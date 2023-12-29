@@ -2,83 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B10281FE87
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 10:17:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1E281FEB9
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 10:38:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJ8yD-0005z1-Ac; Fri, 29 Dec 2023 04:15:57 -0500
+	id 1rJ9JJ-0002I1-P1; Fri, 29 Dec 2023 04:37:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rJ8yB-0005yo-Mu
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:15:55 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rJ8y9-000077-PD
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:15:55 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1d41bb4da91so19229925ad.0
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 01:15:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1703841351; x=1704446151; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hMINUQYMsguwjB/Gf5Ut/mxIdZPjCW6b8Z/XbgT+Rzk=;
- b=G6N0lgcwcQeRxibxMDDqj6tSEHtjWS+LY5uXxA5BanuvDC9zwg8tgag8vvShs7MotU
- /fIXhlljJvf60qKnvyLYFKAzNEjpk2B2fAX5XVKnMaGdMviTe7DaJVtKUcAVmolDQ/f5
- c/SykgJtxuYMheToDEScv4IjxoMYWYJe3gV6jBXrGOVm3aetBspL9K3i4BoPf7h942R6
- C4yD8BC2/hPHsR+G8jb93J8lvm9iBy3c60LXb4yIDwZabjs0u7VOuwN6ojQ57VnQGDrD
- 8uwHCQLDIDFoHWw3Kp9djBbZ+bnWRyCK6cGvsddc6qvKg1LSrVkC+QH9YNIRF6G0nScW
- vcuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703841351; x=1704446151;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hMINUQYMsguwjB/Gf5Ut/mxIdZPjCW6b8Z/XbgT+Rzk=;
- b=DmbCBQm/gHEXRcA/GcehxbcVdQZnQuc+vAl0urmvjPOdhhuog5/k1ADe1fOdQsJ+Ri
- uUL7CxFMDV/QlASMS2iTYqaSblOfxpao4G8RnzWaaC1oD0jqiuVDs0v/MNQZPCLvrynG
- x4EP3n38l0WWmhavz/bdnXFNaHam1x+mx5qbQbmctNzxy49o+kML/gNP07srdzGeLr9p
- gdAngkqXtfUKEgJnKNJYZVATmxajw21RTZme9Ronw+p78q66O770N00XCm7RkjMU8qT8
- CAhPjbpdHtkARZq8QCie4qR9uI7bzXQdha/B2HLJ6fE9r6HAAA/M2V7HU0J/Fi2X/jzc
- 7C8g==
-X-Gm-Message-State: AOJu0Yx80+ATs95h0jcU1aYiFnC8YtPgGYokQW7CqWTFdzgDa8aePC2w
- WX+2/fGIbr/A+3OEACREmG7uPSljiM3aXS4Ev6TAMA7hVygZyQ==
-X-Google-Smtp-Source: AGHT+IGxosM90UuI1wcmD5z7Zr9FTWsJjgvpxyTCTk2hrtCy+7m6WJnV9SIM6qmP8qeWI6q/QNErjw==
-X-Received: by 2002:a17:902:e84f:b0:1d4:3094:72b5 with SMTP id
- t15-20020a170902e84f00b001d4309472b5mr4124972plg.135.1703841351198; 
- Fri, 29 Dec 2023 01:15:51 -0800 (PST)
-Received: from [192.168.68.110] ([189.79.21.107])
- by smtp.gmail.com with ESMTPSA id
- g24-20020a170902fe1800b001d0cfd7f6b9sm15323126plj.54.2023.12.29.01.15.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Dec 2023 01:15:50 -0800 (PST)
-Message-ID: <44b63588-dfa6-4572-a767-84677ee6c0a2@ventanamicro.com>
-Date: Fri, 29 Dec 2023 06:15:44 -0300
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rJ9JH-0002HT-0A
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:37:43 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rJ9JD-0001lE-Vs
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:37:42 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxmupZk45lr2oAAA--.1152S3;
+ Fri, 29 Dec 2023 17:37:29 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxPL5Xk45lL7kPAA--.23722S2; 
+ Fri, 29 Dec 2023 17:37:27 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, peter.maydell@linaro.org, philmd@linaro.org,
+ alex.bennee@linaro.org, maobibo@loongson.cn, zhaotianrui@loongson.cn
+Subject: [PATCH 1/1] target/loongarch: move translate modules to tcg/
+Date: Fri, 29 Dec 2023 17:24:35 +0800
+Message-Id: <20231229092435.3416025-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv/tcg: do not set defaults for non-generic
-To: Vladimir Isaev <vladimir.isaev@syntacore.com>, qemu-riscv@nongnu.org
-Cc: qemu-devel@nongnu.org, zhiwei_liu@linux.alibaba.com, liwei1518@gmail.com, 
- bin.meng@windriver.com, alistair.francis@wdc.com, palmer@dabbelt.com
-References: <20231229080302.125418-1-vladimir.isaev@syntacore.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231229080302.125418-1-vladimir.isaev@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8AxPL5Xk45lL7kPAA--.23722S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,56 +61,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Introduce the target/loongarch/tcg directory. Its purpose is to hold the TCG
+code that is selected by CONFIG_TCG
 
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ target/loongarch/{ => tcg}/constant_timer.c     |  0
+ target/loongarch/{ => tcg}/csr_helper.c         |  0
+ target/loongarch/{ => tcg}/fpu_helper.c         |  0
+ target/loongarch/{ => tcg}/iocsr_helper.c       |  0
+ target/loongarch/{ => tcg}/op_helper.c          |  0
+ target/loongarch/{ => tcg}/tlb_helper.c         |  0
+ target/loongarch/{ => tcg}/translate.c          |  0
+ target/loongarch/{ => tcg}/vec_helper.c         |  0
+ .../{ => tcg}/insn_trans/trans_arith.c.inc      |  0
+ .../{ => tcg}/insn_trans/trans_atomic.c.inc     |  0
+ .../{ => tcg}/insn_trans/trans_bit.c.inc        |  0
+ .../{ => tcg}/insn_trans/trans_branch.c.inc     |  0
+ .../{ => tcg}/insn_trans/trans_extra.c.inc      |  0
+ .../{ => tcg}/insn_trans/trans_farith.c.inc     |  0
+ .../{ => tcg}/insn_trans/trans_fcmp.c.inc       |  0
+ .../{ => tcg}/insn_trans/trans_fcnv.c.inc       |  0
+ .../{ => tcg}/insn_trans/trans_fmemory.c.inc    |  0
+ .../{ => tcg}/insn_trans/trans_fmov.c.inc       |  0
+ .../{ => tcg}/insn_trans/trans_memory.c.inc     |  0
+ .../{ => tcg}/insn_trans/trans_privileged.c.inc |  0
+ .../{ => tcg}/insn_trans/trans_shift.c.inc      |  0
+ .../{ => tcg}/insn_trans/trans_vec.c.inc        |  0
+ target/loongarch/meson.build                    | 17 ++---------------
+ target/loongarch/tcg/meson.build                | 15 +++++++++++++++
+ 24 files changed, 17 insertions(+), 15 deletions(-)
+ rename target/loongarch/{ => tcg}/constant_timer.c (100%)
+ rename target/loongarch/{ => tcg}/csr_helper.c (100%)
+ rename target/loongarch/{ => tcg}/fpu_helper.c (100%)
+ rename target/loongarch/{ => tcg}/iocsr_helper.c (100%)
+ rename target/loongarch/{ => tcg}/op_helper.c (100%)
+ rename target/loongarch/{ => tcg}/tlb_helper.c (100%)
+ rename target/loongarch/{ => tcg}/translate.c (100%)
+ rename target/loongarch/{ => tcg}/vec_helper.c (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_arith.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_atomic.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_bit.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_branch.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_extra.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_farith.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_fcmp.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_fcnv.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_fmemory.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_fmov.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_memory.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_privileged.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_shift.c.inc (100%)
+ rename target/loongarch/{ => tcg}/insn_trans/trans_vec.c.inc (100%)
+ create mode 100644 target/loongarch/tcg/meson.build
 
-On 12/29/23 05:02, Vladimir Isaev wrote:
-> riscv_cpu_options[] are exported using qdev and some of them are defined
-> with default values. This is unfortunate since riscv_cpu_add_user_properties()
-> is called after CPU instance init and there is no clear way to disable MMU/PMP
-> for some CPUs.
-> 
-> Can't define them as NODEFAULT since we still need defaults for generic CPU.
-> 
-> Signed-off-by: Vladimir Isaev <vladimir.isaev@syntacore.com>
-> ---
+diff --git a/target/loongarch/constant_timer.c b/target/loongarch/tcg/constant_timer.c
+similarity index 100%
+rename from target/loongarch/constant_timer.c
+rename to target/loongarch/tcg/constant_timer.c
+diff --git a/target/loongarch/csr_helper.c b/target/loongarch/tcg/csr_helper.c
+similarity index 100%
+rename from target/loongarch/csr_helper.c
+rename to target/loongarch/tcg/csr_helper.c
+diff --git a/target/loongarch/fpu_helper.c b/target/loongarch/tcg/fpu_helper.c
+similarity index 100%
+rename from target/loongarch/fpu_helper.c
+rename to target/loongarch/tcg/fpu_helper.c
+diff --git a/target/loongarch/iocsr_helper.c b/target/loongarch/tcg/iocsr_helper.c
+similarity index 100%
+rename from target/loongarch/iocsr_helper.c
+rename to target/loongarch/tcg/iocsr_helper.c
+diff --git a/target/loongarch/op_helper.c b/target/loongarch/tcg/op_helper.c
+similarity index 100%
+rename from target/loongarch/op_helper.c
+rename to target/loongarch/tcg/op_helper.c
+diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+similarity index 100%
+rename from target/loongarch/tlb_helper.c
+rename to target/loongarch/tcg/tlb_helper.c
+diff --git a/target/loongarch/translate.c b/target/loongarch/tcg/translate.c
+similarity index 100%
+rename from target/loongarch/translate.c
+rename to target/loongarch/tcg/translate.c
+diff --git a/target/loongarch/vec_helper.c b/target/loongarch/tcg/vec_helper.c
+similarity index 100%
+rename from target/loongarch/vec_helper.c
+rename to target/loongarch/tcg/vec_helper.c
+diff --git a/target/loongarch/insn_trans/trans_arith.c.inc b/target/loongarch/tcg/insn_trans/trans_arith.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_arith.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_arith.c.inc
+diff --git a/target/loongarch/insn_trans/trans_atomic.c.inc b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_atomic.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_atomic.c.inc
+diff --git a/target/loongarch/insn_trans/trans_bit.c.inc b/target/loongarch/tcg/insn_trans/trans_bit.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_bit.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_bit.c.inc
+diff --git a/target/loongarch/insn_trans/trans_branch.c.inc b/target/loongarch/tcg/insn_trans/trans_branch.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_branch.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_branch.c.inc
+diff --git a/target/loongarch/insn_trans/trans_extra.c.inc b/target/loongarch/tcg/insn_trans/trans_extra.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_extra.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_extra.c.inc
+diff --git a/target/loongarch/insn_trans/trans_farith.c.inc b/target/loongarch/tcg/insn_trans/trans_farith.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_farith.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_farith.c.inc
+diff --git a/target/loongarch/insn_trans/trans_fcmp.c.inc b/target/loongarch/tcg/insn_trans/trans_fcmp.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_fcmp.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_fcmp.c.inc
+diff --git a/target/loongarch/insn_trans/trans_fcnv.c.inc b/target/loongarch/tcg/insn_trans/trans_fcnv.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_fcnv.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_fcnv.c.inc
+diff --git a/target/loongarch/insn_trans/trans_fmemory.c.inc b/target/loongarch/tcg/insn_trans/trans_fmemory.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_fmemory.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_fmemory.c.inc
+diff --git a/target/loongarch/insn_trans/trans_fmov.c.inc b/target/loongarch/tcg/insn_trans/trans_fmov.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_fmov.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_fmov.c.inc
+diff --git a/target/loongarch/insn_trans/trans_memory.c.inc b/target/loongarch/tcg/insn_trans/trans_memory.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_memory.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_memory.c.inc
+diff --git a/target/loongarch/insn_trans/trans_privileged.c.inc b/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_privileged.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_privileged.c.inc
+diff --git a/target/loongarch/insn_trans/trans_shift.c.inc b/target/loongarch/tcg/insn_trans/trans_shift.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_shift.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_shift.c.inc
+diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+similarity index 100%
+rename from target/loongarch/insn_trans/trans_vec.c.inc
+rename to target/loongarch/tcg/insn_trans/trans_vec.c.inc
+diff --git a/target/loongarch/meson.build b/target/loongarch/meson.build
+index 18e8191e2b..a004523439 100644
+--- a/target/loongarch/meson.build
++++ b/target/loongarch/meson.build
+@@ -3,31 +3,18 @@ gen = decodetree.process('insns.decode')
+ loongarch_ss = ss.source_set()
+ loongarch_ss.add(files(
+   'cpu.c',
++  'gdbstub.c'
+ ))
+-loongarch_tcg_ss = ss.source_set()
+-loongarch_tcg_ss.add(gen)
+-loongarch_tcg_ss.add(files(
+-  'fpu_helper.c',
+-  'op_helper.c',
+-  'translate.c',
+-  'gdbstub.c',
+-  'vec_helper.c',
+-))
+-loongarch_tcg_ss.add(zlib)
+ 
+ loongarch_system_ss = ss.source_set()
+ loongarch_system_ss.add(files(
+   'loongarch-qmp-cmds.c',
+   'machine.c',
+-  'tlb_helper.c',
+-  'constant_timer.c',
+-  'csr_helper.c',
+-  'iocsr_helper.c',
+ ))
+ 
+ common_ss.add(when: 'CONFIG_LOONGARCH_DIS', if_true: [files('disas.c'), gen])
+ 
+-loongarch_ss.add_all(when: 'CONFIG_TCG', if_true: [loongarch_tcg_ss])
++subdir('tcg')
+ 
+ target_arch += {'loongarch': loongarch_ss}
+ target_system_arch += {'loongarch': loongarch_system_ss}
+diff --git a/target/loongarch/tcg/meson.build b/target/loongarch/tcg/meson.build
+new file mode 100644
+index 0000000000..bb7411e5e5
+--- /dev/null
++++ b/target/loongarch/tcg/meson.build
+@@ -0,0 +1,15 @@
++loongarch_ss.add([zlib, gen])
++
++loongarch_ss.add(files(
++  'fpu_helper.c',
++  'op_helper.c',
++  'vec_helper.c',
++  'translate.c',
++))
++
++loongarch_system_ss.add(files(
++  'constant_timer.c',
++  'iocsr_helper.c',
++  'tlb_helper.c',
++  'csr_helper.c',
++))
+-- 
+2.25.1
 
-This issue is fixed by this series:
-
-
-"[PATCH v2 00/16] target/riscv: deprecate riscv_cpu_options[]"
-
-https://lore.kernel.org/qemu-riscv/20231222122235.545235-1-dbarboza@ventanamicro.com/
-
-
-Feel free to give it a go. Thanks,
-
-
-Daniel
-
-
->   target/riscv/tcg/tcg-cpu.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index 8a35683a345d..9ffce1c9f7b0 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -937,6 +937,8 @@ static void riscv_cpu_add_multiext_prop_array(Object *obj,
->    */
->   static void riscv_cpu_add_user_properties(Object *obj)
->   {
-> +    bool use_def_vals = riscv_cpu_is_generic(obj);
-> +
->   #ifndef CONFIG_USER_ONLY
->       riscv_add_satp_mode_properties(obj);
->   #endif
-> @@ -950,6 +952,8 @@ static void riscv_cpu_add_user_properties(Object *obj)
->       riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_deprecated_exts);
->   
->       for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
-> +        prop->set_default = prop->set_default && use_def_vals;
-> +
->           qdev_property_add_static(DEVICE(obj), prop);
->       }
->   }
 
