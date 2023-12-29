@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30A08201C5
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E0C8201E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:33:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJKQE-0008Si-S0; Fri, 29 Dec 2023 16:29:38 -0500
+	id 1rJKQH-0000TN-Sm; Fri, 29 Dec 2023 16:29:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKPu-0008EJ-FI
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:18 -0500
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+ id 1rJKPz-0008QK-J1
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:25 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKPn-0000Nd-3L
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:14 -0500
-Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-6dbc4675749so3312419a34.3
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:29:10 -0800 (PST)
+ id 1rJKPu-0000Nw-7D
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:19 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6d9b37f4804so2673100b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:29:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703885350; x=1704490150; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703885352; x=1704490152; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=gliKhbzw7mYK+Gx2clBOd8jJ7bUN9rjvGSg1S1YFMZA=;
- b=f9ot8awZrrFFFUBj+mzJ13tEWzfUI9vwumkVAlKve70JNF57Z/oWd6RC5FzYlPHWdW
- c5oy2Mz1jkSXe/O6g/W6bI8oka7/dnZ6Ah22bdXNJZIKnYaD7A0jpQ4IZ2OfV7p+hEbj
- d2DzYeWOzaEyaxhBtEDKC+U+UcsMb4SCUyzeOJdrGddWPK59R9Ud3AIymxQfZ94hmWag
- NuPb3HpoRO/ksqbAC6O2mGT0u9PSe307HWQVDoEppssAlJKNgXZlysTbyMIKUBRIvBzA
- pxgd9WGzm9nWFOLhcrMa37HHHIkXax1bH1e/tlYE3S8Df0D9S1X5GY8n/+DBQf9MghZ3
- SFZA==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MzNGhzq81QTlaN12LzVhmURoRRihF1DCyuym+umxPGo=;
+ b=fn8AvMqqQ1y8K0uGGdmD4hKlZIzraw9gSnavPjdk8B3zSFIujqm4V0+k/f0LeNhlzb
+ 2UuEwvV5anvtb4c7QMrVa50EwDbttCsb9T8Cdt7rizf86Mt+1/gxu/RZxgtzNP2h4sni
+ gGkISTseIxbGGavmN7x2/84GCGTgYYbUgu+rxQqGNPWkmObp+fEtRwRqmrIEfFqm9eAg
+ awgXPOLDDRh4xfW8wpPFLeVjaUixTZM71WivnYbkemjgVCJiG6PiTgFjscN4VsQvm8AH
+ rakVQeXQBaPJVWrEPme/vYz/2h7Nl0iZqaLyhT7UipsP2A0/iaXN3j1ZVzFl+tdFpIkk
+ c1Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703885350; x=1704490150;
+ d=1e100.net; s=20230601; t=1703885352; x=1704490152;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gliKhbzw7mYK+Gx2clBOd8jJ7bUN9rjvGSg1S1YFMZA=;
- b=utRq5zHGzW9Qxstg+kSU3oNnwq1xUiZ8kTJWr7RWnKgLHocxFWsxabH7vUBokT6x3O
- zcHJTy1uoW2t2VwGsN9janjM8vUfsuS755faBcTO5YG3RTpqhV7y8EiKir18YNgvLYY+
- XMZjBdvX4SdTor8TpUgVp0m0gQdXXd/eBwyA5MRxl148rfTkK0JY6rYruwtLdoJbT7UD
- HM6YX+tkDTSNLqJ4pBz4dIRV3jxLXuip6RAcTT1z5l8Qn+fDqgjIpMpoMGMq82yOONxG
- rCqpXluIm0RH2EJHf5rpNzMx41v3vScwc0NFkVjtdVen5gZX2owV0464m9iuWKUbd63E
- jOQw==
-X-Gm-Message-State: AOJu0YwWORuourZsfpb7Wo7yqneH03Y5OQ+DC4qRTrjXahFS4lbogi8I
- UKjCuf5eOuTWUCZ3/62edIydLdKwrzEOpfrPH2Hy+Fi6zENPfA==
-X-Google-Smtp-Source: AGHT+IEl40ffbteRspT4sug/OHg8rl8rfl+cUGeosxyU8svI6lxmr6D17Q5kBKf0E41AJQb0hPAITA==
-X-Received: by 2002:a05:6830:488a:b0:6dc:9c6:b060 with SMTP id
- en10-20020a056830488a00b006dc09c6b060mr3609985otb.13.1703885349750; 
- Fri, 29 Dec 2023 13:29:09 -0800 (PST)
+ bh=MzNGhzq81QTlaN12LzVhmURoRRihF1DCyuym+umxPGo=;
+ b=D22m+NRyPT4OF1mEAJZ+KyhpdQrfUPfUePjupy2CuaSqgmj+NMzKKrZZRdCW58Ak5H
+ lzYhIikz7rhUIQQC/ad8ZDS1a2GbxJEcu8BCFNcSmxJK4/r26czy35+Cr2rf2s/tRQDO
+ m25MYDl9P6TbGNtJAIcwAnlATGpm4PnP4Fh4j1+ItNHt/I8UXUeZeEYF5HQ7KQ+XtJ4j
+ u/7YNzh9RDMc2mvWW6CgDjTDYm39FqktU3GNu2h862XIrw2HpQyrgrVfEm+UxT7gSq9R
+ mi9bltHVnPLYwJM2PpeNo50gyMyzF1cDhAXiF9UuniFu8BUqH6Z886juh617YRjyFnND
+ vF0Q==
+X-Gm-Message-State: AOJu0YwgoQAx7aCFALCmMqSR/uHNEZ1xaj9Jqw7nQR+bRfBntpgNRi6V
+ 3ao+7arDIgR49i+6aVaVzJF6eeLk5W7zsvyjGhRc1mQ8ufMHeA==
+X-Google-Smtp-Source: AGHT+IGbiXk7Zakn4jHT7g/5ohoFPdVwbKmKcmoP2DQSUAzM9MjK5vU10hlPJ6jyi/yWR4RHCyauQw==
+X-Received: by 2002:a05:6a20:e127:b0:196:2550:d6d6 with SMTP id
+ kr39-20020a056a20e12700b001962550d6d6mr5702899pzb.13.1703885352053; 
+ Fri, 29 Dec 2023 13:29:12 -0800 (PST)
 Received: from stoup.lan (203-217-28-32.perm.iinet.net.au. [203.217.28.32])
  by smtp.gmail.com with ESMTPSA id
- bd33-20020a056a0027a100b006d9a96b7d0dsm11285396pfb.208.2023.12.29.13.29.08
- for <qemu-devel@nongnu.org>
+ bd33-20020a056a0027a100b006d9a96b7d0dsm11285396pfb.208.2023.12.29.13.29.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Dec 2023 13:29:09 -0800 (PST)
+ Fri, 29 Dec 2023 13:29:11 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 58/71] hw/usb: Constify VMState
-Date: Sat, 30 Dec 2023 08:23:33 +1100
-Message-Id: <20231229212346.147149-59-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 59/71] hw/vfio: Constify VMState
+Date: Sat, 30 Dec 2023 08:23:34 +1100
+Message-Id: <20231229212346.147149-60-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231229212346.147149-1-richard.henderson@linaro.org>
 References: <20231229212346.147149-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,573 +93,53 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231221031652.119827-59-richard.henderson@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Message-Id: <20231221031652.119827-60-richard.henderson@linaro.org>
 ---
- hw/usb/bus.c                        |  2 +-
- hw/usb/ccid-card-passthru.c         |  2 +-
- hw/usb/dev-hid.c                    |  4 ++--
- hw/usb/dev-hub.c                    |  8 ++++----
- hw/usb/dev-mtp.c                    |  2 +-
- hw/usb/dev-smartcard-reader.c       |  8 ++++----
- hw/usb/dev-storage.c                |  2 +-
- hw/usb/dev-uas.c                    |  2 +-
- hw/usb/hcd-dwc2.c                   |  4 ++--
- hw/usb/hcd-dwc3.c                   |  2 +-
- hw/usb/hcd-ehci-pci.c               |  2 +-
- hw/usb/hcd-ehci-sysbus.c            |  2 +-
- hw/usb/hcd-ehci.c                   |  2 +-
- hw/usb/hcd-ohci-pci.c               |  2 +-
- hw/usb/hcd-ohci.c                   |  8 ++++----
- hw/usb/hcd-uhci.c                   |  4 ++--
- hw/usb/hcd-xhci-pci.c               |  2 +-
- hw/usb/hcd-xhci-sysbus.c            |  2 +-
- hw/usb/hcd-xhci.c                   | 12 ++++++------
- hw/usb/host-libusb.c                |  2 +-
- hw/usb/imx-usb-phy.c                |  2 +-
- hw/usb/redirect.c                   | 16 ++++++++--------
- hw/usb/u2f-passthru.c               |  2 +-
- hw/usb/u2f.c                        |  2 +-
- hw/usb/xlnx-versal-usb2-ctrl-regs.c |  2 +-
- 25 files changed, 49 insertions(+), 49 deletions(-)
+ hw/vfio/display.c | 2 +-
+ hw/vfio/pci.c     | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/usb/bus.c b/hw/usb/bus.c
-index 92d6ed5626..59c39945dd 100644
---- a/hw/usb/bus.c
-+++ b/hw/usb/bus.c
-@@ -69,7 +69,7 @@ const VMStateDescription vmstate_usb_device = {
+diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+index 7a10fa8604..1aa440c663 100644
+--- a/hw/vfio/display.c
++++ b/hw/vfio/display.c
+@@ -560,7 +560,7 @@ const VMStateDescription vfio_display_vmstate = {
      .version_id = 1,
      .minimum_version_id = 1,
-     .post_load = usb_device_post_load,
+     .needed = migrate_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(addr, USBDevice),
-         VMSTATE_INT32(state, USBDevice),
-         VMSTATE_INT32(remote_wakeup, USBDevice),
-diff --git a/hw/usb/ccid-card-passthru.c b/hw/usb/ccid-card-passthru.c
-index 07ee42f304..a515703904 100644
---- a/hw/usb/ccid-card-passthru.c
-+++ b/hw/usb/ccid-card-passthru.c
-@@ -378,7 +378,7 @@ static const VMStateDescription passthru_vmstate = {
-     .name = "ccid-card-passthru",
+         VMSTATE_STRUCT_POINTER(ramfb, VFIODisplay, ramfb_vmstate, RAMFBState),
+         VMSTATE_END_OF_LIST(),
+     }
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 1874ec1aba..9f838978be 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2561,7 +2561,7 @@ const VMStateDescription vmstate_vfio_display = {
      .version_id = 1,
      .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BUFFER(vscard_in_data, PassthruState),
-         VMSTATE_UINT32(vscard_in_pos, PassthruState),
-         VMSTATE_UINT32(vscard_in_hdr, PassthruState),
-diff --git a/hw/usb/dev-hid.c b/hw/usb/dev-hid.c
-index bdd6d1ffaf..9e358c934e 100644
---- a/hw/usb/dev-hid.c
-+++ b/hw/usb/dev-hid.c
-@@ -756,7 +756,7 @@ static const VMStateDescription vmstate_usb_ptr = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .post_load = usb_ptr_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_USB_DEVICE(dev, USBHIDState),
-         VMSTATE_HID_POINTER_DEVICE(hid, USBHIDState),
+     .needed = vfio_display_migration_needed,
+-    .fields = (VMStateField[]){
++    .fields = (const VMStateField[]){
+         VMSTATE_STRUCT_POINTER(dpy, VFIOPCIDevice, vfio_display_vmstate,
+                                VFIODisplay),
          VMSTATE_END_OF_LIST()
-@@ -767,7 +767,7 @@ static const VMStateDescription vmstate_usb_kbd = {
-     .name = "usb-kbd",
+@@ -2572,12 +2572,12 @@ const VMStateDescription vmstate_vfio_pci_config = {
+     .name = "VFIOPCIDevice",
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_USB_DEVICE(dev, USBHIDState),
-         VMSTATE_HID_KEYBOARD_DEVICE(hid, USBHIDState),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
-index 5703e0e826..06e9537d03 100644
---- a/hw/usb/dev-hub.c
-+++ b/hw/usb/dev-hub.c
-@@ -623,7 +623,7 @@ static const VMStateDescription vmstate_usb_hub_port = {
-     .name = "usb-hub-port",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT16(wPortStatus, USBHubPort),
-         VMSTATE_UINT16(wPortChange, USBHubPort),
-         VMSTATE_END_OF_LIST()
-@@ -642,7 +642,7 @@ static const VMStateDescription vmstate_usb_hub_port_timer = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = usb_hub_port_timer_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_TIMER_PTR(port_timer, USBHubState),
-         VMSTATE_END_OF_LIST()
-     },
-@@ -652,13 +652,13 @@ static const VMStateDescription vmstate_usb_hub = {
-     .name = "usb-hub",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_USB_DEVICE(dev, USBHubState),
-         VMSTATE_STRUCT_ARRAY(ports, USBHubState, MAX_PORTS, 0,
-                              vmstate_usb_hub_port, USBHubPort),
+         VMSTATE_PCI_DEVICE(pdev, VFIOPCIDevice),
+         VMSTATE_MSIX_TEST(pdev, VFIOPCIDevice, vfio_msix_present),
          VMSTATE_END_OF_LIST()
      },
 -    .subsections = (const VMStateDescription * []) {
 +    .subsections = (const VMStateDescription * const []) {
-         &vmstate_usb_hub_port_timer,
+         &vmstate_vfio_display,
          NULL
-     }
-diff --git a/hw/usb/dev-mtp.c b/hw/usb/dev-mtp.c
-index 1cac1cd435..7e4a0765ae 100644
---- a/hw/usb/dev-mtp.c
-+++ b/hw/usb/dev-mtp.c
-@@ -2072,7 +2072,7 @@ static const VMStateDescription vmstate_usb_mtp = {
-     .unmigratable = 1,
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_USB_DEVICE(dev, MTPState),
-         VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/usb/dev-smartcard-reader.c b/hw/usb/dev-smartcard-reader.c
-index be0a4fc3bc..c0d63e0425 100644
---- a/hw/usb/dev-smartcard-reader.c
-+++ b/hw/usb/dev-smartcard-reader.c
-@@ -1367,7 +1367,7 @@ static const VMStateDescription bulk_in_vmstate = {
-     .name = "CCID BulkIn state",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BUFFER(data, BulkIn),
-         VMSTATE_UINT32(len, BulkIn),
-         VMSTATE_UINT32(pos, BulkIn),
-@@ -1379,7 +1379,7 @@ static const VMStateDescription answer_vmstate = {
-     .name = "CCID Answer state",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(slot, Answer),
-         VMSTATE_UINT8(seq, Answer),
-         VMSTATE_END_OF_LIST()
-@@ -1390,7 +1390,7 @@ static const VMStateDescription usb_device_vmstate = {
-     .name = "usb_device",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(addr, USBDevice),
-         VMSTATE_BUFFER(setup_buf, USBDevice),
-         VMSTATE_BUFFER(data_buf, USBDevice),
-@@ -1404,7 +1404,7 @@ static const VMStateDescription ccid_vmstate = {
-     .minimum_version_id = 1,
-     .post_load = ccid_post_load,
-     .pre_save = ccid_pre_save,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(dev, USBCCIDState, 1, usb_device_vmstate, USBDevice),
-         VMSTATE_UINT8(debug, USBCCIDState),
-         VMSTATE_BUFFER(bulk_out_data, USBCCIDState),
-diff --git a/hw/usb/dev-storage.c b/hw/usb/dev-storage.c
-index a496c811a7..341e505bd0 100644
---- a/hw/usb/dev-storage.c
-+++ b/hw/usb/dev-storage.c
-@@ -572,7 +572,7 @@ static const VMStateDescription vmstate_usb_msd = {
-     .name = "usb-storage",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_USB_DEVICE(dev, MSDState),
-         VMSTATE_UINT32(mode, MSDState),
-         VMSTATE_UINT32(scsi_len, MSDState),
-diff --git a/hw/usb/dev-uas.c b/hw/usb/dev-uas.c
-index f013ded91e..1804cb6799 100644
---- a/hw/usb/dev-uas.c
-+++ b/hw/usb/dev-uas.c
-@@ -947,7 +947,7 @@ static void usb_uas_realize(USBDevice *dev, Error **errp)
- static const VMStateDescription vmstate_usb_uas = {
-     .name = "usb-uas",
-     .unmigratable = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_USB_DEVICE(dev, UASDevice),
-         VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/usb/hcd-dwc2.c b/hw/usb/hcd-dwc2.c
-index a0c4e782b2..222eef82a5 100644
---- a/hw/usb/hcd-dwc2.c
-+++ b/hw/usb/hcd-dwc2.c
-@@ -1391,7 +1391,7 @@ static const VMStateDescription vmstate_dwc2_state_packet = {
-     .name = "dwc2/packet",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(devadr, DWC2Packet),
-         VMSTATE_UINT32(epnum, DWC2Packet),
-         VMSTATE_UINT32(epdir, DWC2Packet),
-@@ -1411,7 +1411,7 @@ const VMStateDescription vmstate_dwc2_state = {
-     .name = "dwc2",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(glbreg, DWC2State,
-                              DWC2_GLBREG_SIZE / sizeof(uint32_t)),
-         VMSTATE_UINT32_ARRAY(fszreg, DWC2State,
-diff --git a/hw/usb/hcd-dwc3.c b/hw/usb/hcd-dwc3.c
-index 279263489e..09d8e25b97 100644
---- a/hw/usb/hcd-dwc3.c
-+++ b/hw/usb/hcd-dwc3.c
-@@ -648,7 +648,7 @@ static void usb_dwc3_init(Object *obj)
- static const VMStateDescription vmstate_usb_dwc3 = {
-     .name = "usb-dwc3",
-     .version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, USBDWC3, USB_DWC3_R_MAX),
-         VMSTATE_UINT8(cfg.mode, USBDWC3),
-         VMSTATE_UINT32(cfg.dwc_usb3_user, USBDWC3),
-diff --git a/hw/usb/hcd-ehci-pci.c b/hw/usb/hcd-ehci-pci.c
-index 345444a573..0b26db74d8 100644
---- a/hw/usb/hcd-ehci-pci.c
-+++ b/hw/usb/hcd-ehci-pci.c
-@@ -144,7 +144,7 @@ static const VMStateDescription vmstate_ehci_pci = {
-     .name        = "ehci",
-     .version_id  = 2,
-     .minimum_version_id  = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(pcidev, EHCIPCIState),
-         VMSTATE_STRUCT(ehci, EHCIPCIState, 2, vmstate_ehci, EHCIState),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/usb/hcd-ehci-sysbus.c b/hw/usb/hcd-ehci-sysbus.c
-index a12e218848..bfb774504c 100644
---- a/hw/usb/hcd-ehci-sysbus.c
-+++ b/hw/usb/hcd-ehci-sysbus.c
-@@ -25,7 +25,7 @@ static const VMStateDescription vmstate_ehci_sysbus = {
-     .name        = "ehci-sysbus",
-     .version_id  = 2,
-     .minimum_version_id  = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(ehci, EHCISysBusState, 2, vmstate_ehci, EHCIState),
-         VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/usb/hcd-ehci.c b/hw/usb/hcd-ehci.c
-index 19b4534c20..a8dcfe373a 100644
---- a/hw/usb/hcd-ehci.c
-+++ b/hw/usb/hcd-ehci.c
-@@ -2473,7 +2473,7 @@ const VMStateDescription vmstate_ehci = {
-     .minimum_version_id  = 1,
-     .pre_save    = usb_ehci_pre_save,
-     .post_load   = usb_ehci_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         /* mmio registers */
-         VMSTATE_UINT32(usbcmd, EHCIState),
-         VMSTATE_UINT32(usbsts, EHCIState),
-diff --git a/hw/usb/hcd-ohci-pci.c b/hw/usb/hcd-ohci-pci.c
-index 6b630d35a7..33ed9b6f5a 100644
---- a/hw/usb/hcd-ohci-pci.c
-+++ b/hw/usb/hcd-ohci-pci.c
-@@ -120,7 +120,7 @@ static const VMStateDescription vmstate_ohci = {
-     .name = "ohci",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, OHCIPCIState),
-         VMSTATE_STRUCT(state, OHCIPCIState, 1, vmstate_ohci_state, OHCIState),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/usb/hcd-ohci.c b/hw/usb/hcd-ohci.c
-index 7ff1b65ced..d73b53f33c 100644
---- a/hw/usb/hcd-ohci.c
-+++ b/hw/usb/hcd-ohci.c
-@@ -1984,7 +1984,7 @@ static const VMStateDescription vmstate_ohci_state_port = {
-     .name = "ohci-core/port",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(ctrl, OHCIPort),
-         VMSTATE_END_OF_LIST()
-     },
-@@ -2002,7 +2002,7 @@ static const VMStateDescription vmstate_ohci_eof_timer = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = ohci_eof_timer_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_TIMER_PTR(eof_timer, OHCIState),
-         VMSTATE_END_OF_LIST()
-     },
-@@ -2012,7 +2012,7 @@ const VMStateDescription vmstate_ohci_state = {
-     .name = "ohci-core",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_INT64(sof_time, OHCIState),
-         VMSTATE_UINT32(ctl, OHCIState),
-         VMSTATE_UINT32(status, OHCIState),
-@@ -2049,7 +2049,7 @@ const VMStateDescription vmstate_ohci_state = {
-         VMSTATE_BOOL(async_complete, OHCIState),
-         VMSTATE_END_OF_LIST()
-     },
--    .subsections = (const VMStateDescription*[]) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_ohci_eof_timer,
-         NULL
-     }
-diff --git a/hw/usb/hcd-uhci.c b/hw/usb/hcd-uhci.c
-index 77baaa7a6b..7d3c026dae 100644
---- a/hw/usb/hcd-uhci.c
-+++ b/hw/usb/hcd-uhci.c
-@@ -339,7 +339,7 @@ static const VMStateDescription vmstate_uhci_port = {
-     .name = "uhci port",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT16(ctrl, UHCIPort),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -361,7 +361,7 @@ static const VMStateDescription vmstate_uhci = {
-     .version_id = 3,
-     .minimum_version_id = 1,
-     .post_load = uhci_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(dev, UHCIState),
-         VMSTATE_UINT8_EQUAL(num_ports_vmstate, UHCIState, NULL),
-         VMSTATE_STRUCT_ARRAY(ports, UHCIState, NB_PORTS, 1,
-diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
-index 643d4643e4..4423983308 100644
---- a/hw/usb/hcd-xhci-pci.c
-+++ b/hw/usb/hcd-xhci-pci.c
-@@ -178,7 +178,7 @@ static const VMStateDescription vmstate_xhci_pci = {
-     .name = "xhci",
-     .version_id = 1,
-     .post_load = xhci_pci_vmstate_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, XHCIPciState),
-         VMSTATE_MSIX(parent_obj, XHCIPciState),
-         VMSTATE_STRUCT(xhci, XHCIPciState, 1, vmstate_xhci, XHCIState),
-diff --git a/hw/usb/hcd-xhci-sysbus.c b/hw/usb/hcd-xhci-sysbus.c
-index faf57b4797..d93bae31f9 100644
---- a/hw/usb/hcd-xhci-sysbus.c
-+++ b/hw/usb/hcd-xhci-sysbus.c
-@@ -91,7 +91,7 @@ static Property xhci_sysbus_props[] = {
- static const VMStateDescription vmstate_xhci_sysbus = {
-     .name = "xhci-sysbus",
-     .version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(xhci, XHCISysbusState, 1, vmstate_xhci, XHCIState),
-         VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index 4b60114207..ad40232eb6 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -3522,7 +3522,7 @@ static int usb_xhci_post_load(void *opaque, int version_id)
- static const VMStateDescription vmstate_xhci_ring = {
-     .name = "xhci-ring",
-     .version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(dequeue, XHCIRing),
-         VMSTATE_BOOL(ccs, XHCIRing),
-         VMSTATE_END_OF_LIST()
-@@ -3532,7 +3532,7 @@ static const VMStateDescription vmstate_xhci_ring = {
- static const VMStateDescription vmstate_xhci_port = {
-     .name = "xhci-port",
-     .version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(portsc, XHCIPort),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -3541,7 +3541,7 @@ static const VMStateDescription vmstate_xhci_port = {
- static const VMStateDescription vmstate_xhci_slot = {
-     .name = "xhci-slot",
-     .version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BOOL(enabled,   XHCISlot),
-         VMSTATE_BOOL(addressed, XHCISlot),
-         VMSTATE_END_OF_LIST()
-@@ -3551,7 +3551,7 @@ static const VMStateDescription vmstate_xhci_slot = {
- static const VMStateDescription vmstate_xhci_event = {
-     .name = "xhci-event",
-     .version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(type,   XHCIEvent),
-         VMSTATE_UINT32(ccode,  XHCIEvent),
-         VMSTATE_UINT64(ptr,    XHCIEvent),
-@@ -3571,7 +3571,7 @@ static bool xhci_er_full(void *opaque, int version_id)
- static const VMStateDescription vmstate_xhci_intr = {
-     .name = "xhci-intr",
-     .version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         /* registers */
-         VMSTATE_UINT32(iman,          XHCIInterrupter),
-         VMSTATE_UINT32(imod,          XHCIInterrupter),
-@@ -3604,7 +3604,7 @@ const VMStateDescription vmstate_xhci = {
-     .name = "xhci-core",
-     .version_id = 1,
-     .post_load = usb_xhci_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT_VARRAY_UINT32(ports, XHCIState, numports, 1,
-                                      vmstate_xhci_port, XHCIPort),
-         VMSTATE_STRUCT_VARRAY_UINT32(slots, XHCIState, numslots, 1,
-diff --git a/hw/usb/host-libusb.c b/hw/usb/host-libusb.c
-index d7060a42d5..80122b4125 100644
---- a/hw/usb/host-libusb.c
-+++ b/hw/usb/host-libusb.c
-@@ -1753,7 +1753,7 @@ static const VMStateDescription vmstate_usb_host = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .post_load = usb_host_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_USB_DEVICE(parent_obj, USBHostDevice),
-         VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/usb/imx-usb-phy.c b/hw/usb/imx-usb-phy.c
-index 1a97b36a11..18917d7599 100644
---- a/hw/usb/imx-usb-phy.c
-+++ b/hw/usb/imx-usb-phy.c
-@@ -20,7 +20,7 @@ static const VMStateDescription vmstate_imx_usbphy = {
-     .name = TYPE_IMX_USBPHY,
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(usbphy, IMXUSBPHYState, USBPHY_MAX),
-         VMSTATE_END_OF_LIST()
-     },
-diff --git a/hw/usb/redirect.c b/hw/usb/redirect.c
-index c9893df867..636eb98e41 100644
---- a/hw/usb/redirect.c
-+++ b/hw/usb/redirect.c
-@@ -2373,7 +2373,7 @@ static const VMStateDescription usbredir_bulk_receiving_vmstate = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = usbredir_bulk_receiving_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(bulk_receiving_started, struct endp_data),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -2391,7 +2391,7 @@ static const VMStateDescription usbredir_stream_vmstate = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = usbredir_stream_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(max_streams, struct endp_data),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -2401,7 +2401,7 @@ static const VMStateDescription usbredir_ep_vmstate = {
-     .name = "usb-redir-ep",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(type, struct endp_data),
-         VMSTATE_UINT8(interval, struct endp_data),
-         VMSTATE_UINT8(interface, struct endp_data),
-@@ -2424,7 +2424,7 @@ static const VMStateDescription usbredir_ep_vmstate = {
-         VMSTATE_INT32(bufpq_target_size, struct endp_data),
-         VMSTATE_END_OF_LIST()
-     },
--    .subsections = (const VMStateDescription*[]) {
-+    .subsections = (const VMStateDescription * const []) {
-         &usbredir_bulk_receiving_vmstate,
-         &usbredir_stream_vmstate,
-         NULL
-@@ -2481,7 +2481,7 @@ static const VMStateDescription usbredir_ep_packet_id_queue_vmstate = {
-     .name = "usb-redir-packet-id-queue",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         {
-             .name         = "queue",
-             .version_id   = 0,
-@@ -2501,7 +2501,7 @@ static const VMStateDescription usbredir_device_info_vmstate = {
-     .name = "usb-redir-device-info",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(speed, struct usb_redir_device_connect_header),
-         VMSTATE_UINT8(device_class, struct usb_redir_device_connect_header),
-         VMSTATE_UINT8(device_subclass, struct usb_redir_device_connect_header),
-@@ -2520,7 +2520,7 @@ static const VMStateDescription usbredir_interface_info_vmstate = {
-     .name = "usb-redir-interface-info",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(interface_count,
-                        struct usb_redir_interface_info_header),
-         VMSTATE_UINT8_ARRAY(interface,
-@@ -2543,7 +2543,7 @@ static const VMStateDescription usbredir_vmstate = {
-     .minimum_version_id = 1,
-     .pre_save = usbredir_pre_save,
-     .post_load = usbredir_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_USB_DEVICE(dev, USBRedirDevice),
-         VMSTATE_TIMER_PTR(attach_timer, USBRedirDevice),
-         {
-diff --git a/hw/usb/u2f-passthru.c b/hw/usb/u2f-passthru.c
-index fc93429c9c..b7025d303d 100644
---- a/hw/usb/u2f-passthru.c
-+++ b/hw/usb/u2f-passthru.c
-@@ -512,7 +512,7 @@ static const VMStateDescription u2f_passthru_vmstate = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .post_load = u2f_passthru_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_U2F_KEY(base, U2FPassthruState),
-         VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/usb/u2f.c b/hw/usb/u2f.c
-index 56001249a4..1fb59cf404 100644
---- a/hw/usb/u2f.c
-+++ b/hw/usb/u2f.c
-@@ -305,7 +305,7 @@ const VMStateDescription vmstate_u2f_key = {
-     .name = "u2f-key",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_USB_DEVICE(dev, U2FKeyState),
-         VMSTATE_UINT8(idle, U2FKeyState),
-         VMSTATE_UINT8_2DARRAY(pending_in, U2FKeyState,
-diff --git a/hw/usb/xlnx-versal-usb2-ctrl-regs.c b/hw/usb/xlnx-versal-usb2-ctrl-regs.c
-index 1c094aa1a6..6fc453817e 100644
---- a/hw/usb/xlnx-versal-usb2-ctrl-regs.c
-+++ b/hw/usb/xlnx-versal-usb2-ctrl-regs.c
-@@ -196,7 +196,7 @@ static const VMStateDescription vmstate_usb2_ctrl_regs = {
-     .name = TYPE_XILINX_VERSAL_USB2_CTRL_REGS,
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, VersalUsb2CtrlRegs, USB2_REGS_R_MAX),
-         VMSTATE_END_OF_LIST(),
      }
 -- 
 2.34.1
