@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E892181FF56
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 13:09:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2E5881FF53
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 13:08:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJBeV-0007nw-Bi; Fri, 29 Dec 2023 07:07:47 -0500
+	id 1rJBeQ-0007lS-3g; Fri, 29 Dec 2023 07:07:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rJBeP-0007mX-Py
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 07:07:41 -0500
+ id 1rJBeI-0007lE-Vb
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 07:07:35 -0500
 Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rJBeG-0004xm-6K
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 07:07:39 -0500
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71])
+ id 1rJBeG-0004yQ-Da
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 07:07:34 -0500
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id B0FB63F15B
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 12:07:28 +0000 (UTC)
+ by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 6706E3F5A0
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 12:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1703851648;
- bh=tFjzcWXuE5DSXBUytMlng7Kt/kySHhmp0JIqujk7Ie8=;
- h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
- b=cMZRxOl4Cbe5Mh6O2YEAQzRjwLEemLV6grb9si3e3vMEMe1s0kNUmt1HFgHKbAg0S
- GTv4yeY+XhiM9n1yY7EKd6kpcdl6mn6Pqp9X95sMV/K7RvP4bfUjAQQQ75z+yDtjbO
- WOFl9LPO9yAwUm/9O68pyg7Ok4ntb9txlICuu6PRJURMjxS9+QnjyPkqNTrIVUiRkL
- OhMzF5WBY3p5Ki2fEkY4rVK8YK6SA5vcILTGJCm2qSXRSUASNJrQ8MMYq/HnknNKSs
- sSIPs/gYDzQtmI5bFiDWoCRa+nTdcpqJF1eA4ps1CDp5dsrui5jqHbVuUU64RaIRSr
- rwoflskCHtKfA==
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-555bda8b4a1so231329a12.3
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 04:07:28 -0800 (PST)
+ s=20210705; t=1703851649;
+ bh=pGgf1wpWz9czkWxYTWfdhI7PjQQXILGRmvI6GlRv8qc=;
+ h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+ MIME-Version;
+ b=kh/b+W3h0bPjGsnH0eGUSZum9A9k/J23OkQ9WjDSeDGj72/pkZi+BoOl729IF/Rtu
+ jubUkCjkk62YQY4QBjwwMyrBgixlRNfGcc9rhdYu0oKoiaQCO94STqCJ7ipYKO5lKC
+ n5zaRaNU2SqQUPPqqIEUREHXbhIs2JR/czLd83aU2TKPoOgylAOdmIRM+ytOs3tqRL
+ Pof8nId1m3BpWsl5UonhotkBmrWZn7aApmHcfRrd0ZSc1CaQWvha5gAGkXWi4Jc3lQ
+ pVSKdJNzCNZuD6YcDUCaGQcG69KH6leGGuOs3bmszbC6b1A/88YumQlo3ZgrqlZ//M
+ 6MDIIZbuLijPg==
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5558d3d179eso775936a12.2
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 04:07:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703851648; x=1704456448;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=tFjzcWXuE5DSXBUytMlng7Kt/kySHhmp0JIqujk7Ie8=;
- b=ZYNslc7hkHKyDQxs0GGVlzuPIpnya30xbndl6Kgb7vJuzrDwnW4GNO3Lt/1QRylxsC
- WShuwrJGXbLFgWqO95HPThr7qz1a533EyZYw2dGOI/MIgiiVx3hDtIwbXLFUYHEDaX/p
- qMSdzaJCBhSd2KUAeef53UUC96BexYCDZSbKd4KZCY/J/Z1X2NZpnDujf8ijs5Vb+9RC
- eEtO3mokINtCdJmGNOYzIVY4pBeA+rERaWKcs6cXuxsm3Aqs3djuRk7/SYYWpUgDI3K1
- /HTM0zUbc/eJelnIih46zjXXnVZKWGSa8DcqbiVH1N5bhwA+0v4y9DSqSYRRYV7k4Asi
- UOsw==
-X-Gm-Message-State: AOJu0Yzf3tfKLZ4+pxO+10z2fmEUXVycALUkLl6e37xKH3gGKxRmQ/vt
- 48oYttsbEk3qRgTPiUwcivcbMZLn8Y228LGYzZ2ANgAqMQXmgso2B9DFKwy/cQB51CSXuDow/xQ
- 8CaB/FrAT76LstdND6aRufQ8XFG+fpKzsAHuqhFw=
-X-Received: by 2002:a50:d7d7:0:b0:553:739e:bfac with SMTP id
- m23-20020a50d7d7000000b00553739ebfacmr7732601edj.8.1703851648217; 
+ d=1e100.net; s=20230601; t=1703851649; x=1704456449;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pGgf1wpWz9czkWxYTWfdhI7PjQQXILGRmvI6GlRv8qc=;
+ b=jjst4D5DbNnArfYouxpta6GyppWZRFpcIB+r6HIQjy7c1GnnXDeP9EfIy/RG7mNGA0
+ EYrF6oqva6+3UvDeAb8w6LxJ/9kcIzoczAfPFMc14AgH+mSARevxbXgika6W/PwuJbN4
+ 4pb7qQXpnhNfcqb2zCNgR0QvAFuZYCx9SKBjHI9GxXWFRnAnAjtfXn+HTxAYIzQ5C+YB
+ t+/A0Lt3eHYIAubRO/IcS/wTnZPh+cQnb7mCCsA8EV0X7OPFsR4tXDywDXgRfRW8H7XU
+ y4GIxRnkuRU5ZAn6kvUrEz6aJ6r8GInG2nztK77sjMsnPd7jgjhUv3k/GdH/ArqS5liU
+ 12bg==
+X-Gm-Message-State: AOJu0Yx2U1smwTyN852QPtfdeXmwF4ysx/s2MddMu8U/3AJmN/JmnIIv
+ /ba6TrSW7V0WueogFobJdBXtrIFlucXd/lnag8vQQWyxHWbnGSHLK6HgUONWpVx/5nL4n5tMnCe
+ HPhQYiFoPHDAarkf475n8LdTWJsnydOy/KQ/qCG4=
+X-Received: by 2002:a05:6402:4306:b0:552:e52f:944f with SMTP id
+ m6-20020a056402430600b00552e52f944fmr8720990edc.56.1703851649111; 
+ Fri, 29 Dec 2023 04:07:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEKtkP9I56djALZdyds52h6QCcSlIsN2FDsDg5tG/s/KktteQ7TeJQgHIrtCYMKmU8FW1VeRA==
+X-Received: by 2002:a05:6402:4306:b0:552:e52f:944f with SMTP id
+ m6-20020a056402430600b00552e52f944fmr8720987edc.56.1703851648874; 
  Fri, 29 Dec 2023 04:07:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEYwKsRQBh2evsx0Q9HgRecFYtkUacRQZ1dFs5S8toVVatnvK9PEr9WMTwV2D/Vu1PaF2YmUw==
-X-Received: by 2002:a50:d7d7:0:b0:553:739e:bfac with SMTP id
- m23-20020a50d7d7000000b00553739ebfacmr7732592edj.8.1703851647910; 
- Fri, 29 Dec 2023 04:07:27 -0800 (PST)
 Received: from x13s.fritz.box (ip-178-202-040-247.um47.pools.vodafone-ip.de.
  [178.202.40.247]) by smtp.gmail.com with ESMTPSA id
- j20-20020aa7c0d4000000b005527de2aecfsm10943344edp.42.2023.12.29.04.07.26
+ j20-20020aa7c0d4000000b005527de2aecfsm10943344edp.42.2023.12.29.04.07.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Dec 2023 04:07:27 -0800 (PST)
+ Fri, 29 Dec 2023 04:07:28 -0800 (PST)
 From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 To: Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>
@@ -76,22 +77,24 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Bin Meng <bin.meng@windriver.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
  Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Subject: [PATCH v2 0/4] target/riscv: SMBIOS support for RISC-V virt machine
-Date: Fri, 29 Dec 2023 13:07:20 +0100
-Message-ID: <20231229120724.41383-1-heinrich.schuchardt@canonical.com>
+Subject: [PATCH v2 1/4] smbios: add processor-family option
+Date: Fri, 29 Dec 2023 13:07:21 +0100
+Message-ID: <20231229120724.41383-2-heinrich.schuchardt@canonical.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231229120724.41383-1-heinrich.schuchardt@canonical.com>
+References: <20231229120724.41383-1-heinrich.schuchardt@canonical.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=185.125.188.122;
  envelope-from=heinrich.schuchardt@canonical.com;
  helo=smtp-relay-internal-0.canonical.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.553,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,29 +110,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Generate SMBIOS tables for the RISC-V mach-virt.
-Add CONFIG_SMBIOS=y to the RISC-V default config.
+For RISC-V the SMBIOS standard requires specific values of the processor
+family value depending on the bitness of the CPU.
 
-With the series the following firmware tables are provided:
+Add a processor-family option for SMBIOS table 4.
 
-    etc/smbios/smbios-anchor
-    etc/smbios/smbios-tables
+The value of processor-family may exceed 255 and therefore must be provided
+in the Processor Family 2 field. Set the Processor Family field to 0xFE
+which signals that the Processor Family 2 is used.
 
-Add processor-family to the '-smbios type=4' command line options.
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+---
+v2:
+	new patch
+---
+ hw/smbios/smbios.c | 13 +++++++++++--
+ qemu-options.hx    |  4 ++--
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-Heinrich Schuchardt (4):
-  smbios: add processor-family option
-  smbios: function to set default processor family
-  target/riscv: SMBIOS support for RISC-V virt machine
-  qemu-options: enable -smbios option on RISC-V
-
- hw/riscv/Kconfig             |  1 +
- hw/riscv/virt.c              | 42 ++++++++++++++++++++++++++++++++++++
- hw/smbios/smbios.c           | 20 ++++++++++++++--
- include/hw/firmware/smbios.h |  1 +
- qemu-options.hx              |  6 +++---
- 5 files changed, 65 insertions(+), 5 deletions(-)
-
+diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+index 2a90601ac5..647bc6d603 100644
+--- a/hw/smbios/smbios.c
++++ b/hw/smbios/smbios.c
+@@ -102,6 +102,7 @@ static struct {
+ #define DEFAULT_CPU_SPEED 2000
+ 
+ static struct {
++    uint16_t processor_family;
+     const char *sock_pfx, *manufacturer, *version, *serial, *asset, *part;
+     uint64_t max_speed;
+     uint64_t current_speed;
+@@ -110,6 +111,7 @@ static struct {
+     .max_speed = DEFAULT_CPU_SPEED,
+     .current_speed = DEFAULT_CPU_SPEED,
+     .processor_id = 0,
++    .processor_family = 0x01, /* Other */
+ };
+ 
+ struct type8_instance {
+@@ -337,6 +339,10 @@ static const QemuOptDesc qemu_smbios_type4_opts[] = {
+         .name = "part",
+         .type = QEMU_OPT_STRING,
+         .help = "part number",
++    }, {
++        .name = "processor-family",
++        .type = QEMU_OPT_NUMBER,
++        .help = "processor family",
+     }, {
+         .name = "processor-id",
+         .type = QEMU_OPT_NUMBER,
+@@ -726,7 +732,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+     snprintf(sock_str, sizeof(sock_str), "%s%2x", type4.sock_pfx, instance);
+     SMBIOS_TABLE_SET_STR(4, socket_designation_str, sock_str);
+     t->processor_type = 0x03; /* CPU */
+-    t->processor_family = 0x01; /* Other */
++    t->processor_family = 0xfe; /* use Processor Family 2 field */
+     SMBIOS_TABLE_SET_STR(4, processor_manufacturer_str, type4.manufacturer);
+     if (type4.processor_id == 0) {
+         t->processor_id[0] = cpu_to_le32(smbios_cpuid_version);
+@@ -758,7 +764,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+     t->thread_count = (threads_per_socket > 255) ? 0xFF : threads_per_socket;
+ 
+     t->processor_characteristics = cpu_to_le16(0x02); /* Unknown */
+-    t->processor_family2 = cpu_to_le16(0x01); /* Other */
++    t->processor_family2 = cpu_to_le16(type4.processor_family);
+ 
+     if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
+         t->core_count2 = t->core_enabled2 = cpu_to_le16(cores_per_socket);
+@@ -1402,6 +1408,9 @@ void smbios_entry_add(QemuOpts *opts, Error **errp)
+                 return;
+             }
+             save_opt(&type4.sock_pfx, opts, "sock_pfx");
++            type4.processor_family = qemu_opt_get_number(opts,
++                                                         "processor-family",
++                                                         0x01 /* Other */);
+             save_opt(&type4.manufacturer, opts, "manufacturer");
+             save_opt(&type4.version, opts, "version");
+             save_opt(&type4.serial, opts, "serial");
+diff --git a/qemu-options.hx b/qemu-options.hx
+index b66570ae00..7bdb414345 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -2694,7 +2694,7 @@ DEF("smbios", HAS_ARG, QEMU_OPTION_smbios,
+     "                specify SMBIOS type 3 fields\n"
+     "-smbios type=4[,sock_pfx=str][,manufacturer=str][,version=str][,serial=str]\n"
+     "              [,asset=str][,part=str][,max-speed=%d][,current-speed=%d]\n"
+-    "              [,processor-id=%d]\n"
++    "              [,processor-family=%d,processor-id=%d]\n"
+     "                specify SMBIOS type 4 fields\n"
+     "-smbios type=8[,external_reference=str][,internal_reference=str][,connector_type=%d][,port_type=%d]\n"
+     "                specify SMBIOS type 8 fields\n"
+@@ -2722,7 +2722,7 @@ SRST
+ ``-smbios type=3[,manufacturer=str][,version=str][,serial=str][,asset=str][,sku=str]``
+     Specify SMBIOS type 3 fields
+ 
+-``-smbios type=4[,sock_pfx=str][,manufacturer=str][,version=str][,serial=str][,asset=str][,part=str][,processor-id=%d]``
++``-smbios type=4[,sock_pfx=str][,manufacturer=str][,version=str][,serial=str][,asset=str][,part=str][,processor-family=%d][,processor-id=%d]``
+     Specify SMBIOS type 4 fields
+ 
+ ``-smbios type=11[,value=str][,path=filename]``
 -- 
 2.43.0
 
