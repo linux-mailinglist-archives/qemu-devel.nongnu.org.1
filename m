@@ -2,87 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C51481FC0D
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 00:47:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A5881FC40
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 01:48:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJ04z-0001cK-NG; Thu, 28 Dec 2023 18:46:21 -0500
+	id 1rJ12L-0003QQ-9g; Thu, 28 Dec 2023 19:47:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJ04x-0001bd-S1
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 18:46:20 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1rJ12I-0003Q3-UF
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 19:47:39 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJ04w-0004Jo-3I
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 18:46:19 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1d420aaa2abso20854025ad.3
- for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 15:46:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1rJ12H-0002uW-1C
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 19:47:38 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1d480c6342dso12955055ad.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 16:47:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703807176; x=1704411976; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Nr4khX4RfDD3obM8EOii2O8wtSIuNQ08Isb1/l5ekwU=;
- b=UR6sz49sg5P8Obg1oTvMLpUqFkmg8w/VABePAb195QpcXi4JB2ohoNmxaH4WL2TrCw
- E+w3mB9pgF0CBP6+/3jNk7IBBU8RgwSuIiXMXqMv70JsRC7cUQWFYkrtRzD0pWseK6z1
- Tz5VyJerhX/s51CVWY4WW5E3AT1zqcB489YjytjToEB/e3IwVmY82lvFH9SJ7Z+0RBAs
- hD6V4Pg17FZMbcOUpdKO0SgVBKBXN2A6jE9c62zBr6kbJu85OChpmvuJ+s2TetgBx8ub
- OLsAg/BwYB7UcGy0/Y3xEotOFPy5NWMcyZGDXf70LfSBSRVo2YjcHUmraUk9N4H+Drja
- rGiQ==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1703810853; x=1704415653;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gvkcXGMKJhei6A4C5VxcjXDsgHP4Nqs2chK3cpMCHlw=;
+ b=Tg+wKIfOLm9V9IPY5EQEoqECEow5lk+Mrw4B/F5cm4GMv9z304DgQ891mJGDawCV4A
+ u1CRbZ7AMWALK/aYI29lvwRhA5BLSSiRgQuBGxcPnyNmSFXKXEmLapOWNUG1VLreehMA
+ YOlljAE7p44FItey4M4isqhH+puqeq3MGF2WdiOp38Zuj12xdN1ZG2r8Il+bDbliLWY9
+ to5Rht0MVTz+cpGvzqgpqIi5CR4kQ4Rqh0dDxUqzffwJaMODPB6u7UwyoPv/vTbZVXCF
+ u5l+Sv3VnC6RXJtVLisxezv23rRVMThxQMtCs91A49Wwnt476xtLLZHjqb61JrkDN2RE
+ 8QBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703807176; x=1704411976;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Nr4khX4RfDD3obM8EOii2O8wtSIuNQ08Isb1/l5ekwU=;
- b=rRSON46B0dhYZy1pW0cYertggAjwcivZK4fXCKIRIhHWNKhcw5UoHPzz445Unyp9Tw
- XTxWMbXietXBjbP2dcu/EM2skJSO+fX9N6qfm307OcIEKqP1D3rr6p3HWula0i4iCpCk
- NcHr+NR9gByFKTC1Wg8O/rYi4HWb47SS/C3claBEL5oqNGtcGn4a6XzKs/PulF+Gl0jr
- wXhQFxTosqClnl//jbBgtCFkyBilb+VuxWSayK0lbUplKrS1VgIMVpgGs136R9yJCc4M
- XTPQz9zYCE86i2kXNHd5n7htEwMyBjrRLuGbOq/CdgcHviU6zgCBZDk4jXJAXjkSHrHv
- iBsQ==
-X-Gm-Message-State: AOJu0Yzfx4GGB3qMWwVy8V8hiWclwJdY/qCjYrKPWa7OlFJJyNP4PxBt
- cK5XS8m/JzZL10GSoo1M2fNKeCP0sZFImg==
-X-Google-Smtp-Source: AGHT+IGTjH3vam9DoCH7ICX6ZBMc+Tfb8bsY8DHNwAqDliYdMoq1BnTgzk/m8Yq7PAD49w0gNnpyTg==
-X-Received: by 2002:a17:902:da92:b0:1d0:6ffd:6e71 with SMTP id
- j18-20020a170902da9200b001d06ffd6e71mr5898472plx.105.1703807176522; 
- Thu, 28 Dec 2023 15:46:16 -0800 (PST)
-Received: from ?IPV6:2001:8003:c020:6900:324d:cbc2:5f8b:3a9d?
- ([2001:8003:c020:6900:324d:cbc2:5f8b:3a9d])
+ d=1e100.net; s=20230601; t=1703810853; x=1704415653;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gvkcXGMKJhei6A4C5VxcjXDsgHP4Nqs2chK3cpMCHlw=;
+ b=R+p08dnn43XjazH028FcT8Rpndn9ZE+hejq7rI6qWlzWK/lPeS4pAtMlPB+pBPI9j5
+ AzVxtYstAKoL5UaZi6dyKS1pbobcwNArC10DjrUHsWfnN2Qo4xi9Y+FswJ8FatzdkRYS
+ 4a3KwGDri+JyqSwgw++bs59pdRvFstyiLHvP6IV7ZOrw1R5Wsc+8gA9rnoJ2NEDbZ+YT
+ 6pIFqFcmdiYT5aB4OqL2rGOCClsc9OUP/yNFf3WfRhHSLV/BJiDpSZGEP6iWGGoaaFb7
+ phifTbtE/D/Im+Cy1n1H1JwdJD6n1G2i0JU4uEPpjaxKheYPsgVEo0f5D1X/pe92tkSH
+ DaJQ==
+X-Gm-Message-State: AOJu0Yx1+zqxSaEc9f0sAhav9OGENLaorxPXcK7YZ1QgBgZwg7hDhKPa
+ pxN5rqFoYJmbEvpNINxXNY8t/0lxgrq/mUxIog6BhVFJP5k=
+X-Google-Smtp-Source: AGHT+IHSiVU4k73fsPIHnbRgnjVB6VsJkH3qV0wILwOqTyTawxm4p8HP0YHUZb4JyXA6WRAFdd0lXg==
+X-Received: by 2002:a17:902:c944:b0:1d4:4a66:dace with SMTP id
+ i4-20020a170902c94400b001d44a66dacemr9785864pla.10.1703810853371; 
+ Thu, 28 Dec 2023 16:47:33 -0800 (PST)
+Received: from atishp.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d5-20020a170902cec500b001d07ebef623sm14444351plg.69.2023.12.28.15.46.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Dec 2023 15:46:15 -0800 (PST)
-Message-ID: <2e68509d-755c-473a-9d52-8ec5f947cc71@linaro.org>
-Date: Fri, 29 Dec 2023 10:46:09 +1100
+ z3-20020a170902ee0300b001d3561680aasm14393949plb.82.2023.12.28.16.47.32
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Dec 2023 16:47:32 -0800 (PST)
+From: Atish Patra <atishp@rivosinc.com>
+To: qemu-devel@nongnu.org
+Subject: [v2 0/5] Add ISA extension smcntrpmf support 
+Date: Thu, 28 Dec 2023 16:47:26 -0800
+Message-Id: <20231229004731.3841550-1-atishp@rivosinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] target/riscv: Update address modify functions to
- take into account pointer masking
-Content-Language: en-US
-To: Alexey Baturo <baturo.alexey@gmail.com>
-Cc: zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
- Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu,
- kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-References: <20231224044812.2072140-1-me@deliversmonkey.space>
- <20231224044812.2072140-6-me@deliversmonkey.space>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231224044812.2072140-6-me@deliversmonkey.space>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=atishp@rivosinc.com; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,108 +87,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/24/23 15:48, Alexey Baturo wrote:
-> From: Alexey Baturo <baturo.alexey@gmail.com>
-> 
-> Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
-> ---
->   target/riscv/translate.c     | 23 +++++++++++++++++++++--
->   target/riscv/vector_helper.c | 10 ++++++++++
->   2 files changed, 31 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-> index 1eb501e0d3..c0c5030e05 100644
-> --- a/target/riscv/translate.c
-> +++ b/target/riscv/translate.c
-> @@ -575,11 +575,20 @@ static void gen_jal(DisasContext *ctx, int rd, target_ulong imm)
->   /* Compute a canonical address from a register plus offset. */
->   static TCGv get_address(DisasContext *ctx, int rs1, int imm)
->   {
-> +    int pmlen = riscv_pm_get_pmlen(ctx->pm_pmm);
->       TCGv addr = tcg_temp_new();
->       TCGv src1 = get_gpr(ctx, rs1, EXT_NONE);
->   
->       tcg_gen_addi_tl(addr, src1, imm);
-> -    if (get_address_xl(ctx) == MXL_RV32) {
-> +    if (ctx->pm_pmm) {
-> +        tcg_gen_shli_tl(addr, addr, pmlen);
-> +        /* sign extend address by first non-masked bit otherwise zero extend */
-> +        if (ctx->pm_signext) {
-> +            tcg_gen_sari_tl(addr, addr, pmlen);
-> +        } else {
-> +            tcg_gen_shri_tl(addr, addr, pmlen);
-> +        }
-> +    } else if (get_address_xl(ctx) == MXL_RV32) {
->           tcg_gen_ext32u_tl(addr, addr);
->       }
->   
-> @@ -589,11 +598,21 @@ static TCGv get_address(DisasContext *ctx, int rs1, int imm)
->   /* Compute a canonical address from a register plus reg offset. */
->   static TCGv get_address_indexed(DisasContext *ctx, int rs1, TCGv offs)
->   {
-> +    int pmlen = riscv_pm_get_pmlen(ctx->pm_pmm);
->       TCGv addr = tcg_temp_new();
->       TCGv src1 = get_gpr(ctx, rs1, EXT_NONE);
->   
->       tcg_gen_add_tl(addr, src1, offs);
-> -    if (get_xl(ctx) == MXL_RV32) {
-> +    /* sign extend address by first non-masked bit */
-> +    if (ctx->pm_pmm) {
-> +        tcg_gen_shli_tl(addr, addr, pmlen);
-> +        /* sign extend address by first non-masked bit otherwise zero extend */
-> +        if (ctx->pm_signext) {
-> +            tcg_gen_sari_tl(addr, addr, pmlen);
-> +        } else {
-> +            tcg_gen_shri_tl(addr, addr, pmlen);
-> +        }
-> +    } else if (get_xl(ctx) == MXL_RV32) {
->           tcg_gen_ext32u_tl(addr, addr);
+This patch series adds the support for RISC-V ISA extension smcntrpmf (cycle and
+privilege mode filtering) [1]. It is based on Kevin's earlier work but improves
+it by actually implement privilege mode filtering by tracking the privilege
+mode switches. This enables the privilege mode filtering for mhpmcounters as
+well. However, Smcntrpmf/Sscofpmf must be enabled to leverage this. This series
+also modified to report the raw instruction count instead of virtual cpu time
+based on the instruction count when icount is enabled. The former seems to be
+the preferred approach for instruction count for other architectures as well.
 
-Use tcg_gen_{s}extract_tl instead of two shifts.
+Please let me know if anybody thinks that's incorrect.
 
-Also, it looks like it would be worth doing all of this once in riscv_tr_init_disas_context:
-
-     if (get_xl(ctx) == MXL_RV32) {
-         ctx->addr_width = 32;
-         ctx->addr_signed = false;
-     } else {
-         pm_pmm = FIELD_EX32(tb_flags, TB_FLAGS, PM_PMM);
-         ctx->addr_width = 64 - riscv_pm_get_pmlen(pm_pmm);
-         ctx->addr_signed = FIELD_EX32(tb_flags, TB_FLAGS, PM_SIGNEXTEND);
-     }
-
-then here in get_address_indexed
-
-     if (ctx->addr_signed) {
-         tcg_gen_sextract_tl(addr, addr, ctx->addr_width);
-     } else {
-         tcg_gen_extract_tl(addr, addr, ctx->addr_width);
-     }
-
-> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-> index 8e7a8e80a0..faa8f5820d 100644
-> --- a/target/riscv/vector_helper.c
-> +++ b/target/riscv/vector_helper.c
-> @@ -94,6 +94,16 @@ static inline uint32_t vext_max_elems(uint32_t desc, uint32_t log2_esz)
->   
->   static inline target_ulong adjust_addr(CPURISCVState *env, target_ulong addr)
->   {
-> +    RISCVPmPmm pmm = riscv_pm_get_pmm(env);
-> +    int pmlen = riscv_pm_get_pmlen(pmm);
-> +    bool signext = !riscv_cpu_bare_mode(env);
-> +    addr = addr << pmlen;
-> +    /* sign/zero extend masked address by N-1 bit */
-> +    if (signext) {
-> +        addr = (target_long)addr >> pmlen;
-> +    } else {
-> +        addr = addr >> pmlen;
-> +    }
->       return addr;
->   }
-
-I think you could usefully exit early when likely(pmm == PMM_FIELD_DISABLED), avoiding the 
-other computation.
+The series is also available at
 
 
-r~
+Changes from v1->v2:
+1. Implemented actual mode filtering for both icount and host ticks mode.
+1. Addressed comments in v1.
+2. Added Kevin's personal email address.
+
+[1] https://github.com/riscv/riscv-smcntrpmf
+[2] https://github.com/atishp04/qemu/tree/smcntrpmf_v1
+
+Atish Patra (2):
+target/riscv: Fix the predicate functions for mhpmeventhX CSRs
+target/riscv: Implement privilege mode filtering for cycle/instret
+
+Kaiwen Xue (3):
+target/riscv: Add cycle & instret privilege mode filtering properties
+target/riscv: Add cycle & instret privilege mode filtering definitions
+target/riscv: Add cycle & instret privilege mode filtering support
+
+target/riscv/cpu.c        |   3 +-
+target/riscv/cpu.h        |  17 +++
+target/riscv/cpu_bits.h   |  29 +++++
+target/riscv/cpu_cfg.h    |   1 +
+target/riscv/cpu_helper.c |   9 +-
+target/riscv/csr.c        | 245 ++++++++++++++++++++++++++++++--------
+target/riscv/pmu.c        |  43 +++++++
+target/riscv/pmu.h        |   2 +
+8 files changed, 295 insertions(+), 54 deletions(-)
+
+--
+2.34.1
+
 
