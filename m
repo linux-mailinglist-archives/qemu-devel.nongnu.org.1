@@ -2,50 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1E281FEB9
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 10:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D23E81FEB4
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 10:33:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJ9JJ-0002I1-P1; Fri, 29 Dec 2023 04:37:45 -0500
+	id 1rJ9Dq-0007xJ-8A; Fri, 29 Dec 2023 04:32:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rJ9JH-0002HT-0A
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:37:43 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rJ9JD-0001lE-Vs
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:37:42 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxmupZk45lr2oAAA--.1152S3;
- Fri, 29 Dec 2023 17:37:29 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxPL5Xk45lL7kPAA--.23722S2; 
- Fri, 29 Dec 2023 17:37:27 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org, philmd@linaro.org,
- alex.bennee@linaro.org, maobibo@loongson.cn, zhaotianrui@loongson.cn
-Subject: [PATCH 1/1] target/loongarch: move translate modules to tcg/
-Date: Fri, 29 Dec 2023 17:24:35 +0800
-Message-Id: <20231229092435.3416025-1-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rJ9Dl-0007vT-Hm
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:32:01 -0500
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rJ9Df-0000Id-26
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:32:00 -0500
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2ccabf5a4beso53885881fa.2
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 01:31:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1703842313; x=1704447113; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=q1mCGC2muH9odc0ah4hixDARuwQ83R8igDlmTm7r8gI=;
+ b=efvL7xXeY8FIt2YuGiSqSGRGS4T5UY8Jrns74+7dfrBfD+s/I8OZ3F3nCIJ9sufCXC
+ 0UxYGe3W4o40Lf0UeoNXLDbdqAmCjsrPtpRY1Nrkwwjci6kVxM9LKe8bUCsQnE954DUi
+ eRQML1JKxO0jDPk9KCCKMhxb7/KqDUT0oo6bSENQ726JcdRfbs5LLh1GfTAJTkuucthO
+ dT6RygyVr6tt+xqjCZNuYabeIiXzvR5RANUJ5bSuNSEK6cyeTDr1dsm8PI7cxAjg0Lrn
+ QhEUdMtybnw/ejGNp+82o39WjfDlMpbMtRbGDZkZfFkcpApRbWs+eU7s4GANjzEbIYjo
+ vBxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703842313; x=1704447113;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=q1mCGC2muH9odc0ah4hixDARuwQ83R8igDlmTm7r8gI=;
+ b=KaCsVadGc1Ecs0PADnv0TcNVosC16iYlTbxlCktRc3NGaI8Rykb2ls1iYtUL3tcfew
+ my5YuXtl22+7cuUxbCHklXqA2TuPXewifEe97b+/U/43vEltG4BO2ZfOXUy57XBBEQSD
+ XfftO8lJ/sraP1Uyl9BAG/+kaFr6dV06Z3tJ0vnOzcoX+0WDZljUMFq3TS4B0C9YbWiU
+ OSjvkKzSgK1aCtiNc59usFp9vyUoawr8nrra6IStlE+3FX8Cw13T42vvgOWUcP2l9QU1
+ gngLXVF763SyKFAblKl8TobzEgvoY62GCISnG5jZYPGDQXRQL74tvLcphI6hm1dgL7BB
+ UBpg==
+X-Gm-Message-State: AOJu0Yz8MHWIFsKpAJsqyAYgyyOklslhWnc48DXaC75OV8CrC02cnnzv
+ ufKcEvRZuYqfgdplkqoewPUwx297yGmPww==
+X-Google-Smtp-Source: AGHT+IGLUXWRlc2h+mIBJlXk5juFRhN6TWEElff1SD/nE/mF11Xw/L+xCFDBFn0EeodseBqA9w0oaw==
+X-Received: by 2002:a2e:1f0a:0:b0:2cc:6fbb:8b07 with SMTP id
+ f10-20020a2e1f0a000000b002cc6fbb8b07mr2358032ljf.98.1703842312678; 
+ Fri, 29 Dec 2023 01:31:52 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.202.55])
+ by smtp.gmail.com with ESMTPSA id
+ e17-20020a5d5311000000b0033672cfca96sm18742297wrv.89.2023.12.29.01.31.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 29 Dec 2023 01:31:52 -0800 (PST)
+Message-ID: <2f7919b1-eb19-4998-9fd6-c89351255e34@linaro.org>
+Date: Fri, 29 Dec 2023 10:31:49 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxPL5Xk45lL7kPAA--.23722S2
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] qapi/virtio: Keep feature and status bits in the QMP
+ output
+Content-Language: en-US
+To: Hyman Huang <yong.huang@smartx.com>, qemu-devel@nongnu.org
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>
+References: <cover.1703787712.git.yong.huang@smartx.com>
+ <138716dee4162ad959ac3580da0d4681fabd6185.1703787712.git.yong.huang@smartx.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <138716dee4162ad959ac3580da0d4681fabd6185.1703787712.git.yong.huang@smartx.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,208 +94,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce the target/loongarch/tcg directory. Its purpose is to hold the TCG
-code that is selected by CONFIG_TCG
+Hi,
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/{ => tcg}/constant_timer.c     |  0
- target/loongarch/{ => tcg}/csr_helper.c         |  0
- target/loongarch/{ => tcg}/fpu_helper.c         |  0
- target/loongarch/{ => tcg}/iocsr_helper.c       |  0
- target/loongarch/{ => tcg}/op_helper.c          |  0
- target/loongarch/{ => tcg}/tlb_helper.c         |  0
- target/loongarch/{ => tcg}/translate.c          |  0
- target/loongarch/{ => tcg}/vec_helper.c         |  0
- .../{ => tcg}/insn_trans/trans_arith.c.inc      |  0
- .../{ => tcg}/insn_trans/trans_atomic.c.inc     |  0
- .../{ => tcg}/insn_trans/trans_bit.c.inc        |  0
- .../{ => tcg}/insn_trans/trans_branch.c.inc     |  0
- .../{ => tcg}/insn_trans/trans_extra.c.inc      |  0
- .../{ => tcg}/insn_trans/trans_farith.c.inc     |  0
- .../{ => tcg}/insn_trans/trans_fcmp.c.inc       |  0
- .../{ => tcg}/insn_trans/trans_fcnv.c.inc       |  0
- .../{ => tcg}/insn_trans/trans_fmemory.c.inc    |  0
- .../{ => tcg}/insn_trans/trans_fmov.c.inc       |  0
- .../{ => tcg}/insn_trans/trans_memory.c.inc     |  0
- .../{ => tcg}/insn_trans/trans_privileged.c.inc |  0
- .../{ => tcg}/insn_trans/trans_shift.c.inc      |  0
- .../{ => tcg}/insn_trans/trans_vec.c.inc        |  0
- target/loongarch/meson.build                    | 17 ++---------------
- target/loongarch/tcg/meson.build                | 15 +++++++++++++++
- 24 files changed, 17 insertions(+), 15 deletions(-)
- rename target/loongarch/{ => tcg}/constant_timer.c (100%)
- rename target/loongarch/{ => tcg}/csr_helper.c (100%)
- rename target/loongarch/{ => tcg}/fpu_helper.c (100%)
- rename target/loongarch/{ => tcg}/iocsr_helper.c (100%)
- rename target/loongarch/{ => tcg}/op_helper.c (100%)
- rename target/loongarch/{ => tcg}/tlb_helper.c (100%)
- rename target/loongarch/{ => tcg}/translate.c (100%)
- rename target/loongarch/{ => tcg}/vec_helper.c (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_arith.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_atomic.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_bit.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_branch.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_extra.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_farith.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_fcmp.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_fcnv.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_fmemory.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_fmov.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_memory.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_privileged.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_shift.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_vec.c.inc (100%)
- create mode 100644 target/loongarch/tcg/meson.build
+On 28/12/23 19:52, Hyman Huang wrote:
+> Maintain the feature and status bits in the x-query-virtio-status
+> output and, as usual, add human-readable output only in HMP.
+> 
+> Applications may find it useful to compare features and status
+> information directly. An upper application, for example, could
+> use the QMP command x-query-virtio-status to retrieve vhost-user
+> net device features and the "ovs-vsctl list interface" command to
+> retrieve interface features (in number format) in order to verify
+> the correctness of the virtio negotiation between guest, QEMU,
+> and OVS-DPDK. The application could then compare the two features
+> directly, without the need for additional feature encoding.
+> 
+> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+> ---
+>   hw/virtio/virtio-hmp-cmds.c |  25 +++--
+>   hw/virtio/virtio-qmp.c      |  23 ++---
+>   qapi/virtio.json            | 192 ++++--------------------------------
+>   3 files changed, 45 insertions(+), 195 deletions(-)
+> 
+> diff --git a/hw/virtio/virtio-hmp-cmds.c b/hw/virtio/virtio-hmp-cmds.c
+> index 477c97dea2..721c630ab0 100644
+> --- a/hw/virtio/virtio-hmp-cmds.c
+> +++ b/hw/virtio/virtio-hmp-cmds.c
+> @@ -6,6 +6,7 @@
+>    */
+>   
+>   #include "qemu/osdep.h"
+> +#include "virtio-qmp.h"
+>   #include "monitor/hmp.h"
+>   #include "monitor/monitor.h"
+>   #include "qapi/qapi-commands-virtio.h"
+> @@ -145,13 +146,17 @@ void hmp_virtio_status(Monitor *mon, const QDict *qdict)
+>       monitor_printf(mon, "  endianness:              %s\n",
+>                      s->device_endian);
+>       monitor_printf(mon, "  status:\n");
+> -    hmp_virtio_dump_status(mon, s->status);
+> +    hmp_virtio_dump_status(mon,
+> +        qmp_decode_status(s->status));
 
-diff --git a/target/loongarch/constant_timer.c b/target/loongarch/tcg/constant_timer.c
-similarity index 100%
-rename from target/loongarch/constant_timer.c
-rename to target/loongarch/tcg/constant_timer.c
-diff --git a/target/loongarch/csr_helper.c b/target/loongarch/tcg/csr_helper.c
-similarity index 100%
-rename from target/loongarch/csr_helper.c
-rename to target/loongarch/tcg/csr_helper.c
-diff --git a/target/loongarch/fpu_helper.c b/target/loongarch/tcg/fpu_helper.c
-similarity index 100%
-rename from target/loongarch/fpu_helper.c
-rename to target/loongarch/tcg/fpu_helper.c
-diff --git a/target/loongarch/iocsr_helper.c b/target/loongarch/tcg/iocsr_helper.c
-similarity index 100%
-rename from target/loongarch/iocsr_helper.c
-rename to target/loongarch/tcg/iocsr_helper.c
-diff --git a/target/loongarch/op_helper.c b/target/loongarch/tcg/op_helper.c
-similarity index 100%
-rename from target/loongarch/op_helper.c
-rename to target/loongarch/tcg/op_helper.c
-diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-similarity index 100%
-rename from target/loongarch/tlb_helper.c
-rename to target/loongarch/tcg/tlb_helper.c
-diff --git a/target/loongarch/translate.c b/target/loongarch/tcg/translate.c
-similarity index 100%
-rename from target/loongarch/translate.c
-rename to target/loongarch/tcg/translate.c
-diff --git a/target/loongarch/vec_helper.c b/target/loongarch/tcg/vec_helper.c
-similarity index 100%
-rename from target/loongarch/vec_helper.c
-rename to target/loongarch/tcg/vec_helper.c
-diff --git a/target/loongarch/insn_trans/trans_arith.c.inc b/target/loongarch/tcg/insn_trans/trans_arith.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_arith.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_arith.c.inc
-diff --git a/target/loongarch/insn_trans/trans_atomic.c.inc b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_atomic.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_atomic.c.inc
-diff --git a/target/loongarch/insn_trans/trans_bit.c.inc b/target/loongarch/tcg/insn_trans/trans_bit.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_bit.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_bit.c.inc
-diff --git a/target/loongarch/insn_trans/trans_branch.c.inc b/target/loongarch/tcg/insn_trans/trans_branch.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_branch.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_branch.c.inc
-diff --git a/target/loongarch/insn_trans/trans_extra.c.inc b/target/loongarch/tcg/insn_trans/trans_extra.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_extra.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_extra.c.inc
-diff --git a/target/loongarch/insn_trans/trans_farith.c.inc b/target/loongarch/tcg/insn_trans/trans_farith.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_farith.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_farith.c.inc
-diff --git a/target/loongarch/insn_trans/trans_fcmp.c.inc b/target/loongarch/tcg/insn_trans/trans_fcmp.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_fcmp.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_fcmp.c.inc
-diff --git a/target/loongarch/insn_trans/trans_fcnv.c.inc b/target/loongarch/tcg/insn_trans/trans_fcnv.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_fcnv.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_fcnv.c.inc
-diff --git a/target/loongarch/insn_trans/trans_fmemory.c.inc b/target/loongarch/tcg/insn_trans/trans_fmemory.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_fmemory.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_fmemory.c.inc
-diff --git a/target/loongarch/insn_trans/trans_fmov.c.inc b/target/loongarch/tcg/insn_trans/trans_fmov.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_fmov.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_fmov.c.inc
-diff --git a/target/loongarch/insn_trans/trans_memory.c.inc b/target/loongarch/tcg/insn_trans/trans_memory.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_memory.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_memory.c.inc
-diff --git a/target/loongarch/insn_trans/trans_privileged.c.inc b/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_privileged.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-diff --git a/target/loongarch/insn_trans/trans_shift.c.inc b/target/loongarch/tcg/insn_trans/trans_shift.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_shift.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_shift.c.inc
-diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_vec.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_vec.c.inc
-diff --git a/target/loongarch/meson.build b/target/loongarch/meson.build
-index 18e8191e2b..a004523439 100644
---- a/target/loongarch/meson.build
-+++ b/target/loongarch/meson.build
-@@ -3,31 +3,18 @@ gen = decodetree.process('insns.decode')
- loongarch_ss = ss.source_set()
- loongarch_ss.add(files(
-   'cpu.c',
-+  'gdbstub.c'
- ))
--loongarch_tcg_ss = ss.source_set()
--loongarch_tcg_ss.add(gen)
--loongarch_tcg_ss.add(files(
--  'fpu_helper.c',
--  'op_helper.c',
--  'translate.c',
--  'gdbstub.c',
--  'vec_helper.c',
--))
--loongarch_tcg_ss.add(zlib)
- 
- loongarch_system_ss = ss.source_set()
- loongarch_system_ss.add(files(
-   'loongarch-qmp-cmds.c',
-   'machine.c',
--  'tlb_helper.c',
--  'constant_timer.c',
--  'csr_helper.c',
--  'iocsr_helper.c',
- ))
- 
- common_ss.add(when: 'CONFIG_LOONGARCH_DIS', if_true: [files('disas.c'), gen])
- 
--loongarch_ss.add_all(when: 'CONFIG_TCG', if_true: [loongarch_tcg_ss])
-+subdir('tcg')
- 
- target_arch += {'loongarch': loongarch_ss}
- target_system_arch += {'loongarch': loongarch_system_ss}
-diff --git a/target/loongarch/tcg/meson.build b/target/loongarch/tcg/meson.build
-new file mode 100644
-index 0000000000..bb7411e5e5
---- /dev/null
-+++ b/target/loongarch/tcg/meson.build
-@@ -0,0 +1,15 @@
-+loongarch_ss.add([zlib, gen])
-+
-+loongarch_ss.add(files(
-+  'fpu_helper.c',
-+  'op_helper.c',
-+  'vec_helper.c',
-+  'translate.c',
-+))
-+
-+loongarch_system_ss.add(files(
-+  'constant_timer.c',
-+  'iocsr_helper.c',
-+  'tlb_helper.c',
-+  'csr_helper.c',
-+))
--- 
-2.25.1
+Why not let the callee do this call?
+
+>       monitor_printf(mon, "  Guest features:\n");
+> -    hmp_virtio_dump_features(mon, s->guest_features);
+> +    hmp_virtio_dump_features(mon,
+> +        qmp_decode_features(s->device_id, s->guest_features));
+>       monitor_printf(mon, "  Host features:\n");
+> -    hmp_virtio_dump_features(mon, s->host_features);
+> +    hmp_virtio_dump_features(mon,
+> +        qmp_decode_features(s->device_id, s->host_features));
+>       monitor_printf(mon, "  Backend features:\n");
+> -    hmp_virtio_dump_features(mon, s->backend_features);
+> +    hmp_virtio_dump_features(mon,
+> +        qmp_decode_features(s->device_id, s->backend_features));
+>   
+>       if (s->vhost_dev) {
+>           monitor_printf(mon, "  VHost:\n");
+> @@ -172,13 +177,17 @@ void hmp_virtio_status(Monitor *mon, const QDict *qdict)
+>           monitor_printf(mon, "    log_size:       %"PRId64"\n",
+>                          s->vhost_dev->log_size);
+>           monitor_printf(mon, "    Features:\n");
+> -        hmp_virtio_dump_features(mon, s->vhost_dev->features);
+> +        hmp_virtio_dump_features(mon,
+> +            qmp_decode_features(s->device_id, s->vhost_dev->features));
+
+Ditto.
+
+>           monitor_printf(mon, "    Acked features:\n");
+> -        hmp_virtio_dump_features(mon, s->vhost_dev->acked_features);
+> +        hmp_virtio_dump_features(mon,
+> +            qmp_decode_features(s->device_id, s->vhost_dev->acked_features));
+>           monitor_printf(mon, "    Backend features:\n");
+> -        hmp_virtio_dump_features(mon, s->vhost_dev->backend_features);
+> +        hmp_virtio_dump_features(mon,
+> +            qmp_decode_features(s->device_id, s->vhost_dev->backend_features));
+>           monitor_printf(mon, "    Protocol features:\n");
+> -        hmp_virtio_dump_protocols(mon, s->vhost_dev->protocol_features);
+> +        hmp_virtio_dump_protocols(mon,
+> +            qmp_decode_protocols(s->vhost_dev->protocol_features));
+>       }
 
 
