@@ -2,65 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C5781FE06
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 09:06:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DAF681FE69
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 10:02:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJ7rT-0005KC-67; Fri, 29 Dec 2023 03:04:55 -0500
+	id 1rJ8kM-00031j-MF; Fri, 29 Dec 2023 04:01:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vladimir.isaev@syntacore.com>)
- id 1rJ7rR-0005Jx-J3; Fri, 29 Dec 2023 03:04:53 -0500
-Received: from mta-04.yadro.com ([89.207.88.248])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vladimir.isaev@syntacore.com>)
- id 1rJ7rO-000588-7I; Fri, 29 Dec 2023 03:04:53 -0500
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com F1426C0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1703837025;
- bh=KrWVf5+lJz4MfIbBmYA1Pz0j724FCRFUK9gDsiM43Bo=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=VX7tFOyiN+kakx++amkiMawj8JJNVh5qEUzXv0BPFNiLPp2zBzkBckFxAs3OKVVdc
- BQaxsulyRZRP7it2yoH2DxDaXq1A8FrEjQanoqO+QAs8g3fRjLcsCCDGXHLf4YCgli
- 6IzkOzoUbGRsIxq8grjg5ZK7iZ4PAKMEvTbmzJ3LAdk+WCwx5R2syzEUH6f2cXW/s7
- xdPh3v91lxbTWeQ4AGm7ke8S9LUTI2oyR9oT/fLQ33I3q7ouywCprqA94ev9biv35w
- N+MXPK3lMOd2TFNuW9bAYbb2xLq89xvB0ZDu/wNFTubR2BB/59JYGLX7OOkW76RwOd
- /8Omq4QSIXnXg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1703837025;
- bh=KrWVf5+lJz4MfIbBmYA1Pz0j724FCRFUK9gDsiM43Bo=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=txKNX/RPLVATD4ZUSpuvrWDRAnVWtJJvoRMMrF26bJfC0ilv7U3SkLymvXAPguWVK
- b28pXS2FNu4d81dE4U5blWBoc6tNJdU2AFQ06bQn9CavuCHxPB7jQbx5E7fqmwXuLF
- N0a3pkGvYx844Pavs0CgktF29U9Bldx4vUl9GbMpOE8EowCM0fYROJVrowdPuqxb+2
- 6IVq27ARsVAMxhhnZ/1If1YOLy+CZl82ton9MHzRy5B0eGBTX6e7Kv8Gb8KUa+mW6s
- ke8wpuzw2WV81y2INsw5IC0A8qtWL/PWjbju8CHstFW6XnlDbEQZtjBMIqD/LSGGd1
- rkSB6Yn2JBW4w==
-From: Vladimir Isaev <vladimir.isaev@syntacore.com>
-To: <qemu-riscv@nongnu.org>
-CC: <qemu-devel@nongnu.org>, <dbarboza@ventanamicro.com>,
- <zhiwei_liu@linux.alibaba.com>, <liwei1518@gmail.com>,
- <bin.meng@windriver.com>, <alistair.francis@wdc.com>, <palmer@dabbelt.com>,
- Vladimir Isaev <vladimir.isaev@syntacore.com>
-Subject: [PATCH] target/riscv/tcg: do not set defaults for non-generic
-Date: Fri, 29 Dec 2023 11:02:52 +0300
-Message-ID: <20231229080302.125418-1-vladimir.isaev@syntacore.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
+ id 1rJ8kK-00031L-DR
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:01:36 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
+ id 1rJ8kI-0005Uv-Lg
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:01:36 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1d3ec3db764so18324645ad.2
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 01:01:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1703840492; x=1704445292; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=jSJ9OeOsxPlsol74Tx7eUH+7WxzBZUw5PDJ630ePXyg=;
+ b=lAyKT/iQdSPBueWy/itDtcRqQFjD0vF00L6CSUO/KM8XqluENvlY3MUtsfgYm6ShGE
+ g2eJuv7mYciHYDY1zG/wfp5s8pZOWawYm/hZiBy3fCr55nm4uMsl3Xb78hqKqqNeOhFF
+ unufCeNcgpE/xaCuHbEB7xizxNbE5k8bHzEJeZJbOrLIut0Cb3eaaxpNLskRIbzUGyQ2
+ G80vdWEzmKPtoDmAkqoTW8IzisSTOzmlhYl0lhCZozPv7p2+8OmgoNxEXikuWmQadgw8
+ SXYNgpeSx6eWUwzSTC/7eApGvrCd8NMLeWi/3CZROt/NRHdTYApSbp7BwENq1CNfebYG
+ TCXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703840492; x=1704445292;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jSJ9OeOsxPlsol74Tx7eUH+7WxzBZUw5PDJ630ePXyg=;
+ b=NmOSv3Qi5/rOPJSKhS8qMus7o6Hi2Hnm/h5MSD2cDfhYHvsvoa6OtI1cw/xtcNMDcm
+ JJ6gosvrbp1lb3SvyQC/WEBWwdxcK/q7U0t761Ap2WJRDJBqo+eL/C+Xs5Ft6w3xvDnQ
+ nuDsCnuoP6PnNK8lfLXdkeZq9jRWH7cLUkbJAq3lwKaFR79JaILZU5MN5XB/jHzaU5jw
+ 2vCZd9Nl3E4aaCJtgTQREzKJIvq8I6q5anw0rgEc62LJOGrJmuB8e2YPlPyu9Qw4QFZT
+ 2SJII9N4pAlB1UCvsAixKjkrRGgVVSprDn7443HcLXuvSdvMLTWJ+18P1FRalad+4KI+
+ /7tA==
+X-Gm-Message-State: AOJu0Ywts5WLH0xrWLrrMihqU4DIsWl9z4071LyKN3A+e30Gfam6SE/o
+ SbkoPXeHV6l4jQ/D2fkt6ppSDwu79BT44g==
+X-Google-Smtp-Source: AGHT+IGIRPs4fAB3loRYltNWrxuXoBEr9M7e3EOXTM7VP8yhJMBLTKxod7UbLrkg5rfi5tAuJsYJYA==
+X-Received: by 2002:a17:902:be14:b0:1d4:6486:b013 with SMTP id
+ r20-20020a170902be1400b001d46486b013mr3470203pls.8.1703840492376; 
+ Fri, 29 Dec 2023 01:01:32 -0800 (PST)
+Received: from leoy-huanghe.lan (211-75-219-200.hinet-ip.hinet.net.
+ [211.75.219.200]) by smtp.gmail.com with ESMTPSA id
+ k8-20020a170902760800b001d4526d0039sm9397284pll.169.2023.12.29.01.01.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 29 Dec 2023 01:01:31 -0800 (PST)
+Date: Fri, 29 Dec 2023 17:01:26 +0800
+From: Leo Yan <leo.yan@linaro.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH v3 0/4] virtio: Refactor vhost input stub
+Message-ID: <20231229090126.GA156812@leoy-huanghe.lan>
+References: <20231120043721.50555-1-leo.yan@linaro.org>
+ <20231225110608-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-08.corp.yadro.com (172.17.11.58) To
- S-Exch-01.corp.yadro.com (10.78.5.241)
-Received-SPF: permerror client-ip=89.207.88.248;
- envelope-from=vladimir.isaev@syntacore.com; helo=mta-04.yadro.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231225110608-mutt-send-email-mst@kernel.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=leo.yan@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,41 +95,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-riscv_cpu_options[] are exported using qdev and some of them are defined
-with default values. This is unfortunate since riscv_cpu_add_user_properties()
-is called after CPU instance init and there is no clear way to disable MMU/PMP
-for some CPUs.
+Hi Michael,
 
-Can't define them as NODEFAULT since we still need defaults for generic CPU.
+On Mon, Dec 25, 2023 at 11:06:35AM -0500, Michael S. Tsirkin wrote:
+> On Mon, Nov 20, 2023 at 12:37:17PM +0800, Leo Yan wrote:
+> > This series is to refactor vhost stub vhost-user-input.
+> > 
+> > Since vhost input stub requires set_config() callback for communication
+> > event configurations between the backend and the guest, patch 01 is a
+> > preparison for support set_config() callback in vhost-user-base.
+> > 
+> > The patch 02 is to add documentation for vhost-user-input.
+> > 
+> > The patch 03 is to move virtio input stub from the input folder to the
+> > virtio folder.
+> 
+> Thanks!
+> Now the release is out I'd like to apply this - can you please rebase on latest master and
+> repost?
 
-Signed-off-by: Vladimir Isaev <vladimir.isaev@syntacore.com>
----
- target/riscv/tcg/tcg-cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Sure.  But I found it's not this patch series causing merging conflict.
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 8a35683a345d..9ffce1c9f7b0 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -937,6 +937,8 @@ static void riscv_cpu_add_multiext_prop_array(Object *obj,
-  */
- static void riscv_cpu_add_user_properties(Object *obj)
- {
-+    bool use_def_vals = riscv_cpu_is_generic(obj);
-+
- #ifndef CONFIG_USER_ONLY
-     riscv_add_satp_mode_properties(obj);
- #endif
-@@ -950,6 +952,8 @@ static void riscv_cpu_add_user_properties(Object *obj)
-     riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_deprecated_exts);
- 
-     for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
-+        prop->set_default = prop->set_default && use_def_vals;
-+
-         qdev_property_add_static(DEVICE(obj), prop);
-     }
- }
--- 
-2.43.0
+Since my patch series is based on Alex's patch series "virtio: cleanup
+vhost-user-generic and reduce c&p" [1], when applying Alex's patch
+series on the master branch, I found the confliction with below commeits:
 
+  91208dd297 ("virtio: i2c: Check notifier helpers for VIRTIO_CONFIG_IRQ_IDX")
+  298d4f892e ("vhost-user: fix the reconnect error")
+
+@Alex, could you rebase the patch set "virtio: cleanup
+vhost-user-generic and reduce c&p" and then I will resend my patch set?
+
+Thanks,
+Leo
+
+[1] https://lore.kernel.org/qemu-devel/20231107180752.3458672-1-alex.bennee@linaro.org/
+
+> > The patch 04 derives vhost-user-input from vhost-user-base.  We reuse
+> > the common code from vhhost-user-base as possible and the input stub is
+> > simplized significantly.
+> > 
+> > This patch set has been tested with the backend daemon:
+> > 
+> >   # ./build/contrib/vhost-user-input/vhost-user-input \
+> > 		     -p /dev/input/event20 -s /tmp/input.sock
+> > 
+> > The series is based on "[PATCH v8 0/7] virtio: cleanup
+> > vhost-user-generic and reduce c&p" which introduces vhost-user-base.
+> > Based-on: <20231107180752.3458672-1-alex.bennee@linaro.org>
 
