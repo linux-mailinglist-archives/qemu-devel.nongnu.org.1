@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159E381FEC2
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 10:45:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB65E81FEC7
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 10:51:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJ9Pr-0005QO-QU; Fri, 29 Dec 2023 04:44:31 -0500
+	id 1rJ9WB-0006fE-5b; Fri, 29 Dec 2023 04:51:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rJ9Pc-0005Q5-Nu
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:44:18 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rJ9W9-0006f1-7q
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:51:01 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rJ9Pb-0005wD-5T
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:44:16 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a26fa294e56so341128766b.0
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 01:44:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rJ9W7-0002VH-29
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 04:51:00 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-555aa7fddeaso1006489a12.2
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 01:50:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703843053; x=1704447853; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703843457; x=1704448257; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=C2m51AiovtVMAUBJcjtkPchet9U4AkH+q41VbNed/Ds=;
- b=h1LFJheUUTC7K3s2QAAOrO6Hhq93FRCO5YWoGGUfAOrZAoT+EWY4cLdskkqfT+vRAP
- qgXCd+VtYl74mrrgpTslqZcmTErYh0V1lv8sEvGu7cahO8ijbRal9pkuMy1CXGCXnjJS
- Dw8n9XsBY2W37E35i5ReKfE9doTSPpMmIoYbsekJzKcovt1yCyyDjKNNKD7akTHj0qX+
- +uDC1dq530NOlqZM/8gmkSlVmv4G6PJa+3/ZDI39SiHVF5SHHgziV4YI7WY3AIlGYcB0
- U+qOSzZZ00UH8qG/Lf6/SDyUmIKHk67oemRmeU3op6MrYjhzFprhjtQY0eCLJ2MnssmF
- AW7g==
+ bh=yTWBBuIS4Juupi+sDFwMniiepShxY6mDyVmwGRvY7Ak=;
+ b=pZg4mQddazHBd3mHcmbsdNkcIWiBQfGviyLBciw4AOPivnOjKepUuk0iUp7IYJRCLe
+ Lk7a3VWblbqkdh6vdUAVP2b2RUuu1pGmi5pCesmqCwYP/7j9Fg7NJUV/5BwS46vykFya
+ BTSPY2azW+wz6NvZ89RgE3Tmi+D4ImgyXdcRdFvjk2DF88KQQgrOY1Tt4puxzU7lC21V
+ 8Qvb66f4+9xg7pMviw4S3gMGqlgNfuMTjrF1ky/8yZ+LfS9xr1TdmveUP4+E0HFXBCwr
+ kBGs2NOuvj7FQ07y53DBKG8h3l2PL5vvq9BIS1wj0gj8AnGHYeBr55YEk1xI+xpSN77T
+ 4gZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703843053; x=1704447853;
+ d=1e100.net; s=20230601; t=1703843457; x=1704448257;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=C2m51AiovtVMAUBJcjtkPchet9U4AkH+q41VbNed/Ds=;
- b=tDCVpdlI57wRwMb+GPEbKHxf4Q0ICKLKx5nE3M7cG5WBzYXihayK11cz+PtMxpWtVZ
- o8wRLIVqE1bxeyVpuGDhRvRkYkcfzbaf3BgawYqAaApWQjVOTBwWwAi/9p2Hdu0DBJzL
- gix85r+4F3RpMAvmEa0INwcoe1UBJ9Ln6b6mF5nb6BNOGESfFJnFtB//fIeuNgBiNIag
- huCMVLx5uvdm+Nx+BhaRT8a4cFjqCCudFb04dv/llteRzvmqKpY4YvQzn819NQsVB6rD
- I9Rd94Hv2APLZoPx4vH12AczW4WyGyJbQumM/HkHojszBS4ZkGrIwPWcfJ829U4usVO8
- 7sdg==
-X-Gm-Message-State: AOJu0YzUVpQ6E20ZTixi34psMozpw8dvqU+LuNv7hm4nyJEnvKps6+Yc
- zpwcBEQU26X6crCfPnJ5QS7I7z+Np7+mJgYtw4EcIcIhiqc=
-X-Google-Smtp-Source: AGHT+IHTuYiiBGfmMU8agFQOkWGZe/rcv9v45qltRL/tsMK8Bk+T4WtofRcJa/XTJ/C5/uqTahLn3Q==
-X-Received: by 2002:a17:907:2686:b0:a27:8953:a710 with SMTP id
- bn6-20020a170907268600b00a278953a710mr562046ejc.155.1703843053545; 
- Fri, 29 Dec 2023 01:44:13 -0800 (PST)
+ bh=yTWBBuIS4Juupi+sDFwMniiepShxY6mDyVmwGRvY7Ak=;
+ b=LUaUzxQqNOUB8UUkTcso3j/F3ea2yCv9hLOGlrm4w/R68zZJZnyEn41s6AkiVb3NF/
+ W2EWLbhHNp99ja1mSlGG4sEtWzYraVhp1OvSArMbdA8SbcwR+oBIlUbrfk2AJr1vlo2u
+ knI11WhLw+a8UY3Xvr3eXQoWZNxc6OQjT+1QSVWpoaHVjg/+FrjlNFvrkwOaBONk5F8o
+ kOoE04QP/8Ck3XCgoBbCVm0HWomBHiAVN0ZjiXrrSIpli37sbsU8aAJBk74SmuGtbxap
+ vXAb60A/+ShNCwQdfM5erqmt8J4otmxweh37yozogLD7SkCei6ob5KqZuPqOWmbsi+ql
+ sN6g==
+X-Gm-Message-State: AOJu0Yy2RNPsuiMRV7cuJhUe55fP8XbvWDUys296rCusD3NXc1GP0QHG
+ JU0Swn2m7ieIrfHiGd1adWsYnMITfnQ6hh6kvydtU6bxJGA=
+X-Google-Smtp-Source: AGHT+IE12JelyO3WFwfrvzTeg2ara9tVaVzN2+IKr9exzo7copYYgAORkZ1KpocPcsRUcjskmWvEZw==
+X-Received: by 2002:a17:906:25a:b0:a1c:85bc:e9ca with SMTP id
+ 26-20020a170906025a00b00a1c85bce9camr4635268ejl.13.1703843457072; 
+ Fri, 29 Dec 2023 01:50:57 -0800 (PST)
 Received: from [192.168.69.100] ([176.187.202.55])
  by smtp.gmail.com with ESMTPSA id
- l10-20020a170906078a00b00a26adbd4f15sm7488110ejc.102.2023.12.29.01.44.12
+ zv13-20020a170907718d00b00a26aeb9e37csm7355835ejb.6.2023.12.29.01.50.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Dec 2023 01:44:13 -0800 (PST)
-Message-ID: <156979a1-3e10-4a6d-abb9-2e980b4db896@linaro.org>
-Date: Fri, 29 Dec 2023 10:44:12 +0100
+ Fri, 29 Dec 2023 01:50:56 -0800 (PST)
+Message-ID: <287bd879-bedf-4d27-ba4d-f78864169e66@linaro.org>
+Date: Fri, 29 Dec 2023 10:50:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/21] meson: add more sections to main meson.build
+Subject: Re: [PATCH 14/21] meson: move program checks together
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20231221171958.59350-1-pbonzini@redhat.com>
- <20231221171958.59350-14-pbonzini@redhat.com>
+ <20231221171958.59350-15-pbonzini@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231221171958.59350-14-pbonzini@redhat.com>
+In-Reply-To: <20231221171958.59350-15-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,9 +94,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 21/12/23 18:19, Paolo Bonzini wrote:
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   meson.build | 24 ++++++++++++++++++------
->   1 file changed, 18 insertions(+), 6 deletions(-)
+>   meson.build | 90 ++++++++++++++++++++++++++---------------------------
+>   1 file changed, 45 insertions(+), 45 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
 
