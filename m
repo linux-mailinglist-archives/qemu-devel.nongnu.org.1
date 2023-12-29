@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCCEC8201C3
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:29:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59EC18201D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:31:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJKPX-0005ba-8g; Fri, 29 Dec 2023 16:28:55 -0500
+	id 1rJKPW-0005Gv-6c; Fri, 29 Dec 2023 16:28:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKPF-00053u-ND
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:28:38 -0500
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
+ id 1rJKPH-00059z-MY
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:28:40 -0500
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKPD-0000JY-C2
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:28:37 -0500
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-2043e721daaso4745324fac.2
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:28:34 -0800 (PST)
+ id 1rJKPG-0000Jp-03
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:28:39 -0500
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-5ce2170b716so2874504a12.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:28:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703885314; x=1704490114; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703885316; x=1704490116; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Vyi0TP52JABfdyZHXUAPl05hmrQ+9G+rb9wPiULLeV0=;
- b=c7gzHZjBKrYgsCelADgQktqOxcrT3Pt0CBPNOeJ0iRfgu41ysLdyJoZs8b5aj1Usvm
- uRHGYBFeE7Qc5oTbgL/m4bq27nxQOu8uhbIuScT1Ffgv3lK8FFXQKJHjgIDh3mpaRIkr
- 4IIc93hpjSfZm2bn3FWNN9D95vXRxS4z9hptIWnLYjV1jbCeMpnyDbL2VC+dO4/q4Piu
- 5Xx1DlgdH4IAfWVWyr3Lr+YD4TmiKGE7jDtG4NdRkZ/ZHIf4cdbSnUml7GllyNHFEdLT
- x8U5EFWGHyPnPSsb/QsnAmzA6K50Sky45ksiKDzf/S6n/wdd7KxHSzJQo5/vhGrZB+Ep
- W+uw==
+ :reply-to; bh=8qiXeFCQHMfrcvkAhK1aChACVtlmSwMwxlo4rTy0C0U=;
+ b=uE97oOV+JCRQJNiJHcKbswSjj2hOz7h4Tkb1DgXgKbMhB5jhof945wzjw10apnDq7B
+ oJt71pQTw0QSHPVkdfVREa+lPWNyfCDV3GUovhujUF6NH3ZrsoxUAzELL84vRNKRd5gu
+ YJei2he+4aEvt61WXQBlGOw87YEBRfFfYhDMNF/WdLod+LRTcFEhJMLz1BX70Xuv57nr
+ TntS1h7EDlTGrhd1ui5OCgB4x5VtaV/+2Zl9ypjnh5oWTrvIoKzrE3ue2lE6KB2AUye6
+ eta6ryq7X70OPQhtkGHBO/MM4D5fR4mdVOfDewn22z3I1xQ/eKEtBXEonegHAFMD7nhj
+ 2SLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703885314; x=1704490114;
+ d=1e100.net; s=20230601; t=1703885316; x=1704490116;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Vyi0TP52JABfdyZHXUAPl05hmrQ+9G+rb9wPiULLeV0=;
- b=mtKv6KSY482GJwOLqmbxZhMhXVOD9upOgMg3MMSOPuccv6Os15Obk6KL/StBrmp47u
- OzAgRHcyisk9/6dsElPMjJ6DmnbiJxieUF5cKUF/XnQeWue8RfQOng9czryVvWw6HmSA
- gYrjYvTILkSKBv8d2tilbZBKfdQpcpL+A+6IvlEzIGXJ+fiUsjd62tfG7BoaVFZ43Ram
- iHB9794BcjiMc/u13z9tN6PbNaPM40ffRN7u8Y1qUZBC9TPTwSBOcVDHCCQwRcVKrROD
- yZcxhGGINoOUywVSS/qeAiMFjeeKN3VNoUYKIsKjqN6GswSv0DPsO+lzoNqNoBpxACbx
- I9UA==
-X-Gm-Message-State: AOJu0YwKMMAQAzLedfsQwpSBB70T0z/F077HK1eVAkgkla4pmqUiiHHH
- a34Hai3kN6Hte3cy631oEfSjXMWvM1Sv/vQyCRt3bNRwzPDk+Q==
-X-Google-Smtp-Source: AGHT+IELZ/b0VGNFFDlTcwETmc1h78YR0Gke3A3DILh/PCEVdbRCkWpVnhh8iB+L3UjSGeVMh65rsw==
-X-Received: by 2002:a05:6870:355:b0:203:e0bc:5e11 with SMTP id
- n21-20020a056870035500b00203e0bc5e11mr13554325oaf.70.1703885314127; 
- Fri, 29 Dec 2023 13:28:34 -0800 (PST)
+ bh=8qiXeFCQHMfrcvkAhK1aChACVtlmSwMwxlo4rTy0C0U=;
+ b=J1wlW3B6AuSqjI1hpMWPskzl9ejG74KDRZZHmIuBVIM94Wuy9aiLukTcI8I048B3pV
+ swjESHaSsPgwUiTWalTozl2wDJc6GC7agP5u7zgTRTHh/XsrnxXKdw374nkOxa0RVFX1
+ FUCDs32yi5PcDZkrqx/zukfWazjZ8mOHSiBuWofWlLoMk7N3OxqeY+VN7EhctJOZTEuY
+ Cbn4CjXKc8y+8dB5WjItNVRCZWSFtFcgZriky+fyG9hRv7t/SVDkekqKVuK2AMfgKlNW
+ QSEOwZv6LTCSekfSmCA5CL4XGsHwMaB1uitGmRZzvzCN9TitFxM+AVvUdkoPyYOkLyer
+ aBOA==
+X-Gm-Message-State: AOJu0YyTIgam3kYCsYf/rSndJ1kBpKgjY1mVFQ6jDL7S4vT+y5Yg2kfN
+ u0kdEKJdRXE7QEtETQ6QFnEQeZ7OVlsJivVUbhg45ns4KnIeGQ==
+X-Google-Smtp-Source: AGHT+IEIUezluwImHiVQxJLuHhKmjDwH0HiQE9hPqkNhN9WvwNHBjc+x/Yb4yB32amf4pySK+vEb4g==
+X-Received: by 2002:a05:6a20:8f01:b0:196:4d6a:c88d with SMTP id
+ b1-20020a056a208f0100b001964d6ac88dmr3359105pzk.50.1703885316349; 
+ Fri, 29 Dec 2023 13:28:36 -0800 (PST)
 Received: from stoup.lan (203-217-28-32.perm.iinet.net.au. [203.217.28.32])
  by smtp.gmail.com with ESMTPSA id
- bd33-20020a056a0027a100b006d9a96b7d0dsm11285396pfb.208.2023.12.29.13.28.32
+ bd33-20020a056a0027a100b006d9a96b7d0dsm11285396pfb.208.2023.12.29.13.28.34
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Dec 2023 13:28:33 -0800 (PST)
+ Fri, 29 Dec 2023 13:28:36 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 42/71] hw/nvram: Constify VMState
-Date: Sat, 30 Dec 2023 08:23:17 +1100
-Message-Id: <20231229212346.147149-43-richard.henderson@linaro.org>
+Subject: [PULL 43/71] hw/openrisc: Constify VMState
+Date: Sat, 30 Dec 2023 08:23:18 +1100
+Message-Id: <20231229212346.147149-44-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231229212346.147149-1-richard.henderson@linaro.org>
 References: <20231229212346.147149-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,175 +91,24 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231221031652.119827-43-richard.henderson@linaro.org>
+Message-Id: <20231221031652.119827-44-richard.henderson@linaro.org>
 ---
- hw/nvram/ds1225y.c                | 2 +-
- hw/nvram/eeprom93xx.c             | 2 +-
- hw/nvram/fw_cfg.c                 | 8 ++++----
- hw/nvram/mac_nvram.c              | 2 +-
- hw/nvram/npcm7xx_otp.c            | 2 +-
- hw/nvram/nrf51_nvm.c              | 2 +-
- hw/nvram/spapr_nvram.c            | 2 +-
- hw/nvram/xlnx-bbram.c             | 2 +-
- hw/nvram/xlnx-versal-efuse-ctrl.c | 2 +-
- hw/nvram/xlnx-zynqmp-efuse.c      | 2 +-
- 10 files changed, 13 insertions(+), 13 deletions(-)
+ hw/openrisc/cputimer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/nvram/ds1225y.c b/hw/nvram/ds1225y.c
-index 3660a47c51..6d510dcc68 100644
---- a/hw/nvram/ds1225y.c
-+++ b/hw/nvram/ds1225y.c
-@@ -102,7 +102,7 @@ static const VMStateDescription vmstate_nvram = {
-     .version_id = 0,
-     .minimum_version_id = 0,
-     .post_load = nvram_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_VARRAY_UINT32(contents, NvRamState, chip_size, 0,
-                               vmstate_info_uint8, uint8_t),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/nvram/eeprom93xx.c b/hw/nvram/eeprom93xx.c
-index 57d63638d7..a8fd60a8fb 100644
---- a/hw/nvram/eeprom93xx.c
-+++ b/hw/nvram/eeprom93xx.c
-@@ -131,7 +131,7 @@ static const VMStateDescription vmstate_eeprom = {
-     .name = "eeprom",
-     .version_id = EEPROM_VERSION,
-     .minimum_version_id = OLD_EEPROM_VERSION,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(tick, eeprom_t),
-         VMSTATE_UINT8(address, eeprom_t),
-         VMSTATE_UINT8(command, eeprom_t),
-diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
-index 4e4524673a..e85493d513 100644
---- a/hw/nvram/fw_cfg.c
-+++ b/hw/nvram/fw_cfg.c
-@@ -656,7 +656,7 @@ static int fw_cfg_acpi_mr_restore_post_load(void *opaque, int version_id)
- static const VMStateDescription vmstate_fw_cfg_dma = {
-     .name = "fw_cfg/dma",
-     .needed = fw_cfg_dma_enabled,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(dma_addr, FWCfgState),
-         VMSTATE_END_OF_LIST()
-     },
-@@ -668,7 +668,7 @@ static const VMStateDescription vmstate_fw_cfg_acpi_mr = {
-     .minimum_version_id = 1,
-     .needed = fw_cfg_acpi_mr_restore,
-     .post_load = fw_cfg_acpi_mr_restore_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(table_mr_size, FWCfgState),
-         VMSTATE_UINT64(linker_mr_size, FWCfgState),
-         VMSTATE_UINT64(rsdp_mr_size, FWCfgState),
-@@ -680,13 +680,13 @@ static const VMStateDescription vmstate_fw_cfg = {
-     .name = "fw_cfg",
-     .version_id = 2,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT16(cur_entry, FWCfgState),
-         VMSTATE_UINT16_HACK(cur_offset, FWCfgState, is_version_1),
-         VMSTATE_UINT32_V(cur_offset, FWCfgState, 2),
-         VMSTATE_END_OF_LIST()
-     },
--    .subsections = (const VMStateDescription*[]) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_fw_cfg_dma,
-         &vmstate_fw_cfg_acpi_mr,
-         NULL,
-diff --git a/hw/nvram/mac_nvram.c b/hw/nvram/mac_nvram.c
-index 810e84f07e..5f9d16fb3e 100644
---- a/hw/nvram/mac_nvram.c
-+++ b/hw/nvram/mac_nvram.c
-@@ -79,7 +79,7 @@ static const VMStateDescription vmstate_macio_nvram = {
-     .name = "macio_nvram",
+diff --git a/hw/openrisc/cputimer.c b/hw/openrisc/cputimer.c
+index 10163b391b..835986c4db 100644
+--- a/hw/openrisc/cputimer.c
++++ b/hw/openrisc/cputimer.c
+@@ -145,7 +145,7 @@ static const VMStateDescription vmstate_or1k_timer = {
+     .name = "or1k_timer",
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_VBUFFER_UINT32(data, MacIONVRAMState, 0, NULL, size),
+         VMSTATE_UINT32(ttcr, OR1KTimerState),
+         VMSTATE_UINT64(last_clk, OR1KTimerState),
          VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/nvram/npcm7xx_otp.c b/hw/nvram/npcm7xx_otp.c
-index c61f2fc1aa..f00ebfa931 100644
---- a/hw/nvram/npcm7xx_otp.c
-+++ b/hw/nvram/npcm7xx_otp.c
-@@ -384,7 +384,7 @@ static const VMStateDescription vmstate_npcm7xx_otp = {
-     .name = "npcm7xx-otp",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, NPCM7xxOTPState, NPCM7XX_OTP_NR_REGS),
-         VMSTATE_UINT8_ARRAY(array, NPCM7xxOTPState, NPCM7XX_OTP_ARRAY_BYTES),
-         VMSTATE_END_OF_LIST(),
-diff --git a/hw/nvram/nrf51_nvm.c b/hw/nvram/nrf51_nvm.c
-index 7f1db8c423..ed8b836074 100644
---- a/hw/nvram/nrf51_nvm.c
-+++ b/hw/nvram/nrf51_nvm.c
-@@ -366,7 +366,7 @@ static const VMStateDescription vmstate_nvm = {
-     .name = "nrf51_soc.nvm",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(uicr_content, NRF51NVMState,
-                 NRF51_UICR_FIXTURE_SIZE),
-         VMSTATE_UINT32(config, NRF51NVMState),
-diff --git a/hw/nvram/spapr_nvram.c b/hw/nvram/spapr_nvram.c
-index 2d72f30442..bfd8aa367e 100644
---- a/hw/nvram/spapr_nvram.c
-+++ b/hw/nvram/spapr_nvram.c
-@@ -245,7 +245,7 @@ static const VMStateDescription vmstate_spapr_nvram = {
-     .minimum_version_id = 1,
-     .pre_load = spapr_nvram_pre_load,
-     .post_load = spapr_nvram_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(size, SpaprNvram),
-         VMSTATE_VBUFFER_ALLOC_UINT32(buf, SpaprNvram, 1, NULL, size),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/nvram/xlnx-bbram.c b/hw/nvram/xlnx-bbram.c
-index e18e7770e1..0a71a005c6 100644
---- a/hw/nvram/xlnx-bbram.c
-+++ b/hw/nvram/xlnx-bbram.c
-@@ -508,7 +508,7 @@ static const VMStateDescription vmstate_bbram_ctrl = {
-     .name = TYPE_XLNX_BBRAM,
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, XlnxBBRam, R_MAX),
-         VMSTATE_END_OF_LIST(),
-     }
-diff --git a/hw/nvram/xlnx-versal-efuse-ctrl.c b/hw/nvram/xlnx-versal-efuse-ctrl.c
-index 2480af35e1..e4b9e11a3d 100644
---- a/hw/nvram/xlnx-versal-efuse-ctrl.c
-+++ b/hw/nvram/xlnx-versal-efuse-ctrl.c
-@@ -737,7 +737,7 @@ static const VMStateDescription vmstate_efuse_ctrl = {
-     .name = TYPE_XLNX_VERSAL_EFUSE_CTRL,
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, XlnxVersalEFuseCtrl, R_MAX),
-         VMSTATE_END_OF_LIST(),
-     }
-diff --git a/hw/nvram/xlnx-zynqmp-efuse.c b/hw/nvram/xlnx-zynqmp-efuse.c
-index 3db5f98ec1..ec98456e5d 100644
---- a/hw/nvram/xlnx-zynqmp-efuse.c
-+++ b/hw/nvram/xlnx-zynqmp-efuse.c
-@@ -821,7 +821,7 @@ static const VMStateDescription vmstate_efuse = {
-     .name = TYPE_XLNX_ZYNQMP_EFUSE,
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, XlnxZynqMPEFuse, R_MAX),
-         VMSTATE_END_OF_LIST(),
-     }
 -- 
 2.34.1
 
