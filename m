@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E47582019A
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:25:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6FE82019E
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:25:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJKLG-0006y0-1h; Fri, 29 Dec 2023 16:24:30 -0500
+	id 1rJKLG-0006xz-0B; Fri, 29 Dec 2023 16:24:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKLD-0006xD-Hh
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:24:27 -0500
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ id 1rJKLE-0006xo-An
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:24:28 -0500
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKLA-0006dC-Nz
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:24:27 -0500
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-2044d093b3fso4451643fac.3
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:24:23 -0800 (PST)
+ id 1rJKLC-0006de-Rw
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:24:28 -0500
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6dc02ab3cc9so1977064a34.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:24:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703885063; x=1704489863; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703885065; x=1704489865; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mm4+MbG9/Lxz7kczYlcLTiw7gqQVGMuSdlqX7t/TGnQ=;
- b=UGSxTEN8rzWp5WTSvqkVDkwVFtSSR6UIqoZOc5E7BsjNp8WKzBluKNEXm/GaHp/Shg
- 2tibF1H3u+IIMTVGrRohUMnP04Z8BrkRMZDew1q5GmjtdmTVOlgTCFPqrWmxjZQSunYC
- 9TIwcRc9H1Ir5AYdigF1nQrfu55YoctYQC86Jd+TIJnbGNOYaxxYkzwR+zxcd6vLn/4g
- zcGdPvdGz8mktA5D24lkyIZRtIve1RyaDofppkRjlZzXw+bO//wyr5vYh7VBZbDfAgDr
- 0VFSqy4VUqZVuJ8cr7gLCpagSZs8FIJYAjSg7QcnLOOUiiMP8FdJXDUWPR+7AtseO4b+
- +5uA==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=D1wtmagA20UyDQGh/RhpJV+m3qRJC3+9KhhosTNeN7E=;
+ b=PPxxqXkbIqfCNQ0ji9JmuN5itT9f5q1QVh1EOWls28yz/qQiH0WsAdjIoICaTYMD19
+ LqUsnM6quF+Z3jpGGcreJz43nzS+UVmTdBx4T9FuohZ46cXddVFv7voLgz102rP6UPUw
+ y3JD2PbGAa3RALuH2sIASauhrZK7etEHbD9B7BRXHG8mf4KvmbJ7MdcHk+CVFMWyKXok
+ 8zaU5cC8nRsnkIwJ1zTPEY2ReY67Am5zX037mzy0p51J6/Q650T3DpJbYQK+rV6mjF6i
+ N0dxamnGwjAQbye6hOJnX/0h1G8BKFsu+oWKNn0CUqVAdawnxfCo+3d84m8oi7YLGqZz
+ t0kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703885063; x=1704489863;
+ d=1e100.net; s=20230601; t=1703885065; x=1704489865;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mm4+MbG9/Lxz7kczYlcLTiw7gqQVGMuSdlqX7t/TGnQ=;
- b=bQyLAzYp1DfPEmf4AHe6VXE6O9zb9GnTrDbsjlkMIsRCGU7drkyC0cVFzgBX6LdYEb
- Ifd8K1Q/z+2lxhMwxWpHRnqfPrTdjbgmgubJFnLNRMRnw97yVUiDu69HjyQw3zZJwD1x
- Gu7Vj4DS3C36/YTJDESKPr2fs1QCZ7eDBSjzUgVLcxyF8kodU5lRzP7OKxQCrT49DEPA
- T+JP0/YkwAfmxNGiH9mJisCwTb2cAW3e0R0LSJafw1sDNqlYfjHTUCy1iYvcu0fKkLw6
- sslUuuAmL1R5Z/TQyAgRaQr4t7ehykHxomx1E/bcrFHVIjS1YHO1uj/jmRxiasjdXjr/
- blqg==
-X-Gm-Message-State: AOJu0YwOmm7jDXQQOPCTj5+e7cAMOkL2AUnXum5TFJIKK2YdoL1KLvL4
- ghCFb9LEbaDpIslsnbW4g1vjWK9gRVgWNm2N+ThigQQhZQ+agw==
-X-Google-Smtp-Source: AGHT+IFdl1V4+fy65GQgJYrf32biJ/i+8z2An25A9Qotmx923CvUQ2uv32uc0B1Rrwur1yZSiQHnEw==
-X-Received: by 2002:a05:6870:238f:b0:203:a48b:6ad4 with SMTP id
- e15-20020a056870238f00b00203a48b6ad4mr15710572oap.93.1703885062984; 
- Fri, 29 Dec 2023 13:24:22 -0800 (PST)
+ bh=D1wtmagA20UyDQGh/RhpJV+m3qRJC3+9KhhosTNeN7E=;
+ b=LgHO6RBIg0dE97gWyx+ozGYcxQHsfxS5lvx1t9zllR58gGJfOvi9ONzsDH+cWfMx15
+ Mq4Ts4U/tGzdxYlhUFcpSglh9P1Y9tVQWsVCYsZ0YDECoQFTkdjh87cjMJdTMpB4CbvR
+ QORC/avbTq90JuoK6ZIe6rHuzx0OU/46jaHSCQG4Yo1rNDdxBlrIRkopBak2P1kFcRxz
+ CTN8DDZjntz911izoP/su035q/GsAGq8VsyN8z7ilsp8dmGODUAQ7mxDfyhlEATFw3as
+ 9fde/5n9XUpaT30Y/RBTZ2/E3IqGEcu6VpqNTCm9rVlEEyCsS4yWF/lpxfaQo2XnJ2OI
+ AvKQ==
+X-Gm-Message-State: AOJu0YzNf4U6NzDit/lf7tNiCY1nhQdISzpu3Nr8Y77/jJ+iVueUJ/jZ
+ t+v1uyo5PwpDrzKXOh1SgvzN3vcQPOVBYPmPy1EgVU3h21QjLQ==
+X-Google-Smtp-Source: AGHT+IEIJ3MwtCVjRM1LMCcGrk5rwap8SL5TyNlerqDGqzC0bzeWf1bpmlPlELilKAUg0IJTKncclg==
+X-Received: by 2002:a9d:7c88:0:b0:6d8:74e2:c09a with SMTP id
+ q8-20020a9d7c88000000b006d874e2c09amr11349202otn.76.1703885064991; 
+ Fri, 29 Dec 2023 13:24:24 -0800 (PST)
 Received: from stoup.lan (203-217-28-32.perm.iinet.net.au. [203.217.28.32])
  by smtp.gmail.com with ESMTPSA id
- a34-20020a631a22000000b005c65e82a0cbsm15016237pga.17.2023.12.29.13.24.20
+ a34-20020a631a22000000b005c65e82a0cbsm15016237pga.17.2023.12.29.13.24.23
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Dec 2023 13:24:22 -0800 (PST)
+ Fri, 29 Dec 2023 13:24:24 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 12/71] target/mips: Constify VMState in machine.c
-Date: Sat, 30 Dec 2023 08:22:47 +1100
-Message-Id: <20231229212346.147149-13-richard.henderson@linaro.org>
+Subject: [PULL 13/71] target/openrisc: Constify VMState in machine.c
+Date: Sat, 30 Dec 2023 08:22:48 +1100
+Message-Id: <20231229212346.147149-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231229212346.147149-1-richard.henderson@linaro.org>
 References: <20231229212346.147149-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,124 +90,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231221031652.119827-13-richard.henderson@linaro.org>
+Message-Id: <20231221031652.119827-14-richard.henderson@linaro.org>
 ---
- target/mips/sysemu/machine.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ target/openrisc/machine.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/mips/sysemu/machine.c b/target/mips/sysemu/machine.c
-index 80d37f9c2f..218f4c3a67 100644
---- a/target/mips/sysemu/machine.c
-+++ b/target/mips/sysemu/machine.c
-@@ -44,7 +44,7 @@ static int put_fpr(QEMUFile *f, void *pv, size_t size,
-     return 0;
- }
- 
--const VMStateInfo vmstate_info_fpr = {
-+static const VMStateInfo vmstate_info_fpr = {
-     .name = "fpr",
-     .get  = get_fpr,
-     .put  = put_fpr,
-@@ -56,21 +56,21 @@ const VMStateInfo vmstate_info_fpr = {
- #define VMSTATE_FPR_ARRAY(_f, _s, _n)                           \
-     VMSTATE_FPR_ARRAY_V(_f, _s, _n, 0)
- 
--static VMStateField vmstate_fpu_fields[] = {
-+static const VMStateField vmstate_fpu_fields[] = {
-     VMSTATE_FPR_ARRAY(fpr, CPUMIPSFPUContext, 32),
-     VMSTATE_UINT32(fcr0, CPUMIPSFPUContext),
-     VMSTATE_UINT32(fcr31, CPUMIPSFPUContext),
-     VMSTATE_END_OF_LIST()
- };
- 
--const VMStateDescription vmstate_fpu = {
-+static const VMStateDescription vmstate_fpu = {
-     .name = "cpu/fpu",
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .fields = vmstate_fpu_fields
- };
- 
--const VMStateDescription vmstate_inactive_fpu = {
-+static const VMStateDescription vmstate_inactive_fpu = {
-     .name = "cpu/inactive_fpu",
-     .version_id = 1,
-     .minimum_version_id = 1,
-@@ -79,7 +79,7 @@ const VMStateDescription vmstate_inactive_fpu = {
- 
- /* TC state */
- 
--static VMStateField vmstate_tc_fields[] = {
-+static const VMStateField vmstate_tc_fields[] = {
-     VMSTATE_UINTTL_ARRAY(gpr, TCState, 32),
- #if defined(TARGET_MIPS64)
-     VMSTATE_UINT64_ARRAY(gpr_hi, TCState, 32),
-@@ -103,14 +103,14 @@ static VMStateField vmstate_tc_fields[] = {
-     VMSTATE_END_OF_LIST()
- };
- 
--const VMStateDescription vmstate_tc = {
-+static const VMStateDescription vmstate_tc = {
-     .name = "cpu/tc",
-     .version_id = 2,
-     .minimum_version_id = 2,
-     .fields = vmstate_tc_fields
- };
- 
--const VMStateDescription vmstate_inactive_tc = {
-+static const VMStateDescription vmstate_inactive_tc = {
-     .name = "cpu/inactive_tc",
-     .version_id = 2,
-     .minimum_version_id = 2,
-@@ -119,11 +119,11 @@ const VMStateDescription vmstate_inactive_tc = {
- 
- /* MVP state */
- 
--const VMStateDescription vmstate_mvp = {
-+static const VMStateDescription vmstate_mvp = {
-     .name = "cpu/mvp",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_INT32(CP0_MVPControl, CPUMIPSMVPContext),
-         VMSTATE_INT32(CP0_MVPConf0, CPUMIPSMVPContext),
-         VMSTATE_INT32(CP0_MVPConf1, CPUMIPSMVPContext),
-@@ -190,7 +190,7 @@ static int put_tlb(QEMUFile *f, void *pv, size_t size,
-     return 0;
- }
- 
--const VMStateInfo vmstate_info_tlb = {
-+static const VMStateInfo vmstate_info_tlb = {
+diff --git a/target/openrisc/machine.c b/target/openrisc/machine.c
+index b7d7388640..3574e571cb 100644
+--- a/target/openrisc/machine.c
++++ b/target/openrisc/machine.c
+@@ -25,7 +25,7 @@ static const VMStateDescription vmstate_tlb_entry = {
      .name = "tlb_entry",
-     .get  = get_tlb,
-     .put  = put_tlb,
-@@ -202,11 +202,11 @@ const VMStateInfo vmstate_info_tlb = {
- #define VMSTATE_TLB_ARRAY(_f, _s, _n)                           \
-     VMSTATE_TLB_ARRAY_V(_f, _s, _n, 0)
- 
--const VMStateDescription vmstate_tlb = {
-+static const VMStateDescription vmstate_tlb = {
-     .name = "cpu/tlb",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINTTL(mr, OpenRISCTLBEntry),
+         VMSTATE_UINTTL(tr, OpenRISCTLBEntry),
+         VMSTATE_END_OF_LIST()
+@@ -36,7 +36,7 @@ static const VMStateDescription vmstate_cpu_tlb = {
+     .name = "cpu_tlb",
      .version_id = 2,
      .minimum_version_id = 2,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(nb_tlb, CPUMIPSTLBContext),
-         VMSTATE_UINT32(tlb_in_use, CPUMIPSTLBContext),
-         VMSTATE_TLB_ARRAY(mmu.r4k.tlb, CPUMIPSTLBContext, MIPS_TLB_MAX),
-@@ -221,7 +221,7 @@ const VMStateDescription vmstate_mips_cpu = {
-     .version_id = 21,
-     .minimum_version_id = 21,
+         VMSTATE_STRUCT_ARRAY(itlb, CPUOpenRISCTLBContext, TLB_SIZE, 0,
+                              vmstate_tlb_entry, OpenRISCTLBEntry),
+         VMSTATE_STRUCT_ARRAY(dtlb, CPUOpenRISCTLBContext, TLB_SIZE, 0,
+@@ -71,7 +71,7 @@ static const VMStateDescription vmstate_env = {
+     .name = "env",
+     .version_id = 6,
+     .minimum_version_id = 6,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINTTL_2DARRAY(shadow_gpr, CPUOpenRISCState, 16, 32),
+         VMSTATE_UINTTL(pc, CPUOpenRISCState),
+         VMSTATE_UINTTL(ppc, CPUOpenRISCState),
+@@ -135,7 +135,7 @@ const VMStateDescription vmstate_openrisc_cpu = {
+     .version_id = 1,
+     .minimum_version_id = 1,
      .post_load = cpu_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         /* Active TC */
-         VMSTATE_STRUCT(env.active_tc, MIPSCPU, 1, vmstate_tc, TCState),
- 
+         VMSTATE_CPU(),
+         VMSTATE_STRUCT(env, OpenRISCCPU, 1, vmstate_env, CPUOpenRISCState),
+         VMSTATE_END_OF_LIST()
 -- 
 2.34.1
 
