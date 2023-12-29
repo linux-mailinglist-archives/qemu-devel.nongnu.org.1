@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E8618201DF
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:33:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD108201D5
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:32:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJKQH-0000Qv-Cr; Fri, 29 Dec 2023 16:29:41 -0500
+	id 1rJKQG-0000FW-Dt; Fri, 29 Dec 2023 16:29:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKQ5-0008Rb-CV
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:32 -0500
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ id 1rJKQ9-0008Tp-7Y
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:37 -0500
+Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKQ3-0000QZ-8l
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:28 -0500
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-204f50f305cso1240900fac.3
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:29:26 -0800 (PST)
+ id 1rJKQ5-0000Qp-KV
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:31 -0500
+Received: by mail-ot1-x333.google.com with SMTP id
+ 46e09a7af769-6dbff975a2aso2216254a34.2
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:29:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703885365; x=1704490165; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703885368; x=1704490168; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hi1W/QRtc07jh63VGtl4+gPGbFgx4yL88GoyzHH2HjY=;
- b=OBCITQaHTc8rHRDQa4p7NZWESC+VdVq9J4MEX1osJBzz7uY3gr00dsriqUbIktyB0K
- xpMNwda2pxhXWSxWvJ38XS6sJWgoWLm9i6q4ufSuHKj5yV/FgJUFZVPfNArv53t9NYnW
- FW+K+PwTkkvk46rAPS5eOOTdDwQgY9g+NURRrdgtCTK+SQSisPOLcM7/8m28d5JFJDun
- 1UpDFocu9ECbEleXKPijaBQrqlnSXenXMfjajvZTr3XD3x0tbWRUK8socQEEK38Q+7F4
- wsPmWsd6vBehQtKywmUxFSXhhxd/784mTwAfQJl0A6BNOWmDoYn5Ljq2lwwl4zTpCmS3
- jUbA==
+ bh=K5Dr0gvZkgxAFIFd99X2103QipE5kAtlXBBE09Dt2kw=;
+ b=arRmigMo2ANGmQj9Na/5HTFJL3myNhe96LTSK7+S2npekjxWN1VKmeEXire8cxZMJU
+ WcogBwGcyHDbhuoPJlUZLu675uSn9sDVjxmZ/iv4xlggU3lH9N9hn/AycAmcLXozjWgF
+ QCyVyAPku0GgN48OrLI870OUfRPXIz4EypGHZCKdYChEnI0JfXSzhIw58iuHvC3laOA7
+ d1YBv2AYY/7KKEYUk2rGc5vbF84t8XQWYylysD9EJyCjJuHd2hWyftDTgxDrgPkHbRkf
+ xxOlK0im+Wzx9e7/uQA2/dzQDzdl9DhPo18hL/Uj9M2rjFHEg3cQyvegfRRTA0Vgedrk
+ iXYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703885365; x=1704490165;
+ d=1e100.net; s=20230601; t=1703885368; x=1704490168;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hi1W/QRtc07jh63VGtl4+gPGbFgx4yL88GoyzHH2HjY=;
- b=c5KgCt5Dix2qNUlOOeGz5LRVkNtbHxfss4bInrZwKfXOtE2yoPh2h0XkPZRqEsZF9S
- KXTslUqPZIvRcYwKSy2HLDesK1GPp29J0LjgFLROyH3LWSp8zFmA8Tivi6aQlM059N7t
- nZrRkdCISTfa8LxirQqM9hi62FKYpHZB5GAcARVFf5BjC01Ntu+96+k0dLcWEPAO58xb
- nIbKGNcG/b5RfJFTxPaj+Tv4pAb6btgZ89LGkazsSnSUMisitmTUsCyx2MP8p0KXhzw0
- 20p0uQfVYPoPxWkjqWZzbSovN7hnpw7uGcRz98Kukkc0YZz6fVCQlcyAOXsutvNkk+7Y
- xIhA==
-X-Gm-Message-State: AOJu0YwX/b0vvj5tRrKkAUZwUqoS4Qwu+yD0En/wc52Z5oAIypfDpQc5
- u/yNBuJ6SmeYVnbh7Ull02bPCYhJx4doCd1KYmyESNfrxDAJdA==
-X-Google-Smtp-Source: AGHT+IFyp44B1XF5HFiVieUchFiqgirBcjwKYkLEdZxIaiB53sQO76/NAf+3ukF7FGeFw9KWoLz5bA==
-X-Received: by 2002:a05:6871:588:b0:204:3f62:a8a0 with SMTP id
- u8-20020a056871058800b002043f62a8a0mr13359299oan.71.1703885365255; 
- Fri, 29 Dec 2023 13:29:25 -0800 (PST)
+ bh=K5Dr0gvZkgxAFIFd99X2103QipE5kAtlXBBE09Dt2kw=;
+ b=PlwkJdM5Iutwfz5yoCQWkJr7P6evGgzpZqMh9raiRf4NIPMVOjNYJuvwqDH7Mn5B77
+ gf9peF3evFDXFZ5km8stYTgiGVfpxftUNJSHwwrPs3PuydmsDPHg8dA2wEN4ibBP4/R3
+ zFQOUj7zCOBmw+WsRkd7rp8sEPsX+r1mqQvtPsb+Xm/3vWSmQOv5On+7FcBAKheZPTmO
+ O2SsUXhy0AlrJOozeJPdNFJGVXJFck3EFSj9K70SAUDTu9/XOgQ2mFUoEZoFROksdc9m
+ y47G1IZjOLhpQDPcG/O5c3bKg0L0Y7705T6sWaJsFqeevOE7fiypA24IGHNbefBy9TEN
+ XkZw==
+X-Gm-Message-State: AOJu0YwjBoK7pn/pfwWAp8AorgqPwIVErevO2pjw08cS0H/x1HxzCcSf
+ baqYHxmE9QII96oKRWgOQ0zP4U/Xw3lU2jleY0vd09u9d+4Vpw==
+X-Google-Smtp-Source: AGHT+IHQRra/yClJ4uot59JHBxOCTeJsRE2r1aOzguNLXXBiV1ckwrC7Vvod2G0uxRAT9yTYp4y0Iw==
+X-Received: by 2002:a9d:63c6:0:b0:6dc:386:a263 with SMTP id
+ e6-20020a9d63c6000000b006dc0386a263mr4415143otl.51.1703885368601; 
+ Fri, 29 Dec 2023 13:29:28 -0800 (PST)
 Received: from stoup.lan (203-217-28-32.perm.iinet.net.au. [203.217.28.32])
  by smtp.gmail.com with ESMTPSA id
- bd33-20020a056a0027a100b006d9a96b7d0dsm11285396pfb.208.2023.12.29.13.29.23
+ bd33-20020a056a0027a100b006d9a96b7d0dsm11285396pfb.208.2023.12.29.13.29.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Dec 2023 13:29:24 -0800 (PST)
+ Fri, 29 Dec 2023 13:29:28 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 65/71] cpu-target: Constify VMState
-Date: Sat, 30 Dec 2023 08:23:40 +1100
-Message-Id: <20231229212346.147149-66-richard.henderson@linaro.org>
+Cc: Juan Quintela <quintela@redhat.com>
+Subject: [PULL 66/71] migration: Constify VMState
+Date: Sat, 30 Dec 2023 08:23:41 +1100
+Message-Id: <20231229212346.147149-67-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231229212346.147149-1-richard.henderson@linaro.org>
 References: <20231229212346.147149-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,51 +91,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20231221031652.119827-66-richard.henderson@linaro.org>
+Message-Id: <20231221031652.119827-67-richard.henderson@linaro.org>
 ---
- cpu-target.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ migration/global_state.c |  2 +-
+ migration/savevm.c       | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/cpu-target.c b/cpu-target.c
-index 508013e23d..430dc53566 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -87,7 +87,7 @@ static const VMStateDescription vmstate_cpu_common_exception_index = {
+diff --git a/migration/global_state.c b/migration/global_state.c
+index 4e2a9d8ec0..8ee15dbb06 100644
+--- a/migration/global_state.c
++++ b/migration/global_state.c
+@@ -131,7 +131,7 @@ static const VMStateDescription vmstate_globalstate = {
+     .post_load = global_state_post_load,
+     .pre_save = global_state_pre_save,
+     .needed = global_state_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(size, GlobalState),
+         VMSTATE_BUFFER(runstate, GlobalState),
+         VMSTATE_END_OF_LIST()
+diff --git a/migration/savevm.c b/migration/savevm.c
+index eab62330b6..c8d08fa079 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -438,7 +438,7 @@ static const VMStateDescription vmstate_target_page_bits = {
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = cpu_common_exception_index_needed,
+     .needed = vmstate_target_page_bits_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT32(exception_index, CPUState),
+         VMSTATE_UINT32(target_page_bits, SaveState),
          VMSTATE_END_OF_LIST()
      }
-@@ -105,7 +105,7 @@ static const VMStateDescription vmstate_cpu_common_crash_occurred = {
+@@ -454,7 +454,7 @@ static const VMStateDescription vmstate_capabilites = {
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = cpu_common_crash_occurred_needed,
+     .needed = vmstate_capabilites_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_BOOL(crash_occurred, CPUState),
+         VMSTATE_UINT32_V(caps_count, SaveState, 1),
+         VMSTATE_VARRAY_UINT32_ALLOC(capabilities, SaveState, caps_count, 1,
+                                     vmstate_info_capability,
+@@ -499,7 +499,7 @@ static const VMStateDescription vmstate_uuid = {
+     .minimum_version_id = 1,
+     .needed = vmstate_uuid_needed,
+     .post_load = vmstate_uuid_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8_ARRAY_V(uuid.data, SaveState, sizeof(QemuUUID), 1),
          VMSTATE_END_OF_LIST()
      }
-@@ -117,12 +117,12 @@ const VMStateDescription vmstate_cpu_common = {
-     .minimum_version_id = 1,
-     .pre_load = cpu_common_pre_load,
-     .post_load = cpu_common_post_load,
+@@ -512,12 +512,12 @@ static const VMStateDescription vmstate_configuration = {
+     .post_load = configuration_post_load,
+     .pre_save = configuration_pre_save,
+     .post_save = configuration_post_save,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(halted, CPUState),
-         VMSTATE_UINT32(interrupt_request, CPUState),
+         VMSTATE_UINT32(len, SaveState),
+         VMSTATE_VBUFFER_ALLOC_UINT32(name, SaveState, 0, NULL, len),
          VMSTATE_END_OF_LIST()
      },
--    .subsections = (const VMStateDescription*[]) {
+-    .subsections = (const VMStateDescription *[]) {
 +    .subsections = (const VMStateDescription * const []) {
-         &vmstate_cpu_common_exception_index,
-         &vmstate_cpu_common_crash_occurred,
-         NULL
+         &vmstate_target_page_bits,
+         &vmstate_capabilites,
+         &vmstate_uuid,
 -- 
 2.34.1
 
