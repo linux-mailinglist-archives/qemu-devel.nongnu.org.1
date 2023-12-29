@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527628201D3
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:32:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4751D8201CE
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:31:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJKPr-0007q3-Al; Fri, 29 Dec 2023 16:29:15 -0500
+	id 1rJKQE-0008R6-Lz; Fri, 29 Dec 2023 16:29:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKPm-0007TX-Nv
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:10 -0500
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1rJKPu-0008Ef-Ii
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:18 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKPj-0000Mx-3b
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:10 -0500
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-5bdbe2de25fso5599943a12.3
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:29:06 -0800 (PST)
+ id 1rJKPl-0000NK-1n
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:13 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6d98ce84e18so5160941b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:29:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703885346; x=1704490146; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703885348; x=1704490148; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=J5UHmsO1he3KEAA2w5u7UCSmsFV99hNVQ8n2drCdabk=;
- b=Z1bz2wts8vMOQkOVWV6q7vnnpUi3lo8cY2yVC7pxDclIwuhSWp58fyrSKfeTtLrMGO
- pUWjEWYvLeii8FAvX0oe5lUunMSDq/kkC/HQTe9DQPX5ggC5Vig4kw+MprpKD+dpLlte
- ljJ0wRSeomRfL9mXeKKtvWvlXd+Yzsfdd8SLqGzU+qwongyAhJSi35r84FpJjgAWGEZ0
- GXpEoE9EhTsg5OXvj0PdCtspkwmefUptijm4YbUEQM89y79F9uE43bpY21m2q9OdM57G
- loFSQ2A1R+FMTdAt2rtExfdGfVzOAPLHuyF5xPoXA2MSxS3op+qeuBRb75HkyyLE1Uht
- cDqA==
+ :reply-to; bh=vt60Tnr4DqLoORHWhbTyoaC4aknKVapk9I6rFjWSbFY=;
+ b=r9JozAFP3HZdhWC8TBQmwRBg2HhFx2fgrl9ttYw3BWpmOyBKxyCYbiNXV5lxK6nAOJ
+ FJQiu8qhuRSyA9lVSAs8/jrQSqnlaPcLgpCjtOqiy4pgdPd7BQWBEYa+zB/4+y+wD1Uo
+ sbfWBhO3AdF19EWikWJ/Rt1TO7uGRJStpol35DqwBU3R3/AJPLHzI+ZDB3eQJ94KHwZc
+ Hz7E/spLLrrlWUUGBCtfoFDaBc9ykNKPO4a/qH3RVhtnecXffIa68MyYfYZOSpwmg7v9
+ fbEN+KrDRTtCMBa79WtEoHy579/R0uXm1eWZmDZTV8Y7oZcuuhQlOT9Ehql8PviyVDyf
+ aewQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703885346; x=1704490146;
+ d=1e100.net; s=20230601; t=1703885348; x=1704490148;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J5UHmsO1he3KEAA2w5u7UCSmsFV99hNVQ8n2drCdabk=;
- b=DZXE5HEE2d5VPeFdJCjGaUeyIXbfy/VVC3Hu4tIbt2Fav0mt82x0oTDKRjRZT7ltX4
- 8foSUhg84kePcosF2ubL5OY+hlNj5XpviaXBxFjTYAFMnIwqqrwuATJXxNYAMc99dNcy
- rpsVQ6x/M0rfhNo41XGGXY47xyzFhPb470VmZXvqrPHzKj3tp+b4liQgk4QBiqrpzC+c
- jyjwps84sr8kvCWpb2yvdZm9ZWES5VE6rNiv/sOJrN6SrNhrnKyVYb5atbqAiSQ7n4JV
- 0LnqdE3guY2ZOIfYcxqVs/enTpISvAInugx7qyzO8mhP5ExkXtHnJAMEVEcukVX1KWEH
- 9Jnw==
-X-Gm-Message-State: AOJu0YyRx4JAMMfB+acgICNbuHU7PO5oJSqc2JQDioroGc0O5Ihv7XI0
- ulJAfncsXX1VNzdvKWaQfMhtW+y2jB1L5W4LwLLEGCqLY9n8gQ==
-X-Google-Smtp-Source: AGHT+IHOGktqB9NQ5NxiOm6FegtPx3+DgWyBsLmX18wVZ6EjFyiWuSjOS2lRnZ8lXXiKppRNrLz3ow==
-X-Received: by 2002:a05:6a20:42a0:b0:196:949e:63c with SMTP id
- o32-20020a056a2042a000b00196949e063cmr1398005pzj.40.1703885345597; 
- Fri, 29 Dec 2023 13:29:05 -0800 (PST)
+ bh=vt60Tnr4DqLoORHWhbTyoaC4aknKVapk9I6rFjWSbFY=;
+ b=YWJDwPyywXYk3NYb9jS5SJU99T+ApmGiE2Jy5qL7nrGAFfUOvImCv2TtqC8HIEPTCh
+ 300YE4DTsDiawFryOwFs/qyMvI9aQHOxsczrFJ3Tm9qxsTbXGBSJr7BzyCskO3zsEn4Q
+ 80md4SAPkosfmXEagqsfu7I+A9WeSDQko1BH1fN6N+KpUfRkhaPUsdgio05gPDh6O1DY
+ /oLeg6XEZlIuRK7Iz+FRCrM2CIBeIkNg/V4Lp5jCQsgyvDAP8VHy55ZnxU/9IzWyxkOB
+ Pp1qK5PIbaIhnlsY+UfDZIODMub/nNQxFn/kQ6OBzCOxND4RMuB29Ihx94JKC2AKeuKG
+ BuXw==
+X-Gm-Message-State: AOJu0Yxrcx70pHVLwXni0LSq7sS/4gOqqoQDXMNGBW1s04wHrUMYyRXI
+ SCXkK7Ai/FIRCWCLaLCidGqRdHRdVOpMw+xHMOJTz1fbflreUg==
+X-Google-Smtp-Source: AGHT+IGUOIYAbnddHLkVmBsxRi2d9hU5h/WLrXWUP86OWvJUC9flhaHilgAe5tTHrUYVEmPtWPMUnA==
+X-Received: by 2002:aa7:8504:0:b0:6d9:b187:b176 with SMTP id
+ v4-20020aa78504000000b006d9b187b176mr10404928pfn.13.1703885347722; 
+ Fri, 29 Dec 2023 13:29:07 -0800 (PST)
 Received: from stoup.lan (203-217-28-32.perm.iinet.net.au. [203.217.28.32])
  by smtp.gmail.com with ESMTPSA id
- bd33-20020a056a0027a100b006d9a96b7d0dsm11285396pfb.208.2023.12.29.13.29.03
+ bd33-20020a056a0027a100b006d9a96b7d0dsm11285396pfb.208.2023.12.29.13.29.06
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Dec 2023 13:29:05 -0800 (PST)
+ Fri, 29 Dec 2023 13:29:07 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 56/71] hw/timer: Constify VMState
-Date: Sat, 30 Dec 2023 08:23:31 +1100
-Message-Id: <20231229212346.147149-57-richard.henderson@linaro.org>
+Subject: [PULL 57/71] hw/tpm: Constify VMState
+Date: Sat, 30 Dec 2023 08:23:32 +1100
+Message-Id: <20231229212346.147149-58-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231229212346.147149-1-richard.henderson@linaro.org>
 References: <20231229212346.147149-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,678 +91,94 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231221031652.119827-57-richard.henderson@linaro.org>
+Message-Id: <20231221031652.119827-58-richard.henderson@linaro.org>
 ---
- hw/timer/a9gtimer.c            |  8 ++++----
- hw/timer/allwinner-a10-pit.c   |  2 +-
- hw/timer/arm_mptimer.c         |  4 ++--
- hw/timer/arm_timer.c           |  4 ++--
- hw/timer/armv7m_systick.c      |  2 +-
- hw/timer/aspeed_timer.c        |  4 ++--
- hw/timer/bcm2835_systmr.c      |  2 +-
- hw/timer/cadence_ttc.c         |  4 ++--
- hw/timer/cmsdk-apb-dualtimer.c |  4 ++--
- hw/timer/cmsdk-apb-timer.c     |  2 +-
- hw/timer/digic-timer.c         |  2 +-
- hw/timer/etraxfs_timer.c       |  2 +-
- hw/timer/exynos4210_mct.c      | 12 ++++++------
- hw/timer/exynos4210_pwm.c      |  4 ++--
- hw/timer/hpet.c                | 10 +++++-----
- hw/timer/i8254_common.c        |  4 ++--
- hw/timer/ibex_timer.c          |  2 +-
- hw/timer/imx_epit.c            |  2 +-
- hw/timer/imx_gpt.c             |  2 +-
- hw/timer/mss-timer.c           |  4 ++--
- hw/timer/npcm7xx_timer.c       |  8 ++++----
- hw/timer/nrf51_timer.c         |  2 +-
- hw/timer/pxa2xx_timer.c        |  6 +++---
- hw/timer/renesas_cmt.c         |  2 +-
- hw/timer/renesas_tmr.c         |  2 +-
- hw/timer/sifive_pwm.c          |  2 +-
- hw/timer/slavio_timer.c        |  4 ++--
- hw/timer/sse-counter.c         |  2 +-
- hw/timer/sse-timer.c           |  2 +-
- hw/timer/stellaris-gptm.c      |  2 +-
- hw/timer/stm32f2xx_timer.c     |  2 +-
- 31 files changed, 57 insertions(+), 57 deletions(-)
+ hw/tpm/tpm_crb.c        | 2 +-
+ hw/tpm/tpm_spapr.c      | 2 +-
+ hw/tpm/tpm_tis_common.c | 2 +-
+ hw/tpm/tpm_tis_i2c.c    | 2 +-
+ hw/tpm/tpm_tis_isa.c    | 2 +-
+ hw/tpm/tpm_tis_sysbus.c | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/timer/a9gtimer.c b/hw/timer/a9gtimer.c
-index 5e959b6d09..a2ac5bdfb9 100644
---- a/hw/timer/a9gtimer.c
-+++ b/hw/timer/a9gtimer.c
-@@ -328,7 +328,7 @@ static const VMStateDescription vmstate_a9_gtimer_per_cpu = {
-     .name = "arm.cortex-a9-global-timer.percpu",
-     .version_id = 1,
-     .minimum_version_id = 1,
+diff --git a/hw/tpm/tpm_crb.c b/hw/tpm/tpm_crb.c
+index ea930da545..5cd5a2533b 100644
+--- a/hw/tpm/tpm_crb.c
++++ b/hw/tpm/tpm_crb.c
+@@ -220,7 +220,7 @@ static int tpm_crb_pre_save(void *opaque)
+ static const VMStateDescription vmstate_tpm_crb = {
+     .name = "tpm-crb",
+     .pre_save = tpm_crb_pre_save,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(control, A9GTimerPerCPU),
-         VMSTATE_UINT64(compare, A9GTimerPerCPU),
-         VMSTATE_UINT32(status, A9GTimerPerCPU),
-@@ -342,7 +342,7 @@ static const VMStateDescription vmstate_a9_gtimer_control = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = vmstate_a9_gtimer_control_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(control, A9GTimerState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -352,7 +352,7 @@ static const VMStateDescription vmstate_a9_gtimer = {
-     .name = "arm.cortex-a9-global-timer",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_TIMER_PTR(timer, A9GTimerState),
-         VMSTATE_UINT64(counter, A9GTimerState),
-         VMSTATE_UINT64(ref_counter, A9GTimerState),
-@@ -362,7 +362,7 @@ static const VMStateDescription vmstate_a9_gtimer = {
-                                      A9GTimerPerCPU),
-         VMSTATE_END_OF_LIST()
-     },
--    .subsections = (const VMStateDescription*[]) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_a9_gtimer_control,
-         NULL
-     }
-diff --git a/hw/timer/allwinner-a10-pit.c b/hw/timer/allwinner-a10-pit.c
-index 971f78462a..a524de1381 100644
---- a/hw/timer/allwinner-a10-pit.c
-+++ b/hw/timer/allwinner-a10-pit.c
-@@ -200,7 +200,7 @@ static const VMStateDescription vmstate_a10_pit = {
-     .name = "a10.pit",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(irq_enable, AwA10PITState),
-         VMSTATE_UINT32(irq_status, AwA10PITState),
-         VMSTATE_UINT32_ARRAY(control, AwA10PITState, AW_A10_PIT_TIMER_NR),
-diff --git a/hw/timer/arm_mptimer.c b/hw/timer/arm_mptimer.c
-index cdfca3000b..bca4cee0e4 100644
---- a/hw/timer/arm_mptimer.c
-+++ b/hw/timer/arm_mptimer.c
-@@ -281,7 +281,7 @@ static const VMStateDescription vmstate_timerblock = {
-     .name = "arm_mptimer_timerblock",
-     .version_id = 3,
-     .minimum_version_id = 3,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(control, TimerBlock),
-         VMSTATE_UINT32(status, TimerBlock),
-         VMSTATE_PTIMER(timer, TimerBlock),
-@@ -293,7 +293,7 @@ static const VMStateDescription vmstate_arm_mptimer = {
-     .name = "arm_mptimer",
-     .version_id = 3,
-     .minimum_version_id = 3,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT_VARRAY_UINT32(timerblock, ARMMPTimerState, num_cpu,
-                                      3, vmstate_timerblock, TimerBlock),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/timer/arm_timer.c b/hw/timer/arm_timer.c
-index 9afe8da831..0940e03f1d 100644
---- a/hw/timer/arm_timer.c
-+++ b/hw/timer/arm_timer.c
-@@ -163,7 +163,7 @@ static const VMStateDescription vmstate_arm_timer = {
-     .name = "arm_timer",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(control, arm_timer_state),
-         VMSTATE_UINT32(limit, arm_timer_state),
-         VMSTATE_INT32(int_level, arm_timer_state),
-@@ -282,7 +282,7 @@ static const VMStateDescription vmstate_sp804 = {
-     .name = "sp804",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_INT32_ARRAY(level, SP804State, 2),
-         VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/timer/armv7m_systick.c b/hw/timer/armv7m_systick.c
-index 5dfe39afe3..f6b1acef27 100644
---- a/hw/timer/armv7m_systick.c
-+++ b/hw/timer/armv7m_systick.c
-@@ -275,7 +275,7 @@ static const VMStateDescription vmstate_systick = {
-     .name = "armv7m_systick",
-     .version_id = 3,
-     .minimum_version_id = 3,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_CLOCK(refclk, SysTickState),
-         VMSTATE_CLOCK(cpuclk, SysTickState),
-         VMSTATE_UINT32(control, SysTickState),
-diff --git a/hw/timer/aspeed_timer.c b/hw/timer/aspeed_timer.c
-index 72161f07bb..fc5c94bdf3 100644
---- a/hw/timer/aspeed_timer.c
-+++ b/hw/timer/aspeed_timer.c
-@@ -645,7 +645,7 @@ static const VMStateDescription vmstate_aspeed_timer = {
-     .name = "aspeed.timer",
-     .version_id = 2,
-     .minimum_version_id = 2,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(id, AspeedTimer),
-         VMSTATE_INT32(level, AspeedTimer),
-         VMSTATE_TIMER(timer, AspeedTimer),
-@@ -659,7 +659,7 @@ static const VMStateDescription vmstate_aspeed_timer_state = {
-     .name = "aspeed.timerctrl",
-     .version_id = 2,
-     .minimum_version_id = 2,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(ctrl, AspeedTimerCtrlState),
-         VMSTATE_UINT32(ctrl2, AspeedTimerCtrlState),
-         VMSTATE_UINT32(ctrl3, AspeedTimerCtrlState),
-diff --git a/hw/timer/bcm2835_systmr.c b/hw/timer/bcm2835_systmr.c
-index 67669a57ff..3ec64604ee 100644
---- a/hw/timer/bcm2835_systmr.c
-+++ b/hw/timer/bcm2835_systmr.c
-@@ -146,7 +146,7 @@ static const VMStateDescription bcm2835_systmr_vmstate = {
-     .name = "bcm2835_sys_timer",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(reg.ctrl_status, BCM2835SystemTimerState),
-         VMSTATE_UINT32_ARRAY(reg.compare, BCM2835SystemTimerState,
-                              BCM2835_SYSTIMER_COUNT),
-diff --git a/hw/timer/cadence_ttc.c b/hw/timer/cadence_ttc.c
-index e57a0f5f09..54dbd4c564 100644
---- a/hw/timer/cadence_ttc.c
-+++ b/hw/timer/cadence_ttc.c
-@@ -425,7 +425,7 @@ static const VMStateDescription vmstate_cadence_timer = {
-     .minimum_version_id = 1,
-     .pre_save = cadence_timer_pre_save,
-     .post_load = cadence_timer_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(reg_clock, CadenceTimerState),
-         VMSTATE_UINT32(reg_count, CadenceTimerState),
-         VMSTATE_UINT32(reg_value, CadenceTimerState),
-@@ -443,7 +443,7 @@ static const VMStateDescription vmstate_cadence_ttc = {
-     .name = "cadence_TTC",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT_ARRAY(timer, CadenceTTCState, 3, 0,
-                             vmstate_cadence_timer,
-                             CadenceTimerState),
-diff --git a/hw/timer/cmsdk-apb-dualtimer.c b/hw/timer/cmsdk-apb-dualtimer.c
-index d4a509c798..ddf9070c3c 100644
---- a/hw/timer/cmsdk-apb-dualtimer.c
-+++ b/hw/timer/cmsdk-apb-dualtimer.c
-@@ -508,7 +508,7 @@ static const VMStateDescription cmsdk_dualtimermod_vmstate = {
-     .name = "cmsdk-apb-dualtimer-module",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PTIMER(timer, CMSDKAPBDualTimerModule),
-         VMSTATE_UINT32(load, CMSDKAPBDualTimerModule),
-         VMSTATE_UINT32(value, CMSDKAPBDualTimerModule),
-@@ -522,7 +522,7 @@ static const VMStateDescription cmsdk_apb_dualtimer_vmstate = {
-     .name = "cmsdk-apb-dualtimer",
-     .version_id = 2,
-     .minimum_version_id = 2,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_CLOCK(timclk, CMSDKAPBDualTimer),
-         VMSTATE_STRUCT_ARRAY(timermod, CMSDKAPBDualTimer,
-                              CMSDK_APB_DUALTIMER_NUM_MODULES,
-diff --git a/hw/timer/cmsdk-apb-timer.c b/hw/timer/cmsdk-apb-timer.c
-index 68aa1a7636..814545c783 100644
---- a/hw/timer/cmsdk-apb-timer.c
-+++ b/hw/timer/cmsdk-apb-timer.c
-@@ -250,7 +250,7 @@ static const VMStateDescription cmsdk_apb_timer_vmstate = {
-     .name = "cmsdk-apb-timer",
-     .version_id = 2,
-     .minimum_version_id = 2,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PTIMER(timer, CMSDKAPBTimer),
-         VMSTATE_CLOCK(pclk, CMSDKAPBTimer),
-         VMSTATE_UINT32(ctrl, CMSDKAPBTimer),
-diff --git a/hw/timer/digic-timer.c b/hw/timer/digic-timer.c
-index 973eab4386..9fc5c1d8a4 100644
---- a/hw/timer/digic-timer.c
-+++ b/hw/timer/digic-timer.c
-@@ -39,7 +39,7 @@ static const VMStateDescription vmstate_digic_timer = {
-     .name = "digic.timer",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PTIMER(ptimer, DigicTimerState),
-         VMSTATE_UINT32(control, DigicTimerState),
-         VMSTATE_UINT32(relvalue, DigicTimerState),
-diff --git a/hw/timer/etraxfs_timer.c b/hw/timer/etraxfs_timer.c
-index f035b74560..da7c946af5 100644
---- a/hw/timer/etraxfs_timer.c
-+++ b/hw/timer/etraxfs_timer.c
-@@ -88,7 +88,7 @@ static const VMStateDescription vmstate_etraxfs = {
-     .name = "etraxfs",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PTIMER(ptimer_t0, ETRAXTimerState),
-         VMSTATE_PTIMER(ptimer_t1, ETRAXTimerState),
-         VMSTATE_PTIMER(ptimer_wd, ETRAXTimerState),
-diff --git a/hw/timer/exynos4210_mct.c b/hw/timer/exynos4210_mct.c
-index 446bbd2b96..75098cdb55 100644
---- a/hw/timer/exynos4210_mct.c
-+++ b/hw/timer/exynos4210_mct.c
-@@ -264,7 +264,7 @@ static const VMStateDescription vmstate_tick_timer = {
-     .name = "exynos4210.mct.tick_timer",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(cnt_run, struct tick_timer),
-         VMSTATE_UINT32(int_run, struct tick_timer),
-         VMSTATE_UINT32(last_icnto, struct tick_timer),
-@@ -283,7 +283,7 @@ static const VMStateDescription vmstate_lregs = {
-     .name = "exynos4210.mct.lregs",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(cnt, struct lregs, L_REG_CNT_AMOUNT),
-         VMSTATE_UINT32(tcon, struct lregs),
-         VMSTATE_UINT32(int_cstat, struct lregs),
-@@ -297,7 +297,7 @@ static const VMStateDescription vmstate_exynos4210_mct_lt = {
-     .name = "exynos4210.mct.lt",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_INT32(id, Exynos4210MCTLT),
-         VMSTATE_STRUCT(tick_timer, Exynos4210MCTLT, 0,
-                 vmstate_tick_timer,
-@@ -314,7 +314,7 @@ static const VMStateDescription vmstate_gregs = {
-     .name = "exynos4210.mct.lregs",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(cnt, struct gregs),
-         VMSTATE_UINT32(cnt_wstat, struct gregs),
-         VMSTATE_UINT32(tcon, struct gregs),
-@@ -332,7 +332,7 @@ static const VMStateDescription vmstate_exynos4210_mct_gt = {
-     .name = "exynos4210.mct.lt",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(reg, Exynos4210MCTGT, 0, vmstate_gregs,
-                 struct gregs),
-         VMSTATE_UINT64(count, Exynos4210MCTGT),
-@@ -346,7 +346,7 @@ static const VMStateDescription vmstate_exynos4210_mct_state = {
-     .name = "exynos4210.mct",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(reg_mct_cfg, Exynos4210MCTState),
-         VMSTATE_STRUCT_ARRAY(l_timer, Exynos4210MCTState, 2, 0,
-             vmstate_exynos4210_mct_lt, Exynos4210MCTLT),
-diff --git a/hw/timer/exynos4210_pwm.c b/hw/timer/exynos4210_pwm.c
-index 3528d0f33a..ca330e9446 100644
---- a/hw/timer/exynos4210_pwm.c
-+++ b/hw/timer/exynos4210_pwm.c
-@@ -123,7 +123,7 @@ static const VMStateDescription vmstate_exynos4210_pwm = {
-     .name = "exynos4210.pwm.pwm",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(id, Exynos4210PWM),
-         VMSTATE_UINT32(freq, Exynos4210PWM),
-         VMSTATE_PTIMER(ptimer, Exynos4210PWM),
-@@ -137,7 +137,7 @@ static const VMStateDescription vmstate_exynos4210_pwm_state = {
-     .name = "exynos4210.pwm",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(reg_tcfg, Exynos4210PWMState, 2),
-         VMSTATE_UINT32(reg_tcon, Exynos4210PWMState),
-         VMSTATE_UINT32(reg_tint_cstat, Exynos4210PWMState),
-diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-index 6998094233..f2f1580f81 100644
---- a/hw/timer/hpet.c
-+++ b/hw/timer/hpet.c
-@@ -296,7 +296,7 @@ static const VMStateDescription vmstate_hpet_rtc_irq_level = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = hpet_rtc_irq_level_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(rtc_irq_level, HPETState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -307,7 +307,7 @@ static const VMStateDescription vmstate_hpet_offset = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = hpet_offset_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(hpet_offset, HPETState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -317,7 +317,7 @@ static const VMStateDescription vmstate_hpet_timer = {
-     .name = "hpet_timer",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(tn, HPETTimer),
-         VMSTATE_UINT64(config, HPETTimer),
-         VMSTATE_UINT64(cmp, HPETTimer),
-@@ -336,7 +336,7 @@ static const VMStateDescription vmstate_hpet = {
-     .pre_save = hpet_pre_save,
-     .pre_load = hpet_pre_load,
-     .post_load = hpet_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(config, HPETState),
-         VMSTATE_UINT64(isr, HPETState),
-         VMSTATE_UINT64(hpet_counter, HPETState),
-@@ -346,7 +346,7 @@ static const VMStateDescription vmstate_hpet = {
-                                     vmstate_hpet_timer, HPETTimer),
-         VMSTATE_END_OF_LIST()
-     },
--    .subsections = (const VMStateDescription*[]) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_hpet_rtc_irq_level,
-         &vmstate_hpet_offset,
-         NULL
-diff --git a/hw/timer/i8254_common.c b/hw/timer/i8254_common.c
-index b25da448c8..28fdabc321 100644
---- a/hw/timer/i8254_common.c
-+++ b/hw/timer/i8254_common.c
-@@ -180,7 +180,7 @@ static const VMStateDescription vmstate_pit_channel = {
-     .name = "pit channel",
-     .version_id = 2,
-     .minimum_version_id = 2,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_INT32(count, PITChannelState),
-         VMSTATE_UINT16(latched_count, PITChannelState),
-         VMSTATE_UINT8(count_latched, PITChannelState),
-@@ -228,7 +228,7 @@ static const VMStateDescription vmstate_pit_common = {
-     .minimum_version_id = 2,
-     .pre_save = pit_dispatch_pre_save,
-     .post_load = pit_dispatch_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_V(channels[0].irq_disabled, PITCommonState, 3),
-         VMSTATE_STRUCT_ARRAY(channels, PITCommonState, 3, 2,
-                              vmstate_pit_channel, PITChannelState),
-diff --git a/hw/timer/ibex_timer.c b/hw/timer/ibex_timer.c
-index d8b8e4e1f6..4917388d45 100644
---- a/hw/timer/ibex_timer.c
-+++ b/hw/timer/ibex_timer.c
-@@ -252,7 +252,7 @@ static const VMStateDescription vmstate_ibex_timer = {
-     .version_id = 2,
-     .minimum_version_id = 2,
-     .post_load = ibex_timer_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(timer_ctrl, IbexTimerState),
-         VMSTATE_UINT32(timer_cfg0, IbexTimerState),
-         VMSTATE_UINT32(timer_compare_lower0, IbexTimerState),
-diff --git a/hw/timer/imx_epit.c b/hw/timer/imx_epit.c
-index 640e4399c2..bd625203aa 100644
---- a/hw/timer/imx_epit.c
-+++ b/hw/timer/imx_epit.c
-@@ -383,7 +383,7 @@ static const VMStateDescription vmstate_imx_timer_epit = {
-     .name = TYPE_IMX_EPIT,
-     .version_id = 3,
-     .minimum_version_id = 3,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(cr, IMXEPITState),
-         VMSTATE_UINT32(sr, IMXEPITState),
-         VMSTATE_UINT32(lr, IMXEPITState),
-diff --git a/hw/timer/imx_gpt.c b/hw/timer/imx_gpt.c
-index 7222b1b387..a8edaec867 100644
---- a/hw/timer/imx_gpt.c
-+++ b/hw/timer/imx_gpt.c
-@@ -63,7 +63,7 @@ static const VMStateDescription vmstate_imx_timer_gpt = {
-     .name = TYPE_IMX_GPT,
-     .version_id = 3,
-     .minimum_version_id = 3,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(cr, IMXGPTState),
-         VMSTATE_UINT32(pr, IMXGPTState),
-         VMSTATE_UINT32(sr, IMXGPTState),
-diff --git a/hw/timer/mss-timer.c b/hw/timer/mss-timer.c
-index ee7438f168..b66aed56ea 100644
---- a/hw/timer/mss-timer.c
-+++ b/hw/timer/mss-timer.c
-@@ -260,7 +260,7 @@ static const VMStateDescription vmstate_timers = {
-     .name = "mss-timer-block",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PTIMER(ptimer, struct Msf2Timer),
-         VMSTATE_UINT32_ARRAY(regs, struct Msf2Timer, R_TIM1_MAX),
-         VMSTATE_END_OF_LIST()
-@@ -271,7 +271,7 @@ static const VMStateDescription vmstate_mss_timer = {
-     .name = TYPE_MSS_TIMER,
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(freq_hz, MSSTimerState),
-         VMSTATE_STRUCT_ARRAY(timers, MSSTimerState, NUM_TIMERS, 0,
-                 vmstate_timers, struct Msf2Timer),
-diff --git a/hw/timer/npcm7xx_timer.c b/hw/timer/npcm7xx_timer.c
-index a8bd93aeb2..779c6049fa 100644
---- a/hw/timer/npcm7xx_timer.c
-+++ b/hw/timer/npcm7xx_timer.c
-@@ -637,7 +637,7 @@ static const VMStateDescription vmstate_npcm7xx_base_timer = {
-     .name = "npcm7xx-base-timer",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_TIMER(qtimer, NPCM7xxBaseTimer),
-         VMSTATE_INT64(expires_ns, NPCM7xxBaseTimer),
-         VMSTATE_INT64(remaining_ns, NPCM7xxBaseTimer),
-@@ -649,7 +649,7 @@ static const VMStateDescription vmstate_npcm7xx_timer = {
-     .name = "npcm7xx-timer",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(base_timer, NPCM7xxTimer,
-                              0, vmstate_npcm7xx_base_timer,
-                              NPCM7xxBaseTimer),
-@@ -663,7 +663,7 @@ static const VMStateDescription vmstate_npcm7xx_watchdog_timer = {
-     .name = "npcm7xx-watchdog-timer",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(base_timer, NPCM7xxWatchdogTimer,
-                              0, vmstate_npcm7xx_base_timer,
-                              NPCM7xxBaseTimer),
-@@ -676,7 +676,7 @@ static const VMStateDescription vmstate_npcm7xx_timer_ctrl = {
-     .name = "npcm7xx-timer-ctrl",
-     .version_id = 2,
-     .minimum_version_id = 2,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(tisr, NPCM7xxTimerCtrlState),
-         VMSTATE_CLOCK(clock, NPCM7xxTimerCtrlState),
-         VMSTATE_STRUCT_ARRAY(timer, NPCM7xxTimerCtrlState,
-diff --git a/hw/timer/nrf51_timer.c b/hw/timer/nrf51_timer.c
-index 50c6772383..a33166a881 100644
---- a/hw/timer/nrf51_timer.c
-+++ b/hw/timer/nrf51_timer.c
-@@ -361,7 +361,7 @@ static const VMStateDescription vmstate_nrf51_timer = {
-     .name = TYPE_NRF51_TIMER,
-     .version_id = 1,
-     .post_load = nrf51_timer_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_TIMER(timer, NRF51TimerState),
-         VMSTATE_INT64(timer_start_ns, NRF51TimerState),
-         VMSTATE_INT64(update_counter_ns, NRF51TimerState),
-diff --git a/hw/timer/pxa2xx_timer.c b/hw/timer/pxa2xx_timer.c
-index 2ae5ae3212..6a7d5551f4 100644
---- a/hw/timer/pxa2xx_timer.c
-+++ b/hw/timer/pxa2xx_timer.c
-@@ -501,7 +501,7 @@ static const VMStateDescription vmstate_pxa2xx_timer0_regs = {
-     .name = "pxa2xx_timer0",
-     .version_id = 2,
-     .minimum_version_id = 2,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(value, PXA2xxTimer0),
+         VMSTATE_UINT32_ARRAY(regs, CRBState, TPM_CRB_R_MAX),
          VMSTATE_END_OF_LIST(),
-     },
-@@ -511,7 +511,7 @@ static const VMStateDescription vmstate_pxa2xx_timer4_regs = {
-     .name = "pxa2xx_timer4",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(tm, PXA2xxTimer4, 1,
-                         vmstate_pxa2xx_timer0_regs, PXA2xxTimer0),
-         VMSTATE_INT32(oldclock, PXA2xxTimer4),
-@@ -533,7 +533,7 @@ static const VMStateDescription vmstate_pxa2xx_timer_regs = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .post_load = pxa25x_timer_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_INT32(clock, PXA2xxTimerInfo),
-         VMSTATE_INT32(oldclock, PXA2xxTimerInfo),
-         VMSTATE_UINT64(lastload, PXA2xxTimerInfo),
-diff --git a/hw/timer/renesas_cmt.c b/hw/timer/renesas_cmt.c
-index 69eabc678a..08832932d2 100644
---- a/hw/timer/renesas_cmt.c
-+++ b/hw/timer/renesas_cmt.c
-@@ -242,7 +242,7 @@ static const VMStateDescription vmstate_rcmt = {
-     .name = "rx-cmt",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT16(cmstr, RCMTState),
-         VMSTATE_UINT16_ARRAY(cmcr, RCMTState, CMT_CH),
-         VMSTATE_UINT16_ARRAY(cmcnt, RCMTState, CMT_CH),
-diff --git a/hw/timer/renesas_tmr.c b/hw/timer/renesas_tmr.c
-index 43b31213bc..1d47d0615a 100644
---- a/hw/timer/renesas_tmr.c
-+++ b/hw/timer/renesas_tmr.c
-@@ -447,7 +447,7 @@ static const VMStateDescription vmstate_rtmr = {
-     .name = "rx-tmr",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_INT64(tick, RTMRState),
-         VMSTATE_UINT8_ARRAY(tcnt, RTMRState, TMR_CH),
-         VMSTATE_UINT8_ARRAY(tcora, RTMRState, TMR_CH),
-diff --git a/hw/timer/sifive_pwm.c b/hw/timer/sifive_pwm.c
-index c664480ccf..e8610c37dd 100644
---- a/hw/timer/sifive_pwm.c
-+++ b/hw/timer/sifive_pwm.c
-@@ -395,7 +395,7 @@ static const VMStateDescription vmstate_sifive_pwm = {
-     .name = TYPE_SIFIVE_PWM,
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_TIMER_ARRAY(timer, SiFivePwmState, 4),
-         VMSTATE_UINT64(tick_offset, SiFivePwmState),
-         VMSTATE_UINT32(pwmcfg, SiFivePwmState),
-diff --git a/hw/timer/slavio_timer.c b/hw/timer/slavio_timer.c
-index 8c4f6eb06b..5507b0145b 100644
---- a/hw/timer/slavio_timer.c
-+++ b/hw/timer/slavio_timer.c
-@@ -344,7 +344,7 @@ static const VMStateDescription vmstate_timer = {
-     .name ="timer",
-     .version_id = 3,
-     .minimum_version_id = 3,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(limit, CPUTimerState),
-         VMSTATE_UINT32(count, CPUTimerState),
-         VMSTATE_UINT32(counthigh, CPUTimerState),
-@@ -359,7 +359,7 @@ static const VMStateDescription vmstate_slavio_timer = {
-     .name ="slavio_timer",
-     .version_id = 3,
-     .minimum_version_id = 3,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT_ARRAY(cputimer, SLAVIO_TIMERState, MAX_CPUS + 1, 3,
-                              vmstate_timer, CPUTimerState),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/timer/sse-counter.c b/hw/timer/sse-counter.c
-index 16c0e8ad15..daceedf964 100644
---- a/hw/timer/sse-counter.c
-+++ b/hw/timer/sse-counter.c
-@@ -442,7 +442,7 @@ static const VMStateDescription sse_counter_vmstate = {
-     .name = "sse-counter",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_CLOCK(clk, SSECounter),
-         VMSTATE_END_OF_LIST()
      }
-diff --git a/hw/timer/sse-timer.c b/hw/timer/sse-timer.c
-index e92e83747d..cb20a9eb79 100644
---- a/hw/timer/sse-timer.c
-+++ b/hw/timer/sse-timer.c
-@@ -428,7 +428,7 @@ static const VMStateDescription sse_timer_vmstate = {
-     .name = "sse-timer",
-     .version_id = 1,
-     .minimum_version_id = 1,
+diff --git a/hw/tpm/tpm_spapr.c b/hw/tpm/tpm_spapr.c
+index dea7b1333b..e084e987e6 100644
+--- a/hw/tpm/tpm_spapr.c
++++ b/hw/tpm/tpm_spapr.c
+@@ -353,7 +353,7 @@ static const VMStateDescription vmstate_spapr_vtpm = {
+     .name = "tpm-spapr",
+     .pre_save = tpm_spapr_pre_save,
+     .post_load = tpm_spapr_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_TIMER(timer, SSETimer),
-         VMSTATE_UINT32(cntfrq, SSETimer),
-         VMSTATE_UINT32(cntp_ctl, SSETimer),
-diff --git a/hw/timer/stellaris-gptm.c b/hw/timer/stellaris-gptm.c
-index fd71c79be4..f28958cefc 100644
---- a/hw/timer/stellaris-gptm.c
-+++ b/hw/timer/stellaris-gptm.c
-@@ -250,7 +250,7 @@ static const VMStateDescription vmstate_stellaris_gptm = {
-     .name = "stellaris_gptm",
-     .version_id = 2,
-     .minimum_version_id = 2,
+         VMSTATE_SPAPR_VIO(vdev, SpaprTpmState),
+ 
+         VMSTATE_UINT8(state, SpaprTpmState),
+diff --git a/hw/tpm/tpm_tis_common.c b/hw/tpm/tpm_tis_common.c
+index 279ce436b5..1bfa28bfd9 100644
+--- a/hw/tpm/tpm_tis_common.c
++++ b/hw/tpm/tpm_tis_common.c
+@@ -879,7 +879,7 @@ int tpm_tis_pre_save(TPMState *s)
+ const VMStateDescription vmstate_locty = {
+     .name = "tpm-tis/locty",
+     .version_id = 0,
+-    .fields      = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(state, TPMLocality),
+         VMSTATE_UINT32(inte, TPMLocality),
+         VMSTATE_UINT32(ints, TPMLocality),
+diff --git a/hw/tpm/tpm_tis_i2c.c b/hw/tpm/tpm_tis_i2c.c
+index 4ecea7fa3e..4bb09655b4 100644
+--- a/hw/tpm/tpm_tis_i2c.c
++++ b/hw/tpm/tpm_tis_i2c.c
+@@ -115,7 +115,7 @@ static const VMStateDescription vmstate_tpm_tis_i2c = {
+     .version_id = 0,
+     .pre_save  = tpm_tis_i2c_pre_save,
+     .post_load  = tpm_tis_i2c_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(config, gptm_state),
-         VMSTATE_UINT32_ARRAY(mode, gptm_state, 2),
-         VMSTATE_UINT32(control, gptm_state),
-diff --git a/hw/timer/stm32f2xx_timer.c b/hw/timer/stm32f2xx_timer.c
-index ba8694dcd3..de4208b1a6 100644
---- a/hw/timer/stm32f2xx_timer.c
-+++ b/hw/timer/stm32f2xx_timer.c
-@@ -274,7 +274,7 @@ static const VMStateDescription vmstate_stm32f2xx_timer = {
-     .name = TYPE_STM32F2XX_TIMER,
-     .version_id = 1,
-     .minimum_version_id = 1,
+         VMSTATE_BUFFER(state.buffer, TPMStateI2C),
+         VMSTATE_UINT16(state.rw_offset, TPMStateI2C),
+         VMSTATE_UINT8(state.active_locty, TPMStateI2C),
+diff --git a/hw/tpm/tpm_tis_isa.c b/hw/tpm/tpm_tis_isa.c
+index 0367401586..8887b3c9c4 100644
+--- a/hw/tpm/tpm_tis_isa.c
++++ b/hw/tpm/tpm_tis_isa.c
+@@ -53,7 +53,7 @@ static const VMStateDescription vmstate_tpm_tis_isa = {
+     .name = "tpm-tis",
+     .version_id = 0,
+     .pre_save  = tpm_tis_pre_save_isa,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT64(tick_offset, STM32F2XXTimerState),
-         VMSTATE_UINT32(tim_cr1, STM32F2XXTimerState),
-         VMSTATE_UINT32(tim_cr2, STM32F2XXTimerState),
+         VMSTATE_BUFFER(state.buffer, TPMStateISA),
+         VMSTATE_UINT16(state.rw_offset, TPMStateISA),
+         VMSTATE_UINT8(state.active_locty, TPMStateISA),
+diff --git a/hw/tpm/tpm_tis_sysbus.c b/hw/tpm/tpm_tis_sysbus.c
+index 2fc550f119..941f7f7f62 100644
+--- a/hw/tpm/tpm_tis_sysbus.c
++++ b/hw/tpm/tpm_tis_sysbus.c
+@@ -52,7 +52,7 @@ static const VMStateDescription vmstate_tpm_tis_sysbus = {
+     .name = "tpm-tis",
+     .version_id = 0,
+     .pre_save  = tpm_tis_pre_save_sysbus,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_BUFFER(state.buffer, TPMStateSysBus),
+         VMSTATE_UINT16(state.rw_offset, TPMStateSysBus),
+         VMSTATE_UINT8(state.active_locty, TPMStateSysBus),
 -- 
 2.34.1
 
