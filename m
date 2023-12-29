@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80168201BD
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:29:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCF58201E4
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:33:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJKPh-00072B-1V; Fri, 29 Dec 2023 16:29:05 -0500
+	id 1rJKPn-0007Qm-8w; Fri, 29 Dec 2023 16:29:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKPe-0006jl-GQ
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:02 -0500
-Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
+ id 1rJKPk-0007ID-8o
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:08 -0500
+Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKPc-0000MK-C2
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:02 -0500
-Received: by mail-ot1-x335.google.com with SMTP id
- 46e09a7af769-6dc02727c62so1747797a34.1
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:28:59 -0800 (PST)
+ id 1rJKPf-0000MU-C4
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:29:08 -0500
+Received: by mail-ot1-x330.google.com with SMTP id
+ 46e09a7af769-6dc076e9e59so1478170a34.2
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:29:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703885339; x=1704490139; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703885341; x=1704490141; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dhfGylU0tZW2Dh+UHioxT5DQ6oaJb1b9JbJR4l6mL0Y=;
- b=UyPUJzbQVDcjyvgR6KxcNCreYvicIqeXvmnSJAYFZyCDLxxROfQcWogNIe0HiCDvQq
- ZAytVUpTYJ/XL//jjqg03VxCmLmpZBUZndMmMkGbg1I0tVOJhsX/kav6xaFvxKh0O9FB
- EibJB3x8pQIoEQVb2d/AcwkUj4Cfr05/5pzuwdh8Q4qD7VqmXCrWg3BEQ9YJPvvsLiC+
- jlhtSf8xhP6OEIVa5Rm4/yN+dQ1/3jdzqUo53Df2BXEgZfLixe1Jnty5At1WQtopy8zv
- NftEqnG1D7KcPnXSwJOS81JG0LYSiacfCXlSyRzxC5mBx1Ce1smJCjy8rl9R7v/Kj/V8
- uC9A==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=aNh1yh21I+GB6YiRXDF7E0H7kYf0QvfrR1nWFgKbksM=;
+ b=Qvd4mDicmxBEif2vOlXfGSRfunKUV3hj60ek6kTa3iruemahC36Z5pqyzcBsFlR9ne
+ qauXgmaCrxMDVCobHwsx3Tb57H1uZMoMTFN0DylXmUlboGkqfqMrC7dGS6FLHJJUdXU7
+ BcjCwd9CL+kpaZSHexJk3d3oL7Xyfv6SxB96Rs7AlTRTQtHh0tC8qSzbp7AO3xyjUm6h
+ AkLs+BUr37D2lG+8uAIJe/usTzkULmlowEBxgAnn03DrVqXiHqv/AfW1InXul58OSnJo
+ 23nrJbA3LOTcuhnprtQ5Emktnnlq+rFDjDtVR951Gt7fAeuqXliVuViSHjtaYyWnCNmN
+ 2PTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703885339; x=1704490139;
+ d=1e100.net; s=20230601; t=1703885341; x=1704490141;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dhfGylU0tZW2Dh+UHioxT5DQ6oaJb1b9JbJR4l6mL0Y=;
- b=dy1NguSJKR8WEoHHImzwvdWHk7QWmwaGbL4nW1S+oP1qpc8rlPRlh2coxClrgZG0vB
- XQxqut7LFo01mSPmayyasYhqsMQuEN1C/kF9tR1iRPBAj14/tsAyqxHHT7o2YNcNtES+
- 2SI5ttuk60ZRmSOiinjMQBhZesIhZGMORPosslnrOiL+JAbWtwBAzG4H18JDzPPL9XFi
- CMWObA4BS0Sg4VlAGO4SJNCmgw2BtmfObXwf+LQPYRTt5N+Q0TIwiJmagk0D0b1/JXGJ
- nuYse+Rm8FH4ZtwKhgYvrcws/oBkRLmN7/sIyOuDUXL+uyeu1vv7wMcQR6olfVJMpa2l
- BiOA==
-X-Gm-Message-State: AOJu0Yy07aQKrJIBuAJmladbJ3P3CESmpfOq1VD3k+BRUkLR1KHA5lu6
- nx2CWWpTmpYfqlam+nH5o6yeNAgdA+rbTqZ0RC7EMbAlL4OhzA==
-X-Google-Smtp-Source: AGHT+IHAZaeAcclqHqQCZk76EDbqaV7csnhiomqU+9QCdjtHjgDD1grxcj+rhTNB9j+UEPHbC9FVnQ==
-X-Received: by 2002:a05:6830:85:b0:6db:a64e:f25e with SMTP id
- a5-20020a056830008500b006dba64ef25emr9276876oto.50.1703885339123; 
- Fri, 29 Dec 2023 13:28:59 -0800 (PST)
+ bh=aNh1yh21I+GB6YiRXDF7E0H7kYf0QvfrR1nWFgKbksM=;
+ b=NepfsGJR703BpdD0LyXLBVU2PLQHCnj4+OhqkwXZ9xN81IAGNSQ9ZOELL5XzcUdypt
+ H9ng72KL9N20WV6zWgDF60YDFXyapVhzJ24ttvT7p1npcX0qFee8jufiENfLGXQirWDw
+ yyHzJTFmPhuI0XLaBKhXDilnMFMDl+WYmB6e8cBm/GgjUC1q43Tms6zwPI8S2iGqyOjs
+ U1WdvNOTa2yfEjW3L8RPH2YPAAIWKnj5GWdSTPYvHJzzxWilJm6pCbM8Xa8+4RhaCo5T
+ K+f2lkGZ0fc9N5PpXwrHX81FMeoSOuotQHUxe/Mo8hUvDbjX6jomzUMU0cyWCc5Y16Ap
+ xncw==
+X-Gm-Message-State: AOJu0Yz3nQMadDF+0C4N6pUEqjMqCC965q4axzvnQbcDG1Kplncr5aSE
+ h+C420YF7rPCm99SbdCjBo2I955quxtTNszMu4O5ayVWZAj+bg==
+X-Google-Smtp-Source: AGHT+IEwAp8AYC0VDgHMN6E5bVgjJ5GaMQHdnxDwEXuwEI5eIEqNqdaYqwJAj4tFfIgouMkcBShdTw==
+X-Received: by 2002:a05:6870:63a1:b0:203:e9cc:4878 with SMTP id
+ t33-20020a05687063a100b00203e9cc4878mr14659108oap.46.1703885341178; 
+ Fri, 29 Dec 2023 13:29:01 -0800 (PST)
 Received: from stoup.lan (203-217-28-32.perm.iinet.net.au. [203.217.28.32])
  by smtp.gmail.com with ESMTPSA id
- bd33-20020a056a0027a100b006d9a96b7d0dsm11285396pfb.208.2023.12.29.13.28.57
+ bd33-20020a056a0027a100b006d9a96b7d0dsm11285396pfb.208.2023.12.29.13.28.59
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Dec 2023 13:28:58 -0800 (PST)
+ Fri, 29 Dec 2023 13:29:00 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 53/71] hw/sensor: Constify VMState
-Date: Sat, 30 Dec 2023 08:23:28 +1100
-Message-Id: <20231229212346.147149-54-richard.henderson@linaro.org>
+Subject: [PULL 54/71] hw/sparc: Constify VMState
+Date: Sat, 30 Dec 2023 08:23:29 +1100
+Message-Id: <20231229212346.147149-55-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231229212346.147149-1-richard.henderson@linaro.org>
 References: <20231229212346.147149-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x335.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,157 +90,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231221031652.119827-54-richard.henderson@linaro.org>
+Message-Id: <20231221031652.119827-55-richard.henderson@linaro.org>
 ---
- hw/sensor/adm1266.c        | 2 +-
- hw/sensor/adm1272.c        | 2 +-
- hw/sensor/dps310.c         | 2 +-
- hw/sensor/emc141x.c        | 2 +-
- hw/sensor/lsm303dlhc_mag.c | 2 +-
- hw/sensor/max31785.c       | 2 +-
- hw/sensor/max34451.c       | 2 +-
- hw/sensor/tmp105.c         | 6 +++---
- hw/sensor/tmp421.c         | 2 +-
- 9 files changed, 11 insertions(+), 11 deletions(-)
+ hw/sparc/sun4m_iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/sensor/adm1266.c b/hw/sensor/adm1266.c
-index 5ae4f82ba1..5454b73a63 100644
---- a/hw/sensor/adm1266.c
-+++ b/hw/sensor/adm1266.c
-@@ -202,7 +202,7 @@ static const VMStateDescription vmstate_adm1266 = {
-     .name = "ADM1266",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]){
-+    .fields = (const VMStateField[]){
-         VMSTATE_PMBUS_DEVICE(parent, ADM1266State),
+diff --git a/hw/sparc/sun4m_iommu.c b/hw/sparc/sun4m_iommu.c
+index eb40f9377c..06703b1d96 100644
+--- a/hw/sparc/sun4m_iommu.c
++++ b/hw/sparc/sun4m_iommu.c
+@@ -331,7 +331,7 @@ static const VMStateDescription vmstate_iommu = {
+     .name = "iommu",
+     .version_id = 2,
+     .minimum_version_id = 2,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32_ARRAY(regs, IOMMUState, IOMMU_NREGS),
+         VMSTATE_UINT64(iostart, IOMMUState),
          VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/sensor/adm1272.c b/hw/sensor/adm1272.c
-index 8f4a1c2cd4..1f7c8abb83 100644
---- a/hw/sensor/adm1272.c
-+++ b/hw/sensor/adm1272.c
-@@ -457,7 +457,7 @@ static const VMStateDescription vmstate_adm1272 = {
-     .name = "ADM1272",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]){
-+    .fields = (const VMStateField[]){
-         VMSTATE_PMBUS_DEVICE(parent, ADM1272State),
-         VMSTATE_UINT64(ein_ext, ADM1272State),
-         VMSTATE_UINT32(pin_ext, ADM1272State),
-diff --git a/hw/sensor/dps310.c b/hw/sensor/dps310.c
-index addee99b19..01c776dd7a 100644
---- a/hw/sensor/dps310.c
-+++ b/hw/sensor/dps310.c
-@@ -188,7 +188,7 @@ static const VMStateDescription vmstate_dps310 = {
-     .name = "DPS310",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(len, DPS310State),
-         VMSTATE_UINT8_ARRAY(regs, DPS310State, NUM_REGISTERS),
-         VMSTATE_UINT8(pointer, DPS310State),
-diff --git a/hw/sensor/emc141x.c b/hw/sensor/emc141x.c
-index 7ce8f4e979..95079558e8 100644
---- a/hw/sensor/emc141x.c
-+++ b/hw/sensor/emc141x.c
-@@ -228,7 +228,7 @@ static const VMStateDescription vmstate_emc141x = {
-     .name = "EMC141X",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(len, EMC141XState),
-         VMSTATE_UINT8(data, EMC141XState),
-         VMSTATE_UINT8(pointer, EMC141XState),
-diff --git a/hw/sensor/lsm303dlhc_mag.c b/hw/sensor/lsm303dlhc_mag.c
-index bb8d48b2fd..343ff98990 100644
---- a/hw/sensor/lsm303dlhc_mag.c
-+++ b/hw/sensor/lsm303dlhc_mag.c
-@@ -442,7 +442,7 @@ static const VMStateDescription vmstate_lsm303dlhc_mag = {
-     .name = "LSM303DLHC_MAG",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
- 
-         VMSTATE_I2C_SLAVE(parent_obj, LSM303DLHCMagState),
-         VMSTATE_UINT8(len, LSM303DLHCMagState),
-diff --git a/hw/sensor/max31785.c b/hw/sensor/max31785.c
-index 8b95e32481..916ed4d457 100644
---- a/hw/sensor/max31785.c
-+++ b/hw/sensor/max31785.c
-@@ -487,7 +487,7 @@ static const VMStateDescription vmstate_max31785 = {
-     .name = TYPE_MAX31785,
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]){
-+    .fields = (const VMStateField[]){
-         VMSTATE_PMBUS_DEVICE(parent, MAX31785State),
-         VMSTATE_UINT16_ARRAY(mfr_mode, MAX31785State,
-                              MAX31785_TOTAL_NUM_PAGES),
-diff --git a/hw/sensor/max34451.c b/hw/sensor/max34451.c
-index 9db52ef677..031ae53f59 100644
---- a/hw/sensor/max34451.c
-+++ b/hw/sensor/max34451.c
-@@ -654,7 +654,7 @@ static const VMStateDescription vmstate_max34451 = {
-     .name = TYPE_MAX34451,
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]){
-+    .fields = (const VMStateField[]){
-         VMSTATE_PMBUS_DEVICE(parent, MAX34451State),
-         VMSTATE_UINT16_ARRAY(power_good_on, MAX34451State,
-                              MAX34451_NUM_PWR_DEVICES),
-diff --git a/hw/sensor/tmp105.c b/hw/sensor/tmp105.c
-index 2056449489..a8730d0b7f 100644
---- a/hw/sensor/tmp105.c
-+++ b/hw/sensor/tmp105.c
-@@ -238,7 +238,7 @@ static const VMStateDescription vmstate_tmp105_detect_falling = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = detect_falling_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BOOL(detect_falling, TMP105State),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -249,7 +249,7 @@ static const VMStateDescription vmstate_tmp105 = {
-     .version_id = 0,
-     .minimum_version_id = 0,
-     .post_load = tmp105_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(len, TMP105State),
-         VMSTATE_UINT8_ARRAY(buf, TMP105State, 2),
-         VMSTATE_UINT8(pointer, TMP105State),
-@@ -260,7 +260,7 @@ static const VMStateDescription vmstate_tmp105 = {
-         VMSTATE_I2C_SLAVE(i2c, TMP105State),
-         VMSTATE_END_OF_LIST()
-     },
--    .subsections = (const VMStateDescription*[]) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_tmp105_detect_falling,
-         NULL
-     }
-diff --git a/hw/sensor/tmp421.c b/hw/sensor/tmp421.c
-index a3db57dcb5..b6f0b62ab1 100644
---- a/hw/sensor/tmp421.c
-+++ b/hw/sensor/tmp421.c
-@@ -290,7 +290,7 @@ static const VMStateDescription vmstate_tmp421 = {
-     .name = "TMP421",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(len, TMP421State),
-         VMSTATE_UINT8_ARRAY(buf, TMP421State, 2),
-         VMSTATE_UINT8(pointer, TMP421State),
 -- 
 2.34.1
 
