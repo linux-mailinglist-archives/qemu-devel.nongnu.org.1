@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E921781FF45
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 13:00:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC0C81FF48
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 13:02:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJBVd-0004Ql-Uu; Fri, 29 Dec 2023 06:58:37 -0500
+	id 1rJBYz-0005SI-6P; Fri, 29 Dec 2023 07:02:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1rJBVc-0004QP-AK
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 06:58:36 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1rJBYu-0005Rj-L9
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 07:02:01 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1rJBVa-0007w9-Lw
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 06:58:36 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-555936e7018so1371263a12.2
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 03:58:34 -0800 (PST)
+ id 1rJBYs-00023X-EP
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 07:02:00 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-554909ac877so4904769a12.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 04:01:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703851112; x=1704455912; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703851315; x=1704456115; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:organization:from:references
  :cc:to:content-language:subject:user-agent:mime-version:date
  :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=NxTjd/49fScheKuPt1bDUmuncY+gFbOtfV2iJvLDxJ0=;
- b=cdYAsf12BmKPU1XocjhwrNMvjgQsZHj16/lFHJJWal8XTxotsMMUkXFF+gppfznBju
- ikqURiF73AnKxs/XLeUAglMWgMzqt8EOIMtFueW+iDtGclOWKfCz1qAswdzquTdumWWZ
- 5ycP+ycxdly32JcU5S4umCu/R7KsB6+HyFUq19ZHQnA6k9LMWPNa+sQjykLgOyPrkHeR
- hi0tRrGlNfmtau8zjR0xC9LaTOSrkMZ0nMZaMIxqUNGciw6CIi8ENWQoPG/t1tz9YqWv
- CYSqjuTDEHwISUeMfuhUcYup8JLhLgfqo1IOFIEjp7XX5doilHjHq91a4UNW2u+pFk2S
- 6jFQ==
+ bh=7+PHEaS0uCelKNM/s+1g0UXrfcWmC0+x6QCJnv5+scU=;
+ b=GtJy73grY02ZF95GZMBspfFaRe8r4LmIPWFn4HBEnXgLkAgLDeXGiqOWIPqCRnrN2N
+ uTNw1oZWweYNiad69qpTsSiGSMj9KPo7nxNzlK3SU15e0Xrn3uW2M3WGepQhlVMAOqvZ
+ DB2lLRPWfNBr/Vfvp6oY3wLLS81+g+8av383IXUFk23CprbO33cBi9tAhS827C6PK0o3
+ 0g7Yylo0m4V50DQiX8ECwfUqQn0hufnujhUcP4RMS8reK+djcHrvWIKz9LC29fzSkFTY
+ Gg4/97H18GwRV3rQqlLHx34NI7r9aEyD9E4g2Jt0Dv5cS+pGzeIRUkf1Iuwk7xUkkQBR
+ 6l2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703851112; x=1704455912;
+ d=1e100.net; s=20230601; t=1703851315; x=1704456115;
  h=content-transfer-encoding:in-reply-to:organization:from:references
  :cc:to:content-language:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=NxTjd/49fScheKuPt1bDUmuncY+gFbOtfV2iJvLDxJ0=;
- b=WcYwPEiDt6x79qOc0xB0h0TMaVDUOcF/Ds00thMTcbgaLoJGm9yLiB2SmvqXHZcIen
- C5rYoHFzxaQrTCYaq78VcRRjV6PIboDbvAZb8fWzM96r5otYhAjzfFEruj/1JowvNMv7
- JOOoMYuzkLqdVhpA6dgLugIYEzKiRzbNlwOgiDFkQAGw++NsSToHAlGvafPR0X4HcVur
- onhWmksahtBgswCC/ApVFZkgKQUfRymocwl42qT/BEFevTud4cCrUpTpQti8IKFsng8o
- 5O7mFJtkvJS26MWaOJ/75WNyHWga+WTikguzk/V9e/2ozyAMscH2krLrExCni7ErcMjG
- 9iFg==
-X-Gm-Message-State: AOJu0YzZnLux+w47McwyOwxzaef9c7wXsP4k6hsA4GcroxWM1yyES8wO
- yUjCnk3LhsXFCjd+0nzbn5A1AtA+GBbJdIyCQzpjyAyS1D8pUCXh
-X-Google-Smtp-Source: AGHT+IHRPiqN/xksYmLlQok0mOoUzu+eBJicirV5CFboKgu7cmuDdHrFLE65tjy9bwZ9jfxS5JikAg==
-X-Received: by 2002:a17:906:10d7:b0:a27:59f9:5156 with SMTP id
- v23-20020a17090610d700b00a2759f95156mr1557319ejv.132.1703851111886; 
- Fri, 29 Dec 2023 03:58:31 -0800 (PST)
+ bh=7+PHEaS0uCelKNM/s+1g0UXrfcWmC0+x6QCJnv5+scU=;
+ b=epfzyooQuXIrO4+fymTLuY47ZKz8pBfFjVCVmX6MKYWvXMokv2RVAzpBmaYiCagbyt
+ d0LtnpMcJEfxJOcXHaZk/0M/vgOBv6Q6MNqz5SCt3sEoM0VRutqgDc4Bgk1WT5z3tp20
+ 2egE4uNeGrlcQzpN5xVxUHdxD3wPODB9jtFITTNKyQnVOVbV30CL0JlhulHaCCEUdX78
+ e0RAqOY4fwYgu7atK0Hq44rsERaAOCrrT3EJ8GFEV9uMBdmFod2xzcmqKobvSAKqFkAJ
+ iTG9/MfOMkiiyRyRvtt2IHx6tt+sXFM879FlJdRUhyZQZPq5eXnmRsbPV9mYsomsvB15
+ ItZg==
+X-Gm-Message-State: AOJu0YzGOVhZrFVOeuVFDlcpriQckSA2h7PxspOKRfwv+MRHZSVIssmC
+ EiUeZxj+UICIMsqDYlC19pMp22zcgzRrlg==
+X-Google-Smtp-Source: AGHT+IH5xkbbiRCWwd5HRM/QMzeVNNp2Bk+Fzq9GsDodmws8JChoTWvJbvpCZmEfZbTLTIQhtcEqHA==
+X-Received: by 2002:a17:907:1114:b0:a23:53f8:c956 with SMTP id
+ qu20-20020a170907111400b00a2353f8c956mr4117740ejb.42.1703851315094; 
+ Fri, 29 Dec 2023 04:01:55 -0800 (PST)
 Received: from [192.168.200.206] (83.11.185.71.ipv4.supernova.orange.pl.
  [83.11.185.71]) by smtp.gmail.com with ESMTPSA id
- fg8-20020a1709069c4800b00a26aaad6618sm5004181ejc.35.2023.12.29.03.58.31
+ p9-20020a170907910900b00a26ac5e3683sm7549570ejq.100.2023.12.29.04.01.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Dec 2023 03:58:31 -0800 (PST)
-Message-ID: <5bda0a91-5d8e-4c12-8e1e-93644108d723@linaro.org>
-Date: Fri, 29 Dec 2023 12:58:30 +0100
+ Fri, 29 Dec 2023 04:01:54 -0800 (PST)
+Message-ID: <c9f9c9a8-acd4-42cc-8dd8-ccaad6d74cba@linaro.org>
+Date: Fri, 29 Dec 2023 13:01:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] hw/arm/sbsa-ref: Add cpu-map to device tree
+Subject: Re: [PATCH 0/2] ARM Sbsa-ref: Enable CPU cluster topology
 Content-Language: pl-PL, en-GB, en-HK
 To: Xiong Yining <xiongyining1480@phytium.com.cn>, rad@semihalf.com,
  peter.maydell@linaro.org, quic_llindhol@quicinc.com
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, chenbaozi@phytium.com.cn
 References: <20231227120722.1683361-1-xiongyining1480@phytium.com.cn>
- <20231227120722.1683361-3-xiongyining1480@phytium.com.cn>
 From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 Organization: Linaro
-In-Reply-To: <20231227120722.1683361-3-xiongyining1480@phytium.com.cn>
+In-Reply-To: <20231227120722.1683361-1-xiongyining1480@phytium.com.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,72 +97,112 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 W dniu 27.12.2023 o 13:07, Xiong Yining pisze:
-> From: xiongyining1480 <xiongyining1480@phytium.com.cn>
+> Enable CPU cluster support on SbsaQemu platform, so that users can
+> specify a 4-level CPU hierarchy sockets/clusters/cores/threads. And this
+> topology can be passed to the firmware through DT cpu-map.
 > 
-> Support CPU topology description through device tree.
+> xiongyining1480 (2):
+>    hw/arm/sbsa-ref:Enable CPU cluster on ARM sbsa machine
+>    hw/arm/sbsa-ref: Add cpu-map to device tree
 > 
-> Signed-off-by: Xiong Yining <xiongyining1480@phytium.com.cn>
-> Signed-off-by: Chen Baozi <chenbaozi@phytium.com.cn>
-> ---
->   hw/arm/sbsa-ref.c | 35 +++++++++++++++++++++++++++++++++++
->   1 file changed, 35 insertions(+)
+>   hw/arm/sbsa-ref.c | 36 ++++++++++++++++++++++++++++++++++++
+>   1 file changed, 36 insertions(+)
 > 
-> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-> index e6cd612bc5..a3c851148a 100644
-> --- a/hw/arm/sbsa-ref.c
-> +++ b/hw/arm/sbsa-ref.c
-> @@ -283,10 +283,45 @@ static void create_fdt(SBSAMachineState *sms)
->                   ms->possible_cpus->cpus[cs->cpu_index].props.node_id);
->           }
->   
-> +        qemu_fdt_setprop_cell(sms->fdt, nodename, "phandle",
-> +                        qemu_fdt_alloc_phandle(sms->fdt));
-> +
->           g_free(nodename);
->       }
->   
-> +
->       sbsa_fdt_add_gic_node(sms);
 
-Can you add vCPU topology code before ^^ line? So code would add /cpus/ 
-node and then go for /intc/ node.
+Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-> +
-> +    /*
-> +     * Add vCPU topology description through fdt node cpu-map.
+Booted system with "-smp 8,sockets=2,clusters=2,cores=1,threads=2" and 
+got what I wanted:
 
-Maybe worth adding pointer to hw/arm/virt.c code for longer description?
+         cpus {
+                 #size-cells = <0x00>;
+                 #address-cells = <0x02>;
 
-> +     */
-> +    qemu_fdt_add_subnode(sms->fdt, "/cpus/cpu-map");
-> +
-> +    for (cpu = sms->smp_cpus - 1; cpu >= 0; cpu--) {
-> +        char *cpu_path = g_strdup_printf("/cpus/cpu@%d", cpu);
-> +        char *map_path;
-> +
-> +        if (ms->smp.threads > 1) {
-> +            map_path = g_strdup_printf(
-> +                "/cpus/cpu-map/socket%d/cluster%d/core%d/thread%d",
-> +                cpu / (ms->smp.clusters * ms->smp.cores * ms->smp.threads),
-> +                (cpu / (ms->smp.cores * ms->smp.threads)) % ms->smp.clusters,
-> +                (cpu / ms->smp.threads) % ms->smp.cores,
-> +                cpu % ms->smp.threads);
-> +        } else {
-> +            map_path = g_strdup_printf(
-> +                "/cpus/cpu-map/socket%d/cluster%d/core%d",
-> +                cpu / (ms->smp.clusters * ms->smp.cores),
-> +                (cpu / ms->smp.cores) % ms->smp.clusters,
-> +                cpu % ms->smp.cores);
-> +        }
-> +        qemu_fdt_add_path(sms->fdt, map_path);
-> +        qemu_fdt_setprop_phandle(sms->fdt, map_path, "cpu", cpu_path);
-> +
-> +        g_free(map_path);
-> +        g_free(cpu_path);
-> +    }
-> +
->   }
->   
->   #define SBSA_FLASH_SECTOR_SIZE (256 * KiB)
+                 cpu-map {
+                         socket0 {
+                                 cluster0 {
+                                         core0 {
+                                                 thread0 {
+                                                         cpu = <0x8007>;
+                                                 };
+                                                 thread1 {
+                                                         cpu = <0x8006>;
+                                                 };
+                                         };
+                                 };
+                                 cluster1 {
+                                         core0 {
+                                                 thread0 {
+                                                         cpu = <0x8005>;
+                                                 };
+                                                 thread1 {
+                                                         cpu = <0x8004>;
+                                                 };
+                                         };
+                                 };
+                         };
+                         socket1 {
+                                 cluster0 {
+                                         core0 {
+                                                 thread0 {
+                                                         cpu = <0x8003>;
+                                                 };
+                                                 thread1 {
+                                                         cpu = <0x8002>;
+                                                 };
+                                         };
+                                 };
+                                 cluster1 {
+                                         core0 {
+                                                 thread0 {
+                                                         cpu = <0x8001>;
+                                                 };
+                                                 thread1 {
+                                                         cpu = <0x8000>;
+                                                 };
+                                         };
+                                 };
+                         };
+                 };
 
+                 cpu@0 {
+                         phandle = <0x8007>;
+                         reg = <0x00 0x00>;
+                 };
+
+                 cpu@1 {
+                         phandle = <0x8006>;
+                         reg = <0x00 0x01>;
+                 };
+
+                 cpu@2 {
+                         phandle = <0x8005>;
+                         reg = <0x00 0x02>;
+                 };
+
+                 cpu@3 {
+                         phandle = <0x8004>;
+                         reg = <0x00 0x03>;
+                 };
+
+                 cpu@4 {
+                         phandle = <0x8003>;
+                         reg = <0x00 0x04>;
+                 };
+
+                 cpu@5 {
+                         phandle = <0x8002>;
+                         reg = <0x00 0x05>;
+                 };
+
+                 cpu@6 {
+                         phandle = <0x8001>;
+                         reg = <0x00 0x06>;
+                 };
+
+                 cpu@7 {
+                         phandle = <0x8000>;
+                         reg = <0x00 0x07>;
+                 };
+         };
 
