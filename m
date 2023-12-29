@@ -2,85 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC0C81FF48
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 13:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E892181FF56
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 13:09:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJBYz-0005SI-6P; Fri, 29 Dec 2023 07:02:05 -0500
+	id 1rJBeV-0007nw-Bi; Fri, 29 Dec 2023 07:07:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1rJBYu-0005Rj-L9
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 07:02:01 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1rJBYs-00023X-EP
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 07:02:00 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-554909ac877so4904769a12.1
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 04:01:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703851315; x=1704456115; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=7+PHEaS0uCelKNM/s+1g0UXrfcWmC0+x6QCJnv5+scU=;
- b=GtJy73grY02ZF95GZMBspfFaRe8r4LmIPWFn4HBEnXgLkAgLDeXGiqOWIPqCRnrN2N
- uTNw1oZWweYNiad69qpTsSiGSMj9KPo7nxNzlK3SU15e0Xrn3uW2M3WGepQhlVMAOqvZ
- DB2lLRPWfNBr/Vfvp6oY3wLLS81+g+8av383IXUFk23CprbO33cBi9tAhS827C6PK0o3
- 0g7Yylo0m4V50DQiX8ECwfUqQn0hufnujhUcP4RMS8reK+djcHrvWIKz9LC29fzSkFTY
- Gg4/97H18GwRV3rQqlLHx34NI7r9aEyD9E4g2Jt0Dv5cS+pGzeIRUkf1Iuwk7xUkkQBR
- 6l2w==
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1rJBeP-0007mX-Py
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 07:07:41 -0500
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1rJBeG-0004xm-6K
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 07:07:39 -0500
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id B0FB63F15B
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 12:07:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1703851648;
+ bh=tFjzcWXuE5DSXBUytMlng7Kt/kySHhmp0JIqujk7Ie8=;
+ h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+ b=cMZRxOl4Cbe5Mh6O2YEAQzRjwLEemLV6grb9si3e3vMEMe1s0kNUmt1HFgHKbAg0S
+ GTv4yeY+XhiM9n1yY7EKd6kpcdl6mn6Pqp9X95sMV/K7RvP4bfUjAQQQ75z+yDtjbO
+ WOFl9LPO9yAwUm/9O68pyg7Ok4ntb9txlICuu6PRJURMjxS9+QnjyPkqNTrIVUiRkL
+ OhMzF5WBY3p5Ki2fEkY4rVK8YK6SA5vcILTGJCm2qSXRSUASNJrQ8MMYq/HnknNKSs
+ sSIPs/gYDzQtmI5bFiDWoCRa+nTdcpqJF1eA4ps1CDp5dsrui5jqHbVuUU64RaIRSr
+ rwoflskCHtKfA==
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-555bda8b4a1so231329a12.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 04:07:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703851315; x=1704456115;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1703851648; x=1704456448;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=7+PHEaS0uCelKNM/s+1g0UXrfcWmC0+x6QCJnv5+scU=;
- b=epfzyooQuXIrO4+fymTLuY47ZKz8pBfFjVCVmX6MKYWvXMokv2RVAzpBmaYiCagbyt
- d0LtnpMcJEfxJOcXHaZk/0M/vgOBv6Q6MNqz5SCt3sEoM0VRutqgDc4Bgk1WT5z3tp20
- 2egE4uNeGrlcQzpN5xVxUHdxD3wPODB9jtFITTNKyQnVOVbV30CL0JlhulHaCCEUdX78
- e0RAqOY4fwYgu7atK0Hq44rsERaAOCrrT3EJ8GFEV9uMBdmFod2xzcmqKobvSAKqFkAJ
- iTG9/MfOMkiiyRyRvtt2IHx6tt+sXFM879FlJdRUhyZQZPq5eXnmRsbPV9mYsomsvB15
- ItZg==
-X-Gm-Message-State: AOJu0YzGOVhZrFVOeuVFDlcpriQckSA2h7PxspOKRfwv+MRHZSVIssmC
- EiUeZxj+UICIMsqDYlC19pMp22zcgzRrlg==
-X-Google-Smtp-Source: AGHT+IH5xkbbiRCWwd5HRM/QMzeVNNp2Bk+Fzq9GsDodmws8JChoTWvJbvpCZmEfZbTLTIQhtcEqHA==
-X-Received: by 2002:a17:907:1114:b0:a23:53f8:c956 with SMTP id
- qu20-20020a170907111400b00a2353f8c956mr4117740ejb.42.1703851315094; 
- Fri, 29 Dec 2023 04:01:55 -0800 (PST)
-Received: from [192.168.200.206] (83.11.185.71.ipv4.supernova.orange.pl.
- [83.11.185.71]) by smtp.gmail.com with ESMTPSA id
- p9-20020a170907910900b00a26ac5e3683sm7549570ejq.100.2023.12.29.04.01.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Dec 2023 04:01:54 -0800 (PST)
-Message-ID: <c9f9c9a8-acd4-42cc-8dd8-ccaad6d74cba@linaro.org>
-Date: Fri, 29 Dec 2023 13:01:53 +0100
+ bh=tFjzcWXuE5DSXBUytMlng7Kt/kySHhmp0JIqujk7Ie8=;
+ b=ZYNslc7hkHKyDQxs0GGVlzuPIpnya30xbndl6Kgb7vJuzrDwnW4GNO3Lt/1QRylxsC
+ WShuwrJGXbLFgWqO95HPThr7qz1a533EyZYw2dGOI/MIgiiVx3hDtIwbXLFUYHEDaX/p
+ qMSdzaJCBhSd2KUAeef53UUC96BexYCDZSbKd4KZCY/J/Z1X2NZpnDujf8ijs5Vb+9RC
+ eEtO3mokINtCdJmGNOYzIVY4pBeA+rERaWKcs6cXuxsm3Aqs3djuRk7/SYYWpUgDI3K1
+ /HTM0zUbc/eJelnIih46zjXXnVZKWGSa8DcqbiVH1N5bhwA+0v4y9DSqSYRRYV7k4Asi
+ UOsw==
+X-Gm-Message-State: AOJu0Yzf3tfKLZ4+pxO+10z2fmEUXVycALUkLl6e37xKH3gGKxRmQ/vt
+ 48oYttsbEk3qRgTPiUwcivcbMZLn8Y228LGYzZ2ANgAqMQXmgso2B9DFKwy/cQB51CSXuDow/xQ
+ 8CaB/FrAT76LstdND6aRufQ8XFG+fpKzsAHuqhFw=
+X-Received: by 2002:a50:d7d7:0:b0:553:739e:bfac with SMTP id
+ m23-20020a50d7d7000000b00553739ebfacmr7732601edj.8.1703851648217; 
+ Fri, 29 Dec 2023 04:07:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEYwKsRQBh2evsx0Q9HgRecFYtkUacRQZ1dFs5S8toVVatnvK9PEr9WMTwV2D/Vu1PaF2YmUw==
+X-Received: by 2002:a50:d7d7:0:b0:553:739e:bfac with SMTP id
+ m23-20020a50d7d7000000b00553739ebfacmr7732592edj.8.1703851647910; 
+ Fri, 29 Dec 2023 04:07:27 -0800 (PST)
+Received: from x13s.fritz.box (ip-178-202-040-247.um47.pools.vodafone-ip.de.
+ [178.202.40.247]) by smtp.gmail.com with ESMTPSA id
+ j20-20020aa7c0d4000000b005527de2aecfsm10943344edp.42.2023.12.29.04.07.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 29 Dec 2023 04:07:27 -0800 (PST)
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+To: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Subject: [PATCH v2 0/4] target/riscv: SMBIOS support for RISC-V virt machine
+Date: Fri, 29 Dec 2023 13:07:20 +0100
+Message-ID: <20231229120724.41383-1-heinrich.schuchardt@canonical.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] ARM Sbsa-ref: Enable CPU cluster topology
-Content-Language: pl-PL, en-GB, en-HK
-To: Xiong Yining <xiongyining1480@phytium.com.cn>, rad@semihalf.com,
- peter.maydell@linaro.org, quic_llindhol@quicinc.com
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, chenbaozi@phytium.com.cn
-References: <20231227120722.1683361-1-xiongyining1480@phytium.com.cn>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <20231227120722.1683361-1-xiongyining1480@phytium.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=185.125.188.122;
+ envelope-from=heinrich.schuchardt@canonical.com;
+ helo=smtp-relay-internal-0.canonical.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,113 +107,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 27.12.2023 o 13:07, Xiong Yining pisze:
-> Enable CPU cluster support on SbsaQemu platform, so that users can
-> specify a 4-level CPU hierarchy sockets/clusters/cores/threads. And this
-> topology can be passed to the firmware through DT cpu-map.
-> 
-> xiongyining1480 (2):
->    hw/arm/sbsa-ref:Enable CPU cluster on ARM sbsa machine
->    hw/arm/sbsa-ref: Add cpu-map to device tree
-> 
->   hw/arm/sbsa-ref.c | 36 ++++++++++++++++++++++++++++++++++++
->   1 file changed, 36 insertions(+)
-> 
+Generate SMBIOS tables for the RISC-V mach-virt.
+Add CONFIG_SMBIOS=y to the RISC-V default config.
 
-Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+With the series the following firmware tables are provided:
 
-Booted system with "-smp 8,sockets=2,clusters=2,cores=1,threads=2" and 
-got what I wanted:
+    etc/smbios/smbios-anchor
+    etc/smbios/smbios-tables
 
-         cpus {
-                 #size-cells = <0x00>;
-                 #address-cells = <0x02>;
+Add processor-family to the '-smbios type=4' command line options.
 
-                 cpu-map {
-                         socket0 {
-                                 cluster0 {
-                                         core0 {
-                                                 thread0 {
-                                                         cpu = <0x8007>;
-                                                 };
-                                                 thread1 {
-                                                         cpu = <0x8006>;
-                                                 };
-                                         };
-                                 };
-                                 cluster1 {
-                                         core0 {
-                                                 thread0 {
-                                                         cpu = <0x8005>;
-                                                 };
-                                                 thread1 {
-                                                         cpu = <0x8004>;
-                                                 };
-                                         };
-                                 };
-                         };
-                         socket1 {
-                                 cluster0 {
-                                         core0 {
-                                                 thread0 {
-                                                         cpu = <0x8003>;
-                                                 };
-                                                 thread1 {
-                                                         cpu = <0x8002>;
-                                                 };
-                                         };
-                                 };
-                                 cluster1 {
-                                         core0 {
-                                                 thread0 {
-                                                         cpu = <0x8001>;
-                                                 };
-                                                 thread1 {
-                                                         cpu = <0x8000>;
-                                                 };
-                                         };
-                                 };
-                         };
-                 };
+Heinrich Schuchardt (4):
+  smbios: add processor-family option
+  smbios: function to set default processor family
+  target/riscv: SMBIOS support for RISC-V virt machine
+  qemu-options: enable -smbios option on RISC-V
 
-                 cpu@0 {
-                         phandle = <0x8007>;
-                         reg = <0x00 0x00>;
-                 };
+ hw/riscv/Kconfig             |  1 +
+ hw/riscv/virt.c              | 42 ++++++++++++++++++++++++++++++++++++
+ hw/smbios/smbios.c           | 20 ++++++++++++++--
+ include/hw/firmware/smbios.h |  1 +
+ qemu-options.hx              |  6 +++---
+ 5 files changed, 65 insertions(+), 5 deletions(-)
 
-                 cpu@1 {
-                         phandle = <0x8006>;
-                         reg = <0x00 0x01>;
-                 };
+-- 
+2.43.0
 
-                 cpu@2 {
-                         phandle = <0x8005>;
-                         reg = <0x00 0x02>;
-                 };
-
-                 cpu@3 {
-                         phandle = <0x8004>;
-                         reg = <0x00 0x03>;
-                 };
-
-                 cpu@4 {
-                         phandle = <0x8003>;
-                         reg = <0x00 0x04>;
-                 };
-
-                 cpu@5 {
-                         phandle = <0x8002>;
-                         reg = <0x00 0x05>;
-                 };
-
-                 cpu@6 {
-                         phandle = <0x8001>;
-                         reg = <0x00 0x06>;
-                 };
-
-                 cpu@7 {
-                         phandle = <0x8000>;
-                         reg = <0x00 0x07>;
-                 };
-         };
 
