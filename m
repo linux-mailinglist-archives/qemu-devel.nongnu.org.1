@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 389BA8201AC
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:28:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC8E8201B9
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 22:29:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJKLI-0006z2-Pe; Fri, 29 Dec 2023 16:24:32 -0500
+	id 1rJKLL-000713-Kf; Fri, 29 Dec 2023 16:24:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKLG-0006yJ-Cy
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:24:30 -0500
-Received: from mail-io1-xd33.google.com ([2607:f8b0:4864:20::d33])
+ id 1rJKLI-0006z3-R2
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:24:32 -0500
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rJKLE-0006e4-Fj
- for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:24:30 -0500
-Received: by mail-io1-xd33.google.com with SMTP id
- ca18e2360f4ac-7ba737ee9b5so505928539f.0
- for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:24:28 -0800 (PST)
+ id 1rJKLH-0006gH-1D
+ for qemu-devel@nongnu.org; Fri, 29 Dec 2023 16:24:32 -0500
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6d9e62ff056so2711576b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Dec 2023 13:24:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703885067; x=1704489867; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703885070; x=1704489870; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NbLag/EB+bHmmgZuugtXh6y657JKbfbzieGWYM5hvCY=;
- b=oAYTO0+p3TOe6m9RMQJmhu13PywPs5SuS9/xbOlKKoS81DLoiiJD8aEqQgYiuGqYu8
- +/BBtz6fTjacWVD2jl7iK3MPFnk/kNPUsUKICL/+oS13d8R1SApS/DBxLqToZ3+3qPFL
- ZEG+sN7Gq9u9JLARWIkNlAHB2lOtScXCLiPGOsbYlrTozaPymhaV7IN4m7qAR0MZqMY3
- cBPra/h9SixPMazwVa23pRBaZZ01OMHLY5m/chn2tGuD7Rd4halPF95zJjI/FUNFx3aN
- v3UgfUMZcV2xGVNGMCsQ6hgWNvNiO5lI70FeXaxpISu4PoIgxzmTF4y6he1HbDwzbnLt
- /tRg==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GagVqcPQHuKFmUNCXS0XsIJu0ULMlIKav1OQs/IsaFA=;
+ b=V31xoIATCLbG1LdDwdi0xOYOug0PZZKqzSnfw65WCkxwif/10NTCiPNuFKHBW08dwa
+ fdQE8hIIUFXZrSuNQJZUQgQzgE0q0xUaOW6Q+Us5HOdDFWk9S36zvuX2STo5eidomcGJ
+ /qF/cu1DCvRnLdva0lcAvzOIHiBsNlczq30gsrFS5G4aT5+U+SXvSvVyzT6hrWmtDbq6
+ JX0rXslF1A6sHtRSfXmOB6j2y1e9QUxHBTwvFu25abmpJayTC5rLVnMNJD4iKIxWD9Qk
+ /oj2i2iYzErd2NNin5eH1/RJ3Bq6KJ7tb+K87z6BDhI3J9g0iyASvx/MIhtTcUylp2GR
+ tboQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703885067; x=1704489867;
+ d=1e100.net; s=20230601; t=1703885070; x=1704489870;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NbLag/EB+bHmmgZuugtXh6y657JKbfbzieGWYM5hvCY=;
- b=en/jJhbU6BHyKehXMwmAb9H6OxfNTNDGzdc0TS/VVzDrOxlaoHrS9lk6EL2GxVs+Gn
- uCcDcC2FiD1JzdQg0iRTTBQbu8yW6KPCwnVtcni7O9y6KoWjvzRPMbBto4vOXshIGGyv
- QsHluRUUJouI8yqNxNt334l7nCjyXG1iECxmQHx0krKwcI3998Z2HDqd3KrUoJFw2Pj9
- r/D5j9clPazJSU1spJobD0SQCeylPUny2rpg6XAcYp2P2iv7fH9h3eizrOAHj0YIEYIG
- 5fC+BNhX/Wdt8uCrBYmKQcsDt2xge42KNNn+6kQdSvJ65MqKRUmT8Ec5pzKK13Q3gpbO
- pNfw==
-X-Gm-Message-State: AOJu0YxqxSLqvHufL3rIzldTuH1uTpwZwXn3TtJsle68sCuvKt4EwXkc
- m3jf3ulq5k/448MaaoamzFlPYNuKeNKUhx/WsioMh8TeyZb0qA==
-X-Google-Smtp-Source: AGHT+IHeJ9Xe71DcdIlz3LvEPXgpOvz2abTQ7l6nGscFUpggD+UxlD2IgYYFMTu/fRQeGMAMQ0e5rA==
-X-Received: by 2002:a05:6e02:2408:b0:35d:5995:7992 with SMTP id
- bs8-20020a056e02240800b0035d59957992mr22555504ilb.44.1703885067229; 
- Fri, 29 Dec 2023 13:24:27 -0800 (PST)
+ bh=GagVqcPQHuKFmUNCXS0XsIJu0ULMlIKav1OQs/IsaFA=;
+ b=P8JfL3ZJSTbTSnuzpZbTmNb7GIsgBe6dzqUjw1ZEXlY2IXM26G+CkU8dZt6fjujtFe
+ RtgbJC4x1hYYgg1gVPujPaZyhyVx/ypG54tptQNoVlMeBSWRTqAeLRAQVtEehCgUElex
+ uT/bCR7iE55l8KRRUZIPkr32Cbk9vasOSPOxHiR2wQ9IBpuuhDCMXp7wr4DjNZ/h5i41
+ Hz//bjxQjB/6OcfnTR2CIQeHOL2xbRHV0DsU+1fm3bfv4/s+iu7E7wYmCstvImNL9TRQ
+ KmdM0WuRXqj6SX39tigeTEvXKvma+9P0DIn+0RjOrB+50wvMwQ5Xr6Aib5zGG5/UfrvU
+ JUyA==
+X-Gm-Message-State: AOJu0YyrktRPzl7N9Egqpw3fgo6Knky0DrccpYfyT9WeovEhGNBSGa2/
+ qXTpT5yGMMXJGjx+WBE3KQQYyDMQE+D2fy5DSNU42YRKTVZ8LQ==
+X-Google-Smtp-Source: AGHT+IEFE75U6koJ8ev1A4Wr7M7yucLqifrzhfHYl3lcSxxEkGjFHA8QnQJhncey3EiCrM8uLMw79g==
+X-Received: by 2002:a05:6a21:1a0:b0:195:dad0:7185 with SMTP id
+ le32-20020a056a2101a000b00195dad07185mr8403380pzb.96.1703885069735; 
+ Fri, 29 Dec 2023 13:24:29 -0800 (PST)
 Received: from stoup.lan (203-217-28-32.perm.iinet.net.au. [203.217.28.32])
  by smtp.gmail.com with ESMTPSA id
- a34-20020a631a22000000b005c65e82a0cbsm15016237pga.17.2023.12.29.13.24.25
- for <qemu-devel@nongnu.org>
+ a34-20020a631a22000000b005c65e82a0cbsm15016237pga.17.2023.12.29.13.24.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Dec 2023 13:24:26 -0800 (PST)
+ Fri, 29 Dec 2023 13:24:29 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/71] target/ppc: Constify VMState in machine.c
-Date: Sat, 30 Dec 2023 08:22:49 +1100
-Message-Id: <20231229212346.147149-15-richard.henderson@linaro.org>
+Cc: Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 15/71] target/riscv: Constify VMState in machine.c
+Date: Sat, 30 Dec 2023 08:22:50 +1100
+Message-Id: <20231229212346.147149-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231229212346.147149-1-richard.henderson@linaro.org>
 References: <20231229212346.147149-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d33;
- envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd33.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,160 +91,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231221031652.119827-15-richard.henderson@linaro.org>
+Message-Id: <20231221031652.119827-16-richard.henderson@linaro.org>
 ---
- target/ppc/machine.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ target/riscv/machine.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-index 68cbdffecd..203fe28e01 100644
---- a/target/ppc/machine.c
-+++ b/target/ppc/machine.c
-@@ -351,7 +351,7 @@ static const VMStateDescription vmstate_fpu = {
+diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+index fdde243e04..72fe2374dc 100644
+--- a/target/riscv/machine.c
++++ b/target/riscv/machine.c
+@@ -49,7 +49,7 @@ static const VMStateDescription vmstate_pmp_entry = {
+     .name = "cpu/pmp/entry",
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = fpu_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_FPR_ARRAY(env.vsr, PowerPCCPU, 32),
-         VMSTATE_UINTTL(env.fpscr, PowerPCCPU),
+         VMSTATE_UINTTL(addr_reg, pmp_entry_t),
+         VMSTATE_UINT8(cfg_reg, pmp_entry_t),
          VMSTATE_END_OF_LIST()
-@@ -392,7 +392,7 @@ static const VMStateDescription vmstate_altivec = {
-     .version_id = 1,
+@@ -62,7 +62,7 @@ static const VMStateDescription vmstate_pmp = {
      .minimum_version_id = 1,
-     .needed = altivec_needed,
+     .needed = pmp_needed,
+     .post_load = pmp_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_AVR_ARRAY(env.vsr, PowerPCCPU, 32),
-         /*
-          * Save the architecture value of the vscr, not the internally
-@@ -425,7 +425,7 @@ static const VMStateDescription vmstate_vsx = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = vsx_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_VSR_ARRAY(env.vsr, PowerPCCPU, 32),
+         VMSTATE_STRUCT_ARRAY(env.pmp_state.pmp, RISCVCPU, MAX_RISCV_PMPS,
+                              0, vmstate_pmp_entry, pmp_entry_t),
          VMSTATE_END_OF_LIST()
-     },
-@@ -445,7 +445,7 @@ static const VMStateDescription vmstate_tm = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = tm_needed,
--    .fields      = (VMStateField []) {
-+    .fields = (const VMStateField []) {
-         VMSTATE_UINTTL_ARRAY(env.tm_gpr, PowerPCCPU, 32),
-         VMSTATE_AVR_ARRAY(env.tm_vsr, PowerPCCPU, 64),
-         VMSTATE_UINT64(env.tm_cr, PowerPCCPU),
-@@ -479,7 +479,7 @@ static const VMStateDescription vmstate_sr = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = sr_needed,
+@@ -82,7 +82,7 @@ static const VMStateDescription vmstate_hyper = {
+     .version_id = 3,
+     .minimum_version_id = 3,
+     .needed = hyper_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL_ARRAY(env.sr, PowerPCCPU, 32),
-         VMSTATE_END_OF_LIST()
-     },
-@@ -553,7 +553,7 @@ static const VMStateDescription vmstate_slb = {
-     .minimum_version_id = 1,
-     .needed = slb_needed,
-     .post_load = slb_post_load,
+         VMSTATE_UINTTL(env.hstatus, RISCVCPU),
+         VMSTATE_UINTTL(env.hedeleg, RISCVCPU),
+         VMSTATE_UINT64(env.hideleg, RISCVCPU),
+@@ -138,7 +138,7 @@ static const VMStateDescription vmstate_vector = {
+     .version_id = 2,
+     .minimum_version_id = 2,
+     .needed = vector_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT32_TEST(mig_slb_nr, PowerPCCPU, cpu_pre_3_0_migration),
-         VMSTATE_SLB_ARRAY(env.slb, PowerPCCPU, MAX_SLB_ENTRIES),
-         VMSTATE_END_OF_LIST()
-@@ -565,7 +565,7 @@ static const VMStateDescription vmstate_tlb6xx_entry = {
-     .name = "cpu/tlb6xx_entry",
+         VMSTATE_UINT64_ARRAY(env.vreg, RISCVCPU, 32 * RV_VLEN_MAX / 64),
+         VMSTATE_UINTTL(env.vxrm, RISCVCPU),
+         VMSTATE_UINTTL(env.vxsat, RISCVCPU),
+@@ -163,7 +163,7 @@ static const VMStateDescription vmstate_pointermasking = {
      .version_id = 1,
      .minimum_version_id = 1,
+     .needed = pointermasking_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL(pte0, ppc6xx_tlb_t),
-         VMSTATE_UINTTL(pte1, ppc6xx_tlb_t),
-         VMSTATE_UINTTL(EPN, ppc6xx_tlb_t),
-@@ -586,7 +586,7 @@ static const VMStateDescription vmstate_tlb6xx = {
+         VMSTATE_UINTTL(env.mmte, RISCVCPU),
+         VMSTATE_UINTTL(env.mpmmask, RISCVCPU),
+         VMSTATE_UINTTL(env.mpmbase, RISCVCPU),
+@@ -189,7 +189,7 @@ static const VMStateDescription vmstate_rv128 = {
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = tlb6xx_needed,
+     .needed = rv128_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT32_EQUAL(env.nb_tlb, PowerPCCPU, NULL),
-         VMSTATE_STRUCT_VARRAY_POINTER_INT32(env.tlb.tlb6, PowerPCCPU,
-                                             env.nb_tlb,
-@@ -601,7 +601,7 @@ static const VMStateDescription vmstate_tlbemb_entry = {
-     .name = "cpu/tlbemb_entry",
+         VMSTATE_UINTTL_ARRAY(env.gprh, RISCVCPU, 32),
+         VMSTATE_UINT64(env.mscratchh, RISCVCPU),
+         VMSTATE_UINT64(env.sscratchh, RISCVCPU),
+@@ -218,7 +218,7 @@ static const VMStateDescription vmstate_kvmtimer = {
+     .minimum_version_id = 1,
+     .needed = kvmtimer_needed,
+     .post_load = cpu_kvmtimer_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(env.kvm_timer_time, RISCVCPU),
+         VMSTATE_UINT64(env.kvm_timer_compare, RISCVCPU),
+         VMSTATE_UINT64(env.kvm_timer_state, RISCVCPU),
+@@ -252,7 +252,7 @@ static const VMStateDescription vmstate_debug = {
+     .minimum_version_id = 2,
+     .needed = debug_needed,
+     .post_load = debug_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINTTL(env.trigger_cur, RISCVCPU),
+         VMSTATE_UINTTL_ARRAY(env.tdata1, RISCVCPU, RV_MAX_TRIGGERS),
+         VMSTATE_UINTTL_ARRAY(env.tdata2, RISCVCPU, RV_MAX_TRIGGERS),
+@@ -283,7 +283,7 @@ static const VMStateDescription vmstate_smstateen = {
      .version_id = 1,
      .minimum_version_id = 1,
+     .needed = smstateen_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(RPN, ppcemb_tlb_t),
-         VMSTATE_UINTTL(EPN, ppcemb_tlb_t),
-         VMSTATE_UINTTL(PID, ppcemb_tlb_t),
-@@ -625,7 +625,7 @@ static const VMStateDescription vmstate_tlbemb = {
+         VMSTATE_UINT64_ARRAY(env.mstateen, RISCVCPU, 4),
+         VMSTATE_UINT64_ARRAY(env.hstateen, RISCVCPU, 4),
+         VMSTATE_UINT64_ARRAY(env.sstateen, RISCVCPU, 4),
+@@ -304,7 +304,7 @@ static const VMStateDescription vmstate_envcfg = {
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = tlbemb_needed,
+     .needed = envcfg_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT32_EQUAL(env.nb_tlb, PowerPCCPU, NULL),
-         VMSTATE_STRUCT_VARRAY_POINTER_INT32(env.tlb.tlbe, PowerPCCPU,
-                                             env.nb_tlb,
-@@ -639,7 +639,7 @@ static const VMStateDescription vmstate_tlbmas_entry = {
-     .name = "cpu/tlbmas_entry",
+         VMSTATE_UINT64(env.menvcfg, RISCVCPU),
+         VMSTATE_UINTTL(env.senvcfg, RISCVCPU),
+         VMSTATE_UINT64(env.henvcfg, RISCVCPU),
+@@ -324,7 +324,7 @@ static const VMStateDescription vmstate_pmu_ctr_state = {
      .version_id = 1,
      .minimum_version_id = 1,
+     .needed = pmu_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(mas8, ppcmas_tlb_t),
-         VMSTATE_UINT32(mas1, ppcmas_tlb_t),
-         VMSTATE_UINT64(mas2, ppcmas_tlb_t),
-@@ -661,7 +661,7 @@ static const VMStateDescription vmstate_tlbmas = {
+         VMSTATE_UINTTL(mhpmcounter_val, PMUCTRState),
+         VMSTATE_UINTTL(mhpmcounterh_val, PMUCTRState),
+         VMSTATE_UINTTL(mhpmcounter_prev, PMUCTRState),
+@@ -346,7 +346,7 @@ static const VMStateDescription vmstate_jvt = {
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = tlbmas_needed,
+     .needed = jvt_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT32_EQUAL(env.nb_tlb, PowerPCCPU, NULL),
-         VMSTATE_STRUCT_VARRAY_POINTER_INT32(env.tlb.tlbm, PowerPCCPU,
-                                             env.nb_tlb,
-@@ -684,7 +684,7 @@ static const VMStateDescription vmstate_compat = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = compat_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(compat_pvr, PowerPCCPU),
+         VMSTATE_UINTTL(env.jvt, RISCVCPU),
          VMSTATE_END_OF_LIST()
      }
-@@ -700,7 +700,7 @@ static const VMStateDescription vmstate_reservation = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = reservation_needed,
+@@ -357,7 +357,7 @@ const VMStateDescription vmstate_riscv_cpu = {
+     .version_id = 9,
+     .minimum_version_id = 9,
+     .post_load = riscv_cpu_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL(env.reserve_addr, PowerPCCPU),
-         VMSTATE_UINTTL(env.reserve_length, PowerPCCPU),
-         VMSTATE_UINTTL(env.reserve_val, PowerPCCPU),
-@@ -717,7 +717,7 @@ const VMStateDescription vmstate_ppc_cpu = {
-     .minimum_version_id = 5,
-     .pre_save = cpu_pre_save,
-     .post_load = cpu_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UNUSED(sizeof(target_ulong)), /* was _EQUAL(env.spr[SPR_PVR]) */
+         VMSTATE_UINTTL_ARRAY(env.gpr, RISCVCPU, 32),
+         VMSTATE_UINT64_ARRAY(env.fpr, RISCVCPU, 32),
+         VMSTATE_UINT8_ARRAY(env.miprio, RISCVCPU, 64),
+@@ -411,7 +411,7 @@ const VMStateDescription vmstate_riscv_cpu = {
  
-         /* User mode architected state */
-@@ -748,7 +748,7 @@ const VMStateDescription vmstate_ppc_cpu = {
-         VMSTATE_UINT32_TEST(mig_nb_BATs, PowerPCCPU, cpu_pre_2_8_migration),
          VMSTATE_END_OF_LIST()
      },
--    .subsections = (const VMStateDescription*[]) {
+-    .subsections = (const VMStateDescription * []) {
 +    .subsections = (const VMStateDescription * const []) {
-         &vmstate_fpu,
-         &vmstate_altivec,
-         &vmstate_vsx,
+         &vmstate_pmp,
+         &vmstate_hyper,
+         &vmstate_vector,
 -- 
 2.34.1
 
