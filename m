@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D449820ABD
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 10:32:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A36820AB5
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 10:32:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJs9n-0002DL-2q; Sun, 31 Dec 2023 04:30:55 -0500
+	id 1rJs9t-0002Fg-0a; Sun, 31 Dec 2023 04:31:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1rJs9c-0002CB-I7
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:30:45 -0500
-Received: from mail-bn1nam02on20606.outbound.protection.outlook.com
- ([2a01:111:f400:7eb2::606]
- helo=NAM02-BN1-obe.outbound.protection.outlook.com)
+ id 1rJs9i-0002D3-7e
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:30:50 -0500
+Received: from mail-mw2nam10on20601.outbound.protection.outlook.com
+ ([2a01:111:f403:2412::601]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1rJs9a-0008Kw-QZ
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:30:44 -0500
+ id 1rJs9g-0008LL-BA
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:30:49 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=f69Bkp7B35ZExfJyVk9hZIETNQobMjP0H9yV/T7gUTCKDHBNz2qEXVbSzGV65BKPxHz507aHsoAEq5A2YUGMiMOTkESivuUojPesspEzSt0zKsjiMzsGbqXEjbYZ4H8B3pmXYajUgxSnZQMWFWAVC/UOqzo+SjkXtcoiEkXcQLus8cR5fNufyE4WrDtuSLYpwTeLPlHvMqgwbjeuHZg8eO/I1z3J8U4NUX4NBWP7suF9PJSKHFoozJcy4yehFbAA6vdCee/bfkLAqTH7kqAsYkeFI/mbv2op4fRVc6ALVM1kU8PORFlFtVDK+2veHztAh5EyrzXS3AMNSBGlDSYNCA==
+ b=bVkm4VazmeGpdPPJHcWs3/BfXMI+BGuP6PePT84xIcRdEOrUuqQmGv8XwI3uf/v4zJs/zKGSJ1Kqf0HhNDFwdpXdao4MyAwu703tNeXaRCcMSxOH8mnTq+9POWLFRTJDT0haddtqQRnX98kpihCZLqKkoTOfdQXqnTy1UNG5E/fgg6xO/sBWQ7g6yl20Mh533JMjnAV5J2AJKBhT9jnnUe8k0a2DevrUD3lcPimS6mt/jSeZWlPXXqr4i64hQnI4E0CTEwK4ciO4jsTqDeLAfthyRHQbMBheqdcApaDcLmK3bP0QevrHV+LdMLFvspeDsZdg3rtydA6Rry2/Ngw5ng==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dCtMpOL+kL48xKZQbBiJDmBJVuOLVM6GAtZub10c0Ls=;
- b=eDM6XdicpXHW6i/jCaLuya8IytGXq8BeFVE7ycHQhaObPw3Fx1JVgbN+yNcfNuBvizHYwtlyDTQsvf5jzf2s/GQzLFhbAN1KGVprH0gKH8x2b0GVXcYUQzRL6AyKhceb/LsJ61mqe6Xhu8Qtmcw12wdJnGwH1AcVSVP/iKmEeZv1uU2k11zUtSrkB0YPWGV5rtilDim407IdcGPg1aOZ5/b8wzegQfQ0ezjeVZGpdw6OOSQOF/2VuhFlgigLoDXvpMDtB6JRqev3TpGBoDVn08ek7mdeHUOIppAZWQyRCsLFm7eFSDtEMdkpN2gK2g9MdNmdC8XW8T20pJPeQ52oBQ==
+ bh=3fl/vu8Cqe8+KUjzLMOn+1F2M6P6XaxNe2THMJmQmGQ=;
+ b=HHItAoqbtC7TpFVl2QxettnbNcFpvBsrJ9kvLjPHyajLXvmtW6Mc002ZUl0Ao3TUTHSKt7+/q8CBiALXjei+JqYQeJqfDwZvl+LxnqO0ODcfJEnobVasmq+p9Ri+RpAAiCGf/KDdakP3XwLKUsn6iZk70LMf6cDusz51E8cYPvx9NIYxuS6IeQHDn6y0Pazl3/cs6g0sd12sDGOWrx83O0zWU4DPAMKUn4T1xUW7SYbduosneroL1UHNfxjxwy2TPvd9kuvD6SD+I3ZIThuLSi7XOWs0ZGUESnsmV0dtDge/oU3DWeRXJyZoWMRYwXWuLbPNH+opkR26hxmP7+e6vA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dCtMpOL+kL48xKZQbBiJDmBJVuOLVM6GAtZub10c0Ls=;
- b=i9yz3o5c/STu4rSGF2fP3NwuwygV7ty7dd49j1hh67O+M5vmZI+0menZsfaZ+9Laapmq5n32pIf9hyenb1/J3cYvqHO0OpOwBKp+7l/Ps8/0qFBw7AU9X3saxVze5Lsr5Xb9Oha8A9FBxUACZI5pxexAVqv8bttDEUAD0j9+D0FD8LDWhOh1uI8wTnplxs29H8TKw8kMmFQy8dFo6KbsE1wMB52Rl1L8Nt7m9IfHFtjgRG4c5tOE9+v0Mm3sITEMYCGwSJwhZ5LTcIb9mQbyvxC+K+qBQxDJwShjF+iCkH9p8rWnmjj8z0VzEM+rAQE2uI/DgHZWRlQ6GszwzL/NZw==
-Received: from CY8PR10CA0006.namprd10.prod.outlook.com (2603:10b6:930:4f::29)
- by BN9PR12MB5065.namprd12.prod.outlook.com (2603:10b6:408:132::12)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=3fl/vu8Cqe8+KUjzLMOn+1F2M6P6XaxNe2THMJmQmGQ=;
+ b=hlo4l+sPQZe3QdmkeWFvt0WaxceMfc/VB0W6eqpCSAH5syLMWLFReJ4rKPO9g2tx6XaFBPeiKCzqczq3lvtPGpXTEZ/OFRom2po5/kteyk9DAIvdGhsAQ8jWSy3+uzVOELACc2YLiq4ANSDN+DhH23mbWVMvkaaExspF40T+tb/JSQ6asstNyVNjxnb8Otd8hEjdABeJyBPgw6nxY08Bd+OMgH2dHajz/q76yFe+d0JlCnJkCYjdJFHZwhemw9LGGC5CaiIvU2m6IXYxLDGX8GgV502kR3wVBVJdJJDqAjy3bbvXn9/bJY5g80nJkO3+G8KOGS3raEOnDU+WYTiC+g==
+Received: from DM6PR07CA0096.namprd07.prod.outlook.com (2603:10b6:5:337::29)
+ by CO6PR12MB5410.namprd12.prod.outlook.com (2603:10b6:5:35b::5) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.23; Sun, 31 Dec
- 2023 09:30:38 +0000
-Received: from CY4PEPF0000FCC5.namprd03.prod.outlook.com
- (2603:10b6:930:4f:cafe::4) by CY8PR10CA0006.outlook.office365.com
- (2603:10b6:930:4f::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.24 via Frontend
- Transport; Sun, 31 Dec 2023 09:30:37 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ 2023 09:30:42 +0000
+Received: from DS1PEPF0001709A.namprd05.prod.outlook.com
+ (2603:10b6:5:337:cafe::b2) by DM6PR07CA0096.outlook.office365.com
+ (2603:10b6:5:337::29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.20 via Frontend
+ Transport; Sun, 31 Dec 2023 09:30:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CY4PEPF0000FCC5.mail.protection.outlook.com (10.167.242.107) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS1PEPF0001709A.mail.protection.outlook.com (10.167.18.104) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7159.9 via Frontend Transport; Sun, 31 Dec 2023 09:30:37 +0000
+ 15.20.7159.9 via Frontend Transport; Sun, 31 Dec 2023 09:30:42 +0000
 Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 31 Dec
- 2023 01:30:24 -0800
+ 2023 01:30:27 -0800
 Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail203.nvidia.com
  (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 31 Dec
- 2023 01:30:24 -0800
+ 2023 01:30:27 -0800
 Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.10)
  with Microsoft SMTP Server id 15.2.986.41 via Frontend Transport; Sun, 31 Dec
- 2023 01:30:22 -0800
+ 2023 01:30:25 -0800
 From: Avihai Horon <avihaih@nvidia.com>
 To: <qemu-devel@nongnu.org>
 CC: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  "Fabiano Rosas" <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>, Li
  Zhijian <lizhijian@fujitsu.com>, Avihai Horon <avihaih@nvidia.com>
-Subject: [PATCH 02/11] migration: Remove nulling of hostname in migrate_init()
-Date: Sun, 31 Dec 2023 11:30:07 +0200
-Message-ID: <20231231093016.14204-3-avihaih@nvidia.com>
+Subject: [PATCH 03/11] migration: Refactor migration_incoming_setup()
+Date: Sun, 31 Dec 2023 11:30:08 +0200
+Message-ID: <20231231093016.14204-4-avihaih@nvidia.com>
 X-Mailer: git-send-email 2.21.3
 In-Reply-To: <20231231093016.14204-1-avihaih@nvidia.com>
 References: <20231231093016.14204-1-avihaih@nvidia.com>
@@ -85,35 +85,35 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC5:EE_|BN9PR12MB5065:EE_
-X-MS-Office365-Filtering-Correlation-Id: f6ca53f5-30d5-432a-0add-08dc09e325cb
+X-MS-TrafficTypeDiagnostic: DS1PEPF0001709A:EE_|CO6PR12MB5410:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37ba47dd-d84d-4030-aa87-08dc09e32884
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: IrDgxt+3i2r8boxdfWLdOEmGtZNKYBudkrcQKNPM5TNsDQH1NsGpt06r6NlBGHlebdZrbtOEqqD4cJxEE0K80Bsp+jlpxUtYPWY7lvqG2xDsb43aN2tqx/cZR09niR5F5sW7Q3V1nhKidW8dW9pW1wy8sCkZE0FkK1dFMeDFvTgN8B/XfVG8bUy8hHo5RqBZRoomNBPzz2o2BrTGWcegI7sXUbQL22Ji/RJlZ2LI/RejfTD46uG8Il3y/isioiLA+Tzi2LadUyCgsTPUNatL/oA0+LF9dCdfJuTd/hO46ctA2lmbP7Q7Pf5xjo/viWOTgjwn0iytMAF0OVVfKxDfKDPz8u6D6pYyOL4kCaxR4Ho8iJoZm/PYehWxEI8vxhDEDKPuByclU1T9o6MtnUFx3DkEIA9eL/oZujq40lhI0F3A60fUhZOqrxV3wWAfQkqmPobOe0a3bq8xxnbSqNUXOC2w+X90/FgLKPfQz7XvCNZrDCl8mHHKuWM+XwlfzXEK3U454fCKEc97YoTsdRdF1o+hI96kHujCJR8RSyHAe7fCapaFFMUF02LZli46xwECO7N0V/1OEnin+xvC8QwIfglU1nNnkmui6a9VEjuA4t9B4GyMeaJhdvHqmzElN0Fp7GGki5dYXHxJSbRTTcnFvZy63qpf4m1+DBrU8sDfB3KZ9wQO4HNtyhtMNTbRtqZ7LiBXmWCxc//X/HXFyI1Ub3ly714U7ArBWmCbsNYh13/8UYIMNcLjA6OiZCBf17T3
-X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230031)(4636009)(136003)(346002)(396003)(39860400002)(376002)(230922051799003)(1800799012)(186009)(64100799003)(82310400011)(451199024)(46966006)(40470700004)(36840700001)(36860700001)(478600001)(107886003)(40460700003)(41300700001)(82740400003)(356005)(7636003)(6916009)(36756003)(4326008)(86362001)(316002)(54906003)(70206006)(70586007)(6666004)(47076005)(7696005)(336012)(426003)(26005)(1076003)(40480700001)(83380400001)(8936002)(8676002)(2616005)(4744005)(2906002)(5660300002);
+X-Microsoft-Antispam-Message-Info: nV61aqYo8QvlAVMDyexGVfOANAq2bvJ9TPxGLdCdDXUKA79u2hH1Qka1UXoHCVkHFRrf5/NQ5vTrddylfn0oBRB6Znwk8lZ/vqvG73zd0pMrqCCoV2w0XxTOg5wje2iP1kwEZl/zQPKuVscsgAX5/mDEPN135EIAPxIXC1cMsJJ80FTj9xaFFxcKam5h3pUIOkkDaKf6Pu27BhJxKZIDZ5S9c9HH7PsSfc0zxyAv5q8wPzlh1xHzKXjGLsWA7Nk/JkQzz+pN8vX6gg6gNoljq03EV32X/eGpbC7lI6ZtDxo88qm2NqU8Q05xzfHrpa2dhFfI7fr+DlP0JHpXyDPas0meKBZDt4/9xrn/opFOh5FANESHclmj2nWaK6tF85rAOBz7ttUnXtsZdBXOEOhOTECPI07iFcga9VH9ZpIsdtAb3uMRKgYGHqGfHnhGu80F2jWiYdU/HpT+cCcGXCH9yqvKPotnoM+TiSw2hHqUlEuPmwmMXnrCiQ7nQWcjtdfaSwUHVbKqF/tE6W9oMe12kPbsYJjbpFZTAwXR+xE1fh+JNVQp6gtAYGsUMRyf+8w6ItG5yhIcaIoXEDngY0lrXbSxvOBI0nfFToKOLjN5soIZElvu328WKVwIblQ8VX9xQr3SqW+25he9WyK9b/7131cBEkBnPkFY9+FLtdTNffo46ss6kJHtMiA/W2c/5QMtSLF+qlcoXo+D6JqqkUrY7t0lc32ouDEbp7xg5L1ke4OoZUhUnCFbkAsjqJ10vkpZ
+X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
+ SFS:(13230031)(4636009)(346002)(376002)(396003)(136003)(39860400002)(230922051799003)(1800799012)(186009)(82310400011)(64100799003)(451199024)(40470700004)(46966006)(36840700001)(7636003)(356005)(82740400003)(36756003)(40460700003)(40480700001)(86362001)(336012)(107886003)(26005)(426003)(1076003)(2616005)(7696005)(6666004)(47076005)(54906003)(4326008)(478600001)(8676002)(316002)(8936002)(36860700001)(6916009)(70586007)(70206006)(83380400001)(41300700001)(5660300002)(2906002);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2023 09:30:37.4964 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f6ca53f5-30d5-432a-0add-08dc09e325cb
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2023 09:30:42.0370 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37ba47dd-d84d-4030-aa87-08dc09e32884
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
  Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000FCC5.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF0001709A.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5065
-Received-SPF: softfail client-ip=2a01:111:f400:7eb2::606;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR12MB5410
+Received-SPF: softfail client-ip=2a01:111:f403:2412::601;
  envelope-from=avihaih@nvidia.com;
- helo=NAM02-BN1-obe.outbound.protection.outlook.com
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
 X-Spam_bar: ----
 X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.667,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -130,27 +130,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MigrationState->hostname is set to NULL in migrate_init(). This is
-redundant because it is already freed and set to NULL in
-migrade_fd_cleanup(). Remove it.
+Commit 6720c2b32725 ("migration: check magic value for deciding the
+mapping of channels") extracted the only code that could fail in
+migration_incoming_setup().
+
+Now migration_incoming_setup() can't fail, so refactor it to return void
+and remove errp parameter.
 
 Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 ---
- migration/migration.c | 1 -
- 1 file changed, 1 deletion(-)
+ migration/migration.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index 3ce04b2aaf..1e25d7966f 100644
+index 1e25d7966f..55d77572d8 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -1588,7 +1588,6 @@ int migrate_init(MigrationState *s, Error **errp)
-     s->migration_thread_running = false;
-     error_free(s->error);
-     s->error = NULL;
--    s->hostname = NULL;
-     s->vmdesc = NULL;
+@@ -724,11 +724,8 @@ fail:
+ /**
+  * migration_incoming_setup: Setup incoming migration
+  * @f: file for main migration channel
+- * @errp: where to put errors
+- *
+- * Returns: %true on success, %false on error.
+  */
+-static bool migration_incoming_setup(QEMUFile *f, Error **errp)
++static void migration_incoming_setup(QEMUFile *f)
+ {
+     MigrationIncomingState *mis = migration_incoming_get_current();
  
-     migrate_set_state(&s->state, MIGRATION_STATUS_NONE, MIGRATION_STATUS_SETUP);
+@@ -736,7 +733,6 @@ static bool migration_incoming_setup(QEMUFile *f, Error **errp)
+         mis->from_src_file = f;
+     }
+     qemu_file_set_blocking(f, false);
+-    return true;
+ }
+ 
+ void migration_incoming_process(void)
+@@ -780,9 +776,7 @@ static bool postcopy_try_recover(void)
+ 
+ void migration_fd_process_incoming(QEMUFile *f, Error **errp)
+ {
+-    if (!migration_incoming_setup(f, errp)) {
+-        return;
+-    }
++    migration_incoming_setup(f);
+     if (postcopy_try_recover()) {
+         return;
+     }
+@@ -855,10 +849,7 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
+ 
+     if (default_channel) {
+         f = qemu_file_new_input(ioc);
+-
+-        if (!migration_incoming_setup(f, errp)) {
+-            return;
+-        }
++        migration_incoming_setup(f);
+     } else {
+         /* Multiple connections */
+         assert(migration_needs_multiple_sockets());
 -- 
 2.26.3
 
