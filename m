@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6958820AB7
+	by mail.lfdr.de (Postfix) with ESMTPS id BC473820AB8
 	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 10:32:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJs9w-0002Is-RH; Sun, 31 Dec 2023 04:31:04 -0500
+	id 1rJs9y-0002Ju-JZ; Sun, 31 Dec 2023 04:31:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1rJs9t-0002Hs-Az
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:31:01 -0500
-Received: from mail-mw2nam10on20601.outbound.protection.outlook.com
- ([2a01:111:f403:2412::601]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ id 1rJs9x-0002Jg-6h
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:31:05 -0500
+Received: from mail-bn7nam10on20601.outbound.protection.outlook.com
+ ([2a01:111:f403:2009::601]
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1rJs9r-0008MX-TJ
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:31:01 -0500
+ id 1rJs9v-0008Mo-GR
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:31:04 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dTeZTriNMssuuNRZtCPcgnTEmLUeoxAQY9MqZDObdmAcEgYlhFrdgXAiGzhaGQel5Hr37Nj2TEMn2CFqp4n00Q7fnPONuEFpIC7+Gmd+HaNqEOCtLllYhxUOe09+MCPEBhulsQayMYfI8AIq4Vo+mVuseDv0c651dJ04w3qjBGOmUGRITfv7t4S10tC4+W+KZKUYgltswcyKoCYDvrbBCZ6f1ji89bsv8JoWthnFw42u0HfKBq+GlkbpGxXGJmmzvVvBsNsFco9hd4232VnODNp6kO8+6aN5wecw6g/+r4xgpwV/PzYCqFqLkh39C2MMw+zb6ivXEEN6LiVr6gN3iQ==
+ b=d5lPePv0I2wKjHaNXWA5Qh5rMKPXHQq6YcAiUYEr0WEwCtagNG3OSTUY9ddBAV6ZosRKOV/Qrye7yT+oRd8dTxaMc4mbagQj9h6SDWRPxgLOKOMZnrwWQnLI43B/FxCOOnhhKz7UaYr3XdPCqMYVuoLVH6NZ7+ylxa24FZKFzWHhoLET21zXwyOMmM4W4/gQ1rj6zPtSI9wnbGtFFqGRC/PM3w5pnG/JUuiHIeUlK3fstCIK6jW/2FMd+sMZQCVlBdn/1SFUgCAkxt0dHODoJ/ZOtAlfxi/pXaDmRhCDaj5OmOc3JETlUpGzN2NwD+ztUJ+EUx3q6tmPH7LKprXT7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IhmNg25SQ2zKpGEDKbEY4cfEtXiZ/4UMe/FxWEJOd64=;
- b=RjGzbNVrjezepKngTTCN7iUXqfq3O/3crTti0qyLM13XvvN8wszsj+LJLfwrKrViF4LZNe3smQcxe+uTFx2AOP4HAUC7g1TflYK4w3qzCaMAmCKmq+Go9wTnuWF+IXyZP7Al8ClMsxknkkFMzKMP9betxBwO4Apx7VWEa3bJpapP7K1snBde6skyvUBMSx9huJH8z9DZu60s5Q717SLLeLsu/uVSju6qROjX2ykf0DTTTcYvwHAifC8zMjsuWBLtG0QdbNtGjebdawBtDMdc0KQZY/0EYAcMK9/4saWROMb3pciyyNsbuBlFDVZYRhftsDvBqw8DcbvWS0mgPOvB0Q==
+ bh=ZdDmB9KpRrH2AQ0tZ21aZr5lp2apV2SVGxjHqJcRA7o=;
+ b=dfX4n6ID5xjkzkIYiscNtyMQM/2STDQrXBXJmoNzTL3A7NjrfSBqt1jKOCohJl93TVWxAlDp/Uul6jOShY8Zzr06G6wZaCFtpg7L/btwQHFj+yVJ5mHBHhdan3VbV4DBrJSlbeq0efud5ZQGtr0UuHji7XGpGm3YyvBVGEiBfDFhJJ4X6V71W75T0J33fEmIJwQyhlAm4bGlJ9my97vb5P5M9PbuO626MGSVGq1c0Cvx8iJP6IdMgahiobbaPq9WajmmSVJG8VYC9eOQ1QXAHYOu+4Lkpib/9RwkIfYUykABGdjsX0xxb5XAQnnp1M26XvIBWMVwc04Rgoe9HDfc4w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IhmNg25SQ2zKpGEDKbEY4cfEtXiZ/4UMe/FxWEJOd64=;
- b=gehMEdLhEyrdZcvwTsAnZLSohkzVlG456mIEOQMvVeFDps0eM1lNqSD1l9WWmqKkbAxwCm0vh4Mh6GahVuZKhfTOesVblWMT2wpxzSuF9ji8j2dybDWLDhHe1UTNJbveFS1WMTsQhq915UhN7+wMW9iZ8fuFj5ZAqwPj9dsiFwMGafSyJu6xSJ2Jt6LfX3K9IaoPHGdhjAp+KEn8p8FxOlI30E+HuwY9DS7Qw+CEekCIVJiQ+Pb2ljplg2ZWI9zOcyxZzal15HPp+8jjQmyM7plkVvQAY5SG9oO12F/xperNAahNgkIAgs2d+PalPZYW8vO+DwHVSbtqOk9VvsjxLw==
-Received: from DS7PR03CA0017.namprd03.prod.outlook.com (2603:10b6:5:3b8::22)
- by PH7PR12MB7940.namprd12.prod.outlook.com (2603:10b6:510:275::18) with
+ bh=ZdDmB9KpRrH2AQ0tZ21aZr5lp2apV2SVGxjHqJcRA7o=;
+ b=ft3FRvt5aD3LxdTkJI6rz/nNXt6VPTlR51ryPDE3rHMASnFxX4sGcv6n503p8ueiocJ/M2t1PBmJmBNGpEozIUyuogSSkrJTx9ozr39AnBgNXio2RDTlSkiw+xc+tG+Wz8PzU7aZme7XMpo5yNJlfb+kKKuv4Y/eFkQ/3TrCXEu1xAakXMZxa0SuZpLmQafVcGigvu3E500kU8CRFOlFgZmKCcvRgaBirHGfbakEc5p/ahK8zHONzdkkBUE7TDy8V2LhmwMCD52avtEMfXASGk5AfpOzJQNo5kWJDO+1RA2vmju9C38rT/KAff9+OpUV5hvPcwoWpa9o+SpkO7iyyA==
+Received: from DM6PR04CA0005.namprd04.prod.outlook.com (2603:10b6:5:334::10)
+ by SN7PR12MB7420.namprd12.prod.outlook.com (2603:10b6:806:2a7::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.24; Sun, 31 Dec
- 2023 09:30:55 +0000
-Received: from CY4PEPF0000FCC2.namprd03.prod.outlook.com
- (2603:10b6:5:3b8:cafe::a7) by DS7PR03CA0017.outlook.office365.com
- (2603:10b6:5:3b8::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.20 via Frontend
- Transport; Sun, 31 Dec 2023 09:30:53 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ 2023 09:30:57 +0000
+Received: from DS1PEPF00017098.namprd05.prod.outlook.com
+ (2603:10b6:5:334:cafe::ad) by DM6PR04CA0005.outlook.office365.com
+ (2603:10b6:5:334::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.21 via Frontend
+ Transport; Sun, 31 Dec 2023 09:30:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CY4PEPF0000FCC2.mail.protection.outlook.com (10.167.242.104) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS1PEPF00017098.mail.protection.outlook.com (10.167.18.102) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7159.9 via Frontend Transport; Sun, 31 Dec 2023 09:30:52 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.7159.9 via Frontend Transport; Sun, 31 Dec 2023 09:30:56 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 31 Dec
- 2023 01:30:38 -0800
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ 2023 01:30:40 -0800
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 31 Dec
- 2023 01:30:37 -0800
+ 2023 01:30:40 -0800
 Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.10)
  with Microsoft SMTP Server id 15.2.986.41 via Frontend Transport; Sun, 31 Dec
- 2023 01:30:35 -0800
+ 2023 01:30:38 -0800
 From: Avihai Horon <avihaih@nvidia.com>
 To: <qemu-devel@nongnu.org>
 CC: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  "Fabiano Rosas" <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>, Li
  Zhijian <lizhijian@fujitsu.com>, Avihai Horon <avihaih@nvidia.com>
-Subject: [PATCH 07/11] migration/multifd: Fix leaking of Error in TLS error
- flow
-Date: Sun, 31 Dec 2023 11:30:12 +0200
-Message-ID: <20231231093016.14204-8-avihaih@nvidia.com>
+Subject: [PATCH 08/11] migration/multifd: Remove error_setg() in
+ migration_ioc_process_incoming()
+Date: Sun, 31 Dec 2023 11:30:13 +0200
+Message-ID: <20231231093016.14204-9-avihaih@nvidia.com>
 X-Mailer: git-send-email 2.21.3
 In-Reply-To: <20231231093016.14204-1-avihaih@nvidia.com>
 References: <20231231093016.14204-1-avihaih@nvidia.com>
@@ -86,29 +86,29 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC2:EE_|PH7PR12MB7940:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6ca1edbb-ce16-49b8-6074-08dc09e32ee9
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017098:EE_|SN7PR12MB7420:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6553112e-8174-49cb-f5de-08dc09e3313b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: hswXKpxilCk1gXqjVWVCwlsf4FfDikYWcqyTFOacDoz6CyWTOhq6ENzm5CxWMyD2yd3fyfHIvYaaHLghzKXw9457uWOaeL0RFq60Soz3rjy/NwNRNMLcAinQ8+bInEvBklv6j5j8cfPkeUkHgg1ZcjIZQYUtIe0uOlQQrMp5xi71tJA9EBXtLpIDUrNi07DkxaVBH0hkekxK5kTsPcULa7iXEvtgTY4qTEZmtkGtpVYlImhheGMB5viqxjh7P6egUBLMSadM23MsUwCZBtqgY0cd2yTi0fjMAGF3Mp8HedWejGMiD2TIs/GWRDOmYO5o1cFh6xCHadY8meTenqHuo8Cz74J2I+B7OHqIxfSkmrhwEEOqt0+2b8ustTCWLWDeFCxlzbLTgUvAF20XExa5G3mPTkVUvOJmBeh43GeN5vDiHu1P1mhWWwF4yOC+uf+Yx2rPEbivVYtvgWE9d5sejOD7NW9bvNznlQDkjgv9Fzgo8wiUAVWzgdN34+Sa4mP2gwzSxe3oYU2kMI+zEMMDOipz0GpAavxU89yA6FnmM4OfGMBfSboWlM3x2jlI2i/aORvw5OxXJTyaoAF2x3Mxi085P2kuHMXBcDa4zMUdwBl2fKLgWkM9yjPARn6vkVLJRM8HWZuSjxx7PA3BF3vVPkpiVKJU1spO3pMG0nx1Z5kMZMM4UHj4k8HeGRbwJ2gEB/GDyvQ0AnDzv9Ne4rUpz3C3JWZ5Kvx0jqbOEc/b7yBtJxdfSCDIrVCc2R18KqPU
-X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230031)(4636009)(136003)(346002)(39860400002)(396003)(376002)(230922051799003)(64100799003)(186009)(82310400011)(451199024)(1800799012)(40470700004)(46966006)(36840700001)(40480700001)(40460700003)(336012)(2616005)(107886003)(426003)(1076003)(26005)(86362001)(7636003)(36756003)(82740400003)(356005)(47076005)(4326008)(5660300002)(7696005)(6666004)(36860700001)(54906003)(8936002)(8676002)(70206006)(70586007)(316002)(6916009)(2906002)(41300700001)(478600001);
+X-Microsoft-Antispam-Message-Info: 23hZWGzj6q5Y+hOoyYE9CWJuHew0k6ORjYN4IWMtzq9a+OxabhoQIfwCQA3tvz778Ux/1gHGn4l2SycMQJymw9DwVRsTzJyOEpIMD+mv66Lb6U8HhNxPoHGwnULO1SSHe+cJ0uV3ZbTqmKv08iKIxae4Doj87loNRzcMFzA6eC38Ydxigf9FIP3PMETFToC89+D9ykzbpezR0C/uTyboKFfvOpdQzp181pa8GG+g0MBV8ogpGnOlJ90bo9VA8qPPvacIJO4vyTiK7jTPfjhSofL+eb15TXW0fh3dQW3Fp3+DqO7Yi+DMZKK46G0EgunFkud7pMktW5uPX0wM+Q4/lxLEHPuCa9/ks75oa2+G3QADFrOeOiU+N+KBVX4RR40Mtdjp6aseZzVrHIKUwBb1d2Mzyii3qze1UMGzSrJSoMqeeipNODsNSArgssx3hMlKcIA4b/RSW8kD8i8ZwI3mAkX9mVi3NW8cOvou4tN5vsxFr/4v6OnHzu6oh/5Z4UcE+e1UAAlwyFBDc2ZOI1fvLHffxJeh41ZZrw3NdWTDrm5zj/DYz98b5MFvOsUyX0eHzmC1Ed4QzJMvi6h26b6TggkAVrNILTzRMIg9+z6FUXuhNSw9IaTIJ9+dnYAllQJykMjF6Yz8Qc1EP27z0aF9Rgoqo0fSgDT1mPQxBohZVBfj83ghscqFd20+vt11ihXzNwqq3LJi++X9fgny8AIwTBTw3A3dpfx74qt3n4fwW0G39HirqbIfoyi+ggEHc15t
+X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
+ SFS:(13230031)(4636009)(136003)(346002)(396003)(39860400002)(376002)(230922051799003)(1800799012)(186009)(64100799003)(82310400011)(451199024)(46966006)(40470700004)(36840700001)(36860700001)(478600001)(107886003)(40460700003)(41300700001)(82740400003)(356005)(7636003)(6916009)(36756003)(4326008)(86362001)(316002)(54906003)(70206006)(70586007)(6666004)(47076005)(7696005)(336012)(426003)(26005)(1076003)(40480700001)(83380400001)(8936002)(8676002)(2616005)(4744005)(2906002)(5660300002);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2023 09:30:52.7946 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ca1edbb-ce16-49b8-6074-08dc09e32ee9
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2023 09:30:56.6600 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6553112e-8174-49cb-f5de-08dc09e3313b
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
  Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000FCC2.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017098.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7940
-Received-SPF: softfail client-ip=2a01:111:f403:2412::601;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7420
+Received-SPF: softfail client-ip=2a01:111:f403:2009::601;
  envelope-from=avihaih@nvidia.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
 X-Spam_bar: ----
@@ -131,41 +131,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If there is an error in multifd TLS handshake task,
-multifd_tls_outgoing_handshake() retrieves the error with
-qio_task_propagate_error() but never frees it.
+If multifd_load_setup() fails in migration_ioc_process_incoming(),
+error_setg() is called with errp. This will lead to an assert because in
+that case errp already contains an error.
 
-Fix it by freeing the obtained Error.
+Fix it by removing the redundant error_setg().
 
-In addition, the error is not reported at all, so report it with
-migrate_set_error().
-
-Fixes: 29647140157a ("migration/tls: add support for multifd tls-handshake")
+Fixes: 6720c2b32725 ("migration: check magic value for deciding the mapping of channels")
 Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 ---
- migration/multifd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ migration/migration.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 55d5fd55f8..9ac24866ad 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -787,6 +787,7 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
+diff --git a/migration/migration.c b/migration/migration.c
+index 732e3dadd9..b0c3b4c23a 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -843,7 +843,6 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
+     }
  
-     trace_multifd_tls_outgoing_handshake_error(ioc, error_get_pretty(err));
+     if (multifd_load_setup(errp) != 0) {
+-        error_setg(errp, "Failed to setup multifd channels");
+         return;
+     }
  
-+    migrate_set_error(migrate_get_current(), err);
-     /*
-      * Error happen, mark multifd_send_thread status as 'quit' although it
-      * is not created, and then tell who pay attention to me.
-@@ -794,6 +795,7 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
-     p->quit = true;
-     qemu_sem_post(&multifd_send_state->channels_ready);
-     qemu_sem_post(&p->sem_sync);
-+    error_free(err);
- }
- 
- static void *multifd_tls_handshake_thread(void *opaque)
 -- 
 2.26.3
 
