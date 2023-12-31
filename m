@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34327820A9C
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 09:53:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D91E5820A8A
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 09:50:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJrUq-0007zz-Rw; Sun, 31 Dec 2023 03:48:36 -0500
+	id 1rJrUv-00089t-4A; Sun, 31 Dec 2023 03:48:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJrT3-0005Bt-3Z
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:46:48 -0500
+ id 1rJrT6-0005GR-Dv
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:46:57 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJrSu-0000r1-TM
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:46:44 -0500
+ id 1rJrT0-0000ri-6h
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:46:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704012393;
+ s=mimecast20190719; t=1704012401;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qGf1GkocofnlPz6qLQNH98ZD2mT7bfGgfy/DraUpGVg=;
- b=ZyYV0Z03O5N782qohnAIaVc8c2r++Oa1PUIPZ6iCYkTD9+MD5WKv2t7OGZ2GuUlbnuDUro
- NwqCr0ffxaUgXkbHcd2tLmbOnu9IaHH7H6wlypGxZlIJWwo8C2gGFugx7UntSa3kIFTBbf
- r7b9UPnB8l1hQsngvVU44zc5B2jAZSw=
+ bh=SLTcsIqH5PtnkvGR0o5eJVyrjzKfSjGxLGSVppVSxC8=;
+ b=I35jNyfIYbWJEyEF5HKG1u5EoqgOtSbvtqE2PqXibgBsbnMMzaNBcUT0sPDMBaXTce8STQ
+ AwcYGYVojiOpUe+QYiINHhCAQtdWzdBw3lG4KtMQiQf/XzVADBH9uAqIPDLHrCbHNIo96R
+ VPRjSGpylNHMGRRiQAVWpDnOYRtoBbE=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-Uchx9IeqO0mUFxqmXw8jcQ-1; Sun, 31 Dec 2023 03:46:31 -0500
-X-MC-Unique: Uchx9IeqO0mUFxqmXw8jcQ-1
+ us-mta-522-IpilPC_pPiK3HZH_3YitIA-1; Sun, 31 Dec 2023 03:46:33 -0500
+X-MC-Unique: IpilPC_pPiK3HZH_3YitIA-1
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40d589908f7so36583915e9.3
- for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 00:46:31 -0800 (PST)
+ 5b1f17b1804b1-40d4a29dca7so62704265e9.0
+ for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 00:46:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704012390; x=1704617190;
+ d=1e100.net; s=20230601; t=1704012392; x=1704617192;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qGf1GkocofnlPz6qLQNH98ZD2mT7bfGgfy/DraUpGVg=;
- b=P6GzHv3SV2OFavRBtnby9Mn50lYmz6HDU/w96ML8ClPzJOeSIEPR4RoqkSeZ3ZqTjw
- c5DHT9ruZ3LQaEMTIxzb7iucEuaCo2WW5Tb97mnC34DjWJtm1iAqgdec3MVdmB72WPg8
- iPox/vs919+GqlSoEt5P55W9R39tiIOsuwdQoKkDgV57uLaIbBy4rnkUFzJt+VwdcKw7
- d0SmSXhA6sgSFVhl5Uc4mApixbAbghSIc7JyMu00BgY5VHpzFYpRNLmg6+9xsxO4qsyM
- Gm+bS98/pZ0gZVOMkU8yK/vlfI0P0TYxbpxX/u/YnvSkt6XpPQghYUI/pNVdnwICDJeW
- Lz+w==
-X-Gm-Message-State: AOJu0YxdopN58oorAHZkKRc9IKu3jIO0GIn81p5NE9Am2SVVL9Zx2g4w
- IWDtSDL9RvxiNP8Tug7PyutW9T3aQHoFcaw1wQDrc3dqbCZYiaaKIb3WPAAggrmP6OQguQklz0f
- xETDZfa1SBNFsW9+vzPFuJoEVQ5ybRxEi7NBlbn8sCJBcv4u8SLhfj9mAiSRDhtGhnc3PuUwxvu
- kx0fpHI7o=
-X-Received: by 2002:a05:600c:378a:b0:40c:4904:bb72 with SMTP id
- o10-20020a05600c378a00b0040c4904bb72mr8231211wmr.18.1704012389886; 
- Sun, 31 Dec 2023 00:46:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHMlvak7Vrr07vmelEskJ7T8TecQMvq4GNzpqB1b7y5Ge+7oDhNFxhnO+HMo5UjETa1JxrQmQ==
-X-Received: by 2002:a05:600c:378a:b0:40c:4904:bb72 with SMTP id
- o10-20020a05600c378a00b0040c4904bb72mr8231201wmr.18.1704012389587; 
- Sun, 31 Dec 2023 00:46:29 -0800 (PST)
+ bh=SLTcsIqH5PtnkvGR0o5eJVyrjzKfSjGxLGSVppVSxC8=;
+ b=fxoK3BmKLhE3dlqin7a1KdkJ2Id85SsFRRH+70G+U8Gdsj4FC7iWhKOz39ooL51b9D
+ LOp8ZtuIJkUFoB8OUzwxXMWvWeVSTKMEfuAnMZvDZqazcxmX0DAnVRsZwnvANdjLmM84
+ I5Rm4g1swjoqPvybZ7lTmMBqnz6nUCT+9VcTU23FFTiltJHhfCeMEHziQsz9o6rf0h6Y
+ +Q/PVwwG95BXNTP7hGnyN3254JxcX1tdZWEazGgscdZUaGhW82OT+zgXYVSY7eZtwB+w
+ k8JghTOd5srdUM5jYxmfexmDacWWuh1iHbFMYsU5gMgnihkPwlGqrD4TaOTb7w/wpKTU
+ KXvw==
+X-Gm-Message-State: AOJu0Yxh/8PgeJfqYKLeyYn6qe3vLEh614X/150LyrVtZo6vql7oaSqW
+ Ofns2nuJP2zqyrs4FGW/CggQHsaa2jmDNxCefPH17MnU93bUhLB78KbX7ZEOBa80Umsdk1oIvF/
+ CFHY56Gnez+Aa0TGiAJO2vkxLrFJPlgkKgpLfJYlVTO73qjRmat1RakASRb0fO91WvGkxN2H9pj
+ OQqi6+5So=
+X-Received: by 2002:a05:600c:c10:b0:40d:84fe:4403 with SMTP id
+ fm16-20020a05600c0c1000b0040d84fe4403mr513870wmb.51.1704012392277; 
+ Sun, 31 Dec 2023 00:46:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHp9/0HTpz2hdm2rnEpEsM113aAXNWyJUrszqpvfozQXdlVi2zqneWAEwbFc18I26PyTqAfVA==
+X-Received: by 2002:a05:600c:c10:b0:40d:84fe:4403 with SMTP id
+ fm16-20020a05600c0c1000b0040d84fe4403mr513866wmb.51.1704012391986; 
+ Sun, 31 Dec 2023 00:46:31 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- j18-20020a5d5652000000b00336ca349bdesm13918817wrw.47.2023.12.31.00.46.28
+ s21-20020a05600c45d500b0040c3953cda5sm44628018wmo.45.2023.12.31.00.46.30
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Dec 2023 00:46:28 -0800 (PST)
+ Sun, 31 Dec 2023 00:46:30 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 32/46] meson: move program checks together
-Date: Sun, 31 Dec 2023 09:44:48 +0100
-Message-ID: <20231231084502.235366-33-pbonzini@redhat.com>
+Subject: [PULL 33/46] meson: move option validation together
+Date: Sun, 31 Dec 2023 09:44:49 +0100
+Message-ID: <20231231084502.235366-34-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231231084502.235366-1-pbonzini@redhat.com>
 References: <20231231084502.235366-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -102,153 +101,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Check options before compiler flags, because some compiler flags are
+incompatible with modules.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 107 +++++++++++++++++++++++++++-------------------------
- 1 file changed, 56 insertions(+), 51 deletions(-)
+ meson.build | 137 ++++++++++++++++++++++++++--------------------------
+ 1 file changed, 68 insertions(+), 69 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index c437e9f55e6..3a1f4cbb90f 100644
+index 3a1f4cbb90f..2c6f09352c9 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -19,21 +19,8 @@ ss = import('sourceset')
- fs = import('fs')
+@@ -108,6 +108,71 @@ endforeach
+ # Option validation #
+ #####################
  
- targetos = host_machine.system()
--sh = find_program('sh')
- config_host = keyval.load(meson.current_build_dir() / 'config-host.mak')
- 
--cc = meson.get_compiler('c')
--all_languages = ['c']
--if targetos == 'windows' and add_languages('cpp', required: false, native: false)
--  all_languages += ['cpp']
--  cxx = meson.get_compiler('cpp')
--endif
--if targetos == 'darwin' and \
--   add_languages('objc', required: get_option('cocoa'), native: false)
--  all_languages += ['objc']
--  objc = meson.get_compiler('objc')
--endif
--
- # Temporary directory used for files created while
- # configure runs. Since it is in the build directory
- # we can safely blow away any previous version of it
-@@ -65,6 +52,62 @@ supported_cpus = ['ppc', 'ppc64', 's390x', 'riscv32', 'riscv64', 'x86', 'x86_64'
- cpu = host_machine.cpu_family()
- 
- target_dirs = config_host['TARGET_DIRS'].split()
-+
-+############
-+# Programs #
-+############
-+
-+sh = find_program('sh')
-+python = import('python').find_installation()
-+
-+cc = meson.get_compiler('c')
-+all_languages = ['c']
-+if targetos == 'windows' and add_languages('cpp', required: false, native: false)
-+  all_languages += ['cpp']
-+  cxx = meson.get_compiler('cpp')
-+endif
-+if targetos == 'darwin' and \
-+   add_languages('objc', required: get_option('cocoa'), native: false)
-+  all_languages += ['objc']
-+  objc = meson.get_compiler('objc')
++# Fuzzing
++if get_option('fuzzing') and get_option('fuzzing_engine') == '' and \
++    not cc.links('''
++          #include <stdint.h>
++          #include <sys/types.h>
++          int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size);
++          int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) { return 0; }
++        ''',
++        args: ['-Werror', '-fsanitize=fuzzer'])
++  error('Your compiler does not support -fsanitize=fuzzer')
 +endif
 +
-+dtrace = not_found
-+stap = not_found
-+if 'dtrace' in get_option('trace_backends')
-+  dtrace = find_program('dtrace', required: true)
-+  stap = find_program('stap', required: false)
-+  if stap.found()
-+    # Workaround to avoid dtrace(1) producing a file with 'hidden' symbol
-+    # visibility. Define STAP_SDT_V2 to produce 'default' symbol visibility
-+    # instead. QEMU --enable-modules depends on this because the SystemTap
-+    # semaphores are linked into the main binary and not the module's shared
-+    # object.
-+    add_global_arguments('-DSTAP_SDT_V2',
-+                         native: false, language: all_languages)
-+  endif
++# Tracing backends
++if 'ftrace' in get_option('trace_backends') and targetos != 'linux'
++  error('ftrace is supported only on Linux')
++endif
++if 'syslog' in get_option('trace_backends') and not cc.compiles('''
++    #include <syslog.h>
++    int main(void) {
++        openlog("qemu", LOG_PID, LOG_DAEMON);
++        syslog(LOG_INFO, "configure");
++        return 0;
++    }''')
++  error('syslog is not supported on this system')
 +endif
 +
-+if get_option('iasl') == ''
-+  iasl = find_program('iasl', required: false)
-+else
-+  iasl = find_program(get_option('iasl'), required: true)
-+endif
++# Miscellaneous Linux-only features
++get_option('mpath') \
++  .require(targetos == 'linux', error_message: 'Multipath is supported only on Linux')
 +
-+edk2_targets = [ 'arm-softmmu', 'aarch64-softmmu', 'i386-softmmu', 'x86_64-softmmu' ]
-+unpack_edk2_blobs = false
-+foreach target : edk2_targets
-+  if target in target_dirs
-+    bzip2 = find_program('bzip2', required: get_option('install_blobs'))
-+    unpack_edk2_blobs = bzip2.found()
-+    break
-+  endif
-+endforeach
++multiprocess_allowed = get_option('multiprocess') \
++  .require(targetos == 'linux', error_message: 'Multiprocess QEMU is supported only on Linux') \
++  .allowed()
 +
-+#####################
-+# Option validation #
-+#####################
++vfio_user_server_allowed = get_option('vfio_user_server') \
++  .require(targetos == 'linux', error_message: 'vfio-user server is supported only on Linux') \
++  .allowed()
 +
++have_tpm = get_option('tpm') \
++  .require(targetos != 'windows', error_message: 'TPM emulation only available on POSIX systems') \
++  .allowed()
++
++# vhost
++have_vhost_user = get_option('vhost_user') \
++  .disable_auto_if(targetos != 'linux') \
++  .require(targetos != 'windows',
++           error_message: 'vhost-user is not available on Windows').allowed()
++have_vhost_vdpa = get_option('vhost_vdpa') \
++  .require(targetos == 'linux',
++           error_message: 'vhost-vdpa is only available on Linux').allowed()
++have_vhost_kernel = get_option('vhost_kernel') \
++  .require(targetos == 'linux',
++           error_message: 'vhost-kernel is only available on Linux').allowed()
++have_vhost_user_crypto = get_option('vhost_crypto') \
++  .require(have_vhost_user,
++           error_message: 'vhost-crypto requires vhost-user to be enabled').allowed()
++
++have_vhost = have_vhost_user or have_vhost_vdpa or have_vhost_kernel
++
++have_vhost_net_user = have_vhost_user and get_option('vhost_net').allowed()
++have_vhost_net_vdpa = have_vhost_vdpa and get_option('vhost_net').allowed()
++have_vhost_net_kernel = have_vhost_kernel and get_option('vhost_net').allowed()
++have_vhost_net = have_vhost_net_kernel or have_vhost_net_user or have_vhost_net_vdpa
++
++# type of binaries to build
  have_linux_user = false
  have_bsd_user = false
  have_system = false
-@@ -90,12 +133,6 @@ enable_modules = get_option('modules') \
+@@ -117,6 +182,7 @@ foreach target : target_dirs
+   have_system = have_system or target.endswith('-softmmu')
+ endforeach
+ have_user = have_linux_user or have_bsd_user
++
+ have_tools = get_option('tools') \
+   .disable_auto_if(not have_system) \
    .allowed()
- have_block = have_system or have_tools
+@@ -125,13 +191,14 @@ have_ga = get_option('guest_agent') \
+   .require(targetos in ['sunos', 'linux', 'windows', 'freebsd', 'netbsd', 'openbsd'],
+            error_message: 'unsupported OS for QEMU guest agent') \
+   .allowed()
++have_block = have_system or have_tools
++
+ enable_modules = get_option('modules') \
+   .require(targetos != 'windows',
+            error_message: 'Modules are not available for Windows') \
+   .require(not get_option('prefer_static'),
+            error_message: 'Modules are incompatible with static linking') \
+   .allowed()
+-have_block = have_system or have_tools
  
--############
--# Programs #
--############
--
--python = import('python').find_installation()
--
  #######################################
  # Variables for host and accelerators #
- #######################################
-@@ -167,38 +204,6 @@ if targetos != 'darwin'
-   modular_tcg = ['i386-softmmu', 'x86_64-softmmu']
+@@ -535,74 +602,6 @@ if sparse.found()
+                        '-Wno-non-pointer-null'])
  endif
  
--edk2_targets = [ 'arm-softmmu', 'aarch64-softmmu', 'i386-softmmu', 'x86_64-softmmu' ]
--unpack_edk2_blobs = false
--foreach target : edk2_targets
--  if target in target_dirs
--    bzip2 = find_program('bzip2', required: get_option('install_blobs'))
--    unpack_edk2_blobs = bzip2.found()
--    break
--  endif
--endforeach
+-#####################
+-# Option validation #
+-#####################
 -
--dtrace = not_found
--stap = not_found
--if 'dtrace' in get_option('trace_backends')
--  dtrace = find_program('dtrace', required: true)
--  stap = find_program('stap', required: false)
--  if stap.found()
--    # Workaround to avoid dtrace(1) producing a file with 'hidden' symbol
--    # visibility. Define STAP_SDT_V2 to produce 'default' symbol visibility
--    # instead. QEMU --enable-modules depends on this because the SystemTap
--    # semaphores are linked into the main binary and not the module's shared
--    # object.
--    add_global_arguments('-DSTAP_SDT_V2',
--                         native: false, language: all_languages)
--  endif
+-# Fuzzing
+-if get_option('fuzzing') and get_option('fuzzing_engine') == '' and \
+-    not cc.links('''
+-          #include <stdint.h>
+-          #include <sys/types.h>
+-          int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size);
+-          int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) { return 0; }
+-        ''',
+-        args: ['-Werror', '-fsanitize=fuzzer'])
+-  error('Your compiler does not support -fsanitize=fuzzer')
 -endif
 -
--if get_option('iasl') == ''
--  iasl = find_program('iasl', required: false)
--else
--  iasl = find_program(get_option('iasl'), required: true)
+-# Tracing backends
+-if 'ftrace' in get_option('trace_backends') and targetos != 'linux'
+-  error('ftrace is supported only on Linux')
+-endif
+-if 'syslog' in get_option('trace_backends') and not cc.compiles('''
+-    #include <syslog.h>
+-    int main(void) {
+-        openlog("qemu", LOG_PID, LOG_DAEMON);
+-        syslog(LOG_INFO, "configure");
+-        return 0;
+-    }''')
+-  error('syslog is not supported on this system')
 -endif
 -
- ##################
- # Compiler flags #
- ##################
+-# Miscellaneous Linux-only features
+-get_option('mpath') \
+-  .require(targetos == 'linux', error_message: 'Multipath is supported only on Linux')
+-
+-multiprocess_allowed = get_option('multiprocess') \
+-  .require(targetos == 'linux', error_message: 'Multiprocess QEMU is supported only on Linux') \
+-  .allowed()
+-
+-vfio_user_server_allowed = get_option('vfio_user_server') \
+-  .require(targetos == 'linux', error_message: 'vfio-user server is supported only on Linux') \
+-  .allowed()
+-
+-have_tpm = get_option('tpm') \
+-  .require(targetos != 'windows', error_message: 'TPM emulation only available on POSIX systems') \
+-  .allowed()
+-
+-# vhost
+-have_vhost_user = get_option('vhost_user') \
+-  .disable_auto_if(targetos != 'linux') \
+-  .require(targetos != 'windows',
+-           error_message: 'vhost-user is not available on Windows').allowed()
+-have_vhost_vdpa = get_option('vhost_vdpa') \
+-  .require(targetos == 'linux',
+-           error_message: 'vhost-vdpa is only available on Linux').allowed()
+-have_vhost_kernel = get_option('vhost_kernel') \
+-  .require(targetos == 'linux',
+-           error_message: 'vhost-kernel is only available on Linux').allowed()
+-have_vhost_user_crypto = get_option('vhost_crypto') \
+-  .require(have_vhost_user,
+-           error_message: 'vhost-crypto requires vhost-user to be enabled').allowed()
+-
+-have_vhost = have_vhost_user or have_vhost_vdpa or have_vhost_kernel
+-
+-have_vhost_net_user = have_vhost_user and get_option('vhost_net').allowed()
+-have_vhost_net_vdpa = have_vhost_vdpa and get_option('vhost_net').allowed()
+-have_vhost_net_kernel = have_vhost_kernel and get_option('vhost_net').allowed()
+-have_vhost_net = have_vhost_net_kernel or have_vhost_net_user or have_vhost_net_vdpa
+-
+ # Target-specific libraries and flags
+ libm = cc.find_library('m', required: false)
+ threads = dependency('threads')
 -- 
 2.43.0
 
