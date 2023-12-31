@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91E5820A8A
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 09:50:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4349820A97
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 09:52:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJrUv-00089t-4A; Sun, 31 Dec 2023 03:48:41 -0500
+	id 1rJrUO-0005tb-8m; Sun, 31 Dec 2023 03:48:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJrT6-0005GR-Dv
+ id 1rJrT6-0005GQ-DK
  for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:46:57 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJrT0-0000ri-6h
+ id 1rJrSy-0000rW-Kv
  for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:46:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704012401;
+ s=mimecast20190719; t=1704012398;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SLTcsIqH5PtnkvGR0o5eJVyrjzKfSjGxLGSVppVSxC8=;
- b=I35jNyfIYbWJEyEF5HKG1u5EoqgOtSbvtqE2PqXibgBsbnMMzaNBcUT0sPDMBaXTce8STQ
- AwcYGYVojiOpUe+QYiINHhCAQtdWzdBw3lG4KtMQiQf/XzVADBH9uAqIPDLHrCbHNIo96R
- VPRjSGpylNHMGRRiQAVWpDnOYRtoBbE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3U8zEYHQuGzz9UZjhWbHUnV1lnoPQnL3dTGBl2Dkros=;
+ b=R4q3c67rwbzr5qrEqsPcIEPqKa6bvFtpLD37gZLoVMpLldgDS38M0AybfsPMLAaNsk6F4T
+ lFp2RTACe9UGGWNTN3JFwadxNx74GjEUtkUlQOh6krgKBO1rYVYdRJf9sLWybmTZIo/U9/
+ Ildx3Hjts4LV+jdq74r6NjD6uVPLI+8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-522-IpilPC_pPiK3HZH_3YitIA-1; Sun, 31 Dec 2023 03:46:33 -0500
-X-MC-Unique: IpilPC_pPiK3HZH_3YitIA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40d4a29dca7so62704265e9.0
- for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 00:46:33 -0800 (PST)
+ us-mta-570-l4MJnsHOMQyjhxhjobWVrA-1; Sun, 31 Dec 2023 03:46:35 -0500
+X-MC-Unique: l4MJnsHOMQyjhxhjobWVrA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3368698f0caso5818660f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 00:46:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704012392; x=1704617192;
+ d=1e100.net; s=20230601; t=1704012394; x=1704617194;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SLTcsIqH5PtnkvGR0o5eJVyrjzKfSjGxLGSVppVSxC8=;
- b=fxoK3BmKLhE3dlqin7a1KdkJ2Id85SsFRRH+70G+U8Gdsj4FC7iWhKOz39ooL51b9D
- LOp8ZtuIJkUFoB8OUzwxXMWvWeVSTKMEfuAnMZvDZqazcxmX0DAnVRsZwnvANdjLmM84
- I5Rm4g1swjoqPvybZ7lTmMBqnz6nUCT+9VcTU23FFTiltJHhfCeMEHziQsz9o6rf0h6Y
- +Q/PVwwG95BXNTP7hGnyN3254JxcX1tdZWEazGgscdZUaGhW82OT+zgXYVSY7eZtwB+w
- k8JghTOd5srdUM5jYxmfexmDacWWuh1iHbFMYsU5gMgnihkPwlGqrD4TaOTb7w/wpKTU
- KXvw==
-X-Gm-Message-State: AOJu0Yxh/8PgeJfqYKLeyYn6qe3vLEh614X/150LyrVtZo6vql7oaSqW
- Ofns2nuJP2zqyrs4FGW/CggQHsaa2jmDNxCefPH17MnU93bUhLB78KbX7ZEOBa80Umsdk1oIvF/
- CFHY56Gnez+Aa0TGiAJO2vkxLrFJPlgkKgpLfJYlVTO73qjRmat1RakASRb0fO91WvGkxN2H9pj
- OQqi6+5So=
-X-Received: by 2002:a05:600c:c10:b0:40d:84fe:4403 with SMTP id
- fm16-20020a05600c0c1000b0040d84fe4403mr513870wmb.51.1704012392277; 
- Sun, 31 Dec 2023 00:46:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHp9/0HTpz2hdm2rnEpEsM113aAXNWyJUrszqpvfozQXdlVi2zqneWAEwbFc18I26PyTqAfVA==
-X-Received: by 2002:a05:600c:c10:b0:40d:84fe:4403 with SMTP id
- fm16-20020a05600c0c1000b0040d84fe4403mr513866wmb.51.1704012391986; 
- Sun, 31 Dec 2023 00:46:31 -0800 (PST)
+ bh=3U8zEYHQuGzz9UZjhWbHUnV1lnoPQnL3dTGBl2Dkros=;
+ b=QC4XwK/Gop6XZarUd3+/SA+7AHh2Wjmf8FDZDaQhtffcNpGka3W6nOEsSi+0k7sL29
+ dTvqAYigb8vFBgqFm2Jxs7He9lSxM9XQ1AkPNR6MVPTpNrIJLOtifB2dzyJmAzFU0T3W
+ ZY5uDPE7K5QSI1JHpV2VlLalxVf93Hx8j4pzDlu/pb1ZKtd80WweO568ABNbWOtTXhHX
+ 9Qg8v0ELNHjOsg0CWy9YDY9XTy2sGZ+/oci37gc9WTV6AvDs49En7IJeLD03aytcZyY+
+ UDSlmA+x+iIm1K2y/PueN+R5lgxltafeVgSJifnKHuS/95QSvVCS934KYmyik7KvdrAd
+ Ar/Q==
+X-Gm-Message-State: AOJu0YwTTonJ1dOGSqommflhTxkreb0GQjUgjUR6tZt/88UrkbabHAtz
+ alrvscdhaPxtNkHzfhDkZ402q93KllKGqGwbP/v4BAIwWI494eguwjgjiGzTFDde7BIWjLbNhbW
+ MzvZqQMlb9JSHADe4IL5RDJH7EuKwV/uNfiLVhTAUwDCFJgG/J9++cpBkx6cGSqJwwPQI85QSnP
+ V/Z7fSvP8=
+X-Received: by 2002:a05:6000:4ea:b0:336:d086:84d4 with SMTP id
+ cr10-20020a05600004ea00b00336d08684d4mr2434494wrb.119.1704012394095; 
+ Sun, 31 Dec 2023 00:46:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGfP8h/lXCUZ9+Tb1O4ioI9PagAC/qToLP3rgHW0dYzTbUAqGH9MCox5xqUcuP59oLpykxkNw==
+X-Received: by 2002:a05:6000:4ea:b0:336:d086:84d4 with SMTP id
+ cr10-20020a05600004ea00b00336d08684d4mr2434487wrb.119.1704012393717; 
+ Sun, 31 Dec 2023 00:46:33 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- s21-20020a05600c45d500b0040c3953cda5sm44628018wmo.45.2023.12.31.00.46.30
+ a6-20020adffb86000000b003372befd19bsm4298031wrr.104.2023.12.31.00.46.33
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Dec 2023 00:46:30 -0800 (PST)
+ Sun, 31 Dec 2023 00:46:33 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 33/46] meson: move option validation together
-Date: Sun, 31 Dec 2023 09:44:49 +0100
-Message-ID: <20231231084502.235366-34-pbonzini@redhat.com>
+Subject: [PULL 34/46] meson: move accelerator dependency checks together
+Date: Sun, 31 Dec 2023 09:44:50 +0100
+Message-ID: <20231231084502.235366-35-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231231084502.235366-1-pbonzini@redhat.com>
 References: <20231231084502.235366-1-pbonzini@redhat.com>
@@ -101,189 +101,239 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check options before compiler flags, because some compiler flags are
-incompatible with modules.
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 137 ++++++++++++++++++++++++++--------------------------
- 1 file changed, 68 insertions(+), 69 deletions(-)
+ meson.build | 175 +++++++++++++++++++++++++++-------------------------
+ 1 file changed, 91 insertions(+), 84 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 3a1f4cbb90f..2c6f09352c9 100644
+index 2c6f09352c9..1867e0428b1 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -108,6 +108,71 @@ endforeach
- # Option validation #
- #####################
- 
-+# Fuzzing
-+if get_option('fuzzing') and get_option('fuzzing_engine') == '' and \
-+    not cc.links('''
-+          #include <stdint.h>
-+          #include <sys/types.h>
-+          int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size);
-+          int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) { return 0; }
-+        ''',
-+        args: ['-Werror', '-fsanitize=fuzzer'])
-+  error('Your compiler does not support -fsanitize=fuzzer')
-+endif
-+
-+# Tracing backends
-+if 'ftrace' in get_option('trace_backends') and targetos != 'linux'
-+  error('ftrace is supported only on Linux')
-+endif
-+if 'syslog' in get_option('trace_backends') and not cc.compiles('''
-+    #include <syslog.h>
-+    int main(void) {
-+        openlog("qemu", LOG_PID, LOG_DAEMON);
-+        syslog(LOG_INFO, "configure");
-+        return 0;
-+    }''')
-+  error('syslog is not supported on this system')
-+endif
-+
-+# Miscellaneous Linux-only features
-+get_option('mpath') \
-+  .require(targetos == 'linux', error_message: 'Multipath is supported only on Linux')
-+
-+multiprocess_allowed = get_option('multiprocess') \
-+  .require(targetos == 'linux', error_message: 'Multiprocess QEMU is supported only on Linux') \
-+  .allowed()
-+
-+vfio_user_server_allowed = get_option('vfio_user_server') \
-+  .require(targetos == 'linux', error_message: 'vfio-user server is supported only on Linux') \
-+  .allowed()
-+
-+have_tpm = get_option('tpm') \
-+  .require(targetos != 'windows', error_message: 'TPM emulation only available on POSIX systems') \
-+  .allowed()
-+
-+# vhost
-+have_vhost_user = get_option('vhost_user') \
-+  .disable_auto_if(targetos != 'linux') \
-+  .require(targetos != 'windows',
-+           error_message: 'vhost-user is not available on Windows').allowed()
-+have_vhost_vdpa = get_option('vhost_vdpa') \
-+  .require(targetos == 'linux',
-+           error_message: 'vhost-vdpa is only available on Linux').allowed()
-+have_vhost_kernel = get_option('vhost_kernel') \
-+  .require(targetos == 'linux',
-+           error_message: 'vhost-kernel is only available on Linux').allowed()
-+have_vhost_user_crypto = get_option('vhost_crypto') \
-+  .require(have_vhost_user,
-+           error_message: 'vhost-crypto requires vhost-user to be enabled').allowed()
-+
-+have_vhost = have_vhost_user or have_vhost_vdpa or have_vhost_kernel
-+
-+have_vhost_net_user = have_vhost_user and get_option('vhost_net').allowed()
-+have_vhost_net_vdpa = have_vhost_vdpa and get_option('vhost_net').allowed()
-+have_vhost_net_kernel = have_vhost_kernel and get_option('vhost_net').allowed()
-+have_vhost_net = have_vhost_net_kernel or have_vhost_net_user or have_vhost_net_vdpa
-+
-+# type of binaries to build
- have_linux_user = false
- have_bsd_user = false
- have_system = false
-@@ -117,6 +182,7 @@ foreach target : target_dirs
-   have_system = have_system or target.endswith('-softmmu')
- endforeach
- have_user = have_linux_user or have_bsd_user
-+
- have_tools = get_option('tools') \
-   .disable_auto_if(not have_system) \
-   .allowed()
-@@ -125,13 +191,14 @@ have_ga = get_option('guest_agent') \
-   .require(targetos in ['sunos', 'linux', 'windows', 'freebsd', 'netbsd', 'openbsd'],
-            error_message: 'unsupported OS for QEMU guest agent') \
-   .allowed()
-+have_block = have_system or have_tools
-+
- enable_modules = get_option('modules') \
-   .require(targetos != 'windows',
-            error_message: 'Modules are not available for Windows') \
-   .require(not get_option('prefer_static'),
-            error_message: 'Modules are incompatible with static linking') \
-   .allowed()
--have_block = have_system or have_tools
- 
- #######################################
- # Variables for host and accelerators #
-@@ -535,74 +602,6 @@ if sparse.found()
+@@ -602,7 +602,10 @@ if sparse.found()
                         '-Wno-non-pointer-null'])
  endif
  
--#####################
--# Option validation #
--#####################
--
--# Fuzzing
--if get_option('fuzzing') and get_option('fuzzing_engine') == '' and \
--    not cc.links('''
--          #include <stdint.h>
--          #include <sys/types.h>
--          int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size);
--          int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) { return 0; }
--        ''',
--        args: ['-Werror', '-fsanitize=fuzzer'])
--  error('Your compiler does not support -fsanitize=fuzzer')
--endif
--
--# Tracing backends
--if 'ftrace' in get_option('trace_backends') and targetos != 'linux'
--  error('ftrace is supported only on Linux')
--endif
--if 'syslog' in get_option('trace_backends') and not cc.compiles('''
--    #include <syslog.h>
--    int main(void) {
--        openlog("qemu", LOG_PID, LOG_DAEMON);
--        syslog(LOG_INFO, "configure");
--        return 0;
--    }''')
--  error('syslog is not supported on this system')
--endif
--
--# Miscellaneous Linux-only features
--get_option('mpath') \
--  .require(targetos == 'linux', error_message: 'Multipath is supported only on Linux')
--
--multiprocess_allowed = get_option('multiprocess') \
--  .require(targetos == 'linux', error_message: 'Multiprocess QEMU is supported only on Linux') \
--  .allowed()
--
--vfio_user_server_allowed = get_option('vfio_user_server') \
--  .require(targetos == 'linux', error_message: 'vfio-user server is supported only on Linux') \
--  .allowed()
--
--have_tpm = get_option('tpm') \
--  .require(targetos != 'windows', error_message: 'TPM emulation only available on POSIX systems') \
--  .allowed()
--
--# vhost
--have_vhost_user = get_option('vhost_user') \
--  .disable_auto_if(targetos != 'linux') \
--  .require(targetos != 'windows',
--           error_message: 'vhost-user is not available on Windows').allowed()
--have_vhost_vdpa = get_option('vhost_vdpa') \
--  .require(targetos == 'linux',
--           error_message: 'vhost-vdpa is only available on Linux').allowed()
--have_vhost_kernel = get_option('vhost_kernel') \
--  .require(targetos == 'linux',
--           error_message: 'vhost-kernel is only available on Linux').allowed()
--have_vhost_user_crypto = get_option('vhost_crypto') \
--  .require(have_vhost_user,
--           error_message: 'vhost-crypto requires vhost-user to be enabled').allowed()
--
--have_vhost = have_vhost_user or have_vhost_vdpa or have_vhost_kernel
--
--have_vhost_net_user = have_vhost_user and get_option('vhost_net').allowed()
--have_vhost_net_vdpa = have_vhost_vdpa and get_option('vhost_net').allowed()
--have_vhost_net_kernel = have_vhost_kernel and get_option('vhost_net').allowed()
--have_vhost_net = have_vhost_net_kernel or have_vhost_net_user or have_vhost_net_vdpa
--
- # Target-specific libraries and flags
+-# Target-specific libraries and flags
++#####################################
++# Host-specific libraries and flags #
++#####################################
++
  libm = cc.find_library('m', required: false)
  threads = dependency('threads')
+ util = cc.find_library('util', required: false)
+@@ -612,8 +615,6 @@ version_res = []
+ coref = []
+ iokit = []
+ emulator_link_args = []
+-nvmm =not_found
+-hvf = not_found
+ midl = not_found
+ widl = not_found
+ pathcch = not_found
+@@ -649,7 +650,10 @@ elif targetos == 'openbsd'
+   endif
+ endif
+ 
+-# Target-specific configuration of accelerators
++###############################################
++# Host-specific configuration of accelerators #
++###############################################
++
+ accelerators = []
+ if get_option('kvm').allowed() and targetos == 'linux'
+   accelerators += 'CONFIG_KVM'
+@@ -662,6 +666,8 @@ if get_option('whpx').allowed() and targetos == 'windows'
+     accelerators += 'CONFIG_WHPX'
+   endif
+ endif
++
++hvf = not_found
+ if get_option('hvf').allowed()
+   hvf = dependency('appleframeworks', modules: 'Hypervisor',
+                    required: get_option('hvf'))
+@@ -669,6 +675,8 @@ if get_option('hvf').allowed()
+     accelerators += 'CONFIG_HVF'
+   endif
+ endif
++
++nvmm = not_found
+ if targetos == 'netbsd'
+   nvmm = cc.find_library('nvmm', required: get_option('nvmm'))
+   if nvmm.found()
+@@ -716,6 +724,85 @@ if 'CONFIG_WHPX' not in accelerators and get_option('whpx').enabled()
+   error('WHPX not available on this platform')
+ endif
+ 
++xen = not_found
++if get_option('xen').enabled() or (get_option('xen').auto() and have_system)
++  xencontrol = dependency('xencontrol', required: false,
++                          method: 'pkg-config')
++  if xencontrol.found()
++    xen_pc = declare_dependency(version: xencontrol.version(),
++      dependencies: [
++        xencontrol,
++        # disabler: true makes xen_pc.found() return false if any is not found
++        dependency('xenstore', required: false,
++                   method: 'pkg-config',
++                   disabler: true),
++        dependency('xenforeignmemory', required: false,
++                   method: 'pkg-config',
++                   disabler: true),
++        dependency('xengnttab', required: false,
++                   method: 'pkg-config',
++                   disabler: true),
++        dependency('xenevtchn', required: false,
++                   method: 'pkg-config',
++                   disabler: true),
++        dependency('xendevicemodel', required: false,
++                   method: 'pkg-config',
++                   disabler: true),
++        # optional, no "disabler: true"
++        dependency('xentoolcore', required: false,
++                   method: 'pkg-config')])
++    if xen_pc.found()
++      xen = xen_pc
++    endif
++  endif
++  if not xen.found()
++    xen_tests = [ '4.11.0', '4.10.0', '4.9.0', '4.8.0', '4.7.1' ]
++    xen_libs = {
++      '4.11.0': [ 'xenstore', 'xenctrl', 'xendevicemodel', 'xenforeignmemory', 'xengnttab', 'xenevtchn', 'xentoolcore' ],
++      '4.10.0': [ 'xenstore', 'xenctrl', 'xendevicemodel', 'xenforeignmemory', 'xengnttab', 'xenevtchn', 'xentoolcore' ],
++      '4.9.0': [ 'xenstore', 'xenctrl', 'xendevicemodel', 'xenforeignmemory', 'xengnttab', 'xenevtchn' ],
++      '4.8.0': [ 'xenstore', 'xenctrl', 'xenforeignmemory', 'xengnttab', 'xenevtchn' ],
++      '4.7.1': [ 'xenstore', 'xenctrl', 'xenforeignmemory', 'xengnttab', 'xenevtchn' ],
++    }
++    xen_deps = {}
++    foreach ver: xen_tests
++      # cache the various library tests to avoid polluting the logs
++      xen_test_deps = []
++      foreach l: xen_libs[ver]
++        if l not in xen_deps
++          xen_deps += { l: cc.find_library(l, required: false) }
++        endif
++        xen_test_deps += xen_deps[l]
++      endforeach
++
++      # Use -D to pick just one of the test programs in scripts/xen-detect.c
++      xen_version = ver.split('.')
++      xen_ctrl_version = xen_version[0] + \
++        ('0' + xen_version[1]).substring(-2) + \
++        ('0' + xen_version[2]).substring(-2)
++      if cc.links(files('scripts/xen-detect.c'),
++                  args: '-DCONFIG_XEN_CTRL_INTERFACE_VERSION=' + xen_ctrl_version,
++                  dependencies: xen_test_deps)
++        xen = declare_dependency(version: ver, dependencies: xen_test_deps)
++        break
++      endif
++    endforeach
++  endif
++  if xen.found()
++    accelerators += 'CONFIG_XEN'
++  elif get_option('xen').enabled()
++    error('could not compile and link Xen test program')
++  endif
++endif
++have_xen_pci_passthrough = get_option('xen_pci_passthrough') \
++  .require(xen.found(),
++           error_message: 'Xen PCI passthrough requested but Xen not enabled') \
++  .require(targetos == 'linux',
++           error_message: 'Xen PCI passthrough not available on this platform') \
++  .require(cpu == 'x86'  or cpu == 'x86_64',
++           error_message: 'Xen PCI passthrough not available on this platform') \
++  .allowed()
++
+ ################
+ # Dependencies #
+ ################
+@@ -1689,86 +1776,6 @@ if not get_option('rdma').auto() or have_system
+   endforeach
+ endif
+ 
+-xen = not_found
+-if get_option('xen').enabled() or (get_option('xen').auto() and have_system)
+-  xencontrol = dependency('xencontrol', required: false,
+-                          method: 'pkg-config')
+-  if xencontrol.found()
+-    xen_pc = declare_dependency(version: xencontrol.version(),
+-      dependencies: [
+-        xencontrol,
+-        # disabler: true makes xen_pc.found() return false if any is not found
+-        dependency('xenstore', required: false,
+-                   method: 'pkg-config',
+-                   disabler: true),
+-        dependency('xenforeignmemory', required: false,
+-                   method: 'pkg-config',
+-                   disabler: true),
+-        dependency('xengnttab', required: false,
+-                   method: 'pkg-config',
+-                   disabler: true),
+-        dependency('xenevtchn', required: false,
+-                   method: 'pkg-config',
+-                   disabler: true),
+-        dependency('xendevicemodel', required: false,
+-                   method: 'pkg-config',
+-                   disabler: true),
+-        # optional, no "disabler: true"
+-        dependency('xentoolcore', required: false,
+-                   method: 'pkg-config')])
+-    if xen_pc.found()
+-      xen = xen_pc
+-    endif
+-  endif
+-  if not xen.found()
+-    xen_tests = [ '4.11.0', '4.10.0', '4.9.0', '4.8.0', '4.7.1' ]
+-    xen_libs = {
+-      '4.11.0': [ 'xenstore', 'xenctrl', 'xendevicemodel', 'xenforeignmemory', 'xengnttab', 'xenevtchn', 'xentoolcore' ],
+-      '4.10.0': [ 'xenstore', 'xenctrl', 'xendevicemodel', 'xenforeignmemory', 'xengnttab', 'xenevtchn', 'xentoolcore' ],
+-      '4.9.0': [ 'xenstore', 'xenctrl', 'xendevicemodel', 'xenforeignmemory', 'xengnttab', 'xenevtchn' ],
+-      '4.8.0': [ 'xenstore', 'xenctrl', 'xenforeignmemory', 'xengnttab', 'xenevtchn' ],
+-      '4.7.1': [ 'xenstore', 'xenctrl', 'xenforeignmemory', 'xengnttab', 'xenevtchn' ],
+-    }
+-    xen_deps = {}
+-    foreach ver: xen_tests
+-      # cache the various library tests to avoid polluting the logs
+-      xen_test_deps = []
+-      foreach l: xen_libs[ver]
+-        if l not in xen_deps
+-          xen_deps += { l: cc.find_library(l, required: false) }
+-        endif
+-        xen_test_deps += xen_deps[l]
+-      endforeach
+-
+-      # Use -D to pick just one of the test programs in scripts/xen-detect.c
+-      xen_version = ver.split('.')
+-      xen_ctrl_version = xen_version[0] + \
+-        ('0' + xen_version[1]).substring(-2) + \
+-        ('0' + xen_version[2]).substring(-2)
+-      if cc.links(files('scripts/xen-detect.c'),
+-                  args: '-DCONFIG_XEN_CTRL_INTERFACE_VERSION=' + xen_ctrl_version,
+-                  dependencies: xen_test_deps)
+-        xen = declare_dependency(version: ver, dependencies: xen_test_deps)
+-        break
+-      endif
+-    endforeach
+-  endif
+-  if xen.found()
+-    accelerators += 'CONFIG_XEN'
+-  elif get_option('xen').enabled()
+-    error('could not compile and link Xen test program')
+-  endif
+-endif
+-have_xen_pci_passthrough = get_option('xen_pci_passthrough') \
+-  .require(xen.found(),
+-           error_message: 'Xen PCI passthrough requested but Xen not enabled') \
+-  .require(targetos == 'linux',
+-           error_message: 'Xen PCI passthrough not available on this platform') \
+-  .require(cpu == 'x86'  or cpu == 'x86_64',
+-           error_message: 'Xen PCI passthrough not available on this platform') \
+-  .allowed()
+-
+-
+ cacard = not_found
+ if not get_option('smartcard').auto() or have_system
+   cacard = dependency('libcacard', required: get_option('smartcard'),
 -- 
 2.43.0
 
