@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56114820A7B
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 09:46:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F561820A87
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 09:50:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJrSJ-0004Mg-Gy; Sun, 31 Dec 2023 03:45:59 -0500
+	id 1rJrSH-0004G9-L7; Sun, 31 Dec 2023 03:45:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJrSG-0004Fw-UV
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:45:56 -0500
+ id 1rJrSF-0004FT-Jx
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:45:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJrSF-0000ki-3F
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:45:56 -0500
+ id 1rJrSE-0000kT-7t
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:45:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704012354;
+ s=mimecast20190719; t=1704012352;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=p+eGaivxgxxuwgRxyPAihwfI4xNVtda+8GH8RU0PMw0=;
- b=ABxWjtuvLB/zGuwt120raDsDV9Kq5Kx51nz6puE7GVJijBTnrO9yjdKvGC2cJme3yOY7TV
- 9kpWhoeXFTx/q7UQJItW47hC3hBgDbeR7PR3BIfI7zonXweUiwL/9rETvtcA5OmeOItSXs
- B5NRsQyD/KhmvIs1rL46TvBRK0V1tkI=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7C7Csfkgif0d2DH8bfPmHRJfMScsORLAfEbNEqOAzmU=;
+ b=Eib7sx5wXDoYMgy0YfyFomj2cbEov/rcNupsvuHMrFZJbNSG5BDEUXzLiDKiEUvMeBR2jp
+ VpuZADiyksT8lP+nm6sboWlWsvt8wg9wBXuff2s0tOo4aGd2Dqz4k1cWI5zBN03AAsctDv
+ XnC/Ie4SeCbeZLVCVMHG79UNcJdeQSE=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-Cj-K5j8_OLi11MgeIPn8iA-1; Sun, 31 Dec 2023 03:45:47 -0500
-X-MC-Unique: Cj-K5j8_OLi11MgeIPn8iA-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-55641f6437fso15924a12.2
- for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 00:45:47 -0800 (PST)
+ us-mta-54-y30pSgtYOOacnkfYsgbICw-1; Sun, 31 Dec 2023 03:45:50 -0500
+X-MC-Unique: y30pSgtYOOacnkfYsgbICw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a27c3388fb7so37793566b.0
+ for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 00:45:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704012346; x=1704617146;
+ d=1e100.net; s=20230601; t=1704012349; x=1704617149;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p+eGaivxgxxuwgRxyPAihwfI4xNVtda+8GH8RU0PMw0=;
- b=dvdxej/cBoY1TKV6D1XjKh7rndQ6VuOv7rCJVTq1/F4hD6xlfsU9AKz1F9ijmhkXu8
- aNv89qHwFMTeXpPKjQxGypjhg/93Sfo/hykrXnTeR5qJQTB41mMw2gSL+Kk+GA4OHVlc
- NhyWtly/VHj2qQMRHb37iL4YcfwBB1CM0+WpOjm8ZUyqhWS3kl2uEeu9Gxut2rffx78W
- PaFv179qIAKUx8OFkYpUvanGmDdqKGwWoXHR7mTjTkM0tSS7SmxHLZBArn6knTzeFAL9
- v4nnEr77GOQRi0u6B043jUxVOwiYod7RASzu1nT7jU5g++7/doNfyvT1Skd/hMtoTQ0E
- hDHQ==
-X-Gm-Message-State: AOJu0Yy41qOG5FVmBAtNtos9y5lFtdXMyICC5pRL42h9U+i022iEdBcK
- K1OvtVIDxnWfnRAv5xkHD9QpmXTvw0eup5TcxBQbH+7P1507RZT1KmGIi3NrQFbOfFQndiqP3kM
- Gc6mfRBUf/fPL7YIW21vivjWbIKL6pNeFjO6HvnzjOhQZQ0OG+WukH1Sb7KbNpLJrXd1gi1pPsx
- RJV86WzRQ=
-X-Received: by 2002:a50:ab5d:0:b0:554:1af:fe11 with SMTP id
- t29-20020a50ab5d000000b0055401affe11mr8927826edc.12.1704012345893; 
- Sun, 31 Dec 2023 00:45:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEAxzV7A6FRgymOn6hxm1CR8F1iCFVnmEgS98/JWpAbHUxtKZL5ECvHceqVWCkwEbXvt0HZjw==
-X-Received: by 2002:a50:ab5d:0:b0:554:1af:fe11 with SMTP id
- t29-20020a50ab5d000000b0055401affe11mr8927818edc.12.1704012345531; 
- Sun, 31 Dec 2023 00:45:45 -0800 (PST)
+ bh=7C7Csfkgif0d2DH8bfPmHRJfMScsORLAfEbNEqOAzmU=;
+ b=Vk7WtO9E6od5LBj8vUWu3J4eg9zEIirgc0jHLTgyHZAoBP9l9HSqXkDOLuwxLZMSiS
+ 06WMtM1eFAB+z0KvQGHQV14xNBuX+sgRJ4lUeH3RAnF43Gl3cV2qwYlKyNmlnulgWN8M
+ AGhjSQUlQdxKlJFG8BmkIeuKv6UwQn+spTzzldHeWCEsXdPhXSEkOdseUR844/iZmKDQ
+ 7jkmnj2AGUdZeyLdlDvASs8rWuyeZXzDG1MMeyP/o44Fr9ZBAl3gcf9sNUv+yvhuk6yP
+ a4AysYjd+fxnLueH76V6fzsz5afPLUuVuWH08xqDVGNqk6f0pjtC6ndyp8AloGINd1qU
+ D5HA==
+X-Gm-Message-State: AOJu0Yz7rcQ+MQp2lpIoU9jebOpmqnsR9unLQjoqHVKoXHHShmeXmHZ3
+ HZk/Q3RqAoNqHWnYGPMca0tK0gZTq9/QqZlOOeq/t7unLiFy7QBT6XGtgMzV5vC9WAfOcY/YBHF
+ uog1wQ40zd8RAjZjUVlASmLjfrMKveS9KW8NnIT8oP4hce5D2V6RpjThaHUCMb2RQ/RTdoqXaq0
+ X1pzVxaJc=
+X-Received: by 2002:a50:c101:0:b0:555:bebd:4f70 with SMTP id
+ l1-20020a50c101000000b00555bebd4f70mr1507661edf.0.1704012349047; 
+ Sun, 31 Dec 2023 00:45:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGAvcTx4RSn+HhuLT8H6ZTGfZVt2OlM29hF9HBi8p4Au8VFE5EpLKXMZOKlqHFQHjPFkaZKJA==
+X-Received: by 2002:a50:c101:0:b0:555:bebd:4f70 with SMTP id
+ l1-20020a50c101000000b00555bebd4f70mr1507654edf.0.1704012348792; 
+ Sun, 31 Dec 2023 00:45:48 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a05640240c200b005527c02c1d6sm13143688edb.50.2023.12.31.00.45.44
+ g25-20020aa7c859000000b005532b0414aesm13295952edt.51.2023.12.31.00.45.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Dec 2023 00:45:45 -0800 (PST)
+ Sun, 31 Dec 2023 00:45:46 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 15/46] target/i386: split eflags computation out of
- gen_compute_eflags
-Date: Sun, 31 Dec 2023 09:44:31 +0100
-Message-ID: <20231231084502.235366-16-pbonzini@redhat.com>
+Subject: [PULL 16/46] target/i386: do not use s->tmp4 for push
+Date: Sun, 31 Dec 2023 09:44:32 +0100
+Message-ID: <20231231084502.235366-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231231084502.235366-1-pbonzini@redhat.com>
 References: <20231231084502.235366-1-pbonzini@redhat.com>
@@ -102,83 +101,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The new x86 decoder wants the gen_* functions to compute EFLAGS before
-writeback, which can be an issue for instructions with a memory
-destination such as ARPL or shifts.
-
-Extract code to compute the EFLAGS without clobbering CC_SRC, in case
-the memory write causes a fault.  The flags writeback mechanism will
-take care of copying the result to CC_SRC.
+Just create a temporary for the occasion.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ target/i386/tcg/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 00ed0cc9a31..b79c312465b 100644
+index b79c312465b..afe0fa6c65f 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -862,22 +862,22 @@ static void gen_op_update_neg_cc(DisasContext *s)
-     tcg_gen_movi_tl(s->cc_srcT, 0);
- }
+@@ -2580,7 +2580,7 @@ static void gen_push_v(DisasContext *s, TCGv val)
  
--/* compute all eflags to cc_src */
--static void gen_compute_eflags(DisasContext *s)
-+/* compute all eflags to reg */
-+static void gen_mov_eflags(DisasContext *s, TCGv reg)
- {
--    TCGv zero, dst, src1, src2;
-+    TCGv dst, src1, src2;
-+    TCGv_i32 cc_op;
-     int live, dead;
- 
-     if (s->cc_op == CC_OP_EFLAGS) {
-+        tcg_gen_mov_tl(reg, cpu_cc_src);
-         return;
-     }
-     if (s->cc_op == CC_OP_CLR) {
--        tcg_gen_movi_tl(cpu_cc_src, CC_Z | CC_P);
--        set_cc_op(s, CC_OP_EFLAGS);
-+        tcg_gen_movi_tl(reg, CC_Z | CC_P);
-         return;
-     }
- 
--    zero = NULL;
-     dst = cpu_cc_dst;
-     src1 = cpu_cc_src;
-     src2 = cpu_cc_src2;
-@@ -886,7 +886,7 @@ static void gen_compute_eflags(DisasContext *s)
-     live = cc_op_live[s->cc_op] & ~USES_CC_SRCT;
-     dead = live ^ (USES_CC_DST | USES_CC_SRC | USES_CC_SRC2);
-     if (dead) {
--        zero = tcg_constant_tl(0);
-+        TCGv zero = tcg_constant_tl(0);
-         if (dead & USES_CC_DST) {
-             dst = zero;
+     if (!CODE64(s)) {
+         if (ADDSEG(s)) {
+-            new_esp = s->tmp4;
++            new_esp = tcg_temp_new();
+             tcg_gen_mov_tl(new_esp, s->A0);
          }
-@@ -898,8 +898,18 @@ static void gen_compute_eflags(DisasContext *s)
-         }
-     }
- 
--    gen_update_cc_op(s);
--    gen_helper_cc_compute_all(cpu_cc_src, dst, src1, src2, cpu_cc_op);
-+    if (s->cc_op != CC_OP_DYNAMIC) {
-+        cc_op = tcg_constant_i32(s->cc_op);
-+    } else {
-+        cc_op = cpu_cc_op;
-+    }
-+    gen_helper_cc_compute_all(reg, dst, src1, src2, cc_op);
-+}
-+
-+/* compute all eflags to cc_src */
-+static void gen_compute_eflags(DisasContext *s)
-+{
-+    gen_mov_eflags(s, cpu_cc_src);
-     set_cc_op(s, CC_OP_EFLAGS);
- }
- 
+         gen_lea_v_seg(s, a_ot, s->A0, R_SS, -1);
 -- 
 2.43.0
 
