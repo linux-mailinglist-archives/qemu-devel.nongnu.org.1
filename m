@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8191820A89
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 09:50:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 819E1820A9F
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 09:53:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJrUk-0007HP-4N; Sun, 31 Dec 2023 03:48:32 -0500
+	id 1rJrUs-00082v-VP; Sun, 31 Dec 2023 03:48:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJrSf-0004xj-Ka
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:46:27 -0500
+ id 1rJrSv-00057o-4f
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:46:39 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJrSd-0000oJ-V8
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:46:21 -0500
+ id 1rJrSm-0000qU-0D
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:46:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704012379;
+ s=mimecast20190719; t=1704012387;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qMPfuQKYh8RDla6S4U2P4p48I7GyoAc7S/H6lEUsjtA=;
- b=X06HNrUOvNr4BiydmIRBuTJeNHTGgLd5EVszFbJUHlYOoZNB2rHO3zdcwwfleJXhAeIZ62
- OMkzuJewtEfnIkM5+keuzolA0lKDys90TcLHNTK7vr1/pldzxjhadLMqgCQnz3wgUPeYUX
- CvZiiKRRCTBLJr9fNqNfJ8n6LNjzpKI=
+ bh=5St6V/X9aWWovQ3ck81QWi8L/g+CG2amW8js8n1+mn0=;
+ b=VahYHfeuCjKThouq5PHWEkLE5a3r1PRr0yyPMztADlr9/xmHJt4airf9s9IsY2dFzaevB2
+ L9XKLXQ7AV2I1FMfqWTlvZUGiRcWSOAowmhUnlp00Mc4APj3pqs9etl51H/W5r4n92FLRr
+ +pLcHBkSBT8RUXlDW8dqEbWbGYkX+Lw=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-288-i_itwihiOwSr4mmL_EJjMg-1; Sun, 31 Dec 2023 03:46:16 -0500
-X-MC-Unique: i_itwihiOwSr4mmL_EJjMg-1
+ us-mta-70-N0ZyMQKdMKuK-cayjBKhCQ-1; Sun, 31 Dec 2023 03:46:18 -0500
+X-MC-Unique: N0ZyMQKdMKuK-cayjBKhCQ-1
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-336862fa1a5so5604198f8f.2
- for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 00:46:16 -0800 (PST)
+ ffacd0b85a97d-33688aa4316so5019305f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 00:46:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704012375; x=1704617175;
+ d=1e100.net; s=20230601; t=1704012377; x=1704617177;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qMPfuQKYh8RDla6S4U2P4p48I7GyoAc7S/H6lEUsjtA=;
- b=aA7L0POwYmVP/DsIgdxTTV9w197EaVqvs8wuUjWARKLT+cp7bsrtfzND1ntVemEk4o
- hQiC7W8+dY7bFUBoUwbfTOC9kTpKeyzxjQVC0ir7dDRM4fIh5HJSHSPYuorceO8lyxrz
- 2XOH5TGZcj5m6vve92vbIevbchGUByAt5eBDfnCcHq/nvJDFodkZsTiYUU0tHx+mPjLU
- PLd4B1pfOUZ6hcC0mygiB2GSjc1vuLFeqtKM298Sff9D+3tXPskEwPQ7M648lJUA/BM/
- tu4c81onELHdF4bcycLKz/f4cdUr22IdjmYdgCqNZL88oo7zwysLPxAJw5g8IWNfA79S
- TUAA==
-X-Gm-Message-State: AOJu0Yzgo7Jw5RPoYiYOT57fD9EbHC/6aXCbkmR3Dr0KyJHVm5hu544b
- DbONP9ZW0rX4wkPJE+Lx5heZbu71Hpxtt3ZXs1jd2qH2hirMzYQrED+iX+GOtVCu05O/da1xNTU
- mKVIJBi5PvVY7QmJFKUCaHEFTMPUZBvz11+muNqXcdm9FwBsI7uejCXAsmvxNRYNEuupDGYSCTX
- C0L6rzI2g=
-X-Received: by 2002:a5d:6c6d:0:b0:337:3f72:3de2 with SMTP id
- r13-20020a5d6c6d000000b003373f723de2mr122533wrz.36.1704012374970; 
- Sun, 31 Dec 2023 00:46:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHVbxlsM36Xkzyin0NtQFFpaCsne78Dr3e4w0JGduUivJSbDSqzJeM/2ooXRwSpSdWrfuH8Cw==
-X-Received: by 2002:a5d:6c6d:0:b0:337:3f72:3de2 with SMTP id
- r13-20020a5d6c6d000000b003373f723de2mr122529wrz.36.1704012374673; 
- Sun, 31 Dec 2023 00:46:14 -0800 (PST)
+ bh=5St6V/X9aWWovQ3ck81QWi8L/g+CG2amW8js8n1+mn0=;
+ b=bAOnnnVVT8emfeLazk1+orYjAQu8ph0vIdicoLgecpwcsAwMiATFbJStXQIg1awiDx
+ aOwSZH8Bnf6shfNv1RezVMt53T/QJ+52wIMWzQOYrVPnwPjtbFD489aC6lkl+zrL2l22
+ mmbJIg2qhOjdCpSYpwLCwfMSwbQqAy5psN4AszqnBsmzH7pBkxSwjv7qUht4baNYHiEX
+ 8Nzr2ho0iYq5xp8d4FWd1HWhAYWHczBE279W3Ivle4YPdBUhHtA4wWeRX0NDem4CfNtq
+ mGoYK9LsqUAlCkhMEX0BZ6AkGKs6RBYWhDpR9SbAM1EORizDVRZoT/Ro+HWojyRJuXlX
+ B3Dw==
+X-Gm-Message-State: AOJu0YyFfKUBzn5pXhSbkFAX4ziBLcfNXzB9oLag7i4hfN1LqYeqs/D3
+ BdZYKKCYMcIbNql44F5+THGF15MvnFb4wkJVauQlfsutNdkYUrDiTQvdsItWYJcV97KgstmQLSC
+ 8Qg0FmOlpPFe4hicKr1H3t2WbHIDHB794vwCZqc/yCDB8RpNDhiQ109qrnfeFn4kS+XTlH96Z+T
+ jG0EMmOa0=
+X-Received: by 2002:a05:600c:4686:b0:40d:4dce:4a2e with SMTP id
+ p6-20020a05600c468600b0040d4dce4a2emr8662049wmo.26.1704012377267; 
+ Sun, 31 Dec 2023 00:46:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFHhhQjAoVz7glahG+JKjRJxqmIlcdgM15DqYFw+3oScgnJkgFszWVla2hZu30dO0mn5HQd7w==
+X-Received: by 2002:a05:600c:4686:b0:40d:4dce:4a2e with SMTP id
+ p6-20020a05600c468600b0040d4dce4a2emr8662043wmo.26.1704012377033; 
+ Sun, 31 Dec 2023 00:46:17 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- o10-20020adfeaca000000b0033677a4e0d6sm23123229wrn.13.2023.12.31.00.46.13
- for <qemu-devel@nongnu.org>
+ fb8-20020a05600c520800b0040d87b9eec7sm888060wmb.32.2023.12.31.00.46.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Dec 2023 00:46:14 -0800 (PST)
+ Sun, 31 Dec 2023 00:46:16 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 25/46] meson: fix type of "relocatable" option
-Date: Sun, 31 Dec 2023 09:44:41 +0100
-Message-ID: <20231231084502.235366-26-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 26/46] meson: remove unused variable
+Date: Sun, 31 Dec 2023 09:44:42 +0100
+Message-ID: <20231231084502.235366-27-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231231084502.235366-1-pbonzini@redhat.com>
 References: <20231231084502.235366-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -101,27 +102,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the option is of boolean type, the default value should be a boolean
-rather than a string.
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson_options.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/bench/meson.build | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/meson_options.txt b/meson_options.txt
-index c9baeda6395..0a99a059ec8 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -101,7 +101,7 @@ option('cfi_debug', type: 'boolean', value: false,
-        description: 'Verbose errors in case of CFI violation')
- option('multiprocess', type: 'feature', value: 'auto',
-        description: 'Out of process device emulation support')
--option('relocatable', type : 'boolean', value : 'true',
-+option('relocatable', type : 'boolean', value : true,
-        description: 'toggle relocatable install')
- option('vfio_user_server', type: 'feature', value: 'disabled',
-        description: 'vfio-user server support')
+diff --git a/tests/bench/meson.build b/tests/bench/meson.build
+index 3c799dbd983..7e76338a52d 100644
+--- a/tests/bench/meson.build
++++ b/tests/bench/meson.build
+@@ -3,9 +3,9 @@ qht_bench = executable('qht-bench',
+                        sources: 'qht-bench.c',
+                        dependencies: [qemuutil])
+ 
+-qtree_bench = executable('qtree-bench',
+-                         sources: 'qtree-bench.c',
+-                         dependencies: [qemuutil])
++executable('qtree-bench',
++           sources: 'qtree-bench.c',
++           dependencies: [qemuutil])
+ 
+ executable('atomic_add-bench',
+            sources: files('atomic_add-bench.c'),
 -- 
 2.43.0
 
