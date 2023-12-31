@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32165820A99
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 09:53:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4D6820A78
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 09:46:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJrRr-0004B4-8O; Sun, 31 Dec 2023 03:45:31 -0500
+	id 1rJrRs-0004Bj-SO; Sun, 31 Dec 2023 03:45:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJrRo-0004Ac-PK
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:45:28 -0500
+ id 1rJrRp-0004Al-Q1
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:45:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJrRm-0000ge-9a
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:45:28 -0500
+ id 1rJrRn-0000gh-Vk
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:45:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1704012325;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kYA4HfjADI4Xy8ZdhxyqI1foFbYl+t0+8orNZuloaxs=;
- b=TNFl2/dLBYzBrgiAKVjUiMGqkMKdX386N5aMvhwsKEGrpfXdmUVpcjqy68sxUboUcXIqin
- V3qdupDkZVT6QBnEKjBjLYmoK6aQxMrMsOmqPBs8CXDejC7CZK4EdUymqMFYN8WmHcb7D7
- rHVHDW7HGOe1mw1SHqL++FBQZEYLfhw=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LQ32nVs2r70R47Ic6geyxZ1Up/qQ6fMthSaIzXPGiiM=;
+ b=fUQAO+n+AGxRtSmjvEqVIfKyOTGnS+BqSg5wYrbISqYhxGcS1t6us5bSveL3TMAjxIPBZK
+ XnWJkcttv+vrs2R1ovZSNVzZXxlX8lPAVXRVSyuoYqvHyQQBWi0yRjKMUu0Y9u/XWYc8lT
+ sxWMmmWFeLh21BNaoc9YWp3lGmid9x8=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-z58buiiaMPOOQ9-WPNqGow-1; Sun, 31 Dec 2023 03:45:15 -0500
-X-MC-Unique: z58buiiaMPOOQ9-WPNqGow-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a27eddc968fso2697666b.3
- for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 00:45:15 -0800 (PST)
+ us-mta-524-K-GONlf2OqiHJmUHVmgRIg-1; Sun, 31 Dec 2023 03:45:17 -0500
+X-MC-Unique: K-GONlf2OqiHJmUHVmgRIg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-554acc951faso3431862a12.2
+ for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 00:45:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704012314; x=1704617114;
+ d=1e100.net; s=20230601; t=1704012316; x=1704617116;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kYA4HfjADI4Xy8ZdhxyqI1foFbYl+t0+8orNZuloaxs=;
- b=htxf7eYBUPoGJA1icSdk3NdjNDQUWmq4+qYQvCTs6J5UG3NxJBgs1zXRzs0+UCLKuy
- WoUAqEqZNH910M6QjEzwurAj1a44CHHnijD6LtD2s5Mg1uvOCQMRzMx9X2ZmekVHW9lk
- P6mV6kAjEgaucEpW6sloO9cHsmEL+OorJDHO6WbZgpwqug76g08KUGH0DsDi/+3sC6LO
- T+rYwnOSqHuqxmk+Cvk4Q2IAT4bEZGXrytaW8kUC6Yu1nPkNyyWTsIhUn9ckzFJ8pe6U
- 7e0H7Tf5ALdiUViJayby3IwZuKkjOJ3zAn+Ii6qEmy3PHw198cRVTnw/8Pe8xU6v6IKQ
- uV3w==
-X-Gm-Message-State: AOJu0YyMzx74qeZmRbu0hG4SeO7/xxFALY4eauGt3MDPyK2iaDH4Wp/c
- OL6jhKYlTTt/kMn1GN6LFh8n7eVhIKcn1te5teTDFA7t+lwCyEdeh7nXM8A3Imlpac2WDce6w58
- bYYXiYcwsyktqqDo0VerElJblY0FDkIR+UAe56duwkBTjJqh3UHxNm9Rvb09E7rlTTFUGsXzn4c
- PKNfd+R1M=
-X-Received: by 2002:a50:c25a:0:b0:555:3143:f9dd with SMTP id
- t26-20020a50c25a000000b005553143f9ddmr4050830edf.19.1704012314026; 
- Sun, 31 Dec 2023 00:45:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFkQemkmRuEgPAAfLgHvuMaoUPgBKzv+3CCO+Fz/rFfKJVLiWGLKFQRoeRK6qRuNUnQTPZsqA==
-X-Received: by 2002:a50:c25a:0:b0:555:3143:f9dd with SMTP id
- t26-20020a50c25a000000b005553143f9ddmr4050823edf.19.1704012313801; 
- Sun, 31 Dec 2023 00:45:13 -0800 (PST)
+ bh=LQ32nVs2r70R47Ic6geyxZ1Up/qQ6fMthSaIzXPGiiM=;
+ b=f6pCYKnWexSfhBhteOpAjOu0ZOUwMzjjpf9u7nE2PZk2nuGqgmqqwK4Yrerk2FOG9h
+ DbP5fNCQ1bk7H5brYXpzRVAXDnbPq6pp0IyXr6RdyqgrA0Wxx7IYhhOqsquacspPwVae
+ 8tPPWlc+8RLoyXmvi5MM2TiGbRpSt5qD8PZ8LMi1lMsqb4miHYTbmU+Y60dmAMjW6YaM
+ owRhN+5H4Tpcs/l40zctG/0Lky77mOvE1bg1jGNaF4onvryy552S7fJzkWW578QqUUQh
+ 3zCt9/kNWaUuY/f/9W1zbb+8MPhL/dpwMBHsrqLrQ+HNYkEQ4tENDR6rgRppdbM+4+V9
+ V9bQ==
+X-Gm-Message-State: AOJu0Yy6AYak+7MUhXvQqZOJli+dUS8DpQ+PBgGh6dXL6Xey460khfXy
+ PVcFgGvl54YL2w97p7bJeBDVUqkZq8nJkB447fbvFYaayLEPvxTMxzRZm51XV/f5r5mC7W3LJkD
+ mLSkVMShLTqdHvEAhpnz7QvIQJQKLof46w3+AsMurkCN9LZa/LuZ5/oAjeR/4zLWc5ESNI0OL1z
+ lvBukCE2g=
+X-Received: by 2002:a17:906:117:b0:a27:45a2:e5f9 with SMTP id
+ 23-20020a170906011700b00a2745a2e5f9mr2977464eje.21.1704012316028; 
+ Sun, 31 Dec 2023 00:45:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGdPMyA8PM+9BJ5fm9tYnFHgj5QSJIpqxMnaTdN6Gvxgj2P24XyFeBTSf22d9ggQFKDvZrcPA==
+X-Received: by 2002:a17:906:117:b0:a27:45a2:e5f9 with SMTP id
+ 23-20020a170906011700b00a2745a2e5f9mr2977460eje.21.1704012315735; 
+ Sun, 31 Dec 2023 00:45:15 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- g6-20020a056402114600b005561ad0368fsm1004538edw.12.2023.12.31.00.45.12
+ hg2-20020a170906f34200b00a26b361ec0esm8730683ejb.118.2023.12.31.00.45.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Dec 2023 00:45:13 -0800 (PST)
+ Sun, 31 Dec 2023 00:45:15 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 03/46] target/i386: speedup JO/SETO after MUL or IMUL
-Date: Sun, 31 Dec 2023 09:44:19 +0100
-Message-ID: <20231231084502.235366-4-pbonzini@redhat.com>
+Subject: [PULL 04/46] target/i386: remove unnecessary arguments from
+ raise_interrupt
+Date: Sun, 31 Dec 2023 09:44:20 +0100
+Message-ID: <20231231084502.235366-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231231084502.235366-1-pbonzini@redhat.com>
 References: <20231231084502.235366-1-pbonzini@redhat.com>
@@ -101,28 +102,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-OF is equal to the carry flag, so use the same CCPrepare.
+is_int is always 1, and error_code is always zero.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/i386/tcg/excp_helper.c | 7 +++----
+ target/i386/tcg/helper-tcg.h  | 3 +--
+ target/i386/tcg/misc_helper.c | 2 +-
+ 3 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 8fb80011a22..a16eb8d4008 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -1020,6 +1020,9 @@ static CCPrepare gen_prepare_eflags_o(DisasContext *s, TCGv reg)
-     case CC_OP_CLR:
-     case CC_OP_POPCNT:
-         return (CCPrepare) { .cond = TCG_COND_NEVER, .mask = -1 };
-+    case CC_OP_MULB ... CC_OP_MULQ:
-+        return (CCPrepare) { .cond = TCG_COND_NE,
-+                             .reg = cpu_cc_src, .mask = -1 };
-     default:
-         gen_compute_eflags(s);
-         return (CCPrepare) { .cond = TCG_COND_NE, .reg = cpu_cc_src,
+diff --git a/target/i386/tcg/excp_helper.c b/target/i386/tcg/excp_helper.c
+index 7c3c8dc7fe8..65e37ae2a0c 100644
+--- a/target/i386/tcg/excp_helper.c
++++ b/target/i386/tcg/excp_helper.c
+@@ -28,7 +28,7 @@
+ G_NORETURN void helper_raise_interrupt(CPUX86State *env, int intno,
+                                           int next_eip_addend)
+ {
+-    raise_interrupt(env, intno, 1, 0, next_eip_addend);
++    raise_interrupt(env, intno, next_eip_addend);
+ }
+ 
+ G_NORETURN void helper_raise_exception(CPUX86State *env, int exception_index)
+@@ -112,10 +112,9 @@ void raise_interrupt2(CPUX86State *env, int intno,
+ 
+ /* shortcuts to generate exceptions */
+ 
+-G_NORETURN void raise_interrupt(CPUX86State *env, int intno, int is_int,
+-                                int error_code, int next_eip_addend)
++G_NORETURN void raise_interrupt(CPUX86State *env, int intno, int next_eip_addend)
+ {
+-    raise_interrupt2(env, intno, is_int, error_code, next_eip_addend, 0);
++    raise_interrupt2(env, intno, 1, 0, next_eip_addend, 0);
+ }
+ 
+ G_NORETURN void raise_exception_err(CPUX86State *env, int exception_index,
+diff --git a/target/i386/tcg/helper-tcg.h b/target/i386/tcg/helper-tcg.h
+index cd1723389ad..ce34b737bb0 100644
+--- a/target/i386/tcg/helper-tcg.h
++++ b/target/i386/tcg/helper-tcg.h
+@@ -65,8 +65,7 @@ G_NORETURN void raise_exception_err(CPUX86State *env, int exception_index,
+                                     int error_code);
+ G_NORETURN void raise_exception_err_ra(CPUX86State *env, int exception_index,
+                                        int error_code, uintptr_t retaddr);
+-G_NORETURN void raise_interrupt(CPUX86State *nenv, int intno, int is_int,
+-                                int error_code, int next_eip_addend);
++G_NORETURN void raise_interrupt(CPUX86State *nenv, int intno, int next_eip_addend);
+ G_NORETURN void handle_unaligned_access(CPUX86State *env, vaddr vaddr,
+                                         MMUAccessType access_type,
+                                         uintptr_t retaddr);
+diff --git a/target/i386/tcg/misc_helper.c b/target/i386/tcg/misc_helper.c
+index babff061864..66b332a83c1 100644
+--- a/target/i386/tcg/misc_helper.c
++++ b/target/i386/tcg/misc_helper.c
+@@ -43,7 +43,7 @@ void helper_into(CPUX86State *env, int next_eip_addend)
+ 
+     eflags = cpu_cc_compute_all(env, CC_OP);
+     if (eflags & CC_O) {
+-        raise_interrupt(env, EXCP04_INTO, 1, 0, next_eip_addend);
++        raise_interrupt(env, EXCP04_INTO, next_eip_addend);
+     }
+ }
+ 
 -- 
 2.43.0
 
