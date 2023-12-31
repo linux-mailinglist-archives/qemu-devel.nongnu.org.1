@@ -2,89 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E62820AD9
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 10:41:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAB43820B1E
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 11:50:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJsId-0003ed-Uv; Sun, 31 Dec 2023 04:40:03 -0500
+	id 1rJtN4-0006ur-3c; Sun, 31 Dec 2023 05:48:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJsIQ-0003RQ-6i
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:39:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1rJtN2-0006ud-Bf
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 05:48:40 -0500
+Received: from mail-mw2nam10on20601.outbound.protection.outlook.com
+ ([2a01:111:f403:2412::601]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJsIL-0001Pn-W7
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:39:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704015585;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=S+H3R073HOVUafO2Tm+SJNZpyjNCi5sTplULF4PSBxA=;
- b=jD8e2zPVXapj2jqofAub06ifB35M5G+PgQfy0sgUBefA4Y2dszlEgxhP6S8VRNDECYzZVt
- rnd0xDQW67KlTVw6Li8xG1/hdC4vClxjEzR259hn1QmnMiBFHkBabKkyHDNS4IBQ2XFnDx
- 0tS4+MdpYXcZI79bD7FMmxd0x0tUDIY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-207-74qD4HYTPHqe8dM67qShHg-1; Sun, 31 Dec 2023 04:39:43 -0500
-X-MC-Unique: 74qD4HYTPHqe8dM67qShHg-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3368abe10c5so5660171f8f.0
- for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 01:39:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704015581; x=1704620381;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=S+H3R073HOVUafO2Tm+SJNZpyjNCi5sTplULF4PSBxA=;
- b=fWx1tLipna/1YvSYcU/dWSISFROqxiVihightF4+qcXBGZO3jRWEFiGZA4yvtM7nq8
- 0zKgHnfJIyE2RxybslQvz+PVUcUY8+p1LiBTFQfEzZTttB9dSqQbUcCNmroIJpInVcym
- PpT63snH3A90EXIADUTbVbTjMSooAwmLFeKs3f4pLlI/l6LhDnq4DxQAAWP2P1dg3eN5
- EPFHpBZIrWyGE+zsXmhBOYG+0V7hf0uACrKCdyH9xwrfnbaunavXB32bkpKwFXd9+U5n
- /+zLCZFv4i/NfauhI4KTJL9LFfPc5Vdcz6Y4wjfpE8MZwEJM08KIw6Etg4kCjgFmFXeW
- KPEw==
-X-Gm-Message-State: AOJu0YwP69B9hlETtnd8wMmaeAe19UQK02d5sGWFfg2LcqfiA4MMWcIB
- l19j47IuEhsZBHTudnIWFrXSsX9+d7bQqU+s2XYjpan8tX9lYriIAfyt2pJ+WnYTv2xF847t2yL
- 1HbOO89OKqE+cgz36cgrjlHgWGkvvkdbGwYEOmfEUxegAYH+1ALRrQpGD1xRkgm28TvdAtMSoQm
- j0mR3+RCo=
-X-Received: by 2002:a5d:6ac1:0:b0:336:6720:aafe with SMTP id
- u1-20020a5d6ac1000000b003366720aafemr4973404wrw.54.1704015581114; 
- Sun, 31 Dec 2023 01:39:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGTr3Gcvgr3tcc5Laod/W+xMEjv1xVEkuWz6wu4cSWdIUwfqtZnqzdCxeFbVaX1aoQ8vS/VTQ==
-X-Received: by 2002:a5d:6ac1:0:b0:336:6720:aafe with SMTP id
- u1-20020a5d6ac1000000b003366720aafemr4973397wrw.54.1704015580602; 
- Sun, 31 Dec 2023 01:39:40 -0800 (PST)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
- by smtp.gmail.com with ESMTPSA id
- cg13-20020a5d5ccd000000b00336e6014263sm11854213wrb.98.2023.12.31.01.39.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Dec 2023 01:39:39 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: kraxel@redhat.com
-Subject: [PATCH 8/8] vga: sort-of implement word and double-word access modes
-Date: Sun, 31 Dec 2023 10:39:18 +0100
-Message-ID: <20231231093918.239549-9-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231231093918.239549-1-pbonzini@redhat.com>
-References: <20231231093918.239549-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1rJtN0-000394-91
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 05:48:40 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ed+squ7VJ0hbzMQQ9kq2AlkLv54pp8AEbLuBGVFxldudoaBPC8640ue9KFrqvDkA2LBGXBXDOPlUQNVPXjTmqfQ5sJClicl+rk1P5zhj2Vw7Fm3o9f5E/GkVgetSJqz29e7c3bhVnwvCPq7IBpnGiy4+7wCt5AKl30MCPzCCAp3fR+UdCByH9V7tTQNmX9RIRs98JF9GSrn1Eo+Czfnot1DhVgB5U7BPhC81ftnKKeqjZQ0intQIU+no52KW4UpGW7f31+Ea43QI3pOoz4pLCSVQGB1BYrtmJ3Vk1+g6yHi24Y+Pw8LRaA7aLJUFnichujU80k+Q57qUQsNs0l1Mrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TqftJsLj3vimXIypQSJBsI4d4cISc2euat/LxQ7PF9w=;
+ b=eCR3OYaq3bPwApF9MxUnXqfhOPOMBRf4VrpBr2UEuD3Ug63rwJ4NZgUxolaYSPbQMGNH+EUz4033BVhhReT8g4gz6tQ9BAWGOZKAGumAq4ngEGtVhARQ5y02lur0VW8hq7ohzZyslEm/WxXmsoD/OFkIcR3Bk2YTgtzx42sDH5DlfvJoafGPd4yAvbJaTkrlnR7gfr4KIWdo42HMHqa0DVUzEwQvoZFE8tEnhHGmpoZZ9eG5vmVdVS7xlu+Qtd/AxKG2zzbQd2dxFeOAXMzqiemvgOqM4kDjRkunrjWP0kXqNsWibRfDJ3TeYP0rcnNBrYnO8BYibO4v/EywOdcqAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TqftJsLj3vimXIypQSJBsI4d4cISc2euat/LxQ7PF9w=;
+ b=plQhZMwDUyUZsIWasYbQ6j4T9O01GG88H1kyqKSxJW9YQ3hh/UejQnq2yxZZ6v4wO379A9uyPB0ssrrts9RDR5oR5iX0MGIORlsEwh0C+iZCv1rtsr+ebkXhvrZmMefXdom3pKPIDs1bmZDjaZFrumOSxxMWD9Gru9RpWXOYMfUqlX+QWZ2FL6LhAuArGba9A/l4XlsDCzOkMrCNjB53O5lsY0SaPDAYCh9B1Kme0dHKaDiFV61ncTH5z9N6OEwe+wX9czKROuSEEMRKpsO2uz0YUUg8OkBco/xk298mcEk17A0tqlHMgl7roewzJPK3KsiExJlhiejOF7w1wD446A==
+Received: from MW2PR16CA0060.namprd16.prod.outlook.com (2603:10b6:907:1::37)
+ by IA0PR12MB8906.namprd12.prod.outlook.com (2603:10b6:208:481::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.24; Sun, 31 Dec
+ 2023 10:48:32 +0000
+Received: from MWH0EPF000971E5.namprd02.prod.outlook.com
+ (2603:10b6:907:1:cafe::dc) by MW2PR16CA0060.outlook.office365.com
+ (2603:10b6:907:1::37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.21 via Frontend
+ Transport; Sun, 31 Dec 2023 10:48:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ MWH0EPF000971E5.mail.protection.outlook.com (10.167.243.73) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7159.9 via Frontend Transport; Sun, 31 Dec 2023 10:48:32 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 31 Dec
+ 2023 02:48:21 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 31 Dec
+ 2023 02:48:20 -0800
+Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server id 15.2.986.41 via Frontend Transport; Sun, 31 Dec
+ 2023 02:48:19 -0800
+From: Avihai Horon <avihaih@nvidia.com>
+To: <qemu-devel@nongnu.org>
+CC: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, Avihai Horon
+ <avihaih@nvidia.com>
+Subject: [PATCH] vfio/migration: Add helper function to set state or reset
+ device
+Date: Sun, 31 Dec 2023 12:48:18 +0200
+Message-ID: <20231231104818.17666-1-avihaih@nvidia.com>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E5:EE_|IA0PR12MB8906:EE_
+X-MS-Office365-Filtering-Correlation-Id: dba7fc0d-deee-4de1-eeed-08dc09ee0813
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: zNXLunP9RFON225WkqTe0tol8iTJcixMe9jh/kcggpB2Raj7yEkRT3yp9Xn3PE/PXviVFpc7w/K4SZK83E1g7/8VPTiug1trPZPA9Qf9ey5SFrhfDTHDNuRzDBArO/kc/A6z3X3jAGOYukHIn8tvjY671+TSxp+ZlxvQ9S88v+6w2Cpa5wkO9qzhP1dEhXJYNVNOPjuDqF7zCra8KS0dAOvhPPfWwY+pVWrjAL1gqegRfFxAKed7oCO2QITR/LvgJKtlEG3AhsjOk6hBOKS8ccwmArw/TUxs6n22sUSTPa2vp+BfTVCF/wAH5OuHwInxUyMY+5VMSo1ZBbx0Le81sOJPI4bTSuWnscvLZym6KcE1aCvzohmyBkUkzWwDdT9urEcHcXdr4R5nyFczxd47itdJ1TypZJDun4gxw9CJHgJafbxy3OD+ZKg1c4eSMDh7cr/3ssjB+EL0NA1L28fLqhiwDL1jlMhjeR9NNLrPjwRJgkwzBOtrKufmgBWZLKxoRIhtDXjycKcpC9MzYicBjw10PEYNHQEIxwc/41cZbj9uIwq59Bw8yPP0JSwRBssock1VU8/u+k/jxmTlJ54BuIaiEbblJR/DAT4dp/atJTlfqEpHZ2+Vv0PXcOIKo6xG1CPNDxFrw2iYHio1I8jQLKoXDlKbGEgpyFlvctPhcY7meNN9h1HryyOGr3gE3a+FLFoJAav1flnTt9QyOnKuKZzEOUkQcIENJxKNzfaB0dGzF8o5yLT9zQVGvzhlVLeA
+X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
+ SFS:(13230031)(4636009)(39860400002)(396003)(136003)(346002)(376002)(230922051799003)(82310400011)(186009)(64100799003)(451199024)(1800799012)(40470700004)(46966006)(36840700001)(40480700001)(40460700003)(41300700001)(2906002)(5660300002)(8676002)(4326008)(316002)(6916009)(54906003)(70206006)(70586007)(8936002)(36756003)(86362001)(82740400003)(7636003)(356005)(478600001)(7696005)(47076005)(36860700001)(83380400001)(107886003)(1076003)(26005)(426003)(336012)(2616005);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2023 10:48:32.0752 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: dba7fc0d-deee-4de1-eeed-08dc09ee0813
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000971E5.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8906
+Received-SPF: softfail client-ip=2a01:111:f403:2412::601;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
 X-Spam_bar: ----
 X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.667,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,200 +129,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jazz Jackrabbit has a very unusual VGA setup, where it uses odd/even mode
-with 256-color graphics.  Probably, it wants to use fast VRAM-to-VRAM
-copies without having to store 4 copies of the sprites as needed in mode
-X, one for each mod-4 alignment; odd/even mode simplifies the code a
-lot if it's okay to place on a 160-pixels horizontal grid.
+There are several places where failure in setting the device state leads
+to a device reset, which is done by setting ERROR as the recover state.
 
-At the same time, because it wants to use double buffering (a la "mode X")
-it uses byte mode, not word mode as is the case in text modes.  In order
-to implement the combination of odd/even mode (plane number comes from
-bit 0 of the address) and byte mode (use all bytes of VRAM, whereas word
-mode only uses bytes 0, 2, 4,... on each of the four planes), we need
-to separate the effect on the plane number from the effect on the address.
+Add a helper function that sets the device state and resets the device
+in case of failure. This will make the code cleaner and remove duplicate
+comments.
 
-Implementing the modes properly is a mess in QEMU, because it would
-change the layout of VRAM and break migration.  As an approximation,
-shift right when the CPU accesses memory instead of shifting left when
-the CRT controller reads it.  A hack is needed in order to write font data
-properly (see comment in the code), but it works well enough for the game.
-
-Because doubleword and chain4 modes are now independent, chain4 does not
-assert anymore that the address is in range.  Instead it just returns
-all ones and discards writes, like other modes.
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 ---
- hw/display/vga.c      | 90 +++++++++++++++++++++++++++++++------------
- hw/display/vga_regs.h |  4 ++
- 2 files changed, 70 insertions(+), 24 deletions(-)
+ hw/vfio/migration.c | 41 +++++++++++++++++------------------------
+ 1 file changed, 17 insertions(+), 24 deletions(-)
 
-diff --git a/hw/display/vga.c b/hw/display/vga.c
-index 731501cb7af..02b250ec0e6 100644
---- a/hw/display/vga.c
-+++ b/hw/display/vga.c
-@@ -832,25 +832,40 @@ uint32_t vga_mem_readb(VGACommonState *s, hwaddr addr)
-     }
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 28d422b39f..70e6b1a709 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -163,6 +163,19 @@ reset_device:
+     return ret;
+ }
  
-     if (sr(s, VGA_SEQ_MEMORY_MODE) & VGA_SR04_CHN_4M) {
--        /* chain 4 mode : simplest access (but it should use the same
--         * algorithms as below; see e.g. vga_mem_writeb's plane mask check).
--         */
--        assert(addr < s->vram_size);
--        return s->vram_ptr[addr];
--    }
--
--    if (s->gr[VGA_GFX_MODE] & 0x10) {
-+        /* chain4 mode */
-+        plane = addr & 3;
-+        addr &= ~3;
-+    } else if (s->gr[VGA_GFX_MODE] & VGA_GR05_HOST_ODD_EVEN) {
-         /* odd/even mode (aka text mode mapping) */
-         plane = (s->gr[VGA_GFX_PLANE_READ] & 2) | (addr & 1);
--        addr >>= 1;
-     } else {
-         /* standard VGA latched access */
-         plane = s->gr[VGA_GFX_PLANE_READ];
-     }
- 
-+    if (s->gr[VGA_GFX_MISC] & VGA_GR06_CHAIN_ODD_EVEN) {
-+        addr &= ~1;
-+    }
++/*
++ * Some device state transitions require resetting the device if they fail.
++ * This function sets the device in new_state and resets the device if that
++ * fails. Reset is done by using ERROR as the recover state.
++ */
++static int
++vfio_migration_set_state_or_reset(VFIODevice *vbasedev,
++                                  enum vfio_device_mig_state new_state)
++{
++    return vfio_migration_set_state(vbasedev, new_state,
++                                    VFIO_DEVICE_STATE_ERROR);
++}
 +
-+    /* Doubleword/word mode.  See comment in vga_mem_writeb */
-+    if (s->cr[VGA_CRTC_UNDERLINE] & VGA_CR14_DW) {
-+        addr >>= 2;
-+    } else if ((s->gr[VGA_GFX_MODE] & VGA_GR05_HOST_ODD_EVEN) &&
-+               (s->cr[VGA_CRTC_MODE] & VGA_CR17_WORD_BYTE) == 0) {
-+        addr >>= 1;
-+    }
-+
-     if (addr * sizeof(uint32_t) >= s->vram_size) {
-         return 0xff;
-     }
-+
-+    if (s->sr[VGA_SEQ_MEMORY_MODE] & VGA_SR04_CHN_4M) {
-+        /* chain 4 mode: simplified access (but it should use the same
-+         * algorithms as below, see e.g. vga_mem_writeb's plane mask check).
-+         */
-+        return s->vram_ptr[(addr << 2) | plane];
-+    }
-+
-     s->latch = ((uint32_t *)s->vram_ptr)[addr];
-     if (!(s->gr[VGA_GFX_MODE] & 0x08)) {
-         /* read mode 0 */
-@@ -870,8 +885,9 @@ uint32_t vga_mem_readb(VGACommonState *s, hwaddr addr)
- /* called for accesses between 0xa0000 and 0xc0000 */
- void vga_mem_writeb(VGACommonState *s, hwaddr addr, uint32_t val)
+ static int vfio_load_buffer(QEMUFile *f, VFIODevice *vbasedev,
+                             uint64_t data_size)
  {
--    int memory_map_mode, plane, write_mode, b, func_select, mask;
-+    int memory_map_mode, write_mode, b, func_select, mask;
-     uint32_t write_mask, bit_mask, set_mask;
-+    int plane = 0;
- 
- #ifdef DEBUG_VGA_MEM
-     printf("vga: [0x" HWADDR_FMT_plx "] = 0x%02x\n", addr, val);
-@@ -905,9 +921,47 @@ void vga_mem_writeb(VGACommonState *s, hwaddr addr, uint32_t val)
-         /* chain 4 mode : simplest access */
-         plane = addr & 3;
-         mask &= (1 << plane);
-+        addr &= ~3;
-+    } else {
-+        if ((sr(s, VGA_SEQ_MEMORY_MODE) & VGA_SR04_SEQ_MODE) == 0) {
-+            mask &= (addr & 1) ? 0x0a : 0x05;
-+        }
-+    }
-+
-+    if (s->gr[VGA_GFX_MISC] & VGA_GR06_CHAIN_ODD_EVEN) {
-+        addr &= ~1;
-+    }
-+
-+    /* Doubleword/word mode.  These should be honored when displaying,
-+     * not when reading/writing to memory!  For example, chain4 modes
-+     * use double-word mode and, on real hardware, would fetch bytes
-+     * 0,1,2,3, 16,17,18,19, 32,33,34,35, etc.  Text modes use word
-+     * mode and, on real hardware, would fetch bytes 0,1, 8,9, etc.
-+     *
-+     * QEMU instead shifted addresses on memory accesses because it
-+     * allows more optimizations (e.g. chain4_alias) and simplifies
-+     * the draw_line handlers. Unfortunately, there is one case where
-+     * the difference shows.  When fetching font data, accesses are
-+     * always in consecutive bytes, even if the text/attribute pairs
-+     * are done in word mode.  Hence, doing a right shift when operating
-+     * on font data is wrong.  So check the odd/even mode bits together with
-+     * word mode bit.  The odd/even read bit is 0 when reading font data,
-+     * and the odd/even write bit is 1 when writing it.
-+     */
-+    if (s->cr[VGA_CRTC_UNDERLINE] & VGA_CR14_DW) {
-+        addr >>= 2;
-+    } else if ((sr(s, VGA_SEQ_MEMORY_MODE) & VGA_SR04_SEQ_MODE) == 0 &&
-+               (s->cr[VGA_CRTC_MODE] & VGA_CR17_WORD_BYTE) == 0) {
-+        addr >>= 1;
-+    }
-+
-+    if (addr * sizeof(uint32_t) >= s->vram_size) {
-+        return;
-+    }
-+
-+    if (sr(s, VGA_SEQ_MEMORY_MODE) & VGA_SR04_CHN_4M) {
-         if (mask) {
--            assert(addr < s->vram_size);
--            s->vram_ptr[addr] = val;
-+            s->vram_ptr[(addr << 2) | plane] = val;
- #ifdef DEBUG_VGA_MEM
-             printf("vga: chain4: [0x" HWADDR_FMT_plx "]\n", addr);
- #endif
-@@ -917,15 +971,6 @@ void vga_mem_writeb(VGACommonState *s, hwaddr addr, uint32_t val)
-         return;
+@@ -422,12 +435,7 @@ static void vfio_save_cleanup(void *opaque)
+      * after migration has completed, so it won't increase downtime.
+      */
+     if (migration->device_state == VFIO_DEVICE_STATE_STOP_COPY) {
+-        /*
+-         * If setting the device in STOP state fails, the device should be
+-         * reset. To do so, use ERROR state as a recover state.
+-         */
+-        vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP,
+-                                 VFIO_DEVICE_STATE_ERROR);
++        vfio_migration_set_state_or_reset(vbasedev, VFIO_DEVICE_STATE_STOP);
      }
  
--    if ((sr(s, VGA_SEQ_MEMORY_MODE) & VGA_SR04_SEQ_MODE) == 0) {
--        mask &= (addr & 1) ? 0x0a : 0x05;
--    }
--
--    if (s->gr[VGA_GFX_MODE] & 0x10) {
--        /* odd/even mode (aka text mode mapping) */
--        addr >>= 1;
--    }
--
-     /* standard VGA latched access */
-     write_mode = s->gr[VGA_GFX_MODE] & 3;
-     switch(write_mode) {
-@@ -990,9 +1035,6 @@ do_write:
-     /* mask data according to sr[2] */
-     s->plane_updated |= mask; /* only used to detect font change */
-     write_mask = mask16[mask];
--    if (addr * sizeof(uint32_t) >= s->vram_size) {
--        return;
--    }
-     ((uint32_t *)s->vram_ptr)[addr] =
-         (((uint32_t *)s->vram_ptr)[addr] & ~write_mask) |
-         (val & write_mask);
-diff --git a/hw/display/vga_regs.h b/hw/display/vga_regs.h
-index 7fdba34b9b1..40e673f164d 100644
---- a/hw/display/vga_regs.h
-+++ b/hw/display/vga_regs.h
-@@ -100,7 +100,9 @@
+     g_free(migration->data_buffer);
+@@ -699,12 +707,7 @@ static void vfio_vmstate_change_prepare(void *opaque, bool running,
+                     VFIO_DEVICE_STATE_PRE_COPY_P2P :
+                     VFIO_DEVICE_STATE_RUNNING_P2P;
  
- /* VGA CRT controller bit masks */
- #define VGA_CR11_LOCK_CR0_CR7   0x80 /* lock writes to CR0 - CR7 */
-+#define VGA_CR14_DW             0x40
- #define VGA_CR17_H_V_SIGNALS_ENABLED 0x80
-+#define VGA_CR17_WORD_BYTE      0x40
+-    /*
+-     * If setting the device in new_state fails, the device should be reset.
+-     * To do so, use ERROR state as a recover state.
+-     */
+-    ret = vfio_migration_set_state(vbasedev, new_state,
+-                                   VFIO_DEVICE_STATE_ERROR);
++    ret = vfio_migration_set_state_or_reset(vbasedev, new_state);
+     if (ret) {
+         /*
+          * Migration should be aborted in this case, but vm_state_notify()
+@@ -736,12 +739,7 @@ static void vfio_vmstate_change(void *opaque, bool running, RunState state)
+                 VFIO_DEVICE_STATE_STOP;
+     }
  
- /* VGA attribute controller register indices */
- #define VGA_ATC_PALETTE0        0x00
-@@ -154,6 +156,8 @@
- #define VGA_GFX_BIT_MASK        0x08
+-    /*
+-     * If setting the device in new_state fails, the device should be reset.
+-     * To do so, use ERROR state as a recover state.
+-     */
+-    ret = vfio_migration_set_state(vbasedev, new_state,
+-                                   VFIO_DEVICE_STATE_ERROR);
++    ret = vfio_migration_set_state_or_reset(vbasedev, new_state);
+     if (ret) {
+         /*
+          * Migration should be aborted in this case, but vm_state_notify()
+@@ -770,12 +768,7 @@ static void vfio_migration_state_notifier(Notifier *notifier, void *data)
+     case MIGRATION_STATUS_CANCELLING:
+     case MIGRATION_STATUS_CANCELLED:
+     case MIGRATION_STATUS_FAILED:
+-        /*
+-         * If setting the device in RUNNING state fails, the device should
+-         * be reset. To do so, use ERROR state as a recover state.
+-         */
+-        vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RUNNING,
+-                                 VFIO_DEVICE_STATE_ERROR);
++        vfio_migration_set_state_or_reset(vbasedev, VFIO_DEVICE_STATE_RUNNING);
+     }
+ }
  
- /* VGA graphics controller bit masks */
-+#define VGA_GR05_HOST_ODD_EVEN  0x10
- #define VGA_GR06_GRAPHICS_MODE  0x01
-+#define VGA_GR06_CHAIN_ODD_EVEN 0x02
- 
- #endif /* HW_VGA_REGS_H */
 -- 
-2.43.0
+2.26.3
 
 
