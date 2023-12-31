@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DFF820A8C
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 09:51:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA1C820A8D
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 09:51:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJrSK-0004WK-TD; Sun, 31 Dec 2023 03:46:00 -0500
+	id 1rJrSI-0004GR-96; Sun, 31 Dec 2023 03:45:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJrSH-0004GM-ID
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:45:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rJrSE-0004Ew-Fo
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:45:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rJrS7-0000k0-H2
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:45:57 -0500
+ id 1rJrS6-0000jk-Bf
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 03:45:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704012346;
+ s=mimecast20190719; t=1704012345;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DBqfFBgY7aStWUgLumJkflj7wgYc5m8HW3cOyukrRFs=;
- b=LIifgfambYotciv3Eodbsl1z5IQ+YUxondeFBODEtly01OG91b9vQJK9HdlF7ESyCQnYBN
- DnThQjFVKcfzrla802IrqjDYkAXitFCaA+dIBXBxJpUipZiraOLQbQC+iyzXStbr9LWXgs
- zKrVqmxPCUST385FHQUS313g9BIE+yk=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=W+zAEPxTPoHgI3wNLPUXZsJ18c3pQ0NulFoTZrQPHS4=;
+ b=Tl/GVvFDxBhC2G0mzp7faFNDrcPw1TOv/1EI16MlyIidgaTVrkMWJVt3cefQSNfkCncuuW
+ JPYVCkcXBRqnCyllflRmDkSKWPYBqYVQqm2yCos1RYq5g+c6eie29a6QPcpRWQmgqLXppw
+ 6C6ncjqaAj1o4XZT9ex3r82883sxSCQ=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-JuEDLFSiNaKTbJwVVRa1lw-1; Sun, 31 Dec 2023 03:45:40 -0500
-X-MC-Unique: JuEDLFSiNaKTbJwVVRa1lw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-40d5ae4cdadso40286875e9.0
- for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 00:45:39 -0800 (PST)
+ us-mta-389-a2Acz6KjM2GtAVJoYIcfFA-1; Sun, 31 Dec 2023 03:45:42 -0500
+X-MC-Unique: a2Acz6KjM2GtAVJoYIcfFA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a2351094960so842074566b.1
+ for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 00:45:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704012338; x=1704617138;
+ d=1e100.net; s=20230601; t=1704012341; x=1704617141;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DBqfFBgY7aStWUgLumJkflj7wgYc5m8HW3cOyukrRFs=;
- b=cGHAnRV20hG1oZdyn/RQ75XzdmaxAcwWss1Frafle1uyKXdGchTvVAz+UwNOhj0Yvz
- XNCam7NHkIWQfVtjwL8kBQqEIEmyrqxs96o/1ceT4MMpfrSC6lnUuwNgiNWll9Kbj0Ta
- Gsn96ISJnCOzV+B13Q+MaZ+3nwQxeq/Y3WBMxiNPlQZ73YA5Loaq2sDgv71OUYQfbNcw
- ycyz5rhLxwDZtV/3A7APw9JVZxKl02TvNcQNh+N3klFf/vtF0TV6IRYtoJijePcExcjw
- q6Yl9uaFm3umTbqIjgGj3gNfFRliKBJIER9v1fIH0VI63gNU0sL5qvwqm5K1DuK1s+wv
- zRMA==
-X-Gm-Message-State: AOJu0Ywr65i3KVElLCOkZkZzvMGQk7qixRXsnwGcNzJoIqZEaXLhR/4N
- h2xXHW17gb+mBXDZOF2IjghZX8q8M0lG3miNgRIIN9HJ5YknuQvjrIaeJw8WE+fMRqrpwA8hgte
- gJ2JEH6PbF506UMAcPkVeqn6BESYH+ZnNS8h60kDSQ/eA8sVnW/jC1aws5GGwrI5BYhXZ/eZkU0
- WlGjZ+fOw=
-X-Received: by 2002:a05:600c:1c92:b0:40d:5b1c:26fb with SMTP id
- k18-20020a05600c1c9200b0040d5b1c26fbmr2862249wms.32.1704012338311; 
- Sun, 31 Dec 2023 00:45:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHh9Is2P2asim4QvQH6OFkj4MLQUdTSWzMFN9yogP6M0yfWlLw3mPR+o8rVUofe7yi1JvO5Ug==
-X-Received: by 2002:a05:600c:1c92:b0:40d:5b1c:26fb with SMTP id
- k18-20020a05600c1c9200b0040d5b1c26fbmr2862244wms.32.1704012338109; 
- Sun, 31 Dec 2023 00:45:38 -0800 (PST)
+ bh=W+zAEPxTPoHgI3wNLPUXZsJ18c3pQ0NulFoTZrQPHS4=;
+ b=ChfV9wbAvqFfwubJMEPpm+vu6YfzwBE6nRpJXAO8+jLQUcdX8czV9pqUGEr7ShL2M1
+ q3D2j9JmtoX87k9vVrLfL6T6Aix6NfoWmRuMRvJvws+R+vq3muzC06RKSgP+WPEY3atk
+ bgBJK9ZGEw1BIDFKsvHKki7s67nIpjaXu8N5cdN7t6bTsmxywIHKvZuMIG3mYRfOp5yr
+ vLRZ2xz+YVIVolN51ZBHWjMEHYKus4J1sCu9HUzchWc4dLgsPXKxpU3KOSr6kkwSpeN9
+ 2nZacNET1B+3eFdY+FCB5VEjw3NqFZ5OzKEVERhz9P1Azjw0vRpyfBVRoFCFtYqWHJYx
+ Y05A==
+X-Gm-Message-State: AOJu0YzspIc/313N3BlJ6xJznaFbG4OrNi1e4uyKi/aonXEMIKecvf8i
+ vUBwAvNem6R7V6F+zPujr6e6mi5Z+dhGFz5Ua8UTehfOel72CNXWxEBFkm5W88Vo5QBR1k2ttVB
+ p1tgncb2HD2Dmcp2jqBE60UvPodtS/IuFeDtcM517vDiwk/9F4ONHuJiLlRxbff+E+lXo/dSkqG
+ gQEYCugSM=
+X-Received: by 2002:a17:906:6a05:b0:a26:f7ea:7cb6 with SMTP id
+ qw5-20020a1709066a0500b00a26f7ea7cb6mr10841961ejc.16.1704012340865; 
+ Sun, 31 Dec 2023 00:45:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEE4N5iehDXpUhhaSYiyoYNs/FIUhDplBYFNSVvUi2hcbp2Pecnz1AcOv1rXQcct3bV8+7vSg==
+X-Received: by 2002:a17:906:6a05:b0:a26:f7ea:7cb6 with SMTP id
+ qw5-20020a1709066a0500b00a26f7ea7cb6mr10841956ejc.16.1704012340579; 
+ Sun, 31 Dec 2023 00:45:40 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- o16-20020a170906601000b00a26dc8ec78dsm7153695ejj.147.2023.12.31.00.45.37
+ r9-20020aa7cb89000000b005550844cd1dsm7183482edt.30.2023.12.31.00.45.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Dec 2023 00:45:37 -0800 (PST)
+ Sun, 31 Dec 2023 00:45:39 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 12/46] target/i386: do not decode string source/destination
- into decode->mem
-Date: Sun, 31 Dec 2023 09:44:28 +0100
-Message-ID: <20231231084502.235366-13-pbonzini@redhat.com>
+Subject: [PULL 13/46] target/i386: do not clobber A0 in POP translation
+Date: Sun, 31 Dec 2023 09:44:29 +0100
+Message-ID: <20231231084502.235366-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231231084502.235366-1-pbonzini@redhat.com>
 References: <20231231084502.235366-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
 X-Spam_bar: ----
 X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.667,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,54 +101,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-decode->mem is only used if one operand has has_ea == true.  String
-operations will not use decode->mem and will load A0 on their own, because
-they are the only case of two memory operands in a single instruction.
+The new decoder likes to compute the address in A0 very early, so the
+gen_lea_v_seg in gen_pop_T0 would clobber the address of the memory
+operand.  Instead use T0 since it is already available and will be
+overwritten immediately after.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.c.inc | 20 ++------------------
- 1 file changed, 2 insertions(+), 18 deletions(-)
+ target/i386/tcg/translate.c | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index d7a86d96c0c..99d18d2871e 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -1212,6 +1212,8 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
-     case X86_TYPE_None:  /* Implicit or absent */
-     case X86_TYPE_A:  /* Implicit */
-     case X86_TYPE_F:  /* EFLAGS/RFLAGS */
-+    case X86_TYPE_X:  /* string source */
-+    case X86_TYPE_Y:  /* string destination */
-         break;
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 73b83e07e23..efef4e74d4c 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -635,17 +635,17 @@ static TCGv eip_cur_tl(DisasContext *s)
+     }
+ }
  
-     case X86_TYPE_B:  /* VEX.vvvv selects a GPR */
-@@ -1346,24 +1348,6 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
-         op->n = insn_get(env, s, op->ot) >> 4;
+-/* Compute SEG:REG into A0.  SEG is selected from the override segment
++/* Compute SEG:REG into DEST.  SEG is selected from the override segment
+    (OVR_SEG) and the default segment (DEF_SEG).  OVR_SEG may be -1 to
+    indicate no override.  */
+-static void gen_lea_v_seg(DisasContext *s, MemOp aflag, TCGv a0,
+-                          int def_seg, int ovr_seg)
++static void gen_lea_v_seg_dest(DisasContext *s, MemOp aflag, TCGv dest, TCGv a0,
++                               int def_seg, int ovr_seg)
+ {
+     switch (aflag) {
+ #ifdef TARGET_X86_64
+     case MO_64:
+         if (ovr_seg < 0) {
+-            tcg_gen_mov_tl(s->A0, a0);
++            tcg_gen_mov_tl(dest, a0);
+             return;
+         }
          break;
+@@ -656,14 +656,14 @@ static void gen_lea_v_seg(DisasContext *s, MemOp aflag, TCGv a0,
+             ovr_seg = def_seg;
+         }
+         if (ovr_seg < 0) {
+-            tcg_gen_ext32u_tl(s->A0, a0);
++            tcg_gen_ext32u_tl(dest, a0);
+             return;
+         }
+         break;
+     case MO_16:
+         /* 16 bit address */
+-        tcg_gen_ext16u_tl(s->A0, a0);
+-        a0 = s->A0;
++        tcg_gen_ext16u_tl(dest, a0);
++        a0 = dest;
+         if (ovr_seg < 0) {
+             if (ADDSEG(s)) {
+                 ovr_seg = def_seg;
+@@ -680,17 +680,23 @@ static void gen_lea_v_seg(DisasContext *s, MemOp aflag, TCGv a0,
+         TCGv seg = cpu_seg_base[ovr_seg];
  
--    case X86_TYPE_X:  /* string source */
--        op->n = -1;
--        decode->mem = (AddressParts) {
--            .def_seg = R_DS,
--            .base = R_ESI,
--            .index = -1,
--        };
--        break;
--
--    case X86_TYPE_Y:  /* string destination */
--        op->n = -1;
--        decode->mem = (AddressParts) {
--            .def_seg = R_ES,
--            .base = R_EDI,
--            .index = -1,
--        };
--        break;
--
-     case X86_TYPE_2op:
-         *op = decode->op[0];
-         break;
+         if (aflag == MO_64) {
+-            tcg_gen_add_tl(s->A0, a0, seg);
++            tcg_gen_add_tl(dest, a0, seg);
+         } else if (CODE64(s)) {
+-            tcg_gen_ext32u_tl(s->A0, a0);
+-            tcg_gen_add_tl(s->A0, s->A0, seg);
++            tcg_gen_ext32u_tl(dest, a0);
++            tcg_gen_add_tl(dest, dest, seg);
+         } else {
+-            tcg_gen_add_tl(s->A0, a0, seg);
+-            tcg_gen_ext32u_tl(s->A0, s->A0);
++            tcg_gen_add_tl(dest, a0, seg);
++            tcg_gen_ext32u_tl(dest, dest);
+         }
+     }
+ }
+ 
++static void gen_lea_v_seg(DisasContext *s, MemOp aflag, TCGv a0,
++                          int def_seg, int ovr_seg)
++{
++    gen_lea_v_seg_dest(s, aflag, s->A0, a0, def_seg, ovr_seg);
++}
++
+ static inline void gen_string_movl_A0_ESI(DisasContext *s)
+ {
+     gen_lea_v_seg(s, s->aflag, cpu_regs[R_ESI], R_DS, s->override);
+@@ -2576,8 +2582,8 @@ static MemOp gen_pop_T0(DisasContext *s)
+ {
+     MemOp d_ot = mo_pushpop(s, s->dflag);
+ 
+-    gen_lea_v_seg(s, mo_stacksize(s), cpu_regs[R_ESP], R_SS, -1);
+-    gen_op_ld_v(s, d_ot, s->T0, s->A0);
++    gen_lea_v_seg_dest(s, mo_stacksize(s), s->T0, cpu_regs[R_ESP], R_SS, -1);
++    gen_op_ld_v(s, d_ot, s->T0, s->T0);
+ 
+     return d_ot;
+ }
 -- 
 2.43.0
 
