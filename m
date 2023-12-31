@@ -2,119 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA0E820AB9
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 10:32:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA44820AD2
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Dec 2023 10:40:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rJsA5-0002NR-25; Sun, 31 Dec 2023 04:31:13 -0500
+	id 1rJsIb-0003bE-Bg; Sun, 31 Dec 2023 04:40:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1rJsA2-0002MW-To
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:31:10 -0500
-Received: from mail-bn8nam11on20601.outbound.protection.outlook.com
- ([2a01:111:f400:7eae::601]
- helo=NAM11-BN8-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rJsIL-0003MY-2B
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:39:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1rJs9x-0008My-Ge
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:31:10 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kT3FKoE+eHxvZYMFbd6XmLhKxlEcFsVTWCqO9d0cozrriLQKeV5sEdS4GUzyNvJiFDyXzZqbLCdYWcfcv4N7PlCOvYPYGSwNJHqRK3zThGQWoA8l+TzhOzrXmYmA+SF+A5GNJwwDNRlHfaQ6ujgGp+SO1dbcxdUmtAOTdi8YveWA5aADas51bU/NbXa78HruSVA+kMHAFwSQ9goxkbwALo+XMVw6nVK1htaYuoCFofoNCSArAAGPDBmt3XbnqihjbKNXDLxFkWNEkrIFHgZxFPqrZ8Y6HIOAnnaMYj8l7JlNMiQl3c6yZBN1k8OX9CkqN1eZXaTFN5t4kpcaVdYAog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T+NB4u+Lh8zA5QvMfHDwCiyztTARD7M8hs83TUcnxik=;
- b=LqhU5jVBf2lNT2ivb7Ky/PzTkVMjj9XyZNhvCtdb9z4A9cN+WwmuaxhXdZ5AcXLXuTI775juGCb9cJIrrEyNv+MlMFRJ4m08Uj5nmWsmDItG7a3jJclcMivNYW3OATxJjz137ihGTM20YwnaBn8kvZEabAN2sUWPd3sxIeWaGKjzYwxreRe+G4YWMP2HUas9ZlCpXrV40gLVJWeRrpGBaVnHRig17sVWh+Fb+TqicAgalKDsgERfqFLmMdZhAXy67l8XawttOfev197qRWQWewlWA7cnjtO34vXJdQ1POlN/IbKXNBzffQLsBvmMZa/glLefcVdt0K2PVogLLER09A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T+NB4u+Lh8zA5QvMfHDwCiyztTARD7M8hs83TUcnxik=;
- b=OxlDmovGLtF6gVCHJ5gdT9yjw4DxxDkYanpmVnp4HK8EKCmywdGdkE8ur5OYYqH2zoYJNS2RyvjiCgcS7/ZVAinle4wuNZuBEBQrOwHwTIGZsVUziK7jOQL4T+csksjGzfelGVmQCaU8RVnGGS9LAqVlLt33lgyGZX/k0ayagv+YtVZ5CiswwoK2o5dRh8LYHa5qTeAkATV5t+OwAsqfDLlSh1IW5dpcva8qocbs8dmgOuJm/8xjyMYaapJlzS+93mehvt2aYsXTkzxlkR2t6WgxCCz5g1r76vsIO20SC8R3gYjyx7mx0T/AeYkrEWaIeyrHlsgs3kh8E3Zr3e9Z8g==
-Received: from DS7PR03CA0024.namprd03.prod.outlook.com (2603:10b6:5:3b8::29)
- by MW4PR12MB7359.namprd12.prod.outlook.com (2603:10b6:303:222::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.23; Sun, 31 Dec
- 2023 09:31:01 +0000
-Received: from CY4PEPF0000FCC2.namprd03.prod.outlook.com
- (2603:10b6:5:3b8:cafe::dc) by DS7PR03CA0024.outlook.office365.com
- (2603:10b6:5:3b8::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.20 via Frontend
- Transport; Sun, 31 Dec 2023 09:31:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CY4PEPF0000FCC2.mail.protection.outlook.com (10.167.242.104) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7159.9 via Frontend Transport; Sun, 31 Dec 2023 09:31:01 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 31 Dec
- 2023 01:30:48 -0800
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 31 Dec
- 2023 01:30:48 -0800
-Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.10)
- with Microsoft SMTP Server id 15.2.986.41 via Frontend Transport; Sun, 31 Dec
- 2023 01:30:46 -0800
-From: Avihai Horon <avihaih@nvidia.com>
-To: <qemu-devel@nongnu.org>
-CC: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- "Fabiano Rosas" <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>, Li
- Zhijian <lizhijian@fujitsu.com>, Avihai Horon <avihaih@nvidia.com>
-Subject: [PATCH 11/11] migration/multifd: Remove unnecessary usage of local
- Error
-Date: Sun, 31 Dec 2023 11:30:16 +0200
-Message-ID: <20231231093016.14204-12-avihaih@nvidia.com>
-X-Mailer: git-send-email 2.21.3
-In-Reply-To: <20231231093016.14204-1-avihaih@nvidia.com>
-References: <20231231093016.14204-1-avihaih@nvidia.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rJsI7-0001OC-EW
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 04:39:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704015570;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=1c96BjheazGo4YMKAvzbPpuQjCYDWNWgeWZsIAdMWSM=;
+ b=UF7+6Y8n+QSZOTVkOojj2clNjE6W12T/S9k5K2s1yd1JXG/SAzvmrQeK0xmCsJGedAs8DS
+ ePvB2Bx1EMEstYgK0lWnFfjGw448FOuXcvXBvEcJtQ5eBtXzH/vP29aR7LRCfnUrV67PU8
+ ZaPBKh7KvpRykPYvdInqRGywD7nbL78=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-124-2iZEpps0M1uSTdANmftl7w-1; Sun, 31 Dec 2023 04:39:23 -0500
+X-MC-Unique: 2iZEpps0M1uSTdANmftl7w-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3368698f0caso5836135f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 01:39:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704015561; x=1704620361;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1c96BjheazGo4YMKAvzbPpuQjCYDWNWgeWZsIAdMWSM=;
+ b=A3gt/o4DUkzlvNSfLvGprtujbI2qYDXMfhKDdCCxqcYl08NJ0w1wumRYv5pI3FBtJF
+ mRFy3PvphTr8xTM7yO3/R6qNldnC5SjuqsA7j36Dc3EB0iXmPrwM9q/GvxFHpqwwHrRi
+ Mom2+/shA3eEFkB9Ga4U60EgB9ZHTnQTBJd328dym/ciSodwf7OMFJqlnHi0OD930uAU
+ sDYTDTXxUoDCTJ8LKHPeLmHe6rFdaxaLmbY7vUIPOGiIpXleVxdGYYd+6FNhkIBDyaiS
+ 3S4u5o3dByHOrg2vPetonvxRTi/+RtYdHPktth9SCneyzlw8fyqIP3BTb5+CzWTS/luc
+ sfLw==
+X-Gm-Message-State: AOJu0Yw3tIGR3rgipqu5k58iOi5v/NwOodRIOV/xpRbY3zUgkes0f5g5
+ QkemSu0J2vj6s3mIL8PzwwYkj2M8jMIX8Slc2VvyMAjMmJA0aS288DS++gihTw/TYpsro044M/W
+ sbbKKYAgp27MMXKBmxTpk4EXAVll1XDtiqwZPIcYC2QFho/ggTgwTB/0yA2J+zXCOHbCqWgD7el
+ BSML35BNg=
+X-Received: by 2002:a05:6000:904:b0:336:e1c0:755a with SMTP id
+ cw4-20020a056000090400b00336e1c0755amr2351705wrb.216.1704015561138; 
+ Sun, 31 Dec 2023 01:39:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGumbRKy6WR5P/xbUoWD1FefO9c3quyXPewHgLtcOG06QI58yZv/SGWy/YoY86588NWejYOLQ==
+X-Received: by 2002:a05:6000:904:b0:336:e1c0:755a with SMTP id
+ cw4-20020a056000090400b00336e1c0755amr2351700wrb.216.1704015560810; 
+ Sun, 31 Dec 2023 01:39:20 -0800 (PST)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
+ by smtp.gmail.com with ESMTPSA id
+ y8-20020a056000108800b0033642a9a1eesm23148729wrw.21.2023.12.31.01.39.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 31 Dec 2023 01:39:19 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: kraxel@redhat.com
+Subject: [PATCH 0/8] vga: improve emulation fidelity
+Date: Sun, 31 Dec 2023 10:39:10 +0100
+Message-ID: <20231231093918.239549-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC2:EE_|MW4PR12MB7359:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9dcd5bb-2f9a-4b16-c12d-08dc09e333dd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: e9uiIaTp/rk8BXOWl/yPWfOh+Lg32xItOiqt057ZF/DHEf7Y1JlFS24ZvXWVJw2RmIP2h+yHPml4pVfUoFounV5MVR/cYsCSRke2I7o2Nwcd+tCY0IRDlVVcm5ZWqY5OThAVhP64XFXWTbYmSmwtZNTPl07WQaCFPh81tb+eJjV+6qzJjxXusKlwAXaZbwZLJiYDR9REOgJ+JYZEH/hF95iXeYltgKsD+bO6nnRWkVgfCPj9WaMQBAYUv1Mlbq7MWmr9j8j7UmVjEv89JdYY9q2kcuyQp46Y9mworHiCF8wSUWhmpMr5okxaf2rNF76ZgFiqTYuc2j7C48LjVDw9DukfObSlyEwKW5rfrlR+uNQ5kyamtI8bM28iKNTMl9bG7ZAKz+tWeHTWjLPwC659bgt+J007XH9HNIe/tCTdrqgYDZlCWLzT4tRdWG2l2HwGAaS10wwi836bpF90t0T1HoVBvsAXWEmry3kZsJ0wDTKHiJWnL+/wdrK90Y1AKrBZPvJT5TH8cm+jvvlBWmNYRjqDtd6ySFOXiunq6TtFLLKbkPcbK6gJb9oXZDgNhYK0L1lQoZV+k1IkswRbSr4Lrw0cMYi7auxm+8yXxQlMsneF/PIq996WakLFSsB4bWUSDj3t1NiJT/3Ftd33rVDcozeIVPrPAj3NTx+gKyjQa0BUck5+o1KHc4OS0DChhGCXYA+WZ36j0/Cgsfup1K21DyymHlJmwCPP0MR902TMiIfL49BucpV5+s8oA595jxHMxX7wXdBoMu9i3XRP5yhNopj/Md48PwmL49BeehcuM/8=
-X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230031)(4636009)(39860400002)(396003)(346002)(376002)(136003)(230922051799003)(1800799012)(64100799003)(186009)(82310400011)(451199024)(36840700001)(40470700004)(46966006)(47076005)(7696005)(40480700001)(6916009)(7636003)(4326008)(86362001)(316002)(54906003)(40460700003)(8936002)(8676002)(70206006)(36756003)(356005)(70586007)(36860700001)(6666004)(5660300002)(478600001)(2616005)(107886003)(1076003)(26005)(41300700001)(426003)(336012)(2906002)(83380400001)(82740400003);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2023 09:31:01.1071 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9dcd5bb-2f9a-4b16-c12d-08dc09e333dd
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000FCC2.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7359
-Received-SPF: softfail client-ip=2a01:111:f400:7eae::601;
- envelope-from=avihaih@nvidia.com;
- helo=NAM11-BN8-obe.outbound.protection.outlook.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
 X-Spam_bar: ----
 X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.667,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -131,51 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to Error API, usage of ERRP_GUARD() or a local Error instead
-of errp is needed if errp is passed to void functions, where it is later
-dereferenced to see if an error occurred.
+This implements horizontal pel panning, which is used by games such as
+the Commander Keen series, and also reimplements word and odd/even modes
+so that they work in graphics modes; this mostly fixes Jazz Jackrabbit's
+graphics.
 
-There are several places in multifd.c that use local Error although it
-is not needed. Change these places to use errp directly.
+There are still some issues with Cirrus VGA, and also Keen expects the
+display parameters to be latched in ways that I don't fully understand
+and that seem to differ between Keen 1 (EGA) and 4 (VGA).  So there is
+still a bit of tearing, but I have been sitting on these patches since
+the Christmas holidays of 2014, so let's flush this first part.
 
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
----
- migration/multifd.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+Paolo
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 9ac24866ad..9f353aecfa 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -951,12 +951,10 @@ int multifd_save_setup(Error **errp)
- 
-     for (i = 0; i < thread_count; i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
--        Error *local_err = NULL;
-         int ret;
- 
--        ret = multifd_send_state->ops->send_setup(p, &local_err);
-+        ret = multifd_send_state->ops->send_setup(p, errp);
-         if (ret) {
--            error_propagate(errp, local_err);
-             return ret;
-         }
-     }
-@@ -1195,12 +1193,10 @@ int multifd_load_setup(Error **errp)
- 
-     for (i = 0; i < thread_count; i++) {
-         MultiFDRecvParams *p = &multifd_recv_state->params[i];
--        Error *local_err = NULL;
-         int ret;
- 
--        ret = multifd_recv_state->ops->recv_setup(p, &local_err);
-+        ret = multifd_recv_state->ops->recv_setup(p, errp);
-         if (ret) {
--            error_propagate(errp, local_err);
-             return ret;
-         }
-     }
+Paolo Bonzini (8):
+  vga: remove unused macros
+  vga: introduce VGADisplayParams
+  vga: mask addresses in non-VESA modes to 256k
+  vga: implement horizontal pel panning in graphics modes
+  vga: optimize horizontal pel panning in 256-color modes
+  vga: reindent memory access code
+  vga: use latches in odd/even mode too
+  vga: sort-of implement word and double-word access modes
+
+ hw/display/cirrus_vga.c  |  28 +--
+ hw/display/vga-helpers.h | 121 +++++++++---
+ hw/display/vga.c         | 418 +++++++++++++++++++++------------------
+ hw/display/vga_int.h     |  18 +-
+ hw/display/vga_regs.h    |   4 +
+ 5 files changed, 347 insertions(+), 242 deletions(-)
+
 -- 
-2.26.3
+2.43.0
 
 
