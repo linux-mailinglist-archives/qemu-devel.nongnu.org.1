@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865B48212CA
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jan 2024 02:44:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A138212CE
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jan 2024 03:02:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rK7L9-0002p7-AX; Sun, 31 Dec 2023 20:43:39 -0500
+	id 1rK7bZ-0006Iq-Nw; Sun, 31 Dec 2023 21:00:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rK7L6-0002oy-Cx
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 20:43:37 -0500
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1rK7bV-0006IV-8L
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 21:00:34 -0500
+Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rK7L4-0004Ea-Tb
- for qemu-devel@nongnu.org; Sun, 31 Dec 2023 20:43:36 -0500
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-28bc870c540so6481036a91.2
- for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 17:43:34 -0800 (PST)
+ id 1rK7bR-0006vP-EP
+ for qemu-devel@nongnu.org; Sun, 31 Dec 2023 21:00:32 -0500
+Received: by mail-oo1-xc34.google.com with SMTP id
+ 006d021491bc7-5955cb20569so710029eaf.3
+ for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 18:00:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704073413; x=1704678213; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1704074427; x=1704679227; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=fmAlPdp1doHYz0XPA+SGLQe6SFOQwQYjFX2j0fxSf6E=;
- b=Q3rWjcqnJAsB59CGkVVSkHXaobh2WeNbsCw64E9d+5cWWyMWHKCyerANs/tyZW0XWF
- hbszvkz76vfzGl4/iEa9TJXlLMO2T+82fJuX1GyOIiNu2WW2jjCg6IL3sL24xPg1jiss
- YUvC17vjtzPWuLRyn/xO6kzthG6yuZ7KhUVvcpG+DQsV94jI9sieJF2vXW40WV4rbKOo
- B8IbIupaj9E9nXTCSiV3NfBPeIk0+cELSaL9JrvHoRC5/1Uz8X83UV59m7NCYgE26vpQ
- ZORCvdQ/JciqeYv5evtFpvqpFxOZKL9Pg2fJpaB46/9n3RBIxxiO28XXZEozbifUEEig
- XiGg==
+ bh=F/v83Qjz23rIce4bNK64OnSL49aBBzew02D+Hquopsc=;
+ b=F8QXtmNAvSMeWJZJCCErc1zYDECk6AdZdG6gX/AM1+BgI2NUub9ErXQdZJKfB6NXjK
+ QW2nmQsMGqkZM6SRNW0XyHEIxgsD+5AApTcb1ZfkxIxInZl0zRKck13JkyBTkglMzaul
+ 4961717XYL979XDm+v1/BABIMbWtnCMmasarXENW8/yFt+6KKI/9LtASku7/oCJMAwVa
+ 7C4YJ6mVJuIkv1xws06d0sxvceNMIucjCSQevrWwgyltHJnBOLjTVPA6rRAdDP3KjKlR
+ wF+ZCIACkHY42tUwtJMdsIIC4yGdaXJB2aj9M40/9ReFaCLZtjPCZURicMhaf6Ff0lba
+ CNkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704073413; x=1704678213;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1704074427; x=1704679227;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fmAlPdp1doHYz0XPA+SGLQe6SFOQwQYjFX2j0fxSf6E=;
- b=PETJxEoNWnAAEZRvaUJWX8SePiEZqZBn6GMW1VnBkc6ofNxTmQYyWDW+m/5RKy851K
- B+x60LIdzlC1mxL/ZFaJMCDd8k6HFmIQ2Z8V51eHwyjsr/D1Vflndg44SLTxgfBazi9s
- SgaSMbsoapbP5vW/X+MXkt/w8CT+BVtu8epeBpw/Gt251vw8v+zKJJCoWv7XHbIzoCBd
- 3RPu+BtRjLAHYnGRLvQk142+rmvQCzzX11te4nukXVwiN+nBNH4gzGZxcxP5CDlQUdjk
- JwpGycAUW+M34IvPWjxCVu/F4wcD1Rz03xtkB2ClgeaNShIAOONy1TjnAJj/gTv+PXJc
- xfaA==
-X-Gm-Message-State: AOJu0Yx7qgBEJX5jFzSeXJArSpV+RWKdjTZob0iJXOY01Gvb9FlxXfUF
- 27fWA1DIUYRDmljzJGT5VZ0zW0kGcixf2F5V5CMjlaDo7Pj9nw==
-X-Google-Smtp-Source: AGHT+IEiDnlvR0Mluen2Geup7U3JYroKRIR6fe9+K99GVlhm0HfXaQO57sa23wt3qm5qWVDMjsY9Ig==
-X-Received: by 2002:a17:902:e5c7:b0:1d4:35d6:f999 with SMTP id
- u7-20020a170902e5c700b001d435d6f999mr17108337plf.139.1704073413044; 
- Sun, 31 Dec 2023 17:43:33 -0800 (PST)
+ bh=F/v83Qjz23rIce4bNK64OnSL49aBBzew02D+Hquopsc=;
+ b=ddKsdob6sUZC+pDf6MPgjCftzSVIt/3aAg6p9aX2ZHHJ40UN5WmNYzzm7Bhu/uPD8D
+ /lks58KYAxrgcoef2PIkvqEQLKG6NC8bTyN3JW4qrQ2AIIXS2pJff8ZJfAnTw3nGhPaV
+ fyCMkqr+Shk/5ooIE8mbEeDIxZVUfRdz0csFjJaKizCiWyt+GnUSreO99gME+vFd+ige
+ 5y21vALTNP4NiOZO1k+u5Lt4jK0XbNhdHBrV5QhT7AAMw92jh1eQkZYt/11Ylwhq40+0
+ iTToQ6uoZS1i94V/Z/OWgh9bFDkQ90kV0nLnvh/ZHW7/zp+rmPtEm5sUTdrHaNsjqltO
+ fXGQ==
+X-Gm-Message-State: AOJu0YxuM3xRIid3pAlaHOqE7ynyioSq1CKXYanrSa01qummQeQLsB7e
+ 4DSgcdAE4imwvDP+rn8O0ol9zzgAaec2QA==
+X-Google-Smtp-Source: AGHT+IEf5sj1OHHfcs8KaFNdJaOPWZfPd7P3DInrUj4bKei3lcp6JQAWTQhQ9rJgRCbgM5vY+h1KvA==
+X-Received: by 2002:a05:6870:b24f:b0:203:7bef:1691 with SMTP id
+ b15-20020a056870b24f00b002037bef1691mr20387240oam.109.1704074427595; 
+ Sun, 31 Dec 2023 18:00:27 -0800 (PST)
 Received: from [192.168.50.95] (124-149-254-207.tpgi.com.au. [124.149.254.207])
  by smtp.gmail.com with ESMTPSA id
- o13-20020a170902778d00b001d403f12739sm19033419pll.263.2023.12.31.17.43.30
+ d14-20020a17090ad98e00b0028ac1112124sm19708802pjv.30.2023.12.31.18.00.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 31 Dec 2023 17:43:32 -0800 (PST)
-Message-ID: <8fc61441-a87a-4c78-85ff-d00b7889fc8b@linaro.org>
-Date: Mon, 1 Jan 2024 12:43:27 +1100
+ Sun, 31 Dec 2023 18:00:27 -0800 (PST)
+Message-ID: <643f1d00-c917-4bb0-a499-ab7edacac3e9@linaro.org>
+Date: Mon, 1 Jan 2024 13:00:22 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tcg/i386: use 8-bit OR or XOR for unsigned 8-bit
- immediates
+Subject: Re: [PATCH for-8.2?] target/i386: Fix 32-bit wrapping of pc/eip
+ computation
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20231228120524.70239-1-pbonzini@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com
+References: <20231212172510.103305-1-richard.henderson@linaro.org>
+ <f07b02b9-6c6c-40c1-9f21-2a9bd033a5a5@tls.msk.ru>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231228120524.70239-1-pbonzini@redhat.com>
+In-Reply-To: <f07b02b9-6c6c-40c1-9f21-2a9bd033a5a5@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,46 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/28/23 23:05, Paolo Bonzini wrote:
-> In the case where OR or XOR has an 8-bit immediate between 128 and 255, we can
-> operate on a low-byte register and shorten the output by two or three bytes
-> (two if a prefix byte is needed for REX.B).
+On 12/25/23 07:49, Michael Tokarev wrote:
+> 12.12.2023 20:25, Richard Henderson:
+>> In 32-bit mode, pc = eip + cs_base is also 32-bit, and must wrap.
+>> Failure to do so results in incorrect memory exceptions to the guest.
+>> Before 732d548732ed, this was implicitly done via truncation to
+>> target_ulong but only in qemu-system-i386, not qemu-system-x86_64.
+>>
+>> To fix this, we must add conditional zero-extensions.
+>> Since we have to test for 32 vs 64-bit anyway, note that cs_base
+>> is always zero in 64-bit mode.
+>>
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2022
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>
+>> This may be too late for 8.2; if not, then 8.2.1 and 8.1.next.
+>> I think I have found all forms of pc <-> eip, but another set
+>> of eyes would be appreciated.
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   tcg/i386/tcg-target.c.inc | 7 +++++++
->   1 file changed, 7 insertions(+)
+> This change breaks trivial 4M edk2 boot - both in 8.2.0 and in
+> 8.1.4 (which also has this commit now).
+> 
+>   qemu-system-x86_64 -machine q35 -no-user-config -nodefaults -display none \
+>    -serial stdio \
+>    -drive file=/usr/share/OVMF/OVMF_CODE_4M.secboot.fd,if=pflash,format=raw,readonly=on \
+>    -drive file=/usr/share/OVMF/OVMF_VARS_4M.ms.fd,if=pflash,format=raw,snapshot=on
+> 
+> After this change, nothing is printed on the serial console anymore
+> (or in vga, whatever). Before that commit, usual edk2 boot sequence
+> is seen.
+> 
+> Nothing has changed with the 2M variant though.
 
-Queued.  I adjusted the function a bit to use a switch.
+Ack.  Looking at it....
 
 
 r~
-
-> 
-> diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-> index 1791b959738..a24a23f43b1 100644
-> --- a/tcg/i386/tcg-target.c.inc
-> +++ b/tcg/i386/tcg-target.c.inc
-> @@ -244,6 +244,7 @@ static bool tcg_target_const_match(int64_t val, TCGType type, int ct, int vece)
->   #define P_VEXL          0x80000         /* Set VEX.L = 1 */
->   #define P_EVEX          0x100000        /* Requires EVEX encoding */
->   
-> +#define OPC_ARITH_EbIb	(0x80)
->   #define OPC_ARITH_EvIz	(0x81)
->   #define OPC_ARITH_EvIb	(0x83)
->   #define OPC_ARITH_GvEv	(0x03)		/* ... plus (ARITH_FOO << 3) */
-> @@ -1366,6 +1367,12 @@ static void tgen_arithi(TCGContext *s, int c, int r0,
->           tcg_out8(s, val);
->           return;
->       }
-> +    if (val == (uint8_t)val && (c == ARITH_OR || c == ARITH_XOR) &&
-> +        (r0 < 4 || TCG_TARGET_REG_BITS == 64)) {
-> +        tcg_out_modrm(s, OPC_ARITH_EbIb + P_REXB_RM, c, r0);
-> +        tcg_out8(s, val);
-> +        return;
-> +    }
->       if (rexw == 0 || val == (int32_t)val) {
->           tcg_out_modrm(s, OPC_ARITH_EvIz + rexw, c, r0);
->           tcg_out32(s, val);
 
 
