@@ -2,60 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B2BC821574
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jan 2024 22:45:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C7E8215E5
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 00:07:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKQ5M-0006HX-Ut; Mon, 01 Jan 2024 16:44:36 -0500
+	id 1rKRMd-0001OI-KV; Mon, 01 Jan 2024 18:06:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <herve.poussineau@reactos.org>)
- id 1rKQ5H-0006GY-9q; Mon, 01 Jan 2024 16:44:31 -0500
-Received: from iserv.reactos.org ([2a01:4f8:1c17:5ae1::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <herve.poussineau@reactos.org>)
- id 1rKQ5F-0005HV-4E; Mon, 01 Jan 2024 16:44:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=reactos.org
- ; s=25047;
- h=Sender:Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
- References:Cc:To:Subject:MIME-Version:Date:Message-ID:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=Klpoq4IBJlwhgww+5AFWbDVu6+kwoqVKefDdmBTb8R0=;
- i=herve.poussineau@reactos.org; b=KTo6F9xA5eMZRYMALNwiU7LeZPPhe/qRQcqP2qoStkT
- S0uuts6wZq7EU4cf+cvTtUudL4rs3ULzBntS3iXgXRi/3DnLh08lkZra0ujEcWuCVG3agXgzWzPda
- XaQqXfRPCHgMurOPGq+4K+7Nf4XvUwpSUj69o6vblXO+In8gchU=;
-Received: (Authenticated sender: herve.poussineau@reactos.org)
- by iserv.reactos.org with esmtpsa
- (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_128_GCM:128) (Exim)
- (envelope-from <herve.poussineau@reactos.org>)
- id 1rKQ59-00FL7K-Kv; Mon, 01 Jan 2024 21:44:23 +0000
-Message-ID: <10e3fd96-ede1-1e13-2441-779be98cf886@reactos.org>
-Date: Mon, 1 Jan 2024 22:44:21 +0100
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rKRMa-0001NR-Rr
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 18:06:28 -0500
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rKRMZ-0000Uc-9F
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 18:06:28 -0500
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-53fbf2c42bfso6436343a12.3
+ for <qemu-devel@nongnu.org>; Mon, 01 Jan 2024 15:06:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704150385; x=1704755185; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Fc7w6qm1lcKkOSX/aWlQDZG20+2gOdT5iAy2c8bZOd8=;
+ b=dNkcO41+f8tEqtfO4CNEK3dzzuYmU72bWdyd57epmAhewzLeLt7RHz7f8a67QcEMtj
+ ogk6TnzY9C5YB3hC95BjYoWhfUSIRC+4LS6Z0RwjdR/VKwliPovopIgOnnCJgr11M6gq
+ x0Oo7AV6+ydX2/CJ/vi7CdysfcZZNdnlX5DkwVtTI296PMIfJhRN/SIHiqDfABCFrw8B
+ Nf+VpbYc91syKadTGBPzmOtamcAqx3MD7ndkVEI1eFkiejeGu9jawdqrAxz+jrFJJMby
+ 3/j4e+hqiQjlRVHVrpiQEM6ip7BsHqaMXlc6glQyIRph/u6yRDewnRTojoIGcUN84nFm
+ mbCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704150385; x=1704755185;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Fc7w6qm1lcKkOSX/aWlQDZG20+2gOdT5iAy2c8bZOd8=;
+ b=hZafAFg/VkyIycwdF4otV76XBU2LSrOJf6IQXXrHMfYC6VpDcmh6U6unnnNrhV1rJc
+ Frk0If2lK+nqHlo6ygJZVRdtRCln267V28VDpSD/lTZPO9vgZZYtmILeAjt4/L6mtPUf
+ 43iW7kR8zjBT8Uf80ld5qRodyuJS5bo86Asuzg/WgRfMGqBs9Im+w+MqwqKrTxSjPAvs
+ Psix/WKTNvKR6XHuyVDA17fTVJiGIsDUQp1InHF1ExsF2gG4wPI3hVMjTj+F2hs0SeY6
+ Ivqs1RMAKbe9i581Wo6tIM2Jw/MHxL8fKN1SVC7klk4HpF516HBS8u/gQQE9vunYup05
+ ccyQ==
+X-Gm-Message-State: AOJu0Yy5sdlKUW0PNOmXX9aF7N5+gfVMCk21pUVv8dRCuvQamjzIYvYj
+ bSbNjV179B0oOyVl1t2lm1MwjDSpugfXsoz2rrpo8m8NOcc=
+X-Google-Smtp-Source: AGHT+IEE8RrF8uJO+68mSKODXu7giWx4EOgGGw+lT4v5lrdoFoZHlM0SU92PKHZ7B7CK5Dh1q82oRg==
+X-Received: by 2002:a05:6a20:111f:b0:194:9578:9ba8 with SMTP id
+ x31-20020a056a20111f00b0019495789ba8mr14471419pze.16.1704150384447; 
+ Mon, 01 Jan 2024 15:06:24 -0800 (PST)
+Received: from stoup.. (124-149-254-207.tpgi.com.au. [124.149.254.207])
+ by smtp.gmail.com with ESMTPSA id
+ h12-20020a63df4c000000b005bd2b3a03eesm19672386pgj.6.2024.01.01.15.06.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 01 Jan 2024 15:06:24 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, qemu-stable@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH] target/i386: Do not re-compute new pc with CF_PCREL
+Date: Tue,  2 Jan 2024 10:06:17 +1100
+Message-Id: <20240101230617.129349-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] hw/block/fdc: do not set SEEK status bit in multi track
- commands
-Content-Language: en-US
-To: John Snow <jsnow@redhat.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20230812085957.408208-1-hpoussin@reactos.org>
-From: =?UTF-8?Q?Herv=c3=a9_Poussineau?= <hpoussin@reactos.org>
-In-Reply-To: <20230812085957.408208-1-hpoussin@reactos.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a01:4f8:1c17:5ae1::1;
- envelope-from=herve.poussineau@reactos.org; helo=iserv.reactos.org
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.014,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,28 +89,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping.
+With PCREL, we have a page-relative view of EIP, and an
+approximation of PC = EIP+CSBASE that is good enough to
+detect page crossings.  If we try to recompute PC after
+masking EIP, we will mess up that approximation and write
+a corrupt value to EIP.
 
-Le 12/08/2023 à 10:59, Hervé Poussineau a écrit :
-> I don't understand when SEEK must be set or not, but it seems to fix Minix...
-> 
-> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1522
-> Signed-off-by: Hervé Poussineau <hpoussin@reactos.org>
-> ---
->   hw/block/fdc.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/hw/block/fdc.c b/hw/block/fdc.c
-> index d7cc4d3ec19..f627bbaf951 100644
-> --- a/hw/block/fdc.c
-> +++ b/hw/block/fdc.c
-> @@ -1404,7 +1404,6 @@ static int fdctrl_seek_to_next_sect(FDCtrl *fdctrl, FDrive *cur_drv)
->               } else {
->                   new_head = 0;
->                   new_track++;
-> -                fdctrl->status0 |= FD_SR0_SEEK;
->                   if ((cur_drv->flags & FDISK_DBL_SIDES) == 0) {
->                       ret = 0;
->                   }
+We already handled masking properly for PCREL, so the
+fix in b5e0d5d2 was only needed for the !PCREL path.
+
+Cc: qemu-stable@nongnu.org
+Fixes: b5e0d5d22fbf ("target/i386: Fix 32-bit wrapping of pc/eip computation")
+Reported-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/i386/tcg/translate.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 037bc47e7c..e68375b19d 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -2845,10 +2845,6 @@ static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num)
+         }
+     }
+     new_eip &= mask;
+-    new_pc = new_eip + s->cs_base;
+-    if (!CODE64(s)) {
+-        new_pc = (uint32_t)new_pc;
+-    }
+ 
+     gen_update_cc_op(s);
+     set_cc_op(s, CC_OP_DYNAMIC);
+@@ -2864,6 +2860,8 @@ static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num)
+             tcg_gen_andi_tl(cpu_eip, cpu_eip, mask);
+             use_goto_tb = false;
+         }
++    } else if (!CODE64(s)) {
++        new_pc = (uint32_t)(new_eip + s->cs_base);
+     }
+ 
+     if (use_goto_tb && translator_use_goto_tb(&s->base, new_pc)) {
+-- 
+2.34.1
 
 
