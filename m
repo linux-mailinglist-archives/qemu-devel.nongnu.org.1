@@ -2,83 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB31382151B
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jan 2024 20:04:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26ECE821573
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jan 2024 22:40:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKNYh-00012O-Sv; Mon, 01 Jan 2024 14:02:43 -0500
+	id 1rKPzd-00052W-6N; Mon, 01 Jan 2024 16:38:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rKNYf-000120-Q8
- for qemu-devel@nongnu.org; Mon, 01 Jan 2024 14:02:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1rKPza-00052E-5l
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 16:38:38 -0500
+Received: from bumble.birch.relay.mailchannels.net ([23.83.209.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rKNYe-0007JE-3L
- for qemu-devel@nongnu.org; Mon, 01 Jan 2024 14:02:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704135756;
+ (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1rKPzY-0004UO-AD
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 16:38:37 -0500
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+ by relay.mailchannels.net (Postfix) with ESMTP id B7A202C23B0;
+ Mon,  1 Jan 2024 21:38:32 +0000 (UTC)
+Received: from pdx1-sub0-mail-a227.dreamhost.com (unknown [127.0.0.6])
+ (Authenticated sender: dreamhost)
+ by relay.mailchannels.net (Postfix) with ESMTPA id 4D3142C23A2;
+ Mon,  1 Jan 2024 21:38:32 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1704145112; a=rsa-sha256;
+ cv=none;
+ b=MJpEnGmB1A5UAyl1LovopJ/bOSCIrOL6CC5uiX/etqk+qySNsFkevH2OGhoqiz0iCB8AsP
+ +I2CO0ZOoWHQRnet15NvYJHckDMhoIpaX1TF9mwYyZlyTN2WmwZqvea3M2ilNTyf6RK7Gb
+ qXUw6qptPV5BFqcCCR34O7fWmKUynSgy0VAg7pTDw5daA9+qMRL2pKsAy3/++YZS6GJ5Rl
+ ynu19DNohXnEAh6mEodjQ5A4LJmO9hmomBpOEh/k5ZnkNN1/JqD/DumNoBQscvL6G5rHV4
+ ssZtVrGrbzfrI+pRWxxl0IH1G4krTl0OOysoPpYq55TmuqRwwwDxXzgnfayPiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net; s=arc-2022; t=1704145112;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gZsopaZnpVnSQzYAabePbvtjo+oQmgwlrp0tUWETiAI=;
- b=YTaG6UbeatSt7TAspPA3ZPLL6ZJlEFPVEHs8k7DnIIVIYYBXKwCuJ7usnH3135eCjDlo9R
- vMXtzDoZcoejT8ZEjBLXMiL6nV1jCBkvoTaKEdeBDc41iNbBJFImWEx1lDQhRN17uq7ch/
- zAyXwLynao/3Ns9kb5vK9hhTb8Ldsl4=
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
- [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-2u5kyko6OoS9GtPhkh9OXQ-1; Mon, 01 Jan 2024 14:02:29 -0500
-X-MC-Unique: 2u5kyko6OoS9GtPhkh9OXQ-1
-Received: by mail-oi1-f198.google.com with SMTP id
- 5614622812f47-3bbc4a68340so4481739b6e.1
- for <qemu-devel@nongnu.org>; Mon, 01 Jan 2024 11:02:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704135749; x=1704740549;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gZsopaZnpVnSQzYAabePbvtjo+oQmgwlrp0tUWETiAI=;
- b=jrNMMVMZfQYQYIYKKVvz3b0yAOU/v9ZAArOgPhdFmvnHIpP63AX7Z8xqv7zEb5ePUI
- GWl1j3jOuKko204sRXyKQh76l2iM6Lq855cRoG+aQb3CpPQAfpK53kbYYVJdIk3M27VE
- h1ndO9WQA5dwqGgrh0XoYOmIOAUuTkypPbNbOjSv2+iYLaUpcNH5I2xmuMlx5QiAzusQ
- RLPsvzN1y2hmzd+Gw+N+mM8NDp7eIaKFt6o2/cObO8+F53WN0WRVInOvqhjWm+vCecF4
- EmP5AeTG10Ssd0way3PGz2nf4QgZKVwuid4RMCONdn5E5pf+Kogo4Q/W/hoFx6mupTOB
- nWiw==
-X-Gm-Message-State: AOJu0Yw+KAZf0wKneG1Q7AZ1qLk93IHR6v/ZTyheArNLR/f9U7CfjGcY
- SMSMVWlHo05cSaNxrevJGAxHxFbuImDIU2Qim3kUkgImbUxEe+wremyRP722cxY40Qb4rrAq6im
- 5PRoBz/GdXejualKacuQAarWa493uBU0b7b3RBJg=
-X-Received: by 2002:a05:6808:3c93:b0:3bb:c935:3e0e with SMTP id
- gs19-20020a0568083c9300b003bbc9353e0emr10447808oib.73.1704135749013; 
- Mon, 01 Jan 2024 11:02:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHqYk9YnmJ6Smknm62ihgPHJ6rx2+4RzcPu1t+EmJGdRxjR3aAGUM+10KUsKh82hhfzsgz9+AubpCzGKgNOdMQ=
-X-Received: by 2002:a05:6808:3c93:b0:3bb:c935:3e0e with SMTP id
- gs19-20020a0568083c9300b003bbc9353e0emr10447801oib.73.1704135748773; Mon, 01
- Jan 2024 11:02:28 -0800 (PST)
+ in-reply-to:in-reply-to:references:references:dkim-signature;
+ bh=O0Vl21gdkyhagidw/M2dwHYt+Cr9WGQFM2ryl4rjPyI=;
+ b=CdFGMHEH24zr5oK45Kd3s2WP1C6g9Ni4htHiOR85UzI318Vusheow1JKKKHypLp9u+Kh0H
+ Ppi7MuWt67IW0Ch8PxOkNF1rQlaVV/Rm6FDw1oTIN5l920BxXLMxSjaiaXMdbDNa8WmQpp
+ tgXf1eLgs5RwvhW457RXXExDcW3GgUj6PN3vLV00am1yM9MuA7geRmix/+bAHkC8Ga/hrk
+ 26lXEPSYuKF0duPRNmsy3azG+MAGo5xiT9wN3CUyZGKSKS2nTRJCUA9rDzLeE/3ystPfFg
+ ws4cc5sDPscExX4qtbxzj4q3uttU7m9LhuAUBKXkTDgYsI4Tel3JhWOQ4KFCxg==
+ARC-Authentication-Results: i=1; rspamd-856c7f878f-c7md2;
+ auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Absorbed-Little: 255de27f6b2c3616_1704145112578_3752715891
+X-MC-Loop-Signature: 1704145112578:4118686458
+X-MC-Ingress-Time: 1704145112578
+Received: from pdx1-sub0-mail-a227.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.112.49.9 (trex/6.9.2); Mon, 01 Jan 2024 21:38:32 +0000
+Received: from offworld (ip72-199-50-187.sd.sd.cox.net [72.199.50.187])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ (Authenticated sender: dave@stgolabs.net)
+ by pdx1-sub0-mail-a227.dreamhost.com (Postfix) with ESMTPSA id 4T3q9M5LQkz7v; 
+ Mon,  1 Jan 2024 13:38:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+ s=dreamhost; t=1704145112;
+ bh=O0Vl21gdkyhagidw/M2dwHYt+Cr9WGQFM2ryl4rjPyI=;
+ h=Date:From:To:Cc:Subject:Content-Type;
+ b=FsRknOZYYMye8JB9YiWefxLFqRqzGEg8hRUpqal1pZMKePAMHNSJ5PV8UW80iqQgN
+ lHhOOGVMEMJnSzE8sz12n2+HwD9SxSup5nIwLnceE4ufmSeOXM8NbX3rmWEaQWPfjQ
+ 2LNaY1Lv1qdVWjeqh6apEhP93bqqHQzU4LdMuaT2K7/Vo62/9YsYcQvq8ikekq1vvk
+ kUAJBl1v3N7xe8qJZwfJuFp7qrhR81jkU5w0tN+vG8JqOpSC7IncSFw2+sfxZ6bp3S
+ HrgUqjf2hCTtC17wP1voCR19ABufyYub3Btb3q3dNLKD+930eBfq5buYiXls22y31y
+ NzufqDtwc9AZw==
+Date: Mon, 1 Jan 2024 13:38:28 -0800
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Fan Ni <fan.ni@samsung.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ linux-cxl@vger.kernel.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 4/4] hw/cxl/events: discard all event records during
+ sanitation
+Message-ID: <20240101213828.nxayq6ps3azk2eic@offworld>
+References: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
+ <20231222090051.3265307-5-42.hyeyoo@gmail.com>
 MIME-Version: 1.0
-References: <20231231093918.239549-1-pbonzini@redhat.com>
- <20231231093918.239549-6-pbonzini@redhat.com>
- <0479f7fd-b3d5-a18c-3640-0c679cd8a834@eik.bme.hu>
-In-Reply-To: <0479f7fd-b3d5-a18c-3640-0c679cd8a834@eik.bme.hu>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 1 Jan 2024 20:02:16 +0100
-Message-ID: <CABgObfa3DVVzRa6v=QREyWqhRyLofiiNpp7ZJdu5nv65GrkHBQ@mail.gmail.com>
-Subject: Re: [PATCH 5/8] vga: optimize horizontal pel panning in 256-color
- modes
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel <qemu-devel@nongnu.org>, "Hoffmann, Gerd" <kraxel@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000f47e9d060de705c2"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.246,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20231222090051.3265307-5-42.hyeyoo@gmail.com>
+User-Agent: NeoMutt/20220429
+Received-SPF: pass client-ip=23.83.209.25; envelope-from=dave@stgolabs.net;
+ helo=bumble.birch.relay.mailchannels.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,106 +112,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000f47e9d060de705c2
-Content-Type: text/plain; charset="UTF-8"
+On Fri, 22 Dec 2023, Hyeonggon Yoo wrote:
 
-Il dom 31 dic 2023, 17:27 BALATON Zoltan <balaton@eik.bme.hu> ha scritto:
+>Per spec 8.2.9.9.5.1 Sanitize (Opcode 4400h), sanitize command should
+>delete all event logs. Introduce cxl_discard_all_event_logs() and call
+>this in __do_sanitization().
 
-> >     palette = vga->last_palette;
-> >     hpel = (hpel >> 1) & 3;
-> > +
-> > +    /* For 256 color modes, we can adjust the source address and write
-> directly
-> > +     * to the destination, even if horizontal pel panning is active.
-> However,
-> > +     * the loop below assumes that the address does not wrap in the
-> middle of a
-> > +     * plane.  If that happens...
-> > +     */
-> > +    if (addr + (width >> 3) * 4 < VGA_VRAM_SIZE) {
-> > +        addr += hpel * 4;
-> > +        hpel = 0;
-> > +    }
-> > +
-> > +    /* ... use the panning buffer as in planar modes.  */
-> >     if (hpel) {
-> >         width += 8;
-> >         d = vga->panning_buf;
+lgtm
+
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+
+>Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+>---
+> hw/cxl/cxl-events.c         | 13 +++++++++++++
+> hw/cxl/cxl-mailbox-utils.c  |  1 +
+> include/hw/cxl/cxl_device.h |  1 +
+> 3 files changed, 15 insertions(+)
 >
-> Is it possible to do these checks once in vga.c and instead of changing
-> the return value of the draw functions pass panning_buf as d if needed?
-> Maybe that way the draw funcs could be left unchanged?
+>diff --git a/hw/cxl/cxl-events.c b/hw/cxl/cxl-events.c
+>index bee6dfaf14..837b18ab47 100644
+>--- a/hw/cxl/cxl-events.c
+>+++ b/hw/cxl/cxl-events.c
+>@@ -141,6 +141,19 @@ bool cxl_event_insert(CXLDeviceState *cxlds, CXLEventLogType log_type,
+>     return cxl_event_count(log) == 1;
+> }
 >
-
-As of the previous patch it could, here however the logic for whether to
-use the panning_buf depends on the drawing function; 8d2 is special and
-different from the others.
-
-I can remove the optimization, it's not super Important; but it's kind of
-obvious to do it for the VGA 256-color modes, since they're the only ones
-with the same bit alignment for all pixels.
-
-Paolo
-
-
-> Regards,
-> BALATON Zoltan
+>+void cxl_discard_all_event_records(CXLDeviceState *cxlds)
+>+{
+>+    CXLEventLogType log_type;
+>+    CXLEventLog *log;
+>+
+>+    for (log_type = 0; log_type < CXL_EVENT_TYPE_MAX; log_type++) {
+>+        log = &cxlds->event_logs[log_type];
+>+        while (!cxl_event_empty(log)) {
+>+            cxl_event_delete_head(cxlds, log_type, log);
+>+        }
+>+    }
+>+}
+>+
+> CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
+>                                  uint8_t log_type, int max_recs,
+>                                  size_t *len)
+>diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+>index efeb5f8174..2ade351d82 100644
+>--- a/hw/cxl/cxl-mailbox-utils.c
+>+++ b/hw/cxl/cxl-mailbox-utils.c
+>@@ -1150,6 +1150,7 @@ static void __do_sanitization(CXLType3Dev *ct3d)
+>             memset(lsa, 0, memory_region_size(mr));
+>         }
+>     }
+>+    cxl_discard_all_event_records(&ct3d->cxl_dstate);
+> }
 >
+> /*
+>diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+>index 5618061ebe..8f05dd9beb 100644
+>--- a/include/hw/cxl/cxl_device.h
+>+++ b/include/hw/cxl/cxl_device.h
+>@@ -604,6 +604,7 @@ CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
+>                                  size_t *len);
+> CXLRetCode cxl_event_clear_records(CXLDeviceState *cxlds,
+>                                    CXLClearEventPayload *pl);
+>+void cxl_discard_all_event_records(CXLDeviceState *cxlds);
 >
-
---000000000000f47e9d060de705c2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D=
-"gmail_attr">Il dom 31 dic 2023, 17:27 BALATON Zoltan &lt;<a href=3D"mailto=
-:balaton@eik.bme.hu">balaton@eik.bme.hu</a>&gt; ha scritto:<br></div><block=
-quote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc=
- solid;padding-left:1ex">&gt;=C2=A0 =C2=A0 =C2=A0palette =3D vga-&gt;last_p=
-alette;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0hpel =3D (hpel &gt;&gt; 1) &amp; 3;<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 /* For 256 color modes, we can adjust the source addres=
-s and write directly<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0* to the destination, even if horizontal pel pann=
-ing is active.=C2=A0 However,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0* the loop below assumes that the address does no=
-t wrap in the middle of a<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0* plane.=C2=A0 If that happens...<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0*/<br>
-&gt; +=C2=A0 =C2=A0 if (addr + (width &gt;&gt; 3) * 4 &lt; VGA_VRAM_SIZE) {=
-<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 addr +=3D hpel * 4;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 hpel =3D 0;<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 /* ... use the panning buffer as in planar modes.=C2=A0=
- */<br>
-&gt;=C2=A0 =C2=A0 =C2=A0if (hpel) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0width +=3D 8;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0d =3D vga-&gt;panning_buf;<br>
-<br>
-Is it possible to do these checks once in vga.c and instead of changing <br=
+> void cxl_event_irq_assert(CXLType3Dev *ct3d);
 >
-the return value of the draw functions pass panning_buf as d if needed? <br=
+>-- 
+>2.39.3
 >
-Maybe that way the draw funcs could be left unchanged?<br></blockquote></di=
-v></div><div dir=3D"auto"><br></div><div dir=3D"auto">As of the previous pa=
-tch it could, here however the logic for whether to use the panning_buf dep=
-ends on the drawing function; 8d2 is special and different from the others.=
-</div><div dir=3D"auto"><br></div><div dir=3D"auto">I can remove the optimi=
-zation, it&#39;s not super Important; but it&#39;s kind of obvious to do it=
- for the VGA 256-color modes, since they&#39;re the only ones with the same=
- bit alignment for all pixels.</div><div dir=3D"auto"><br></div><div dir=3D=
-"auto">Paolo</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=
-=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8=
-ex;border-left:1px #ccc solid;padding-left:1ex">
-<br>
-Regards,<br>
-BALATON Zoltan<br>
-<br>
-</blockquote></div></div></div>
-
---000000000000f47e9d060de705c2--
-
 
