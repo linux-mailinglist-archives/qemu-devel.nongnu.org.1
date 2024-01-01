@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C9D821333
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jan 2024 08:55:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB31382151B
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jan 2024 20:04:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKD7T-00054k-Fh; Mon, 01 Jan 2024 02:53:55 -0500
+	id 1rKNYh-00012O-Sv; Mon, 01 Jan 2024 14:02:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
- id 1rKD7Q-00053k-JX
- for qemu-devel@nongnu.org; Mon, 01 Jan 2024 02:53:52 -0500
-Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
- id 1rKD7O-0007QN-Fg
- for qemu-devel@nongnu.org; Mon, 01 Jan 2024 02:53:52 -0500
-Received: by mail-qt1-x834.google.com with SMTP id
- d75a77b69052e-427b8775aebso51860331cf.1
- for <qemu-devel@nongnu.org>; Sun, 31 Dec 2023 23:53:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1704095629; x=1704700429; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8FUEEGnGsBaweemMprQnXlz3wR+5ydknYqnb+TOQpYo=;
- b=jhT7iw9yegd/R9AE0kfASXPchHT6JlOCIoD/ZhUO+8WyMzCXRQDERpsnhI3SIQ8l4d
- iY61bTRVFb4CNET2DcPKtMXHERPD8eNKX8WjhTlbvvn/6500x36ktZUQ5YsWS9eE1Asi
- pQdr1FWo7uQyMg8AQJcKKAwOURIWxhOFLE24KnMoS4Zv0PtsSPQc/vldu+iuq44STO2o
- uwuoYvlQkJntUvc26dopDlonC07fnVCLXVgxXsRKtT53axlQJrxjA36q01BM8D6Ol/Ce
- b7UqsxXCP9o5f2QJ3VHYzfQSMCGhn5XNuo3EATI4R9O+JPl0P8bARM6DRCs7Sr1R4yvk
- 8/4w==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rKNYf-000120-Q8
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 14:02:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rKNYe-0007JE-3L
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 14:02:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704135756;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=gZsopaZnpVnSQzYAabePbvtjo+oQmgwlrp0tUWETiAI=;
+ b=YTaG6UbeatSt7TAspPA3ZPLL6ZJlEFPVEHs8k7DnIIVIYYBXKwCuJ7usnH3135eCjDlo9R
+ vMXtzDoZcoejT8ZEjBLXMiL6nV1jCBkvoTaKEdeBDc41iNbBJFImWEx1lDQhRN17uq7ch/
+ zAyXwLynao/3Ns9kb5vK9hhTb8Ldsl4=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-641-2u5kyko6OoS9GtPhkh9OXQ-1; Mon, 01 Jan 2024 14:02:29 -0500
+X-MC-Unique: 2u5kyko6OoS9GtPhkh9OXQ-1
+Received: by mail-oi1-f198.google.com with SMTP id
+ 5614622812f47-3bbc4a68340so4481739b6e.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Jan 2024 11:02:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704095629; x=1704700429;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8FUEEGnGsBaweemMprQnXlz3wR+5ydknYqnb+TOQpYo=;
- b=pB0kSEWdBJ38g32TIHQvbGe+ccAJhoi/qshc70vb+ZXSAc3s6Ts//Xr9Z4jp2g1E22
- 5AAUSV+e/yQerG8FTI+3GGBPWRLbbBSk+dE179lLUGFocXOYLTUuYX/B9N1gEvxZNHRy
- C5MZe61y1QZ2nOlH355ABH32iFlBVtHcVH/LlAGdkObRAzCNyuvDPVjs+RQrmVA+6RKb
- BrWREncvU5++4LLQmd9VxOLmnnjG2PEC2rOJKMGklQovxe9Un29m3SVIJbUlxN4zasoF
- WDgO6l7LpYlStA+1lfuG+O3IOorzo2lvVUv+uS72UkpQ2qdBGDHQLtK6kdxcaBijI6Q6
- TZww==
-X-Gm-Message-State: AOJu0YyBKYlFZ8fPuOAZGYYORg5ucmW5sD+QR8ZZfA4faxEJrEtbhzr1
- Ioi7oNQQdtb5uXlGfmA8HGxZCiWsclAc+w==
-X-Google-Smtp-Source: AGHT+IETp0NQPl5rZvtW0mxc9ERREZGzkHxXHcf0ZU9nXvUfuC9skWSvcJ3vGosbP2+gSBWH9Uih3w==
-X-Received: by 2002:ac8:5795:0:b0:428:1de2:e591 with SMTP id
- v21-20020ac85795000000b004281de2e591mr1762564qta.57.1704095629024; 
- Sun, 31 Dec 2023 23:53:49 -0800 (PST)
-Received: from n73-164-11.byted.org ([72.29.204.230])
- by smtp.gmail.com with ESMTPSA id
- bx4-20020a05622a090400b00427f5c73636sm4465361qtb.27.2023.12.31.23.53.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Dec 2023 23:53:48 -0800 (PST)
-From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
- "Hao Xiang" <hao.xiang@bytedance.com>,
- "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
- "Ben Widawsky" <ben.widawsky@intel.com>,
- "Gregory Price" <gourry.memverge@gmail.com>, "Fan Ni" <fan.ni@samsung.com>,
- "Ira Weiny" <ira.weiny@intel.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
-Cc: "Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
- "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- linux-cxl@vger.kernel.org
-Subject: [QEMU-devel][RFC PATCH 1/1] backends/hostmem: qapi/qom: Add an
- ObjectOption for memory-backend-* called HostMemType and its arg 'cxlram'
-Date: Sun, 31 Dec 2023 23:53:15 -0800
-Message-Id: <20240101075315.43167-2-horenchuang@bytedance.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20240101075315.43167-1-horenchuang@bytedance.com>
-References: <20240101075315.43167-1-horenchuang@bytedance.com>
+ d=1e100.net; s=20230601; t=1704135749; x=1704740549;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gZsopaZnpVnSQzYAabePbvtjo+oQmgwlrp0tUWETiAI=;
+ b=jrNMMVMZfQYQYIYKKVvz3b0yAOU/v9ZAArOgPhdFmvnHIpP63AX7Z8xqv7zEb5ePUI
+ GWl1j3jOuKko204sRXyKQh76l2iM6Lq855cRoG+aQb3CpPQAfpK53kbYYVJdIk3M27VE
+ h1ndO9WQA5dwqGgrh0XoYOmIOAUuTkypPbNbOjSv2+iYLaUpcNH5I2xmuMlx5QiAzusQ
+ RLPsvzN1y2hmzd+Gw+N+mM8NDp7eIaKFt6o2/cObO8+F53WN0WRVInOvqhjWm+vCecF4
+ EmP5AeTG10Ssd0way3PGz2nf4QgZKVwuid4RMCONdn5E5pf+Kogo4Q/W/hoFx6mupTOB
+ nWiw==
+X-Gm-Message-State: AOJu0Yw+KAZf0wKneG1Q7AZ1qLk93IHR6v/ZTyheArNLR/f9U7CfjGcY
+ SMSMVWlHo05cSaNxrevJGAxHxFbuImDIU2Qim3kUkgImbUxEe+wremyRP722cxY40Qb4rrAq6im
+ 5PRoBz/GdXejualKacuQAarWa493uBU0b7b3RBJg=
+X-Received: by 2002:a05:6808:3c93:b0:3bb:c935:3e0e with SMTP id
+ gs19-20020a0568083c9300b003bbc9353e0emr10447808oib.73.1704135749013; 
+ Mon, 01 Jan 2024 11:02:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHqYk9YnmJ6Smknm62ihgPHJ6rx2+4RzcPu1t+EmJGdRxjR3aAGUM+10KUsKh82hhfzsgz9+AubpCzGKgNOdMQ=
+X-Received: by 2002:a05:6808:3c93:b0:3bb:c935:3e0e with SMTP id
+ gs19-20020a0568083c9300b003bbc9353e0emr10447801oib.73.1704135748773; Mon, 01
+ Jan 2024 11:02:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
- envelope-from=horenchuang@bytedance.com; helo=mail-qt1-x834.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20231231093918.239549-1-pbonzini@redhat.com>
+ <20231231093918.239549-6-pbonzini@redhat.com>
+ <0479f7fd-b3d5-a18c-3640-0c679cd8a834@eik.bme.hu>
+In-Reply-To: <0479f7fd-b3d5-a18c-3640-0c679cd8a834@eik.bme.hu>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 1 Jan 2024 20:02:16 +0100
+Message-ID: <CABgObfa3DVVzRa6v=QREyWqhRyLofiiNpp7ZJdu5nv65GrkHBQ@mail.gmail.com>
+Subject: Re: [PATCH 5/8] vga: optimize horizontal pel panning in 256-color
+ modes
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel <qemu-devel@nongnu.org>, "Hoffmann, Gerd" <kraxel@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000f47e9d060de705c2"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.246,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,324 +95,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a new configuration option 'host-mem-type=' in the
-'-object memory-backend-ram', allowing users to specify
-from which type of memory to allocate.
+--000000000000f47e9d060de705c2
+Content-Type: text/plain; charset="UTF-8"
 
-Users can specify 'cxlram' as an argument, and QEMU will then
-automatically locate CXL RAM NUMA nodes and use them as the backend memory.
-For example:
-	-object memory-backend-ram,id=vmem0,size=19G,host-mem-type=cxlram \
-	-device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
-	-device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
-	-device cxl-type3,bus=root_port13,volatile-memdev=vmem0,id=cxl-vmem0 \
-	-M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=19G,cxl-fmw.0.interleave-granularity=8k \
+Il dom 31 dic 2023, 17:27 BALATON Zoltan <balaton@eik.bme.hu> ha scritto:
 
-In v1, we plan to move most of the implementations to util and break down
-this patch into different smaller patches.
+> >     palette = vga->last_palette;
+> >     hpel = (hpel >> 1) & 3;
+> > +
+> > +    /* For 256 color modes, we can adjust the source address and write
+> directly
+> > +     * to the destination, even if horizontal pel panning is active.
+> However,
+> > +     * the loop below assumes that the address does not wrap in the
+> middle of a
+> > +     * plane.  If that happens...
+> > +     */
+> > +    if (addr + (width >> 3) * 4 < VGA_VRAM_SIZE) {
+> > +        addr += hpel * 4;
+> > +        hpel = 0;
+> > +    }
+> > +
+> > +    /* ... use the panning buffer as in planar modes.  */
+> >     if (hpel) {
+> >         width += 8;
+> >         d = vga->panning_buf;
+>
+> Is it possible to do these checks once in vga.c and instead of changing
+> the return value of the draw functions pass panning_buf as d if needed?
+> Maybe that way the draw funcs could be left unchanged?
+>
 
-Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
-Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
----
- backends/hostmem.c       | 184 +++++++++++++++++++++++++++++++++++++++
- include/sysemu/hostmem.h |   1 +
- qapi/common.json         |  19 ++++
- qapi/qom.json            |   1 +
- qemu-options.hx          |   2 +-
- 5 files changed, 206 insertions(+), 1 deletion(-)
+As of the previous patch it could, here however the logic for whether to
+use the panning_buf depends on the drawing function; 8d2 is special and
+different from the others.
 
-diff --git a/backends/hostmem.c b/backends/hostmem.c
-index 747e7838c0..3bede13879 100644
---- a/backends/hostmem.c
-+++ b/backends/hostmem.c
-@@ -44,6 +44,133 @@ host_memory_backend_get_name(HostMemoryBackend *backend)
-     return object_get_canonical_path(OBJECT(backend));
- }
- 
-+#define FILE_LINE_LEN 256
-+static int
-+is_valid_node(const char *path) {
-+    FILE *file = fopen(path, "r");
-+    if (file == NULL) {
-+        return -1;
-+    }
-+
-+    char line[FILE_LINE_LEN];
-+    if (fgets(line, sizeof(line), file) != NULL) {
-+        int target_node = atoi(line);
-+
-+        if (target_node >= 0) {
-+            fclose(file);
-+            return target_node;
-+        }
-+    }
-+
-+    fclose(file);
-+    return -1;
-+}
-+
-+static int
-+is_directory(const char *path) {
-+    struct stat path_stat;
-+    stat(path, &path_stat);
-+    return S_ISDIR(path_stat.st_mode);
-+}
-+
-+static int
-+is_symlink(const char *path) {
-+    struct stat path_stat;
-+    if (lstat(path, &path_stat) == -1) {
-+        return 0;
-+    }
-+    return S_ISLNK(path_stat.st_mode);
-+}
-+
-+#define CXL_DEVICE_PATH "/sys/bus/cxl/devices/"
-+#define REGION_PATH_LEN 307
-+#define DAX_REGION_PATH_LEN 563
-+#define DAX_PATH_LEN 819
-+#define TARGET_FILE_PATH_LEN 831
-+/*
-+ * return: the number of valid numa node id found
-+ */
-+static int
-+host_memory_backend_get_cxlram_nodes(int *valid_cxlram_nodes) {
-+    DIR *base_dir = NULL, *region_dir = NULL, *dax_region_dir = NULL;
-+    const char *base_dir_path = CXL_DEVICE_PATH;
-+    struct dirent *entry;
-+    int valid_node = 0, ret = 0;
-+
-+    base_dir = opendir(base_dir_path);
-+    if (base_dir == NULL) {
-+        return valid_node;
-+    }
-+
-+    while ((entry = readdir(base_dir)) != NULL) {
-+        char region_path[REGION_PATH_LEN];
-+
-+        ret = snprintf(region_path, sizeof(region_path), "%s%s",
-+                                            base_dir_path, entry->d_name);
-+        if (ret < 0 ||
-+            !is_symlink(region_path) ||
-+            strncmp(entry->d_name, "region", ARRAY_SIZE("region") - 1)) {
-+            continue;
-+        }
-+
-+        region_dir = opendir(region_path);
-+        if (region_dir == NULL) {
-+            goto region_exit;
-+        }
-+
-+        while ((entry = readdir(region_dir)) != NULL) {
-+            char dax_region_path[DAX_REGION_PATH_LEN];
-+
-+            ret = snprintf(dax_region_path, sizeof(dax_region_path), "%s/%s",
-+                                                    region_path, entry->d_name);
-+            if (ret < 0 ||
-+                !is_directory(dax_region_path) ||
-+                strncmp(entry->d_name, "dax_region",
-+                            ARRAY_SIZE("dax_region") - 1)) {
-+
-+                continue;
-+            }
-+
-+            dax_region_dir = opendir(dax_region_path);
-+            if (dax_region_dir == NULL) {
-+                goto dax_region_exit;
-+            }
-+
-+            while ((entry = readdir(dax_region_dir)) != NULL) {
-+                int target_node;
-+                char dax_path[DAX_PATH_LEN];
-+                char target_file_path[TARGET_FILE_PATH_LEN];
-+                ret = snprintf(dax_path, sizeof(dax_path), "%s/%s",
-+                                            dax_region_path, entry->d_name);
-+                if (ret < 0 ||
-+                    !is_directory(dax_path) ||
-+                    strncmp(entry->d_name, "dax", ARRAY_SIZE("dax") - 1)) {
-+                    continue;
-+                }
-+
-+                ret = snprintf(target_file_path, sizeof(target_file_path),
-+                                                    "%s/target_node", dax_path);
-+                if (ret < 0) {
-+                    continue;
-+                }
-+
-+                target_node = is_valid_node(target_file_path);
-+                if (target_node >= 0) {
-+                    valid_cxlram_nodes[valid_node] = target_node;
-+                    valid_node++;
-+                }
-+            }
-+        }
-+    }
-+
-+    closedir(dax_region_dir);
-+dax_region_exit:
-+    closedir(region_dir);
-+region_exit:
-+    closedir(base_dir);
-+    return valid_node;
-+}
-+
- static void
- host_memory_backend_get_size(Object *obj, Visitor *v, const char *name,
-                              void *opaque, Error **errp)
-@@ -117,6 +244,12 @@ host_memory_backend_set_host_nodes(Object *obj, Visitor *v, const char *name,
-     HostMemoryBackend *backend = MEMORY_BACKEND(obj);
-     uint16List *l, *host_nodes = NULL;
- 
-+    if (backend->host_mem_type == HOST_MEM_TYPE_CXLRAM) {
-+        error_setg(errp,
-+            "'host-mem-type=' and 'host-nodes='/'policy=' are incompatible");
-+        return;
-+    }
-+
-     visit_type_uint16List(v, name, &host_nodes, errp);
- 
-     for (l = host_nodes; l; l = l->next) {
-@@ -150,6 +283,11 @@ host_memory_backend_set_policy(Object *obj, int policy, Error **errp)
-     HostMemoryBackend *backend = MEMORY_BACKEND(obj);
-     backend->policy = policy;
- 
-+    if (backend->host_mem_type == HOST_MEM_TYPE_CXLRAM) {
-+        error_setg(errp,
-+            "'host-mem-type=' and 'host-nodes='/'policy=' are incompatible");
-+    }
-+
- #ifndef CONFIG_NUMA
-     if (policy != HOST_MEM_POLICY_DEFAULT) {
-         error_setg(errp, "NUMA policies are not supported by this QEMU");
-@@ -157,6 +295,46 @@ host_memory_backend_set_policy(Object *obj, int policy, Error **errp)
- #endif
- }
- 
-+static int
-+host_memory_backend_get_host_mem_type(Object *obj, Error **errp G_GNUC_UNUSED)
-+{
-+    HostMemoryBackend *backend = MEMORY_BACKEND(obj);
-+    return backend->host_mem_type;
-+}
-+
-+static void
-+host_memory_backend_set_host_mem_type(Object *obj, int host_mem_type, Error **errp)
-+{
-+    HostMemoryBackend *backend = MEMORY_BACKEND(obj);
-+    backend->host_mem_type = host_mem_type;
-+
-+#ifndef CONFIG_NUMA
-+    error_setg(errp, "NUMA node host memory types are not supported by this QEMU");
-+#else
-+    int i, valid_cxlram_nodes[MAX_NODES];
-+
-+    if (backend->policy > 0 ||
-+        !bitmap_empty(backend->host_nodes, MAX_NODES)) {
-+        error_setg(errp,
-+            "'host-mem-type=' and 'host-nodes='/'policy=' are incompatible");
-+        return;
-+    }
-+
-+    if (host_memory_backend_get_cxlram_nodes(valid_cxlram_nodes) > 0) {
-+        for (i = 0; i < MAX_NODES; i++) {
-+            if (valid_cxlram_nodes[i] < 0) {
-+                break;
-+            }
-+            bitmap_set(backend->host_nodes, valid_cxlram_nodes[i], 1);
-+        }
-+    } else {
-+        error_setg(errp, "Cannot find CXL RAM on host");
-+        return;
-+    }
-+    backend->policy = HOST_MEM_POLICY_BIND;
-+#endif
-+}
-+
- static bool host_memory_backend_get_merge(Object *obj, Error **errp)
- {
-     HostMemoryBackend *backend = MEMORY_BACKEND(obj);
-@@ -536,6 +714,12 @@ host_memory_backend_class_init(ObjectClass *oc, void *data)
-         host_memory_backend_get_share, host_memory_backend_set_share);
-     object_class_property_set_description(oc, "share",
-         "Mark the memory as private to QEMU or shared");
-+    object_class_property_add_enum(oc, "host-mem-type", "HostMemType",
-+        &HostMemType_lookup,
-+        host_memory_backend_get_host_mem_type,
-+        host_memory_backend_set_host_mem_type);
-+    object_class_property_set_description(oc, "host-mem-type",
-+        "Set the backend host memory type");
- #ifdef CONFIG_LINUX
-     object_class_property_add_bool(oc, "reserve",
-         host_memory_backend_get_reserve, host_memory_backend_set_reserve);
-diff --git a/include/sysemu/hostmem.h b/include/sysemu/hostmem.h
-index 39326f1d4f..afeb9b71d1 100644
---- a/include/sysemu/hostmem.h
-+++ b/include/sysemu/hostmem.h
-@@ -70,6 +70,7 @@ struct HostMemoryBackend {
-     ThreadContext *prealloc_context;
-     DECLARE_BITMAP(host_nodes, MAX_NODES + 1);
-     HostMemPolicy policy;
-+    HostMemType host_mem_type;
- 
-     MemoryRegion mr;
- };
-diff --git a/qapi/common.json b/qapi/common.json
-index 6fed9cde1a..591fd73291 100644
---- a/qapi/common.json
-+++ b/qapi/common.json
-@@ -167,6 +167,25 @@
- { 'enum': 'HostMemPolicy',
-   'data': [ 'default', 'preferred', 'bind', 'interleave' ] }
- 
-+##
-+# @HostMemType:
-+#
-+# Automatically find a backend memory type on host.
-+# Can be further extened to support other types such as cxlpmem, hbm.
-+#
-+# @none: do nothing (default).
-+#
-+# @cxlram: a CXL RAM backend on host.
-+#
-+# Note: HostMemType and HostMemPolicy/host-nodes cannot be set at the same
-+# time. HostMemType is used to automatically bind with one kind of
-+# host memory types.
-+#
-+# Since: 8.3
-+##
-+{ 'enum': 'HostMemType',
-+  'data': [ 'none', 'cxlram' ] }
-+
- ##
- # @NetFilterDirection:
- #
-diff --git a/qapi/qom.json b/qapi/qom.json
-index 95516ba325..fa3bc29708 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -626,6 +626,7 @@
-             '*host-nodes': ['uint16'],
-             '*merge': 'bool',
-             '*policy': 'HostMemPolicy',
-+            '*host-mem-type': 'HostMemType',
-             '*prealloc': 'bool',
-             '*prealloc-threads': 'uint32',
-             '*prealloc-context': 'str',
-diff --git a/qemu-options.hx b/qemu-options.hx
-index b66570ae00..39074c1aa0 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -5211,7 +5211,7 @@ SRST
-         (``share=off``). For this use case, we need writable RAM instead
-         of ROM, and want to also set ``rom=off``.
- 
--    ``-object memory-backend-ram,id=id,merge=on|off,dump=on|off,share=on|off,prealloc=on|off,size=size,host-nodes=host-nodes,policy=default|preferred|bind|interleave``
-+    ``-object memory-backend-ram,id=id,merge=on|off,dump=on|off,share=on|off,prealloc=on|off,size=size,host-mem-type=cxlram,host-nodes=host-nodes,policy=default|preferred|bind|interleave``
-         Creates a memory backend object, which can be used to back the
-         guest RAM. Memory backend objects offer more control than the
-         ``-m`` option that is traditionally used to define guest RAM.
--- 
-Regards,
-Hao Xiang and Ho-Ren (Jack) Chuang
+I can remove the optimization, it's not super Important; but it's kind of
+obvious to do it for the VGA 256-color modes, since they're the only ones
+with the same bit alignment for all pixels.
+
+Paolo
+
+
+> Regards,
+> BALATON Zoltan
+>
+>
+
+--000000000000f47e9d060de705c2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D=
+"gmail_attr">Il dom 31 dic 2023, 17:27 BALATON Zoltan &lt;<a href=3D"mailto=
+:balaton@eik.bme.hu">balaton@eik.bme.hu</a>&gt; ha scritto:<br></div><block=
+quote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc=
+ solid;padding-left:1ex">&gt;=C2=A0 =C2=A0 =C2=A0palette =3D vga-&gt;last_p=
+alette;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0hpel =3D (hpel &gt;&gt; 1) &amp; 3;<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 /* For 256 color modes, we can adjust the source addres=
+s and write directly<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0* to the destination, even if horizontal pel pann=
+ing is active.=C2=A0 However,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0* the loop below assumes that the address does no=
+t wrap in the middle of a<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0* plane.=C2=A0 If that happens...<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0*/<br>
+&gt; +=C2=A0 =C2=A0 if (addr + (width &gt;&gt; 3) * 4 &lt; VGA_VRAM_SIZE) {=
+<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 addr +=3D hpel * 4;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 hpel =3D 0;<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 /* ... use the panning buffer as in planar modes.=C2=A0=
+ */<br>
+&gt;=C2=A0 =C2=A0 =C2=A0if (hpel) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0width +=3D 8;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0d =3D vga-&gt;panning_buf;<br>
+<br>
+Is it possible to do these checks once in vga.c and instead of changing <br=
+>
+the return value of the draw functions pass panning_buf as d if needed? <br=
+>
+Maybe that way the draw funcs could be left unchanged?<br></blockquote></di=
+v></div><div dir=3D"auto"><br></div><div dir=3D"auto">As of the previous pa=
+tch it could, here however the logic for whether to use the panning_buf dep=
+ends on the drawing function; 8d2 is special and different from the others.=
+</div><div dir=3D"auto"><br></div><div dir=3D"auto">I can remove the optimi=
+zation, it&#39;s not super Important; but it&#39;s kind of obvious to do it=
+ for the VGA 256-color modes, since they&#39;re the only ones with the same=
+ bit alignment for all pixels.</div><div dir=3D"auto"><br></div><div dir=3D=
+"auto">Paolo</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=
+=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8=
+ex;border-left:1px #ccc solid;padding-left:1ex">
+<br>
+Regards,<br>
+BALATON Zoltan<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000f47e9d060de705c2--
 
 
