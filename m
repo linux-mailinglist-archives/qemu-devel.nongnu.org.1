@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE47821633
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F084821631
 	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 03:00:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKU3O-0003Lh-Lj; Mon, 01 Jan 2024 20:58:50 -0500
+	id 1rKU3T-0003VH-T7; Mon, 01 Jan 2024 20:58:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rKU3M-0003LD-U9
- for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:58:48 -0500
-Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
+ id 1rKU3P-0003Lj-7U
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:58:51 -0500
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rKU3L-00072X-4O
- for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:58:48 -0500
-Received: by mail-oi1-x236.google.com with SMTP id
- 5614622812f47-3bbd6f87959so2438372b6e.1
- for <qemu-devel@nongnu.org>; Mon, 01 Jan 2024 17:58:46 -0800 (PST)
+ id 1rKU3N-00072u-Hi
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:58:50 -0500
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6d9bba6d773so4527187b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Jan 2024 17:58:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704160726; x=1704765526; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704160728; x=1704765528; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TCVGxN0fnWUc6maO2wa7dwEI9dVIrhQYXz7yUCQwr68=;
- b=Gk9qLQmxGv4qKw8p86XCfG4z+OwjmQuWyHIBOSx3Htu4N0q3gZII+kZFHZZWQ16IEo
- GB2BpgHcxrI+kzcFEizQmMHxps4Bm8PxgI5b/pVwB9ph/0qza+ZxVsG2VrSgV3E2tLhK
- RtkVmQcMen+jUC9k7ByYsrMc3qqCTKKh8UNdT1i9jXdcWLBBnZVxLUUy6ZWUGMqp4y8y
- lba7JnVNMDCGTZuKVnTxTWm3hALGY09t6K3zl8f8kASeEGLuubBpSOmlO5iNa7GZPJmd
- G5HLgAiLEeVP9HENIDHq1XB7Xd+4HRu2nxc/P4mRTuuQjxOL7SsGZCwNY90hYpPa+1Qf
- ev7w==
+ bh=tnSJisjhmOEPjG/usSlqH7jpNx1heRPl0XkUSpAoUU4=;
+ b=aDr1PqNlVmx4prsdKZJYRIm1vVLFrlbT6SY+3REZiZoWHYh3Oj+ALdajLfoNkPsZh7
+ PUx6vukihpxMCfj0LC0oRtdffGQukkr80+Egwfr6iE8lzzLGYtjqlKy6vNGA01kyF7Tg
+ RyzeiFyIClFuFE97n/IymEcNvGUmBlIUR+hmNzAcj6WfVP+7om1Bvfm2ODNkrZUP/Goy
+ rxd9w8cUPUl+pAMHEGyOA6/C6rP/AMhq0TCLUDBpMP1vuy9QOc1dLcZ2v1loOFhasIpo
+ G1Yj0MVvUGy6np5T0Eof3ZI82ryXuFCYhbSZarF2GJyQzy2tNNa/KrbGF1hJo3dCGzhd
+ MvrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704160726; x=1704765526;
+ d=1e100.net; s=20230601; t=1704160728; x=1704765528;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TCVGxN0fnWUc6maO2wa7dwEI9dVIrhQYXz7yUCQwr68=;
- b=wDn9lVbb/PkTTR28Bf1YswB2T4n1jTx7cUNqpLex7hb37e/Kfhnpa1bSoez982xwOK
- Sw8eMPzlHBp78SozLnyHHU8+TY+jLQ+uegB1WV2Je1SfwwHmSOQRwOylLDi9iCXx4V2A
- RGgIFzjGEkMm+zZxo13mbpcMyiUKD/m4uRbQkqBG2pLynt252vJ4q5o6ZBPJaX0Ucs0g
- UBzIa604wFFtpjNoIi1ATEHi+gy6Oa6EIHNZg3vw1SOr4cbHxblRuvmyjZUoH9B/ORP2
- CMUXt0v42ZpF/j4lFffsgsbW90hqeb4TYSK11LYLWnzZ2YJMHyJCsBk3I6sQEH95QUTa
- 2dzw==
-X-Gm-Message-State: AOJu0Yzb4RT0Hlq9aPFAI1mV455ELay7ID7pljUgA1r2aAdt2VKFyxBl
- 1e81I08H1dTeUXmdQptILlNRqj96fKiR3u2PSypQk5kfH3s=
-X-Google-Smtp-Source: AGHT+IFSfWkWw+ykc02cxF/IAAJDocZtPwmgTGs/MlDQprQgtZciMKLd4Fspg3DQWJUyvtVRKG319w==
-X-Received: by 2002:a05:6808:159e:b0:3bc:18d8:d208 with SMTP id
- t30-20020a056808159e00b003bc18d8d208mr317011oiw.30.1704160725851; 
- Mon, 01 Jan 2024 17:58:45 -0800 (PST)
+ bh=tnSJisjhmOEPjG/usSlqH7jpNx1heRPl0XkUSpAoUU4=;
+ b=MEB1pD6rQCL/PwJDuhOsNwFhns2lJ2ZkJIrLxq432uvz3jj+Mx1wAZit4SR1eF9jZf
+ vRl0bXcz6k2panp6KnG0uSIQ54SgFN9Fww7vebqQYhk38+9Pp1dH87oF++J8HyISsg4g
+ QWmy71O+7hcmo1/tYfb2webZwEByx9B1xdpxTg288oot5prnsmk57OSARQ64JvhiQvOK
+ 4Ou+K5cwlDRfg1gshaYsRplqJ+zdqvZJf5b20epDobtJYPp/Lkp/XbgJMTbBuGxGOVl4
+ 4D0i1lHUOfJYxs2xy94BJo1Dn3Aqyg4Yb7hzeESXOsHDt0cCbaJ3vbCSCsXFA8cagwaV
+ Qbag==
+X-Gm-Message-State: AOJu0Yz40f9+oiqNHmSysAPvqJuGXeV69CriohRRvGsB3IwFCZBPAD/5
+ VchgXQ3pkEMs80ATrPt4o0VosRi5PtMcIB/aNr4FrS8p/2w=
+X-Google-Smtp-Source: AGHT+IEAGlexuAg3lxm+T1XIQe1a0LOV0XxZb3TleOCDXhLfRg4LkVgcjkmJOnp+ilwF+MBVdDVeVA==
+X-Received: by 2002:a05:6a00:1d96:b0:6d9:af31:293b with SMTP id
+ z22-20020a056a001d9600b006d9af31293bmr17005737pfw.61.1704160728179; 
+ Mon, 01 Jan 2024 17:58:48 -0800 (PST)
 Received: from stoup.. (124-149-254-207.tpgi.com.au. [124.149.254.207])
  by smtp.gmail.com with ESMTPSA id
- g33-20020a635221000000b0058ee60f8e4dsm19561891pgb.34.2024.01.01.17.58.44
+ g33-20020a635221000000b0058ee60f8e4dsm19561891pgb.34.2024.01.01.17.58.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jan 2024 17:58:45 -0800 (PST)
+ Mon, 01 Jan 2024 17:58:47 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 16/33] linux-user: Split out target_mmap__locked
-Date: Tue,  2 Jan 2024 12:57:51 +1100
-Message-Id: <20240102015808.132373-17-richard.henderson@linaro.org>
+Subject: [PATCH v3 17/33] linux-user: Move some mmap checks outside the lock
+Date: Tue,  2 Jan 2024 12:57:52 +1100
+Message-Id: <20240102015808.132373-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240102015808.132373-1-richard.henderson@linaro.org>
 References: <20240102015808.132373-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x236.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,210 +92,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All "goto fail" may be transformed to "return -1".
+Basic validation of operands does not require the lock.
+Hoist them from target_mmap__locked back into target_mmap.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 62 ++++++++++++++++++++++++++---------------------
- 1 file changed, 35 insertions(+), 27 deletions(-)
+ linux-user/mmap.c | 107 +++++++++++++++++++++++-----------------------
+ 1 file changed, 53 insertions(+), 54 deletions(-)
 
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index d11f758d07..b4c3cc65aa 100644
+index b4c3cc65aa..fbaea832c5 100644
 --- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -490,9 +490,9 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
-     }
+@@ -491,52 +491,14 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
  }
  
--/* NOTE: all the constants are the HOST ones */
--abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
--                     int flags, int fd, off_t offset)
-+static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
-+                                    int target_prot, int flags,
-+                                    int fd, off_t offset)
+ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+-                                    int target_prot, int flags,
++                                    int target_prot, int flags, int page_flags,
+                                     int fd, off_t offset)
  {
      int host_page_size = qemu_real_host_page_size();
      abi_ulong ret, last, real_start, real_last, retaddr, host_len;
-@@ -500,30 +500,27 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-     int page_flags;
+     abi_ulong passthrough_start = -1, passthrough_last = 0;
+-    int page_flags;
      off_t host_offset;
  
--    mmap_lock();
--    trace_target_mmap(start, len, target_prot, flags, fd, offset);
+-    if (!len) {
+-        errno = EINVAL;
+-        return -1;
+-    }
 -
-     if (!len) {
-         errno = EINVAL;
--        goto fail;
-+        return -1;
-     }
+-    page_flags = validate_prot_to_pageflags(target_prot);
+-    if (!page_flags) {
+-        errno = EINVAL;
+-        return -1;
+-    }
+-
+-    /* Also check for overflows... */
+-    len = TARGET_PAGE_ALIGN(len);
+-    if (!len) {
+-        errno = ENOMEM;
+-        return -1;
+-    }
+-
+-    if (offset & ~TARGET_PAGE_MASK) {
+-        errno = EINVAL;
+-        return -1;
+-    }
+-
+-    /*
+-     * If we're mapping shared memory, ensure we generate code for parallel
+-     * execution and flush old translations.  This will work up to the level
+-     * supported by the host -- anything that requires EXCP_ATOMIC will not
+-     * be atomic with respect to an external process.
+-     */
+-    if (flags & MAP_SHARED) {
+-        CPUState *cpu = thread_cpu;
+-        if (!(cpu->tcg_cflags & CF_PARALLEL)) {
+-            cpu->tcg_cflags |= CF_PARALLEL;
+-            tb_flush(cpu);
+-        }
+-    }
+-
+     real_start = start & -host_page_size;
+     host_offset = offset & -host_page_size;
  
-     page_flags = validate_prot_to_pageflags(target_prot);
-     if (!page_flags) {
-         errno = EINVAL;
--        goto fail;
-+        return -1;
-     }
- 
-     /* Also check for overflows... */
-     len = TARGET_PAGE_ALIGN(len);
-     if (!len) {
-         errno = ENOMEM;
--        goto fail;
-+        return -1;
-     }
- 
-     if (offset & ~TARGET_PAGE_MASK) {
-         errno = EINVAL;
--        goto fail;
-+        return -1;
-     }
- 
-     /*
-@@ -553,7 +550,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-         start = mmap_find_vma(real_start, host_len, TARGET_PAGE_SIZE);
-         if (start == (abi_ulong)-1) {
-             errno = ENOMEM;
--            goto fail;
-+            return -1;
-         }
-     }
- 
-@@ -574,7 +571,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-         struct stat sb;
- 
-         if (fstat(fd, &sb) == -1) {
--            goto fail;
-+            return -1;
-         }
- 
-         /* Are we trying to create a map beyond EOF?.  */
-@@ -601,7 +598,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-         p = mmap(g2h_untagged(start), host_len, host_prot,
-                  flags | MAP_FIXED | MAP_ANONYMOUS, -1, 0);
-         if (p == MAP_FAILED) {
--            goto fail;
-+            return -1;
-         }
-         /* update start so that it points to the file position at 'offset' */
-         host_start = (uintptr_t)p;
-@@ -610,7 +607,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-                      flags | MAP_FIXED, fd, host_offset);
-             if (p == MAP_FAILED) {
-                 munmap(g2h_untagged(start), host_len);
--                goto fail;
-+                return -1;
-             }
-             host_start += offset - host_offset;
-         }
-@@ -621,7 +618,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+@@ -616,23 +578,9 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+         passthrough_start = start;
+         passthrough_last = last;
      } else {
-         if (start & ~TARGET_PAGE_MASK) {
-             errno = EINVAL;
--            goto fail;
-+            return -1;
-         }
+-        if (start & ~TARGET_PAGE_MASK) {
+-            errno = EINVAL;
+-            return -1;
+-        }
          last = start + len - 1;
          real_last = ROUND_UP(last, host_page_size) - 1;
-@@ -633,14 +630,14 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-          */
-         if (last < start || !guest_range_valid_untagged(start, len)) {
-             errno = ENOMEM;
--            goto fail;
-+            return -1;
-         }
  
+-        /*
+-         * Test if requested memory area fits target address space
+-         * It can fail only on 64-bit host with 32-bit target.
+-         * On any other target/host host mmap() handles this error correctly.
+-         */
+-        if (last < start || !guest_range_valid_untagged(start, len)) {
+-            errno = ENOMEM;
+-            return -1;
+-        }
+-
          if (flags & MAP_FIXED_NOREPLACE) {
              /* Validate that the chosen range is empty. */
              if (!page_check_range_empty(start, last)) {
-                 errno = EEXIST;
--                goto fail;
-+                return -1;
-             }
+@@ -778,13 +726,64 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+                      int flags, int fd, off_t offset)
+ {
+     abi_long ret;
++    int page_flags;
  
-             /*
-@@ -671,17 +668,17 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-             if ((flags & MAP_TYPE) == MAP_SHARED
-                 && (target_prot & PROT_WRITE)) {
-                 errno = EINVAL;
--                goto fail;
-+                return -1;
-             }
-             retaddr = target_mmap(start, len, target_prot | PROT_WRITE,
-                                   (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))
-                                   | MAP_PRIVATE | MAP_ANONYMOUS,
-                                   -1, 0);
-             if (retaddr == -1) {
--                goto fail;
-+                return -1;
-             }
-             if (pread(fd, g2h_untagged(start), len, offset) == -1) {
--                goto fail;
-+                return -1;
-             }
-             if (!(target_prot & PROT_WRITE)) {
-                 ret = target_mprotect(start, len, target_prot);
-@@ -696,14 +693,14 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-                 /* one single host page */
-                 if (!mmap_frag(real_start, start, last,
-                                target_prot, flags, fd, offset)) {
--                    goto fail;
-+                    return -1;
-                 }
-                 goto the_end1;
-             }
-             if (!mmap_frag(real_start, start,
-                            real_start + host_page_size - 1,
-                            target_prot, flags, fd, offset)) {
--                goto fail;
-+                return -1;
-             }
-             real_start += host_page_size;
-         }
-@@ -713,7 +710,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-             if (!mmap_frag(real_page, real_page, last,
-                            target_prot, flags, fd,
-                            offset + real_page - start)) {
--                goto fail;
-+                return -1;
-             }
-             real_last -= host_page_size;
-         }
-@@ -739,7 +736,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-                     munmap(p, len1);
-                     errno = EEXIST;
-                 }
--                goto fail;
-+                return -1;
-             }
-             passthrough_start = real_start;
-             passthrough_last = real_last;
-@@ -773,11 +770,22 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-             qemu_log_unlock(f);
-         }
-     }
--    mmap_unlock();
-     return start;
--fail:
-+}
+     trace_target_mmap(start, len, target_prot, flags, fd, offset);
 +
-+/* NOTE: all the constants are the HOST ones */
-+abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-+                     int flags, int fd, off_t offset)
-+{
-+    abi_long ret;
++    if (!len) {
++        errno = EINVAL;
++        return -1;
++    }
 +
-+    trace_target_mmap(start, len, target_prot, flags, fd, offset);
-+    mmap_lock();
++    page_flags = validate_prot_to_pageflags(target_prot);
++    if (!page_flags) {
++        errno = EINVAL;
++        return -1;
++    }
 +
-+    ret = target_mmap__locked(start, len, target_prot, flags, fd, offset);
++    /* Also check for overflows... */
++    len = TARGET_PAGE_ALIGN(len);
++    if (!len || len != (size_t)len) {
++        errno = ENOMEM;
++        return -1;
++    }
 +
++    if (offset & ~TARGET_PAGE_MASK) {
++        errno = EINVAL;
++        return -1;
++    }
++    if (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE)) {
++        if (start & ~TARGET_PAGE_MASK) {
++            errno = EINVAL;
++            return -1;
++        }
++        if (!guest_range_valid_untagged(start, len)) {
++            errno = ENOMEM;
++            return -1;
++        }
++    }
++
+     mmap_lock();
+ 
+-    ret = target_mmap__locked(start, len, target_prot, flags, fd, offset);
++    ret = target_mmap__locked(start, len, target_prot, flags,
++                              page_flags, fd, offset);
+ 
      mmap_unlock();
--    return -1;
-+    return ret;
++
++    /*
++     * If we're mapping shared memory, ensure we generate code for parallel
++     * execution and flush old translations.  This will work up to the level
++     * supported by the host -- anything that requires EXCP_ATOMIC will not
++     * be atomic with respect to an external process.
++     */
++    if (ret != -1 && (flags & MAP_TYPE) != MAP_PRIVATE) {
++        CPUState *cpu = thread_cpu;
++        if (!(cpu->tcg_cflags & CF_PARALLEL)) {
++            cpu->tcg_cflags |= CF_PARALLEL;
++            tb_flush(cpu);
++        }
++    }
++
+     return ret;
  }
  
- static int mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
 -- 
 2.34.1
 
