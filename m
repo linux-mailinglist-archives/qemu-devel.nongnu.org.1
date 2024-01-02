@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2F082194F
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 10:59:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70571821958
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 11:02:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKbYZ-0002lG-1F; Tue, 02 Jan 2024 04:59:31 -0500
+	id 1rKbaN-0003Tb-72; Tue, 02 Jan 2024 05:01:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKbYX-0002ku-OF
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 04:59:29 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKba5-0003SS-BI
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 05:01:15 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKbYW-0004b0-6V
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 04:59:29 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-336c9acec03so5326662f8f.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 01:59:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKbZw-0005I9-Vn
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 05:01:04 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3373a30af67so1730886f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 02:00:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704189566; x=1704794366; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704189655; x=1704794455; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ItovUO5eWLxbEammtzFJKTWC25DQHMBuIbrcoYWGoHw=;
- b=PG768vF85J5qMFujlatNFvTzjKXpbYqdjRWZIe44dKuGhNeKeGexZX/T5ZnKmqycfe
- YB8WEmfCka7aMEfLPYQGxYj7YnBJr6l6fd9FsufWMsJDCaq8GSHLA9GvU1/Y6xtLWfQz
- Y/zEwZ6qkEb69V789eM2XeoTSXHdXi1vEsP5fAxe+E2yLLjZc5JGFSyPx2oieV/GtR+9
- gFEPbEzpWD6wCMTDNunVMFS3Df29ER8wfs3GnMNm2DnirnO70cmq34t7eF5GBzmwqohk
- MyVjKjSiVNRJSiukZ6kcRbk4VUOPiE2OGtl5Jupnh+eE1TnqgsIqUBpN+boKrAn4uPOQ
- /REg==
+ bh=s++RBQNZ14uMYixJRc1hsmTMclQuQpHvVPBssIi3yNc=;
+ b=KHlNV0aCs8Z7aJvdYIMVBGWe+UemirCryE2TTOlIGo6oX5EghFaeJ1M0upP200BFZS
+ Ko8v1BiPzMIhifJEp6iqjZHTq5kELXhBTsbzWtOJUmsdZ8ZLUnvxO2WbfB5yqJcT8EcX
+ AajJFTDe2ErVpj0FFYJS+W9FZd38iffgm2YpeePKw6ha09tvfG+sVa7RUT5nAkK6LKX6
+ uRHZ8JlApscHKXrksY0WLntBvSG0NsqMUBsKttETyxDBh7iZdZ5zaIKvQaLWFYPYQ6T0
+ mwixtkuQ/KM6488jDVUckNrgcdYR7Y3Eae6yRB36aYee+yuV+MTzDu9LvxL/1y+SbmP8
+ d/ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704189566; x=1704794366;
+ d=1e100.net; s=20230601; t=1704189655; x=1704794455;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ItovUO5eWLxbEammtzFJKTWC25DQHMBuIbrcoYWGoHw=;
- b=f0zbZd3roNZvtUyAapAP+vy2zH12/lPZC6QM43LHZMM3r9rMrjuIl1iW6IPCOOcqeX
- BQtfFtOX1SiwC2wQjbUaeFuU70icW0xZtBFfaGISSIQXB07RJ2115C2w9FMpz1wSGuFr
- NVzEEzo1vLrE6fqoa4WYsMXNh+k+krKVQmZn6Tq5KDHOrLwUPJgYSqbFEa8QpsrH+x7n
- f1YY3URdm6U1F3iIx3e0kodtmenLD9aLcFLaNWdN9at5+PqcbWc+S4h6+QCNvMCgwiGz
- 1f5lL1KjKr9mB9GlplEomgGGgLGYOe7TeXzp+XneZ3C8YXKOjEuemZutj2w/SRu4Fqev
- vSrw==
-X-Gm-Message-State: AOJu0YyfpZNl7LaC1bkf2m5MRt1R+KG7rjsGfPNJ9NZ4OLfzIGIAiUIE
- Q2jDloj6YM2u/VE8vUmNA9FyOJYNLguNag==
-X-Google-Smtp-Source: AGHT+IEh45ns8Gd12tpWuK8fetbhH3c91CGcJBKdsjCNjghoVHxHXMRaZQ7C2cM8OzrZ32v12R96Iw==
-X-Received: by 2002:a5d:688b:0:b0:336:647c:cef1 with SMTP id
- h11-20020a5d688b000000b00336647ccef1mr8158438wru.44.1704189566092; 
- Tue, 02 Jan 2024 01:59:26 -0800 (PST)
+ bh=s++RBQNZ14uMYixJRc1hsmTMclQuQpHvVPBssIi3yNc=;
+ b=ITWrhu+TlnIk142fdIpQy9IO6Z/o6LmhC1vYoouDlb1UtAawZrEu0H+dCTRjerX/gp
+ kNrrYqIofdowNPoY7fgsSUR60jerPh/K8tMIHfvurW4O2gxYRqgesHM+4FD6cD5Cqamt
+ CkJN84kPMESl6GLoiE7ffN3hNZhfhGO/0pDgjak3yj7Eu5g5zAUMiPHojdSmCMvQKbgo
+ IDsBwCSK1YuKStXjmQtUXjVT0oFiE2qs/ooTMfzaE2Vniv/6sBh2VjCGB4fTQs3ng1eu
+ cerBhkIZrGmGIl5Melkg49sYbeOgC1MFxUk8aOfbCdDUkn2X9JUOzQ+j0BkMh4rHytT3
+ R8jA==
+X-Gm-Message-State: AOJu0YyIFlUIKgCsTPxTrLWjLwFhpJpr7qwwEu4vEk44+c2WV+MMEtu8
+ yipSkWmpnwzsA9RL/dJ2MB4ds4nj/ZU7mWzCjYv4+nQvklk=
+X-Google-Smtp-Source: AGHT+IE2SKnciiCVGXbFrGp786lFth5FIt0p5rEscmRz21+qUUALEikOIIB5Q9YLTIw6IeqIg1uSKg==
+X-Received: by 2002:a5d:5404:0:b0:336:7f6b:190c with SMTP id
+ g4-20020a5d5404000000b003367f6b190cmr5708066wrv.205.1704189655092; 
+ Tue, 02 Jan 2024 02:00:55 -0800 (PST)
 Received: from [192.168.69.100] (sal63-h02-176-184-16-71.dsl.sta.abo.bbox.fr.
  [176.184.16.71]) by smtp.gmail.com with ESMTPSA id
- a4-20020adff7c4000000b003366da509ecsm28030822wrq.85.2024.01.02.01.59.25
+ a4-20020adff7c4000000b003366da509ecsm28030822wrq.85.2024.01.02.02.00.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jan 2024 01:59:25 -0800 (PST)
-Message-ID: <cc130d98-796e-4e27-954e-d0d6edb4551c@linaro.org>
-Date: Tue, 2 Jan 2024 10:59:24 +0100
+ Tue, 02 Jan 2024 02:00:54 -0800 (PST)
+Message-ID: <8f99476e-ebff-4b33-a7f6-daea2b3b8eb8@linaro.org>
+Date: Tue, 2 Jan 2024 11:00:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/8] vga: introduce VGADisplayParams
+Subject: Re: [PATCH 6/8] vga: reindent memory access code
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 Cc: kraxel@redhat.com
 References: <20231231093918.239549-1-pbonzini@redhat.com>
- <20231231093918.239549-3-pbonzini@redhat.com>
+ <20231231093918.239549-7-pbonzini@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231231093918.239549-3-pbonzini@redhat.com>
+In-Reply-To: <20231231093918.239549-7-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,18 +93,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 31/12/23 10:39, Paolo Bonzini wrote:
-> The next patches will introduce more parameters that cause a full
-> refresh.  Instead of adding arguments to get_offsets and lines to
-> update_basic_params, do everything through a struct.
+> The next patch will reuse latched memory access in text modes.  Start with
+> a patch that moves the latched access code out of the "if".
+> 
+> Best reviewed with "git diff -b".
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   hw/display/cirrus_vga.c | 24 +++++-------
->   hw/display/vga.c        | 82 +++++++++++++++++------------------------
->   hw/display/vga_int.h    | 15 ++++----
->   3 files changed, 52 insertions(+), 69 deletions(-)
+>   hw/display/vga.c | 211 ++++++++++++++++++++++++-----------------------
+>   1 file changed, 110 insertions(+), 101 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-(Please enable scripts/git.orderfile)
 
