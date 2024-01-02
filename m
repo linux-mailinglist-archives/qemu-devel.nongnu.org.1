@@ -2,89 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3972B8219C2
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 11:30:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 450B3821A3C
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 11:44:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKc1Z-0004Uv-Ei; Tue, 02 Jan 2024 05:29:29 -0500
+	id 1rKcEf-0006lw-Nb; Tue, 02 Jan 2024 05:43:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKc1K-0004UT-JO
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 05:29:17 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rKcEd-0006kg-6z
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 05:42:59 -0500
+Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKc1I-0001bs-LL
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 05:29:14 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3368ae75082so4850299f8f.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 02:29:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rKcEb-0003yb-I7
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 05:42:58 -0500
+Received: by mail-qt1-x830.google.com with SMTP id
+ d75a77b69052e-4281bcaf321so8921271cf.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 02:42:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704191350; x=1704796150; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gZt+jI3yrrtHW+ylSqnHBTIVmmrElsiUaVV6R1l2/6Y=;
- b=rlhTbO3+B7if2+TBseEiuYTGjijRUM1zgG+vqNDFTdKL2T/blczOH5M6nn0jfCKqWz
- xjiKWXs32UKDLuYpnRteGZLKf7NPx56EL9Cvmym+OTPYvAtcHxhBMGS98Ycy/SaMaNJ7
- FA1YsXL8RD5MaR8uapzgXhqw8e3X1UXDurHbAWWvAWxW8qH+fqh/en0QtXqPxd5Z3znc
- 9WsA7nZdlltlNCRlu1yJazTyKrdAaqgCSr0xxyonyrWQgJAOw+Fa7mPC/eY1tAApQl+G
- qp5GraHYh0aB4xB5RSNZ1f+7Ad6Ud9kTJkqDz1VReq4i9GEfPU+42eMJrfapNY/bQfzX
- 1Smw==
+ d=gmail.com; s=20230601; t=1704192176; x=1704796976; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JTlbJfG49FXk96s4oJ9RThaa8t9INNDD3eL8LRERVLc=;
+ b=EB8nIGM4YpTCAXyKVsqFyIXARrr9Ycv99E76ojtcmgGrkmJGTibxBMWK3GmHlJ/Mno
+ 9rhxQgV6Ev5nM/0rJOSmSGMqUfaO7rkC2+7NfjQbDcTVRzyiR/3hZquqHQLHa8lg7asT
+ liGOCDIyc9trCOy0H/tIhG+LQODU+hfvVJOZ6zbOBQaHaCjfvpPhB9zod1nupPBwAGXS
+ awqlCiJc3QExZDgIpkWX9EvxQ4hg9m1o4CxtPqS0/M9Rku/k5B1jyNz2X9NbixYySzt0
+ 154ym0mLyg73FFJ+njQeZSyV/60vwX69coB0l98qum4K216Hcd23JY5FfpsbenEFj4MH
+ 9iaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704191350; x=1704796150;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gZt+jI3yrrtHW+ylSqnHBTIVmmrElsiUaVV6R1l2/6Y=;
- b=RsMPzEjFjCXOIKkXY7KphDYOdtOYqMn5EEv/mhqRIxmeVYP7+yoLYZEPfjIXZj16Kf
- TtgXMg8aaVVNfYW/eoKnVClvIDAzmS4gvOEScnfB3BW78zLswKhqtZGtokXIUig59TjD
- 7pInBq185AhPHkHGNujwhZXs0GmG0nf0PSIViIXF3hf5UTnl8ZWnD8vlNTdV1dqaZPrl
- 4JVQJs4Yw1A9wWmZTENbuxtnBiHmUyw0xMJUbwNNvPafUHwGPKC8JMt4kpvfc4URSPcZ
- G3IpZoPPho4EZF0GjHT6Rnf+7i+bjUsrwVB2yZEcevJ4jNMtaUVyi5wI52G9qGaBkJlH
- cUVg==
-X-Gm-Message-State: AOJu0Yy+lkqGlzpBwMadBBz+nRU5MbWzGGLoHIRv5zJ2TT5Nft8ZL/n1
- N6eoT34YHgxHzenOGGI/siq2Hkiw5xlqFw==
-X-Google-Smtp-Source: AGHT+IHAb3J/DyUzJZ5XQrEKJCwXXjtwAJtsL+ESzB0vCFur9k//lqdpUL+GN3kc0YeflrCbgVv1XQ==
-X-Received: by 2002:a05:600c:4f56:b0:40d:85a1:8d0a with SMTP id
- m22-20020a05600c4f5600b0040d85a18d0amr1787566wmq.113.1704191350241; 
- Tue, 02 Jan 2024 02:29:10 -0800 (PST)
-Received: from [192.168.69.100] (sal63-h02-176-184-16-71.dsl.sta.abo.bbox.fr.
- [176.184.16.71]) by smtp.gmail.com with ESMTPSA id
- o20-20020a05600c4fd400b0040b37f1079dsm51650250wmq.29.2024.01.02.02.29.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jan 2024 02:29:09 -0800 (PST)
-Message-ID: <75843b7e-1460-4ea2-8837-51299a3a232b@linaro.org>
-Date: Tue, 2 Jan 2024 11:29:07 +0100
+ d=1e100.net; s=20230601; t=1704192176; x=1704796976;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JTlbJfG49FXk96s4oJ9RThaa8t9INNDD3eL8LRERVLc=;
+ b=VEqE2OAhx93z7hlhsJ1cYl1XHHlhFl/zDDEoaE660cDvooRh75G14CkI2BTbdMFkh8
+ 2QCn868Kr5GWJzdLlErX++ip+ByKsRaw+D1ZrNMiyX1oRyVtIfk6wBX7MXSlvwtxA6eb
+ /kHWOag+DD3xjo2LM4kddeygvzVP89vggj611eVDTjgt/ukVFTppg8ZDzvQDtKOW+VTI
+ imhDwU6qmvBkmdBOOtOk/9RPF32SluO9cF2cCPYwQHu7gCO0aqty5grLTyzp0azx6mA4
+ s98yNucHhmHlMbuEHi6w3+Oiy0bOCeirb7GuUADFeQ0ZRQOzsmvhQGU0uJxdLWMER2t0
+ jEnw==
+X-Gm-Message-State: AOJu0YyEZVCGo1jUz5et3QTDhVvS2cGAhomsvjgQVmrSKg8edDWGQIiC
+ JX0uxEOu/DYDkc5fIP4Sb3lWrQfr+ohaHKd9IBU=
+X-Google-Smtp-Source: AGHT+IG+dGscGnQcQ2gYtf0pCV3DKsQ9eE3HvQS3itcI+yz2wtXVsk/iLEAUfGLvkZme1TcR2oyjULRqJRtAhKJddTM=
+X-Received: by 2002:a05:622a:1646:b0:427:860c:40b2 with SMTP id
+ y6-20020a05622a164600b00427860c40b2mr21410322qtj.49.1704192176122; Tue, 02
+ Jan 2024 02:42:56 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [QEMU-devel][RFC PATCH 1/1] backends/hostmem: qapi/qom: Add an
- ObjectOption for memory-backend-* called HostMemType and its arg 'cxlram'
-Content-Language: en-US
-To: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Hao Xiang <hao.xiang@bytedance.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Ben Widawsky <ben.widawsky@intel.com>,
- Gregory Price <gourry.memverge@gmail.com>, Fan Ni <fan.ni@samsung.com>,
- Ira Weiny <ira.weiny@intel.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
-Cc: "Ho-Ren (Jack) Chuang" <horenc@vt.edu>, linux-cxl@vger.kernel.org
-References: <20240101075315.43167-1-horenchuang@bytedance.com>
- <20240101075315.43167-2-horenchuang@bytedance.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240101075315.43167-2-horenchuang@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+References: <20231219075320.165227-1-ray.huang@amd.com>
+ <20231219075320.165227-2-ray.huang@amd.com>
+ <6adff6d2-7c58-4c78-93a5-5a4594a60d27@daynix.com> <ZYGe4GcFPt0k5PTM@amd.com>
+ <CAFEAcA_=iedJw4BbNHrDALC4mL4g3ZEihsDbLkEzsy-1zAWFWw@mail.gmail.com>
+ <af89f683-2b6e-4ca1-aa37-8bedd12a781d@daynix.com>
+In-Reply-To: <af89f683-2b6e-4ca1-aa37-8bedd12a781d@daynix.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 2 Jan 2024 14:42:44 +0400
+Message-ID: <CAJ+F1CJnanuw_VQ0DDwUMfRjwHwQAZ3yif4FANcKVHMZXH3dyg@mail.gmail.com>
+Subject: Re: [PATCH v6 01/11] linux-headers: Update to kernel headers to add
+ venus capset
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Huang Rui <ray.huang@amd.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>, 
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>, 
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
+ Gert Wollny <gert.wollny@collabora.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ "ernunes@redhat.com" <ernunes@redhat.com>, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>, 
+ "Stabellini, Stefano" <stefano.stabellini@amd.com>, "Koenig,
+ Christian" <Christian.Koenig@amd.com>, 
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>, 
+ "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>, 
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang,
+ Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x830.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,102 +113,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Jack,
+Hi
 
-On 1/1/24 08:53, Ho-Ren (Jack) Chuang wrote:
-> Introduce a new configuration option 'host-mem-type=' in the
-> '-object memory-backend-ram', allowing users to specify
-> from which type of memory to allocate.
-> 
-> Users can specify 'cxlram' as an argument, and QEMU will then
-> automatically locate CXL RAM NUMA nodes and use them as the backend memory.
-> For example:
-> 	-object memory-backend-ram,id=vmem0,size=19G,host-mem-type=cxlram \
-> 	-device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
-> 	-device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
-> 	-device cxl-type3,bus=root_port13,volatile-memdev=vmem0,id=cxl-vmem0 \
-> 	-M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=19G,cxl-fmw.0.interleave-granularity=8k \
-> 
-> In v1, we plan to move most of the implementations to util and break down
-> this patch into different smaller patches.
-> 
-> Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
-> Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
-> ---
->   backends/hostmem.c       | 184 +++++++++++++++++++++++++++++++++++++++
->   include/sysemu/hostmem.h |   1 +
->   qapi/common.json         |  19 ++++
->   qapi/qom.json            |   1 +
->   qemu-options.hx          |   2 +-
->   5 files changed, 206 insertions(+), 1 deletion(-)
-> 
-> diff --git a/backends/hostmem.c b/backends/hostmem.c
+On Thu, Dec 21, 2023 at 10:55=E2=80=AFAM Akihiko Odaki <akihiko.odaki@dayni=
+x.com> wrote:
+>
+> On 2023/12/19 23:14, Peter Maydell wrote:
+> > On Tue, 19 Dec 2023 at 13:49, Huang Rui <ray.huang@amd.com> wrote:
+> >>
+> >> On Tue, Dec 19, 2023 at 08:20:22PM +0800, Akihiko Odaki wrote:
+> >>> On 2023/12/19 16:53, Huang Rui wrote:
+> >>>> Sync up kernel headers to update venus macro till they are merged in=
+to
+> >>>> mainline.
+> >>>
+> >>> Thanks for sorting things out with the kernel and spec.
+> >>>
+> >>>>
+> >>>> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> >>>> ---
+> >>>>
+> >>>> Changes in v6:
+> >>>> - Venus capset is applied in kernel, so update it in qemu for future=
+ use.
+> >>>>
+> >>>> https://lore.kernel.org/lkml/b79dcf75-c9e8-490e-644f-3b97d95f7397@co=
+llabora.com/
+> >>>> https://cgit.freedesktop.org/drm-misc/commit/?id=3D216d86b9a430f3280=
+e5b631c51e6fd1a7774cfa0
+> >>> Please include the link to the upstream commit in the commit message.
+> >>
+> >> So far, it's in drm maintainers' branch not in kernel mainline yet. Do=
+ I
+> >> need to wait it to be merged into kernel mainline?
+> >
+> > For an RFC patchset, no. For patches to be merged into QEMU
+> > the headers change must be in the kernel mainline, and the
+> > QEMU commit that updates our copy of the headers must be a
+> > full-sync done with scripts/update-linux-headers.sh, not a
+> > manual edit.
+>
+> Apparently the kernel change is unlikely to be merged to mainline before
+> QEMU 9.0 so we need to come up with some idea to deal with this.
+>
+> The release of Linux 6.7 is near and the development of 6.8 will start
+> soon. So it was nice if the change made into 6.8, but unfortunately it
+> missed the *probably last* drm-misc tree pull request for 6.8:
+> https://lore.kernel.org/all/aqpn5miejmkks7pbcfex7b6u63uwsruywxsnr3x5ljs45=
+qatin@nbkkej2elk46/
+>
+> It will still get into linux-next so we may retrieve headers from
+> linux-next. Or we may add the definition to
+> hw/display/virtio-gpu-virgl.c; the duplicate definition warning will
+> tell when the definition becomes no longer necessary. I'm fine with
+> either option.
 
+The second option seems better to me, as it can avoid pulling unwanted chan=
+ges.
 
-> +#define CXL_DEVICE_PATH "/sys/bus/cxl/devices/"
-> +#define REGION_PATH_LEN 307
-> +#define DAX_REGION_PATH_LEN 563
-> +#define DAX_PATH_LEN 819
-> +#define TARGET_FILE_PATH_LEN 831
+thanks
 
-How do you get these numbers?
-
-> diff --git a/qapi/common.json b/qapi/common.json
-> index 6fed9cde1a..591fd73291 100644
-> --- a/qapi/common.json
-> +++ b/qapi/common.json
-> @@ -167,6 +167,25 @@
->   { 'enum': 'HostMemPolicy',
->     'data': [ 'default', 'preferred', 'bind', 'interleave' ] }
->   
-> +##
-> +# @HostMemType:
-> +#
-> +# Automatically find a backend memory type on host.
-
-This description is not clear (to me).
-
-> +# Can be further extened to support other types such as cxlpmem, hbm.
-
-Typo "extended" although I'm not sure it is helpful to mention it.
-
-> +#
-> +# @none: do nothing (default).
-
-"do nothing" is confusing here, I'd drop it.
-
-> +#
-> +# @cxlram: a CXL RAM backend on host.
-> +#
-> +# Note: HostMemType and HostMemPolicy/host-nodes cannot be set at the same
-> +# time. HostMemType is used to automatically bind with one kind of
-> +# host memory types.
-> +#
-> +# Since: 8.3
-
-9.0
-
-> +##
-> +{ 'enum': 'HostMemType',
-> +  'data': [ 'none', 'cxlram' ] }
-> +
->   ##
->   # @NetFilterDirection:
->   #
-> diff --git a/qapi/qom.json b/qapi/qom.json
-> index 95516ba325..fa3bc29708 100644
-> --- a/qapi/qom.json
-> +++ b/qapi/qom.json
-> @@ -626,6 +626,7 @@
->               '*host-nodes': ['uint16'],
->               '*merge': 'bool',
->               '*policy': 'HostMemPolicy',
-> +            '*host-mem-type': 'HostMemType',
-
-Missing documentation in MemoryBackendProperties.
-
->               '*prealloc': 'bool',
->               '*prealloc-threads': 'uint32',
->               '*prealloc-context': 'str',
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
