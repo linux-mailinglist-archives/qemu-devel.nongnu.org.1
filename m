@@ -2,94 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3661D822170
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 19:54:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6A7822185
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 19:58:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKjtQ-0003gL-Nr; Tue, 02 Jan 2024 13:53:36 -0500
+	id 1rKjwy-0004Xe-Tw; Tue, 02 Jan 2024 13:57:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rKjtO-0003gA-Hf
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 13:53:34 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rKjwx-0004XV-Gv
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 13:57:15 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rKjtM-0007qU-W2
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 13:53:34 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rKjww-0008Ji-13
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 13:57:15 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 112541FD03;
- Tue,  2 Jan 2024 18:53:31 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id A9DB021F75;
+ Tue,  2 Jan 2024 18:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704221611; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1704221831; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=FweSG8wjKb+ZLGnJNQUjfkW6SATaDXIeGwvvut1Ig+k=;
- b=mOhmJXzdqvi7NFahirdbEDeP4kM5jRlmK/8IJsM93ALovQBy1XoLamofnhjC5XRsTxCJ//
- pwQzCyFUkwipLKDaWsND6kV/X+iF8qhV0/EqS+yF22WCBzndfk4+6hv6P6x8izZ4+aTRX0
- uIhAho3qfa7QOzUxteQGYAAFGtmKbN0=
+ bh=h3n/4zR6ANZj783LZLk23R7XFvCyMN8ikB+vxnSa4xQ=;
+ b=N4zwZ5BueoyNjZXOivj4pMr/q33FNOAn1c83Cw4hOiKcZ7RX3qvK0T4RdTLgI/ZHZTE02O
+ W25s8afW/AHr2vM6J8d/L9T9dvhklZKeBmHuKyeR/c9CLK3MKTwd2gKy6M0YXHWh3tM6OJ
+ 4P02DQlcGY/DTcxNSbyUWKUdUAijXwI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704221611;
+ s=susede2_ed25519; t=1704221831;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=FweSG8wjKb+ZLGnJNQUjfkW6SATaDXIeGwvvut1Ig+k=;
- b=DBLv3KRe8dCb2Pk6FdXRz2zFE960MizkZERkC14YFD4mCTcgq9IlgNEtyp+aIi71gvpHW1
- 9ShZzXrRpCH4k6CQ==
+ bh=h3n/4zR6ANZj783LZLk23R7XFvCyMN8ikB+vxnSa4xQ=;
+ b=G/0jxpNP8escJRn+N4JSDgpQoXuslV70pkLUWnOsDgjT/83RvL6hWV3S0icDJenK4IfxYt
+ ZuOq3IqKTTb+piAg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704221611; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1704221831; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=FweSG8wjKb+ZLGnJNQUjfkW6SATaDXIeGwvvut1Ig+k=;
- b=mOhmJXzdqvi7NFahirdbEDeP4kM5jRlmK/8IJsM93ALovQBy1XoLamofnhjC5XRsTxCJ//
- pwQzCyFUkwipLKDaWsND6kV/X+iF8qhV0/EqS+yF22WCBzndfk4+6hv6P6x8izZ4+aTRX0
- uIhAho3qfa7QOzUxteQGYAAFGtmKbN0=
+ bh=h3n/4zR6ANZj783LZLk23R7XFvCyMN8ikB+vxnSa4xQ=;
+ b=N4zwZ5BueoyNjZXOivj4pMr/q33FNOAn1c83Cw4hOiKcZ7RX3qvK0T4RdTLgI/ZHZTE02O
+ W25s8afW/AHr2vM6J8d/L9T9dvhklZKeBmHuKyeR/c9CLK3MKTwd2gKy6M0YXHWh3tM6OJ
+ 4P02DQlcGY/DTcxNSbyUWKUdUAijXwI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704221611;
+ s=susede2_ed25519; t=1704221831;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=FweSG8wjKb+ZLGnJNQUjfkW6SATaDXIeGwvvut1Ig+k=;
- b=DBLv3KRe8dCb2Pk6FdXRz2zFE960MizkZERkC14YFD4mCTcgq9IlgNEtyp+aIi71gvpHW1
- 9ShZzXrRpCH4k6CQ==
+ bh=h3n/4zR6ANZj783LZLk23R7XFvCyMN8ikB+vxnSa4xQ=;
+ b=G/0jxpNP8escJRn+N4JSDgpQoXuslV70pkLUWnOsDgjT/83RvL6hWV3S0icDJenK4IfxYt
+ ZuOq3IqKTTb+piAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8C7391340C;
- Tue,  2 Jan 2024 18:53:30 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 230AD1340C;
+ Tue,  2 Jan 2024 18:57:10 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id FhTYFKpblGUUJQAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 02 Jan 2024 18:53:30 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id VsgCN4ZclGXrJQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 02 Jan 2024 18:57:10 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Li
  Zhijian <lizhijian@fujitsu.com>, Avihai Horon <avihaih@nvidia.com>
-Subject: Re: [PATCH 03/11] migration: Refactor migration_incoming_setup()
-In-Reply-To: <20231231093016.14204-4-avihaih@nvidia.com>
+Subject: Re: [PATCH 04/11] migration: Remove errp parameter in
+ migration_fd_process_incoming()
+In-Reply-To: <20231231093016.14204-5-avihaih@nvidia.com>
 References: <20231231093016.14204-1-avihaih@nvidia.com>
- <20231231093016.14204-4-avihaih@nvidia.com>
-Date: Tue, 02 Jan 2024 15:53:28 -0300
-Message-ID: <87sf3f5zyv.fsf@suse.de>
+ <20231231093016.14204-5-avihaih@nvidia.com>
+Date: Tue, 02 Jan 2024 15:57:08 -0300
+Message-ID: <87plyj5zsr.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spamd-Result: default: False [-0.35 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_THREE(0.00)[3];
- RCPT_COUNT_SEVEN(0.00)[7]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; MID_RHS_MATCH_FROM(0.00)[];
- BAYES_HAM(-0.25)[73.45%]; ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.06 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ BAYES_HAM(-2.75)[98.90%]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,nvidia.com:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[]
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: -0.35
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ RCPT_COUNT_SEVEN(0.00)[7];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,suse.de:dkim,suse.de:email];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=N4zwZ5Bu;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="G/0jxpNP"
+X-Spam-Score: -3.06
+X-Rspamd-Queue-Id: A9DB021F75
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -114,12 +122,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Avihai Horon <avihaih@nvidia.com> writes:
 
-> Commit 6720c2b32725 ("migration: check magic value for deciding the
-> mapping of channels") extracted the only code that could fail in
-> migration_incoming_setup().
->
-> Now migration_incoming_setup() can't fail, so refactor it to return void
-> and remove errp parameter.
+> Errp parameter in migration_fd_process_incoming() is unused.
+> Remove it.
 >
 > Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 
