@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8C882163C
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 03:00:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 779D782164F
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 03:03:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKU3i-0003h0-Nv; Mon, 01 Jan 2024 20:59:12 -0500
+	id 1rKU3m-0003kr-Aa; Mon, 01 Jan 2024 20:59:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rKU3X-0003ca-V1
- for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:58:59 -0500
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ id 1rKU3Z-0003eP-Gl
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:59:02 -0500
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rKU3V-00074J-P8
- for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:58:59 -0500
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-28c467446f0so3839128a91.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jan 2024 17:58:57 -0800 (PST)
+ id 1rKU3X-00074b-NB
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:59:01 -0500
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6dc018228b4so3062009a34.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jan 2024 17:58:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704160736; x=1704765536; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704160738; x=1704765538; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Agx2bj5+PO3H0m/DZ+WXfvcf7Vu2LJVqySA/YVtXeLI=;
- b=MJ21oOH6KOGyz7Jwk2LdJrOs+delovfo2tJApoUL7RsNSLn0oEohvF4s4Wzm30E9Rn
- UHSCRBmbGYSaDPpOo4cYUi9DaDoQYCPfuXAFURFeKwpFBtwYQx9HV3Hn5UhGfVp/WN4g
- boiSXGmYkBIKTtwXqEHJI3TJaYLWEvfq3tv3PZb6NTtWMRAIsMiNPmv2wlzUKgzF0d+S
- XlE4M6XbXjUOzKsZrElWbHOS79ePgpO8+lGZ4/2RKoJxSLOb94pKsZ18/eVYFv3KgtTv
- PSCA1Nhjj6sD8bHGyrMhkha5rCopwcI9GtPtX3OZVDjV2abfmjdivJMxyrB/RpKRLk77
- GXHQ==
+ :reply-to; bh=qA2a/PTKZLcZg5cbX228JZnmG9F2Eb0mEU1DFgp6lOI=;
+ b=tXc2OJRCBlQorvRvX/hn7/nUSOktcroMzwn7shw9Ag9QDegfsFDZL9vh7pP7BDY7c9
+ eWkvxNHJwGNUEmNHcnsg4HTkQBsYMDYnuxj8ejlLAkdhyyCkfE3+5R+fLg7PU0kthK9p
+ pHHI+CgX5sJa/qSONH7mzWCpXkX9p/l+m3iqCE0JhSwx3fLDAMkMUJhey0DN8o19n/8K
+ 75rGkVfBNqQwBT/r5xU+3GqNKjmr+vMoryFe5OKqDCMzPFuwGE30M50MqoedJkdAcpxg
+ JJMKTATANwZ0BS4mTmZdS2HFQSwAagMwdzKkweq5Y28ERjRG5PnfTsRjSWnDpodXjr+6
+ Szfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704160736; x=1704765536;
+ d=1e100.net; s=20230601; t=1704160738; x=1704765538;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Agx2bj5+PO3H0m/DZ+WXfvcf7Vu2LJVqySA/YVtXeLI=;
- b=YnvpT7Hlz9kqXyLhnEHVwSV74/2QzIFfcmWDAGdW/guUL+Jtap757nsw/Eve3OsQDd
- zYf0Dnzno+mmQOo/Rdpzmlz0sWq/rHc0fksgt3OhNMoJFIn/cZSYyBzLywuy1jRrLfca
- dKZ8an1+9bWIfCCawvN1G+xrs/q0MMFAcDiTmBH+hgj1EL05mUdckSzT5LUg6DdIbfCt
- Vo60RYjjJCLuizC9wUyqoAUPZ6uxSuhSdP+cyqQ53RmDyzVnJZ8/uaaZHNh48RQr7V66
- 5MGrekkVr0gEmjzhibk4Qs8f8OhTOQAASt30grjbF1ZZHD2SgJkLnXe9PxLoJ3SdZAva
- Tdyg==
-X-Gm-Message-State: AOJu0YxfKThpOcUOd+TuassZHMfpYa3wVzY3UoNznDTHO9OgpTLL1kSc
- RnG/nRg0/IKf0OZ7wWzXOJe2E94m0Wry96Y8O3on/4gD944=
-X-Google-Smtp-Source: AGHT+IG0p43Jz7zHHpmdcqtX8fOuBNtEIX5Rnnjmqh7KeozxvvemLvLDx1OOogkoVU1ieh9wp+qYnw==
-X-Received: by 2002:a17:90a:de04:b0:28b:bd9d:8d50 with SMTP id
- m4-20020a17090ade0400b0028bbd9d8d50mr19527276pjv.13.1704160736445; 
- Mon, 01 Jan 2024 17:58:56 -0800 (PST)
+ bh=qA2a/PTKZLcZg5cbX228JZnmG9F2Eb0mEU1DFgp6lOI=;
+ b=ltEru97ggWBl4JCiDGqeucl2+tdK3q1ukBpAR26kyLnI9k0VlFycTOPYi6jQrhTXm5
+ zr24f47eCJbGYiIdb3BonG9BdYcF5+ktMfTsIN2CZ92daCnzgeHol9QDu6pq3kZLyMoQ
+ iM3Cpa3RS+mULl1MwgcW7N1Mpwxf2c6IidGoxldjzm4BoQoo1yBrmQBj1ukfP06CJoxh
+ mxff6yj122w6Sdutg1mCqsTG7ERwOGn6Z8yYCEvACUhC4k/EzEG9/F6JUXYo2ODvlam6
+ H3aMMakjoOb76QsolGhJFniqfJcfVdSjmhRDudqjGJfAWljWCcW5k4j6fagw/xt6GX/H
+ ZmYw==
+X-Gm-Message-State: AOJu0YwAi/PH4bFFRHXunPr82S96hvvz7zpHYlE3oP6ZxiJqK5OQftqK
+ pZFJXQgvtJ1kHggVN++dugSGn3rMRpSqs0qiExkgMa4moe0=
+X-Google-Smtp-Source: AGHT+IEW1aa2hupVZ45dmHHnSO+I1c8E6HwKME+OmDikxt4hfGmRSgxV5JyDWtKG4MkAZT/WaX4KcQ==
+X-Received: by 2002:a05:6808:238e:b0:3bb:e1bb:3546 with SMTP id
+ bp14-20020a056808238e00b003bbe1bb3546mr6643355oib.44.1704160738363; 
+ Mon, 01 Jan 2024 17:58:58 -0800 (PST)
 Received: from stoup.. (124-149-254-207.tpgi.com.au. [124.149.254.207])
  by smtp.gmail.com with ESMTPSA id
- g33-20020a635221000000b0058ee60f8e4dsm19561891pgb.34.2024.01.01.17.58.54
+ g33-20020a635221000000b0058ee60f8e4dsm19561891pgb.34.2024.01.01.17.58.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jan 2024 17:58:56 -0800 (PST)
+ Mon, 01 Jan 2024 17:58:57 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 21/33] linux-user: Split out mmap_h_eq_g
-Date: Tue,  2 Jan 2024 12:57:56 +1100
-Message-Id: <20240102015808.132373-22-richard.henderson@linaro.org>
+Subject: [PATCH v3 22/33] linux-user: Split out mmap_h_lt_g
+Date: Tue,  2 Jan 2024 12:57:57 +1100
+Message-Id: <20240102015808.132373-23-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240102015808.132373-1-richard.henderson@linaro.org>
 References: <20240102015808.132373-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,124 +90,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the MAX_FIXED_NOREPLACE check for reserved_va earlier.
-Move the computation of host_prot earlier.
+Work much harder to get alignment and mapping beyond the end
+of the file correct.  Both of which are excercised by our
+test-mmap for alpha (8k pages) on any 4k page host.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 66 +++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 53 insertions(+), 13 deletions(-)
+ linux-user/mmap.c | 156 +++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 125 insertions(+), 31 deletions(-)
 
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 42eb3eb2b4..00003b8329 100644
+index 00003b8329..8b0a26e50d 100644
 --- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -527,6 +527,31 @@ static abi_long mmap_end(abi_ulong start, abi_ulong last,
-     return start;
+@@ -552,6 +552,128 @@ static abi_long mmap_h_eq_g(abi_ulong start, abi_ulong len,
+     return mmap_end(start, last, start, last, flags, page_flags);
  }
  
 +/*
-+ * Special case host page size == target page size,
-+ * where there are no edge conditions.
++ * Special case host page size < target page size.
++ *
++ * The two special cases are increased guest alignment, and mapping
++ * past the end of a file.
++ *
++ * When mapping files into a memory area larger than the file,
++ * accesses to pages beyond the file size will cause a SIGBUS.
++ *
++ * For example, if mmaping a file of 100 bytes on a host with 4K
++ * pages emulating a target with 8K pages, the target expects to
++ * be able to access the first 8K. But the host will trap us on
++ * any access beyond 4K.
++ *
++ * When emulating a target with a larger page-size than the hosts,
++ * we may need to truncate file maps at EOF and add extra anonymous
++ * pages up to the targets page boundary.
++ *
++ * This workaround only works for files that do not change.
++ * If the file is later extended (e.g. ftruncate), the SIGBUS
++ * vanishes and the proper behaviour is that changes within the
++ * anon page should be reflected in the file.
++ *
++ * However, this case is rather common with executable images,
++ * so the workaround is important for even trivial tests, whereas
++ * the mmap of of a file being extended is less common.
 + */
-+static abi_long mmap_h_eq_g(abi_ulong start, abi_ulong len,
-+                            int host_prot, int flags, int page_flags,
-+                            int fd, off_t offset)
++static abi_long mmap_h_lt_g(abi_ulong start, abi_ulong len, int host_prot,
++                            int mmap_flags, int page_flags, int fd,
++                            off_t offset, int host_page_size)
 +{
 +    void *p, *want_p = g2h_untagged(start);
-+    abi_ulong last;
++    off_t fileend_adj = 0;
++    int flags = mmap_flags;
++    abi_ulong last, pass_last;
 +
-+    p = mmap(want_p, len, host_prot, flags, fd, offset);
-+    if (p == MAP_FAILED) {
-+        return -1;
-+    }
-+    if ((flags & MAP_FIXED_NOREPLACE) && p != want_p) {
-+        errno = EEXIST;
-+        return -1;
++    if (!(flags & MAP_ANONYMOUS)) {
++        struct stat sb;
++
++        if (fstat(fd, &sb) == -1) {
++            return -1;
++        }
++        if (offset >= sb.st_size) {
++            /*
++             * The entire map is beyond the end of the file.
++             * Transform it to an anonymous mapping.
++             */
++            flags |= MAP_ANONYMOUS;
++            fd = -1;
++            offset = 0;
++        } else if (offset + len > sb.st_size) {
++            /*
++             * A portion of the map is beyond the end of the file.
++             * Truncate the file portion of the allocation.
++             */
++            fileend_adj = offset + len - sb.st_size;
++        }
 +    }
 +
-+    start = h2g(p);
++    if (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE)) {
++        if (fileend_adj) {
++            p = mmap(want_p, len, host_prot, flags | MAP_ANONYMOUS, -1, 0);
++        } else {
++            p = mmap(want_p, len, host_prot, flags, fd, offset);
++        }
++        if (p != want_p) {
++            if (p != MAP_FAILED) {
++                munmap(p, len);
++                errno = EEXIST;
++            }
++            return -1;
++        }
++
++        if (fileend_adj) {
++            void *t = mmap(p, len - fileend_adj, host_prot,
++                           (flags & ~MAP_FIXED_NOREPLACE) | MAP_FIXED,
++                           fd, offset);
++            assert(t != MAP_FAILED);
++        }
++    } else {
++        size_t host_len, part_len;
++
++        /*
++         * Take care to align the host memory.  Perform a larger anonymous
++         * allocation and extract the aligned portion.  Remap the file on
++         * top of that.
++         */
++        host_len = len + TARGET_PAGE_SIZE - host_page_size;
++        p = mmap(want_p, host_len, host_prot, flags | MAP_ANONYMOUS, -1, 0);
++        if (p == MAP_FAILED) {
++            return -1;
++        }
++
++        part_len = (uintptr_t)p & (TARGET_PAGE_SIZE - 1);
++        if (part_len) {
++            part_len = TARGET_PAGE_SIZE - part_len;
++            munmap(p, part_len);
++            p += part_len;
++            host_len -= part_len;
++        }
++        if (len < host_len) {
++            munmap(p + len, host_len - len);
++        }
++
++        if (!(flags & MAP_ANONYMOUS)) {
++            void *t = mmap(p, len - fileend_adj, host_prot,
++                           flags | MAP_FIXED, fd, offset);
++            assert(t != MAP_FAILED);
++        }
++
++        start = h2g(p);
++    }
++
 +    last = start + len - 1;
-+    return mmap_end(start, last, start, last, flags, page_flags);
++    if (fileend_adj) {
++        pass_last = ROUND_UP(last - fileend_adj, host_page_size) - 1;
++    } else {
++        pass_last = last;
++    }
++    return mmap_end(start, last, start, pass_last, mmap_flags, page_flags);
 +}
 +
  static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
                                      int target_prot, int flags, int page_flags,
                                      int fd, off_t offset)
-@@ -535,6 +560,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
-     abi_ulong ret, last, real_start, real_last, retaddr, host_len;
-     abi_ulong passthrough_start = -1, passthrough_last = 0;
-     off_t host_offset;
-+    int host_prot;
- 
-     real_start = start & -host_page_size;
-     host_offset = offset & -host_page_size;
-@@ -543,16 +569,33 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
-      * For reserved_va, we are in full control of the allocation.
-      * Find a suitible hole and convert to MAP_FIXED.
-      */
--    if (reserved_va && !(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
--        host_len = len + offset - host_offset;
--        start = mmap_find_vma(real_start, host_len,
--                              MAX(host_page_size, TARGET_PAGE_SIZE));
--        if (start == (abi_ulong)-1) {
--            errno = ENOMEM;
+@@ -596,37 +718,9 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+     if (host_page_size == TARGET_PAGE_SIZE) {
+         return mmap_h_eq_g(start, len, host_prot, flags,
+                            page_flags, fd, offset);
+-    }
+-
+-    /*
+-     * When mapping files into a memory area larger than the file, accesses
+-     * to pages beyond the file size will cause a SIGBUS.
+-     *
+-     * For example, if mmaping a file of 100 bytes on a host with 4K pages
+-     * emulating a target with 8K pages, the target expects to be able to
+-     * access the first 8K. But the host will trap us on any access beyond
+-     * 4K.
+-     *
+-     * When emulating a target with a larger page-size than the hosts, we
+-     * may need to truncate file maps at EOF and add extra anonymous pages
+-     * up to the targets page boundary.
+-     */
+-    if (host_page_size < TARGET_PAGE_SIZE && !(flags & MAP_ANONYMOUS)) {
+-        struct stat sb;
+-
+-        if (fstat(fd, &sb) == -1) {
 -            return -1;
-+    if (reserved_va) {
-+        if (flags & MAP_FIXED_NOREPLACE) {
-+            /* Validate that the chosen range is empty. */
-+            if (!page_check_range_empty(start, start + len - 1)) {
-+                errno = EEXIST;
-+                return -1;
-+            }
-+            flags = (flags & ~MAP_FIXED_NOREPLACE) | MAP_FIXED;
-+        } else if (!(flags & MAP_FIXED)) {
-+            size_t real_len = len + offset - host_offset;
-+            abi_ulong align = MAX(host_page_size, TARGET_PAGE_SIZE);
-+
-+            start = mmap_find_vma(real_start, real_len, align);
-+            if (start == (abi_ulong)-1) {
-+                errno = ENOMEM;
-+                return -1;
-+            }
-+            start += offset - host_offset;
-+            flags |= MAP_FIXED;
-         }
--        start += offset - host_offset;
--        flags |= MAP_FIXED;
-+    }
-+
-+    host_prot = target_to_host_prot(target_prot);
-+
-+    if (host_page_size == TARGET_PAGE_SIZE) {
-+        return mmap_h_eq_g(start, len, host_prot, flags,
-+                           page_flags, fd, offset);
+-        }
+-
+-        /* Are we trying to create a map beyond EOF?.  */
+-        if (offset + len > sb.st_size) {
+-            /*
+-             * If so, truncate the file map at eof aligned with
+-             * the hosts real pagesize. Additional anonymous maps
+-             * will be created beyond EOF.
+-             */
+-            len = ROUND_UP(sb.st_size - offset, host_page_size);
+-        }
++    } else if (host_page_size < TARGET_PAGE_SIZE) {
++        return mmap_h_lt_g(start, len, host_prot, flags,
++                           page_flags, fd, offset, host_page_size);
      }
  
-     /*
-@@ -588,12 +631,10 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
- 
      if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-         uintptr_t host_start;
--        int host_prot;
-         void *p;
- 
-         host_len = len + offset - host_offset;
-         host_len = ROUND_UP(host_len, host_page_size);
--        host_prot = target_to_host_prot(target_prot);
- 
-         /* Note: we prefer to control the mapping address. */
-         p = mmap(g2h_untagged(start), host_len, host_prot,
-@@ -716,8 +757,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
-             len1 = real_last - real_start + 1;
-             want_p = g2h_untagged(real_start);
- 
--            p = mmap(want_p, len1, target_to_host_prot(target_prot),
--                     flags, fd, offset1);
-+            p = mmap(want_p, len1, host_prot, flags, fd, offset1);
-             if (p != want_p) {
-                 if (p != MAP_FAILED) {
-                     munmap(p, len1);
 -- 
 2.34.1
 
