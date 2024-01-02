@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C13C821652
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 03:03:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1808A82164B
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 03:02:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKU30-0003F6-HD; Mon, 01 Jan 2024 20:58:26 -0500
+	id 1rKU33-0003FU-31; Mon, 01 Jan 2024 20:58:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rKU2y-0003Ex-HP
- for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:58:24 -0500
-Received: from mail-io1-xd2f.google.com ([2607:f8b0:4864:20::d2f])
+ id 1rKU30-0003FB-DK
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:58:26 -0500
+Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rKU2x-0006ys-2p
- for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:58:24 -0500
-Received: by mail-io1-xd2f.google.com with SMTP id
- ca18e2360f4ac-7bae735875bso422555039f.2
- for <qemu-devel@nongnu.org>; Mon, 01 Jan 2024 17:58:22 -0800 (PST)
+ id 1rKU2y-0006zi-Vw
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:58:26 -0500
+Received: by mail-oa1-x2f.google.com with SMTP id
+ 586e51a60fabf-204a16df055so4590524fac.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jan 2024 17:58:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704160701; x=1704765501; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704160704; x=1704765504; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HPXK9kHV+jGx1v/PMtKU+RQr0a5HO3R80iapTrtjCrM=;
- b=wAZ29ia+o28Vbk/E3+aA8CMLwPSNXlbbEDb1V3okaFDhoB8N9SlcWu/kvA5TSloPsl
- goEYU2rhQGf9n1oxznHMvEREwrV8TzjCoo0hKHPSQLQCAK/R85m3F1d6wztQmKTb4NZP
- T4sB4w51fTahoSPBkCLvzKXqhbqZPDM4iNeZ0JwBGwxdMFJZ3BsKcawLepWTcQHyPlWn
- IFdcJ4XlpZSK6fxbGt3QwVezxc5w0GpvLArGC7+CLu3xQa3xBJeViVXujgarrSWUOMzd
- UMBKXSc0ptz5EYQVTGbrDeVvFtEX4zD6Z54OwNjIEawWk8m4u7CDI6bSkQIxWizJ6YWB
- yCSw==
+ :reply-to; bh=78dfRtxu5FZmtTcGt9x+K6ObYYej+Dd79lpS+g2uV20=;
+ b=KoPkmBNn3fsTzzfZDDBD4glny9XDdl280EzeqRlta+qii6RVGKRu2WVo59pwr0vGLS
+ TyguKSLoNiKXI0Zj0v7YxptX0FXycyZ/qAs1GVY2cZFYKX7KcKOkivlcKXODD5pnRSgR
+ zxr51xGeDa/xSkiuRndef+WN2/iSb5GClkA/FS8a8borZNyqf/4qKWxWivWT29VIZQ3x
+ ehJGQiqcmsaP7LPSHbElyHJz5utRwix0Nle4P0JIJ68Izm7GRjJhI7l5oJOhxDyOoztZ
+ YF6FrRByE35gO7dcwO7Cx16FNIFoSaaMryZoEuCw5/3wdEINRVQKkcD4jjK478AA8cLP
+ YyCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704160701; x=1704765501;
+ d=1e100.net; s=20230601; t=1704160704; x=1704765504;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HPXK9kHV+jGx1v/PMtKU+RQr0a5HO3R80iapTrtjCrM=;
- b=Y/SAWzu8iRrv1k3ysmNvlRl69XMdocijaI3r3Uml1kHHYf+HTa1qgeekbrPCA9cQd9
- XKFpxx9jd/kcCjdSHJku1rhJvu3bh7RV490XVQtKowUXnNP21yPk0hkntZ46D9KashOm
- uJ1bgkEoFW7UfGZ63rXlOmGHKqrR8djgCso9xN3qsDfW8fZsPzQ1FFYjwZLFVvB76LPE
- HBMHr2W1Hqxz893rAAKlmPG1Y6L40fGaSy1CkGg56tr79TDa6aSBImcaGVwCUu4r1kFu
- RkGVmIT+TldKXFigtHa9FFO3MddP9LKZyI2HbPQFwvyG+jHhPHCuGwLDTZxn4t4qUVrp
- kBPA==
-X-Gm-Message-State: AOJu0Yxk8uAAeyi7imHe1m9SHaE39Jp0GrOtkoMhOvfry2ixWgiK0A+U
- aa5bFKaGgzbl5llYK4IiZpbMMoRE3vcyiwBVuLigWdqk5VY=
-X-Google-Smtp-Source: AGHT+IGDKsIlqoL0o7XJJ7rt7gKDWlzIDWGOycliW9M0LcLG+x9SFSdfP8Q4d3byotxCoWJREhsuZA==
-X-Received: by 2002:a05:6e02:1847:b0:35f:b93e:6a7 with SMTP id
- b7-20020a056e02184700b0035fb93e06a7mr28136922ilv.58.1704160701787; 
- Mon, 01 Jan 2024 17:58:21 -0800 (PST)
+ bh=78dfRtxu5FZmtTcGt9x+K6ObYYej+Dd79lpS+g2uV20=;
+ b=qH1SS7e8mJ/mPH4sLG+fnOT/WPzIi57Lj1zzVXREl+2MrSCW2Qx+jyeRWVzljMusZI
+ n1Cx5uqR1D/T7d6mTSAMApQHVQjUxjpDz1/nQJZG0uYmD0/z+KjHJtGiUpRQtDQUrpqa
+ tJjUx7vQK2mfsOoWnYVeJpkvByjCCDBo+EGYMUTy4u+9o5UMeal5Ek8OfFM7O6PJSQex
+ kZDLnFgODJ0+TdaMbYLT0sxJdDU+NuJYPyp+trR0+6dK/ko0RrEKAf4Bdh1wCuVHbnTH
+ YM1m+unoZ5nqpG8qO50K7OGY5L8XrQ+ehpQwtE1TX3zy2gKwH58jnLMjeGBjBGXGMufd
+ 9HSg==
+X-Gm-Message-State: AOJu0YwOSp3IYIE6odHEXqltDx2XhaGZa0yAie9SvTqD+xWEz8BfdjoM
+ f0tAnKb0S5fzmYeGgcAx2z26+hb1OAcf9xsITQSHBiUTgTQ=
+X-Google-Smtp-Source: AGHT+IEKcu6Oot8nb2g1mvV+10w5DCuNUI80lw1mQ+rZ3vv5cqmuKCdtRwqAtD8cWnFSaYjhfOL78Q==
+X-Received: by 2002:a05:6870:558c:b0:1fb:e34:e31c with SMTP id
+ qj12-20020a056870558c00b001fb0e34e31cmr21828007oac.37.1704160703516; 
+ Mon, 01 Jan 2024 17:58:23 -0800 (PST)
 Received: from stoup.. (124-149-254-207.tpgi.com.au. [124.149.254.207])
  by smtp.gmail.com with ESMTPSA id
- g33-20020a635221000000b0058ee60f8e4dsm19561891pgb.34.2024.01.01.17.58.20
+ g33-20020a635221000000b0058ee60f8e4dsm19561891pgb.34.2024.01.01.17.58.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jan 2024 17:58:21 -0800 (PST)
+ Mon, 01 Jan 2024 17:58:23 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 04/33] linux-user: Remove qemu_host_page_size from
- create_elf_tables
-Date: Tue,  2 Jan 2024 12:57:39 +1100
-Message-Id: <20240102015808.132373-5-richard.henderson@linaro.org>
+Subject: [PATCH v3 05/33] linux-user/hppa: Simplify init_guest_commpage
+Date: Tue,  2 Jan 2024 12:57:40 +1100
+Message-Id: <20240102015808.132373-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240102015808.132373-1-richard.henderson@linaro.org>
 References: <20240102015808.132373-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d2f;
- envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd2f.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,37 +90,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AT_PAGESZ is supposed to advertise the guest page size.
-The random adjustment made here using qemu_host_page_size
-does not match anything else within linux-user.
-
-The idea here is good, but should be done more systemically
-via adjustment to TARGET_PAGE_SIZE.
+If reserved_va, then we have already reserved the entire
+guest virtual address space; no need to remap page.
+If !reserved_va, then use MAP_FIXED_NOREPLACE.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ linux-user/elfload.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 4df565d64b..c166faabab 100644
+index c166faabab..96d8d4f84c 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -2678,13 +2678,7 @@ static abi_ulong create_elf_tables(abi_ulong p, int argc, int envc,
-     NEW_AUX_ENT(AT_PHDR, (abi_ulong)(info->load_addr + exec->e_phoff));
-     NEW_AUX_ENT(AT_PHENT, (abi_ulong)(sizeof (struct elf_phdr)));
-     NEW_AUX_ENT(AT_PHNUM, (abi_ulong)(exec->e_phnum));
--    if ((info->alignment & ~qemu_host_page_mask) != 0) {
--        /* Target doesn't support host page size alignment */
--        NEW_AUX_ENT(AT_PAGESZ, (abi_ulong)(TARGET_PAGE_SIZE));
--    } else {
--        NEW_AUX_ENT(AT_PAGESZ, (abi_ulong)(MAX(TARGET_PAGE_SIZE,
--                                               qemu_host_page_size)));
+@@ -1969,16 +1969,21 @@ static inline void init_thread(struct target_pt_regs *regs,
+ 
+ static bool init_guest_commpage(void)
+ {
+-    void *want = g2h_untagged(LO_COMMPAGE);
+-    void *addr = mmap(want, qemu_host_page_size, PROT_NONE,
+-                      MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
++    /* If reserved_va, then we have already mapped 0 page on the host. */
++    if (!reserved_va) {
++        int host_page_size = qemu_real_host_page_size();
++        void *want, *addr;
+ 
+-    if (addr == MAP_FAILED) {
+-        perror("Allocating guest commpage");
+-        exit(EXIT_FAILURE);
 -    }
-+    NEW_AUX_ENT(AT_PAGESZ, (abi_ulong)(TARGET_PAGE_SIZE));
-     NEW_AUX_ENT(AT_BASE, (abi_ulong)(interp_info ? interp_info->load_addr : 0));
-     NEW_AUX_ENT(AT_FLAGS, (abi_ulong)0);
-     NEW_AUX_ENT(AT_ENTRY, info->entry);
+-    if (addr != want) {
+-        return false;
++        want = g2h_untagged(LO_COMMPAGE);
++        addr = mmap(want, host_page_size, PROT_NONE,
++                    MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED_NOREPLACE, -1, 0);
++        if (addr == MAP_FAILED) {
++            perror("Allocating guest commpage");
++            exit(EXIT_FAILURE);
++        }
++        if (addr != want) {
++            return false;
++        }
+     }
+ 
+     /*
 -- 
 2.34.1
 
