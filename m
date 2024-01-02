@@ -2,80 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB50B8221C8
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 20:10:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AA7E8221D0
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 20:13:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKk8g-0006rR-9d; Tue, 02 Jan 2024 14:09:22 -0500
+	id 1rKkBY-0008CL-3p; Tue, 02 Jan 2024 14:12:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKk8e-0006qr-AY
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 14:09:20 -0500
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKkBW-0008Bt-4j
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 14:12:18 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKk8c-0001ln-Ne
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 14:09:20 -0500
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-50e72e3d435so7206172e87.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 11:09:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKkBU-0002QQ-Lx
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 14:12:17 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40d858c56cbso27571845e9.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 11:12:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704222557; x=1704827357; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1704222735; x=1704827535; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=P22KJd4xSMdDsULBNfpp2XHeqw0XeEFBkNPx7c8XCxM=;
- b=gVIqQ7uIBrhf5q2Y+CPSF5RL4ptd9/BbLMat0tSSbFA+w+jjFdjfJkWtnuja9Iqr0M
- 8tyLmwAlk+ZVjwYNAMM8s04aZ+/0VmggYLi3zX10NHX5ngFS6UVYtpHsKl7TKdm0+mft
- MpBfTEKWYt+RuLKBzj2etpYQD3OquscAUdVe0kJaVwQGva4gFVg4ElPxdTFgToSTSvXy
- 0mJN4uiW7ZbvmjxEc2/bOEdjo9B8abrKvSCbllCDI96pWbHE1d4DEBlLJzzIhXOMdMkV
- ArKc86juj6PHyriQs8Av0Q4z0CToEr35sJbdMrRFW4RkFtLblnPphrb9cTahxTiu7++O
- o58g==
+ bh=K/1Cc+MQMSq9U5gFf9WsOF+WBjndRWPg/m+IpcEV0ek=;
+ b=XU/TwPoo0lKdYlSrT0vfd3cZ0Y4Fh6KcZrLIALr3TJf+UqytfLAeK9lEr7PVsvhR6q
+ aM+p5Ay3lLz3AzXZkqVhbj26TEh7P0sJs7pj4dSVzyaYjNugTFDGn4+NsJOu6gU2ZINx
+ 7Y5nNqkg/Of+sbB7R6A+vaqZlbGkxzksdTBeOKT4qLXIQSY3NCohDhjI1hiYKMT574gd
+ XKf268UaDngk/rBWUjqXguyWGl7QDl5fnhcVlC6uc4jiG06BiaublqfGhXxwd2C3m2GA
+ KMlyYl+ObFdxJbBgdWIyHi9bzm6LTnAVYjsRyHVl2dT0GqDzxfS2Y3gUJN5JWdUYwJkX
+ yv5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704222557; x=1704827357;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1704222735; x=1704827535;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=P22KJd4xSMdDsULBNfpp2XHeqw0XeEFBkNPx7c8XCxM=;
- b=ICrRp78uuBfk0BBYE/gaknj5sKK5xp3Kg7kbmcC4jQp4Jjbk5QC6FNUVSSIx7zpoGB
- COMhahn5eKzv2vykTdyFPJ4y0OedZhRoPyejiXQE0W6px3Ga6hrJz3hdSv9vEjUeZAUq
- wN67PLfjnGzP4/s/O1FLGP5M4nDkst8iJtS2Pe1S9tH2vVXqx7plEWLNd0lJO5OhWFcp
- PjkSYF7/y/5kFqHT4wBbcb68B9IHrTW/x25uZVi/9WzjTSdWQwbYO/qaYzCNUnqZWFkX
- VMLoBtKcBxQchJii3jU75GKwP9DVjtLy1ZXCz4ZZ37IwEtitTXN4YAh6Q1vyAEhShsPc
- i7HQ==
-X-Gm-Message-State: AOJu0YyvimWbqujbapBw9BlqbVAwd+pTlsghMIYLv17x4rRpyBs+94q/
- oFmHzOHGYPndOrQlqqHIMk7Hm954sV9Geg==
-X-Google-Smtp-Source: AGHT+IHUWhpk9s36ngvS0fhj6eyzPq5uCEkEnCzUu2612vJcSF/PyQH8F5hUjMzd6zZ2nrAmoS82ow==
-X-Received: by 2002:a05:6512:505:b0:50e:3c22:9d8e with SMTP id
- o5-20020a056512050500b0050e3c229d8emr5195420lfb.59.1704222556641; 
- Tue, 02 Jan 2024 11:09:16 -0800 (PST)
+ bh=K/1Cc+MQMSq9U5gFf9WsOF+WBjndRWPg/m+IpcEV0ek=;
+ b=fnAnrA8FSoiV+KgzfjxO0EGUXILz9YQ/TtbBVVLZFP58PFbjPJKbQJ3PBJdM4vbg8I
+ jI13TeXSw7vXeABJ4BdGTXNx5gmQ+PF2be+qnBiULC1T2sV9SBfwbzCVBO/jCpmCe+LA
+ UpClC1RwOoYNSOSa2szQM1u2IjopJAnCFvA59iPnmWqe729fm2Ft5z7F6zZgWR7WA7xc
+ rC9RqZgTuLGARJEI0Oq1J3u/pa5NRosIa/uswqDjYyhNJGHqdpNUpaDGFxzC/Yo2rVHq
+ vx884mVpZL62A/1s8KRvbrL2PqmwsL4s/hUXd2/kdXONY7UWSfq1vZhC8zzKeZbVkUon
+ imZw==
+X-Gm-Message-State: AOJu0Yzx2fYD5ZX41DmCgedJfF3G8VDR4AXi8Vl8jimFKlWrWfEGfVzl
+ rm+3W/pUOfusLfHYY9kDL8dl3dmU5W+QxQ==
+X-Google-Smtp-Source: AGHT+IEIfqKCcgcFB7P+srnvZP5HutaRuAP/vfDBX2kpPzQDpKUcirsyFmCggP+VYmyi2HACMxFTqg==
+X-Received: by 2002:a05:600c:4e45:b0:40d:8b38:57d0 with SMTP id
+ e5-20020a05600c4e4500b0040d8b3857d0mr1183259wmq.144.1704222734894; 
+ Tue, 02 Jan 2024 11:12:14 -0800 (PST)
 Received: from [192.168.69.100] (sal63-h02-176-184-16-71.dsl.sta.abo.bbox.fr.
  [176.184.16.71]) by smtp.gmail.com with ESMTPSA id
- lj3-20020a170906f9c300b00a26a80ac5fasm11565207ejb.120.2024.01.02.11.09.14
+ u15-20020a05600c138f00b0040d7b340e07sm16167378wmf.45.2024.01.02.11.12.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jan 2024 11:09:16 -0800 (PST)
-Message-ID: <0ff293e2-4155-4ec3-a078-41e4b022127f@linaro.org>
-Date: Tue, 2 Jan 2024 20:09:13 +0100
+ Tue, 02 Jan 2024 11:12:14 -0800 (PST)
+Message-ID: <864fe591-935e-4197-91df-51be68360ae2@linaro.org>
+Date: Tue, 2 Jan 2024 20:12:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for 8.2.1] hw/net: cadence_gem: Fix MDIO_OP_xxx values
+Subject: Re: [PATCH v3 12/33] hw/tpm: Remove HOST_PAGE_ALIGN from tpm_ppi_init
 Content-Language: en-US
-To: Heinrich Schuchardt <xypron.glpk@gmx.de>, Bin Meng <bmeng@tinylab.org>
-Cc: Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Jason Wang <jasowang@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org, Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
- qemu-devel@nongnu.org, Luc Michel <luc.michel@amd.com>,
- qemu-trivial@nongnu.org
-References: <20240102141803.117631-1-bmeng@tinylab.org>
- <985e87d6-0f8c-4127-b425-f1efc6034879@linaro.org>
- <f662a5cd-fa5b-4583-8864-6f1c1a1f6ec2@gmx.de>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20240102015808.132373-1-richard.henderson@linaro.org>
+ <20240102015808.132373-13-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <f662a5cd-fa5b-4583-8864-6f1c1a1f6ec2@gmx.de>
+In-Reply-To: <20240102015808.132373-13-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,34 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/1/24 19:32, Heinrich Schuchardt wrote:
-> On 1/2/24 16:08, Philippe Mathieu-Daudé wrote:
->> On 2/1/24 15:18, Bin Meng wrote:
->>> Testing upstream U-Boot with 'sifive_u' machine we see:
->>>
->>>    => dhcp
->>>    ethernet@10090000: PHY present at 0
->>>    Could not get PHY for ethernet@10090000: addr 0
->>>    phy_connect failed
->>>
->>> This has been working till QEMU 8.1 but broken since QEMU 8.2.
->>
->> s/till/until/?
+On 2/1/24 02:57, Richard Henderson wrote:
+> The size of the allocation need not match the alignment.
 > 
-> These are synonyms. Till is more informal. No need to change.
-
-Not obvious for non-native/fluent informal English speakers.
-
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   hw/tpm/tpm_ppi.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
 > 
->>
->>> Fixes: 1b09eeb122aa ("hw/net/cadence_gem: use FIELD to describe
->>> PHYMNTNC register fields")
->>> Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
->>> Signed-off-by: Bin Meng <bmeng@tinylab.org>
->>>
->>> ---
->>>
->>>   hw/net/cadence_gem.c | 4 ++--
->>>   1 file changed, 2 insertions(+), 2 deletions(-)
+> diff --git a/hw/tpm/tpm_ppi.c b/hw/tpm/tpm_ppi.c
+> index 7f74e26ec6..91eeafd53a 100644
+> --- a/hw/tpm/tpm_ppi.c
+> +++ b/hw/tpm/tpm_ppi.c
+> @@ -47,8 +47,7 @@ void tpm_ppi_reset(TPMPPI *tpmppi)
+>   void tpm_ppi_init(TPMPPI *tpmppi, MemoryRegion *m,
+>                     hwaddr addr, Object *obj)
+>   {
+> -    tpmppi->buf = qemu_memalign(qemu_real_host_page_size(),
+> -                                HOST_PAGE_ALIGN(TPM_PPI_ADDR_SIZE));
+> +    tpmppi->buf = qemu_memalign(qemu_real_host_page_size(), TPM_PPI_ADDR_SIZE);
+>       memory_region_init_ram_device_ptr(&tpmppi->ram, obj, "tpm-ppi",
+>                                         TPM_PPI_ADDR_SIZE, tpmppi->buf);
+>       vmstate_register_ram(&tpmppi->ram, DEVICE(obj));
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
