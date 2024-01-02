@@ -2,85 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB20821BA2
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 13:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD1E821BAB
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 13:32:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKdue-0002U7-IU; Tue, 02 Jan 2024 07:30:28 -0500
+	id 1rKdwY-0003Jx-Ca; Tue, 02 Jan 2024 07:32:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rKduW-0002TN-Q5
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 07:30:22 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rKdu9-0005nw-7v
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 07:30:20 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1d3e84fded7so44629445ad.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 04:29:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704198595; x=1704803395; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Augk+xPGGFqEgjYC1IaucYVe0K+Hl4t3eULPoLhAk20=;
- b=lTPt9y07aR/otrAP8pObnFXgwa2zwNGmH4oQlT01c4ibgnQAyFE3C6GvktTyO5tuZa
- Z3TWV/FE4XKyKI6vI6ljAfIdnd7SiaRMmcA5xDAsWzH+PXQURZFUPnZWbSrYjJb01Zor
- KRbmP+DgQKA0CcNOUt/hDUAyXghRbyUDRzQA5RcQnhPX65ftgiaT/5HESVlRrtV3jqGy
- 8f6Is3JLPu8IkkRrep4FMBi0zA70fQ5jpZKNt7iLage1mM9aGNd7JVS+an/G/F6bAVyt
- pcHzemOFGZmXVhYlDwOPpbgAN2qpxMaZeXd7pkam1bP0juGEGejhyQx3xTGgOT8RDdEr
- xLEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704198595; x=1704803395;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Augk+xPGGFqEgjYC1IaucYVe0K+Hl4t3eULPoLhAk20=;
- b=u2x1OxnKbsLyAtZY45gxkmBsgM6IoE650s+0sLjOEiSny70gg9CrP0tATxeJBNoqIH
- uaeAjk0+gSSlmMvjNugvXtoAXt/uFTHCoxVkikfKd8yigmalxnSvIP5eq3OpOy5m8RNz
- xylLf8ZFkGFkigggR+xrRBHMpcTgVNtBgGZ86JwEmPxtJQ+jrJ5N4LbKZNpTLJH41RMJ
- zVbOYOypvPZna2sK8J3wvyWtTzVk6yQKjJdsQt3lPnX7Jl6yBaHXj/vL6y5hNcFqBlu9
- Gr+ALa9nUN27GH8klngATj5Iik7Rd38ZhOg9FPJZfm+/62RkjHVYler+15K2lf0R2LrB
- Komg==
-X-Gm-Message-State: AOJu0YzPOnF56GhjnpzQnv0eo0E2oufKLRpGiK9OVhXoCzwFul6i4UOU
- ekICJ1IV83v3s6LeLisHf4QA1Jw8BFYbrA==
-X-Google-Smtp-Source: AGHT+IHS3iOa66IYtgf5mfAZCZ07dT1eHIB6zQxVe89gAoGWeHV2UUPXNhTMpzv3HoP9IPA8LQ5MYQ==
-X-Received: by 2002:a17:903:2450:b0:1d4:ab6b:f102 with SMTP id
- l16-20020a170903245000b001d4ab6bf102mr1281083pls.85.1704198595524; 
- Tue, 02 Jan 2024 04:29:55 -0800 (PST)
-Received: from [192.168.68.110] ([189.79.21.107])
- by smtp.gmail.com with ESMTPSA id
- l7-20020a17090270c700b001d49608e3dfsm8560466plt.50.2024.01.02.04.29.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jan 2024 04:29:55 -0800 (PST)
-Message-ID: <b2a9b35d-e1dc-4d01-b42c-a2eb865f274e@ventanamicro.com>
-Date: Tue, 2 Jan 2024 09:29:51 -0300
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rKdwU-0003JF-EA; Tue, 02 Jan 2024 07:32:22 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rKdwR-0006Oc-Q1; Tue, 02 Jan 2024 07:32:22 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T4Bxj4gbpz6K7JW;
+ Tue,  2 Jan 2024 20:29:45 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id B7DFA140DDB;
+ Tue,  2 Jan 2024 20:31:49 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 2 Jan
+ 2024 12:31:45 +0000
+Date: Tue, 2 Jan 2024 12:31:43 +0000
+To: <ankita@nvidia.com>
+CC: <jgg@nvidia.com>, <alex.williamson@redhat.com>, <clg@redhat.com>,
+ <shannon.zhaosl@gmail.com>, <peter.maydell@linaro.org>, <ani@anisinha.ca>,
+ <berrange@redhat.com>, <eduardo@habkost.net>, <imammedo@redhat.com>,
+ <mst@redhat.com>, <eblake@redhat.com>, <armbru@redhat.com>,
+ <david@redhat.com>, <gshan@redhat.com>, <aniketa@nvidia.com>,
+ <cjia@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <vsethi@nvidia.com>, <acurrid@nvidia.com>, <dnigam@nvidia.com>,
+ <udhoke@nvidia.com>, <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v6 0/2] acpi: report numa nodes for device memory using GI
+Message-ID: <20240102123143.00006486@Huawei.com>
+In-Reply-To: <20231225045603.7654-1-ankita@nvidia.com>
+References: <20231225045603.7654-1-ankita@nvidia.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/16] target/riscv: create finalize_features() for KVM
-Content-Language: en-US
-To: Vladimir Isaev <vladimir.isaev@syntacore.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com
-References: <20231222122235.545235-1-dbarboza@ventanamicro.com>
- <20231222122235.545235-11-dbarboza@ventanamicro.com>
- <1905a7c9-b59f-4392-9a27-74c292668856@syntacore.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <1905a7c9-b59f-4392-9a27-74c292668856@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,193 +68,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, 25 Dec 2023 10:26:01 +0530
+<ankita@nvidia.com> wrote:
 
-
-On 12/29/23 08:22, Vladimir Isaev wrote:
-> 22.12.2023 15:22, Daniel Henrique Barboza wrote:
->> To turn cbom_blocksize and cboz_blocksize into class properties we need
->> KVM specific changes.
->>
->> KVM is creating its own version of these options with a customized
->> setter() that prevents users from picking an invalid value during init()
->> time. This comes at the cost of duplicating each option that KVM
->> supports. This will keep happening for each new shared option KVM
->> implements in the future.
->>
->> We can avoid that by using the same property TCG uses and adding
->> specific KVM handling during finalize() time, like TCG already does with
->> riscv_tcg_cpu_finalize_features(). To do that, the common CPU property
->> offers a way of knowing if an option was user set or not, sparing us
->> from doing unneeded syscalls.
->>
->> riscv_kvm_cpu_finalize_features() is then created using the same
->> KVMScratch CPU we already use during init() time, since finalize() time
->> is still too early to use the official KVM CPU for it. cbom_blocksize
->> and cboz_blocksize are then handled during finalize() in the same way
->> they're handled by their KVM specific setter.
->>
->> With this change we can proceed with the blocksize changes in the common
->> code without breaking the KVM driver.
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/cpu.c           | 16 +++++++---
->>   target/riscv/cpu.h           |  1 +
->>   target/riscv/kvm/kvm-cpu.c   | 59 ++++++++++++++++++++++++++++++++++++
->>   target/riscv/kvm/kvm_riscv.h |  1 +
->>   4 files changed, 72 insertions(+), 5 deletions(-)
->>
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index 8be619b6f1..f49d31d753 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -63,6 +63,11 @@ static void cpu_option_add_user_setting(const char *optname, uint32_t value)
->>                           GUINT_TO_POINTER(value));
->>   }
->>
->> +bool riscv_cpu_option_set(const char *optname)
->> +{
->> +    return g_hash_table_contains(general_user_opts, optname);
->> +}
->> +
+> From: Ankit Agrawal <ankita@nvidia.com>
 > 
-> This function may work in unexpected way for future developer since we can check just somehow restricted
-> number of options using it, like vlen/elen/cbom/cboz size, but not vext_spec or pmu-num/mask.
-
-Makes sense. I'll add all options in this hash to make it consistent.
-
-
-Thanks,
-
-
-Daniel
-
+> There are upcoming devices which allow CPU to cache coherently access
+> their memory. It is sensible to expose such memory as NUMA nodes separate
+> from the sysmem node to the OS. The ACPI spec provides a scheme in SRAT
+> called Generic Initiator Affinity Structure [1] to allow an association
+> between a Proximity Domain (PXM) and a Generic Initiator (GI) (e.g.
+> heterogeneous processors and accelerators, GPUs, and I/O devices with
+> integrated compute or DMA engines).
 > 
->>   #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
->>       {#_name, _min_ver, CPU_CFG_OFFSET(_prop)}
->>
->> @@ -1056,17 +1061,18 @@ void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
->>   {
->>       Error *local_err = NULL;
->>
->> -    /*
->> -     * KVM accel does not have a specialized finalize()
->> -     * callback because its extensions are validated
->> -     * in the get()/set() callbacks of each property.
->> -     */
->>       if (tcg_enabled()) {
->>           riscv_tcg_cpu_finalize_features(cpu, &local_err);
->>           if (local_err != NULL) {
->>               error_propagate(errp, local_err);
->>               return;
->>           }
->> +    } else if (kvm_enabled()) {
->> +        riscv_kvm_cpu_finalize_features(cpu, &local_err);
->> +        if (local_err != NULL) {
->> +            error_propagate(errp, local_err);
->> +            return;
->> +        }
->>       }
->>
->>   #ifndef CONFIG_USER_ONLY
->> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
->> index 53101b82c5..988471c7ba 100644
->> --- a/target/riscv/cpu.h
->> +++ b/target/riscv/cpu.h
->> @@ -495,6 +495,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
->>                           bool probe, uintptr_t retaddr);
->>   char *riscv_isa_string(RISCVCPU *cpu);
->>   void riscv_cpu_list(void);
->> +bool riscv_cpu_option_set(const char *optname);
->>
->>   #define cpu_list riscv_cpu_list
->>   #define cpu_mmu_index riscv_cpu_mmu_index
->> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
->> index 62a1e51f0a..70fb075846 100644
->> --- a/target/riscv/kvm/kvm-cpu.c
->> +++ b/target/riscv/kvm/kvm-cpu.c
->> @@ -1490,6 +1490,65 @@ static void kvm_cpu_instance_init(CPUState *cs)
->>       }
->>   }
->>
->> +void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
->> +{
->> +    CPURISCVState *env = &cpu->env;
->> +    KVMScratchCPU kvmcpu;
->> +    struct kvm_one_reg reg;
->> +    uint64_t val;
->> +    int ret;
->> +
->> +    /* short-circuit without spinning the scratch CPU */
->> +    if (!cpu->cfg.ext_zicbom && !cpu->cfg.ext_zicboz) {
->> +        return;
->> +    }
->> +
->> +    if (!kvm_riscv_create_scratch_vcpu(&kvmcpu)) {
->> +        error_setg(errp, "Unable to create scratch KVM cpu");
->> +        return;
->> +    }
->> +
->> +    if (cpu->cfg.ext_zicbom &&
->> +        riscv_cpu_option_set(kvm_cbom_blocksize.name)) {
->> +
->> +        reg.id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CONFIG,
->> +                                        kvm_cbom_blocksize.kvm_reg_id);
->> +        reg.addr = (uint64_t)&val;
->> +        ret = ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
->> +        if (ret != 0) {
->> +            error_setg(errp, "Unable to read cbom_blocksize, error %d", errno);
->> +            return;
->> +        }
->> +
->> +        if (cpu->cfg.cbom_blocksize != val) {
->> +            error_setg(errp, "Unable to set cbom_blocksize to a different "
->> +                       "value than the host (%lu)", val);
->> +            return;
->> +        }
->> +    }
->> +
->> +    if (cpu->cfg.ext_zicboz &&
->> +        riscv_cpu_option_set(kvm_cboz_blocksize.name)) {
->> +
->> +        reg.id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CONFIG,
->> +                                        kvm_cboz_blocksize.kvm_reg_id);
->> +        reg.addr = (uint64_t)&val;
->> +        ret = ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
->> +        if (ret != 0) {
->> +            error_setg(errp, "Unable to read cbom_blocksize, error %d", errno);
->> +            return;
->> +        }
->> +
->> +        if (cpu->cfg.cboz_blocksize != val) {
->> +            error_setg(errp, "Unable to set cboz_blocksize to a different "
->> +                       "value than the host (%lu)", val);
->> +            return;
->> +        }
->> +    }
->> +
->> +    kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
->> +}
->> +
->>   static void kvm_cpu_accel_class_init(ObjectClass *oc, void *data)
->>   {
->>       AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
->> diff --git a/target/riscv/kvm/kvm_riscv.h b/target/riscv/kvm/kvm_riscv.h
->> index 8329cfab82..4bd98fddc7 100644
->> --- a/target/riscv/kvm/kvm_riscv.h
->> +++ b/target/riscv/kvm/kvm_riscv.h
->> @@ -27,5 +27,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
->>                             uint64_t guest_num);
->>   void riscv_kvm_aplic_request(void *opaque, int irq, int level);
->>   int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
->> +void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
->>
->>   #endif
->> --
->> 2.43.0
->>
->>
+> While a single node per device may cover several use cases, it is however
+> insufficient for a full utilization of the NVIDIA GPUs MIG
+> (Mult-Instance GPUs) [2] feature. The feature allows partitioning of the
+> GPU device resources (including device memory) into several (upto 8)
+> isolated instances. Each of the partitioned memory requires a dedicated NUMA
+> node to operate. The partitions are not fixed and they can be created/deleted
+> at runtime.
+> 
+> Linux OS does not provide a means to dynamically create/destroy NUMA nodes
+> and such feature implementation is expected to be non-trivial. The nodes
+> that OS discovers at the boot time while parsing SRAT remains fixed. So we
+> utilize the GI Affinity structures that allows association between nodes
+> and devices. Multiple GI structures per device/BDF is possible, allowing
+> creation of multiple nodes in the VM by exposing unique PXM in each of these
+> structures.
+> 
+> Implement the mechanism to build the GI affinity structures as Qemu currently
+> does not. Introduce a new acpi-generic-initiator object that allows an
+> association of a set of nodes with a device. During SRAT creation, all such
+> objected are identified and used to add the GI Affinity Structures. Currently,
+> only PCI device is supported. On a multi device system, each device supporting
+> the features needs a unique acpi-generic-initiator object with its own set of
+> NUMA nodes associated to it.
+> 
+> The admin will create a range of 8 nodes and associate that with the device
+> using the acpi-generic-initiator object. While a configuration of less than
+> 8 nodes per device is allowed, such configuration will prevent utilization of
+> the feature to the fullest. This setting is applicable to all the Grace+Hopper
+> systems. The following is an example of the Qemu command line arguments to
+> create 8 nodes and link them to the device 'dev0':
+> 
+> -numa node,nodeid=2 -numa node,nodeid=3 -numa node,nodeid=4 \
+> -numa node,nodeid=5 -numa node,nodeid=6 -numa node,nodeid=7 \
+> -numa node,nodeid=8 -numa node,nodeid=9 \
+> -device vfio-pci-nohotplug,host=0009:01:00.0,bus=pcie.0,addr=04.0,rombar=0,id=dev0 \
+> -object acpi-generic-initiator,id=gi0,pci-dev=dev0,host-nodes=2-9 \
+> 
+
+I'd find it helpful to see the resulting chunk of SRAT for these examples
+(disassembled) in this cover letter and the patches (where there are more examples).
+
 
