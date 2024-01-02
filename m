@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB3682190D
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3CF82190C
 	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 10:46:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKbL8-0005zN-GI; Tue, 02 Jan 2024 04:45:38 -0500
+	id 1rKbLj-00063r-7N; Tue, 02 Jan 2024 04:46:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKbL5-0005yd-61
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 04:45:35 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKbLh-00063g-0g
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 04:46:13 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKbL3-0002HF-HU
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 04:45:34 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40d560818b8so66609845e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 01:45:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKbLd-0002KN-Pp
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 04:46:12 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-336746c7b6dso8380605f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 01:46:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704188731; x=1704793531; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704188767; x=1704793567; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=D5sHdH8s4qL8YDy1fschkSwNx0GWjqxbCOfWlBrG6H8=;
- b=sV9Gw1AjwxDL6nNfr5rlAff0LyH4TP3qgtbneX5G7AE/2es6ClfXjavpUd08q1wz30
- gaOLOgLFTr1J7AbOq8HfRWEyHe+NtW1Wf2rKeae7SgVAMtN+IHpH9/6HfPyXKNzbWHYe
- PEN3UN7jQ8lZTJBCguFTRBP/TOfC3/jZcKjcqkg1WdhkdE0tS2voOT54JAlP3LF3s/Kd
- svJzo4/yibqCFfQboucIESkLJV1VQ2AaOBOjzYqges9gXRZc5KEQJ/f/2cwR9Uq4te4q
- NnP4dD6CLnLKM0DqcTTUP2v29GYDbRUIBJRW3PHgA204KV/kZRU0/Si56LOSn+/II7nZ
- SovA==
+ bh=BvMBtZj6qG2YAHPCp33gXWJoAoUmhT3nZupD7Y526G4=;
+ b=xL9dZGrrOpgrhySoH0r5T2uOp11ojpafFt2hM37QLyGEByXhM6aFNAsoa5B3b9VAr8
+ ZutfUcsJGOq4ilXSRSqBbRlM8mEpvTrVTEdoJ3fe5XXT4NitSSxFDBSQo5XmTLkHcfGc
+ DFVcXGD7O4ks2q6hrpvnMezX09jTPx96Ll5gf84Slo8xuRNr36iIBSfPbePwQJH4Mh1+
+ 990Rx1rfG5eF8l5RBzhu06sIrFbt3MY3Vf0MB4ivl/WCWRwAT42XklhO8qi105mH2PYe
+ VDaG7cP/yEV+bLsloXyxG7nsknyrY+7ZB5DLfiH0JcyJRGLZKrsgjFeLuR3pG8oeihm/
+ Y+tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704188731; x=1704793531;
+ d=1e100.net; s=20230601; t=1704188767; x=1704793567;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=D5sHdH8s4qL8YDy1fschkSwNx0GWjqxbCOfWlBrG6H8=;
- b=mU9bGkT5cvM8mGal0lQTksgdS0M2CrYYvF9BD2IByuF/5hagkAHLAH7jfkK6YuR95S
- fM1ExIZ8pELCZ564U92fiXExiN0TKKSRnMA1WyvOVBE1b2JZnx1VbgtGAIA2nwnU1vj9
- vcvP/AjXKPQBVmTJkBU02IXLGSA2cjzO80Qs+Z1IxvwtqsPzpqvnPlI+8Xh/FxsLThDP
- xlSxCc4qfeuhkNQaxhIuP8+KTJlM2fCONAjgVyirdChy0+x2VzUh4IVUenWzQ3AqV6AZ
- zM3/8GkzCbr5YKdyo42AaqzaD6SOSAF9xzVGHwNeiIlZuBQ/3H2zi2vS6/1Bygqmf2F1
- uUxQ==
-X-Gm-Message-State: AOJu0YyOYZxa0wXm3iSWF9NsxHIxHrS38zzwmqDydBu3yHW6Igx90CPj
- 63x0Pt8GyOnqRPQ9LBdWOLJtkJzS73OsBg==
-X-Google-Smtp-Source: AGHT+IGobNEaLIFhhKzy2eu1TD/XRyAnZa3n0wYCOpoieBs11bOXdvCEdsdpkx07H6UHghQM61Oweg==
-X-Received: by 2002:a1c:4c14:0:b0:40d:8bc5:d9cb with SMTP id
- z20-20020a1c4c14000000b0040d8bc5d9cbmr548166wmf.110.1704188731402; 
- Tue, 02 Jan 2024 01:45:31 -0800 (PST)
+ bh=BvMBtZj6qG2YAHPCp33gXWJoAoUmhT3nZupD7Y526G4=;
+ b=lwiZUZnelrQsR8OkMwxrDXBdPR+9fPxMAhHoWgpVS1IPISFE00WWRfmzH4XZyoIPJQ
+ fJ8Af5jEdRRqOSP9qSP9sx/fnL18aIbIHg+Q2lP0Gw3RSAiXOElQTLaS0AcdseRwNMrL
+ SR84y+J8FtKVu3LslA2cFlNXBahkkSfU5c2Kn488FHNN/OwyVk8/fAB67hfADIrzf2iF
+ Y2g1ym7zHkhcV84KfP0OMBxOY6m0p17qiERVn2PNugzlWGCau/pxgkijKqK2isx6DzX4
+ ueAItWs/sMZB5hxVpxaxuRoPLxM1GuuDKrXRwX+iuvU6PU+FUyYvO8AHb5xASd2MIr+L
+ B7Cg==
+X-Gm-Message-State: AOJu0YyaJyTwg1Bv9qBOFIW8aIgMMquHKKcqEyYjEl08/VIZA+UTOv+R
+ LEWJvGS+I0rUbR1ZUu29lsqvxW3vhZ0XZQ==
+X-Google-Smtp-Source: AGHT+IHIo0rYm67SDNvbhqITqenaAyXC5moHEnvXXtNCwd/Jj8amiQ463fO2lQufC1ND2RbQI+Dgvw==
+X-Received: by 2002:adf:f003:0:b0:336:43db:e73 with SMTP id
+ j3-20020adff003000000b0033643db0e73mr8113891wro.84.1704188767791; 
+ Tue, 02 Jan 2024 01:46:07 -0800 (PST)
 Received: from [192.168.69.100] (sal63-h02-176-184-16-71.dsl.sta.abo.bbox.fr.
  [176.184.16.71]) by smtp.gmail.com with ESMTPSA id
- l2-20020adfe582000000b003366cf8bda4sm27938746wrm.41.2024.01.02.01.45.30
+ l2-20020adfe582000000b003366cf8bda4sm27938746wrm.41.2024.01.02.01.46.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jan 2024 01:45:31 -0800 (PST)
-Message-ID: <c1dcff9a-a1e7-406f-ac3f-696e4222e7c9@linaro.org>
-Date: Tue, 2 Jan 2024 10:45:28 +0100
+ Tue, 02 Jan 2024 01:46:07 -0800 (PST)
+Message-ID: <0c873d56-fb90-41e2-8777-8b0642479a9f@linaro.org>
+Date: Tue, 2 Jan 2024 10:46:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] target/loongarch: move translate modules to tcg/
+Subject: Re: [PATCH v2 1/2] target/loongarch/meson: move gdbstub.c to
+ loongarch.ss
 Content-Language: en-US
 To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
  alex.bennee@linaro.org, pbonzini@redhat.com, maobibo@loongson.cn
 References: <20240102020200.3462097-1-gaosong@loongson.cn>
- <20240102020200.3462097-2-gaosong@loongson.cn>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240102020200.3462097-2-gaosong@loongson.cn>
+In-Reply-To: <20240102020200.3462097-1-gaosong@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,39 +93,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/1/24 03:02, Song Gao wrote:
-> Introduce the target/loongarch/tcg directory. Its purpose is to hold the TCG
-> code that is selected by CONFIG_TCG
+On 2/1/24 03:01, Song Gao wrote:
+> gdbstub.c is not specific to TCG and can be used by
+> other accelerators, such as KVM accelerator
 > 
+> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+I didn't really suggested the change but the split ;)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 > Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->   target/loongarch/{ => tcg}/constant_timer.c   |  0
->   target/loongarch/{ => tcg}/csr_helper.c       |  0
->   target/loongarch/{ => tcg}/fpu_helper.c       |  0
->   target/loongarch/{ => tcg}/iocsr_helper.c     |  0
->   target/loongarch/{ => tcg}/op_helper.c        |  0
->   target/loongarch/{ => tcg}/tlb_helper.c       |  0
->   target/loongarch/{ => tcg}/translate.c        |  0
->   target/loongarch/{ => tcg}/vec_helper.c       |  0
->   .../{ => tcg}/insn_trans/trans_arith.c.inc    |  0
->   .../{ => tcg}/insn_trans/trans_atomic.c.inc   |  0
->   .../{ => tcg}/insn_trans/trans_bit.c.inc      |  0
->   .../{ => tcg}/insn_trans/trans_branch.c.inc   |  0
->   .../{ => tcg}/insn_trans/trans_extra.c.inc    |  0
->   .../{ => tcg}/insn_trans/trans_farith.c.inc   |  0
->   .../{ => tcg}/insn_trans/trans_fcmp.c.inc     |  0
->   .../{ => tcg}/insn_trans/trans_fcnv.c.inc     |  0
->   .../{ => tcg}/insn_trans/trans_fmemory.c.inc  |  0
->   .../{ => tcg}/insn_trans/trans_fmov.c.inc     |  0
->   .../{ => tcg}/insn_trans/trans_memory.c.inc   |  0
->   .../insn_trans/trans_privileged.c.inc         |  0
->   .../{ => tcg}/insn_trans/trans_shift.c.inc    |  0
->   .../{ => tcg}/insn_trans/trans_vec.c.inc      |  0
->   target/loongarch/meson.build                  | 15 +--------------
->   target/loongarch/tcg/meson.build              | 19 +++++++++++++++++++
->   24 files changed, 20 insertions(+), 14 deletions(-)
+>   target/loongarch/meson.build | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
->   create mode 100644 target/loongarch/tcg/meson.build
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
