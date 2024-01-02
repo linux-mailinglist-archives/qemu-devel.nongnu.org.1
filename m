@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04119821D1E
+	by mail.lfdr.de (Postfix) with ESMTPS id 019DC821D1D
 	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 14:53:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKfBa-0002Ad-PN; Tue, 02 Jan 2024 08:52:02 -0500
+	id 1rKfC1-0002Fz-44; Tue, 02 Jan 2024 08:52:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=hBD0=IM=kaod.org=clg@ozlabs.org>)
- id 1rKfBY-0002AK-B3; Tue, 02 Jan 2024 08:52:00 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1rKfBx-0002Ey-PC; Tue, 02 Jan 2024 08:52:25 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=hBD0=IM=kaod.org=clg@ozlabs.org>)
- id 1rKfBW-0004bw-Cz; Tue, 02 Jan 2024 08:52:00 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T4DmP25YBz4x22;
- Wed,  3 Jan 2024 00:51:49 +1100 (AEDT)
+ id 1rKfBw-0004h3-9T; Tue, 02 Jan 2024 08:52:25 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T4Dmz32Hpz4x2P;
+ Wed,  3 Jan 2024 00:52:19 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T4DmF2HQtz4wnx;
- Wed,  3 Jan 2024 00:51:40 +1100 (AEDT)
-Message-ID: <a15e671a-9193-4e0a-b2e2-1e7a20eb914e@kaod.org>
-Date: Tue, 2 Jan 2024 14:51:36 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T4Dms6tp3z4wny;
+ Wed,  3 Jan 2024 00:52:13 +1100 (AEDT)
+Message-ID: <4d36f06f-2167-4c85-9223-9805908b04b3@kaod.org>
+Date: Tue, 2 Jan 2024 14:52:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/33] hw/arm/boot: Propagate vCPU to arm_load_dtb()
+Subject: Re: [PATCH 02/33] hw/arm/fsl-imx6: Add a local 'gic' variable
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -48,20 +46,19 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
  qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 References: <20231212162935.42910-1-philmd@linaro.org>
- <20231212162935.42910-2-philmd@linaro.org>
+ <20231212162935.42910-3-philmd@linaro.org>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231212162935.42910-2-philmd@linaro.org>
+In-Reply-To: <20231212162935.42910-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=hBD0=IM=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,10 +75,11 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/12/23 17:29, Philippe Mathieu-Daudé wrote:
-> In heterogeneous setup the first vCPU might not be
-> the one expected, better pass it explicitly.
+> The A9MPCore forward the IRQs from its internal GIC.
+> To make the code clearer, add a 'gic' variable.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
