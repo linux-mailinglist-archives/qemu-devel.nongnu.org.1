@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3090821AF2
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 12:29:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C54821B22
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 12:42:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKcxf-0002Sg-LN; Tue, 02 Jan 2024 06:29:31 -0500
+	id 1rKd8m-0005AV-IN; Tue, 02 Jan 2024 06:41:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rKcxe-0002SV-35
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 06:29:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rKcxc-0003Q0-HG
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 06:29:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704194966;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qlcwmHCw4XG7hEcVZMxj3EW39wo6HjTOhdpCpdHKi98=;
- b=a11fzNFjeBPE19N8rIH9x+QuN6wsAHi/y0vTrMQcL99meWAkDy4DZaeCxCNZ6wNkoq5WSn
- RHznH7xgSkNto39eIozqOBNXd4RwwC5TfliDr8AT8xvo8b1EO5c7r6pU4Du1f4pCGRs3If
- fvU0Nakq6IgGts2SD1c0dC3xCHWKV2U=
-Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
- [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-Y6XdFVJsP8a2mn6kcXiYjg-1; Tue, 02 Jan 2024 06:29:25 -0500
-X-MC-Unique: Y6XdFVJsP8a2mn6kcXiYjg-1
-Received: by mail-yb1-f197.google.com with SMTP id
- 3f1490d57ef6-dbdc1d8025cso10026390276.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 03:29:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rKd8k-00059g-DL
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 06:40:58 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rKd8h-0005Ps-VL
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 06:40:58 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6d9ac5bd128so2095614b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 03:40:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1704195653; x=1704800453; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/D9RXVtUGUvypPb23ej2EvWHBg+LtAi9dKXPwv2JqhY=;
+ b=oK++d8KQSaZxgeFUq3cma6Oso61oRNNkS4GQoI8VBvaYGmTc87yJmTCPjQM1ZKMhxm
+ FfDejFioEJ+CfOS8JzGIIDqOrHTrOLWs5l37SSLhbktnodMhewy05ERS5J54WhGXBZQ4
+ eVwl1KSeOm5Y4HkvFkkhdxaHVWQHxOc3f8TPZhuWxhmDCEtOJqUgMSkVW6Js0/e5cLHP
+ miH51MwOKQdXpXSozXt2X4KS4z8wYBLkcq8LyVvZU4PZwKaXc/BOk4CBNGdsR5Q5tDp/
+ 4HDkS8OHSJmudSr1IquAf3ITtn6m7bKLnatfwG3xRpB3Snq39QnE16sFG9i/rIB5DbSL
+ xjUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704194964; x=1704799764;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qlcwmHCw4XG7hEcVZMxj3EW39wo6HjTOhdpCpdHKi98=;
- b=rNBG9yKhbwBoIVoZ0h05N1plwxY9g/WPTQl3D3q2RmavFXfR0UBn2CiXX832hHvjOt
- ImyY55xz6LhpTtonQ8m/rzSJgv9gpTAPO47k8DrqLsRLFcqzgAhLb7PfZdMclq5Bt7sV
- doZ92MZIeDkYUSn8QZUKzMqbEZUKZYFbKzoMrlnUB16dQ78d/DqBrE7gRj74TMawQX3/
- jIJ4I4pIMcDPDoUZJ4Q4Rm/awoieE0ich0oGdEQ8203wKuZ5L6jDmcmTB0H3XGv7pYDT
- 9SSqit/XwY7zBI4ABv87hKH22I1C3Hy7sErIqSgfuXZ17verpQh600LcvV+RL2qJKRjP
- yIVA==
-X-Gm-Message-State: AOJu0YwjiY9g2ERXk/KwK7fyX81PzXBETsBrZvJDiRXA/bbJFlRr9NP6
- 4t9+/OgIWw392enq9gLckjzi1Zz1H4iNPqWcXx9jx0So9UpjujLYX25JuQJvLajraNI9+3+CbyA
- vwJXafTFeznPcg0P40Ez8SlJgVxBqBCrdZ3khStc=
-X-Received: by 2002:a25:ef4c:0:b0:dbc:e80b:7103 with SMTP id
- w12-20020a25ef4c000000b00dbce80b7103mr7965125ybm.80.1704194964701; 
- Tue, 02 Jan 2024 03:29:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IECRZSvOXVtbneCa8cE3Jq3yuDUM7oe1DdD95JAb4MgGkgYhdAegAKV7ah2+FSOv/cW3pRvtVOBHhRetz7J8mo=
-X-Received: by 2002:a25:ef4c:0:b0:dbc:e80b:7103 with SMTP id
- w12-20020a25ef4c000000b00dbce80b7103mr7965117ybm.80.1704194964380; Tue, 02
- Jan 2024 03:29:24 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704195653; x=1704800453;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/D9RXVtUGUvypPb23ej2EvWHBg+LtAi9dKXPwv2JqhY=;
+ b=QY+4E6lOVKTs+etiIYatDr9dADEKINlYf5jQ2EbWw8ZNHtlLZiNHbQaqKZQhanGieB
+ kGg/pT9uzpn0kHfLluw5HkMP2UdBPzXdwr5VTXb2YqOCsmQD+Zvi2HZ8WJBUsk7dZYwa
+ wW+mFZbtYv3wHW+FdnjBvPOcMYLwYSgU7KoyHX9l12OFAejr8zBx2jDIrAQeS2PZBq0b
+ 4qb59n9oMZ3QRu64xynkIt8j42B8Ly2ez1OQUbCjUufJU92ApnIh6HUyru8wujKV7Ctd
+ b1QaWLsz/gkH4BmcFkGgEapL8D5uh9/3BjkZ4T+OeeaflqZiGaHuFco3cYOMeUXFsRte
+ bSTQ==
+X-Gm-Message-State: AOJu0YzUZca2Mw7wBDJzVDE10WvDlRZgTY3keAICpoopaqtCeGLY3jog
+ +jJ2mabvcPg5+SOQQsxfMLdA9zMbpcTBv3d7s06eWAfjB6WzjA==
+X-Google-Smtp-Source: AGHT+IFRAlafM2IcPA/b5bfVw6DAzJTH9ElPIevIuQ4OVkIb/stP7ALsYgxPs708fytv4m6isjJNBA==
+X-Received: by 2002:aa7:8b4a:0:b0:6d9:b92b:833c with SMTP id
+ i10-20020aa78b4a000000b006d9b92b833cmr4735605pfd.55.1704195653660; 
+ Tue, 02 Jan 2024 03:40:53 -0800 (PST)
+Received: from [192.168.68.110] ([189.79.21.107])
+ by smtp.gmail.com with ESMTPSA id
+ s22-20020a62e716000000b006da105deedesm9565035pfh.197.2024.01.02.03.40.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Jan 2024 03:40:53 -0800 (PST)
+Message-ID: <a3f0392c-6a1a-4d48-8d55-13348457c345@ventanamicro.com>
+Date: Tue, 2 Jan 2024 08:40:48 -0300
 MIME-Version: 1.0
-References: <20231215172830.2540987-1-eperezma@redhat.com>
- <20231215172830.2540987-9-eperezma@redhat.com>
- <CACGkMEvH=uU4QxMHVHTo5tQiuML2+NTE3gZssfz84-+4kGHa1Q@mail.gmail.com>
- <CAJaqyWczW+uwYBsWas97JY6OgiSurnvNQnnTYPFWv5La55GOOg@mail.gmail.com>
- <CACGkMEukZNUnXRSwpVAROe7U7GzkubP9i37ev+qOSQvWxLEK_Q@mail.gmail.com>
- <CAJaqyWfGkboB4sN0PSukKx1kAV-QQ_YSWXWvksPScBD9OgHRsQ@mail.gmail.com>
- <ZZOgGmpNT_zi2eat@x1n>
-In-Reply-To: <ZZOgGmpNT_zi2eat@x1n>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Tue, 2 Jan 2024 12:28:48 +0100
-Message-ID: <CAJaqyWcajuV12tV0aguBO1qpa95pK0qUEHjsNh2+VpMR3fCVyg@mail.gmail.com>
-Subject: Re: [PATCH for 9.0 08/12] vdpa: add vhost_vdpa_load_setup
-To: Peter Xu <peterx@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org, 
- "Michael S. Tsirkin" <mst@redhat.com>, si-wei.liu@oracle.com,
- Lei Yang <leiyang@redhat.com>, 
- Dragos Tatulea <dtatulea@nvidia.com>, Zhu Lingshan <lingshan.zhu@intel.com>, 
- Parav Pandit <parav@mellanox.com>, Stefano Garzarella <sgarzare@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.246,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 00/26] riscv: RVA22 profiles support
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com
+References: <20231218125334.37184-1-dbarboza@ventanamicro.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231218125334.37184-1-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,59 +95,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 2, 2024 at 6:33=E2=80=AFAM Peter Xu <peterx@redhat.com> wrote:
->
-> Jason, Eugenio,
->
-> Apologies for a late reply; just back from the long holiday.
->
-> On Thu, Dec 21, 2023 at 09:20:40AM +0100, Eugenio Perez Martin wrote:
-> > Si-Wei did the actual profiling as he is the one with the 128G guests,
-> > but most of the time was spent in the memory pinning. Si-Wei, please
-> > correct me if I'm wrong.
->
-> IIUC we're talking about no-vIOMMU use case.  The pinning should indeed
-> take a lot of time if it's similar to what VFIO does.
->
-> >
-> > I didn't check VFIO, but I think it just maps at realize phase with
-> > vfio_realize -> vfio_attach_device -> vfio_connect_container(). In
-> > previous testings, this delayed the VM initialization by a lot, as
-> > we're moving that 20s of blocking to every VM start.
-> >
-> > Investigating a way to do it only in the case of being the destination
-> > of a live migration, I think the right place is .load_setup migration
-> > handler. But I'm ok to move it for sure.
->
-> If it's destined to map the 128G, it does sound sensible to me to do it
-> when VM starts, rather than anytime afterwards.
->
+Hi,
 
-Just for completion, it is not 100% sure the driver will start the
-device. But it is likely for sure.
+Drew brought to my attention the following post on the tech-unprivileged mailing
+list:
 
-> Could anyone help to explain what's the problem if vDPA maps 128G at VM
-> init just like what VFIO does?
->
+"Architecture Review Committee meeting minutes, 12/19/23"
+https://lists.riscv.org/g/tech-unprivileged/message/611
 
-The main problem was the delay of VM start. In the master branch, the
-pinning is done when the driver starts the device. While it takes the
-BQL, the rest of the vCPUs can move work forward while the host is
-pinning. So the impact of it is not so evident.
+Second paragraph mentions:
 
-To move it to initialization time made it very noticeable. To make
-things worse, QEMU did not respond to QMP commands and similar. That's
-why it was done only if the VM was the destination of a LM.
+"In response to some recent discussion in the Apps and Tools HC about how profiles should
+be represented in GCC/LLVM, the ARC provides this answer: compilers should use a single parameter
+for an ISA string.  An ISA string begins with either a base ISA name (e.g. rv64i) or a profile name
+(e.g. rva23u64) and is optionally followed by additional extensions (e.g.  rv64imac_zicond or
+rva23u64_zfh_zicond).  If the ISA string begins with a profile name, it is equivalent to
+replacing the profile name with its mandatory base ISA and its mandatory extensions; any
+optional extensions in a profile must be explicitly named if their inclusion is desired.
+ISAs are sets, and concatenating strings takes the union, so redundancy is legal (e.g.
+rva23u64, rva23u64_zicsr, and rva23u64_zicsr_zicsr are all valid and equivalent)."
 
-However, we've added the memory map thread in this version, so this
-might not be a problem anymore. We could move the spawn of the thread
-to initialization time.
+The takeaways from it:
 
-But how to undo this pinning in the case the guest does not start the
-device? In this series, this is done at the destination with
-vhost_vdpa_load_cleanup. Or is it ok to just keep the memory mapped as
-long as QEMU has the vDPA device?
+- this implementation is compliant with how profiles are interpreted, i.e. a profile is
+considered a set of the mandatory base ISA and mandatory extensions, and any additional/optional
+extensions must be explicitly named;
 
-Thanks!
+- our ISA string format is also since we use the base ISA name + extensions format already.
+This series don't  change/add anything in this regard.
 
+
+If we have enough demand for it, I can do a follow-up to add support for the ISA string
+profile format. I.e. this:
+
+$ build/qemu-system-riscv64 -M virt -cpu rva22s64 (...)
+
+# cat /proc/device-tree/cpus/cpu@0/riscv,isa
+rv64imafdc_zicbom_zicbop_zicboz_zicntr_zicsr_zifencei_zihintpause_zihpm_zfhmin_zca_zcd_zba_zbb_zbs_zkt_svinval_svpbmt
+
+Would become this:
+
+# cat /proc/device-tree/cpus/cpu@0/riscv,isa
+rva22s64
+
+
+Feel free to comment here if you, as a toolchain/application developer, thinks that this
+ISA string profile format makes it easier to deal with profiles or if you're fine with
+just parsing all the extensions in the current ISA string format.
+
+
+All of this relies on this series being upstreamed first, of course. Alistair, let me
+know if we're missing anything.
+
+
+
+Thanks,
+
+
+Daniel
+
+
+
+On 12/18/23 09:53, Daniel Henrique Barboza wrote:
+> Hi,
+> 
+> This is a merge of the two profile series:
+> 
+> "[PATCH for-9.0 v12 00/18] riscv: rv64i/rva22u64 CPUs, RVA22U64 profile support"
+> "[PATCH for-9.0 v2 0/8] target/riscv: implement RVA22S64 profile"
+> 
+> I'm sending them together since the second series is dependent on the first.
+> 
+> Quick summary of the major features added:
+> 
+> - A new rv64i CPU type. This is a CPU that has only RVI enabled;
+> 
+> - 'rva22u64' and 'rva22s64' profile flags. They were designed to be used
+>    with the 'rv64i' CPU but can be used with other generic CPUs like
+>    rv64;
+> 
+> - Two new profile CPUs: 'rva22u64' and 'rva22s64'. A profile CPU is an
+>    alias of '-cpu rv64,profile=on' and it's the most convenient way of
+>    using profiles. E.g to launch an rva22s64 'virt' machine:
+> 
+>    ./qemu-system-riscv64 -M virt -cpu rva22s64  (...)
+> 
+>    To test an application with an rva22u64 profile with linux-user mode:
+> 
+>    ./qemu-riscv64 -cpu rva22u64  (...)
+> 
+> 
+> The series can also be fetch via:
+> 
+> https://gitlab.com/danielhb/qemu/-/tree/rva22_v13
+> 
+> Patches rebased on top of Alistair riscv-to-apply.next.
+> 
+> All patches acked.
+> 
+> Daniel Henrique Barboza (26):
+>    target/riscv: create TYPE_RISCV_VENDOR_CPU
+>    target/riscv/tcg: do not use "!generic" CPU checks
+>    target/riscv/tcg: update priv_ver on user_set extensions
+>    target/riscv: add rv64i CPU
+>    target/riscv: add zicbop extension flag
+>    target/riscv/tcg: add 'zic64b' support
+>    riscv-qmp-cmds.c: expose named features in cpu_model_expansion
+>    target/riscv: add rva22u64 profile definition
+>    target/riscv/kvm: add 'rva22u64' flag as unavailable
+>    target/riscv/tcg: add user flag for profile support
+>    target/riscv/tcg: add MISA user options hash
+>    target/riscv/tcg: add riscv_cpu_write_misa_bit()
+>    target/riscv/tcg: handle profile MISA bits
+>    target/riscv/tcg: add hash table insert helpers
+>    target/riscv/tcg: honor user choice for G MISA bits
+>    target/riscv/tcg: validate profiles during finalize
+>    riscv-qmp-cmds.c: add profile flags in cpu-model-expansion
+>    target/riscv: add 'rva22u64' CPU
+>    target/riscv: implement svade
+>    target/riscv: add priv ver restriction to profiles
+>    target/riscv/cpu.c: finalize satp_mode earlier
+>    target/riscv/cpu.c: add riscv_cpu_is_32bit()
+>    target/riscv: add satp_mode profile support
+>    target/riscv: add 'parent' in profile description
+>    target/riscv: add RVA22S64 profile
+>    target/riscv: add rva22s64 cpu
+> 
+>   hw/riscv/virt.c               |   5 +
+>   target/riscv/cpu-qom.h        |   5 +
+>   target/riscv/cpu.c            | 201 +++++++++++++--
+>   target/riscv/cpu.h            |  18 ++
+>   target/riscv/cpu_cfg.h        |   4 +
+>   target/riscv/kvm/kvm-cpu.c    |   7 +-
+>   target/riscv/riscv-qmp-cmds.c |  44 +++-
+>   target/riscv/tcg/tcg-cpu.c    | 450 +++++++++++++++++++++++++++++++---
+>   8 files changed, 672 insertions(+), 62 deletions(-)
+> 
 
