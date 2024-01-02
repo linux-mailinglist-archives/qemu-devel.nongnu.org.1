@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F1E0821F35
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 17:06:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FEB7821F33
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 17:06:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKhGo-0006NG-Nq; Tue, 02 Jan 2024 11:05:35 -0500
+	id 1rKhGx-0006QC-6R; Tue, 02 Jan 2024 11:05:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKhGc-0006HB-GJ
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 11:05:24 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKhGi-0006JI-07
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 11:05:28 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKhGa-0002dS-4T
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 11:05:22 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3367632ce7bso8283814f8f.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 08:05:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKhGg-0002eD-Ee
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 11:05:27 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40d8909a6feso15060345e9.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 08:05:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704211518; x=1704816318; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704211524; x=1704816324; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J38P+ankfUbUztT5GJCTo6FfwFdn7YoTpHgRI5fDY8Q=;
- b=Kh0/g3pWmtcjNrg2GA+ugfeewPTLorGSMcQtucfc0dK86ejPhvL8cAAgZTqvDKUVl5
- p/uXgdMDSrEY85KGPdwoQECS0/qG98VIrE9x3kObWu29mSleCdUOM7+8AvapXPT9xeVn
- kjPLi5E1zm3CsFxYozi4kK73PGXvBbNoKEOZB/fECvArh7KciYy4UAAJnhPE04OOKWE+
- CdZfJPy7CcHp8L3cElNUFwRXf1E6gN9CzFbvlGlY2xIQUYpY1xDPBQEPVjIhb1y4ce5t
- 96ji0Ip9YsSR/G83ZJ/Q/3JAQi6nMBjZ5Xsz88GGnevAgGt+DVxOPKChrE5olH198mga
- 0FYQ==
+ bh=6BwjC+ujFoVcnh1DxjxgU1C6te3MWe6aqORUUnNaIGM=;
+ b=PMU2ZMTZF9/le816mASMlytGfTgze2mTIUiyDNIE2b4tFg1eEgGv3Lx3nTACUsoeAB
+ WG8/c6M4jmL85IezF2nCXfonD7znmIqZ4PPkn7EtOqV+6VNM4PYRAhacGl4qUb/eQhCy
+ YPDS7Go0HG0mc1EaXN/9JmIpXrRecZ8r8vAON9HB1LYZZTDf28znJuzra84XGoenWQhy
+ m9nGm+UfrLXujOxUCypLsOq9BFTeEIp1Ca94D4TZuznHBG7zmb+f2wFk70dvAMR+XmV1
+ uj/OnnyiwhBqRRnLsz4eNeuL+cOU3ViNHq+BfbzTjN3CTSeBcfQufBl91x9pX2e3rPmM
+ rjLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704211518; x=1704816318;
+ d=1e100.net; s=20230601; t=1704211524; x=1704816324;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J38P+ankfUbUztT5GJCTo6FfwFdn7YoTpHgRI5fDY8Q=;
- b=GYg6uweQpgAc7/UUjly63AX3TiBtBl12dnvM1fvP/cFES/NsJZQ1dRRCstdoJoTn6N
- JtyLhecOKSqhqMToa+QKmxB58friS9a5LG9Om1bvFi4FC7K4f4A9qwXkxNryTWf1Zh83
- qKW9F3rQoFg7HA499JgFJHC7YgAWhVNq84kORN3/Uhk0/aeBh1v8MOCUwZNn/UyhavsA
- 2QgqYS1Nql9fGReS/wh2YqjsR6Bk2HpCmD8KwfBwPZfMAwnHuLRMVQ+8pcqbKoaXoTA1
- Pl4eoauRFL5cKCz+PjznS1ZMEXMGDhvmMgQHnKOYm0bztM+zGz+d/ggGv7aCG4SBiAAK
- 46Cg==
-X-Gm-Message-State: AOJu0Yxg18DrG8SeZ+wlG/wH+twAr9YsvhT+quUfnfTsIeGmFB4s7akA
- c2FYIoX7pBOTuzvkE5SH/nMhN+PsPI6gGDkBlSG8W4mq9qg=
-X-Google-Smtp-Source: AGHT+IGK81sSXeAZVigy9QHy8W3v7E9N09SlmUg/+/UeieW3S9EWG4i4DkIxryo3kfAalZFebgBIRA==
-X-Received: by 2002:adf:ec82:0:b0:337:37c2:fc57 with SMTP id
- z2-20020adfec82000000b0033737c2fc57mr2610183wrn.106.1704211518286; 
- Tue, 02 Jan 2024 08:05:18 -0800 (PST)
+ bh=6BwjC+ujFoVcnh1DxjxgU1C6te3MWe6aqORUUnNaIGM=;
+ b=K02uNwmeVTrga6rhU9Zoe7kv9r+EepyKJpCblmxgA5ovv2hOGicfJL8xfnGiZUA3U4
+ 6dGSlOw3s0I9EnwyaQg5ywMOzC5x4cPhT1/SKdfVilB3p9T25zD6IOM0gzuTuG4sWAfQ
+ Bt1gZAppyZrCb5Mclf8U2xuN8T77ESEkRVRMP/aUCtkxhkQ50S3cD9NsDHDgJCnsW7Ze
+ KCoHenx6+If+ojGyfxSHSRvO8ZFgyCOKZe8q2LBQ/zHcxWLmKFEuqrYooumfaCj1ngTC
+ iqjgmLBgwuoLqpKluaT5XRe5D+GbyB2SPs29R3f58vco/4RmtxyG/lwN05P1/SnX7lrj
+ ascA==
+X-Gm-Message-State: AOJu0Yy4dh6gJoSfIuN1XY4vYg+GE6uz+6o7xGEawOu+Qm8dHfkp0MRg
+ 2GLA0gdAOyeSrNgLrNfy2yQv9mUWvTb+RlEahFuapEQKKCw=
+X-Google-Smtp-Source: AGHT+IEr2Xaz+dnCGfu3Wh34558swFw/Oy2LhA/afKeYUi5+1wP3jjMtyLhrgd0jbz6osbxKK7xh4g==
+X-Received: by 2002:a05:600c:a44:b0:40d:7822:bf54 with SMTP id
+ c4-20020a05600c0a4400b0040d7822bf54mr2417553wmq.132.1704211524670; 
+ Tue, 02 Jan 2024 08:05:24 -0800 (PST)
 Received: from m1x-phil.lan (sal63-h02-176-184-16-71.dsl.sta.abo.bbox.fr.
  [176.184.16.71]) by smtp.gmail.com with ESMTPSA id
- b16-20020a056000055000b003372dcd739csm9582956wrf.86.2024.01.02.08.05.15
+ h15-20020a05600c314f00b0040d5f466deesm22836750wmo.38.2024.01.02.08.05.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Jan 2024 08:05:17 -0800 (PST)
+ Tue, 02 Jan 2024 08:05:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Eric Blake <eblake@redhat.com>,
@@ -65,18 +65,18 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 3/5] hw/arm/armv7m: Convert ARMv7MState::vfp from bool to
- OptionalBool
-Date: Tue,  2 Jan 2024 17:04:52 +0100
-Message-ID: <20240102160455.68612-4-philmd@linaro.org>
+Subject: [RFC PATCH 4/5] hw/arm/armv7m: Error if trying to set unavailable
+ ARMCPU::vfp property
+Date: Tue,  2 Jan 2024 17:04:53 +0100
+Message-ID: <20240102160455.68612-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240102160455.68612-1-philmd@linaro.org>
 References: <20240102160455.68612-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,77 +99,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want to know if the 'vfp' property has been initialized.
-Convert it from boolean to OptionalBool (which contain the
-'unset' enum).
+Do not ignore impossible configuration requested by the user.
+For example, when trying to enable VFP on a Cortex-M33 we now get:
 
-Note the monitor output is changed as:
-
-  (qemu) info qtree
-    ...
-    dev: armv7m, id ""
-      gpio-in "NMI" 1
-      gpio-out "SYSRESETREQ" 1
-      gpio-in "" 96
-      clock-in "cpuclk" freq_hz=40 MHz
-      clock-in "refclk" freq_hz=0 Hz
-      cpu-type = "cortex-m33-arm-cpu"
-      init-svtor = 270532608 (0x10200000)
-      init-nsvtor = 0 (0x0)
-      enable-bitband = false
-      start-powered-off = false
--     vfp = false
-+     vfp = "false"
-      dsp = false
-      mpu-ns-regions = 8 (0x8)
-      mpu-s-regions = 8 (0x8)
+  qemu-system-arm: 'cortex-m33-arm-cpu' does not support VFP
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/arm/armv7m.h | 2 +-
- hw/arm/armsse.c         | 2 +-
- hw/arm/armv7m.c         | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ hw/arm/armv7m.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/hw/arm/armv7m.h b/include/hw/arm/armv7m.h
-index e2cebbd15c..6c9e65b644 100644
---- a/include/hw/arm/armv7m.h
-+++ b/include/hw/arm/armv7m.h
-@@ -105,7 +105,7 @@ struct ARMv7MState {
-     uint32_t mpu_s_regions;
-     bool enable_bitband;
-     bool start_powered_off;
--    bool vfp;
-+    OptionalBool vfp;
-     bool dsp;
- };
- 
-diff --git a/hw/arm/armsse.c b/hw/arm/armsse.c
-index 31acbf7347..472b16fc30 100644
---- a/hw/arm/armsse.c
-+++ b/hw/arm/armsse.c
-@@ -1028,7 +1028,7 @@ static void armsse_realize(DeviceState *dev, Error **errp)
-             }
-         }
-         if (!s->cpu_fpu[i]) {
--            if (!object_property_set_bool(cpuobj, "vfp", false, errp)) {
-+            if (!object_property_set_str(cpuobj, "vfp", "false", errp)) {
-                 return;
-             }
-         }
 diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
-index d10abb36a8..3610f6f4a1 100644
+index 3610f6f4a1..12cdad09f9 100644
 --- a/hw/arm/armv7m.c
 +++ b/hw/arm/armv7m.c
-@@ -548,7 +548,7 @@ static Property armv7m_properties[] = {
-     DEFINE_PROP_BOOL("enable-bitband", ARMv7MState, enable_bitband, false),
-     DEFINE_PROP_BOOL("start-powered-off", ARMv7MState, start_powered_off,
-                      false),
--    DEFINE_PROP_BOOL("vfp", ARMv7MState, vfp, true),
-+    DEFINE_PROP_BOOL_NODEFAULT("vfp", ARMv7MState, vfp),
-     DEFINE_PROP_BOOL("dsp", ARMv7MState, dsp, true),
-     DEFINE_PROP_UINT32("mpu-ns-regions", ARMv7MState, mpu_ns_regions, UINT_MAX),
-     DEFINE_PROP_UINT32("mpu-s-regions", ARMv7MState, mpu_s_regions, UINT_MAX),
+@@ -328,6 +328,9 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
+         if (!object_property_set_bool(OBJECT(s->cpu), "vfp", s->vfp, errp)) {
+             return;
+         }
++    } else if (s->vfp == OPTIONAL_BOOL_TRUE) {
++        error_setg(errp, "'%s' does not support VFP", s->cpu_type);
++        return;
+     }
+     if (object_property_find(OBJECT(s->cpu), "dsp")) {
+         if (!object_property_set_bool(OBJECT(s->cpu), "dsp", s->dsp, errp)) {
 -- 
 2.41.0
 
