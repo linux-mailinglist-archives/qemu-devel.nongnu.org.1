@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755F7821D2D
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 14:58:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED28821D37
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 15:02:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKfHT-0006xg-Nw; Tue, 02 Jan 2024 08:58:07 -0500
+	id 1rKfKN-0000hA-JJ; Tue, 02 Jan 2024 09:01:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=hBD0=IM=kaod.org=clg@ozlabs.org>)
- id 1rKfHQ-0006id-IF; Tue, 02 Jan 2024 08:58:04 -0500
+ id 1rKfKH-0000dQ-VU; Tue, 02 Jan 2024 09:01:04 -0500
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=hBD0=IM=kaod.org=clg@ozlabs.org>)
- id 1rKfHN-0005WN-Ss; Tue, 02 Jan 2024 08:58:03 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T4DvW4Dv2z4x5q;
- Wed,  3 Jan 2024 00:57:59 +1100 (AEDT)
+ id 1rKfKF-0006CE-63; Tue, 02 Jan 2024 09:01:01 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T4Dyr0p9Pz4wny;
+ Wed,  3 Jan 2024 01:00:52 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T4DvQ1z3Sz4wcM;
- Wed,  3 Jan 2024 00:57:54 +1100 (AEDT)
-Message-ID: <d4211b88-f0e2-4cd7-b2ad-64f2159dfdce@kaod.org>
-Date: Tue, 2 Jan 2024 14:57:52 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T4Dyk4nBFz4wcX;
+ Wed,  3 Jan 2024 01:00:46 +1100 (AEDT)
+Message-ID: <e4a0b3e1-40e4-4ab1-91a0-c8337b93bb86@kaod.org>
+Date: Tue, 2 Jan 2024 15:00:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/33] hw/cpu/arm: Declare CPU QOM types using
- DEFINE_TYPES() macro
+Subject: Re: [PATCH 09/33] hw/cpu/arm: Merge {a9mpcore.h, a15mpcore.h} as
+ cortex_mpcore.h
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -48,9 +49,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
  qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 References: <20231212162935.42910-1-philmd@linaro.org>
- <20231212162935.42910-9-philmd@linaro.org>
+ <20231212162935.42910-10-philmd@linaro.org>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231212162935.42910-9-philmd@linaro.org>
+In-Reply-To: <20231212162935.42910-10-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
@@ -78,10 +79,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/12/23 17:29, Philippe Mathieu-Daudé wrote:
-> When multiple QOM types are registered in the same file,
-> it is simpler to use the the DEFINE_TYPES() macro. In
-> particular because type array declared with such macro
-> are easier to review.
+> Merge Cortex-A{9,15} MPCore devices in the same header.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
