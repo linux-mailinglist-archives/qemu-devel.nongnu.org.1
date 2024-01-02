@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA7E8221D0
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 20:13:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6694C8221DC
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 20:14:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKkBY-0008CL-3p; Tue, 02 Jan 2024 14:12:20 -0500
+	id 1rKkDG-0000OF-8k; Tue, 02 Jan 2024 14:14:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKkBW-0008Bt-4j
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 14:12:18 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKkDD-0000Ny-7s
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 14:14:03 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKkBU-0002QQ-Lx
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 14:12:17 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40d858c56cbso27571845e9.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 11:12:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKkDB-0002Tt-OA
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 14:14:02 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-33748c4f33dso683034f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 11:14:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704222735; x=1704827535; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1704222840; x=1704827640; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=K/1Cc+MQMSq9U5gFf9WsOF+WBjndRWPg/m+IpcEV0ek=;
- b=XU/TwPoo0lKdYlSrT0vfd3cZ0Y4Fh6KcZrLIALr3TJf+UqytfLAeK9lEr7PVsvhR6q
- aM+p5Ay3lLz3AzXZkqVhbj26TEh7P0sJs7pj4dSVzyaYjNugTFDGn4+NsJOu6gU2ZINx
- 7Y5nNqkg/Of+sbB7R6A+vaqZlbGkxzksdTBeOKT4qLXIQSY3NCohDhjI1hiYKMT574gd
- XKf268UaDngk/rBWUjqXguyWGl7QDl5fnhcVlC6uc4jiG06BiaublqfGhXxwd2C3m2GA
- KMlyYl+ObFdxJbBgdWIyHi9bzm6LTnAVYjsRyHVl2dT0GqDzxfS2Y3gUJN5JWdUYwJkX
- yv5A==
+ bh=7GZv3KYTkWjasm/oFdH9CGzYzRRL4JqjQt0xh6dClYA=;
+ b=Xx26XP1/rvNFnO/Ir4PaigktQ0uqoDqRRlfaqdYDt2XODCnuJmtvlAYCQDpd4CDzsb
+ ZZG18AN1RclVFgCNiLepYI7XlBAKr3cbiTZ3j3dk79A3bU931g2F4EcvxyODlxBJD7Ly
+ pG8cGOFolTkasA5cGbwD4s07EVTW5qvjaSY1WRTrk5GINDm+FM7WoBR6zuhm84smJLpK
+ vx7y/G9n/j3961XdpLYJqJdm2LwrqQBDgTGl//P1Ik0ENQ0nrVhYiEX0ZiamUrYieL5y
+ v3ymSFICXfHtVEQyKn4S05PUCh99EpVQEsg7eBLpobXXMoLOZA1n8cK7H+UhZngcXzdg
+ q56g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704222735; x=1704827535;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1704222840; x=1704827640;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=K/1Cc+MQMSq9U5gFf9WsOF+WBjndRWPg/m+IpcEV0ek=;
- b=fnAnrA8FSoiV+KgzfjxO0EGUXILz9YQ/TtbBVVLZFP58PFbjPJKbQJ3PBJdM4vbg8I
- jI13TeXSw7vXeABJ4BdGTXNx5gmQ+PF2be+qnBiULC1T2sV9SBfwbzCVBO/jCpmCe+LA
- UpClC1RwOoYNSOSa2szQM1u2IjopJAnCFvA59iPnmWqe729fm2Ft5z7F6zZgWR7WA7xc
- rC9RqZgTuLGARJEI0Oq1J3u/pa5NRosIa/uswqDjYyhNJGHqdpNUpaDGFxzC/Yo2rVHq
- vx884mVpZL62A/1s8KRvbrL2PqmwsL4s/hUXd2/kdXONY7UWSfq1vZhC8zzKeZbVkUon
- imZw==
-X-Gm-Message-State: AOJu0Yzx2fYD5ZX41DmCgedJfF3G8VDR4AXi8Vl8jimFKlWrWfEGfVzl
- rm+3W/pUOfusLfHYY9kDL8dl3dmU5W+QxQ==
-X-Google-Smtp-Source: AGHT+IEIfqKCcgcFB7P+srnvZP5HutaRuAP/vfDBX2kpPzQDpKUcirsyFmCggP+VYmyi2HACMxFTqg==
-X-Received: by 2002:a05:600c:4e45:b0:40d:8b38:57d0 with SMTP id
- e5-20020a05600c4e4500b0040d8b3857d0mr1183259wmq.144.1704222734894; 
- Tue, 02 Jan 2024 11:12:14 -0800 (PST)
+ bh=7GZv3KYTkWjasm/oFdH9CGzYzRRL4JqjQt0xh6dClYA=;
+ b=rx7vfq6vaeRgzwplr8077NuXZ3l/sq0rUGZrqJWnudUOXoNmn2eIzRCWLOPv9fF6J/
+ 8Kaf+8jh/uLuj1TK90tTfof4plxDSHl9tXqbRMgQcn9p9LcJ7O1wxRGLwok+Cv1sVIDe
+ w+bcGmZXyKn6CFFA6TNdAC3e4s0vNlKw4bbGza3/ndnVW+s6LTguY6pFkAqNmkntk/ag
+ 6rbd3UuZxpVuFX+1U/juIO3k6OKygm5cbGVI8hlXOzEzSr3fURRJ/SPv0nCEIM4uMldr
+ He3dkzMkukZErnVsvU6ggQVYjX0Qbmwd8LRQrJwhJLceNrHxBGKRfWSIXzXtAUadg5E9
+ AE0g==
+X-Gm-Message-State: AOJu0Ywd6r31Gg4E3c3vyXFbGXjRn+Lu5XpMJXWqHqM/KZXMDMvAXrJB
+ ifCHCX12JOMFx8BTRnfvRf7d7IeDl7bi5w==
+X-Google-Smtp-Source: AGHT+IFlcZvz1NJwf5dpfunOi4YMnYQDhGleKGDxt+LQCZ4XTEEV7X52vvp80ybziItPXZvg+nH0Zw==
+X-Received: by 2002:a05:6000:100e:b0:336:c5e2:fc9f with SMTP id
+ a14-20020a056000100e00b00336c5e2fc9fmr6314344wrx.29.1704222840294; 
+ Tue, 02 Jan 2024 11:14:00 -0800 (PST)
 Received: from [192.168.69.100] (sal63-h02-176-184-16-71.dsl.sta.abo.bbox.fr.
  [176.184.16.71]) by smtp.gmail.com with ESMTPSA id
- u15-20020a05600c138f00b0040d7b340e07sm16167378wmf.45.2024.01.02.11.12.13
+ c5-20020adffb45000000b003372818f4ddsm10966910wrs.0.2024.01.02.11.13.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jan 2024 11:12:14 -0800 (PST)
-Message-ID: <864fe591-935e-4197-91df-51be68360ae2@linaro.org>
-Date: Tue, 2 Jan 2024 20:12:12 +0100
+ Tue, 02 Jan 2024 11:13:59 -0800 (PST)
+Message-ID: <97d3b8c0-e9d4-4e82-9a94-aeac9a038494@linaro.org>
+Date: Tue, 2 Jan 2024 20:13:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/33] hw/tpm: Remove HOST_PAGE_ALIGN from tpm_ppi_init
+Subject: Re: [PATCH v3 26/33] *-user: Deprecate and disable -p pagesize
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- Stefan Berger <stefanb@linux.vnet.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Warner Losh <imp@bsdimp.com>
 References: <20240102015808.132373-1-richard.henderson@linaro.org>
- <20240102015808.132373-13-richard.henderson@linaro.org>
+ <20240102015808.132373-27-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240102015808.132373-13-richard.henderson@linaro.org>
+In-Reply-To: <20240102015808.132373-27-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,28 +92,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/1/24 02:57, Richard Henderson wrote:
-> The size of the allocation need not match the alignment.
+On 2/1/24 02:58, Richard Henderson wrote:
+> This option controls the host page size.  From the mis-usage in
+> our own testsuite, this is easily confused with guest page size.
 > 
+> The only thing that occurs when changing the host page size is
+> that stuff breaks, because one cannot actually change the host
+> page size.  Therefore reject all but the no-op setting as part
+> of the deprecation process.
+> 
+> Reviewed-by: Warner Losh <imp@bsdimp.com>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   hw/tpm/tpm_ppi.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/hw/tpm/tpm_ppi.c b/hw/tpm/tpm_ppi.c
-> index 7f74e26ec6..91eeafd53a 100644
-> --- a/hw/tpm/tpm_ppi.c
-> +++ b/hw/tpm/tpm_ppi.c
-> @@ -47,8 +47,7 @@ void tpm_ppi_reset(TPMPPI *tpmppi)
->   void tpm_ppi_init(TPMPPI *tpmppi, MemoryRegion *m,
->                     hwaddr addr, Object *obj)
->   {
-> -    tpmppi->buf = qemu_memalign(qemu_real_host_page_size(),
-> -                                HOST_PAGE_ALIGN(TPM_PPI_ADDR_SIZE));
-> +    tpmppi->buf = qemu_memalign(qemu_real_host_page_size(), TPM_PPI_ADDR_SIZE);
->       memory_region_init_ram_device_ptr(&tpmppi->ram, obj, "tpm-ppi",
->                                         TPM_PPI_ADDR_SIZE, tpmppi->buf);
->       vmstate_register_ram(&tpmppi->ram, DEVICE(obj));
+>   docs/about/deprecated.rst |  7 +++++++
+>   docs/user/main.rst        |  3 ---
+>   bsd-user/main.c           |  9 +++++----
+>   linux-user/main.c         | 11 ++++++-----
+>   4 files changed, 18 insertions(+), 12 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
