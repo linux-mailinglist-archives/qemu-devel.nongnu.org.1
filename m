@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435FE821944
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 10:56:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2F082194F
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 10:59:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKbUS-0001kg-0L; Tue, 02 Jan 2024 04:55:16 -0500
+	id 1rKbYZ-0002lG-1F; Tue, 02 Jan 2024 04:59:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKbUP-0001kO-LN
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 04:55:13 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKbYX-0002ku-OF
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 04:59:29 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKbUO-0003uY-5k
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 04:55:13 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40d604b4b30so24378675e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 01:55:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKbYW-0004b0-6V
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 04:59:29 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-336c9acec03so5326662f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 01:59:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704189310; x=1704794110; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704189566; x=1704794366; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=s6sOi38o/SqF7CiDtVKhEvCBZFji1LtubOV01ywXIog=;
- b=A4+3dIvaODFN1fx041FYK55gN/dW4Jra2PMHIFE7IrD3/IzSiWWUkSQ9fwGfHGMMqc
- wzzCo/sA07+hZGgiQFyj0N3qYq//FfvNJc6fuMkvl0/geae9JaqK6999CueiaqJqqKVR
- ptxgPI/3nH94uZ2dQBaVq99E4zj4qOLF//viDOaFAzHQfhvF8K+eHXMdkFXpxcbWma+j
- eL57YKvusx1cdn9HnREomAdONJ8vpjgis2vCuPiHCEFa+ML3kraQEJDqe11qoLCtwSVH
- +buJnwm9m40pLj7vzuJltDAcrvtQkf7pH6ucgl4Eh5KipgK5y6C6khwP9nBRD3y84RbX
- VUSg==
+ bh=ItovUO5eWLxbEammtzFJKTWC25DQHMBuIbrcoYWGoHw=;
+ b=PG768vF85J5qMFujlatNFvTzjKXpbYqdjRWZIe44dKuGhNeKeGexZX/T5ZnKmqycfe
+ YB8WEmfCka7aMEfLPYQGxYj7YnBJr6l6fd9FsufWMsJDCaq8GSHLA9GvU1/Y6xtLWfQz
+ Y/zEwZ6qkEb69V789eM2XeoTSXHdXi1vEsP5fAxe+E2yLLjZc5JGFSyPx2oieV/GtR+9
+ gFEPbEzpWD6wCMTDNunVMFS3Df29ER8wfs3GnMNm2DnirnO70cmq34t7eF5GBzmwqohk
+ MyVjKjSiVNRJSiukZ6kcRbk4VUOPiE2OGtl5Jupnh+eE1TnqgsIqUBpN+boKrAn4uPOQ
+ /REg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704189310; x=1704794110;
+ d=1e100.net; s=20230601; t=1704189566; x=1704794366;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=s6sOi38o/SqF7CiDtVKhEvCBZFji1LtubOV01ywXIog=;
- b=C1MSJSXbq5tUDsSrLpRT2bN/RN7Cx+4wgjy7j6smnbgR2kaAd8o9bPdbhsKcRftJqT
- D1SOF7zb2jnrGNJ4lbGQfYmKDJjGpgRt24Mvc5lcRYEZuG47ci8HiAnUo5DB07YKajY/
- 1Hnbir0NWxX+SKhNjNtPIi9vimj5/68CnkPOm1Br2NI0FUQA+PHbamkbI2hSxFARTQA3
- tgeQLD1ckv5064aAAjnhrBXOcIljSvgkTmtHGNvcqbZZPgk/phwisxTMwsBqVgBmGUO9
- /SQdqRjEE4UOhtYD1ZZKWO4eRnMpY03XjgHoJJ5vEqW0HeonZgG2b6cW2iDF2/KsmtFx
- 2k/Q==
-X-Gm-Message-State: AOJu0YwnMrl/AmoD5/bO4DrtGzVKB3l95VKn1MtjUU2C0otFVBFvjm1J
- uGfnRD0Mr2ekFPyIYoBzlo7eU7+EzLTDlg==
-X-Google-Smtp-Source: AGHT+IHKVKnpDRXwJg2Ucwb9TUFSQIf63rJiYG1UqExbZirnMwu41K58XcluNhNxZjjo5pNydbdTIQ==
-X-Received: by 2002:a7b:c347:0:b0:40d:70c4:ff7c with SMTP id
- l7-20020a7bc347000000b0040d70c4ff7cmr3600114wmj.77.1704189310192; 
- Tue, 02 Jan 2024 01:55:10 -0800 (PST)
+ bh=ItovUO5eWLxbEammtzFJKTWC25DQHMBuIbrcoYWGoHw=;
+ b=f0zbZd3roNZvtUyAapAP+vy2zH12/lPZC6QM43LHZMM3r9rMrjuIl1iW6IPCOOcqeX
+ BQtfFtOX1SiwC2wQjbUaeFuU70icW0xZtBFfaGISSIQXB07RJ2115C2w9FMpz1wSGuFr
+ NVzEEzo1vLrE6fqoa4WYsMXNh+k+krKVQmZn6Tq5KDHOrLwUPJgYSqbFEa8QpsrH+x7n
+ f1YY3URdm6U1F3iIx3e0kodtmenLD9aLcFLaNWdN9at5+PqcbWc+S4h6+QCNvMCgwiGz
+ 1f5lL1KjKr9mB9GlplEomgGGgLGYOe7TeXzp+XneZ3C8YXKOjEuemZutj2w/SRu4Fqev
+ vSrw==
+X-Gm-Message-State: AOJu0YyfpZNl7LaC1bkf2m5MRt1R+KG7rjsGfPNJ9NZ4OLfzIGIAiUIE
+ Q2jDloj6YM2u/VE8vUmNA9FyOJYNLguNag==
+X-Google-Smtp-Source: AGHT+IEh45ns8Gd12tpWuK8fetbhH3c91CGcJBKdsjCNjghoVHxHXMRaZQ7C2cM8OzrZ32v12R96Iw==
+X-Received: by 2002:a5d:688b:0:b0:336:647c:cef1 with SMTP id
+ h11-20020a5d688b000000b00336647ccef1mr8158438wru.44.1704189566092; 
+ Tue, 02 Jan 2024 01:59:26 -0800 (PST)
 Received: from [192.168.69.100] (sal63-h02-176-184-16-71.dsl.sta.abo.bbox.fr.
  [176.184.16.71]) by smtp.gmail.com with ESMTPSA id
- a6-20020adffb86000000b003372befd19bsm9132875wrr.104.2024.01.02.01.55.09
+ a4-20020adff7c4000000b003366da509ecsm28030822wrq.85.2024.01.02.01.59.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jan 2024 01:55:09 -0800 (PST)
-Message-ID: <4b157d2b-9b5c-4131-a06b-d964664f9576@linaro.org>
-Date: Tue, 2 Jan 2024 10:55:08 +0100
+ Tue, 02 Jan 2024 01:59:25 -0800 (PST)
+Message-ID: <cc130d98-796e-4e27-954e-d0d6edb4551c@linaro.org>
+Date: Tue, 2 Jan 2024 10:59:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vfio/migration: Add helper function to set state or reset
- device
+Subject: Re: [PATCH 2/8] vga: introduce VGADisplayParams
 Content-Language: en-US
-To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-References: <20231231104818.17666-1-avihaih@nvidia.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: kraxel@redhat.com
+References: <20231231093918.239549-1-pbonzini@redhat.com>
+ <20231231093918.239549-3-pbonzini@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231231104818.17666-1-avihaih@nvidia.com>
+In-Reply-To: <20231231093918.239549-3-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,20 +92,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/12/23 11:48, Avihai Horon wrote:
-> There are several places where failure in setting the device state leads
-> to a device reset, which is done by setting ERROR as the recover state.
+On 31/12/23 10:39, Paolo Bonzini wrote:
+> The next patches will introduce more parameters that cause a full
+> refresh.  Instead of adding arguments to get_offsets and lines to
+> update_basic_params, do everything through a struct.
 > 
-> Add a helper function that sets the device state and resets the device
-> in case of failure. This will make the code cleaner and remove duplicate
-> comments.
-> 
-> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   hw/vfio/migration.c | 41 +++++++++++++++++------------------------
->   1 file changed, 17 insertions(+), 24 deletions(-)
+>   hw/display/cirrus_vga.c | 24 +++++-------
+>   hw/display/vga.c        | 82 +++++++++++++++++------------------------
+>   hw/display/vga_int.h    | 15 ++++----
+>   3 files changed, 52 insertions(+), 69 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-
+(Please enable scripts/git.orderfile)
 
