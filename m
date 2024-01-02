@@ -2,74 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3268224EA
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 23:45:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BDFF8224EC
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 23:46:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKnUQ-00011k-Dt; Tue, 02 Jan 2024 17:44:02 -0500
+	id 1rKnVZ-0001al-Kz; Tue, 02 Jan 2024 17:45:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng.cn@gmail.com>)
- id 1rKnUO-00011I-JA
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 17:44:00 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rKnVY-0001a3-0d
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 17:45:12 -0500
+Received: from mail-il1-x133.google.com ([2607:f8b0:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <bmeng.cn@gmail.com>)
- id 1rKnUN-0000K0-6I
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 17:44:00 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a2821884a09so116669066b.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 14:43:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rKnVW-0000T0-4n
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 17:45:11 -0500
+Received: by mail-il1-x133.google.com with SMTP id
+ e9e14a558f8ab-36017ab9760so23270715ab.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 14:45:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704235437; x=1704840237; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=A1jLmGTPUWFJlPisnQyQmkworW4nukdFJMKLmx7wZ44=;
- b=XqhLqdQFmxUqkogZCZPcu59Gsa4HGvs9vlo639W6Qy/thWyo4nL91Wbql7uES1oE02
- ukaWV1UHGEwPgFPsl1xpiPSjKLw/OLsKwotKq1caxe3Fi8663FoA+paE6RjaCkBp4y7a
- XqQ3lFmZaObVuTNotJgqz3uAiVj8EGogcgNAYSMbuOM4oYzp50RPkrYTRacHmPsbwdPV
- DC5WGg79Hxz46z8y0VidVMOCiW5f/oUaQyeNcncLDmuPjMqNN+bUSeUTG4I70z+7XuLr
- BxSe9AFwUWRrgORlxuSI4KVOya+TweRSkjCrKBvHYW2NOc23UGODw0hp4P9QuYBk8hxI
- 4evA==
+ d=linaro.org; s=google; t=1704235508; x=1704840308; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=auuogxhODAyeTAXk1aM8FKif/dnKPBiqqExdH8L+uR4=;
+ b=F1MXFUmVmTyEAa2zlihtMAN3LzWRm0NUag6umhZiwobZqJOvUn6Su3rdV8TQEtchpR
+ 2GKDFZWhXwILIbWkm9D43g0Qne+9jlgsnrv0ICXG5ftEIZyJwdydeYlDvW6K44RA+Xgy
+ RCNGbFmDmKO5IVg+zv388LF304LGiIo9PZpfi6/icSWJjksQH2pn1b/7TkouunvDOYay
+ 0kchD5uHWdEtBKBtKSfQ5KbF7kjVOVd8xJREKmxnPKXLyNXMlnygS/d37nOv8kZ8bgX0
+ MxugKoqdpj15u+9GDUc+fnNzBwdwg7N5oli264wCUBhUo4FpKo9KdrfZ76ObHVXqrDYO
+ fX7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704235437; x=1704840237;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=A1jLmGTPUWFJlPisnQyQmkworW4nukdFJMKLmx7wZ44=;
- b=jUBqYbkn/3TM8ZW5ngdUDKjEw5pUXKuMF9XfWbcCnAm1J75G84joYrsv7MLMjMN3Mp
- GI4u0b3Igc1/7N+Z795CoIIlZbMWb4B0rV8BeKvRKvUJNa6MpWFIp9sSmEviyclbCDMM
- e8hvXt0BrCSO91J4Dg7HcLpPkegkK5nCveVTW2o6DHp8/b4H2DpWl8UR0Q2IW2E0zUsA
- FoYYrhBxmYMWIVsyjuEjo84pT8dJgm4f63xtR7W5YcrhN6JaXW3aJ5kYviZuBd9qg8az
- Ek9QsZY840c7bYx07BhnW+fyHRlciU73xNFO4eJ5/5Y4XSJh41qdvAp6OL7FpXwavh6m
- 5CGQ==
-X-Gm-Message-State: AOJu0YyvZAOyxDMyF+fEvYwJTqYLTbarewAGCm9NXNi1mIRVW2hlFOGL
- +zlyjbfoH68mHN5o6Qd/m+fqi41Uh0gvKh9Svn8=
-X-Google-Smtp-Source: AGHT+IHM2pMidjbKgoK0VyyJeMYpt4e5ieGS3Gilxdw/1So/7Ie6o9QUCfvRfbMu8aMqeeZgCvOkA4jhiGKH4+vPU5c=
-X-Received: by 2002:a17:906:f2c2:b0:a28:820f:adf7 with SMTP id
- gz2-20020a170906f2c200b00a28820fadf7mr183128ejb.25.1704235437113; Tue, 02 Jan
- 2024 14:43:57 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704235508; x=1704840308;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=auuogxhODAyeTAXk1aM8FKif/dnKPBiqqExdH8L+uR4=;
+ b=LdIV8XxTRPpury2QXbviRJr/K0qUzTi/fiNoO2MvMwbC9/s5hau5LlQp3urC2s3xdA
+ +2C/tp6HGfsuzqee96+6C6I+VTltg9RlwzbxgGuk3Glo4AaujjNw7AFXZd9F2Mxsd55v
+ ILgrlYEekr1xV6J5lMsPJ+PsMNMcGQNGvdKtFtJyC2iZFEd8apIwQjksSyAwcKSATRHo
+ ZUuryX9adZ4MRukv7cGW7OsSaARigDHqfz0/qunk6QMDwxDinwCh31caZSiTaOldl9Xk
+ MQNIED3ip4Z1Jls2II4w0ZzsIJsnFrw2jnRYyFg/jo2ZQ6u4+CTMnte6FjEt4badPToq
+ QGAA==
+X-Gm-Message-State: AOJu0YwqDCEm/sdS9hBijGIuO/1pjytDqiwu2K5MyS3++a78mx5OdBV/
+ ylmFw0AwKFL0WFVeETvCiO8emqx762bW/g==
+X-Google-Smtp-Source: AGHT+IF9oWP911JrqvLyTxrhm22gQued8ChmVcxb+6K95e/KJX4V7ur6Cvkh2PzFdxsX1FwR5XaEjw==
+X-Received: by 2002:a92:c54b:0:b0:360:bfa:4143 with SMTP id
+ a11-20020a92c54b000000b003600bfa4143mr13914540ilj.44.1704235508623; 
+ Tue, 02 Jan 2024 14:45:08 -0800 (PST)
+Received: from [192.168.50.95] (124-149-254-207.tpgi.com.au. [124.149.254.207])
+ by smtp.gmail.com with ESMTPSA id
+ v5-20020a632f05000000b005c259cef481sm21082979pgv.59.2024.01.02.14.45.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Jan 2024 14:45:08 -0800 (PST)
+Message-ID: <c4e0c179-0fe3-4b16-9a7d-1298e018dbb7@linaro.org>
+Date: Wed, 3 Jan 2024 09:44:59 +1100
 MIME-Version: 1.0
-References: <20240102201908.1987-1-quintela@redhat.com>
- <20240102201908.1987-2-quintela@redhat.com>
-In-Reply-To: <20240102201908.1987-2-quintela@redhat.com>
-From: Bin Meng <bmeng.cn@gmail.com>
-Date: Wed, 3 Jan 2024 06:43:50 +0800
-Message-ID: <CAEUhbmX3iAwtBkH2hPa031rok0OH01uSkiMPp3fde+wbKxDkhQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] Leaving Migration
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, quintela@trasno.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=bmeng.cn@gmail.com; helo=mail-ej1-x635.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/5] qdev-properties: Add OptionalBool QAPI type
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, Eric Blake <eblake@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-arm@nongnu.org, Luc Michel <luc.michel@amd.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Eduardo Habkost <eduardo@habkost.net>, Frederic Konrad <fkonrad@amd.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>
+References: <20240102160455.68612-1-philmd@linaro.org>
+ <20240102160455.68612-3-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240102160455.68612-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::133;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,28 +102,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 3, 2024 at 4:20=E2=80=AFAM Juan Quintela <quintela@redhat.com> =
-wrote:
->
-> I am leaving Red Hat, and as part of that I am leaving Migration
-> maintenarship.
-
-maintainership?
-
->
-> You are left in good hands with Peter and Fabiano.
->
-> Thanks for all the fish.
-
-Best wishes!
-
->
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
+On 1/3/24 03:04, Philippe Mathieu-Daudé wrote:
+> To be able to distinct whether a boolean qdev property
+> has been set or not, add the DEFINE_PROP_BOOL_NODEFAULT()
+> qdev macro based on the tri-state OptionalBool QAPI type.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  MAINTAINERS | 3 ---
->  .mailmap    | 1 +
->  2 files changed, 1 insertion(+), 3 deletions(-)
->
+>   qapi/common.json             | 16 ++++++++++++++++
+>   include/hw/qdev-properties.h |  5 +++++
+>   hw/core/qdev-properties.c    | 10 ++++++++++
+>   3 files changed, 31 insertions(+)
 
-Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
+How is this different from OnOffAuto?
+
+
+r~
 
