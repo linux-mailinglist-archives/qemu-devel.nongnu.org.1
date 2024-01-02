@@ -2,161 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B35C78216E3
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 05:29:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 262F9821769
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 06:34:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKWNG-0004zw-Va; Mon, 01 Jan 2024 23:27:30 -0500
+	id 1rKXPC-0007Wm-8D; Tue, 02 Jan 2024 00:33:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rKWNC-0004zf-6W; Mon, 01 Jan 2024 23:27:27 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rKXP8-0007Vx-Vz
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 00:33:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rKWN8-0004JA-GQ; Mon, 01 Jan 2024 23:27:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704169642; x=1735705642;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=nD24LTczWanDnILu+PNxGZPSSv73R3rrcDqfeB5tMK8=;
- b=ZoGw71f9NotOYCu/set6R/1z8RsvpBi+/tf7QmYGPveD049zaOKlFzfG
- LkFZHslm12/r4w60iuO99pKCG2JES/HTqant43RrJtYIgbwwCP3zzdXLY
- Dw1sXH+uWXce8YGpv/JwubXzgCmo4rcV2CEUItOwtdJUcr/QBU46qpYUB
- ra+AcoBXqOWXdTf3A+ChXY6EWbtE9Fk0jxmqwIPuEZOUMNTjth2TaIqAj
- mWy+qk3iyovMcvvZK99BPW0HOZNb1JbBiV0CrQ+cJBq4qVhagm86Rqeb5
- AT9jlY1EUAKsm5BCFyO8n4i8i1KkUcWgru+Ex6nfWfmSdg7RCUber8Fwe w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10940"; a="15478952"
-X-IronPort-AV: E=Sophos;i="6.04,324,1695711600"; d="scan'208";a="15478952"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jan 2024 20:27:15 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10940"; a="1026670693"
-X-IronPort-AV: E=Sophos;i="6.04,324,1695711600"; d="scan'208";a="1026670693"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by fmsmga006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 01 Jan 2024 20:27:15 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 1 Jan 2024 20:27:14 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Mon, 1 Jan 2024 20:27:14 -0800
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.41) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 1 Jan 2024 20:27:14 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=m+U1Pxxdh9k8JJqmoGOkyiNikvHEgEbgz5tuScIOA/EAAeNjjTe/gd+MV9DAcFYTksbA35zB+Ku81iu9XHN61WRLA335vpWVZgi0YDVuAa7tBSa3BaNU5RM86OAux8lNv4B24wV+m8xps7FCyv2NI8BOLFnFrCiPp70qOr3OTrsOyeoCbDPy3grOQ8Lh+8qYRecZXeI5VW1UrRXnob4xUYqpXvXuXS0hWz9252duAFIBXRFQFLA8Q/YfCOlZocruoLpk7vmRZXnTy8LwncIwTzSE/BqKVyXzNf75sp7eOQ59vjeNTgXG0LDW3oCFv9MKx6cYPN4sX4zpX/JvuYcUsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nD24LTczWanDnILu+PNxGZPSSv73R3rrcDqfeB5tMK8=;
- b=DWq7nGRCR3jWdBwR4h+6lkNTjnOy6sAJcSlg6uSpalInoL0XgdDHNb3BapncaHRDQG7a2W5d49hJsHtLMb2QuAtdBoNF1np3J7i6H8XIUzSa8HZdvC6Cvx1fEgIaoqqWMK0dSkxZ4o/mkAq2jqotjZmsfBWhrtVXq95udkdgX/7Ks4Jil/wLSm8C9nxS94jhyyYU3taXKHj5XQ55nzjocEketyCRwRtWQgoY/bwHgwzMS/rAsBe3pseGS7ZNue/5Y0LDpUjwe3qspn3AXOcz9uEHAB9WwxcGkCnO6kZAIl5cURwExrwxadoBqo20Ep8tfe06y9tkXG07QMN5reAZ1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by CO1PR11MB4916.namprd11.prod.outlook.com (2603:10b6:303:9c::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.25; Tue, 2 Jan
- 2024 04:27:12 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::88e9:5716:274c:5ace]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::88e9:5716:274c:5ace%4]) with mapi id 15.20.7135.023; Tue, 2 Jan 2024
- 04:27:12 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Vm9sa2VyIFLDvG1lbGlu?= <vr_qemu@t-online.de>, Alex Williamson
- <alex.williamson@redhat.com>, =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?=
- <clg@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-stable@nongnu.org"
- <qemu-stable@nongnu.org>
-Subject: RE: [PATCH] hw/vfio: fix iteration over global VFIODevice list
-Thread-Topic: [PATCH] hw/vfio: fix iteration over global VFIODevice list
-Thread-Index: AQHaOpdBPvFVzWrig0mR6PBiMf4g5LDF7vZw
-Date: Tue, 2 Jan 2024 04:27:12 +0000
-Message-ID: <SJ0PR11MB674437F64A9154EDD0055A799261A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20231229203854.8281-1-vr_qemu@t-online.de>
-In-Reply-To: <20231229203854.8281-1-vr_qemu@t-online.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|CO1PR11MB4916:EE_
-x-ms-office365-filtering-correlation-id: 33677356-b6a7-448b-36c4-08dc0b4b175e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: kt+aTzvDqEYSPUWH59R57+f1DRrhmb3KAM8chkMRXDuqLS7qzeEevnKjGVL8+vnEyxYCwbhfTiisE1trqMXxqUsA+y9/Yr2iD+IW/Ps2bZJFsqRF0A+6Ewr6p6zJ2ynu+PguDRh4CBj7N39j1H0lKZk/rUHdEik9Zzq7MmeT/7TU+0SIUokTFP6MNgWpEo2dk36nFvXeWpwryHsXNhzxNc4UxEijUiTfccRk+ERQ5OGjt0ey1dnLv4gKUnwx2HNDg9CBGLnShpE/jGeY3rV8+IryCZfE3oIlFgE3/Z+JDEs4RaTK5H42z6HUAZQPrTySfUg9ToaToIZuFDciJCGzA4TwIdoCjkIIgr7ivQFMM3988IcvUGEIqyNw8BfaQNZqOwBlBTui5zbeRUlwCe20Aa9Xlq82dgwcsz/AMnKIyBgNRArlO85FKQhnf/pF7n3ioAO54QgzusUpqOKG7Ui5H5xpyZ8vCcNlKci9TlkhHa5pS36gw+nlj13FuCJjyuI/K5BGNeRFBkdE1KR4vnKSmMsG2J8acj8ehCReFGTq/YsCLq0AK3/xcVEFNxyVjIdm3jB/B/nB4a1GJlci6ymQzhC2V4queXXxrZn8QPdCY6Q=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(346002)(376002)(396003)(136003)(39860400002)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(83380400001)(66574015)(33656002)(26005)(6506007)(9686003)(7696005)(478600001)(966005)(71200400001)(41300700001)(316002)(54906003)(110136005)(66446008)(66946007)(64756008)(76116006)(66476007)(66556008)(8936002)(4326008)(52536014)(8676002)(82960400001)(55016003)(86362001)(122000001)(38100700002)(2906002)(5660300002)(38070700009);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RnRHQ3RMUUpZVGpJdWVQZGNxd1V2SE1JQ0U0TzczMmliSVlFWUJZb3ZISmZs?=
- =?utf-8?B?RGE1SkJlMXUzK0htYU9lSkkyUTNUNGlmcWRVTkVCYTRlb1c1c2NkWkhmVnpG?=
- =?utf-8?B?dXA0K1NNSUNuK2FVL3F5a3gvK2hRU1d1NXZNT2pyQ0wwSFF4bitWc3hQUmw1?=
- =?utf-8?B?UGtkbVdQdko2UG1YbU4wckF6aUwxeWRXaTRWZGpQd2t4enFlTHR6RjVQM0VK?=
- =?utf-8?B?TVI4dVJ2ZCtYUzN0dlJZTnBRamJQN2xnMTJMdTMvMEQvYWE0VkdmNGxYZWRu?=
- =?utf-8?B?M3Z3bTk2bFl2bFVwYi9vZ3dDdHVDOFR6VHhmbWVsVzVQNExyc0FBS1JNSUF5?=
- =?utf-8?B?eDhSaG5MZzdWWWxibnBZNWF6czNuOXAvSDRCdFpib2VScnEwY2FoYmFMRm5n?=
- =?utf-8?B?SVpMb2JUVTI4ZHpLL3V0d0FDcXFkV0hZd3pTb0p4bGFWYTZVSGdTdWZxNWFt?=
- =?utf-8?B?QmJqRmVwdkMrd0hrTVp6LytPbTdYdkdkbUJQREp2blZQWjFUMjVqYjA0dm1D?=
- =?utf-8?B?WmsrVExRcWhmSjhKbm1ndTJlNDNrUzNFUDBvUW01V3lGbkhZK3FHeFdkZ0Vn?=
- =?utf-8?B?ckpjZUZBeTlRVi8zYkJXdDl4OWdUdFlDRlpyT3dLQWYwcnFGblY2ZHk1V0lr?=
- =?utf-8?B?SnpGR0VoWk9GYWJ5LzVmdkdYTzFQMmhkVzJxWi9pRkhqQ0lCNFVPR1cwclY2?=
- =?utf-8?B?Tjh5RExnK29STHJCN004Ync4cEplaTJ1YTdTNFRXZjdTOW5PUFdDcXdpTG1o?=
- =?utf-8?B?aHdSU1o1eTNxanZnSkdIWGZMVEJXbjI3dHhvWncxSHVlbURnN0tvaGhTckdL?=
- =?utf-8?B?TzJyUGRaNEVGSkttM3RUR2d0RVJjMGh6VDNneHQvNTlLVW5HcTJRWjZyNXFK?=
- =?utf-8?B?TVdGMWxQcEw1aU96RURsTUc4aVpXblFIeVo3Q2Vickl3NXdOYUUrY3ZnSFJC?=
- =?utf-8?B?N2xValZ0Zi93ZlVWWHkvYUhScWdOVUtvT0dCMlZLNUdPTWpSWXFURUpNSDR2?=
- =?utf-8?B?aVVaNUtxUW1xb0FwdWRaOWxDcmorOGFwM2RweVVYeFpLUU5OUjA0UzFtZjZu?=
- =?utf-8?B?VG9GUzNoQjdxRGFWQk16OE5wbzVUc1Y5cHRMSWFyZENrMWR2TVdyR0Y2YW5T?=
- =?utf-8?B?L095b2o1clZHNTE1d2xaYXVWbHRnUTk5YlU2MHpuQ3BPZ1N2WDRMekpRN1cw?=
- =?utf-8?B?N0ttQzNweWRTRHNqZDA1OHVYV3NEZjlPc2hoTEtycG5uRExhRnVSV2hWRGM2?=
- =?utf-8?B?R3hWTmRicGVtdEtRNmthOHhLVTZTK0FZSmQ1c2dETlJTVHhqaGF5S1pXeEY0?=
- =?utf-8?B?TW1sV25pL0hJSWVsclNzVXpYaXp5R0s3TDFHMDdNL2tpTWY0MmF3bytDbzdZ?=
- =?utf-8?B?azNrbmtpMDdxLzVYRHBTQWI0bnNiQlJSQlFNcHdnNWNzeUh0bEhURExuRnJy?=
- =?utf-8?B?cHNCd1B3VDRzcWZObllPb1lxYnV6MVJPSG15djdrS01NdUl5TmRZTmEzNWg3?=
- =?utf-8?B?eWhTVlZnaDV5ZUJqcDUybzR2NkUxYUVtaFZNQk9rK0ZKMlBPRXRnc0tTNklC?=
- =?utf-8?B?VlMrQnRMc3BaNE5YMFVLMnpIZmROY1A3UEZtV0E5djRIeGlzOHFhWkQ5TXE4?=
- =?utf-8?B?VjhCa2prNjlub05nVmJxcXZMRnpPdVZ4VU5Cd1RyQllIbGREemN1UjUwTzFL?=
- =?utf-8?B?OEU3anpTK1h3ZEJYcHZySk5WejFWT3Z1blhMQTYvWVhaNXNQdG9UVlMyTlZM?=
- =?utf-8?B?WXhtekg0YUU2U29nUHpoaFhsanZBbnNnVmM3Z3VFUmtFc2pTSmROT0Z5b3A3?=
- =?utf-8?B?b1BBRXBiRm5MSlVLeVY2ZE1uSmcyR0pTLytuWUNYQTRYZGtWRGVadnNCdlAz?=
- =?utf-8?B?T2ZjWGpuNDBsM0JBRFFIZzdjd3pHeHJ2Tmo4ak1QaFVZbUxKdHhBRE9xdGhy?=
- =?utf-8?B?bWs2VWgzY28yZDdBK25zRmM1RXFQdGl0SmFTUU9YYVpGZlU5TkZGRUZuTnl0?=
- =?utf-8?B?WVNmdmlhOXpoOTFPbHE3UWdOdUR6L0FzSVRJaEhjUFoyUkdXUEV2WWllbHdG?=
- =?utf-8?B?VHMweWNiMkE4TW5mY3hwRFBDTUZocC9nYXgvK0wrNjc2cmFIcmEvckJKaGxV?=
- =?utf-8?Q?yHtk1WjkdU6ViwNdBg4u5ieiq?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rKXP7-0004wH-DE
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 00:33:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704173607;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=DLuGyiCoaBVMrE7O9a34E+pfOlWA4Kw+204HbgIt3oo=;
+ b=Ujz+s1OzSguTyvegf3uCfgdEZ/VpNPkWzonVoSjQlUoKQuyHs5sCqlKe0HeD5Kl0P6guTU
+ B6r8KbmjJyCteyU0roDsIoeu0CiStAbwdDqaM8EbAG/nvLuleAdGy7k4ikfHe3o0RVpoYp
+ xzL9jhi6JWdDE+w3Xx7myx6EGLhLQPs=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-271-dK9wjsH-NeyJHPNxWjGj_Q-1; Tue, 02 Jan 2024 00:33:25 -0500
+X-MC-Unique: dK9wjsH-NeyJHPNxWjGj_Q-1
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-6d99a379dacso1443658b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Jan 2024 21:33:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704173605; x=1704778405;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DLuGyiCoaBVMrE7O9a34E+pfOlWA4Kw+204HbgIt3oo=;
+ b=A+RC1/7ue2ENLLDkUxrvKML8mVmQped5aPclygJnyCl5ASf1++CzPA697RtjYLFbR5
+ JkLt/9YHAKt0bKLJBCDsUmo1SZmc1LIviLlBzmXUMHnYPSdBflHAgdOAap+5eZrBmGV/
+ tIFzRO5g9ApU+yd1kZsUY4vrxPnu33gjA+Gxt1Jbd/KHeyolYmeVQfOrqFIoR8OSsR2Z
+ EtrSZZdS3Dv5raLKHgnmIZMAOmJBN5xtYEv756WDmWf3+PD0pmA5tcA3e3sqxBo0vt7r
+ bvJLe6TmXf431Uw8F0TUU+aeLt2tQOjuSLu361gN6rqmVtOUvZiVHRTAJb5joNYdCk8F
+ ED+A==
+X-Gm-Message-State: AOJu0YxO3SzY5+JjCAz5huR/XSCulMkaIM+Y/KJhWXfDzoi3WhPXLmP4
+ JBmunXUBeEdJs8EfY2Z73odChK7/dIKJzWNRUmV9GxcF76DkmJ3xHw3ZGKwvg5PJeuQGS+MszWT
+ NdphikBNp1Q/D/1Qvo2ykWQ8=
+X-Received: by 2002:a05:6a21:279e:b0:197:3a34:2889 with SMTP id
+ rn30-20020a056a21279e00b001973a342889mr1497522pzb.3.1704173604805; 
+ Mon, 01 Jan 2024 21:33:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG4X0RRhUgvKbALWG1xE+s4n7v7Y6IGmhfp7HSxZwfZ304h084DxaaNFV465lAW3oV9E+65kA==
+X-Received: by 2002:a05:6a21:279e:b0:197:3a34:2889 with SMTP id
+ rn30-20020a056a21279e00b001973a342889mr1497506pzb.3.1704173604446; 
+ Mon, 01 Jan 2024 21:33:24 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ p2-20020a170902eac200b001d0c09cc6ebsm20995850pld.92.2024.01.01.21.33.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 01 Jan 2024 21:33:24 -0800 (PST)
+Date: Tue, 2 Jan 2024 13:33:14 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, si-wei.liu@oracle.com,
+ Lei Yang <leiyang@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Zhu Lingshan <lingshan.zhu@intel.com>, Parav Pandit <parav@mellanox.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH for 9.0 08/12] vdpa: add vhost_vdpa_load_setup
+Message-ID: <ZZOgGmpNT_zi2eat@x1n>
+References: <20231215172830.2540987-1-eperezma@redhat.com>
+ <20231215172830.2540987-9-eperezma@redhat.com>
+ <CACGkMEvH=uU4QxMHVHTo5tQiuML2+NTE3gZssfz84-+4kGHa1Q@mail.gmail.com>
+ <CAJaqyWczW+uwYBsWas97JY6OgiSurnvNQnnTYPFWv5La55GOOg@mail.gmail.com>
+ <CACGkMEukZNUnXRSwpVAROe7U7GzkubP9i37ev+qOSQvWxLEK_Q@mail.gmail.com>
+ <CAJaqyWfGkboB4sN0PSukKx1kAV-QQ_YSWXWvksPScBD9OgHRsQ@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33677356-b6a7-448b-36c4-08dc0b4b175e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jan 2024 04:27:12.2126 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Q1BRlLeFqW2SjX8iMYwrxc/zM68fPIgkoMDof7KDmPKE+32TRBHG1fhai95HSQFo304aHMCLsQQ6tYvGjZkYSzgSCNAQxif1grjJIW6Jevk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4916
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.9;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAJaqyWfGkboB4sN0PSukKx1kAV-QQ_YSWXWvksPScBD9OgHRsQ@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.246,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -174,49 +105,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IFZvbGtlciBSw7xtZWxpbiA8
-dnJfcWVtdUB0LW9ubGluZS5kZT4NCj5TdWJqZWN0OiBbUEFUQ0hdIGh3L3ZmaW86IGZpeCBpdGVy
-YXRpb24gb3ZlciBnbG9iYWwgVkZJT0RldmljZSBsaXN0DQo+DQo+Q29tbWl0IDNkNzc5YWJhZmUg
-KCJ2ZmlvL2NvbW1vbjogSW50cm9kdWNlIGEgZ2xvYmFsIFZGSU9EZXZpY2UgbGlzdCIpDQo+aW50
-cm9kdWNlZCBhIGdsb2JhbCBWRklPRGV2aWNlIGxpc3QsIGJ1dCBmb3Jnb3QgdG8gdXBkYXRlIHRo
-ZSBsaXN0DQo+ZWxlbWVudCBmaWVsZCBuYW1lIHdoZW4gaXRlcmF0aW5nIG92ZXIgdGhlIG5ldyBs
-aXN0LiBDaGFuZ2UgdGhlIGNvZGUNCj50byB1c2UgdGhlIGNvcnJlY3QgbGlzdCBlbGVtZW50IGZp
-ZWxkLg0KPg0KPkZpeGVzOiAzZDc3OWFiYWZlICgidmZpby9jb21tb246IEludHJvZHVjZSBhIGds
-b2JhbCBWRklPRGV2aWNlIGxpc3QiKQ0KPlJlc29sdmVzOiBodHRwczovL2dpdGxhYi5jb20vcWVt
-dS1wcm9qZWN0L3FlbXUvLS9pc3N1ZXMvMjA2MQ0KPlNpZ25lZC1vZmYtYnk6IFZvbGtlciBSw7xt
-ZWxpbiA8dnJfcWVtdUB0LW9ubGluZS5kZT4NCg0KUmV2aWV3ZWQtYnk6IFpoZW56aG9uZyBEdWFu
-IDx6aGVuemhvbmcuZHVhbkBpbnRlbC5jb20+DQoNCk15IGZhdWx0LCB0aGFua3MgZm9yIGZpeGlu
-ZyENCg0KSSBhbHNvIGRpZ2dlZCBpbnRvIHdoeSBJIGRpZG4ndCByZXByb2R1Y2UgdGhpcyBpc3N1
-ZSB3aXRoIHR3byB2ZmlvIGRldmljZXMgYmVmb3JlLg0KVGhpcyBpc3N1ZSBvbmx5IHJlcHJvZHVj
-ZSB3aXRoIHR3byB2ZmlvIGRldmljZXMgaW4gb25lIHJlc2V0IGdyb3VwKHNhbWUgc2xvdCBvciBi
-dXMpDQpwbHVzIGEgdGhpcmQgdmZpbyBkZXZpY2UgaW4gYSBkaWZmZXJlbnQgcmVzZXQgZ3JvdXAu
-IFRoZW4gdGhlIHR3byB2ZmlvIGRldmljZXMgd2lsbA0KbWlzcyByZXNldCBkdWUgdG8gdGhpcyBi
-dWcuDQoNCkJScy4NClpoZW56aG9uZw0KDQo+LS0tDQo+IGh3L3ZmaW8vY29tbW9uLmMgfCA4ICsr
-KystLS0tDQo+IDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0p
-DQo+DQo+ZGlmZiAtLWdpdCBhL2h3L3ZmaW8vY29tbW9uLmMgYi9ody92ZmlvL2NvbW1vbi5jDQo+
-aW5kZXggMDhhM2U1NzY3Mi4uM2JhODkyZDdkMyAxMDA2NDQNCj4tLS0gYS9ody92ZmlvL2NvbW1v
-bi5jDQo+KysrIGIvaHcvdmZpby9jb21tb24uYw0KPkBAIC03NCw3ICs3NCw3IEBAIGJvb2wgdmZp
-b19taWdfYWN0aXZlKHZvaWQpDQo+ICAgICAgICAgcmV0dXJuIGZhbHNlOw0KPiAgICAgfQ0KPg0K
-Pi0gICAgUUxJU1RfRk9SRUFDSCh2YmFzZWRldiwgJnZmaW9fZGV2aWNlX2xpc3QsIG5leHQpIHsN
-Cj4rICAgIFFMSVNUX0ZPUkVBQ0godmJhc2VkZXYsICZ2ZmlvX2RldmljZV9saXN0LCBnbG9iYWxf
-bmV4dCkgew0KPiAgICAgICAgIGlmICh2YmFzZWRldi0+bWlncmF0aW9uX2Jsb2NrZXIpIHsNCj4g
-ICAgICAgICAgICAgcmV0dXJuIGZhbHNlOw0KPiAgICAgICAgIH0NCj5AQCAtOTUsNyArOTUsNyBA
-QCBzdGF0aWMgYm9vbA0KPnZmaW9fbXVsdGlwbGVfZGV2aWNlc19taWdyYXRpb25faXNfc3VwcG9y
-dGVkKHZvaWQpDQo+ICAgICB1bnNpZ25lZCBpbnQgZGV2aWNlX251bSA9IDA7DQo+ICAgICBib29s
-IGFsbF9zdXBwb3J0X3AycCA9IHRydWU7DQo+DQo+LSAgICBRTElTVF9GT1JFQUNIKHZiYXNlZGV2
-LCAmdmZpb19kZXZpY2VfbGlzdCwgbmV4dCkgew0KPisgICAgUUxJU1RfRk9SRUFDSCh2YmFzZWRl
-diwgJnZmaW9fZGV2aWNlX2xpc3QsIGdsb2JhbF9uZXh0KSB7DQo+ICAgICAgICAgaWYgKHZiYXNl
-ZGV2LT5taWdyYXRpb24pIHsNCj4gICAgICAgICAgICAgZGV2aWNlX251bSsrOw0KPg0KPkBAIC0x
-MzY3LDEzICsxMzY3LDEzIEBAIHZvaWQgdmZpb19yZXNldF9oYW5kbGVyKHZvaWQgKm9wYXF1ZSkN
-Cj4gew0KPiAgICAgVkZJT0RldmljZSAqdmJhc2VkZXY7DQo+DQo+LSAgICBRTElTVF9GT1JFQUNI
-KHZiYXNlZGV2LCAmdmZpb19kZXZpY2VfbGlzdCwgbmV4dCkgew0KPisgICAgUUxJU1RfRk9SRUFD
-SCh2YmFzZWRldiwgJnZmaW9fZGV2aWNlX2xpc3QsIGdsb2JhbF9uZXh0KSB7DQo+ICAgICAgICAg
-aWYgKHZiYXNlZGV2LT5kZXYtPnJlYWxpemVkKSB7DQo+ICAgICAgICAgICAgIHZiYXNlZGV2LT5v
-cHMtPnZmaW9fY29tcHV0ZV9uZWVkc19yZXNldCh2YmFzZWRldik7DQo+ICAgICAgICAgfQ0KPiAg
-ICAgfQ0KPg0KPi0gICAgUUxJU1RfRk9SRUFDSCh2YmFzZWRldiwgJnZmaW9fZGV2aWNlX2xpc3Qs
-IG5leHQpIHsNCj4rICAgIFFMSVNUX0ZPUkVBQ0godmJhc2VkZXYsICZ2ZmlvX2RldmljZV9saXN0
-LCBnbG9iYWxfbmV4dCkgew0KPiAgICAgICAgIGlmICh2YmFzZWRldi0+ZGV2LT5yZWFsaXplZCAm
-JiB2YmFzZWRldi0+bmVlZHNfcmVzZXQpIHsNCj4gICAgICAgICAgICAgdmJhc2VkZXYtPm9wcy0+
-dmZpb19ob3RfcmVzZXRfbXVsdGkodmJhc2VkZXYpOw0KPiAgICAgICAgIH0NCj4tLQ0KPjIuMzUu
-Mw0KDQo=
+Jason, Eugenio,
+
+Apologies for a late reply; just back from the long holiday.
+
+On Thu, Dec 21, 2023 at 09:20:40AM +0100, Eugenio Perez Martin wrote:
+> Si-Wei did the actual profiling as he is the one with the 128G guests,
+> but most of the time was spent in the memory pinning. Si-Wei, please
+> correct me if I'm wrong.
+
+IIUC we're talking about no-vIOMMU use case.  The pinning should indeed
+take a lot of time if it's similar to what VFIO does.
+
+>
+> I didn't check VFIO, but I think it just maps at realize phase with
+> vfio_realize -> vfio_attach_device -> vfio_connect_container(). In
+> previous testings, this delayed the VM initialization by a lot, as
+> we're moving that 20s of blocking to every VM start.
+>
+> Investigating a way to do it only in the case of being the destination
+> of a live migration, I think the right place is .load_setup migration
+> handler. But I'm ok to move it for sure.
+
+If it's destined to map the 128G, it does sound sensible to me to do it
+when VM starts, rather than anytime afterwards.
+
+Could anyone help to explain what's the problem if vDPA maps 128G at VM
+init just like what VFIO does?
+
+Thanks,
+
+-- 
+Peter Xu
+
 
