@@ -2,92 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD018821B9D
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 13:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB20821BA2
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 13:31:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKdtB-0001ou-Hk; Tue, 02 Jan 2024 07:28:57 -0500
+	id 1rKdue-0002U7-IU; Tue, 02 Jan 2024 07:30:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKdt9-0001oL-Tx
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 07:28:55 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rKduW-0002TN-Q5
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 07:30:22 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKdt8-0005ar-06
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 07:28:55 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40d4a222818so43817545e9.0
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 04:28:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rKdu9-0005nw-7v
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 07:30:20 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1d3e84fded7so44629445ad.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 04:29:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704198532; x=1704803332; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1704198595; x=1704803395; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=EGWivcS99+wHRa2vbtr7B5dRD4LP8waN05N4XbedEWs=;
- b=qpZYR7vUHu4hR2nW04oXyygioP//vw/SmrW3UXtb/1DWepo6FXuggLJ1gRBVYPZxNf
- Da+eTK8ocelyXqm3W8mv4TtAJ6kQaWtbV8P/rKyhA32m4blMD6BXjaKhg5F2UiZ3MRIu
- LaFtBBLhs3Z1KgNu+e5wYnoD3im4ncPrtZM9PR3c12Pe56IqM3VlUQyLtcdQ2ZuDYvYq
- FLJQkNwjKbnq0cIkAVG/YKsvWk7tVpjD0fwZdhzi7mTE4vhyuun5ajjB3jcIWmKzlBXv
- ZPlWPt6Xmff4JUm+wSgtuiLvj7kXDL36U+cNTvzn/kTbSKx+aaPgF0UDqWUkjXvO5sGv
- /NxQ==
+ bh=Augk+xPGGFqEgjYC1IaucYVe0K+Hl4t3eULPoLhAk20=;
+ b=lTPt9y07aR/otrAP8pObnFXgwa2zwNGmH4oQlT01c4ibgnQAyFE3C6GvktTyO5tuZa
+ Z3TWV/FE4XKyKI6vI6ljAfIdnd7SiaRMmcA5xDAsWzH+PXQURZFUPnZWbSrYjJb01Zor
+ KRbmP+DgQKA0CcNOUt/hDUAyXghRbyUDRzQA5RcQnhPX65ftgiaT/5HESVlRrtV3jqGy
+ 8f6Is3JLPu8IkkRrep4FMBi0zA70fQ5jpZKNt7iLage1mM9aGNd7JVS+an/G/F6bAVyt
+ pcHzemOFGZmXVhYlDwOPpbgAN2qpxMaZeXd7pkam1bP0juGEGejhyQx3xTGgOT8RDdEr
+ xLEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704198532; x=1704803332;
+ d=1e100.net; s=20230601; t=1704198595; x=1704803395;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EGWivcS99+wHRa2vbtr7B5dRD4LP8waN05N4XbedEWs=;
- b=Ds1ipe75EA+Oh+VyE5yhffD+0m4czyCEEuSp0//6aDqooolOpLpfOk02gNz7bZasnP
- EcHqYJDwlAlblZZB205laFC9LIQzuHbgifcvYm6Dc1vZqiS5ObuVOUtrACHeM+3K4eku
- o9H6j1sHomgWG+RVWBNoWzttJKr3um8y8GW2wy2tqkZy1ccTg2shajPL/ASHzvfJTJf6
- uOA7Gb81SkTLUw6dhAcgpoAAL9iCHn6CrKwl+eZZ9XgLB7qfK+dQP7UZHJo/RWnVGXQT
- vehmvs86dhWDyIVW2J04C4MGJ7PkOtA8GTiol4K52tzwTe376bBbM7Hnj1YUtPGbxU9Z
- OcSQ==
-X-Gm-Message-State: AOJu0YyHDaVX4Voykl1G7kZP42LNWIjI9ZSMauxmzGPfN8j7CyhuTCqb
- 7lNlQPB4r++MLRThQL574s/mH7vc8dmT2Q==
-X-Google-Smtp-Source: AGHT+IEwpcTL0Csf+EWLMVI9iqmJ7YDfPSWV44S+4HHothwKYStghNbHwsGo0zDVddU+owpDPGqmRw==
-X-Received: by 2002:a05:600c:5020:b0:40b:3322:2af6 with SMTP id
- n32-20020a05600c502000b0040b33222af6mr7727002wmr.5.1704198531712; 
- Tue, 02 Jan 2024 04:28:51 -0800 (PST)
-Received: from [192.168.69.100] (sal63-h02-176-184-16-71.dsl.sta.abo.bbox.fr.
- [176.184.16.71]) by smtp.gmail.com with ESMTPSA id
- i2-20020a05600c354200b0040d5ac00dc6sm25464652wmq.8.2024.01.02.04.28.49
+ bh=Augk+xPGGFqEgjYC1IaucYVe0K+Hl4t3eULPoLhAk20=;
+ b=u2x1OxnKbsLyAtZY45gxkmBsgM6IoE650s+0sLjOEiSny70gg9CrP0tATxeJBNoqIH
+ uaeAjk0+gSSlmMvjNugvXtoAXt/uFTHCoxVkikfKd8yigmalxnSvIP5eq3OpOy5m8RNz
+ xylLf8ZFkGFkigggR+xrRBHMpcTgVNtBgGZ86JwEmPxtJQ+jrJ5N4LbKZNpTLJH41RMJ
+ zVbOYOypvPZna2sK8J3wvyWtTzVk6yQKjJdsQt3lPnX7Jl6yBaHXj/vL6y5hNcFqBlu9
+ Gr+ALa9nUN27GH8klngATj5Iik7Rd38ZhOg9FPJZfm+/62RkjHVYler+15K2lf0R2LrB
+ Komg==
+X-Gm-Message-State: AOJu0YzPOnF56GhjnpzQnv0eo0E2oufKLRpGiK9OVhXoCzwFul6i4UOU
+ ekICJ1IV83v3s6LeLisHf4QA1Jw8BFYbrA==
+X-Google-Smtp-Source: AGHT+IHS3iOa66IYtgf5mfAZCZ07dT1eHIB6zQxVe89gAoGWeHV2UUPXNhTMpzv3HoP9IPA8LQ5MYQ==
+X-Received: by 2002:a17:903:2450:b0:1d4:ab6b:f102 with SMTP id
+ l16-20020a170903245000b001d4ab6bf102mr1281083pls.85.1704198595524; 
+ Tue, 02 Jan 2024 04:29:55 -0800 (PST)
+Received: from [192.168.68.110] ([189.79.21.107])
+ by smtp.gmail.com with ESMTPSA id
+ l7-20020a17090270c700b001d49608e3dfsm8560466plt.50.2024.01.02.04.29.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jan 2024 04:28:51 -0800 (PST)
-Message-ID: <9293e63b-8032-4ea0-b516-9db6949fb607@linaro.org>
-Date: Tue, 2 Jan 2024 13:28:48 +0100
+ Tue, 02 Jan 2024 04:29:55 -0800 (PST)
+Message-ID: <b2a9b35d-e1dc-4d01-b42c-a2eb865f274e@ventanamicro.com>
+Date: Tue, 2 Jan 2024 09:29:51 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] hw/arm: Prefer arm_feature() over
- object_property_find()
+Subject: Re: [PATCH v2 10/16] target/riscv: create finalize_features() for KVM
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>, Radoslaw Biernacki
- <rad@semihalf.com>, qemu-arm@nongnu.org,
- Leif Lindholm <quic_llindhol@quicinc.com>, Rob Herring <robh@kernel.org>,
- Alistair Francis <alistair@alistair23.me>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-References: <20231214171447.44025-1-philmd@linaro.org>
- <CAFEAcA-Je+_tNCwiL_sQb-tDmCRJ2LWm5mAfuowtxbUBNEWQXQ@mail.gmail.com>
- <871qbkug24.fsf@pond.sub.org>
- <CAFEAcA9vEvOeTseaC27hz9RKe13zs_2oPGjK-bLs8VL1wQF2jw@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA9vEvOeTseaC27hz9RKe13zs_2oPGjK-bLs8VL1wQF2jw@mail.gmail.com>
+To: Vladimir Isaev <vladimir.isaev@syntacore.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com
+References: <20231222122235.545235-1-dbarboza@ventanamicro.com>
+ <20231222122235.545235-11-dbarboza@ventanamicro.com>
+ <1905a7c9-b59f-4392-9a27-74c292668856@syntacore.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <1905a7c9-b59f-4392-9a27-74c292668856@syntacore.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,115 +96,190 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
 
-On 18/12/23 10:48, Peter Maydell wrote:
-> On Mon, 18 Dec 2023 at 07:26, Markus Armbruster <armbru@redhat.com> wrote:
+
+On 12/29/23 08:22, Vladimir Isaev wrote:
+> 22.12.2023 15:22, Daniel Henrique Barboza wrote:
+>> To turn cbom_blocksize and cboz_blocksize into class properties we need
+>> KVM specific changes.
 >>
->> Peter Maydell <peter.maydell@linaro.org> writes:
+>> KVM is creating its own version of these options with a customized
+>> setter() that prevents users from picking an invalid value during init()
+>> time. This comes at the cost of duplicating each option that KVM
+>> supports. This will keep happening for each new shared option KVM
+>> implements in the future.
 >>
->>> On Thu, 14 Dec 2023 at 17:14, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>>>
->>>> QOM properties are added on the ARM vCPU object when a
->>>> feature is present. Rather than checking the property
->>>> is present, check the feature.
->>>>
->>>> Suggested-by: Markus Armbruster <armbru@redhat.com>
->>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>> ---
->>>> RFC: If there is no objection on this patch, I can split
->>>>       as a per-feature series if necessary.
->>>>
->>>> Based-on: <20231123143813.42632-1-philmd@linaro.org>
->>>>    "hw: Simplify accesses to CPUState::'start-powered-off' property"
->>>
->>> I'm not a super-fan of board-level code looking inside
->>> the QOM object with direct use of arm_feature() when
->>> it doesn't have to. What's wrong with asking whether
->>> the property exists before trying to set it?
+>> We can avoid that by using the same property TCG uses and adding
+>> specific KVM handling during finalize() time, like TCG already does with
+>> riscv_tcg_cpu_finalize_features(). To do that, the common CPU property
+>> offers a way of knowing if an option was user set or not, sparing us
+>> from doing unneeded syscalls.
 >>
->> I'm not a fan of using QOM instead of the native C interface.
+>> riscv_kvm_cpu_finalize_features() is then created using the same
+>> KVMScratch CPU we already use during init() time, since finalize() time
+>> is still too early to use the official KVM CPU for it. cbom_blocksize
+>> and cboz_blocksize are then handled during finalize() in the same way
+>> they're handled by their KVM specific setter.
 >>
->> The native C interface is CPUArmState method arm_feature().
+>> With this change we can proceed with the blocksize changes in the common
+>> code without breaking the KVM driver.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/cpu.c           | 16 +++++++---
+>>   target/riscv/cpu.h           |  1 +
+>>   target/riscv/kvm/kvm-cpu.c   | 59 ++++++++++++++++++++++++++++++++++++
+>>   target/riscv/kvm/kvm_riscv.h |  1 +
+>>   4 files changed, 72 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 8be619b6f1..f49d31d753 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -63,6 +63,11 @@ static void cpu_option_add_user_setting(const char *optname, uint32_t value)
+>>                           GUINT_TO_POINTER(value));
+>>   }
+>>
+>> +bool riscv_cpu_option_set(const char *optname)
+>> +{
+>> +    return g_hash_table_contains(general_user_opts, optname);
+>> +}
+>> +
 > 
-> But we don't in most of these cases really want to know "is this
-> a CPU with feature foo?". What we're asking is "does this
-> QOM property exist so it won't blow up if I set/get it?".
+> This function may work in unexpected way for future developer since we can check just somehow restricted
+> number of options using it, like vlen/elen/cbom/cboz size, but not vext_spec or pmu-num/mask.
 
-[More analysis on this topic.]
+Makes sense. I'll add all options in this hash to make it consistent.
 
-ARMV7M (hw/arm/armv7m.c) is an interesting QOM use case.
 
-ARMV7M is a ARMCPU container, with few more things. (We have
-more complex cases with containers of array of vCPUs, so this
-single-vCPU case is a good start).
+Thanks,
 
-We'd like to apply properties on ARMV7M which get forwarded
-to the embedded ARMCPU.
-Usually we create the ARMCPU in armv7m_instance_init(), call
-object_property_add_alias() to alias some ARMCPU to ARMV7M,
-so these properties can be set externally before ARMV7M is
-realized, being directly forwarded to the embedded ARMCPU [*].
 
-The problem with ARMV7M is it the ARMCPU QOM type is variable,
-so we don't know it in armv7m_instance_init() but only later
-in armv7m_realize(), thus we can not call QOM _add_alias() to
-alias them. One way to resolve this is to duplicate all possible
-ARMCPU properties we want to set on ARMV7M, and set them in
-armv7m_realize() after the ARMCPU is created and before it is
-realized (the current implementation):
+Daniel
 
-static void armv7m_realize(DeviceState *dev, Error **errp)
-{
-     ...
-     s->cpu = ARM_CPU(object_new_with_props(s->cpu_type,
-                                            OBJECT(s), "cpu",
-                                            &err, NULL));
-     ...
-
-     if (object_property_find(OBJECT(s->cpu), "vfp")) {
-         if (!object_property_set_bool(OBJECT(s->cpu), "vfp",
-                                       s->vfp, errp)) {
-             return;
-         }
-     }
-     ...
-
-     if (!qdev_realize(cpudev, NULL, errp)) {
-         return;
-     }
-     ...
-}
-
-static Property armv7m_properties[] = {
-     DEFINE_PROP_STRING("cpu-type", ARMv7MState, cpu_type),
-     ...
-     DEFINE_PROP_BOOL("vfp", ARMv7MState, vfp, true),
-     ...
-};
-
-Note ARMV7M "vfp" is a /static/ QOM property, so can not be
-unregistered if the ARMCPU doesn't expose it.
-
-* If ARMCPU doesn't provide "vfp", ARMV7M properties introspection
-   still shows 'vfp=true'.
-
-* If ARMCPU doesn't provide "vfp", requesting 'vfp=true' on ARMV7M
-   is silently ignored.
-
-* If ARMCPU doesn't provide "vfp", even if we unregister ARMV7M "vfp"
-   property in realize() for cleaner introspection, we can not check
-   whether user requested an explicit value before realize().
-   Possibly we could use a tri-state {unset/false/true} dynamic property
-   to check that.
-
-[*] object_property_add_alias() is a 1-1 static aliasing. In the
-     case of cluster of objects we don't have API to do a 1-N static
-     aliasing; the current way to do that is similar to dynamic
-     properties setters iterating on the array (getter usually return
-     the container property, ignoring the cluster values).
-
-Regards,
-
-Phil.
+> 
+>>   #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
+>>       {#_name, _min_ver, CPU_CFG_OFFSET(_prop)}
+>>
+>> @@ -1056,17 +1061,18 @@ void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+>>   {
+>>       Error *local_err = NULL;
+>>
+>> -    /*
+>> -     * KVM accel does not have a specialized finalize()
+>> -     * callback because its extensions are validated
+>> -     * in the get()/set() callbacks of each property.
+>> -     */
+>>       if (tcg_enabled()) {
+>>           riscv_tcg_cpu_finalize_features(cpu, &local_err);
+>>           if (local_err != NULL) {
+>>               error_propagate(errp, local_err);
+>>               return;
+>>           }
+>> +    } else if (kvm_enabled()) {
+>> +        riscv_kvm_cpu_finalize_features(cpu, &local_err);
+>> +        if (local_err != NULL) {
+>> +            error_propagate(errp, local_err);
+>> +            return;
+>> +        }
+>>       }
+>>
+>>   #ifndef CONFIG_USER_ONLY
+>> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+>> index 53101b82c5..988471c7ba 100644
+>> --- a/target/riscv/cpu.h
+>> +++ b/target/riscv/cpu.h
+>> @@ -495,6 +495,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+>>                           bool probe, uintptr_t retaddr);
+>>   char *riscv_isa_string(RISCVCPU *cpu);
+>>   void riscv_cpu_list(void);
+>> +bool riscv_cpu_option_set(const char *optname);
+>>
+>>   #define cpu_list riscv_cpu_list
+>>   #define cpu_mmu_index riscv_cpu_mmu_index
+>> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+>> index 62a1e51f0a..70fb075846 100644
+>> --- a/target/riscv/kvm/kvm-cpu.c
+>> +++ b/target/riscv/kvm/kvm-cpu.c
+>> @@ -1490,6 +1490,65 @@ static void kvm_cpu_instance_init(CPUState *cs)
+>>       }
+>>   }
+>>
+>> +void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+>> +{
+>> +    CPURISCVState *env = &cpu->env;
+>> +    KVMScratchCPU kvmcpu;
+>> +    struct kvm_one_reg reg;
+>> +    uint64_t val;
+>> +    int ret;
+>> +
+>> +    /* short-circuit without spinning the scratch CPU */
+>> +    if (!cpu->cfg.ext_zicbom && !cpu->cfg.ext_zicboz) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (!kvm_riscv_create_scratch_vcpu(&kvmcpu)) {
+>> +        error_setg(errp, "Unable to create scratch KVM cpu");
+>> +        return;
+>> +    }
+>> +
+>> +    if (cpu->cfg.ext_zicbom &&
+>> +        riscv_cpu_option_set(kvm_cbom_blocksize.name)) {
+>> +
+>> +        reg.id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CONFIG,
+>> +                                        kvm_cbom_blocksize.kvm_reg_id);
+>> +        reg.addr = (uint64_t)&val;
+>> +        ret = ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
+>> +        if (ret != 0) {
+>> +            error_setg(errp, "Unable to read cbom_blocksize, error %d", errno);
+>> +            return;
+>> +        }
+>> +
+>> +        if (cpu->cfg.cbom_blocksize != val) {
+>> +            error_setg(errp, "Unable to set cbom_blocksize to a different "
+>> +                       "value than the host (%lu)", val);
+>> +            return;
+>> +        }
+>> +    }
+>> +
+>> +    if (cpu->cfg.ext_zicboz &&
+>> +        riscv_cpu_option_set(kvm_cboz_blocksize.name)) {
+>> +
+>> +        reg.id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CONFIG,
+>> +                                        kvm_cboz_blocksize.kvm_reg_id);
+>> +        reg.addr = (uint64_t)&val;
+>> +        ret = ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
+>> +        if (ret != 0) {
+>> +            error_setg(errp, "Unable to read cbom_blocksize, error %d", errno);
+>> +            return;
+>> +        }
+>> +
+>> +        if (cpu->cfg.cboz_blocksize != val) {
+>> +            error_setg(errp, "Unable to set cboz_blocksize to a different "
+>> +                       "value than the host (%lu)", val);
+>> +            return;
+>> +        }
+>> +    }
+>> +
+>> +    kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
+>> +}
+>> +
+>>   static void kvm_cpu_accel_class_init(ObjectClass *oc, void *data)
+>>   {
+>>       AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
+>> diff --git a/target/riscv/kvm/kvm_riscv.h b/target/riscv/kvm/kvm_riscv.h
+>> index 8329cfab82..4bd98fddc7 100644
+>> --- a/target/riscv/kvm/kvm_riscv.h
+>> +++ b/target/riscv/kvm/kvm_riscv.h
+>> @@ -27,5 +27,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+>>                             uint64_t guest_num);
+>>   void riscv_kvm_aplic_request(void *opaque, int irq, int level);
+>>   int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
+>> +void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
+>>
+>>   #endif
+>> --
+>> 2.43.0
+>>
+>>
 
