@@ -2,86 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B2DE82245D
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 23:02:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE72C822490
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 23:12:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKmpC-0001sV-5e; Tue, 02 Jan 2024 17:01:26 -0500
+	id 1rKmxs-0004GQ-QM; Tue, 02 Jan 2024 17:10:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rKmp4-0001qP-B5; Tue, 02 Jan 2024 17:01:19 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ id 1rKmxp-0004Fu-Do; Tue, 02 Jan 2024 17:10:21 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rKmp1-0005MZ-M6; Tue, 02 Jan 2024 17:01:17 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a28005f9b9cso183172566b.3; 
- Tue, 02 Jan 2024 14:01:14 -0800 (PST)
+ id 1rKmxl-0007Jx-4V; Tue, 02 Jan 2024 17:10:19 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40d5f402571so64861045e9.0; 
+ Tue, 02 Jan 2024 14:10:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704232873; x=1704837673; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704233415; x=1704838215; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RybfX6cFxOoWNhvf1lUHDW1yP5iQ4MUUyEXqzhB2lXs=;
- b=Q0jLIm77KnU7HegqFlBOLFsEj1P4m2V5mHMzrUiZX/C4p88NsUZAakQA75zeQhZAvG
- cN8cnHWyVjAdBbV0Ot5gU6SQzgb8NfZMKmGndwqR8TvG8u8B32PvGgyXas5RLkacRxU1
- V6xmOpxWzS0AKJAPiYOgCoAefSuNGlydCpTzADWWZaLOiHVcMONN5AlNJH+YdTFE7QRG
- w5Aza01ucRnjkdOr8np5vn7ZDxCqQvOmrC46tNIbYhwe7u5cMbsqE9xKvSyleIkX090M
- i7B8pJogOIH8Cml9GlA7poJwjr7kY358jOdoL7JXDuV5oyuLqWlNDOrL2m/4HipOZ9s4
- nU9A==
+ bh=iFlIoMFsMjtwvwUcMFXTwIx/QuyOZP7C3m00LklabqY=;
+ b=gxagKbVYPncAlmxBJ8NRv2A1QZAAKCJnNwqvF3R3BZm871jemllEZyrvuBeCkaMtQG
+ YyaLI9jVOVa5mgIs9c1DxvvUw49b7Sb1UAeOH5C3RTfSE3CcrqLIAOdInmoQS8/eHmHp
+ 0xPj/qpiIVhmYqXCoI3CuGDgn5TJ4D/vhL4FYKXk4N7HqifKJS0km+1ww4fdbAPYBecd
+ E/y6d5hd7PjhCa8devCNEiD3WUO/Lp+WQfWMp4V3vUZVk31Du3Jp/8bxwglQd/UON3TI
+ aevS1TuNkvZuXjqC0KQD/lFVsZuF7IPLLg7ee0ZYgCAjbUUQb0JRbYXx+bzd/98EF6nf
+ Al1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704232873; x=1704837673;
+ d=1e100.net; s=20230601; t=1704233415; x=1704838215;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RybfX6cFxOoWNhvf1lUHDW1yP5iQ4MUUyEXqzhB2lXs=;
- b=oLly/reftdpT7tV4/m5qkFaW8WxmWpZTWpd8WWg65+grJZAzuxbqKKD/SqkFRVAQ0J
- 0ZXKYOINXJ8s1jQeg0ChHvQsquFKw2QLhDzz3Evw81pdDK4Xj9gn/JxsuMJKoMbT+cu3
- 1PLy6bQkcqsNzBN3g/FNCri2EpagSRw8ikm+l4JbNPyS45MempiUU6GCFWXWAaPufK+k
- Yhs7OMMblaSZuTcX7tdSmaRiMkEH98vOc9wSwTF2Vkq3w90IXFGvi2UK+U+RjUX63/D9
- z0V4/KcTExnV8N0hS9PysTDvdqqotmU+Nk+vLJiNQP9/cOzu/KqxhrC0SHN3m+cUXJHN
- tT+Q==
-X-Gm-Message-State: AOJu0YynE1F9XLcYPnTQHiPZrn5riu6y0qKiRQUiC4G+4wrhxAi/E6pe
- 4tq7k0I83vbxePbORPRwq7MHZnb+NDg=
-X-Google-Smtp-Source: AGHT+IG7XjxcSAiDcUILkhVEEuQgOt/sQm42Ri2z3dmQd8VXKXEpw5ZDwOFnX/9HTFFqYhZAhdJpzg==
-X-Received: by 2002:a17:907:970e:b0:a27:710d:99ed with SMTP id
- jg14-20020a170907970e00b00a27710d99edmr5024938ejc.24.1704232872882; 
- Tue, 02 Jan 2024 14:01:12 -0800 (PST)
+ bh=iFlIoMFsMjtwvwUcMFXTwIx/QuyOZP7C3m00LklabqY=;
+ b=oL6E9t78SFO0nczOACj8HGsp+uZa+55tSwMsbj+4nnQQT2NDjvdY/cfYjlJw9I+rPI
+ cxlW1OfizsJa1nLfo0ZL0+coxB2ZR6BDiGRTRuE9T9kc0PoZHruWfnhuJVmq2QzP0aD6
+ ZWc7PXlINeIz+5UD47KwOfWAvtc7/LB1GHJxRVHei6rLgerUxNu/v5lAOi8I1jAk5wj6
+ qDQEqSAIrKMwefoOpsT+x1K4iO25qPgesfztKP4bVMmHDNoqs1Pmn7t8tzkg0GpkMEJf
+ skxY8VQM12vnrFJer7WvW6+4FSq+OUp/tfv2q7vlgGn0ogeHXitTj3LstVzTZ+4EKXb5
+ NOpA==
+X-Gm-Message-State: AOJu0Yx/B7on9nLtFAUnPDMljGum+Qe+nlgazhU4fCipHcHH+2ePXEOd
+ 5DJIZCMTSMYq78R0JfLPbRg=
+X-Google-Smtp-Source: AGHT+IGgfBmbc3ALab5jW/+GFYAlqiMkT3Xif6eAUC6Mq8qzqdTcGdqKsGMsovXcnKBDl8LI3Y7XvA==
+X-Received: by 2002:a05:600c:190b:b0:40d:5118:e426 with SMTP id
+ j11-20020a05600c190b00b0040d5118e426mr7921727wmq.246.1704233414944; 
+ Tue, 02 Jan 2024 14:10:14 -0800 (PST)
 Received: from [127.0.0.1] (dynamic-089-014-091-072.89.14.pool.telefonica.de.
  [89.14.91.72]) by smtp.gmail.com with ESMTPSA id
- cl2-20020a170906c4c200b00a19afc16d23sm12003262ejb.104.2024.01.02.14.01.12
+ g18-20020a05600c311200b0040d85a1fad9sm273939wmo.46.2024.01.02.14.10.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jan 2024 14:01:12 -0800 (PST)
-Date: Tue, 02 Jan 2024 22:01:07 +0000
+ Tue, 02 Jan 2024 14:10:14 -0800 (PST)
+Date: Tue, 02 Jan 2024 22:10:11 +0000
 From: Bernhard Beschow <shentey@gmail.com>
 To: BALATON Zoltan <balaton@eik.bme.hu>
-CC: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Juan Quintela <quintela@redhat.com>, John Snow <jsnow@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_12/12=5D_hw/isa/vt82c686=3A_Implemen?=
- =?US-ASCII?Q?t_relocation_and_toggling_of_SuperI/O_functions?=
-In-Reply-To: <acf63b63-df0d-1223-1022-292a396d717e@eik.bme.hu>
-References: <20231218185114.119736-1-shentey@gmail.com>
- <20231218185114.119736-13-shentey@gmail.com>
- <9c472e25-506f-fbd5-6d72-00be078bb15c@eik.bme.hu>
- <B0C3E617-569E-4DD2-900A-5ACF093C3B63@gmail.com>
- <acf63b63-df0d-1223-1022-292a396d717e@eik.bme.hu>
-Message-ID: <4E10FA4B-2659-4344-BA5A-6FD4BBC74AD3@gmail.com>
+CC: qemu-devel@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
+Subject: Re: [PATCH] docs/system: Document running Linux on amigaone machine
+In-Reply-To: <6d50c5e7-ee6d-609f-c3e7-28f74eeeb714@eik.bme.hu>
+References: <20231216123013.67978-1-shentey@gmail.com>
+ <da92f16c-585a-7d1f-fa0b-9a6912f7760e@eik.bme.hu>
+ <79067497-55AC-49EB-A0EE-909219E2C6A7@gmail.com>
+ <6d50c5e7-ee6d-609f-c3e7-28f74eeeb714@eik.bme.hu>
+Message-ID: <2CA50F74-DE6D-4AD6-8581-EC22C80925B3@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,151 +97,216 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 24=2E Dezember 2023 00:51:53 UTC schrieb BALATON Zoltan <balaton@eik=2E=
+Am 16=2E Dezember 2023 21:15:54 UTC schrieb BALATON Zoltan <balaton@eik=2E=
 bme=2Ehu>:
->On Tue, 19 Dec 2023, Bernhard Beschow wrote:
->> Am 19=2E Dezember 2023 00:26:15 UTC schrieb BALATON Zoltan <balaton@eik=
+>On Sat, 16 Dec 2023, Bernhard Beschow wrote:
+>> Am 16=2E Dezember 2023 12:53:55 UTC schrieb BALATON Zoltan <balaton@eik=
 =2Ebme=2Ehu>:
->>> On Mon, 18 Dec 2023, Bernhard Beschow wrote:
->>>> The VIA south bridges are able to relocate and toggle (enable or disa=
-ble) their
->>>> SuperI/O functions=2E So far this is hardcoded such that all function=
-s are always
->>>> enabled and are located at fixed addresses=2E
->>>>=20
->>>> Some PC BIOSes seem to probe for I/O occupancy before activating such=
- a function
->>>> and issue an error in case of a conflict=2E Since the functions are e=
-nabled on
->>>> reset, conflicts are always detected=2E Prevent that by implementing =
-relocation
->>>> and toggling of the SuperI/O functions=2E
->>>>=20
->>>> Note that all SuperI/O functions are now deactivated upon reset (exce=
-pt for
->>>> VT82C686B's serial ports where Fuloong 2e's rescue-yl seems to expect=
- them to be
->>>> enabled by default)=2E Rely on firmware -- or in case of pegasos2 on =
-board code if
->>>> no -bios is given -- to configure the functions accordingly=2E
+>>> On Sat, 16 Dec 2023, Bernhard Beschow wrote:
+>>>> Documentation on how to run Linux on the amigaone machine is currentl=
+y burried
+>>>> in the depths of the qemu-devel mailing list [1] and in the source co=
+de=2E Let's
+>>>> collect the information in the QEMU handbook for a one stop solution=
+=2E
 >>>=20
->>> Pegasos2 emulates firmware when no -bios is given, this was explained =
-in previos commit so maybe not needed to be explained it here again so you =
-could drop the comment between -- -- but I don't mind=2E
+>>> Thanks for collecting this info and adding it as documentation=2E
+>>=20
+>> You're welcome!
+>>=20
+>>> A few small comments bellow=2E
 >>>=20
+>>>> [1] https://lore=2Ekernel=2Eorg/qemu-devel/dafc407d-3749-e6f4-3a66-75=
+0fde8965f9@eik=2Ebme=2Ehu/
+>>>=20
+>>> Do we want to keep an URL in the commit log? kernel=2Eorg is quite sta=
+ble but not sure it would need to be in the commit message=2E
+>>=20
+>> Let's drop it=2E
+>>=20
+>>>=20
+>>>> Co-authored-by: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
 >>>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
 >>>> ---
->>>> hw/isa/vt82c686=2Ec | 121 ++++++++++++++++++++++++++++++++++---------=
----
->>>> 1 file changed, 90 insertions(+), 31 deletions(-)
+>>>> MAINTAINERS                  |  1 +
+>>>> docs/system/ppc/amigaone=2Erst | 53 +++++++++++++++++++++++++++++++++=
++++
+>>>> docs/system/target-ppc=2Erst   |  1 +
+>>>> hw/ppc/amigaone=2Ec            |  9 ------
+>>>> 4 files changed, 55 insertions(+), 9 deletions(-)
+>>>> create mode 100644 docs/system/ppc/amigaone=2Erst
 >>>>=20
->>>> diff --git a/hw/isa/vt82c686=2Ec b/hw/isa/vt82c686=2Ec
->>>> index 9c2333a277=2E=2Ebe202d23cf 100644
->>>> --- a/hw/isa/vt82c686=2Ec
->>>> +++ b/hw/isa/vt82c686=2Ec
->>>> @@ -15,6 +15,9 @@
->>>>=20
->>>> #include "qemu/osdep=2Eh"
->>>> #include "hw/isa/vt82c686=2Eh"
->>>> +#include "hw/block/fdc=2Eh"
->>>> +#include "hw/char/parallel-isa=2Eh"
->>>> +#include "hw/char/serial=2Eh"
->>>> #include "hw/pci/pci=2Eh"
->>>> #include "hw/qdev-properties=2Eh"
->>>> #include "hw/ide/pci=2Eh"
->>>> @@ -343,6 +346,35 @@ static const TypeInfo via_superio_info =3D {
->>>>=20
->>>> #define TYPE_VT82C686B_SUPERIO "vt82c686b-superio"
->>>>=20
->>>> +static void vt82c686b_superio_update(ViaSuperIOState *s)
->>>> +{
->>>> +    isa_parallel_set_enabled(s->superio=2Eparallel[0],
->>>> +                             (s->regs[0xe2] & 0x3) !=3D 3);
->>>> +    isa_serial_set_enabled(s->superio=2Eserial[0], s->regs[0xe2] & B=
-IT(2));
->>>> +    isa_serial_set_enabled(s->superio=2Eserial[1], s->regs[0xe2] & B=
-IT(3));
->>>> +    isa_fdc_set_enabled(s->superio=2Efloppy, s->regs[0xe2] & BIT(4))=
-;
->>>> +
->>>> +    isa_fdc_set_iobase(s->superio=2Efloppy, (s->regs[0xe3] & 0xfc) <=
-< 2);
->>>> +    isa_parallel_set_iobase(s->superio=2Eparallel[0], s->regs[0xe6] =
-<< 2);
->>>> +    isa_serial_set_iobase(s->superio=2Eserial[0], (s->regs[0xe7] & 0=
-xfe) << 2);
->>>> +    isa_serial_set_iobase(s->superio=2Eserial[1], (s->regs[0xe8] & 0=
-xfe) << 2);
->>>> +}
+>>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>>> index 695e0bd34f=2E=2Ea2dd1407e2 100644
+>>>> --- a/MAINTAINERS
+>>>> +++ b/MAINTAINERS
+>>>> @@ -1560,6 +1560,7 @@ amigaone
+>>>> M: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
+>>>> L: qemu-ppc@nongnu=2Eorg
+>>>> S: Maintained
+>>>> +F: docs/system/ppc/amigaone=2Erst
+>>>> F: hw/ppc/amigaone=2Ec
+>>>> F: hw/pci-host/articia=2Ec
+>>>> F: include/hw/pci-host/articia=2Eh
+>>>> diff --git a/docs/system/ppc/amigaone=2Erst b/docs/system/ppc/amigaon=
+e=2Erst
+>>>> new file mode 100644
+>>>> index 0000000000=2E=2Ec3f11a7bb2
+>>>> --- /dev/null
+>>>> +++ b/docs/system/ppc/amigaone=2Erst
 >>>=20
->>> I wonder if some code duplication could be saved by adding a shared vi=
-a_superio_update() for this further up in the abstract via-superio class in=
-stead of this method and vt8231_superio_update() below=2E This common metho=
-d in abstract class would need to handle the differences which seem to be r=
-eg addresses offset by 0x10 and VT8231 having only 1 serial port=2E These c=
-ould either be handled by adding function parameters or fields to ViaSuperI=
-OState for this that the subclasses can set and the method check=2E (Such a=
-s reg base=3D0xe2 for vt82c686 and 0xf2 for vt8231 and num_serial or simila=
-r for how many ports are there then can have a for loop for those that woul=
-d only run once for vt8231)=2E
+>>> Maybe call it amigang=2Erst so it can be a place for docs on other PPC=
+ AmigaNG machines such as pegasos2 and sam460ex in the future to collect th=
+em in one place=2E
 >>=20
->> Only the enable bits and the parallel port base address line up, the se=
-rial port(s) and the floppy would need special treatment=2E Not worth it IM=
-O=2E
+>> Having everything in one place seems like creating a lot of complexity =
+if one were to elaborate on the various pros and cons for each machine: Ami=
+gaOne needs a custom vgabios, the others do not=2E
 >
->Missed this part in previous reply=2E The serial ports would be taken car=
-e of by a loop for number of ports so only the floppy needs an if which cou=
-ld also use the number of serial ports for lack of better way to distinguis=
-h these cips easily=2E Number of ports are in the superio class which you c=
-ould get with ISA_SUPERIO_GET_CLASS (see via_superio_realize) then serial=
-=2Ecount would be 2 for 686b and 1 for 8231=2E
-
-I'm not very convinced about telling the device models apart by their numb=
-er of sub devices=2E So let's omit this part for now=2E
-
+>All of these need real mode VGA BIOS as the BIOS emulator in all three ma=
+chines choke on the gcc compiled QEMU VGA BIOS so this isn't uinque to amig=
+aone=2E
 >
->But now I think another way may be better that is to drop the superio_upd=
-ate function as this updates all functions on writing any register unnecess=
-arily and put the lines from it in the vt*_superio_cfg_write() functions un=
-der the separate cases=2E This was the original intent, that's why the rese=
-t function goes through that write function so it can enable/disable functi=
-ons=2E That way you could apply mask on write so via_superio_cfg_read() wou=
-ld return 0 bits as 0 (although the data sheet is not clear about what real=
- chip does, just says these must be 0 not that it's enforced but if we enfo=
-rce that it's probably better to return the effective value on read as well=
-)=2E Then when state saving is added in separate patch you can have a simil=
-ar function as vt82c686b_superio_reset() (or rename that to update and make=
- it use regs[xx] instead of constant values and call that from reset after =
-setting regs values like you did here=2E But that needs more thought as the=
- vmstate added by this patch is incomplete and would not work so you could =
-just drop it for now and add it later with also adding other necessary stat=
-e as well=2E The idea was to implement the chip first then add state saving=
- so we don't need to bother with breaking it until we have a good enough im=
-plementation=2E So far the state saving there is just left over from the ol=
-d model which never worked and only left there for reminder but only wanted=
- to fix once the model is complete enough=2E
-
-Indeed, the patch obviously does too much if it misses details in vmstate=
-=2E Let's omit vmstate handling for now and go with your suggestion=2E
-
-Any other comments from your side before the next iteration?
-
+>> MorpOS can be run on the other machines but not on AmigaOne=2E Sometime=
+s a bootloader is needed and sometimes not, the circumstances may vary=2E
 >
->So I think for now you could drop vmstate stuff and distribute the superi=
-o_update lines in the superio_cfg_write functions so each reg only controls=
- the function it should control=2E Then when vmstate saving is added later =
-it could reuse superio_reset as an update function adding a new reset func =
-setting reg values and calling the old reset/new update function=2E Does th=
-at make sense?
+>MorphOS does not support amigaone, boot loader is optional and alternativ=
+e to using firmware=2E
+>
+>Other docs seem to combine similar machines like powermac and embedded an=
+d ppce500 in a single doc file so the convention seems to not have one file=
+ for each machine but it's not a big deal=2E
+>
+>> I suggest to have a separate doc on each machine=2E
+>
+>I could also rename it later if more docs is added for other machines=2E
+>
+>>>> @@ -0,0 +1,53 @@
+>>>> +Eyetech AmigaOne/Mai Logic Teron (``amigaone``)
+>>>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>>> +
+>>>> +The ``amigaone`` model emulates an AmigaOne XE mainboard developed b=
+y Eyetech=2E Use
+>>>> +the executable ``qemu-system-ppc`` to simulate a complete system=2E
+>>>=20
+>>> QEMU is not a simulator so even if that's repeating this should say em=
+ulate=2E (Should this doc be formatted with 80 chars line too like sources?=
+)
+>>=20
+>> I took heavy inspiration from the cupieboard machine=2E Feel free to ch=
+ange=2E
+>
+>docs/system/arm/cubieboard=2Erst:
+>"The ``cubieboard`` model emulates the Cubietech Cubieboard,"
+>also says emulate not simulate=2E
+>
+>>>> +
+>>>> +Emulated devices
+>>>> +----------------
+>>>> +
+>>>> + *  PowerPC 7457 v1=2E2 CPU
+>>>> + *  Articia S north bridge
+>>>> + *  VT82C686B south bridge
+>>>> + *  PCI VGA compatible card
+>>>> +
+>>>> +
+>>>> +Preparation
+>>>> +-----------
+>>>> +
+>>>> +A firmware binary is necessary for the boot process and is available=
+ at
+>>>> +https://www=2Ehyperion-entertainment=2Ecom/index=2Ephp/downloads?vie=
+w=3Dfiles&parent=3D28=2E
+>>>> +It needs to be extracted with the following command:
+>>>> +
+>>>> +=2E=2E code-block:: bash
+>>>> +
+>>>> +  $ tail -c 524288 updater=2Eimage > u-boot-amigaone=2Ebin
+>>>> +
+>>>> +The firmware binary is unable to run QEMU=E2=80=98s standard vgabios=
+ and
+>>>> +``VGABIOS-lgpl-latest=2Ebin`` is needed instead=2E It can be downloa=
+ded from
+>>>> +http://www=2Enongnu=2Eorg/vgabios=2E
+>>>> +
+>>>> +
+>>>> +Running Linux
+>>>> +-------------
+>>>> +
+>>>> +There are some Linux images under the following link that work on th=
+e
+>>>> +``amigaone`` machine:
+>>>> +https://sourceforge=2Enet/projects/amigaone-linux/files/debian-insta=
+ller/=2E To boot
+>>>> +the system run:
+>>>> +
+>>>> +=2E=2E code-block:: bash
+>>>> +
+>>>> +  $ qemu-system-ppc -M amigaone -bios u-boot-amigaone=2Ebin \
+>>>> +                    -cdrom "A1 Linux Net Installer=2Eiso" \
+>>>> +                    -device ati-vga,model=3Drv100,romfile=3DVGABIOS-=
+lgpl-latest=2Ebin
+>>>> +
+>>>> +From the firmware menu that appears select ``Boot sequence`` =E2=86=
+=92
+>>>> +``Amiga Multiboot Options`` and set ``Boot device 1`` to
+>>>> +``Onboard VIA IDE CDROM``=2E Then hit escape until the main screen a=
+ppears again,
+>>>> +hit escape once more and from the exit menu that appears select eith=
+er
+>>>> +``Save settings and exit`` or ``Use settings for this session only``=
+=2E It may
+>>>> +take a long time loading the kernel into memory but eventually it bo=
+ots and the
+>>>> +installer becomes visible=2E
+>>>> diff --git a/docs/system/target-ppc=2Erst b/docs/system/target-ppc=2E=
+rst
+>>>> index 4f6eb93b17=2E=2Ec1daa463cf 100644
+>>>> --- a/docs/system/target-ppc=2Erst
+>>>> +++ b/docs/system/target-ppc=2Erst
+>>>> @@ -18,6 +18,7 @@ help``=2E
+>>>>    :maxdepth: 1
+>>>>=20
+>>>>    ppc/embedded
+>>>> +   ppc/amigaone
+>>>>    ppc/powermac
+>>>>    ppc/powernv
+>>>>    ppc/ppce500
+>>>> diff --git a/hw/ppc/amigaone=2Ec b/hw/ppc/amigaone=2Ec
+>>>> index ddfa09457a=2E=2E4f680a5bdd 100644
+>>>> --- a/hw/ppc/amigaone=2Ec
+>>>> +++ b/hw/ppc/amigaone=2Ec
+>>>> @@ -27,15 +27,6 @@
+>>>>=20
+>>>> #define BUS_FREQ_HZ 100000000
+>>>>=20
+>>>> -/*
+>>>> - * Firmware binary available at
+>>>> - * https://www=2Ehyperion-entertainment=2Ecom/index=2Ephp/downloads?=
+view=3Dfiles&parent=3D28
+>>>> - * then "tail -c 524288 updater=2Eimage >u-boot-amigaone=2Ebin"
+>>>> - *
+>>>> - * BIOS emulator in firmware cannot run QEMU vgabios and hangs on it=
+, use
+>>>> - * -device VGA,romfile=3DVGABIOS-lgpl-latest=2Ebin
+>>>> - * from http://www=2Enongnu=2Eorg/vgabios/ instead=2E
+>>>> - */
+>>>=20
+>>> Maybe it's worth keeping the comment here in case somebody reads the s=
+ource but not documentation=2E
+>>=20
+>> Maybe change the comment to point at the doc to avoid duplication?
+>
+>That could work too=2E
+>
+>>> Do you want to send a v2 or want me to take over and do it myself?
+>>=20
+>> Sure, feel free to take over!
+>
+>OK, I'll try to make a v2 then=2E
 
-What I don't like about the vt*_superio_cfg_write() being called during re=
-set is the trace logs they produce=2E They are hard to tell apart from gues=
-ts poking these registers, especially during reboot=2E So I wonder if this =
-could be addressed when implementing vmstate handling as you suggest=2E Not=
- too big of a deal, though=2E
-
-Best regards,
-Bernhard
+Ping
 
 >
 >Regards,
