@@ -2,89 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566D7821DD8
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 15:39:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 277EA821E2C
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 15:57:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKfuv-00036r-DX; Tue, 02 Jan 2024 09:38:53 -0500
+	id 1rKgB6-0007Kv-GV; Tue, 02 Jan 2024 09:55:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rKfut-00035a-Ae
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 09:38:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=hBD0=IM=kaod.org=clg@ozlabs.org>)
+ id 1rKgB3-0007KM-Ld; Tue, 02 Jan 2024 09:55:33 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rKfur-0003t5-BB
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 09:38:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704206328;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3F7U3lQS5j0a5uSmITGI4DPObQevbEoHda2/rZfgWqA=;
- b=hzSaPgeXg82nmWSwYyROy4FU1eJlev2n4C1O0TkjnolxsisDP2PK1h93KZZ3jopeGPk98M
- khSMW0QQ0nceRH1eOM0toTtW2yzBgrBPydv2Vpa/3ARJpP5EMkAeVnkGUyXDxdj23rpRWm
- WoW0j8ebiiNml2Xitv3IgUDnYMNxMyA=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-214-mOtdUZbIPwyfL9ZAwSw_dQ-1; Tue, 02 Jan 2024 09:38:47 -0500
-X-MC-Unique: mOtdUZbIPwyfL9ZAwSw_dQ-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-5f1df517cf3so21731987b3.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 06:38:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704206326; x=1704811126;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3F7U3lQS5j0a5uSmITGI4DPObQevbEoHda2/rZfgWqA=;
- b=rOS1PpRvJkzH2a6WFTjxbfPL1H2QhYfG2qrA/TYTeXA4FVrin/zjOY1hYY74jkmfbF
- gftIsyNsr8vTJW9ud9tn/Rf+MEoVekDJTLAalp0K21odGdVdL9dh1ZAt4lZFBJLAFoKR
- +10Wz8NR6xeMe1OrtSCxGm1YshmhZaaZctIrParTLOrjAGj3Qm6M3DTwvpJuXwW8d/WJ
- HPSJkiqmuHWQBodjaW0UvM6K4dIY9s9mZUVQl17h44qmOejhb7JF3g/eZfoj/mS/ETxQ
- wAR94QpESFKaJ3T021lC3D7dnTR2kcKvqaco1ove37FDSbodg/JQ7VPVNIX/SkcIDAnl
- 20Mg==
-X-Gm-Message-State: AOJu0Yybm2JhHdIXAPuEXe6ygQ3oSS3qZNv14MgXwCVc7xewAyB6B0YW
- grCfJidcw3OWcFoqkGUs2DgKU6hkMwQ0aAK1A4gzXL0Sl0cEWkGaNnHj19SI+nbuwy99uKnyUOt
- 1WfP1AgNHA1i4E1mOMql90MIX8a0+lhULad+smBg=
-X-Received: by 2002:a0d:ea4e:0:b0:5e8:566:56ff with SMTP id
- t75-20020a0dea4e000000b005e8056656ffmr11525041ywe.32.1704206326701; 
- Tue, 02 Jan 2024 06:38:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGniz6n5paOXmq9CaLgyyBZv0q4o8SiSG1q7rB1ViVBgikWhk4Vx2GwFXnNY6fDbTTHmaSwJ/QRypCFRoON0UI=
-X-Received: by 2002:a0d:ea4e:0:b0:5e8:566:56ff with SMTP id
- t75-20020a0dea4e000000b005e8056656ffmr11525035ywe.32.1704206326471; Tue, 02
- Jan 2024 06:38:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <SRS0=hBD0=IM=kaod.org=clg@ozlabs.org>)
+ id 1rKgAw-0006tq-WA; Tue, 02 Jan 2024 09:55:29 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T4G9g6t02z4x1P;
+ Wed,  3 Jan 2024 01:55:19 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T4G9X4wtBz4wcc;
+ Wed,  3 Jan 2024 01:55:12 +1100 (AEDT)
+Message-ID: <03b969d3-1947-4186-b3ee-15e3cddc5f34@kaod.org>
+Date: Tue, 2 Jan 2024 15:55:08 +0100
 MIME-Version: 1.0
-References: <20231215172830.2540987-1-eperezma@redhat.com>
- <20231225113031-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20231225113031-mutt-send-email-mst@kernel.org>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Tue, 2 Jan 2024 15:38:10 +0100
-Message-ID: <CAJaqyWc+Y_nTHJEPJxcseOT9Bop3z232J_WoShHTeDSJgFBXEw@mail.gmail.com>
-Subject: Re: [PATCH for 9.0 00/12] Map memory at destination .load_setup in
- vDPA-net migration
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, si-wei.liu@oracle.com, 
- Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- Dragos Tatulea <dtatulea@nvidia.com>, Zhu Lingshan <lingshan.zhu@intel.com>, 
- Parav Pandit <parav@mellanox.com>, Stefano Garzarella <sgarzare@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.178,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in
+ A7/A15 MPCore priv
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
+ Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
+ qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+References: <20231212162935.42910-1-philmd@linaro.org>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231212162935.42910-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=hBD0=IM=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,114 +74,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 25, 2023 at 5:31=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
->
-> On Fri, Dec 15, 2023 at 06:28:18PM +0100, Eugenio P=C3=A9rez wrote:
-> > Current memory operations like pinning may take a lot of time at the
-> > destination.  Currently they are done after the source of the migration=
- is
-> > stopped, and before the workload is resumed at the destination.  This i=
-s a
-> > period where neigher traffic can flow, nor the VM workload can continue
-> > (downtime).
-> >
-> > We can do better as we know the memory layout of the guest RAM at the
-> > destination from the moment the migration starts.  Moving that operatio=
-n allows
-> > QEMU to communicate the kernel the maps while the workload is still run=
-ning in
-> > the source, so Linux can start mapping them.
-> >
-> > Also, the destination of the guest memory may finish before the destina=
-tion
-> > QEMU maps all the memory.  In this case, the rest of the memory will be=
- mapped
-> > at the same time as before applying this series, when the device is sta=
-rting.
-> > So we're only improving with this series.
-> >
-> > If the destination has the switchover_ack capability enabled, the desti=
-nation
-> > hold the migration until all the memory is mapped.
-> >
-> > This needs to be applied on top of [1]. That series performs some code
-> > reorganization that allows to map the guest memory without knowing the =
-queue
-> > layout the guest configure on the device.
-> >
-> > This series reduced the downtime in the stop-and-copy phase of the live
-> > migration from 20s~30s to 5s, with a 128G mem guest and two mlx5_vdpa d=
-evices,
-> > per [2].
->
-> I think this is reasonable and could be applied - batching is good.
-> Could you rebase on master and repost please?
->
+On 12/12/23 17:29, Philippe Mathieu-Daudé wrote:
+> Hi,
+> 
+> When a MPCore cluster is used, the Cortex-A cores belong the the
+> cluster container, not to the board/soc layer. This series move
+> the creation of vCPUs to the MPCore private container.
+> 
+> Doing so we consolidate the QOM model, moving common code in a
+> central place (abstract MPCore parent).
 
-New comments appeared in the meantime [1], but I'll rebase with the
-needed changes after they converge.
+Changing the QOM hierarchy has an impact on the state of the machine
+and some fixups are then required to maintain migration compatibility.
+This can become a real headache for KVM machines like virt for which
+migration compatibility is a feature, less for emulated ones.
 
-Thanks!
+I don't have a good solution to propose to overcome this problem :/
 
-[1] https://patchwork.kernel.org/comment/25653487/
+C.
+  
 
-
-> > Future directions on top of this series may include:
-> > * Iterative migration of virtio-net devices, as it may reduce downtime =
-per [3].
-> >   vhost-vdpa net can apply the configuration through CVQ in the destina=
-tion
-> >   while the source is still migrating.
-> > * Move more things ahead of migration time, like DRIVER_OK.
-> > * Check that the devices of the destination are valid, and cancel the m=
-igration
-> >   in case it is not.
-> >
-> > v1 from RFC v2:
-> > * Hold on migration if memory has not been mapped in full with switchov=
-er_ack.
-> > * Revert map if the device is not started.
-> >
-> > RFC v2:
-> > * Delegate map to another thread so it does no block QMP.
-> > * Fix not allocating iova_tree if x-svq=3Don at the destination.
-> > * Rebased on latest master.
-> > * More cleanups of current code, that might be split from this series t=
-oo.
-> >
-> > [1] https://lists.nongnu.org/archive/html/qemu-devel/2023-12/msg01986.h=
-tml
-> > [2] https://lists.nongnu.org/archive/html/qemu-devel/2023-12/msg00909.h=
-tml
-> > [3] https://lore.kernel.org/qemu-devel/6c8ebb97-d546-3f1c-4cdd-54e23a56=
-6f61@nvidia.com/T/
-> >
-> > Eugenio P=C3=A9rez (12):
-> >   vdpa: do not set virtio status bits if unneeded
-> >   vdpa: make batch_begin_once early return
-> >   vdpa: merge _begin_batch into _batch_begin_once
-> >   vdpa: extract out _dma_end_batch from _listener_commit
-> >   vdpa: factor out stop path of vhost_vdpa_dev_start
-> >   vdpa: check for iova tree initialized at net_client_start
-> >   vdpa: set backend capabilities at vhost_vdpa_init
-> >   vdpa: add vhost_vdpa_load_setup
-> >   vdpa: approve switchover after memory map in the migration destinatio=
-n
-> >   vdpa: add vhost_vdpa_net_load_setup NetClient callback
-> >   vdpa: add vhost_vdpa_net_switchover_ack_needed
-> >   virtio_net: register incremental migration handlers
-> >
-> >  include/hw/virtio/vhost-vdpa.h |  32 ++++
-> >  include/net/net.h              |   8 +
-> >  hw/net/virtio-net.c            |  48 ++++++
-> >  hw/virtio/vhost-vdpa.c         | 274 +++++++++++++++++++++++++++------
-> >  net/vhost-vdpa.c               |  43 +++++-
-> >  5 files changed, 357 insertions(+), 48 deletions(-)
-> >
-> > --
-> > 2.39.3
-> >
->
+> 
+> This eventually allow removing one qemu_get_cpu() use, which we
+> want to remove in heterogeneous machines (machines using MPCore
+> are candidate for heterogeneous emulation).
+> 
+> Maybe these hw/cpu/arm/ files belong to hw/arm/...
+> 
+> Regards,
+> 
+> Phil.
+> 
+> Philippe Mathieu-Daudé (33):
+>    hw/arm/boot: Propagate vCPU to arm_load_dtb()
+>    hw/arm/fsl-imx6: Add a local 'gic' variable
+>    hw/arm/fsl-imx6ul: Add a local 'gic' variable
+>    hw/arm/fsl-imx7: Add a local 'gic' variable
+>    hw/cpu: Remove dead Kconfig
+>    hw/cpu/arm: Rename 'busdev' -> 'gicsbd' in a15mp_priv_realize()
+>    hw/cpu/arm: Alias 'num-cpu' property on TYPE_REALVIEW_MPCORE
+>    hw/cpu/arm: Declare CPU QOM types using DEFINE_TYPES() macro
+>    hw/cpu/arm: Merge {a9mpcore.h, a15mpcore.h} as cortex_mpcore.h
+>    hw/cpu/arm: Introduce abstract CORTEX_MPCORE_PRIV QOM type
+>    hw/cpu/arm: Have A9MPCORE/A15MPCORE inheritate common
+>      CORTEX_MPCORE_PRIV
+>    hw/cpu/arm: Create MPCore container in QOM parent
+>    hw/cpu/arm: Handle 'num_cores' property once in MPCore parent
+>    hw/cpu/arm: Handle 'has_el2/3' properties once in MPCore parent
+>    hw/cpu/arm: Handle 'gic-irq' property once in MPCore parent
+>    hw/cpu/arm: Handle GIC once in MPCore parent
+>    hw/cpu/arm: Document more properties of CORTEX_MPCORE_PRIV QOM type
+>    hw/cpu/arm: Replace A15MPPrivState by CortexMPPrivState
+>    hw/cpu/arm: Introduce TYPE_A7MPCORE_PRIV for Cortex-A7 MPCore
+>    hw/cpu/arm: Consolidate check on max GIC spi supported
+>    hw/cpu/arm: Create CPUs once in MPCore parent
+>    hw/arm/aspeed_ast2600: Let the A7MPcore create/wire the CPU cores
+>    hw/arm/exynos4210: Let the A9MPcore create/wire the CPU cores
+>    hw/arm/fsl-imx6: Let the A9MPcore create/wire the CPU cores
+>    hw/arm/fsl-imx6ul: Let the A7MPcore create/wire the CPU cores
+>    hw/arm/fsl-imx7: Let the A7MPcore create/wire the CPU cores
+>    hw/arm/highbank: Let the A9/A15MPcore create/wire the CPU cores
+>    hw/arm/vexpress: Let the A9/A15MPcore create/wire the CPU cores
+>    hw/arm/xilinx_zynq: Let the A9MPcore create/wire the CPU cores
+>    hw/arm/npcm7xx: Let the A9MPcore create/wire the CPU cores
+>    hw/cpu/a9mpcore: Remove legacy code
+>    hw/cpu/arm: Remove 'num-cpu' property alias
+>    hw/cpu/arm: Remove use of qemu_get_cpu() in A7/A15 realize()
+> 
+>   MAINTAINERS                    |   3 +-
+>   include/hw/arm/aspeed_soc.h    |   5 +-
+>   include/hw/arm/boot.h          |   4 +-
+>   include/hw/arm/exynos4210.h    |   6 +-
+>   include/hw/arm/fsl-imx6.h      |   6 +-
+>   include/hw/arm/fsl-imx6ul.h    |   8 +-
+>   include/hw/arm/fsl-imx7.h      |   8 +-
+>   include/hw/arm/npcm7xx.h       |   3 +-
+>   include/hw/cpu/a15mpcore.h     |  44 -------
+>   include/hw/cpu/a9mpcore.h      |  39 -------
+>   include/hw/cpu/cortex_mpcore.h | 135 ++++++++++++++++++++++
+>   hw/arm/aspeed_ast2600.c        |  61 ++++------
+>   hw/arm/boot.c                  |  11 +-
+>   hw/arm/exynos4210.c            |  60 ++++------
+>   hw/arm/exynos4_boards.c        |   6 +-
+>   hw/arm/fsl-imx6.c              |  84 ++++----------
+>   hw/arm/fsl-imx6ul.c            |  65 ++++-------
+>   hw/arm/fsl-imx7.c              | 103 +++++------------
+>   hw/arm/highbank.c              |  56 ++-------
+>   hw/arm/mcimx6ul-evk.c          |   3 +-
+>   hw/arm/mcimx7d-sabre.c         |   3 +-
+>   hw/arm/npcm7xx.c               |  48 ++------
+>   hw/arm/realview.c              |   4 +-
+>   hw/arm/sabrelite.c             |   4 +-
+>   hw/arm/vexpress.c              |  60 +++-------
+>   hw/arm/virt.c                  |   2 +-
+>   hw/arm/xilinx_zynq.c           |  30 ++---
+>   hw/cpu/a15mpcore.c             | 179 +++++++++++++----------------
+>   hw/cpu/a9mpcore.c              | 138 +++++++++-------------
+>   hw/cpu/arm11mpcore.c           |  23 ++--
+>   hw/cpu/cortex_mpcore.c         | 202 +++++++++++++++++++++++++++++++++
+>   hw/cpu/realview_mpcore.c       |  30 ++---
+>   hw/arm/Kconfig                 |   8 +-
+>   hw/cpu/Kconfig                 |   8 --
+>   hw/cpu/meson.build             |   1 +
+>   35 files changed, 689 insertions(+), 761 deletions(-)
+>   delete mode 100644 include/hw/cpu/a15mpcore.h
+>   delete mode 100644 include/hw/cpu/a9mpcore.h
+>   create mode 100644 include/hw/cpu/cortex_mpcore.h
+>   create mode 100644 hw/cpu/cortex_mpcore.c
+>   delete mode 100644 hw/cpu/Kconfig
+> 
 
 
