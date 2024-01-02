@@ -2,63 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277EA821E2C
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 15:57:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C4C0821E65
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 16:10:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKgB6-0007Kv-GV; Tue, 02 Jan 2024 09:55:36 -0500
+	id 1rKgO5-0001hR-FK; Tue, 02 Jan 2024 10:09:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=hBD0=IM=kaod.org=clg@ozlabs.org>)
- id 1rKgB3-0007KM-Ld; Tue, 02 Jan 2024 09:55:33 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=hBD0=IM=kaod.org=clg@ozlabs.org>)
- id 1rKgAw-0006tq-WA; Tue, 02 Jan 2024 09:55:29 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T4G9g6t02z4x1P;
- Wed,  3 Jan 2024 01:55:19 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T4G9X4wtBz4wcc;
- Wed,  3 Jan 2024 01:55:12 +1100 (AEDT)
-Message-ID: <03b969d3-1947-4186-b3ee-15e3cddc5f34@kaod.org>
-Date: Tue, 2 Jan 2024 15:55:08 +0100
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKgO3-0001gx-Fk
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 10:08:59 -0500
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKgO1-0000wk-JK
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 10:08:58 -0500
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-50e759ece35so7205200e87.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 07:08:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704208135; x=1704812935; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=J7Tq9QtgITf1V5dEA4XQbNPEPX/yCoTUWLmNnJyV6yI=;
+ b=xNY8KlsCiKdR/dKI88opLPrm28l03/ZElUnU97UeTexmMT54aXcSSrKTWJ1bnqI0id
+ CbeIe6HadrhHOnVlPWRjsXgTfh4IQKleRJDeIGB4MKisQKKGhkmnZZhSkLPgqgnkg5gu
+ lNkm7h9iJfyX+gudtrahOusLSeLxwhx8gvraJX6HtaSMTkVljBWnE7BJjJWFuclLpqZn
+ FQ594P2swLbcfB+JggZ7ip2NtPgFVWOLeKwQTU1yn7n3PQq0rm96YpTmLrRq0uNJ/DFr
+ JnrTBHmtG6LoVb0l+FE83O2uqnjqltzjtNJfyB3fc24lEBMRsRM99wm01b5bFY/mb/Fr
+ D7sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704208135; x=1704812935;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=J7Tq9QtgITf1V5dEA4XQbNPEPX/yCoTUWLmNnJyV6yI=;
+ b=Bzep7Vix/ys7zQkNvRxT1l5j6mVqP65OjLLb1fLRO+2vGS5Pe88TzFAyQX+ck+BhxB
+ DW+9O+utGekEaa4gZCr0gP9LOqIPUjQs4utBnUydV0FovRPw2sgorDTrGH+iNSCaxn7C
+ kO33791MiSYGSWA2Z2M7Brd7L1SQxZ4/BIn1BR+1YobRCjWAFiq+7h/3/VFA5ZkZ3Un+
+ SrFAn2qXF1qkKLDTUTRGcPe77R2aUNQoJ83GuBRpWnjrhQh5cMjzgi4kXvpFdPTaTTCW
+ Zyp2OGuSvro2bXGKcNyN67LxpduIsJd17wGUhENLCDVqQl/dBeW+W/Id7n5q7iKcoWWU
+ 0TYA==
+X-Gm-Message-State: AOJu0YyGPGcRNhDosdAGf4zYkvRpwQR1Vxg+HKJTMFFmFnufJf9icLZl
+ MqF5TMDVLYP+00uCzKhGnPk1NEEd0/SNYQ==
+X-Google-Smtp-Source: AGHT+IGAByqF8gx3Q5Y/SXLiyjnnY7ZEYqkNG8ikWH782h3MP0VLzZWDbJ/rzZdLzn0ZuQaN+iGLKA==
+X-Received: by 2002:a05:6512:3b83:b0:50e:7b37:d110 with SMTP id
+ g3-20020a0565123b8300b0050e7b37d110mr5949366lfv.16.1704208135402; 
+ Tue, 02 Jan 2024 07:08:55 -0800 (PST)
+Received: from [192.168.69.100] (sal63-h02-176-184-16-71.dsl.sta.abo.bbox.fr.
+ [176.184.16.71]) by smtp.gmail.com with ESMTPSA id
+ qc28-20020a170906d8bc00b00a279b182e42sm4026491ejb.171.2024.01.02.07.08.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Jan 2024 07:08:55 -0800 (PST)
+Message-ID: <985e87d6-0f8c-4127-b425-f1efc6034879@linaro.org>
+Date: Tue, 2 Jan 2024 16:08:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in
- A7/A15 MPCore priv
+Subject: Re: [PATCH for 8.2.1] hw/net: cadence_gem: Fix MDIO_OP_xxx values
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>,
+To: Bin Meng <bmeng@tinylab.org>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org, Luc Michel <luc.michel@amd.com>
+Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>,
+ Alistair Francis <alistair@alistair23.me>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
- qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-References: <20231212162935.42910-1-philmd@linaro.org>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231212162935.42910-1-philmd@linaro.org>
+ Jason Wang <jasowang@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org, Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+References: <20240102141803.117631-1-bmeng@tinylab.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240102141803.117631-1-bmeng@tinylab.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=hBD0=IM=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x130.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,114 +96,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/12/23 17:29, Philippe Mathieu-Daudé wrote:
-> Hi,
+On 2/1/24 15:18, Bin Meng wrote:
+> Testing upstream U-Boot with 'sifive_u' machine we see:
 > 
-> When a MPCore cluster is used, the Cortex-A cores belong the the
-> cluster container, not to the board/soc layer. This series move
-> the creation of vCPUs to the MPCore private container.
+>    => dhcp
+>    ethernet@10090000: PHY present at 0
+>    Could not get PHY for ethernet@10090000: addr 0
+>    phy_connect failed
 > 
-> Doing so we consolidate the QOM model, moving common code in a
-> central place (abstract MPCore parent).
+> This has been working till QEMU 8.1 but broken since QEMU 8.2.
 
-Changing the QOM hierarchy has an impact on the state of the machine
-and some fixups are then required to maintain migration compatibility.
-This can become a real headache for KVM machines like virt for which
-migration compatibility is a feature, less for emulated ones.
+s/till/until/?
 
-I don't have a good solution to propose to overcome this problem :/
+> Fixes: 1b09eeb122aa ("hw/net/cadence_gem: use FIELD to describe PHYMNTNC register fields")
+> Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+> Signed-off-by: Bin Meng <bmeng@tinylab.org>
+> 
+> ---
+> 
+>   hw/net/cadence_gem.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c
+> index 296bba238e..472ce9c8cf 100644
+> --- a/hw/net/cadence_gem.c
+> +++ b/hw/net/cadence_gem.c
+> @@ -199,8 +199,8 @@ REG32(PHYMNTNC, 0x34) /* Phy Maintenance reg */
+>       FIELD(PHYMNTNC, PHY_ADDR, 23, 5)
+>       FIELD(PHYMNTNC, OP, 28, 2)
+>       FIELD(PHYMNTNC, ST, 30, 2)
+> -#define MDIO_OP_READ    0x3
+> -#define MDIO_OP_WRITE   0x2
+> +#define MDIO_OP_READ    0x2
+> +#define MDIO_OP_WRITE   0x1
+>   
+>   REG32(RXPAUSE, 0x38) /* RX Pause Time reg */
+>   REG32(TXPAUSE, 0x3c) /* TX Pause Time reg */
 
-C.
-  
-
-> 
-> This eventually allow removing one qemu_get_cpu() use, which we
-> want to remove in heterogeneous machines (machines using MPCore
-> are candidate for heterogeneous emulation).
-> 
-> Maybe these hw/cpu/arm/ files belong to hw/arm/...
-> 
-> Regards,
-> 
-> Phil.
-> 
-> Philippe Mathieu-Daudé (33):
->    hw/arm/boot: Propagate vCPU to arm_load_dtb()
->    hw/arm/fsl-imx6: Add a local 'gic' variable
->    hw/arm/fsl-imx6ul: Add a local 'gic' variable
->    hw/arm/fsl-imx7: Add a local 'gic' variable
->    hw/cpu: Remove dead Kconfig
->    hw/cpu/arm: Rename 'busdev' -> 'gicsbd' in a15mp_priv_realize()
->    hw/cpu/arm: Alias 'num-cpu' property on TYPE_REALVIEW_MPCORE
->    hw/cpu/arm: Declare CPU QOM types using DEFINE_TYPES() macro
->    hw/cpu/arm: Merge {a9mpcore.h, a15mpcore.h} as cortex_mpcore.h
->    hw/cpu/arm: Introduce abstract CORTEX_MPCORE_PRIV QOM type
->    hw/cpu/arm: Have A9MPCORE/A15MPCORE inheritate common
->      CORTEX_MPCORE_PRIV
->    hw/cpu/arm: Create MPCore container in QOM parent
->    hw/cpu/arm: Handle 'num_cores' property once in MPCore parent
->    hw/cpu/arm: Handle 'has_el2/3' properties once in MPCore parent
->    hw/cpu/arm: Handle 'gic-irq' property once in MPCore parent
->    hw/cpu/arm: Handle GIC once in MPCore parent
->    hw/cpu/arm: Document more properties of CORTEX_MPCORE_PRIV QOM type
->    hw/cpu/arm: Replace A15MPPrivState by CortexMPPrivState
->    hw/cpu/arm: Introduce TYPE_A7MPCORE_PRIV for Cortex-A7 MPCore
->    hw/cpu/arm: Consolidate check on max GIC spi supported
->    hw/cpu/arm: Create CPUs once in MPCore parent
->    hw/arm/aspeed_ast2600: Let the A7MPcore create/wire the CPU cores
->    hw/arm/exynos4210: Let the A9MPcore create/wire the CPU cores
->    hw/arm/fsl-imx6: Let the A9MPcore create/wire the CPU cores
->    hw/arm/fsl-imx6ul: Let the A7MPcore create/wire the CPU cores
->    hw/arm/fsl-imx7: Let the A7MPcore create/wire the CPU cores
->    hw/arm/highbank: Let the A9/A15MPcore create/wire the CPU cores
->    hw/arm/vexpress: Let the A9/A15MPcore create/wire the CPU cores
->    hw/arm/xilinx_zynq: Let the A9MPcore create/wire the CPU cores
->    hw/arm/npcm7xx: Let the A9MPcore create/wire the CPU cores
->    hw/cpu/a9mpcore: Remove legacy code
->    hw/cpu/arm: Remove 'num-cpu' property alias
->    hw/cpu/arm: Remove use of qemu_get_cpu() in A7/A15 realize()
-> 
->   MAINTAINERS                    |   3 +-
->   include/hw/arm/aspeed_soc.h    |   5 +-
->   include/hw/arm/boot.h          |   4 +-
->   include/hw/arm/exynos4210.h    |   6 +-
->   include/hw/arm/fsl-imx6.h      |   6 +-
->   include/hw/arm/fsl-imx6ul.h    |   8 +-
->   include/hw/arm/fsl-imx7.h      |   8 +-
->   include/hw/arm/npcm7xx.h       |   3 +-
->   include/hw/cpu/a15mpcore.h     |  44 -------
->   include/hw/cpu/a9mpcore.h      |  39 -------
->   include/hw/cpu/cortex_mpcore.h | 135 ++++++++++++++++++++++
->   hw/arm/aspeed_ast2600.c        |  61 ++++------
->   hw/arm/boot.c                  |  11 +-
->   hw/arm/exynos4210.c            |  60 ++++------
->   hw/arm/exynos4_boards.c        |   6 +-
->   hw/arm/fsl-imx6.c              |  84 ++++----------
->   hw/arm/fsl-imx6ul.c            |  65 ++++-------
->   hw/arm/fsl-imx7.c              | 103 +++++------------
->   hw/arm/highbank.c              |  56 ++-------
->   hw/arm/mcimx6ul-evk.c          |   3 +-
->   hw/arm/mcimx7d-sabre.c         |   3 +-
->   hw/arm/npcm7xx.c               |  48 ++------
->   hw/arm/realview.c              |   4 +-
->   hw/arm/sabrelite.c             |   4 +-
->   hw/arm/vexpress.c              |  60 +++-------
->   hw/arm/virt.c                  |   2 +-
->   hw/arm/xilinx_zynq.c           |  30 ++---
->   hw/cpu/a15mpcore.c             | 179 +++++++++++++----------------
->   hw/cpu/a9mpcore.c              | 138 +++++++++-------------
->   hw/cpu/arm11mpcore.c           |  23 ++--
->   hw/cpu/cortex_mpcore.c         | 202 +++++++++++++++++++++++++++++++++
->   hw/cpu/realview_mpcore.c       |  30 ++---
->   hw/arm/Kconfig                 |   8 +-
->   hw/cpu/Kconfig                 |   8 --
->   hw/cpu/meson.build             |   1 +
->   35 files changed, 689 insertions(+), 761 deletions(-)
->   delete mode 100644 include/hw/cpu/a15mpcore.h
->   delete mode 100644 include/hw/cpu/a9mpcore.h
->   create mode 100644 include/hw/cpu/cortex_mpcore.h
->   create mode 100644 hw/cpu/cortex_mpcore.c
->   delete mode 100644 hw/cpu/Kconfig
-> 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
