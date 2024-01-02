@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1787821826
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 08:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D685B821834
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 09:12:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKZfn-00054W-K2; Tue, 02 Jan 2024 02:58:51 -0500
+	id 1rKZri-0007r3-Er; Tue, 02 Jan 2024 03:11:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rKZfk-000528-Jo
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 02:58:48 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rKZrd-0007qb-Iy
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 03:11:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rKZfi-0001hs-RL
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 02:58:48 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rKZrc-00048c-2P
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 03:11:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704182325;
+ s=mimecast20190719; t=1704183061;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GTKWiTdbmJanmz141SH4msraPtvzGFRVXDb6ZOwPH+0=;
- b=YtflPPaK+MDs54M08TBYadMF+ZnR7EgEoQxnoiEwaOeLZ2qAWItCOOf8lAEnnIc1d1Ev2z
- aLmBFg3c7OmvzzkMASCx+yPAZj1YFtSdQlh5ybZ4tSAZyIMdeTlDH8n45eI3Llbs2nrqLd
- XMIbbRqSsJzCac2Awqbz0KrZI6ve82k=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pHCkzghVSQDWF5YoKXlnYeDKNOmUMADj5ccuCrCoRvw=;
+ b=F7NEh9TaVA+pjk8NRaWQLAqz9iGKqGch8qWBEgE+QiFFwMvqKW4SJbEF8Joqkrv/nGs82y
+ JP9dVPBAp+pNxegGgGVaTcEsncpr2O9Ud3KUy3fZVExUq9T9OzXQ5jjE9aKOvj4dXriDyv
+ zcCp9Hz3vnGlRioZd7HrSkt+LhyUkB4=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-567-QrrybPjAOBu4K2afKsDx7w-1; Tue, 02 Jan 2024 02:58:44 -0500
-X-MC-Unique: QrrybPjAOBu4K2afKsDx7w-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-680971002e3so52717366d6.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jan 2024 23:58:44 -0800 (PST)
+ us-mta-279-TY_TZBv-M3mWMmfvrLCYww-1; Tue, 02 Jan 2024 03:11:00 -0500
+X-MC-Unique: TY_TZBv-M3mWMmfvrLCYww-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-427e291776aso101045711cf.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 00:11:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704182324; x=1704787124;
+ d=1e100.net; s=20230601; t=1704183059; x=1704787859;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GTKWiTdbmJanmz141SH4msraPtvzGFRVXDb6ZOwPH+0=;
- b=H/IMizEyZYPiLLT9UUFko0XiGgP0tfBWsHvkLwO35x5LzkStOg1GiD/IU/5g4zjfft
- Mb/TF4MoQg8L7Or0w6ONKIbR9MqdaiO2tE6zBP8gZFlkjeVsGaS5g3rbCcW+qUTcp9SX
- ERJ9VxFs5K0Ahat+lxPZ9fVE88jSeg6cn/kBHz92gCZn57zgHxaFimJEp9TNEbkuovir
- 2OMRaP1BcqGLNQExtk120Oaj/5esMtAOiOs8GZsV4sjjuSFi/eneGsPy+t+K+iT0LJZe
- 0XQtQtH4ORS3PsC2VEvgjAImgCWQw6LWMrlkHwcd/JVFLe5QRPLddA94n9dBn/t2aRdq
- yMNQ==
-X-Gm-Message-State: AOJu0YzCWc70yB8HoskzyxoVO6XUr535YPiQpiDygyfUxjdzsuMRS0MZ
- Va1kkmfWpPje37z+KzeYcgDD3RfZsv92tB3OGn6AyxoZCZt1YqL21NuzKw97MfL6tFXqTp6Tz1s
- U6HSDiR7vehw7mL18XxJajfw=
-X-Received: by 2002:a05:6214:2608:b0:67f:49ae:9adb with SMTP id
- gu8-20020a056214260800b0067f49ae9adbmr28953326qvb.41.1704182323858; 
- Mon, 01 Jan 2024 23:58:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHwGs/dLKBrb+Nl0R2+SrN+1LLJ6i9w4/vD11hdGElpBeB4KLIpu1/ZLkUbTevT2k5XBqWhsw==
-X-Received: by 2002:a05:6214:2608:b0:67f:49ae:9adb with SMTP id
- gu8-20020a056214260800b0067f49ae9adbmr28953317qvb.41.1704182323622; 
- Mon, 01 Jan 2024 23:58:43 -0800 (PST)
+ bh=pHCkzghVSQDWF5YoKXlnYeDKNOmUMADj5ccuCrCoRvw=;
+ b=eIh7SFknVIEPQvchp0i1B/NzHMIVcMZ1FFBHSPAgLGJwET7DJDn1LhQpzljohUJaXy
+ mDNR+j3E4znLn8JVeIq7XP8PawwV7IH1+XffL6SHG4ICVvun9C/9odlj/6vIq63Vo7l7
+ nR8ZoTbq1pMSGrkAOSPWUBaeH3/ynP2FDFjGtDN4uDIgfCEukGmvf8I+6+OoNYx/g3nc
+ K+IetjoS6coQDLGwAwM0J5mzj9/xOhvU9Pvw9kSbMWZmXPXo671xgqFkb47uMDz0jkww
+ WJx6S8G1evnk4MoZKUjBGu7D1DiRaNzgKEXuQvbLUyIiLzMi5FVBWeNAX8z98n8u1r/N
+ jeAg==
+X-Gm-Message-State: AOJu0YwO4oSSRT6JXJF4JmMCljYmDCKf7qcsr9cVVg3XbUKMgQZsRH45
+ FJ4X1mVFZziTyJi/ccCIraLJ83inLqFwQ6EJEg+xrHgnZcrXtbGfcgtd4HseLuSo7EoJEhO5Jn8
+ YMb1j8OeXemZZhqHEZEtrCqNzPHPBQRRfeAfHeDl3wJfM21qsJaZkIAkMJZKxMJkt1xiBPnr/kY
+ RN
+X-Received: by 2002:ac8:5d86:0:b0:425:93d0:8267 with SMTP id
+ d6-20020ac85d86000000b0042593d08267mr23778217qtx.48.1704183059256; 
+ Tue, 02 Jan 2024 00:10:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG59N1yVDFq2CG9N910rSK2vlxHHjEvnnRcuSNlom0DqWlyVg/7omubsE/mfn/92M42ba7/Eg==
+X-Received: by 2002:ac8:5d86:0:b0:425:93d0:8267 with SMTP id
+ d6-20020ac85d86000000b0042593d08267mr23778208qtx.48.1704183058865; 
+ Tue, 02 Jan 2024 00:10:58 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- bp13-20020a05621407ed00b00680b1731d9asm1423324qvb.5.2024.01.01.23.58.42
+ l8-20020ac84cc8000000b004257bf9a394sm12599119qtv.14.2024.01.02.00.10.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 01 Jan 2024 23:58:43 -0800 (PST)
-Message-ID: <b33c1eef-533c-44fa-b8e3-a59c20bb31fa@redhat.com>
-Date: Tue, 2 Jan 2024 08:58:40 +0100
+ Tue, 02 Jan 2024 00:10:58 -0800 (PST)
+Message-ID: <a12b52a1-5e79-4e0b-84bb-98af94b1d571@redhat.com>
+Date: Tue, 2 Jan 2024 09:10:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/vfio: fix iteration over global VFIODevice list
+Subject: Re: [PATCH] vfio/iommufd: Remove the use of stat() to check file
+ existence
 Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>,
+To: qemu-devel@nongnu.org
+Cc: Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Alex Williamson <alex.williamson@redhat.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-stable@nongnu.org" <qemu-stable@nongnu.org>,
- 'YangHang Liu' <yanghliu@redhat.com>
-References: <20231229203854.8281-1-vr_qemu@t-online.de>
- <SJ0PR11MB674437F64A9154EDD0055A799261A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+References: <20231221080957.1081077-1-clg@redhat.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <SJ0PR11MB674437F64A9154EDD0055A799261A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+In-Reply-To: <20231221080957.1081077-1-clg@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
@@ -105,85 +104,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/2/24 05:27, Duan, Zhenzhong wrote:
+On 12/21/23 09:09, Cédric Le Goater wrote:
+> Using stat() before opening a file or a directory can lead to a
+> time-of-check to time-of-use (TOCTOU) filesystem race, which is
+> reported by coverity as a Security best practices violations. The
+> sequence could be replaced by open and fdopendir but it doesn't add
+> much in this case. Simply use opendir to avoid the race.
 > 
-> 
->> -----Original Message-----
->> From: Volker Rümelin <vr_qemu@t-online.de>
->> Subject: [PATCH] hw/vfio: fix iteration over global VFIODevice list
->>
->> Commit 3d779abafe ("vfio/common: Introduce a global VFIODevice list")
->> introduced a global VFIODevice list, but forgot to update the list
->> element field name when iterating over the new list. Change the code
->> to use the correct list element field.
->>
->> Fixes: 3d779abafe ("vfio/common: Introduce a global VFIODevice list")
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2061
->> Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-> 
-> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> 
-> My fault, thanks for fixing!
-> 
-> I also digged into why I didn't reproduce this issue with two vfio devices before.
-> This issue only reproduce with two vfio devices in one reset group(same slot or bus)
-> plus a third vfio device in a different reset group. Then the two vfio devices will
-> miss reset due to this bug.
+> Fixes: CID 1531551
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
 
-Thanks for digging.
+
+Applied to vfio-next.
+
+Thanks,
 
 C.
 
 
-
-> BRs.
-> Zhenzhong
-> 
->> ---
->> hw/vfio/common.c | 8 ++++----
->> 1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->> index 08a3e57672..3ba892d7d3 100644
->> --- a/hw/vfio/common.c
->> +++ b/hw/vfio/common.c
->> @@ -74,7 +74,7 @@ bool vfio_mig_active(void)
->>          return false;
->>      }
->>
->> -    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
->> +    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
->>          if (vbasedev->migration_blocker) {
->>              return false;
->>          }
->> @@ -95,7 +95,7 @@ static bool
->> vfio_multiple_devices_migration_is_supported(void)
->>      unsigned int device_num = 0;
->>      bool all_support_p2p = true;
->>
->> -    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
->> +    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
->>          if (vbasedev->migration) {
->>              device_num++;
->>
->> @@ -1367,13 +1367,13 @@ void vfio_reset_handler(void *opaque)
->> {
->>      VFIODevice *vbasedev;
->>
->> -    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
->> +    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
->>          if (vbasedev->dev->realized) {
->>              vbasedev->ops->vfio_compute_needs_reset(vbasedev);
->>          }
->>      }
->>
->> -    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
->> +    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
->>          if (vbasedev->dev->realized && vbasedev->needs_reset) {
->>              vbasedev->ops->vfio_hot_reset_multi(vbasedev);
->>          }
->> --
->> 2.35.3
-> 
 
 
