@@ -2,101 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450B3821A3C
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 11:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A02821AB9
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 12:15:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKcEf-0006lw-Nb; Tue, 02 Jan 2024 05:43:01 -0500
+	id 1rKcjM-0005b3-77; Tue, 02 Jan 2024 06:14:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rKcEd-0006kg-6z
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 05:42:59 -0500
-Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rKcEb-0003yb-I7
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 05:42:58 -0500
-Received: by mail-qt1-x830.google.com with SMTP id
- d75a77b69052e-4281bcaf321so8921271cf.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 02:42:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704192176; x=1704796976; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JTlbJfG49FXk96s4oJ9RThaa8t9INNDD3eL8LRERVLc=;
- b=EB8nIGM4YpTCAXyKVsqFyIXARrr9Ycv99E76ojtcmgGrkmJGTibxBMWK3GmHlJ/Mno
- 9rhxQgV6Ev5nM/0rJOSmSGMqUfaO7rkC2+7NfjQbDcTVRzyiR/3hZquqHQLHa8lg7asT
- liGOCDIyc9trCOy0H/tIhG+LQODU+hfvVJOZ6zbOBQaHaCjfvpPhB9zod1nupPBwAGXS
- awqlCiJc3QExZDgIpkWX9EvxQ4hg9m1o4CxtPqS0/M9Rku/k5B1jyNz2X9NbixYySzt0
- 154ym0mLyg73FFJ+njQeZSyV/60vwX69coB0l98qum4K216Hcd23JY5FfpsbenEFj4MH
- 9iaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704192176; x=1704796976;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JTlbJfG49FXk96s4oJ9RThaa8t9INNDD3eL8LRERVLc=;
- b=VEqE2OAhx93z7hlhsJ1cYl1XHHlhFl/zDDEoaE660cDvooRh75G14CkI2BTbdMFkh8
- 2QCn868Kr5GWJzdLlErX++ip+ByKsRaw+D1ZrNMiyX1oRyVtIfk6wBX7MXSlvwtxA6eb
- /kHWOag+DD3xjo2LM4kddeygvzVP89vggj611eVDTjgt/ukVFTppg8ZDzvQDtKOW+VTI
- imhDwU6qmvBkmdBOOtOk/9RPF32SluO9cF2cCPYwQHu7gCO0aqty5grLTyzp0azx6mA4
- s98yNucHhmHlMbuEHi6w3+Oiy0bOCeirb7GuUADFeQ0ZRQOzsmvhQGU0uJxdLWMER2t0
- jEnw==
-X-Gm-Message-State: AOJu0YyEZVCGo1jUz5et3QTDhVvS2cGAhomsvjgQVmrSKg8edDWGQIiC
- JX0uxEOu/DYDkc5fIP4Sb3lWrQfr+ohaHKd9IBU=
-X-Google-Smtp-Source: AGHT+IG+dGscGnQcQ2gYtf0pCV3DKsQ9eE3HvQS3itcI+yz2wtXVsk/iLEAUfGLvkZme1TcR2oyjULRqJRtAhKJddTM=
-X-Received: by 2002:a05:622a:1646:b0:427:860c:40b2 with SMTP id
- y6-20020a05622a164600b00427860c40b2mr21410322qtj.49.1704192176122; Tue, 02
- Jan 2024 02:42:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <prvs=87314d91c5=schalla@marvell.com>)
+ id 1rKcjK-0005av-VS
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 06:14:42 -0500
+Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]
+ helo=mx0b-0016f401.pphosted.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <prvs=87314d91c5=schalla@marvell.com>)
+ id 1rKcjJ-0000ma-7b
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 06:14:42 -0500
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+ by mx0a-0016f401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
+ 4025LPJS008170; Tue, 2 Jan 2024 03:14:36 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+ from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding:content-type; s=pfpt0220; bh=vdvFXjYI
+ wzzWeDI5t51XYynUaKTLBBGaYjvDZabBfQw=; b=CNwo9hkIQ6LL/f2uGA/PQB+I
+ 3qvuFjcgnXv2RMRgE5y0Tt1xrkO3Yu1UfbdRGAOzVeD+apo72HwI2jkAsS+OAJRj
+ NSQUYSr020lXJCywpQSBceLB4iDKIQ+FexxklGhWZmuOfiK5hPHO1CMwQ5m0gd5F
+ NalqQuzWv6K4rv6FImYXnnHBdINobdR7zYgNKw8lR4H5VkHQEXY2onHn8ynpZl+P
+ eK1dUV4GmvB/tbJO3I3xhylQkTCwq8b7AC1e9fFoVZQCI81IV4EzkHI/ibIwMx54
+ lspCUnmv61FvvBYJdhQTxgYCq4t20/l+S2mMFXtqS+8vhGQTAfVmqDDLeTRspg==
+Received: from dc5-exch01.marvell.com ([199.233.59.181])
+ by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 3vcc908t9a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+ Tue, 02 Jan 2024 03:14:36 -0800 (PST)
+Received: from DC5-EXCH02.marvell.com (10.69.176.39) by DC5-EXCH01.marvell.com
+ (10.69.176.38) with Microsoft SMTP Server (TLS) id 15.0.1497.48;
+ Tue, 2 Jan 2024 03:14:35 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server id 15.0.1497.48 via Frontend
+ Transport; Tue, 2 Jan 2024 03:14:35 -0800
+Received: from localhost.localdomain (unknown [10.28.36.175])
+ by maili.marvell.com (Postfix) with ESMTP id 93C0E3F7078;
+ Tue,  2 Jan 2024 03:14:33 -0800 (PST)
+From: Srujana Challa <schalla@marvell.com>
+To: <qemu-devel@nongnu.org>
+CC: <mst@redhat.com>, <vattunuru@marvell.com>, <jerinj@marvell.com>
+Subject: [PATCH] vhost_net: add NOTIFICATION_DATA and IN_ORDER feature bits to
+ vdpa_feature_bits
+Date: Tue, 2 Jan 2024 16:44:32 +0530
+Message-ID: <20240102111432.36817-1-schalla@marvell.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-2-ray.huang@amd.com>
- <6adff6d2-7c58-4c78-93a5-5a4594a60d27@daynix.com> <ZYGe4GcFPt0k5PTM@amd.com>
- <CAFEAcA_=iedJw4BbNHrDALC4mL4g3ZEihsDbLkEzsy-1zAWFWw@mail.gmail.com>
- <af89f683-2b6e-4ca1-aa37-8bedd12a781d@daynix.com>
-In-Reply-To: <af89f683-2b6e-4ca1-aa37-8bedd12a781d@daynix.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 2 Jan 2024 14:42:44 +0400
-Message-ID: <CAJ+F1CJnanuw_VQ0DDwUMfRjwHwQAZ3yif4FANcKVHMZXH3dyg@mail.gmail.com>
-Subject: Re: [PATCH v6 01/11] linux-headers: Update to kernel headers to add
- venus capset
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>, Huang Rui <ray.huang@amd.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>, 
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>, 
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
- Gert Wollny <gert.wollny@collabora.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
- "Deucher, Alexander" <Alexander.Deucher@amd.com>, 
- "Stabellini, Stefano" <stefano.stabellini@amd.com>, "Koenig,
- Christian" <Christian.Koenig@amd.com>, 
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>, 
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>, 
- "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang,
- Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x830.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: bCosLgaO_aLwlzqoPw2bIYIvPOhFb-fr
+X-Proofpoint-GUID: bCosLgaO_aLwlzqoPw2bIYIvPOhFb-fr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
+Received-SPF: pass client-ip=67.231.148.174;
+ envelope-from=prvs=87314d91c5=schalla@marvell.com;
+ helo=mx0b-0016f401.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,66 +85,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Enables VIRTIO_F_NOTIFICATION_DATA and VIRTIO_F_IN_ORDER feature bits
+for vhost vdpa backend. Also adds code to consider all feature bits
+supported by vhost net client type for feature negotiation, so that
+vhost backend device supported features can be negotiated with guest.
 
-On Thu, Dec 21, 2023 at 10:55=E2=80=AFAM Akihiko Odaki <akihiko.odaki@dayni=
-x.com> wrote:
->
-> On 2023/12/19 23:14, Peter Maydell wrote:
-> > On Tue, 19 Dec 2023 at 13:49, Huang Rui <ray.huang@amd.com> wrote:
-> >>
-> >> On Tue, Dec 19, 2023 at 08:20:22PM +0800, Akihiko Odaki wrote:
-> >>> On 2023/12/19 16:53, Huang Rui wrote:
-> >>>> Sync up kernel headers to update venus macro till they are merged in=
-to
-> >>>> mainline.
-> >>>
-> >>> Thanks for sorting things out with the kernel and spec.
-> >>>
-> >>>>
-> >>>> Signed-off-by: Huang Rui <ray.huang@amd.com>
-> >>>> ---
-> >>>>
-> >>>> Changes in v6:
-> >>>> - Venus capset is applied in kernel, so update it in qemu for future=
- use.
-> >>>>
-> >>>> https://lore.kernel.org/lkml/b79dcf75-c9e8-490e-644f-3b97d95f7397@co=
-llabora.com/
-> >>>> https://cgit.freedesktop.org/drm-misc/commit/?id=3D216d86b9a430f3280=
-e5b631c51e6fd1a7774cfa0
-> >>> Please include the link to the upstream commit in the commit message.
-> >>
-> >> So far, it's in drm maintainers' branch not in kernel mainline yet. Do=
- I
-> >> need to wait it to be merged into kernel mainline?
-> >
-> > For an RFC patchset, no. For patches to be merged into QEMU
-> > the headers change must be in the kernel mainline, and the
-> > QEMU commit that updates our copy of the headers must be a
-> > full-sync done with scripts/update-linux-headers.sh, not a
-> > manual edit.
->
-> Apparently the kernel change is unlikely to be merged to mainline before
-> QEMU 9.0 so we need to come up with some idea to deal with this.
->
-> The release of Linux 6.7 is near and the development of 6.8 will start
-> soon. So it was nice if the change made into 6.8, but unfortunately it
-> missed the *probably last* drm-misc tree pull request for 6.8:
-> https://lore.kernel.org/all/aqpn5miejmkks7pbcfex7b6u63uwsruywxsnr3x5ljs45=
-qatin@nbkkej2elk46/
->
-> It will still get into linux-next so we may retrieve headers from
-> linux-next. Or we may add the definition to
-> hw/display/virtio-gpu-virgl.c; the duplicate definition warning will
-> tell when the definition becomes no longer necessary. I'm fine with
-> either option.
+Signed-off-by: Srujana Challa <schalla@marvell.com>
+---
+ hw/net/vhost_net.c | 10 ++++++++++
+ net/vhost-vdpa.c   |  2 ++
+ 2 files changed, 12 insertions(+)
 
-The second option seems better to me, as it can avoid pulling unwanted chan=
-ges.
+diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+index e8e1661646..65ae8bcece 100644
+--- a/hw/net/vhost_net.c
++++ b/hw/net/vhost_net.c
+@@ -117,6 +117,16 @@ static const int *vhost_net_get_feature_bits(struct vhost_net *net)
+ 
+ uint64_t vhost_net_get_features(struct vhost_net *net, uint64_t features)
+ {
++    const int *bit = vhost_net_get_feature_bits(net);
++
++    /*
++     * Consider all feature bits for feature negotiation with vhost backend,
++     * so that all backend device supported features can be negotiated.
++     */
++    while (*bit != VHOST_INVALID_FEATURE_BIT) {
++        features |= (1ULL << *bit);
++        bit++;
++    }
+     return vhost_get_features(&net->dev, vhost_net_get_feature_bits(net),
+             features);
+ }
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 3726ee5d67..51334fcfe2 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -57,7 +57,9 @@ typedef struct VhostVDPAState {
+  */
+ const int vdpa_feature_bits[] = {
+     VIRTIO_F_ANY_LAYOUT,
++    VIRTIO_F_IN_ORDER,
+     VIRTIO_F_IOMMU_PLATFORM,
++    VIRTIO_F_NOTIFICATION_DATA,
+     VIRTIO_F_NOTIFY_ON_EMPTY,
+     VIRTIO_F_RING_PACKED,
+     VIRTIO_F_RING_RESET,
+-- 
+2.25.1
 
-thanks
-
---=20
-Marc-Andr=C3=A9 Lureau
 
