@@ -2,65 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F544822279
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C28B82227A
 	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 21:20:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKlEQ-000664-8v; Tue, 02 Jan 2024 15:19:22 -0500
+	id 1rKlER-00066D-AB; Tue, 02 Jan 2024 15:19:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1rKlEM-00065W-Fb
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 15:19:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rKlEO-00065j-60
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 15:19:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1rKlEK-0005d9-SP
+ id 1rKlEK-0005dC-V7
  for qemu-devel@nongnu.org; Tue, 02 Jan 2024 15:19:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704226753;
+ s=mimecast20190719; t=1704226754;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=M35FDrds7nsyL3BqFj865YC4K75Z01CHjlCPyxRcQw8=;
- b=X1tosQ0BqY4BNSJDOWTHj23RpFJS+cf2/e08UDQnxVk2OeIYJgsl6ygbsBx5vdeaKX7dc3
- q+Zz9KCENdzWwWSTvkx/JCVNxY+jO2XZ2lVI3Sl5EqfE4lY6iHUm/j+ASeL8bWlfdRBr5c
- EHUTmLbfoqEzYKZAdDW78+1TYNr8I6c=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TQRTBLiB5sCWPY/SSBV8dpy8QCL1auf0MVKDKGE0e9Q=;
+ b=P9Jf4DWObZo0EoPmOxLp3/xDtIoTg5nePPKKpWR3STnuRQd960ZugBsxHygOMskBxXCneW
+ xaM+KWcPWdyuUoM4ZNrCLVJJheFMaAWjECY16iGi1jNwBq65IVl57NOLHz3iTBaOeI24NQ
+ M473kkc9mnrgJLwCr4Q13TKta980Xgw=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-336-gPN5Ol03P1qFnFnwq7Acaw-1; Tue, 02 Jan 2024 15:19:11 -0500
-X-MC-Unique: gPN5Ol03P1qFnFnwq7Acaw-1
+ us-mta-611-K9t77doPNtKhOFjVW3aPmg-1; Tue, 02 Jan 2024 15:19:12 -0500
+X-MC-Unique: K9t77doPNtKhOFjVW3aPmg-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A2F0F85A588;
- Tue,  2 Jan 2024 20:19:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B83A85A58A;
+ Tue,  2 Jan 2024 20:19:11 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.192.65])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0EBA81121306;
- Tue,  2 Jan 2024 20:19:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E3F3F1121306;
+ Tue,  2 Jan 2024 20:19:10 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: quintela@trasno.org,
 	Juan Quintela <quintela@redhat.com>
-Subject: [PATCH 0/1] Leaving Red Hat
-Date: Tue,  2 Jan 2024 21:19:06 +0100
-Message-ID: <20240102201908.1987-1-quintela@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 1/1] Leaving Migration
+Date: Tue,  2 Jan 2024 21:19:07 +0100
+Message-ID: <20240102201908.1987-2-quintela@redhat.com>
+In-Reply-To: <20240102201908.1987-1-quintela@redhat.com>
+References: <20240102201908.1987-1-quintela@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
 X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.178,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -78,45 +81,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+I am leaving Red Hat, and as part of that I am leaving Migration
+maintenarship.
 
-After so many years it has been a difficult decision to make, but I am
-leaving Red Hat, and with it I am leaving QEMU development and
-Migration Mainteinership.
+You are left in good hands with Peter and Fabiano.
 
-I leave you in good and capable hands with Peter and Fabiano.
+Thanks for all the fish.
 
-I have really enjoyed working with all of you.  I have learned a lot
-working with you.
-
-Looking at git logs, it appears that my 1st commit is from:
-
-commit 4f3a1d56e45bcd325f1e8a976290142bc8662bee
-Author: Juan Quintela <quintela@redhat.com>
-Date:   Thu Jun 25 00:07:59 2009 +0200
-
-    Rename OBJS to obj-y
-
-So it have been almost 15 years.
-
-As you can see for the commit, I changed the configure script to make
-it more configurable and the change was so bad that Paolo ended
-rewriting all of it in meson :-)
-
-I am cc'ing my personal account because I lost access to this address
-today.
-
-Again, thanks for everything.
-
-Later, Juan.
-
-Juan Quintela (1):
-  Leaving Migration
-
+Signed-off-by: Juan Quintela <quintela@redhat.com>
+---
  MAINTAINERS | 3 ---
  .mailmap    | 1 +
  2 files changed, 1 insertion(+), 3 deletions(-)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 395f26ba86..56464cd916 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -70,7 +70,6 @@ R: Daniel P. Berrangé <berrange@redhat.com>
+ R: Thomas Huth <thuth@redhat.com>
+ R: Markus Armbruster <armbru@redhat.com>
+ R: Philippe Mathieu-Daudé <philmd@linaro.org>
+-R: Juan Quintela <quintela@redhat.com>
+ W: https://www.qemu.org/docs/master/devel/index.html
+ S: Odd Fixes
+ F: docs/devel/style.rst
+@@ -3355,7 +3354,6 @@ S: Odd Fixes
+ F: scripts/checkpatch.pl
+ 
+ Migration
+-M: Juan Quintela <quintela@redhat.com>
+ M: Peter Xu <peterx@redhat.com>
+ M: Fabiano Rosas <farosas@suse.de>
+ R: Leonardo Bras <leobras@redhat.com>
+@@ -3375,7 +3373,6 @@ F: util/userfaultfd.c
+ X: migration/rdma*
+ 
+ RDMA Migration
+-M: Juan Quintela <quintela@redhat.com>
+ R: Li Zhijian <lizhijian@fujitsu.com>
+ R: Peter Xu <peterx@redhat.com>
+ R: Leonardo Bras <leobras@redhat.com>
+diff --git a/.mailmap b/.mailmap
+index e12e19f691..d94572af05 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -81,6 +81,7 @@ Greg Kurz <groug@kaod.org> <gkurz@linux.vnet.ibm.com>
+ Huacai Chen <chenhuacai@kernel.org> <chenhc@lemote.com>
+ Huacai Chen <chenhuacai@kernel.org> <chenhuacai@loongson.cn>
+ James Hogan <jhogan@kernel.org> <james.hogan@imgtec.com>
++Juan Quintela <quintela@trasno.org> <quintela@redhat.com>
+ Leif Lindholm <quic_llindhol@quicinc.com> <leif.lindholm@linaro.org>
+ Leif Lindholm <quic_llindhol@quicinc.com> <leif@nuviainc.com>
+ Luc Michel <luc@lmichel.fr> <luc.michel@git.antfield.fr>
 -- 
 2.43.0
 
