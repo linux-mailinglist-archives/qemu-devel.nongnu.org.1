@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63446821622
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 02:26:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BB9821626
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 02:36:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKTX7-0000tm-Ue; Mon, 01 Jan 2024 20:25:29 -0500
+	id 1rKTgc-0006Y8-EK; Mon, 01 Jan 2024 20:35:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rKTX5-0000rJ-3K
- for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:25:27 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rKTX2-0003XB-0R
- for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:25:26 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxoOn4ZZNlsgMBAA--.76S3;
- Tue, 02 Jan 2024 09:25:13 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxzuT1ZZNlwRYVAA--.65059S3; 
- Tue, 02 Jan 2024 09:25:11 +0800 (CST)
-Subject: Re: [PATCH 1/1] target/loongarch: move translate modules to tcg/
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
- alex.bennee@linaro.org, maobibo@loongson.cn, zhaotianrui@loongson.cn
-References: <20231229092435.3416025-1-gaosong@loongson.cn>
- <bf627980-1edd-4743-889c-c27bbae971aa@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <f538cd46-2d33-8dc5-fdbd-27921c81d27f@loongson.cn>
-Date: Tue, 2 Jan 2024 09:25:09 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rKTgV-0006Xz-6p
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:35:11 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rKTgS-0004pV-32
+ for qemu-devel@nongnu.org; Mon, 01 Jan 2024 20:35:10 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1d4b650bc9cso8168915ad.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jan 2024 17:35:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704159302; x=1704764102; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8sooKBESMwiRbV7J/EJZrL8fz1lrtlkfYgONVpEAYSw=;
+ b=vPwvFN3G9V4u6iQW3pnAd9IJ+5IKjrfDXAWZuodqaEk8AC1fpeDXSk8H75lKCd2YlX
+ REom0czQOwSB4HRgOzKo3BJi2UU00/rweBvGOw9WSIh2T0V8NJHGTP1j8vAOrm41ZgaG
+ wHJByH3QIpQBLqWDsAbkQgF4YQi9EOAp4fHXuOihm8kkeM/GgDC5d5AdqLioZbdIU+4e
+ 3U3OJ1t9V/slQYvVOzSMW+3hkeq84SKG78HZKYXUKEKqqmXoW/7wJlkZ+ugQzRFZZ0Jq
+ gYpWxWwfQfyScBV8IJ2J12biA2YYjRrTNIre0yfKkHwi0QhVWl4+/4L1Tfltc/J68KJl
+ 5dzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704159302; x=1704764102;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8sooKBESMwiRbV7J/EJZrL8fz1lrtlkfYgONVpEAYSw=;
+ b=dvUOIdkqLOCmRngOjDUOxdekiXwoveDP/Dh/kLUAEA/N3s2YJ3YtDRQ+jdVRAX3+is
+ dDk4wwZY6rUF2Igz2EE43GrS4MbqWP6DJ+Pc9nWTPrEwdci2FX4Vpt2zmoP5/awQ/Z0L
+ yCFC+jX718zaX87GYoG9FKRKX+J/0kBDRQ7EU7uHYf+l02paC6zXuwffhlr98iD9LAIz
+ i4dyTNCqCl/B8P/mViijB1MfR+FSPVFfI95YWhMwimp7MWAbcf9w/igNQEfm8CwwhyJu
+ FsRgI/ABtPkOqXH6wDtvurkH2JvGeJJiisdHZWGcHkD3Iop8VvQzWASx/QX8roPbQKeA
+ Z98A==
+X-Gm-Message-State: AOJu0YyJ7PdIWZUErF5+QvdNFtCO+9Qvf+6Ae5z8BbNQg5O2dP8Lgecx
+ BO3srbjPe5vaH65MnNDl27sMMZ3LK9GJdKPDjVY1AP66xLA=
+X-Google-Smtp-Source: AGHT+IHl3lSUajTFr9H6pJYOzbpOHiJZu5Srv4UL4A/wuHjsTKB06ozjCeMCROmG0JswtSYYP5m7Ag==
+X-Received: by 2002:a17:902:b213:b0:1d4:3dfd:7e31 with SMTP id
+ t19-20020a170902b21300b001d43dfd7e31mr17554714plr.139.1704159302604; 
+ Mon, 01 Jan 2024 17:35:02 -0800 (PST)
+Received: from stoup.. (124-149-254-207.tpgi.com.au. [124.149.254.207])
+ by smtp.gmail.com with ESMTPSA id
+ jm7-20020a17090304c700b001d3e6f58e5esm20675565plb.6.2024.01.01.17.35.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 01 Jan 2024 17:35:02 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org,
+	qemu-stable@nongnu.org
+Subject: [PATCH] tcg/ppc: Use new registers for LQ destination
+Date: Tue,  2 Jan 2024 12:34:56 +1100
+Message-Id: <20240102013456.131846-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-In-Reply-To: <bf627980-1edd-4743-889c-c27bbae971aa@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8AxzuT1ZZNlwRYVAA--.65059S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Jr45Xw1xCFWrZw4kAF4kZrc_yoWxWr1fpr
- 1xCrW7KrW8CrWkAwn7XayUXFyUXwnxGwnFq3Z3tF93AwsrXry2vF40g3sFgF1UJw4rWa40
- qF18Zw17ZFWUJ3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
- 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
- kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
- wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
- 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL05UU
- UUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.014,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,157 +89,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2023/12/29 下午6:08, Philippe Mathieu-Daudé 写道:
-> Hi,
->
-> On 29/12/23 10:24, Song Gao wrote:
->> Introduce the target/loongarch/tcg directory. Its purpose is to hold 
->> the TCG
->> code that is selected by CONFIG_TCG
->>
->> Signed-off-by: Song Gao <gaosong@loongson.cn>
->> ---
->>   target/loongarch/{ => tcg}/constant_timer.c     |  0
->>   target/loongarch/{ => tcg}/csr_helper.c         |  0
->>   target/loongarch/{ => tcg}/fpu_helper.c         |  0
->>   target/loongarch/{ => tcg}/iocsr_helper.c       |  0
->>   target/loongarch/{ => tcg}/op_helper.c          |  0
->>   target/loongarch/{ => tcg}/tlb_helper.c         |  0
->>   target/loongarch/{ => tcg}/translate.c          |  0
->>   target/loongarch/{ => tcg}/vec_helper.c         |  0
->>   .../{ => tcg}/insn_trans/trans_arith.c.inc      |  0
->>   .../{ => tcg}/insn_trans/trans_atomic.c.inc     |  0
->>   .../{ => tcg}/insn_trans/trans_bit.c.inc        |  0
->>   .../{ => tcg}/insn_trans/trans_branch.c.inc     |  0
->>   .../{ => tcg}/insn_trans/trans_extra.c.inc      |  0
->>   .../{ => tcg}/insn_trans/trans_farith.c.inc     |  0
->>   .../{ => tcg}/insn_trans/trans_fcmp.c.inc       |  0
->>   .../{ => tcg}/insn_trans/trans_fcnv.c.inc       |  0
->>   .../{ => tcg}/insn_trans/trans_fmemory.c.inc    |  0
->>   .../{ => tcg}/insn_trans/trans_fmov.c.inc       |  0
->>   .../{ => tcg}/insn_trans/trans_memory.c.inc     |  0
->>   .../{ => tcg}/insn_trans/trans_privileged.c.inc |  0
->>   .../{ => tcg}/insn_trans/trans_shift.c.inc      |  0
->>   .../{ => tcg}/insn_trans/trans_vec.c.inc        |  0
->>   target/loongarch/meson.build                    | 17 ++---------------
->>   target/loongarch/tcg/meson.build                | 15 +++++++++++++++
->>   24 files changed, 17 insertions(+), 15 deletions(-)
->>   rename target/loongarch/{ => tcg}/constant_timer.c (100%)
->>   rename target/loongarch/{ => tcg}/csr_helper.c (100%)
->>   rename target/loongarch/{ => tcg}/fpu_helper.c (100%)
->>   rename target/loongarch/{ => tcg}/iocsr_helper.c (100%)
->>   rename target/loongarch/{ => tcg}/op_helper.c (100%)
->>   rename target/loongarch/{ => tcg}/tlb_helper.c (100%)
->>   rename target/loongarch/{ => tcg}/translate.c (100%)
->>   rename target/loongarch/{ => tcg}/vec_helper.c (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_arith.c.inc (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_atomic.c.inc (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_bit.c.inc (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_branch.c.inc (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_extra.c.inc (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_farith.c.inc (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_fcmp.c.inc (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_fcnv.c.inc (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_fmemory.c.inc 
->> (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_fmov.c.inc (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_memory.c.inc (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_privileged.c.inc 
->> (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_shift.c.inc (100%)
->>   rename target/loongarch/{ => tcg}/insn_trans/trans_vec.c.inc (100%)
->>   create mode 100644 target/loongarch/tcg/meson.build
->
->
->> diff --git a/target/loongarch/meson.build b/target/loongarch/meson.build
->> index 18e8191e2b..a004523439 100644
->> --- a/target/loongarch/meson.build
->> +++ b/target/loongarch/meson.build
->> @@ -3,31 +3,18 @@ gen = decodetree.process('insns.decode')
->>   loongarch_ss = ss.source_set()
->>   loongarch_ss.add(files(
->>     'cpu.c',
->> +  'gdbstub.c'
->
-> Preferably a preliminary commit "gdbstub.c is not specific to TCG and
-> can be used by other accelerators ...". Otherwise just mention it in
-> this patch description.
->
-I will split it to a new patch.
->>   ))
->> -loongarch_tcg_ss = ss.source_set()
->> -loongarch_tcg_ss.add(gen)
->> -loongarch_tcg_ss.add(files(
->> -  'fpu_helper.c',
->> -  'op_helper.c',
->> -  'translate.c',
->> -  'gdbstub.c',
->> -  'vec_helper.c',
->> -))
->> -loongarch_tcg_ss.add(zlib)
->>     loongarch_system_ss = ss.source_set()
->>   loongarch_system_ss.add(files(
->>     'loongarch-qmp-cmds.c',
->>     'machine.c',
->> -  'tlb_helper.c',
->> -  'constant_timer.c',
->> -  'csr_helper.c',
->> -  'iocsr_helper.c',
->>   ))
->>     common_ss.add(when: 'CONFIG_LOONGARCH_DIS', if_true: 
->> [files('disas.c'), gen])
->>   -loongarch_ss.add_all(when: 'CONFIG_TCG', if_true: [loongarch_tcg_ss])
->> +subdir('tcg')
->>     target_arch += {'loongarch': loongarch_ss}
->>   target_system_arch += {'loongarch': loongarch_system_ss}
->> diff --git a/target/loongarch/tcg/meson.build 
->> b/target/loongarch/tcg/meson.build
->> new file mode 100644
->> index 0000000000..bb7411e5e5
->> --- /dev/null
->> +++ b/target/loongarch/tcg/meson.build
->> @@ -0,0 +1,15 @@
->
-> You missed the CONFIG_TCG check, you can use either:
->
->   if 'CONFIG_TCG' in config_all
->      subdir('tcg')
->   endif
->
-> in target/loongarch/meson.build, but since your target seems well
-> designed and doesn't require TCG stub, you can do directly here:
->
->   if 'CONFIG_TCG' not in config_all
->     subdir_done()
->   endif
->
-> so the rest of this file isn't processed.
->
-Got it
->> +loongarch_ss.add([zlib, gen])
->> +
->> +loongarch_ss.add(files(
->> +  'fpu_helper.c',
->> +  'op_helper.c',
->> +  'vec_helper.c',
->> +  'translate.c',
->
-> (since moved/new, let's sort these files alphabetically).
->
-I will corret it .
+LQ has a constraint that RTp != RA, else SIGILL.
+Therefore, force the destination of INDEX_op_qemu_*_ld128 to be a
+new register pair, so that it cannot overlap the input address.
 
-Thanks.
-Song Gao
->> +))
->> +
->> +loongarch_system_ss.add(files(
->> +  'constant_timer.c',
->> +  'iocsr_helper.c',
->> +  'tlb_helper.c',
->> +  'csr_helper.c',
->
-> (Ditto)
->
->> +))
+This requires new support in process_op_defs and tcg_reg_alloc_op.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 526cd4ec01f ("tcg/ppc: Support 128-bit load/store")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+
+This bug may be triggered with qemu-aarch64 and
+tests/tcg/multiarch/linux-test.c.
+
+r~
+
+---
+ tcg/ppc/tcg-target-con-set.h |  2 +-
+ tcg/tcg.c                    | 21 ++++++++++++++++-----
+ tcg/ppc/tcg-target.c.inc     |  3 ++-
+ 3 files changed, 19 insertions(+), 7 deletions(-)
+
+diff --git a/tcg/ppc/tcg-target-con-set.h b/tcg/ppc/tcg-target-con-set.h
+index bbd7b21247..cb47b29452 100644
+--- a/tcg/ppc/tcg-target-con-set.h
++++ b/tcg/ppc/tcg-target-con-set.h
+@@ -35,7 +35,7 @@ C_O1_I3(v, v, v, v)
+ C_O1_I4(r, r, ri, rZ, rZ)
+ C_O1_I4(r, r, r, ri, ri)
+ C_O2_I1(r, r, r)
+-C_O2_I1(o, m, r)
++C_N1O1_I1(o, m, r)
+ C_O2_I2(r, r, r, r)
+ C_O2_I4(r, r, rI, rZM, r, r)
+ C_O2_I4(r, r, r, r, rI, rZM)
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 896a36caeb..e2c38f6d11 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -653,6 +653,7 @@ static void tcg_out_movext3(TCGContext *s, const TCGMovExtend *i1,
+ #define C_O1_I4(O1, I1, I2, I3, I4)     C_PFX5(c_o1_i4_, O1, I1, I2, I3, I4),
+ 
+ #define C_N1_I2(O1, I1, I2)             C_PFX3(c_n1_i2_, O1, I1, I2),
++#define C_N1O1_I1(O1, O2, I1)           C_PFX3(c_n1o1_i1_, O1, O2, I1),
+ #define C_N2_I1(O1, O2, I1)             C_PFX3(c_n2_i1_, O1, O2, I1),
+ 
+ #define C_O2_I1(O1, O2, I1)             C_PFX3(c_o2_i1_, O1, O2, I1),
+@@ -676,6 +677,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
+ #undef C_O1_I3
+ #undef C_O1_I4
+ #undef C_N1_I2
++#undef C_N1O1_I1
+ #undef C_N2_I1
+ #undef C_O2_I1
+ #undef C_O2_I2
+@@ -696,6 +698,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
+ #define C_O1_I4(O1, I1, I2, I3, I4)     { .args_ct_str = { #O1, #I1, #I2, #I3, #I4 } },
+ 
+ #define C_N1_I2(O1, I1, I2)             { .args_ct_str = { "&" #O1, #I1, #I2 } },
++#define C_N1O1_I1(O1, O2, I1)           { .args_ct_str = { "&" #O1, #O2, #I1 } },
+ #define C_N2_I1(O1, O2, I1)             { .args_ct_str = { "&" #O1, "&" #O2, #I1 } },
+ 
+ #define C_O2_I1(O1, O2, I1)             { .args_ct_str = { #O1, #O2, #I1 } },
+@@ -718,6 +721,7 @@ static const TCGTargetOpDef constraint_sets[] = {
+ #undef C_O1_I3
+ #undef C_O1_I4
+ #undef C_N1_I2
++#undef C_N1O1_I1
+ #undef C_N2_I1
+ #undef C_O2_I1
+ #undef C_O2_I2
+@@ -738,6 +742,7 @@ static const TCGTargetOpDef constraint_sets[] = {
+ #define C_O1_I4(O1, I1, I2, I3, I4)     C_PFX5(c_o1_i4_, O1, I1, I2, I3, I4)
+ 
+ #define C_N1_I2(O1, I1, I2)             C_PFX3(c_n1_i2_, O1, I1, I2)
++#define C_N1O1_I1(O1, O2, I1)           C_PFX3(c_n1o1_i1_, O1, O2, I1)
+ #define C_N2_I1(O1, O2, I1)             C_PFX3(c_n2_i1_, O1, O2, I1)
+ 
+ #define C_O2_I1(O1, O2, I1)             C_PFX3(c_o2_i1_, O1, O2, I1)
+@@ -2988,6 +2993,7 @@ static void process_op_defs(TCGContext *s)
+                     .pair = 2,
+                     .pair_index = o,
+                     .regs = def->args_ct[o].regs << 1,
++                    .newreg = def->args_ct[o].newreg,
+                 };
+                 def->args_ct[o].pair = 1;
+                 def->args_ct[o].pair_index = i;
+@@ -3004,6 +3010,7 @@ static void process_op_defs(TCGContext *s)
+                     .pair = 1,
+                     .pair_index = o,
+                     .regs = def->args_ct[o].regs >> 1,
++                    .newreg = def->args_ct[o].newreg,
+                 };
+                 def->args_ct[o].pair = 2;
+                 def->args_ct[o].pair_index = i;
+@@ -5036,17 +5043,21 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
+                 break;
+ 
+             case 1: /* first of pair */
+-                tcg_debug_assert(!arg_ct->newreg);
+                 if (arg_ct->oalias) {
+                     reg = new_args[arg_ct->alias_index];
+-                    break;
++                } else if (arg_ct->newreg) {
++                    reg = tcg_reg_alloc_pair(s, arg_ct->regs,
++                                             i_allocated_regs | o_allocated_regs,
++                                             output_pref(op, k),
++                                             ts->indirect_base);
++                } else {
++                    reg = tcg_reg_alloc_pair(s, arg_ct->regs, o_allocated_regs,
++                                             output_pref(op, k),
++                                             ts->indirect_base);
+                 }
+-                reg = tcg_reg_alloc_pair(s, arg_ct->regs, o_allocated_regs,
+-                                         output_pref(op, k), ts->indirect_base);
+                 break;
+ 
+             case 2: /* second of pair */
+-                tcg_debug_assert(!arg_ct->newreg);
+                 if (arg_ct->oalias) {
+                     reg = new_args[arg_ct->alias_index];
+                 } else {
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index 856c3b18f5..54816967bc 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -2595,6 +2595,7 @@ static void tcg_out_qemu_ldst_i128(TCGContext *s, TCGReg datalo, TCGReg datahi,
+         tcg_debug_assert(!need_bswap);
+         tcg_debug_assert(datalo & 1);
+         tcg_debug_assert(datahi == datalo - 1);
++        tcg_debug_assert(!is_ld || datahi != index);
+         insn = is_ld ? LQ : STQ;
+         tcg_out32(s, insn | TAI(datahi, index, 0));
+     } else {
+@@ -4071,7 +4072,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+ 
+     case INDEX_op_qemu_ld_a32_i128:
+     case INDEX_op_qemu_ld_a64_i128:
+-        return C_O2_I1(o, m, r);
++        return C_N1O1_I1(o, m, r);
+     case INDEX_op_qemu_st_a32_i128:
+     case INDEX_op_qemu_st_a64_i128:
+         return C_O0_I3(o, m, r);
+-- 
+2.34.1
 
 
