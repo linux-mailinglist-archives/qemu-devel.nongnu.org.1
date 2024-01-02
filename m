@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886C0821D22
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 14:53:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A6AF821D23
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 14:53:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKfCv-0003f0-Dz; Tue, 02 Jan 2024 08:53:25 -0500
+	id 1rKfD9-0004Jf-OJ; Tue, 02 Jan 2024 08:53:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=hBD0=IM=kaod.org=clg@ozlabs.org>)
- id 1rKfCr-0003Q1-0E; Tue, 02 Jan 2024 08:53:23 -0500
+ id 1rKfD7-0004GB-Td; Tue, 02 Jan 2024 08:53:37 -0500
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=hBD0=IM=kaod.org=clg@ozlabs.org>)
- id 1rKfCo-0004qc-RB; Tue, 02 Jan 2024 08:53:20 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T4Dp446DTz4x5l;
- Wed,  3 Jan 2024 00:53:16 +1100 (AEDT)
+ id 1rKfD6-0004rL-Bv; Tue, 02 Jan 2024 08:53:37 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T4DpP6lNnz4x5k;
+ Wed,  3 Jan 2024 00:53:33 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T4Dnz1TLxz4x5h;
- Wed,  3 Jan 2024 00:53:10 +1100 (AEDT)
-Message-ID: <03959676-a070-4a2f-a6ff-32d55aa9c6dd@kaod.org>
-Date: Tue, 2 Jan 2024 14:53:09 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T4DpJ4PGkz4x1v;
+ Wed,  3 Jan 2024 00:53:28 +1100 (AEDT)
+Message-ID: <4f4307ae-442b-4dbd-b3d5-528679dc10d7@kaod.org>
+Date: Tue, 2 Jan 2024 14:53:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/33] hw/arm/fsl-imx7: Add a local 'gic' variable
+Subject: Re: [PATCH 05/33] hw/cpu: Remove dead Kconfig
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -47,9 +48,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
  qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 References: <20231212162935.42910-1-philmd@linaro.org>
- <20231212162935.42910-5-philmd@linaro.org>
+ <20231212162935.42910-6-philmd@linaro.org>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231212162935.42910-5-philmd@linaro.org>
+In-Reply-To: <20231212162935.42910-6-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
@@ -77,9 +78,10 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/12/23 17:29, Philippe Mathieu-Daudé wrote:
-> The A7MPCore forward the IRQs from its internal GIC.
-> To make the code clearer, add a 'gic' variable.
+> ARM MPCore Kconfig are defined in hw/arm/Kconfig.
+> hw/cpu/Kconfig is never used, remove it.
 > 
+> Fixes: 82f5181777 ("kconfig: introduce kconfig files")
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
@@ -88,6 +90,7 @@ Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Thanks,
 
 C.
+
 
 
 
