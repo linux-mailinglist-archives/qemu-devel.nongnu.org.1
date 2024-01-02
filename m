@@ -2,82 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C54821B22
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 12:42:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9375821B24
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 12:44:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKd8m-0005AV-IN; Tue, 02 Jan 2024 06:41:00 -0500
+	id 1rKdBJ-00068p-3c; Tue, 02 Jan 2024 06:43:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rKd8k-00059g-DL
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 06:40:58 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rKdBH-00068L-0t
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 06:43:35 -0500
+Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rKd8h-0005Ps-VL
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 06:40:58 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6d9ac5bd128so2095614b3a.0
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 03:40:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rKdBF-0005hX-Ej
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 06:43:34 -0500
+Received: by mail-qt1-x82e.google.com with SMTP id
+ d75a77b69052e-42831bbf750so1122121cf.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 03:43:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704195653; x=1704800453; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/D9RXVtUGUvypPb23ej2EvWHBg+LtAi9dKXPwv2JqhY=;
- b=oK++d8KQSaZxgeFUq3cma6Oso61oRNNkS4GQoI8VBvaYGmTc87yJmTCPjQM1ZKMhxm
- FfDejFioEJ+CfOS8JzGIIDqOrHTrOLWs5l37SSLhbktnodMhewy05ERS5J54WhGXBZQ4
- eVwl1KSeOm5Y4HkvFkkhdxaHVWQHxOc3f8TPZhuWxhmDCEtOJqUgMSkVW6Js0/e5cLHP
- miH51MwOKQdXpXSozXt2X4KS4z8wYBLkcq8LyVvZU4PZwKaXc/BOk4CBNGdsR5Q5tDp/
- 4HDkS8OHSJmudSr1IquAf3ITtn6m7bKLnatfwG3xRpB3Snq39QnE16sFG9i/rIB5DbSL
- xjUg==
+ d=gmail.com; s=20230601; t=1704195812; x=1704800612; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uRWEY18VciRq+byvwMCRJuF5oX/xWtKPpJhz2/bbeoM=;
+ b=mohXKSHUx6E5bBIAoFM4haXKfQdyTLJGC1kt2uHnyqyjWLCt149dz87MUjq+pcjstz
+ njXex3Hb2iJm/PyPhTBc0tuOZNMT0bRD4CEyu2CIthKdu79kZ01H2Kq+a1EClCx2IgBQ
+ MomuRT+D+IT543UEeBeR4dUUfCvH+TwtzPJ6gQYcD1e8mUGQOLtIQYJWyHbAb24Ggonc
+ pl+48vb7vZ0m0HbF3047iLVXnpxsn+8zKr5sWiCujhB3fQMruxCdXHRUM3oPmnJWQZDH
+ pL9wBuo0H4fvV4JDwRXC6MT5ZNd/XIKU9E3t60rDbc/WlVueMBYWedr5p3OnxIIvSS2x
+ z1Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704195653; x=1704800453;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/D9RXVtUGUvypPb23ej2EvWHBg+LtAi9dKXPwv2JqhY=;
- b=QY+4E6lOVKTs+etiIYatDr9dADEKINlYf5jQ2EbWw8ZNHtlLZiNHbQaqKZQhanGieB
- kGg/pT9uzpn0kHfLluw5HkMP2UdBPzXdwr5VTXb2YqOCsmQD+Zvi2HZ8WJBUsk7dZYwa
- wW+mFZbtYv3wHW+FdnjBvPOcMYLwYSgU7KoyHX9l12OFAejr8zBx2jDIrAQeS2PZBq0b
- 4qb59n9oMZ3QRu64xynkIt8j42B8Ly2ez1OQUbCjUufJU92ApnIh6HUyru8wujKV7Ctd
- b1QaWLsz/gkH4BmcFkGgEapL8D5uh9/3BjkZ4T+OeeaflqZiGaHuFco3cYOMeUXFsRte
- bSTQ==
-X-Gm-Message-State: AOJu0YzUZca2Mw7wBDJzVDE10WvDlRZgTY3keAICpoopaqtCeGLY3jog
- +jJ2mabvcPg5+SOQQsxfMLdA9zMbpcTBv3d7s06eWAfjB6WzjA==
-X-Google-Smtp-Source: AGHT+IFRAlafM2IcPA/b5bfVw6DAzJTH9ElPIevIuQ4OVkIb/stP7ALsYgxPs708fytv4m6isjJNBA==
-X-Received: by 2002:aa7:8b4a:0:b0:6d9:b92b:833c with SMTP id
- i10-20020aa78b4a000000b006d9b92b833cmr4735605pfd.55.1704195653660; 
- Tue, 02 Jan 2024 03:40:53 -0800 (PST)
-Received: from [192.168.68.110] ([189.79.21.107])
- by smtp.gmail.com with ESMTPSA id
- s22-20020a62e716000000b006da105deedesm9565035pfh.197.2024.01.02.03.40.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jan 2024 03:40:53 -0800 (PST)
-Message-ID: <a3f0392c-6a1a-4d48-8d55-13348457c345@ventanamicro.com>
-Date: Tue, 2 Jan 2024 08:40:48 -0300
+ d=1e100.net; s=20230601; t=1704195812; x=1704800612;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=uRWEY18VciRq+byvwMCRJuF5oX/xWtKPpJhz2/bbeoM=;
+ b=b4HGHL7V2KXoWpPTshpYy2Z0XTmwCdIV+DrAIMSmWC2p8vh4rHZ3Bygj1vJ8AwUo/I
+ UKxQCfkGV2Xb7/qHz6oA8GDH9n4fooKZAWgP+aW+rHAecyP4Z0i+oqwJiyFArJggx9k7
+ hIwpyp6M0Otnzw3ONBy05hnMwp6dCotw20iYZ/rz3NTi/KyRaJ3cMHsMkZ0VabWkU2cB
+ CTEqw6R1BrLI/1IVs8AR/XRSl/9TdvTvWSEfaBpBXKMAb9Zr4Cd1AA5amgNCEMJh34m2
+ 2UQ/k2PTCKdguLSMcXMVpKPNO8RE2MWncDTS9z3/bE5FinIKxNQBaXQ1lpPdDtDXi8dR
+ gj5A==
+X-Gm-Message-State: AOJu0YwspD7DSlrynUr/xxkGDFknDn5/SlRC4e2wOPIoW4zF+2ztMbdu
+ 9gsU4sVz0pj0B5bERcn/OPIXl/G9HD2mxP67Wk4=
+X-Google-Smtp-Source: AGHT+IElUCV1tBN7z3T8PqF76mDlw2yI+JJQJrvkY3fbF7Kd8h10J0xQcAoWiSbWqyJXU4H5PkT7ziqveKo2VLi0OMk=
+X-Received: by 2002:ac8:5844:0:b0:428:3018:7ee7 with SMTP id
+ h4-20020ac85844000000b0042830187ee7mr918581qth.77.1704195812322; Tue, 02 Jan
+ 2024 03:43:32 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 00/26] riscv: RVA22 profiles support
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com
-References: <20231218125334.37184-1-dbarboza@ventanamicro.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231218125334.37184-1-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x431.google.com
+References: <20231219075320.165227-1-ray.huang@amd.com>
+ <20231219075320.165227-4-ray.huang@amd.com>
+In-Reply-To: <20231219075320.165227-4-ray.huang@amd.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 2 Jan 2024 15:43:20 +0400
+Message-ID: <CAJ+F1CJ7cH3v9vXy+g-2ANZ1MowprW451dhzSDdsSn=P+c7LFg@mail.gmail.com>
+Subject: Re: [PATCH v6 03/11] virtio-gpu: Support context init feature with
+ virglrenderer
+To: Huang Rui <ray.huang@amd.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>, 
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>, 
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
+ Gert Wollny <gert.wollny@collabora.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ qemu-devel@nongnu.org, xen-devel@lists.xenproject.org, 
+ Gurchetan Singh <gurchetansingh@chromium.org>, ernunes@redhat.com, 
+ Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
+ Alex Deucher <alexander.deucher@amd.com>,
+ Stefano Stabellini <stefano.stabellini@amd.com>, 
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>, 
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, 
+ Julia Zhang <julia.zhang@amd.com>, Chen Jiqian <Jiqian.Chen@amd.com>, 
+ Antonio Caggiano <antonio.caggiano@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82e;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,140 +110,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Hi
 
-Drew brought to my attention the following post on the tech-unprivileged mailing
-list:
+On Tue, Dec 19, 2023 at 11:54=E2=80=AFAM Huang Rui <ray.huang@amd.com> wrot=
+e:
+>
+> Patch "virtio-gpu: CONTEXT_INIT feature" has added the context_init
+> feature flags.
+> We would like to enable the feature with virglrenderer, so add to create
+> virgl renderer context with flags using context_id when valid.
+>
+> Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> ---
+>
+> Changes in v6:
+> - Handle the case while context_init is disabled.
+> - Enable context_init by default.
+>
+>  hw/display/virtio-gpu-virgl.c | 13 +++++++++++--
+>  hw/display/virtio-gpu.c       |  4 ++++
+>  2 files changed, 15 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.=
+c
+> index 8bb7a2c21f..5bbc8071b2 100644
+> --- a/hw/display/virtio-gpu-virgl.c
+> +++ b/hw/display/virtio-gpu-virgl.c
+> @@ -106,8 +106,17 @@ static void virgl_cmd_context_create(VirtIOGPU *g,
+>      trace_virtio_gpu_cmd_ctx_create(cc.hdr.ctx_id,
+>                                      cc.debug_name);
+>
+> -    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen,
+> -                                  cc.debug_name);
+> +#ifdef HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS
+> +    if (cc.context_init && virtio_gpu_context_init_enabled(g->parent_obj=
+.conf)) {
+> +        virgl_renderer_context_create_with_flags(cc.hdr.ctx_id,
+> +                                                 cc.context_init,
+> +                                                 cc.nlen,
+> +                                                 cc.debug_name);
+> +        return;
+> +    }
+> +#endif
+> +
+> +    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen, cc.debug_name)=
+;
+>  }
+>
+>  static void virgl_cmd_context_destroy(VirtIOGPU *g,
+> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+> index b016d3bac8..8b2f4c6be3 100644
+> --- a/hw/display/virtio-gpu.c
+> +++ b/hw/display/virtio-gpu.c
+> @@ -1619,6 +1619,10 @@ static Property virtio_gpu_properties[] =3D {
+>      DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
+>                      VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
+>      DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0),
+> +#ifdef HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS
+> +    DEFINE_PROP_BIT("context_init", VirtIOGPU, parent_obj.conf.flags,
+> +                    VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED, true),
+> +#endif
 
-"Architecture Review Committee meeting minutes, 12/19/23"
-https://lists.riscv.org/g/tech-unprivileged/message/611
+Does it make sense to make this configurable? If the context to be
+created asked for a capset id but the one created doesn't respect it,
+what's the outcome?
 
-Second paragraph mentions:
+It looks like it should instead set cmd->error.
 
-"In response to some recent discussion in the Apps and Tools HC about how profiles should
-be represented in GCC/LLVM, the ARC provides this answer: compilers should use a single parameter
-for an ISA string.  An ISA string begins with either a base ISA name (e.g. rv64i) or a profile name
-(e.g. rva23u64) and is optionally followed by additional extensions (e.g.  rv64imac_zicond or
-rva23u64_zfh_zicond).  If the ISA string begins with a profile name, it is equivalent to
-replacing the profile name with its mandatory base ISA and its mandatory extensions; any
-optional extensions in a profile must be explicitly named if their inclusion is desired.
-ISAs are sets, and concatenating strings takes the union, so redundancy is legal (e.g.
-rva23u64, rva23u64_zicsr, and rva23u64_zicsr_zicsr are all valid and equivalent)."
-
-The takeaways from it:
-
-- this implementation is compliant with how profiles are interpreted, i.e. a profile is
-considered a set of the mandatory base ISA and mandatory extensions, and any additional/optional
-extensions must be explicitly named;
-
-- our ISA string format is also since we use the base ISA name + extensions format already.
-This series don't  change/add anything in this regard.
-
-
-If we have enough demand for it, I can do a follow-up to add support for the ISA string
-profile format. I.e. this:
-
-$ build/qemu-system-riscv64 -M virt -cpu rva22s64 (...)
-
-# cat /proc/device-tree/cpus/cpu@0/riscv,isa
-rv64imafdc_zicbom_zicbop_zicboz_zicntr_zicsr_zifencei_zihintpause_zihpm_zfhmin_zca_zcd_zba_zbb_zbs_zkt_svinval_svpbmt
-
-Would become this:
-
-# cat /proc/device-tree/cpus/cpu@0/riscv,isa
-rva22s64
-
-
-Feel free to comment here if you, as a toolchain/application developer, thinks that this
-ISA string profile format makes it easier to deal with profiles or if you're fine with
-just parsing all the extensions in the current ISA string format.
-
-
-All of this relies on this series being upstreamed first, of course. Alistair, let me
-know if we're missing anything.
-
-
-
-Thanks,
-
-
-Daniel
-
-
-
-On 12/18/23 09:53, Daniel Henrique Barboza wrote:
-> Hi,
-> 
-> This is a merge of the two profile series:
-> 
-> "[PATCH for-9.0 v12 00/18] riscv: rv64i/rva22u64 CPUs, RVA22U64 profile support"
-> "[PATCH for-9.0 v2 0/8] target/riscv: implement RVA22S64 profile"
-> 
-> I'm sending them together since the second series is dependent on the first.
-> 
-> Quick summary of the major features added:
-> 
-> - A new rv64i CPU type. This is a CPU that has only RVI enabled;
-> 
-> - 'rva22u64' and 'rva22s64' profile flags. They were designed to be used
->    with the 'rv64i' CPU but can be used with other generic CPUs like
->    rv64;
-> 
-> - Two new profile CPUs: 'rva22u64' and 'rva22s64'. A profile CPU is an
->    alias of '-cpu rv64,profile=on' and it's the most convenient way of
->    using profiles. E.g to launch an rva22s64 'virt' machine:
-> 
->    ./qemu-system-riscv64 -M virt -cpu rva22s64  (...)
-> 
->    To test an application with an rva22u64 profile with linux-user mode:
-> 
->    ./qemu-riscv64 -cpu rva22u64  (...)
-> 
-> 
-> The series can also be fetch via:
-> 
-> https://gitlab.com/danielhb/qemu/-/tree/rva22_v13
-> 
-> Patches rebased on top of Alistair riscv-to-apply.next.
-> 
-> All patches acked.
-> 
-> Daniel Henrique Barboza (26):
->    target/riscv: create TYPE_RISCV_VENDOR_CPU
->    target/riscv/tcg: do not use "!generic" CPU checks
->    target/riscv/tcg: update priv_ver on user_set extensions
->    target/riscv: add rv64i CPU
->    target/riscv: add zicbop extension flag
->    target/riscv/tcg: add 'zic64b' support
->    riscv-qmp-cmds.c: expose named features in cpu_model_expansion
->    target/riscv: add rva22u64 profile definition
->    target/riscv/kvm: add 'rva22u64' flag as unavailable
->    target/riscv/tcg: add user flag for profile support
->    target/riscv/tcg: add MISA user options hash
->    target/riscv/tcg: add riscv_cpu_write_misa_bit()
->    target/riscv/tcg: handle profile MISA bits
->    target/riscv/tcg: add hash table insert helpers
->    target/riscv/tcg: honor user choice for G MISA bits
->    target/riscv/tcg: validate profiles during finalize
->    riscv-qmp-cmds.c: add profile flags in cpu-model-expansion
->    target/riscv: add 'rva22u64' CPU
->    target/riscv: implement svade
->    target/riscv: add priv ver restriction to profiles
->    target/riscv/cpu.c: finalize satp_mode earlier
->    target/riscv/cpu.c: add riscv_cpu_is_32bit()
->    target/riscv: add satp_mode profile support
->    target/riscv: add 'parent' in profile description
->    target/riscv: add RVA22S64 profile
->    target/riscv: add rva22s64 cpu
-> 
->   hw/riscv/virt.c               |   5 +
->   target/riscv/cpu-qom.h        |   5 +
->   target/riscv/cpu.c            | 201 +++++++++++++--
->   target/riscv/cpu.h            |  18 ++
->   target/riscv/cpu_cfg.h        |   4 +
->   target/riscv/kvm/kvm-cpu.c    |   7 +-
->   target/riscv/riscv-qmp-cmds.c |  44 +++-
->   target/riscv/tcg/tcg-cpu.c    | 450 +++++++++++++++++++++++++++++++---
->   8 files changed, 672 insertions(+), 62 deletions(-)
-> 
+--=20
+Marc-Andr=C3=A9 Lureau
 
