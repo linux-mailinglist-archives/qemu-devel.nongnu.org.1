@@ -2,86 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD78821B64
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B43821B63
 	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 13:06:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKdVi-0002pm-Rx; Tue, 02 Jan 2024 07:04:42 -0500
+	id 1rKdWd-0003Ir-Gm; Tue, 02 Jan 2024 07:05:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rKdVh-0002pU-5s
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 07:04:41 -0500
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rKdVV-0000xg-FK
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 07:04:40 -0500
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6d9f94b9186so3725766b3a.0
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 04:04:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704197068; x=1704801868; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=JfIuPENYZ8JbpZW3U2QQ6Cx6wbyARRSkcKv4zbbDRqg=;
- b=X/OIYG9N+SWo9f0tw+vJkgef/LLfZjrC1oWlngyazDlbkfzm2VNDInoCgJ/Z2492I0
- HbKah4fOWOf08K1liL4zReNz32xiClbQONGBIRF9e2HNBm20/hBkFbDC++bUOMLwN5Ej
- 8KDjkF8+Vb4z+/3bk/DoVP29yFRrHKYsvquIhA8dA43pKxpooL1n+/qwPW3CoAv1dPVg
- pHPm9W9RK05P0DKSAxmUfF62QaBTzQe83prhs/gllYkbMfKlHnLXzcfSYg4MVy/Rh3EH
- F+BwQ8NBuGpOvNXDM9ClLC9XM6nLjxfcTSr9GInfdyy2kM2zJYjPSSnMa41yzTvTWhlr
- pdOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704197068; x=1704801868;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JfIuPENYZ8JbpZW3U2QQ6Cx6wbyARRSkcKv4zbbDRqg=;
- b=jmzxOFlz7Y3fO4FWEl7M08vInSFg2s8Vmwf4ZeFKEkijVQ3wPmEI9iQJeM7Ool8o5q
- IoqVtOV8BhCZSPgVz1OS+/cra8enILJH4n+gACZPvih3F8n1X2wPINqrhOex6NUNPjPI
- /CZQdspRgrkMOXkeMD702jujBH+ocv/nB0sbGgOTherpqkoYaPBm2Hrhi5F8WoeTG4rK
- wPP4jM/njqCZG9XdDpRpNVsglXNEQYsRhh7uXiYOX7/LrsjtuUPcidvWLYX9NNZZpXgX
- 9XsAer6Nyu+MOikZdEhBsV3aCcFML423/oXzQ9LMmkR/qbUQR8fKskvoCwzXeZsB5I6t
- jsNA==
-X-Gm-Message-State: AOJu0YySquxt0kt4xHGZFzVaadJB0S8rAvpZRmlmkdnI0MQGpqsFZ/Lq
- EWO61+t86+XY0zC7xKffzD/6QD3QRAiz4Q==
-X-Google-Smtp-Source: AGHT+IGrR4JfESd4l0RzFnWEEjunBTXUN1VYfNgzsF2hPghhJXt8NGsRbnZMqyJx4iVpFadyBQFsxw==
-X-Received: by 2002:a05:6a00:2315:b0:6d9:c0a0:b1f2 with SMTP id
- h21-20020a056a00231500b006d9c0a0b1f2mr14348780pfh.46.1704197067909; 
- Tue, 02 Jan 2024 04:04:27 -0800 (PST)
-Received: from [192.168.68.110] ([189.79.21.107])
- by smtp.gmail.com with ESMTPSA id
- i26-20020aa78b5a000000b006cdb17f9ffdsm20905550pfd.66.2024.01.02.04.04.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jan 2024 04:04:27 -0800 (PST)
-Message-ID: <cb307b8b-dfc8-4c10-9420-281865eb678c@ventanamicro.com>
-Date: Tue, 2 Jan 2024 09:04:22 -0300
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rKdWa-0003I1-9A
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 07:05:36 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rKdWX-0001PZ-MJ
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 07:05:36 -0500
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8Dx_+sF_JNlcyYBAA--.4612S3;
+ Tue, 02 Jan 2024 20:05:25 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Cx2r0D_JNlC8UVAA--.38171S3; 
+ Tue, 02 Jan 2024 20:05:25 +0800 (CST)
+Subject: Re: [PATCH v2 1/2] target/loongarch/meson: move gdbstub.c to
+ loongarch.ss
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
+ alex.bennee@linaro.org, pbonzini@redhat.com, maobibo@loongson.cn
+References: <20240102020200.3462097-1-gaosong@loongson.cn>
+ <0c873d56-fb90-41e2-8777-8b0642479a9f@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <60853301-6434-a9e3-30af-7e810e698e0d@loongson.cn>
+Date: Tue, 2 Jan 2024 20:05:22 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/16] target/riscv: move 'vlen' to
- riscv_cpu_properties[]
+In-Reply-To: <0c873d56-fb90-41e2-8777-8b0642479a9f@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-To: Vladimir Isaev <vladimir.isaev@syntacore.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com
-References: <20231222122235.545235-1-dbarboza@ventanamicro.com>
- <20231222122235.545235-9-dbarboza@ventanamicro.com>
- <346d8260-bed8-492b-aae3-8110b7663e5e@syntacore.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <346d8260-bed8-492b-aae3-8110b7663e5e@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAf8Cx2r0D_JNlC8UVAA--.38171S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
+ BjDU0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26c
+ xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
+ j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxV
+ AFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x02
+ 67AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6x
+ ACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E
+ 87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0V
+ AS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
+ 6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF
+ 0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvE
+ c7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14
+ v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x
+ 07UE-erUUUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -56
+X-Spam_score: -5.7
+X-Spam_bar: -----
+X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.762,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,171 +82,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+在 2024/1/2 下午5:46, Philippe Mathieu-Daudé 写道:
+> On 2/1/24 03:01, Song Gao wrote:
+>> gdbstub.c is not specific to TCG and can be used by
+>> other accelerators, such as KVM accelerator
+>>
+>> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>
+> I didn't really suggested the change but the split ;)
+>
+Ah,  I can drop it for pull request.
 
-
-On 12/29/23 08:22, Vladimir Isaev wrote:
-> 22.12.2023 15:22, Daniel Henrique Barboza wrote:
->>
->> Turning 'vlen' into a class property will allow its default value to be
->> overwritten by cpu_init() later on, solving the issue we have now where
->> CPU specific settings are getting overwritten by the default.
->>
->> For 'vlen', 'elen' and the blocksize options we need a way of tracking
->> if the user set a value for them. This is benign for TCG since the cost
->> of always validating these values are small, but for KVM we need syscalls
->> to read the host values to make the validations. Knowing whether the
->> user didn't touch the values makes a difference. We'll track user setting
->> for these properties using a hash, like we do in the TCG driver.
->>
->> Common validation bits are moved from riscv_cpu_validate_v() to
->> prop_vlen_set() to be shared with KVM.
->>
->> And, as done with every option we migrated to riscv_cpu_properties[],
->> vendor CPUs can't have their 'vlen' value changed.
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Thanks.
+Song Gao.
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>
+>> Signed-off-by: Song Gao <gaosong@loongson.cn>
 >> ---
->>   target/riscv/cpu.c         | 63 +++++++++++++++++++++++++++++++++++++-
->>   target/riscv/tcg/tcg-cpu.c |  5 ---
->>   2 files changed, 62 insertions(+), 6 deletions(-)
->>
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index d6625399a7..c2ff50bcab 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -29,6 +29,7 @@
->>   #include "qapi/visitor.h"
->>   #include "qemu/error-report.h"
->>   #include "hw/qdev-properties.h"
->> +#include "hw/core/qdev-prop-internal.h"
->>   #include "migration/vmstate.h"
->>   #include "fpu/softfloat-helpers.h"
->>   #include "sysemu/kvm.h"
->> @@ -53,6 +54,15 @@ const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
->>   #define BYTE(x)   (x)
->>   #endif
->>
->> +/* Hash that stores general user set numeric options */
->> +static GHashTable *general_user_opts;
->> +
->> +static void cpu_option_add_user_setting(const char *optname, uint32_t value)
->> +{
->> +    g_hash_table_insert(general_user_opts, (gpointer)optname,
->> +                        GUINT_TO_POINTER(value));
->> +}
->> +
->>   #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
->>       {#_name, _min_ver, CPU_CFG_OFFSET(_prop)}
->>
->> @@ -1244,6 +1254,8 @@ static void riscv_cpu_init(Object *obj)
->>                         IRQ_LOCAL_MAX + IRQ_LOCAL_GUEST_MAX);
->>   #endif /* CONFIG_USER_ONLY */
->>
->> +    general_user_opts = g_hash_table_new(g_str_hash, g_str_equal);
->> +
->>       /*
->>        * The timer and performance counters extensions were supported
->>        * in QEMU before they were added as discrete extensions in the
->> @@ -1664,8 +1676,54 @@ static const PropertyInfo prop_vext_spec = {
->>       .set = prop_vext_spec_set,
->>   };
->>
->> +static void prop_vlen_set(Object *obj, Visitor *v, const char *name,
->> +                         void *opaque, Error **errp)
->> +{
->> +    RISCVCPU *cpu = RISCV_CPU(obj);
->> +    uint16_t value;
->> +
->> +    if (!visit_type_uint16(v, name, &value, errp)) {
->> +        return;
->> +    }
->> +
->> +    if (!is_power_of_2(value)) {
->> +        error_setg(errp, "Vector extension VLEN must be power of 2");
->> +        return;
->> +    }
->> +
->> +    /* Always allow setting a default value */
-> 
-> What is the case for vlen equal to 0? Since in properties it is defined with default value set to 128.
+>>   target/loongarch/meson.build | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
 
-The process of setting a default uses the default setter of the property. I.e.
-when setting vlen default value to 128, this function will be called with
-value = 128 when cpu->cfg.vlen is 0.
-
-If we don't special case this scenario we'll fail the "vendor CPUs don't allow
-changing vlen" check that comes right after.
-
-
-Thanks,
-
-Daniel
-
-> 
->> +    if (cpu->cfg.vlen == 0) {
->> +        cpu->cfg.vlen = value;
->> +        return;
->> +    }
->> +
->> +    if (value != cpu->cfg.vlen && riscv_cpu_is_vendor(obj)) {
->> +        cpu_set_prop_err(cpu, name, errp);
->> +        error_append_hint(errp, "Current '%s' val: %u\n",
->> +                          name, cpu->cfg.vlen);
->> +        return;
->> +    }
->> +
->> +    cpu_option_add_user_setting(name, value);
->> +    cpu->cfg.vlen = value;
->> +}
->> +
->> +static void prop_vlen_get(Object *obj, Visitor *v, const char *name,
->> +                         void *opaque, Error **errp)
->> +{
->> +    uint16_t value = RISCV_CPU(obj)->cfg.vlen;
->> +
->> +    visit_type_uint16(v, name, &value, errp);
->> +}
->> +
->> +static const PropertyInfo prop_vlen = {
->> +    .name = "vlen",
->> +    .get = prop_vlen_get,
->> +    .set = prop_vlen_set,
->> +    .set_default_value = qdev_propinfo_set_default_value_uint,
->> +};
->> +
->>   Property riscv_cpu_options[] = {
->> -    DEFINE_PROP_UINT16("vlen", RISCVCPU, cfg.vlen, 128),
->>       DEFINE_PROP_UINT16("elen", RISCVCPU, cfg.elen, 64),
->>
->>       DEFINE_PROP_UINT16("cbom_blocksize", RISCVCPU, cfg.cbom_blocksize, 64),
->> @@ -1687,6 +1745,9 @@ static Property riscv_cpu_properties[] = {
->>       {.name = "priv_spec", .info = &prop_priv_spec},
->>       {.name = "vext_spec", .info = &prop_vext_spec},
->>
->> +    {.name = "vlen", .info = &prop_vlen,
->> +     .set_default = true, .defval.u = 128},
->> +
->>   #ifndef CONFIG_USER_ONLY
->>       DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVEC),
->>   #endif
->> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
->> index 6501c29d8e..8ec858e096 100644
->> --- a/target/riscv/tcg/tcg-cpu.c
->> +++ b/target/riscv/tcg/tcg-cpu.c
->> @@ -178,11 +178,6 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
->>   static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
->>                                    Error **errp)
->>   {
->> -    if (!is_power_of_2(cfg->vlen)) {
->> -        error_setg(errp, "Vector extension VLEN must be power of 2");
->> -        return;
->> -    }
->> -
->>       if (cfg->vlen > RV_VLEN_MAX || cfg->vlen < 128) {
->>           error_setg(errp,
->>                      "Vector extension implementation only supports VLEN "
->> --
->> 2.43.0
->>
->>
 
