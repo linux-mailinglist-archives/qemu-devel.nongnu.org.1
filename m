@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB66821D95
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC66821D96
 	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jan 2024 15:25:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKfgO-0005z8-CI; Tue, 02 Jan 2024 09:23:52 -0500
+	id 1rKfgY-00064x-Vl; Tue, 02 Jan 2024 09:24:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=hBD0=IM=kaod.org=clg@ozlabs.org>)
- id 1rKfg9-0005uw-4U; Tue, 02 Jan 2024 09:23:43 -0500
+ id 1rKfgO-00060o-VD; Tue, 02 Jan 2024 09:23:53 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=hBD0=IM=kaod.org=clg@ozlabs.org>)
- id 1rKfg7-0001Bs-27; Tue, 02 Jan 2024 09:23:36 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T4FT02qWTz4x1v;
- Wed,  3 Jan 2024 01:23:32 +1100 (AEDT)
+ id 1rKfgM-0001DZ-8X; Tue, 02 Jan 2024 09:23:52 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T4FTH5n2pz4wxx;
+ Wed,  3 Jan 2024 01:23:47 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T4FSv0QZgz4wnx;
- Wed,  3 Jan 2024 01:23:26 +1100 (AEDT)
-Message-ID: <069fbb45-8a3c-479a-bfa1-f033e614b0d2@kaod.org>
-Date: Tue, 2 Jan 2024 15:23:25 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T4FTB3MyQz4wnx;
+ Wed,  3 Jan 2024 01:23:42 +1100 (AEDT)
+Message-ID: <5afcc9a5-7329-461f-a2d2-1be50ae57b80@kaod.org>
+Date: Tue, 2 Jan 2024 15:23:41 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/33] hw/cpu/arm: Have A9MPCORE/A15MPCORE inheritate
- common CORTEX_MPCORE_PRIV
+Subject: Re: [PATCH 12/33] hw/cpu/arm: Create MPCore container in QOM parent
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -47,9 +47,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
  qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 References: <20231212162935.42910-1-philmd@linaro.org>
- <20231212162935.42910-12-philmd@linaro.org>
+ <20231212162935.42910-13-philmd@linaro.org>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231212162935.42910-12-philmd@linaro.org>
+In-Reply-To: <20231212162935.42910-13-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=150.107.74.76;
@@ -76,8 +76,9 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/12/23 17:29, Philippe Mathieu-Daudé wrote:
-> TYPE_CORTEX_MPCORE_PRIV becomes the common parent to
-> TYPE_A9MPCORE_PRIV and TYPE_A15MPCORE_PRIV.
+> Move the memory region container creation to the abstract QOM
+> parent. Children set the region size via the class 'container_size'
+> field.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
