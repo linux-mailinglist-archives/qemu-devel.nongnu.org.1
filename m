@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 532F682337A
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 18:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A2F82337E
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 18:39:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL58n-0004MP-1Y; Wed, 03 Jan 2024 12:34:53 -0500
+	id 1rL58M-0003sR-PB; Wed, 03 Jan 2024 12:34:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rL58P-0003yu-U2
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:30 -0500
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ id 1rL58K-0003qD-RB
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:24 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rL584-0002Ve-1t
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:29 -0500
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2ccec119587so48543231fa.0
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 09:34:05 -0800 (PST)
+ id 1rL580-0002UV-6g
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:24 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3367632ce7bso9138318f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 09:34:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704303243; x=1704908043; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704303240; x=1704908040; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G7uxGZGov81O+5jLuoaBr/C5I/uZZh1/zGx1+p9cIt8=;
- b=Auu0NJM0w0lP+xQ2nDVJjbOs9Rh9fBl6lkEe1wrdgaCbZIHVUNzirOuVa6rwdMzi4N
- j6/wcgTf1iitxO9BX7U53zwkWy1g0IWvsCygTrnG4W8h1Kfd62eSPkx/a3YnVfFjWIWC
- HC9nRuz+pRcOHzs+H+Tr7+WJe49Pk4yZt/5AEqAvjYdgjb5wC+Rkk+P3b4WvRBiwgvQB
- dZu+PczlBaOH/H68UyN5PqtcwhVCJCmM++IDvbWRhlyljzM2ivRMLraxfR6UL7nGWoeO
- E3GJO1bxYMzStvkODb0/8LlZE+HddafIjHTzzCRMF48oB50MVsDVaqzeDbnw53mQqSSm
- KSlw==
+ bh=vqrDXpkh9FjMlfAgHrjndIlqPg75eovfRGnZr9OF3KY=;
+ b=px/1BEMAA58Anby4kBk1fpNqIQu/skQnoxsX1HHLsckmUbsUm+ENf8i/dT9np1uNv/
+ yAfUdVe+XfbYuV+bKsXOrbXEVnuNCPFbkq/JrgMVsTebKo7JhdBo//tjyQwU3letusBd
+ PgEdyBqU/Ug5MORXkCwvXCzxVkrjMR4y5lIQDWxUX1u7hrYTE/5VriOqd2j8Op4LC3yC
+ PAzV7uKa2Y+mMWKJ2ug3TU0NbIqnnakSTX9yaA5TDaD5U11yqPOB+CK4lg2gYwhYsbSL
+ nUpkK9Ovo32R1nb8pL0tfp+fPgQPOnh1f/qXVEZR5t6TJO0mszIhkUv/BVMM9ld1rDln
+ ZMLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704303243; x=1704908043;
+ d=1e100.net; s=20230601; t=1704303240; x=1704908040;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G7uxGZGov81O+5jLuoaBr/C5I/uZZh1/zGx1+p9cIt8=;
- b=rJaAKBmL5uFQA2RrpSj+im5DJL3ktC21z414va37yfdqxtact9I7TsS2AWDo90NxGH
- VuFK70s/PhDE7e/T+YrvskY/S3nQ8pzJ1jwaHxFqz+BfSD8oRBrn/83FoudmJvlVlrYM
- 4MoPIFrBH4Tx+s4y4Fu+wBOMderQgLTXAykgOgK2hvNTiTwsUs3cqGQlBr9pa6co8d29
- XPoXiBofH7+YQP//RZrSFyFMHGeLaNuhhiCZ6L5DnBU27EFH4TcDfkRZicQ0sHd6QfdZ
- id6Li84vWfDgEJ2x2bFwaCMC821EQl7xv8kuM4VZ8WAQ/x3w4uozHOC3oyGXX01KYsIB
- Z5Iw==
-X-Gm-Message-State: AOJu0YzrD9AttMGKBijXg7XBubILT29Rtg15FoBuzanytuL9wbjlC9jL
- a9ZJFLEtQJOZz/dPjK34fBNuUHQ+9jXWPg==
-X-Google-Smtp-Source: AGHT+IFhNAa0ExWYCS2KvTjl2oi2iRsIB5/oaggT0hzzaXckkjHspuvOE576DfxADqAu/SUDJduuEQ==
-X-Received: by 2002:a05:651c:686:b0:2cc:d555:bc66 with SMTP id
- x6-20020a05651c068600b002ccd555bc66mr4899025ljb.76.1704303242728; 
- Wed, 03 Jan 2024 09:34:02 -0800 (PST)
+ bh=vqrDXpkh9FjMlfAgHrjndIlqPg75eovfRGnZr9OF3KY=;
+ b=KNeaOh+Kpa7eJB+IQs1HdHSxoEjUSdMkE3RvYQsMz2il0GdrgGQKxYru4kyTDD0Q2r
+ edfn0B900MMI9M4UM0V7Il+Jw2o7g3MPjg49T7WnO4qQ3U5yrbFKIVp+sH/Gqr8r5tlh
+ mkc7BQfRR6mDpYBrVfZoCbwd1etfEQEglokVl/bNh1Qbjqm6Q8cE2rOC9n4v42SZwsef
+ KR7iMBW/s6oBhmTtB0SO08uNnKS0cJpwYcmwyJTfHhwBgfkbr90Fk/IkztTACKbTZP1f
+ yJgvZ/yMSSAsQkpH9UeBjqYN6MhRn4svJtpzOkIf88xkGbBQri33hP07tJaIe34ogeOw
+ 349A==
+X-Gm-Message-State: AOJu0Yzv/auAN6BCFACQbsMQlGWTYaiLkozm+Iy8K9hykC79MbHQLcSA
+ z5fjj5AfOf5lL0D3JTd61ZIoKRYJWh8vag==
+X-Google-Smtp-Source: AGHT+IEnYc36seB1PpcGJ/mV+1AvJpNac6K8FWM/1UmeDuOkWOqd5bHXuF6GN7+Wd+OGJrM9o3XEQA==
+X-Received: by 2002:a5d:684a:0:b0:336:1182:6475 with SMTP id
+ o10-20020a5d684a000000b0033611826475mr10980107wrw.34.1704303240708; 
+ Wed, 03 Jan 2024 09:34:00 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- q28-20020adfab1c000000b0033690139ea5sm28923405wrc.44.2024.01.03.09.33.53
+ a18-20020a5d53d2000000b0033671314440sm31256414wrw.3.2024.01.03.09.33.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 03 Jan 2024 09:33:56 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 817AB5F944;
+ by draig.lan (Postfix) with ESMTP id 95FEB5F926;
  Wed,  3 Jan 2024 17:33:50 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -92,17 +92,17 @@ Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
  Alistair Francis <alistair.francis@wdc.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 13/43] qtest: bump qos-test timeout to 2 minutes
-Date: Wed,  3 Jan 2024 17:33:19 +0000
-Message-Id: <20240103173349.398526-14-alex.bennee@linaro.org>
+Subject: [PATCH v2 14/43] qtest: bump aspeed_smc-test timeout to 6 minutes
+Date: Wed,  3 Jan 2024 17:33:20 +0000
+Message-Id: <20240103173349.398526-15-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103173349.398526-1-alex.bennee@linaro.org>
 References: <20240103173349.398526-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,31 +127,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The qos-test takes just under 1 minute in a --enable-debug
-build. Bumping to 2 minutes will give more headroom.
+On a loaded system with --enable-debug, this test can take longer than
+5 minutes. Raising the timeout to 6 minutes gives greater headroom for
+such situations.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20230717182859.707658-10-berrange@redhat.com>
+[thuth: Increase the timeout to 6 minutes for very loaded systems]
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231215070357.10888-10-thuth@redhat.com>
+Message-Id: <20231215070357.10888-11-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
  tests/qtest/meson.build | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index dc1e6da5c7b..b02ca540cff 100644
+index b02ca540cff..da53dd66c97 100644
 --- a/tests/qtest/meson.build
 +++ b/tests/qtest/meson.build
-@@ -7,6 +7,7 @@ slow_qtests = {
-   'pxe-test': 600,
-   'prom-env-test': 360,
-   'boot-serial-test': 180,
-+  'qos-test': 120,
- }
- 
- qtests_generic = [
+@@ -1,4 +1,5 @@
+ slow_qtests = {
++  'aspeed_smc-test': 360,
+   'bios-tables-test' : 120,
+   'migration-test' : 480,
+   'npcm7xx_pwm-test': 300,
 -- 
 2.39.2
 
