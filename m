@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0028823357
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 18:35:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E20A823360
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 18:36:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL589-0003aU-TT; Wed, 03 Jan 2024 12:34:13 -0500
+	id 1rL58E-0003fx-Th; Wed, 03 Jan 2024 12:34:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rL57v-0003T4-EI
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:00 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1rL584-0003Wy-G6
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:09 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rL57o-0002Mt-Tx
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:33:59 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40d3c4bfe45so111700315e9.1
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 09:33:51 -0800 (PST)
+ id 1rL57q-0002Oa-HQ
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:07 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40d3c4bfe45so111700695e9.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 09:33:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704303230; x=1704908030; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704303233; x=1704908033; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RdsiaowAjsV2VhJV7X+uJO6SS3PjKGOvNs318qpxEnc=;
- b=udnsPMjkO0Ppej4CA5oKCwErxZtFwGWNbCDUKiCKcw/Nyd7V2bEj1fKMM2jGwEphR0
- 9k+mgiYoZPX7IdQgRgu8S/OmUWG/Of/9xZ+X/0VfRD6WcBjHmKUfl0eYOjWdrWHoWU9P
- xUcE2ip5hcOVQ9OAWpSUzl9SulsTdMKljx/hadQKx5D5Lp7jkg7AYbC/ZrhOjfq/rCsj
- +J5kxCJ7TunfMNWdqPvIvokAmmamBGsP6XC+wHKeaXI7fAYmtS5tPWAB93r/ft6bs+kw
- uqMxxAlNsML2tWnyzey16p//YPxmbOrul9xb8F901i+qWYj5umDRz/Ttr0lotXX3AL85
- Q18g==
+ bh=qzxoAeOdiga+52AiTCmsWe8ywFNoeoZ5ZVuxsnjrTLU=;
+ b=ZLps0+nU4+JNR/NQZZd/MN36RMkw1RydMXgzftF+ZsmXcXuYRV2G1vmqHuR+flMRUz
+ YZxuq4neTtF+FCgSh3AtmknIrUyrmVH36lZmzTi8A9L3dMVe6ukiEZx9G9Xff1wVqenf
+ 67VBAAQ2TuLv5u81Wih0cRgqvvex8hWVEfsFfE62TkndggnanGtevLTecgfxwImSBkOm
+ IJLJG7ekrS52ekogCYbc7bkLEVTACYhxYe0Ac0v5j7XNdFgXvUmhFRldn4+LnTuInl7z
+ 0Y1BHtsx9DIUGN3nJbbxdnIVZLWEObWwDsGIEZh/gQXqH3TZ6XsAQPjQvXZ9pzfTUPVc
+ FCRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704303230; x=1704908030;
+ d=1e100.net; s=20230601; t=1704303233; x=1704908033;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RdsiaowAjsV2VhJV7X+uJO6SS3PjKGOvNs318qpxEnc=;
- b=LE0JyDVm+9Y4UQ7sIiwd/prFh5dzy31A5r8t3QdDkPq4kyuNu/yg/6FCjX3hcAHPqN
- /aF4BZqQVQDIYQd0cg7RWQNr1pewezKD7IENvjzurb92+WLWbZHpYkkUP9ckTzh5zIjN
- vOCDbChcAi+j9fqMFsoXorKhgZTL+XVKGgXgy9fQjb9HWa/a6JrVOgAfWTNrm2wNkkvy
- cr54SihFhSW3oN1EGbs5nPzCXUuZrFz3N08OenQHXZ40hv265pSWgMGaGOIotN00TT/q
- xxbt5yMGAXLIdVF1L7HwS+SI0zU1rX2hd/Aj9v/4Ucqdt6G+dlGh3i/bTxKvy0EKQMoR
- ievA==
-X-Gm-Message-State: AOJu0YwHrmS0BPJE1monMQDISMJEsx1xOMj1FvXjaefcN2ilZ/h3A5hM
- erqTNg6ArSLrgoYf0GnuPpS3LpH5ziyxpA==
-X-Google-Smtp-Source: AGHT+IGeFbtzVvu3T8oVc1zHjuCDZo+RPaHsfV4kjVznDt57AzNWaYV+gZhSH5pdHVRgX2Ots1y9PA==
-X-Received: by 2002:a05:600c:491e:b0:40d:5c56:5545 with SMTP id
- f30-20020a05600c491e00b0040d5c565545mr3022779wmp.298.1704303230107; 
- Wed, 03 Jan 2024 09:33:50 -0800 (PST)
+ bh=qzxoAeOdiga+52AiTCmsWe8ywFNoeoZ5ZVuxsnjrTLU=;
+ b=jMIjyEKP5H89qjoqWIZsSzzUJh14PgnfkLbcN3umTAn84fZYuoxgaT9Qs5YEHGQme3
+ xuJgG8jBE9jzoEvF/WcDY5kFyye2Jm3LmP19338G2b05LqI1EFnEKIPbsjapYlPy1jO1
+ pklDPhlWTU6vj//kkQ33V+NKMj8qQpFZFa0NGt73aAfCQSluEjJ5cJ8QhEepSwSA3PNf
+ K1O5d8KTKoFtNrEp+/OtyDoYQGT5BsHoevZiIVpQC1JWGPxts1oAxwzSjEyVpaG8W9eb
+ co2rYZ9XFPn37iN8tunKBwBmszJnbseEuQXouN4Qn2mIM+55vbdsMXW+heCb4c9cyaVU
+ acSg==
+X-Gm-Message-State: AOJu0YytLtxK6cLJ1aqbnoLxLyS07cscqauBZrSpXUtY2H+zNgcmw7cB
+ xBcwRqT8AAieBzAPz9Nr5S8SB/afiO/SKw==
+X-Google-Smtp-Source: AGHT+IGhE7/q82Jf4z4D1OPjoyeetuf4+aSfmg/R61bfYTK6tVdLZR8E2VO87yUiQHcrTBnDAn/iZg==
+X-Received: by 2002:a05:600c:a0b:b0:40d:7da9:8662 with SMTP id
+ z11-20020a05600c0a0b00b0040d7da98662mr2292525wmp.338.1704303233122; 
+ Wed, 03 Jan 2024 09:33:53 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- s7-20020a05600c45c700b0040d8d11bf63sm2903966wmo.41.2024.01.03.09.33.49
+ t12-20020adfe10c000000b00336f43fa654sm18186652wrz.22.2024.01.03.09.33.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jan 2024 09:33:49 -0800 (PST)
+ Wed, 03 Jan 2024 09:33:50 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6A5105F92D;
+ by draig.lan (Postfix) with ESMTP id 7EB765F92F;
  Wed,  3 Jan 2024 17:33:49 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,18 +91,17 @@ Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v2 01/43] tests/avocado: Add a test for a little-endian
- microblaze machine
-Date: Wed,  3 Jan 2024 17:33:07 +0000
-Message-Id: <20240103173349.398526-2-alex.bennee@linaro.org>
+Subject: [PATCH v2 02/43] tests/avocado: use snapshot=on in kvm_xen_guest
+Date: Wed,  3 Jan 2024 17:33:08 +0000
+Message-Id: <20240103173349.398526-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103173349.398526-1-alex.bennee@linaro.org>
 References: <20240103173349.398526-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,61 +124,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+This ensures the rootfs is never permanently changed as we don't need
+persistence between tests anyway.
 
-We've already got a test for a big endian microblaze machine, but so
-far we lack one for a little endian machine. Now that the QEMU advent
-calendar featured such an image, we can test the little endian mode,
-too.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231215161851.71508-1-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/avocado/machine_microblaze.py | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ tests/avocado/kvm_xen_guest.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/avocado/machine_microblaze.py b/tests/avocado/machine_microblaze.py
-index 8d0efff30d2..807709cd11e 100644
---- a/tests/avocado/machine_microblaze.py
-+++ b/tests/avocado/machine_microblaze.py
-@@ -5,6 +5,8 @@
- # This work is licensed under the terms of the GNU GPL, version 2 or
- # later. See the COPYING file in the top-level directory.
- 
-+import time
-+from avocado_qemu import exec_command, exec_command_and_wait_for_pattern
- from avocado_qemu import QemuSystemTest
- from avocado_qemu import wait_for_console_pattern
- from avocado.utils import archive
-@@ -33,3 +35,27 @@ def test_microblaze_s3adsp1800(self):
-         # The kernel sometimes gets stuck after the "This architecture ..."
-         # message, that's why we don't test for a later string here. This
-         # needs some investigation by a microblaze wizard one day...
-+
-+    def test_microblazeel_s3adsp1800(self):
-+        """
-+        :avocado: tags=arch:microblazeel
-+        :avocado: tags=machine:petalogix-s3adsp1800
-+        """
-+
-+        self.require_netdev('user')
-+        tar_url = ('http://www.qemu-advent-calendar.org/2023/download/'
-+                   'day13.tar.gz')
-+        tar_hash = '6623d5fff5f84cfa8f34e286f32eff6a26546f44'
-+        file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
-+        archive.extract(file_path, self.workdir)
-+        self.vm.set_console()
-+        self.vm.add_args('-kernel', self.workdir + '/day13/xmaton.bin')
-+        self.vm.add_args('-nic', 'user,tftp=' + self.workdir + '/day13/')
-+        self.vm.launch()
-+        wait_for_console_pattern(self, 'QEMU Advent Calendar 2023')
-+        time.sleep(0.1)
-+        exec_command(self, 'root')
-+        time.sleep(0.1)
-+        exec_command_and_wait_for_pattern(self,
-+                'tftp -g -r xmaton.png 10.0.2.2 ; md5sum xmaton.png',
-+                '821cd3cab8efd16ad6ee5acc3642a8ea')
+diff --git a/tests/avocado/kvm_xen_guest.py b/tests/avocado/kvm_xen_guest.py
+index 5391283113e..f8cb458d5db 100644
+--- a/tests/avocado/kvm_xen_guest.py
++++ b/tests/avocado/kvm_xen_guest.py
+@@ -59,7 +59,7 @@ def common_vm_setup(self):
+     def run_and_check(self):
+         self.vm.add_args('-kernel', self.kernel_path,
+                          '-append', self.kernel_params,
+-                         '-drive',  f"file={self.rootfs},if=none,format=raw,id=drv0",
++                         '-drive',  f"file={self.rootfs},if=none,snapshot=on,format=raw,id=drv0",
+                          '-device', 'xen-disk,drive=drv0,vdev=xvda',
+                          '-device', 'virtio-net-pci,netdev=unet',
+                          '-netdev', 'user,id=unet,hostfwd=:127.0.0.1:0-:22')
 -- 
 2.39.2
 
