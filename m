@@ -2,68 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7AE822D00
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 13:26:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A54822D03
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 13:27:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL0K2-00055c-Ni; Wed, 03 Jan 2024 07:26:10 -0500
+	id 1rL0KG-0005Av-T1; Wed, 03 Jan 2024 07:26:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rL0Jz-00054t-Iu
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 07:26:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rL0KB-0005A0-Ss; Wed, 03 Jan 2024 07:26:21 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rL0Jx-0002RW-DX
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 07:26:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704284763;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=XBJfRQPFrJr7x2QE0SlgsgPM2jJ1STbI8jYSIeXm3Ew=;
- b=GV8QgdAYTIulfwl2om2hNp29qfBXlnxxWRUsv7EB8xK+2k5oCe23101oHIItI5ebRHl7n3
- SpUbsGhCPJnAsohot0oHRGR150hS3KQVs0XuveNQSTyVN9/Qkk/UdGZOHT8WKo24XAH2We
- 2lkIV8sxObduFC3c9gaYfDbMBwog73w=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-G9yaxtw_PLmH3W6adNx_hg-1; Wed, 03 Jan 2024 07:26:02 -0500
-X-MC-Unique: G9yaxtw_PLmH3W6adNx_hg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B793C85A58A
- for <qemu-devel@nongnu.org>; Wed,  3 Jan 2024 12:26:01 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.117])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F2402492BE6;
- Wed,  3 Jan 2024 12:26:00 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH] ui: drop VNC feature _MASK constants
-Date: Wed,  3 Jan 2024 12:26:00 +0000
-Message-ID: <20240103122600.2399662-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rL0K9-0002Sq-4j; Wed, 03 Jan 2024 07:26:19 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 634974E64A4;
+ Wed,  3 Jan 2024 13:26:10 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id QnnS9FhwUK9Q; Wed,  3 Jan 2024 13:26:08 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 018CA4E6003; Wed,  3 Jan 2024 13:26:08 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id F233074577C;
+ Wed,  3 Jan 2024 13:26:07 +0100 (CET)
+Date: Wed, 3 Jan 2024 13:26:07 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
+ qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Leonardo Bras <leobras@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Juan Quintela <quintela@redhat.com>, John Snow <jsnow@redhat.com>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Hanna Reitz <hreitz@redhat.com>, 
+ qemu-block@nongnu.org
+Subject: Re: [PATCH v2 12/12] hw/isa/vt82c686: Implement relocation and
+ toggling of SuperI/O functions
+In-Reply-To: <4E10FA4B-2659-4344-BA5A-6FD4BBC74AD3@gmail.com>
+Message-ID: <4508fb1e-0e25-2654-6dd6-f4a35b71c880@eik.bme.hu>
+References: <20231218185114.119736-1-shentey@gmail.com>
+ <20231218185114.119736-13-shentey@gmail.com>
+ <9c472e25-506f-fbd5-6d72-00be078bb15c@eik.bme.hu>
+ <B0C3E617-569E-4DD2-900A-5ACF093C3B63@gmail.com>
+ <acf63b63-df0d-1223-1022-292a396d717e@eik.bme.hu>
+ <4E10FA4B-2659-4344-BA5A-6FD4BBC74AD3@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,157 +75,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Each VNC feature enum entry has a corresponding _MASK constant
-which is the bit-shifted value. It is very easy for contributors
-to accidentally use the _MASK constant, instead of the non-_MASK
-constant, or the reverse. No compiler warning is possible and
-it'll just silently do the wrong thing at runtime.
+On Tue, 2 Jan 2024, Bernhard Beschow wrote:
+> Am 24. Dezember 2023 00:51:53 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>> On Tue, 19 Dec 2023, Bernhard Beschow wrote:
+>>> Am 19. Dezember 2023 00:26:15 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>>>> On Mon, 18 Dec 2023, Bernhard Beschow wrote:
+>>>>> The VIA south bridges are able to relocate and toggle (enable or disable) their
+>>>>> SuperI/O functions. So far this is hardcoded such that all functions are always
+>>>>> enabled and are located at fixed addresses.
+>>>>>
+>>>>> Some PC BIOSes seem to probe for I/O occupancy before activating such a function
+>>>>> and issue an error in case of a conflict. Since the functions are enabled on
+>>>>> reset, conflicts are always detected. Prevent that by implementing relocation
+>>>>> and toggling of the SuperI/O functions.
+>>>>>
+>>>>> Note that all SuperI/O functions are now deactivated upon reset (except for
+>>>>> VT82C686B's serial ports where Fuloong 2e's rescue-yl seems to expect them to be
+>>>>> enabled by default). Rely on firmware -- or in case of pegasos2 on board code if
+>>>>> no -bios is given -- to configure the functions accordingly.
+>>>>
+>>>> Pegasos2 emulates firmware when no -bios is given, this was explained in previos commit so maybe not needed to be explained it here again so you could drop the comment between -- -- but I don't mind.
+>>>>
+>>>>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+>>>>> ---
+>>>>> hw/isa/vt82c686.c | 121 ++++++++++++++++++++++++++++++++++------------
+>>>>> 1 file changed, 90 insertions(+), 31 deletions(-)
+>>>>>
+>>>>> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+>>>>> index 9c2333a277..be202d23cf 100644
+>>>>> --- a/hw/isa/vt82c686.c
+>>>>> +++ b/hw/isa/vt82c686.c
+>>>>> @@ -15,6 +15,9 @@
+>>>>>
+>>>>> #include "qemu/osdep.h"
+>>>>> #include "hw/isa/vt82c686.h"
+>>>>> +#include "hw/block/fdc.h"
+>>>>> +#include "hw/char/parallel-isa.h"
+>>>>> +#include "hw/char/serial.h"
+>>>>> #include "hw/pci/pci.h"
+>>>>> #include "hw/qdev-properties.h"
+>>>>> #include "hw/ide/pci.h"
+>>>>> @@ -343,6 +346,35 @@ static const TypeInfo via_superio_info = {
+>>>>>
+>>>>> #define TYPE_VT82C686B_SUPERIO "vt82c686b-superio"
+>>>>>
+>>>>> +static void vt82c686b_superio_update(ViaSuperIOState *s)
+>>>>> +{
+>>>>> +    isa_parallel_set_enabled(s->superio.parallel[0],
+>>>>> +                             (s->regs[0xe2] & 0x3) != 3);
+>>>>> +    isa_serial_set_enabled(s->superio.serial[0], s->regs[0xe2] & BIT(2));
+>>>>> +    isa_serial_set_enabled(s->superio.serial[1], s->regs[0xe2] & BIT(3));
+>>>>> +    isa_fdc_set_enabled(s->superio.floppy, s->regs[0xe2] & BIT(4));
+>>>>> +
+>>>>> +    isa_fdc_set_iobase(s->superio.floppy, (s->regs[0xe3] & 0xfc) << 2);
+>>>>> +    isa_parallel_set_iobase(s->superio.parallel[0], s->regs[0xe6] << 2);
+>>>>> +    isa_serial_set_iobase(s->superio.serial[0], (s->regs[0xe7] & 0xfe) << 2);
+>>>>> +    isa_serial_set_iobase(s->superio.serial[1], (s->regs[0xe8] & 0xfe) << 2);
+>>>>> +}
+>>>>
+>>>> I wonder if some code duplication could be saved by adding a shared via_superio_update() for this further up in the abstract via-superio class instead of this method and vt8231_superio_update() below. This common method in abstract class would need to handle the differences which seem to be reg addresses offset by 0x10 and VT8231 having only 1 serial port. These could either be handled by adding function parameters or fields to ViaSuperIOState for this that the subclasses can set and the method check. (Such as reg base=0xe2 for vt82c686 and 0xf2 for vt8231 and num_serial or similar for how many ports are there then can have a for loop for those that would only run once for vt8231).
+>>>
+>>> Only the enable bits and the parallel port base address line up, the serial port(s) and the floppy would need special treatment. Not worth it IMO.
+>>
+>> Missed this part in previous reply. The serial ports would be taken care of by a loop for number of ports so only the floppy needs an if which could also use the number of serial ports for lack of better way to distinguish these cips easily. Number of ports are in the superio class which you could get with ISA_SUPERIO_GET_CLASS (see via_superio_realize) then serial.count would be 2 for 686b and 1 for 8231.
+>
+> I'm not very convinced about telling the device models apart by their number of sub devices. So let's omit this part for now.
+>
+>>
+>> But now I think another way may be better that is to drop the 
+>> superio_update function as this updates all functions on writing any 
+>> register unnecessarily and put the lines from it in the 
+>> vt*_superio_cfg_write() functions under the separate cases. This was 
+>> the original intent, that's why the reset function goes through that 
+>> write function so it can enable/disable functions. That way you could 
+>> apply mask on write so via_superio_cfg_read() would return 0 bits as 0 
+>> (although the data sheet is not clear about what real chip does, just 
+>> says these must be 0 not that it's enforced but if we enforce that it's 
+>> probably better to return the effective value on read as well). Then 
+>> when state saving is added in separate patch you can have a similar 
+>> function as vt82c686b_superio_reset() (or rename that to update and 
+>> make it use regs[xx] instead of constant values and call that from 
+>> reset after setting regs values like you did here. But that needs more 
+>> thought as the vmstate added by this patch is incomplete and would not 
+>> work so you could just drop it for now and add it later with also 
+>> adding other necessary state as well. The idea was to implement the 
+>> chip first then add state saving so we don't need to bother with 
+>> breaking it until we have a good enough implementation. So far the 
+>> state saving there is just left over from the old model which never 
+>> worked and only left there for reminder but only wanted to fix once the 
+>> model is complete enough.
+>
+> Indeed, the patch obviously does too much if it misses details in vmstate. Let's omit vmstate handling for now and go with your suggestion.
+>
+> Any other comments from your side before the next iteration?
 
-By introducing the vnc_set_feature helper method, we can drop
-all the _MASK constants and thus prevent any future accidents.
+Nothing else from me unless Philippe has something to add. You can keep a 
+common function in the abstract via superclass for handling the enable 
+bits in the function select register to reduce code duplication as those 
+match and handle the address setting separately.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- ui/vnc.c | 34 +++++++++++++++++-----------------
- ui/vnc.h | 21 ++++-----------------
- 2 files changed, 21 insertions(+), 34 deletions(-)
+>> So I think for now you could drop vmstate stuff and distribute the 
+>> superio_update lines in the superio_cfg_write functions so each reg 
+>> only controls the function it should control. Then when vmstate saving 
+>> is added later it could reuse superio_reset as an update function 
+>> adding a new reset func setting reg values and calling the old 
+>> reset/new update function. Does that make sense?
+>
+> What I don't like about the vt*_superio_cfg_write() being called during 
+> reset is the trace logs they produce. They are hard to tell apart from 
+> guests poking these registers, especially during reboot. So I wonder if 
+> this could be addressed when implementing vmstate handling as you 
+> suggest. Not too big of a deal, though.
 
-diff --git a/ui/vnc.c b/ui/vnc.c
-index 4f23a0fa79..3db87fd89c 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -2144,16 +2144,16 @@ static void set_encodings(VncState *vs, int32_t *encodings, size_t n_encodings)
-             vs->vnc_encoding = enc;
-             break;
-         case VNC_ENCODING_HEXTILE:
--            vs->features |= VNC_FEATURE_HEXTILE_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_HEXTILE);
-             vs->vnc_encoding = enc;
-             break;
-         case VNC_ENCODING_TIGHT:
--            vs->features |= VNC_FEATURE_TIGHT_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_TIGHT);
-             vs->vnc_encoding = enc;
-             break;
- #ifdef CONFIG_PNG
-         case VNC_ENCODING_TIGHT_PNG:
--            vs->features |= VNC_FEATURE_TIGHT_PNG_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_TIGHT_PNG);
-             vs->vnc_encoding = enc;
-             break;
- #endif
-@@ -2163,57 +2163,57 @@ static void set_encodings(VncState *vs, int32_t *encodings, size_t n_encodings)
-              * So prioritize ZRLE, even if the client hints that it prefers
-              * ZLIB.
-              */
--            if ((vs->features & VNC_FEATURE_ZRLE_MASK) == 0) {
--                vs->features |= VNC_FEATURE_ZLIB_MASK;
-+            if (!vnc_has_feature(vs, VNC_FEATURE_ZRLE)) {
-+                vnc_set_feature(vs, VNC_FEATURE_ZLIB);
-                 vs->vnc_encoding = enc;
-             }
-             break;
-         case VNC_ENCODING_ZRLE:
--            vs->features |= VNC_FEATURE_ZRLE_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_ZRLE);
-             vs->vnc_encoding = enc;
-             break;
-         case VNC_ENCODING_ZYWRLE:
--            vs->features |= VNC_FEATURE_ZYWRLE_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_ZYWRLE);
-             vs->vnc_encoding = enc;
-             break;
-         case VNC_ENCODING_DESKTOPRESIZE:
--            vs->features |= VNC_FEATURE_RESIZE_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_RESIZE);
-             break;
-         case VNC_ENCODING_DESKTOP_RESIZE_EXT:
--            vs->features |= VNC_FEATURE_RESIZE_EXT_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_RESIZE_EXT);
-             break;
-         case VNC_ENCODING_POINTER_TYPE_CHANGE:
--            vs->features |= VNC_FEATURE_POINTER_TYPE_CHANGE_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_POINTER_TYPE_CHANGE);
-             break;
-         case VNC_ENCODING_RICH_CURSOR:
--            vs->features |= VNC_FEATURE_RICH_CURSOR_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_RICH_CURSOR);
-             break;
-         case VNC_ENCODING_ALPHA_CURSOR:
--            vs->features |= VNC_FEATURE_ALPHA_CURSOR_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_ALPHA_CURSOR);
-             break;
-         case VNC_ENCODING_EXT_KEY_EVENT:
-             send_ext_key_event_ack(vs);
-             break;
-         case VNC_ENCODING_AUDIO:
-             if (vs->vd->audio_state) {
--                vs->features |= VNC_FEATURE_AUDIO_MASK;
-+                vnc_set_feature(vs, VNC_FEATURE_AUDIO);
-                 send_ext_audio_ack(vs);
-             }
-             break;
-         case VNC_ENCODING_WMVi:
--            vs->features |= VNC_FEATURE_WMVI_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_WMVI);
-             break;
-         case VNC_ENCODING_LED_STATE:
--            vs->features |= VNC_FEATURE_LED_STATE_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_LED_STATE);
-             break;
-         case VNC_ENCODING_XVP:
-             if (vs->vd->power_control) {
--                vs->features |= VNC_FEATURE_XVP_MASK;
-+                vnc_set_feature(vs, VNC_FEATURE_XVP);
-                 send_xvp_message(vs, VNC_XVP_CODE_INIT);
-             }
-             break;
-         case VNC_ENCODING_CLIPBOARD_EXT:
--            vs->features |= VNC_FEATURE_CLIPBOARD_EXT_MASK;
-+            vnc_set_feature(vs, VNC_FEATURE_CLIPBOARD_EXT);
-             vnc_server_cut_text_caps(vs);
-             break;
-         case VNC_ENCODING_COMPRESSLEVEL0 ... VNC_ENCODING_COMPRESSLEVEL0 + 9:
-diff --git a/ui/vnc.h b/ui/vnc.h
-index 96d19dce19..8b88555ff2 100644
---- a/ui/vnc.h
-+++ b/ui/vnc.h
-@@ -467,23 +467,6 @@ enum VncFeatures {
-     VNC_FEATURE_AUDIO,
- };
- 
--#define VNC_FEATURE_RESIZE_MASK              (1 << VNC_FEATURE_RESIZE)
--#define VNC_FEATURE_RESIZE_EXT_MASK          (1 << VNC_FEATURE_RESIZE_EXT)
--#define VNC_FEATURE_HEXTILE_MASK             (1 << VNC_FEATURE_HEXTILE)
--#define VNC_FEATURE_POINTER_TYPE_CHANGE_MASK (1 << VNC_FEATURE_POINTER_TYPE_CHANGE)
--#define VNC_FEATURE_WMVI_MASK                (1 << VNC_FEATURE_WMVI)
--#define VNC_FEATURE_TIGHT_MASK               (1 << VNC_FEATURE_TIGHT)
--#define VNC_FEATURE_ZLIB_MASK                (1 << VNC_FEATURE_ZLIB)
--#define VNC_FEATURE_RICH_CURSOR_MASK         (1 << VNC_FEATURE_RICH_CURSOR)
--#define VNC_FEATURE_ALPHA_CURSOR_MASK        (1 << VNC_FEATURE_ALPHA_CURSOR)
--#define VNC_FEATURE_TIGHT_PNG_MASK           (1 << VNC_FEATURE_TIGHT_PNG)
--#define VNC_FEATURE_ZRLE_MASK                (1 << VNC_FEATURE_ZRLE)
--#define VNC_FEATURE_ZYWRLE_MASK              (1 << VNC_FEATURE_ZYWRLE)
--#define VNC_FEATURE_LED_STATE_MASK           (1 << VNC_FEATURE_LED_STATE)
--#define VNC_FEATURE_XVP_MASK                 (1 << VNC_FEATURE_XVP)
--#define VNC_FEATURE_CLIPBOARD_EXT_MASK       (1 <<  VNC_FEATURE_CLIPBOARD_EXT)
--#define VNC_FEATURE_AUDIO_MASK               (1 <<  VNC_FEATURE_AUDIO)
--
- 
- /* Client -> Server message IDs */
- #define VNC_MSG_CLIENT_SET_PIXEL_FORMAT           0
-@@ -599,6 +582,10 @@ static inline uint32_t vnc_has_feature(VncState *vs, int feature) {
-     return (vs->features & (1 << feature));
- }
- 
-+static inline void vnc_set_feature(VncState *vs, int feature) {
-+    vs->features |= (1 << feature);
-+}
-+
- /* Framebuffer */
- void vnc_framebuffer_update(VncState *vs, int x, int y, int w, int h,
-                             int32_t encoding);
--- 
-2.43.0
+An easy way around that is to start qemu with -S then these setup logs 
+come before qemu stops then logs from guest actions will be printed after 
+continue|c in monitor.
 
+Regards,
+BALATON Zoltan
 
