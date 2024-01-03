@@ -2,39 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C6DB822C4E
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 12:43:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4633822C5A
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 12:50:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKzdq-0006eJ-P0; Wed, 03 Jan 2024 06:42:34 -0500
+	id 1rKzjX-00008A-HX; Wed, 03 Jan 2024 06:48:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rKzdn-0006co-8C; Wed, 03 Jan 2024 06:42:31 -0500
+ id 1rKzjT-00007Q-1Q; Wed, 03 Jan 2024 06:48:23 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rKzdl-0006J5-Bc; Wed, 03 Jan 2024 06:42:30 -0500
+ id 1rKzjR-0000ku-4f; Wed, 03 Jan 2024 06:48:22 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B4DA64065D;
- Wed,  3 Jan 2024 14:43:08 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1A36F593BE;
- Wed,  3 Jan 2024 14:42:25 +0300 (MSK)
-Received: (nullmailer pid 325235 invoked by uid 1000);
- Wed, 03 Jan 2024 11:42:24 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH trivial] chardev/char.c: fix "abstract device type" error
- message
-Date: Wed,  3 Jan 2024 14:42:21 +0300
-Message-Id: <20240103114221.325221-1-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
+ by isrv.corpit.ru (Postfix) with ESMTP id 8E08040660;
+ Wed,  3 Jan 2024 14:48:58 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id E5095593C4;
+ Wed,  3 Jan 2024 14:48:14 +0300 (MSK)
+Message-ID: <a5a9d1e2-5bdf-4dc8-9a52-aae401077494@tls.msk.ru>
+Date: Wed, 3 Jan 2024 14:48:14 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for 8.2.1] hw/net: cadence_gem: Fix MDIO_OP_xxx values
+Content-Language: en-US
+To: Bin Meng <bmeng@tinylab.org>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org
+Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>,
+ Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Jason Wang <jasowang@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org
+References: <20240102141803.117631-1-bmeng@tinylab.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240102141803.117631-1-bmeng@tinylab.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -68
@@ -58,33 +87,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current error message:
+02.01.2024 17:18, Bin Meng:
+> Testing upstream U-Boot with 'sifive_u' machine we see:
+> 
+>    => dhcp
+>    ethernet@10090000: PHY present at 0
+>    Could not get PHY for ethernet@10090000: addr 0
+>    phy_connect failed
+> 
+> This has been working till QEMU 8.1 but broken since QEMU 8.2.
+> 
+> Fixes: 1b09eeb122aa ("hw/net/cadence_gem: use FIELD to describe PHYMNTNC register fields")
+> Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+> Signed-off-by: Bin Meng <bmeng@tinylab.org>
 
- qemu-system-x86_64: -chardev spice,id=foo: Parameter 'driver' expects an abstract device type
+Applied to trivial-patches tree, and marked to be picked up for stable.
 
-while in fact the meaning is in reverse, -chardev expects
-a non-abstract device type.
+Thanks,
 
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Fixes: 777357d758d9 "chardev: qom-ify" (2016-12-07)
----
- chardev/char.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/chardev/char.c b/chardev/char.c
-index 996a024c7a..119b548784 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -518,7 +518,7 @@ static const ChardevClass *char_get_class(const char *driver, Error **errp)
- 
-     if (object_class_is_abstract(oc)) {
-         error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "driver",
--                   "an abstract device type");
-+                   "a non-abstract device type");
-         return NULL;
-     }
- 
--- 
-2.39.2
-
+/mjt
 
