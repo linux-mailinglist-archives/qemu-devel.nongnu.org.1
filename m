@@ -2,96 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFB7822A36
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 10:21:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E80C3822A43
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 10:26:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKxPr-0001HK-E0; Wed, 03 Jan 2024 04:19:59 -0500
+	id 1rKxVL-0002n1-07; Wed, 03 Jan 2024 04:25:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKxPc-0001GH-KR
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 04:19:46 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKxPa-0007TU-PJ
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 04:19:44 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3374d309eebso270142f8f.3
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 01:19:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704273581; x=1704878381; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5ooNoPjL26IpKded8UKXPH4td0bzmVxNmp3Fp+OcrNE=;
- b=y9dye0NHp0vgRAyk2TZ4cz+V3gJgGcvCQFbK7vT+BmBZ38VNx8dwro9B+TeUhXdTSG
- Gt387PqhOYBbHD11TXRa6y3FhD1uEsz/bne9Ha+ld4FfQ0ZxISf7JHDxAQH/e5FeyOw3
- Fap9LI48uFOEFwMzfword4mZWKqTsswyZ0/8Dvi6V7H6+0IMD2hfTLvH2Z/GzJEM1R2A
- x62xXsHMk7xJ1Z1mfb8WU/IQk8s1/7+KEjp7z1IFS5Gtz+fYkeCkQf6a9vVDkG16b3m5
- XwD9UP2KGFOLycXzxMiA4OkMcNH0EYEGNOc6B/s4SRAthtM0iDDrVqsB9+orb8gZ2Gz4
- 8hvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704273581; x=1704878381;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5ooNoPjL26IpKded8UKXPH4td0bzmVxNmp3Fp+OcrNE=;
- b=HhWbFM5KxjbKiioyU9g2f/QfRV6DLMFSJPzKe6lwXBg0Qe3YvfDiR+WpICir+9WNYS
- 2c3i6ywdZAk6qIIcHX9vOpanImEQuTCIHtxqXNsQMIHdWELB8LdO4ZHSjy2yHFpZPg+h
- gYoUbxdWPuAIJUTyR65PPQN3K5SQ9GT1XRvcpbPvpvBmYyBDlL2ljxrg7YtNiKqaWdNJ
- xe7fk+drA+cJP1IGYgSrChRR/hEWtE6AQQuVT+kMN6X+nO/59jDtuJJ9lbxRCCfBUyPF
- 5B4hIHQM1lb1eo49Bds7xsaMa+L3r+fQHxwrmaWjXXk6uApyXE+2gkbWS8AD9Jr7hxYV
- GRGA==
-X-Gm-Message-State: AOJu0YxCFlkd3VmcYvN4MoMoJSxVDMs62la8aESxag2vZkzByiWce2/7
- c7BL6KAtrjA5IRgCwIXoDDf36EurkMqKIQ==
-X-Google-Smtp-Source: AGHT+IGSJf8MKcjwqxwbl1bKe5xfiRAki36T8rP8nUpGLQNBb3SGLs2cpiAUvOdKD0ykp0z4plt/Rg==
-X-Received: by 2002:adf:f1c5:0:b0:336:6b67:2cc6 with SMTP id
- z5-20020adff1c5000000b003366b672cc6mr10711490wro.126.1704273580932; 
- Wed, 03 Jan 2024 01:19:40 -0800 (PST)
-Received: from [192.168.69.100] (tre93-h02-176-184-7-144.dsl.sta.abo.bbox.fr.
- [176.184.7.144]) by smtp.gmail.com with ESMTPSA id
- c15-20020a5d4ccf000000b00336ebf27d59sm18486753wrt.78.2024.01.03.01.19.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Jan 2024 01:19:40 -0800 (PST)
-Message-ID: <fe4d463f-b646-4b7b-9063-d16ad5dbb128@linaro.org>
-Date: Wed, 3 Jan 2024 10:19:36 +0100
+ (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
+ id 1rKxVD-0002l8-9n
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 04:25:31 -0500
+Received: from mgamail.intel.com ([134.134.136.31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
+ id 1rKxVB-0003S1-2T
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 04:25:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1704273929; x=1735809929;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=qg5DqPfqY1spw2/swDgcPg10+0r62nU0nm9TnH6NbMA=;
+ b=aZ1DWRVgSUVAwEqNME+1pw0UUMPKJGEZKOfr2F8MpIwEeiMG+p6BQF7C
+ r1Z8x2FMeLKDH49LPIuKVr40FNzsfB2Y/K9xKdSIoWpJ3dH9Yy3CuFNCc
+ fUrS23yxeMDLi1ydi8hMVYecLJko0WZ7ctiXShSuKWwHjnhOZwehUvC95
+ 6dTsKWoDv3XdvxZVjYTASVA4achy1nC7Dq/KophprxyEZewWn8Bau1AqT
+ LgruVcWRo7fz5D0Oae/rtjs2NeEZipOhH1Tkyuidik+z991ujoCyDGhuz
+ 7xczroY4miu3VF0asrTYtSbah9uH8cNHNB2Y1AD2HBHz4F+aC6fcXrZ92 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="461295246"
+X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; d="scan'208";a="461295246"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jan 2024 01:25:24 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="1111313896"
+X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; d="scan'208";a="1111313896"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.238.9.51])
+ ([10.238.9.51])
+ by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jan 2024 01:25:22 -0800
+Message-ID: <a6505d3b-5850-45ac-9439-14b6fd9b8138@linux.intel.com>
+Date: Wed, 3 Jan 2024 17:25:19 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in
- A7/A15 MPCore priv
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- Juan Quintela <quintela@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
- qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>
-References: <20231212162935.42910-1-philmd@linaro.org>
- <03b969d3-1947-4186-b3ee-15e3cddc5f34@kaod.org>
- <18a38b88-8f20-420c-9916-a03d1b4930a7@linaro.org>
- <38cfa9de-874b-41dd-873e-5ad1f5a5805e@kaod.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <38cfa9de-874b-41dd-873e-5ad1f5a5805e@kaod.org>
+Subject: Re: [PATCH v3 2/2] target/i386: add control bits support for LAM
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, chao.gao@intel.com,
+ robert.hu@linux.intel.com
+References: <20230721080800.2329-1-binbin.wu@linux.intel.com>
+ <20230721080800.2329-3-binbin.wu@linux.intel.com>
+ <634d2f1e-f7b0-491d-979e-99609b79a955@intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <634d2f1e-f7b0-491d-979e-99609b79a955@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: none client-ip=134.134.136.31;
+ envelope-from=binbin.wu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -64
+X-Spam_score: -6.5
+X-Spam_bar: ------
+X-Spam_report: (-6.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.178,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,72 +81,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-+Peter/Fabiano
 
-On 2/1/24 17:41, Cédric Le Goater wrote:
-> On 1/2/24 17:15, Philippe Mathieu-Daudé wrote:
->> Hi Cédric,
+
+On 12/28/2023 4:51 PM, Xiaoyao Li wrote:
+> On 7/21/2023 4:08 PM, Binbin Wu wrote:
+>> LAM uses CR3[61] and CR3[62] to configure/enable LAM on user pointers.
+>> LAM uses CR4[28] to configure/enable LAM on supervisor pointers.
 >>
->> On 2/1/24 15:55, Cédric Le Goater wrote:
->>> On 12/12/23 17:29, Philippe Mathieu-Daudé wrote:
->>>> Hi,
->>>>
->>>> When a MPCore cluster is used, the Cortex-A cores belong the the
->>>> cluster container, not to the board/soc layer. This series move
->>>> the creation of vCPUs to the MPCore private container.
->>>>
->>>> Doing so we consolidate the QOM model, moving common code in a
->>>> central place (abstract MPCore parent).
->>>
->>> Changing the QOM hierarchy has an impact on the state of the machine
->>> and some fixups are then required to maintain migration compatibility.
->>> This can become a real headache for KVM machines like virt for which
->>> migration compatibility is a feature, less for emulated ones.
+>> For CR3 LAM bits, no additional handling needed:
+>> - TCG
+>>    LAM is not supported for TCG of target-i386. helper_write_crN() 
+>> and helper_vmrun()
+>>    check max physical address bits before calling 
+>> cpu_x86_update_cr3(), no change needed,
+>>    i.e. CR3 LAM bits are not allowed to be set in TCG.
+>> - gdbstub
+>>    x86_cpu_gdb_write_register() will call cpu_x86_update_cr3() to 
+>> update cr3. Allow gdb
+>>    to set the LAM bit(s) to CR3, if vcpu doesn't support LAM, 
+>> KVM_SET_SREGS will fail as
+>>    other CR3 reserved bits.
 >>
->> All changes are either moving properties (which are not migrated)
->> or moving non-migrated QOM members (i.e. pointers of ARMCPU, which
->> is still migrated elsewhere). So I don't see any obvious migration
->> problem, but I might be missing something, so I Cc'ed Juan :>
-> We broke migration compatibility by moving the IC object in the QOM
-> hierarchy of the pseries machines in the past. These changes might
-> be different. Here is the QOM tree of the ast2600 SoC.
-> 
-> before :
-> 
->    /soc (ast2600-a3)
->      /a7mpcore (a15mpcore_priv)
->        /a15mp-priv-container[0] (memory-region)
->        /gic (arm_gic)
->          /gic_cpu[0] (memory-region)
->          /gic_cpu[1] (memory-region)
->          /gic_cpu[2] (memory-region)
->          /gic_dist[0] (memory-region)
->          /gic_vcpu[0] (memory-region)
->          /gic_viface[0] (memory-region)
->          /gic_viface[1] (memory-region)
->          /gic_viface[2] (memory-region)
->      /cpu[0] (cortex-a7-arm-cpu)
->      /cpu[1] (cortex-a7-arm-cpu)
-> 
-> after :
-> 
->    /soc (ast2600-a3)
->      /a7mpcore (a7mpcore_priv)
->        /cpu[0] (cortex-a7-arm-cpu)
->        /cpu[1] (cortex-a7-arm-cpu)
->        /gic (arm_gic)
->          /gic_cpu[0] (memory-region)
->          /gic_cpu[1] (memory-region)
->          /gic_cpu[2] (memory-region)
->          /gic_dist[0] (memory-region)
->        /mpcore-priv-container[0] (memory-region)
-> 
-> 
-> Thanks,
-> 
-> C.
-> 
-> 
-> 
+>> For CR4 LAM bit, its reservation depends on vcpu supporting LAM 
+>> feature or not.
+>> - TCG
+>>    LAM is not supported for TCG of target-i386. helper_write_crN() 
+>> and helper_vmrun()
+>>    check CR4 reserved bit before calling cpu_x86_update_cr4(), i.e. 
+>> CR4 LAM bit is not
+>>    allowed to be set in TCG.
+>> - gdbstub
+>>    x86_cpu_gdb_write_register() will call cpu_x86_update_cr4() to 
+>> update cr4. Allow gdb
+>>    to set the LAM bit to CR4, if vcpu doesn't support LAM, 
+>> KVM_SET_SREGS will fail.
+>
+> I would go follow the current code, to mask out LAM bit if no CPUID.
+
+I can do it in the next version.
+
+But I am curious what's the rule of masking out a CR4 bit if no CPUID
+in cpu_x86_update_cr4()?
+e.g. current code checks SMAP but not SMEP.
+
+
+>
+>> - x86_cpu_reset_hold() doesn't need special handling.
+>>
+>> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+>> ---
+>>   target/i386/cpu.h | 7 ++++++-
+>>   1 file changed, 6 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+>> index 4db97899fe..710fadf550 100644
+>> --- a/target/i386/cpu.h
+>> +++ b/target/i386/cpu.h
+>> @@ -261,6 +261,7 @@ typedef enum X86Seg {
+>>   #define CR4_SMAP_MASK   (1U << 21)
+>>   #define CR4_PKE_MASK   (1U << 22)
+>>   #define CR4_PKS_MASK   (1U << 24)
+>> +#define CR4_LAM_SUP_MASK (1U << 28)
+>>     #define CR4_RESERVED_MASK \
+>>   (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
+>> @@ -269,7 +270,8 @@ typedef enum X86Seg {
+>>                   | CR4_OSFXSR_MASK | CR4_OSXMMEXCPT_MASK | 
+>> CR4_UMIP_MASK \
+>>                   | CR4_LA57_MASK \
+>>                   | CR4_FSGSBASE_MASK | CR4_PCIDE_MASK | 
+>> CR4_OSXSAVE_MASK \
+>> -                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | 
+>> CR4_PKS_MASK))
+>> +                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | 
+>> CR4_PKS_MASK \
+>> +                | CR4_LAM_SUP_MASK))
+>>     #define DR6_BD          (1 << 13)
+>>   #define DR6_BS          (1 << 14)
+>> @@ -2478,6 +2480,9 @@ static inline uint64_t 
+>> cr4_reserved_bits(CPUX86State *env)
+>>       if (!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS)) {
+>>           reserved_bits |= CR4_PKS_MASK;
+>>       }
+>> +    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
+>> +        reserved_bits |= CR4_LAM_SUP_MASK;
+>> +    }
+>>       return reserved_bits;
+>>   }
+>
 
 
