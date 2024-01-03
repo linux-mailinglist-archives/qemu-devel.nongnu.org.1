@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A986823354
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 18:35:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2702182335B
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 18:35:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL588-0003YD-PG; Wed, 03 Jan 2024 12:34:12 -0500
+	id 1rL58B-0003cz-F8; Wed, 03 Jan 2024 12:34:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rL57w-0003T6-CH
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:00 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1rL580-0003VI-JR
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:06 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rL57p-0002No-PA
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:00 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40d3c4bfe45so111700485e9.1
+ id 1rL57p-0002Nz-Ub
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:01 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40d5ac76667so55663305e9.1
  for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 09:33:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1704303231; x=1704908031; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Aeln3++ASlFUfIwMVf5xyvW2uMLaZ4UxQn5nypBC6DU=;
- b=U4drxGlJ/tkZXc9hvZ3os6xuYTZJF5h49z3k8E2J+jUzucL7Sk9MvZv9AAPAyT7R+9
- tT2dswG0KJ2kD4qBWjbtVOmeatZY46+0ij9eWc3imoGgPWsArqLR54wxqnUEMAE4urvM
- tumWUWjG9SN3lQ6Sd3HzO3IYHQ12M1rWOE1r2/PNCuDww8365ae18SgVchmtYpVYd9n4
- c0jE5BIiJw9ScQJlRsZB6mIQeXjkyaWKD4maFnj6FrLlgqjP20+uBlL2krhA7awdHB5b
- cfusSNoaOqDJ+haTpVpXM90oG5KeIsSySZ8Qh85r4K6WQeuzd5lBNQVu9etTBKgZpc0N
- RVSA==
+ bh=rOpjk5Xc89URXPry+uTcPrYjjlL9ZRbEnDqtNUUFVo4=;
+ b=j7R+G2pJWTMP9nz9N56OlOSgXJYdnt1QbdmbCheotup826UTwL7TO3/sUqhmPQ6eNG
+ fSrZ2lIHg08wRb+613ubQ47Pu4cy743voWDbKgzXahU4ZSqIeQmMMCZcXoycVf7L8O4g
+ ikIFEzJ5PXzlMSqj24sWKAtO/bX3DmaCKwajVfp5DmdBg7hNmaVzBBoRg+mdMOYH/t5l
+ 7dwz4ECfIlCDFJ0qZP0+ydHpaRQYtqWgjEjWWjVeGy5DmEiJIJp7xJjbVK96yZxFK550
+ f6aWCJy3NJHYphH7mlDBE/wFKyfb7j/MLfW9B5ufYOliv91lTXo/gwP+Mclm+lPbKOry
+ bNjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1704303231; x=1704908031;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Aeln3++ASlFUfIwMVf5xyvW2uMLaZ4UxQn5nypBC6DU=;
- b=K344hPBa9iAcdIZP5RtNhJc3ISkz3dGIEtqkF8v+kODzqRWzaTGKzXjoEOa3BNNULp
- MyPd0/nCckGhBVgdzQ0JqrmQQbjOtqImiVa3PhGY3cex0GvidfCwpoLjDZa7JS9/alcc
- d2NHSojmrew8PG4Lgct5HSHWN72JffiGB8QRs6VDr02NDR4sSejoA/Xrd19I7UpwD8nv
- eXUptj1rP5EVx0+UrpRujFyG38hqfWZYBGQ+Xcc4xZZXBj+vyNOAXUh1jlVKtrdfSs+H
- nSIkMde1jgnpGskDCqpVz4Jei7f3xTEOgJ3O1J4TxJRLiQ2tPmcTpKpBiKuUPofg434E
- h0fg==
-X-Gm-Message-State: AOJu0YwddX65vjK3Wg9rv8rr1CUnu7rBTAzUdYvhpRHnVPX+kfL+Vkr9
- gyRRhEXYKqpntxHOckfY5R7AxdwQKT7FRg==
-X-Google-Smtp-Source: AGHT+IHtCR4hmp3Vukr9hzN46Gz71ep8bM3kzLyD4gCRhfkpq3Ia3b7dQ3Ru8mfmCaqnt5tCeWxVgQ==
-X-Received: by 2002:a05:600c:68d7:b0:40d:5941:f16a with SMTP id
- jd23-20020a05600c68d700b0040d5941f16amr3530996wmb.273.1704303231484; 
+ bh=rOpjk5Xc89URXPry+uTcPrYjjlL9ZRbEnDqtNUUFVo4=;
+ b=PX6VmDBOq+q/iVeA9WLPBWZfdbIMQT6BQAHKu1ffgd6gBTOT64kHHuVsQzQACQpkaW
+ hDc2yqE2TPcNrfo1WjnLfE/n0m1ntgbkKPuY6OLfTFlegWNn+ldBmKfWVl0Z/gO7If/5
+ 3NyhfhhMY/WA9NSm6OLGU7eHOUn0jDcVmJB4BP9avcbV5jWfE/DECFTzw4sxwsvDswWz
+ S7EB/vYR13I4UIGF2awqbt//Ze/UeF3kOv1bSwLx8puWvPpIbFinBIbJlZBggK6zFbVq
+ 8yT511Bskqe4/O1Im8tNta0k2kYpxzh2lIsqOBqPMhgV2DPnonakqqT0NOsZeyWxnlVe
+ i1qg==
+X-Gm-Message-State: AOJu0Yzv0pK3EPnjTGR9idUa8ADVd3rHjwhlw1cWaJFiYbJ6ksmJOpc/
+ rijm3tHD9GHlE80Jxj+P51cKIqmL3v8kMA==
+X-Google-Smtp-Source: AGHT+IEhbukIbMJxe0XeRt2lHobV2JbuWL9JZcjldNC8OY0732Jbqq6ubAvn3PMQTDTFrXUf5ogLhA==
+X-Received: by 2002:a05:600c:a003:b0:404:4b6f:d70d with SMTP id
+ jg3-20020a05600ca00300b004044b6fd70dmr11754074wmb.17.1704303231383; 
  Wed, 03 Jan 2024 09:33:51 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- je2-20020a05600c1f8200b0040d934f48d3sm750166wmb.32.2024.01.03.09.33.49
+ fl27-20020a05600c0b9b00b0040d2dfb10e0sm2979265wmb.11.2024.01.03.09.33.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 03 Jan 2024 09:33:50 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 93F3B5F932;
+ by draig.lan (Postfix) with ESMTP id AB9515F933;
  Wed,  3 Jan 2024 17:33:49 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,17 +91,17 @@ Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v2 03/43] gitlab: include microblazeel in testing
-Date: Wed,  3 Jan 2024 17:33:09 +0000
-Message-Id: <20240103173349.398526-4-alex.bennee@linaro.org>
+Subject: [PATCH v2 04/43] chardev: use bool for fe_is_open
+Date: Wed,  3 Jan 2024 17:33:10 +0000
+Message-Id: <20240103173349.398526-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103173349.398526-1-alex.bennee@linaro.org>
 References: <20240103173349.398526-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -124,37 +124,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts aeb5f8f248e (gitlab: build the correct microblaze target)
-now we actually have a little-endian test in avocado thanks to this
-years advent calendar.
+The function qemu_chr_fe_init already treats be->fe_open as a bool and
+if it acts like a bool it should be one. While we are at it make the
+variable name more descriptive and add kdoc decorations.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- .gitlab-ci.d/buildtest.yml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Message-Id: <20231211145959.93759-1-alex.bennee@linaro.org>
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 91663946de4..ef71dfe8665 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -41,7 +41,7 @@ build-system-ubuntu:
-   variables:
-     IMAGE: ubuntu2204
-     CONFIGURE_ARGS: --enable-docs
--    TARGETS: alpha-softmmu microblaze-softmmu mips64el-softmmu
-+    TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
-     MAKE_CHECK_ARGS: check-build
+---
+v2
+  - rename to fe_is_open at f4bug's request
+---
+ include/chardev/char-fe.h | 19 ++++++++++++-------
+ chardev/char-fe.c         | 16 ++++++++--------
+ chardev/char.c            |  2 +-
+ 3 files changed, 21 insertions(+), 16 deletions(-)
+
+diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h
+index 0ff6f875116..ecef1828355 100644
+--- a/include/chardev/char-fe.h
++++ b/include/chardev/char-fe.h
+@@ -7,8 +7,12 @@
+ typedef void IOEventHandler(void *opaque, QEMUChrEvent event);
+ typedef int BackendChangeHandler(void *opaque);
  
- check-system-ubuntu:
-@@ -61,7 +61,7 @@ avocado-system-ubuntu:
-   variables:
-     IMAGE: ubuntu2204
-     MAKE_CHECK_ARGS: check-avocado
--    AVOCADO_TAGS: arch:alpha arch:microblaze arch:mips64el
-+    AVOCADO_TAGS: arch:alpha arch:microblazeel arch:mips64el
+-/* This is the backend as seen by frontend, the actual backend is
+- * Chardev */
++/**
++ * struct CharBackend - back end as seen by front end
++ * @fe_is_open: the front end is ready for IO
++ *
++ * The actual backend is Chardev
++ */
+ struct CharBackend {
+     Chardev *chr;
+     IOEventHandler *chr_event;
+@@ -17,7 +21,7 @@ struct CharBackend {
+     BackendChangeHandler *chr_be_change;
+     void *opaque;
+     int tag;
+-    int fe_open;
++    bool fe_is_open;
+ };
  
- build-system-debian:
-   extends:
+ /**
+@@ -156,12 +160,13 @@ void qemu_chr_fe_set_echo(CharBackend *be, bool echo);
+ 
+ /**
+  * qemu_chr_fe_set_open:
++ * @be: a CharBackend
++ * @is_open: the front end open status
+  *
+- * Set character frontend open status.  This is an indication that the
+- * front end is ready (or not) to begin doing I/O.
+- * Without associated Chardev, do nothing.
++ * This is an indication that the front end is ready (or not) to begin
++ * doing I/O. Without associated Chardev, do nothing.
+  */
+-void qemu_chr_fe_set_open(CharBackend *be, int fe_open);
++void qemu_chr_fe_set_open(CharBackend *be, bool is_open);
+ 
+ /**
+  * qemu_chr_fe_printf:
+diff --git a/chardev/char-fe.c b/chardev/char-fe.c
+index 7789f7be9c8..20222a4cad5 100644
+--- a/chardev/char-fe.c
++++ b/chardev/char-fe.c
+@@ -211,7 +211,7 @@ bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
+         }
+     }
+ 
+-    b->fe_open = false;
++    b->fe_is_open = false;
+     b->tag = tag;
+     b->chr = s;
+     return true;
+@@ -257,7 +257,7 @@ void qemu_chr_fe_set_handlers_full(CharBackend *b,
+                                    bool sync_state)
+ {
+     Chardev *s;
+-    int fe_open;
++    bool fe_open;
+ 
+     s = b->chr;
+     if (!s) {
+@@ -265,10 +265,10 @@ void qemu_chr_fe_set_handlers_full(CharBackend *b,
+     }
+ 
+     if (!opaque && !fd_can_read && !fd_read && !fd_event) {
+-        fe_open = 0;
++        fe_open = false;
+         remove_fd_in_watch(s);
+     } else {
+-        fe_open = 1;
++        fe_open = true;
+     }
+     b->chr_can_read = fd_can_read;
+     b->chr_read = fd_read;
+@@ -336,7 +336,7 @@ void qemu_chr_fe_set_echo(CharBackend *be, bool echo)
+     }
+ }
+ 
+-void qemu_chr_fe_set_open(CharBackend *be, int fe_open)
++void qemu_chr_fe_set_open(CharBackend *be, bool is_open)
+ {
+     Chardev *chr = be->chr;
+ 
+@@ -344,12 +344,12 @@ void qemu_chr_fe_set_open(CharBackend *be, int fe_open)
+         return;
+     }
+ 
+-    if (be->fe_open == fe_open) {
++    if (be->fe_is_open == is_open) {
+         return;
+     }
+-    be->fe_open = fe_open;
++    be->fe_is_open = is_open;
+     if (CHARDEV_GET_CLASS(chr)->chr_set_fe_open) {
+-        CHARDEV_GET_CLASS(chr)->chr_set_fe_open(chr, fe_open);
++        CHARDEV_GET_CLASS(chr)->chr_set_fe_open(chr, is_open);
+     }
+ }
+ 
+diff --git a/chardev/char.c b/chardev/char.c
+index 996a024c7a2..0653b112e92 100644
+--- a/chardev/char.c
++++ b/chardev/char.c
+@@ -750,7 +750,7 @@ static int qmp_query_chardev_foreach(Object *obj, void *data)
+ 
+     value->label = g_strdup(chr->label);
+     value->filename = g_strdup(chr->filename);
+-    value->frontend_open = chr->be && chr->be->fe_open;
++    value->frontend_open = chr->be && chr->be->fe_is_open;
+ 
+     QAPI_LIST_PREPEND(*list, value);
+ 
 -- 
 2.39.2
 
