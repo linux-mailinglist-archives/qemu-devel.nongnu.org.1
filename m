@@ -2,87 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BD58229F0
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 10:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED928229FE
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 10:12:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKxEd-00067j-Ra; Wed, 03 Jan 2024 04:08:24 -0500
+	id 1rKxIb-0007VE-N8; Wed, 03 Jan 2024 04:12:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKxEM-000670-TZ
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 04:08:07 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rKxIa-0007V6-Ft
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 04:12:28 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKxEJ-0001Mf-NW
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 04:08:05 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-33694bf8835so8642795f8f.3
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 01:08:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rKxIY-0002jT-Tn
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 04:12:28 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40d5d898162so48097825e9.3
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 01:12:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704272882; x=1704877682; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=kddLE5JKCGU9j3eVdLqxBGlDZb8ajWq0Q9Bk1qRSMl4=;
- b=PLVRy2yyXvu+VDI4WavopNHKE4LJCYcCTLKuEAzBHMpr7JtrzlrokhEDcXJAsMM9yP
- BHqAoGzdfY270Luxc+b3JEK5oeoK8JCIXVLJtnGDomySx8QVFMgBQbDfThWqKoq86QsU
- 9aJ4FBKJDYYzH9y7nVR9Ku6vPb5ld5mffCECvmW2q2bT+PMEwD0/PR5r6EAcKpxAm0iu
- kAQ0lheV9e4zVMR1lRH+vX9pFai9xz23UccLpZUZ0mJxxtRAFmNmA7riqVOVjnaNPJ6J
- Ofy9ZjbliCrkTPMDLr0cxW/oxGmGGRJqpaAn+held0jJm7XbhqbNg6FNiy3J+gHYREH/
- lH3g==
+ d=linaro.org; s=google; t=1704273145; x=1704877945; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=//ydq74TQCn8+GtWJABv+9zz/Hr3gsvOy1rW+luIY88=;
+ b=Wop2l7YncFCC18757B70cOCZg/OH3dfrhCkEcxc9bHtHTiZGGuKvKK9WAbYKFprh3c
+ mOgt31vA8o4mKuKX4qhZLSFrAQkDfH+W5y3WkorSH9qz19qVcRXU3WDv5YLYaC2rDwXG
+ YikIKpFYRhFj89EF2Dms9e+APcGzrxFiVOtILRqKUXF1Dqmq+TZDavt27OvDKanwrcx6
+ VKdEWRb2IlGD0mGOOjKe7SxM1c60Ep0M/jEvx/j0FY9SSxvjA9ivVUDtDkS65yN8yU7+
+ 3HA/SzWPwoAoQYyoG0qucDo1Pso1assGo1/vMFI4xn+KTKpkGHWk5Qr8tzEfHKkHgJB8
+ KMZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704272882; x=1704877682;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kddLE5JKCGU9j3eVdLqxBGlDZb8ajWq0Q9Bk1qRSMl4=;
- b=oevKdSpodg78oq+TYlXmD/pZ3tuYhuLPh+fzsyJuP6hpA+TBYMDEUUvgXbzG8OuwiF
- Xy4sJgQ3bFMYrKbtaeF+4IwYX2fC0ItDCys623eDwgTxFObJ6fA4Fnjbdnp9Tbr6RuPY
- z4TRoV5IxuWTgrZy9tVOJ2JdWKPd4kqsslE2msdCm2TkO4u2MHQPked2/iZwqkhEYvcu
- PFsjbmXAIqSbPQJ/MgR2ZI1FuO8eg/OidQ/Wg4QTIPn7jcZibmqlSXAVq8+CVWR7kS1D
- sSnmvXHn9QEFgVF8OOxMIejUY5EJDA+PrwevMSwsp8u0YoB3P++aPoKMU38XEgN0pbfL
- 1vUw==
-X-Gm-Message-State: AOJu0YwOOIAgAdtNQSAyOnzoiPddUUyV+4NmZRZAZ2GCpcWd2BaqoliT
- DaTsNkLMM5yOA0a64+tGbJhJrx1u1U9K5g==
-X-Google-Smtp-Source: AGHT+IEuROR3ntialr7KsmxFgBXAEE5ZEkZdMUi/szyKGvEh2yDcKSqO8H0nxDUQgzG7gwUE3PZtAQ==
-X-Received: by 2002:adf:f306:0:b0:336:1fcf:5aec with SMTP id
- i6-20020adff306000000b003361fcf5aecmr9875073wro.55.1704272881844; 
- Wed, 03 Jan 2024 01:08:01 -0800 (PST)
-Received: from [192.168.69.100] (tre93-h02-176-184-7-144.dsl.sta.abo.bbox.fr.
- [176.184.7.144]) by smtp.gmail.com with ESMTPSA id
- c2-20020adffb42000000b003372095b2ddsm12483162wrs.105.2024.01.03.01.08.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Jan 2024 01:08:01 -0800 (PST)
-Message-ID: <37057f38-5326-48e2-9646-b356f13da11e@linaro.org>
-Date: Wed, 3 Jan 2024 10:07:59 +0100
+ d=1e100.net; s=20230601; t=1704273145; x=1704877945;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=//ydq74TQCn8+GtWJABv+9zz/Hr3gsvOy1rW+luIY88=;
+ b=Ci/5aK0VVSHNzbbUK2TCDwy68W2FMF+zMNXr1jntyQeIZFcA+Odt9ArQ6vNgj70czo
+ 8u/IaTuxGoEY5r73/feXHWNq8JhXjjLNX45TZdbzaKfzuC5Mt4qc0zHwYu1rW/aoz6ai
+ a4EIVF70rrfunXxJTdLBzcyZkVU+Ye6Tiq3XV1SpcjAAXvdXpSiQ1pIwsJrBdCjL5Skl
+ 1zP8X7NdlsJ+je4iAIpV/64h4w7xPNC5oSS8p8Vi/HGLg6gKw67HuP5WoelUBz0xqaP8
+ fodM/rfiKkIVOypUwrLa7piN9esXGyhNBvN57bwA60CQZK/cJ7rtHO5rdtjqXkS46s9c
+ UBOg==
+X-Gm-Message-State: AOJu0Yzr1Ub+5VvOQY6Oh5OwmQjRP9vvnCmKulAgC2Z5u38hUyEl4NFs
+ XoI1qmUdRX4F5oD8PcD86kuZmpjcf7k9Gw==
+X-Google-Smtp-Source: AGHT+IFKNUJdt4borhqETCGEhYAemlYe6bdGuh60CQpZxdB6/bc5I5avkZ9pZgUTI9wRuzXViuwndw==
+X-Received: by 2002:a7b:cd17:0:b0:40d:5c89:9f0f with SMTP id
+ f23-20020a7bcd17000000b0040d5c899f0fmr6258585wmj.15.1704273145183; 
+ Wed, 03 Jan 2024 01:12:25 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ bg40-20020a05600c3ca800b0040d87b5a87csm1643993wmb.48.2024.01.03.01.12.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Jan 2024 01:12:24 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 5DEFB5F8B7;
+ Wed,  3 Jan 2024 09:12:24 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Richard
+ Henderson <richard.henderson@linaro.org>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH 1/2] hw/i386/x86: Fix PIC interrupt handling if APIC
+ globally disabled
+In-Reply-To: <20240103084900.22856-2-shentey@gmail.com> (Bernhard Beschow's
+ message of "Wed, 3 Jan 2024 09:48:59 +0100")
+References: <20240103084900.22856-1-shentey@gmail.com>
+ <20240103084900.22856-2-shentey@gmail.com>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Wed, 03 Jan 2024 09:12:24 +0000
+Message-ID: <8734veixvr.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] tests/lcitool: Refresh generated files
-Content-Language: en-US
-To: Ilya Maximets <i.maximets@ovn.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Erik Skultety <eskultet@redhat.com>, qemu-devel@nongnu.org,
- Thomas Huth <thuth@redhat.com>, Warner Losh <imp@bsdimp.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Ed Maste <emaste@freebsd.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Kyle Evans <kevans@freebsd.org>, Li-Wen Hsu <lwhsu@freebsd.org>,
- Beraldo Leal <bleal@redhat.com>, Jason Wang <jasowang@redhat.com>
-References: <20230711144922.67491-1-philmd@linaro.org>
- <20230711144922.67491-3-philmd@linaro.org> <ZK2YS0v5G3iKyXwJ@redhat.com>
- <41ae7db7-8d80-1749-c89d-025ee30bd73d@linaro.org>
- <ZK6Kn8hB8soQBRsA@redhat.com>
- <30d49562-451e-b4c6-679e-0f8d1e0abe72@linaro.org>
- <ZK6lhY5H/XRqukgU@redhat.com>
- <eb9bb489-d79a-4aa1-951e-b0c7e97313dc@linaro.org>
- <ecdc0f06-a7b2-49ac-a3f4-536f91b80b92@ovn.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <ecdc0f06-a7b2-49ac-a3f4-536f91b80b92@ovn.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,94 +100,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/1/24 19:36, Ilya Maximets wrote:
-> On 1/2/24 19:19, Philippe Mathieu-Daudé wrote:
->> On 12/7/23 15:07, Daniel P. Berrangé wrote:
->>> On Wed, Jul 12, 2023 at 02:55:10PM +0200, Philippe Mathieu-Daudé wrote:
->>>> On 12/7/23 13:12, Daniel P. Berrangé wrote:
->>>>> On Wed, Jul 12, 2023 at 01:00:38PM +0200, Philippe Mathieu-Daudé wrote:
->>>>>> On 11/7/23 19:58, Daniel P. Berrangé wrote:
->>>>>>> On Tue, Jul 11, 2023 at 04:49:20PM +0200, Philippe Mathieu-Daudé wrote:
->>>>>>>> Refresh the generated files by running:
->>>>>>>>
->>>>>>>>       $ make lcitool-refresh
->>>>>>>>
->>>>>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>>>>>> ---
->>>>>>>>      tests/docker/dockerfiles/debian-amd64.docker |  2 -
->>>>>>>>      tests/docker/dockerfiles/ubuntu2004.docker   |  2 -
->>>>>>>>      tests/docker/dockerfiles/ubuntu2204.docker   |  2 -
->>>>>>>
->>>>>>> I don't know why this would be removing xen/pmem from these files. If
->>>>>>> I run 'lcitool-refresh' on current git master that doesn't happen
->>
->> FTR since commit cb039ef3d9 libxdp-devel is also being changed on my
->> host, similarly to libpmem-devel, so I suppose it also has some host
->> specific restriction.
-> 
-> Yeah, many distributions are not building libxdp for non-x86
-> architectures today.  There are no real reasons not to, but
-> they just do not, because the package is relatively new.  It
-> will likely become available in the future.
-> 
-> I see this thread is a bit old.  Was a solution found for the
-> pmem/xen?  i.e. do I need to do something specific for libxdp
-> at this point?
+Bernhard Beschow <shentey@gmail.com> writes:
 
-Maybe this is tracked in this issue?
-https://gitlab.com/libvirt/libvirt-ci/-/issues/30
+> QEMU populates the apic_state attribute of x86 CPUs if supported by real
+> hardware. Even when the APIC is globally disabled by a guest, this attrib=
+ute
+> stays populated. This means that the APIC code paths are still used in th=
+is
+> case. However, chapter 10.4.3 of [1] requires that:
+>
+>   When IA32_APIC_BASE[11] is 0, the processor is functionally equivalent =
+to an
+>   IA-32 processor without an on-chip APIC. The CPUID feature flag for the=
+ APIC
+>   [...] is also set to 0.
+>
+> Fix this by checking the APIC feature flag rather than apic_state when de=
+ciding
+> whether PIC or APIC behavior is required. This fixes some real-world BIOS=
+es.
+>
+> Notice that presence of the CPUID_APIC flag implies that apic_state is no=
+n-NULL.
+>
+> [1] Intel 64 and IA-32 Architectures Software Developer's Manual, Vol. 3A:
+>     System Programming Guide, Part 1
+>
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>  hw/i386/x86.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+> index 2b6291ad8d..a753d1aeca 100644
+> --- a/hw/i386/x86.c
+> +++ b/hw/i386/x86.c
+> @@ -516,10 +516,10 @@ static void x86_nmi(NMIState *n, int cpu_index, Err=
+or **errp)
+>      CPU_FOREACH(cs) {
+>          X86CPU *cpu =3D X86_CPU(cs);
+>=20=20
+> -        if (!cpu->apic_state) {
+> -            cpu_interrupt(cs, CPU_INTERRUPT_NMI);
+> -        } else {
+> +        if (cpu->env.features[FEAT_1_EDX] & CPUID_APIC) {
 
-Otherwise libvirt/lcitool maintainers are Cc'ed :)
+You could assert the relationship between the feature and ->apic_state with:
 
-> Best regards, Ilya Maximets.
-> 
->>
->>>>>>> Do you have any other local changes on top ?
->>>>
->>>> (I just noticed manually updating the libvirt-ci submodule is
->>>>    pointless because the 'lcitool-refresh' rule does that)
->>>>
->>>>>> diff --git a/tests/docker/dockerfiles/ubuntu2204.docker
->>>>>> b/tests/docker/dockerfiles/ubuntu2204.docker
->>>>>> index 1d442cdfe6..5162927016 100644
->>>>>> --- a/tests/docker/dockerfiles/ubuntu2204.docker
->>>>>> +++ b/tests/docker/dockerfiles/ubuntu2204.docker
->>>>>> @@ -73 +72,0 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
->>>>>> -                      libpmem-dev \
->>>>>> @@ -99 +97,0 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
->>>>>> -                      libxen-dev \
->>>>>
->>>>> What architecture are you running from ? I'm suspecting it is a non
->>>>> x86_64 architecture as these pacakges are both arch conditionalized.
->>>>
->>>> My host is Darwin aarch64, but how is this relevant to what we
->>>> generate for guests? Are we missing specifying the target arch
->>>> somewhere? (This is not the '--cross-arch' argument, because we
->>>> don't want to cross-build). These dockerfiles always targeted x86_64,
->>>> in particular the debian-amd64.docker one...
->>>
->>> This is an unfortunate design choice of lcitool.
->>>
->>> If you give '--cross-arch' it will always spit out the dockerfile
->>> suitable for cross-compiling to that arch.
->>>
->>> If you omit '--cross-arch' it will always spit out the dockerfile
->>> suitable for compiling on the *current* host arch.
->>>
->>> When we're committing the dockerfiles to qemu (or any libvirt project
->>> using lcitool), we've got an implicit assumption that the non-cross
->>> dockerfiles were for x86_64, and hence an implicit assumption that
->>> the person who ran 'lcitool' was also on x86_64.
->>>
->>> This is clearly a bad design choice mistake in retrospect as people
->>> are increasingly likely to be using aarch64 for day-to-day dev work.
->>>
->>> So I guess we need to come up with a more explicit way to say give
->>> me a native container for x86_64.
->>>
->>> With regards,
->>> Daniel
->>
-> 
+  g_assert(cpu->apic_state)
 
+But probably unnecessary in the grand scheme of things. Anyway:
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
