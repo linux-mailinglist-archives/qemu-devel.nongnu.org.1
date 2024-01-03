@@ -2,125 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6F6C8235F3
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 20:55:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E201A823613
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 21:06:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL7It-0001an-6R; Wed, 03 Jan 2024 14:53:27 -0500
+	id 1rL7Ty-0003wF-Ml; Wed, 03 Jan 2024 15:04:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1rL7Ir-0001aL-Ep; Wed, 03 Jan 2024 14:53:25 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1rL7Tw-0003w7-PF
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 15:04:53 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1rL7Ip-0003EI-JA; Wed, 03 Jan 2024 14:53:25 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 74DEE2207B;
- Wed,  3 Jan 2024 19:53:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704311600; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WnrRHUoz0jts2thVWi4a43FMZwX2AvnPsl8a71ZrUsA=;
- b=GF3HFBPo5oaXerPCtqrpaFWf3HG1+dx3tB8RiNsD/R2S40Gii55rt6rzukwnAws9IV3Fq8
- Do7/dMqrE/Aasdb27FhtL3SXLYK7Xq0oS1OYWtlO86gEefFKWpzaYSkKZhaMuISFTVndBV
- yZJN4c6S4zOV/WFZO0bKfJi5JPtSvdw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704311600;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WnrRHUoz0jts2thVWi4a43FMZwX2AvnPsl8a71ZrUsA=;
- b=SqRkAj6zY5/CmGZTxvZXKXgac2U0yhhbSsKgk/RgDnnem1tAP6saTJD0WP/NrRI9VjPrTo
- vQDzJLwDXYg0/dCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704311600; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WnrRHUoz0jts2thVWi4a43FMZwX2AvnPsl8a71ZrUsA=;
- b=GF3HFBPo5oaXerPCtqrpaFWf3HG1+dx3tB8RiNsD/R2S40Gii55rt6rzukwnAws9IV3Fq8
- Do7/dMqrE/Aasdb27FhtL3SXLYK7Xq0oS1OYWtlO86gEefFKWpzaYSkKZhaMuISFTVndBV
- yZJN4c6S4zOV/WFZO0bKfJi5JPtSvdw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704311600;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WnrRHUoz0jts2thVWi4a43FMZwX2AvnPsl8a71ZrUsA=;
- b=SqRkAj6zY5/CmGZTxvZXKXgac2U0yhhbSsKgk/RgDnnem1tAP6saTJD0WP/NrRI9VjPrTo
- vQDzJLwDXYg0/dCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E7FB51398A;
- Wed,  3 Jan 2024 19:53:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id C1x1Ky+7lWXuHAAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 03 Jan 2024 19:53:19 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@kaod.org>, qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, Manos Pitsidianakis
- <manos.pitsidianakis@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
- Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
- Anton Johansson <anjo@rev.ng>, Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>, Igor Mitsyanko
- <i.mitsyanko@gmail.com>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring
- <robh@kernel.org>, qemu-arm@nongnu.org, Mark Cave-Ayland
- <mark.cave-ayland@ilande.co.uk>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in
- A7/A15 MPCore priv
-In-Reply-To: <fe4d463f-b646-4b7b-9063-d16ad5dbb128@linaro.org>
-References: <20231212162935.42910-1-philmd@linaro.org>
- <03b969d3-1947-4186-b3ee-15e3cddc5f34@kaod.org>
- <18a38b88-8f20-420c-9916-a03d1b4930a7@linaro.org>
- <38cfa9de-874b-41dd-873e-5ad1f5a5805e@kaod.org>
- <fe4d463f-b646-4b7b-9063-d16ad5dbb128@linaro.org>
-Date: Wed, 03 Jan 2024 16:53:17 -0300
-Message-ID: <87y1d6i47m.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1rL7Tu-0000ne-Kf
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 15:04:52 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a28ac851523so84096466b.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 12:04:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1704312283; x=1704917083; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5XotvJpbWf+FY0z5QuEPNQxlfTIz1FqaIq8h0N/lBN8=;
+ b=XZHRNcg6SoRmVrKPZVRoHzbMQGWa5AbE/NYn2TNAdderTUDCwkYndeycikM8SQ+w2+
+ im5/5STEIS24PN6D6y0SkbHZxp+hmW46ayNERmSclERqjjIlRkZ9fCRs6esN8XzgXmuZ
+ QuhbVE3t85uUn7mw8iwk3dgafj8TMm+/5iWSrcXULEyA9r5hYFxq1O/Ukhb/rK0JOcbN
+ wimkpPpjkrYVxS2eQ05nXwQRk3x+MWRoFWF4ffIgLM7JTGLVP6jpbNuRhaSN31KjdRWq
+ VrTH65uYLwaOlltpvEzLYVSWMPAD8pJ4wQf0cAQnzNMRonNAkghPJk0kyNAJyl5rLIRB
+ pF0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704312283; x=1704917083;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5XotvJpbWf+FY0z5QuEPNQxlfTIz1FqaIq8h0N/lBN8=;
+ b=PijO5WqdLfzs/VmWMkJPeF2xwl1zxQQJmRpeLmPCxaTpv/DVPMTDJrLSEcO0CWoadd
+ TWxdQWXN+kYayBgzNZIikHvfWoMCWOHH7PpgYvMSY5ji5/LgCYq6CW33BWW3wRrHPwyr
+ YB2zqJVaVM6D6mi7crTmOrihn/n2DjjC3Jdfe90X7fi21WQfJtzWBTI3ycZ51dobuTCB
+ bq9zTSahetfrPQb/c2vbkRjAyWN4Bnip6/Bm1EYnokRTbPsS0Abz+X/Q5ieeuhaQg5kn
+ 0R2kUn1BdoDB+Ggvctr6xBoVzBHYkwvRMVMyCGO1DCKXavMttxCG70qXXp+YxpizRrE0
+ I66g==
+X-Gm-Message-State: AOJu0YzJiah8FIa72gllmpseOcmSvpLysrpyMlUHE+ovyACmSZUvjCcL
+ 44BUFI7JFv/c4nMpDDuX3iVs7aUx5uEKf4PhMHWnIXj2plyNCw==
+X-Google-Smtp-Source: AGHT+IER3twzYaH92tiTo7Uz/fZ5/qBWDisUDWmD4HbpGnUdWDMgX9KD/FM+Ws9Ak3gqpHwKj5Wf7mt1isU2W/s5/GQ=
+X-Received: by 2002:a17:906:4e4a:b0:a28:a8cb:3185 with SMTP id
+ g10-20020a1709064e4a00b00a28a8cb3185mr617825ejw.69.1704312283040; Wed, 03 Jan
+ 2024 12:04:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20231114054032.1192027-1-hao.xiang@bytedance.com>
+ <20231114054032.1192027-19-hao.xiang@bytedance.com> <87o7eu80tu.fsf@suse.de>
+In-Reply-To: <87o7eu80tu.fsf@suse.de>
+From: Hao Xiang <hao.xiang@bytedance.com>
+Date: Wed, 3 Jan 2024 12:04:31 -0800
+Message-ID: <CAAYibXiChYSjaHmi22xJ7s7dpQ6X4s22dJ3SzL2M0zkVrTNeNg@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v2 18/20] migration/multifd: Enable set
+ packet size migration option.
+To: Fabiano Rosas <farosas@suse.de>
+Cc: peter.maydell@linaro.org, quintela@redhat.com, peterx@redhat.com, 
+ marcandre.lureau@redhat.com, bryan.zhang@bytedance.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.60 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
- TO_DN_SOME(0.00)[];
- R_RATELIMIT(0.00)[to_ip_from(RLgn3pipxh44ye66tuwadwbnif)];
- RCVD_COUNT_THREE(0.00)[3]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; MID_RHS_MATCH_FROM(0.00)[];
- BAYES_HAM(-3.00)[100.00%]; ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
- FREEMAIL_ENVRCPT(0.00)[gmail.com];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; TAGGED_RCPT(0.00)[];
- MIME_GOOD(-0.10)[text/plain];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_TWELVE(0.00)[23];
- DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- FREEMAIL_CC(0.00)[redhat.com,nuvoton.com,linaro.org,habkost.net,jms.id.au,alistair23.me,rev.ng,gmail.com,google.com,tribudubois.net,codeconstruct.com.au,kernel.org,nongnu.org,ilande.co.uk];
- RCVD_TLS_ALL(0.00)[]; SUSPICIOUS_RECIPS(1.50)[]
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: -1.60
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -137,86 +89,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
-
-> +Peter/Fabiano
+On Wed, Dec 13, 2023 at 9:33=E2=80=AFAM Fabiano Rosas <farosas@suse.de> wro=
+te:
 >
-> On 2/1/24 17:41, C=C3=A9dric Le Goater wrote:
->> On 1/2/24 17:15, Philippe Mathieu-Daud=C3=A9 wrote:
->>> Hi C=C3=A9dric,
->>>
->>> On 2/1/24 15:55, C=C3=A9dric Le Goater wrote:
->>>> On 12/12/23 17:29, Philippe Mathieu-Daud=C3=A9 wrote:
->>>>> Hi,
->>>>>
->>>>> When a MPCore cluster is used, the Cortex-A cores belong the the
->>>>> cluster container, not to the board/soc layer. This series move
->>>>> the creation of vCPUs to the MPCore private container.
->>>>>
->>>>> Doing so we consolidate the QOM model, moving common code in a
->>>>> central place (abstract MPCore parent).
->>>>
->>>> Changing the QOM hierarchy has an impact on the state of the machine
->>>> and some fixups are then required to maintain migration compatibility.
->>>> This can become a real headache for KVM machines like virt for which
->>>> migration compatibility is a feature, less for emulated ones.
->>>
->>> All changes are either moving properties (which are not migrated)
->>> or moving non-migrated QOM members (i.e. pointers of ARMCPU, which
->>> is still migrated elsewhere). So I don't see any obvious migration
->>> problem, but I might be missing something, so I Cc'ed Juan :>
+> Hao Xiang <hao.xiang@bytedance.com> writes:
+>
+> > During live migration, if the latency between sender and receiver
+> > is high but bandwidth is high (a long and fat pipe), using a bigger
+> > packet size can help reduce migration total time. In addition, Intel
+> > DSA offloading performs better with a large batch task. Providing an
+> > option to set the packet size is useful for performance tuning.
+> >
+> > Set the option:
+> > migrate_set_parameter multifd-packet-size 512
+>
+> This should continue being bytes, we just needed to have code enforcing
+> it to be a multiple of page size at migrate_params_check().
+>
 
-FWIW, I didn't spot anything problematic either.
-
-I've ran this through my migration compatibility series [1] and it
-doesn't regress aarch64 migration from/to 8.2. The tests use '-M
-virt -cpu max', so the cortex-a7 and cortex-a15 are not covered. I don't
-think we even support migration of anything non-KVM on arm.
-
-1- https://gitlab.com/farosas/qemu/-/jobs/5853599533
-
->> We broke migration compatibility by moving the IC object in the QOM
->> hierarchy of the pseries machines in the past. These changes might
->> be different. Here is the QOM tree of the ast2600 SoC.
->>=20
->> before :
->>=20
->>  =C2=A0 /soc (ast2600-a3)
->>  =C2=A0=C2=A0=C2=A0 /a7mpcore (a15mpcore_priv)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /a15mp-priv-container[0] (memory-region)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic (arm_gic)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_cpu[0] (memory-region)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_cpu[1] (memory-region)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_cpu[2] (memory-region)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_dist[0] (memory-region)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_vcpu[0] (memory-region)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_viface[0] (memory-regio=
-n)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_viface[1] (memory-regio=
-n)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_viface[2] (memory-regio=
-n)
->>  =C2=A0=C2=A0=C2=A0 /cpu[0] (cortex-a7-arm-cpu)
->>  =C2=A0=C2=A0=C2=A0 /cpu[1] (cortex-a7-arm-cpu)
->>=20
->> after :
->>=20
->>  =C2=A0 /soc (ast2600-a3)
->>  =C2=A0=C2=A0=C2=A0 /a7mpcore (a7mpcore_priv)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /cpu[0] (cortex-a7-arm-cpu)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /cpu[1] (cortex-a7-arm-cpu)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic (arm_gic)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_cpu[0] (memory-region)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_cpu[1] (memory-region)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_cpu[2] (memory-region)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_dist[0] (memory-region)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /mpcore-priv-container[0] (memory-region)
->>=20
->>=20
->> Thanks,
->>=20
->> C.
->>=20
->>=20
->>=20
+OK. I switched back to use bytes and enforced multiple of page size at
+migrate_params_check().
 
