@@ -2,71 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 177AE822F1B
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 15:02:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CAA1822F25
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 15:04:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL1ns-0004aU-3D; Wed, 03 Jan 2024 09:01:04 -0500
+	id 1rL1qj-0006Ph-QS; Wed, 03 Jan 2024 09:04:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rL1nW-0004UO-8j
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 09:00:49 -0500
-Received: from mgamail.intel.com ([192.198.163.9])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rL1qi-0006PH-3D; Wed, 03 Jan 2024 09:04:00 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rL1nS-0005ZE-Ta
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 09:00:41 -0500
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rL1qf-00089x-QT; Wed, 03 Jan 2024 09:03:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704290439; x=1735826439;
+ t=1704290638; x=1735826638;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=KXY2frgsCgMxPjEjWPIRpxOky61C0gI7uIaZ1AWjyQ0=;
- b=M4wbIKtHc7gcR0R2ZKqh14RP2jSSWH0QRfskHUliy11/bQr5pB8gUgsR
- WheiTj2moSwAOL2fosos0V+35acy59Avbq7ASTn7h3qsjbh3wd4lMiOhR
- DYDvM+V8XykRmzt3Ho0T7Af5u6Sm9he2/CHCjh4VS4UMlIf4jtxRI4ekv
- o/UYgWvi2oKNsyMND1e8q98slIu9kHSosg+fQPNUd1Q2iTvyVho1axQMT
- XhvEBbgTjh5YBt9YtqmbBNCg3dDg9ZhFUUWGE0KvywaNuOzc9ft9vJb0L
- 1bf/Ez8zJpW8e6qUDd+3++pmaYk7MeuQVHokT6K1W7P3m+Q6TfobWWD1q A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="3831916"
-X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; 
-   d="scan'208";a="3831916"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jan 2024 06:00:29 -0800
+ mime-version:in-reply-to;
+ bh=d+ImrcDJqLQslhu3APzH++8RCVdCrKFJ6XROL6rjdU4=;
+ b=lvk0tHCVtQroQiamTdxKFK+hH9q+ZURAE5xeF0aSJo61sbJA8sqs0f2j
+ hIU94+ppZmdc7VoeU19zTLEC7lXDu410GElKKjx72FbY6M77KSPMox5BM
+ 4/uULg7MBDgeAGf0Z8MCL98OiMurqlpRzaOy6pJPzmJFU5G13kh2Ok+KU
+ CThci9eJ+N8Ya3El7B9upcDi5bcxA9q0/G/55cgts48X5IxlKuG5cSX66
+ HJwNN46MMIqgXa44l8vLJ2rK07oelychxqrUMQergH/SiAY0uxisLjV39
+ 9aeXBmSFeJJocF1zIFBr+Nv6i+XfnDvi8iiCHvHVs+LF5GFKp+pPrqi9L A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="10611044"
+X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; d="scan'208";a="10611044"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jan 2024 06:03:50 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; d="scan'208";a="21789989"
+X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="903446706"
+X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; d="scan'208";a="903446706"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa002.jf.intel.com with ESMTP; 03 Jan 2024 06:00:27 -0800
-Date: Wed, 3 Jan 2024 22:13:19 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, qemu-devel@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 2/2] hw/cpu/cluster: Cleanup unused included header in
- cluster.c
-Message-ID: <ZZVrfyl9OgGRw6/O@intel.com>
-References: <20231127145611.925817-1-zhao1.liu@linux.intel.com>
- <20231127145611.925817-3-zhao1.liu@linux.intel.com>
- <605a850b-ebdd-4744-a772-5b20ec171ec7@linaro.org>
+ by orsmga004.jf.intel.com with ESMTP; 03 Jan 2024 06:03:47 -0800
+Date: Wed, 3 Jan 2024 22:16:40 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH trivial] chardev/char.c: fix "abstract device type" error
+ message
+Message-ID: <ZZVsSGz5YsEfUBBc@intel.com>
+References: <20240103114221.325221-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <605a850b-ebdd-4744-a772-5b20ec171ec7@linaro.org>
-Received-SPF: none client-ip=192.198.163.9;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
+In-Reply-To: <20240103114221.325221-1-mjt@tls.msk.ru>
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
 X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,37 +76,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 28, 2023 at 11:02:00AM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Tue, 28 Nov 2023 11:02:00 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: Re: [PATCH 2/2] hw/cpu/cluster: Cleanup unused included header in
->  cluster.c
+On Wed, Jan 03, 2024 at 02:42:21PM +0300, Michael Tokarev wrote:
+> Date: Wed,  3 Jan 2024 14:42:21 +0300
+> From: Michael Tokarev <mjt@tls.msk.ru>
+> Subject: [PATCH trivial] chardev/char.c: fix "abstract device type" error
+>  message
+> X-Mailer: git-send-email 2.39.2
 > 
-> On 27/11/23 15:56, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > Remove unused header (qemu/module.h and qemu/cutils.h) in cluster.c,
-> > and reorder the remaining header files (except qemu/osdep.h) in
-> > alphabetical order.
-> > 
-> > Tested by "./configure" and then "make".
-> > 
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> >   hw/cpu/cluster.c | 5 ++---
-> >   1 file changed, 2 insertions(+), 3 deletions(-)
+> Current error message:
 > 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->
+>  qemu-system-x86_64: -chardev spice,id=foo: Parameter 'driver' expects an abstract device type
+> 
+> while in fact the meaning is in reverse, -chardev expects
+> a non-abstract device type.
+> 
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> Fixes: 777357d758d9 "chardev: qom-ify" (2016-12-07)
+> ---
 
-Thanks Philippe!
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-BTW, could these two patches be merged into your next tree?
-
-I also find these 2 headers are included in many cases, maybe I can go
-further and do a more thorough cleaning.
-
-Regards,
-Zhao
-
+>  chardev/char.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/chardev/char.c b/chardev/char.c
+> index 996a024c7a..119b548784 100644
+> --- a/chardev/char.c
+> +++ b/chardev/char.c
+> @@ -518,7 +518,7 @@ static const ChardevClass *char_get_class(const char *driver, Error **errp)
+>  
+>      if (object_class_is_abstract(oc)) {
+>          error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "driver",
+> -                   "an abstract device type");
+> +                   "a non-abstract device type");
+>          return NULL;
+>      }
+>  
+> -- 
+> 2.39.2
+> 
+> 
 
