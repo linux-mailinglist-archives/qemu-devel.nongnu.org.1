@@ -2,51 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E90A822CA6
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 13:08:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1382B822CA5
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 13:06:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL025-0000P0-5P; Wed, 03 Jan 2024 07:07:37 -0500
+	id 1rL003-00077Y-No; Wed, 03 Jan 2024 07:05:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
- id 1rL021-0000OI-OQ
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 07:07:33 -0500
-Received: from jedlik.phy.bme.hu ([152.66.102.83])
+ (Exim 4.90_1) (envelope-from <kowsjois@linux.vnet.ibm.com>)
+ id 1rL001-00076m-8K; Wed, 03 Jan 2024 07:05:29 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
- id 1rL01y-00012t-Vs
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 07:07:33 -0500
-Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
- id 7F3BEA00CF; Wed,  3 Jan 2024 13:00:35 +0100 (CET)
-Date: Wed, 3 Jan 2024 13:00:35 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Bernhard Beschow <shentey@gmail.com>
-cc: qemu-devel@nongnu.org, Nicholas Piggin <npiggin@gmail.com>, 
- qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
-Subject: Re: [PATCH] docs/system: Document running Linux on amigaone
- machine
-In-Reply-To: <2CA50F74-DE6D-4AD6-8581-EC22C80925B3@gmail.com>
-Message-ID: <alpine.LMD.2.03.2401031258001.11743@eik.bme.hu>
-References: <20231216123013.67978-1-shentey@gmail.com>
- <da92f16c-585a-7d1f-fa0b-9a6912f7760e@eik.bme.hu>
- <79067497-55AC-49EB-A0EE-909219E2C6A7@gmail.com>
- <6d50c5e7-ee6d-609f-c3e7-28f74eeeb714@eik.bme.hu>
- <2CA50F74-DE6D-4AD6-8581-EC22C80925B3@gmail.com>
-User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
+ (Exim 4.90_1) (envelope-from <kowsjois@linux.vnet.ibm.com>)
+ id 1rKzzy-0000PJ-9H; Wed, 03 Jan 2024 07:05:29 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 4039mOvV013602; Wed, 3 Jan 2024 12:05:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=8EPlNQJ7KtRTSLAwJfLjK8XWGb9b6ixO66Q5MLQE464=;
+ b=KaoKVZtdta6KWCXvuXsiQtFgcJcPCMILxzX4uWFrF+jKWodEv4Kl6c4ktn1qJPnYcVWJ
+ GiDYuDny8RQYnduTFcKFvckj0ZplDqJs36bkVSugMhzPzLzxu1KI2DGbrpVCNu/mqd9m
+ 26GOeh1ayhQYjHh10ntoDEUaarTaoOIRBkyT37HCvMXg6RPn2YhnOP5bEXkCxtZ1NdEr
+ uF6t0jMfXEe8uvxTsgUUFjH9HsLXJse8tvlivs0dtOwZO1kHg958oHYO2HeB4Oy2JuBE
+ 8rPiIyZFlpNYyUvrRGWAIi1QkdRX0R9PzupDjaGg1bNk160jXJ/uiq+6npn70eMwXGoC +Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vd591w22h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Jan 2024 12:05:10 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 403BLoVO014121;
+ Wed, 3 Jan 2024 12:05:10 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vd591w21w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Jan 2024 12:05:09 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 403B0e0g019424; Wed, 3 Jan 2024 12:05:09 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vc30shwvc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Jan 2024 12:05:09 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 403C577l23397118
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 3 Jan 2024 12:05:07 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1401B20043;
+ Wed,  3 Jan 2024 12:05:07 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3294320040;
+ Wed,  3 Jan 2024 12:05:05 +0000 (GMT)
+Received: from [9.43.62.72] (unknown [9.43.62.72])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  3 Jan 2024 12:05:04 +0000 (GMT)
+Message-ID: <449ae601-e7df-4c26-aad7-aca8bf79400f@linux.vnet.ibm.com>
+Date: Wed, 3 Jan 2024 17:35:04 +0530
 MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED;
- BOUNDARY="1117279078-348480708-1704283235=:11743"
-Received-SPF: none client-ip=152.66.102.83;
- envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] ppc/spapr: Introduce SPAPR_IRQ_NR_IPIS to refer
+ IRQ range for CPU IPIs.
+Content-Language: en-US
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, npiggin@gmail.com,
+ qemu-ppc@nongnu.org
+Cc: danielhb413@gmail.com, david@gibson.dropbear.id.au, qemu-devel@nongnu.org
+References: <20231123055733.1002890-1-harshpb@linux.ibm.com>
+ <20231123055733.1002890-2-harshpb@linux.ibm.com>
+ <1523c986-7022-4b3f-8e26-b25d8621c623@kaod.org>
+ <3030ea29-3611-bd4f-cfd5-b34e4cf6b800@linux.ibm.com>
+ <adb6e571-004c-4c28-94e7-efadd61d88c1@kaod.org>
+ <7bda3fad-e4df-8e2b-bb8b-8f984d89fcff@linux.ibm.com>
+ <9880236c-cc89-4a83-a377-e680d2ca7163@kaod.org>
+From: Kowshik Jois B S <kowsjois@linux.vnet.ibm.com>
+In-Reply-To: <9880236c-cc89-4a83-a377-e680d2ca7163@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: oRH3sC4zI5WkSD_ELBpc-DLr5r5EiMCm
+X-Proofpoint-GUID: 1etwjSUciVep4V9DSgjNLL-lMyMEzpcq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-03_06,2024-01-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0
+ spamscore=0 priorityscore=1501 impostorscore=0 mlxscore=0 bulkscore=0
+ lowpriorityscore=0 clxscore=1011 phishscore=0 mlxlogscore=999
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401030100
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=kowsjois@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,227 +121,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---1117279078-348480708-1704283235=:11743
-Content-Type: TEXT/PLAIN; charset=utf-8; format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-
-On Tue, 2 Jan 2024, Bernhard Beschow wrote:
-> Am 16. Dezember 2023 21:15:54 UTC schrieb BALATON Zoltan <balaton@eik.bme=
-=2Ehu>:
->> On Sat, 16 Dec 2023, Bernhard Beschow wrote:
->>> Am 16. Dezember 2023 12:53:55 UTC schrieb BALATON Zoltan <balaton@eik.b=
-me.hu>:
->>>> On Sat, 16 Dec 2023, Bernhard Beschow wrote:
->>>>> Documentation on how to run Linux on the amigaone machine is currentl=
-y burried
->>>>> in the depths of the qemu-devel mailing list [1] and in the source co=
-de. Let's
->>>>> collect the information in the QEMU handbook for a one stop solution.
+On 24/11/23 13:39, Cédric Le Goater wrote:
+> On 11/24/23 09:01, Harsh Prateek Bora wrote:
+>>
+>>
+>> On 11/23/23 19:42, Cédric Le Goater wrote:
+>>> On 11/23/23 10:31, Harsh Prateek Bora wrote:
 >>>>
->>>> Thanks for collecting this info and adding it as documentation.
->>>
->>> You're welcome!
->>>
->>>> A few small comments bellow.
 >>>>
->>>>> [1] https://lore.kernel.org/qemu-devel/dafc407d-3749-e6f4-3a66-750fde=
-8965f9@eik.bme.hu/
+>>>> On 11/23/23 14:20, CI've applied these patches and verified on the 
+>>>> latest upstream qemu. The code is working as expected.
 >>>>
->>>> Do we want to keep an URL in the commit log? kernel.org is quite stabl=
-e but not sure it would need to be in the commit message.
->>>
->>> Let's drop it.
->>>
->>>>
->>>>> Co-authored-by: BALATON Zoltan <balaton@eik.bme.hu>
->>>>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
->>>>> ---
->>>>> MAINTAINERS                  |  1 +
->>>>> docs/system/ppc/amigaone.rst | 53 +++++++++++++++++++++++++++++++++++=
-+
->>>>> docs/system/target-ppc.rst   |  1 +
->>>>> hw/ppc/amigaone.c            |  9 ------
->>>>> 4 files changed, 55 insertions(+), 9 deletions(-)
->>>>> create mode 100644 docs/system/ppc/amigaone.rst
+>>>> Tested-by: Kowshik Jois<kowsjois@linux.ibm.com>édric Le Goater wrote:
+>>>>> On 11/23/23 06:57, Harsh Prateek Bora wrote:
+>>>>>> spapr_irq_init currently uses existing macro SPAPR_XIRQ_BASE to 
+>>>>>> refer to
+>>>>>> the range of CPU IPIs during initialization of nr-irqs property.
+>>>>>> It is more appropriate to have its own define which can be further
+>>>>>> reused as appropriate for correct interpretation.
+>>>>>>
+>>>>>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>>>>>> Suggested-by: Cedric Le Goater <clg@kaod.org>
 >>>>>
->>>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>>> index 695e0bd34f..a2dd1407e2 100644
->>>>> --- a/MAINTAINERS
->>>>> +++ b/MAINTAINERS
->>>>> @@ -1560,6 +1560,7 @@ amigaone
->>>>> M: BALATON Zoltan <balaton@eik.bme.hu>
->>>>> L: qemu-ppc@nongnu.org
->>>>> S: Maintained
->>>>> +F: docs/system/ppc/amigaone.rst
->>>>> F: hw/ppc/amigaone.c
->>>>> F: hw/pci-host/articia.c
->>>>> F: include/hw/pci-host/articia.h
->>>>> diff --git a/docs/system/ppc/amigaone.rst b/docs/system/ppc/amigaone.=
-rst
->>>>> new file mode 100644
->>>>> index 0000000000..c3f11a7bb2
->>>>> --- /dev/null
->>>>> +++ b/docs/system/ppc/amigaone.rst
->>>>
->>>> Maybe call it amigang.rst so it can be a place for docs on other PPC A=
-migaNG machines such as pegasos2 and sam460ex in the future to collect them=
- in one place.
->>>
->>> Having everything in one place seems like creating a lot of complexity =
-if one were to elaborate on the various pros and cons for each machine: Ami=
-gaOne needs a custom vgabios, the others do not.
->>
->> All of these need real mode VGA BIOS as the BIOS emulator in all three m=
-achines choke on the gcc compiled QEMU VGA BIOS so this isn't uinque to ami=
-gaone.
->>
->>> MorpOS can be run on the other machines but not on AmigaOne. Sometimes =
-a bootloader is needed and sometimes not, the circumstances may vary.
->>
->> MorphOS does not support amigaone, boot loader is optional and alternati=
-ve to using firmware.
->>
->> Other docs seem to combine similar machines like powermac and embedded a=
-nd ppce500 in a single doc file so the convention seems to not have one fil=
-e for each machine but it's not a big deal.
->>
->>> I suggest to have a separate doc on each machine.
->>
->> I could also rename it later if more docs is added for other machines.
->>
->>>>> @@ -0,0 +1,53 @@
->>>>> +Eyetech AmigaOne/Mai Logic Teron (``amigaone``)
->>>>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>>>> +
->>>>> +The ``amigaone`` model emulates an AmigaOne XE mainboard developed b=
-y Eyetech. Use
->>>>> +the executable ``qemu-system-ppc`` to simulate a complete system.
->>>>
->>>> QEMU is not a simulator so even if that's repeating this should say em=
-ulate. (Should this doc be formatted with 80 chars line too like sources?)
->>>
->>> I took heavy inspiration from the cupieboard machine. Feel free to chan=
-ge.
->>
->> docs/system/arm/cubieboard.rst:
->> "The ``cubieboard`` model emulates the Cubietech Cubieboard,"
->> also says emulate not simulate.
->>
->>>>> +
->>>>> +Emulated devices
->>>>> +----------------
->>>>> +
->>>>> + *  PowerPC 7457 v1.2 CPU
->>>>> + *  Articia S north bridge
->>>>> + *  VT82C686B south bridge
->>>>> + *  PCI VGA compatible card
->>>>> +
->>>>> +
->>>>> +Preparation
->>>>> +-----------
->>>>> +
->>>>> +A firmware binary is necessary for the boot process and is available=
- at
->>>>> +https://www.hyperion-entertainment.com/index.php/downloads?view=3Dfi=
-les&parent=3D28.
->>>>> +It needs to be extracted with the following command:
->>>>> +
->>>>> +.. code-block:: bash
->>>>> +
->>>>> +  $ tail -c 524288 updater.image > u-boot-amigaone.bin
->>>>> +
->>>>> +The firmware binary is unable to run QEMU=E2=80=98s standard vgabios=
- and
->>>>> +``VGABIOS-lgpl-latest.bin`` is needed instead. It can be downloaded =
-from
->>>>> +http://www.nongnu.org/vgabios.
->>>>> +
->>>>> +
->>>>> +Running Linux
->>>>> +-------------
->>>>> +
->>>>> +There are some Linux images under the following link that work on th=
-e
->>>>> +``amigaone`` machine:
->>>>> +https://sourceforge.net/projects/amigaone-linux/files/debian-install=
-er/. To boot
->>>>> +the system run:
->>>>> +
->>>>> +.. code-block:: bash
->>>>> +
->>>>> +  $ qemu-system-ppc -M amigaone -bios u-boot-amigaone.bin \
->>>>> +                    -cdrom "A1 Linux Net Installer.iso" \
->>>>> +                    -device ati-vga,model=3Drv100,romfile=3DVGABIOS-=
-lgpl-latest.bin
->>>>> +
->>>>> +From the firmware menu that appears select ``Boot sequence`` =E2=86=
-=92
->>>>> +``Amiga Multiboot Options`` and set ``Boot device 1`` to
->>>>> +``Onboard VIA IDE CDROM``. Then hit escape until the main screen app=
-ears again,
->>>>> +hit escape once more and from the exit menu that appears select eith=
-er
->>>>> +``Save settings and exit`` or ``Use settings for this session only``=
-=2E It may
->>>>> +take a long time loading the kernel into memory but eventually it bo=
-ots and the
->>>>> +installer becomes visible.
->>>>> diff --git a/docs/system/target-ppc.rst b/docs/system/target-ppc.rst
->>>>> index 4f6eb93b17..c1daa463cf 100644
->>>>> --- a/docs/system/target-ppc.rst
->>>>> +++ b/docs/system/target-ppc.rst
->>>>> @@ -18,6 +18,7 @@ help``.
->>>>>    :maxdepth: 1
+>>>>> One comment below
 >>>>>
->>>>>    ppc/embedded
->>>>> +   ppc/amigaone
->>>>>    ppc/powermac
->>>>>    ppc/powernv
->>>>>    ppc/ppce500
->>>>> diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
->>>>> index ddfa09457a..4f680a5bdd 100644
->>>>> --- a/hw/ppc/amigaone.c
->>>>> +++ b/hw/ppc/amigaone.c
->>>>> @@ -27,15 +27,6 @@
+>>>>> Reviewed-by: Cédric Le Goater <clg@kaod.org>
 >>>>>
->>>>> #define BUS_FREQ_HZ 100000000
->>>>>
->>>>> -/*
->>>>> - * Firmware binary available at
->>>>> - * https://www.hyperion-entertainment.com/index.php/downloads?view=
-=3Dfiles&parent=3D28
->>>>> - * then "tail -c 524288 updater.image >u-boot-amigaone.bin"
->>>>> - *
->>>>> - * BIOS emulator in firmware cannot run QEMU vgabios and hangs on it=
-, use
->>>>> - * -device VGA,romfile=3DVGABIOS-lgpl-latest.bin
->>>>> - * from http://www.nongnu.org/vgabios/ instead.
->>>>> - */
 >>>>
->>>> Maybe it's worth keeping the comment here in case somebody reads the s=
-ource but not documentation.
+>>>> Thanks, responding below ..
+>>>>
+>>>>>> ---
+>>>>>>   include/hw/ppc/spapr_irq.h | 14 +++++++++++++-
+>>>>>>   hw/ppc/spapr_irq.c         |  6 ++++--
+>>>>>>   2 files changed, 17 insertions(+), 3 deletions(-)
+>>>>>>
+>>>>>> diff --git a/include/hw/ppc/spapr_irq.h b/include/hw/ppc/spapr_irq.h
+>>>>>> index c22a72c9e2..4fd2d5853d 100644
+>>>>>> --- a/include/hw/ppc/spapr_irq.h
+>>>>>> +++ b/include/hw/ppc/spapr_irq.h
+>>>>>> @@ -14,9 +14,21 @@
+>>>>>>   #include "qom/object.h"
+>>>>>>   /*
+>>>>>> - * IRQ range offsets per device type
+>>>>>> + * The XIVE IRQ backend uses the same layout as the XICS backend 
+>>>>>> but
+>>>>>> + * covers the full range of the IRQ number space. The IRQ 
+>>>>>> numbers for
+>>>>>> + * the CPU IPIs are allocated at the bottom of this space, below 
+>>>>>> 4K,
+>>>>>> + * to preserve compatibility with XICS which does not use that 
+>>>>>> range.
+>>>>>> + */
+>>>>>> +
+>>>>>> +/*
+>>>>>> + * CPU IPI range (XIVE only)
+>>>>>>    */
+>>>>>>   #define SPAPR_IRQ_IPI        0x0
+>>>>>> +#define SPAPR_IRQ_NR_IPIS    0x1000
+>>>>>> +
+>>>>>> +/*
+>>>>>> + * IRQ range offsets per device type
+>>>>>> + */
+>>>>>>   #define SPAPR_XIRQ_BASE      XICS_IRQ_BASE /* 0x1000 */
+>>>>>>   #define SPAPR_IRQ_EPOW       (SPAPR_XIRQ_BASE + 0x0000)
+>>>>>> diff --git a/hw/ppc/spapr_irq.c b/hw/ppc/spapr_irq.c
+>>>>>> index a0d1e1298e..97b2fc42ab 100644
+>>>>>> --- a/hw/ppc/spapr_irq.c
+>>>>>> +++ b/hw/ppc/spapr_irq.c
+>>>>>> @@ -23,6 +23,8 @@
+>>>>>>   #include "trace.h"
+>>>>>> +QEMU_BUILD_BUG_ON(SPAPR_IRQ_NR_IPIS > SPAPR_XIRQ_BASE);
+>>>>>> +
+>>>>>
+>>>>> I would have put the check in include/hw/ppc/spapr_irq.h but since
+>>>>> SPAPR_XIRQ_BASE is only used in hw/ppc/spapr_irq.c which is always
+>>>>> compiled, this is fine. You might want to change that in case a
+>>>>> respin is asked for.
+>>>>>
+>>>>
+>>>> I had initially tried keeping it in spapr_irq.h , but that would 
+>>>> give a build break for XICS_IRQ_BASE not defined since that gets 
+>>>> defined in spapr_xics.h and is included later in some files, 
+>>>> however, the QEMU_BUILD_BUG_ON expects it to be defined before it 
+>>>> reaches here.
 >>>
->>> Maybe change the comment to point at the doc to avoid duplication?
->>
->> That could work too.
->>
->>>> Do you want to send a v2 or want me to take over and do it myself?
+>>> ah. good catch. this went unnoticed and is a bit ugly. We should fix
+>>> in some ways. May with a define SPAPR_XIRQ_BASE to 0x1000 simply ?
 >>>
->>> Sure, feel free to take over!
 >>
->> OK, I'll try to make a v2 then.
+>> Hmm, I can do that if a re-spin is reqd, or can be done as a separate
+>> patch later also along with other improvements.
 >
-> Ping
-
-I've started it but then did not have time to finish yet but not=20
-forgotten, will do it eventually. I also want to add info on other=20
-machines so we'll have this in one place.
-
-Regards,
-BALATON Zoltan
---1117279078-348480708-1704283235=:11743--
+> yes. This is food for thoughts for further improvements.
+>
+> Thanks,
+>
+> C.
+>
+>
+>
+>>
+>>> Also, we could probably define the ICS offset to SPAPR_XIRQ_BASE
+>>> directly under spapr_irq_init() and get rid of ics_instance_init().
+>>> The HW IRQ Number offset in the PNV ICS instances is assigned
+>>> dynamically by the OS (see pnv_phb3). So it should befine to do
+>>> the same for spapr. In which case we can get rid of XICS_IRQ_BASE.
+>>>
+>>
+>> Hmm, I am not so familiar with XICS yet, so not sure if we really need
+>> to do that, but it can be done along with other improvements if needed.
+>>
+>> regards,
+>> Harsh
+>>
+>>> Thanks,
+>>>
+>>> C.
+>>>
+>>>
+>>>
+>>>>
+>>>> regards,
+>>>> Harsh
+>>>>
+>>>>> Thanks,
+>>>>>
+>>>>> C.
+>>>>>
+>>>>>
+>>>>>>   static const TypeInfo spapr_intc_info = {
+>>>>>>       .name = TYPE_SPAPR_INTC,
+>>>>>>       .parent = TYPE_INTERFACE,
+>>>>>> @@ -329,7 +331,7 @@ void spapr_irq_init(SpaprMachineState *spapr, 
+>>>>>> Error **errp)
+>>>>>>           int i;
+>>>>>>           dev = qdev_new(TYPE_SPAPR_XIVE);
+>>>>>> -        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + 
+>>>>>> SPAPR_XIRQ_BASE);
+>>>>>> +        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + 
+>>>>>> SPAPR_IRQ_NR_IPIS);
+>>>>>>           /*
+>>>>>>            * 8 XIVE END structures per CPU. One for each available
+>>>>>>            * priority
+>>>>>> @@ -356,7 +358,7 @@ void spapr_irq_init(SpaprMachineState *spapr, 
+>>>>>> Error **errp)
+>>>>>>       }
+>>>>>>       spapr->qirqs = qemu_allocate_irqs(spapr_set_irq, spapr,
+>>>>>> -                                      smc->nr_xirqs + 
+>>>>>> SPAPR_XIRQ_BASE);
+>>>>>> +                                      smc->nr_xirqs + 
+>>>>>> SPAPR_IRQ_NR_IPIS);
+>>>>>>       /*
+>>>>>>        * Mostly we don't actually need this until reset, except 
+>>>>>> that not
+>>>>>
+>>>
+>
+> I've applied these patches and verified on the latest upstream qemu. 
+> The code is working as expected.
+>
+> Tested-by: Kowshik Jois<kowsjois@linux.ibm.com>
 
