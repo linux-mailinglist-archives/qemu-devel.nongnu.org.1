@@ -2,65 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CAA1822F25
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 15:04:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38FAE822FB8
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 15:41:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL1qj-0006Ph-QS; Wed, 03 Jan 2024 09:04:01 -0500
+	id 1rL2QJ-0007VP-UQ; Wed, 03 Jan 2024 09:40:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rL1qi-0006PH-3D; Wed, 03 Jan 2024 09:04:00 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
+ (Exim 4.90_1) (envelope-from <samuel.tardieu@telecom-paris.fr>)
+ id 1rL2Q5-0007V3-Nd; Wed, 03 Jan 2024 09:40:33 -0500
+Received: from zproxy4.enst.fr ([2001:660:330f:2::df])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rL1qf-00089x-QT; Wed, 03 Jan 2024 09:03:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704290638; x=1735826638;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=d+ImrcDJqLQslhu3APzH++8RCVdCrKFJ6XROL6rjdU4=;
- b=lvk0tHCVtQroQiamTdxKFK+hH9q+ZURAE5xeF0aSJo61sbJA8sqs0f2j
- hIU94+ppZmdc7VoeU19zTLEC7lXDu410GElKKjx72FbY6M77KSPMox5BM
- 4/uULg7MBDgeAGf0Z8MCL98OiMurqlpRzaOy6pJPzmJFU5G13kh2Ok+KU
- CThci9eJ+N8Ya3El7B9upcDi5bcxA9q0/G/55cgts48X5IxlKuG5cSX66
- HJwNN46MMIqgXa44l8vLJ2rK07oelychxqrUMQergH/SiAY0uxisLjV39
- 9aeXBmSFeJJocF1zIFBr+Nv6i+XfnDvi8iiCHvHVs+LF5GFKp+pPrqi9L A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="10611044"
-X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; d="scan'208";a="10611044"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jan 2024 06:03:50 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="903446706"
-X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; d="scan'208";a="903446706"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orsmga004.jf.intel.com with ESMTP; 03 Jan 2024 06:03:47 -0800
-Date: Wed, 3 Jan 2024 22:16:40 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH trivial] chardev/char.c: fix "abstract device type" error
- message
-Message-ID: <ZZVsSGz5YsEfUBBc@intel.com>
-References: <20240103114221.325221-1-mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <samuel.tardieu@telecom-paris.fr>)
+ id 1rL2Py-0006lN-6o; Wed, 03 Jan 2024 09:40:30 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id 1D745206DF;
+ Wed,  3 Jan 2024 15:40:17 +0100 (CET)
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id vHmJFdcbV1ZL; Wed,  3 Jan 2024 15:40:16 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id 7635B206F5;
+ Wed,  3 Jan 2024 15:40:16 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy4.enst.fr 7635B206F5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1704292816;
+ bh=8Bpi2UyXi9bDygv9v87FHzYkLF/eVApRysLUBHQGI/8=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=QnCUkvGKnlmqtfXDEDq9Xie09Hi3eFjsYe5bffXaNzHVootKdxZ2vI+csRQxDdAAC
+ utdzfamEL4wRp6DQiwcTvfgO9Hn1kjcBBiqB7m1oyWME0LUIvYzTlRmgi9zXDk6n0B
+ JMg8ZcTewm9UoN56qGrMMn1JrhTfp1us0TcLF2q8=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id pCZ9mus-PDFd; Wed,  3 Jan 2024 15:40:16 +0100 (CET)
+Received: from buffy (unknown [IPv6:2a01:e34:ec63:e440:5c00:58bd:886:e993])
+ by zproxy4.enst.fr (Postfix) with ESMTPSA id AD3E5206DF;
+ Wed,  3 Jan 2024 15:40:15 +0100 (CET)
+References: <20231215103448.3822284-1-zhao1.liu@linux.intel.com>
+User-agent: mu4e 1.10.8; emacs 29.1
+From: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Darren Kenny <darren.kenny@oracle.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-trivial@nongnu.org, Zhenyu Wang
+ <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma
+ <yongwei.ma@intel.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] scripts/checkpatch: Support codespell checking
+Date: Wed, 03 Jan 2024 15:36:59 +0100
+In-reply-to: <20231215103448.3822284-1-zhao1.liu@linux.intel.com>
+Message-ID: <87frze5vlc.fsf@telecom-paris.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240103114221.325221-1-mjt@tls.msk.ru>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:660:330f:2::df;
+ envelope-from=samuel.tardieu@telecom-paris.fr; helo=zproxy4.enst.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,44 +82,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 03, 2024 at 02:42:21PM +0300, Michael Tokarev wrote:
-> Date: Wed,  3 Jan 2024 14:42:21 +0300
-> From: Michael Tokarev <mjt@tls.msk.ru>
-> Subject: [PATCH trivial] chardev/char.c: fix "abstract device type" error
->  message
-> X-Mailer: git-send-email 2.39.2
-> 
-> Current error message:
-> 
->  qemu-system-x86_64: -chardev spice,id=foo: Parameter 'driver' expects an abstract device type
-> 
-> while in fact the meaning is in reverse, -chardev expects
-> a non-abstract device type.
-> 
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-> Fixes: 777357d758d9 "chardev: qom-ify" (2016-12-07)
-> ---
+> +  --codespell                Use the codespell dictionary for=20
+> spelling/typos
+> +                             (default:$codespellfile)
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Nitpick: I would have used a space after ":".
 
->  chardev/char.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/chardev/char.c b/chardev/char.c
-> index 996a024c7a..119b548784 100644
-> --- a/chardev/char.c
-> +++ b/chardev/char.c
-> @@ -518,7 +518,7 @@ static const ChardevClass *char_get_class(const char *driver, Error **errp)
->  
->      if (object_class_is_abstract(oc)) {
->          error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "driver",
-> -                   "an abstract device type");
-> +                   "a non-abstract device type");
->          return NULL;
->      }
->  
-> -- 
-> 2.39.2
-> 
-> 
+> +	# If /usr/share/codespell/dictionary.txt is not present,=20
+> try to find it
+> +	# under codespell's install directory:=20
+> <codespell_root>/data/dictionary.txt
+
+This works correctly on my NixOS system using a non-FHS layout and=20
+properly locates the codespell file.
+
+This patch made me find a typo in one of my commit messages.
+
+Tested-by: Samuel Tardieu <sam@rfc1149.net>
+
+  Sam
+--=20
+Samuel Tardieu
+T=C3=A9l=C3=A9com Paris - Institut Polytechnique de Paris
 
