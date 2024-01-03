@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D6FE822C2D
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 12:33:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C384822C49
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 12:39:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKzU4-0003p2-KB; Wed, 03 Jan 2024 06:32:28 -0500
+	id 1rKza4-000543-ML; Wed, 03 Jan 2024 06:38:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKzU0-0003oh-Q2
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 06:32:24 -0500
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKzTv-0001ln-9t
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 06:32:24 -0500
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2ccbf8cbf3aso96504311fa.3
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 03:32:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704281537; x=1704886337; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8Uw11SI08AfTXeQE7SXpzipR7L2b7UEXTXmofT03JLU=;
- b=df/yCP9lj6Q3UTCHjzr3zkwO2EgEt26PnErO6PRpRXN8uhkyxLL+N8q8nbLdZlh+Y4
- p7j/uJrSIEx54zseaA4hCVUX4GbNj0ZQYUEBxP2zzBtC4DiD4GVIowqIQDiXMgsDhFC5
- kkWRzg68VukjAEQu7Qqj/Nu+YH1NTD6RS3XWeIOtRAzw6mIuFqRDbr1rGr9pY7XFpTQN
- Lak9dzA/pVk+VXv1RWQYK3HJYPGA6skGt5aLIARp+wO8uBVQ41rCQzZTGDmusUA54S1b
- dgsQhtP/Y8oLRSprTW2nLVwtZz3+qKvwQb10xN9fgpk9eGfRU+mrUX2q23iF24BwkIXd
- pcuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704281537; x=1704886337;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8Uw11SI08AfTXeQE7SXpzipR7L2b7UEXTXmofT03JLU=;
- b=CKN1c4qROfUN6/bybx3BB2M+Oa7UFirQa//N0U95l7ulpdzCAY677kt8DihF7O+VTr
- n4Rojkz+U81pSLSkqc+Y8cAlg3jT2m5s5IG1QuM7xuxubH+Oh03i3YbNjbzX7O/I+QEb
- ILliqkmydjKTUVhs1YZBLJvWQdR75FVWw+UnjoyXIoUMs7SZSn4JOCuo+1bcseYOPrfs
- o+DMumSD+HPwm8gj/kgDd2cMaphE4C3Kn2M2lYwgVMaemBzDX7+7WxxrJT3YJxnDstfn
- cLHen8W/1cIIOEkkMeGbsoTnXfk219dIoBmNHPUp1aBzmvC96gXFgeRfFCOPu1lFEli4
- 2R2w==
-X-Gm-Message-State: AOJu0YyqcuIbnHetL5m1v4wfEIBhYpQoS9Dtbcm7s2wk9Q1T/WM83zU2
- lLinjSAkEuSNZw9tvmggahNWs8sMp4bXQg==
-X-Google-Smtp-Source: AGHT+IFbclPYLG3EQIABvqS+Urv9s0DG419U8bS17o+85hN0la+BNJibuON7BMmYuZeZ/m6YLj3I2Q==
-X-Received: by 2002:a2e:a68a:0:b0:2cc:5864:f3e8 with SMTP id
- q10-20020a2ea68a000000b002cc5864f3e8mr7565247lje.98.1704281536823; 
- Wed, 03 Jan 2024 03:32:16 -0800 (PST)
-Received: from [192.168.69.100] (tre93-h02-176-184-7-144.dsl.sta.abo.bbox.fr.
- [176.184.7.144]) by smtp.gmail.com with ESMTPSA id
- c9-20020a056000104900b003368849129dsm29757242wrx.15.2024.01.03.03.32.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Jan 2024 03:32:16 -0800 (PST)
-Message-ID: <3eeb7394-d138-4a27-b2d3-0b6aeb9c5205@linaro.org>
-Date: Wed, 3 Jan 2024 12:32:15 +0100
+ (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
+ id 1rKzZz-00053i-9a
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 06:38:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
+ id 1rKzZw-0004oF-No
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 06:38:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704281911;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5owTHrb3aE8LNf+PDidxspj2b3b5oe/aR/5VhaeK35o=;
+ b=YYUrVi4S94UshuTDxVpLmCapW1c0DA1crL2W9dG7D0vVre5iTxi0Nr4FfhM2Up8ffOL9Oc
+ bhmLYaun/fU/lSlM3tDikY4asplbaCmPHpeAwcyIZ/WZSwhOf0iT+Syk6bolJ2bbTkQ9No
+ L8UFyGad/QGzDxs5AApJLC4hyuf+e4M=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-150-2N3w5CV3OM-nu1ptzkJhvg-1; Wed, 03 Jan 2024 06:38:27 -0500
+X-MC-Unique: 2N3w5CV3OM-nu1ptzkJhvg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 66C7C101A555;
+ Wed,  3 Jan 2024 11:38:27 +0000 (UTC)
+Received: from angien.pipo.sk (unknown [10.45.242.28])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8BB6B51D5;
+ Wed,  3 Jan 2024 11:38:25 +0000 (UTC)
+Date: Wed, 3 Jan 2024 12:38:23 +0100
+From: Peter Krempa <pkrempa@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ John Snow <jsnow@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-block@nongnu.org
+Subject: Re: [PATCH v3 0/2] block: commit/stream: Allow users to request only
+ format driver names in backing file format
+Message-ID: <ZZVHL6ps2ldfikbj@angien.pipo.sk>
+References: <cover.1701796348.git.pkrempa@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH trivial] audio/audio.c: remove trailing newline in
- error_setg
-Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Martin Kletzander <mkletzan@redhat.com>
-References: <20240103111800.250151-1-mjt@tls.msk.ru>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240103111800.250151-1-mjt@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1701796348.git.pkrempa@redhat.com>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pkrempa@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,29 +85,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/1/24 12:18, Michael Tokarev wrote:
-> error_setg() appends newline to the formatted message.
-> Fixes: cb94ff5f80c5
+On Tue, Dec 05, 2023 at 18:14:40 +0100, Peter Krempa wrote:
+> Please see patches for rationale.
 > 
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-> ---
->   audio/audio.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Libvirt patches using this new flag will be posted soon-ish (after
+> cleanup).
 > 
-> diff --git a/audio/audio.c b/audio/audio.c
-> index 8d1e4ad922..7ac74f9e16 100644
-> --- a/audio/audio.c
-> +++ b/audio/audio.c
-> @@ -1744,7 +1744,7 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
->           if (driver) {
->               done = !audio_driver_init(s, driver, dev, errp);
->           } else {
-> -            error_setg(errp, "Unknown audio driver `%s'\n", drvname);
-> +            error_setg(errp, "Unknown audio driver `%s'", drvname);
->           }
->           if (!done) {
->               goto out;
+> v3:
+>  - changed name of flag to 'backing-mask-protocol' (Eric)
+>  - decided to keep Vladimir's R-b as he requested shorter name too
+> 
+> v2:
+>  - fixed mistaken argument order in 'hmp_block_stream'
+>  - changed version in docs to 9.0 as getting this into RC 3 probably
+>    isn't realistic
+> 
+> Peter Krempa (2):
+>   block: commit: Allow users to request only format driver names in
+>     backing file format
+>   block: stream: Allow users to request only format driver names in
+>     backing file format
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Polite ping, now that qemu-8.2 was released.
 
 
