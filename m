@@ -2,40 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4633822C5A
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 12:50:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2FDD822C60
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 12:52:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKzjX-00008A-HX; Wed, 03 Jan 2024 06:48:27 -0500
+	id 1rKzmG-0001As-6H; Wed, 03 Jan 2024 06:51:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rKzjT-00007Q-1Q; Wed, 03 Jan 2024 06:48:23 -0500
+ id 1rKzm8-0001AP-QI; Wed, 03 Jan 2024 06:51:09 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rKzjR-0000ku-4f; Wed, 03 Jan 2024 06:48:22 -0500
+ id 1rKzm6-0002RO-Es; Wed, 03 Jan 2024 06:51:08 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8E08040660;
- Wed,  3 Jan 2024 14:48:58 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2799F40663;
+ Wed,  3 Jan 2024 14:51:48 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E5095593C4;
- Wed,  3 Jan 2024 14:48:14 +0300 (MSK)
-Message-ID: <a5a9d1e2-5bdf-4dc8-9a52-aae401077494@tls.msk.ru>
-Date: Wed, 3 Jan 2024 14:48:14 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 95663593C9;
+ Wed,  3 Jan 2024 14:51:04 +0300 (MSK)
+Message-ID: <033180df-18d9-426d-8d26-04ee478595db@tls.msk.ru>
+Date: Wed, 3 Jan 2024 14:51:04 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for 8.2.1] hw/net: cadence_gem: Fix MDIO_OP_xxx values
+Subject: Re: [PATCH] edu: fix DMA range upper bound check
 Content-Language: en-US
-To: Bin Meng <bmeng@tinylab.org>, qemu-devel@nongnu.org,
- qemu-trivial@nongnu.org
-Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>,
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Jason Wang <jasowang@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org
-References: <20240102141803.117631-1-bmeng@tinylab.org>
+To: Max Erenberg <merenber@uwaterloo.ca>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, jslaby@suse.cz
+References: <ZYoT4OGEuikUup59@max-HP-NOTEBOOK>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -61,7 +56,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240102141803.117631-1-bmeng@tinylab.org>
+In-Reply-To: <ZYoT4OGEuikUup59@max-HP-NOTEBOOK>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -87,21 +82,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-02.01.2024 17:18, Bin Meng:
-> Testing upstream U-Boot with 'sifive_u' machine we see:
+26.12.2023 02:44, Max Erenberg:
+> The edu_check_range function checks that start <= end1 < end2, where
+> end1 is the upper bound (exclusive) of the guest-supplied DMA range and
+> end2 is the upper bound (exclusive) of the device's allowed DMA range.
+> When the guest tries to transfer exactly DMA_SIZE (4096) bytes, end1
+> will be equal to end2, so the check fails and QEMU aborts with this
+> puzzling error message (newlines added for formatting):
 > 
->    => dhcp
->    ethernet@10090000: PHY present at 0
->    Could not get PHY for ethernet@10090000: addr 0
->    phy_connect failed
+>    qemu: hardware error: EDU: DMA range
+>      0x0000000000040000-0x0000000000040fff out of bounds
+>     (0x0000000000040000-0x0000000000040fff)!
 > 
-> This has been working till QEMU 8.1 but broken since QEMU 8.2.
-> 
-> Fixes: 1b09eeb122aa ("hw/net/cadence_gem: use FIELD to describe PHYMNTNC register fields")
-> Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
-> Signed-off-by: Bin Meng <bmeng@tinylab.org>
+> By checking end1 <= end2 instead, guests will be allowed to transfer
+> exactly 4096 bytes. It is not necessary to explicitly check for
+> start <= end1 because the previous two checks (within(addr, start, end2)
+> and end1 > addr) imply start < end1.
 
-Applied to trivial-patches tree, and marked to be picked up for stable.
+Fixes: b30934cb52a7 ("hw: misc, add educational driver", 2015-01-21)
+
+Applied to trivial-patches tree, and queued for -stable.
 
 Thanks,
 
