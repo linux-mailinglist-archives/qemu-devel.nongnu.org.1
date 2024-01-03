@@ -2,136 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D53823767
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 23:02:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A906823764
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 23:00:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL9Iv-00077C-0E; Wed, 03 Jan 2024 17:01:37 -0500
+	id 1rL9G6-0006N8-8C; Wed, 03 Jan 2024 16:58:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1rL9Ir-00076x-5i
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 17:01:33 -0500
-Received: from mail-co1nam11on2053.outbound.protection.outlook.com
- ([40.107.220.53] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1rL9Ip-00087C-0d
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 17:01:32 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=X4R7S8pVJ2oq+9bpSQDrGwRJN67DLT2p///xWfQfHexYAj4RcfQQIV+ojKp2XNqHUTyjR7CWsNbteMXCuJwUMD5sy8kiwk9Z1pmmVvf5yWWM4XW8WOszJXze1WfCwzmzyJstMC/HWJl0jbJTAKs+R1RQAZ13ddlVIwF1kAYxvxg8lhSFQG09cv5dt0yWfYsKVOwdtHUNgkdq0qT5gJOBTXEo5obX5mgEAI18LQ9UhA5IwrYbqUCDD+OtROrHhGnpHih/Qb5D2Eo5pOi1BBaMrPWkOiJcZWKP1msbaE/pH3H55QdBCogNGXZrXkQT3vf8WeBUu3U/I6QKTYpGhlJ3KA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ppf+29AthgPEXhB4zsxLYqPB7P5PUGMjN1VJN3FxdLk=;
- b=SbDaR3yP0zCcI/RjRXmj3bLGAHapYzYtnwBBTpB54h26zXqC0zNHyc1wswXgPhbRYdSRTSmYJ7UhG8aSPV37u1ZSOjcQ011h01Gv/BDesKTvqrmPW2hsQsSwC5GFwN14QA+JdpzWblKcDFKEreo6xHXir10cEDF8p4xJhuHAcj2m2Bj2Ip1u8m2KyIFN5lXdfaFunECSyr6D70+9tLlTVB0aEOkhjNKZLM/jqgObBuLP9jdC7Om6CW1s5kIzO4hvgCYi2/M/Nx9PgHbPo1yozFumr+7VdDuGyZnq4T9yoRH5tq+2sADPgZL/drjyI25e2oRafPy4CR1VJG6sdUUe3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
- dkim=pass header.d=memverge.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ppf+29AthgPEXhB4zsxLYqPB7P5PUGMjN1VJN3FxdLk=;
- b=VQYT00u0a1LRDTups8eCpm9pdRHWyU2WCv7brQVTTHCHK8p4AmnVcwerayae+wy/ixBEjtFumoOPSDs4YGB0TAgDhqcNfzyhwOn8N3pc3LGLov4Uh59wIaicINBj9AZnOlx4aCs4C7UsmMkmf4lLhK4H+QhKHu2OKu5ZbI3m/Jg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=memverge.com;
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
- by PH0PR17MB5613.namprd17.prod.outlook.com (2603:10b6:510:b2::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.13; Wed, 3 Jan
- 2024 21:56:21 +0000
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::7a04:dc86:2799:2f15]) by SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::7a04:dc86:2799:2f15%4]) with mapi id 15.20.7135.023; Wed, 3 Jan 2024
- 21:56:21 +0000
-Date: Wed, 3 Jan 2024 16:56:07 -0500
-From: Gregory Price <gregory.price@memverge.com>
-To: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Hao Xiang <hao.xiang@bytedance.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Ben Widawsky <ben.widawsky@intel.com>,
- Gregory Price <gourry.memverge@gmail.com>,
- Fan Ni <fan.ni@samsung.com>, Ira Weiny <ira.weiny@intel.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
- "Ho-Ren (Jack) Chuang" <horenc@vt.edu>, linux-cxl@vger.kernel.org
-Subject: Re: [QEMU-devel][RFC PATCH 1/1] backends/hostmem: qapi/qom: Add an
- ObjectOption for memory-backend-* called HostMemType and its arg 'cxlram'
-Message-ID: <ZZXX95yvk/WTIBT/@memverge.com>
-References: <20240101075315.43167-1-horenchuang@bytedance.com>
- <20240101075315.43167-2-horenchuang@bytedance.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240101075315.43167-2-horenchuang@bytedance.com>
-X-ClientProxiedBy: BY5PR20CA0020.namprd20.prod.outlook.com
- (2603:10b6:a03:1f4::33) To SJ0PR17MB5512.namprd17.prod.outlook.com
- (2603:10b6:a03:394::19)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rL9G4-0006Me-Lw
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 16:58:40 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rL9G2-0005la-NQ
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 16:58:40 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1d408c2908cso28052625ad.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 13:58:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704319116; x=1704923916; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=opKxbXQuYffQjWUNzILHPw6iSGXqTzk5hotfxbKQvoI=;
+ b=ZIlEF2DDRSawbDVHjIqforzJRgNjtFrDSco8IGmhXxOztsPP6sI4bwlyDg5CSwamES
+ iWI2/LEV0Rr+Inu+Hszip1cpFn7VKcLHIM2xKEUaw1xRLeW/QuMWtN9iJ9MaqN/K+Qdl
+ iM/q5Tman9eTk7JwbsKTaKBp2sD7QRRySvr2xdNe+yW74LZVwsIxatA1Byeq8ew2uZZm
+ IgK8XUJXBvsH0atzU4gcRYQe1+YrPw9qNiz9Oil7o/8DttccoKnoOBzxaRsSnN4NEaWd
+ giUXpASsqsR1XXsuDRMF4vflA8RkIn7GfxWzvLJxr0Lj/dSw/F5IZNUZCzs9CxcWzqsd
+ Y8BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704319116; x=1704923916;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=opKxbXQuYffQjWUNzILHPw6iSGXqTzk5hotfxbKQvoI=;
+ b=qG0xPdg+oXHLty7UM8vpQteSDWOMWcvM1/0s97yx4B++tRE8scr8CzxV4UeITbO7MH
+ 6BxCTZ7rGLDEK6Xb3Ek+5KyK+yTfDSmcw2oLeD8zC65AhBfAk2kuo9VPtOI1Mo6DzD9x
+ XM9C9v5f57kVuy4IhqJS13B5bGO+KczWzvJ9phxP81Ek09UX51PypOFNjapup67YKH8O
+ zLnaaQnnNSBd5e7sR0wNs4hJOIAyjHbUKYuNHwmCC2MbcBVXUJ6Gc9fIfB06ePASyECR
+ 6SW3gmD+LFJXFC4/ZPP/fpC8cyOtptz0qAdJawkf6FOPU4fTeptzWHv2IJVO+3AA7Rxk
+ 2HPQ==
+X-Gm-Message-State: AOJu0Yx3kMjG9gfVaKqA3eDPkBm811XT+aglwf9UXPKAHe3B60L6I/2j
+ gG9mgj0X1ActlHK10YYJShC6jmAWixpOMw==
+X-Google-Smtp-Source: AGHT+IGScWEgQ8yWjIjMObry65Mo+Pp5K/Vv97mDvFQA6VygP15L+qyegpEPOILtSDTXVwARWZaiNQ==
+X-Received: by 2002:a17:903:444:b0:1d4:b881:2e79 with SMTP id
+ iw4-20020a170903044400b001d4b8812e79mr2543886plb.2.1704319115683; 
+ Wed, 03 Jan 2024 13:58:35 -0800 (PST)
+Received: from [192.168.50.95] (124-149-254-207.tpgi.com.au. [124.149.254.207])
+ by smtp.gmail.com with ESMTPSA id
+ d19-20020a170902b71300b001d4c98c7439sm3505346pls.276.2024.01.03.13.58.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 03 Jan 2024 13:58:34 -0800 (PST)
+Message-ID: <a0a5cfd7-6889-4fa0-982c-47dfec8c857a@linaro.org>
+Date: Thu, 4 Jan 2024 08:58:28 +1100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|PH0PR17MB5613:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b39b38b-c6a5-4c0c-7341-08dc0ca6d26f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: k4ECk77zHFn8zwii/5s1+3gAycIUvdQfuwLDLpYkhj3Sm634yKGqX/NNuXpZOq4U2letxH42R8DzPSWZT12xqapWwOGOFkir+dEqHQ7nbkY6PXHINUHyP1Od6dKBCjeu7ViaEBcP5Egl+ZbAWjDKyKzesrjyG3MfsAbBYpjz015LUqDC/aJjQnxhJ8HFu0U7j/UdTKnfBcnA5naEZudlp6YGOldq5n9MYqcgY0ddbcc40KwtdNxmP8mqcRZQekBItIK+52Iww1FJR052w89y8acRlYh5dnachfa4X7P5Ft8SZ0biPJMEvwic/tgyb2qUA6OiP2t4JrPtw6H86ZAgo57A4s6j8d5BYKTiv4RDGFbSuuY1N4SaVKGos2Wny0lPhjbRkPLxGKHOxG771WKNbOWqN0ZcjnQ88b6xApWKNktmU8CE8Yk6A2VhuqHdhRuxn984EPuuuVpWGQSKqxcj26j2cuYao664i5YykApKFRFPF4AhH6uXqvsyk7933X+WF/OBlggl1e0XOg9MxIPiqbFY66XKoruH2zXnecXrdtfVT6bj3XzrJNMWbO3eJyxc
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(346002)(136003)(39840400004)(366004)(396003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(86362001)(36756003)(66899024)(6486002)(478600001)(6506007)(6666004)(66476007)(66556008)(54906003)(66946007)(6916009)(6512007)(26005)(2616005)(44832011)(2906002)(7416002)(5660300002)(8676002)(8936002)(316002)(4326008)(38100700002)(83380400001)(41300700001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1K1P4cwk6t1LP9be3m2PPWeDVcjPJBL97eHlXvnSaU2IJV1SkDeZ247spSCq?=
- =?us-ascii?Q?WkcmrQUy44YhXzNE+CRY8Mzfl65WjkQRMTSjVfncrjKIImgCAwjJ1uckMEh6?=
- =?us-ascii?Q?L9TZtg7k2edJj3aR0wkTMlJ7avInhvQmrod8prsJlWYi+tixBmmHZiiUDVjm?=
- =?us-ascii?Q?0g3bLsNGCD9p2gz+BPZZ5RGkDnSWJzTDMNmZZ2plqJp9pDy/PHM+w1H5W4Hl?=
- =?us-ascii?Q?UuK95aDjec34oLJXSDanh/LExJB7PiKDchgGMyw/vUFjNLcYPnh9ci8eDMVA?=
- =?us-ascii?Q?ij8I3cVkLNxkDBCE03NNrA3IEYvzGcCZmCOK7KG7GLRyI95NW6ChQb3lT+EX?=
- =?us-ascii?Q?zCepBDv662GQWuN/LPwenv+JShwoggNNYuCK24JHafXdEf/VXCIh8o3Bnu4s?=
- =?us-ascii?Q?vij9plc5EFvV95IwV2uaVHA2jEzqoB/G18ZEutLtu6An4Dss3JJ+wKZimIOX?=
- =?us-ascii?Q?sufXcxcjEwPRcThFbj0Km5OoqZ1Sf4kGAcNl37ulWZT4nFFoyo66mR1cHBz3?=
- =?us-ascii?Q?kFHUDzT0s5x7heLrj7tpMzajKLHYtSEcXFAW1oP8tWxy88xLmdVGTIo0TAJP?=
- =?us-ascii?Q?01nIyiQC3DM49AWf1OD6CJ6QkHkIr8lClN6SeKW0+aB6TH25qdhmsndzeG/h?=
- =?us-ascii?Q?imsPCYLupOK6PldtB/UFfablc90I4gW4dKFqM/yFZBUDAYmrgRiOU9s8sJx9?=
- =?us-ascii?Q?fIDr7MAevwKjB28A61JMh8Nr1bjDtcRTskeDWcPdHxwhxTGx6HBN9MGxJD/X?=
- =?us-ascii?Q?G00DOnubKvs6041FPSGiI3RZAEV586brxvTuE51q7wKe66xCUhtnJLhV1gYa?=
- =?us-ascii?Q?saXtB9ZcK5QMO/jDONO0zJ1JlT5Z6E8HsDqcrzZme31nLxo40SgbrbyF6gLV?=
- =?us-ascii?Q?4XmB/YyPxyFvQbKhPkVVOpo1ZFKdDw0z3+SukJoOiW3ePJL0nX6IZQNQtMWJ?=
- =?us-ascii?Q?oqyMdq7cMqi9JjMbcT136p9gdo4KXBnYpIm5MmpfMKMkZlY5tRBA9WWxj2//?=
- =?us-ascii?Q?Fsg9OdLYpJrnVP6iE6frag7Plzq6iLmx7VmqtjTYgaiPO6mZcKfObW8L0Aj2?=
- =?us-ascii?Q?9tBQ6IbwSuAHX5GKm0Fivs0zK8A4pCtxniEERD5xNWY0mYVck5sYq1gTAgMC?=
- =?us-ascii?Q?tal+qKwN0cDWvLHdTh1mjIGOeaJUloCZf+Q/moUqbvG6bRieFWqVf9t2nJNQ?=
- =?us-ascii?Q?UH3RTNyx1VJYMtMSCwJBolgMFRyf6QA+UWO/acM7UdYA6jjbzQAMesfaIwCy?=
- =?us-ascii?Q?1SLxl1eHOznByUVIGnf8or6qO+6+ZK9Pu8Rmh7If1J2HzwdGVYBd28t+gDYR?=
- =?us-ascii?Q?GBnVhOIYaizatMpx/6DvCkeByrzCT71q17mLhJ+aKKV5FFFOmdNrwJAuR/d5?=
- =?us-ascii?Q?XEIT1Ly/HvAlvAlVBMS6KyT4jJVdbqYMU1M91TD509CNtbLLl4Yd1fpkQ8eF?=
- =?us-ascii?Q?4NRfxWDn3Yrgz6N6uEerxBi844LzqLO3WWGNqoN3zjZsNhi9dfv+pYMgEQTx?=
- =?us-ascii?Q?XV5lKyTw+Qp3m8QPg05EUU8EW9yJkKrndmiJa1BDjNKFQ5a0atGhC+GjhYFi?=
- =?us-ascii?Q?zrPjtsOdaEalloc5Q8N2G9V5H9sDzcl6eRRNIKvLx/zkshQncW06ZExI8jiW?=
- =?us-ascii?Q?9w=3D=3D?=
-X-OriginatorOrg: memverge.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b39b38b-c6a5-4c0c-7341-08dc0ca6d26f
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jan 2024 21:56:21.5673 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: t1h7EpmXRs6CkMIFm+qg7Umj8uDHP/TlmgZJrhTrs8Fw0kbkpkcY1HPh5nrc7lEm+RG4EaxaA7MwfOVS/fApeCtxiz934Uc+eWQIiNIyUa8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR17MB5613
-Received-SPF: pass client-ip=40.107.220.53;
- envelope-from=gregory.price@memverge.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/20] tcg/s390x: Implement vector NAND, NOR, EQV
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-s390x <qemu-s390x@nongnu.org>
+References: <20211218194250.247633-1-richard.henderson@linaro.org>
+ <20211218194250.247633-5-richard.henderson@linaro.org>
+ <b962d769-ed44-4620-bcf2-4fcc7658db1a@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <b962d769-ed44-4620-bcf2-4fcc7658db1a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,110 +97,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Dec 31, 2023 at 11:53:15PM -0800, Ho-Ren (Jack) Chuang wrote:
-> Introduce a new configuration option 'host-mem-type=' in the
-> '-object memory-backend-ram', allowing users to specify
-> from which type of memory to allocate.
+On 1/4/24 00:21, Philippe Mathieu-Daudé wrote:
+> Hi Richard,
 > 
-> Users can specify 'cxlram' as an argument, and QEMU will then
-> automatically locate CXL RAM NUMA nodes and use them as the backend memory.
-> For example:
-> 	-object memory-backend-ram,id=vmem0,size=19G,host-mem-type=cxlram \
+> (revisiting this old patch which is now commit 21eab5bfae)
+> 
+> On 18/12/21 20:42, Richard Henderson wrote:
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   tcg/s390x/tcg-target.h     |  6 +++---
+>>   tcg/s390x/tcg-target.c.inc | 17 +++++++++++++++++
+>>   2 files changed, 20 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/tcg/s390x/tcg-target.h b/tcg/s390x/tcg-target.h
+>> index ad29e62b16..fef227b0fe 100644
+>> --- a/tcg/s390x/tcg-target.h
+>> +++ b/tcg/s390x/tcg-target.h
+>> @@ -145,9 +145,9 @@ extern uint64_t s390_facilities[3];
+>>   #define TCG_TARGET_HAS_andc_vec       1
+>>   #define TCG_TARGET_HAS_orc_vec        HAVE_FACILITY(VECTOR_ENH1)
+>> -#define TCG_TARGET_HAS_nand_vec       0
+>> -#define TCG_TARGET_HAS_nor_vec        0
+>> -#define TCG_TARGET_HAS_eqv_vec        0
+>> +#define TCG_TARGET_HAS_nand_vec       HAVE_FACILITY(VECTOR_ENH1)
+>> +#define TCG_TARGET_HAS_nor_vec        1
+>> +#define TCG_TARGET_HAS_eqv_vec        HAVE_FACILITY(VECTOR_ENH1)
+> 
+> Here some opcodes are conditional, ...
+> 
+>>   #define TCG_TARGET_HAS_not_vec        1
+>>   #define TCG_TARGET_HAS_neg_vec        1
+>>   #define TCG_TARGET_HAS_abs_vec        1
+>> diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
+>> index 57e803e339..5a90b892cb 100644
+>> --- a/tcg/s390x/tcg-target.c.inc
+>> +++ b/tcg/s390x/tcg-target.c.inc
+>> @@ -288,7 +288,9 @@ typedef enum S390Opcode {
+>>       VRRc_VMXL   = 0xe7fd,
+>>       VRRc_VN     = 0xe768,
+>>       VRRc_VNC    = 0xe769,
+>> +    VRRc_VNN    = 0xe76e,
+>>       VRRc_VNO    = 0xe76b,
+>> +    VRRc_VNX    = 0xe76c,
+>>       VRRc_VO     = 0xe76a,
+>>       VRRc_VOC    = 0xe76f,
+>>       VRRc_VPKS   = 0xe797,   /* we leave the m5 cs field 0 */
+>> @@ -2750,6 +2752,15 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+>>       case INDEX_op_xor_vec:
+>>           tcg_out_insn(s, VRRc, VX, a0, a1, a2, 0);
+>>           break;
+>> +    case INDEX_op_nand_vec:
+>> +        tcg_out_insn(s, VRRc, VNN, a0, a1, a2, 0);
+>> +        break;
+>> +    case INDEX_op_nor_vec:
+>> +        tcg_out_insn(s, VRRc, VNO, a0, a1, a2, 0);
+>> +        break;
+>> +    case INDEX_op_eqv_vec:
+>> +        tcg_out_insn(s, VRRc, VNX, a0, a1, a2, 0);
+>> +        break;
+>>       case INDEX_op_shli_vec:
+>>           tcg_out_insn(s, VRSa, VESL, a0, a2, TCG_REG_NONE, a1, vece);
+>> @@ -2846,7 +2857,10 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
+>>       case INDEX_op_and_vec:
+>>       case INDEX_op_andc_vec:
+>>       case INDEX_op_bitsel_vec:
+>> +    case INDEX_op_eqv_vec:
+>> +    case INDEX_op_nand_vec:
+> 
+> ... but here we unconditionally return 1 for them.
+> 
+> Shouldn't we return TCG_TARGET_HAS_opcode instead?
 
-Stupid questions:
-
-Why not just use `host-nodes` and pass in the numa node you want to
-allocate from? Why should QEMU be made "CXL-aware" in the sense that
-QEMU is responsible for figuring out what host node has CXL memory?
-
-This feels like an "upper level software" operation (orchestration), rather
-than something qemu should internally understand.
-
-> 	-device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
-> 	-device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
-> 	-device cxl-type3,bus=root_port13,volatile-memdev=vmem0,id=cxl-vmem0 \
-
-For a variety of performance reasons, this will not work the way you
-want it to.  You are essentially telling QEMU to map the vmem0 into a
-virtual cxl device, and now any memory accesses to that memory region
-will end up going through the cxl-type3 device logic - which is an IO
-path from the perspective of QEMU.
-
-You may want to double check that your tests aren't using swap space in
-the guest, because I found in my testing that linux would prefer to use
-swap rather than attempt to use virtual cxl-type3 device memory because
-of how god-awful slow it is (even if it is backed by DRAM).
-
-
-Additionally, this configuration will not (should not) presently work
-with VMX enabled.  Unless I missed some other update, QEMU w/ CXL memory
-presently crashes when VMX is enabled for not-yet-debugged reasons.
-
-Another possiblity: You mapped this memory-backend into another numa
-node explicitly and never onlined the memory via cxlcli.  I've done
-this, and it works, but it's a "hidden feature" that probably should
-not exist / be supported.
-
-
-
-If I understand the goal here, it's to pass CXL-hosted DRAM through to
-the guest in a way that the system can manage it according to its
-performance attributes.
-
-You're better off just using the `host-nodes` field of host-memory
-and passing bandwidth/latency attributes though via `-numa hmat-lb`
-
-In that scenario, the guest software doesn't even need to know CXL
-exists at all, it can just read the attributes of the numa node
-that QEMU created for it.
-
-In the future to deal with proper dynamic capacity, we may need to
-consider a different backend object altogether that allows sparse
-allocations, and a virtual cxl device which pre-allocates the CFMW
-can at least be registered to manage it.  I'm not quite sure how that
-looks just yet.
-
-For example: 1-socket, 4 CPU QEMU instance w/ 4GB on a cpu-node and 4GB
-on a cpuless node.
-
-qemu-system-x86_64 \
--nographic \
--accel kvm \
--machine type=q35,hmat=on \
--drive file=./myvm.qcow2,format=qcow2,index=0,media=disk,id=hd \
--m 8G,slots=4,maxmem=16G \
--smp cpus=4 \
--object memory-backend-ram,size=4G,id=ram-node0,numa=X \ <-- extend here
--object memory-backend-ram,size=4G,id=ram-node1,numa=Y \ <-- extend here
--numa node,nodeid=0,cpus=0-4,memdev=ram-node0 \          <-- cpu node
--numa node,initiator=0,nodeid=1,memdev=ram-node1 \       <-- cpuless node
--netdev bridge,id=hn0,br=virbr0 \
--device virtio-net-pci,netdev=hn0,id=nic1,mac=52:54:00:12:34:77 \
--numa hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-latency,latency=10 \
--numa hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-bandwidth,bandwidth=10485760 \
--numa hmat-lb,initiator=0,target=1,hierarchy=memory,data-type=access-latency,latency=20 \
--numa hmat-lb,initiator=0,target=1,hierarchy=memory,data-type=access-bandwidth,bandwidth=5242880
-
-[root@fedora ~]# numactl -H
-available: 2 nodes (0-1)
-node 0 cpus: 0 1 2 3
-node 0 size: 3965 MB
-node 0 free: 3611 MB
-node 1 cpus:
-node 1 size: 3986 MB
-node 1 free: 3960 MB
-node distances:
-node   0   1
-  0:  10  20
-  1:  20  10
-
-[root@fedora initiators]# cd /sys/devices/system/node/node1/access0/initiators
-node0  read_bandwidth  read_latency  write_bandwidth  write_latency
-[root@fedora initiators]# cat read_bandwidth
-5
-[root@fedora initiators]# cat read_latency
-20
+Yes, you're right.  There's some logical overlap between tcg_gen_emit_vec_op and 
+tcg_op_supported, and I think I confused myself a bit there.
 
 
-~Gregory
+r~
 
