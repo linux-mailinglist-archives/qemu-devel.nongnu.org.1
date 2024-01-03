@@ -2,67 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61C44823B0A
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 04:17:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6FE822C2D
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 12:33:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLEDH-0005W2-JE; Wed, 03 Jan 2024 22:16:07 -0500
+	id 1rKzU4-0003p2-KB; Wed, 03 Jan 2024 06:32:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1rLEDF-0005VS-25
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 22:16:05 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1rLED9-00039G-Mj
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 22:16:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704338160; x=1735874160;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0G8YhBBvNelZugB6TnSfX13GRyqhWXymBGVWBxIrzCs=;
- b=A+ESEwl5j3CR+WZEXdj2rHQobaBLFZ5pM/RYQFRFUgHVzhjvA5KxEJoc
- lR1UpZxmzH3iiMcHhODI4EgSI6KOA0ZuKwxieZVj+LzSYvGqNqUW4nm6s
- 8xzJeb8DrFXlYQx5Nzx0veFYShnz+fgdYhcnN+czcfZMyC2rQ9Yt33wNN
- cLkGtqGpQw0jaOlBZsvrhOBuZsgrIeLGGUX2uQMiS+a2MkBUZVdTYW4gA
- RjnlIkmCZxvqFNbWEXcTIrES3WTON9m+MlqEkMYAbnh7n1aTKhSoc5vhF
- 00Fg/JWkpyr9yeVn8C2yAkZMJ+Mzjrvui5Ugni9tBbB1WhVRZHBoqYnvs w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="3873425"
-X-IronPort-AV: E=Sophos;i="6.04,329,1695711600"; 
-   d="scan'208";a="3873425"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jan 2024 19:15:58 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="846079439"
-X-IronPort-AV: E=Sophos;i="6.04,329,1695711600"; d="scan'208";a="846079439"
-Received: from sae-gw02.sh.intel.com (HELO localhost) ([10.239.45.110])
- by fmsmga008.fm.intel.com with ESMTP; 03 Jan 2024 19:15:55 -0800
-From: Yuan Liu <yuan1.liu@intel.com>
-To: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Cc: qemu-devel@nongnu.org,
-	yuan1.liu@intel.com,
-	nanhai.zou@intel.com
-Subject: [PATCH v3 4/4] multifd: Introduce QPL compression accelerator
-Date: Wed,  3 Jan 2024 19:28:51 +0800
-Message-Id: <20240103112851.908082-5-yuan1.liu@intel.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240103112851.908082-1-yuan1.liu@intel.com>
-References: <20240103112851.908082-1-yuan1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKzU0-0003oh-Q2
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 06:32:24 -0500
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rKzTv-0001ln-9t
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 06:32:24 -0500
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2ccbf8cbf3aso96504311fa.3
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 03:32:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704281537; x=1704886337; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8Uw11SI08AfTXeQE7SXpzipR7L2b7UEXTXmofT03JLU=;
+ b=df/yCP9lj6Q3UTCHjzr3zkwO2EgEt26PnErO6PRpRXN8uhkyxLL+N8q8nbLdZlh+Y4
+ p7j/uJrSIEx54zseaA4hCVUX4GbNj0ZQYUEBxP2zzBtC4DiD4GVIowqIQDiXMgsDhFC5
+ kkWRzg68VukjAEQu7Qqj/Nu+YH1NTD6RS3XWeIOtRAzw6mIuFqRDbr1rGr9pY7XFpTQN
+ Lak9dzA/pVk+VXv1RWQYK3HJYPGA6skGt5aLIARp+wO8uBVQ41rCQzZTGDmusUA54S1b
+ dgsQhtP/Y8oLRSprTW2nLVwtZz3+qKvwQb10xN9fgpk9eGfRU+mrUX2q23iF24BwkIXd
+ pcuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704281537; x=1704886337;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8Uw11SI08AfTXeQE7SXpzipR7L2b7UEXTXmofT03JLU=;
+ b=CKN1c4qROfUN6/bybx3BB2M+Oa7UFirQa//N0U95l7ulpdzCAY677kt8DihF7O+VTr
+ n4Rojkz+U81pSLSkqc+Y8cAlg3jT2m5s5IG1QuM7xuxubH+Oh03i3YbNjbzX7O/I+QEb
+ ILliqkmydjKTUVhs1YZBLJvWQdR75FVWw+UnjoyXIoUMs7SZSn4JOCuo+1bcseYOPrfs
+ o+DMumSD+HPwm8gj/kgDd2cMaphE4C3Kn2M2lYwgVMaemBzDX7+7WxxrJT3YJxnDstfn
+ cLHen8W/1cIIOEkkMeGbsoTnXfk219dIoBmNHPUp1aBzmvC96gXFgeRfFCOPu1lFEli4
+ 2R2w==
+X-Gm-Message-State: AOJu0YyqcuIbnHetL5m1v4wfEIBhYpQoS9Dtbcm7s2wk9Q1T/WM83zU2
+ lLinjSAkEuSNZw9tvmggahNWs8sMp4bXQg==
+X-Google-Smtp-Source: AGHT+IFbclPYLG3EQIABvqS+Urv9s0DG419U8bS17o+85hN0la+BNJibuON7BMmYuZeZ/m6YLj3I2Q==
+X-Received: by 2002:a2e:a68a:0:b0:2cc:5864:f3e8 with SMTP id
+ q10-20020a2ea68a000000b002cc5864f3e8mr7565247lje.98.1704281536823; 
+ Wed, 03 Jan 2024 03:32:16 -0800 (PST)
+Received: from [192.168.69.100] (tre93-h02-176-184-7-144.dsl.sta.abo.bbox.fr.
+ [176.184.7.144]) by smtp.gmail.com with ESMTPSA id
+ c9-20020a056000104900b003368849129dsm29757242wrx.15.2024.01.03.03.32.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 03 Jan 2024 03:32:16 -0800 (PST)
+Message-ID: <3eeb7394-d138-4a27-b2d3-0b6aeb9c5205@linaro.org>
+Date: Wed, 3 Jan 2024 12:32:15 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH trivial] audio/audio.c: remove trailing newline in
+ error_setg
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Martin Kletzander <mkletzan@redhat.com>
+References: <20240103111800.250151-1-mjt@tls.msk.ru>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240103111800.250151-1-mjt@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=yuan1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -36
-X-Spam_score: -3.7
-X-Spam_bar: ---
-X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIMWL_WL_HIGH=-2.601, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,370 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Intel Query Processing Library (QPL) is an open-source library
-for data compression, it supports the deflate compression algorithm,
-compatible with Zlib and GZIP.
+On 3/1/24 12:18, Michael Tokarev wrote:
+> error_setg() appends newline to the formatted message.
+> Fixes: cb94ff5f80c5
+> 
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>   audio/audio.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/audio/audio.c b/audio/audio.c
+> index 8d1e4ad922..7ac74f9e16 100644
+> --- a/audio/audio.c
+> +++ b/audio/audio.c
+> @@ -1744,7 +1744,7 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
+>           if (driver) {
+>               done = !audio_driver_init(s, driver, dev, errp);
+>           } else {
+> -            error_setg(errp, "Unknown audio driver `%s'\n", drvname);
+> +            error_setg(errp, "Unknown audio driver `%s'", drvname);
+>           }
+>           if (!done) {
+>               goto out;
 
-QPL supports both software compression and hardware compression.
-Software compression is based on instruction optimization to accelerate
-data compression, and it can be widely used on Intel CPUs. Hardware
-compression utilizes the Intel In-Memory Analytics Accelerator (IAA)
-hardware which is available on Intel Xeon Sapphire Rapids processors.
-
-During multifd live migration, the QPL accelerator can be specified to
-accelerate the Zlib compression algorithm. QPL can automatically choose
-software or hardware acceleration based on the platform.
-
-Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
----
- migration/meson.build   |   1 +
- migration/multifd-qpl.c | 323 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 324 insertions(+)
- create mode 100644 migration/multifd-qpl.c
-
-diff --git a/migration/meson.build b/migration/meson.build
-index 92b1cc4297..c155c2d781 100644
---- a/migration/meson.build
-+++ b/migration/meson.build
-@@ -40,6 +40,7 @@ if get_option('live_block_migration').allowed()
-   system_ss.add(files('block.c'))
- endif
- system_ss.add(when: zstd, if_true: files('multifd-zstd.c'))
-+system_ss.add(when: qpl, if_true: files('multifd-qpl.c'))
- 
- specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
-                 if_true: files('ram.c',
-diff --git a/migration/multifd-qpl.c b/migration/multifd-qpl.c
-new file mode 100644
-index 0000000000..88ebe87c09
---- /dev/null
-+++ b/migration/multifd-qpl.c
-@@ -0,0 +1,323 @@
-+/*
-+ * Multifd qpl compression accelerator implementation
-+ *
-+ * Copyright (c) 2023 Intel Corporation
-+ *
-+ * Authors:
-+ *  Yuan Liu<yuan1.liu@intel.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/rcu.h"
-+#include "exec/ramblock.h"
-+#include "exec/target_page.h"
-+#include "qapi/error.h"
-+#include "migration.h"
-+#include "trace.h"
-+#include "options.h"
-+#include "multifd.h"
-+#include "qpl/qpl.h"
-+
-+#define MAX_BUF_SIZE (MULTIFD_PACKET_SIZE * 2)
-+static bool support_compression_methods[MULTIFD_COMPRESSION__MAX];
-+
-+struct qpl_data {
-+    qpl_job *job;
-+    /* compressed data buffer */
-+    uint8_t *buf;
-+    /* decompressed data buffer */
-+    uint8_t *zbuf;
-+};
-+
-+static int init_qpl(struct qpl_data *qpl, uint8_t channel_id,  Error **errp)
-+{
-+    qpl_status status;
-+    qpl_path_t path = qpl_path_auto;
-+    uint32_t job_size = 0;
-+
-+    status = qpl_get_job_size(path, &job_size);
-+    if (status != QPL_STS_OK) {
-+        error_setg(errp, "multfd: %u: failed to get QPL size, error %d",
-+                   channel_id, status);
-+        return -1;
-+    }
-+
-+    qpl->job = g_try_malloc0(job_size);
-+    if (!qpl->job) {
-+        error_setg(errp, "multfd: %u: failed to allocate QPL job", channel_id);
-+        return -1;
-+    }
-+
-+    status = qpl_init_job(path, qpl->job);
-+    if (status != QPL_STS_OK) {
-+        error_setg(errp, "multfd: %u: failed to init QPL hardware, error %d",
-+                   channel_id, status);
-+        return -1;
-+    }
-+    return 0;
-+}
-+
-+static void deinit_qpl(struct qpl_data *qpl)
-+{
-+    if (qpl->job) {
-+        qpl_fini_job(qpl->job);
-+        g_free(qpl->job);
-+    }
-+}
-+
-+/**
-+ * qpl_send_setup: setup send side
-+ *
-+ * Setup each channel with QPL compression.
-+ *
-+ * Returns 0 for success or -1 for error
-+ *
-+ * @p: Params for the channel that we are using
-+ * @errp: pointer to an error
-+ */
-+static int qpl_send_setup(MultiFDSendParams *p, Error **errp)
-+{
-+    struct qpl_data *qpl = g_new0(struct qpl_data, 1);
-+    int flags = MAP_PRIVATE | MAP_POPULATE | MAP_ANONYMOUS;
-+    const char *err_msg;
-+
-+    if (init_qpl(qpl, p->id, errp) != 0) {
-+        err_msg = "failed to initialize QPL\n";
-+        goto err_qpl_init;
-+    }
-+    qpl->zbuf = mmap(NULL, MAX_BUF_SIZE, PROT_READ | PROT_WRITE, flags, -1, 0);
-+    if (qpl->zbuf == MAP_FAILED) {
-+        err_msg = "failed to allocate QPL zbuf\n";
-+        goto err_zbuf_mmap;
-+    }
-+    p->data = qpl;
-+    return 0;
-+
-+err_zbuf_mmap:
-+    deinit_qpl(qpl);
-+err_qpl_init:
-+    g_free(qpl);
-+    error_setg(errp, "multifd %u: %s", p->id, err_msg);
-+    return -1;
-+}
-+
-+/**
-+ * qpl_send_cleanup: cleanup send side
-+ *
-+ * Close the channel and return memory.
-+ *
-+ * @p: Params for the channel that we are using
-+ * @errp: pointer to an error
-+ */
-+static void qpl_send_cleanup(MultiFDSendParams *p, Error **errp)
-+{
-+    struct qpl_data *qpl = p->data;
-+
-+    deinit_qpl(qpl);
-+    if (qpl->zbuf) {
-+        munmap(qpl->zbuf, MAX_BUF_SIZE);
-+        qpl->zbuf = NULL;
-+    }
-+    g_free(p->data);
-+    p->data = NULL;
-+}
-+
-+/**
-+ * qpl_send_prepare: prepare data to be able to send
-+ *
-+ * Create a compressed buffer with all the pages that we are going to
-+ * send.
-+ *
-+ * Returns 0 for success or -1 for error
-+ *
-+ * @p: Params for the channel that we are using
-+ * @errp: pointer to an error
-+ */
-+static int qpl_send_prepare(MultiFDSendParams *p, Error **errp)
-+{
-+    struct qpl_data *qpl = p->data;
-+    qpl_job *job = qpl->job;
-+    qpl_status status;
-+
-+    job->op = qpl_op_compress;
-+    job->next_out_ptr = qpl->zbuf;
-+    job->available_out = MAX_BUF_SIZE;
-+    job->flags = QPL_FLAG_FIRST | QPL_FLAG_OMIT_VERIFY | QPL_FLAG_ZLIB_MODE;
-+    /* QPL supports compression level 1 */
-+    job->level = 1;
-+    for (int i = 0; i < p->normal_num; i++) {
-+        if (i == p->normal_num - 1) {
-+            job->flags |= (QPL_FLAG_LAST | QPL_FLAG_OMIT_VERIFY);
-+        }
-+        job->next_in_ptr = p->pages->block->host + p->normal[i];
-+        job->available_in = p->page_size;
-+        status = qpl_execute_job(job);
-+        if (status != QPL_STS_OK) {
-+            error_setg(errp, "multifd %u: execute job error %d ",
-+                       p->id, status);
-+            return -1;
-+        }
-+        job->flags &= ~QPL_FLAG_FIRST;
-+    }
-+    p->iov[p->iovs_num].iov_base = qpl->zbuf;
-+    p->iov[p->iovs_num].iov_len = job->total_out;
-+    p->iovs_num++;
-+    p->next_packet_size += job->total_out;
-+    p->flags |= MULTIFD_FLAG_ZLIB;
-+    return 0;
-+}
-+
-+/**
-+ * qpl_recv_setup: setup receive side
-+ *
-+ * Create the compressed channel and buffer.
-+ *
-+ * Returns 0 for success or -1 for error
-+ *
-+ * @p: Params for the channel that we are using
-+ * @errp: pointer to an error
-+ */
-+static int qpl_recv_setup(MultiFDRecvParams *p, Error **errp)
-+{
-+    struct qpl_data *qpl = g_new0(struct qpl_data, 1);
-+    int flags = MAP_PRIVATE | MAP_POPULATE | MAP_ANONYMOUS;
-+    const char *err_msg;
-+
-+    if (init_qpl(qpl, p->id, errp) != 0) {
-+        err_msg = "failed to initialize QPL\n";
-+        goto err_qpl_init;
-+    }
-+    qpl->zbuf = mmap(NULL, MAX_BUF_SIZE, PROT_READ | PROT_WRITE, flags, -1, 0);
-+    if (qpl->zbuf == MAP_FAILED) {
-+        err_msg = "failed to allocate QPL zbuf\n";
-+        goto err_zbuf_mmap;
-+    }
-+    qpl->buf = mmap(NULL, MAX_BUF_SIZE, PROT_READ | PROT_WRITE, flags, -1, 0);
-+    if (qpl->buf == MAP_FAILED) {
-+        err_msg = "failed to allocate QPL buf\n";
-+        goto err_buf_mmap;
-+    }
-+    p->data = qpl;
-+    return 0;
-+
-+err_buf_mmap:
-+    munmap(qpl->zbuf, MAX_BUF_SIZE);
-+    qpl->zbuf = NULL;
-+err_zbuf_mmap:
-+    deinit_qpl(qpl);
-+err_qpl_init:
-+    g_free(qpl);
-+    error_setg(errp, "multifd %u: %s", p->id, err_msg);
-+    return -1;
-+}
-+
-+/**
-+ * qpl_recv_cleanup: setup receive side
-+ *
-+ * For no compression this function does nothing.
-+ *
-+ * @p: Params for the channel that we are using
-+ */
-+static void qpl_recv_cleanup(MultiFDRecvParams *p)
-+{
-+    struct qpl_data *qpl = p->data;
-+
-+    deinit_qpl(qpl);
-+    if (qpl->zbuf) {
-+        munmap(qpl->zbuf, MAX_BUF_SIZE);
-+        qpl->zbuf = NULL;
-+    }
-+    if (qpl->buf) {
-+        munmap(qpl->buf, MAX_BUF_SIZE);
-+        qpl->buf = NULL;
-+    }
-+    g_free(p->data);
-+    p->data = NULL;
-+}
-+
-+/**
-+ * qpl_recv_pages: read the data from the channel into actual pages
-+ *
-+ * Read the compressed buffer, and uncompress it into the actual
-+ * pages.
-+ *
-+ * Returns 0 for success or -1 for error
-+ *
-+ * @p: Params for the channel that we are using
-+ * @errp: pointer to an error
-+ */
-+static int qpl_recv_pages(MultiFDRecvParams *p, Error **errp)
-+{
-+    struct qpl_data *qpl = p->data;
-+    uint32_t in_size = p->next_packet_size;
-+    uint32_t expected_size = p->normal_num * p->page_size;
-+    uint32_t flags = p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
-+    qpl_job *job = qpl->job;
-+    qpl_status status;
-+    int ret;
-+
-+    if (flags != MULTIFD_FLAG_ZLIB) {
-+        error_setg(errp, "multifd %u: flags received %x flags expected %x",
-+                   p->id, flags, MULTIFD_FLAG_ZLIB);
-+        return -1;
-+    }
-+    ret = qio_channel_read_all(p->c, (void *)qpl->zbuf, in_size, errp);
-+    if (ret != 0) {
-+        return ret;
-+    }
-+
-+    job->op = qpl_op_decompress;
-+    job->next_in_ptr = qpl->zbuf;
-+    job->available_in = in_size;
-+    job->next_out_ptr = qpl->buf;
-+    job->available_out = expected_size;
-+    job->flags = QPL_FLAG_FIRST | QPL_FLAG_LAST | QPL_FLAG_OMIT_VERIFY |
-+                 QPL_FLAG_ZLIB_MODE;
-+    status = qpl_execute_job(job);
-+    if ((status != QPL_STS_OK) || (job->total_out != expected_size)) {
-+        error_setg(errp, "multifd %u: execute job error %d, expect %u, out %u",
-+                   p->id, status, job->total_out, expected_size);
-+        return -1;
-+    }
-+    for (int i = 0; i < p->normal_num; i++) {
-+        memcpy(p->host + p->normal[i], qpl->buf + (i * p->page_size),
-+               p->page_size);
-+    }
-+    return 0;
-+}
-+
-+static MultiFDMethods multifd_qpl_ops = {
-+    .send_setup = qpl_send_setup,
-+    .send_cleanup = qpl_send_cleanup,
-+    .send_prepare = qpl_send_prepare,
-+    .recv_setup = qpl_recv_setup,
-+    .recv_cleanup = qpl_recv_cleanup,
-+    .recv_pages = qpl_recv_pages
-+};
-+
-+static bool is_supported(MultiFDCompression compression)
-+{
-+    return support_compression_methods[compression];
-+}
-+
-+static MultiFDMethods *get_qpl_multifd_methods(void)
-+{
-+    return &multifd_qpl_ops;
-+}
-+
-+static MultiFDAccelMethods multifd_qpl_accel_ops = {
-+    .is_supported = is_supported,
-+    .get_multifd_methods = get_qpl_multifd_methods,
-+};
-+
-+static void multifd_qpl_register(void)
-+{
-+    multifd_register_accel_ops(MULTIFD_COMPRESSION_ACCEL_QPL,
-+                               &multifd_qpl_accel_ops);
-+    support_compression_methods[MULTIFD_COMPRESSION_ZLIB] = true;
-+}
-+
-+migration_init(multifd_qpl_register);
--- 
-2.39.3
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
