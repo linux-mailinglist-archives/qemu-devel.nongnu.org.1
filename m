@@ -2,71 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6F18229CD
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 09:55:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E51C8229F1
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 10:09:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKx1N-0003gX-Vm; Wed, 03 Jan 2024 03:54:42 -0500
+	id 1rKxEZ-00067F-Cr; Wed, 03 Jan 2024 04:08:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rKx1K-0003g7-Fc
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 03:54:38 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rKx1I-0002cI-Eq
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 03:54:38 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F013240615;
- Wed,  3 Jan 2024 11:55:08 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id B5EB85931B;
- Wed,  3 Jan 2024 11:54:25 +0300 (MSK)
-Message-ID: <cc4ad254-b177-4a09-96f7-448c638ae67e@tls.msk.ru>
-Date: Wed, 3 Jan 2024 11:54:25 +0300
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rKxEI-00066l-M9
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 04:08:04 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rKxEH-0001KX-3w
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 04:08:02 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40d5b89e2bfso63163455e9.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 01:07:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704272872; x=1704877672; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kIcKzjZjSPa3A3hp55Tv6AE29w9HZt5CDLYKDVjAZ5Q=;
+ b=pGOJiBMw37y0b8TwzbbP0FFGEr9m6r9TnlAQiSbZoXrcv3Jf9OJzIyqTXj+hqE6jRf
+ t1GAdvbVYI0sBUxLaKyz5zQk4nr8PjxrTH+D3cwcijpEfxNvCCOPD2B3SNLYtDHriv8F
+ MRjkE7isUDfnnnSSFyRiHc1U0CVSyjv3SfBqqwbZVz6FpQ3AK0POi7MKzUvABIi7TTG+
+ OMIOAUJD/pPA+oyuTPKoILphmYC2rtwJxjcltXJvi1NTFRZAVnqU+VM5oLJz+/zQAzSI
+ S8KoRzzuKJnM592ECBbnMCMNymwu+6WG6/8BETGPOanUpNLC80yLk0ZyQGYNZyrjOuqA
+ wVVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704272872; x=1704877672;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=kIcKzjZjSPa3A3hp55Tv6AE29w9HZt5CDLYKDVjAZ5Q=;
+ b=XXRUK22Ew9MS5tjOkIIiJX4ZoE/BCRqOcb0Ytlvl2H6rNJNuPLYa+Ds37CAaplYWSs
+ bWydqBSTGjC3yC0dG7j8LtNaO8OyX41P6uCz8D1xi1RhWUPbzHX5a72xzDyn31pEPwiH
+ 4MDahhxSLXPFRkVciNlPVY1/No5GhU6EyzI8PLRFhnBhwulxfsvIy/eDuf4y/l0ovxuq
+ txGRE+SLmibwKXkdCHnqDVumh8AKnjivAjnbzNNOWZw0wm+STmAcjdxa1VkeaKjfV9r+
+ S4vmc+JtCu9QFESIC1Aam7EU29cEmpW8nMTbDCRj99mk4B//AUSqGnI2OCbKL4nMg3u2
+ aYug==
+X-Gm-Message-State: AOJu0YwUJ9vYRozZwsqCtxTixaVHsJjVCRbDEqXlSVJ3o3BwHoLj1FXP
+ YZiQoH38c91w/+8BGeMWyYUwv/qqD45cDA==
+X-Google-Smtp-Source: AGHT+IHEIuyjaT/WbTw4NEXQZawAFa3kbH7a4vnSaCnw0MTw2unQGH5HqhEFjWH3qRafLPTNzpGNtw==
+X-Received: by 2002:a05:600c:c84:b0:40d:8cca:c637 with SMTP id
+ fj4-20020a05600c0c8400b0040d8ccac637mr1068899wmb.71.1704272872456; 
+ Wed, 03 Jan 2024 01:07:52 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ c12-20020a5d4ccc000000b003371e7113d4sm12701446wrt.24.2024.01.03.01.07.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Jan 2024 01:07:52 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id B603F5F8B7;
+ Wed,  3 Jan 2024 09:07:51 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Richard
+ Henderson <richard.henderson@linaro.org>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH 2/2] target/i386/cpu: Fix small typo in comment
+In-Reply-To: <20240103084900.22856-3-shentey@gmail.com> (Bernhard Beschow's
+ message of "Wed, 3 Jan 2024 09:49:00 +0100")
+References: <20240103084900.22856-1-shentey@gmail.com>
+ <20240103084900.22856-3-shentey@gmail.com>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Wed, 03 Jan 2024 09:07:51 +0000
+Message-ID: <878r56iy3c.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: chacha20-s390 broken in 8.2.0 in TCG on s390x
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>
-References: <d5e8f88b-1d19-4e00-8dc2-b20e0cd34931@tls.msk.ru>
- <dfc5987a-4210-4579-b9a3-1cc12fe1b909@linaro.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <dfc5987a-4210-4579-b9a3-1cc12fe1b909@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,50 +99,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-03.01.2024 03:22, Richard Henderson wrote:
-> On 12/22/23 01:51, Michael Tokarev wrote:
-...
->> git bisect points to this commit:
->>
->> commit ab84dc398b3b702b0c692538b947ef65dbbdf52f
->> Author: Richard Henderson <richard.henderson@linaro.org>
->> Date:   Wed Aug 23 23:04:24 2023 -0700
->>
->>      tcg/optimize: Optimize env memory operations
->>
->> So far, this seems to work on amd64 host, but fails on s390x host -
->> where this has been observed so far.  Maybe it also fails in some
->> other combinations too, I don't yet know.  Just finished bisecting
->> it on s390x.
-> 
-> I haven't been able to build a reproducer for this.
-> Have you an image or kernel you can share?
+Bernhard Beschow <shentey@gmail.com> writes:
 
-Sure.
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>  target/i386/cpu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 95d5f16cd5..2ae271e9a1 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -2179,7 +2179,7 @@ static const CPUCaches epyc_genoa_cache_info =3D {
+>   *  Conceal VM entries from PT
+>   *  Enable ENCLS exiting
+>   *  Mode-based execute control (XS/XU)
+> - s  TSC scaling (Skylake Server and newer)
+> + *  TSC scaling (Skylake Server and newer)
+>   *  GPA translation for PT (IceLake and newer)
+>   *  User wait and pause
+>   *  ENCLV exiting
 
-Here's my actual testing "image": http://www.corpit.ru/mjt/tmp/s390x-chacha.tar.gz
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-It contains vmlinuz and initrd - generated on a debian s390x system using standard
-debian tools.
-
-Actual command line I used when doing bisection:
-
-  ~/qemu/b/qemu-system-s390x -append "root=/dev/vda rw" -nographic -smp 2 -drive format=raw,file=vmlinuz,if=virtio -no-user-config -m 1G -kernel 
-vmlinuz -initrd initrd -snapshot
-
-This command has unrelated stuff, one of which is using of vmlinuz as the hdd
-image (in my initial test it was real filesystem image, but it doesn't really
-matter), - I don't need this filesystem to be mounted, the prob is visible before
-the mount when crypto modules are loaded.
-
-All it needs is to load crypto stuff, - in particular it runs some selftests
-at this point.
-
-But please note once again: it works just fine on amd64 hw.  Where it breaks
-is the actual s390x *host*, - I did all my tests on a debian s390x porterbox,
-an actual s390x machine.
-
-Thanks,
-
-/mjt
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
