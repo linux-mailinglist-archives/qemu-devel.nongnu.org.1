@@ -2,57 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8039822D0A
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 13:31:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E3F822D25
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 13:35:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL0Ot-0007OJ-5a; Wed, 03 Jan 2024 07:31:11 -0500
+	id 1rL0S1-0000rH-3i; Wed, 03 Jan 2024 07:34:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rL0OY-0007M7-En
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 07:30:56 -0500
+ id 1rL0Rx-0000o4-TW
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 07:34:21 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rL0OV-0003Lr-Se
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 07:30:49 -0500
+ id 1rL0Rw-0003uA-1u
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 07:34:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704285045;
+ s=mimecast20190719; t=1704285259;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=6/KGp6dNIa+l1BZc/Kgdn3y7H2ebnf706fk8ATlDqkA=;
- b=cImvgFTvZIaSLkkmj+WifSD5O7Lds2Gl7l4wpsIJKuewfb03F20Bc31lek0V+H+l3cpXb3
- vtlYgkmqhnrbVKG3vK0QH7mVkjxHT4g3I/yOhZ7U284B9SgBH5kWLNksrow22dLnfPK9WZ
- hU6sS9/HuJ4o8IlIDNEUsgp7CEJW934=
+ bh=C2FydINtaM0L+l4F4wTXqiAuybmiMdIpVnxxl8qKyzM=;
+ b=hJLcJ7/xNRFgzmKFPXmlIk7BN0fUSmWYri9e5irRoZJ7OcP3BP63vHp6PaYzp5/xYyG2N7
+ DFwSwDFjFGgJaSrYb6lDE+m0vkOZ4Ou38FI42em2SKCipBypF+3WQSygvrt/L7nfJV1prd
+ BE2iqgH6YsEZ5KvU+F0pYlnYKVe6cg0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-7qY_H1hxN9G5KQb-E5PH5Q-1; Wed, 03 Jan 2024 07:30:44 -0500
-X-MC-Unique: 7qY_H1hxN9G5KQb-E5PH5Q-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-292-DQbD6Ck3Oz6oapk0TiqjXw-1; Wed, 03 Jan 2024 07:34:16 -0500
+X-MC-Unique: DQbD6Ck3Oz6oapk0TiqjXw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 12155185A78F
- for <qemu-devel@nongnu.org>; Wed,  3 Jan 2024 12:30:44 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BDC728047C0;
+ Wed,  3 Jan 2024 12:34:15 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.117])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7C3442026D66;
- Wed,  3 Jan 2024 12:30:43 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BC56A40C6EB9;
+ Wed,  3 Jan 2024 12:34:14 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH] softmmu: remove obsolete comment about libvirt timeouts
-Date: Wed,  3 Jan 2024 12:30:42 +0000
-Message-ID: <20240103123042.2400677-1-berrange@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH v2 0/2] topic: meson: add more compiler hardening flags
+Date: Wed,  3 Jan 2024 12:34:12 +0000
+Message-ID: <20240103123414.2401208-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -46
@@ -78,28 +80,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For a long time now, libvirt has pre-created the monitor connection
-socket and passed the pre-opened FD into QEMU during startup. Thus
-libvirt does not have any timeouts waiting for the monitor socket
-to appear, it is immediately connected.
+This brings more compiler hardening flags to the default QEMU
+build process. The proposed flags have already been adopted by
+default in the kernel build process. At some point it is hoped
+that distros might enable them globally, as they've done in
+the past with things like _FORTIFY_SOURCE. Meanwhile they are
+easy things to enable in QEMU which have negligible cost and
+clear benefits to hardening. Considering QEMU shows no signs
+of stoppping the flow of guest triggerable CVEs, investing in
+hardening is worthwhile. See the respective commit messages
+for details
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- system/vl.c | 1 -
- 1 file changed, 1 deletion(-)
+Changed in v2:
 
-diff --git a/system/vl.c b/system/vl.c
-index 6b87bfa32c..1d1508e28f 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -1911,7 +1911,6 @@ static bool object_create_early(const char *type)
-      * Allocation of large amounts of memory may delay
-      * chardev initialization for too long, and trigger timeouts
-      * on software that waits for a monitor socket to be created
--     * (e.g. libvirt).
-      */
-     if (g_str_has_prefix(type, "memory-backend-")) {
-         return false;
+ * Fix spelling of -ftrivial-auto-var-init option
+
+Daniel P. Berrangé (2):
+  meson: mitigate against ROP exploits with -fzero-call-used-regs
+  meson: mitigate against use of uninitialize stack for exploits
+
+ meson.build | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
 -- 
 2.43.0
 
