@@ -2,85 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F963822F1C
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 15:02:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 024F6822EFB
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 14:56:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL1oP-0004j8-Lu; Wed, 03 Jan 2024 09:01:39 -0500
+	id 1rL1iV-0001Of-6O; Wed, 03 Jan 2024 08:55:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rL1o3-0004gj-NE
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 09:01:16 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rL1nx-00073V-7k
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 09:01:13 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-556c3f0d6c5so863818a12.2
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 06:01:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704290465; x=1704895265; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=B+SeJrYHOHeb0n8EPEq05j+IHNe8ZL6Bu6xI2IfMTfE=;
- b=z7zOgKX1AuG8bVqrLoLojfJ3ENDrfzI2v8eprxc+RXmt7Dv6zLiUqCdUwEI69hfVZR
- Uz8Xd7mLPXVJ6hg+IglrbYqskkU+k6xPNQe2JvUcWAp0/XeqFSeL+XVJ+wJCfWXINmpn
- SVJpakydhhjlcrn02WDNw78L9N39MQPLrgeswsk9gX+bZBJ7EZwsgloIatmGotPGju6P
- 1ZU2TPXXQ5o/dzQkCLKBONoPn7g9Yv2ouIm4uH1FA67q2OSn2Tc+pvsQMYFIyanb5lBf
- IHjxGhXohSYUm7s8Ut+RjlvDkbmAp9AnGmiYEUurHnFK9kbpayYqe8cMYmh1ruj2lkaM
- SwxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704290465; x=1704895265;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=B+SeJrYHOHeb0n8EPEq05j+IHNe8ZL6Bu6xI2IfMTfE=;
- b=fPpFwPE/1y80ycH66zODp5noADlVhcemFy6zheFJecJ6gxv6SRx6zT8Up5CajtC7oG
- MqscKmJL8PnJ0FzcNeRQjMpgBvD/YK4S38HMLRtg04bz/aqcOXiCieLRxsctqdGjwIa0
- Z6Z1TD76CNFb2sGa0jAxRVjLpIKNQ8PXfQm2hHPgaC0gcTl+R7s6kt5IiCtbZmQHOkcm
- TLBdQmOOpKpsG5/LOLi5kdrNM0Oya529lzK+FtKTYkEcNfqrJeoK5Cn1SNKFZJs8f7sd
- 7z0TgizyFhgmPziDytccY1NQpROXJKdP9jZYgmwvtdxaKLpqhBC+BVeMYhNci7UM1T0o
- rtWQ==
-X-Gm-Message-State: AOJu0YyfDznWUfW2YTuANwe62D5lKJowycprL2Lw63+JWtBhfp/3QO+I
- fArb2nVuPrpEEPu6lqyrdSZ8Xr6opIrbfQ==
-X-Google-Smtp-Source: AGHT+IFOF8cg2CsW4ktDt+o5SVQBz5CWwOObLjC2g7eFj8GPBQFyYzTem665XWbhZet+v7hHFOL18g==
-X-Received: by 2002:a17:907:7e92:b0:a28:a9a7:cbe0 with SMTP id
- qb18-20020a1709077e9200b00a28a9a7cbe0mr255473ejc.122.1704290465222; 
- Wed, 03 Jan 2024 06:01:05 -0800 (PST)
-Received: from [192.168.69.100] (tre93-h02-176-184-7-144.dsl.sta.abo.bbox.fr.
- [176.184.7.144]) by smtp.gmail.com with ESMTPSA id
- ex17-20020a170907955100b00a269fa0d305sm12781245ejc.8.2024.01.03.06.01.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Jan 2024 06:01:04 -0800 (PST)
-Message-ID: <764215cd-6f62-4746-b1f5-6174a158f95d@linaro.org>
-Date: Wed, 3 Jan 2024 15:01:02 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: chacha20-s390 broken in 8.2.0 in TCG on s390x
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Michael Tokarev <mjt@tls.msk.ru>,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rL1iS-0001MH-Jo; Wed, 03 Jan 2024 08:55:28 -0500
+Received: from mgamail.intel.com ([134.134.136.31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rL1iP-0002MM-PZ; Wed, 03 Jan 2024 08:55:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1704290125; x=1735826125;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=patHji83S3QKwB1IhiSpFYK0Yoli4+3DJ1DD/OyGpPY=;
+ b=Q5uOTP2vYfKI0zoxGWCrJiJmtr8KyeLG6WouCqyJRimv+r+PDX9ElAz6
+ 4GQzv4wazdSit1W6VX8RJJvNcaEqRTKOND8s+7MH8SOYFLC66THXReJdW
+ J87E3q2W8WHgROeIR7qQg+8gI8sn/HaEkYRq+qhhuRnluCBnOuRsX1d2U
+ RXE0iIHwrbEmkHseucoonXLK+Xa61hGz7TDwnZZ/YlKJqtiBUJxb21NY8
+ I6j79KNPmQdXaZbxnXkuSRKxf7r6O73o0vxSklcUPlr/MiKICbjZKKf4+
+ bv1+lgAEEdkRQ71AR4NJPckfd2AnqyWilxa4lyscaWlRZddn5jbb0nTAr Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="461319193"
+X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; d="scan'208";a="461319193"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jan 2024 05:54:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="814269023"
+X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; d="scan'208";a="814269023"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga001.jf.intel.com with ESMTP; 03 Jan 2024 05:54:28 -0800
+Date: Wed, 3 Jan 2024 22:07:21 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>
-Cc: qemu-s390x <qemu-s390x@nongnu.org>, David Hildenbrand <david@redhat.com>
-References: <d5e8f88b-1d19-4e00-8dc2-b20e0cd34931@tls.msk.ru>
- <dfc5987a-4210-4579-b9a3-1cc12fe1b909@linaro.org>
- <cc4ad254-b177-4a09-96f7-448c638ae67e@tls.msk.ru>
- <f07dfa5c-9f3c-4e22-9514-81c130b6a9ab@linaro.org>
-In-Reply-To: <f07dfa5c-9f3c-4e22-9514-81c130b6a9ab@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ Darren Kenny <darren.kenny@oracle.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v2] scripts/checkpatch: Support codespell checking
+Message-ID: <ZZVqGbp59ESAWus2@intel.com>
+References: <20231215103448.3822284-1-zhao1.liu@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231215103448.3822284-1-zhao1.liu@linux.intel.com>
+Received-SPF: none client-ip=134.134.136.31;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,107 +81,220 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/1/24 12:53, Philippe Mathieu-Daudé wrote:
-> Hi Richard,
-> 
-> On 3/1/24 09:54, Michael Tokarev wrote:
->> 03.01.2024 03:22, Richard Henderson wrote:
->>> On 12/22/23 01:51, Michael Tokarev wrote:
->> ...
->>>> git bisect points to this commit:
->>>>
->>>> commit ab84dc398b3b702b0c692538b947ef65dbbdf52f
->>>> Author: Richard Henderson <richard.henderson@linaro.org>
->>>> Date:   Wed Aug 23 23:04:24 2023 -0700
->>>>
->>>>      tcg/optimize: Optimize env memory operations
->>>>
->>>> So far, this seems to work on amd64 host, but fails on s390x host -
->>>> where this has been observed so far.  Maybe it also fails in some
->>>> other combinations too, I don't yet know.  Just finished bisecting
->>>> it on s390x.
->>>
->>> I haven't been able to build a reproducer for this.
->>> Have you an image or kernel you can share?
->>
->> Sure.
->>
->> Here's my actual testing "image": 
->> http://www.corpit.ru/mjt/tmp/s390x-chacha.tar.gz
->>
->> It contains vmlinuz and initrd - generated on a debian s390x system 
->> using standard
->> debian tools.
->>
->> Actual command line I used when doing bisection:
->>
->>   ~/qemu/b/qemu-system-s390x -append "root=/dev/vda rw" -nographic 
->> -smp 2 -drive format=raw,file=vmlinuz,if=virtio -no-user-config -m 1G 
->> -kernel vmlinuz -initrd initrd -snapshot
-> 
-> I had a quick look at the reproducer and reduced the code
-> area to:
-> 
-> void tcg_optimize(TCGContext *s)
-> {
->      ...
->          switch (opc) {
->          case INDEX_op_ld_vec:
->              done = fold_tcg_ld_memcopy(&ctx, op);
-> 
-> 
-> static bool fold_tcg_ld_memcopy(OptContext *ctx, TCGOp *op)
-> {
->      ...
->      if (src && src->base_type == type) {
->          return tcg_opt_gen_mov(ctx, op, temp_arg(dst), temp_arg(src));
->      }
-> 
-> 
-> static bool tcg_opt_gen_mov(OptContext *ctx, TCGOp *op, TCGArg dst, 
-> TCGArg src)
-> {
->      ...
->      switch (ctx->type) {
->      case TCG_TYPE_V128:
->          new_op = INDEX_op_mov_vec;
-> 
-> 
-> By disabling this optimization, the test succeeds.
-> 
-> Looking at commit 4caad79f8d ("tcg/s390x: Support 128-bit load/store")
-> and remembering the constraints change on PPC LQ in
-> https://lore.kernel.org/qemu-devel/20240102013456.131846-1-richard.henderson@linaro.org/
-> I wondered if LPQ constraints are correct, but I disabled
-> TCG_TARGET_HAS_qemu_ldst_i128 and the bug persists (so
-> re-enabled).
-> 
-> Then disabling TCG_TARGET_HAS_v64 and TCG_TARGET_HAS_v128 the bug
-> disappears.
+Hi maintainers,
 
-Reducing a bit further, it works when disabling rotli_vec opcode
-(commit 22cb37b417 "tcg/s390x: Implement vector shift operations"):
+Just a kindly ping for review. :-)
 
----
-diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
-index fbee43d3b0..5f147661e8 100644
---- a/tcg/s390x/tcg-target.c.inc
-+++ b/tcg/s390x/tcg-target.c.inc
-@@ -2918,3 +2918,5 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType 
-type, unsigned vece)
-      case INDEX_op_orc_vec:
-+        return 1;
-      case INDEX_op_rotli_vec:
-+        return TCG_TARGET_HAS_roti_vec;
-      case INDEX_op_rotls_vec:
-diff --git a/tcg/s390x/tcg-target.h b/tcg/s390x/tcg-target.h
-index e69b0d2ddd..5c18146a40 100644
---- a/tcg/s390x/tcg-target.h
-+++ b/tcg/s390x/tcg-target.h
-@@ -152,3 +152,3 @@ extern uint64_t s390_facilities[3];
-  #define TCG_TARGET_HAS_abs_vec        1
--#define TCG_TARGET_HAS_roti_vec       1
-+#define TCG_TARGET_HAS_roti_vec       0
-  #define TCG_TARGET_HAS_rots_vec       1
----
+Thanks,
+Zhao
+
+On Fri, Dec 15, 2023 at 06:34:48PM +0800, Zhao Liu wrote:
+> Date: Fri, 15 Dec 2023 18:34:48 +0800
+> From: Zhao Liu <zhao1.liu@linux.intel.com>
+> Subject: [PATCH v2] scripts/checkpatch: Support codespell checking
+> X-Mailer: git-send-email 2.34.1
+> 
+> From: Zhao Liu <zhao1.liu@intel.com>
+> 
+> Add two spelling check options (--codespell and --codespellfile) to
+> enhance spelling check through dictionary, which copied the Linux
+> kernel's implementation in checkpatch.pl.
+> 
+> This check uses the dictionary at "/usr/share/codespell/dictionary.txt"
+> by default, if there is no dictionary specified under this path, it
+> will look for the dictionary of python3's codespell (This requires user
+> to add python3's path in environment variable $PATH, and to install
+> codespell by "pip install codespell").
+> 
+> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+> Changes since v1:
+> * Drop the default dictionary "selling.text" and just support optional
+>   spelling check via --codespell and --codespellfile. (Thomas)
+> 
+> v1: https://lore.kernel.org/qemu-devel/20231204082917.2430223-1-zhao1.liu@linux.intel.com/
+> 
+> (CC more maintainers who are suggested by get_maintainer.pl in v2.)
+> ---
+>  scripts/checkpatch.pl | 125 +++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 105 insertions(+), 20 deletions(-)
+> 
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> index 6e4100d2a41c..45a5c66e3eab 100755
+> --- a/scripts/checkpatch.pl
+> +++ b/scripts/checkpatch.pl
+> @@ -35,6 +35,9 @@ my $summary_file = 0;
+>  my $root;
+>  my %debug;
+>  my $help = 0;
+> +my $codespell = 0;
+> +my $codespellfile = "/usr/share/codespell/dictionary.txt";
+> +my $user_codespellfile = "";
+>  
+>  sub help {
+>  	my ($exitcode) = @_;
+> @@ -66,6 +69,9 @@ Options:
+>                               is all off)
+>    --test-only=WORD           report only warnings/errors containing WORD
+>                               literally
+> +  --codespell                Use the codespell dictionary for spelling/typos
+> +                             (default:$codespellfile)
+> +  --codespellfile            Use this codespell dictionary
+>    --color[=WHEN]             Use colors 'always', 'never', or only when output
+>                               is a terminal ('auto'). Default is 'auto'.
+>    -h, --help, --version      display this help and exit
+> @@ -85,28 +91,50 @@ foreach (@ARGV) {
+>  }
+>  
+>  GetOptions(
+> -	'q|quiet+'	=> \$quiet,
+> -	'tree!'		=> \$tree,
+> -	'signoff!'	=> \$chk_signoff,
+> -	'patch!'	=> \$chk_patch,
+> -	'branch!'	=> \$chk_branch,
+> -	'emacs!'	=> \$emacs,
+> -	'terse!'	=> \$terse,
+> -	'f|file!'	=> \$file,
+> -	'strict!'	=> \$no_warnings,
+> -	'root=s'	=> \$root,
+> -	'summary!'	=> \$summary,
+> -	'mailback!'	=> \$mailback,
+> -	'summary-file!'	=> \$summary_file,
+> -
+> -	'debug=s'	=> \%debug,
+> -	'test-only=s'	=> \$tst_only,
+> -	'color=s'       => \$color,
+> -	'no-color'      => sub { $color = 'never'; },
+> -	'h|help'	=> \$help,
+> -	'version'	=> \$help
+> +	'q|quiet+'		=> \$quiet,
+> +	'tree!'			=> \$tree,
+> +	'signoff!'		=> \$chk_signoff,
+> +	'patch!'		=> \$chk_patch,
+> +	'branch!'		=> \$chk_branch,
+> +	'emacs!'		=> \$emacs,
+> +	'terse!'		=> \$terse,
+> +	'f|file!'		=> \$file,
+> +	'strict!'		=> \$no_warnings,
+> +	'root=s'		=> \$root,
+> +	'summary!'		=> \$summary,
+> +	'mailback!'		=> \$mailback,
+> +	'summary-file!'		=> \$summary_file,
+> +	'debug=s'		=> \%debug,
+> +	'test-only=s'		=> \$tst_only,
+> +	'codespell!'		=> \$codespell,
+> +	'codespellfile=s'	=> \$user_codespellfile,
+> +	'color=s'		=> \$color,
+> +	'no-color'		=> sub { $color = 'never'; },
+> +	'h|help'		=> \$help,
+> +	'version'		=> \$help
+>  ) or help(1);
+>  
+> +if ($user_codespellfile) {
+> +	# Use the user provided codespell file unconditionally
+> +	$codespellfile = $user_codespellfile;
+> +} elsif (!(-f $codespellfile)) {
+> +	# If /usr/share/codespell/dictionary.txt is not present, try to find it
+> +	# under codespell's install directory: <codespell_root>/data/dictionary.txt
+> +	if (($codespell || $help) && which("python3") ne "") {
+> +		my $python_codespell_dict = << "EOF";
+> +
+> +import os.path as op
+> +import codespell_lib
+> +codespell_dir = op.dirname(codespell_lib.__file__)
+> +codespell_file = op.join(codespell_dir, 'data', 'dictionary.txt')
+> +print(codespell_file, end='')
+> +EOF
+> +
+> +		my $codespell_dict = `python3 -c "$python_codespell_dict" 2> /dev/null`;
+> +		$codespellfile = $codespell_dict if (-f $codespell_dict);
+> +	}
+> +}
+> +
+>  help(0) if ($help);
+>  
+>  my $exit = 0;
+> @@ -337,6 +365,36 @@ our @typeList = (
+>  	qr{guintptr},
+>  );
+>  
+> +# Load common spelling mistakes and build regular expression list.
+> +my $misspellings;
+> +my %spelling_fix;
+> +
+> +if ($codespell) {
+> +	if (open(my $spelling, '<', $codespellfile)) {
+> +		while (<$spelling>) {
+> +			my $line = $_;
+> +
+> +			$line =~ s/\s*\n?$//g;
+> +			$line =~ s/^\s*//g;
+> +
+> +			next if ($line =~ m/^\s*#/);
+> +			next if ($line =~ m/^\s*$/);
+> +			next if ($line =~ m/, disabled/i);
+> +
+> +			$line =~ s/,.*$//;
+> +
+> +			my ($suspect, $fix) = split(/->/, $line);
+> +
+> +			$spelling_fix{$suspect} = $fix;
+> +		}
+> +		close($spelling);
+> +	} else {
+> +		warn "No codespell typos will be found - file '$codespellfile': $!\n";
+> +	}
+> +}
+> +
+> +$misspellings = join("|", sort keys %spelling_fix) if keys %spelling_fix;
+> +
+>  # This can be modified by sub possible.  Since it can be empty, be careful
+>  # about regexes that always match, because they can cause infinite loops.
+>  our @modifierList = (
+> @@ -477,6 +535,18 @@ sub top_of_kernel_tree {
+>  	return 1;
+>  }
+>  
+> +sub which {
+> +	my ($bin) = @_;
+> +
+> +	foreach my $path (split(/:/, $ENV{PATH})) {
+> +		if (-e "$path/$bin") {
+> +			return "$path/$bin";
+> +		}
+> +	}
+> +
+> +	return "";
+> +}
+> +
+>  sub expand_tabs {
+>  	my ($str) = @_;
+>  
+> @@ -1585,6 +1655,21 @@ sub process {
+>  			WARN("8-bit UTF-8 used in possible commit log\n" . $herecurr);
+>  		}
+>  
+> +# Check for various typo / spelling mistakes
+> +		if (defined($misspellings) &&
+> +		    ($in_commit_log || $line =~ /^(?:\+|Subject:)/i)) {
+> +			while ($rawline =~ /(?:^|[^\w\-'`])($misspellings)(?:[^\w\-'`]|$)/gi) {
+> +				my $typo = $1;
+> +				my $blank = copy_spacing($rawline);
+> +				my $ptr = substr($blank, 0, $-[1]) . "^" x length($typo);
+> +				my $hereptr = "$hereline$ptr\n";
+> +				my $typo_fix = $spelling_fix{lc($typo)};
+> +				$typo_fix = ucfirst($typo_fix) if ($typo =~ /^[A-Z]/);
+> +				$typo_fix = uc($typo_fix) if ($typo =~ /^[A-Z]+$/);
+> +				WARN("'$typo' may be misspelled - perhaps '$typo_fix'?\n" . $hereptr);
+> +			}
+> +		}
+> +
+>  # ignore non-hunk lines and lines being removed
+>  		next if (!$hunk_line || $line =~ /^-/);
+>  
+> -- 
+> 2.34.1
+> 
+> 
 
