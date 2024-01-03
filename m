@@ -2,69 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80C3822A43
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 10:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C68822BE6
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 12:13:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKxVL-0002n1-07; Wed, 03 Jan 2024 04:25:39 -0500
+	id 1rKzAJ-00084M-9s; Wed, 03 Jan 2024 06:12:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
- id 1rKxVD-0002l8-9n
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 04:25:31 -0500
-Received: from mgamail.intel.com ([134.134.136.31])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rKzAH-00084E-SJ
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 06:12:01 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
- id 1rKxVB-0003S1-2T
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 04:25:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704273929; x=1735809929;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=qg5DqPfqY1spw2/swDgcPg10+0r62nU0nm9TnH6NbMA=;
- b=aZ1DWRVgSUVAwEqNME+1pw0UUMPKJGEZKOfr2F8MpIwEeiMG+p6BQF7C
- r1Z8x2FMeLKDH49LPIuKVr40FNzsfB2Y/K9xKdSIoWpJ3dH9Yy3CuFNCc
- fUrS23yxeMDLi1ydi8hMVYecLJko0WZ7ctiXShSuKWwHjnhOZwehUvC95
- 6dTsKWoDv3XdvxZVjYTASVA4achy1nC7Dq/KophprxyEZewWn8Bau1AqT
- LgruVcWRo7fz5D0Oae/rtjs2NeEZipOhH1Tkyuidik+z991ujoCyDGhuz
- 7xczroY4miu3VF0asrTYtSbah9uH8cNHNB2Y1AD2HBHz4F+aC6fcXrZ92 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="461295246"
-X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; d="scan'208";a="461295246"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jan 2024 01:25:24 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="1111313896"
-X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; d="scan'208";a="1111313896"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.238.9.51])
- ([10.238.9.51])
- by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jan 2024 01:25:22 -0800
-Message-ID: <a6505d3b-5850-45ac-9439-14b6fd9b8138@linux.intel.com>
-Date: Wed, 3 Jan 2024 17:25:19 +0800
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rKzAG-0001Rv-0q
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 06:12:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704280318;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CEC6qcVqtx61rhEFaumX3qTsLNeNXfpgbip8CtAeIM0=;
+ b=Sv5CPyjWFLpzanJFmBeylp7LXuTQAHRoWpv8TEyfSPFdpau82seDm0woqd1v8pNaGr1vbB
+ qOYtsAZpLWGYdfXs2u5CSxVbkkX2gJBJI0G8SgYeSg8g3rbSfGnqU6xHYmrjjISZp20y9D
+ WHcNoX92uqATSvoQW3jb6kBAl6nv8Bw=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-426-EL_qpt7xMoO0a6A_hp8ZVw-1; Wed, 03 Jan 2024 06:11:57 -0500
+X-MC-Unique: EL_qpt7xMoO0a6A_hp8ZVw-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-5e6fe91c706so172175707b3.2
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 03:11:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704280317; x=1704885117;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CEC6qcVqtx61rhEFaumX3qTsLNeNXfpgbip8CtAeIM0=;
+ b=iUhuHPe2ZkOJdRLM/JmqSRXY2q4YirXIB3yGJRXPQn06DDE0QajjvFTP3EXb/GsTS/
+ bIUGuzw8MyqUpLSfXij5BZUoVIVenH8EJ3eU4ArfGzldfXIJvHMopXhJm8Hx1D12/xJn
+ /K+gqBNJaz6mxPGCDyyk1y7r/rhLnyBvbvsfst8ZKFfcoKZcEC/iKBhU9IAtbWUCOF85
+ Y5YjU6RHnjCGoiynIK5oIHACvr9rfZvl749J2U+1diAvBFtWjFAYb+uDQMj/PdR+vGpb
+ 0EbyxmFEKvXZUorbjbQtNy64CbbUfGOYor4h9oIoq9Yuaeq1xPe4ZL3dGn3bChkT0mtJ
+ 0AFQ==
+X-Gm-Message-State: AOJu0Yz4ywF//R85fqaagTNqUwPQw722xTzHTwBqB3/IJmpW2NaOiCo+
+ EbiG1cZ2JhTfPmMgxIJB9Z/66e63wubpG2JLsDFxte9jjD2g5XiB6tbLVeMhaPbRxs517uMZ0qR
+ XIBPdJ3DPL0uQ6F38pPccILxyuOh46pTgVesu3tA=
+X-Received: by 2002:a0d:eb94:0:b0:5e2:a997:50d5 with SMTP id
+ u142-20020a0deb94000000b005e2a99750d5mr10375328ywe.35.1704280316957; 
+ Wed, 03 Jan 2024 03:11:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF2Xn3qOxm3iwhGtWeey9ViwnqoczZJ4vjCswRtgckVe3QvPfiMm6xIzSvbN5u51ZGJokpkAbUS3RrldGUXOes=
+X-Received: by 2002:a0d:eb94:0:b0:5e2:a997:50d5 with SMTP id
+ u142-20020a0deb94000000b005e2a99750d5mr10375322ywe.35.1704280316617; Wed, 03
+ Jan 2024 03:11:56 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] target/i386: add control bits support for LAM
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, chao.gao@intel.com,
- robert.hu@linux.intel.com
-References: <20230721080800.2329-1-binbin.wu@linux.intel.com>
- <20230721080800.2329-3-binbin.wu@linux.intel.com>
- <634d2f1e-f7b0-491d-979e-99609b79a955@intel.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <634d2f1e-f7b0-491d-979e-99609b79a955@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=134.134.136.31;
- envelope-from=binbin.wu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -64
-X-Spam_score: -6.5
-X-Spam_bar: ------
-X-Spam_report: (-6.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.178,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+References: <20231215172830.2540987-1-eperezma@redhat.com>
+ <20231215172830.2540987-9-eperezma@redhat.com>
+ <CACGkMEvH=uU4QxMHVHTo5tQiuML2+NTE3gZssfz84-+4kGHa1Q@mail.gmail.com>
+ <CAJaqyWczW+uwYBsWas97JY6OgiSurnvNQnnTYPFWv5La55GOOg@mail.gmail.com>
+ <CACGkMEukZNUnXRSwpVAROe7U7GzkubP9i37ev+qOSQvWxLEK_Q@mail.gmail.com>
+ <CAJaqyWfGkboB4sN0PSukKx1kAV-QQ_YSWXWvksPScBD9OgHRsQ@mail.gmail.com>
+ <ZZOgGmpNT_zi2eat@x1n>
+ <CAJaqyWcajuV12tV0aguBO1qpa95pK0qUEHjsNh2+VpMR3fCVyg@mail.gmail.com>
+ <ZZT7wuq-_IhfN_wR@x1n>
+In-Reply-To: <ZZT7wuq-_IhfN_wR@x1n>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Wed, 3 Jan 2024 12:11:19 +0100
+Message-ID: <CAJaqyWfMEeg6FVhyFTVEest1eZXEwMiyib47Z8+BUGCaWkfH3w@mail.gmail.com>
+Subject: Re: [PATCH for 9.0 08/12] vdpa: add vhost_vdpa_load_setup
+To: Peter Xu <peterx@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org, 
+ "Michael S. Tsirkin" <mst@redhat.com>, si-wei.liu@oracle.com,
+ Lei Yang <leiyang@redhat.com>, 
+ Dragos Tatulea <dtatulea@nvidia.com>, Zhu Lingshan <lingshan.zhu@intel.com>, 
+ Parav Pandit <parav@mellanox.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.178,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,92 +108,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 12/28/2023 4:51 PM, Xiaoyao Li wrote:
-> On 7/21/2023 4:08 PM, Binbin Wu wrote:
->> LAM uses CR3[61] and CR3[62] to configure/enable LAM on user pointers.
->> LAM uses CR4[28] to configure/enable LAM on supervisor pointers.
->>
->> For CR3 LAM bits, no additional handling needed:
->> - TCG
->>    LAM is not supported for TCG of target-i386. helper_write_crN() 
->> and helper_vmrun()
->>    check max physical address bits before calling 
->> cpu_x86_update_cr3(), no change needed,
->>    i.e. CR3 LAM bits are not allowed to be set in TCG.
->> - gdbstub
->>    x86_cpu_gdb_write_register() will call cpu_x86_update_cr3() to 
->> update cr3. Allow gdb
->>    to set the LAM bit(s) to CR3, if vcpu doesn't support LAM, 
->> KVM_SET_SREGS will fail as
->>    other CR3 reserved bits.
->>
->> For CR4 LAM bit, its reservation depends on vcpu supporting LAM 
->> feature or not.
->> - TCG
->>    LAM is not supported for TCG of target-i386. helper_write_crN() 
->> and helper_vmrun()
->>    check CR4 reserved bit before calling cpu_x86_update_cr4(), i.e. 
->> CR4 LAM bit is not
->>    allowed to be set in TCG.
->> - gdbstub
->>    x86_cpu_gdb_write_register() will call cpu_x86_update_cr4() to 
->> update cr4. Allow gdb
->>    to set the LAM bit to CR4, if vcpu doesn't support LAM, 
->> KVM_SET_SREGS will fail.
+On Wed, Jan 3, 2024 at 7:16=E2=80=AFAM Peter Xu <peterx@redhat.com> wrote:
 >
-> I would go follow the current code, to mask out LAM bit if no CPUID.
-
-I can do it in the next version.
-
-But I am curious what's the rule of masking out a CR4 bit if no CPUID
-in cpu_x86_update_cr4()?
-e.g. current code checks SMAP but not SMEP.
-
-
+> On Tue, Jan 02, 2024 at 12:28:48PM +0100, Eugenio Perez Martin wrote:
+> > On Tue, Jan 2, 2024 at 6:33=E2=80=AFAM Peter Xu <peterx@redhat.com> wro=
+te:
+> > >
+> > > Jason, Eugenio,
+> > >
+> > > Apologies for a late reply; just back from the long holiday.
+> > >
+> > > On Thu, Dec 21, 2023 at 09:20:40AM +0100, Eugenio Perez Martin wrote:
+> > > > Si-Wei did the actual profiling as he is the one with the 128G gues=
+ts,
+> > > > but most of the time was spent in the memory pinning. Si-Wei, pleas=
+e
+> > > > correct me if I'm wrong.
+> > >
+> > > IIUC we're talking about no-vIOMMU use case.  The pinning should inde=
+ed
+> > > take a lot of time if it's similar to what VFIO does.
+> > >
+> > > >
+> > > > I didn't check VFIO, but I think it just maps at realize phase with
+> > > > vfio_realize -> vfio_attach_device -> vfio_connect_container(). In
+> > > > previous testings, this delayed the VM initialization by a lot, as
+> > > > we're moving that 20s of blocking to every VM start.
+> > > >
+> > > > Investigating a way to do it only in the case of being the destinat=
+ion
+> > > > of a live migration, I think the right place is .load_setup migrati=
+on
+> > > > handler. But I'm ok to move it for sure.
+> > >
+> > > If it's destined to map the 128G, it does sound sensible to me to do =
+it
+> > > when VM starts, rather than anytime afterwards.
+> > >
+> >
+> > Just for completion, it is not 100% sure the driver will start the
+> > device. But it is likely for sure.
 >
->> - x86_cpu_reset_hold() doesn't need special handling.
->>
->> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
->> ---
->>   target/i386/cpu.h | 7 ++++++-
->>   1 file changed, 6 insertions(+), 1 deletion(-)
->>
->> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
->> index 4db97899fe..710fadf550 100644
->> --- a/target/i386/cpu.h
->> +++ b/target/i386/cpu.h
->> @@ -261,6 +261,7 @@ typedef enum X86Seg {
->>   #define CR4_SMAP_MASK   (1U << 21)
->>   #define CR4_PKE_MASK   (1U << 22)
->>   #define CR4_PKS_MASK   (1U << 24)
->> +#define CR4_LAM_SUP_MASK (1U << 28)
->>     #define CR4_RESERVED_MASK \
->>   (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
->> @@ -269,7 +270,8 @@ typedef enum X86Seg {
->>                   | CR4_OSFXSR_MASK | CR4_OSXMMEXCPT_MASK | 
->> CR4_UMIP_MASK \
->>                   | CR4_LA57_MASK \
->>                   | CR4_FSGSBASE_MASK | CR4_PCIDE_MASK | 
->> CR4_OSXSAVE_MASK \
->> -                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | 
->> CR4_PKS_MASK))
->> +                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | 
->> CR4_PKS_MASK \
->> +                | CR4_LAM_SUP_MASK))
->>     #define DR6_BD          (1 << 13)
->>   #define DR6_BS          (1 << 14)
->> @@ -2478,6 +2480,9 @@ static inline uint64_t 
->> cr4_reserved_bits(CPUX86State *env)
->>       if (!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS)) {
->>           reserved_bits |= CR4_PKS_MASK;
->>       }
->> +    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
->> +        reserved_bits |= CR4_LAM_SUP_MASK;
->> +    }
->>       return reserved_bits;
->>   }
+> My understanding is that vDPA is still a quite special device, assuming
+> only targeting advanced users, and should not appear in a default config
+> for anyone.  It means the user should hopefully remove the device if the
+> guest is not using it, instead of worrying on a slow boot.
 >
+> >
+> > > Could anyone help to explain what's the problem if vDPA maps 128G at =
+VM
+> > > init just like what VFIO does?
+> > >
+> >
+> > The main problem was the delay of VM start. In the master branch, the
+> > pinning is done when the driver starts the device. While it takes the
+> > BQL, the rest of the vCPUs can move work forward while the host is
+> > pinning. So the impact of it is not so evident.
+> >
+> > To move it to initialization time made it very noticeable. To make
+> > things worse, QEMU did not respond to QMP commands and similar. That's
+> > why it was done only if the VM was the destination of a LM.
+>
+> Is that a major issue for us?
+
+To me it is a regression but I'm ok with it for sure.
+
+>  IIUC then VFIO shares the same condition.
+> If it's a real problem, do we want to have a solution that works for both
+> (or, is it possible)?
+>
+
+I would not consider a regression for VFIO since I think it has
+behaved that way from the beginning. But yes, I'm all in to find a
+common solution.
+
+> >
+> > However, we've added the memory map thread in this version, so this
+> > might not be a problem anymore. We could move the spawn of the thread
+> > to initialization time.
+> >
+> > But how to undo this pinning in the case the guest does not start the
+> > device? In this series, this is done at the destination with
+> > vhost_vdpa_load_cleanup. Or is it ok to just keep the memory mapped as
+> > long as QEMU has the vDPA device?
+>
+> I think even if vDPA decides to use a thread, we should keep the same
+> behavior before/after the migration.  Having assymetric behavior over DMA
+> from the assigned HWs might have unpredictable implications.
+>
+> What I worry is we may over-optimize / over-engineer the case where the
+> user will specify the vDPA device but not use it, as I mentioned above.
+>
+
+I agree with all of the above. If it is ok to keep memory mapped while
+the guest has not started I think we can move the spawn of the thread,
+or even just the map write itself, to the vdpa init.
+
+> For the long term, maybe there's chance to optimize DMA pinning for both
+> vdpa/vfio use cases, then we can always pin them during VM starts? Assumi=
+ng
+> that issue only exists for large VMs, while they should normally be good
+> candidates for huge pages already.  Then, it means maybe one folio/page c=
+an
+> cover a large range (e.g. 1G on x86_64) in one pin, and physical continui=
+ty
+> also provides possibility of IOMMU large page mappings.  I didn't check a=
+t
+> which stage we are for VFIO on this, Alex may know better.
+
+Sounds interesting, and I think it should be implemented. Thanks for
+the pointer!
+
+> I'm copying Alex
+> anyway since the problem seems to be a common one already, so maybe he ha=
+s
+> some thoughts.
+>
+
+Appreciated :).
+
+Thanks!
 
 
