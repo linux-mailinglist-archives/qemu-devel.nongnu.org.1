@@ -2,82 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B62382352B
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 19:59:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F6C8235F3
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 20:55:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL6R0-0005E0-Pk; Wed, 03 Jan 2024 13:57:46 -0500
+	id 1rL7It-0001an-6R; Wed, 03 Jan 2024 14:53:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
- id 1rL6Qw-0005As-11; Wed, 03 Jan 2024 13:57:43 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1rL7Ir-0001aL-Ep; Wed, 03 Jan 2024 14:53:25 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
- id 1rL6Qu-00044B-GG; Wed, 03 Jan 2024 13:57:41 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a28b2e1a13fso59453366b.3; 
- Wed, 03 Jan 2024 10:57:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704308259; x=1704913059; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=y9kSUAed4zEz3MVCNwiB85u7BQBDF6R1AhpsEYcRoFw=;
- b=EmVaXl7WjpOazzjyqjNtjg6fs/HDRfYW1juLytjQy4RCaMgSTov443kw34/zgSZ+/b
- irXWVgilyf1hAB8Qc7D52uQ+N/laBV9VLtFdLhjpDVos2j8TWF4nhzDsvwkKaXRnAd28
- psVCTVBQEZ5ZELyyD8xsQTKRfzn0m2gCq1VNf8dkBPRcD6JT/YuKsGIbadjl56bYP7cQ
- CVdfWpqc7V4q+GqWMzhNwB+ZZfDtgqHH6OKUtY5gylmqLgAolTbqCyXWbrNFKVLD/7SU
- 67RCbwDxVN+MRKW7xLSLpeqM9x8aWAyyZmh6a5muvp2PLcyMmGtvtPPwzNlz9FwZ1mP3
- E2GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704308259; x=1704913059;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=y9kSUAed4zEz3MVCNwiB85u7BQBDF6R1AhpsEYcRoFw=;
- b=ZqbiEiWe7q/BJFJ1/F1xB4QelKLRXVI2s3rxrXDAN2vAWkH9egvYw+umGQvqZEPZr0
- BRTAErzVwDDMwSAg7ODmv6I7rvHZmSsCVzkBoGq6W9vsvZQrs+WLmxxRQhyH/ulB49+e
- yZiYN98NK+Sl+us9yD1Akt748Azt6dJtuDTiFRA+9T1LREDnQPMMhq2lcapnW+dUQMSD
- Dyhq6HR1QEOaBVVT9cJHXr6iANE9B8DdSLcoijXAKz2+x5fbrx4ESxTwwd7OwlIQctBS
- fidpbZpY7odlmmFI55Ypb6+E+ss+XiwYis5E5vsfFaiTsvGSHfSIuQOPcKBal2MZaVFR
- xI5A==
-X-Gm-Message-State: AOJu0Yy8zz0lXc2g+QN2TgHS/AsKm6mLFSFHzI3R04jeGHg1qMKriMV8
- PWex9SFnIwuh3+0W5Gahimk=
-X-Google-Smtp-Source: AGHT+IEDgal93t0gWBxV+mVsmbEYfr+jmj8CDYURtlbped2aEOZZavfnbvPGu7P9hnbPpN92WpWqwA==
-X-Received: by 2002:a17:907:7289:b0:a23:56f4:205d with SMTP id
- dt9-20020a170907728900b00a2356f4205dmr10901609ejc.73.1704308258773; 
- Wed, 03 Jan 2024 10:57:38 -0800 (PST)
-Received: from freya.midgard (broadband-188-255-126-251.ip.moscow.rt.ru.
- [188.255.126.251]) by smtp.gmail.com with ESMTPSA id
- ep16-20020a1709069b5000b00a27d5e9b3ebsm3897915ejc.105.2024.01.03.10.57.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jan 2024 10:57:37 -0800 (PST)
-From: Alexey Baturo <baturo.alexey@gmail.com>
-X-Google-Original-From: Alexey Baturo <me@deliversmonkey.space>
-To: 
-Cc: baturo.alexey@gmail.com, richard.henderson@linaro.org,
- zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com, Alistair.Francis@wdc.com,
- sagark@eecs.berkeley.edu, kbastian@mail.uni-paderborn.de,
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Subject: [PATCH v3 6/6] target/riscv: Enable updates for pointer masking
- variables and thus enable pointer masking extension
-Date: Wed,  3 Jan 2024 18:57:16 +0000
-Message-Id: <20240103185716.1790546-7-me@deliversmonkey.space>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240103185716.1790546-1-me@deliversmonkey.space>
-References: <20240103185716.1790546-1-me@deliversmonkey.space>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1rL7Ip-0003EI-JA; Wed, 03 Jan 2024 14:53:25 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 74DEE2207B;
+ Wed,  3 Jan 2024 19:53:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1704311600; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WnrRHUoz0jts2thVWi4a43FMZwX2AvnPsl8a71ZrUsA=;
+ b=GF3HFBPo5oaXerPCtqrpaFWf3HG1+dx3tB8RiNsD/R2S40Gii55rt6rzukwnAws9IV3Fq8
+ Do7/dMqrE/Aasdb27FhtL3SXLYK7Xq0oS1OYWtlO86gEefFKWpzaYSkKZhaMuISFTVndBV
+ yZJN4c6S4zOV/WFZO0bKfJi5JPtSvdw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1704311600;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WnrRHUoz0jts2thVWi4a43FMZwX2AvnPsl8a71ZrUsA=;
+ b=SqRkAj6zY5/CmGZTxvZXKXgac2U0yhhbSsKgk/RgDnnem1tAP6saTJD0WP/NrRI9VjPrTo
+ vQDzJLwDXYg0/dCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1704311600; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WnrRHUoz0jts2thVWi4a43FMZwX2AvnPsl8a71ZrUsA=;
+ b=GF3HFBPo5oaXerPCtqrpaFWf3HG1+dx3tB8RiNsD/R2S40Gii55rt6rzukwnAws9IV3Fq8
+ Do7/dMqrE/Aasdb27FhtL3SXLYK7Xq0oS1OYWtlO86gEefFKWpzaYSkKZhaMuISFTVndBV
+ yZJN4c6S4zOV/WFZO0bKfJi5JPtSvdw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1704311600;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WnrRHUoz0jts2thVWi4a43FMZwX2AvnPsl8a71ZrUsA=;
+ b=SqRkAj6zY5/CmGZTxvZXKXgac2U0yhhbSsKgk/RgDnnem1tAP6saTJD0WP/NrRI9VjPrTo
+ vQDzJLwDXYg0/dCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E7FB51398A;
+ Wed,  3 Jan 2024 19:53:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id C1x1Ky+7lWXuHAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 03 Jan 2024 19:53:19 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@kaod.org>, qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, Manos Pitsidianakis
+ <manos.pitsidianakis@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
+ Anton Johansson <anjo@rev.ng>, Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>, Igor Mitsyanko
+ <i.mitsyanko@gmail.com>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring
+ <robh@kernel.org>, qemu-arm@nongnu.org, Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>, Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in
+ A7/A15 MPCore priv
+In-Reply-To: <fe4d463f-b646-4b7b-9063-d16ad5dbb128@linaro.org>
+References: <20231212162935.42910-1-philmd@linaro.org>
+ <03b969d3-1947-4186-b3ee-15e3cddc5f34@kaod.org>
+ <18a38b88-8f20-420c-9916-a03d1b4930a7@linaro.org>
+ <38cfa9de-874b-41dd-873e-5ad1f5a5805e@kaod.org>
+ <fe4d463f-b646-4b7b-9063-d16ad5dbb128@linaro.org>
+Date: Wed, 03 Jan 2024 16:53:17 -0300
+Message-ID: <87y1d6i47m.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=baturo.alexey@gmail.com; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.60 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TO_DN_SOME(0.00)[];
+ R_RATELIMIT(0.00)[to_ip_from(RLgn3pipxh44ye66tuwadwbnif)];
+ RCVD_COUNT_THREE(0.00)[3]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MID_RHS_MATCH_FROM(0.00)[];
+ BAYES_HAM(-3.00)[100.00%]; ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TAGGED_RCPT(0.00)[];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCPT_COUNT_TWELVE(0.00)[23];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ FREEMAIL_CC(0.00)[redhat.com,nuvoton.com,linaro.org,habkost.net,jms.id.au,alistair23.me,rev.ng,gmail.com,google.com,tribudubois.net,codeconstruct.com.au,kernel.org,nongnu.org,ilande.co.uk];
+ RCVD_TLS_ALL(0.00)[]; SUSPICIOUS_RECIPS(1.50)[]
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -1.60
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,40 +137,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexey Baturo <baturo.alexey@gmail.com>
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
----
- target/riscv/cpu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+> +Peter/Fabiano
+>
+> On 2/1/24 17:41, C=C3=A9dric Le Goater wrote:
+>> On 1/2/24 17:15, Philippe Mathieu-Daud=C3=A9 wrote:
+>>> Hi C=C3=A9dric,
+>>>
+>>> On 2/1/24 15:55, C=C3=A9dric Le Goater wrote:
+>>>> On 12/12/23 17:29, Philippe Mathieu-Daud=C3=A9 wrote:
+>>>>> Hi,
+>>>>>
+>>>>> When a MPCore cluster is used, the Cortex-A cores belong the the
+>>>>> cluster container, not to the board/soc layer. This series move
+>>>>> the creation of vCPUs to the MPCore private container.
+>>>>>
+>>>>> Doing so we consolidate the QOM model, moving common code in a
+>>>>> central place (abstract MPCore parent).
+>>>>
+>>>> Changing the QOM hierarchy has an impact on the state of the machine
+>>>> and some fixups are then required to maintain migration compatibility.
+>>>> This can become a real headache for KVM machines like virt for which
+>>>> migration compatibility is a feature, less for emulated ones.
+>>>
+>>> All changes are either moving properties (which are not migrated)
+>>> or moving non-migrated QOM members (i.e. pointers of ARMCPU, which
+>>> is still migrated elsewhere). So I don't see any obvious migration
+>>> problem, but I might be missing something, so I Cc'ed Juan :>
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 1e6571ce99..13389ddc55 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -153,6 +153,9 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
-     ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
-     ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
-+    ISA_EXT_DATA_ENTRY(ssnpm, PRIV_VERSION_1_12_0, ext_ssnpm),
-+    ISA_EXT_DATA_ENTRY(smnpm, PRIV_VERSION_1_12_0, ext_smnpm),
-+    ISA_EXT_DATA_ENTRY(smmpm, PRIV_VERSION_1_12_0, ext_smmpm),
-     ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
-     ISA_EXT_DATA_ENTRY(xtheadbb, PRIV_VERSION_1_11_0, ext_xtheadbb),
-     ISA_EXT_DATA_ENTRY(xtheadbs, PRIV_VERSION_1_11_0, ext_xtheadbs),
-@@ -1337,6 +1340,11 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
- 
-     MULTI_EXT_CFG_BOOL("zmmul", ext_zmmul, false),
- 
-+    /* Zjpm v0.8 extensions */
-+    MULTI_EXT_CFG_BOOL("ssnpm", ext_ssnpm, false),
-+    MULTI_EXT_CFG_BOOL("smnpm", ext_smnpm, false),
-+    MULTI_EXT_CFG_BOOL("smmpm", ext_smmpm, false),
-+
-     MULTI_EXT_CFG_BOOL("zca", ext_zca, false),
-     MULTI_EXT_CFG_BOOL("zcb", ext_zcb, false),
-     MULTI_EXT_CFG_BOOL("zcd", ext_zcd, false),
--- 
-2.34.1
+FWIW, I didn't spot anything problematic either.
 
+I've ran this through my migration compatibility series [1] and it
+doesn't regress aarch64 migration from/to 8.2. The tests use '-M
+virt -cpu max', so the cortex-a7 and cortex-a15 are not covered. I don't
+think we even support migration of anything non-KVM on arm.
+
+1- https://gitlab.com/farosas/qemu/-/jobs/5853599533
+
+>> We broke migration compatibility by moving the IC object in the QOM
+>> hierarchy of the pseries machines in the past. These changes might
+>> be different. Here is the QOM tree of the ast2600 SoC.
+>>=20
+>> before :
+>>=20
+>>  =C2=A0 /soc (ast2600-a3)
+>>  =C2=A0=C2=A0=C2=A0 /a7mpcore (a15mpcore_priv)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /a15mp-priv-container[0] (memory-region)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic (arm_gic)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_cpu[0] (memory-region)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_cpu[1] (memory-region)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_cpu[2] (memory-region)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_dist[0] (memory-region)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_vcpu[0] (memory-region)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_viface[0] (memory-regio=
+n)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_viface[1] (memory-regio=
+n)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_viface[2] (memory-regio=
+n)
+>>  =C2=A0=C2=A0=C2=A0 /cpu[0] (cortex-a7-arm-cpu)
+>>  =C2=A0=C2=A0=C2=A0 /cpu[1] (cortex-a7-arm-cpu)
+>>=20
+>> after :
+>>=20
+>>  =C2=A0 /soc (ast2600-a3)
+>>  =C2=A0=C2=A0=C2=A0 /a7mpcore (a7mpcore_priv)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /cpu[0] (cortex-a7-arm-cpu)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /cpu[1] (cortex-a7-arm-cpu)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic (arm_gic)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_cpu[0] (memory-region)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_cpu[1] (memory-region)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_cpu[2] (memory-region)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /gic_dist[0] (memory-region)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /mpcore-priv-container[0] (memory-region)
+>>=20
+>>=20
+>> Thanks,
+>>=20
+>> C.
+>>=20
+>>=20
+>>=20
 
