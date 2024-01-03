@@ -2,84 +2,155 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 876AF822871
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 07:37:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4998229B8
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 09:49:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKusT-0004Z3-9H; Wed, 03 Jan 2024 01:37:21 -0500
+	id 1rKwua-0007Tu-Cp; Wed, 03 Jan 2024 03:47:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rKusQ-0004YX-Lk
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 01:37:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rKwuW-0007Tg-6p
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 03:47:36 -0500
+Received: from mail-co1nam11on20600.outbound.protection.outlook.com
+ ([2a01:111:f403:2416::600]
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rKusO-0002pV-O6
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 01:37:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704263835;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xM3e1/VIg57HXRvd3saST/2mIKlgqva7fT2+R/qjAeU=;
- b=TOm2449BpPbArfq0GnB+ImFAosEGZz5h1Lzh2uT3kelE5EcffwDz/38LFovMO+hrmQGxEQ
- mlOKCuyZixuSERx8STxjapKDRtOerdwIt95DT4Ttqhi+P18mSdXTCONeoyPiJTBvK3tImo
- mhfPbEDTG/47PQSSrgz4XM0tkPkoURM=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-jF9DTe9XNCqgpFyL7MlJrA-1; Wed, 03 Jan 2024 01:37:14 -0500
-X-MC-Unique: jF9DTe9XNCqgpFyL7MlJrA-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-28c0765415eso1988914a91.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 22:37:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704263833; x=1704868633;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xM3e1/VIg57HXRvd3saST/2mIKlgqva7fT2+R/qjAeU=;
- b=ApuM/ufKISvQ6+0r/6RGzjCCGNNMhBmrjg5Kyh4xcrmE7C6DSuw1TbYhgnFaV+h89e
- felnZy3mMT6YghZefnJ9AOAfZjLRw+ICpGvZkaXzTnqdxugHWQ7JkHd2aGZ2+aJw9BBl
- gmK5fwJ7JKuh03w7CiWHL626J9x7cqZ77ZYLAuyzuCeSbqvUE5yuR6tBs0HMb7JOeLwF
- ibgKLENf22LUAfU9Dw3CYusrrMb09hLYvU1CYUCCqeFv3vSyzH3xSS/rwCmAM/4GxFqe
- SVzWNNzUs5YOZm1qKNt3/UgC1q7DUi4xPcIxpNG9JxyTeQH5D+NkxyiVt04XJ0usf0ye
- WgZw==
-X-Gm-Message-State: AOJu0Yx6CKFWm5BwLcANlCkvHa104U0arg+U9SO5IxcvItcvvuhYF+eT
- cZ9zqn6RIs/5tR//1CBG0SDOaAgzUGd2Lmy9s7yqa5EcpJP/NEcRzNMTIEZSHPZSH5MMrc51Kqh
- QmW2cNum5YBzlrsNqKYozQN4=
-X-Received: by 2002:a17:902:d389:b0:1d4:f1c:6363 with SMTP id
- e9-20020a170902d38900b001d40f1c6363mr37118761pld.3.1704263833460; 
- Tue, 02 Jan 2024 22:37:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHFiEvvV2pmvRgxexprvMhlAf/kRtO4Mfn0XAic96655R/8yAS9kUh5s1M7tP696bgaqO2Jww==
-X-Received: by 2002:a17:902:d389:b0:1d4:f1c:6363 with SMTP id
- e9-20020a170902d38900b001d40f1c6363mr37118746pld.3.1704263833151; 
- Tue, 02 Jan 2024 22:37:13 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- m7-20020a170902bb8700b001d486882d79sm11655836pls.179.2024.01.02.22.37.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jan 2024 22:37:12 -0800 (PST)
-Date: Wed, 3 Jan 2024 14:37:06 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, quintela@trasno.org, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 1/1] Leaving Migration
-Message-ID: <ZZUAkgpHmo0TL1WX@x1n>
-References: <20240102201908.1987-1-quintela@redhat.com>
- <20240102201908.1987-2-quintela@redhat.com>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rKwuT-0006BI-I8
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 03:47:35 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=h64Bt/HcFkGy5TfC3YbeBRH/3WvPJjVjMcSBcscmu811W+dOpi21h393Nyy3LFRwWk2QZF5gPCeBsWKDKUceZMCZ5syp2RuOOvZ7UlV3C11Dqhfj2DO81J70pPMojCmAgFwv19vmaA+rPKh0ODiyjHmT/xO1FHaQZkP5Cp+Vrfbqyfu25QInWmkKZFny8p9glGekAmc8rTkOsaShGI6redf2JHKtL5p2THcB9pjQZDenkWDcpL1YeA5lva+zKDmgyGr7FfstXTMqtJWdcf3I22hroDv0MPkbycKlkbN62zCh5JrcFUzHKomTlSfEqzaQnWHDg0IaUVkYlo6NeWRyfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=30UsxFmHmKLAyDmhZfRz5WKNFF4i8bqWX+v7pNDaabk=;
+ b=CNSVHgW6REB2frTJOUfEp5qVzgi2bSW5csC1vXm1xCIXyiogge5vNYZ/1hmMuhLI2fjxh2Pa0h/u/35uUy/ww5SZvIhkqxCwGjH2dYRMa259bWIOcsf/PMmnbo1d1oeiYGgHOec+pA7jxIl+EmgzEJjlZ96pMFVhxfDaK69U8luYZO52cYuS2pBjMDEcxa1DEtnK5cEHZDFtguHldMeG0B9TXcRI7B8eoA3AJjlEdffBLD9Nun5UU4zcZJ6HRcB14pYll4OMuBrlaHGU0HCjVcHX99txq91w1+D5EM4y0QGb52KfYoqoxXiLehWcxz7nu2wxT87JbPIuPYFKpEYVaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=30UsxFmHmKLAyDmhZfRz5WKNFF4i8bqWX+v7pNDaabk=;
+ b=yFHwhVD/epuIvE0xxMCTRcM85jfKhsfnvoYoIath8n3oKv2a1p4+AltzlW/b6hBhiRGCYqvd+EwxiDdPymkkswrGJGr9y+XYIuCd48jCeyovEEEoMrjm44SY+3tgy6xvS0488cbXGXEbI+5qHgouyCDwOp1+6/vjakpGERZpAbU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
+ by SA1PR12MB5672.namprd12.prod.outlook.com (2603:10b6:806:23c::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.25; Wed, 3 Jan
+ 2024 08:47:26 +0000
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::9b8e:816d:20b9:9845]) by SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::9b8e:816d:20b9:9845%5]) with mapi id 15.20.7159.013; Wed, 3 Jan 2024
+ 08:47:26 +0000
+Date: Wed, 3 Jan 2024 16:46:58 +0800
+From: Huang Rui <ray.huang@amd.com>
+To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Gert Wollny <gert.wollny@collabora.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ "ernunes@redhat.com" <ernunes@redhat.com>, Alyssa Ross <hi@alyssa.is>,
+ Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "Stabellini, Stefano" <stefano.stabellini@amd.com>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
+ "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>,
+ "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>,
+ Antonio Caggiano <antonio.caggiano@collabora.com>
+Subject: Re: [PATCH v6 03/11] virtio-gpu: Support context init feature with
+ virglrenderer
+Message-ID: <ZZUfAu5vXRWNUwjY@amd.com>
+References: <20231219075320.165227-1-ray.huang@amd.com>
+ <20231219075320.165227-4-ray.huang@amd.com>
+ <CAJ+F1CJ7cH3v9vXy+g-2ANZ1MowprW451dhzSDdsSn=P+c7LFg@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240102201908.1987-2-quintela@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.178,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ+F1CJ7cH3v9vXy+g-2ANZ1MowprW451dhzSDdsSn=P+c7LFg@mail.gmail.com>
+X-ClientProxiedBy: SI2PR04CA0005.apcprd04.prod.outlook.com
+ (2603:1096:4:197::16) To SJ2PR12MB8690.namprd12.prod.outlook.com
+ (2603:10b6:a03:540::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|SA1PR12MB5672:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6cb4165b-007e-4a6e-e416-08dc0c389c41
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: OTwRtRJT5ivHVbZBT+4dTF26k1iInlBQVljjSZTgn23rjJDewhSHIRXJei+jTXkoIPinxQc6oiyt1li5XVXopiofVIMAMNk9sdXePjEC97qHg2EBIjN2fy3Fku0/TF0UvRoEwggt5W/wuXce/EfWZsL5/AAl/ODWdL+Tx1UAQCrkc3IoSWiuEnrQOTuE0CdkNT3tNTe/bV2x0ORn/d4uT0DOPHorske8YYAHnlPqHWuhAnI1TPvrpboPND/IgrMVvFi40qIf3z/9led3QSm83t+0aQtufrAJsbhgMG+66jYasGJxl3Q2UO4HXkBiHwysJT/QGqTcogSHZm0BKVfj4pFUU9aOziwc2GmQlDDTn70icH0ens6/s0vCT9xlU4FFxQiRuJTx3vXk5M1qkZWm7ic8b/iNPQutOloW6ldUgoP++LFTv2TDc42J9RXszgckjfxx+7OOIzySePrko39sZgK1XZYjKWoG1paDD4kRX8M1Fdhxrj4UB8lkW7OmMb8+PpuR06XR+pI1bfUl0wwpCeEo84v7xT/fupmd2RIWi4cIhSHut/iKL8JKDFauErK1
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(346002)(376002)(39860400002)(136003)(396003)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(41300700001)(26005)(2616005)(38100700002)(83380400001)(8676002)(54906003)(6666004)(5660300002)(8936002)(316002)(7416002)(4326008)(2906002)(478600001)(6916009)(66556008)(6486002)(6506007)(53546011)(66476007)(6512007)(66946007)(86362001)(36756003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aGVjRFZGN2x3VHZTbVdWbHlXN3N5RTVpRnl6cGtEVUZ1VHNqcFE1TmtDbFF2?=
+ =?utf-8?B?WTQwUnEveWFwOXNYVElEMmltNDZVZFExNktRbkRSejYzTWw4b29qSlQ2S2Fo?=
+ =?utf-8?B?eUhxM28xSHZ0Tm1wdW1BSGFnYi8zT2hLT1E5R3lTWjUvdDB4bGFDeUt6Y3Zt?=
+ =?utf-8?B?Mk1OejdFb3l1eEJYK3dvQ3R1OGJkZ3Y2RG1YaEJDZzF6TTdITzZNazNYVzh4?=
+ =?utf-8?B?ZjNwRmxlalZ3VmdwSjJiTzlDbHM5NFlscWZPYnYvdzFyV0dJdi92Sk5xNTVB?=
+ =?utf-8?B?N01MN3V4cXFtVEM3YU5sbGNGOEkybHZSZE5OQnMxcXNDZ3RoVkxJS0ZLRFlm?=
+ =?utf-8?B?VmNReG1WT1hkb3RvUU1jcDFUbS9ySEoyd1ZDQ052bW95YytDRVRZcE9wWmcz?=
+ =?utf-8?B?OEQzZHJMWDRuK0k4d0IyTFpBTHBnWEYra09ONkN3ZFRxSzdya0RJSGljRlRs?=
+ =?utf-8?B?aktReWEwdE9jL0VkSTlLTHp2Uk1ESE1Sa21BdlRSNkt2U0ttcFZBWFNmQTFG?=
+ =?utf-8?B?UVJWQ0tySTlsTmc1SmlkVWRuWVE4djZDTnhoOVhYVlBGR1JtQy96cVU1RXhS?=
+ =?utf-8?B?bW85eU5KcVBZT0lITW5Pc0xiT25HbHVpOUdwNlp4SGR0VDdnZUpLZHNBYkVU?=
+ =?utf-8?B?cTRpRGhCa1hscU9EVUlxUG5IVWM1UEtNQnViQzlzZVRUTzBrVEkxbFJGa3pL?=
+ =?utf-8?B?YVBPNWROVDJ3WU1qZU1uUmhHdXVwZHZwN2hkejlkc0dzVXZSaWh1U2ZWNmNF?=
+ =?utf-8?B?UDJCQmhlWHlyRFFLT2hyVklyeU9yQ21Ga0lPOFlKa2g1eUV2cTJDSTUwaDVt?=
+ =?utf-8?B?RDloZWV5Wm1nNmZaRVU1emFta2NqWmZpMDRwTjlSNzg4R00zaFVLUllzbWRC?=
+ =?utf-8?B?dERpYkhUeXIweFFTb2FKMnl5LzBvb3N1RWlDWXNUSG0vY0hsUXo5SysvSFBi?=
+ =?utf-8?B?bUZJallMTk1DNGxhUGpObGtNVmZWVDlDaS8wcmpFTXAzZUsrVVZXdlVtN3pE?=
+ =?utf-8?B?STA2Q2VaZHZwU3BqaDNYaEUweUNzdE8zSzdFQlNwY2MwamdzWGdDMTByK09r?=
+ =?utf-8?B?SnZMaDNSejAxNFFVVUpOc1U0R1dmZFRXOGFQRGFLS3d1THNpYWZzanJEZ29C?=
+ =?utf-8?B?T1pzSnBzQ3JvNHNVT0RGZkNGN0V1TlZtc2dpS3pPZzMzbnlMV1pqT3UwZ3cr?=
+ =?utf-8?B?QjM0UzdRTTdVdjEySlJHbDBLeS9yL3pteUUvaW5oRVh5R1N1dUtTR1FBSnE1?=
+ =?utf-8?B?TVZCQzdPMGRYaFVvMlpOazdxNEtZQjBQc25oOGg1djVHREhKTDRpb1lmOHM0?=
+ =?utf-8?B?MEd5cmxWeTMxNUZKenNKWW1JNG00S2xsc0thZklmWFRZa3oxdUJNUlZQUHpT?=
+ =?utf-8?B?azJTVlg4RWp0aVRJaVEzSm92RDN0QXNWc0ZyTzE1RnlWR0tnOEw2RWVsR2V6?=
+ =?utf-8?B?Ti9QNFE0ZFZOUXJWK1o0QUtOM2VXdURDSVhnZm91dU43VUV3cStTOVhHRTBa?=
+ =?utf-8?B?WVYydW82ZFlrdUY1MlNkWXB0aTJNVWRka0FvNkRUdnJ4WGhnRHVKNGVrQ0Rn?=
+ =?utf-8?B?U2FVWDFBaEVVbkxqQ09pS1YvN3pSVWFLMGpxcTVWakkxOFVjQld3Z3M1eXY1?=
+ =?utf-8?B?aWZBeVJ3T0dJTVc2NjNoN09RUko1ZG01cnVJdUVVbDk5azg4NEU1SjBPS0gx?=
+ =?utf-8?B?Mmw4SkxEdWpSNmdDZ0VLZy95UC8zRmpQQVgxK2Z3cWozaG1hcU03SitscnNp?=
+ =?utf-8?B?VUo2UXY0TW5zQlc4eEFxR0hMdkMxM0UxTTltY3BGNjVGR2wwRmFocDR4M3lj?=
+ =?utf-8?B?aG1SdHI4bWliSW5hbG4yei85VC9iVlBlZmNMckE3TWw1RzFBV3BMZ1VRUW1N?=
+ =?utf-8?B?Y2Y1cmltSG9lbkVlWUJpNUlpK3JqSnc5Skw5Sy8yV2VVTE5OUDBhbnBlZitP?=
+ =?utf-8?B?eEtMYmJEUlQ0WkY3N1FCNjJCMkdKUWU2WTVBcFJqTnE1RXc4clFSWkg0MDla?=
+ =?utf-8?B?czhoM1V6T3ArVFlMWXplOVVhVVA3dlZjTDVtS0VsV3NCTzBHZXV4dThDTEFo?=
+ =?utf-8?B?SEQzSkZiTnFWUXpKdFJnNkk5YTFUUjRXNERlN284N0JRQ3c1VnpENXJnVmRi?=
+ =?utf-8?Q?QqT77XIa5Uu5W0BcJV+L2cm2V?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6cb4165b-007e-4a6e-e416-08dc0c389c41
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jan 2024 08:47:26.2247 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: O55xT5eNe9QJH70aJCxe517aD0oV+zuQDThkDAL4vx6rIdWtZn0tGYm2DxDrJFy9UNMZUqFaIoutMGglgs2a8Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5672
+Received-SPF: softfail client-ip=2a01:111:f403:2416::600;
+ envelope-from=Ray.Huang@amd.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.178,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,30 +167,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 02, 2024 at 09:19:07PM +0100, Juan Quintela wrote:
-> I am leaving Red Hat, and as part of that I am leaving Migration
-> maintenarship.
+On Tue, Jan 02, 2024 at 07:43:20PM +0800, Marc-André Lureau wrote:
+> Hi
 > 
-> You are left in good hands with Peter and Fabiano.
+> On Tue, Dec 19, 2023 at 11:54 AM Huang Rui <ray.huang@amd.com> wrote:
+> >
+> > Patch "virtio-gpu: CONTEXT_INIT feature" has added the context_init
+> > feature flags.
+> > We would like to enable the feature with virglrenderer, so add to create
+> > virgl renderer context with flags using context_id when valid.
+> >
+> > Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+> > Signed-off-by: Huang Rui <ray.huang@amd.com>
+> > ---
+> >
+> > Changes in v6:
+> > - Handle the case while context_init is disabled.
+> > - Enable context_init by default.
+> >
+> >  hw/display/virtio-gpu-virgl.c | 13 +++++++++++--
+> >  hw/display/virtio-gpu.c       |  4 ++++
+> >  2 files changed, 15 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+> > index 8bb7a2c21f..5bbc8071b2 100644
+> > --- a/hw/display/virtio-gpu-virgl.c
+> > +++ b/hw/display/virtio-gpu-virgl.c
+> > @@ -106,8 +106,17 @@ static void virgl_cmd_context_create(VirtIOGPU *g,
+> >      trace_virtio_gpu_cmd_ctx_create(cc.hdr.ctx_id,
+> >                                      cc.debug_name);
+> >
+> > -    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen,
+> > -                                  cc.debug_name);
+> > +#ifdef HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS
+> > +    if (cc.context_init && virtio_gpu_context_init_enabled(g->parent_obj.conf)) {
+> > +        virgl_renderer_context_create_with_flags(cc.hdr.ctx_id,
+> > +                                                 cc.context_init,
+> > +                                                 cc.nlen,
+> > +                                                 cc.debug_name);
+> > +        return;
+> > +    }
+> > +#endif
+> > +
+> > +    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen, cc.debug_name);
+> >  }
+> >
+> >  static void virgl_cmd_context_destroy(VirtIOGPU *g,
+> > diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+> > index b016d3bac8..8b2f4c6be3 100644
+> > --- a/hw/display/virtio-gpu.c
+> > +++ b/hw/display/virtio-gpu.c
+> > @@ -1619,6 +1619,10 @@ static Property virtio_gpu_properties[] = {
+> >      DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
+> >                      VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
+> >      DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0),
+> > +#ifdef HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS
+> > +    DEFINE_PROP_BIT("context_init", VirtIOGPU, parent_obj.conf.flags,
+> > +                    VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED, true),
+> > +#endif
 > 
-> Thanks for all the fish.
+> Does it make sense to make this configurable? If the context to be
+> created asked for a capset id but the one created doesn't respect it,
+> what's the outcome?
 > 
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> It looks like it should instead set cmd->error.
+> 
 
-We lose two entries for migration in just a few days.  That's always sad.
-
-Since I joined QEMU late, so I don't know much for the past, but besides
-those many migration patches that I already saw, you're also the first room
-mate for my first KVM forum visit.  I just need more English KongFu to
-digest all the jokes, and I'm still trying to improve (even not much. :-).
-
-Thanks for all the work and help, and it's my honor to have worked with you
-and also Dave. I wish QEMU can have a CREDITS file, but I didn't yet find
-one.  This will be in the next pull, no matter from Fabiano or myself.
+Hmm, how about setting VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED in
+virtio_gpu_gl_device_realize(). And then drop context_init DEFINE_PROP_BIT
+in virtio_gpu_properties. We treat all gl device as context_init enabled
+and let virglrenderer report the error if command fails.
 
 Thanks,
-
--- 
-Peter Xu
-
+Ray
 
