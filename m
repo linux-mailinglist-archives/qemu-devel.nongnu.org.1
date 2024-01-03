@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2EF823616
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 21:06:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B088F82362F
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 21:09:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL7VJ-0004tX-BL; Wed, 03 Jan 2024 15:06:17 -0500
+	id 1rL7YR-0002sx-P1; Wed, 03 Jan 2024 15:09:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rL7V5-0004gN-2z
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 15:06:04 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1rL7YO-0002q9-Lf
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 15:09:29 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rL7V2-0002C3-2y
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 15:06:02 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ id 1rL7YM-00030z-LH
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 15:09:28 -0500
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 403JXM0R030826; Wed, 3 Jan 2024 20:05:55 GMT
+ 403JXXkI006835; Wed, 3 Jan 2024 20:05:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=8iTZBQ+L4IocD6DvgOzcUZKcozm1YvazMNDfv4SSwt8=;
- b=EudXp7z1QYZLSk137MuArgyrgTca8JnV1i7EDQw7BTJGHe/EEQWEEAQDP+uBXNAxJehY
- ANo1OBfrzDnnFfRVqIpbwUoNn1teziCaK0axu2bUfXY5OZQlhrcAl5zXojwFFu8MbZl5
- 0+j13EUwC8cqCPa1HE2B+Crh/e7lnoOhQ04+yW+k8r1CaVYwQHETGLB+h/eTTaQdT0aT
- Ho757vVSqzBdnAeC4YrKrSbKBi/A67VurN8mLJIN+QXsnZeULumfCjg28b71xUaOgJ7y
- tae0URaGhuaavpSnq7RoSjTAVDZNQdSIg+iHJN07Br1oKyMHJazY7eFlBzL1I6j2W4sH YA== 
+ bh=WOx16+Qz+oIai3FaefU+mhmYaviyvUmdvn/+rSLkfkU=;
+ b=WNpZHN8IYv4+ikM76mfUkzE9ClUQ8o2OPr1k+1b9oh6Qc+BzOZUKHVf3bmugL6/rX6zS
+ PRFwp5luBehnF/2vlYj7kj743LUFttXlLIf3R7kEOSie5qnZ+rHWnjwie6q3NYXg6vU2
+ gWvZrth4CKEY8vRxy1LQQXkM8HmyBMduaKCK8d2VdF/sU0WPNEIKzkXofiBfTJW/mu1N
+ 8EOny4KGIdhwORkdYGrZ/eMWkDEw6vIv1mzAXtlCJM0RsHSTemmw4MFoYwzFi76Bd+S6
+ SN0CRhMsVElz5EEiX3FjvIPDgCPubFKMg0gMvZZBaw1WFwDZBxU0Jel1u38EhFB1DTWj MA== 
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3va9me5qq7-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vabrv5s8f-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 03 Jan 2024 20:05:54 +0000
+ Wed, 03 Jan 2024 20:05:55 +0000
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 403K23o7013831; Wed, 3 Jan 2024 20:05:53 GMT
+ with ESMTP id 403K22g9013704; Wed, 3 Jan 2024 20:05:54 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3vddsvtbm9-1
+ 3vddsvtbna-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 03 Jan 2024 20:05:53 +0000
+ Wed, 03 Jan 2024 20:05:54 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 403K2UZv020511;
- Wed, 3 Jan 2024 20:05:53 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 403K2UZx020511;
+ Wed, 3 Jan 2024 20:05:54 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 3vddsvtba4-11; Wed, 03 Jan 2024 20:05:52 +0000
+ ESMTP id 3vddsvtba4-12; Wed, 03 Jan 2024 20:05:54 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -65,9 +65,9 @@ Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Paul Durrant <paul@xen.org>, Eric Blake <eblake@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V9 10/12] tests/qtest: option to suspend during migration
-Date: Wed,  3 Jan 2024 12:05:39 -0800
-Message-Id: <1704312341-66640-11-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V9 11/12] tests/qtest: precopy migration with suspend
+Date: Wed,  3 Jan 2024 12:05:40 -0800
+Message-Id: <1704312341-66640-12-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1704312341-66640-1-git-send-email-steven.sistare@oracle.com>
 References: <1704312341-66640-1-git-send-email-steven.sistare@oracle.com>
@@ -79,10 +79,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  suspectscore=0 mlxscore=0 adultscore=0 phishscore=0 mlxlogscore=999
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2401030162
-X-Proofpoint-ORIG-GUID: GOspUNsx2GP5SV7qAGLm83OiF0_PLNkM
-X-Proofpoint-GUID: GOspUNsx2GP5SV7qAGLm83OiF0_PLNkM
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: Y-6Pr8GkJaXmMlnF4m9x9UgLH130Lh9j
+X-Proofpoint-GUID: Y-6Pr8GkJaXmMlnF4m9x9UgLH130Lh9j
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,236 +106,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an option to suspend the src in a-b-bootblock.S, which puts the guest
-in S3 state after one round of writing to memory.  The option is enabled by
-poking a 1 into the suspend_me word in the boot block prior to starting the
-src vm.  Generate symbol offsets in a-b-bootblock.h so that the suspend_me
-offset is known.  Generate the bootblock for each test, because suspend_me
-may differ for each.
+Add a test case to verify that the suspended state is handled correctly
+during live migration precopy.  The test suspends the src, migrates, then
+wakes the dest.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Acked-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- tests/migration/i386/Makefile        |  5 ++--
- tests/migration/i386/a-b-bootblock.S | 50 +++++++++++++++++++++++++++++++++---
- tests/migration/i386/a-b-bootblock.h | 26 +++++++++++++------
- tests/qtest/migration-test.c         | 12 ++++++---
- 4 files changed, 77 insertions(+), 16 deletions(-)
+ tests/qtest/migration-helpers.c |  3 ++
+ tests/qtest/migration-helpers.h |  2 ++
+ tests/qtest/migration-test.c    | 62 +++++++++++++++++++++++++++++++++++++++--
+ 3 files changed, 64 insertions(+), 3 deletions(-)
 
-diff --git a/tests/migration/i386/Makefile b/tests/migration/i386/Makefile
-index 5c03241..37a72ae 100644
---- a/tests/migration/i386/Makefile
-+++ b/tests/migration/i386/Makefile
-@@ -4,9 +4,10 @@
- .PHONY: all clean
- all: a-b-bootblock.h
+diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+index fd3b94e..37e8e81 100644
+--- a/tests/qtest/migration-helpers.c
++++ b/tests/qtest/migration-helpers.c
+@@ -32,6 +32,9 @@ bool migrate_watch_for_events(QTestState *who, const char *name,
+     if (g_str_equal(name, "STOP")) {
+         state->stop_seen = true;
+         return true;
++    } else if (g_str_equal(name, "SUSPEND")) {
++        state->suspend_seen = true;
++        return true;
+     } else if (g_str_equal(name, "RESUME")) {
+         state->resume_seen = true;
+         return true;
+diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+index 3d32699..b478549 100644
+--- a/tests/qtest/migration-helpers.h
++++ b/tests/qtest/migration-helpers.h
+@@ -18,6 +18,8 @@
+ typedef struct QTestMigrationState {
+     bool stop_seen;
+     bool resume_seen;
++    bool suspend_seen;
++    bool suspend_me;
+ } QTestMigrationState;
  
--a-b-bootblock.h: x86.bootsect
-+a-b-bootblock.h: x86.bootsect x86.o
- 	echo "$$__note" > header.tmp
- 	xxd -i $< | sed -e 's/.*int.*//' >> header.tmp
-+	nm x86.o | awk '{print "#define SYM_"$$3" 0x"$$1}' >> header.tmp
- 	mv header.tmp $@
- 
- x86.bootsect: x86.boot
-@@ -16,7 +17,7 @@ x86.boot: x86.o
- 	$(CROSS_PREFIX)objcopy -O binary $< $@
- 
- x86.o: a-b-bootblock.S
--	$(CROSS_PREFIX)gcc -m32 -march=i486 -c $< -o $@
-+	$(CROSS_PREFIX)gcc -I.. -m32 -march=i486 -c $< -o $@
- 
- clean:
- 	@rm -rf *.boot *.o *.bootsect
-diff --git a/tests/migration/i386/a-b-bootblock.S b/tests/migration/i386/a-b-bootblock.S
-index 6bb9999..6f39eb6 100644
---- a/tests/migration/i386/a-b-bootblock.S
-+++ b/tests/migration/i386/a-b-bootblock.S
-@@ -9,6 +9,23 @@
- #
- # Author: dgilbert@redhat.com
- 
-+#include "migration-test.h"
-+
-+#define ACPI_ENABLE         0xf1
-+#define ACPI_PORT_SMI_CMD   0xb2
-+#define ACPI_PM_BASE        0x600
-+#define PM1A_CNT_OFFSET     4
-+
-+#define ACPI_SCI_ENABLE     0x0001
-+#define ACPI_SLEEP_TYPE     0x0400
-+#define ACPI_SLEEP_ENABLE   0x2000
-+#define SLEEP (ACPI_SCI_ENABLE + ACPI_SLEEP_TYPE + ACPI_SLEEP_ENABLE)
-+
-+#define LOW_ADDR            X86_TEST_MEM_START
-+#define HIGH_ADDR           X86_TEST_MEM_END
-+
-+/* Save the suspended status at an address that is not written in the loop. */
-+#define suspended           (X86_TEST_MEM_START + 4)
- 
- .code16
- .org 0x7c00
-@@ -35,8 +52,8 @@ start:             # at 0x7c00 ?
-         mov %eax,%ds
- 
- # Start from 1MB
--.set TEST_MEM_START, (1024*1024)
--.set TEST_MEM_END, (100*1024*1024)
-+.set TEST_MEM_START, X86_TEST_MEM_START
-+.set TEST_MEM_END, X86_TEST_MEM_END
- 
-         mov $65,%ax
-         mov $0x3f8,%dx
-@@ -69,7 +86,30 @@ innerloop:
-         mov $0x3f8,%dx
-         outb %al,%dx
- 
--        jmp mainloop
-+        # should this test suspend?
-+        mov (suspend_me),%eax
-+        cmp $0,%eax
-+        je mainloop
-+
-+        # are we waking after suspend?  do not suspend again.
-+        mov $suspended,%eax
-+        mov (%eax),%eax
-+        cmp $1,%eax
-+        je mainloop
-+
-+        # enable acpi
-+        mov $ACPI_ENABLE,%al
-+        outb %al,$ACPI_PORT_SMI_CMD
-+
-+        # suspend to ram
-+        mov $suspended,%eax
-+        movl $1,(%eax)
-+        mov $SLEEP,%ax
-+        mov $(ACPI_PM_BASE + PM1A_CNT_OFFSET),%dx
-+        outw %ax,%dx
-+        # not reached.  The wakeup causes reset and restart at 0x7c00, and we
-+        # do not save and restore registers as a real kernel would do.
-+
- 
-         # GDT magic from old (GPLv2)  Grub startup.S
-         .p2align        2       /* force 4-byte alignment */
-@@ -95,6 +135,10 @@ gdtdesc:
-         .word   0x27                    /* limit */
-         .long   gdt                     /* addr */
- 
-+        /* test launcher can poke a 1 here to exercise suspend */
-+suspend_me:
-+        .int  0
-+
- /* I'm a bootable disk */
- .org 0x7dfe
-         .byte 0x55
-diff --git a/tests/migration/i386/a-b-bootblock.h b/tests/migration/i386/a-b-bootblock.h
-index 5b52391..c83f871 100644
---- a/tests/migration/i386/a-b-bootblock.h
-+++ b/tests/migration/i386/a-b-bootblock.h
-@@ -4,7 +4,7 @@
-  * the header and the assembler differences in your patch submission.
-  */
- unsigned char x86_bootsect[] = {
--  0xfa, 0x0f, 0x01, 0x16, 0x8c, 0x7c, 0x66, 0xb8, 0x01, 0x00, 0x00, 0x00,
-+  0xfa, 0x0f, 0x01, 0x16, 0xb8, 0x7c, 0x66, 0xb8, 0x01, 0x00, 0x00, 0x00,
-   0x0f, 0x22, 0xc0, 0x66, 0xea, 0x20, 0x7c, 0x00, 0x00, 0x08, 0x00, 0x00,
-   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xe4, 0x92, 0x0c, 0x02,
-   0xe6, 0x92, 0xb8, 0x10, 0x00, 0x00, 0x00, 0x8e, 0xd8, 0x66, 0xb8, 0x41,
-@@ -13,13 +13,13 @@ unsigned char x86_bootsect[] = {
-   0x40, 0x06, 0x7c, 0xf1, 0xb8, 0x00, 0x00, 0x10, 0x00, 0xfe, 0x00, 0x05,
-   0x00, 0x10, 0x00, 0x00, 0x3d, 0x00, 0x00, 0x40, 0x06, 0x7c, 0xf2, 0xfe,
-   0xc3, 0x80, 0xe3, 0x3f, 0x75, 0xe6, 0x66, 0xb8, 0x42, 0x00, 0x66, 0xba,
--  0xf8, 0x03, 0xee, 0xeb, 0xdb, 0x8d, 0x76, 0x00, 0x00, 0x00, 0x00, 0x00,
--  0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00, 0x00, 0x9a, 0xcf, 0x00,
--  0xff, 0xff, 0x00, 0x00, 0x00, 0x92, 0xcf, 0x00, 0x27, 0x00, 0x74, 0x7c,
--  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
--  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
--  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
--  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+  0xf8, 0x03, 0xee, 0xa1, 0xbe, 0x7c, 0x00, 0x00, 0x83, 0xf8, 0x00, 0x74,
-+  0xd3, 0xb8, 0x04, 0x00, 0x10, 0x00, 0x8b, 0x00, 0x83, 0xf8, 0x01, 0x74,
-+  0xc7, 0xb0, 0xf1, 0xe6, 0xb2, 0xb8, 0x04, 0x00, 0x10, 0x00, 0xc7, 0x00,
-+  0x01, 0x00, 0x00, 0x00, 0x66, 0xb8, 0x01, 0x24, 0x66, 0xba, 0x04, 0x06,
-+  0x66, 0xef, 0x66, 0x90, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+  0xff, 0xff, 0x00, 0x00, 0x00, 0x9a, 0xcf, 0x00, 0xff, 0xff, 0x00, 0x00,
-+  0x00, 0x92, 0xcf, 0x00, 0x27, 0x00, 0xa0, 0x7c, 0x00, 0x00, 0x00, 0x00,
-   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-@@ -49,3 +49,13 @@ unsigned char x86_bootsect[] = {
-   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0xaa
- };
- 
-+#define SYM_do_zero 0x00007c3d
-+#define SYM_gdt 0x00007ca0
-+#define SYM_gdtdesc 0x00007cb8
-+#define SYM_innerloop 0x00007c51
-+#define SYM_mainloop 0x00007c4c
-+#define SYM_pre_zero 0x00007c38
-+#define SYM_start 0x00007c00
-+#define SYM_suspend_me 0x00007cbe
-+#define SYM_TEST_MEM_END 0x06400000
-+#define SYM_TEST_MEM_START 0x00100000
+ bool migrate_watch_for_events(QTestState *who, const char *name,
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 41fc837..2e2ab6a 100644
+index 2e2ab6a..a3bfbf2 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -133,7 +133,7 @@ static char *bootpath;
- #include "tests/migration/aarch64/a-b-kernel.h"
- #include "tests/migration/s390x/a-b-bios.h"
- 
--static void bootfile_create(char *dir)
-+static void bootfile_create(char *dir, bool suspend_me)
- {
-     const char *arch = qtest_get_arch();
-     unsigned char *content;
-@@ -143,6 +143,7 @@ static void bootfile_create(char *dir)
-     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
-         /* the assembled x86 boot sector should be exactly one sector large */
-         g_assert(sizeof(x86_bootsect) == 512);
-+        x86_bootsect[SYM_suspend_me - SYM_start] = suspend_me;
-         content = x86_bootsect;
-         len = sizeof(x86_bootsect);
-     } else if (g_str_equal(arch, "s390x")) {
-@@ -646,6 +647,8 @@ typedef struct {
-     bool use_dirty_ring;
-     const char *opts_source;
-     const char *opts_target;
-+    /* suspend the src before migrating to dest. */
-+    bool suspend_me;
- } MigrateStart;
- 
+@@ -178,7 +178,7 @@ static void bootfile_delete(void)
  /*
-@@ -767,6 +770,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+  * Wait for some output in the serial output file,
+  * we get an 'A' followed by an endless string of 'B's
+- * but on the destination we won't have the A.
++ * but on the destination we won't have the A (unless we enabled suspend/resume)
+  */
+ static void wait_for_serial(const char *side)
+ {
+@@ -245,6 +245,13 @@ static void wait_for_resume(QTestState *who, QTestMigrationState *state)
+     }
+ }
  
++static void wait_for_suspend(QTestState *who, QTestMigrationState *state)
++{
++    if (state->suspend_me && !state->suspend_seen) {
++        qtest_qmp_eventwait(who, "SUSPEND");
++    }
++}
++
+ /*
+  * It's tricky to use qemu's migration event capability with qtest,
+  * events suddenly appearing confuse the qmp()/hmp() responses.
+@@ -299,7 +306,7 @@ static void wait_for_migration_pass(QTestState *who)
+ {
+     uint64_t pass, prev_pass = 0, changes = 0;
+ 
+-    while (changes < 2 && !src_state.stop_seen) {
++    while (changes < 2 && !src_state.stop_seen && !src_state.suspend_seen) {
+         usleep(1000);
+         pass = get_migration_pass(who);
+         changes += (pass != prev_pass);
+@@ -584,6 +591,12 @@ static void migrate_wait_for_dirty_mem(QTestState *from,
+         usleep(1000 * 10);
+     } while (qtest_readq(to, marker_address) != MAGIC_MARKER);
+ 
++
++    /* If suspended, src only iterates once, and watch_byte may never change */
++    if (src_state.suspend_me) {
++        return;
++    }
++
+     /*
+      * Now ensure that already transferred bytes are
+      * dirty again from the guest workload. Note the
+@@ -771,6 +784,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
      dst_state = (QTestMigrationState) { };
      src_state = (QTestMigrationState) { };
-+    bootfile_create(tmpfs, args->suspend_me);
-+
+     bootfile_create(tmpfs, args->suspend_me);
++    src_state.suspend_me = args->suspend_me;
+ 
      if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
          memory_size = "150M";
- 
-@@ -2980,7 +2985,9 @@ static int64_t get_limit_rate(QTestState *who)
- static QTestState *dirtylimit_start_vm(void)
- {
-     QTestState *vm = NULL;
--    g_autofree gchar *
-+    g_autofree gchar *cmd = NULL;
-+
-+    bootfile_create(tmpfs, false);
-     cmd = g_strdup_printf("-accel kvm,dirty-ring-size=4096 "
-                           "-name dirtylimit-test,debug-threads=on "
-                           "-m 150M -smp 1 "
-@@ -3329,7 +3336,6 @@ int main(int argc, char **argv)
-                        g_get_tmp_dir(), err->message);
+@@ -1717,6 +1731,7 @@ static void test_precopy_common(MigrateCommon *args)
+     /* Wait for the first serial output from the source */
+     if (args->result == MIG_TEST_SUCCEED) {
+         wait_for_serial("src_serial");
++        wait_for_suspend(from, &src_state);
      }
-     g_assert(tmpfs);
--    bootfile_create(tmpfs);
+ 
+     if (args->live) {
+@@ -1793,6 +1808,11 @@ static void test_precopy_common(MigrateCommon *args)
+ 
+         wait_for_resume(to, &dst_state);
+ 
++        if (args->start.suspend_me) {
++            /* wakeup succeeds only if guest is suspended */
++            qtest_qmp_assert_success(to, "{'execute': 'system_wakeup'}");
++        }
++
+         wait_for_serial("dest_serial");
+     }
+ 
+@@ -1879,6 +1899,34 @@ static void test_precopy_unix_plain(void)
+     test_precopy_common(&args);
+ }
+ 
++static void test_precopy_unix_suspend_live(void)
++{
++    g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
++    MigrateCommon args = {
++        .listen_uri = uri,
++        .connect_uri = uri,
++        /*
++         * despite being live, the test is fast because the src
++         * suspends immediately.
++         */
++        .live = true,
++        .start.suspend_me = true,
++    };
++
++    test_precopy_common(&args);
++}
++
++static void test_precopy_unix_suspend_notlive(void)
++{
++    g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
++    MigrateCommon args = {
++        .listen_uri = uri,
++        .connect_uri = uri,
++        .start.suspend_me = true,
++    };
++
++    test_precopy_common(&args);
++}
+ 
+ static void test_precopy_unix_dirty_ring(void)
+ {
+@@ -3279,7 +3327,7 @@ static bool kvm_dirty_ring_supported(void)
+ int main(int argc, char **argv)
+ {
+     bool has_kvm, has_tcg;
+-    bool has_uffd;
++    bool has_uffd, is_x86;
+     const char *arch;
+     g_autoptr(GError) err = NULL;
+     const char *qemu_src = getenv(QEMU_ENV_SRC);
+@@ -3309,6 +3357,7 @@ int main(int argc, char **argv)
+ 
+     has_uffd = ufd_version_check();
+     arch = qtest_get_arch();
++    is_x86 = !strcmp(arch, "i386") || !strcmp(arch, "x86_64");
+ 
+     /*
+      * On ppc64, the test only works with kvm-hv, but not with kvm-pr and TCG
+@@ -3339,6 +3388,13 @@ int main(int argc, char **argv)
  
      module_call_init(MODULE_INIT_QOM);
  
++    if (is_x86) {
++        qtest_add_func("/migration/precopy/unix/suspend/live",
++                       test_precopy_unix_suspend_live);
++        qtest_add_func("/migration/precopy/unix/suspend/notlive",
++                       test_precopy_unix_suspend_notlive);
++    }
++
+     if (has_uffd) {
+         qtest_add_func("/migration/postcopy/plain", test_postcopy);
+         qtest_add_func("/migration/postcopy/recovery/plain",
 -- 
 1.8.3.1
 
