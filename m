@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E20A823360
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 18:36:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A986823354
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 18:35:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL58E-0003fx-Th; Wed, 03 Jan 2024 12:34:18 -0500
+	id 1rL588-0003YD-PG; Wed, 03 Jan 2024 12:34:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rL584-0003Wy-G6
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:09 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1rL57w-0003T6-CH
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:00 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rL57q-0002Oa-HQ
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:07 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40d3c4bfe45so111700695e9.1
+ id 1rL57p-0002No-PA
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:00 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40d3c4bfe45so111700485e9.1
  for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 09:33:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704303233; x=1704908033; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704303231; x=1704908031; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qzxoAeOdiga+52AiTCmsWe8ywFNoeoZ5ZVuxsnjrTLU=;
- b=ZLps0+nU4+JNR/NQZZd/MN36RMkw1RydMXgzftF+ZsmXcXuYRV2G1vmqHuR+flMRUz
- YZxuq4neTtF+FCgSh3AtmknIrUyrmVH36lZmzTi8A9L3dMVe6ukiEZx9G9Xff1wVqenf
- 67VBAAQ2TuLv5u81Wih0cRgqvvex8hWVEfsFfE62TkndggnanGtevLTecgfxwImSBkOm
- IJLJG7ekrS52ekogCYbc7bkLEVTACYhxYe0Ac0v5j7XNdFgXvUmhFRldn4+LnTuInl7z
- 0Y1BHtsx9DIUGN3nJbbxdnIVZLWEObWwDsGIEZh/gQXqH3TZ6XsAQPjQvXZ9pzfTUPVc
- FCRg==
+ bh=Aeln3++ASlFUfIwMVf5xyvW2uMLaZ4UxQn5nypBC6DU=;
+ b=U4drxGlJ/tkZXc9hvZ3os6xuYTZJF5h49z3k8E2J+jUzucL7Sk9MvZv9AAPAyT7R+9
+ tT2dswG0KJ2kD4qBWjbtVOmeatZY46+0ij9eWc3imoGgPWsArqLR54wxqnUEMAE4urvM
+ tumWUWjG9SN3lQ6Sd3HzO3IYHQ12M1rWOE1r2/PNCuDww8365ae18SgVchmtYpVYd9n4
+ c0jE5BIiJw9ScQJlRsZB6mIQeXjkyaWKD4maFnj6FrLlgqjP20+uBlL2krhA7awdHB5b
+ cfusSNoaOqDJ+haTpVpXM90oG5KeIsSySZ8Qh85r4K6WQeuzd5lBNQVu9etTBKgZpc0N
+ RVSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704303233; x=1704908033;
+ d=1e100.net; s=20230601; t=1704303231; x=1704908031;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qzxoAeOdiga+52AiTCmsWe8ywFNoeoZ5ZVuxsnjrTLU=;
- b=jMIjyEKP5H89qjoqWIZsSzzUJh14PgnfkLbcN3umTAn84fZYuoxgaT9Qs5YEHGQme3
- xuJgG8jBE9jzoEvF/WcDY5kFyye2Jm3LmP19338G2b05LqI1EFnEKIPbsjapYlPy1jO1
- pklDPhlWTU6vj//kkQ33V+NKMj8qQpFZFa0NGt73aAfCQSluEjJ5cJ8QhEepSwSA3PNf
- K1O5d8KTKoFtNrEp+/OtyDoYQGT5BsHoevZiIVpQC1JWGPxts1oAxwzSjEyVpaG8W9eb
- co2rYZ9XFPn37iN8tunKBwBmszJnbseEuQXouN4Qn2mIM+55vbdsMXW+heCb4c9cyaVU
- acSg==
-X-Gm-Message-State: AOJu0YytLtxK6cLJ1aqbnoLxLyS07cscqauBZrSpXUtY2H+zNgcmw7cB
- xBcwRqT8AAieBzAPz9Nr5S8SB/afiO/SKw==
-X-Google-Smtp-Source: AGHT+IGhE7/q82Jf4z4D1OPjoyeetuf4+aSfmg/R61bfYTK6tVdLZR8E2VO87yUiQHcrTBnDAn/iZg==
-X-Received: by 2002:a05:600c:a0b:b0:40d:7da9:8662 with SMTP id
- z11-20020a05600c0a0b00b0040d7da98662mr2292525wmp.338.1704303233122; 
- Wed, 03 Jan 2024 09:33:53 -0800 (PST)
+ bh=Aeln3++ASlFUfIwMVf5xyvW2uMLaZ4UxQn5nypBC6DU=;
+ b=K344hPBa9iAcdIZP5RtNhJc3ISkz3dGIEtqkF8v+kODzqRWzaTGKzXjoEOa3BNNULp
+ MyPd0/nCckGhBVgdzQ0JqrmQQbjOtqImiVa3PhGY3cex0GvidfCwpoLjDZa7JS9/alcc
+ d2NHSojmrew8PG4Lgct5HSHWN72JffiGB8QRs6VDr02NDR4sSejoA/Xrd19I7UpwD8nv
+ eXUptj1rP5EVx0+UrpRujFyG38hqfWZYBGQ+Xcc4xZZXBj+vyNOAXUh1jlVKtrdfSs+H
+ nSIkMde1jgnpGskDCqpVz4Jei7f3xTEOgJ3O1J4TxJRLiQ2tPmcTpKpBiKuUPofg434E
+ h0fg==
+X-Gm-Message-State: AOJu0YwddX65vjK3Wg9rv8rr1CUnu7rBTAzUdYvhpRHnVPX+kfL+Vkr9
+ gyRRhEXYKqpntxHOckfY5R7AxdwQKT7FRg==
+X-Google-Smtp-Source: AGHT+IHtCR4hmp3Vukr9hzN46Gz71ep8bM3kzLyD4gCRhfkpq3Ia3b7dQ3Ru8mfmCaqnt5tCeWxVgQ==
+X-Received: by 2002:a05:600c:68d7:b0:40d:5941:f16a with SMTP id
+ jd23-20020a05600c68d700b0040d5941f16amr3530996wmb.273.1704303231484; 
+ Wed, 03 Jan 2024 09:33:51 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- t12-20020adfe10c000000b00336f43fa654sm18186652wrz.22.2024.01.03.09.33.49
+ je2-20020a05600c1f8200b0040d934f48d3sm750166wmb.32.2024.01.03.09.33.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 03 Jan 2024 09:33:50 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7EB765F92F;
+ by draig.lan (Postfix) with ESMTP id 93F3B5F932;
  Wed,  3 Jan 2024 17:33:49 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,17 +91,17 @@ Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v2 02/43] tests/avocado: use snapshot=on in kvm_xen_guest
-Date: Wed,  3 Jan 2024 17:33:08 +0000
-Message-Id: <20240103173349.398526-3-alex.bennee@linaro.org>
+Subject: [PATCH v2 03/43] gitlab: include microblazeel in testing
+Date: Wed,  3 Jan 2024 17:33:09 +0000
+Message-Id: <20240103173349.398526-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103173349.398526-1-alex.bennee@linaro.org>
 References: <20240103173349.398526-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -124,27 +124,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This ensures the rootfs is never permanently changed as we don't need
-persistence between tests anyway.
+This reverts aeb5f8f248e (gitlab: build the correct microblaze target)
+now we actually have a little-endian test in avocado thanks to this
+years advent calendar.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/avocado/kvm_xen_guest.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .gitlab-ci.d/buildtest.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/avocado/kvm_xen_guest.py b/tests/avocado/kvm_xen_guest.py
-index 5391283113e..f8cb458d5db 100644
---- a/tests/avocado/kvm_xen_guest.py
-+++ b/tests/avocado/kvm_xen_guest.py
-@@ -59,7 +59,7 @@ def common_vm_setup(self):
-     def run_and_check(self):
-         self.vm.add_args('-kernel', self.kernel_path,
-                          '-append', self.kernel_params,
--                         '-drive',  f"file={self.rootfs},if=none,format=raw,id=drv0",
-+                         '-drive',  f"file={self.rootfs},if=none,snapshot=on,format=raw,id=drv0",
-                          '-device', 'xen-disk,drive=drv0,vdev=xvda',
-                          '-device', 'virtio-net-pci,netdev=unet',
-                          '-netdev', 'user,id=unet,hostfwd=:127.0.0.1:0-:22')
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 91663946de4..ef71dfe8665 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -41,7 +41,7 @@ build-system-ubuntu:
+   variables:
+     IMAGE: ubuntu2204
+     CONFIGURE_ARGS: --enable-docs
+-    TARGETS: alpha-softmmu microblaze-softmmu mips64el-softmmu
++    TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
+     MAKE_CHECK_ARGS: check-build
+ 
+ check-system-ubuntu:
+@@ -61,7 +61,7 @@ avocado-system-ubuntu:
+   variables:
+     IMAGE: ubuntu2204
+     MAKE_CHECK_ARGS: check-avocado
+-    AVOCADO_TAGS: arch:alpha arch:microblaze arch:mips64el
++    AVOCADO_TAGS: arch:alpha arch:microblazeel arch:mips64el
+ 
+ build-system-debian:
+   extends:
 -- 
 2.39.2
 
