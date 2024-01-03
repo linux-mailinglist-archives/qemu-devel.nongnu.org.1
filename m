@@ -2,146 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37B98229BC
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 09:50:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF378229BB
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 09:50:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKwwG-00006i-B3; Wed, 03 Jan 2024 03:49:24 -0500
+	id 1rKwwE-0008U0-G4; Wed, 03 Jan 2024 03:49:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rKwwD-0008Ts-IM
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rKwwD-0008Sw-5W
  for qemu-devel@nongnu.org; Wed, 03 Jan 2024 03:49:21 -0500
-Received: from mail-bn7nam10on20600.outbound.protection.outlook.com
- ([2a01:111:f403:2009::600]
- helo=NAM10-BN7-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rKwwB-0007RE-31
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 03:49:21 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=c5pWTeRjfLlrr5CuzPG8UtFL2Vyap2570rOYsyFhptFAQ2wPbFpyV3d0/XNNjXS8BB1GF6moaMM7C+72j+5Dj4K91Vm0QNRqxqPUadwRgzxJROc7AeAWvzIje1Z0OhEwk4mSLgkAfxgPL0KSqT/b2UfJlEpWsgmlUsuUmwcvTfSuPeQNuXGIhpUL/i6J83ZEDQFyW5tFgCHYlfWW1rOOFtpFBfRPLpC60TG74ydSwudMoObO51Rr6ylGgvwuXeKpM6i1jdWdKf3IqMbZcMUnfeXaDnT4buzCTY3jieEyBivFD/l1gPi5QYJISKTQjuyOXKopub7g31zWMPO+1F09WA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dn2ThuHqlgJOFeiBw7gJaeZ7iDX0yPVeR+GYzaTbJ/Y=;
- b=Ufv8P9IaJSoLapmU7cIL4hceE9EYW+nCGYg+j+Pq5MKpymIU9tb7vJ9FhAxXS+QWp1c10PYJn16k6mmm9eAFUFS+sLRNH4qHekVbn6tbAe7MmtQiyRqYjUV6UUokQF8gorkzvatO4fxqkKGL5JzgjngL9ACre71wSZGlZW+KRHfQT6eOkltKeL7+BFjkvicMvxa3+SpH3oAymVdwHFZvf4QpBezC3ZkLAis4vaPjicMWIOrYrDEw7q7qNcu+Au839YrN4Ohcef/ZeDtNpa3c4ocH1bDPKUuDzLXIEa5eOBgTHgDWYDQPeG+I5FnRuhiXCk5KUmzBMY1EpUb9WdnfrQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dn2ThuHqlgJOFeiBw7gJaeZ7iDX0yPVeR+GYzaTbJ/Y=;
- b=1yFZ0TBV22aYkfr0LVJiantkOG32lrTJFQqfMmrZUQckHP11VeiV6gnb7UHyM/DaRwm/sB6cdNcf0Ps46pG8GSgjjD9yMrTwafvilQxIT9aWsM6bQt4n19S1bgpkJSglIiDRr8uLqJkzK4ZizDGZzDZyOcJAq/dZ8lECfF9b9z4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
- by DS0PR12MB7748.namprd12.prod.outlook.com (2603:10b6:8:130::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.25; Wed, 3 Jan
- 2024 08:49:13 +0000
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::9b8e:816d:20b9:9845]) by SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::9b8e:816d:20b9:9845%5]) with mapi id 15.20.7159.013; Wed, 3 Jan 2024
- 08:49:13 +0000
-Date: Wed, 3 Jan 2024 16:48:47 +0800
-From: Huang Rui <ray.huang@amd.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>, Alyssa Ross <hi@alyssa.is>,
- Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Stabellini, Stefano" <stefano.stabellini@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-Subject: Re: [PATCH v6 05/11] virtio-gpu: Introduce virgl_gpu_resource
- structure
-Message-ID: <ZZUfb/t652zPyey1@amd.com>
-References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-6-ray.huang@amd.com>
- <3105531c-bfc4-4421-a197-4ab8ddb9f4a5@daynix.com>
- <ZYGaWs6OmZpaMH46@amd.com>
- <c5d9e074-de7c-4056-becc-8fd1ce24f3e4@daynix.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c5d9e074-de7c-4056-becc-8fd1ce24f3e4@daynix.com>
-X-ClientProxiedBy: SG2PR01CA0188.apcprd01.prod.exchangelabs.com
- (2603:1096:4:189::10) To SJ2PR12MB8690.namprd12.prod.outlook.com
- (2603:10b6:a03:540::10)
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rKwwA-0007Qz-6K
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 03:49:20 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40d89446895so1188065e9.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 00:49:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1704271754; x=1704876554; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=P6AP33R7uLbzcM5ifE2R2q8gbfKrp6LDNdA8+yNBd4c=;
+ b=kMhhMtPvCCV0ommLT/Qf/s49z8sG3NRcpeLKfMUqWN073G7JvpmXpxvd9NAr77d4Qp
+ K7zXmh27Tla31KFlyKLgZj6Xo9MZMNCbzvcbMyFhBptMhNRsy0M5BFWGT06enac9NOTE
+ uLSna1aph7koVf6DrsR7sHvUi7O8k9i59rj1LsquMigIbUw7cMcTeQ3x++m4IEtJ5OYS
+ ILYrJTybQ0eDVidQf6RnXSZnfVbSqMurUqqj0Oh94g5jh7HF9ug8kTQCcUhGAjkSA/Kd
+ Ws85EqwX6f8/o2xUnBMqgh/sCv4TrXccQwZ1ou7cBKPB0aSiQT7fsYeVmZzL04Nbd+pg
+ lsuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704271754; x=1704876554;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=P6AP33R7uLbzcM5ifE2R2q8gbfKrp6LDNdA8+yNBd4c=;
+ b=cbekn7Y8xayeKv1sFdvys7+LTDeKCskpmeEpQ6O22bL6+qI6WJQfyTvuzxRV0IruHN
+ MYzSx567nXap4gZAKGnw4aDfoIrS1CWQoCElGwOafqSicBFn65QJrlPuGCg8uIcu4CHy
+ pVrXlX3jxGCY/byoLqZ4vIRylSS9cIUm2in58hk7kXckMVALm8aQf7zBl95blZfESu/c
+ UD7oYGFvK2xRhKNTF/QWZaY9O2QlAd/oAGwceb/3l82sLGu1Cd5fVlweDRxZnz/Rgp7v
+ o5Otf0t+So7wOTWojDQ8IcmX36UVYWmY2FBPdoqHl1Zjabk+oF07AdrTIBbb4is5QR9E
+ /hbw==
+X-Gm-Message-State: AOJu0YwM1GpEg4t38MEuA8916mokZc5V9AGG+ivqgJ1IEKMO4dBdL/jI
+ t9L9gCK789sboHieUkC6qOh93xh3nw5cBA==
+X-Google-Smtp-Source: AGHT+IG1ARzKgqwd3g+nI1PycL4FNqJGvkxmCNMzEq56NmaJUgOpRsMrLxOYicd42BSAOv3pRMdOAw==
+X-Received: by 2002:a05:600c:78a:b0:40c:2ace:6e58 with SMTP id
+ z10-20020a05600c078a00b0040c2ace6e58mr283920wmo.182.1704271754405; 
+ Wed, 03 Jan 2024 00:49:14 -0800 (PST)
+Received: from Provence.localdomain
+ (dynamic-077-013-084-064.77.13.pool.telefonica.de. [77.13.84.64])
+ by smtp.gmail.com with ESMTPSA id
+ z16-20020adfec90000000b003366fb71297sm30063183wrn.81.2024.01.03.00.49.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Jan 2024 00:49:13 -0800 (PST)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH 0/2] Fix PIC interrupt handling of x86 CPUs if APIC is
+ globally disabled
+Date: Wed,  3 Jan 2024 09:48:58 +0100
+Message-ID: <20240103084900.22856-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|DS0PR12MB7748:EE_
-X-MS-Office365-Filtering-Correlation-Id: f9697f18-64d5-4108-dbc7-08dc0c38dc2f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EmZPKhZRx20f8LeMx89snZsM+11EvKu5JDiZvmhBm8WaLnUqC/pM03GQe/Vrzhogq/+UrNI3mJh11fh9u2n6owJEIaq6XTAUDXzvOmqMieYif1/usPL5UEL3L3pQHHhrJGI7VjMrsBqKNgyJrzPu7Ra1iv0WW75T6rZOXnz0rkpq8mMk63bKBSPG6tPW+q6Kde0b+jl9jn6efAdFWFcoVNgflqvh/5ZveINtsLHxHLudyaNbNXllOJzxvufJEOo6KE96pq5uT0DWxm9ndwLPR0qtqXyrKQjtXiz7ng9E6YBMAa5XVIQk5Q1DtAa0fa2XLUPYGtkixzW7C9fisdHwkl5UMs3IWzAAtDDaG4pGlP/gq7F+hwx48hDQDXJDJ0owrmC6dh5GCKjd54gygXZqX+32cxMD+kCo5Jad9Ne1O78CqCpznSf3WF3SIUlEQQzHEZ/ueuloP7yIZAFUSQ3y6wARhLV8PzJFvyKKmz9hSeRXCrjrVODTdF52mz8vfRJmUVPr5xIgMIpFuRRxITliS0qQ7mLekKdCtaBCh+LUFxnzks76xBOM50vhoa8YYgc7
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(39860400002)(136003)(366004)(376002)(396003)(230922051799003)(1800799012)(64100799003)(451199024)(186009)(26005)(2616005)(66556008)(38100700002)(66946007)(83380400001)(36756003)(66476007)(316002)(6916009)(54906003)(478600001)(86362001)(6486002)(5660300002)(2906002)(7416002)(4744005)(8676002)(8936002)(4326008)(6506007)(6666004)(6512007)(53546011)(41300700001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?eaSb+Ra/g5P5CKDAMlC+olAj3AUfEFj2d9aUiMopJ+zVEF9f+fWNZOGoMFWa?=
- =?us-ascii?Q?xlSia15fJZjfpiBLywZLCK8dwKjoekn1xnKWnn7gmzi9tgjt10CKfirlPoX6?=
- =?us-ascii?Q?n/KpFZ4zPN90ywxuzMxvkP65hp5K4VAkhSmY9B+kVTPcpI44a+IDbOFXBbaE?=
- =?us-ascii?Q?zHKRTzSmrSgFKDlPrrB8rZRSj6sJIdMb1068wP+3h0TQBZVbVRnXgBQAS/Bd?=
- =?us-ascii?Q?X2UMT7Ac5NKA4buuqd3A8muTrk1wPF7fzLbKQrPEcVhIMJZjyO5YMJ6JD+63?=
- =?us-ascii?Q?tpdnEvjMf9bxvgBP6SZ35Y8khZECZ4ZVlLc/crFMcMyZQxDExyyNH/NVIsUb?=
- =?us-ascii?Q?DS6CNCO62vyIMf0SFaXn8RHfvhcmFYVnKvuy1sTiK1IHMWp9ojf+XvRI9mjq?=
- =?us-ascii?Q?ygmuuw7RHH4+gjrb3CwtKXSOPGg/xA1cWSHdTiInO2rxwNVlkkjZX0OJB2mH?=
- =?us-ascii?Q?UvSiE2XOVuJa4x9uw0oUTQz0gA76MDtQhePENx08roNSim+6t9z6hp6p3KS4?=
- =?us-ascii?Q?Eav1KzUR06YbF62/J6vA/yc2zDtDaFaxAq6tSO5fdccmljhdy0FDeDeDqz8F?=
- =?us-ascii?Q?HxRWeMm/sRNgOmDUqCPwxp69pJmvK6moCqZ9r7HlTBd32nfgp2nk7459izvS?=
- =?us-ascii?Q?Ypl3V9uh/507n9IZR4UojE4LydaLachE12gJCPa/z5l6tUlCP91ud4d+J66y?=
- =?us-ascii?Q?124qiAQx9rEYic+9FheoU/P3VsmL+CIBvXIhOikbBBtAzy1SsU1sEb0LwLOm?=
- =?us-ascii?Q?RSksYQlh0vvpjjoVTOQ8Opb0XwM4xu2hOHi9vWgGq6HZjq0a6kRjoSUbcMbB?=
- =?us-ascii?Q?qkCeljywFWrTxousrPkvmZEDQheRxPMXBjlR/9nkSRv9A5WbzSXzFbrdN/cn?=
- =?us-ascii?Q?ELOJHWN+4JyH1E4/BYdLv9/ZAQSvYHCd5m2XnMz1X7qQ+pbk1TBNg+hddmsQ?=
- =?us-ascii?Q?Ny13jSC57/yFYuohIDmeSziPmSVT/zRqkOAbIIhTZh5DhpLsCmLMeJuvz/na?=
- =?us-ascii?Q?NyeGHR67WeDGr1wEiifFfF7xqDghXgbAcuebKO6YL76ch+wn/beHoycUw2Ns?=
- =?us-ascii?Q?Az7rlJ+gSQCN8YCWvF2Va8cYeJGm02q2rGceI1UnGPGi06srAqJ6pAPlgPTb?=
- =?us-ascii?Q?SDP0DpipKPoCR97DZSv+S0aGtS//4kzw7MIJ95oOGmUPemU93TCraWnY+HsQ?=
- =?us-ascii?Q?Ihd4R77xfmsUZzTGXowZSsdtaJrjSFFVZ6o4iG0+52HWENjoAx7xtrhcoTEg?=
- =?us-ascii?Q?eitugK0ZPdCCfsp1TLvCmH4VEUlNVjBlGf9CS3QLCMzZYyb9FdCyvhjXqbPg?=
- =?us-ascii?Q?Mwsgi7abF3+iHXMlsGKg7lMWn6wf++v0B1217E0xtrl0Gqc2QkcIS7UPCXIf?=
- =?us-ascii?Q?m3O6FEBHShkJUypMNJSAyOL7PPEquxYiMvYVRB+Qap3MdchbAqc6+n1t3sCl?=
- =?us-ascii?Q?4YTzgArHy6L2arCZfxsuATp1341znkThmWDveEt1waPVDjzuywRJT9NCdVXc?=
- =?us-ascii?Q?XL8vKiiejK36gKhSeXnYMuIG47cI3YObLCFa1FFZQGJWucNx9C8eUDIt222F?=
- =?us-ascii?Q?lQwrcBdjPxe3HwV8llfSIxTMW9YxBIVT+LTmRNGd?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9697f18-64d5-4108-dbc7-08dc0c38dc2f
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jan 2024 08:49:13.3674 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ULg6QtEhJzV22SoWiZdi2FBKS2hQ8n/X+zp494tHpNGqop8XGUQa7ErOytitf4Q+BxTmq84HFvA1JL8AaV5NDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7748
-Received-SPF: softfail client-ip=2a01:111:f403:2009::600;
- envelope-from=Ray.Huang@amd.com;
- helo=NAM10-BN7-obe.outbound.protection.outlook.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.178,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -158,24 +93,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 21, 2023 at 01:43:37PM +0800, Akihiko Odaki wrote:
-> On 2023/12/19 22:27, Huang Rui wrote:
-> > On Tue, Dec 19, 2023 at 08:35:27PM +0800, Akihiko Odaki wrote:
-> >> On 2023/12/19 16:53, Huang Rui wrote:
-> >>> Introduce a new virgl_gpu_resource data structure and helper functions
-> >>> for virgl. It's used to add new member which is specific for virgl in
-> >>> following patches of blob memory support.
-> >>
-> >> The name is ambigious. It should tell that it's specific for virgl.
-> > 
-> > How about "virgl_resource" which inherits virtio_gpu_simple_resource? But
-> > this name is exactly same with the name in virglrenderer.
-> 
-> You can prefix it with virtio_gpu_virgl as virtio_gpu_virgl_init() and 
-> other functions do.
-> 
-
-Thanks, will update it in V7.
-
-Ray
+This two-patch series is part of my work emulating the VIA Apollo Pro 133T=
+=0D
+chipset in QEMU [1] and testing it by running real-world BIOSes on it. The =
+first=0D
+patch fixes an issue regarding PIC interrupt handling, the second one just =
+fixes=0D
+a typo in a comment.=0D
+=0D
+During testing, I've found that the boot process gets stuck for some BIOSes=
+ that=0D
+disable the LAPIC globally (by disabling the enable bit in the base address=
+=0D
+register). QEMU seems to emulate PIC interrupt handling only if a CPU doesn=
+'t=0D
+have a LAPIC, and always emulates LAPIC interrupt handling if one is presen=
+t.=0D
+According to the Intel documentation, a CPU should resort to PIC interrupt=
+=0D
+handling if its LAPIC is globally didabled. This series fixes this corner c=
+ase=0D
+which makes the boot process succeed. More details can be found in the comm=
+it=0D
+message.=0D
+=0D
+Testing done:=0D
+* `make check`=0D
+* `make check-avocado`=0D
+=0D
+[1] https://github.com/shentok/qemu/tree/via-apollo-pro-133t=0D
+=0D
+Bernhard Beschow (2):=0D
+  hw/i386/x86: Fix PIC interrupt handling if APIC globally disabled=0D
+  target/i386/cpu: Fix small typo in comment=0D
+=0D
+ hw/i386/x86.c     | 10 +++++-----=0D
+ target/i386/cpu.c |  2 +-=0D
+ 2 files changed, 6 insertions(+), 6 deletions(-)=0D
+=0D
+-- =0D
+2.43.0=0D
+=0D
 
