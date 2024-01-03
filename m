@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17CF9823373
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 18:37:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 791E7823375
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 18:38:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL58U-00040t-8W; Wed, 03 Jan 2024 12:34:34 -0500
+	id 1rL58Q-0003w1-Ek; Wed, 03 Jan 2024 12:34:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rL58M-0003sz-Fu
+ id 1rL58M-0003u4-Ut
  for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:26 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rL584-0002Vp-0B
+ id 1rL584-0002VP-2o
  for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:34:26 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40d2376db79so95777665e9.0
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40d76fefd6bso43399935e9.2
  for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 09:34:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1704303242; x=1704908042; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NG0GNTBkS5OA4bLgzcXFuNl7bQt30v5WL9SIW527gOo=;
- b=h28a7erC+ZXWKMeh+DWy4ovBR4jL4Fki7KsJLkaHVfqV/8Qv4NnEQ/F9c3tS7b6xh5
- gNIJrbhUW9xt2MT+ZRTkolY8m5VnRBe+a9dEuz9U+CI77/kNzuFa3d8QPezvUJzqfdZv
- gi90o+d//I+t9y5yA5iz5yxAS0ggvVZJQUuxf/PJWdXxoSyv56+NnQo1j+2CWcYURz3b
- 0Mc6Vrji5I8XOjY/m9V8CYbWZj3d1mHQl+c7IXAZj8TCF7ki3o5M2+w41DBXIA3/hSCA
- whMQ38YpXyLjBjguUPsd6+5GIS4HjmJf24So/lG+8vlMJPJGi41wdg7zdpIjhjZZjkq+
- hz0g==
+ bh=b7XkKmTa2rk3nK9lrhGULgV33LxXcjUpugmHNR7vUhY=;
+ b=yQmaCTOxAA97+kToksODq+xb0wCXfjKjCPEdeBxbtMN9nNfaEoWIRb7uAKHqyXGltn
+ PiyKbQYsNklSQPr/2cE7rKk80csblUVmfsJhptagho71CgsoChpOz5P+i8fRaTWgN5ia
+ AUkJfSQfN4Poq/YJjku5/LbB8MCdPC/vByfCcjeV5TkxYRrHSvohJj5WaPSxz3z3dBt+
+ Kc48QltoegTshq78iGpeNDui5YE93ldbJdjhgoM41XEWKzm2T+AVwgj9WH/9gvAl7MjU
+ Cywvj/K8778C0mODFxJtQogUS3kNlnzApP9MM2BRcT0AzOL168iePdiQioMD+ePbvF3b
+ GAkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1704303242; x=1704908042;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NG0GNTBkS5OA4bLgzcXFuNl7bQt30v5WL9SIW527gOo=;
- b=sXwR1i0PBJyEm27Pqacmm/b+HLX44nY3FXUy3M7boufUS2iOfG9jeQ1U6w5WnZFOkh
- YYjrPpg4XWJ18cwLqzFAd2b3LlcWVgmtDbkr6jAAqOF8vUG9rhg687btB7ZXwnfzQWZJ
- JhSV4fRccbnMb5nKOq1zY1mTUCDuritYl6RNUmQOi1qzWmV2U79+8zfKfle1k5TbSRc3
- 8nWYSVIITm/mlVMaO6bOQMQQoXmrF92AHkIsPhxyJHMbmo1sL16buN5+80U1cMzmotZG
- 4Pzq5zDPPhk5cUW/9FpSR9SyI0CfrEzWzTgLiUyXVL5oMam5fji20gNp44lQ6PFW5g3/
- f5JQ==
-X-Gm-Message-State: AOJu0YyY/5OkUFgflgrZoDGUqLFSc7WjZ8GvEwhjLQs1WoQKVqql5jLp
- tkkNBPy15uisBwuEEk1QQHPQZ48U0Hzafg==
-X-Google-Smtp-Source: AGHT+IEBcU3HIt2kk3f3ka5JNEGbknZiuar/K/H51Rdj+QmKRU4GX1U2mGMWQY7DZpu51o+Llv5W6Q==
-X-Received: by 2002:a05:600c:524c:b0:40d:42de:46f with SMTP id
- fc12-20020a05600c524c00b0040d42de046fmr11584360wmb.1.1704303242245; 
+ bh=b7XkKmTa2rk3nK9lrhGULgV33LxXcjUpugmHNR7vUhY=;
+ b=jWk8x8567/NDokpN0t9H//BNT64mlD2R/P+IOmYNfE1IsT/gtGy/9ai5VeyUR+dGMY
+ TDg3+QhtnW/ol0dV7VjylV0gvpbAM/87xwsO9QVNW8e0g6WvLv9J7R2gsQmaiZovR0g5
+ H31IKWcEepYDQPLobZYABdgxlwzYjLami8XM267cCOyKJFOh0mOvtLPFrKI4DkYySpc5
+ zTwyqCYSW7Wr3kmj/zPhPLG/B10hXZKKwz4SDxvlRhB8lRFLWqSYkRiV3+0Hp1OyqTUp
+ AH9HSVSydgvYBGmQGySNMHT+G3XKEJ1RIsWJwOgQ9n9y7qbO/fGDmj65/ZfdaXP+2oR1
+ LXRQ==
+X-Gm-Message-State: AOJu0Yw09D7BkLhLQtNUhhpBAgozROaefmy4ue5Wm0qq5wexucqhH7w1
+ 2ppPW/pc5zmLiPhVg4d7qRxxcoFjC9B6Dg==
+X-Google-Smtp-Source: AGHT+IF/L2p0zQ5EsxWm/ZeewITkxLw43+Hum/+1n38RYmruA0nJMBDcBTcvxGZi4eR6abvI1/ZlBA==
+X-Received: by 2002:a05:600c:154f:b0:40d:5f55:663 with SMTP id
+ f15-20020a05600c154f00b0040d5f550663mr3068051wmg.94.1704303242496; 
  Wed, 03 Jan 2024 09:34:02 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- v10-20020a05600c470a00b0040d839e7bb3sm2954439wmo.19.2024.01.03.09.33.54
+ q17-20020adff951000000b0033718210dd3sm14497665wrr.103.2024.01.03.09.33.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 03 Jan 2024 09:33:57 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id ACA435F946;
+ by draig.lan (Postfix) with ESMTP id C30C35F948;
  Wed,  3 Jan 2024 17:33:50 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -90,26 +90,26 @@ Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 15/43] qtest: bump bios-table-test timeout to 9 minutes
-Date: Wed,  3 Jan 2024 17:33:21 +0000
-Message-Id: <20240103173349.398526-16-alex.bennee@linaro.org>
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PATCH v2 16/43] tests/qtest: Bump the device-introspect-test timeout
+ to 12 minutes
+Date: Wed,  3 Jan 2024 17:33:22 +0000
+Message-Id: <20240103173349.398526-17-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103173349.398526-1-alex.bennee@linaro.org>
 References: <20240103173349.398526-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,30 +125,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
 
-This is reliably hitting the current 2 minute timeout in GitLab CI,
-and for the TCI job, it even hits a 6 minute timeout.
+When running the test in slow mode on a very loaded system with the
+arm/aarch64 target and with --enable-debug, it can take longer than
+10 minutes to finish the introspection test. Bump the timeout to twelve
+minutes to make sure that it also finishes in such situations.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20230717182859.707658-12-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231215070357.10888-12-thuth@redhat.com>
+Message-Id: <20231215070357.10888-13-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/qtest/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index da53dd66c97..6e8d00d53cb 100644
+index 6e8d00d53cb..16916ae857b 100644
 --- a/tests/qtest/meson.build
 +++ b/tests/qtest/meson.build
-@@ -1,6 +1,6 @@
+@@ -1,6 +1,7 @@
  slow_qtests = {
    'aspeed_smc-test': 360,
--  'bios-tables-test' : 120,
-+  'bios-tables-test' : 540,
+   'bios-tables-test' : 540,
++  'device-introspect-test' : 720,
    'migration-test' : 480,
    'npcm7xx_pwm-test': 300,
    'qom-test' : 900,
