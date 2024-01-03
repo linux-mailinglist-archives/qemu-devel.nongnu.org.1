@@ -2,82 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044C6822E27
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 14:23:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 053C8822E2D
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 14:26:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL1C6-0006gu-EH; Wed, 03 Jan 2024 08:22:02 -0500
+	id 1rL1Fj-0007md-95; Wed, 03 Jan 2024 08:25:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rL1C3-0006gP-KO
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 08:21:59 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rL1Ff-0007mU-Ei
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 08:25:43 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rL1C1-0001Nz-Uc
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 08:21:59 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40d2376db79so93994725e9.0
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 05:21:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rL1Fd-0004VS-NE
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 08:25:43 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-33723ad790cso3897536f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 05:25:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704288115; x=1704892915; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1ImRCU49+H0fx7XhDhJ2pDu5iKWo5h6tenHk37rX1Xs=;
- b=CHhShSJFxrimvTF+3qLNoDql1Log0/y++EUFgvzto+UcYz8gAiPr6zGN3o3HpiZYtQ
- c+KN7DDFfncPlQ4YWsKZW5EQY0/uiVyjo/tSWzE2VuDdUh3UkYVQuJGB9HtHvLFDSAqr
- mLMtdNnW4I3rf7kaCNJOoCHkQLI+EoJZC6bDR63Vat2zjq4tVJQcJJzRne1Zu8EsOtJ7
- FQv+SvR+9nZqozFQLrNv4HCcX2Ekaao9XcqjoBQieBqT3saOWSTo945e5U6j5lYuhZfQ
- AKv6K6od+o3gzSaphUcDWQ46Jp9/kpiUPl6jFFXYEifKDkPmzbxmoDHKCOA7bPxsbPgd
- h0/A==
+ d=linaro.org; s=google; t=1704288340; x=1704893140; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iQoCe0v/UMTuth4yG+nDSukSgH2xh1V+h4uUaaOkPvg=;
+ b=i7XViizmzH/c+gTwNg0ZYWdSTDpA9AbmNWtRzdhwRZcM0nDKLSvLFVf+MQkigUbMh0
+ By9zyIpxyStZdXpCwlFGSMp1IXcQ4dc2FQtU1wemqRbkkKE/SvVJ2DxWngGhINoptPZ+
+ NH6XNRqc7H6M+7+QvJ4eP8LByh25fU8778iJJE1p7PzC+2yj4a7eUtmDJUISuZPJr8Hg
+ qJxAF4oBtB0fTl3xfj9AhgRu+8uIXOOMkOWpEOZ9joTb7erbkkBNy3aPCB9Nw9H2WGDl
+ Hdvs7E6qslkDsJHrZTNsBsgr2BY50EnHOInszlokO9iZbc2Jwl9RzfYlfmmmW1m1aw55
+ CjzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704288115; x=1704892915;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1ImRCU49+H0fx7XhDhJ2pDu5iKWo5h6tenHk37rX1Xs=;
- b=FdB5KNeBZP1OMhVGn4H30pXag3mEBuKOwif3G1UX1rSEvXPyCJPKcj1ckR7yFpHBvz
- 7WuC7vRU0nE+pCGIZAoA07vJdPT9ar7C43RTnlhkbHmQn+FTcwCFI+mprCOG4TO2tyE5
- Eshsp4R+RGU0U7nEAJ1FlstB4TzRhMertdmQGxEXbb974G07GcDtMSLaTT3hitzR9FXK
- SukUUBUfiGgYzhkMyliodpBKq3V0o5BplV8PMJVhagt1dR5U0/fBsg/kbfh0PB5DsYeB
- msMqNw7UFgj6Mz9gSc5WCP4kJ452TQyy/RKjB5p7X8GmQ42u6qkHCUuyy6Ue+CgLuycp
- fqTA==
-X-Gm-Message-State: AOJu0YzOjKvwQOYUwAVlcgCDrGiFYdoTc/oa7oVPA4zwS91sV0chSbVI
- R/JMHdJ10yM1LPgGs901CPgaXfGUc07ALw==
-X-Google-Smtp-Source: AGHT+IFFlV6iuVGpXe4U/L97EOesVFkkP6TrMqjxHNji0hfbesPH6ZvkdBNepRB6zX7+pbUAQQXEHA==
-X-Received: by 2002:a05:600c:1f88:b0:40d:62c4:3f3 with SMTP id
- je8-20020a05600c1f8800b0040d62c403f3mr4630846wmb.106.1704288115092; 
- Wed, 03 Jan 2024 05:21:55 -0800 (PST)
-Received: from [192.168.69.100] (tre93-h02-176-184-7-144.dsl.sta.abo.bbox.fr.
- [176.184.7.144]) by smtp.gmail.com with ESMTPSA id
- g3-20020a5d4883000000b00336e32338f3sm19625625wrq.70.2024.01.03.05.21.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Jan 2024 05:21:54 -0800 (PST)
-Message-ID: <b962d769-ed44-4620-bcf2-4fcc7658db1a@linaro.org>
-Date: Wed, 3 Jan 2024 14:21:53 +0100
+ d=1e100.net; s=20230601; t=1704288340; x=1704893140;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=iQoCe0v/UMTuth4yG+nDSukSgH2xh1V+h4uUaaOkPvg=;
+ b=eG/ELrPC9O/6Txb6OUwgQ4x0X6OYgB4N9gdnxeJrofsXq8gQb1g5s9Rn4ELmWkQoGd
+ 37FHz+Ffo+8oDNRkHcUci/2aQLJ4GKE2Y2UgmBLikyoZBzEaSwaG1RJl78C5Lg95ev1p
+ bMf5RSjlcfe1F7+rs+HH04tYH2YhGPUuAcRPOd9Tve/eltnOr+iMHZBVUaYS7uijWOwV
+ 1dnwHWr+kpFFzLazI9yb7WBVc2zGlw5dWF+MTbs2nt4Al9xZID7AvQIr4SiUpwnyF+tI
+ jwukQB7bRflLfuis6NSe8im/DGS8htvP8UzpQyTWfxhaESHbwEYAoY10Y+6aZff+8a9q
+ yo6Q==
+X-Gm-Message-State: AOJu0YxcZ0f/oJ1kEJnxambcuF3NDJb5J28d6c3mADC/W9aXZhTtvvlY
+ 4njPA8v1WhkAe1wWyIwXlEG0yh52EyGAVA==
+X-Google-Smtp-Source: AGHT+IGTz2lTleX3X5epZzTAQnJuMV+3ZlHKHhdIh1E/erkcLXw/I3DulAf1nN9ah8o2UduQgdsZ1A==
+X-Received: by 2002:adf:f243:0:b0:336:6cbc:7940 with SMTP id
+ b3-20020adff243000000b003366cbc7940mr5921781wrp.63.1704288339937; 
+ Wed, 03 Jan 2024 05:25:39 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ z5-20020adff1c5000000b003366e974cacsm30730996wro.73.2024.01.03.05.25.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Jan 2024 05:25:39 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 0EC4E5F926;
+ Wed,  3 Jan 2024 13:25:39 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Leo Yan <leo.yan@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,  qemu-devel@nongnu.org,  Gerd
+ Hoffmann <kraxel@redhat.com>,  Manos Pitsidianakis
+ <manos.pitsidianakis@linaro.org>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH v3 0/4] virtio: Refactor vhost input stub
+In-Reply-To: <20231229090126.GA156812@leoy-huanghe.lan> (Leo Yan's message of
+ "Fri, 29 Dec 2023 17:01:26 +0800")
+References: <20231120043721.50555-1-leo.yan@linaro.org>
+ <20231225110608-mutt-send-email-mst@kernel.org>
+ <20231229090126.GA156812@leoy-huanghe.lan>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Wed, 03 Jan 2024 13:25:39 +0000
+Message-ID: <87o7e2h7l8.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/20] tcg/s390x: Implement vector NAND, NOR, EQV
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20211218194250.247633-1-richard.henderson@linaro.org>
- <20211218194250.247633-5-richard.henderson@linaro.org>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-s390x <qemu-s390x@nongnu.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20211218194250.247633-5-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,97 +100,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
+Leo Yan <leo.yan@linaro.org> writes:
 
-(revisiting this old patch which is now commit 21eab5bfae)
+> Hi Michael,
+>
+> On Mon, Dec 25, 2023 at 11:06:35AM -0500, Michael S. Tsirkin wrote:
+>> On Mon, Nov 20, 2023 at 12:37:17PM +0800, Leo Yan wrote:
+>> > This series is to refactor vhost stub vhost-user-input.
+>> >=20
+>> > Since vhost input stub requires set_config() callback for communication
+>> > event configurations between the backend and the guest, patch 01 is a
+>> > preparison for support set_config() callback in vhost-user-base.
+>> >=20
+>> > The patch 02 is to add documentation for vhost-user-input.
+>> >=20
+>> > The patch 03 is to move virtio input stub from the input folder to the
+>> > virtio folder.
+>>=20
+>> Thanks!
+>> Now the release is out I'd like to apply this - can you please rebase on=
+ latest master and
+>> repost?
+>
+> Sure.  But I found it's not this patch series causing merging conflict.
+>
+> Since my patch series is based on Alex's patch series "virtio: cleanup
+> vhost-user-generic and reduce c&p" [1], when applying Alex's patch
+> series on the master branch, I found the confliction with below commeits:
+>
+>   91208dd297 ("virtio: i2c: Check notifier helpers for VIRTIO_CONFIG_IRQ_=
+IDX")
+>   298d4f892e ("vhost-user: fix the reconnect error")
+>
+> @Alex, could you rebase the patch set "virtio: cleanup
+> vhost-user-generic and reduce c&p" and then I will resend my patch set?
+>
+> Thanks,
+> Leo
+>
+> [1] https://lore.kernel.org/qemu-devel/20231107180752.3458672-1-alex.benn=
+ee@linaro.org/
+>
+>> > The patch 04 derives vhost-user-input from vhost-user-base.  We reuse
+>> > the common code from vhhost-user-base as possible and the input stub is
+>> > simplized significantly.
+>> >=20
+>> > This patch set has been tested with the backend daemon:
+>> >=20
+>> >   # ./build/contrib/vhost-user-input/vhost-user-input \
+>> > 		     -p /dev/input/event20 -s /tmp/input.sock
+>> >=20
+>> > The series is based on "[PATCH v8 0/7] virtio: cleanup
+>> > vhost-user-generic and reduce c&p" which introduces vhost-user-base.
+>> > Based-on: <20231107180752.3458672-1-alex.bennee@linaro.org>
 
-On 18/12/21 20:42, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tcg/s390x/tcg-target.h     |  6 +++---
->   tcg/s390x/tcg-target.c.inc | 17 +++++++++++++++++
->   2 files changed, 20 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tcg/s390x/tcg-target.h b/tcg/s390x/tcg-target.h
-> index ad29e62b16..fef227b0fe 100644
-> --- a/tcg/s390x/tcg-target.h
-> +++ b/tcg/s390x/tcg-target.h
-> @@ -145,9 +145,9 @@ extern uint64_t s390_facilities[3];
->   
->   #define TCG_TARGET_HAS_andc_vec       1
->   #define TCG_TARGET_HAS_orc_vec        HAVE_FACILITY(VECTOR_ENH1)
-> -#define TCG_TARGET_HAS_nand_vec       0
-> -#define TCG_TARGET_HAS_nor_vec        0
-> -#define TCG_TARGET_HAS_eqv_vec        0
-> +#define TCG_TARGET_HAS_nand_vec       HAVE_FACILITY(VECTOR_ENH1)
-> +#define TCG_TARGET_HAS_nor_vec        1
-> +#define TCG_TARGET_HAS_eqv_vec        HAVE_FACILITY(VECTOR_ENH1)
+I'll fix up and include this series in my next posting. Hopefully by the
+end of this week.
 
-Here some opcodes are conditional, ...
-
->   #define TCG_TARGET_HAS_not_vec        1
->   #define TCG_TARGET_HAS_neg_vec        1
->   #define TCG_TARGET_HAS_abs_vec        1
-> diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
-> index 57e803e339..5a90b892cb 100644
-> --- a/tcg/s390x/tcg-target.c.inc
-> +++ b/tcg/s390x/tcg-target.c.inc
-> @@ -288,7 +288,9 @@ typedef enum S390Opcode {
->       VRRc_VMXL   = 0xe7fd,
->       VRRc_VN     = 0xe768,
->       VRRc_VNC    = 0xe769,
-> +    VRRc_VNN    = 0xe76e,
->       VRRc_VNO    = 0xe76b,
-> +    VRRc_VNX    = 0xe76c,
->       VRRc_VO     = 0xe76a,
->       VRRc_VOC    = 0xe76f,
->       VRRc_VPKS   = 0xe797,   /* we leave the m5 cs field 0 */
-> @@ -2750,6 +2752,15 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
->       case INDEX_op_xor_vec:
->           tcg_out_insn(s, VRRc, VX, a0, a1, a2, 0);
->           break;
-> +    case INDEX_op_nand_vec:
-> +        tcg_out_insn(s, VRRc, VNN, a0, a1, a2, 0);
-> +        break;
-> +    case INDEX_op_nor_vec:
-> +        tcg_out_insn(s, VRRc, VNO, a0, a1, a2, 0);
-> +        break;
-> +    case INDEX_op_eqv_vec:
-> +        tcg_out_insn(s, VRRc, VNX, a0, a1, a2, 0);
-> +        break;
->   
->       case INDEX_op_shli_vec:
->           tcg_out_insn(s, VRSa, VESL, a0, a2, TCG_REG_NONE, a1, vece);
-> @@ -2846,7 +2857,10 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
->       case INDEX_op_and_vec:
->       case INDEX_op_andc_vec:
->       case INDEX_op_bitsel_vec:
-> +    case INDEX_op_eqv_vec:
-> +    case INDEX_op_nand_vec:
-
-... but here we unconditionally return 1 for them.
-
-Shouldn't we return TCG_TARGET_HAS_opcode instead?
-
->       case INDEX_op_neg_vec:
-> +    case INDEX_op_nor_vec:
->       case INDEX_op_not_vec:
->       case INDEX_op_or_vec:
->       case INDEX_op_orc_vec:
-
-(expanding context)
-
-             return 1;
-
-> @@ -3191,6 +3205,9 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
->       case INDEX_op_or_vec:
->       case INDEX_op_orc_vec:
->       case INDEX_op_xor_vec:
-> +    case INDEX_op_nand_vec:
-> +    case INDEX_op_nor_vec:
-> +    case INDEX_op_eqv_vec:
->       case INDEX_op_cmp_vec:
->       case INDEX_op_mul_vec:
->       case INDEX_op_rotlv_vec:
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
