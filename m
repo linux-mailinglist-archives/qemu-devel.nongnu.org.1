@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B9282362E
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 21:09:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97697823621
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 21:07:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL7YQ-0002rE-Lm; Wed, 03 Jan 2024 15:09:30 -0500
+	id 1rL7VH-0004oD-LW; Wed, 03 Jan 2024 15:06:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rL7YN-0002nc-OQ
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 15:09:27 -0500
+ id 1rL7V5-0004gP-4H
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 15:06:04 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rL7YL-00030u-Sc
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 15:09:27 -0500
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ id 1rL7V2-0002C8-As
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 15:06:02 -0500
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 403JXUsC027022; Wed, 3 Jan 2024 20:05:47 GMT
+ 403JXQJI003046; Wed, 3 Jan 2024 20:05:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=x+u+GMacxwrn64ie5Ex4xyhexUAdtayAFySg/cuy1nU=;
- b=JMn3aIknH1/t0BLXjYeLQDymo3QaEvSIemG2+jMgR7hFhIFr6iWqQYOYsEjy501r6UAm
- 0Wr4TcW2pzETpB2oDvGvm30ii8IduWjHniHH6twUWFBN0XsP9+UgKjVWs5jnXZdJ2C9r
- X26oILjd4lledhbpGHYgpo5N2HlhencGTN1iOflIXLseiBsvvXWfTk07iT8tRG6cCscn
- J5l5PBKdltN2fiTZVeLVfdE67z/a7sisxshUDZ4lI5Et72YP5rFEplUWQfbo73RY0cuz
- Qy4ZfFKJmT5lTa4Cjb4bM+PxRVL/dubu0CrlWJOh6fU5Gos7XFvbNZY13pesl5LEIuDK hQ== 
+ bh=GnVeRbOAl6rLN2jYjXl8d0jSztnXvyn1ynEEBiEsVjk=;
+ b=DbQHB/i54Mv7P53XPWsTXnC0slCOVKJt/q7DKJ94PWTLp5O0AsAE4WtHIfoKFD8gxdX0
+ 5mlk6Sz5nann9A0NZg/xe/O6qSKcAmMFzcNuooo/oElL5Cf3GX2yxQblsiFQvbbJPpDu
+ snkYFeaNUSS+4iI/VV177+cpfbJHB4X5lxxnbCZU1DJG2gmD9ekqamhiELXloYqlBu2T
+ vA+Z6sUePICFSoc8jNpr9eS886te5mP16wID/3kS7sq2frrKfdSIT8rtpeZe7Knr4YHp
+ 2BNGsv/5oM1lidh153iUvxmLWy6h60LPWdySewl5U+JOgFGFiRpbepkQ+hq0RBS9od+p Vw== 
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vaatu5qsv-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vab8d5sxj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Wed, 03 Jan 2024 20:05:47 +0000
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 403K2519014127; Wed, 3 Jan 2024 20:05:46 GMT
+ with ESMTP id 403K2160013632; Wed, 3 Jan 2024 20:05:47 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3vddsvtbdr-1
+ 3vddsvtbej-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 03 Jan 2024 20:05:45 +0000
+ Wed, 03 Jan 2024 20:05:46 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 403K2UZf020511;
- Wed, 3 Jan 2024 20:05:45 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 403K2UZh020511;
+ Wed, 3 Jan 2024 20:05:46 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 3vddsvtba4-3; Wed, 03 Jan 2024 20:05:45 +0000
+ ESMTP id 3vddsvtba4-4; Wed, 03 Jan 2024 20:05:46 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -65,9 +65,9 @@ Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Paul Durrant <paul@xen.org>, Eric Blake <eblake@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V9 02/12] cpus: stop vm in suspended runstate
-Date: Wed,  3 Jan 2024 12:05:31 -0800
-Message-Id: <1704312341-66640-3-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V9 03/12] cpus: check running not RUN_STATE_RUNNING
+Date: Wed,  3 Jan 2024 12:05:32 -0800
+Message-Id: <1704312341-66640-4-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1704312341-66640-1-git-send-email-steven.sistare@oracle.com>
 References: <1704312341-66640-1-git-send-email-steven.sistare@oracle.com>
@@ -79,8 +79,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  suspectscore=0 mlxscore=0 adultscore=0 phishscore=0 mlxlogscore=999
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2401030162
-X-Proofpoint-GUID: _wOUPE0ha4-x2mJ6GpzyFFjod0Ycl5FD
-X-Proofpoint-ORIG-GUID: _wOUPE0ha4-x2mJ6GpzyFFjod0Ycl5FD
+X-Proofpoint-GUID: 8BvJxfWCSAsufEI1Tm6Fu1bi-ejisHc3
+X-Proofpoint-ORIG-GUID: 8BvJxfWCSAsufEI1Tm6Fu1bi-ejisHc3
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -20
@@ -106,235 +106,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, a vm in the suspended state is not completely stopped.  The VCPUs
-have been paused, but the cpu clock still runs, and runstate notifiers for
-the transition to stopped have not been called.  This causes problems for
-live migration.  Stale cpu timers_state is saved to the migration stream,
-causing time errors in the guest when it wakes from suspend, and state that
-would have been modified by runstate notifiers is wrong.
+When a vm transitions from running to suspended, runstate notifiers are
+not called, so the notifiers still think the vm is running.  Hence, when
+we call vm_start to restore the suspended state, we call vm_state_notify
+with running=1.  However, some notifiers check for RUN_STATE_RUNNING.
+They must check the running boolean instead.
 
-Modify vm_stop to completely stop the vm if the current state is suspended,
-transition to RUN_STATE_PAUSED, and remember that the machine was suspended.
-Modify vm_start to restore the suspended state.
+No functional change.
 
-This affects all callers of vm_stop and vm_start, notably, the qapi stop and
-cont commands:
-
-  old behavior:
-    RUN_STATE_SUSPENDED --> stop --> RUN_STATE_SUSPENDED
-
-  new behavior:
-    RUN_STATE_SUSPENDED --> stop --> RUN_STATE_PAUSED
-    RUN_STATE_PAUSED    --> cont --> RUN_STATE_SUSPENDED
-
-For example:
-
-    (qemu) info status
-    VM status: paused (suspended)
-
-    (qemu) stop
-    (qemu) info status
-    VM status: paused
-
-    (qemu) system_wakeup
-    Error: Unable to wake up: guest is not in suspended state
-
-    (qemu) cont
-    (qemu) info status
-    VM status: paused (suspended)
-
-    (qemu) system_wakeup
-    (qemu) info status
-    VM status: running
-
-Suggested-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- include/sysemu/runstate.h |  9 +++++++++
- qapi/misc.json            | 11 +++++++++--
- qapi/run-state.json       |  6 +++---
- system/cpus.c             | 23 +++++++++++++++--------
- system/runstate.c         |  3 +++
- 5 files changed, 39 insertions(+), 13 deletions(-)
+ backends/tpm/tpm_emulator.c | 2 +-
+ hw/usb/hcd-ehci.c           | 2 +-
+ hw/usb/redirect.c           | 2 +-
+ hw/xen/xen-hvm-common.c     | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-index 88a67e2..618eb49 100644
---- a/include/sysemu/runstate.h
-+++ b/include/sysemu/runstate.h
-@@ -40,6 +40,15 @@ static inline bool shutdown_caused_by_guest(ShutdownCause cause)
-     return cause >= SHUTDOWN_CAUSE_GUEST_SHUTDOWN;
- }
+diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
+index f7f1b4a..254fce7 100644
+--- a/backends/tpm/tpm_emulator.c
++++ b/backends/tpm/tpm_emulator.c
+@@ -904,7 +904,7 @@ static void tpm_emulator_vm_state_change(void *opaque, bool running,
  
-+/*
-+ * In a "live" state, the vcpu clock is ticking, and the runstate notifiers
-+ * think we are running.
-+ */
-+static inline bool runstate_is_live(RunState state)
-+{
-+    return state == RUN_STATE_RUNNING || state == RUN_STATE_SUSPENDED;
-+}
-+
- void vm_start(void);
+     trace_tpm_emulator_vm_state_change(running, state);
  
- /**
-diff --git a/qapi/misc.json b/qapi/misc.json
-index cda2eff..3622d98 100644
---- a/qapi/misc.json
-+++ b/qapi/misc.json
-@@ -134,7 +134,7 @@
- ##
- # @stop:
- #
--# Stop all guest VCPU execution.
-+# Stop guest VM execution.
- #
- # Since: 0.14
- #
-@@ -143,6 +143,9 @@
- #     the guest remains paused once migration finishes, as if the -S
- #     option was passed on the command line.
- #
-+#     In the "suspended" state, it will completely stop the VM and
-+#     cause a transition to the "paused" state. (Since 9.0)
-+#
- # Example:
- #
- # -> { "execute": "stop" }
-@@ -153,7 +156,7 @@
- ##
- # @cont:
- #
--# Resume guest VCPU execution.
-+# Resume guest VM execution.
- #
- # Since: 0.14
- #
-@@ -165,6 +168,10 @@
- #     guest starts once migration finishes, removing the effect of the
- #     -S command line option if it was passed.
- #
-+#     If the VM was previously suspended, and not been reset or woken,
-+#     this command will transition back to the "suspended" state.
-+#     (Since 9.0)
-+#
- # Example:
- #
- # -> { "execute": "cont" }
-diff --git a/qapi/run-state.json b/qapi/run-state.json
-index f216ba5..ca05502 100644
---- a/qapi/run-state.json
-+++ b/qapi/run-state.json
-@@ -102,7 +102,7 @@
- ##
- # @StatusInfo:
- #
--# Information about VCPU run state
-+# Information about VM run state
- #
- # @running: true if all VCPUs are runnable, false if not runnable
- #
-@@ -130,9 +130,9 @@
- ##
- # @query-status:
- #
--# Query the run status of all VCPUs
-+# Query the run status of the VM
- #
--# Returns: @StatusInfo reflecting all VCPUs
-+# Returns: @StatusInfo reflecting the VM
- #
- # Since: 0.14
- #
-diff --git a/system/cpus.c b/system/cpus.c
-index 9f631ab..f162435 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -277,11 +277,15 @@ bool vm_get_suspended(void)
- static int do_vm_stop(RunState state, bool send_stop)
- {
-     int ret = 0;
-+    RunState oldstate = runstate_get();
- 
--    if (runstate_is_running()) {
-+    if (runstate_is_live(oldstate)) {
-+        vm_was_suspended = (oldstate == RUN_STATE_SUSPENDED);
-         runstate_set(state);
-         cpu_disable_ticks();
--        pause_all_vcpus();
-+        if (oldstate == RUN_STATE_RUNNING) {
-+            pause_all_vcpus();
-+        }
-         vm_state_notify(0, state);
-         if (send_stop) {
-             qapi_event_send_stop();
-@@ -694,11 +698,13 @@ int vm_stop(RunState state)
- 
- /**
-  * Prepare for (re)starting the VM.
-- * Returns -1 if the vCPUs are not to be restarted (e.g. if they are already
-- * running or in case of an error condition), 0 otherwise.
-+ * Returns 0 if the vCPUs should be restarted, -1 on an error condition,
-+ * and 1 otherwise.
-  */
- int vm_prepare_start(bool step_pending)
- {
-+    int ret = vm_was_suspended ? 1 : 0;
-+    RunState state = vm_was_suspended ? RUN_STATE_SUSPENDED : RUN_STATE_RUNNING;
-     RunState requested;
- 
-     qemu_vmstop_requested(&requested);
-@@ -729,9 +735,10 @@ int vm_prepare_start(bool step_pending)
-     qapi_event_send_resume();
- 
-     cpu_enable_ticks();
--    runstate_set(RUN_STATE_RUNNING);
--    vm_state_notify(1, RUN_STATE_RUNNING);
--    return 0;
-+    runstate_set(state);
-+    vm_state_notify(1, state);
-+    vm_was_suspended = false;
-+    return ret;
- }
- 
- void vm_start(void)
-@@ -745,7 +752,7 @@ void vm_start(void)
-    current state is forgotten forever */
- int vm_stop_force_state(RunState state)
- {
--    if (runstate_is_running()) {
-+    if (runstate_is_live(runstate_get())) {
-         return vm_stop(state);
-     } else {
-         int ret;
-diff --git a/system/runstate.c b/system/runstate.c
-index ea9d6c2..e2fa204 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -108,6 +108,7 @@ static const RunStateTransition runstate_transitions_def[] = {
-     { RUN_STATE_PAUSED, RUN_STATE_POSTMIGRATE },
-     { RUN_STATE_PAUSED, RUN_STATE_PRELAUNCH },
-     { RUN_STATE_PAUSED, RUN_STATE_COLO},
-+    { RUN_STATE_PAUSED, RUN_STATE_SUSPENDED},
- 
-     { RUN_STATE_POSTMIGRATE, RUN_STATE_RUNNING },
-     { RUN_STATE_POSTMIGRATE, RUN_STATE_FINISH_MIGRATE },
-@@ -161,6 +162,7 @@ static const RunStateTransition runstate_transitions_def[] = {
-     { RUN_STATE_SUSPENDED, RUN_STATE_FINISH_MIGRATE },
-     { RUN_STATE_SUSPENDED, RUN_STATE_PRELAUNCH },
-     { RUN_STATE_SUSPENDED, RUN_STATE_COLO},
-+    { RUN_STATE_SUSPENDED, RUN_STATE_PAUSED},
- 
-     { RUN_STATE_WATCHDOG, RUN_STATE_RUNNING },
-     { RUN_STATE_WATCHDOG, RUN_STATE_FINISH_MIGRATE },
-@@ -502,6 +504,7 @@ void qemu_system_reset(ShutdownCause reason)
-         qapi_event_send_reset(shutdown_caused_by_guest(reason), reason);
+-    if (!running || state != RUN_STATE_RUNNING || !tpm_emu->relock_storage) {
++    if (!running || !tpm_emu->relock_storage) {
+         return;
      }
-     cpu_synchronize_all_post_reset();
-+    vm_set_suspended(false);
+ 
+diff --git a/hw/usb/hcd-ehci.c b/hw/usb/hcd-ehci.c
+index 19b4534..10c82ce 100644
+--- a/hw/usb/hcd-ehci.c
++++ b/hw/usb/hcd-ehci.c
+@@ -2451,7 +2451,7 @@ static void usb_ehci_vm_state_change(void *opaque, bool running, RunState state)
+      * USB-devices which have async handled packages have a packet in the
+      * ep queue to match the completion with.
+      */
+-    if (state == RUN_STATE_RUNNING) {
++    if (running) {
+         ehci_advance_async_state(ehci);
+     }
+ 
+diff --git a/hw/usb/redirect.c b/hw/usb/redirect.c
+index c9893df..3785bb0 100644
+--- a/hw/usb/redirect.c
++++ b/hw/usb/redirect.c
+@@ -1403,7 +1403,7 @@ static void usbredir_vm_state_change(void *priv, bool running, RunState state)
+ {
+     USBRedirDevice *dev = priv;
+ 
+-    if (state == RUN_STATE_RUNNING && dev->parser != NULL) {
++    if (running && dev->parser != NULL) {
+         usbredirparser_do_write(dev->parser); /* Flush any pending writes */
+     }
+ }
+diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+index 565dc39..47e6cb1 100644
+--- a/hw/xen/xen-hvm-common.c
++++ b/hw/xen/xen-hvm-common.c
+@@ -623,7 +623,7 @@ void xen_hvm_change_state_handler(void *opaque, bool running,
+ 
+     xen_set_ioreq_server_state(xen_domid,
+                                state->ioservid,
+-                               (rstate == RUN_STATE_RUNNING));
++                               running);
  }
  
- /*
+ void xen_exit_notifier(Notifier *n, void *data)
 -- 
 1.8.3.1
 
