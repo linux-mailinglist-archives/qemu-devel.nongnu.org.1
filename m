@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A1E8237A5
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 23:19:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A56C4823836
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 23:30:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL9Z5-00020J-9Q; Wed, 03 Jan 2024 17:18:19 -0500
+	id 1rL9jY-0003RB-HE; Wed, 03 Jan 2024 17:29:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rL9Z2-0001zi-0O
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 17:18:16 -0500
-Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rL9jW-0003QZ-IL; Wed, 03 Jan 2024 17:29:06 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rL9Z0-00014O-Gz
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 17:18:15 -0500
-Received: by mail-oo1-xc2b.google.com with SMTP id
- 006d021491bc7-595aa5b1fe0so1636816eaf.2
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 14:18:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rL9jV-0002ps-2M; Wed, 03 Jan 2024 17:29:06 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40d5a41143fso70442605e9.3; 
+ Wed, 03 Jan 2024 14:29:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704320293; x=1704925093; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=oY7A6dcazrd1HX/YecrgNeGFMezD5hHIGXl4MS6ZxdA=;
- b=T3703RyBJ4I8hIoHXkF/KEf/DB1LOqAa9eUA4IhtT3dMjHiw8BK+hGhyJdJWcpVOzf
- S+OZyAYdyWe355lwiYz5qqJq1e+cF9JXNHltNDwFhDf2RFNx6EF6OHN2u8y/C00RCg0a
- g8ZJpviyXagpHRY9Sz3nimPT/0E0yMVDhUk66G4vjMVrmKt0hwdY+/4R8u4CvBBl9/Gi
- GNJ55gcGNAfWNO0WsnPAE8pTOYBTqJENxS76biYfG7NR2nXyYhv4rtuUrUt1VMNnQRJv
- 7A0zl8xnffLSv/9r91IWarnKG9X9BlN+/nxSvsEN/T6MkTbnmgk2XSHfBAUZnmL7L//U
- FYhg==
+ d=gmail.com; s=20230601; t=1704320941; x=1704925741; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yFtmu+/SLVoSwA0M6bICIlut2qL+mspFLhB5Gr3ix5M=;
+ b=K1dO69DIaUosuWXGHucWVlAJGNYu85DEiGaD2ovCdzGq432YptFE+IhOh+wMXxfx5q
+ AYk4okTeXSpsVLiUxBAvnS7QynGXnAzFFqYswWdAjkZakmbRbxOLXOl+acTGOfqBJmED
+ QxJaeaEGpLpbURA4sVd3EBDJSdrKdYAZ5x+Qw8dlOgR5ze8RdKKCajGLr7+Z1nT/wNuH
+ DHqB56AYoZPM/W7gYm7RXO6cN7qBRL6vol6GsmkRIYG4LQvGFA99OalHGtghC5HcvbXc
+ vPQfV0wGkGDpkXFtan95vfXkGw22gnvVG56zo0nnlV/L22Y94+potMOkmKsw9AKTAuMe
+ qBzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704320293; x=1704925093;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oY7A6dcazrd1HX/YecrgNeGFMezD5hHIGXl4MS6ZxdA=;
- b=Z/HwPSpF1AUPmSVPK2hnYRhasuSrc6PzsZ7bgSRL4uWPuWBodmF5I+icEFedvNXloi
- nj0LELGibDAOtqw4Kg8OU/Jlrs4D71PNGllXbyub80BQE0gXAFrLN40QgZJFgVvGXW+N
- x5MPXNhgRDohjJXsNh07X9TPjxfRWpvNJ7JoW217nvkugVf02ijbBPeOXLpuRxLKLSed
- mxIZmzepHmfWpFIFvF9hT3GJLrlenFKdnBvGdUESMpNzbhmK975HccgRH/KQmAlZarIk
- nEDdXD6YbSDTUrTY0FikHVNHh+4zlgqnj/b+C1gjmRRguNz0HR98YEwQiVZj7JMmqVjM
- TsgA==
-X-Gm-Message-State: AOJu0Yyq4RHxIO6ARYMVBhYUkh1Ffj9GfTxfGPJBrct2R+06v1Tm2esX
- T40gGDF9h81QyPicn9kCzDh2etlqNEKlzA==
-X-Google-Smtp-Source: AGHT+IHfl63e3h8k0UBNGbukm9N6fcWtClBQsI2DHfGkuEYK4eVmhRuqADGuMXejLyJE1ZfrfNa/Wg==
-X-Received: by 2002:a05:6358:6f8d:b0:170:cc82:db41 with SMTP id
- s13-20020a0563586f8d00b00170cc82db41mr24209890rwn.21.1704320292794; 
- Wed, 03 Jan 2024 14:18:12 -0800 (PST)
-Received: from [192.168.50.95] (124-149-254-207.tpgi.com.au. [124.149.254.207])
- by smtp.gmail.com with ESMTPSA id
- k4-20020aa792c4000000b006ce5da5956csm23439586pfa.24.2024.01.03.14.18.08
+ d=1e100.net; s=20230601; t=1704320941; x=1704925741;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yFtmu+/SLVoSwA0M6bICIlut2qL+mspFLhB5Gr3ix5M=;
+ b=pw14eiQ3cxJecD+nOX47Wdcx+FoaCXOyYcp/q7cfAG9hiM2ttMFyFc8GWhVtsrvXAX
+ YoTbmD6rQlQqb/rTbIvP7ONSEeUsrKVhdqQ+vX2vJWxHZgOoqvanJq8SK5V0N16Qh3Ow
+ 5QjDBkpFN7gDzckb84G7hRPFdAYEQbv/obwx6wJO8Mw7aPLv49JbBfqx+8ZkU9ZMRpJg
+ pNQ+eNAQAMHmeEwNZZZ7tz4jbI27x/mmlvpO6qnwE076zVTzsAkGJstr38wRh6Gd+cfF
+ lj1ciVMPxisT/weIHXDNcMJ1kLyww4ll8F08IEOsQPuEN4ZWSBvHMG06fZN3x07EmTSh
+ dXdg==
+X-Gm-Message-State: AOJu0YyummWMtLT4BDwsXzLuELTeVb+SzzSFvRUulF6CbBt7PKuPy/Ts
+ ZL5kDzJUaKNYoNGWSH5z/RSCRSsErYI=
+X-Google-Smtp-Source: AGHT+IHrA0bAk5PLY09HUAO4fkG6MxIi0TUGpejcEc9TJGLmbSBNR5j38EA/UCseHw6LBYex0bBuxg==
+X-Received: by 2002:a05:600c:1f0a:b0:40d:8fcb:af54 with SMTP id
+ bd10-20020a05600c1f0a00b0040d8fcbaf54mr923936wmb.145.1704320940461; 
+ Wed, 03 Jan 2024 14:29:00 -0800 (PST)
+Received: from [127.0.0.1] (dynamic-078-054-089-148.78.54.pool.telefonica.de.
+ [78.54.89.148]) by smtp.gmail.com with ESMTPSA id
+ fa24-20020a05600c519800b0040d94c31fdbsm355498wmb.0.2024.01.03.14.28.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Jan 2024 14:18:12 -0800 (PST)
-Message-ID: <8ee0bdd6-42b8-4b4b-9083-ea6eba08447d@linaro.org>
-Date: Thu, 4 Jan 2024 09:18:04 +1100
+ Wed, 03 Jan 2024 14:29:00 -0800 (PST)
+Date: Wed, 03 Jan 2024 22:28:54 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org, Pavel Pisa <pisa@fel.cvut.cz>,
+ Philippe Mathieu-Daude <philmd@redhat.com>,
+ Grant Ramsay <gramsay@enphaseenergy.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>, Vikram Garhwal <fnu.vikram@xilinx.com>,
+ Jin-Yang <jinyang.sia@gmail.com>, qemu-stable@nongnu.org,
+ Pavel Pisa <pisa@cmp.felk.cvut.cz>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_hw/net/can/sja1000=3A_fix_bug_for?=
+ =?US-ASCII?Q?_single_acceptance_filer_and_standard_frame?=
+In-Reply-To: <20231214104623.31147-1-pisa@fel.cvut.cz>
+References: <20231214104623.31147-1-pisa@fel.cvut.cz>
+Message-ID: <F6A326B6-0CA1-4FDE-AABC-D88280F2D607@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/6] target/riscv: Update address modify functions to
- take into account pointer masking
-Content-Language: en-US
-To: Alexey Baturo <baturo.alexey@gmail.com>
-Cc: zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
- Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu,
- kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-References: <20240103185716.1790546-1-me@deliversmonkey.space>
- <20240103185716.1790546-6-me@deliversmonkey.space>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240103185716.1790546-6-me@deliversmonkey.space>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2b.google.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,17 +95,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/4/24 05:57, Alexey Baturo wrote:
-> From: Alexey Baturo <baturo.alexey@gmail.com>
-> 
-> Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
-> ---
->   target/riscv/translate.c     | 12 ++++++++----
->   target/riscv/vector_helper.c | 12 ++++++++++++
->   2 files changed, 20 insertions(+), 4 deletions(-)
+Typo in commit subject: s/filer/filter/
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
+Am 14=2E Dezember 2023 10:46:23 UTC schrieb Pavel Pisa <pisa@fel=2Ecvut=2E=
+cz>:
+>From: Pavel Pisa <pisa@cmp=2Efelk=2Ecvut=2Ecz>
+>
+>A CAN sja1000 standard frame filter mask has been computed and applied
+>incorrectly for standard frames when single Acceptance Filter Mode
+>(MOD_AFM =3D 1) has been selected=2E The problem has not been found
+>by Linux kernel testing because it uses dual filter mode (MOD_AFM =3D 0)
+>and leaves falters fully open=2E
+>
+>The problem has been noticed by Grant Ramsay when testing with Zephyr
+>RTOS which uses single filter mode=2E
+>
+>Signed-off-by: Pavel Pisa <pisa@cmp=2Efelk=2Ecvut=2Ecz>
+>Reported-by: Grant Ramsay <gramsay@enphaseenergy=2Ecom>
+>---
+> hw/net/can/can_sja1000=2Ec | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/hw/net/can/can_sja1000=2Ec b/hw/net/can/can_sja1000=2Ec
+>index 73201f9139=2E=2E575df7d2f8 100644
+>--- a/hw/net/can/can_sja1000=2Ec
+>+++ b/hw/net/can/can_sja1000=2Ec
+>@@ -108,7 +108,7 @@ void can_sja_single_filter(struct qemu_can_filter *fi=
+lter,
+>         }
+>=20
+>         filter->can_mask =3D (uint32_t)amr[0] << 3;
+>-        filter->can_mask |=3D (uint32_t)amr[1] << 5;
+>+        filter->can_mask |=3D (uint32_t)amr[1] >> 5;
+>         filter->can_mask =3D ~filter->can_mask & QEMU_CAN_SFF_MASK;
+>         if (!(amr[1] & 0x10)) {
+>             filter->can_mask |=3D QEMU_CAN_RTR_FLAG;
 
