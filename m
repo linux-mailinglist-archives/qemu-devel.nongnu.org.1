@@ -2,65 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AD2823B0B
+	by mail.lfdr.de (Postfix) with ESMTPS id C2136823B0C
 	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 04:17:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLEDT-0005Wd-EO; Wed, 03 Jan 2024 22:16:19 -0500
+	id 1rLEDT-0005WI-LO; Wed, 03 Jan 2024 22:16:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1rLEDF-0005VR-2N
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 22:16:05 -0500
-Received: from mgamail.intel.com ([192.55.52.136])
+ id 1rLEDB-0005V2-A3
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 22:16:02 -0500
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1rLEDC-00038q-O4
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 22:16:04 -0500
+ id 1rLED8-000397-Ih
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 22:16:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704338162; x=1735874162;
+ t=1704338159; x=1735874159;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=NQg7u/XzEAvtrRRQA3KYd7lWsTaf05gMYyw4pAhb0as=;
- b=hH9K3rs0ZdsThPIGLZiuqR0+YoEA+wY34JGWEId98RjK7/1dqObzmMoS
- hS9w+MQQGbwmwB2flMQLc8l1tjZ3SZf6+yQcOQe26SeJiHJRWFIOT70FE
- JoF5GPiTwQ+M2bzVep6fvw+BWLKCBZjPMm3csVrQAv+65KGePOvAStDTW
- N/QLypAArDpukdn1mg1Jwd/NP6YHpCam43T0U4vRnsUwdyJ3m8Hehz0dL
- bqjASJvKYo/H2mw1LAUOF6u/dBZKTOtcRud6U9DiYnNc2iXNrj6S7spX2
- XJqqnea+3j9reb1ChgSfwscR6hcNAKaYp7dcZatT1WHfd100es1qBbt2s g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="376610423"
-X-IronPort-AV: E=Sophos;i="6.04,329,1695711600"; d="scan'208";a="376610423"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jan 2024 19:15:51 -0800
+ bh=AQpouSi14xYJdnTly7KkaayQzY3h55nSTOJfkbeUxu8=;
+ b=Z8TLczdoq0JC6KQ9+DkWkuX07TLQsVyucS6jAcKAX/wzfGxSxbybmeTI
+ VVHv7PI/45ZmsibGCOQWjCmj2wD+vtikiAAZnbfghMPbA0qWK5yJS7Grx
+ m/7q6/F/LmcSvL5kgX7cBpFKWoxIA222OmwtThkoGbdZeEUthCXeJObGL
+ QVn31YQUh180m2Wzggl5ab70gNk9FW98oOkVgVGQe8dR1jSEuLNp58mKl
+ K6d0xZzUSYHnSrIJHyoLf3mR/mkif+d25VbHFMxIaJhII9409wjSQJYL/
+ l3uZ5nRpZD2Pg3FJjHXx0cxQ7mTqrU1H5sxOjaCMy6HTUWX+Pa9VcMsu0 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="3873418"
+X-IronPort-AV: E=Sophos;i="6.04,329,1695711600"; 
+   d="scan'208";a="3873418"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jan 2024 19:15:56 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.04,329,1695711600"; d="scan'208";a="28613650"
+X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="846079432"
+X-IronPort-AV: E=Sophos;i="6.04,329,1695711600"; d="scan'208";a="846079432"
 Received: from sae-gw02.sh.intel.com (HELO localhost) ([10.239.45.110])
- by orviesa001.jf.intel.com with ESMTP; 03 Jan 2024 19:15:49 -0800
+ by fmsmga008.fm.intel.com with ESMTP; 03 Jan 2024 19:15:52 -0800
 From: Yuan Liu <yuan1.liu@intel.com>
 To: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
 Cc: qemu-devel@nongnu.org,
 	yuan1.liu@intel.com,
 	nanhai.zou@intel.com
-Subject: [PATCH v3 2/4] multifd: Implement multifd compression accelerator
-Date: Wed,  3 Jan 2024 19:28:49 +0800
-Message-Id: <20240103112851.908082-3-yuan1.liu@intel.com>
+Subject: [PATCH v3 3/4] configure: add qpl option
+Date: Wed,  3 Jan 2024 19:28:50 +0800
+Message-Id: <20240103112851.908082-4-yuan1.liu@intel.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240103112851.908082-1-yuan1.liu@intel.com>
 References: <20240103112851.908082-1-yuan1.liu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.136; envelope-from=yuan1.liu@intel.com;
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=yuan1.liu@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -59
-X-Spam_score: -6.0
-X-Spam_bar: ------
-X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
  DKIMWL_WL_HIGH=-2.601, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,109 +78,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-when starting multifd live migration, if the compression method is
-enabled, compression method can be accelerated using accelerators.
+the Query Processing Library (QPL) is an open-source library that
+supports data compression and decompression features.
+
+add --enable-qpl and --disable-qpl options to enable and disable
+the QPL compression accelerator. The QPL compression accelerator
+can accelerate the Zlib compression algorithm during the live migration.
 
 Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd.c | 40 ++++++++++++++++++++++++++++++++++++++--
- migration/multifd.h |  8 ++++++++
- 2 files changed, 46 insertions(+), 2 deletions(-)
+ meson.build                   | 18 ++++++++++++++++++
+ meson_options.txt             |  2 ++
+ scripts/meson-buildoptions.sh |  3 +++
+ 3 files changed, 23 insertions(+)
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 1fe53d3b98..8ee083b691 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -165,6 +165,36 @@ static MultiFDMethods multifd_nocomp_ops = {
- static MultiFDMethods *multifd_ops[MULTIFD_COMPRESSION__MAX] = {
-     [MULTIFD_COMPRESSION_NONE] = &multifd_nocomp_ops,
- };
-+static MultiFDAccelMethods *accel_multifd_ops[MULTIFD_COMPRESSION_ACCEL__MAX];
-+
-+static MultiFDMethods *get_multifd_ops(void)
-+{
-+    MultiFDCompression comp = migrate_multifd_compression();
-+    MultiFDCompressionAccel accel = migrate_multifd_compression_accel();
-+
-+    assert(comp < MULTIFD_COMPRESSION__MAX);
-+    assert(accel < MULTIFD_COMPRESSION_ACCEL__MAX);
-+    if (comp == MULTIFD_COMPRESSION_NONE ||
-+        accel == MULTIFD_COMPRESSION_ACCEL_NONE) {
-+        return multifd_ops[comp];
-+    }
-+    if (accel == MULTIFD_COMPRESSION_ACCEL_AUTO) {
-+        for (int i = 0; i < MULTIFD_COMPRESSION_ACCEL__MAX; i++) {
-+            if (accel_multifd_ops[i] &&
-+                accel_multifd_ops[i]->is_supported(comp)) {
-+                return accel_multifd_ops[i]->get_multifd_methods();
-+            }
-+        }
-+        return multifd_ops[comp];
-+    }
-+
-+    /* Check if a specified accelerator is available */
-+    if (accel_multifd_ops[accel] &&
-+        accel_multifd_ops[accel]->is_supported(comp)) {
-+        return accel_multifd_ops[accel]->get_multifd_methods();
-+    }
-+    return multifd_ops[comp];
-+}
+diff --git a/meson.build b/meson.build
+index 259dc5f308..f2bb81f9cb 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1032,6 +1032,22 @@ if not get_option('zstd').auto() or have_block
+                     required: get_option('zstd'),
+                     method: 'pkg-config')
+ endif
++qpl = not_found
++if not get_option('qpl').auto()
++  libqpl = cc.find_library('qpl', required: false)
++  if not libqpl.found()
++    error('libqpl not found, please install it from ' +
++    'https://intel.github.io/qpl/documentation/get_started_docs/installation.html')
++  endif
++  libaccel = cc.find_library('accel-config', required: false)
++  if not libaccel.found()
++    error('libaccel-config not found, please install it from ' +
++    'https://github.com/intel/idxd-config')
++  endif
++  qpl = declare_dependency(dependencies: [libqpl, libaccel,
++        cc.find_library('dl', required: get_option('qpl'))],
++        link_args: ['-lstdc++'])
++endif
+ virgl = not_found
  
- void multifd_register_ops(int method, MultiFDMethods *ops)
- {
-@@ -172,6 +202,12 @@ void multifd_register_ops(int method, MultiFDMethods *ops)
-     multifd_ops[method] = ops;
+ have_vhost_user_gpu = have_tools and targetos == 'linux' and pixman.found()
+@@ -2165,6 +2181,7 @@ config_host_data.set('CONFIG_MALLOC_TRIM', has_malloc_trim)
+ config_host_data.set('CONFIG_STATX', has_statx)
+ config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
+ config_host_data.set('CONFIG_ZSTD', zstd.found())
++config_host_data.set('CONFIG_QPL', qpl.found())
+ config_host_data.set('CONFIG_FUSE', fuse.found())
+ config_host_data.set('CONFIG_FUSE_LSEEK', fuse_lseek.found())
+ config_host_data.set('CONFIG_SPICE_PROTOCOL', spice_protocol.found())
+@@ -4325,6 +4342,7 @@ summary_info += {'snappy support':    snappy}
+ summary_info += {'bzip2 support':     libbzip2}
+ summary_info += {'lzfse support':     liblzfse}
+ summary_info += {'zstd support':      zstd}
++summary_info += {'Query Processing Library support': qpl}
+ summary_info += {'NUMA host support': numa}
+ summary_info += {'capstone':          capstone}
+ summary_info += {'libpmem support':   libpmem}
+diff --git a/meson_options.txt b/meson_options.txt
+index 3c7398f3c6..71cd533985 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -255,6 +255,8 @@ option('xkbcommon', type : 'feature', value : 'auto',
+        description: 'xkbcommon support')
+ option('zstd', type : 'feature', value : 'auto',
+        description: 'zstd compression support')
++option('qpl', type : 'feature', value : 'auto',
++       description: 'Query Processing Library support')
+ option('fuse', type: 'feature', value: 'auto',
+        description: 'FUSE block device export')
+ option('fuse_lseek', type : 'feature', value : 'auto',
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 7ca4b77eae..0909d1d517 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -220,6 +220,7 @@ meson_options_help() {
+   printf "%s\n" '                  Xen PCI passthrough support'
+   printf "%s\n" '  xkbcommon       xkbcommon support'
+   printf "%s\n" '  zstd            zstd compression support'
++  printf "%s\n" '  qpl             Query Processing Library support'
  }
- 
-+void multifd_register_accel_ops(int accel, MultiFDAccelMethods *ops)
-+{
-+    assert(0 < accel && accel < MULTIFD_COMPRESSION_ACCEL__MAX);
-+    accel_multifd_ops[accel] = ops;
-+}
-+
- static int multifd_send_initial_packet(MultiFDSendParams *p, Error **errp)
- {
-     MultiFDInit_t msg = {};
-@@ -922,7 +958,7 @@ int multifd_save_setup(Error **errp)
-     multifd_send_state->pages = multifd_pages_init(page_count);
-     qemu_sem_init(&multifd_send_state->channels_ready, 0);
-     qatomic_set(&multifd_send_state->exiting, 0);
--    multifd_send_state->ops = multifd_ops[migrate_multifd_compression()];
-+    multifd_send_state->ops = get_multifd_ops();
- 
-     for (i = 0; i < thread_count; i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
-@@ -1180,7 +1216,7 @@ int multifd_load_setup(Error **errp)
-     multifd_recv_state->params = g_new0(MultiFDRecvParams, thread_count);
-     qatomic_set(&multifd_recv_state->count, 0);
-     qemu_sem_init(&multifd_recv_state->sem_sync, 0);
--    multifd_recv_state->ops = multifd_ops[migrate_multifd_compression()];
-+    multifd_recv_state->ops = get_multifd_ops();
- 
-     for (i = 0; i < thread_count; i++) {
-         MultiFDRecvParams *p = &multifd_recv_state->params[i];
-diff --git a/migration/multifd.h b/migration/multifd.h
-index a835643b48..c40ff79443 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -206,7 +206,15 @@ typedef struct {
-     int (*recv_pages)(MultiFDRecvParams *p, Error **errp);
- } MultiFDMethods;
- 
-+typedef struct {
-+    /* Check if the compression method supports acceleration */
-+    bool (*is_supported) (MultiFDCompression compression);
-+    /* Get multifd methods of the accelerator */
-+    MultiFDMethods* (*get_multifd_methods)(void);
-+} MultiFDAccelMethods;
-+
- void multifd_register_ops(int method, MultiFDMethods *ops);
-+void multifd_register_accel_ops(int accel, MultiFDAccelMethods *ops);
- 
- #endif
- 
+ _meson_option_parse() {
+   case $1 in
+@@ -556,6 +557,8 @@ _meson_option_parse() {
+     --disable-xkbcommon) printf "%s" -Dxkbcommon=disabled ;;
+     --enable-zstd) printf "%s" -Dzstd=enabled ;;
+     --disable-zstd) printf "%s" -Dzstd=disabled ;;
++    --enable-qpl) printf "%s" -Dqpl=enabled ;;
++    --disable-qpl) printf "%s" -Dqpl=disabled ;;
+     *) return 1 ;;
+   esac
+ }
 -- 
 2.39.3
 
