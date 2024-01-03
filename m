@@ -2,112 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615F0822576
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 00:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F38DC8225EA
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 01:23:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKo6E-00010a-8G; Tue, 02 Jan 2024 18:23:06 -0500
+	id 1rKp1t-0001EG-IJ; Tue, 02 Jan 2024 19:22:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1rKo6B-00010K-V2
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 18:23:03 -0500
-Received: from mail-bn8nam04on2087.outbound.protection.outlook.com
- ([40.107.100.87] helo=NAM04-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1rKo69-0003ch-5Y
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 18:23:03 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Yfhc/zOK33h/lCCpUSwA+UahsUivuNpge+Bc02+eAGuNFsGkebxyuYyzlR2N6GwlyKGoecrGJ3Ad5afNS6F35XKewSbO3Tua/QVfb6YToSc6VzXEmSyIv3+2ua476oLubBnKFOTta81OXqtbI1Ze7RIlJmADm3I0ZOEsI8KGpoiVRjB1MDVzJk64YsfOTJYvHIU5/RzoFS/e7y1nseDocz6SKXw3nparDOoYXfCSLo45IoZT9vjEwWvPmyjdJpgBSNTKDyvGuw351rqQFkcyyW4CY7z0vnh2B9srlpSeDqRzr8ZGFRx6cYI81a7vdwfyww8DVWSQITqeQVcd4N8mfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WynkN7U2JmduBf8YTYAa+Wx7B0uuUTbhGBXJc1kBmUc=;
- b=maydPzkIx4FGc/2q++e9ksT8HkUY1/9NULGM03epBD971znLgQFoDJgRMpHxBXTsN/+nysja4vs/bVaclW0nhukZ2IBfQyJQYxJP9ZXxN8290eft3RIRJrjY3s7pAXIovckeq2WDTfIC1YcTTgKrM84eXgfiw+y1p0ds9l+Pbg1bgJ3aA7zhqTFfiCo7SxPmpE5dsD2flaJR7f7BdL2Ex3XpmqzeVDwEL/WAEkMr0fTCTXAfblHB0Ef7/i5FNb09fGGPQlDeg49wOumwa/FKzFOUHoCRUE4tVk557hGr5bmVSGCmRDaS5+D0y4rxmoJjFp9jCt3O3WrDcWwMUYH0Qw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WynkN7U2JmduBf8YTYAa+Wx7B0uuUTbhGBXJc1kBmUc=;
- b=ch71h+Fw/IL8vuZiYoTMoSPhexcp8yeRQu/Uw3AhepA924Y1LmKQepZKsOIoqDhhGt2/wZpZEcKPy9jiJDNDZ2E781gfomyrZ9JhZlx7ThPsD78DDA8T2FtqtVCikS6r00vZKQLAAoIPBJO4kEYgvguBMFwj4GvuX6hMjYQ0GZg=
-Received: from DS7PR03CA0017.namprd03.prod.outlook.com (2603:10b6:5:3b8::22)
- by IA1PR12MB8222.namprd12.prod.outlook.com (2603:10b6:208:3f2::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.13; Tue, 2 Jan
- 2024 23:17:55 +0000
-Received: from DS1PEPF00017099.namprd05.prod.outlook.com
- (2603:10b6:5:3b8:cafe::d) by DS7PR03CA0017.outlook.office365.com
- (2603:10b6:5:3b8::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.25 via Frontend
- Transport; Tue, 2 Jan 2024 23:17:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS1PEPF00017099.mail.protection.outlook.com (10.167.18.103) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7159.9 via Frontend Transport; Tue, 2 Jan 2024 23:17:55 +0000
-Received: from bmoger-ubuntu.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Tue, 2 Jan
- 2024 17:17:54 -0600
-From: Babu Moger <babu.moger@amd.com>
-To: <pbonzini@redhat.com>, <richard.henderson@linaro.org>
-CC: <babu.moger@amd.com>, <weijiang.yang@intel.com>, <philmd@linaro.org>,
- <dwmw@amazon.co.uk>, <paul@xen.org>, <joao.m.martins@oracle.com>,
- <qemu-devel@nongnu.org>, <mtosatti@redhat.com>, <kvm@vger.kernel.org>,
- <mst@redhat.com>, <marcel.apfelbaum@gmail.com>, <yang.zhong@intel.com>,
- <jing2.liu@intel.com>, <vkuznets@redhat.com>, <michael.roth@amd.com>,
- <wei.huang2@amd.com>, <berrange@redhat.com>, <bdas@redhat.com>
-Subject: [PATCH v2] target/i386: Fix CPUID encoding of Fn8000001E_ECX
-Date: Tue, 2 Jan 2024 17:17:38 -0600
-Message-ID: <20240102231738.46553-1-babu.moger@amd.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rKp1r-0001E8-JL
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 19:22:39 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rKp1p-0005jT-Ji
+ for qemu-devel@nongnu.org; Tue, 02 Jan 2024 19:22:39 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1d44200b976so33160525ad.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jan 2024 16:22:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704241354; x=1704846154; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gza86VDTwHN5Ij2jw315cml16cTwUefHEJrmNAED8vI=;
+ b=WFIj7WtvZrgm8gNLqAecSHGIciIhLgo4d3bHQZU9MPIHLTIoDJ3Y6QobBMAeYyy3VR
+ CElwpuKiRg5UOA4SpP77s9crUrk19GcDg0VnavSpINKsgbLTsl+OllFpgZKFHbkuaZ0Z
+ vRXfzVLmUzMEa3QQ1E4i/HRRjpxU9x8IOXWEhaWAAu5LBIyRhYZ5wedzdjMK9ixdg9bo
+ GvlWfQeBBayerQnRydPTyFgaBmB4e5fnXmA10KO+s4SVvkn8q+88cIyRFNbg82i7M316
+ hmTYaUh7HCxCDDp9TQCmcfeCILF8S5ybSiAeTvlRly460F4sVDfhr2d3QEj724GKb7De
+ lRWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704241354; x=1704846154;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gza86VDTwHN5Ij2jw315cml16cTwUefHEJrmNAED8vI=;
+ b=FfPX/Li1MaiCGO+J89E+y9jiies7v6MZ5E005P0r2e+7b8IC2IheRi50TN/4gAknCG
+ uPR9ykxzNAu+ZsfDQtlnjfMzFk0ZiA5Fq7mbl4eZgh7oRlPaiv/OISPVrgPyjiL80nhw
+ h1f+LM5/FepKH4fuk594NZ6iEUP9Bqe0i9wz0i4EjYlB93o4yGcby8u81cOb9jyOd4oc
+ j69h12Xvck5M12XeyvUIq65trfrzEeQlO00T6Mec1ckigZ51h4aCGWmlufsKLVu06zs1
+ ULenQao0Qncr1l++UuwVWRb5rlj23vVA9O3I7TGKuzfg8CU9fz2EV3umklcpOpSDx/NX
+ PDBA==
+X-Gm-Message-State: AOJu0Yxr5+9SrzNRix5y+PiZq8iA9x9qbe6jq2QuhWGpROWJBWu0U+/a
+ nfOEu88vZ7IPf1D/nO7NxpDs4hhnpxsdN5bacal0m//ZbV0=
+X-Google-Smtp-Source: AGHT+IEUtxxN1Oj2BICiAD1Osb/WMZWUeIAg26Nf4fM6/WUqQfiQHxvSQEkmPYM1CTqKPQ4Y4KJk3w==
+X-Received: by 2002:a17:902:684d:b0:1c5:d063:b70e with SMTP id
+ f13-20020a170902684d00b001c5d063b70emr8884119pln.53.1704241354578; 
+ Tue, 02 Jan 2024 16:22:34 -0800 (PST)
+Received: from [192.168.50.95] (124-149-254-207.tpgi.com.au. [124.149.254.207])
+ by smtp.gmail.com with ESMTPSA id
+ d4-20020a170902cec400b001c62b9a51a4sm22612511plg.239.2024.01.02.16.22.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Jan 2024 16:22:33 -0800 (PST)
+Message-ID: <dfc5987a-4210-4579-b9a3-1cc12fe1b909@linaro.org>
+Date: Wed, 3 Jan 2024 11:22:29 +1100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: chacha20-s390 broken in 8.2.0 in TCG on s390x
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, QEMU Developers <qemu-devel@nongnu.org>
+References: <d5e8f88b-1d19-4e00-8dc2-b20e0cd34931@tls.msk.ru>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <d5e8f88b-1d19-4e00-8dc2-b20e0cd34931@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017099:EE_|IA1PR12MB8222:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e87214f-5b09-4b35-daa0-08dc0be90d00
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: WPnmAwBOHhdn04eGPevDrw2QlJgk5wkZmnGzBL5U3w3vgQfalLCSnvj/6vK4hsHys5a+40cS1eCRZ/nyO5SbLWR8dz+zEcnUANFZCdF+ou42KBGEtDH0PgXARgBVeTFWo81NzBtDFRpzIsAJk2JSypbJKwYugbjfk7w/GDcbpePv5bFMEXg4efGTUcensB77g9bu8U+N7H3BxG5QaWUXQX+ruAQ2NKg+YheL3X/srzEWvYJm8HgNxdvuyj1jKT5RWhP8hP/mjqw+9VeDjr7BN+Cl7KtyZP18BrbUKU7TSRHlxXzcbVdef4o7vXAzMRUzQIcjuUAft12P55J1Tqwmpctf2VKZmMz1ryPVoCQGuSPqTiKjJClJyMfDLEIEZBEpoFQu22cLsweXjPzcuSPaGcFIG1WGunvzycEGvcQynTySQwt+/sXINjwiCNBmP+U8neiL7ZHBSSK9k3Zys0oJVoaGtjXFRj/tByt1I/JZkkXxT7lWdKkwnjQR8VLM88ULkviml9T5IkAG+XQ/CxlSq4+dhiW8nX2KCQdr9X+jHqOwXCEv0bYhwV6crpadg/DAdrkMPizaXBLt8Q8/r9RlTobU7i7SeF+icW2aWIZEdbaw2VCbOV63eEGRqChsepF6PEH0EIqbmB+pcUC6M47qwtbLekBZyTFUrq5qKq8fMuGJLiTsuAYJ9WCRU07rGlzNX6SmO5GtAPNi5/Yjv7oPFSowuGugkfh264ohnQ3yMg5FciNTQ3vVoRiqL9sRXiQkAauGVAOUAm70iOAN5LEN9g==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(346002)(39860400002)(136003)(376002)(396003)(230922051799003)(186009)(64100799003)(82310400011)(451199024)(1800799012)(46966006)(40470700004)(36840700001)(36756003)(40480700001)(40460700003)(70206006)(70586007)(86362001)(336012)(16526019)(81166007)(356005)(82740400003)(1076003)(5660300002)(26005)(47076005)(41300700001)(83380400001)(2616005)(2906002)(6666004)(426003)(44832011)(7416002)(478600001)(7696005)(4326008)(966005)(110136005)(8936002)(54906003)(316002)(36860700001)(8676002)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2024 23:17:55.2431 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e87214f-5b09-4b35-daa0-08dc0be90d00
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017099.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8222
-Received-SPF: softfail client-ip=40.107.100.87;
- envelope-from=Babu.Moger@amd.com;
- helo=NAM04-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.178,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,153 +92,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Observed the following failure while booting the SEV-SNP guest and the
-guest fails to boot with the smp parameters:
-"-smp 192,sockets=1,dies=12,cores=8,threads=2".
+On 12/22/23 01:51, Michael Tokarev wrote:
+> When running current kernel on s390x in tcg mode *on s390x hw*, the following
+> is generated when loading crypto selftest module (it gets loaded automatically):
+> 
+> [   10.546690] alg: skcipher: chacha20-s390 encryption test failed (wrong result) on test 
+> vector 1, cfg="in-place (one sglist)"
+> [   10.546914] alg: self-tests for chacha20 using chacha20-s390 failed (rc=-22)
+> [   10.546969] ------------[ cut here ]------------
+> [   10.546998] alg: self-tests for chacha20 using chacha20-s390 failed (rc=-22)
+> [   10.547182] WARNING: CPU: 1 PID: 109 at crypto/testmgr.c:5936 alg_test+0x55a/0x5b8
+> [   10.547510] Modules linked in: net_failover chacha_s390(+) libchacha virtio_blk(+) 
+> failover
+> [   10.547854] CPU: 1 PID: 109 Comm: cryptomgr_test Not tainted 6.5.0-5-s390x #1  Debian 
+> 6.5.13-1
+> [   10.548002] Hardware name: QEMU 8561 QEMU (KVM/Linux)
+> [   10.548101] Krnl PSW : 0704c00180000000 00000000005df8fe (alg_test+0x55e/0x5b8)
+> [   10.548207]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+> [   10.548291] Krnl GPRS: 0000000000000000 0000000001286408 00000000005df8fa 0000000001286408
+> [   10.548337]            000000000014bf14 00000000001c6ba8 0000000001838b3c 0000000000000005
+> [   10.548475]            00000000025a4880 00000000025a4800 ffffffffffffffea 00000000ffffffea
+> [   10.548521]            000000003e649200 00000000ffffffff 00000000005df8fa 000003800016bcf8
+> [   10.549504] Krnl Code: 00000000005df8ee: c020003b5828    larl    %r2,0000000000d4a93e
+> [   10.549504]            00000000005df8f4: c0e5ffdb62d2    brasl    %r14,000000000014be98
+> [   10.549504]           #00000000005df8fa: af000000        mc    0,0
+> [   10.549504]           >00000000005df8fe: a7f4fee6        brc    15,00000000005df6ca
+> [   10.549504]            00000000005df902: b9040042        lgr    %r4,%r2
+> [   10.549504]            00000000005df906: b9040039        lgr    %r3,%r9
+> [   10.549504]            00000000005df90a: c020003b57df    larl    %r2,0000000000d4a8c8
+> [   10.549504]            00000000005df910: 18bd        lr    %r11,%r13
+> [   10.550004] Call Trace:
+> [   10.550375]  [<00000000005df8fe>] alg_test+0x55e/0x5b8
+> [   10.550467] ([<00000000005df8fa>] alg_test+0x55a/0x5b8)
+> [   10.550489]  [<00000000005d9fbc>] cryptomgr_test+0x34/0x60
+> [   10.550514]  [<000000000017d004>] kthread+0x124/0x130
+> [   10.550539]  [<0000000000103124>] __ret_from_fork+0x3c/0x50
+> [   10.550562]  [<0000000000b1dfca>] ret_from_fork+0xa/0x30
+> [   10.550611] Last Breaking-Event-Address:
+> [   10.550626]  [<000000000014bf20>] __warn_printk+0x88/0x110
+> [   10.550723] ---[ end trace 0000000000000000 ]---
+> 
+> git bisect points to this commit:
+> 
+> commit ab84dc398b3b702b0c692538b947ef65dbbdf52f
+> Author: Richard Henderson <richard.henderson@linaro.org>
+> Date:   Wed Aug 23 23:04:24 2023 -0700
+> 
+>      tcg/optimize: Optimize env memory operations
+> 
+> So far, this seems to work on amd64 host, but fails on s390x host -
+> where this has been observed so far.  Maybe it also fails in some
+> other combinations too, I don't yet know.  Just finished bisecting
+> it on s390x.
 
-qemu-system-x86_64: sev_snp_launch_update: SNP_LAUNCH_UPDATE ret=-5 fw_error=22 'Invalid parameter'
-qemu-system-x86_64: SEV-SNP: CPUID validation failed for function 0x8000001e, index: 0x0.
-provided: eax:0x00000000, ebx: 0x00000100, ecx: 0x00000b00, edx: 0x00000000
-expected: eax:0x00000000, ebx: 0x00000100, ecx: 0x00000300, edx: 0x00000000
-qemu-system-x86_64: SEV-SNP: failed update CPUID page
+I haven't been able to build a reproducer for this.
+Have you an image or kernel you can share?
 
-Reason for the failure is due to overflowing of bits used for "Node per
-processor" in CPUID Fn8000001E_ECX. This field's width is 3 bits wide and
-can hold maximum value 0x7. With dies=12 (0xB), it overflows and spills
-over into the reserved bits. In the case of SEV-SNP, this causes CPUID
-enforcement failure and guest fails to boot.
 
-The PPR documentation for CPUID_Fn8000001E_ECX [Node Identifiers]
-=================================================================
-Bits    Description
-31:11   Reserved.
-
-10:8    NodesPerProcessor: Node per processor. Read-only.
-        ValidValues:
-        Value   Description
-        0h      1 node per processor.
-        7h-1h   Reserved.
-
-7:0     NodeId: Node ID. Read-only. Reset: Fixed,XXh.
-=================================================================
-
-As in the spec, the valid value for "node per processor" is 0 and rest
-are reserved.
-
-Looking back at the history of decoding of CPUID_Fn8000001E_ECX, noticed
-that there were cases where "node per processor" can be more than 1. It
-is valid only for pre-F17h (pre-EPYC) architectures. For EPYC or later
-CPUs, the linux kernel does not use this information to build the L3
-topology.
-
-Also noted that the CPUID Function 0x8000001E_ECX is available only when
-TOPOEXT feature is enabled. This feature is enabled only for EPYC(F17h)
-or later processors. So, previous generation of processors do not not
-enumerate 0x8000001E_ECX leaf.
-
-There could be some corner cases where the older guests could enable the
-TOPOEXT feature by running with -cpu host, in which case legacy guests
-might notice the topology change. To address those cases introduced a
-new CPU property "legacy-multi-node". It will be true for older machine
-types to maintain compatibility. By default, it will be false, so new
-decoding will be used going forward.
-
-The documentation is taken from Preliminary Processor Programming
-Reference (PPR) for AMD Family 19h Model 11h, Revision B1 Processors 55901
-Rev 0.25 - Oct 6, 2022.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 31ada106d891 ("Simplify CPUID_8000_001E for AMD")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537
-Signed-off-by: Babu Moger <babu.moger@amd.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
----
-v2: Rebased to the latest tree.
-    Updated the pc_compat_8_2 for the new flag.
-    Added the comment for new property legacy_multi_node.
-    Added Reviwed-by from Zhao.
----
- hw/i386/pc.c      |  4 +++-
- target/i386/cpu.c | 18 ++++++++++--------
- target/i386/cpu.h |  6 ++++++
- 3 files changed, 19 insertions(+), 9 deletions(-)
-
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 496498df3a..a504e05e62 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -78,7 +78,9 @@
-     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
-     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
- 
--GlobalProperty pc_compat_8_2[] = {};
-+GlobalProperty pc_compat_8_2[] = {
-+    { TYPE_X86_CPU, "legacy-multi-node", "on" },
-+};
- const size_t pc_compat_8_2_len = G_N_ELEMENTS(pc_compat_8_2);
- 
- GlobalProperty pc_compat_8_1[] = {};
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 95d5f16cd5..2cc84e8500 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -398,12 +398,9 @@ static void encode_topo_cpuid8000001e(X86CPU *cpu, X86CPUTopoInfo *topo_info,
-      * 31:11 Reserved.
-      * 10:8 NodesPerProcessor: Node per processor. Read-only. Reset: XXXb.
-      *      ValidValues:
--     *      Value Description
--     *      000b  1 node per processor.
--     *      001b  2 nodes per processor.
--     *      010b Reserved.
--     *      011b 4 nodes per processor.
--     *      111b-100b Reserved.
-+     *      Value   Description
-+     *      0h      1 node per processor.
-+     *      7h-1h   Reserved.
-      *  7:0 NodeId: Node ID. Read-only. Reset: XXh.
-      *
-      * NOTE: Hardware reserves 3 bits for number of nodes per processor.
-@@ -412,8 +409,12 @@ static void encode_topo_cpuid8000001e(X86CPU *cpu, X86CPUTopoInfo *topo_info,
-      * NodeId is combination of node and socket_id which is already decoded
-      * in apic_id. Just use it by shifting.
-      */
--    *ecx = ((topo_info->dies_per_pkg - 1) << 8) |
--           ((cpu->apic_id >> apicid_die_offset(topo_info)) & 0xFF);
-+    if (cpu->legacy_multi_node) {
-+        *ecx = ((topo_info->dies_per_pkg - 1) << 8) |
-+               ((cpu->apic_id >> apicid_die_offset(topo_info)) & 0xFF);
-+    } else {
-+        *ecx = (cpu->apic_id >> apicid_pkg_offset(topo_info)) & 0xFF;
-+    }
- 
-     *edx = 0;
- }
-@@ -7895,6 +7896,7 @@ static Property x86_cpu_properties[] = {
-      * own cache information (see x86_cpu_load_def()).
-      */
-     DEFINE_PROP_BOOL("legacy-cache", X86CPU, legacy_cache, true),
-+    DEFINE_PROP_BOOL("legacy-multi-node", X86CPU, legacy_multi_node, false),
-     DEFINE_PROP_BOOL("xen-vapic", X86CPU, xen_vapic, false),
- 
-     /*
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index ef987f344c..6ef4396fc5 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1989,6 +1989,12 @@ struct ArchCPU {
-      */
-     bool legacy_cache;
- 
-+    /* Compatibility bits for old machine types.
-+     * If true decode the CPUID Function 0x8000001E_ECX to support multiple
-+     * nodes per processor
-+     */
-+    bool legacy_multi_node;
-+
-     /* Compatibility bits for old machine types: */
-     bool enable_cpuid_0xb;
- 
--- 
-2.34.1
+r~
 
 
