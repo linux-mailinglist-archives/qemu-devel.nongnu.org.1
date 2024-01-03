@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146038233B7
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 18:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 002968233C0
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 18:48:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL5EY-0002re-R4; Wed, 03 Jan 2024 12:40:50 -0500
+	id 1rL5Ed-0003aO-Aj; Wed, 03 Jan 2024 12:40:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rL5EM-0002Sv-P6
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:40:40 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1rL5ER-0002Xs-AJ
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:40:44 -0500
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rL5EK-0001ZB-Er
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:40:38 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6d9af1f12d5so6489927b3a.3
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 09:40:35 -0800 (PST)
+ id 1rL5EN-0001bQ-Pq
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 12:40:43 -0500
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6d9af1f52bcso2928880b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 09:40:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704303633; x=1704908433; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1704303637; x=1704908437; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cz+jeKfAbDjCYD0ym8saUo72Sdfqs84e9WmM8BUjwrU=;
- b=cF2M+Jbwj39s6BqeSCZAUUhURpVNCT1yMDBa1NK/I05AzIrhXxhGu+FvH4EwTBGS+P
- UjXI6tPdLZ2mlLRqMMwRhy5eaEuegwsA8CTULry9gwWsT/IsfgrQ7IcLHOZPH5vB3mG4
- dLKe71vIDHfehqI9kNgcBKe6IRHEzha1fMr7WCOX8RGeqF81D9K/l4lLbTiVVL3gYAmM
- AgiJ3AZyEjT5rkYmCsH1Cb+Fdmxr/xc4w+NAmdZwrCeyI3MUlcucE6U70VdlPV4yH04z
- mQsxaqahIOeeuGoNgwZetn3jhJ/Tv27MiW3FiapD2Onay/xkn7ZB5gVZHhBXwB8IHt6Y
- 7IcQ==
+ bh=iuIlMixa+qWdIu7SpCSQCDmDPoiwKpmn6qm/naO42AI=;
+ b=hnjRefqabqwKnVk7xXTmFNTPnAvUGvRwPBuOeYoMLek/9VKclXH6RnEKzylRnH8oms
+ 5sgvNTxCwaL8uYH2uzb5asDf5EyHdTkfSNKBIeKjgHX5YdU0N0AHHnwm/6DYJ/+CrVRK
+ ovJ6ttNQLh1uxaIwFq8B7yek8SfrvkL4AVv3Imp0b/jaNVHzN4/5dv/pm1GLDk1JvygW
+ XXnR9cIAsJzEGDNEjvBaqagVPuo+1jLuEuvSA6+gUnuXwPjdNKax8/4AK9GPWr0H0S1R
+ S9NzhN1y0MsDLnorXSQZFmBrXw8ee21oJefgPtPrGpMgQN2fD0aT1/ktzqEzjGaaKySn
+ j0Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704303633; x=1704908433;
+ d=1e100.net; s=20230601; t=1704303637; x=1704908437;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cz+jeKfAbDjCYD0ym8saUo72Sdfqs84e9WmM8BUjwrU=;
- b=UdVmh98o0qyFPSN1YM8o39p34N8ytb4XXZcbvAkHG+VPtWgV5VCOtLWA2J9IO35MxA
- eZi10IR+G4qDkNWehcoKOdG2cxbxWM9mCPQQnFBgwz9QcHooqsS3OivEJ8T8YYy/NEcs
- 4Q/GoZAXmE7SZIZLgtB9IF609cuxTaRu855BMzxdKaMiN88o/RJAmPjQo62PW7NHT8tR
- 3b5TuG0SNfAdRLmWQIB0LJ8O1Kl/b6uOkSJit7JndkEUl01zuVGRThBPsvypdfHbNAj4
- nlrm+GIRAt+ulfioEeAREapmyfDNG15pPOsFtKEwjWKu/SniDq3pfWdMlzf5uy9pPDnO
- 5smQ==
-X-Gm-Message-State: AOJu0YzDhyd41+MdnsXqqGip2pzOFWM0Mlcl84DEvao25ZkQ8Xsn3XyP
- 6rEqqZGIwERB9bAFCfzglxIQ3NW7mlgFstxggMv8BdTDrcT0uw==
-X-Google-Smtp-Source: AGHT+IH8RBd0Oy6dDeXQTx9unafqxpxaEpNLMBbFRBJNSMM+I88VcaEcTcdjFxNqHXHNFc3UfuUPpw==
-X-Received: by 2002:a62:e805:0:b0:6d9:a014:ca4a with SMTP id
- c5-20020a62e805000000b006d9a014ca4amr15593638pfi.51.1704303633405; 
- Wed, 03 Jan 2024 09:40:33 -0800 (PST)
+ bh=iuIlMixa+qWdIu7SpCSQCDmDPoiwKpmn6qm/naO42AI=;
+ b=o7JbL49qIS6N+XQ4VzlVwqMT0JlEd3PckxHB1aYngSJCzo/NKeiXORTpdQVojNovTd
+ LOBcBtGju1SVDRAJz+6UvFpipQu1XeKUCVOYBrHRfjdlDC0pzOh6sBOt9t90OeAKRRon
+ XzZVUhGtK0fVwat5lh2RUTW5DtH/ZMUmx+wyCLr+7Aen9LxEl7NObJiUGGAFT2uRm13+
+ +2AI4iUauF8sARdf/KlAIQHQgC81CfPm3+BQrH6XMW2KrxIQDHKGQwkD9zWqDSu7LhHq
+ 2ZPNnkdovAAviJsFT0y5wCqmH5+Z5v+BQ0beOBXoxNOj4q9whQEXDMFBtkI3Z9KA6NMS
+ vunw==
+X-Gm-Message-State: AOJu0Yz2GDytHlOcVIfmn2VX2rSN0lJJOxAeh0y6v4vAqoaOIYW4jBbt
+ gronhlSQ1K+Xd83jp9nrPD+29ZIn0VsYFBYKnx0EbQgfLVKXVA==
+X-Google-Smtp-Source: AGHT+IFG7RgRzSWJewNuw7PNEQWgmVz9865RfE5a04Yb0w+skS8lF071qlnK+6/etvYAJu9PUGkVgw==
+X-Received: by 2002:aa7:85ce:0:b0:6d9:a5e9:528e with SMTP id
+ z14-20020aa785ce000000b006d9a5e9528emr6953694pfn.30.1704303636775; 
+ Wed, 03 Jan 2024 09:40:36 -0800 (PST)
 Received: from grind.. ([189.79.21.107]) by smtp.gmail.com with ESMTPSA id
- v3-20020aa78503000000b006d7f1ae421csm24042050pfn.145.2024.01.03.09.40.30
+ v3-20020aa78503000000b006d7f1ae421csm24042050pfn.145.2024.01.03.09.40.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jan 2024 09:40:33 -0800 (PST)
+ Wed, 03 Jan 2024 09:40:36 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com, vladimir.isaev@syntacore.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v3 03/16] target/riscv: move 'pmu-mask' and 'pmu-num' to
- riscv_cpu_properties[]
-Date: Wed,  3 Jan 2024 14:40:00 -0300
-Message-ID: <20240103174013.147279-4-dbarboza@ventanamicro.com>
+Subject: [PATCH v3 04/16] target/riscv: move 'mmu' to riscv_cpu_properties[]
+Date: Wed,  3 Jan 2024 14:40:01 -0300
+Message-ID: <20240103174013.147279-5-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240103174013.147279-1-dbarboza@ventanamicro.com>
 References: <20240103174013.147279-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,202 +93,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Every property in riscv_cpu_options[] will be migrated to
-riscv_cpu_properties[]. This will make their default values init
-earlier, allowing cpu_init() functions to overwrite them. We'll also
-implement common getters and setters that both accelerators will use,
-allowing them to share validations that TCG is doing.
+Commit 7f0bdfb5bfc ("target/riscv/cpu.c: remove cfg setup from
+riscv_cpu_init()") already did some of the work by making some
+cpu_init() functions to explictly enable their own 'mmu' default.
 
-At the same time, some options (namely 'vlen', 'elen' and the cache
-blocksizes) need a way of tracking if the user set a value for them.
-This is benign for TCG since the cost of always validating these values
-are small, but for KVM we need syscalls to read the host values to make
-the validations, thus knowing whether the user didn't touch the values
-makes a difference.
+The generic CPUs didn't get update by that commit, so they are still
+relying on the defaults set by the 'mmu' option. But having 'mmu' and
+'pmp' being default=true will force CPUs that doesn't implement these
+options to set them to 'false' in their cpu_init(), which isn't ideal.
 
-We'll track user setting for these properties using a hash, like we do
-in the TCG driver. All riscv cpu options will update this hash in case
-the user sets it. The KVM driver will use this hash to minimize the
-amount of syscalls done.
+We'll move 'mmu' to riscv_cpu_properties[] without any defaults, i.e.
+the default will be 'false'. Compensate it by manually setting 'mmu =
+true' to the generic CPUs that requires it.
 
-For now, both 'pmu-mask' and 'pmu-num' shouldn't be changed for vendor
-CPUs. The existing setter for 'pmu-num' is changed to add this
-restriction. New getters and setters are required for 'pmu-mask'
+Implement a setter for it to forbid the 'mmu' setting to be changed for
+vendor CPUs. This will allow the option to exist for all CPUs and, at
+the same time, protect vendor CPUs from undesired changes:
 
-While we're at it, add a 'static' modifier to 'prop_pmu_num' since we're
-not exporting it.
+$ ./build/qemu-system-riscv64 -M virt -cpu sifive-e51,mmu=true
+qemu-system-riscv64: can't apply global sifive-e51-riscv-cpu.mmu=true:
+   CPU 'sifive-e51' does not allow changing the value of 'mmu'
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu.c | 96 ++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 89 insertions(+), 7 deletions(-)
+ target/riscv/cpu.c | 55 ++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 51 insertions(+), 4 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 65cfa6c740..e90b70c0a7 100644
+index e90b70c0a7..9f1407b73f 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -53,6 +53,15 @@ const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
- #define BYTE(x)   (x)
+@@ -419,6 +419,8 @@ static void riscv_max_cpu_init(Object *obj)
+     CPURISCVState *env = &cpu->env;
+     RISCVMXL mlx = MXL_RV64;
+ 
++    cpu->cfg.mmu = true;
++
+ #ifdef TARGET_RISCV32
+     mlx = MXL_RV32;
  #endif
- 
-+/* Hash that stores general user set numeric options */
-+static GHashTable *general_user_opts;
+@@ -433,7 +435,11 @@ static void riscv_max_cpu_init(Object *obj)
+ #if defined(TARGET_RISCV64)
+ static void rv64_base_cpu_init(Object *obj)
+ {
+-    CPURISCVState *env = &RISCV_CPU(obj)->env;
++    RISCVCPU *cpu = RISCV_CPU(obj);
++    CPURISCVState *env = &cpu->env;
 +
-+static void cpu_option_add_user_setting(const char *optname, uint32_t value)
-+{
-+    g_hash_table_insert(general_user_opts, (gpointer)optname,
-+                        GUINT_TO_POINTER(value));
-+}
++    cpu->cfg.mmu = true;
 +
- #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
-     {#_name, _min_ver, CPU_CFG_OFFSET(_prop)}
+     /* We set this in the realise function */
+     riscv_cpu_set_misa(env, MXL_RV64, 0);
+     /* Set latest version of privileged specification */
+@@ -551,13 +557,18 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
  
-@@ -1218,11 +1227,15 @@ static void riscv_cpu_post_init(Object *obj)
- 
- static void riscv_cpu_init(Object *obj)
+ static void rv128_base_cpu_init(Object *obj)
  {
 +    RISCVCPU *cpu = RISCV_CPU(obj);
++    CPURISCVState *env = &cpu->env;
 +
- #ifndef CONFIG_USER_ONLY
-     qdev_init_gpio_in(DEVICE(obj), riscv_cpu_set_irq,
-                       IRQ_LOCAL_MAX + IRQ_LOCAL_GUEST_MAX);
- #endif /* CONFIG_USER_ONLY */
- 
-+    general_user_opts = g_hash_table_new(g_str_hash, g_str_equal);
+     if (qemu_tcg_mttcg_enabled()) {
+         /* Missing 128-bit aligned atomics */
+         error_report("128-bit RISC-V currently does not work with Multi "
+                      "Threaded TCG. Please use: -accel tcg,thread=single");
+         exit(EXIT_FAILURE);
+     }
+-    CPURISCVState *env = &RISCV_CPU(obj)->env;
 +
-     /*
-      * The timer and performance counters extensions were supported
-      * in QEMU before they were added as discrete extensions in the
-@@ -1232,6 +1245,9 @@ static void riscv_cpu_init(Object *obj)
-      */
-     RISCV_CPU(obj)->cfg.ext_zicntr = true;
-     RISCV_CPU(obj)->cfg.ext_zihpm = true;
++    cpu->cfg.mmu = true;
 +
-+    /* Default values for non-bool cpu properties */
-+    cpu->cfg.pmu_mask = MAKE_64BIT_MASK(3, 16);
- }
- 
- typedef struct misa_ext_info {
-@@ -1431,26 +1447,51 @@ const RISCVCPUMultiExtConfig riscv_cpu_deprecated_exts[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-+static bool riscv_cpu_is_vendor(Object *obj)
-+{
-+    return !riscv_cpu_is_generic(obj);
-+}
-+
-+static void cpu_set_prop_err(RISCVCPU *cpu, const char *propname,
-+                             Error **errp)
-+{
-+    g_autofree char *cpuname = riscv_cpu_get_name(cpu);
-+    error_setg(errp, "CPU '%s' does not allow changing the value of '%s'",
-+               cpuname, propname);
-+}
-+
- static void prop_pmu_num_set(Object *obj, Visitor *v, const char *name,
-                              void *opaque, Error **errp)
+     /* We set this in the realise function */
+     riscv_cpu_set_misa(env, MXL_RV128, 0);
+     /* Set latest version of privileged specification */
+@@ -569,7 +580,11 @@ static void rv128_base_cpu_init(Object *obj)
+ #else
+ static void rv32_base_cpu_init(Object *obj)
  {
-     RISCVCPU *cpu = RISCV_CPU(obj);
--    uint8_t pmu_num;
-+    uint8_t pmu_num, curr_pmu_num;
-+    uint32_t pmu_mask;
- 
-     visit_type_uint8(v, name, &pmu_num, errp);
- 
-+    curr_pmu_num = ctpop32(cpu->cfg.pmu_mask);
+-    CPURISCVState *env = &RISCV_CPU(obj)->env;
++    RISCVCPU *cpu = RISCV_CPU(obj);
++    CPURISCVState *env = &cpu->env;
 +
-+    if (pmu_num != curr_pmu_num && riscv_cpu_is_vendor(obj)) {
-+        cpu_set_prop_err(cpu, name, errp);
-+        error_append_hint(errp, "Current '%s' val: %u\n",
-+                          name, curr_pmu_num);
-+        return;
-+    }
++    cpu->cfg.mmu = true;
 +
-     if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
-         error_setg(errp, "Number of counters exceeds maximum available");
-         return;
-     }
- 
-     if (pmu_num == 0) {
--        cpu->cfg.pmu_mask = 0;
-+        pmu_mask = 0;
-     } else {
--        cpu->cfg.pmu_mask = MAKE_64BIT_MASK(3, pmu_num);
-+        pmu_mask = MAKE_64BIT_MASK(3, pmu_num);
-     }
- 
-     warn_report("\"pmu-num\" property is deprecated; use \"pmu-mask\"");
-+    cpu->cfg.pmu_mask = pmu_mask;
-+    cpu_option_add_user_setting("pmu-mask", pmu_mask);
- }
- 
- static void prop_pmu_num_get(Object *obj, Visitor *v, const char *name,
-@@ -1462,16 +1503,54 @@ static void prop_pmu_num_get(Object *obj, Visitor *v, const char *name,
-     visit_type_uint8(v, name, &pmu_num, errp);
- }
- 
--const PropertyInfo prop_pmu_num = {
-+static const PropertyInfo prop_pmu_num = {
-     .name = "pmu-num",
-     .get = prop_pmu_num_get,
-     .set = prop_pmu_num_set,
+     /* We set this in the realise function */
+     riscv_cpu_set_misa(env, MXL_RV32, 0);
+     /* Set latest version of privileged specification */
+@@ -1550,8 +1565,38 @@ static const PropertyInfo prop_pmu_mask = {
+     .set = prop_pmu_mask_set,
  };
  
--Property riscv_cpu_options[] = {
--    DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_mask, MAKE_64BIT_MASK(3, 16)),
--    {.name = "pmu-num", .info = &prop_pmu_num}, /* Deprecated */
-+static void prop_pmu_mask_set(Object *obj, Visitor *v, const char *name,
-+                             void *opaque, Error **errp)
++static void prop_mmu_set(Object *obj, Visitor *v, const char *name,
++                         void *opaque, Error **errp)
 +{
 +    RISCVCPU *cpu = RISCV_CPU(obj);
-+    uint32_t value;
-+    uint8_t pmu_num;
++    bool value;
 +
-+    visit_type_uint32(v, name, &value, errp);
++    visit_type_bool(v, name, &value, errp);
 +
-+    if (value != cpu->cfg.pmu_mask && riscv_cpu_is_vendor(obj)) {
-+        cpu_set_prop_err(cpu, name, errp);
-+        error_append_hint(errp, "Current '%s' val: %x\n",
-+                          name, cpu->cfg.pmu_mask);
++    if (cpu->cfg.mmu != value && riscv_cpu_is_vendor(obj)) {
++        cpu_set_prop_err(cpu, "mmu", errp);
 +        return;
 +    }
 +
-+    pmu_num = ctpop32(value);
-+
-+    if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
-+        error_setg(errp, "Number of counters exceeds maximum available");
-+        return;
-+    }
- 
 +    cpu_option_add_user_setting(name, value);
-+    cpu->cfg.pmu_mask = value;
++    cpu->cfg.mmu = value;
 +}
 +
-+static void prop_pmu_mask_get(Object *obj, Visitor *v, const char *name,
-+                             void *opaque, Error **errp)
++static void prop_mmu_get(Object *obj, Visitor *v, const char *name,
++                         void *opaque, Error **errp)
 +{
-+    uint8_t pmu_mask = RISCV_CPU(obj)->cfg.pmu_mask;
++    bool value = RISCV_CPU(obj)->cfg.mmu;
 +
-+    visit_type_uint8(v, name, &pmu_mask, errp);
++    visit_type_bool(v, name, &value, errp);
 +}
 +
-+static const PropertyInfo prop_pmu_mask = {
-+    .name = "pmu-mask",
-+    .get = prop_pmu_mask_get,
-+    .set = prop_pmu_mask_set,
++static const PropertyInfo prop_mmu = {
++    .name = "mmu",
++    .get = prop_mmu_get,
++    .set = prop_mmu_set,
 +};
 +
-+Property riscv_cpu_options[] = {
-     DEFINE_PROP_BOOL("mmu", RISCVCPU, cfg.mmu, true),
+ Property riscv_cpu_options[] = {
+-    DEFINE_PROP_BOOL("mmu", RISCVCPU, cfg.mmu, true),
      DEFINE_PROP_BOOL("pmp", RISCVCPU, cfg.pmp, true),
  
-@@ -1490,6 +1569,9 @@ Property riscv_cpu_options[] = {
- static Property riscv_cpu_properties[] = {
-     DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
+     DEFINE_PROP_STRING("priv_spec", RISCVCPU, cfg.priv_spec),
+@@ -1572,6 +1617,8 @@ static Property riscv_cpu_properties[] = {
+     {.name = "pmu-mask", .info = &prop_pmu_mask},
+     {.name = "pmu-num", .info = &prop_pmu_num}, /* Deprecated */
  
-+    {.name = "pmu-mask", .info = &prop_pmu_mask},
-+    {.name = "pmu-num", .info = &prop_pmu_num}, /* Deprecated */
++    {.name = "mmu", .info = &prop_mmu},
 +
  #ifndef CONFIG_USER_ONLY
      DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVEC),
