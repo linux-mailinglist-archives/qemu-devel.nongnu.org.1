@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053C8822E2D
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 14:26:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76013822E32
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 14:27:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL1Fj-0007md-95; Wed, 03 Jan 2024 08:25:47 -0500
+	id 1rL1Gk-0008Nz-In; Wed, 03 Jan 2024 08:26:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rL1Ff-0007mU-Ei
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 08:25:43 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rL1Gh-0008MP-0o
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 08:26:47 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rL1Fd-0004VS-NE
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 08:25:43 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-33723ad790cso3897536f8f.1
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 05:25:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rL1Gf-00053i-F9
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 08:26:46 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3373a30af67so2808650f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 05:26:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704288340; x=1704893140; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iQoCe0v/UMTuth4yG+nDSukSgH2xh1V+h4uUaaOkPvg=;
- b=i7XViizmzH/c+gTwNg0ZYWdSTDpA9AbmNWtRzdhwRZcM0nDKLSvLFVf+MQkigUbMh0
- By9zyIpxyStZdXpCwlFGSMp1IXcQ4dc2FQtU1wemqRbkkKE/SvVJ2DxWngGhINoptPZ+
- NH6XNRqc7H6M+7+QvJ4eP8LByh25fU8778iJJE1p7PzC+2yj4a7eUtmDJUISuZPJr8Hg
- qJxAF4oBtB0fTl3xfj9AhgRu+8uIXOOMkOWpEOZ9joTb7erbkkBNy3aPCB9Nw9H2WGDl
- Hdvs7E6qslkDsJHrZTNsBsgr2BY50EnHOInszlokO9iZbc2Jwl9RzfYlfmmmW1m1aw55
- CjzA==
+ d=linaro.org; s=google; t=1704288403; x=1704893203; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Sv452OOA1YHAvH4egC8pCNjgvS+mWVxvhFGgNYtEQNo=;
+ b=mONyJJhhZwIoN8mRHCNaJNmSPLS1zNNuW4kf6pjSdcH8KrS6cc6T2j4P+3Ah0nLmx8
+ 6uH/B+uMI9yYzHHNWhMHcTEOFFEv6v+d11b1ojkxKWrELqUuGw516/AChdyTzEp2Smuc
+ Dl1y6HoqOBExiBtiis7qcfQPqfIMk3ZsZe4/wSGQBpApuQTvkSuIpYBrf1mF6QyjTgtK
+ yR4QFKFYarIFjbBANlFpfy6jB4JPd3wOs6CYbLKXlcinURwaNB0V2sDHDvMc9c0TG9+H
+ xT7FbvNf17xs+o4zVajnEmX7EHAQjXX5LSt4N6ZhU5eEWomUi+QB9UyHuipbjsq8xZhe
+ wHOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704288340; x=1704893140;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=iQoCe0v/UMTuth4yG+nDSukSgH2xh1V+h4uUaaOkPvg=;
- b=eG/ELrPC9O/6Txb6OUwgQ4x0X6OYgB4N9gdnxeJrofsXq8gQb1g5s9Rn4ELmWkQoGd
- 37FHz+Ffo+8oDNRkHcUci/2aQLJ4GKE2Y2UgmBLikyoZBzEaSwaG1RJl78C5Lg95ev1p
- bMf5RSjlcfe1F7+rs+HH04tYH2YhGPUuAcRPOd9Tve/eltnOr+iMHZBVUaYS7uijWOwV
- 1dnwHWr+kpFFzLazI9yb7WBVc2zGlw5dWF+MTbs2nt4Al9xZID7AvQIr4SiUpwnyF+tI
- jwukQB7bRflLfuis6NSe8im/DGS8htvP8UzpQyTWfxhaESHbwEYAoY10Y+6aZff+8a9q
- yo6Q==
-X-Gm-Message-State: AOJu0YxcZ0f/oJ1kEJnxambcuF3NDJb5J28d6c3mADC/W9aXZhTtvvlY
- 4njPA8v1WhkAe1wWyIwXlEG0yh52EyGAVA==
-X-Google-Smtp-Source: AGHT+IGTz2lTleX3X5epZzTAQnJuMV+3ZlHKHhdIh1E/erkcLXw/I3DulAf1nN9ah8o2UduQgdsZ1A==
-X-Received: by 2002:adf:f243:0:b0:336:6cbc:7940 with SMTP id
- b3-20020adff243000000b003366cbc7940mr5921781wrp.63.1704288339937; 
- Wed, 03 Jan 2024 05:25:39 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- z5-20020adff1c5000000b003366e974cacsm30730996wro.73.2024.01.03.05.25.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jan 2024 05:25:39 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0EC4E5F926;
- Wed,  3 Jan 2024 13:25:39 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Leo Yan <leo.yan@linaro.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,  qemu-devel@nongnu.org,  Gerd
- Hoffmann <kraxel@redhat.com>,  Manos Pitsidianakis
- <manos.pitsidianakis@linaro.org>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH v3 0/4] virtio: Refactor vhost input stub
-In-Reply-To: <20231229090126.GA156812@leoy-huanghe.lan> (Leo Yan's message of
- "Fri, 29 Dec 2023 17:01:26 +0800")
-References: <20231120043721.50555-1-leo.yan@linaro.org>
- <20231225110608-mutt-send-email-mst@kernel.org>
- <20231229090126.GA156812@leoy-huanghe.lan>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Wed, 03 Jan 2024 13:25:39 +0000
-Message-ID: <87o7e2h7l8.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1704288403; x=1704893203;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Sv452OOA1YHAvH4egC8pCNjgvS+mWVxvhFGgNYtEQNo=;
+ b=bsvoksUSX8kDa2yAlETb2AiL6J+e1k24TAM68fMor4mpPpyDknOPC8JuhK0xPVWeJC
+ qHiUsjc4TfkyjFZ1ToiRB6i2CBYMiAk4oRXL5O7DivweD/fHfSDhVWd5mPb/ZokjlmAe
+ CsVU+ogIvwk9BhCgd0qUL9py988OzcjAEJCdDLOVxgf8CRcxd27I5Ry4yn1cQUG3nOxj
+ w4IH6Kj1WFJ+/XJd0vnGI3FK2dVuBZ+uXzsxu+xDg4tPxGWh4jopWi2zbboqg4xVds27
+ CZcwBW9hHo/Lc0zkkcBfhBg3BCw1PikuSe5KwqRI82IGgDRMbRlbFQr7024w7iNdUbs4
+ 1OCA==
+X-Gm-Message-State: AOJu0Yyfp19dUsblUR89YGCwpdS7+jYpfU3nEdp0TTS9GiL2xebZJMIX
+ CC1GRFa0H/m/1M0NbrJQBfD5oPqHJAhUkA==
+X-Google-Smtp-Source: AGHT+IHNP6NzKRLKlPniuIS1rZZjW6SEXn1CKQoQJr3kWejuXjIklLqYzpTZ0ZsgF6/tEnN/Mf8YRg==
+X-Received: by 2002:a5d:4d87:0:b0:337:f1c:fc13 with SMTP id
+ b7-20020a5d4d87000000b003370f1cfc13mr3081820wru.215.1704288403386; 
+ Wed, 03 Jan 2024 05:26:43 -0800 (PST)
+Received: from [192.168.69.100] (tre93-h02-176-184-7-144.dsl.sta.abo.bbox.fr.
+ [176.184.7.144]) by smtp.gmail.com with ESMTPSA id
+ u17-20020a5d4351000000b00336f05840c4sm17998086wrr.100.2024.01.03.05.26.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 03 Jan 2024 05:26:42 -0800 (PST)
+Message-ID: <a81a9bb0-4d5b-40bb-b6b2-87c70ba23743@linaro.org>
+Date: Wed, 3 Jan 2024 14:26:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ui: drop VNC feature _MASK constants
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20240103122600.2399662-1-berrange@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240103122600.2399662-1-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,64 +93,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Leo Yan <leo.yan@linaro.org> writes:
+On 3/1/24 13:26, Daniel P. Berrangé wrote:
+> Each VNC feature enum entry has a corresponding _MASK constant
+> which is the bit-shifted value. It is very easy for contributors
+> to accidentally use the _MASK constant, instead of the non-_MASK
+> constant, or the reverse. No compiler warning is possible and
+> it'll just silently do the wrong thing at runtime.
+> 
+> By introducing the vnc_set_feature helper method, we can drop
+> all the _MASK constants and thus prevent any future accidents.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   ui/vnc.c | 34 +++++++++++++++++-----------------
+>   ui/vnc.h | 21 ++++-----------------
+>   2 files changed, 21 insertions(+), 34 deletions(-)
 
-> Hi Michael,
->
-> On Mon, Dec 25, 2023 at 11:06:35AM -0500, Michael S. Tsirkin wrote:
->> On Mon, Nov 20, 2023 at 12:37:17PM +0800, Leo Yan wrote:
->> > This series is to refactor vhost stub vhost-user-input.
->> >=20
->> > Since vhost input stub requires set_config() callback for communication
->> > event configurations between the backend and the guest, patch 01 is a
->> > preparison for support set_config() callback in vhost-user-base.
->> >=20
->> > The patch 02 is to add documentation for vhost-user-input.
->> >=20
->> > The patch 03 is to move virtio input stub from the input folder to the
->> > virtio folder.
->>=20
->> Thanks!
->> Now the release is out I'd like to apply this - can you please rebase on=
- latest master and
->> repost?
->
-> Sure.  But I found it's not this patch series causing merging conflict.
->
-> Since my patch series is based on Alex's patch series "virtio: cleanup
-> vhost-user-generic and reduce c&p" [1], when applying Alex's patch
-> series on the master branch, I found the confliction with below commeits:
->
->   91208dd297 ("virtio: i2c: Check notifier helpers for VIRTIO_CONFIG_IRQ_=
-IDX")
->   298d4f892e ("vhost-user: fix the reconnect error")
->
-> @Alex, could you rebase the patch set "virtio: cleanup
-> vhost-user-generic and reduce c&p" and then I will resend my patch set?
->
-> Thanks,
-> Leo
->
-> [1] https://lore.kernel.org/qemu-devel/20231107180752.3458672-1-alex.benn=
-ee@linaro.org/
->
->> > The patch 04 derives vhost-user-input from vhost-user-base.  We reuse
->> > the common code from vhhost-user-base as possible and the input stub is
->> > simplized significantly.
->> >=20
->> > This patch set has been tested with the backend daemon:
->> >=20
->> >   # ./build/contrib/vhost-user-input/vhost-user-input \
->> > 		     -p /dev/input/event20 -s /tmp/input.sock
->> >=20
->> > The series is based on "[PATCH v8 0/7] virtio: cleanup
->> > vhost-user-generic and reduce c&p" which introduces vhost-user-base.
->> > Based-on: <20231107180752.3458672-1-alex.bennee@linaro.org>
 
-I'll fix up and include this series in my next posting. Hopefully by the
-end of this week.
+> @@ -599,6 +582,10 @@ static inline uint32_t vnc_has_feature(VncState *vs, int feature) {
+>       return (vs->features & (1 << feature));
+>   }
+>   
+> +static inline void vnc_set_feature(VncState *vs, int feature) {
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Even stricter using s/int/VncFeatures/ enum type.
+
+With that:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +    vs->features |= (1 << feature);
+> +}
 
