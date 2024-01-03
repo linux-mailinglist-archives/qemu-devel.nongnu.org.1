@@ -2,73 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C8B8230BE
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 16:45:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E49C8230DA
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 16:55:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL3Pj-0007WI-VG; Wed, 03 Jan 2024 10:44:15 -0500
+	id 1rL3Z7-0004Lp-O6; Wed, 03 Jan 2024 10:53:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rL3Pi-0007W5-NB
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 10:44:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
+ id 1rL3Z5-0004Ke-Pp; Wed, 03 Jan 2024 10:53:55 -0500
+Received: from zoidberg.rfc1149.net ([195.154.227.159])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rL3Pg-0000Yv-Pe
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 10:44:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704296651;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CV5UVhrlmBlvqNeo+9LwULV/Dxx7vSEHXvg20ocEy4Q=;
- b=UBjXgXRxv8gPpcFUMinYHCFNM0qIyWtZ2rkLTilv1pIf+ig3X8l2pEgNvsRl/86Hnq/24E
- oFntHZD11IydaEUxob529xO1EaT4boQ+dKQnirKLIkh8MLQ76dA569tfY9WxAe7eMTQPxE
- EUZ2QX15fc85pZ4XJiAmCk0fVjgz2SI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-PziTXXQRPkmrm-qejvWT9A-1; Wed,
- 03 Jan 2024 10:44:09 -0500
-X-MC-Unique: PziTXXQRPkmrm-qejvWT9A-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 845321C41B22
- for <qemu-devel@nongnu.org>; Wed,  3 Jan 2024 15:44:09 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.182])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 622EA40C6EBC;
- Wed,  3 Jan 2024 15:44:09 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 3F0FA1800605; Wed,  3 Jan 2024 16:44:08 +0100 (CET)
-Date: Wed, 3 Jan 2024 16:44:08 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: Cole Robinson <crobinso@redhat.com>, qemu-devel@nongnu.org, 
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: Re: Re: [PATCH] pc-bios/optionrom: Fix pvh.img ld build failure on
- fedora rawhide
-Message-ID: <pxcc3rmq7g7zriwgyv2uiovwicnzfvtvdsngmt47r746sukwxb@shbiglopqrrw>
-References: <20231128143647.847668-1-crobinso@redhat.com>
- <ZZVWtxyGkVzBjf0O@redhat.com>
+ (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
+ id 1rL3Z2-00052C-Ko; Wed, 03 Jan 2024 10:53:55 -0500
+Received: from buffy.. (buffy [192.168.147.6])
+ by zoidberg.rfc1149.net (Postfix) with ESMTP id 333A280024;
+ Wed,  3 Jan 2024 16:53:43 +0100 (CET)
+Authentication-Results: zoidberg.rfc1149.net;
+ dmarc=fail (p=none dis=none) header.from=rfc1149.net
+Authentication-Results: zoidberg.rfc1149.net;
+ spf=fail smtp.mailfrom=rfc1149.net
+From: Samuel Tardieu <sam@rfc1149.net>
+To: qemu-devel@nongnu.org
+Cc: Arnaud Minier <arnaud.minier@telecom-paris.fr>, qemu-arm@nongnu.org,
+ Anton Kochkov <anton.kochkov@proton.me>,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Alexandre Iooss <erdnaxe@crans.org>, Samuel Tardieu <sam@rfc1149.net>
+Subject: [PATCH v2 0/3] Add "num-prio-bits" property for Cortex-M devices
+Date: Wed,  3 Jan 2024 16:53:34 +0100
+Message-ID: <20240103155337.2026946-1-sam@rfc1149.net>
+X-Mailer: git-send-email 2.42.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZZVWtxyGkVzBjf0O@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=195.154.227.159; envelope-from=sam@rfc1149.net;
+ helo=zoidberg.rfc1149.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,31 +60,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 03, 2024 at 12:44:39PM +0000, Daniel P. Berrangé wrote:
-> On Tue, Nov 28, 2023 at 09:36:47AM -0500, Cole Robinson wrote:
-> > binutils 2.39 shows some warnings when building pvh.img
-> > 
-> > /usr/bin/ld: warning: pvh.o: missing .note.GNU-stack section implies executable stack
-> > /usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
-> > /usr/bin/ld: warning: pvh.img has a LOAD segment with RWX permissions
-> > 
-> > The latter of which is fatal on Fedora rawhide for some reason.
-> > 
-> > Add linker options to suppress the errors
-> 
-> This makes it silent, but I guess someone needs to confirm that this
-> option ROM code genuinely does NOT need to have executable stack,
-> otherwise the future change that is being warned about could impact
-> it ?
+This patch series builds on a discussion initiated by Anton Kochkov on
+this list in 2022. It allows setting the appropriate number of priority
+bits for Cortex-M devices. For example, FreeRTOS checks at startup that
+the right number of priority bits is available in order to guarantee
+its runtime structures safety. They have added a configuration option
+to disable this check when running on QEMU because QEMU always use 2
+bits for Cortex-M0/M0+/M1 and 8 bits for other devices.
 
-Skimming the code it does not look like it depends on a execute-able
-stack.  Beside that the option rom will be loaded as raw binary by
-seabios and run without paging.  There is nothing which could actually
-setup and enforce an NX stack ...
+While this change allows the number of priority bits to be properly
+configured, it keeps the same default as before in order to preserve
+backward compatibility unless the SoC configures the exact value.
 
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Changes from v1:
+- Add support for the STM32L4x5 SOC family (which is currently
+  under review for integration) and fix the Based-on: trailer
+  in the cover letter.
+- Fix a typo in one of the commit messages ("compatibility")
 
-take care,
-  Gerd
+Based-on: <20231221213838.54944-1-ines.varhol@telecom-paris.fr>
+([PATCH v4 0/2] Add minimal support for the B-L475E-IOT01A board)
+
+Samuel Tardieu (3):
+  hw/intc/armv7m_nvic: add "num-prio-bits" property
+  hw/arm/armv7m: alias the NVIC "num-prio-bits" property
+  hw/arm/socs: configure priority bits for existing SOCs
+
+ hw/arm/armv7m.c        |  2 ++
+ hw/arm/stellaris.c     |  2 ++
+ hw/arm/stm32f100_soc.c |  1 +
+ hw/arm/stm32f205_soc.c |  1 +
+ hw/arm/stm32f405_soc.c |  1 +
+ hw/arm/stm32l4x5_soc.c |  1 +
+ hw/intc/armv7m_nvic.c  | 23 ++++++++++++++++++++++-
+ 7 files changed, 30 insertions(+), 1 deletion(-)
+
+-- 
+2.42.0
 
 
