@@ -2,74 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15368226F5
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 03:25:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71211822838
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 07:05:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rKqwI-0004iN-AS; Tue, 02 Jan 2024 21:25:02 -0500
+	id 1rKuM2-00073m-TH; Wed, 03 Jan 2024 01:03:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rKqwG-0004i6-GH
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 21:25:00 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rKqwE-0005bB-NB
- for qemu-devel@nongnu.org; Tue, 02 Jan 2024 21:25:00 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Cxaep3xZRlA14BAA--.1328S3;
- Wed, 03 Jan 2024 10:24:55 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Cxmb13xZRl24QXAA--.42108S3; 
- Wed, 03 Jan 2024 10:24:55 +0800 (CST)
-Subject: Re: [PATCH v3 7/9] target/loongarch: Implement kvm_arch_handle_exit
-To: Tianrui Zhao <zhaotianrui@loongson.cn>, qemu-devel@nongnu.org
-Cc: maobibo@loongson.cn, mst@redhat.com, cohuck@redhat.com,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, richard.henderson@linaro.org,
- peter.maydell@linaro.org, yangxiaojuan@loongson.cn,
- xianglai li <lixianglai@loongson.cn>
-References: <20231228084051.3235354-1-zhaotianrui@loongson.cn>
- <20231228084051.3235354-8-zhaotianrui@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <a5e93a5c-bf7e-251c-b30c-02f7715ae460@loongson.cn>
-Date: Wed, 3 Jan 2024 10:24:55 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rKuM0-00073M-8e
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 01:03:48 -0500
+Received: from mail-mw2nam12on2086.outbound.protection.outlook.com
+ ([40.107.244.86] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rKuLx-0002Fd-V5
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 01:03:48 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BWkwc2bkoSvvQln1Gu2zjFUHISCpFmAhPuFfN1zygBK7ZYWwm0uuZpCGkINDDygrQqMvl8cIB3IGt2wEFta6hoXG/r2xyp5FAhqWLFoTAjDAPMJvJtEZnihC3sg7C5hKo3wHosUJ6PsmEiIvH/PaVuUr+DHD3fXI/9Dw0JhlXycP9xl/jELa5PNmHYba+tNVWHA6Dl3QTPwFN5jYTyr506/4aRKmFAsC+uBs2h2WN0VqcOJh9RPtc7snyJtyI7bnf0+nALIUE+tOCXit5Es5EaoWgyxpIm6z4Di9LK5hRMa4NxAJZvTWo5fcMH+96xbQVshiFKGYaIUWGLZlhqrrug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k1jaHvZHUzXcrhv92fjJ0baTkP8/HSKem5AfXymKesA=;
+ b=TUGq9agQZNvJetWNsZl0y7sga6Kx46qNC95sJt6iNSVr3Zp+sCXrfLni4bud8eB4cEZkBVQnN/I/biDYzJONfsUOdvF4VM2/Ix5VZs/jy8H6se18xXNldpFI1hUaHAsBtoxOzM0EIBnf+1/fJNImXbJ0QOYkCWXYvBlRGFdEDnzHyy1ecRSkz33fi33bi3spH/zQzR/Fi5WoiCybnrVcaojW4uEFN77XJ+KZ86vPzFNlw9wF59z9dn07BHdrme5thDDuZ3W0BRdNsDhey1Nmx3Val4kqDLJAtBwIcNe+D9FPP6IVjUi6CYOpsqsdnIJMF1P6Zodi6zdHX4Mlns0oGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=k1jaHvZHUzXcrhv92fjJ0baTkP8/HSKem5AfXymKesA=;
+ b=TADxnQ0GmJ76D2TRBLyYnUP9dtE1m9j+Uwa67bXlGEyNkDe8sqHosdYKEykA9QiWQ+TtRc8SgCRPAxcX1D1Y+DnuJn2oLxScuusn1gfpnik+UfljMTSDc4/xYpssGzmJJuJ+0BJm/VqkcsZivPzizHMzOdkQOX+PD35U1kYonH8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
+ by SA1PR12MB8985.namprd12.prod.outlook.com (2603:10b6:806:377::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.25; Wed, 3 Jan
+ 2024 05:58:36 +0000
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::9b8e:816d:20b9:9845]) by SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::9b8e:816d:20b9:9845%5]) with mapi id 15.20.7159.013; Wed, 3 Jan 2024
+ 05:58:35 +0000
+Date: Wed, 3 Jan 2024 13:58:09 +0800
+From: Huang Rui <ray.huang@amd.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Gert Wollny <gert.wollny@collabora.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ "ernunes@redhat.com" <ernunes@redhat.com>, Alyssa Ross <hi@alyssa.is>,
+ Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "Stabellini, Stefano" <stefano.stabellini@amd.com>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
+ "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>,
+ "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
+Subject: Re: [PATCH v6 01/11] linux-headers: Update to kernel headers to add
+ venus capset
+Message-ID: <ZZT3cSw3dKai90LV@amd.com>
+References: <20231219075320.165227-1-ray.huang@amd.com>
+ <20231219075320.165227-2-ray.huang@amd.com>
+ <6adff6d2-7c58-4c78-93a5-5a4594a60d27@daynix.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6adff6d2-7c58-4c78-93a5-5a4594a60d27@daynix.com>
+X-ClientProxiedBy: SI2PR06CA0003.apcprd06.prod.outlook.com
+ (2603:1096:4:186::14) To SJ2PR12MB8690.namprd12.prod.outlook.com
+ (2603:10b6:a03:540::10)
 MIME-Version: 1.0
-In-Reply-To: <20231228084051.3235354-8-zhaotianrui@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8Cxmb13xZRl24QXAA--.42108S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ury5Kr45tr48KrWfGrWxGrX_yoW8KrW7pa
- y2y3Z8KrW8J39rt3ZIq3WUXr1UJrWxWFW2vayxt34furs8X3s3Wr48twnxtFW5t3yxWa10
- qF18ur1DKF1qqwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE
- 14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
- AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
- rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8Zw
- CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x02
- 67AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr
- 0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8QJ
- 57UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-3.762, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|SA1PR12MB8985:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1365a7eb-6b86-4009-248f-08dc0c210624
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: nQGuTkc3yY37QjaxTd55dW+n7VJqQ3MNdGOYIpzamNs4x7fWsKlqq/8mbuo7IjlPyCdNaJ7cPaz6qYi6gZXg9tuURTIp0fAsa31rqqDCbR4s54uzg0t/ugls1vdRrnr5KvUZZQFsDE0OrorG0oqp5mjRiSZVcaqhzBBQTQ7nS84Ha+pEu9Vmbja3iDbFLekDBd7uqeDSr89yTJQxLjds/vF2u99ZHPLi/n/fi9oMsdzGzceQw5TFVleNI8cP10CfmklEgLGiHI0SIZo6i5fnoZA0Tz1uCDS8tBpQ5nq4r61XvOdQjnf1YvlVSMdGRk8Z+lRyKGh3ocT/hd9jgRUr/puyTEAPlTVMRqcDQgUPoH2Nsj1gfw7Qb5pA7gBbqaQuOJatQjsrUFjIf47WUEtZlgijv8VAAZmn/OLuexunzHpipZqiW9Psi1bTVbU8jdVPCjK9AWKfZ8RoG7LhjH+NLzAjpJlmzJUcDi0aZ+/wpYUyz7z5nzcnJX0jlL8vSeHdpGnuIu8uIIgHzG17aS0oSafExt+H2++zO4KVaA4z7/c=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(366004)(396003)(136003)(39860400002)(376002)(230922051799003)(451199024)(1800799012)(186009)(64100799003)(26005)(4744005)(2616005)(38100700002)(54906003)(8936002)(8676002)(5660300002)(316002)(2906002)(4326008)(41300700001)(6666004)(7416002)(6916009)(966005)(83380400001)(15650500001)(6486002)(66946007)(6512007)(478600001)(66556008)(6506007)(86362001)(53546011)(66476007)(36756003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?VxCOgNodG/ELCQUEB25feEZpmWLvedF8xTfhcmxTFfUvxAkSUijjXwnWR0kh?=
+ =?us-ascii?Q?Kedt2mYAt/9KPZEcLQDCeidvqjAesbKopD/oX7nn/fkUHIcgdbgEf7XDYnXZ?=
+ =?us-ascii?Q?v4jxjnZxKQ+GV+wBV3meEZXstVI5aK2EKWam26AifuBC/jp24xVdoOUtFXai?=
+ =?us-ascii?Q?lF0w8OxMU58SlT3m+zX0mkFVV/CvcH+aJ8dFlcqBAru3MrQpBjFuPlPul7W1?=
+ =?us-ascii?Q?6XoLiju8MDT0bEDe1j/GWCsF7PWA63cUqxDY2wL/3kKJdEBat9wJTVofyf22?=
+ =?us-ascii?Q?Y2UrCVNLuUOUsswwkNdMeE4OIypE7m1ka+qe1pPhPwaj6yv9pNjdiPztQACx?=
+ =?us-ascii?Q?qzjELcAQdXhGE9u+7AP1g6yOp0j4H5hvOxjYvSBNkSdWPg84XZ71pouoOHUP?=
+ =?us-ascii?Q?GujPvj7d2zQcs3wxSMI57oQtPqeYI6908KYByH2OG7nYPruCpnodldso5QJR?=
+ =?us-ascii?Q?JUzlYZF7Da1YSbNqChyIBH52BOO337qGNKKLBXBVHTUlh3yAgFAOY2NqbILj?=
+ =?us-ascii?Q?4E8ffmnYGHQpkGKpJZ484XI32tUDBo64lLgJGqrFsJEJfHOlO1LNIBfVR24F?=
+ =?us-ascii?Q?yzR9jMQjDqmHZti1ezt3V7DllnWfJ3rNDh3t9nJFl2oOGsFs+QKa7b870Qqn?=
+ =?us-ascii?Q?NG9dN9XlNmHR3Qs6TysIYUdlqIqImVK79PxOOV+Dddv1Ppi93rQroWZGE94X?=
+ =?us-ascii?Q?8JJWvc8CPNj95mtUiUtK2IX0+GLXW300lKzQUfioR+XBaENzbj7tyFsjWDiT?=
+ =?us-ascii?Q?3xGWYo0LxUw8Lj4DHQOsas0SLfRTxlVQnLvwMpu6IzCVnaC19d6yeLzy0Oou?=
+ =?us-ascii?Q?c/PtpG1KeGRJEbyt9vimJiY2i8dzBi4EskakRHMnrefy0aHn5lj6MF18YSHk?=
+ =?us-ascii?Q?CMQMWNEPIPYL75CVmtP/k9N9oOAMIjmYJQm2Td9UnO+GPUNKOJEdpe/Xac7p?=
+ =?us-ascii?Q?sGGs4MzM040ADRkkip13NYf2uIJSJZVXgSPVbrMGrMxihrqGoPUvAS3RAkb3?=
+ =?us-ascii?Q?deSQIK3IgVXopkulIxKMCm4fa0la4WZN8NOSmK/+yXK+nBNlDMlA3lcD4bmp?=
+ =?us-ascii?Q?uNSE8ln24Bb9lWdoFDIYR+UPlp/X9V37aOgIaJS92Bo5VqK5HuE+0xDDWzUO?=
+ =?us-ascii?Q?2S3HQHsQxVJOPczv8sTYQfBd36Exl+SgVfj+YHjCAiPrHw0gXYMGsqLE/E7Y?=
+ =?us-ascii?Q?J6SSdIA4GBOIllsYv5ZyDMG13oSQ1NR0dl7o/AjrbWh2smHgBNlldnQ7C0eK?=
+ =?us-ascii?Q?JBbajGCU4dfWD+D+8TrwtjB7GM2ARJ3HzruR6YHpCQnkOPSM9pAa8twGTu7I?=
+ =?us-ascii?Q?MxY/uWalg1bapDM4+yAIoSfYQ9AzKCAIu0hU9rng2CKR84kaMOYhf1kcH2jE?=
+ =?us-ascii?Q?vdMYRrwGqwfLbCqEMLMOY5lL9uElpI5j9GpEuDAzUwJXNd2stOgCbtf9GOOf?=
+ =?us-ascii?Q?SwGhH1g5NGL1ckE+cJr/K2/iG6E68uj7nYJtNXRKPNu+y76hF54y5It/Q1O9?=
+ =?us-ascii?Q?AFekXhx5nTJEJffdfk6AN3nll4ZsJQToTIldVlLvmDIJfxJlQ6+7Y/Y2Okih?=
+ =?us-ascii?Q?Drn7tlFSnq+oACZbH4yrv/2kiiKk0j+fXHmJdNEp?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1365a7eb-6b86-4009-248f-08dc0c210624
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jan 2024 05:58:35.8358 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: E4ugCWreKYj5v/BwtnxU5We6BBHdHAgI/m6kaasXHBCSUdONHxv8QL5Z1vHnGDvkf+zL4pvWNMSE0/dQk9xrNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8985
+Received-SPF: softfail client-ip=40.107.244.86; envelope-from=Ray.Huang@amd.com;
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.178,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,66 +154,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2023/12/28 ÏÂÎç4:40, Tianrui Zhao Ð´µÀ:
-> Implement kvm_arch_handle_exit for loongarch. In this
-> function, the KVM_EXIT_LOONGARCH_IOCSR is handled,
-> we read or write the iocsr address space by the addr,
-> length and is_write argument in kvm_run.
->
-> Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
-> Signed-off-by: xianglai li <lixianglai@loongson.cn>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/loongarch/kvm.c        | 24 +++++++++++++++++++++++-
->   target/loongarch/trace-events |  1 +
->   2 files changed, 24 insertions(+), 1 deletion(-)
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+On Tue, Dec 19, 2023 at 08:20:22PM +0800, Akihiko Odaki wrote:
+> On 2023/12/19 16:53, Huang Rui wrote:
+> > Sync up kernel headers to update venus macro till they are merged into
+> > mainline.
+> 
+> Thanks for sorting things out with the kernel and spec.
+> 
+> > 
+> > Signed-off-by: Huang Rui <ray.huang@amd.com>
+> > ---
+> > 
+> > Changes in v6:
+> > - Venus capset is applied in kernel, so update it in qemu for future use.
+> > 
+> > https://lore.kernel.org/lkml/b79dcf75-c9e8-490e-644f-3b97d95f7397@collabora.com/
+> > https://cgit.freedesktop.org/drm-misc/commit/?id=216d86b9a430f3280e5b631c51e6fd1a7774cfa0
+> Please include the link to the upstream commit in the commit message.
 
-Thanks.
-Song Gao
-> diff --git a/target/loongarch/kvm.c b/target/loongarch/kvm.c
-> index 85e7aeb083..d2dab3fef4 100644
-> --- a/target/loongarch/kvm.c
-> +++ b/target/loongarch/kvm.c
-> @@ -723,7 +723,29 @@ bool kvm_arch_cpu_check_are_resettable(void)
->   
->   int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
->   {
-> -    return 0;
-> +    int ret = 0;
-> +    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-> +    CPULoongArchState *env = &cpu->env;
-> +    MemTxAttrs attrs = {};
-> +
-> +    attrs.requester_id = env_cpu(env)->cpu_index;
-> +
-> +    trace_kvm_arch_handle_exit(run->exit_reason);
-> +    switch (run->exit_reason) {
-> +    case KVM_EXIT_LOONGARCH_IOCSR:
-> +        address_space_rw(&env->address_space_iocsr,
-> +                         run->iocsr_io.phys_addr,
-> +                         attrs,
-> +                         run->iocsr_io.data,
-> +                         run->iocsr_io.len,
-> +                         run->iocsr_io.is_write);
-> +        break;
-> +    default:
-> +        ret = -1;
-> +        warn_report("KVM: unknown exit reason %d", run->exit_reason);
-> +        break;
-> +    }
-> +    return ret;
->   }
->   
->   void kvm_arch_accel_class_init(ObjectClass *oc)
-> diff --git a/target/loongarch/trace-events b/target/loongarch/trace-events
-> index 937c3c7c0c..021839880e 100644
-> --- a/target/loongarch/trace-events
-> +++ b/target/loongarch/trace-events
-> @@ -11,3 +11,4 @@ kvm_failed_get_counter(const char *msg) "Failed to get counter from KVM: %s"
->   kvm_failed_put_counter(const char *msg) "Failed to put counter into KVM: %s"
->   kvm_failed_get_cpucfg(const char *msg) "Failed to get cpucfg from KVM: %s"
->   kvm_failed_put_cpucfg(const char *msg) "Failed to put cpucfg into KVM: %s"
-> +kvm_arch_handle_exit(int num) "kvm arch handle exit, the reason number: %d"
+OK, I will add this info in qemu commit message.
 
+Thanks,
+Ray
 
