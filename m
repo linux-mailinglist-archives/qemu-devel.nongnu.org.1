@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A906823764
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 23:00:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDDCD823781
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jan 2024 23:10:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rL9G6-0006N8-8C; Wed, 03 Jan 2024 16:58:42 -0500
+	id 1rL9Pf-0008OZ-Fn; Wed, 03 Jan 2024 17:08:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rL9G4-0006Me-Lw
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 16:58:40 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1rL9Pb-0008OB-QT
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 17:08:31 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rL9G2-0005la-NQ
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 16:58:40 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1d408c2908cso28052625ad.1
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 13:58:36 -0800 (PST)
+ id 1rL9PY-0004sR-1w
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 17:08:31 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1d4c3393f99so16532375ad.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 14:08:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704319116; x=1704923916; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1704319706; x=1704924506; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=opKxbXQuYffQjWUNzILHPw6iSGXqTzk5hotfxbKQvoI=;
- b=ZIlEF2DDRSawbDVHjIqforzJRgNjtFrDSco8IGmhXxOztsPP6sI4bwlyDg5CSwamES
- iWI2/LEV0Rr+Inu+Hszip1cpFn7VKcLHIM2xKEUaw1xRLeW/QuMWtN9iJ9MaqN/K+Qdl
- iM/q5Tman9eTk7JwbsKTaKBp2sD7QRRySvr2xdNe+yW74LZVwsIxatA1Byeq8ew2uZZm
- IgK8XUJXBvsH0atzU4gcRYQe1+YrPw9qNiz9Oil7o/8DttccoKnoOBzxaRsSnN4NEaWd
- giUXpASsqsR1XXsuDRMF4vflA8RkIn7GfxWzvLJxr0Lj/dSw/F5IZNUZCzs9CxcWzqsd
- Y8BQ==
+ bh=/eTTFbrv6dlsZWhQ1YSFmXMRMJ1j9PfOhE9AOL0gnrg=;
+ b=ORg329/jrsAMNt6UDF58a10Cc5+I7623JWUxsu3kZIKUm6G6IN9EYq1RHUxKzBUc3o
+ QXAjfVTRAzZ9ilF1UvXTPOItX5s7UZSPGvxqcfTT/OUbXOJdjkwD0IsUVxx3SLp4pe5K
+ HeEvB/jLSlG5hgVK6ZIs/yqsGfI3uM2+Y+49D0Gt30O8SI6fItLNyILEyY4KVudwiktH
+ DRgZKnQ23w0r/NWXojt4gRSas9nUFZpzx4w2rIuYLPB7Bdn/w+JmzQliLFVyGs6OrIP5
+ 0nOpJZP/hIKpdnNuSBLPll5lE54VQhuUtPFZzT1sh0GAWzAa2RrnAP2o9M8l1jCzs4lQ
+ 7B8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704319116; x=1704923916;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1704319706; x=1704924506;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=opKxbXQuYffQjWUNzILHPw6iSGXqTzk5hotfxbKQvoI=;
- b=qG0xPdg+oXHLty7UM8vpQteSDWOMWcvM1/0s97yx4B++tRE8scr8CzxV4UeITbO7MH
- 6BxCTZ7rGLDEK6Xb3Ek+5KyK+yTfDSmcw2oLeD8zC65AhBfAk2kuo9VPtOI1Mo6DzD9x
- XM9C9v5f57kVuy4IhqJS13B5bGO+KczWzvJ9phxP81Ek09UX51PypOFNjapup67YKH8O
- zLnaaQnnNSBd5e7sR0wNs4hJOIAyjHbUKYuNHwmCC2MbcBVXUJ6Gc9fIfB06ePASyECR
- 6SW3gmD+LFJXFC4/ZPP/fpC8cyOtptz0qAdJawkf6FOPU4fTeptzWHv2IJVO+3AA7Rxk
- 2HPQ==
-X-Gm-Message-State: AOJu0Yx3kMjG9gfVaKqA3eDPkBm811XT+aglwf9UXPKAHe3B60L6I/2j
- gG9mgj0X1ActlHK10YYJShC6jmAWixpOMw==
-X-Google-Smtp-Source: AGHT+IGScWEgQ8yWjIjMObry65Mo+Pp5K/Vv97mDvFQA6VygP15L+qyegpEPOILtSDTXVwARWZaiNQ==
-X-Received: by 2002:a17:903:444:b0:1d4:b881:2e79 with SMTP id
- iw4-20020a170903044400b001d4b8812e79mr2543886plb.2.1704319115683; 
- Wed, 03 Jan 2024 13:58:35 -0800 (PST)
+ bh=/eTTFbrv6dlsZWhQ1YSFmXMRMJ1j9PfOhE9AOL0gnrg=;
+ b=O+iga9m03z5AOeCnCJmji/pj+fjK29imfdY5elW2HKhI3aAdwo+psE5wHG58/aH2Ip
+ 4rr0WeotZQPD7MATwc9cwRBYMYxz1fSQ3wl8cU4fMvBRvRKCu4PD5nH3TmwjHDtRObie
+ 5RRprobUO8uDPGkt+3c3TEughNNfLvOyyjtdZZDYbJOOR6ukFzKfHF11LhjZA+chyKLy
+ eFp+2ZtrgdOHpXDyel9zdCTA6SFFkjl43lmh+YsnNXUWEE36UAOjdwlUMXOnVK5hA0T2
+ bFPHukipGDXDAiTf5uWiKmbMXiaXV01bk7M8l26bje8GXvNLBUECbN3Dk3f70BMGdSV1
+ XeFw==
+X-Gm-Message-State: AOJu0YyXEaPtksGuFD1QTJW7Tm91JG0midspnVhdbr/L8dtpGpVp9H33
+ Kan4zhJZlvJK4QVUpHx5zcl4c7JZ1e+YNg==
+X-Google-Smtp-Source: AGHT+IHDl/Mc6Z49uGqyCYuhtbGC6UwegHbT/2hM6/FJ7/7e/yItiV3EtGQkFMSLE3Y/Nu03NRsgxA==
+X-Received: by 2002:a17:903:41c8:b0:1d4:5276:7674 with SMTP id
+ u8-20020a17090341c800b001d452767674mr22189661ple.64.1704319706237; 
+ Wed, 03 Jan 2024 14:08:26 -0800 (PST)
 Received: from [192.168.50.95] (124-149-254-207.tpgi.com.au. [124.149.254.207])
  by smtp.gmail.com with ESMTPSA id
- d19-20020a170902b71300b001d4c98c7439sm3505346pls.276.2024.01.03.13.58.32
+ t1-20020a170902bc4100b001d4cd7bf923sm2228046plz.68.2024.01.03.14.08.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Jan 2024 13:58:34 -0800 (PST)
-Message-ID: <a0a5cfd7-6889-4fa0-982c-47dfec8c857a@linaro.org>
-Date: Thu, 4 Jan 2024 08:58:28 +1100
+ Wed, 03 Jan 2024 14:08:25 -0800 (PST)
+Message-ID: <47177ca3-e190-42b1-a6c2-d3a2be8cedb6@linaro.org>
+Date: Thu, 4 Jan 2024 09:08:18 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/20] tcg/s390x: Implement vector NAND, NOR, EQV
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-s390x <qemu-s390x@nongnu.org>
-References: <20211218194250.247633-1-richard.henderson@linaro.org>
- <20211218194250.247633-5-richard.henderson@linaro.org>
- <b962d769-ed44-4620-bcf2-4fcc7658db1a@linaro.org>
+Subject: Re: [PATCH v3 4/6] target/riscv: Add pointer masking tb flags
 Content-Language: en-US
+To: Alexey Baturo <baturo.alexey@gmail.com>
+Cc: zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
+ Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu,
+ kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+References: <20240103185716.1790546-1-me@deliversmonkey.space>
+ <20240103185716.1790546-5-me@deliversmonkey.space>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <b962d769-ed44-4620-bcf2-4fcc7658db1a@linaro.org>
+In-Reply-To: <20240103185716.1790546-5-me@deliversmonkey.space>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,79 +96,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/4/24 00:21, Philippe Mathieu-Daudé wrote:
-> Hi Richard,
+On 1/4/24 05:57, Alexey Baturo wrote:
+> From: Alexey Baturo <baturo.alexey@gmail.com>
 > 
-> (revisiting this old patch which is now commit 21eab5bfae)
+> Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
+> ---
+>   target/riscv/cpu.h        |  3 +++
+>   target/riscv/cpu_helper.c |  3 +++
+>   target/riscv/translate.c  | 11 +++++++++++
+>   3 files changed, 17 insertions(+)
 > 
-> On 18/12/21 20:42, Richard Henderson wrote:
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   tcg/s390x/tcg-target.h     |  6 +++---
->>   tcg/s390x/tcg-target.c.inc | 17 +++++++++++++++++
->>   2 files changed, 20 insertions(+), 3 deletions(-)
->>
->> diff --git a/tcg/s390x/tcg-target.h b/tcg/s390x/tcg-target.h
->> index ad29e62b16..fef227b0fe 100644
->> --- a/tcg/s390x/tcg-target.h
->> +++ b/tcg/s390x/tcg-target.h
->> @@ -145,9 +145,9 @@ extern uint64_t s390_facilities[3];
->>   #define TCG_TARGET_HAS_andc_vec       1
->>   #define TCG_TARGET_HAS_orc_vec        HAVE_FACILITY(VECTOR_ENH1)
->> -#define TCG_TARGET_HAS_nand_vec       0
->> -#define TCG_TARGET_HAS_nor_vec        0
->> -#define TCG_TARGET_HAS_eqv_vec        0
->> +#define TCG_TARGET_HAS_nand_vec       HAVE_FACILITY(VECTOR_ENH1)
->> +#define TCG_TARGET_HAS_nor_vec        1
->> +#define TCG_TARGET_HAS_eqv_vec        HAVE_FACILITY(VECTOR_ENH1)
-> 
-> Here some opcodes are conditional, ...
-> 
->>   #define TCG_TARGET_HAS_not_vec        1
->>   #define TCG_TARGET_HAS_neg_vec        1
->>   #define TCG_TARGET_HAS_abs_vec        1
->> diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
->> index 57e803e339..5a90b892cb 100644
->> --- a/tcg/s390x/tcg-target.c.inc
->> +++ b/tcg/s390x/tcg-target.c.inc
->> @@ -288,7 +288,9 @@ typedef enum S390Opcode {
->>       VRRc_VMXL   = 0xe7fd,
->>       VRRc_VN     = 0xe768,
->>       VRRc_VNC    = 0xe769,
->> +    VRRc_VNN    = 0xe76e,
->>       VRRc_VNO    = 0xe76b,
->> +    VRRc_VNX    = 0xe76c,
->>       VRRc_VO     = 0xe76a,
->>       VRRc_VOC    = 0xe76f,
->>       VRRc_VPKS   = 0xe797,   /* we leave the m5 cs field 0 */
->> @@ -2750,6 +2752,15 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
->>       case INDEX_op_xor_vec:
->>           tcg_out_insn(s, VRRc, VX, a0, a1, a2, 0);
->>           break;
->> +    case INDEX_op_nand_vec:
->> +        tcg_out_insn(s, VRRc, VNN, a0, a1, a2, 0);
->> +        break;
->> +    case INDEX_op_nor_vec:
->> +        tcg_out_insn(s, VRRc, VNO, a0, a1, a2, 0);
->> +        break;
->> +    case INDEX_op_eqv_vec:
->> +        tcg_out_insn(s, VRRc, VNX, a0, a1, a2, 0);
->> +        break;
->>       case INDEX_op_shli_vec:
->>           tcg_out_insn(s, VRSa, VESL, a0, a2, TCG_REG_NONE, a1, vece);
->> @@ -2846,7 +2857,10 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
->>       case INDEX_op_and_vec:
->>       case INDEX_op_andc_vec:
->>       case INDEX_op_bitsel_vec:
->> +    case INDEX_op_eqv_vec:
->> +    case INDEX_op_nand_vec:
-> 
-> ... but here we unconditionally return 1 for them.
-> 
-> Shouldn't we return TCG_TARGET_HAS_opcode instead?
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index c607a94bba..4df160494f 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -546,6 +546,9 @@ FIELD(TB_FLAGS, ITRIGGER, 20, 1)
+>   FIELD(TB_FLAGS, VIRT_ENABLED, 21, 1)
+>   FIELD(TB_FLAGS, PRIV, 22, 2)
+>   FIELD(TB_FLAGS, AXL, 24, 2)
+> +/* If pointer masking should be applied and address sign extended */
+> +FIELD(TB_FLAGS, PM_PMM, 26, 2)
+> +FIELD(TB_FLAGS, PM_SIGNEXTEND, 28, 1)
+>   
+>   #ifdef TARGET_RISCV32
+>   #define riscv_cpu_mxl(env)  ((void)(env), MXL_RV32)
+> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+> index 4c34e12ee3..b8d8a622f3 100644
+> --- a/target/riscv/cpu_helper.c
+> +++ b/target/riscv/cpu_helper.c
+> @@ -68,6 +68,7 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+>       RISCVCPU *cpu = env_archcpu(env);
+>       RISCVExtStatus fs, vs;
+>       uint32_t flags = 0;
+> +    bool pm_signext = !riscv_cpu_bare_mode(env);
+>   
+>       *pc = env->xl == MXL_RV32 ? env->pc & UINT32_MAX : env->pc;
+>       *cs_base = 0;
+> @@ -135,6 +136,8 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+>       flags = FIELD_DP32(flags, TB_FLAGS, VS, vs);
+>       flags = FIELD_DP32(flags, TB_FLAGS, XL, env->xl);
+>       flags = FIELD_DP32(flags, TB_FLAGS, AXL, cpu_address_xl(env));
+> +    flags = FIELD_DP32(flags, TB_FLAGS, PM_PMM, riscv_pm_get_pmm(env));
+> +    flags = FIELD_DP32(flags, TB_FLAGS, PM_SIGNEXTEND, pm_signext);
 
-Yes, you're right.  There's some logical overlap between tcg_gen_emit_vec_op and 
-tcg_op_supported, and I think I confused myself a bit there.
+You should avoid setting these fields (i.e. leave them zero) when they won't be used...
+
+> +    if (get_xl(ctx) == MXL_RV32) {
+> +        ctx->addr_width = 32;
+> +        ctx->addr_signed = false;
+
+... like so.
+
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
