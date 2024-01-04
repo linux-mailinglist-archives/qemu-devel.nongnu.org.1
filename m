@@ -2,80 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 532E98239F5
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 02:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A1B823A15
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 02:13:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLC4C-0004Q8-Pb; Wed, 03 Jan 2024 19:58:38 -0500
+	id 1rLCHJ-0006dt-Fc; Wed, 03 Jan 2024 20:12:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rLC48-0004O3-Hs; Wed, 03 Jan 2024 19:58:32 -0500
-Received: from mail-ua1-x92b.google.com ([2607:f8b0:4864:20::92b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rLC45-0007oL-Qf; Wed, 03 Jan 2024 19:58:32 -0500
-Received: by mail-ua1-x92b.google.com with SMTP id
- a1e0cc1a2514c-7cc7bae27b5so14216241.2; 
- Wed, 03 Jan 2024 16:58:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704329908; x=1704934708; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eEnkAf9aavndpxH2FRGiV5FDDIfqhRDBdjUrlcUGgUg=;
- b=auChd2O+TNxTeR+FitPUkAsKaLqZcFTnc1bbN9LsEQJuXUxFCpWx9OtebHG8bdrsad
- 80J5Tuzsfiz14DWWPoWEVp2rsvuglKCklMm9kHpN19bwqzSNFAkk9RNcPiM0CjfbQjzO
- 1dqy6E1aDqsbeloRO7JjpElD59aLN7eoO/I830zUqnOEqDA96K+P7krGfqoqvrKNSvaT
- z2c9lPrWbBT/tbUjIFctogsT0unJiXX5XuVpi0S4uV08Ptuh6RPXB30vILwKsBUGWEqU
- RqRNvkYArNe61dlSN45WAKbANo4L3ZdFuuILeY12l7Ew9AiyifjpixXz/RKWibmssE0I
- LbQg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLCHH-0006dg-Em
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 20:12:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLCHF-0001u9-IF
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 20:12:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704330724;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fkNMxuLySyW3pQrBDgcTPooDvsx3boQ81Z//bX1rQ5Q=;
+ b=WHVu+Fz+qfYQegH4piEeEy9Io0eYBMMw5Sftsn4ExGsJBOgpKAyAMtaniMxolEqU3OPTAS
+ qF5nS3QzhU/VFUD/dieURPgL2mdYIFFk7Y/qJ+erhDbq/B73KFn51L9nK/JyaXHqOiH1CM
+ 0V4NxrbNWOkqIKFWerOtPvaTxEaomGo=
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
+ [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-88-jWLQeotdORS5rlnllvpQAQ-1; Wed, 03 Jan 2024 20:12:03 -0500
+X-MC-Unique: jWLQeotdORS5rlnllvpQAQ-1
+Received: by mail-ot1-f72.google.com with SMTP id
+ 46e09a7af769-6dc056af5e5so14833a34.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 17:12:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704329908; x=1704934708;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eEnkAf9aavndpxH2FRGiV5FDDIfqhRDBdjUrlcUGgUg=;
- b=ZKTVQyiZfq0W26X5QcOADW9KTwjlozjWZckV2iQ1NtEjyP2HuLaTCtPoupPvdsh+WZ
- 7n2HNTLTqEuD/VGJ9OZ8ZpK/nujtXSwWfOJMvpN1KNYuQWZmg6K255a6/do8l8vfVlMo
- C0YaS2eDzp/Gu69slQ1QnmL4tovRGlrCMNX8FX2diFH2X9N+qXyr/yQJKltQIkJgjFKs
- 1uYgV13DM9CEnxs5RZLIDr6Qt5CXcLlubsteltQj9F+MNapRta/QWTwkdtf5jYLkOU9N
- VaNJoXwvHQwB+FQI9d+gUBOZwg/PlbCVsmXzV15VHTgKTsP1w1oDQUv+WE//8knEwCPv
- EzZg==
-X-Gm-Message-State: AOJu0YwOdPt8D9exjpSKBXV8uzVpUShu2bj+Em1cfhloDib6SSeYPgJz
- u6YcxaApCO5A5fGQOj2PoFsmdd4VN+D/v995bOM=
-X-Google-Smtp-Source: AGHT+IE0EG8t4+gtjEcLODEGbm0bu8Wf20oLE60Sx4QA2WnE4hYAJO28Hkz5gW7bQgI/awq6IFEJXRkAus6S3n2wpwY=
-X-Received: by 2002:a05:6102:374e:b0:467:8539:52b8 with SMTP id
- u14-20020a056102374e00b00467853952b8mr2670182vst.7.1704329908114; Wed, 03 Jan
- 2024 16:58:28 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704330722; x=1704935522;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fkNMxuLySyW3pQrBDgcTPooDvsx3boQ81Z//bX1rQ5Q=;
+ b=gPzCjLkFf1FsTBYqizvcknDFLljZO3Z/+xkmE8BXgErM2H7TJP1YO1BWMkiR9QxaNj
+ 0cLsNIci3AhWoYnj+czvlu/5mO+rC3fOdrQcA3S3Mcjw70uEqw/5db0aOh7x3+Tn3qtd
+ Soed7tqwZPuxXkp5ZXTwDaA8IuyXVTkgaqECitjbw6qu+NntUt+3Hcy/AwJxaMAIgOFv
+ vVCBS94hObTywWkFvdfr36VtHDUXkB2SrOn5tmSD1Nu1CPYm9lLWZP9ZWqIURkg03NEP
+ R3/eiA91ECzghICT5uWVmcXu/o0tXdjc725HOA2PUG+vbRjnt101RsNhBbkygQogDfSW
+ NmFQ==
+X-Gm-Message-State: AOJu0Yw7rP2y51L8f/khj9TBlZY7AVDH/QpaHVyba+xCghzVqPp5+g0G
+ CMejrJWdgcgnk5lU2PJPEyzCTmXjOVDM3hM56Ol5wyxecSItiMKaxSh4fl+t0hA5QL7ft/mLCxs
+ nYA7FYhMxgRqRB9gxLbaJxk0=
+X-Received: by 2002:a05:6359:5e83:b0:174:d2c5:e24f with SMTP id
+ px3-20020a0563595e8300b00174d2c5e24fmr26614192rwb.2.1704330722146; 
+ Wed, 03 Jan 2024 17:12:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEKPZev9YmS/TJINE8eGLWpprrH/EGM9RN+h8v1fUYBvlVQrzgmhAlTn9cRtYnW0d8KPGQt9Q==
+X-Received: by 2002:a05:6359:5e83:b0:174:d2c5:e24f with SMTP id
+ px3-20020a0563595e8300b00174d2c5e24fmr26614178rwb.2.1704330721645; 
+ Wed, 03 Jan 2024 17:12:01 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ fn24-20020a056a002fd800b006d9974a87fcsm20033773pfb.215.2024.01.03.17.11.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Jan 2024 17:12:01 -0800 (PST)
+Date: Thu, 4 Jan 2024 09:11:56 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: Re: QEMU developers call
+Message-ID: <ZZYF3KmzNWPadIl9@x1n>
+References: <87mstno2ob.fsf@secure.mitica> <ZZS9-H2g6qjlY-4_@x1n>
+ <87ttnuhbov.fsf@draig.linaro.org>
 MIME-Version: 1.0
-References: <20231218090543.22353-1-yongxuan.wang@sifive.com>
-In-Reply-To: <20231218090543.22353-1-yongxuan.wang@sifive.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 4 Jan 2024 10:58:01 +1000
-Message-ID: <CAKmqyKNMhVyTOc5H+ndroygD9oxy+KENU0HO14XO_ZWnAmQEhg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] hw/riscv/virt.c: fix the interrupts-extended property
- format of PLIC
-To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, greentime.hu@sifive.com, 
- vincent.chen@sifive.com, frank.chang@sifive.com, jim.shu@sifive.com, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92b;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87ttnuhbov.fsf@draig.linaro.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,102 +99,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 18, 2023 at 7:07=E2=80=AFPM Yong-Xuan Wang <yongxuan.wang@sifiv=
-e.com> wrote:
->
-> The interrupts-extended property of PLIC only has 2 * hart number
-> fields when KVM enabled, copy 4 * hart number fields to fdt will
-> expose some uninitialized value.
->
-> In this patch, I also refactor the code about the setting of
-> interrupts-extended property of PLIC for improved readability.
->
-> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-> Reviewed-by: Jim Shu <jim.shu@sifive.com>
+On Wed, Jan 03, 2024 at 11:57:04AM +0000, Alex Bennée wrote:
+> Another way of saying M-x rot13-region ;-)
 
-Thanks!
+Ah.. :)
 
-Applied to riscv-to-apply.next
+        ROT13 is used in online forums as a means of hiding spoilers,
+        punchlines, puzzle solutions, and offensive materials from the
+        casual glance.
 
-Alistair
+Thanks for sharing!
 
-> ---
->  hw/riscv/virt.c | 47 +++++++++++++++++++++++++++--------------------
->  1 file changed, 27 insertions(+), 20 deletions(-)
->
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index d2eac2415619..e42baf82cab6 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -460,24 +460,6 @@ static void create_fdt_socket_plic(RISCVVirtState *s=
-,
->          "sifive,plic-1.0.0", "riscv,plic0"
->      };
->
-> -    if (kvm_enabled()) {
-> -        plic_cells =3D g_new0(uint32_t, s->soc[socket].num_harts * 2);
-> -    } else {
-> -        plic_cells =3D g_new0(uint32_t, s->soc[socket].num_harts * 4);
-> -    }
-> -
-> -    for (cpu =3D 0; cpu < s->soc[socket].num_harts; cpu++) {
-> -        if (kvm_enabled()) {
-> -            plic_cells[cpu * 2 + 0] =3D cpu_to_be32(intc_phandles[cpu]);
-> -            plic_cells[cpu * 2 + 1] =3D cpu_to_be32(IRQ_S_EXT);
-> -        } else {
-> -            plic_cells[cpu * 4 + 0] =3D cpu_to_be32(intc_phandles[cpu]);
-> -            plic_cells[cpu * 4 + 1] =3D cpu_to_be32(IRQ_M_EXT);
-> -            plic_cells[cpu * 4 + 2] =3D cpu_to_be32(intc_phandles[cpu]);
-> -            plic_cells[cpu * 4 + 3] =3D cpu_to_be32(IRQ_S_EXT);
-> -        }
-> -    }
-> -
->      plic_phandles[socket] =3D (*phandle)++;
->      plic_addr =3D memmap[VIRT_PLIC].base + (memmap[VIRT_PLIC].size * soc=
-ket);
->      plic_name =3D g_strdup_printf("/soc/plic@%lx", plic_addr);
-> @@ -490,8 +472,33 @@ static void create_fdt_socket_plic(RISCVVirtState *s=
-,
->                                    (char **)&plic_compat,
->                                    ARRAY_SIZE(plic_compat));
->      qemu_fdt_setprop(ms->fdt, plic_name, "interrupt-controller", NULL, 0=
-);
-> -    qemu_fdt_setprop(ms->fdt, plic_name, "interrupts-extended",
-> -        plic_cells, s->soc[socket].num_harts * sizeof(uint32_t) * 4);
-> +
-> +    if (kvm_enabled()) {
-> +        plic_cells =3D g_new0(uint32_t, s->soc[socket].num_harts * 2);
-> +
-> +        for (cpu =3D 0; cpu < s->soc[socket].num_harts; cpu++) {
-> +            plic_cells[cpu * 2 + 0] =3D cpu_to_be32(intc_phandles[cpu]);
-> +            plic_cells[cpu * 2 + 1] =3D cpu_to_be32(IRQ_S_EXT);
-> +        }
-> +
-> +        qemu_fdt_setprop(ms->fdt, plic_name, "interrupts-extended",
-> +                         plic_cells,
-> +                         s->soc[socket].num_harts * sizeof(uint32_t) * 2=
-);
-> +   } else {
-> +        plic_cells =3D g_new0(uint32_t, s->soc[socket].num_harts * 4);
-> +
-> +        for (cpu =3D 0; cpu < s->soc[socket].num_harts; cpu++) {
-> +            plic_cells[cpu * 4 + 0] =3D cpu_to_be32(intc_phandles[cpu]);
-> +            plic_cells[cpu * 4 + 1] =3D cpu_to_be32(IRQ_M_EXT);
-> +            plic_cells[cpu * 4 + 2] =3D cpu_to_be32(intc_phandles[cpu]);
-> +            plic_cells[cpu * 4 + 3] =3D cpu_to_be32(IRQ_S_EXT);
-> +        }
-> +
-> +        qemu_fdt_setprop(ms->fdt, plic_name, "interrupts-extended",
-> +                         plic_cells,
-> +                         s->soc[socket].num_harts * sizeof(uint32_t) * 4=
-);
-> +    }
-> +
->      qemu_fdt_setprop_cells(ms->fdt, plic_name, "reg",
->          0x0, plic_addr, 0x0, memmap[VIRT_PLIC].size);
->      qemu_fdt_setprop_cell(ms->fdt, plic_name, "riscv,ndev",
-> --
-> 2.17.1
->
->
+-- 
+Peter Xu
+
 
