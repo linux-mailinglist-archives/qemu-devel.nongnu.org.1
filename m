@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA2D8239D7
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 01:49:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5108239D2
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 01:47:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLBs5-0008Ky-Lk; Wed, 03 Jan 2024 19:46:05 -0500
+	id 1rLBs5-0008L5-Uy; Wed, 03 Jan 2024 19:46:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rLBs1-0008JW-4U
+ id 1rLBs1-0008JZ-Nx
  for qemu-devel@nongnu.org; Wed, 03 Jan 2024 19:46:02 -0500
-Received: from mail-qk1-x72f.google.com ([2607:f8b0:4864:20::72f])
+Received: from mail-qk1-x734.google.com ([2607:f8b0:4864:20::734])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rLBrs-0007V9-Nt
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 19:45:54 -0500
-Received: by mail-qk1-x72f.google.com with SMTP id
- af79cd13be357-7818487b1d3so1874985a.2
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 16:45:51 -0800 (PST)
+ id 1rLBrt-0007VJ-Dq
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 19:45:55 -0500
+Received: by mail-qk1-x734.google.com with SMTP id
+ af79cd13be357-78104f6f692so74509885a.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 16:45:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1704329151; x=1704933951; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1704329152; x=1704933952; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=K6QJbyNGuVRLGZ8vbfrugWybx1mGgwwJhrzz8rgJs0I=;
- b=BwW/XJ2Z60Z8SUEx4pWRHICj/4p8bvI2quLw4KniNigKQFe3Excf8wb9IrJ4jzwjJ9
- oi1Btv+glTOQYeh3/o9cbeKk5dO9lWlEODnkrh7d/XbkADD15uRdvNEV/LbUrh1BLhLp
- +Qlizf3e4HoL8Vbatrt/8hLGOTW4Sv96eojbf+dWJMLOJfcdpLiYbbTbSCPufinQ5NvB
- ZOTluzllEK9+S46+lfThFO32UZxYg3E6q9x4YfSlifwyvzOP62F5aAXngr3AXjLWcSkz
- 4EzSl5WZCp48m8S46HFGimhVa8Yk8vNgCzWJQSkFSUs8S21GXaS1eHJzd+AvERgW4hYB
- ao4w==
+ bh=vZRlIjhhISfiTz2PoTJ+Q54Z2iN+C/amao7oXcJmFBs=;
+ b=I1SVAGqe/JqWEBsyzBLRS9X+Hf9dNRDYR3+tUmXcPQDMcgdLWzPmkJSx34Jd1gj+Xu
+ VBNYRAxrtf4HaITcscHk+ZU4JLtNYDV/9fJq3v4oQ5J5+iL/KfX8O28K8w1JixSqMnWn
+ 5rOqawkptiWTkP7Bbyzj3PQKPMGlwoJg5eIedn3lSp5LqhA//2sUCDzBYpVqgOmvPFPf
+ tC4im2G8AL7h7WeMuiiBu1+DeUeyoOThbeV4fmn6iYAd9lkEJ5coYdY9AZNMF82pHofv
+ OfQ1Y55HkVYncPyjlU8b5gvuPCbFFQkkggSikEcsy7TZrA1Xs7SY/XjOacz9iUK3l2d4
+ CNBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704329151; x=1704933951;
+ d=1e100.net; s=20230601; t=1704329152; x=1704933952;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K6QJbyNGuVRLGZ8vbfrugWybx1mGgwwJhrzz8rgJs0I=;
- b=nFET3u0nDnbDhDb5WHGUrSfgDY0NwhNaoqlKJzihiY9dEaTYwx8x8FU3I9npYlcEf3
- 9R0sNBMrDoE0WU73w8t86S0/pLcIdXgLrpEaIAKtrPdP4cixM7HrLh9LbQP10EvwGLLO
- 24AbTDCgH2gwICu9jsBRKwrOW1fs207W+vyJzQa3KjalTzii4Gh4pqxsY7EauC8zNjZy
- ZMxYpryxMjBn2tGV50fSGPWtom9p0JpfJEoIA3kjD+tYbJhurnT/GRCjwIcPSzWh2Rcv
- inKPPiNiZ9QCYX+Wg1Ob0L+pKPA2PXQ6yB8RDef4Zuwre4yzcVKb4nr8Vk25KV0PL58o
- qNDg==
-X-Gm-Message-State: AOJu0Yz3H457QZeAc6SOIiOr+9+T1nY6HX8E460xn7sOFuRMgyocKqJN
- zDTiodNVodCmG8qYBqng/1+M1Oi0YHRKKzakK5wA9TEZdug=
-X-Google-Smtp-Source: AGHT+IH2TtesTCRW4SBxx93ZrHfEPAxCub7H02gGPKudEYpI//NOkjQup5ZqvSxNF8PfViREW5U9hQ==
-X-Received: by 2002:a05:620a:2689:b0:781:2b9d:f155 with SMTP id
- c9-20020a05620a268900b007812b9df155mr25072008qkp.29.1704329151374; 
- Wed, 03 Jan 2024 16:45:51 -0800 (PST)
+ bh=vZRlIjhhISfiTz2PoTJ+Q54Z2iN+C/amao7oXcJmFBs=;
+ b=n15GbMQlPSVBECiKStqchPstnTmr/gMDfVPsI87xET3Bvsw+RYqmL9RTA/O7ySaexu
+ 89Cyr3sOYDCkLc980s52Q4s7SqAAh3J/7mUp144Jvb3sgMl54133zcB0YVMrCEXuiErR
+ 8EADJrJPATya2S0bo5vahn4cvENNfooDBSt+JJqkVjef03jD3fLTKUQCO1BFuCN66tNs
+ j9RL9lDhGGSeTv5AWgyQ9ntWdF8h+im77L4p3aZ6AM1c3SylM4GUJ4zgV++NWMubS9B8
+ ikPRkR15IAtCnCJbgQ67u+JL9ePMA7wLUJOqfMyNUmDd/otOQwwSIHxzMJmJ1/eqGHT9
+ ZFoQ==
+X-Gm-Message-State: AOJu0Yzhbgsl63lz8r9FASQwmbhJkjmES6AnV/zFdu06GpazidBF9mJD
+ 6GEwSBwPPYrOnBIpCQvVDBH9gbKY3Fb4+8lK4jrUqddQsp0=
+X-Google-Smtp-Source: AGHT+IGsZZQaR5NZs1/FFzeGJln/0XziW7751TnULnC533zzqkq5PTlWhpQrLzub3WVDvISOOSPmPw==
+X-Received: by 2002:a05:620a:4508:b0:781:68b0:6054 with SMTP id
+ t8-20020a05620a450800b0078168b06054mr3091069qkp.16.1704329152387; 
+ Wed, 03 Jan 2024 16:45:52 -0800 (PST)
 Received: from n231-230-216.byted.org ([147.160.184.87])
  by smtp.gmail.com with ESMTPSA id
- x19-20020ae9f813000000b0077d66e5b2e6sm10646087qkh.3.2024.01.03.16.45.50
+ x19-20020ae9f813000000b0077d66e5b2e6sm10646087qkh.3.2024.01.03.16.45.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jan 2024 16:45:50 -0800 (PST)
+ Wed, 03 Jan 2024 16:45:51 -0800 (PST)
 From: Hao Xiang <hao.xiang@bytedance.com>
 To: farosas@suse.de, peter.maydell@linaro.org, peterx@redhat.com,
  marcandre.lureau@redhat.com, bryan.zhang@bytedance.com,
  qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH v3 16/20] migration/multifd: Enable set normal page ratio test
- hook in multifd.
-Date: Thu,  4 Jan 2024 00:44:48 +0000
-Message-Id: <20240104004452.324068-17-hao.xiang@bytedance.com>
+Subject: [PATCH v3 17/20] migration/multifd: Add migration option set packet
+ size.
+Date: Thu,  4 Jan 2024 00:44:49 +0000
+Message-Id: <20240104004452.324068-18-hao.xiang@bytedance.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20240104004452.324068-1-hao.xiang@bytedance.com>
 References: <20240104004452.324068-1-hao.xiang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72f;
- envelope-from=hao.xiang@bytedance.com; helo=mail-qk1-x72f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::734;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-qk1-x734.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,119 +94,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test hook is disabled by default. To set it, a normal page ratio
-between 0 and 100 are valid. If the ratio is set to 50, it means
-at least 50% of all pages are sent as normal pages.
-
-Set the option:
-migrate_set_parameter multifd-normal-page-ratio 60
+The current multifd packet size is 128 * 4kb. This change adds
+an option to set the packet size. Both sender and receiver needs
+to set the same packet size for things to work.
 
 Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
 ---
- include/qemu/dsa.h             |  5 ++++-
- migration/migration-hmp-cmds.c |  7 +++++++
- migration/multifd.c            | 33 +++++++++++++++++++++++++++++++++
- 3 files changed, 44 insertions(+), 1 deletion(-)
+ migration/options.c | 36 ++++++++++++++++++++++++++++++++++++
+ migration/options.h |  1 +
+ qapi/migration.json | 21 ++++++++++++++++++---
+ 3 files changed, 55 insertions(+), 3 deletions(-)
 
-diff --git a/include/qemu/dsa.h b/include/qemu/dsa.h
-index fe7772107a..ac3d8b51f4 100644
---- a/include/qemu/dsa.h
-+++ b/include/qemu/dsa.h
-@@ -38,7 +38,7 @@ typedef struct dsa_batch_task {
-     QemuSemaphore sem_task_complete;
-     DsaTaskType task_type;
-     DsaTaskStatus status;
--    int batch_size;
-+    uint32_t batch_size;
-     bool *results;
-     QSIMPLEQ_ENTRY(dsa_batch_task) entry;
- } dsa_batch_task;
-@@ -50,6 +50,9 @@ struct batch_task {
-     ram_addr_t *addr;
-     /* Zero page checking results */
-     bool *results;
-+    /* Set normal page ratio test hook. */
-+    uint32_t normal_page_index;
-+    uint32_t normal_page_counter;
- #ifdef CONFIG_DSA_OPT
-     struct dsa_batch_task *dsa_batch;
- #endif
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 761d6d54de..8219d112d6 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -356,6 +356,9 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
-         monitor_printf(mon, "%s: '%s'\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_MULTIFD_DSA_ACCEL),
-             params->multifd_dsa_accel);
-+        monitor_printf(mon, "%s: %u\n",
-+            MigrationParameter_str(MIGRATION_PARAMETER_MULTIFD_NORMAL_PAGE_RATIO),
-+            params->multifd_normal_page_ratio);
+diff --git a/migration/options.c b/migration/options.c
+index aceb391338..fafdeb69cd 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -84,6 +84,12 @@
+  */
+ #define DEFAULT_MIGRATE_MULTIFD_NORMAL_PAGE_RATIO 101
  
-         if (params->has_block_bitmap_mapping) {
-             const BitmapMigrationNodeAliasList *bmnal;
-@@ -675,6 +678,10 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
-         error_setg(&err, "The block-bitmap-mapping parameter can only be set "
-                    "through QMP");
-         break;
-+    case MIGRATION_PARAMETER_MULTIFD_NORMAL_PAGE_RATIO:
-+        p->has_multifd_normal_page_ratio = true;
-+        visit_type_uint8(v, param, &p->multifd_normal_page_ratio, &err);
-+        break;
-     case MIGRATION_PARAMETER_X_VCPU_DIRTY_LIMIT_PERIOD:
-         p->has_x_vcpu_dirty_limit_period = true;
-         visit_type_size(v, param, &p->x_vcpu_dirty_limit_period, &err);
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 6e73d995b0..cfae5401a9 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -683,6 +683,37 @@ int multifd_send_sync_main(QEMUFile *f)
-     return 0;
++/*
++ * Parameter for multifd packet size.
++ */
++#define DEFAULT_MIGRATE_MULTIFD_PACKET_SIZE (128 * 4 * 1024)
++#define MAX_MIGRATE_MULTIFD_PACKET_SIZE (1023 * 4 * 1024)
++
+ #define DEFINE_PROP_MIG_CAP(name, x)             \
+     DEFINE_PROP_BOOL(name, MigrationState, capabilities[x], false)
+ 
+@@ -189,6 +195,9 @@ Property migration_properties[] = {
+     DEFINE_PROP_UINT8("multifd-normal-page-ratio", MigrationState,
+                       parameters.multifd_normal_page_ratio,
+                       DEFAULT_MIGRATE_MULTIFD_NORMAL_PAGE_RATIO),
++    DEFINE_PROP_SIZE("multifd-packet-size", MigrationState,
++                     parameters.multifd_packet_size,
++                     DEFAULT_MIGRATE_MULTIFD_PACKET_SIZE),
+ 
+     /* Migration capabilities */
+     DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
+@@ -876,6 +885,13 @@ uint8_t migrate_multifd_normal_page_ratio(void)
+     return s->parameters.multifd_normal_page_ratio;
  }
  
-+static void multifd_normal_page_test_hook(MultiFDSendParams *p)
++uint64_t migrate_multifd_packet_size(void)
 +{
-+    /*
-+     * The value is between 0 to 100. If the value is 10, it means at
-+     * least 10% of the pages are normal page. A zero page can be made
-+     * a normal page but not the other way around.
-+     */
-+    uint8_t multifd_normal_page_ratio =
-+        migrate_multifd_normal_page_ratio();
-+    struct batch_task *batch_task = p->batch_task;
++    MigrationState *s = migrate_get_current();
 +
-+    /* Set normal page test hook is disabled. */
-+    if (multifd_normal_page_ratio > 100) {
-+        return;
-+    }
-+
-+    for (int i = 0; i < p->pages->num; i++) {
-+        if (batch_task->normal_page_counter < multifd_normal_page_ratio) {
-+            /* Turn a zero page into a normal page. */
-+            batch_task->results[i] = false;
-+        }
-+        batch_task->normal_page_index++;
-+        batch_task->normal_page_counter++;
-+
-+        if (batch_task->normal_page_index >= 100) {
-+            batch_task->normal_page_index = 0;
-+            batch_task->normal_page_counter = 0;
-+        }
-+    }
++    return s->parameters.multifd_packet_size;
 +}
 +
- static void set_page(MultiFDSendParams *p, bool zero_page, uint64_t offset)
+ MultiFDCompression migrate_multifd_compression(void)
  {
-     RAMBlock *rb = p->pages->block;
-@@ -748,6 +779,8 @@ static void multifd_zero_page_check(MultiFDSendParams *p)
-         set_normal_pages(p);
-     }
+     MigrationState *s = migrate_get_current();
+@@ -1014,6 +1030,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+     params->x_checkpoint_delay = s->parameters.x_checkpoint_delay;
+     params->has_block_incremental = true;
+     params->block_incremental = s->parameters.block_incremental;
++    params->has_multifd_packet_size = true;
++    params->multifd_packet_size = s->parameters.multifd_packet_size;
+     params->has_multifd_channels = true;
+     params->multifd_channels = s->parameters.multifd_channels;
+     params->has_multifd_compression = true;
+@@ -1075,6 +1093,7 @@ void migrate_params_init(MigrationParameters *params)
+     params->has_downtime_limit = true;
+     params->has_x_checkpoint_delay = true;
+     params->has_block_incremental = true;
++    params->has_multifd_packet_size = true;
+     params->has_multifd_channels = true;
+     params->has_multifd_compression = true;
+     params->has_multifd_zlib_level = true;
+@@ -1173,6 +1192,17 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
  
-+    multifd_normal_page_test_hook(p);
+     /* x_checkpoint_delay is now always positive */
+ 
++    if (params->has_multifd_packet_size &&
++        ((params->multifd_packet_size < DEFAULT_MIGRATE_MULTIFD_PACKET_SIZE) ||
++            (params->multifd_packet_size >  MAX_MIGRATE_MULTIFD_PACKET_SIZE) ||
++            (params->multifd_packet_size % qemu_target_page_size() != 0))) {
++        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
++                    "multifd_packet_size",
++                    "a value between 524288 and 4190208, "
++                    "must be a multiple of guest VM's page size.");
++        return false;
++    }
 +
-     for (int i = 0; i < p->pages->num; i++) {
-         uint64_t offset = p->pages->offset[i];
-         bool zero_page = p->batch_task->results[i];
+     if (params->has_multifd_channels && (params->multifd_channels < 1)) {
+         error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
+                    "multifd_channels",
+@@ -1354,6 +1384,9 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+     if (params->has_block_incremental) {
+         dest->block_incremental = params->block_incremental;
+     }
++    if (params->has_multifd_packet_size) {
++        dest->multifd_packet_size = params->multifd_packet_size;
++    }
+     if (params->has_multifd_channels) {
+         dest->multifd_channels = params->multifd_channels;
+     }
+@@ -1499,6 +1532,9 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+                     " use blockdev-mirror with NBD instead");
+         s->parameters.block_incremental = params->block_incremental;
+     }
++    if (params->has_multifd_packet_size) {
++        s->parameters.multifd_packet_size = params->multifd_packet_size;
++    }
+     if (params->has_multifd_channels) {
+         s->parameters.multifd_channels = params->multifd_channels;
+     }
+diff --git a/migration/options.h b/migration/options.h
+index 21e3e7b0cf..5816f6dac2 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -96,6 +96,7 @@ const char *migrate_tls_hostname(void);
+ uint64_t migrate_xbzrle_cache_size(void);
+ const char *migrate_multifd_dsa_accel(void);
+ uint8_t migrate_multifd_normal_page_ratio(void);
++uint64_t migrate_multifd_packet_size(void);
+ 
+ /* parameters setters */
+ 
+diff --git a/qapi/migration.json b/qapi/migration.json
+index dedcdd076a..354f10a83f 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -888,6 +888,10 @@
+ # @multifd-normal-page-ratio: Test hook setting the normal page ratio.
+ #     (Since 8.2)
+ #
++# @multifd-packet-size: Packet size in bytes used to migrate data.
++#     The value needs to be a multiple of guest VM's page size.
++#     The default value is 524288 and max value is 4190208. (Since 8.2)
++#
+ # Features:
+ #
+ # @deprecated: Member @block-incremental is deprecated.  Use
+@@ -922,7 +926,8 @@
+            { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
+            'vcpu-dirty-limit',
+            'mode',
+-           'multifd-normal-page-ratio'] }
++           'multifd-normal-page-ratio',
++           'multifd-packet-size'] }
+ 
+ ##
+ # @MigrateSetParameters:
+@@ -1086,6 +1091,10 @@
+ # @multifd-normal-page-ratio: Test hook setting the normal page ratio.
+ #     (Since 8.2)
+ #
++# @multifd-packet-size: Packet size in bytes used to migrate data.
++#     The value needs to be a multiple of guest VM's page size.
++#     The default value is 524288 and max value is 4190208. (Since 8.2)
++#
+ # Features:
+ #
+ # @deprecated: Member @block-incremental is deprecated.  Use
+@@ -1141,7 +1150,8 @@
+             '*vcpu-dirty-limit': 'uint64',
+             '*mode': 'MigMode',
+             '*multifd-dsa-accel': 'StrOrNull',
+-            '*multifd-normal-page-ratio': 'uint8'} }
++            '*multifd-normal-page-ratio': 'uint8',
++            '*multifd-packet-size' : 'uint64'} }
+ 
+ ##
+ # @migrate-set-parameters:
+@@ -1325,6 +1335,10 @@
+ # @multifd-normal-page-ratio: Test hook setting the normal page ratio.
+ #     (Since 8.2)
+ #
++# @multifd-packet-size: Packet size in bytes used to migrate data.
++#     The value needs to be a multiple of guest VM's page size.
++#     The default value is 524288 and max value is 4190208. (Since 8.2)
++#
+ # Features:
+ #
+ # @deprecated: Member @block-incremental is deprecated.  Use
+@@ -1377,7 +1391,8 @@
+             '*vcpu-dirty-limit': 'uint64',
+             '*mode': 'MigMode',
+             '*multifd-dsa-accel': 'str',
+-            '*multifd-normal-page-ratio': 'uint8'} }
++            '*multifd-normal-page-ratio': 'uint8',
++            '*multifd-packet-size': 'uint64'} }
+ 
+ ##
+ # @query-migrate-parameters:
 -- 
 2.30.2
 
