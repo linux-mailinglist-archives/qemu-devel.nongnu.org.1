@@ -2,153 +2,156 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5B6823CCD
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 08:34:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F14823CE7
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 08:45:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLIEG-0007A5-2d; Thu, 04 Jan 2024 02:33:24 -0500
+	id 1rLIOn-0001X5-T7; Thu, 04 Jan 2024 02:44:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rLIEC-00079Y-2G
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 02:33:20 -0500
-Received: from mail-dm3nam02on2043.outbound.protection.outlook.com
- ([40.107.95.43] helo=NAM02-DM3-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1rLIOl-0001WP-S0
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 02:44:16 -0500
+Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rLIE8-0005Q8-6t
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 02:33:18 -0500
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1rLIOd-0007HO-Gq
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 02:44:15 -0500
+Received: from pps.filterd (m0127838.ppops.net [127.0.0.1])
+ by mx0a-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
+ 403Ki0tp028333; Wed, 3 Jan 2024 23:43:59 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ content-type:message-id:date:subject:from:to:cc:references
+ :in-reply-to:mime-version; s=proofpoint20171006; bh=BdceHG+1k/vY
+ XKybPPdLVlhnCbUXWLf38YdHUIyvrqM=; b=yEZZo5voF4Z0atOHVQ6KQ3NJJsvp
+ 4VooiNJ7n2G6R6+pYYNDzUM4xaKNHe853fLgfEySLrFYEjFgKagEgCUfqpK3d9B6
+ 9nWN2LfADB6jmctJBoqQIGeViIA8J05UPBzGM2AKboD4FnPiDGxE9BI4T2HIY1Py
+ 4V7yf4UoCzgEc+5Ktru1XLPVCBLWrXyfqcMB1tnKa7yv5Btj5IBo6uckRZHJYKb4
+ 7fa5w8F0pZgCa7TflGffB8XdFYapZyrqVGRARh64fUrqt4ddDU/w03SWVo2G/Jgz
+ QOV+A6clbiQdI6nsaDqcv7oD0IdguVvnetRCGwKWSiiRtykpKWQPw7Tdug==
+Received: from nam12-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3vc20ww4jy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Jan 2024 23:43:59 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kKfb7ELqUk5W1M1Az+Wcid8+QRnAjrdmUkzFrWrvX/nU2JbtyuuAPLmeFb0SpUczC5h2U/BrOIUhFoq4c1QhGI1lzyNtPIXz1pc4woBC+qjgDFBYbwEcCcX/6KcL0NZZQ+ofNcIoTdfT8SCRpJdjOXeL4zKMpQaSzn4XAp4Frk7T8nS+gOCM4En1gnQw0gp0abtGNE5gnsmMFMHRYUipLkoxk/0O/HvY/E0iQTaq6ZDSP4W1cfkOqCZgg0wSxd/hJqunGVardz7Itf1ddfRD8Mh2iKn5HAXhce4yXFuY7bF142doPl/AFkF7RAo2ngiOgLUf9loXnjkqyL/OKPaQjg==
+ b=mDbqGTOcEt2BkT/a40ln/Q6NWWWQqYpLO3qhOx3t4zl0rgKPdCrkIrVySL+0z0ecHmmdozUI3LGE+QtoTvF6AGWOu2yHtDcm0mTMAA27haoEBViypP6Pb2j6xZTpwaFhX1kRucE4VQ9UqvV9aKbbgeBibHpohS6gHpcR2aQDsY6Z+7z9VDavwqf7sU7YKR32hA3Ra2ZG6xLc6fIGtb+N6wPFWt3IpR9gPZGmb5dATMqUp2Fc57+5q6BCtbAvFQyo2s/t2kPrrkSmj0lEutSTrUrZzqbY5WRKIB7q7lvKqIn5DOT9XE9iL2eYqrV593VaZ/SLKqDq7UwO6bYb6yWWzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bQgBZZHXKDiWsObp33Dylkkgai5L0Y9yrgbatlk5dXc=;
- b=npRbXebCEOPPHgo2RafMCtA0r4calyedCZEHY2gqkIf76I4Od6QSAxBe6kLLWqUESOaf3U8E8h+hpFWwuBgrVx+OjkZeAnKiVbZJuBKno2lxXI89C+tV20N+EoUhCYzhpPusC8l3kPcEXBRt+++4F3L1dt7VUIwcm3H5QDNm+RinCS7DRsb3OFO/5rOy44aaUH2uD6C4ruy5JiIlGLL3RS8/ZmxneMcP+8t3cWrsc4YrSiV4wvbFosiiWZE8UNRsTvxSlrLvmEF0ZsoS6O3jCBZ+2cbfjpnhEXU810Eb0UrCbJjqZXycDhexB13p2ynVpkbgyUhO2oUA2kjs1pe4Mw==
+ bh=BdceHG+1k/vYXKybPPdLVlhnCbUXWLf38YdHUIyvrqM=;
+ b=ZqB1+JbvuWSMMdkHsLsnnahykFheECStdOozHczNxVhBFh4Rrq1LkmJauWr87G/yQyOt5d4IdhYr/3ZGkrtD60pCvf6FvK9InHko0Trbz1pIvD3A80y7Zlnn+l9fgZ9eIbe9Tr8PhaZ2P4iR97jZnErLL/p8SaJDg29DeZmbV3/XaEkKL2qpWGfMs7fX1MWExd3xjGJ+97JSVnhXbJgEXj07NtqCBn9eQ3+VacVyRqIsls0sIoxGrNiOKXf4GxqGPFKEKqR8NgNE/qcR7pYoZvMPd5bStJGVGkVnNLXNTkaLlwNTg/WQidF5pelvYIANHWgoGtHw6fdDvxs6QJvl9g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bQgBZZHXKDiWsObp33Dylkkgai5L0Y9yrgbatlk5dXc=;
- b=CWwaVrjhhvyVZPHPdfnFIg+v92segp59XCno+2Dihg2CwFJhlQ2p4mtaJJBVrNNAEJIKzQBURVX0UAMkAD7p5arY4CalypYc8+i8+moJc7RZS0Hqq9AUxC9mUvfCQ9ABr4xX29uqWTV0TibwjX2IAW8VPA63+/hI2bCJh1ZZILs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
- by IA1PR12MB6385.namprd12.prod.outlook.com (2603:10b6:208:38b::6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.25; Thu, 4 Jan
- 2024 07:28:05 +0000
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::9b8e:816d:20b9:9845]) by SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::9b8e:816d:20b9:9845%5]) with mapi id 15.20.7159.013; Thu, 4 Jan 2024
- 07:28:05 +0000
-Date: Thu, 4 Jan 2024 15:27:38 +0800
-From: Huang Rui <ray.huang@amd.com>
-To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>, Alyssa Ross <hi@alyssa.is>,
- Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Stabellini, Stefano" <stefano.stabellini@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-Subject: Re: [PATCH v6 05/11] virtio-gpu: Introduce virgl_gpu_resource
- structure
-Message-ID: <ZZZd6rueZGmzSbPb@amd.com>
-References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-6-ray.huang@amd.com>
- <CAJ+F1CKOsDk835H8j56mfS7e=8BusYjo3mJYwuPbdRPq1MmNzw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ+F1CKOsDk835H8j56mfS7e=8BusYjo3mJYwuPbdRPq1MmNzw@mail.gmail.com>
-X-ClientProxiedBy: SG2PR02CA0108.apcprd02.prod.outlook.com
- (2603:1096:4:92::24) To SJ2PR12MB8690.namprd12.prod.outlook.com
- (2603:10b6:a03:540::10)
+ bh=BdceHG+1k/vYXKybPPdLVlhnCbUXWLf38YdHUIyvrqM=;
+ b=YDkkfrzWyURfxSWkGIUvFuGm8KotDvC2ruPsq5YNFyX2F9nicDNS0/zrdVlJx1UWmdJRi0+r5uq3YJBy4gdBtojqn7z6LlCsHbWKlxd2d87opDKe17xdsA/qxnfIqc0dtnJtUI4ct+e31fYFFXqt6NHVqAtMD8usmwhKwKoAK+sLhuR0dZSSpX0p20kxpQu3wGrkbDmyAGZ0Byr4ZNCR3CcXQr1BjfNG0wtpfYBoCpoWemUJi/QGPToGWoaDvsCt3jDpD7X/x7Ea45E+kdvNAMUJnuKiZ/qC2hJ9g1nWFlVNo7bXYQsMcnR8qzK7ZGw6GdF0iJOk+DRQs+RQeqC0oA==
+Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
+ by CO6PR02MB7793.namprd02.prod.outlook.com (2603:10b6:303:a0::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.15; Thu, 4 Jan
+ 2024 07:43:57 +0000
+Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
+ ([fe80::bf6f:93ea:cea5:91b5]) by SJ2PR02MB9955.namprd02.prod.outlook.com
+ ([fe80::bf6f:93ea:cea5:91b5%2]) with mapi id 15.20.7159.013; Thu, 4 Jan 2024
+ 07:43:56 +0000
+Content-Type: multipart/alternative;
+ boundary="------------zZT9ymqwhJvlU3KvyGNX3zgz"
+Message-ID: <0db9854c-4e4f-4f2a-a143-16d3ca62f44a@nutanix.com>
+Date: Thu, 4 Jan 2024 13:13:48 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] migration: Simplify initial conditionals in migration for
+ better readability
+Content-Language: en-US
+From: Het Gala <het.gala@nutanix.com>
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: prerna.saxena@nutanix.com, berrange@redhat.com, peter.maydell@linaro.org, 
+ armbru@redhat.com, Peter Xu <peterx@redhat.com>
+References: <20231205080039.197615-1-het.gala@nutanix.com>
+ <87a5qon6vj.fsf@suse.de> <62ae7ae7-76bd-4526-a002-515cd9660ed4@nutanix.com>
+In-Reply-To: <62ae7ae7-76bd-4526-a002-515cd9660ed4@nutanix.com>
+X-ClientProxiedBy: PN0PR01CA0054.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:49::15) To SJ2PR02MB9955.namprd02.prod.outlook.com
+ (2603:10b6:a03:55f::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|IA1PR12MB6385:EE_
-X-MS-Office365-Filtering-Correlation-Id: 80af6f06-263d-4c9a-b561-08dc0cf6b0ca
+X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|CO6PR02MB7793:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4888b90-feaf-413f-d674-08dc0cf8e7df
+x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: mwATAW5smQUBr/NkiutoK/x0weguozx4lOB3rXBkvh1Ijvb3dd2YR6PqUpgDE4kHjINk1qcHnnNmRlqziB2KoOAEkom7DCvW4WgmSHDTIC6XidPDz+Aglda4DeDVVTdY0FSTy3AkhjUTNyjBoIhkPT9uTzRbQbDBLRZau+WD88sq1JBVNkAnaG+vbMocj3SrZ+TNoW1C/oeh+LusDtwjT9p/k1At/GPGk/DoyIr5saiJTU0DpFYkmpdp/kV2CT+QE+JxrdN2KaxzYylvRhZPRAh0cezIFTv/U10PSj8SLE0XuLb1xQUwt2znf6UxjBF5jpFgX+rUFKSd4YiQIsiJxnxDzsw9GUaVUIPNq7nk4ZqCVxB02MOJfaHmivFAp1/v/+JyFFdkgMC4ZPHxaD3K4MpG9BACL2SMRJp6JTpaNNgtVuuH/OV9WKnr6YZGXnyIHFYHR0LP5l4znuY/LiMXuZtO+t9u7sY/h8XobugyC4p78UKslqDVgf486ExcTyn+c/w9nxzR3RCluY0Ghot9FJZ2uUrlOyMJcVPGSQnkyIs7TokA+yT5LJ1K/yuKA8P9
+X-Microsoft-Antispam-Message-Info: 7e3dotcrneh2NQvyNXcHg05RjIOiqu6mKsk9nCX3sv9r+E3HM+00koEckiRz4PvhNNoVM2jkY19/t2C+N5iC14mBJWSQi//1uyLFH8VLLfHCMK29eYacG7161bFoV9nyL58xrhI2Bjj3DIgn6UaEDZlvu7S4PBR7lX6S4q27Cm3maxGnrNVW1icGcXNrwZrURnN4JWnFnJlLA4nqAUmrMlVnCkoeUwaBjVHLGU4EFEgw5qGJUNr8qDk6gvSPW01TnJ5Do0dKSb4jlxx+PzrezarutVjGyQFM1QPdQz9o5HM4bOjcC5TMESbbV+kJG9bz+4TejU+5qe8SUCOybvDtD5DR5LI9G6o6KG+/HG2m80g632N4XZ/TkkY78+1siWLbPGluK0MQeNB25i06+pwJuzLIP1jniNuueBp3X7NOSjYtM0COi6SZfe1IOWZtBJT08Upcr3lrB22neXzPMywTXV2oawGnkW4f0hQc+K87VlQjtW36F1Eo2Xc/okfWEUyAr9J08uYQlZUeC5EpYsfrUzJYwEf5Q0jKGGsAEnwtK/btyHytvpo5sXDrvSBjWfIVBG5lLfgX9m09qdwal263bur7o6TPKJOfZNGpJFGkPa501qlKUxVwz3s2Y6Fd6PaZ63pCsviCJh12L+QgKJYuMQ==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(396003)(346002)(39860400002)(376002)(366004)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(66946007)(4326008)(8676002)(316002)(478600001)(54906003)(6916009)(66556008)(8936002)(6486002)(66476007)(83380400001)(6512007)(53546011)(6506007)(6666004)(2616005)(26005)(7416002)(5660300002)(41300700001)(2906002)(36756003)(38100700002)(86362001);
- DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(136003)(346002)(39860400002)(366004)(396003)(376002)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(26005)(2616005)(38100700002)(41300700001)(8676002)(8936002)(316002)(5660300002)(2906002)(4326008)(44832011)(6666004)(478600001)(6512007)(6506007)(53546011)(33964004)(66556008)(66946007)(66476007)(6486002)(31696002)(86362001)(36756003)(31686004)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aGtKYnhSZ1dyTkF5aW5qL2d1YWtBYTZYQUVBOGtZNkhUdVhBYTh4b1h5OWdn?=
- =?utf-8?B?NncwVEszSWp3MXVlTzFzZFhzcGlVNVRlN3FaaHJnU0FYbHZGb0pEVmhJbW9O?=
- =?utf-8?B?a1hMRTNRdGQwL1NrQXNJeFFpVjFLbEJWRy9PUTgwczlHNUhtT0NKOXJnelFw?=
- =?utf-8?B?S1BnUFpNTlVDNWtYNUo5K2lPTEprUjF3STVJTnZmb0tFVFA3NGZYblJQSUU1?=
- =?utf-8?B?TXRiZ2lCM3FMZ2YvREtPQng1aGpoQ1RSWWNNc2pIY0FSWjRqQVhMRXZSWjUx?=
- =?utf-8?B?WlY5NjMzVkloM0x4cGhSWFR1Q2xvV04zSDRVSmI0MDduNTAwVWdYZ0dOdGxQ?=
- =?utf-8?B?ZEMyYXZJdk14Rmw3ZzNlbnJQa0QxalZ5cnB6OWc2aXA1TmpUMURXcFRyb2I3?=
- =?utf-8?B?TXhFTHdGLzl1SXkxZjRiNytvNklVTS9aVmZEcjIzMVl4S2kyZXNTTHRGc2Zo?=
- =?utf-8?B?ejc4RkR1alpRT3NDT2VwdjNVd21iRUpOZStvUFcxT241cS9DUnUwNkN2RnhJ?=
- =?utf-8?B?Q0hTeGtZUERKaHNCMlNINEdjVE5qWXpVb1FqU0p4dlRWa2JFRlNSSUVBOVBO?=
- =?utf-8?B?Q01wTlN1VXhrQVpML20yVEU4TXo1RDNjeHlCbGZQMEttUHdBdjVWT0RxSE42?=
- =?utf-8?B?NzlIS3F2VHBvNlZqYlRsbHA0MjNEZG1EdGRTYlc3VlpsVmpBZ3NnNWl3WVZS?=
- =?utf-8?B?SEZkZHRNV3dCTFpQUjk2V0Y1elM5SjF6TFVHWDgxZjByMnZTUy9pUGorN2xj?=
- =?utf-8?B?c0dGUGpCV3lmWWRRWC8xbk85aDh1c1ErRkFpUVk1QVBrWXJFY3NMdmgvZm5B?=
- =?utf-8?B?OUk4QU42RUMxUnlCNnQzYTlUVnZWcVhoMEZobGkvUTBRQmxOb0JiVXhwdW1y?=
- =?utf-8?B?UXlMMFhOeHNyOGRYSUdoNitVYVYxUkhIYWFselpNOW9xZEZWcFFtUjI5OFJp?=
- =?utf-8?B?RTZZcUFGQWUvQWU0UktNUVlkZFlxck5qSG9LdzJQcEwxcFFBZm5BWlFBeW40?=
- =?utf-8?B?S1VZMzM0aEFHYUlZUkx0Y3EwdjNWb25ScFZaVGJpYmw2RjYwbnh4bzZEK1c5?=
- =?utf-8?B?MFRablEyUmdTNVIyT2s4dTRDTktnTE0rQVdmbHdGRWt1VE5vR1dSZERuTFk5?=
- =?utf-8?B?VzROSDJwY1VROTVPSXZwUmtmeCs1aHZ1MlpsTmFxL1lNKzZ4ejZmYjZoWnc1?=
- =?utf-8?B?N3g2REIxd1BqUXVHN1NXYk5ubTB5WWN1aERHaTMwV2VnK0R5K1ZqeHRYT1k5?=
- =?utf-8?B?SkVvVi9yRzkrcHBTdnlRVkJod0xFZXZveGRrTmRXU0xvQlpTdFBIVWhaRUgx?=
- =?utf-8?B?MkthYXN0bGxvWG9RK3lveGFpbUpKSHRUWlhObnFEMHJpMC9Gb2RtNWZJWVI1?=
- =?utf-8?B?NG10RHR2SDVrRlUxeS9SeEh3b1hqUHBqYXJxMmtYTTZvK2tqRXJrRFR2RzZL?=
- =?utf-8?B?ckRqUDJoTmg4NlpPdFlwVnZ6cmR3NTdOSEhYQXB5Y2dHWVZwTUVzSEhsdlpM?=
- =?utf-8?B?MG50U1k5TGV0a0N4RXo1WTBEcGExdkFNNmxIS0orTk8vV3AwOU1ZVnhnZjF6?=
- =?utf-8?B?UEJ5eHQrdXdtYW8vVENlZnpSbnY2U3NUckRGU3czSjBtVDV4aUpMWiszRjNu?=
- =?utf-8?B?ajAvL3V5T0dycWpHQlpBbVQxdHgybHJkV3c3NUVHd3FLZHU2TCtjcURSejl4?=
- =?utf-8?B?WThCdndqbncwNDVseXdFTXl2bXk0Z1Q3WWVsSDJPTkx5L2xSOGZmRzU2WTRx?=
- =?utf-8?B?YytMc0lqQW1hcmdDamdkTDZodHBZaFliYXpOMVA1dHZjTno1NEpJS1dQbFZE?=
- =?utf-8?B?aktqa2Z0MDhPdURqNU9KdFlrb1JQalJUQWhvbFRWSXRJUEZReUxnM0RWV293?=
- =?utf-8?B?ZGtTTmo2djJwZjQzTmx0MFNJaGRSU3gxYkwya0J6RXZqZHdaQ2NSK012RzhW?=
- =?utf-8?B?YzdOOXU4UzZibnFyaFJhQlREbWpxMUM4Qlc1SzkrRy8wT0ZkSUlydVRwV3pU?=
- =?utf-8?B?MElNTVFwNHh3VTZJZ29BczNaK0gzaVVyOGNMWktQZFR1Yk9UZVNGV2RaVFRT?=
- =?utf-8?B?Mk1XbnQ0VjdNTlFHWGh1Y3V5Y2QyMjgrYUg1UVF0NC91aS8zcFVXcURCR3g0?=
- =?utf-8?Q?L4JfW/BgisnLy1GGB37a1DV0v?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 80af6f06-263d-4c9a-b561-08dc0cf6b0ca
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T0pkejFiamo2VjBYcHhBU3F0QW5KSjBJK0NTbzVlbkVRaFVpVGMvbWFSZDYz?=
+ =?utf-8?B?M1BsTW9VWURWbWlydWVNUm1ZVjNmdzQwQmtTMlFEN0pQSmlsRHZ5bWVZN0gx?=
+ =?utf-8?B?bnpLU09yS2xDL1Rkc3kyMWZDdXlqcVEwZGkwMVBLcW5mTDFoWlFuYU1YVjBW?=
+ =?utf-8?B?dGdidWk4Y0o4TDNmVlRDVW9jVE5IUEVFM0s4V2ttMTRPSVk0aldEdXg4QnNG?=
+ =?utf-8?B?SUlwL0hGWnpCRVVlWFNZaVp6YUVjVjh4a1lrQ3hSSzliUTdqOWd6YWZ4c2lp?=
+ =?utf-8?B?amVJTmpxeHNMRXBJcWRlT3M4MzA3eXIzZGtpeFVKMmVrTU1EeUdSRllHNlhD?=
+ =?utf-8?B?MndsU0lEQk5DNXRuV2xBS0l3TWplY3BwVFFienhaaWpka3pBYklKWHlQVjJY?=
+ =?utf-8?B?bWxGVzBrZ1M1NVhjemJIZi9DV2lZeWluUUNMMjNLKzgyUGhJRHNyejYwdEdR?=
+ =?utf-8?B?M0N5blpiUnl4ZCtVNFFwKys0ZnpZS3pyaXlidFNDS1ZBNFFHano4OU5qaWlI?=
+ =?utf-8?B?aytFRUJ3N2RIMzlSamRydzVxb0RabEtxcFFZMURKQXRSQVZpWFVZdXBxZGNY?=
+ =?utf-8?B?ZTBQT3hBU0txbkI4c1EraHl4b25ZQ2hDd09JZjFJVzNUNUhBVTkzK2dqQXM4?=
+ =?utf-8?B?VjNtTTJIaStPZGk2TGo3ZUpBTFpYWnJrM0dIWjVxMlozclZONzJGS1VyQ2ls?=
+ =?utf-8?B?THI5QnBIVFNwcGdneUVwRVIrOVFpaGp5VExLcUM5dEh6cG5UUVR2a3JOUStV?=
+ =?utf-8?B?a2lJOStydnFRcDZiaUJDNGFmU2dZa2kzVUU2NEZzd09oVjhGYlo1NzhrcDZu?=
+ =?utf-8?B?UVBpb2NKTkwwNlo2LzlNSzQzOFVDeUNJbk1pYkVyZVJJNUdSVk5oT0dubXY4?=
+ =?utf-8?B?SDZiMm1YeHUwdXQwSWp5bzNrVDFVeFlWdk9saXgrYlFWRmpCbFFISEFhWW9u?=
+ =?utf-8?B?d1dOSytGdTdrSFVjazBTQjlUdGR6T3pYWWFtdkp1ays3MDlMSjVjcXJraXBU?=
+ =?utf-8?B?dkhybm9TNlM5d2tINkRsT3RSdUdJbUdRdnk1bHpkSHQ3WHB6bkJ3aGl0NktD?=
+ =?utf-8?B?bXVLRU5ja0sxVCtLOUNXSnBkek9JSTMrT2RCZTRNcG9lb2FYWmJkMzRUZkl0?=
+ =?utf-8?B?SjN5ZUpwVHhSaVpydEdIS2dtcnJ1cnhCdEpUbEgzb1NBRzFIMzVCMjFYVkNq?=
+ =?utf-8?B?dXlvbEdnRE03Qms5REpZMEFpRjVMcS9MMXA0dHlCcXlUeUpRVkQwalVJYVh3?=
+ =?utf-8?B?SFdpaE9EMnVYeGxZM0RCemtsZk1VWmFMNE5oUTdNTnU3UnJKeHd0QjQ5dDRt?=
+ =?utf-8?B?cWU3TkdEK250UmcrcDJsNGszT20yOUoveFNKdXZpZktyV1BUcWl5M2kzT0Yy?=
+ =?utf-8?B?U2E4RVdaeVFNRTZONDh2elpLNXJpd0oySnc0d1lOYzY1YmF2dDhVZDRkK3Ju?=
+ =?utf-8?B?L0M0VHVEblNwT1RQbXB5UVJVbEtla3RFL24ra1NTdW1VUFROSG9rb1VsbmRH?=
+ =?utf-8?B?RHVYbjg4bnFXZEZKMVJBSzMrS3ZBZ01qVkl1S3ByejFQWXN3UEtSZ0VNclNL?=
+ =?utf-8?B?MVV6UndobzVVZWNKUVdFWU1hQUYxWUFQSDVTQWJsT2g2Y1JnL01yclV2eU5q?=
+ =?utf-8?B?NTVCL3AyeFdGQjVkRmMrTm9EbDhhUUU1OTdTcWNrTFZrb3EvS0N3eEM3T25K?=
+ =?utf-8?B?bjA1RG41ZGV3dXZWR2RKUmJnenZyWkNxVkRjRWJlYjJlQ01HMFJxM0xZN2Ry?=
+ =?utf-8?B?NGM1MVFOTjlra1Y2YUhQcEtTM2NBVnN1WE1tNkhtUTFpWUc5RmRNYi82RmZF?=
+ =?utf-8?B?ZVAxMG1NbDhwcGk2bUNtQk9jVkloM0MvekI0aUlROElGZi9kSzVJMFlyaXNN?=
+ =?utf-8?B?YWVUQU11cHE0NGhhZitxeFg4alVFRHptdkNKUkdQUnZyNHVYMkVsQUFwdElG?=
+ =?utf-8?B?TEpEZ3VsNUpVK011eXozcDJWdUlJT3F6UWpEZWtpM3JpMC80ZSt1VFVSZys2?=
+ =?utf-8?B?OUovd2ZmL2lzY1FZblRFU2ZpNVBId0FON3FiMUROSGFaWWNDUU1obTNaS21J?=
+ =?utf-8?B?aitFVk12TUR1c3hxczhoR1V4RE94cXltUW9PWTBxeUdZNHMzdTlQaUF4SlNX?=
+ =?utf-8?Q?TIdDArtX+NUpBhatV6NDy0DDc?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4888b90-feaf-413f-d674-08dc0cf8e7df
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jan 2024 07:28:05.0412 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jan 2024 07:43:56.4882 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RgzTUAvY+G9IZ6e+zkwoKGfrs8PPcp/eurA+ouvUrSrKI1mshTFPBkY78fdRxoInnNZsv1jwn7uaIxYH4Piafg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6385
-Received-SPF: softfail client-ip=40.107.95.43; envelope-from=Ray.Huang@amd.com;
- helo=NAM02-DM3-obe.outbound.protection.outlook.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: xqKN4eEbhiJg8rURfwjsEkerMOJSgtgYhmt7zCh5W8zg98M0JidKzaPcR9NcmNuGnaHzsXs5qxb2Kisb5JgOmg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR02MB7793
+X-Proofpoint-GUID: HYNisQkHaaKBQrUoq3GvNd7N4E-BGBAi
+X-Proofpoint-ORIG-GUID: HYNisQkHaaKBQrUoq3GvNd7N4E-BGBAi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-28_27,2023-11-27_01,2023-05-22_02
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.151.68; envelope-from=het.gala@nutanix.com;
+ helo=mx0a-002c1b01.pphosted.com
 X-Spam_score_int: -46
 X-Spam_score: -4.7
 X-Spam_bar: ----
 X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,210 +167,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 02, 2024 at 07:52:04PM +0800, Marc-André Lureau wrote:
-> Hi
-> 
-> On Tue, Dec 19, 2023 at 11:55 AM Huang Rui <ray.huang@amd.com> wrote:
-> >
-> > Introduce a new virgl_gpu_resource data structure and helper functions
-> > for virgl. It's used to add new member which is specific for virgl in
-> > following patches of blob memory support.
-> >
-> > Signed-off-by: Huang Rui <ray.huang@amd.com>
-> > ---
-> >
-> > New patch:
-> > - Introduce new struct virgl_gpu_resource to store virgl specific members.
-> > - Move resource initialization from path "virtio-gpu: Resource UUID" here.
-> > - Remove error handling of g_new0, because glib will abort() on OOM.
-> > - Set iov and iov_cnt in struct virtio_gpu_simple_resource for all types
-> >   of resources.
-> >
-> >  hw/display/virtio-gpu-virgl.c | 84 ++++++++++++++++++++++++++---------
-> >  1 file changed, 64 insertions(+), 20 deletions(-)
-> >
-> > diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> > index 5bbc8071b2..faab374336 100644
-> > --- a/hw/display/virtio-gpu-virgl.c
-> > +++ b/hw/display/virtio-gpu-virgl.c
-> > @@ -22,6 +22,23 @@
-> >
-> >  #include <virglrenderer.h>
-> >
-> > +struct virgl_gpu_resource {
-> > +    struct virtio_gpu_simple_resource res;
-> > +};
-> > +
-> > +static struct virgl_gpu_resource *
-> > +virgl_gpu_find_resource(VirtIOGPU *g, uint32_t resource_id)
-> > +{
-> > +    struct virtio_gpu_simple_resource *res;
-> > +
-> > +    res = virtio_gpu_find_resource(g, resource_id);
-> > +    if (!res) {
-> > +        return NULL;
-> > +    }
-> > +
-> > +    return container_of(res, struct virgl_gpu_resource, res);
-> > +}
-> > +
-> >  #if VIRGL_RENDERER_CALLBACKS_VERSION >= 4
-> >  static void *
-> >  virgl_get_egl_display(G_GNUC_UNUSED void *cookie)
-> > @@ -35,11 +52,19 @@ static void virgl_cmd_create_resource_2d(VirtIOGPU *g,
-> >  {
-> >      struct virtio_gpu_resource_create_2d c2d;
-> >      struct virgl_renderer_resource_create_args args;
-> > +    struct virgl_gpu_resource *vres;
-> >
-> >      VIRTIO_GPU_FILL_CMD(c2d);
-> >      trace_virtio_gpu_cmd_res_create_2d(c2d.resource_id, c2d.format,
-> >                                         c2d.width, c2d.height);
-> >
-> 
-> It should check the resource doesn't already exist (similar to 2d code)
-> 
+--------------zZT9ymqwhJvlU3KvyGNX3zgz
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Will add the resource check here in V7.
+Ping. In-case this patch has been missed out. Waiting for other maintainers to respond. Thanks!
 
-Thanks,
-Ray
+On 11/12/23 6:43 pm, Het Gala wrote:
+> Ping? Waiting for other maintainers to respond on this patch
+> On 05/12/23 6:28 pm, Fabiano Rosas wrote:
+>> Het Gala<het.gala@nutanix.com>  writes:
+>>
+>>> The inital conditional statements in qmp migration functions is harder
+>>> to understand than necessary. It is better to get all errors out of
+>>> the way in the beginning itself to have better readability and error
+>>> handling.
+>>>
+>>> Signed-off-by: Het Gala<het.gala@nutanix.com>
+>>> Suggested-by: Markus Armbruster<armbru@redhat.com>
+>> Reviewed-by: Fabiano Rosas<farosas@suse.de>
+>>
+> Regards,
+> Het Gala
 
-> > +    vres = g_new0(struct virgl_gpu_resource, 1);
-> > +    vres->res.width = c2d.width;
-> > +    vres->res.height = c2d.height;
-> > +    vres->res.format = c2d.format;
-> > +    vres->res.resource_id = c2d.resource_id;
-> > +    QTAILQ_INSERT_HEAD(&g->reslist, &vres->res, next);
-> > +
-> >      args.handle = c2d.resource_id;
-> >      args.target = 2;
-> >      args.format = c2d.format;
-> > @@ -59,11 +84,19 @@ static void virgl_cmd_create_resource_3d(VirtIOGPU *g,
-> >  {
-> >      struct virtio_gpu_resource_create_3d c3d;
-> >      struct virgl_renderer_resource_create_args args;
-> > +    struct virgl_gpu_resource *vres;
-> >
-> >      VIRTIO_GPU_FILL_CMD(c3d);
-> >      trace_virtio_gpu_cmd_res_create_3d(c3d.resource_id, c3d.format,
-> >                                         c3d.width, c3d.height, c3d.depth);
-> >
-> 
-> same
-> 
-> > +    vres = g_new0(struct virgl_gpu_resource, 1);
-> > +    vres->res.width = c3d.width;
-> > +    vres->res.height = c3d.height;
-> > +    vres->res.format = c3d.format;
-> > +    vres->res.resource_id = c3d.resource_id;
-> > +    QTAILQ_INSERT_HEAD(&g->reslist, &vres->res, next);
-> > +
-> >      args.handle = c3d.resource_id;
-> >      args.target = c3d.target;
-> >      args.format = c3d.format;
-> > @@ -82,19 +115,23 @@ static void virgl_cmd_resource_unref(VirtIOGPU *g,
-> >                                       struct virtio_gpu_ctrl_command *cmd)
-> >  {
-> >      struct virtio_gpu_resource_unref unref;
-> > -    struct iovec *res_iovs = NULL;
-> > -    int num_iovs = 0;
-> > +    struct virgl_gpu_resource *vres;
-> >
-> >      VIRTIO_GPU_FILL_CMD(unref);
-> >      trace_virtio_gpu_cmd_res_unref(unref.resource_id);
-> >
-> > -    virgl_renderer_resource_detach_iov(unref.resource_id,
-> > -                                       &res_iovs,
-> > -                                       &num_iovs);
-> > -    if (res_iovs != NULL && num_iovs != 0) {
-> > -        virtio_gpu_cleanup_mapping_iov(g, res_iovs, num_iovs);
-> > +    vres = virgl_gpu_find_resource(g, unref.resource_id);
-> > +    if (!vres) {
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
-> > +        return;
-> >      }
-> > +
-> > +    virgl_renderer_resource_detach_iov(unref.resource_id, NULL, NULL);
-> >      virgl_renderer_resource_unref(unref.resource_id);
-> > +
-> > +    QTAILQ_REMOVE(&g->reslist, &vres->res, next);
-> > +    virtio_gpu_cleanup_mapping(g, &vres->res);
-> > +    g_free(vres);
-> >  }
-> >
-> >  static void virgl_cmd_context_create(VirtIOGPU *g,
-> > @@ -310,44 +347,51 @@ static void virgl_resource_attach_backing(VirtIOGPU *g,
-> >                                            struct virtio_gpu_ctrl_command *cmd)
-> >  {
-> >      struct virtio_gpu_resource_attach_backing att_rb;
-> > -    struct iovec *res_iovs;
-> > -    uint32_t res_niov;
-> > +    struct virgl_gpu_resource *vres;
-> >      int ret;
-> >
-> >      VIRTIO_GPU_FILL_CMD(att_rb);
-> >      trace_virtio_gpu_cmd_res_back_attach(att_rb.resource_id);
-> >
-> > +    vres = virgl_gpu_find_resource(g, att_rb.resource_id);
-> > +    if (!vres) {
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
-> > +        return;
-> > +    }
-> > +
-> >      ret = virtio_gpu_create_mapping_iov(g, att_rb.nr_entries, sizeof(att_rb),
-> > -                                        cmd, NULL, &res_iovs, &res_niov);
-> > +                                        cmd, NULL, &vres->res.iov,
-> > +                                        &vres->res.iov_cnt);
-> >      if (ret != 0) {
-> >          cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
-> >          return;
-> >      }
-> >
-> >      ret = virgl_renderer_resource_attach_iov(att_rb.resource_id,
-> > -                                             res_iovs, res_niov);
-> > +                                             vres->res.iov, vres->res.iov_cnt);
-> >
-> > -    if (ret != 0)
-> > -        virtio_gpu_cleanup_mapping_iov(g, res_iovs, res_niov);
-> > +    if (ret != 0) {
-> > +        virtio_gpu_cleanup_mapping(g, &vres->res);
-> > +    }
-> >  }
-> >
-> >  static void virgl_resource_detach_backing(VirtIOGPU *g,
-> >                                            struct virtio_gpu_ctrl_command *cmd)
-> >  {
-> >      struct virtio_gpu_resource_detach_backing detach_rb;
-> > -    struct iovec *res_iovs = NULL;
-> > -    int num_iovs = 0;
-> > +    struct virgl_gpu_resource *vres;
-> >
-> >      VIRTIO_GPU_FILL_CMD(detach_rb);
-> >      trace_virtio_gpu_cmd_res_back_detach(detach_rb.resource_id);
-> >
-> > -    virgl_renderer_resource_detach_iov(detach_rb.resource_id,
-> > -                                       &res_iovs,
-> > -                                       &num_iovs);
-> > -    if (res_iovs == NULL || num_iovs == 0) {
-> > +    vres = virgl_gpu_find_resource(g, detach_rb.resource_id);
-> > +    if (!vres) {
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
-> >          return;
-> >      }
-> > -    virtio_gpu_cleanup_mapping_iov(g, res_iovs, num_iovs);
-> > +
-> > +    virgl_renderer_resource_detach_iov(detach_rb.resource_id, NULL, NULL);
-> > +    virtio_gpu_cleanup_mapping(g, &vres->res);
-> >  }
-> >
-> >
-> > --
-> > 2.25.1
-> >
-> >
-> 
-> 
-> -- 
-> Marc-André Lureau
+Regards,
+
+Het Gala
+
+--------------zZT9ymqwhJvlU3KvyGNX3zgz
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <pre>Ping. In-case this patch has been missed out. Waiting for other maintainers to respond. Thanks!
+</pre>
+    <div class="moz-cite-prefix">On 11/12/23 6:43 pm, Het Gala wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:62ae7ae7-76bd-4526-a002-515cd9660ed4@nutanix.com">
+      
+      <pre style="color: rgb(0, 0, 0); font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; margin: 0em;">Ping? Waiting for other maintainers to respond on this patch
+</pre>
+      <div class="moz-cite-prefix">On 05/12/23 6:28 pm, Fabiano Rosas
+        wrote:<br>
+      </div>
+      <blockquote type="cite" cite="mid:87a5qon6vj.fsf@suse.de">
+        <pre class="moz-quote-pre" wrap="">Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com" moz-do-not-send="true">&lt;het.gala@nutanix.com&gt;</a> writes:
+
+</pre>
+        <blockquote type="cite">
+          <pre class="moz-quote-pre" wrap="">The inital conditional statements in qmp migration functions is harder
+to understand than necessary. It is better to get all errors out of
+the way in the beginning itself to have better readability and error
+handling.
+
+Signed-off-by: Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com" moz-do-not-send="true">&lt;het.gala@nutanix.com&gt;</a>
+Suggested-by: Markus Armbruster <a class="moz-txt-link-rfc2396E" href="mailto:armbru@redhat.com" moz-do-not-send="true">&lt;armbru@redhat.com&gt;</a>
+</pre>
+        </blockquote>
+        <pre class="moz-quote-pre" wrap="">Reviewed-by: Fabiano Rosas <a class="moz-txt-link-rfc2396E" href="mailto:farosas@suse.de" moz-do-not-send="true">&lt;farosas@suse.de&gt;</a>
+
+</pre>
+      </blockquote>
+      <pre>Regards,</pre>
+      <pre>Het Gala</pre>
+    </blockquote>
+    <pre>Regards,</pre>
+    <pre>Het Gala</pre>
+  </body>
+</html>
+
+--------------zZT9ymqwhJvlU3KvyGNX3zgz--
 
