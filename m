@@ -2,68 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB32823C12
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 07:08:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B678823C23
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 07:16:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLGu1-0005gt-Je; Thu, 04 Jan 2024 01:08:25 -0500
+	id 1rLH0X-0008EK-NA; Thu, 04 Jan 2024 01:15:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rLGty-0005fr-Jg; Thu, 04 Jan 2024 01:08:22 -0500
-Received: from mail-vs1-xe2c.google.com ([2607:f8b0:4864:20::e2c])
+ id 1rLH0V-0008EC-MM
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 01:15:07 -0500
+Received: from mail-ua1-x936.google.com ([2607:f8b0:4864:20::936])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rLGtw-0005yR-Pa; Thu, 04 Jan 2024 01:08:22 -0500
-Received: by mail-vs1-xe2c.google.com with SMTP id
- ada2fe7eead31-466f4be526bso41853137.0; 
- Wed, 03 Jan 2024 22:08:14 -0800 (PST)
+ id 1rLH0T-0007Gq-A6
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 01:15:07 -0500
+Received: by mail-ua1-x936.google.com with SMTP id
+ a1e0cc1a2514c-7cc94f8756aso73371241.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 22:15:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704348493; x=1704953293; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704348904; x=1704953704; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sKFsKHhRtmzJqkFI8rCYjZj4XqnX/Q95NlhfjUuIPpQ=;
- b=LOtZIFeMJnZdc3uiIva872FsF8h9ejudgxKo3FS/MfKQzAkWLA0YSiT34BtYAdX2aw
- Xmhpvhqxd9QwdIGUhMszf0Qc1xs7Fgqtd6h2/S7tZNtA5L7bXMGO8JZJAYYBuczT31Hy
- 2LZf6VMwbASYHIGoYCPj0yuSECwjZCd/1eZmmPpxqUvNBRct+FUCzApWfpQoFA9+xQED
- fFu0CAXIKw1F5QCORh2+H4yep1ZjE6Rau9dMTItKQpog1+jwYRvIl6Ojvo5KdXhT9nP1
- iJfH0S0k/4TXbcPHVR0rEvA+p2EHCUkb1OSoCjJHOCY7rP+veSjhfByhQmxo8skaobra
- WZXw==
+ bh=s5LVNrgSNhhUh6wqST3N7LURPEFQksoT3IDpSWDPqZI=;
+ b=l7Fnrkv9sJLbAhX4NtXSBNMNLGil/6GsW1TcE1/s2HK16uCK1bM6cc4hAjPkfuBt2M
+ cLT6at8/fPVmZ+jqWz+vUefQRStT51kAyQL4LSz1BVY+wnWXWjyPm0HSz2O+zLz/5ajT
+ L4eCiPr4G0ljRLsuFL6rT3jYzGSGQv5hcTmI0gsRZ1sfmYAN4n+30AMukf+y9kDtEDeT
+ 5CovK3NAZ51xfkJQQVyqs1byjDpW38hOPiia9FTp8CY+flUD8XgaN3EKIcvnf0xkUEUG
+ EjjWfrwlNWh+lNtmJvq9lKkuwMPmJtHbj07+9IJHANlggNm8N5EdOo/O0uHWlUXW3NMQ
+ DT/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704348493; x=1704953293;
+ d=1e100.net; s=20230601; t=1704348904; x=1704953704;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sKFsKHhRtmzJqkFI8rCYjZj4XqnX/Q95NlhfjUuIPpQ=;
- b=cqhnvVFe+PqaMAz/Hi+cAnHspxsbg0baMrUrk/7ZhZAfELH8T/VpfhrDLz6tyr5Rnr
- P1vuY2SpACq0XOFrpmJweJGAQR62xXBblW3e9ayNm1bxb0pyMwZ0Os5HkU2D/yhfLmLr
- 6xt33ALENRLW5TQ1q/uzXNtbABX9a0BgrDEYUi5B/oY6WL4z1vNdEfumGlYPv8YEJKEl
- rbGaxiwX8iLL/qNzWs21FuOoYhuGgwLPNgCI3ZyzOgabuVR6dy28PKFmpa+qPmHJqkmn
- HnuAXvpO+D0OeuIoSyZiJUnSvR+VILHLFMNuus6ADeh89MXxYDG5BaLJ4bWQKW0C+gda
- sp0Q==
-X-Gm-Message-State: AOJu0Yzn0s2HWzhWiCCxMNDtvT6zwtOYA9Lynt4CYhU7LLsAwPNISPxj
- fkdLOc3ugTfMX/O//e3UoZCoIa3czA/jslC7S7j2kxXe
-X-Google-Smtp-Source: AGHT+IG59s9jUxR+E/SBlN9iwgnMWQdM1/SrsGWE4AI9BOsNmAOqdZ1lTmQB9lZ56sFV7jubBf/CWOQVXypA4Q5z+3A=
-X-Received: by 2002:a05:6102:d8f:b0:467:7ccb:27da with SMTP id
- d15-20020a0561020d8f00b004677ccb27damr29151vst.6.1704348493335; Wed, 03 Jan
- 2024 22:08:13 -0800 (PST)
+ bh=s5LVNrgSNhhUh6wqST3N7LURPEFQksoT3IDpSWDPqZI=;
+ b=g3xSWjOVgmezoz/gX4gQOQjIRpHqIE18b/uC5ZRSsALbRCvqOwyFnK1a0olicFELDD
+ A6VvrczQi6+ImmCxqwQ2hpSgqTUV+Wr+9JIQCepCsp33sWtxUoxJ0T1xf8AfWrfE8Qrf
+ mSCKUkC9HejqfoNTmUxgNBblgwNvFZ68N6jMwT7eI+Hbnoo/uTTzuQpqu2rqapvHBp86
+ FG14/5ewpt5mCQSFSLtYh0p9rAMmxtsWFCUvs4JMu+He0+iFEgEIOVkWqWlaNnBn5m0Q
+ Ibje80ApFIdrYOp52QuPfhbNy1hyCill6TInsE6qQNgH52g6oBOj2cdJnATityCmH2Wq
+ NgmQ==
+X-Gm-Message-State: AOJu0Yziktl8BCS2//lkBH1kJ3mazyCFOMRQ8Sh7mUeh+nGUb3ofMC6t
+ 7WavE4UdUtsfK7wLByt71hUseeyjODRRdGDsWXc=
+X-Google-Smtp-Source: AGHT+IFv+8cvzPDgjWeymZKhv/MBhFWqTFbXnf7xgrWek+IpJ9ke4uJko9xGZXU1FKplPSgIjeErC9tXdnF/vqXH3g4=
+X-Received: by 2002:a05:6102:2c14:b0:467:a7cf:212e with SMTP id
+ ie20-20020a0561022c1400b00467a7cf212emr58268vsb.17.1704348903739; Wed, 03 Jan
+ 2024 22:15:03 -0800 (PST)
 MIME-Version: 1.0
-References: <20231207153842.32401-1-rbradford@rivosinc.com>
-In-Reply-To: <20231207153842.32401-1-rbradford@rivosinc.com>
+References: <20231220193436.25909-1-heinrich.schuchardt@canonical.com>
+In-Reply-To: <20231220193436.25909-1-heinrich.schuchardt@canonical.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 4 Jan 2024 16:07:47 +1000
-Message-ID: <CAKmqyKP1=Uf3GnyKiM7_a6NiT3RNjUL7RL-DDZodpDt5Vf4-Gg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Add support for (ratified) Zacas extension
-To: Rob Bradford <rbradford@rivosinc.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, atishp@rivosinc.com, 
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
- liwei1518@gmail.com, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+Date: Thu, 4 Jan 2024 16:14:37 +1000
+Message-ID: <CAKmqyKPk3jA5YttbizhNhtLY=2NaNCjvgucAAqO4kJ4Ptg8OPw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] docs/system/riscv: document acpi parameter of virt
+ machine
+To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Sunil V L <sunilvl@ventanamicro.com>, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2c;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::936;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x936.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -87,52 +91,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 8, 2023 at 1:40=E2=80=AFAM Rob Bradford <rbradford@rivosinc.com=
-> wrote:
+On Thu, Dec 21, 2023 at 6:03=E2=80=AFAM Heinrich Schuchardt
+<heinrich.schuchardt@canonical.com> wrote:
 >
-> The Zacas extension is now ratified:
-> https://github.com/riscv/riscv-zacas
+> Since QEMU v8.0.0 the RISC-V virt machine has a switch to disable ACPI
+> table generation. Add it to the documentation.
 >
-> This series uses a patch from Weiwei Li from:
-> https://github.com/plctlab/plct-qemu/tree/plct-zacas-dev with the
-> following changes:
->
-> * Fixed destination register (looks like a copy and paste error),
-> * Fixed extension name enabling,
-> * Minor coding style fixes,
-> * Updated for new extension handling & cpu.h header split.
->
-> This patch was mentioned on the list here:
-> https://www.mail-archive.com/qemu-devel@nongnu.org/msg970280.html
->
-> The series was tested against riscv-tests from the following PR:
-> https://github.com/riscv-software-src/riscv-tests/pull/492
->
-> Rob Bradford (1):
->   disas/riscv: Add amocas.[w,d,q] instructions
->
-> Weiwei Li (1):
->   target/riscv: Add support for Zacas extension
+> Fixes: 168b8c29cedb ("hw/riscv/virt: Add a switch to disable ACPI")
+> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 
-Thanks!
-
-Applied to riscv-to-apply.next
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
+> ---
+> v2:
+>         mention that acpi=3Don is the default
+> ---
+>  docs/system/riscv/virt.rst | 5 +++++
+>  1 file changed, 5 insertions(+)
 >
->  disas/riscv.c                               |   9 ++
->  target/riscv/cpu.c                          |   2 +
->  target/riscv/cpu_cfg.h                      |   1 +
->  target/riscv/insn32.decode                  |   6 +
->  target/riscv/insn_trans/trans_rvzacas.c.inc | 150 ++++++++++++++++++++
->  target/riscv/tcg/tcg-cpu.c                  |   5 +
->  target/riscv/translate.c                    |   1 +
->  7 files changed, 174 insertions(+)
->  create mode 100644 target/riscv/insn_trans/trans_rvzacas.c.inc
+> diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
+> index f5fa7b8b29..9a06f95a34 100644
+> --- a/docs/system/riscv/virt.rst
+> +++ b/docs/system/riscv/virt.rst
+> @@ -95,6 +95,11 @@ The following machine-specific options are supported:
+>    SiFive CLINT. When not specified, this option is assumed to be "off".
+>    This option is restricted to the TCG accelerator.
 >
+> +- acpi=3D[on|off|auto]
+> +
+> +  When this option is "on" (which is the default), ACPI tables are gener=
+ated and
+> +  exposed as firmware tables etc/acpi/rsdp and etc/acpi/tables.
+> +
+>  - aia=3D[none|aplic|aplic-imsic]
+>
+>    This option allows selecting interrupt controller defined by the AIA
 > --
-> 2.43.0
+> 2.40.1
 >
 >
 
