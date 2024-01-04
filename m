@@ -2,167 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95964823A65
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 02:56:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E751E823ABF
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 03:40:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLCxN-0006hm-DP; Wed, 03 Jan 2024 20:55:37 -0500
+	id 1rLDdY-0003ox-1e; Wed, 03 Jan 2024 21:39:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rLCxL-0006he-Jg
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 20:55:35 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1rLDdO-0003oL-1w; Wed, 03 Jan 2024 21:39:02 -0500
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rLCxJ-0001jW-C1
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 20:55:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704333333; x=1735869333;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=l/+NjgLMP8sEVSexsnvyqCrgz21kmPKgvvWdAgKw9BU=;
- b=MoZp0sby9kT+iceBy94z1Q2ycP5LD2dkQ7waiv0aMVexZNgFVFFSNJqN
- iysFrtH3AXRppBuMedgA9urmbBLqeNNUJpzRMuRpROoFZ6lCYjkxZYNWO
- wBXy/XvDSzrQ2J2pleTaiajsZNsuJH7Tq5/jAFFzZvBcPMcn/OizxC37n
- UGkeCxQkCYrcg6DzT23giJS9zB+rKmY5oisIHbA4YvsW9gRf3UIBWv8jT
- grEDYaohAexS8TnJb5gKtKnBu2QlhiJrtJs8HXyHLQVwk6LYfZpEq70vQ
- g62cjjot0ClkowCWFklfQZWtjur2Npu+6BA0MF29m8g3qPTRo9yeyIYqY Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="10683767"
-X-IronPort-AV: E=Sophos;i="6.04,329,1695711600"; d="scan'208";a="10683767"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jan 2024 17:55:31 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="850595243"
-X-IronPort-AV: E=Sophos;i="6.04,329,1695711600"; d="scan'208";a="850595243"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by fmsmga004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 03 Jan 2024 17:55:31 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 3 Jan 2024 17:55:30 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 3 Jan 2024 17:55:30 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 3 Jan 2024 17:55:30 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.41) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 3 Jan 2024 17:55:30 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=S9QK0WzcaY16SEikqBINPNqLk9iyXE78YWA/QsVDzn1ITeRTDQ8ZhxC30Rv9i1AN2q/WH2HGwF1Yj1HIaYTrCSnq5hz09lCUDpK6rTPtV7Jm3lrAjbV2EdUi4vheGKXKGAcYec6oqejWIEk7xhHE/0qe++0nhhJihtO+TLHqUOIleoalY0R65VJ/rR03RyabrSKqEKzzvATXZRWNGI0aWab9ojHI23XQ1fYHAa9bFAUcutSZdJawjfsC7oBpLCwvAss6UlRUIrS/qq8+bRnBVwKI1m/iTz/iHedKSNsAFCuSGsuYfYLXIGu4NiNgQJPYFndNDGdpC//T8sk2cQps1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l/+NjgLMP8sEVSexsnvyqCrgz21kmPKgvvWdAgKw9BU=;
- b=HUB4NcSYoY2QiFoc9IqXOWOKlnuAr3xht6bG+RAMpdZzLZDXF1+mN3TnIL3PmKCYP1au1RGXfwzd+xngxt5ygRsL3sSJSFMoukoFNzO+bgXiIuTWFciicpLl42ylWMbExbm1+coCOE+oA1997zeBBUcolgbYxXxicmuzJ9E4WM4F2vMdVmaSeNorzhU9nx3aIQ0tVTj/Wda9Eo+jJ1g7BZh9K44A77mC94hdI8epG7Un+ooLBcZOEze5YeO2qPRw9xgGdiuT4gFv4GNDV2jKlrx0D3vCvyzv+bUQ8QOSP9Fo44CthgpqgzqL7t1NZyYluiH790PNYvb6/Slrc3dSmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by SJ0PR11MB5940.namprd11.prod.outlook.com (2603:10b6:a03:42f::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.21; Thu, 4 Jan
- 2024 01:55:28 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::88e9:5716:274c:5ace]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::88e9:5716:274c:5ace%4]) with mapi id 15.20.7135.026; Thu, 4 Jan 2024
- 01:55:28 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "Liu, Yi L" <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>
-Subject: RE: [PATCH 0/2] backends/iommufd: Remove mutex
-Thread-Topic: [PATCH 0/2] backends/iommufd: Remove mutex
-Thread-Index: AQHaPXe/kwphXHq90k6VkzZdUc50nbDI5tsg
-Date: Thu, 4 Jan 2024 01:55:28 +0000
-Message-ID: <SJ0PR11MB6744473872E8E3E26934C1409267A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20240102123210.1184293-1-clg@redhat.com>
-In-Reply-To: <20240102123210.1184293-1-clg@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|SJ0PR11MB5940:EE_
-x-ms-office365-filtering-correlation-id: 89d37b54-e004-48dc-8aa1-08dc0cc83a32
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: fLuRtRDcLin64HDxF1xSropMOVF2LuB3AtilOfyYMcg279Qoqw/oQIIWhCUgV/EJtBs9zxCQI/Rbb6QSuxMTeR2zHkkFoMZQMzGKPrchH9and3RBAyisZMnZJXqD1HQLCIhOk94MVcAhx8HTwb6NkENnK1EQEjRG4lCL1lO50XUsv+dMKdkP4AFpjaQp90P6YszT9fYFguLq2+mUNQUxRGYsF2VtT5Kd0rQiR4pSJLXRBZF0M631BK0zN+NfLlSQuHMic4r3oLj5FhmFuSM/dkA5y7N4JwEjUpsyjVnlu6pToJUWczrjNEyWV/F8CgDgYHPM+ABFfbADrb5HCBZsPMvaTIft9xEHR1XfHN9hGym3Jdnh9IFuwBdnYOsz8qllvVbMnS6zqZ+xb1Ai27IJn5bHyuMVjDC9Yq1zaQBshQPOjmqfhyRwIjpO3knb8wD/4dAlZp3Box9qboPlliwGo0Cd6zGMJAZ4RbQvuQhqUyRoaWGcg+W7HqHW3whsRjVNcIxn2uCkspbRMx6O5gN+OmhBd8s2WZMEHDmcFKwxK6qXgDC5R49X1DnkGkJ45ZxKsUCl42T3cJN0k3qhCtHJkWU4yeEVbCn2ldzON2l1CtZNwEum96eJ6PNxm/glzdiK
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(346002)(39860400002)(366004)(136003)(376002)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(66446008)(71200400001)(66556008)(64756008)(66476007)(9686003)(6506007)(7696005)(110136005)(66946007)(76116006)(316002)(478600001)(54906003)(8676002)(8936002)(38070700009)(5660300002)(4326008)(52536014)(86362001)(83380400001)(122000001)(55016003)(66574015)(38100700002)(26005)(4744005)(2906002)(82960400001)(33656002)(41300700001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dFVhNlFXeEJ2U3hVZThSM0x2b014REhqOVpRWWorUzJEeHNKK1cwTjQxdUxT?=
- =?utf-8?B?UzZwbUVsaGpXUXM5REZtb2MxeHRXeGNmTDFVZy9PdnU2SlVyem5JWHlGQmgx?=
- =?utf-8?B?NWhNQ2xKamRaYzJTK3A4d3ZML3YySjkwZDZPeVdOR1NPOERDUWN6eFFlalFK?=
- =?utf-8?B?ZlRadHBOb0RVZ3J3ZS9KSTh5a2VPb0Zrdklyb2ZFdlBiZkNoWUhvWXJnSmlX?=
- =?utf-8?B?bElSK0hTa3VsRklCSUJJOEgyWWRFNFJncC9OTmkycUlxS29PRkZQdHV6SytE?=
- =?utf-8?B?eklJVS9DMmh6SVZOZTJLSGc1SjRiazlGM2gramgvT3ZUeDJoSHZiWFY5eWI5?=
- =?utf-8?B?UkIySFFtWHdIN2NpSUE5WDRhU2JPQW9ISzlmYlhndWVXb1JZOTF0NzFwWEt6?=
- =?utf-8?B?UFpSanAySE1OZDBVWnhjb0VsNHhYZS8xR214RXVlUDBhdG1vVWl2Y3ZiMktP?=
- =?utf-8?B?a1IrbTNYdmkvTUhVTk5tOHpFSDRMNDI5NFdBcEQ5OG52OHZtVjJrdWdnRkFX?=
- =?utf-8?B?OGxqM1FKTnZ4aURGK2JDY2JTRWVObWJZRWE1TldkU29IK0haRjNka2N4WjRI?=
- =?utf-8?B?akRXVmRVd1J2eUJaZTZtRDFDNjdzY1hJSU1odmlmcGh0SnBpVkdiVkYwREEv?=
- =?utf-8?B?UEYvSk5UbmFleWUxOU50cEVSQjRBSUNzTWx5bm9zcEdzT2d6K1h4dmc0YTZt?=
- =?utf-8?B?T3JMdFp2OUlQeHovUkhNRE1OWC9TZndoMHh3NDl3ZUUxTkdzVUpZcnEvalJW?=
- =?utf-8?B?dlZiQnRkcyt6a01NMUlETUYycTdJNlFIb2FXejFNQndLSlNSRHVTZGU5QWl5?=
- =?utf-8?B?dHdLM2ZyM3htV2hFemlLbC9pNU9WSnY5eWl2UHJVSk1keXVrc1Q1akxhYmhh?=
- =?utf-8?B?SU4veWZna1cvaVF1TFVmdGtMQWpVMVMvbXVVTjBUZ0lqVGxSdGovb0U5Z2pE?=
- =?utf-8?B?MGxsY1FycXpRTFVlakZXTnpiOW1uM2V6K0lIZC9TUzJLSWJYOThlZmRPN2Fi?=
- =?utf-8?B?ZWNoQ1luZG41Nk4vVW1XaEJpNEJzdVFabldHNFpkcE1LZytDaklzUHhyL2xW?=
- =?utf-8?B?TndKZWZIUGY2S1N1QTU2ZkQyQkhpMGlIcU1NV0FjejZkcE1FSnlVVEVhYlN3?=
- =?utf-8?B?RmUzWjdxRnpWcEVsUTlSZkhQK3d2Q2JjNVEzUzYrSGxOdkYvQ1hKbDUyZzAz?=
- =?utf-8?B?ZVJZbm8ybHgybmREellib1Uxd3NnL2ZaYW0zYndTaXNXR2xSNklIUzg5NmR3?=
- =?utf-8?B?NTVQbTlzWTB1ZXBLa0lvY3FLZHlqbHp4LzdLTUhxZ2lPbU1YdWtPMHdDUnRW?=
- =?utf-8?B?ZEtVd29HbXc5SS9WRHFhcUxzRndPR0E3V2ZVd2kzTkNiQkhYa0lNMVh2VW5W?=
- =?utf-8?B?YXZ2dVpRaVlseWFBL1dhbVV1VG9uaXg0M1d0Wko5ZERob3dVKzFJanI4dnBm?=
- =?utf-8?B?STBkbzl6bHMwazNiRnRhYnFkN2lDenJwWDVzRkZVNndXUldENExVdm90TVVW?=
- =?utf-8?B?cUhkWWo4d2k1ZnBIYzZPLzlEMEM0amtWUzBRaVA2ajdFMHBsak9HeEZOZ1g4?=
- =?utf-8?B?YndCbE5la212aTNaVlhnVEtVRmJ6eFRaeXdjbXluOGo1dExLbVdiNWdzMmFM?=
- =?utf-8?B?WnF1YXFHUnJJUGI2TFNIb3N4dnJYcE8rOGRzYzE0VkVrTHRCRWZIOUdBYzRv?=
- =?utf-8?B?UVdlQzFnR1BlWTJlcm9obnhXWFNCVnd5MEhrYWJLdDZjeDUzUmVQVWhCQnlw?=
- =?utf-8?B?MzR5dXV2bUppa05BUGpDeFFFb3FmTkdHUFJQdUlZVUQxTmFySDJJTHFUMndi?=
- =?utf-8?B?MXo4WDNSQXg1U0tISTYvV21yT0ZwQ1ZTckF2VU00cDdLU1VGZ0I0ZjhxcUtM?=
- =?utf-8?B?NVBxMEVzREFzT3FVTitYWDJ0eDdpT1ZUVlR0Zzc0VVhWK09ONHZJSU1SZFBG?=
- =?utf-8?B?UjFPVnlsUERkM0pGbVF4VEl2NVhKK3VFeHpSM3ZoaW55RCtteHpJdHZ5ZGdZ?=
- =?utf-8?B?NE1WeHdmNUZ2QVZmbFdGZFg4M05TandKQWRpczRUYTBJUGpjR3JXYUhGQWpp?=
- =?utf-8?B?QjNhVG9sekhnQkxNck9jdVhmTkN5TnN6ZFZ4SWhPUnBzZFcrVlVCd1hETWUx?=
- =?utf-8?Q?MdzlzGP3YDahIVYVwabWhc6rN?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1rLDdK-0005BJ-Bg; Wed, 03 Jan 2024 21:39:01 -0500
+Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
+ by Atcsqr.andestech.com with ESMTP id 4042cSic094412;
+ Thu, 4 Jan 2024 10:38:28 +0800 (+08)
+ (envelope-from ethan84@andestech.com)
+Received: from ethan84-VirtualBox (10.0.12.51) by ATCPCS16.andestech.com
+ (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Thu, 4 Jan 2024
+ 10:38:26 +0800
+Date: Thu, 4 Jan 2024 10:38:19 +0800
+To: Alistair Francis <alistair23@gmail.com>
+CC: <qemu-devel@nongnu.org>, <peter.maydell@linaro.org>,
+ <edgar.iglesias@gmail.com>, <richard.henderson@linaro.org>,
+ <pbonzini@redhat.com>, <palmer@dabbelt.com>,
+ <alistair.francis@wdc.com>, <in.meng@windriver.com>,
+ <liweiwei@iscas.ac.cn>, <dbarboza@ventanamicro.com>,
+ <hiwei_liu@linux.alibaba.com>, <qemu-riscv@nongnu.org>,
+ <peterx@redhat.com>, <david@redhat.com>
+Subject: Re: [PATCH v4 0/4] Support RISC-V IOPMP
+Message-ID: <ZZYaGwLs3OS84WUQ@ethan84-VirtualBox>
+References: <20231122053251.440723-1-ethan84@andestech.com>
+ <CAKmqyKO9nGLo2b0TamakNh4qRr+Bi8NQ973bQ=ch8=CKoH-etg@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 89d37b54-e004-48dc-8aa1-08dc0cc83a32
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jan 2024 01:55:28.8967 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: E8qI5b2Ptrsd3W7ed+y/36hss8CFOdJ1aFQGctQfCSxxPSBkwy/EfKMmPszlE8ybHkEMqAnUkzXhv9StjvBvjpZr5vw6Pkjyg0KMAVc/9cg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5940
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.198.163.8;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKmqyKO9nGLo2b0TamakNh4qRr+Bi8NQ973bQ=ch8=CKoH-etg@mail.gmail.com>
+User-Agent: Mutt/2.1.4 (2021-12-11)
+X-Originating-IP: [10.0.12.51]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 4042cSic094412
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -175,25 +67,92 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Ethan Chen <ethan84@andestech.com>
+From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
-IDxjbGdAcmVkaGF0LmNvbT4NCj5TZW50OiBUdWVzZGF5LCBKYW51YXJ5IDIsIDIwMjQgODozMiBQ
-TQ0KPlRvOiBxZW11LWRldmVsQG5vbmdudS5vcmcNCj5DYzogTGl1LCBZaSBMIDx5aS5sLmxpdUBp
-bnRlbC5jb20+OyBFcmljIEF1Z2VyIDxlcmljLmF1Z2VyQHJlZGhhdC5jb20+OyBEdWFuLA0KPlpo
-ZW56aG9uZyA8emhlbnpob25nLmR1YW5AaW50ZWwuY29tPjsgQ8OpZHJpYyBMZSBHb2F0ZXINCj48
-Y2xnQHJlZGhhdC5jb20+DQo+U3ViamVjdDogW1BBVENIIDAvMl0gYmFja2VuZHMvaW9tbXVmZDog
-UmVtb3ZlIG11dGV4DQo+DQo+SGVsbG8gIQ0KPg0KPkNvdmVyaXR5IGhhcyBzb21lIHJlcG9ydHMg
-cmVnYXJkaW5nIHRoZSBJT01NVUZEQmFja2VuZCBtdXRleC4gU2luY2UNCj50aGUgSU9NTVVGREJh
-Y2tlbmQgcm91dGluZXMgYXJlIGNhbGxlZCBmcm9tIHRoZSBRRU1VIG1haW4gdGhyZWFkLCB0aGlz
-DQo+c2VyaWVzIHNpbXBseSBzdWdnZXN0cyByZW1vdmluZyB0aGUgbXV0ZXggYW5kIHJlbHkgb24g
-dGhlIEJRTCB0bw0KPmhhbmRsZSBjb25jdXJyZW50IGFjY2Vzcy4NCg0KRm9yIHRoZSB3aG9sZSBz
-ZXJpZXMsDQpSZXZpZXdlZC1ieTogWmhlbnpob25nIER1YW4gPHpoZW56aG9uZy5kdWFuQGludGVs
-LmNvbT4NCg0KVGhhbmtzDQpaaGVuemhvbmcNCg0KPg0KPlRoYW5rcywNCj4NCj5DLg0KPg0KPkPD
-qWRyaWMgTGUgR29hdGVyICgyKToNCj4gIGJhY2tlbmRzL2lvbW11ZmQ6IFJlbW92ZSBjaGVjayBv
-biBudW1iZXIgb2YgYmFja2VuZCB1c2Vycw0KPiAgYmFja2VuZHMvaW9tbXVmZDogUmVtb3ZlIG11
-dGV4DQo+DQo+IGluY2x1ZGUvc3lzZW11L2lvbW11ZmQuaCB8ICAyIC0tDQo+IGJhY2tlbmRzL2lv
-bW11ZmQuYyAgICAgICB8IDEyIC0tLS0tLS0tLS0tLQ0KPiAyIGZpbGVzIGNoYW5nZWQsIDE0IGRl
-bGV0aW9ucygtKQ0KPg0KPi0tDQo+Mi40My4wDQoNCg==
+On Mon, Dec 18, 2023 at 02:18:58PM +1000, Alistair Francis wrote:
+> On Wed, Nov 22, 2023 at 3:36 PM Ethan Chen via <qemu-devel@nongnu.org> wrote:
+> >
+> > This series implements IOPMP specification v1.0.0-draft4 rapid-k model.
+> > The specification url:
+> > https://github.com/riscv-non-isa/iopmp-spec/blob/main/riscv_iopmp_specification.pdf
+> >
+> > When IOPMP is enabled, a DMA device ATCDMAC300 is added to RISC-V virt
+> > platform. This DMA device is connected to the IOPMP and has the functionalities
+> 
+> I don't think we want to add an Andes DMA device to the virt machine.
+> 
+> I can't even find the spec for the ATCDMAC300, which isn't great
+> 
+
+AndeShape ATCDMAC110 data sheet is available on Andes website
+http://www.andestech.com/en/products-solutions/product-documentation/
+
+ATCDMAC300 is compatible with ATCDMAC110.
+
+Thanks,
+Ethan Chen
+
+> 
+> > required by IOPMP, including:
+> > - Support setup the connection to IOPMP
+> > - Support asynchronous I/O to handle stall transactions
+> > - Send transaction information
+> >
+> > IOPMP takes a transaction which partially match an entry as a partially hit
+> > error. The transaction size is depending on source device, destination device
+> > and bus.
+> >
+> > Source device can send a transaction_info to IOPMP. IOPMP will check partially
+> > hit by transaction_info. If source device does not send a transaction_info,
+> > IOPMP checks information in IOMMU and dose not check partially hit.
+> >
+> > Changes for v4:
+> >
+> >   - Add descriptions of IOPMP and ATCDMAC300
+> >   - Refine coding style and comments
+> >   - config XILINX_AXI does not include file stream.c but selects config STREAM
+> >     instead.
+> >   - ATCDMAC300: INT_STATUS is write 1 clear per bit
+> >                             Rename iopmp_address_sink to transcation_info_sink
+> >   - IOPMP: Refine error message and remove unused variable
+> >   - VIRT: Document new options
+> >                 atcdmac300 is only added when iopmp is enabled
+> >           serial setting should not be changed
+> >
+> > Ethan Chen (4):
+> >   hw/core: Add config stream
+> >   Add RISC-V IOPMP support
+> >   hw/dma: Add Andes ATCDMAC300 support
+> >   hw/riscv/virt: Add IOPMP support
+> >
+> >  docs/system/riscv/virt.rst                    |  11 +
+> >  hw/Kconfig                                    |   1 +
+> >  hw/core/Kconfig                               |   3 +
+> >  hw/core/meson.build                           |   2 +-
+> >  hw/dma/Kconfig                                |   4 +
+> >  hw/dma/atcdmac300.c                           | 566 ++++++++++
+> >  hw/dma/meson.build                            |   1 +
+> >  hw/misc/Kconfig                               |   4 +
+> >  hw/misc/meson.build                           |   1 +
+> >  hw/misc/riscv_iopmp.c                         | 966 ++++++++++++++++++
+> >  hw/riscv/Kconfig                              |   2 +
+> >  hw/riscv/virt.c                               |  65 ++
+> >  include/hw/dma/atcdmac300.h                   | 180 ++++
+> >  include/hw/misc/riscv_iopmp.h                 | 341 +++++++
+> >  .../hw/misc/riscv_iopmp_transaction_info.h    |  28 +
+> >  include/hw/riscv/virt.h                       |  10 +-
+> >  16 files changed, 2183 insertions(+), 2 deletions(-)
+> >  create mode 100644 hw/dma/atcdmac300.c
+> >  create mode 100644 hw/misc/riscv_iopmp.c
+> >  create mode 100644 include/hw/dma/atcdmac300.h
+> >  create mode 100644 include/hw/misc/riscv_iopmp.h
+> >  create mode 100644 include/hw/misc/riscv_iopmp_transaction_info.h
+> >
+> > --
+> > 2.34.1
+> >
+> >
 
