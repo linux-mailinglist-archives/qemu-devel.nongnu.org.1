@@ -2,105 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B24823EB6
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 10:33:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 231498242F5
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 14:48:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLK52-0008WS-Uk; Thu, 04 Jan 2024 04:32:01 -0500
+	id 1rLO3U-0001w0-Kt; Thu, 04 Jan 2024 08:46:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rLK4x-0008Vj-SU
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 04:31:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Srikanth.Aithal@amd.com>)
+ id 1rLLMC-0007z6-Lq
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 05:53:48 -0500
+Received: from mail-bn1nam02on2087.outbound.protection.outlook.com
+ ([40.107.212.87] helo=NAM02-BN1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rLK4v-0008NQ-Ke
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 04:31:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704360712;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zIXKKMqhILxRblSeoztvZ34izwtCDG3gNl+mN+M3Jfw=;
- b=PukynblAw8rcHitjKMBiqqJPLa9+Sn+9WrZUUw/YzpRyP84rHhG1vX8sPKpOMkAcH7MgT7
- YvQv+LxAvrvri2lSIMAf6zChXBvUq4bjUm4xTLK0cXHux39+TE9jelwCpZNFLE40OuI1NG
- jjsw9Dgmh9zcbLDvDs6fAMzjwUzS5kg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-390-VfOJiDoeMgCX6uAq70exgQ-1; Thu, 04 Jan 2024 04:31:48 -0500
-X-MC-Unique: VfOJiDoeMgCX6uAq70exgQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 288B3863B83;
- Thu,  4 Jan 2024 09:31:47 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.113])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 821551121313;
- Thu,  4 Jan 2024 09:31:37 +0000 (UTC)
-Date: Thu, 4 Jan 2024 09:31:35 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
- Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Paolo Bonzini <pbonzini@redhat.com>, Brian Cain <bcain@quicinc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Cleber Rosa <crosa@redhat.com>, kvm@vger.kernel.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- qemu-arm@nongnu.org, Weiwei Li <liwei1518@gmail.com>,
- John Snow <jsnow@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- qemu-riscv@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: [PATCH v2 10/43] qtest: bump pxe-test timeout to 10 minutes
-Message-ID: <ZZZ6912gSKasWA3G@redhat.com>
-References: <20240103173349.398526-1-alex.bennee@linaro.org>
- <20240103173349.398526-11-alex.bennee@linaro.org>
- <6826da51-3b97-4ecf-8517-9e5b5243e91f@linaro.org>
+ (Exim 4.90_1) (envelope-from <Srikanth.Aithal@amd.com>)
+ id 1rLLMA-0002wj-6A
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 05:53:48 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=G0BWeUU+5jFxYHPi7nIutH8INbYHRET1kNdafP+vpIsCZRwY4lfjoZ3hrHEHRFEjrSzcL5rMPWdQZifuVk5rCTaIpkJwX4Q/YRgzsLAv5s9WP8obSFXqJAi3QMUeEYsvTzK/Af5q84HY3jjIXRZaVHYRK+LxF6I1cIOawN9pFpNPxJpEmNd59QyV9Frklxv93gOXjJD4INJTKw68jmmBxzAWCnhGO0j/EbLS/IRGEuD7LnmoD3kJewFO3WKq/aHKS4QyJiyM0iqdgUCeTODJxGimuj93ZzXnBT9iOZQYx+XpDQNxu7uyuxP8wHMQtjBNtnqOadg2FwLtTIgsHpTwXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HDju8QZYxD4Y+uCsEEjsnnTeB2WsupH47nWxsv7v1B0=;
+ b=O63tKth57nvPGBt7pQLuiy2p9HR/tszBoRzi3e2dyT4150VMoU6O+JYsQ2aSlMP7s3i7+fsf4EFwbUxWdcgUAecVLVSPZwuFEo3/0wiSb2FiKa7kLsBpha8bXotirS3w1BtgIgbuECZJ/EVYZzyjfZA9j0+v2lFPiwlEjG+3QHlCeToR5AGmUjUq6ir1F9M8w9Jsukrox2uIEptmJkXGVkvB6ykzEXxpj27HnlPVhTET9qARJtWqBQlhRT7/1mM394Z4UuMcL5lb8QBz2UGaJX7UsGa00fpzKTlk21lvMuihLKHc3QlKAAegGYoxKg/8sqLZVwz1eMurwWsYgjYMNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HDju8QZYxD4Y+uCsEEjsnnTeB2WsupH47nWxsv7v1B0=;
+ b=mAuFKJj+DYAxDFv2n5O3h0eK3lMbE4Hx9FDIH4i/zq4kimLL4EX/l38UWLfGwPiD/Rd7RvzHMDEnYFRBIO2hafGK9YRcV+5E0GrDNsG6EBh4rwumXnRMGH23OinELLA3A0dFIVzOIIkqYoaa2GnPG7lSMgC57VEfsCoSCrVMriA=
+Received: from DM6PR18CA0032.namprd18.prod.outlook.com (2603:10b6:5:15b::45)
+ by MN2PR12MB4287.namprd12.prod.outlook.com (2603:10b6:208:1dd::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.13; Thu, 4 Jan
+ 2024 10:48:39 +0000
+Received: from CY4PEPF0000E9D9.namprd05.prod.outlook.com
+ (2603:10b6:5:15b:cafe::54) by DM6PR18CA0032.outlook.office365.com
+ (2603:10b6:5:15b::45) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.14 via Frontend
+ Transport; Thu, 4 Jan 2024 10:48:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000E9D9.mail.protection.outlook.com (10.167.241.77) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7159.9 via Frontend Transport; Thu, 4 Jan 2024 10:48:38 +0000
+Received: from BLR-L-SRAITHAL.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Thu, 4 Jan
+ 2024 04:48:36 -0600
+From: Srikanth Aithal <srikanth.aithal@amd.com>
+To: <qemu-devel@nongnu.org>, <pbonzini@redhat.com>, <mtosatti@redhat.com>
+CC: <nikunj@amd.com>, Srikanth Aithal <srikanth.aithal@amd.com>
+Subject: [PATCH] target/i386/sev: Fix a segfault in sev_kvm_init
+Date: Thu, 4 Jan 2024 16:18:20 +0530
+Message-ID: <20240104104820.14422-1-srikanth.aithal@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6826da51-3b97-4ecf-8517-9e5b5243e91f@linaro.org>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D9:EE_|MN2PR12MB4287:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d6b9393-34b9-4dd2-1163-08dc0d12b5e2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: uPjKczVp1WvUp/1i2CztoynVw+wNGmpP0zKrhzhScs0cxkYYDHd8jSiHYef4/20FVKxE2TvIcUsBAwMoVBQemDeu6I5WgO2vANSHx6BDTkOO3aGxFVBf6gp6SgP6ehPFNtCGjIQIQlORBRjnamXPdgYCCCjw7uMRL7wVBhnBf1IatyN933jvV24Yy+rLi/EmLl6gju2m6dytJBf6+ve+Q3fGwPNUH+zoXgWPSdYmRaPTzE5M+3ROAD+k53BROVhEzmFp1w63Z0dXQSdG1KD3PrTFwWAYVTcNaIfDOOEZ/jfOcyVbdzHix8NeeC+lvm5PMf7nGYpaOHHIYINHMIZPA0GoZZTsV4q1WOJ5oqeI6QDqrFY2MgqvjhSC5nNGSXiPJu8+Ep2aHvev4h3GmsKmOmwOMooYF/xiTVAJFsXhBc8Z+on1MFCp5drbF1QHLpQgKK2Ab9hiLYAPm/AcafsVtdo8VC1+gtr31NHEHJsAN1DNE+qHFDefqUvbXhVsHaCJYTsFparG+pGMpzzPmj1MScLZAY7aPIYTnmmSoVxVwWSq2JV1Mm2K8hM2VXuT+z8sEk5lcYNaz8GFlJYU/zfXDPvIkYWvfejasTpoIxftroFIT7gZ7btH3kkmhOyf9mkuMTe90PwxwW4WR+Dx6unzqFryQHR1rhVzb3r1E+mk04VAxRcXVyPdkuxYOs7rxCLHp4ov2gO8HJTYsC9s4VXJcyL9SXsOvCoY22Na2oFbYjM3FKBSinhab6RxxrdJvV4EoKggBtIf4n6aaRQUhJO+ag==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(136003)(346002)(39860400002)(376002)(396003)(230922051799003)(451199024)(82310400011)(64100799003)(1800799012)(186009)(40470700004)(36840700001)(46966006)(2906002)(356005)(81166007)(36756003)(86362001)(41300700001)(40460700003)(2616005)(54906003)(16526019)(8936002)(8676002)(47076005)(6666004)(83380400001)(7696005)(110136005)(316002)(70206006)(1076003)(26005)(70586007)(40480700001)(36860700001)(82740400003)(44832011)(478600001)(5660300002)(336012)(426003)(4326008)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jan 2024 10:48:38.9175 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d6b9393-34b9-4dd2-1163-08dc0d12b5e2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D9.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4287
+Received-SPF: softfail client-ip=40.107.212.87;
+ envelope-from=Srikanth.Aithal@amd.com;
+ helo=NAM02-BN1-obe.outbound.protection.outlook.com
 X-Spam_score_int: -46
 X-Spam_score: -4.7
 X-Spam_bar: ----
 X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 04 Jan 2024 08:46:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,55 +116,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 03, 2024 at 06:43:52PM +0100, Philippe Mathieu-Daudé wrote:
-> Hi Daniel,
-> 
-> On 3/1/24 18:33, Alex Bennée wrote:
-> > From: Daniel P. Berrangé <berrange@redhat.com>
-> > 
-> > The pxe-test uses the boot_sector_test() function, and that already
-> > uses a timeout of 600 seconds. So adjust the timeout on the meson
-> > side accordingly.
-> 
-> IIRC few years ago you said tests running on CI ('Tier-1') should
-> respect a time limit. IMO 10min seems too much for CI, should this
-> test be skipped there?
+Propogate error code using errp in sev_kvm_init.
 
-This isn't going to take 10 minutes in reality. We're setting timeouts
-such that we avoid false-failures in the extreme worst case scenarios.
+Before fix:
+qemu-system-x86_64: sev_kvm_init: guest policy requires SEV-ES,
+but host SEV-ES support unavailable
+27747 Segmentation fault      (core dumped)
 
-> 
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > [thuth: Bump timeout to 600s and adjust commit description]
-> > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> > Message-Id: <20231215070357.10888-7-thuth@redhat.com>
-> > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> > ---
-> >   tests/qtest/meson.build | 1 +
-> >   1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> > index 7a4160df046..ec93d5a384f 100644
-> > --- a/tests/qtest/meson.build
-> > +++ b/tests/qtest/meson.build
-> > @@ -4,6 +4,7 @@ slow_qtests = {
-> >     'npcm7xx_pwm-test': 300,
-> >     'qom-test' : 900,
-> >     'test-hmp' : 240,
-> > +  'pxe-test': 600,
-> >   }
-> >   qtests_generic = [
-> 
+After fix:
+qemu-system-x86_64: sev_kvm_init: guest policy requires SEV-ES,
+but host SEV-ES support unavailable
+qemu-system-x86_64: failed to initialize kvm: Operation not permitted
 
-With regards,
-Daniel
+While at it, also fix two more locations.
+
+Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+Signed-off-by: Srikanth Aithal <srikanth.aithal@amd.com>
+---
+ target/i386/sev.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index 9a71246682..c0a4d5e535 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -922,7 +922,8 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+ 
+     ret = ram_block_discard_disable(true);
+     if (ret) {
+-        error_report("%s: cannot disable RAM discard", __func__);
++        error_setg(errp, "%s: cannot disable "
++                     "RAM discard", __func__);
+         return -1;
+     }
+ 
+@@ -979,13 +980,13 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+ 
+     if (sev_es_enabled()) {
+         if (!kvm_kernel_irqchip_allowed()) {
+-            error_report("%s: SEV-ES guests require in-kernel irqchip support",
+-                         __func__);
++            error_setg(errp, "%s: SEV-ES guests require in-kernel "
++                         "irqchip support", __func__);
+             goto err;
+         }
+ 
+         if (!(status.flags & SEV_STATUS_FLAGS_CONFIG_ES)) {
+-            error_report("%s: guest policy requires SEV-ES, but "
++            error_setg(errp, "%s: guest policy requires SEV-ES, but "
+                          "host SEV-ES support unavailable",
+                          __func__);
+             goto err;
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
