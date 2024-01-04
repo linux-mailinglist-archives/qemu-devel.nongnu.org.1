@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD24C8242B7
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 14:35:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FCB68242C4
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 14:38:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLNqa-0003ad-Qz; Thu, 04 Jan 2024 08:33:21 -0500
+	id 1rLNuV-0006B2-1e; Thu, 04 Jan 2024 08:37:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLNqY-0003aC-Iq
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:33:18 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLNuS-00069A-KD
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:37:20 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLNqV-0007xD-Cg
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:33:18 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3368abe1093so373550f8f.2
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 05:33:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLNuP-0006By-Ar
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:37:20 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-40d5a41143fso4293505e9.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 05:37:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704375193; x=1704979993; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704375435; x=1704980235; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QJS5zZy6zgomOyOtVRuyX1xTeTZW0jiOaotRDl0Z0zM=;
- b=Cf0J7aSEbFNH5RwhvVi1diVauptto6GfZrAA4vfRQqF8pxtqj6HUaSAIqHXltAw43+
- dsg3w846yNuRiJdoftzzLAUeqstcNFmz/PWFrUeD08A2YnkDy+8HDCGoJXA8fEy6O0S6
- RE+o7ggdMriqaOcGOv873kqdVWOpB5nUI6Mt16ACymXj0iuNVsLRHeqDNIanuMuIYs7W
- Xb4boV4pOIb4AV9NQn8Q1c59VR/f4rH58ni4nNEkVM5rTHEaKsWcq9OManhOuVb0ESJz
- OUGsUk6wVwhZIKLf7M4Ax72Ko+zZ01fTIxsIfY/UecO4xSlVT0elzGo223L5MZGUR7qt
- 7MWw==
+ bh=f+GEATtftaLC4WRJy+IobLm2QXvjmUhmkXYdWfYQTzc=;
+ b=pF29FuncikzI/iJh0FEQizx6HmXvPSzLGOx8zCI/4CHem6LfpyCzC1Bx2yxHr5yX1P
+ K+QFIK8CGjUP/T72yc+s4+sdLMeo8T8wCrUWxyeihWOWwgk55CybhCqOHht95/DxSQyQ
+ zfjVX7jVVbez9fjJC8thyCA0z4tKwYW9Q/eZib+ZPl+9jyACQiMOWKfIKfruC0iPaDne
+ yvRLNEi/F7ieUWofD6rs9OSfMEf9Vf1LVZFOUlBBs2uYmrhfiHQXcnZOFd1u5PIWxaLb
+ P0oixMc2ffhycH5xbYPf5FaPcSiDiVqmH/P2DNEQZlM0pW1BMbgsmJTAEuHLVCUVjihS
+ AYyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704375193; x=1704979993;
+ d=1e100.net; s=20230601; t=1704375435; x=1704980235;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QJS5zZy6zgomOyOtVRuyX1xTeTZW0jiOaotRDl0Z0zM=;
- b=qud/Bs4W/Ac1Qsa4W7WAQJorEGEReL5iL97czt7nuU5wgAtv9Vh/ZZLkmSAB8jCh9L
- 4SRzDgsdaCBEc+wtMXaJkD+DkK9NFwAUP8Ff2S8EXPDoAuCnAdLqvZmk0CtSGW5akATU
- sWYRSqovZKi7byJe5fRkiFGHU+erj7YKkVy4Jc5kwO77hrOms77Sih0EHTMmm2RhVUsP
- YG75gVSG8AiN5PkBse0cKPmCBHzOFSOCiRCtCjOtxcY9Jj0JagijqQv9Z55eX/DaSCfm
- uhfuv9VduPD5gs43Gg3qgRQ8hlHreQ80s8Z/d8D4DRUCfh5mMcE2JxvWUqlS5H4iHI8L
- J7fA==
-X-Gm-Message-State: AOJu0YxrFu8VRaA5BjS2oy9mmIpVXmrkeksrh4I2cvX4CG7t9m5SJYt2
- K+TwPn5sfPyc7X3z8kJqA+UojAaGLaEZep66Yc+fK5otfbiWfw==
-X-Google-Smtp-Source: AGHT+IGkXXz1ZZhrYwJ17d1aF5GzTmql3LiO/uS+4W4YMZDfaeKSO7LCnH+NMHHDiojMvBAVntgVeA==
-X-Received: by 2002:adf:ce04:0:b0:333:4bd9:8e with SMTP id
- p4-20020adfce04000000b003334bd9008emr391520wrn.25.1704375193417; 
- Thu, 04 Jan 2024 05:33:13 -0800 (PST)
+ bh=f+GEATtftaLC4WRJy+IobLm2QXvjmUhmkXYdWfYQTzc=;
+ b=CZFnd65Fze3qWhgrX3JdfcB29UUw5KZmSIcfzkc+l9v75apnznzLifmzCX8oW9bN6X
+ V4tbcvMexlh01TI5yo1s68q5IzK/gkl2FsxIKjrwT68Kk2RpEO0hpO0O9i4uS/pZtE6V
+ ntnxWmOe3dRSvg+jUIALHAjv0iiPkQIHLb0E/phD55AquXNHvW72P/PJ1Cyb38tPZMl5
+ UsgYC+hUf+j+FzS32n9qO5/KLnoLNkymz95rjX/2XDHkMGC/KZd9dxrKb6TaYOg5fQ1L
+ grnIKd9TGMz5RzhnbvhI61aM76PSnqiCn4CVXOUTTSQlE/izHO+rvCvWATqtf7p3N2YG
+ PGDA==
+X-Gm-Message-State: AOJu0YyW9K4DZJzsAm1yiIY9d+lHGWedW1XCWAy8e+zTdVjlMQfnRt2k
+ t1DNjWIgaEBR+n2VAgjS3yQ/c5x84F00Vg==
+X-Google-Smtp-Source: AGHT+IHMT3+xGt60wNzryLJXjEaMJQKAlwGWUCpauNtHWb1VRTdUDbZ9oWHNm554ZUforVibUFGwhg==
+X-Received: by 2002:a05:600c:84ce:b0:40c:2b01:e09e with SMTP id
+ er14-20020a05600c84ce00b0040c2b01e09emr315806wmb.47.1704375435040; 
+ Thu, 04 Jan 2024 05:37:15 -0800 (PST)
 Received: from [192.168.69.100] ([176.187.194.232])
  by smtp.gmail.com with ESMTPSA id
- t18-20020a5d4612000000b003367bb8898dsm33094022wrq.66.2024.01.04.05.33.11
+ fc16-20020a05600c525000b0040d5c58c41dsm5733869wmb.24.2024.01.04.05.37.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 04 Jan 2024 05:33:13 -0800 (PST)
-Message-ID: <cd41459a-b96d-4b51-bc2a-37724ccc4db1@linaro.org>
-Date: Thu, 4 Jan 2024 14:33:10 +0100
+ Thu, 04 Jan 2024 05:37:14 -0800 (PST)
+Message-ID: <f69286a2-cedf-428a-9c9f-a4b94d787507@linaro.org>
+Date: Thu, 4 Jan 2024 14:37:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] tests/qtest: Add STM32L4x5 EXTI QTest testcase
+Subject: Re: [PATCH v3 2/3] tests/qtest: Add STM32L4x5 SYSCFG QTest testcase
 Content-Language: en-US
 To: =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
  qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair@alistair23.me>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org
-References: <20231228161944.303768-1-ines.varhol@telecom-paris.fr>
- <20231228161944.303768-3-ines.varhol@telecom-paris.fr>
+Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Alistair Francis <alistair@alistair23.me>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>
+References: <20231229164915.133199-1-ines.varhol@telecom-paris.fr>
+ <20231229164915.133199-3-ines.varhol@telecom-paris.fr>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231228161944.303768-3-ines.varhol@telecom-paris.fr>
+In-Reply-To: <20231229164915.133199-3-ines.varhol@telecom-paris.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,103 +96,295 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/12/23 17:19, Inès Varhol wrote:
+On 29/12/23 17:47, Inès Varhol wrote:
+> Acked-by: Alistair Francis <alistair.francis@wdc.com>
+> 
 > Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 > Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
 > ---
->   tests/qtest/meson.build           |   5 +
->   tests/qtest/stm32l4x5_exti-test.c | 596 ++++++++++++++++++++++++++++++
->   2 files changed, 601 insertions(+)
->   create mode 100644 tests/qtest/stm32l4x5_exti-test.c
+>   tests/qtest/meson.build             |   3 +-
+>   tests/qtest/stm32l4x5_syscfg-test.c | 408 ++++++++++++++++++++++++++++
+>   2 files changed, 410 insertions(+), 1 deletion(-)
+>   create mode 100644 tests/qtest/stm32l4x5_syscfg-test.c
 
-Once the SoC parentship fixed in based series, this patch
-requires:
+Helper suggestion to ease readability:
 
--- >8 --
-diff --git a/tests/qtest/stm32l4x5_exti-test.c 
-b/tests/qtest/stm32l4x5_exti-test.c
-index 60c8297246..543199cd4d 100644
---- a/tests/qtest/stm32l4x5_exti-test.c
-+++ b/tests/qtest/stm32l4x5_exti-test.c
-@@ -287,4 +287,3 @@ static void test_edge_selector(void)
-      /* Configure EXTI line 0 irq on rising edge */
--    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
--                     NULL, 0, 1);
-+    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 1);
-      exti_writel(EXTI_IMR1, 0x00000001);
-@@ -294,4 +293,3 @@ static void test_edge_selector(void)
-      /* Test that an irq is raised on rising edge only */
--    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
--                     NULL, 0, 0);
-+    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 0);
-
-@@ -301,4 +299,3 @@ static void test_edge_selector(void)
-
--    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
--                     NULL, 0, 1);
-+    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 1);
-
-@@ -316,4 +313,3 @@ static void test_edge_selector(void)
-      /* Configure EXTI line 0 irq on falling edge */
--    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
--                     NULL, 0, 0);
-+    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 0);
-      exti_writel(EXTI_IMR1, 0x00000001);
-@@ -323,4 +319,3 @@ static void test_edge_selector(void)
-      /* Test that an irq is raised on falling edge only */
--    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
--                     NULL, 0, 1);
-+    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 1);
-
-@@ -330,4 +325,3 @@ static void test_edge_selector(void)
-
--    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
--                     NULL, 0, 0);
-+    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 0);
-
-@@ -350,4 +344,3 @@ static void test_edge_selector(void)
-      /* Test that an irq is raised on rising and falling edge */
--    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
--                     NULL, 0, 1);
-+    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 1);
-
-@@ -357,4 +350,3 @@ static void test_edge_selector(void)
-
--    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
--                     NULL, 0, 0);
-+    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 0);
-
-@@ -377,4 +369,3 @@ static void test_edge_selector(void)
-      /* Test that no irq is raised */
--    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
--                     NULL, 0, 1);
-+    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 1);
-
-@@ -384,4 +375,3 @@ static void test_edge_selector(void)
-
--    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
--                     NULL, 0, 0);
-+    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 0);
-
-@@ -500,4 +490,3 @@ static void test_masked_interrupt(void)
-      /* Simulate rising edge from GPIO line 1 */
--    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
--                     NULL, 1, 1);
-+    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 1, 1);
-
-@@ -550,4 +539,3 @@ static void test_interrupt(void)
-      /* Simulate rising edge from GPIO line 1 */
--    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
--                     NULL, 1, 1);
-+    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 1, 1);
----
-
-Note you could use a helper to ease readability:
-
-static void exti_set_irq(int num, int lvl)
+static void syscfg_set_irq(int num, int level)
 {
-    qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, num, lvl);
+    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg",
+                     NULL, num, level);
 }
 
+When the SoC is parented to the machine, this patch needs:
+
+-- >8 --
+diff --git a/tests/qtest/stm32l4x5_syscfg-test.c 
+b/tests/qtest/stm32l4x5_syscfg-test.c
+index 3edd13b222..272ba91055 100644
+--- a/tests/qtest/stm32l4x5_syscfg-test.c
++++ b/tests/qtest/stm32l4x5_syscfg-test.c
+@@ -240,3 +240,3 @@ static void test_interrupt(void)
+       */
+-    qtest_irq_intercept_in(global_qtest, 
+"/machine/unattached/device[0]/exti");
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/exti");
+      /* Enable interrupt on rising edge of GPIO PA[0] */
+@@ -245,4 +245,3 @@ static void test_interrupt(void)
+
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 1);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 0, 1);
+
+@@ -254,4 +253,3 @@ static void test_interrupt(void)
+
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 15, 1);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 15, 1);
+
+@@ -264,4 +262,3 @@ static void test_interrupt(void)
+
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 17, 1);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 17, 1);
+
+@@ -271,8 +268,5 @@ static void test_interrupt(void)
+      syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 0);
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 15, 0);
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 17, 0);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 0, 0);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 15, 0);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 17, 0);
+  }
+@@ -285,3 +279,3 @@ static void test_irq_pin_multiplexer(void)
+
+-    qtest_irq_intercept_in(global_qtest, 
+"/machine/unattached/device[0]/exti");
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/exti");
+
+@@ -291,4 +285,3 @@ static void test_irq_pin_multiplexer(void)
+
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 1);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 0, 1);
+
+@@ -299,4 +292,3 @@ static void test_irq_pin_multiplexer(void)
+      /* Clean the test */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 0);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 0, 0);
+
+@@ -306,4 +298,3 @@ static void test_irq_pin_multiplexer(void)
+
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 15, 1);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 15, 1);
+
+@@ -314,4 +305,3 @@ static void test_irq_pin_multiplexer(void)
+      /* Clean the test */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 15, 0);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 15, 0);
+  }
+@@ -324,3 +314,3 @@ static void test_irq_gpio_multiplexer(void)
+
+-    qtest_irq_intercept_in(global_qtest, 
+"/machine/unattached/device[0]/exti");
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/exti");
+
+@@ -331,4 +321,3 @@ static void test_irq_gpio_multiplexer(void)
+      /* Check that setting rising pin GPIOA[0] generates an irq */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 1);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 0, 1);
+
+@@ -337,8 +326,6 @@ static void test_irq_gpio_multiplexer(void)
+      /* Clean the test */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 0);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 0, 0);
+
+      /* Check that setting rising pin GPIOB[0] doesn't generate an irq */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 16, 1);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 16, 1);
+
+@@ -347,4 +334,3 @@ static void test_irq_gpio_multiplexer(void)
+      /* Clean the test */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 16, 0);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 16, 0);
+
+@@ -356,4 +342,3 @@ static void test_irq_gpio_multiplexer(void)
+      /* Check that setting rising pin GPIOA[0] doesn't generate an irq */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 1);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 0, 1);
+
+@@ -362,8 +347,6 @@ static void test_irq_gpio_multiplexer(void)
+      /* Clean the test */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 0);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 0, 0);
+
+      /* Check that setting rising pin GPIOB[0] generates an irq */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 16, 1);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 16, 1);
+
+@@ -372,4 +355,3 @@ static void test_irq_gpio_multiplexer(void)
+      /* Clean the test */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 16, 0);
++    qtest_set_irq_in(global_qtest, "/machine/soc/syscfg", NULL, 16, 0);
+      syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
+---
+
+With the helper included (since I tested it):
+
+-- >8 --
+diff --git a/tests/qtest/stm32l4x5_syscfg-test.c 
+b/tests/qtest/stm32l4x5_syscfg-test.c
+index 3edd13b222..19a5f83ebe 100644
+--- a/tests/qtest/stm32l4x5_syscfg-test.c
++++ b/tests/qtest/stm32l4x5_syscfg-test.c
+@@ -47,2 +47,8 @@ static void exti_writel(unsigned int offset, uint32_t 
+value)
+
++static void syscfg_set_irq(int num, int level)
++{
++   qtest_set_irq_in(global_qtest, "/machine/soc/syscfg",
++                    NULL, num, level);
++}
++
+  static void system_reset(void)
+@@ -240,3 +246,3 @@ static void test_interrupt(void)
+       */
+-    qtest_irq_intercept_in(global_qtest, 
+"/machine/unattached/device[0]/exti");
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/exti");
+      /* Enable interrupt on rising edge of GPIO PA[0] */
+@@ -245,4 +251,3 @@ static void test_interrupt(void)
+
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 1);
++    syscfg_set_irq(0, 1);
+
+@@ -254,4 +259,3 @@ static void test_interrupt(void)
+
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 15, 1);
++    syscfg_set_irq(15, 1);
+
+@@ -264,4 +268,3 @@ static void test_interrupt(void)
+
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 17, 1);
++    syscfg_set_irq(17, 1);
+
+@@ -271,8 +274,5 @@ static void test_interrupt(void)
+      syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 0);
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 15, 0);
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 17, 0);
++    syscfg_set_irq(0, 0);
++    syscfg_set_irq(15, 0);
++    syscfg_set_irq(17, 0);
+  }
+@@ -285,3 +285,3 @@ static void test_irq_pin_multiplexer(void)
+
+-    qtest_irq_intercept_in(global_qtest, 
+"/machine/unattached/device[0]/exti");
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/exti");
+
+@@ -291,4 +291,3 @@ static void test_irq_pin_multiplexer(void)
+
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 1);
++    syscfg_set_irq(0, 1);
+
+@@ -299,4 +298,3 @@ static void test_irq_pin_multiplexer(void)
+      /* Clean the test */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 0);
++    syscfg_set_irq(0, 0);
+
+@@ -306,4 +304,3 @@ static void test_irq_pin_multiplexer(void)
+
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 15, 1);
++    syscfg_set_irq(15, 1);
+
+@@ -314,4 +311,3 @@ static void test_irq_pin_multiplexer(void)
+      /* Clean the test */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 15, 0);
++    syscfg_set_irq(15, 0);
+  }
+@@ -324,3 +320,3 @@ static void test_irq_gpio_multiplexer(void)
+
+-    qtest_irq_intercept_in(global_qtest, 
+"/machine/unattached/device[0]/exti");
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/exti");
+
+@@ -331,4 +327,3 @@ static void test_irq_gpio_multiplexer(void)
+      /* Check that setting rising pin GPIOA[0] generates an irq */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 1);
++    syscfg_set_irq(0, 1);
+
+@@ -337,8 +332,6 @@ static void test_irq_gpio_multiplexer(void)
+      /* Clean the test */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 0);
++    syscfg_set_irq(0, 0);
+
+      /* Check that setting rising pin GPIOB[0] doesn't generate an irq */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 16, 1);
++    syscfg_set_irq(16, 1);
+
+@@ -347,4 +340,3 @@ static void test_irq_gpio_multiplexer(void)
+      /* Clean the test */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 16, 0);
++    syscfg_set_irq(16, 0);
+
+@@ -356,4 +348,3 @@ static void test_irq_gpio_multiplexer(void)
+      /* Check that setting rising pin GPIOA[0] doesn't generate an irq */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 1);
++    syscfg_set_irq(0, 1);
+
+@@ -362,8 +353,6 @@ static void test_irq_gpio_multiplexer(void)
+      /* Clean the test */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 0, 0);
++    syscfg_set_irq(0, 0);
+
+      /* Check that setting rising pin GPIOB[0] generates an irq */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 16, 1);
++    syscfg_set_irq(16, 1);
+
+@@ -372,4 +361,3 @@ static void test_irq_gpio_multiplexer(void)
+      /* Clean the test */
+-    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
+-                     NULL, 16, 0);
++    syscfg_set_irq(16, 0);
+      syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
+---
+
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Regards,
+
+Phil.
 
