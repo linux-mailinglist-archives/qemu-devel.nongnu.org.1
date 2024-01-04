@@ -2,82 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4390882435E
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 15:13:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D20A68243AC
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 15:23:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLOS9-0006Fe-Po; Thu, 04 Jan 2024 09:12:10 -0500
+	id 1rLOc3-0001Li-FS; Thu, 04 Jan 2024 09:22:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLOS8-0006FI-Aw
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 09:12:08 -0500
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rLOc1-0001LI-Ie
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 09:22:21 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLOS5-0000Jx-C5
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 09:12:07 -0500
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-50ea9daac4cso593216e87.3
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 06:12:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704377523; x=1704982323; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=HH/FOzMkAK9P4wWyuKIB0SOChexA4vOozUZ0T8lYoS8=;
- b=gF4yh7tAutpOO9ZHanxhABaotb8IUvk9jiX2GKoRO021J3yqJNVqgNo4pXdM7ioS8r
- zukNhi/Tpp4/vLmPfnoVp5Mpcn+k2N1YWTGbDIJJcPEv+sYKEK28f3PYCKRfrnJP9kYh
- DL2vXnDK8GBm0e7KIQVqosXZ0MmqaF6io+2WGzpyRNHVJiRczzfSm+puaOSJoPF0KaUR
- eTgzBYWh9ozFbTgozO8rY4q5dxebHyyrz+g4Uvv1elKbXdLIxT2MR1aETQlgDIucfqIR
- G9Ou1IgTxYm+LPtL4CKdOkAPG/yDTRHlOWxFxX4UWm5YlgCIlAx31nYGJrZaOFKts/Mw
- LUww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704377523; x=1704982323;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HH/FOzMkAK9P4wWyuKIB0SOChexA4vOozUZ0T8lYoS8=;
- b=BvQGnlTujlLhf5VqjFcamaIO04HTLsBgygDydtrIVDImIXIMz3nKAWKjW88tRE/Y1x
- fanJ+/CglZ04khYbxbLiNohYq6JM1GKHAmcEv+pLw69Iiy/OOAHCAbSqgjfO2L8IMV01
- jhS2A7xq90Ljaq4Wnoggt2i9VikFHTEw+vTSwdd81Djd099l+ML6jVXj2cd+huUi2Zyo
- USwIwqO5maAD37P1ZB2GlKvOuRrfxGrBksvzyZW4B4CGrKbRqWUNZsYBUo2fn5nHSQvC
- W4zUWySzxrEvV4UsreSLDkhX7olozEVI7oYqxN+OD8kGNVXwrtiKJ5UrJSset31ieuuD
- m2cQ==
-X-Gm-Message-State: AOJu0YygWoBFAVADC+YJX3Fr1n2z8ZgcRGcb3GObVYcJf7jcWqlH4nyU
- kONvj4YDDCrACLj1F0ioWCvlMf2QHF9vTSGUsV7QH9VRZHXJ9g==
-X-Google-Smtp-Source: AGHT+IGmU5cevp3ctWU0Vh4aUer7qw8TinDGiplS1FtucNefleY36X6b1PTT7MlSLGB672tnx4DAcA==
-X-Received: by 2002:a05:6512:31c6:b0:50e:712b:393f with SMTP id
- j6-20020a05651231c600b0050e712b393fmr411303lfe.80.1704377523160; 
- Thu, 04 Jan 2024 06:12:03 -0800 (PST)
-Received: from m1x-phil.lan ([176.187.194.232])
- by smtp.gmail.com with ESMTPSA id
- p13-20020a05640210cd00b0055298b38768sm18985841edu.80.2024.01.04.06.12.01
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 04 Jan 2024 06:12:02 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rLObz-0008UZ-56
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 09:22:20 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id D659F1F814;
+ Thu,  4 Jan 2024 14:22:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1704378136; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=G+M8hpWCZSRHakpkPJLXsLslueaCgeKuxkEmbx9C5k4=;
+ b=mTBwhTuvMOOMf+SZs4/retD+qPjPmFN3OAQcXXaQigsn9e7N+MIWDWjXG8RJpIIrS4l8rH
+ mWlU6VdqaoD+UDl0oSzgqAX2LzKbjT3uunhenpGOJF1YGWfLVyWZuaTfvjcr2d/6c4ZLLG
+ 0bCWXWT7lQKuujHRgj9Lg+F/JM5Frx8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1704378136;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=G+M8hpWCZSRHakpkPJLXsLslueaCgeKuxkEmbx9C5k4=;
+ b=IFYtXwP7s7mm7qilNnhJWgV6o06vOmfiEABW5IN5dbbp7jn2uTwQGxLL6MSU8rtC+GJXNs
+ /MjT/q6rAbwTp0Cg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1704378136; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=G+M8hpWCZSRHakpkPJLXsLslueaCgeKuxkEmbx9C5k4=;
+ b=mTBwhTuvMOOMf+SZs4/retD+qPjPmFN3OAQcXXaQigsn9e7N+MIWDWjXG8RJpIIrS4l8rH
+ mWlU6VdqaoD+UDl0oSzgqAX2LzKbjT3uunhenpGOJF1YGWfLVyWZuaTfvjcr2d/6c4ZLLG
+ 0bCWXWT7lQKuujHRgj9Lg+F/JM5Frx8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1704378136;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=G+M8hpWCZSRHakpkPJLXsLslueaCgeKuxkEmbx9C5k4=;
+ b=IFYtXwP7s7mm7qilNnhJWgV6o06vOmfiEABW5IN5dbbp7jn2uTwQGxLL6MSU8rtC+GJXNs
+ /MjT/q6rAbwTp0Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E3876137E8;
+ Thu,  4 Jan 2024 14:22:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id P53jKRe/lmUfPAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 04 Jan 2024 14:22:15 +0000
+From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Subbaraya Sundeep <sundeep.lkml@gmail.com>, qemu-arm@nongnu.org,
- Felipe Balbi <balbi@kernel.org>, Alexandre Iooss <erdnaxe@crans.org>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
- Peter Maydell <peter.maydell@linaro.org>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Alistair Francis <alistair@alistair23.me>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] hw/arm: Add missing QOM parent for v7-M SoCs
-Date: Thu,  4 Jan 2024 15:11:59 +0100
-Message-ID: <20240104141159.53883-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+Cc: Peter Xu <peterx@redhat.com>
+Subject: [PATCH v2 0/7] migration cleanups and testing improvements
+Date: Thu,  4 Jan 2024 11:21:37 -0300
+Message-Id: <20240104142144.9680-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: 4.73
+X-Spamd-Result: default: False [4.73 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; R_MISSING_CHARSET(2.50)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ BROKEN_CONTENT_TYPE(1.50)[]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCPT_COUNT_TWO(0.00)[2]; MID_CONTAINS_FROM(1.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ BAYES_HAM(-0.17)[69.71%]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,79 +105,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QDev objects created with qdev_new() need to manually add
-their parent relationship with object_property_add_child().
+No change, just rebased on latest migration PR:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/arm/msf2-som.c          | 1 +
- hw/arm/netduino2.c         | 1 +
- hw/arm/netduinoplus2.c     | 1 +
- hw/arm/olimex-stm32-h405.c | 1 +
- hw/arm/stm32vldiscovery.c  | 1 +
- 5 files changed, 5 insertions(+)
+[PULL 00/26] Migration 20240104 patches
+https://lore.kernel.org/r/20240104043213.431566-1-peterx@redhat.com
 
-diff --git a/hw/arm/msf2-som.c b/hw/arm/msf2-som.c
-index 7b3106c790..e93c83c410 100644
---- a/hw/arm/msf2-som.c
-+++ b/hw/arm/msf2-som.c
-@@ -66,6 +66,7 @@ static void emcraft_sf2_s2s010_init(MachineState *machine)
-     memory_region_add_subregion(sysmem, DDR_BASE_ADDRESS, ddr);
- 
-     dev = qdev_new(TYPE_MSF2_SOC);
-+    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
-     qdev_prop_set_string(dev, "part-name", "M2S010");
-     qdev_prop_set_string(dev, "cpu-type", mc->default_cpu_type);
- 
-diff --git a/hw/arm/netduino2.c b/hw/arm/netduino2.c
-index 501f63a77f..8b1a9a2437 100644
---- a/hw/arm/netduino2.c
-+++ b/hw/arm/netduino2.c
-@@ -44,6 +44,7 @@ static void netduino2_init(MachineState *machine)
-     clock_set_hz(sysclk, SYSCLK_FRQ);
- 
-     dev = qdev_new(TYPE_STM32F205_SOC);
-+    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
-     qdev_connect_clock_in(dev, "sysclk", sysclk);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
- 
-diff --git a/hw/arm/netduinoplus2.c b/hw/arm/netduinoplus2.c
-index 2e58984947..bccd100354 100644
---- a/hw/arm/netduinoplus2.c
-+++ b/hw/arm/netduinoplus2.c
-@@ -44,6 +44,7 @@ static void netduinoplus2_init(MachineState *machine)
-     clock_set_hz(sysclk, SYSCLK_FRQ);
- 
-     dev = qdev_new(TYPE_STM32F405_SOC);
-+    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
-     qdev_connect_clock_in(dev, "sysclk", sysclk);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
- 
-diff --git a/hw/arm/olimex-stm32-h405.c b/hw/arm/olimex-stm32-h405.c
-index d793de7c97..4ad7b043be 100644
---- a/hw/arm/olimex-stm32-h405.c
-+++ b/hw/arm/olimex-stm32-h405.c
-@@ -47,6 +47,7 @@ static void olimex_stm32_h405_init(MachineState *machine)
-     clock_set_hz(sysclk, SYSCLK_FRQ);
- 
-     dev = qdev_new(TYPE_STM32F405_SOC);
-+    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
-     qdev_connect_clock_in(dev, "sysclk", sysclk);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
- 
-diff --git a/hw/arm/stm32vldiscovery.c b/hw/arm/stm32vldiscovery.c
-index 190db6118b..cc41935160 100644
---- a/hw/arm/stm32vldiscovery.c
-+++ b/hw/arm/stm32vldiscovery.c
-@@ -47,6 +47,7 @@ static void stm32vldiscovery_init(MachineState *machine)
-     clock_set_hz(sysclk, SYSCLK_FRQ);
- 
-     dev = qdev_new(TYPE_STM32F100_SOC);
-+    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
-     qdev_connect_clock_in(dev, "sysclk", sysclk);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
- 
+v1:
+https://lore.kernel.org/r/20231124161432.3515-1-farosas@suse.de
+
+These are some general cleanups and improvements to testing and
+debugging that I collected over the past month.
+
+Fabiano Rosas (7):
+  migration/multifd: Remove MultiFDPages_t::packet_num
+  migration/multifd: Remove QEMUFile from where it is not needed
+  migration/multifd: Change multifd_pages_init argument
+  migration: Report error in incoming migration
+  tests/qtest/migration: Print migration incoming errors
+  tests/qtest/migration: Add a wrapper to print test names
+  tests/qtest/migration: Use the new migration_test_add
+
+ migration/migration.c           |   7 ++
+ migration/multifd.c             |  19 ++-
+ migration/multifd.h             |   6 +-
+ migration/ram.c                 |  15 ++-
+ tests/qtest/migration-helpers.c |  38 ++++++
+ tests/qtest/migration-helpers.h |   1 +
+ tests/qtest/migration-test.c    | 215 +++++++++++++++++---------------
+ 7 files changed, 176 insertions(+), 125 deletions(-)
+
 -- 
-2.41.0
+2.35.3
 
 
