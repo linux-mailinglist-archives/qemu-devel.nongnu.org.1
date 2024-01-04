@@ -2,73 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F5682494D
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 20:56:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C114E824950
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 20:59:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLToG-0005o7-CO; Thu, 04 Jan 2024 14:55:20 -0500
+	id 1rLTrw-0006nD-Qv; Thu, 04 Jan 2024 14:59:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLToC-0005mA-V4
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 14:55:16 -0500
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLTo9-0005va-IK
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 14:55:15 -0500
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2cd1232a2c7so11467371fa.0
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 11:55:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704398111; x=1705002911; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=mvBvsVkuGfXlJ0tWqoFwsxssyMKtv26GHTZ/kv69p4c=;
- b=hEXZ2jiuGeBRNPvQjsbTG6XfGVdDv+Rp6C/WbYpvompy/PxdqgyEz8tTU0GaXiRWnj
- MMJIg6JzXShXoY0NP5F3GNw41lFwgmwcq/xH/+mWautmp8dVQDDE2qdqqsyOMHhto5FN
- 640bGCemd44qeAmVmiys1TSvkL5Of9GYX4kV983TB82vWJd5v5fxZ6ZJ7TTt5qbeNmEV
- CJuE3CEI0EnpSnfV59ARwUE0i73A+zguNKLCgdNXghySWTPgd1hMnWL8A8djXOJg8F/Y
- QAQD7SsYLkQcpIM3iZbgYmfaYy5EKsvRkW2W5MwmWy/wrA0c5QNBFbpZQ01MPmaFBYJf
- g9Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704398111; x=1705002911;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mvBvsVkuGfXlJ0tWqoFwsxssyMKtv26GHTZ/kv69p4c=;
- b=DN+gyOY149sk7nUwWV+eiMv3PAkeavHNLMoDm4RXP1OF6LLUeg6ILYL7c/5oj+btEv
- q9sS1xTl2CqhayFh2Z5kuvZmvEN900UcaqNalbUKo5TCA1Ax8Qx9gblbCWWfERwaa/jd
- ge9kj2vSw5xmoRVpYFDO3JyQ8tVWqBAVwuVVzSkaIqe8t0zg0iSJO8S3/CKpACE1gDs/
- 0Zb/jR5e31LrV1Ej9rOjuAnwueiQvJSg+RhklXqzyZ1xdUM/mBktctNU2IGRG50+hCqE
- qy0OC18jvikUWh6AN6LduaozSCbFc/YCc3MIjY89oYCLX+Wv1rWn2dWiyXfFVhQ1p3Yb
- NgGw==
-X-Gm-Message-State: AOJu0YzY81tPWdrSG8+fQ7FmjRbeYZzs0cTxAllbfE6g26sMRQg6zqR+
- hqdn6dyjMITWES0/rtO2i9dh4VysS6bnrUtm+oUaQ2ae0j5uXw==
-X-Google-Smtp-Source: AGHT+IE74CBum4erJHc3rVETdc4g1dMLwKiLoH7B1DoP4zMmQlOFukHpNOVYmDtYHVyvGgKtl/KyE3njTCasVXta+7w=
-X-Received: by 2002:a2e:b8cb:0:b0:2cd:10aa:762b with SMTP id
- s11-20020a2eb8cb000000b002cd10aa762bmr694644ljp.80.1704398111281; Thu, 04 Jan
- 2024 11:55:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1rLTru-0006n5-Ow
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 14:59:06 -0500
+Received: from jedlik.phy.bme.hu ([152.66.102.83])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1rLTrs-0006hz-Hw
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 14:59:06 -0500
+Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
+ id D1091A00CF; Thu,  4 Jan 2024 20:58:53 +0100 (CET)
+Date: Thu, 4 Jan 2024 20:58:53 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: deller@kernel.org
+cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>, 
+ Bruno Haible <bruno@clisp.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ "Nelson H . F . Beebe" <beebe@math.utah.edu>, Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH 1/9] hw/hppa/machine: Allow up to 3840 MB total memory
+In-Reply-To: <20240104183628.101366-2-deller@kernel.org>
+Message-ID: <alpine.LMD.2.03.2401042055420.28870@eik.bme.hu>
+References: <20240104183628.101366-1-deller@kernel.org>
+ <20240104183628.101366-2-deller@kernel.org>
+User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
 MIME-Version: 1.0
-References: <20231229212346.147149-1-richard.henderson@linaro.org>
-In-Reply-To: <20231229212346.147149-1-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 4 Jan 2024 19:54:36 +0000
-Message-ID: <CAFEAcA9Huy_5Jam8AqWgotEz+6sT0fVaG=c5pOAQ4DsyKOBntA@mail.gmail.com>
-Subject: Re: [PULL 00/71] Constify VMState
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Received-SPF: none client-ip=152.66.102.83;
+ envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,30 +57,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 29 Dec 2023 at 21:24, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On Thu, 4 Jan 2024, deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
 >
-> The following changes since commit 7425b6277f12e82952cede1f531bfc689bf77fb1:
+> The physical hardware allows DIMMs of 4 MB size and above, allowing up
+> to 3840 MB of memory, but is restricted by setup code to 3 GB.
+> Increase the limit to allow up to the maximum amount of memory.
 >
->   Merge tag 'tracing-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-12-27 05:15:32 -0500)
+> Btw. the memory area from 0xf000.0000 to 0xffff.ffff is reserved by
+> the architecture for firmware and I/O memory and can not be used for
+> standard memory.
 >
-> are available in the Git repository at:
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Noticed-by: Nelson H. F. Beebe <beebe@math.utah.edu>
+> Fixes: b7746b1194c8 ("hw/hppa/machine: Restrict the total memory size to 3GB")
+> ---
+> hw/hppa/machine.c | 9 ++++++---
+> 1 file changed, 6 insertions(+), 3 deletions(-)
 >
->   https://gitlab.com/rth7680/qemu.git tags/pull-20231230
+> diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+> index c8da7c18d5..6181f4b747 100644
+> --- a/hw/hppa/machine.c
+> +++ b/hw/hppa/machine.c
+> @@ -276,6 +276,7 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
+>     unsigned int smp_cpus = machine->smp.cpus;
+>     TranslateFn *translate;
+>     MemoryRegion *cpu_region;
+> +    ram_addr_t ram_max;
 >
-> for you to fetch changes up to 2563c97f611f709b975880737a24dddc3318fa17:
->
->   docs: Constify VMstate in examples (2023-12-30 07:38:06 +1100)
->
-> ----------------------------------------------------------------
-> Mark VMStateField and VMStateDescription arrays const.
->
+>     /* Create CPUs.  */
+>     for (unsigned int i = 0; i < smp_cpus; i++) {
+> @@ -288,8 +289,10 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
+>      */
+>     if (hppa_is_pa20(&cpu[0]->env)) {
+>         translate = translate_pa20;
+> +        ram_max = 0xf0000000;      /* 3.75 GB (limited by 32-bit firmware) */
+>     } else {
+>         translate = translate_pa10;
+> +        ram_max = 0xf0000000;      /* 3.75 GB (32-bit CPU) */
 
+If the value is the same what's the point of setting it here and not once 
+above at definition? It is's only the different comment then you could 
+have a comment saying "3.75 GB, limited by 32-bit firmware on 64 bit CPU" 
+or similar there.
 
-Applied, thanks.
+Regards,
+BALATON Zoltan
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
-
--- PMM
+>     }
+>
+>     for (unsigned int i = 0; i < smp_cpus; i++) {
+> @@ -311,9 +314,9 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
+>                                 cpu_region);
+>
+>     /* Main memory region. */
+> -    if (machine->ram_size > 3 * GiB) {
+> -        error_report("RAM size is currently restricted to 3GB");
+> -        exit(EXIT_FAILURE);
+> +    if (machine->ram_size > ram_max) {
+> +        info_report("Max RAM size limited to %ld MB", ram_max / MiB);
+> +        machine->ram_size = ram_max;
+>     }
+>     memory_region_add_subregion_overlap(addr_space, 0, machine->ram, -1);
+>
+> -- 
+> 2.43.0
+>
+>
+>
 
