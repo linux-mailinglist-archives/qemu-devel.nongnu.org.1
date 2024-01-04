@@ -2,82 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56AD182460A
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:23:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF4D8245CE
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:08:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLQUw-0000x5-2r; Thu, 04 Jan 2024 11:23:10 -0500
+	id 1rLQGl-0005OA-Oq; Thu, 04 Jan 2024 11:08:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rLQUt-0000wD-Ka
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:23:07 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rLQUs-0006E8-4c
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:23:07 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1d3ed1ca402so4871595ad.2
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 08:21:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1704385264; x=1704990064;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nLUzGfzUZUvPQFou46dKVJl/tbVU2f+F7XMXWWcrcu4=;
- b=Rns4f9QDBfDIPTJNv2NeMbnts2aUAg+rREb83TJfH1+WO3F2Ko7XzTuE5MmKewWNdl
- edyrXcLikOyCb43kffTcaXrE25OOxgpaeZkYCs5T3gXcbL2ln6pODgglMm+Rveq6acio
- 9Lygr36Suecgyssrvgl8HrsP+TKt6v9WtTsUMYb8rCqFJvoILEl6szPmFu/wwoPYTgzH
- GZ3qVUYTBQBw/4KEtisX5IGFWJ0nJLl+8j7yQejBv4Zj8EyTLuvNLrkvNLL0m46HwL+B
- vvCLMW/vnfen6qiWlF8V/oEAMFdTxfSyFHa2OF9dDJHkAOhGdLsaSWVFOC7ls6BeBmhU
- XLnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704385264; x=1704990064;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nLUzGfzUZUvPQFou46dKVJl/tbVU2f+F7XMXWWcrcu4=;
- b=KERWbDUdVS7HxONddNzWlq9mIF+2pin2rF920fEBlPeDXZf9QSDhzB5ZjPgIX6edDR
- kHfAg6RgyDvDbYPdfZVfcca+ZuYouuo0pCD8uQOV6QnEauga4f9Xn3KAzdyFramKpzpf
- 5ZGtdbzK4OuwXJ9QPvb3njwLEOH7q8s1JG2jOW6pw3Wr9tPw8gd6o2HtoUuOeUBPAHsB
- fBIfBq6hBXhKO+Ij0pMs6GVRua5Xp8so2mzfY3j+eOSivW1wS3cYInTcTp1OWFWGqzoG
- UvPkXNsoQuJ146966PmQo899VPH7KoANmfsIsIcNpaaWFd4xsdSwAle+G3jgVtUDMHSl
- 9M4Q==
-X-Gm-Message-State: AOJu0YwudLSU91HT4mEs3oA6H2CGMoZxtVRl1jEI7g803H56DVhVLckL
- M7HjCZ/Ack4c4+qR7hS0SuvUJt/1QIqE73/4KvV9OeLw8nrXtJu1
-X-Google-Smtp-Source: AGHT+IH/rvZ2B2U4ykO+HTdOX5wgyl5IeV/ATxBXGncQ4oYm3E4O9cnhImHlsMfO6azoLiGr5nIH7g==
-X-Received: by 2002:a17:902:db09:b0:1d4:22ab:e378 with SMTP id
- m9-20020a170902db0900b001d422abe378mr873941plx.116.1704385263915; 
- Thu, 04 Jan 2024 08:21:03 -0800 (PST)
-Received: from localhost.localdomain ([118.114.59.173])
- by smtp.gmail.com with ESMTPSA id
- 5-20020a170902ee4500b001d06b63bb98sm25987314plo.71.2024.01.04.08.21.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Jan 2024 08:21:03 -0800 (PST)
-From: Hyman Huang <yong.huang@smartx.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH v2 2/2] hmp: Drop unknown feature and status bits
-Date: Fri,  5 Jan 2024 00:19:35 +0800
-Message-Id: <6f0de9a1c82f64c4055908573d82a1c86c4d99e8.1704382761.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1704382761.git.yong.huang@smartx.com>
-References: <cover.1704382761.git.yong.huang@smartx.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rLQGh-0005N4-Ti; Thu, 04 Jan 2024 11:08:28 -0500
+Received: from mgamail.intel.com ([134.134.136.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rLQGf-0007rm-Av; Thu, 04 Jan 2024 11:08:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1704384505; x=1735920505;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=bP25CFmB5ICIWnAQeHR2h136ykKPR/ZLhxWl27+NbLU=;
+ b=VgqCoJUa+F6T+yGEjeEak+1QxHK1reQ5vhzdc8pshTixFgkQOLQeFi6m
+ MjwKtu8COjKcDVQarOBwSY3HfhZ69AvH4AqiySons5NZieZ6AC/eLI4Ls
+ oeb5vIYwfddiqjTMfqIOyOpZMAhznl8Qok3cvjhaSOrhczsIN7MoA7Nyo
+ twIMH/99xBrbWHk4Mws6k1gsriE53gWxPaYO5PQe6PY3TunlORNZOvjiw
+ 9oWzBoCmvx8cH6O4NLDLX21xJ7060gQVhyfmEXQFZUS9Kh5PJv3aV28S4
+ Btz/krqIqFYult1KP/4+vP+1joRYbY9AiTIR2zOQYnCX0P8VnQMYUAJLb g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="387738508"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; d="scan'208";a="387738508"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jan 2024 08:08:14 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="846293747"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; d="scan'208";a="846293747"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmsmga008.fm.intel.com with ESMTP; 04 Jan 2024 08:08:10 -0800
+Date: Fri, 5 Jan 2024 00:21:02 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Darren Kenny <darren.kenny@oracle.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ qemu-trivial@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] scripts/checkpatch: Support codespell checking
+Message-ID: <ZZba7sAdGooq482x@intel.com>
+References: <20231215103448.3822284-1-zhao1.liu@linux.intel.com>
+ <87frze5vlc.fsf@telecom-paris.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87frze5vlc.fsf@telecom-paris.fr>
+Received-SPF: none client-ip=134.134.136.20;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,54 +83,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The QMP command "x-query-virtio-status" outputs the full
-feature and status bit information, so there is no need
-to maintain it in the HMP output; drop it.
+Hi Samuel,
 
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
----
- hw/virtio/virtio-hmp-cmds.c | 13 -------------
- 1 file changed, 13 deletions(-)
+On Wed, Jan 03, 2024 at 03:36:59PM +0100, Samuel Tardieu wrote:
+> Date: Wed, 03 Jan 2024 15:36:59 +0100
+> From: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>
+> Subject: Re: [PATCH v2] scripts/checkpatch: Support codespell checking
+> 
+> > +  --codespell                Use the codespell dictionary for
+> > spelling/typos
+> > +                             (default:$codespellfile)
+> 
+> Nitpick: I would have used a space after ":".
 
-diff --git a/hw/virtio/virtio-hmp-cmds.c b/hw/virtio/virtio-hmp-cmds.c
-index 4fabba4f9c..ae27968523 100644
---- a/hw/virtio/virtio-hmp-cmds.c
-+++ b/hw/virtio/virtio-hmp-cmds.c
-@@ -27,10 +27,6 @@ static void hmp_virtio_dump_protocols(Monitor *mon,
-         }
-     }
-     monitor_printf(mon, "\n");
--    if (pcol->has_unknown_protocols) {
--        monitor_printf(mon, "  unknown-protocols(0x%016"PRIx64")\n",
--                       pcol->unknown_protocols);
--    }
- }
- 
- static void hmp_virtio_dump_status(Monitor *mon,
-@@ -47,10 +43,6 @@ static void hmp_virtio_dump_status(Monitor *mon,
-         }
-     }
-     monitor_printf(mon, "\n");
--    if (status->has_unknown_statuses) {
--        monitor_printf(mon, "  unknown-statuses(0x%016"PRIx32")\n",
--                       status->unknown_statuses);
--    }
- }
- 
- static void hmp_virtio_dump_features(Monitor *mon,
-@@ -81,11 +73,6 @@ static void hmp_virtio_dump_features(Monitor *mon,
-         }
-         monitor_printf(mon, "\n");
-     }
--
--    if (features->has_unknown_dev_features) {
--        monitor_printf(mon, "  unknown-features(0x%016"PRIx64")\n",
--                       features->unknown_dev_features);
--    }
- }
- 
- void hmp_virtio_query(Monitor *mon, const QDict *qdict)
--- 
-2.39.1
+OK! I'll add it to improve the readability of the help printout.
+
+> 
+> > +	# If /usr/share/codespell/dictionary.txt is not present, try to find
+> > it
+> > +	# under codespell's install directory:
+> > <codespell_root>/data/dictionary.txt
+> 
+> This works correctly on my NixOS system using a non-FHS layout and properly
+> locates the codespell file.
+> 
+> This patch made me find a typo in one of my commit messages.
+> 
+> Tested-by: Samuel Tardieu <sam@rfc1149.net>
+>
+
+Thanks! Good to know this enhancement can help you!
+
+Regards,
+Zhao
 
 
