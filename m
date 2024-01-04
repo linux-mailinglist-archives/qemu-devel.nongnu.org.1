@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE714824638
+	by mail.lfdr.de (Postfix) with ESMTPS id D75FF824639
 	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:30:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLQba-0007QY-3J; Thu, 04 Jan 2024 11:30:02 -0500
+	id 1rLQbh-0007To-SS; Thu, 04 Jan 2024 11:30:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rLQbX-0007PJ-Ms
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:29:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rLQbf-0007T1-1f
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:30:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rLQbV-0002Id-Vm
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:29:59 -0500
+ id 1rLQba-0002JH-7U
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:30:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704385797;
+ s=mimecast20190719; t=1704385801;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PO022ogkCYNvkRsxlXJxq9bB2wwkwHlXSTOlCW9k6Mk=;
- b=M3OHMlvWOEbPu7Vpe2ZseZeoDjCXtuEZlLcVOrjp50sQxj9C2i23AZ1sLg2++0SPuizJoo
- 0S3xRS0/zu0JWEUx5VwF/DemhV+/QZ1BFNGNSPaeXyPxXxQnGmcbApzzNwoZrqDsCyYo+o
- opTZ19bpARsoknqenZUdqMmHttfNnbU=
+ bh=osu/Rh1SoKvT1kP7US/jM9zDmq2ErI+QYvKDb98yvPU=;
+ b=UtnN2X647VFBtBxvQkr+sLJJ9Y5HAagRy3pXd5LEzg5N7P1Uz2dqScV0DFjAKnh9M8m4ZV
+ edjHVliJm8adHGZi+McBNg610pe4T3j10CMVWt9VgxyGKsp/Vc/gujF1oVz+3MXU2WN4kh
+ smA7s/U0cQXnkSMqG4t0ktHO+K0Kl3U=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-253-odxg7bIXNNmhRO_Ngh4QDg-1; Thu, 04 Jan 2024 11:29:55 -0500
-X-MC-Unique: odxg7bIXNNmhRO_Ngh4QDg-1
+ us-mta-652-Ihe7MNLwPimD1UYNsHaQcA-1; Thu, 04 Jan 2024 11:29:57 -0500
+X-MC-Unique: Ihe7MNLwPimD1UYNsHaQcA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 98046101AA49;
- Thu,  4 Jan 2024 16:29:55 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 754D1830F97;
+ Thu,  4 Jan 2024 16:29:57 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.113])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 86AB81C060AF;
- Thu,  4 Jan 2024 16:29:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DD80F1C060AF;
+ Thu,  4 Jan 2024 16:29:55 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
@@ -52,23 +52,24 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 4/6] net: add explicit info about connecting/listening state
-Date: Thu,  4 Jan 2024 16:29:40 +0000
-Message-ID: <20240104162942.211458-5-berrange@redhat.com>
+Subject: [PATCH 5/6] net: handle QIOTask completion to report useful error
+ message
+Date: Thu,  4 Jan 2024 16:29:41 +0000
+Message-ID: <20240104162942.211458-6-berrange@redhat.com>
 In-Reply-To: <20240104162942.211458-1-berrange@redhat.com>
 References: <20240104162942.211458-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,122 +87,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When running 'info network', if the stream backend is still in
-the process of connecting, or waiting for an incoming connection,
-no information is displayed.
+The network stream backend uses the async QIO socket APIs for listening
+and connecting sockets. It does not check the task object completion
+status, however, instead just looking at whether the socket FD is -1
+or not.
 
-There is also no way to distinguish whether the server is still
-in the process of setting up the listener socket, or whether it
-is ready to accept incoming client connections.
+By checking the task completion, we can set a useful error message for
+users instead of the non-actionable "connection error" string.
 
-This leads to a race condition in the netdev-socket qtest which
-launches a server process followed by a client process. Under
-high load conditions it is possible for the client to attempt
-to connect before the server is accepting clients. For the
-scenarios which do not set the 'reconnect' option, this opens
-up a race which can lead to the test scenario failing to reach
-the expected state.
+eg so users will see:
 
-Now that 'info network' can distinguish between initialization
-phase and the listening phase, the netdev-socket qtest will
-correctly synchronize, such that the client QEMU is not spawned
-until the server is ready.
-
-This should solve the non-deterministic failures seen with the
-netdev-socket qtest.
+(qemu) info network
+net: index=0,type=stream,error: Failed to connect to '/foo.unix': No such file or directory
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- net/stream.c                |  5 ++++-
- tests/qtest/netdev-socket.c | 10 +++++-----
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ net/stream.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/net/stream.c b/net/stream.c
-index 9204b4c96e..0defb21d45 100644
+index 0defb21d45..97e6ec6679 100644
 --- a/net/stream.c
 +++ b/net/stream.c
-@@ -173,7 +173,7 @@ static gboolean net_stream_send(QIOChannel *ioc,
+@@ -165,6 +165,7 @@ static gboolean net_stream_send(QIOChannel *ioc,
+             s->ioc_write_tag = 0;
+         }
+         if (s->listener) {
++            qemu_set_info_str(&s->nc, "listening");
+             qio_net_listener_set_client_func(s->listener, net_stream_listen,
+                                              s, NULL);
+         }
+@@ -173,7 +174,6 @@ static gboolean net_stream_send(QIOChannel *ioc,
  
          net_socket_rs_init(&s->rs, net_stream_rs_finalize, false);
          s->nc.link_down = true;
--        qemu_set_info_str(&s->nc, "%s", "");
-+        qemu_set_info_str(&s->nc, "listening");
+-        qemu_set_info_str(&s->nc, "listening");
  
          qapi_event_send_netdev_stream_disconnected(s->nc.name);
          net_stream_arm_reconnect(s);
-@@ -292,6 +292,7 @@ static void net_stream_server_listening(QIOTask *task, gpointer opaque)
-     s->nc.link_down = true;
-     s->listener = qio_net_listener_new();
+@@ -272,9 +272,11 @@ static void net_stream_server_listening(QIOTask *task, gpointer opaque)
+     QIOChannelSocket *listen_sioc = QIO_CHANNEL_SOCKET(s->listen_ioc);
+     SocketAddress *addr;
+     int ret;
++    Error *err = NULL;
  
-+    qemu_set_info_str(&s->nc, "listening");
-     net_socket_rs_init(&s->rs, net_stream_rs_finalize, false);
-     qio_net_listener_set_client_func(s->listener, net_stream_listen, s, NULL);
-     qio_net_listener_add(s->listener, listen_sioc);
-@@ -309,6 +310,7 @@ static int net_stream_server_init(NetClientState *peer,
+-    if (listen_sioc->fd < 0) {
+-        qemu_set_info_str(&s->nc, "connection error");
++    if (qio_task_propagate_error(task, &err)) {
++        qemu_set_info_str(&s->nc, "error: %s", error_get_pretty(err));
++        error_free(err);
+         return;
+     }
  
-     nc = qemu_new_net_client(&net_stream_info, peer, model, name);
-     s = DO_UPCAST(NetStreamState, nc, nc);
-+    qemu_set_info_str(&s->nc, "initializing");
+@@ -327,9 +329,11 @@ static void net_stream_client_connected(QIOTask *task, gpointer opaque)
+     SocketAddress *addr;
+     gchar *uri;
+     int ret;
++    Error *err = NULL;
  
-     s->listen_ioc = QIO_CHANNEL(listen_sioc);
-     qio_channel_socket_listen_async(listen_sioc, addr, 0,
-@@ -400,6 +402,7 @@ static int net_stream_client_init(NetClientState *peer,
+-    if (sioc->fd < 0) {
+-        qemu_set_info_str(&s->nc, "connection error");
++    if (qio_task_propagate_error(task, &err)) {
++        qemu_set_info_str(&s->nc, "error: %s", error_get_pretty(err));
++        error_free(err);
+         goto error;
+     }
  
-     nc = qemu_new_net_client(&net_stream_info, peer, model, name);
-     s = DO_UPCAST(NetStreamState, nc, nc);
-+    qemu_set_info_str(&s->nc, "connecting");
- 
-     s->ioc = QIO_CHANNEL(sioc);
-     s->nc.link_down = true;
-diff --git a/tests/qtest/netdev-socket.c b/tests/qtest/netdev-socket.c
-index 3fc2ac26d0..91441f7922 100644
---- a/tests/qtest/netdev-socket.c
-+++ b/tests/qtest/netdev-socket.c
-@@ -127,7 +127,7 @@ static void test_stream_inet_ipv4(void)
-                        "addr.ipv4=on,addr.ipv6=off,"
-                        "addr.host=127.0.0.1,addr.port=%d", port);
- 
--    EXPECT_STATE(qts0, "st0: index=0,type=stream,\r\n", 0);
-+    EXPECT_STATE(qts0, "st0: index=0,type=stream,listening\r\n", 0);
- 
-     qts1 = qtest_initf("-nodefaults -M none "
-                        "-netdev stream,server=false,id=st0,addr.type=inet,"
-@@ -200,7 +200,7 @@ static void test_stream_unix_reconnect(void)
-                        "-netdev stream,id=st0,server=true,addr.type=unix,"
-                        "addr.path=%s", path);
- 
--    EXPECT_STATE(qts0, "st0: index=0,type=stream,\r\n", 0);
-+    EXPECT_STATE(qts0, "st0: index=0,type=stream,listening\r\n", 0);
- 
-     qts1 = qtest_initf("-nodefaults -M none "
-                        "-netdev stream,server=false,id=st0,addr.type=unix,"
-@@ -250,7 +250,7 @@ static void test_stream_inet_ipv6(void)
-                        "addr.ipv4=off,addr.ipv6=on,"
-                        "addr.host=::1,addr.port=%d", port);
- 
--    EXPECT_STATE(qts0, "st0: index=0,type=stream,\r\n", 0);
-+    EXPECT_STATE(qts0, "st0: index=0,type=stream,listening\r\n", 0);
- 
-     qts1 = qtest_initf("-nodefaults -M none "
-                        "-netdev stream,server=false,id=st0,addr.type=inet,"
-@@ -282,7 +282,7 @@ static void test_stream_unix(void)
-                        "addr.type=unix,addr.path=%s,",
-                        path);
- 
--    EXPECT_STATE(qts0, "st0: index=0,type=stream,\r\n", 0);
-+    EXPECT_STATE(qts0, "st0: index=0,type=stream,listening\r\n", 0);
- 
-     qts1 = qtest_initf("-nodefaults -M none "
-                        "-netdev stream,id=st0,server=false,"
-@@ -314,7 +314,7 @@ static void test_stream_unix_abstract(void)
-                        "addr.abstract=on",
-                        path);
- 
--    EXPECT_STATE(qts0, "st0: index=0,type=stream,\r\n", 0);
-+    EXPECT_STATE(qts0, "st0: index=0,type=stream,listening\r\n", 0);
- 
-     qts1 = qtest_initf("-nodefaults -M none "
-                        "-netdev stream,id=st0,server=false,"
+@@ -384,6 +388,7 @@ static gboolean net_stream_reconnect(gpointer data)
+ static void net_stream_arm_reconnect(NetStreamState *s)
+ {
+     if (s->reconnect && s->timer_tag == 0) {
++        qemu_set_info_str(&s->nc, "connecting");
+         s->timer_tag = g_timeout_add_seconds(s->reconnect,
+                                              net_stream_reconnect, s);
+     }
 -- 
 2.43.0
 
