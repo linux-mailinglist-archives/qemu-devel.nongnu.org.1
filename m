@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637778245DA
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:10:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03BED8245D9
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:09:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLQHM-0006Em-PQ; Thu, 04 Jan 2024 11:09:08 -0500
+	id 1rLQHr-0006aI-Vc; Thu, 04 Jan 2024 11:09:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQHH-0006D8-9a
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:09:03 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQHN-0006Qt-RM
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:09:09 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQHF-0007w7-KS
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:09:03 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-556fc91aba9so914406a12.1
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 08:09:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQHL-0007wf-Vr
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:09:09 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a1915034144so79890266b.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 08:09:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704384539; x=1704989339; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704384546; x=1704989346; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FkyRoAukzzjNZxJCvjtQL25l3Xz55vUpwmGgfR+jaus=;
- b=Cx6qikXKF5+si1ZJlYttz90fGOl6RLHXf6gfEONgppRawitvbVpBO5RiEjXJbHqjp5
- XINnVDMfyO3mGdAbypz9bxvUSglPs+jRHBNgMvJ7zZbPNVKeQxyJjtRhoQyV6vet7YLh
- SsMDjyj9UfvvjJ6twnVED0ObhtwNqiIms4VBdrVEjE/niclMiWBy17gm8CL/Lr0FVbVi
- upljEmneFsspSUbsXV/vGQ5fsLXdPgvaUQtqXVgHZ/kEZdKOX9TW3Q9bZ3upTgUUoPoI
- BKfXLYixI6btcKep45L4BBl5X6w5YPXonJXwNxO87zQQA394u3NXwmsyfSHodHDZZP47
- OZqg==
+ bh=efH3EwEIJk0cqjaLTWeXPZwgMrle+x/TDtx5ReZFUsQ=;
+ b=CewWtGkBdlAFsRyhB6r4tdzdHhf+lQRTjXhRX8KHgciU9tFgwV/hKekhsvmwLJ7IrY
+ WwOcAj9ewi6Dp4ESa+Qg3byqQWWQQceFl+oOqjdIu3N759A/OUKP0c6SQyTPRCCrAuPF
+ N/Bkg75UdWFHPXxaRCZjoXJDL3R2Jd9FrmXqWwAfkzJcRiwGVFel0GGIxzNDfBIfIJ3T
+ 27VKEGMsP+rtrJI/qMXOq7DQK5pNngOJ25/UUi0nWrxY6pSYolNY8gol/S4/htB5Vs87
+ GlfFqRZ1EiukFkZB92xxSOuvbdCZyV5lL7EMuMIwbmhjd7HtrkXRs+Lnnrml+D2YkKOP
+ 9nLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704384539; x=1704989339;
+ d=1e100.net; s=20230601; t=1704384546; x=1704989346;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FkyRoAukzzjNZxJCvjtQL25l3Xz55vUpwmGgfR+jaus=;
- b=SAbM2wn5KsvAXvg+FKAUZjWz4pCMcDiirwGQx2KJ4SGmAA9Tg7kp2xo2oks3WUZtOO
- Sb8uZ8K1RcQJAsPZcArVeLv4LAvCn3Fsaj5sON4ooJErJCMFzmzq2/nDaeiYmP2z6l1J
- GLvAU3R2pHbpgSTGnN4gopTgMxymnGB6VFxPLsGYbKFg9DJTFCuONJAPwic0lf3atkUp
- E4t76hmWJVCBMIZHASLq62p1aMhxxweLaamAuKrM9deJWRdPOg87nkd0sAd8VBmZma2e
- u3QmcyvbhzECAfzhjUsiEVM2DfR01tmGaAOyKGFVKqoaovZKeUxau1bm/enBJc4BzAjA
- Zlrw==
-X-Gm-Message-State: AOJu0Yy7WxwOeZPmVKpGFzSCMmpoi7nDbhiaKDEBIygjGNRqH9wJy5We
- QW01qhnpeb6KkUJv5LyFfxzn1m+G5ggjR6vjoiOB3EUU2m5nTQ==
-X-Google-Smtp-Source: AGHT+IGwi1PuBKL6dOJHv1Wnt0YJi4FSD5s5HByeUtPp5neS5KlxfclHX1EGDGPd+Y4/se8DyOShfg==
-X-Received: by 2002:a17:906:4089:b0:a28:b085:bea with SMTP id
- u9-20020a170906408900b00a28b0850beamr452711ejj.53.1704384539816; 
- Thu, 04 Jan 2024 08:08:59 -0800 (PST)
+ bh=efH3EwEIJk0cqjaLTWeXPZwgMrle+x/TDtx5ReZFUsQ=;
+ b=tbmkTm7k7NR02h5EZssZWkPpALWN5+VKls9xSAftkz4RFl9EyaO/YtffYzsRK72EgN
+ HMS6KB8kqPHBBpuTqKfciyAZtM2g61+uldJZUu9lWoO60JvagZeM0j/SdDSWG1egTkDK
+ 8Qn1/knXB/FkKFz0NW0UmO2S3OioekzKKqydAg9A1UUCADSHbNOaHT5iEe/j5h6xQA5Y
+ NufI5BeK3IjeizJ3P5q0JSCVKl76Ni/1Gphs5x3CaZyCBLSe/Rk3yXpG5qrvl7Y78krl
+ +B3vzkSJKXPkaS8AJrVm6ng96qOi7n0BmaHSb9bElZN9uuWXkJyKH3a/N86L7LZZVqUr
+ ZPgA==
+X-Gm-Message-State: AOJu0YzW7UNRneCC0IFUPS2oZ0r5sX2o9s8W3kHXRKD2XDede0xzQOx8
+ GAPtWuRwXN+iE7MTPD2sSzxflBIfiDjiyoTdqQHQs3EYdDJ8Yg==
+X-Google-Smtp-Source: AGHT+IEr0z3q1RG2AzqxjljHQyqOTIMgSltIzaCdEnqjlFzBqDySkY3l5bJZNaZIt+cAjDaeAKTfFw==
+X-Received: by 2002:a17:906:3e5b:b0:a28:c148:d79f with SMTP id
+ t27-20020a1709063e5b00b00a28c148d79fmr464409eji.60.1704384546372; 
+ Thu, 04 Jan 2024 08:09:06 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.194.232])
  by smtp.gmail.com with ESMTPSA id
- fw34-20020a170907502200b00a28da51438asm782859ejc.157.2024.01.04.08.08.58
+ ey7-20020a1709070b8700b00a269d26f278sm7720417ejc.161.2024.01.04.08.09.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 04 Jan 2024 08:08:59 -0800 (PST)
+ Thu, 04 Jan 2024 08:09:05 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>,
@@ -66,17 +66,18 @@ Cc: Thomas Huth <thuth@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [RFC PATCH 8/9] scripts/ci: Update Ubuntu packages list
-Date: Thu,  4 Jan 2024 17:08:04 +0100
-Message-ID: <20240104160805.56856-9-philmd@linaro.org>
+Subject: [RFC PATCH 9/9] scripts/ci: Restrict libpmem-dev and libxen-dev
+ packages to x86 hosts
+Date: Thu,  4 Jan 2024 17:08:05 +0100
+Message-ID: <20240104160805.56856-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240104160805.56856-1-philmd@linaro.org>
 References: <20240104160805.56856-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,49 +100,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update Ubuntu 22.04 package list running:
-
- $ lcitool variables -f json ubuntu-2204 qemu \
-   | jq -r '.pkgs[]' \
-   | xargs -n 1 echo "          -"
-
-On libvirt-ci commit e9e7d3bf ("facts: enable gtk-vnc2-devel
-on almalinux 8 / centos stream 8").
+libpmem-dev / libxen-dev are not available for all host archs.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- scripts/ci/setup/build-environment.yml | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/ci/setup/build-environment.yml | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/scripts/ci/setup/build-environment.yml b/scripts/ci/setup/build-environment.yml
-index 6baa539b46..988aef3a07 100644
+index 988aef3a07..8b5b8e1dbd 100644
 --- a/scripts/ci/setup/build-environment.yml
 +++ b/scripts/ci/setup/build-environment.yml
-@@ -58,7 +58,7 @@
-           - git
-           - hostname
-           - libaio-dev
--          - libasan5
-+          - libasan6
-           - libasound2-dev
-           - libattr1-dev
-           - libbpf-dev
-@@ -94,6 +94,7 @@
-           - libnuma-dev
-           - libpam0g-dev
+@@ -96,7 +96,6 @@
            - libpcre2-dev
-+          - libpipewire-0.3-dev
+           - libpipewire-0.3-dev
            - libpixman-1-dev
-           - libpmem-dev
+-          - libpmem-dev
            - libpng-dev
-@@ -139,6 +140,7 @@
-           - python3-pip
-           - python3-sphinx
-           - python3-sphinx-rtd-theme
-+          - python3-tomli
-           - python3-venv
-           - python3-yaml
-           - rpm2cpio
+           - libpulse-dev
+           - librbd-dev
+@@ -120,7 +119,6 @@
+           - libvdeplug-dev
+           - libvirglrenderer-dev
+           - libvte-2.91-dev
+-          - libxen-dev
+           - libxml2-dev
+           - libzstd-dev
+           - llvm
+@@ -158,6 +156,17 @@
+         - ansible_facts['distribution'] == 'Ubuntu'
+         - ansible_facts['distribution_version'] == '22.04'
+ 
++    - name: Install arch-specific packages (Ubuntu 22.04)
++      dnf:
++        name:
++          - libpmem-dev
++          - libxen-dev
++      when:
++        - ansible_facts['distribution'] == 'Ubuntu'
++        - ansible_facts['distribution_version'] == '22.04'
++        - ansible_facts['architecture'] == 'x86_64'
++
++
+     - name: Install armhf cross-compile packages to build QEMU on AArch64 Ubuntu 22.04
+       package:
+         name:
 -- 
 2.41.0
 
