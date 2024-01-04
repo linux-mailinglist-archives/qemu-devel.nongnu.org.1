@@ -2,122 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 646CF824733
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 18:20:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9AB982476B
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 18:26:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLRNL-00049n-1z; Thu, 04 Jan 2024 12:19:23 -0500
+	id 1rLRSt-0007hn-6o; Thu, 04 Jan 2024 12:25:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rLRNH-00048U-LG
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 12:19:20 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rLRNF-0008ME-8x
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 12:19:18 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 6E7DA220C4;
- Thu,  4 Jan 2024 17:19:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704388753; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1rLRSs-0007hH-5N
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 12:25:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1rLRSq-0000rH-44
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 12:25:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704389102;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RXzhHM5Xsos+lZ8KeiisT11rEeM4li9bZ4VVFvCjCso=;
- b=iG5buSwWp6Fp7QGqkjidr8gHghu/KIBFpEeNSFoZpgg6dAC3cZCJhKAM63H2yas8yBaK/4
- 9u2eNiDZdaY8v+zjkNK/E/2kJmI4Hynz5J1w39U1KO+QDzubrwVdUQtBqmzTv8D4+l5Z1a
- P94vLtEcPlDYDiAXlKZmQ9s7pFHNiH8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704388753;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RXzhHM5Xsos+lZ8KeiisT11rEeM4li9bZ4VVFvCjCso=;
- b=szCprh7CB7f2wYkpr7unAVN6NFTJaPKkJ1FccUAT9+a6zsedljv44LE4yG8Cp6MRv3nF3G
- LmUtsXusfH6MHDDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704388753; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RXzhHM5Xsos+lZ8KeiisT11rEeM4li9bZ4VVFvCjCso=;
- b=iG5buSwWp6Fp7QGqkjidr8gHghu/KIBFpEeNSFoZpgg6dAC3cZCJhKAM63H2yas8yBaK/4
- 9u2eNiDZdaY8v+zjkNK/E/2kJmI4Hynz5J1w39U1KO+QDzubrwVdUQtBqmzTv8D4+l5Z1a
- P94vLtEcPlDYDiAXlKZmQ9s7pFHNiH8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704388753;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RXzhHM5Xsos+lZ8KeiisT11rEeM4li9bZ4VVFvCjCso=;
- b=szCprh7CB7f2wYkpr7unAVN6NFTJaPKkJ1FccUAT9+a6zsedljv44LE4yG8Cp6MRv3nF3G
- LmUtsXusfH6MHDDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2666413722;
- Thu,  4 Jan 2024 17:19:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id WB2AN47olmUNbAAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 04 Jan 2024 17:19:10 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH v2 4/4] ci: Add a migration compatibility test job
-Date: Thu,  4 Jan 2024 14:18:57 -0300
-Message-Id: <20240104171857.20108-5-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240104171857.20108-1-farosas@suse.de>
-References: <20240104171857.20108-1-farosas@suse.de>
+ bh=nryjzsLAz0uQo500B7l/Kj+QhCCmbJ3uZDCprBYf0X8=;
+ b=Qp0vAGt+lAoZR4JAfdMDJQqvsaN6fYOK8yf8Dz6j5I3GTgecGr4SpWpZLgQDh3UZe98xxl
+ 31KlS9nJTIKOdP8suwmnl+0JSggDCJDk1jMbE1KHm52ushmNU3D4611j73KnLAxb86ic/R
+ Ls5esBG9dWqnUPEWXQw5Fb4bxfvllOQ=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-170-2eO2aCGAOCG0WDEcFxk-HQ-1; Thu, 04 Jan 2024 12:23:03 -0500
+X-MC-Unique: 2eO2aCGAOCG0WDEcFxk-HQ-1
+Received: by mail-io1-f71.google.com with SMTP id
+ ca18e2360f4ac-7bbad6e08b0so78008139f.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 09:23:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704388983; x=1704993783;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nryjzsLAz0uQo500B7l/Kj+QhCCmbJ3uZDCprBYf0X8=;
+ b=M0lzdLT1Q1FB7VoAsQBdGGKQCNxQUyHK6U2iA4Wm4Rqs7X+wXvDfCX+s/5454/Itfv
+ xu3mS1flrN6efP/iNHMafGJvskBGG10ggtGeOrJ+ylob/djdH9z3/awVm3EZUgJcgBh4
+ odFdcq96W1OCTewM/9n9jhE3dRffaOUpH+Jjk8X26XWPDRXWdByOTtlyh4TwQrUOUzx0
+ kBcls3xUCV86FVkCSwveOOzRebAykXj/7K8WIUfxGQ1sTZ2PD81qEVPFc9eNO1AIgNSa
+ hviGsAq8p4UnBj4xoonH84DPgZAdg+ofWDJdPo97ZQvu7ClF0x23TW2k8vsdwF+BCIj6
+ aTsg==
+X-Gm-Message-State: AOJu0Yx93W38BxYAXhcozXeiqkw3xfm9gH4YgB8h9VwZZmsv32Eoeakb
+ LYgVXrxGTtWObWPtOudDKHeTDMJeg2IpCMXmi4YEP+QESsCtdmcXFBzLN3AEwz9msFLa80zfYe9
+ +pRMZmV/5kUY3fZY6C+/dM9s=
+X-Received: by 2002:a6b:621a:0:b0:7bb:411c:3da2 with SMTP id
+ f26-20020a6b621a000000b007bb411c3da2mr878480iog.38.1704388982800; 
+ Thu, 04 Jan 2024 09:23:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEVieDC6DPTBlX+5xCu9FREl9NZLrMAeZJ6HIBcmEe2x4Qi5TKbU89vpSxTFo9pvrvMBb8f/A==
+X-Received: by 2002:a6b:621a:0:b0:7bb:411c:3da2 with SMTP id
+ f26-20020a6b621a000000b007bb411c3da2mr878466iog.38.1704388982487; 
+ Thu, 04 Jan 2024 09:23:02 -0800 (PST)
+Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
+ cd15-20020a0566381a0f00b0046dfa8c080asm59956jab.136.2024.01.04.09.23.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Jan 2024 09:23:02 -0800 (PST)
+Date: Thu, 4 Jan 2024 10:23:00 -0700
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Ankit Agrawal <ankita@nvidia.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Jason Gunthorpe
+ <jgg@nvidia.com>, "clg@redhat.com" <clg@redhat.com>,
+ "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
+ <ani@anisinha.ca>, "berrange@redhat.com" <berrange@redhat.com>,
+ "eduardo@habkost.net" <eduardo@habkost.net>, "imammedo@redhat.com"
+ <imammedo@redhat.com>, "mst@redhat.com" <mst@redhat.com>,
+ "eblake@redhat.com" <eblake@redhat.com>, "armbru@redhat.com"
+ <armbru@redhat.com>, "david@redhat.com" <david@redhat.com>,
+ "gshan@redhat.com" <gshan@redhat.com>, Aniket Agashe <aniketa@nvidia.com>,
+ Neo Jia <cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, "Tarun
+ Gupta (SW-GPU)" <targupta@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>,
+ Andy Currid <acurrid@nvidia.com>, Dheeraj Nigam <dnigam@nvidia.com>, Uday
+ Dhoke <udhoke@nvidia.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v6 1/2] qom: new object to associate device to numa node
+Message-ID: <20240104102300.0f9e5aa1.alex.williamson@redhat.com>
+In-Reply-To: <SA1PR12MB7199DF47EDDA9419E22FD79FB067A@SA1PR12MB7199.namprd12.prod.outlook.com>
+References: <20231225045603.7654-1-ankita@nvidia.com>
+ <20231225045603.7654-2-ankita@nvidia.com>
+ <20240102125821.00001aa0@Huawei.com>
+ <SA1PR12MB7199DF47EDDA9419E22FD79FB067A@SA1PR12MB7199.namprd12.prod.outlook.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -0.51
-X-Rspamd-Queue-Id: 6E7DA220C4
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iG5buSwW;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=szCprh7C
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Bar: /
-X-Spamd-Result: default: False [-0.51 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- URIBL_BLOCKED(0.00)[suse.de:email,suse.de:dkim];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- R_MISSING_CHARSET(2.50)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- MIME_GOOD(-0.10)[text/plain];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- BROKEN_CONTENT_TYPE(1.50)[];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[8]; MID_CONTAINS_FROM(1.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,99 +117,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The migration tests have support for being passed two QEMU binaries to
-test migration compatibility.
+On Thu, 4 Jan 2024 03:36:06 +0000
+Ankit Agrawal <ankita@nvidia.com> wrote:
 
-Add a CI job that builds the lastest release of QEMU and another job
-that uses that version plus an already present build of the current
-version and run the migration tests with the two, both as source and
-destination. I.e.:
+> Thanks Jonathan for the review.
+>=20
+> > As per reply to the cover letter I definitely want to see SRAT table du=
+mps
+> > in here though so we can easily see what this is actually building. =20
+>=20
+> Ack.
+>=20
+> > I worry that some OS might make the assumption that it's one GI node
+> > per PCI device though. The language in the ACPI specification is:
+> >=20
+> > "The Generic Initiator Affinity Structure provides the association betw=
+een _a_
+> > generic initiator and _the_ proximity domain to which the initiator bel=
+ongs".
+> >=20
+> > The use of _a_ and _the_ in there makes it pretty explicitly a N:1 rela=
+tionship
+> > (multiple devices can be in same proximity domain, but a device may onl=
+y be in one).
+> > To avoid that confusion you will need an ACPI spec change.=C2=A0 I'd be=
+ happy to
+> > support =20
+>=20
+> Yeah, that's a good point. It won't hurt to make the spec change to make =
+the
+> possibility of the association between a device with multiple domains.
+>=20
+> > The reason you can get away with this in Linux today is that I only imp=
+lemented
+> > a very minimal support for GIs with the mappings being provided the oth=
+er way
+> > around (_PXM in a PCIe node in DSDT).=C2=A0 If we finish that support o=
+ff I'd assume =20
+>=20
+> Not sure if I understand this. Can you provide a reference to this DSDT r=
+elated
+> change?
+>=20
+> > Also, this effectively creates a bunch of separate generic initiator no=
+des
+> > and lumping that under one object seems to imply they are in general co=
+nnected
+> > to each other.
+> >=20
+> > I'd be happier with a separate instance per GI node
+> >=20
+> >  -object acpi-generic-initiator,id=3Dgi1,pci-dev=3Ddev1,nodeid=3D10
+> >=C2=A0 -object acpi-generic-initiator,id=3Dgi2,pci-dev=3Ddev1,nodeid=3D11
+> > etc with the proviso that anyone using this on a system that assumes a =
+one
+> > to one mapping for PCI
+> >
+> > However, I'll leave it up to those more familiar with the QEMU numa
+> > control interface design to comment on whether this approach is prefera=
+ble
+> > to making the gi part of the numa node entry or doing it like hmat. =20
+>=20
+> > -numa srat-gi,node-id=3D10,gi-pci-dev=3Ddev1 =20
+>=20
+> The current way of acpi-generic-initiator object usage came out of the di=
+scussion
+> on v1 to essentially link all the device NUMA nodes to the device.
+> (https://lore.kernel.org/all/20230926131427.1e441670.alex.williamson@redh=
+at.com/)
+>=20
+> Can Alex or David comment on which is preferable (the current mechanism v=
+s 1:1
+> mapping per object as suggested by Jonathan)?
 
- old QEMU (n-1) -> current QEMU (development tree)
- current QEMU (development tree) -> old QEMU (n-1)
+I imagine there are ways that either could work, but specifying a
+gi-pci-dev in the numa node declaration appears to get a bit messy if we
+have multiple gi-pci-dev devices to associate to the node whereas
+creating an acpi-generic-initiator object per individual device:node
+relationship feels a bit easier to iterate.
 
-The purpose of this CI job is to ensure the code we're about to merge
-will not cause a migration compatibility problem when migrating the
-next release (which will contain that code) to/from the previous
-release.
+Also if we do extend the ACPI spec to more explicitly allow a device to
+associate to multiple nodes, we could re-instate the list behavior of
+the acpi-generic-initiator whereas I don't see a representation of the
+association at the numa object that makes sense.  Thanks,
 
-I'm leaving the jobs as manual for now because using an older QEMU in
-tests could hit bugs that were already fixed in the current
-development tree and we need to handle those case-by-case.
-
-Note: for user forks, the version tags need to be pushed to gitlab
-otherwise it won't be able to checkout a different version.
-
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- .gitlab-ci.d/buildtest.yml | 53 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
-
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 91663946de..81163a3f6a 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -167,6 +167,59 @@ build-system-centos:
-       x86_64-softmmu rx-softmmu sh4-softmmu nios2-softmmu
-     MAKE_CHECK_ARGS: check-build
- 
-+build-previous-qemu:
-+  extends: .native_build_job_template
-+  artifacts:
-+    when: on_success
-+    expire_in: 2 days
-+    paths:
-+      - build-previous
-+    exclude:
-+      - build-previous/**/*.p
-+      - build-previous/**/*.a.p
-+      - build-previous/**/*.fa.p
-+      - build-previous/**/*.c.o
-+      - build-previous/**/*.c.o.d
-+      - build-previous/**/*.fa
-+  needs:
-+    job: amd64-opensuse-leap-container
-+  variables:
-+    QEMU_JOB_OPTIONAL: 1
-+    IMAGE: opensuse-leap
-+    TARGETS: x86_64-softmmu aarch64-softmmu
-+  before_script:
-+    - export QEMU_PREV_VERSION="$(sed 's/\([0-9.]*\)\.[0-9]*/v\1.0/' VERSION)"
-+    - git checkout $QEMU_PREV_VERSION
-+  after_script:
-+    - mv build build-previous
-+
-+.migration-compat-common:
-+  extends: .common_test_job_template
-+  needs:
-+    - job: build-previous-qemu
-+    - job: build-system-opensuse
-+  allow_failure: true
-+  variables:
-+    QEMU_JOB_OPTIONAL: 1
-+    IMAGE: opensuse-leap
-+    MAKE_CHECK_ARGS: check-build
-+  script:
-+    - cd build
-+    - QTEST_QEMU_BINARY_SRC=../build-previous/qemu-system-${TARGET}
-+          QTEST_QEMU_BINARY=./qemu-system-${TARGET} ./tests/qtest/migration-test
-+    - QTEST_QEMU_BINARY_DST=../build-previous/qemu-system-${TARGET}
-+          QTEST_QEMU_BINARY=./qemu-system-${TARGET} ./tests/qtest/migration-test
-+
-+migration-compat-aarch64:
-+  extends: .migration-compat-common
-+  variables:
-+    TARGET: aarch64
-+
-+migration-compat-x86_64:
-+  extends: .migration-compat-common
-+  variables:
-+    TARGET: x86_64
-+
- check-system-centos:
-   extends: .native_test_job_template
-   needs:
--- 
-2.35.3
+Alex
 
 
