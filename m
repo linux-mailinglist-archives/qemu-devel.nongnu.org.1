@@ -2,49 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C738282484B
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 19:38:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6DBF824851
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 19:38:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLSaE-0001L5-Ui; Thu, 04 Jan 2024 13:36:46 -0500
+	id 1rLSaI-0001Mm-Fe; Thu, 04 Jan 2024 13:36:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rLSaB-0001HL-9y
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 13:36:44 -0500
-Received: from ams.source.kernel.org ([2604:1380:4601:e00::1])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rLSaE-0001LX-Rw
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 13:36:46 -0500
+Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rLSa9-0004pa-6q
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 13:36:42 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rLSaD-00052L-1O
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 13:36:46 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by ams.source.kernel.org (Postfix) with ESMTP id 08583B81A19;
- Thu,  4 Jan 2024 18:36:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E618AC433C8;
- Thu,  4 Jan 2024 18:36:30 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTP id 07DAFCE1A9E;
+ Thu,  4 Jan 2024 18:36:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0391C433C7;
+ Thu,  4 Jan 2024 18:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1704393392;
- bh=kppn6/8aqphYn7jxY1OJtjBn3tczlhMoWZRE9Gt68TE=;
- h=From:To:Cc:Subject:Date:From;
- b=PXlrs/YH/KKTDOZKXrjdxy/R2JQl5RkAtkBnGbYhl1/3FiQXIV103fM7AAYvxKhDZ
- n2yZtDvIiQt/TlbP/V1mBokLnTDtRjDAKWa/igiXIxU4x+833Ry9YUDAp7xcxwezs7
- kTRR7gGQEZbITSq+jF5QVadOe9I4ntJ9YLqqTatvx6m+ZYRz68KuJj7rm7XST4WpQ3
- sEaJlIru1YZlrRMOYprso5orfsYdL5/RfCmUeieurQydOzk5wHvnnu3UXXNuMjCctG
- Yac792eukN7FB3PlZ1l8rFlQGkyX8Azj6iFDZbn+sGMpQVjAyNqolOeZhPES74D6k3
- 6/PnGsP3VxnCA==
+ s=k20201202; t=1704393394;
+ bh=U9ELA9CSzBzQvR2mewIpQhkEKKPZ2EGYxEwZmAAmKrc=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=VBpqQ+/wEnAx+9b/o2CiUmH/iQrGbrlHVFQFjPo6WbytQ6PEWH52+r8r0S36cPNZD
+ c/Jze45+GC8HKfZCdcL5iytdfGrUKqmD2NH18yaxRQ3hzSHjwPZHPZT/lZf7fF8frI
+ eav745R3DaFVW/l5EicStuLkEGWPgL/adA5xzD6hBXzuVakR10d44E7BJM7kxcvswW
+ ZJc7vr+7QKZ7/AK4V08VYK1pT0VUSCWwDkT7CWsLpXhR8D3Y9/FhDqlrulNnN1YiXK
+ VAX4/XVQKG5jQgimOqBjDdbP9bcpOjCzLn0uB5y1BuKj43SGnkzkrPOKEkOB4NUDz7
+ 2CYNev72BtAaQ==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, Bruno Haible <bruno@clisp.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  "Nelson H . F . Beebe" <beebe@math.utah.edu>, Helge Deller <deller@gmx.de>
-Subject: [PATCH 0/9] target/hppa qemu v8.2 regression fixes
-Date: Thu,  4 Jan 2024 19:36:19 +0100
-Message-ID: <20240104183628.101366-1-deller@kernel.org>
+Subject: [PATCH 1/9] hw/hppa/machine: Allow up to 3840 MB total memory
+Date: Thu,  4 Jan 2024 19:36:20 +0100
+Message-ID: <20240104183628.101366-2-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20240104183628.101366-1-deller@kernel.org>
+References: <20240104183628.101366-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4601:e00::1;
- envelope-from=deller@kernel.org; helo=ams.source.kernel.org
+Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
+ helo=sin.source.kernel.org
 X-Spam_score_int: -70
 X-Spam_score: -7.1
 X-Spam_bar: -------
@@ -69,52 +70,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-There were some regressions introduced with Qemu v8.2 on the hppa/hppa64
-target, e.g.:
+The physical hardware allows DIMMs of 4 MB size and above, allowing up
+to 3840 MB of memory, but is restricted by setup code to 3 GB.
+Increase the limit to allow up to the maximum amount of memory.
 
-- 32-bit HP-UX crashes on B160L (32-bit) machine
-- NetBSD boot failure due to power button in page zero
-- NetBSD FPU detection failure
+Btw. the memory area from 0xf000.0000 to 0xffff.ffff is reserved by
+the architecture for firmware and I/O memory and can not be used for
+standard memory.
 
-This small patch series fixes those known regressions and
-additionally:
+Signed-off-by: Helge Deller <deller@gmx.de>
+Noticed-by: Nelson H. F. Beebe <beebe@math.utah.edu>
+Fixes: b7746b1194c8 ("hw/hppa/machine: Restrict the total memory size to 3GB")
+---
+ hw/hppa/machine.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-- allows usage of the max. 3840MB of memory (instead of 3GB),
-- adds support for the qemu --nodefaults option (to debug other devices)
-
-I tried to keep the patches small to make backporting easier.
-
-This patch set will not fix those known (non-regression) bugs:
-- HP-UX and NetBSD still fail to boot on the new 64-bit C3700 machine
-- Linux kernel will still fail to boot on C3700 as long as kernel modules are used.
-
-The whole series can be pulled from the "hppa-fixes-8.2" branch from:
-https://github.com/hdeller/qemu-hppa.git        hppa-fixes-8.2
-
-Please test and review.
-
-Helge
-
-Helge Deller (9):
-  hw/hppa/machine: Allow up to 3840 MB total memory
-  hw/hppa/machine: Disable default devices with --nodefaults option
-  hw/pci-host/astro: Add missing astro & elroy registers for NetBSD
-  target/hppa: Fix PDC address translation on PA2.0 with PSW.W=0
-  target/hppa: Strip upper 32-bits of IOR on error in probe
-  target/hppa: Strip upper 32-bits of IOR on unaligned access error
-  hw/hppa: Move software power button address back into PDC
-  target/hppa: Avoid accessing %gr0 when raising exception
-  target/hppa: Update SeaBIOS-hppa to version 14
-
- hw/hppa/machine.c         |  33 ++++++++++++++++++++-------------
- hw/pci-host/astro.c       |  26 +++++++++++++++++++++++---
- pc-bios/hppa-firmware.img | Bin 681388 -> 163316 bytes
- roms/seabios-hppa         |   2 +-
- target/hppa/cpu.c         |   2 +-
- target/hppa/mem_helper.c  |   4 ++--
- target/hppa/op_helper.c   |   2 +-
- 7 files changed, 48 insertions(+), 21 deletions(-)
-
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index c8da7c18d5..6181f4b747 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -276,6 +276,7 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
+     unsigned int smp_cpus = machine->smp.cpus;
+     TranslateFn *translate;
+     MemoryRegion *cpu_region;
++    ram_addr_t ram_max;
+ 
+     /* Create CPUs.  */
+     for (unsigned int i = 0; i < smp_cpus; i++) {
+@@ -288,8 +289,10 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
+      */
+     if (hppa_is_pa20(&cpu[0]->env)) {
+         translate = translate_pa20;
++        ram_max = 0xf0000000;      /* 3.75 GB (limited by 32-bit firmware) */
+     } else {
+         translate = translate_pa10;
++        ram_max = 0xf0000000;      /* 3.75 GB (32-bit CPU) */
+     }
+ 
+     for (unsigned int i = 0; i < smp_cpus; i++) {
+@@ -311,9 +314,9 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
+                                 cpu_region);
+ 
+     /* Main memory region. */
+-    if (machine->ram_size > 3 * GiB) {
+-        error_report("RAM size is currently restricted to 3GB");
+-        exit(EXIT_FAILURE);
++    if (machine->ram_size > ram_max) {
++        info_report("Max RAM size limited to %ld MB", ram_max / MiB);
++        machine->ram_size = ram_max;
+     }
+     memory_region_add_subregion_overlap(addr_space, 0, machine->ram, -1);
+ 
 -- 
 2.43.0
 
