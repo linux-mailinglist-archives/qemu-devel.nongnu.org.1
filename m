@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A80182442C
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 15:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E3C4824452
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 16:00:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLP4L-0008Pq-9n; Thu, 04 Jan 2024 09:51:37 -0500
+	id 1rLPBw-0003Ks-9H; Thu, 04 Jan 2024 09:59:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rLP4J-0008Pc-9K
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 09:51:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rLPBu-0003Kh-Tm
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 09:59:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rLP4D-0005Oo-S0
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 09:51:34 -0500
+ id 1rLPBt-0006dg-0z
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 09:59:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704379888;
+ s=mimecast20190719; t=1704380363;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=ZUSoHK6Dc4Le3eEabY58PSGnYGF9BMMEyumcL+FRa28=;
- b=O+LVoUDfMywvgbLD8GwDP7+F4pWg/rGphXX+ggJMgf4h3DRvTH4iwOe4L1fwFk0aoepU75
- WkWB5FonCNp5f/pWkLX7HSei0Puktsb0zDg78iCxkSwksUwCvGm2Gzyk/OiGlkZIaQ8mUV
- mPLxN8wzAqmGFnE6Ll4vpfTJxfKUa1E=
+ bh=1wX/QG4ac9chsnNAp4cXbz6H6vlE1wNRlQKuak3jvcM=;
+ b=c6m5onLtXX/cfd3Q0toCtG4WbyS4b0brNFeLqita3Y2oJRVASm1AnS0Fd9xOh8G4fzNdQl
+ QZ8z2FN3QfNdBk900lVQmz/VKdbgW86dI3AhYgUt1SxDW8JplJkyEgePvOoDjlmbkX2IYZ
+ 2KqHX0QCIvvIkD+9VG7ChpYCX3psuvE=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-671-uZeVr47vMTCkmzKvyXb_Ew-1; Thu,
- 04 Jan 2024 09:51:25 -0500
-X-MC-Unique: uZeVr47vMTCkmzKvyXb_Ew-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-wXhc0ltqOb2xuZH6aZ_3Qw-1; Thu,
+ 04 Jan 2024 09:59:20 -0500
+X-MC-Unique: wXhc0ltqOb2xuZH6aZ_3Qw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4C8093806729;
- Thu,  4 Jan 2024 14:51:25 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 27B3E28040B1;
+ Thu,  4 Jan 2024 14:59:20 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.113])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E481B40C6EB9;
- Thu,  4 Jan 2024 14:51:23 +0000 (UTC)
-Date: Thu, 4 Jan 2024 14:51:21 +0000
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 10DEE492BF0;
+ Thu,  4 Jan 2024 14:59:18 +0000 (UTC)
+Date: Thu, 4 Jan 2024 14:59:16 +0000
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Hyman Huang <yong.huang@smartx.com>
 Cc: qemu-devel <qemu-devel@nongnu.org>, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH RESEND v3 04/10] crypto: Introduce creation option and
- structure for detached LUKS header
-Message-ID: <ZZbF6XvNiEng7JcS@redhat.com>
+Subject: Re: [PATCH RESEND v3 08/10] crypto: Introduce 'detached-header'
+ field in QCryptoBlockInfoLUKS
+Message-ID: <ZZbHxMnMJvwYvsAH@redhat.com>
 References: <cover.1703482349.git.yong.huang@smartx.com>
- <57ccc93a05f69973d41b571615f9ef13fd9b2983.1703482349.git.yong.huang@smartx.com>
+ <0866d2a1e7011831570a377e02cddb5db4b7d855.1703482349.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <57ccc93a05f69973d41b571615f9ef13fd9b2983.1703482349.git.yong.huang@smartx.com>
+In-Reply-To: <0866d2a1e7011831570a377e02cddb5db4b7d855.1703482349.git.yong.huang@smartx.com>
 User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
 X-Spam_bar: ----
 X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,78 +85,101 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 25, 2023 at 01:45:06PM +0800, Hyman Huang wrote:
-> Introduce 'header' field in BlockdevCreateOptionsLUKS to support
-> detached LUKS header creation. Meanwhile, introduce header-related
-> field in QCryptoBlock.
+On Mon, Dec 25, 2023 at 01:45:10PM +0800, Hyman Huang wrote:
+> When querying the LUKS disk with the qemu-img tool or other APIs,
+> add information about whether the LUKS header is detached.
+> 
+> Additionally, update the test case with the appropriate
+> modification.
 > 
 > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 > ---
->  crypto/blockpriv.h   | 3 +++
->  qapi/block-core.json | 3 +++
->  qapi/crypto.json     | 5 ++++-
->  3 files changed, 10 insertions(+), 1 deletion(-)
+>  crypto/block-luks.c        | 2 ++
+>  qapi/crypto.json           | 3 +++
+>  tests/qemu-iotests/210.out | 4 ++++
+>  3 files changed, 9 insertions(+)
 > 
-> diff --git a/crypto/blockpriv.h b/crypto/blockpriv.h
-> index 3c7ccea504..6289aea961 100644
-> --- a/crypto/blockpriv.h
-> +++ b/crypto/blockpriv.h
-> @@ -42,6 +42,9 @@ struct QCryptoBlock {
->      size_t niv;
->      uint64_t payload_offset; /* In bytes */
->      uint64_t sector_size; /* In bytes */
-> +
-> +    bool detached_header; /* True if disk has a detached LUKS header */
-> +    uint64_t detached_header_size; /* LUKS header size plus key slot size */
+> diff --git a/crypto/block-luks.c b/crypto/block-luks.c
+> index 474c7aee2e..c5e53b4ee4 100644
+> --- a/crypto/block-luks.c
+> +++ b/crypto/block-luks.c
+> @@ -1266,6 +1266,7 @@ qcrypto_block_luks_open(QCryptoBlock *block,
+>      block->sector_size = QCRYPTO_BLOCK_LUKS_SECTOR_SIZE;
+>      block->payload_offset =
+>          qcrypto_block_luks_payload_offset(luks->header.payload_offset_sector);
+> +    block->detached_header = (block->payload_offset == 0) ? true : false;
 
-This field can be replaced by a local variable I believe.
+We shouldn't be looking at payload_offset for this - when we pass
+in an enum flag to indicate detached header, we'll know directly.
 
->  };
 >  
->  struct QCryptoBlockDriver {
-> diff --git a/qapi/block-core.json b/qapi/block-core.json
-> index 9ac256c489..8aec179926 100644
-> --- a/qapi/block-core.json
-> +++ b/qapi/block-core.json
-> @@ -4948,6 +4948,8 @@
->  # @file: Node to create the image format on, mandatory except when
->  #        'preallocation' is not requested
->  #
-> +# @header: Detached LUKS header node to format. (since 9.0)
-> +#
->  # @size: Size of the virtual disk in bytes
->  #
->  # @preallocation: Preallocation mode for the new image (since: 4.2)
-> @@ -4958,6 +4960,7 @@
->  { 'struct': 'BlockdevCreateOptionsLUKS',
->    'base': 'QCryptoBlockCreateOptionsLUKS',
->    'data': { '*file':            'BlockdevRef',
-> +            '*header':          'BlockdevRef',
->              'size':             'size',
->              '*preallocation':   'PreallocMode' } }
+>      return 0;
 >  
+> @@ -1892,6 +1893,7 @@ static int qcrypto_block_luks_get_info(QCryptoBlock *block,
+>      info->u.luks.master_key_iters = luks->header.master_key_iterations;
+>      info->u.luks.uuid = g_strndup((const char *)luks->header.uuid,
+>                                    sizeof(luks->header.uuid));
+> +    info->u.luks.detached_header = block->detached_header;
+>  
+>      for (i = 0; i < QCRYPTO_BLOCK_LUKS_NUM_KEY_SLOTS; i++) {
+>          slot = g_new0(QCryptoBlockInfoLUKSSlot, 1);
 > diff --git a/qapi/crypto.json b/qapi/crypto.json
-> index fd3d46ebd1..6b4e86cb81 100644
+> index 8e81aa8454..336c880b5d 100644
 > --- a/qapi/crypto.json
 > +++ b/qapi/crypto.json
-> @@ -195,10 +195,13 @@
->  #     decryption key.  Mandatory except when probing image for
->  #     metadata only.
+> @@ -317,6 +317,8 @@
 >  #
-> +# @detached-header: if true, disk has detached LUKS header.
+>  # @hash-alg: the master key hash algorithm
+>  #
+> +# @detached-header: whether the LUKS header is detached (Since 9.0)
 > +#
->  # Since: 2.6
->  ##
->  { 'struct': 'QCryptoBlockOptionsLUKS',
-> -  'data': { '*key-secret': 'str' }}
-> +  'data': { '*key-secret': 'str',
-> +            '*detached-header': 'bool' }}
-
-I don't think we need this change if we pass this info as an enum flag
-
->  
->  ##
->  # @QCryptoBlockCreateOptionsLUKS:
+>  # @payload-offset: offset to the payload data in bytes
+>  #
+>  # @master-key-iters: number of PBKDF2 iterations for key material
+x> @@ -333,6 +335,7 @@
+>             'ivgen-alg': 'QCryptoIVGenAlgorithm',
+>             '*ivgen-hash-alg': 'QCryptoHashAlgorithm',
+>             'hash-alg': 'QCryptoHashAlgorithm',
+> +           'detached-header': 'bool',
+>             'payload-offset': 'int',
+>             'master-key-iters': 'int',
+>             'uuid': 'str',
+> diff --git a/tests/qemu-iotests/210.out b/tests/qemu-iotests/210.out
+> index 96d9f749dd..94b29b2120 100644
+> --- a/tests/qemu-iotests/210.out
+> +++ b/tests/qemu-iotests/210.out
+> @@ -18,6 +18,7 @@ virtual size: 128 MiB (134217728 bytes)
+>  encrypted: yes
+>  Format specific information:
+>      ivgen alg: plain64
+> +    detached header: false
+>      hash alg: sha256
+>      cipher alg: aes-256
+>      uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+> @@ -70,6 +71,7 @@ virtual size: 64 MiB (67108864 bytes)
+>  encrypted: yes
+>  Format specific information:
+>      ivgen alg: plain64
+> +    detached header: false
+>      hash alg: sha1
+>      cipher alg: aes-128
+>      uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+> @@ -125,6 +127,7 @@ virtual size: 0 B (0 bytes)
+>  encrypted: yes
+>  Format specific information:
+>      ivgen alg: plain64
+> +    detached header: false
+>      hash alg: sha256
+>      cipher alg: aes-256
+>      uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+> @@ -195,6 +198,7 @@ virtual size: 0 B (0 bytes)
+>  encrypted: yes
+>  Format specific information:
+>      ivgen alg: plain64
+> +    detached header: false
+>      hash alg: sha256
+>      cipher alg: aes-256
+>      uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 > -- 
 > 2.39.1
 > 
