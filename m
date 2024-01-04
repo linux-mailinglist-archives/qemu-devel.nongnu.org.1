@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8161E823B66
+	by mail.lfdr.de (Postfix) with ESMTPS id A8982823B69
 	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 05:33:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLFPK-0000Dn-ES; Wed, 03 Jan 2024 23:32:38 -0500
+	id 1rLFPM-0000E4-8a; Wed, 03 Jan 2024 23:32:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFPI-0000D4-Fe
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:32:36 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFPK-0000Dp-Pc
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:32:38 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFPH-0006Xl-0r
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:32:36 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFPJ-0006YA-Ai
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:32:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704342754;
+ s=mimecast20190719; t=1704342756;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WktZ2LzDhP+W10mjy931IC19R4i2j3WY3KXAO/VI7i8=;
- b=We+FSNvkc5bB6ydstC766yatvZAATp4w2e4C6XAKIu5kcYQYqwqZE9m2l6pMdOAPoeSkh1
- UHIp3Ui5RSn8aY2h9kr5pT54uTa8DaW5eIjy7JLIAi8pOEmbB5UpjszYrwn894eg4XbW+F
- I3tbKbJ05AqNERx73KNXbQ2RJXWoOTI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-478-c0vyesrWNlqx6CG2U5wQJA-1; Wed,
- 03 Jan 2024 23:32:30 -0500
-X-MC-Unique: c0vyesrWNlqx6CG2U5wQJA-1
+ bh=HF+47A1lnM8/YjS6desQe6306uTmYoFO3/fohn4jQGw=;
+ b=X/mn02PwesZ8vVQq4inFIz332KcWsQ1Wq/2r+FE9bDj8DO1zNAJi1qVFF2noyls7hh3SiU
+ 6EGAhYd8ZOluFFcdSJg3NJSdo5zZXSMATPTTYRCgCX9MQIZs9FYIMm/eO8iU/groopxYWZ
+ ZBO+GsNnmjOeI61R830SITs5vZqD1uw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-612-vxNw8MqCOFOGavyS-dYoVQ-1; Wed, 03 Jan 2024 23:32:35 -0500
+X-MC-Unique: vxNw8MqCOFOGavyS-dYoVQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5EE841C2B662;
- Thu,  4 Jan 2024 04:32:30 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F25E0836F85;
+ Thu,  4 Jan 2024 04:32:34 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.12])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EBB30C15968;
- Thu,  4 Jan 2024 04:32:25 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 149C9C15E6A;
+ Thu,  4 Jan 2024 04:32:30 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
 Cc: Fabiano Rosas <farosas@suse.de>, Steve Sistare <steven.sistare@oracle.com>,
  Juan Quintela <quintela@trasno.org>, peterx@redhat.com,
  Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Leonardo Bras <leobras@redhat.com>
-Subject: [PULL 02/26] MAINTAINERS: Remove myself as reviewer from Live
- Migration
-Date: Thu,  4 Jan 2024 12:31:47 +0800
-Message-ID: <20240104043213.431566-3-peterx@redhat.com>
+ Avihai Horon <avihaih@nvidia.com>
+Subject: [PULL 03/26] cpus: vm_was_suspended
+Date: Thu,  4 Jan 2024 12:31:48 +0800
+Message-ID: <20240104043213.431566-4-peterx@redhat.com>
 In-Reply-To: <20240104043213.431566-1-peterx@redhat.com>
 References: <20240104043213.431566-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -82,41 +81,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Leonardo Bras <leobras@redhat.com>
+From: Steve Sistare <steven.sistare@oracle.com>
 
-I am currently focusing in kernel development, so I will probably not be
-of much help in reviewing general Live Migration changes.
+Add a state variable to remember if a vm previously transitioned into a
+suspended state.
 
-For above reason I am removing my Reviewer status from Migration and RDMA
-Migration.
-
-Signed-off-by: Leonardo Bras <leobras@redhat.com>
-Link: https://lore.kernel.org/r/20231221170739.332378-1-leobras@redhat.com
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Link: https://lore.kernel.org/r/1704312341-66640-2-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- MAINTAINERS | 2 --
- 1 file changed, 2 deletions(-)
+ include/sysemu/runstate.h |  2 ++
+ system/cpus.c             | 15 +++++++++++++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 56464cd916..00ec1f7eca 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3356,7 +3356,6 @@ F: scripts/checkpatch.pl
- Migration
- M: Peter Xu <peterx@redhat.com>
- M: Fabiano Rosas <farosas@suse.de>
--R: Leonardo Bras <leobras@redhat.com>
- S: Maintained
- F: hw/core/vmstate-if.c
- F: include/hw/vmstate-if.h
-@@ -3375,7 +3374,6 @@ X: migration/rdma*
- RDMA Migration
- R: Li Zhijian <lizhijian@fujitsu.com>
- R: Peter Xu <peterx@redhat.com>
--R: Leonardo Bras <leobras@redhat.com>
- S: Odd Fixes
- F: migration/rdma*
+diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
+index c8c2bd8a61..88a67e22b0 100644
+--- a/include/sysemu/runstate.h
++++ b/include/sysemu/runstate.h
+@@ -51,6 +51,8 @@ int vm_prepare_start(bool step_pending);
+ int vm_stop(RunState state);
+ int vm_stop_force_state(RunState state);
+ int vm_shutdown(void);
++void vm_set_suspended(bool suspended);
++bool vm_get_suspended(void);
  
+ typedef enum WakeupReason {
+     /* Always keep QEMU_WAKEUP_REASON_NONE = 0 */
+diff --git a/system/cpus.c b/system/cpus.c
+index a444a747f0..9f631ab734 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -259,6 +259,21 @@ void cpu_interrupt(CPUState *cpu, int mask)
+     }
+ }
+ 
++/*
++ * True if the vm was previously suspended, and has not been woken or reset.
++ */
++static int vm_was_suspended;
++
++void vm_set_suspended(bool suspended)
++{
++    vm_was_suspended = suspended;
++}
++
++bool vm_get_suspended(void)
++{
++    return vm_was_suspended;
++}
++
+ static int do_vm_stop(RunState state, bool send_stop)
+ {
+     int ret = 0;
 -- 
 2.41.0
 
