@@ -2,56 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D86EE823B6B
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 05:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93879823B6C
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 05:33:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLFP9-0000AA-9s; Wed, 03 Jan 2024 23:32:27 -0500
+	id 1rLFPE-0000An-U7; Wed, 03 Jan 2024 23:32:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFP7-00009x-7k
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:32:25 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFPD-0000AY-L6
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:32:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFP5-0006Wq-C5
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:32:24 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFPC-0006XS-0h
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:32:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704342741;
+ s=mimecast20190719; t=1704342749;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=3STyDinUTvGIEQvgFrC+VOyUJUv9ABeLdR89aNy1zYs=;
- b=FqiFLEgOJRP9RbXGt1nEZswAJHFD75DTrg+PbVqYNei+WBy9Vm5t9mKb61ZxU8czWccR/t
- tjfJ7cBo+qmLkbR3PofAklVHOZdYJ8pYW9WuWYyUdqnjPH1gYLdIai++AywHLkSO1P8et/
- ucWAiV6tUwXGig/EqdsUz/NmMwfMi80=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-_ofupzBSMgmIrGSPthkGog-1; Wed, 03 Jan 2024 23:32:20 -0500
-X-MC-Unique: _ofupzBSMgmIrGSPthkGog-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=M4NEMeHwevL0+UB0KJS07+uty2N/Zh9zpVkTHzGeTTo=;
+ b=VSlYhRrPxrlIS1Iwvh2ZGIFGLYO/4HJXq2vIb0+PITjX3IixMZQT6INfASjHoDmQNhrYvd
+ c89+UzmFRUMnz62wU1KpAQO0IeSMLN9oXkXfdKZuWFd2adG0/j2E3oOqlavI8/WXD2Z4Ed
+ L/ZZfyFP3u/fqdoS0JjXVZlJONe6t0g=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-60-YseHawpsPFmWdyDN_N8uIw-1; Wed,
+ 03 Jan 2024 23:32:25 -0500
+X-MC-Unique: YseHawpsPFmWdyDN_N8uIw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED5CA836F88;
- Thu,  4 Jan 2024 04:32:19 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43D693C2B60D;
+ Thu,  4 Jan 2024 04:32:25 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.12])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 87EEFC15A0C;
- Thu,  4 Jan 2024 04:32:15 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A4426C15968;
+ Thu,  4 Jan 2024 04:32:20 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
 Cc: Fabiano Rosas <farosas@suse.de>, Steve Sistare <steven.sistare@oracle.com>,
  Juan Quintela <quintela@trasno.org>, peterx@redhat.com,
  Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>
-Subject: [PULL 00/26] Migration 20240104 patches
-Date: Thu,  4 Jan 2024 12:31:45 +0800
-Message-ID: <20240104043213.431566-1-peterx@redhat.com>
+ Avihai Horon <avihaih@nvidia.com>, Juan Quintela <quintela@redhat.com>,
+ Bin Meng <bmeng.cn@gmail.com>
+Subject: [PULL 01/26] MAINTAINERS: Leaving Migration
+Date: Thu,  4 Jan 2024 12:31:46 +0800
+Message-ID: <20240104043213.431566-2-peterx@redhat.com>
+In-Reply-To: <20240104043213.431566-1-peterx@redhat.com>
+References: <20240104043213.431566-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
@@ -79,96 +83,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+From: Juan Quintela <quintela@redhat.com>
 
-The following changes since commit 7425b6277f12e82952cede1f531bfc689bf77fb1:
+I am leaving Red Hat, and as part of that I am leaving Migration
+maintenarship.
 
-  Merge tag 'tracing-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-12-27 05:15:32 -0500)
+You are left in good hands with Peter and Fabiano.
 
-are available in the Git repository at:
+Thanks for all the fish.
 
-  https://gitlab.com/peterx/qemu.git tags/migration-20240104-pull-request
+Signed-off-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
+Link: https://lore.kernel.org/r/20240102201908.1987-2-quintela@redhat.com
+[peterx: prefix the subject]
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ MAINTAINERS | 3 ---
+ .mailmap    | 1 +
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-for you to fetch changes up to b12635ff08ab2e5a6a955c6866ef4525fb3deb5d:
-
-  migration: fix coverity migrate_mode finding (2024-01-04 09:52:42 +0800)
-
-----------------------------------------------------------------
-migration 1st pull for 9.0
-
-- We lost Juan and Leo in the maintainers file
-- Steven's suspend state fix
-- Steven's fix for coverity on migrate_mode
-- Avihai's migration cleanup series
-
-----------------------------------------------------------------
-
-Avihai Horon (11):
-  migration: Remove migrate_max_downtime() declaration
-  migration: Remove nulling of hostname in migrate_init()
-  migration: Refactor migration_incoming_setup()
-  migration: Remove errp parameter in migration_fd_process_incoming()
-  migration/multifd: Fix error message in multifd_recv_initial_packet()
-  migration/multifd: Simplify multifd_channel_connect() if else
-    statement
-  migration/multifd: Fix leaking of Error in TLS error flow
-  migration/multifd: Remove error_setg() in
-    migration_ioc_process_incoming()
-  migration: Fix migration_channel_read_peek() error path
-  migration: Remove unnecessary usage of local Error
-  migration/multifd: Remove unnecessary usage of local Error
-
-Juan Quintela (1):
-  MAINTAINERS: Leaving Migration
-
-Leonardo Bras (1):
-  MAINTAINERS: Remove myself as reviewer from Live Migration
-
-Steve Sistare (13):
-  cpus: vm_was_suspended
-  cpus: stop vm in suspended runstate
-  cpus: check running not RUN_STATE_RUNNING
-  cpus: vm_resume
-  migration: propagate suspended runstate
-  migration: preserve suspended runstate
-  migration: preserve suspended for snapshot
-  migration: preserve suspended for bg_migration
-  tests/qtest: migration events
-  tests/qtest: option to suspend during migration
-  tests/qtest: precopy migration with suspend
-  tests/qtest: postcopy migration with suspend
-  migration: fix coverity migrate_mode finding
-
- MAINTAINERS                          |   5 -
- qapi/misc.json                       |  11 +-
- qapi/run-state.json                  |   6 +-
- include/migration/snapshot.h         |   7 ++
- include/sysemu/runstate.h            |  20 +++
- migration/migration.h                |   4 +-
- tests/migration/i386/a-b-bootblock.h |  26 ++--
- tests/qtest/migration-helpers.h      |  11 +-
- backends/tpm/tpm_emulator.c          |   2 +-
- hw/usb/hcd-ehci.c                    |   2 +-
- hw/usb/redirect.c                    |   2 +-
- hw/xen/xen-hvm-common.c              |   2 +-
- migration/channel.c                  |   9 +-
- migration/global_state.c             |  47 ++++---
- migration/migration-hmp-cmds.c       |   8 +-
- migration/migration.c                |  42 ++-----
- migration/multifd.c                  |  27 ++--
- migration/options.c                  |   4 +-
- migration/rdma.c                     |   6 +-
- migration/savevm.c                   |  23 ++--
- system/cpus.c                        |  47 +++++--
- system/runstate.c                    |   9 ++
- system/vl.c                          |   2 +
- tests/qtest/migration-helpers.c      |  25 ++--
- tests/qtest/migration-test.c         | 181 +++++++++++++++++++--------
- .mailmap                             |   1 +
- tests/migration/i386/Makefile        |   5 +-
- tests/migration/i386/a-b-bootblock.S |  50 +++++++-
- 28 files changed, 385 insertions(+), 199 deletions(-)
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 395f26ba86..56464cd916 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -70,7 +70,6 @@ R: Daniel P. Berrangé <berrange@redhat.com>
+ R: Thomas Huth <thuth@redhat.com>
+ R: Markus Armbruster <armbru@redhat.com>
+ R: Philippe Mathieu-Daudé <philmd@linaro.org>
+-R: Juan Quintela <quintela@redhat.com>
+ W: https://www.qemu.org/docs/master/devel/index.html
+ S: Odd Fixes
+ F: docs/devel/style.rst
+@@ -3355,7 +3354,6 @@ S: Odd Fixes
+ F: scripts/checkpatch.pl
+ 
+ Migration
+-M: Juan Quintela <quintela@redhat.com>
+ M: Peter Xu <peterx@redhat.com>
+ M: Fabiano Rosas <farosas@suse.de>
+ R: Leonardo Bras <leobras@redhat.com>
+@@ -3375,7 +3373,6 @@ F: util/userfaultfd.c
+ X: migration/rdma*
+ 
+ RDMA Migration
+-M: Juan Quintela <quintela@redhat.com>
+ R: Li Zhijian <lizhijian@fujitsu.com>
+ R: Peter Xu <peterx@redhat.com>
+ R: Leonardo Bras <leobras@redhat.com>
+diff --git a/.mailmap b/.mailmap
+index e12e19f691..d94572af05 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -81,6 +81,7 @@ Greg Kurz <groug@kaod.org> <gkurz@linux.vnet.ibm.com>
+ Huacai Chen <chenhuacai@kernel.org> <chenhc@lemote.com>
+ Huacai Chen <chenhuacai@kernel.org> <chenhuacai@loongson.cn>
+ James Hogan <jhogan@kernel.org> <james.hogan@imgtec.com>
++Juan Quintela <quintela@trasno.org> <quintela@redhat.com>
+ Leif Lindholm <quic_llindhol@quicinc.com> <leif.lindholm@linaro.org>
+ Leif Lindholm <quic_llindhol@quicinc.com> <leif@nuviainc.com>
+ Luc Michel <luc@lmichel.fr> <luc.michel@git.antfield.fr>
 -- 
 2.41.0
 
