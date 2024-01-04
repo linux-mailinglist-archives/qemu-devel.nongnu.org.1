@@ -2,84 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035F982429D
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 14:21:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2458242A4
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 14:24:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLNeX-0006M8-EP; Thu, 04 Jan 2024 08:20:53 -0500
+	id 1rLNgV-0007Hr-Lp; Thu, 04 Jan 2024 08:22:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLNeV-0006LN-6f
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:20:51 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rLNgS-0007Ge-TQ
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:22:52 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLNeT-0006BD-I7
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:20:50 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40d60ad5f0bso5328955e9.0
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 05:20:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rLNgQ-0006Nl-7T
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:22:52 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6d9e62ff056so345649b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 05:22:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704374447; x=1704979247; darn=nongnu.org;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1704374568; x=1704979368;
+ darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=i0X/gENd0lp00ZKQzSO/OCuz4ztqy3uU3tq+bWast84=;
- b=DjHDx9LebgGKkeMaO/TN3gWwG5ffrrnxziGsi93TsMbY7G6PEyBStzVREtvmxo6M5r
- MGdsC+JQbUAAC30+4FoQZhaKsHTNRfSNF86z/ItliPI0knSxolyrLBfln0te7uqb3sVs
- O+LL09WbbNhK8M6vPOMki5YLMuQVNe2s3jTTPwHiyWP+SgYaW0S83NNYOu7AfmNYGemv
- yy7MTcIPCSq36nR161Xscj0Dr+ORlq7kVK/4g0yWXVtM03OluvptJRoQ2C4uE5ms+ytr
- uIE9ZUrdrs52jSQCLQRoX2kBFWwp9AoBQygJ9QoGdU2SfXrpx6GfBBik0w2jESE4UQ4P
- HyOg==
+ bh=+UaUoSEUxULvKOz2jhQuoYpr4rLktnoBGVluoHHYMOU=;
+ b=1bv073tZz+lRFULvmgTlv/p2kj//bEO6qfFPNrSt8Aw+wvsExnWycEluG3lr1Y/Taf
+ 67KetNaXmQsUnGTbTWBHFe5tr3iZb6xbdFllngNrarqaRLhkA/jVGWfyy4MlTbuGubfL
+ ACfDkTArPFcHJ/azShjoMH4hZsTQULnwDcjYaJ4E3up0nRccqSLqKHZO8u9a7/8ZHDYE
+ Jf1zlC/jbDFpogsl37LxbK0VRxczrAHpqyRgZoo0sp5f/2C47WQNuLUu8sRzIL6Q8Ert
+ z4yKQC2pONUlKr1WjQWRRX7LhGuhSN3r35XsbFQLfnbAy99cRhlW2OzkNJ6bNh0bXLLr
+ L3Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704374447; x=1704979247;
+ d=1e100.net; s=20230601; t=1704374568; x=1704979368;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=i0X/gENd0lp00ZKQzSO/OCuz4ztqy3uU3tq+bWast84=;
- b=iVi8KJveba33dOD2AHE+jKFbCahE50/3XrwcJ2AgSyyso499Q8cIawN7vWVTj/flSQ
- GjMBExGEqEoo8vL6dlTbYRDv+dO9uH11a3MjYFrtp7mVB+I6b4q09dzQqAbeTCfLTDlL
- 7hyvJzUyBdo/ZKmIq0WK1TAEzsVp9/A8+Qhf93NWbgw8jebNfkVT7PYQIqVomPHo6BJt
- 8V4fGs52eGtWh+PqsjKG07G6lgw1/uq7cpiX3zC6yLKmOsk8NNHXSI66bQuGS8iMrHeh
- LwVnIFGSV+SH1PVpRGEJBjZratRC14rNrqAFpqGbwxRMfdP3kVqY0RsEQ0skLYtOdsy1
- e61A==
-X-Gm-Message-State: AOJu0YydjvWGsWZ8kYyAydlf86afiAR3meZnBR+IqhpRQEpvWlZ+Z2Xf
- ixyU+J8du18EDo3vrlQeciI1jpzvkvKmEg==
-X-Google-Smtp-Source: AGHT+IHgfQiWQESRQtDpu16AxE6FBsd6J/3JZ9LDMGtIODEflxg7L6OItZsiqQ+8ykCouhOJsXKOwg==
-X-Received: by 2002:a05:600c:540a:b0:40c:610d:c2bf with SMTP id
- he10-20020a05600c540a00b0040c610dc2bfmr411775wmb.16.1704374447241; 
- Thu, 04 Jan 2024 05:20:47 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.194.232])
+ bh=+UaUoSEUxULvKOz2jhQuoYpr4rLktnoBGVluoHHYMOU=;
+ b=ARwKqs00Hpxk45g0g0JVB2KBzslKWN7rZYwcLTuFAonBm8O8L28IqOHWNybLQfjbMN
+ uhbVFtvnLZV/35ZtnDJxvh/ci8kjZnK/fTkVD1qpZDTiSZ2BKd1RvhcNRv0sshQtaTN5
+ A2hZADxcrp4uhVZlJtU1NnKCvp4mYyYSZw7TtNrbS2154NoT6laDQlpfq6TaQccD79wd
+ H14oSwd6UNB0D6PAIj7HeePKECC10JOcF82Spz3piEh3FwBR9Dlfw5HoCwQHZ9Mppu8g
+ hanIY/qWyYpoL1NI3y+mFVvWgXsZ0haI2hSOinUdStmp1Np0LnqMbZ/5IDRBrw1Q/hoi
+ 4AzQ==
+X-Gm-Message-State: AOJu0YzOSU08V7eMxZ5hO6p8eHgDDDHxYax3EW4IG2v3SvBpS469Oklg
+ uLIZeIWgTo8gmjdJBIVxsDyMVuvGdYaroA==
+X-Google-Smtp-Source: AGHT+IFokc8I4M12wpRZbGFseRS03dNmYQJFm1uTthsqLJ9zrTgE2OKJgGw72Fa3MExoY1OmaCb7cA==
+X-Received: by 2002:a05:6a20:1445:b0:199:247a:1044 with SMTP id
+ a5-20020a056a20144500b00199247a1044mr201672pzi.17.1704374568632; 
+ Thu, 04 Jan 2024 05:22:48 -0800 (PST)
+Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
+ ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with ESMTPSA id
- t8-20020adfe448000000b003367eae8e18sm32998077wrm.57.2024.01.04.05.20.45
+ a25-20020a634d19000000b005c6617b52e6sm24378620pgb.5.2024.01.04.05.22.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 04 Jan 2024 05:20:46 -0800 (PST)
-Message-ID: <6cc8aa4d-33de-47e2-aa34-d22f2877d7c6@linaro.org>
-Date: Thu, 4 Jan 2024 14:20:44 +0100
+ Thu, 04 Jan 2024 05:22:48 -0800 (PST)
+Message-ID: <4cf878c6-0adf-4c97-b404-446d8a3dabf1@daynix.com>
+Date: Thu, 4 Jan 2024 22:22:39 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] hw/arm: Connect STM32L4x5 SYSCFG to STM32L4x5 SoC
+Subject: Re: [PATCH v2 38/43] plugins: add an API to read registers
 Content-Language: en-US
-To: =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
- qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Alistair Francis <alistair@alistair23.me>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>
-References: <20231229164915.133199-1-ines.varhol@telecom-paris.fr>
- <20231229164915.133199-4-ines.varhol@telecom-paris.fr>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231229164915.133199-4-ines.varhol@telecom-paris.fr>
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
+ Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Brian Cain <bcain@quicinc.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Cleber Rosa <crosa@redhat.com>,
+ kvm@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
+ Weiwei Li <liwei1518@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, John Snow <jsnow@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>
+References: <20240103173349.398526-1-alex.bennee@linaro.org>
+ <20240103173349.398526-39-alex.bennee@linaro.org>
+ <52cac44e-a467-4748-8c5b-c9c47f5b0f79@daynix.com>
+ <87cyuhguf4.fsf@draig.linaro.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <87cyuhguf4.fsf@draig.linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: none client-ip=2607:f8b0:4864:20::435;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,80 +124,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/12/23 17:47, Inès Varhol wrote:
-> The SYSCFG input GPIOs aren't connected yet. When the STM32L4x5 GPIO
-> device will be implemented, its output GPIOs will be connected to the
-> SYSCFG input GPIOs.
+On 2024/01/04 21:22, Alex Bennée wrote:
+> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 > 
-> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-> ---
->   hw/arm/Kconfig                 |  1 +
->   hw/arm/stm32l4x5_soc.c         | 23 ++++++++++++++++++++++-
->   include/hw/arm/stm32l4x5_soc.h |  2 ++
->   3 files changed, 25 insertions(+), 1 deletion(-)
+>> On 2024/01/04 2:33, Alex Bennée wrote:
+>>> We can only request a list of registers once the vCPU has been
+>>> initialised so the user needs to use either call the get function on
+>>> vCPU initialisation or during the translation phase.
+>>> We don't expose the reg number to the plugin instead hiding it
+>>> behind
+>>> an opaque handle. This allows for a bit of future proofing should the
+>>> internals need to be changed while also being hashed against the
+>>> CPUClass so we can handle different register sets per-vCPU in
+>>> hetrogenous situations.
+>>> Having an internal state within the plugins also allows us to expand
+>>> the interface in future (for example providing callbacks on register
+>>> change if the translator can track changes).
+>>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1706
+>>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> Based-on: <20231025093128.33116-18-akihiko.odaki@daynix.com>
+>>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+>>> ---
+>>> v3
+>>>     - also g_intern_string the register name
+>>>     - make get_registers documentation a bit less verbose
+>>> v2
+>>>     - use new get whole list api, and expose upwards
+>>> vAJB:
+>>> The main difference to Akikio's version is hiding the gdb register
+>>> detail from the plugin for the reasons described above.
+>>> ---
+>>>    include/qemu/qemu-plugin.h   |  51 +++++++++++++++++-
+>>>    plugins/api.c                | 102 +++++++++++++++++++++++++++++++++++
+>>>    plugins/qemu-plugins.symbols |   2 +
+>>>    3 files changed, 153 insertions(+), 2 deletions(-)
+>>> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+>>> index 4daab6efd29..95380895f81 100644
+>>> --- a/include/qemu/qemu-plugin.h
+>>> +++ b/include/qemu/qemu-plugin.h
+>>> @@ -11,6 +11,7 @@
+>>>    #ifndef QEMU_QEMU_PLUGIN_H
+>>>    #define QEMU_QEMU_PLUGIN_H
+>>>    +#include <glib.h>
+>>>    #include <inttypes.h>
+>>>    #include <stdbool.h>
+>>>    #include <stddef.h>
+>>> @@ -227,8 +228,8 @@ struct qemu_plugin_insn;
+>>>     * @QEMU_PLUGIN_CB_R_REGS: callback reads the CPU's regs
+>>>     * @QEMU_PLUGIN_CB_RW_REGS: callback reads and writes the CPU's regs
+>>>     *
+>>> - * Note: currently unused, plugins cannot read or change system
+>>> - * register state.
+>>> + * Note: currently QEMU_PLUGIN_CB_RW_REGS is unused, plugins cannot change
+>>> + * system register state.
+>>>     */
+>>>    enum qemu_plugin_cb_flags {
+>>>        QEMU_PLUGIN_CB_NO_REGS,
+>>> @@ -708,4 +709,50 @@ uint64_t qemu_plugin_end_code(void);
+>>>    QEMU_PLUGIN_API
+>>>    uint64_t qemu_plugin_entry_code(void);
+>>>    +/** struct qemu_plugin_register - Opaque handle for register
+>>> access */
+>>> +struct qemu_plugin_register;
+>>
+>> Just in case you missed my comment for the earlier version:
+>>
+>> What about identifying a register with an index in an array returned
+>> by qemu_plugin_get_registers(). That saves troubles having the handle
+>> member in qemu_plugin_reg_descriptor.
+> 
+> The handle gets de-referenced internally in the plugin api and
+> additional checking could be added there. If we pass an index then we'd
+> end up having to track the index assigned during get_registers as well
+> as account for a potential skew in the index value if the register
+> layout varies between vCPUs (although I admit this is future proofing
+> for potential heterogeneous models).
+> 
+> The concept of opaque handle == pointer is fairly common in the QEMU
+> code base. We are not making it hard for a plugin author to bypass this
+> "protection", just making it clear if you do so your violating the
+> principle of the API.
 
+Now I get the idea. Indeed index values are not guaranteed to be stable 
+across CPUs.
 
-> diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
-> index 08b8a4c2ed..0581f4ce30 100644
-> --- a/hw/arm/stm32l4x5_soc.c
-> +++ b/hw/arm/stm32l4x5_soc.c
-> @@ -37,6 +37,7 @@
->   #define SRAM2_SIZE (32 * KiB)
->   
->   #define EXTI_ADDR 0x40010400
-> +#define SYSCFG_ADDR 0x40010000
->   
->   #define NUM_EXTI_IRQ 40
->   /* Match exti line connections with their CPU IRQ number */
-> @@ -81,6 +82,8 @@ static void stm32l4x5_soc_initfn(Object *obj)
->   
->       object_initialize_child(obj, "exti", &s->exti, TYPE_STM32L4X5_EXTI);
->   
-> +    object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32L4X5_SYSCFG);
-> +
->       s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
->       s->refclk = qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0);
->   }
-> @@ -158,6 +161,20 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
->           return;
->       }
->   
-> +    /* System configuration controller */
-> +    dev = DEVICE(&s->syscfg);
-
-No need for 'dev', use 'busdev' directly.
-
-> +    if (!sysbus_realize(SYS_BUS_DEVICE(&s->syscfg), errp)) {
-> +        return;
-> +    }
-> +    busdev = SYS_BUS_DEVICE(dev);
-> +    sysbus_mmio_map(busdev, 0, SYSCFG_ADDR);
-> +    /*
-> +     * TODO: when the GPIO device is implemented, connect it
-> +     * to SYCFG using `qdev_connect_gpio_out`, NUM_GPIOS and
-> +     * GPIO_NUM_PINS.
-> +     */
-> +
-> +    /* EXTI device */
->       dev = DEVICE(&s->exti);
->       if (!sysbus_realize(SYS_BUS_DEVICE(&s->exti), errp)) {
->           return;
-> @@ -168,6 +185,11 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
->           sysbus_connect_irq(busdev, i, qdev_get_gpio_in(armv7m, exti_irq[i]));
->       }
->   
-> +    for (i = 0; i < 16; i++) {
-
-You can reduce 'i' scope.
-
-> +        qdev_connect_gpio_out(DEVICE(&s->syscfg), i,
-> +                              qdev_get_gpio_in(dev, i));
-> +    }
-
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Preferably using 'busdev':
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+Why don't you pass gdb_reg_num as is then? qemu_plugin_register has the 
+name member, but it's unused so gdb_reg_num is effectively the only 
+member we need. You can even cast gdb_reg_num to (struct 
+qemu_plugin_register *), but I don't think pointers are more opaque or 
+future-proof than integers.
 
