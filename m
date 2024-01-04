@@ -2,65 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2298242F6
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 14:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7848242FE
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 14:48:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLO3T-0001vR-8e; Thu, 04 Jan 2024 08:46:39 -0500
+	id 1rLO4p-0004J7-RE; Thu, 04 Jan 2024 08:48:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <inesvarhol@proton.me>)
- id 1rLO2g-0001WD-5L
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:45:50 -0500
-Received: from mail-4318.protonmail.ch ([185.70.43.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <inesvarhol@proton.me>)
- id 1rLO2b-00022Q-Ac
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:45:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
- s=protonmail; t=1704375942; x=1704635142;
- bh=t0Yxl9VW5WvFjF/FalnTSQcUgwlftiRhZvicw8QVMmY=;
- h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
- Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
- Message-ID:BIMI-Selector;
- b=Xmsbs0p8SYvx52M5ajHJQRSQOKWOEqPHe5W8QOa6z5NbDtDqUW4o+OcOwnsd5hc7M
- cldVNyCaqmmDShfuhrXbpefEHWfVHQd/RPmnrpwQBQ70BC+gdeKt8i6Sit1mrB9Jmo
- UcdtdpDjp8P0e1vFvOz1wWRXNqFhqqYhSl4QhcBFTACnoBBN0LZkwreYaL8ylvCK65
- zu7p+c2hpVHN3ImPf0aLkNDio/LuQGHPge18jX8gAX1luxWvZM3DSCwO5K4A1tGJOX
- sWHbXXQr+SU5U/ZRebDVYiGUU2dKQCF4GGTOI0rm0AkPHCWQossqW3pMrlhkqocwEY
- o3G9Zw2TSf2dw==
-Date: Thu, 04 Jan 2024 13:45:21 +0000
-To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-From: inesvarhol <inesvarhol@proton.me>
-Cc: =?utf-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
- qemu-devel@nongnu.org, Alistair Francis <alistair@alistair23.me>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org
-Subject: Re: [PATCH v5 2/3] tests/qtest: Add STM32L4x5 EXTI QTest testcase
-Message-ID: <vueSA6LNk2OEd9t7plxmNvtm9LVj_TIG9PEY1n8Gz9MMPMHL8jXTaStS6_-AddPqbYwLbbm-ZZgAbg0ezFyTS0_VQ5gq1-FvMG5m5tomJe8=@proton.me>
-In-Reply-To: <cd41459a-b96d-4b51-bc2a-37724ccc4db1@linaro.org>
-References: <20231228161944.303768-1-ines.varhol@telecom-paris.fr>
- <20231228161944.303768-3-ines.varhol@telecom-paris.fr>
- <cd41459a-b96d-4b51-bc2a-37724ccc4db1@linaro.org>
-Feedback-ID: 78004345:user:proton
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLO4l-000480-BM
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:48:00 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLO4j-0003gG-C6
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:47:59 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40d76923ec4so4652535e9.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 05:47:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704376075; x=1704980875; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DliT4hOlGihAIrNhSmS13X+aX8dNM5Idvh0MCUHG4AQ=;
+ b=U/7x7ekD4IYlwAimzMJdTnRlpbnjCDKl0RrsNE1lZJlJ3usKmC6jZQBdRmB+rTlQN3
+ 3lkW0zgdkis/xUt8hdorVnhkOw912MQ0vKRBRxv7/oI28EctXoEneoxqq9GSIJYajatV
+ WKBy8s1GspD/F4yDDxPxUfB4Vi14oLar8e7duL646JTTzuahpcL4Kt8JkipEZioK1tW4
+ 3zrRmadKja/UCWWzf/kaAMLjfHJVKw9yvU2Rpag0qDcv+VrLrebNMogYVcnFtm6UjQzE
+ eXmPfc/ZemP/EnejhCVdggqMpfA6/OG8nJSRuEhPJQqcOxV1hYD3GKPWYrttKIAOuTvx
+ lhQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704376075; x=1704980875;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DliT4hOlGihAIrNhSmS13X+aX8dNM5Idvh0MCUHG4AQ=;
+ b=MLR+Bx4+CBaHEwDcPth1j7IuOqYaB4uGeG7M7wjr8EiRILUN/cAtYUHO6u5pcyDWBE
+ FBQJkc+zjGiGFvJRebOLYPa8RjxaNgI68DT4zVrYydJYTtjkLZQPsjSnj09/rQHm8QAA
+ WZxPe/nv8Vd/8qJZJtSVRR1C3sOJ4PFRrX7ZyUTKnU645zYqGAZWNCMkEGG6cYIcUTN1
+ FB0DXsLmgvvUZzyx7lb02h0RAz+8MhJ+RQSmF1o58dJ2PLfpQXYiZhSNl221gp1Q6/zN
+ 2qgnkNxrlr3XHP18WBaM/deCesGLYJ8RKr7GtxmP05ayO0pLQlbKPnHbRh+wSVzfU1ES
+ I//A==
+X-Gm-Message-State: AOJu0YwVq4qgc3ODZa1wXRHyEQwOvzHyOd0IC2somMhzH14EjToMmfCQ
+ xMJMFahlp8JQRMNk+1xF3BFFydd281uYwg==
+X-Google-Smtp-Source: AGHT+IE3TraElgBjSPk5YaoVf0r713HF9vtwOvPnWM7vqWGB+g9oTPngnKnR569F08nwqXUccS50SQ==
+X-Received: by 2002:a05:600c:6b17:b0:40d:8587:a77f with SMTP id
+ jn23-20020a05600c6b1700b0040d8587a77fmr384305wmb.90.1704376075348; 
+ Thu, 04 Jan 2024 05:47:55 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.194.232])
+ by smtp.gmail.com with ESMTPSA id
+ p16-20020a05600c359000b0040d5a5c523csm5820118wmq.1.2024.01.04.05.47.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 04 Jan 2024 05:47:55 -0800 (PST)
+Message-ID: <05df4322-0f91-4423-a065-9636fac7a005@linaro.org>
+Date: Thu, 4 Jan 2024 14:47:52 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=185.70.43.18; envelope-from=inesvarhol@proton.me;
- helo=mail-4318.protonmail.ch
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/3] Add device STM32L4x5 SYSCFG
+Content-Language: en-US
+To: =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
+ qemu-devel@nongnu.org
+Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Alistair Francis <alistair@alistair23.me>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>
+References: <20231229164915.133199-1-ines.varhol@telecom-paris.fr>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231229164915.133199-1-ines.varhol@telecom-paris.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 04 Jan 2024 08:46:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,113 +96,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le jeudi 4 janvier 2024 =C3=A0 14:33, Philippe Mathieu-Daud=C3=A9 <philmd@l=
-inaro.org> a =C3=A9crit :
+Hi Inès,
 
+On 29/12/23 17:47, Inès Varhol wrote:
 
-> On 28/12/23 17:19, In=C3=A8s Varhol wrote:
->
-> > Signed-off-by: Arnaud Minier arnaud.minier@telecom-paris.fr
-> > Signed-off-by: In=C3=A8s Varhol ines.varhol@telecom-paris.fr
-> > ---
-> > tests/qtest/meson.build | 5 +
-> > tests/qtest/stm32l4x5_exti-test.c | 596 ++++++++++++++++++++++++++++++
-> > 2 files changed, 601 insertions(+)
-> > create mode 100644 tests/qtest/stm32l4x5_exti-test.c
->
->
-> Once the SoC parentship fixed in based series, this patch
-> requires:
->
-> -- >8 --
->
-> diff --git a/tests/qtest/stm32l4x5_exti-test.c
-> b/tests/qtest/stm32l4x5_exti-test.c
-> index 60c8297246..543199cd4d 100644
-> --- a/tests/qtest/stm32l4x5_exti-test.c
-> +++ b/tests/qtest/stm32l4x5_exti-test.c
-> @@ -287,4 +287,3 @@ static void test_edge_selector(void)
-> /* Configure EXTI line 0 irq on rising edge /
-> - qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
-> - NULL, 0, 1);
-> + qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 1);
-> exti_writel(EXTI_IMR1, 0x00000001);
-> @@ -294,4 +293,3 @@ static void test_edge_selector(void)
-> / Test that an irq is raised on rising edge only /
-> - qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
-> - NULL, 0, 0);
-> + qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 0);
->
-> @@ -301,4 +299,3 @@ static void test_edge_selector(void)
->
-> - qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
-> - NULL, 0, 1);
-> + qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 1);
->
-> @@ -316,4 +313,3 @@ static void test_edge_selector(void)
-> / Configure EXTI line 0 irq on falling edge /
-> - qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
-> - NULL, 0, 0);
-> + qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 0);
-> exti_writel(EXTI_IMR1, 0x00000001);
-> @@ -323,4 +319,3 @@ static void test_edge_selector(void)
-> / Test that an irq is raised on falling edge only /
-> - qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
-> - NULL, 0, 1);
-> + qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 1);
->
-> @@ -330,4 +325,3 @@ static void test_edge_selector(void)
->
-> - qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
-> - NULL, 0, 0);
-> + qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 0);
->
-> @@ -350,4 +344,3 @@ static void test_edge_selector(void)
-> / Test that an irq is raised on rising and falling edge /
-> - qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
-> - NULL, 0, 1);
-> + qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 1);
->
-> @@ -357,4 +350,3 @@ static void test_edge_selector(void)
->
-> - qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
-> - NULL, 0, 0);
-> + qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 0);
->
-> @@ -377,4 +369,3 @@ static void test_edge_selector(void)
-> / Test that no irq is raised /
-> - qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
-> - NULL, 0, 1);
-> + qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 1);
->
-> @@ -384,4 +375,3 @@ static void test_edge_selector(void)
->
-> - qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
-> - NULL, 0, 0);
-> + qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 0, 0);
->
-> @@ -500,4 +490,3 @@ static void test_masked_interrupt(void)
-> / Simulate rising edge from GPIO line 1 /
-> - qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
-> - NULL, 1, 1);
-> + qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 1, 1);
->
-> @@ -550,4 +539,3 @@ static void test_interrupt(void)
-> / Simulate rising edge from GPIO line 1 */
-> - qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
-> - NULL, 1, 1);
-> + qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, 1, 1);
-> ---
->
-> Note you could use a helper to ease readability:
->
-> static void exti_set_irq(int num, int lvl)
-> {
-> qtest_set_irq_in(global_qtest, "/machine/soc/exti", NULL, num, lvl);
-> }
->
-> Tested-by: Philippe Mathieu-Daud=C3=A9 philmd@linaro.org
+> Based-on: <20231228161944.303768-1-ines.varhol@telecom-paris.fr>
+> ([PATCH v5 0/3] Add device STM32L4x5 EXTI)
+> 
+> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+> 
+> Inès Varhol (3):
+>    hw/misc: Implement STM32L4x5 SYSCFG
+>    tests/qtest: Add STM32L4x5 SYSCFG QTest testcase
+>    hw/arm: Connect STM32L4x5 SYSCFG to STM32L4x5 SoC
 
-Ok thank you a lot !
-And yes, we'll swap the 2nd and 3rd commit as you said.
+Very good work!
+
+In case that helps, I pushed my reviewed branch of your
+series here:
+https://gitlab.com/philmd/qemu/-/commits/review/stm32l4x5-v5/
+
+Regards,
+
+Phil.
 
