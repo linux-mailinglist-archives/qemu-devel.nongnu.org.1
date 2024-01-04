@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FCEA823B7E
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 05:36:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1062823B70
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 05:34:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLFQT-0003Iu-Ln; Wed, 03 Jan 2024 23:33:49 -0500
+	id 1rLFQf-00049j-Ke; Wed, 03 Jan 2024 23:34:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFQR-00037S-I4
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:33:47 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFQd-000451-BX
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:33:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFQP-0006fi-W9
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:33:47 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFQX-0006g8-0l
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:33:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704342825;
+ s=mimecast20190719; t=1704342832;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Rnk2maPq+bSGItFG+Z0n+FGuFwgdzYVZMOX86HeQM6Q=;
- b=WTsygflArtvtYmeS5MRXrD+VL2aRyyuentOun4g4cZ62PMuUZj+a3bnFUd6zYEvtn4MLdC
- HFWuoT5RY42G7o0agUpc3SOuayRBWdEN/G5XCbfD5F7ChOHSJhBydw80+vatQKeYqC9xAy
- nBW5FIZGwCIjNqv9yWLV7y5rw44msyk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-346-s3SGKsMxPCeEfg4skg70xA-1; Wed,
- 03 Jan 2024 23:33:44 -0500
-X-MC-Unique: s3SGKsMxPCeEfg4skg70xA-1
+ bh=LdgknPaPIQRAT3aoK1JFpcg7tOfhi2KNrc0fRj1JKyE=;
+ b=KAOlu5v4lULiZuLRMewNirEnv3wsUJcoB20nOtyQLC/Pr3R9XgLhNGIzppL483eUw0NTGJ
+ b87RDOfBIet01VI79+lN4KYCWkNg3xR8lCrSznAd59qpDKWXwSnezwbK3qluM1EyRCgyo/
+ BZ4S2zr+RYW897tMxVhsQiDj611RtfQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-380-gtMyQl9kNZ-MY0aobIYGLg-1; Wed, 03 Jan 2024 23:33:49 -0500
+X-MC-Unique: gtMyQl9kNZ-MY0aobIYGLg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AC1A23816D84;
- Thu,  4 Jan 2024 04:33:43 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9673F848C02;
+ Thu,  4 Jan 2024 04:33:48 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.12])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5E919C15968;
- Thu,  4 Jan 2024 04:33:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7B93BC15968;
+ Thu,  4 Jan 2024 04:33:44 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
 Cc: Fabiano Rosas <farosas@suse.de>, Steve Sistare <steven.sistare@oracle.com>,
  Juan Quintela <quintela@trasno.org>, peterx@redhat.com,
  Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 17/26] migration: Refactor migration_incoming_setup()
-Date: Thu,  4 Jan 2024 12:32:02 +0800
-Message-ID: <20240104043213.431566-18-peterx@redhat.com>
+ Avihai Horon <avihaih@nvidia.com>
+Subject: [PULL 18/26] migration: Remove errp parameter in
+ migration_fd_process_incoming()
+Date: Thu,  4 Jan 2024 12:32:03 +0800
+Message-ID: <20240104043213.431566-19-peterx@redhat.com>
 In-Reply-To: <20240104043213.431566-1-peterx@redhat.com>
 References: <20240104043213.431566-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
@@ -66,8 +65,8 @@ X-Spam_bar: ----
 X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,70 +84,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Avihai Horon <avihaih@nvidia.com>
 
-Commit 6720c2b32725 ("migration: check magic value for deciding the
-mapping of channels") extracted the only code that could fail in
-migration_incoming_setup().
-
-Now migration_incoming_setup() can't fail, so refactor it to return void
-and remove errp parameter.
+Errp parameter in migration_fd_process_incoming() is unused.
+Remove it.
 
 Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20231231093016.14204-4-avihaih@nvidia.com
+Link: https://lore.kernel.org/r/20231231093016.14204-5-avihaih@nvidia.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ migration/migration.h | 2 +-
+ migration/migration.c | 2 +-
+ migration/rdma.c      | 6 +-----
+ 3 files changed, 3 insertions(+), 7 deletions(-)
 
+diff --git a/migration/migration.h b/migration/migration.h
+index b3c9288c38..17972dac34 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -474,7 +474,7 @@ struct MigrationState {
+ 
+ void migrate_set_state(int *state, int old_state, int new_state);
+ 
+-void migration_fd_process_incoming(QEMUFile *f, Error **errp);
++void migration_fd_process_incoming(QEMUFile *f);
+ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp);
+ void migration_incoming_process(void);
+ 
 diff --git a/migration/migration.c b/migration/migration.c
-index 15dc8aa21c..e7d342ab59 100644
+index e7d342ab59..8bb1a8134e 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -724,11 +724,8 @@ fail:
- /**
-  * migration_incoming_setup: Setup incoming migration
-  * @f: file for main migration channel
-- * @errp: where to put errors
-- *
-- * Returns: %true on success, %false on error.
-  */
--static bool migration_incoming_setup(QEMUFile *f, Error **errp)
-+static void migration_incoming_setup(QEMUFile *f)
- {
-     MigrationIncomingState *mis = migration_incoming_get_current();
- 
-@@ -736,7 +733,6 @@ static bool migration_incoming_setup(QEMUFile *f, Error **errp)
-         mis->from_src_file = f;
-     }
-     qemu_file_set_blocking(f, false);
--    return true;
+@@ -774,7 +774,7 @@ static bool postcopy_try_recover(void)
+     return false;
  }
  
- void migration_incoming_process(void)
-@@ -780,9 +776,7 @@ static bool postcopy_try_recover(void)
- 
- void migration_fd_process_incoming(QEMUFile *f, Error **errp)
+-void migration_fd_process_incoming(QEMUFile *f, Error **errp)
++void migration_fd_process_incoming(QEMUFile *f)
  {
--    if (!migration_incoming_setup(f, errp)) {
--        return;
--    }
-+    migration_incoming_setup(f);
+     migration_incoming_setup(f);
      if (postcopy_try_recover()) {
-         return;
-     }
-@@ -855,10 +849,7 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
+diff --git a/migration/rdma.c b/migration/rdma.c
+index 04debab5d9..94c0f871f0 100644
+--- a/migration/rdma.c
++++ b/migration/rdma.c
+@@ -4035,7 +4035,6 @@ static void rdma_accept_incoming_migration(void *opaque)
+ {
+     RDMAContext *rdma = opaque;
+     QEMUFile *f;
+-    Error *local_err = NULL;
  
-     if (default_channel) {
-         f = qemu_file_new_input(ioc);
--
--        if (!migration_incoming_setup(f, errp)) {
--            return;
--        }
-+        migration_incoming_setup(f);
-     } else {
-         /* Multiple connections */
-         assert(migration_needs_multiple_sockets());
+     trace_qemu_rdma_accept_incoming_migration();
+     if (qemu_rdma_accept(rdma) < 0) {
+@@ -4057,10 +4056,7 @@ static void rdma_accept_incoming_migration(void *opaque)
+     }
+ 
+     rdma->migration_started_on_destination = 1;
+-    migration_fd_process_incoming(f, &local_err);
+-    if (local_err) {
+-        error_reportf_err(local_err, "RDMA ERROR:");
+-    }
++    migration_fd_process_incoming(f);
+ }
+ 
+ void rdma_start_incoming_migration(InetSocketAddress *host_port,
 -- 
 2.41.0
 
