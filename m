@@ -2,93 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34038823B88
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 05:38:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD87823B89
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 05:38:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLFUT-0007HZ-5G; Wed, 03 Jan 2024 23:37:57 -0500
+	id 1rLFUn-0007Vm-9A; Wed, 03 Jan 2024 23:38:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFUQ-0007Gu-1k
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:37:54 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFUh-0007Uo-VJ
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:38:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFUO-00072W-7c
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:37:53 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFUg-0007JP-Jx
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:38:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704343071;
+ s=mimecast20190719; t=1704343089;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Zh4oir7kaQJanjgDJQu0g7SU0yBfk0UTOoF1q7nOcc0=;
- b=KVs2GPtuELqg3JyobHJ5c5AiuY1j3aKthUfHH/H1M+lTB3JOUULge+PBIuPc6weKuQgfJy
- EYUGNjzRcA36MjU4CAqcrrTNKMEiJw7RSFHXIzX4j6B9Kn8DxAC8cmgRytMzfx9pvV6KPt
- dV7Mgb+t8w8xNdF7iXeKUQZBMbjkntg=
-Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
- [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jq5+fyGtnpO9tHHchw5tDcaRkR5Kpm9JOtwIqWVjWRk=;
+ b=PDeT6NzyzLyvQupALw7KNLU7e3rKVOFosGcKnIDHx0sEaLZ78bNQUUAKwRmi6raKzU4WPg
+ XPPcWAPjIEkPbICH5TkA6Na2h9UCH+w/4J2+ixsZ4fiP1qN3oMrvIlsYcfymTAISF+tZ16
+ DJ1A2OYk3J+P26OhccdictewczXP+Zk=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-lnaxfj2UNQqu835fZ2f22w-1; Wed, 03 Jan 2024 23:37:49 -0500
-X-MC-Unique: lnaxfj2UNQqu835fZ2f22w-1
-Received: by mail-oa1-f72.google.com with SMTP id
- 586e51a60fabf-2040e2d65ecso42473fac.0
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 20:37:49 -0800 (PST)
+ us-mta-507-KQIAUm6KNz-2wOluGGL88A-1; Wed, 03 Jan 2024 23:38:08 -0500
+X-MC-Unique: KQIAUm6KNz-2wOluGGL88A-1
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-6da4d130a82so29109b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 20:38:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704343069; x=1704947869;
+ d=1e100.net; s=20230601; t=1704343087; x=1704947887;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Zh4oir7kaQJanjgDJQu0g7SU0yBfk0UTOoF1q7nOcc0=;
- b=FdWcnenF/x05WTQuZ2oC204froUVR3XDCA5UirrrjlDg32zlOYSkfVMNNkiYXR+pvT
- WTp4Bt31Vjk8y8eHmSQAbYTLTGgfOVhybdxJ+7Phiz3/CQuNo6UK4Mfg2Q7tGqOPfMss
- 5OAPyGvHIN6ZmpG6HKCYUeNiOVPc3dYOqDb3YA64/HhaC4dXwWpdbtYCc4Gr59q6R4lQ
- ee2O8upmu1S9XKtEA4A/q332m2xtzjHiGrqpIF0Sk593WUxoJKcnYPMWLO9IEFi6u8l4
- NDtx+zbvpGrwo/nnsKyXAiHJjcuAS9oSFSvudNwaID2qhKYh9A93ZZbDC2S1SNfBvyhF
- uz2w==
-X-Gm-Message-State: AOJu0Yw3olcyRuntYwoZ9rhcM2YWYAbNgw6RRppMiGuCRHUmfl8jJw0i
- sw2gDfoHSp3FUBe08JMhYRk82Ja+Ozduwh7h/J2K3Tk0AVpzK1/Iv+CETf2L90qo+q/3+s8+y/2
- 90fOr+uWJgilwbLAhdf2VQfw=
-X-Received: by 2002:a05:6358:894:b0:174:f9ba:9482 with SMTP id
- m20-20020a056358089400b00174f9ba9482mr56693rwj.1.1704343069095; 
- Wed, 03 Jan 2024 20:37:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFdYtOwitwLJWZ1kAMCmHADoiJujKq9t8pGRHKybOZu7eT8iml6L74OVKuYi28je/LHjVoa5Q==
-X-Received: by 2002:a05:6358:894:b0:174:f9ba:9482 with SMTP id
- m20-20020a056358089400b00174f9ba9482mr56678rwj.1.1704343068772; 
- Wed, 03 Jan 2024 20:37:48 -0800 (PST)
+ bh=jq5+fyGtnpO9tHHchw5tDcaRkR5Kpm9JOtwIqWVjWRk=;
+ b=JSs6P7bCxVuFXweEkmVHGYma64ONf4bAAjuSHb4pK3AveMc+31MfuDb9hQGZgdKuVU
+ RyTluJBQp8JT109Cq/Sx/Oej1eXotvUIvcF9SxK01TL0Mj74MLHvCgI1N5Io0Ey3tx0Y
+ HC51S+hdZPunx68V94e0VwS7dWQu6jjz+eMD6KktQo6qLTKT7ArDmbYE5MJmSqN0g/U8
+ NZd5SCMSxFxDJPTxVCVtdY6ckLv8UyBoMZUC/cnDFcrWyGwXveqtG5wwe7Lcg1mmk6qr
+ MmEeGxeN2q4Z/acW16T1Ckilw2rnh2D1CmEA58pr+LMBOphR6WAgpBK1NljuzZtNDUyk
+ toiQ==
+X-Gm-Message-State: AOJu0YyVGERRmr3uNVQjtJCJdtdXCLtq4w51ykHYEavR31e3IZdWVVuw
+ Qw7VwOmhMoTIgiFYkn9Z1PmSEfEYZEQLE7r2mdiOs2JDoVjxoxBC5T+R4cyDNLZUPsQ1twezFw2
+ F2s+lvSBuKw/ngRJpHsmvi+4=
+X-Received: by 2002:a17:902:9a85:b0:1d4:be1e:f197 with SMTP id
+ w5-20020a1709029a8500b001d4be1ef197mr81829plp.1.1704343087763; 
+ Wed, 03 Jan 2024 20:38:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGsREsDzLz2CjcYymrcn2Qp1/O7JKm+FdafJkBtx2yAoQ6zbfhy10FvZZct6m7UjaENvytsUQ==
+X-Received: by 2002:a17:902:9a85:b0:1d4:be1e:f197 with SMTP id
+ w5-20020a1709029a8500b001d4be1ef197mr81818plp.1.1704343087449; 
+ Wed, 03 Jan 2024 20:38:07 -0800 (PST)
 Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- le6-20020a056a004fc600b006da0f15b31csm13006850pfb.97.2024.01.03.20.37.43
+ d9-20020a170902aa8900b001c407fac227sm24625667plr.41.2024.01.03.20.38.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jan 2024 20:37:48 -0800 (PST)
-Date: Thu, 4 Jan 2024 12:37:40 +0800
+ Wed, 03 Jan 2024 20:38:07 -0800 (PST)
+Date: Thu, 4 Jan 2024 12:38:01 +0800
 From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+To: Avihai Horon <avihaih@nvidia.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Paul Durrant <paul@xen.org>, Eric Blake <eblake@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH V9 00/12] fix migration of suspended runstate
-Message-ID: <ZZY2FFq3-CGFbGPN@x1n>
-References: <1704312341-66640-1-git-send-email-steven.sistare@oracle.com>
+ Li Zhijian <lizhijian@fujitsu.com>
+Subject: Re: [PATCH 00/11] migration: Misc cleanups and fixes
+Message-ID: <ZZY2KTOKKef48n11@x1n>
+References: <20231231093016.14204-1-avihaih@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1704312341-66640-1-git-send-email-steven.sistare@oracle.com>
+In-Reply-To: <20231231093016.14204-1-avihaih@nvidia.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,20 +97,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 03, 2024 at 12:05:29PM -0800, Steve Sistare wrote:
-> Migration of a guest in the suspended runstate is broken.  The incoming
-> migration code automatically tries to wake the guest, which is wrong;
-> the guest should end migration in the same runstate it started.  Further,
-> after saving a snapshot in the suspended state and loading it, the vm_start
-> fails.  The runstate is RUNNING, but the guest is not.
+On Sun, Dec 31, 2023 at 11:30:05AM +0200, Avihai Horon wrote:
+> Hi,
 > 
-> See the commit messages for the details.
+> This series contains misc cleanups and fixes in migration code that I
+> noticed while going over the code.
 
-I was planning to wait for an ack from Markus, but I noticed Markus will
-only be back next week.  So I queued it for now, and we can work on top
-just in case.
-
-Thanks,
+queued.
 
 -- 
 Peter Xu
