@@ -2,102 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8234824A12
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 22:12:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 538E9824A5C
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 22:32:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLUzh-0007oI-AA; Thu, 04 Jan 2024 16:11:13 -0500
+	id 1rLVIs-0001gb-CC; Thu, 04 Jan 2024 16:31:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rLUyW-0006xd-V7
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 16:10:04 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rLUyT-0007VA-1F
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 16:09:59 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3367632ce7bso685406f8f.2
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 13:09:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704402595; x=1705007395; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YUt/1uqyWaURmVAVVhlqD6XH9TChabURPi6+UCY421E=;
- b=gOKRMYXj0XR5JMaNzepaez0PaMD37d/3Cr75TrriUzoOjTQPE2qu1ube7hGYyc5zRX
- UETsDwFsPs/U17YH66GL846/Wo2RnSFn5i2dPM85vZYZC5ohD+ka8wIflukQrYZh3AWe
- ebBEkfETayg6p96YdipMyFZUAsIKhy3ATnt90wr0X2PmjTvEHXzbdR4IywzSGKiFH8p7
- qEcE6cIvPdLbBd2u0D4TIlhX0BJN9Gv3xq9hPgI9FmDl8P2LBEYumTEIomdIcgqIBEL6
- nhjFcJUrbw2HHYnGcx23TU5okhuXTQK3z2M9TMejO+FeR+XBhyV7//3UA2lgLG2/Eo22
- cuKg==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rLVIq-0001gT-F8
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 16:31:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rLVIo-00012N-E4
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 16:31:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704403856;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=8L6EWvhJPF/zb9OOBelfxiKlRzNaoujVPynLq1bV+8Q=;
+ b=ItkMWYAc05r5fpuzlkt05ENu1SxM9tsyTDj76VjklyVPvjSTagUM8a7Wl/wWzkoNza/Zet
+ lPvIsLDBYkcomNLfwBRj22mhEa/gaTlEIUtnd/83vkySHaYcKYjJvlIoIV2GjcODoIUk5/
+ 9AAnbq7ULB3dWSXKxOKECwyZ8b2UiwI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-470-uTnSqP8NOrG9QR5u5JLmNA-1; Thu, 04 Jan 2024 16:30:54 -0500
+X-MC-Unique: uTnSqP8NOrG9QR5u5JLmNA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-40d8f402742so6321105e9.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 13:30:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704402595; x=1705007395;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YUt/1uqyWaURmVAVVhlqD6XH9TChabURPi6+UCY421E=;
- b=eGXC0efE0KXWpkpJugKDBm+jmscuARaAugvjTlgS2al5A3B/Myii5+DhGd6ab6Wl5t
- hzQ95Wft2ZnUE2i0MHI99CWuNxp8F7xH1w6YYrlZuBTcKxp4UMLUSYmr/GeOlCHp2KFn
- Wj/pFA3mN8lSska+iB1srS53dlRueOYEjT5ep0u/dqQlL/HUX0KuoMTbzu4oi3qKGSAZ
- 7uvFVH5VzRtwFub4sQt1MjDqrcCsY7HH/LhmyuMeYP2CQFUEmlvd/Ex/H1foVNTOqka5
- JG7Qm13q1kznVYKuqAzv8szM42Zu1icxJvxo8l7orMzKiw6lrte7Ap5PY4+ddC1PIgcY
- nx3Q==
-X-Gm-Message-State: AOJu0YySppVL5g71i/LwtwWN7xcb7jl0059/Q7YEGHLR6b5u1aX4QxAP
- IV249gvIcj034PML9VvFfRnGZwDzjjM8FQ==
-X-Google-Smtp-Source: AGHT+IEeRUn11lBEN4h6LjwutqZ9pByY8GQv9DPwG573YbXlYSSuLjSqpK24Eto3Cw41wCnqiRygTQ==
-X-Received: by 2002:a5d:5d0e:0:b0:336:7a5c:ffdf with SMTP id
- ch14-20020a5d5d0e000000b003367a5cffdfmr902957wrb.13.1704402595038; 
- Thu, 04 Jan 2024 13:09:55 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- f17-20020adfc991000000b0033609b71825sm107862wrh.35.2024.01.04.13.09.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Jan 2024 13:09:53 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2B0755F92F;
- Thu,  4 Jan 2024 21:09:46 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Jason Wang <jasowang@redhat.com>,
- Erik Schilling <erik.schilling@linaro.org>, Eric Blake <eblake@redhat.com>,
- Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, virtio-fs@redhat.com,
- Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Leo Yan <leo.yan@linaro.org>
-Subject: [PATCH v9 11/11] hw/virtio: derive vhost-user-input from
- vhost-user-base
-Date: Thu,  4 Jan 2024 21:09:45 +0000
-Message-Id: <20240104210945.1223134-12-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240104210945.1223134-1-alex.bennee@linaro.org>
-References: <20240104210945.1223134-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1704403853; x=1705008653;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8L6EWvhJPF/zb9OOBelfxiKlRzNaoujVPynLq1bV+8Q=;
+ b=CJ9NAFidkE0bDqtdLnbmeSSJ1E7JWcpy3LxgiGFrm5Cr29EPmIQLQycHfkQMKbQM14
+ eB2KjMoVNyUOXOfU/pzPQ2H20w2F2ClVBQf1wyvXZ905LYmoXm2Z96MArSDKpKrMTlrl
+ PoR/325p4UdraBvu6z3adJ/Pf9yaHK5k8xTB8jQptDqt+HPw/7FL0T92OC812ce4JYB+
+ cpEb1J0yjrHAiNeWpsRXrx4oNBtCWdoULIyOOYR3A85d6Zxm3JmC/CY0j6ltp8zgZ3kh
+ F0yldZKymZsbOi2dOnpS+F1JOTwjtGgcAyTSmsHA1yIeZ2ANmkiDgDGw/3TcoB9S3VmE
+ mkqw==
+X-Gm-Message-State: AOJu0Yxjr5gjYPPsg5QUwQ+6QYRFytAHOy/e4iWq7AEnQ5oj90BGk5cb
+ tpvhFyfvFPoCFAjkUBgeUnkql4g7RmRjpc0wnBz+BNA2UM/SEdFzvWnXyMT7LrdMBRfDUDZxzVd
+ qwQ+YUXYUxe2FbVyqzDcEYgI=
+X-Received: by 2002:a05:600c:4f10:b0:40d:596e:f250 with SMTP id
+ l16-20020a05600c4f1000b0040d596ef250mr688084wmq.13.1704403853387; 
+ Thu, 04 Jan 2024 13:30:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEI8/vIFEAeGOJZlY4p0xXhJDiyLh3dVhtQ0Keh5plAl2zzX/wnlSxsA761WmqiI05H6WCv9Q==
+X-Received: by 2002:a05:600c:4f10:b0:40d:596e:f250 with SMTP id
+ l16-20020a05600c4f1000b0040d596ef250mr688080wmq.13.1704403852995; 
+ Thu, 04 Jan 2024 13:30:52 -0800 (PST)
+Received: from ?IPV6:2003:cb:c720:6400:963d:9726:6d56:aa61?
+ (p200300cbc7206400963d97266d56aa61.dip0.t-ipconnect.de.
+ [2003:cb:c720:6400:963d:9726:6d56:aa61])
+ by smtp.gmail.com with ESMTPSA id
+ u18-20020a05600c139200b0040d5ae2905asm392011wmf.30.2024.01.04.13.30.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 04 Jan 2024 13:30:52 -0800 (PST)
+Message-ID: <9318bc3d-5a6d-4c4b-90f5-1209c7e4dc20@redhat.com>
+Date: Thu, 4 Jan 2024 22:30:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/virtio: Add ioeventfd option for balloon
+Content-Language: en-US
+To: =?UTF-8?B?5rKI5ZOy6LWf?= <szy0127@sjtu.edu.cn>, qemu-devel@nongnu.org
+Cc: mst@redhat.com
+References: <799810807.232349.1704352540541.JavaMail.zimbra@sjtu.edu.cn>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <799810807.232349.1704352540541.JavaMail.zimbra@sjtu.edu.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,212 +147,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Leo Yan <leo.yan@linaro.org>
+On 04.01.24 08:15, 沈哲赟 wrote:
+> Traditional mmio in balloon makes Qemu do balloon inflation in the same
+> thread as vcpu thread. In a CPU overcommitment scenario, host may run
+> more than one vcpu threads on one host CPU, which makes
+> madvise_dontneed_free() wait for a long time due to the function
+> cond_resched() at host side.
+> 
+> If using SEV/ES and the kernel provided by AMD, the overhead will
+> become even much larger.(From 90s to 1400s when reclaming 4GB)
 
-This patch derives vhost-user-input from vhost-user-base class, so make
-the input stub as a simpler boilerplate wrapper.
+I recall that encrypted VMs etc are not compatible with ballooning. Are 
+there other (i.e., guest kernel) changes required for this setup to 
+work? ("provided by AMD")
 
-With the refactoring, vhost-user-input adds the property 'chardev', this
-leads to conflict with the vhost-user-input-pci adds the same property.
-To resolve the error, remove the duplicate property from
-vhost-user-input-pci.
+> 
+> With ioeventfd, the thread for host to do balloon inflation will
+> be separated from the VCPU thread, leading to better performance
+> for the whole process of balloon inflation.(1400s to 263s
+> in SEV CPU overcommitment scenario)
+> 
+> As a para-virtual solution, balloon serves for host so the process
+> of inflation in host needs to run on a host iothread instead of a guest
+> VCPU thread.
+> 
+> Signed-off-by: Zheyun Shen <szy0127@sjtu.edu.cn>
 
-Signed-off-by: Leo Yan <leo.yan@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-Id: <20231120043721.50555-5-leo.yan@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- include/hw/virtio/virtio-input.h |   6 +-
- hw/virtio/vhost-user-input-pci.c |   3 -
- hw/virtio/vhost-user-input.c     | 114 +++++--------------------------
- 3 files changed, 21 insertions(+), 102 deletions(-)
+If this a resend i.e., v2, please indicate changes below the "---" and 
+use versions like "PATCH v2".
 
-diff --git a/include/hw/virtio/virtio-input.h b/include/hw/virtio/virtio-input.h
-index a6c97036440..e69c0aeca38 100644
---- a/include/hw/virtio/virtio-input.h
-+++ b/include/hw/virtio/virtio-input.h
-@@ -1,6 +1,8 @@
- #ifndef QEMU_VIRTIO_INPUT_H
- #define QEMU_VIRTIO_INPUT_H
- 
-+#include "hw/virtio/vhost-user.h"
-+#include "hw/virtio/vhost-user-base.h"
- #include "ui/input.h"
- #include "sysemu/vhost-user-backend.h"
- 
-@@ -97,9 +99,7 @@ struct VirtIOInputHost {
- };
- 
- struct VHostUserInput {
--    VirtIOInput                       parent_obj;
--
--    VhostUserBackend                  *vhost;
-+    VHostUserBase parent_obj;
- };
- 
- void virtio_input_send(VirtIOInput *vinput, virtio_input_event *event);
-diff --git a/hw/virtio/vhost-user-input-pci.c b/hw/virtio/vhost-user-input-pci.c
-index b858898a363..3f4761ce88a 100644
---- a/hw/virtio/vhost-user-input-pci.c
-+++ b/hw/virtio/vhost-user-input-pci.c
-@@ -30,9 +30,6 @@ static void vhost_user_input_pci_instance_init(Object *obj)
- 
-     virtio_instance_init_common(obj, &dev->vhi, sizeof(dev->vhi),
-                                 TYPE_VHOST_USER_INPUT);
--
--    object_property_add_alias(obj, "chardev",
--                              OBJECT(&dev->vhi), "chardev");
- }
- 
- static const VirtioPCIDeviceTypeInfo vhost_user_input_pci_info = {
-diff --git a/hw/virtio/vhost-user-input.c b/hw/virtio/vhost-user-input.c
-index 4ee3542106e..bedec0468c3 100644
---- a/hw/virtio/vhost-user-input.c
-+++ b/hw/virtio/vhost-user-input.c
-@@ -5,83 +5,25 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/error-report.h"
--#include "qapi/error.h"
--
- #include "hw/virtio/virtio-input.h"
- 
--static int vhost_input_config_change(struct vhost_dev *dev)
--{
--    error_report("vhost-user-input: unhandled backend config change");
--    return -1;
--}
--
--static const VhostDevConfigOps config_ops = {
--    .vhost_dev_config_notifier = vhost_input_config_change,
-+static Property vinput_properties[] = {
-+    DEFINE_PROP_CHR("chardev", VHostUserBase, chardev),
-+    DEFINE_PROP_END_OF_LIST(),
- };
- 
--static void vhost_input_realize(DeviceState *dev, Error **errp)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(dev);
--    VirtIOInput *vinput = VIRTIO_INPUT(dev);
--    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
--
--    vhost_dev_set_config_notifier(&vhi->vhost->dev, &config_ops);
--    vinput->cfg_size = sizeof_field(virtio_input_config, u);
--    if (vhost_user_backend_dev_init(vhi->vhost, vdev, 2, errp) == -1) {
--        return;
--    }
--}
--
--static void vhost_input_change_active(VirtIOInput *vinput)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(vinput);
--
--    if (vinput->active) {
--        vhost_user_backend_start(vhi->vhost);
--    } else {
--        vhost_user_backend_stop(vhi->vhost);
--    }
--}
--
--static void vhost_input_get_config(VirtIODevice *vdev, uint8_t *config_data)
--{
--    VirtIOInput *vinput = VIRTIO_INPUT(vdev);
--    VHostUserInput *vhi = VHOST_USER_INPUT(vdev);
--    Error *local_err = NULL;
--    int ret;
--
--    memset(config_data, 0, vinput->cfg_size);
--
--    ret = vhost_dev_get_config(&vhi->vhost->dev, config_data, vinput->cfg_size,
--                               &local_err);
--    if (ret) {
--        error_report_err(local_err);
--        return;
--    }
--}
--
--static void vhost_input_set_config(VirtIODevice *vdev,
--                                   const uint8_t *config_data)
-+static void vinput_realize(DeviceState *dev, Error **errp)
- {
--    VHostUserInput *vhi = VHOST_USER_INPUT(vdev);
--    int ret;
-+    VHostUserBase *vub = VHOST_USER_BASE(dev);
-+    VHostUserBaseClass *vubc = VHOST_USER_BASE_GET_CLASS(dev);
- 
--    ret = vhost_dev_set_config(&vhi->vhost->dev, config_data,
--                               0, sizeof(virtio_input_config),
--                               VHOST_SET_CONFIG_TYPE_FRONTEND);
--    if (ret) {
--        error_report("vhost-user-input: set device config space failed");
--        return;
--    }
-+    /* Fixed for input device */
-+    vub->virtio_id = VIRTIO_ID_INPUT;
-+    vub->num_vqs = 2;
-+    vub->vq_size = 4;
-+    vub->config_size = sizeof(virtio_input_config);
- 
--    virtio_notify_config(vdev);
--}
--
--static struct vhost_dev *vhost_input_get_vhost(VirtIODevice *vdev)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(vdev);
--    return &vhi->vhost->dev;
-+    vubc->parent_realize(dev, errp);
- }
- 
- static const VMStateDescription vmstate_vhost_input = {
-@@ -91,40 +33,20 @@ static const VMStateDescription vmstate_vhost_input = {
- 
- static void vhost_input_class_init(ObjectClass *klass, void *data)
- {
--    VirtIOInputClass *vic = VIRTIO_INPUT_CLASS(klass);
--    VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
-+    VHostUserBaseClass *vubc = VHOST_USER_BASE_CLASS(klass);
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-     dc->vmsd = &vmstate_vhost_input;
--    vdc->get_config = vhost_input_get_config;
--    vdc->set_config = vhost_input_set_config;
--    vdc->get_vhost = vhost_input_get_vhost;
--    vic->realize = vhost_input_realize;
--    vic->change_active = vhost_input_change_active;
--}
--
--static void vhost_input_init(Object *obj)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(obj);
--
--    vhi->vhost = VHOST_USER_BACKEND(object_new(TYPE_VHOST_USER_BACKEND));
--    object_property_add_alias(obj, "chardev",
--                              OBJECT(vhi->vhost), "chardev");
--}
--
--static void vhost_input_finalize(Object *obj)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(obj);
--
--    object_unref(OBJECT(vhi->vhost));
-+    device_class_set_props(dc, vinput_properties);
-+    device_class_set_parent_realize(dc, vinput_realize,
-+                                    &vubc->parent_realize);
-+    set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
- }
- 
- static const TypeInfo vhost_input_info = {
-     .name          = TYPE_VHOST_USER_INPUT,
--    .parent        = TYPE_VIRTIO_INPUT,
-+    .parent        = TYPE_VHOST_USER_BASE,
-     .instance_size = sizeof(VHostUserInput),
--    .instance_init = vhost_input_init,
--    .instance_finalize = vhost_input_finalize,
-     .class_init    = vhost_input_class_init,
- };
- 
+https://lkml.kernel.org/r/https://lkml.kernel.org/r/20231212075058.710918-1-szy0127@sjtu.edu.cn
+
 -- 
-2.39.2
+Cheers,
+
+David / dhildenb
 
 
