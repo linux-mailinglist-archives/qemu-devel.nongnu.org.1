@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2554B823B7B
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 05:36:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F1E823B7C
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 05:36:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLFQq-0004IA-9W; Wed, 03 Jan 2024 23:34:12 -0500
+	id 1rLFQr-0004J3-6X; Wed, 03 Jan 2024 23:34:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFQm-0004Gh-Rv
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:34:10 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFQp-0004I6-MK
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:34:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFQl-0006jG-AL
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:34:08 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFQo-0006jX-29
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:34:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704342846;
+ s=mimecast20190719; t=1704342849;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5aZuxJnrToxZ5DpnWuVDhfmW883sU+rGu7ymv+9ot6E=;
- b=eUG590kqFlILiStxN0yEK0a7TMqfhM3ACS7JzU8oIM7ZplROWyTAJrlj5HmhX89mHEXc3O
- jz/6StCcR4qX4ZHXXD+XDLlthMJN4O3CJjovTYAiDM/WnEgANpPNZlgXH3g7lGwvcROh/k
- BHwB1Q1wvVQ02w/EqfL9Rt232dorZjc=
+ bh=pgPfvYyH9GUtQmjreG2FRloy8mQoBl7JfiFhYkJLhrg=;
+ b=dPHXwyl8JFC1xaBgSoQ3iG0gmccu0PzBrW4BhSL3IlVtuWMnFn/gPgUqFF3YNg7lsv2AfD
+ dqeH2IsliH5lW6ccddt2syGZlMpd6HT6zi4FNSEi+UAMuZfJ6Pe/U0Qh0Hwr6wc+6+EZJ7
+ GnmxAMJFU1NVWhp/gFQc0tA4IFg63G8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-UIa82VnpMSeDndPZ5jshaw-1; Wed, 03 Jan 2024 23:34:03 -0500
-X-MC-Unique: UIa82VnpMSeDndPZ5jshaw-1
+ us-mta-593-osB_PlAtMkaMLOgUJ2SRDw-1; Wed, 03 Jan 2024 23:34:08 -0500
+X-MC-Unique: osB_PlAtMkaMLOgUJ2SRDw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0EAA0848C03;
- Thu,  4 Jan 2024 04:34:03 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A2F9385A589;
+ Thu,  4 Jan 2024 04:34:07 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.12])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 24B79C15968;
- Thu,  4 Jan 2024 04:33:58 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B904BC15A0C;
+ Thu,  4 Jan 2024 04:34:03 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
@@ -48,9 +48,10 @@ Cc: Fabiano Rosas <farosas@suse.de>, Steve Sistare <steven.sistare@oracle.com>,
  Juan Quintela <quintela@trasno.org>, peterx@redhat.com,
  Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>
-Subject: [PULL 21/26] migration/multifd: Fix leaking of Error in TLS error flow
-Date: Thu,  4 Jan 2024 12:32:06 +0800
-Message-ID: <20240104043213.431566-22-peterx@redhat.com>
+Subject: [PULL 22/26] migration/multifd: Remove error_setg() in
+ migration_ioc_process_incoming()
+Date: Thu,  4 Jan 2024 12:32:07 +0800
+Message-ID: <20240104043213.431566-23-peterx@redhat.com>
 In-Reply-To: <20240104043213.431566-1-peterx@redhat.com>
 References: <20240104043213.431566-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -83,44 +84,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Avihai Horon <avihaih@nvidia.com>
 
-If there is an error in multifd TLS handshake task,
-multifd_tls_outgoing_handshake() retrieves the error with
-qio_task_propagate_error() but never frees it.
+If multifd_load_setup() fails in migration_ioc_process_incoming(),
+error_setg() is called with errp. This will lead to an assert because in
+that case errp already contains an error.
 
-Fix it by freeing the obtained Error.
+Fix it by removing the redundant error_setg().
 
-In addition, the error is not reported at all, so report it with
-migrate_set_error().
-
-Fixes: 29647140157a ("migration/tls: add support for multifd tls-handshake")
+Fixes: 6720c2b32725 ("migration: check magic value for deciding the mapping of channels")
 Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20231231093016.14204-8-avihaih@nvidia.com
+Link: https://lore.kernel.org/r/20231231093016.14204-9-avihaih@nvidia.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ migration/migration.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 55d5fd55f8..9ac24866ad 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -787,6 +787,7 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
+diff --git a/migration/migration.c b/migration/migration.c
+index 8bb1a8134e..9524c22a50 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -843,7 +843,6 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
+     }
  
-     trace_multifd_tls_outgoing_handshake_error(ioc, error_get_pretty(err));
+     if (multifd_load_setup(errp) != 0) {
+-        error_setg(errp, "Failed to setup multifd channels");
+         return;
+     }
  
-+    migrate_set_error(migrate_get_current(), err);
-     /*
-      * Error happen, mark multifd_send_thread status as 'quit' although it
-      * is not created, and then tell who pay attention to me.
-@@ -794,6 +795,7 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
-     p->quit = true;
-     qemu_sem_post(&multifd_send_state->channels_ready);
-     qemu_sem_post(&p->sem_sync);
-+    error_free(err);
- }
- 
- static void *multifd_tls_handshake_thread(void *opaque)
 -- 
 2.41.0
 
