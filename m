@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07EF8245D6
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:09:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 982F28245CF
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:08:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLQGj-0005N8-8b; Thu, 04 Jan 2024 11:08:29 -0500
+	id 1rLQGm-0005OJ-T5; Thu, 04 Jan 2024 11:08:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQGf-0005Ms-DV
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:08:25 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQGl-0005OB-NB
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:08:31 -0500
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQGd-0007rq-R9
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:08:25 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5571b26fda8so88691a12.3
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 08:08:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQGj-0007sL-U1
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:08:31 -0500
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-50e7dd8bce8so763247e87.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 08:08:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704384502; x=1704989302; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704384508; x=1704989308; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TJy7Wt2jc64lOn7AtGOipdtRDw6Xrpk77ZRRAYTrF5g=;
- b=psD/FvDaRQe0BLhbKL6geGuyLkiidNSi8ZfGM59z5mwE3rfKULhwzqi8kDJ39IzC4P
- TqhTHap0FrYPyW41XAAek8LhlcNyJMDOu2TwP+/yzyANrGCkN7LJN1K8Zl0DiuKXp1rl
- BfR8cpjobr8ELrPheFYrXUSzO9ufyBl5gtmk8r6U0sAutDwi5rea+Oa11N6keuw3r5dA
- rIf4/vQ3QeLcm5VS8k86ncM+RoZJmkoAhxDz+fPHwq/GlKw9/Nq70Y+5bFgJROB0ZVE1
- 5f1roz7atJ+mmgdMdEvghqiv7jpFpTOWLTqRnetTli39+xzI+phdKt0t+0Q8lOkbRyOv
- +e/A==
+ bh=SGjQWJGQLmAl7EsKd4gss7GidQfzjVVMOp135hQS5aE=;
+ b=UzIBHmKLGuztYhNv0gCz8C+7F5qsP7mSRUt5o6XNnybuccsecupRHNrF/hN4e3CY4O
+ Gqm+eb/0CL9HQ2H/3qV5I7a1RrhVKOKYXEs0Ft8h2Lw8yJop2Upe5bZkk882EPKuQ5nP
+ a8D3HTvp59Fdrt0853HLALWsjaFNVjX/hrHzTXFvOMI0hHNnkM2RmxPlnOhRMppioHvd
+ L2MVEJ9kGeUytCb0ekO3gab1ttQl/+rjGSKmpOTCE7X9YXgdnpoDOYOVIAaYvRgLBHxS
+ n1EUrjQaYwLD7AB0I6LkplW+XCLZvIdF/cKQjo3fiNxNUbGfwl09D4Qz2QJ/BpoPtp+s
+ hJKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704384502; x=1704989302;
+ d=1e100.net; s=20230601; t=1704384508; x=1704989308;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TJy7Wt2jc64lOn7AtGOipdtRDw6Xrpk77ZRRAYTrF5g=;
- b=FDprW2Fex67Z/B+VET53hRrbsEJH+oUHEhBTsoLftHrDCCy0UvaTAUt0rOG5y0SyZW
- BWV4XU4Ay0yzzOyvWKpQB3jasHSMltMZr0QXvTssDYinE3BpLjAxPS1aXUU+QOnL2CTp
- Hiq38lVSMppWro1PjKWtQH2e1aF2TbbA1WnQ20iXPgYF00dnjdk9kpW/mUzb44VsI2we
- jOIbTxcV4Ob9FV3FX5urx5W2R0VZGKuQt0I6mAhjQlFcBM8BJXXXE9QJebb9qRp+jyl1
- UH16g+ton7JFK9dhy40QtYHYyLIF+sCV2+pHWcEkdjsDs7qIWGjeBZ/k+pwwsYQecFve
- jfUg==
-X-Gm-Message-State: AOJu0YzOa7a5dVfvPuCdaoql20Di6g3T/OJMMpwvTOTUuLx4CpDtSeeE
- FOyE7DqKcNZj1WQvwhj7iy06ga4WA65fCAv3z8HdGqGkOinQvg==
-X-Google-Smtp-Source: AGHT+IHzvpJoZUeKiFq7SvCj6LKf3KkadyCVPVLgMMfjhGB+xnTqjqCTFMa0VlyRoUOn4AE5Hch/LQ==
-X-Received: by 2002:aa7:c9d0:0:b0:555:3b98:7540 with SMTP id
- i16-20020aa7c9d0000000b005553b987540mr549634edt.33.1704384501967; 
- Thu, 04 Jan 2024 08:08:21 -0800 (PST)
+ bh=SGjQWJGQLmAl7EsKd4gss7GidQfzjVVMOp135hQS5aE=;
+ b=lULIAtEbBrfU253/zSJvT2Ip3Vnd09d1064wzitgHmsJkmDrdYaG1oi0ewqR+65qUs
+ PmeRMLfwSkO3F4KTNUow22YekqJLg1X8yL/2fm0fPBambXBWO4oOoSanuhN0+JT1LnRD
+ G8MIMqpZT0Fyj+57pl64rxcNlViurYjOH9Mlki+Dx5itf7gLN5yrugsslQUtiSSJKRLI
+ os3DMDAstPPE3exIJU5a2bKhxL8dsPNHP1xVeNX7HBPrD2fJb4FkARYEPuIsOJkts1xZ
+ /z6Kl1c062W0ltoBDh0ic2wp3wzLjLserxkUeCCMyTV/cTXJXx7FvtbfMhqszNN9JETP
+ AILQ==
+X-Gm-Message-State: AOJu0YyynssMzWxiPO5Fj3urDmLaA4DLozHI0K0eMEz2B8xQ2JIReU91
+ psYMt+inDbJ4/PmFWDOgGYow1vsTRzMMLei+LcDPEebOTd83RQ==
+X-Google-Smtp-Source: AGHT+IEDR1mJVz4NII2iH5TjH2XjOHlzngmGH1Aky2igRcUdTcGteoM6Wsuq0+UkHiSW4FCurZQcdw==
+X-Received: by 2002:ac2:5f4c:0:b0:50e:3107:29e2 with SMTP id
+ 12-20020ac25f4c000000b0050e310729e2mr376995lfz.108.1704384508018; 
+ Thu, 04 Jan 2024 08:08:28 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.194.232])
  by smtp.gmail.com with ESMTPSA id
- p2-20020a056402044200b005553a8bb61dsm12178417edw.87.2024.01.04.08.08.20
+ r14-20020a056402018e00b00556d13abcc7sm2430690edv.85.2024.01.04.08.08.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 04 Jan 2024 08:08:21 -0800 (PST)
+ Thu, 04 Jan 2024 08:08:27 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>,
@@ -66,17 +66,18 @@ Cc: Thomas Huth <thuth@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 2/9] scripts/ci: Do not restrict spice package to x86/arm hosts
-Date: Thu,  4 Jan 2024 17:07:58 +0100
-Message-ID: <20240104160805.56856-3-philmd@linaro.org>
+Subject: [RFC PATCH 3/9] scripts/ci: Split EL8 specific packages out of
+ Centos8 list
+Date: Thu,  4 Jan 2024 17:07:59 +0100
+Message-ID: <20240104160805.56856-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240104160805.56856-1-philmd@linaro.org>
 References: <20240104160805.56856-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,40 +100,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow installing spice-server-devel package on any non-ppc64le host,
-as per commit  556ede028d ("scripts/ci/setup: spice-server only on
-x86 aarch64") describes: "Spice server not available in ppc64le".
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- scripts/ci/setup/build-environment.yml | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ scripts/ci/setup/build-environment.yml | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/scripts/ci/setup/build-environment.yml b/scripts/ci/setup/build-environment.yml
-index f344d1a850..32ac0a74f4 100644
+index 32ac0a74f4..60b751018f 100644
 --- a/scripts/ci/setup/build-environment.yml
 +++ b/scripts/ci/setup/build-environment.yml
-@@ -249,7 +249,7 @@
+@@ -234,10 +234,8 @@
+           - nmap-ncat
+           - numactl-devel
+           - pixman-devel
+-          - python38
+           - python3-sphinx
+           - rdma-core-devel
+-          - redhat-rpm-config
+           - snappy-devel
+           - spice-glib-devel
+           - systemd-devel
+@@ -249,6 +247,16 @@
          - ansible_facts['distribution_file_variety'] in ['RedHat', 'CentOS']
          - ansible_facts['distribution_version'] == '8'
  
--    - name: Install packages only available on x86 and aarch64
-+    - name: Install Spice packages
++    - name: Install packages only available on EL8
++      dnf:
++        name:
++          - python38
++          - redhat-rpm-config
++        state: present
++      when:
++        - ansible_facts['distribution_file_variety'] in ['RedHat']
++        - ansible_facts['distribution_version'] == '8'
++
+     - name: Install Spice packages
        dnf:
          # Spice server not available in ppc64le
-         name:
-@@ -257,9 +257,8 @@
-           - spice-server-devel
-         state: present
-       when:
--        - ansible_facts['distribution_file_variety'] in ['RedHat', 'CentOS']
--        - ansible_facts['distribution_version'] == '8'
--        - ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'x86_64'
-+        - ansible_facts['os_family'] == 'RedHat'
-+        - ansible_facts['architecture'] != 'ppc64le'
- 
-     - name: Check whether the Python runtime version is managed by alternatives
-       stat:
 -- 
 2.41.0
 
