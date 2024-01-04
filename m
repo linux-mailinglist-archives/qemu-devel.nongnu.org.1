@@ -2,74 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8AC82463E
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9109824606
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:21:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLQbg-0007T6-Hj; Thu, 04 Jan 2024 11:30:08 -0500
+	id 1rLQRX-0007Zb-Pz; Thu, 04 Jan 2024 11:19:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rLQbd-0007SQ-Dm
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:30:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rLQRS-0007Wt-F5; Thu, 04 Jan 2024 11:19:34 -0500
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rLQbb-0002ON-V0
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:30:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704385803;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+3JNEzcvarOHKa3q9hrfDZ4SHodTXzg+K6gMC3D5u+w=;
- b=WaA0JKtqg1VDuC29KPzAtUDjShtNtep61V7uikXneRxCfAuHdpICAnrNzha2HQ/A7oR8vz
- wo53Wy8KwwV54jlpcGZ3mNYmxgCX2yx42l/abZLf1UjTqHRfm+rKOn0BIDy2gWp1MddsJr
- h2xyhdlrdGJG30sgD8qRYtvYjVWKuBw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-457-883CETGiNLmw4oTn6Tg2wA-1; Thu,
- 04 Jan 2024 11:30:00 -0500
-X-MC-Unique: 883CETGiNLmw4oTn6Tg2wA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B22193806729;
- Thu,  4 Jan 2024 16:29:59 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.113])
- by smtp.corp.redhat.com (Postfix) with ESMTP id AE8A71C060AF;
- Thu,  4 Jan 2024 16:29:57 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6/6] qtest: ensure netdev-socket tests have non-overlapping
- names
-Date: Thu,  4 Jan 2024 16:29:42 +0000
-Message-ID: <20240104162942.211458-7-berrange@redhat.com>
-In-Reply-To: <20240104162942.211458-1-berrange@redhat.com>
-References: <20240104162942.211458-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rLQRQ-0005NO-0W; Thu, 04 Jan 2024 11:19:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1704385172; x=1735921172;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ETWmTlJlHbaTTOuyM0EieSosO/J9p965d/zZA24U6F0=;
+ b=YE8GHgtaHG72Igeei+/wGoYWgP8VS5pv+mqCtUNyXBKLchpoHeAYjBjZ
+ /p++fpwYzto/ZwawnhFGJpmMbVs2QB0x2zPTTmneucdtjYo+jsK9/A4r9
+ DvVoBjpycuGhdm1tPnqJuMJojqdAp4H+dtOZ23ywSzb4sQAMusCbz8vwd
+ NfjAQD9TNjerFevHNdbDPrUaCCz/wWcB7DmiOq7bdiOmr42oNTXfqHQEa
+ hB9Vb0mCgk6TDw263NPY6VrfLseY354y8Rx/1wku8SkFoUS2eiv0IZuWr
+ MRVnR1Wx5K6gRpfLoJ6lGlsa5ygiTppKvr6jqvEAARD5263oWQuqvNkvK Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="4103005"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
+   d="scan'208";a="4103005"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jan 2024 08:19:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; d="scan'208";a="28838743"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa001.jf.intel.com with ESMTP; 04 Jan 2024 08:19:24 -0800
+Date: Fri, 5 Jan 2024 00:32:17 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Samuel Tardieu <sam@rfc1149.net>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
+ Vikram Garhwal <fnu.vikram@xilinx.com>, Pavel Pisa <pisa@cmp.felk.cvut.cz>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH] docs: use "buses" rather than "busses"
+Message-ID: <ZZbdkTgmg3MsRjkv@intel.com>
+References: <20240103172817.2197737-1-sam@rfc1149.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240103172817.2197737-1-sam@rfc1149.net>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
 X-Spam_bar: ----
 X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,29 +76,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When naming glib tests if the name of one test is a substring of the
-name of another test, it is not possible to use the '-p /the/name'
-option to run a single test.
+On Wed, Jan 03, 2024 at 06:28:17PM +0100, Samuel Tardieu wrote:
+> Date: Wed,  3 Jan 2024 18:28:17 +0100
+> From: Samuel Tardieu <sam@rfc1149.net>
+> Subject: [PATCH] docs: use "buses" rather than "busses"
+> X-Mailer: git-send-email 2.42.0
+> 
+> If "busses" might be encountered as a plural of "bus" (5 instances),
+> the correct spelling is "buses" (26 instances). Fixing those 5
+> instances makes the doc more consistent.
+> 
+> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+> ---
+>  docs/system/arm/palm.rst    | 2 +-
+>  docs/system/arm/xscale.rst  | 2 +-
+>  docs/system/devices/can.rst | 6 +++---
+>  3 files changed, 5 insertions(+), 5 deletions(-)
+> 
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- tests/qtest/netdev-socket.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-diff --git a/tests/qtest/netdev-socket.c b/tests/qtest/netdev-socket.c
-index 91441f7922..fc7d11961e 100644
---- a/tests/qtest/netdev-socket.c
-+++ b/tests/qtest/netdev-socket.c
-@@ -526,7 +526,7 @@ int main(int argc, char **argv)
- #ifndef _WIN32
-         qtest_add_func("/netdev/dgram/unix", test_dgram_unix);
- #endif
--        qtest_add_func("/netdev/stream/unix", test_stream_unix);
-+        qtest_add_func("/netdev/stream/unix/oneshot", test_stream_unix);
-         qtest_add_func("/netdev/stream/unix/reconnect",
-                        test_stream_unix_reconnect);
- #ifdef CONFIG_LINUX
--- 
-2.43.0
 
 
