@@ -2,76 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD7D823C48
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 07:31:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CFB4823C5B
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 07:48:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLHGa-0005uo-Gw; Thu, 04 Jan 2024 01:31:44 -0500
+	id 1rLHV7-0001DI-Gc; Thu, 04 Jan 2024 01:46:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rLHGY-0005uR-Ht; Thu, 04 Jan 2024 01:31:42 -0500
-Received: from mail-vk1-xa2d.google.com ([2607:f8b0:4864:20::a2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rLHGW-00013O-Ou; Thu, 04 Jan 2024 01:31:42 -0500
-Received: by mail-vk1-xa2d.google.com with SMTP id
- 71dfb90a1353d-4b78b813dd0so54046e0c.3; 
- Wed, 03 Jan 2024 22:31:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704349899; x=1704954699; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5DgNiaJnpMr38ezaTxgsgMqudpjOk1sQ7uYuhKw+moU=;
- b=IkFGilBxSzH3LXZNC5c4ixDvOUZ5CWd/TmKWrT6S6fR1O/BLbMiZDNyyj6ODJdTdeW
- 5LN3tiuxjf7Vl9TIsYcoHjrhzHmlUZbOWa3+3vE0B+fn2Em7pb9rqnMl/S1UXff2U7JX
- 5VO16uHPhqq+l+MtwTsxiQMgbysePsishzzBm9tlgwcNPaNd6rNlkdY3Gg5jmA5blCsF
- rgZ1zGGE9yTca9gO45tz4waTi3kBfeRMbx6RJHoYb7hVQtHrwQCeakZBZjT4gIOJjQTY
- ZUW9HvqlL8gEwDsrEzVXMfZghVXJTETGjntbcHEYJoBP7wZEGUna/+YjUrTyVOvMxDBT
- Iotw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLHUy-0001CF-Bk
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 01:46:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLHUv-00058v-4r
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 01:46:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704350789;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=RYtPe9vhtv4TiE7oIw9K2PTDlEP37Gs3xyj/IQ1fEdE=;
+ b=K3uFuwyieZc3Dtmlw0gA/qmKrwfEcUtFJMnwD5kI73/9rJvq2o7dJcovRVW9qN+AaAW5Yy
+ RBRmUoSMbvHRR9Wx908CiuBPI3Yd1m7UqmShFjbzq11ZI6X/uCYMHNmfA7PVpw1CpOqSaS
+ dMZPeriy7Q30v+TurcASttWWj+hv64o=
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
+ [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-684-l5_UROVQNRGYsE5krKhjFQ-1; Thu, 04 Jan 2024 01:46:26 -0500
+X-MC-Unique: l5_UROVQNRGYsE5krKhjFQ-1
+Received: by mail-pf1-f199.google.com with SMTP id
+ d2e1a72fcca58-6da4d130a82so51728b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 22:46:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704349899; x=1704954699;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5DgNiaJnpMr38ezaTxgsgMqudpjOk1sQ7uYuhKw+moU=;
- b=O7BXToUAqKCQCEQmNZC3yAG0o8kyevkDOnnwPMfxqSk2r4pEOx2S0IhwKnj1n1DJfQ
- FV3AzIGSgMCP9DHuRbMsW8YqbZzT8lvkkXZCUOKdCC7Flp9V3E0AE7SZoFaEPUFr5thB
- N38w/C82NGWe+v+3VTbhapwqJ5U3e68oGT0d4hOPu8vCaHpea6f8E2/NLX9GZP+6s2nX
- uM0gID+zoF9xDx8gKKSsUSEFDnt1MY+k4/ydHOpqvuVmfikWTanGFnTuZkG46oAtlre4
- N6fZHdaaGh8nAPr/xK7OQR6Rym4aJsyFFhOP4LzLHy7jKGgIpGRNA6G5MGrPrhZkbadb
- JXIQ==
-X-Gm-Message-State: AOJu0YyPmGoRB3dELVl6Ol0gaTnvWqM9BIbm54oTUCmuDz3Q1hbbGUVi
- RyxCTegqYLg3f/1uaNrf1s9GvNG9LTXiXhvwBWzX/B8t
-X-Google-Smtp-Source: AGHT+IGQELwMxjTm3zeYh1jkcVB4GXQYTz23C87ECblQU4foS7I3pHpFHc/mkztdNZhjjGMVoARE6oj+43Xg0Zgnbd8=
-X-Received: by 2002:ac5:c90b:0:b0:4b7:97b9:527d with SMTP id
- t11-20020ac5c90b000000b004b797b9527dmr87039vkl.26.1704349899180; Wed, 03 Jan
- 2024 22:31:39 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704350783; x=1704955583;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RYtPe9vhtv4TiE7oIw9K2PTDlEP37Gs3xyj/IQ1fEdE=;
+ b=pX6b3B4n/Qk3108xb5LAoTR70iQLbGgaO8ULJAK+LfgMcRYLd/t+hdSqx13oOymom6
+ LTwUrESBS7Nt9gmCt0OE7sFyJYYCcpt9KXk7njnmw+OBKSDa2rAr301IzVKilCAE7f2o
+ yeqfRgj3gay2tIVrnzYh35vDoqjQXMiXMsUGF3Bt251gR26LEar+as3AUeh63H5AhGNw
+ Q/SkZmYkFQ/LitI25/MxuGJeKxIZIkh703eDNYOmpwrGJbMRpCjbmIHEMCROuCFNy25Z
+ ljqZSl5pvZeJCu9XaDjn/aJVd6Nj2QfFqbi6mUcpGdfaU+4MSbuJg6OA2p9F4vvlTaTV
+ Dl2A==
+X-Gm-Message-State: AOJu0Yz0FuLyj0t3xg9FEfcL3Yw9isgmbuNFlsnXNmy4uTIpmcnpQ9nV
+ BH9CPF1mvvVihTLs3m2Ax8XZjAq4rRX+fkPLtzopGaJByTzCK3Z0+RNDh/8nwlAZVagJyM79m9u
+ XhP2el3RVdTBIYvogtbotao4=
+X-Received: by 2002:a05:6a00:399b:b0:6da:86e5:1648 with SMTP id
+ fi27-20020a056a00399b00b006da86e51648mr370394pfb.0.1704350783541; 
+ Wed, 03 Jan 2024 22:46:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHuGEPyuUvXBHeDEIQIQum00SsRqSLpcxxUCahzH0FtoCfJYrWbwedoFFREZowEPnKlNSo7aw==
+X-Received: by 2002:a05:6a00:399b:b0:6da:86e5:1648 with SMTP id
+ fi27-20020a056a00399b00b006da86e51648mr370385pfb.0.1704350783182; 
+ Wed, 03 Jan 2024 22:46:23 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ i126-20020a625484000000b006dac8b83f29sm194518pfb.122.2024.01.03.22.46.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Jan 2024 22:46:22 -0800 (PST)
+Date: Thu, 4 Jan 2024 14:46:14 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, si-wei.liu@oracle.com,
+ Lei Yang <leiyang@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Zhu Lingshan <lingshan.zhu@intel.com>, Parav Pandit <parav@mellanox.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>
+Subject: Re: [PATCH for 9.0 08/12] vdpa: add vhost_vdpa_load_setup
+Message-ID: <ZZZUNsOVxxqr-H5S@x1n>
+References: <20231215172830.2540987-1-eperezma@redhat.com>
+ <20231215172830.2540987-9-eperezma@redhat.com>
+ <CACGkMEvH=uU4QxMHVHTo5tQiuML2+NTE3gZssfz84-+4kGHa1Q@mail.gmail.com>
+ <CAJaqyWczW+uwYBsWas97JY6OgiSurnvNQnnTYPFWv5La55GOOg@mail.gmail.com>
+ <CACGkMEukZNUnXRSwpVAROe7U7GzkubP9i37ev+qOSQvWxLEK_Q@mail.gmail.com>
+ <CAJaqyWfGkboB4sN0PSukKx1kAV-QQ_YSWXWvksPScBD9OgHRsQ@mail.gmail.com>
+ <ZZOgGmpNT_zi2eat@x1n>
+ <CAJaqyWcajuV12tV0aguBO1qpa95pK0qUEHjsNh2+VpMR3fCVyg@mail.gmail.com>
+ <ZZT7wuq-_IhfN_wR@x1n>
+ <CAJaqyWfMEeg6FVhyFTVEest1eZXEwMiyib47Z8+BUGCaWkfH3w@mail.gmail.com>
 MIME-Version: 1.0
-References: <20231218125334.37184-1-dbarboza@ventanamicro.com>
- <20231218125334.37184-19-dbarboza@ventanamicro.com>
-In-Reply-To: <20231218125334.37184-19-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 4 Jan 2024 16:31:13 +1000
-Message-ID: <CAKmqyKMtmS+i2b6uQM9fXz=i89r0Zp3U0XBZ2mcuhmtbYBf=YA@mail.gmail.com>
-Subject: Re: [PATCH v13 18/26] target/riscv: add 'rva22u64' CPU
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, ajones@ventanamicro.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2d;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJaqyWfMEeg6FVhyFTVEest1eZXEwMiyib47Z8+BUGCaWkfH3w@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,119 +112,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 18, 2023 at 10:56=E2=80=AFPM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> This CPU was suggested by Alistair [1] and others during the profile
-> design discussions. It consists of the bare 'rv64i' CPU with rva22u64
-> enabled by default, like an alias of '-cpu rv64i,rva22u64=3Dtrue'.
->
-> Users now have an even easier way of consuming this user-mode profile by
-> doing '-cpu rva22u64'. Extensions can be enabled/disabled at will on top
-> of it.
->
-> We can boot Linux with this "user-mode" CPU by doing:
->
-> -cpu rva22u64,sv39=3Dtrue,s=3Dtrue,zifencei=3Dtrue
->
-> [1] https://lore.kernel.org/qemu-riscv/CAKmqyKP7xzZ9Sx=3D-Lbx2Ob0qCfB7Z+J=
-O944FQ2TQ+49mqo0q_Q@mail.gmail.com/
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+On Wed, Jan 03, 2024 at 12:11:19PM +0100, Eugenio Perez Martin wrote:
+> On Wed, Jan 3, 2024 at 7:16 AM Peter Xu <peterx@redhat.com> wrote:
+> >
+> > On Tue, Jan 02, 2024 at 12:28:48PM +0100, Eugenio Perez Martin wrote:
+> > > On Tue, Jan 2, 2024 at 6:33 AM Peter Xu <peterx@redhat.com> wrote:
+> > > >
+> > > > Jason, Eugenio,
+> > > >
+> > > > Apologies for a late reply; just back from the long holiday.
+> > > >
+> > > > On Thu, Dec 21, 2023 at 09:20:40AM +0100, Eugenio Perez Martin wrote:
+> > > > > Si-Wei did the actual profiling as he is the one with the 128G guests,
+> > > > > but most of the time was spent in the memory pinning. Si-Wei, please
+> > > > > correct me if I'm wrong.
+> > > >
+> > > > IIUC we're talking about no-vIOMMU use case.  The pinning should indeed
+> > > > take a lot of time if it's similar to what VFIO does.
+> > > >
+> > > > >
+> > > > > I didn't check VFIO, but I think it just maps at realize phase with
+> > > > > vfio_realize -> vfio_attach_device -> vfio_connect_container(). In
+> > > > > previous testings, this delayed the VM initialization by a lot, as
+> > > > > we're moving that 20s of blocking to every VM start.
+> > > > >
+> > > > > Investigating a way to do it only in the case of being the destination
+> > > > > of a live migration, I think the right place is .load_setup migration
+> > > > > handler. But I'm ok to move it for sure.
+> > > >
+> > > > If it's destined to map the 128G, it does sound sensible to me to do it
+> > > > when VM starts, rather than anytime afterwards.
+> > > >
+> > >
+> > > Just for completion, it is not 100% sure the driver will start the
+> > > device. But it is likely for sure.
+> >
+> > My understanding is that vDPA is still a quite special device, assuming
+> > only targeting advanced users, and should not appear in a default config
+> > for anyone.  It means the user should hopefully remove the device if the
+> > guest is not using it, instead of worrying on a slow boot.
+> >
+> > >
+> > > > Could anyone help to explain what's the problem if vDPA maps 128G at VM
+> > > > init just like what VFIO does?
+> > > >
+> > >
+> > > The main problem was the delay of VM start. In the master branch, the
+> > > pinning is done when the driver starts the device. While it takes the
+> > > BQL, the rest of the vCPUs can move work forward while the host is
+> > > pinning. So the impact of it is not so evident.
+> > >
+> > > To move it to initialization time made it very noticeable. To make
+> > > things worse, QEMU did not respond to QMP commands and similar. That's
+> > > why it was done only if the VM was the destination of a LM.
+> >
+> > Is that a major issue for us?
+> 
+> To me it is a regression but I'm ok with it for sure.
+> 
+> >  IIUC then VFIO shares the same condition.
+> > If it's a real problem, do we want to have a solution that works for both
+> > (or, is it possible)?
+> >
+> 
+> I would not consider a regression for VFIO since I think it has
+> behaved that way from the beginning. But yes, I'm all in to find a
+> common solution.
+> 
+> > >
+> > > However, we've added the memory map thread in this version, so this
+> > > might not be a problem anymore. We could move the spawn of the thread
+> > > to initialization time.
+> > >
+> > > But how to undo this pinning in the case the guest does not start the
+> > > device? In this series, this is done at the destination with
+> > > vhost_vdpa_load_cleanup. Or is it ok to just keep the memory mapped as
+> > > long as QEMU has the vDPA device?
+> >
+> > I think even if vDPA decides to use a thread, we should keep the same
+> > behavior before/after the migration.  Having assymetric behavior over DMA
+> > from the assigned HWs might have unpredictable implications.
+> >
+> > What I worry is we may over-optimize / over-engineer the case where the
+> > user will specify the vDPA device but not use it, as I mentioned above.
+> >
+> 
+> I agree with all of the above. If it is ok to keep memory mapped while
+> the guest has not started I think we can move the spawn of the thread,
+> or even just the map write itself, to the vdpa init.
+> 
+> > For the long term, maybe there's chance to optimize DMA pinning for both
+> > vdpa/vfio use cases, then we can always pin them during VM starts? Assuming
+> > that issue only exists for large VMs, while they should normally be good
+> > candidates for huge pages already.  Then, it means maybe one folio/page can
+> > cover a large range (e.g. 1G on x86_64) in one pin, and physical continuity
+> > also provides possibility of IOMMU large page mappings.  I didn't check at
+> > which stage we are for VFIO on this, Alex may know better.
+> 
+> Sounds interesting, and I think it should be implemented. Thanks for
+> the pointer!
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+I didn't have an exact pointer previously, but to provide a pointer, I
+think it can be something like this:
 
-Alistair
+  physr discussion - Jason Gunthorpe
+  https://www.youtube.com/watch?v=QftOTtks-pI&list=PLbzoR-pLrL6rlmdpJ3-oMgU_zxc1wAhjS&index=36
 
-> ---
->  target/riscv/cpu-qom.h     |  1 +
->  target/riscv/cpu.c         | 17 +++++++++++++++++
->  target/riscv/tcg/tcg-cpu.c |  9 +++++++++
->  3 files changed, 27 insertions(+)
->
-> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-> index 4d1aa54311..12fe78fc52 100644
-> --- a/target/riscv/cpu-qom.h
-> +++ b/target/riscv/cpu-qom.h
-> @@ -35,6 +35,7 @@
->  #define TYPE_RISCV_CPU_BASE64           RISCV_CPU_TYPE_NAME("rv64")
->  #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x-rv128")
->  #define TYPE_RISCV_CPU_RV64I            RISCV_CPU_TYPE_NAME("rv64i")
-> +#define TYPE_RISCV_CPU_RVA22U64         RISCV_CPU_TYPE_NAME("rva22u64")
->  #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibe=
-x")
->  #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
->  #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31"=
-)
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index b9057c8da2..a38d78b2d6 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1576,6 +1576,15 @@ static Property riscv_cpu_properties[] =3D {
->      DEFINE_PROP_END_OF_LIST(),
->  };
->
-> +#if defined(TARGET_RISCV64)
-> +static void rva22u64_profile_cpu_init(Object *obj)
-> +{
-> +    rv64i_bare_cpu_init(obj);
-> +
-> +    RVA22U64.enabled =3D true;
-> +}
-> +#endif
-> +
->  static const gchar *riscv_gdb_arch_name(CPUState *cs)
->  {
->      RISCVCPU *cpu =3D RISCV_CPU(cs);
-> @@ -1866,6 +1875,13 @@ void riscv_cpu_list(void)
->          .instance_init =3D initfn            \
->      }
->
-> +#define DEFINE_PROFILE_CPU(type_name, initfn) \
-> +    {                                         \
-> +        .name =3D type_name,                    \
-> +        .parent =3D TYPE_RISCV_BARE_CPU,        \
-> +        .instance_init =3D initfn               \
-> +    }
-> +
->  static const TypeInfo riscv_cpu_type_infos[] =3D {
->      {
->          .name =3D TYPE_RISCV_CPU,
-> @@ -1910,6 +1926,7 @@ static const TypeInfo riscv_cpu_type_infos[] =3D {
->      DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,   rv64_veyron_v1_cpu_ini=
-t),
->      DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,  rv128_base_cpu_init),
->      DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64I, rv64i_bare_cpu_init),
-> +    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64, rva22u64_profile_cpu_ini=
-t),
->  #endif
->  };
->
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index 005d8be26b..04aedf3840 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -1095,6 +1095,15 @@ static void riscv_cpu_add_profiles(Object *cpu_obj=
-)
->          object_property_add(cpu_obj, profile->name, "bool",
->                              cpu_get_profile, cpu_set_profile,
->                              NULL, (void *)profile);
-> +
-> +        /*
-> +         * CPUs might enable a profile right from the start.
-> +         * Enable its mandatory extensions right away in this
-> +         * case.
-> +         */
-> +        if (profile->enabled) {
-> +            object_property_set_bool(cpu_obj, profile->name, true, NULL)=
-;
-> +        }
->      }
->  }
->
-> --
-> 2.43.0
->
->
+Since I have zero knowledge on vDPA side, I can only provide the exmaple
+from VFIO and even if so that may not be fully accurate.  Basically afaiu
+currently vfio is already smart enough to recognize continuous ranges (via
+vfio_pin_pages_remote()):
+
+		/* Pin a contiguous chunk of memory */
+		npage = vfio_pin_pages_remote(dma, vaddr + dma->size,
+					      size >> PAGE_SHIFT, &pfn, limit,
+					      &batch);
+
+But the pin can still be slow, due to e.g. we need a page* for each
+PAGE_SIZE range.
+
+I think something like physr can improve it.  That should correspond to the
+1st slide of the video of the "performance" entry on pin_user_pages().
+
+Thanks,
+
+> 
+> > I'm copying Alex
+> > anyway since the problem seems to be a common one already, so maybe he has
+> > some thoughts.
+> >
+> 
+> Appreciated :).
+> 
+> Thanks!
+> 
+
+-- 
+Peter Xu
+
 
