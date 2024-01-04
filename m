@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982F28245CF
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:08:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8358245D3
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:09:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLQGm-0005OJ-T5; Thu, 04 Jan 2024 11:08:32 -0500
+	id 1rLQGu-0005PY-GO; Thu, 04 Jan 2024 11:08:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQGl-0005OB-NB
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:08:31 -0500
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQGr-0005P3-VF
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:08:37 -0500
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQGj-0007sL-U1
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:08:31 -0500
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-50e7dd8bce8so763247e87.1
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 08:08:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQGq-0007u6-6p
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:08:37 -0500
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-50e7dff3e9fso757340e87.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 08:08:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704384508; x=1704989308; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704384514; x=1704989314; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SGjQWJGQLmAl7EsKd4gss7GidQfzjVVMOp135hQS5aE=;
- b=UzIBHmKLGuztYhNv0gCz8C+7F5qsP7mSRUt5o6XNnybuccsecupRHNrF/hN4e3CY4O
- Gqm+eb/0CL9HQ2H/3qV5I7a1RrhVKOKYXEs0Ft8h2Lw8yJop2Upe5bZkk882EPKuQ5nP
- a8D3HTvp59Fdrt0853HLALWsjaFNVjX/hrHzTXFvOMI0hHNnkM2RmxPlnOhRMppioHvd
- L2MVEJ9kGeUytCb0ekO3gab1ttQl/+rjGSKmpOTCE7X9YXgdnpoDOYOVIAaYvRgLBHxS
- n1EUrjQaYwLD7AB0I6LkplW+XCLZvIdF/cKQjo3fiNxNUbGfwl09D4Qz2QJ/BpoPtp+s
- hJKw==
+ bh=7++Y7va51Qj/c1w7IkyF5ARAG45RNZAlgZr3RWGqoII=;
+ b=qfOUrqXpQT/SQRo8CLVDyuOzZ9FtgYLpTzPmdPtVDn0NQxMsaBAD9GNwpZAM5+ikYa
+ wUT/vydBO+p+jA5l23S/VnENUPuS2Sm97a0pTz9rf9PSCxq67m35KBs3tclyPBDsBfEv
+ +883vO8rkEvRO44cCcjsyBF9/NJIDBZp1bvFolDIE9KxYG7bN2RKSGoqcApIM6B8UcCN
+ Vq3ApOanIvQCH5HacTOO9zl8jTafvpii9RC+o2+IDV2eneWnqHe0FiUkW1x94iYgwu5L
+ xpxuc0YX3ZRRrxbVB5K51kxS1HBCeCJwDjFa86lj1cydO3lBNo59adoOrXktSs2yKf35
+ smFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704384508; x=1704989308;
+ d=1e100.net; s=20230601; t=1704384514; x=1704989314;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SGjQWJGQLmAl7EsKd4gss7GidQfzjVVMOp135hQS5aE=;
- b=lULIAtEbBrfU253/zSJvT2Ip3Vnd09d1064wzitgHmsJkmDrdYaG1oi0ewqR+65qUs
- PmeRMLfwSkO3F4KTNUow22YekqJLg1X8yL/2fm0fPBambXBWO4oOoSanuhN0+JT1LnRD
- G8MIMqpZT0Fyj+57pl64rxcNlViurYjOH9Mlki+Dx5itf7gLN5yrugsslQUtiSSJKRLI
- os3DMDAstPPE3exIJU5a2bKhxL8dsPNHP1xVeNX7HBPrD2fJb4FkARYEPuIsOJkts1xZ
- /z6Kl1c062W0ltoBDh0ic2wp3wzLjLserxkUeCCMyTV/cTXJXx7FvtbfMhqszNN9JETP
- AILQ==
-X-Gm-Message-State: AOJu0YyynssMzWxiPO5Fj3urDmLaA4DLozHI0K0eMEz2B8xQ2JIReU91
- psYMt+inDbJ4/PmFWDOgGYow1vsTRzMMLei+LcDPEebOTd83RQ==
-X-Google-Smtp-Source: AGHT+IEDR1mJVz4NII2iH5TjH2XjOHlzngmGH1Aky2igRcUdTcGteoM6Wsuq0+UkHiSW4FCurZQcdw==
-X-Received: by 2002:ac2:5f4c:0:b0:50e:3107:29e2 with SMTP id
- 12-20020ac25f4c000000b0050e310729e2mr376995lfz.108.1704384508018; 
- Thu, 04 Jan 2024 08:08:28 -0800 (PST)
+ bh=7++Y7va51Qj/c1w7IkyF5ARAG45RNZAlgZr3RWGqoII=;
+ b=WaBJ0kUTmaE8OUF+9uGTbmIDKzZSR4fij9k2mZrALUqBUfOqUDz6QlhKD632OiE8H3
+ 64Azm2l9Jr1wQvALV61hNNn3lxHS7XChi9M60UWWN8ZZtqxG05TX4UFVb75vU1rKC+dp
+ NrA0uU/GbmSET20W0BxWbqmJQihMus08XECa+Sei7H/Y5We+hrVL/akYoD0ZOKG/N1Vk
+ TjVVmILRg5pfpdhsODunDw3A3TAjp05r6/qllZZoAYGzwwMCugUE/d10TW2AsrIjTsli
+ VaCiiHWRzmp+0wi/hLBDY5pIQYiEzRZqiIkY+Qu3JG2eDUNRT2oc1O7XjhKReYmNZbzY
+ PD5g==
+X-Gm-Message-State: AOJu0Yx1EhFYz35ag0O72NLeonTOBZtDHX2LyddJqD5bvOUOnzRgO/Xs
+ 0SNfOTAPyzeqUQ74byoZ8UbmYSuynb3+Hc73zAPyC5/kgUSQ8A==
+X-Google-Smtp-Source: AGHT+IEpW84q3GfkP1YI0oh68pSSCVRdx0TFch3tFPfDpwwxEIxGZ855yyMPgxlLNF1l2PJjh+Ozzw==
+X-Received: by 2002:a2e:a588:0:b0:2cc:c7fb:ce0d with SMTP id
+ m8-20020a2ea588000000b002ccc7fbce0dmr539622ljp.93.1704384514151; 
+ Thu, 04 Jan 2024 08:08:34 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.194.232])
  by smtp.gmail.com with ESMTPSA id
- r14-20020a056402018e00b00556d13abcc7sm2430690edv.85.2024.01.04.08.08.26
+ x7-20020aa7cd87000000b00555b548c3fesm9082233edv.29.2024.01.04.08.08.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 04 Jan 2024 08:08:27 -0800 (PST)
+ Thu, 04 Jan 2024 08:08:33 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>,
@@ -66,18 +66,17 @@ Cc: Thomas Huth <thuth@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [RFC PATCH 3/9] scripts/ci: Split EL8 specific packages out of
- Centos8 list
-Date: Thu,  4 Jan 2024 17:07:59 +0100
-Message-ID: <20240104160805.56856-4-philmd@linaro.org>
+Subject: [RFC PATCH 4/9] scripts/ci: Update Centos8 package list
+Date: Thu,  4 Jan 2024 17:08:00 +0100
+Message-ID: <20240104160805.56856-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240104160805.56856-1-philmd@linaro.org>
 References: <20240104160805.56856-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,43 +99,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Update Centos 8 package list running:
+
+ $ lcitool variables -f json centos-stream-8 qemu \
+   | jq -r '.pkgs[]' \
+   | xargs -n 1 echo "          -"
+
+On libvirt-ci commit e9e7d3bf ("facts: enable gtk-vnc2-devel
+on almalinux 8 / centos stream 8").
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- scripts/ci/setup/build-environment.yml | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ scripts/ci/setup/build-environment.yml | 75 +++++++++++++++++++++++---
+ 1 file changed, 68 insertions(+), 7 deletions(-)
 
 diff --git a/scripts/ci/setup/build-environment.yml b/scripts/ci/setup/build-environment.yml
-index 32ac0a74f4..60b751018f 100644
+index 60b751018f..9518cc55a5 100644
 --- a/scripts/ci/setup/build-environment.yml
 +++ b/scripts/ci/setup/build-environment.yml
-@@ -234,10 +234,8 @@
+@@ -195,53 +195,114 @@
+ 
+     - name: Install basic packages to build QEMU on EL8
+       dnf:
+-        # This list of packages start with tests/docker/dockerfiles/centos8.docker
+-        # but only include files that are common to all distro variants and present
+-        # in the standard repos (no add-ons)
+         name:
++          - SDL2-devel
++          - alsa-lib-devel
++          - bash
++          - bc
++          - bison
++          - brlapi-devel
+           - bzip2
+           - bzip2-devel
++          - ca-certificates
+           - capstone-devel
++          - ccache
++          - clang
++          - ctags
++          - cyrus-sasl-devel
++          - daxctl-devel
+           - dbus-daemon
+           - device-mapper-multipath-devel
+           - diffutils
++          - findutils
++          - flex
+           - gcc
+           - gcc-c++
+           - genisoimage
+           - gettext
+           - git
+           - glib2-devel
++          - glib2-static
++          - glibc-langpack-en
++          - glibc-static
+           - glusterfs-api-devel
+           - gnutls-devel
++          - gtk3-devel
++          - hostname
++          - jemalloc-devel
++          - json-c-devel
+           - libaio-devel
++          - libasan
++          - libattr-devel
++          - libbpf-devel
++          - libcacard-devel
+           - libcap-ng-devel
++          - libcmocka-devel
+           - libcurl-devel
++          - libdrm-devel
+           - libepoxy-devel
+           - libfdt-devel
++          - libffi-devel
+           - libgcrypt-devel
+           - libiscsi-devel
++          - libjpeg-devel
++          - libnfs-devel
+           - libpmem-devel
+-          - librados-devel
++          - libpng-devel
+           - librbd-devel
+           - libseccomp-devel
++          - libslirp-devel
+           - libssh-devel
+-          - libxkbcommon-devel
++          - libtasn1-devel
++          - libubsan
++          - liburing-devel
++          - libusbx-devel
++          - libxdp-devel
++          - libxml2-devel
++          - libzstd-devel
++          - llvm
++          - lttng-ust-devel
+           - lzo-devel
+           - make
+-          - mesa-libEGL-devel
++          - mesa-libgbm-devel
++          - meson
++          - ncurses-devel
+           - nettle-devel
+           - ninja-build
            - nmap-ncat
            - numactl-devel
++          - openssh-clients
++          - pam-devel
++          - pcre-static
++          - pipewire-devel
            - pixman-devel
--          - python38
++          - pkgconfig
++          - pulseaudio-libs-devel
++          - python3
++          - python3-PyYAML
++          - python3-numpy
++          - python3-pillow
++          - python3-pip
            - python3-sphinx
++          - python3-sphinx_rtd_theme
++          - python3-tomli
            - rdma-core-devel
--          - redhat-rpm-config
++          - sed
            - snappy-devel
-           - spice-glib-devel
+-          - spice-glib-devel
++          - spice-protocol
++          - spice-server-devel
            - systemd-devel
-@@ -249,6 +247,16 @@
+           - systemtap-sdt-devel
+           - tar
++          - texinfo
++          - usbredir-devel
++          - util-linux
++          - virglrenderer-devel
++          - vte291-devel
++          - which
++          - xfsprogs-devel
+           - zlib-devel
++          - zlib-static
+         state: present
+       when:
          - ansible_facts['distribution_file_variety'] in ['RedHat', 'CentOS']
-         - ansible_facts['distribution_version'] == '8'
- 
-+    - name: Install packages only available on EL8
-+      dnf:
-+        name:
-+          - python38
-+          - redhat-rpm-config
-+        state: present
-+      when:
-+        - ansible_facts['distribution_file_variety'] in ['RedHat']
-+        - ansible_facts['distribution_version'] == '8'
-+
-     - name: Install Spice packages
-       dnf:
-         # Spice server not available in ppc64le
 -- 
 2.41.0
 
