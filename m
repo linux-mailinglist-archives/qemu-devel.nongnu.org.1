@@ -2,80 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE395824622
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:27:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6593B8245F4
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:15:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLQYd-00068a-74; Thu, 04 Jan 2024 11:26:59 -0500
+	id 1rLQMT-0004hL-2H; Thu, 04 Jan 2024 11:14:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQYa-00067s-OD
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:26:56 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQYY-0001pK-UT
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:26:56 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3367601a301so544790f8f.2
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 08:26:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704385613; x=1704990413; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ABRr9DwPYWDIh06BsEiyMJoio67xealvfTczb5e8umg=;
- b=R/Ngc7J/6Rf4sdb9XJOq7hSNyydzJcgiQzMZTmvD+akus1EUU43Mo4qGAy6VZ3yAmD
- 09XBspMuOg61wEq4sgOQ98CLnZIEoT/pcGB/+4hRaC3iqxctH5SjlQSW4pmUIEQQiYT4
- Prx+0O4EiFz0qaslf5WBwiyO6LM+VYJ9rv9/xjHIl8ER4x1KeAyXvkwHZefMObEsprD4
- efPtkyU327M2dF7O28N49SJaa6vN9MJF46ql1XsGKm+ZjFXPbaP6SnNKg73X3TGzAS9Y
- PWGnVh8sRQUCkB6G705JJaxd3ie2LeicbW2MSi3iQ+FPMDk8Cd48GvtwggNqYnSXtF9S
- V8eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704385613; x=1704990413;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ABRr9DwPYWDIh06BsEiyMJoio67xealvfTczb5e8umg=;
- b=mVCPr+FSrYY3NhG7W8zWhMyrWwfeOzk9dVgWOf+9K4ksrNSSfsO2X37WUKUr+omZJk
- 9glWdRub6AQOjCuQ6eiSuK70l7TBEW94bqg6DIhh1r6i9udgXj4zh5ljpHyRTtD39cU5
- n9YufUzFVs2PwaECgPHnpcw4o8sC67yx8QL6sNmPmyCIWrvOePfx7xa/D1oot5p+h6Mt
- HWQF+4mYo3neC233bkYe5tBc/qYUKvuOenA7VDdYqMM+KB8UdNmkwzKZ+H3a/Q3YEoY8
- 4s6XfA4065CZ50ck6D+tTmiTekNEQcPF300MBtT0Wcjav+P+pfciwabiAha3e31vQ/b4
- YGuA==
-X-Gm-Message-State: AOJu0YyhTCTCe1VlKR3DknfHx9yKnH1AUDpBqQW84aXUoHhX2tlok//l
- u2CorWuSNyOehAbC9sE+DXs44vpcbEGkGw==
-X-Google-Smtp-Source: AGHT+IF0zXUjl2ZVrGMPNtVfCYbsoSWAtrBaGBsmAyN1Pp49BlXsCbwLig5vv2BvkntWrPFUdbiStA==
-X-Received: by 2002:a5d:5902:0:b0:336:d9a6:494f with SMTP id
- v2-20020a5d5902000000b00336d9a6494fmr360338wrd.131.1704385613411; 
- Thu, 04 Jan 2024 08:26:53 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.194.232])
- by smtp.gmail.com with ESMTPSA id
- e8-20020a5d5948000000b00336aa190139sm28477953wri.5.2024.01.04.08.26.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 04 Jan 2024 08:26:52 -0800 (PST)
-Message-ID: <5f7b5921-b6e3-48f1-8bec-b4fdbfdac2f1@linaro.org>
-Date: Thu, 4 Jan 2024 17:26:50 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rLQMM-0004gw-NF
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:14:18 -0500
+Received: from mgamail.intel.com ([198.175.65.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rLQMJ-0002ws-TL
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:14:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1704384856; x=1735920856;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=GyG58qjtlD6A9ubA7JmpOD9H93YdHIfHPaTbFgmjR14=;
+ b=LNWhMZccsD0PJ1oIu7K6el8K0/zjskcXdJS8yMQyVuUSYR7Mh+B0BXFK
+ ghVw89Rj6woBw3ExA60EwhtCi6t3wPMwo2jBhrvbPaDRrDRYU91qxKrLI
+ OEfGkW04KJgLOsAmHE56RljUzJ5Vpn8NhsYrcU5BVOzjUQ9yCzV6e8ItQ
+ mGSFhEOFV5e7o7ul1KrAWHU+jVBiYRTcDNGLziIDw7eHf0K96jQnv0nUA
+ chkDmnoMbucK2rJIZMN26ShLdbSyEYtibuACDT0go/TS86jnPuci/t5+a
+ 6+d+pYUAG6wj4FWGaGqvw8ydZXNQeJf7HVqzxJny7p7kJzOlYsI9AqaSb Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="4384834"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
+   d="scan'208";a="4384834"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jan 2024 08:14:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="773562200"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; d="scan'208";a="773562200"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga007.jf.intel.com with ESMTP; 04 Jan 2024 08:14:10 -0800
+Date: Fri, 5 Jan 2024 00:27:03 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Srikanth Aithal <srikanth.aithal@amd.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
+ nikunj@amd.com
+Subject: Re: [PATCH] target/i386/sev: Fix a segfault in sev_kvm_init
+Message-ID: <ZZbcVwOxISsgr4gW@intel.com>
+References: <20240104104820.14422-1-srikanth.aithal@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] util: fix build with musl libc on ppc64le
-Content-Language: en-US
-To: Natanael Copa <ncopa@alpinelinux.org>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20231219105236.7059-1-ncopa@alpinelinux.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231219105236.7059-1-ncopa@alpinelinux.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240104104820.14422-1-srikanth.aithal@amd.com>
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,63 +78,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Natanael,
-
-On 19/12/23 11:51, Natanael Copa wrote:
-> Use PPC_FEATURE2_ISEL and PPC_FEATURE2_VEC_CRYPTO from linux headers
-> instead of the GNU specific PPC_FEATURE2_HAS_ISEL and
-> PPC_FEATURE2_HAS_VEC_CRYPTO. This fixes build with musl libc.
+On Thu, Jan 04, 2024 at 04:18:20PM +0530, Srikanth Aithal wrote:
+> Date: Thu, 4 Jan 2024 16:18:20 +0530
+> From: Srikanth Aithal <srikanth.aithal@amd.com>
+> Subject: [PATCH] target/i386/sev: Fix a segfault in sev_kvm_init
+> X-Mailer: git-send-email 2.34.1
 > 
-> Fixes: 623d7e3551a6 (util: Add cpuinfo-ppc.c)
-
-Hmm this commit barely moved the code. Maybe it revealed the
-issue from the following commits?
-
-Fixes: 63922f467a ("tcg/ppc: Replace HAVE_ISEL macro with a variable")
-Fixes: 68f340d4cd ("tcg/ppc: Enable Altivec detection")
-
-Anyhow, changes LGTM.
-
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1861
+> Propogate error code using errp in sev_kvm_init.
 > 
-> Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
+> Before fix:
+> qemu-system-x86_64: sev_kvm_init: guest policy requires SEV-ES,
+> but host SEV-ES support unavailable
+> 27747 Segmentation fault      (core dumped)
+> 
+> After fix:
+> qemu-system-x86_64: sev_kvm_init: guest policy requires SEV-ES,
+> but host SEV-ES support unavailable
+> qemu-system-x86_64: failed to initialize kvm: Operation not permitted
+> 
+> While at it, also fix two more locations.
+> 
+> Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+> Signed-off-by: Srikanth Aithal <srikanth.aithal@amd.com>
 > ---
->   util/cpuinfo-ppc.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/util/cpuinfo-ppc.c b/util/cpuinfo-ppc.c
-> index 1ea3db0ac8..b2d8893a06 100644
-> --- a/util/cpuinfo-ppc.c
-> +++ b/util/cpuinfo-ppc.c
-> @@ -6,10 +6,10 @@
->   #include "qemu/osdep.h"
->   #include "host/cpuinfo.h"
->   
-> +#include <asm/cputable.h>
->   #ifdef CONFIG_GETAUXVAL
->   # include <sys/auxv.h>
->   #else
-> -# include <asm/cputable.h>
->   # include "elf.h"
->   #endif
->   
-> @@ -40,7 +40,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
->           info |= CPUINFO_V2_06;
->       }
->   
-> -    if (hwcap2 & PPC_FEATURE2_HAS_ISEL) {
-> +    if (hwcap2 & PPC_FEATURE2_ISEL) {
->           info |= CPUINFO_ISEL;
->       }
->       if (hwcap & PPC_FEATURE_HAS_ALTIVEC) {
-> @@ -53,7 +53,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
->                * always have both anyway, since VSX came with Power7
->                * and crypto came with Power8.
->                */
-> -            if (hwcap2 & PPC_FEATURE2_HAS_VEC_CRYPTO) {
-> +            if (hwcap2 & PPC_FEATURE2_VEC_CRYPTO) {
->                   info |= CPUINFO_CRYPTO;
->               }
->           }
+>  target/i386/sev.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
 
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+> 
+> diff --git a/target/i386/sev.c b/target/i386/sev.c
+> index 9a71246682..c0a4d5e535 100644
+> --- a/target/i386/sev.c
+> +++ b/target/i386/sev.c
+> @@ -922,7 +922,8 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+>  
+>      ret = ram_block_discard_disable(true);
+>      if (ret) {
+> -        error_report("%s: cannot disable RAM discard", __func__);
+> +        error_setg(errp, "%s: cannot disable "
+> +                     "RAM discard", __func__);
+>          return -1;
+>      }
+>  
+> @@ -979,13 +980,13 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+>  
+>      if (sev_es_enabled()) {
+>          if (!kvm_kernel_irqchip_allowed()) {
+> -            error_report("%s: SEV-ES guests require in-kernel irqchip support",
+> -                         __func__);
+> +            error_setg(errp, "%s: SEV-ES guests require in-kernel "
+> +                         "irqchip support", __func__);
+>              goto err;
+>          }
+>  
+>          if (!(status.flags & SEV_STATUS_FLAGS_CONFIG_ES)) {
+> -            error_report("%s: guest policy requires SEV-ES, but "
+> +            error_setg(errp, "%s: guest policy requires SEV-ES, but "
+>                           "host SEV-ES support unavailable",
+>                           __func__);
+>              goto err;
+> -- 
+> 2.34.1
+> 
+> 
 
