@@ -2,64 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9109824606
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:21:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61FE2824658
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:37:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLQRX-0007Zb-Pz; Thu, 04 Jan 2024 11:19:39 -0500
+	id 1rLQhd-0004Jp-Kc; Thu, 04 Jan 2024 11:36:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rLQRS-0007Wt-F5; Thu, 04 Jan 2024 11:19:34 -0500
-Received: from mgamail.intel.com ([192.198.163.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rLQRQ-0005NO-0W; Thu, 04 Jan 2024 11:19:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704385172; x=1735921172;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ETWmTlJlHbaTTOuyM0EieSosO/J9p965d/zZA24U6F0=;
- b=YE8GHgtaHG72Igeei+/wGoYWgP8VS5pv+mqCtUNyXBKLchpoHeAYjBjZ
- /p++fpwYzto/ZwawnhFGJpmMbVs2QB0x2zPTTmneucdtjYo+jsK9/A4r9
- DvVoBjpycuGhdm1tPnqJuMJojqdAp4H+dtOZ23ywSzb4sQAMusCbz8vwd
- NfjAQD9TNjerFevHNdbDPrUaCCz/wWcB7DmiOq7bdiOmr42oNTXfqHQEa
- hB9Vb0mCgk6TDw263NPY6VrfLseY354y8Rx/1wku8SkFoUS2eiv0IZuWr
- MRVnR1Wx5K6gRpfLoJ6lGlsa5ygiTppKvr6jqvEAARD5263oWQuqvNkvK Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="4103005"
-X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
-   d="scan'208";a="4103005"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jan 2024 08:19:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; d="scan'208";a="28838743"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa001.jf.intel.com with ESMTP; 04 Jan 2024 08:19:24 -0800
-Date: Fri, 5 Jan 2024 00:32:17 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Samuel Tardieu <sam@rfc1149.net>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org,
- Vikram Garhwal <fnu.vikram@xilinx.com>, Pavel Pisa <pisa@cmp.felk.cvut.cz>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH] docs: use "buses" rather than "busses"
-Message-ID: <ZZbdkTgmg3MsRjkv@intel.com>
-References: <20240103172817.2197737-1-sam@rfc1149.net>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQhW-0004Io-Pi
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:36:10 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLQhV-0005jF-9G
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:36:10 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-33674f60184so624128f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 08:36:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704386167; x=1704990967; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fCEdlFQgTfhi304D/CI1xIMqPWs524/Tf2DNOWvo43g=;
+ b=xPdwLWeJ77ndTnWgBwEkEULvlspXyJQTjsOrsN8QX6Nk85YvS2uOpQuD/IG+f6NReQ
+ FYUyoJW3fZRaorlKaRZf8dGvwmXNpes5a/cyflpmnjb2uGXTTVo4iE/F3zAToaEIEBFy
+ qWvAFRtBoDMs5h3UcegVaNOkd72K/+gPo+U6aXtgrRJRe0L2xEP4V/qmiQnps9vYJcw2
+ 663SialaIa1gWeZ/y7M8dYhk5oPKosWjomQeZxEYkbrQe2tYfUqOoknxcZCSeaAUFOkZ
+ gtN/M799sFDPeUpo122K9Rq9elmssyoDqmqKdKxmqYAE8atlA8SKdREc0bnIUTiQQgCc
+ /8oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704386167; x=1704990967;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fCEdlFQgTfhi304D/CI1xIMqPWs524/Tf2DNOWvo43g=;
+ b=GdxDdVbw5o4/ORzmKFbfFhpipAkWRxcpbO36OO7fRDrBoJnkNL+Lxs5NHC6iy+mAu8
+ xU+joIRMTu/cJz/0hWgNkdLU09Fnb8qdY32MqyDICCFSY1lOE8ANp+xWRHlcpvc5Ccnm
+ 85i3LXPO6gHwEet8JjO1mb8WmmErrXuDSjpEA39FjAk8YEkjneHaH/KBU+FyBOQ0HcGd
+ 75JnymdeUq4hBI7V5evyWnwmnu8Fni1+XSillHAHQh3xr8dBW2RHLYjt/2kgH57X0NeD
+ ADJhDQsGqqUwjnl6JjqQXFMRv4XKCRw2gFfGqtVFJ/X7ycMGiC11O0zwO0svOsEK38mj
+ rPAQ==
+X-Gm-Message-State: AOJu0Yzi+fjlS+D77l/hJ1gkFs/BZxmu+xfRWVekYXPK873O3co2UbmE
+ CbO1cAf+Uy7MAichj2D81QmJyaNRv8WUrg==
+X-Google-Smtp-Source: AGHT+IHIBkKrOIUMtXUrM8Us7WmZ3fMlNAYwq5CcNF8GST2LKxKT4wdjz/LjnEnnebwfTWShTjgR+w==
+X-Received: by 2002:a05:600c:539b:b0:40d:3d92:a01e with SMTP id
+ hg27-20020a05600c539b00b0040d3d92a01emr402131wmb.230.1704386167484; 
+ Thu, 04 Jan 2024 08:36:07 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.194.232])
+ by smtp.gmail.com with ESMTPSA id
+ h15-20020a05600c350f00b0040d8810efc9sm6222191wmq.17.2024.01.04.08.36.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 04 Jan 2024 08:36:07 -0800 (PST)
+Message-ID: <2a2e84ce-c8a2-4d4b-bd09-01fe50b3e310@linaro.org>
+Date: Thu, 4 Jan 2024 17:36:05 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240103172817.2197737-1-sam@rfc1149.net>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/arm: add cache controller for Freescale i.MX6
+Content-Language: en-US
+To: Nikita Ostrenkov <n.ostrenkov@gmail.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org
+References: <20231219105510.4907-1-n.ostrenkov@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231219105510.4907-1-n.ostrenkov@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,25 +93,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 03, 2024 at 06:28:17PM +0100, Samuel Tardieu wrote:
-> Date: Wed,  3 Jan 2024 18:28:17 +0100
-> From: Samuel Tardieu <sam@rfc1149.net>
-> Subject: [PATCH] docs: use "buses" rather than "busses"
-> X-Mailer: git-send-email 2.42.0
-> 
-> If "busses" might be encountered as a plural of "bus" (5 instances),
-> the correct spelling is "buses" (26 instances). Fixing those 5
-> instances makes the doc more consistent.
-> 
-> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+On 19/12/23 11:55, Nikita Ostrenkov wrote:
+
+Per "i.MX 6Dual/6Quad Applications Processor Reference Manual, Rev. 4, 
+09/2017", Chapter 2 "Memory Maps", 2.2 ARM Platform Memory Map,
+Table 2-1. System memory map.
+
+> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
 > ---
->  docs/system/arm/palm.rst    | 2 +-
->  docs/system/arm/xscale.rst  | 2 +-
->  docs/system/devices/can.rst | 6 +++---
->  3 files changed, 5 insertions(+), 5 deletions(-)
-> 
+>   hw/arm/Kconfig    | 1 +
+>   hw/arm/fsl-imx6.c | 3 +++
+>   2 files changed, 4 insertions(+)
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
