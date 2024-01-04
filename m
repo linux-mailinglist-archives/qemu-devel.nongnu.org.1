@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54DFF8245A2
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:01:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A03388245C3
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 17:05:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLQ8D-0000Tn-JF; Thu, 04 Jan 2024 10:59:41 -0500
+	id 1rLQCT-0003OU-1j; Thu, 04 Jan 2024 11:04:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLQ8B-0000Qu-5L
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 10:59:39 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1rLQCP-0003Nq-J2
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:04:01 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLQ89-00073p-Ee
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 10:59:38 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5571b26fda8so75162a12.3
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 07:59:36 -0800 (PST)
+ id 1rLQCN-0007AL-AP
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 11:04:01 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5570bef7cb8so651962a12.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 08:03:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704383975; x=1704988775; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704384237; x=1704989037; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=zsO3hJlRvieRtzgzFWW/di8vjLeFOct1kXD4EepUEdg=;
- b=dwoI7aGZkLFcraipuRdXjHZSJMlfTMqIfnpKN5rCk5fxeLlCW2AzDfYwkyr4IeWgMS
- mbHDT+7cO6L4dfNk7A6uEHvr67HbUmbaZ3Aj/wEupfZOqKbWFIFT9pb0KiWPRW6W9spe
- DkX+QaspRRpuTJ3ZDZxmKhVBw0bHYqRLfvqLp8HMsYZkh9oDYk8z790+AxXhzy41kD0P
- EMjRZz0TvHOKpETR9EvUyV/xQBfBp7ZllPn0mfbgGXBTWJZwshR6VqyUQNEQaDVof/6h
- Oxm7rR3HxbSbROBkCRBnclqZmmdnmbX4S0pwicAhEQaRXXa/F/B//xeNcr2jSPtkvBWd
- vZzA==
+ bh=wbj9XQjH4wjaQmwUCu7Uppgeic/eprNUAiwgWhRgsuM=;
+ b=aeyi/vMtQiLxW1EuHx0q1Vl7K7CZ0RNQkAByriRYW0V5YZbvpq1MrURd1AmJEMtA54
+ RciNskCCAGyvfr4f30rXh1Ds3CxEIO4pNHpRpqQ5MajioF4vfvsRRAXd8PNyQorfFkQU
+ nw8ROCenhte8WyYvRw6sDKhI4OK5C14dmWmJl9VpNDLyoGaR3YdxUyHFxizOhDkO3Ul6
+ URy8Fuxwld7eIa22lFa9vBW1RKROGq/Hfa+KaUWaSkcwZGcA989juHYDnsUIErmm2tIe
+ 7xpGKVG3vTU7fy7zQIzKogBiGm/WzsDmhomSNzMl9OZ3niisGrm9A6jFk1E2FfiAthhM
+ E8mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704383975; x=1704988775;
+ d=1e100.net; s=20230601; t=1704384237; x=1704989037;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=zsO3hJlRvieRtzgzFWW/di8vjLeFOct1kXD4EepUEdg=;
- b=s9yW0rX68PasKTE9+0lE8aZ8hhXd7OHbKFkHLfLvJau/djbb4+cE2Fjpb3/9kYnjhL
- wVFunY4GirGEqjYFOWWpQwghKdhH8aHoGblRrhdu1Eng/DaJGyFTlrVMYWSS5AYIRWrX
- 5x7c8oL3JExzhQcYgC2gUM6ZXfM2qnOC7E6zhL/xmM58frQaLzTMe4rxYv/pAQN8QWer
- HFzsAfuUStYy/CMV9y5HscjkGNuKqK/41uYliNuOgT8W7nJZjl7PbHt/L6MOJa3bBX2I
- 6QLMFRUJPjol69sEB35XNkcep2zgM5wX7z3NcyvLZ82P9TdF1UfQ9AERK53fZWx6Tsu8
- bXpw==
-X-Gm-Message-State: AOJu0YwOiZUZ66qGg+9x6ww+HOeEez5iCzT8I/Zu3UqxeI7nmh9YeQ8S
- tPJR4HBOhujdrzra8OvdfpkWP09mhNzrjGPecsDDayEkGbNZq6YsVX83citB
-X-Google-Smtp-Source: AGHT+IGbOMP3er8kn5LBs4ifKBtJf0E8/bzvWoDAI2bwaUizZD3yOQox/XDzHPX2uEGiqYAb8CQl4LGPrITUvFC+m28=
-X-Received: by 2002:a50:8e19:0:b0:554:89f6:5802 with SMTP id
- 25-20020a508e19000000b0055489f65802mr462752edw.63.1704383975056; Thu, 04 Jan
- 2024 07:59:35 -0800 (PST)
+ bh=wbj9XQjH4wjaQmwUCu7Uppgeic/eprNUAiwgWhRgsuM=;
+ b=MHAeOmA5bLYHqd7JB8Ty2CiVeX4W/v3P+X61lkffcZCeirHOQ+rbWtJ1zJ4iqcRwy5
+ DcijmRNvPW8FY09K83rQxgQbSQI+nAzNiLUD1NLZTwOZ0yEMJpH+7bKpF7f5BQ6QSt54
+ dGU2r1BKJRsEURBk9uNpVRFe1Wl7NA4D7GBeba1xH5cz0sAH/xo+k9/aQyEbbaZ/Odof
+ xzXXkzoXSBaYJCYvRg94z8wCs+1MZSJOwXo/WCt3YqKS0q6HKcG3Vl26NGAhrIAsbsOs
+ 2ZxdP+bVvZLW0PbPWB359I/J1PLqCKo28NyR2Q3oOdXe57xNyW37dJeevf3xkKTl866m
+ JN0A==
+X-Gm-Message-State: AOJu0YxFM4//xmi2Ee6g/taOxYPVvn3pncD8warJIILVlw0/wsVbDVEa
+ pYlZPh1CP2h502ZrF9N3vk6hfkkoqSiZJ/1M5n8li54CfKL/IAjokGNdJa09
+X-Google-Smtp-Source: AGHT+IHjO4KK55HvNTrDa+EaSkzrIVOHiNg53hcSwQpwdsYVfL09TBkK+R3Se6ezndhN1dqcEigHZx63UKIQ2wdIu/A=
+X-Received: by 2002:a50:d59a:0:b0:554:3ba8:6896 with SMTP id
+ v26-20020a50d59a000000b005543ba86896mr542553edi.79.1704384237519; Thu, 04 Jan
+ 2024 08:03:57 -0800 (PST)
 MIME-Version: 1.0
 References: <20231218113305.2511480-1-peter.maydell@linaro.org>
- <20231218113305.2511480-18-peter.maydell@linaro.org>
- <34263e7c-1419-4680-89ef-dd4fd28c1a88@linaro.org>
-In-Reply-To: <34263e7c-1419-4680-89ef-dd4fd28c1a88@linaro.org>
+ <20231218113305.2511480-25-peter.maydell@linaro.org>
+ <cd9c4cc1-be3b-49d4-a049-c8157a9cae03@linaro.org>
+In-Reply-To: <cd9c4cc1-be3b-49d4-a049-c8157a9cae03@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 4 Jan 2024 15:59:23 +0000
-Message-ID: <CAFEAcA_z_Rfnb1jR8EhR9NjMjvtP=-OKo_49rC1D+L8RE5qWNA@mail.gmail.com>
-Subject: Re: [PATCH 17/35] target/arm: Always use arm_pan_enabled() when
- checking if PAN is enabled
+Date: Thu, 4 Jan 2024 16:03:46 +0000
+Message-ID: <CAFEAcA96cVE+upOzMow-qiH-S-fWKKMYj6FuhhvGn1jWc7EVxQ@mail.gmail.com>
+Subject: Re: [PATCH 24/35] target/arm: Handle FEAT_NV2 changes to when
+ SPSR_EL1.M reports EL2
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,53 +87,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 27 Dec 2023 at 22:50, Richard Henderson
+On Wed, 27 Dec 2023 at 23:06, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
 > On 12/18/23 22:32, Peter Maydell wrote:
-> > Currently the code in target/arm/helper.c mostly checks the PAN bits
-> > in env->pstate or env->uncached_cpsr directly when it wants to know
-> > if PAN is enabled, because in most callsites we know whether we are
-> > in AArch64 or AArch32. We do have an arm_pan_enabled() function, but
-> > we only use it in a few places where the code might run in either an
-> > AArch32 or AArch64 context.
-> >
-> > For FEAT_NV, when HCR_EL2.{NV,NV1} is {1,1} PAN is always disabled
-> > even when the PSTATE.PAN bit is set, the "is PAN enabled" test
-> > becomes more complicated. Make all places that check for PAN use
-> > arm_pan_enabled(), so we have a place to put the FEAT_NV test.
+> > With FEAT_NV2, the condition for when SPSR_EL1.M should report that
+> > an exception was taken from EL2 changes.
 > >
 > > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > > ---
-> >   target/arm/helper.c | 22 +++++++++++-----------
-> >   1 file changed, 11 insertions(+), 11 deletions(-)
+> >   target/arm/helper.c | 16 ++++++++++++----
+> >   1 file changed, 12 insertions(+), 4 deletions(-)
 > >
 > > diff --git a/target/arm/helper.c b/target/arm/helper.c
-> > index 3270fb11049..4b0e46cfaae 100644
+> > index 45444360f95..38e16c2f8a5 100644
 > > --- a/target/arm/helper.c
 > > +++ b/target/arm/helper.c
-> > @@ -263,6 +263,15 @@ void init_cpreg_list(ARMCPU *cpu)
-> >       g_list_free(keys);
-> >   }
+> > @@ -11405,10 +11405,18 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
+> >           aarch64_save_sp(env, arm_current_el(env));
+> >           env->elr_el[new_el] = env->pc;
 > >
-> > +static bool arm_pan_enabled(CPUARMState *env)
-> > +{
-> > +    if (is_a64(env)) {
-> > +        return env->pstate & PSTATE_PAN;
-> > +    } else {
-> > +        return env->uncached_cpsr & CPSR_PAN;
-> > +    }
-> > +}
+> > -        if (cur_el == 1 && new_el == 1 &&
+> > -            ((arm_hcr_el2_eff(env) & (HCR_NV | HCR_NV1)) == HCR_NV)) {
+> > -            /* I_ZJRNN: report EL2 in the SPSR by setting M[3:2] to 0b10 */
+> > -            old_mode = deposit32(old_mode, 2, 2, 2);
+> > +        if (cur_el == 1 && new_el == 1) {
+> > +            uint64_t hcr = arm_hcr_el2_eff(env);
+> > +            if ((hcr & (HCR_NV | HCR_NV1 | HCR_NV2)) == HCR_NV ||
+> > +                (hcr & (HCR_NV | HCR_NV2)) == (HCR_NV | HCR_NV2)) {
 >
-> Worth splitting out helpers aa{32,64}_pan_enabled to avoid the is_a64 check when context
-> dictates?
+> Maybe clearer as
+>
+>         if ((hcr & HCR_NV) && ((hcr & HCR_NV2) || !(hcr & HCR_NV1)))
+>
+> ?
 
-Doesn't really seem worthwhile to me -- we only know this
-for a couple of subcases of AT instructions, which aren't
-all that common in guest execution, and the cost of
-is_a64() is going to be completely swamped by the cost
-of actually doing the address translation...
+I dunno; I went back and forth a bit on how to write this, but
+I think what I have is a little closer to how the Arm ARM
+defines it (as separate FEAT_NV vs FEAT_NV2 conditions). At any rate,
+I don't think your suggestion sufficiently better to do the
+work to make the change :-)
 
-thanks
 -- PMM
 
