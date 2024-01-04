@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21A68244B5
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 16:11:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87BA78244B3
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 16:11:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLPN3-00084r-8L; Thu, 04 Jan 2024 10:10:57 -0500
+	id 1rLPN3-000864-R7; Thu, 04 Jan 2024 10:10:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1rLPN0-00080x-4m
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 10:10:54 -0500
-Received: from mail-io1-xd34.google.com ([2607:f8b0:4864:20::d34])
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1rLPN1-00083V-Le
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 10:10:55 -0500
+Received: from mail-il1-x12a.google.com ([2607:f8b0:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1rLPMy-0000Bg-In
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 10:10:53 -0500
-Received: by mail-io1-xd34.google.com with SMTP id
- ca18e2360f4ac-7bb5fda069bso23765339f.0
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1rLPMz-0000Bp-9n
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 10:10:55 -0500
+Received: by mail-il1-x12a.google.com with SMTP id
+ e9e14a558f8ab-360576be761so4557905ab.1
  for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 07:10:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1704381051; x=1704985851; darn=nongnu.org;
+ d=chromium.org; s=google; t=1704381052; x=1704985852; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FuMMyoINzgyasVsmgJvWqqRoYWhwNtTQTkUs2Hh1jgE=;
- b=oeKE+Bt5vFNEc45pf/tUPV0IJM+kXPcTjgEE1Jp6cW2XolZJbTcwvgWVOMw4ltAuHU
- 1XLmSvJ1e/i8lnZ+Wc0mJ5Drsi7exhPyiy1Y3N6Jbd2w/XizYb2A6dYYXsodPcpamiSC
- I5GOPsa+uQvjVRH6EVNbKmZ7ZkZYu/O20nVG8=
+ bh=jAQCA2+L8S+5OKFmSgZPF3WL7XCVJOyD3jGB9qjlr1Q=;
+ b=hkjGzeJpNGkEOIIAGY3CHOAI290gLWjiguhDqEqnrXmKFlUMOd0Aeqc0NV8E2t4Vou
+ ibfTAOEGD3uBrOJEuMFGtY4JoHTM6K/ADNj7/XpX3cr6mxMcxldegICoEIppFoTVHtLE
+ /Hhb0MWqZnWyJM5Nh3GZFO4+klk1/7PLduWP8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704381051; x=1704985851;
+ d=1e100.net; s=20230601; t=1704381052; x=1704985852;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FuMMyoINzgyasVsmgJvWqqRoYWhwNtTQTkUs2Hh1jgE=;
- b=Ej7jNoxzg2PNWvsLLmiWOOqGy5Ee5MinvenzT5I/O4UuIgtMB2cT78EjTVUH52E7hb
- Fy2agEo2k3pBeq72jhbvXBq0zd6QjYO2tHN4Nln5njrw/sMxVRYozb58bqdfIektHX16
- KxlnCDKE+iCat46Vy70gMdDR3kcOKtxTz9UYCpigYUASHvsynAHZ2KYK+V8paVUn7oR1
- I8sm8VNJ2rFX7trI/J1kn7YoBy1vX5HV9aUvqoKgP6+vtLHt3vqYDFSbJyAJCVzmxjXA
- pDqZ7RvQGDt1kzmT7XKs3hRJFQa9VhurnfsTeAnsVaI7n9dDeRtuYu2S1j3mzep5XS5W
- uEkA==
-X-Gm-Message-State: AOJu0Yzmjglq0E0a9cOJVajELt9OQhWdJ4Icfwe9H2wLDv64PReBN2Zf
- oEIi5eTW3g5t+9bFF1TAa0OcQARwlmZ3ObDvQ1d1JCRGlrvX
-X-Google-Smtp-Source: AGHT+IFo2r70CszJhQXRkbPSgMxKTc6yfWpbIsalJibBOmJUapJ4euuS1cQY3ScUfCnrwiJ92gtaWQ==
-X-Received: by 2002:a5d:8704:0:b0:7ba:9c04:2e03 with SMTP id
- u4-20020a5d8704000000b007ba9c042e03mr739674iom.27.1704381051365; 
- Thu, 04 Jan 2024 07:10:51 -0800 (PST)
+ bh=jAQCA2+L8S+5OKFmSgZPF3WL7XCVJOyD3jGB9qjlr1Q=;
+ b=uMm41ZSTpViLSmYIUYWdB8LYDRLeSjisdbwYwHc2dE/8V+EYH7SpcB191OWvidfMvw
+ OEd/XLWRucytGocH8/cauNCM4cqGCfn58pwkS9N1t860+3qYB1EajrhP5It451cI2byP
+ qXXySTKZERe1AkKIZOk7GzNJNmRbXtnigedq66Rv+LaD4FuiVFW7f9UOZ0t7nn0Bqi1Q
+ gGNZ7v7iLAut722ce/FoWTGFtsR85yk+DnRFDkMz1+rttk7KukJDcXg66DdzbGRam1rz
+ BOQS66eTZcQQ+MNW4beQyo4Rl7CDEIeDwVxjGOi/19fZj2y3DbYdS0lxU+U5z8x/hI2D
+ W5cw==
+X-Gm-Message-State: AOJu0Ywa6ci4l9ybPaoIcDSbX603DVqa3QpMhzzbOP8zXwMW3YAET/xu
+ ooW1yH8viZEm06FLMioGS1VgzN5vmufm
+X-Google-Smtp-Source: AGHT+IHKGtjhho94H8XlnF5DxIDBQI5UgRF5OICVleGRtK1i58J6OfSiw9pqYrEh0W7htYlJzoE8Dw==
+X-Received: by 2002:a05:6e02:20eb:b0:360:142:3fec with SMTP id
+ q11-20020a056e0220eb00b0036001423fecmr359057ilv.6.1704381052163; 
+ Thu, 04 Jan 2024 07:10:52 -0800 (PST)
 Received: from chromium.org (c-73-14-173-85.hsd1.co.comcast.net.
  [73.14.173.85]) by smtp.gmail.com with ESMTPSA id
- z14-20020a02938e000000b0046d710cef38sm4937310jah.159.2024.01.04.07.10.50
+ z14-20020a02938e000000b0046d710cef38sm4937310jah.159.2024.01.04.07.10.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 04 Jan 2024 07:10:51 -0800 (PST)
 From: Simon Glass <sjg@chromium.org>
@@ -57,16 +57,16 @@ Cc: Simon Glass <sjg@chromium.org>, Bin Meng <bmeng.cn@gmail.com>,
  Heinrich Schuchardt <xypron.glpk@gmx.de>,
  Ilias Apalodimas <ilias.apalodimas@linaro.org>,
  Peter Robinson <pbrobinson@gmail.com>, qemu-devel@nongnu.org
-Subject: [PATCH v6 6/7] x86: qemu: Expand ROM size
-Date: Thu,  4 Jan 2024 08:10:41 -0700
-Message-Id: <20240104151042.695717-6-sjg@chromium.org>
+Subject: [PATCH v6 7/7] x86: qemu: Enable truetype fonts
+Date: Thu,  4 Jan 2024 08:10:42 -0700
+Message-Id: <20240104151042.695717-7-sjg@chromium.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240104151042.695717-1-sjg@chromium.org>
 References: <20240104151042.695717-1-sjg@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d34;
- envelope-from=sjg@chromium.org; helo=mail-io1-xd34.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12a;
+ envelope-from=sjg@chromium.org; helo=mail-il1-x12a.google.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
 X-Spam_bar: ----
@@ -89,54 +89,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Expand the ROM for x86_64 to 2MB to make space for the font, as it is
-already on the edge.
+Enable this feature to provide a larger font choice and more attractive
+menus. Expand the ROM for x86_64 to 2MB to make space for the font.
 
 Signed-off-by: Simon Glass <sjg@chromium.org>
 ---
 
-(no changes since v1)
+Changes in v6:
+- Move 'Avoid unbinding devices in use by bootflows' to another series
 
- board/emulation/qemu-x86/Kconfig | 3 ++-
- configs/qemu-x86_64_defconfig    | 4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+Changes in v3:
+- Add new patch to enable truetype fonts in qemu-x86 and qemu-x86_64
 
-diff --git a/board/emulation/qemu-x86/Kconfig b/board/emulation/qemu-x86/Kconfig
-index 01dc1d497ae..34d665a3e4c 100644
---- a/board/emulation/qemu-x86/Kconfig
-+++ b/board/emulation/qemu-x86/Kconfig
-@@ -21,7 +21,8 @@ config BOARD_SPECIFIC_OPTIONS # dummy
- 	select X86_RESET_VECTOR
- 	select QEMU
- 	select QFW_PIO if CMD_QFW
--	select BOARD_ROMSIZE_KB_1024
-+	select BOARD_ROMSIZE_KB_1024 if TARGET_QEMU_X86
-+	select BOARD_ROMSIZE_KB_2048 if TARGET_QEMU_X86_64
- 	imply VIRTIO_PCI
- 	imply VIRTIO_NET
- 	imply VIRTIO_BLK
+ configs/qemu-x86_64_defconfig | 1 +
+ configs/qemu-x86_defconfig    | 1 +
+ 2 files changed, 2 insertions(+)
+
 diff --git a/configs/qemu-x86_64_defconfig b/configs/qemu-x86_64_defconfig
-index 8b4c5aff7f6..79cdb0bddb2 100644
+index 79cdb0bddb2..f084f8e2989 100644
 --- a/configs/qemu-x86_64_defconfig
 +++ b/configs/qemu-x86_64_defconfig
-@@ -6,7 +6,7 @@ CONFIG_ENV_SIZE=0x40000
- CONFIG_MAX_CPUS=2
- CONFIG_SPL_DM_SPI=y
- CONFIG_DEFAULT_DEVICE_TREE="qemu-x86_i440fx"
--CONFIG_SPL_TEXT_BASE=0xfffd8000
-+CONFIG_SPL_TEXT_BASE=0xfffd4000
- CONFIG_SPL_SYS_MALLOC_F_LEN=0x2000
- CONFIG_DEBUG_UART_BASE=0x3f8
- CONFIG_DEBUG_UART_CLOCK=1843200
-@@ -17,7 +17,7 @@ CONFIG_DEBUG_UART=y
- CONFIG_SMP=y
- CONFIG_GENERATE_PIRQ_TABLE=y
- CONFIG_GENERATE_MP_TABLE=y
--CONFIG_X86_OFFSET_U_BOOT=0xfff00000
-+CONFIG_X86_OFFSET_U_BOOT=0xffe00000
- CONFIG_SYS_MONITOR_BASE=0x01110000
- CONFIG_FIT=y
- CONFIG_SPL_LOAD_FIT=y
+@@ -81,6 +81,7 @@ CONFIG_SPL_DM_RTC=y
+ CONFIG_SYS_NS16550_PORT_MAPPED=y
+ CONFIG_SPI=y
+ CONFIG_USB_KEYBOARD=y
++CONFIG_CONSOLE_TRUETYPE=y
+ CONFIG_FRAMEBUFFER_SET_VESA_MODE=y
+ CONFIG_FRAMEBUFFER_VESA_MODE_USER=y
+ CONFIG_FRAMEBUFFER_VESA_MODE=0x144
+diff --git a/configs/qemu-x86_defconfig b/configs/qemu-x86_defconfig
+index 9bcf06c137f..b0d397bae08 100644
+--- a/configs/qemu-x86_defconfig
++++ b/configs/qemu-x86_defconfig
+@@ -58,6 +58,7 @@ CONFIG_NVME_PCI=y
+ CONFIG_SYS_NS16550_PORT_MAPPED=y
+ CONFIG_SPI=y
+ CONFIG_USB_KEYBOARD=y
++CONFIG_CONSOLE_TRUETYPE=y
+ CONFIG_FRAMEBUFFER_SET_VESA_MODE=y
+ CONFIG_FRAMEBUFFER_VESA_MODE_USER=y
+ CONFIG_FRAMEBUFFER_VESA_MODE=0x144
 -- 
 2.34.1
 
