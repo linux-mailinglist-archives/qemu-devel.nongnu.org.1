@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3770D823D30
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 09:09:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AECBE823DB1
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 09:43:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLIlg-0006Bh-9Q; Thu, 04 Jan 2024 03:07:56 -0500
+	id 1rLJIf-0007oq-Mq; Thu, 04 Jan 2024 03:42:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLIle-0006BQ-A6
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 03:07:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rLJId-0007oU-L2
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 03:41:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLIlc-0003Dm-I0
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 03:07:54 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rLJIb-0000FA-20
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 03:41:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704355671;
+ s=mimecast20190719; t=1704357714;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fz43dLURe+aIgByZHhAeuVay3evlBrH8cX/y6E0JvAY=;
- b=QM61IwYxUT3VP/jDOlC66vvN2S2bH4bNZo+sTqcwUEHQIkG4LEgdXmCfxTfa8y1/4npqog
- 3IpkVvqFq/QSwt44d3DYtuHXC/dBgBVuomvktaORDjJ1mpgVIJZvPXCSijKvim2pzZwJTA
- o1McOJFpT8Cf1VipZPhbJWASr3Q/q9k=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=apOZxuhCzLHgrtX5zmWi/5YqD6eEbxYqATpxP+JpYfM=;
+ b=i3EPJJNYzRHp7wNCaM0COuEgkGCxH8gSpMoHy1haBbl5onm+BO2bcuHsh18883cBBZLfsQ
+ QsT75yufwqBOKKyy/iiebl28FU7IbKlLJED4r1huuGwJ3G85y3LD32Ko/04NcJou8GMh05
+ JOmAr+ebU1fVFKauvuSbYdA17/E4qMU=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-meehEACVOOanpifl6GrSlg-1; Thu, 04 Jan 2024 03:07:49 -0500
-X-MC-Unique: meehEACVOOanpifl6GrSlg-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1d44a50ab19so680005ad.1
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 00:07:49 -0800 (PST)
+ us-mta-96-hclTqWtDOUCh7_sagsEDdg-1; Thu, 04 Jan 2024 03:41:52 -0500
+X-MC-Unique: hclTqWtDOUCh7_sagsEDdg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-40d5aef0b1fso1975375e9.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 00:41:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704355669; x=1704960469;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fz43dLURe+aIgByZHhAeuVay3evlBrH8cX/y6E0JvAY=;
- b=lHfefv1OMs8QLSDW8GCey/0lSrSd/g0iBFt/I2C97V8sZXyI0r71g+hahwsUu0PYPq
- H0Jtv4SGLzMm208ScP1BRxSRZgottZoVaWnqNPX95e+0UMZlYN0kswhZYutRKLv3oUpG
- R2HfUtw7lgC4D+fsiUFYCYWA3rKy4onQojXMRVJ5o4Ce2KE4hYyoZXJUJSR7Pl+8Oz8W
- hifDBESiS2MG0+574eDOpw6SVJjm0ac4LJumiG4J/us4sYhux2BpmFmJ4JjS3SZ6Om5N
- 70DPBqRUJJSXCopT5VzrZHPgtW5gkdczANj0gNfMKRaPI9BwwGN+i/OVEaA04IyrK56V
- aIBA==
-X-Gm-Message-State: AOJu0YzwG2GoQbP7IcfXcwh776LtCLbvEa6MH1jzqlHh0kEV/TwWyH3D
- xC0MAHRFYsq+yjHM+3SZdoB19WCL2OIzT//EkP7nze+ZDvE5ffzxzUVharNEHFZ5Ime/jNlZypg
- sLKirDR0oGNxSLs6QTQS0yEo=
-X-Received: by 2002:a17:902:dac1:b0:1d3:7788:1c40 with SMTP id
- q1-20020a170902dac100b001d377881c40mr398758plx.0.1704355668859; 
- Thu, 04 Jan 2024 00:07:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHEpFzAoSO64fGtgB3NWMxr2CI0MvqFa6Otg0/FaeGx3uDNgNPVZaRMt/7/2p1SpkdUXkzOXg==
-X-Received: by 2002:a17:902:dac1:b0:1d3:7788:1c40 with SMTP id
- q1-20020a170902dac100b001d377881c40mr398746plx.0.1704355668545; 
- Thu, 04 Jan 2024 00:07:48 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- s2-20020a170902c64200b001d075e847d5sm25158021pls.44.2024.01.04.00.07.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Jan 2024 00:07:48 -0800 (PST)
-Date: Thu, 4 Jan 2024 16:07:42 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- prerna.saxena@nutanix.com, berrange@redhat.com,
- peter.maydell@linaro.org, armbru@redhat.com
-Subject: Re: [PATCH] migration: Simplify initial conditionals in migration
- for better readability
-Message-ID: <ZZZnTmVxn4tha1qL@x1n>
-References: <20231205080039.197615-1-het.gala@nutanix.com>
- <87a5qon6vj.fsf@suse.de>
- <62ae7ae7-76bd-4526-a002-515cd9660ed4@nutanix.com>
- <0db9854c-4e4f-4f2a-a143-16d3ca62f44a@nutanix.com>
+ d=1e100.net; s=20230601; t=1704357711; x=1704962511;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=apOZxuhCzLHgrtX5zmWi/5YqD6eEbxYqATpxP+JpYfM=;
+ b=By8EMYheYPQ+jN0l7z15vLSCNtqrfS8hd0PTnZGks7tb9VplDZp+Zv/9iE6dFH0lOK
+ OFORWxhxczRNpHG2MGA7OgyPWbLLKTuz4NXcVytOD0kWJiH1BmP6S13a4M5Kqfy+CO3C
+ pS37RCdSJ2i60PLbes7LXQ6A2OYUF5uMR5qdyUu8jPktQXyT/O6bNHVG33M6b5/ybsp9
+ hf/heTS481licTM0ulDPsOkIgUecmXcC8qadqFh7bpV+Wj0b8ZFSLGluU8UP9RfYZb5T
+ OHz6ncg0OpNQUZ9LJu27rQI8Mk3snxLxNLRBZptjdC1FLBDzSJE4lr8eWefFyK9bHVKu
+ 934g==
+X-Gm-Message-State: AOJu0YzoO1dPkaTvaCZ0SZP/MPv89kt+XCnUbMe7gWF8syllMHIlMG3e
+ 7o/jfOBzIpHVliZGQGHGidedpN+gI0BZytyMWhM3SL9WwZcWE2UH5KJpayTw9at6Zbo6F82RUfi
+ JDSllZKMHG8c7rw5krebH8fO8zQTx5OdzaOJU1OU/WzE/V9+jb1gcB1C8hQCCP1AqcAMmSQFGHD
+ C7
+X-Received: by 2002:a05:600c:244:b0:40d:8944:657c with SMTP id
+ 4-20020a05600c024400b0040d8944657cmr146635wmj.71.1704357711119; 
+ Thu, 04 Jan 2024 00:41:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGGmTLy5yGLJeDBXeEav3aLrG1ttIEDSfDOH6w2HxAGUa7FPAFv3vvyYZxOQpRnlsOKYu+PQQ==
+X-Received: by 2002:a05:600c:244:b0:40d:8944:657c with SMTP id
+ 4-20020a05600c024400b0040d8944657cmr146624wmj.71.1704357710660; 
+ Thu, 04 Jan 2024 00:41:50 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ fc11-20020a05600c524b00b0040e354e2a61sm13911wmb.43.2024.01.04.00.41.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 04 Jan 2024 00:41:50 -0800 (PST)
+Message-ID: <9d1ace89-82a8-4355-8a57-8c883b8aecb2@redhat.com>
+Date: Thu, 4 Jan 2024 09:41:49 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <0db9854c-4e4f-4f2a-a143-16d3ca62f44a@nutanix.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] backends/iommufd: Remove mutex
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+References: <20240102123210.1184293-1-clg@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240102123210.1184293-1-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.601,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,33 +102,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 04, 2024 at 01:13:48PM +0530, Het Gala wrote:
-> Ping. In-case this patch has been missed out. Waiting for other maintainers to respond. Thanks!
+On 1/2/24 13:32, Cédric Le Goater wrote:
+> Hello !
 > 
-> On 11/12/23 6:43 pm, Het Gala wrote:
-> > Ping? Waiting for other maintainers to respond on this patch
-> > On 05/12/23 6:28 pm, Fabiano Rosas wrote:
-> > > Het Gala<het.gala@nutanix.com>  writes:
-> > > 
-> > > > The inital conditional statements in qmp migration functions is harder
-> > > > to understand than necessary. It is better to get all errors out of
-> > > > the way in the beginning itself to have better readability and error
-> > > > handling.
-> > > > 
-> > > > Signed-off-by: Het Gala<het.gala@nutanix.com>
-> > > > Suggested-by: Markus Armbruster<armbru@redhat.com>
-> > > Reviewed-by: Fabiano Rosas<farosas@suse.de>
-> > > 
-> > Regards,
-> > Het Gala
+> Coverity has some reports regarding the IOMMUFDBackend mutex. Since
+> the IOMMUFDBackend routines are called from the QEMU main thread, this
+> series simply suggests removing the mutex and rely on the BQL to
+> handle concurrent access.
+> 
+> Thanks,
+> 
+> C.
+> 
+> Cédric Le Goater (2):
+>    backends/iommufd: Remove check on number of backend users
+>    backends/iommufd: Remove mutex
+> 
+>   include/sysemu/iommufd.h |  2 --
+>   backends/iommufd.c       | 12 ------------
+>   2 files changed, 14 deletions(-)
+> 
 
-queued in staging.  will be in the next pull.
 
-https://gitlab.com/peterx/qemu/-/tree/migration-staging
+Applied to vfio-next.
 
 Thanks,
 
--- 
-Peter Xu
+C.
+
 
 
