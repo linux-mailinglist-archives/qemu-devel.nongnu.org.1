@@ -2,53 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072DE823C8E
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 08:18:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB070823C8D
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 08:18:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLHxQ-0001ku-5z; Thu, 04 Jan 2024 02:16:00 -0500
+	id 1rLHxY-0001oW-KF; Thu, 04 Jan 2024 02:16:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>)
- id 1rLHxN-0001kH-E7; Thu, 04 Jan 2024 02:15:57 -0500
-Received: from bg4.exmail.qq.com ([43.154.221.58])
+ (Exim 4.90_1) (envelope-from <szy0127@sjtu.edu.cn>)
+ id 1rLHxU-0001nQ-Jh
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 02:16:04 -0500
+Received: from smtp238.sjtu.edu.cn ([202.120.2.238])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>)
- id 1rLHxJ-0002B3-Du; Thu, 04 Jan 2024 02:15:57 -0500
-X-QQ-mid: bizesmtp87t1704352525tdv3w4yw
-Received: from ubuntu.. ( [111.196.133.100]) by bizesmtp.qq.com (ESMTP) with 
- id ; Thu, 04 Jan 2024 15:15:23 +0800 (CST)
-X-QQ-SSF: 01200000000000F0I000000A0000000
-X-QQ-FEAT: +ynUkgUhZJneV3O8vwQ6VqNCfIA+YGrhLMoq2uYiPpxq/RvPqkHFrU0luWxEx
- hvkzb+qq7yOY7HORcTUxN3jYeUOz1jrGZLKQi94Ir9cftgaJZaKt/4mG8JhzLssBNwgLqOX
- xyZEoBOt6g6/l4qLUupllSxMMCyC4osw2xa/iLxMhQs5KXlj6wUIm3CtKtX9NLGh2bolORy
- 0pecdLdbySRxD45419bbY3jsJE0Uhv6dkT/Ullk+kb4cfh0dn4vLMgTzvroWWxONdb4i6lQ
- e85eUOqVnnGi+kbe5ufjiDlQXO3s+cD/Jp/LFDR+vlmLvAza62Wlka7FwtX9rMZEVZHEIUr
- FGAbF/E
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 9677172758537372753
-From: Bin Meng <bmeng@tinylab.org>
-To: Alistair Francis <Alistair.Francis@wdc.com>
-Cc: Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Subject: [PATCH] docs/system/riscv: sifive_u: Update S-mode U-Boot image build
- instructions
-Date: Thu,  4 Jan 2024 15:15:23 +0800
-Message-Id: <20240104071523.273702-1-bmeng@tinylab.org>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <szy0127@sjtu.edu.cn>)
+ id 1rLHxR-0002Bb-4f
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 02:16:03 -0500
+Received: from mta91.sjtu.edu.cn (unknown [10.118.0.91])
+ by smtp238.sjtu.edu.cn (Postfix) with ESMTPS id C55628569;
+ Thu,  4 Jan 2024 15:15:40 +0800 (CST)
+Received: from mstore135.sjtu.edu.cn (unknown [10.118.0.135])
+ by mta91.sjtu.edu.cn (Postfix) with ESMTP id 9719B37C8F4;
+ Thu,  4 Jan 2024 15:15:40 +0800 (CST)
+Date: Thu, 4 Jan 2024 15:15:40 +0800 (CST)
+From: =?utf-8?B?5rKI5ZOy6LWf?= <szy0127@sjtu.edu.cn>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, david@redhat.com
+Message-ID: <799810807.232349.1704352540541.JavaMail.zimbra@sjtu.edu.cn>
+Subject: [PATCH] hw/virtio: Add ioeventfd option for balloon
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:tinylab.org:qybglogicsvrgz:qybglogicsvrgz7a-0
-Received-SPF: pass client-ip=43.154.221.58; envelope-from=bmeng@tinylab.org;
- helo=bg4.exmail.qq.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [202.120.40.82]
+X-Mailer: Zimbra 10.0.5_GA_4574 (ZimbraWebClient - GC120 (Win)/10.0.5_GA_4574)
+Thread-Index: vsyzaVr5EyRnaKpEfYhyuhv2dZan8Q==
+Thread-Topic: hw/virtio: Add ioeventfd option for balloon
+Received-SPF: pass client-ip=202.120.2.238; envelope-from=szy0127@sjtu.edu.cn;
+ helo=smtp238.sjtu.edu.cn
+X-Spam_score_int: -3
+X-Spam_score: -0.4
+X-Spam_bar: /
+X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_SORBS_WEB=1.5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,86 +60,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, the documentation outlines the process for building the
-S-mode U-Boot image using `make menuconfig` and manual actions within
-the menuconfig UI. However, this approach is fragile due to Kconfig
-options potentially changing across different releases. For example,
-CONFIG_OF_PRIOR_STAGE has been replaced by CONFIG_BOARD since v2022.01
-release, and CONFIG_TEXT_BASE has been moved to the 'General setup'
-menu from the 'Boot options' menu in v2024.01 release.
+Traditional mmio in balloon makes Qemu do balloon inflation in the same
+thread as vcpu thread. In a CPU overcommitment scenario, host may run
+more than one vcpu threads on one host CPU, which makes
+madvise_dontneed_free() wait for a long time due to the function
+cond_resched() at host side.
 
-This update aims to make the S-mode U-Boot image build instructions
-future-proof. It leverages the 'config' script provided in the U-Boot
-source tree to edit the .config file, followed by a `make olddefconfig`.
+If using SEV/ES and the kernel provided by AMD, the overhead will
+become even much larger.(From 90s to 1400s when reclaming 4GB)
 
-Validated with U-Boot v2024.01 release.
+With ioeventfd, the thread for host to do balloon inflation will
+be separated from the VCPU thread, leading to better performance
+for the whole process of balloon inflation.(1400s to 263s 
+in SEV CPU overcommitment scenario)
 
-Signed-off-by: Bin Meng <bmeng@tinylab.org>
+As a para-virtual solution, balloon serves for host so the process
+of inflation in host needs to run on a host iothread instead of a guest
+VCPU thread.
 
+Signed-off-by: Zheyun Shen <szy0127@sjtu.edu.cn>
 ---
+ hw/virtio/virtio-balloon-pci.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
- docs/system/riscv/sifive_u.rst | 33 ++++++++++++---------------------
- 1 file changed, 12 insertions(+), 21 deletions(-)
-
-diff --git a/docs/system/riscv/sifive_u.rst b/docs/system/riscv/sifive_u.rst
-index 7b166567f9..8f55ae8e31 100644
---- a/docs/system/riscv/sifive_u.rst
-+++ b/docs/system/riscv/sifive_u.rst
-@@ -210,7 +210,7 @@ command line options with ``qemu-system-riscv32``.
- Running U-Boot
- --------------
+diff --git a/hw/virtio/virtio-balloon-pci.c b/hw/virtio/virtio-balloon-pci.c
+index ce2645b..7195322 100644
+--- a/hw/virtio/virtio-balloon-pci.c
++++ b/hw/virtio/virtio-balloon-pci.c
+@@ -35,6 +35,12 @@ struct VirtIOBalloonPCI {
+     VirtIOBalloon vdev;
+ };
  
--U-Boot mainline v2021.07 release is tested at the time of writing. To build a
-+U-Boot mainline v2024.01 release is tested at the time of writing. To build a
- U-Boot mainline bootloader that can be booted by the ``sifive_u`` machine, use
- the sifive_unleashed_defconfig with similar commands as described above for
- Linux:
-@@ -325,15 +325,10 @@ configuration of U-Boot:
- 
-   $ export CROSS_COMPILE=riscv64-linux-
-   $ make sifive_unleashed_defconfig
--  $ make menuconfig
--
--then manually select the following configuration:
--
--  * Device Tree Control ---> Provider of DTB for DT Control ---> Prior Stage bootloader DTB
--
--and unselect the following configuration:
--
--  * Library routines ---> Allow access to binman information in the device tree
-+  $ ./scripts/config --enable OF_BOARD
-+  $ ./scripts/config --disable BINMAN_FDT
-+  $ ./scripts/config --disable SPL
-+  $ make olddefconfig
- 
- This changes U-Boot to use the QEMU generated device tree blob, and bypass
- running the U-Boot SPL stage.
-@@ -352,17 +347,13 @@ It's possible to create a 32-bit U-Boot S-mode image as well.
- 
-   $ export CROSS_COMPILE=riscv64-linux-
-   $ make sifive_unleashed_defconfig
--  $ make menuconfig
--
--then manually update the following configuration in U-Boot:
--
--  * Device Tree Control ---> Provider of DTB for DT Control ---> Prior Stage bootloader DTB
--  * RISC-V architecture ---> Base ISA ---> RV32I
--  * Boot options ---> Boot images ---> Text Base ---> 0x80400000
--
--and unselect the following configuration:
--
--  * Library routines ---> Allow access to binman information in the device tree
-+  $ ./scripts/config --disable ARCH_RV64I
-+  $ ./scripts/config --enable ARCH_RV32I
-+  $ ./scripts/config --set-val TEXT_BASE 0x80400000
-+  $ ./scripts/config --enable OF_BOARD
-+  $ ./scripts/config --disable BINMAN_FDT
-+  $ ./scripts/config --disable SPL
-+  $ make olddefconfig
- 
- Use the same command line options to boot the 32-bit U-Boot S-mode image:
- 
--- 
++static Property virtio_balloon_properties[] = {
++    DEFINE_PROP_BIT("ioeventfd", VirtIOPCIProxy, flags,
++            VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT, false),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
+ static void virtio_balloon_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
+ {
+     VirtIOBalloonPCI *dev = VIRTIO_BALLOON_PCI(vpci_dev);
+@@ -51,6 +57,7 @@ static void virtio_balloon_pci_class_init(ObjectClass *klass, void *data)
+     PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
+     k->realize = virtio_balloon_pci_realize;
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
++    device_class_set_props(dc, virtio_balloon_properties);
+     pcidev_k->vendor_id = PCI_VENDOR_ID_REDHAT_QUMRANET;
+     pcidev_k->device_id = PCI_DEVICE_ID_VIRTIO_BALLOON;
+     pcidev_k->revision = VIRTIO_PCI_ABI_VERSION;
+--
 2.34.1
-
 
