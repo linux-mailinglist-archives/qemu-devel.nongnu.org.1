@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E508239DE
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 01:50:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB00D8239DF
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 01:50:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLBs4-0008Kp-Gd; Wed, 03 Jan 2024 19:46:04 -0500
+	id 1rLBs5-0008Kt-71; Wed, 03 Jan 2024 19:46:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rLBrq-0008Hf-CR
+ id 1rLBrr-0008Hi-1p
  for qemu-devel@nongnu.org; Wed, 03 Jan 2024 19:45:51 -0500
-Received: from mail-qv1-xf36.google.com ([2607:f8b0:4864:20::f36])
+Received: from mail-qk1-x72e.google.com ([2607:f8b0:4864:20::72e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rLBro-0007TY-9D
+ id 1rLBro-0007UL-TY
  for qemu-devel@nongnu.org; Wed, 03 Jan 2024 19:45:50 -0500
-Received: by mail-qv1-xf36.google.com with SMTP id
- 6a1803df08f44-67ff241c2bcso11816d6.1
- for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 16:45:47 -0800 (PST)
+Received: by mail-qk1-x72e.google.com with SMTP id
+ af79cd13be357-78109a21144so2199485a.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jan 2024 16:45:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1704329147; x=1704933947; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1704329148; x=1704933948; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KpA/Kj66rISFQ/iHtkD7zXF8SxLl+/TJ5O3hi3eQFdo=;
- b=H3MObuQ9DJFjlsPkAUtIjzebELDBgWLJbpyGCOlaySurAg329xWJ/fOkbPqVpPFMj6
- J6sXk0Wh96Yk8l3XFDRr4PVUPogzVPltnOCz1MhOWg58T2bO7lyftsgRH4kHddAigiOH
- AKf9oiJhWSJLGIAQiUklCcxdWOS4d6LQeDgI1BwXH3NVRqum11Bnq2c8C//ZXsNJ8qg5
- L0bAJ8zIFqqm6WGvIfnHsprOAAK0A28uTLEMu6cyp/mPleIxS/8bVOinPzsbiM7Xv9rq
- KIZkJWMe37ApuReZ+/wCA8jvipJwwNSmPEq9NvevNipBdThfU/05ZWiGHxgaMsYQvrQE
- 8ljQ==
+ bh=hjqc0MDwZ2dIuPp0XnT06qNhonHSsnXQ8jjps1IW7I4=;
+ b=OvMGFFvqO3iiPoAXxHmMXn7NMJZBf59rL/UoVk8gKZ5NVsmGlV7NkIj0kpLKaxNWks
+ 8W60U1d2O7QFowOgQ+Zhh2CqaxWHkXqrH4XzeZQt8VnHm9+fKJ5yp0KzP2MajLo5YQwj
+ tQRj/OHprNqw45cXqBwuzK4B2mCHYTYohd7pJIuLg7FLZBuTG6zt5ZNjyNrLYcwfLnuR
+ LrrfUg2QVvzLuHzmOmNJxC6Lo6zx+uc94q+Kq22TofivZIzra85iRVYmnNIR2f/5zoBt
+ etMWEHZhYofiksC0KJSMx3KSGGeEdsh7YBTa8VltIvbJp9/lp8MOvIurkn2T4AZomUxi
+ iOVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704329147; x=1704933947;
+ d=1e100.net; s=20230601; t=1704329148; x=1704933948;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KpA/Kj66rISFQ/iHtkD7zXF8SxLl+/TJ5O3hi3eQFdo=;
- b=O6ACLSAZq/Kqhbjn0A1ODyg9oEt6ziDiD2h2HML3YSF1b8+BYbwk4AIp13GiKHNbfz
- XpBPJYzZc0c/nC95gCoSFrY+FkG6XcNU6s8CKZ0X8vlKw8pFymciIIGWj9dfgcZkZq/d
- /bTPY7D1PB3KNhnfSR4cgVm1ShhyDnrQyTV2kmp1Z3Mmlns+FW+u6pflTAgoKFQHvxSC
- 7d175Tcgox+B6ewxKW/U+pzF7klsvE7gAoezRZL0x3pB5WUiDlr6rKESJuBnx6wC9VE1
- HKhgFqirECQZkH7fFGiZj8TggVN0UtaAQxunTokvbRg2/fKK8+QcuXKMUOMlI3015crw
- 94KQ==
-X-Gm-Message-State: AOJu0YzCg/6KURRLGrsv2m+aJ2pr6o/S39AP4GsiP2a2+selVFNlJZ6R
- oF/fwrnUXBO+yT9ttx1wKKdYdc6vc+7u9g==
-X-Google-Smtp-Source: AGHT+IGsQA9kH+au0DUSHnYs3/9oSqfusxwYvlH4I8TNshkQxKpa9T//gY+Jgvk4kW6ofCGI5GxxHQ==
-X-Received: by 2002:ad4:5d42:0:b0:67f:8107:12a7 with SMTP id
- jk2-20020ad45d42000000b0067f810712a7mr38956044qvb.31.1704329147384; 
- Wed, 03 Jan 2024 16:45:47 -0800 (PST)
+ bh=hjqc0MDwZ2dIuPp0XnT06qNhonHSsnXQ8jjps1IW7I4=;
+ b=TknvEIYnd03WSZBq5s9FAmpV7NtsdHHYXhDAcSKfFsrIUWeKksNI4v8kKrlgcmMwGE
+ MnGR97kx+2CtnBCXBp8DsfNFLgygdGyua4ZubS/mE9Yg4Qoydck6yjdniEmnHVQdgtGz
+ qYk83+b9HF8tfts4ernWyLbe4Dpl561PicWTnIpQgIgJ7sxlxnYvto+jsT9AjdL9DwE3
+ xwayliTYoHPgLS7tg4i4VQ1ktWM+R0ww53O/LPEeO3N7Zt2XJI4ROhvFiI0XwjZbnhXA
+ ovRw9FCnm4062xgDiq672lZL5XqAh5zXLMDZc8FtJfBAnWl6G/z+KOPZJ1mgpniGTw0I
+ TAFw==
+X-Gm-Message-State: AOJu0Ywzl/rurmiFnAPS1fXBi5eDgXm+HS3k+y+jrgWHgz0J1qsSwgsl
+ O3k/o6F7mVZKC4guNLwTQr6JfIBWv74yjA==
+X-Google-Smtp-Source: AGHT+IGV4Nh38By5szJYxgYG929XzfNXH5PRcSxcqgWAkUAfBBbFSBoDdBAdD2haH+U25gjtrWpDDg==
+X-Received: by 2002:a05:620a:6015:b0:781:eff2:fd00 with SMTP id
+ dw21-20020a05620a601500b00781eff2fd00mr253913qkb.122.1704329148096; 
+ Wed, 03 Jan 2024 16:45:48 -0800 (PST)
 Received: from n231-230-216.byted.org ([147.160.184.87])
  by smtp.gmail.com with ESMTPSA id
- x19-20020ae9f813000000b0077d66e5b2e6sm10646087qkh.3.2024.01.03.16.45.46
+ x19-20020ae9f813000000b0077d66e5b2e6sm10646087qkh.3.2024.01.03.16.45.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 03 Jan 2024 16:45:47 -0800 (PST)
 From: Hao Xiang <hao.xiang@bytedance.com>
@@ -61,17 +61,17 @@ To: farosas@suse.de, peter.maydell@linaro.org, peterx@redhat.com,
  marcandre.lureau@redhat.com, bryan.zhang@bytedance.com,
  qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH v3 12/20] migration/multifd: Add new migration option for
- multifd DSA offloading.
-Date: Thu,  4 Jan 2024 00:44:44 +0000
-Message-Id: <20240104004452.324068-13-hao.xiang@bytedance.com>
+Subject: [PATCH v3 13/20] migration/multifd: Prepare to introduce DSA
+ acceleration on the multifd path.
+Date: Thu,  4 Jan 2024 00:44:45 +0000
+Message-Id: <20240104004452.324068-14-hao.xiang@bytedance.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20240104004452.324068-1-hao.xiang@bytedance.com>
 References: <20240104004452.324068-1-hao.xiang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f36;
- envelope-from=hao.xiang@bytedance.com; helo=mail-qv1-xf36.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72e;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-qk1-x72e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,215 +94,327 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Intel DSA offloading is an optional feature that turns on if
-proper hardware and software stack is available. To turn on
-DSA offloading in multifd live migration:
-
-multifd-dsa-accel="[dsa_dev_path1] [dsa_dev_path2] ... [dsa_dev_pathX]"
-
-This feature is turned off by default.
+1. Refactor multifd_send_thread function.
+2. Implement buffer_is_zero_use_cpu to handle CPU based zero page
+checking.
+3. Introduce the batch task structure in MultiFDSendParams.
 
 Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
 ---
- migration/migration-hmp-cmds.c |  8 ++++++++
- migration/options.c            | 30 ++++++++++++++++++++++++++++++
- migration/options.h            |  1 +
- qapi/migration.json            | 26 +++++++++++++++++++++++---
- 4 files changed, 62 insertions(+), 3 deletions(-)
+ include/qemu/dsa.h  | 43 +++++++++++++++++++++++--
+ migration/multifd.c | 77 ++++++++++++++++++++++++++++++++++++---------
+ migration/multifd.h |  2 ++
+ util/dsa.c          | 51 +++++++++++++++++++++++++-----
+ 4 files changed, 148 insertions(+), 25 deletions(-)
 
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 99710c8ffb..761d6d54de 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -353,6 +353,9 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
-         monitor_printf(mon, "%s: '%s'\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_TLS_AUTHZ),
-             params->tls_authz);
-+        monitor_printf(mon, "%s: '%s'\n",
-+            MigrationParameter_str(MIGRATION_PARAMETER_MULTIFD_DSA_ACCEL),
-+            params->multifd_dsa_accel);
+diff --git a/include/qemu/dsa.h b/include/qemu/dsa.h
+index e002652879..fe7772107a 100644
+--- a/include/qemu/dsa.h
++++ b/include/qemu/dsa.h
+@@ -2,6 +2,7 @@
+ #define QEMU_DSA_H
  
-         if (params->has_block_bitmap_mapping) {
-             const BitmapMigrationNodeAliasList *bmnal;
-@@ -615,6 +618,11 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
-         p->has_block_incremental = true;
-         visit_type_bool(v, param, &p->block_incremental, &err);
-         break;
-+    case MIGRATION_PARAMETER_MULTIFD_DSA_ACCEL:
-+        p->multifd_dsa_accel = g_new0(StrOrNull, 1);
-+        p->multifd_dsa_accel->type = QTYPE_QSTRING;
-+        visit_type_str(v, param, &p->multifd_dsa_accel->u.s, &err);
-+        break;
-     case MIGRATION_PARAMETER_MULTIFD_CHANNELS:
-         p->has_multifd_channels = true;
-         visit_type_uint8(v, param, &p->multifd_channels, &err);
-diff --git a/migration/options.c b/migration/options.c
-index 180698a8f5..b5f69031a9 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -179,6 +179,8 @@ Property migration_properties[] = {
-     DEFINE_PROP_MIG_MODE("mode", MigrationState,
-                       parameters.mode,
-                       MIG_MODE_NORMAL),
-+    DEFINE_PROP_STRING("multifd-dsa-accel", MigrationState,
-+                       parameters.multifd_dsa_accel),
+ #include "qemu/error-report.h"
++#include "exec/cpu-common.h"
+ #include "qemu/thread.h"
+ #include "qemu/queue.h"
  
-     /* Migration capabilities */
-     DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
-@@ -903,6 +905,13 @@ const char *migrate_tls_creds(void)
-     return s->parameters.tls_creds;
- }
+@@ -42,6 +43,20 @@ typedef struct dsa_batch_task {
+     QSIMPLEQ_ENTRY(dsa_batch_task) entry;
+ } dsa_batch_task;
  
-+const char *migrate_multifd_dsa_accel(void)
-+{
-+    MigrationState *s = migrate_get_current();
++#endif
 +
-+    return s->parameters.multifd_dsa_accel;
++struct batch_task {
++    /* Address of each pages in pages */
++    ram_addr_t *addr;
++    /* Zero page checking results */
++    bool *results;
++#ifdef CONFIG_DSA_OPT
++    struct dsa_batch_task *dsa_batch;
++#endif
++};
++
++#ifdef CONFIG_DSA_OPT
++
+ /**
+  * @brief Initializes DSA devices.
+  *
+@@ -74,7 +89,7 @@ void dsa_cleanup(void);
+ bool dsa_is_running(void);
+ 
+ /**
+- * @brief Initializes a buffer zero batch task.
++ * @brief Initializes a buffer zero DSA batch task.
+  *
+  * @param task A pointer to the batch task to initialize.
+  * @param results A pointer to an array of zero page checking results.
+@@ -102,7 +117,7 @@ void buffer_zero_batch_task_destroy(struct dsa_batch_task *task);
+  * @return Zero if successful, otherwise non-zero.
+  */
+ int
+-buffer_is_zero_dsa_batch_async(struct dsa_batch_task *batch_task,
++buffer_is_zero_dsa_batch_async(struct batch_task *batch_task,
+                                const void **buf, size_t count, size_t len);
+ 
+ #else
+@@ -128,6 +143,30 @@ static inline void dsa_stop(void) {}
+ 
+ static inline void dsa_cleanup(void) {}
+ 
++static inline int
++buffer_is_zero_dsa_batch_async(struct batch_task *batch_task,
++                               const void **buf, size_t count, size_t len)
++{
++    exit(1);
 +}
 +
- const char *migrate_tls_hostname(void)
- {
-     MigrationState *s = migrate_get_current();
-@@ -1027,6 +1036,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
-     params->vcpu_dirty_limit = s->parameters.vcpu_dirty_limit;
-     params->has_mode = true;
-     params->mode = s->parameters.mode;
-+    params->multifd_dsa_accel = g_strdup(s->parameters.multifd_dsa_accel ?
-+                                         s->parameters.multifd_dsa_accel : "");
+ #endif
  
-     return params;
- }
-@@ -1035,6 +1046,7 @@ void migrate_params_init(MigrationParameters *params)
- {
-     params->tls_hostname = g_strdup("");
-     params->tls_creds = g_strdup("");
-+    params->multifd_dsa_accel = g_strdup("");
- 
-     /* Set has_* up only for parameter checks */
-     params->has_compress_level = true;
-@@ -1364,6 +1376,11 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
-     if (params->has_mode) {
-         dest->mode = params->mode;
-     }
++/**
++ * @brief Initializes a general buffer zero batch task.
++ *
++ * @param task A pointer to the general batch task to initialize.
++ * @param batch_size The number of zero page checking tasks in the batch.
++ */
++void
++batch_task_init(struct batch_task *task, int batch_size);
 +
-+    if (params->multifd_dsa_accel) {
-+        assert(params->multifd_dsa_accel->type == QTYPE_QSTRING);
-+        dest->multifd_dsa_accel = params->multifd_dsa_accel->u.s;
-+    }
- }
- 
- static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-@@ -1508,6 +1525,13 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-     if (params->has_mode) {
-         s->parameters.mode = params->mode;
-     }
++/**
++ * @brief Destroys a general buffer zero batch task.
++ *
++ * @param task A pointer to the general batch task to destroy.
++ */
++void
++batch_task_destroy(struct batch_task *task);
 +
-+    if (params->multifd_dsa_accel) {
-+        g_free(s->parameters.multifd_dsa_accel);
-+        assert(params->multifd_dsa_accel->type == QTYPE_QSTRING);
-+        s->parameters.multifd_dsa_accel =
-+            g_strdup(params->multifd_dsa_accel->u.s);
-+    }
+ #endif
+diff --git a/migration/multifd.c b/migration/multifd.c
+index eece85569f..e7c549b93e 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -14,6 +14,8 @@
+ #include "qemu/cutils.h"
+ #include "qemu/rcu.h"
+ #include "qemu/cutils.h"
++#include "qemu/dsa.h"
++#include "qemu/memalign.h"
+ #include "exec/target_page.h"
+ #include "sysemu/sysemu.h"
+ #include "exec/ramblock.h"
+@@ -574,6 +576,8 @@ void multifd_save_cleanup(void)
+         p->name = NULL;
+         multifd_pages_clear(p->pages);
+         p->pages = NULL;
++        batch_task_destroy(p->batch_task);
++        p->batch_task = NULL;
+         p->packet_len = 0;
+         g_free(p->packet);
+         p->packet = NULL;
+@@ -678,13 +682,66 @@ int multifd_send_sync_main(QEMUFile *f)
+     return 0;
  }
  
- void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
-@@ -1533,6 +1557,12 @@ void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
-         params->tls_authz->type = QTYPE_QSTRING;
-         params->tls_authz->u.s = strdup("");
-     }
-+    if (params->multifd_dsa_accel
-+        && params->multifd_dsa_accel->type == QTYPE_QNULL) {
-+        qobject_unref(params->multifd_dsa_accel->u.n);
-+        params->multifd_dsa_accel->type = QTYPE_QSTRING;
-+        params->multifd_dsa_accel->u.s = strdup("");
++static void set_page(MultiFDSendParams *p, bool zero_page, uint64_t offset)
++{
++    RAMBlock *rb = p->pages->block;
++    if (zero_page) {
++        p->zero[p->zero_num] = offset;
++        p->zero_num++;
++        ram_release_page(rb->idstr, offset);
++    } else {
++        p->normal[p->normal_num] = offset;
++        p->normal_num++;
 +    }
++}
++
++static void buffer_is_zero_use_cpu(MultiFDSendParams *p)
++{
++    const void **buf = (const void **)p->batch_task->addr;
++    assert(!migrate_use_main_zero_page());
++
++    for (int i = 0; i < p->pages->num; i++) {
++        p->batch_task->results[i] = buffer_is_zero(buf[i], p->page_size);
++    }
++}
++
++static void set_normal_pages(MultiFDSendParams *p)
++{
++    for (int i = 0; i < p->pages->num; i++) {
++        p->batch_task->results[i] = false;
++    }
++}
++
++static void multifd_zero_page_check(MultiFDSendParams *p)
++{
++    /* older qemu don't understand zero page on multifd channel */
++    bool use_multifd_zero_page = !migrate_use_main_zero_page();
++
++    RAMBlock *rb = p->pages->block;
++
++    for (int i = 0; i < p->pages->num; i++) {
++        p->batch_task->addr[i] = (ram_addr_t)(rb->host + p->pages->offset[i]);
++    }
++
++    if (use_multifd_zero_page) {
++        buffer_is_zero_use_cpu(p);
++    } else {
++        /* No zero page checking. All pages are normal pages. */
++        set_normal_pages(p);
++    }
++
++    for (int i = 0; i < p->pages->num; i++) {
++        uint64_t offset = p->pages->offset[i];
++        bool zero_page = p->batch_task->results[i];
++        set_page(p, zero_page, offset);
++    }
++}
++
+ static void *multifd_send_thread(void *opaque)
+ {
+     MultiFDSendParams *p = opaque;
+     MigrationThread *thread = NULL;
+     Error *local_err = NULL;
+-    /* qemu older than 8.2 don't understand zero page on multifd channel */
+-    bool use_multifd_zero_page = !migrate_use_main_zero_page();
+     int ret = 0;
+     bool use_zero_copy_send = migrate_zero_copy_send();
  
-     migrate_params_test_apply(params, &tmp);
+@@ -710,7 +767,6 @@ static void *multifd_send_thread(void *opaque)
+         qemu_mutex_lock(&p->mutex);
  
-diff --git a/migration/options.h b/migration/options.h
-index c901eb57c6..56100961a9 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -94,6 +94,7 @@ const char *migrate_tls_authz(void);
- const char *migrate_tls_creds(void);
- const char *migrate_tls_hostname(void);
- uint64_t migrate_xbzrle_cache_size(void);
-+const char *migrate_multifd_dsa_accel(void);
+         if (p->pending_job) {
+-            RAMBlock *rb = p->pages->block;
+             uint64_t packet_num = p->packet_num;
+             uint32_t flags;
  
- /* parameters setters */
+@@ -723,18 +779,7 @@ static void *multifd_send_thread(void *opaque)
+                 p->iovs_num = 1;
+             }
  
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 4c7a42e364..74465bc821 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -879,6 +879,12 @@
- # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
- #        (Since 8.2)
- #
-+# @multifd-dsa-accel: If enabled, use DSA accelerator offloading for
-+#     certain memory operations. Enable DSA accelerator offloading by
-+#     setting this string to a list of DSA device path separated by space
-+#     characters. Setting this string to an empty string means disabling
-+#     DSA accelerator offloading. Defaults to an empty string. (since 8.2)
-+#
- # Features:
- #
- # @deprecated: Member @block-incremental is deprecated.  Use
-@@ -902,7 +908,7 @@
-            'cpu-throttle-initial', 'cpu-throttle-increment',
-            'cpu-throttle-tailslow',
-            'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
--           'avail-switchover-bandwidth', 'downtime-limit',
-+           'avail-switchover-bandwidth', 'downtime-limit', 'multifd-dsa-accel',
-            { 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
-            { 'name': 'block-incremental', 'features': [ 'deprecated' ] },
-            'multifd-channels',
-@@ -1067,6 +1073,12 @@
- # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
- #        (Since 8.2)
- #
-+# @multifd-dsa-accel: If enabled, use DSA accelerator offloading for
-+#     certain memory operations. Enable DSA accelerator offloading by
-+#     setting this string to a list of DSA device path separated by space
-+#     characters. Setting this string to an empty string means disabling
-+#     DSA accelerator offloading. Defaults to an empty string. (since 8.2)
-+#
- # Features:
- #
- # @deprecated: Member @block-incremental is deprecated.  Use
-@@ -1120,7 +1132,8 @@
-             '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
-                                             'features': [ 'unstable' ] },
-             '*vcpu-dirty-limit': 'uint64',
--            '*mode': 'MigMode'} }
-+            '*mode': 'MigMode',
-+            '*multifd-dsa-accel': 'StrOrNull'} }
+-            for (int i = 0; i < p->pages->num; i++) {
+-                uint64_t offset = p->pages->offset[i];
+-                if (use_multifd_zero_page &&
+-                    buffer_is_zero(rb->host + offset, p->page_size)) {
+-                    p->zero[p->zero_num] = offset;
+-                    p->zero_num++;
+-                    ram_release_page(rb->idstr, offset);
+-                } else {
+-                    p->normal[p->normal_num] = offset;
+-                    p->normal_num++;
+-                }
+-            }
++            multifd_zero_page_check(p);
  
- ##
- # @migrate-set-parameters:
-@@ -1295,6 +1308,12 @@
- # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
- #        (Since 8.2)
- #
-+# @multifd-dsa-accel: If enabled, use DSA accelerator offloading for
-+#     certain memory operations. Enable DSA accelerator offloading by
-+#     setting this string to a list of DSA device path separated by space
-+#     characters. Setting this string to an empty string means disabling
-+#     DSA accelerator offloading. Defaults to an empty string. (since 8.2)
-+#
- # Features:
- #
- # @deprecated: Member @block-incremental is deprecated.  Use
-@@ -1345,7 +1364,8 @@
-             '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
-                                             'features': [ 'unstable' ] },
-             '*vcpu-dirty-limit': 'uint64',
--            '*mode': 'MigMode'} }
-+            '*mode': 'MigMode',
-+            '*multifd-dsa-accel': 'str'} }
+             if (p->normal_num) {
+                 ret = multifd_send_state->ops->send_prepare(p, &local_err);
+@@ -975,6 +1020,8 @@ int multifd_save_setup(Error **errp)
+         p->pending_job = 0;
+         p->id = i;
+         p->pages = multifd_pages_init(page_count);
++        p->batch_task = g_malloc0(sizeof(struct batch_task));
++        batch_task_init(p->batch_task, page_count);
+         p->packet_len = sizeof(MultiFDPacket_t)
+                       + sizeof(uint64_t) * page_count;
+         p->packet = g_malloc0(p->packet_len);
+diff --git a/migration/multifd.h b/migration/multifd.h
+index 13762900d4..97b5f888a7 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -119,6 +119,8 @@ typedef struct {
+      * pending_job != 0 -> multifd_channel can use it.
+      */
+     MultiFDPages_t *pages;
++    /* Zero page checking batch task */
++    struct batch_task *batch_task;
  
- ##
- # @query-migrate-parameters:
+     /* thread local variables. No locking required */
+ 
+diff --git a/util/dsa.c b/util/dsa.c
+index 5a2bf33651..f6224a27d4 100644
+--- a/util/dsa.c
++++ b/util/dsa.c
+@@ -802,7 +802,7 @@ buffer_zero_task_init_int(struct dsa_hw_desc *descriptor,
+ }
+ 
+ /**
+- * @brief Initializes a buffer zero batch task.
++ * @brief Initializes a buffer zero DSA batch task.
+  *
+  * @param task A pointer to the batch task to initialize.
+  * @param results A pointer to an array of zero page checking results.
+@@ -1107,29 +1107,64 @@ void dsa_cleanup(void)
+  * @return Zero if successful, otherwise non-zero.
+  */
+ int
+-buffer_is_zero_dsa_batch_async(struct dsa_batch_task *batch_task,
++buffer_is_zero_dsa_batch_async(struct batch_task *batch_task,
+                                const void **buf, size_t count, size_t len)
+ {
+-    if (count <= 0 || count > batch_task->batch_size) {
++    struct dsa_batch_task *dsa_batch = batch_task->dsa_batch;
++
++    if (count <= 0 || count > dsa_batch->batch_size) {
+         return -1;
+     }
+ 
+-    assert(batch_task != NULL);
++    assert(dsa_batch != NULL);
+     assert(len != 0);
+     assert(buf != NULL);
+ 
+     if (count == 1) {
+         /* DSA doesn't take batch operation with only 1 task. */
+-        buffer_zero_dsa_async(batch_task, buf[0], len);
++        buffer_zero_dsa_async(dsa_batch, buf[0], len);
+     } else {
+-        buffer_zero_dsa_batch_async(batch_task, buf, count, len);
++        buffer_zero_dsa_batch_async(dsa_batch, buf, count, len);
+     }
+ 
+-    buffer_zero_dsa_wait(batch_task);
+-    buffer_zero_cpu_fallback(batch_task);
++    buffer_zero_dsa_wait(dsa_batch);
++    buffer_zero_cpu_fallback(dsa_batch);
+ 
+     return 0;
+ }
+ 
+ #endif
+ 
++/**
++ * @brief Initializes a general buffer zero batch task.
++ *
++ * @param task A pointer to the general batch task to initialize.
++ * @param batch_size The number of zero page checking tasks in the batch.
++ */
++void
++batch_task_init(struct batch_task *task, int batch_size)
++{
++    task->addr = g_new0(ram_addr_t, batch_size);
++    task->results = g_new0(bool, batch_size);
++#ifdef CONFIG_DSA_OPT
++    task->dsa_batch = qemu_memalign(64, sizeof(struct dsa_batch_task));
++    buffer_zero_batch_task_init(task->dsa_batch, task->results, batch_size);
++#endif
++}
++
++/**
++ * @brief Destroys a general buffer zero batch task.
++ *
++ * @param task A pointer to the general batch task to destroy.
++ */
++void
++batch_task_destroy(struct batch_task *task)
++{
++    g_free(task->addr);
++    g_free(task->results);
++#ifdef CONFIG_DSA_OPT
++    buffer_zero_batch_task_destroy(task->dsa_batch);
++    qemu_vfree(task->dsa_batch);
++#endif
++}
++
 -- 
 2.30.2
 
