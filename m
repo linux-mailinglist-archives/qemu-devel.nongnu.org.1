@@ -2,82 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECBE823DB1
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 09:43:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B24823EB6
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 10:33:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLJIf-0007oq-Mq; Thu, 04 Jan 2024 03:42:01 -0500
+	id 1rLK52-0008WS-Uk; Thu, 04 Jan 2024 04:32:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rLJId-0007oU-L2
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 03:41:59 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rLK4x-0008Vj-SU
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 04:31:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rLJIb-0000FA-20
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 03:41:59 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rLK4v-0008NQ-Ke
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 04:31:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704357714;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1704360712;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=apOZxuhCzLHgrtX5zmWi/5YqD6eEbxYqATpxP+JpYfM=;
- b=i3EPJJNYzRHp7wNCaM0COuEgkGCxH8gSpMoHy1haBbl5onm+BO2bcuHsh18883cBBZLfsQ
- QsT75yufwqBOKKyy/iiebl28FU7IbKlLJED4r1huuGwJ3G85y3LD32Ko/04NcJou8GMh05
- JOmAr+ebU1fVFKauvuSbYdA17/E4qMU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zIXKKMqhILxRblSeoztvZ34izwtCDG3gNl+mN+M3Jfw=;
+ b=PukynblAw8rcHitjKMBiqqJPLa9+Sn+9WrZUUw/YzpRyP84rHhG1vX8sPKpOMkAcH7MgT7
+ YvQv+LxAvrvri2lSIMAf6zChXBvUq4bjUm4xTLK0cXHux39+TE9jelwCpZNFLE40OuI1NG
+ jjsw9Dgmh9zcbLDvDs6fAMzjwUzS5kg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-96-hclTqWtDOUCh7_sagsEDdg-1; Thu, 04 Jan 2024 03:41:52 -0500
-X-MC-Unique: hclTqWtDOUCh7_sagsEDdg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40d5aef0b1fso1975375e9.2
- for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 00:41:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704357711; x=1704962511;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=apOZxuhCzLHgrtX5zmWi/5YqD6eEbxYqATpxP+JpYfM=;
- b=By8EMYheYPQ+jN0l7z15vLSCNtqrfS8hd0PTnZGks7tb9VplDZp+Zv/9iE6dFH0lOK
- OFORWxhxczRNpHG2MGA7OgyPWbLLKTuz4NXcVytOD0kWJiH1BmP6S13a4M5Kqfy+CO3C
- pS37RCdSJ2i60PLbes7LXQ6A2OYUF5uMR5qdyUu8jPktQXyT/O6bNHVG33M6b5/ybsp9
- hf/heTS481licTM0ulDPsOkIgUecmXcC8qadqFh7bpV+Wj0b8ZFSLGluU8UP9RfYZb5T
- OHz6ncg0OpNQUZ9LJu27rQI8Mk3snxLxNLRBZptjdC1FLBDzSJE4lr8eWefFyK9bHVKu
- 934g==
-X-Gm-Message-State: AOJu0YzoO1dPkaTvaCZ0SZP/MPv89kt+XCnUbMe7gWF8syllMHIlMG3e
- 7o/jfOBzIpHVliZGQGHGidedpN+gI0BZytyMWhM3SL9WwZcWE2UH5KJpayTw9at6Zbo6F82RUfi
- JDSllZKMHG8c7rw5krebH8fO8zQTx5OdzaOJU1OU/WzE/V9+jb1gcB1C8hQCCP1AqcAMmSQFGHD
- C7
-X-Received: by 2002:a05:600c:244:b0:40d:8944:657c with SMTP id
- 4-20020a05600c024400b0040d8944657cmr146635wmj.71.1704357711119; 
- Thu, 04 Jan 2024 00:41:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGGmTLy5yGLJeDBXeEav3aLrG1ttIEDSfDOH6w2HxAGUa7FPAFv3vvyYZxOQpRnlsOKYu+PQQ==
-X-Received: by 2002:a05:600c:244:b0:40d:8944:657c with SMTP id
- 4-20020a05600c024400b0040d8944657cmr146624wmj.71.1704357710660; 
- Thu, 04 Jan 2024 00:41:50 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- fc11-20020a05600c524b00b0040e354e2a61sm13911wmb.43.2024.01.04.00.41.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 04 Jan 2024 00:41:50 -0800 (PST)
-Message-ID: <9d1ace89-82a8-4355-8a57-8c883b8aecb2@redhat.com>
-Date: Thu, 4 Jan 2024 09:41:49 +0100
+ us-mta-390-VfOJiDoeMgCX6uAq70exgQ-1; Thu, 04 Jan 2024 04:31:48 -0500
+X-MC-Unique: VfOJiDoeMgCX6uAq70exgQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 288B3863B83;
+ Thu,  4 Jan 2024 09:31:47 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.113])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 821551121313;
+ Thu,  4 Jan 2024 09:31:37 +0000 (UTC)
+Date: Thu, 4 Jan 2024 09:31:35 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
+ Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
+ Laurent Vivier <laurent@vivier.eu>,
+ Paolo Bonzini <pbonzini@redhat.com>, Brian Cain <bcain@quicinc.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Cleber Rosa <crosa@redhat.com>, kvm@vger.kernel.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ qemu-arm@nongnu.org, Weiwei Li <liwei1518@gmail.com>,
+ John Snow <jsnow@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ qemu-riscv@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [PATCH v2 10/43] qtest: bump pxe-test timeout to 10 minutes
+Message-ID: <ZZZ6912gSKasWA3G@redhat.com>
+References: <20240103173349.398526-1-alex.bennee@linaro.org>
+ <20240103173349.398526-11-alex.bennee@linaro.org>
+ <6826da51-3b97-4ecf-8517-9e5b5243e91f@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] backends/iommufd: Remove mutex
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-References: <20240102123210.1184293-1-clg@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20240102123210.1184293-1-clg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+In-Reply-To: <6826da51-3b97-4ecf-8517-9e5b5243e91f@linaro.org>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -46
 X-Spam_score: -4.7
@@ -99,36 +112,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/2/24 13:32, Cédric Le Goater wrote:
-> Hello !
+On Wed, Jan 03, 2024 at 06:43:52PM +0100, Philippe Mathieu-Daudé wrote:
+> Hi Daniel,
 > 
-> Coverity has some reports regarding the IOMMUFDBackend mutex. Since
-> the IOMMUFDBackend routines are called from the QEMU main thread, this
-> series simply suggests removing the mutex and rely on the BQL to
-> handle concurrent access.
+> On 3/1/24 18:33, Alex Bennée wrote:
+> > From: Daniel P. Berrangé <berrange@redhat.com>
+> > 
+> > The pxe-test uses the boot_sector_test() function, and that already
+> > uses a timeout of 600 seconds. So adjust the timeout on the meson
+> > side accordingly.
 > 
-> Thanks,
+> IIRC few years ago you said tests running on CI ('Tier-1') should
+> respect a time limit. IMO 10min seems too much for CI, should this
+> test be skipped there?
+
+This isn't going to take 10 minutes in reality. We're setting timeouts
+such that we avoid false-failures in the extreme worst case scenarios.
+
 > 
-> C.
-> 
-> Cédric Le Goater (2):
->    backends/iommufd: Remove check on number of backend users
->    backends/iommufd: Remove mutex
-> 
->   include/sysemu/iommufd.h |  2 --
->   backends/iommufd.c       | 12 ------------
->   2 files changed, 14 deletions(-)
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > [thuth: Bump timeout to 600s and adjust commit description]
+> > Signed-off-by: Thomas Huth <thuth@redhat.com>
+> > Message-Id: <20231215070357.10888-7-thuth@redhat.com>
+> > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> > ---
+> >   tests/qtest/meson.build | 1 +
+> >   1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+> > index 7a4160df046..ec93d5a384f 100644
+> > --- a/tests/qtest/meson.build
+> > +++ b/tests/qtest/meson.build
+> > @@ -4,6 +4,7 @@ slow_qtests = {
+> >     'npcm7xx_pwm-test': 300,
+> >     'qom-test' : 900,
+> >     'test-hmp' : 240,
+> > +  'pxe-test': 600,
+> >   }
+> >   qtests_generic = [
 > 
 
-
-Applied to vfio-next.
-
-Thanks,
-
-C.
-
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
