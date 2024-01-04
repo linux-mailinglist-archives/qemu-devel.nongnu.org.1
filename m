@@ -2,98 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D3B8243B6
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 15:24:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE4F8243AE
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 15:23:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLOcD-0001Nq-Kh; Thu, 04 Jan 2024 09:22:33 -0500
+	id 1rLOc7-0001NA-FH; Thu, 04 Jan 2024 09:22:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rLOc4-0001MR-3H
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rLOc4-0001MQ-2L
  for qemu-devel@nongnu.org; Thu, 04 Jan 2024 09:22:24 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rLOc1-0008Uh-Bf
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rLOc1-0008Um-Nf
  for qemu-devel@nongnu.org; Thu, 04 Jan 2024 09:22:23 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 49DA21FCD8;
- Thu,  4 Jan 2024 14:22:18 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id B728B21E1A;
+ Thu,  4 Jan 2024 14:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704378138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1704378139; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lVql7tiWBTeK4WI1qaBzlhALh8DU+rKjXn3TGzSv2Yg=;
- b=TOOveeA9gb/gqasM8lfIF6lL02wPfmVYGk2BRtgO6G8UZ7EdTScYUu7mf6a4NDN7e+QPQ1
- bmshlplkIq+fnm3LJ5rhi8cPBBBLMxxK2tnQ2xhuuBDbEqStO+GH3uHXCPXOzZRClE8GQ/
- 9OOYgB6CbTHlhNTv6aJ3rh824COOP34=
+ bh=OQauhPNVhpDDdP3z2mKGEg4aNBnP7toPGXMNMNJetWg=;
+ b=lpDPSZWQLcgp1A5fCc9tozhZ18pcfuX8lfmHx0pK8bcR6VbuAqogzNDSOLFbjLQMtL97x3
+ qUiyA6VLkZXLKg8CGimYjut7E6zXfNWsuxxTcmzjB6JmYo6ZgW6Mv0WxxXL9dq/KBMmyBI
+ 2LA+0cawj8yPVeWyVwDg4nwPLIC3H/Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704378138;
+ s=susede2_ed25519; t=1704378139;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lVql7tiWBTeK4WI1qaBzlhALh8DU+rKjXn3TGzSv2Yg=;
- b=m1lQ0fSUIUH//GdKZ+344TtIZWKXmoP0+LJp2zzQ1GIbDnKenvRDDW4KsKjVs1npFQH1yc
- Q9sFtvzjcaS+uZCA==
+ bh=OQauhPNVhpDDdP3z2mKGEg4aNBnP7toPGXMNMNJetWg=;
+ b=fHYcoIHiJfk1H+dYopeW2vPFGW4x2HY0d6EAYX/BMgbZemM4qHWsJ420Xfacb9belPU5Xo
+ 9SE9GI6hxNXfSaDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704378138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1704378139; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lVql7tiWBTeK4WI1qaBzlhALh8DU+rKjXn3TGzSv2Yg=;
- b=TOOveeA9gb/gqasM8lfIF6lL02wPfmVYGk2BRtgO6G8UZ7EdTScYUu7mf6a4NDN7e+QPQ1
- bmshlplkIq+fnm3LJ5rhi8cPBBBLMxxK2tnQ2xhuuBDbEqStO+GH3uHXCPXOzZRClE8GQ/
- 9OOYgB6CbTHlhNTv6aJ3rh824COOP34=
+ bh=OQauhPNVhpDDdP3z2mKGEg4aNBnP7toPGXMNMNJetWg=;
+ b=lpDPSZWQLcgp1A5fCc9tozhZ18pcfuX8lfmHx0pK8bcR6VbuAqogzNDSOLFbjLQMtL97x3
+ qUiyA6VLkZXLKg8CGimYjut7E6zXfNWsuxxTcmzjB6JmYo6ZgW6Mv0WxxXL9dq/KBMmyBI
+ 2LA+0cawj8yPVeWyVwDg4nwPLIC3H/Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704378138;
+ s=susede2_ed25519; t=1704378139;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lVql7tiWBTeK4WI1qaBzlhALh8DU+rKjXn3TGzSv2Yg=;
- b=m1lQ0fSUIUH//GdKZ+344TtIZWKXmoP0+LJp2zzQ1GIbDnKenvRDDW4KsKjVs1npFQH1yc
- Q9sFtvzjcaS+uZCA==
+ bh=OQauhPNVhpDDdP3z2mKGEg4aNBnP7toPGXMNMNJetWg=;
+ b=fHYcoIHiJfk1H+dYopeW2vPFGW4x2HY0d6EAYX/BMgbZemM4qHWsJ420Xfacb9belPU5Xo
+ 9SE9GI6hxNXfSaDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 57802137E8;
- Thu,  4 Jan 2024 14:22:17 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C1E18137E8;
+ Thu,  4 Jan 2024 14:22:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id AFlZBxm/lmUfPAAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 04 Jan 2024 14:22:17 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id uMSnIRq/lmUfPAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 04 Jan 2024 14:22:18 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>
-Subject: [PATCH v2 1/7] migration/multifd: Remove MultiFDPages_t::packet_num
-Date: Thu,  4 Jan 2024 11:21:38 -0300
-Message-Id: <20240104142144.9680-2-farosas@suse.de>
+Subject: [PATCH v2 2/7] migration/multifd: Remove QEMUFile from where it is
+ not needed
+Date: Thu,  4 Jan 2024 11:21:39 -0300
+Message-Id: <20240104142144.9680-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240104142144.9680-1-farosas@suse.de>
 References: <20240104142144.9680-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spam-Score: 10.00
-X-Spamd-Result: default: False [10.00 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
- BAYES_SPAM(5.10)[99.99%]; TO_DN_SOME(0.00)[];
+X-Spam-Score: 8.80
+X-Spamd-Result: default: False [8.80 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ BAYES_SPAM(5.10)[100.00%]; TO_DN_SOME(0.00)[];
  R_MISSING_CHARSET(2.50)[]; BROKEN_CONTENT_TYPE(1.50)[];
- RCVD_COUNT_THREE(0.00)[3]; RCPT_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
- URIBL_BLOCKED(0.00)[suse.de:email]; FROM_HAS_DN(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_COUNT_THREE(0.00)[3]; NEURAL_HAM_SHORT(-0.20)[-0.998];
+ RCPT_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  MID_CONTAINS_FROM(1.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -116,41 +118,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This was introduced by commit 34c55a94b1 ("migration: Create multipage
-support") and never used.
-
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.c | 1 -
- migration/multifd.h | 2 --
- 2 files changed, 3 deletions(-)
+ migration/multifd.c | 12 ++++++------
+ migration/multifd.h |  4 ++--
+ migration/ram.c     | 15 +++++++--------
+ 3 files changed, 15 insertions(+), 16 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 9f353aecfa..3e650f5da0 100644
+index 3e650f5da0..2dbc3ba836 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -250,7 +250,6 @@ static void multifd_pages_clear(MultiFDPages_t *pages)
+@@ -390,7 +390,7 @@ struct {
+  * false.
+  */
+ 
+-static int multifd_send_pages(QEMUFile *f)
++static int multifd_send_pages(void)
  {
-     pages->num = 0;
-     pages->allocated = 0;
--    pages->packet_num = 0;
-     pages->block = NULL;
-     g_free(pages->offset);
-     pages->offset = NULL;
+     int i;
+     static int next_channel;
+@@ -436,7 +436,7 @@ static int multifd_send_pages(QEMUFile *f)
+     return 1;
+ }
+ 
+-int multifd_queue_page(QEMUFile *f, RAMBlock *block, ram_addr_t offset)
++int multifd_queue_page(RAMBlock *block, ram_addr_t offset)
+ {
+     MultiFDPages_t *pages = multifd_send_state->pages;
+     bool changed = false;
+@@ -456,12 +456,12 @@ int multifd_queue_page(QEMUFile *f, RAMBlock *block, ram_addr_t offset)
+         changed = true;
+     }
+ 
+-    if (multifd_send_pages(f) < 0) {
++    if (multifd_send_pages() < 0) {
+         return -1;
+     }
+ 
+     if (changed) {
+-        return multifd_queue_page(f, block, offset);
++        return multifd_queue_page(block, offset);
+     }
+ 
+     return 1;
+@@ -583,7 +583,7 @@ static int multifd_zero_copy_flush(QIOChannel *c)
+     return ret;
+ }
+ 
+-int multifd_send_sync_main(QEMUFile *f)
++int multifd_send_sync_main(void)
+ {
+     int i;
+     bool flush_zero_copy;
+@@ -592,7 +592,7 @@ int multifd_send_sync_main(QEMUFile *f)
+         return 0;
+     }
+     if (multifd_send_state->pages->num) {
+-        if (multifd_send_pages(f) < 0) {
++        if (multifd_send_pages() < 0) {
+             error_report("%s: multifd_send_pages fail", __func__);
+             return -1;
+         }
 diff --git a/migration/multifd.h b/migration/multifd.h
-index a835643b48..b0ff610c37 100644
+index b0ff610c37..35d11f103c 100644
 --- a/migration/multifd.h
 +++ b/migration/multifd.h
-@@ -58,8 +58,6 @@ typedef struct {
-     uint32_t num;
-     /* number of allocated pages */
-     uint32_t allocated;
--    /* global number of generated multifd packets */
--    uint64_t packet_num;
-     /* offset of each page */
-     ram_addr_t *offset;
-     RAMBlock *block;
+@@ -21,8 +21,8 @@ void multifd_load_shutdown(void);
+ bool multifd_recv_all_channels_created(void);
+ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp);
+ void multifd_recv_sync_main(void);
+-int multifd_send_sync_main(QEMUFile *f);
+-int multifd_queue_page(QEMUFile *f, RAMBlock *block, ram_addr_t offset);
++int multifd_send_sync_main(void);
++int multifd_queue_page(RAMBlock *block, ram_addr_t offset);
+ 
+ /* Multifd Compression flags */
+ #define MULTIFD_FLAG_SYNC (1 << 0)
+diff --git a/migration/ram.c b/migration/ram.c
+index 8c7886ab79..b4f2f5108f 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1250,10 +1250,9 @@ static int ram_save_page(RAMState *rs, PageSearchStatus *pss)
+     return pages;
+ }
+ 
+-static int ram_save_multifd_page(QEMUFile *file, RAMBlock *block,
+-                                 ram_addr_t offset)
++static int ram_save_multifd_page(RAMBlock *block, ram_addr_t offset)
+ {
+-    if (multifd_queue_page(file, block, offset) < 0) {
++    if (multifd_queue_page(block, offset) < 0) {
+         return -1;
+     }
+     stat64_add(&mig_stats.normal_pages, 1);
+@@ -1336,7 +1335,7 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
+             if (migrate_multifd() &&
+                 !migrate_multifd_flush_after_each_section()) {
+                 QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
+-                int ret = multifd_send_sync_main(f);
++                int ret = multifd_send_sync_main();
+                 if (ret < 0) {
+                     return ret;
+                 }
+@@ -2067,7 +2066,7 @@ static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
+      * still see partially copied pages which is data corruption.
+      */
+     if (migrate_multifd() && !migration_in_postcopy()) {
+-        return ram_save_multifd_page(pss->pss_channel, block, offset);
++        return ram_save_multifd_page(block, offset);
+     }
+ 
+     return ram_save_page(rs, pss);
+@@ -2985,7 +2984,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+     migration_ops->ram_save_target_page = ram_save_target_page_legacy;
+ 
+     qemu_mutex_unlock_iothread();
+-    ret = multifd_send_sync_main(f);
++    ret = multifd_send_sync_main();
+     qemu_mutex_lock_iothread();
+     if (ret < 0) {
+         return ret;
+@@ -3109,7 +3108,7 @@ out:
+     if (ret >= 0
+         && migration_is_setup_or_active(migrate_get_current()->state)) {
+         if (migrate_multifd() && migrate_multifd_flush_after_each_section()) {
+-            ret = multifd_send_sync_main(rs->pss[RAM_CHANNEL_PRECOPY].pss_channel);
++            ret = multifd_send_sync_main();
+             if (ret < 0) {
+                 return ret;
+             }
+@@ -3183,7 +3182,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+         }
+     }
+ 
+-    ret = multifd_send_sync_main(rs->pss[RAM_CHANNEL_PRECOPY].pss_channel);
++    ret = multifd_send_sync_main();
+     if (ret < 0) {
+         return ret;
+     }
 -- 
 2.35.3
 
