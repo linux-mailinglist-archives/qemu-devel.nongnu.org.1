@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93879823B6C
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 05:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8161E823B66
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 05:33:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLFPE-0000An-U7; Wed, 03 Jan 2024 23:32:32 -0500
+	id 1rLFPK-0000Dn-ES; Wed, 03 Jan 2024 23:32:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFPD-0000AY-L6
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:32:31 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFPI-0000D4-Fe
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:32:36 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFPC-0006XS-0h
- for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:32:31 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLFPH-0006Xl-0r
+ for qemu-devel@nongnu.org; Wed, 03 Jan 2024 23:32:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704342749;
+ s=mimecast20190719; t=1704342754;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=M4NEMeHwevL0+UB0KJS07+uty2N/Zh9zpVkTHzGeTTo=;
- b=VSlYhRrPxrlIS1Iwvh2ZGIFGLYO/4HJXq2vIb0+PITjX3IixMZQT6INfASjHoDmQNhrYvd
- c89+UzmFRUMnz62wU1KpAQO0IeSMLN9oXkXfdKZuWFd2adG0/j2E3oOqlavI8/WXD2Z4Ed
- L/ZZfyFP3u/fqdoS0JjXVZlJONe6t0g=
+ bh=WktZ2LzDhP+W10mjy931IC19R4i2j3WY3KXAO/VI7i8=;
+ b=We+FSNvkc5bB6ydstC766yatvZAATp4w2e4C6XAKIu5kcYQYqwqZE9m2l6pMdOAPoeSkh1
+ UHIp3Ui5RSn8aY2h9kr5pT54uTa8DaW5eIjy7JLIAi8pOEmbB5UpjszYrwn894eg4XbW+F
+ I3tbKbJ05AqNERx73KNXbQ2RJXWoOTI=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-60-YseHawpsPFmWdyDN_N8uIw-1; Wed,
- 03 Jan 2024 23:32:25 -0500
-X-MC-Unique: YseHawpsPFmWdyDN_N8uIw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-478-c0vyesrWNlqx6CG2U5wQJA-1; Wed,
+ 03 Jan 2024 23:32:30 -0500
+X-MC-Unique: c0vyesrWNlqx6CG2U5wQJA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43D693C2B60D;
- Thu,  4 Jan 2024 04:32:25 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5EE841C2B662;
+ Thu,  4 Jan 2024 04:32:30 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.12])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A4426C15968;
- Thu,  4 Jan 2024 04:32:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EBB30C15968;
+ Thu,  4 Jan 2024 04:32:25 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
 Cc: Fabiano Rosas <farosas@suse.de>, Steve Sistare <steven.sistare@oracle.com>,
  Juan Quintela <quintela@trasno.org>, peterx@redhat.com,
  Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Juan Quintela <quintela@redhat.com>,
- Bin Meng <bmeng.cn@gmail.com>
-Subject: [PULL 01/26] MAINTAINERS: Leaving Migration
-Date: Thu,  4 Jan 2024 12:31:46 +0800
-Message-ID: <20240104043213.431566-2-peterx@redhat.com>
+ Avihai Horon <avihaih@nvidia.com>, Leonardo Bras <leobras@redhat.com>
+Subject: [PULL 02/26] MAINTAINERS: Remove myself as reviewer from Live
+ Migration
+Date: Thu,  4 Jan 2024 12:31:47 +0800
+Message-ID: <20240104043213.431566-3-peterx@redhat.com>
 In-Reply-To: <20240104043213.431566-1-peterx@redhat.com>
 References: <20240104043213.431566-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
@@ -83,65 +82,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Juan Quintela <quintela@redhat.com>
+From: Leonardo Bras <leobras@redhat.com>
 
-I am leaving Red Hat, and as part of that I am leaving Migration
-maintenarship.
+I am currently focusing in kernel development, so I will probably not be
+of much help in reviewing general Live Migration changes.
 
-You are left in good hands with Peter and Fabiano.
+For above reason I am removing my Reviewer status from Migration and RDMA
+Migration.
 
-Thanks for all the fish.
-
-Signed-off-by: Juan Quintela <quintela@redhat.com>
-Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
-Link: https://lore.kernel.org/r/20240102201908.1987-2-quintela@redhat.com
-[peterx: prefix the subject]
+Signed-off-by: Leonardo Bras <leobras@redhat.com>
+Link: https://lore.kernel.org/r/20231221170739.332378-1-leobras@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- MAINTAINERS | 3 ---
- .mailmap    | 1 +
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ MAINTAINERS | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 395f26ba86..56464cd916 100644
+index 56464cd916..00ec1f7eca 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -70,7 +70,6 @@ R: Daniel P. Berrangé <berrange@redhat.com>
- R: Thomas Huth <thuth@redhat.com>
- R: Markus Armbruster <armbru@redhat.com>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
--R: Juan Quintela <quintela@redhat.com>
- W: https://www.qemu.org/docs/master/devel/index.html
- S: Odd Fixes
- F: docs/devel/style.rst
-@@ -3355,7 +3354,6 @@ S: Odd Fixes
- F: scripts/checkpatch.pl
- 
+@@ -3356,7 +3356,6 @@ F: scripts/checkpatch.pl
  Migration
--M: Juan Quintela <quintela@redhat.com>
  M: Peter Xu <peterx@redhat.com>
  M: Fabiano Rosas <farosas@suse.de>
- R: Leonardo Bras <leobras@redhat.com>
-@@ -3375,7 +3373,6 @@ F: util/userfaultfd.c
- X: migration/rdma*
- 
+-R: Leonardo Bras <leobras@redhat.com>
+ S: Maintained
+ F: hw/core/vmstate-if.c
+ F: include/hw/vmstate-if.h
+@@ -3375,7 +3374,6 @@ X: migration/rdma*
  RDMA Migration
--M: Juan Quintela <quintela@redhat.com>
  R: Li Zhijian <lizhijian@fujitsu.com>
  R: Peter Xu <peterx@redhat.com>
- R: Leonardo Bras <leobras@redhat.com>
-diff --git a/.mailmap b/.mailmap
-index e12e19f691..d94572af05 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -81,6 +81,7 @@ Greg Kurz <groug@kaod.org> <gkurz@linux.vnet.ibm.com>
- Huacai Chen <chenhuacai@kernel.org> <chenhc@lemote.com>
- Huacai Chen <chenhuacai@kernel.org> <chenhuacai@loongson.cn>
- James Hogan <jhogan@kernel.org> <james.hogan@imgtec.com>
-+Juan Quintela <quintela@trasno.org> <quintela@redhat.com>
- Leif Lindholm <quic_llindhol@quicinc.com> <leif.lindholm@linaro.org>
- Leif Lindholm <quic_llindhol@quicinc.com> <leif@nuviainc.com>
- Luc Michel <luc@lmichel.fr> <luc.michel@git.antfield.fr>
+-R: Leonardo Bras <leobras@redhat.com>
+ S: Odd Fixes
+ F: migration/rdma*
+ 
 -- 
 2.41.0
 
