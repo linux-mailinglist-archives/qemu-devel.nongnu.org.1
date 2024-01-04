@@ -2,65 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7668242F7
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 14:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D93A78242C9
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jan 2024 14:41:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLO3T-0001vh-Kx; Thu, 04 Jan 2024 08:46:39 -0500
+	id 1rLNxM-0008LC-4M; Thu, 04 Jan 2024 08:40:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <inesvarhol@proton.me>)
- id 1rLNvE-0006ka-1l
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:38:08 -0500
-Received: from mail-40138.protonmail.ch ([185.70.40.138])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <inesvarhol@proton.me>)
- id 1rLNuy-0006Lh-Sx
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:38:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
- s=protonmail; t=1704375467; x=1704634667;
- bh=qzVBR4lBcGJVgTKzHaiagV6F7F9YSUdTi14Y6w2hhuw=;
- h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
- Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
- Message-ID:BIMI-Selector;
- b=LsngcGavZ3qKg8o41q4w5QIwSLInkO83ER4qMPjXtWHqxZuTtNUCyut4upaBB0ZZK
- Nq+TLAUAbLbEgItGX3s3uzy2jO+XrbIMxUTgtPD6SeH7hm6d/vsA5M0fTYc4Ok90iw
- 91pWXS/c/Y8y6LehE8hzqJ9Hj1waYHX9Ewt353ucXkvrmDkTMcqI5r7TI0QUgSW8V3
- 21lJqSqB6lmFwDVHHj0AtmbUqNYQapKqUSIZSPuLMV6S8YvsuMokei3CXV914l1L1d
- 16/V3J45D7u/kjV+Tk40WLjeBVYu6KHkp5ttNjgl8wm5S/dB9YcfhPnljpa7eoQK81
- 06w86msCLWPzQ==
-Date: Thu, 04 Jan 2024 13:37:22 +0000
-To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-From: inesvarhol <inesvarhol@proton.me>
-Cc: =?utf-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
- qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLNxE-0008IX-5a
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:40:13 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLNxC-0007CG-4i
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 08:40:11 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40d5d898162so3614445e9.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 05:40:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704375607; x=1704980407; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TyGOTt5YQ5dKu9eEJjLJcTwPgoh0JifEfkWu+PyEtDI=;
+ b=gdbhDYSZymnT4Nc+19kw7Zk976DvAeteKQJQyFtR6XHZS9MmFMGFUMmwRNdmuPitNz
+ 97h0wTASt5EcvsVQjB8/tfbYM5/qZqsnhO/y4FI4I2ah0nkWQM9BgyPlDl1Sp6epQCiO
+ hMxn9q0sNGGt+u4zTb4Q8KS1yOeLJchr1rW55Kkdumyg1Fkl1M5BbZEEaL7inWW5Ov0v
+ iD0z/Utv+oOLVJ8EpX5J/O2ZAtweK0UG3kp9p+y5N0e1v1px6pwt5YPvxiEUkCgflBPX
+ X1Fhblr4KJsHBCjvnNDkCqRaARN/vdpabHcZXC7lQP+0hbMWLN4tesBYxDA0I/+OKKv7
+ QcnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704375607; x=1704980407;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TyGOTt5YQ5dKu9eEJjLJcTwPgoh0JifEfkWu+PyEtDI=;
+ b=sQiSCxTWBGWIWT6WvUwf7HoAc8WCCIYMRcSNHEywEq7kSIp/w1GcmmdrwH/jC/eAX+
+ 4UQ5fdqfwcT0xOXnvgKTP0o4zo2vuzVf6uFZBa3Wr1TP6H1PYEj2RHyzw5SDtYA6Ypfx
+ lfU8jUgKmosaxFe5Rn9kYq1iuJYKAqSMbhmTibkuHSdreyBCjmQQ3rr4yb/YcJlVvNhN
+ fv9VieslswCGWKUxCpl1iP9pL2kb0lNjji1yBIHoVCyFxH0t2Mq9PuDrJPrZ2+LS51pH
+ PQVv4YFPSYBEE8TKtwkF5DhYmqxrIhgMklIX8RzPl2PJoKH5y31eZo8Jx87jy5qcmpGj
+ aDRA==
+X-Gm-Message-State: AOJu0YwjXtQwk+VFhtPOGjyoHspxygJGrAjp2jPPUEkU7RDdMRQXtlv7
+ nZ7FSEFzTCxHgpy4FiTLMtlIZ3Z7wrrHnA==
+X-Google-Smtp-Source: AGHT+IEh8zh5TO9xChhuF1GP5QhK44PI6nhJLjguKVympHK9kS/451TmlJTbEDGw8VhtqpXIdSZgwA==
+X-Received: by 2002:a1c:6a15:0:b0:40d:77d9:8d80 with SMTP id
+ f21-20020a1c6a15000000b0040d77d98d80mr403977wmc.44.1704375607155; 
+ Thu, 04 Jan 2024 05:40:07 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.194.232])
+ by smtp.gmail.com with ESMTPSA id
+ t14-20020a05600c450e00b0040d6d755c90sm5763131wmo.42.2024.01.04.05.40.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 04 Jan 2024 05:40:06 -0800 (PST)
+Message-ID: <b0f06e83-aa11-4990-a3ed-e6738e7ebbbf@linaro.org>
+Date: Thu, 4 Jan 2024 14:40:04 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/3] hw/misc: Implement STM32L4x5 EXTI
+Content-Language: en-US
+To: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>
+Cc: =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
  Alistair Francis <alistair@alistair23.me>,
  Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org
-Subject: Re: [PATCH v5 2/3] tests/qtest: Add STM32L4x5 EXTI QTest testcase
-Message-ID: <ZjC6phtwjcDoQP-NDP6GF-dvCVK8Ctk9EeW_JezuNBqnQq4-V6NU6eAhECMqxJzMDRxwjbb-LPcHTvysc6YGuLD7ckWhbtpqD1g9lnklofI=@proton.me>
-In-Reply-To: <61fd13b3-7cc9-4e27-bf91-bd2b4aedf97b@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org
 References: <20231228161944.303768-1-ines.varhol@telecom-paris.fr>
- <20231228161944.303768-3-ines.varhol@telecom-paris.fr>
- <61fd13b3-7cc9-4e27-bf91-bd2b4aedf97b@linaro.org>
-Feedback-ID: 78004345:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=185.70.40.138; envelope-from=inesvarhol@proton.me;
- helo=mail-40138.protonmail.ch
+ <20231228161944.303768-2-ines.varhol@telecom-paris.fr>
+ <908650b4-3bb2-4cf2-8909-5bffc622950f@linaro.org>
+ <877ckpgrie.fsf@telecom-paris.fr>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <877ckpgrie.fsf@telecom-paris.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 04 Jan 2024 08:46:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,61 +99,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 4/1/24 14:23, Samuel Tardieu wrote:
+> 
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+> 
+>> This doesn't build:
+>>
+>> ../../hw/misc/stm32l4x5_exti.c:172:9: error: expected expression
+>>         const uint32_t set1 = value & ~DIRECT_LINE_MASK1;
+>> […]
+>> I could build using:
+>> -    case EXTI_SWIER1:
+>> +    case EXTI_SWIER1: {
+> 
+> Out or curiosity, which C compiler or option do you use for checking? I 
+> have no problem building this using "./configure 
+> --target-list=arm-softmmu" with GCC 12.3.0.
 
-Le jeudi 4 janvier 2024 =C3=A0 14:05, Philippe Mathieu-Daud=C3=A9 <philmd@l=
-inaro.org> a =C3=A9crit=C2=A0:
+C compiler for the host machine: clang (clang 15.0.0 "Apple clang 
+version 15.0.0 (clang-1500.0.40.1)")
+C linker for the host machine: clang ld64 1015.7
 
-Hello,
+If you don't have access to similar compiler, you can fork on GitLab
+and push a branch to trigger the CI; I expect it to fail.
 
-> > +static void test_edge_selector(void)
-> > +{
-> > + enable_nvic_irq(EXTI0_IRQ);
-> > +
-> > + / Configure EXTI line 0 irq on rising edge */
-> > + qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
->=20
->=20
-> Markus, this qtest use seems to expect some stability in QOM path...
->=20
-> In=C3=A8s, Arnaud, having the SoC unattached is dubious, it belongs to
-> the machine.
+Regards,
 
-Noted, we will fix that.=20
-Should we be concerned about the "stability in QOM path" ?
-
->=20
-> (qemu) info qom-tree
-> /machine (b-l475e-iot01a-machine)
-> /SYSCLK (clock)
-> /peripheral (container)
-> /peripheral-anon (container)
-> /unattached (container)
-> /device[0] (stm32l4x5xg-soc)
->=20
-> Eh I don't see the 'exti' here...
->=20
-> Indeed the test fails:
->=20
-> 17/35 qemu:qtest+qtest-arm / qtest-arm/test-arm-mptimer
-> OK 0.44s 61 subtests passed
-> =E2=96=B6 18/35 /arm/stm32l4x5/exti/reg_write_read
-> FAIL
-> =E2=96=B6 18/35 /arm/stm32l4x5/exti/no_software_interrupt
-> FAIL
-> =E2=96=B6 18/35 /arm/stm32l4x5/exti/software_interrupt
-> FAIL
-> =E2=96=B6 18/35 /arm/stm32l4x5/exti/masked_interrupt
-> FAIL
-> =E2=96=B6 18/35 /arm/stm32l4x5/exti/interrupt
-> FAIL
-> =E2=96=B6 18/35 /arm/stm32l4x5/exti/test_edge_selector
-> FAIL
-> Listing only the last 100 lines from a long log.
-
-Yes indeed, the tests fail in this 2nd commit as the EXTI device isn't conn=
-ected to the SoC yet (3rd commit).
-I forgot to mention it in this in this version :/
-Swapping the 2nd and 3rd commmit seems more straightforward to do ?=20
-
-
+Phil.
 
