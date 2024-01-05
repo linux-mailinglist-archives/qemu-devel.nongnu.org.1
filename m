@@ -2,86 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E038251C1
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 11:19:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE4B8251E4
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 11:26:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLhIT-0006Tx-GV; Fri, 05 Jan 2024 05:19:25 -0500
+	id 1rLhNV-0007jd-3z; Fri, 05 Jan 2024 05:24:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLhIQ-0006TG-Vt
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 05:19:23 -0500
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1rLhNR-0007jC-Oh
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 05:24:33 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLhIM-0001qO-KO
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 05:19:20 -0500
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-50ea9daac4cso1591963e87.3
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 02:19:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1rLhNQ-0004Kk-1w
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 05:24:33 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40e36e29685so7224775e9.3
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 02:24:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704449955; x=1705054755; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=JrpZJsC+JCf4DKhNEEKL+YgSEbHMOxskxIftU0vEodU=;
- b=OatCxACRDqIQhAUiVMmjpMDUtT9F1ygNGRbswS9eCcfeyccdbRrJyyIj2ViME3giCi
- GBI/elw0FSgyayH/L33Y6GdESiAQlmE4Ju5EJg50xp7Rbb7u6Ynsi+5f9I/DIHH/thRf
- YvPEJ3i+QUTVfFkw9JrPU03kVdyJHHM5cEBR9NfDEKdtx9/jdDAwLCoq1VhKkhhMiLZt
- 48aIXnWPXIVrcHjUlIRSwXKTKgvSkY8vsD72GmQtyY/CA4KipcnkdTg75+nbrl3eTqzr
- xYJqVc3NUZcEbQuob01Xb4Y/yPiTXHC3uk1CGd5o05YjNsoMRW1D5b/hyVk4LoieVqG4
- xbpg==
+ d=adacore.com; s=google; t=1704450269; x=1705055069; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=oH069RZTJa1YClK7MWQRB9iAj8pdAu6oir5e+vwxYJE=;
+ b=KMlXf1qcumhsVPxv2H9YtoRHsCOo9cWxxISRTsA/jNyk//t1z0kKUy9wrBj2aAVdLH
+ /XZ/9e6Qq9WtXbl5XagiSNCbY61gEPnEOcaJE6/0b8XmL6nEzYtIjEcT32ZZh8l9XiTK
+ VdodgFu6BlhihriLfC/J3Kud6hBkIAK6Qufutck7ysql7XZfxI3QpnnrKf6k9gYbtlyK
+ 1AcfYVnYePQGnuSKNN+T0duiOMBszA0kGLFfXgAY7qeRZtAc4RScUb4J0Ml9DE0s/W9I
+ ErCCsghjz920o+vf88GWZl7QhIXPFTLkOEr+gm4bOef7Xn6k0QS8BNUV0PhbWFnRztkT
+ fe1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704449955; x=1705054755;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JrpZJsC+JCf4DKhNEEKL+YgSEbHMOxskxIftU0vEodU=;
- b=VS0e9Ixh4NbmHtn24Bv9wykS63YnnkS/oERtyv43IEZ5XaBWxpPez4k7KzIeoZXlbg
- 2kFMQxseR0AGG+oO/1j/JUGJMyGrlvLVpWoERyfMDk3oUL2bailgs00srjlarER3RC6K
- Eoh2jIrDQFCjcEZNB2K8qTAVKLZzuU28o5DL86sr8jRPI0L8WjgT7HPQxxgz16m+dd2Z
- JNI7lPmOQyQgqOGT3i7DNJbJsqGIk0RjjjrNIQq6lD+Iv1xYTwU7qcQY5uiFKS9iMdGd
- QwWa44kLxkpP/Irqc6Yw5Dyj1NO5leC/fc99tVfTJHOqtUZb4dzCDRi6yd3NepviDFKj
- uLPQ==
-X-Gm-Message-State: AOJu0YwQ4TwQ91ICn6Ye/c9v1gr3T1/XiUjHGDZThbFqSkutxB5VyELy
- 0Cc5qLp7RdgFGE+0i6PQigZQqwzqEO+Qgw==
-X-Google-Smtp-Source: AGHT+IHVkagXCx3fkpSIjgLt9WHN15EDl/XDVnrpgRaotm6vc3qL2n1cXtP+BBxz4rpWyMt8rbVuIQ==
-X-Received: by 2002:a05:6512:3e05:b0:50e:7bbb:55c with SMTP id
- i5-20020a0565123e0500b0050e7bbb055cmr1140634lfv.139.1704449955448; 
- Fri, 05 Jan 2024 02:19:15 -0800 (PST)
-Received: from [192.168.69.100] (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
- [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- p4-20020a170906604400b00a298ade2e72sm83965ejj.195.2024.01.05.02.19.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 05 Jan 2024 02:19:14 -0800 (PST)
-Message-ID: <805ca196-5464-4023-a1c1-97d5a6699c1b@linaro.org>
-Date: Fri, 5 Jan 2024 11:19:12 +0100
+ d=1e100.net; s=20230601; t=1704450269; x=1705055069;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oH069RZTJa1YClK7MWQRB9iAj8pdAu6oir5e+vwxYJE=;
+ b=aMgYZsIqTikIdzNSp+lm7n3uqa2XiCNUdqkgQzo3V5/Y1xv+m70wJQazPCFieTumiL
+ 2juCQS67UN1KoqNbmgm/eB66/GpJxLLinCDsf5pU4nKdp+5eGp8U+0aJKIi/G0uCA+y+
+ E4Fu10cGxkADYFC3040u6VQ09/QEKrLLnfbWHT8UyPuk7rWxbgTB4ekKJa/Y+tQeaa+S
+ MuEazCbHOftMJLm89BNzbtSknRF4uBP62/l1XFfVlPzn0/zJvOK/vefGwN9CvCDQ8czR
+ UPFHKRCSCTrfMNzo1zRz6Hyy8fgd2W2Jzgcy7Syt3tSuH+FXzmCyHa8CnEMwj8VGYzMr
+ 7zfg==
+X-Gm-Message-State: AOJu0YwDPlUmmtPxB+BvIo2EJV9Cp1QIu7dsvukc+DAZBCiXk2Xa5/K1
+ 7L0bzuTfniU18cQUMsrtsxpdRvjJmITdY0g0ifTIlDPOJQ==
+X-Google-Smtp-Source: AGHT+IHdMugwJFZCg9uUW0Hdj4n6Rlxm+wCFfosLnxXxrxj3plHuMddCKKJ9Ox0/PntDeLvfY4Kbpw==
+X-Received: by 2002:a05:600c:4451:b0:40d:ecd9:bde6 with SMTP id
+ v17-20020a05600c445100b0040decd9bde6mr1101144wmn.34.1704450269325; 
+ Fri, 05 Jan 2024 02:24:29 -0800 (PST)
+Received: from chigot-Dell.home ([2a01:cb15:8123:8100:323e:281a:689:2b09])
+ by smtp.gmail.com with ESMTPSA id
+ v8-20020a05600c444800b0040d934f48d3sm1117548wmn.32.2024.01.05.02.24.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 05 Jan 2024 02:24:28 -0800 (PST)
+From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+Subject: [PATCH 0/9] sparc/leon3: Add support for -smp
+Date: Fri,  5 Jan 2024 11:24:12 +0100
+Message-Id: <20240105102421.163554-1-chigot@adacore.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] tests/qtest: Add STM32L4x5 EXTI QTest testcase
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: inesvarhol <inesvarhol@proton.me>,
- =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Alistair Francis <alistair@alistair23.me>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
-References: <20231228161944.303768-1-ines.varhol@telecom-paris.fr>
- <20231228161944.303768-3-ines.varhol@telecom-paris.fr>
- <61fd13b3-7cc9-4e27-bf91-bd2b4aedf97b@linaro.org>
- <ZjC6phtwjcDoQP-NDP6GF-dvCVK8Ctk9EeW_JezuNBqnQq4-V6NU6eAhECMqxJzMDRxwjbb-LPcHTvysc6YGuLD7ckWhbtpqD1g9lnklofI=@proton.me>
- <5f624a13-0ba0-4d9a-8910-2ef1c784a295@linaro.org>
-In-Reply-To: <5f624a13-0ba0-4d9a-8910-2ef1c784a295@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=chigot@adacore.com; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,50 +89,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/1/24 11:13, Philippe Mathieu-Daudé wrote:
-> (+Mark & Eduardo)
-> 
-> On 4/1/24 14:37, inesvarhol wrote:
->>
->> Le jeudi 4 janvier 2024 à 14:05, Philippe Mathieu-Daudé 
->> <philmd@linaro.org> a écrit :
->>
->> Hello,
->>
->>>> +static void test_edge_selector(void)
->>>> +{
->>>> + enable_nvic_irq(EXTI0_IRQ);
->>>> +
->>>> + / Configure EXTI line 0 irq on rising edge */
->>>> + qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
->>>
->>>
->>> Markus, this qtest use seems to expect some stability in QOM path...
->>>
->>> Inès, Arnaud, having the SoC unattached is dubious, it belongs to
->>> the machine.
->>
->> Noted, we will fix that.
->> Should we be concerned about the "stability in QOM path" ?
-> 
-> Don't worry about this Inès, I wanted to raise Markus attention on this.
-> 
-> You showed a legit use of stable QOM path, and Markus told me recently
-> there is no contract for QOM paths (it shouldn't be considered as a
-> stable API). IIRC Markus explanation, "/unattached" container was
-> added as a temporary hack to allow migrating QDev objects to QOM (see
-> around commit da57febfed "qdev: give all devices a canonical path",
-> 11 years ago).
+This series allows leon3 emulations to record up 4 CPUs.
 
-Hmm am I getting confused with "/peripheral-anon" (commit 8eb02831af
-"dev: add an anonymous peripheral container")?
+It requires some enhancements in the grlib_irqmp device and adding the
+cpu_index field in the asr17 instruction.
 
-> I agree anything under "/unattached" can be expected to be stable
-> (but we need a community consensus). Then the big question remaining
-> is "can any qom-path out of /unattached be considered stable?"
-> 
-> Regards,
-> 
-> Phil.
+It has been tested locally with various bareboard runtimes and through
+the Gitlab CI: https://gitlab.com/Helflym/qemu/-/pipelines/1127834623.
+
+Clément Chigot (9):
+  sparc/grlib: split out the headers for each peripherals
+  intc/grlib_irqmp: add ncpus property
+  intc/grlib_irqmp: implements the multiprocessor status register
+  intc/grlib_irqmp: implements multicore irq
+  target/sparc: implement asr17 feature for smp
+  target/sparc: simplify qemu_irq_ack
+  leon3: implement multiprocessor
+  leon3: check cpu_id in the tiny bootloader
+  MAINTAINERS: replace Fabien by myself as Leon3 maintainer
+
+ MAINTAINERS                                   |   2 +-
+ hw/char/grlib_apbuart.c                       |   4 +-
+ hw/intc/grlib_irqmp.c                         |  97 ++++++++----
+ hw/sparc/leon3.c                              | 145 +++++++++++++-----
+ hw/timer/grlib_gptimer.c                      |   4 +-
+ include/hw/char/grlib_uart.h                  |  30 ++++
+ .../hw/{sparc/grlib.h => intc/grlib_irqmp.h}  |  16 +-
+ include/hw/timer/grlib_gptimer.h              |  30 ++++
+ target/sparc/cpu.h                            |   2 +-
+ target/sparc/helper.c                         |  16 ++
+ target/sparc/helper.h                         |   1 +
+ target/sparc/int32_helper.c                   |   2 +-
+ target/sparc/translate.c                      |  13 +-
+ 13 files changed, 258 insertions(+), 104 deletions(-)
+ create mode 100644 include/hw/char/grlib_uart.h
+ rename include/hw/{sparc/grlib.h => intc/grlib_irqmp.h} (83%)
+ create mode 100644 include/hw/timer/grlib_gptimer.h
+
+-- 
+2.25.1
 
 
