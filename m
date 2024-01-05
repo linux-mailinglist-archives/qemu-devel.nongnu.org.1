@@ -2,49 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15300825557
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:32:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF33B8255B1
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:41:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLlDw-00029N-Ci; Fri, 05 Jan 2024 09:31:00 -0500
+	id 1rLlMm-000659-Il; Fri, 05 Jan 2024 09:40:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1rLlDr-00028i-Sk; Fri, 05 Jan 2024 09:30:55 -0500
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1rLlDp-0001gP-Lr; Fri, 05 Jan 2024 09:30:55 -0500
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id E66AE48FDD;
- Fri,  5 Jan 2024 15:30:49 +0100 (CET)
-Message-ID: <67a36617-9e61-4778-aebf-1e667cb51120@proxmox.com>
-Date: Fri, 5 Jan 2024 15:30:48 +0100
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1rLlMk-00064z-Di
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:40:06 -0500
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1rLlMi-0007yg-Jt
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:40:06 -0500
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-5ced19f15c3so824228a12.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 06:40:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=adacore.com; s=google; t=1704465602; x=1705070402; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=klNYkt3KRaSo8ShKxrTNAFGyD4ke/A+cj/8a/FPAh1w=;
+ b=GCCpvFQ51SzTCF+ek3s0djenrkLyAFC7WKYE3BnAPXdVcprsqp/Ei8dFJXUU3qptAd
+ Ef/uh7OsE9KU1jyW18/PP6cNr4rBi9GFtalXYG6LyKjEdsHXuFvVN1FXzNbZQTr2MuES
+ pCFZlA9c09Ti4Hkao5fuBJNU/jx2xB4qy4Rtz05wn9vfKGGz4U/6n1UJZKBn5O7z4C9p
+ hv2A2IfF6DSwU6mXv6w1jvWTWiIZ8gdS+1jaOJQNGALR8Rk2zfkxgkCns/p14SF7TMBE
+ jszD7jMYR0dlNMwk4JZdZtpizyb7e0IuCrFGdXVKKhZpgU/ZzkWVFmD1uUQCW6hL/cDR
+ bxgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704465602; x=1705070402;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=klNYkt3KRaSo8ShKxrTNAFGyD4ke/A+cj/8a/FPAh1w=;
+ b=CkOUyULmTfdeIXtOc5H9vqoHWbz2LMdtjo4nv1V0WgNKbu7awhVgQkccAnvYrxnQLA
+ vrmBJXyl4qB6/3PAh2Va/av0YmNOYHbh1w/TUvd1mHI6fVaXU3x2xPe3ZkKfbg1X85Fc
+ UcXEsbbgU/ZKKr+J8pxnUN5f3igiYFZ1fQHAEXVRfMll9LV2vNIVgWfPb3J8r+G7VyG8
+ RKjFDU4vCFwWcU1m1BztiEUuYfuSoEeW8xjU/FIPc0J0BPN6Eky70mR6bH6ENN+3+I6M
+ bKNY/nRi2N6bWfQvIAm3ZAG2sCJSBs4UC0ChnjWnV5FqOYXDELP9dru9tHGXBmLDGpua
+ QxWw==
+X-Gm-Message-State: AOJu0Yx/AokCc5DiJvyhAyY+9Ry9sDs7VhGIt7VEkudNd+OvOfrUSilr
+ RsayMNclpuFmErL6vqUKNEWMuBb7hff2jXWDbyQGwsmyQrmS
+X-Google-Smtp-Source: AGHT+IGUa5RveMfl3Kd5SFsLiLsi1Ulv+LrpSzvdZj7p+isUNZKWVqHYqQMC+bL7cerbpygCaeJ20yKc/yOlITs9PqE=
+X-Received: by 2002:a17:90a:1c82:b0:282:d080:feed with SMTP id
+ t2-20020a17090a1c8200b00282d080feedmr1947853pjt.40.1704465601959; Fri, 05 Jan
+ 2024 06:40:01 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/3] aio-posix: call ->poll_end() when removing AioHandler
-Content-Language: en-US
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Hanna Czenczek <hreitz@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>
-References: <20231213211544.1601971-1-stefanha@redhat.com>
- <142d6078-1bb9-4116-ac87-7daac16f12d8@redhat.com>
- <016ac3d1-f6c1-48eb-a714-fb777dff7012@proxmox.com>
- <94db88e7-1f02-44dd-bc2c-3d9ccf1cce72@redhat.com>
- <bfc7b20c-2144-46e9-acbc-e726276c5a31@proxmox.com>
-In-Reply-To: <bfc7b20c-2144-46e9-acbc-e726276c5a31@proxmox.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240105102421.163554-1-chigot@adacore.com>
+ <20240105102421.163554-2-chigot@adacore.com>
+ <104080fa-71d2-41a8-b273-171173d6cb44@linaro.org>
+In-Reply-To: <104080fa-71d2-41a8-b273-171173d6cb44@linaro.org>
+From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
+Date: Fri, 5 Jan 2024 15:39:50 +0100
+Message-ID: <CAJ307Ei8E8x8Jncy-5+-2KoSwCE12QggKM_ynnAJ_Tg5qgG_nw@mail.gmail.com>
+Subject: Re: [PATCH 1/9] sparc/grlib: split out the headers for each
+ peripherals
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Frederic Konrad <konrad.frederic@yahoo.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=chigot@adacore.com; helo=mail-pg1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,86 +89,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 05.01.24 um 14:43 schrieb Fiona Ebner:
-> Am 03.01.24 um 14:35 schrieb Paolo Bonzini:
->> On 1/3/24 12:40, Fiona Ebner wrote:
->>> I'm happy to report that I cannot reproduce the CPU-usage-spike issue
->>> with the patch, but I did run into an assertion failure when trying to
->>> verify that it fixes my original stuck-guest-IO issue. See below for the
->>> backtrace [0]. Hanna wrote in https://issues.redhat.com/browse/RHEL-3934
->>>
->>>> I think it’s sufficient to simply call virtio_queue_notify_vq(vq)
->>>> after the virtio_queue_aio_attach_host_notifier(vq, ctx) call, because
->>>> both virtio-scsi’s and virtio-blk’s .handle_output() implementations
->>>> acquire the device’s context, so this should be directly callable from
->>>> any context.
->>>
->>> I guess this is not true anymore now that the AioContext locking was
->>> removed?
->>
->> Good point and, in fact, even before it was much safer to use
->> virtio_queue_notify() instead.  Not only does it use the event notifier
->> handler, but it also calls it in the right thread/AioContext just by
->> doing event_notifier_set().
->>
-> 
-> But with virtio_queue_notify() using the event notifier, the
-> CPU-usage-spike issue is present:
-> 
->>> Back to the CPU-usage-spike issue: I experimented around and it doesn't
->>> seem to matter whether I notify the virt queue before or after attaching
->>> the notifiers. But there's another functional difference. My patch
->>> called virtio_queue_notify() which contains this block:
->>>
->>>>     if (vq->host_notifier_enabled) {
->>>>         event_notifier_set(&vq->host_notifier);
->>>>     } else if (vq->handle_output) {
->>>>         vq->handle_output(vdev, vq);
->>>
->>> In my testing, the first branch was taken, calling event_notifier_set().
->>> Hanna's patch uses virtio_queue_notify_vq() and there,
->>> vq->handle_output() will be called. That seems to be the relevant
->>> difference regarding the CPU-usage-spike issue.
-> 
-> I should mention that this is with a VirtIO SCSI disk. I also attempted
-> to reproduce the CPU-usage-spike issue with a VirtIO block disk, but
-> didn't manage yet.
-> 
-> What I noticed is that in virtio_queue_host_notifier_aio_poll(), one of
-> the queues (but only one) will always show as nonempty. And then,
-> run_poll_handlers_once() will always detect progress which explains the
-> CPU usage.
-> 
-> The following shows
-> 1. vq address
-> 2. number of times vq was passed to virtio_queue_host_notifier_aio_poll()
-> 3. number of times the result of virtio_queue_host_notifier_aio_poll()
-> was true for the vq
-> 
->> 0x555fd93f9c80 17162000 0
->> 0x555fd93f9e48 17162000 6
->> 0x555fd93f9ee0 17162000 0
->> 0x555fd93f9d18 17162000 17162000
->> 0x555fd93f9db0 17162000 0
->> 0x555fd93f9f78 17162000 0
-> 
-> And for the problematic one, the reason it is seen as nonempty is:
-> 
->> 0x555fd93f9d18 shadow_avail_idx 8 last_avail_idx 0
-> 
+On Fri, Jan 5, 2024 at 3:00=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd@=
+linaro.org> wrote:
+>
+> On 5/1/24 11:24, Cl=C3=A9ment Chigot wrote:
+> > ... and move them in their right hardware directory.
+> >
+> > Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
+> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
+> > ---
+> >   hw/char/grlib_apbuart.c                       |  4 +--
+> >   hw/intc/grlib_irqmp.c                         |  4 +--
+> >   hw/sparc/leon3.c                              |  6 ++--
+> >   hw/timer/grlib_gptimer.c                      |  4 +--
+> >   include/hw/char/grlib_uart.h                  | 30 ++++++++++++++++++=
++
+> >   .../hw/{sparc/grlib.h =3D> intc/grlib_irqmp.h}  | 14 +++------
+> >   include/hw/timer/grlib_gptimer.h              | 30 ++++++++++++++++++=
++
+> >   7 files changed, 74 insertions(+), 18 deletions(-)
+> >   create mode 100644 include/hw/char/grlib_uart.h
+> >   rename include/hw/{sparc/grlib.h =3D> intc/grlib_irqmp.h} (86%)
+> >   create mode 100644 include/hw/timer/grlib_gptimer.h
+>
+> This still matches the MAINTAINERS patterns, good.
+>
+> > diff --git a/include/hw/char/grlib_uart.h b/include/hw/char/grlib_uart.=
+h
+> > new file mode 100644
+> > index 0000000000..b67da6c62a
+> > --- /dev/null
+> > +++ b/include/hw/char/grlib_uart.h
+> > @@ -0,0 +1,30 @@
+> > +/*
+> > + * QEMU GRLIB UART
+> > + *
+> > + * Copyright (c) 2024 AdaCore
+> > + *
+> > + * Permission is hereby granted, free of charge, to any person obtaini=
+ng a copy
+> > + * of this software and associated documentation files (the "Software"=
+), to deal
+> > + * in the Software without restriction, including without limitation t=
+he rights
+> > + * to use, copy, modify, merge, publish, distribute, sublicense, and/o=
+r sell
+> > + * copies of the Software, and to permit persons to whom the Software =
+is
+> > + * furnished to do so, subject to the following conditions:
+> > + *
+> > + * The above copyright notice and this permission notice shall be incl=
+uded in
+> > + * all copies or substantial portions of the Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXP=
+RESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABI=
+LITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT S=
+HALL
+> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES O=
+R OTHER
+> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARI=
+SING FROM,
+> > + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALI=
+NGS IN
+> > + * THE SOFTWARE.
+>
+> When adding license, SPDX tag is prefered (although not enforced)
+> because it eases tools parsing.
 
-vring_avail_idx(vq) also gives 8 here. This is the vs->event_vq and
-s->events_dropped is false in my testing, so
-virtio_scsi_handle_event_vq() doesn't do anything.
+Should it be something like this ?
+ * SPDX-FileCopyrightText: 20xx-2024 Adacore
+ * SPDX-License-Identifier: MIT
 
-> Those values stay like this while the call counts above increase.
-> 
-> So something going wrong with the indices when the event notifier is set
-> from QEMU side (in the main thread)?
-> 
-> The guest is Debian 12 with a 6.1 kernel.
+Would updating, now, all those files make it better ?
 
-Best Regards,
-Fiona
-
+> > + */
+> > +
+> > +#ifndef GRLIB_UART_H
+> > +#define GRLIB_UART_H
+> > +
+> > +#define TYPE_GRLIB_APB_UART "grlib-apbuart"
+> > +
+> > +#endif
+>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>
 
