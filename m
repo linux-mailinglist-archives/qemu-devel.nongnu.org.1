@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF44825774
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 17:01:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F311825756
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:59:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLmTS-00036j-Th; Fri, 05 Jan 2024 10:51:06 -0500
+	id 1rLmTQ-0002oc-L8; Fri, 05 Jan 2024 10:51:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmRo-0007aX-48
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:27 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmRt-0007kW-3w
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:30 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmRl-00089l-If
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:23 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-336990fb8fbso1225269f8f.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:49:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmRq-0008ME-2U
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:28 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40d2376db79so13010785e9.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:49:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704469759; x=1705074559; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704469764; x=1705074564; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3HnuyTIxGYsWykQsG+bF/A0ZdepEt+u1/qeWfQkxoXY=;
- b=W5IRGN+q6DxEAK7IZ142Yb6IQ7SyaNnnL42Zi3OjH8BHb3APSAzo3/QcBLKwzXUKdk
- e6Mkz9HGBxDx8rVeGuNK2jOtNrjL0jAVeMGBY7b2XLo4Tayr6136TGASp/O5c0jggpU4
- gZaycS75NjgbR9dsRwT2ir3octbXCuBd6/nG9ecY2wsaqg7GDDwoLKApGOfJpkBNCV6x
- A5cGl5zFNSDisVBRiwrszNVn2k9W4dhBq4kh1W+odEl5du13AmPIQ/NQPdH31CABblza
- SeIxHR2/ZEjEu18tLg62ds9RFn9qD3EXRiZvHn6uNqoXJJiYpqdBUWfmT7aBx2ZiZKg2
- EBUQ==
+ bh=X1UceGM9JMyf+mvn5Vqfm2bFDJfnlw6Hthf90m+0+RM=;
+ b=uz3+Keveir5GfCNNPI4bKaz/IJviY0QjaiHfbycrEa3nNitGKCHtXLcEG7wGWqhwWN
+ jWYM/6Ziz+NElFCvid4OHeIU70L0VL9A3JHaSiCBE7DXXVC3DmWwJhWf5GCpnj9D3dwO
+ BBL/L1aRVNdR6wvDbbHxpFg42BY4BbiUFdQWg+irIS9J/fuMW3kv5DxSxkTegPANxkq9
+ +9ofRqjBB4gwTuMFk20jSoXKMZT1dJ28zm0WtVsW8Ku8oaDcNnEGz69xmjn2DJrNXnaG
+ /8SsBr2w/p8mxe+lqUP5t3oMs4nEOhUD9DHpNyADmyEybbRJWkThlqOvgDFFYtO98Zu2
+ 2thA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704469759; x=1705074559;
+ d=1e100.net; s=20230601; t=1704469764; x=1705074564;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3HnuyTIxGYsWykQsG+bF/A0ZdepEt+u1/qeWfQkxoXY=;
- b=N8iBysN30TQDDqWQAItx/QTNI2zbR0RFGZKCI7vn/adUuHaLoSLIQOQOBsYDy7fRZW
- Flb1FINRwJkd1RFqQlJ2Z1hyFF0pnxE64skORu4l+ZJmr858j/p0sCTquHtnZLk48K3i
- +AhernaE8pCoOVGgf8Mrx/rINjGJiX6KzDAt/K5mv5U1nSC7k28m2h5Jlq+E344bisft
- Hh7BisJOWL+lgdARr3Yz7QwYnaThX0MB3/MRKPOS5vArO9WD4QXaw3XfGfAsxLYrI9/o
- lz2ZH1r3XMCQgv44hoIKYqbhkULF9kM8+FXRnbOTMLGtTbBxGW7SkQMlSu9yRKiwzb5A
- O16Q==
-X-Gm-Message-State: AOJu0Yz7hufI6i0Wpe00aRRrRDtpYcNt2LzCx5GKJzY48rarW/hnwb9L
- sk04k6P7TB/CONUtVPSJkThFIOvp8CEIx7maku576/P/XYk=
-X-Google-Smtp-Source: AGHT+IF0Pyylu6bX+CfbQ1+REdITz6wqERsRZV89jAdI+Yqci0wvAbIS9//YMrS8A8aLBTnEpv3jBA==
-X-Received: by 2002:a5d:5cc3:0:b0:336:e399:6fc7 with SMTP id
- cg3-20020a5d5cc3000000b00336e3996fc7mr1040828wrb.59.1704469758884; 
- Fri, 05 Jan 2024 07:49:18 -0800 (PST)
+ bh=X1UceGM9JMyf+mvn5Vqfm2bFDJfnlw6Hthf90m+0+RM=;
+ b=G3g+9malKF6cKP179piJxGw6ZxtYREoYtkxnCM5BmV+FWgmc7xFXnKYe+Bv4W4beTQ
+ SfFus5Q7yj8CnZeyIQsxW35aKUoAueHlerDyUBilnL5bZ0sE4x9BZCq/QRVIUKHp9x7R
+ S2tRvGL6v+yJk7ZS70qQLwp5+A4+9YgS0n+ouneRWA8ZfK09zw2ecim+FGCNOmE0Mntd
+ Ca8GkDkD3+0DsU8Cq3swuCF/hpG3jzSXNHXEDGVGezwFkYhP8D1AhAqBeOpvAOHCF440
+ 9CLywyx8Sih9wLh7fmdoJ+NAwjoxMMWdUJia0C9tQc18+CDFZ85CEPJGHal7ddEUaBfC
+ iCvg==
+X-Gm-Message-State: AOJu0YygvahTLq+2UpKmA4U1s8JuOBenp+hyUmemz+Va0lqtzeBGM5nl
+ nLt67cB/CK4ZZ8elSi9TvMbt4JB5IKAYSEM8AQQyuqIGsRQ=
+X-Google-Smtp-Source: AGHT+IHccUNpKVVjTXlW0mJxNGaQ6Af5HH0OlIBwUtFVNZbg5nXxb16dddyAiKNMmNcnjXOoYKYcLQ==
+X-Received: by 2002:adf:e9d2:0:b0:337:39c7:48 with SMTP id
+ l18-20020adfe9d2000000b0033739c70048mr1522360wrn.1.1704469764364; 
+ Fri, 05 Jan 2024 07:49:24 -0800 (PST)
 Received: from m1x-phil.lan (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- k4-20020a5d6284000000b00336c43b366fsm1618203wru.12.2024.01.05.07.49.17
+ d10-20020a056000114a00b00336710ddea0sm1618390wrx.59.2024.01.05.07.49.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jan 2024 07:49:18 -0800 (PST)
+ Fri, 05 Jan 2024 07:49:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Gavin Shan <gshan@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>
-Subject: [PULL 60/71] backends: Reduce variable scope in
- host_memory_backend_memory_complete
-Date: Fri,  5 Jan 2024 16:42:53 +0100
-Message-ID: <20240105154307.21385-61-philmd@linaro.org>
+ Peter Xu <peterx@redhat.com>, Gavin Shan <gshan@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>
+Subject: [PULL 61/71] util/oslib: Have qemu_prealloc_mem() handler return a
+ boolean
+Date: Fri,  5 Jan 2024 16:42:54 +0100
+Message-ID: <20240105154307.21385-62-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240105154307.21385-1-philmd@linaro.org>
 References: <20240105154307.21385-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,48 +94,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reduce the &local_err variable use and remove the 'out:' label.
+Following the example documented since commit e3fe3988d7 ("error:
+Document Error API usage rules"), have qemu_prealloc_mem()
+return a boolean indicating whether an error is set or not.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
-Message-Id: <20231120213301.24349-18-philmd@linaro.org>
+Message-Id: <20231120213301.24349-19-philmd@linaro.org>
 ---
- backends/hostmem.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/qemu/osdep.h | 4 +++-
+ util/oslib-posix.c   | 7 +++++--
+ util/oslib-win32.c   | 4 +++-
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/backends/hostmem.c b/backends/hostmem.c
-index 3f8eb936d7..1b0043a0d9 100644
---- a/backends/hostmem.c
-+++ b/backends/hostmem.c
-@@ -324,7 +324,6 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
- {
-     HostMemoryBackend *backend = MEMORY_BACKEND(uc);
-     HostMemoryBackendClass *bc = MEMORY_BACKEND_GET_CLASS(uc);
--    Error *local_err = NULL;
-     void *ptr;
-     uint64_t sz;
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index d30ba73eda..db366d6796 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -678,8 +678,10 @@ typedef struct ThreadContext ThreadContext;
+  * memory area starting at @area with the size of @sz. After a successful call,
+  * each page in the area was faulted in writable at least once, for example,
+  * after allocating file blocks for mapped files.
++ *
++ * Return: true on success, else false setting @errp with error.
+  */
+-void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
++bool qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
+                        ThreadContext *tc, Error **errp);
  
-@@ -400,15 +399,16 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
-      * specified NUMA policy in place.
-      */
-     if (backend->prealloc) {
-+        Error *local_err = NULL;
-+
-         qemu_prealloc_mem(memory_region_get_fd(&backend->mr), ptr, sz,
-                           backend->prealloc_threads,
-                           backend->prealloc_context, &local_err);
-         if (local_err) {
--            goto out;
-+            error_propagate(errp, local_err);
-+            return;
-         }
-     }
--out:
--    error_propagate(errp, local_err);
+ /**
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index e86fd64e09..7c297003b9 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -497,7 +497,7 @@ static bool madv_populate_write_possible(char *area, size_t pagesize)
+            errno != EINVAL;
  }
  
- static bool
+-void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
++bool qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
+                        ThreadContext *tc, Error **errp)
+ {
+     static gsize initialized;
+@@ -506,6 +506,7 @@ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
+     size_t numpages = DIV_ROUND_UP(sz, hpagesize);
+     bool use_madv_populate_write;
+     struct sigaction act;
++    bool rv = true;
+ 
+     /*
+      * Sense on every invocation, as MADV_POPULATE_WRITE cannot be used for
+@@ -534,7 +535,7 @@ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
+             qemu_mutex_unlock(&sigbus_mutex);
+             error_setg_errno(errp, errno,
+                 "qemu_prealloc_mem: failed to install signal handler");
+-            return;
++            return false;
+         }
+     }
+ 
+@@ -544,6 +545,7 @@ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
+     if (ret) {
+         error_setg_errno(errp, -ret,
+                          "qemu_prealloc_mem: preallocating memory failed");
++        rv = false;
+     }
+ 
+     if (!use_madv_populate_write) {
+@@ -555,6 +557,7 @@ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
+         }
+         qemu_mutex_unlock(&sigbus_mutex);
+     }
++    return rv;
+ }
+ 
+ char *qemu_get_pid_name(pid_t pid)
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+index 55b0189dc3..c4a5f05a49 100644
+--- a/util/oslib-win32.c
++++ b/util/oslib-win32.c
+@@ -264,7 +264,7 @@ int getpagesize(void)
+     return system_info.dwPageSize;
+ }
+ 
+-void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
++bool qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
+                        ThreadContext *tc, Error **errp)
+ {
+     int i;
+@@ -274,6 +274,8 @@ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
+     for (i = 0; i < sz / pagesize; i++) {
+         memset(area + pagesize * i, 0, 1);
+     }
++
++    return true;
+ }
+ 
+ char *qemu_get_pid_name(pid_t pid)
 -- 
 2.41.0
 
