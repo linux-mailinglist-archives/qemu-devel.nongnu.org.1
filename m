@@ -2,121 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0068259AA
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 19:05:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34CFA8259B3
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 19:08:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLoZD-0006qF-AD; Fri, 05 Jan 2024 13:05:11 -0500
+	id 1rLobc-0001oZ-S3; Fri, 05 Jan 2024 13:07:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rLoZB-0006d9-2Z
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 13:05:09 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
+ id 1rLobZ-0001ne-D2
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 13:07:37 -0500
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rLoZ8-0001oT-7m
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 13:05:08 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id D61321FB4D;
- Fri,  5 Jan 2024 18:05:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704477904; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jGc2/noWrnS62qR5PLvKgmjVykv0VVX8pPelHLO1R1Y=;
- b=ExAL0OSxWXf+MJWr2TUFENaPWy34WxAuz0vKJy3CAe6gbZ6xGjVTH1PdzA04uC3TkvoRwm
- 5DExG3OJDAW7oGuYptD4RQJCbMObO0Yj3WvrF0VY9rKfPBO4blFUA+aI9hHqnHrTvtESRR
- 4Gc7X+1/Uc8tiJc7jTh4s9HPu7BhZBE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704477904;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jGc2/noWrnS62qR5PLvKgmjVykv0VVX8pPelHLO1R1Y=;
- b=dEdF9wVqrj5nPnZ8gJYG5lUj7OwNEe24yIS2JIVQjUJSgdKyKPMkBlvDGdjSREjiDkc1ay
- I8w9Y3EhfXoAnPCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704477904; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jGc2/noWrnS62qR5PLvKgmjVykv0VVX8pPelHLO1R1Y=;
- b=ExAL0OSxWXf+MJWr2TUFENaPWy34WxAuz0vKJy3CAe6gbZ6xGjVTH1PdzA04uC3TkvoRwm
- 5DExG3OJDAW7oGuYptD4RQJCbMObO0Yj3WvrF0VY9rKfPBO4blFUA+aI9hHqnHrTvtESRR
- 4Gc7X+1/Uc8tiJc7jTh4s9HPu7BhZBE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704477904;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jGc2/noWrnS62qR5PLvKgmjVykv0VVX8pPelHLO1R1Y=;
- b=dEdF9wVqrj5nPnZ8gJYG5lUj7OwNEe24yIS2JIVQjUJSgdKyKPMkBlvDGdjSREjiDkc1ay
- I8w9Y3EhfXoAnPCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C5877137E8;
- Fri,  5 Jan 2024 18:05:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id qAG7Is5EmGXFWAAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 05 Jan 2024 18:05:02 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 4/4] [NOT FOR MERGE] tests/qtest/migration: Adapt tests to
- use older QEMUs
-Date: Fri,  5 Jan 2024 15:04:49 -0300
-Message-Id: <20240105180449.11562-5-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240105180449.11562-1-farosas@suse.de>
-References: <20240105180449.11562-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
+ id 1rLobX-0004S1-HE
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 13:07:37 -0500
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-28b6218d102so1440547a91.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 10:07:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1704478054; x=1705082854;
+ darn=nongnu.org; 
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=bHsHpKSLxo23gNzK+/R47h+VsUNDD5UAjZsR9YYsCiA=;
+ b=BXbLHYVaPjnMIf5nGCNo3l1i/QEDOJZPLdd2bmiP4iYHaC1FzNe0QHz4LgMLjS+PXC
+ KPCQynwdzvku7JcPtKoxf6xwomQlyTJ7XD1LLJQhN3WLebz4Tl0w1VZGQCdf+qa3TI2N
+ VzxNd3Ps8T0zkYs/hKolP8DNZy/XUHlA+RdWYb1TYbs9el9jgmhNqtwhVn1a9iVSsAjZ
+ dPB5umfYqo1traiQzrsYlZx+Kr9qkcQuEiNd6tshdXtSsA2syHlHwrvE0bCfH29GPTDR
+ 7ZaWIHsRCnHBTrxmHIhJSQPwkNLYE0ymPxWXpP3LUfFXZ0wY33E8JWPlgidmQlMA9e/H
+ 812Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704478054; x=1705082854;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bHsHpKSLxo23gNzK+/R47h+VsUNDD5UAjZsR9YYsCiA=;
+ b=ix4TwqULZJTdmU/6jUcRN4n/+ryVLv+BB9yjJn7i1BGEuYzzWsLXkLa4X6X+N1QwQa
+ /gb11u5DjkNFe/b5WE7rYDI932poKqLZ5apniVzCyX8CYgrk5EenOPSfXxkcMCN7Y6zy
+ gj6Pp/WxBABm/j509BqMZ/B/DkOrCyYikXWif/DOiFNkJ6k7ke/feB4Sewn7geCD98WT
+ LTPWD5KnQbxlY8bcNdJgiHjDtR2Bk3Jb962mHt0ZJ0R96eigJ+KkFW/MZHheuil5p8HI
+ d/xIHT8CWGaGfxaSlBCSm35oBvCVuY5xo5tRQjP5HA9cdwTJ9fHMWY3JP7/w9ZIuZD5y
+ 3ybQ==
+X-Gm-Message-State: AOJu0Ywaww4BAjANr/I7AUoTaZpSi+hCsvt6rSoH0TsLT8Kl2Do/jjz7
+ v9st70k4FaLJQ8jnjVsU+QTqXa4Ia9zFL+4Uk+DaKsvU7do=
+X-Google-Smtp-Source: AGHT+IHB5+gHzlK/cEboxvuzNU4lb6gZ89r1I1YTI4BPHCim+HQdiFgvSLABzWLzcHuADwhUMYME0Q==
+X-Received: by 2002:a17:90a:4f05:b0:28b:ecdf:326f with SMTP id
+ p5-20020a17090a4f0500b0028becdf326fmr2192448pjh.87.1704478053983; 
+ Fri, 05 Jan 2024 10:07:33 -0800 (PST)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+ by smtp.gmail.com with ESMTPSA id
+ sb6-20020a17090b50c600b0028d2500e82esm23775pjb.50.2024.01.05.10.07.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 05 Jan 2024 10:07:33 -0800 (PST)
+Date: Fri, 5 Jan 2024 10:07:32 -0800
+From: Deepak Gupta <debug@rivosinc.com>
+To: Alexey Baturo <baturo.alexey@gmail.com>
+Cc: richard.henderson@linaro.org, zhiwei_liu@linux.alibaba.com,
+ palmer@dabbelt.com, Alistair.Francis@wdc.com,
+ sagark@eecs.berkeley.edu, kbastian@mail.uni-paderborn.de,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Subject: Re: [PATCH v3 5/6] target/riscv: Update address modify functions to
+ take into account pointer masking
+Message-ID: <ZZhFZB8kpOd48mba@debug.ba.rivosinc.com>
+References: <20240103185716.1790546-1-me@deliversmonkey.space>
+ <20240103185716.1790546-6-me@deliversmonkey.space>
+ <CAKC1njSMAWV_tPru_E04GfhstfPK3gjeF1PuBtx+VaQqws6uVA@mail.gmail.com>
+ <CAFukJ-B-TorkC4q-a1gVvyJD4w4vUF26Ph+VhPNjQJCDTuOZTw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: 1.44
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: D61321FB4D
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ExAL0OSx;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dEdF9wVq
-X-Spamd-Bar: +
-X-Spamd-Result: default: False [1.44 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[]; R_MISSING_CHARSET(2.50)[];
- BROKEN_CONTENT_TYPE(1.50)[]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[7]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- BAYES_HAM(-2.05)[95.35%]; ARC_NA(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- URIBL_BLOCKED(0.00)[suse.de:email,suse.de:dkim];
- FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MID_CONTAINS_FROM(1.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <CAFukJ-B-TorkC4q-a1gVvyJD4w4vUF26Ph+VhPNjQJCDTuOZTw@mail.gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=debug@rivosinc.com; helo=mail-pj1-x1031.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,98 +99,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[This patch is not necessary anymore after 8.2 has been released]
+On Fri, Jan 05, 2024 at 10:29:35AM +0300, Alexey Baturo wrote:
+>> +    addr = addr << pmlen;
+>> +    if (signext) {
+>> +        addr = (target_long)addr >> pmlen;
+>> +    } else {
+>> +        addr = addr >> pmlen;
+>Could you please elaborate a bit more on your concern here?
+>I believe this code works as intended: https://godbolt.org/z/b9c7na13a
+Nevermind I missed this above in code.
+addr = addr << pmlen;
 
-Add the 'since' annotations to recently added tests and adapt the
-postcopy test to use the older "uri" API when needed.
-
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- tests/qtest/migration-test.c | 34 +++++++++++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 7 deletions(-)
-
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 001470238b..599f51f978 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -1338,14 +1338,21 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
-     migrate_ensure_non_converge(from);
- 
-     migrate_prepare_for_dirty_mem(from);
--    qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
--                             "  'arguments': { "
--                             "      'channels': [ { 'channel-type': 'main',"
--                             "      'addr': { 'transport': 'socket',"
--                             "                'type': 'inet',"
--                             "                'host': '127.0.0.1',"
--                             "                'port': '0' } } ] } }");
- 
-+    /* New syntax was introduced in 8.2 */
-+    if (migration_vercmp(to, "8.2") < 0) {
-+        qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
-+                                 "  'arguments': { "
-+                                 "      'uri': 'tcp:127.0.0.1:0' } }");
-+    } else {
-+        qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
-+                                 "  'arguments': { "
-+                                 "      'channels': [ { 'channel-type': 'main',"
-+                                 "      'addr': { 'transport': 'socket',"
-+                                 "                'type': 'inet',"
-+                                 "                'host': '127.0.0.1',"
-+                                 "                'port': '0' } } ] } }");
-+    }
-     /* Wait for the first serial output from the source */
-     wait_for_serial("src_serial");
- 
-@@ -1603,6 +1610,9 @@ static void test_postcopy_recovery_double_fail(void)
- {
-     MigrateCommon args = {
-         .postcopy_recovery_test_fail = true,
-+        .start = {
-+            .since = "8.2",
-+        },
-     };
- 
-     test_postcopy_recovery_common(&args);
-@@ -1665,6 +1675,7 @@ static void test_analyze_script(void)
- {
-     MigrateStart args = {
-         .opts_source = "-uuid 11111111-1111-1111-1111-111111111111",
-+        .since = "8.2",
-     };
-     QTestState *from, *to;
-     g_autofree char *uri = NULL;
-@@ -2090,6 +2101,9 @@ static void test_precopy_file(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
-+        .start = {
-+            .since = "8.2"
-+        },
-     };
- 
-     test_file_common(&args, true);
-@@ -2134,6 +2148,9 @@ static void test_precopy_file_offset(void)
-         .connect_uri = uri,
-         .listen_uri = "defer",
-         .finish_hook = file_offset_finish_hook,
-+        .start = {
-+            .since = "8.2"
-+        },
-     };
- 
-     test_file_common(&args, false);
-@@ -2148,6 +2165,9 @@ static void test_precopy_file_offset_bad(void)
-         .connect_uri = uri,
-         .listen_uri = "defer",
-         .result = MIG_TEST_QMP_ERROR,
-+        .start = {
-+            .since = "8.2"
-+        },
-     };
- 
-     test_file_common(&args, false);
--- 
-2.35.3
-
+You're good. Sorry about that.
+>
+>Thanks
+>
+>пт, 5 янв. 2024 г. в 04:02, Deepak Gupta <debug@rivosinc.com>:
+>
+>> > --- a/target/riscv/vector_helper.c
+>> > +++ b/target/riscv/vector_helper.c
+>> > @@ -94,6 +94,18 @@ static inline uint32_t vext_max_elems(uint32_t desc,
+>> uint32_t log2_esz)
+>> >
+>> >  static inline target_ulong adjust_addr(CPURISCVState *env, target_ulong
+>> addr)
+>> >  {
+>> > +    RISCVPmPmm pmm = riscv_pm_get_pmm(env);
+>> > +    if (pmm == PMM_FIELD_DISABLED)
+>> > +        return addr;
+>> > +    int pmlen = riscv_pm_get_pmlen(pmm);
+>> > +    bool signext = !riscv_cpu_bare_mode(env);
+>> > +    addr = addr << pmlen;
+>> > +    /* sign/zero extend masked address by N-1 bit */
+>> > +    if (signext) {
+>> > +        addr = (target_long)addr >> pmlen;
+>>
+>> These look like right shift operations and not sign extensions of N-1 bit
+>>
+>> > +    } else {
+>> > +        addr = addr >> pmlen;
+>>
+>> Same here.
+>>
+>> > +    }
+>> >      return addr;
+>> >  }
+>> >
+>> > --
+>> > 2.34.1
+>> >
+>> >
+>>
 
