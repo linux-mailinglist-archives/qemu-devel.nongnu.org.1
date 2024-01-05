@@ -2,68 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ADBB824FD4
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 09:27:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B49D825092
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 10:08:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLfXG-0002jM-75; Fri, 05 Jan 2024 03:26:34 -0500
+	id 1rLgA5-0001GA-Bx; Fri, 05 Jan 2024 04:06:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rLfXD-0002iZ-EO; Fri, 05 Jan 2024 03:26:31 -0500
-Received: from mgamail.intel.com ([192.55.52.136])
+ (Exim 4.90_1) (envelope-from <jeeheng.sia@starfivetech.com>)
+ id 1rLgA2-0001Fs-G5; Fri, 05 Jan 2024 04:06:38 -0500
+Received: from mail-sh0chn02on2061d.outbound.protection.partner.outlook.cn
+ ([2406:e500:4420:2::61d]
+ helo=CHN02-SH0-obe.outbound.protection.partner.outlook.cn)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rLfX8-0001qE-Th; Fri, 05 Jan 2024 03:26:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704443186; x=1735979186;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=w4Plb8VoQe8M2Gz0DfTXzjxGrfMyToDgiD718NI0E6s=;
- b=lRPlSOIQeBkxT2580GL8CEBP0Cs9dCBgKSZSxl+HvGAFhZTFVQWllGEu
- 5DBcu9SNWFaGr63lXkDYN4FFKVRW3u0Dmp+tqZCWSPeIp2zZxjB39DCYk
- diNw3/1VeAY0WGFads14Qmng3ftSvtGkGWok47SB7ljJszu6n8VWzvvdy
- X+OHMWZU29cVDIXNXEUITzBET4brUqrYUNDHnrx6EieUz85Y8By3atBqn
- Zx1Ct1g3zro2v0CQegMLmjV+n07i1U5pPJOC07hcNLRQQhyXavsMfhJnc
- sXyyrq0+PQ9p65JwZNNwYyXKx+zACFmjtEllb0H6Kai/+Kn7Dlm9J1JQf w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="376948840"
-X-IronPort-AV: E=Sophos;i="6.04,333,1695711600"; d="scan'208";a="376948840"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jan 2024 00:26:08 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="784145770"
-X-IronPort-AV: E=Sophos;i="6.04,333,1695711600"; d="scan'208";a="784145770"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmsmga007.fm.intel.com with ESMTP; 05 Jan 2024 00:26:05 -0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Darren Kenny <darren.kenny@oracle.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexander Bulekov <alxndr@bu.edu>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Samuel Tardieu <sam@rfc1149.net>
-Subject: [PATCH v3] scripts/checkpatch: Support codespell checking
-Date: Fri,  5 Jan 2024 16:38:48 +0800
-Message-Id: <20240105083848.267192-1-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <jeeheng.sia@starfivetech.com>)
+ id 1rLgA0-0008TI-Bi; Fri, 05 Jan 2024 04:06:38 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EU+zsZgm3f2sNPgJYzBhSws28/ZKQkFxnFFcGArCUB7i+u0pkSVrF89p79AHNJNRqHp1Rzni2rh4NdP8g0u3lm8Tr47OQVAJvy9fOqaG6l/y3b9HP/WXrh1+9FaJivt69fYlqOjiYZp8r2XV2Z+5ay7vYoHGgeg2yEuf+Uqqd+/lNCxZhRTO/+ZNgFNYLZSFZaYV69drTPENrEFM+pT6wqlohMisxju6mRnr2hOM9St11ca8me0W3UhppbcHuy2gra6DB8TGCNJKz8qVcepeyU7A/60XKlGNrll/Z6p8IRMriTBTSEJQrSYmLdULE11Kbzd8CgiaUHIp+zuq0Gf+sw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QmPhi8k8/orxKBA27Bga6nqdCes2sNZMJ00sI9/2+ik=;
+ b=LdwnEbrAnvo9qXC7n49DSrcjXX3wVYHm1uu+bMO2maZ0E3fS7SMGVBgeMTvE3Eb9DqvIsh9P6qX4xcAuyHD8SZTjWg2B4Oc+Of6SqNqM34LwBrFJBZb3UhpwnufAHDBKsdLss9ntKgUsmDNVkTzwv/3goKdPGjndnCiWYZptmIVYhwzvQUn10T4y3VtzHrL50pVIt+vijxA1ZxJQpXs0Ggx4oSSbpFBk7vVX+FrkxAQS7tXGRMuy/lyp0wHz/+R9MiPlzyvWyRgezIufvPetDmfifTaqfy0PPcD9eM9CWujkY1X/ux8Q8g9332v8SmvIDiO4qLzEFsxsiV+xC2veDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+Received: from BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:f::16) by BJSPR01MB0755.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:1c::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.29; Fri, 5 Jan
+ 2024 09:06:22 +0000
+Received: from BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn
+ ([fe80::3862:65b4:c857:c4a6]) by
+ BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn ([fe80::3862:65b4:c857:c4a6%4])
+ with mapi id 15.20.7135.028; Fri, 5 Jan 2024 09:06:22 +0000
+From: Sia Jee Heng <jeeheng.sia@starfivetech.com>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com,
+ peter.maydell@linaro.org, jeeheng.sia@starfivetech.com,
+ shannon.zhaosl@gmail.com, sunilvl@ventanamicro.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+Subject: [RESEND RFC v1 0/2] RISC-V: ACPI: Enable SPCR
+Date: Fri,  5 Jan 2024 17:06:06 +0800
+Message-Id: <20240105090608.5745-1-jeeheng.sia@starfivetech.com>
 X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.55.52.136;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-ClientProxiedBy: SH0PR01CA0007.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:5::19) To BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:f::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BJSPR01MB0561:EE_|BJSPR01MB0755:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6d77cebc-7131-4e24-2bf5-08dc0dcd963c
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: TxYBNHQtrGg+eRhkNnAwmyZ09ONjLDAjbVD1otqktGtwNMMtXx3Ni15Z1HLrs08XBlqJVQthlP8du0WkDGE7A1O10sWoOv8Vz38cj3aAa02hEIqrHXm5onKG7lOo0YJ5+AOT400sxDBMCovDHrjV5Pa8Kw7fzUm1YaDquKl3Y8ztzFaqQqZOsmRCd7epV5HZdM/xDaabx045vRiZLkkjVqc9KtyvUAeXuu+BQeZ8uxcqjEqpOBbvPQkYbQOnmuTy7hkpN7ecRQpIQG1P5qznxsuL/IPO5MxLIdhdPYIpvU43qNZV1mcrsEmiopVeY5a+kLQKczk8WtxYL4ssMAr9dmomgy6ChknQTkQ9PPqzThEe3u4XXVkRj/tQPrxW5q3CpidalJXgcdOgxndPAIoucQKL+VTnFcxOmg1kUC357lwANaWSOr5lrzlUh+ngvp1Rv8iRKtJUB6rTzBmp3T+DBTQGvCxNYGtuLIWE+E/N5Q67Un4OgJ74d959UTh2lr9WDizK1jYu/Ov4OB3Y2fNO2Yt82JnRHuIQDpOVyJZmkBAY/gUwJX5JPnUeUEPosSbP
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn; PTR:;
+ CAT:NONE;
+ SFS:(13230031)(39830400003)(136003)(346002)(366004)(396003)(230922051799003)(186009)(64100799003)(451199024)(1800799012)(2616005)(1076003)(26005)(52116002)(6666004)(83380400001)(40160700002)(36756003)(86362001)(38100700002)(40180700001)(38350700005)(5660300002)(7416002)(4326008)(4744005)(55236004)(41300700001)(66946007)(66556008)(66476007)(966005)(2906002)(8676002)(508600001)(8936002)(41320700001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uVTr0+5pNi8FjK9Un8oAEo62omBN9GrIlL7uAoH+ZS1CncmPKcQL2FItwRee?=
+ =?us-ascii?Q?1sRGwXZnWB8hLCyti+g6C1dUoWQBwgLYIbeSYYOmQEU8m3EQ25EZLldXJgOk?=
+ =?us-ascii?Q?rSm6AJ5pjLS8TPvkyXxvSnKNY2kryBMPrN2hDVIyW7SDMoETTc5JIqIPUDqP?=
+ =?us-ascii?Q?oW1Vp2WfsZ2lpL6ZkmhD4RnesMzxRMLp0FE89wchrLL0PH9nz2UvrYvxRt3L?=
+ =?us-ascii?Q?PJgbffQTiwuamGgg9+lcyKdbZLdMHJbcU9C32vAuWTjfjgNS38FhuPD/1YlH?=
+ =?us-ascii?Q?jfHtWgDZNcJXDXwPr7mYONFLI5LgnJugUQwvzHH507NFK9peRFsJSCBP/Pls?=
+ =?us-ascii?Q?gEHwer/jYYk2WUhlbf1fF0bn0Mnewt3rW5TwpKQnzIlpcvv4C5E7SVww8ySu?=
+ =?us-ascii?Q?QS2cWWBZnLQ8CQisJVC+v7cSiMflEQWbjZ4iNlJG37mTJlghy2qubRwplP5F?=
+ =?us-ascii?Q?jQSSDq2YQNjwxWvA0Od4Ilp7LIQGRAK6woWaHCN4iGZJSgzGrl80IamydjzI?=
+ =?us-ascii?Q?RUhxR9RKXa4uBaQXQvUyXymDiuYiyFJgJj+VsAY2+3FznBDZAz1JhobK1eiX?=
+ =?us-ascii?Q?yxhyV8q9Gt6AkvE1Ks25J9xJClmBPLiS5EqENHN2bOv/WoeFphaSkc5Jojmf?=
+ =?us-ascii?Q?NgNqhP5G9Pyq64lWJTnjKW71JWYrdozuhckmL97ReVK5eor7P/mUI14C+uY+?=
+ =?us-ascii?Q?8UBU60AZR4XyUilg8ws9WeFKQpHfAXH2/1xrfhW2+DbLk/42tDW0cSZs6gqn?=
+ =?us-ascii?Q?qeJszOQmEHrPzsUoGtDgkwI5xpD2PPBhG+LFzakoGkZ+gkO/9htWbvtJsQvW?=
+ =?us-ascii?Q?2FdrOOyQcaChjTtzWExry0rm9bNxOQxlX9+K7R61Fx9PR3EK2Y+D8TAzWnXy?=
+ =?us-ascii?Q?pYTUsTxt0hcxh8uJwu/kFwiAoFbx4lVJDEUs/Wh/9fBsw4qT9/8gpR4mxl6J?=
+ =?us-ascii?Q?x3F7v/2e9vnGhlQOv9K1UboTkCaaefU5WlIxC0+i0qB5GLWGwOQ48CoR0hLS?=
+ =?us-ascii?Q?N4oV0xJ+PZSEoydURmPFAL8bmH5Af19CrZBfZ+wV9K94yzcbFQ2MwGDceDTv?=
+ =?us-ascii?Q?G/Y5T+sDsZLyRexA24xY8limFO6IBC/BrpRAu6rXa5w2CQ0ShL5gL/wD1rFT?=
+ =?us-ascii?Q?t6X2MpXAlXBTBXVD6GHdBi6U3hPcBLHhoyQPGq7oZanaP0NWYMkOdpipdRbm?=
+ =?us-ascii?Q?o2WnXRAmf5en/2ryhS/uieW7w5UFniqLslad4NAVL+u6f8f5ufhaZalQJYWY?=
+ =?us-ascii?Q?hA+c4/AsWaFxTNgsL9ccPARE1qJDByk0iQEwYtFE2Oh08K90cU8xoAl4tM0s?=
+ =?us-ascii?Q?8x6rhYUkQZWeabc6lGsX9Vg8l7UQ379X+ktv9FOZfIFUywK0n/o1uyBhBN1k?=
+ =?us-ascii?Q?4bnllh1V2Kmn6ZkCzMiGkkug0sgtbQGLve6CRgb/8GhcwxJ2U3of3thZVB3t?=
+ =?us-ascii?Q?00d9qjtFrx4iJLjQrO7/jJqPP6o5vaNn35LmLUe2FjWvX8vP6MFEIdUs2DIY?=
+ =?us-ascii?Q?oI+iLoHdSTcoDiOP8mgrSy15pdOBHvslsSqny3yVRrYaR3MPsIYz2tYmG2n5?=
+ =?us-ascii?Q?3HQi17ZDg1txtgxxIrb3b3y8740rP0idYAmeH1XuyZE0QBaNT+P6fklOUU8U?=
+ =?us-ascii?Q?4g=3D=3D?=
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d77cebc-7131-4e24-2bf5-08dc0dcd963c
+X-MS-Exchange-CrossTenant-AuthSource: BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2024 09:06:22.2201 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7xfJltRxeIde++T8opaUGax7OIDVFzGmBI1tFSJqOTJkxossI5aZpgGkuQwFecrCTDz5b7RoHQtNBkEW9kyDPsCvnVO0gkHHR2RbJt7BWzc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJSPR01MB0755
+Received-SPF: pass client-ip=2406:e500:4420:2::61d;
+ envelope-from=jeeheng.sia@starfivetech.com;
+ helo=CHN02-SH0-obe.outbound.protection.partner.outlook.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,209 +131,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+This series focuses on enabling the Serial Port Console Redirection (SPCR)
+table for the RISC-V virt platform. Considering that ARM utilizes the same
+function, the initial patch involves migrating the build_spcr function to
+common code. This consolidation ensures that RISC-V avoids duplicating the
+function.
 
-Add two spelling check options (--codespell and --codespellfile) to
-enhance spelling check through dictionary, which copied the Linux
-kernel's implementation in checkpatch.pl.
+The patch set is built upon Alistair's riscv-to-apply.next branch and
+relies on Sunil's patches at [1].
 
-This check uses the dictionary at "/usr/share/codespell/dictionary.txt"
-by default, if there is no dictionary specified under this path, it
-will look for the dictionary of python3's codespell (This requires user
-to add python3's path in environment variable $PATH, and to install
-codespell by "pip install codespell").
+[1] https://lore.kernel.org/qemu-devel/20231218150247.466427-1-sunilvl@ventanamicro.com/
 
-Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-Tested-by: Samuel Tardieu <sam@rfc1149.net>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Changes since v2:
-* Fix the code style. (Samuel)
+Sia Jee Heng (2):
+  hw/arm/virt-acpi-build.c: Migrate SPCR creation to common location
+  hw/riscv/virt-acpi-build.c: Generate SPCR table
 
-v2: https://lore.kernel.org/qemu-devel/20231215103448.3822284-1-zhao1.liu@linux.intel.com/
+ hw/acpi/aml-build.c         | 51 ++++++++++++++++++++++++++++
+ hw/arm/virt-acpi-build.c    | 68 +++++++++++++++----------------------
+ hw/riscv/virt-acpi-build.c  | 39 +++++++++++++++++++++
+ include/hw/acpi/acpi-defs.h | 33 ++++++++++++++++++
+ include/hw/acpi/aml-build.h |  4 +++
+ 5 files changed, 154 insertions(+), 41 deletions(-)
 
-Changes since v1:
-* Drop the default dictionary "selling.text" and just support optional
-  spelling check via --codespell and --codespellfile. (Thomas)
-
-v1: https://lore.kernel.org/qemu-devel/20231204082917.2430223-1-zhao1.liu@linux.intel.com/
----
- scripts/checkpatch.pl | 125 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 105 insertions(+), 20 deletions(-)
-
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 6e4100d2a41c..702689507412 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -35,6 +35,9 @@ my $summary_file = 0;
- my $root;
- my %debug;
- my $help = 0;
-+my $codespell = 0;
-+my $codespellfile = "/usr/share/codespell/dictionary.txt";
-+my $user_codespellfile = "";
- 
- sub help {
- 	my ($exitcode) = @_;
-@@ -66,6 +69,9 @@ Options:
-                              is all off)
-   --test-only=WORD           report only warnings/errors containing WORD
-                              literally
-+  --codespell                Use the codespell dictionary for spelling/typos
-+                             (default: $codespellfile)
-+  --codespellfile            Use this codespell dictionary
-   --color[=WHEN]             Use colors 'always', 'never', or only when output
-                              is a terminal ('auto'). Default is 'auto'.
-   -h, --help, --version      display this help and exit
-@@ -85,28 +91,50 @@ foreach (@ARGV) {
- }
- 
- GetOptions(
--	'q|quiet+'	=> \$quiet,
--	'tree!'		=> \$tree,
--	'signoff!'	=> \$chk_signoff,
--	'patch!'	=> \$chk_patch,
--	'branch!'	=> \$chk_branch,
--	'emacs!'	=> \$emacs,
--	'terse!'	=> \$terse,
--	'f|file!'	=> \$file,
--	'strict!'	=> \$no_warnings,
--	'root=s'	=> \$root,
--	'summary!'	=> \$summary,
--	'mailback!'	=> \$mailback,
--	'summary-file!'	=> \$summary_file,
--
--	'debug=s'	=> \%debug,
--	'test-only=s'	=> \$tst_only,
--	'color=s'       => \$color,
--	'no-color'      => sub { $color = 'never'; },
--	'h|help'	=> \$help,
--	'version'	=> \$help
-+	'q|quiet+'		=> \$quiet,
-+	'tree!'			=> \$tree,
-+	'signoff!'		=> \$chk_signoff,
-+	'patch!'		=> \$chk_patch,
-+	'branch!'		=> \$chk_branch,
-+	'emacs!'		=> \$emacs,
-+	'terse!'		=> \$terse,
-+	'f|file!'		=> \$file,
-+	'strict!'		=> \$no_warnings,
-+	'root=s'		=> \$root,
-+	'summary!'		=> \$summary,
-+	'mailback!'		=> \$mailback,
-+	'summary-file!'		=> \$summary_file,
-+	'debug=s'		=> \%debug,
-+	'test-only=s'		=> \$tst_only,
-+	'codespell!'		=> \$codespell,
-+	'codespellfile=s'	=> \$user_codespellfile,
-+	'color=s'		=> \$color,
-+	'no-color'		=> sub { $color = 'never'; },
-+	'h|help'		=> \$help,
-+	'version'		=> \$help
- ) or help(1);
- 
-+if ($user_codespellfile) {
-+	# Use the user provided codespell file unconditionally
-+	$codespellfile = $user_codespellfile;
-+} elsif (!(-f $codespellfile)) {
-+	# If /usr/share/codespell/dictionary.txt is not present, try to find it
-+	# under codespell's install directory: <codespell_root>/data/dictionary.txt
-+	if (($codespell || $help) && which("python3") ne "") {
-+		my $python_codespell_dict = << "EOF";
-+
-+import os.path as op
-+import codespell_lib
-+codespell_dir = op.dirname(codespell_lib.__file__)
-+codespell_file = op.join(codespell_dir, 'data', 'dictionary.txt')
-+print(codespell_file, end='')
-+EOF
-+
-+		my $codespell_dict = `python3 -c "$python_codespell_dict" 2> /dev/null`;
-+		$codespellfile = $codespell_dict if (-f $codespell_dict);
-+	}
-+}
-+
- help(0) if ($help);
- 
- my $exit = 0;
-@@ -337,6 +365,36 @@ our @typeList = (
- 	qr{guintptr},
- );
- 
-+# Load common spelling mistakes and build regular expression list.
-+my $misspellings;
-+my %spelling_fix;
-+
-+if ($codespell) {
-+	if (open(my $spelling, '<', $codespellfile)) {
-+		while (<$spelling>) {
-+			my $line = $_;
-+
-+			$line =~ s/\s*\n?$//g;
-+			$line =~ s/^\s*//g;
-+
-+			next if ($line =~ m/^\s*#/);
-+			next if ($line =~ m/^\s*$/);
-+			next if ($line =~ m/, disabled/i);
-+
-+			$line =~ s/,.*$//;
-+
-+			my ($suspect, $fix) = split(/->/, $line);
-+
-+			$spelling_fix{$suspect} = $fix;
-+		}
-+		close($spelling);
-+	} else {
-+		warn "No codespell typos will be found - file '$codespellfile': $!\n";
-+	}
-+}
-+
-+$misspellings = join("|", sort keys %spelling_fix) if keys %spelling_fix;
-+
- # This can be modified by sub possible.  Since it can be empty, be careful
- # about regexes that always match, because they can cause infinite loops.
- our @modifierList = (
-@@ -477,6 +535,18 @@ sub top_of_kernel_tree {
- 	return 1;
- }
- 
-+sub which {
-+	my ($bin) = @_;
-+
-+	foreach my $path (split(/:/, $ENV{PATH})) {
-+		if (-e "$path/$bin") {
-+			return "$path/$bin";
-+		}
-+	}
-+
-+	return "";
-+}
-+
- sub expand_tabs {
- 	my ($str) = @_;
- 
-@@ -1585,6 +1655,21 @@ sub process {
- 			WARN("8-bit UTF-8 used in possible commit log\n" . $herecurr);
- 		}
- 
-+# Check for various typo / spelling mistakes
-+		if (defined($misspellings) &&
-+		    ($in_commit_log || $line =~ /^(?:\+|Subject:)/i)) {
-+			while ($rawline =~ /(?:^|[^\w\-'`])($misspellings)(?:[^\w\-'`]|$)/gi) {
-+				my $typo = $1;
-+				my $blank = copy_spacing($rawline);
-+				my $ptr = substr($blank, 0, $-[1]) . "^" x length($typo);
-+				my $hereptr = "$hereline$ptr\n";
-+				my $typo_fix = $spelling_fix{lc($typo)};
-+				$typo_fix = ucfirst($typo_fix) if ($typo =~ /^[A-Z]/);
-+				$typo_fix = uc($typo_fix) if ($typo =~ /^[A-Z]+$/);
-+				WARN("'$typo' may be misspelled - perhaps '$typo_fix'?\n" . $hereptr);
-+			}
-+		}
-+
- # ignore non-hunk lines and lines being removed
- 		next if (!$hunk_line || $line =~ /^-/);
- 
 -- 
 2.34.1
 
