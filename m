@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB93825754
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:59:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F14EB82572D
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:53:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLmR9-0002yi-Mz; Fri, 05 Jan 2024 10:48:43 -0500
+	id 1rLmR8-0002pI-2V; Fri, 05 Jan 2024 10:48:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmPs-0005aC-EP
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:47:26 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmPx-0005yh-Go
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:47:29 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmPp-00047Y-M3
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:47:23 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-336c9acec03so1301787f8f.2
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:47:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmPu-00048O-Dc
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:47:29 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40e37524fafso8947865e9.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:47:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704469640; x=1705074440; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704469645; x=1705074445; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iQqVZQAplGXwt087ddAaGknca/07pmUL/gFu1d2+27U=;
- b=rBQ6eBIXuAdfLu0GR0eKsWS8Azq3u6wuQt/JBZFPQA+UTw1BKa/4aqxs2MlLyDkxHa
- Dmybi4K6P90/kCOiGPp2usL4/dwMPfcqH+zZrUDqv3EyikR2zLsQtZHQE3qbcDGAOmEa
- wPZKoWXBjmPDfeF6OMULLPtdOE8ukQJD5SuD+86lD1MMo17Fgj7aIHczzKJvC9Jr14WL
- jnYu6MaFy2xKM7Ur1xTqjl1flVigApzvxBjIEOCWe1GaOlid4kY9wYAi6XpqqOhpODW0
- qyE9bL84xhawbACVPZSv2pzucEcTBZyYN8JEHUn1LA/5cPTOtZmhjD/1VlzqX1o2xpgN
- wgWw==
+ bh=QIi494ZIPpClTlGLpiqU0qCpof/tLsTarUcBXXHQbq8=;
+ b=vF/Df9YLbCjANguPuSTnr5QfBzVSnVUxQLKWNRIi39PkE0VqwfoMXZwtY6i9ev2Y3G
+ k1c044BErpcFaMnnVAmS27oU/FYDSUs/07xVVhlVDTcgiZRasF7PxTLhn0nhwQzRYJjF
+ P9wnNG/gEJPshWBVVLfQpz3KqP4AQyeL1SUIkhYQ+igni1G5atHybX1NltpzRDGmE5kG
+ tXsgdGji5hVH79JHmL9/7/qXTDl6d3Hhy8kVx3KxRmZ52OlbqNGD89B/rVuN3ZFeWJHj
+ T2qVhc50YHGebsufMNlPCQzVCGLbFHERMejo+B43BAYGIjLgjXmRM0Oigxac2DKatPhX
+ Y0FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704469640; x=1705074440;
+ d=1e100.net; s=20230601; t=1704469645; x=1705074445;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iQqVZQAplGXwt087ddAaGknca/07pmUL/gFu1d2+27U=;
- b=cv0M0dn3MvBN4A3+Hwny/QXkneNYOcbGf/Aqrm4EJnrGXEZlzriF3XHHharf0O5J17
- gX4gFoo5Q3xvvVogg9XC8+55P6AJpjwZsIclJ3Tfxy6v4XyCr6BKXPTq2R45ejk+Wt98
- E8oTAEiz3rtvFt1auGhexlZ9804Hm1bMwavlcHhPCFLw2sAXQZr3hH8AZ/3YxqmVsP6h
- Klr0pwAP82JX1y11bDou+rg2rKQZ814UyIDd0BF3+vO4OCf5LMGrLoKJppZ4a5KPzoMf
- 2/xlW3xKUqnafnQZBAmsVq0bc6qYfTh/44HYRsJw9fk8isKyZeGsm+QnwcZvNGZCiViX
- ABmw==
-X-Gm-Message-State: AOJu0YxcAj8RpkPVR029E5ler4izx+50aD4eIsjO8Fym5W9pqUPc4gjS
- eb90Y+yno/YViFzi9rvf74HGVjuYEQ9ioL5YylNcG3Zrezk=
-X-Google-Smtp-Source: AGHT+IFR0sHSGxpKEI+Ag2hwXAsaEAvXTLccumut7zi7pHF38anQ7KYbLL7zcyI7JlDChab5stlH/g==
-X-Received: by 2002:adf:ed8c:0:b0:337:d82:5106 with SMTP id
- c12-20020adfed8c000000b003370d825106mr1218971wro.99.1704469639779; 
- Fri, 05 Jan 2024 07:47:19 -0800 (PST)
+ bh=QIi494ZIPpClTlGLpiqU0qCpof/tLsTarUcBXXHQbq8=;
+ b=KpeGe8Zm2kiv1NDKB5IOduVkuWvvC/izIbntfphkxc8Vqc8zxzIjatQqC6W/XsLSxx
+ xR9EMjLECeC0XzflYxa/nIyl6pHK1lTj9NCh7vsNOnbA4K4kb5N/iEuwX+wqnKG8XEhP
+ xjxp/0mV1vIzzUR8AaTggs4Dqjbb+WyxlAYfn6wBk+rWmJZnmM6N9QcBHaJIyAgpNioe
+ gVxsH86c6XYZy3ABn1AnWvYqyAWb6cpphm+50ULXCJW4FuX+nJt8el3OKBeInW2Ob0yz
+ CYKY75JNJJdMY9nBEQvaNAG4Hr+FgctVdy3EOar1OXI7rPsB4qVE0d51xu+C/oiMcqbz
+ a0Xw==
+X-Gm-Message-State: AOJu0YwrvIrUr8CpLZpbvdQNGvI3hEOr6EVN5XsiOe11dj/CzPC/c2Px
+ 1e9PVSUbdyRs9KymDmsT1tG6chmr13GKwDEM/3keJz9T59Q=
+X-Google-Smtp-Source: AGHT+IE0XlPSZc9tFbMSGblHOADfNL01MnPGMi6FOcPBZRLMhQw7ZmRMlo0tISzqYBwqCFrICq5QzA==
+X-Received: by 2002:a05:600c:4f02:b0:40b:5e21:ec3f with SMTP id
+ l2-20020a05600c4f0200b0040b5e21ec3fmr1175525wmq.113.1704469644973; 
+ Fri, 05 Jan 2024 07:47:24 -0800 (PST)
 Received: from m1x-phil.lan (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- k7-20020a5d6d47000000b0033725783839sm1605061wri.110.2024.01.05.07.47.18
+ iv20-20020a05600c549400b0040b3d8907fesm1928352wmb.29.2024.01.05.07.47.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jan 2024 07:47:19 -0800 (PST)
+ Fri, 05 Jan 2024 07:47:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 38/71] hw/arm/bcm2836: Simplify use of 'reset-cbar' property
-Date: Fri,  5 Jan 2024 16:42:31 +0100
-Message-ID: <20240105154307.21385-39-philmd@linaro.org>
+Subject: [PULL 39/71] hw/arm/bcm2836: Use ARM_CPU 'mp-affinity' property
+Date: Fri,  5 Jan 2024 16:42:32 +0100
+Message-ID: <20240105154307.21385-40-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240105154307.21385-1-philmd@linaro.org>
 References: <20240105154307.21385-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,44 +93,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-bcm2836_realize() is called by
-
- - bcm2836_class_init() which sets:
-
-    bc->cpu_type = ARM_CPU_TYPE_NAME("cortex-a7")
-
- - bcm2837_class_init() which sets:
-
-    bc->cpu_type = ARM_CPU_TYPE_NAME("cortex-a53")
-
-Both Cortex-A7 / A53 have the ARM_FEATURE_CBAR set. If it isn't,
-then this is a programming error: use &error_abort.
+The 'mp-affinity' property is present since commit 15a21fe028
+("target-arm: Add mp-affinity property for ARM CPU class").
+Use it and remove a /* TODO */ comment. Since all ARM CPUs
+have this property, use &error_abort, because this call can
+not fail.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20231123143813.42632-3-philmd@linaro.org>
+Message-Id: <20231123143813.42632-4-philmd@linaro.org>
 ---
- hw/arm/bcm2836.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ hw/arm/bcm2836.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
-index 166dc896c0..a1bd1406e1 100644
+index a1bd1406e1..289c30e6b6 100644
 --- a/hw/arm/bcm2836.c
 +++ b/hw/arm/bcm2836.c
-@@ -131,10 +131,8 @@ static void bcm2836_realize(DeviceState *dev, Error **errp)
-         s->cpu[n].core.mp_affinity = (bc->clusterid << 8) | n;
+@@ -127,8 +127,8 @@ static void bcm2836_realize(DeviceState *dev, Error **errp)
+         qdev_get_gpio_in_named(DEVICE(&s->control), "gpu-fiq", 0));
+ 
+     for (n = 0; n < BCM283X_NCPUS; n++) {
+-        /* TODO: this should be converted to a property of ARM_CPU */
+-        s->cpu[n].core.mp_affinity = (bc->clusterid << 8) | n;
++        object_property_set_int(OBJECT(&s->cpu[n].core), "mp-affinity",
++                                (bc->clusterid << 8) | n, &error_abort);
  
          /* set periphbase/CBAR value for CPU-local registers */
--        if (!object_property_set_int(OBJECT(&s->cpu[n].core), "reset-cbar",
--                                     bc->peri_base, errp)) {
--            return;
--        }
-+        object_property_set_int(OBJECT(&s->cpu[n].core), "reset-cbar",
-+                                bc->peri_base, &error_abort);
- 
-         /* start powered off if not enabled */
-         if (!object_property_set_bool(OBJECT(&s->cpu[n].core),
+         object_property_set_int(OBJECT(&s->cpu[n].core), "reset-cbar",
 -- 
 2.41.0
 
