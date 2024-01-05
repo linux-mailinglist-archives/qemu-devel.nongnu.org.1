@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D42FC825B1C
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 20:33:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3B5825B18
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 20:32:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLpuM-0000HD-3J; Fri, 05 Jan 2024 14:31:06 -0500
+	id 1rLpuN-0000HY-Jc; Fri, 05 Jan 2024 14:31:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rLpu9-0000Gm-Iw; Fri, 05 Jan 2024 14:30:54 -0500
+ id 1rLpuA-0000Gs-Q4; Fri, 05 Jan 2024 14:30:54 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rLpu7-0002xT-El; Fri, 05 Jan 2024 14:30:53 -0500
+ id 1rLpu7-0002xW-H2; Fri, 05 Jan 2024 14:30:54 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 12F4040D2B;
+ by isrv.corpit.ru (Postfix) with ESMTP id 41A8640D2C;
  Fri,  5 Jan 2024 22:30:42 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id AB73F5B1EB;
+ by tsrv.corpit.ru (Postfix) with SMTP id DB5215B1EC;
  Fri,  5 Jan 2024 22:30:38 +0300 (MSK)
-Received: (nullmailer pid 116603 invoked by uid 1000);
+Received: (nullmailer pid 116607 invoked by uid 1000);
  Fri, 05 Jan 2024 19:30:38 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 0/6] Trivial patches for 2024-01-05
-Date: Fri,  5 Jan 2024 22:30:32 +0300
-Message-Id: <20240105193038.116576-1-mjt@tls.msk.ru>
+Cc: Xu Lu <luxu.kernel@bytedance.com>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 1/6] target/riscv: Fix mcycle/minstret increment behavior
+Date: Fri,  5 Jan 2024 22:30:33 +0300
+Message-Id: <20240105193038.116576-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240105193038.116576-1-mjt@tls.msk.ru>
+References: <20240105193038.116576-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,47 +59,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 0c1eccd368af8805ec0fb11e6cf25d0684d37328:
+From: Xu Lu <luxu.kernel@bytedance.com>
 
-  Merge tag 'hw-cpus-20240105' of https://github.com/philmd/qemu into staging (2024-01-05 16:08:58 +0000)
+The mcycle/minstret counter's stop flag is mistakenly updated on a copy
+on stack. Thus the counter increments even when the CY/IR bit in the
+mcountinhibit register is set. This commit corrects its behavior.
 
-are available in the Git repository at:
+Fixes: 3780e33732f88 (target/riscv: Support mcycle/minstret write operation)
+Signed-off-by: Xu Lu <luxu.kernel@bytedance.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ target/riscv/csr.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index fde7ce1a53..c50a33397c 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -907,11 +907,11 @@ static int write_mhpmcounterh(CPURISCVState *env, int csrno, target_ulong val)
+ static RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
+                                          bool upper_half, uint32_t ctr_idx)
+ {
+-    PMUCTRState counter = env->pmu_ctrs[ctr_idx];
+-    target_ulong ctr_prev = upper_half ? counter.mhpmcounterh_prev :
+-                                         counter.mhpmcounter_prev;
+-    target_ulong ctr_val = upper_half ? counter.mhpmcounterh_val :
+-                                        counter.mhpmcounter_val;
++    PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
++    target_ulong ctr_prev = upper_half ? counter->mhpmcounterh_prev :
++                                         counter->mhpmcounter_prev;
++    target_ulong ctr_val = upper_half ? counter->mhpmcounterh_val :
++                                        counter->mhpmcounter_val;
+ 
+     if (get_field(env->mcountinhibit, BIT(ctr_idx))) {
+         /*
+@@ -919,12 +919,12 @@ static RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
+          * stop the icount counting. Just return the counter value written by
+          * the supervisor to indicate that counter was not incremented.
+          */
+-        if (!counter.started) {
++        if (!counter->started) {
+             *val = ctr_val;
+             return RISCV_EXCP_NONE;
+         } else {
+             /* Mark that the counter has been stopped */
+-            counter.started = false;
++            counter->started = false;
+         }
+     }
+ 
+-- 
+2.39.2
 
-for you to fetch changes up to 8a780cd212647a6013c8ea59e0929dad996e2c54:
-
-  docs: use "buses" rather than "busses" (2024-01-05 22:28:54 +0300)
-
-----------------------------------------------------------------
-trivial patches for 2024-01-05
-
-Random stuff here and there, plus a riscv bugfix.
-
-----------------------------------------------------------------
-Bin Meng (1):
-      hw/net: cadence_gem: Fix MDIO_OP_xxx values
-
-Max Erenberg (1):
-      edu: fix DMA range upper bound check
-
-Michael Tokarev (2):
-      chardev/char.c: fix "abstract device type" error message
-      audio/audio.c: remove trailing newline in error_setg
-
-Samuel Tardieu (1):
-      docs: use "buses" rather than "busses"
-
-Xu Lu (1):
-      target/riscv: Fix mcycle/minstret increment behavior
-
- audio/audio.c               |  2 +-
- chardev/char.c              |  2 +-
- docs/system/arm/palm.rst    |  2 +-
- docs/system/arm/xscale.rst  |  2 +-
- docs/system/devices/can.rst |  6 +++---
- hw/misc/edu.c               |  2 +-
- hw/net/cadence_gem.c        |  4 ++--
- target/riscv/csr.c          | 14 +++++++-------
- 8 files changed, 17 insertions(+), 17 deletions(-)
 
