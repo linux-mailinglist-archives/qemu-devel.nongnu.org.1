@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B77D8254C5
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:01:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B76848254DE
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:10:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLklM-0007jT-Vj; Fri, 05 Jan 2024 09:01:31 -0500
+	id 1rLksN-0002bX-QG; Fri, 05 Jan 2024 09:08:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLkkf-0007Sp-1C
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:00:47 -0500
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLksL-0002b8-1W
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:08:41 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLkkb-0004q9-VF
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:00:44 -0500
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a293f2280c7so64368166b.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 06:00:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLksJ-00030O-6i
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:08:40 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40d60c49ee7so16390045e9.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 06:08:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704463239; x=1705068039; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704463717; x=1705068517; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=z4QFZjfTudbE7tCSCZOHuFkUMXlIrZiBNhaRnMFRlLU=;
- b=HvSzw58JVr1zOLXLKFW7XLI0/6aMSZfEQFTbCQeaiYEpSGZsukUahVfxWj5JbbfrKZ
- Avg5FWsruTx9ARP91Rx/+lJ8acRpKpAT2Uj7PYIh4LEfy5blMnrFZBchDM6yHL/nhsGk
- qnMI/18vvt6r99WiBQWeT1PMYD+BpVzjt20cngylJT56ZjH203CbTyWV2PborX7jLnmg
- Yh1CIEj6ZAhGTH0sbS5ga1o61fwzBB3pYm1DAOkV7S2dycraVnH905tO9SU9cDaLR6Cv
- IVr1xJEQSlMXshnd0BMWNpLoHrGBr+Xq/BNl37Fy8DgPXl1lVrckBR3miucA67KUIw2L
- 3C/w==
+ bh=hKciBo3VLeB1ivg2FYiPgY0sifTOvsA6mJmXTFqHC+0=;
+ b=qxEJErUv/Jd3oFPJzUTcl8f7ikCA7MITVHxovFiQn1S4rbDzmm5an6LR4DUgZoD58b
+ 4Iz6zpGdoxggDRh9CKV41zaywA6Nc24QVvCO+KZmATCzaAOvCYCvgioPdBaAt9sT3lpH
+ QHEb/ZPafiSH54D5+Mkf6mgIZgITPSQOoYzHftSHkHfXGKZjInW5sCyWYZJ8QuCIrzyl
+ v76AMDQJzzfA3VFq1jEOb3NCG77JpUc4L04x60d3cHEavJPzbO+yzhwZ20zNMrjti9bv
+ d1ZgMjTtaLQA37SGT2GtfZHGJR9lR8wtoP2fo1NjpjkJhTplvHlL0mBYjWBwbNHXmOel
+ dxJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704463239; x=1705068039;
+ d=1e100.net; s=20230601; t=1704463717; x=1705068517;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z4QFZjfTudbE7tCSCZOHuFkUMXlIrZiBNhaRnMFRlLU=;
- b=sEmK0hDXv10FmlrZFEz125i5Xjj2RBqi9EkabOApTk4fvVfkwxFxlIIwjyPHfyThZx
- +awV8A/W/2EwV8otsd2Sb6WOSp7f4zxU13aoIXZEMFM7M8HzEchJvq/W3o8Q1TOHWskT
- toxxzFOZ2WqRmAUBXpuBQP6Tk6RbGvl7nYTmvtHMBQG8BbSw5mifJPct2zs6VKQ7KxHS
- CiA2rO31ya/b+mjyc9qmMm3kPniEC2x3ZUg1olahlRQCcI9T4vJTgW0sxoZla5y1z+rf
- F5eS3+WENPd7nfnzSN+rZbwWy45iSueGKLuyKNboSsjU50cHF+mpInLGPpslYMJPSwA+
- SJOQ==
-X-Gm-Message-State: AOJu0Ywcshw1Prjo+ZQn0bYHP0oetGA2WDsyNgBBe1UMWNZK/L3OCEGu
- wvz8WrhS6dPFeYiRT+nb3yTqD53cbuqRzg==
-X-Google-Smtp-Source: AGHT+IG7zBh6j2eUDcjcb/sbMtVjVFcyT+kHWcJK8kxX6C7w8t9DKLFeDWUzhP8oaTXXcaf7b6ZVmg==
-X-Received: by 2002:a17:907:3a98:b0:a29:3fc1:a66 with SMTP id
- fh24-20020a1709073a9800b00a293fc10a66mr139089ejc.154.1704463238807; 
- Fri, 05 Jan 2024 06:00:38 -0800 (PST)
+ bh=hKciBo3VLeB1ivg2FYiPgY0sifTOvsA6mJmXTFqHC+0=;
+ b=KOJhvDAI/XjEvPz7iRflk3fpOFTtE8LHHvaV7QSmE7hDQb5zrx8Hxla70GZXuYsw2t
+ a0GBJcScjIxzmN5JbzJ1Q6bJV6WZL93WP7q1XzmmByS8p3vr656wTv1XtMkpXyqkj3ZI
+ brJ5ARw7Ly9I5a+kvXBXh/pUS7rR6fycXAhSsNVMIM0EWW9YD6usX5GfdY46CTscKf5p
+ XzyT6yS5202m73ETC9GB124X5J8MWgon8xVfAJBtKTbUepwdPK8IBlwfQJVVjWDIPZnf
+ /LTztZogElw8OkHkki2sc3Rtwm/cUNvKr56bK3BsjBy70mzN98z88tmRoh11To1+ZRfh
+ 6XdA==
+X-Gm-Message-State: AOJu0YwmYMVxIi+iN8zFEI1IL2MYEmdoqe9iagO9hKbOK5kbGA+zy7d+
+ /vktxAXyzGVTQsyr/rPmztiT4/nxcM0P2g==
+X-Google-Smtp-Source: AGHT+IHRCURP0aJ+kSrc6cNEtOuTZX2Vv1H7ZdVzIWFLRb4XBoIRt4hJn43YWFbuHzCPrh3E9+w8Xw==
+X-Received: by 2002:a05:600c:3ca3:b0:40d:5597:c7e9 with SMTP id
+ bg35-20020a05600c3ca300b0040d5597c7e9mr1210263wmb.95.1704463716864; 
+ Fri, 05 Jan 2024 06:08:36 -0800 (PST)
 Received: from [192.168.69.100] (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- o18-20020a1709064f9200b00a28ace8fb17sm903917eju.206.2024.01.05.06.00.37
+ k3-20020a5d5243000000b0033668b27f8fsm1477995wrc.4.2024.01.05.06.08.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 05 Jan 2024 06:00:38 -0800 (PST)
-Message-ID: <104080fa-71d2-41a8-b273-171173d6cb44@linaro.org>
-Date: Fri, 5 Jan 2024 15:00:36 +0100
+ Fri, 05 Jan 2024 06:08:36 -0800 (PST)
+Message-ID: <eca60f4c-2938-4388-8582-8c8216207201@linaro.org>
+Date: Fri, 5 Jan 2024 15:08:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] sparc/grlib: split out the headers for each
- peripherals
+Subject: Re: [PATCH 1/2] hw/pflash: refactor pflash_data_write()
 Content-Language: en-US
-To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>, qemu-devel@nongnu.org
-Cc: Frederic Konrad <konrad.frederic@yahoo.fr>
-References: <20240105102421.163554-1-chigot@adacore.com>
- <20240105102421.163554-2-chigot@adacore.com>
+To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ qemu-block@nongnu.org
+References: <20240105135855.268064-1-kraxel@redhat.com>
+ <20240105135855.268064-2-kraxel@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240105102421.163554-2-chigot@adacore.com>
+In-Reply-To: <20240105135855.268064-2-kraxel@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,67 +93,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/1/24 11:24, Clément Chigot wrote:
-> ... and move them in their right hardware directory.
+On 5/1/24 14:58, Gerd Hoffmann wrote:
+> Move the offset calculation, do it once at the start of the function and
+> let the 'p' variable point directly to the memory location which should
+> be updated.  This makes it simpler to update other buffers than
+> pfl->storage in an upcoming patch.  No functional change.
 > 
-> Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
-> Signed-off-by: Clément Chigot <chigot@adacore.com>
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 > ---
->   hw/char/grlib_apbuart.c                       |  4 +--
->   hw/intc/grlib_irqmp.c                         |  4 +--
->   hw/sparc/leon3.c                              |  6 ++--
->   hw/timer/grlib_gptimer.c                      |  4 +--
->   include/hw/char/grlib_uart.h                  | 30 +++++++++++++++++++
->   .../hw/{sparc/grlib.h => intc/grlib_irqmp.h}  | 14 +++------
->   include/hw/timer/grlib_gptimer.h              | 30 +++++++++++++++++++
->   7 files changed, 74 insertions(+), 18 deletions(-)
->   create mode 100644 include/hw/char/grlib_uart.h
->   rename include/hw/{sparc/grlib.h => intc/grlib_irqmp.h} (86%)
->   create mode 100644 include/hw/timer/grlib_gptimer.h
-
-This still matches the MAINTAINERS patterns, good.
-
-> diff --git a/include/hw/char/grlib_uart.h b/include/hw/char/grlib_uart.h
-> new file mode 100644
-> index 0000000000..b67da6c62a
-> --- /dev/null
-> +++ b/include/hw/char/grlib_uart.h
-> @@ -0,0 +1,30 @@
-> +/*
-> + * QEMU GRLIB UART
-> + *
-> + * Copyright (c) 2024 AdaCore
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a copy
-> + * of this software and associated documentation files (the "Software"), to deal
-> + * in the Software without restriction, including without limitation the rights
-> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-> + * copies of the Software, and to permit persons to whom the Software is
-> + * furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-> + * THE SOFTWARE.
-
-When adding license, SPDX tag is prefered (although not enforced)
-because it eases tools parsing.
-
-> + */
+>   hw/block/pflash_cfi01.c | 30 ++++++++++++++++--------------
+>   1 file changed, 16 insertions(+), 14 deletions(-)
+> 
+> diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
+> index 3e2dc08bd78f..67f1c9773ab3 100644
+> --- a/hw/block/pflash_cfi01.c
+> +++ b/hw/block/pflash_cfi01.c
+> @@ -403,33 +403,35 @@ static void pflash_update(PFlashCFI01 *pfl, int offset,
+>   static inline void pflash_data_write(PFlashCFI01 *pfl, hwaddr offset,
+>                                        uint32_t value, int width, int be)
+>   {
+> -    uint8_t *p = pfl->storage;
+> +    uint8_t *p;
+>   
+>       trace_pflash_data_write(pfl->name, offset, width, value, pfl->counter);
+> +    p = pfl->storage + offset;
 > +
-> +#ifndef GRLIB_UART_H
-> +#define GRLIB_UART_H
-> +
-> +#define TYPE_GRLIB_APB_UART "grlib-apbuart"
-> +
-> +#endif
+>       switch (width) {
+>       case 1:
+> -        p[offset] = value;
+> +        p[0] = value;
+>           break;
+>       case 2:
+>           if (be) {
+> -            p[offset] = value >> 8;
+> -            p[offset + 1] = value;
+> +            p[0] = value >> 8;
+> +            p[1] = value;
+>           } else {
+> -            p[offset] = value;
+> -            p[offset + 1] = value >> 8;
+> +            p[0] = value;
+> +            p[1] = value >> 8;
+>           }
+>           break;
+>       case 4:
+>           if (be) {
+> -            p[offset] = value >> 24;
+> -            p[offset + 1] = value >> 16;
+> -            p[offset + 2] = value >> 8;
+> -            p[offset + 3] = value;
+> +            p[0] = value >> 24;
+> +            p[1] = value >> 16;
+> +            p[2] = value >> 8;
+> +            p[3] = value;
+>           } else {
+> -            p[offset] = value;
+> -            p[offset + 1] = value >> 8;
+> -            p[offset + 2] = value >> 16;
+> -            p[offset + 3] = value >> 24;
+> +            p[0] = value;
+> +            p[1] = value >> 8;
+> +            p[2] = value >> 16;
+> +            p[3] = value >> 24;
+>           }
+>           break;
+>       }
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Close to commit c3d25271b2 ("hw/block/pflash_cfi02: Use the ldst
+API in pflash_write()"):
 
+   if (be) {
+       stn_be_p(p, width, value);
+   } else {
+       stn_le_p(p, width, value);
+   }
 
