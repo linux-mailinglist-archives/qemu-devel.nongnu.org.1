@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C805825B1A
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 20:33:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D13825B15
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 20:32:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLpuU-0000M2-9w; Fri, 05 Jan 2024 14:31:14 -0500
+	id 1rLpuW-0000Mq-1d; Fri, 05 Jan 2024 14:31:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rLpuK-0000J4-A6; Fri, 05 Jan 2024 14:31:05 -0500
+ id 1rLpuO-0000Jn-1r; Fri, 05 Jan 2024 14:31:08 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rLpuH-00030k-OL; Fri, 05 Jan 2024 14:31:03 -0500
+ id 1rLpuL-00031a-Na; Fri, 05 Jan 2024 14:31:07 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 12A5D40D30;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4482240D31;
  Fri,  5 Jan 2024 22:30:43 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B17E55B1F0;
+ by tsrv.corpit.ru (Postfix) with SMTP id DC8235B1F1;
  Fri,  5 Jan 2024 22:30:39 +0300 (MSK)
-Received: (nullmailer pid 116619 invoked by uid 1000);
+Received: (nullmailer pid 116622 invoked by uid 1000);
  Fri, 05 Jan 2024 19:30:38 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Max Erenberg <merenber@uwaterloo.ca>, qemu-trivial@nongnu.org,
+Cc: Samuel Tardieu <sam@rfc1149.net>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 5/6] edu: fix DMA range upper bound check
-Date: Fri,  5 Jan 2024 22:30:37 +0300
-Message-Id: <20240105193038.116576-6-mjt@tls.msk.ru>
+Subject: [PULL 6/6] docs: use "buses" rather than "busses"
+Date: Fri,  5 Jan 2024 22:30:38 +0300
+Message-Id: <20240105193038.116576-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240105193038.116576-1-mjt@tls.msk.ru>
 References: <20240105193038.116576-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,44 +60,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Erenberg <merenber@uwaterloo.ca>
+From: Samuel Tardieu <sam@rfc1149.net>
 
-The edu_check_range function checks that start <= end1 < end2, where
-end1 is the upper bound (exclusive) of the guest-supplied DMA range and
-end2 is the upper bound (exclusive) of the device's allowed DMA range.
-When the guest tries to transfer exactly DMA_SIZE (4096) bytes, end1
-will be equal to end2, so the check fails and QEMU aborts with this
-puzzling error message (newlines added for formatting):
+If "busses" might be encountered as a plural of "bus" (5 instances),
+the correct spelling is "buses" (26 instances). Fixing those 5
+instances makes the doc more consistent.
 
-  qemu: hardware error: EDU: DMA range
-    0x0000000000040000-0x0000000000040fff out of bounds
-   (0x0000000000040000-0x0000000000040fff)!
-
-By checking end1 <= end2 instead, guests will be allowed to transfer
-exactly 4096 bytes. It is not necessary to explicitly check for
-start <= end1 because the previous two checks (within(addr, start, end2)
-and end1 > addr) imply start < end1.
-
-Fixes: b30934cb52a7 ("hw: misc, add educational driver", 2015-01-21)
-Signed-off-by: Max Erenberg <merenber@uwaterloo.ca>
+Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/misc/edu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/system/arm/palm.rst    | 2 +-
+ docs/system/arm/xscale.rst  | 2 +-
+ docs/system/devices/can.rst | 6 +++---
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/misc/edu.c b/hw/misc/edu.c
-index a1f8bc77e7..e64a246d3f 100644
---- a/hw/misc/edu.c
-+++ b/hw/misc/edu.c
-@@ -115,7 +115,7 @@ static void edu_check_range(uint64_t addr, uint64_t size1, uint64_t start,
-     uint64_t end2 = start + size2;
+diff --git a/docs/system/arm/palm.rst b/docs/system/arm/palm.rst
+index 47ff9b36d4..61bc8d34f4 100644
+--- a/docs/system/arm/palm.rst
++++ b/docs/system/arm/palm.rst
+@@ -14,7 +14,7 @@ following elements:
+ -  On-chip Real Time Clock
  
-     if (within(addr, start, end2) &&
--            end1 > addr && within(end1, start, end2)) {
-+            end1 > addr && end1 <= end2) {
-         return;
-     }
+ -  TI TSC2102i touchscreen controller / analog-digital converter /
+-   Audio CODEC, connected through MicroWire and |I2S| busses
++   Audio CODEC, connected through MicroWire and |I2S| buses
  
+ -  GPIO-connected matrix keypad
+ 
+diff --git a/docs/system/arm/xscale.rst b/docs/system/arm/xscale.rst
+index d2d5949e10..e239136c3c 100644
+--- a/docs/system/arm/xscale.rst
++++ b/docs/system/arm/xscale.rst
+@@ -32,4 +32,4 @@ The clamshell PDA models emulation includes the following peripherals:
+ 
+ -  Three on-chip UARTs
+ 
+--  WM8750 audio CODEC on |I2C| and |I2S| busses
++-  WM8750 audio CODEC on |I2C| and |I2S| buses
+diff --git a/docs/system/devices/can.rst b/docs/system/devices/can.rst
+index 0af3d9912a..09121836fd 100644
+--- a/docs/system/devices/can.rst
++++ b/docs/system/devices/can.rst
+@@ -1,12 +1,12 @@
+ CAN Bus Emulation Support
+ =========================
+ The CAN bus emulation provides mechanism to connect multiple
+-emulated CAN controller chips together by one or multiple CAN busses
+-(the controller device "canbus"  parameter). The individual busses
++emulated CAN controller chips together by one or multiple CAN buses
++(the controller device "canbus"  parameter). The individual buses
+ can be connected to host system CAN API (at this time only Linux
+ SocketCAN is supported).
+ 
+-The concept of busses is generic and different CAN controllers
++The concept of buses is generic and different CAN controllers
+ can be implemented.
+ 
+ The initial submission implemented SJA1000 controller which
 -- 
 2.39.2
 
