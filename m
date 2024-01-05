@@ -2,87 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B75825895
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 17:47:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D928258D7
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 18:06:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLnLH-0003rl-V2; Fri, 05 Jan 2024 11:46:43 -0500
+	id 1rLndF-0007va-Jn; Fri, 05 Jan 2024 12:05:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rLnLF-0003rS-Vi
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 11:46:41 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLndE-0007ur-27
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 12:05:16 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rLnLE-0006ux-Bh
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 11:46:41 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40d5d8a6730so15790275e9.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 08:46:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLndA-0005QO-Dx
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 12:05:15 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40e384404e7so9407365e9.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 09:05:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704473198; x=1705077998; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=y+XesGPt6M8kow2hbHLuoiYwZT9fbHdGsS/st+N6yU4=;
- b=rPzcPeB1Q5WcGvRdsXUoa/SY7Ww9DzX4EzE8Lzzw2gucPua3WyCk58B/UoypCOHl7Z
- AIQnYD9jX8DWtvH31QEMzNbiFJBLvC0bKoVWlyIE3RaUAYI/l4wKulunegknc/nmct9/
- HiSvs/GS37VZ3oUdO89wXVHjL7LXw4zoCkX/IPskeHBjcmMUlY5ciPyiJq/yJFavrDA/
- FK7/GJ79rGWhfjHt4qj3cMaC3O8++eonVEujzWaRR3/UDP3MLIetqdJsTGZoYHt1DAAj
- rYrP40LFwaakDWAheqzDs53Up5MqMWoeR7x09Vw9RTnokNwyC89q5qJnNZSM5XFkOTZw
- +VEw==
+ d=linaro.org; s=google; t=1704474310; x=1705079110; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aEKJmkt/kEh0jAkLCdfh1+fpI+Ncd11yrNhGOqJTJao=;
+ b=MogocZ9bwYR+2NE7ubyx9IQJTk/rqodPdS2872oCx0LPBs+5WvAK/Y4FaAyJEwi8w3
+ n9l7Hzpmx6/FLzBHQcWHQGaGZo+FljbNg6Q56SWgH7UDYpiZZmWBPplMfRHTOXyhfeTG
+ Ecmq7FGSsIPAkwwhXLijx73OLk3iS6LAlsb/vQbE8DXO2R8MIZW8Ep0hqA8FR6DjBVtG
+ DGp+pggwzptanAEsGI9Hh78w60kdGCQF7rO80x6OILypmuLRHt8ZEiLxXoJUUlrchEmG
+ 0yX7Mi53Ecf+gGLR17wjol1AbRddSdMvNAbiqwmnXV+pXSXW+4EMMupTUT+32rmqZidc
+ +1Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704473198; x=1705077998;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=y+XesGPt6M8kow2hbHLuoiYwZT9fbHdGsS/st+N6yU4=;
- b=mD81KcIo3H0eCx1HOGWzV8wa9ps2NV7V7u+EuBlQK6a0BeFQdxeZWvSFEqs4qlqZor
- Ra2rJ/MvgTEI4M6r0pt/DLJRIVH/AS2GOlV2q0wIAtFc97JyAK6cWGavmjDmHIWAdhH2
- 7wM4GEbvgbjXlur/P8EGfpOP7rYfJ57zjgTctU4SHY2SaUxt0rF0k1Bv+j/JTbdiQioM
- D7hgfRj5rjNzv6xq8/4WWkgonqvrzt8tZeo+os+D+wIUIRqiFDSf5O+/lg42T+ZWEm1i
- p9F+cXUS6G4rqoa5Xyn3mlkI/8NxYNnxArvHby0cHzWfVeoqp4P11QaH+TyeTy6jXzWL
- GCoQ==
-X-Gm-Message-State: AOJu0YyoAh75W0rCuB/ylP7BEnhXQVsyPpoWIRKLqbR4T9EbN4r3dKlH
- 3pPOqJBOogGwW05qCvYcbZSY/hFsSss8yCT77aYPgkKABAc=
-X-Google-Smtp-Source: AGHT+IGfQ3Xtijrn9RSjx5/lkQi003txpkqHMJPrjO3j7ymH6H2sBW6JG409QE8qxnBxTKL1vsQOww==
-X-Received: by 2002:a05:600c:a42:b0:40d:8780:2aff with SMTP id
- c2-20020a05600c0a4200b0040d87802affmr1276841wmq.131.1704473198281; 
- Fri, 05 Jan 2024 08:46:38 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- h14-20020adfe98e000000b003367a51217csm1706264wrm.34.2024.01.05.08.46.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jan 2024 08:46:38 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id AB8E75F933;
- Fri,  5 Jan 2024 16:46:37 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: =?utf-8?B?5ZGo56ul?= <273415826@qq.com>
-Cc: "qemu-devel" <qemu-devel@nongnu.org>,  "linux-cxl"
- <linux-cxl@vger.kernel.org>, Jonathan Cameron
- <jonathan.cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: Re: Question about CXL emulation in QEMU
-In-Reply-To: <tencent_7710D323F3DCBEF4BEAAF17BB3AF851D4707@qq.com>
- (=?utf-8?B?IuWRqOerpSIncw==?=
- message of "Fri, 5 Jan 2024 19:00:14 +0800")
-References: <tencent_7710D323F3DCBEF4BEAAF17BB3AF851D4707@qq.com>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Fri, 05 Jan 2024 16:46:37 +0000
-Message-ID: <87r0iveniq.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1704474310; x=1705079110;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aEKJmkt/kEh0jAkLCdfh1+fpI+Ncd11yrNhGOqJTJao=;
+ b=kw661Ts9ZBOF2LfbDgANLusG0CXd5PijyqLZ3jlsJR6cK5HBGO2uflztnWOybAP27l
+ pRO4bfo6a/twDWVq3xLY9gELU30y91yXjV45obtm5M055npucxLXpKnHbj1syOkX8m5X
+ ilcdQ7RvM7cu89jMiJWAeKP1dlJ+05MAHYh4SO4/e0FUzF1vBPgfdRwvP0+CcRMYQGKX
+ dX9nYB0dN0dmN+pjJrQGoxMEyGEox3e/HCQ4m1P6MrB6W6DnUeQZmAVOK4fcycMLlQq8
+ oxAkAhU/hizvY24TXsZC845wjl/KAizxou1KGuUqUW+PWNQ5GqoL8CErvVUrkuS6VWbi
+ n1Mw==
+X-Gm-Message-State: AOJu0Yxhnr0bSepYkv+a1iZ4x5f0Gr19F8vkTjdTy+nEsZqCNLNLmAU4
+ 0jaystxaBRXnYQneXE4vhbas8rptBolxrCoYC1xvygyjiP0=
+X-Google-Smtp-Source: AGHT+IEzGMVIaFFpOtQ3MJiOm/QErUDRTnXNULZjgHpiLM7Fqf3LNNQJXBiZ/5uH3kUircJDBwyWCw==
+X-Received: by 2002:a1c:4c18:0:b0:40d:7eb2:bf93 with SMTP id
+ z24-20020a1c4c18000000b0040d7eb2bf93mr1384600wmf.46.1704474310418; 
+ Fri, 05 Jan 2024 09:05:10 -0800 (PST)
+Received: from [192.168.69.100] (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
+ [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
+ fc12-20020a05600c524c00b0040d5a9d6b68sm2143198wmb.6.2024.01.05.09.05.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 05 Jan 2024 09:05:10 -0800 (PST)
+Message-ID: <566d5a05-5cd3-40fe-b40e-8e82524d8ea6@linaro.org>
+Date: Fri, 5 Jan 2024 18:05:08 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 00/71] HW core patches for 2024-01-05
+Content-Language: en-US
+To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org
+References: <20240105154307.21385-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240105154307.21385-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,53 +91,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"=E5=91=A8=E7=AB=A5" <273415826@qq.com> writes:
+On 5/1/24 16:41, Philippe Mathieu-Daudé wrote:
+> The following changes since commit 05470c3979d5485003e129ff4b0c2ef98af91d86:
+> 
+>    Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-01-04 19:55:20 +0000)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/philmd/qemu.git tags/hw-cpus-20240105
+> 
+> for you to fetch changes up to a318da6b3f6a88e6cfd6953c519def9457e8962f:
+> 
+>    target/sparc: Simplify qemu_irq_ack (2024-01-05 16:20:15 +0100)
+> 
+> ----------------------------------------------------------------
+> HW core patch queue
+> 
+> - Unify CPU QOM type checks (Gavin)
+> - Simplify uses of some CPU related property (Philippe)
+>    (start-powered-off, ARM reset-cbar and mp-affinity)
+> - Header and documentation cleanups (Zhao, Philippe)
+> - Have Memory API return boolean indicating possible error
+> - Fix frame filter mask in CAN sja1000 model (Pavel)
+> - QOM embed MCF5206 timer into SoC (Thomas)
+> - Simplify LEON3 qemu_irq_ack handler (Clément)
+> 
+> ----------------------------------------------------------------
 
-> Dear Experts,
 
-(add maintainers to CC)
+> Philippe Mathieu-Daudé (37):
 
->
-> I am writing to seek your assistance about CXL emulation in QEMU. I am Zh=
-ou Tong and I am researching how to use QEMU
-> to simulate CXL over Ethernet=E3=80=82
->
-> I want to implement remote registration of CXL.mem devices based on the Q=
-OM model. The general idea is: the CXL slave
-> side notifies the master side of the size of the CXL memory and other con=
-trol information through Ethernet, and the master
-> side registers the CXL device locally based on the control information. W=
-hen the master accesses the CXL device, KVM is
-> responsible for intercepting the action of accessing the memory, and enca=
-psulates the CXL message and forwards it to the
-> slave through Ethernet=EF=BC=8Cultimately achieving remote CXL memory acc=
-ess.. Ask the experts how to register the CXL device
-> locally based on the control information without occupying the HVA resour=
-ces of the master host (OR display the CXL
-> device).
->
-> Thank you in advance for your attention to this email, and I eagerly look=
- forward to any insights or advice you may be able to
-> provide. If there is a more convenient time for us to discuss this matter=
- further, please let me know, and I will be more than
-> happy to accommodate your schedule.
->
-> Once again, thank you for your impactful contributions to the open-source=
- community, and I greatly appreciate your time and
-> consideration.
->
-> Regard,
->
-> Zhou Tong.
->
-> -------------------------------------------------------------------------=
-------------------------------------------------
->
->  *  =E5=91=A8=E7=AB=A5=20=20
->    273415826@qq.com=20=20
-> *=20
+>    backends: Simplify host_memory_backend_memory_complete()
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+I neglected to run checkpatch.pl on this patch, so it lacks:
+
+-- >8 --
+diff --git a/backends/hostmem.c b/backends/hostmem.c
+index 30f69b2cb5..987f6f591e 100644
+--- a/backends/hostmem.c
++++ b/backends/hostmem.c
+@@ -346,5 +346,7 @@ host_memory_backend_memory_complete(UserCreatable 
+*uc, Error **errp)
+      unsigned long maxnode = (lastbit + 1) % (MAX_NODES + 1);
+-    /* ensure policy won't be ignored in case memory is preallocated
++    /*
++     * Ensure policy won't be ignored in case memory is preallocated
+       * before mbind(). note: MPOL_MF_STRICT is ignored on hugepages so
+-     * this doesn't catch hugepage case. */
++     * this doesn't catch hugepage case.
++     */
+      unsigned flags = MPOL_MF_STRICT | MPOL_MF_MOVE;
+@@ -365,3 +367,4 @@ host_memory_backend_memory_complete(UserCreatable 
+*uc, Error **errp)
+
+-    /* We can have up to MAX_NODES nodes, but we need to pass maxnode+1
++    /*
++     * We can have up to MAX_NODES nodes, but we need to pass maxnode+1
+       * as argument to mbind() due to an old Linux bug (feature?) which
+@@ -393,3 +396,4 @@ host_memory_backend_memory_complete(UserCreatable 
+*uc, Error **errp)
+  #endif
+-    /* Preallocate memory after the NUMA policy has been instantiated.
++    /*
++     * Preallocate memory after the NUMA policy has been instantiated.
+       * This is necessary to guarantee memory is allocated with
+---
+
+Since the PR is already in the testing pipeline:
+- if it get merged, I'll send a cleanup patch
+- otherwise if it fails I'll fix it.
+
+Sorry for missing that.
+
+Phil.
 
