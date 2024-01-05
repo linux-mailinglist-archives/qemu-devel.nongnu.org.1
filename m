@@ -2,75 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B76848254DE
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:10:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4364A8254E0
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:10:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLksN-0002bX-QG; Fri, 05 Jan 2024 09:08:43 -0500
+	id 1rLkto-0003Vq-00; Fri, 05 Jan 2024 09:10:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLksL-0002b8-1W
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:08:41 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rLktk-0003R3-Hw
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:10:09 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLksJ-00030O-6i
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:08:40 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40d60c49ee7so16390045e9.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 06:08:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rLkth-000381-LG
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:10:07 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5572a9b3420so1078740a12.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 06:10:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704463717; x=1705068517; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hKciBo3VLeB1ivg2FYiPgY0sifTOvsA6mJmXTFqHC+0=;
- b=qxEJErUv/Jd3oFPJzUTcl8f7ikCA7MITVHxovFiQn1S4rbDzmm5an6LR4DUgZoD58b
- 4Iz6zpGdoxggDRh9CKV41zaywA6Nc24QVvCO+KZmATCzaAOvCYCvgioPdBaAt9sT3lpH
- QHEb/ZPafiSH54D5+Mkf6mgIZgITPSQOoYzHftSHkHfXGKZjInW5sCyWYZJ8QuCIrzyl
- v76AMDQJzzfA3VFq1jEOb3NCG77JpUc4L04x60d3cHEavJPzbO+yzhwZ20zNMrjti9bv
- d1ZgMjTtaLQA37SGT2GtfZHGJR9lR8wtoP2fo1NjpjkJhTplvHlL0mBYjWBwbNHXmOel
- dxJQ==
+ d=linaro.org; s=google; t=1704463802; x=1705068602; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=bahS9iB2kqF0K/bP/F4Orc6xeRWqU4OLx4XmMHcT0DE=;
+ b=UtiujScjwZvQvtoZJ/CxMQA/9eNMZGhwLIQyfUBTPh7pFXYwfnq+LjWjfSypZVwDtM
+ cj4vyVe9w6xhXJXqHkZEZi82W05qrOtSPYfa+5kHsRUBBxhmuTLi4wgww6/PW38PBcBP
+ EFPP76qT26ppZN2A3izkowkX7mkASoODUzGfUUtH9/Hr4prAjoSqkypT7LGm3F5qoDxF
+ yY85gIeD4DQC0aCSi0XiTg/sJlhbDD+gM/BfrO4yAOw/r/F5O+dfr+LF2YcEm8pZP2if
+ ml0MLRgwA0au7VQtIKCX150+l42P9fJQtKeLHgB97YsmB5knYp6BM/ljZTxvPf2UnOk3
+ o0Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704463717; x=1705068517;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hKciBo3VLeB1ivg2FYiPgY0sifTOvsA6mJmXTFqHC+0=;
- b=KOJhvDAI/XjEvPz7iRflk3fpOFTtE8LHHvaV7QSmE7hDQb5zrx8Hxla70GZXuYsw2t
- a0GBJcScjIxzmN5JbzJ1Q6bJV6WZL93WP7q1XzmmByS8p3vr656wTv1XtMkpXyqkj3ZI
- brJ5ARw7Ly9I5a+kvXBXh/pUS7rR6fycXAhSsNVMIM0EWW9YD6usX5GfdY46CTscKf5p
- XzyT6yS5202m73ETC9GB124X5J8MWgon8xVfAJBtKTbUepwdPK8IBlwfQJVVjWDIPZnf
- /LTztZogElw8OkHkki2sc3Rtwm/cUNvKr56bK3BsjBy70mzN98z88tmRoh11To1+ZRfh
- 6XdA==
-X-Gm-Message-State: AOJu0YwmYMVxIi+iN8zFEI1IL2MYEmdoqe9iagO9hKbOK5kbGA+zy7d+
- /vktxAXyzGVTQsyr/rPmztiT4/nxcM0P2g==
-X-Google-Smtp-Source: AGHT+IHRCURP0aJ+kSrc6cNEtOuTZX2Vv1H7ZdVzIWFLRb4XBoIRt4hJn43YWFbuHzCPrh3E9+w8Xw==
-X-Received: by 2002:a05:600c:3ca3:b0:40d:5597:c7e9 with SMTP id
- bg35-20020a05600c3ca300b0040d5597c7e9mr1210263wmb.95.1704463716864; 
- Fri, 05 Jan 2024 06:08:36 -0800 (PST)
-Received: from [192.168.69.100] (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
- [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- k3-20020a5d5243000000b0033668b27f8fsm1477995wrc.4.2024.01.05.06.08.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 05 Jan 2024 06:08:36 -0800 (PST)
-Message-ID: <eca60f4c-2938-4388-8582-8c8216207201@linaro.org>
-Date: Fri, 5 Jan 2024 15:08:35 +0100
+ d=1e100.net; s=20230601; t=1704463802; x=1705068602;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bahS9iB2kqF0K/bP/F4Orc6xeRWqU4OLx4XmMHcT0DE=;
+ b=ahs+sj7zN5H+s44n68uE2AfvUlF23VYZe8OdDuD18hqPX5DOMDJ2Mfnc8xsSogjbVn
+ loDd3hCXpmq714nF28m7C1TGMxRovX5/InXtX1z+yLq72RPlK7QeuNaTpfNZ8SpABxlO
+ 168ex/RJACd8gaikw+LW9YB9RCIwiWKHpUu9SY6QkwA0wFmE8yQwbGWKpNSgohJweNYZ
+ CeOz1Sy0MSSY4Nf9n8MUzsXTvlOwQ/+jcw/C05IrFvmXgkN7TcEYuTejYU1FM2Fb2Cqo
+ mD19cCCymOrQta6y4hMF/7gtWFj5ptis5UfOaRb5dLMZEWYQWMqElNdwx7ldwjsJsyN9
+ shOQ==
+X-Gm-Message-State: AOJu0Yy02+tInjpTHXn4bJrAMvjFgS61Y99wVerE7+SBsdCQFugIxfQd
+ 8tbpOSLDN4D6lDEcwa3CJPwIvaoHvn2Fl14SrLJM4QshAJ7zGSquV8VHKQaO
+X-Google-Smtp-Source: AGHT+IFRxp7wWkE+7Wgug84jK5WlO4MQsu/Ugz3dYBTWYZQI5Kx9UW32/E9pNfuVBzTeHN/LaEY/PPyGzVVe/LQmqDw=
+X-Received: by 2002:a05:6402:3506:b0:557:22e4:437e with SMTP id
+ b6-20020a056402350600b0055722e4437emr1163162edd.7.1704463801692; Fri, 05 Jan
+ 2024 06:10:01 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] hw/pflash: refactor pflash_data_write()
-Content-Language: en-US
-To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org
-References: <20240105135855.268064-1-kraxel@redhat.com>
- <20240105135855.268064-2-kraxel@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240105135855.268064-2-kraxel@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+References: <90d7351c-2680-4ab6-95ee-5dac4e3f21c5@tls.msk.ru>
+ <CAFEAcA8DdsHQ0eCYnh4vNoybodj0mcHCnOMEr9b_aOk7yO2Osw@mail.gmail.com>
+ <ea7dd9f7-b40f-436c-a469-97ef26ac66a2@tls.msk.ru>
+ <d08930a4-7e01-41eb-b118-b20fea0f8556@tls.msk.ru>
+In-Reply-To: <d08930a4-7e01-41eb-b118-b20fea0f8556@tls.msk.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 5 Jan 2024 14:09:49 +0000
+Message-ID: <CAFEAcA_7WZwTeQrdV1NTW7_V0YKtDT6HHcnghWGBwvpEV7HEdQ@mail.gmail.com>
+Subject: Re: virtio-pci in qemu-system-arm is broken in 8.2
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,78 +87,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/1/24 14:58, Gerd Hoffmann wrote:
-> Move the offset calculation, do it once at the start of the function and
-> let the 'p' variable point directly to the memory location which should
-> be updated.  This makes it simpler to update other buffers than
-> pfl->storage in an upcoming patch.  No functional change.
-> 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->   hw/block/pflash_cfi01.c | 30 ++++++++++++++++--------------
->   1 file changed, 16 insertions(+), 14 deletions(-)
-> 
-> diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
-> index 3e2dc08bd78f..67f1c9773ab3 100644
-> --- a/hw/block/pflash_cfi01.c
-> +++ b/hw/block/pflash_cfi01.c
-> @@ -403,33 +403,35 @@ static void pflash_update(PFlashCFI01 *pfl, int offset,
->   static inline void pflash_data_write(PFlashCFI01 *pfl, hwaddr offset,
->                                        uint32_t value, int width, int be)
->   {
-> -    uint8_t *p = pfl->storage;
-> +    uint8_t *p;
->   
->       trace_pflash_data_write(pfl->name, offset, width, value, pfl->counter);
-> +    p = pfl->storage + offset;
-> +
->       switch (width) {
->       case 1:
-> -        p[offset] = value;
-> +        p[0] = value;
->           break;
->       case 2:
->           if (be) {
-> -            p[offset] = value >> 8;
-> -            p[offset + 1] = value;
-> +            p[0] = value >> 8;
-> +            p[1] = value;
->           } else {
-> -            p[offset] = value;
-> -            p[offset + 1] = value >> 8;
-> +            p[0] = value;
-> +            p[1] = value >> 8;
->           }
->           break;
->       case 4:
->           if (be) {
-> -            p[offset] = value >> 24;
-> -            p[offset + 1] = value >> 16;
-> -            p[offset + 2] = value >> 8;
-> -            p[offset + 3] = value;
-> +            p[0] = value >> 24;
-> +            p[1] = value >> 16;
-> +            p[2] = value >> 8;
-> +            p[3] = value;
->           } else {
-> -            p[offset] = value;
-> -            p[offset + 1] = value >> 8;
-> -            p[offset + 2] = value >> 16;
-> -            p[offset + 3] = value >> 24;
-> +            p[0] = value;
-> +            p[1] = value >> 8;
-> +            p[2] = value >> 16;
-> +            p[3] = value >> 24;
->           }
->           break;
->       }
+On Thu, 4 Jan 2024 at 17:17, Michael Tokarev <mjt@tls.msk.ru> wrote:
+>
+> 04.01.2024 19:25, Michael Tokarev wrote:
+> ...
+> > this archive contains kernel+initrd.  I run it this way:
+> >
+> > qemu-system-arm -append root=LABEL=debvm -nographic -machine type=virt \
+> >   -drive media=disk,format=raw,file=vmlinuz,if=virtio,snapshot=on \
+> >   -no-user-config -m 1G -kernel vmlinuz -initrd initrd.img
+>
+> This is actually even more fishy.
+>
+> The reproducer needs -cpu max to "work." Without -cpu max, it
+> fails to recognize virtio pci devices in both cases - in 8.2.0
+> with or without the commit in question (b8f7959f28c4f36496).
+> Only with -cpu max it works after reverting b8f7959f28c.
+>
+> Additional kernel message in case when it doesn't work:
+>
+> [    1.372841] pci-host-generic 4010000000.pcie: \
+>    can't claim ECAM area [mem 0x10000000-0x1fffffff]: \
+>    address conflict with pcie@10000000 [mem 0x10000000-0x3efeffff]
+>
+> which isn't generated in case everything's ok.
 
-Close to commit c3d25271b2 ("hw/block/pflash_cfi02: Use the ldst
-API in pflash_write()"):
+This looks in fact like commit b8f7959f28c fixed a bug which
+was masking problems with booting newer kernels. What happens is:
 
-   if (be) {
-       stn_be_p(p, width, value);
-   } else {
-       stn_le_p(p, width, value);
-   }
+ * arm_pamax() is a function for finding out the maximum
+   physical address space size supported by the CPU
+ * it is called by the virt board on a CPU object which has
+   been inited but not realized
+ * before b8f7959f28c the implications like "V7VE implies
+   LPAE" were only done at realize, and so arm_pamax() has
+   some manual workarounds to do the same logic
+ * but those workarounds were missing the case "v8 implies
+   v7ve implies lpae", so for a v8 CPU we incorrectly reported
+   that it could only do 32 bit addressing (affecting only
+   "max" on qemu-system-arm)
+
+b8f7959f28c moves where we do the "v8 implies v7ve etc" logic,
+which means that
+ * the workarounds in arm_pamax() aren't needed any more
+ * we now correctly report 40 bits as the pa size for 'max'
+(That is, '-cpu max' then behaves the same as '-cpu cortex-a15',
+as intended.)
+
+Unfortunately it seems like these kernels don't correctly
+handle how we report the PCI controller when we're using a
+40-bit address space. This seems like it's probably a kernel
+bug, but it might be that we're getting the DTB wrong.
+In any case it seems a bit awkward to actively require the
+guest kernel to be LPAE in order to boot on an LPAE CPU,
+so maybe we should tweak the logic to not put the ECAM
+in high memory for a 32-bit CPU.
+
+thanks
+-- PMM
 
