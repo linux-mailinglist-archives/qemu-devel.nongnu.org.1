@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C25182560C
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:48:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7948825639
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:58:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLlTN-0007x0-K7; Fri, 05 Jan 2024 09:46:58 -0500
+	id 1rLleX-00085c-Fj; Fri, 05 Jan 2024 09:58:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLlTF-0007ue-JH
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:46:50 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rLleH-000827-Sl
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:58:13 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLlTE-0003cP-0r
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:46:49 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a26ed1e05c7so195605266b.2
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 06:46:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rLleF-0003KA-V6
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:58:13 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-555144cd330so2129608a12.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 06:58:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704466006; x=1705070806; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4q2PRBt+A+8v/H6PAfohK1hhNC1DLucOWK2Y3cCn9GA=;
- b=xT0C684oi3lkkTq4HxOLe1KabzL2J/Ru6xFLtWDt6SlTrXIcXUP7/0mthLN+6lXsnU
- FlK9kKqPxxaBK0zwuEmbIXwTdqdiHzmTYNbS/OYvBddiyeiSQeHkj/j7FU1JNVztey8z
- UnXE9XEIrTU4B01zVXbD0Ip8b2D8FEa/yMRUDOzlJVEuvqqoa2F9RgKUCKojBAazQvi3
- Qs4DnJ9gyUrGWmQJ3ZwBRE1PLrCUE9eluwfRYo5eJ/cWEnGDFpoBQSmdHpx0YpFwZZA8
- hnA5Afo+dvcn/AwcqIs26BPX7NctcszuAIvdQuSLfEmz+CxMoFae9559B5yXNYQ5ipD7
- /APg==
+ d=linaro.org; s=google; t=1704466689; x=1705071489; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=itu+JwLJHwRCZPfVP49tBSwhZMj0Z3KwKhApjwEVvng=;
+ b=rcuvsORTH5DqJ5Ig/asI/1tUfyLu8v64OW15uJIep9mWhx/msPZCExr2pTjLtaEWak
+ GxXoJZgvr3Fr6EjOPLWZZ34KelKyBu0LuxJqaMauX5UHh2688koR9FrHz0x/FceY9pdi
+ NMtxT7xonKQLRkj5ZAA7ePImmPrzDf9xCBBLnhxiocfUWpUv2m6WSZS8V295KAooaBKD
+ 8rIi1SWOKWEXast48pwODjvxfXCjBM6377HlmGv63uzwZbR9bvy2uGMtl2IuswSK+WNQ
+ HrgSyXaXcU9eipyEYG0nrnF9+B6/VwN7soXLnWuSkP3PqBJJeBD8vFhb19Jrg4RM7IbI
+ mMiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704466006; x=1705070806;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4q2PRBt+A+8v/H6PAfohK1hhNC1DLucOWK2Y3cCn9GA=;
- b=EZe7U6k0HViO3BQPS1hPab6ImDch9V2KzYMTiJqNUSiwc0IoxC//GHfllvmqo4/J8g
- cXdTT6oaiOChS8Kb7lBIiw90idKw0jOJnBqh7DsX3GnWqs4f2OA1QYrHtAIw/R1PRqtB
- Iz/rBblgk6WBOJkivfa5ZZgVhLz2fD+PesEqc0bRWXJkUrnGmFiWU58gMbKv9m17DF2l
- mslCX+uCJrSbJgv2xAqVBLg04TSn9ci2BUUJvmF8+iYhawGOd6tMgMKnmHsLkF4uJQFT
- GUcXFdfMYjVVUl6U3w54tSvP7zjChU6J0T8P8G0O/XyvYPWr2akd1bunOZtQnI1lfPRM
- L/PA==
-X-Gm-Message-State: AOJu0YwV9Mn1WhKrQS9IjeNrdQIuj1YjBhJrzB+CBa/W1OxhJa+VlylB
- 3lU9uZbM5m61cqe9u8dBT36cqnlEdQYF2A==
-X-Google-Smtp-Source: AGHT+IGZyZI5euoER8n1OHXUg290vvQO/I1fJoxzNxqWvhHLH9p7iCV7lRqJ1F0iiLUH0cCHsVqdQQ==
-X-Received: by 2002:a17:907:b9c9:b0:a28:e4d3:7b1a with SMTP id
- xa9-20020a170907b9c900b00a28e4d37b1amr801141ejc.154.1704466006275; 
- Fri, 05 Jan 2024 06:46:46 -0800 (PST)
-Received: from [192.168.69.100] (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
- [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- jo21-20020a170906f6d500b00a275637e699sm942950ejb.166.2024.01.05.06.46.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 05 Jan 2024 06:46:45 -0800 (PST)
-Message-ID: <af352e7d-3346-4705-be77-6eed86858d18@linaro.org>
-Date: Fri, 5 Jan 2024 15:46:43 +0100
+ d=1e100.net; s=20230601; t=1704466689; x=1705071489;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=itu+JwLJHwRCZPfVP49tBSwhZMj0Z3KwKhApjwEVvng=;
+ b=YsJuS0x5n8worCnDPL/N/dGqc/0cG+SQs6JKp9r4VDWoMZdVtqW1zPW8KpsYe577bZ
+ d3+iZOUTP1aP7QtkQiUHdCK1qELRifOeweqY0/bZ5bdhvu7t5iTYibbqwBMhaknDdB8a
+ NBLCE9W6991nBJAjENsVSrAjGc+T7VSuyeMOnbhTnxXBHGDVBxmPoujQNIBoTNmqC9So
+ dqu6vEm0D7/hnS5uMZ0bEVh3N7T95wEIY6VyMcCv/4ptoOxNAAssV1F/P0SM/xshhWA6
+ kWt2JuXtQ2UCx6DTrBmg2x/7LSWBk+mI7tMlgj+gi52NsGkrIg70SqqelBzZIGVFs3vA
+ f48Q==
+X-Gm-Message-State: AOJu0YySNP8ktck35buC0Fx5xSJi3zle/Xr5koBVOW6TDtnUzGMuVMMt
+ dtQZa/HSiHVb+IFNtmoxqgywoQ7ZRjZFxFuAJvdEhqQO8uIN+g==
+X-Google-Smtp-Source: AGHT+IEvCUuIZybalpKOXQkos8QKXWOZfecXhJcb5lbA2A/XuICUGwSd9xnwsmPuFZFFUnlpFM9271ZPq85ixHmYPK8=
+X-Received: by 2002:a50:9354:0:b0:557:1af5:d4e0 with SMTP id
+ n20-20020a509354000000b005571af5d4e0mr806678eda.63.1704466689281; Fri, 05 Jan
+ 2024 06:58:09 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20231120213301.24349-1-philmd@linaro.org>
+ <20231120213301.24349-4-philmd@linaro.org>
+ <4h38a.h95poe276hnn@linaro.org>
+ <af352e7d-3346-4705-be77-6eed86858d18@linaro.org>
+In-Reply-To: <af352e7d-3346-4705-be77-6eed86858d18@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 5 Jan 2024 14:57:57 +0000
+Message-ID: <CAFEAcA_yKxnTMnfWVdXWixPq27=OVQCZ0BjRdiPfSKKhqh=gVw@mail.gmail.com>
 Subject: Re: [PATCH-for-9.0 03/25] memory: Have
  memory_region_init_rom_nomigrate() handler return a boolean
-Content-Language: en-US
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, qemu-ppc@nongnu.org,
- =?UTF-8?Q?C_=C3=A9_dric_Le_Goater?= <clg@kaod.org>,
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-arm@nongnu.org, 
+ qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, qemu-ppc@nongnu.org, 
+ =?UTF-8?Q?C_=C3=A9_dric_Le_Goater?= <clg@kaod.org>, 
  Peter Xu <peterx@redhat.com>
-References: <20231120213301.24349-1-philmd@linaro.org>
- <20231120213301.24349-4-philmd@linaro.org> <4h38a.h95poe276hnn@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <4h38a.h95poe276hnn@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,71 +97,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/11/23 13:10, Manos Pitsidianakis wrote:
-> On Mon, 20 Nov 2023 23:32, Philippe Mathieu-Daudé <philmd@linaro.org> 
+On Fri, 5 Jan 2024 at 14:46, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
 > wrote:
->> Following the example documented since commit e3fe3988d7 ("error:
->> Document Error API usage rules"), have cpu_exec_realizefn()
->> return a boolean indicating whether an error is set or not.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->> include/exec/memory.h | 4 +++-
->> system/memory.c       | 8 ++++++--
->> 2 files changed, 9 insertions(+), 3 deletions(-)
+>
+> On 21/11/23 13:10, Manos Pitsidianakis wrote:
+> > On Mon, 20 Nov 2023 23:32, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.o=
+rg>
+> > wrote:
+> >> Following the example documented since commit e3fe3988d7 ("error:
+> >> Document Error API usage rules"), have cpu_exec_realizefn()
+> >> return a boolean indicating whether an error is set or not.
+> >>
+> >> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> >> ---
+> >> include/exec/memory.h | 4 +++-
+> >> system/memory.c       | 8 ++++++--
+> >> 2 files changed, 9 insertions(+), 3 deletions(-)
+>
+>
+> >> diff --git a/system/memory.c b/system/memory.c
+> >> index 337b12a674..bfe0b62d59 100644
+> >> --- a/system/memory.c
+> >> +++ b/system/memory.c
+> >> @@ -1729,14 +1729,18 @@ void memory_region_init_alias(MemoryRegion *mr=
+,
+> >>     mr->alias_offset =3D offset;
+> >> }
+> >>
+> >> -void memory_region_init_rom_nomigrate(MemoryRegion *mr,
+> >> +bool memory_region_init_rom_nomigrate(MemoryRegion *mr,
+> >>                                       Object *owner,
+> >>                                       const char *name,
+> >>                                       uint64_t size,
+> >>                                       Error **errp)
+> >> {
+> >> -    memory_region_init_ram_flags_nomigrate(mr, owner, name, size, 0,
+> >> errp);
+> >> +    bool rv;
+> >> +
+> >> +    rv =3D memory_region_init_ram_flags_nomigrate(mr, owner, name,
+> >> size, 0, errp);
+> >>     mr->readonly =3D true;
+> >> +
+> >
+> > By the way, do we want to set mr->readonly on failure? Should there be
+> > modifications if an error is propagated upwards?
+>
+> Good point
 
+I don't think it matters much. If the init function fails,
+then the MemoryRegion is not initialized, and there's
+nothing you can do with the struct except free it (if it
+was in allocated memory). Whether the readonly field is
+true or false doesn't matter, because conceptually it's
+all undefined-values. And memory_region_init_ram_flags_nomigrate()
+has already written to some fields, so avoiding changing
+mr->readonly specifically doesn't seem worthwhile.
 
->> diff --git a/system/memory.c b/system/memory.c
->> index 337b12a674..bfe0b62d59 100644
->> --- a/system/memory.c
->> +++ b/system/memory.c
->> @@ -1729,14 +1729,18 @@ void memory_region_init_alias(MemoryRegion *mr,
->>     mr->alias_offset = offset;
->> }
->>
->> -void memory_region_init_rom_nomigrate(MemoryRegion *mr,
->> +bool memory_region_init_rom_nomigrate(MemoryRegion *mr,
->>                                       Object *owner,
->>                                       const char *name,
->>                                       uint64_t size,
->>                                       Error **errp)
->> {
->> -    memory_region_init_ram_flags_nomigrate(mr, owner, name, size, 0, 
->> errp);
->> +    bool rv;
->> +
->> +    rv = memory_region_init_ram_flags_nomigrate(mr, owner, name, 
->> size, 0, errp);
->>     mr->readonly = true;
->> +
-> 
-> By the way, do we want to set mr->readonly on failure? Should there be 
-> modifications if an error is propagated upwards?
-
-Good point, I'm squashing:
-
--- >8 --
-diff --git a/system/memory.c b/system/memory.c
-index a748de3694..72c6441e20 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -1707,12 +1707,13 @@ bool 
-memory_region_init_rom_nomigrate(MemoryRegion *mr,
-                                        uint64_t size,
-                                        Error **errp)
-  {
--    bool rv;
--
--    rv = memory_region_init_ram_flags_nomigrate(mr, owner, name, size, 
-0, errp);
-+    if (!memory_region_init_ram_flags_nomigrate(mr, owner, name,
-+                                                size, 0, errp)) {
-+         return false;
-+    }
-      mr->readonly = true;
-
--    return rv;
-+    return true;
-  }
----
+-- PMM
 
