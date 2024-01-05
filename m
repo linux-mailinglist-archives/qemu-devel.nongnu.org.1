@@ -2,87 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD83E8252FE
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 12:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B29FA825301
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 12:38:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLiVl-0005XX-7w; Fri, 05 Jan 2024 06:37:13 -0500
+	id 1rLiWT-0005wW-IR; Fri, 05 Jan 2024 06:37:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1rLiVh-0005Wf-0c
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:37:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1rLiVe-00076A-H7
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:37:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704454624;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/AF7UZ0kIvzE4wEVF2e7piXtnsH7yKeM9MTSq/f0xqY=;
- b=X2UdFqt3wslfoTCCL3VJ6+Ap5dbaZqR6LIpHeQnO6AgRi4QLSb7u56V/nU5E/4WIlb7KDG
- SCaCThBhh0GcQYfUy8VjmqcG6oaXl+9Jd98MQL0HoQgV0ayQtpphBgzFXbSHepevSz05h9
- F61965xibq+PB6vdjjkzPHZ2LoHzQoA=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-JNcQuxW4NqmmevYuy3vUPw-1; Fri, 05 Jan 2024 06:37:03 -0500
-X-MC-Unique: JNcQuxW4NqmmevYuy3vUPw-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-556c3940061so841658a12.3
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 03:37:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rLiWR-0005vP-Hk
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:37:55 -0500
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rLiWM-0007B5-7i
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:37:55 -0500
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2ccbded5aa4so17761251fa.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 03:37:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704454668; x=1705059468; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TFkjv9dxhyJHBDfpyQf/cncDrZs0NtSHgpm16fB1J+0=;
+ b=cNo1E6EHgt47MyF53TXLxTawbnJYqNmbRmC9AclOTKn9Kpej+HUUhbFkpUQuuNg5oi
+ 1PWcQUFZTURTvWkZW/fO8oetekVoZasC1NLPKrFzYDUrfLMkGhTl0NmVG99HSVCttbyS
+ Gu5g0sugICi493HLqdLUTB+K9RkDuKlQBcBAh57yb7fOhoc+XjclG4xoSRcbScL+UoEK
+ yoZu9DO1QWthajjkFs5ZbFYJuTwr5BP+blO5aMScZOqnNKWPKmO/k5itp/YDjDrcjabm
+ LvJRDhRRFsX1tuEyB0YqH+xbgMosL1dIjZY3+eumsVTfaH53RVvFx4CGHKRcJV8UjrpI
+ FRqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704454621; x=1705059421;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/AF7UZ0kIvzE4wEVF2e7piXtnsH7yKeM9MTSq/f0xqY=;
- b=dKCwXHiPjIgC4L/2MpxLdITK0oO6qHbuWtP9XPPVmHKcuukg6ET6mvzgVQHxDYnhEx
- zd0UowHdiThhLnXBIFEBPdr0rcFqmG8clz9NfK2Lx+47LwH1fwxcNgaYgs8BdVjs+wiv
- XzPKvvZkJkliz1Jzdr9HzE5b4ujJFOre6DeBUYXxS+WpjdDhB+9Aa+IrHE3yCurSVpWa
- dcR+iaMzPAKM6qNoTdnpq+wJn95Yfs+dWRTyZX0xUMjE6fD4IMQlwavY8Y0ffpej6Y/A
- KZX/c+kAoUf/52q7I1bdO583uzphjOtsZaF6lTI28Yu7uc5ryYXST9Dt7ilEZxQAeory
- izzw==
-X-Gm-Message-State: AOJu0YzeK6u/ZFQiqj3oTIsYw1EUOgrtaUXRvLswrXQjhT7dl1FmsYCE
- E5VEhe0Fam71+G5zcKIRfk4FT/n2jg+pWbDm40bdjXkOZVwIHqESeP3N27Vc9QlG4neCfBWbZN8
- yNWRsm5ecd74NHoF6Zchw96RTJWGbfn+Rb2s0mAQ3WlRsFEL3dg==
-X-Received: by 2002:a50:f603:0:b0:557:2af4:ae80 with SMTP id
- c3-20020a50f603000000b005572af4ae80mr426735edn.65.1704454621277; 
- Fri, 05 Jan 2024 03:37:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFmaq8XqWJTNVGvSI3lFsjb8k6VeUuX46s8jQzvD7QEGj1d4XCuRfWmGfvYmCh203QnKQobQiY9rQjsbseYLfM=
-X-Received: by 2002:a50:f603:0:b0:557:2af4:ae80 with SMTP id
- c3-20020a50f603000000b005572af4ae80mr426731edn.65.1704454621018; Fri, 05 Jan
- 2024 03:37:01 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704454668; x=1705059468;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=TFkjv9dxhyJHBDfpyQf/cncDrZs0NtSHgpm16fB1J+0=;
+ b=ZS4SE2EcHH8ERAltLVlTnxHiFMZYqnqYnD7TFaC4mQErnLICyQfxmzbAEFczeO9msw
+ yMEzSjQCJOcOAIfDshkSHq6A6B2QdfINm6L7K8cjxadVC9iWQe4/2/1NgzLvAvu8j7Yx
+ oqs0isuRI9/8XpQ/i7bvA3+a/mx1RJdbbwlL08ZIjjBLq35WdN12xZo41AJH1e3jzkRG
+ YNefQMc+07bxHHP5mzprxSgYAC8zVY39r7iLWNaTn6ec5m1Lb5ReIlq1RdzpwUkt5Wvs
+ 4ERl8NC3NrW2JIP9iRrSUW4I4Ev+fyYCSW/u6Ce2aBO85El3NTCgNXtHLLgsm/+tWLzt
+ F+Dw==
+X-Gm-Message-State: AOJu0YyUbTZJ0jhz8jVS4WFJU0cznRpY0DtSaRPosjL3PdeFyAtxmFJ6
+ /tovQH+Jv++V/DTOgcaXYJQfIQ0vfp6CeQ==
+X-Google-Smtp-Source: AGHT+IG3/MAf/jl/vf11S3y/bYYZLCTYkxC67I8J4pmltzjjKJPKqRJBvlXtOBF8WkUv1Xncmijo1w==
+X-Received: by 2002:a19:9156:0:b0:50e:10e8:d544 with SMTP id
+ y22-20020a199156000000b0050e10e8d544mr1045215lfj.68.1704454668387; 
+ Fri, 05 Jan 2024 03:37:48 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ bd7-20020a05600c1f0700b0040d85a1fad9sm1303495wmb.46.2024.01.05.03.37.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 05 Jan 2024 03:37:48 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 759DC5F933;
+ Fri,  5 Jan 2024 11:37:47 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Gerd Hoffmann <kraxel@redhat.com>,  Mathieu
+ Poirier <mathieu.poirier@linaro.org>,  Kevin Wolf <kwolf@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Jason Wang
+ <jasowang@redhat.com>,  Erik Schilling <erik.schilling@linaro.org>,  Eric
+ Blake <eblake@redhat.com>,  Fam Zheng <fam@euphon.net>,  =?utf-8?Q?Marc-A?=
+ =?utf-8?Q?ndr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,
+ virtio-fs@redhat.com,  Hanna Reitz <hreitz@redhat.com>,  Manos
+ Pitsidianakis <manos.pitsidianakis@linaro.org>,  Daniel P. =?utf-8?Q?Berr?=
+ =?utf-8?Q?ang=C3=A9?=
+ <berrange@redhat.com>,  qemu-block@nongnu.org,  Markus Armbruster
+ <armbru@redhat.com>,  "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,  Raphael Norwitz
+ <raphael.norwitz@nutanix.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>,  Stefan Hajnoczi
+ <stefanha@redhat.com>
+Subject: Re: [PATCH v9 01/11] virtio: split into vhost-user-base and
+ vhost-user-device
+In-Reply-To: <98246d7d-0e6f-45c3-91c2-2b2e1cd7fe93@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 5 Jan 2024 10:49:03
+ +0100")
+References: <20240104210945.1223134-1-alex.bennee@linaro.org>
+ <20240104210945.1223134-2-alex.bennee@linaro.org>
+ <98246d7d-0e6f-45c3-91c2-2b2e1cd7fe93@linaro.org>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Fri, 05 Jan 2024 11:37:47 +0000
+Message-ID: <87plygf1tg.fsf@draig.linaro.org>
 MIME-Version: 1.0
-References: <b416aee3-72a9-4642-b219-3e1800ee5b3c@t-online.de>
- <20240104203422.12308-5-vr_qemu@t-online.de>
-In-Reply-To: <20240104203422.12308-5-vr_qemu@t-online.de>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Fri, 5 Jan 2024 15:36:49 +0400
-Message-ID: <CAMxuvazLnP-_PC-0PbxNncp1C+HzZOwvvmNwbdrLUxgY7eMcqA@mail.gmail.com>
-Subject: Re: [PATCH 05/10] hw/audio/virtio-sound: return correct command
- response size
-To: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x232.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,91 +114,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-On Fri, Jan 5, 2024 at 12:34=E2=80=AFAM Volker R=C3=BCmelin <vr_qemu@t-onli=
-ne.de> wrote:
+> On 4/1/24 22:09, Alex Benn=C3=A9e wrote:
+>> Lets keep a cleaner split between the base class and the derived
+>> vhost-user-device which we can use for generic vhost-user stubs. This
+>> includes an update to introduce the vq_size property so the number of
+>> entries in a virtq can be defined.
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> ---
+>> v5
+>>    - s/parent/parent_obj/
+>>    - remove left over vhost-user-device.h
+>>    - use DEFINE_TYPES
+>> v6
+>>    - rebase and set .abstract =3D true for vhost-user-device
+>> v7
+>>    - checkpatch line length + MAINTAINERS
+>>    - s/abstract =3D true/dc->user_creatable =3D false/ for both mmio and=
+ pci
+>> ---
+>>   MAINTAINERS                                   |   6 +
+>>   ...{vhost-user-device.h =3D> vhost-user-base.h} |  21 +-
+>>   hw/virtio/vhost-user-base.c                   | 346 ++++++++++++++++++
+>>   hw/virtio/vhost-user-device-pci.c             |  13 +-
+>>   hw/virtio/vhost-user-device.c                 | 338 +----------------
+>>   hw/virtio/meson.build                         |   1 +
+>>   6 files changed, 383 insertions(+), 342 deletions(-)
+>>   rename include/hw/virtio/{vhost-user-device.h =3D> vhost-user-base.h} =
+(71%)
+>>   create mode 100644 hw/virtio/vhost-user-base.c
 >
-> The payload size returned by command VIRTIO_SND_R_PCM_INFO is
-> wrong. The code in process_cmd() assumes that all commands
-> return only a virtio_snd_hdr payload, but some commands like
-> VIRTIO_SND_R_PCM_INFO may return an additional payload.
 >
-> Add a zero initialized payload_size variable to struct
-> virtio_snd_ctrl_command to allow for additional payloads.
+>> @@ -358,6 +42,9 @@ static void vud_class_init(ObjectClass *klass, void *=
+data)
+>>   {
+>>       DeviceClass *dc =3D DEVICE_CLASS(klass);
+>>   +    /* Reason: stop inexperienced users confusing themselves */
+>> +    dc->user_creatable =3D false;
 >
-> Signed-off-by: Volker R=C3=BCmelin <vr_qemu@t-online.de>
-> ---
->  hw/audio/virtio-snd.c         | 7 +++++--
->  include/hw/audio/virtio-snd.h | 1 +
->  2 files changed, 6 insertions(+), 2 deletions(-)
 >
-> diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-> index a2817a64b5..9f3269d72b 100644
-> --- a/hw/audio/virtio-snd.c
-> +++ b/hw/audio/virtio-snd.c
-> @@ -262,12 +262,13 @@ static void virtio_snd_handle_pcm_info(VirtIOSound =
-*s,
->          memset(&pcm_info[i].padding, 0, 5);
->      }
->
-> +    cmd->payload_size =3D sizeof(virtio_snd_pcm_info) * count;
->      cmd->resp.code =3D cpu_to_le32(VIRTIO_SND_S_OK);
->      iov_from_buf(cmd->elem->in_sg,
->                   cmd->elem->in_num,
->                   sizeof(virtio_snd_hdr),
->                   pcm_info,
-> -                 sizeof(virtio_snd_pcm_info) * count);
-> +                 cmd->payload_size);
+> What about making VHOST_USER_DEVICE_PCI and
+> TYPE_VHOST_USER_DEVICE TypeInfos abstract instead?
 
-iov_from_buf() return value should probably be checked to match the
-expected written size..
+I had in a previous iteration (v7) but AIUI abstract really means
+something different - the device can be instantiated but we just want to
+stop the user from creating it arbitrarily.
 
-The earlier check for iov_size() is then probably redundant. Hmm, it
-checks for req.size, which should probably match
-sizeof(virtio_snd_pcm_info) too.
-
->  }
 >
->  /*
-> @@ -805,7 +806,8 @@ process_cmd(VirtIOSound *s, virtio_snd_ctrl_command *=
-cmd)
->                   0,
->                   &cmd->resp,
->                   sizeof(virtio_snd_hdr));
-> -    virtqueue_push(cmd->vq, cmd->elem, sizeof(virtio_snd_hdr));
-> +    virtqueue_push(cmd->vq, cmd->elem,
-> +                   sizeof(virtio_snd_hdr) + cmd->payload_size);
->      virtio_notify(VIRTIO_DEVICE(s), cmd->vq);
->  }
->
-> @@ -856,6 +858,7 @@ static void virtio_snd_handle_ctrl(VirtIODevice *vdev=
-, VirtQueue *vq)
->          cmd->elem =3D elem;
->          cmd->vq =3D vq;
->          cmd->resp.code =3D cpu_to_le32(VIRTIO_SND_S_OK);
-> +        /* implicit cmd->payload_size =3D 0; */
->          QTAILQ_INSERT_TAIL(&s->cmdq, cmd, next);
->          elem =3D virtqueue_pop(vq, sizeof(VirtQueueElement));
->      }
-> diff --git a/include/hw/audio/virtio-snd.h b/include/hw/audio/virtio-snd.=
-h
-> index d1a68444d0..d6e08bd30d 100644
-> --- a/include/hw/audio/virtio-snd.h
-> +++ b/include/hw/audio/virtio-snd.h
-> @@ -210,6 +210,7 @@ struct virtio_snd_ctrl_command {
->      VirtQueue *vq;
->      virtio_snd_hdr ctrl;
->      virtio_snd_hdr resp;
-> +    size_t payload_size;
->      QTAILQ_ENTRY(virtio_snd_ctrl_command) next;
->  };
->  #endif
-> --
-> 2.35.3
->
+>> +
+>>       device_class_set_props(dc, vud_properties);
+>>       dc->vmsd =3D &vud_vmstate;
+>>       set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
+>> @@ -366,14 +53,11 @@ static void vud_class_init(ObjectClass *klass, void=
+ *data)
+>>   static const TypeInfo vud_info =3D {
+>>       .name =3D TYPE_VHOST_USER_DEVICE,
+>>       .parent =3D TYPE_VHOST_USER_BASE,
+>> -    .instance_size =3D sizeof(VHostUserBase),
+>>       .class_init =3D vud_class_init,
+>> -    .class_size =3D sizeof(VHostUserBaseClass),
+>>   };
 
-otherwise, lgtm. Should it be backported to -stable ?
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
