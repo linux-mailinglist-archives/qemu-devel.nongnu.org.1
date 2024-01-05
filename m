@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24250825B1B
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 20:33:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1129A825B16
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 20:32:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLpuU-0000Ly-2n; Fri, 05 Jan 2024 14:31:14 -0500
+	id 1rLpuS-0000Jm-4N; Fri, 05 Jan 2024 14:31:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rLpuG-0000HL-AW; Fri, 05 Jan 2024 14:31:01 -0500
+ id 1rLpuG-0000HN-Ar; Fri, 05 Jan 2024 14:31:01 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rLpuB-000300-Ks; Fri, 05 Jan 2024 14:30:57 -0500
+ id 1rLpuC-00030C-OL; Fri, 05 Jan 2024 14:30:58 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 83D4840D2D;
+ by isrv.corpit.ru (Postfix) with ESMTP id B4C5D40D2E;
  Fri,  5 Jan 2024 22:30:42 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 262175B1ED;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6257E5B1EE;
  Fri,  5 Jan 2024 22:30:39 +0300 (MSK)
-Received: (nullmailer pid 116610 invoked by uid 1000);
+Received: (nullmailer pid 116613 invoked by uid 1000);
  Fri, 05 Jan 2024 19:30:38 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 2/6] chardev/char.c: fix "abstract device type" error message
-Date: Fri,  5 Jan 2024 22:30:34 +0300
-Message-Id: <20240105193038.116576-3-mjt@tls.msk.ru>
+Subject: [PULL 3/6] audio/audio.c: remove trailing newline in error_setg
+Date: Fri,  5 Jan 2024 22:30:35 +0300
+Message-Id: <20240105193038.116576-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240105193038.116576-1-mjt@tls.msk.ru>
 References: <20240105193038.116576-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,33 +59,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current error message:
+error_setg() appends newline to the formatted message.
+Fixes: cb94ff5f80c5 ("audio: propagate Error * out of audio_init")
 
- qemu-system-x86_64: -chardev spice,id=foo: Parameter 'driver' expects an abstract device type
-
-while in fact the meaning is in reverse, -chardev expects
-a non-abstract device type.
-
-Fixes: 777357d758d9 ("chardev: qom-ify" 2016-12-07)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- chardev/char.c | 2 +-
+ audio/audio.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/chardev/char.c b/chardev/char.c
-index 996a024c7a..119b548784 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -518,7 +518,7 @@ static const ChardevClass *char_get_class(const char *driver, Error **errp)
- 
-     if (object_class_is_abstract(oc)) {
-         error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "driver",
--                   "an abstract device type");
-+                   "a non-abstract device type");
-         return NULL;
-     }
- 
+diff --git a/audio/audio.c b/audio/audio.c
+index a1097bb016..af0ae33fed 100644
+--- a/audio/audio.c
++++ b/audio/audio.c
+@@ -1744,7 +1744,7 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
+         if (driver) {
+             done = !audio_driver_init(s, driver, dev, errp);
+         } else {
+-            error_setg(errp, "Unknown audio driver `%s'\n", drvname);
++            error_setg(errp, "Unknown audio driver `%s'", drvname);
+         }
+         if (!done) {
+             goto out;
 -- 
 2.39.2
 
