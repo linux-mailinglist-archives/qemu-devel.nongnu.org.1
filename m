@@ -2,67 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19960825964
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 18:49:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C3E825982
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 18:57:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLoKF-0006dW-1R; Fri, 05 Jan 2024 12:49:43 -0500
+	id 1rLoQD-0000M3-KL; Fri, 05 Jan 2024 12:55:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLoKD-0006dN-Cc
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 12:49:41 -0500
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ id 1rLoQA-0000HG-CR
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 12:55:51 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLoKB-0007mV-T3
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 12:49:41 -0500
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2cd33336b32so10383341fa.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 09:49:37 -0800 (PST)
+ id 1rLoQ7-0003ii-Np
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 12:55:50 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-555f581aed9so2136263a12.3
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 09:55:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704476976; x=1705081776; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704477346; x=1705082146; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=+sXnJtWcjyBLOb2yW1MhZlclOJfsqSSZCQwvR/NIHrA=;
- b=N+MnHX/MO4x3+RFDyu5814V3teR4vZUK9qrnKwjz7Ks3yJz5hdoEugTXNWqegxMrlU
- 3ZZiVGqzXaBdGdwWauR80cQhuGT/jb16vmC2r49+Zmhq8MPLsK244HstFNLUDRcUGSyz
- xTewPEfaV5khOkEJUOBh5E9l5utknjRQ/HWVA8IIeINfgrXW+zPEWvrRzLzYyf1zSUWj
- P0mFya+iVBmYAJP0FS4zwNQeoyJD9IsnUqWbPmulhE6tTppWgxSG2wsFQnGes/Mwe/G9
- Gb8QIG5ZEePJxNVHWXOMneoWv/bLPQyE9xqhh+vHSZ3ucYV6ypSwE0d52EuUhvjQ1Vvy
- LBuw==
+ bh=elohRhapRXRLisFPupz54RHCVYVrr8bTqmeGSIcKb3c=;
+ b=SsmDlFg21gzOfGR2KbiRBrkiL04EXgKLFm5XteMKt7A510uF70oMg4hlacvzad7aoA
+ 7FjA7OfgBRF/nZXxX2Mc+pnylNFU7YtUdLHqoOMSivr0AGWV2BSp3QYITTZvPl8fH0w+
+ 73pe2fMTwraHkElBmrSQpVaKpEtBbqApif4lUuGenjhZNJNIETiBrpCtwePTZqJ9zTXg
+ XY42aPIglnII8DDTJ05xajIkZoq9l+Qi1+EkKHUyBJl5Ui18p/WnSl+obqCGjp6o0Vhn
+ 6KTDQzSSIkt1jyK1+D84TT0kil9ExW+OV/5pgzuR3xhyETeft3nj1oUlaG5cbutPIws+
+ 2nZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704476976; x=1705081776;
+ d=1e100.net; s=20230601; t=1704477346; x=1705082146;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=+sXnJtWcjyBLOb2yW1MhZlclOJfsqSSZCQwvR/NIHrA=;
- b=HmZbdNSglSUv/KIpmKJYDZDXQ+nR4x9aqI+IFbCdA1Mv/XV1H69L6LbtrDw32S1Ttf
- XWcy+kXEHiEhU2iyu08LGB+UzFCLOqnEzHC9m0yB30dUBbPQIg/47ha0JWsFeEFvUaok
- MdqLLuN3MfZ5UvP9t3RLuGvMSZPbI/Em0Rj6+ixE3vz4AXV1lCXS40Ji6QzMDyEtWTpT
- sSFUevM9VO2nT255V87j6d0KfjPl8o9ZM6unRgHajWDDtFRTDHbPZUdaRcBxylTjlSIC
- yVWjrDNdw/oWIo9ck6jEXu5dXHcwKT/IxE3s2eiw8lpW2MxgW1VBOrPZmY5uxz+4kzzq
- qENQ==
-X-Gm-Message-State: AOJu0YxvFpIhAsChxuSblps+f9lXA4TJofzqNk5vL8XpP3G/47hXJw3p
- mzeqenHXeVcBxeVysf38N9W1eT66pFOQV6Vx17e5LS7G7qabYA==
-X-Google-Smtp-Source: AGHT+IH5rG1gUpJoxmAV6+MY9zz3mfIdQY1bsoQxIgXHW1wKcJ5YzP/Tp3xbm2QILBt2fm8BBkHnJGJt5hA98kgvviE=
-X-Received: by 2002:a05:651c:1693:b0:2cc:f586:ce9a with SMTP id
- bd19-20020a05651c169300b002ccf586ce9amr1442366ljb.93.1704476976171; Fri, 05
- Jan 2024 09:49:36 -0800 (PST)
+ bh=elohRhapRXRLisFPupz54RHCVYVrr8bTqmeGSIcKb3c=;
+ b=dQ6z8XQ6xNiPkfHjlmicHY+uA+XzUuDCSdXOP5njcK3bTPB8rVcokkdkOYKgYasuLU
+ 9Vp326Bq2tx3Y+cbUzWX01KzHMjfBgbQRLCHMo9uELK8RqnTItQIxmKMLFBwN/Cdz9P5
+ 5wK0fF9kVXlB6G8puHp0ku5tXGOfmQfQamRIFA2UJeA0ZRdnBdaIiIqL7tRroeia4TUr
+ UsDUXj7boeUUUXyp5nT7LLv5udlJUgMVBriNb0Mkf3OlG3PGKYmoXsGPnQZbIc29vOnU
+ 3IfXQkyGwiPH95v7K51zJvBUDsStf8rsTKOqf8ir+jVFegdM/clbJtGEi+7l4QxpY8CI
+ jg2g==
+X-Gm-Message-State: AOJu0YzWtP28d+KqVBHTQoimTdlAUQfovi1v0UJeoGErH+fuXNA8gZFD
+ p3qSqEl2ccHbdPp3ZmGG2M3S68byQftfZk7IS4nI3wYdF79rzA==
+X-Google-Smtp-Source: AGHT+IFdiWlH1hKguFD6D0qQYKHK79LP9KRI0gqOKWXJkg980RGiu1H5OksO/sahToeaYfvc7XE0N21pt2tyVELvReM=
+X-Received: by 2002:a05:6402:b46:b0:553:ee28:b97e with SMTP id
+ bx6-20020a0564020b4600b00553ee28b97emr1153592edb.26.1704477345886; Fri, 05
+ Jan 2024 09:55:45 -0800 (PST)
 MIME-Version: 1.0
-References: <20240103172817.2197737-1-sam@rfc1149.net>
-In-Reply-To: <20240103172817.2197737-1-sam@rfc1149.net>
+References: <20240103155337.2026946-1-sam@rfc1149.net>
+ <20240103155337.2026946-4-sam@rfc1149.net>
+In-Reply-To: <20240103155337.2026946-4-sam@rfc1149.net>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 5 Jan 2024 17:49:25 +0000
-Message-ID: <CAFEAcA_yoBEM-6cw5QOTcpO=TH+2=ySFu6=XRkBqGywxAi2SHA@mail.gmail.com>
-Subject: Re: [PATCH] docs: use "buses" rather than "busses"
+Date: Fri, 5 Jan 2024 17:55:35 +0000
+Message-ID: <CAFEAcA8Pv4Hy-T_PhgiDSgO4yhfROH_=847qP_pQYdBxGnxY=A@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] hw/arm/socs: configure priority bits for existing
+ SOCs
 To: Samuel Tardieu <sam@rfc1149.net>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org, 
- Vikram Garhwal <fnu.vikram@xilinx.com>, Pavel Pisa <pisa@cmp.felk.cvut.cz>
+Cc: qemu-devel@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
+ qemu-arm@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>, 
+ Alistair Francis <alistair@alistair23.me>,
+ =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>, 
+ Alexandre Iooss <erdnaxe@crans.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,16 +90,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 3 Jan 2024 at 17:28, Samuel Tardieu <sam@rfc1149.net> wrote:
+On Wed, 3 Jan 2024 at 15:53, Samuel Tardieu <sam@rfc1149.net> wrote:
 >
-> If "busses" might be encountered as a plural of "bus" (5 instances),
-> the correct spelling is "buses" (26 instances). Fixing those 5
-> instances makes the doc more consistent.
+> Update the number of priority bits for a number of existing
+> SoCs according to their technical documentation:
+>
+> - STM32F100/F205/F405/L4x5: 4 bits
+> - Stellaris (Sandstorm/Fury): 3 bits
 >
 > Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
 
-Applied to target-arm.next, thanks (since 2 out of 3 of these
-are arm related).
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
+thanks
 -- PMM
 
