@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A6C8256E9
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1878256E6
 	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:45:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLmMU-0004dk-KX; Fri, 05 Jan 2024 10:43:56 -0500
+	id 1rLmMm-0004pv-OR; Fri, 05 Jan 2024 10:44:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmMS-0004cz-F5
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:43:52 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmMY-0004ga-Gu
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:43:58 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmMQ-0003AO-9J
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:43:52 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40d858c56cbso19526265e9.2
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:43:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmMV-0003Bn-NC
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:43:58 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40d41555f9dso16539035e9.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:43:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704469428; x=1705074228; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704469434; x=1705074234; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rLV8uDs3E9nSqverOGkh+8mNeXXqUDlTZQBJE1rP3g0=;
- b=SKcVvpLX5hYD/oCShDsCadOdmGIZpC29ktiYlOnsidG8LcdFmOvFmSH1QEuhh/qESa
- YYPGBWkW2a1rPzYYFglCaIbw7bnOZJw0joqB5Kudwh1BN3duuCilg9ORZ4/nGBnXCjA5
- BKZKh9/wDUHQIbVidQMa9V9a6t/iO9S+jU7y4NC9ecaLfJxJ/0uOaoffaKvLR75JTPJt
- +IpnIYY5Cdtv3zgFUSH1U3xry7p0AYApE0oc9BCO/SAavCZaIv9RUgjp2ARlmcKOwB9T
- vxjD/J/1iAdHvdCqXWaKzR3pb0QbEjR4EFELolDRJAFV7ufficbheNvpRmMPHhto/OXv
- KjNg==
+ bh=woqU0CJbLpbBNTO5d7sFgz50JLFq3nMIZ0ht3SRJ1YE=;
+ b=xSpH4fYkHdsPRicQUBBr9yk+JuKO+SmbCrl1mHawHDzs73/ZTgDaMs9ug/h5bG6sC/
+ jMvOYRWaF5Kjz0YAtG94CQS0/wLiZx0jMnWALgBH1yMluVYF12j2RuLShZKfWl5bHce1
+ lX2wuo+HsFcrOwjVp3RbwJWT03fXukqPB6dKVmCy2FdQ5GoVpJGn0IPWlQJWu0s4uH9M
+ rZTbNjmh4nA0zZBjG5LfP5M/nIKGJEjKJQn1vdGl9Va170gWDXkqZ1BclqLdf67nOC8c
+ sOn4x/gXWdO1iSn/TW5V9AEDvH6I5kE6gKMJr2h4MKfT61DbzM23GbNvjrGL2TT5MTmH
+ gcFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704469428; x=1705074228;
+ d=1e100.net; s=20230601; t=1704469434; x=1705074234;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rLV8uDs3E9nSqverOGkh+8mNeXXqUDlTZQBJE1rP3g0=;
- b=naGuM6t1v4v1oqIDrss44Mm9+iNDrU4orwTFC1qW8D6/GjZ064ga140FimuAxj+hBD
- ptLlDo5F1V/f9+KddI5Z61ETODKu/Vcu5NvlEN7jgjwtWka3jm3a3/kvaDFJ9RNKr/ow
- Jm+Oc5Kq+jdOzrDqbR+7f4mCG5UCaxyDf9Vjo7hF/V5Z06HbfHVlVcInDitBEP8GwREt
- ieS9XNN36pg9DQYbHyulGjQdIz21SujewSudTcO8N5rIRi2agit/hxFWHzFGWcDVLnng
- xRHJ+SfMscrwHUWowh75KaumYmUDa3idDIU0uqXJsSKA8iYW47I6p/X4ZsDLPAEn/Qix
- DwYQ==
-X-Gm-Message-State: AOJu0YzsxTNIP2d+gdt9xgzkEKQCYL9bEnkMHmyRRtpAPUGk+rJ9wLOH
- jlTMq/3gallDIsdz5z/rNHcw92K5k/K0hqg0cGx98/SzrH0=
-X-Google-Smtp-Source: AGHT+IE9W+bwzv81LqReK2b8RnuBqkC9QkppVRtHF2hIbPI72uabkye4qhdaPPLzE+C38Xw8L+SGMQ==
-X-Received: by 2002:a05:600c:a45:b0:40e:3511:2c39 with SMTP id
- c5-20020a05600c0a4500b0040e35112c39mr1353505wmq.172.1704469428691; 
- Fri, 05 Jan 2024 07:43:48 -0800 (PST)
+ bh=woqU0CJbLpbBNTO5d7sFgz50JLFq3nMIZ0ht3SRJ1YE=;
+ b=m7N1Z7Dr31ou/K0zOErA7Gd2FTc/TTACr7wGvS9NGXQAticFsk/xxBGMSAobTGX5L+
+ bR6lcIBgncFf84xooM+DdQtH5p8S+3cl24kFXamUPNVWZmiAgD+lfYoHiEE2G36V3KG4
+ w2F8opUCf8F+rdtVcuf7lWWRaHdu24eUi8BKie2x3VV8+4qJjcdbBGf5CKoK14HcBE0k
+ WHTUPRJZsJntvhLdvhGS9Nx5rj1dqy16Uy/hYSOjBXbFIoX7TtVUrWMoaAYJiFJuyx1a
+ YoOnKHpvffsrDtxp0YIVEMjFyahz/uNyxLt/5DtirYyRpKu3yxTrHQ1tWbBrt4DLFpvd
+ kX+Q==
+X-Gm-Message-State: AOJu0Yxj/uH1WPLHBRir1dBchQxvYHKudmOhEB4vblOoVIJ51R7mIoHr
+ dWeL9WwttjB3R06LcHSqSjcqQfEsFJotzRy7eFHbrl0kW08=
+X-Google-Smtp-Source: AGHT+IEeRcFLbKk4dFeAmeBvJcSygmKaaj/1gLM6njWmdPg6vzuBbto2c0jdOLbPMEUjorS5a5yEaA==
+X-Received: by 2002:a7b:cbd9:0:b0:40d:62f6:5d51 with SMTP id
+ n25-20020a7bcbd9000000b0040d62f65d51mr1336159wmi.127.1704469434059; 
+ Fri, 05 Jan 2024 07:43:54 -0800 (PST)
 Received: from m1x-phil.lan (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- k7-20020a5d6d47000000b0033725783839sm1599738wri.110.2024.01.05.07.43.47
+ z6-20020a05600c0a0600b0040e3ac9f4c8sm898004wmp.28.2024.01.05.07.43.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jan 2024 07:43:48 -0800 (PST)
+ Fri, 05 Jan 2024 07:43:53 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Gavin Shan <gshan@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 07/71] target/alpha: Use generic cpu_list()
-Date: Fri,  5 Jan 2024 16:42:00 +0100
-Message-ID: <20240105154307.21385-8-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 08/71] target/arm: Use generic cpu_list()
+Date: Fri,  5 Jan 2024 16:42:01 +0100
+Message-ID: <20240105154307.21385-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240105154307.21385-1-philmd@linaro.org>
 References: <20240105154307.21385-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,89 +96,147 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gavin Shan <gshan@redhat.com>
 
-Before it's applied:
+No changes of the output from the following command before and
+after it's applied.
 
-[gshan@gshan q]$ ./build/qemu-system-alpha -cpu ?
+[gshan@gshan q]$ ./build/qemu-system-aarch64 -cpu ?
 Available CPUs:
-  ev4-alpha-cpu
-  ev5-alpha-cpu
-  ev56-alpha-cpu
-  ev6-alpha-cpu
-  ev67-alpha-cpu
-  ev68-alpha-cpu
-  pca56-alpha-cpu
-
-After it's applied:
-
-[gshan@gshan q]$ ./build/qemu-system-alpha -cpu ?
-Available CPUs:
-  ev4
-  ev5
-  ev56
-  ev6
-  ev67
-  ev68
-  pca56
+  a64fx
+  arm1026
+  arm1136
+  arm1136-r2
+  arm1176
+  arm11mpcore
+  arm926
+  arm946
+  cortex-a15
+  cortex-a35
+  cortex-a53
+  cortex-a55
+  cortex-a57
+  cortex-a7
+  cortex-a710
+  cortex-a72
+  cortex-a76
+  cortex-a8
+  cortex-a9
+  cortex-m0
+  cortex-m3
+  cortex-m33
+  cortex-m4
+  cortex-m55
+  cortex-m7
+  cortex-r5
+  cortex-r52
+  cortex-r5f
+  max
+  neoverse-n1
+  neoverse-n2
+  neoverse-v1
+  pxa250
+  pxa255
+  pxa260
+  pxa261
+  pxa262
+  pxa270-a0
+  pxa270-a1
+  pxa270
+  pxa270-b0
+  pxa270-b1
+  pxa270-c0
+  pxa270-c5
+  sa1100
+  sa1110
+  ti925t
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20231114235628.534334-8-gshan@redhat.com>
+Message-ID: <20231114235628.534334-9-gshan@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/alpha/cpu.h |  3 ---
- target/alpha/cpu.c | 17 -----------------
- 2 files changed, 20 deletions(-)
+ target/arm/cpu.h    |  3 ---
+ target/arm/helper.c | 46 ---------------------------------------------
+ 2 files changed, 49 deletions(-)
 
-diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
-index d672e911dd..ce806587ca 100644
---- a/target/alpha/cpu.h
-+++ b/target/alpha/cpu.h
-@@ -292,8 +292,6 @@ void alpha_cpu_dump_state(CPUState *cs, FILE *f, int flags);
- int alpha_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
- int alpha_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index a0282e0d28..8c3ca2e231 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -2737,7 +2737,6 @@ static inline bool access_secure_reg(CPUARMState *env)
+                        (arm_is_secure(_env) && !arm_el_is_aa64((_env), 3)), \
+                        (_val))
  
--#define cpu_list alpha_cpu_list
+-void arm_cpu_list(void);
+ uint32_t arm_phys_excp_target_el(CPUState *cs, uint32_t excp_idx,
+                                  uint32_t cur_el, bool secure);
+ 
+@@ -2840,8 +2839,6 @@ bool write_cpustate_to_list(ARMCPU *cpu, bool kvm_sync);
+ 
+ #define TYPE_ARM_HOST_CPU "host-" TYPE_ARM_CPU
+ 
+-#define cpu_list arm_cpu_list
 -
- #include "exec/cpu-all.h"
- 
- enum {
-@@ -441,7 +439,6 @@ void alpha_translate_init(void);
- 
- #define CPU_RESOLVING_TYPE TYPE_ALPHA_CPU
- 
--void alpha_cpu_list(void);
- G_NORETURN void dynamic_excp(CPUAlphaState *, uintptr_t, int, int);
- G_NORETURN void arith_excp(CPUAlphaState *, uintptr_t, int, uint64_t);
- 
-diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-index 83345c5c7d..b8ed29e343 100644
---- a/target/alpha/cpu.c
-+++ b/target/alpha/cpu.c
-@@ -87,23 +87,6 @@ static void alpha_cpu_realizefn(DeviceState *dev, Error **errp)
-     acc->parent_realize(dev, errp);
+ /* ARM has the following "translation regimes" (as the ARM ARM calls them):
+  *
+  * If EL3 is 64-bit:
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index fc546df5c7..a2a7f6c29f 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -9468,52 +9468,6 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+ #endif
  }
  
--static void alpha_cpu_list_entry(gpointer data, gpointer user_data)
+-/* Sort alphabetically by type name, except for "any". */
+-static gint arm_cpu_list_compare(gconstpointer a, gconstpointer b)
 -{
--    ObjectClass *oc = data;
+-    ObjectClass *class_a = (ObjectClass *)a;
+-    ObjectClass *class_b = (ObjectClass *)b;
+-    const char *name_a, *name_b;
 -
--    qemu_printf("  %s\n", object_class_get_name(oc));
+-    name_a = object_class_get_name(class_a);
+-    name_b = object_class_get_name(class_b);
+-    if (strcmp(name_a, "any-" TYPE_ARM_CPU) == 0) {
+-        return 1;
+-    } else if (strcmp(name_b, "any-" TYPE_ARM_CPU) == 0) {
+-        return -1;
+-    } else {
+-        return strcmp(name_a, name_b);
+-    }
 -}
 -
--void alpha_cpu_list(void)
+-static void arm_cpu_list_entry(gpointer data, gpointer user_data)
+-{
+-    ObjectClass *oc = data;
+-    CPUClass *cc = CPU_CLASS(oc);
+-    const char *typename;
+-    char *name;
+-
+-    typename = object_class_get_name(oc);
+-    name = g_strndup(typename, strlen(typename) - strlen("-" TYPE_ARM_CPU));
+-    if (cc->deprecation_note) {
+-        qemu_printf("  %s (deprecated)\n", name);
+-    } else {
+-        qemu_printf("  %s\n", name);
+-    }
+-    g_free(name);
+-}
+-
+-void arm_cpu_list(void)
 -{
 -    GSList *list;
 -
--    list = object_class_get_list_sorted(TYPE_ALPHA_CPU, false);
+-    list = object_class_get_list(TYPE_ARM_CPU, false);
+-    list = g_slist_sort(list, arm_cpu_list_compare);
 -    qemu_printf("Available CPUs:\n");
--    g_slist_foreach(list, alpha_cpu_list_entry, NULL);
+-    g_slist_foreach(list, arm_cpu_list_entry, NULL);
 -    g_slist_free(list);
 -}
 -
- /* Models */
- typedef struct AlphaCPUAlias {
-     const char *alias;
+ /*
+  * Private utility function for define_one_arm_cp_reg_with_opaque():
+  * add a single reginfo struct to the hash table.
 -- 
 2.41.0
 
