@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8D9D825887
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 17:44:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B75825895
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 17:47:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLnIF-0001JD-0B; Fri, 05 Jan 2024 11:43:35 -0500
+	id 1rLnLH-0003rl-V2; Fri, 05 Jan 2024 11:46:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rLnID-0001J5-KO
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 11:43:33 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1rLnLF-0003rS-Vi
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 11:46:41 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rLnIC-0006Bk-1H
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 11:43:33 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40e37524fafso9508145e9.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 08:43:31 -0800 (PST)
+ id 1rLnLE-0006ux-Bh
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 11:46:41 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40d5d8a6730so15790275e9.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 08:46:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704473009; x=1705077809; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704473198; x=1705077998; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2BgcfFribFghRQXHP9MDmW6sivQs+B9t4EwDp8f5u3c=;
- b=L/pBrpyC5ZQ0kg306w6YZBOsOZdAQzWUyuGNW0oMdcNf9mUZ6o/N6jSDTnYl+nEckH
- 3V8rn3mldbM/pBuntAMIsB1UZ0Nb7qfyveXWNLaQK9TU8nyzJrqmqutWwV1tW+yr9VLQ
- 6vAzcjt+ttzocFlR5rC05fUyC1KIZJT1RxmhN+8+/G1Dn45QBK6o9/DY2P3I0cdpZdZ4
- uUdMkh2TVtvf1CM2LVdgwEJXG34fPioRrF+EfYzTJFMHaG7FwsQAh6Bj8errfs1kMQaq
- N4GbCQZ0AqzV9SlQBj8wzSBthJN/T7p4wf7ijHzIzl0K3vYumW91ft7h5AWTI1mUHYzt
- ywjg==
+ bh=y+XesGPt6M8kow2hbHLuoiYwZT9fbHdGsS/st+N6yU4=;
+ b=rPzcPeB1Q5WcGvRdsXUoa/SY7Ww9DzX4EzE8Lzzw2gucPua3WyCk58B/UoypCOHl7Z
+ AIQnYD9jX8DWtvH31QEMzNbiFJBLvC0bKoVWlyIE3RaUAYI/l4wKulunegknc/nmct9/
+ HiSvs/GS37VZ3oUdO89wXVHjL7LXw4zoCkX/IPskeHBjcmMUlY5ciPyiJq/yJFavrDA/
+ FK7/GJ79rGWhfjHt4qj3cMaC3O8++eonVEujzWaRR3/UDP3MLIetqdJsTGZoYHt1DAAj
+ rYrP40LFwaakDWAheqzDs53Up5MqMWoeR7x09Vw9RTnokNwyC89q5qJnNZSM5XFkOTZw
+ +VEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704473009; x=1705077809;
+ d=1e100.net; s=20230601; t=1704473198; x=1705077998;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=2BgcfFribFghRQXHP9MDmW6sivQs+B9t4EwDp8f5u3c=;
- b=hqgadJoB4srvGJ3HDa4wp9kig740mEo2z7G/ikWc1iiJbVPgXI/yvtKEw2vOj3e8Mu
- SivCHpYXo+EbIlUQX9cdtFPRtaWH4itwD1IIkts32RpXzRBM6siWSAMu1FvYe0ivPVSy
- w0YbeX2VWkLQ41fm6evKTVIAkBWd+FHXfdylH7GcbssL03+fiPiQ6fqkt9hgJ7cin/tO
- HYSm+r+8HpTvfwxb1+lItLWQTM0CtdLIZ9WUbWx1yGyLsT2WvuGzwZyyU4HzK8762gSN
- sWPZMAwHvu+/4eFqM+INRnASXjL58rflejr5Z1QbHmV8DFcbz3IlliXpr+eNOsi5txfC
- GyBw==
-X-Gm-Message-State: AOJu0Yyu+TUHj2WME/dTsxk9UQ41xx3BIH774YFNBsvdaoXz129WHhY7
- zl4LJUhWa5q55AUm92dAZOkDJdjw0+OteyvGB4YtUF/uAv0=
-X-Google-Smtp-Source: AGHT+IGKn+GVwvBldS4zHcCB/wx8KNRoTUCJh7ll18TqeNQOrC8kFOnZAzVu2BwpVFNOf8ss0Gx+fw==
-X-Received: by 2002:a05:600c:b5a:b0:40d:89ff:53c7 with SMTP id
- k26-20020a05600c0b5a00b0040d89ff53c7mr1324463wmr.21.1704473008660; 
- Fri, 05 Jan 2024 08:43:28 -0800 (PST)
+ bh=y+XesGPt6M8kow2hbHLuoiYwZT9fbHdGsS/st+N6yU4=;
+ b=mD81KcIo3H0eCx1HOGWzV8wa9ps2NV7V7u+EuBlQK6a0BeFQdxeZWvSFEqs4qlqZor
+ Ra2rJ/MvgTEI4M6r0pt/DLJRIVH/AS2GOlV2q0wIAtFc97JyAK6cWGavmjDmHIWAdhH2
+ 7wM4GEbvgbjXlur/P8EGfpOP7rYfJ57zjgTctU4SHY2SaUxt0rF0k1Bv+j/JTbdiQioM
+ D7hgfRj5rjNzv6xq8/4WWkgonqvrzt8tZeo+os+D+wIUIRqiFDSf5O+/lg42T+ZWEm1i
+ p9F+cXUS6G4rqoa5Xyn3mlkI/8NxYNnxArvHby0cHzWfVeoqp4P11QaH+TyeTy6jXzWL
+ GCoQ==
+X-Gm-Message-State: AOJu0YyoAh75W0rCuB/ylP7BEnhXQVsyPpoWIRKLqbR4T9EbN4r3dKlH
+ 3pPOqJBOogGwW05qCvYcbZSY/hFsSss8yCT77aYPgkKABAc=
+X-Google-Smtp-Source: AGHT+IGfQ3Xtijrn9RSjx5/lkQi003txpkqHMJPrjO3j7ymH6H2sBW6JG409QE8qxnBxTKL1vsQOww==
+X-Received: by 2002:a05:600c:a42:b0:40d:8780:2aff with SMTP id
+ c2-20020a05600c0a4200b0040d87802affmr1276841wmq.131.1704473198281; 
+ Fri, 05 Jan 2024 08:46:38 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- az29-20020a05600c601d00b0040d87b5a87csm2099792wmb.48.2024.01.05.08.43.28
+ h14-20020adfe98e000000b003367a51217csm1706264wrm.34.2024.01.05.08.46.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jan 2024 08:43:28 -0800 (PST)
+ Fri, 05 Jan 2024 08:46:38 -0800 (PST)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0714A5F933;
- Fri,  5 Jan 2024 16:43:28 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id AB8E75F933;
+ Fri,  5 Jan 2024 16:46:37 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Hyman Huang <yong.huang@smartx.com>
-Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Marcelo
- Tosatti <mtosatti@redhat.com>
-Subject: Re: [PATCH] i386/sev: Nitpick at the error message's output
-In-Reply-To: <c5033954155dfe256f650fc9ca2084c688356317.1704469721.git.yong.huang@smartx.com>
- (Hyman Huang's message of "Sat, 6 Jan 2024 00:09:55 +0800")
-References: <c5033954155dfe256f650fc9ca2084c688356317.1704469721.git.yong.huang@smartx.com>
+To: =?utf-8?B?5ZGo56ul?= <273415826@qq.com>
+Cc: "qemu-devel" <qemu-devel@nongnu.org>,  "linux-cxl"
+ <linux-cxl@vger.kernel.org>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Subject: Re: Question about CXL emulation in QEMU
+In-Reply-To: <tencent_7710D323F3DCBEF4BEAAF17BB3AF851D4707@qq.com>
+ (=?utf-8?B?IuWRqOerpSIncw==?=
+ message of "Fri, 5 Jan 2024 19:00:14 +0800")
+References: <tencent_7710D323F3DCBEF4BEAAF17BB3AF851D4707@qq.com>
 User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Fri, 05 Jan 2024 16:43:27 +0000
-Message-ID: <87wmsneno0.fsf@draig.linaro.org>
+Date: Fri, 05 Jan 2024 16:46:37 +0000
+Message-ID: <87r0iveniq.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,63 +98,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hyman Huang <yong.huang@smartx.com> writes:
+"=E5=91=A8=E7=AB=A5" <273415826@qq.com> writes:
 
-> The incorrect error message was produced as a result of
-> the return number being disregarded on the sev_kvm_init
-> failure path.
->
-> For instance, when a user's failure to launch a SEV guest
-> is caused by an incorrect IOCTL, the following message is
-> reported:
->
-> kvm: sev_kvm_init: failed to initialize ret=3D-25 fw_error=3D0
-> kvm: failed to initialize kvm: Operation not permitted
->
-> While the error message's accurate output should be:
->
-> kvm: sev_kvm_init: failed to initialize ret=3D-25 fw_error=3D0
-> kvm: failed to initialize kvm: Inappropriate ioctl for device
->
-> Fix this by returning the return number directly on the
-> failure path.
->
-> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-> ---
->  target/i386/sev.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/target/i386/sev.c b/target/i386/sev.c
-> index 9a71246682..4a69ca457c 100644
-> --- a/target/i386/sev.c
-> +++ b/target/i386/sev.c
-> @@ -1019,7 +1019,7 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Err=
-or **errp)
->  err:
->      sev_guest =3D NULL;
->      ram_block_discard_disable(false);
-> -    return -1;
-> +    return ret;
+> Dear Experts,
 
-I don't think this will be correct in all cases because there are other
-legs (e.g. if (host_cbitpos !=3D sev->cbitpos)) where ret may be the
-successful setting of ram_block_discard_disable(true).
+(add maintainers to CC)
 
-You might want to explore if the function can be re-written with
-explicit return's and utilise autofree to do the clean-up of dynamic
-objects.
-
-I think this entails setting sev_guest at the end of the function just
-before the return 0.
-
-I'm not sure if there is a clean way to handle
-ram_block_discard_disable(false); cleanly for all the failure legs
-though. Maybe someone with more familiarity with the code has some ideas?
-
-
->  }
->=20=20
->  int
+>
+> I am writing to seek your assistance about CXL emulation in QEMU. I am Zh=
+ou Tong and I am researching how to use QEMU
+> to simulate CXL over Ethernet=E3=80=82
+>
+> I want to implement remote registration of CXL.mem devices based on the Q=
+OM model. The general idea is: the CXL slave
+> side notifies the master side of the size of the CXL memory and other con=
+trol information through Ethernet, and the master
+> side registers the CXL device locally based on the control information. W=
+hen the master accesses the CXL device, KVM is
+> responsible for intercepting the action of accessing the memory, and enca=
+psulates the CXL message and forwards it to the
+> slave through Ethernet=EF=BC=8Cultimately achieving remote CXL memory acc=
+ess.. Ask the experts how to register the CXL device
+> locally based on the control information without occupying the HVA resour=
+ces of the master host (OR display the CXL
+> device).
+>
+> Thank you in advance for your attention to this email, and I eagerly look=
+ forward to any insights or advice you may be able to
+> provide. If there is a more convenient time for us to discuss this matter=
+ further, please let me know, and I will be more than
+> happy to accommodate your schedule.
+>
+> Once again, thank you for your impactful contributions to the open-source=
+ community, and I greatly appreciate your time and
+> consideration.
+>
+> Regard,
+>
+> Zhou Tong.
+>
+> -------------------------------------------------------------------------=
+------------------------------------------------
+>
+>  *  =E5=91=A8=E7=AB=A5=20=20
+>    273415826@qq.com=20=20
+> *=20
 
 --=20
 Alex Benn=C3=A9e
