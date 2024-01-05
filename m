@@ -2,84 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127BB825489
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 14:37:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8803982549A
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 14:45:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLkOA-0007od-FT; Fri, 05 Jan 2024 08:37:30 -0500
+	id 1rLkTy-0001l1-JJ; Fri, 05 Jan 2024 08:43:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLkO8-0007oF-Bv
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:37:28 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLkO6-0000Vn-MZ
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:37:28 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3373bc6d625so1208171f8f.3
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 05:37:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704461845; x=1705066645; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lB4zxDMWzAIjh26Q1A4CLloRuni1/xHvs5AjJmJ1XJg=;
- b=ZRf5oV8Mby7crVGkNhfmvjZmx7nnjrXzN9UKgpjo8a2ZN7Lrcx5LQp3vxUEBXCUFWP
- w40Y7yNU6sPKYMlYwHhIyM8+HJFReAitXirNLOO6SSwZV8tqCeIQb1Rm7pKng+SON2Dg
- wvH0I2TdFLtN0qDartwdoy0t6NCBv6o+jdolEcx5rAtUD/Xk4/0J1WMjOWo1Wx+FAQvP
- V6iRtDYXl+Ou2dhr0QZwhPxGD6DKIOvBcdfzwoL4G0UzHvEMNsJPEtOvnXVE60Gb1Gvl
- YqwkJ2rsf6KX3R1IZO8uU7P6FeX81mJN58QinflsQoPCUc2PTEr7P/IxZAbuiZDog49+
- BuBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704461845; x=1705066645;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lB4zxDMWzAIjh26Q1A4CLloRuni1/xHvs5AjJmJ1XJg=;
- b=GyFNeAM9lB52tL9pu3xBQnv96lw5U6/Kq53uO+LycRik255DaeXs4sxExh9/cBIeAh
- H4Gxkh3BQGbua1Mleh/i5FU1UuRQT70npxM4F8umSM7chSSOVErcFV6ir5BCDIE1dqrz
- JUfeSsUIsnEGubuEksIqvBMjx+ewB1tBi7/6rJC76bmjflgCbD+bTCF7LqYF1dWxah7K
- cS1xM/L4QKXNnJ1Vif1M0dUxXT3vuY8uOkaXYarlNWHGOzR1Bhy3C4X4nU7OqNOuuiQd
- rCePyjoFS1cJ6zBb8/B6UfgbBm4XkVwP5jIsgq2kOqW8Xn7/BUQOupgFCX2K/qcADyAu
- CfBg==
-X-Gm-Message-State: AOJu0Yw9SODnohZd5a8Oo+ATc0fpLK3uPbKL3lavOykhkupvpYuBwUkb
- Anw4namzLQe688UEVj2b7Ob2Un3UV0r0hw==
-X-Google-Smtp-Source: AGHT+IEHq0ZTzAmMUsCkWUKvZ2SIROxXMBRUfn03yOemRjqVrCIVFAhcxKJx1W1jE1ohc+65w7hwDA==
-X-Received: by 2002:a5d:4f86:0:b0:337:160:790d with SMTP id
- d6-20020a5d4f86000000b003370160790dmr1385012wru.23.1704461844651; 
- Fri, 05 Jan 2024 05:37:24 -0800 (PST)
-Received: from [192.168.69.100] (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
- [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- u5-20020a5d5145000000b00336cbbf2e0fsm1415457wrt.27.2024.01.05.05.37.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 05 Jan 2024 05:37:24 -0800 (PST)
-Message-ID: <a103ed7a-aeeb-4d51-b0e7-996897e30658@linaro.org>
-Date: Fri, 5 Jan 2024 14:37:22 +0100
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rLkTw-0001kX-E1; Fri, 05 Jan 2024 08:43:28 -0500
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rLkTu-0002XR-53; Fri, 05 Jan 2024 08:43:28 -0500
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id BAC34452F1;
+ Fri,  5 Jan 2024 14:43:13 +0100 (CET)
+Message-ID: <bfc7b20c-2144-46e9-acbc-e726276c5a31@proxmox.com>
+Date: Fri, 5 Jan 2024 14:43:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/9] intc/grlib_irqmp: implements the multiprocessor
- status register
-Content-Language: en-US
-To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Cc: qemu-devel@nongnu.org, Frederic Konrad <konrad.frederic@yahoo.fr>
-References: <20240105102421.163554-1-chigot@adacore.com>
- <20240105102421.163554-4-chigot@adacore.com>
- <702936da-4931-40b7-8f82-b256cdf8d9f1@linaro.org>
- <CAJ307EiJ1SEdnnqEFFL-=YeO3XNtAJLLctixvxxFasQBhu0eFQ@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAJ307EiJ1SEdnnqEFFL-=YeO3XNtAJLLctixvxxFasQBhu0eFQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Fiona Ebner <f.ebner@proxmox.com>
+Subject: Re: [RFC 0/3] aio-posix: call ->poll_end() when removing AioHandler
+To: Paolo Bonzini <pbonzini@redhat.com>, Hanna Czenczek <hreitz@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Fam Zheng <fam@euphon.net>
+References: <20231213211544.1601971-1-stefanha@redhat.com>
+ <142d6078-1bb9-4116-ac87-7daac16f12d8@redhat.com>
+ <016ac3d1-f6c1-48eb-a714-fb777dff7012@proxmox.com>
+ <94db88e7-1f02-44dd-bc2c-3d9ccf1cce72@redhat.com>
+Content-Language: de-AT, en-US
+In-Reply-To: <94db88e7-1f02-44dd-bc2c-3d9ccf1cce72@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,58 +59,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/1/24 14:23, Clément Chigot wrote:
-> On Fri, Jan 5, 2024 at 12:32 PM Philippe Mathieu-Daudé
-> <philmd@linaro.org> wrote:
+Am 03.01.24 um 14:35 schrieb Paolo Bonzini:
+> On 1/3/24 12:40, Fiona Ebner wrote:
+>> I'm happy to report that I cannot reproduce the CPU-usage-spike issue
+>> with the patch, but I did run into an assertion failure when trying to
+>> verify that it fixes my original stuck-guest-IO issue. See below for the
+>> backtrace [0]. Hanna wrote in https://issues.redhat.com/browse/RHEL-3934
 >>
->> Hi Clément,
+>>> I think it’s sufficient to simply call virtio_queue_notify_vq(vq)
+>>> after the virtio_queue_aio_attach_host_notifier(vq, ctx) call, because
+>>> both virtio-scsi’s and virtio-blk’s .handle_output() implementations
+>>> acquire the device’s context, so this should be directly callable from
+>>> any context.
 >>
->> On 5/1/24 11:24, Clément Chigot wrote:
->>> This implements the multiprocessor status register in grlib-irqmp and bind
->>> it to a start signal, which will be later wired in leon3-generic to
->>> start a cpu.
->>>
->>> Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
->>> Signed-off-by: Clément Chigot <chigot@adacore.com>
->>> ---
->>>    hw/intc/grlib_irqmp.c | 22 +++++++++++++++++++---
->>>    1 file changed, 19 insertions(+), 3 deletions(-)
->>
->>
->>> @@ -323,6 +334,8 @@ static void grlib_irqmp_reset(DeviceState *d)
->>>
->>>        memset(irqmp->state, 0, sizeof *irqmp->state);
->>>        irqmp->state->parent = irqmp;
->>> +    irqmp->state->mpstatus = ((irqmp->ncpus - 1) << 28)
->>
->> Can you #define this magic '28' number?
->>
->>> +        | ((1 << irqmp->ncpus) - 2);
->>>    }
->>>
->>>    static void grlib_irqmp_realize(DeviceState *dev, Error **errp)
->>> @@ -336,6 +349,9 @@ static void grlib_irqmp_realize(DeviceState *dev, Error **errp)
->>>        }
->>>
->>>        qdev_init_gpio_in(dev, grlib_irqmp_set_irq, MAX_PILS);
->>> +    /* Transitionning from 0 to 1 starts the CPUs.  */
->>
->> What about 1 -> 0?
+>> I guess this is not true anymore now that the AioContext locking was
+>> removed?
 > 
-> It does nothing. I have updated the comment to mention it.
-> For the doc (also mention it in the commit message now).
->    | [15:1] Power-down status of CPU [n]: reads ‘1’ = power-down, ‘0’ = running.
->    | Write to start processor n: ‘1’=to start ‘0'=has no effect.
+> Good point and, in fact, even before it was much safer to use
+> virtio_queue_notify() instead.  Not only does it use the event notifier
+> handler, but it also calls it in the right thread/AioContext just by
+> doing event_notifier_set().
+> 
 
-Then grlib_irqmp_write() could be simplified as:
+But with virtio_queue_notify() using the event notifier, the
+CPU-usage-spike issue is present:
 
-      case MP_STATUS_OFFSET:
--        /* Read Only (no SMP support) */
-+        state->mpstatus = deposit32(state->mpstatus,
-+                                    value, 0, IRQMP_MAX_CPU);
-+        for (unsigned i = 0; i < irqmp->ncpus; i++) {
-+            qemu_set_irq(irqmp->start_signal[i],
-+                         extract32(value, i, 1));
-+        }
-          return;
+>> Back to the CPU-usage-spike issue: I experimented around and it doesn't
+>> seem to matter whether I notify the virt queue before or after attaching
+>> the notifiers. But there's another functional difference. My patch
+>> called virtio_queue_notify() which contains this block:
+>> 
+>>>     if (vq->host_notifier_enabled) {
+>>>         event_notifier_set(&vq->host_notifier);
+>>>     } else if (vq->handle_output) {
+>>>         vq->handle_output(vdev, vq);
+>> 
+>> In my testing, the first branch was taken, calling event_notifier_set().
+>> Hanna's patch uses virtio_queue_notify_vq() and there,
+>> vq->handle_output() will be called. That seems to be the relevant
+>> difference regarding the CPU-usage-spike issue.
+
+I should mention that this is with a VirtIO SCSI disk. I also attempted
+to reproduce the CPU-usage-spike issue with a VirtIO block disk, but
+didn't manage yet.
+
+What I noticed is that in virtio_queue_host_notifier_aio_poll(), one of
+the queues (but only one) will always show as nonempty. And then,
+run_poll_handlers_once() will always detect progress which explains the
+CPU usage.
+
+The following shows
+1. vq address
+2. number of times vq was passed to virtio_queue_host_notifier_aio_poll()
+3. number of times the result of virtio_queue_host_notifier_aio_poll()
+was true for the vq
+
+> 0x555fd93f9c80 17162000 0
+> 0x555fd93f9e48 17162000 6
+> 0x555fd93f9ee0 17162000 0
+> 0x555fd93f9d18 17162000 17162000
+> 0x555fd93f9db0 17162000 0
+> 0x555fd93f9f78 17162000 0
+
+And for the problematic one, the reason it is seen as nonempty is:
+
+> 0x555fd93f9d18 shadow_avail_idx 8 last_avail_idx 0
+
+Those values stay like this while the call counts above increase.
+
+So something going wrong with the indices when the event notifier is set
+from QEMU side (in the main thread)?
+
+The guest is Debian 12 with a 6.1 kernel.
+
+Best Regards,
+Fiona
+
 
