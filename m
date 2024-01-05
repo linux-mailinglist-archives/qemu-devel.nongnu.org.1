@@ -2,68 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4AFD824E0E
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 06:18:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D38BD824E1A
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 06:25:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLcaq-0002qt-8C; Fri, 05 Jan 2024 00:18:04 -0500
+	id 1rLchF-0004Ud-RG; Fri, 05 Jan 2024 00:24:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rLcao-0002qb-Iv; Fri, 05 Jan 2024 00:18:02 -0500
-Received: from mail-ua1-x930.google.com ([2607:f8b0:4864:20::930])
+ id 1rLchE-0004UR-Ma; Fri, 05 Jan 2024 00:24:40 -0500
+Received: from mail-ua1-x934.google.com ([2607:f8b0:4864:20::934])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rLcam-0008U9-Qw; Fri, 05 Jan 2024 00:18:02 -0500
-Received: by mail-ua1-x930.google.com with SMTP id
- a1e0cc1a2514c-7cdf4b99e7eso238364241.0; 
- Thu, 04 Jan 2024 21:17:59 -0800 (PST)
+ id 1rLchD-0005FX-1P; Fri, 05 Jan 2024 00:24:40 -0500
+Received: by mail-ua1-x934.google.com with SMTP id
+ a1e0cc1a2514c-7cc0f5bcb4fso440323241.1; 
+ Thu, 04 Jan 2024 21:24:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704431879; x=1705036679; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704432277; x=1705037077; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=v1Wq3peqZgPbg2yQFzBm1lb4F6pcpmP7MHWgPMaIRPE=;
- b=Kz7TrZswZeFjhGxnjzO8WtFyLGvmJxmCbHg3vUS5w2Xb/jAcPAe8NHsR9AkUiYLWKu
- +nKEIOSvf9dQaDrXFrSDVmV9fIrdrVu5CN0CmrDivo3J/FSWvXelVj1rUkhy6OTU0gKQ
- dje/8eXNwxlm5Cchlztgo19zSn/gNhTh+7/chvxwdwOILVSX/1Ov639SN5UEO+AqKemb
- RsP63rhkkhD7dCHVn3NIMlVIaRyi7tB/y7Rek+K7hpPOrD0VwnHcgSnibdNsoeb9aOrN
- zY0eie18q0EVF9qv/BNYtAQ0e216oIEpX0fQjuGa6AyiMaHqNypXAUVh7lgY/uWS3amZ
- 1y6Q==
+ bh=FwdA6WdijysZ9q+QKAOZuqXxvlqY+Vu5vFFYgL7ZxWM=;
+ b=mdyDODMDQYgvpItvtLHCCgvFKTZtEQMD5qYNj+6C9rEP4CLYimAkgT/l3aXaWzJ/M+
+ IpnuplwijXYU6IMXWxEjY58AP8NmADbMsBZIKbusq/VL2QkRcAn6OwYVTDJOfJPVzm3Y
+ ETeEbSvleLRN9WQNJBUD1zaAM23PIg+ZspPggvrKPoiuEUmuxL4oKRliOiDWA6YyXkZk
+ I9y+fZ7DAdarIhRKrGzmgyVNqN6H9Az93KD6vI4rT8YGn19DEDY5roXN8GvV0GLGz+sR
+ mUJnLLLECPfeY7JVy44F6wLP19Dj1xN9tuqsqsJ9j5I55KMuqAsm66/G6+53AVXXZ5A4
+ cXtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704431879; x=1705036679;
+ d=1e100.net; s=20230601; t=1704432277; x=1705037077;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=v1Wq3peqZgPbg2yQFzBm1lb4F6pcpmP7MHWgPMaIRPE=;
- b=HysR+Ltqp/y2D4YzEZdtNm5LTkdtwSlsYKRnyz5FfhwGsGxvWsQjxqV3PhMKqVcRUo
- bNC9dhR6J6hjXFElxwIAYOD2dtFU5VlWHiYlyJ7smiKB+FltDK8htu6nJzFdQlctdmcQ
- iBxTtpNyFchl8uBg1rGcVJw4SdbPt8r9Bi/iJrkz+/oYV2wBRVJOCLP/XyifVmkv+DwF
- iBSwPia6OpOFUSdOpkLiNngGShC9tsPwz14/gUMdHx9nzurs6YX93GHnRamzq66ZW41K
- E6G1OBzEjlDwsln8oVlRlljE1x5t4yx7p3l+5LUDAiuWWt8HRspZI/DlhOriz/qNqySm
- U3Nw==
-X-Gm-Message-State: AOJu0Yy2JXHY4hDyrBnY/ZqewQKR7ug+ECspU1QpLaZImRvrzbAwOdKO
- V+fw3794TacyeDKEKZpueJCl/tPXYHHQP/yieRU=
-X-Google-Smtp-Source: AGHT+IGJ8pQqhGR678XmKn0HhwBP1y9WHG3puKrdwY+9YNT2FmHnk9Lv8XaBDySLvwjUDdLiZGkuDZpY/wM1Cme9SxI=
-X-Received: by 2002:a05:6102:151d:b0:467:af58:295a with SMTP id
- f29-20020a056102151d00b00467af58295amr1195518vsv.31.1704431879315; Thu, 04
- Jan 2024 21:17:59 -0800 (PST)
+ bh=FwdA6WdijysZ9q+QKAOZuqXxvlqY+Vu5vFFYgL7ZxWM=;
+ b=RBWt1cVUwaF6qnXWeluJ9+Tre9496TefWXgtW600hCUGwthwZnCxlDPH+410KcySzX
+ aCTa6gEgCsWW4+9UlGaAfcahy8P5lX6Fuxzq0hIZCEDcGO7uQeVgxdkz5XUAuFI9kZfx
+ 2A0KbFDD3cXfb2Ij+6/Pl7F7gA1cTBsltyAkVaiZrCOh/0xBugHuj4USQb49KKU4QRU8
+ 9+K707WvcyowQkyKBK9Vs+08EQWzw0ekDAXh0JVS8cdL5HEswZjUnNo6ZiReU9HNsW7+
+ D15jrtL/XuL0tVGY0NVi1M3f3OosSfbO8PPj/7JZ55FMOZMYm9r1IeroPnF6ACmRyqJe
+ UMiQ==
+X-Gm-Message-State: AOJu0Yyo+oPhuiO+0m7F6hIDhueIf439SsExphPdJwg1LyLFuqddTiu5
+ 7ay2+RT3q8lQlk7C5Rv+vQ719TW5x8+12f70mwI=
+X-Google-Smtp-Source: AGHT+IFzbKI7tFM9CMH30I3s0J8O20lbGNGRr0+A79fZkdByXgrC+mmU8gqhsiWWOGHBOL0qvAOrmM7mqP1nOuLcGOw=
+X-Received: by 2002:a05:6102:3713:b0:467:759f:b00b with SMTP id
+ s19-20020a056102371300b00467759fb00bmr1739369vst.5.1704432277596; Thu, 04 Jan
+ 2024 21:24:37 -0800 (PST)
 MIME-Version: 1.0
-References: <20231218204321.75757-1-dbarboza@ventanamicro.com>
-In-Reply-To: <20231218204321.75757-1-dbarboza@ventanamicro.com>
+References: <20231229120724.41383-1-heinrich.schuchardt@canonical.com>
+ <20231229120724.41383-2-heinrich.schuchardt@canonical.com>
+In-Reply-To: <20231229120724.41383-2-heinrich.schuchardt@canonical.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 5 Jan 2024 15:17:33 +1000
-Message-ID: <CAKmqyKMAteKFDF14TikbQGYz98e9Kjr_YKrM1GgtfGOotHUSNg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] target/riscv: add RVV CSRs
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
+Date: Fri, 5 Jan 2024 15:24:11 +1000
+Message-ID: <CAKmqyKNmyMKMDuUwrgi4RQnAAWAJ7uSzMztDnHW+HRaM1zPNDA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] smbios: add processor-family option
+To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Bin Meng <bin.meng@windriver.com>, 
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-riscv@nongnu.org, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::930;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x930.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::934;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x934.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -87,80 +94,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 19, 2023 at 6:44=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
+On Fri, Dec 29, 2023 at 10:48=E2=80=AFPM Heinrich Schuchardt
+<heinrich.schuchardt@canonical.com> wrote:
 >
-> Hi,
->
-> This version was rebased on top of Alistair's riscv-to-apply.next. A
-> small tweak was needed in patch 4 due to changes in the branch.
->
-> I took the chance to update linux-headers to 6.7-rc5, although the
-> differences from the rc3 headers from v1 were minimal.
->
-> All patches acked.
->
-> Changes from v1:
-> - rebased to Alistair's riscv-to-apply.next
-> - patch 1:
->   - updated headers to v6.7-rc5
-> - patch 4:
->   - use kvm_riscv_reg_id_ulong() instead of kvm_riscv_reg_id()
-> - v1 link: https://lore.kernel.org/qemu-riscv/20231130182748.1894790-1-db=
-arboza@ventanamicro.com/
->
-> Daniel Henrique Barboza (4):
->   linux-headers: Update to Linux v6.7-rc5
->   linux-headers: riscv: add ptrace.h
->   target/riscv/kvm: do PR_RISCV_V_SET_CONTROL during realize()
->   target/riscv/kvm: add RVV and Vector CSR regs
+> For RISC-V the SMBIOS standard requires specific values of the processor
+> family value depending on the bitness of the CPU.
 
-Thanks!
-
-Applied to riscv-to-apply.next
+Can you provide some details of where this is described? I can't seem to fi=
+nd it
 
 Alistair
 
 >
->  include/standard-headers/drm/drm_fourcc.h     |   2 +
->  include/standard-headers/linux/pci_regs.h     |  24 ++-
->  include/standard-headers/linux/vhost_types.h  |   7 +
->  .../standard-headers/linux/virtio_config.h    |   5 +
->  include/standard-headers/linux/virtio_pci.h   |  11 ++
->  linux-headers/asm-arm64/kvm.h                 |  32 ++++
->  linux-headers/asm-generic/unistd.h            |  14 +-
->  linux-headers/asm-loongarch/bitsperlong.h     |   1 +
->  linux-headers/asm-loongarch/kvm.h             | 108 +++++++++++
->  linux-headers/asm-loongarch/mman.h            |   1 +
->  linux-headers/asm-loongarch/unistd.h          |   5 +
->  linux-headers/asm-mips/unistd_n32.h           |   4 +
->  linux-headers/asm-mips/unistd_n64.h           |   4 +
->  linux-headers/asm-mips/unistd_o32.h           |   4 +
->  linux-headers/asm-powerpc/unistd_32.h         |   4 +
->  linux-headers/asm-powerpc/unistd_64.h         |   4 +
->  linux-headers/asm-riscv/kvm.h                 |  12 ++
->  linux-headers/asm-riscv/ptrace.h              | 132 +++++++++++++
->  linux-headers/asm-s390/unistd_32.h            |   4 +
->  linux-headers/asm-s390/unistd_64.h            |   4 +
->  linux-headers/asm-x86/unistd_32.h             |   4 +
->  linux-headers/asm-x86/unistd_64.h             |   3 +
->  linux-headers/asm-x86/unistd_x32.h            |   3 +
->  linux-headers/linux/iommufd.h                 | 180 +++++++++++++++++-
->  linux-headers/linux/kvm.h                     |  11 ++
->  linux-headers/linux/psp-sev.h                 |   1 +
->  linux-headers/linux/stddef.h                  |   9 +-
->  linux-headers/linux/userfaultfd.h             |   9 +-
->  linux-headers/linux/vfio.h                    |  47 +++--
->  linux-headers/linux/vhost.h                   |   8 +
->  scripts/update-linux-headers.sh               |   3 +
->  target/riscv/kvm/kvm-cpu.c                    | 103 ++++++++++
->  32 files changed, 736 insertions(+), 27 deletions(-)
->  create mode 100644 linux-headers/asm-loongarch/bitsperlong.h
->  create mode 100644 linux-headers/asm-loongarch/kvm.h
->  create mode 100644 linux-headers/asm-loongarch/mman.h
->  create mode 100644 linux-headers/asm-loongarch/unistd.h
->  create mode 100644 linux-headers/asm-riscv/ptrace.h
+> Add a processor-family option for SMBIOS table 4.
 >
+> The value of processor-family may exceed 255 and therefore must be provid=
+ed
+> in the Processor Family 2 field. Set the Processor Family field to 0xFE
+> which signals that the Processor Family 2 is used.
+>
+> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+> ---
+> v2:
+>         new patch
+> ---
+>  hw/smbios/smbios.c | 13 +++++++++++--
+>  qemu-options.hx    |  4 ++--
+>  2 files changed, 13 insertions(+), 4 deletions(-)
+>
+> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+> index 2a90601ac5..647bc6d603 100644
+> --- a/hw/smbios/smbios.c
+> +++ b/hw/smbios/smbios.c
+> @@ -102,6 +102,7 @@ static struct {
+>  #define DEFAULT_CPU_SPEED 2000
+>
+>  static struct {
+> +    uint16_t processor_family;
+>      const char *sock_pfx, *manufacturer, *version, *serial, *asset, *par=
+t;
+>      uint64_t max_speed;
+>      uint64_t current_speed;
+> @@ -110,6 +111,7 @@ static struct {
+>      .max_speed =3D DEFAULT_CPU_SPEED,
+>      .current_speed =3D DEFAULT_CPU_SPEED,
+>      .processor_id =3D 0,
+> +    .processor_family =3D 0x01, /* Other */
+>  };
+>
+>  struct type8_instance {
+> @@ -337,6 +339,10 @@ static const QemuOptDesc qemu_smbios_type4_opts[] =
+=3D {
+>          .name =3D "part",
+>          .type =3D QEMU_OPT_STRING,
+>          .help =3D "part number",
+> +    }, {
+> +        .name =3D "processor-family",
+> +        .type =3D QEMU_OPT_NUMBER,
+> +        .help =3D "processor family",
+>      }, {
+>          .name =3D "processor-id",
+>          .type =3D QEMU_OPT_NUMBER,
+> @@ -726,7 +732,7 @@ static void smbios_build_type_4_table(MachineState *m=
+s, unsigned instance)
+>      snprintf(sock_str, sizeof(sock_str), "%s%2x", type4.sock_pfx, instan=
+ce);
+>      SMBIOS_TABLE_SET_STR(4, socket_designation_str, sock_str);
+>      t->processor_type =3D 0x03; /* CPU */
+> -    t->processor_family =3D 0x01; /* Other */
+> +    t->processor_family =3D 0xfe; /* use Processor Family 2 field */
+>      SMBIOS_TABLE_SET_STR(4, processor_manufacturer_str, type4.manufactur=
+er);
+>      if (type4.processor_id =3D=3D 0) {
+>          t->processor_id[0] =3D cpu_to_le32(smbios_cpuid_version);
+> @@ -758,7 +764,7 @@ static void smbios_build_type_4_table(MachineState *m=
+s, unsigned instance)
+>      t->thread_count =3D (threads_per_socket > 255) ? 0xFF : threads_per_=
+socket;
+>
+>      t->processor_characteristics =3D cpu_to_le16(0x02); /* Unknown */
+> -    t->processor_family2 =3D cpu_to_le16(0x01); /* Other */
+> +    t->processor_family2 =3D cpu_to_le16(type4.processor_family);
+>
+>      if (tbl_len =3D=3D SMBIOS_TYPE_4_LEN_V30) {
+>          t->core_count2 =3D t->core_enabled2 =3D cpu_to_le16(cores_per_so=
+cket);
+> @@ -1402,6 +1408,9 @@ void smbios_entry_add(QemuOpts *opts, Error **errp)
+>                  return;
+>              }
+>              save_opt(&type4.sock_pfx, opts, "sock_pfx");
+> +            type4.processor_family =3D qemu_opt_get_number(opts,
+> +                                                         "processor-fami=
+ly",
+> +                                                         0x01 /* Other *=
+/);
+>              save_opt(&type4.manufacturer, opts, "manufacturer");
+>              save_opt(&type4.version, opts, "version");
+>              save_opt(&type4.serial, opts, "serial");
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index b66570ae00..7bdb414345 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -2694,7 +2694,7 @@ DEF("smbios", HAS_ARG, QEMU_OPTION_smbios,
+>      "                specify SMBIOS type 3 fields\n"
+>      "-smbios type=3D4[,sock_pfx=3Dstr][,manufacturer=3Dstr][,version=3Ds=
+tr][,serial=3Dstr]\n"
+>      "              [,asset=3Dstr][,part=3Dstr][,max-speed=3D%d][,current=
+-speed=3D%d]\n"
+> -    "              [,processor-id=3D%d]\n"
+> +    "              [,processor-family=3D%d,processor-id=3D%d]\n"
+>      "                specify SMBIOS type 4 fields\n"
+>      "-smbios type=3D8[,external_reference=3Dstr][,internal_reference=3Ds=
+tr][,connector_type=3D%d][,port_type=3D%d]\n"
+>      "                specify SMBIOS type 8 fields\n"
+> @@ -2722,7 +2722,7 @@ SRST
+>  ``-smbios type=3D3[,manufacturer=3Dstr][,version=3Dstr][,serial=3Dstr][,=
+asset=3Dstr][,sku=3Dstr]``
+>      Specify SMBIOS type 3 fields
+>
+> -``-smbios type=3D4[,sock_pfx=3Dstr][,manufacturer=3Dstr][,version=3Dstr]=
+[,serial=3Dstr][,asset=3Dstr][,part=3Dstr][,processor-id=3D%d]``
+> +``-smbios type=3D4[,sock_pfx=3Dstr][,manufacturer=3Dstr][,version=3Dstr]=
+[,serial=3Dstr][,asset=3Dstr][,part=3Dstr][,processor-family=3D%d][,process=
+or-id=3D%d]``
+>      Specify SMBIOS type 4 fields
+>
+>  ``-smbios type=3D11[,value=3Dstr][,path=3Dfilename]``
 > --
 > 2.43.0
 >
