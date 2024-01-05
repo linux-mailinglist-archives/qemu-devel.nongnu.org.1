@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AACB8252D4
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 12:28:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E648252F1
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 12:33:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLiLK-0002M0-Pv; Fri, 05 Jan 2024 06:26:27 -0500
+	id 1rLiR8-0003jn-QO; Fri, 05 Jan 2024 06:32:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLiKT-0002DG-MO
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:25:37 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLiR5-0003jO-SS
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:32:24 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLiKN-00009s-Uq
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:25:33 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-55692ad81e3so1625637a12.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 03:25:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLiR4-0004B7-9A
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:32:23 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a28d25253d2so158283666b.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 03:32:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704453924; x=1705058724; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704454340; x=1705059140; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Is4syUN7/x4EQqrOo1gZAChXmkcXmDSsZeHA4i+iDlA=;
- b=YRFymV++TvwhIwDAO1KmemUWPGG3BcD+dYC1VHUO9KRzdNUVqv/AdMszlWewSeA6A9
- VeNpuV8RZeschzeRxU+4VyLZOKZgGhsIzvUyguzVN8XVzvz4aEcKTUn7CkuPGeePhRqB
- WVUHUjJdf2F7BJov6sEsRJNTXkEPOzMNALkVh1DnefzCe7knGg6uCWRBX+nC7duDYcg6
- /IV24d1bT0pdCGCn4sLLr8lD4s9KB3tTqE3g3UxKPr/RnOJTHtGudj1g46oh94HC5IRk
- rYkGJOkXxPrb+I8fqBZfC+2r9AMB+6E8ffg0GbD0Z/KGNJcow30je6mbUacPgbwqudxm
- TJJA==
+ bh=6Ki4iJu5Z2dtOUCyOqUx926JbIQ+swkf687+BhNbUEY=;
+ b=rzMLaizZRkrmMaAfUV9iSiG/WgbqFh4IOa9sAV/4Z9BSG2lh1zS5f/jCA41QjfLX/i
+ PxlWa/0BSxbFZp9kEHrfxsbPjqqDdOL72NTlbLMir2m+o33iRci9OYigPGglYPbxRsq/
+ EuqEqNzXlBrgAQ2SSehd0e/B5EKP/Mxdm0hNoOwn63eq/sVOGCnDrNm3c3m2JQTaWeWq
+ dFLI9xXgf4O6ymSuvUX1QCbrOSwWAZVcFOAnDN7VaQx13Dxenh+mzaGBo/R4rwh8Oqp0
+ +pTdZ3lsRPBP/4tWn/6EX4krknr3R/G+tTYch6xVflbA+eXfgQVzRczIj8dUDnH34l/m
+ GEbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704453924; x=1705058724;
+ d=1e100.net; s=20230601; t=1704454340; x=1705059140;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Is4syUN7/x4EQqrOo1gZAChXmkcXmDSsZeHA4i+iDlA=;
- b=eBq9mRurRwkSipr40Qs74e4WvrXL+AYNJBHPFaoGcIb0R7udHj2rTQRiQlitjQIQS/
- AMYMBw7KqVumEs/1FsVR+HWy8OpbwqW/adxBE0uqsTz7ZxCGmDvfVUt6Mvvxv08sP7lO
- BtYYqHyNBEwmOuqTUfmjSOimBcFIyJJUZsFXHnqn8fmCT85Tj1VX3T9G+ed7PrEcclj+
- g+ZsdhBUhJ/sv9QeZnu3nCjY669GU24wg/Tyj+B4ETfkhGYDfzoMiyU6Z0yXTsFFA4QB
- J8uRCym8+Nkg5UVdVCIV76duCO3mzSUcCN7z9fkzw+pY3DgVb3TzTAVe7Se826UpeLCv
- C/TA==
-X-Gm-Message-State: AOJu0Yx5Xu9A87dwadhyux2ZZEAONOO4TZ0V0QJ3s2aR53j+tuUXeSGK
- m5CDsLxDdWsDR1wpoInRfzkVCIv9qsodtTS+wKhUzfZt3SQ=
-X-Google-Smtp-Source: AGHT+IHpCIkZfu5KLVyqWILUye3jxXVpRAqBjzk9sKICRFXYusg6dCiQxOHSXn9y/GzD5kWeTTJ4Yg==
-X-Received: by 2002:a17:907:c9a5:b0:a22:ebf2:1edc with SMTP id
- uj37-20020a170907c9a500b00a22ebf21edcmr808537ejc.16.1704453924310; 
- Fri, 05 Jan 2024 03:25:24 -0800 (PST)
+ bh=6Ki4iJu5Z2dtOUCyOqUx926JbIQ+swkf687+BhNbUEY=;
+ b=SkbLWbzki7nZrkenveIMUx6x42C/u5lXg7ijuAQmUD/7KkG3FG+jMP0ebyCCij1TSR
+ BGu9n2xE7/kBFrw1g3bef7KHnWMv2BM4czyLQzTTem1gWtz20pjOpy/Xg63gfHB9ugcy
+ G2EOHK5fbatcF8iWSp4ByQFl8JPjAr3ixGca0LJq8oGhgH8C545eIbhZ0G23iLzcb7hf
+ YtHlAjMZdCZ3kFnw0463cbVTvn3Rp3d/Cs7JgfoWQ+crTO9142n+QWml6aMBOBABUJUB
+ wvvHBWKsZtAk/jfM4N+Z82kqLAo6Sxc89akxqkZhFdmVHyDmn+0EzoPDNB4gxyJ6ULCI
+ menA==
+X-Gm-Message-State: AOJu0Yzc5+iSnQLsJ4eKwDn8RYniaXYfgzBFhKadztfMwzPvjQ5uXY54
+ VuVBMbpfHurqQsXa3AU0Dd3+LnjfgoembQ==
+X-Google-Smtp-Source: AGHT+IEAOZK7xiNDZ44TBjQ4FxbbBJleNhKBncoCJu7e8RxfZmzpxbHi70ayo0WiMDoORjC87IXgzg==
+X-Received: by 2002:a17:906:1111:b0:a29:852c:dd21 with SMTP id
+ h17-20020a170906111100b00a29852cdd21mr161816eja.10.1704454340018; 
+ Fri, 05 Jan 2024 03:32:20 -0800 (PST)
 Received: from [192.168.69.100] (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- a17-20020a1709065f9100b00a2471bb0d11sm781882eju.31.2024.01.05.03.25.23
+ oz39-20020a170906cd2700b00a1f7ab65d3fsm781262ejb.131.2024.01.05.03.32.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 05 Jan 2024 03:25:23 -0800 (PST)
-Message-ID: <55b93d1e-646b-43c3-ab05-d58b968b9b34@linaro.org>
-Date: Fri, 5 Jan 2024 12:25:22 +0100
+ Fri, 05 Jan 2024 03:32:19 -0800 (PST)
+Message-ID: <702936da-4931-40b7-8f82-b256cdf8d9f1@linaro.org>
+Date: Fri, 5 Jan 2024 12:32:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/9] intc/grlib_irqmp: add ncpus property
+Subject: Re: [PATCH 3/9] intc/grlib_irqmp: implements the multiprocessor
+ status register
 Content-Language: en-US
 To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>, qemu-devel@nongnu.org
 Cc: Frederic Konrad <konrad.frederic@yahoo.fr>
 References: <20240105102421.163554-1-chigot@adacore.com>
- <20240105102421.163554-3-chigot@adacore.com>
+ <20240105102421.163554-4-chigot@adacore.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240105102421.163554-3-chigot@adacore.com>
+In-Reply-To: <20240105102421.163554-4-chigot@adacore.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,18 +93,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Clément,
+
 On 5/1/24 11:24, Clément Chigot wrote:
-> This adds a "ncpus" property to the "grlib-irqmp" device to be used later,
-> this required a little refactoring of how we initialize the device (ie: use
-> realize instead of init).
+> This implements the multiprocessor status register in grlib-irqmp and bind
+> it to a start signal, which will be later wired in leon3-generic to
+> start a cpu.
 > 
 > Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
 > Signed-off-by: Clément Chigot <chigot@adacore.com>
 > ---
->   hw/intc/grlib_irqmp.c | 30 +++++++++++++++++++++---------
->   hw/sparc/leon3.c      |  2 +-
->   2 files changed, 22 insertions(+), 10 deletions(-)
+>   hw/intc/grlib_irqmp.c | 22 +++++++++++++++++++---
+>   1 file changed, 19 insertions(+), 3 deletions(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> @@ -323,6 +334,8 @@ static void grlib_irqmp_reset(DeviceState *d)
+>   
+>       memset(irqmp->state, 0, sizeof *irqmp->state);
+>       irqmp->state->parent = irqmp;
+> +    irqmp->state->mpstatus = ((irqmp->ncpus - 1) << 28)
+
+Can you #define this magic '28' number?
+
+> +        | ((1 << irqmp->ncpus) - 2);
+>   }
+>   
+>   static void grlib_irqmp_realize(DeviceState *dev, Error **errp)
+> @@ -336,6 +349,9 @@ static void grlib_irqmp_realize(DeviceState *dev, Error **errp)
+>       }
+>   
+>       qdev_init_gpio_in(dev, grlib_irqmp_set_irq, MAX_PILS);
+> +    /* Transitionning from 0 to 1 starts the CPUs.  */
+
+What about 1 -> 0?
+
+> +    qdev_init_gpio_out_named(dev, irqmp->start_signal, "grlib-start-cpu",
+> +                             IRQMP_MAX_CPU);
+>       qdev_init_gpio_out_named(dev, &irqmp->irq, "grlib-irq", 1);
+>       memory_region_init_io(&irqmp->iomem, OBJECT(dev), &grlib_irqmp_ops, irqmp,
+>                             "irqmp", IRQMP_REG_SIZE);
 
 
