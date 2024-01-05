@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE5C8256EC
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:45:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A6C8256E9
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:45:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLmMQ-0004bJ-TN; Fri, 05 Jan 2024 10:43:50 -0500
+	id 1rLmMU-0004dk-KX; Fri, 05 Jan 2024 10:43:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmMN-0004a6-RQ
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:43:47 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmMS-0004cz-F5
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:43:52 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmMM-00037b-37
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:43:47 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40e37524fafso8903105e9.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:43:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmMQ-0003AO-9J
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:43:52 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40d858c56cbso19526265e9.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:43:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704469423; x=1705074223; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704469428; x=1705074228; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kIbpZfgL2GdYvVTJqmdprGQ276jFAcijx1XENXuPWGk=;
- b=kddC/ty8CGTqJHmRGxs5FvNNFEcQOb84m/dtAls4cZS1vrL72cla8RnZUPhDu3FA1v
- lMTAVCyoqh1Y0/EoZHyj99u9DFo+r3/9zUWrziuMajrFA7rXHyC6TkhAmCqMBVNXQGf9
- cRd6dNbmVOFeoHoGbPzAGq2zf0RjwODlvjOEZhOHqn/zDMYmVjx1UE49AQjF/vKqFK9M
- BsD1bAbq52gGJa1nAQTxzhWrjbqQjjpux2nS8ItoEaKDttlSMi80sqc5dLgYiNm1Covs
- Yg3K0ae3Bfhld5h0lIlslHeZUMqbMPfsBwwko4051LsiGfGcn5lBEywalkEEDCqlZjte
- OWnw==
+ bh=rLV8uDs3E9nSqverOGkh+8mNeXXqUDlTZQBJE1rP3g0=;
+ b=SKcVvpLX5hYD/oCShDsCadOdmGIZpC29ktiYlOnsidG8LcdFmOvFmSH1QEuhh/qESa
+ YYPGBWkW2a1rPzYYFglCaIbw7bnOZJw0joqB5Kudwh1BN3duuCilg9ORZ4/nGBnXCjA5
+ BKZKh9/wDUHQIbVidQMa9V9a6t/iO9S+jU7y4NC9ecaLfJxJ/0uOaoffaKvLR75JTPJt
+ +IpnIYY5Cdtv3zgFUSH1U3xry7p0AYApE0oc9BCO/SAavCZaIv9RUgjp2ARlmcKOwB9T
+ vxjD/J/1iAdHvdCqXWaKzR3pb0QbEjR4EFELolDRJAFV7ufficbheNvpRmMPHhto/OXv
+ KjNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704469423; x=1705074223;
+ d=1e100.net; s=20230601; t=1704469428; x=1705074228;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kIbpZfgL2GdYvVTJqmdprGQ276jFAcijx1XENXuPWGk=;
- b=fhfQ3moP49wyo5RmYoLD2Eho7FhBQTPbPSc4P8IivwgXm/D2MLdsx7ArJw6ntdVdHb
- 3xBQ8CnQKC/PZTLKoPEtGvpczdzduZg4mjacLHSfzQrUlyLst+Cv091SrC9lnqh3yr7S
- FkqUT6bXJaGypsCY1W2MObk2dyloXKcR3QtpWAmYEq0Pua+qwROM23pVJU/v4HXESWoZ
- pYHTbo7BlDp304PSOs1MJb5VZlf3v93L3L6Nwz+Q9iYQSGMdTABV3R7Ky7Ht/NC5slI0
- xqFtfhXJCqzrtiPabEpWFAL7PUG0U7SD0jpdLJV2hc/MAvaHWJVx/FnW9wX2iehPX3Yc
- qriQ==
-X-Gm-Message-State: AOJu0YwFyXf30I274fUxVTYf3OQutnPFptrYVlf1jZm4DoY6NgyiDGGQ
- UrjZgFVMJSQTWcib4KbxY5+cILXf9OU16Hlr1dNASGGJhsU=
-X-Google-Smtp-Source: AGHT+IFNSGg21WHACL8WVEdlAMnB0moS6tkcRS+hCip3mongDPrSWiboIOw7D6dWHnEcdVKHsqBwug==
-X-Received: by 2002:a05:600c:4e8f:b0:40d:9238:df50 with SMTP id
- f15-20020a05600c4e8f00b0040d9238df50mr1269643wmq.81.1704469423467; 
- Fri, 05 Jan 2024 07:43:43 -0800 (PST)
+ bh=rLV8uDs3E9nSqverOGkh+8mNeXXqUDlTZQBJE1rP3g0=;
+ b=naGuM6t1v4v1oqIDrss44Mm9+iNDrU4orwTFC1qW8D6/GjZ064ga140FimuAxj+hBD
+ ptLlDo5F1V/f9+KddI5Z61ETODKu/Vcu5NvlEN7jgjwtWka3jm3a3/kvaDFJ9RNKr/ow
+ Jm+Oc5Kq+jdOzrDqbR+7f4mCG5UCaxyDf9Vjo7hF/V5Z06HbfHVlVcInDitBEP8GwREt
+ ieS9XNN36pg9DQYbHyulGjQdIz21SujewSudTcO8N5rIRi2agit/hxFWHzFGWcDVLnng
+ xRHJ+SfMscrwHUWowh75KaumYmUDa3idDIU0uqXJsSKA8iYW47I6p/X4ZsDLPAEn/Qix
+ DwYQ==
+X-Gm-Message-State: AOJu0YzsxTNIP2d+gdt9xgzkEKQCYL9bEnkMHmyRRtpAPUGk+rJ9wLOH
+ jlTMq/3gallDIsdz5z/rNHcw92K5k/K0hqg0cGx98/SzrH0=
+X-Google-Smtp-Source: AGHT+IE9W+bwzv81LqReK2b8RnuBqkC9QkppVRtHF2hIbPI72uabkye4qhdaPPLzE+C38Xw8L+SGMQ==
+X-Received: by 2002:a05:600c:a45:b0:40e:3511:2c39 with SMTP id
+ c5-20020a05600c0a4500b0040e35112c39mr1353505wmq.172.1704469428691; 
+ Fri, 05 Jan 2024 07:43:48 -0800 (PST)
 Received: from m1x-phil.lan (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- u14-20020a05600c19ce00b0040d5ae2906esm1929189wmq.30.2024.01.05.07.43.42
+ k7-20020a5d6d47000000b0033725783839sm1599738wri.110.2024.01.05.07.43.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jan 2024 07:43:43 -0800 (PST)
+ Fri, 05 Jan 2024 07:43:48 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Gavin Shan <gshan@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 06/71] cpu: Add generic cpu_list()
-Date: Fri,  5 Jan 2024 16:41:59 +0100
-Message-ID: <20240105154307.21385-7-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 07/71] target/alpha: Use generic cpu_list()
+Date: Fri,  5 Jan 2024 16:42:00 +0100
+Message-ID: <20240105154307.21385-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240105154307.21385-1-philmd@linaro.org>
 References: <20240105154307.21385-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,96 +95,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gavin Shan <gshan@redhat.com>
 
-Add generic cpu_list() to replace the individual target's implementation
-in the subsequent commits. Currently, there are 3 targets with no cpu_list()
-implementation: microblaze and nios2. With this applied, those two targets
-switch to the generic cpu_list().
+Before it's applied:
 
-[gshan@gshan q]$ ./build/qemu-system-microblaze -cpu ?
+[gshan@gshan q]$ ./build/qemu-system-alpha -cpu ?
 Available CPUs:
-  microblaze-cpu
+  ev4-alpha-cpu
+  ev5-alpha-cpu
+  ev56-alpha-cpu
+  ev6-alpha-cpu
+  ev67-alpha-cpu
+  ev68-alpha-cpu
+  pca56-alpha-cpu
 
-[gshan@gshan q]$ ./build/qemu-system-nios2 -cpu ?
+After it's applied:
+
+[gshan@gshan q]$ ./build/qemu-system-alpha -cpu ?
 Available CPUs:
-  nios2-cpu
+  ev4
+  ev5
+  ev56
+  ev6
+  ev67
+  ev68
+  pca56
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231114235628.534334-7-gshan@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20231114235628.534334-8-gshan@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- bsd-user/main.c |  5 +----
- cpu-target.c    | 29 ++++++++++++++++++++++++++---
- 2 files changed, 27 insertions(+), 7 deletions(-)
+ target/alpha/cpu.h |  3 ---
+ target/alpha/cpu.c | 17 -----------------
+ 2 files changed, 20 deletions(-)
 
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index e6014f517e..4de226d211 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -378,10 +378,7 @@ int main(int argc, char **argv)
-         } else if (!strcmp(r, "cpu")) {
-             cpu_model = argv[optind++];
-             if (is_help_option(cpu_model)) {
--                /* XXX: implement xxx_cpu_list for targets that still miss it */
--#if defined(cpu_list)
--                cpu_list();
--#endif
-+                list_cpus();
-                 exit(1);
-             }
-         } else if (!strcmp(r, "B")) {
-diff --git a/cpu-target.c b/cpu-target.c
-index 6f4afc1dbc..5eecd7ea2d 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -24,6 +24,7 @@
- #include "hw/qdev-core.h"
- #include "hw/qdev-properties.h"
- #include "qemu/error-report.h"
-+#include "qemu/qemu-print.h"
- #include "migration/vmstate.h"
- #ifdef CONFIG_USER_ONLY
- #include "qemu.h"
-@@ -283,12 +284,34 @@ const char *parse_cpu_option(const char *cpu_option)
-     return cpu_type;
+diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
+index d672e911dd..ce806587ca 100644
+--- a/target/alpha/cpu.h
++++ b/target/alpha/cpu.h
+@@ -292,8 +292,6 @@ void alpha_cpu_dump_state(CPUState *cs, FILE *f, int flags);
+ int alpha_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+ int alpha_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
+ 
+-#define cpu_list alpha_cpu_list
+-
+ #include "exec/cpu-all.h"
+ 
+ enum {
+@@ -441,7 +439,6 @@ void alpha_translate_init(void);
+ 
+ #define CPU_RESOLVING_TYPE TYPE_ALPHA_CPU
+ 
+-void alpha_cpu_list(void);
+ G_NORETURN void dynamic_excp(CPUAlphaState *, uintptr_t, int, int);
+ G_NORETURN void arith_excp(CPUAlphaState *, uintptr_t, int, uint64_t);
+ 
+diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
+index 83345c5c7d..b8ed29e343 100644
+--- a/target/alpha/cpu.c
++++ b/target/alpha/cpu.c
+@@ -87,23 +87,6 @@ static void alpha_cpu_realizefn(DeviceState *dev, Error **errp)
+     acc->parent_realize(dev, errp);
  }
  
-+#ifndef cpu_list
-+static void cpu_list_entry(gpointer data, gpointer user_data)
-+{
-+    CPUClass *cc = CPU_CLASS(OBJECT_CLASS(data));
-+    const char *typename = object_class_get_name(OBJECT_CLASS(data));
-+    g_autofree char *model = cpu_model_from_type(typename);
-+
-+    if (cc->deprecation_note) {
-+        qemu_printf("  %s (deprecated)\n", model);
-+    } else {
-+        qemu_printf("  %s\n", model);
-+    }
-+}
-+
-+static void cpu_list(void)
-+{
-+    GSList *list;
-+
-+    list = object_class_get_list_sorted(TYPE_CPU, false);
-+    qemu_printf("Available CPUs:\n");
-+    g_slist_foreach(list, cpu_list_entry, NULL);
-+    g_slist_free(list);
-+}
-+#endif
-+
- void list_cpus(void)
- {
--    /* XXX: implement xxx_cpu_list for targets that still miss it */
--#if defined(cpu_list)
-     cpu_list();
--#endif
- }
- 
- #if defined(CONFIG_USER_ONLY)
+-static void alpha_cpu_list_entry(gpointer data, gpointer user_data)
+-{
+-    ObjectClass *oc = data;
+-
+-    qemu_printf("  %s\n", object_class_get_name(oc));
+-}
+-
+-void alpha_cpu_list(void)
+-{
+-    GSList *list;
+-
+-    list = object_class_get_list_sorted(TYPE_ALPHA_CPU, false);
+-    qemu_printf("Available CPUs:\n");
+-    g_slist_foreach(list, alpha_cpu_list_entry, NULL);
+-    g_slist_free(list);
+-}
+-
+ /* Models */
+ typedef struct AlphaCPUAlias {
+     const char *alias;
 -- 
 2.41.0
 
