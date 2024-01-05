@@ -2,66 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C4D825484
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 14:36:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 127BB825489
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 14:37:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLkLa-00061T-Lh; Fri, 05 Jan 2024 08:34:50 -0500
+	id 1rLkOA-0007od-FT; Fri, 05 Jan 2024 08:37:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLkLY-0005v0-O9
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:34:48 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLkO8-0007oF-Bv
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:37:28 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLkLX-00065k-2e
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:34:48 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-557425ac461so171306a12.3
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 05:34:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLkO6-0000Vn-MZ
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:37:28 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3373bc6d625so1208171f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 05:37:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704461685; x=1705066485; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=j/8nD3V5gs0NMkLj1rrZKwzx7F1XlHhsqxktswRURek=;
- b=D0pVVOj1iOt53qF+xlkooIPqp1YCPqccrzsbHn4ml3uLwVP8IFPce8yuZE4A2P2UB7
- lspplDRtk7xmaZVDwIPjMJWKAIZrmB0/bC6nyxtmApiNZsijUol13gptPKXXM4HAYyzi
- jZP6Kh3OGKrkit9QAf+9n0XddB6C/I5u+iybjIWEgtTQUS35p5iwPSMAc1mQRtHrDr/x
- FREJWK7l/AEQ7lL7Cqx9ZFS2x+iFhyyvvW5gkB9KY1IcAcXLZqsaLYuBHZlXk3iW7age
- Iz9Oatf0ylmPPT4yLw7jmpZ233ZFmqnu12/+exPl/1Ja0B/7cgeViGL9rUkYeMQdyYB3
- /yzg==
+ d=linaro.org; s=google; t=1704461845; x=1705066645; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lB4zxDMWzAIjh26Q1A4CLloRuni1/xHvs5AjJmJ1XJg=;
+ b=ZRf5oV8Mby7crVGkNhfmvjZmx7nnjrXzN9UKgpjo8a2ZN7Lrcx5LQp3vxUEBXCUFWP
+ w40Y7yNU6sPKYMlYwHhIyM8+HJFReAitXirNLOO6SSwZV8tqCeIQb1Rm7pKng+SON2Dg
+ wvH0I2TdFLtN0qDartwdoy0t6NCBv6o+jdolEcx5rAtUD/Xk4/0J1WMjOWo1Wx+FAQvP
+ V6iRtDYXl+Ou2dhr0QZwhPxGD6DKIOvBcdfzwoL4G0UzHvEMNsJPEtOvnXVE60Gb1Gvl
+ YqwkJ2rsf6KX3R1IZO8uU7P6FeX81mJN58QinflsQoPCUc2PTEr7P/IxZAbuiZDog49+
+ BuBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704461685; x=1705066485;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=j/8nD3V5gs0NMkLj1rrZKwzx7F1XlHhsqxktswRURek=;
- b=GvtekExo3afldzM2NskmXHhzjHayI8szdjfXdxro4NX1Vl9jjBxp8xWx04bqw1e5l2
- V6YFfsXjaCo5lgen8qq7L0C9qaFyYTCgM2pgZbT3+bdIdVFnUFGSbMqu7/L95Poiypid
- wDIK3sBQ24JAgxE5Oy56q8i2HeJXrm3ZCGZRtjCFlZtGDNMY6K4L9kidqNs+a9gFHyGA
- k9bMTipan7XOol4JXBJgv/sqB8KgEnE8RX0VJmnAZMKHuuNR5CGJaHhTgjdshCIqjnM9
- UN/WGFqDnHSTTEJO3B272rz6KWK+1nlLBot7qcuSvG86BiWX/+hYx5dBAsRR7QWxmVq7
- CDgQ==
-X-Gm-Message-State: AOJu0Yy/E59LcvDIZJ1kRIeOmRbsbWce52AybZuyuBqhThHzjdPBpPjm
- DJvkzLqsJ1uzYOpRp99EchPUIEiSX29xNoR/ojd9zugqBJ7g2B9+Zu/pkahy
-X-Google-Smtp-Source: AGHT+IEaZL6g7JbE2DoTau0CSPszVmr6Ul36pbYRueeocG2rfUX+CWeMIjkQOMWg2MFR1V9I6ICQDWob1uaHDtPYPng=
-X-Received: by 2002:aa7:d51a:0:b0:54c:60f0:7511 with SMTP id
- y26-20020aa7d51a000000b0054c60f07511mr1256179edq.35.1704461684706; Fri, 05
- Jan 2024 05:34:44 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704461845; x=1705066645;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lB4zxDMWzAIjh26Q1A4CLloRuni1/xHvs5AjJmJ1XJg=;
+ b=GyFNeAM9lB52tL9pu3xBQnv96lw5U6/Kq53uO+LycRik255DaeXs4sxExh9/cBIeAh
+ H4Gxkh3BQGbua1Mleh/i5FU1UuRQT70npxM4F8umSM7chSSOVErcFV6ir5BCDIE1dqrz
+ JUfeSsUIsnEGubuEksIqvBMjx+ewB1tBi7/6rJC76bmjflgCbD+bTCF7LqYF1dWxah7K
+ cS1xM/L4QKXNnJ1Vif1M0dUxXT3vuY8uOkaXYarlNWHGOzR1Bhy3C4X4nU7OqNOuuiQd
+ rCePyjoFS1cJ6zBb8/B6UfgbBm4XkVwP5jIsgq2kOqW8Xn7/BUQOupgFCX2K/qcADyAu
+ CfBg==
+X-Gm-Message-State: AOJu0Yw9SODnohZd5a8Oo+ATc0fpLK3uPbKL3lavOykhkupvpYuBwUkb
+ Anw4namzLQe688UEVj2b7Ob2Un3UV0r0hw==
+X-Google-Smtp-Source: AGHT+IEHq0ZTzAmMUsCkWUKvZ2SIROxXMBRUfn03yOemRjqVrCIVFAhcxKJx1W1jE1ohc+65w7hwDA==
+X-Received: by 2002:a5d:4f86:0:b0:337:160:790d with SMTP id
+ d6-20020a5d4f86000000b003370160790dmr1385012wru.23.1704461844651; 
+ Fri, 05 Jan 2024 05:37:24 -0800 (PST)
+Received: from [192.168.69.100] (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
+ [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
+ u5-20020a5d5145000000b00336cbbf2e0fsm1415457wrt.27.2024.01.05.05.37.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 05 Jan 2024 05:37:24 -0800 (PST)
+Message-ID: <a103ed7a-aeeb-4d51-b0e7-996897e30658@linaro.org>
+Date: Fri, 5 Jan 2024 14:37:22 +0100
 MIME-Version: 1.0
-References: <20240105011739.1217818-1-gaosong@loongson.cn>
-In-Reply-To: <20240105011739.1217818-1-gaosong@loongson.cn>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 5 Jan 2024 13:34:33 +0000
-Message-ID: <CAFEAcA8oQN9Rq9NK+1pVE2g=-2YjDtGqSQNVL9t+RvSgJ4oNEA@mail.gmail.com>
-Subject: Re: [PULL 0/2] loongarch-to-apply queue
-To: Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/9] intc/grlib_irqmp: implements the multiprocessor
+ status register
+Content-Language: en-US
+To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
+Cc: qemu-devel@nongnu.org, Frederic Konrad <konrad.frederic@yahoo.fr>
+References: <20240105102421.163554-1-chigot@adacore.com>
+ <20240105102421.163554-4-chigot@adacore.com>
+ <702936da-4931-40b7-8f82-b256cdf8d9f1@linaro.org>
+ <CAJ307EiJ1SEdnnqEFFL-=YeO3XNtAJLLctixvxxFasQBhu0eFQ@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAJ307EiJ1SEdnnqEFFL-=YeO3XNtAJLLctixvxxFasQBhu0eFQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,39 +95,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 5 Jan 2024 at 01:30, Song Gao <gaosong@loongson.cn> wrote:
->
-> The following changes since commit d328fef93ae757a0dd65ed786a4086e27952eef3:
->
->   Merge tag 'pull-20231230' of https://gitlab.com/rth7680/qemu into staging (2024-01-04 10:23:34 +0000)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240105
->
-> for you to fetch changes up to 0cd8b379081fa71c23836052feb65da4685f8ec7:
->
->   target/loongarch: move translate modules to tcg/ (2024-01-05 09:31:05 +0800)
->
-> ----------------------------------------------------------------
-> pull-loongarch-20240105
->
-> ----------------------------------------------------------------
-> Song Gao (2):
->       target/loongarch/meson: move gdbstub.c to loongarch.ss
->       target/loongarch: move translate modules to tcg/
+On 5/1/24 14:23, Clément Chigot wrote:
+> On Fri, Jan 5, 2024 at 12:32 PM Philippe Mathieu-Daudé
+> <philmd@linaro.org> wrote:
+>>
+>> Hi Clément,
+>>
+>> On 5/1/24 11:24, Clément Chigot wrote:
+>>> This implements the multiprocessor status register in grlib-irqmp and bind
+>>> it to a start signal, which will be later wired in leon3-generic to
+>>> start a cpu.
+>>>
+>>> Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
+>>> Signed-off-by: Clément Chigot <chigot@adacore.com>
+>>> ---
+>>>    hw/intc/grlib_irqmp.c | 22 +++++++++++++++++++---
+>>>    1 file changed, 19 insertions(+), 3 deletions(-)
+>>
+>>
+>>> @@ -323,6 +334,8 @@ static void grlib_irqmp_reset(DeviceState *d)
+>>>
+>>>        memset(irqmp->state, 0, sizeof *irqmp->state);
+>>>        irqmp->state->parent = irqmp;
+>>> +    irqmp->state->mpstatus = ((irqmp->ncpus - 1) << 28)
+>>
+>> Can you #define this magic '28' number?
+>>
+>>> +        | ((1 << irqmp->ncpus) - 2);
+>>>    }
+>>>
+>>>    static void grlib_irqmp_realize(DeviceState *dev, Error **errp)
+>>> @@ -336,6 +349,9 @@ static void grlib_irqmp_realize(DeviceState *dev, Error **errp)
+>>>        }
+>>>
+>>>        qdev_init_gpio_in(dev, grlib_irqmp_set_irq, MAX_PILS);
+>>> +    /* Transitionning from 0 to 1 starts the CPUs.  */
+>>
+>> What about 1 -> 0?
+> 
+> It does nothing. I have updated the comment to mention it.
+> For the doc (also mention it in the commit message now).
+>    | [15:1] Power-down status of CPU [n]: reads ‘1’ = power-down, ‘0’ = running.
+>    | Write to start processor n: ‘1’=to start ‘0'=has no effect.
 
-Hi; this fails to build, with
+Then grlib_irqmp_write() could be simplified as:
 
-../target/loongarch/tcg/meson.build:1:3: ERROR: Unknown variable "config_all".
-
-(eg https://gitlab.com/qemu-project/qemu/-/jobs/5868662017)
-
-I think your pullreq has unfortunately got a conflict with the
-meson cleanup patches that I just applied from Paolo.
-
-Could you have a look at this and respin the pullreq, please?
-
-thanks
--- PMM
+      case MP_STATUS_OFFSET:
+-        /* Read Only (no SMP support) */
++        state->mpstatus = deposit32(state->mpstatus,
++                                    value, 0, IRQMP_MAX_CPU);
++        for (unsigned i = 0; i < irqmp->ncpus; i++) {
++            qemu_set_irq(irqmp->start_signal[i],
++                         extract32(value, i, 1));
++        }
+          return;
 
