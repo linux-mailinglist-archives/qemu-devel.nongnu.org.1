@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDA7825723
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:52:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF44825774
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 17:01:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLmTN-00027C-EH; Fri, 05 Jan 2024 10:51:01 -0500
+	id 1rLmTS-00036j-Th; Fri, 05 Jan 2024 10:51:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmRj-0007Fm-GE
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:21 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmRo-0007aX-48
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:27 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmRg-0007rh-0o
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:19 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40d60ad5f0bso19751205e9.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:49:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmRl-00089l-If
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:23 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-336990fb8fbso1225269f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:49:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704469753; x=1705074553; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704469759; x=1705074559; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QjTvneZAUBkosxG1nWDJT6FQx8ULASKYfEukRB1XIpY=;
- b=bSQdDuDMsgO/iZ7Fv9m7PW1eB1csUPd557FC0hOWYAaQUFFp4CgsNcrld3qtjxo33U
- 5xl0ooX9IAXb9CkG+vfzsd1r7askWZsZ0TEIfq+cVAZyWJXK3zSAjPCSMihaEgdKdCbq
- CrzC0L0+LF8+UM6muz9jwO05cZwZBuvfNCMUp4wi4H8sWFL25wfyu25T8gDso1w7m716
- /Y4FNurtrXC0vdtBfRHO5+8u+NXAfGDrnIzAOVCBvyMf/NSExPf+ZLflb1DkMtvY3Cn7
- SckIjMm2AWqtqtrOcnUfsS3DAl5kYIDKkToDANQWK5+TNOm526/PRjTZgsgOppk2zYRn
- k+Cw==
+ bh=3HnuyTIxGYsWykQsG+bF/A0ZdepEt+u1/qeWfQkxoXY=;
+ b=W5IRGN+q6DxEAK7IZ142Yb6IQ7SyaNnnL42Zi3OjH8BHb3APSAzo3/QcBLKwzXUKdk
+ e6Mkz9HGBxDx8rVeGuNK2jOtNrjL0jAVeMGBY7b2XLo4Tayr6136TGASp/O5c0jggpU4
+ gZaycS75NjgbR9dsRwT2ir3octbXCuBd6/nG9ecY2wsaqg7GDDwoLKApGOfJpkBNCV6x
+ A5cGl5zFNSDisVBRiwrszNVn2k9W4dhBq4kh1W+odEl5du13AmPIQ/NQPdH31CABblza
+ SeIxHR2/ZEjEu18tLg62ds9RFn9qD3EXRiZvHn6uNqoXJJiYpqdBUWfmT7aBx2ZiZKg2
+ EBUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704469753; x=1705074553;
+ d=1e100.net; s=20230601; t=1704469759; x=1705074559;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QjTvneZAUBkosxG1nWDJT6FQx8ULASKYfEukRB1XIpY=;
- b=f1RTneF3tW+BPP+7+XWdbSY11WGbgy7WYDEk/fB4h6xv5+UFE7a+EIK80hhRjmjxLD
- b3ws6dpoQCKZ9FmJoUmq7el6j2+qjXKuQnAxjGaicNF87J1YYocRIP7SuC/YyRNgmA0n
- 9lGfM04Sd4XbE7Br7VwsoFkYIgceGZ74cBym4/MFlY2/eRLkTURaiQsyRav1hG1rce5G
- kcKDWVQwEksto94Rf7rPrRxfG2oNZ+OzLPILFF3eGkkJq4O/6qWry4sOO6h08yCYo248
- HB/CX6zcLhSbc2Nu25efxJdM+Paa24oO6ZprgTQarfHYmUj8wOmwurAOWt4q1zmZpR/u
- m0gw==
-X-Gm-Message-State: AOJu0Yx9sUDOs9vV7nZoZX5uhNuK/FUQtoqeh27UrJFcr1nvu3WtHqmb
- r0X2KjYsIQg1DXWeSmNL9WtW/QzaVTYRrV463cEgYV2sT9k=
-X-Google-Smtp-Source: AGHT+IGG3nrZw0R33ZdCdnMyPFIMVtpJdwa2QHtsYkDw8jf9KUPt1o7tF7B/jmDhhVLe/I1ue141zg==
-X-Received: by 2002:a05:600c:3b1d:b0:40d:91fd:74e with SMTP id
- m29-20020a05600c3b1d00b0040d91fd074emr1369672wms.15.1704469753430; 
- Fri, 05 Jan 2024 07:49:13 -0800 (PST)
+ bh=3HnuyTIxGYsWykQsG+bF/A0ZdepEt+u1/qeWfQkxoXY=;
+ b=N8iBysN30TQDDqWQAItx/QTNI2zbR0RFGZKCI7vn/adUuHaLoSLIQOQOBsYDy7fRZW
+ Flb1FINRwJkd1RFqQlJ2Z1hyFF0pnxE64skORu4l+ZJmr858j/p0sCTquHtnZLk48K3i
+ +AhernaE8pCoOVGgf8Mrx/rINjGJiX6KzDAt/K5mv5U1nSC7k28m2h5Jlq+E344bisft
+ Hh7BisJOWL+lgdARr3Yz7QwYnaThX0MB3/MRKPOS5vArO9WD4QXaw3XfGfAsxLYrI9/o
+ lz2ZH1r3XMCQgv44hoIKYqbhkULF9kM8+FXRnbOTMLGtTbBxGW7SkQMlSu9yRKiwzb5A
+ O16Q==
+X-Gm-Message-State: AOJu0Yz7hufI6i0Wpe00aRRrRDtpYcNt2LzCx5GKJzY48rarW/hnwb9L
+ sk04k6P7TB/CONUtVPSJkThFIOvp8CEIx7maku576/P/XYk=
+X-Google-Smtp-Source: AGHT+IF0Pyylu6bX+CfbQ1+REdITz6wqERsRZV89jAdI+Yqci0wvAbIS9//YMrS8A8aLBTnEpv3jBA==
+X-Received: by 2002:a5d:5cc3:0:b0:336:e399:6fc7 with SMTP id
+ cg3-20020a5d5cc3000000b00336e3996fc7mr1040828wrb.59.1704469758884; 
+ Fri, 05 Jan 2024 07:49:18 -0800 (PST)
 Received: from m1x-phil.lan (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- t9-20020a05600c198900b0040d6d755c90sm1937955wmq.42.2024.01.05.07.49.12
+ k4-20020a5d6284000000b00336c43b366fsm1618203wru.12.2024.01.05.07.49.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jan 2024 07:49:13 -0800 (PST)
+ Fri, 05 Jan 2024 07:49:18 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
@@ -61,25 +61,24 @@ Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Gavin Shan <gshan@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>
-Subject: [PULL 59/71] backends: Have HostMemoryBackendClass::alloc() handler
- return a boolean
-Date: Fri,  5 Jan 2024 16:42:52 +0100
-Message-ID: <20240105154307.21385-60-philmd@linaro.org>
+Subject: [PULL 60/71] backends: Reduce variable scope in
+ host_memory_backend_memory_complete
+Date: Fri,  5 Jan 2024 16:42:53 +0100
+Message-ID: <20240105154307.21385-61-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240105154307.21385-1-philmd@linaro.org>
 References: <20240105154307.21385-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_FILL_THIS_FORM_SHORT=0.01,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,239 +95,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Following the example documented since commit e3fe3988d7 ("error:
-Document Error API usage rules"), have HostMemoryBackendClass::alloc
-return a boolean indicating whether an error is set or not.
+Reduce the &local_err variable use and remove the 'out:' label.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
-Message-Id: <20231120213301.24349-17-philmd@linaro.org>
+Message-Id: <20231120213301.24349-18-philmd@linaro.org>
 ---
- include/sysemu/hostmem.h | 10 +++++++++-
- backends/hostmem-epc.c   | 11 +++++------
- backends/hostmem-file.c  | 19 ++++++++++---------
- backends/hostmem-memfd.c | 10 +++++-----
- backends/hostmem-ram.c   |  9 +++++----
- backends/hostmem.c       |  5 ++---
- 6 files changed, 36 insertions(+), 28 deletions(-)
+ backends/hostmem.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/sysemu/hostmem.h b/include/sysemu/hostmem.h
-index 39326f1d4f..0e411aaa29 100644
---- a/include/sysemu/hostmem.h
-+++ b/include/sysemu/hostmem.h
-@@ -47,7 +47,15 @@ OBJECT_DECLARE_TYPE(HostMemoryBackend, HostMemoryBackendClass,
- struct HostMemoryBackendClass {
-     ObjectClass parent_class;
- 
--    void (*alloc)(HostMemoryBackend *backend, Error **errp);
-+    /**
-+     * alloc: Allocate memory from backend.
-+     *
-+     * @backend: the #HostMemoryBackend.
-+     * @errp: pointer to Error*, to store an error if it happens.
-+     *
-+     * Return: true on success, else false setting @errp with error.
-+     */
-+    bool (*alloc)(HostMemoryBackend *backend, Error **errp);
- };
- 
- /**
-diff --git a/backends/hostmem-epc.c b/backends/hostmem-epc.c
-index 3ceb079f9e..735e2e1cf8 100644
---- a/backends/hostmem-epc.c
-+++ b/backends/hostmem-epc.c
-@@ -17,7 +17,7 @@
- #include "sysemu/hostmem.h"
- #include "hw/i386/hostmem-epc.h"
- 
--static void
-+static bool
- sgx_epc_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
+diff --git a/backends/hostmem.c b/backends/hostmem.c
+index 3f8eb936d7..1b0043a0d9 100644
+--- a/backends/hostmem.c
++++ b/backends/hostmem.c
+@@ -324,7 +324,6 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
  {
-     g_autofree char *name = NULL;
-@@ -26,21 +26,20 @@ sgx_epc_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
+     HostMemoryBackend *backend = MEMORY_BACKEND(uc);
+     HostMemoryBackendClass *bc = MEMORY_BACKEND_GET_CLASS(uc);
+-    Error *local_err = NULL;
+     void *ptr;
+     uint64_t sz;
  
-     if (!backend->size) {
-         error_setg(errp, "can't create backend with size 0");
--        return;
-+        return false;
-     }
- 
-     fd = qemu_open_old("/dev/sgx_vepc", O_RDWR);
-     if (fd < 0) {
-         error_setg_errno(errp, errno,
-                          "failed to open /dev/sgx_vepc to alloc SGX EPC");
--        return;
-+        return false;
-     }
- 
-     name = object_get_canonical_path(OBJECT(backend));
-     ram_flags = (backend->share ? RAM_SHARED : 0) | RAM_PROTECTED;
--    memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend),
--                                   name, backend->size, ram_flags,
--                                   fd, 0, errp);
-+    return memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend), name,
-+                                          backend->size, ram_flags, fd, 0, errp);
- }
- 
- static void sgx_epc_backend_instance_init(Object *obj)
-diff --git a/backends/hostmem-file.c b/backends/hostmem-file.c
-index fe8c481f8f..ac3e433cbd 100644
---- a/backends/hostmem-file.c
-+++ b/backends/hostmem-file.c
-@@ -36,12 +36,13 @@ struct HostMemoryBackendFile {
-     OnOffAuto rom;
- };
- 
--static void
-+static bool
- file_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- {
- #ifndef CONFIG_POSIX
-     error_setg(errp, "backend '%s' not supported on this host",
-                object_get_typename(OBJECT(backend)));
-+    return false;
- #else
-     HostMemoryBackendFile *fb = MEMORY_BACKEND_FILE(backend);
-     g_autofree gchar *name = NULL;
-@@ -49,11 +50,11 @@ file_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- 
-     if (!backend->size) {
-         error_setg(errp, "can't create backend with size 0");
--        return;
-+        return false;
-     }
-     if (!fb->mem_path) {
-         error_setg(errp, "mem-path property not set");
--        return;
-+        return false;
-     }
- 
-     switch (fb->rom) {
-@@ -65,18 +66,18 @@ file_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-         if (!fb->readonly) {
-             error_setg(errp, "property 'rom' = 'on' is not supported with"
-                        " 'readonly' = 'off'");
--            return;
-+            return false;
+@@ -400,15 +399,16 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
+      * specified NUMA policy in place.
+      */
+     if (backend->prealloc) {
++        Error *local_err = NULL;
++
+         qemu_prealloc_mem(memory_region_get_fd(&backend->mr), ptr, sz,
+                           backend->prealloc_threads,
+                           backend->prealloc_context, &local_err);
+         if (local_err) {
+-            goto out;
++            error_propagate(errp, local_err);
++            return;
          }
-         break;
-     case ON_OFF_AUTO_OFF:
-         if (fb->readonly && backend->share) {
-             error_setg(errp, "property 'rom' = 'off' is incompatible with"
-                        " 'readonly' = 'on' and 'share' = 'on'");
--            return;
-+            return false;
-         }
-         break;
-     default:
--        assert(false);
-+        g_assert_not_reached();
      }
- 
-     name = host_memory_backend_get_name(backend);
-@@ -86,9 +87,9 @@ file_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
-     ram_flags |= fb->is_pmem ? RAM_PMEM : 0;
-     ram_flags |= RAM_NAMED_FILE;
--    memory_region_init_ram_from_file(&backend->mr, OBJECT(backend), name,
--                                     backend->size, fb->align, ram_flags,
--                                     fb->mem_path, fb->offset, errp);
-+    return memory_region_init_ram_from_file(&backend->mr, OBJECT(backend), name,
-+                                            backend->size, fb->align, ram_flags,
-+                                            fb->mem_path, fb->offset, errp);
- #endif
- }
- 
-diff --git a/backends/hostmem-memfd.c b/backends/hostmem-memfd.c
-index db28ab5a56..3923ea9364 100644
---- a/backends/hostmem-memfd.c
-+++ b/backends/hostmem-memfd.c
-@@ -31,7 +31,7 @@ struct HostMemoryBackendMemfd {
-     bool seal;
- };
- 
--static void
-+static bool
- memfd_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- {
-     HostMemoryBackendMemfd *m = MEMORY_BACKEND_MEMFD(backend);
-@@ -41,7 +41,7 @@ memfd_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- 
-     if (!backend->size) {
-         error_setg(errp, "can't create backend with size 0");
--        return;
-+        return false;
-     }
- 
-     fd = qemu_memfd_create(TYPE_MEMORY_BACKEND_MEMFD, backend->size,
-@@ -49,14 +49,14 @@ memfd_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-                            F_SEAL_GROW | F_SEAL_SHRINK | F_SEAL_SEAL : 0,
-                            errp);
-     if (fd == -1) {
--        return;
-+        return false;
-     }
- 
-     name = host_memory_backend_get_name(backend);
-     ram_flags = backend->share ? RAM_SHARED : 0;
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
--    memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend), name,
--                                   backend->size, ram_flags, fd, 0, errp);
-+    return memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend), name,
-+                                          backend->size, ram_flags, fd, 0, errp);
+-out:
+-    error_propagate(errp, local_err);
  }
  
  static bool
-diff --git a/backends/hostmem-ram.c b/backends/hostmem-ram.c
-index 0a670fc22a..d121249f0f 100644
---- a/backends/hostmem-ram.c
-+++ b/backends/hostmem-ram.c
-@@ -16,7 +16,7 @@
- #include "qemu/module.h"
- #include "qom/object_interfaces.h"
- 
--static void
-+static bool
- ram_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- {
-     g_autofree char *name = NULL;
-@@ -24,14 +24,15 @@ ram_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- 
-     if (!backend->size) {
-         error_setg(errp, "can't create backend with size 0");
--        return;
-+        return false;
-     }
- 
-     name = host_memory_backend_get_name(backend);
-     ram_flags = backend->share ? RAM_SHARED : 0;
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
--    memory_region_init_ram_flags_nomigrate(&backend->mr, OBJECT(backend), name,
--                                           backend->size, ram_flags, errp);
-+    return memory_region_init_ram_flags_nomigrate(&backend->mr, OBJECT(backend),
-+                                                  name, backend->size,
-+                                                  ram_flags, errp);
- }
- 
- static void
-diff --git a/backends/hostmem.c b/backends/hostmem.c
-index 1723c19165..3f8eb936d7 100644
---- a/backends/hostmem.c
-+++ b/backends/hostmem.c
-@@ -331,9 +331,8 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
-     if (!bc->alloc) {
-         return;
-     }
--    bc->alloc(backend, &local_err);
--    if (local_err) {
--        goto out;
-+    if (!bc->alloc(backend, errp)) {
-+        return;
-     }
- 
-     ptr = memory_region_get_ram_ptr(&backend->mr);
 -- 
 2.41.0
 
