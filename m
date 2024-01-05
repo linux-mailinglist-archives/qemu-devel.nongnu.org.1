@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA53824E07
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 06:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 080FB824E0F
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 06:19:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLcYi-00020q-N3; Fri, 05 Jan 2024 00:15:52 -0500
+	id 1rLcbi-0003VR-UT; Fri, 05 Jan 2024 00:18:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rLcYd-00020b-2F; Fri, 05 Jan 2024 00:15:47 -0500
-Received: from mail-vs1-xe2a.google.com ([2607:f8b0:4864:20::e2a])
+ id 1rLcbg-0003TM-Oz; Fri, 05 Jan 2024 00:18:56 -0500
+Received: from mail-ua1-x936.google.com ([2607:f8b0:4864:20::936])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rLcYb-0006YW-4d; Fri, 05 Jan 2024 00:15:46 -0500
-Received: by mail-vs1-xe2a.google.com with SMTP id
- ada2fe7eead31-4670a58b118so256693137.2; 
- Thu, 04 Jan 2024 21:15:44 -0800 (PST)
+ id 1rLcbf-00008V-5I; Fri, 05 Jan 2024 00:18:56 -0500
+Received: by mail-ua1-x936.google.com with SMTP id
+ a1e0cc1a2514c-7cd0e4e3da6so452932241.0; 
+ Thu, 04 Jan 2024 21:18:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704431743; x=1705036543; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704431933; x=1705036733; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FpIwxGIoBzTF2CiL9kRStVXzjIkH2PzgGmQCJ3pRg8E=;
- b=aCzyh9JGMmrC0LFenMEiYzIeva5pA/uQO+r851oiWUDJilb9ZzSgIVILl0vn0lWF6U
- Ju3wxzRAioRNShVe5RRUOwvykUPZDNtNIqcy7Dbr8W48wJxDg5edBaUYz+gJzHR1z2HY
- JPvPKjJyWpjrb4CwfzdiTmk8ufrKfCfwbhoic5IB/anAwWg0wmCPVerzY3wmfWhxZXtC
- LYUnSIhRc03wsnr1FAuTyjdrQkgUUf/1fnu2NBN/5cG39k4QI2uuTux6FHmdPZIgDRr1
- pQNGmhzHgtGN47KhBNe0R9BRDVrPrXW2J03h8GSpDyv0d7fU/Suw8oIRpqJWXwPXQZRX
- 6uGA==
+ bh=gEX8EfbggQwg5SMmX1UZF4Ha2g9ZGknZpcZUn/MVmhs=;
+ b=Rhlcq1AUacAlAUQ1NCv0SWH/HN2BYwQv10116f52yQyQtMZ0RVpG2grqatn6+T+0qE
+ DnA1vXLYbk16+Jy0RWgIidc+uT/1J4efrsrXR0gEbXkIhmsLX3SlxpQUyXqljwdtSS70
+ mBbFYWx8JRC0lvMiusryVXab125LGibEFCcG2sXctFupnJGPjnRxlYS5H/3onIOEo0N4
+ t69xgaN0e1d+E/EVs2VbDsqKfTfbPMpRgo+aNJBXGw1qY1lOmyQ0xPVTdV9SKz1evME/
+ b1z27L1932owgAjVsMq18PEHukeuJhOZ2bMJbxbTKNquSA5xmcQliSP43zffnw9m4kkV
+ doig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704431743; x=1705036543;
+ d=1e100.net; s=20230601; t=1704431933; x=1705036733;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FpIwxGIoBzTF2CiL9kRStVXzjIkH2PzgGmQCJ3pRg8E=;
- b=Ee10/wY3FPb961hIqSwaDuSpK7IscuuogJwNffwlZkdBP8nf5IOKc6Mp/WEtX38MST
- QXtEf/EEphCAvmW6OCV4s7Emd1bCMynFH5yOvZ/Mgp6vTioZ1NUm3l8YAnKocdBF1WKt
- 278hPt6fdon8xo+WuqU7Ry3uKUhsN9ALp9CBIFf33B48PihcSqfp1GLAcMsOEWrDEwSS
- a+pRBXVk/7tkKhmn5tidpausV57xIwclbiQTIllMMcT1Q0fvFfLz6cEq5iNiOhN6fc9n
- Lmig8bDv/IwHVHPFxf0v1c9adRPKksHxMsjeXSevqL9BuumkvD177XhWbRSTEqBvZ5dz
- oE4w==
-X-Gm-Message-State: AOJu0Yw3AmGCvCitlcMA1dP4Y8zn1z3uW3tqMcqnevi7i3fteIvWp/mx
- gi/6/G3eypiEzsLUHm9JeGD/SY1Jnxh3NCZlADg=
-X-Google-Smtp-Source: AGHT+IEjAeGE+CiiCR1+pfYYZhCn5dePl4bb90sRSZ+SqObbZdrSfAZYqKGuMSEGY+9uivt2BQcp4LGO3LFDPJRXih4=
-X-Received: by 2002:a05:6102:b12:b0:467:aff0:1627 with SMTP id
- b18-20020a0561020b1200b00467aff01627mr875352vst.1.1704431743612; Thu, 04 Jan
- 2024 21:15:43 -0800 (PST)
+ bh=gEX8EfbggQwg5SMmX1UZF4Ha2g9ZGknZpcZUn/MVmhs=;
+ b=Ys9xFaP958RWxvJZ1rT9+m2rOV8Hqd6xXA/pIMq/8oOk0AUy0YUyUJOgWDVIRIcEcu
+ athQW3BuLHNXYWpMm6hJbQ6ChrOfe7WPDnIGe1yW2qDy5KM6IZDy4wvowpuxpyEodP9j
+ kcQz/lM+3H5VsvGV6bcDKkctPxlWkAYOLE+Js8wrfxLu9elZwOZjC1g06cPO9Xl9qD1S
+ R7xEvyC80AwawkmbdY5UUE28Tw6FawoXqLOLfit2QyA6o2fQbEg2VBxJiNg50KlLrag3
+ S0GGFhI46YI8qhlEMj8pxa8Ytp2JQAIN4YpZmMOUXLOz2XmBp//Wov5UoWSWdGxSrlyf
+ NYEw==
+X-Gm-Message-State: AOJu0Ywcn1j9kXXFW+WVc0GPYxG5wDJTeOen9+9xv2tgUA2z6zIXrkY/
+ pLrAB1rl6a+FAlJ4rwh2jEI9g60qA0VL8nJcevg=
+X-Google-Smtp-Source: AGHT+IHDUGkCowPN7A9aAhAGZIqFvjxwL4Fou1wGaiG7P8sldu32JvSzTdODK/wCzeIZ7CAdmqM8tNKmIFfkaQLjDiI=
+X-Received: by 2002:a05:6102:2c83:b0:467:b8fa:3a46 with SMTP id
+ if3-20020a0561022c8300b00467b8fa3a46mr28545vsb.20.1704431933636; Thu, 04 Jan
+ 2024 21:18:53 -0800 (PST)
 MIME-Version: 1.0
 References: <20240103174013.147279-1-dbarboza@ventanamicro.com>
- <20240103174013.147279-8-dbarboza@ventanamicro.com>
-In-Reply-To: <20240103174013.147279-8-dbarboza@ventanamicro.com>
+ <20240103174013.147279-10-dbarboza@ventanamicro.com>
+In-Reply-To: <20240103174013.147279-10-dbarboza@ventanamicro.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 5 Jan 2024 15:15:00 +1000
-Message-ID: <CAKmqyKN0eev2Bc7NQ5ZEDtFWKD9OkcnzLu45C5gKqcVHA7+wVg@mail.gmail.com>
-Subject: Re: [PATCH v3 07/16] target/riscv: rework 'vext_spec'
+Date: Fri, 5 Jan 2024 15:17:00 +1000
+Message-ID: <CAKmqyKPQEVUXm_t7qkRRMCpgyNojibqM+=sf-f1zUrNHY5drPw@mail.gmail.com>
+Subject: Re: [PATCH v3 09/16] target/riscv: move 'elen' to
+ riscv_cpu_properties[]
 To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
  bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
  palmer@rivosinc.com, ajones@ventanamicro.com, vladimir.isaev@syntacore.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2a;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::936;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x936.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -88,14 +89,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 4, 2024 at 3:47=E2=80=AFAM Daniel Henrique Barboza
+On Thu, Jan 4, 2024 at 3:49=E2=80=AFAM Daniel Henrique Barboza
 <dbarboza@ventanamicro.com> wrote:
 >
-> The same rework did in 'priv_spec' is done for 'vext_spec'. This time is
-> simpler, since we only accept one value ("v1.0") and we'll always have
-> env->vext_ver set to VEXT_VERSION_1_00_0, thus we don't need helpers to
-> convert string to 'vext_ver' back and forth like we needed for
-> 'priv_spec'.
+> Do the same thing we did with 'vlen' in the previous patch with 'elen'.
 >
 > Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
@@ -104,127 +101,100 @@ Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Alistair
 
 > ---
->  target/riscv/cpu.c         | 35 +++++++++++++++++++++++++++++++++--
->  target/riscv/cpu.h         |  1 +
->  target/riscv/cpu_cfg.h     |  1 -
->  target/riscv/tcg/tcg-cpu.c | 15 ---------------
->  4 files changed, 34 insertions(+), 18 deletions(-)
+>  target/riscv/cpu.c         | 44 ++++++++++++++++++++++++++++++++++++--
+>  target/riscv/tcg/tcg-cpu.c |  5 -----
+>  2 files changed, 42 insertions(+), 7 deletions(-)
 >
 > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 657569d8a6..c39da44f51 100644
+> index 557874a017..da432e4c1e 100644
 > --- a/target/riscv/cpu.c
 > +++ b/target/riscv/cpu.c
-> @@ -1267,6 +1267,7 @@ static void riscv_cpu_init(Object *obj)
->
+> @@ -1269,6 +1269,7 @@ static void riscv_cpu_init(Object *obj)
 >      /* Default values for non-bool cpu properties */
 >      cpu->cfg.pmu_mask =3D MAKE_64BIT_MASK(3, 16);
-> +    cpu->env.vext_ver =3D VEXT_VERSION_1_00_0;
+>      cpu->cfg.vlen =3D 128;
+> +    cpu->cfg.elen =3D 64;
+>      cpu->env.vext_ver =3D VEXT_VERSION_1_00_0;
 >  }
 >
->  typedef struct misa_ext_info {
-> @@ -1701,9 +1702,38 @@ static const PropertyInfo prop_priv_spec =3D {
->      .set =3D prop_priv_spec_set,
+> @@ -1775,9 +1776,47 @@ static const PropertyInfo prop_vlen =3D {
+>      .set =3D prop_vlen_set,
 >  };
 >
 > -Property riscv_cpu_options[] =3D {
-> -    DEFINE_PROP_STRING("vext_spec", RISCVCPU, cfg.vext_spec),
-> +static void prop_vext_spec_set(Object *obj, Visitor *v, const char *name=
-,
-> +                               void *opaque, Error **errp)
+> -    DEFINE_PROP_UINT16("elen", RISCVCPU, cfg.elen, 64),
+> +static void prop_elen_set(Object *obj, Visitor *v, const char *name,
+> +                         void *opaque, Error **errp)
 > +{
 > +    RISCVCPU *cpu =3D RISCV_CPU(obj);
-> +    g_autofree char *value =3D NULL;
->
-> +    visit_type_str(v, name, &value, errp);
+> +    uint16_t value;
 > +
-> +    if (g_strcmp0(value, VEXT_VER_1_00_0_STR) !=3D 0) {
-> +        error_setg(errp, "Unsupported vector spec version '%s'", value);
+> +    if (!visit_type_uint16(v, name, &value, errp)) {
 > +        return;
 > +    }
 > +
-> +    cpu_option_add_user_setting(name, VEXT_VERSION_1_00_0);
-> +    cpu->env.vext_ver =3D VEXT_VERSION_1_00_0;
-> +}
+> +    if (!is_power_of_2(value)) {
+> +        error_setg(errp, "Vector extension ELEN must be power of 2");
+> +        return;
+> +    }
 > +
-> +static void prop_vext_spec_get(Object *obj, Visitor *v, const char *name=
-,
-> +                               void *opaque, Error **errp)
+> +    if (value !=3D cpu->cfg.elen && riscv_cpu_is_vendor(obj)) {
+> +        cpu_set_prop_err(cpu, name, errp);
+> +        error_append_hint(errp, "Current '%s' val: %u\n",
+> +                          name, cpu->cfg.elen);
+> +        return;
+> +    }
+> +
+> +    cpu_option_add_user_setting(name, value);
+> +    cpu->cfg.elen =3D value;
+> +}
+>
+> +static void prop_elen_get(Object *obj, Visitor *v, const char *name,
+> +                         void *opaque, Error **errp)
 > +{
-> +    const char *value =3D VEXT_VER_1_00_0_STR;
+> +    uint16_t value =3D RISCV_CPU(obj)->cfg.elen;
 > +
-> +    visit_type_str(v, name, (char **)&value, errp);
+> +    visit_type_uint16(v, name, &value, errp);
 > +}
 > +
-> +static const PropertyInfo prop_vext_spec =3D {
-> +    .name =3D "vext_spec",
-> +    .get =3D prop_vext_spec_get,
-> +    .set =3D prop_vext_spec_set,
+> +static const PropertyInfo prop_elen =3D {
+> +    .name =3D "elen",
+> +    .get =3D prop_elen_get,
+> +    .set =3D prop_elen_set,
 > +};
 > +
 > +Property riscv_cpu_options[] =3D {
->      DEFINE_PROP_UINT16("vlen", RISCVCPU, cfg.vlen, 128),
->      DEFINE_PROP_UINT16("elen", RISCVCPU, cfg.elen, 64),
+>      DEFINE_PROP_UINT16("cbom_blocksize", RISCVCPU, cfg.cbom_blocksize, 6=
+4),
+>      DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU, cfg.cboz_blocksize, 6=
+4),
 >
-> @@ -1723,6 +1753,7 @@ static Property riscv_cpu_properties[] =3D {
->      {.name =3D "pmp", .info =3D &prop_pmp},
+> @@ -1797,6 +1836,7 @@ static Property riscv_cpu_properties[] =3D {
+>      {.name =3D "vext_spec", .info =3D &prop_vext_spec},
 >
->      {.name =3D "priv_spec", .info =3D &prop_priv_spec},
-> +    {.name =3D "vext_spec", .info =3D &prop_vext_spec},
+>      {.name =3D "vlen", .info =3D &prop_vlen},
+> +    {.name =3D "elen", .info =3D &prop_elen},
 >
 >  #ifndef CONFIG_USER_ONLY
 >      DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVE=
 C),
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index aa3d3372e3..f1715d9d31 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -89,6 +89,7 @@ enum {
->  };
->
->  #define VEXT_VERSION_1_00_0 0x00010000
-> +#define VEXT_VER_1_00_0_STR "v1.0"
->
->  enum {
->      TRANSLATE_SUCCESS,
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index 2dba1f0007..7112af6c4c 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -135,7 +135,6 @@ struct RISCVCPUConfig {
->      bool ext_XVentanaCondOps;
->
->      uint32_t pmu_mask;
-> -    char *vext_spec;
->      uint16_t vlen;
->      uint16_t elen;
->      uint16_t cbom_blocksize;
 > diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index 4d67b72d9e..6501c29d8e 100644
+> index 8ec858e096..84064ef7e0 100644
 > --- a/target/riscv/tcg/tcg-cpu.c
 > +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -201,21 +201,6 @@ static void riscv_cpu_validate_v(CPURISCVState *env,=
+> @@ -185,11 +185,6 @@ static void riscv_cpu_validate_v(CPURISCVState *env,=
  RISCVCPUConfig *cfg,
->                     "in the range [8, 64]");
 >          return;
 >      }
-> -
-> -    if (cfg->vext_spec) {
-> -        if (!g_strcmp0(cfg->vext_spec, "v1.0")) {
-> -            env->vext_ver =3D VEXT_VERSION_1_00_0;
-> -        } else {
-> -            error_setg(errp, "Unsupported vector spec version '%s'",
-> -                       cfg->vext_spec);
-> -            return;
-> -        }
-> -    } else if (env->vext_ver =3D=3D 0) {
-> -        qemu_log("vector version is not specified, "
-> -                 "use the default value v1.0\n");
-> -
-> -        env->vext_ver =3D VEXT_VERSION_1_00_0;
-> -    }
->  }
 >
->  static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+> -    if (!is_power_of_2(cfg->elen)) {
+> -        error_setg(errp, "Vector extension ELEN must be power of 2");
+> -        return;
+> -    }
+> -
+>      if (cfg->elen > 64 || cfg->elen < 8) {
+>          error_setg(errp,
+>                     "Vector extension implementation only supports ELEN "
 > --
 > 2.43.0
 >
