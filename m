@@ -2,73 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6162825AF9
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 20:13:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D42FC825B1C
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 20:33:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLpbd-0003Fz-3h; Fri, 05 Jan 2024 14:11:45 -0500
+	id 1rLpuM-0000HD-3J; Fri, 05 Jan 2024 14:31:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLpba-0003Fc-TX
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 14:11:42 -0500
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLpbZ-0004Wy-8T
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 14:11:42 -0500
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2ccb4adbffbso23541781fa.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 11:11:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704481899; x=1705086699; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=b/xWt9HcFaZ8rZA7S0X5KGzzTrv3RzRl+XbBpqD19zk=;
- b=no3m/ybPprs2exqvvF7wol2WdKVMEPeVbcParX+78paLnFIY4paAyUk71DgnX/nKcN
- QW49iBhCmAdm1ATmEFgjK8TvsStwLHPGhc9/PkvTP1Aph1/l38w9YvAzpQzj26dawxz9
- /SJ8luDlGC9P6nCMhTeb+jPDzqJ6VnA5+9+u4LuheToLDPIqI1pZ4E9WsD+Bhf0g9yNK
- OZJerYoOsVAiWyhqcBJTkK7XkxhxzuZmjbEu+iXYAc3USfO09D+jrdCIJ4B/iu7jVKPR
- iznVp4b/oDXoVNxYL6RfsLGfI398SBLNEtaJxVzVdIR44vtz+V/MTK6qnuZad08zKYbG
- 8RLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704481899; x=1705086699;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=b/xWt9HcFaZ8rZA7S0X5KGzzTrv3RzRl+XbBpqD19zk=;
- b=op2YWHK3wxEvOTq1l29EOzfKbOhu7RO9mN4nFbnUBqgGu5UKb4fSAJ9ASEdmCEUP7l
- RCLTEgb5c7DoQ36x4NRibAWnCRrS4dhjl7mBgQeHewidIPBYAW+2EWvPYvChM7Qu7wfR
- bI7doplP44uXPYwVGmHl904hPRgDzI11Acmf5tfuMHXnSO8OGkmnVzSUPXXPHoWnOsqb
- 4WLc4INO8o7g25qrJDfNZcGzNP1G2Ghk4zQELyV4u0H+MW7RSCEYST7JWU9QaQpk5Qdd
- 1tlsNRp2gBqxvRZ6R3E0d4UrTOSvjkkwRLC1ojB6apzvfD3J2zFK5dRY9sQotlH3d0Ga
- sVHg==
-X-Gm-Message-State: AOJu0YzNvLqccTx8BEUHT6D82zHZQGS5XlvyYNwaKz0C166K+kirmskZ
- bRsuE/cVdqFSpklyusYpujTHIbBf9smaSPm3TkMG5qaZ3H4hkrMvnbrRdZ2c
-X-Google-Smtp-Source: AGHT+IGTH/klVla2fkeTzeBU88S4DF4/TxnUzHBaRRSSoeweWJesX5Bj9VIEqtqnXj0rmIeCWpUaYeiGGvkf5q2Rwuo=
-X-Received: by 2002:a05:651c:2325:b0:2cc:dc54:871e with SMTP id
- bi37-20020a05651c232500b002ccdc54871emr1310188ljb.24.1704481899468; Fri, 05
- Jan 2024 11:11:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rLpu9-0000Gm-Iw; Fri, 05 Jan 2024 14:30:54 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rLpu7-0002xT-El; Fri, 05 Jan 2024 14:30:53 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 12F4040D2B;
+ Fri,  5 Jan 2024 22:30:42 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id AB73F5B1EB;
+ Fri,  5 Jan 2024 22:30:38 +0300 (MSK)
+Received: (nullmailer pid 116603 invoked by uid 1000);
+ Fri, 05 Jan 2024 19:30:38 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
+Subject: [PULL 0/6] Trivial patches for 2024-01-05
+Date: Fri,  5 Jan 2024 22:30:32 +0300
+Message-Id: <20240105193038.116576-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 5 Jan 2024 19:11:28 +0000
-Message-ID: <CAFEAcA93kpreNOOKz6-qbVE_9Kg6tgZNaMowNLwc+G_47MXLHg@mail.gmail.com>
-Subject: CI "pages" job failing with incomprehensible error message from htags
-To: QEMU Developers <qemu-devel@nongnu.org>
-Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,16 +57,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-https://gitlab.com/qemu-project/qemu/-/jobs/5871592479
+The following changes since commit 0c1eccd368af8805ec0fb11e6cf25d0684d37328:
 
-failed with
+  Merge tag 'hw-cpus-20240105' of https://github.com/philmd/qemu into staging (2024-01-05 16:08:58 +0000)
 
-$ htags -anT --tree-view=filetree -m qemu_init -t "Welcome to the QEMU
-sourcecode"
-htags: Negative exec line limit = -371
+are available in the Git repository at:
 
-Does anybody have any idea what this is about ?
+  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
 
-thanks
--- PMM
+for you to fetch changes up to 8a780cd212647a6013c8ea59e0929dad996e2c54:
+
+  docs: use "buses" rather than "busses" (2024-01-05 22:28:54 +0300)
+
+----------------------------------------------------------------
+trivial patches for 2024-01-05
+
+Random stuff here and there, plus a riscv bugfix.
+
+----------------------------------------------------------------
+Bin Meng (1):
+      hw/net: cadence_gem: Fix MDIO_OP_xxx values
+
+Max Erenberg (1):
+      edu: fix DMA range upper bound check
+
+Michael Tokarev (2):
+      chardev/char.c: fix "abstract device type" error message
+      audio/audio.c: remove trailing newline in error_setg
+
+Samuel Tardieu (1):
+      docs: use "buses" rather than "busses"
+
+Xu Lu (1):
+      target/riscv: Fix mcycle/minstret increment behavior
+
+ audio/audio.c               |  2 +-
+ chardev/char.c              |  2 +-
+ docs/system/arm/palm.rst    |  2 +-
+ docs/system/arm/xscale.rst  |  2 +-
+ docs/system/devices/can.rst |  6 +++---
+ hw/misc/edu.c               |  2 +-
+ hw/net/cadence_gem.c        |  4 ++--
+ target/riscv/csr.c          | 14 +++++++-------
+ 8 files changed, 17 insertions(+), 17 deletions(-)
 
