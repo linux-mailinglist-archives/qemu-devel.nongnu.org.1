@@ -2,73 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC83D825A35
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 19:34:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6181D825A5D
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 19:43:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLp01-0007mO-BF; Fri, 05 Jan 2024 13:32:53 -0500
+	id 1rLp8Q-0003Xq-E4; Fri, 05 Jan 2024 13:41:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rLozu-0007lq-RE
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 13:32:47 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rLp8N-0003V4-QM
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 13:41:31 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rLozs-0004Cq-MY
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 13:32:46 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40d5f402571so20775565e9.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 10:32:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rLp8L-0006RT-UC
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 13:41:31 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5573a920ca3so1116458a12.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 10:41:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704479561; x=1705084361; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :subject:to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=7xvXBwo87761ZVxQHWaFVWLnITZo/3LXTjKwSv0DQj4=;
- b=gOcTX1hqVrHysfw+IVEFcmwvRSz5ddciruhA/vcSerD7IG6wwwKubI4oDtEZTWkWlL
- RBepEnTiuQsZJZmcxd8C0wnHMvhTrBrfi18fBwo828ccku5SVp0zuxq6VIst42g+8Jix
- bsrH1luOZWbqRpYhaCkAMIX5Q/bjpNZHPnFv/GBlzSXbiCfBMb0i69ywnzvGcJUvmtLz
- ePWm/SqfFhLeXY/s6fHJsLglaSmk5NFQbrDbhE6SHSp/DUH+mqRwtUp6mBcleGcJW9/j
- C4XuVGrSJTY8n/68XV97dqlba7a5YcHpJUVDYHmAU/zXHuiInByioN2sUMjdP4+fVspR
- 5EWA==
+ d=linaro.org; s=google; t=1704480087; x=1705084887; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=A2qdGAXqBAyo3dhmj1sOx9fo3snJwo+Y2oTFJPOGDbc=;
+ b=Sw5BVVeDAyav4iSvOz69E17igwp0r/wGOcFSF8vpVnp/4pha4I/zKz+xToitDJN3Bt
+ V8ItnIswaGamc9/1Wqo8i2pNQnZVSoacVr3tZCLM9sACu+xZxz1S7ntC92Zm0fDkMcmo
+ C+M9+X0mgHLbsDrCMW/tFsU3sBiZzYehY5HoDCYaoL9ez4TkQcJlTOQpeAU1OxSFNS83
+ bbLcTuzikleqiTdqS85PN12AFgXOopnlX3o9wjQO/vWgcPdIkm99KGwfZNgxxaMeUJPt
+ q3nm/R7xPzvMmHZizYG3cMiaPF6yaFVnL7+5QH8uPsxpkojio/6DlYlCzjOo7ZNah/l/
+ OnxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704479561; x=1705084361;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :subject:to:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7xvXBwo87761ZVxQHWaFVWLnITZo/3LXTjKwSv0DQj4=;
- b=YFcz3BmTOvkLA3fThEy5+XWW+sF1mAriYJIwojcSQG7YGTG5sx3lgBMwp9LTdefelm
- j0Jd92fX6Rztn02OmRVo50Ck5XVaecbFU0MEniBtAq0mQfUEoxUpSRv1j23q7Tz1BOLL
- 3+77oag+B/kaFgp/8kZA52027r9BxLNbtEx/cKg/RrmkU8utkq49VR9vj9dTBoFzyj5K
- G2sPJa5P8MVhXq36j8aImdh78tvXzZlNZVr+hLaQUx+qF31kUyS1Im4QekjvjkqivNpR
- NoyqKQ9igWfnd7OI/gZlk0iY7osGVVHM1AkmixzXIx7BAOAiJHRKbmiWqbLHImAWYSuX
- oKpg==
-X-Gm-Message-State: AOJu0YyqcQJvVYzxuyxStAPLz3GeIy21Qu6rgomXooRPFDz2hX62e3Nh
- VHfU6EWAW6VLPGsNprZ8+j5ODK1o5qs0kUBjaGUymBUjur4=
-X-Google-Smtp-Source: AGHT+IF9ANEaml3IkJZmbG7X8zNqFiXTQlvXBpXmmnsm1BLUn/gH+fEGY4fllUhDcfI2DSgeFDlcKw==
-X-Received: by 2002:a7b:cb9a:0:b0:40d:8815:bcc6 with SMTP id
- m26-20020a7bcb9a000000b0040d8815bcc6mr1170445wmi.12.1704479561230; 
- Fri, 05 Jan 2024 10:32:41 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- d1-20020adfa341000000b0033662fb321esm1865014wrb.33.2024.01.05.10.32.40
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jan 2024 10:32:41 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 929675F933
- for <qemu-devel@nongnu.org>; Fri,  5 Jan 2024 18:32:40 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: QEMU Developers <qemu-devel@nongnu.org>
-Subject: KVM/QEMU Community Call 9th Jan Agenda Items
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Fri, 05 Jan 2024 18:32:40 +0000
-Message-ID: <87le93eilz.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1704480087; x=1705084887;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=A2qdGAXqBAyo3dhmj1sOx9fo3snJwo+Y2oTFJPOGDbc=;
+ b=QlgvyZL8E/PARGcCNBVkG+SdlJCHzFmwr7jY5GvC8mCMkwRxpauFAb6H3YiXMavVvy
+ jIBteoCfJ2Y0VVZZsdkVnDUG5E1FaxkOK2syKmIVEKcMq0NLt9yEGNjmYiidnbwToiw7
+ fbov+E296lxbGRIOFznucFSvg5RQvVtdT6FnpoXh88KVUIbeN72boneOt5TKo5ZMji5f
+ v8LleZQUHIhU628//cE84J4L3ehlylB03LeSQUfNBfQyeNtxz57UXMSFTt3uzBaNuf3e
+ MrhDYTdRijvwuVL31vrI/wVnQTJqDW1y8U+E0nRpGHepzuTa24E2N00doREAHdsprdZG
+ N/ZA==
+X-Gm-Message-State: AOJu0YykFYM1hCbglwo7AnbBvMHQCCmLsuYxSgNiMRlJWQTP0jXhpi/p
+ Lrlv9cS7Y+HDR256YZdmuEjS8Bg1QpfSVkK1vu9N+gesLtQkNaVA45OEKXft
+X-Google-Smtp-Source: AGHT+IHmH3N4z6xtytJd4ImVyxbsE67ZFCwjhRqAm8DiZ7lIe03kMB76v81kSdRRvG5UKar8UWvuTrebAoxZx5cyzfs=
+X-Received: by 2002:a50:8e5d:0:b0:556:d3d7:b7b with SMTP id
+ 29-20020a508e5d000000b00556d3d70b7bmr2259567edx.20.1704480087047; Fri, 05 Jan
+ 2024 10:41:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 5 Jan 2024 18:41:16 +0000
+Message-ID: <CAFEAcA_TGYZP2eV1C4Yn5a6vnAO-_1r98rY1Teahy_Pb1ocvjw@mail.gmail.com>
+Subject: acpiBitsTest.test_acpi_smbios_bits test intermittently times out
+To: QEMU Developers <qemu-devel@nongnu.org>
+Cc: Ani Sinha <anisinha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Beraldo Leal <bleal@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,17 +85,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The avocado test acpiBitsTest.test_acpi_smbios_bits seems to be
+flaky in CI -- sometimes it appears to time out.
 
-The KVM/QEMU community call is at:
+https://gitlab.com/qemu-project/qemu/-/issues/2077
+has the details (including links to jobs etc). As far as I can
+see, the test is still running when after about a minute it
+gets timed out. (Though the python tracebacks in the logs are
+not easy for me to interpret, so I might be wrong). This I find
+a bit confusing, because tests/avocado/acpi-bits.py sets
+"timeout = 200". So maybe that isn't taking effect properly?
 
-  https://meet.jit.si/kvmcallmeeting
-  @
-  9/1/2024 14:00 UTC
+Does anybody have time to investigate this? If not, we can disable
+the test as flaky until somebody does have the time.
 
-If anyone has any agenda items please reply to this thread.
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+thanks
+-- PMM
 
