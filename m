@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D51D82574A
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:56:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE33D825752
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:58:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLmTQ-0002rg-UH; Fri, 05 Jan 2024 10:51:05 -0500
+	id 1rLmU9-0004x5-6P; Fri, 05 Jan 2024 10:51:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmSI-0008MD-Fu
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:56 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmSL-0008RA-P7
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:59 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmSB-0000xb-Ce
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:53 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40d6b4e2945so18127645e9.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:49:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmSI-0000zP-7t
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:57 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-33677fb38a3so1538914f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:49:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704469786; x=1705074586; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704469791; x=1705074591; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PoxGR8z2iD4/dV7vlDevdlyqaz6yGMvGSLHUDaB/+Ko=;
- b=lS7mHqvQydw9G3Y95Kh+xSnAHmZcPK6Yh8lO6Q5C9+RCv/1NWXRQ4A55nbW9oDf4oQ
- 9aSJuVas4MVrsgWiIyEyzqfq+nyNySZfOtIC5N9GM+HXAHyfV/1Lho4v7IPKzpQkYaqr
- egKqoEs5pBlK1/60ZWAnVsBN2S0ysVpzIxlnweC/UHHMq7PIPpCNsERY2FDaavfUtJtP
- 4fTGLJ+fesB/gcydoGNKFrRiX3rH8XYdKuDJUZWh43hwFe66wwqDN7QzUPVMpt3zpFZ2
- 2kIM3RYtJYkES9osuoVYSZzPSHx2XaQg0UtO6rJ4wRa1uL157YP0fxCdqjJ2TwPoMP1L
- PcSw==
+ bh=Z5/v+dvKjgkiKWiEWELJXJdh6CxKEAYCa0IE+244Hh8=;
+ b=QGmMTmsPzG09YP9RTv3wX7hL7BH1ePk48LweT5ro7lTtu1EO15dnbc0Z7nwii5Uxlv
+ gAW8H1cVZTlXlUlS+OxOd+rST3K69Lolv8+WWSp2MLaik+gKY0wkGMOaSnad4wKvOwaY
+ wbSeFAQWo/UyO2VJ0uxalm2g6PT1ouLlhmkAdqCjMfVnxOq8wODyPkFXzSUNMSEWhuzG
+ C9NYGv5GTiIkFuNPID2YoDeML53hhQRqvubhLYm5Es18EQyRCbEUR8bcbSDT014IfI4V
+ HvbV6s43a0bbTa/59PAjyk8xD3Nn0gw0cbe58Nf0eksTU3spwYiD0joNdjXsVmIMmveD
+ rDSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704469786; x=1705074586;
+ d=1e100.net; s=20230601; t=1704469791; x=1705074591;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PoxGR8z2iD4/dV7vlDevdlyqaz6yGMvGSLHUDaB/+Ko=;
- b=DhOhgTlhNaCvlWcyaSdzQ6R5HDbxlgvXKE9y9FDlVjgk0QDQ0ey2Bw1kKnz1C1s/TB
- PZqTi/U+w87xkMncPIOlHVhuRp5wxmiFHW1btmQQUoWllRHLdvHl+bh0P5Gf2wMBQbIF
- D/Gm74UTANVHGzxe44MnN8oQRnU/9aCnkLuI67ipoZZU8fP+ohNYG7vpfqmZygczukau
- Xz6LLUWHiJg1HOXZlx6T37/8+onBDS58+INxolkIHOLc57Ts9IMzJcuE+CyrojPFEzBC
- aO7EKwFz5xtliv9nYRQeuQbCcCxAQ2x6LWMrPLYZ6CAifpIcnrJsNCb8Rmqsz/ImfZEY
- TFEQ==
-X-Gm-Message-State: AOJu0YwmJG/UnpkKyPxCHsPULCvg3EuE/burt+n+95O4P6LdXGjt1LHo
- I4PmMKIC/ikH4j/h+bw+Xjt/ExG2dNOp0VE6snxOsPcm4vg=
-X-Google-Smtp-Source: AGHT+IFwrMeMDJP4oO+XGA1BUGpUIY1yT52Wd8pHgBQFLKSV3AS0DpLDcrNG8K6y3OFW3EgRTkVmXA==
-X-Received: by 2002:a05:600c:22d6:b0:40d:5d07:55d3 with SMTP id
- 22-20020a05600c22d600b0040d5d0755d3mr819881wmg.177.1704469785886; 
- Fri, 05 Jan 2024 07:49:45 -0800 (PST)
+ bh=Z5/v+dvKjgkiKWiEWELJXJdh6CxKEAYCa0IE+244Hh8=;
+ b=Gn9DNmQi0E2P6w6pqRlxC/RV7osT9Uy4mNJwFpUkzf8cKIX/jBPtNy7r9/3CwzqFdM
+ v6Uxeui2mQnos3UHXp/5qA5StQJVGhWHya3ZAbhzOMpe374OB7WAwcGmIjA7RftpIZbj
+ 0tOAt86mNXaxeo1mcVgDnJOh97cydJDsIRJkF7Tfr6XuudOF2xCMrRKuyDMAe+9CAtEg
+ fjN/njGMTNdNphAF7alhlZhCfEqHY9kRfOGbq93LVMW23mBZHF9DHSvHwjP/4WDBpqiK
+ wwd13nD4SMopZPWA95rJq2GF3zWOAEsKtCzEofTRvhgB0XQqlRvn5yUKxdSmSmJkGvuh
+ gegw==
+X-Gm-Message-State: AOJu0Yynx37I+d8y5BIywQtZIvX1CTJy4inzdNNEppn7mD2lKif/Z2Q1
+ eHbqv0zsxlO/YQaRSmm7Cnnv5HFZ2KrHWn8otM/7fbkM7HA=
+X-Google-Smtp-Source: AGHT+IEC9VUr/PXB0Hf7LPxeqrhHmLHyX3P5rGzjminRYbjRgLPZ92Ef9i/1SP3FQVsoFVvgOjt4pA==
+X-Received: by 2002:a05:600c:3488:b0:40d:8514:fb5 with SMTP id
+ a8-20020a05600c348800b0040d85140fb5mr1225021wmq.21.1704469791170; 
+ Fri, 05 Jan 2024 07:49:51 -0800 (PST)
 Received: from m1x-phil.lan (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- b14-20020adff90e000000b003375c072fbcsm896486wrr.100.2024.01.05.07.49.44
+ hn3-20020a05600ca38300b0040e398f8cafsm1647488wmb.31.2024.01.05.07.49.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jan 2024 07:49:45 -0800 (PST)
+ Fri, 05 Jan 2024 07:49:50 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gavin Shan <gshan@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PULL 65/71] hw/sparc: Simplify memory_region_init_ram_nomigrate()
- calls
-Date: Fri,  5 Jan 2024 16:42:58 +0100
-Message-ID: <20240105154307.21385-66-philmd@linaro.org>
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Gavin Shan <gshan@redhat.com>
+Subject: [PULL 66/71] hw/misc: Simplify memory_region_init_ram_from_fd() calls
+Date: Fri,  5 Jan 2024 16:42:59 +0100
+Message-ID: <20240105154307.21385-67-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240105154307.21385-1-philmd@linaro.org>
 References: <20240105154307.21385-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,12 +96,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Mechanical change using the following coccinelle script:
 
 @@
-expression mr, owner, arg3, arg4, errp;
+expression mr, owner, arg3, arg4, arg5, arg6, arg7, errp;
 @@
--   memory_region_init_ram_nomigrate(mr, owner, arg3, arg4, &errp);
+-   memory_region_init_ram_from_fd(mr, owner, arg3, arg4, arg5, arg6, arg7, &errp);
     if (
 -       errp
-+       !memory_region_init_ram_nomigrate(mr, owner, arg3, arg4, &errp)
++       !memory_region_init_ram_from_fd(mr, owner, arg3, arg4, arg5, arg6, arg7, &errp)
     ) {
         ...
         return;
@@ -112,78 +110,36 @@ expression mr, owner, arg3, arg4, errp;
 and removing the local Error variable.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
-Message-Id: <20231120213301.24349-23-philmd@linaro.org>
+Message-Id: <20231120213301.24349-24-philmd@linaro.org>
 ---
- hw/sparc/sun4m.c   | 21 ++++++---------------
- hw/sparc64/sun4u.c |  7 ++-----
- 2 files changed, 8 insertions(+), 20 deletions(-)
+ hw/misc/ivshmem.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/hw/sparc/sun4m.c b/hw/sparc/sun4m.c
-index 64895aebe3..550af01690 100644
---- a/hw/sparc/sun4m.c
-+++ b/hw/sparc/sun4m.c
-@@ -577,12 +577,9 @@ static void idreg_realize(DeviceState *ds, Error **errp)
- {
-     IDRegState *s = MACIO_ID_REGISTER(ds);
-     SysBusDevice *dev = SYS_BUS_DEVICE(ds);
--    Error *local_err = NULL;
+diff --git a/hw/misc/ivshmem.c b/hw/misc/ivshmem.c
+index 62af75e862..a2fd0bc365 100644
+--- a/hw/misc/ivshmem.c
++++ b/hw/misc/ivshmem.c
+@@ -476,7 +476,6 @@ static void setup_interrupt(IVShmemState *s, int vector, Error **errp)
  
--    memory_region_init_ram_nomigrate(&s->mem, OBJECT(ds), "sun4m.idreg",
--                                     sizeof(idreg_data), &local_err);
+ static void process_msg_shmem(IVShmemState *s, int fd, Error **errp)
+ {
+-    Error *local_err = NULL;
+     struct stat buf;
+     size_t size;
+ 
+@@ -496,10 +495,9 @@ static void process_msg_shmem(IVShmemState *s, int fd, Error **errp)
+     size = buf.st_size;
+ 
+     /* mmap the region and map into the BAR2 */
+-    memory_region_init_ram_from_fd(&s->server_bar2, OBJECT(s), "ivshmem.bar2",
+-                                   size, RAM_SHARED, fd, 0, &local_err);
 -    if (local_err) {
 -        error_propagate(errp, local_err);
-+    if (!memory_region_init_ram_nomigrate(&s->mem, OBJECT(ds), "sun4m.idreg",
-+                                          sizeof(idreg_data), errp)) {
-         return;
-     }
- 
-@@ -631,12 +628,9 @@ static void afx_realize(DeviceState *ds, Error **errp)
- {
-     AFXState *s = TCX_AFX(ds);
-     SysBusDevice *dev = SYS_BUS_DEVICE(ds);
--    Error *local_err = NULL;
- 
--    memory_region_init_ram_nomigrate(&s->mem, OBJECT(ds), "sun4m.afx", 4,
--                                     &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (!memory_region_init_ram_nomigrate(&s->mem, OBJECT(ds), "sun4m.afx",
-+                                          4, errp)) {
-         return;
-     }
- 
-@@ -715,12 +709,9 @@ static void prom_realize(DeviceState *ds, Error **errp)
- {
-     PROMState *s = OPENPROM(ds);
-     SysBusDevice *dev = SYS_BUS_DEVICE(ds);
--    Error *local_err = NULL;
- 
--    memory_region_init_ram_nomigrate(&s->prom, OBJECT(ds), "sun4m.prom",
--                                     PROM_SIZE_MAX, &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (!memory_region_init_ram_nomigrate(&s->prom, OBJECT(ds), "sun4m.prom",
-+                                          PROM_SIZE_MAX, errp)) {
-         return;
-     }
- 
-diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
-index c871170378..24d53bf5fd 100644
---- a/hw/sparc64/sun4u.c
-+++ b/hw/sparc64/sun4u.c
-@@ -454,12 +454,9 @@ static void prom_realize(DeviceState *ds, Error **errp)
- {
-     PROMState *s = OPENPROM(ds);
-     SysBusDevice *dev = SYS_BUS_DEVICE(ds);
--    Error *local_err = NULL;
- 
--    memory_region_init_ram_nomigrate(&s->prom, OBJECT(ds), "sun4u.prom",
--                                     PROM_SIZE_MAX, &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (!memory_region_init_ram_nomigrate(&s->prom, OBJECT(ds), "sun4u.prom",
-+                                          PROM_SIZE_MAX, errp)) {
++    if (!memory_region_init_ram_from_fd(&s->server_bar2, OBJECT(s),
++                                        "ivshmem.bar2", size, RAM_SHARED,
++                                        fd, 0, errp)) {
          return;
      }
  
