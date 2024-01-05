@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8831B825C68
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 23:14:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF5F825C6D
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 23:15:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLsRn-0007PK-4W; Fri, 05 Jan 2024 17:13:47 -0500
+	id 1rLsRn-0007PT-8e; Fri, 05 Jan 2024 17:13:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1rLsRk-0007No-F6
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 17:13:44 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1rLsRl-0007OL-1x
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 17:13:45 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1rLsRi-00010O-8y
+ id 1rLsRj-00010i-Bn
  for qemu-devel@nongnu.org; Fri, 05 Jan 2024 17:13:44 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1d3e6c86868so157085ad.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 14:13:41 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1d3ed1ca402so100895ad.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 14:13:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1704492821; x=1705097621;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1704492822; x=1705097622;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rMJVTM/OJQ3D+48PDiP3nmkHnu6Md2qHwda7zuLI03Y=;
- b=gFIw+7pC0PBKtcLCK2Wl0ScxquNc89TnM8QvVkGCK39Xi1kI/DU7vWb7Guw9utoHwu
- 4WSLlJt0dOQibhWMTDS9dT5aL49YGSMMf5Fy6qEmhV3v6RXDFtGwnyaEeTHMEVlSW61d
- taX/2JFuebpoDc4g5SUilmPIuaxdzCC4IX5XDSzq98dk0AI52rfZdxdQxWk0GxUQvNvf
- WUQLP8EZzVFVO1+2WwFLqaiI7jnVy4co26pLhe9qljFlNXhHnoJDLIKmd7j8LPs1Zltw
- rcgWCr1LxHHhEAcGuiBXmWJYlMJhG3yG/OwFVS/xbKSEVonaMksGIx2RSwMavSRUynPx
- FjJw==
+ bh=P+DSlWlsYYmfvUro+I+wBQwYUt4/Bqz6j14sqSuXYzQ=;
+ b=vXmH4wePBkZWMf2MgW1Ji2gyWD4jjeQfN7UrWEPGSc8Myga03LfObawl59abopL8vX
+ 7NfivleiVHRn2uI815iiDj9NydkbRWMKM84cKtzH7kKk20Yd0aJM6zycNPc2pUz5hnxq
+ mVOznVwDTUTEAvE6YCgIXxOECwpp4+tmIaBKxPvjxTlE29QurxGSjCyJKRzRSMSXaNiG
+ kOTUMqE8C8Oa90/rdGzesRbXB+VN9fMq+XilZag/iQe0BHikuQ37uw9FxmT0K/W5G6Dk
+ 0dbJyTQRiNseTSU5tkV7k8YtG4nx4uXgOXe6RXwiOU/v35FzXfR6dv5I7qmo8b3hQ5I5
+ vpkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704492821; x=1705097621;
+ d=1e100.net; s=20230601; t=1704492822; x=1705097622;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rMJVTM/OJQ3D+48PDiP3nmkHnu6Md2qHwda7zuLI03Y=;
- b=WtXhIByScEBQPaktQIyHRQPbBmPfnv2PK62OJVVOdz8adH1boodIUWlCu8LaBZFfjH
- rxvbE9EoSWbuS+Tq6nbSiLEbIrE9BUp+3q4ks27Hm2Uq0VsfH5ggw2AJ4/eq2S6hMq9O
- lJywQHkjh4SDl10WQAmx1+9PpGvdBmQJ/1hJyq45Khaf3TXshu0Ch9eJyfZWeQd7vyij
- +XMA5dCpeQcHoP2blQityo+fnUOIFI79l3eq5Rmwz8ur/RQGvx8QOEHdbbwxU/Gz39RR
- 9D+Fm8cvPiwJbXM8aeb6Symt9ye6mCS78t/cii6fwaFk7NyiuAde5Dua+7FTdkTrV2h6
- D/YQ==
-X-Gm-Message-State: AOJu0YyKQzdnmA4X+KCOBsfdNxTy8wDZy3pHr4r0WfBK/e4dNamHw4q/
- w8bjK1o+qpHabIFNDF8N76sx3N8EFqE0Lw==
-X-Google-Smtp-Source: AGHT+IFLTct98VFQuRTDWFJ9OcZlVou00HzDMCJrKIxFdKPpdFWIYwouyOSJCLaAL6FicIJau2LeVQ==
-X-Received: by 2002:a17:903:22ce:b0:1d3:c21b:db5a with SMTP id
- y14-20020a17090322ce00b001d3c21bdb5amr156680plg.34.1704492820915; 
- Fri, 05 Jan 2024 14:13:40 -0800 (PST)
+ bh=P+DSlWlsYYmfvUro+I+wBQwYUt4/Bqz6j14sqSuXYzQ=;
+ b=I++E3MxU72bnOywAus2eJ/QR5XKKJYn9u2Rv18HYYWoW3Fb0wfAJh/mZbgB5DbjcjX
+ rbc0odScgRDmxc87jw7ZcTQ4w81xGynny8XtZ9eKEMgryf7fe9zgNZ9KzK8t9k1XBYBY
+ hW0htsKf9o1Ar/7hH0z96ABbL3Ly++HRGuyRBWT89U8E9Lr1yZTgxXJuQS95BUHf4Jhv
+ hpToZOjHlpvq29k2kDYwli1fGvSz1q6nZkaF7skX1djT1oxTMokeejtPoEOlX0RtUsax
+ qMU8SkelxrNc80abGIVWdGmQ8e/ba/erSC63Y4n/Yt8YcMYtavXzawJWXd6Vl1neVT9Y
+ MKZw==
+X-Gm-Message-State: AOJu0YxfiUQn4Zhgy6W22DJ2sn+Hv0myNVYLyO+m1g7tf4mk0XsmKrKd
+ Aq9wCw7ZrGtAiEnd+S1Xf+9gmUa1tV2pynyjC/U6f1MiT7Y=
+X-Google-Smtp-Source: AGHT+IE8XVCqST3n8sfOYTEorensuw+awaKDTgBYY9YSk2ebTzs9SsE/VSyObJEjRD3lVwEdYU1yQA==
+X-Received: by 2002:a17:903:2447:b0:1d4:2473:e7de with SMTP id
+ l7-20020a170903244700b001d42473e7demr156384pls.125.1704492822213; 
+ Fri, 05 Jan 2024 14:13:42 -0800 (PST)
 Received: from atishp.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- w22-20020a1709029a9600b001d35223d0besm1850524plp.251.2024.01.05.14.13.39
+ w22-20020a1709029a9600b001d35223d0besm1850524plp.251.2024.01.05.14.13.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jan 2024 14:13:40 -0800 (PST)
+ Fri, 05 Jan 2024 14:13:41 -0800 (PST)
 From: Atish Patra <atishp@rivosinc.com>
 To: 
 Cc: Kaiwen Xue <kaiwenx@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
@@ -67,17 +67,17 @@ Cc: Kaiwen Xue <kaiwenx@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
  Palmer Dabbelt <palmer@dabbelt.com>, qemu-devel@nongnu.org,
  qemu-riscv@nongnu.org, Weiwei Li <liwei1518@gmail.com>,
  kaiwenxue1@gmail.com
-Subject: [PATCH v3 3/5] target/riscv: Add cycle & instret privilege mode
- filtering definitions
-Date: Fri,  5 Jan 2024 14:13:25 -0800
-Message-Id: <20240105221327.176764-4-atishp@rivosinc.com>
+Subject: [PATCH v3 4/5] target/riscv: Add cycle & instret privilege mode
+ filtering support
+Date: Fri,  5 Jan 2024 14:13:26 -0800
+Message-Id: <20240105221327.176764-5-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240105221327.176764-1-atishp@rivosinc.com>
 References: <20240105221327.176764-1-atishp@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=atishp@rivosinc.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=atishp@rivosinc.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,86 +101,129 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kaiwen Xue <kaiwenx@rivosinc.com>
 
-This adds the definitions for ISA extension smcntrpmf.
+QEMU only calculates dummy cycles and instructions, so there is no
+actual means to stop the icount in QEMU. Hence this patch merely adds
+the functionality of accessing the cfg registers, and cause no actual
+effects on the counting of cycle and instret counters.
 
-Signed-off-by: Kaiwen Xue <kaiwenx@rivosinc.com>
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Kaiwen Xue <kaiwenx@rivosinc.com>
 ---
- target/riscv/cpu.h      |  6 ++++++
- target/riscv/cpu_bits.h | 29 +++++++++++++++++++++++++++++
- 2 files changed, 35 insertions(+)
+ target/riscv/csr.c | 80 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 80 insertions(+)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index d74b361be641..34617c4c4bab 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -319,6 +319,12 @@ struct CPUArchState {
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 283468bbc652..3bd4aa22374f 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -233,6 +233,24 @@ static RISCVException sscofpmf_32(CPURISCVState *env, int csrno)
+     return sscofpmf(env, csrno);
+ }
  
-     target_ulong mcountinhibit;
- 
-+    /* PMU cycle & instret privilege mode filtering */
-+    target_ulong mcyclecfg;
-+    target_ulong mcyclecfgh;
-+    target_ulong minstretcfg;
-+    target_ulong minstretcfgh;
++static RISCVException smcntrpmf(CPURISCVState *env, int csrno)
++{
++    if (!riscv_cpu_cfg(env)->ext_smcntrpmf) {
++        return RISCV_EXCP_ILLEGAL_INST;
++    }
 +
-     /* PMU counter state */
-     PMUCTRState pmu_ctrs[RV_MAX_MHPMCOUNTERS];
- 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index ebd7917d490a..0ee91e502e8f 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -401,6 +401,10 @@
- /* Machine counter-inhibit register */
- #define CSR_MCOUNTINHIBIT   0x320
- 
-+/* Machine counter configuration registers */
-+#define CSR_MCYCLECFG       0x321
-+#define CSR_MINSTRETCFG     0x322
++    return RISCV_EXCP_NONE;
++}
 +
- #define CSR_MHPMEVENT3      0x323
- #define CSR_MHPMEVENT4      0x324
- #define CSR_MHPMEVENT5      0x325
-@@ -431,6 +435,9 @@
- #define CSR_MHPMEVENT30     0x33e
- #define CSR_MHPMEVENT31     0x33f
++static RISCVException smcntrpmf_32(CPURISCVState *env, int csrno)
++{
++    if (riscv_cpu_mxl(env) != MXL_RV32) {
++        return RISCV_EXCP_ILLEGAL_INST;
++    }
++
++    return smcntrpmf(env, csrno);
++}
++
+ static RISCVException any(CPURISCVState *env, int csrno)
+ {
+     return RISCV_EXCP_NONE;
+@@ -818,6 +836,54 @@ static int read_hpmcounterh(CPURISCVState *env, int csrno, target_ulong *val)
  
-+#define CSR_MCYCLECFGH      0x721
-+#define CSR_MINSTRETCFGH    0x722
-+
- #define CSR_MHPMEVENT3H     0x723
- #define CSR_MHPMEVENT4H     0x724
- #define CSR_MHPMEVENT5H     0x725
-@@ -885,6 +892,28 @@ typedef enum RISCVException {
- /* PMU related bits */
- #define MIE_LCOFIE                         (1 << IRQ_PMU_OVF)
+ #else /* CONFIG_USER_ONLY */
  
-+#define MCYCLECFG_BIT_MINH                 BIT_ULL(62)
-+#define MCYCLECFGH_BIT_MINH                BIT(30)
-+#define MCYCLECFG_BIT_SINH                 BIT_ULL(61)
-+#define MCYCLECFGH_BIT_SINH                BIT(29)
-+#define MCYCLECFG_BIT_UINH                 BIT_ULL(60)
-+#define MCYCLECFGH_BIT_UINH                BIT(28)
-+#define MCYCLECFG_BIT_VSINH                BIT_ULL(59)
-+#define MCYCLECFGH_BIT_VSINH               BIT(27)
-+#define MCYCLECFG_BIT_VUINH                BIT_ULL(58)
-+#define MCYCLECFGH_BIT_VUINH               BIT(26)
++static int read_mcyclecfg(CPURISCVState *env, int csrno, target_ulong *val)
++{
++    *val = env->mcyclecfg;
++    return RISCV_EXCP_NONE;
++}
 +
-+#define MINSTRETCFG_BIT_MINH               BIT_ULL(62)
-+#define MINSTRETCFGH_BIT_MINH              BIT(30)
-+#define MINSTRETCFG_BIT_SINH               BIT_ULL(61)
-+#define MINSTRETCFGH_BIT_SINH              BIT(29)
-+#define MINSTRETCFG_BIT_UINH               BIT_ULL(60)
-+#define MINSTRETCFGH_BIT_UINH              BIT(28)
-+#define MINSTRETCFG_BIT_VSINH              BIT_ULL(59)
-+#define MINSTRETCFGH_BIT_VSINH             BIT(27)
-+#define MINSTRETCFG_BIT_VUINH              BIT_ULL(58)
-+#define MINSTRETCFGH_BIT_VUINH             BIT(26)
++static int write_mcyclecfg(CPURISCVState *env, int csrno, target_ulong val)
++{
++    env->mcyclecfg = val;
++    return RISCV_EXCP_NONE;
++}
 +
- #define MHPMEVENT_BIT_OF                   BIT_ULL(63)
- #define MHPMEVENTH_BIT_OF                  BIT(31)
- #define MHPMEVENT_BIT_MINH                 BIT_ULL(62)
++static int read_mcyclecfgh(CPURISCVState *env, int csrno, target_ulong *val)
++{
++    *val = env->mcyclecfgh;
++    return RISCV_EXCP_NONE;
++}
++
++static int write_mcyclecfgh(CPURISCVState *env, int csrno, target_ulong val)
++{
++    env->mcyclecfgh = val;
++    return RISCV_EXCP_NONE;
++}
++
++static int read_minstretcfg(CPURISCVState *env, int csrno, target_ulong *val)
++{
++    *val = env->minstretcfg;
++    return RISCV_EXCP_NONE;
++}
++
++static int write_minstretcfg(CPURISCVState *env, int csrno, target_ulong val)
++{
++    env->minstretcfg = val;
++    return RISCV_EXCP_NONE;
++}
++
++static int read_minstretcfgh(CPURISCVState *env, int csrno, target_ulong *val)
++{
++    *val = env->minstretcfgh;
++    return RISCV_EXCP_NONE;
++}
++
++static int write_minstretcfgh(CPURISCVState *env, int csrno, target_ulong val)
++{
++    env->minstretcfgh = val;
++    return RISCV_EXCP_NONE;
++}
++
+ static int read_mhpmevent(CPURISCVState *env, int csrno, target_ulong *val)
+ {
+     int evt_index = csrno - CSR_MCOUNTINHIBIT;
+@@ -4922,6 +4988,13 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+                              write_mcountinhibit,
+                              .min_priv_ver = PRIV_VERSION_1_11_0       },
+ 
++    [CSR_MCYCLECFG]      = { "mcyclecfg",   smcntrpmf, read_mcyclecfg,
++                             write_mcyclecfg,
++                             .min_priv_ver = PRIV_VERSION_1_12_0       },
++    [CSR_MINSTRETCFG]    = { "minstretcfg", smcntrpmf, read_minstretcfg,
++                             write_minstretcfg,
++                             .min_priv_ver = PRIV_VERSION_1_12_0       },
++
+     [CSR_MHPMEVENT3]     = { "mhpmevent3",     any,    read_mhpmevent,
+                              write_mhpmevent                           },
+     [CSR_MHPMEVENT4]     = { "mhpmevent4",     any,    read_mhpmevent,
+@@ -4981,6 +5054,13 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+     [CSR_MHPMEVENT31]    = { "mhpmevent31",    any,    read_mhpmevent,
+                              write_mhpmevent                           },
+ 
++    [CSR_MCYCLECFGH]     = { "mcyclecfgh",   smcntrpmf_32, read_mcyclecfgh,
++                             write_mcyclecfgh,
++                             .min_priv_ver = PRIV_VERSION_1_12_0        },
++    [CSR_MINSTRETCFGH]   = { "minstretcfgh", smcntrpmf_32, read_minstretcfgh,
++                             write_minstretcfgh,
++                             .min_priv_ver = PRIV_VERSION_1_12_0        },
++
+     [CSR_MHPMEVENT3H]    = { "mhpmevent3h",    sscofpmf_32,  read_mhpmeventh,
+                              write_mhpmeventh,
+                              .min_priv_ver = PRIV_VERSION_1_12_0        },
 -- 
 2.34.1
 
