@@ -2,58 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E70C8254C2
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:00:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4FE88254C0
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:00:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLkj1-0005ap-RG; Fri, 05 Jan 2024 08:59:03 -0500
+	id 1rLkj1-0005bF-UR; Fri, 05 Jan 2024 08:59:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rLkj0-0005ad-A8
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:59:02 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rLkiz-0005aW-V4
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:59:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rLkix-00039h-U9
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:59:02 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rLkix-00039e-Sr
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:59:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1704463138;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=0hof9TN+rxDXuxoyt0Vciyfx0KPFFfZq+/jydNyxF7Q=;
- b=BkS/qtwmuefd3j17RfcwsnUzN1YNlwapvhbeJhhnJqFM6/CfOubgM0JW2SLycD6tEQ1x9q
- i5ba7zXbAKFTypjrVJ35G42swD9GORS4JtfphSuetIh0hnq2ExoBzGMZ8tPc+es6TzmGnt
- fsGrJ9Qp4b80po8Uh9L7ZTfsUFq32kA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-124-BNBNowR1MmeOnp9XB6nE1Q-1; Fri, 05 Jan 2024 08:58:56 -0500
-X-MC-Unique: BNBNowR1MmeOnp9XB6nE1Q-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FAeSf6AyHlWJ1aj4AEUmp5aZamGhHrmjKFEVdVz+6yI=;
+ b=MdAs7um4DwQ3TEuWLEPTXle/vdUO4U07tEsTwbd1K5WxxKtuXIuKyl1VGllTpNQ66oDjK2
+ uLIX3fpuBu+FqPTUXDm6rAaK7nBYpIzsqmL47P1D9LRL927qmWkuj/B5fCFkTi8EKM3uBf
+ rWdxARfCu4kDwuK0vVHDmWp64RD6M1k=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-uiKVQ9gKOia80ZqURwrOfQ-1; Fri,
+ 05 Jan 2024 08:58:56 -0500
+X-MC-Unique: uiKVQ9gKOia80ZqURwrOfQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A25788CC40;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7D1A23816B42;
  Fri,  5 Jan 2024 13:58:56 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.193.65])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6B64E1121306;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4A7B13C25;
  Fri,  5 Jan 2024 13:58:56 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 203AD18009E5; Fri,  5 Jan 2024 14:58:55 +0100 (CET)
+ id 2D0A118017F0; Fri,  5 Jan 2024 14:58:55 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-block@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 0/2] hw/pflash: implement update buffer for block writes
-Date: Fri,  5 Jan 2024 14:58:52 +0100
-Message-ID: <20240105135855.268064-1-kraxel@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 1/2] hw/pflash: refactor pflash_data_write()
+Date: Fri,  5 Jan 2024 14:58:53 +0100
+Message-ID: <20240105135855.268064-2-kraxel@redhat.com>
+In-Reply-To: <20240105135855.268064-1-kraxel@redhat.com>
+References: <20240105135855.268064-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -47
@@ -79,22 +81,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When running qemu with edk2 efi firmware on aarch64 the efi
-variable store in pflash can get corrupted.  qemu not doing
-proper block writes -- flush all or nothing to storage -- is
-a hot candidate for being the root cause.
+Move the offset calculation, do it once at the start of the function and
+let the 'p' variable point directly to the memory location which should
+be updated.  This makes it simpler to update other buffers than
+pfl->storage in an upcoming patch.  No functional change.
 
-This little series tries to fix that with an update buffer
-where block writes are staged, so we can commit or discard
-the changes when the block write is completed or canceled.
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+---
+ hw/block/pflash_cfi01.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-Gerd Hoffmann (2):
-  hw/pflash: refactor pflash_data_write()
-  hw/pflash: implement update buffer for block writes
-
- hw/block/pflash_cfi01.c | 132 ++++++++++++++++++++++++++++------------
- 1 file changed, 93 insertions(+), 39 deletions(-)
-
+diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
+index 3e2dc08bd78f..67f1c9773ab3 100644
+--- a/hw/block/pflash_cfi01.c
++++ b/hw/block/pflash_cfi01.c
+@@ -403,33 +403,35 @@ static void pflash_update(PFlashCFI01 *pfl, int offset,
+ static inline void pflash_data_write(PFlashCFI01 *pfl, hwaddr offset,
+                                      uint32_t value, int width, int be)
+ {
+-    uint8_t *p = pfl->storage;
++    uint8_t *p;
+ 
+     trace_pflash_data_write(pfl->name, offset, width, value, pfl->counter);
++    p = pfl->storage + offset;
++
+     switch (width) {
+     case 1:
+-        p[offset] = value;
++        p[0] = value;
+         break;
+     case 2:
+         if (be) {
+-            p[offset] = value >> 8;
+-            p[offset + 1] = value;
++            p[0] = value >> 8;
++            p[1] = value;
+         } else {
+-            p[offset] = value;
+-            p[offset + 1] = value >> 8;
++            p[0] = value;
++            p[1] = value >> 8;
+         }
+         break;
+     case 4:
+         if (be) {
+-            p[offset] = value >> 24;
+-            p[offset + 1] = value >> 16;
+-            p[offset + 2] = value >> 8;
+-            p[offset + 3] = value;
++            p[0] = value >> 24;
++            p[1] = value >> 16;
++            p[2] = value >> 8;
++            p[3] = value;
+         } else {
+-            p[offset] = value;
+-            p[offset + 1] = value >> 8;
+-            p[offset + 2] = value >> 16;
+-            p[offset + 3] = value >> 24;
++            p[0] = value;
++            p[1] = value >> 8;
++            p[2] = value >> 16;
++            p[3] = value >> 24;
+         }
+         break;
+     }
 -- 
 2.43.0
 
