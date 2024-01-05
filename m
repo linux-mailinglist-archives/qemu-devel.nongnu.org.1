@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B21B8254A1
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 14:48:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A14C08254B6
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 14:56:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLkXp-0002ky-Nn; Fri, 05 Jan 2024 08:47:29 -0500
+	id 1rLkfJ-00046U-MH; Fri, 05 Jan 2024 08:55:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLkXh-0002ka-KJ
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:47:21 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLkfI-00046K-5w
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:55:12 -0500
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLkXf-0003FE-BI
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:47:21 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40d87df95ddso13949075e9.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 05:47:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLkfF-0002gY-Vx
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:55:11 -0500
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2cd0c17e42bso18761561fa.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 05:55:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704462437; x=1705067237; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1704462908; x=1705067708; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:cc:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=8yANIo9XwSPsn23LEL+WCP1lA40BVvc4bUgRohLca0M=;
- b=qmTdMxB+2ro/IL5do+PtlfC7USDLObaZSEq1em/uqryETJRJ4r+nanHZPMXXnQp7FG
- HvlGTWztAzKRdcuf7cVPV/eS7nqI7szpB6e/WxTHlbkzRx3igaXxYQ4VaLEVHyovLvN1
- Tf1U6R580jColX+yCvMHrg3dzMcGnOrs1aCWnaFPM6E2wC5583N2xmh/ButhXT7w5ozE
- DT+FGDlBoawINpGMVDpnJW2D/asW/uUlBEF2jPp8OUWJuyaNb3llZWeNfgFVeNCiNApA
- 8WDinibcJCG1Y+xfsW/zttWvz2NU4qmtjpQsLkTyCOe17mfwrjQqyPQMXjj0KAwKdKhm
- HtZQ==
+ bh=MiIpUnnuHacmfwdVvHosOSRE3xuKEeEb7B96g/UFOlo=;
+ b=qSAaZ1BzDR9M9ctXJYrrDG0zudoOEMee7YF0/fvv/E2cFZ/hor1fzMh35yUN5KJ7pG
+ 4abWQ8Yn8ARfulMzNlznY99nB6kJDTdle9Gyfnb1UqySySiELjpZHKGgwcohwxWLIj1f
+ +UwaMmpGmu01yd465n5e4Cq0Gm1hd48igGPkpJ71BdB3NaWQQsfm3IybIU141MbNNwiy
+ STG33jKwkC321B5OyDcqfuD4Y5wA/PENApuXTBWYWI03N88T8pQpbsN4LrNkD10TffGW
+ vcX0M0zlzQRqMO2su7vs34WXC4qLzwmzrv1pPpbfnCGuYIFEa1gpBzJZ6jvdKNqt6P0Z
+ g2uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704462437; x=1705067237;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1704462908; x=1705067708;
+ h=content-transfer-encoding:in-reply-to:from:cc:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8yANIo9XwSPsn23LEL+WCP1lA40BVvc4bUgRohLca0M=;
- b=G4sJgJ0F86Az1ZGevznSCrccV4NDCoeQGaW7ZMVirsFdDt85nwV1dtYgsoZBNPtg6A
- j3Ijd1BUEELQ98OGlBcQmJcZjGTn2q1OYpimomt+MqS8Seis0RXAZMysempUA5fPVybM
- aKUWsC2AnuMSMEyi5WEDboAU5SO5O217G+SiHd6xoX7207ZWrXWY8Mtz6p87uhcgBwT4
- ylETSAlQY3GThTZ8ZyXzd+TnWFoDr/A2eiMsvGqpXO6FScgRzV8iDcXsqkv2IeOQuMDi
- FZPySDxzaYGSHpquzZpxCJf+RYTJUyKTDpJpX9lCaYCCNAcNeAubCLG3Ol/sQ2aQUaVD
- JOCw==
-X-Gm-Message-State: AOJu0Yy9OVD3fIvP9IeAEdbl6zgekdDxRZfha9vhc/xj5eeEvhnozaj4
- I8sNzXCOV3mph9K0PHYojW7JkhYiYJE/Cg==
-X-Google-Smtp-Source: AGHT+IEBRiVDnwP6+wMxjVwrjlno8s/tp73MeyskcGEiLwMo0PgoRsc7cIsGuKg9bg49MFv8+CEtGg==
-X-Received: by 2002:a7b:cb90:0:b0:40d:1a5f:8abd with SMTP id
- m16-20020a7bcb90000000b0040d1a5f8abdmr600416wmi.291.1704462437429; 
- Fri, 05 Jan 2024 05:47:17 -0800 (PST)
+ bh=MiIpUnnuHacmfwdVvHosOSRE3xuKEeEb7B96g/UFOlo=;
+ b=wZvXrrW5BCW34yyaYrLHMNYONkiRz2A3d0/9zAHaOYWtoq6nRtpo3PnPrA2kpIxYUy
+ LETY1Tl5zfCv+z7QcKdDRKQOKPNoWn7v0xwDyyQKnlT3BUxAfUtc/qjRu0WZidrun1qS
+ gyz5l1QBoEKWWsm7Hrdlsz5I8p+xnHyUNTUkLUZmYyM7cMIq0dB/mFGLcgmSgJlY/+KI
+ bdcWYTQKPLqBizgxtsOyLku6g1alR3x0Dtv9HPH7mu8FReQUBTV4m4OwhwFZELTo6YH3
+ ThfJngIhnboHDrMwzhN/mDeM1YVKtHFIN18rRZsZVi4rh1BrorlOIUsGcWKOVpLWWqW3
+ 9qnA==
+X-Gm-Message-State: AOJu0YyMlYC5wXAh7YYJ083ZQ6dXWNMbmR7RxHoPwFFsBZBsblsDDYoV
+ BcTI1zbOXdG0X0SnMRoxU8SRMRrfmFvGyw==
+X-Google-Smtp-Source: AGHT+IFemHcdYOTlcAmAi8HN94qd4Puw/ZtcbOvLTM9xZnFfqahxxOM1TKU5iSJP9F7RncJ84KZdNw==
+X-Received: by 2002:a05:651c:516:b0:2cc:9817:6389 with SMTP id
+ o22-20020a05651c051600b002cc98176389mr1278924ljp.99.1704462908005; 
+ Fri, 05 Jan 2024 05:55:08 -0800 (PST)
 Received: from [192.168.69.100] (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- g11-20020a05600c4ecb00b0040d2d33312csm1654165wmq.2.2024.01.05.05.47.15
+ d8-20020a50fb08000000b0055350d989dasm981352edq.88.2024.01.05.05.55.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 05 Jan 2024 05:47:16 -0800 (PST)
-Message-ID: <5492018d-8b72-4aea-b33c-bb9f4f6b4f48@linaro.org>
-Date: Fri, 5 Jan 2024 14:47:14 +0100
+ Fri, 05 Jan 2024 05:55:07 -0800 (PST)
+Message-ID: <7616e931-3f92-4150-9264-0732e559dd4e@linaro.org>
+Date: Fri, 5 Jan 2024 14:55:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] qga-win: Fix guest-get-fsinfo multi-disks collection
+Subject: Re: [PATCH v3 00/33] linux-user: Improve host and guest page size
+ handling
 Content-Language: en-US
-To: peng.ji@smartx.com, qemu-devel <qemu-devel@nongnu.org>
-Cc: Konstantin Kostiuk <kkostiuk@redhat.com>,
- Michael Roth <michael.roth@amd.com>, Yan Vugenfirer <yvugenfi@redhat.com>
-References: <20231227071540.4035803-1-peng.ji@smartx.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+References: <20240102015808.132373-1-richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231227071540.4035803-1-peng.ji@smartx.com>
+In-Reply-To: <20240102015808.132373-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,35 +92,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/12/23 08:15, peng.ji@smartx.com wrote:
-> From: Peng Ji <peng.ji@smartx.com>
-> 
-> When a volume has more than one disk, all disks cannot be
-> returned correctly because there is not enough malloced memory
-> for disk extents, so before executing DeviceIoControl for the
-> second time, get the correct size of the required memory space
-> to store all disk extents.
-> 
-> Signed-off-by: Peng Ji <peng.ji@smartx.com>
+Cc'ing Pierrick
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2075
-
-> ---
->   qga/commands-win32.c | 2 ++
->   1 file changed, 2 insertions(+)
+On 2/1/24 02:57, Richard Henderson wrote:
+> Changes for v3:
+>    * Rebase.
 > 
-> diff --git a/qga/commands-win32.c b/qga/commands-win32.c
-> index 697c65507c..a1015757d8 100644
-> --- a/qga/commands-win32.c
-> +++ b/qga/commands-win32.c
-> @@ -935,6 +935,8 @@ static GuestDiskAddressList *build_guest_disk_info(char *guid, Error **errp)
->           DWORD last_err = GetLastError();
->           if (last_err == ERROR_MORE_DATA) {
->               /* Try once more with big enough buffer */
-> +            size = sizeof(VOLUME_DISK_EXTENTS) +
-> +               (sizeof(DISK_EXTENT) * (extents->NumberOfDiskExtents - 1));
->               g_free(extents);
->               extents = g_malloc0(size);
->               if (!DeviceIoControl(
+> Blurb from v1:
+> 
+> While working on mmap issues for 8.1, I noticed a lot of corner
+> cases of host != guest page size that we implement poorly.
+> This seems to be particularly visible on Apple M1 with 16k pages,
+> more so than Power with 64k pages for some reason.
+> 
+> Objective 1 is to deprecate and (essentially) disable the -p option.
+> 
+> The effect of -p is apparently confusing, so much so that our own
+> testsuite misuses it.  One cannot really change the host page size,
+> and pretending otherwise means that we don't treat the host memory
+> system correctly, and stuff breaks.
+> 
+> I have not yet done the same work for bsd-user.
+> 
+> Objective 2 is to allow the guest page size to change to match the host.
+> 
+> There are corner cases of host != guest page size will fail in odd ways.
+> For case of host > guest page size, the issues could be solved with
+> softmmu, allowing a non-linear mapping between host and guest addresses
+> and also disconnecting host and guest page permissions.
+> 
+> However, host < guest page has issues with SIGBUS which I believe to be
+> totally unfixable.  At minimum one would need to monitor changes to all
+> files mapped in the address space, but I'm sure there is much more.
+> 
+> But as always the best behaviour is obtained when the host and guest
+> page sizes match -- there are no corner cases to contend with.
+> 
+> There are a set of guests which can be configured to use multiple page
+> sizes, and therefore software developed for those guests (usually) does
+> not hard-code a particular page size.  For those, we can allow the
+> page size to vary and let the guest match the host.
+> 
+> I have only changed aarch64, alpha and ppc guests so far, as those
+> are both easy to test and, especially for the case of alpha's default
+> 8k page size, prone to failure.
+> 
+> 
+> r~
+> 
+> 
+> Richard Henderson (33):
+>    accel/tcg: Remove qemu_host_page_size from page_protect/page_unprotect
+>    linux-user: Adjust SVr4 NULL page mapping
+>    linux-user: Remove qemu_host_page_{size,mask} in probe_guest_base
+>    linux-user: Remove qemu_host_page_size from create_elf_tables
+>    linux-user/hppa: Simplify init_guest_commpage
+>    linux-user/nios2: Remove qemu_host_page_size from init_guest_commpage
+>    linux-user/arm: Remove qemu_host_page_size from init_guest_commpage
+>    linux-user: Remove qemu_host_page_{size,mask} from mmap.c
+>    linux-user: Remove REAL_HOST_PAGE_ALIGN from mmap.c
+>    linux-user: Remove HOST_PAGE_ALIGN from mmap.c
+>    migration: Remove qemu_host_page_size
+>    hw/tpm: Remove HOST_PAGE_ALIGN from tpm_ppi_init
+>    softmmu/physmem: Remove qemu_host_page_size
+>    softmmu/physmem: Remove HOST_PAGE_ALIGN
+>    linux-user: Remove qemu_host_page_size from main
+>    linux-user: Split out target_mmap__locked
+>    linux-user: Move some mmap checks outside the lock
+>    linux-user: Fix sub-host-page mmap
+>    linux-user: Split out mmap_end
+>    linux-user: Do early mmap placement only for reserved_va
+>    linux-user: Split out mmap_h_eq_g
+>    linux-user: Split out mmap_h_lt_g
+>    linux-user: Split out mmap_h_gt_g
+>    tests/tcg: Remove run-test-mmap-*
+>    tests/tcg: Extend file in linux-madvise.c
+>    *-user: Deprecate and disable -p pagesize
+>    cpu: Remove page_size_init
+>    accel/tcg: Disconnect TargetPageDataNode from page size
+>    linux-user: Allow TARGET_PAGE_BITS_VARY
+>    target/arm: Enable TARGET_PAGE_BITS_VARY for AArch64 user-only
+>    linux-user: Bound mmap_min_addr by host page size
+>    target/ppc: Enable TARGET_PAGE_BITS_VARY for user-only
+>    target/alpha: Enable TARGET_PAGE_BITS_VARY for user-only
+> 
+>   docs/about/deprecated.rst                 |   7 +
+>   docs/user/main.rst                        |   3 -
+>   bsd-user/qemu.h                           |   7 +
+>   include/exec/cpu-common.h                 |   7 -
+>   include/hw/core/cpu.h                     |   2 -
+>   target/alpha/cpu-param.h                  |  16 +-
+>   target/arm/cpu-param.h                    |   6 +-
+>   target/ppc/cpu-param.h                    |   9 +-
+>   accel/tcg/translate-all.c                 |   1 -
+>   accel/tcg/user-exec.c                     |  31 +-
+>   bsd-user/main.c                           |  21 +-
+>   cpu-target.c                              |  13 -
+>   hw/tpm/tpm_ppi.c                          |   3 +-
+>   linux-user/elfload.c                      |  67 +-
+>   linux-user/main.c                         |  33 +-
+>   linux-user/mmap.c                         | 714 +++++++++++++---------
+>   migration/ram.c                           |  22 +-
+>   system/physmem.c                          |  17 +-
+>   system/vl.c                               |   1 -
+>   target/arm/cpu.c                          |  51 +-
+>   tests/tcg/multiarch/linux/linux-madvise.c |   2 +
+>   tests/tcg/alpha/Makefile.target           |   3 -
+>   tests/tcg/arm/Makefile.target             |   3 -
+>   tests/tcg/hppa/Makefile.target            |   3 -
+>   tests/tcg/i386/Makefile.target            |   3 -
+>   tests/tcg/m68k/Makefile.target            |   3 -
+>   tests/tcg/multiarch/Makefile.target       |   9 -
+>   tests/tcg/ppc/Makefile.target             |  12 -
+>   tests/tcg/sh4/Makefile.target             |   3 -
+>   tests/tcg/sparc64/Makefile.target         |   6 -
+>   30 files changed, 626 insertions(+), 452 deletions(-)
+>   delete mode 100644 tests/tcg/ppc/Makefile.target
+>   delete mode 100644 tests/tcg/sparc64/Makefile.target
+> 
 
 
