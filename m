@@ -2,85 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F109D825291
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 12:12:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AACB8252D4
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 12:28:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLi6R-0007Q3-DH; Fri, 05 Jan 2024 06:11:03 -0500
+	id 1rLiLK-0002M0-Pv; Fri, 05 Jan 2024 06:26:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLi6K-0007MY-Oq
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:10:58 -0500
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLiKT-0002DG-MO
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:25:37 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLi6H-0003jR-PH
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:10:56 -0500
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-50eac018059so1865297e87.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 03:10:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLiKN-00009s-Uq
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:25:33 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-55692ad81e3so1625637a12.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 03:25:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704453051; x=1705057851; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704453924; x=1705058724; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=IjDO5m0dOcaqMNoq9200rzLpRXSkVfVuBa2ol+B/RjU=;
- b=Ld5XkDJlqPnkKe7mhb4ecfAhcrf94Pcr3lIVENITo8rrd87SZFl3FHvAxy2RaTwbZB
- O7y0+jcMPN51UETUoGZSa8SZ3STtr68ZBlerObvauZY9n9dSHun1zM+1gFBD7842umAR
- IMC6qvZb2CiVdIsKsqioNisvLV4uUchgCu9/aaaE5FwKp/uBwX8HwEWhAopdh5Z8XQlS
- bzTfg57TmmpyL8YKYo/U56dhHFSrOfGjmYdqpIE5UIMmoyRvc5P50CZQbzmNC3uTReCa
- JlRyuneuqR798V3+7ATe5dMyGhoZPpNZ3Q61UAlPe9/4AC3uDHqucPu+pEECsukqruE7
- hFJA==
+ bh=Is4syUN7/x4EQqrOo1gZAChXmkcXmDSsZeHA4i+iDlA=;
+ b=YRFymV++TvwhIwDAO1KmemUWPGG3BcD+dYC1VHUO9KRzdNUVqv/AdMszlWewSeA6A9
+ VeNpuV8RZeschzeRxU+4VyLZOKZgGhsIzvUyguzVN8XVzvz4aEcKTUn7CkuPGeePhRqB
+ WVUHUjJdf2F7BJov6sEsRJNTXkEPOzMNALkVh1DnefzCe7knGg6uCWRBX+nC7duDYcg6
+ /IV24d1bT0pdCGCn4sLLr8lD4s9KB3tTqE3g3UxKPr/RnOJTHtGudj1g46oh94HC5IRk
+ rYkGJOkXxPrb+I8fqBZfC+2r9AMB+6E8ffg0GbD0Z/KGNJcow30je6mbUacPgbwqudxm
+ TJJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704453051; x=1705057851;
+ d=1e100.net; s=20230601; t=1704453924; x=1705058724;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IjDO5m0dOcaqMNoq9200rzLpRXSkVfVuBa2ol+B/RjU=;
- b=WmCFm0JStVMa4CBDc7t9agY9huoEQpsRsQoiyNakZPJ+uP0d9VVDzwGSg5ZVgj0UNn
- CkW5B39Gaps5H5s/sGW6XiVHhIjEGcNGDvdeepx4UdnbBgoBOY/5ggVzDub99IyIEbUr
- 1J/g2vpuFAst1FS/fTPURIbTtFfz1SiwmZb0u95pz3lp9AxMzOAyviw9mWs1rH2iTvNh
- dTjK7AOOAin9AMdvWKtIDNnjmvkpPqP6tsQFq5WImJTagZKIXk9192ZVp3p5L9Z7CpfC
- vsbsVnffVQsKKsLux8/4chTvywI04qIUv0UHKlCMIEwixvA3ET8xd8lmSvL6yBviTaj1
- 8Rpg==
-X-Gm-Message-State: AOJu0YzFcmsgv+p6Pn6MtKIx12OMze668rDRnH/XTvKLPZmO4oajN2Gk
- Ouwa0mjCU91F5ReuISAzZ68Y6elGPs5LFw==
-X-Google-Smtp-Source: AGHT+IFTcVsxYXywomF9LXeYXnD4KRcGPVQ4BaSBQVFsdO3fjgm8KACmz/w4uPNYx7xC70Q0QJ/6hw==
-X-Received: by 2002:a05:6512:2351:b0:50e:55d0:855c with SMTP id
- p17-20020a056512235100b0050e55d0855cmr1334142lfu.17.1704453051109; 
- Fri, 05 Jan 2024 03:10:51 -0800 (PST)
+ bh=Is4syUN7/x4EQqrOo1gZAChXmkcXmDSsZeHA4i+iDlA=;
+ b=eBq9mRurRwkSipr40Qs74e4WvrXL+AYNJBHPFaoGcIb0R7udHj2rTQRiQlitjQIQS/
+ AMYMBw7KqVumEs/1FsVR+HWy8OpbwqW/adxBE0uqsTz7ZxCGmDvfVUt6Mvvxv08sP7lO
+ BtYYqHyNBEwmOuqTUfmjSOimBcFIyJJUZsFXHnqn8fmCT85Tj1VX3T9G+ed7PrEcclj+
+ g+ZsdhBUhJ/sv9QeZnu3nCjY669GU24wg/Tyj+B4ETfkhGYDfzoMiyU6Z0yXTsFFA4QB
+ J8uRCym8+Nkg5UVdVCIV76duCO3mzSUcCN7z9fkzw+pY3DgVb3TzTAVe7Se826UpeLCv
+ C/TA==
+X-Gm-Message-State: AOJu0Yx5Xu9A87dwadhyux2ZZEAONOO4TZ0V0QJ3s2aR53j+tuUXeSGK
+ m5CDsLxDdWsDR1wpoInRfzkVCIv9qsodtTS+wKhUzfZt3SQ=
+X-Google-Smtp-Source: AGHT+IHpCIkZfu5KLVyqWILUye3jxXVpRAqBjzk9sKICRFXYusg6dCiQxOHSXn9y/GzD5kWeTTJ4Yg==
+X-Received: by 2002:a17:907:c9a5:b0:a22:ebf2:1edc with SMTP id
+ uj37-20020a170907c9a500b00a22ebf21edcmr808537ejc.16.1704453924310; 
+ Fri, 05 Jan 2024 03:25:24 -0800 (PST)
 Received: from [192.168.69.100] (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- a5-20020a1709063a4500b00a28d309b063sm757869ejf.220.2024.01.05.03.10.48
+ a17-20020a1709065f9100b00a2471bb0d11sm781882eju.31.2024.01.05.03.25.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 05 Jan 2024 03:10:50 -0800 (PST)
-Message-ID: <c9c65355-7666-4749-b93b-5fb1c7f1585b@linaro.org>
-Date: Fri, 5 Jan 2024 12:10:47 +0100
+ Fri, 05 Jan 2024 03:25:23 -0800 (PST)
+Message-ID: <55b93d1e-646b-43c3-ab05-d58b968b9b34@linaro.org>
+Date: Fri, 5 Jan 2024 12:25:22 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/9] machine: Introduce helper is_cpu_type_supported()
+Subject: Re: [PATCH 2/9] intc/grlib_irqmp: add ncpus property
 Content-Language: en-US
-To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
- imammedo@redhat.com, b.galvani@gmail.com, strahinja.p.jankovic@gmail.com,
- sundeep.lkml@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
- nieklinnenbank@gmail.com, rad@semihalf.com, quic_llindhol@quicinc.com,
- marcin.juszkiewicz@linaro.org, eduardo@habkost.net,
- marcel.apfelbaum@gmail.com, wangyanan55@huawei.com, vijai@behindbytes.com,
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com,
- Thomas Huth <thuth@redhat.com>
-References: <20231129042012.277831-1-gshan@redhat.com>
- <20231129042012.277831-3-gshan@redhat.com>
- <fd8715af-ef1c-4ccc-b602-25776a56fc76@linaro.org>
- <c9f68946-2824-48a5-a0a1-290d7ddba178@redhat.com>
+To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>, qemu-devel@nongnu.org
+Cc: Frederic Konrad <konrad.frederic@yahoo.fr>
+References: <20240105102421.163554-1-chigot@adacore.com>
+ <20240105102421.163554-3-chigot@adacore.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <c9f68946-2824-48a5-a0a1-290d7ddba178@redhat.com>
+In-Reply-To: <20240105102421.163554-3-chigot@adacore.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,100 +92,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/12/23 00:13, Gavin Shan wrote:
-> Hi Phil,
+On 5/1/24 11:24, Clément Chigot wrote:
+> This adds a "ncpus" property to the "grlib-irqmp" device to be used later,
+> this required a little refactoring of how we initialize the device (ie: use
+> realize instead of init).
 > 
-> On 12/1/23 20:53, Philippe Mathieu-Daudé wrote:
->> On 29/11/23 05:20, Gavin Shan wrote:
->>> The logic, to check if the specified CPU type is supported in
->>> machine_run_board_init(), is independent enough. Factor it out into
->>> helper is_cpu_type_supported(). machine_run_board_init() looks a bit
->>> clean with this. Since we're here, @machine_class is renamed to @mc to
->>> avoid multiple line spanning of code. The comments are tweaked a bit
->>> either.
->>>
->>> No functional change intended.
->>>
->>> Signed-off-by: Gavin Shan <gshan@redhat.com>
->>> ---
->>> v8: Move the precise message hint to PATCH[v8 3/9]        (Gavin)
->>> ---
->>>   hw/core/machine.c | 83 +++++++++++++++++++++++++----------------------
->>>   1 file changed, 45 insertions(+), 38 deletions(-)
->>>
->>> diff --git a/hw/core/machine.c b/hw/core/machine.c
->>> index bde7f4af6d..1797e002f9 100644
->>> --- a/hw/core/machine.c
->>> +++ b/hw/core/machine.c
->>> @@ -1387,13 +1387,53 @@ out:
->>>       return r;
->>>   }
->>> +static bool is_cpu_type_supported(const MachineState *machine, Error 
->>> **errp)
->>> +{
->>> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
->>> +    ObjectClass *oc = object_class_by_name(machine->cpu_type);
->>> +    CPUClass *cc;
->>> +    int i;
->>> +
->>> +    /*
->>> +     * Check if the user specified CPU type is supported when the valid
->>> +     * CPU types have been determined. Note that the user specified CPU
->>> +     * type is provided through '-cpu' option.
->>> +     */
->>> +    if (mc->valid_cpu_types && machine->cpu_type) {
->>> +        for (i = 0; mc->valid_cpu_types[i]; i++) {
->>> +            if (object_class_dynamic_cast(oc, 
->>> mc->valid_cpu_types[i])) {
->>> +                break;
->>> +            }
->>> +        }
->>> +
->>> +        /* The user specified CPU type isn't valid */
->>> +        if (!mc->valid_cpu_types[i]) {
->>> +            error_setg(errp, "Invalid CPU type: %s", 
->>> machine->cpu_type);
->>> +            error_append_hint(errp, "The valid types are: %s",
->>> +                              mc->valid_cpu_types[0]);
->>> +            for (i = 1; mc->valid_cpu_types[i]; i++) {
->>> +                error_append_hint(errp, ", %s", 
->>> mc->valid_cpu_types[i]);
->>> +            }
->>> +
->>> +            error_append_hint(errp, "\n");
->>> +            return false;
->>> +        }
->>> +    }
->>> +
->>> +    /* Check if CPU type is deprecated and warn if so */
->>> +    cc = CPU_CLASS(oc);
->>> +    if (cc && cc->deprecation_note) {
->>
->> cc can't be NULL, right? Otherwise,
->>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>
-> 
-> machine->cpu_type is either mc->default_cpu_type or returned from 
-> parse_cpu_option().
-> It can be NULL if mc->default_cpu_type is invalid, which is a program 
-> error. So
-> assert(cc != NULL) should be used instead. I will fold the change to 
-> PATCH[v9 3/9]
+> Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
+> Signed-off-by: Clément Chigot <chigot@adacore.com>
+> ---
+>   hw/intc/grlib_irqmp.c | 30 +++++++++++++++++++++---------
+>   hw/sparc/leon3.c      |  2 +-
+>   2 files changed, 22 insertions(+), 10 deletions(-)
 
-cpu_type and cc an be NULL with the 'none' machine.
-
-> 
->>> +        warn_report("CPU model %s is deprecated -- %s",
->>> +                    machine->cpu_type, cc->deprecation_note);
->>> +    }
->>> +
->>> +    return true;
->>> +}
->>
-> 
-> Thanks,
-> Gavin
-> 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
