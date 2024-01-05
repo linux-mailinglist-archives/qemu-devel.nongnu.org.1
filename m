@@ -2,53 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD40824C93
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 02:32:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB154824CAE
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 03:01:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLZ36-0003DY-16; Thu, 04 Jan 2024 20:31:00 -0500
+	id 1rLZVS-0008FF-HO; Thu, 04 Jan 2024 21:00:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rLZ2u-0003Cl-Mc
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 20:30:48 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rLZ2q-0000qH-KJ
- for qemu-devel@nongnu.org; Thu, 04 Jan 2024 20:30:48 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Cxaeq+W5dlbiQCAA--.3877S3;
- Fri, 05 Jan 2024 09:30:38 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bxut23W5dlmqECAA--.6905S4; 
- Fri, 05 Jan 2024 09:30:37 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: peter.maydell@linaro.org
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 2/2] target/loongarch: move translate modules to tcg/
-Date: Fri,  5 Jan 2024 09:17:39 +0800
-Message-Id: <20240105011739.1217818-3-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20240105011739.1217818-1-gaosong@loongson.cn>
-References: <20240105011739.1217818-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLZVN-0008Ex-8k
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 21:00:13 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rLZVK-0000RU-QZ
+ for qemu-devel@nongnu.org; Thu, 04 Jan 2024 21:00:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704420008;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LtCv3rNm2RUDU2XtxQjOEj0rRO+vmF56i+EJz24VM3I=;
+ b=ZutZF9TntbR8nclHUQRH/gxFBAqQUtbHNqxFfdPnyvri0ymfCWiIuvVybJJIeX38hLFzSA
+ EEgfXoWnQH61qv6mEdTTDmmwyXdOF4upzJSg3dppcDtbZP8fDYgqVTLTMO/C5tdUJZf1B4
+ H/+Sgim5m//jyIx2JiEJDLcLbzM/hWw=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-75-V_Q-XbRuMQa-rwd2AEgNjg-1; Thu, 04 Jan 2024 21:00:07 -0500
+X-MC-Unique: V_Q-XbRuMQa-rwd2AEgNjg-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-6d9b96ae87bso237217b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Jan 2024 18:00:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704420006; x=1705024806;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LtCv3rNm2RUDU2XtxQjOEj0rRO+vmF56i+EJz24VM3I=;
+ b=HGV8zycA1HGCITIt5KXXNDq9PZ0IRqOknezDIifjHo9X6Jeu19Y3HzD1QReOP7b9yc
+ KbDgRMSl2cFow9RTYBiGjDTXkqkyvk9nSLWQM4bECzI7iyxTdXZUnsdxzV5DrFs9hPxw
+ D4oEBNGtrnjJNMbT8ThZDyxAtgSE8SEEwAnrDWHMd5UveWMUpI1s2SHInRSK1Mk3VSTk
+ tDGHcHhF5y/z9YeNKDgWaG0g5ropJF9+qhinyGCdvt8gSRCO+QGG2OJ2lnrRIV2QM8sH
+ Iv1KIpxjvig6Xw9hil4eQxx3kyLSQeZTZEWwa2pIbV6Lpvr3PByTIUFOQwCKXLv9LL1H
+ vhrg==
+X-Gm-Message-State: AOJu0Yz5M4s4TDOfKBVF0Jn6kiGsQKJRlAtV6kGG7xJm+CNyMsfevVZn
+ ELeCrCTVU/ji9ICa5JUcmlolubsdVOBFGygZtXseZ4wS5DWWG4Q2FjLE0Kg/eLQ99mNHhLKkiuQ
+ v1SYzVPk7bQUhhL8k55ZKPTc=
+X-Received: by 2002:a05:6a20:1b1c:b0:195:2e78:d4f6 with SMTP id
+ ch28-20020a056a201b1c00b001952e78d4f6mr2314937pzb.1.1704420006089; 
+ Thu, 04 Jan 2024 18:00:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEMb23Ny6y/RWUFSEwgbDenRgVXHyHL1DsNRtc/jAd+W0PNE9Thewn4q+r9YPiVpKAJV3sfQg==
+X-Received: by 2002:a05:6a20:1b1c:b0:195:2e78:d4f6 with SMTP id
+ ch28-20020a056a201b1c00b001952e78d4f6mr2314910pzb.1.1704420005503; 
+ Thu, 04 Jan 2024 18:00:05 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ s127-20020a625e85000000b006d842c1eb6fsm320651pfb.210.2024.01.04.18.00.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Jan 2024 18:00:05 -0800 (PST)
+Date: Fri, 5 Jan 2024 09:59:56 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH] hw/audio/sb16: Do not migrate qdev properties
+Message-ID: <ZZdinF59FrEJDhhZ@x1n>
+References: <20231124182615.94943-1-philmd@linaro.org>
+ <48dcbec1-dceb-4bfe-8876-96b99c8ed6c7@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bxut23W5dlmqECAA--.6905S4
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <48dcbec1-dceb-4bfe-8876-96b99c8ed6c7@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,211 +99,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce the target/loongarch/tcg directory. Its purpose is to hold the TCG
-code that is selected by CONFIG_TCG
+On Thu, Jan 04, 2024 at 05:48:18PM +0100, Philippe Mathieu-Daudé wrote:
+> If there are no objections I'll queue this patch (fixing
+> the typo reported by Zoltan).
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240102020200.3462097-2-gaosong@loongson.cn>
----
- target/loongarch/meson.build                  | 15 +--------------
- target/loongarch/{ => tcg}/constant_timer.c   |  0
- target/loongarch/{ => tcg}/csr_helper.c       |  0
- target/loongarch/{ => tcg}/fpu_helper.c       |  0
- .../{ => tcg}/insn_trans/trans_arith.c.inc    |  0
- .../{ => tcg}/insn_trans/trans_atomic.c.inc   |  0
- .../{ => tcg}/insn_trans/trans_bit.c.inc      |  0
- .../{ => tcg}/insn_trans/trans_branch.c.inc   |  0
- .../{ => tcg}/insn_trans/trans_extra.c.inc    |  0
- .../{ => tcg}/insn_trans/trans_farith.c.inc   |  0
- .../{ => tcg}/insn_trans/trans_fcmp.c.inc     |  0
- .../{ => tcg}/insn_trans/trans_fcnv.c.inc     |  0
- .../{ => tcg}/insn_trans/trans_fmemory.c.inc  |  0
- .../{ => tcg}/insn_trans/trans_fmov.c.inc     |  0
- .../{ => tcg}/insn_trans/trans_memory.c.inc   |  0
- .../insn_trans/trans_privileged.c.inc         |  0
- .../{ => tcg}/insn_trans/trans_shift.c.inc    |  0
- .../{ => tcg}/insn_trans/trans_vec.c.inc      |  0
- target/loongarch/{ => tcg}/iocsr_helper.c     |  0
- target/loongarch/tcg/meson.build              | 19 +++++++++++++++++++
- target/loongarch/{ => tcg}/op_helper.c        |  0
- target/loongarch/{ => tcg}/tlb_helper.c       |  0
- target/loongarch/{ => tcg}/translate.c        |  0
- target/loongarch/{ => tcg}/vec_helper.c       |  0
- 24 files changed, 20 insertions(+), 14 deletions(-)
- rename target/loongarch/{ => tcg}/constant_timer.c (100%)
- rename target/loongarch/{ => tcg}/csr_helper.c (100%)
- rename target/loongarch/{ => tcg}/fpu_helper.c (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_arith.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_atomic.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_bit.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_branch.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_extra.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_farith.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_fcmp.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_fcnv.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_fmemory.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_fmov.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_memory.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_privileged.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_shift.c.inc (100%)
- rename target/loongarch/{ => tcg}/insn_trans/trans_vec.c.inc (100%)
- rename target/loongarch/{ => tcg}/iocsr_helper.c (100%)
- create mode 100644 target/loongarch/tcg/meson.build
- rename target/loongarch/{ => tcg}/op_helper.c (100%)
- rename target/loongarch/{ => tcg}/tlb_helper.c (100%)
- rename target/loongarch/{ => tcg}/translate.c (100%)
- rename target/loongarch/{ => tcg}/vec_helper.c (100%)
+Yes feel free to.  Thanks,
 
-diff --git a/target/loongarch/meson.build b/target/loongarch/meson.build
-index b3a0fb12fb..e84e4c51f4 100644
---- a/target/loongarch/meson.build
-+++ b/target/loongarch/meson.build
-@@ -5,29 +5,16 @@ loongarch_ss.add(files(
-   'cpu.c',
-   'gdbstub.c',
- ))
--loongarch_tcg_ss = ss.source_set()
--loongarch_tcg_ss.add(gen)
--loongarch_tcg_ss.add(files(
--  'fpu_helper.c',
--  'op_helper.c',
--  'translate.c',
--  'vec_helper.c',
--))
--loongarch_tcg_ss.add(zlib)
- 
- loongarch_system_ss = ss.source_set()
- loongarch_system_ss.add(files(
-   'loongarch-qmp-cmds.c',
-   'machine.c',
--  'tlb_helper.c',
--  'constant_timer.c',
--  'csr_helper.c',
--  'iocsr_helper.c',
- ))
- 
- common_ss.add(when: 'CONFIG_LOONGARCH_DIS', if_true: [files('disas.c'), gen])
- 
--loongarch_ss.add_all(when: 'CONFIG_TCG', if_true: [loongarch_tcg_ss])
-+subdir('tcg')
- 
- target_arch += {'loongarch': loongarch_ss}
- target_system_arch += {'loongarch': loongarch_system_ss}
-diff --git a/target/loongarch/constant_timer.c b/target/loongarch/tcg/constant_timer.c
-similarity index 100%
-rename from target/loongarch/constant_timer.c
-rename to target/loongarch/tcg/constant_timer.c
-diff --git a/target/loongarch/csr_helper.c b/target/loongarch/tcg/csr_helper.c
-similarity index 100%
-rename from target/loongarch/csr_helper.c
-rename to target/loongarch/tcg/csr_helper.c
-diff --git a/target/loongarch/fpu_helper.c b/target/loongarch/tcg/fpu_helper.c
-similarity index 100%
-rename from target/loongarch/fpu_helper.c
-rename to target/loongarch/tcg/fpu_helper.c
-diff --git a/target/loongarch/insn_trans/trans_arith.c.inc b/target/loongarch/tcg/insn_trans/trans_arith.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_arith.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_arith.c.inc
-diff --git a/target/loongarch/insn_trans/trans_atomic.c.inc b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_atomic.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_atomic.c.inc
-diff --git a/target/loongarch/insn_trans/trans_bit.c.inc b/target/loongarch/tcg/insn_trans/trans_bit.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_bit.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_bit.c.inc
-diff --git a/target/loongarch/insn_trans/trans_branch.c.inc b/target/loongarch/tcg/insn_trans/trans_branch.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_branch.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_branch.c.inc
-diff --git a/target/loongarch/insn_trans/trans_extra.c.inc b/target/loongarch/tcg/insn_trans/trans_extra.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_extra.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_extra.c.inc
-diff --git a/target/loongarch/insn_trans/trans_farith.c.inc b/target/loongarch/tcg/insn_trans/trans_farith.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_farith.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_farith.c.inc
-diff --git a/target/loongarch/insn_trans/trans_fcmp.c.inc b/target/loongarch/tcg/insn_trans/trans_fcmp.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_fcmp.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_fcmp.c.inc
-diff --git a/target/loongarch/insn_trans/trans_fcnv.c.inc b/target/loongarch/tcg/insn_trans/trans_fcnv.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_fcnv.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_fcnv.c.inc
-diff --git a/target/loongarch/insn_trans/trans_fmemory.c.inc b/target/loongarch/tcg/insn_trans/trans_fmemory.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_fmemory.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_fmemory.c.inc
-diff --git a/target/loongarch/insn_trans/trans_fmov.c.inc b/target/loongarch/tcg/insn_trans/trans_fmov.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_fmov.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_fmov.c.inc
-diff --git a/target/loongarch/insn_trans/trans_memory.c.inc b/target/loongarch/tcg/insn_trans/trans_memory.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_memory.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_memory.c.inc
-diff --git a/target/loongarch/insn_trans/trans_privileged.c.inc b/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_privileged.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-diff --git a/target/loongarch/insn_trans/trans_shift.c.inc b/target/loongarch/tcg/insn_trans/trans_shift.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_shift.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_shift.c.inc
-diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-similarity index 100%
-rename from target/loongarch/insn_trans/trans_vec.c.inc
-rename to target/loongarch/tcg/insn_trans/trans_vec.c.inc
-diff --git a/target/loongarch/iocsr_helper.c b/target/loongarch/tcg/iocsr_helper.c
-similarity index 100%
-rename from target/loongarch/iocsr_helper.c
-rename to target/loongarch/tcg/iocsr_helper.c
-diff --git a/target/loongarch/tcg/meson.build b/target/loongarch/tcg/meson.build
-new file mode 100644
-index 0000000000..1a3cd589fb
---- /dev/null
-+++ b/target/loongarch/tcg/meson.build
-@@ -0,0 +1,19 @@
-+if 'CONFIG_TCG' not in config_all
-+  subdir_done()
-+endif
-+
-+loongarch_ss.add([zlib, gen])
-+
-+loongarch_ss.add(files(
-+  'fpu_helper.c',
-+  'op_helper.c',
-+  'translate.c',
-+  'vec_helper.c',
-+))
-+
-+loongarch_system_ss.add(files(
-+  'constant_timer.c',
-+  'csr_helper.c',
-+  'iocsr_helper.c',
-+  'tlb_helper.c',
-+))
-diff --git a/target/loongarch/op_helper.c b/target/loongarch/tcg/op_helper.c
-similarity index 100%
-rename from target/loongarch/op_helper.c
-rename to target/loongarch/tcg/op_helper.c
-diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-similarity index 100%
-rename from target/loongarch/tlb_helper.c
-rename to target/loongarch/tcg/tlb_helper.c
-diff --git a/target/loongarch/translate.c b/target/loongarch/tcg/translate.c
-similarity index 100%
-rename from target/loongarch/translate.c
-rename to target/loongarch/tcg/translate.c
-diff --git a/target/loongarch/vec_helper.c b/target/loongarch/tcg/vec_helper.c
-similarity index 100%
-rename from target/loongarch/vec_helper.c
-rename to target/loongarch/tcg/vec_helper.c
 -- 
-2.25.1
+Peter Xu
 
 
