@@ -2,75 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38399825638
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:58:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F109D825291
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 12:12:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLlcX-0005L6-0j; Fri, 05 Jan 2024 09:56:25 -0500
+	id 1rLi6R-0007Q3-DH; Fri, 05 Jan 2024 06:11:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <273415826@qq.com>) id 1rLi2h-0006vq-5T
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:07:11 -0500
-Received: from out162-62-58-216.mail.qq.com ([162.62.58.216])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <273415826@qq.com>) id 1rLi2e-00033A-Ek
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:07:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
- t=1704452824; bh=yg6kmhCYdWE48sdWLMO5E2KypfQ5M/cZAW1FauPGmQM=;
- h=From:To:Subject:Date;
- b=lt7dLRymvoXa234iV3ITkBzq2oc1mUGcPmv/kUFgTgiuxbVotRnQGJK+gSwdjtmBD
- V4Rm7myssW4cwJ/UNBmHNUV9UNQXnzZMtEzdhhb8h6VZzOEebYv5fC2I01RytxU56g
- 91roi6hmg8J+JMULdsn5P31kNYqIILUg5IA9qKBA=
-X-QQ-FEAT: oHWrrGTW1dBM1wq2dbSTgn8AaBOV+Hnu
-X-QQ-SSF: 00000000000000F0000000000000
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-XMAILINFO: NkcbD1JCaMYVbcTIeFQmskiTS4vktb0ABLZIjDwnHH2Sx1aF320BbPGebA5Ezs
- rSLPk+/GHbbkDgwymS4+JkV8c8RXQvpQe4zB5s3jSPstA2UMDU9ULYSZrNVICW8atmAXBL/aQH+bF
- BG6u8NU4d6Rpyq/H8eLz2fSKTSHg0+sARNE+Hby8nhLNE536M4qJ3HyViH18cMos7Y7oaPmyG/QDd
- GusJRrzQU3W4clXcb4CPagTRpBGJkXmfGuwNCsyLwCmJ4atojLQo9XWqS2U7ogIe/5HVcyh/hyDRY
- aaUEn7WhHP0KKxocBLgWQJ4PTNTnUt0P55yDzhkz5cUbymnLMcA/bgxsVx96QaSPt739MMq+pSeK1
- AQpM1a3tTyvoUzG3I2BXqhse+U20mVSjUHfXSfP6nvjAaOU0XBIagRAhdRYZE411rz7yM9pYzABNz
- WK6C2Fhul1eh/N0ZrnY6rQ+HJmw6nag1IJuVcuGq0ErWMw8VwqbR7hH/eqnY1UcZS+Z3aA1piKAAx
- v07Uo7PHDeB6IEpjSExjSfXLiTFukdS5kuSqZt34tfBYSKrmBBdsY3CuFrDOxcadgBDZtJMYAy32G
- Qp5OhUEeNJZBWedtqcoD+sWCuilH2n5Aa7NKhcowEWmhZ9smxwS7cHt5eR1gL6oZTlBd0kKbub3yf
- jRF2gAOxNX8aEInkzUHUwhrR/yRFKqJKM/B4uXVGv95vPVWy7s0+5hYN6DoAyIygT1+183uJ2urtt
- i8a+9I9MijerO6hyQqRE3j9TZLvl61/7y8ez5okopv0LfRybL+FEH7oNiH2UZBkZCQnhPl59Fj7MU
- qGMlA21nJ04IvOyySnkUlVfV7CbL9N5XT5kd3RwhosZUMVJ2acIRaktDkIsjsXAA0898MgDA1W39V
- r0pdxUD3u3E0/pw0fIXpOprGy5vCUu4cNPyTUUFydlNShArJCUWV84wbvKh0zaaVenQThLPILD4va
- FzytmRfNx9O4goIPq+
-X-HAS-ATTACH: no
-X-QQ-BUSINESS-ORIGIN: 2
-X-Originating-IP: 223.108.197.101
-X-QQ-STYLE: 
-X-QQ-mid: webmail438t1704452758t7343112
-From: "=?gb18030?B?1tzNrw==?=" <273415826@qq.com>
-To: "=?gb18030?B?cWVtdS1kZXZlbA==?=" <qemu-devel@nongnu.org>
-Subject: Question about CXL emulation in QEMU
-Mime-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="----=_NextPart_6597E296_16F12050_194EF272"
-Content-Transfer-Encoding: 8Bit
-Date: Fri, 5 Jan 2024 19:05:58 +0800
-X-Priority: 3
-Message-ID: <tencent_8DDF745FD27897D9F242B6E39129B6B96B06@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-Received-SPF: pass client-ip=162.62.58.216; envelope-from=273415826@qq.com;
- helo=out162-62-58-216.mail.qq.com
-X-Spam_score_int: 67
-X-Spam_score: 6.7
-X-Spam_bar: ++++++
-X-Spam_report: (6.7 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- HELO_DYNAMIC_IPADDR=1.951, HTML_MESSAGE=0.001, MIME_CHARSET_FARAWAY=2.45,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_TVD_MIME_EPI=0.01 autolearn=no autolearn_force=no
-X-Spam_action: reject
-X-Mailman-Approved-At: Fri, 05 Jan 2024 09:56:22 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLi6K-0007MY-Oq
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:10:58 -0500
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLi6H-0003jR-PH
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:10:56 -0500
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-50eac018059so1865297e87.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 03:10:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704453051; x=1705057851; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IjDO5m0dOcaqMNoq9200rzLpRXSkVfVuBa2ol+B/RjU=;
+ b=Ld5XkDJlqPnkKe7mhb4ecfAhcrf94Pcr3lIVENITo8rrd87SZFl3FHvAxy2RaTwbZB
+ O7y0+jcMPN51UETUoGZSa8SZ3STtr68ZBlerObvauZY9n9dSHun1zM+1gFBD7842umAR
+ IMC6qvZb2CiVdIsKsqioNisvLV4uUchgCu9/aaaE5FwKp/uBwX8HwEWhAopdh5Z8XQlS
+ bzTfg57TmmpyL8YKYo/U56dhHFSrOfGjmYdqpIE5UIMmoyRvc5P50CZQbzmNC3uTReCa
+ JlRyuneuqR798V3+7ATe5dMyGhoZPpNZ3Q61UAlPe9/4AC3uDHqucPu+pEECsukqruE7
+ hFJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704453051; x=1705057851;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IjDO5m0dOcaqMNoq9200rzLpRXSkVfVuBa2ol+B/RjU=;
+ b=WmCFm0JStVMa4CBDc7t9agY9huoEQpsRsQoiyNakZPJ+uP0d9VVDzwGSg5ZVgj0UNn
+ CkW5B39Gaps5H5s/sGW6XiVHhIjEGcNGDvdeepx4UdnbBgoBOY/5ggVzDub99IyIEbUr
+ 1J/g2vpuFAst1FS/fTPURIbTtFfz1SiwmZb0u95pz3lp9AxMzOAyviw9mWs1rH2iTvNh
+ dTjK7AOOAin9AMdvWKtIDNnjmvkpPqP6tsQFq5WImJTagZKIXk9192ZVp3p5L9Z7CpfC
+ vsbsVnffVQsKKsLux8/4chTvywI04qIUv0UHKlCMIEwixvA3ET8xd8lmSvL6yBviTaj1
+ 8Rpg==
+X-Gm-Message-State: AOJu0YzFcmsgv+p6Pn6MtKIx12OMze668rDRnH/XTvKLPZmO4oajN2Gk
+ Ouwa0mjCU91F5ReuISAzZ68Y6elGPs5LFw==
+X-Google-Smtp-Source: AGHT+IFTcVsxYXywomF9LXeYXnD4KRcGPVQ4BaSBQVFsdO3fjgm8KACmz/w4uPNYx7xC70Q0QJ/6hw==
+X-Received: by 2002:a05:6512:2351:b0:50e:55d0:855c with SMTP id
+ p17-20020a056512235100b0050e55d0855cmr1334142lfu.17.1704453051109; 
+ Fri, 05 Jan 2024 03:10:51 -0800 (PST)
+Received: from [192.168.69.100] (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
+ [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
+ a5-20020a1709063a4500b00a28d309b063sm757869ejf.220.2024.01.05.03.10.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 05 Jan 2024 03:10:50 -0800 (PST)
+Message-ID: <c9c65355-7666-4749-b93b-5fb1c7f1585b@linaro.org>
+Date: Fri, 5 Jan 2024 12:10:47 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/9] machine: Introduce helper is_cpu_type_supported()
+Content-Language: en-US
+To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
+ imammedo@redhat.com, b.galvani@gmail.com, strahinja.p.jankovic@gmail.com,
+ sundeep.lkml@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
+ nieklinnenbank@gmail.com, rad@semihalf.com, quic_llindhol@quicinc.com,
+ marcin.juszkiewicz@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, wangyanan55@huawei.com, vijai@behindbytes.com,
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com,
+ Thomas Huth <thuth@redhat.com>
+References: <20231129042012.277831-1-gshan@redhat.com>
+ <20231129042012.277831-3-gshan@redhat.com>
+ <fd8715af-ef1c-4ccc-b602-25776a56fc76@linaro.org>
+ <c9f68946-2824-48a5-a0a1-290d7ddba178@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <c9f68946-2824-48a5-a0a1-290d7ddba178@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,128 +103,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
+On 4/12/23 00:13, Gavin Shan wrote:
+> Hi Phil,
+> 
+> On 12/1/23 20:53, Philippe Mathieu-Daudé wrote:
+>> On 29/11/23 05:20, Gavin Shan wrote:
+>>> The logic, to check if the specified CPU type is supported in
+>>> machine_run_board_init(), is independent enough. Factor it out into
+>>> helper is_cpu_type_supported(). machine_run_board_init() looks a bit
+>>> clean with this. Since we're here, @machine_class is renamed to @mc to
+>>> avoid multiple line spanning of code. The comments are tweaked a bit
+>>> either.
+>>>
+>>> No functional change intended.
+>>>
+>>> Signed-off-by: Gavin Shan <gshan@redhat.com>
+>>> ---
+>>> v8: Move the precise message hint to PATCH[v8 3/9]        (Gavin)
+>>> ---
+>>>   hw/core/machine.c | 83 +++++++++++++++++++++++++----------------------
+>>>   1 file changed, 45 insertions(+), 38 deletions(-)
+>>>
+>>> diff --git a/hw/core/machine.c b/hw/core/machine.c
+>>> index bde7f4af6d..1797e002f9 100644
+>>> --- a/hw/core/machine.c
+>>> +++ b/hw/core/machine.c
+>>> @@ -1387,13 +1387,53 @@ out:
+>>>       return r;
+>>>   }
+>>> +static bool is_cpu_type_supported(const MachineState *machine, Error 
+>>> **errp)
+>>> +{
+>>> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
+>>> +    ObjectClass *oc = object_class_by_name(machine->cpu_type);
+>>> +    CPUClass *cc;
+>>> +    int i;
+>>> +
+>>> +    /*
+>>> +     * Check if the user specified CPU type is supported when the valid
+>>> +     * CPU types have been determined. Note that the user specified CPU
+>>> +     * type is provided through '-cpu' option.
+>>> +     */
+>>> +    if (mc->valid_cpu_types && machine->cpu_type) {
+>>> +        for (i = 0; mc->valid_cpu_types[i]; i++) {
+>>> +            if (object_class_dynamic_cast(oc, 
+>>> mc->valid_cpu_types[i])) {
+>>> +                break;
+>>> +            }
+>>> +        }
+>>> +
+>>> +        /* The user specified CPU type isn't valid */
+>>> +        if (!mc->valid_cpu_types[i]) {
+>>> +            error_setg(errp, "Invalid CPU type: %s", 
+>>> machine->cpu_type);
+>>> +            error_append_hint(errp, "The valid types are: %s",
+>>> +                              mc->valid_cpu_types[0]);
+>>> +            for (i = 1; mc->valid_cpu_types[i]; i++) {
+>>> +                error_append_hint(errp, ", %s", 
+>>> mc->valid_cpu_types[i]);
+>>> +            }
+>>> +
+>>> +            error_append_hint(errp, "\n");
+>>> +            return false;
+>>> +        }
+>>> +    }
+>>> +
+>>> +    /* Check if CPU type is deprecated and warn if so */
+>>> +    cc = CPU_CLASS(oc);
+>>> +    if (cc && cc->deprecation_note) {
+>>
+>> cc can't be NULL, right? Otherwise,
+>>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>
+> 
+> machine->cpu_type is either mc->default_cpu_type or returned from 
+> parse_cpu_option().
+> It can be NULL if mc->default_cpu_type is invalid, which is a program 
+> error. So
+> assert(cc != NULL) should be used instead. I will fold the change to 
+> PATCH[v9 3/9]
 
-------=_NextPart_6597E296_16F12050_194EF272
-Content-Type: text/plain;
-	charset="gb18030"
-Content-Transfer-Encoding: base64
+cpu_type and cc an be NULL with the 'none' machine.
 
-RGVhciBFeHBlcnRzLA0KDQpJIGFtIHdyaXRpbmcgdG8gc2VlayB5b3VyIGFzc2lzdGFuY2Ug
-YWJvdXQgQ1hMIGVtdWxhdGlvbiBpbiBRRU1VLiBJIGFtIFpob3UgVG9uZyBhbmQgSSBhbSBy
-ZXNlYXJjaGluZyBob3cgdG8gdXNlIFFFTVUgdG8gc2ltdWxhdGUgQ1hMIG92ZXIgRXRoZXJu
-ZXShow0KDQpJIHdhbnQgdG8gaW1wbGVtZW50IHJlbW90ZSByZWdpc3RyYXRpb24gb2YgQ1hM
-Lm1lbSBkZXZpY2VzIGJhc2VkIG9uIHRoZSBRT00gbW9kZWwuIFRoZSBnZW5lcmFsIGlkZWEg
-aXM6IHRoZSBDWEwgc2xhdmUgc2lkZSBub3RpZmllcyB0aGUgbWFzdGVyIHNpZGUgb2YgdGhl
-IHNpemUgb2YgdGhlIENYTCBtZW1vcnkgYW5kIG90aGVyIGNvbnRyb2wgaW5mb3JtYXRpb24g
-dGhyb3VnaCBFdGhlcm5ldCwgYW5kIHRoZSBtYXN0ZXIgc2lkZSByZWdpc3RlcnMgdGhlIENY
-TCBkZXZpY2UgbG9jYWxseSBiYXNlZCBvbiB0aGUgY29udHJvbCBpbmZvcm1hdGlvbi4gV2hl
-biB0aGUgbWFzdGVyIGFjY2Vzc2VzIHRoZSBDWEwgZGV2aWNlLCBLVk0gaXMgcmVzcG9uc2li
-bGUgZm9yIGludGVyY2VwdGluZyB0aGUgYWN0aW9uIG9mIGFjY2Vzc2luZyB0aGUgbWVtb3J5
-LCBhbmQgZW5jYXBzdWxhdGVzIHRoZSBDWEwgbWVzc2FnZSBhbmQgZm9yd2FyZHMgaXQgdG8g
-dGhlIHNsYXZlIHRocm91Z2ggRXRoZXJuZXSjrHVsdGltYXRlbHkgYWNoaWV2aW5nIHJlbW90
-ZSBDWEwgbWVtb3J5IGFjY2Vzcy4uIEFzayB0aGUgZXhwZXJ0cyBob3cgdG8gcmVnaXN0ZXIg
-dGhlIENYTCBkZXZpY2UgbG9jYWxseSBiYXNlZCBvbiB0aGUgY29udHJvbCBpbmZvcm1hdGlv
-biB3aXRob3V0IG9jY3VweWluZyB0aGUgSFZBIHJlc291cmNlcyBvZiB0aGUgbWFzdGVyIGhv
-c3QgKE9SIGRpc3BsYXkgdGhlIENYTCBkZXZpY2UpLg0KDQoNCg0KVGhhbmsgeW91IGluIGFk
-dmFuY2UgZm9yIHlvdXIgYXR0ZW50aW9uIHRvIHRoaXMgZW1haWwsIGFuZCBJIGVhZ2VybHkg
-bG9vayBmb3J3YXJkIHRvIGFueSBpbnNpZ2h0cyBvciBhZHZpY2UgeW91IG1heSBiZSBhYmxl
-IHRvIHByb3ZpZGUuIElmIHRoZXJlIGlzIGEgbW9yZSBjb252ZW5pZW50IHRpbWUgZm9yIHVz
-IHRvIGRpc2N1c3MgdGhpcyBtYXR0ZXIgZnVydGhlciwgcGxlYXNlIGxldCBtZSBrbm93LCBh
-bmQgSSB3aWxsIGJlIG1vcmUgdGhhbiBoYXBweSB0byBhY2NvbW1vZGF0ZSB5b3VyIHNjaGVk
-dWxlLg0KDQoNCk9uY2UgYWdhaW4sIHRoYW5rIHlvdSBmb3IgeW91ciBpbXBhY3RmdWwgY29u
-dHJpYnV0aW9ucyB0byB0aGUgb3Blbi1zb3VyY2UgY29tbXVuaXR5LCBhbmQgSSBncmVhdGx5
-IGFwcHJlY2lhdGUgeW91ciB0aW1lIGFuZCBjb25zaWRlcmF0aW9uLg0KDQoNCg0KUmVnYXJk
-LA0KDQoNClpob3UgVG9uZy4NCg0KDQoNCg0KDQoNCg0K1tzNrw0KMjczNDE1ODI2QHFxLmNv
-bQ0KDQoNCg0KJm5ic3A7
+> 
+>>> +        warn_report("CPU model %s is deprecated -- %s",
+>>> +                    machine->cpu_type, cc->deprecation_note);
+>>> +    }
+>>> +
+>>> +    return true;
+>>> +}
+>>
+> 
+> Thanks,
+> Gavin
+> 
 
-------=_NextPart_6597E296_16F12050_194EF272
-Content-Type: text/html;
-	charset="gb18030"
-Content-Transfer-Encoding: base64
-
-PG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNo
-YXJzZXQ9R0IxODAzMCI+PGRpdj48ZGl2IHN0eWxlPSIgIDsgOyA7OyAiPkRlYXIgRXhwZXJ0
-cyw8L2Rpdj48ZGl2IGlkPSI6dGkiIGNsYXNzPSJBciBBdSBBbyIganNsb2c9IjE3MTA5NyIg
-c3R5bGU9IiI+PGRpdiBpZD0iOnRtIiBjbGFzcz0iQW0gYWlMIEFsIGVkaXRhYmxlIExXLWF2
-ZiB0Uy10VyB0Uy10WSIgaGlkZWZvY3VzPSJ0cnVlIiBhcmlhLWxhYmVsPSLTyrz+1f3OxCIg
-Z19lZGl0YWJsZT0idHJ1ZSIgcm9sZT0idGV4dGJveCIgYXJpYS1tdWx0aWxpbmU9InRydWUi
-IHRhYmluZGV4PSIxIiBzcGVsbGNoZWNrPSJmYWxzZSIgYXJpYS1vd25zPSI6MTF1IiBhcmlh
-LWNvbnRyb2xzPSI6MTF1IiBhcmlhLWV4cGFuZGVkPSJmYWxzZSIgc3R5bGU9ImRpcmVjdGlv
-bjogbHRyOyBtaW4taGVpZ2h0OiAzNzZweDsiPjxwIHN0eWxlPSIgIDsgOyA7OyBsaW5lLWhl
-aWdodDogMjMuOHB4OyBtYXJnaW46IDBweDsgIj48c3BhbiBzdHlsZT0iZm9udC1mYW1pbHk6
-IENhbWJyaWE7IGZvbnQtc2l6ZTogbGFyZ2U7Ij5JIGFtIHdyaXRpbmcgdG8gc2VlayB5b3Vy
-IGFzc2lzdGFuY2UgYWJvdXQgQ1hMIGVtdWxhdGlvbiBpbiBRRU1VLiBJIGFtIFpob3UgVG9u
-ZyBhbmQgSSBhbSByZXNlYXJjaGluZyBob3cgdG8gdXNlIFFFTVUgdG8gc2ltdWxhdGUgQ1hM
-IG92ZXIgRXRoZXJuZXShozwvc3Bhbj48L3A+PHAgc3R5bGU9ImxpbmUtaGVpZ2h0OiAyMy44
-cHg7IG1hcmdpbjogMHB4OyI+PGZvbnQgZmFjZT0iQ2FtYnJpYSIgc2l6ZT0iNCI+SSB3YW50
-IHRvIGltcGxlbWVudCByZW1vdGUgcmVnaXN0cmF0aW9uIG9mIENYTC5tZW0gZGV2aWNlcyBi
-YXNlZCBvbiB0aGUgUU9NIG1vZGVsLiBUaGUgZ2VuZXJhbCBpZGVhIGlzOiB0aGUgQ1hMIHNs
-YXZlIHNpZGUgbm90aWZpZXMgdGhlIG1hc3RlciBzaWRlIG9mIHRoZSBzaXplIG9mIHRoZSBD
-WEwgbWVtb3J5IGFuZCBvdGhlciBjb250cm9sIGluZm9ybWF0aW9uIHRocm91Z2ggRXRoZXJu
-ZXQsIGFuZCB0aGUgbWFzdGVyIHNpZGUgcmVnaXN0ZXJzIHRoZSBDWEwgZGV2aWNlIGxvY2Fs
-bHkgYmFzZWQgb24gdGhlIGNvbnRyb2wgaW5mb3JtYXRpb24uIFdoZW4gdGhlIG1hc3RlciBh
-Y2Nlc3NlcyB0aGUgQ1hMIGRldmljZSwgS1ZNIGlzIHJlc3BvbnNpYmxlIGZvciBpbnRlcmNl
-cHRpbmcgdGhlIGFjdGlvbiBvZiBhY2Nlc3NpbmcgdGhlIG1lbW9yeSwgYW5kIGVuY2Fwc3Vs
-YXRlcyB0aGUgQ1hMIG1lc3NhZ2UgYW5kIGZvcndhcmRzIGl0IHRvIHRoZSBzbGF2ZSB0aHJv
-dWdoIEV0aGVybmV0o6x1bHRpbWF0ZWx5IGFjaGlldmluZyByZW1vdGUgQ1hMIG1lbW9yeSBh
-Y2Nlc3MuPC9mb250PjxzcGFuIHN0eWxlPSJmb250LWZhbWlseTogQ2FtYnJpYTsgZm9udC1z
-aXplOiBsYXJnZTsiPi4gQXNrIHRoZSBleHBlcnRzIGhvdyB0byByZWdpc3RlciB0aGUgQ1hM
-IGRldmljZSBsb2NhbGx5IGJhc2VkIG9uIHRoZSBjb250cm9sIGluZm9ybWF0aW9uIHdpdGhv
-dXQgb2NjdXB5aW5nIHRoZSBIVkEgcmVzb3VyY2VzIG9mIHRoZSBtYXN0ZXIgaG9zdCAoT1Ig
-ZGlzcGxheSB0aGUgQ1hMIGRldmljZSkuPC9zcGFuPjwvcD48cCBzdHlsZT0ibGluZS1oZWln
-aHQ6IDIzLjhweDsgbWFyZ2luOiAwcHg7Ij48Zm9udCBmYWNlPSJDYW1icmlhIiBzaXplPSI0
-Ij48YnI+PC9mb250PjwvcD48ZGl2IHN0eWxlPSIgIDsgOyA7OyAiPjxkaXY+PGZvbnQgc2l6
-ZT0iNCIgc3R5bGU9ImxpbmUtaGVpZ2h0OiAzMC42cHg7Ij5UaGFuayB5b3UgaW4gYWR2YW5j
-ZSBmb3IgeW91ciBhdHRlbnRpb24gdG8gdGhpcyBlbWFpbCwgYW5kIEkgZWFnZXJseSBsb29r
-IGZvcndhcmQgdG8gYW55IGluc2lnaHRzIG9yIGFkdmljZSB5b3UgbWF5IGJlIGFibGUgdG8g
-cHJvdmlkZS4gSWYgdGhlcmUgaXMgYSBtb3JlIGNvbnZlbmllbnQgdGltZSBmb3IgdXMgdG8g
-ZGlzY3VzcyB0aGlzIG1hdHRlciBmdXJ0aGVyLCBwbGVhc2UgbGV0IG1lIGtub3csIGFuZCBJ
-IHdpbGwgYmUgbW9yZSB0aGFuIGhhcHB5IHRvIGFjY29tbW9kYXRlIHlvdXIgc2NoZWR1bGUu
-PC9mb250PjwvZGl2PjxkaXY+PGZvbnQgc2l6ZT0iNCIgc3R5bGU9ImxpbmUtaGVpZ2h0OiAz
-MC42cHg7Ij48YnI+PC9mb250PjwvZGl2PjxkaXY+PGZvbnQgc2l6ZT0iNCIgc3R5bGU9Imxp
-bmUtaGVpZ2h0OiAzMC42cHg7Ij5PbmNlIGFnYWluLCB0aGFuayB5b3UgZm9yIHlvdXIgaW1w
-YWN0ZnVsIGNvbnRyaWJ1dGlvbnMgdG8gdGhlIG9wZW4tc291cmNlIGNvbW11bml0eSwgYW5k
-IEkgZ3JlYXRseSBhcHByZWNpYXRlIHlvdXIgdGltZSBhbmQgY29uc2lkZXJhdGlvbi48L2Zv
-bnQ+PC9kaXY+PC9kaXY+PGRpdiBzdHlsZT0iICA7IDsgOzsgIj48c3BhbiBzdHlsZT0iZm9u
-dC1zaXplOiBsYXJnZTsiPjxicj48L3NwYW4+PC9kaXY+PGRpdiBzdHlsZT0iICA7IDsgOzsg
-Ij48c3BhbiBzdHlsZT0iZm9udC1zaXplOiBsYXJnZTsiPlJlZ2FyZCw8L3NwYW4+PC9kaXY+
-PGRpdiBzdHlsZT0iICA7IDsgOzsgIj48c3BhbiBzdHlsZT0iZm9udC1zaXplOiBsYXJnZTsi
-Pjxicj48L3NwYW4+PC9kaXY+PGRpdiBzdHlsZT0iICA7IDsgOzsgIj48c3BhbiBzdHlsZT0i
-Zm9udC1zaXplOiBsYXJnZTsiPlpob3UgVG9uZy48L3NwYW4+PC9kaXY+PC9kaXY+PC9kaXY+
-PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj48aHIgYWxpZ249ImxlZnQiIHN0eWxlPSJtYXJn
-aW46IDAgMCAxMHB4IDA7Ym9yZGVyOiAwO2JvcmRlci1ib3R0b206MXB4IHNvbGlkICNFNEU1
-RTY7aGVpZ2h0OjA7bGluZS1oZWlnaHQ6MDtmb250LXNpemU6MDtwYWRkaW5nOiAyMHB4IDAg
-MCAwO3dpZHRoOiA1MHB4OyI+PGRpdiBzdHlsZT0iZm9udC1zaXplOjE0cHg7Zm9udC1mYW1p
-bHk6VmVyZGFuYTtjb2xvcjojMDAwOyI+PGEgY2xhc3M9InhtX3dyaXRlX2NhcmQiIGlkPSJp
-bl9hbGlhcyIgc3R5bGU9IndoaXRlLXNwYWNlOiBub3JtYWw7IGRpc3BsYXk6IGlubGluZS1i
-bG9jazsgdGV4dC1kZWNvcmF0aW9uOiBub25lICFpbXBvcnRhbnQ7Zm9udC1mYW1pbHk6IC1h
-cHBsZS1zeXN0ZW0sQmxpbmtNYWNTeXN0ZW1Gb250LFBpbmdGYW5nIFNDLE1pY3Jvc29mdCBZ
-YUhlaTsiIGhyZWY9Imh0dHBzOi8vd3gubWFpbC5xcS5jb20vaG9tZS9pbmRleD90PXJlYWRt
-YWlsX2J1c2luZXNzY2FyZF9taWRwYWdlJmFtcDtub2NoZWNrPXRydWUmYW1wO25hbWU9JUU1
-JTkxJUE4JUU3JUFCJUE1JmFtcDtpY29uPWh0dHBzJTNBJTJGJTJGdGhpcmRxcS5xbG9nby5j
-biUyRmclM0ZiJTNEb2lkYiUyNmslM0Q4ME1BQ0ZBZUlDaWJUVjAzRVpHb0tuUSUyNnMlM0Qw
-JmFtcDttYWlsPTI3MzQxNTgyNiU0MHFxLmNvbSZhbXA7Y29kZT1pbzJxTWhlRFNOSGdKRXFM
-LUx4RDhhbHBKUXBFY0dOZ0dKNDE1TGt6XzR0aDBrSWozVll0MzhvTWNLYTN6QS1oX3JOTUJh
-a1BBOHpMUHViTGdmVzdwQSIgdGFyZ2V0PSJfYmxhbmsiPjx0YWJsZSBzdHlsZT0id2hpdGUt
-c3BhY2U6IG5vcm1hbDt0YWJsZS1sYXlvdXQ6IGZpeGVkOyBwYWRkaW5nLXJpZ2h0OiAyMHB4
-OyIgY29udGVudGVkaXRhYmxlPSJmYWxzZSIgY2VsbHBhZGRpbmc9IjAiIGNlbGxzcGFjaW5n
-PSIwIj48dGJvZHk+PHRyIHZhbGlnbj0idG9wIj48dGQgc3R5bGU9IndpZHRoOiA0MHB4O21p
-bi13aWR0aDogNDBweDsgcGFkZGluZy10b3A6MTBweCI+PGRpdiBzdHlsZT0id2lkdGg6IDM4
-cHg7IGhlaWdodDogMzhweDsgYm9yZGVyOiAxcHggI0ZGRiBzb2xpZDsgYm9yZGVyLXJhZGl1
-czo1MCU7IG1hcmdpbjogMDt2ZXJ0aWNhbC1hbGlnbjogdG9wO2JveC1zaGFkb3c6IDAgMCAx
-MHB4IDAgcmdiYSgxMjcsMTUyLDE3OCwwLjE0KTsiPjxpbWcgc3JjPSJodHRwczovL3RoaXJk
-cXEucWxvZ28uY24vZz9iPW9pZGImYW1wO2s9ODBNQUNGQWVJQ2liVFYwM0VaR29LblEmYW1w
-O3M9MCIgc3R5bGU9IndpZHRoOjEwMCU7Ym9yZGVyLXJhZGl1czo1MCU7cG9pbnRlci1ldmVu
-dHM6IG5vbmU7Ij48L2Rpdj48L3RkPjx0ZCBzdHlsZT0icGFkZGluZzogMTBweCAwIDhweCAx
-MHB4OyI+PGRpdiBjbGFzcz0iYnVzaW5lc3NDYXJkX25hbWUiIHN0eWxlPSJmb250LXNpemU6
-IDE0cHg7Y29sb3I6ICMzMzMxMkU7bGluZS1oZWlnaHQ6IDIwcHg7IHBhZGRpbmctYm90dG9t
-OiAycHg7IG1hcmdpbjowO2ZvbnQtd2VpZ2h0OiA1MDA7Ij7W3M2vPC9kaXY+PGRpdiBjbGFz
-cz0iYnVzaW5lc3NDYXJkX21haWwiIHN0eWxlPSJmb250LXNpemU6IDEycHg7Y29sb3I6ICM5
-OTk4OTY7bGluZS1oZWlnaHQ6IDE4cHg7IG1hcmdpbjowOyI+MjczNDE1ODI2QHFxLmNvbTwv
-ZGl2PjwvdGQ+PC90cj48L3Rib2R5PjwvdGFibGU+PC9hPjwvZGl2PjwvZGl2PjxkaXY+Jm5i
-c3A7PC9kaXY+
-
-------=_NextPart_6597E296_16F12050_194EF272--
-
 
