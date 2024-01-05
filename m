@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C80825C6A
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 23:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B052825C69
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 23:14:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLsRm-0007Ow-3n; Fri, 05 Jan 2024 17:13:46 -0500
+	id 1rLsRl-0007O7-Bv; Fri, 05 Jan 2024 17:13:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1rLsRj-0007Mr-4k
+ id 1rLsRi-0007Mb-W4
  for qemu-devel@nongnu.org; Fri, 05 Jan 2024 17:13:43 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1rLsRf-000100-Uj
+ id 1rLsRg-00010B-UL
  for qemu-devel@nongnu.org; Fri, 05 Jan 2024 17:13:42 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1d3ec3db764so67955ad.2
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 14:13:39 -0800 (PST)
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1d4d5b37670so190565ad.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 14:13:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1704492818; x=1705097618;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1704492819; x=1705097619;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mFO6QqdXq3JW6oU7ctrtm10IpAFtm5ygC7pWBD3zG/Y=;
- b=WPqxLm9cv9cP04dsSi93aHyUFSPjfKXidvhvHlEJ+iiiIVfS4U4LQl3qbKDhksZL+e
- IpHcKs7BjRruTTGAHkvLqF1q490FYJad4/oNCwt7JUznOiB10TzZfPcA7tsvxOZ2zugL
- gMPIS/pUDDw7E8JMw7DZwVJJrTqlU1jJW9/zUh28nWbWvJUtEnDmMmy8+BmNl4AdcO6c
- k5GybxYm2yQLmVnr/dlxOMw0WVkwm0XQmeG9KNhAqYubWsR65sbhQtY49lJfARAh+GtF
- u5+SiWAfChH5/aNBrSQTzqW11eL/tb2CmdFWfnUJ2wfOcWeNgmPifxdCfPzrGlHAHR99
- edew==
+ bh=icUnttxijHhXVlY//OcxsENx3d05O3jc8y9mTE1JkJE=;
+ b=SICWYLrjU8obMpFph5XnDkf3BIffgGSWcJR9eM53Y9cp8db8en3YQs0iei6qEn+T9i
+ 10KrOcQtWWnTnZSSyUGjohxaIw3kOaYE6xPD2J2lyTyNGcLx65pUrw+MdHkwahRQluDC
+ t9zmSUsl6BS8H8qB8t9npRF2rxWoDn0jHoe+5bxRR2/pji9WvB5nUVTJ0ohugOhPVCnE
+ iov3xII/J0McWnFsvYvkdfCTwKq5x+KhhM14fz21Qka0TiKzPi94KIUSU+EFX71MntKP
+ kXITK5IoCBwB/QsyOdyDN6eOOjY2jR40z0KwQYzIoGV6Lt6UIcMIdJwITEhkpnz6iC5j
+ 44kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704492818; x=1705097618;
+ d=1e100.net; s=20230601; t=1704492819; x=1705097619;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mFO6QqdXq3JW6oU7ctrtm10IpAFtm5ygC7pWBD3zG/Y=;
- b=GC61DIrl8vDlvb+JFkEGE8pZR9NynX1+6IHNYvxU3/nFwgEXqbwxIvJCtvqz5exM8p
- g5FP9YuOsgUM7TyjLVOSRIgOmWrUExjbEQ5FlzdoDPUyWzwsE220KflC+ltvJ8W1gYHN
- TiZScTR3a2+XlGVoHREVDDPxKvEO0FcPy5GrJOhGWpJWYGGP0+l1csKENdgabPdPmEsS
- 1e4PmGFG+L5VtKVesJNZuA/D9wOAdyMlHmbcviUub47f1V7nUVA+Nd0hCq3We1Jy7vNx
- 9XMD/YWyohNNkYCZTaoHQUdWn5MCPrZFOZq5moYOdXxj8UizOHjEL5ojn9WEhbPDx4O7
- 6OoA==
-X-Gm-Message-State: AOJu0YwAx0uGg9YGWNU+QeVdGE9aNY+jxeF2JLdW6MmFZzM0pvjbK7AM
- zIgIcJqM1g8d/tIHHYXwxIMl8MkKg5yUcKZ+kQIj8p2oBoo=
-X-Google-Smtp-Source: AGHT+IGo7zA2Grj71yBzCowlcPa1FAcyfdF5twaI6aWFUXJZZ7elb+JB/8Y8uizQ8YJ1hxIo8LcMCA==
-X-Received: by 2002:a17:903:41d2:b0:1d4:ca35:3cd9 with SMTP id
- u18-20020a17090341d200b001d4ca353cd9mr121781ple.119.1704492818566; 
- Fri, 05 Jan 2024 14:13:38 -0800 (PST)
+ bh=icUnttxijHhXVlY//OcxsENx3d05O3jc8y9mTE1JkJE=;
+ b=VmkvT5LXMRi0CAFJP9N5aSV308Js5u7O+vNgIUB2O2rm0AgFcQQks2wPUShxdemfwO
+ omZUt4SM3Gy8FjxYg7ueTwCmuaddSSySz8LrxImdmnYcwt7CglFUY5Yn1d21VCTJwjyi
+ Ef7C23ORO1gVjvc4CoY0X3hrtLke3Ad9GjDnGrw/hbOPbpq+KhHO3FxRcpKV+/OvQgbT
+ +I8qD37YchqrlqT2rpEZr/EkDop/qftck0vDDqIgRv4YklEzTSksJW2v9rwdSptdCEkv
+ qrjUi7EY+I4I1QxzJFCYM9IRiX7fTgKvUJ+T1d+j3jtu/4eR6gO3mPx6sYfh+sE6Q4D9
+ teyg==
+X-Gm-Message-State: AOJu0YzhJnrMdBuT88xBWjFtUvgBjBTfCXEQ2NJqyHFouSdTRhAYVkBk
+ poC/wReNAsi9u11Asp3ov2/GqF6lTOhEjQ==
+X-Google-Smtp-Source: AGHT+IEkpBlwNcWqE55Mw0Z8UwH0wkYU83TYYldJuc5DMy3A33NUgXLym16cgUqOoawmzmEGHebpIQ==
+X-Received: by 2002:a17:902:8bc7:b0:1d4:e04b:4742 with SMTP id
+ r7-20020a1709028bc700b001d4e04b4742mr117462plo.58.1704492819578; 
+ Fri, 05 Jan 2024 14:13:39 -0800 (PST)
 Received: from atishp.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- w22-20020a1709029a9600b001d35223d0besm1850524plp.251.2024.01.05.14.13.37
+ w22-20020a1709029a9600b001d35223d0besm1850524plp.251.2024.01.05.14.13.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jan 2024 14:13:37 -0800 (PST)
+ Fri, 05 Jan 2024 14:13:39 -0800 (PST)
 From: Atish Patra <atishp@rivosinc.com>
 To: 
-Cc: Atish Patra <atishp@rivosinc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: Kaiwen Xue <kaiwenx@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Bin Meng <bin.meng@windriver.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Palmer Dabbelt <palmer@dabbelt.com>, qemu-devel@nongnu.org,
  qemu-riscv@nongnu.org, Weiwei Li <liwei1518@gmail.com>,
  kaiwenxue1@gmail.com
-Subject: [PATCH v3 1/5] target/riscv: Fix the predicate functions for
- mhpmeventhX CSRs
-Date: Fri,  5 Jan 2024 14:13:23 -0800
-Message-Id: <20240105221327.176764-2-atishp@rivosinc.com>
+Subject: [PATCH v3 2/5] target/riscv: Add cycle & instret privilege mode
+ filtering properties
+Date: Fri,  5 Jan 2024 14:13:24 -0800
+Message-Id: <20240105221327.176764-3-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240105221327.176764-1-atishp@rivosinc.com>
 References: <20240105221327.176764-1-atishp@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=atishp@rivosinc.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=atishp@rivosinc.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,158 +99,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-mhpmeventhX CSRs are available for RV32. The predicate function
-should check that first before checking sscofpmf extension.
+From: Kaiwen Xue <kaiwenx@rivosinc.com>
 
-Fixes: 14664483457b ("target/riscv: Add sscofpmf extension support")
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+This adds the properties for ISA extension smcntrpmf. Patches
+implementing it will follow.
+
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Kaiwen Xue <kaiwenx@rivosinc.com>
 ---
- target/riscv/csr.c | 67 ++++++++++++++++++++++++++--------------------
- 1 file changed, 38 insertions(+), 29 deletions(-)
+ target/riscv/cpu.c     | 2 ++
+ target/riscv/cpu_cfg.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index fde7ce1a5336..283468bbc652 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -224,6 +224,15 @@ static RISCVException sscofpmf(CPURISCVState *env, int csrno)
-     return RISCV_EXCP_NONE;
- }
- 
-+static RISCVException sscofpmf_32(CPURISCVState *env, int csrno)
-+{
-+    if (riscv_cpu_mxl(env) != MXL_RV32) {
-+        return RISCV_EXCP_ILLEGAL_INST;
-+    }
-+
-+    return sscofpmf(env, csrno);
-+}
-+
- static RISCVException any(CPURISCVState *env, int csrno)
- {
-     return RISCV_EXCP_NONE;
-@@ -4972,91 +4981,91 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
-     [CSR_MHPMEVENT31]    = { "mhpmevent31",    any,    read_mhpmevent,
-                              write_mhpmevent                           },
- 
--    [CSR_MHPMEVENT3H]    = { "mhpmevent3h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT3H]    = { "mhpmevent3h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT4H]    = { "mhpmevent4h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT4H]    = { "mhpmevent4h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT5H]    = { "mhpmevent5h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT5H]    = { "mhpmevent5h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT6H]    = { "mhpmevent6h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT6H]    = { "mhpmevent6h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT7H]    = { "mhpmevent7h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT7H]    = { "mhpmevent7h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT8H]    = { "mhpmevent8h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT8H]    = { "mhpmevent8h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT9H]    = { "mhpmevent9h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT9H]    = { "mhpmevent9h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT10H]   = { "mhpmevent10h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT10H]   = { "mhpmevent10h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT11H]   = { "mhpmevent11h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT11H]   = { "mhpmevent11h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT12H]   = { "mhpmevent12h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT12H]   = { "mhpmevent12h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT13H]   = { "mhpmevent13h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT13H]   = { "mhpmevent13h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT14H]   = { "mhpmevent14h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT14H]   = { "mhpmevent14h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT15H]   = { "mhpmevent15h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT15H]   = { "mhpmevent15h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT16H]   = { "mhpmevent16h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT16H]   = { "mhpmevent16h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT17H]   = { "mhpmevent17h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT17H]   = { "mhpmevent17h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT18H]   = { "mhpmevent18h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT18H]   = { "mhpmevent18h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT19H]   = { "mhpmevent19h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT19H]   = { "mhpmevent19h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT20H]   = { "mhpmevent20h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT20H]   = { "mhpmevent20h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT21H]   = { "mhpmevent21h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT21H]   = { "mhpmevent21h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT22H]   = { "mhpmevent22h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT22H]   = { "mhpmevent22h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT23H]   = { "mhpmevent23h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT23H]   = { "mhpmevent23h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT24H]   = { "mhpmevent24h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT24H]   = { "mhpmevent24h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT25H]   = { "mhpmevent25h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT25H]   = { "mhpmevent25h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT26H]   = { "mhpmevent26h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT26H]   = { "mhpmevent26h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT27H]   = { "mhpmevent27h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT27H]   = { "mhpmevent27h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT28H]   = { "mhpmevent28h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT28H]   = { "mhpmevent28h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT29H]   = { "mhpmevent29h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT29H]   = { "mhpmevent29h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT30H]   = { "mhpmevent30h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT30H]   = { "mhpmevent30h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
--    [CSR_MHPMEVENT31H]   = { "mhpmevent31h",    sscofpmf,  read_mhpmeventh,
-+    [CSR_MHPMEVENT31H]   = { "mhpmevent31h",    sscofpmf_32,  read_mhpmeventh,
-                              write_mhpmeventh,
-                              .min_priv_ver = PRIV_VERSION_1_12_0        },
- 
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 83c7c0cf07be..ea34ff2ae983 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -148,6 +148,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
+     ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
+     ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
++    ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
+     ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
+     ISA_EXT_DATA_ENTRY(svadu, PRIV_VERSION_1_12_0, ext_svadu),
+     ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+@@ -1296,6 +1297,7 @@ const char *riscv_get_misa_ext_description(uint32_t bit)
+ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     /* Defaults for standard extensions */
+     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
++    MULTI_EXT_CFG_BOOL("smcntrpmf", ext_smcntrpmf, false),
+     MULTI_EXT_CFG_BOOL("zifencei", ext_zifencei, true),
+     MULTI_EXT_CFG_BOOL("zicsr", ext_zicsr, true),
+     MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index f4605fb190b9..00c34fdd3209 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -72,6 +72,7 @@ struct RISCVCPUConfig {
+     bool ext_zihpm;
+     bool ext_smstateen;
+     bool ext_sstc;
++    bool ext_smcntrpmf;
+     bool ext_svadu;
+     bool ext_svinval;
+     bool ext_svnapot;
 -- 
 2.34.1
 
