@@ -2,69 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4364A8254E0
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:10:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDF9825506
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:16:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLkto-0003Vq-00; Fri, 05 Jan 2024 09:10:12 -0500
+	id 1rLkyz-0006XE-3j; Fri, 05 Jan 2024 09:15:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLktk-0003R3-Hw
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:10:09 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1rLkyx-0006X2-K9
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:15:31 -0500
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLkth-000381-LG
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:10:07 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5572a9b3420so1078740a12.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 06:10:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1rLkyv-0001l6-IM
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:15:31 -0500
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-28bd85bda06so1057664a91.3
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 06:15:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704463802; x=1705068602; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=bahS9iB2kqF0K/bP/F4Orc6xeRWqU4OLx4XmMHcT0DE=;
- b=UtiujScjwZvQvtoZJ/CxMQA/9eNMZGhwLIQyfUBTPh7pFXYwfnq+LjWjfSypZVwDtM
- cj4vyVe9w6xhXJXqHkZEZi82W05qrOtSPYfa+5kHsRUBBxhmuTLi4wgww6/PW38PBcBP
- EFPP76qT26ppZN2A3izkowkX7mkASoODUzGfUUtH9/Hr4prAjoSqkypT7LGm3F5qoDxF
- yY85gIeD4DQC0aCSi0XiTg/sJlhbDD+gM/BfrO4yAOw/r/F5O+dfr+LF2YcEm8pZP2if
- ml0MLRgwA0au7VQtIKCX150+l42P9fJQtKeLHgB97YsmB5knYp6BM/ljZTxvPf2UnOk3
- o0Sg==
+ d=adacore.com; s=google; t=1704464128; x=1705068928; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zajdsmJirqsO3ZnoyVwOUJGmlB77C+64f78IABkAuHY=;
+ b=ayd9mwCp938Mck6Ip6zfvfD1Q7cpboSwezAaZnTcVZLQ88De/vw0msjwlbvj0v2pkt
+ qZldgf6bggs+nSoNQ5HszvnAsNQ6ZZWi1qOLzxavY5sdpK2MIW8j5hbddspCH567zGjI
+ CR9Pc+KFOnAm5yZyDPJvM1PlCu28mNkgayY6SOXABbF6Fdcj6tnGXezXPlvGICM+HEe7
+ pJajAiFoGqs3QU0EQrTHBrUys3MPM+NWisBsbC3/eNGGKFPQsr5mPOht3+sDK6q43Wiz
+ eD1ve/BXCLvjg06udPtjNoOuBmkInv82gAPM/n+766lbCca3BeRRWOtX8BEIhLvL7Jr5
+ LGqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704463802; x=1705068602;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bahS9iB2kqF0K/bP/F4Orc6xeRWqU4OLx4XmMHcT0DE=;
- b=ahs+sj7zN5H+s44n68uE2AfvUlF23VYZe8OdDuD18hqPX5DOMDJ2Mfnc8xsSogjbVn
- loDd3hCXpmq714nF28m7C1TGMxRovX5/InXtX1z+yLq72RPlK7QeuNaTpfNZ8SpABxlO
- 168ex/RJACd8gaikw+LW9YB9RCIwiWKHpUu9SY6QkwA0wFmE8yQwbGWKpNSgohJweNYZ
- CeOz1Sy0MSSY4Nf9n8MUzsXTvlOwQ/+jcw/C05IrFvmXgkN7TcEYuTejYU1FM2Fb2Cqo
- mD19cCCymOrQta6y4hMF/7gtWFj5ptis5UfOaRb5dLMZEWYQWMqElNdwx7ldwjsJsyN9
- shOQ==
-X-Gm-Message-State: AOJu0Yy02+tInjpTHXn4bJrAMvjFgS61Y99wVerE7+SBsdCQFugIxfQd
- 8tbpOSLDN4D6lDEcwa3CJPwIvaoHvn2Fl14SrLJM4QshAJ7zGSquV8VHKQaO
-X-Google-Smtp-Source: AGHT+IFRxp7wWkE+7Wgug84jK5WlO4MQsu/Ugz3dYBTWYZQI5Kx9UW32/E9pNfuVBzTeHN/LaEY/PPyGzVVe/LQmqDw=
-X-Received: by 2002:a05:6402:3506:b0:557:22e4:437e with SMTP id
- b6-20020a056402350600b0055722e4437emr1163162edd.7.1704463801692; Fri, 05 Jan
- 2024 06:10:01 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704464128; x=1705068928;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zajdsmJirqsO3ZnoyVwOUJGmlB77C+64f78IABkAuHY=;
+ b=c70jFfQsUXG569e45T6g8JBJuJ5dryRxfqmPoc3SLC/3Q8zrrZdzKd2o9/9uLymkb8
+ JPN6Wo5F4TQNPiq3AQJrdOiSNleltFbsm+mjI8AcqFhT+Q5b4aj6TiROgpqGuGIQM4Tk
+ R4N0R1DTa8f5SZ/rCK8AXVpiK3uY3GA/OYQ1QCsaqGdfv5WwIyKNDoernq1tI3QLG0I7
+ Dnty2OZDE92nUNObH+PrWnG1yORgWfeGaKeSg5KaNha/g+cfemAk9pQ91M3rC6tEUfUt
+ PN8TVUAZuqGM14e9HV9f71/jWZPJOp4uY5ukQ0e09a7oCSP+lFOtQYt4trwuRRWVOs4b
+ M29Q==
+X-Gm-Message-State: AOJu0YxnvJz3Z64TfxTnjmTkpLIGukxmTNVWuyzggEC4msdYWrjXuNJy
+ 3oUVeT1VwYFoSDTiFoVmpPlOEEHqUvIIcYqvOS46eAfKtB7zTNSSkRv2oaQ=
+X-Google-Smtp-Source: AGHT+IGDtMR1guA+GPPGEaB1/gONC3WA1dc2F4Hv9hnCBUo48mpyU9dqxVsExQmEsRnW4Xld7URdVPxTA6T9g2mOLZM=
+X-Received: by 2002:a17:90a:d814:b0:28b:d919:f577 with SMTP id
+ a20-20020a17090ad81400b0028bd919f577mr1804975pjv.47.1704464128111; Fri, 05
+ Jan 2024 06:15:28 -0800 (PST)
 MIME-Version: 1.0
-References: <90d7351c-2680-4ab6-95ee-5dac4e3f21c5@tls.msk.ru>
- <CAFEAcA8DdsHQ0eCYnh4vNoybodj0mcHCnOMEr9b_aOk7yO2Osw@mail.gmail.com>
- <ea7dd9f7-b40f-436c-a469-97ef26ac66a2@tls.msk.ru>
- <d08930a4-7e01-41eb-b118-b20fea0f8556@tls.msk.ru>
-In-Reply-To: <d08930a4-7e01-41eb-b118-b20fea0f8556@tls.msk.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 5 Jan 2024 14:09:49 +0000
-Message-ID: <CAFEAcA_7WZwTeQrdV1NTW7_V0YKtDT6HHcnghWGBwvpEV7HEdQ@mail.gmail.com>
-Subject: Re: virtio-pci in qemu-system-arm is broken in 8.2
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
+References: <20240105102421.163554-1-chigot@adacore.com>
+ <20240105102421.163554-4-chigot@adacore.com>
+ <702936da-4931-40b7-8f82-b256cdf8d9f1@linaro.org>
+ <CAJ307EiJ1SEdnnqEFFL-=YeO3XNtAJLLctixvxxFasQBhu0eFQ@mail.gmail.com>
+ <a103ed7a-aeeb-4d51-b0e7-996897e30658@linaro.org>
+In-Reply-To: <a103ed7a-aeeb-4d51-b0e7-996897e30658@linaro.org>
+From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
+Date: Fri, 5 Jan 2024 15:15:17 +0100
+Message-ID: <CAJ307EhF9oiL1v30nWAy9ftqOKreqieVUX+VUWHV4Zcbefe6Vg@mail.gmail.com>
+Subject: Re: [PATCH 3/9] intc/grlib_irqmp: implements the multiprocessor
+ status register
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Frederic Konrad <konrad.frederic@yahoo.fr>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=chigot@adacore.com; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,62 +91,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 4 Jan 2024 at 17:17, Michael Tokarev <mjt@tls.msk.ru> wrote:
+On Fri, Jan 5, 2024 at 2:37=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd@=
+linaro.org> wrote:
 >
-> 04.01.2024 19:25, Michael Tokarev wrote:
-> ...
-> > this archive contains kernel+initrd.  I run it this way:
+> On 5/1/24 14:23, Cl=C3=A9ment Chigot wrote:
+> > On Fri, Jan 5, 2024 at 12:32=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+> > <philmd@linaro.org> wrote:
+> >>
+> >> Hi Cl=C3=A9ment,
+> >>
+> >> On 5/1/24 11:24, Cl=C3=A9ment Chigot wrote:
+> >>> This implements the multiprocessor status register in grlib-irqmp and=
+ bind
+> >>> it to a start signal, which will be later wired in leon3-generic to
+> >>> start a cpu.
+> >>>
+> >>> Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
+> >>> Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
+> >>> ---
+> >>>    hw/intc/grlib_irqmp.c | 22 +++++++++++++++++++---
+> >>>    1 file changed, 19 insertions(+), 3 deletions(-)
+> >>
+> >>
+> >>> @@ -323,6 +334,8 @@ static void grlib_irqmp_reset(DeviceState *d)
+> >>>
+> >>>        memset(irqmp->state, 0, sizeof *irqmp->state);
+> >>>        irqmp->state->parent =3D irqmp;
+> >>> +    irqmp->state->mpstatus =3D ((irqmp->ncpus - 1) << 28)
+> >>
+> >> Can you #define this magic '28' number?
+> >>
+> >>> +        | ((1 << irqmp->ncpus) - 2);
+> >>>    }
+> >>>
+> >>>    static void grlib_irqmp_realize(DeviceState *dev, Error **errp)
+> >>> @@ -336,6 +349,9 @@ static void grlib_irqmp_realize(DeviceState *dev,=
+ Error **errp)
+> >>>        }
+> >>>
+> >>>        qdev_init_gpio_in(dev, grlib_irqmp_set_irq, MAX_PILS);
+> >>> +    /* Transitionning from 0 to 1 starts the CPUs.  */
+> >>
+> >> What about 1 -> 0?
 > >
-> > qemu-system-arm -append root=LABEL=debvm -nographic -machine type=virt \
-> >   -drive media=disk,format=raw,file=vmlinuz,if=virtio,snapshot=on \
-> >   -no-user-config -m 1G -kernel vmlinuz -initrd initrd.img
+> > It does nothing. I have updated the comment to mention it.
+> > For the doc (also mention it in the commit message now).
+> >    | [15:1] Power-down status of CPU [n]: reads =E2=80=981=E2=80=99 =3D=
+ power-down, =E2=80=980=E2=80=99 =3D running.
+> >    | Write to start processor n: =E2=80=981=E2=80=99=3Dto start =E2=80=
+=980'=3Dhas no effect.
 >
-> This is actually even more fishy.
+> Then grlib_irqmp_write() could be simplified as:
 >
-> The reproducer needs -cpu max to "work." Without -cpu max, it
-> fails to recognize virtio pci devices in both cases - in 8.2.0
-> with or without the commit in question (b8f7959f28c4f36496).
-> Only with -cpu max it works after reverting b8f7959f28c.
->
-> Additional kernel message in case when it doesn't work:
->
-> [    1.372841] pci-host-generic 4010000000.pcie: \
->    can't claim ECAM area [mem 0x10000000-0x1fffffff]: \
->    address conflict with pcie@10000000 [mem 0x10000000-0x3efeffff]
->
-> which isn't generated in case everything's ok.
+>       case MP_STATUS_OFFSET:
+> -        /* Read Only (no SMP support) */
+> +        state->mpstatus =3D deposit32(state->mpstatus,
+> +                                    value, 0, IRQMP_MAX_CPU);
+> +        for (unsigned i =3D 0; i < irqmp->ncpus; i++) {
+> +            qemu_set_irq(irqmp->start_signal[i],
+> +                         extract32(value, i, 1));
+> +        }
+>           return;
 
-This looks in fact like commit b8f7959f28c fixed a bug which
-was masking problems with booting newer kernels. What happens is:
-
- * arm_pamax() is a function for finding out the maximum
-   physical address space size supported by the CPU
- * it is called by the virt board on a CPU object which has
-   been inited but not realized
- * before b8f7959f28c the implications like "V7VE implies
-   LPAE" were only done at realize, and so arm_pamax() has
-   some manual workarounds to do the same logic
- * but those workarounds were missing the case "v8 implies
-   v7ve implies lpae", so for a v8 CPU we incorrectly reported
-   that it could only do 32 bit addressing (affecting only
-   "max" on qemu-system-arm)
-
-b8f7959f28c moves where we do the "v8 implies v7ve etc" logic,
-which means that
- * the workarounds in arm_pamax() aren't needed any more
- * we now correctly report 40 bits as the pa size for 'max'
-(That is, '-cpu max' then behaves the same as '-cpu cortex-a15',
-as intended.)
-
-Unfortunately it seems like these kernels don't correctly
-handle how we report the PCI controller when we're using a
-40-bit address space. This seems like it's probably a kernel
-bug, but it might be that we're getting the DTB wrong.
-In any case it seems a bit awkward to actively require the
-guest kernel to be LPAE in order to boot on an LPAE CPU,
-so maybe we should tweak the logic to not put the ECAM
-in high memory for a 32-bit CPU.
-
-thanks
--- PMM
+No, because the logic between write and read is reversed.
+Writing "1" starts the CPU but reading 1 means that the CPU is not
+started. Therefore, when writing 1, we must trigger the start signal
+and then write 0 in mpstatus.
 
