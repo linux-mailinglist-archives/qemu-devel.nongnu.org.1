@@ -2,75 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C7D824F38
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 08:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DFE0824F56
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 08:51:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLeiL-0002hM-H4; Fri, 05 Jan 2024 02:33:57 -0500
+	id 1rLeyI-0005qi-95; Fri, 05 Jan 2024 02:50:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
- id 1rLeiJ-0002gd-HT; Fri, 05 Jan 2024 02:33:55 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
- id 1rLeiH-0003V5-WA; Fri, 05 Jan 2024 02:33:55 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-555e07761acso1585287a12.0; 
- Thu, 04 Jan 2024 23:33:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704440032; x=1705044832; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=hQgr/BM6wDwe9Ikg5ZNdn6Ng7bGApbQT7S3s2q2ALv4=;
- b=W/kMkOuHeHq39j6DTvTsQ6ET/tOnYpOy9fUVgZ98e36ZVfmMlXidX2MO+Drxpt5T4M
- 4wtuVIafYTmCqXGr+0MsGokqo2mEEJbvVrPT+Uh9NQyuXNUqVNYqEyQR5Guv09O2GoBu
- G23ze+t/L+X9G2hifqhGRyVTy+O2OdV1+pUcDNXwnU2PXy0VSmD6PyI0VDsHmsJ89tS2
- KTBjkKzcr6fhdSG9KV4hqLC09xI4HAQbmuyhrNK1RZ2WPkn/D61OF7tvHZZFH7Jqzhnq
- WVBvuuMe7MjKoKJHhdQaJ/zKY81WgRY8Mf6IR8Efbol91hUFBZexWZsxkMH15UfgbayJ
- +b5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704440032; x=1705044832;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=hQgr/BM6wDwe9Ikg5ZNdn6Ng7bGApbQT7S3s2q2ALv4=;
- b=DVYEk4tf3yam+9NLYhUaJizhWF4yJ9EpZdemQB/T8zQCMUUf0xX5MLkYHGytnM1iPb
- 5DbrrnuEQfRXLY8/yLkesJnpCxFHmgF1Kip/FtiWwvTeyHvgPKUSZ/PrXk1XQknH63qr
- ljuJjb5ONvHdIdQkzrFOrkIh2Z9Q+V3mAj+B9gbxTGscMsfI50yhyCZW3z+VDdpfVobS
- ece7cKlgaSMcklops6JkFPlDpKR31YY7BwCoTOLtf/QWXK3wT0jVssgs5qhy9AAkPOWK
- 0DVkQgeA3BI0Tucz2Aq1Shks7M1CemKx7GYi6J8Yi88/fEx06+Iy6j7hXb4thfq6Y1Q5
- 9PEA==
-X-Gm-Message-State: AOJu0Yzz/BnJmX2V7lp1aVpqG0JQuoH9Wx8UJz9kUhJ9X2RrifG16Bya
- uKtCJKlOKGo7atYlI1C1r9Gmv7Hly9gKUH7TjzU=
-X-Google-Smtp-Source: AGHT+IGphGAXFL7Ouhq2fbkIFEBTDJks1dSl0ITRMwxPjx49GFMoDA4pIan6k7aaXF8MiO5WIl5gFYYSToy4P4IFaLw=
-X-Received: by 2002:a50:cd91:0:b0:54c:4837:7d26 with SMTP id
- p17-20020a50cd91000000b0054c48377d26mr698164edi.101.1704440031821; Thu, 04
- Jan 2024 23:33:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rLeyF-0005qT-Fk; Fri, 05 Jan 2024 02:50:23 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rLeyD-0004wO-Pk; Fri, 05 Jan 2024 02:50:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=ItHxcJHt/ybbZgZG9SSUK6DBvg6n/Sd5s8ugtIjRNIU=; b=DRrc86/GWhzksneDa+7Lvt7KLW
+ WytNqGiiEXclBIF+94SJCjXq4az8JO4anJocDmcrwUpBw5zfC3pWruEU/BAR3WbRKkqi06LrLlRaB
+ r4zugRa2gNMs1E+OjIM6nYyAf20yPJxGMhG3gJrAhAawv6fvdcBRjdFyIsm7I2zG4acpUK1BFUpNB
+ sMvlzoNkFawCcm9xyCZ62EJjFfmgwxVfMoItyic9Rb1JMygVjtlBSW97tRgbyRBwXwtR85mzmv+HY
+ Qsx/miF8BAPSglHBjWVvA7h/fuMD4dM05AAH3tSY7Cz//o/yM+ez/OL8VLsJ1vhOa1Mx68/C4A4N4
+ ZjGSBymDhLg+FmWI1KOpWLJUEJSWXGXR2wIrPSy4AnZy47SWKiV4FT747Be/0u1qpqs4X1yaJSVQi
+ P4dJhzZwn8qREX3xCeglpvXUMGopFb7dgjn/Rf9VI34epuK83X9FOVkA1fZzjpy6r5Z77vCFbZ5yT
+ gFh46a9gBWslP42p+DVJWK9QNfviB1gFcwmPvIz5ikfj/bSwrrrAyK0AEvk01YcghSN04hIpXE0OP
+ CTBn+YPwC2Sq4iSFQO2Hl32uvoZSIUyZOWj2rFECJptMbWhFBdYeAl5BDBM4bh18GXKswIhZ2VkfJ
+ IbYjZqyYKYjcfswIDtwiJy+Du4oF7QjOEbkuMoLc0=;
+Received: from [2a00:23c4:8bb1:9800:2afe:393f:f9d8:dd75]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rLexb-0008xK-HG; Fri, 05 Jan 2024 07:49:43 +0000
+Message-ID: <525885a8-59f0-44e1-b210-0b4bcbbe4258@ilande.co.uk>
+Date: Fri, 5 Jan 2024 07:50:06 +0000
 MIME-Version: 1.0
-References: <20240103185716.1790546-1-me@deliversmonkey.space>
- <20240103185716.1790546-4-me@deliversmonkey.space>
- <CAKC1njQwWxwSeGKVMUtUVmTkWEO-Z8zL8O20VmC+NJvUQNj94w@mail.gmail.com>
-In-Reply-To: <CAKC1njQwWxwSeGKVMUtUVmTkWEO-Z8zL8O20VmC+NJvUQNj94w@mail.gmail.com>
-From: Alexey Baturo <baturo.alexey@gmail.com>
-Date: Fri, 5 Jan 2024 10:33:40 +0300
-Message-ID: <CAFukJ-CSS2QPmP5xKxRS=VaXBNy_-pv24w-ovnmxcXxOD9jrZA@mail.gmail.com>
-Subject: Re: [PATCH v3 3/6] target/riscv: Add helper functions to calculate
- current number of masked bits for pointer masking
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: richard.henderson@linaro.org, zhiwei_liu@linux.alibaba.com, 
- palmer@dabbelt.com, Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu, 
- kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000a34370060e2ddeab"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=baturo.alexey@gmail.com; helo=mail-ed1-x533.google.com
+User-Agent: Mozilla Thunderbird
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Gavin Shan <gshan@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Evgeny Iakovlev <eiakovlev@linux.microsoft.com>, qemu-arm@nongnu.org
+References: <20231109192814.95977-1-philmd@linaro.org>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <20231109192814.95977-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb1:9800:2afe:393f:f9d8:dd75
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH-for-8.2 v4 00/10] hw/char/pl011: Implement TX (async) FIFO
+ to avoid blocking the main loop
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,87 +106,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a34370060e2ddeab
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 09/11/2023 19:28, Philippe Mathieu-Daudé wrote:
 
-I think you're right, thanks.
-I'll add a check for M-mode as well and I guess I'll have to rename the
-function.
-Any ideas on the proper and self-describing name?
+> Missing review: #10
+> 
+> Hi,
+> 
+> This series add support for (async) FIFO on the transmit path
+> of the PL011 UART.
+> 
+> Since v3:
+> - Document migration bits (Alex, Richard)
+> - Just check FIFO is not empty in pl011_xmit_fifo_state_needed (rth)
+> - In pl011_xmit check TX enabled first, and ignore < 8-bit TX (rth)
+> 
+> Since v2:
+> - Added R-b tags
+> - Addressed Richard comments on migration
+> 
+> Since v1:
+> - Restrict pl011_ops[] impl access_size,
+> - Do not check transmitter is enabled (Peter),
+> - Addressed Alex's review comments,
+> - Simplified migration trying to care about backward compat,
+>    but still unsure...
+> 
+> Philippe Mathieu-Daudé (10):
+>    util/fifo8: Allow fifo8_pop_buf() to not populate popped length
+>    util/fifo8: Introduce fifo8_peek_buf()
+>    hw/char/pl011: Split RX/TX path of pl011_reset_fifo()
+>    hw/char/pl011: Extract pl011_write_txdata() from pl011_write()
+>    hw/char/pl011: Extract pl011_read_rxdata() from pl011_read()
+>    hw/char/pl011: Warn when using disabled transmitter
+>    hw/char/pl011: Check if receiver is enabled
+>    hw/char/pl011: Rename RX FIFO methods
+>    hw/char/pl011: Add transmit FIFO to PL011State
+>    hw/char/pl011: Implement TX FIFO
+> 
+>   include/hw/char/pl011.h |   2 +
+>   include/qemu/fifo8.h    |  37 ++++++-
+>   hw/char/pl011.c         | 239 +++++++++++++++++++++++++++++++++-------
+>   util/fifo8.c            |  28 ++++-
+>   hw/char/trace-events    |   8 +-
+>   5 files changed, 263 insertions(+), 51 deletions(-)
 
-Thanks
+Hi Phil,
 
-=D0=BF=D1=82, 5 =D1=8F=D0=BD=D0=B2. 2024=E2=80=AF=D0=B3. =D0=B2 03:46, Deep=
-ak Gupta <debug@rivosinc.com>:
+Happy New Year! Are there plans to queue this series for 9.0 soon? I'm particularly 
+interested in the first 2 patches as I've made use of the new fifo8_peek_buf() 
+function as part of my latest ESP updates.
 
-> On Wed, Jan 3, 2024 at 10:59=E2=80=AFAM Alexey Baturo <baturo.alexey@gmai=
-l.com>
-> wrote:
-> > +
-> > +bool riscv_cpu_bare_mode(CPURISCVState *env)
-> > +{
-> > +    int satp_mode =3D 0;
-> > +#ifndef CONFIG_USER_ONLY
-> > +    if (riscv_cpu_mxl(env) =3D=3D MXL_RV32) {
-> > +        satp_mode =3D get_field(env->satp, SATP32_MODE);
-> > +    } else {
-> > +        satp_mode =3D get_field(env->satp, SATP64_MODE);
-> > +    }
-> > +#endif
-> > +    return (satp_mode =3D=3D VM_1_10_MBARE);
-> > +}
-> > +
->
-> Assume the CPU was in S or U with satp =3D non-bare mode but then a
-> transfer to M-mode happened.
-> In that case, even though the CPU is in M mode, the above function
-> will return non-bare mode and enforce
-> signed extension on M mode pointer masking (if enabled).
->
-> right or am I missing something here?
->
 
---000000000000a34370060e2ddeab
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ATB,
 
-<div dir=3D"ltr">I think you&#39;re right, thanks.<div>I&#39;ll add a check=
- for M-mode as well and I guess I&#39;ll have to rename the function.</div>=
-<div>Any ideas on the proper and self-describing name?</div><div><br></div>=
-<div>Thanks<br><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gma=
-il_attr">=D0=BF=D1=82, 5 =D1=8F=D0=BD=D0=B2. 2024=E2=80=AF=D0=B3. =D0=B2 03=
-:46, Deepak Gupta &lt;<a href=3D"mailto:debug@rivosinc.com" target=3D"_blan=
-k">debug@rivosinc.com</a>&gt;:<br></div><blockquote class=3D"gmail_quote" s=
-tyle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pad=
-ding-left:1ex">On Wed, Jan 3, 2024 at 10:59=E2=80=AFAM Alexey Baturo &lt;<a=
- href=3D"mailto:baturo.alexey@gmail.com" target=3D"_blank">baturo.alexey@gm=
-ail.com</a>&gt; wrote:<br>
-&gt; +<br>
-&gt; +bool riscv_cpu_bare_mode(CPURISCVState *env)<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 int satp_mode =3D 0;<br>
-&gt; +#ifndef CONFIG_USER_ONLY<br>
-&gt; +=C2=A0 =C2=A0 if (riscv_cpu_mxl(env) =3D=3D MXL_RV32) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 satp_mode =3D get_field(env-&gt;satp, SAT=
-P32_MODE);<br>
-&gt; +=C2=A0 =C2=A0 } else {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 satp_mode =3D get_field(env-&gt;satp, SAT=
-P64_MODE);<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +#endif<br>
-&gt; +=C2=A0 =C2=A0 return (satp_mode =3D=3D VM_1_10_MBARE);<br>
-&gt; +}<br>
-&gt; +<br>
-<br>
-Assume the CPU was in S or U with satp =3D non-bare mode but then a<br>
-transfer to M-mode happened.<br>
-In that case, even though the CPU is in M mode, the above function<br>
-will return non-bare mode and enforce<br>
-signed extension on M mode pointer masking (if enabled).<br>
-<br>
-right or am I missing something here?<br>
-</blockquote></div></div></div>
+Mark.
 
---000000000000a34370060e2ddeab--
 
