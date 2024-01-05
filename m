@@ -2,66 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0CE825382
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 13:54:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CAAE825468
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 14:24:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLjhY-0001kr-Cr; Fri, 05 Jan 2024 07:53:28 -0500
+	id 1rLkAd-0000ks-Gp; Fri, 05 Jan 2024 08:23:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLjhW-0001kh-17
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 07:53:26 -0500
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1rLkAY-0000kj-VI
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:23:26 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLjhU-0008KG-5y
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 07:53:25 -0500
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-50e7dd8bce8so1797859e87.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 04:53:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1rLkAU-0002IW-1T
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 08:23:26 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6d9bd63ec7fso994030b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 05:23:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704459200; x=1705064000; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=249vhzwPgN1JVD24dXaosALaFCDBT3qv/vgDwXMnbzc=;
- b=zrJ3bpAXUsDziYYHJ6lmy68v250cAVb7/BFXCh5fNDe9clkheC77jicuU+ptHLcfwS
- 4KUiHJijIlJQ9vtHmlsFvdmMlMtFYPIdXLTg1i2skg0HO1TH02Xw+/oX23CcvnVGroLq
- 99MIVuRKAgDtTNYqWrA96nK9GwMB/ej6lKjnHyuDso2LP/baLooAdR0yaipZfDNv0JTh
- tPyk7WcTF8n/SAyP9/0LNDHj6w5LrtpMlLp4fpr2Z6JR5T1QFc2A0nbm9qWqNbQJM40M
- JJjEBCTx22AhZEuAbnUVUmolrC2263tpDr65nGBadUQYuvDxvtQSsTEn5CUcyrpVztUd
- jZXQ==
+ d=adacore.com; s=google; t=1704461000; x=1705065800; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wU2iA9i0jjzT4gcfzBnVB6Q8+uGxSYSuFvoFdTGYM4Q=;
+ b=GHHIWOxUjtT6NO//W5QdRQsFDSGi4uwWzEVoe0Or3Ud2mYOmGFBq7lrbluF34ujvWd
+ hDx+qhPoNJrl4NKFzJpFLgCCdm1rkwEDOeiLwrz0JFY47Q9Ekh5WHcaMOVG+uZL+58TD
+ I8gdB5oBXY+32hN2gIkr1FRUK4wdSq3l+g3hDJpM3H6ds/rgIP0gOJdaeRf3jhFTYpEh
+ 8YXSyfxBfJTn6+tb51SIuvMPUmEYpRzxb4JAhmaKqFpsx/PiFPEB2Rxfvcxin2K/oeA9
+ teaBFL8sbJ3GUznn8aSfiXS5EdDU7ADqifrfD7j69rJmE3u8aPtJ+qqcn8/CllVAqz1R
+ 1BHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704459200; x=1705064000;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=249vhzwPgN1JVD24dXaosALaFCDBT3qv/vgDwXMnbzc=;
- b=VTry7+BfsXZ2BK2pvTEGT+DJRcIpDNsYuJCALHw5Rvd7rcPU6ZfgdAdHZAljxiNo5z
- XWrYX/6S8oY5kifWlx+717V/y62kW6U7MvM7kxirKbvgGwalG5Ym2Vec3j9N9isFOmlO
- JdBLAXqjuuR+I9Lh1sWA5JI8DLWIbkDefHhywnWmQIhTDvXI/3M3ZYY+KkkrROmHHNCc
- AmxDmlr5oBnyzqrMWMqHykzfQGY6Ixe6SENBsOJ/L9buljk7qfTSav/g+t9qviJdiLie
- 1WmpbcG6kl5IPYNVpc4hPzxALCs516kYKyrwPr/H7qyT3nbDgv1BPBDhM4mI7u05+WqV
- BFBQ==
-X-Gm-Message-State: AOJu0YxekGwNpDqUjGvotkIY66MVptaKWWGpBA7ES6/pKFoX4XmeL1AR
- vf5nRGPRjiE41MC49t7+t3y5BG3PYlf32qpp0beK5dbGWkDmrQ==
-X-Google-Smtp-Source: AGHT+IFR2tcpVVOFOFwyLOI9+EOf5tt2OctZAvvdZnIDwgOvIJQAt2zBR2ebpj8hvUp4V/DF6WpISW5/5MTIHrb4QXI=
-X-Received: by 2002:ac2:4c99:0:b0:50e:7bb7:af8d with SMTP id
- d25-20020ac24c99000000b0050e7bb7af8dmr1021169lfl.116.1704459200125; Fri, 05
- Jan 2024 04:53:20 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704461000; x=1705065800;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wU2iA9i0jjzT4gcfzBnVB6Q8+uGxSYSuFvoFdTGYM4Q=;
+ b=VVbVwAnxazsNXd/N18FQWFga2QGncVFBO63ER3rhl4N3Xi153Du2YVRqDvWn2chWzl
+ KX+gncWjePea4g7KyL1o8t6qMCmCSVOaHz/LHtdrYg0UzBZkWKoX/q4EhnpQssDBdOMt
+ i1SSOhcTeSrb4SeznleK0RW+gFl36EH+50fJgLXFYZlVU2f99WqgyA+K8nFMfVT+7yRG
+ Zg8257dl3Mkl0fzRoAXihZcs/lKcXpbUumv5JaC4wDnowrtyWjRQBrxUFoP3bTLYHRuT
+ ubLOgPep8vp65bMN2wA87SkgBfHkHih3cHaKnRftdDrWHQhBQezfvR+aDyDl9HPBlHuQ
+ 0Suw==
+X-Gm-Message-State: AOJu0Yz+DoEKxcVynJ8kFcF65mK1Xl0/W/ZZpPKMq96jsLBpBYpYuYqV
+ zQfxXTRFXAVghdNxGJZTQvrbhEq0uPd1WRzCiMIUsQmktQkP
+X-Google-Smtp-Source: AGHT+IFTccjSCWTZEfwqT1qMvRdxZbR5ELloEds1HldrSFL3ShZkj8M6eWPoAT3fAhg5drWPYNBc+jCSFkKcbVTr634=
+X-Received: by 2002:a05:6a20:4287:b0:199:3acc:3e00 with SMTP id
+ o7-20020a056a20428700b001993acc3e00mr680893pzj.14.1704461000367; Fri, 05 Jan
+ 2024 05:23:20 -0800 (PST)
 MIME-Version: 1.0
-References: <20231231084502.235366-1-pbonzini@redhat.com>
-In-Reply-To: <20231231084502.235366-1-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 5 Jan 2024 12:53:09 +0000
-Message-ID: <CAFEAcA8MUDUchXrz50kr0e-vf0vQ+38o3P2fWx9kO5SZnvXdkw@mail.gmail.com>
-Subject: Re: [PULL 00/46] (mostly) target/i386 and meson changes for 2023-12-31
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
+References: <20240105102421.163554-1-chigot@adacore.com>
+ <20240105102421.163554-4-chigot@adacore.com>
+ <702936da-4931-40b7-8f82-b256cdf8d9f1@linaro.org>
+In-Reply-To: <702936da-4931-40b7-8f82-b256cdf8d9f1@linaro.org>
+From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
+Date: Fri, 5 Jan 2024 14:23:09 +0100
+Message-ID: <CAJ307EiJ1SEdnnqEFFL-=YeO3XNtAJLLctixvxxFasQBhu0eFQ@mail.gmail.com>
+Subject: Re: [PATCH 3/9] intc/grlib_irqmp: implements the multiprocessor
+ status register
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Frederic Konrad <konrad.frederic@yahoo.fr>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=chigot@adacore.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,34 +89,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 31 Dec 2023 at 08:50, Paolo Bonzini <pbonzini@redhat.com> wrote:
+On Fri, Jan 5, 2024 at 12:32=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
 >
-> The following changes since commit 191710c221f65b1542f6ea7fa4d30dde6e134fd7:
+> Hi Cl=C3=A9ment,
 >
->   Merge tag 'pull-request-2023-12-20' of https://gitlab.com/thuth/qemu into staging (2023-12-20 09:40:16 -0500)
+> On 5/1/24 11:24, Cl=C3=A9ment Chigot wrote:
+> > This implements the multiprocessor status register in grlib-irqmp and b=
+ind
+> > it to a start signal, which will be later wired in leon3-generic to
+> > start a cpu.
+> >
+> > Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
+> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
+> > ---
+> >   hw/intc/grlib_irqmp.c | 22 +++++++++++++++++++---
+> >   1 file changed, 19 insertions(+), 3 deletions(-)
 >
-> are available in the Git repository at:
 >
->   https://gitlab.com/bonzini/qemu.git tags/for-upstream
+> > @@ -323,6 +334,8 @@ static void grlib_irqmp_reset(DeviceState *d)
+> >
+> >       memset(irqmp->state, 0, sizeof *irqmp->state);
+> >       irqmp->state->parent =3D irqmp;
+> > +    irqmp->state->mpstatus =3D ((irqmp->ncpus - 1) << 28)
 >
-> for you to fetch changes up to f705c1f25d9a075534f8279048082af4ce2066bf:
+> Can you #define this magic '28' number?
 >
->   meson.build: report graphics backends separately (2023-12-31 09:11:29 +0100)
+> > +        | ((1 << irqmp->ncpus) - 2);
+> >   }
+> >
+> >   static void grlib_irqmp_realize(DeviceState *dev, Error **errp)
+> > @@ -336,6 +349,9 @@ static void grlib_irqmp_realize(DeviceState *dev, E=
+rror **errp)
+> >       }
+> >
+> >       qdev_init_gpio_in(dev, grlib_irqmp_set_irq, MAX_PILS);
+> > +    /* Transitionning from 0 to 1 starts the CPUs.  */
 >
-> ----------------------------------------------------------------
-> * configure: use a native non-cross compiler for linux-user
-> * meson: cleanups
-> * target/i386: miscellaneous cleanups and optimizations
-> * target/i386: implement CMPccXADD
-> * target/i386: the sgx_epc_get_section stub is reachable
-> * esp: check for NULL result from scsi_device_find()
->
+> What about 1 -> 0?
+
+It does nothing. I have updated the comment to mention it.
+For the doc (also mention it in the commit message now).
+  | [15:1] Power-down status of CPU [n]: reads =E2=80=981=E2=80=99 =3D powe=
+r-down, =E2=80=980=E2=80=99 =3D running.
+  | Write to start processor n: =E2=80=981=E2=80=99=3Dto start =E2=80=980'=
+=3Dhas no effect.
 
 
-Applied, thanks.
-
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
-
--- PMM
+> > +    qdev_init_gpio_out_named(dev, irqmp->start_signal, "grlib-start-cp=
+u",
+> > +                             IRQMP_MAX_CPU);
+> >       qdev_init_gpio_out_named(dev, &irqmp->irq, "grlib-irq", 1);
+> >       memory_region_init_io(&irqmp->iomem, OBJECT(dev), &grlib_irqmp_op=
+s, irqmp,
+> >                             "irqmp", IRQMP_REG_SIZE);
+>
 
