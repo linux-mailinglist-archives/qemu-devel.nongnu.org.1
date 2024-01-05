@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC86825772
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 17:01:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 624D7825726
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:53:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLmTS-00034u-Il; Fri, 05 Jan 2024 10:51:06 -0500
+	id 1rLmTU-0003LH-A2; Fri, 05 Jan 2024 10:51:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmS7-0007pc-HB
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:44 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmS9-0007vo-L1
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:46 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmS4-0000au-TP
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:42 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-336746a545fso411337f8f.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:49:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmS7-0000pY-9I
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:45 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3373a30af67so1326527f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:49:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704469775; x=1705074575; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704469780; x=1705074580; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/qHj/5uAdYCvRnDozLLxG4HVXbbh9wIM2eiBwuzcy8E=;
- b=O6thLAWUIs+mpGnt3fcHUY2d+6DiM5HlAlAv/iQ7Fr0KqxtaYdnmgujwU5LX4cOHnI
- TRBPVsIdGacvsdSE4JULGcXZ37MXJyoZMGi2J97hGoOGpnNnppIJbVsShplKGBxtE7K2
- Ro+YfmT04YRZ5Oo4QY4PsWJ8Kxm+KywzbePWYvGxTzFUfJGTqeNtoHhiSg4pJqjGlK7r
- 7nTpn/8XYky0sGBDkaOBw2PjzQZUNNgxrcJt5UbWbUrHP6P2MKL0oypX11k2hMpg/VZP
- Z1pOnAzb9gCSA1gVhgFS8HM3IkswqKhqFwK4A7P7Fea/yRPYwZDmcjq2SV8bxaOym+io
- 5kFQ==
+ bh=WY1HVSmMqBvEYUJRh+Ffc8mXYkbCc4MclKwdMWfHMLU=;
+ b=mXagiHF54kfdUzGSesLI76REo2QBZplxlc1aW1qLhPd8wePZSbyZ39zD7DLoFUtIYt
+ jVuOToy6dQy681AXlDMqJDrRBXTrczgiy6uxzZL6IylVyQyYBUuLn8ZJVNy0riAkrN3M
+ BeJNEIj2SA94/Nqsct2y3fcoOVwznwK9JVOUHMooqNLgNRHgtjWERpZLrq+qXgL+q8Sz
+ Rv3ORrBQjlLZKmLYwZcvHN8tf6YvXJpB2xBAJH0qC9i9wOnmn7mPgB08i48O7KfoL3dr
+ kZSYZBzFoc84yiGT36iUbs/I57/IcUqwe4W0YbLDzGg6oauLsmVUgxKwAYY/TVGuUbXx
+ W1LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704469775; x=1705074575;
+ d=1e100.net; s=20230601; t=1704469780; x=1705074580;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/qHj/5uAdYCvRnDozLLxG4HVXbbh9wIM2eiBwuzcy8E=;
- b=QOwx7zbq9vj8smNJq0aXfB70+K+RYGNxmr25byXQzme0RPpWAFqXkyaMJLEGRsirhF
- FUBHv1irj60PzT+Q34+ITdIhB682nXH0GtpGI/PdtG+k2Sc4a2xtqcW4ccLpzCsNce6n
- SxPSUbBuKLdIpW+6rcmfpEuASF0FgO0hBHpQZabqobliaarE57ttmWEUL2g7rwpWb57X
- Znq333g/KDoWh1EM5hN0jN9WJHiBis9x/0M/bIlQlfMNjflnfMHIBcgv2siIt1bZYOhQ
- wWcXJ03VJCclx+D1DSITYP4g/v/T7SjpLri4atSdDzYvMkcNDSsxHqg213dCDG7K7W0h
- Fsuw==
-X-Gm-Message-State: AOJu0YybH2z+GqTm9FMBDNeJmVKR81heU/SxB+nYC0G9NsV0FgLm7HGq
- VOfd/m1UV/4LdkL35oRfTiymlOs+h5KjPk9oK6Yz8g7jjOo=
-X-Google-Smtp-Source: AGHT+IE/O2rz6N1tj24/myPE2K2KIstpMZKWm+MxMoFdRGNI2tf3Htgb1gzG1cc6OxiRjPIzmrR1PQ==
-X-Received: by 2002:a5d:42cc:0:b0:337:5c9c:2a52 with SMTP id
- t12-20020a5d42cc000000b003375c9c2a52mr361625wrr.20.1704469775442; 
- Fri, 05 Jan 2024 07:49:35 -0800 (PST)
+ bh=WY1HVSmMqBvEYUJRh+Ffc8mXYkbCc4MclKwdMWfHMLU=;
+ b=DNPbRqoyo9d7M7pPn/ReTZBXBa3O+ZAB3/dyLCR67xRzMnUvCyCLXsdt0zw5v3ve1W
+ dIvSQ0rycX6ySADNTGvUXcCDUn2TymLuaPN3PxLMD5p/ASC+7L0rJieHoK0KDqWPDDkH
+ HS1ED/LXJO+XvoCHSAi1xFqHMwwZCDQcUuIjpHniapyFTyK+HbHd/FEiU+GDls2ggFwE
+ rMfr5qrV9HLrsX60jl9iAYl48uE0fFLgWNL2jpGqNl0LQApugfX/3ajHufbq/RRb6tWq
+ 6RpJ+MFW19JSjJ085AVc+6iNnFCp/Z7NXvmj0rYZGZqYDe76q9pDlUVQ71Y0rMg6eFHP
+ 6YkA==
+X-Gm-Message-State: AOJu0YyEJv+wHl+RU9JjXBBjAWR6pM8XYedcokcUN7KDX/4bt9B7g2wc
+ p8FKxpAsTMPOX2j+8LpQG7Frv2LArjvTXskQhxfpp6ZJctg=
+X-Google-Smtp-Source: AGHT+IEkMn4lig3/xSwctERMb9JqfN0t33SzjP+XpjfyOru6RJDfaXV1dK3xbGJJqN/PY15TOOWL8g==
+X-Received: by 2002:a05:6000:1286:b0:337:39d7:3e16 with SMTP id
+ f6-20020a056000128600b0033739d73e16mr810103wrx.76.1704469780660; 
+ Fri, 05 Jan 2024 07:49:40 -0800 (PST)
 Received: from m1x-phil.lan (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- cs18-20020a056000089200b00333359b522dsm1615912wrb.77.2024.01.05.07.49.34
+ q16-20020adfea10000000b003365fcc1846sm1607957wrm.52.2024.01.05.07.49.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jan 2024 07:49:35 -0800 (PST)
+ Fri, 05 Jan 2024 07:49:40 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Gavin Shan <gshan@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>
-Subject: [PULL 63/71] hw: Simplify memory_region_init_ram() calls
-Date: Fri,  5 Jan 2024 16:42:56 +0100
-Message-ID: <20240105154307.21385-64-philmd@linaro.org>
+ Gavin Shan <gshan@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>
+Subject: [PULL 64/71] hw/arm: Simplify memory_region_init_rom() calls
+Date: Fri,  5 Jan 2024 16:42:57 +0100
+Message-ID: <20240105154307.21385-65-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240105154307.21385-1-philmd@linaro.org>
 References: <20240105154307.21385-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,10 +99,10 @@ Mechanical change using the following coccinelle script:
 @@
 expression mr, owner, arg3, arg4, errp;
 @@
--   memory_region_init_ram(mr, owner, arg3, arg4, &errp);
+-   memory_region_init_rom(mr, owner, arg3, arg4, &errp);
     if (
 -       errp
-+       !memory_region_init_ram(mr, owner, arg3, arg4, &errp)
++       !memory_region_init_rom(mr, owner, arg3, arg4, &errp)
     ) {
         ...
         return;
@@ -116,188 +112,123 @@ and removing the local Error variable.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au> # aspeed
 Reviewed-by: Gavin Shan <gshan@redhat.com>
-Message-Id: <20231120213301.24349-21-philmd@linaro.org>
+Message-Id: <20231120213301.24349-22-philmd@linaro.org>
 ---
- hw/arm/aspeed_ast2400.c | 6 ++----
- hw/arm/aspeed_ast2600.c | 6 ++----
- hw/arm/fsl-imx25.c      | 6 ++----
- hw/arm/fsl-imx31.c      | 6 ++----
- hw/arm/fsl-imx6.c       | 6 ++----
- hw/arm/integratorcp.c   | 7 ++-----
- hw/arm/nrf51_soc.c      | 7 ++-----
- hw/ppc/rs6000_mc.c      | 7 ++-----
- 8 files changed, 16 insertions(+), 35 deletions(-)
+ hw/arm/fsl-imx25.c | 13 ++++---------
+ hw/arm/fsl-imx31.c | 13 ++++---------
+ hw/arm/fsl-imx6.c  | 13 ++++---------
+ 3 files changed, 12 insertions(+), 27 deletions(-)
 
-diff --git a/hw/arm/aspeed_ast2400.c b/hw/arm/aspeed_ast2400.c
-index a4334c81b8..0baa2ff96e 100644
---- a/hw/arm/aspeed_ast2400.c
-+++ b/hw/arm/aspeed_ast2400.c
-@@ -247,7 +247,6 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
-     Aspeed2400SoCState *a = ASPEED2400_SOC(dev);
-     AspeedSoCState *s = ASPEED_SOC(dev);
-     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
--    Error *err = NULL;
-     g_autofree char *sram_name = NULL;
- 
-     /* Default boot region (SPI memory or ROMs) */
-@@ -276,9 +275,8 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
- 
-     /* SRAM */
-     sram_name = g_strdup_printf("aspeed.sram.%d", CPU(&a->cpu[0])->cpu_index);
--    memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram_size, &err);
--    if (err) {
--        error_propagate(errp, err);
-+    if (!memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram_size,
-+                                errp)) {
-         return;
-     }
-     memory_region_add_subregion(s->memory,
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index b965fbab5e..3a9a303ab8 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -282,7 +282,6 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
-     Aspeed2600SoCState *a = ASPEED2600_SOC(dev);
-     AspeedSoCState *s = ASPEED_SOC(dev);
-     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
--    Error *err = NULL;
-     qemu_irq irq;
-     g_autofree char *sram_name = NULL;
- 
-@@ -355,9 +354,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
- 
-     /* SRAM */
-     sram_name = g_strdup_printf("aspeed.sram.%d", CPU(&a->cpu[0])->cpu_index);
--    memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram_size, &err);
--    if (err) {
--        error_propagate(errp, err);
-+    if (!memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram_size,
-+                                errp)) {
-         return;
-     }
-     memory_region_add_subregion(s->memory,
 diff --git a/hw/arm/fsl-imx25.c b/hw/arm/fsl-imx25.c
-index 9aabbf7f58..b15435ccaf 100644
+index b15435ccaf..9d2fb75a68 100644
 --- a/hw/arm/fsl-imx25.c
 +++ b/hw/arm/fsl-imx25.c
-@@ -299,10 +299,8 @@ static void fsl_imx25_realize(DeviceState *dev, Error **errp)
-                                 &s->rom[1]);
+@@ -81,7 +81,6 @@ static void fsl_imx25_realize(DeviceState *dev, Error **errp)
+ {
+     FslIMX25State *s = FSL_IMX25(dev);
+     uint8_t i;
+-    Error *err = NULL;
  
-     /* initialize internal RAM (128 KB) */
--    memory_region_init_ram(&s->iram, NULL, "imx25.iram", FSL_IMX25_IRAM_SIZE,
--                           &err);
+     if (!qdev_realize(DEVICE(&s->cpu), NULL, errp)) {
+         return;
+@@ -281,18 +280,14 @@ static void fsl_imx25_realize(DeviceState *dev, Error **errp)
+                                                        FSL_IMX25_WDT_IRQ));
+ 
+     /* initialize 2 x 16 KB ROM */
+-    memory_region_init_rom(&s->rom[0], OBJECT(dev), "imx25.rom0",
+-                           FSL_IMX25_ROM0_SIZE, &err);
 -    if (err) {
 -        error_propagate(errp, err);
-+    if (!memory_region_init_ram(&s->iram, NULL, "imx25.iram",
-+                                FSL_IMX25_IRAM_SIZE, errp)) {
++    if (!memory_region_init_rom(&s->rom[0], OBJECT(dev), "imx25.rom0",
++                                FSL_IMX25_ROM0_SIZE, errp)) {
          return;
      }
-     memory_region_add_subregion(get_system_memory(), FSL_IMX25_IRAM_ADDR,
+     memory_region_add_subregion(get_system_memory(), FSL_IMX25_ROM0_ADDR,
+                                 &s->rom[0]);
+-    memory_region_init_rom(&s->rom[1], OBJECT(dev), "imx25.rom1",
+-                           FSL_IMX25_ROM1_SIZE, &err);
+-    if (err) {
+-        error_propagate(errp, err);
++    if (!memory_region_init_rom(&s->rom[1], OBJECT(dev), "imx25.rom1",
++                                FSL_IMX25_ROM1_SIZE, errp)) {
+         return;
+     }
+     memory_region_add_subregion(get_system_memory(), FSL_IMX25_ROM1_ADDR,
 diff --git a/hw/arm/fsl-imx31.c b/hw/arm/fsl-imx31.c
-index def27bb913..1d5dcd51e8 100644
+index 1d5dcd51e8..c0584e4dfc 100644
 --- a/hw/arm/fsl-imx31.c
 +++ b/hw/arm/fsl-imx31.c
-@@ -208,10 +208,8 @@ static void fsl_imx31_realize(DeviceState *dev, Error **errp)
-                                 &s->rom);
+@@ -63,7 +63,6 @@ static void fsl_imx31_realize(DeviceState *dev, Error **errp)
+ {
+     FslIMX31State *s = FSL_IMX31(dev);
+     uint16_t i;
+-    Error *err = NULL;
  
-     /* initialize internal RAM (16 KB) */
--    memory_region_init_ram(&s->iram, NULL, "imx31.iram", FSL_IMX31_IRAM_SIZE,
--                           &err);
+     if (!qdev_realize(DEVICE(&s->cpu), NULL, errp)) {
+         return;
+@@ -188,20 +187,16 @@ static void fsl_imx31_realize(DeviceState *dev, Error **errp)
+     sysbus_mmio_map(SYS_BUS_DEVICE(&s->wdt), 0, FSL_IMX31_WDT_ADDR);
+ 
+     /* On a real system, the first 16k is a `secure boot rom' */
+-    memory_region_init_rom(&s->secure_rom, OBJECT(dev), "imx31.secure_rom",
+-                           FSL_IMX31_SECURE_ROM_SIZE, &err);
 -    if (err) {
 -        error_propagate(errp, err);
-+    if (!memory_region_init_ram(&s->iram, NULL, "imx31.iram",
-+                                FSL_IMX31_IRAM_SIZE, errp)) {
++    if (!memory_region_init_rom(&s->secure_rom, OBJECT(dev), "imx31.secure_rom",
++                                FSL_IMX31_SECURE_ROM_SIZE, errp)) {
          return;
      }
-     memory_region_add_subregion(get_system_memory(), FSL_IMX31_IRAM_ADDR,
+     memory_region_add_subregion(get_system_memory(), FSL_IMX31_SECURE_ROM_ADDR,
+                                 &s->secure_rom);
+ 
+     /* There is also a 16k ROM */
+-    memory_region_init_rom(&s->rom, OBJECT(dev), "imx31.rom",
+-                           FSL_IMX31_ROM_SIZE, &err);
+-    if (err) {
+-        error_propagate(errp, err);
++    if (!memory_region_init_rom(&s->rom, OBJECT(dev), "imx31.rom",
++                                FSL_IMX31_ROM_SIZE, errp)) {
+         return;
+     }
+     memory_region_add_subregion(get_system_memory(), FSL_IMX31_ROM_ADDR,
 diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
-index 7dc42cbfe6..58f37e7c11 100644
+index 58f37e7c11..b2153022c0 100644
 --- a/hw/arm/fsl-imx6.c
 +++ b/hw/arm/fsl-imx6.c
-@@ -443,10 +443,8 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
-                                 &s->caam);
- 
-     /* OCRAM memory */
--    memory_region_init_ram(&s->ocram, NULL, "imx6.ocram", FSL_IMX6_OCRAM_SIZE,
--                           &err);
--    if (err) {
--        error_propagate(errp, err);
-+    if (!memory_region_init_ram(&s->ocram, NULL, "imx6.ocram",
-+                                FSL_IMX6_OCRAM_SIZE, errp)) {
-         return;
-     }
-     memory_region_add_subregion(get_system_memory(), FSL_IMX6_OCRAM_ADDR,
-diff --git a/hw/arm/integratorcp.c b/hw/arm/integratorcp.c
-index e602ca5e14..1830e1d785 100644
---- a/hw/arm/integratorcp.c
-+++ b/hw/arm/integratorcp.c
-@@ -291,12 +291,9 @@ static void integratorcm_realize(DeviceState *d, Error **errp)
- {
-     IntegratorCMState *s = INTEGRATOR_CM(d);
-     SysBusDevice *dev = SYS_BUS_DEVICE(d);
--    Error *local_err = NULL;
- 
--    memory_region_init_ram(&s->flash, OBJECT(d), "integrator.flash", 0x100000,
--                           &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (!memory_region_init_ram(&s->flash, OBJECT(d), "integrator.flash",
-+                                0x100000, errp)) {
-         return;
-     }
- 
-diff --git a/hw/arm/nrf51_soc.c b/hw/arm/nrf51_soc.c
-index 34da0d62f0..ac53441630 100644
---- a/hw/arm/nrf51_soc.c
-+++ b/hw/arm/nrf51_soc.c
-@@ -58,7 +58,6 @@ static void nrf51_soc_realize(DeviceState *dev_soc, Error **errp)
- {
-     NRF51State *s = NRF51_SOC(dev_soc);
-     MemoryRegion *mr;
+@@ -109,7 +109,6 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+     MachineState *ms = MACHINE(qdev_get_machine());
+     FslIMX6State *s = FSL_IMX6(dev);
+     uint16_t i;
 -    Error *err = NULL;
-     uint8_t i = 0;
-     hwaddr base_addr = 0;
+     unsigned int smp_cpus = ms->smp.cpus;
  
-@@ -92,10 +91,8 @@ static void nrf51_soc_realize(DeviceState *dev_soc, Error **errp)
+     if (smp_cpus > FSL_IMX6_NUM_CPUS) {
+@@ -423,20 +422,16 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+     }
  
-     memory_region_add_subregion_overlap(&s->container, 0, s->board_memory, -1);
- 
--    memory_region_init_ram(&s->sram, OBJECT(s), "nrf51.sram", s->sram_size,
--                           &err);
+     /* ROM memory */
+-    memory_region_init_rom(&s->rom, OBJECT(dev), "imx6.rom",
+-                           FSL_IMX6_ROM_SIZE, &err);
 -    if (err) {
 -        error_propagate(errp, err);
-+    if (!memory_region_init_ram(&s->sram, OBJECT(s), "nrf51.sram", s->sram_size,
-+                                errp)) {
++    if (!memory_region_init_rom(&s->rom, OBJECT(dev), "imx6.rom",
++                                FSL_IMX6_ROM_SIZE, errp)) {
          return;
      }
-     memory_region_add_subregion(&s->container, NRF51_SRAM_BASE, &s->sram);
-diff --git a/hw/ppc/rs6000_mc.c b/hw/ppc/rs6000_mc.c
-index b35f8ba112..e6ec4b4c40 100644
---- a/hw/ppc/rs6000_mc.c
-+++ b/hw/ppc/rs6000_mc.c
-@@ -143,7 +143,6 @@ static void rs6000mc_realize(DeviceState *dev, Error **errp)
-     RS6000MCState *s = RS6000MC(dev);
-     int socket = 0;
-     unsigned int ram_size = s->ram_size / MiB;
--    Error *local_err = NULL;
+     memory_region_add_subregion(get_system_memory(), FSL_IMX6_ROM_ADDR,
+                                 &s->rom);
  
-     while (socket < 6) {
-         if (ram_size >= 64) {
-@@ -165,10 +164,8 @@ static void rs6000mc_realize(DeviceState *dev, Error **errp)
-         if (s->simm_size[socket]) {
-             char name[] = "simm.?";
-             name[5] = socket + '0';
--            memory_region_init_ram(&s->simm[socket], OBJECT(dev), name,
--                                   s->simm_size[socket] * MiB, &local_err);
--            if (local_err) {
--                error_propagate(errp, local_err);
-+            if (!memory_region_init_ram(&s->simm[socket], OBJECT(dev), name,
-+                                        s->simm_size[socket] * MiB, errp)) {
-                 return;
-             }
-             memory_region_add_subregion_overlap(get_system_memory(), 0,
+     /* CAAM memory */
+-    memory_region_init_rom(&s->caam, OBJECT(dev), "imx6.caam",
+-                           FSL_IMX6_CAAM_MEM_SIZE, &err);
+-    if (err) {
+-        error_propagate(errp, err);
++    if (!memory_region_init_rom(&s->caam, OBJECT(dev), "imx6.caam",
++                                FSL_IMX6_CAAM_MEM_SIZE, errp)) {
+         return;
+     }
+     memory_region_add_subregion(get_system_memory(), FSL_IMX6_CAAM_MEM_ADDR,
 -- 
 2.41.0
 
