@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2BE825706
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:48:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C560825733
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:54:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLmPw-000581-AG; Fri, 05 Jan 2024 10:47:28 -0500
+	id 1rLmQ6-0006Ec-W0; Fri, 05 Jan 2024 10:47:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmOm-000204-QK
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:46:25 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmP6-0002D6-MQ
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:46:37 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmOj-0003qM-D4
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:46:16 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40d4f5d902dso16146425e9.2
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:46:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmOo-0003t8-Ky
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:46:24 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3373a30af67so1322941f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:46:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704469572; x=1705074372; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704469577; x=1705074377; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TaWEpr5f/U/wZNl7ClicoZnkchpUab2rsBaBsce3JqA=;
- b=ILKT0InOW9Wh0TE9nnBj+WiviH/WaLZ2lala2LTM3Aovv0TCxl0Pbwsc9kFU21n0b9
- 1DerARmCTs0ZNtAjGFfFlADSzSrWqBtdT6c9OexpGORqpgTGKiQNneNccpIuTSkvuVZB
- KblNMxRPeXNDg8ICd5uQ0ErMktTa9w/pq+f3jAKVX9Lm6tqPTV8f5bFBW0wf9himunrL
- ykMetXUvmr1a3RXbLacRdY3kjsrVVVT3RWv61tAUS4HoEu+kGsd6HSiup7Df9XZOy+8D
- CBcAwY2UHg1DBoGyKfZi4IIGiL+7BQuOmcT36oKycCdiqNVOKEpVv4U2tglj2CqkVMAT
- ED9g==
+ bh=SzfKYNH1/2wbsF3ubLhxzVujUnJw+6X9RP1nI43IQ80=;
+ b=ER+J0fYiSRL3gi+24IzzqLi/vohO2TpKTOVS8ZxzSZqC9Ai0Lvseqm8dV9Kb08KJcp
+ dYjRgEm1GVRhyi4n6XMmL8INkuwKezBuUIawlv4TubUjXFsSTgJ/DFg4WcnSeoboAMTK
+ S+yc4RVCPE4zI4/4tydWnrUyfNWbDUt/gsyoeG+sgYjCylUll4xy5ogWnaE8+jJqNMqc
+ nO3UhJexhrOY0FIBb7wXYBO9DaweNrAaVyYzMJ1Bw9HqfBJPSMyE+sMjpLVaFTLmVLbx
+ UO/vG7esM3RKdCkk8QRV1KJNRnx9iuIHWcXVWE4cTzyTo1xIqwepADnoYvsOZTHPxjq1
+ F79w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704469572; x=1705074372;
+ d=1e100.net; s=20230601; t=1704469577; x=1705074377;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TaWEpr5f/U/wZNl7ClicoZnkchpUab2rsBaBsce3JqA=;
- b=bjk89RuKEXhwB+Asie2e5wH9KzpAd9ED+4PEC0w/osYf9lxtxdNTVxJpTrKp6KweNt
- F8ZtvE8yesQ6Pt+OY7vjPg7GP8hOiIjqrroPhYJwwxsgDctLCKL4taF2YkN9KvA9S7L3
- ApgbkSso9tynJuWEUn2sKgjxhpm2+fJ/OuqaWAzdSSy0ze4XRi2T0ayN/ATnhJDCyafV
- WNGnamsWRvzuIKsQrCjbl9cYGPP1RXjhhcuzyZYlMwjfxWFJrPWM92zv3Og4WU+cBfYZ
- rPc0wjyGDp9pyUleTuLcydHyxxpWzz+5YoKR8atPsoca6blgabjgHOI/pwjbcXP7QZaz
- dFmA==
-X-Gm-Message-State: AOJu0YxfiFnYXOQBrpcEja0AWM3sDd+ic8AdyIUWlU3tOBoaUN6DQSGx
- zDVzR3SbgPi4XE7wtLwyJ3xFxuDh+2ZLXuU8m+KKg0O7mBw=
-X-Google-Smtp-Source: AGHT+IHchGDzGZUXyaUKE7Ua7noUpkAg1Gg/cGtAMRVa5jV2c1mKHycg+NpR9CLOzU4msVwipqj0dQ==
-X-Received: by 2002:a05:600c:138e:b0:40d:9485:cc89 with SMTP id
- u14-20020a05600c138e00b0040d9485cc89mr1204952wmf.74.1704469571776; 
- Fri, 05 Jan 2024 07:46:11 -0800 (PST)
+ bh=SzfKYNH1/2wbsF3ubLhxzVujUnJw+6X9RP1nI43IQ80=;
+ b=AUiW8IKyrCJrxJIqs5KSaYSggJkGqliOHk3II4wN7wgtFlQeuwjqZOLlLKa1gkGfwt
+ 3dmv/SOFWrn9DE0IsvQc2U9yzd53iw/34FM3oTRBO0l/Dq8FENX77qvdfqauilzFt387
+ A+FAhFna2XFSf5RdYYQOiki35DdF9RougBwGVybb4broRDG9DLxnhoJ677jPrAWbcT9E
+ bXUrllQ90+J5FGcQBnnKzBcaVpPKBH5vLo+pehVUQJV9rgW4oJbe6rcSrTbqFhZealBp
+ gj269pgLEmIGBiFVToqlEOPstPVNzpP2hUgxFsWRuZLLBIh0NnskAPcVhjpMkY8R3qOG
+ IztQ==
+X-Gm-Message-State: AOJu0YxxsDirRU+eoDMmsS7h7ykdHCLVgJdt71lAKrPX1NnNihX7MYHO
+ WtlXK2hNNaX+f0e8Tq6Xt2cMda5J4XXiwTlHh4qPwSEmRIo=
+X-Google-Smtp-Source: AGHT+IEhkyu+mJt4ZgaI2HopS0VuCObVFwdS74M/k0bvowJHwD76KBU/9p3O6T1tSG4xTvFzEZ3yWg==
+X-Received: by 2002:adf:f552:0:b0:336:b9b3:f554 with SMTP id
+ j18-20020adff552000000b00336b9b3f554mr797130wrp.133.1704469577055; 
+ Fri, 05 Jan 2024 07:46:17 -0800 (PST)
 Received: from m1x-phil.lan (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- k9-20020a05600c1c8900b0040e3a1f88f2sm1376690wms.15.2024.01.05.07.46.10
+ y10-20020a5d620a000000b003372befd19bsm1607838wru.104.2024.01.05.07.46.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jan 2024 07:46:11 -0800 (PST)
+ Fri, 05 Jan 2024 07:46:16 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Gavin Shan <gshan@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PULL 27/71] machine: Print CPU model name instead of CPU type
-Date: Fri,  5 Jan 2024 16:42:20 +0100
-Message-ID: <20240105154307.21385-28-philmd@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 28/71] hw/arm/virt: Hide host CPU model for tcg
+Date: Fri,  5 Jan 2024 16:42:21 +0100
+Message-ID: <20240105154307.21385-29-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240105154307.21385-1-philmd@linaro.org>
 References: <20240105154307.21385-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,50 +96,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gavin Shan <gshan@redhat.com>
 
-The names of supported CPU models instead of CPU types should be
-printed when the user specified CPU type isn't supported, to be
-consistent with the output from '-cpu ?'.
+The 'host' CPU model isn't available until KVM or HVF is enabled.
+For example, the following error messages are seen when the guest
+is started with option '-cpu cortex-a8' on tcg after the next commit
+is applied to check the CPU type in machine_run_board_init().
 
-Correct the error messages to print CPU model names instead of CPU
-type names.
+  ERROR:../hw/core/machine.c:1423:is_cpu_type_supported: \
+  assertion failed: (model != NULL)
+  Bail out! ERROR:../hw/core/machine.c:1423:is_cpu_type_supported: \
+  assertion failed: (model != NULL)
+  Aborted (core dumped)
+
+Hide 'host' CPU model until KVM or HVF is enabled. With this applied,
+the valid CPU models can be shown.
+
+  qemu-system-aarch64: Invalid CPU type: cortex-a8
+  The valid types are: cortex-a7, cortex-a15, cortex-a35, \
+  cortex-a55, cortex-a72, cortex-a76, cortex-a710, a64fx, \
+  neoverse-n1, neoverse-v1, neoverse-n2, cortex-a53,      \
+  cortex-a57, max
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231204004726.483558-5-gshan@redhat.com>
+Message-ID: <20231204004726.483558-6-gshan@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/core/machine.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ hw/arm/virt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index c523ce32eb..fc239101f9 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1421,15 +1421,19 @@ static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 8b69aba189..8b060ef1d9 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -220,7 +220,9 @@ static const char *valid_cpus[] = {
+ #endif
+     ARM_CPU_TYPE_NAME("cortex-a53"),
+     ARM_CPU_TYPE_NAME("cortex-a57"),
++#if defined(CONFIG_KVM) || defined(CONFIG_HVF)
+     ARM_CPU_TYPE_NAME("host"),
++#endif
+     ARM_CPU_TYPE_NAME("max"),
+ };
  
-         /* The user specified CPU type isn't valid */
-         if (!mc->valid_cpu_types[i]) {
--            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
-+            g_autofree char *requested = cpu_model_from_type(machine->cpu_type);
-+            error_setg(errp, "Invalid CPU model: %s", requested);
-             if (!mc->valid_cpu_types[1]) {
--                error_append_hint(errp, "The only valid type is: %s\n",
--                                  mc->valid_cpu_types[0]);
-+                g_autofree char *model = cpu_model_from_type(
-+                                                 mc->valid_cpu_types[0]);
-+                error_append_hint(errp, "The only valid type is: %s\n", model);
-             } else {
--                error_append_hint(errp, "The valid types are: ");
-+                error_append_hint(errp, "The valid models are: ");
-                 for (i = 0; mc->valid_cpu_types[i]; i++) {
-+                    g_autofree char *model = cpu_model_from_type(
-+                                                 mc->valid_cpu_types[i]);
-                     error_append_hint(errp, "%s%s",
--                                      mc->valid_cpu_types[i],
-+                                      model,
-                                       mc->valid_cpu_types[i + 1] ? ", " : "");
-                 }
-                 error_append_hint(errp, "\n");
 -- 
 2.41.0
 
