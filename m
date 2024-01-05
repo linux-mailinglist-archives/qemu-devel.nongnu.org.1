@@ -2,69 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C8E824E39
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 06:46:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C85824F20
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 08:21:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLd0I-0000jD-9O; Fri, 05 Jan 2024 00:44:22 -0500
+	id 1rLeUj-0006bJ-4u; Fri, 05 Jan 2024 02:19:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rLd0G-0000iw-Iz; Fri, 05 Jan 2024 00:44:20 -0500
-Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120])
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1rLeUg-0006aF-Hn
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 02:19:50 -0500
+Received: from mail-mw2nam10on20601.outbound.protection.outlook.com
+ ([2a01:111:f403:2412::601]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rLd0E-0001Lv-0u; Fri, 05 Jan 2024 00:44:20 -0500
-Received: from [192.168.123.94] (ip-178-202-040-247.um47.pools.vodafone-ip.de
- [178.202.40.247])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 5F899413B3; 
- Fri,  5 Jan 2024 05:44:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1704433453;
- bh=OyQM+TWjGJ6u5HqzmvRQlHPmDy8aSFTrKgSPYbJ15rU=;
- h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
- In-Reply-To:Content-Type;
- b=Zo6ysmT/T3LBnJPOiNufXFNDjQje9Uhz8JtdjNAbA8O/zqCzczpHuL2LzyM+pb2f4
- /Cef4B1sSqPbWxja1E52ODSVH9c+CozB3eBgyPZNocCqbO8XTAheovWjJWqGDzZC41
- Meqf1GrErAEEDDA9e8sq59aE/W1VhVB+39+TglbuSxug5nS8wFxFvBKX5gGDsvyv5q
- BPYdxC349jK+uQPeTMJYEOBja/q6q2oaWE/LfeZEFtvTvQ6Fe+3Ozvkrf0CWnYTB45
- ZY2JaRjqIyuvMnNL3o27JHa12yYPmwMqBXL8xXwaNWgo3OlOdrQZlJP3278V+/lugA
- zxz0IRXZjWAfg==
-Message-ID: <cf9b3023-d6d4-4da9-ab1e-da440f98bf3e@canonical.com>
-Date: Fri, 5 Jan 2024 06:44:14 +0100
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1rLeUe-0003vM-6D
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 02:19:50 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iCMubhsKVTGWjk7XzJD7vuG4lnQHNzd+yQK4N2VDpvHkw1K41CeYmaXE8o+4cfZGxytkLDCmq011/wgj8GYdraTfgWUXAihXwQRiL7fIsCgj6eDf5XVi9mifjXHjL64sFPtIVL7uJ0b0OKkAb7FQaq/SanAo0ZkSYKQ4AXb4NXMJE1g4CuotpDwKj3vXeZh0aV5gy9epgz2T2ManZU2vm79xVOrc1Th41LEI3QDB1Rm7IoVfDDJvZy8f0j881TrjYuai1Imq3tao2Hwuvmrc6eTgtJM4KSRFllFsd0UoqfR77cJnM/IIdGP8KnSZ6ddXPsGC00WIpNyay6gQut4HQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Q0roh1gGW/4i+nfz8YP4YEt9OMHF9n0XqY0kXBc4kSA=;
+ b=ZqDyeAfqpOKIg7/yfcHypvLl/tr78HISnODcYZ/telHtPoGPs2GgnQBSBNXlXPs+8+BJw1EuI7ejOn/kIU5nEEn5DeEND5E0w4maxYegQlYrkHjwWmCp9QAnAu2T329Y6IEuAdVRHx2S3jpOJzmqM9MgHK833LmHKKm84xQNXiMAOU743K+flRY1J8QzG/cvXg4SXpiKAzHxpX2VqqefOjCL6BhRv+KRsGAsTbgOxYRX+BHMzSJmXLPExl1U68oFb2/byfOEJQ45f9BhUYaQlyh5m9kujV7tM2YWki2nEIMaDhZQ4c897fer90EGdAWQOdRl3J3g3nkj/CpYF/ObGA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q0roh1gGW/4i+nfz8YP4YEt9OMHF9n0XqY0kXBc4kSA=;
+ b=ZuLR7ZNOOqGHUgQlpt9s9ekdI521mJxg7m43R5qApXPXgCW5DtxSX9Qqg2pzJbny7asri5oDJD1H15xEVNJNdocdgYmbBE08MpXhs1DcMG4nZlkgN1tEZx3jG9zh4J8sFvRtndNxdRZjVDjulS6NgWi4QBdcrwyvg4PefrY+Zeg=
+Received: from MN2PR14CA0005.namprd14.prod.outlook.com (2603:10b6:208:23e::10)
+ by DS0PR12MB8454.namprd12.prod.outlook.com (2603:10b6:8:15e::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.17; Fri, 5 Jan
+ 2024 07:19:39 +0000
+Received: from MN1PEPF0000ECDA.namprd02.prod.outlook.com
+ (2603:10b6:208:23e:cafe::ba) by MN2PR14CA0005.outlook.office365.com
+ (2603:10b6:208:23e::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.16 via Frontend
+ Transport; Fri, 5 Jan 2024 07:19:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MN1PEPF0000ECDA.mail.protection.outlook.com (10.167.242.134) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7159.9 via Frontend Transport; Fri, 5 Jan 2024 07:19:39 +0000
+Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 5 Jan
+ 2024 01:19:36 -0600
+From: Jiqian Chen <Jiqian.Chen@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: Stefano Stabellini <sstabellini@kernel.org>, Anthony Perard
+ <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ <xen-devel@lists.xenproject.org>, Huang Rui <Ray.Huang@amd.com>, Jiqian Chen
+ <Jiqian.Chen@amd.com>
+Subject: [RFC QEMU PATCH v4 0/1] Support device passthrough when dom0 is PVH
+ on Xen
+Date: Fri, 5 Jan 2024 15:19:18 +0800
+Message-ID: <20240105071919.350397-1-Jiqian.Chen@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] smbios: add processor-family option
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, qemu-riscv@nongnu.org, qemu-devel@nongnu.org
-References: <20231229120724.41383-1-heinrich.schuchardt@canonical.com>
- <20231229120724.41383-2-heinrich.schuchardt@canonical.com>
- <CAKmqyKNmyMKMDuUwrgi4RQnAAWAJ7uSzMztDnHW+HRaM1zPNDA@mail.gmail.com>
-Content-Language: en-US, de-DE
-From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <CAKmqyKNmyMKMDuUwrgi4RQnAAWAJ7uSzMztDnHW+HRaM1zPNDA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=185.125.188.120;
- envelope-from=heinrich.schuchardt@canonical.com;
- helo=smtp-relay-canonical-0.canonical.com
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECDA:EE_|DS0PR12MB8454:EE_
+X-MS-Office365-Filtering-Correlation-Id: 64f4f821-16eb-4066-fe90-08dc0dbeade0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 4pu6y3uRf6JmFpwgnHSbcGaZoY3IQb55qfu49/0cso6ugDlpVj8rkmS9WwgUzDbbEduqCK44KsvtIGdBQIE+sODZrGHEv2fGxbM3TG2RDpicbZ6eajvOjLHO/XI1vk0hcnG0Ojr9LS9vURu0+0MhAic3G/bPDmSnA/6m3jqjHFbqFOzB/D/gTyUSGIwcaWCuDlGzgpvICV8l+AfaEGXpMJTIuA5LrHvffNd5hkTGYnpKpNYQdpwYZTOnM4Xn9jg0hCIyUpkuO4YZqCzKRY6LSfaD3ZVAXEUfcwRI/0MaydQOxRzvC8rapBTrHalrME6/8UXasVm4FsW0Y9S+oQvCX8TdLkaji/iFr6d36JifUsygW+mrYgaJKEWGfD+oR8wJLaPhBjgkvYZsysuCAbDtoQ23XvHrc+2+F/x9djLr1HriJZubH+hrvxOUj3nl4RFyrE1bK+Ato5sg38x9lyIp+fTOF1IWHi/46gQd/kKT3lAGlxbR8I9gK4/R3n7uyWKTXGkJrTGEn37xQXI3OZtEtrOt6igQQu4WKPMkc8sD7tZQyqp4a3XUC3qXvhs6vtd/kdfTSRG02NjWUXZJCBLz2xXlxIDGcWebuEOQaAW+F2KnH0CkIsVyjlLAXj+alFzujKwl1p3PBWH3leNzKdNZlWkfpjGX7R0DLIPgkeV1uhwyqUdrFCcMg9pD6TfYmseipu16C+G/nXdNSfXxiakd5Ju8FGopo424J0jAsqngdN7uRf7sRD1ZZnotGbhwI31h
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(376002)(346002)(396003)(136003)(39860400002)(230922051799003)(451199024)(1800799012)(82310400011)(64100799003)(186009)(40470700004)(46966006)(36840700001)(83380400001)(16526019)(1076003)(336012)(426003)(26005)(2616005)(82740400003)(47076005)(36860700001)(8676002)(8936002)(4326008)(5660300002)(2906002)(966005)(6666004)(7696005)(478600001)(6916009)(54906003)(316002)(70206006)(70586007)(41300700001)(36756003)(356005)(81166007)(86362001)(40480700001)(40460700003)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2024 07:19:39.1449 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64f4f821-16eb-4066-fe90-08dc0dbeade0
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: MN1PEPF0000ECDA.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8454
+Received-SPF: softfail client-ip=2a01:111:f403:2412::601;
+ envelope-from=Jiqian.Chen@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,134 +123,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/5/24 06:24, Alistair Francis wrote:
-> On Fri, Dec 29, 2023 at 10:48 PM Heinrich Schuchardt
-> <heinrich.schuchardt@canonical.com> wrote:
->>
->> For RISC-V the SMBIOS standard requires specific values of the processor
->> family value depending on the bitness of the CPU.
-> 
-> Can you provide some details of where this is described? I can't seem to find it
-> 
-> Alistair
+Hi All,
+This is v4 series to support passthrough on Xen when dom0 is PVH.
+v3->v4 changes:
+* Add gsi into struct XenHostPCIDevice and use gsi number that read from gsi sysfs if it exists, if there is no gsi sysfs, still use irq.
 
-System Management BIOS (SMBIOS) Reference Specification 3.7.0 (DSP0134)
-https://www.dmtf.org/sites/default/files/standards/documents/DSP0134_3.7.0.pdf
-7.5.2 Processor Information — Processor Family
-Table 23 – Processor Information: Processor Family field
+v2->v3 changes:
+* du to changes in the implementation of the second patch on kernel side(that adds a new sysfs for gsi instead of a new syscall), so read gsi number from the sysfs of gsi.
 
-200h 512 RISC-V RV32
-201h 513 RISC-V RV64
-202h 514 RISC-V RV128
+Below is the description of v2 cover letter:
+This patch is the v2 of the implementation of passthrough when dom0 is PVH on Xen.
+Issues we encountered:
+1. failed to map pirq for gsi
+Problem: qemu will call xc_physdev_map_pirq() to map a passthrough device’s gsi to pirq in function xen_pt_realize(). But failed.
 
-While for other architectures values for different CPU generations have 
-been defined the values for RISC-V only depend on the bitness.
+Reason: According to the implement of xc_physdev_map_pirq(), it needs gsi instead of irq, but qemu pass irq to it and treat irq as gsi, it is got from file /sys/bus/pci/devices/xxxx:xx:xx.x/irq in function xen_host_pci_device_get(). But actually the gsi number is not equal with irq. On PVH dom0, when it allocates irq for a gsi in function acpi_register_gsi_ioapic(), allocation is dynamic, and follow the principle of applying first, distributing first. And if you debug the kernel codes(see function __irq_alloc_descs), you will find the irq number is allocated from small to large by order, but the applying gsi number is not, gsi 38 may come before gsi 28, that causes gsi 38 get a smaller irq number than gsi 28, and then gsi != irq.
 
-Best regards
+Solution: we can record the relation between gsi and irq, then when userspace(qemu) want to use gsi, we can do a translation. The third patch of kernel(xen/privcmd: Add new syscall to get gsi from irq) records all the relations in acpi_register_gsi_xen_pvh() when dom0 initialize pci devices, and provide a syscall for userspace to get the gsi from irq. The third patch of xen(tools: Add new function to get gsi from irq) add a new function xc_physdev_gsi_from_irq() to call the new syscall added on kernel side.
+And then userspace can use that function to get gsi. Then xc_physdev_map_pirq() will success.
 
-Heinrich
+This v2 on qemu side is the same as the v1 ( qemu https://lore.kernel.org/xen-devel/20230312092244.451465-19-ray.huang@amd.com/), just call
+xc_physdev_gsi_from_irq() to get gsi from irq.
 
-> 
->>
->> Add a processor-family option for SMBIOS table 4.
->>
->> The value of processor-family may exceed 255 and therefore must be provided
->> in the Processor Family 2 field. Set the Processor Family field to 0xFE
->> which signals that the Processor Family 2 is used.
->>
->> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
->> ---
->> v2:
->>          new patch
->> ---
->>   hw/smbios/smbios.c | 13 +++++++++++--
->>   qemu-options.hx    |  4 ++--
->>   2 files changed, 13 insertions(+), 4 deletions(-)
->>
->> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
->> index 2a90601ac5..647bc6d603 100644
->> --- a/hw/smbios/smbios.c
->> +++ b/hw/smbios/smbios.c
->> @@ -102,6 +102,7 @@ static struct {
->>   #define DEFAULT_CPU_SPEED 2000
->>
->>   static struct {
->> +    uint16_t processor_family;
->>       const char *sock_pfx, *manufacturer, *version, *serial, *asset, *part;
->>       uint64_t max_speed;
->>       uint64_t current_speed;
->> @@ -110,6 +111,7 @@ static struct {
->>       .max_speed = DEFAULT_CPU_SPEED,
->>       .current_speed = DEFAULT_CPU_SPEED,
->>       .processor_id = 0,
->> +    .processor_family = 0x01, /* Other */
->>   };
->>
->>   struct type8_instance {
->> @@ -337,6 +339,10 @@ static const QemuOptDesc qemu_smbios_type4_opts[] = {
->>           .name = "part",
->>           .type = QEMU_OPT_STRING,
->>           .help = "part number",
->> +    }, {
->> +        .name = "processor-family",
->> +        .type = QEMU_OPT_NUMBER,
->> +        .help = "processor family",
->>       }, {
->>           .name = "processor-id",
->>           .type = QEMU_OPT_NUMBER,
->> @@ -726,7 +732,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
->>       snprintf(sock_str, sizeof(sock_str), "%s%2x", type4.sock_pfx, instance);
->>       SMBIOS_TABLE_SET_STR(4, socket_designation_str, sock_str);
->>       t->processor_type = 0x03; /* CPU */
->> -    t->processor_family = 0x01; /* Other */
->> +    t->processor_family = 0xfe; /* use Processor Family 2 field */
->>       SMBIOS_TABLE_SET_STR(4, processor_manufacturer_str, type4.manufacturer);
->>       if (type4.processor_id == 0) {
->>           t->processor_id[0] = cpu_to_le32(smbios_cpuid_version);
->> @@ -758,7 +764,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
->>       t->thread_count = (threads_per_socket > 255) ? 0xFF : threads_per_socket;
->>
->>       t->processor_characteristics = cpu_to_le16(0x02); /* Unknown */
->> -    t->processor_family2 = cpu_to_le16(0x01); /* Other */
->> +    t->processor_family2 = cpu_to_le16(type4.processor_family);
->>
->>       if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
->>           t->core_count2 = t->core_enabled2 = cpu_to_le16(cores_per_socket);
->> @@ -1402,6 +1408,9 @@ void smbios_entry_add(QemuOpts *opts, Error **errp)
->>                   return;
->>               }
->>               save_opt(&type4.sock_pfx, opts, "sock_pfx");
->> +            type4.processor_family = qemu_opt_get_number(opts,
->> +                                                         "processor-family",
->> +                                                         0x01 /* Other */);
->>               save_opt(&type4.manufacturer, opts, "manufacturer");
->>               save_opt(&type4.version, opts, "version");
->>               save_opt(&type4.serial, opts, "serial");
->> diff --git a/qemu-options.hx b/qemu-options.hx
->> index b66570ae00..7bdb414345 100644
->> --- a/qemu-options.hx
->> +++ b/qemu-options.hx
->> @@ -2694,7 +2694,7 @@ DEF("smbios", HAS_ARG, QEMU_OPTION_smbios,
->>       "                specify SMBIOS type 3 fields\n"
->>       "-smbios type=4[,sock_pfx=str][,manufacturer=str][,version=str][,serial=str]\n"
->>       "              [,asset=str][,part=str][,max-speed=%d][,current-speed=%d]\n"
->> -    "              [,processor-id=%d]\n"
->> +    "              [,processor-family=%d,processor-id=%d]\n"
->>       "                specify SMBIOS type 4 fields\n"
->>       "-smbios type=8[,external_reference=str][,internal_reference=str][,connector_type=%d][,port_type=%d]\n"
->>       "                specify SMBIOS type 8 fields\n"
->> @@ -2722,7 +2722,7 @@ SRST
->>   ``-smbios type=3[,manufacturer=str][,version=str][,serial=str][,asset=str][,sku=str]``
->>       Specify SMBIOS type 3 fields
->>
->> -``-smbios type=4[,sock_pfx=str][,manufacturer=str][,version=str][,serial=str][,asset=str][,part=str][,processor-id=%d]``
->> +``-smbios type=4[,sock_pfx=str][,manufacturer=str][,version=str][,serial=str][,asset=str][,part=str][,processor-family=%d][,processor-id=%d]``
->>       Specify SMBIOS type 4 fields
->>
->>   ``-smbios type=11[,value=str][,path=filename]``
->> --
->> 2.43.0
->>
->>
+Jiqian Chen (1):
+  xen: Use gsi instead of irq for mapping pirq
+
+ hw/xen/xen-host-pci-device.c | 7 +++++++
+ hw/xen/xen-host-pci-device.h | 1 +
+ hw/xen/xen_pt.c              | 6 +++++-
+ 3 files changed, 13 insertions(+), 1 deletion(-)
+
+-- 
+2.34.1
 
 
