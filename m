@@ -2,81 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FEE382535A
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 13:29:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0CE825382
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 13:54:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLjII-0001db-AH; Fri, 05 Jan 2024 07:27:22 -0500
+	id 1rLjhY-0001kr-Cr; Fri, 05 Jan 2024 07:53:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rLjIG-0001cn-9n
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 07:27:20 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rLjhW-0001kh-17
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 07:53:26 -0500
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rLjIE-000611-8N
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 07:27:19 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6d9cdd0a5e6so959338b3a.3
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 04:27:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rLjhU-0008KG-5y
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 07:53:25 -0500
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-50e7dd8bce8so1797859e87.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 04:53:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704457636; x=1705062436; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1fuRmMn2/OEzC2xcyqjGVvOZ+85ANPKX5Ih5OYJKAfU=;
- b=gm2qpv6Qy3Yzt7tCrTYzyr2rHmb28Sd13YGLvDYY5h/W0oOkbwuox5rzgNxqay8Qvj
- GFGlUBb6/f+5PnYUmJYabpfgRgtA8DZgfA/LqVV6Ho/WFjhPNPAvPRhvcz+DD7IJKxNt
- xrfMqkMf0OWSi29IX7kHnjbZq9SD97AarXxbo6WQ/HH4Udi25BRej7cepfuPOFRk09Tk
- PP6/jntAJTVeZxC2T/zLka1Ai6VQqwrFoipyrKpv2ucDoyGUfcxx4ZDyzi/XGxvZ3Jy2
- bHXEvXYjeYDuZPk1UnF+a5d4eOvgIOr7b87gmoQVh0AbNLGrpo6ZA1wCdkaaR+cFGKDb
- rBXg==
+ d=linaro.org; s=google; t=1704459200; x=1705064000; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=249vhzwPgN1JVD24dXaosALaFCDBT3qv/vgDwXMnbzc=;
+ b=zrJ3bpAXUsDziYYHJ6lmy68v250cAVb7/BFXCh5fNDe9clkheC77jicuU+ptHLcfwS
+ 4KUiHJijIlJQ9vtHmlsFvdmMlMtFYPIdXLTg1i2skg0HO1TH02Xw+/oX23CcvnVGroLq
+ 99MIVuRKAgDtTNYqWrA96nK9GwMB/ej6lKjnHyuDso2LP/baLooAdR0yaipZfDNv0JTh
+ tPyk7WcTF8n/SAyP9/0LNDHj6w5LrtpMlLp4fpr2Z6JR5T1QFc2A0nbm9qWqNbQJM40M
+ JJjEBCTx22AhZEuAbnUVUmolrC2263tpDr65nGBadUQYuvDxvtQSsTEn5CUcyrpVztUd
+ jZXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704457636; x=1705062436;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1fuRmMn2/OEzC2xcyqjGVvOZ+85ANPKX5Ih5OYJKAfU=;
- b=sbMHRxK/hVLo3w/Bs+tpcWCYlRCEYUjefSfSsbrfdCFJyXqS+fo7jnfUHHUSgM8TAX
- zBgncZrQv1FAxiYt2It2YMpPqJK/ty2moh+FoBnA5rscaQ+ZwL9kGca5ygH2rbzkf7Mt
- 3zu3cRsNNZKjI+IiK3QQxmB8Qm90H52ZKq15p6uSqzNQQWL24anU2y0dmHYpkvz577N/
- mRevq//4NJ9NtgkqD1iaOoyKO6QxRu+O7puwXDP7qsayNZEdwDYy6Oe7pSJ8Tjn3ZjAs
- OndvjaFdDfZE8jZ4nOE4Lf0P0JHw8drVe8XPYZxDN/ZOoq+sRM+Cnfq/ui2qq4nKkYsP
- PxOw==
-X-Gm-Message-State: AOJu0YwV4erxxhm8vJOY6++Mut+KXbhHjcyJVfK/0lHxssmcd/IhR3Zv
- h8AGMoj6p+xlJK4osZBTP1mx3nBDQk9mbA==
-X-Google-Smtp-Source: AGHT+IEe2y+wHcYvW86pk092usDYohPziIZef9eBxpMtlFhRcN6y2N1V38Lw1q3FTOe7/N28qUl8Hg==
-X-Received: by 2002:a05:6a20:9150:b0:199:4546:bc0c with SMTP id
- x16-20020a056a20915000b001994546bc0cmr421451pzc.83.1704457636406; 
- Fri, 05 Jan 2024 04:27:16 -0800 (PST)
-Received: from [192.168.68.110] ([152.234.127.254])
- by smtp.gmail.com with ESMTPSA id
- r5-20020a62e405000000b006da76842a66sm1292898pfh.85.2024.01.05.04.27.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 05 Jan 2024 04:27:15 -0800 (PST)
-Message-ID: <e7ee041b-4e71-458c-8a56-f0b91a3ace0f@ventanamicro.com>
-Date: Fri, 5 Jan 2024 09:27:10 -0300
+ d=1e100.net; s=20230601; t=1704459200; x=1705064000;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=249vhzwPgN1JVD24dXaosALaFCDBT3qv/vgDwXMnbzc=;
+ b=VTry7+BfsXZ2BK2pvTEGT+DJRcIpDNsYuJCALHw5Rvd7rcPU6ZfgdAdHZAljxiNo5z
+ XWrYX/6S8oY5kifWlx+717V/y62kW6U7MvM7kxirKbvgGwalG5Ym2Vec3j9N9isFOmlO
+ JdBLAXqjuuR+I9Lh1sWA5JI8DLWIbkDefHhywnWmQIhTDvXI/3M3ZYY+KkkrROmHHNCc
+ AmxDmlr5oBnyzqrMWMqHykzfQGY6Ixe6SENBsOJ/L9buljk7qfTSav/g+t9qviJdiLie
+ 1WmpbcG6kl5IPYNVpc4hPzxALCs516kYKyrwPr/H7qyT3nbDgv1BPBDhM4mI7u05+WqV
+ BFBQ==
+X-Gm-Message-State: AOJu0YxekGwNpDqUjGvotkIY66MVptaKWWGpBA7ES6/pKFoX4XmeL1AR
+ vf5nRGPRjiE41MC49t7+t3y5BG3PYlf32qpp0beK5dbGWkDmrQ==
+X-Google-Smtp-Source: AGHT+IFR2tcpVVOFOFwyLOI9+EOf5tt2OctZAvvdZnIDwgOvIJQAt2zBR2ebpj8hvUp4V/DF6WpISW5/5MTIHrb4QXI=
+X-Received: by 2002:ac2:4c99:0:b0:50e:7bb7:af8d with SMTP id
+ d25-20020ac24c99000000b0050e7bb7af8dmr1021169lfl.116.1704459200125; Fri, 05
+ Jan 2024 04:53:20 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND RFC v1 2/2] hw/riscv/virt-acpi-build.c: Generate SPCR
- table
-Content-Language: en-US
-To: Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Cc: mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com,
- peter.maydell@linaro.org, shannon.zhaosl@gmail.com,
- sunilvl@ventanamicro.com, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
-References: <20240105090608.5745-1-jeeheng.sia@starfivetech.com>
- <20240105090608.5745-3-jeeheng.sia@starfivetech.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240105090608.5745-3-jeeheng.sia@starfivetech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42a.google.com
+References: <20231231084502.235366-1-pbonzini@redhat.com>
+In-Reply-To: <20231231084502.235366-1-pbonzini@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 5 Jan 2024 12:53:09 +0000
+Message-ID: <CAFEAcA8MUDUchXrz50kr0e-vf0vQ+38o3P2fWx9kO5SZnvXdkw@mail.gmail.com>
+Subject: Re: [PULL 00/46] (mostly) target/i386 and meson changes for 2023-12-31
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,90 +84,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Sun, 31 Dec 2023 at 08:50, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> The following changes since commit 191710c221f65b1542f6ea7fa4d30dde6e134fd7:
+>
+>   Merge tag 'pull-request-2023-12-20' of https://gitlab.com/thuth/qemu into staging (2023-12-20 09:40:16 -0500)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/bonzini/qemu.git tags/for-upstream
+>
+> for you to fetch changes up to f705c1f25d9a075534f8279048082af4ce2066bf:
+>
+>   meson.build: report graphics backends separately (2023-12-31 09:11:29 +0100)
+>
+> ----------------------------------------------------------------
+> * configure: use a native non-cross compiler for linux-user
+> * meson: cleanups
+> * target/i386: miscellaneous cleanups and optimizations
+> * target/i386: implement CMPccXADD
+> * target/i386: the sgx_epc_get_section stub is reachable
+> * esp: check for NULL result from scsi_device_find()
+>
 
 
-On 1/5/24 06:06, Sia Jee Heng wrote:
-> Generate Serial Port Console Redirection Table (SPCR) for RISC-V
-> virtual machine.
-> 
-> Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
-> ---
->   hw/riscv/virt-acpi-build.c | 39 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 39 insertions(+)
-> 
-> diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-> index d4a02579d6..388b3d1a84 100644
-> --- a/hw/riscv/virt-acpi-build.c
-> +++ b/hw/riscv/virt-acpi-build.c
-> @@ -174,6 +174,42 @@ acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
->       aml_append(scope, dev);
->   }
->   
-> +/*
-> + * Serial Port Console Redirection Table (SPCR)
-> + * Rev: 1.07
+Applied, thanks.
 
-Shouldn't it be "Rev: 2.0"? The function is calling the common build_spcr() that
-specifies
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
 
-+    AcpiTable table = { .sig = "SPCR", .rev = 2, .oem_id = oem_id,
-+                        .oem_table_id = oem_table_id };
-
-
-
-Code LGTM regardless of the "Rev: " comment value.
-
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
-
-
-
-
-> + */
-> +
-> +static void
-> +build_spcr_rev2(GArray *table_data, BIOSLinker *linker, RISCVVirtState *s)
-> +{
-> +    AcpiSpcrData serial = {
-> +        .interface_type = 0,       /* 16550 compatible */
-> +        .base_addr.id = AML_AS_SYSTEM_MEMORY,
-> +        .base_addr.width = 32,
-> +        .base_addr.offset = 0,
-> +        .base_addr.size = 1,
-> +        .base_addr.addr = s->memmap[VIRT_UART0].base,
-> +        .interrupt_type = (1 << 4),/* Bit[4] RISC-V PLIC/APLIC */
-> +        .pc_interrupt = 0,
-> +        .interrupt = UART0_IRQ,
-> +        .baud_rate = 7,            /* 15200 */
-> +        .parity = 0,
-> +        .stop_bits = 1,
-> +        .flow_control = 0,
-> +        .terminal_type = 3,        /* ANSI */
-> +        .language = 0,             /* Language */
-> +        .pci_device_id = 0xffff,   /* not a PCI device*/
-> +        .pci_vendor_id = 0xffff,   /* not a PCI device*/
-> +        .pci_bus = 0,
-> +        .pci_device = 0,
-> +        .pci_function = 0,
-> +        .pci_flags = 0,
-> +        .pci_segment = 0,
-> +    };
-> +
-> +    build_spcr(table_data, linker, &serial, s->oem_id, s->oem_table_id);
-> +}
-> +
->   /* RHCT Node[N] starts at offset 56 */
->   #define RHCT_NODE_ARRAY_OFFSET 56
->   
-> @@ -555,6 +591,9 @@ static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
->       acpi_add_table(table_offsets, tables_blob);
->       build_rhct(tables_blob, tables->linker, s);
->   
-> +    acpi_add_table(table_offsets, tables_blob);
-> +    build_spcr_rev2(tables_blob, tables->linker, s);
-> +
->       acpi_add_table(table_offsets, tables_blob);
->       {
->           AcpiMcfgInfo mcfg = {
+-- PMM
 
