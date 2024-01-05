@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F458251E5
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 11:26:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 571868251E2
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 11:26:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLhNd-0007lT-PA; Fri, 05 Jan 2024 05:24:45 -0500
+	id 1rLhNe-0007ld-Mo; Fri, 05 Jan 2024 05:24:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1rLhNb-0007l3-MQ
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 05:24:43 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1rLhNd-0007lI-8j
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 05:24:45 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1rLhNZ-0004Le-U3
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 05:24:43 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40d76fefd6bso12383195e9.2
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 02:24:41 -0800 (PST)
+ id 1rLhNb-0004Lw-LF
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 05:24:45 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40d894764e7so14739245e9.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 02:24:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1704450280; x=1705055080; darn=nongnu.org;
+ d=adacore.com; s=google; t=1704450281; x=1705055081; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=REnTJhdFUEh9ogw8XoBpqYK4Nd8U+IE3k2q6fPhQ764=;
- b=HQ1Bklr4kB/Oke94GsQXZz6i5zCxuainb+0bGSb58kypbKgUTGyKdEkiiTHKmdL+h/
- UKhDYSXXzc7PV8E6Ei5K5srNYoSVDv8l8isCVd5WBC4oOp8JZN3HthBuHIsbxiROVhH5
- Eaa4MVThuJMkLPu59nK+XcuHKDqzNo6PcjhSXuaZ+A5YPwX4ug6+Z1it5aytvlXi0KJW
- QYxQ9jszBP20/mBA25L3AV7L97FIA0vDHjt4NYVzRiHS6dgNNe9k9jvwpP4wUFbgXx0s
- JwIVxUOrSl/ZfYKeGuWaGQPUeBRGinNEuaIsLurMRkCH11W0EubQhv7oAzN/XTuSoCry
- 1Jyw==
+ bh=BUJ6l0OkyKg584UzrfGAsqs56Rbvr/1CMcQmKL/iGrw=;
+ b=DRVZfQ4snrT8pzOduqa4/68XX7AQCEVkDtWlNTsFibq6O0VL47vSBErDJpGadnol6R
+ BLTEEHcd4w9aTY6pd3ozRzshqIbgRDfTcy1nZzNA9CLEmtMCywXREtDMdxcY4iyd3kso
+ dHwUm1VoaAjUT/nat/k2h8JPJwnJQPPzoSF8Yn5nJDjbAaVEB/qQ5LXRH/hUtsQoMMYb
+ s7RdxBCi7X4xZU0YrzgpzrRbj0Uu7OzvDmFVYN/Pia1Bo6xwBuhH/RZ+jRi0H4tCZZOf
+ LyAyCuHPZu9POBP5KcpVisAI3tIZXOXogEh0JBzPiZ2Jq1FAMZzCY6/3ZuaexMNOleFv
+ WGbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704450280; x=1705055080;
+ d=1e100.net; s=20230601; t=1704450281; x=1705055081;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=REnTJhdFUEh9ogw8XoBpqYK4Nd8U+IE3k2q6fPhQ764=;
- b=SBDEvqcRuuNF94cQQlarHF8lxJ6Fkk6KUS/kCVeHI5kEJCFTFyhONk0TgzyhdXrvRM
- nrg1c1sF0MmFfxTyhbHo9LNKLL13DEky5Had372iTvbdWTNDBXKF1E0ySpXazhp5vApo
- 0CYtNgcLyIOxxsdfP7D9fd0L0gjL9dkHNyIUiftgFc8WQCmq0AnrEq1iM5ueR9dy4KJW
- Swo+jmc7ZJYu2zEjAs+O0tgf4GfYz/LeSX96DPptsbUprp2ZodJz9stadB10wfvBAH6C
- Qsq2mhFhqZICVvRcZ/WJGe6y6z8ezn+ut/PWt1re8OCapdXcjza1KWBSyhpVSVa0/XRJ
- 1UdA==
-X-Gm-Message-State: AOJu0YyXtjJNX7KZRUD10O5szIWsWRlODbKdccAWf/YfkwA5f0TF2Cv3
- eeh9ZLnixlH9g44LdDcqrfrq4vBaxAiKtIudFCcRictHpA==
-X-Google-Smtp-Source: AGHT+IHYP3ho2Cg6MLPsSfS4EMsRRvnifsAnWQn8QIcxvrJnjTbG6dlWNrJtU/v83TVHJHMhXAdf7Q==
-X-Received: by 2002:a05:600c:3b90:b0:40e:34d3:8ef5 with SMTP id
- n16-20020a05600c3b9000b0040e34d38ef5mr507203wms.147.1704450279958; 
- Fri, 05 Jan 2024 02:24:39 -0800 (PST)
+ bh=BUJ6l0OkyKg584UzrfGAsqs56Rbvr/1CMcQmKL/iGrw=;
+ b=dybQQrm/1bXpbmzP8qas7KVjrZYmyXQ+Ytm0aps1dGit8+r3+h8L63XutDpcuA+LwY
+ uu6HsipxCeBMiJIqE6OtJ8zD4rXgYBZivzYz0pScB4fRSMHZyuwlD4fjhcS67JhFcB2v
+ jRsOdb/3Qt54xj5g2kbrp/8JBT/D8tdZ204s4EjQupq71Kji/1UUh7vz91f69HFTKauA
+ PhPrhiRr1f30f6e2oMAbhpwqcUZaZFulyTxvkx1qY66kfCJWajVacuEba/0UauLLzALH
+ VGwVNoMoREeqSphSX9Xh41I4tPT1DGrwHkQRv3pF3hCdrcIXY5w8YHYHVr+5YynBt7Mr
+ 4D+g==
+X-Gm-Message-State: AOJu0Ywd4UxOOeAaS8VJoj/YGxyMK4pDHvt8i60GjsujYjvODVGxvylL
+ c/R2VGoxmL1gnCRMjn4Zt9elYGkNt7YZNLVoYsH0s1XZyQ==
+X-Google-Smtp-Source: AGHT+IE/hVblsS/6QiS0GUM5yeRUP4aspV3fLTmaYo+CfWYszB+mQbh+rc3oVI6vWZJsau1FejRbXA==
+X-Received: by 2002:a05:600c:2d8c:b0:40c:4b4e:95a6 with SMTP id
+ i12-20020a05600c2d8c00b0040c4b4e95a6mr653703wmg.94.1704450281563; 
+ Fri, 05 Jan 2024 02:24:41 -0800 (PST)
 Received: from chigot-Dell.home ([2a01:cb15:8123:8100:323e:281a:689:2b09])
  by smtp.gmail.com with ESMTPSA id
- v8-20020a05600c444800b0040d934f48d3sm1117548wmn.32.2024.01.05.02.24.39
+ v8-20020a05600c444800b0040d934f48d3sm1117548wmn.32.2024.01.05.02.24.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jan 2024 02:24:39 -0800 (PST)
+ Fri, 05 Jan 2024 02:24:40 -0800 (PST)
 From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
  Frederic Konrad <konrad.frederic@yahoo.fr>
-Subject: [PATCH 4/9] intc/grlib_irqmp: implements multicore irq
-Date: Fri,  5 Jan 2024 11:24:16 +0100
-Message-Id: <20240105102421.163554-5-chigot@adacore.com>
+Subject: [PATCH 5/9] target/sparc: implement asr17 feature for smp
+Date: Fri,  5 Jan 2024 11:24:17 +0100
+Message-Id: <20240105102421.163554-6-chigot@adacore.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240105102421.163554-1-chigot@adacore.com>
 References: <20240105102421.163554-1-chigot@adacore.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=chigot@adacore.com; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=chigot@adacore.com; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,147 +93,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now there is an ncpus property, use it in order to deliver the IRQ to
-multiple CPU.
+This allows the guest program to know its cpu id.
 
 Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
 Signed-off-by: Clément Chigot <chigot@adacore.com>
 ---
- hw/intc/grlib_irqmp.c         | 43 ++++++++++++++++++-----------------
- hw/sparc/leon3.c              |  3 ++-
- include/hw/intc/grlib_irqmp.h |  2 +-
- 3 files changed, 25 insertions(+), 23 deletions(-)
+ target/sparc/helper.c    | 16 ++++++++++++++++
+ target/sparc/helper.h    |  1 +
+ target/sparc/translate.c | 13 +++----------
+ 3 files changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/hw/intc/grlib_irqmp.c b/hw/intc/grlib_irqmp.c
-index be0e840181..4df0293064 100644
---- a/hw/intc/grlib_irqmp.c
-+++ b/hw/intc/grlib_irqmp.c
-@@ -64,7 +64,7 @@ struct IRQMP {
-     unsigned int ncpus;
-     IRQMPState *state;
-     qemu_irq start_signal[IRQMP_MAX_CPU];
--    qemu_irq irq;
-+    qemu_irq irq[IRQMP_MAX_CPU];
- };
+diff --git a/target/sparc/helper.c b/target/sparc/helper.c
+index bd10b60e4b..2247e243b5 100644
+--- a/target/sparc/helper.c
++++ b/target/sparc/helper.c
+@@ -212,4 +212,20 @@ void helper_power_down(CPUSPARCState *env)
+     env->npc = env->pc + 4;
+     cpu_loop_exit(cs);
+ }
++
++target_ulong helper_rdasr17(CPUSPARCState *env)
++{
++    CPUState *cs = env_cpu(env);
++    target_ulong val;
++
++    /*
++     * TODO: There are many more fields to be filled,
++     * some of which are writable.
++     */
++    val = env->def.nwindows - 1;    /* [4:0]   NWIN   */
++    val |= 1 << 8;                  /* [8]      V8    */
++    val |= (cs->cpu_index) << 28;   /* [31:28] INDEX  */
++
++    return val;
++}
+ #endif
+diff --git a/target/sparc/helper.h b/target/sparc/helper.h
+index 55eff66283..fc818b8678 100644
+--- a/target/sparc/helper.h
++++ b/target/sparc/helper.h
+@@ -2,6 +2,7 @@
+ DEF_HELPER_1(rett, void, env)
+ DEF_HELPER_2(wrpsr, void, env, tl)
+ DEF_HELPER_1(rdpsr, tl, env)
++DEF_HELPER_1(rdasr17, tl, env)
+ DEF_HELPER_1(power_down, void, env)
+ #else
+ DEF_HELPER_FLAGS_2(wrpil, TCG_CALL_NO_RWG, void, env, tl)
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index 9387299559..1cabda9565 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -37,6 +37,7 @@
  
- struct IRQMPState {
-@@ -83,37 +83,37 @@ struct IRQMPState {
+ #ifdef TARGET_SPARC64
+ # define gen_helper_rdpsr(D, E)                 qemu_build_not_reached()
++# define gen_helper_rdasr17(D, E)               qemu_build_not_reached()
+ # define gen_helper_rett(E)                     qemu_build_not_reached()
+ # define gen_helper_power_down(E)               qemu_build_not_reached()
+ # define gen_helper_wrpsr(E, S)                 qemu_build_not_reached()
+@@ -2681,16 +2682,8 @@ static bool trans_RDY(DisasContext *dc, arg_RDY *a)
  
- static void grlib_irqmp_check_irqs(IRQMPState *state)
+ static TCGv do_rd_leon3_config(DisasContext *dc, TCGv dst)
  {
--    uint32_t      pend   = 0;
--    uint32_t      level0 = 0;
--    uint32_t      level1 = 0;
-+    uint32_t pend = 0;
-+    uint32_t level0 = 0;
-+    uint32_t level1 = 0;
-+    int i;
- 
-     assert(state != NULL);
-     assert(state->parent != NULL);
- 
--    /* IRQ for CPU 0 (no SMP support) */
--    pend = (state->pending | state->force[0])
--        & state->mask[0];
+-    uint32_t val;
 -
--    level0 = pend & ~state->level;
--    level1 = pend &  state->level;
-+    for (i = 0; i < state->parent->ncpus; i++) {
-+        pend = (state->pending | state->force[i]) & state->mask[i];
-+        level0 = pend & ~state->level;
-+        level1 = pend &  state->level;
- 
--    trace_grlib_irqmp_check_irqs(state->pending, state->force[0],
--                                 state->mask[0], level1, level0);
-+        trace_grlib_irqmp_check_irqs(state->pending, state->force[i],
-+                                     state->mask[i], level1, level0);
- 
--    /* Trigger level1 interrupt first and level0 if there is no level1 */
--    qemu_set_irq(state->parent->irq, level1 ?: level0);
-+        /* Trigger level1 interrupt first and level0 if there is no level1 */
-+        qemu_set_irq(state->parent->irq[i], level1 ?: level0);
-+    }
- }
- 
--static void grlib_irqmp_ack_mask(IRQMPState *state, uint32_t mask)
-+static void grlib_irqmp_ack_mask(IRQMPState *state, int cpu, uint32_t mask)
- {
-     /* Clear registers */
-     state->pending  &= ~mask;
--    state->force[0] &= ~mask; /* Only CPU 0 (No SMP support) */
-+    state->force[cpu] &= ~mask;
- 
-     grlib_irqmp_check_irqs(state);
- }
- 
--void grlib_irqmp_ack(DeviceState *dev, int intno)
-+void grlib_irqmp_ack(DeviceState *dev, int cpu, int intno)
- {
-     IRQMP        *irqmp = GRLIB_IRQMP(dev);
-     IRQMPState   *state;
-@@ -127,7 +127,7 @@ void grlib_irqmp_ack(DeviceState *dev, int intno)
- 
-     trace_grlib_irqmp_ack(intno);
- 
--    grlib_irqmp_ack_mask(state, mask);
-+    grlib_irqmp_ack_mask(state, cpu, mask);
- }
- 
- static void grlib_irqmp_set_irq(void *opaque, int irq, int level)
-@@ -153,7 +153,6 @@ static void grlib_irqmp_set_irq(void *opaque, int irq, int level)
-             s->pending |= 1 << irq;
-         }
-         grlib_irqmp_check_irqs(s);
+-    /*
+-     * TODO: There are many more fields to be filled,
+-     * some of which are writable.
+-     */
+-    val = dc->def->nwindows - 1;   /* [4:0] NWIN */
+-    val |= 1 << 8;                 /* [8]   V8   */
 -
-     }
+-    return tcg_constant_tl(val);
++    gen_helper_rdasr17(dst, tcg_env);
++    return dst;
  }
  
-@@ -257,7 +256,9 @@ static void grlib_irqmp_write(void *opaque, hwaddr addr,
- 
-     case CLEAR_OFFSET:
-         value &= ~1; /* clean up the value */
--        grlib_irqmp_ack_mask(state, value);
-+        for (i = 0; i < irqmp->ncpus; i++) {
-+            grlib_irqmp_ack_mask(state, i, value);
-+        }
-         return;
- 
-     case MP_STATUS_OFFSET:
-@@ -352,7 +353,7 @@ static void grlib_irqmp_realize(DeviceState *dev, Error **errp)
-     /* Transitionning from 0 to 1 starts the CPUs.  */
-     qdev_init_gpio_out_named(dev, irqmp->start_signal, "grlib-start-cpu",
-                              IRQMP_MAX_CPU);
--    qdev_init_gpio_out_named(dev, &irqmp->irq, "grlib-irq", 1);
-+    qdev_init_gpio_out_named(dev, irqmp->irq, "grlib-irq", irqmp->ncpus);
-     memory_region_init_io(&irqmp->iomem, OBJECT(dev), &grlib_irqmp_ops, irqmp,
-                           "irqmp", IRQMP_REG_SIZE);
- 
-diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
-index 7b9809b81f..94d8ec94b0 100644
---- a/hw/sparc/leon3.c
-+++ b/hw/sparc/leon3.c
-@@ -168,7 +168,8 @@ static void leon3_cache_control_int(CPUSPARCState *env)
- 
- static void leon3_irq_ack(void *irq_manager, int intno)
- {
--    grlib_irqmp_ack((DeviceState *)irq_manager, intno);
-+    /* No SMP support yet.  */
-+    grlib_irqmp_ack((DeviceState *)irq_manager, 0, intno);
- }
- 
- /*
-diff --git a/include/hw/intc/grlib_irqmp.h b/include/hw/intc/grlib_irqmp.h
-index b9cc584168..776a2508e1 100644
---- a/include/hw/intc/grlib_irqmp.h
-+++ b/include/hw/intc/grlib_irqmp.h
-@@ -34,6 +34,6 @@
- /* IRQMP */
- #define TYPE_GRLIB_IRQMP "grlib-irqmp"
- 
--void grlib_irqmp_ack(DeviceState *dev, int intno);
-+void grlib_irqmp_ack(DeviceState *dev, int cpu, int intno);
- 
- #endif /* GRLIB_IRQMP_H */
+ TRANS(RDASR17, ASR17, do_rd_special, true, a->rd, do_rd_leon3_config)
 -- 
 2.25.1
 
