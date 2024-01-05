@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3819825D0A
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 00:09:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 286C9825D01
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 00:07:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLtGr-0002PE-HB; Fri, 05 Jan 2024 18:06:33 -0500
+	id 1rLtGs-0002PX-6z; Fri, 05 Jan 2024 18:06:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rLtGo-0002O3-NH
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 18:06:30 -0500
+ id 1rLtGp-0002Ob-Ql
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 18:06:31 -0500
 Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rLtGj-0002KV-UJ
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 18:06:30 -0500
+ id 1rLtGn-0002LD-3J
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 18:06:31 -0500
 Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6d9e62ff056so98076b3a.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 15:06:25 -0800 (PST)
+ d2e1a72fcca58-6d9bba6d773so86328b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 15:06:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704495984; x=1705100784; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1704495987; x=1705100787; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KL2XvnZ+VL7Gnef96AYgruQ2CK2f0IPzyKyaL7kZzSI=;
- b=gMjctoJiQ5Z9eErBRgMdrlkCugYKtfz9FHUxus8frVlQjwOAoqHJVe25CSQkBfMmG+
- Z1DwMtDo3F+LLmRO6oFbKNy+JVOZAj1g89uuktoPswrxWrg1UHX8pFn63K+FfBi2EPlX
- FfH1UKwaXW8CUuki7Gfv8zzizKQEMX1voleBwhQqHz192cA37DZwo4YlpGjmkoaLiz/o
- ztXgTfCKtIVIpskS+NSHvf+FQdpkC802VcROosfmXOHmLFGGwSTHHjcht+HgvCT8e4C3
- a0LGIhOHIekNFfFjaIbO25lfk67qXJJMh+1YGn6+PSzDmdCa3im7B+nPn+seDGjVf4si
- 7ERA==
+ bh=E3qHJNUTp6ei4Pr6UEbA+M6z6shcloC09j2Q3vV7+ao=;
+ b=Y5VtRXfvbJwkZaWzJ5J6+UH+2Ljr621u6sI2V7ey1LSoHk45V7Bm2CTjuEUPexDW9F
+ 1tdHk0mGrX2205mVxXJH+GxOYIhbGwvCZYphS9i+PIRxqwrFHX6CKf43XGM2ls26KADr
+ OK7wgfK4S8TiETIqkxGMyQ55v2YeXim5QJsatlHSfqKHTJtve+/sxj6UlHkMeQLgbXGl
+ jqLbI55dw3s+NeD0e1BHT/vPrxspGlmHSBggr5NeAkV3orfJgRmnksp3r/A1E19I49To
+ KDksr3/31+fzPUj+M49TkTiIkyiKQQ//Ka+qToxdGGO/6IwdexdR9d2g1lyfvL6tzIUL
+ XVdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704495984; x=1705100784;
+ d=1e100.net; s=20230601; t=1704495987; x=1705100787;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KL2XvnZ+VL7Gnef96AYgruQ2CK2f0IPzyKyaL7kZzSI=;
- b=UhvkzGs4YnxZz1LOfG3DTyHsOnTscT5bZ7DBQeS7Ccu2UoOYysms7yGC8NNGwe60nc
- 81QsE1frUUYh6p4bkF+ht2ybQ4R90/REj3bLTBZfg14Ig+8z998k73YQBWD8GdT2vRFC
- R/7LJYkNiGffDm0riHiKiWTW9w+s4yDcpfA0xSkznVXPhn9NPWVVt27tlJUyoepHGWXN
- Dn8ndPnZF6+8uBV4fzbs8pf6qYuhMcEHfzqlayZOx+v48mrci45z7AF4QLYw1MCOGxDn
- vuwX1HEJvdmrftF0xcq5hJVBtLH3vjXC5QxfqApbEgJRsUmqJj+gzdKgxpG4mOl/uscc
- Gf/A==
-X-Gm-Message-State: AOJu0Yxl9X6W7TBtNGHjJziYK5mGe2PAXR1S6wWH9R/69eTR+dk93LbS
- JkNqxMpb4WMR0xDYs1fbch2AkEH8I0r2DTbX5tW7+SWPWbCQow==
-X-Google-Smtp-Source: AGHT+IE8kpsr07nVJJ7DCnBKx7SrnxgJrXRlZxgmirHEQs0DqdHHE0+Xe1hENZWZ2dzMyue4kb9guA==
-X-Received: by 2002:a05:6a21:3387:b0:197:34c4:a650 with SMTP id
- yy7-20020a056a21338700b0019734c4a650mr112415pzb.13.1704495984133; 
- Fri, 05 Jan 2024 15:06:24 -0800 (PST)
+ bh=E3qHJNUTp6ei4Pr6UEbA+M6z6shcloC09j2Q3vV7+ao=;
+ b=CzrwT++4lCLnoTjPDVYNOEzBni/xh+8y6ZGIzvRqib3Q4AJUoCWb+JhyNpPO5JLFF6
+ 15DS7GiSlskzVLiIKfDgMsLMZBBmzVSuOt/SqdJQaJBfFXAX+W9B7DY3+ULrns1oMXs1
+ Np10S/k4NBvvNzssHTNK3W5EA7//L+Yf+dzoAVVU70iKTc4x4w8+qlvTKHIL/yC3oARG
+ zyaAbBtPtSe0YIjpJq3rkWh1RAffOZAfx9yj8N6ZYEn/XFcBmQ3//bIE6ky3EEbRf/AH
+ pwFTORJQbP7qjyU/MgrPxVTKZbIQMpvfb3w8NutTIk4rIXfCw0iiDOZd+4FdKjDYbMkQ
+ 2qXQ==
+X-Gm-Message-State: AOJu0YwNvXBBGv/5xrPSgvLskU8f1TrLjEzQQqf+uAae6Z/Tt3QeekWc
+ j+uKFVmr5wpZqB8CxJksU+Ym4jZHea6hJ/N8dUPnShvMA3xb4w==
+X-Google-Smtp-Source: AGHT+IEpdTLv/tNLGdxI2HCvGz2xmPewcQnJw45w/Bcw793LRv0H0xRq8OEEP/H6nAswtxS5T9Ak5Q==
+X-Received: by 2002:a05:6a00:1d2a:b0:6d9:bf73:6275 with SMTP id
+ a42-20020a056a001d2a00b006d9bf736275mr82693pfx.2.1704495987108; 
+ Fri, 05 Jan 2024 15:06:27 -0800 (PST)
 Received: from grind.dc1.ventanamicro.com ([152.234.127.254])
  by smtp.gmail.com with ESMTPSA id
- r19-20020aa78b93000000b006dacfab07b6sm1849249pfd.121.2024.01.05.15.06.21
+ r19-20020aa78b93000000b006dacfab07b6sm1849249pfd.121.2024.01.05.15.06.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jan 2024 15:06:23 -0800 (PST)
+ Fri, 05 Jan 2024 15:06:26 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v4 10/17] target/riscv: create finalize_features() for KVM
-Date: Fri,  5 Jan 2024 20:05:39 -0300
-Message-ID: <20240105230546.265053-11-dbarboza@ventanamicro.com>
+Subject: [PATCH v4 11/17] target/riscv: move 'cbom_blocksize' to
+ riscv_cpu_properties[]
+Date: Fri,  5 Jan 2024 20:05:40 -0300
+Message-ID: <20240105230546.265053-12-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240105230546.265053-1-dbarboza@ventanamicro.com>
 References: <20240105230546.265053-1-dbarboza@ventanamicro.com>
@@ -78,7 +79,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,171 +95,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To turn cbom_blocksize and cboz_blocksize into class properties we need
-KVM specific changes.
+After adding a KVM finalize() implementation, turn cbom_blocksize into a
+class property. Follow the same design we used with 'vlen' and 'elen'.
 
-KVM is creating its own version of these options with a customized
-setter() that prevents users from picking an invalid value during init()
-time. This comes at the cost of duplicating each option that KVM
-supports. This will keep happening for each new shared option KVM
-implements in the future.
-
-We can avoid that by using the same property TCG uses and adding
-specific KVM handling during finalize() time, like TCG already does with
-riscv_tcg_cpu_finalize_features(). To do that, the common CPU property
-offers a way of knowing if an option was user set or not, sparing us
-from doing unneeded syscalls.
-
-riscv_kvm_cpu_finalize_features() is then created using the same
-KVMScratch CPU we already use during init() time, since finalize() time
-is still too early to use the official KVM CPU for it. cbom_blocksize
-and cboz_blocksize are then handled during finalize() in the same way
-they're handled by their KVM specific setter.
-
-With this change we can proceed with the blocksize changes in the common
-code without breaking the KVM driver.
+The duplicated 'cbom_blocksize' KVM property can be removed from
+kvm_riscv_add_cpu_user_properties().
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c           | 16 +++++++---
- target/riscv/cpu.h           |  1 +
- target/riscv/kvm/kvm-cpu.c   | 59 ++++++++++++++++++++++++++++++++++++
- target/riscv/kvm/kvm_riscv.h |  1 +
- 4 files changed, 72 insertions(+), 5 deletions(-)
+ target/riscv/cpu.c         | 39 +++++++++++++++++++++++++++++++++++++-
+ target/riscv/kvm/kvm-cpu.c |  4 ----
+ 2 files changed, 38 insertions(+), 5 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 2bb4828324..cd91966ea7 100644
+index cd91966ea7..b77d26231c 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -68,6 +68,11 @@ static void cpu_option_add_user_setting(const char *optname, uint32_t value)
-                         GUINT_TO_POINTER(value));
+@@ -1316,6 +1316,7 @@ static void riscv_cpu_init(Object *obj)
+     cpu->cfg.pmu_mask = MAKE_64BIT_MASK(3, 16);
+     cpu->cfg.vlen = 128;
+     cpu->cfg.elen = 64;
++    cpu->cfg.cbom_blocksize = 64;
+     cpu->env.vext_ver = VEXT_VERSION_1_00_0;
  }
  
-+bool riscv_cpu_option_set(const char *optname)
+@@ -1866,8 +1867,42 @@ static const PropertyInfo prop_elen = {
+     .set = prop_elen_set,
+ };
+ 
++static void prop_cbom_blksize_set(Object *obj, Visitor *v, const char *name,
++                                  void *opaque, Error **errp)
 +{
-+    return g_hash_table_contains(general_user_opts, optname);
++    RISCVCPU *cpu = RISCV_CPU(obj);
++    uint16_t value;
++
++    if (!visit_type_uint16(v, name, &value, errp)) {
++        return;
++    }
++
++    if (value != cpu->cfg.cbom_blocksize && riscv_cpu_is_vendor(obj)) {
++        cpu_set_prop_err(cpu, name, errp);
++        error_append_hint(errp, "Current '%s' val: %u\n",
++                          name, cpu->cfg.cbom_blocksize);
++        return;
++    }
++
++    cpu_option_add_user_setting(name, value);
++    cpu->cfg.cbom_blocksize = value;
 +}
 +
- #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
-     {#_name, _min_ver, CPU_CFG_OFFSET(_prop)}
++static void prop_cbom_blksize_get(Object *obj, Visitor *v, const char *name,
++                         void *opaque, Error **errp)
++{
++    uint16_t value = RISCV_CPU(obj)->cfg.cbom_blocksize;
++
++    visit_type_uint16(v, name, &value, errp);
++}
++
++static const PropertyInfo prop_cbom_blksize = {
++    .name = "cbom_blocksize",
++    .get = prop_cbom_blksize_get,
++    .set = prop_cbom_blksize_set,
++};
++
+ Property riscv_cpu_options[] = {
+-    DEFINE_PROP_UINT16("cbom_blocksize", RISCVCPU, cfg.cbom_blocksize, 64),
+     DEFINE_PROP_UINT16("cbop_blocksize", RISCVCPU, cfg.cbop_blocksize, 64),
+     DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU, cfg.cboz_blocksize, 64),
  
-@@ -1104,17 +1109,18 @@ void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
-     }
+@@ -1956,6 +1991,8 @@ static Property riscv_cpu_properties[] = {
+     {.name = "vlen", .info = &prop_vlen},
+     {.name = "elen", .info = &prop_elen},
+ 
++    {.name = "cbom_blocksize", .info = &prop_cbom_blksize},
++
+ #ifndef CONFIG_USER_ONLY
+     DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVEC),
  #endif
- 
--    /*
--     * KVM accel does not have a specialized finalize()
--     * callback because its extensions are validated
--     * in the get()/set() callbacks of each property.
--     */
-     if (tcg_enabled()) {
-         riscv_tcg_cpu_finalize_features(cpu, &local_err);
-         if (local_err != NULL) {
-             error_propagate(errp, local_err);
-             return;
-         }
-+    } else if (kvm_enabled()) {
-+        riscv_kvm_cpu_finalize_features(cpu, &local_err);
-+        if (local_err != NULL) {
-+            error_propagate(errp, local_err);
-+            return;
-+        }
-     }
- }
- 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 3cec85069f..1c19fa84bb 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -510,6 +510,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                         bool probe, uintptr_t retaddr);
- char *riscv_isa_string(RISCVCPU *cpu);
- void riscv_cpu_list(void);
-+bool riscv_cpu_option_set(const char *optname);
- 
- #define cpu_list riscv_cpu_list
- #define cpu_mmu_index riscv_cpu_mmu_index
 diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 2c5217102c..2713f4b2ba 100644
+index 2713f4b2ba..9a6a007931 100644
 --- a/target/riscv/kvm/kvm-cpu.c
 +++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1493,6 +1493,65 @@ static void kvm_cpu_instance_init(CPUState *cs)
+@@ -484,10 +484,6 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
+                             NULL, multi_cfg);
      }
- }
  
-+void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
-+{
-+    CPURISCVState *env = &cpu->env;
-+    KVMScratchCPU kvmcpu;
-+    struct kvm_one_reg reg;
-+    uint64_t val;
-+    int ret;
-+
-+    /* short-circuit without spinning the scratch CPU */
-+    if (!cpu->cfg.ext_zicbom && !cpu->cfg.ext_zicboz) {
-+        return;
-+    }
-+
-+    if (!kvm_riscv_create_scratch_vcpu(&kvmcpu)) {
-+        error_setg(errp, "Unable to create scratch KVM cpu");
-+        return;
-+    }
-+
-+    if (cpu->cfg.ext_zicbom &&
-+        riscv_cpu_option_set(kvm_cbom_blocksize.name)) {
-+
-+        reg.id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CONFIG,
-+                                        kvm_cbom_blocksize.kvm_reg_id);
-+        reg.addr = (uint64_t)&val;
-+        ret = ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
-+        if (ret != 0) {
-+            error_setg(errp, "Unable to read cbom_blocksize, error %d", errno);
-+            return;
-+        }
-+
-+        if (cpu->cfg.cbom_blocksize != val) {
-+            error_setg(errp, "Unable to set cbom_blocksize to a different "
-+                       "value than the host (%lu)", val);
-+            return;
-+        }
-+    }
-+
-+    if (cpu->cfg.ext_zicboz &&
-+        riscv_cpu_option_set(kvm_cboz_blocksize.name)) {
-+
-+        reg.id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CONFIG,
-+                                        kvm_cboz_blocksize.kvm_reg_id);
-+        reg.addr = (uint64_t)&val;
-+        ret = ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
-+        if (ret != 0) {
-+            error_setg(errp, "Unable to read cboz_blocksize, error %d", errno);
-+            return;
-+        }
-+
-+        if (cpu->cfg.cboz_blocksize != val) {
-+            error_setg(errp, "Unable to set cboz_blocksize to a different "
-+                       "value than the host (%lu)", val);
-+            return;
-+        }
-+    }
-+
-+    kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
-+}
-+
- static void kvm_cpu_accel_class_init(ObjectClass *oc, void *data)
- {
-     AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
-diff --git a/target/riscv/kvm/kvm_riscv.h b/target/riscv/kvm/kvm_riscv.h
-index 8329cfab82..4bd98fddc7 100644
---- a/target/riscv/kvm/kvm_riscv.h
-+++ b/target/riscv/kvm/kvm_riscv.h
-@@ -27,5 +27,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
-                           uint64_t guest_num);
- void riscv_kvm_aplic_request(void *opaque, int irq, int level);
- int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
-+void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
- 
- #endif
+-    object_property_add(cpu_obj, "cbom_blocksize", "uint16",
+-                        NULL, kvm_cpu_set_cbomz_blksize,
+-                        NULL, &kvm_cbom_blocksize);
+-
+     object_property_add(cpu_obj, "cboz_blocksize", "uint16",
+                         NULL, kvm_cpu_set_cbomz_blksize,
+                         NULL, &kvm_cboz_blocksize);
 -- 
 2.43.0
 
