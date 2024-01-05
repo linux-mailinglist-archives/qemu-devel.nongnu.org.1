@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE33D825752
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:58:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2442825747
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:56:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLmU9-0004x5-6P; Fri, 05 Jan 2024 10:51:49 -0500
+	id 1rLmTX-0003fz-Jc; Fri, 05 Jan 2024 10:51:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmSL-0008RA-P7
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:59 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmSO-0008WF-Ub
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:50:03 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmSI-0000zP-7t
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:49:57 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-33677fb38a3so1538914f8f.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:49:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmSM-00010K-69
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:50:00 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40d5f402571so19120245e9.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:49:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704469791; x=1705074591; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704469796; x=1705074596; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z5/v+dvKjgkiKWiEWELJXJdh6CxKEAYCa0IE+244Hh8=;
- b=QGmMTmsPzG09YP9RTv3wX7hL7BH1ePk48LweT5ro7lTtu1EO15dnbc0Z7nwii5Uxlv
- gAW8H1cVZTlXlUlS+OxOd+rST3K69Lolv8+WWSp2MLaik+gKY0wkGMOaSnad4wKvOwaY
- wbSeFAQWo/UyO2VJ0uxalm2g6PT1ouLlhmkAdqCjMfVnxOq8wODyPkFXzSUNMSEWhuzG
- C9NYGv5GTiIkFuNPID2YoDeML53hhQRqvubhLYm5Es18EQyRCbEUR8bcbSDT014IfI4V
- HvbV6s43a0bbTa/59PAjyk8xD3Nn0gw0cbe58Nf0eksTU3spwYiD0joNdjXsVmIMmveD
- rDSA==
+ bh=h8Y9INkkzpXAHIBaDV6X4EdXcLZoAOfyToK+IgBwRCs=;
+ b=trG9EbVhTGYocEygqSoykHHDkh1JoR0PUhzxazvHz7oZ+PleHicBzuXNFOjxTqEdDK
+ 8By/C6OFTFxt2LuM7D35vPSxPo5QBx5ucQfRiq4Z5tiBTgUDo/1P2XckLZAGMtk4LQ/l
+ 2Keu9fXhHLFt+ix/xtuFH/axA4ea7Ne4l9ybsrDQU/mbkD8y3vIuS+eFtm+7MzX6zad1
+ vR9ZifAi9/DdS8gdg56M0j/w/alidI2k/fsSif4vcdnbGqB1ZlhHqUMF1h2LwRMzawVi
+ UOYQs7Dogxrk8Lq4RoqKbjkyP4HscJ4Np4DT561c6jjxMWMM9I0ZFYUGyzODoK/yfwKE
+ gitQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704469791; x=1705074591;
+ d=1e100.net; s=20230601; t=1704469796; x=1705074596;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z5/v+dvKjgkiKWiEWELJXJdh6CxKEAYCa0IE+244Hh8=;
- b=Gn9DNmQi0E2P6w6pqRlxC/RV7osT9Uy4mNJwFpUkzf8cKIX/jBPtNy7r9/3CwzqFdM
- v6Uxeui2mQnos3UHXp/5qA5StQJVGhWHya3ZAbhzOMpe374OB7WAwcGmIjA7RftpIZbj
- 0tOAt86mNXaxeo1mcVgDnJOh97cydJDsIRJkF7Tfr6XuudOF2xCMrRKuyDMAe+9CAtEg
- fjN/njGMTNdNphAF7alhlZhCfEqHY9kRfOGbq93LVMW23mBZHF9DHSvHwjP/4WDBpqiK
- wwd13nD4SMopZPWA95rJq2GF3zWOAEsKtCzEofTRvhgB0XQqlRvn5yUKxdSmSmJkGvuh
- gegw==
-X-Gm-Message-State: AOJu0Yynx37I+d8y5BIywQtZIvX1CTJy4inzdNNEppn7mD2lKif/Z2Q1
- eHbqv0zsxlO/YQaRSmm7Cnnv5HFZ2KrHWn8otM/7fbkM7HA=
-X-Google-Smtp-Source: AGHT+IEC9VUr/PXB0Hf7LPxeqrhHmLHyX3P5rGzjminRYbjRgLPZ92Ef9i/1SP3FQVsoFVvgOjt4pA==
-X-Received: by 2002:a05:600c:3488:b0:40d:8514:fb5 with SMTP id
- a8-20020a05600c348800b0040d85140fb5mr1225021wmq.21.1704469791170; 
- Fri, 05 Jan 2024 07:49:51 -0800 (PST)
+ bh=h8Y9INkkzpXAHIBaDV6X4EdXcLZoAOfyToK+IgBwRCs=;
+ b=ObkRZNGhexxhkhmbOZgpnuyrdqjYw64+8DMui/RN6M8MVIK+/GPr7jursLGBn2mqiY
+ lnzeiHov8FC1CMoplFmGfU8oGjJYbnzfXgPMRZu9bRzMFMq44m/tfEK2NoqafgUMQi2T
+ EaSkgmQs5EyelbsZtJOxh4Gor277hcbUvOeCnbos/vydDx9iDqctc6TxjVUGRhJ8NArB
+ 8Yt0iFTFXR+jKjSSnp5djuawXkR+4qUCvoRQMuVPzfPn6CaxrCx7DF/DQenLz66TnDlI
+ EhLdZkQot+ECh7tmF+P/cXB57SfMLUj2V9uOyhWJn7FqDGK/Ll05P0FgKZGobE7zBBd3
+ 7SWA==
+X-Gm-Message-State: AOJu0YyiJShQLi0zkWFzwrNNEQ+oUbWNNLZ37KQCXSBeDoZPB3EJsWC4
+ 6qlmQlbhdFugdbcnW0XL0xLv4FUtHkOI6TlJ78RsAvPJ+DI=
+X-Google-Smtp-Source: AGHT+IHw0jYoJSp6nOLr/q7TJz51rOTiU2htIhCuA9C4AKWA0eKPJWeM8l6XSCJiD5tt4EEsS5RiJg==
+X-Received: by 2002:a05:600c:a02:b0:40c:45e:f89a with SMTP id
+ z2-20020a05600c0a0200b0040c045ef89amr1280111wmp.50.1704469796358; 
+ Fri, 05 Jan 2024 07:49:56 -0800 (PST)
 Received: from m1x-phil.lan (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- hn3-20020a05600ca38300b0040e398f8cafsm1647488wmb.31.2024.01.05.07.49.50
+ g11-20020a05600c310b00b0040d94b65342sm1927739wmo.48.2024.01.05.07.49.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jan 2024 07:49:50 -0800 (PST)
+ Fri, 05 Jan 2024 07:49:56 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Gavin Shan <gshan@redhat.com>
-Subject: [PULL 66/71] hw/misc: Simplify memory_region_init_ram_from_fd() calls
-Date: Fri,  5 Jan 2024 16:42:59 +0100
-Message-ID: <20240105154307.21385-67-philmd@linaro.org>
+ Gavin Shan <gshan@redhat.com>, Joel Stanley <joel@jms.id.au>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 67/71] hw/nvram: Simplify memory_region_init_rom_device() calls
+Date: Fri,  5 Jan 2024 16:43:00 +0100
+Message-ID: <20240105154307.21385-68-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240105154307.21385-1-philmd@linaro.org>
 References: <20240105154307.21385-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,12 +97,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Mechanical change using the following coccinelle script:
 
 @@
-expression mr, owner, arg3, arg4, arg5, arg6, arg7, errp;
+expression mr, owner, arg3, arg4, arg5, arg6, errp;
 @@
--   memory_region_init_ram_from_fd(mr, owner, arg3, arg4, arg5, arg6, arg7, &errp);
+-   memory_region_init_rom_device(mr, owner, arg3, arg4, arg5, arg6, &errp);
     if (
 -       errp
-+       !memory_region_init_ram_from_fd(mr, owner, arg3, arg4, arg5, arg6, arg7, &errp)
++       !memory_region_init_rom_device(mr, owner, arg3, arg4, arg5, arg6, &errp)
     ) {
         ...
         return;
@@ -112,34 +113,27 @@ and removing the local Error variable.
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
-Message-Id: <20231120213301.24349-24-philmd@linaro.org>
+Message-Id: <20231120213301.24349-25-philmd@linaro.org>
 ---
- hw/misc/ivshmem.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ hw/nvram/nrf51_nvm.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/hw/misc/ivshmem.c b/hw/misc/ivshmem.c
-index 62af75e862..a2fd0bc365 100644
---- a/hw/misc/ivshmem.c
-+++ b/hw/misc/ivshmem.c
-@@ -476,7 +476,6 @@ static void setup_interrupt(IVShmemState *s, int vector, Error **errp)
- 
- static void process_msg_shmem(IVShmemState *s, int fd, Error **errp)
+diff --git a/hw/nvram/nrf51_nvm.c b/hw/nvram/nrf51_nvm.c
+index ed8b836074..73564f7e6e 100644
+--- a/hw/nvram/nrf51_nvm.c
++++ b/hw/nvram/nrf51_nvm.c
+@@ -336,12 +336,9 @@ static void nrf51_nvm_init(Object *obj)
+ static void nrf51_nvm_realize(DeviceState *dev, Error **errp)
  {
--    Error *local_err = NULL;
-     struct stat buf;
-     size_t size;
+     NRF51NVMState *s = NRF51_NVM(dev);
+-    Error *err = NULL;
  
-@@ -496,10 +495,9 @@ static void process_msg_shmem(IVShmemState *s, int fd, Error **errp)
-     size = buf.st_size;
- 
-     /* mmap the region and map into the BAR2 */
--    memory_region_init_ram_from_fd(&s->server_bar2, OBJECT(s), "ivshmem.bar2",
--                                   size, RAM_SHARED, fd, 0, &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (!memory_region_init_ram_from_fd(&s->server_bar2, OBJECT(s),
-+                                        "ivshmem.bar2", size, RAM_SHARED,
-+                                        fd, 0, errp)) {
+-    memory_region_init_rom_device(&s->flash, OBJECT(dev), &flash_ops, s,
+-        "nrf51_soc.flash", s->flash_size, &err);
+-    if (err) {
+-        error_propagate(errp, err);
++    if (!memory_region_init_rom_device(&s->flash, OBJECT(dev), &flash_ops, s,
++                                       "nrf51_soc.flash", s->flash_size, errp)) {
          return;
      }
  
