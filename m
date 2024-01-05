@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6181D825A5D
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 19:43:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D922E825A5F
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 19:44:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLp8Q-0003Xq-E4; Fri, 05 Jan 2024 13:41:34 -0500
+	id 1rLpAs-0004sG-3m; Fri, 05 Jan 2024 13:44:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLp8N-0003V4-QM
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 13:41:31 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1rLpAn-0004pB-8Q
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 13:44:02 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLp8L-0006RT-UC
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 13:41:31 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5573a920ca3so1116458a12.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 10:41:29 -0800 (PST)
+ id 1rLpAU-0000pY-0V
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 13:44:00 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-55745901085so430701a12.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 10:43:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704480087; x=1705084887; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=A2qdGAXqBAyo3dhmj1sOx9fo3snJwo+Y2oTFJPOGDbc=;
- b=Sw5BVVeDAyav4iSvOz69E17igwp0r/wGOcFSF8vpVnp/4pha4I/zKz+xToitDJN3Bt
- V8ItnIswaGamc9/1Wqo8i2pNQnZVSoacVr3tZCLM9sACu+xZxz1S7ntC92Zm0fDkMcmo
- C+M9+X0mgHLbsDrCMW/tFsU3sBiZzYehY5HoDCYaoL9ez4TkQcJlTOQpeAU1OxSFNS83
- bbLcTuzikleqiTdqS85PN12AFgXOopnlX3o9wjQO/vWgcPdIkm99KGwfZNgxxaMeUJPt
- q3nm/R7xPzvMmHZizYG3cMiaPF6yaFVnL7+5QH8uPsxpkojio/6DlYlCzjOo7ZNah/l/
- OnxA==
+ d=linaro.org; s=google; t=1704480216; x=1705085016; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2XheI6gPr0kqfBkCeGZsoVngCMamKM2r3BSHHntDCuY=;
+ b=rdBFuK43jHozU3ORH58motFiaaG2dzTobk9QZpFqCm06Wo1thbNAsguH6lJP46rDBE
+ vpE1xfdieatbpnjqSlazWr+UIREnQNWkEfB7F5CLjyfAHHMG7WjW839ac1FR0NRK7/O/
+ 1WPr3hXxb9wEFwzsDuXpeDta91lt/6ZK+4IQJgr+7QrE6ggM7Cm4ui6PeeJFZvVJZhfd
+ M5IRKNEFsevk8bNEXMmi8mwrqev4dQqYJK7ZYxTiaDOb7vw2i6TC6qPbE99cEQJEodJC
+ fgCHy6JAB8J9giWizRn2jq71mMkPX1su3d8lUWk1cwCx25+TEwmREKvTvZ8xsvjqFP7U
+ wt5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704480087; x=1705084887;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=A2qdGAXqBAyo3dhmj1sOx9fo3snJwo+Y2oTFJPOGDbc=;
- b=QlgvyZL8E/PARGcCNBVkG+SdlJCHzFmwr7jY5GvC8mCMkwRxpauFAb6H3YiXMavVvy
- jIBteoCfJ2Y0VVZZsdkVnDUG5E1FaxkOK2syKmIVEKcMq0NLt9yEGNjmYiidnbwToiw7
- fbov+E296lxbGRIOFznucFSvg5RQvVtdT6FnpoXh88KVUIbeN72boneOt5TKo5ZMji5f
- v8LleZQUHIhU628//cE84J4L3ehlylB03LeSQUfNBfQyeNtxz57UXMSFTt3uzBaNuf3e
- MrhDYTdRijvwuVL31vrI/wVnQTJqDW1y8U+E0nRpGHepzuTa24E2N00doREAHdsprdZG
- N/ZA==
-X-Gm-Message-State: AOJu0YykFYM1hCbglwo7AnbBvMHQCCmLsuYxSgNiMRlJWQTP0jXhpi/p
- Lrlv9cS7Y+HDR256YZdmuEjS8Bg1QpfSVkK1vu9N+gesLtQkNaVA45OEKXft
-X-Google-Smtp-Source: AGHT+IHmH3N4z6xtytJd4ImVyxbsE67ZFCwjhRqAm8DiZ7lIe03kMB76v81kSdRRvG5UKar8UWvuTrebAoxZx5cyzfs=
-X-Received: by 2002:a50:8e5d:0:b0:556:d3d7:b7b with SMTP id
- 29-20020a508e5d000000b00556d3d70b7bmr2259567edx.20.1704480087047; Fri, 05 Jan
- 2024 10:41:27 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704480216; x=1705085016;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=2XheI6gPr0kqfBkCeGZsoVngCMamKM2r3BSHHntDCuY=;
+ b=iz5mKMbq+6cc7Zb2rYxfJ5jXBoFndVjefQNV5jrncSGNbXChAswJbPYmDoy36IcKBK
+ koDkhZmYRehem8LMYxq3V5AHHASdJtxSEEhr+GBu8ddgw6/9ehXKGkrVcgVvWTv18sR+
+ 9U936HAijmTQLtHggMkEIeNFhFWvxYgbUYqdEke9BQGp2783b0K+xNh3neyjaUXobrLX
+ L9CuN/wYmCUEP1fjWwhYgBUetwZ0ksy29hFAPRNzfl4WJolicNj9LqCjwlTC6kJKMITH
+ lxvue158vNhHR4jtPGgq0NVtNtVU08JIzH+RG32Ur/uSmSvpaU2krY+DbGH60CE8khO9
+ LirA==
+X-Gm-Message-State: AOJu0YyZ//QJVwivvLmg8SiqFjbvJkO1fdFb7+Ts62A8cRDeD8viFAi8
+ wsvvHTsu0RuzuLhi5aNwBcKq2BKMEPT9Qmyj5QndqZ5Pkp6B0A==
+X-Google-Smtp-Source: AGHT+IHUTgi1inhy4VcKtkYeOrjYf2lzsdWeefje5mdcMroIGLiizIM6JmzPJqISBeJSTSgGYwXxUJJ6ZFRZsz0og0s=
+X-Received: by 2002:aa7:c1cc:0:b0:557:4227:e2bf with SMTP id
+ d12-20020aa7c1cc000000b005574227e2bfmr414279edp.35.1704480216062; Fri, 05 Jan
+ 2024 10:43:36 -0800 (PST)
 MIME-Version: 1.0
+References: <20240105154307.21385-1-philmd@linaro.org>
+ <566d5a05-5cd3-40fe-b40e-8e82524d8ea6@linaro.org>
+In-Reply-To: <566d5a05-5cd3-40fe-b40e-8e82524d8ea6@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 5 Jan 2024 18:41:16 +0000
-Message-ID: <CAFEAcA_TGYZP2eV1C4Yn5a6vnAO-_1r98rY1Teahy_Pb1ocvjw@mail.gmail.com>
-Subject: acpiBitsTest.test_acpi_smbios_bits test intermittently times out
-To: QEMU Developers <qemu-devel@nongnu.org>
-Cc: Ani Sinha <anisinha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Beraldo Leal <bleal@redhat.com>
+Date: Fri, 5 Jan 2024 18:43:25 +0000
+Message-ID: <CAFEAcA-1S7-eAU=_mLM0fsecKA8JTOx4LfHZZYOEfskTU=vjeA@mail.gmail.com>
+Subject: Re: [PULL 00/71] HW core patches for 2024-01-05
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org, 
+ qemu-riscv@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,20 +88,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The avocado test acpiBitsTest.test_acpi_smbios_bits seems to be
-flaky in CI -- sometimes it appears to time out.
+On Fri, 5 Jan 2024 at 17:05, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> On 5/1/24 16:41, Philippe Mathieu-Daud=C3=A9 wrote:
+> > The following changes since commit 05470c3979d5485003e129ff4b0c2ef98af9=
+1d86:
+> >
+> >    Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into sta=
+ging (2024-01-04 19:55:20 +0000)
+> >
+> > are available in the Git repository at:
+> >
+> >    https://github.com/philmd/qemu.git tags/hw-cpus-20240105
+> >
+> > for you to fetch changes up to a318da6b3f6a88e6cfd6953c519def9457e8962f=
+:
+> >
+> >    target/sparc: Simplify qemu_irq_ack (2024-01-05 16:20:15 +0100)
+> >
+> > ----------------------------------------------------------------
+> > HW core patch queue
+> >
+> > - Unify CPU QOM type checks (Gavin)
+> > - Simplify uses of some CPU related property (Philippe)
+> >    (start-powered-off, ARM reset-cbar and mp-affinity)
+> > - Header and documentation cleanups (Zhao, Philippe)
+> > - Have Memory API return boolean indicating possible error
+> > - Fix frame filter mask in CAN sja1000 model (Pavel)
+> > - QOM embed MCF5206 timer into SoC (Thomas)
+> > - Simplify LEON3 qemu_irq_ack handler (Cl=C3=A9ment)
+> >
+> > ----------------------------------------------------------------
+>
+>
+> > Philippe Mathieu-Daud=C3=A9 (37):
+>
+> >    backends: Simplify host_memory_backend_memory_complete()
+>
+> I neglected to run checkpatch.pl on this patch, so it lacks:
+>
+> -- >8 --
+> diff --git a/backends/hostmem.c b/backends/hostmem.c
+> index 30f69b2cb5..987f6f591e 100644
+> --- a/backends/hostmem.c
+> +++ b/backends/hostmem.c
+> @@ -346,5 +346,7 @@ host_memory_backend_memory_complete(UserCreatable
+> *uc, Error **errp)
+>       unsigned long maxnode =3D (lastbit + 1) % (MAX_NODES + 1);
+> -    /* ensure policy won't be ignored in case memory is preallocated
+> +    /*
+> +     * Ensure policy won't be ignored in case memory is preallocated
+>        * before mbind(). note: MPOL_MF_STRICT is ignored on hugepages so
+> -     * this doesn't catch hugepage case. */
+> +     * this doesn't catch hugepage case.
+> +     */
+>       unsigned flags =3D MPOL_MF_STRICT | MPOL_MF_MOVE;
+> @@ -365,3 +367,4 @@ host_memory_backend_memory_complete(UserCreatable
+> *uc, Error **errp)
+>
+> -    /* We can have up to MAX_NODES nodes, but we need to pass maxnode+1
+> +    /*
+> +     * We can have up to MAX_NODES nodes, but we need to pass maxnode+1
+>        * as argument to mbind() due to an old Linux bug (feature?) which
+> @@ -393,3 +396,4 @@ host_memory_backend_memory_complete(UserCreatable
+> *uc, Error **errp)
+>   #endif
+> -    /* Preallocate memory after the NUMA policy has been instantiated.
+> +    /*
+> +     * Preallocate memory after the NUMA policy has been instantiated.
+>        * This is necessary to guarantee memory is allocated with
+> ---
+>
+> Since the PR is already in the testing pipeline:
+> - if it get merged, I'll send a cleanup patch
+> - otherwise if it fails I'll fix it.
 
-https://gitlab.com/qemu-project/qemu/-/issues/2077
-has the details (including links to jobs etc). As far as I can
-see, the test is still running when after about a minute it
-gets timed out. (Though the python tracebacks in the logs are
-not easy for me to interpret, so I might be wrong). This I find
-a bit confusing, because tests/avocado/acpi-bits.py sets
-"timeout = 200". So maybe that isn't taking effect properly?
+It just passed the last CI job on a retry, so please send a
+followup patch.
 
-Does anybody have time to investigate this? If not, we can disable
-the test as flaky until somebody does have the time.
 
-thanks
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
+
 -- PMM
 
