@@ -2,71 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44378824E05
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 06:15:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA53824E07
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 06:16:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLcWT-0001AC-Fn; Fri, 05 Jan 2024 00:13:33 -0500
+	id 1rLcYi-00020q-N3; Fri, 05 Jan 2024 00:15:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rLcWM-00019z-1s; Fri, 05 Jan 2024 00:13:27 -0500
-Received: from mail-ua1-x92f.google.com ([2607:f8b0:4864:20::92f])
+ id 1rLcYd-00020b-2F; Fri, 05 Jan 2024 00:15:47 -0500
+Received: from mail-vs1-xe2a.google.com ([2607:f8b0:4864:20::e2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rLcWJ-00032v-GG; Fri, 05 Jan 2024 00:13:25 -0500
-Received: by mail-ua1-x92f.google.com with SMTP id
- a1e0cc1a2514c-7cbebe9ca1dso444826241.2; 
- Thu, 04 Jan 2024 21:13:22 -0800 (PST)
+ id 1rLcYb-0006YW-4d; Fri, 05 Jan 2024 00:15:46 -0500
+Received: by mail-vs1-xe2a.google.com with SMTP id
+ ada2fe7eead31-4670a58b118so256693137.2; 
+ Thu, 04 Jan 2024 21:15:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704431601; x=1705036401; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704431743; x=1705036543; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TsStT1aL1F5Xto+hQYk49czhhwQbVKvz07rD0+xxXiI=;
- b=OhSMVzpAs5AbeDAhgusGhG2WGWpuYhJ9VjMgKz+rpjQhJRZ6oDcnB4DBnEjzgvosQ5
- ePwUybb5cl2sL2CqqXdXc/MaXfNXSJow+ai4uctU1yCTByadG0Eq6T4zOdfV6dWTYVUE
- kgJDgI/F4BqbEHZ6pGEoPpS1zI1K+T8YTj2j0ZC7wunQlcj0W2TQcwRWDZ2Rp+J4YZ16
- m+NzVrIZzSEBCw30spO+WCyA9vtDs5nqMMsPgKknwDRIAwi6s3NS4nqiSiNxROlG6OCE
- 4FgRLC2xtCexBuH3whfqz/Q56oET7Ua1AH0Fmj39iVak/SPLaSmop6xQegsxJsd8ZHIc
- Yb/w==
+ bh=FpIwxGIoBzTF2CiL9kRStVXzjIkH2PzgGmQCJ3pRg8E=;
+ b=aCzyh9JGMmrC0LFenMEiYzIeva5pA/uQO+r851oiWUDJilb9ZzSgIVILl0vn0lWF6U
+ Ju3wxzRAioRNShVe5RRUOwvykUPZDNtNIqcy7Dbr8W48wJxDg5edBaUYz+gJzHR1z2HY
+ JPvPKjJyWpjrb4CwfzdiTmk8ufrKfCfwbhoic5IB/anAwWg0wmCPVerzY3wmfWhxZXtC
+ LYUnSIhRc03wsnr1FAuTyjdrQkgUUf/1fnu2NBN/5cG39k4QI2uuTux6FHmdPZIgDRr1
+ pQNGmhzHgtGN47KhBNe0R9BRDVrPrXW2J03h8GSpDyv0d7fU/Suw8oIRpqJWXwPXQZRX
+ 6uGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704431601; x=1705036401;
+ d=1e100.net; s=20230601; t=1704431743; x=1705036543;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TsStT1aL1F5Xto+hQYk49czhhwQbVKvz07rD0+xxXiI=;
- b=AEu4oLt/0uaSxKLQYJXuSqe6Y1qu/0g3HI8O26npwWozKPKJhg4Uaw47gotv0eGxHO
- CEkber8Mkhcqyzlj7i/+UDO8qPr0d3TiotHtdr8+uFr0HkqWS+EJRExq//Va56jCxfjJ
- I8PkKqPIvaApeSo+6HTVe0x1vb0yIq8Bk5i6AVoC5SuGtYF5fYljNmDfQORnroleHs2t
- r9reFBW6z9QhuCZOQBK/x56Y3baP51mUL+/Y2kuqIKhezNSY3H2tMxRmGJu12AMyNsAA
- 5Z9R0tQ+ICKhw7Dc9KODIug8oZxPthrsuGS3XPRh9rrOh1a7IzqC5x8RazsUNklYAKpu
- 3/HA==
-X-Gm-Message-State: AOJu0YzWOUzCvZ3MWOHNNZOW0mBydyr0h/7fFyuV0dCht2kn2Ti1BG+e
- 9gZGGyGevRbMuERjE6N3X1kWqJBaCLuRlNEebLO6vLJ+
-X-Google-Smtp-Source: AGHT+IGrOOlbCmqUOI5NiwXJoOyIct3lMArwGfBPiOahcLGlsVZvtMoCYcpGA0Wu3uwH6iKdxw5dOOgx2PxkedOu0eI=
-X-Received: by 2002:a05:6102:3f4c:b0:467:2430:6bba with SMTP id
- l12-20020a0561023f4c00b0046724306bbamr1746246vsv.15.1704431601349; Thu, 04
- Jan 2024 21:13:21 -0800 (PST)
+ bh=FpIwxGIoBzTF2CiL9kRStVXzjIkH2PzgGmQCJ3pRg8E=;
+ b=Ee10/wY3FPb961hIqSwaDuSpK7IscuuogJwNffwlZkdBP8nf5IOKc6Mp/WEtX38MST
+ QXtEf/EEphCAvmW6OCV4s7Emd1bCMynFH5yOvZ/Mgp6vTioZ1NUm3l8YAnKocdBF1WKt
+ 278hPt6fdon8xo+WuqU7Ry3uKUhsN9ALp9CBIFf33B48PihcSqfp1GLAcMsOEWrDEwSS
+ a+pRBXVk/7tkKhmn5tidpausV57xIwclbiQTIllMMcT1Q0fvFfLz6cEq5iNiOhN6fc9n
+ Lmig8bDv/IwHVHPFxf0v1c9adRPKksHxMsjeXSevqL9BuumkvD177XhWbRSTEqBvZ5dz
+ oE4w==
+X-Gm-Message-State: AOJu0Yw3AmGCvCitlcMA1dP4Y8zn1z3uW3tqMcqnevi7i3fteIvWp/mx
+ gi/6/G3eypiEzsLUHm9JeGD/SY1Jnxh3NCZlADg=
+X-Google-Smtp-Source: AGHT+IEjAeGE+CiiCR1+pfYYZhCn5dePl4bb90sRSZ+SqObbZdrSfAZYqKGuMSEGY+9uivt2BQcp4LGO3LFDPJRXih4=
+X-Received: by 2002:a05:6102:b12:b0:467:aff0:1627 with SMTP id
+ b18-20020a0561020b1200b00467aff01627mr875352vst.1.1704431743612; Thu, 04 Jan
+ 2024 21:15:43 -0800 (PST)
 MIME-Version: 1.0
-References: <20231229164915.133199-1-ines.varhol@telecom-paris.fr>
- <20231229164915.133199-2-ines.varhol@telecom-paris.fr>
-In-Reply-To: <20231229164915.133199-2-ines.varhol@telecom-paris.fr>
+References: <20240103174013.147279-1-dbarboza@ventanamicro.com>
+ <20240103174013.147279-8-dbarboza@ventanamicro.com>
+In-Reply-To: <20240103174013.147279-8-dbarboza@ventanamicro.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 5 Jan 2024 15:12:55 +1000
-Message-ID: <CAKmqyKNBxBLyXdzLjMGDNPtZDjQUHSS+87N4SNTUKCjg9gwXFQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] hw/misc: Implement STM32L4x5 SYSCFG
-To: =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Alistair Francis <alistair@alistair23.me>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>, qemu-arm@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>
+Date: Fri, 5 Jan 2024 15:15:00 +1000
+Message-ID: <CAKmqyKN0eev2Bc7NQ5ZEDtFWKD9OkcnzLu45C5gKqcVHA7+wVg@mail.gmail.com>
+Subject: Re: [PATCH v3 07/16] target/riscv: rework 'vext_spec'
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, ajones@ventanamicro.com, vladimir.isaev@syntacore.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92f;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2a;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -74,8 +72,7 @@ X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,446 +88,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Dec 30, 2023 at 2:50=E2=80=AFAM In=C3=A8s Varhol
-<ines.varhol@telecom-paris.fr> wrote:
+On Thu, Jan 4, 2024 at 3:47=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> The same rework did in 'priv_spec' is done for 'vext_spec'. This time is
+> simpler, since we only accept one value ("v1.0") and we'll always have
+> env->vext_ver set to VEXT_VERSION_1_00_0, thus we don't need helpers to
+> convert string to 'vext_ver' back and forth like we needed for
+> 'priv_spec'.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
 > ---
->  docs/system/arm/b-l475e-iot01a.rst |   2 +-
->  hw/misc/Kconfig                    |   3 +
->  hw/misc/meson.build                |   1 +
->  hw/misc/stm32l4x5_syscfg.c         | 265 +++++++++++++++++++++++++++++
->  hw/misc/trace-events               |   6 +
->  include/hw/misc/stm32l4x5_syscfg.h |  54 ++++++
->  6 files changed, 330 insertions(+), 1 deletion(-)
->  create mode 100644 hw/misc/stm32l4x5_syscfg.c
->  create mode 100644 include/hw/misc/stm32l4x5_syscfg.h
+>  target/riscv/cpu.c         | 35 +++++++++++++++++++++++++++++++++--
+>  target/riscv/cpu.h         |  1 +
+>  target/riscv/cpu_cfg.h     |  1 -
+>  target/riscv/tcg/tcg-cpu.c | 15 ---------------
+>  4 files changed, 34 insertions(+), 18 deletions(-)
 >
-> diff --git a/docs/system/arm/b-l475e-iot01a.rst b/docs/system/arm/b-l475e=
--iot01a.rst
-> index 72f256ace7..1a021b306a 100644
-> --- a/docs/system/arm/b-l475e-iot01a.rst
-> +++ b/docs/system/arm/b-l475e-iot01a.rst
-> @@ -16,6 +16,7 @@ Currently B-L475E-IOT01A machine's only supports the fo=
-llowing devices:
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 657569d8a6..c39da44f51 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1267,6 +1267,7 @@ static void riscv_cpu_init(Object *obj)
 >
->  - Cortex-M4F based STM32L4x5 SoC
->  - STM32L4x5 EXTI (Extended interrupts and events controller)
-> +- STM32L4x5 SYSCFG (System configuration controller)
+>      /* Default values for non-bool cpu properties */
+>      cpu->cfg.pmu_mask =3D MAKE_64BIT_MASK(3, 16);
+> +    cpu->env.vext_ver =3D VEXT_VERSION_1_00_0;
+>  }
 >
->  Missing devices
->  """""""""""""""
-> @@ -24,7 +25,6 @@ The B-L475E-IOT01A does *not* support the following dev=
-ices:
+>  typedef struct misa_ext_info {
+> @@ -1701,9 +1702,38 @@ static const PropertyInfo prop_priv_spec =3D {
+>      .set =3D prop_priv_spec_set,
+>  };
 >
->  - Reset and clock control (RCC)
->  - Serial ports (UART)
-> -- System configuration controller (SYSCFG)
->  - General-purpose I/Os (GPIO)
->  - Analog to Digital Converter (ADC)
->  - SPI controller
-> diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-> index 3efe3dc2cc..4fc6b29b43 100644
-> --- a/hw/misc/Kconfig
-> +++ b/hw/misc/Kconfig
-> @@ -90,6 +90,9 @@ config STM32F4XX_EXTI
->  config STM32L4X5_EXTI
->      bool
->
-> +config STM32L4X5_SYSCFG
-> +    bool
-> +
->  config MIPS_ITU
->      bool
->
-> diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-> index 16db6e228d..2ca2ce4b62 100644
-> --- a/hw/misc/meson.build
-> +++ b/hw/misc/meson.build
-> @@ -111,6 +111,7 @@ system_ss.add(when: 'CONFIG_STM32F2XX_SYSCFG', if_tru=
-e: files('stm32f2xx_syscfg.
->  system_ss.add(when: 'CONFIG_STM32F4XX_SYSCFG', if_true: files('stm32f4xx=
-_syscfg.c'))
->  system_ss.add(when: 'CONFIG_STM32F4XX_EXTI', if_true: files('stm32f4xx_e=
-xti.c'))
->  system_ss.add(when: 'CONFIG_STM32L4X5_EXTI', if_true: files('stm32l4x5_e=
-xti.c'))
-> +system_ss.add(when: 'CONFIG_STM32L4X5_SYSCFG', if_true: files('stm32l4x5=
-_syscfg.c'))
->  system_ss.add(when: 'CONFIG_MPS2_FPGAIO', if_true: files('mps2-fpgaio.c'=
-))
->  system_ss.add(when: 'CONFIG_MPS2_SCC', if_true: files('mps2-scc.c'))
->
-> diff --git a/hw/misc/stm32l4x5_syscfg.c b/hw/misc/stm32l4x5_syscfg.c
-> new file mode 100644
-> index 0000000000..36ac8956f9
-> --- /dev/null
-> +++ b/hw/misc/stm32l4x5_syscfg.c
-> @@ -0,0 +1,265 @@
-> +/*
-> + * STM32L4x5 SYSCFG (System Configuration Controller)
-> + *
-> + * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> + * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or la=
-ter.
-> + * See the COPYING file in the top-level directory.
-> + *
-> + * This work is based on the stm32f4xx_syscfg by Alistair Francis.
-> + * Original code is licensed under the MIT License:
-> + *
-> + * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
-> + */
-> +
-> +/*
-> + * The reference used is the STMicroElectronics RM0351 Reference manual
-> + * for STM32L4x5 and STM32L4x6 advanced Arm =C2=AE -based 32-bit MCUs.
-> + * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/docu=
-mentation.html
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu/log.h"
-> +#include "trace.h"
-> +#include "hw/irq.h"
-> +#include "migration/vmstate.h"
-> +#include "hw/misc/stm32l4x5_syscfg.h"
-> +
-> +#define SYSCFG_MEMRMP 0x00
-> +#define SYSCFG_CFGR1 0x04
-> +#define SYSCFG_EXTICR1 0x08
-> +#define SYSCFG_EXTICR2 0x0C
-> +#define SYSCFG_EXTICR3 0x10
-> +#define SYSCFG_EXTICR4 0x14
-> +#define SYSCFG_SCSR 0x18
-> +#define SYSCFG_CFGR2 0x1C
-> +#define SYSCFG_SWPR 0x20
-> +#define SYSCFG_SKR 0x24
-> +#define SYSCFG_SWPR2 0x28
-> +
-> +/* 00000000_00000000_00000001_00000111 */
-> +#define ACTIVABLE_BITS_MEMRP 0x00000107
-> +
-> +/* 11111100_11111111_00000001_00000000 */
-> +#define ACTIVABLE_BITS_CFGR1 0xFCFF0100
-> +/* 00000000_00000000_00000000_00000001 */
-> +#define FIREWALL_DISABLE_CFGR1 0x00000001
-> +
-> +/* 00000000_00000000_11111111_11111111 */
-> +#define ACTIVABLE_BITS_EXTICR 0x0000FFFF
-> +
-> +/* 00000000_00000000_00000000_00000011 */
-> +/* #define ACTIVABLE_BITS_SCSR 0x00000003 */
-> +
-> +/* 00000000_00000000_00000000_00001111 */
-> +#define ECC_LOCK_CFGR2 0x0000000F
-> +/* 00000000_00000000_00000001_00000000 */
-> +#define SRAM2_PARITY_ERROR_FLAG_CFGR2 0x00000100
-> +
-> +/* 00000000_00000000_00000000_11111111 */
-> +#define ACTIVABLE_BITS_SKR 0x000000FF
-> +
-> +static void stm32l4x5_syscfg_hold_reset(Object *obj)
+> -Property riscv_cpu_options[] =3D {
+> -    DEFINE_PROP_STRING("vext_spec", RISCVCPU, cfg.vext_spec),
+> +static void prop_vext_spec_set(Object *obj, Visitor *v, const char *name=
+,
+> +                               void *opaque, Error **errp)
 > +{
-> +    Stm32l4x5SyscfgState *s =3D STM32L4X5_SYSCFG(obj);
+> +    RISCVCPU *cpu =3D RISCV_CPU(obj);
+> +    g_autofree char *value =3D NULL;
+>
+> +    visit_type_str(v, name, &value, errp);
 > +
-> +    s->memrmp =3D 0x00000000;
-> +    s->cfgr1 =3D 0x7C000001;
-> +    s->exticr[0] =3D 0x00000000;
-> +    s->exticr[1] =3D 0x00000000;
-> +    s->exticr[2] =3D 0x00000000;
-> +    s->exticr[3] =3D 0x00000000;
-> +    s->scsr =3D 0x00000000;
-> +    s->cfgr2 =3D 0x00000000;
-> +    s->swpr =3D 0x00000000;
-> +    s->skr =3D 0x00000000;
-> +    s->swpr2 =3D 0x00000000;
-> +}
-> +
-> +static void stm32l4x5_syscfg_set_irq(void *opaque, int irq, int level)
-> +{
-> +    Stm32l4x5SyscfgState *s =3D opaque;
-> +    uint8_t gpio =3D irq / GPIO_NUM_PINS;
-> +    g_assert(gpio < NUM_GPIOS);
-> +
-> +    int line =3D irq % GPIO_NUM_PINS;
-> +    int exticr_reg =3D line / 4;
-> +    int startbit =3D (irq % 4) * 4;
-> +
-> +    trace_stm32l4x5_syscfg_set_irq(gpio, line, level);
-> +
-> +    if (extract32(s->exticr[exticr_reg], startbit, 4) =3D=3D gpio) {
-> +        trace_stm32l4x5_syscfg_forward_exti(line);
-> +        qemu_set_irq(s->gpio_out[line], level);
-> +   }
-> +}
-> +
-> +static uint64_t stm32l4x5_syscfg_read(void *opaque, hwaddr addr,
-> +                                      unsigned int size)
-> +{
-> +    Stm32l4x5SyscfgState *s =3D opaque;
-> +
-> +    trace_stm32l4x5_syscfg_read(addr);
-> +
-> +    switch (addr) {
-> +    case SYSCFG_MEMRMP:
-> +        return s->memrmp;
-> +    case SYSCFG_CFGR1:
-> +        return s->cfgr1;
-> +    case SYSCFG_EXTICR1...SYSCFG_EXTICR4:
-> +        return s->exticr[(addr - SYSCFG_EXTICR1) / 4];
-> +    case SYSCFG_SCSR:
-> +        return s->scsr;
-> +    case SYSCFG_CFGR2:
-> +        return s->cfgr2;
-> +    case SYSCFG_SWPR:
-> +        return s->swpr;
-> +    case SYSCFG_SKR:
-> +        return s->skr;
-> +    case SYSCFG_SWPR2:
-> +        return s->swpr2;
-> +    default:
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: Bad offset 0x%"HWADDR_PRIx"\n", __func__, add=
-r);
-> +        return 0;
+> +    if (g_strcmp0(value, VEXT_VER_1_00_0_STR) !=3D 0) {
+> +        error_setg(errp, "Unsupported vector spec version '%s'", value);
+> +        return;
 > +    }
+> +
+> +    cpu_option_add_user_setting(name, VEXT_VERSION_1_00_0);
+> +    cpu->env.vext_ver =3D VEXT_VERSION_1_00_0;
 > +}
-> +static void stm32l4x5_syscfg_write(void *opaque, hwaddr addr,
-> +                                   uint64_t val64, unsigned int size)
+> +
+> +static void prop_vext_spec_get(Object *obj, Visitor *v, const char *name=
+,
+> +                               void *opaque, Error **errp)
 > +{
-> +    Stm32l4x5SyscfgState *s =3D opaque;
-> +    uint32_t value =3D val64;
+> +    const char *value =3D VEXT_VER_1_00_0_STR;
 > +
-> +    trace_stm32l4x5_syscfg_write(addr, value);
-> +
-> +    switch (addr) {
-> +    case SYSCFG_MEMRMP:
-> +        qemu_log_mask(LOG_UNIMP,
-> +                      "%s: Changing the memory mapping isn't supported\n=
-",
-> +                      __func__);
-> +        s->memrmp =3D value & ACTIVABLE_BITS_MEMRP;
-> +        return;
-> +    case SYSCFG_CFGR1:
-> +        qemu_log_mask(LOG_UNIMP,
-> +                      "%s: Functions in CFGRx aren't supported\n",
-> +                      __func__);
-> +        /* bit 0 (firewall dis.) is cleared by software, set only by res=
-et. */
-> +        s->cfgr1 =3D (s->cfgr1 & value & FIREWALL_DISABLE_CFGR1) |
-> +                   (value & ACTIVABLE_BITS_CFGR1);
-> +        return;
-> +    case SYSCFG_EXTICR1...SYSCFG_EXTICR4:
-> +        s->exticr[(addr - SYSCFG_EXTICR1) / 4] =3D
-> +                (value & ACTIVABLE_BITS_EXTICR);
-> +        return;
-> +    case SYSCFG_SCSR:
-> +        qemu_log_mask(LOG_UNIMP,
-> +                      "%s: Erasing SRAM2 isn't supported\n",
-> +                      __func__);
-> +        /*
-> +         * only non reserved bits are :
-> +         * bit 0 (write-protected by a passkey), bit 1 (meant to be read=
-)
-> +         * so it serves no purpose yet to add :
-> +         * s->scsr =3D value & 0x3;
-> +         */
-> +        return;
-> +    case SYSCFG_CFGR2:
-> +        qemu_log_mask(LOG_UNIMP,
-> +                      "%s: Functions in CFGRx aren't supported\n",
-> +                      __func__);
-> +        /* bit 8 (SRAM2 PEF) is cleared by software by writing a '1'.*/
-> +        /* bits[3:0] (ECC Lock) are set by software, cleared only by res=
-et.*/
-> +        s->cfgr2 =3D (s->cfgr2 | (value & ECC_LOCK_CFGR2)) &
-> +                   ~(value & SRAM2_PARITY_ERROR_FLAG_CFGR2);
-> +        return;
-> +    case SYSCFG_SWPR:
-> +        qemu_log_mask(LOG_UNIMP,
-> +                      "%s: Write protecting SRAM2 isn't supported\n",
-> +                      __func__);
-> +        /* These bits are set by software and cleared only by reset.*/
-> +        s->swpr |=3D value;
-> +        return;
-> +    case SYSCFG_SKR:
-> +        qemu_log_mask(LOG_UNIMP,
-> +                      "%s: Erasing SRAM2 isn't supported\n",
-> +                      __func__);
-> +        s->skr =3D value & ACTIVABLE_BITS_SKR;
-> +        return;
-> +    case SYSCFG_SWPR2:
-> +        qemu_log_mask(LOG_UNIMP,
-> +                      "%s: Write protecting SRAM2 isn't supported\n",
-> +                      __func__);
-> +        /* These bits are set by software and cleared only by reset.*/
-> +        s->swpr2 |=3D value;
-> +        return;
-> +    default:
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: Bad offset 0x%"HWADDR_PRIx"\n", __func__, add=
-r);
-> +    }
+> +    visit_type_str(v, name, (char **)&value, errp);
 > +}
 > +
-> +static const MemoryRegionOps stm32l4x5_syscfg_ops =3D {
-> +    .read =3D stm32l4x5_syscfg_read,
-> +    .write =3D stm32l4x5_syscfg_write,
-> +    .endianness =3D DEVICE_NATIVE_ENDIAN,
-> +    .impl.min_access_size =3D 4,
-> +    .impl.max_access_size =3D 4,
-> +    .impl.unaligned =3D false,
-> +    .valid.min_access_size =3D 4,
-> +    .valid.max_access_size =3D 4,
-> +    .valid.unaligned =3D false,
+> +static const PropertyInfo prop_vext_spec =3D {
+> +    .name =3D "vext_spec",
+> +    .get =3D prop_vext_spec_get,
+> +    .set =3D prop_vext_spec_set,
 > +};
 > +
-> +static void stm32l4x5_syscfg_init(Object *obj)
-> +{
-> +    Stm32l4x5SyscfgState *s =3D STM32L4X5_SYSCFG(obj);
-> +
-> +    memory_region_init_io(&s->mmio, obj, &stm32l4x5_syscfg_ops, s,
-> +                          TYPE_STM32L4X5_SYSCFG, 0x400);
-> +    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-> +
-> +    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_syscfg_set_irq,
-> +                      GPIO_NUM_PINS * NUM_GPIOS);
-> +    qdev_init_gpio_out(DEVICE(obj), s->gpio_out, GPIO_NUM_PINS);
-> +}
-> +
-> +static const VMStateDescription vmstate_stm32l4x5_syscfg =3D {
-> +    .name =3D TYPE_STM32L4X5_SYSCFG,
-> +    .version_id =3D 1,
-> +    .minimum_version_id =3D 1,
-> +    .fields =3D (VMStateField[]) {
-> +        VMSTATE_UINT32(memrmp, Stm32l4x5SyscfgState),
-> +        VMSTATE_UINT32(cfgr1, Stm32l4x5SyscfgState),
-> +        VMSTATE_UINT32_ARRAY(exticr, Stm32l4x5SyscfgState,
-> +                             SYSCFG_NUM_EXTICR),
-> +        VMSTATE_UINT32(scsr, Stm32l4x5SyscfgState),
-> +        VMSTATE_UINT32(cfgr2, Stm32l4x5SyscfgState),
-> +        VMSTATE_UINT32(swpr, Stm32l4x5SyscfgState),
-> +        VMSTATE_UINT32(skr, Stm32l4x5SyscfgState),
-> +        VMSTATE_UINT32(swpr2, Stm32l4x5SyscfgState),
-> +        VMSTATE_END_OF_LIST()
-> +    }
-> +};
-> +
-> +static void stm32l4x5_syscfg_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc =3D DEVICE_CLASS(klass);
-> +    ResettableClass *rc =3D RESETTABLE_CLASS(klass);
-> +
-> +    dc->vmsd =3D &vmstate_stm32l4x5_syscfg;
-> +    rc->phases.hold =3D stm32l4x5_syscfg_hold_reset;
-> +}
-> +
-> +static const TypeInfo stm32l4x5_syscfg_info[] =3D {
-> +    {
-> +        .name          =3D TYPE_STM32L4X5_SYSCFG,
-> +        .parent        =3D TYPE_SYS_BUS_DEVICE,
-> +        .instance_size =3D sizeof(Stm32l4x5SyscfgState),
-> +        .instance_init =3D stm32l4x5_syscfg_init,
-> +        .class_init    =3D stm32l4x5_syscfg_class_init,
-> +    }
-> +};
-> +
-> +DEFINE_TYPES(stm32l4x5_syscfg_info)
-> diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-> index 2f01c62c0e..60d0a14e74 100644
-> --- a/hw/misc/trace-events
-> +++ b/hw/misc/trace-events
-> @@ -163,6 +163,12 @@ stm32f4xx_exti_set_irq(int irq, int level) "Set EXTI=
-: %d to %d"
->  stm32f4xx_exti_read(uint64_t addr) "reg read: addr: 0x%" PRIx64 " "
->  stm32f4xx_exti_write(uint64_t addr, uint64_t data) "reg write: addr: 0x%=
-" PRIx64 " val: 0x%" PRIx64 ""
+> +Property riscv_cpu_options[] =3D {
+>      DEFINE_PROP_UINT16("vlen", RISCVCPU, cfg.vlen, 128),
+>      DEFINE_PROP_UINT16("elen", RISCVCPU, cfg.elen, 64),
 >
-> +# stm32l4x5_syscfg.c
-> +stm32l4x5_syscfg_set_irq(int gpio, int line, int level) "irq from GPIO: =
-%d, line: %d, level: %d"
-> +stm32l4x5_syscfg_forward_exti(int irq) "irq %d forwarded to EXTI"
-> +stm32l4x5_syscfg_read(uint64_t addr) "reg read: addr: 0x%" PRIx64 " "
-> +stm32l4x5_syscfg_write(uint64_t addr, uint64_t data) "reg write: addr: 0=
-x%" PRIx64 " val: 0x%" PRIx64 ""
-> +
->  # stm32l4x5_exti.c
->  stm32l4x5_exti_set_irq(int irq, int level) "Set EXTI: %d to %d"
->  stm32l4x5_exti_read(uint64_t addr, uint64_t data) "reg read: addr: 0x%" =
-PRIx64 " val: 0x%" PRIx64 ""
-> diff --git a/include/hw/misc/stm32l4x5_syscfg.h b/include/hw/misc/stm32l4=
-x5_syscfg.h
-> new file mode 100644
-> index 0000000000..76bdcf5189
-> --- /dev/null
-> +++ b/include/hw/misc/stm32l4x5_syscfg.h
-> @@ -0,0 +1,54 @@
-> +/*
-> + * STM32L4x5 SYSCFG (System Configuration Controller)
-> + *
-> + * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> + * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or la=
-ter.
-> + * See the COPYING file in the top-level directory.
-> + *
-> + * This work is based on the stm32f4xx_syscfg by Alistair Francis.
-> + * Original code is licensed under the MIT License:
-> + *
-> + * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
-> + */
-> +
-> +/*
-> + * The reference used is the STMicroElectronics RM0351 Reference manual
-> + * for STM32L4x5 and STM32L4x6 advanced Arm =C2=AE -based 32-bit MCUs.
-> + * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/docu=
-mentation.html
-> + */
-> +
-> +#ifndef HW_STM32L4X5_SYSCFG_H
-> +#define HW_STM32L4X5_SYSCFG_H
-> +
-> +#include "hw/sysbus.h"
-> +#include "qom/object.h"
-> +
-> +#define TYPE_STM32L4X5_SYSCFG "stm32l4x5-syscfg"
-> +OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5SyscfgState, STM32L4X5_SYSCFG)
-> +
-> +#define NUM_GPIOS 8
-> +#define GPIO_NUM_PINS 16
-> +#define SYSCFG_NUM_EXTICR 4
-> +
-> +struct Stm32l4x5SyscfgState {
-> +    SysBusDevice parent_obj;
-> +
-> +    MemoryRegion mmio;
-> +
-> +    uint32_t memrmp;
-> +    uint32_t cfgr1;
-> +    uint32_t exticr[SYSCFG_NUM_EXTICR];
-> +    uint32_t scsr;
-> +    uint32_t cfgr2;
-> +    uint32_t swpr;
-> +    uint32_t skr;
-> +    uint32_t swpr2;
-> +
-> +    qemu_irq gpio_out[16];
-> +};
-> +
-> +#endif
+> @@ -1723,6 +1753,7 @@ static Property riscv_cpu_properties[] =3D {
+>      {.name =3D "pmp", .info =3D &prop_pmp},
+>
+>      {.name =3D "priv_spec", .info =3D &prop_priv_spec},
+> +    {.name =3D "vext_spec", .info =3D &prop_vext_spec},
+>
+>  #ifndef CONFIG_USER_ONLY
+>      DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVE=
+C),
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index aa3d3372e3..f1715d9d31 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -89,6 +89,7 @@ enum {
+>  };
+>
+>  #define VEXT_VERSION_1_00_0 0x00010000
+> +#define VEXT_VER_1_00_0_STR "v1.0"
+>
+>  enum {
+>      TRANSLATE_SUCCESS,
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index 2dba1f0007..7112af6c4c 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -135,7 +135,6 @@ struct RISCVCPUConfig {
+>      bool ext_XVentanaCondOps;
+>
+>      uint32_t pmu_mask;
+> -    char *vext_spec;
+>      uint16_t vlen;
+>      uint16_t elen;
+>      uint16_t cbom_blocksize;
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index 4d67b72d9e..6501c29d8e 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -201,21 +201,6 @@ static void riscv_cpu_validate_v(CPURISCVState *env,=
+ RISCVCPUConfig *cfg,
+>                     "in the range [8, 64]");
+>          return;
+>      }
+> -
+> -    if (cfg->vext_spec) {
+> -        if (!g_strcmp0(cfg->vext_spec, "v1.0")) {
+> -            env->vext_ver =3D VEXT_VERSION_1_00_0;
+> -        } else {
+> -            error_setg(errp, "Unsupported vector spec version '%s'",
+> -                       cfg->vext_spec);
+> -            return;
+> -        }
+> -    } else if (env->vext_ver =3D=3D 0) {
+> -        qemu_log("vector version is not specified, "
+> -                 "use the default value v1.0\n");
+> -
+> -        env->vext_ver =3D VEXT_VERSION_1_00_0;
+> -    }
+>  }
+>
+>  static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
 > --
 > 2.43.0
 >
