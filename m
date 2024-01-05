@@ -2,75 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03F86825738
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:54:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59AF88256FC
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:47:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLmPE-0002zZ-LN; Fri, 05 Jan 2024 10:46:45 -0500
+	id 1rLmPH-0003HG-W0; Fri, 05 Jan 2024 10:46:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmO2-0001NS-NK
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:45:35 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmOG-0001Tm-H9
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:45:57 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmNy-0003jr-PR
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:45:30 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-337520892f7so389818f8f.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:45:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmOE-0003lb-G8
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:45:44 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40d76923ec4so16157925e9.3
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:45:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704469524; x=1705074324; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704469539; x=1705074339; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=amIzVl4R3+PRNgzKiNHopIA/d217u9I/36YG2i2vTZM=;
- b=jo4c14uMlTmfF7eTggkWu51n178e1EZRoMEUHTEbJi2FO0JGfgbLcSV8d4fTEzouPc
- uZ75aS29g4RJRozIdJQmXqC8F5pxlC32ao+vUeZZQFmdvgVHcLAXS1dC3AMCUOduJ0ir
- Gv6cgk783qjPXF2Lrga1PYOFRfmRV2D6yOF+bw+JIitCKGkYolpU8pbN3onp4kRVHvdI
- 3088w1Syvt1/9ce1RN3SbCkaJ09m8+0x2F+Kc1dgW0nV4TxFkMOOgPYfhDgZTMbIJ3b1
- gs2Bvsz22P7LnoCCG4IHrvMA4IrbxeCidQU7fKV6M8fFIJuYDj7d7/j3bILKR/QYqJ1+
- cYMQ==
+ bh=e4mZu4dIothIAeIYl7XbtHN8Q7Ylsc498FBOxXuUI0M=;
+ b=HH2M+j4yRxWzQcnuQvd5Y/pUTR+1/p1Y2UdaJ6hbg9KQ4DP94ihA8QEvcVHoqzAFUY
+ m6O4jdu1aPujtudvL8mX4+zdeif6w/9+jYsFxkpSATRzjxYLvWLsHEbU8fsXpzb2hma/
+ Qok1uLqIBr6PQhkc2VPbwPLTD9wgqOFNi8jAFBcnwYD7R6W+NhST/5wSoIJgs1oy0EIq
+ kosYve95eJM13WZgIeHUC6xQxnfmwG7a8KIOIWOE4xZX2i3oA8T1BaEAVQt+Z9dzElIT
+ vjufjMlLkWwhvIARBhsxNfuJ8EgINQEIEFPoOg1GXX+k6h5hyjLNTX8Aj2YtUJW4uU4o
+ +owg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704469524; x=1705074324;
+ d=1e100.net; s=20230601; t=1704469539; x=1705074339;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=amIzVl4R3+PRNgzKiNHopIA/d217u9I/36YG2i2vTZM=;
- b=S6jJF0RF2PZnNOsZ6PTMUyorqqSBYzVyGRK2lPXIT2tT87fQ+/TznuZ7EKYbD/Ao0G
- H8Cm839ZILGWOFROY8DjpOXV/IbbZg9t/0pyLgcWfBXvLqf3txF76ifwMnDKwpHw2D7z
- YGeDORQ2xLncKikNVOJYNJiy14uLXRhs62cXSuZLIDo5M4h/g2NWrrEygj2vlOeKpWjy
- kgjA7HZuKbifcl3i+AEbbNdi8MypphEClZbJflFdAdLE2owbPwIA+DUdQ2HJwFrbYjem
- qDvw7D7AvzgxAHB1QWv0BdoCe7Y82VFDyxNbVkyUFaXaLecKUY7egISEdp70Uv/w7sWd
- 7Q4w==
-X-Gm-Message-State: AOJu0YxO0m7VRtle7sok6ZWfrESdNMIcNsto0Flbrh5XDXvaokCOY32O
- fwv+u9ZFXH4bN4Rhl/zCJYQKmOnMsijlZGv4Vf6l22RRhSg=
-X-Google-Smtp-Source: AGHT+IGqufJs3Mill6aJTL/2a2/pz7WmfNQLIUSgYOYhQoGFbsfG9/6rCYzCbj6/n2jSFigkySsbxg==
-X-Received: by 2002:a05:600c:34c7:b0:40d:5ae4:a487 with SMTP id
- d7-20020a05600c34c700b0040d5ae4a487mr1247589wmq.25.1704469524057; 
- Fri, 05 Jan 2024 07:45:24 -0800 (PST)
+ bh=e4mZu4dIothIAeIYl7XbtHN8Q7Ylsc498FBOxXuUI0M=;
+ b=aPz5kVpuVYNX6Nup0OERi1vsR6Ar7XgXfTuvfiVTI57wi9465gEz+afLwE4rx5Hl/m
+ RlxPH5CMS6g78FK0yErleZ5BPXmgmSyCWVW7423w56j//EBtg9JVFbv3n+iPQqdjSqls
+ Ffkt/HQLnCDwwUjU5Pc5+xmm4VZYp8otb7D1AvBGq9xKjJlLh+8UKU7epKmYjI9xA+Zg
+ pKGmzNtFJf9m+kYX7tN9UVIBNBaca6NfNSDW5OsgCLvWy2Yq7LeSBpDxMtJvd8NeaOWJ
+ S6+pBAHU/f9+1BYy+Dsmiq+BangAF7us5EDRiVM7UkZR9O/Ibxx9VU5XwivI6/ma7/a6
+ nRXw==
+X-Gm-Message-State: AOJu0YxSNjzUH1TL+uZ4vCZ2963vUYYWTgNkeAB+d0OYWDsL1QG5e5Sm
+ 1t2nv9s/2D6OacIcD4COWw5+NjZXsOKg60RxHiRzOp52HfI=
+X-Google-Smtp-Source: AGHT+IFcVp0qR9MGObXw9lQNSxmy+uatTj5gwKdD6WMxmUrW8rksiYX3pMmatWQHOxh1RrOMRB/8nQ==
+X-Received: by 2002:a05:600c:5487:b0:40d:877d:ca1 with SMTP id
+ iv7-20020a05600c548700b0040d877d0ca1mr1218741wmb.54.1704469539200; 
+ Fri, 05 Jan 2024 07:45:39 -0800 (PST)
 Received: from m1x-phil.lan (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- w15-20020adfe04f000000b00336471bc7ffsm1592013wrh.109.2024.01.05.07.45.22
+ p11-20020a05600c468b00b0040d81ca11casm1930040wmo.28.2024.01.05.07.45.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jan 2024 07:45:23 -0800 (PST)
+ Fri, 05 Jan 2024 07:45:38 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Gavin Shan <gshan@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PULL 21/71] target/xtensa: Use generic cpu_list()
-Date: Fri,  5 Jan 2024 16:42:14 +0100
-Message-ID: <20240105154307.21385-22-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Song Gao <gaosong@loongson.cn>,
+ Huacai Chen <chenhuacai@kernel.org>, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PULL 22/71] target: Use generic cpu_model_from_type()
+Date: Fri,  5 Jan 2024 16:42:15 +0100
+Message-ID: <20240105154307.21385-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240105154307.21385-1-philmd@linaro.org>
 References: <20240105154307.21385-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,83 +107,137 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gavin Shan <gshan@redhat.com>
 
-Before it's applied:
-
-[gshan@gshan q]$ ./build/qemu-system-xtensa -cpu ?
-Available CPUs:
-  test_mmuhifi_c3
-  sample_controller
-  lx106
-  dsp3400
-  de233_fpu
-  de212
-  dc233c
-  dc232b
-
-After it's applied:
-
-[gshan@gshan q]$ ./build/qemu-system-xtensa -cpu ?
-Available CPUs:
-  dc232b
-  dc233c
-  de212
-  de233_fpu
-  dsp3400
-  lx106
-  sample_controller
-  test_mmuhifi_c3
+Use generic cpu_model_from_type() when the CPU model name needs to
+be extracted from the CPU type name.
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
-Message-ID: <20231114235628.534334-22-gshan@redhat.com>
-[PMD: Split patch in 2, only include the "Use generic cpu_list" change]
-Message-ID: <51ffd060-b2f8-405c-83e1-a0663c0183f5@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20231114235628.534334-23-gshan@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/xtensa/cpu.h    | 3 ---
- target/xtensa/helper.c | 9 ---------
- 2 files changed, 12 deletions(-)
+ target/arm/arm-qmp-cmds.c             | 3 +--
+ target/i386/cpu.c                     | 3 +--
+ target/loongarch/loongarch-qmp-cmds.c | 3 +--
+ target/mips/sysemu/mips-qmp-cmds.c    | 3 +--
+ target/ppc/cpu_init.c                 | 3 +--
+ target/ppc/ppc-qmp-cmds.c             | 3 +--
+ target/riscv/cpu.c                    | 3 +--
+ target/riscv/riscv-qmp-cmds.c         | 3 +--
+ 8 files changed, 8 insertions(+), 16 deletions(-)
 
-diff --git a/target/xtensa/cpu.h b/target/xtensa/cpu.h
-index dd81729306..d9c49a35fa 100644
---- a/target/xtensa/cpu.h
-+++ b/target/xtensa/cpu.h
-@@ -600,8 +600,6 @@ G_NORETURN void xtensa_cpu_do_unaligned_access(CPUState *cpu, vaddr addr,
-                                                MMUAccessType access_type, int mmu_idx,
-                                                uintptr_t retaddr);
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index b53d5efe13..2250cd7ddf 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -237,8 +237,7 @@ static void arm_cpu_add_definition(gpointer data, gpointer user_data)
  
--#define cpu_list xtensa_cpu_list
--
- #define CPU_RESOLVING_TYPE TYPE_XTENSA_CPU
+     typename = object_class_get_name(oc);
+     info = g_malloc0(sizeof(*info));
+-    info->name = g_strndup(typename,
+-                           strlen(typename) - strlen("-" TYPE_ARM_CPU));
++    info->name = cpu_model_from_type(typename);
+     info->q_typename = g_strdup(typename);
  
- #if TARGET_BIG_ENDIAN
-@@ -626,7 +624,6 @@ void check_interrupts(CPUXtensaState *s);
- void xtensa_irq_init(CPUXtensaState *env);
- qemu_irq *xtensa_get_extints(CPUXtensaState *env);
- qemu_irq xtensa_get_runstall(CPUXtensaState *env);
--void xtensa_cpu_list(void);
- void xtensa_sync_window_from_phys(CPUXtensaState *env);
- void xtensa_sync_phys_from_window(CPUXtensaState *env);
- void xtensa_rotate_window(CPUXtensaState *env, uint32_t delta);
-diff --git a/target/xtensa/helper.c b/target/xtensa/helper.c
-index dbeb97a953..f6632df646 100644
---- a/target/xtensa/helper.c
-+++ b/target/xtensa/helper.c
-@@ -234,15 +234,6 @@ void xtensa_breakpoint_handler(CPUState *cs)
-     }
+     QAPI_LIST_PREPEND(*cpu_list, info);
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index fd47ee7def..2524881ce2 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1744,8 +1744,7 @@ static char *x86_cpu_class_get_model_name(X86CPUClass *cc)
+ {
+     const char *class_name = object_class_get_name(OBJECT_CLASS(cc));
+     assert(g_str_has_suffix(class_name, X86_CPU_TYPE_SUFFIX));
+-    return g_strndup(class_name,
+-                     strlen(class_name) - strlen(X86_CPU_TYPE_SUFFIX));
++    return cpu_model_from_type(class_name);
  }
  
--void xtensa_cpu_list(void)
--{
--    XtensaConfigList *core = xtensa_cores;
--    qemu_printf("Available CPUs:\n");
--    for (; core; core = core->next) {
--        qemu_printf("  %s\n", core->config->name);
--    }
--}
--
- #ifndef CONFIG_USER_ONLY
- void xtensa_cpu_do_unaligned_access(CPUState *cs,
-                                     vaddr addr, MMUAccessType access_type,
+ typedef struct X86CPUVersionDefinition {
+diff --git a/target/loongarch/loongarch-qmp-cmds.c b/target/loongarch/loongarch-qmp-cmds.c
+index 645672ff59..ec33ce81f0 100644
+--- a/target/loongarch/loongarch-qmp-cmds.c
++++ b/target/loongarch/loongarch-qmp-cmds.c
+@@ -22,8 +22,7 @@ static void loongarch_cpu_add_definition(gpointer data, gpointer user_data)
+     CpuDefinitionInfo *info = g_new0(CpuDefinitionInfo, 1);
+     const char *typename = object_class_get_name(oc);
+ 
+-    info->name = g_strndup(typename,
+-                           strlen(typename) - strlen("-" TYPE_LOONGARCH_CPU));
++    info->name = cpu_model_from_type(typename);
+     info->q_typename = g_strdup(typename);
+ 
+     QAPI_LIST_PREPEND(*cpu_list, info);
+diff --git a/target/mips/sysemu/mips-qmp-cmds.c b/target/mips/sysemu/mips-qmp-cmds.c
+index 6db4626412..7340ac70ba 100644
+--- a/target/mips/sysemu/mips-qmp-cmds.c
++++ b/target/mips/sysemu/mips-qmp-cmds.c
+@@ -19,8 +19,7 @@ static void mips_cpu_add_definition(gpointer data, gpointer user_data)
+ 
+     typename = object_class_get_name(oc);
+     info = g_malloc0(sizeof(*info));
+-    info->name = g_strndup(typename,
+-                           strlen(typename) - strlen("-" TYPE_MIPS_CPU));
++    info->name = cpu_model_from_type(typename);
+     info->q_typename = g_strdup(typename);
+ 
+     QAPI_LIST_PREPEND(*cpu_list, info);
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 40fe14a6c2..344196a8ce 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -7036,8 +7036,7 @@ static void ppc_cpu_list_entry(gpointer data, gpointer user_data)
+         return;
+     }
+ 
+-    name = g_strndup(typename,
+-                     strlen(typename) - strlen(POWERPC_CPU_TYPE_SUFFIX));
++    name = cpu_model_from_type(typename);
+     qemu_printf("PowerPC %-16s PVR %08x\n", name, pcc->pvr);
+     for (i = 0; ppc_cpu_aliases[i].alias != NULL; i++) {
+         PowerPCCPUAlias *alias = &ppc_cpu_aliases[i];
+diff --git a/target/ppc/ppc-qmp-cmds.c b/target/ppc/ppc-qmp-cmds.c
+index f9acc21056..c0c137d9d7 100644
+--- a/target/ppc/ppc-qmp-cmds.c
++++ b/target/ppc/ppc-qmp-cmds.c
+@@ -181,8 +181,7 @@ static void ppc_cpu_defs_entry(gpointer data, gpointer user_data)
+ 
+     typename = object_class_get_name(oc);
+     info = g_malloc0(sizeof(*info));
+-    info->name = g_strndup(typename,
+-                           strlen(typename) - strlen(POWERPC_CPU_TYPE_SUFFIX));
++    info->name = cpu_model_from_type(typename);
+ 
+     QAPI_LIST_PREPEND(*first, info);
+ }
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 22d7422c89..b07a76ef6b 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -657,8 +657,7 @@ char *riscv_cpu_get_name(RISCVCPU *cpu)
+ 
+     g_assert(g_str_has_suffix(typename, RISCV_CPU_TYPE_SUFFIX));
+ 
+-    return g_strndup(typename,
+-                     strlen(typename) - strlen(RISCV_CPU_TYPE_SUFFIX));
++    return cpu_model_from_type(typename);
+ }
+ 
+ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
+index 2f2dbae7c8..c5551d2cfe 100644
+--- a/target/riscv/riscv-qmp-cmds.c
++++ b/target/riscv/riscv-qmp-cmds.c
+@@ -44,8 +44,7 @@ static void riscv_cpu_add_definition(gpointer data, gpointer user_data)
+     const char *typename = object_class_get_name(oc);
+     ObjectClass *dyn_class;
+ 
+-    info->name = g_strndup(typename,
+-                           strlen(typename) - strlen("-" TYPE_RISCV_CPU));
++    info->name = cpu_model_from_type(typename);
+     info->q_typename = g_strdup(typename);
+ 
+     dyn_class = object_class_dynamic_cast(oc, TYPE_RISCV_DYNAMIC_CPU);
 -- 
 2.41.0
 
