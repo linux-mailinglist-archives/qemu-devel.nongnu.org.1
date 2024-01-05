@@ -2,118 +2,127 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2449825237
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 11:37:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C79B825244
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 11:41:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLhZF-0007eu-2V; Fri, 05 Jan 2024 05:36:45 -0500
+	id 1rLhd8-00009G-GK; Fri, 05 Jan 2024 05:40:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rLhZD-0007ec-3i
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 05:36:43 -0500
-Received: from mout.gmx.net ([212.227.15.18])
+ (Exim 4.90_1)
+ (envelope-from <frederic.petrot@univ-grenoble-alpes.fr>)
+ id 1rLhcq-0008TM-6G; Fri, 05 Jan 2024 05:40:28 -0500
+Received: from zm-mta-out-3.u-ga.fr ([152.77.200.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rLhZB-0004L6-2P
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 05:36:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
- t=1704450999; x=1705055799; i=deller@gmx.de;
- bh=HTqM978rbb6eILELo0Y/p4brHOX2rqT/ZFRKWalX2m4=;
- h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
- b=qowmSMtujuJmxB8s42ZysKXttKO+RslTcZ2qeHhRAia7Z1oS1PEd6DGgpth1Wboe
- bvg9eJ/UN6RYGbFckaMsT9IGlqr4ih8pA7mgL1HPXgmz5NzjNmKGlTOAzCXioku3m
- kVfSlhmEvsV86Goao/+io3fbx6AaY1H/6k2BqTanSA0dp3b4/FzIJWKksj5jL4exN
- PpDhODkuoQg1Y+AGDqq8b8arbXVa+/sFaoOy1R58u3w707zkTAQl1LxLbp7Hn5NLb
- LRlnZd79plkclGKLSVnBKOswGDTxrkBAHfCsC8CLb+9b5c42S0QfjbaLoqVJ4QH4I
- nX+mxjj5hontL34/og==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([94.134.157.36]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MCbIn-1rThuH3eEt-009jEL; Fri, 05
- Jan 2024 11:36:38 +0100
-Message-ID: <02ea954a-ba42-4143-8311-6f4d6093c3e0@gmx.de>
-Date: Fri, 5 Jan 2024 11:36:38 +0100
+ (Exim 4.90_1)
+ (envelope-from <frederic.petrot@univ-grenoble-alpes.fr>)
+ id 1rLhcm-0000O6-8n; Fri, 05 Jan 2024 05:40:27 -0500
+Received: from mailhub.u-ga.fr (mailhub-1.u-ga.fr [129.88.178.98])
+ by zm-mta-out-3.u-ga.fr (Postfix) with ESMTP id A35784029D;
+ Fri,  5 Jan 2024 11:40:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=univ-grenoble-alpes.fr; s=2020; t=1704451214;
+ bh=fykYQ/3tfgtb47HRmaF07GMFcUoSZCQqQeIoojbO0co=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=bGZlwCNcHGdFrSuxIaCeVIxDt7xW9qhJkryj7uI8H5P1L7ig4A5ofNysvvRDmDTTr
+ WV+aFWgfUAFf/tA6H+4xV4d8T7829T1K3QGnwveIWHl4vs2ZDit6b9ADoUZ2KVnHLq
+ rab98zbF2wEpGTtPq0ioe2E04YAdmk743bb8LngLlLNN47Lmn36jPiPvcWV9fhRk45
+ MvKQoccyEg0eElcpa4j6yU9HkZ/yreoV1IoZ1TUpJTa7UTgwecuOOFhxU34GZ5N9nW
+ 4zke6YTZeRqmKFmN9UDaYaf9PpHMJpuZIvCgA7A1KxVxYiyP7wKi8cuG/HkjxP9OCR
+ Mg3SGiya5OvHA==
+Received: from smtps.univ-grenoble-alpes.fr (smtps3.u-ga.fr [195.83.24.62])
+ by mailhub.u-ga.fr (Postfix) with ESMTP id 9B13710005A;
+ Fri,  5 Jan 2024 11:40:14 +0100 (CET)
+Received: from [192.168.1.73] (static-176-185-194-185.axione.abo.bbox.fr
+ [176.185.194.185])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ (Authenticated sender: petrotf@univ-grenoble-alpes.fr)
+ by smtps.univ-grenoble-alpes.fr (Postfix) with ESMTPSA id 92FD640052;
+ Fri,  5 Jan 2024 11:40:09 +0100 (CET)
+Message-ID: <9f9b8359-d33b-4c94-8eb1-fc500d8fc2b4@univ-grenoble-alpes.fr>
+Date: Fri, 5 Jan 2024 11:40:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] hw/hppa/machine: Allow up to 3840 MB total memory
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-References: <20240104183628.101366-1-deller@kernel.org>
- <20240104183628.101366-2-deller@kernel.org>
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20240104183628.101366-2-deller@kernel.org>
+Subject: Re: [PATCH v2 40/43] contrib/plugins: extend execlog to track
+ register changes
+Content-Language: fr
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
+ Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Brian Cain <bcain@quicinc.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Cleber Rosa <crosa@redhat.com>,
+ kvm@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
+ Weiwei Li <liwei1518@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, John Snow <jsnow@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+References: <20240103173349.398526-1-alex.bennee@linaro.org>
+ <20240103173349.398526-41-alex.bennee@linaro.org>
+From: =?UTF-8?B?RnLDqWTDqXJpYyBQw6l0cm90?=
+ <frederic.petrot@univ-grenoble-alpes.fr>
+Autocrypt: addr=frederic.petrot@univ-grenoble-alpes.fr; keydata=
+ xsDiBEzGfDQRBACnR+QhOOA6gstLMoL8vexXgQ/shw+w6zEsACrydiwCrAXMOQfyozlXyGYf
+ XBO0cf4RKMh51NLdgntJbYlOoFalY7iGRwo8U64iy8kHBcXlfdFYGrYFbFYervlMwXoY89D6
+ 02uMzWK/UossWWWX2PkqfBenmYd0zk+JwghTwY8MVwCgtr1Z52ZRv8vPA7ZLn4WSJLC/qv0D
+ /1hBIaSsCAT/nO78oFZq9hzY51GsmiBT88hTofCma2PIotJT9qocJglgqzA9B+2ja4bgXJ1f
+ 0WFlvxyLTjga8jJ/lcdNpAGi13sFEhP6nyi2Zh2hFhrXlTPH+VtdnjTHSnzK23eLphZJv031
+ SxCqEYT6pgJPwwHIWOHyeDZq0ORdA/4+2U4eYUhCGfi9u60L3zRDzUVULScq3vXah1ak1yBs
+ Nxz/F1iMYVBUmp4SGSM6XFxVwvJxvSRPD+4zXIkr7+MfIheiXbiSzNoZdH3AwaAK6jGxhfWb
+ f8Jm8KuLvGkR2QaS7QT+rhhv0OLEhVBMmm8EXZpsrOV3ZVmE934+WoRDd807RnLDqWTDqXJp
+ YyBQw6l0cm90IDxmcmVkZXJpYy5wZXRyb3RAdW5pdi1ncmVub2JsZS1hbHBlcy5mcj7CeAQT
+ EQIAOBYhBGyr6EloIPZXrmtYU0QWC1i+uhtgBQJa/b5sAhsDBQsJCAcCBhUKCQgLAgQWAgMB
+ Ah4BAheAAAoJEEQWC1i+uhtgNooAnjAwrIMPDJ+mQr1svgh9+NFFZBUWAJwONXxE5DrxP9OV
+ R0tsDROd3EbvXs7BTQRMxnw0EAgA8XI4FU6LH2NryyrydYoopZfixTvfS3rra8Q3UN+eHvuG
+ jM4+oebZO+ZZ6KtdGj/RDpXtn0KW6SdFynKuLS5obLx8GGfq1tj5KGep14kr1/BRp3xTqKE+
+ rleeWvR1fGXryJhxIV/AQ/tY2Le1ExsgLbD5dbPQKJhpQUlScz6Y1U2UsyxnMV4c7PlCNNb9
+ 1ZWfxPN8c/w8XBSZDaE5UcBmxYxH9959yte9hsczuzqbMgiGa0DCN+iIgsQOYtD2csDxVQUL
+ vxtD530vdTB32tdlmcumIgZCH4X7RyLhdbv1Xj6gcZ9InGf2tRLHbnd0/uPY6qTX/5teXQ7g
+ 0xzVlvcWQwADBggAvXpFpXACegDPqglkroyA8+LQWNyumsFtcrlAc9mcC5WwDBqNsSeCbGcx
+ TXsUckRAC3DpJkzKLbBsFki4fcYEx3tjfJGkknxInPYmOIlKRinSnIMS0qFqXdy37w7vPhqv
+ KMLwbeHYronnGUAW0Z//ZXZZTl1KbEeKOEXK2dyE0aLUtoWj/aLwM1c2zuJCctI38GENtRC6
+ qaqFzCHKTqxjl7aL1LILSvKQ1sZGKdKjApw5KLoKnk6WbspFIfgIirXoC2gRo/lhhd1ctVZK
+ IptiyHp7dw2Rr6TEzjy+Z/rDHVf9lGCzUkMDJHm5XQB8+f/Va5kddgZ9gznRo17IPvR0jcJJ
+ BBgRAgAJBQJMxnw0AhsMAAoJEEQWC1i+uhtgg90An139WxG/GTGPRFVQCaxQRkycFiI3AJ40
+ aR3/xWYMOEUWfcXpCS8dzPbdDA==
+In-Reply-To: <20240103173349.398526-41-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:uZsHJlbenzvP5nNlG6fvpn80q4aVxyxe1mHMdX9LoQ+sUnfKBfT
- p2T/OtJDu2+S2MhnZcqKxesL+W917pTYvDodflsbEppk1klQyB36VUDCaoOyeN/c2kfAyWC
- gSazzhW/AfDbtdSViFbo0H3ZDB+0oJAsmx8htsKk6x2a5JyoaIZLYfQ8e/9ZA5Dr9XmA87N
- 4DBVqSH7FfWQ68sZT1FDg==
-UI-OutboundReport: notjunk:1;M01:P0:TMT5tzZMBwc=;bRxtLklLT0Piy/2sgj+sl0P3qsa
- CsYlAz4APHeDxQml9/GJQ0xU+/nv4qCDxYH4RlzIRBmvEBOrRWwfeTu+SZ+zl1v2UuxMegT1g
- wm9phpIg9HGvAYsj+8OsAzisjQI8NvwyKh5TTKrPc3IFgI9W/jxZtP21IAM1haNylZaZhigJW
- WF5xeH8mybb13mhDItUE0nzrt2Hj2eetym58qUKtLsT+KDW6V9AzH3li9fU0Da6ebXJHg6MtH
- w6G7mv9hbUMHePcm9Lztq2e1MM0tUA8rHPE5pC3QqvLoQ51SvvjkvfSI7to1k56QcZ0zKmUny
- gNOOL2fQfXY9yBTbgu6sUFujESQpmWRQwtSxywOkB8qyHLmpXqqcCdKbz7chVZEbkwwcNw5lU
- UilljeT3uh7qju7v7JvtTINaHt3AiAbW1Doc3L7lXvyfuwZx7T2fYXD+0KYGK+OaA2oGrBu7n
- 0Zmf8jGsyysg4TvOFSXJ4mnvopfWVG1elVuF5Uyh78V5LaAFC9AZV9UvlbOHFhyza5TkNhd6h
- 0vlMELl1j98/stg7oO6YW9mYmRUzYjO8jguuVlnUcSN9BnZST7iHfG4gm85CQadEGR9CPRNYB
- cbQfx+9TAC9Kh7YRnJBhA7aezAaqTKMU6RmrRAo5ky4L+Im5PR5jFVPlNvn0i6mOxslUt8RmJ
- 9We3crzmte9EXxlhDL69zue1M2pjg4OUzxHiTQWMdBbO0ghmgdKYeYVFnGGlKpjYPntn3BFLr
- /oCpHkt4/E9kioiijIxsAbReCrhIyDjKWEvGHRA09tTko7PpUh9dHlWNB62V0ztrdjA+wWaq0
- 6Ru3WyKBvlqPFrtO0i7O04lM0PxCS+XN0eFF5RJwS3TK0uo1/rXmCy2R4Dhe2+fSIqOXBtOcb
- vzZfdf10yU+1Ge90Fwf0LERhxl8EJ91PTqWt3mE7NJ9IjMcTOP5fXndO574BPkCmcVG4XqWCl
- Nj0s+g==
-Received-SPF: pass client-ip=212.227.15.18; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Greylist: Whitelist-UGA SMTP Authentifie (petrotf@univ-grenoble-alpes.fr)
+ via submission-587 ACL (41)
+Received-SPF: pass client-ip=152.77.200.56;
+ envelope-from=frederic.petrot@univ-grenoble-alpes.fr;
+ helo=zm-mta-out-3.u-ga.fr
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,72 +138,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/4/24 19:36, deller@kernel.org wrote:
-> From: Helge Deller <deller@gmx.de>
->
-> The physical hardware allows DIMMs of 4 MB size and above, allowing up
-> to 3840 MB of memory, but is restricted by setup code to 3 GB.
-> Increase the limit to allow up to the maximum amount of memory.
->
-> Btw. the memory area from 0xf000.0000 to 0xffff.ffff is reserved by
-> the architecture for firmware and I/O memory and can not be used for
-> standard memory.
->
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Noticed-by: Nelson H. F. Beebe <beebe@math.utah.edu>
-> Fixes: b7746b1194c8 ("hw/hppa/machine: Restrict the total memory size to=
- 3GB")
-> ---
->   hw/hppa/machine.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-> index c8da7c18d5..6181f4b747 100644
-> --- a/hw/hppa/machine.c
-> +++ b/hw/hppa/machine.c
-> @@ -276,6 +276,7 @@ static TranslateFn *machine_HP_common_init_cpus(Mach=
-ineState *machine)
->       unsigned int smp_cpus =3D machine->smp.cpus;
->       TranslateFn *translate;
->       MemoryRegion *cpu_region;
-> +    ram_addr_t ram_max;
->
->       /* Create CPUs.  */
->       for (unsigned int i =3D 0; i < smp_cpus; i++) {
-> @@ -288,8 +289,10 @@ static TranslateFn *machine_HP_common_init_cpus(Mac=
-hineState *machine)
->        */
->       if (hppa_is_pa20(&cpu[0]->env)) {
->           translate =3D translate_pa20;
-> +        ram_max =3D 0xf0000000;      /* 3.75 GB (limited by 32-bit firm=
-ware) */
->       } else {
->           translate =3D translate_pa10;
-> +        ram_max =3D 0xf0000000;      /* 3.75 GB (32-bit CPU) */
->       }
->
->       for (unsigned int i =3D 0; i < smp_cpus; i++) {
-> @@ -311,9 +314,9 @@ static TranslateFn *machine_HP_common_init_cpus(Mach=
-ineState *machine)
->                                   cpu_region);
->
->       /* Main memory region. */
-> -    if (machine->ram_size > 3 * GiB) {
-> -        error_report("RAM size is currently restricted to 3GB");
-> -        exit(EXIT_FAILURE);
-> +    if (machine->ram_size > ram_max) {
-> +        info_report("Max RAM size limited to %ld MB", ram_max / MiB);
+Hello Alex,
 
-Need to use RAM_ADDR_FMT instead of "%ld" here.
-Will fix in v2.
+   just reporting below what might be a riscv only oddity (also applies to
+   patch 41 but easier to report here).
 
-Helge
+Le 03/01/2024 à 18:33, Alex Bennée a écrit :
+> With the new plugin register API we can now track changes to register
+> values. Currently the implementation is fairly dumb which will slow
+> down if a large number of register values are being tracked. This
+> could be improved by only instrumenting instructions which mention
+> registers we are interested in tracking.
+> 
+> Example usage:
+> 
+>    ./qemu-aarch64 -D plugin.log -d plugin \
+>       -cpu max,sve256=on \
+>       -plugin contrib/plugins/libexeclog.so,reg=sp,reg=z\* \
+>       ./tests/tcg/aarch64-linux-user/sha512-sve
+> 
+> will display in the execlog any changes to the stack pointer (sp) and
+> the SVE Z registers.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Based-On: <20231025093128.33116-19-akihiko.odaki@daynix.com>
 
+> +static registers_init(int vcpu_index)
+> +{
+> +    GPtrArray *registers = g_ptr_array_new();
+> +    g_autoptr(GArray) reg_list = qemu_plugin_get_registers(vcpu_index);
+> +
+> +    if (reg_list && reg_list->len) {
+> +        /*
+> +         * Go through each register in the complete list and
+> +         * see if we want to track it.
+> +         */
+> +        for (int r = 0; r < reg_list->len; r++) {
+> +            qemu_plugin_reg_descriptor *rd = &g_array_index(
+> +                reg_list, qemu_plugin_reg_descriptor, r);
 
-> +        machine->ram_size =3D ram_max;
->       }
->       memory_region_add_subregion_overlap(addr_space, 0, machine->ram, -=
-1);
->
+riscv csrs are not continously numbered and the dynamically generated gdb xml
+seems to follow that scheme.
+So the calls to Glib string functions output quite a few assertion
+warnings because for the non existing csrs rd->name is NULL (and there
+are a bit less than 4000 such cases for rv64g).
+Checking for NULL and then continue is a simple way to solve the issue, but
+I am not sure this is the proper way to proceed, as it might stand in the
+generation of the riscv xml description for gdb.
 
+Cheers,
+Frédéric
+
+> +            for (int p = 0; p < rmatches->len; p++) {
+> +                g_autoptr(GPatternSpec) pat = g_pattern_spec_new(rmatches->pdata[p]);
+> +                if (g_pattern_match_string(pat, rd->name)) {
+> +                    Register *reg = init_vcpu_register(vcpu_index, rd);
+> +                    g_ptr_array_add(registers, reg);
+> +                }
+> +            }
+> +        }
+> +    }
+> +    cpus[num_cpus].registers = registers;
+> +}
+> 
 
