@@ -2,79 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C3E825982
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 18:57:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9596C8259A2
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 19:05:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLoQD-0000M3-KL; Fri, 05 Jan 2024 12:55:53 -0500
+	id 1rLoXu-0004be-JU; Fri, 05 Jan 2024 13:03:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLoQA-0000HG-CR
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 12:55:51 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rLoQ7-0003ii-Np
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 12:55:50 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-555f581aed9so2136263a12.3
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 09:55:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704477346; x=1705082146; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=elohRhapRXRLisFPupz54RHCVYVrr8bTqmeGSIcKb3c=;
- b=SsmDlFg21gzOfGR2KbiRBrkiL04EXgKLFm5XteMKt7A510uF70oMg4hlacvzad7aoA
- 7FjA7OfgBRF/nZXxX2Mc+pnylNFU7YtUdLHqoOMSivr0AGWV2BSp3QYITTZvPl8fH0w+
- 73pe2fMTwraHkElBmrSQpVaKpEtBbqApif4lUuGenjhZNJNIETiBrpCtwePTZqJ9zTXg
- XY42aPIglnII8DDTJ05xajIkZoq9l+Qi1+EkKHUyBJl5Ui18p/WnSl+obqCGjp6o0Vhn
- 6KTDQzSSIkt1jyK1+D84TT0kil9ExW+OV/5pgzuR3xhyETeft3nj1oUlaG5cbutPIws+
- 2nZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704477346; x=1705082146;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=elohRhapRXRLisFPupz54RHCVYVrr8bTqmeGSIcKb3c=;
- b=dQ6z8XQ6xNiPkfHjlmicHY+uA+XzUuDCSdXOP5njcK3bTPB8rVcokkdkOYKgYasuLU
- 9Vp326Bq2tx3Y+cbUzWX01KzHMjfBgbQRLCHMo9uELK8RqnTItQIxmKMLFBwN/Cdz9P5
- 5wK0fF9kVXlB6G8puHp0ku5tXGOfmQfQamRIFA2UJeA0ZRdnBdaIiIqL7tRroeia4TUr
- UsDUXj7boeUUUXyp5nT7LLv5udlJUgMVBriNb0Mkf3OlG3PGKYmoXsGPnQZbIc29vOnU
- 3IfXQkyGwiPH95v7K51zJvBUDsStf8rsTKOqf8ir+jVFegdM/clbJtGEi+7l4QxpY8CI
- jg2g==
-X-Gm-Message-State: AOJu0YzWtP28d+KqVBHTQoimTdlAUQfovi1v0UJeoGErH+fuXNA8gZFD
- p3qSqEl2ccHbdPp3ZmGG2M3S68byQftfZk7IS4nI3wYdF79rzA==
-X-Google-Smtp-Source: AGHT+IFdiWlH1hKguFD6D0qQYKHK79LP9KRI0gqOKWXJkg980RGiu1H5OksO/sahToeaYfvc7XE0N21pt2tyVELvReM=
-X-Received: by 2002:a05:6402:b46:b0:553:ee28:b97e with SMTP id
- bx6-20020a0564020b4600b00553ee28b97emr1153592edb.26.1704477345886; Fri, 05
- Jan 2024 09:55:45 -0800 (PST)
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
+ id 1rLoXr-0004ae-PX; Fri, 05 Jan 2024 13:03:47 -0500
+Received: from zoidberg.rfc1149.net ([195.154.227.159])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
+ id 1rLoXp-0000HO-Q1; Fri, 05 Jan 2024 13:03:47 -0500
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits)
+ server-digest SHA256) (Client did not present a certificate)
+ by zoidberg.rfc1149.net (Postfix) with ESMTPSA id 9DB0F80024;
+ Fri,  5 Jan 2024 19:03:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rfc1149.net; s=smtp;
+ t=1704477822; bh=iLoRepbx4vfuo3JSlCYs0nvNO2gl1nCFC2LADd1/OyM=;
+ h=References:From:To:Cc:Subject:Date:In-reply-to;
+ b=BGCDTHKPXAkFTJidrWh9BPj5g/5C/2AazBmCp6rDK7lZ0gtvyI3liT+tX4JGKD/WB
+ g4ytX2Kdxaiwo+LpqI+pZfxZriFTNdJrIY10Itt8xQelzEgVRiob3mFOebgUwqFNbS
+ EnxiqcRKSsttxucKuyAB6f4Tp85cysU/hDLrEafbMEd2Gi0BM0oymwVvmGTe+9EV9Q
+ bGmIj4jK/VCaMmiv+wp9XVoS9GtE0zQgKKgiuRe/sVZBilplfYmijGsWfSsfvRWWqA
+ 6EJRc0hPyOUslnpIEwQu5rwIJ+Vftou7VUruR3AwcuF2z4Wkqzc2fjQq0vOXYNNA3k
+ ukN+AjBrbjOmQ==
 References: <20240103155337.2026946-1-sam@rfc1149.net>
- <20240103155337.2026946-4-sam@rfc1149.net>
-In-Reply-To: <20240103155337.2026946-4-sam@rfc1149.net>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 5 Jan 2024 17:55:35 +0000
-Message-ID: <CAFEAcA8Pv4Hy-T_PhgiDSgO4yhfROH_=847qP_pQYdBxGnxY=A@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] hw/arm/socs: configure priority bits for existing
- SOCs
-To: Samuel Tardieu <sam@rfc1149.net>
-Cc: qemu-devel@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
- qemu-arm@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>, 
- Alistair Francis <alistair@alistair23.me>,
- =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>, 
- Alexandre Iooss <erdnaxe@crans.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+ <20240103155337.2026946-3-sam@rfc1149.net>
+ <CAFEAcA8k22X+8Ypw_gvpsFHVAm=pHnB2-_iVNwyMrHhhyP=JRA@mail.gmail.com>
+User-agent: mu4e 1.10.8; emacs 29.1
+From: Samuel Tardieu <sam@rfc1149.net>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ qemu-arm@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>, Alistair
+ Francis <alistair@alistair23.me>, =?utf-8?Q?In=C3=A8s?= Varhol
+ <ines.varhol@telecom-paris.fr>, Alexandre Iooss <erdnaxe@crans.org>
+Subject: Re: [PATCH v2 2/3] hw/arm/armv7m: alias the NVIC "num-prio-bits"
+ property
+Date: Fri, 05 Jan 2024 19:01:21 +0100
+In-reply-to: <CAFEAcA8k22X+8Ypw_gvpsFHVAm=pHnB2-_iVNwyMrHhhyP=JRA@mail.gmail.com>
+Message-ID: <87ttnrbqtd.fsf@rfc1149.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=195.154.227.159; envelope-from=sam@rfc1149.net;
+ helo=zoidberg.rfc1149.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,18 +72,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 3 Jan 2024 at 15:53, Samuel Tardieu <sam@rfc1149.net> wrote:
->
-> Update the number of priority bits for a number of existing
-> SoCs according to their technical documentation:
->
-> - STM32F100/F205/F405/L4x5: 4 bits
-> - Stellaris (Sandstorm/Fury): 3 bits
->
-> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-thanks
--- PMM
+> There's a comment in include/hw/arm/armv7m.h which documents
+> all the GPIO inputs, QOM properties, etc, that this device
+> has -- that also needs a line adding to it for this property.
+
+Thanks Peter for your review. I'll send a v3 containing the=20
+requested change after In=C3=A8s has submitted an updated version of=20
+her "Add minimal support for the B-L475E-IOT01A board" serie on=20
+which this one is based.
+
+Best.
+
+  Sam
+--=20
+Samuel Tardieu
 
