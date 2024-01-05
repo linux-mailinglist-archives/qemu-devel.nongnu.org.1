@@ -2,71 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF33B8255B1
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C25182560C
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:48:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLlMm-000659-Il; Fri, 05 Jan 2024 09:40:08 -0500
+	id 1rLlTN-0007x0-K7; Fri, 05 Jan 2024 09:46:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1rLlMk-00064z-Di
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:40:06 -0500
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLlTF-0007ue-JH
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:46:50 -0500
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1rLlMi-0007yg-Jt
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:40:06 -0500
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-5ced19f15c3so824228a12.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 06:40:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLlTE-0003cP-0r
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 09:46:49 -0500
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-a26ed1e05c7so195605266b.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 06:46:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1704465602; x=1705070402; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=klNYkt3KRaSo8ShKxrTNAFGyD4ke/A+cj/8a/FPAh1w=;
- b=GCCpvFQ51SzTCF+ek3s0djenrkLyAFC7WKYE3BnAPXdVcprsqp/Ei8dFJXUU3qptAd
- Ef/uh7OsE9KU1jyW18/PP6cNr4rBi9GFtalXYG6LyKjEdsHXuFvVN1FXzNbZQTr2MuES
- pCFZlA9c09Ti4Hkao5fuBJNU/jx2xB4qy4Rtz05wn9vfKGGz4U/6n1UJZKBn5O7z4C9p
- hv2A2IfF6DSwU6mXv6w1jvWTWiIZ8gdS+1jaOJQNGALR8Rk2zfkxgkCns/p14SF7TMBE
- jszD7jMYR0dlNMwk4JZdZtpizyb7e0IuCrFGdXVKKhZpgU/ZzkWVFmD1uUQCW6hL/cDR
- bxgA==
+ d=linaro.org; s=google; t=1704466006; x=1705070806; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=4q2PRBt+A+8v/H6PAfohK1hhNC1DLucOWK2Y3cCn9GA=;
+ b=xT0C684oi3lkkTq4HxOLe1KabzL2J/Ru6xFLtWDt6SlTrXIcXUP7/0mthLN+6lXsnU
+ FlK9kKqPxxaBK0zwuEmbIXwTdqdiHzmTYNbS/OYvBddiyeiSQeHkj/j7FU1JNVztey8z
+ UnXE9XEIrTU4B01zVXbD0Ip8b2D8FEa/yMRUDOzlJVEuvqqoa2F9RgKUCKojBAazQvi3
+ Qs4DnJ9gyUrGWmQJ3ZwBRE1PLrCUE9eluwfRYo5eJ/cWEnGDFpoBQSmdHpx0YpFwZZA8
+ hnA5Afo+dvcn/AwcqIs26BPX7NctcszuAIvdQuSLfEmz+CxMoFae9559B5yXNYQ5ipD7
+ /APg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704465602; x=1705070402;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=klNYkt3KRaSo8ShKxrTNAFGyD4ke/A+cj/8a/FPAh1w=;
- b=CkOUyULmTfdeIXtOc5H9vqoHWbz2LMdtjo4nv1V0WgNKbu7awhVgQkccAnvYrxnQLA
- vrmBJXyl4qB6/3PAh2Va/av0YmNOYHbh1w/TUvd1mHI6fVaXU3x2xPe3ZkKfbg1X85Fc
- UcXEsbbgU/ZKKr+J8pxnUN5f3igiYFZ1fQHAEXVRfMll9LV2vNIVgWfPb3J8r+G7VyG8
- RKjFDU4vCFwWcU1m1BztiEUuYfuSoEeW8xjU/FIPc0J0BPN6Eky70mR6bH6ENN+3+I6M
- bKNY/nRi2N6bWfQvIAm3ZAG2sCJSBs4UC0ChnjWnV5FqOYXDELP9dru9tHGXBmLDGpua
- QxWw==
-X-Gm-Message-State: AOJu0Yx/AokCc5DiJvyhAyY+9Ry9sDs7VhGIt7VEkudNd+OvOfrUSilr
- RsayMNclpuFmErL6vqUKNEWMuBb7hff2jXWDbyQGwsmyQrmS
-X-Google-Smtp-Source: AGHT+IGUa5RveMfl3Kd5SFsLiLsi1Ulv+LrpSzvdZj7p+isUNZKWVqHYqQMC+bL7cerbpygCaeJ20yKc/yOlITs9PqE=
-X-Received: by 2002:a17:90a:1c82:b0:282:d080:feed with SMTP id
- t2-20020a17090a1c8200b00282d080feedmr1947853pjt.40.1704465601959; Fri, 05 Jan
- 2024 06:40:01 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704466006; x=1705070806;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4q2PRBt+A+8v/H6PAfohK1hhNC1DLucOWK2Y3cCn9GA=;
+ b=EZe7U6k0HViO3BQPS1hPab6ImDch9V2KzYMTiJqNUSiwc0IoxC//GHfllvmqo4/J8g
+ cXdTT6oaiOChS8Kb7lBIiw90idKw0jOJnBqh7DsX3GnWqs4f2OA1QYrHtAIw/R1PRqtB
+ Iz/rBblgk6WBOJkivfa5ZZgVhLz2fD+PesEqc0bRWXJkUrnGmFiWU58gMbKv9m17DF2l
+ mslCX+uCJrSbJgv2xAqVBLg04TSn9ci2BUUJvmF8+iYhawGOd6tMgMKnmHsLkF4uJQFT
+ GUcXFdfMYjVVUl6U3w54tSvP7zjChU6J0T8P8G0O/XyvYPWr2akd1bunOZtQnI1lfPRM
+ L/PA==
+X-Gm-Message-State: AOJu0YwV9Mn1WhKrQS9IjeNrdQIuj1YjBhJrzB+CBa/W1OxhJa+VlylB
+ 3lU9uZbM5m61cqe9u8dBT36cqnlEdQYF2A==
+X-Google-Smtp-Source: AGHT+IGZyZI5euoER8n1OHXUg290vvQO/I1fJoxzNxqWvhHLH9p7iCV7lRqJ1F0iiLUH0cCHsVqdQQ==
+X-Received: by 2002:a17:907:b9c9:b0:a28:e4d3:7b1a with SMTP id
+ xa9-20020a170907b9c900b00a28e4d37b1amr801141ejc.154.1704466006275; 
+ Fri, 05 Jan 2024 06:46:46 -0800 (PST)
+Received: from [192.168.69.100] (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
+ [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
+ jo21-20020a170906f6d500b00a275637e699sm942950ejb.166.2024.01.05.06.46.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 05 Jan 2024 06:46:45 -0800 (PST)
+Message-ID: <af352e7d-3346-4705-be77-6eed86858d18@linaro.org>
+Date: Fri, 5 Jan 2024 15:46:43 +0100
 MIME-Version: 1.0
-References: <20240105102421.163554-1-chigot@adacore.com>
- <20240105102421.163554-2-chigot@adacore.com>
- <104080fa-71d2-41a8-b273-171173d6cb44@linaro.org>
-In-Reply-To: <104080fa-71d2-41a8-b273-171173d6cb44@linaro.org>
-From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Date: Fri, 5 Jan 2024 15:39:50 +0100
-Message-ID: <CAJ307Ei8E8x8Jncy-5+-2KoSwCE12QggKM_ynnAJ_Tg5qgG_nw@mail.gmail.com>
-Subject: Re: [PATCH 1/9] sparc/grlib: split out the headers for each
- peripherals
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Frederic Konrad <konrad.frederic@yahoo.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=chigot@adacore.com; helo=mail-pg1-x534.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-9.0 03/25] memory: Have
+ memory_region_init_rom_nomigrate() handler return a boolean
+Content-Language: en-US
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Cc: David Hildenbrand <david@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, qemu-ppc@nongnu.org,
+ =?UTF-8?Q?C_=C3=A9_dric_Le_Goater?= <clg@kaod.org>,
+ Peter Xu <peterx@redhat.com>
+References: <20231120213301.24349-1-philmd@linaro.org>
+ <20231120213301.24349-4-philmd@linaro.org> <4h38a.h95poe276hnn@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <4h38a.h95poe276hnn@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,91 +100,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 5, 2024 at 3:00=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd@=
-linaro.org> wrote:
->
-> On 5/1/24 11:24, Cl=C3=A9ment Chigot wrote:
-> > ... and move them in their right hardware directory.
-> >
-> > Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
-> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
-> > ---
-> >   hw/char/grlib_apbuart.c                       |  4 +--
-> >   hw/intc/grlib_irqmp.c                         |  4 +--
-> >   hw/sparc/leon3.c                              |  6 ++--
-> >   hw/timer/grlib_gptimer.c                      |  4 +--
-> >   include/hw/char/grlib_uart.h                  | 30 ++++++++++++++++++=
-+
-> >   .../hw/{sparc/grlib.h =3D> intc/grlib_irqmp.h}  | 14 +++------
-> >   include/hw/timer/grlib_gptimer.h              | 30 ++++++++++++++++++=
-+
-> >   7 files changed, 74 insertions(+), 18 deletions(-)
-> >   create mode 100644 include/hw/char/grlib_uart.h
-> >   rename include/hw/{sparc/grlib.h =3D> intc/grlib_irqmp.h} (86%)
-> >   create mode 100644 include/hw/timer/grlib_gptimer.h
->
-> This still matches the MAINTAINERS patterns, good.
->
-> > diff --git a/include/hw/char/grlib_uart.h b/include/hw/char/grlib_uart.=
-h
-> > new file mode 100644
-> > index 0000000000..b67da6c62a
-> > --- /dev/null
-> > +++ b/include/hw/char/grlib_uart.h
-> > @@ -0,0 +1,30 @@
-> > +/*
-> > + * QEMU GRLIB UART
-> > + *
-> > + * Copyright (c) 2024 AdaCore
-> > + *
-> > + * Permission is hereby granted, free of charge, to any person obtaini=
-ng a copy
-> > + * of this software and associated documentation files (the "Software"=
-), to deal
-> > + * in the Software without restriction, including without limitation t=
-he rights
-> > + * to use, copy, modify, merge, publish, distribute, sublicense, and/o=
-r sell
-> > + * copies of the Software, and to permit persons to whom the Software =
-is
-> > + * furnished to do so, subject to the following conditions:
-> > + *
-> > + * The above copyright notice and this permission notice shall be incl=
-uded in
-> > + * all copies or substantial portions of the Software.
-> > + *
-> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXP=
-RESS OR
-> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABI=
-LITY,
-> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT S=
-HALL
-> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES O=
-R OTHER
-> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARI=
-SING FROM,
-> > + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALI=
-NGS IN
-> > + * THE SOFTWARE.
->
-> When adding license, SPDX tag is prefered (although not enforced)
-> because it eases tools parsing.
+On 21/11/23 13:10, Manos Pitsidianakis wrote:
+> On Mon, 20 Nov 2023 23:32, Philippe Mathieu-Daudé <philmd@linaro.org> 
+> wrote:
+>> Following the example documented since commit e3fe3988d7 ("error:
+>> Document Error API usage rules"), have cpu_exec_realizefn()
+>> return a boolean indicating whether an error is set or not.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> include/exec/memory.h | 4 +++-
+>> system/memory.c       | 8 ++++++--
+>> 2 files changed, 9 insertions(+), 3 deletions(-)
 
-Should it be something like this ?
- * SPDX-FileCopyrightText: 20xx-2024 Adacore
- * SPDX-License-Identifier: MIT
 
-Would updating, now, all those files make it better ?
+>> diff --git a/system/memory.c b/system/memory.c
+>> index 337b12a674..bfe0b62d59 100644
+>> --- a/system/memory.c
+>> +++ b/system/memory.c
+>> @@ -1729,14 +1729,18 @@ void memory_region_init_alias(MemoryRegion *mr,
+>>     mr->alias_offset = offset;
+>> }
+>>
+>> -void memory_region_init_rom_nomigrate(MemoryRegion *mr,
+>> +bool memory_region_init_rom_nomigrate(MemoryRegion *mr,
+>>                                       Object *owner,
+>>                                       const char *name,
+>>                                       uint64_t size,
+>>                                       Error **errp)
+>> {
+>> -    memory_region_init_ram_flags_nomigrate(mr, owner, name, size, 0, 
+>> errp);
+>> +    bool rv;
+>> +
+>> +    rv = memory_region_init_ram_flags_nomigrate(mr, owner, name, 
+>> size, 0, errp);
+>>     mr->readonly = true;
+>> +
+> 
+> By the way, do we want to set mr->readonly on failure? Should there be 
+> modifications if an error is propagated upwards?
 
-> > + */
-> > +
-> > +#ifndef GRLIB_UART_H
-> > +#define GRLIB_UART_H
-> > +
-> > +#define TYPE_GRLIB_APB_UART "grlib-apbuart"
-> > +
-> > +#endif
->
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->
+Good point, I'm squashing:
+
+-- >8 --
+diff --git a/system/memory.c b/system/memory.c
+index a748de3694..72c6441e20 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1707,12 +1707,13 @@ bool 
+memory_region_init_rom_nomigrate(MemoryRegion *mr,
+                                        uint64_t size,
+                                        Error **errp)
+  {
+-    bool rv;
+-
+-    rv = memory_region_init_ram_flags_nomigrate(mr, owner, name, size, 
+0, errp);
++    if (!memory_region_init_ram_flags_nomigrate(mr, owner, name,
++                                                size, 0, errp)) {
++         return false;
++    }
+      mr->readonly = true;
+
+-    return rv;
++    return true;
+  }
+---
 
