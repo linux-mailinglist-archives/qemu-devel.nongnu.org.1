@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A12A7825777
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 17:01:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C03EC825700
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 16:48:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLmOW-0000jE-LB; Fri, 05 Jan 2024 10:46:04 -0500
+	id 1rLmPB-0002jF-QU; Fri, 05 Jan 2024 10:46:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmNc-0000TB-AS
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:45:04 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmNl-0000x6-7X
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:45:20 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmNZ-0003PU-CF
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:45:03 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40e3b43173eso2025055e9.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:45:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rLmNh-0003c9-Pu
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 10:45:12 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-40d858c56cbso19542055e9.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 07:45:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704469499; x=1705074299; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704469505; x=1705074305; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QZuAr3GGN/pOvffPY8+fLddBxJHGJfB6Dvfc17Jcg0E=;
- b=hQiB8IA1hhYuYpdQNeCxIID2eAzyigfnquvRK+W0GKHdvwtMiaE4WLwvzI58qlGIWN
- l5BeDm0XbIhRqlK3yHTMhPBVNtAGuRnd5jb4w0bi9vJS4ZJ6kQ4zftDEJzlwwv9/bUwx
- QqIiBRmLKqqXXcaytTmeWYTj5YQOelenLOqrPkKCN/F8Bv9P9Aj/0IPYdNrkHngA11Ow
- XW1ngewoFSpeB8+270VllBuriwO9XEsVZH6ZSFJ4xgwE3jyNPmIfcc5pyxEtf65EWv9k
- NMEGozYDQCbEqX9y+DYEjtJWRSY1YBAbGeh1kKvy7wi6wmZmxR7VUbUi50GJpM6Ee+r0
- /DAQ==
+ bh=24gk9foSLxYRl9r29iWk8lo8oQhlMpaHzfjXYQc2w0g=;
+ b=Z0Za4Xu/w0dNjdmtf3ySVKB5dtUAAFIYjkirdl65q6kjc8SqOYSu0x8AHH53VoBcYP
+ DxEtSaBVn8e+hbzgf3M94NDMvVUf+XdyF2Ta8pxuBZ/Tfn66M2CFd8NSfe7CkHwKfAfX
+ cX7PPOfmkdKUJj9rASrpe07m0YMR07g1ysWqsHLbUg8jImO5IPoNRmGMN7VHCSFf5Xzc
+ X6Qnf0z6D5UyBZcFDMXx0Hq7jFC/pWA0YC0JK0dnyyPhnbT8/A01Phh6SIe+DSb93422
+ FQLV+aRYxPcGdQeOeo+Gv+3q1xZjY5YKqphgBxxbQuYCCOKDzJLuTxgMGoCzcxpD34sL
+ r5Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704469499; x=1705074299;
+ d=1e100.net; s=20230601; t=1704469505; x=1705074305;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QZuAr3GGN/pOvffPY8+fLddBxJHGJfB6Dvfc17Jcg0E=;
- b=fK3qHfg1NFJzO0oCGoI3ovr3h1NWINnkXxmWavlBOBthemG9q7c/YN5Hf8h8wPMiHl
- CPV7tZYKeKCG8KUtCJAAx+anLPbxgwsXATQ0LPUVMelxnEz30TixBrUapOjY2nBFG+5A
- Vu08zmJBQOIg5wB+PDD+ZINFP9kLBUy6c2h6dOVT3/B3qmwcAep8a8S11dPzSR5fBH/U
- Ac//5+SpRa24aH7vNaJnAobzTbIbKxro/EB9K0maCd+Bdoe8T32/qzqfLbYLww/cJGdg
- 8NIo475TjcWqvee2R/4oXpIGszWvFqjFSnKKYuFP2dHGfih3lAmRgXnT+u7GxWaoo6aS
- u1tg==
-X-Gm-Message-State: AOJu0YznMbJWUIYfQDUCafuTib7qHZ9Ovw6CGcDD4qAkBXg35XhoUO1n
- GkB2fDAbFiQFa646vB9FHWQwyP4ft2JNIGj77XOUtrAVA/E=
-X-Google-Smtp-Source: AGHT+IGny8+SWTY6U144UBNwNlW/E/DP/64K/J5QwVFnNt0tgleVhyFrf3a592It1vnOgIMtqfPFDQ==
-X-Received: by 2002:a05:600c:510e:b0:40d:190c:160f with SMTP id
- o14-20020a05600c510e00b0040d190c160fmr885239wms.110.1704469499779; 
- Fri, 05 Jan 2024 07:44:59 -0800 (PST)
+ bh=24gk9foSLxYRl9r29iWk8lo8oQhlMpaHzfjXYQc2w0g=;
+ b=KoWOyktMFSkBiE1XpSVSmibBT/DfipktDm/Kzmj5PZm71CGhPH6TsKqso6DsIIgoAn
+ r9SScIb548MkXefZTkonTMaJsazIniGmtd8wsI7FzjiwQRNpZGWvoVoHl/kIbUevWFxs
+ UifiBTFv3fnBru5R3baTpFjjsipQ0kXLVgnDU12PNuC5ms9mLjimNZ5JhgNogCskGDZF
+ fc02dCXtgvlefneIL9+wLRuuYEoxFemgTZns8NOj/UcPz0MDPiGEY9/qlv7KH2wfdFDr
+ lRKT1hhBi4Vqfsp33RtXBUR6UP5vRsB6lYKj4mhA3aVYLEO/G9vD442bVsGGu4SIAANw
+ R+tA==
+X-Gm-Message-State: AOJu0YwsTVVYrfmVIu6ihqVhH0Y0C6N2RCj+P/NjvtuocP9b6fMSMnMi
+ 9iDMKHprWCfZJUfKv6j3ORY39rXNaHGWRYq0synrf5t8exg=
+X-Google-Smtp-Source: AGHT+IF9Hyrc8xX9hjDg+0Xi42zw0SlUymSR/8Z5AOHy5liOxnJ81syNtIPExDT6wZVX6DmjPJst1Q==
+X-Received: by 2002:a05:600c:1d17:b0:40d:850b:a19e with SMTP id
+ l23-20020a05600c1d1700b0040d850ba19emr1407108wms.82.1704469505433; 
+ Fri, 05 Jan 2024 07:45:05 -0800 (PST)
 Received: from m1x-phil.lan (juv34-h02-176-184-26-1.dsl.sta.abo.bbox.fr.
  [176.184.26.1]) by smtp.gmail.com with ESMTPSA id
- fl13-20020a05600c0b8d00b0040d8af75e19sm1958682wmb.24.2024.01.05.07.44.58
+ g11-20020a05600c310b00b0040d94b65342sm1915385wmo.48.2024.01.05.07.45.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jan 2024 07:44:59 -0800 (PST)
+ Fri, 05 Jan 2024 07:45:05 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
@@ -61,17 +61,17 @@ Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PULL 18/71] target/rx: Use generic cpu_list()
-Date: Fri,  5 Jan 2024 16:42:11 +0100
-Message-ID: <20240105154307.21385-19-philmd@linaro.org>
+Subject: [PULL 19/71] target/sh4: Use generic cpu_list()
+Date: Fri,  5 Jan 2024 16:42:12 +0100
+Message-ID: <20240105154307.21385-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240105154307.21385-1-philmd@linaro.org>
 References: <20240105154307.21385-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,67 +98,76 @@ From: Gavin Shan <gshan@redhat.com>
 
 Before it's applied:
 
-[gshan@gshan q]$ ./build/qemu-system-rx -cpu ?
-Available CPUs:
-  rx62n-rx-cpu
+[gshan@gshan q]$ ./build/qemu-system-sh4 -cpu ?
+sh7750r
+sh7751r
+sh7785
 
 After it's applied:
 
-[gshan@gshan q]$ ./build/qemu-system-rx -cpu ?
+[gshan@gshan q]$ ./build/qemu-system-sh4 -cpu ?
 Available CPUs:
-  rx62n
+  sh7750r
+  sh7751r
+  sh7785
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231114235628.534334-19-gshan@redhat.com>
+Message-ID: <20231114235628.534334-20-gshan@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/rx/cpu.h |  3 ---
- target/rx/cpu.c | 16 ----------------
- 2 files changed, 19 deletions(-)
+ target/sh4/cpu.h |  3 ---
+ target/sh4/cpu.c | 17 -----------------
+ 2 files changed, 20 deletions(-)
 
-diff --git a/target/rx/cpu.h b/target/rx/cpu.h
-index e931e77e85..65f9cd2d0a 100644
---- a/target/rx/cpu.h
-+++ b/target/rx/cpu.h
-@@ -139,11 +139,8 @@ int rx_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
- int rx_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
+diff --git a/target/sh4/cpu.h b/target/sh4/cpu.h
+index 031dc0b457..0e6fa65bae 100644
+--- a/target/sh4/cpu.h
++++ b/target/sh4/cpu.h
+@@ -238,7 +238,6 @@ G_NORETURN void superh_cpu_do_unaligned_access(CPUState *cpu, vaddr addr,
+                                                uintptr_t retaddr);
  
- void rx_translate_init(void);
--void rx_cpu_list(void);
- void rx_cpu_unpack_psw(CPURXState *env, uint32_t psw, int rte);
+ void sh4_translate_init(void);
+-void sh4_cpu_list(void);
  
--#define cpu_list rx_cpu_list
+ #if !defined(CONFIG_USER_ONLY)
+ hwaddr superh_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
+@@ -272,8 +271,6 @@ void cpu_load_tlb(CPUSH4State * env);
+ 
+ #define CPU_RESOLVING_TYPE TYPE_SUPERH_CPU
+ 
+-#define cpu_list sh4_cpu_list
 -
- #include "exec/cpu-all.h"
- 
- #define CPU_INTERRUPT_SOFT CPU_INTERRUPT_TGT_INT_0
-diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index 9cc9d9d15e..c5ffeffe32 100644
---- a/target/rx/cpu.c
-+++ b/target/rx/cpu.c
-@@ -89,22 +89,6 @@ static void rx_cpu_reset_hold(Object *obj)
-     set_flush_inputs_to_zero(1, &env->fp_status);
+ /* MMU modes definitions */
+ #define MMU_USER_IDX 1
+ static inline int cpu_mmu_index (CPUSH4State *env, bool ifetch)
+diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
+index a8ec98b134..806a0ef875 100644
+--- a/target/sh4/cpu.c
++++ b/target/sh4/cpu.c
+@@ -122,23 +122,6 @@ static void superh_cpu_disas_set_info(CPUState *cpu, disassemble_info *info)
+     info->print_insn = print_insn_sh;
  }
  
--static void rx_cpu_list_entry(gpointer data, gpointer user_data)
+-static void superh_cpu_list_entry(gpointer data, gpointer user_data)
 -{
--    ObjectClass *oc = data;
+-    const char *typename = object_class_get_name(OBJECT_CLASS(data));
+-    int len = strlen(typename) - strlen(SUPERH_CPU_TYPE_SUFFIX);
 -
--    qemu_printf("  %s\n", object_class_get_name(oc));
+-    qemu_printf("%.*s\n", len, typename);
 -}
 -
--void rx_cpu_list(void)
+-void sh4_cpu_list(void)
 -{
 -    GSList *list;
--    list = object_class_get_list_sorted(TYPE_RX_CPU, false);
--    qemu_printf("Available CPUs:\n");
--    g_slist_foreach(list, rx_cpu_list_entry, NULL);
+-
+-    list = object_class_get_list_sorted(TYPE_SUPERH_CPU, false);
+-    g_slist_foreach(list, superh_cpu_list_entry, NULL);
 -    g_slist_free(list);
 -}
 -
- static ObjectClass *rx_cpu_class_by_name(const char *cpu_model)
+ static ObjectClass *superh_cpu_class_by_name(const char *cpu_model)
  {
      ObjectClass *oc;
 -- 
