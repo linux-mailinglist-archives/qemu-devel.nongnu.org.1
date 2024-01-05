@@ -2,88 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C141982527F
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 11:58:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20638825637
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jan 2024 15:58:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLhtl-0003nP-8t; Fri, 05 Jan 2024 05:57:57 -0500
+	id 1rLlcc-0005M3-BS; Fri, 05 Jan 2024 09:56:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1rLhtj-0003n3-Ap
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 05:57:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <273415826@qq.com>) id 1rLhzV-0006MD-VV
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:03:53 -0500
+Received: from out162-62-57-210.mail.qq.com ([162.62.57.210])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1rLhth-00031H-LK
- for qemu-devel@nongnu.org; Fri, 05 Jan 2024 05:57:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704452272;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=N9Iuy1O/MzSQAIE19zAD+fanRbhxddtcavkTM5bywOY=;
- b=B/heW3EVm9kfmhuSM0qtSJ+QIHNBBlHAHi63GEYSG1jDqwY6iTMZDH5dtCN+26RPgybvML
- gVFD+HuY+GnIBePi+icbUIJCr7XTXG/Jlt9Ga8rzrkOBDTF9XZnvDZwReA4V4A/+2V+PCA
- DVl2WuWbb+i5znXlJuttndQa+JfBgRQ=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-82-t8d3vmoGNhilmEadvIB0HA-1; Fri, 05 Jan 2024 05:57:50 -0500
-X-MC-Unique: t8d3vmoGNhilmEadvIB0HA-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5560cd16f03so853145a12.2
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 02:57:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704452270; x=1705057070;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=N9Iuy1O/MzSQAIE19zAD+fanRbhxddtcavkTM5bywOY=;
- b=eRgjC0saQRJw4GfFUbTOBeXIEhxZd5R7jxYimfdoV8UErJWx16MWsvu0dhkdmyhcup
- BE1nlfIijCr0782OXhXYE1ECqa0rokpy/0vF3wkENVuzxFKUSe3PMTepdWe2lnVXjxh6
- fulEAfpFG+A5XMHYWE9RIXF1q35BOh5j0HYaJ9dSYSwrlNRD5Ezuti0/6Zfsl6NQcmep
- il0SFE9mrTubja832IYfNsOyHONjI5bOc9pl7s35g+zmc6fpS6IQ4/otmZvRJi9zbKy7
- Rxr8Y1FQfYLMzDdxGW9HRaoKdqafhfmL5R9ONJjz6agyviDHDtON2NJmkCEW5XeChLgD
- 8Mzg==
-X-Gm-Message-State: AOJu0Yz+0IQC+RBlPZpfbgfNYz7hSQyIESRr/PbwHdwWXkKKUxdy04fq
- 0S83VnheNNuGS8qIL4j3R2AGtEnNf/ZAcGi7GWRkaSyL3KF9viqvONzvjhpF76R0RsFasUyWZ9s
- pf2DC5HgjbHNi5CsEuu10dmsjKo+x1RjgPNilZO0=
-X-Received: by 2002:a50:9308:0:b0:553:739e:bfac with SMTP id
- m8-20020a509308000000b00553739ebfacmr1155761eda.8.1704452269872; 
- Fri, 05 Jan 2024 02:57:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGEkkdilOJ/kotKXsYobUSA3IjYU8QOZuX5T7RPd5lulXrrPVc2vVA9MnVX+XXNQNhMr6vmqcj+DKmDtF+qxPE=
-X-Received: by 2002:a50:9308:0:b0:553:739e:bfac with SMTP id
- m8-20020a509308000000b00553739ebfacmr1155754eda.8.1704452269595; Fri, 05 Jan
- 2024 02:57:49 -0800 (PST)
-MIME-Version: 1.0
-References: <b416aee3-72a9-4642-b219-3e1800ee5b3c@t-online.de>
- <20240104203422.12308-3-vr_qemu@t-online.de>
-In-Reply-To: <20240104203422.12308-3-vr_qemu@t-online.de>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Fri, 5 Jan 2024 14:57:38 +0400
-Message-ID: <CAMxuvax9fswBrmQ9VnG=ZA-hF_BZPPY70o-iyyLNi_f+WxydOA@mail.gmail.com>
-Subject: Re: [PATCH 03/10] hw/audio/virtio-sound: split out
- virtio_snd_pcm_start_stop()
-To: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.691,
+ (Exim 4.90_1) (envelope-from <273415826@qq.com>) id 1rLhzO-0002DU-Ry
+ for qemu-devel@nongnu.org; Fri, 05 Jan 2024 06:03:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+ t=1704452616; bh=fZlpwb4e6HTj98yWEJZT9ZhaA+LqvcFH+S615GnUCMk=;
+ h=From:To:Subject:Date;
+ b=ba7hlhJAXZuE6O0mL6qu1QIvLspaClcP51VbcVBnInLfnREDlW+gDdS6lOooBHEAe
+ oY5JjG+95TDn0UdR7NJdgGXTDLiZuJ7rzNk+NGF/lgckMlBjt+QSZ/2rgjrNAqkkpN
+ QXKRfrBlWmN4cSDFkQQwwoENqCqLUcBQWy2qCMYI=
+X-QQ-FEAT: oHWrrGTW1dBM1wq2dbSTgn8AaBOV+Hnu
+X-QQ-SSF: 00000000000000F0000000000000
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-XMAILINFO: N0JG5d2dvsRDdGVHIAu6ccWWDHmCJr5wlzRxZElPGtRY8TOcxWB69NQuj/CijH
+ o3noYWxeQ+crDFR48LujD6l/MSFppbibNPdwO7wsJx/G96igXZstj5+rnMimj8rLQkraxY/TTz/Fa
+ w3msjnOOmlaKQcYXzsmIqN11EOmITeSVFx7MmBt8s0rJwXcFXgFDS9hQ4H62+Uq9rAa//lZ58a6Pe
+ XBCO6L9M83TMyxc3iH4OTOGdJJ42707pwGfgWsi+n+tHYQAu8OUVnXJf+H/UtHsB7KzHFxvspXYn2
+ y/kH1RfpLuG/DblA9bjKBu0ISh8+xe9rP6Bfe4D4hsBo4q0qSBlnrRmDWHUYdDfAIt+dliqEdIr6P
+ b8xdUJ4X6ZytnFP5qM6b6fh67NgZ1dsM+Vqp2W2Q7F7m7NY1iqDQAJMyTkjwTINEpa9OmqKlXtnm0
+ kxFiEA7++CHuQnYJPVH/dqQU5ssnXt7T45WAi2bb+lRaouitr+ygQ8j408BuSghx9wOLFydJwu9f1
+ DzhNKoWjPuqjulOfroKzXVTHXRnLZe/5LpCccwiR7kDjxr8VQR/HZCso+dz5S6R+HILqOWHrEtJc/
+ pdOLZqt2l9tpuVGpM9+7qFhiKp62JZb76k26ZBUlYkMGvfCbR1XL0lYz/1YENiL0AVeyZN61rBbl9
+ UkHJDsjvGgRd/hcrqjNLCIrV2FdU6mw5HUywa47JYxOG0jG5jXKDAAG60QegO0SETOrNRQWCkNJIc
+ 4zoHaqcK5ee04bms/Us/AlymqFdWJMsheCUSXpZEPi7xhw/21OGzZeTcxhAAW8Af0WhVGRev4cQEo
+ bYztBxwRpEL0hde5+MDYzpnyAyqv0g1rhfWpi6wCEM29UV2zsbLWPRHimdWkoomUWERh3F7nlqdnz
+ M3mdvfkof5aYkpR5FQJCGuxdx9AcQDGnVbRH7YtA8ke0WzKrTmqkbHyneZzUI6wdSs5mRky0S4=
+X-HAS-ATTACH: no
+X-QQ-BUSINESS-ORIGIN: 2
+X-Originating-IP: 223.108.197.101
+X-QQ-STYLE: 
+X-QQ-mid: webmail438t1704452415t3657280
+From: "=?gb18030?B?1tzNrw==?=" <273415826@qq.com>
+To: "=?gb18030?B?cWVtdS1kZXZlbA==?=" <qemu-devel@nongnu.org>,
+ "=?gb18030?B?bGludXgtY3hs?=" <linux-cxl@vger.kernel.org>
+Subject: Question about CXL emulation in QEMU
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="----=_NextPart_6597E13E_191B31C0_2CB9C4A4"
+Content-Transfer-Encoding: 8Bit
+Date: Fri, 5 Jan 2024 19:00:14 +0800
+X-Priority: 3
+Message-ID: <tencent_7710D323F3DCBEF4BEAAF17BB3AF851D4707@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+Received-SPF: pass client-ip=162.62.57.210; envelope-from=273415826@qq.com;
+ helo=out162-62-57-210.mail.qq.com
+X-Spam_score_int: 67
+X-Spam_score: 6.7
+X-Spam_bar: ++++++
+X-Spam_report: (6.7 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
-X-Spam_action: no action
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ HELO_DYNAMIC_IPADDR=1.951, HTML_MESSAGE=0.001, MIME_CHARSET_FARAWAY=2.45,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RDNS_DYNAMIC=0.982, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_TVD_MIME_EPI=0.01 autolearn=no autolearn_force=no
+X-Spam_action: reject
+X-Mailman-Approved-At: Fri, 05 Jan 2024 09:56:22 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,132 +86,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 5, 2024 at 12:34=E2=80=AFAM Volker R=C3=BCmelin <vr_qemu@t-onli=
-ne.de> wrote:
->
-> Split out virtio_snd_pcm_start_stop(). This is a preparation
-> for the next patch so that it doesn't become too big.
->
-> Signed-off-by: Volker R=C3=BCmelin <vr_qemu@t-online.de>
+This is a multi-part message in MIME format.
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+------=_NextPart_6597E13E_191B31C0_2CB9C4A4
+Content-Type: text/plain;
+	charset="gb18030"
+Content-Transfer-Encoding: base64
 
-> ---
->  hw/audio/trace-events |  3 ++-
->  hw/audio/virtio-snd.c | 57 ++++++++++++++++++++++++++++---------------
->  2 files changed, 39 insertions(+), 21 deletions(-)
->
-> diff --git a/hw/audio/trace-events b/hw/audio/trace-events
-> index b1870ff224..7554bfcc60 100644
-> --- a/hw/audio/trace-events
-> +++ b/hw/audio/trace-events
-> @@ -50,7 +50,8 @@ virtio_snd_unrealize(void *snd) "snd %p: unrealize"
->  virtio_snd_handle_pcm_set_params(uint32_t stream) "VIRTIO_SND_PCM_SET_PA=
-RAMS called for stream %"PRIu32
->  virtio_snd_handle_ctrl(void *vdev, void *vq) "snd %p: handle ctrl event =
-for queue %p"
->  virtio_snd_handle_pcm_info(uint32_t stream) "VIRTIO_SND_R_PCM_INFO calle=
-d for stream %"PRIu32
-> -virtio_snd_handle_pcm_start_stop(const char *code, uint32_t stream) "%s =
-called for stream %"PRIu32
-> +virtio_snd_handle_pcm_start(uint32_t stream) "VIRTIO_SND_R_PCM_START cal=
-led for stream %"PRIu32
-> +virtio_snd_handle_pcm_stop(uint32_t stream) "VIRTIO_SND_R_PCM_STOP calle=
-d for stream %"PRIu32
->  virtio_snd_handle_pcm_release(uint32_t stream) "VIRTIO_SND_PCM_RELEASE c=
-alled for stream %"PRIu32
->  virtio_snd_handle_code(uint32_t val, const char *code) "ctrl code msg va=
-l =3D %"PRIu32" =3D=3D %s"
->  virtio_snd_handle_chmap_info(void) "VIRTIO_SND_CHMAP_INFO called"
-> diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-> index 36b1bb502c..040bc32ebe 100644
-> --- a/hw/audio/virtio-snd.c
-> +++ b/hw/audio/virtio-snd.c
-> @@ -534,7 +534,42 @@ static void virtio_snd_handle_pcm_prepare(VirtIOSoun=
-d *s,
->  }
->
->  /*
-> - * Handles VIRTIO_SND_R_PCM_START.
-> + * Starts/Stops a VirtIOSound card stream.
-> + * Returns the response status code. (VIRTIO_SND_S_*).
-> + *
-> + * @s: VirtIOSound device
-> + * @stream_id: stream id
-> + * @start: whether to start or stop the stream
-> + */
-> +static uint32_t virtio_snd_pcm_start_stop(VirtIOSound *s,
-> +                                          uint32_t stream_id,
-> +                                          bool start)
-> +{
-> +    VirtIOSoundPCMStream *stream;
-> +
-> +    stream =3D virtio_snd_pcm_get_stream(s, stream_id);
-> +    if (!stream) {
-> +        return cpu_to_le32(VIRTIO_SND_S_BAD_MSG);
-> +    }
-> +
-> +    if (start) {
-> +        trace_virtio_snd_handle_pcm_start(stream_id);
-> +    } else {
-> +        trace_virtio_snd_handle_pcm_stop(stream_id);
-> +    }
-> +
-> +    stream->active =3D start;
-> +    if (stream->info.direction =3D=3D VIRTIO_SND_D_OUTPUT) {
-> +        AUD_set_active_out(stream->voice.out, start);
-> +    } else {
-> +        AUD_set_active_in(stream->voice.in, start);
-> +    }
-> +
-> +    return cpu_to_le32(VIRTIO_SND_S_OK);
-> +}
-> +
-> +/*
-> + * Handles VIRTIO_SND_R_PCM_START and VIRTIO_SND_R_PCM_STOP.
->   *
->   * @s: VirtIOSound device
->   * @cmd: The request command queue element from VirtIOSound cmdq field
-> @@ -544,7 +579,6 @@ static void virtio_snd_handle_pcm_start_stop(VirtIOSo=
-und *s,
->                                               virtio_snd_ctrl_command *cm=
-d,
->                                               bool start)
->  {
-> -    VirtIOSoundPCMStream *stream;
->      virtio_snd_pcm_hdr req;
->      uint32_t stream_id;
->      size_t msg_sz =3D iov_to_buf(cmd->elem->out_sg,
-> @@ -562,24 +596,7 @@ static void virtio_snd_handle_pcm_start_stop(VirtIOS=
-ound *s,
->      }
->
->      stream_id =3D le32_to_cpu(req.stream_id);
-> -    cmd->resp.code =3D cpu_to_le32(VIRTIO_SND_S_OK);
-> -    trace_virtio_snd_handle_pcm_start_stop(start ? "VIRTIO_SND_R_PCM_STA=
-RT" :
-> -            "VIRTIO_SND_R_PCM_STOP", stream_id);
-> -
-> -    stream =3D virtio_snd_pcm_get_stream(s, stream_id);
-> -    if (stream) {
-> -        stream->active =3D start;
-> -        if (stream->info.direction =3D=3D VIRTIO_SND_D_OUTPUT) {
-> -            AUD_set_active_out(stream->voice.out, start);
-> -        } else {
-> -            AUD_set_active_in(stream->voice.in, start);
-> -        }
-> -    } else {
-> -        error_report("Invalid stream id: %"PRIu32, stream_id);
-> -        cmd->resp.code =3D cpu_to_le32(VIRTIO_SND_S_BAD_MSG);
-> -        return;
-> -    }
-> -    stream->active =3D start;
-> +    cmd->resp.code =3D virtio_snd_pcm_start_stop(s, stream_id, start);
->  }
->
->  /*
-> --
-> 2.35.3
->
+RGVhciBFeHBlcnRzLA0KDQpJIGFtIHdyaXRpbmcgdG8gc2VlayB5b3VyIGFzc2lzdGFuY2Ug
+YWJvdXQgQ1hMIGVtdWxhdGlvbiBpbiBRRU1VLiBJIGFtIFpob3UgVG9uZyBhbmQgSSBhbSBy
+ZXNlYXJjaGluZyBob3cgdG8gdXNlIFFFTVUgdG8gc2ltdWxhdGUgQ1hMIG92ZXIgRXRoZXJu
+ZXShow0KDQpJIHdhbnQgdG8gaW1wbGVtZW50IHJlbW90ZSByZWdpc3RyYXRpb24gb2YgQ1hM
+Lm1lbSBkZXZpY2VzIGJhc2VkIG9uIHRoZSBRT00gbW9kZWwuIFRoZSBnZW5lcmFsIGlkZWEg
+aXM6IHRoZSBDWEwgc2xhdmUgc2lkZSBub3RpZmllcyB0aGUgbWFzdGVyIHNpZGUgb2YgdGhl
+IHNpemUgb2YgdGhlIENYTCBtZW1vcnkgYW5kIG90aGVyIGNvbnRyb2wgaW5mb3JtYXRpb24g
+dGhyb3VnaCBFdGhlcm5ldCwgYW5kIHRoZSBtYXN0ZXIgc2lkZSByZWdpc3RlcnMgdGhlIENY
+TCBkZXZpY2UgbG9jYWxseSBiYXNlZCBvbiB0aGUgY29udHJvbCBpbmZvcm1hdGlvbi4gV2hl
+biB0aGUgbWFzdGVyIGFjY2Vzc2VzIHRoZSBDWEwgZGV2aWNlLCBLVk0gaXMgcmVzcG9uc2li
+bGUgZm9yIGludGVyY2VwdGluZyB0aGUgYWN0aW9uIG9mIGFjY2Vzc2luZyB0aGUgbWVtb3J5
+LCBhbmQgZW5jYXBzdWxhdGVzIHRoZSBDWEwgbWVzc2FnZSBhbmQgZm9yd2FyZHMgaXQgdG8g
+dGhlIHNsYXZlIHRocm91Z2ggRXRoZXJuZXSjrHVsdGltYXRlbHkgYWNoaWV2aW5nIHJlbW90
+ZSBDWEwgbWVtb3J5IGFjY2Vzcy4uIEFzayB0aGUgZXhwZXJ0cyBob3cgdG8gcmVnaXN0ZXIg
+dGhlIENYTCBkZXZpY2UgbG9jYWxseSBiYXNlZCBvbiB0aGUgY29udHJvbCBpbmZvcm1hdGlv
+biB3aXRob3V0IG9jY3VweWluZyB0aGUgSFZBIHJlc291cmNlcyBvZiB0aGUgbWFzdGVyIGhv
+c3QgKE9SIGRpc3BsYXkgdGhlIENYTCBkZXZpY2UpLg0KDQoNCg0KVGhhbmsgeW91IGluIGFk
+dmFuY2UgZm9yIHlvdXIgYXR0ZW50aW9uIHRvIHRoaXMgZW1haWwsIGFuZCBJIGVhZ2VybHkg
+bG9vayBmb3J3YXJkIHRvIGFueSBpbnNpZ2h0cyBvciBhZHZpY2UgeW91IG1heSBiZSBhYmxl
+IHRvIHByb3ZpZGUuIElmIHRoZXJlIGlzIGEgbW9yZSBjb252ZW5pZW50IHRpbWUgZm9yIHVz
+IHRvIGRpc2N1c3MgdGhpcyBtYXR0ZXIgZnVydGhlciwgcGxlYXNlIGxldCBtZSBrbm93LCBh
+bmQgSSB3aWxsIGJlIG1vcmUgdGhhbiBoYXBweSB0byBhY2NvbW1vZGF0ZSB5b3VyIHNjaGVk
+dWxlLg0KDQoNCk9uY2UgYWdhaW4sIHRoYW5rIHlvdSBmb3IgeW91ciBpbXBhY3RmdWwgY29u
+dHJpYnV0aW9ucyB0byB0aGUgb3Blbi1zb3VyY2UgY29tbXVuaXR5LCBhbmQgSSBncmVhdGx5
+IGFwcHJlY2lhdGUgeW91ciB0aW1lIGFuZCBjb25zaWRlcmF0aW9uLg0KDQoNCg0KUmVnYXJk
+LA0KDQoNClpob3UgVG9uZy4NCg0KDQoNCg0KDQoNCg0K1tzNrw0KMjczNDE1ODI2QHFxLmNv
+bQ0KDQoNCg0KJm5ic3A7
 
+------=_NextPart_6597E13E_191B31C0_2CB9C4A4
+Content-Type: text/html;
+	charset="gb18030"
+Content-Transfer-Encoding: base64
+
+PG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNo
+YXJzZXQ9R0IxODAzMCI+PGRpdj48ZGl2IHN0eWxlPSJmb250LWZhbWlseTogJnF1b3Q7bHVj
+aWRhIEdyYW5kZSZxdW90OywgVmVyZGFuYSwgJnF1b3Q7TWljcm9zb2Z0IFlhSGVpJnF1b3Q7
+OyI+RGVhciBFeHBlcnRzLDwvZGl2PjxkaXYgaWQ9Ijp0aSIgY2xhc3M9IkFyIEF1IEFvIiBq
+c2xvZz0iMTcxMDk3IiBzdHlsZT0iIj48ZGl2IGlkPSI6dG0iIGNsYXNzPSJBbSBhaUwgQWwg
+ZWRpdGFibGUgTFctYXZmIHRTLXRXIHRTLXRZIiBoaWRlZm9jdXM9InRydWUiIGFyaWEtbGFi
+ZWw9ItPKvP7V/c7EIiBnX2VkaXRhYmxlPSJ0cnVlIiByb2xlPSJ0ZXh0Ym94IiBhcmlhLW11
+bHRpbGluZT0idHJ1ZSIgdGFiaW5kZXg9IjEiIHNwZWxsY2hlY2s9ImZhbHNlIiBhcmlhLW93
+bnM9IjoxMXUiIGFyaWEtY29udHJvbHM9IjoxMXUiIGFyaWEtZXhwYW5kZWQ9ImZhbHNlIiBz
+dHlsZT0iZGlyZWN0aW9uOiBsdHI7IG1pbi1oZWlnaHQ6IDM3NnB4OyI+PHAgc3R5bGU9ImZv
+bnQtZmFtaWx5OiAmcXVvdDtsdWNpZGEgR3JhbmRlJnF1b3Q7LCBWZXJkYW5hLCAmcXVvdDtN
+aWNyb3NvZnQgWWFIZWkmcXVvdDs7IGxpbmUtaGVpZ2h0OiAyMy44cHg7IG1hcmdpbjogMHB4
+OyI+PHNwYW4gc3R5bGU9ImZvbnQtZmFtaWx5OiBDYW1icmlhOyBmb250LXNpemU6IGxhcmdl
+OyI+SSBhbSB3cml0aW5nIHRvIHNlZWsgeW91ciBhc3Npc3RhbmNlIGFib3V0IENYTCBlbXVs
+YXRpb24gaW4gUUVNVS4gSSBhbSBaaG91IFRvbmcgYW5kIEkgYW0gcmVzZWFyY2hpbmcgaG93
+IHRvIHVzZSBRRU1VIHRvIHNpbXVsYXRlIENYTCBvdmVyIEV0aGVybmV0oaM8L3NwYW4+PC9w
+PjxwIHN0eWxlPSJsaW5lLWhlaWdodDogMjMuOHB4OyBtYXJnaW46IDBweDsiPjxmb250IGZh
+Y2U9IkNhbWJyaWEiIHNpemU9IjQiPkkgd2FudCB0byBpbXBsZW1lbnQgcmVtb3RlIHJlZ2lz
+dHJhdGlvbiBvZiBDWEwubWVtIGRldmljZXMgYmFzZWQgb24gdGhlIFFPTSBtb2RlbC4gVGhl
+IGdlbmVyYWwgaWRlYSBpczogdGhlIENYTCBzbGF2ZSBzaWRlIG5vdGlmaWVzIHRoZSBtYXN0
+ZXIgc2lkZSBvZiB0aGUgc2l6ZSBvZiB0aGUgQ1hMIG1lbW9yeSBhbmQgb3RoZXIgY29udHJv
+bCBpbmZvcm1hdGlvbiB0aHJvdWdoIEV0aGVybmV0LCBhbmQgdGhlIG1hc3RlciBzaWRlIHJl
+Z2lzdGVycyB0aGUgQ1hMIGRldmljZSBsb2NhbGx5IGJhc2VkIG9uIHRoZSBjb250cm9sIGlu
+Zm9ybWF0aW9uLiBXaGVuIHRoZSBtYXN0ZXIgYWNjZXNzZXMgdGhlIENYTCBkZXZpY2UsIEtW
+TSBpcyByZXNwb25zaWJsZSBmb3IgaW50ZXJjZXB0aW5nIHRoZSBhY3Rpb24gb2YgYWNjZXNz
+aW5nIHRoZSBtZW1vcnksIGFuZCBlbmNhcHN1bGF0ZXMgdGhlIENYTCBtZXNzYWdlIGFuZCBm
+b3J3YXJkcyBpdCB0byB0aGUgc2xhdmUgdGhyb3VnaCBFdGhlcm5ldKOsdWx0aW1hdGVseSBh
+Y2hpZXZpbmcgcmVtb3RlIENYTCBtZW1vcnkgYWNjZXNzLjwvZm9udD48c3BhbiBzdHlsZT0i
+Zm9udC1mYW1pbHk6IENhbWJyaWE7IGZvbnQtc2l6ZTogbGFyZ2U7Ij4uIEFzayB0aGUgZXhw
+ZXJ0cyBob3cgdG8gcmVnaXN0ZXIgdGhlIENYTCBkZXZpY2UgbG9jYWxseSBiYXNlZCBvbiB0
+aGUgY29udHJvbCBpbmZvcm1hdGlvbiB3aXRob3V0IG9jY3VweWluZyB0aGUgSFZBIHJlc291
+cmNlcyBvZiB0aGUgbWFzdGVyIGhvc3QgKE9SIGRpc3BsYXkgdGhlIENYTCBkZXZpY2UpLjwv
+c3Bhbj48L3A+PHAgc3R5bGU9ImxpbmUtaGVpZ2h0OiAyMy44cHg7IG1hcmdpbjogMHB4OyI+
+PGZvbnQgZmFjZT0iQ2FtYnJpYSIgc2l6ZT0iNCI+PGJyPjwvZm9udD48L3A+PGRpdiBzdHls
+ZT0iZm9udC1mYW1pbHk6ICZxdW90O2x1Y2lkYSBHcmFuZGUmcXVvdDssIFZlcmRhbmEsICZx
+dW90O01pY3Jvc29mdCBZYUhlaSZxdW90OzsiPjxkaXY+PGZvbnQgc2l6ZT0iNCIgc3R5bGU9
+ImxpbmUtaGVpZ2h0OiAzMC42cHg7Ij5UaGFuayB5b3UgaW4gYWR2YW5jZSBmb3IgeW91ciBh
+dHRlbnRpb24gdG8gdGhpcyBlbWFpbCwgYW5kIEkgZWFnZXJseSBsb29rIGZvcndhcmQgdG8g
+YW55IGluc2lnaHRzIG9yIGFkdmljZSB5b3UgbWF5IGJlIGFibGUgdG8gcHJvdmlkZS4gSWYg
+dGhlcmUgaXMgYSBtb3JlIGNvbnZlbmllbnQgdGltZSBmb3IgdXMgdG8gZGlzY3VzcyB0aGlz
+IG1hdHRlciBmdXJ0aGVyLCBwbGVhc2UgbGV0IG1lIGtub3csIGFuZCBJIHdpbGwgYmUgbW9y
+ZSB0aGFuIGhhcHB5IHRvIGFjY29tbW9kYXRlIHlvdXIgc2NoZWR1bGUuPC9mb250PjwvZGl2
+PjxkaXY+PGZvbnQgc2l6ZT0iNCIgc3R5bGU9ImxpbmUtaGVpZ2h0OiAzMC42cHg7Ij48YnI+
+PC9mb250PjwvZGl2PjxkaXY+PGZvbnQgc2l6ZT0iNCIgc3R5bGU9ImxpbmUtaGVpZ2h0OiAz
+MC42cHg7Ij5PbmNlIGFnYWluLCB0aGFuayB5b3UgZm9yIHlvdXIgaW1wYWN0ZnVsIGNvbnRy
+aWJ1dGlvbnMgdG8gdGhlIG9wZW4tc291cmNlIGNvbW11bml0eSwgYW5kIEkgZ3JlYXRseSBh
+cHByZWNpYXRlIHlvdXIgdGltZSBhbmQgY29uc2lkZXJhdGlvbi48L2ZvbnQ+PC9kaXY+PC9k
+aXY+PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6ICZxdW90O2x1Y2lkYSBHcmFuZGUmcXVvdDss
+IFZlcmRhbmEsICZxdW90O01pY3Jvc29mdCBZYUhlaSZxdW90OzsiPjxzcGFuIHN0eWxlPSJm
+b250LXNpemU6IGxhcmdlOyI+PGJyPjwvc3Bhbj48L2Rpdj48ZGl2IHN0eWxlPSJmb250LWZh
+bWlseTogJnF1b3Q7bHVjaWRhIEdyYW5kZSZxdW90OywgVmVyZGFuYSwgJnF1b3Q7TWljcm9z
+b2Z0IFlhSGVpJnF1b3Q7OyI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogbGFyZ2U7Ij5SZWdh
+cmQsPC9zcGFuPjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiAmcXVvdDtsdWNpZGEg
+R3JhbmRlJnF1b3Q7LCBWZXJkYW5hLCAmcXVvdDtNaWNyb3NvZnQgWWFIZWkmcXVvdDs7Ij48
+c3BhbiBzdHlsZT0iZm9udC1zaXplOiBsYXJnZTsiPjxicj48L3NwYW4+PC9kaXY+PGRpdiBz
+dHlsZT0iZm9udC1mYW1pbHk6ICZxdW90O2x1Y2lkYSBHcmFuZGUmcXVvdDssIFZlcmRhbmEs
+ICZxdW90O01pY3Jvc29mdCBZYUhlaSZxdW90OzsiPjxzcGFuIHN0eWxlPSJmb250LXNpemU6
+IGxhcmdlOyI+WmhvdSBUb25nLjwvc3Bhbj48L2Rpdj48L2Rpdj48L2Rpdj48L2Rpdj48ZGl2
+Pjxicj48L2Rpdj48ZGl2PjxociBhbGlnbj0ibGVmdCIgc3R5bGU9Im1hcmdpbjogMCAwIDEw
+cHggMDtib3JkZXI6IDA7Ym9yZGVyLWJvdHRvbToxcHggc29saWQgI0U0RTVFNjtoZWlnaHQ6
+MDtsaW5lLWhlaWdodDowO2ZvbnQtc2l6ZTowO3BhZGRpbmc6IDIwcHggMCAwIDA7d2lkdGg6
+IDUwcHg7Ij48ZGl2IHN0eWxlPSJmb250LXNpemU6MTRweDtmb250LWZhbWlseTpWZXJkYW5h
+O2NvbG9yOiMwMDA7Ij48YSBjbGFzcz0ieG1fd3JpdGVfY2FyZCIgaWQ9ImluX2FsaWFzIiBz
+dHlsZT0id2hpdGUtc3BhY2U6IG5vcm1hbDsgZGlzcGxheTogaW5saW5lLWJsb2NrOyB0ZXh0
+LWRlY29yYXRpb246IG5vbmUgIWltcG9ydGFudDtmb250LWZhbWlseTogLWFwcGxlLXN5c3Rl
+bSxCbGlua01hY1N5c3RlbUZvbnQsUGluZ0ZhbmcgU0MsTWljcm9zb2Z0IFlhSGVpOyIgaHJl
+Zj0iaHR0cHM6Ly93eC5tYWlsLnFxLmNvbS9ob21lL2luZGV4P3Q9cmVhZG1haWxfYnVzaW5l
+c3NjYXJkX21pZHBhZ2UmYW1wO25vY2hlY2s9dHJ1ZSZhbXA7bmFtZT0lRTUlOTElQTglRTcl
+QUIlQTUmYW1wO2ljb249aHR0cHMlM0ElMkYlMkZ0aGlyZHFxLnFsb2dvLmNuJTJGZyUzRmIl
+M0RvaWRiJTI2ayUzRDgwTUFDRkFlSUNpYlRWMDNFWkdvS25RJTI2cyUzRDAmYW1wO21haWw9
+MjczNDE1ODI2JTQwcXEuY29tJmFtcDtjb2RlPWlvMnFNaGVEU05IZ0pFcUwtTHhEOGFscEpR
+cEVjR05nR0o0MTVMa3pfNHRoMGtJajNWWXQzOG9NY0thM3pBLWhfck5NQmFrUEE4ekxQdWJM
+Z2ZXN3BBIiB0YXJnZXQ9Il9ibGFuayI+PHRhYmxlIHN0eWxlPSJ3aGl0ZS1zcGFjZTogbm9y
+bWFsO3RhYmxlLWxheW91dDogZml4ZWQ7IHBhZGRpbmctcmlnaHQ6IDIwcHg7IiBjb250ZW50
+ZWRpdGFibGU9ImZhbHNlIiBjZWxscGFkZGluZz0iMCIgY2VsbHNwYWNpbmc9IjAiPjx0Ym9k
+eT48dHIgdmFsaWduPSJ0b3AiPjx0ZCBzdHlsZT0id2lkdGg6IDQwcHg7bWluLXdpZHRoOiA0
+MHB4OyBwYWRkaW5nLXRvcDoxMHB4Ij48ZGl2IHN0eWxlPSJ3aWR0aDogMzhweDsgaGVpZ2h0
+OiAzOHB4OyBib3JkZXI6IDFweCAjRkZGIHNvbGlkOyBib3JkZXItcmFkaXVzOjUwJTsgbWFy
+Z2luOiAwO3ZlcnRpY2FsLWFsaWduOiB0b3A7Ym94LXNoYWRvdzogMCAwIDEwcHggMCByZ2Jh
+KDEyNywxNTIsMTc4LDAuMTQpOyI+PGltZyBzcmM9Imh0dHBzOi8vdGhpcmRxcS5xbG9nby5j
+bi9nP2I9b2lkYiZhbXA7az04ME1BQ0ZBZUlDaWJUVjAzRVpHb0tuUSZhbXA7cz0wIiBzdHls
+ZT0id2lkdGg6MTAwJTtoZWlnaHQ6MTAwJTtib3JkZXItcmFkaXVzOjUwJTtwb2ludGVyLWV2
+ZW50czogbm9uZTsiPjwvZGl2PjwvdGQ+PHRkIHN0eWxlPSJwYWRkaW5nOiAxMHB4IDAgOHB4
+IDEwcHg7Ij48ZGl2IGNsYXNzPSJidXNpbmVzc0NhcmRfbmFtZSIgc3R5bGU9ImZvbnQtc2l6
+ZTogMTRweDtjb2xvcjogIzMzMzEyRTtsaW5lLWhlaWdodDogMjBweDsgcGFkZGluZy1ib3R0
+b206IDJweDsgbWFyZ2luOjA7Zm9udC13ZWlnaHQ6IDUwMDsiPtbcza88L2Rpdj48ZGl2IGNs
+YXNzPSJidXNpbmVzc0NhcmRfbWFpbCIgc3R5bGU9ImZvbnQtc2l6ZTogMTJweDtjb2xvcjog
+Izk5OTg5NjtsaW5lLWhlaWdodDogMThweDsgbWFyZ2luOjA7Ij4yNzM0MTU4MjZAcXEuY29t
+PC9kaXY+PC90ZD48L3RyPjwvdGJvZHk+PC90YWJsZT48L2E+PC9kaXY+PC9kaXY+PGRpdj4m
+bmJzcDs8L2Rpdj4=
+
+------=_NextPart_6597E13E_191B31C0_2CB9C4A4--
+9
 
