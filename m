@@ -2,80 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB81C825F66
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 13:11:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D671A825F76
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 13:26:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rM5Ux-0003Pd-Sx; Sat, 06 Jan 2024 07:09:55 -0500
+	id 1rM5jg-0005fm-L8; Sat, 06 Jan 2024 07:25:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rM5Uw-0003PV-Mx
- for qemu-devel@nongnu.org; Sat, 06 Jan 2024 07:09:54 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rM5Uv-0001R1-0Y
- for qemu-devel@nongnu.org; Sat, 06 Jan 2024 07:09:54 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-5537dd673e5so319497a12.0
- for <qemu-devel@nongnu.org>; Sat, 06 Jan 2024 04:09:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704542991; x=1705147791; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YeD7f2OlxRrJ679VNegenw8yPupYRWwly1FFQKfYZEc=;
- b=TtpzkTRzYfHQc/AJ3ytKPnL2U3BB6HxmfAWYHxUa8It5WbFDu2XPPjjC2FaE/5QdU3
- BFmYiMgLcB20vtPRycribiCuTDtTmJ6whQxCamdU/9xZcaKUsTiDK5IpJYvAYt+1cB6V
- UwFrHUucpby06brXaRddYuPH291JHos4nQXqSW7WwlrW3xv3k/e1t2Si5FdcgX0NCmKS
- GAcRwYJwRTmPkEaokUms2F3tuAHd48U13M+SUiCk6RKMVQEv9ew3IGIl/Aq30RZDFSWH
- R9R+4ps3HW0fGVbH62ug87uDGVsH6yIqTikKkDHZ+EukCt/4kqLO/ZhC92XceULiKJZK
- tE4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704542991; x=1705147791;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YeD7f2OlxRrJ679VNegenw8yPupYRWwly1FFQKfYZEc=;
- b=rbmEjbgesusKJc7dI/NuowMXPy/HMMt8n1i4BfvAgCRZHNwxmSbbfQWTrnunYkJKlB
- saEaPn39XKyTQzMb8N3tQ5N1pwnsNDzUHW3900BIcLTePiHnD8/DHby/w3yB9MpAkTPL
- R9IeO44eGUP/VztlPg9MOWL8tMv4dayoDTX+slPRXQwyi5XA9RWOXZD3VeC9yQVw+kn9
- qaqaSeFPgbLLu6NACG4YhyJ5utvLK1vkU8LxF3+geNzk35Gbjncj4EngsgafljFG5tcD
- Bknu0UIa+DapnzkYAATUzjIp26piUqsoKfbnKju+cBBI9TobDIAykeAJ3FXaDPVIwfx/
- QZmA==
-X-Gm-Message-State: AOJu0YwcqKrLVP2fHTlFr45wP4muS4/Td5efAXrAMUm/ih8ETiSFNdFG
- bDkomPjmpB4tVq3RcK5hK4JHzIulzn+pojsgUYlK2rzDboB2ig==
-X-Google-Smtp-Source: AGHT+IFbjgYHjmp65cb1hwnmsDHUJMzCvfe9swUV8LQBfI5MXCLGJoxFSpTmGJ6+XhXaa1oXYcvuSgBuCPqSgVcTPgU=
-X-Received: by 2002:a50:955c:0:b0:553:ad79:b7cb with SMTP id
- v28-20020a50955c000000b00553ad79b7cbmr448953eda.3.1704542990971; Sat, 06 Jan
- 2024 04:09:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1rM5je-0005fY-4K
+ for qemu-devel@nongnu.org; Sat, 06 Jan 2024 07:25:06 -0500
+Received: from mailout03.t-online.de ([194.25.134.81])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1rM5jb-00029H-Rp
+ for qemu-devel@nongnu.org; Sat, 06 Jan 2024 07:25:05 -0500
+Received: from fwd83.aul.t-online.de (fwd83.aul.t-online.de [10.223.144.109])
+ by mailout03.t-online.de (Postfix) with SMTP id BBD2E517EC;
+ Sat,  6 Jan 2024 13:25:00 +0100 (CET)
+Received: from [192.168.211.200] ([93.236.158.98]) by fwd83.t-online.de
+ with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+ esmtp id 1rM5jX-1lRSq10; Sat, 6 Jan 2024 13:24:59 +0100
+Message-ID: <bd56f299-a425-45d5-9dba-558829600bac@t-online.de>
+Date: Sat, 6 Jan 2024 13:24:59 +0100
 MIME-Version: 1.0
-References: <CAFEAcA_TGYZP2eV1C4Yn5a6vnAO-_1r98rY1Teahy_Pb1ocvjw@mail.gmail.com>
- <CAK3XEhM75DW+eUFrx=73xPycKvxccdT-Tg5mfFyuW_hAMJJ3+w@mail.gmail.com>
- <CAK3XEhNe4TO4oBavsuqJwP5e1nzB6+xpdWa-D0NEq_-rqXincw@mail.gmail.com>
-In-Reply-To: <CAK3XEhNe4TO4oBavsuqJwP5e1nzB6+xpdWa-D0NEq_-rqXincw@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 6 Jan 2024 12:09:17 +0000
-Message-ID: <CAFEAcA-fjZw9x2RC+Czo8dQUuux1WUD6fDWCMJ-1xHdGevNWAw@mail.gmail.com>
-Subject: Re: acpiBitsTest.test_acpi_smbios_bits test intermittently times out
-To: Ani Sinha <anisinha@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, 
- =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Beraldo Leal <bleal@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/10] hw/audio/virtio-sound: allocate all streams in
+ advance
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
+References: <b416aee3-72a9-4642-b219-3e1800ee5b3c@t-online.de>
+ <20240104203422.12308-2-vr_qemu@t-online.de>
+ <CAMxuvazUD51rzJAL0h6u70dm4EP33CMYoz=akydJ0k8cEmaOpQ@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
+In-Reply-To: <CAMxuvazUD51rzJAL0h6u70dm4EP33CMYoz=akydJ0k8cEmaOpQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TOI-EXPURGATEID: 150726::1704543899-B980699C-932E1096/0/0 CLEAN NORMAL
+X-TOI-MSGID: 596b3a2a-0560-4ef5-a006-bf1b8b9f767d
+Received-SPF: pass client-ip=194.25.134.81; envelope-from=vr_qemu@t-online.de;
+ helo=mailout03.t-online.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,29 +68,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 6 Jan 2024 at 05:41, Ani Sinha <anisinha@redhat.com> wrote:
+Am 05.01.24 um 11:54 schrieb Marc-André Lureau:
+> Hi
 >
-> On Sat, Jan 6, 2024 at 10:05=E2=80=AFAM Ani Sinha <anisinha@redhat.com> w=
-rote:
-> >
-> > On Sat, Jan 6, 2024 at 12:11=E2=80=AFAM Peter Maydell <peter.maydell@li=
-naro.org> wrote:
-> > >
-> > > The avocado test acpiBitsTest.test_acpi_smbios_bits seems to be
-> > > flaky in CI -- sometimes it appears to time out.
-> > >
-> > > https://gitlab.com/qemu-project/qemu/-/issues/2077
-> > > has the details (including links to jobs etc).
-> >
-> > Do you have more data points in terms of the jobs that failed?
+> On Fri, Jan 5, 2024 at 12:34 AM Volker Rümelin <vr_qemu@t-online.de> wrote:
+>> It is much easier to migrate an array of structs than individual
+>> structs that are accessed via a pointer to a pointer to an array
+>> of pointers to struct, where some pointers can also be NULL.
+>>
+>> For this reason, the audio streams are already allocated during
+>> the realization phase and all stream variables that are constant
+>> at runtime are initialised immediately after allocation. This is
+>> a step towards being able to migrate the audio streams of the
+>> virtio sound device after the next few patches.
+>>
+>> Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+>> ---
+>>  hw/audio/virtio-snd.c         | 35 ++++++++++++++++++++++-------------
+>>  include/hw/audio/virtio-snd.h |  1 +
+>>  2 files changed, 23 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
+>> index 8344f61c64..36b1bb502c 100644
+>> --- a/hw/audio/virtio-snd.c
+>> +++ b/hw/audio/virtio-snd.c
+>> @@ -447,11 +447,9 @@ static uint32_t virtio_snd_pcm_prepare(VirtIOSound *s, uint32_t stream_id)
+>>
+>>      stream = virtio_snd_pcm_get_stream(s, stream_id);
+>>      if (stream == NULL) {
+>> -        stream = g_new0(VirtIOSoundPCMStream, 1);
+>> +        stream = &s->streams[stream_id];
+>>          stream->active = false;
+>> -        stream->id = stream_id;
+>>          stream->pcm = s->pcm;
+>> -        stream->s = s;
+>>          QSIMPLEQ_INIT(&stream->queue);
+>>          QSIMPLEQ_INIT(&stream->invalid);
+> note: I can't find where s->pcm->streams[stream_id] is reset to NULL
+> on pcm_release...
+
+Hi Marc-André,
+
+right, I'll have to remove the subordinate clause from the commit
+message where I claim some pointers can be NULL. All streams get
+allocated in virtio_snd_realize() with calls of virtio_snd_pcm_prepare()
+and get freed in virtio_snd_unrealize().
+
+>> @@ -463,14 +461,6 @@ static uint32_t virtio_snd_pcm_prepare(VirtIOSound *s, uint32_t stream_id)
+>>      }
+>>
+>>      virtio_snd_get_qemu_audsettings(&as, params);
+>> -    stream->info.direction = stream_id < s->snd_conf.streams / 2 +
+>> -        (s->snd_conf.streams & 1) ? VIRTIO_SND_D_OUTPUT : VIRTIO_SND_D_INPUT;
+>> -    stream->info.hdr.hda_fn_nid = VIRTIO_SOUND_HDA_FN_NID;
+>> -    stream->info.features = 0;
+>> -    stream->info.channels_min = 1;
+>> -    stream->info.channels_max = as.nchannels;
+>> -    stream->info.formats = supported_formats;
+>> -    stream->info.rates = supported_rates;
+>>      stream->params = *params;
+>>
+>>      stream->positions[0] = VIRTIO_SND_CHMAP_FL;
+>> @@ -1074,6 +1064,24 @@ static void virtio_snd_realize(DeviceState *dev, Error **errp)
+>>      vsnd->vmstate =
+>>          qemu_add_vm_change_state_handler(virtio_snd_vm_state_change, vsnd);
+>>
+>> +    vsnd->streams = g_new0(VirtIOSoundPCMStream, vsnd->snd_conf.streams);
+>> +
+>> +    for (uint32_t i = 0; i < vsnd->snd_conf.streams; i++) {
+>> +        VirtIOSoundPCMStream *stream = &vsnd->streams[i];
+>> +
+>> +        stream->id = i;
+>> +        stream->s = vsnd;
+>> +        stream->info.hdr.hda_fn_nid = VIRTIO_SOUND_HDA_FN_NID;
+>> +        stream->info.features = 0;
+>> +        stream->info.formats = supported_formats;
+>> +        stream->info.rates = supported_rates;
+>> +        stream->info.direction =
+>> +            i < vsnd->snd_conf.streams / 2 + (vsnd->snd_conf.streams & 1)
+>> +            ? VIRTIO_SND_D_OUTPUT : VIRTIO_SND_D_INPUT;
+>> +        stream->info.channels_min = 1;
+>> +        stream->info.channels_max = 2;
+> Fixed max channels set to 2.. ? before this was set to
+> MIN(AUDIO_MAX_CHANNELS, params->channels)
+
+Before my patch params->channels and stream->info.max_channels were also
+2 at the time the guest driver queried stream info. They got initialized
+in function virtio_snd_realize().
+
+default_params.channels = 2;
+...
+status = virtio_snd_set_pcm_params(vsnd, i, &default_params);
+...
+status = virtio_snd_pcm_prepare(vsnd, i);
+
+The guest may not update stream->info variables. They are configuration
+information set when QEMU starts. This was wrong in
+virtio_snd_pcm_prepare().
+
 >
-> I just noticed that you attached three examples of failed tests. In
-> all of them the test seems to be stuck at the ami latency test.
+>> +    }
+>> +
+>>      vsnd->pcm = g_new0(VirtIOSoundPCM, 1);
+>>      vsnd->pcm->snd = vsnd;
+>>      vsnd->pcm->streams =
+>> @@ -1314,14 +1322,13 @@ static void virtio_snd_unrealize(DeviceState *dev)
+>>      qemu_del_vm_change_state_handler(vsnd->vmstate);
+>>      trace_virtio_snd_unrealize(vsnd);
+>>
+>> -    if (vsnd->pcm) {
+>> +    if (vsnd->streams) {
+>>          if (vsnd->pcm->streams) {
+>>              for (uint32_t i = 0; i < vsnd->snd_conf.streams; i++) {
+>>                  stream = vsnd->pcm->streams[i];
+>>                  if (stream) {
+>>                      virtio_snd_process_cmdq(stream->s);
+>>                      virtio_snd_pcm_close(stream);
+>> -                    g_free(stream);
+>>                  }
+>>              }
+>>              g_free(vsnd->pcm->streams);
+>> @@ -1329,6 +1336,8 @@ static void virtio_snd_unrealize(DeviceState *dev)
+>>          g_free(vsnd->pcm->pcm_params);
+>>          g_free(vsnd->pcm);
+>>          vsnd->pcm = NULL;
+>> +        g_free(vsnd->streams);
+>> +        vsnd->streams = NULL;
+>>      }
+>>      AUD_remove_card(&vsnd->card);
+>>      virtio_delete_queue(vsnd->queues[VIRTIO_SND_VQ_CONTROL]);
+>> diff --git a/include/hw/audio/virtio-snd.h b/include/hw/audio/virtio-snd.h
+>> index ea6315f59b..05b4490488 100644
+>> --- a/include/hw/audio/virtio-snd.h
+>> +++ b/include/hw/audio/virtio-snd.h
+>> @@ -216,6 +216,7 @@ struct VirtIOSound {
+>>      VirtQueue *queues[VIRTIO_SND_VQ_MAX];
+>>      uint64_t features;
+>>      VirtIOSoundPCM *pcm;
+>> +    VirtIOSoundPCMStream *streams;
+>>      QEMUSoundCard card;
+>>      VMChangeStateEntry *vmstate;
+>>      virtio_snd_config snd_conf;
+>> --
+>> 2.35.3
+>>
 
-OK, if you think that subtest is suspicious, could you send a
-patch that disables just that subpart, and we'll see if it helps?
-
-Thanks for looking into the issue.
-
--- PMM
 
