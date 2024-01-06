@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F69982619C
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 22:08:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27AA6826192
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 22:07:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMDrp-0005fp-Lu; Sat, 06 Jan 2024 16:06:05 -0500
+	id 1rMDrs-0005if-Ti; Sat, 06 Jan 2024 16:06:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rMDrn-0005ev-D2; Sat, 06 Jan 2024 16:06:03 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1rMDrp-0005gO-Vq; Sat, 06 Jan 2024 16:06:06 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rMDrl-0001Ai-SZ; Sat, 06 Jan 2024 16:06:03 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5576fd0ded7so412300a12.0; 
- Sat, 06 Jan 2024 13:06:00 -0800 (PST)
+ id 1rMDro-0001B7-Cb; Sat, 06 Jan 2024 16:06:05 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-554fe147ddeso699752a12.3; 
+ Sat, 06 Jan 2024 13:06:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704575159; x=1705179959; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704575161; x=1705179961; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=py92FQejKDlLtWW57eF8TnbqU3TrVAOsFf1Pvat3KP0=;
- b=bdpwCToRsGOSXQnrJy0laaxQgKwYM4xwd+OAo8RCCLjugKnJb+mX2XiGRZ23Qvgyrb
- AXJqlPElryp9cEB6lwePkteDGmp51l3qlvrmVT5XZJeV7jHw8bz/W1fisvZyYqBOzsgO
- UhH3gOqWEsj1kd09KJvmyWPlA7Ew3nNjpqZet9Z3uggElSjpeHJ1zZjOrmsMax6NkOQj
- liejEM61u9Tk2gksQ0GpknQWSUxAu6W44o/DLRPzxbC/ot2K48ppTS0EW42JGmecWmLd
- JWmEV2A3pFvwH2NV/nziRzUkOr9D4clMB1nZVZnn3/mvEmt//IAcQ0p25AHGxf7GarvP
- gTAQ==
+ bh=BO3joJYDTtGUerfBs3WaLe5gIZcBp9HzTmPOq+TE/bA=;
+ b=dQ6Sbkj/jhYOmhqYCQ7QuApRs9soCMHda5EgaqnFOEl3fCOkE8dw4QpnAOOQbqz3ws
+ CzV9MIwzHp9IbeUD1a8AitK9/iX9vv5nAFo1fSdfIFTt7wIeRVRdngc5YYVOlnLBnM8x
+ U2s0kwSOGzmSqvf45lIXQ15ngRguHyJv1CSZPHVqGsK9sXkwtxiWN25A2+8Roh72kXiN
+ gGm/n/R3DVLNaDYHyvUfWriuZOiLUf185sxiqzwSy+F2qavy9gbNbaFJgjTW4KBc9T2W
+ lj4p9XrA3w2hBYxj4go5SAJ7mheqc3xTASG2TT2tU+6XhOmzopXRL0DMb4VCRdxBvxo2
+ bO3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704575159; x=1705179959;
+ d=1e100.net; s=20230601; t=1704575161; x=1705179961;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=py92FQejKDlLtWW57eF8TnbqU3TrVAOsFf1Pvat3KP0=;
- b=o3K700/VL6BXrvvhMaAoYXuVp1t+bTtKfQWGSe31bGJxSKRu2w+xzB+nH8oyjOvzRv
- ZNeu8yTJEa9CTBeg4pLIn2SPPK495EG0wt4CPEqyg231KdgHmHkPhr6ggutSbqCyOd7l
- fv4W+kNsgmrZsbu3FE4PgdDVBvNh4NrORN1udqIp26piXHmoLyT+c2pNvqdxyVg59OH1
- xk4PYnB3t9HrIzu15WyIih1PWcIVmWnwnib2R5icnPohddq9ffKHnLe6onn5jJo8R8os
- TZQfxYEcgLbGctfaNLarruKJQDlXG0YgZIusTKDf2mt2bKi6g1T7rPKFwyt7v0jG+7lH
- W0uA==
-X-Gm-Message-State: AOJu0YwUW0ag8ymWv/h3NgOmp/YCjv7IC7g3NhTKOQS7nvpJoXGr0aEJ
- 62ZOjCzrlQJJlVU2aAg4n911yGkde9k=
-X-Google-Smtp-Source: AGHT+IELw8mPxKFc41Q8uSbl5gicbbEH8EpGDEMqaJFg+sXFiIQ7hN7Fvfa0BLQAWVt8elDR2pE5jw==
-X-Received: by 2002:a50:d7d7:0:b0:557:7c2:1114 with SMTP id
- m23-20020a50d7d7000000b0055707c21114mr524894edj.171.1704575159369; 
- Sat, 06 Jan 2024 13:05:59 -0800 (PST)
+ bh=BO3joJYDTtGUerfBs3WaLe5gIZcBp9HzTmPOq+TE/bA=;
+ b=D0YQeaLcjWY4hbc15x1ISqCmZEG8X7di1l5+CggMrQJVatJPuNIsgHsogySgJ57PmW
+ 4thmDwMs0yO/Zz37aK6PzJCbIzcuDNsZHPpawytdPjjnUx3NEjypDZk3T1UB3I57wgGo
+ g/Qy1BH0WvUhZWjKHVIs2zRPLMNiv7jjyfIMxJMpfB0cpweRSMxozBPkoKZIzKhSSisS
+ nvmhiUh7vs63iTbjHqn4zcjkTMd+fw9WEl2QnVDGFTO1KimPwRrITvEQGff9E/JHg5iM
+ ZtQU+5o8Svqapc54p8JDIoiIJTT5pxfq+1KwxDYM68iLIbdIcaN8MblcziuR7rOSgTe0
+ 8Biw==
+X-Gm-Message-State: AOJu0YwUhxuLT2/xjat9qV/eb0rekB1C8Jk2eNegtVNXAVDWUV8TbemJ
+ o/eQdRpOsjmEdDC0wQfweb9RePeX61k=
+X-Google-Smtp-Source: AGHT+IFifs91QStc18KDRYn+mCVXA1173sWpbHPJyqCQAfvLTfGDTDLiK4Jn9Dbn1N/T5MSrbigOyw==
+X-Received: by 2002:a50:8d4f:0:b0:54c:d9c5:f9ef with SMTP id
+ t15-20020a508d4f000000b0054cd9c5f9efmr454637edt.8.1704575161062; 
+ Sat, 06 Jan 2024 13:06:01 -0800 (PST)
 Received: from archlinux.. (dynamic-077-011-174-094.77.11.pool.telefonica.de.
  [77.11.174.94]) by smtp.gmail.com with ESMTPSA id
- f20-20020a056402195400b005576f4471besm624922edz.42.2024.01.06.13.05.57
+ f20-20020a056402195400b005576f4471besm624922edz.42.2024.01.06.13.05.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 06 Jan 2024 13:05:58 -0800 (PST)
+ Sat, 06 Jan 2024 13:06:00 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -77,17 +77,17 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v4 08/11] hw/char/serial-isa: Implement relocation and
- enabling/disabling for TYPE_ISA_SERIAL
-Date: Sat,  6 Jan 2024 22:05:28 +0100
-Message-ID: <20240106210531.140542-9-shentey@gmail.com>
+Subject: [PATCH v4 09/11] hw/char/parallel-isa: Implement relocation and
+ enabling/disabling for TYPE_ISA_PARALLEL
+Date: Sat,  6 Jan 2024 22:05:29 +0100
+Message-ID: <20240106210531.140542-10-shentey@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240106210531.140542-1-shentey@gmail.com>
 References: <20240106210531.140542-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,47 +112,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 The real SuperI/O chips emulated by QEMU allow for relocating and enabling or
 disabling their SuperI/O functions via software. So far this is not implemented.
-Prepare for that by adding isa_serial_set_{enabled,iobase}.
+Prepare for that by adding isa_parallel_set_{enabled,iobase}.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- include/hw/char/serial.h |  2 ++
- hw/char/serial-isa.c     | 14 ++++++++++++++
- 2 files changed, 16 insertions(+)
+ include/hw/char/parallel-isa.h |  3 +++
+ hw/char/parallel-isa.c         | 14 ++++++++++++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/include/hw/char/serial.h b/include/hw/char/serial.h
-index 8ba7eca3d6..6e14099ee7 100644
---- a/include/hw/char/serial.h
-+++ b/include/hw/char/serial.h
-@@ -112,5 +112,7 @@ SerialMM *serial_mm_init(MemoryRegion *address_space,
+diff --git a/include/hw/char/parallel-isa.h b/include/hw/char/parallel-isa.h
+index 3b783bd08d..5284b2ffec 100644
+--- a/include/hw/char/parallel-isa.h
++++ b/include/hw/char/parallel-isa.h
+@@ -29,4 +29,7 @@ struct ISAParallelState {
+     PortioList portio_list;
+ };
  
- #define TYPE_ISA_SERIAL "isa-serial"
- void serial_hds_isa_init(ISABus *bus, int from, int to);
-+void isa_serial_set_iobase(ISADevice *serial, hwaddr iobase);
-+void isa_serial_set_enabled(ISADevice *serial, bool enabled);
- 
- #endif
-diff --git a/hw/char/serial-isa.c b/hw/char/serial-isa.c
-index 1c793b20f7..329b352b9a 100644
---- a/hw/char/serial-isa.c
-+++ b/hw/char/serial-isa.c
-@@ -184,3 +184,17 @@ void serial_hds_isa_init(ISABus *bus, int from, int to)
++void isa_parallel_set_iobase(ISADevice *parallel, hwaddr iobase);
++void isa_parallel_set_enabled(ISADevice *parallel, bool enabled);
++
+ #endif /* HW_PARALLEL_ISA_H */
+diff --git a/hw/char/parallel-isa.c b/hw/char/parallel-isa.c
+index ab0f879998..a5ce6ee13a 100644
+--- a/hw/char/parallel-isa.c
++++ b/hw/char/parallel-isa.c
+@@ -41,3 +41,17 @@ void parallel_hds_isa_init(ISABus *bus, int n)
          }
      }
  }
 +
-+void isa_serial_set_iobase(ISADevice *serial, hwaddr iobase)
++void isa_parallel_set_iobase(ISADevice *parallel, hwaddr iobase)
 +{
-+    ISASerialState *s = ISA_SERIAL(serial);
++    ISAParallelState *s = ISA_PARALLEL(parallel);
 +
-+    serial->ioport_id = iobase;
++    parallel->ioport_id = iobase;
 +    s->iobase = iobase;
-+    memory_region_set_address(&s->state.io, s->iobase);
++    portio_list_set_address(&s->portio_list, s->iobase);
 +}
 +
-+void isa_serial_set_enabled(ISADevice *serial, bool enabled)
++void isa_parallel_set_enabled(ISADevice *parallel, bool enabled)
 +{
-+    memory_region_set_enabled(&ISA_SERIAL(serial)->state.io, enabled);
++    portio_list_set_enabled(&ISA_PARALLEL(parallel)->portio_list, enabled);
 +}
 -- 
 2.43.0
