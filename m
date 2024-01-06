@@ -2,84 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C1EC825E6E
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 07:01:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8C9825E88
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 07:33:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLzig-0003D0-F7; Sat, 06 Jan 2024 00:59:42 -0500
+	id 1rM0Dl-0007Zk-26; Sat, 06 Jan 2024 01:31:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rLzid-0003Ck-Er
- for qemu-devel@nongnu.org; Sat, 06 Jan 2024 00:59:39 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1rM0Di-0007ZI-JL
+ for qemu-devel@nongnu.org; Sat, 06 Jan 2024 01:31:46 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rLzia-0004Y0-M3
- for qemu-devel@nongnu.org; Sat, 06 Jan 2024 00:59:39 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-552d39ac3ccso2149874a12.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 21:59:33 -0800 (PST)
+ id 1rM0Df-0008TL-Gi
+ for qemu-devel@nongnu.org; Sat, 06 Jan 2024 01:31:46 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-555144cd330so272628a12.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 22:31:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1704520772; x=1705125572; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1704522699; x=1705127499; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TP5ubnLFEUP8bCQUNCtogctaDcnIbCfZpR0c+RvPaLE=;
- b=NE0N3FZuT4M644E1mtQF1EaKxDDHhmfJ70AIHxvBuxXtPVcFcllB+AhguZErcWlEH8
- 1jouLXskHQmxRMk0Qnknm1jNY9581MwwlkieaIzBGewHD2HIsu51yxh/8bdtpuvbnJXi
- 4JQzEA+NB62Jgi3IMkL3Axfbi40OGymkSlO6fGbXu4PaBQiUxEAzJHdObyig0k6queIr
- wQJxB30kuCLz4ErQEuwyObKEJ6jB1EcZqCc8EE8Frjia6v2iRKZ6ewYgPoQvnUTou9Mj
- vm8GGiuqqT4olLLnS8Aags63wMz7x3gYNdgMtUarbTVlEQhhAdZJwfMCaCNl0PSf2X5m
- xMlQ==
+ bh=YizGA5nyRb+WVCm/VzvxYivjeD7z+YLJbt/VePjH97Y=;
+ b=VixIoJnS3HfhM0S0S7bKtp4z99GkatorOIxtGP6I4Ub7mbrzDPCY03XXPaRsb1MG0u
+ MNexUH8XEIZvzBgIqiwLOAv4Bnz8JBwGjia+qLty3fT83vEQDIak8ULRAFDOiINw8Wi7
+ ncfukhUjsLJEJzm24Zzm/qtpUr4XrsIkdWsfebLfrn1LdxeRO7g1bBA0FGJkJbwk9Qwa
+ foo646zymHGMn44n27nO/FCuNxGD3u+FOxKPt09XUZorO5ZDzr2IYUvxtc/d32DmIJgr
+ cvCagaNXHnXpOcuCe5T0tGMcNbAfy8Fjm6RVactLCGGIf8q+ivxpeRQ8JmQwJj+xy0cv
+ +ErA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704520772; x=1705125572;
+ d=1e100.net; s=20230601; t=1704522699; x=1705127499;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TP5ubnLFEUP8bCQUNCtogctaDcnIbCfZpR0c+RvPaLE=;
- b=SYS5KIG/e8ttFIV4Jv/0VFAMI7Oauudkaj6zgnLnZAh630qog68J1Z/MPTR2/JZsXw
- c7aKgw+dSncpMIS0eOQAQBsp62B36L+v8NSzKgmaMMz35XBIZBx4gXmexmMlknfhYdbM
- nSNRx3GoJ4z7YaS4CbYBIjmqdXOwhd2UjQzeeZpZWd02jbQnS/lBOxGonIAINJbi7XWP
- NH0cGEjPFLHayR/gWjkdbgDcPc34xpfgK/oEg7kIm2lLjUZxrE9Hi2e/cP7AtSgGTXxx
- 5x/wUvOPbh4T3lEmRG7zqJEDzqJB8wjgkfIWERSyrkqpLAsOduI+iQmrSg0J6eI9XS1T
- 36sQ==
-X-Gm-Message-State: AOJu0YxZkjWZMuktfnAV5sSKsxepdTVWsDtOc5c2600kOXps65f4MATJ
- YVoj4iaC/N9tVAvrNwhJusnA7cM4hC5lMw/OKNuvl+xOq9cibQ==
-X-Google-Smtp-Source: AGHT+IGQTogDZIrGTNqCN9zcFH+YgeYItqs7cJaYdSTGjI2XuSp5CfzjXcRhvAYHztqR96zfm0o8sBRRWnHdTheCFY4=
-X-Received: by 2002:a17:907:5c9:b0:a28:7265:5915 with SMTP id
- wg9-20020a17090705c900b00a2872655915mr553546ejb.20.1704520771751; Fri, 05 Jan
- 2024 21:59:31 -0800 (PST)
+ bh=YizGA5nyRb+WVCm/VzvxYivjeD7z+YLJbt/VePjH97Y=;
+ b=fWBH/WejsjaY+QSXJAAp67dby+74a+cjiVMuG9E6wjis90hQvEsJYWThj6fv7W4EhD
+ xBnynnDt0pWARlYRAxqid/NaEQSegk/iXcS4Kd0uk2IeLm4nd5ZbxXo3jvrmONpPVs0u
+ b29++9p+ZQbycLeUIMZ5OfDXE0PYWHZ7I29MJTPDlJRngtxs6LX5dbKmvDpGAvb70S0B
+ HJdE09v3X42eidLlAvu655vpvRl2FxfP0r2f79dHt3Pg+DFX7+6p3BW2xDCBeeowgEuz
+ y4q8egXe1Ex9ngdFlVNKzQU3fpiazQ0XK/CZud78J8soJHWT32hEw2hEm5TOZplUbswg
+ ap2w==
+X-Gm-Message-State: AOJu0YxQxk84dWGK0f2VLAGwHxQAyCFwUM4c/5Pe6Q6i662fOkovIPk+
+ zm0KIz1FfS3k+NuJ2MaHPYZ3UmGHt0MqueDkuGEBiftCBiJ9tg==
+X-Google-Smtp-Source: AGHT+IH6/3Bwk7jtbkMdXqLBrCyCJgnnHN3XBosZEhLmlm87YhD6V1TcnBRR6qvOX6MtWlshbwPw23CEdjNA7HoybIQ=
+X-Received: by 2002:a50:d7d0:0:b0:554:4dce:9d47 with SMTP id
+ m16-20020a50d7d0000000b005544dce9d47mr224467edj.14.1704522699324; Fri, 05 Jan
+ 2024 22:31:39 -0800 (PST)
 MIME-Version: 1.0
-References: <20240101075315.43167-1-horenchuang@bytedance.com>
- <20240101075315.43167-2-horenchuang@bytedance.com>
- <ZZXX95yvk/WTIBT/@memverge.com>
-In-Reply-To: <ZZXX95yvk/WTIBT/@memverge.com>
+References: <20231231205804.2366509-1-bryan.zhang@bytedance.com>
+ <20231231205804.2366509-4-bryan.zhang@bytedance.com> <87jzon8ryv.fsf@suse.de>
+ <CAAYibXgNC1vL1i9M9Sj1J1GS_msxTMJS+B143qFO0pnF4UQGKA@mail.gmail.com>
+In-Reply-To: <CAAYibXgNC1vL1i9M9Sj1J1GS_msxTMJS+B143qFO0pnF4UQGKA@mail.gmail.com>
 From: Hao Xiang <hao.xiang@bytedance.com>
-Date: Fri, 5 Jan 2024 21:59:19 -0800
-Message-ID: <CAAYibXjZ0HSCqMrzXGv62cMLncS_81R3e1uNV5Fu4CPm0zAtYw@mail.gmail.com>
-Subject: Re: [External] Re: [QEMU-devel][RFC PATCH 1/1] backends/hostmem:
- qapi/qom: Add an ObjectOption for memory-backend-* called HostMemType and its
- arg 'cxlram'
-To: Gregory Price <gregory.price@memverge.com>
-Cc: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Ben Widawsky <ben.widawsky@intel.com>, 
- Gregory Price <gourry.memverge@gmail.com>, Fan Ni <fan.ni@samsung.com>, 
- Ira Weiny <ira.weiny@intel.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Eric Blake <eblake@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org, 
- "Ho-Ren (Jack) Chuang" <horenc@vt.edu>, linux-cxl@vger.kernel.org
+Date: Fri, 5 Jan 2024 22:31:28 -0800
+Message-ID: <CAAYibXgE+62nqDE1vZqXrSRFJK5J74CdBT66GVq=G0RwzJGHpQ@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH 3/5] migration: Introduce unimplemented
+ 'qatzip' compression method
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Bryan Zhang <bryan.zhang@bytedance.com>, qemu-devel@nongnu.org, 
+ marcandre.lureau@redhat.com, peterx@redhat.com, quintela@redhat.com, 
+ peter.maydell@linaro.org, yuan1.liu@intel.com, berrange@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=hao.xiang@bytedance.com; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,174 +91,255 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 3, 2024 at 1:56=E2=80=AFPM Gregory Price <gregory.price@memverg=
-e.com> wrote:
+On Fri, Jan 5, 2024 at 3:52=E2=80=AFPM Hao Xiang <hao.xiang@bytedance.com> =
+wrote:
 >
-> On Sun, Dec 31, 2023 at 11:53:15PM -0800, Ho-Ren (Jack) Chuang wrote:
-> > Introduce a new configuration option 'host-mem-type=3D' in the
-> > '-object memory-backend-ram', allowing users to specify
-> > from which type of memory to allocate.
+> On Fri, Jan 5, 2024 at 12:07=E2=80=AFPM Fabiano Rosas <farosas@suse.de> w=
+rote:
 > >
-> > Users can specify 'cxlram' as an argument, and QEMU will then
-> > automatically locate CXL RAM NUMA nodes and use them as the backend mem=
-ory.
-> > For example:
-> >       -object memory-backend-ram,id=3Dvmem0,size=3D19G,host-mem-type=3D=
-cxlram \
+> > Bryan Zhang <bryan.zhang@bytedance.com> writes:
+> >
+> > +cc Yuan Liu, Daniel Berrang=C3=A9
+> >
+> > > Adds support for 'qatzip' as an option for the multifd compression
+> > > method parameter, but copy-pastes the no-op logic to leave the actual
+> > > methods effectively unimplemented. This is in preparation of a
+> > > subsequent commit that will implement actually using QAT for compress=
+ion
+> > > and decompression.
+> > >
+> > > Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
+> > > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
+> > > ---
+> > >  hw/core/qdev-properties-system.c |  6 ++-
+> > >  migration/meson.build            |  1 +
+> > >  migration/multifd-qatzip.c       | 81 ++++++++++++++++++++++++++++++=
+++
+> > >  migration/multifd.h              |  1 +
+> > >  qapi/migration.json              |  5 +-
+> > >  5 files changed, 92 insertions(+), 2 deletions(-)
+> > >  create mode 100644 migration/multifd-qatzip.c
+> > >
+> > > diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properti=
+es-system.c
+> > > index 1a396521d5..d8e48dcb0e 100644
+> > > --- a/hw/core/qdev-properties-system.c
+> > > +++ b/hw/core/qdev-properties-system.c
+> > > @@ -658,7 +658,11 @@ const PropertyInfo qdev_prop_fdc_drive_type =3D =
+{
+> > >  const PropertyInfo qdev_prop_multifd_compression =3D {
+> > >      .name =3D "MultiFDCompression",
+> > >      .description =3D "multifd_compression values, "
+> > > -                   "none/zlib/zstd",
+> > > +                   "none/zlib/zstd"
+> > > +#ifdef CONFIG_QATZIP
+> > > +                   "/qatzip"
+> > > +#endif
+> > > +                   ,
+> > >      .enum_table =3D &MultiFDCompression_lookup,
+> > >      .get =3D qdev_propinfo_get_enum,
+> > >      .set =3D qdev_propinfo_set_enum,
+> > > diff --git a/migration/meson.build b/migration/meson.build
+> > > index 92b1cc4297..e20f318379 100644
+> > > --- a/migration/meson.build
+> > > +++ b/migration/meson.build
+> > > @@ -40,6 +40,7 @@ if get_option('live_block_migration').allowed()
+> > >    system_ss.add(files('block.c'))
+> > >  endif
+> > >  system_ss.add(when: zstd, if_true: files('multifd-zstd.c'))
+> > > +system_ss.add(when: qatzip, if_true: files('multifd-qatzip.c'))
+> > >
+> > >  specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
+> > >                  if_true: files('ram.c',
+> > > diff --git a/migration/multifd-qatzip.c b/migration/multifd-qatzip.c
+> > > new file mode 100644
+> > > index 0000000000..1733bbddb7
+> > > --- /dev/null
+> > > +++ b/migration/multifd-qatzip.c
+> > > @@ -0,0 +1,81 @@
+> > > +/*
+> > > + * Multifd QATzip compression implementation
+> > > + *
+> > > + * Copyright (c) Bytedance
+> > > + *
+> > > + * Authors:
+> > > + *  Bryan Zhang <bryan.zhang@bytedance.com>
+> > > + *  Hao Xiang   <hao.xiang@bytedance.com>
+> > > + *
+> > > + * This work is licensed under the terms of the GNU GPL, version 2 o=
+r later.
+> > > + * See the COPYING file in the top-level directory.
+> > > + */
+> > > +
+> > > +#include "qemu/osdep.h"
+> > > +#include "exec/ramblock.h"
+> > > +#include "exec/target_page.h"
+> > > +#include "qapi/error.h"
+> > > +#include "migration.h"
+> > > +#include "options.h"
+> > > +#include "multifd.h"
+> > > +
+> > > +static int qatzip_send_setup(MultiFDSendParams *p, Error **errp)
+> > > +{
+> > > +    return 0;
+> > > +}
+> > > +
+> > > +static void qatzip_send_cleanup(MultiFDSendParams *p, Error **errp) =
+{};
+> > > +
+> > > +static int qatzip_send_prepare(MultiFDSendParams *p, Error **errp)
+> > > +{
+> > > +    MultiFDPages_t *pages =3D p->pages;
+> > > +
+> > > +    for (int i =3D 0; i < p->normal_num; i++) {
+> > > +        p->iov[p->iovs_num].iov_base =3D pages->block->host + p->nor=
+mal[i];
+> > > +        p->iov[p->iovs_num].iov_len =3D p->page_size;
+> > > +        p->iovs_num++;
+> > > +    }
+> > > +
+> > > +    p->next_packet_size =3D p->normal_num * p->page_size;
+> > > +    p->flags |=3D MULTIFD_FLAG_NOCOMP;
+> > > +    return 0;
+> > > +}
+> > > +
+> > > +static int qatzip_recv_setup(MultiFDRecvParams *p, Error **errp)
+> > > +{
+> > > +    return 0;
+> > > +}
+> > > +
+> > > +static void qatzip_recv_cleanup(MultiFDRecvParams *p) {};
+> > > +
+> > > +static int qatzip_recv_pages(MultiFDRecvParams *p, Error **errp)
+> > > +{
+> > > +    uint32_t flags =3D p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
+> > > +
+> > > +    if (flags !=3D MULTIFD_FLAG_NOCOMP) {
+> > > +        error_setg(errp, "multifd %u: flags received %x flags expect=
+ed %x",
+> > > +                   p->id, flags, MULTIFD_FLAG_NOCOMP);
+> > > +        return -1;
+> > > +    }
+> > > +    for (int i =3D 0; i < p->normal_num; i++) {
+> > > +        p->iov[i].iov_base =3D p->host + p->normal[i];
+> > > +        p->iov[i].iov_len =3D p->page_size;
+> > > +    }
+> > > +    return qio_channel_readv_all(p->c, p->iov, p->normal_num, errp);
+> > > +}
+> > > +
+> > > +static MultiFDMethods multifd_qatzip_ops =3D {
+> > > +    .send_setup =3D qatzip_send_setup,
+> > > +    .send_cleanup =3D qatzip_send_cleanup,
+> > > +    .send_prepare =3D qatzip_send_prepare,
+> > > +    .recv_setup =3D qatzip_recv_setup,
+> > > +    .recv_cleanup =3D qatzip_recv_cleanup,
+> > > +    .recv_pages =3D qatzip_recv_pages
+> > > +};
+> > > +
+> > > +static void multifd_qatzip_register(void)
+> > > +{
+> > > +    multifd_register_ops(MULTIFD_COMPRESSION_QATZIP, &multifd_qatzip=
+_ops);
+> > > +}
+> > > +
+> > > +migration_init(multifd_qatzip_register);
+> > > diff --git a/migration/multifd.h b/migration/multifd.h
+> > > index a835643b48..5600f7fc82 100644
+> > > --- a/migration/multifd.h
+> > > +++ b/migration/multifd.h
+> > > @@ -33,6 +33,7 @@ int multifd_queue_page(QEMUFile *f, RAMBlock *block=
+, ram_addr_t offset);
+> > >  #define MULTIFD_FLAG_NOCOMP (0 << 1)
+> > >  #define MULTIFD_FLAG_ZLIB (1 << 1)
+> > >  #define MULTIFD_FLAG_ZSTD (2 << 1)
+> > > +#define MULTIFD_FLAG_QATZIP (3 << 1)
+> > >
+> > >  /* This value needs to be a multiple of qemu_target_page_size() */
+> > >  #define MULTIFD_PACKET_SIZE (512 * 1024)
+> > > diff --git a/qapi/migration.json b/qapi/migration.json
+> > > index 6d5a4b0489..e3cc195aed 100644
+> > > --- a/qapi/migration.json
+> > > +++ b/qapi/migration.json
+> > > @@ -625,11 +625,14 @@
+> > >  #
+> > >  # @zstd: use zstd compression method.
+> > >  #
+> > > +# @qatzip: use qatzip compression method.
+> > > +#
+> > >  # Since: 5.0
+> > >  ##
+> > >  { 'enum': 'MultiFDCompression',
+> > >    'data': [ 'none', 'zlib',
+> > > -            { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
+> > > +            { 'name': 'zstd', 'if': 'CONFIG_ZSTD' },
+> > > +            { 'name': 'qatzip', 'if': 'CONFIG_QATZIP'} ] }
+> >
+> > In another thread adding support to another Intel accelerator (IAA) we
+> > decided that it was better to select the offloading as an accelerator
+> > method to multifd zlib rather than as an entirely new compression
+> > format. Take a look at that discussion:
+> > https://lore.kernel.org/r/ZTFCnqbbqlmsUkRC@redhat.com
 >
-> Stupid questions:
+> We had some early discussion with Intel folks (probably a different
+> team than the one with the above patchset). The understanding at the
+> time is that QAT is good at both bulk data compression and
+> decompression. IAA is good at decompression with smaller data size but
+> compression performance is not the best. In multifd, we are
+> compressing up to 128 4k pages at a time and potentially this can
+> increase by configuring the packet size, at the time we thought QAT
+> could be a better fit in the multifd live migration scenario. We would
+> like to hear more from Intel.
 >
-> Why not just use `host-nodes` and pass in the numa node you want to
-> allocate from? Why should QEMU be made "CXL-aware" in the sense that
-> QEMU is responsible for figuring out what host node has CXL memory?
+> From our benchmark testing, with two QAT devices, we can get deflate
+> compression throughout to around 7GB/s with ~160% CPU. That's beating
+> the current software implementation (zlib and zstd) by a lot. We are
+> still tuning the configuration in QEMU live migration now.
 >
-> This feels like an "upper level software" operation (orchestration), rath=
-er
-> than something qemu should internally understand.
+> >
+> > As I understand it, QAT + QATzip would be compatible with both zlib and
+> > IAA + QPL, so we'd add another accelerator method like this:
+> >
+> > https://lore.kernel.org/r/20240103112851.908082-3-yuan1.liu@intel.com
+> >
+>
+> I quickly read over the IAA patchset and I saw this:
+>
+> "However, due to some reasons, QPL is currently
+> not compatible with the existing Zlib method that Zlib compressed data
+> can be decompressed by QPl and vice versa."
+>
+> The above probably means the current zlib software implementation and
+> IAA are not compatible.
+>
+> For QAT, although, both Intel's QATzip and zlib are internally using
+> deflate, QATzip only supports deflate with a 4 byte header, deflate
+> wrapped by Gzip header and footer, or deflate wrapped by Intel=C2=AE QAT
+> Gzip* extension header and footer. None of the headers can be
+> recognized by zlib software implementation is my understanding. So if
+> we want to make them compatible with zlib, the QATzip library needs to
+> support that.
 
-I don't have a "big picture" and I am learning. Maybe we proposed
-something not useful :-) I replied to the same question on a fork of
-this thread.
+I took a closer look at Intel's documentation here
+https://github.com/intel/QATzip
+QATzip does have a compression format QZ_DEFLATE_RAW, which uses the
+deflate format but no header at all. This looks like the same as what
+QEMU's current zlib implementation does - using the raw deflate
+format. I can have a quick test to confirm that. Meanwhile, the
+documentation mentioned that if using the raw deflate format,
+decompression cannot be offloaded by QAT hardware. So there is a
+trade-off here if we want to avoid creating a new compression format
+in QEMU.
 
 >
-> >       -device pxb-cxl,bus_nr=3D12,bus=3Dpcie.0,id=3Dcxl.1 \
-> >       -device cxl-rp,port=3D0,bus=3Dcxl.1,id=3Droot_port13,chassis=3D0,=
-slot=3D2 \
-> >       -device cxl-type3,bus=3Droot_port13,volatile-memdev=3Dvmem0,id=3D=
-cxl-vmem0 \
+> > All that, of course, assuming we even want to support both
+> > accelerators. They're addressing the same problem after all. I wonder
+> > how we'd choose a precedence, since both seem to be present in the same
+> > processor family.
+> >
+> >
 >
-> For a variety of performance reasons, this will not work the way you
-> want it to.  You are essentially telling QEMU to map the vmem0 into a
-> virtual cxl device, and now any memory accesses to that memory region
-> will end up going through the cxl-type3 device logic - which is an IO
-> path from the perspective of QEMU.
-
-I didn't understand exactly how the virtual cxl-type3 device works. I
-thought it would go with the same "guest virtual address ->  guest
-physical address -> host physical address" translation totally done by
-CPU. But if it is going through an emulation path handled by virtual
-cxl-type3, I agree the performance would be bad. Do you know why
-accessing memory on a virtual cxl-type3 device can't go with the
-nested page table translation?
-
->
-> You may want to double check that your tests aren't using swap space in
-> the guest, because I found in my testing that linux would prefer to use
-> swap rather than attempt to use virtual cxl-type3 device memory because
-> of how god-awful slow it is (even if it is backed by DRAM).
-
-We didn't enable swap in our current test setup. I think there was a
-kernel change making the mm page reclamation path to use cxl memory
-instead of swap if you enable memory tiering. Did you try that? Swap
-is persistent storage. I would be very surprised if virtual cxl is
-actually slower than swap.
-
->
->
-> Additionally, this configuration will not (should not) presently work
-> with VMX enabled.  Unless I missed some other update, QEMU w/ CXL memory
-> presently crashes when VMX is enabled for not-yet-debugged reasons.
-
-When we had a discussion with Intel, they told us to not use the KVM
-option in QEMU while using virtual cxl type3 device. That's probably
-related to the issue you described here? We enabled KVM though but
-haven't seen the crash yet.
-
->
-> Another possiblity: You mapped this memory-backend into another numa
-> node explicitly and never onlined the memory via cxlcli.  I've done
-> this, and it works, but it's a "hidden feature" that probably should
-> not exist / be supported.
-
-I thought general purpose memory nodes are onlined by default?
-
->
->
->
-> If I understand the goal here, it's to pass CXL-hosted DRAM through to
-> the guest in a way that the system can manage it according to its
-> performance attributes.
-
-Yes.
-
->
-> You're better off just using the `host-nodes` field of host-memory
-> and passing bandwidth/latency attributes though via `-numa hmat-lb`
-
-We tried this but it doesn't work from end to end right now. I
-described the issue in another fork of this thread.
-
->
-> In that scenario, the guest software doesn't even need to know CXL
-> exists at all, it can just read the attributes of the numa node
-> that QEMU created for it.
-
-We thought about this before. But the current kernel implementation
-requires a devdax device to be probed and recognized as a slow tier
-(by reading the memory attributes). I don't think this can be done via
-the path you described. Have you tried this before?
-
->
-> In the future to deal with proper dynamic capacity, we may need to
-> consider a different backend object altogether that allows sparse
-> allocations, and a virtual cxl device which pre-allocates the CFMW
-> can at least be registered to manage it.  I'm not quite sure how that
-> looks just yet.
-
-Are we talking about CXL memory pooling?
-
->
-> For example: 1-socket, 4 CPU QEMU instance w/ 4GB on a cpu-node and 4GB
-> on a cpuless node.
->
-> qemu-system-x86_64 \
-> -nographic \
-> -accel kvm \
-> -machine type=3Dq35,hmat=3Don \
-> -drive file=3D./myvm.qcow2,format=3Dqcow2,index=3D0,media=3Ddisk,id=3Dhd =
-\
-> -m 8G,slots=3D4,maxmem=3D16G \
-> -smp cpus=3D4 \
-> -object memory-backend-ram,size=3D4G,id=3Dram-node0,numa=3DX \ <-- extend=
- here
-> -object memory-backend-ram,size=3D4G,id=3Dram-node1,numa=3DY \ <-- extend=
- here
-> -numa node,nodeid=3D0,cpus=3D0-4,memdev=3Dram-node0 \          <-- cpu no=
-de
-> -numa node,initiator=3D0,nodeid=3D1,memdev=3Dram-node1 \       <-- cpules=
-s node
-> -netdev bridge,id=3Dhn0,br=3Dvirbr0 \
-> -device virtio-net-pci,netdev=3Dhn0,id=3Dnic1,mac=3D52:54:00:12:34:77 \
-> -numa hmat-lb,initiator=3D0,target=3D0,hierarchy=3Dmemory,data-type=3Dacc=
-ess-latency,latency=3D10 \
-> -numa hmat-lb,initiator=3D0,target=3D0,hierarchy=3Dmemory,data-type=3Dacc=
-ess-bandwidth,bandwidth=3D10485760 \
-> -numa hmat-lb,initiator=3D0,target=3D1,hierarchy=3Dmemory,data-type=3Dacc=
-ess-latency,latency=3D20 \
-> -numa hmat-lb,initiator=3D0,target=3D1,hierarchy=3Dmemory,data-type=3Dacc=
-ess-bandwidth,bandwidth=3D5242880
->
-> [root@fedora ~]# numactl -H
-> available: 2 nodes (0-1)
-> node 0 cpus: 0 1 2 3
-> node 0 size: 3965 MB
-> node 0 free: 3611 MB
-> node 1 cpus:
-> node 1 size: 3986 MB
-> node 1 free: 3960 MB
-> node distances:
-> node   0   1
->   0:  10  20
->   1:  20  10
->
-> [root@fedora initiators]# cd /sys/devices/system/node/node1/access0/initi=
-ators
-> node0  read_bandwidth  read_latency  write_bandwidth  write_latency
-> [root@fedora initiators]# cat read_bandwidth
-> 5
-> [root@fedora initiators]# cat read_latency
-> 20
->
->
-> ~Gregory
+> That's an interesting question :-) I think overall performance
+> (throughput and CPU overhead) should both be considered. IAA and QAT
+> accelerators don't present on all systems. We Bytedance choose to have
+> both on our platform when purchasing from Intel.
 
