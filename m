@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96AD9826104
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 19:16:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 544F6826103
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 19:16:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMBCU-0006PD-S0; Sat, 06 Jan 2024 13:15:14 -0500
+	id 1rMBCW-0006QH-AF; Sat, 06 Jan 2024 13:15:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
- id 1rMBCR-0006MG-Md; Sat, 06 Jan 2024 13:15:11 -0500
+ id 1rMBCS-0006MV-4T; Sat, 06 Jan 2024 13:15:12 -0500
 Received: from zoidberg.rfc1149.net ([195.154.227.159])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
- id 1rMBCP-0001vz-S1; Sat, 06 Jan 2024 13:15:11 -0500
+ id 1rMBCP-0001w0-Tf; Sat, 06 Jan 2024 13:15:11 -0500
 Received: from 127.0.0.1 (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (Client did not present a certificate)
- by zoidberg.rfc1149.net (Postfix) with ESMTPSA id 6152A80027;
+ by zoidberg.rfc1149.net (Postfix) with ESMTPSA id 86FBB80028;
  Sat,  6 Jan 2024 19:15:04 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rfc1149.net; s=smtp;
- t=1704564904; bh=oUHxTnxbJvmbEvqdnnqwZEZn9kWgtC+tyGXnlDxve3k=;
+ t=1704564904; bh=iu3m/mRdL0Tkd0J8OVr/lcW4X577Y9gBeYR2iYmGZA0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=yLEYvFldTrVhoUyXhSBunjIXabEi7otSSKeJUDbtwa67DXed7zA3oked6YwF8Q35O
- 3TvznjLfB02ciVDDx+fvglBOxguG0hlslc0yQbl6ZGfohjFi4HEJP0YIsRHtLrM/63
- TY3Xg43Ou9ig3NmXs4OVZt7zfHaCJ1FNeWtBBPaLTMwBbHk/gmSfVYMxmixBbi8B8H
- DYreBykkpctFN36ccDsdzuGE0Wlp+VzMWKgV7x/KvPlcJXaHkyCofaSUfOKspN1DrB
- bdb+lfVtWqyU2rN0+NXtwH4UdGHeDAEX+H2fMd11VcTyKy1Mql7MG4rIyLNRgnBzlu
- 50YFwaTIcFaoQ==
+ b=fA94ChpWTgYKrj54unjEBe7W/CrFsZZc47lCPIIoo7yiag9/YwlJ4jyrrdGjN6Ozz
+ IcZElkvJzigXoaI6kmgDjHheLLo1cJ34zWI5qaksJT3B227pbeKl1PA7P4NTAV+IP+
+ kDHQNYcNiui6rvnh2y5nzMd25Ea5UptZBoF8c36hpizydYjgDY9AzJ5DYB3IIpWvHA
+ /7vLR9lSNEFYUF4NV7mheMZWX4sahE+M3RhAh9Ey7kPp+ufYASatXqJeGUnbRu6hWo
+ 0gxAsVqlo/8jd9bNYtzuZvg56EZIxjLDmgbj3l5kvUhIAL+36DhZx+yZcRDZ40A4Oh
+ 2kaPQbXH375IA==
 From: Samuel Tardieu <sam@rfc1149.net>
 To: qemu-devel@nongnu.org
 Cc: Anton Kochkov <anton.kochkov@proton.me>, qemu-arm@nongnu.org,
@@ -39,9 +39,9 @@ Cc: Anton Kochkov <anton.kochkov@proton.me>, qemu-arm@nongnu.org,
  =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
  Alistair Francis <alistair@alistair23.me>,
  Peter Maydell <peter.maydell@linaro.org>, Samuel Tardieu <sam@rfc1149.net>
-Subject: [PATCH v3 2/3] hw/arm/armv7m: alias the NVIC "num-prio-bits" property
-Date: Sat,  6 Jan 2024 19:15:02 +0100
-Message-ID: <20240106181503.1746200-3-sam@rfc1149.net>
+Subject: [PATCH v3 3/3] hw/arm/socs: configure priority bits for existing SOCs
+Date: Sat,  6 Jan 2024 19:15:03 +0100
+Message-ID: <20240106181503.1746200-4-sam@rfc1149.net>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240106181503.1746200-1-sam@rfc1149.net>
 References: <20240106181503.1746200-1-sam@rfc1149.net>
@@ -70,43 +70,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A SoC will not have a direct access to the NVIC embedded in its ARM
-core. By aliasing the "num-prio-bits" property similarly to what is
-done for the "num-irq" one, a SoC can easily configure it on its
-armv7m instance.
+Update the number of priority bits for a number of existing
+SoCs according to their technical documentation:
+
+- STM32F100/F205/F405/L4x5: 4 bits
+- Stellaris (Sandstorm/Fury): 3 bits
 
 Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/armv7m.c         | 2 ++
- include/hw/arm/armv7m.h | 1 +
- 2 files changed, 3 insertions(+)
+ hw/arm/stellaris.c     | 2 ++
+ hw/arm/stm32f100_soc.c | 1 +
+ hw/arm/stm32f205_soc.c | 1 +
+ hw/arm/stm32f405_soc.c | 1 +
+ hw/arm/stm32l4x5_soc.c | 1 +
+ 5 files changed, 6 insertions(+)
 
-diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
-index e39b61bc1a..1f21827773 100644
---- a/hw/arm/armv7m.c
-+++ b/hw/arm/armv7m.c
-@@ -256,6 +256,8 @@ static void armv7m_instance_init(Object *obj)
-     object_initialize_child(obj, "nvic", &s->nvic, TYPE_NVIC);
-     object_property_add_alias(obj, "num-irq",
-                               OBJECT(&s->nvic), "num-irq");
-+    object_property_add_alias(obj, "num-prio-bits",
-+                              OBJECT(&s->nvic), "num-prio-bits");
+diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
+index 729a8bf569..d18b1144af 100644
+--- a/hw/arm/stellaris.c
++++ b/hw/arm/stellaris.c
+@@ -47,6 +47,7 @@
+ #define BP_GAMEPAD   0x04
  
-     object_initialize_child(obj, "systick-reg-ns", &s->systick[M_REG_NS],
-                             TYPE_SYSTICK);
-diff --git a/include/hw/arm/armv7m.h b/include/hw/arm/armv7m.h
-index e2cebbd15c..5c057ab2ec 100644
---- a/include/hw/arm/armv7m.h
-+++ b/include/hw/arm/armv7m.h
-@@ -43,6 +43,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(ARMv7MState, ARMV7M)
-  *   a qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET).
-  * + Property "cpu-type": CPU type to instantiate
-  * + Property "num-irq": number of external IRQ lines
-+ * + Property "num-prio-bits": number of priority bits in the NVIC
-  * + Property "memory": MemoryRegion defining the physical address space
-  *   that CPU accesses see. (The NVIC, bitbanding and other CPU-internal
-  *   devices will be automatically layered on top of this view.)
+ #define NUM_IRQ_LINES 64
++#define NUM_PRIO_BITS 3
+ 
+ typedef const struct {
+     const char *name;
+@@ -1067,6 +1068,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+ 
+     nvic = qdev_new(TYPE_ARMV7M);
+     qdev_prop_set_uint32(nvic, "num-irq", NUM_IRQ_LINES);
++    qdev_prop_set_uint8(nvic, "num-prio-bits", NUM_PRIO_BITS);
+     qdev_prop_set_string(nvic, "cpu-type", ms->cpu_type);
+     qdev_prop_set_bit(nvic, "enable-bitband", true);
+     qdev_connect_clock_in(nvic, "cpuclk",
+diff --git a/hw/arm/stm32f100_soc.c b/hw/arm/stm32f100_soc.c
+index b90d440d7a..808b783515 100644
+--- a/hw/arm/stm32f100_soc.c
++++ b/hw/arm/stm32f100_soc.c
+@@ -115,6 +115,7 @@ static void stm32f100_soc_realize(DeviceState *dev_soc, Error **errp)
+     /* Init ARMv7m */
+     armv7m = DEVICE(&s->armv7m);
+     qdev_prop_set_uint32(armv7m, "num-irq", 61);
++    qdev_prop_set_uint8(armv7m, "num-prio-bits", 4);
+     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m3"));
+     qdev_prop_set_bit(armv7m, "enable-bitband", true);
+     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
+diff --git a/hw/arm/stm32f205_soc.c b/hw/arm/stm32f205_soc.c
+index 1a548646f6..a451e21f59 100644
+--- a/hw/arm/stm32f205_soc.c
++++ b/hw/arm/stm32f205_soc.c
+@@ -127,6 +127,7 @@ static void stm32f205_soc_realize(DeviceState *dev_soc, Error **errp)
+ 
+     armv7m = DEVICE(&s->armv7m);
+     qdev_prop_set_uint32(armv7m, "num-irq", 96);
++    qdev_prop_set_uint8(armv7m, "num-prio-bits", 4);
+     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m3"));
+     qdev_prop_set_bit(armv7m, "enable-bitband", true);
+     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
+diff --git a/hw/arm/stm32f405_soc.c b/hw/arm/stm32f405_soc.c
+index a65bbe298d..2ad5b79a06 100644
+--- a/hw/arm/stm32f405_soc.c
++++ b/hw/arm/stm32f405_soc.c
+@@ -149,6 +149,7 @@ static void stm32f405_soc_realize(DeviceState *dev_soc, Error **errp)
+ 
+     armv7m = DEVICE(&s->armv7m);
+     qdev_prop_set_uint32(armv7m, "num-irq", 96);
++    qdev_prop_set_uint8(armv7m, "num-prio-bits", 4);
+     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
+     qdev_prop_set_bit(armv7m, "enable-bitband", true);
+     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
+diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
+index 7513db0d6a..cc70c83d20 100644
+--- a/hw/arm/stm32l4x5_soc.c
++++ b/hw/arm/stm32l4x5_soc.c
+@@ -105,6 +105,7 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
+     object_initialize_child(OBJECT(dev_soc), "armv7m", &s->armv7m, TYPE_ARMV7M);
+     armv7m = DEVICE(&s->armv7m);
+     qdev_prop_set_uint32(armv7m, "num-irq", 96);
++    qdev_prop_set_uint32(armv7m, "num-prio-bits", 4);
+     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
+     qdev_prop_set_bit(armv7m, "enable-bitband", true);
+     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
 -- 
 2.42.0
 
