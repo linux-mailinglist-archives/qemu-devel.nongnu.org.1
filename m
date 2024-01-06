@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27AA6826192
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 22:07:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D177826198
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 22:08:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMDrs-0005if-Ti; Sat, 06 Jan 2024 16:06:08 -0500
+	id 1rMDrv-0005kH-8y; Sat, 06 Jan 2024 16:06:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rMDrp-0005gO-Vq; Sat, 06 Jan 2024 16:06:06 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1rMDrr-0005hh-E4; Sat, 06 Jan 2024 16:06:07 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rMDro-0001B7-Cb; Sat, 06 Jan 2024 16:06:05 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-554fe147ddeso699752a12.3; 
- Sat, 06 Jan 2024 13:06:03 -0800 (PST)
+ id 1rMDrp-0001BU-NZ; Sat, 06 Jan 2024 16:06:07 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-555e07761acso716881a12.0; 
+ Sat, 06 Jan 2024 13:06:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704575161; x=1705179961; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704575163; x=1705179963; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BO3joJYDTtGUerfBs3WaLe5gIZcBp9HzTmPOq+TE/bA=;
- b=dQ6Sbkj/jhYOmhqYCQ7QuApRs9soCMHda5EgaqnFOEl3fCOkE8dw4QpnAOOQbqz3ws
- CzV9MIwzHp9IbeUD1a8AitK9/iX9vv5nAFo1fSdfIFTt7wIeRVRdngc5YYVOlnLBnM8x
- U2s0kwSOGzmSqvf45lIXQ15ngRguHyJv1CSZPHVqGsK9sXkwtxiWN25A2+8Roh72kXiN
- gGm/n/R3DVLNaDYHyvUfWriuZOiLUf185sxiqzwSy+F2qavy9gbNbaFJgjTW4KBc9T2W
- lj4p9XrA3w2hBYxj4go5SAJ7mheqc3xTASG2TT2tU+6XhOmzopXRL0DMb4VCRdxBvxo2
- bO3Q==
+ bh=beCClsHMmqcMkMYgwQdfXIKn37AYMjOXEPxAk81UJRk=;
+ b=DgPDNcF8drqPgAcBBrzGxS/dfz5BBaz1q9H35ny5BTx2wS283LHzK+xjX0pCRqa7Pp
+ 0dRt9+4mSiDvWIft7HAJmIbJ3VeqOiT6XaJ7ZsRQH1s7RDnVHsLqlFhftFItELV2NqHl
+ tkZF42/1HiKn8nwbvcxln1dvX1u0RcFHAsYARVq6/Lmld2Q0PbVywcr3bNYduhgsE8JH
+ 3EE6CvBQRuHKm0u7KofGET4gCkWJ+BuueVoSCYnhXRoKw63z5Bri1M3tujEqn43ZlH+v
+ YcQyGgfRJK/8U0rzdaY5uXUeR4PDuU3HUWrfWqfm6XcrELbXkmxD/bQy2lTAOah2F7lD
+ MmsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704575161; x=1705179961;
+ d=1e100.net; s=20230601; t=1704575163; x=1705179963;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BO3joJYDTtGUerfBs3WaLe5gIZcBp9HzTmPOq+TE/bA=;
- b=D0YQeaLcjWY4hbc15x1ISqCmZEG8X7di1l5+CggMrQJVatJPuNIsgHsogySgJ57PmW
- 4thmDwMs0yO/Zz37aK6PzJCbIzcuDNsZHPpawytdPjjnUx3NEjypDZk3T1UB3I57wgGo
- g/Qy1BH0WvUhZWjKHVIs2zRPLMNiv7jjyfIMxJMpfB0cpweRSMxozBPkoKZIzKhSSisS
- nvmhiUh7vs63iTbjHqn4zcjkTMd+fw9WEl2QnVDGFTO1KimPwRrITvEQGff9E/JHg5iM
- ZtQU+5o8Svqapc54p8JDIoiIJTT5pxfq+1KwxDYM68iLIbdIcaN8MblcziuR7rOSgTe0
- 8Biw==
-X-Gm-Message-State: AOJu0YwUhxuLT2/xjat9qV/eb0rekB1C8Jk2eNegtVNXAVDWUV8TbemJ
- o/eQdRpOsjmEdDC0wQfweb9RePeX61k=
-X-Google-Smtp-Source: AGHT+IFifs91QStc18KDRYn+mCVXA1173sWpbHPJyqCQAfvLTfGDTDLiK4Jn9Dbn1N/T5MSrbigOyw==
-X-Received: by 2002:a50:8d4f:0:b0:54c:d9c5:f9ef with SMTP id
- t15-20020a508d4f000000b0054cd9c5f9efmr454637edt.8.1704575161062; 
- Sat, 06 Jan 2024 13:06:01 -0800 (PST)
+ bh=beCClsHMmqcMkMYgwQdfXIKn37AYMjOXEPxAk81UJRk=;
+ b=O9sP9I5ykDPHLSez4kWQKo2bMTvjtf9H4i4EuYcIzE77GbjTV5DRIhjFNEvcnKj8HS
+ DjlXug4NK0ks3G0z8SEwZem6jqp63wrV94rPhYgZbwu5LKWYlrjT9cZDsNMtJHoakYJ2
+ lkvBbNiPJLW+CwktDqQ3+OQsWKclUZ9FrMYkLBxBGxppbnu2XvIzo3cyEJl7xhaTP0tR
+ 2vyw6NJJ1ojQEBUJHnBJFLoOfcgA/uGGkyLPsWli4z3Td69XJsaRM8yNxvxEbRCzn1J8
+ qCrqHGZsuBK6a6bSe/gZUvysIBz3PiBC7TSQSrlUojcGwNWn5rtX2UOgyW4HXb0QjyxE
+ czPQ==
+X-Gm-Message-State: AOJu0YxNHaW+1zrZuIu5LHDWuzMVK+c0KOHR9ezqM1gJ5cVhLwbwRki+
+ 76XgUnRCwQOXzQn3Xx+ZrvkIymlRlSM=
+X-Google-Smtp-Source: AGHT+IFMwTHj4D+JHoC4lxMaM3UMO8U5yzCZNNCv0vBsKo6BEwB7nI6hVlmYOq3JaNqbyow8FiTg+A==
+X-Received: by 2002:a05:6402:1cab:b0:556:9ccb:33c9 with SMTP id
+ cz11-20020a0564021cab00b005569ccb33c9mr480617edb.111.1704575163282; 
+ Sat, 06 Jan 2024 13:06:03 -0800 (PST)
 Received: from archlinux.. (dynamic-077-011-174-094.77.11.pool.telefonica.de.
  [77.11.174.94]) by smtp.gmail.com with ESMTPSA id
- f20-20020a056402195400b005576f4471besm624922edz.42.2024.01.06.13.05.59
+ f20-20020a056402195400b005576f4471besm624922edz.42.2024.01.06.13.06.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 06 Jan 2024 13:06:00 -0800 (PST)
+ Sat, 06 Jan 2024 13:06:02 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -77,17 +77,17 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v4 09/11] hw/char/parallel-isa: Implement relocation and
- enabling/disabling for TYPE_ISA_PARALLEL
-Date: Sat,  6 Jan 2024 22:05:29 +0100
-Message-ID: <20240106210531.140542-10-shentey@gmail.com>
+Subject: [PATCH v4 10/11] hw/ppc/pegasos2: Let pegasos2 machine configure
+ SuperI/O functions
+Date: Sat,  6 Jan 2024 22:05:30 +0100
+Message-ID: <20240106210531.140542-11-shentey@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240106210531.140542-1-shentey@gmail.com>
 References: <20240106210531.140542-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,50 +110,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The real SuperI/O chips emulated by QEMU allow for relocating and enabling or
-disabling their SuperI/O functions via software. So far this is not implemented.
-Prepare for that by adding isa_parallel_set_{enabled,iobase}.
+This is a preparation for implementing relocation and toggling of SuperI/O
+functions in the VT8231 device model. Upon reset, all SuperI/O functions will be
+deactivated, so in case if no -bios is given, let the machine configure those
+functions the same way Pegasos II firmware would do.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- include/hw/char/parallel-isa.h |  3 +++
- hw/char/parallel-isa.c         | 14 ++++++++++++++
- 2 files changed, 17 insertions(+)
+ hw/ppc/pegasos2.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/include/hw/char/parallel-isa.h b/include/hw/char/parallel-isa.h
-index 3b783bd08d..5284b2ffec 100644
---- a/include/hw/char/parallel-isa.h
-+++ b/include/hw/char/parallel-isa.h
-@@ -29,4 +29,7 @@ struct ISAParallelState {
-     PortioList portio_list;
- };
- 
-+void isa_parallel_set_iobase(ISADevice *parallel, hwaddr iobase);
-+void isa_parallel_set_enabled(ISADevice *parallel, bool enabled);
-+
- #endif /* HW_PARALLEL_ISA_H */
-diff --git a/hw/char/parallel-isa.c b/hw/char/parallel-isa.c
-index ab0f879998..a5ce6ee13a 100644
---- a/hw/char/parallel-isa.c
-+++ b/hw/char/parallel-isa.c
-@@ -41,3 +41,17 @@ void parallel_hds_isa_init(ISABus *bus, int n)
-         }
-     }
+diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
+index 3203a4a728..0a40ebd542 100644
+--- a/hw/ppc/pegasos2.c
++++ b/hw/ppc/pegasos2.c
+@@ -285,6 +285,15 @@ static void pegasos2_pci_config_write(Pegasos2MachineState *pm, int bus,
+     pegasos2_mv_reg_write(pm, pcicfg + 4, len, val);
  }
-+
-+void isa_parallel_set_iobase(ISADevice *parallel, hwaddr iobase)
+ 
++static void pegasos2_superio_write(Pegasos2MachineState *pm, uint32_t addr,
++                                   uint32_t val)
 +{
-+    ISAParallelState *s = ISA_PARALLEL(parallel);
++    AddressSpace *as = CPU(pm->cpu)->as;
 +
-+    parallel->ioport_id = iobase;
-+    s->iobase = iobase;
-+    portio_list_set_address(&s->portio_list, s->iobase);
++    stb_phys(as, PCI1_IO_BASE + 0x3f0, addr);
++    stb_phys(as, PCI1_IO_BASE + 0x3f1, val);
 +}
 +
-+void isa_parallel_set_enabled(ISADevice *parallel, bool enabled)
-+{
-+    portio_list_set_enabled(&ISA_PARALLEL(parallel)->portio_list, enabled);
-+}
+ static void pegasos2_machine_reset(MachineState *machine, ShutdownCause reason)
+ {
+     Pegasos2MachineState *pm = PEGASOS2_MACHINE(machine);
+@@ -310,6 +319,12 @@ static void pegasos2_machine_reset(MachineState *machine, ShutdownCause reason)
+ 
+     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
+                               PCI_INTERRUPT_LINE, 2, 0x9);
++    pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
++                              0x50, 1, 0x6);
++    pegasos2_superio_write(pm, 0xf4, 0xbe);
++    pegasos2_superio_write(pm, 0xf6, 0xef);
++    pegasos2_superio_write(pm, 0xf7, 0xfc);
++    pegasos2_superio_write(pm, 0xf2, 0x14);
+     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
+                               0x50, 1, 0x2);
+     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
 -- 
 2.43.0
 
