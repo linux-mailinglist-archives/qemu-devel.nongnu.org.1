@@ -2,84 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C55825FAD
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 14:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01AD3826023
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 16:27:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rM6go-0000bj-P8; Sat, 06 Jan 2024 08:26:14 -0500
+	id 1rM8ZA-0006Z2-D0; Sat, 06 Jan 2024 10:26:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rM6gd-0000Zl-0E
- for qemu-devel@nongnu.org; Sat, 06 Jan 2024 08:26:04 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rM8Z8-0006Ym-4N
+ for qemu-devel@nongnu.org; Sat, 06 Jan 2024 10:26:26 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rM6gb-0005yV-HN
- for qemu-devel@nongnu.org; Sat, 06 Jan 2024 08:26:02 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-555f581aed9so454523a12.3
- for <qemu-devel@nongnu.org>; Sat, 06 Jan 2024 05:26:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rM8Z6-0001UY-8Y
+ for qemu-devel@nongnu.org; Sat, 06 Jan 2024 10:26:25 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-552d39ac3ccso2592702a12.0
+ for <qemu-devel@nongnu.org>; Sat, 06 Jan 2024 07:26:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704547559; x=1705152359; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rVIESXOk5bK140JAyI+BSQBXs83euXAOCnCvVsW03eQ=;
- b=Z30GFj4hRzSPx99Lo85e/zrLuzDfLJxQJcAH03c2xSKpxCR2gUM9LinK+w6rcIvgJv
- rZbivZAc5dRkjXIMis9crf9j12isg4mp3pG2m55Ueu9nLeRiEFdS93uyIWomirGUSosV
- KvJhmUWdPd+XvYeKz2LA080zy50Ba2YY4BPZMy3TL85fLvoo/bAMF28iPf5viOPqthwf
- 5bLl9IBRYVDvqRXFA+MTxeKYOdYOtRiUrvJ+wAs7IrrQtFsjVZqRSpLPJvzOIwCmNql1
- qc5JVO7TslklhAMhsJ0xmERDhoW2sl/6UTPpLmPd7yo2Og5k/zKVVu7wJvIv5M7qzVn4
- YStw==
+ d=linaro.org; s=google; t=1704554781; x=1705159581; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hMgpMeixTkShqQJe2jHzQGZaz6xmcr//fqb5WDPCh74=;
+ b=dS8YlSXHr4475EtWyec7oREOI00MLS/jStQYduaCPP0D3i303cVLcO7hVyc9UP11So
+ fN/aSl80M5whaZDX9lBvlV21gEbtBtjzKvPTcF2x2HeHXszT+k8gkdRRufefJNR74f/y
+ aWC1YxdY3BXd8V3Oarv66aWntKl++JjcUfp/PgES1ovm+K5BLshdSAmNJOXqM4/Aj/qx
+ SwvOq3NEUUptbSWfvd9Ypxib8oTrD7H5xbyxxtu5zxESFmrEFhUpvQBBeOgLoGJvW8g1
+ /gGUH37NaXWTXpNBV177bdNY1u7zHPzlO+zPVOmg6BMTG6NunrEiJBIR8sGqacVstQtW
+ 0ApA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704547559; x=1705152359;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rVIESXOk5bK140JAyI+BSQBXs83euXAOCnCvVsW03eQ=;
- b=iwUAFp6+tOdoxAHIMLHxjAYn9liflt8JuSuM+Yyw1eHQmXPVfsQTzIloxgntWA4q8h
- bpM/5EdEDEIMRXw2zjyjymhoQkvWnUJhTfqhmWByx9yEbn+PeKnawbWmUEcn2gP9zwlL
- zHijnJvMKTFb4w6DWFkz3sxM+Q6q8lPXr5CM0NxO7n+X3icv/Mycu6BsKZyh068UqAa6
- DnuaJAlwpOHdUm/GarZwgLwsWDQv2VNBfzPpFUT2eF/U126o8kdl2CaGXuxSByk0Y0wj
- vTHnNGkD6e+YD8FOYFJ96JNKYFw8D1tWkrA8vBp9VVCATiX67zl3L3nm+7ZaVIKUmby4
- 0Vng==
-X-Gm-Message-State: AOJu0YxYcXkZoGgmchmt1ePoUz4RQqU3HhHtCyOaRmyLzxpB7f8mbjMJ
- x2FF9RE8++iDnknMO2MAhehmP3VHS1s=
-X-Google-Smtp-Source: AGHT+IEHVgmFHG/slMf/wkbvSNJ8IBWa1UDTFSBK3GF4z8UlOuvIQQtA74Vo++VkRaHCNdb4l0H1VA==
-X-Received: by 2002:a50:ab15:0:b0:557:34d4:e523 with SMTP id
- s21-20020a50ab15000000b0055734d4e523mr506665edc.39.1704547559206; 
- Sat, 06 Jan 2024 05:25:59 -0800 (PST)
-Received: from Provence.localdomain
- (dynamic-077-011-174-094.77.11.pool.telefonica.de. [77.11.174.94])
- by smtp.gmail.com with ESMTPSA id
- 3-20020a508e03000000b0055515b40464sm2159752edw.81.2024.01.06.05.25.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 06 Jan 2024 05:25:58 -0800 (PST)
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Bernhard Beschow <shentey@gmail.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 3/3] target/i386/cpu: Fix typo in comment
-Date: Sat,  6 Jan 2024 14:25:46 +0100
-Message-ID: <20240106132546.21248-4-shentey@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240106132546.21248-1-shentey@gmail.com>
-References: <20240106132546.21248-1-shentey@gmail.com>
+ d=1e100.net; s=20230601; t=1704554781; x=1705159581;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hMgpMeixTkShqQJe2jHzQGZaz6xmcr//fqb5WDPCh74=;
+ b=AntHAFEsWOh7bTPZucYjvmeYZtA88x89sNootwdZLrWDmNmYawcrgRym28f5/KEgbJ
+ /o0MB5M+FbA1k2t6itSHMMfYAfCKtF87gN9CvepKGyMbNWDh4KM4zA/KG/u2mgK6HAZx
+ xWAwHyOIKgLQ9Ngj9kI7ilP7F4JEm/CaRtPBjhWrsRpeRCCauu4DhVm/6siqJ/k74jki
+ o63C4Q8Vk+WGsmDIZftFYcvBBPYOfBt7LSS3k1j6RiKU//siXmGUrxVC/nEPjtLdDLN7
+ nJFjKRGAMcGNtnBQiSlT6y9AFguO6Na33wVoK28yHfEZE8qEqdUXnMrEoInjEL38ExkV
+ +Wqg==
+X-Gm-Message-State: AOJu0YwDa283lQU3USWEqt3txaILDdYjYg/qI2TawpSF6pwm+MAyhb7x
+ XQH9TB3Y5xJw6gOKbGC1WjLEtjnpyabFsg==
+X-Google-Smtp-Source: AGHT+IHx6DoozYNDiJtZqonCVBi74JNH3a8qI4JcZw33eT8eT9DErL/RqXvaYYxTqGebrwt7Gr+Rag==
+X-Received: by 2002:a17:906:354b:b0:a28:c8bd:2592 with SMTP id
+ s11-20020a170906354b00b00a28c8bd2592mr1000294eja.54.1704554781634; 
+ Sat, 06 Jan 2024 07:26:21 -0800 (PST)
+Received: from [192.168.69.100] (mab78-h01-176-184-55-22.dsl.sta.abo.bbox.fr.
+ [176.184.55.22]) by smtp.gmail.com with ESMTPSA id
+ z25-20020a1709060ad900b00a26af6e4604sm2053972ejf.107.2024.01.06.07.26.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 06 Jan 2024 07:26:21 -0800 (PST)
+Message-ID: <7175ff85-408b-4faa-b7e9-362a16767e34@linaro.org>
+Date: Sat, 6 Jan 2024 16:26:19 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/qtest/virtio-ccw: Fix device presence checking
+Content-Language: en-US
+To: Samuel Tardieu <sam@rfc1149.net>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+References: <20240106130121.1244993-1-sam@rfc1149.net>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240106130121.1244993-1-sam@rfc1149.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,26 +92,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
----
- target/i386/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 6/1/24 14:01, Samuel Tardieu wrote:
+> An apparent copy-paste error tests for the presence of the
+> virtio-rng-ccw device in order to perform tests on the virtio-scsi-ccw
+> device.
+> 
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 2524881ce2..7d11edf4fa 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -2178,7 +2178,7 @@ static const CPUCaches epyc_genoa_cache_info = {
-  *  Conceal VM entries from PT
-  *  Enable ENCLS exiting
-  *  Mode-based execute control (XS/XU)
-- s  TSC scaling (Skylake Server and newer)
-+ *  TSC scaling (Skylake Server and newer)
-  *  GPA translation for PT (IceLake and newer)
-  *  User wait and pause
-  *  ENCLV exiting
--- 
-2.43.0
+Fixes: 65331bf5d1 ("tests/qtest: Check for virtio-ccw devices before 
+using them")
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+> ---
+>   tests/qtest/virtio-ccw-test.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/qtest/virtio-ccw-test.c b/tests/qtest/virtio-ccw-test.c
+> index f4f5858b84..7a5357c212 100644
+> --- a/tests/qtest/virtio-ccw-test.c
+> +++ b/tests/qtest/virtio-ccw-test.c
+> @@ -85,7 +85,7 @@ int main(int argc, char **argv)
+>       if (qtest_has_device("virtio-rng-ccw")) {
+>           qtest_add_func("/virtio/rng/nop", virtio_rng_nop);
+>       }
+> -    if (qtest_has_device("virtio-rng-ccw")) {
+> +    if (qtest_has_device("virtio-scsi-ccw")) {
+>           qtest_add_func("/virtio/scsi/nop", virtio_scsi_nop);
+>           qtest_add_func("/virtio/scsi/hotplug", virtio_scsi_hotplug);
+>       }
 
 
