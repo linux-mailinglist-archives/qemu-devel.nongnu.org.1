@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1429F826102
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 19:16:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AD9826104
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 19:16:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMBCX-0006Qm-3M; Sat, 06 Jan 2024 13:15:17 -0500
+	id 1rMBCU-0006PD-S0; Sat, 06 Jan 2024 13:15:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
- id 1rMBCS-0006MU-4S; Sat, 06 Jan 2024 13:15:12 -0500
+ id 1rMBCR-0006MG-Md; Sat, 06 Jan 2024 13:15:11 -0500
 Received: from zoidberg.rfc1149.net ([195.154.227.159])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
- id 1rMBCP-0001vy-RT; Sat, 06 Jan 2024 13:15:11 -0500
+ id 1rMBCP-0001vz-S1; Sat, 06 Jan 2024 13:15:11 -0500
 Received: from 127.0.0.1 (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (Client did not present a certificate)
- by zoidberg.rfc1149.net (Postfix) with ESMTPSA id 4215080026;
+ by zoidberg.rfc1149.net (Postfix) with ESMTPSA id 6152A80027;
  Sat,  6 Jan 2024 19:15:04 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rfc1149.net; s=smtp;
- t=1704564904; bh=kNhppvo/CRU4H84/steItY4yhrW3Ab/UuhFo++kdr+M=;
+ t=1704564904; bh=oUHxTnxbJvmbEvqdnnqwZEZn9kWgtC+tyGXnlDxve3k=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=NF0BJAQQOwugLGE5o+IyBIcpSK1ehpS2hnwlLnDAmcXxB79+PacfTCZugGJRcMpby
- Lx6ze1evzOLT9JB5B57jQrr8uTF+EiibkeJI+QeEC8b4du+mCAyDd6NY+1V3wHaBZq
- wg5UWKZ2CDjJ1q/z+eVMwGq4aWS1Cn+0Q/+hZcNVBSPVO4AVN0hjnl/lA8WQ16mWGa
- WhFDc9VmrEZH9fQ4UvfBLMDE5RTsawON8y1aBXhbGMYCmVSP9NA3XPijpLsz3k0By+
- KWJDDcsWqsfY70EBOtV629RHX3RHv/pQ2EwZtY3UKiaFXDkCnF02WWGXn6u3OvKD7H
- GFrYRToMMIuHg==
+ b=yLEYvFldTrVhoUyXhSBunjIXabEi7otSSKeJUDbtwa67DXed7zA3oked6YwF8Q35O
+ 3TvznjLfB02ciVDDx+fvglBOxguG0hlslc0yQbl6ZGfohjFi4HEJP0YIsRHtLrM/63
+ TY3Xg43Ou9ig3NmXs4OVZt7zfHaCJ1FNeWtBBPaLTMwBbHk/gmSfVYMxmixBbi8B8H
+ DYreBykkpctFN36ccDsdzuGE0Wlp+VzMWKgV7x/KvPlcJXaHkyCofaSUfOKspN1DrB
+ bdb+lfVtWqyU2rN0+NXtwH4UdGHeDAEX+H2fMd11VcTyKy1Mql7MG4rIyLNRgnBzlu
+ 50YFwaTIcFaoQ==
 From: Samuel Tardieu <sam@rfc1149.net>
 To: qemu-devel@nongnu.org
 Cc: Anton Kochkov <anton.kochkov@proton.me>, qemu-arm@nongnu.org,
@@ -39,9 +39,9 @@ Cc: Anton Kochkov <anton.kochkov@proton.me>, qemu-arm@nongnu.org,
  =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
  Alistair Francis <alistair@alistair23.me>,
  Peter Maydell <peter.maydell@linaro.org>, Samuel Tardieu <sam@rfc1149.net>
-Subject: [PATCH v3 1/3] hw/intc/armv7m_nvic: add "num-prio-bits" property
-Date: Sat,  6 Jan 2024 19:15:01 +0100
-Message-ID: <20240106181503.1746200-2-sam@rfc1149.net>
+Subject: [PATCH v3 2/3] hw/arm/armv7m: alias the NVIC "num-prio-bits" property
+Date: Sat,  6 Jan 2024 19:15:02 +0100
+Message-ID: <20240106181503.1746200-3-sam@rfc1149.net>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240106181503.1746200-1-sam@rfc1149.net>
 References: <20240106181503.1746200-1-sam@rfc1149.net>
@@ -70,64 +70,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cortex-M NVIC can have a different number of priority bits.
-Cortex-M0/M0+/M1 devices must use 2 or more bits, while devices based
-on ARMv7m and up must use 3 or more bits.
-
-This adds a "num-prio-bits" property which will get sensible default
-values if unset (2 or 8 depending on the device). Unless a SOC
-specifies the number of bits to use, the previous behavior is
-maintained for backward compatibility.
+A SoC will not have a direct access to the NVIC embedded in its ARM
+core. By aliasing the "num-prio-bits" property similarly to what is
+done for the "num-irq" one, a SoC can easily configure it on its
+armv7m instance.
 
 Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
-Suggested-by: Anton Kochkov <anton.kochkov@proton.me>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1122
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/intc/armv7m_nvic.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ hw/arm/armv7m.c         | 2 ++
+ include/hw/arm/armv7m.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/hw/intc/armv7m_nvic.c b/hw/intc/armv7m_nvic.c
-index 50f9a973a2..404a445138 100644
---- a/hw/intc/armv7m_nvic.c
-+++ b/hw/intc/armv7m_nvic.c
-@@ -2572,6 +2572,11 @@ static const VMStateDescription vmstate_nvic = {
- static Property props_nvic[] = {
-     /* Number of external IRQ lines (so excluding the 16 internal exceptions) */
-     DEFINE_PROP_UINT32("num-irq", NVICState, num_irq, 64),
-+    /*
-+     * Number of the maximum priority bits that can be used. 0 means
-+     * to use a reasonable default.
-+     */
-+    DEFINE_PROP_UINT8("num-prio-bits", NVICState, num_prio_bits, 0),
-     DEFINE_PROP_END_OF_LIST()
- };
+diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
+index e39b61bc1a..1f21827773 100644
+--- a/hw/arm/armv7m.c
++++ b/hw/arm/armv7m.c
+@@ -256,6 +256,8 @@ static void armv7m_instance_init(Object *obj)
+     object_initialize_child(obj, "nvic", &s->nvic, TYPE_NVIC);
+     object_property_add_alias(obj, "num-irq",
+                               OBJECT(&s->nvic), "num-irq");
++    object_property_add_alias(obj, "num-prio-bits",
++                              OBJECT(&s->nvic), "num-prio-bits");
  
-@@ -2685,7 +2690,23 @@ static void armv7m_nvic_realize(DeviceState *dev, Error **errp)
-     /* include space for internal exception vectors */
-     s->num_irq += NVIC_FIRST_IRQ;
- 
--    s->num_prio_bits = arm_feature(&s->cpu->env, ARM_FEATURE_V7) ? 8 : 2;
-+    if (s->num_prio_bits == 0) {
-+        /*
-+         * If left unspecified, use 2 bits by default on Cortex-M0/M0+/M1
-+         * and 8 bits otherwise.
-+         */
-+        s->num_prio_bits = arm_feature(&s->cpu->env, ARM_FEATURE_V7) ? 8 : 2;
-+    } else {
-+        uint8_t min_prio_bits =
-+            arm_feature(&s->cpu->env, ARM_FEATURE_V7) ? 3 : 2;
-+        if (s->num_prio_bits < min_prio_bits || s->num_prio_bits > 8) {
-+            error_setg(errp,
-+                       "num-prio-bits %d is outside "
-+                       "NVIC acceptable range [%d-8]",
-+                       s->num_prio_bits, min_prio_bits);
-+            return;
-+        }
-+    }
- 
-     /*
-      * This device provides a single memory region which covers the
+     object_initialize_child(obj, "systick-reg-ns", &s->systick[M_REG_NS],
+                             TYPE_SYSTICK);
+diff --git a/include/hw/arm/armv7m.h b/include/hw/arm/armv7m.h
+index e2cebbd15c..5c057ab2ec 100644
+--- a/include/hw/arm/armv7m.h
++++ b/include/hw/arm/armv7m.h
+@@ -43,6 +43,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(ARMv7MState, ARMV7M)
+  *   a qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET).
+  * + Property "cpu-type": CPU type to instantiate
+  * + Property "num-irq": number of external IRQ lines
++ * + Property "num-prio-bits": number of priority bits in the NVIC
+  * + Property "memory": MemoryRegion defining the physical address space
+  *   that CPU accesses see. (The NVIC, bitbanding and other CPU-internal
+  *   devices will be automatically layered on top of this view.)
 -- 
 2.42.0
 
