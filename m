@@ -2,83 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC2C8260EE
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 18:45:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAC3826101
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 19:16:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMAiZ-0001tq-9O; Sat, 06 Jan 2024 12:44:19 -0500
+	id 1rMBCW-0006QG-As; Sat, 06 Jan 2024 13:15:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rMAiQ-0001qZ-Tb
- for qemu-devel@nongnu.org; Sat, 06 Jan 2024 12:44:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
+ id 1rMBCR-0006MH-Ms; Sat, 06 Jan 2024 13:15:11 -0500
+Received: from zoidberg.rfc1149.net ([195.154.227.159])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rMAiO-00065l-LC
- for qemu-devel@nongnu.org; Sat, 06 Jan 2024 12:44:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704563045;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NAFhZZ5z8kM7eJH3ZhnX5dwUABNYfaGlxPDj7HVKXzM=;
- b=D+2NFwLnSnLrf4GSSmaaH/vc9AS7dMRhJCfY3/Jg0mx74RW0YNN7ZpnB0mccZGrrccc9El
- SEwZe5nq023Zb+ESnvZ5kRO9rCVtr5rDilLSUPkUalub/9p7aIIoltHpqudfJ+qslkR4c6
- X9eLC+8DkA4pc+cAp/bkape9ClVwsnE=
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
- [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-590-IoU_UImRP_uIUltrpv5B5g-1; Sat, 06 Jan 2024 12:44:01 -0500
-X-MC-Unique: IoU_UImRP_uIUltrpv5B5g-1
-Received: by mail-ot1-f71.google.com with SMTP id
- 46e09a7af769-6dbffa4b034so708574a34.3
- for <qemu-devel@nongnu.org>; Sat, 06 Jan 2024 09:44:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704563041; x=1705167841;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NAFhZZ5z8kM7eJH3ZhnX5dwUABNYfaGlxPDj7HVKXzM=;
- b=AAtb3KjVfXGtAsQ8UZEOyEIGjSW+l44SKu2MQYJmMpPZlEoH/H7UtznRR05STvUt3C
- OeBzvxoyw4mbsAo+Vb16wM1jtnj2jMWJq0dunj2500RgNTNIMulG8HRAp/3k477SKXZm
- XoVnIcIIDzL74/sMyzDTeARUGTBpJ9NCUpFFQegulDcbjEm1rqhoWPTiRiWcFrvaiFMW
- QPJy+n+54dUkRztLMAQ70NemnsuE5fmwIHpstTAWxiHf6rxIJWHHFDv8KGwXPNjKKl3D
- DnXLR7t4FXvFiVdQDMjqxYoX4Lw1Jb3qlIjqjLRaLvAlVJjRrYoeCiMFmn6HoP1jDsEI
- jPoQ==
-X-Gm-Message-State: AOJu0Yxn2NUsr50Vg+g39wK474IcTl+AbGLcvGuf8fxMszSTKGbVtwit
- 3BBxACh5ymHT6xxwaJCdDlWR4Lnq+A6swFO3YoD6rXO51t83DVU+jpun8XnRm5YCSQCWlMPzMS4
- 90ahbBP+FE5uU8uaSOJ46jUciAD2ClCAckATOEKQ=
-X-Received: by 2002:a05:6830:118:b0:6dc:18e3:78d4 with SMTP id
- i24-20020a056830011800b006dc18e378d4mr968742otp.59.1704563041212; 
- Sat, 06 Jan 2024 09:44:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEt6lFZth+tdL5AaUcWaKYP8Y4SjV8/H+3VYQx6QP52FrLUeHl+e0Nez6CKwBtHXw5djxeWZ57thG4aj3z/aX8=
-X-Received: by 2002:a05:6830:118:b0:6dc:18e3:78d4 with SMTP id
- i24-20020a056830011800b006dc18e378d4mr968738otp.59.1704563040896; Sat, 06 Jan
- 2024 09:44:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
+ id 1rMBCP-0001vx-RS; Sat, 06 Jan 2024 13:15:11 -0500
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by zoidberg.rfc1149.net (Postfix) with ESMTPSA id 212D180024;
+ Sat,  6 Jan 2024 19:15:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rfc1149.net; s=smtp;
+ t=1704564904; bh=uion8r+6NFyJE1zzEuSuvOZ83zGWGVvSYSaEc/TUxuY=;
+ h=From:To:Cc:Subject:Date;
+ b=IvV1hmzIWzRkoxQeDpMsmLIDIqymDvL40Gm/Ufwwf1GZYMRLsY6ufBc61ehJlAiP/
+ mX3T6sC6smH3mrrfBPCkhhnviuOmFwrr7ii4za0s6JeOf4CY75IlChr47OmAXV0fqV
+ 2V4bT0zdgEkeDJ9aCfAPf+Q0p1pL6ICwjnIizwyU2nK8FFQtpBhDk23C420Gct+b1K
+ XIMK8SeH+s/19cyWqvUhQlGL6yFCi99O1CoYYQENaIlzYm9Qc6eNxUJKSSzjdYCcCY
+ kxQ7uA/ik5IZkC1hvUYtXGTgshB07PN65vM1yla1HJAchswrpYR6DK40QeklubQIor
+ R/hyNLl8tZsow==
+From: Samuel Tardieu <sam@rfc1149.net>
+To: qemu-devel@nongnu.org
+Cc: Anton Kochkov <anton.kochkov@proton.me>, qemu-arm@nongnu.org,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>, Samuel Tardieu <sam@rfc1149.net>
+Subject: [PATCH v3 0/3] Add "num-prio-bits" property for Cortex-M devices
+Date: Sat,  6 Jan 2024 19:15:00 +0100
+Message-ID: <20240106181503.1746200-1-sam@rfc1149.net>
+X-Mailer: git-send-email 2.42.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20231028194522.245170-1-richard.henderson@linaro.org>
-In-Reply-To: <20231028194522.245170-1-richard.henderson@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sat, 6 Jan 2024 18:43:48 +0100
-Message-ID: <CABgObfZme6gNZG=3ibXb8=+yAg=LHPeHYdncdx2LgN741bk_7A@mail.gmail.com>
-Subject: Re: [PATCH v2 00/35] tcg: Introduce TCG_COND_TST{EQ,NE}
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.54,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=195.154.227.159; envelope-from=sam@rfc1149.net;
+ helo=zoidberg.rfc1149.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,40 +69,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 28, 2023 at 9:45=E2=80=AFPM Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Expose a pair of comparison operators that map to the "test"
-> comparison that is available on many architectures.
->
-> Changes for v2:
->   * Add TCGCond to tcg_target_const_match.
->     This fixes a long-standing issue with ppc and s390x backends,
->     in that CMPI for signed comparisons has signed immediate and
->     CMPLI for unsigned comparisons has unsigned immediate.
->     But now allows different immediates for the TST comparisons.
->   * tcg/i386: Generate TEST x,x for power-of-two in {7,15,31,63}.
->   * tcg/i386: Generate BT n,x for other power-of-two.
->   * tcg/ppc: tcg_target_const_match improvements
->   * tcg/s390x: tcg_target_const_match improvements
->   * target/m68k: Use TST{EQ,NE} for gen_fcc_cond.
+This patch series builds on a discussion initiated by Anton Kochkov on
+this list in 2022. It allows setting the appropriate number of priority
+bits for Cortex-M devices. For example, FreeRTOS checks at startup that
+the right number of priority bits is available in order to guarantee
+its runtime structures safety. They have added a configuration option
+to disable this check when running on QEMU because QEMU always use 2
+bits for Cortex-M0/M0+/M1 and 8 bits for other devices.
 
-I updated the MIPS backend (untested though) and pushed the result to
-branch i386 of https://gitlab.com/bonzini/qemu/.
+While this change allows the number of priority bits to be properly
+configured, it keeps the same default as before in order to preserve
+backward compatibility unless the SoC configures the exact value.
 
-However I was thinking: a lot of RISC targets simply do AND/ANDI
-followed by the sequence used for TCG_COND_NE.  Would it make sense to
-have a TCG_TARGET_SUPPORTS_TST bit and, if absent, lower TSTEQ/TSTNE
-to AND+EQ/NE directly in the optimizer?  And for brcond2/setcond2,
-always using AND/AND/OR may work just as well as any backend-specific
-trick, and will give more freedom to the register allocator.
+Changes from v2:
+- Add the description of the new armv7m property in include/hw/arm/armv7m.h.
 
-This also would allow to reorder the target patches before the TCG
-patches, thus: 1) providing more exposure to the lowering code 2)
-making the "minimum viable series" smaller. (2) is not a huge deal
-since you have already written the backend code, but (1) is
-interesting.
+Changes from v1:
+- Add support for the STM32L4x5 SOC family (which is currently
+  under review for integration) and fix the Based-on: trailer
+  in the cover letter.
+- Fix a typo in one of the commit messages ("compatibility")
 
-Paolo
+Based-on: <20240106163905.42027-1-ines.varhol@telecom-paris.fr>
+([PATCH v5 0/2] Add minimal support for the B-L475E-IOT01A board)
+
+Samuel Tardieu (3):
+  hw/intc/armv7m_nvic: add "num-prio-bits" property
+  hw/arm/armv7m: alias the NVIC "num-prio-bits" property
+  hw/arm/socs: configure priority bits for existing SOCs
+
+ hw/arm/armv7m.c         |  2 ++
+ hw/arm/stellaris.c      |  2 ++
+ hw/arm/stm32f100_soc.c  |  1 +
+ hw/arm/stm32f205_soc.c  |  1 +
+ hw/arm/stm32f405_soc.c  |  1 +
+ hw/arm/stm32l4x5_soc.c  |  1 +
+ hw/intc/armv7m_nvic.c   | 23 ++++++++++++++++++++++-
+ include/hw/arm/armv7m.h |  1 +
+ 8 files changed, 31 insertions(+), 1 deletion(-)
+
+-- 
+2.42.0
 
 
