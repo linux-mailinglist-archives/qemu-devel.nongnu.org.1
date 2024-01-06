@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99DB1826199
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 22:08:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A4A7826196
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 22:08:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMDrg-0005bF-V8; Sat, 06 Jan 2024 16:05:56 -0500
+	id 1rMDrk-0005d8-8O; Sat, 06 Jan 2024 16:06:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rMDre-0005aF-Fg; Sat, 06 Jan 2024 16:05:54 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1rMDrg-0005bp-RS; Sat, 06 Jan 2024 16:05:56 -0500
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rMDrc-00018w-SR; Sat, 06 Jan 2024 16:05:54 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-55778f7662bso443992a12.1; 
- Sat, 06 Jan 2024 13:05:51 -0800 (PST)
+ id 1rMDrf-00019M-1Y; Sat, 06 Jan 2024 16:05:56 -0500
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2ccabf5a4beso5467971fa.2; 
+ Sat, 06 Jan 2024 13:05:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704575150; x=1705179950; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704575152; x=1705179952; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cBLwkrwr8Jj7XdQH7raQa9Nj1TEuOiCXih1DV9ONnp0=;
- b=MNiJfEmSezxWQKi6ifbpvLqhZPRwT05aXo9RuVFC8WZMypV514YTtR6xjqgl2k7mXW
- 8DPArYBitmsFJerzVWW1cjP/S7SoJhhjqkz3VuW011UkUtamWxEQY2gx51cw14xBQYHI
- gNVwYAC8RVwGeYpaS0q7s+23G5zJEj3j/u0IKDk+kNTXQfjP0aMJEhH4Y7zuUGIYpKzA
- pqusrY8MmMhZ7wqzgPdY0hOoafqdRUsBMEQoGqzvSRtlMK8THn/drv6KvFR4vIr11adD
- wKtTkJfZnN7AXv8rb+uz/st41zSCNjew1rfRPpTNevpdjhSSrf4hOS6oT7lV3FcWvpgL
- VMPQ==
+ bh=LzCBxca0nCRHR665JCCwURJqMXPSu7RYmWln7L2TOQo=;
+ b=XEIb5HsFdQquUOCJ5vytLm0aBmLn5nH+8ng6zYlv9+kASKNmHFNeTv5CptW9f0PTMW
+ B4ECioAmBbxrWmIX4CtJlrp5+Ln4iiUIJ2gExVIdv1/WYBvs7FUCJhFcXCKYmn+LLymo
+ Ff3aIiQHI7ZEdv2i/oTzbYFqrSF6x61o5EBL4uhluqOrjlw5bWcOPa4DAg3ET1bXf9Qn
+ hDOuUf8oBd16IPu71FLmtTkveldI8QPzDrjH9mDihnOj/U7aW9KJFGxUnCD39FdbhTmv
+ MF8JMv415wOUkVasPPpsdeTCrdWLLllHWXVjWf4CW9wlVpsQ4+EP3i27rfYC/AXrSxS8
+ LfJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704575150; x=1705179950;
+ d=1e100.net; s=20230601; t=1704575152; x=1705179952;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cBLwkrwr8Jj7XdQH7raQa9Nj1TEuOiCXih1DV9ONnp0=;
- b=LsqUDRX/GGhxiPh/hMbmiqHN1FRFNZPTTAPbDWiC6kST9SMxgJ4oV6pQztAPuFJ5Im
- VzdPlR4rESqJQZJoZgB2foypfCXA0VIPfc7Pki1KJcbPN9UH7KXaHZDcUn84YJWCscvT
- 05e/X3+XA/bd8SCaBxMoYrIW0Cq0XfbozhSnjip0BWmkhCrcSfYmu1D/Usv6vrRkH0wR
- kRSWsA1g6BXP7lbu/uSVulFv4miPUJsDeWn2eO4tarPOZljIcdzqnGTeTR+DFUPXHAW+
- 0klcdJ/FIfU+i+qY8Rv9elOBrxgiPnRgYa+Pz8HXENgArvgsiI4PJQrANvPpBFr75tZ2
- IbCw==
-X-Gm-Message-State: AOJu0Yyt0t975PSt9CRtu8JSmHh+yHk3bMDgOz6RrzAcjwZPawmH0UzS
- Ub9s8K3cB6bslH8L//9rPRTT6a8BNKo=
-X-Google-Smtp-Source: AGHT+IEPygpyBoxm/Okl0EbRqcvKq1fg2xBH35wVgGDfSoYMFXQq4sFNMTleAKNtjAaafowjmLssWg==
-X-Received: by 2002:a05:6402:3584:b0:557:1cde:812f with SMTP id
- y4-20020a056402358400b005571cde812fmr3781465edc.8.1704575149956; 
- Sat, 06 Jan 2024 13:05:49 -0800 (PST)
+ bh=LzCBxca0nCRHR665JCCwURJqMXPSu7RYmWln7L2TOQo=;
+ b=Q9Ys+hjXW/eKBBUpp26FtEUadoi2lzXDrXPpHJdi0aLBzp9lpWzRbfUgjtzNIN7Vo8
+ APEPJ4ZEDQL9nFtrfEyGokKSkL4JyMZyjyKeV6tzGCtSpnYbGfW0Aqm/UX4clpImmu/W
+ 3R7fcMXWvJOFo9huBlGJFOvp/NX+mZKqCHnT5rl/aAIvtDoj0bu7ofBZFI1gh9HNGRRn
+ 2tAYlVrQta062h2Ozn4XgZtCRLUrhpJNPI6HWmLwaenw6XQNvgUW1ppwOlXobvDk5Qez
+ Kt2Kga+qvKqv8tfbgqUnggG0NXYvbjd6vinpzbsDik0ZNUS/XC8hpHJ3fmWlyhjY5G9d
+ 2jEA==
+X-Gm-Message-State: AOJu0YzW7qE+5bmMISMgcsW9IdKSBsDk3/Cg26sWmbf3ijFgOPeGoKHE
+ oPV/TCS8upNOvEQdgQHRE0SFGIr1Fto=
+X-Google-Smtp-Source: AGHT+IFNjD5sQIPeMGd/1cWzvaGT9Us26llRzYnA3++xOIZ5ZxXphK1jYmYK41FgbR+YQ72FxNzjjw==
+X-Received: by 2002:a2e:848d:0:b0:2cd:475:18f3 with SMTP id
+ b13-20020a2e848d000000b002cd047518f3mr270134ljh.126.1704575151810; 
+ Sat, 06 Jan 2024 13:05:51 -0800 (PST)
 Received: from archlinux.. (dynamic-077-011-174-094.77.11.pool.telefonica.de.
  [77.11.174.94]) by smtp.gmail.com with ESMTPSA id
- f20-20020a056402195400b005576f4471besm624922edz.42.2024.01.06.13.05.47
+ f20-20020a056402195400b005576f4471besm624922edz.42.2024.01.06.13.05.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 06 Jan 2024 13:05:49 -0800 (PST)
+ Sat, 06 Jan 2024 13:05:51 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -77,17 +77,17 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v4 03/11] hw/char/parallel: Move portio_list from
- ParallelState to ISAParallelState
-Date: Sat,  6 Jan 2024 22:05:23 +0100
-Message-ID: <20240106210531.140542-4-shentey@gmail.com>
+Subject: [PATCH v4 04/11] exec/ioport: Resolve redundant .base attribute in
+ struct MemoryRegionPortio
+Date: Sat,  6 Jan 2024 22:05:24 +0100
+Message-ID: <20240106210531.140542-5-shentey@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240106210531.140542-1-shentey@gmail.com>
 References: <20240106210531.140542-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=shentey@gmail.com; helo=mail-lj1-x233.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,70 +110,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ParallelState::portio_list isn't used inside ParallelState context but only
-inside ISAParallelState context, so move it there.
+portio_list_add_1() creates a MemoryRegionPortioList instance which holds a
+MemoryRegion `mr` and an array of MemoryRegionPortio elements named `ports`.
+Each element in the array gets assigned the same value for its .base attribute.
+The same value also ends up as the .addr attribute of `mr` due to the
+memory_region_add_subregion() call. This means that all .base attributes are
+the same as `mr.addr`.
+
+The only usages of MemoryRegionPortio::base were in portio_read() and
+portio_write(). Both functions get above MemoryRegionPortioList as their
+opaque parameter. In both cases find_portio() can only return one of the
+MemoryRegionPortio elements of the `ports` array. Due to above observation any
+element will have the same .base value equal to `mr.addr` which is also
+accessible.
+
+Hence, `mrpio->mr.addr` is equivalent to `mrp->base` and
+MemoryRegionPortio::base is redundant and can be removed.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- include/hw/char/parallel-isa.h | 2 ++
- include/hw/char/parallel.h     | 2 --
- hw/char/parallel.c             | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ include/exec/ioport.h |  1 -
+ system/ioport.c       | 13 ++++++-------
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/include/hw/char/parallel-isa.h b/include/hw/char/parallel-isa.h
-index d24ccecf05..3b783bd08d 100644
---- a/include/hw/char/parallel-isa.h
-+++ b/include/hw/char/parallel-isa.h
-@@ -12,6 +12,7 @@
+diff --git a/include/exec/ioport.h b/include/exec/ioport.h
+index e34f668998..95f1dc30d0 100644
+--- a/include/exec/ioport.h
++++ b/include/exec/ioport.h
+@@ -35,7 +35,6 @@ typedef struct MemoryRegionPortio {
+     unsigned size;
+     uint32_t (*read)(void *opaque, uint32_t address);
+     void (*write)(void *opaque, uint32_t address, uint32_t data);
+-    uint32_t base; /* private field */
+ } MemoryRegionPortio;
  
- #include "parallel.h"
+ #define PORTIO_END_OF_LIST() { }
+diff --git a/system/ioport.c b/system/ioport.c
+index 1824aa808c..a59e58b716 100644
+--- a/system/ioport.c
++++ b/system/ioport.c
+@@ -181,13 +181,13 @@ static uint64_t portio_read(void *opaque, hwaddr addr, unsigned size)
  
-+#include "exec/ioport.h"
- #include "hw/isa/isa.h"
- #include "qom/object.h"
+     data = ((uint64_t)1 << (size * 8)) - 1;
+     if (mrp) {
+-        data = mrp->read(mrpio->portio_opaque, mrp->base + addr);
++        data = mrp->read(mrpio->portio_opaque, mrpio->mr.addr + addr);
+     } else if (size == 2) {
+         mrp = find_portio(mrpio, addr, 1, false);
+         if (mrp) {
+-            data = mrp->read(mrpio->portio_opaque, mrp->base + addr);
++            data = mrp->read(mrpio->portio_opaque, mrpio->mr.addr + addr);
+             if (addr + 1 < mrp->offset + mrp->len) {
+-                data |= mrp->read(mrpio->portio_opaque, mrp->base + addr + 1) << 8;
++                data |= mrp->read(mrpio->portio_opaque, mrpio->mr.addr + addr + 1) << 8;
+             } else {
+                 data |= 0xff00;
+             }
+@@ -203,13 +203,13 @@ static void portio_write(void *opaque, hwaddr addr, uint64_t data,
+     const MemoryRegionPortio *mrp = find_portio(mrpio, addr, size, true);
  
-@@ -25,6 +26,7 @@ struct ISAParallelState {
-     uint32_t iobase;
-     uint32_t isairq;
-     ParallelState state;
-+    PortioList portio_list;
- };
- 
- #endif /* HW_PARALLEL_ISA_H */
-diff --git a/include/hw/char/parallel.h b/include/hw/char/parallel.h
-index 7b5a309a03..cfb97cc7cc 100644
---- a/include/hw/char/parallel.h
-+++ b/include/hw/char/parallel.h
-@@ -1,7 +1,6 @@
- #ifndef HW_PARALLEL_H
- #define HW_PARALLEL_H
- 
--#include "exec/ioport.h"
- #include "exec/memory.h"
- #include "hw/isa/isa.h"
- #include "hw/irq.h"
-@@ -22,7 +21,6 @@ typedef struct ParallelState {
-     uint32_t last_read_offset; /* For debugging */
-     /* Memory-mapped interface */
-     int it_shift;
--    PortioList portio_list;
- } ParallelState;
- 
- void parallel_hds_isa_init(ISABus *bus, int n);
-diff --git a/hw/char/parallel.c b/hw/char/parallel.c
-index bd488cd7f9..c394635ada 100644
---- a/hw/char/parallel.c
-+++ b/hw/char/parallel.c
-@@ -532,7 +532,7 @@ static void parallel_isa_realizefn(DeviceState *dev, Error **errp)
-         s->status = dummy;
+     if (mrp) {
+-        mrp->write(mrpio->portio_opaque, mrp->base + addr, data);
++        mrp->write(mrpio->portio_opaque, mrpio->mr.addr + addr, data);
+     } else if (size == 2) {
+         mrp = find_portio(mrpio, addr, 1, true);
+         if (mrp) {
+-            mrp->write(mrpio->portio_opaque, mrp->base + addr, data & 0xff);
++            mrp->write(mrpio->portio_opaque, mrpio->mr.addr + addr, data & 0xff);
+             if (addr + 1 < mrp->offset + mrp->len) {
+-                mrp->write(mrpio->portio_opaque, mrp->base + addr + 1, data >> 8);
++                mrp->write(mrpio->portio_opaque, mrpio->mr.addr + addr + 1, data >> 8);
+             }
+         }
+     }
+@@ -244,7 +244,6 @@ static void portio_list_add_1(PortioList *piolist,
+     /* Adjust the offsets to all be zero-based for the region.  */
+     for (i = 0; i < count; ++i) {
+         mrpio->ports[i].offset -= off_low;
+-        mrpio->ports[i].base = start + off_low;
      }
  
--    isa_register_portio_list(isadev, &s->portio_list, base,
-+    isa_register_portio_list(isadev, &isa->portio_list, base,
-                              (s->hw_driver
-                               ? &isa_parallel_portio_hw_list[0]
-                               : &isa_parallel_portio_sw_list[0]),
+     /*
 -- 
 2.43.0
 
