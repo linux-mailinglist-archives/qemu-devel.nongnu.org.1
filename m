@@ -2,87 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE343825E4E
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 06:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1EC825E6E
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jan 2024 07:01:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rLzR1-0000bM-KL; Sat, 06 Jan 2024 00:41:27 -0500
+	id 1rLzig-0003D0-F7; Sat, 06 Jan 2024 00:59:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rLzQz-0000b9-6l
- for qemu-devel@nongnu.org; Sat, 06 Jan 2024 00:41:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rLzQx-0004Nh-Dj
- for qemu-devel@nongnu.org; Sat, 06 Jan 2024 00:41:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704519681;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sQhKI3hnzb8SO/2gRLcl/elm6x27D5pUzpA2FYAQZE0=;
- b=dwo6TqjVNe+d/Up40V4QCi2ebx5zR8InB145qvftqU7i5VeqGvNl/7OM9xgKSP45ttXWCv
- h1HiTeTnQosDA0MIqEcggK5cCssBfncwgAZ92i4ybGTsPzA5TdnxOCTu1WtSmVdf6a96Jz
- Tx5zi2NkR8YIcuChB+ClvrU1RL6boH8=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-52-ftxEiOCmMm25pqU7KGtN9g-1; Sat, 06 Jan 2024 00:41:19 -0500
-X-MC-Unique: ftxEiOCmMm25pqU7KGtN9g-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a28fbc49006so25467766b.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 21:41:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1rLzid-0003Ck-Er
+ for qemu-devel@nongnu.org; Sat, 06 Jan 2024 00:59:39 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1rLzia-0004Y0-M3
+ for qemu-devel@nongnu.org; Sat, 06 Jan 2024 00:59:39 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-552d39ac3ccso2149874a12.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jan 2024 21:59:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1704520772; x=1705125572; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TP5ubnLFEUP8bCQUNCtogctaDcnIbCfZpR0c+RvPaLE=;
+ b=NE0N3FZuT4M644E1mtQF1EaKxDDHhmfJ70AIHxvBuxXtPVcFcllB+AhguZErcWlEH8
+ 1jouLXskHQmxRMk0Qnknm1jNY9581MwwlkieaIzBGewHD2HIsu51yxh/8bdtpuvbnJXi
+ 4JQzEA+NB62Jgi3IMkL3Axfbi40OGymkSlO6fGbXu4PaBQiUxEAzJHdObyig0k6queIr
+ wQJxB30kuCLz4ErQEuwyObKEJ6jB1EcZqCc8EE8Frjia6v2iRKZ6ewYgPoQvnUTou9Mj
+ vm8GGiuqqT4olLLnS8Aags63wMz7x3gYNdgMtUarbTVlEQhhAdZJwfMCaCNl0PSf2X5m
+ xMlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704519678; x=1705124478;
+ d=1e100.net; s=20230601; t=1704520772; x=1705125572;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sQhKI3hnzb8SO/2gRLcl/elm6x27D5pUzpA2FYAQZE0=;
- b=E376RCouN/q+en+KyYhH45wh6Tk67aU0+XK0TQ94LwXJD2vKO1czglMdD1+zaLlmmB
- ZlaJL+rzArytAuaJxknf4xKxyzu7V4Wa3zAFPD1rWswYiFGsRFe8p6uFd8VcWkStT/q4
- ybaJ6fphXGPePjhlFBcnhVRnOsLRZP6upHm+o12zRGmlDrKY1vgS+6Wr2Tg22UfcjwrY
- m01jG1mwyyj4BdLuRydrYCQjTGGQyUmZgscJFHa5EQEFFdm4QljEvJ4B39WaHvpif3WQ
- LGt+TH1aGsY2ElMDKcDl2kmu5SWNe8A/yF3IqThsb2qU6t/f6K5rz87i4Azp77hHc9kx
- QA4g==
-X-Gm-Message-State: AOJu0Yy8VZ1zhD2Dez/fI9nyrQ9UfCq+tGgLkZH/qGl+6+OuZQezzy/g
- SK2jOu5fJTQC07y7hosYf9WhRrDX5XsHrTJEvwQlw/JxnThI0r7hIrftOqnxm0r2QOkbE++I0sd
- Nei4kHH2e124pEFTUi7887Xy4JqQA0ZmHuCNkbkI=
-X-Received: by 2002:a17:906:229a:b0:a28:aef6:2677 with SMTP id
- p26-20020a170906229a00b00a28aef62677mr453746eja.63.1704519678626; 
- Fri, 05 Jan 2024 21:41:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFOubIZPHUiRy1nwXBvp0fnIUYQw8mY1cYeMu/FpsBulDQ9iVRnhJdxP0GWfNeHVr+vNmcz4rajNz6KkIJsLnM=
-X-Received: by 2002:a17:906:229a:b0:a28:aef6:2677 with SMTP id
- p26-20020a170906229a00b00a28aef62677mr453744eja.63.1704519678336; Fri, 05 Jan
- 2024 21:41:18 -0800 (PST)
+ bh=TP5ubnLFEUP8bCQUNCtogctaDcnIbCfZpR0c+RvPaLE=;
+ b=SYS5KIG/e8ttFIV4Jv/0VFAMI7Oauudkaj6zgnLnZAh630qog68J1Z/MPTR2/JZsXw
+ c7aKgw+dSncpMIS0eOQAQBsp62B36L+v8NSzKgmaMMz35XBIZBx4gXmexmMlknfhYdbM
+ nSNRx3GoJ4z7YaS4CbYBIjmqdXOwhd2UjQzeeZpZWd02jbQnS/lBOxGonIAINJbi7XWP
+ NH0cGEjPFLHayR/gWjkdbgDcPc34xpfgK/oEg7kIm2lLjUZxrE9Hi2e/cP7AtSgGTXxx
+ 5x/wUvOPbh4T3lEmRG7zqJEDzqJB8wjgkfIWERSyrkqpLAsOduI+iQmrSg0J6eI9XS1T
+ 36sQ==
+X-Gm-Message-State: AOJu0YxZkjWZMuktfnAV5sSKsxepdTVWsDtOc5c2600kOXps65f4MATJ
+ YVoj4iaC/N9tVAvrNwhJusnA7cM4hC5lMw/OKNuvl+xOq9cibQ==
+X-Google-Smtp-Source: AGHT+IGQTogDZIrGTNqCN9zcFH+YgeYItqs7cJaYdSTGjI2XuSp5CfzjXcRhvAYHztqR96zfm0o8sBRRWnHdTheCFY4=
+X-Received: by 2002:a17:907:5c9:b0:a28:7265:5915 with SMTP id
+ wg9-20020a17090705c900b00a2872655915mr553546ejb.20.1704520771751; Fri, 05 Jan
+ 2024 21:59:31 -0800 (PST)
 MIME-Version: 1.0
-References: <CAFEAcA_TGYZP2eV1C4Yn5a6vnAO-_1r98rY1Teahy_Pb1ocvjw@mail.gmail.com>
- <CAK3XEhM75DW+eUFrx=73xPycKvxccdT-Tg5mfFyuW_hAMJJ3+w@mail.gmail.com>
-In-Reply-To: <CAK3XEhM75DW+eUFrx=73xPycKvxccdT-Tg5mfFyuW_hAMJJ3+w@mail.gmail.com>
-From: Ani Sinha <anisinha@redhat.com>
-Date: Sat, 6 Jan 2024 11:11:07 +0530
-Message-ID: <CAK3XEhNe4TO4oBavsuqJwP5e1nzB6+xpdWa-D0NEq_-rqXincw@mail.gmail.com>
-Subject: Re: acpiBitsTest.test_acpi_smbios_bits test intermittently times out
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, 
- =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Beraldo Leal <bleal@redhat.com>
+References: <20240101075315.43167-1-horenchuang@bytedance.com>
+ <20240101075315.43167-2-horenchuang@bytedance.com>
+ <ZZXX95yvk/WTIBT/@memverge.com>
+In-Reply-To: <ZZXX95yvk/WTIBT/@memverge.com>
+From: Hao Xiang <hao.xiang@bytedance.com>
+Date: Fri, 5 Jan 2024 21:59:19 -0800
+Message-ID: <CAAYibXjZ0HSCqMrzXGv62cMLncS_81R3e1uNV5Fu4CPm0zAtYw@mail.gmail.com>
+Subject: Re: [External] Re: [QEMU-devel][RFC PATCH 1/1] backends/hostmem:
+ qapi/qom: Add an ObjectOption for memory-backend-* called HostMemType and its
+ arg 'cxlram'
+To: Gregory Price <gregory.price@memverge.com>
+Cc: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Ben Widawsky <ben.widawsky@intel.com>, 
+ Gregory Price <gourry.memverge@gmail.com>, Fan Ni <fan.ni@samsung.com>, 
+ Ira Weiny <ira.weiny@intel.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eric Blake <eblake@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org, 
+ "Ho-Ren (Jack) Chuang" <horenc@vt.edu>, linux-cxl@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.679,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,51 +102,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Jan 6, 2024 at 10:05=E2=80=AFAM Ani Sinha <anisinha@redhat.com> wro=
-te:
+On Wed, Jan 3, 2024 at 1:56=E2=80=AFPM Gregory Price <gregory.price@memverg=
+e.com> wrote:
 >
-> On Sat, Jan 6, 2024 at 12:11=E2=80=AFAM Peter Maydell <peter.maydell@lina=
-ro.org> wrote:
+> On Sun, Dec 31, 2023 at 11:53:15PM -0800, Ho-Ren (Jack) Chuang wrote:
+> > Introduce a new configuration option 'host-mem-type=3D' in the
+> > '-object memory-backend-ram', allowing users to specify
+> > from which type of memory to allocate.
 > >
-> > The avocado test acpiBitsTest.test_acpi_smbios_bits seems to be
-> > flaky in CI -- sometimes it appears to time out.
-> >
-> > https://gitlab.com/qemu-project/qemu/-/issues/2077
-> > has the details (including links to jobs etc).
+> > Users can specify 'cxlram' as an argument, and QEMU will then
+> > automatically locate CXL RAM NUMA nodes and use them as the backend mem=
+ory.
+> > For example:
+> >       -object memory-backend-ram,id=3Dvmem0,size=3D19G,host-mem-type=3D=
+cxlram \
 >
-> Do you have more data points in terms of the jobs that failed?
+> Stupid questions:
+>
+> Why not just use `host-nodes` and pass in the numa node you want to
+> allocate from? Why should QEMU be made "CXL-aware" in the sense that
+> QEMU is responsible for figuring out what host node has CXL memory?
+>
+> This feels like an "upper level software" operation (orchestration), rath=
+er
+> than something qemu should internally understand.
 
-I just noticed that you attached three examples of failed tests. In
-all of them the test seems to be stuck at the ami latency test.
+I don't have a "big picture" and I am learning. Maybe we proposed
+something not useful :-) I replied to the same question on a fork of
+this thread.
 
-The one
-> you point to seems to be stuck in SMI latency tests:
 >
-> =3D=3D=3D=3D SMI latency test =3D=3D=3D=3D
-> 16:45:49 DEBUG|
-> Warning: touching the keyboard can affect the results of this test.
-> 16:45:50 DEBUG|
-> Starting test. Wait here, I will be back in 15 seconds.
+> >       -device pxb-cxl,bus_nr=3D12,bus=3Dpcie.0,id=3Dcxl.1 \
+> >       -device cxl-rp,port=3D0,bus=3Dcxl.1,id=3Droot_port13,chassis=3D0,=
+slot=3D2 \
+> >       -device cxl-type3,bus=3Droot_port13,volatile-memdev=3Dvmem0,id=3D=
+cxl-vmem0 \
 >
-> If this is consistently timing out here, we can disable the smi
-> latency test. This test was a little problematic from the get go.
->
-> Meanwhile I have assigned
-> https://gitlab.com/qemu-project/qemu/-/issues/2077 to myself and will
-> take a look.
->
-> > As far as I can
-> > see, the test is still running when after about a minute it
-> > gets timed out. (Though the python tracebacks in the logs are
-> > not easy for me to interpret, so I might be wrong). This I find
-> > a bit confusing, because tests/avocado/acpi-bits.py sets
-> > "timeout =3D 200". So maybe that isn't taking effect properly?
-> >
-> > Does anybody have time to investigate this? If not, we can disable
-> > the test as flaky until somebody does have the time.
-> >
-> > thanks
-> > -- PMM
-> >
+> For a variety of performance reasons, this will not work the way you
+> want it to.  You are essentially telling QEMU to map the vmem0 into a
+> virtual cxl device, and now any memory accesses to that memory region
+> will end up going through the cxl-type3 device logic - which is an IO
+> path from the perspective of QEMU.
 
+I didn't understand exactly how the virtual cxl-type3 device works. I
+thought it would go with the same "guest virtual address ->  guest
+physical address -> host physical address" translation totally done by
+CPU. But if it is going through an emulation path handled by virtual
+cxl-type3, I agree the performance would be bad. Do you know why
+accessing memory on a virtual cxl-type3 device can't go with the
+nested page table translation?
+
+>
+> You may want to double check that your tests aren't using swap space in
+> the guest, because I found in my testing that linux would prefer to use
+> swap rather than attempt to use virtual cxl-type3 device memory because
+> of how god-awful slow it is (even if it is backed by DRAM).
+
+We didn't enable swap in our current test setup. I think there was a
+kernel change making the mm page reclamation path to use cxl memory
+instead of swap if you enable memory tiering. Did you try that? Swap
+is persistent storage. I would be very surprised if virtual cxl is
+actually slower than swap.
+
+>
+>
+> Additionally, this configuration will not (should not) presently work
+> with VMX enabled.  Unless I missed some other update, QEMU w/ CXL memory
+> presently crashes when VMX is enabled for not-yet-debugged reasons.
+
+When we had a discussion with Intel, they told us to not use the KVM
+option in QEMU while using virtual cxl type3 device. That's probably
+related to the issue you described here? We enabled KVM though but
+haven't seen the crash yet.
+
+>
+> Another possiblity: You mapped this memory-backend into another numa
+> node explicitly and never onlined the memory via cxlcli.  I've done
+> this, and it works, but it's a "hidden feature" that probably should
+> not exist / be supported.
+
+I thought general purpose memory nodes are onlined by default?
+
+>
+>
+>
+> If I understand the goal here, it's to pass CXL-hosted DRAM through to
+> the guest in a way that the system can manage it according to its
+> performance attributes.
+
+Yes.
+
+>
+> You're better off just using the `host-nodes` field of host-memory
+> and passing bandwidth/latency attributes though via `-numa hmat-lb`
+
+We tried this but it doesn't work from end to end right now. I
+described the issue in another fork of this thread.
+
+>
+> In that scenario, the guest software doesn't even need to know CXL
+> exists at all, it can just read the attributes of the numa node
+> that QEMU created for it.
+
+We thought about this before. But the current kernel implementation
+requires a devdax device to be probed and recognized as a slow tier
+(by reading the memory attributes). I don't think this can be done via
+the path you described. Have you tried this before?
+
+>
+> In the future to deal with proper dynamic capacity, we may need to
+> consider a different backend object altogether that allows sparse
+> allocations, and a virtual cxl device which pre-allocates the CFMW
+> can at least be registered to manage it.  I'm not quite sure how that
+> looks just yet.
+
+Are we talking about CXL memory pooling?
+
+>
+> For example: 1-socket, 4 CPU QEMU instance w/ 4GB on a cpu-node and 4GB
+> on a cpuless node.
+>
+> qemu-system-x86_64 \
+> -nographic \
+> -accel kvm \
+> -machine type=3Dq35,hmat=3Don \
+> -drive file=3D./myvm.qcow2,format=3Dqcow2,index=3D0,media=3Ddisk,id=3Dhd =
+\
+> -m 8G,slots=3D4,maxmem=3D16G \
+> -smp cpus=3D4 \
+> -object memory-backend-ram,size=3D4G,id=3Dram-node0,numa=3DX \ <-- extend=
+ here
+> -object memory-backend-ram,size=3D4G,id=3Dram-node1,numa=3DY \ <-- extend=
+ here
+> -numa node,nodeid=3D0,cpus=3D0-4,memdev=3Dram-node0 \          <-- cpu no=
+de
+> -numa node,initiator=3D0,nodeid=3D1,memdev=3Dram-node1 \       <-- cpules=
+s node
+> -netdev bridge,id=3Dhn0,br=3Dvirbr0 \
+> -device virtio-net-pci,netdev=3Dhn0,id=3Dnic1,mac=3D52:54:00:12:34:77 \
+> -numa hmat-lb,initiator=3D0,target=3D0,hierarchy=3Dmemory,data-type=3Dacc=
+ess-latency,latency=3D10 \
+> -numa hmat-lb,initiator=3D0,target=3D0,hierarchy=3Dmemory,data-type=3Dacc=
+ess-bandwidth,bandwidth=3D10485760 \
+> -numa hmat-lb,initiator=3D0,target=3D1,hierarchy=3Dmemory,data-type=3Dacc=
+ess-latency,latency=3D20 \
+> -numa hmat-lb,initiator=3D0,target=3D1,hierarchy=3Dmemory,data-type=3Dacc=
+ess-bandwidth,bandwidth=3D5242880
+>
+> [root@fedora ~]# numactl -H
+> available: 2 nodes (0-1)
+> node 0 cpus: 0 1 2 3
+> node 0 size: 3965 MB
+> node 0 free: 3611 MB
+> node 1 cpus:
+> node 1 size: 3986 MB
+> node 1 free: 3960 MB
+> node distances:
+> node   0   1
+>   0:  10  20
+>   1:  20  10
+>
+> [root@fedora initiators]# cd /sys/devices/system/node/node1/access0/initi=
+ators
+> node0  read_bandwidth  read_latency  write_bandwidth  write_latency
+> [root@fedora initiators]# cat read_bandwidth
+> 5
+> [root@fedora initiators]# cat read_latency
+> 20
+>
+>
+> ~Gregory
 
