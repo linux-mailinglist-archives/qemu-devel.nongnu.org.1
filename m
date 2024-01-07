@@ -2,88 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7CD282640B
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 13:35:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA418826412
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 13:43:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMSLb-0004QK-Ms; Sun, 07 Jan 2024 07:33:47 -0500
+	id 1rMSTN-0006tm-Cq; Sun, 07 Jan 2024 07:41:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rMSLZ-0004Q7-NH
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 07:33:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rMSLY-0005w6-6P
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 07:33:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704630821;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=eygNhRoP2RWVk5Ug3YDJPfJYf9qQ/jEsBE/vcoLFGYU=;
- b=UM+CyqIs1kJf9r47DRj5d8pHCe1VtXaHo2dwLesUzW/2hOAsD94Jx90aZrG9LIVZjclzra
- wwyGl72IaWcANUvTDkH9WMprc53AgrB3XMd4MCPGxJzZHWEduhEsd3Dz6uSSUjG9LSIpJE
- 1aqo2nAKDuNOBC/OKX9gl110/i/lCWA=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-67-DEa5S19xPfWNsH2Ka0VTHg-1; Sun, 07 Jan 2024 07:33:40 -0500
-X-MC-Unique: DEa5S19xPfWNsH2Ka0VTHg-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-6d9bf77a474so420962b3a.0
- for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 04:33:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rMSTF-0006te-29
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 07:41:41 -0500
+Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rMSTD-0003AW-Gl
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 07:41:40 -0500
+Received: by mail-oa1-x2e.google.com with SMTP id
+ 586e51a60fabf-204c9c002e0so577519fac.0
+ for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 04:41:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1704631297; x=1705236097; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=WXrEqOiwyXtxonKlT8UbYcrtZqfd9b5ivG0uOZXkOmk=;
+ b=Fwy2/rZ++sni/q59/7vo86U0aDGZSr7up1UizxILRn/TZh/0K0DfjPMV/08AhZqUf6
+ LEg7dPoZI/PJT+A53hU0fXp2mHD96V4ukB8r/+kYY3uVZhlZXCaKoRHi7HJRUHXmOYyn
+ MerP9KIVCP5ojkAXvUVIRr7Zj6R3be5hVsES5DQEqae7BdDqwiBt0yKt5YEE1Ykrjb+E
+ 6ADDkYCet4x7SPUl8867EixLs5Hc+LNTvwRhq8ynscvtdZh/JaN8SNeDxbDBbMBt0NRG
+ kJ3rWPZ176QWU8SaPqW3Oy8YbPKmNjSO1+nNMwBq8QnjAXhNd6LEJ0cFPohvc6Ddx4G7
+ n6hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704630819; x=1705235619;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eygNhRoP2RWVk5Ug3YDJPfJYf9qQ/jEsBE/vcoLFGYU=;
- b=AEtvhZ3U/5HQ6Pa51w4EK9wC90x5eAtQndVAbL3ndvIp4IGFbgpozB4e+55i8RZN2a
- RGxijhJRLngaosvBdg4GPBBD1kK92xnfnmpnvINirCPmkBhq/rJfzJ9t1VVmYA7CddGR
- mel2xKmFcdarSdN3KJsSd0c8C9GFxtpqIbFFCNgUhVqiiLShUx3N2ykDTJVE5yP2J8MR
- t+eb96UtyXbkY/OPcyXxhvPyA7yOLHHitLl7IUgKjMFO3ONHlXGpNPrKryQtHeGqKd0A
- uz61SWqG4mtK2ctyF+ekagFbSEzN2z/+L72o8aW/xzW+OiD4f/SLPb5t8BRgpArLC+HW
- aXvg==
-X-Gm-Message-State: AOJu0YxyxLw6dfifqYhi+35hR5Q2QH19DCQRodR4e5Jj2pEyNvd9p7Qb
- a9voMAHEK0GwBJriOHHHx6kju7Tl3cYzrD1Q9ITVcsXN+cM7UpNU9K+tK7mdNoPiYiBuCJRswPI
- RNufFiyY8fDBOUptbEYYSpQ0=
-X-Received: by 2002:a05:6a00:2447:b0:6da:86e5:1648 with SMTP id
- d7-20020a056a00244700b006da86e51648mr4935284pfj.0.1704630819357; 
- Sun, 07 Jan 2024 04:33:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEqamcRcinZxjoR2u4vFfvdBR7pRB78RHaBZ4PwHGlAWGX1dT7XI7VEgg9xiy6J8I7fgn91ZA==
-X-Received: by 2002:a05:6a00:2447:b0:6da:86e5:1648 with SMTP id
- d7-20020a056a00244700b006da86e51648mr4935260pfj.0.1704630819031; 
- Sun, 07 Jan 2024 04:33:39 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- 10-20020aa7924a000000b006d9aa04574csm4289911pfp.52.2024.01.07.04.33.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 07 Jan 2024 04:33:38 -0800 (PST)
-Date: Sun, 7 Jan 2024 20:33:29 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Steve Sistare <steven.sistare@oracle.com>,
- Juan Quintela <quintela@trasno.org>,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>
-Subject: Re: [PULL 00/26] Migration 20240104 patches
-Message-ID: <ZZqaGf6nt0wkZgbS@x1n>
+ d=1e100.net; s=20230601; t=1704631297; x=1705236097;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WXrEqOiwyXtxonKlT8UbYcrtZqfd9b5ivG0uOZXkOmk=;
+ b=exgFgsF0TTPgFIqmAuH7JQ+McAspM/j+CfnrgLhwMubFuT+d4pzsWFxOkii1anPMt4
+ 2ASFFHU+4xd5gCoWMlJq+Sp/X+SCkSmdE9xqfgkb6MiyctZSzzVbLbqPvOSu5l67N7KT
+ CoPX99qENvMtkBhWKND3e8NYHH7K0d/IbdnwraK11y0R4sJ3M5gDlRumxjcjpR11zjeh
+ oMDGT31sBQS1HnA2l0UecCUWaLskgfu44uUMVumTIkWvRitZbjfzVyGon/ZrW/1M7ZCT
+ jon69rGa9kkWyR85ugC6It7pMtntyLrpxwkPAriTLtYrwgWdGIyTHWrWHEvKkyDb9lvL
+ VVAg==
+X-Gm-Message-State: AOJu0Yx8LTO2D/QQlCThaGEC1MKY5OXIypVcQBlMIlc6IEjdBoS/Ryas
+ 0Wkm0gkkMxW34q4ojS7sXXcBsIQ3rT8aG8PsQDc=
+X-Google-Smtp-Source: AGHT+IGurRtzMtLiVMrnCXscZDGru8Jub/zC0Uolxa0Oeu8eTer1zjtTL+/nbriA66c5AQR3ref4JuUkd8tF9NAVhu4=
+X-Received: by 2002:a05:6870:7e06:b0:203:69b1:2882 with SMTP id
+ wx6-20020a0568707e0600b0020369b12882mr2608035oab.97.1704631297472; Sun, 07
+ Jan 2024 04:41:37 -0800 (PST)
+MIME-Version: 1.0
 References: <20240104043213.431566-1-peterx@redhat.com>
  <CAFEAcA8iim9vr19DxRDVabdESvcz+pAx91Ff6a7wQB-rrsCxqg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA8iim9vr19DxRDVabdESvcz+pAx91Ff6a7wQB-rrsCxqg@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.098,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ <ZZqaGf6nt0wkZgbS@x1n>
+In-Reply-To: <ZZqaGf6nt0wkZgbS@x1n>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Sun, 7 Jan 2024 07:41:25 -0500
+Message-ID: <CAJSP0QVA3USmat7EodQ7eBk+sf0FCT7oYBen_251ZMeeZHJ5dg@mail.gmail.com>
+Subject: Re: [PULL 00/26] Migration 20240104 patches
+To: Peter Xu <peterx@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Steve Sistare <steven.sistare@oracle.com>, Juan Quintela <quintela@trasno.org>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2001:4860:4864:20::2e;
+ envelope-from=stefanha@gmail.com; helo=mail-oa1-x2e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,17 +90,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 05, 2024 at 04:08:40PM +0000, Peter Maydell wrote:
-> I notice that your gpg key doesn't seem to be signed by anybody
-> else; you might look at whether it's easy to get it signed
-> by somebody else (eg some of your redhat colleagues).
+On Sun, 7 Jan 2024 at 07:34, Peter Xu <peterx@redhat.com> wrote:
+>
+> On Fri, Jan 05, 2024 at 04:08:40PM +0000, Peter Maydell wrote:
+> > I notice that your gpg key doesn't seem to be signed by anybody
+> > else; you might look at whether it's easy to get it signed
+> > by somebody else (eg some of your redhat colleagues).
+>
+> Hmm, I think I have signed with at least Juan and Stefan.  Which is the key
+> server we normally use?  Maybe I missed some steps there?
 
-Hmm, I think I have signed with at least Juan and Stefan.  Which is the key
-server we normally use?  Maybe I missed some steps there?
+Yes, Peter's key is signed by me:
 
-Thanks,
+$ gpg --list-signatures 3B5FCCCDF3ABD706
+pub   ed25519/0x3B5FCCCDF3ABD706 2023-10-03 [SC]
+      Key fingerprint = B918 4DC2 0CC4 57DA CF7D  D1A9 3B5F CCCD F3AB D706
+uid                   [  full  ] Peter Xu <xzpeter@gmail.com>
+sig 3        0x3B5FCCCDF3ABD706 2023-10-03  [self-signature]
+sig          0x9CA4ABB381AB73C8 2023-10-10  Stefan Hajnoczi
+<stefanha@redhat.com>
+uid                   [  full  ] Peter Xu <peterx@redhat.com>
+sig 3        0x3B5FCCCDF3ABD706 2023-10-03  [self-signature]
+sig          0x9CA4ABB381AB73C8 2023-10-10  Stefan Hajnoczi
+<stefanha@redhat.com>
+sub   cv25519/0xD5261EB1CB0C6E45 2023-10-03 [E]
+sig          0x3B5FCCCDF3ABD706 2023-10-03  [self-signature]
 
--- 
-Peter Xu
+I have pushed to the keyservers again in case I forget.
 
+Stefan
 
