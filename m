@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602A18263F5
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 12:55:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4203B8263F4
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 12:55:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMRkY-0001c3-0D; Sun, 07 Jan 2024 06:55:30 -0500
+	id 1rMRkY-0001cB-9l; Sun, 07 Jan 2024 06:55:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rMRkW-0001bm-HY
+ id 1rMRkW-0001ba-AL
  for qemu-devel@nongnu.org; Sun, 07 Jan 2024 06:55:28 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+Received: from mail-il1-x129.google.com ([2607:f8b0:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rMRkR-0004oe-Nc
+ id 1rMRkU-0004oo-QD
  for qemu-devel@nongnu.org; Sun, 07 Jan 2024 06:55:28 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d3e6c86868so8163365ad.1
- for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 03:53:23 -0800 (PST)
+Received: by mail-il1-x129.google.com with SMTP id
+ e9e14a558f8ab-3606f507efeso6578895ab.3
+ for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 03:53:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1704628402; x=1705233202;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1704628405; x=1705233205;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4uRq7C9ZUE1eAcpVbzP7nNiWmwJQwxB+eLzHwmIPY48=;
- b=yUYulyVlhFjl9IQ2ooRgwS1VMBe7Jhxv/AAFSQjZ30c2Oid//3qKJLClmY115uDpvX
- HxAiaSWo2Ufsr1ylhoKJO4/R5/lN3RJk0lHHQMfd3D8SwUZF+ASDPGh6zxhRrXZfnDV+
- xCAIdwVDBKmhpBUj0QvWIdobXaKnHsVVLmkZC9wCJpkWtlyQmPN4WHiTbY8RIrnW55Ze
- 5jPft+IsDIFGIWAW2+NIspmMjxirw9cAe5zdSWuxnSjzCVeVVDv7kiN23IL0QObeK/Dj
- bZuIlBSrLJjZ7mzrOvEuDgcjJP5zVNK92vwd1GMH4DCzLuAj07AiDRv3924HSWj2TSXf
- I49w==
+ bh=wfCEURHfoJYyEJ96UVfChxnBswBuLiHx6tLxG6w0IME=;
+ b=bxVFomnYV3FcC2Dq69Ar9+jikZlqYC5fh/XhSbj0cgEvNXXCIKpLUfZECGq2ZExJk+
+ e5EIPv/HlIZNfY6fpd7fgh6L2UJXO1xoy3Qc7SzirUKnG2Au9kPrP3XByG+BjlnZj5Sv
+ 3I2RzmKuVHDQ+TpL+FpPRUlzjOj0IVzjKABBzHZ/0G8e0WASdxteksiUAt/QNuvgddht
+ xgh2kS2S3VJJbXxJ3f8aIcwIykTrifFlRnH0X9NHonoc9b8mZ5QmtTDSK55bO6ryGj+w
+ VgZijlgOHEfCLs4Lb/4Ukn6IEEWzMdpUjwSly3PM+3vPZIX7yUynMyRywy6bNtUdDtcg
+ Be0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704628402; x=1705233202;
+ d=1e100.net; s=20230601; t=1704628405; x=1705233205;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4uRq7C9ZUE1eAcpVbzP7nNiWmwJQwxB+eLzHwmIPY48=;
- b=VU7NP7lcWW86ZNRNenVaKBrr8Faw596CaunoeBivWn5J9/6/teesL6atHwxyLHHngW
- Js8BFpwqr67MVh0KDpsfx0MYLfFVoslaLwTPPkMH0ry0U8FkPhtrQsarIGpnE/3GhQzC
- lKEb9RBZCJoCDNDdHD6NpcQ5/DPfiPzm5NA5RVhMQNFh6ZeYKtt/kDvF6Ie+Ozgk2mBY
- pI108IiduSev59PXBHS4fbyJdv2BgiAcqvOcUNV36HqCKEZgSYiXfv0HD/DrrdvSPvSF
- lLMaE3jM+Inb5ZrfNcStv+4W9BZFmEG4+mD7EZPJvYmi16PiEeK2akq09YYJ9jjxGj2T
- kSYw==
-X-Gm-Message-State: AOJu0YyNhH/NLRaHikxxBy+ePRpHuxfcpU1x4bjq8gxrLP0K4FyhIGit
- O9vrv08MZ+2o1ZXCsTtDAmaOXg+/uY9KkPMamZmEeY5v1PY7xQ==
-X-Google-Smtp-Source: AGHT+IHdIfgeYZEiF3tTWfQsB1ak1gzEwGCgnN1O1v57XzzETiid0mUahyz1as9XLGZV4OIdOngZUQ==
-X-Received: by 2002:a17:902:b489:b0:1d4:9c06:1807 with SMTP id
- y9-20020a170902b48900b001d49c061807mr2254254plr.47.1704628401535; 
- Sun, 07 Jan 2024 03:53:21 -0800 (PST)
+ bh=wfCEURHfoJYyEJ96UVfChxnBswBuLiHx6tLxG6w0IME=;
+ b=bGX8niGCVF3eDUF5zbikSX3QIy6f/5QtKESOoQA7r3PuG38HgTtNnP9YsoDNBA19fT
+ ZpYh+LMYzGFiF2w8voAPjqfIvQ9yaa1fg2O1u7Bw/Un6B2kW0kglDg7pU4L5WYrSIi09
+ fetMqBexQ/uSIL+CYjjdl1XxPSD/lw5UhTmhWZm17+9bG0YuUyvc/+sR+7j2XPs6bFBi
+ UDyp1wRMI/tyVHMDkEouW2CoJ7u37YjWq457MnBDG7Mp1VHqVUI+VnB3YtmesKbAqtom
+ zHo+OXjwuP/RNonCsiOp30gFQW0dlNjJIClMdrLUlT0VQYZlmuqqE7HlZbcoOj6Pq8Dt
+ Lg3A==
+X-Gm-Message-State: AOJu0YylHOWmEjXe6Gq2oPRW++FBVHHDcnhK4VSGqjVPXISOvASK4eAO
+ ReWm1ibMgLwwcmEX+Ul/uKXPREnCroRjRO/MnuRd9vawLHwI0w==
+X-Google-Smtp-Source: AGHT+IFfUNYsnm2Bn8zu/P/Vjm4bVutG//muG7PXoQMluMBQb0PV4u9qT3NkuSBOaayeuZNeCH5OCQ==
+X-Received: by 2002:a05:6e02:19c5:b0:35d:6121:3794 with SMTP id
+ r5-20020a056e0219c500b0035d61213794mr4215127ill.54.1704628405012; 
+ Sun, 07 Jan 2024 03:53:25 -0800 (PST)
 Received: from localhost.localdomain ([171.216.79.156])
  by smtp.gmail.com with ESMTPSA id
- x5-20020a1709027c0500b001d4ea1b6a2csm4082694pll.32.2024.01.07.03.53.18
+ x5-20020a1709027c0500b001d4ea1b6a2csm4082694pll.32.2024.01.07.03.53.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 07 Jan 2024 03:53:21 -0800 (PST)
+ Sun, 07 Jan 2024 03:53:24 -0800 (PST)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  yong.huang@smartx.com
-Subject: [PATCH v2 1/2] i386/sev: Sort the error message
-Date: Sun,  7 Jan 2024 19:53:10 +0800
-Message-Id: <c34aaa8055cd09b17f7abebfb2d1397331f7d5c0.1704626686.git.yong.huang@smartx.com>
+Subject: [PATCH v2 2/2] i386/sev: Nitpick at the error message's output
+Date: Sun,  7 Jan 2024 19:53:11 +0800
+Message-Id: <af66b40fe05eae1b641df92e73605e84412f926d.1704626686.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1704626686.git.yong.huang@smartx.com>
 References: <cover.1704626686.git.yong.huang@smartx.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::630;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x630.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::129;
+ envelope-from=yong.huang@smartx.com; helo=mail-il1-x129.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,70 +95,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prior to giving the caller the return number(in the next commit),
-sorting the error message:
-1. report the error number on the ram_block_discard_disable
-   failure path
-2. report the error number on the syscall "open" failure path
-3. report EINVAL when a prerequisite check fails or the command
-   line is invalid
+The incorrect error message was produced as a result of
+the return number being disregarded on the sev_kvm_init
+failure path.
+
+For instance, when a user's failure to launch a SEV guest
+is caused by an incorrect IOCTL, the following message is
+reported:
+
+kvm: sev_kvm_init: failed to initialize ret=-25 fw_error=0
+kvm: failed to initialize kvm: Operation not permitted
+
+While the error message's accurate output should be:
+
+kvm: sev_kvm_init: failed to initialize ret=-25 fw_error=0
+kvm: failed to initialize kvm: Inappropriate ioctl for device
+
+Fix this by returning the return number directly on the
+failure path.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <c5033954155dfe256f650fc9ca2084c688356317.1704469721.git.yong.huang@smartx.com>
 ---
- target/i386/sev.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ target/i386/sev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 9a71246682..96eff73001 100644
+index 96eff73001..3fef8cf163 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -923,7 +923,7 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-     ret = ram_block_discard_disable(true);
-     if (ret) {
-         error_report("%s: cannot disable RAM discard", __func__);
--        return -1;
-+        return ret;
-     }
+@@ -1023,7 +1023,7 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+ err:
+     sev_guest = NULL;
+     ram_block_discard_disable(false);
+-    return -1;
++    return ret;
+ }
  
-     sev_guest = sev;
-@@ -940,6 +940,7 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-     if (host_cbitpos != sev->cbitpos) {
-         error_setg(errp, "%s: cbitpos check failed, host '%d' requested '%d'",
-                    __func__, host_cbitpos, sev->cbitpos);
-+        ret = -EINVAL;
-         goto err;
-     }
- 
-@@ -952,11 +953,12 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-         error_setg(errp, "%s: reduced_phys_bits check failed,"
-                    " it should be in the range of 1 to 63, requested '%d'",
-                    __func__, sev->reduced_phys_bits);
-+        ret = -EINVAL;
-         goto err;
-     }
- 
-     devname = object_property_get_str(OBJECT(sev), "sev-device", NULL);
--    sev->sev_fd = open(devname, O_RDWR);
-+    ret = sev->sev_fd = open(devname, O_RDWR);
-     if (sev->sev_fd < 0) {
-         error_setg(errp, "%s: Failed to open %s '%s'", __func__,
-                    devname, strerror(errno));
-@@ -981,6 +983,7 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-         if (!kvm_kernel_irqchip_allowed()) {
-             error_report("%s: SEV-ES guests require in-kernel irqchip support",
-                          __func__);
-+            ret = -EINVAL;
-             goto err;
-         }
- 
-@@ -988,6 +991,7 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-             error_report("%s: guest policy requires SEV-ES, but "
-                          "host SEV-ES support unavailable",
-                          __func__);
-+            ret = -EINVAL;
-             goto err;
-         }
-         cmd = KVM_SEV_ES_INIT;
+ int
 -- 
 2.39.1
 
