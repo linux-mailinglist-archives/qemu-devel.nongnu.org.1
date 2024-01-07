@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DE48263FD
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 12:59:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC1A8263FE
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 13:00:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMRoP-0003bQ-NX; Sun, 07 Jan 2024 06:59:29 -0500
+	id 1rMRpL-0004Ea-Cx; Sun, 07 Jan 2024 07:00:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rMRoM-0003bD-M5
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 06:59:26 -0500
-Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ id 1rMRpI-0004Dw-L7
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 07:00:24 -0500
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rMRoD-0005wJ-V5
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 06:59:26 -0500
-Received: by mail-ot1-x334.google.com with SMTP id
- 46e09a7af769-6dc02ab3cc9so837140a34.3
- for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 03:57:15 -0800 (PST)
+ id 1rMRpG-00067G-49
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 07:00:24 -0500
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-5c66b093b86so1223976a12.0
+ for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 03:58:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1704628634; x=1705233434;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1704628699; x=1705233499;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=45zAUh8EIJaAHbzoBDFIvNz1v0Tox0j9ENGUvEHwTXE=;
- b=BHHV0poNLC0+XGexBpu8mME0vQm9uUyMynm4U0iQIICcLlPEq5ydCqk/gJn/xoXO1c
- uMeHCEJurH3uzfNj0x7JD5R8APEcud+yurJm04fcqjCs/cTjmvD8fiyPWFD4/s3XcNo7
- 1DBkgSFLSixULtE84HtD3HoVI9/uQzWQOhtahYRDDTHpv2/Y/pGl/YN17vIDGwaByPqh
- Dt/MJIZNQehJIPZ7Q6H9Ck3V/fp0NEGxpL/MKNSrVoq7VVh0UJm7PrBtwZvmsBD2zZGJ
- wzsmGK02lDlnF/xMwiOjCYCAPQs5OUwE0fiYpw4yVDjSVzMtiWlbCG0mOAPfal88A+B0
- kRTQ==
+ bh=HXTdd9k7z66M6LQFvPlDeESCw3SxnVeA8Bj9OBj3Skw=;
+ b=OTfqWdEcyCczKq05uIv7lOtwS42zLz4F0COXYwjDzSCFLL4ZmfKRM+ZTmzS9K1jQ62
+ 2OhV05Qg9GXpR+wrcEbidpbBxv6l7sBW5Qz//tCo9s1J4PqjLgYrcbYw3cTSaChyJeS3
+ WXxkumkSazhD+epYPErOc7tZCc2ylqPf2ECGtcohpQMh9fbJCZL2QwefNHq4kIRnt+vn
+ 9X+3ZIoARz2eVrVg+PW6wqmk+EKuk95Z5e+kvmWQ9ZPRMfUenrw3s2rPOyOfRD2U3rCO
+ 2/MMTu3Stj8s8o7+fAI6OE3qijg89pKYn6H+d7p5kAPJwJa+Bo3NS5jkgel8J72lNA9M
+ d0/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704628634; x=1705233434;
+ d=1e100.net; s=20230601; t=1704628699; x=1705233499;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=45zAUh8EIJaAHbzoBDFIvNz1v0Tox0j9ENGUvEHwTXE=;
- b=EWcut5Lg4kQpEopQ1MGZfi0L5AT1/4pW/Job8cd4SDDNSgOxPNJB/7VXBhTedBhh1p
- D9O2BIMgJUPz3L9R8ye2FgsrSHoMheFXHFn2+W+4ukvanjxIrOZYpyMUyZs4XegNu54K
- lKHbuccOam2QRndHUPpCn2aMlRdnpKHjSRpXVS25LKlbZHDSM68N0KiMPyeoOZigZ9Ad
- gd2xue2Ze4FpXFL/BS4PSPujKHsCOOw3FJpThj+JT1Tiac+xKUuK1Tx6nRXXmH0ezSsF
- Q99xGF2JSTT4NowkeE7dmdIOpWnvdS+cuZs8VqWOtLLEZgm9O3wSbXQBsK+X0MuIN19d
- tFUQ==
-X-Gm-Message-State: AOJu0YxFPhNWPI3fQoNPvC068wn+PWZb1EHKyiy1Gj6Kougju/4UiWdX
- V4kZd/FcxeMoWnkTBIQE9RnPY2JZhZ9n+JzIi6nPJ3fu/+6FVg==
-X-Google-Smtp-Source: AGHT+IGDeRF8++W78qNdtZ5Etr2jrDx/0uDExdSOFlBdD3wXvM9xKy7q6oJJywaZP8b4fVg2aobCfXBpyTXjA5fxC1s=
-X-Received: by 2002:a05:6870:36d4:b0:203:fca4:43ab with SMTP id
- u20-20020a05687036d400b00203fca443abmr3518177oak.7.1704628632386; Sun, 07 Jan
- 2024 03:57:12 -0800 (PST)
+ bh=HXTdd9k7z66M6LQFvPlDeESCw3SxnVeA8Bj9OBj3Skw=;
+ b=kTwl5YXfFpjei7UoHE9RVDUm7lfG/sDgswy4WOZEJY473nYF/AOUp0ccJPQkXhn53U
+ 69Jx9dOoXKs8qunwJveFFiJFtRFb82Vc1v9QfFw8y4oGnX9sqmmKaf4Krd8HPxIi/26b
+ e0joqoKGMu9aX41w3TD6BDf9/mty9ZM7ZQeuvsmh9Y7KSKq5Ng02apwncmN+PW1WtAZp
+ XebPsoSWsfzCyUom4cPIwxWp4I6Vwh7Y5Q1+gkYojyuLhGBDhsuuBcybbNQ2TNzK4vpe
+ k48VE72AbjmqXSJ7RlHI6s6vORs+JgnaX+VcdRP8ZlA280DCmT4bK7+3JUYkIAgBnGhR
+ 6cLg==
+X-Gm-Message-State: AOJu0YwPzpHLwt4g/IstumoxZ2yiMfofy4oa6DbXw4RGsgSz2SKmxGo9
+ 9G+HQMgZomDneAF8vUVB3nlnbTgUuKaTGJLMEKh+wCJsPdWiLw==
+X-Google-Smtp-Source: AGHT+IHBY4KJF2DM3nBsBo/VW8voZSRMSCgg9e0/4rMH0iQIDsWUxAZRH7NoXlM2q9NuWQ4B5saVMKvvYxTgJ6zVWyw=
+X-Received: by 2002:a17:90a:7447:b0:28c:7e73:2485 with SMTP id
+ o7-20020a17090a744700b0028c7e732485mr5938335pjk.36.1704628697113; Sun, 07 Jan
+ 2024 03:58:17 -0800 (PST)
 MIME-Version: 1.0
 References: <cover.1703482349.git.yong.huang@smartx.com>
- <c55f6e98595c654d17c16a569422bec5c03ddaa0.1703482349.git.yong.huang@smartx.com>
- <ZZbDJSgyfQJ9NF8f@redhat.com>
-In-Reply-To: <ZZbDJSgyfQJ9NF8f@redhat.com>
+ <57ccc93a05f69973d41b571615f9ef13fd9b2983.1703482349.git.yong.huang@smartx.com>
+ <ZZbF6XvNiEng7JcS@redhat.com>
+In-Reply-To: <ZZbF6XvNiEng7JcS@redhat.com>
 From: Yong Huang <yong.huang@smartx.com>
-Date: Sun, 7 Jan 2024 19:56:56 +0800
-Message-ID: <CAK9dgmYXiSBQ7Moam+wP63FgdScuT5uKVdXnxOJHU3maoM-=Og@mail.gmail.com>
-Subject: Re: [PATCH RESEND v3 02/10] crypto: Support generic LUKS encryption
+Date: Sun, 7 Jan 2024 19:58:01 +0800
+Message-ID: <CAK9dgmYLba6KRk0rvrcsAHRkx1wTFWTV2p_=FJW+HO4=fhKZKA@mail.gmail.com>
+Subject: Re: [PATCH RESEND v3 04/10] crypto: Introduce creation option and
+ structure for detached LUKS header
 To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel <qemu-devel@nongnu.org>, Kevin Wolf <kwolf@redhat.com>, 
  Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>, 
  Markus Armbruster <armbru@redhat.com>
-Content-Type: multipart/alternative; boundary="0000000000001b9137060e59c8d1"
-Received-SPF: none client-ip=2607:f8b0:4864:20::334;
- envelope-from=yong.huang@smartx.com; helo=mail-ot1-x334.google.com
+Content-Type: multipart/alternative; boundary="000000000000f738c0060e59cb99"
+Received-SPF: none client-ip=2607:f8b0:4864:20::531;
+ envelope-from=yong.huang@smartx.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,174 +90,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000001b9137060e59c8d1
+--000000000000f738c0060e59cb99
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 4, 2024 at 10:40=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+On Thu, Jan 4, 2024 at 10:51=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
 edhat.com>
 wrote:
 
-> On Mon, Dec 25, 2023 at 01:45:04PM +0800, Hyman Huang wrote:
-> > By enhancing the LUKS driver, it is possible to enable
-> > the detachable LUKS header and, as a result, achieve
-> > general encryption for any disk format that QEMU has
-> > supported.
-> >
-> > Take the qcow2 as an example, the usage of the generic
-> > LUKS encryption as follows:
-> >
-> > 1. add a protocol blockdev node of data disk
-> > $ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
-> > > "arguments":{"node-name":"libvirt-1-storage", "driver":"file",
-> > > "filename":"/path/to/test_disk.qcow2"}}'
-> >
-> > 2. add a protocol blockdev node of LUKS header as above.
-> > $ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
-> > > "arguments":{"node-name":"libvirt-2-storage", "driver":"file",
-> > > "filename": "/path/to/cipher.gluks" }}'
-> >
-> > 3. add the secret for decrypting the cipher stored in LUKS
-> >    header above
-> > $ virsh qemu-monitor-command vm '{"execute":"object-add",
-> > > "arguments":{"qom-type":"secret", "id":
-> > > "libvirt-2-storage-secret0", "data":"abc123"}}'
-> >
-> > 4. add the qcow2-drived blockdev format node
-> > $ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
-> > > "arguments":{"node-name":"libvirt-1-format", "driver":"qcow2",
-> > > "file":"libvirt-1-storage"}}'
-> >
-> > 5. add the luks-drived blockdev to link the qcow2 disk with
-> >    LUKS header by specifying the field "header"
-> > $ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
-> > > "arguments":{"node-name":"libvirt-2-format", "driver":"luks",
-> > > "file":"libvirt-1-format", "header":"libvirt-2-storage",
-> > > "key-secret":"libvirt-2-format-secret0"}}'
-> >
-> > 6. add the virtio-blk device finally
-> > $ virsh qemu-monitor-command vm '{"execute":"device_add",
-> > > "arguments": {"num-queues":"1", "driver":"virtio-blk-pci",
-> > > "drive": "libvirt-2-format", "id":"virtio-disk2"}}'
-> >
-> > The generic LUKS encryption method of starting a virtual
-> > machine (VM) is somewhat similar to hot-plug in that both
-> > maintaining the same json command while the starting VM
-> > changes the "blockdev-add/device_add" parameters to
-> > "blockdev/device".
+> On Mon, Dec 25, 2023 at 01:45:06PM +0800, Hyman Huang wrote:
+> > Introduce 'header' field in BlockdevCreateOptionsLUKS to support
+> > detached LUKS header creation. Meanwhile, introduce header-related
+> > field in QCryptoBlock.
 > >
 > > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-> > Message-Id: <
-> 910801f303da1601051479d3b7e5c2c6b4e01eb7.1701879996.git.yong.huang@smartx=
-.com
-> >
 > > ---
-> >  block/crypto.c | 14 +++++++++++++-
-> >  1 file changed, 13 insertions(+), 1 deletion(-)
+> >  crypto/blockpriv.h   | 3 +++
+> >  qapi/block-core.json | 3 +++
+> >  qapi/crypto.json     | 5 ++++-
+> >  3 files changed, 10 insertions(+), 1 deletion(-)
 > >
-> > diff --git a/block/crypto.c b/block/crypto.c
-> > index f82b13d32b..6063879bac 100644
-> > --- a/block/crypto.c
-> > +++ b/block/crypto.c
-> > @@ -64,12 +64,14 @@ static int block_crypto_read_func(QCryptoBlock
-> *block,
-> >                                    Error **errp)
-> >  {
-> >      BlockDriverState *bs =3D opaque;
-> > +    BlockCrypto *crypto =3D bs->opaque;
-> >      ssize_t ret;
-> >
-> >      GLOBAL_STATE_CODE();
-> >      GRAPH_RDLOCK_GUARD_MAINLOOP();
-> >
-> > -    ret =3D bdrv_pread(bs->file, offset, buflen, buf, 0);
-> > +    ret =3D bdrv_pread(crypto->header ? crypto->header : bs->file,
-> > +                     offset, buflen, buf, 0);
-> >      if (ret < 0) {
-> >          error_setg_errno(errp, -ret, "Could not read encryption
-> header");
-> >          return ret;
-> > @@ -269,6 +271,7 @@ static int
-> block_crypto_open_generic(QCryptoBlockFormat format,
-> >      QCryptoBlockOpenOptions *open_opts =3D NULL;
-> >      unsigned int cflags =3D 0;
-> >      QDict *cryptoopts =3D NULL;
-> > +    const char *hdr_bdref =3D qdict_get_try_str(options, "header");
->
-> This is an invalid check to make, because it is assuming the user is
-> referencing a separate blockdev node name and doesn't work for an
-> inline definition. eg
->
->   qemu-img info
-> 'json:{"driver":"luks","file":{"filename":"test-payload.img"},"header":{"=
-filename":"test-header.img"}}'
->
->
-> >
-> >      GLOBAL_STATE_CODE();
-> >
-> > @@ -277,6 +280,15 @@ static int
-> block_crypto_open_generic(QCryptoBlockFormat format,
-> >          return ret;
-> >      }
-> >
-> > +    if (hdr_bdref) {
->
-> Get rid of this 'if' clause and unconditionally call the next line:
->
-> > +        crypto->header =3D bdrv_open_child(NULL, options, "header", bs=
-,
-> > +                                         &child_of_bds,
-> BDRV_CHILD_METADATA,
-> > +                                         false, errp);
->
-> but pass 'true' instead of 'false' here to allow the child to be absent,
-> and thus let it return NULL.
->
-> > +        if (!crypto->header) {
->
-> You'll need to then check  '*errp !=3D NULL' instead
->
-> You'll also need "ERRP_GUARD" at the start of the method
->
-> > +            return -EINVAL;
-> > +        }
-> > +    }
+> > diff --git a/crypto/blockpriv.h b/crypto/blockpriv.h
+> > index 3c7ccea504..6289aea961 100644
+> > --- a/crypto/blockpriv.h
+> > +++ b/crypto/blockpriv.h
+> > @@ -42,6 +42,9 @@ struct QCryptoBlock {
+> >      size_t niv;
+> >      uint64_t payload_offset; /* In bytes */
+> >      uint64_t sector_size; /* In bytes */
 > > +
-> >      GRAPH_RDLOCK_GUARD_MAINLOOP();
+> > +    bool detached_header; /* True if disk has a detached LUKS header *=
+/
+> > +    uint64_t detached_header_size; /* LUKS header size plus key slot
+> size */
+>
+> This field can be replaced by a local variable I believe.
+>
+> >  };
 > >
-> >      bs->supported_write_flags =3D BDRV_REQ_FUA &
+> >  struct QCryptoBlockDriver {
+> > diff --git a/qapi/block-core.json b/qapi/block-core.json
+> > index 9ac256c489..8aec179926 100644
+> > --- a/qapi/block-core.json
+> > +++ b/qapi/block-core.json
+> > @@ -4948,6 +4948,8 @@
+> >  # @file: Node to create the image format on, mandatory except when
+> >  #        'preallocation' is not requested
+> >  #
+> > +# @header: Detached LUKS header node to format. (since 9.0)
+> > +#
+> >  # @size: Size of the virtual disk in bytes
+> >  #
+> >  # @preallocation: Preallocation mode for the new image (since: 4.2)
+> > @@ -4958,6 +4960,7 @@
+> >  { 'struct': 'BlockdevCreateOptionsLUKS',
+> >    'base': 'QCryptoBlockCreateOptionsLUKS',
+> >    'data': { '*file':            'BlockdevRef',
+> > +            '*header':          'BlockdevRef',
+> >              'size':             'size',
+> >              '*preallocation':   'PreallocMode' } }
+> >
+> > diff --git a/qapi/crypto.json b/qapi/crypto.json
+> > index fd3d46ebd1..6b4e86cb81 100644
+> > --- a/qapi/crypto.json
+> > +++ b/qapi/crypto.json
+> > @@ -195,10 +195,13 @@
+> >  #     decryption key.  Mandatory except when probing image for
+> >  #     metadata only.
+> >  #
+> > +# @detached-header: if true, disk has detached LUKS header.
+> > +#
+> >  # Since: 2.6
+> >  ##
+> >  { 'struct': 'QCryptoBlockOptionsLUKS',
+> > -  'data': { '*key-secret': 'str' }}
+> > +  'data': { '*key-secret': 'str',
+> > +            '*detached-header': 'bool' }}
 >
-> This patch should be combined with the previous patch that adds the new
-> QAPI schema element as splitting them doesn't add value.
+> I don't think we need this change if we pass this info as an enum flag
 >
->
-> Testing this patch with the changes I suggest above, however, still does
-> not work:
->
->   $ dd if=3D/dev/zero of=3Dtest-header.img bs=3D1M count=3D32
->   $ dd if=3D/dev/zero of=3Dtest-payload.img bs=3D1M count=3D1000
->   $ cryptsetup luksFormat  --header test-header.img test-payload.img
-> --force-password --type luks1
->   $ qemu-img info
-> 'json:{"driver":"luks","file":{"filename":"test-payload.img"},"header":{"=
-filename":"test-header.img"}}'
->   qemu-img: Could not open
-> 'json:{"driver":"luks","file":{"filename":"test-payload.img"},"header":{"=
-filename":"test-header.img"}}':
-> LUKS payload is overlapping with the header
+
+Agree.
 
 
+> >
+> >  ##
+> >  # @QCryptoBlockCreateOptionsLUKS:
+> > --
+> > 2.39.1
+> >
 >
-> You need to pass some info into qcrypto_block_open to tell it that the
-> header is detached. Add a new enum entry to QCryptoBlockOpenFlags
-> perhaps.  Then skip the LUKS payload overlap check.
->
-> Ok, I'll try this way and do a test using cryptsetup tools in the next
-version.
-Thanks for testing this series.
-
-
 > With regards,
 > Daniel
 > --
@@ -271,215 +195,113 @@ Thanks for testing this series.
 --=20
 Best regards
 
---0000000000001b9137060e59c8d1
+--000000000000f738c0060e59cb99
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
 t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
 ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jan 4, 202=
-4 at 10:40=E2=80=AFPM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrang=
+4 at 10:51=E2=80=AFPM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrang=
 e@redhat.com">berrange@redhat.com</a>&gt; wrote:<br></div><blockquote class=
 =3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;bo=
 rder-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">=
-On Mon, Dec 25, 2023 at 01:45:04PM +0800, Hyman Huang wrote:<br>
-&gt; By enhancing the LUKS driver, it is possible to enable<br>
-&gt; the detachable LUKS header and, as a result, achieve<br>
-&gt; general encryption for any disk format that QEMU has<br>
-&gt; supported.<br>
-&gt; <br>
-&gt; Take the qcow2 as an example, the usage of the generic<br>
-&gt; LUKS encryption as follows:<br>
-&gt; <br>
-&gt; 1. add a protocol blockdev node of data disk<br>
-&gt; $ virsh qemu-monitor-command vm &#39;{&quot;execute&quot;:&quot;blockd=
-ev-add&quot;,<br>
-&gt; &gt; &quot;arguments&quot;:{&quot;node-name&quot;:&quot;libvirt-1-stor=
-age&quot;, &quot;driver&quot;:&quot;file&quot;,<br>
-&gt; &gt; &quot;filename&quot;:&quot;/path/to/test_disk.qcow2&quot;}}&#39;<=
-br>
-&gt; <br>
-&gt; 2. add a protocol blockdev node of LUKS header as above.<br>
-&gt; $ virsh qemu-monitor-command vm &#39;{&quot;execute&quot;:&quot;blockd=
-ev-add&quot;,<br>
-&gt; &gt; &quot;arguments&quot;:{&quot;node-name&quot;:&quot;libvirt-2-stor=
-age&quot;, &quot;driver&quot;:&quot;file&quot;,<br>
-&gt; &gt; &quot;filename&quot;: &quot;/path/to/cipher.gluks&quot; }}&#39;<b=
-r>
-&gt; <br>
-&gt; 3. add the secret for decrypting the cipher stored in LUKS<br>
-&gt;=C2=A0 =C2=A0 header above<br>
-&gt; $ virsh qemu-monitor-command vm &#39;{&quot;execute&quot;:&quot;object=
--add&quot;,<br>
-&gt; &gt; &quot;arguments&quot;:{&quot;qom-type&quot;:&quot;secret&quot;, &=
-quot;id&quot;:<br>
-&gt; &gt; &quot;libvirt-2-storage-secret0&quot;, &quot;data&quot;:&quot;abc=
-123&quot;}}&#39;<br>
-&gt; <br>
-&gt; 4. add the qcow2-drived blockdev format node<br>
-&gt; $ virsh qemu-monitor-command vm &#39;{&quot;execute&quot;:&quot;blockd=
-ev-add&quot;,<br>
-&gt; &gt; &quot;arguments&quot;:{&quot;node-name&quot;:&quot;libvirt-1-form=
-at&quot;, &quot;driver&quot;:&quot;qcow2&quot;,<br>
-&gt; &gt; &quot;file&quot;:&quot;libvirt-1-storage&quot;}}&#39;<br>
-&gt; <br>
-&gt; 5. add the luks-drived blockdev to link the qcow2 disk with<br>
-&gt;=C2=A0 =C2=A0 LUKS header by specifying the field &quot;header&quot;<br=
->
-&gt; $ virsh qemu-monitor-command vm &#39;{&quot;execute&quot;:&quot;blockd=
-ev-add&quot;,<br>
-&gt; &gt; &quot;arguments&quot;:{&quot;node-name&quot;:&quot;libvirt-2-form=
-at&quot;, &quot;driver&quot;:&quot;luks&quot;,<br>
-&gt; &gt; &quot;file&quot;:&quot;libvirt-1-format&quot;, &quot;header&quot;=
-:&quot;libvirt-2-storage&quot;,<br>
-&gt; &gt; &quot;key-secret&quot;:&quot;libvirt-2-format-secret0&quot;}}&#39=
-;<br>
-&gt; <br>
-&gt; 6. add the virtio-blk device finally<br>
-&gt; $ virsh qemu-monitor-command vm &#39;{&quot;execute&quot;:&quot;device=
-_add&quot;,<br>
-&gt; &gt; &quot;arguments&quot;: {&quot;num-queues&quot;:&quot;1&quot;, &qu=
-ot;driver&quot;:&quot;virtio-blk-pci&quot;,<br>
-&gt; &gt; &quot;drive&quot;: &quot;libvirt-2-format&quot;, &quot;id&quot;:&=
-quot;virtio-disk2&quot;}}&#39;<br>
-&gt; <br>
-&gt; The generic LUKS encryption method of starting a virtual<br>
-&gt; machine (VM) is somewhat similar to hot-plug in that both<br>
-&gt; maintaining the same json command while the starting VM<br>
-&gt; changes the &quot;blockdev-add/device_add&quot; parameters to<br>
-&gt; &quot;blockdev/device&quot;.<br>
+On Mon, Dec 25, 2023 at 01:45:06PM +0800, Hyman Huang wrote:<br>
+&gt; Introduce &#39;header&#39; field in BlockdevCreateOptionsLUKS to suppo=
+rt<br>
+&gt; detached LUKS header creation. Meanwhile, introduce header-related<br>
+&gt; field in QCryptoBlock.<br>
 &gt; <br>
 &gt; Signed-off-by: Hyman Huang &lt;<a href=3D"mailto:yong.huang@smartx.com=
 " target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
-&gt; Message-Id: &lt;<a href=3D"mailto:910801f303da1601051479d3b7e5c2c6b4e0=
-1eb7.1701879996.git.yong.huang@smartx.com" target=3D"_blank">910801f303da16=
-01051479d3b7e5c2c6b4e01eb7.1701879996.git.yong.huang@smartx.com</a>&gt;<br>
 &gt; ---<br>
-&gt;=C2=A0 block/crypto.c | 14 +++++++++++++-<br>
-&gt;=C2=A0 1 file changed, 13 insertions(+), 1 deletion(-)<br>
+&gt;=C2=A0 crypto/blockpriv.h=C2=A0 =C2=A0| 3 +++<br>
+&gt;=C2=A0 qapi/block-core.json | 3 +++<br>
+&gt;=C2=A0 qapi/crypto.json=C2=A0 =C2=A0 =C2=A0| 5 ++++-<br>
+&gt;=C2=A0 3 files changed, 10 insertions(+), 1 deletion(-)<br>
 &gt; <br>
-&gt; diff --git a/block/crypto.c b/block/crypto.c<br>
-&gt; index f82b13d32b..6063879bac 100644<br>
-&gt; --- a/block/crypto.c<br>
-&gt; +++ b/block/crypto.c<br>
-&gt; @@ -64,12 +64,14 @@ static int block_crypto_read_func(QCryptoBlock *bl=
-ock,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Error **errp)<br>
-&gt;=C2=A0 {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 BlockDriverState *bs =3D opaque;<br>
-&gt; +=C2=A0 =C2=A0 BlockCrypto *crypto =3D bs-&gt;opaque;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 ssize_t ret;<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 GLOBAL_STATE_CODE();<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 GRAPH_RDLOCK_GUARD_MAINLOOP();<br>
-&gt;=C2=A0 <br>
-&gt; -=C2=A0 =C2=A0 ret =3D bdrv_pread(bs-&gt;file, offset, buflen, buf, 0)=
-;<br>
-&gt; +=C2=A0 =C2=A0 ret =3D bdrv_pread(crypto-&gt;header ? crypto-&gt;heade=
-r : bs-&gt;file,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0offset, buflen, buf, 0);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 if (ret &lt; 0) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg_errno(errp, -ret, &quot;C=
-ould not read encryption header&quot;);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return ret;<br>
-&gt; @@ -269,6 +271,7 @@ static int block_crypto_open_generic(QCryptoBlockF=
-ormat format,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 QCryptoBlockOpenOptions *open_opts =3D NULL;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 unsigned int cflags =3D 0;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 QDict *cryptoopts =3D NULL;<br>
-&gt; +=C2=A0 =C2=A0 const char *hdr_bdref =3D qdict_get_try_str(options, &q=
-uot;header&quot;);<br>
-<br>
-This is an invalid check to make, because it is assuming the user is<br>
-referencing a separate blockdev node name and doesn&#39;t work for an<br>
-inline definition. eg<br>
-<br>
-=C2=A0 qemu-img info=C2=A0 &#39;json:{&quot;driver&quot;:&quot;luks&quot;,&=
-quot;file&quot;:{&quot;filename&quot;:&quot;test-payload.img&quot;},&quot;h=
-eader&quot;:{&quot;filename&quot;:&quot;test-header.img&quot;}}&#39;<br>
-<br>
-<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 GLOBAL_STATE_CODE();<br>
-&gt;=C2=A0 <br>
-&gt; @@ -277,6 +280,15 @@ static int block_crypto_open_generic(QCryptoBlock=
-Format format,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return ret;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;=C2=A0 <br>
-&gt; +=C2=A0 =C2=A0 if (hdr_bdref) {<br>
-<br>
-Get rid of this &#39;if&#39; clause and unconditionally call the next line:=
-<br>
-<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 crypto-&gt;header =3D bdrv_open_child(NUL=
-L, options, &quot;header&quot;, bs,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0&amp;child_of_bds, BDRV_CHILD_METADATA,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0false, errp);<br>
-<br>
-but pass &#39;true&#39; instead of &#39;false&#39; here to allow the child =
-to be absent,<br>
-and thus let it return NULL.<br>
-<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!crypto-&gt;header) {<br>
-<br>
-You&#39;ll need to then check=C2=A0 &#39;*errp !=3D NULL&#39; instead<br>
-<br>
-You&#39;ll also need &quot;ERRP_GUARD&quot; at the start of the method<br>
-<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -EINVAL;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 }<br>
+&gt; diff --git a/crypto/blockpriv.h b/crypto/blockpriv.h<br>
+&gt; index 3c7ccea504..6289aea961 100644<br>
+&gt; --- a/crypto/blockpriv.h<br>
+&gt; +++ b/crypto/blockpriv.h<br>
+&gt; @@ -42,6 +42,9 @@ struct QCryptoBlock {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 size_t niv;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 uint64_t payload_offset; /* In bytes */<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 uint64_t sector_size; /* In bytes */<br>
 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 GRAPH_RDLOCK_GUARD_MAINLOOP();<br>
+&gt; +=C2=A0 =C2=A0 bool detached_header; /* True if disk has a detached LU=
+KS header */<br>
+&gt; +=C2=A0 =C2=A0 uint64_t detached_header_size; /* LUKS header size plus=
+ key slot size */<br>
+<br>
+This field can be replaced by a local variable I believe.<br>
+<br>
+&gt;=C2=A0 };<br>
 &gt;=C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 bs-&gt;supported_write_flags =3D BDRV_REQ_FUA &amp=
-;<br>
+&gt;=C2=A0 struct QCryptoBlockDriver {<br>
+&gt; diff --git a/qapi/block-core.json b/qapi/block-core.json<br>
+&gt; index 9ac256c489..8aec179926 100644<br>
+&gt; --- a/qapi/block-core.json<br>
+&gt; +++ b/qapi/block-core.json<br>
+&gt; @@ -4948,6 +4948,8 @@<br>
+&gt;=C2=A0 # @file: Node to create the image format on, mandatory except wh=
+en<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;preallocation&#39; is not requ=
+ested<br>
+&gt;=C2=A0 #<br>
+&gt; +# @header: Detached LUKS header node to format. (since 9.0)<br>
+&gt; +#<br>
+&gt;=C2=A0 # @size: Size of the virtual disk in bytes<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # @preallocation: Preallocation mode for the new image (since: 4=
+.2)<br>
+&gt; @@ -4958,6 +4960,7 @@<br>
+&gt;=C2=A0 { &#39;struct&#39;: &#39;BlockdevCreateOptionsLUKS&#39;,<br>
+&gt;=C2=A0 =C2=A0 &#39;base&#39;: &#39;QCryptoBlockCreateOptionsLUKS&#39;,<=
+br>
+&gt;=C2=A0 =C2=A0 &#39;data&#39;: { &#39;*file&#39;:=C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 &#39;BlockdevRef&#39;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;*header&#39;:=C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;BlockdevRef&#39;,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;size&#39;:=C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;size&#39;,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;*preallocation&#3=
+9;:=C2=A0 =C2=A0&#39;PreallocMode&#39; } }<br>
+&gt;=C2=A0 <br>
+&gt; diff --git a/qapi/crypto.json b/qapi/crypto.json<br>
+&gt; index fd3d46ebd1..6b4e86cb81 100644<br>
+&gt; --- a/qapi/crypto.json<br>
+&gt; +++ b/qapi/crypto.json<br>
+&gt; @@ -195,10 +195,13 @@<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0decryption key.=C2=A0 Mandatory except when=
+ probing image for<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0metadata only.<br>
+&gt;=C2=A0 #<br>
+&gt; +# @detached-header: if true, disk has detached LUKS header.<br>
+&gt; +#<br>
+&gt;=C2=A0 # Since: 2.6<br>
+&gt;=C2=A0 ##<br>
+&gt;=C2=A0 { &#39;struct&#39;: &#39;QCryptoBlockOptionsLUKS&#39;,<br>
+&gt; -=C2=A0 &#39;data&#39;: { &#39;*key-secret&#39;: &#39;str&#39; }}<br>
+&gt; +=C2=A0 &#39;data&#39;: { &#39;*key-secret&#39;: &#39;str&#39;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;*detached-header&#39;:=
+ &#39;bool&#39; }}<br>
 <br>
-This patch should be combined with the previous patch that adds the new<br>
-QAPI schema element as splitting them doesn&#39;t add value.<br>
+I don&#39;t think we need this change if we pass this info as an enum flag<=
+br></blockquote><div><br></div><div class=3D"gmail_default" style=3D"font-f=
+amily:&quot;comic sans ms&quot;,sans-serif">Agree.</div><div class=3D"gmail=
+_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif"><br></=
+div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bor=
+der-left-width:1px;border-left-style:solid;border-left-color:rgb(204,204,20=
+4);padding-left:1ex">
 <br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 ##<br>
+&gt;=C2=A0 # @QCryptoBlockCreateOptionsLUKS:<br>
+&gt; -- <br>
+&gt; 2.39.1<br>
+&gt; <br>
 <br>
-Testing this patch with the changes I suggest above, however, still does<br=
->
-not work:<br>
-<br>
-=C2=A0 $ dd if=3D/dev/zero of=3Dtest-header.img bs=3D1M count=3D32<br>
-=C2=A0 $ dd if=3D/dev/zero of=3Dtest-payload.img bs=3D1M count=3D1000<br>
-=C2=A0 $ cryptsetup luksFormat=C2=A0 --header test-header.img test-payload.=
-img=C2=A0 --force-password --type luks1<br>
-=C2=A0 $ qemu-img info=C2=A0 &#39;json:{&quot;driver&quot;:&quot;luks&quot;=
-,&quot;file&quot;:{&quot;filename&quot;:&quot;test-payload.img&quot;},&quot=
-;header&quot;:{&quot;filename&quot;:&quot;test-header.img&quot;}}&#39;<br>
-=C2=A0 qemu-img: Could not open &#39;json:{&quot;driver&quot;:&quot;luks&qu=
-ot;,&quot;file&quot;:{&quot;filename&quot;:&quot;test-payload.img&quot;},&q=
-uot;header&quot;:{&quot;filename&quot;:&quot;test-header.img&quot;}}&#39;: =
-LUKS payload is overlapping with the header</blockquote><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;bo=
-rder-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">
-<br>
-<br>
-You need to pass some info into qcrypto_block_open to tell it that the<br>
-header is detached. Add a new enum entry to QCryptoBlockOpenFlags<br>
-perhaps.=C2=A0 Then skip the LUKS payload overlap check.<br>
-<br></blockquote><div><div class=3D"gmail_default"><span style=3D"font-fami=
-ly:&quot;comic sans ms&quot;,sans-serif"></span></div><div class=3D"gmail_d=
-efault"><span style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">Ok=
-, I&#39;ll try this way and=C2=A0</span><span style=3D"font-family:&quot;co=
-mic sans ms&quot;,sans-serif">do a test usi</span><font face=3D"comic sans =
-ms, sans-serif">ng=C2=A0cryptsetup tools=C2=A0</font><span style=3D"font-fa=
-mily:&quot;comic sans ms&quot;,sans-serif">in the next version.</span></div=
-><div class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot=
-;,sans-serif">Thanks for testing this series.</div></div><div>=C2=A0</div><=
-blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
-eft-width:1px;border-left-style:solid;border-left-color:rgb(204,204,204);pa=
-dding-left:1ex">
 With regards,<br>
 Daniel<br>
 -- <br>
@@ -501,5 +323,5 @@ gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
 iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
 </div></div></div>
 
---0000000000001b9137060e59c8d1--
+--000000000000f738c0060e59cb99--
 
