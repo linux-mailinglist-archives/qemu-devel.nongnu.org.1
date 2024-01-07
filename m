@@ -2,67 +2,123 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27EF3826615
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 22:27:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A4282662D
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 22:42:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMaeZ-0003K0-Ak; Sun, 07 Jan 2024 16:25:55 -0500
+	id 1rMat8-00014X-Vb; Sun, 07 Jan 2024 16:40:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rMaeX-0003Iu-Cn
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 16:25:53 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>)
+ id 1rMasw-00013w-1V; Sun, 07 Jan 2024 16:40:46 -0500
+Received: from mout.gmx.net ([212.227.17.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rMaeV-0004CZ-JB
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 16:25:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=dr06ePIVgTeo8NJyEhCmNprRIYjT235U71iyeZuVs0E=; b=V9bsKtfm6Lk6B6rto1/z8mj4zj
- DmiuRmebxZRDiMfZPC8jmiqBLIYwHu8T0GPNXx3eLMCZXOKSghOQI3rNkC0Z/PYO1ffLAH1/ttePu
- BMV534TS3lhL5twel2D3WLOpkzih7bCXQhaXAs7A9yVPqi+zoNVQ9onlBP9moz1ipOesZdEW1gWad
- kzab+lwCcl+vXMfHci7DQ4qOYaEQ4fK+YxxeUR3wx7KjMcPlXINo2RhIbGf+gLkSSVIp0UPcZRk4V
- CM44ePS0HYKJe9Lfbx38e7SkUfXhCGGWlQ0Z/CPKwFGa4LD33xwCvAtNTQ8gVuaK+QaIoq89x0BI8
- lAOLM9gMLo8r0m9N3POKtL/bjCY85F1MJZau5SnlqKJGcT7dSHa2r0NWmKl75Nw20L6n1VPBxEjC4
- 9DcpL63pVqKdSOkB2kKAYWT+qtpHFxjDzNK63HTDqD9BZaFlzbljF+y6U351lrUq6hVXV7az0YuMl
- cUKbWR0YwEzxU0TZhMJjbWT7T5zPZHrahEw2qLHcX1ilC0B+Zd/ltzi4xrDS5o0Nmr3lvRT6wrBZu
- R9cBi4DlYofLvtYQT6BAYuOyWR5BvYGQOe69KN6wmGwRKjJ81ogdE3LhQfdEoAu/HAy0YbqOQEy/r
- uHydcR4S7M7E7ZnxVAhQUPWtGG3/2jyKrpuSaRuQs=;
-Received: from [2a00:23c4:8bb1:9800:cf84:25bc:70ee:fc26]
- (helo=localhost.localdomain)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rMadx-0006OD-Bx; Sun, 07 Jan 2024 21:25:21 +0000
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: laurent@vivier.eu,
-	qemu-devel@nongnu.org,
-	elliotnunn@fastmail.com
-Date: Sun,  7 Jan 2024 21:25:38 +0000
-Message-Id: <20240107212538.227627-3-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240107212538.227627-1-mark.cave-ayland@ilande.co.uk>
-References: <20240107212538.227627-1-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>)
+ id 1rMasu-0007ln-4A; Sun, 07 Jan 2024 16:40:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+ t=1704663636; x=1705268436; i=deller@gmx.de;
+ bh=mE1pKONsWd8dbTaqj1+lzoWanFnELldum79KID7+GG4=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+ In-Reply-To;
+ b=jphdKN41tj9Ntx8vPPTOFxrvvkEignf88gCeEfwv9E4r8Xc2OE0F3kPJjEaGJpMn
+ kQzg+XYpwVZt9IEX+SG+21RYXSJ1trmBtseTTnU8jqaXHhITWHKuJ2ccbFO9OnUSq
+ 7gXhsl6NShtBmzYaVtSdboa6m9HIYkYLpQ2MIBpIZ27EWg9Hp4L5hBlETbiz4hbgu
+ yziml41sF42PYutBQ0a+XjzORzGcRfrk6zqPtsVeg2Xa1lhKtjfOZFIvVSIiUsIUe
+ 2l5xDKpg1oJtFSbFgv2/4LzKccAhoM8ErpZfMH4aeVER8Zs8SzKUnHWM3muO/qCYb
+ rpwDqERqUvWvZAawrQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([94.134.148.157]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MZktj-1rixMJ38MR-00WqQU; Sun, 07
+ Jan 2024 22:40:36 +0100
+Message-ID: <7df97a8e-6bb2-482c-86cf-a9dbf2bd2e53@gmx.de>
+Date: Sun, 7 Jan 2024 22:40:27 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb1:9800:cf84:25bc:70ee:fc26
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 2/2] nubus: add nubus-virtio-mmio device
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tcg/tci: Fix TCI on hppa host and update TCI test matrix
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, Helge Deller <deller@kernel.org>
+Cc: Laurent Vivier <laurent@vivier.eu>, Michael Tokarev <mjt@tls.msk.ru>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org
+References: <ZZpQZ77s2t81mXIT@p100>
+ <CAFEAcA9K4GVcYNe2YvtDxiXC-HBvAXEZzNMA-z9xkpNY4Qf2EQ@mail.gmail.com>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
+ HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
+ r+8w6mkccOM9GhoPU0vMaD/UVJcJQzvrxVHO8EHS36aUkjKd6cOpdVbCt3qx8cEhCmaFEO6u
+ CL+k5AZQoABbFQEBocZE1/lSYzaHkcHrjn4cQjc3CffXnUVYwlo8EYOtAHgMDC39s9a7S90L
+ 69l6G73lYBD/Br5lnDPlG6dKfGFZZpQ1h8/x+Qz366Ojfq9MuuRJg7ZQpe6foiOtqwKym/zV
+ dVvSdOOc5sHSpfwu5+BVAAyBd6hw4NddlAQUjHSRs3zJ9OfrEx2d3mIfXZ7+pMhZ7qX0Axlq
+ Lq+B5cfLpzkPAgKn11tfXFxP+hcPHIts0bnDz4EEp+HraW+oRCH2m57Y9zhcJTOJaLw4YpTY
+ GRUlF076vZ2Hz/xMEvIJddRGId7UXZgH9a32NDf+BUjWEZvFt1wFSW1r7zb7oGCwZMy2LI/G
+ aHQv/N0NeFMd28z+deyxd0k1CGefHJuJcOJDVtcE1rGQ43aDhWSpXvXKDj42vFD2We6uIo9D
+ 1VNre2+uAxFzqqf026H6cH8hin9Vnx7p3uq3Dka/Y/qmRFnKVQARAQABzRxIZWxnZSBEZWxs
+ ZXIgPGRlbGxlckBnbXguZGU+wsGRBBMBCAA7AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
+ FiEERUSCKCzZENvvPSX4Pl89BKeiRgMFAl3J1zsCGQEACgkQPl89BKeiRgNK7xAAg6kJTPje
+ uBm9PJTUxXaoaLJFXbYdSPfXhqX/BI9Xi2VzhwC2nSmizdFbeobQBTtRIz5LPhjk95t11q0s
+ uP5htzNISPpwxiYZGKrNnXfcPlziI2bUtlz4ke34cLK6MIl1kbS0/kJBxhiXyvyTWk2JmkMi
+ REjR84lCMAoJd1OM9XGFOg94BT5aLlEKFcld9qj7B4UFpma8RbRUpUWdo0omAEgrnhaKJwV8
+ qt0ULaF/kyP5qbI8iA2PAvIjq73dA4LNKdMFPG7Rw8yITQ1Vi0DlDgDT2RLvKxEQC0o3C6O4
+ iQq7qamsThLK0JSDRdLDnq6Phv+Yahd7sDMYuk3gIdoyczRkXzncWAYq7XTWl7nZYBVXG1D8
+ gkdclsnHzEKpTQIzn/rGyZshsjL4pxVUIpw/vdfx8oNRLKj7iduf11g2kFP71e9v2PP94ik3
+ Xi9oszP+fP770J0B8QM8w745BrcQm41SsILjArK+5mMHrYhM4ZFN7aipK3UXDNs3vjN+t0zi
+ qErzlrxXtsX4J6nqjs/mF9frVkpv7OTAzj7pjFHv0Bu8pRm4AyW6Y5/H6jOup6nkJdP/AFDu
+ 5ImdlA0jhr3iLk9s9WnjBUHyMYu+HD7qR3yhX6uWxg2oB2FWVMRLXbPEt2hRGq09rVQS7DBy
+ dbZgPwou7pD8MTfQhGmDJFKm2jvOwU0EXchrcwEQAOsDQjdtPeaRt8EP2pc8tG+g9eiiX9Sh
+ rX87SLSeKF6uHpEJ3VbhafIU6A7hy7RcIJnQz0hEUdXjH774B8YD3JKnAtfAyuIU2/rOGa/v
+ UN4BY6U6TVIOv9piVQByBthGQh4YHhePSKtPzK9Pv/6rd8H3IWnJK/dXiUDQllkedrENXrZp
+ eLUjhyp94ooo9XqRl44YqlsrSUh+BzW7wqwfmu26UjmAzIZYVCPCq5IjD96QrhLf6naY6En3
+ ++tqCAWPkqKvWfRdXPOz4GK08uhcBp3jZHTVkcbo5qahVpv8Y8mzOvSIAxnIjb+cklVxjyY9
+ dVlrhfKiK5L+zA2fWUreVBqLs1SjfHm5OGuQ2qqzVcMYJGH/uisJn22VXB1c48yYyGv2HUN5
+ lC1JHQUV9734I5cczA2Gfo27nTHy3zANj4hy+s/q1adzvn7hMokU7OehwKrNXafFfwWVK3OG
+ 1dSjWtgIv5KJi1XZk5TV6JlPZSqj4D8pUwIx3KSp0cD7xTEZATRfc47Yc+cyKcXG034tNEAc
+ xZNTR1kMi9njdxc1wzM9T6pspTtA0vuD3ee94Dg+nDrH1As24uwfFLguiILPzpl0kLaPYYgB
+ wumlL2nGcB6RVRRFMiAS5uOTEk+sJ/tRiQwO3K8vmaECaNJRfJC7weH+jww1Dzo0f1TP6rUa
+ fTBRABEBAAHCwXYEGAEIACAWIQRFRIIoLNkQ2+89Jfg+Xz0Ep6JGAwUCXchrcwIbDAAKCRA+
+ Xz0Ep6JGAxtdEAC54NQMBwjUNqBNCMsh6WrwQwbg9tkJw718QHPw43gKFSxFIYzdBzD/YMPH
+ l+2fFiefvmI4uNDjlyCITGSM+T6b8cA7YAKvZhzJyJSS7pRzsIKGjhk7zADL1+PJei9p9idy
+ RbmFKo0dAL+ac0t/EZULHGPuIiavWLgwYLVoUEBwz86ZtEtVmDmEsj8ryWw75ZIarNDhV74s
+ BdM2ffUJk3+vWe25BPcJiaZkTuFt+xt2CdbvpZv3IPrEkp9GAKof2hHdFCRKMtgxBo8Kao6p
+ Ws/Vv68FusAi94ySuZT3fp1xGWWf5+1jX4ylC//w0Rj85QihTpA2MylORUNFvH0MRJx4mlFk
+ XN6G+5jIIJhG46LUucQ28+VyEDNcGL3tarnkw8ngEhAbnvMJ2RTx8vGh7PssKaGzAUmNNZiG
+ MB4mPKqvDZ02j1wp7vthQcOEg08z1+XHXb8ZZKST7yTVa5P89JymGE8CBGdQaAXnqYK3/yWf
+ FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
+ 4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
+ ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
+In-Reply-To: <CAFEAcA9K4GVcYNe2YvtDxiXC-HBvAXEZzNMA-z9xkpNY4Qf2EQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:MtwcpbhUh0IA837yjH8U9s5WofhB9MykmYc6CCaeQ9Mh+lS9lu5
+ epY7P7Nyur6Z+VgUmkHmxZsKxzK9M41FvDgQNya+ZNZU0RWTgFeYuJLXtmnOivVxgb5RhGa
+ BcaLX8OIkRf3/T45umWORSPUXAiu6n+xcfKUhZULLP251fltBXHCe2wAp7dPuc1FwLXZO+W
+ InAGxBmLv/JZ7xOvq/1CA==
+UI-OutboundReport: notjunk:1;M01:P0:UQhgH6lP57I=;XCNV0ASIrBtRKicH7Qdz5fpEDbP
+ 2OxUOdL8OcRsM5W0DgQhkTrXeuKd/y0OHF+PH81EUyLB8Iz2pT96Tx5SYuzNe/XpdJUGCLTGy
+ 4Z/EE5+nk7dIrXKUjq5iJbHyY4khq4Lk/LzJwXqgaUTebjk+PF0Lc1O7kMi9Naf2WsCM6mTTF
+ /1gfG1LKiZfNifmBCFiYTn9Y7QyQk+/F8rAebN7Gsr1I1PIx8SFE3inKgjBRPDTVVabjPgINa
+ GSSNSJrJtEHl3J2rp/e8QZmxtLSEO8/UK9WigWBtrOHyy2pg2zqG516fr1772d5grHOQ7P/Wf
+ gXdh4ras4DRpWDgra8kHk+0VUsvpURwlxwTp/Kaa2xCjgzHp9wLD5QcEOIg7v2qkiUfCvI/YE
+ kZk5D6ADJkaHtEaJVuurrUzKZWMkrb8V9AcNCWDNO58oQfiqxBShdos0eV/Vya1tQFUqoMdTD
+ AegU7UIOWKsJAxkWmTVfhiyrTDSNJl2JqKBOiDZYjGKKNrPg6cp8OrxWfLblMkG1AumLDY3Ds
+ rp3XDLZW9e4/PYVWauxO4yEhXAh6NNPuON5pWFKRg3sH1KRANDuEBQFFaojaZar8jelghoxgW
+ hhOeAvZMY9kRx7Oy7+atZOsgXobCibhsqkrtzrdxHcznvIR8lQSFi2oyYsTxFEbDQTeNHyL17
+ binwijkskWeMupGugNafumIMvf7C+ZXzf/hXuMAU62cl73SbYHqs/DLy9cy1U0lGtvRE+eTyW
+ jXJtScB+olzmMA0y75Mt1gbihF+5ucwQD4OfnvrB2rpKD1z3KoNKNI80Ik2qKHkAnMtpfQZtE
+ Ofg3YN0bTkAwtsKpRrpCh/Qjx+TQLdqe87KL5WIIvpCfe+ODky53TI62uFSn7Sr0cXcjtmRfU
+ ywS4XymEp1F2IFPxPUojIb6ABa4ju/KicShv5RAkou5I9xhKMSShV6bYTU02SY2D0bwWpUEwo
+ awRFUHyZVeBJ3KFbkJmJo//61wc=
+Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,186 +134,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The nubus-virtio-mmio device is a Nubus card that contains a set of 32 virtio-mmio
-devices and a goldfish PIC similar to the m68k virt machine that can be plugged
-into the m68k q800 machine.
+On 1/7/24 16:22, Peter Maydell wrote:
+> On Sun, 7 Jan 2024 at 07:20, Helge Deller <deller@kernel.org> wrote:
+>>
+>> Update the TCI interpreter test matrix for big-endian hosts with
+>> big- (hppa, hppa64) and little-endian (x86,x96-64) targets.
+>> I used native ppc64 and hppa hosts for those tests.
+>>
+>> Starting TCI on a hppa host crashed immediately, because hppa is
+>> the only archive left where the stack grows upwards.
+>> Write-protecting the stack guard page at the top of the stack
+>> fixes the crash.
+>
+> We deliberately dropped support for HPPA hosts, under
+> commit a1eaa6281f8b and commit b1cef6d02f84bd8.
+> Do we really care enough about trying to run on these
+> ancient host CPUs to want to bring it back?
+>
+> My personal rule of thumb is that if a host CPU is supported
+> only by TCI then we are better off saying it is entirely
+> unsupported -- in practice the performance will be so
+> terrible as to not be something anybody will want to use,
+> especially for older architectures which are slow to
+> start with.
 
-There are currently a number of drivers under development that can be used in
-conjunction with this device to provide accelerated and/or additional hypervisor
-services to 68k Classic MacOS.
+I can see your point (and the performance is really horrible).
+It's not my intention to make hppa a supported TCI platform,
+but for me it's a good candidate to at least test TCI on
+a big-endian machine, mostly because I have access to some of
+such machines.
+And, this patch is all what's needed and it's pretty trivial, so
+it would be great if it could be accepted.
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
----
- hw/nubus/meson.build                 |   1 +
- hw/nubus/nubus-virtio-mmio.c         | 102 +++++++++++++++++++++++++++
- include/hw/nubus/nubus-virtio-mmio.h |  36 ++++++++++
- 3 files changed, 139 insertions(+)
- create mode 100644 hw/nubus/nubus-virtio-mmio.c
- create mode 100644 include/hw/nubus/nubus-virtio-mmio.h
-
-diff --git a/hw/nubus/meson.build b/hw/nubus/meson.build
-index e7ebda8993..9a7a12ea68 100644
---- a/hw/nubus/meson.build
-+++ b/hw/nubus/meson.build
-@@ -2,6 +2,7 @@ nubus_ss = ss.source_set()
- nubus_ss.add(files('nubus-device.c'))
- nubus_ss.add(files('nubus-bus.c'))
- nubus_ss.add(files('nubus-bridge.c'))
-+nubus_ss.add(files('nubus-virtio-mmio.c'))
- nubus_ss.add(when: 'CONFIG_Q800', if_true: files('mac-nubus-bridge.c'))
- 
- system_ss.add_all(when: 'CONFIG_NUBUS', if_true: nubus_ss)
-diff --git a/hw/nubus/nubus-virtio-mmio.c b/hw/nubus/nubus-virtio-mmio.c
-new file mode 100644
-index 0000000000..58a63c84d0
---- /dev/null
-+++ b/hw/nubus/nubus-virtio-mmio.c
-@@ -0,0 +1,102 @@
-+/*
-+ * QEMU Macintosh Nubus Virtio MMIO card
-+ *
-+ * Copyright (c) 2024 Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/nubus/nubus-virtio-mmio.h"
-+
-+
-+#define NUBUS_VIRTIO_MMIO_PIC_OFFSET   0
-+#define NUBUS_VIRTIO_MMIO_DEV_OFFSET   0x200
-+
-+
-+static void nubus_virtio_mmio_set_input_irq(void *opaque, int n, int level)
-+{
-+    NubusDevice *nd = NUBUS_DEVICE(opaque);
-+
-+    nubus_set_irq(nd, level);
-+}
-+
-+static void nubus_virtio_mmio_realize(DeviceState *dev, Error **errp)
-+{
-+    NubusVirtioMMIODeviceClass *nvmdc = NUBUS_VIRTIO_MMIO_GET_CLASS(dev);
-+    NubusVirtioMMIO *s = NUBUS_VIRTIO_MMIO(dev);
-+    NubusDevice *nd = NUBUS_DEVICE(dev);
-+    SysBusDevice *sbd;
-+    int i, offset;
-+
-+    nvmdc->parent_realize(dev, errp);
-+    if (*errp) {
-+        return;
-+    }
-+
-+    /* Goldfish PIC */
-+    sbd = SYS_BUS_DEVICE(&s->pic);
-+    if (!sysbus_realize(sbd, errp)) {
-+        return;
-+    }
-+    memory_region_add_subregion(&nd->slot_mem, NUBUS_VIRTIO_MMIO_PIC_OFFSET,
-+                                sysbus_mmio_get_region(sbd, 0));
-+    sysbus_connect_irq(sbd, 0,
-+                       qdev_get_gpio_in_named(dev, "pic-input-irq", 0));
-+
-+    /* virtio-mmio devices */
-+    offset = NUBUS_VIRTIO_MMIO_DEV_OFFSET;
-+    for (i = 0; i < NUBUS_VIRTIO_MMIO_NUM_DEVICES; i++) {
-+        sbd = SYS_BUS_DEVICE(&s->virtio_mmio[i]);
-+        qdev_prop_set_bit(DEVICE(sbd), "force-legacy", false);
-+        if (!sysbus_realize_and_unref(sbd, errp)) {
-+            return;
-+        }
-+
-+        memory_region_add_subregion(&nd->slot_mem, offset,
-+                                    sysbus_mmio_get_region(sbd, 0));
-+        offset += 0x200;
-+
-+        sysbus_connect_irq(sbd, 0, qdev_get_gpio_in(DEVICE(&s->pic), i));
-+    }
-+}
-+
-+static void nubus_virtio_mmio_init(Object *obj)
-+{
-+    NubusVirtioMMIO *s = NUBUS_VIRTIO_MMIO(obj);
-+    int i;
-+
-+    object_initialize_child(obj, "pic", &s->pic, TYPE_GOLDFISH_PIC);
-+    for (i = 0; i < NUBUS_VIRTIO_MMIO_NUM_DEVICES; i++) {
-+        char *name = g_strdup_printf("virtio-mmio[%d]", i);
-+        object_initialize_child(obj, name, &s->virtio_mmio[i],
-+                                TYPE_VIRTIO_MMIO);
-+        g_free(name);
-+    }
-+
-+    /* Input from goldfish PIC */
-+    qdev_init_gpio_in_named(DEVICE(obj), nubus_virtio_mmio_set_input_irq,
-+                            "pic-input-irq", 1);
-+}
-+
-+static void nubus_virtio_mmio_class_init(ObjectClass *oc, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(oc);
-+    NubusVirtioMMIODeviceClass *nvmdc = NUBUS_VIRTIO_MMIO_CLASS(oc);
-+
-+    device_class_set_parent_realize(dc, nubus_virtio_mmio_realize,
-+                                    &nvmdc->parent_realize);
-+}
-+
-+static const TypeInfo nubus_virtio_mmio_types[] = {
-+    {
-+        .name = TYPE_NUBUS_VIRTIO_MMIO,
-+        .parent = TYPE_NUBUS_DEVICE,
-+        .instance_init = nubus_virtio_mmio_init,
-+        .instance_size = sizeof(NubusVirtioMMIO),
-+        .class_init = nubus_virtio_mmio_class_init,
-+        .class_size = sizeof(NubusVirtioMMIODeviceClass),
-+    },
-+};
-+
-+DEFINE_TYPES(nubus_virtio_mmio_types)
-diff --git a/include/hw/nubus/nubus-virtio-mmio.h b/include/hw/nubus/nubus-virtio-mmio.h
-new file mode 100644
-index 0000000000..de497b7f76
---- /dev/null
-+++ b/include/hw/nubus/nubus-virtio-mmio.h
-@@ -0,0 +1,36 @@
-+/*
-+ * QEMU Macintosh Nubus Virtio MMIO card
-+ *
-+ * Copyright (c) 2023 Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef HW_NUBUS_VIRTIO_MMIO_H
-+#define HW_NUBUS_VIRTIO_MMIO_H
-+
-+#include "hw/nubus/nubus.h"
-+#include "qom/object.h"
-+#include "hw/intc/goldfish_pic.h"
-+#include "hw/virtio/virtio-mmio.h"
-+
-+#define TYPE_NUBUS_VIRTIO_MMIO "nubus-virtio-mmio"
-+OBJECT_DECLARE_TYPE(NubusVirtioMMIO, NubusVirtioMMIODeviceClass,
-+                    NUBUS_VIRTIO_MMIO)
-+
-+struct NubusVirtioMMIODeviceClass {
-+    DeviceClass parent_class;
-+
-+    DeviceRealize parent_realize;
-+};
-+
-+#define NUBUS_VIRTIO_MMIO_NUM_DEVICES 32
-+
-+struct NubusVirtioMMIO {
-+    NubusDevice parent_obj;
-+
-+    GoldfishPICState pic;
-+    VirtIOMMIOProxy virtio_mmio[NUBUS_VIRTIO_MMIO_NUM_DEVICES];
-+};
-+
-+#endif
--- 
-2.39.2
-
+Helge
 
