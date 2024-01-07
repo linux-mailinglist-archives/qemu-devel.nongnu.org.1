@@ -2,68 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A87D982665C
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 23:25:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9778266C3
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 00:18:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMbYf-0001hL-GJ; Sun, 07 Jan 2024 17:23:53 -0500
+	id 1rMcNj-0002HT-Gl; Sun, 07 Jan 2024 18:16:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng.cn@gmail.com>)
- id 1rMbYd-0001hD-R3
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 17:23:51 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rMcNh-0002Gu-Jb
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 18:16:37 -0500
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <bmeng.cn@gmail.com>)
- id 1rMbYc-0001lB-5V
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 17:23:51 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a28d61ba65eso122806366b.3
- for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 14:23:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rMcNg-0006Jr-0z
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 18:16:37 -0500
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-50eabbc3dccso1031619e87.2
+ for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 15:16:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704666228; x=1705271028; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=okdT+KNoBgif36UAtw8WXdBt5hDoM90c9Cso6/SH3SI=;
- b=fuvU5Pb70glOZr52zNdX+Js8ZYxLcPrshKRaAwTfBHbTCrmuEwl6X3PQ6r8Qga+gnL
- 8KVRJwv8FKKwt193aLGa+RwvpvUfEEn/EMWceN21Jav6H43ZhK+5AvKhJO3zRV310Bth
- ZH0WjS0V/ODJwOlQQTm37KulCB+AsK3WIsPCDQ5CCST3HLnh+k8lULebizrROaUzO5p/
- QT/eVhmLtayvF/55zIbs4Gb+lF3QTVCHM/Y1SytQBCJFL4JxrU6Y8JWaMziPQkKCe8n9
- kecuEtNp2n/zUrH6BSL7AeGSK3HsI/F2NdLpjmsrLwjg/Tcn3xC4txLXh3iOvOvk2wuL
- 9UVQ==
+ d=gmail.com; s=20230601; t=1704669393; x=1705274193; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6jsVDJtLEm1lPndCJvtY3GO9mpTGY2wxwxo3LuOR4oE=;
+ b=jUZ4Z/UchmHh9EDeQNxB385WRdxe9nfSkqICiNlhbQZrqKsHiPneJZ3YBDSqKKx9B8
+ 8gTLPQZ+sav/LQJrQ5HKUR/fIgaz9yiCkp+hT2N5HMEezAlSqlQPccZsFjcwqWIe8xXc
+ n55kQAeFRDK6VnPnsxK6jQAsRVQPkW/09STPRTvI+N4HMcv+5CKw1LRSxCRFNjlanVF4
+ 1CoRj2HhUgBdJfKbblD6IdMadpa2wStl+HIZCtvKPdlvhHcWr1uSa5ZzLfAmDiweMafJ
+ T9bLTjE3xFTIABc5vFR2pU6gRTS8ykvjvRGjDB6wk6/cMgRAaJBvJ8ghFeFGW5RpzFG2
+ 9tZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704666228; x=1705271028;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=okdT+KNoBgif36UAtw8WXdBt5hDoM90c9Cso6/SH3SI=;
- b=RGUH/wxy4Bj8i6Hbbpc7PTaEBwwomrSKlDkuWEY2313NjqkYaBMK1Ask24tsu84Oj6
- Xg1O3somW6NDSfL8bgdVoBDBI5T4Bs9E1wN1grrovM5f/omYcdn+io4AgqT/XnU6Sl95
- T5vLF17AA/YOMeHalKDMD6Dw/JHsLP2JkGOQSWuDWEPuDSK+zhQpgraTfFMTzAw/d6BD
- EJxjTnzQJuyWJlAtUBNErp3nfxtmQHzwm1QO8nJJ+m3g1GqhyYcZZ1lBYJy8wgEV5rNB
- pQk8xVYR1gvdhCwvGz8bx1+hC5lqdd9HXNkB7XzqbSTOEq57Kak8tpYQBtWoywgejyZC
- 1KWA==
-X-Gm-Message-State: AOJu0YwnlVwoOCPsh+I8T9I22i8XOV6QCE7U+0klM8hlNap+/6hh35Pg
- lz6wg1j4vS8KXoPONOhyOqNhpHmNVRfR+fpsw8AFwVMSx9P8RQ==
-X-Google-Smtp-Source: AGHT+IF+iKGXija7X9xl8tOhd6dW+cP5x60qvf1hvYiehxo50+J2wbjdmdnV0pL2rbhoX3RriSyjJRoK1euZlmFelI8=
-X-Received: by 2002:a17:906:787:b0:a28:f771:ad03 with SMTP id
- l7-20020a170906078700b00a28f771ad03mr589644ejc.101.1704666227912; Sun, 07 Jan
- 2024 14:23:47 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704669393; x=1705274193;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6jsVDJtLEm1lPndCJvtY3GO9mpTGY2wxwxo3LuOR4oE=;
+ b=h804iz97tXKvcyZgN1SKytv56F/pW3xmRlqQUdxfDO0qk1kTMlaTTajCRXdbo3pt7/
+ 2qhM3tFoSjUiLU59Qh8Jyl0vSth/VEvdbOPA5BW8AYccGCg6Y0oHQVwj5sizEKF6hNHR
+ pXwNqwv8mnnCqJGtHD3YCq44GGU2QOTZ7vWzdoOVNK4GUYGUumyg1iT9lb6ukFyaim+c
+ 2TFDzL3G3etktmYssVc2HIPSPxqkXwkBhI+UObZeCEpNCPbo2vC5asfu0767Ps0LTPID
+ wm4IHIPUetXfJuAdR2j609es+B3aFavrTBO39cDr3Xe/14sW4BeuCwWJ2AzJTa63bgyh
+ Bkcw==
+X-Gm-Message-State: AOJu0YzrQYLODPXMgFIHOgmOp3kBM9w+Qa8opR3IIxATY+PrLyyBGQ3x
+ +HKzR54Xqri41VO6dklLfdUYCPAkQkU=
+X-Google-Smtp-Source: AGHT+IHk2KwjckC2+0MPqdilUMmvonza/ii8ds1d+gqApYYQ7ahD486c6CLaIVQh3OrzE2iSYbke6w==
+X-Received: by 2002:a05:6512:39ce:b0:50b:f1ca:e6a with SMTP id
+ k14-20020a05651239ce00b0050bf1ca0e6amr610420lfu.48.1704669392392; 
+ Sun, 07 Jan 2024 15:16:32 -0800 (PST)
+Received: from localhost.localdomain
+ (dynamic-077-191-044-194.77.191.pool.telefonica.de. [77.191.44.194])
+ by smtp.gmail.com with ESMTPSA id
+ p9-20020a17090635c900b00a27eddc3dcbsm3338834ejb.198.2024.01.07.15.16.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 07 Jan 2024 15:16:31 -0800 (PST)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Chuck Zmudzinski <brchuckz@aol.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ xen-devel@lists.xenproject.org, David Woodhouse <dwmw2@infradead.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paul Durrant <paul@xen.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH] hw/i386/pc_piix: Make piix_intx_routing_notifier_xen() more
+ device independent
+Date: Mon,  8 Jan 2024 00:16:23 +0100
+Message-ID: <20240107231623.5282-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20240106223546.44460-1-wsh@wshooper.org>
-In-Reply-To: <20240106223546.44460-1-wsh@wshooper.org>
-From: Bin Meng <bmeng.cn@gmail.com>
-Date: Mon, 8 Jan 2024 06:23:36 +0800
-Message-ID: <CAEUhbmX1anAjH9sp06ygft5wrR-QPD_6c9Jtze2ZKw9cm2KKuQ@mail.gmail.com>
-Subject: Re: [PATCH] net/vmnet: Pad short Ethernet frames
-To: William Hooper <wsh@wshooper.org>
-Cc: qemu-devel@nongnu.org, Bin Meng <bin.meng@windriver.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=bmeng.cn@gmail.com; helo=mail-ej1-x62c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=shentey@gmail.com; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,23 +96,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jan 7, 2024 at 7:19=E2=80=AFAM William Hooper <wsh@wshooper.org> wr=
-ote:
->
-> At least on macOS 12.7.2, vmnet doesn't pad Ethernet frames, such as the
-> host's ARP replies, to the minimum size (60 bytes before the frame check
-> sequence) defined in IEEE Std 802.3-2022, so guests' Ethernet device
-> drivers may drop them with "frame too short" errors.
->
-> This patch calls eth_pad_short_frame() to add padding, as in net/tap.c
-> and net/slirp.c.
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2058
-> Signed-off-by: William Hooper <wsh@wshooper.org>
-> ---
->  net/vmnet-common.m | 20 +++++++++++++++++---
->  1 file changed, 17 insertions(+), 3 deletions(-)
->
+This is a follow-up on commit 89965db43cce "hw/isa/piix3: Avoid Xen-specific
+variant of piix3_write_config()" which introduced
+piix_intx_routing_notifier_xen(). This function is implemented in board code but
+accesses the PCI configuration space of the PIIX ISA function to determine the
+PCI interrupt routes. Avoid this by reusing pci_device_route_intx_to_irq() which
+makes piix_intx_routing_notifier_xen() more device-agnostic.
 
-Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
+One remaining improvement would be making piix_intx_routing_notifier_xen()
+agnostic towards the number of PCI interrupt routes and move it to xen-hvm.
+This might be useful for possible Q35 Xen efforts but remains a future exercise
+for now.
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+---
+ hw/i386/pc_piix.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 042c13cdbc..abfcfe4d2b 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -92,13 +92,10 @@ static void piix_intx_routing_notifier_xen(PCIDevice *dev)
+ {
+     int i;
+ 
+-    /* Scan for updates to PCI link routes (0x60-0x63). */
++    /* Scan for updates to PCI link routes. */
+     for (i = 0; i < PIIX_NUM_PIRQS; i++) {
+-        uint8_t v = dev->config_read(dev, PIIX_PIRQCA + i, 1);
+-        if (v & 0x80) {
+-            v = 0;
+-        }
+-        v &= 0xf;
++        const PCIINTxRoute route = pci_device_route_intx_to_irq(dev, i);
++        const uint8_t v = route.mode == PCI_INTX_ENABLED ? route.irq : 0;
+         xen_set_pci_link_route(i, v);
+     }
+ }
+-- 
+2.43.0
+
 
