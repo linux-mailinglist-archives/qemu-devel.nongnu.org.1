@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 407A782643F
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 14:24:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19786826441
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 14:24:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMT75-0006Do-Oo; Sun, 07 Jan 2024 08:22:51 -0500
+	id 1rMT79-0006HX-Ud; Sun, 07 Jan 2024 08:22:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMT73-0006CO-9k
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 08:22:49 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMT76-0006Fc-V9
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 08:22:52 -0500
+Received: from ams.source.kernel.org ([145.40.68.75])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMT70-0003Ip-RF
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 08:22:48 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMT74-0003Je-E1
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 08:22:51 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id F159360B99;
+ by ams.source.kernel.org (Postfix) with ESMTP id 3AFACB80A48;
+ Sun,  7 Jan 2024 13:22:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB33C433C8;
  Sun,  7 Jan 2024 13:22:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26314C433C9;
- Sun,  7 Jan 2024 13:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1704633765;
- bh=oaMIfnlI/vyznx8Vsna73wbJCQNRediFZRBx4P/PiJk=;
+ s=k20201202; t=1704633767;
+ bh=8736TLy8Xcz4clNFx2YPANIAByh7vW48ap0a8DeNsGs=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Lpv7IU5iSvQr/waBk+WSPLtd5UdDJxQ51NU6sVo+FaRcYdiOPdvOfeJ58GIa0QkEz
- 4KaCjgUd1j7jQsB0GnhsjA/1ZqH17BSCaoNS5beAhK+mLdYyjG7tuesRjXJsgg4brx
- RENyM1b0xZfomnLVfrwNXrshlZGx1cmItF8OQg7x8sbMb1u4Du9Ccjc0V/zjn4E+qZ
- dAp5BVNvKadNURDzTIMPJn8rAbi8KfjIL8YbzCYhN0UPhHRdQ9g4VeNeUyJLWMLQmt
- HInBVERMNsywb/P8VMgFk2KpDs/WQkfN7j+di66wX9ZPYZvNp/xNGdGqlC0zxIM3L4
- +AvbYA1yztg3w==
+ b=Qtc9wIVxn3DAZZ8jyv5587/ZynbXVdEYMSrGcEPklrqbpE93xSAhGA7oGZZcnOMx3
+ 1CveJQU8Z3H5ZUxNeWAcINwTpXJHdKtazorF09VUmdFYq5cO1uwBV3d1otEeRr5e/K
+ Eh1ymBUpT4mPrxk+dAFtPbPiS+vj0ClhGfviAZoDF+hk/0ZEqDLlyT7xJxIk/tPMx+
+ 0G2b5LttZjD/7y3bOHAS7/VSduewULVNTdSLFAo/YdiBq3C1Vx8S8AhbHsFZIvYgaF
+ smGJtFJpHBjHaumsEo5uPBid+H6zrQYXCturMmEL/LrAVBPG2XlMfiZh9KK+x+8gz4
+ NkfcgJyo4fYiw==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>, Bruno Haible <bruno@clisp.org>,
  "Nelson H . F . Beebe" <beebe@math.utah.edu>, Helge Deller <deller@gmx.de>
-Subject: [PATCH v2 2/9] hw/hppa/machine: Disable default devices with
- --nodefaults option
-Date: Sun,  7 Jan 2024 14:22:30 +0100
-Message-ID: <20240107132237.50553-3-deller@kernel.org>
+Subject: [PATCH v2 3/9] hw/pci-host/astro: Add missing astro & elroy registers
+ for NetBSD
+Date: Sun,  7 Jan 2024 14:22:31 +0100
+Message-ID: <20240107132237.50553-4-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240107132237.50553-1-deller@kernel.org>
 References: <20240107132237.50553-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -91
-X-Spam_score: -9.2
-X-Spam_bar: ---------
-X-Spam_report: (-9.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.098,
+Received-SPF: pass client-ip=145.40.68.75; envelope-from=deller@kernel.org;
+ helo=ams.source.kernel.org
+X-Spam_score_int: -64
+X-Spam_score: -6.5
+X-Spam_bar: ------
+X-Spam_report: (-6.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.098,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,72 +71,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Add support for the qemu --nodefaults option, which will disable the
-following default devices:
-- lsi53c895a SCSI controller,
-- artist graphics card,
-- LASI 82596 NIC,
-- tulip PCI NIC,
-- second serial PCI card,
-- USB OHCI controller.
-
-Adding this option is very useful to allow manual testing and
-debugging of the other possible devices on the command line.
+NetBSD accesses some astro and elroy registers which aren't accessed
+by Linux yet. Add emulation for those registers to allow NetBSD to
+boot further.
+Please note that this patch is not sufficient to completely boot up
+NetBSD on the 64-bit C3700 machine yet.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/hppa/machine.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ hw/pci-host/astro.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index b11907617e..8017002a2a 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -346,11 +346,14 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-     SysBusDevice *s;
+diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
+index 7d68ccee7e..cb2c8a828d 100644
+--- a/hw/pci-host/astro.c
++++ b/hw/pci-host/astro.c
+@@ -166,6 +166,8 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
+     trace_elroy_write(addr, size, val);
  
-     /* SCSI disk setup. */
--    dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
--    lsi53c8xx_handle_legacy_cmdline(dev);
-+    if (defaults_enabled()) {
-+        dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
-+        lsi53c8xx_handle_legacy_cmdline(dev);
-+    }
- 
-     /* Graphics setup. */
--    if (machine->enable_graphics && vga_interface_type != VGA_NONE) {
-+    if (defaults_enabled() && machine->enable_graphics &&
-+        vga_interface_type != VGA_NONE) {
-         vga_interface_created = true;
-         dev = qdev_new("artist");
-         s = SYS_BUS_DEVICE(dev);
-@@ -360,7 +363,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-     }
- 
-     /* Network setup. */
--    if (enable_lasi_lan()) {
-+    if (defaults_enabled() && enable_lasi_lan()) {
-         lasi_82596_init(addr_space, translate(NULL, LASI_LAN_HPA),
-                         qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA));
-     }
-@@ -385,7 +388,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-     pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_ID], 0x1227); /* Powerbar */
- 
-     /* create a second serial PCI card when running Astro */
--    if (!lasi_dev) {
-+    if (defaults_enabled() && !lasi_dev) {
-         pci_dev = pci_new(-1, "pci-serial-4x");
-         qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(1));
-         qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(2));
-@@ -395,7 +398,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-     }
- 
-     /* create USB OHCI controller for USB keyboard & mouse on Astro machines */
--    if (!lasi_dev && machine->enable_graphics) {
-+    if (defaults_enabled() && !lasi_dev && machine->enable_graphics) {
-         pci_create_simple(pci_bus, -1, "pci-ohci");
-         usb_create_simple(usb_bus_find(-1), "usb-kbd");
-         usb_create_simple(usb_bus_find(-1), "usb-mouse");
+     switch ((addr >> 3) << 3) {
++    case 0x000: /* PCI_ID & PCI_COMMAND_STATUS_REG */
++        break;
+     case 0x080:
+         put_val_in_int64(&s->arb_mask, addr, size, val);
+         break;
+@@ -175,6 +177,9 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
+     case 0x200 ... 0x250 - 1:   /* LMMIO, GMMIO, WLMMIO, WGMMIO, ... */
+         put_val_in_arrary(s->mmio_base, 0x200, addr, size, val);
+         break;
++    case 0x300: /* ibase */
++    case 0x308: /* imask */
++        break;
+     case 0x0680:
+         put_val_in_int64(&s->error_config, addr, size, val);
+         break;
+@@ -538,6 +543,9 @@ static MemTxResult astro_chip_read_with_attrs(void *opaque, hwaddr addr,
+     case 0x0030:        /* HP-UX 10.20 and 11.11 reads it. No idea. */
+         val = -1;
+         break;
++    case 0x0078:        /* NetBSD reads 0x78 ? */
++        val = -1;
++        break;
+     case 0x0300 ... 0x03d8:     /* LMMIO_DIRECT0_BASE... */
+         index = (addr - 0x300) / 8;
+         val = s->ioc_ranges[index];
+@@ -624,31 +632,43 @@ static MemTxResult astro_chip_write_with_attrs(void *opaque, hwaddr addr,
+     case 0x10220:
+     case 0x10230:        /* HP-UX 11.11 reads it. No idea. */
+         break;
+-    case 0x22108:        /* IOC STATUS_CONTROL */
+-        put_val_in_int64(&s->ioc_status_ctrl, addr, size, val);
+-        break;
+     case 0x20200 ... 0x20240 - 1: /* IOC Rope0_Control ... */
+         put_val_in_arrary(s->ioc_rope_control, 0x20200, addr, size, val);
+         break;
+     case 0x20040:        /* IOC Rope config */
++    case 0x22040:
+         put_val_in_int64(&s->ioc_rope_config, addr, size, val);
+         break;
+     case 0x20300:
++    case 0x22300:
+         put_val_in_int64(&s->tlb_ibase, addr, size, val);
+         break;
+     case 0x20308:
++    case 0x22308:
+         put_val_in_int64(&s->tlb_imask, addr, size, val);
+         break;
+     case 0x20310:
++    case 0x22310:
+         put_val_in_int64(&s->tlb_pcom, addr, size, val);
+         /* TODO: flush iommu */
+         break;
+     case 0x20318:
++    case 0x22318:
+         put_val_in_int64(&s->tlb_tcnfg, addr, size, val);
+         break;
+     case 0x20320:
++    case 0x22320:
+         put_val_in_int64(&s->tlb_pdir_base, addr, size, val);
+         break;
++    case 0x22000:       /* func_id */
++        break;
++    case 0x22008:       /* func_class */
++        break;
++    case 0x22050:       /* rope_debug */
++        break;
++    case 0x22108:        /* IOC STATUS_CONTROL */
++        put_val_in_int64(&s->ioc_status_ctrl, addr, size, val);
++        break;
+     /*
+      * empty placeholders for non-existent elroys, e.g.
+      * func_class, pci config & data
 -- 
 2.43.0
 
