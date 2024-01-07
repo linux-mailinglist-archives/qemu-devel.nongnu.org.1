@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B9F82653A
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 18:03:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E25826539
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 18:03:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMWX5-0000cH-TW; Sun, 07 Jan 2024 12:01:55 -0500
+	id 1rMWX6-0000h4-Py; Sun, 07 Jan 2024 12:01:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rMWWr-0000RI-Tc; Sun, 07 Jan 2024 12:01:45 -0500
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ id 1rMWWy-0000Sg-0m; Sun, 07 Jan 2024 12:01:53 -0500
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rMWWp-0006ub-BU; Sun, 07 Jan 2024 12:01:41 -0500
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-28d2c1389e8so815458a91.2; 
- Sun, 07 Jan 2024 09:01:37 -0800 (PST)
+ id 1rMWWw-00075L-IX; Sun, 07 Jan 2024 12:01:47 -0500
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-28be024282bso510507a91.3; 
+ Sun, 07 Jan 2024 09:01:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704646896; x=1705251696; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ELojimsRxbTxv9bQNb/kBJ+EXH/u21UnkztfXEpNuHs=;
- b=RWeomhN81Pnyqx21cOElNv1SpVJnULmzTUcBPpxvuRQMVq0uaum+6d5bGUjiU7m2bZ
- GRpbF45iVQ2E7L2juu6++Z0UhKP8FSxYq7S4hxyjNtAk66F3vO49rS1eoUQM9MIOF0Ux
- rthfI1DudyNyZ+YdYWkZSq3sNidpgO+Rj83S0XntzmpxVBLB/BKnkY6+QXMnEowpKf+4
- DmcCBnJiPmJhPlUSfnhyQEJAEbQKCxwkTwgI5I9jLASh7VERjSbRfSliHf5JuCzcQI5f
- yRdMKHUlE4T+cN+M8bsJeGqtqghS/3GPUnUkkUCfg3K0SziGoGWowOx+VJvMRshzQnoo
- NIZQ==
+ d=gmail.com; s=20230601; t=1704646904; x=1705251704; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Uhq4cqVst5wOeiM+A3ZvuIpPDrIGmY8oPrygh7VrYew=;
+ b=WUYlfbE0w2rjJuOn0s0wBipoCfJiLuDPgSv+WqNBSa2JIu0A8SLevhNdW1mR7mbh/t
+ MrfAFgPiJTCRJWdy9q3F34iGyQrQP6Etn9T70J8Hs61ywl8Dx0llTrgAE7wskRlWMysU
+ qu4gxBvVueyFFI4MSyLVel39IsxJjH4BiDdIXkw73Gz62AGrFsQJ8wtuVSydOALFtubs
+ 5MlAyl5rtOcradnjHZdqHfHW0PicJzb8EGVw9pPHGpDmNsgmwWy+vrQb8sxAsPiQpEyC
+ Fu85RaRqp14JSWVBcFWWMVueq3adR8JqMfly6Zv5HDti8T+B8Sb20pgYvcCmmCeQdasC
+ ZGmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704646896; x=1705251696;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ELojimsRxbTxv9bQNb/kBJ+EXH/u21UnkztfXEpNuHs=;
- b=lIVdFs8vj+dUSeHFUFkDe0u8Tj1QPiGHPGNCvwmbco1KlUmJa3x49hwRxPnFf/sNZH
- sBs6MX1ozqqDZ53+t5KiIG6cb9+KsXTuGBLnYUakFoZENzSdhfO6G3MTqh0Ob12masRH
- yCO4Y1teb5aGMeGpEMZ4unTDml1fDUmFrUdJ62SacYaHyOS/4YhnRkXRL9qBWDDilEzz
- kakVjTdVE3PtPp8tz2bXnKuNyEi3+dVdIWNnQXdBmDsR4W7iEOZdyDJE09c0qY9r9vjZ
- f3EtpJue66eVORRv9LjNTn77toowxPFKkyEwQtSQzdbC/POKRarKUpVq7sYaBxZTYVw7
- XdDQ==
-X-Gm-Message-State: AOJu0YxyOG0+q5q6IGd1dqJJoa56APR771sQauW3kr3kMMiTZGpqu7+u
- ZfhhEmA+nr1Q95oWs8clF++Alm0nMhs=
-X-Google-Smtp-Source: AGHT+IEdCi/Pgaz4kTdtpnVGws4DgAbvbNR97qHtvesAHH/I3BVeB8b1/zRdqGH7b+d9jRs3sjzduQ==
-X-Received: by 2002:a17:903:2305:b0:1d4:42f:d39b with SMTP id
- d5-20020a170903230500b001d4042fd39bmr3520180plh.3.1704646895804; 
- Sun, 07 Jan 2024 09:01:35 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704646904; x=1705251704;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Uhq4cqVst5wOeiM+A3ZvuIpPDrIGmY8oPrygh7VrYew=;
+ b=lqAwxiwv+jtC6xgEsBhXa2a54eyXe63N7DigQim0TQIgqRboLtWAMxHjGo/OxgZR65
+ mrpMBWjvsM0bS8FvEKLyhmDO2RDt/bLNe+pDlQVk1TtLSmgSrn8PBxjNzIEJQYx1ai2t
+ 25azRuDdLJloTccSu58g0HTMezaNY9mOp1f9l4zB7KOrZNIoMvTFqsY9GS7vnWKNp5ZT
+ Q0zwDo/M5RK6QQPQUg4PpB1pxDNtWZk7iBy6YBKMzj/g0CPgRdeQ4kDwvrHyN2dAZT64
+ tPDxLr4tzyBA/STxy4Bf255ihazVA1mZ8OWsbcXRljyjnIMp4ZB9fuCBvjeMQkaRxCw4
+ 3BFA==
+X-Gm-Message-State: AOJu0YwVFMgwoG13kDbEfWfDwbDHon0hgXRGAoZV1uYrmBd6dYixQPM5
+ bsRfVi04BjoB1VdfW/UakbIBpmYiXdA=
+X-Google-Smtp-Source: AGHT+IFA6giLZ+u+pgGHuYba9TpYTl4/KY5RkpEgxPDbiY6WImq3POEK7o/Yt9effmQCRX78712zjw==
+X-Received: by 2002:a17:903:495:b0:1d4:2266:64bf with SMTP id
+ jj21-20020a170903049500b001d4226664bfmr764949plb.52.1704646904244; 
+ Sun, 07 Jan 2024 09:01:44 -0800 (PST)
 Received: from wheely.local0.net ([203.87.79.144])
  by smtp.gmail.com with ESMTPSA id
- c9-20020a170902c1c900b001d3ea8ad878sm4632883plc.290.2024.01.07.09.01.25
+ c9-20020a170902c1c900b001d3ea8ad878sm4632883plc.290.2024.01.07.09.01.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 07 Jan 2024 09:01:30 -0800 (PST)
+ Sun, 07 Jan 2024 09:01:41 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -64,15 +65,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- qemu-ppc@nongnu.org
-Subject: [PATCH 0/9] tests/avocado: ppc additions and other fixes
-Date: Mon,  8 Jan 2024 03:01:10 +1000
-Message-ID: <20240107170119.82222-1-npiggin@gmail.com>
+ qemu-ppc@nongnu.org, qemu-s390x@nongnu.org (open list:S390 general arch...)
+Subject: [PATCH 1/9] gitlab: fix s390x tag for avocado-system-centos
+Date: Mon,  8 Jan 2024 03:01:11 +1000
+Message-ID: <20240107170119.82222-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20240107170119.82222-1-npiggin@gmail.com>
+References: <20240107170119.82222-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1036.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,41 +98,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a set of ppc avocado tests that I have posted before, but
-it has also grown a few misc changes, and patch 2 creates a
-dependency with the added ppc tests that use the
-AVOCADO_ALLOW_LONG_RUNTIME it introduces. I could take patches 2-3
-via the ppc tree if they get acked, but happy to rebase ppc tests
-if they'd better go via testing tree.
+The 390x tag should be s390x.
 
-Thanks,
-Nick
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ .gitlab-ci.d/buildtest.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Nicholas Piggin (9):
-  gitlab: fix s390x tag for avocado-system-centos
-  tests/avocado: mark boot_linux.py long runtime instead of flaky
-  tests/avocado: Mark x86-64 boot_linux.py TCG tests as long runtime
-  tests/avocado: Enable replay_linux.py on ppc64 pseries
-  tests/avocado: ppc add powernv10 boot_linux_console test
-  tests/avocado: Add ppc pseries and powernv hash MMU tests
-  tests/avocado: Add pseries KVM boot_linux test
-  tests/avocado: ppc add hypervisor tests
-  tests/avocado: Add FreeBSD distro boot tests for ppc
-
- MAINTAINERS                         |   1 +
- docs/devel/testing.rst              |   8 ++
- .gitlab-ci.d/buildtest.yml          |   2 +-
- tests/avocado/boot_freebsd.py       | 106 +++++++++++++++
- tests/avocado/boot_linux.py         |  32 ++---
- tests/avocado/boot_linux_console.py |   8 ++
- tests/avocado/ppc_hv_tests.py       | 201 ++++++++++++++++++++++++++++
- tests/avocado/ppc_powernv.py        |  23 +++-
- tests/avocado/ppc_pseries.py        |  20 ++-
- tests/avocado/replay_linux.py       |  76 ++++++++++-
- 10 files changed, 453 insertions(+), 24 deletions(-)
- create mode 100644 tests/avocado/boot_freebsd.py
- create mode 100644 tests/avocado/ppc_hv_tests.py
-
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 91663946de..cfe737aca2 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -184,7 +184,7 @@ avocado-system-centos:
+   variables:
+     IMAGE: centos8
+     MAKE_CHECK_ARGS: check-avocado
+-    AVOCADO_TAGS: arch:ppc64 arch:or1k arch:390x arch:x86_64 arch:rx
++    AVOCADO_TAGS: arch:ppc64 arch:or1k arch:s390x arch:x86_64 arch:rx
+       arch:sh4 arch:nios2
+ 
+ build-system-opensuse:
 -- 
 2.42.0
 
