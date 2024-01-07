@@ -2,95 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6A4826468
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 15:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07051826469
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 15:05:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMTlg-0005F0-06; Sun, 07 Jan 2024 09:04:48 -0500
+	id 1rMTmD-0005aE-6s; Sun, 07 Jan 2024 09:05:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rMTle-0005EU-QE; Sun, 07 Jan 2024 09:04:46 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rMTm6-0005QI-7d
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 09:05:14 -0500
+Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rMTlc-0006fX-W3; Sun, 07 Jan 2024 09:04:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=fEJoEgbFJSgvpGetzAYU6wr3cF/3P9Go4Hx6iYVVKaA=; b=OqAgtgcNQoFMX3dbDiQNqH8/uy
- 2vgnguyIM4VRlpzCVABLwkmWHbbfm0b8yr6M77R1lX7TP1StjNzAH+BT/j9WPB5UUhkGNwjOebETl
- /OhZxOvGpzFMjTrsz/rEUz6CRgQAhwz1djz1IHq1QtfozDh54nL94dTP9/MrWR3+we+KU5+YbZhZO
- jtCFGKyhVMSBIX8hTw1QnvE8xYqBhmICY8hTWGTfOJap1hO+YOgLosFzA1v7+2yMaNAjuJ1rWkjYO
- JiX9kNjQW2kheoRbdAdFSzWRhm0v+RED998oTgXRPwDPudWM4v1bTgS6AI9JyfRI3+O7V/KPoI1Ny
- IIF17jiZkoMPCEpVtAu72nRK4vLNoDFib+JBM0IhalVAoIh1DlePuLjRB3l5ZGFKFCoV8nMgKLPmm
- FWi1JZuCsMBM33g3+pKPrZs5d11vVx92lmTf3Xbth6KJvYmvVBDQHqx/yMc/1ZPk3aNjAh5bOwF45
- XU6aKQBJx41d+ios06Q9m/e831yC5aP4TNZF1BKIHBFoBO3rY+MejIuHql8lH2PuE1XV3YmXcSGjE
- pghBVC3ZGdWv8/0KAUNUaIp5cgEHW/+84l5NcfFraFJdhaBNa2mnxHu7dfnn5Oocl+N50r5EzsI0/
- azqkCkM7xaVE2xVoHQFQ4esi21edL7GlDnZ+dQ6OU=;
-Received: from [2a00:23c4:8bb1:9800:d580:3d66:e68a:4949]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rMTkx-0003dG-7K; Sun, 07 Jan 2024 14:04:07 +0000
-Message-ID: <ab6ecb71-7c29-45e6-b69f-9e36d05fd6d6@ilande.co.uk>
-Date: Sun, 7 Jan 2024 14:04:27 +0000
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rMTm3-0006ua-2R
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 09:05:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
+ t=1704636309; bh=//Fd5lI5J8z6T03oQgOMGUggiy/9qp+ute6/BYnhrdM=;
+ h=From:Subject:Date:To:Cc:From;
+ b=dRfMQfAM0bimLBk2UTFm9TqSCpO2CtmCSqRsLQjuQKUPaNTgvo0P109EkaxoOefHJ
+ 5oW8WAHTXOVl5LsMpIumC4S33U+hXK6Eno4lqDqVJGD4GIzl8SwXiCJ5hQcRZP1AMN
+ V4lH7yngD7issq7CIyWpitUUB1vDu5V8XIJG5QiQ=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+Subject: [PATCH v4 0/4] hw/misc/pvpanic: add support for normal shutdowns
+Date: Sun, 07 Jan 2024 15:05:07 +0100
+Message-Id: <20240107-pvpanic-shutdown-v4-0-81500a7e4081@t-8ch.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- inesvarhol <inesvarhol@proton.me>, =?UTF-8?Q?In=C3=A8s_Varhol?=
- <ines.varhol@telecom-paris.fr>, Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Alistair Francis <alistair@alistair23.me>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
-References: <20231228161944.303768-1-ines.varhol@telecom-paris.fr>
- <20231228161944.303768-3-ines.varhol@telecom-paris.fr>
- <61fd13b3-7cc9-4e27-bf91-bd2b4aedf97b@linaro.org>
- <ZjC6phtwjcDoQP-NDP6GF-dvCVK8Ctk9EeW_JezuNBqnQq4-V6NU6eAhECMqxJzMDRxwjbb-LPcHTvysc6YGuLD7ckWhbtpqD1g9lnklofI=@proton.me>
- <5f624a13-0ba0-4d9a-8910-2ef1c784a295@linaro.org>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <5f624a13-0ba0-4d9a-8910-2ef1c784a295@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb1:9800:d580:3d66:e68a:4949
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v5 2/3] tests/qtest: Add STM32L4x5 EXTI QTest testcase
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-B4-Tracking: v=1; b=H4sIAJOvmmUC/33NQQ7CIBCF4as0rMXADCi48h7GRaFU2LQNVNQ0v
+ bu0q8Y0Lt8k3z8TSS4Gl8ilmkh0OaTQd2WIQ0Wsr7uHo6EpmwAD5JwJOuSh7oKlyT/Hpn91lIE
+ TRlgjtNCksCG6NrzX5O1etg9p7ONn/ZD5cv0Ty5yyUkSJXJ6V5uY6UmX9sXFkaWXYeFA7HopXy
+ FCjEdKa04/Hrdc7Hou3ugalobUScOPnef4C9UC44y8BAAA=
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org, =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1704636308; l=2648;
+ i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
+ bh=//Fd5lI5J8z6T03oQgOMGUggiy/9qp+ute6/BYnhrdM=;
+ b=plaJlaCLZSp8nBLIgttxvu0djy57CQaVFuOxkIwi5xL+XklxubGpBKwA7csATzD70xPB5aCFu
+ AlJ58OOMdpTAYhWxEYuz0xybdigvpHB5YtHCp8PY3rBY4MrbTucdZlb
+X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
+ envelope-from=thomas@t-8ch.de; helo=todd.t-8ch.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,83 +68,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/01/2024 10:13, Philippe Mathieu-Daudé wrote:
+Shutdown requests are normally hardware dependent.
+By extending pvpanic to also handle shutdown requests, guests can
+submit such requests with an easily implementable and cross-platform
+mechanism.
 
-> (+Mark & Eduardo)
-> 
-> On 4/1/24 14:37, inesvarhol wrote:
->>
->> Le jeudi 4 janvier 2024 à 14:05, Philippe Mathieu-Daudé <philmd@linaro.org> a écrit :
->>
->> Hello,
->>
->>>> +static void test_edge_selector(void)
->>>> +{
->>>> + enable_nvic_irq(EXTI0_IRQ);
->>>> +
->>>> + / Configure EXTI line 0 irq on rising edge */
->>>> + qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
->>>
->>>
->>> Markus, this qtest use seems to expect some stability in QOM path...
->>>
->>> Inès, Arnaud, having the SoC unattached is dubious, it belongs to
->>> the machine.
->>
->> Noted, we will fix that.
->> Should we be concerned about the "stability in QOM path" ?
-> 
-> Don't worry about this Inès, I wanted to raise Markus attention on this.
-> 
-> You showed a legit use of stable QOM path, and Markus told me recently
-> there is no contract for QOM paths (it shouldn't be considered as a
-> stable API). IIRC Markus explanation, "/unattached" container was
-> added as a temporary hack to allow migrating QDev objects to QOM (see
-> around commit da57febfed "qdev: give all devices a canonical path",
-> 11 years ago).
-> 
-> I agree anything under "/unattached" can be expected to be stable
-> (but we need a community consensus). Then the big question remaining
-> is "can any qom-path out of /unattached be considered stable?"
+The background is the usage of minimal Linux kernels with different
+architectures for testing purposes.
+Poweroff support varies highly per architecture and requires a bunch of
+code to be compiled to work.
+pvpanic on the other hand is very small and uniform.
 
-For the moment I would definitely say no, and that is mainly because if we were to 
-assume that QOM paths were stable today then I can see it being a barrier to updating 
-older code to meet our current guidelines.
+I sent an RFC[0] for this before to qemu-devel and lkml which didn't
+generate feedback, so let's discuss the concrete proposal.
 
-These days I think more about QOM paths being related to the lifecycle of the objects 
-e.g. a machine object has child devices, which may also consist of a number of other 
-children in the case of a multi-function device. For me this means that using 
-object_resolve_path_component() to look up a child object seems reasonable, in 
-contrast with expecting the entire path to be stable.
+Patch 1 and 2 are general cleanups, that seems useful even without this
+proposal being implemented.
 
-One thing I think about often is whether the use of device[n] is suitable within QOM 
-tree. For example, if I have a command line like:
+A corresponding patch has been submitted for Linux [1].
+This is also where the request was voiced to drop move away from a
+pvpanic uapi header in Linux.
 
-   -device foo,myprop=prop0,id=fooid0 -device foo,myprop=prop1,id=fooid1
+[0] https://lore.kernel.org/all/984794aa-4af0-4c68-a74e-7420ec3151a5@t-8ch.de/
+[1] https://lore.kernel.org/lkml/20231104-pvpanic-shutdown-v1-1-5ee7c9b3e301@weissschuh.net/
 
-currently they would appear in "info qom-tree" as:
+Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+---
+Changes in v4:
+- Rebase on 8.2 master
+- Resend after tree reopened and holidays
+- Link to v3: https://lore.kernel.org/r/20231129-pvpanic-shutdown-v3-0-c9a2892fc523@t-8ch.de
 
-   /machine
-     /unattached
-       /device[0] (foo)
-       /device[1] (foo)
+Changes in v3:
+- Drop from Linux imported pvpanic header as discussed with Cornelia and
+  requested by Greg
+- Link to v2: https://lore.kernel.org/r/20231128-pvpanic-shutdown-v2-0-830393b45cb6@t-8ch.de
 
-whereas it feels this could be done better as:
+Changes in v2:
+- Remove RFC status
+- Add Ack from Thomas to 2nd patch
+- Fix typo in title of 2nd patch
+- Link to v1: https://lore.kernel.org/r/20231104-pvpanic-shutdown-v1-0-02353157891b@t-8ch.de
 
-   /machine
-     /unattached
-       /foo[0] (fooid0)
-       /foo[1] (fooid1)
+---
+Thomas Weißschuh (4):
+      linux-headers: drop pvpanic.h
+      hw/misc/pvpanic: centralize definition of supported events
+      tests/qtest/pvpanic: use centralized definition of supported events
+      hw/misc/pvpanic: add support for normal shutdowns
 
-This would automatically place devices of the same type within a QOM array to allow 
-them to be accessed separately by type, or even directly via the "id" if we assume 
-they are unique. In particular if you have a machine with 2 foo in-built devices you 
-could then potentially configure them separately using -global foo[0].myprop=newprop0 
-and/or -global foo[1].myprop=newprop1 which is something that currently isn't possible.
+ docs/specs/pvpanic.rst                   | 2 ++
+ hw/misc/pvpanic-isa.c                    | 3 +--
+ hw/misc/pvpanic-pci.c                    | 3 +--
+ hw/misc/pvpanic.c                        | 8 ++++++--
+ include/hw/misc/pvpanic.h                | 5 +++++
+ include/standard-headers/linux/pvpanic.h | 9 ---------
+ scripts/update-linux-headers.sh          | 3 +--
+ tests/qtest/pvpanic-pci-test.c           | 5 +++--
+ tests/qtest/pvpanic-test.c               | 5 +++--
+ 9 files changed, 22 insertions(+), 21 deletions(-)
+---
+base-commit: 0c1eccd368af8805ec0fb11e6cf25d0684d37328
+change-id: 20231104-pvpanic-shutdown-02e4b4cb4949
 
-
-ATB,
-
-Mark.
+Best regards,
+-- 
+Thomas Weißschuh <thomas@t-8ch.de>
 
 
