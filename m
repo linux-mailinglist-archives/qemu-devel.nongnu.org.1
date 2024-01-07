@@ -2,64 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027CE8262EB
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 06:07:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD403826344
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 08:21:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMLMq-0006kf-Nx; Sun, 07 Jan 2024 00:06:36 -0500
+	id 1rMNRM-0002s5-Py; Sun, 07 Jan 2024 02:19:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@trasno.org>)
- id 1rMIXg-0003oy-IY
- for qemu-devel@nongnu.org; Sat, 06 Jan 2024 21:05:36 -0500
-Received: from ocean.trasno.org ([167.172.185.48])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>)
+ id 1rMNRJ-0002r0-UC; Sun, 07 Jan 2024 02:19:22 -0500
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@trasno.org>)
- id 1rMIXf-0002JR-2j
- for qemu-devel@nongnu.org; Sat, 06 Jan 2024 21:05:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=trasno.org; 
- s=dkim20221213;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:
- Message-ID:Date:Reply-To:References:In-Reply-To:Subject:Cc:To:From:Sender:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=96rTKq5jABwonZNu0voPFAn25VfsOwkD5Tak7oKSR7g=; t=1704593133; x=1705457133; 
- b=GbkO4NyDhQEFemFw3IHHAxTlAEQNCPh09IfL051qA8ZFaBQRDtoeGXQyHFgpVidyG5XKRtQhLS/
- LM+SpSVINb5WxLs3gP8HWDjgUhcwL2vPL/J6eLejd2Wmg4inVsY6B9C2r2EkQzRtVFOa68PJZW733
- z8DtubVgkOtOIB2jX8VdHGD5OtVspI6CNxsqPP1lokcX4O00mpEYtU297y7vWC71VlbHEAl4Oycsa
- H+GQE4SuNE1Nm/pDxCUboQnTvqeSZejBHQOBGcgbsyLmy35Ojd8s67HRW9/VYDxOvQd5T5iLut5I2
- 2K73/nWazBBw1QHcW4BYwgW7JGzw3oji0eSA==;
-Received: from static-133-204-7-89.ipcom.comunitel.net ([89.7.204.133]
- helo=trasno.org)
- by ocean.trasno.org with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96.2) (envelope-from <quintela@trasno.org>)
- id 1rMIVR-00Dv00-1Z; Sun, 07 Jan 2024 03:03:17 +0100
-To: Bin Meng <bmeng.cn@gmail.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/1] Leaving Migration
-In-Reply-To: <CAEUhbmX3iAwtBkH2hPa031rok0OH01uSkiMPp3fde+wbKxDkhQ@mail.gmail.com>
- (Bin Meng's message of "Wed, 3 Jan 2024 06:43:50 +0800")
-References: <20240102201908.1987-1-quintela@redhat.com>
- <20240102201908.1987-2-quintela@redhat.com>
- <CAEUhbmX3iAwtBkH2hPa031rok0OH01uSkiMPp3fde+wbKxDkhQ@mail.gmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-Date: Sun, 07 Jan 2024 03:03:18 +0100
-Message-ID: <87zfxh7vdl.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>)
+ id 1rMNRH-0002Vx-Tz; Sun, 07 Jan 2024 02:19:21 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sin.source.kernel.org (Postfix) with ESMTP id CA891CE0AE8;
+ Sun,  7 Jan 2024 07:19:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B233C433C7;
+ Sun,  7 Jan 2024 07:19:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1704611948;
+ bh=Bh7liYiHeIx3Vq6CFHeTZMdj0GWBysbr/3QXwBI9eg8=;
+ h=Date:From:To:Subject:From;
+ b=BeKZjLa6fSxcHsx6wAtabayxlu07/zH4MRP8cbRIpFBoZjhPT9lCLvaAMaG72WFeU
+ IRz1VYL7mxNIqLdxvHhLcK3GJRKW2NgO5VOUmIHldW3A8DK87GdMA7SahGhObeTVOy
+ QU1gUIdRCz0CrbVJfZpnzSp4yt29gz/dVlMVW3YceDJ0jgzpGZD1viCqwSeL86E23H
+ 9Tc5swWvkk7MZCItEaqj4Zd4+D/pUlhjRGvqOzKzF7O7TT1kCw2p9ZnvpwzZnc0Adu
+ 6mSFwLz3uPtchXoBd/O2QmHll4O2mfhw5/Kdi6gJAXv2GjdD4tfLQNjGWFE/VYV/Jk
+ eieGd5Ulqml0w==
+Date: Sun, 7 Jan 2024 08:19:03 +0100
+From: Helge Deller <deller@kernel.org>
+To: Laurent Vivier <laurent@vivier.eu>, Michael Tokarev <mjt@tls.msk.ru>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+Subject: [PATCH] tcg/tci: Fix TCI on hppa host and update TCI test matrix
+Message-ID: <ZZpQZ77s2t81mXIT@p100>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=167.172.185.48; envelope-from=quintela@trasno.org;
- helo=ocean.trasno.org
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=deller@kernel.org; helo=sin.source.kernel.org
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.54,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sun, 07 Jan 2024 00:06:35 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,39 +62,85 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  quintela@trasno.org
-X-ACL-Warn: ,  Juan Quintela <quintela@trasno.org>
-From:  Juan Quintela via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Bin Meng <bmeng.cn@gmail.com> wrote:
-> On Wed, Jan 3, 2024 at 4:20=E2=80=AFAM Juan Quintela <quintela@redhat.com=
-> wrote:
->>
->> I am leaving Red Hat, and as part of that I am leaving Migration
->> maintenarship.
->
-> maintainership?
+Update the TCI interpreter test matrix for big-endian hosts with
+big- (hppa, hppa64) and little-endian (x86,x96-64) targets.
+I used native ppc64 and hppa hosts for those tests.
 
-You are right, as usual O:-)
+Starting TCI on a hppa host crashed immediately, because hppa is
+the only archive left where the stack grows upwards.
+Write-protecting the stack guard page at the top of the stack
+fixes the crash.
 
->>
->> You are left in good hands with Peter and Fabiano.
->>
->> Thanks for all the fish.
->
-> Best wishes!
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-Thanks very much.
-
->>
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->> ---
->>  MAINTAINERS | 3 ---
->>  .mailmap    | 1 +
->>  2 files changed, 1 insertion(+), 3 deletions(-)
->>
->
-> Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
+diff --git a/tcg/tci/README b/tcg/tci/README
+index 4a8b5b5401..0c1e50779e 100644
+--- a/tcg/tci/README
++++ b/tcg/tci/README
+@@ -72,16 +72,16 @@ host and target with same or different endianness.
+             | host (le)                     host (be)
+             | 32             64             32             64
+ ------------+------------------------------------------------------------
+-target (le) | s0, u0         s1, u1         s?, u?         s?, u?
++target (le) | s0, u0         s1, u1         s2, u?         s2, u?
+ 32 bit      |
+             |
+-target (le) | sc, uc         s1, u1         s?, u?         s?, u?
++target (le) | sc, uc         s1, u1         s2, u?         s2, u?
+ 64 bit      |
+             |
+-target (be) | sc, u0         sc, uc         s?, u?         s?, u?
++target (be) | sc, u0         sc, uc         s2, u?         s2, u?
+ 32 bit      |
+             |
+-target (be) | sc, uc         sc, uc         s?, u?         s?, u?
++target (be) | sc, uc         sc, uc         s?, u?         s2, u?
+ 64 bit      |
+             |
+ 
+@@ -110,6 +115,10 @@ u1 = linux-user-test works
+   A cross compiled QEMU for ppc host works at least partially:
+   i386-linux-user/qemu-i386 can run a simple hello-world program
+   (tested in a ppc emulation).
++  The big-endian tests were run on native hppa (big-endian, 32-bit) and
++  ppc64 (big-endian, 64-bit) machines. Tested target machines were
++  x86 and x86-64 (little-endian, debian install ISO) and 32- and 64-bit
++  big-endian hppa (NetBSD and Debian install ISOs).
+ 
+ * Some TCG opcodes are either missing in the code generator and/or
+   in the interpreter. These opcodes raise a runtime exception, so it is
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index e86fd64e09..e378b71641 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -585,11 +585,8 @@ char *qemu_get_pid_name(pid_t pid)
+ 
+ void *qemu_alloc_stack(size_t *sz)
+ {
+-    void *ptr;
++    void *ptr, *ptr2;
+     int flags;
+-#ifdef CONFIG_DEBUG_STACK_USAGE
+-    void *ptr2;
+-#endif
+     size_t pagesz = qemu_real_host_page_size();
+ #ifdef _SC_THREAD_STACK_MIN
+     /* avoid stacks smaller than _SC_THREAD_STACK_MIN */
+@@ -619,7 +616,12 @@ void *qemu_alloc_stack(size_t *sz)
+     }
+ 
+     /* Stack grows down -- guard page at the bottom. */
+-    if (mprotect(ptr, pagesz, PROT_NONE) != 0) {
++    ptr2 = ptr;
++#if defined(__hppa__)
++    /* but on hppa the stack grows up, so guard the top page instead */
++    ptr2 = ptr + *sz - pagesz;
++#endif
++    if (mprotect(ptr2, pagesz, PROT_NONE) != 0) {
+         perror("failed to set up stack guard page");
+         abort();
+     }
 
