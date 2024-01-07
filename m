@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9778266C3
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 00:18:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB008266C8
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 00:42:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMcNj-0002HT-Gl; Sun, 07 Jan 2024 18:16:39 -0500
+	id 1rMclc-0007BX-Dj; Sun, 07 Jan 2024 18:41:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rMcNh-0002Gu-Jb
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 18:16:37 -0500
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rMcla-0007Au-2K; Sun, 07 Jan 2024 18:41:18 -0500
+Received: from mail-qv1-xf2d.google.com ([2607:f8b0:4864:20::f2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rMcNg-0006Jr-0z
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 18:16:37 -0500
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-50eabbc3dccso1031619e87.2
- for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 15:16:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rMclY-0006iI-4o; Sun, 07 Jan 2024 18:41:17 -0500
+Received: by mail-qv1-xf2d.google.com with SMTP id
+ 6a1803df08f44-67f9f6caabcso14064896d6.3; 
+ Sun, 07 Jan 2024 15:41:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704669393; x=1705274193; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=6jsVDJtLEm1lPndCJvtY3GO9mpTGY2wxwxo3LuOR4oE=;
- b=jUZ4Z/UchmHh9EDeQNxB385WRdxe9nfSkqICiNlhbQZrqKsHiPneJZ3YBDSqKKx9B8
- 8gTLPQZ+sav/LQJrQ5HKUR/fIgaz9yiCkp+hT2N5HMEezAlSqlQPccZsFjcwqWIe8xXc
- n55kQAeFRDK6VnPnsxK6jQAsRVQPkW/09STPRTvI+N4HMcv+5CKw1LRSxCRFNjlanVF4
- 1CoRj2HhUgBdJfKbblD6IdMadpa2wStl+HIZCtvKPdlvhHcWr1uSa5ZzLfAmDiweMafJ
- T9bLTjE3xFTIABc5vFR2pU6gRTS8ykvjvRGjDB6wk6/cMgRAaJBvJ8ghFeFGW5RpzFG2
- 9tZg==
+ d=gmail.com; s=20230601; t=1704670874; x=1705275674; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EW2dgSQrxieMxSNaTZ7OtZx+Dr1ZzgYu+7eKtMT4bAA=;
+ b=JfcfTKYGUOVx7o3dkmAETgQMiKcWm72EiG2Z9kfbvkX39VfdhFcNENk8U0rjSJDlFg
+ 1MUyPwAkB2SFRrYAaoJauGrZfZbbW+2AFebwX8WcH0qJZ3laWZUlV2vRXzXolUqclTUc
+ EB8kEcK0wf0AI9QPWmpPJ9OJ4vS7B6z3I1C55boXd1bSre/qFFkW5yv+KRuhD8ApyzBM
+ /qCk9e+iw8nXDUM9mrULHsY3y5cdXBZ+HrP9MDKK0/+LiR64PNUfRiBE7vOaoJCaWSm6
+ uQsf6m/yjAnKggqjSJVHiS5DkYjdhLG5BWtcsJs9/xfd7xTxAUN7KXtpghi9/Da3y9os
+ NVEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704669393; x=1705274193;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=6jsVDJtLEm1lPndCJvtY3GO9mpTGY2wxwxo3LuOR4oE=;
- b=h804iz97tXKvcyZgN1SKytv56F/pW3xmRlqQUdxfDO0qk1kTMlaTTajCRXdbo3pt7/
- 2qhM3tFoSjUiLU59Qh8Jyl0vSth/VEvdbOPA5BW8AYccGCg6Y0oHQVwj5sizEKF6hNHR
- pXwNqwv8mnnCqJGtHD3YCq44GGU2QOTZ7vWzdoOVNK4GUYGUumyg1iT9lb6ukFyaim+c
- 2TFDzL3G3etktmYssVc2HIPSPxqkXwkBhI+UObZeCEpNCPbo2vC5asfu0767Ps0LTPID
- wm4IHIPUetXfJuAdR2j609es+B3aFavrTBO39cDr3Xe/14sW4BeuCwWJ2AzJTa63bgyh
- Bkcw==
-X-Gm-Message-State: AOJu0YzrQYLODPXMgFIHOgmOp3kBM9w+Qa8opR3IIxATY+PrLyyBGQ3x
- +HKzR54Xqri41VO6dklLfdUYCPAkQkU=
-X-Google-Smtp-Source: AGHT+IHk2KwjckC2+0MPqdilUMmvonza/ii8ds1d+gqApYYQ7ahD486c6CLaIVQh3OrzE2iSYbke6w==
-X-Received: by 2002:a05:6512:39ce:b0:50b:f1ca:e6a with SMTP id
- k14-20020a05651239ce00b0050bf1ca0e6amr610420lfu.48.1704669392392; 
- Sun, 07 Jan 2024 15:16:32 -0800 (PST)
-Received: from localhost.localdomain
- (dynamic-077-191-044-194.77.191.pool.telefonica.de. [77.191.44.194])
- by smtp.gmail.com with ESMTPSA id
- p9-20020a17090635c900b00a27eddc3dcbsm3338834ejb.198.2024.01.07.15.16.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 07 Jan 2024 15:16:31 -0800 (PST)
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Chuck Zmudzinski <brchuckz@aol.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- xen-devel@lists.xenproject.org, David Woodhouse <dwmw2@infradead.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paul Durrant <paul@xen.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH] hw/i386/pc_piix: Make piix_intx_routing_notifier_xen() more
- device independent
-Date: Mon,  8 Jan 2024 00:16:23 +0100
-Message-ID: <20240107231623.5282-1-shentey@gmail.com>
-X-Mailer: git-send-email 2.43.0
+ d=1e100.net; s=20230601; t=1704670874; x=1705275674;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EW2dgSQrxieMxSNaTZ7OtZx+Dr1ZzgYu+7eKtMT4bAA=;
+ b=DTuyThBs0pYAAgo2W6bQ457ijWvYoLDR4/ynOfg1t58KamO8vNdckdtfxQnkqHVrD2
+ BHbPivu9enJbhGjUWKXTlPeNCxPClZkl4vVsoPiL88uKh7Mr3QofZIPR90wARB3zFDKj
+ XssJ2UfLRpSM5h/Jg9pCDGnhuR17nUeL1E4YWjqiKUxFUHKLoR03rGkOUo79XjQDdDk/
+ dfzIkR+s/z203nhkXp8zuQ6hNR6cFawWZcCIIONADNRXXbTr2kE1RlUTMnvVzF79EmTP
+ 1F5jct7XGwA559n8K5XIb9dGdnEaHvHl2x+8viUesSlMMHJpfGrmZsgJIFL54AfZJJYh
+ h+YQ==
+X-Gm-Message-State: AOJu0YzrOnv1l/4Q2ojKN0cvR0I8frdDXK5zCxUg9HewfaZCar4kBXCR
+ 1ckEh4cz6+6c1ImpBMUpqnUOEAwlHvJZRPNgl/s=
+X-Google-Smtp-Source: AGHT+IHnXGZEXA0U7WRX0UI7OsKBJgyfh+K5Gc3ZCV5GEIht4L9AYrp6p4neqaHEb103PFF/6pB3ji5Fc9XM3/MTmBE=
+X-Received: by 2002:a0c:f98f:0:b0:680:ca82:b1c8 with SMTP id
+ t15-20020a0cf98f000000b00680ca82b1c8mr3892214qvn.86.1704670873767; Sun, 07
+ Jan 2024 15:41:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=shentey@gmail.com; helo=mail-lf1-x136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+References: <20240104071523.273702-1-bmeng@tinylab.org>
+In-Reply-To: <20240104071523.273702-1-bmeng@tinylab.org>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 8 Jan 2024 09:40:47 +1000
+Message-ID: <CAKmqyKMSs9vYMVKfgeye-vnPQOgk34sdQXNVty2YZMFQszNP8Q@mail.gmail.com>
+Subject: Re: [PATCH] docs/system/riscv: sifive_u: Update S-mode U-Boot image
+ build instructions
+To: Bin Meng <bmeng@tinylab.org>
+Cc: Alistair Francis <Alistair.Francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2d;
+ envelope-from=alistair23@gmail.com; helo=mail-qv1-xf2d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,45 +89,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a follow-up on commit 89965db43cce "hw/isa/piix3: Avoid Xen-specific
-variant of piix3_write_config()" which introduced
-piix_intx_routing_notifier_xen(). This function is implemented in board code but
-accesses the PCI configuration space of the PIIX ISA function to determine the
-PCI interrupt routes. Avoid this by reusing pci_device_route_intx_to_irq() which
-makes piix_intx_routing_notifier_xen() more device-agnostic.
+On Thu, Jan 4, 2024 at 5:18=E2=80=AFPM Bin Meng <bmeng@tinylab.org> wrote:
+>
+> Currently, the documentation outlines the process for building the
+> S-mode U-Boot image using `make menuconfig` and manual actions within
+> the menuconfig UI. However, this approach is fragile due to Kconfig
+> options potentially changing across different releases. For example,
+> CONFIG_OF_PRIOR_STAGE has been replaced by CONFIG_BOARD since v2022.01
+> release, and CONFIG_TEXT_BASE has been moved to the 'General setup'
+> menu from the 'Boot options' menu in v2024.01 release.
+>
+> This update aims to make the S-mode U-Boot image build instructions
+> future-proof. It leverages the 'config' script provided in the U-Boot
+> source tree to edit the .config file, followed by a `make olddefconfig`.
+>
+> Validated with U-Boot v2024.01 release.
+>
+> Signed-off-by: Bin Meng <bmeng@tinylab.org>
 
-One remaining improvement would be making piix_intx_routing_notifier_xen()
-agnostic towards the number of PCI interrupt routes and move it to xen-hvm.
-This might be useful for possible Q35 Xen efforts but remains a future exercise
-for now.
+Thanks!
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- hw/i386/pc_piix.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+Applied to riscv-to-apply.next
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 042c13cdbc..abfcfe4d2b 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -92,13 +92,10 @@ static void piix_intx_routing_notifier_xen(PCIDevice *dev)
- {
-     int i;
- 
--    /* Scan for updates to PCI link routes (0x60-0x63). */
-+    /* Scan for updates to PCI link routes. */
-     for (i = 0; i < PIIX_NUM_PIRQS; i++) {
--        uint8_t v = dev->config_read(dev, PIIX_PIRQCA + i, 1);
--        if (v & 0x80) {
--            v = 0;
--        }
--        v &= 0xf;
-+        const PCIINTxRoute route = pci_device_route_intx_to_irq(dev, i);
-+        const uint8_t v = route.mode == PCI_INTX_ENABLED ? route.irq : 0;
-         xen_set_pci_link_route(i, v);
-     }
- }
--- 
-2.43.0
+Alistair
 
+>
+> ---
+>
+>  docs/system/riscv/sifive_u.rst | 33 ++++++++++++---------------------
+>  1 file changed, 12 insertions(+), 21 deletions(-)
+>
+> diff --git a/docs/system/riscv/sifive_u.rst b/docs/system/riscv/sifive_u.=
+rst
+> index 7b166567f9..8f55ae8e31 100644
+> --- a/docs/system/riscv/sifive_u.rst
+> +++ b/docs/system/riscv/sifive_u.rst
+> @@ -210,7 +210,7 @@ command line options with ``qemu-system-riscv32``.
+>  Running U-Boot
+>  --------------
+>
+> -U-Boot mainline v2021.07 release is tested at the time of writing. To bu=
+ild a
+> +U-Boot mainline v2024.01 release is tested at the time of writing. To bu=
+ild a
+>  U-Boot mainline bootloader that can be booted by the ``sifive_u`` machin=
+e, use
+>  the sifive_unleashed_defconfig with similar commands as described above =
+for
+>  Linux:
+> @@ -325,15 +325,10 @@ configuration of U-Boot:
+>
+>    $ export CROSS_COMPILE=3Driscv64-linux-
+>    $ make sifive_unleashed_defconfig
+> -  $ make menuconfig
+> -
+> -then manually select the following configuration:
+> -
+> -  * Device Tree Control ---> Provider of DTB for DT Control ---> Prior S=
+tage bootloader DTB
+> -
+> -and unselect the following configuration:
+> -
+> -  * Library routines ---> Allow access to binman information in the devi=
+ce tree
+> +  $ ./scripts/config --enable OF_BOARD
+> +  $ ./scripts/config --disable BINMAN_FDT
+> +  $ ./scripts/config --disable SPL
+> +  $ make olddefconfig
+>
+>  This changes U-Boot to use the QEMU generated device tree blob, and bypa=
+ss
+>  running the U-Boot SPL stage.
+> @@ -352,17 +347,13 @@ It's possible to create a 32-bit U-Boot S-mode imag=
+e as well.
+>
+>    $ export CROSS_COMPILE=3Driscv64-linux-
+>    $ make sifive_unleashed_defconfig
+> -  $ make menuconfig
+> -
+> -then manually update the following configuration in U-Boot:
+> -
+> -  * Device Tree Control ---> Provider of DTB for DT Control ---> Prior S=
+tage bootloader DTB
+> -  * RISC-V architecture ---> Base ISA ---> RV32I
+> -  * Boot options ---> Boot images ---> Text Base ---> 0x80400000
+> -
+> -and unselect the following configuration:
+> -
+> -  * Library routines ---> Allow access to binman information in the devi=
+ce tree
+> +  $ ./scripts/config --disable ARCH_RV64I
+> +  $ ./scripts/config --enable ARCH_RV32I
+> +  $ ./scripts/config --set-val TEXT_BASE 0x80400000
+> +  $ ./scripts/config --enable OF_BOARD
+> +  $ ./scripts/config --disable BINMAN_FDT
+> +  $ ./scripts/config --disable SPL
+> +  $ make olddefconfig
+>
+>  Use the same command line options to boot the 32-bit U-Boot S-mode image=
+:
+>
+> --
+> 2.34.1
+>
+>
 
