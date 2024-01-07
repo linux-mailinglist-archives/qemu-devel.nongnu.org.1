@@ -2,68 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5A18264AD
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 16:24:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 053778264AE
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 16:24:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMUz1-00072M-7x; Sun, 07 Jan 2024 10:22:39 -0500
+	id 1rMV07-00083v-KC; Sun, 07 Jan 2024 10:23:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMUyz-000726-I4
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 10:22:37 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1rMV05-00080s-06
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 10:23:45 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMUyy-0005X0-0o
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 10:22:37 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-557ad92cabbso146321a12.0
- for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 07:22:34 -0800 (PST)
+ id 1rMV03-0006KV-BE
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 10:23:44 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-55559e26ccfso1159015a12.3
+ for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 07:23:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704640954; x=1705245754; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704641021; x=1705245821; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=UIdnjnI8BPcVjdkMDC1cdE6XJzt6wpy67pWVTElYz/o=;
- b=PA+BohD8YUULVbG6FRgGhoG8pw76rVF7G0YiwJc64HmDqfuIcTJ340H0BzdJn7fRiW
- 7yf6+lMASfBqoz3OEzO0KWbZl7g9eaw99lrTqEhtuUYuYKMDGK+8rqVOxTt6bHL1AP7b
- GeEUlVayH6enhUyhuP4DYJSTZpSWPRmnf3Av9r0TMLXw9LeIlHtBGixjMJKjxV7VhtTy
- vRDTAB0YUcUUei8sMDjtuWNRj819xXV6vzJT6ErIvrv07SaMN8HBC94r8SRTGip05qX9
- QcOiLQGYNMZ4qVw+2A5Qh21eoqHUi4OIgyKORiP6dv+PhmPFho6Qia/Ui5XEYtKB9Z8R
- zMrQ==
+ bh=sDI1snDzm899lfnhzHxRtD5F3BS1KrDqf9/aJ/b+nPc=;
+ b=gZFpHlc8+e3sd1XRUo3YERV6ko199cLHxeJh/x/2T1+L9mF8OYlxQY46r+6Gu6nTyx
+ heR5zkovwVLTwUCfnDB5lM2qPzLA1w5L16KROGSNbHRqCs7d06/eWWC8m/Te5QmDhlMt
+ h8K3AuTvR+R6SxEmYa72+3qj0BJqsAobei5jWzb1YCGa5UWI+lctR5ZQqRMqFHQr250/
+ 05UQI7zIHx92gIEp2/KEaSAt4WseBcMpKFZ2p98A1m/XkpMABW3SGdQ2FdjWzIm1ieg6
+ ip5+NvylY7Jo4Y5HevYvxvWTg4epnBijOMMEto4LS0jQeTE6ze9CgyWmYl7eSVz7D6F1
+ PAxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704640954; x=1705245754;
+ d=1e100.net; s=20230601; t=1704641021; x=1705245821;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=UIdnjnI8BPcVjdkMDC1cdE6XJzt6wpy67pWVTElYz/o=;
- b=V/LPhztCW1f+Ll/hIdhyj/BUIJ17no/0NvR3jpcoM3b3ADqeotVRk403nkb73iya/w
- PklbNGu2XKRJI2xWQyBDuc6eTrxg4EQbyPwbVYJAb684nboHKYr0z8RnYQm4hSQCpAr/
- Gc5rx8DvRVQCrod9fB1SG2D5YcjRJ/By9MSl0ehhc5Cl9ppVKOF4CDrfcykACEWPwofp
- eiWuX25AaGFxWXBY65wqxnCShnGRXbgmNDNbWTr6Zx6yeRQvxgtUtShetehscfOkaKop
- oGjH6Hxxv0EzSZwUWBvd8NyNWQM1vvgjizK95K7+f9BDUHBXsrb3klDI+osBJFOWJV8O
- A/nA==
-X-Gm-Message-State: AOJu0Yx6U+SlLmD3pfsZ5EXbgi1k/b2EFWoI/RGOXDvsv5w0FM4zoCMT
- SnuYJ9UeXAKNUdyhN4O/BtiI+1t/l7I2jFA872H3+vfMb0HDRQ==
-X-Google-Smtp-Source: AGHT+IHmwq9gYIEyyT74GJJXQLIz9S4sHygYnl7UlZWKdXT//CYH/SBk3voK2eHv5XPI2afv/Kv+/mBs6HhSArfvbPk=
-X-Received: by 2002:a50:d6c8:0:b0:556:adb2:90a1 with SMTP id
- l8-20020a50d6c8000000b00556adb290a1mr1008701edj.3.1704640953867; Sun, 07 Jan
- 2024 07:22:33 -0800 (PST)
+ bh=sDI1snDzm899lfnhzHxRtD5F3BS1KrDqf9/aJ/b+nPc=;
+ b=U2FnpFfjOoWQ0ijSwNLYYOepGOYXumkAKNtNQ73spvsB/aAh+BpUXQZJca1YLx8qpH
+ OtuzFzkUp2aEaFn7cLuEhdSiRApp/9zNRsj/cMfYgwIZVVPV8WVMz4REOj9IeqWac/QU
+ PIVXyetZzKoFzQ++J2ktZpziqOpXD0ivZed2sD+o5xOSlNwmGvP8xitHd6C3JPv64xNy
+ Cf3lsrzOSa3B0DwjhlbjgFpONfISXRl94F5oalp4TPwebAkHDYYomcpEp+XCsX6Sw9wc
+ zsC5lrkRXrnRJQiz9owF0LxyVGov4x41lS7WwbiO/wuQXHGBagJEQlvOWqNQoHW90cvD
+ 9A7g==
+X-Gm-Message-State: AOJu0YxewZSlj7HS3Gs/t3jsC5BC9rNk2Ap65lBP9Hm/XSqx7krtT33w
+ IqJBpqOzMl7riiY82ywAapMSsvhbPzjGAeN1+7XOL9qhmgH8lQ==
+X-Google-Smtp-Source: AGHT+IHMZn7NeAC/pacFlb/N6nTooQ7eaJbcxjUIppjnF6x3iQSrdPztKbKiL/nz3Zaf4IL4gGIvT2JFbGYYGxRLVXo=
+X-Received: by 2002:a50:c056:0:b0:557:60a6:de62 with SMTP id
+ u22-20020a50c056000000b0055760a6de62mr846207edd.50.1704641020895; Sun, 07 Jan
+ 2024 07:23:40 -0800 (PST)
 MIME-Version: 1.0
-References: <ZZpQZ77s2t81mXIT@p100>
-In-Reply-To: <ZZpQZ77s2t81mXIT@p100>
+References: <20240104043213.431566-1-peterx@redhat.com>
+ <CAFEAcA8iim9vr19DxRDVabdESvcz+pAx91Ff6a7wQB-rrsCxqg@mail.gmail.com>
+ <ZZqaGf6nt0wkZgbS@x1n>
+ <CAJSP0QVA3USmat7EodQ7eBk+sf0FCT7oYBen_251ZMeeZHJ5dg@mail.gmail.com>
+In-Reply-To: <CAJSP0QVA3USmat7EodQ7eBk+sf0FCT7oYBen_251ZMeeZHJ5dg@mail.gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sun, 7 Jan 2024 15:22:00 +0000
-Message-ID: <CAFEAcA9K4GVcYNe2YvtDxiXC-HBvAXEZzNMA-z9xkpNY4Qf2EQ@mail.gmail.com>
-Subject: Re: [PATCH] tcg/tci: Fix TCI on hppa host and update TCI test matrix
-To: Helge Deller <deller@kernel.org>
-Cc: Laurent Vivier <laurent@vivier.eu>, Michael Tokarev <mjt@tls.msk.ru>, 
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
- qemu-trivial@nongnu.org
+Date: Sun, 7 Jan 2024 15:23:07 +0000
+Message-ID: <CAFEAcA9Wx4wcZj2MtBfb7u-y4wrbbjNhbLXA21pqmcrS+T8+hw@mail.gmail.com>
+Subject: Re: [PULL 00/26] Migration 20240104 patches
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Steve Sistare <steven.sistare@oracle.com>, Juan Quintela <quintela@trasno.org>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,29 +91,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 7 Jan 2024 at 07:20, Helge Deller <deller@kernel.org> wrote:
+On Sun, 7 Jan 2024 at 12:41, Stefan Hajnoczi <stefanha@gmail.com> wrote:
 >
-> Update the TCI interpreter test matrix for big-endian hosts with
-> big- (hppa, hppa64) and little-endian (x86,x96-64) targets.
-> I used native ppc64 and hppa hosts for those tests.
+> On Sun, 7 Jan 2024 at 07:34, Peter Xu <peterx@redhat.com> wrote:
+> >
+> > On Fri, Jan 05, 2024 at 04:08:40PM +0000, Peter Maydell wrote:
+> > > I notice that your gpg key doesn't seem to be signed by anybody
+> > > else; you might look at whether it's easy to get it signed
+> > > by somebody else (eg some of your redhat colleagues).
+> >
+> > Hmm, I think I have signed with at least Juan and Stefan.  Which is the key
+> > server we normally use?  Maybe I missed some steps there?
 >
-> Starting TCI on a hppa host crashed immediately, because hppa is
-> the only archive left where the stack grows upwards.
-> Write-protecting the stack guard page at the top of the stack
-> fixes the crash.
+> Yes, Peter's key is signed by me:
+>
+> $ gpg --list-signatures 3B5FCCCDF3ABD706
+> pub   ed25519/0x3B5FCCCDF3ABD706 2023-10-03 [SC]
+>       Key fingerprint = B918 4DC2 0CC4 57DA CF7D  D1A9 3B5F CCCD F3AB D706
+> uid                   [  full  ] Peter Xu <xzpeter@gmail.com>
+> sig 3        0x3B5FCCCDF3ABD706 2023-10-03  [self-signature]
+> sig          0x9CA4ABB381AB73C8 2023-10-10  Stefan Hajnoczi
+> <stefanha@redhat.com>
+> uid                   [  full  ] Peter Xu <peterx@redhat.com>
+> sig 3        0x3B5FCCCDF3ABD706 2023-10-03  [self-signature]
+> sig          0x9CA4ABB381AB73C8 2023-10-10  Stefan Hajnoczi
+> <stefanha@redhat.com>
+> sub   cv25519/0xD5261EB1CB0C6E45 2023-10-03 [E]
+> sig          0x3B5FCCCDF3ABD706 2023-10-03  [self-signature]
+>
+> I have pushed to the keyservers again in case I forget.
 
-We deliberately dropped support for HPPA hosts, under
-commit a1eaa6281f8b and commit b1cef6d02f84bd8.
-Do we really care enough about trying to run on these
-ancient host CPUs to want to bring it back?
+Thanks. Which keyservers did you use? I think these days the
+keyserver infrastructure is unfortunately fragmented; I
+probably didn't try refreshing from the right keyserver.
 
-My personal rule of thumb is that if a host CPU is supported
-only by TCI then we are better off saying it is entirely
-unsupported -- in practice the performance will be so
-terrible as to not be something anybody will want to use,
-especially for older architectures which are slow to
-start with.
-
-thanks
 -- PMM
 
