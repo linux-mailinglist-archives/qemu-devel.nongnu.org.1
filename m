@@ -2,80 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1971082653E
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 18:03:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA3E826542
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 18:06:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMWYZ-0006Jd-NB; Sun, 07 Jan 2024 12:03:27 -0500
+	id 1rMWbW-0001Cz-IA; Sun, 07 Jan 2024 12:06:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rMWYX-0006EK-LT; Sun, 07 Jan 2024 12:03:25 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1rMWbQ-0001Bw-IG; Sun, 07 Jan 2024 12:06:25 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rMWYV-0007iS-LJ; Sun, 07 Jan 2024 12:03:25 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-28cf491b197so310691a91.1; 
- Sun, 07 Jan 2024 09:03:22 -0800 (PST)
+ id 1rMWbO-0008Q0-Lq; Sun, 07 Jan 2024 12:06:24 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1d3ef33e68dso6871335ad.1; 
+ Sun, 07 Jan 2024 09:06:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704647001; x=1705251801; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gj5wpFqx12ILIOgzmUxgQDtNTX3qdzeAME6ErSpnIOc=;
- b=H/7dwwlh8WBrvkPyRyts4WdhRHoSwa0cx99ls3PjeNugtWHpfUj5byUeMBx0KPp+2o
- 6e6M49VBeOqxcpoIXbdOG2ir8j1dJWyMdk0iPAp5I8xsm9HUGZac2UrOfgL3r+fDcKVI
- IBrXXIeIrfsBEj9+sDfrtdrxtrRj3mK8MWF2bwGSv9plAMIDOiyM2jr5Egc2ZAiO1TGx
- uv7fsHjnR5GfLxThMMGSZfLOk+qO1u3JfW4VAwU2IHxoRUZvlho+fozz6Ylk2kbU0+uI
- vsFfwR/cZjhVFG6wWoZ9+xX1WEiJCXfkbXI9sqvw5ZxN8R2YBPkvSU6hFVJ5RniuddDV
- xpLQ==
+ d=gmail.com; s=20230601; t=1704647181; x=1705251981; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ktsLKK29f+/IeeDEKz0GGjKbLwJBswLySVd2HaxcMCQ=;
+ b=dGXk19ikIB4WeaA9AUP86cvgXYTSL004LxAUcMaswjckXzPwkBQNbhrA0SKWICEflO
+ RxmGRasWLwjiPg2yBfdIbIfIqdTGwwptJD2df1xNdqxFpewSZGKhlYp8Vq4wkWX2azkl
+ TfHMgoWnZ5bENmFgm7VsYoJrsimcWJHrgEogfPqFP8UmBSEPCJ4O5El4w4/iW238VGW/
+ Kh2vQ6B5DCjEQnxcNs3YxW3O8PnD6FwzYjuQOnynZsyz2ciddEudedNMMHfZQc6ZBI7k
+ o8Rayq0Vd2IN4l+s7G3g6LaeybDknHD71LetKLoJmXEra9HFftu12neUWn0l+kYlNA37
+ b7Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704647001; x=1705251801;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gj5wpFqx12ILIOgzmUxgQDtNTX3qdzeAME6ErSpnIOc=;
- b=MavQsN0UYHTRRVvlQiuzlZdCoTB6+X8jnKjuvCn+1FxWHjXU8NtA6yiXxjmSUUTolk
- 6+BDfK3sl3Tf6Yv4nEieIztIltG+dSlofoXp0W33Gex69Vqoe0eobEaJphHFwQUFiJxI
- +zBT+otZz0Sa/UxEe/D3Sf78Ibp1o7gN/5UBJVJb8ffK5ci0/1V9hmdXFJ6lcsnqm/ui
- YtgMKalyXkSf3/NJNmpJiNnbwVndFp8FBWHW0+DXb0WLWc9O8n75Mfgctp9tav7P85Bl
- L1uRn++a2bJywrJOqGFeMYeOylU08F7xP4RQgyb1YKLphYr5rIpYl1ahq5KK7j2gNkIn
- fYMQ==
-X-Gm-Message-State: AOJu0YynDeVlvPTtmTTt1vFUkv00FVcaf5icp+cccZ1UsryMrbVIOmLN
- AqmfGAnLisSrTrg9vjnt2+oJ8rqxNSQ=
-X-Google-Smtp-Source: AGHT+IHHNb6vX3gycWjeWvOKEFKpWnsSPxfHn88iAAyQXuVswJmntJzLIBqTk0q1TL87Y9YXhUJxuQ==
-X-Received: by 2002:a17:903:2309:b0:1d4:ca58:8495 with SMTP id
- d9-20020a170903230900b001d4ca588495mr821414plh.108.1704647001247; 
- Sun, 07 Jan 2024 09:03:21 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704647181; x=1705251981;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ktsLKK29f+/IeeDEKz0GGjKbLwJBswLySVd2HaxcMCQ=;
+ b=Il5slQrzuJEnkSNXtogeuHON/mtfXdXAdTaNzL+UJoZu/QzfwIKcu9x2kG4q08Pm+w
+ uzCAqugHv8ARAoKgSPdwo0MdZq5zPYpMUMgw6EAuzP5CgJepTgQwTKo5nY0qJ7lO8Hqr
+ YDQwCPSbAGf1XZWz0wsq/2J1ppWi2mE434U1UQHEQxu53+yE5OjrY8v+WNnQ3pPFotU8
+ LFARyTquW3/8pjFEFjCSeGgLjMxvZAK4WUis9Y/zM474rUYBH1D8/ssYBdOC8pNK2tLF
+ I73px42ugUIyAimDVRciqQgS5DVqzqtvmMNtljsysry4eEXkTrp6aA8Jo/Y2piHm05hM
+ wcnQ==
+X-Gm-Message-State: AOJu0Yz2Qdv2XKSigfEFs1YNf4sx+I+V1rXWQtyuoIcePpwQ3VYS+8tR
+ G5U+5GikqPTwC4WxoubnnvZI3jKHmgM=
+X-Google-Smtp-Source: AGHT+IG5/Kxk51jBHHP6WfkkidzQ/WagyNMX8fAVZ+ilE3bIMUA8RcXKOVuX9dFc2GIwG6xeGQN6kw==
+X-Received: by 2002:a17:903:11c5:b0:1d4:bd18:7c47 with SMTP id
+ q5-20020a17090311c500b001d4bd187c47mr3334548plh.57.1704647180692; 
+ Sun, 07 Jan 2024 09:06:20 -0800 (PST)
 Received: from wheely.local0.net ([203.87.79.144])
  by smtp.gmail.com with ESMTPSA id
- c9-20020a170902c1c900b001d3ea8ad878sm4632883plc.290.2024.01.07.09.03.02
+ z1-20020a170902834100b001cff026df52sm4633203pln.221.2024.01.07.09.06.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 07 Jan 2024 09:03:10 -0800 (PST)
+ Sun, 07 Jan 2024 09:06:15 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
+To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- qemu-ppc@nongnu.org, Warner Losh <imp@bsdimp.com>
-Subject: [PATCH 9/9] tests/avocado: Add FreeBSD distro boot tests for ppc
-Date: Mon,  8 Jan 2024 03:01:19 +1000
-Message-ID: <20240107170119.82222-10-npiggin@gmail.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, qemu-devel@nongnu.org
+Subject: [PATCH] target/ppc: Fix crash on machine check caused by ifetch
+Date: Mon,  8 Jan 2024 03:05:59 +1000
+Message-ID: <20240107170559.82383-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240107170119.82222-1-npiggin@gmail.com>
-References: <20240107170119.82222-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,141 +88,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FreeBSD project provides qcow2 images that work well for testing QEMU.
-Add pseries tests for HPT and Radix, KVM and TCG. This uses a short
-term VM image, because FreeBSD has not set up long term builds for
-ppc64 at present.
+is_prefix_insn_excp() loads the first word of the instruction address
+which caused an exception, to determine whether or not it was prefixed
+so the prefix bit can be set in [H]SRR1.
 
-Other architectures could be added so this does not get a ppc_ prefix
-but is instead named similarly to boot_linux.
+In case it was the instruction fetch itself that caused the exception,
+the [H]SRR1 prefix bit is not required to be set, because it is not the
+instruction itself that causes the interrupt. If the load is attempted,
+t could cause a recursive exception.
 
-Reviewed-by: Warner Losh <imp@bsdimp.com>
+Instruction storage interrupts, HDSIs caused by ifetch are excluded from
+the prefix check. Machine checks caused by ifetch are not, and these
+can cause bugs. For example fetching from an unmapped physical address
+can result in:
+
+  ERROR:../system/cpus.c:504:qemu_mutex_lock_iothread_impl:
+      assertion failed: (!qemu_mutex_iothread_locked())
+  #0  __pthread_kill_implementation
+      (threadid=<optimized out>, signo=signo@entry=6, no_tid=no_tid@entry=0)
+      at ./nptl/pthread_kill.c:44
+  #1  0x00007ffff705a15f in __pthread_kill_internal
+      (signo=6, threadid=<optimized out>) at ./nptl/pthread_kill.c:78
+  #2  0x00007ffff700c472 in __GI_raise (sig=sig@entry=6)
+      at ../sysdeps/posix/raise.c:26
+  #3  0x00007ffff6ff64b2 in __GI_abort () at ./stdlib/abort.c:79
+  #4  0x00007ffff73def08 in  () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
+  #5  0x00007ffff7445e4e in g_assertion_message_expr ()
+      at /lib/x86_64-linux-gnu/libglib-2.0.so.0
+  #6  0x0000555555a833f1 in qemu_mutex_lock_iothread_impl
+      (file=0x555555efda6e "../accel/tcg/cputlb.c", line=2033)
+      at ../system/cpus.c:504
+  #7  qemu_mutex_lock_iothread_impl
+      (file=file@entry=0x555555efda6e "../accel/tcg/cputlb.c", line=line@entry=2033) at ../system/cpus.c:500
+  #8  0x0000555555cbf786 in do_ld_mmio_beN
+      (cpu=cpu@entry=0x555556b72010, full=0x7fff5408e010, ret_be=ret_be@entry=0, addr=2310065133864353792, size=size@entry=4, mmu_idx=7, type=MMU_INST_FETCH, ra=0) at ../accel/tcg/cputlb.c:2033
+  #9  0x0000555555cc2ec6 in do_ld_4
+      (ra=0, memop=MO_BEUL, type=MMU_INST_FETCH, mmu_idx=<optimized out>, p=0x7fff67dfc660, cpu=0x555556b72010) at ../accel/tcg/cputlb.c:2336
+  #10 do_ld4_mmu
+      (cpu=cpu@entry=0x555556b72010, addr=<optimized out>, oi=<optimized out>, ra=ra@entry=0, access_type=access_type@entry=MMU_INST_FETCH)
+      at ../accel/tcg/cputlb.c:2418
+  #11 0x0000555555ccbaf6 in cpu_ldl_code
+      (env=env@entry=0x555556b747d0, addr=<optimized out>)
+      at ../accel/tcg/cputlb.c:2975
+  #12 0x0000555555b7a47c in ppc_ldl_code
+      (addr=<optimized out>, env=0x555556b747d0)
+      at ../target/ppc/excp_helper.c:147
+  #13 is_prefix_insn_excp (excp=1, cpu=0x555556b72010)
+      at ../target/ppc/excp_helper.c:1350
+  #14 powerpc_excp_books (excp=1, cpu=0x555556b72010)
+      at ../target/ppc/excp_helper.c:1415
+  #15 powerpc_excp (cpu=0x555556b72010, excp=<optimized out>)
+      at ../target/ppc/excp_helper.c:1733
+  #16 0x0000555555cb1c74 in cpu_handle_exception
+      (ret=<synthetic pointer>, cpu=<optimized out>)
+
+Fix this by excluding machine checks caused by ifetch from the prefix
+check.
+
+Fixes: 55a7fa34f89 ("target/ppc: Machine check on invalid real address access on POWER9/10")
+Fixes: 5a5d3b23cb2 ("target/ppc: Add SRR1 prefix indication to interrupt handlers")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-Unfortunately the latest stable (14.0) x86-64 VM image does not seem to
-output to console by default and I've not been able to find a reliable
-way to edit the filesystem to change the boot loader options, or use
-console input in the test case to change it on the fly.
+ target/ppc/excp_helper.c | 32 +++++++++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
-Thanks,
-Nick
----
- tests/avocado/boot_freebsd.py | 106 ++++++++++++++++++++++++++++++++++
- 1 file changed, 106 insertions(+)
- create mode 100644 tests/avocado/boot_freebsd.py
-
-diff --git a/tests/avocado/boot_freebsd.py b/tests/avocado/boot_freebsd.py
-new file mode 100644
-index 0000000000..79c68b149a
---- /dev/null
-+++ b/tests/avocado/boot_freebsd.py
-@@ -0,0 +1,106 @@
-+# Functional tests that boot FreeBSD in various configurations
-+#
-+# Copyright (c) 2023 IBM Corporation
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later. See the COPYING file in the top-level directory.
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index a42743a3e0..34c307b572 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -1322,6 +1322,15 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+     }
+ 
+     switch (excp) {
++    case POWERPC_EXCP_MCHECK:
++        if (!(env->error_code & PPC_BIT(42))) {
++            /*
++             * Fetch attempt caused a machine check, so attempting to fetch
++             * again would cause a recursive machine check.
++             */
++            return false;
++        }
++        break;
+     case POWERPC_EXCP_HDSI:
+         /* HDSI PRTABLE_FAULT has the originating access type in error_code */
+         if ((env->spr[SPR_HDSISR] & DSISR_PRTABLE_FAULT) &&
+@@ -1332,10 +1341,10 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+              * instruction at NIP would cause recursive faults with the same
+              * translation).
+              */
+-            break;
++            return false;
+         }
+-        /* fall through */
+-    case POWERPC_EXCP_MCHECK:
++        break;
 +
-+import os
+     case POWERPC_EXCP_DSI:
+     case POWERPC_EXCP_DSEG:
+     case POWERPC_EXCP_ALIGN:
+@@ -1346,17 +1355,14 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+     case POWERPC_EXCP_VPU:
+     case POWERPC_EXCP_VSXU:
+     case POWERPC_EXCP_FU:
+-    case POWERPC_EXCP_HV_FU: {
+-        uint32_t insn = ppc_ldl_code(env, env->nip);
+-        if (is_prefix_insn(env, insn)) {
+-            return true;
+-        }
++    case POWERPC_EXCP_HV_FU:
+         break;
+-    }
+     default:
+-        break;
++        return false;
+     }
+-    return false;
 +
-+from avocado import skipUnless
-+from avocado_qemu import QemuSystemTest
-+from avocado_qemu import wait_for_console_pattern
-+from avocado_qemu import exec_command
-+from avocado.utils import archive
-+from avocado.utils import process
-+from avocado.utils.path import find_command
 +
-+@skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
-+@skipUnless(os.getenv('AVOCADO_ALLOW_LONG_RUNTIME'), 'runtime limited')
-+class BootFreeBSDPPC64(QemuSystemTest):
-+    """
-+    :avocado: tags=arch:ppc64
-+    """
-+
-+    timeout = 360
-+
-+    def setUp(self):
-+        super().setUp()
-+
-+        # We need zstd for all the tests
-+        # See https://github.com/avocado-framework/avocado/issues/5609
-+        zstd = find_command('zstd', False)
-+        if zstd is False:
-+            self.cancel('Could not find "zstd", which is required to '
-+                        'decompress rootfs')
-+        drive_url = ('https://artifact.ci.freebsd.org/snapshot/15.0-CURRENT/8a735ffdf04936c6785ac4fa31486639262dd416/powerpc/powerpc64le/disk.qcow2.zst')
-+        drive_hash = '95d863dbbc4b60f4899d1ef21d6489fca05bf03d'
-+        drive_path_zstd = self.fetch_asset(drive_url, asset_hash=drive_hash)
-+        drive_path = os.path.join(self.workdir, 'disk.qcow2')
-+
-+        cmd = f"{zstd} -d {drive_path_zstd} -o {drive_path}"
-+        process.run(cmd)
-+
-+        self.drive_opt = f"file={drive_path},format=qcow2,if=virtio"
-+
-+    def run_pseries_test(self, force_HPT=False):
-+        if force_HPT:
-+            self.vm.add_args('-m', '4g')
-+        else:
-+            self.vm.add_args('-m', '1g')
-+        self.vm.add_args('-smp', '4')
-+        self.vm.add_args('-drive', self.drive_opt)
-+        self.vm.add_args('-net', 'nic,model=virtio')
-+        self.vm.set_console()
-+        self.vm.launch()
-+
-+        wait_for_console_pattern(self, 'Hit [Enter] to boot immediately, or any other key for command prompt.')
-+        if force_HPT:
-+            exec_command(self, 'x')
-+            wait_for_console_pattern(self, 'OK')
-+            exec_command(self, 'set radix_mmu=0')
-+            exec_command(self, 'boot')
-+            wait_for_console_pattern(self, 'cas: selected hash MMU', 'panic:')
-+        else:
-+            exec_command(self, '')
-+            wait_for_console_pattern(self, 'cas: selected radix MMU', 'panic:')
-+
-+        wait_for_console_pattern(self, 'FreeBSD 15.0-CURRENT', 'panic:')
-+        wait_for_console_pattern(self, 'FreeBSD/SMP: Multiprocessor System Detected: 4 CPUs', 'panic:')
-+        wait_for_console_pattern(self, 'FreeBSD/powerpc (Amnesiac) (ttyu0)', 'panic:')
-+
-+    def test_pseries_tcg(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:pseries
-+        :avocado: tags=accel:tcg
-+        """
-+        self.require_accelerator("tcg")
-+        self.run_pseries_test()
-+
-+    def test_pseries_hpt_tcg(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:pseries
-+        :avocado: tags=accel:tcg
-+        """
-+        self.require_accelerator("tcg")
-+        self.run_pseries_test(force_HPT=True)
-+
-+    def test_pseries_kvm(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:pseries
-+        :avocado: tags=accel:kvm
-+        """
-+        self.require_accelerator("kvm")
-+        self.run_pseries_test()
-+
-+    def test_pseries_hpt_kvm(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:pseries
-+        :avocado: tags=accel:kvm
-+        """
-+        self.require_accelerator("kvm")
-+        self.run_pseries_test(force_HPT=True)
++    return is_prefix_insn(env, ppc_ldl_code(env, env->nip));
+ }
+ #else
+ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+@@ -3245,6 +3251,10 @@ void ppc_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
+             env->error_code |= PPC_BIT(42);
+ 
+         } else { /* Fetch */
++            /*
++             * is_prefix_insn_excp() tests !PPC_BIT(42) to avoid fetching
++             * the instruction, so that must always be clear for fetches.
++             */
+             env->error_code = PPC_BIT(36) | PPC_BIT(44) | PPC_BIT(45);
+         }
+         break;
 -- 
 2.42.0
 
