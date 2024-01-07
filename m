@@ -2,48 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BFC9826461
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 15:03:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D6A4826468
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 15:05:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMTjk-00031P-PU; Sun, 07 Jan 2024 09:02:48 -0500
+	id 1rMTlg-0005F0-06; Sun, 07 Jan 2024 09:04:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rMTje-00030Z-V6
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 09:02:43 -0500
-Received: from todd.t-8ch.de ([159.69.126.157])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rMTle-0005EU-QE; Sun, 07 Jan 2024 09:04:46 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rMTjY-0006Rn-47
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 09:02:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
- t=1704636150; bh=ThaR2lQ9ugwXxp2czupmIpBn0zcwkOa611yJbG1gw/g=;
- h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=B6v95y3loNFiXd2xFJtGBVsGhAHlI+XD2DZmE88Ycu4vZQY95MV6a+rOlw6H+/AVN
- /OtJ/lbOOFhkCgSKac5tX1dQ2whIYYD1m1gbFdvlLJoCRsjSERpu2gMgXBWv8bVZQL
- reKyi/lH3VTL2ClJRyZDf9sDSZQ+Il1sQXlACr8g=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-Date: Sun, 07 Jan 2024 15:01:54 +0100
-Subject: [PATCH v2 2/2] linux-user/elfload: check PR_GET_DUMPABLE before
- creating coredump
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rMTlc-0006fX-W3; Sun, 07 Jan 2024 09:04:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=fEJoEgbFJSgvpGetzAYU6wr3cF/3P9Go4Hx6iYVVKaA=; b=OqAgtgcNQoFMX3dbDiQNqH8/uy
+ 2vgnguyIM4VRlpzCVABLwkmWHbbfm0b8yr6M77R1lX7TP1StjNzAH+BT/j9WPB5UUhkGNwjOebETl
+ /OhZxOvGpzFMjTrsz/rEUz6CRgQAhwz1djz1IHq1QtfozDh54nL94dTP9/MrWR3+we+KU5+YbZhZO
+ jtCFGKyhVMSBIX8hTw1QnvE8xYqBhmICY8hTWGTfOJap1hO+YOgLosFzA1v7+2yMaNAjuJ1rWkjYO
+ JiX9kNjQW2kheoRbdAdFSzWRhm0v+RED998oTgXRPwDPudWM4v1bTgS6AI9JyfRI3+O7V/KPoI1Ny
+ IIF17jiZkoMPCEpVtAu72nRK4vLNoDFib+JBM0IhalVAoIh1DlePuLjRB3l5ZGFKFCoV8nMgKLPmm
+ FWi1JZuCsMBM33g3+pKPrZs5d11vVx92lmTf3Xbth6KJvYmvVBDQHqx/yMc/1ZPk3aNjAh5bOwF45
+ XU6aKQBJx41d+ios06Q9m/e831yC5aP4TNZF1BKIHBFoBO3rY+MejIuHql8lH2PuE1XV3YmXcSGjE
+ pghBVC3ZGdWv8/0KAUNUaIp5cgEHW/+84l5NcfFraFJdhaBNa2mnxHu7dfnn5Oocl+N50r5EzsI0/
+ azqkCkM7xaVE2xVoHQFQ4esi21edL7GlDnZ+dQ6OU=;
+Received: from [2a00:23c4:8bb1:9800:d580:3d66:e68a:4949]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rMTkx-0003dG-7K; Sun, 07 Jan 2024 14:04:07 +0000
+Message-ID: <ab6ecb71-7c29-45e6-b69f-9e36d05fd6d6@ilande.co.uk>
+Date: Sun, 7 Jan 2024 14:04:27 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ inesvarhol <inesvarhol@proton.me>, =?UTF-8?Q?In=C3=A8s_Varhol?=
+ <ines.varhol@telecom-paris.fr>, Markus Armbruster <armbru@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Alistair Francis <alistair@alistair23.me>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+References: <20231228161944.303768-1-ines.varhol@telecom-paris.fr>
+ <20231228161944.303768-3-ines.varhol@telecom-paris.fr>
+ <61fd13b3-7cc9-4e27-bf91-bd2b4aedf97b@linaro.org>
+ <ZjC6phtwjcDoQP-NDP6GF-dvCVK8Ctk9EeW_JezuNBqnQq4-V6NU6eAhECMqxJzMDRxwjbb-LPcHTvysc6YGuLD7ckWhbtpqD1g9lnklofI=@proton.me>
+ <5f624a13-0ba0-4d9a-8910-2ef1c784a295@linaro.org>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <5f624a13-0ba0-4d9a-8910-2ef1c784a295@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240107-qemu-user-dumpable-v2-2-54e3bcfc00c9@t-8ch.de>
-References: <20240107-qemu-user-dumpable-v2-0-54e3bcfc00c9@t-8ch.de>
-In-Reply-To: <20240107-qemu-user-dumpable-v2-0-54e3bcfc00c9@t-8ch.de>
-To: Laurent Vivier <laurent@vivier.eu>
-Cc: qemu-devel@nongnu.org, =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1704636150; l=1019;
- i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
- bh=ThaR2lQ9ugwXxp2czupmIpBn0zcwkOa611yJbG1gw/g=;
- b=EeLEta/e+iYcE4nuuKzAHvGZTBIAebQo6lNg0wLOuy2lgkV9SNkgE4NJ8f4el1s5Tfwz8cVlZ
- CEjV47enDzQAg7Yk1BZQlQMaKnXLLUJrmNMs4SAEA1dmakQEHXad3sx
-X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-Received-SPF: pass client-ip=159.69.126.157; envelope-from=thomas@t-8ch.de;
- helo=todd.t-8ch.de
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb1:9800:d580:3d66:e68a:4949
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v5 2/3] tests/qtest: Add STM32L4x5 EXTI QTest testcase
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -65,43 +112,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A process can opt-out of coredump creation by calling
-prctl(PR_SET_DUMPABLE, 0).
-linux-user passes this call from the guest through to the
-operating system.
-From there it can be read back again to avoid creating coredumps from
-qemu-user itself if the guest chose so.
+On 05/01/2024 10:13, Philippe Mathieu-Daudé wrote:
 
-Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
----
- linux-user/elfload.c | 5 +++++
- 1 file changed, 5 insertions(+)
+> (+Mark & Eduardo)
+> 
+> On 4/1/24 14:37, inesvarhol wrote:
+>>
+>> Le jeudi 4 janvier 2024 à 14:05, Philippe Mathieu-Daudé <philmd@linaro.org> a écrit :
+>>
+>> Hello,
+>>
+>>>> +static void test_edge_selector(void)
+>>>> +{
+>>>> + enable_nvic_irq(EXTI0_IRQ);
+>>>> +
+>>>> + / Configure EXTI line 0 irq on rising edge */
+>>>> + qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
+>>>
+>>>
+>>> Markus, this qtest use seems to expect some stability in QOM path...
+>>>
+>>> Inès, Arnaud, having the SoC unattached is dubious, it belongs to
+>>> the machine.
+>>
+>> Noted, we will fix that.
+>> Should we be concerned about the "stability in QOM path" ?
+> 
+> Don't worry about this Inès, I wanted to raise Markus attention on this.
+> 
+> You showed a legit use of stable QOM path, and Markus told me recently
+> there is no contract for QOM paths (it shouldn't be considered as a
+> stable API). IIRC Markus explanation, "/unattached" container was
+> added as a temporary hack to allow migrating QDev objects to QOM (see
+> around commit da57febfed "qdev: give all devices a canonical path",
+> 11 years ago).
+> 
+> I agree anything under "/unattached" can be expected to be stable
+> (but we need a community consensus). Then the big question remaining
+> is "can any qom-path out of /unattached be considered stable?"
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 74c9ecda1806..956cb3ae2da5 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -2,6 +2,7 @@
- #include "qemu/osdep.h"
- #include <sys/param.h>
- 
-+#include <sys/prctl.h>
- #include <sys/resource.h>
- #include <sys/shm.h>
- 
-@@ -4667,6 +4668,10 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-     init_note_info(&info);
- 
-     errno = 0;
-+
-+    if (prctl(PR_GET_DUMPABLE) == 0)
-+        return 0;
-+
-     if (getrlimit(RLIMIT_CORE, &dumpsize) == 0 && dumpsize.rlim_cur == 0)
-         return 0;
- 
+For the moment I would definitely say no, and that is mainly because if we were to 
+assume that QOM paths were stable today then I can see it being a barrier to updating 
+older code to meet our current guidelines.
 
--- 
-2.43.0
+These days I think more about QOM paths being related to the lifecycle of the objects 
+e.g. a machine object has child devices, which may also consist of a number of other 
+children in the case of a multi-function device. For me this means that using 
+object_resolve_path_component() to look up a child object seems reasonable, in 
+contrast with expecting the entire path to be stable.
+
+One thing I think about often is whether the use of device[n] is suitable within QOM 
+tree. For example, if I have a command line like:
+
+   -device foo,myprop=prop0,id=fooid0 -device foo,myprop=prop1,id=fooid1
+
+currently they would appear in "info qom-tree" as:
+
+   /machine
+     /unattached
+       /device[0] (foo)
+       /device[1] (foo)
+
+whereas it feels this could be done better as:
+
+   /machine
+     /unattached
+       /foo[0] (fooid0)
+       /foo[1] (fooid1)
+
+This would automatically place devices of the same type within a QOM array to allow 
+them to be accessed separately by type, or even directly via the "id" if we assume 
+they are unique. In particular if you have a machine with 2 foo in-built devices you 
+could then potentially configure them separately using -global foo[0].myprop=newprop0 
+and/or -global foo[1].myprop=newprop1 which is something that currently isn't possible.
+
+
+ATB,
+
+Mark.
 
 
