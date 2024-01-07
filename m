@@ -2,74 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB73482651A
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 17:29:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 228FA826530
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 17:58:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMW1A-0007Go-Bw; Sun, 07 Jan 2024 11:28:56 -0500
+	id 1rMWSj-0007C8-Jv; Sun, 07 Jan 2024 11:57:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rMW0v-0007GL-6f
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 11:28:41 -0500
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
+ id 1rMWSg-0007Bf-SW; Sun, 07 Jan 2024 11:57:22 -0500
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rMW0t-0001UJ-LQ
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 11:28:40 -0500
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-59641a03f31so825894eaf.2
- for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 08:28:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
+ id 1rMWSf-0003oB-2p; Sun, 07 Jan 2024 11:57:22 -0500
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2ccb4adbffbso11198711fa.0; 
+ Sun, 07 Jan 2024 08:57:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704644917; x=1705249717; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Yb4XDeNxoRpbXacAfKmJdYj+NZ9JlJOxh8RK2njUGl8=;
- b=KlgZpbDOtZ3+EjIpTuJkBR5JgPtWUsbzBt4OHZD9KbLn0Dq/XV+55ysnWgDw6B/kYB
- GTk3y4RhEGt3nILVBzpe8xFRlye/F8JQK10xKlbu7yhC/MoyWH7dvDJp7Nmvi9H8+W7w
- AN+Sr443z6cBFVjMdVZkJTQ2QlZPZFLYO54tCK6XtZlS+tHigsZ6MX9VRQHjVXmnJQHB
- hLcNNS+RY/E5aktBMajhMj+dq2lt8w28zisLv9QGQZrWRjNZkQMNIcJMtDyZeIl+VhHZ
- mt7eKNaaUw8kz1+narFfx+IQztPrgOk8u2mM96NIG8lF8Rv7D8oO5NMTi6FJt8FPY0Wv
- phrQ==
+ d=gmail.com; s=20230601; t=1704646638; x=1705251438; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Iq8Y5yMM9yB95mE/Oe79R4F4jxbBO9DlK4fUkRgZxIg=;
+ b=i3uSgXAgKvRHr+k7L/wCGjhF5yzh6swiDdYbJq39LNJ7YkczqeUQn1Q08y692EF1DP
+ VyHQbQiQ1LZqLAjCASBtJ2JtFA6tZt8LWAbSegrPSAoz04qKZQVkB75oXR+QzMUPzk1v
+ EGTEJLEju1TIKOs0BWmCorK3xgmsts8b5PeJOLBa7rzi3bH9I192vhA3rngRciExxET4
+ RPR4ZECK+Cng9x2/qHD/81FBOZW97GwyJNdQ5iypqhivwp7aioI2Asd7wa9/eApTXFwu
+ v596dZRqOPk6gpwDarNs6rxQMiLc8zFVH+cD2Qb8S9PZR9lNLOqyg4bM/B/puKsXLik+
+ Etow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704644917; x=1705249717;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1704646638; x=1705251438;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Yb4XDeNxoRpbXacAfKmJdYj+NZ9JlJOxh8RK2njUGl8=;
- b=GxG5RONkg4b4PDwg5JbyNMufhITbzhWULd9D3sJJB49JCK+znYy87ZTNK5YIzz3BxK
- 381GgfL6QkKzDriVAIapm0Xi2bKslMlN2h/Eu6gVk5xhHHjJ8b1y3SIwBN2g3VMmDawu
- Vk/WP8JndoUtGsP8m/BDcuZ4bxh63A3NuzQpGQ72Czul//c65llUnpzZjbgxvHdy256L
- pOqp8vzEev3zXvC2X7X2V3Grdy2c91IhL7yXT3Iu62q3amoUPJ2r4x8OnMzd+LjjV9ya
- 4ccysDl9V9Y3/fn1xtQR/2NN++Rp+y6yH4qzV/vWqkA8xxMW/VFdXnC79I2G/UyE9RrN
- Ygig==
-X-Gm-Message-State: AOJu0Yyd9XsvQsVOvqgELCnXe+ZSDhmMliOWhlehvCAID2n9eVLfXKYy
- tDMfX9nyn/nN9j4Ul2sVRrhy3eYbij3+mZOdtQM=
-X-Google-Smtp-Source: AGHT+IHHGoQ99Czpi5ILNZ9j9+LxV7+QzbLGcIqeztEtzKXD0CvFomWn6aB0hMpzyT0KnnkfQuwMjAoMXsZu1MvumAk=
-X-Received: by 2002:a05:6820:1ac1:b0:596:3aaf:3eca with SMTP id
- bu1-20020a0568201ac100b005963aaf3ecamr1192866oob.18.1704644917421; Sun, 07
- Jan 2024 08:28:37 -0800 (PST)
+ bh=Iq8Y5yMM9yB95mE/Oe79R4F4jxbBO9DlK4fUkRgZxIg=;
+ b=kbm7bjKV+UpMF37GVcSRdMkuV+KuiBTncSJX11IIVCvoCA6WkZIsvJX5GTcmAhbZ1y
+ tGkB0EaaePanANfB63gmhYZwI5qmNgrb5kqQfJtYMZgG4+44nhxL4cpWQgPbr6ZwEQps
+ KBMDy7ydgF8fVOXwLGPMyPfHitelzSQHYUZwZeRDSNghdpjbMOootZldSzJKHbtQdUE6
+ K8APDj4XhxdU4gd7LKlAUfRRBghAbXwR3BXrxSHV/5P6HcoVS5p/8LGgsTubnNZISiHH
+ nGSmIGANpgEJjbRg1mD7lOk4er32jGruRPjk1FpHRk7sXv5UCrYT6PqCMcEyRVQ/E9NG
+ PoNw==
+X-Gm-Message-State: AOJu0Yx3OLCbEjSjFUZ8gpHP/pfs4liQjpfYJIfIc0LSoDmxgq6jbIsO
+ kQZ4qMFLvdBdxszM5D6L+QFhrrNYK6rHIw2YduU=
+X-Google-Smtp-Source: AGHT+IFnFLE429Glqzs/Rivsf4pjgZIG4sHgPTN/RPjxXdkfeBMES/brqZoQbHP1GFTv4lZrjsXqCQ==
+X-Received: by 2002:a2e:a590:0:b0:2cc:6210:1dce with SMTP id
+ m16-20020a2ea590000000b002cc62101dcemr1157877ljp.4.1704646637956; 
+ Sun, 07 Jan 2024 08:57:17 -0800 (PST)
+Received: from localhost.localdomain ([176.120.189.69])
+ by smtp.gmail.com with ESMTPSA id
+ z24-20020a2e9658000000b002cd52b9a020sm281671ljh.94.2024.01.07.08.57.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 07 Jan 2024 08:57:17 -0800 (PST)
+From: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Nikita Ostrenkov <n.ostrenkov@gmail.com>
+Subject: [PATCH] hw/arm: add PCIe to Freescale i.MX6
+Date: Sun,  7 Jan 2024 16:57:02 +0000
+Message-Id: <20240107165702.47819-1-n.ostrenkov@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240104043213.431566-1-peterx@redhat.com>
- <CAFEAcA8iim9vr19DxRDVabdESvcz+pAx91Ff6a7wQB-rrsCxqg@mail.gmail.com>
- <ZZqaGf6nt0wkZgbS@x1n>
- <CAJSP0QVA3USmat7EodQ7eBk+sf0FCT7oYBen_251ZMeeZHJ5dg@mail.gmail.com>
- <CAFEAcA9Wx4wcZj2MtBfb7u-y4wrbbjNhbLXA21pqmcrS+T8+hw@mail.gmail.com>
-In-Reply-To: <CAFEAcA9Wx4wcZj2MtBfb7u-y4wrbbjNhbLXA21pqmcrS+T8+hw@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Sun, 7 Jan 2024 11:28:25 -0500
-Message-ID: <CAJSP0QX2bmZboYPyQ5AQz-q=n2N4sp=zzzDYvoie=vhiAYQ+7A@mail.gmail.com>
-Subject: Re: [PULL 00/26] Migration 20240104 patches
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, 
- Stefan Hajnoczi <stefanha@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- Steve Sistare <steven.sistare@oracle.com>, Juan Quintela <quintela@trasno.org>,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc33.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=n.ostrenkov@gmail.com; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,43 +89,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 7 Jan 2024 at 10:23, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Sun, 7 Jan 2024 at 12:41, Stefan Hajnoczi <stefanha@gmail.com> wrote:
-> >
-> > On Sun, 7 Jan 2024 at 07:34, Peter Xu <peterx@redhat.com> wrote:
-> > >
-> > > On Fri, Jan 05, 2024 at 04:08:40PM +0000, Peter Maydell wrote:
-> > > > I notice that your gpg key doesn't seem to be signed by anybody
-> > > > else; you might look at whether it's easy to get it signed
-> > > > by somebody else (eg some of your redhat colleagues).
-> > >
-> > > Hmm, I think I have signed with at least Juan and Stefan.  Which is the key
-> > > server we normally use?  Maybe I missed some steps there?
-> >
-> > Yes, Peter's key is signed by me:
-> >
-> > $ gpg --list-signatures 3B5FCCCDF3ABD706
-> > pub   ed25519/0x3B5FCCCDF3ABD706 2023-10-03 [SC]
-> >       Key fingerprint = B918 4DC2 0CC4 57DA CF7D  D1A9 3B5F CCCD F3AB D706
-> > uid                   [  full  ] Peter Xu <xzpeter@gmail.com>
-> > sig 3        0x3B5FCCCDF3ABD706 2023-10-03  [self-signature]
-> > sig          0x9CA4ABB381AB73C8 2023-10-10  Stefan Hajnoczi
-> > <stefanha@redhat.com>
-> > uid                   [  full  ] Peter Xu <peterx@redhat.com>
-> > sig 3        0x3B5FCCCDF3ABD706 2023-10-03  [self-signature]
-> > sig          0x9CA4ABB381AB73C8 2023-10-10  Stefan Hajnoczi
-> > <stefanha@redhat.com>
-> > sub   cv25519/0xD5261EB1CB0C6E45 2023-10-03 [E]
-> > sig          0x3B5FCCCDF3ABD706 2023-10-03  [self-signature]
-> >
-> > I have pushed to the keyservers again in case I forget.
->
-> Thanks. Which keyservers did you use? I think these days the
-> keyserver infrastructure is unfortunately fragmented; I
-> probably didn't try refreshing from the right keyserver.
+Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+---
+ hw/arm/Kconfig            |  3 +++
+ hw/arm/fsl-imx6.c         | 25 ++++++++++++++++++++++
+ include/hw/arm/fsl-imx6.h | 44 ++++++++++++++++++++-------------------
+ 3 files changed, 51 insertions(+), 21 deletions(-)
 
-I ran gpg --send-key again and it said hkps://keyserver.ubuntu.com.
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index 660f49db49..575bb68c76 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -530,13 +530,16 @@ config FSL_IMX31
+ 
+ config FSL_IMX6
+     bool
++    imply PCI_DEVICES
+     imply I2C_DEVICES
+     select A9MPCORE
++    select PCI
+     select IMX
+     select IMX_FEC
+     select IMX_I2C
+     select IMX_USBPHY
+     select WDT_IMX2
++    select PCI_EXPRESS_DESIGNWARE
+     select SDHCI
+ 
+ config ASPEED_SOC
+diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
+index b2153022c0..27702b6d6d 100644
+--- a/hw/arm/fsl-imx6.c
++++ b/hw/arm/fsl-imx6.c
+@@ -22,6 +22,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "hw/arm/fsl-imx6.h"
++#include "hw/misc/unimp.h"
+ #include "hw/usb/imx-usb-phy.h"
+ #include "hw/boards.h"
+ #include "hw/qdev-properties.h"
+@@ -102,6 +103,8 @@ static void fsl_imx6_init(Object *obj)
+ 
+ 
+     object_initialize_child(obj, "eth", &s->eth, TYPE_IMX_ENET);
++
++    object_initialize_child(obj, "pcie", &s->pcie, TYPE_DESIGNWARE_PCIE_HOST);
+ }
+ 
+ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+@@ -109,6 +112,7 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+     MachineState *ms = MACHINE(qdev_get_machine());
+     FslIMX6State *s = FSL_IMX6(dev);
+     uint16_t i;
++    qemu_irq irq;
+     unsigned int smp_cpus = ms->smp.cpus;
+ 
+     if (smp_cpus > FSL_IMX6_NUM_CPUS) {
+@@ -421,6 +425,27 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+                                             FSL_IMX6_WDOGn_IRQ[i]));
+     }
+ 
++    /*
++     * PCIe
++     */
++    sysbus_realize(SYS_BUS_DEVICE(&s->pcie), &error_abort);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->pcie), 0, FSL_IMX6_PCIe_REG_ADDR);
++
++    irq = qdev_get_gpio_in(DEVICE(&s->a9mpcore), FSL_IMX6_PCIE1_IRQ);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 0, irq);
++    irq = qdev_get_gpio_in(DEVICE(&s->a9mpcore), FSL_IMX6_PCIE2_IRQ);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 1, irq);
++    irq = qdev_get_gpio_in(DEVICE(&s->a9mpcore), FSL_IMX6_PCIE3_IRQ);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 2, irq);
++    irq = qdev_get_gpio_in(DEVICE(&s->a9mpcore), FSL_IMX6_PCIE4_IRQ);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 3, irq);
++
++    /*
++     * PCIe PHY
++     */
++    create_unimplemented_device("pcie-phy", FSL_IMX6_PCIe_ADDR,
++                                FSL_IMX6_PCIe_SIZE);
++
+     /* ROM memory */
+     if (!memory_region_init_rom(&s->rom, OBJECT(dev), "imx6.rom",
+                                 FSL_IMX6_ROM_SIZE, errp)) {
+diff --git a/include/hw/arm/fsl-imx6.h b/include/hw/arm/fsl-imx6.h
+index 519b871014..61c593ffd2 100644
+--- a/include/hw/arm/fsl-imx6.h
++++ b/include/hw/arm/fsl-imx6.h
+@@ -32,6 +32,7 @@
+ #include "hw/net/imx_fec.h"
+ #include "hw/usb/chipidea.h"
+ #include "hw/usb/imx-usb-phy.h"
++#include "hw/pci-host/designware.h"
+ #include "exec/memory.h"
+ #include "cpu.h"
+ #include "qom/object.h"
+@@ -55,27 +56,28 @@ struct FslIMX6State {
+     DeviceState parent_obj;
+ 
+     /*< public >*/
+-    ARMCPU         cpu[FSL_IMX6_NUM_CPUS];
+-    A9MPPrivState  a9mpcore;
+-    IMX6CCMState   ccm;
+-    IMX6SRCState   src;
+-    IMX7SNVSState  snvs;
+-    IMXSerialState uart[FSL_IMX6_NUM_UARTS];
+-    IMXGPTState    gpt;
+-    IMXEPITState   epit[FSL_IMX6_NUM_EPITS];
+-    IMXI2CState    i2c[FSL_IMX6_NUM_I2CS];
+-    IMXGPIOState   gpio[FSL_IMX6_NUM_GPIOS];
+-    SDHCIState     esdhc[FSL_IMX6_NUM_ESDHCS];
+-    IMXSPIState    spi[FSL_IMX6_NUM_ECSPIS];
+-    IMX2WdtState   wdt[FSL_IMX6_NUM_WDTS];
+-    IMXUSBPHYState usbphy[FSL_IMX6_NUM_USB_PHYS];
+-    ChipideaState  usb[FSL_IMX6_NUM_USBS];
+-    IMXFECState    eth;
+-    MemoryRegion   rom;
+-    MemoryRegion   caam;
+-    MemoryRegion   ocram;
+-    MemoryRegion   ocram_alias;
+-    uint32_t       phy_num;
++    ARMCPU             cpu[FSL_IMX6_NUM_CPUS];
++    A9MPPrivState      a9mpcore;
++    IMX6CCMState       ccm;
++    IMX6SRCState       src;
++    IMX7SNVSState      snvs;
++    IMXSerialState     uart[FSL_IMX6_NUM_UARTS];
++    IMXGPTState        gpt;
++    IMXEPITState       epit[FSL_IMX6_NUM_EPITS];
++    IMXI2CState        i2c[FSL_IMX6_NUM_I2CS];
++    IMXGPIOState       gpio[FSL_IMX6_NUM_GPIOS];
++    SDHCIState         esdhc[FSL_IMX6_NUM_ESDHCS];
++    IMXSPIState        spi[FSL_IMX6_NUM_ECSPIS];
++    IMX2WdtState       wdt[FSL_IMX6_NUM_WDTS];
++    IMXUSBPHYState     usbphy[FSL_IMX6_NUM_USB_PHYS];
++    ChipideaState      usb[FSL_IMX6_NUM_USBS];
++    IMXFECState        eth;
++    DesignwarePCIEHost pcie;
++    MemoryRegion       rom;
++    MemoryRegion       caam;
++    MemoryRegion       ocram;
++    MemoryRegion       ocram_alias;
++    uint32_t           phy_num;
+ };
+ 
+ 
+-- 
+2.34.1
 
-Stefan
 
