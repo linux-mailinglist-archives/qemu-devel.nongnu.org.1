@@ -2,69 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E38826458
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 15:01:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8745F826460
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jan 2024 15:03:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMThO-00026X-1P; Sun, 07 Jan 2024 09:00:22 -0500
+	id 1rMTjj-000314-Cr; Sun, 07 Jan 2024 09:02:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rMTgw-00025O-0l; Sun, 07 Jan 2024 08:59:55 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rMTjb-000304-Bs
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 09:02:39 -0500
+Received: from todd.t-8ch.de ([159.69.126.157])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rMTgq-0003U3-Gp; Sun, 07 Jan 2024 08:59:51 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 0BD754E64E8;
- Sun,  7 Jan 2024 14:59:46 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id eUCln_09bNo0; Sun,  7 Jan 2024 14:59:44 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 1B06E4E6C91; Sun,  7 Jan 2024 14:59:44 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 196C574577C;
- Sun,  7 Jan 2024 14:59:44 +0100 (CET)
-Date: Sun, 7 Jan 2024 14:59:44 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Bernhard Beschow <shentey@gmail.com>
-cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>, 
- Artyom Tarasenko <atar4qemu@gmail.com>, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
- =?ISO-8859-15?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>, 
- John Snow <jsnow@redhat.com>, qemu-block@nongnu.org, 
- Kevin Wolf <kwolf@redhat.com>, Thomas Huth <huth@tuxfamily.org>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, 
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Juan Quintela <quintela@redhat.com>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Sergio Lopez <slp@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- =?ISO-8859-15?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>
-Subject: Re: [PATCH v4 11/11] hw/isa/vt82c686: Implement relocation and
- toggling of SuperI/O functions
-In-Reply-To: <20240106210531.140542-12-shentey@gmail.com>
-Message-ID: <43de62e3-67d0-f013-2f4b-21ec1a78dbee@eik.bme.hu>
-References: <20240106210531.140542-1-shentey@gmail.com>
- <20240106210531.140542-12-shentey@gmail.com>
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rMTjY-0006Rm-T9
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 09:02:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
+ t=1704636150; bh=0lIi37ao4DLY8G9TURSvPnxE58gEy4C7h3znnFp/6MU=;
+ h=From:Subject:Date:To:Cc:From;
+ b=Lv/EPM29yaEBmJD7fyUOC8itY4jJa49Lg/YGRp3Ej8XTtQM7ppg8ab0+kDb9hcGex
+ pAbsiIH8SuP5nzvSSL0xlaA1dhZ0Qcq3j+59pTph2j7J99I7YgDBNSCOz3Hcfnfu/W
+ nOHnCbBS5rbscEHteyCzuXUBgLYHl2S8sxWLoTF0=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+Subject: [PATCH v2 0/2] linux-user: two fixes to coredump generation
+Date: Sun, 07 Jan 2024 15:01:52 +0100
+Message-Id: <20240107-qemu-user-dumpable-v2-0-54e3bcfc00c9@t-8ch.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANCummUC/32NSw7CIBRFt9K8sc/w8VdH7sN0UOAhJPYjFKJp2
+ LvYBTg8NznnrhApeIpwbVYIlH3001hB7BrQrh8fhN5UBsGE5Jwf8UVDwlQtNGmYe/UkNIe21Uy
+ 2J84kVHEOZP17i967ys7HZQqf7SPz3/o3lzkyJKPobJlVionbghft9oagK6V8Ad1qfbCzAAAA
+To: Laurent Vivier <laurent@vivier.eu>
+Cc: qemu-devel@nongnu.org, =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1704636150; l=657;
+ i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
+ bh=0lIi37ao4DLY8G9TURSvPnxE58gEy4C7h3znnFp/6MU=;
+ b=7AIAKN+OVZe+LVtXTHNVvnLehEHpNClN14I6tuCQk8tcaRoaR9+iVVEk9QALdRtWQITjUwwPY
+ gFMAoTsiQZIBiM3fmqk8bNJWr/OPw7ZxPOxIlElfvijla3qbYukb+BN
+X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+Received-SPF: pass client-ip=159.69.126.157; envelope-from=thomas@t-8ch.de;
+ helo=todd.t-8ch.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,153 +65,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 6 Jan 2024, Bernhard Beschow wrote:
-> The VIA south bridges are able to relocate and toggle (enable or disable) their
-> SuperI/O functions. So far this is hardcoded such that all functions are always
-> enabled and are located at fixed addresses.
->
-> Some PC BIOSes seem to probe for I/O occupancy before activating such a function
-> and issue an error in case of a conflict. Since the functions are currently
-> enabled on reset, conflicts are always detected. Prevent that by implementing
-> relocation and toggling of the SuperI/O functions.
->
-> Note that all SuperI/O functions are now deactivated upon reset (except for
-> VT82C686B's serial ports where Fuloong 2e's rescue-yl seems to expect them to be
-> enabled by default). Rely on firmware to configure the functions accordingly.
->
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> ---
-> hw/isa/vt82c686.c | 66 ++++++++++++++++++++++++++++++++++++++++-------
-> 1 file changed, 56 insertions(+), 10 deletions(-)
->
-> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-> index d3e0f6d01f..9f62fb5964 100644
-> --- a/hw/isa/vt82c686.c
-> +++ b/hw/isa/vt82c686.c
-> @@ -15,6 +15,9 @@
->
-> #include "qemu/osdep.h"
-> #include "hw/isa/vt82c686.h"
-> +#include "hw/block/fdc.h"
-> +#include "hw/char/parallel-isa.h"
-> +#include "hw/char/serial.h"
-> #include "hw/pci/pci.h"
-> #include "hw/qdev-properties.h"
-> #include "hw/ide/pci.h"
-> @@ -323,6 +326,18 @@ static uint64_t via_superio_cfg_read(void *opaque, hwaddr addr, unsigned size)
->     return val;
-> }
->
-> +static void via_superio_devices_enable(ViaSuperIOState *s, uint8_t data)
-> +{
-> +    ISASuperIOClass *ic = ISA_SUPERIO_GET_CLASS(s);
-> +    size_t i;
+Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+---
+Changes in v2:
+- Rebase on 8.2 master
+- Resend after closed tree and holidays
+- Link to v1: https://lore.kernel.org/r/20231115-qemu-user-dumpable-v1-0-edbe7f0fbb02@t-8ch.de
 
-The expected value for i is 0 or 1 (maybe up to 3 sometimes it there are 
-more serial ports in a chip). so why use such big type? This should just 
-be int. Newly it's also allowed to declare it within the for so if you 
-want that you could do so but I have no preference on that and declaring 
-it here is also OK. Otherwise:
+---
+Thomas Weißschuh (2):
+      linux-user/elfload: test return value of getrlimit
+      linux-user/elfload: check PR_GET_DUMPABLE before creating coredump
 
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+ linux-user/elfload.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+---
+base-commit: 0c1eccd368af8805ec0fb11e6cf25d0684d37328
+change-id: 20231115-qemu-user-dumpable-d499c0396103
 
-> +
-> +    isa_parallel_set_enabled(s->superio.parallel[0], (data & 0x3) != 3);
-> +    for (i = 0; i < ic->serial.count; i++) {
-> +        isa_serial_set_enabled(s->superio.serial[i], data & BIT(i + 2));
-> +    }
-> +    isa_fdc_set_enabled(s->superio.floppy, data & BIT(4));
-> +}
-> +
-> static void via_superio_class_init(ObjectClass *klass, void *data)
-> {
->     DeviceClass *dc = DEVICE_CLASS(klass);
-> @@ -368,7 +383,25 @@ static void vt82c686b_superio_cfg_write(void *opaque, hwaddr addr,
->     case 0xfd ... 0xff:
->         /* ignore write to read only registers */
->         return;
-> -    /* case 0xe6 ... 0xe8: Should set base port of parallel and serial */
-> +    case 0xe2:
-> +        data &= 0x1f;
-> +        via_superio_devices_enable(sc, data);
-> +        break;
-> +    case 0xe3:
-> +        data &= 0xfc;
-> +        isa_fdc_set_iobase(sc->superio.floppy, data << 2);
-> +        break;
-> +    case 0xe6:
-> +        isa_parallel_set_iobase(sc->superio.parallel[0], data << 2);
-> +        break;
-> +    case 0xe7:
-> +        data &= 0xfe;
-> +        isa_serial_set_iobase(sc->superio.serial[0], data << 2);
-> +        break;
-> +    case 0xe8:
-> +        data &= 0xfe;
-> +        isa_serial_set_iobase(sc->superio.serial[1], data << 2);
-> +        break;
->     default:
->         qemu_log_mask(LOG_UNIMP,
->                       "via_superio_cfg: unimplemented register 0x%x\n", idx);
-> @@ -395,9 +428,14 @@ static void vt82c686b_superio_reset(DeviceState *dev)
->     /* Device ID */
->     vt82c686b_superio_cfg_write(s, 0, 0xe0, 1);
->     vt82c686b_superio_cfg_write(s, 1, 0x3c, 1);
-> -    /* Function select - all disabled */
-> +    /*
-> +     * Function select - only serial enabled
-> +     * Fuloong 2e's rescue-yl prints to the serial console w/o enabling it. This
-> +     * suggests that the serial ports are enabled by default, so override the
-> +     * datasheet.
-> +     */
->     vt82c686b_superio_cfg_write(s, 0, 0xe2, 1);
-> -    vt82c686b_superio_cfg_write(s, 1, 0x03, 1);
-> +    vt82c686b_superio_cfg_write(s, 1, 0x0f, 1);
->     /* Floppy ctrl base addr 0x3f0-7 */
->     vt82c686b_superio_cfg_write(s, 0, 0xe3, 1);
->     vt82c686b_superio_cfg_write(s, 1, 0xfc, 1);
-> @@ -465,6 +503,21 @@ static void vt8231_superio_cfg_write(void *opaque, hwaddr addr,
->     case 0xfd:
->         /* ignore write to read only registers */
->         return;
-> +    case 0xf2:
-> +        data &= 0x17;
-> +        via_superio_devices_enable(sc, data);
-> +        break;
-> +    case 0xf4:
-> +        data &= 0xfe;
-> +        isa_serial_set_iobase(sc->superio.serial[0], data << 2);
-> +        break;
-> +    case 0xf6:
-> +        isa_parallel_set_iobase(sc->superio.parallel[0], data << 2);
-> +        break;
-> +    case 0xf7:
-> +        data &= 0xfc;
-> +        isa_fdc_set_iobase(sc->superio.floppy, data << 2);
-> +        break;
->     default:
->         qemu_log_mask(LOG_UNIMP,
->                       "via_superio_cfg: unimplemented register 0x%x\n", idx);
-> @@ -513,12 +566,6 @@ static void vt8231_superio_init(Object *obj)
->     VIA_SUPERIO(obj)->io_ops = &vt8231_superio_cfg_ops;
-> }
->
-> -static uint16_t vt8231_superio_serial_iobase(ISASuperIODevice *sio,
-> -                                             uint8_t index)
-> -{
-> -        return 0x2f8; /* FIXME: This should be settable via registers f2-f4 */
-> -}
-> -
-> static void vt8231_superio_class_init(ObjectClass *klass, void *data)
-> {
->     DeviceClass *dc = DEVICE_CLASS(klass);
-> @@ -526,7 +573,6 @@ static void vt8231_superio_class_init(ObjectClass *klass, void *data)
->
->     dc->reset = vt8231_superio_reset;
->     sc->serial.count = 1;
-> -    sc->serial.get_iobase = vt8231_superio_serial_iobase;
->     sc->parallel.count = 1;
->     sc->ide.count = 0; /* emulated by via-ide */
->     sc->floppy.count = 1;
->
+Best regards,
+-- 
+Thomas Weißschuh <thomas@t-8ch.de>
+
 
