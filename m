@@ -2,83 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B956D827ADE
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 23:49:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76985827AE2
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 23:50:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMyQY-0006be-M0; Mon, 08 Jan 2024 17:49:02 -0500
+	id 1rMyRd-0000Wp-Cy; Mon, 08 Jan 2024 17:50:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rMyQV-0006XF-Tq
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 17:48:59 -0500
-Received: from mail-io1-xd29.google.com ([2607:f8b0:4864:20::d29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rMyQS-0008W2-E5
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 17:48:59 -0500
-Received: by mail-io1-xd29.google.com with SMTP id
- ca18e2360f4ac-7bed944f553so4404339f.3
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 14:48:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704754135; x=1705358935; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8WXx1KgQGvaoHAN3dxMBX85FHZrbmTm10LepTlf7fW8=;
- b=SblaAGl8JPTo2U7zWqV5CPH3dd34n+3OkntWNcqiKGU4BqGm9cOQoA5CrLjc4VZ35m
- WDy4oqv1DNHZe+sipnX+GLyAfR9v039DfdCYukZabdUeJMzkWTiw3l5EvPr6OJ0Sufc8
- 1YY86KhDMgkVz9AUIk3sNuVcjzH8EtTQL2LMhGp8uuKilp/PxW2/p0laBvMgCt0zI0aD
- FNZRWohlabtyCiZSJ/umlEaQbnFUojbegr+1oGx2NtyGbjNhqA+dQ0xr6f44GEpn39/Z
- JJYWpoEe9vqG1fMQcoPRxyWwj/dvDvB5kIjvQ2UE20DWP382dxjqW5VkWS1GgqQldsvl
- iWWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704754135; x=1705358935;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8WXx1KgQGvaoHAN3dxMBX85FHZrbmTm10LepTlf7fW8=;
- b=rCauYLh7PAd8IWBE7Xwaw3JhvYJFI1D3m0QuTpmbHTcmYCL1TflZ1i5BmHyBNdflTa
- 0Q+k6BkpCYCmoVHsHusruNdhU6jr3Ykec9tHzFwXC7r6i4QfhZLC6sdYbW582MAD9SrS
- s0QYyPKxMLcLYsPGY+qlXJJ6w6zflaT4qmevZ+F7pPbJz+UeetGmikbu5n2FHXCkaexp
- PFo1k0YBwBGCurMjsTfE78JgZxgM46SjhSMVvOIiar2dfbwclV54sv2hBRvO03KN+clq
- t110zJX+z0yxwvKUhhkigb9kKPNdakk8XvYOLHZUOJHlcjUGrmos+AwU/3lF4ex/Bcb5
- NZYw==
-X-Gm-Message-State: AOJu0Yy1IPq37AghLQwQFmO0u88IjFmZzjPymZzPEIrC/baBZJx5NubR
- iVxoD2lva2D5KmkLxfXlFAoZsd4iV5mijQ==
-X-Google-Smtp-Source: AGHT+IFhYxNQQ6GE7XCa/UZYYTag4MjoDWQFMMNVjJuU5zSTGTXSwwwaxKyQW6V+9JTK4Z/YKklf6g==
-X-Received: by 2002:a6b:e70c:0:b0:7ba:b744:bb0 with SMTP id
- b12-20020a6be70c000000b007bab7440bb0mr5912602ioh.35.1704754132663; 
- Mon, 08 Jan 2024 14:48:52 -0800 (PST)
-Received: from taylor-ubuntu.hsd1.co.comcast.net
- (c-73-169-12-54.hsd1.co.comcast.net. [73.169.12.54])
- by smtp.gmail.com with ESMTPSA id
- t7-20020a056638204700b0046e08e513b2sm241877jaj.116.2024.01.08.14.48.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Jan 2024 14:48:51 -0800 (PST)
-From: Taylor Simpson <ltaylorsimpson@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: bcain@quicinc.com, quic_mathbern@quicinc.com, sidneym@quicinc.com,
- quic_mliebel@quicinc.com, richard.henderson@linaro.org, philmd@linaro.org,
- ale@rev.ng, anjo@rev.ng, ltaylorsimpson@gmail.com
-Subject: [PATCH v2 3/3] Hexagon (target/hexagon) Remove old dectree.py
-Date: Mon,  8 Jan 2024 15:48:45 -0700
-Message-Id: <20240108224845.285864-4-ltaylorsimpson@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240108224845.285864-1-ltaylorsimpson@gmail.com>
-References: <20240108224845.285864-1-ltaylorsimpson@gmail.com>
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1rMyRa-0000W6-OI; Mon, 08 Jan 2024 17:50:06 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1rMyRY-0000op-E6; Mon, 08 Jan 2024 17:50:06 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 408LZhFq028108; Mon, 8 Jan 2024 22:49:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=k7aE0cnTaUgabLuuTRS2mAtwa3Fe+rVt5Fwr/aWzuLg=;
+ b=FKr+6FRVvkYCQcLvGNJioSvpE8NxZEBZm9LGPwZpfGjspCJHDAqFn7bxzKocSY0TUfzz
+ x34MePnd8KrAcYTQYKCVYQgh+yJ0u6zuTrsjy/dhWtMqx9Ka2IipqBhWJDvEdnbx0dWO
+ shnU2bVdAs4uXjSN/M4gnJPYEL5/CUw1QSg9CdmlwZr4fCNidjgY8pkcbSkDJqDQg4gO
+ FFkmHv4pCXcMI2jduPy1oRwdDsA73qG+CZ4NczPISmwxDJml1WeRhYUQfHDkw4ruB13G
+ uD45Iiez4WzBkz7TlUks//VcvkzDmDr9XkbvVKSfku/umG6Ce8D/KSBv3wcEJmhPULiw Ww== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vgnfj711a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Jan 2024 22:49:45 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 408MNDFL009063;
+ Mon, 8 Jan 2024 22:49:45 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vgnfj7111-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Jan 2024 22:49:45 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 408M7bZs027254; Mon, 8 Jan 2024 22:49:44 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkw1tma8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Jan 2024 22:49:44 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 408MnhU329033036
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 8 Jan 2024 22:49:43 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7CD5058055;
+ Mon,  8 Jan 2024 22:49:43 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AF8845804B;
+ Mon,  8 Jan 2024 22:49:42 +0000 (GMT)
+Received: from [9.61.145.235] (unknown [9.61.145.235])
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  8 Jan 2024 22:49:42 +0000 (GMT)
+Message-ID: <3d9b40fa-c5d2-4243-9895-be892e992848@linux.ibm.com>
+Date: Mon, 8 Jan 2024 16:49:42 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 04/10] hw/fsi: IBM's On-chip Peripheral Bus
+Content-Language: en-US
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
+References: <20231128235700.599584-1-ninad@linux.ibm.com>
+ <20231128235700.599584-5-ninad@linux.ibm.com>
+ <d8b3b1c4-42df-4390-9b81-0a426fa43b77@kaod.org>
+From: Ninad Palsule <ninad@linux.ibm.com>
+In-Reply-To: <d8b3b1c4-42df-4390-9b81-0a426fa43b77@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d29;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-io1-xd29.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: bMjxJcuA9BwPi6RmbJG8M4_W6b0xcSXX
+X-Proofpoint-GUID: nG7pKeYYYqTBt3atMBy1PmvXi7so0ryw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-08_10,2024-01-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0
+ lowpriorityscore=0 clxscore=1015 suspectscore=0 phishscore=0
+ malwarescore=0 mlxlogscore=760 priorityscore=1501 bulkscore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401080185
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,974 +117,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we are using QEMU decodetree.py, remove the old decoder
+Hello Cedric,
 
-Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
----
- target/hexagon/opcodes.h            |   2 -
- target/hexagon/decode.c             | 344 ------------------------
- target/hexagon/gen_dectree_import.c |  49 ----
- target/hexagon/opcodes.c            |  29 --
- target/hexagon/dectree.py           | 403 ----------------------------
- target/hexagon/meson.build          |  12 -
- 6 files changed, 839 deletions(-)
- delete mode 100755 target/hexagon/dectree.py
 
-diff --git a/target/hexagon/opcodes.h b/target/hexagon/opcodes.h
-index 6e90e00fe2..fa7e321950 100644
---- a/target/hexagon/opcodes.h
-+++ b/target/hexagon/opcodes.h
-@@ -53,6 +53,4 @@ extern const OpcodeEncoding opcode_encodings[XX_LAST_OPCODE];
- 
- void opcode_init(void);
- 
--int opcode_which_immediate_is_extended(Opcode opcode);
--
- #endif
-diff --git a/target/hexagon/decode.c b/target/hexagon/decode.c
-index 160b23a895..a40210ca1e 100644
---- a/target/hexagon/decode.c
-+++ b/target/hexagon/decode.c
-@@ -88,175 +88,6 @@ static int shift_left(DisasContext *ctx, int x, int n, int immno)
- /* Include the generated helpers for the decoder */
- #include "decodetree_trans_funcs_generated.c.inc"
- 
--typedef struct {
--    const struct DectreeTable *table_link;
--    const struct DectreeTable *table_link_b;
--    Opcode opcode;
--    enum {
--        DECTREE_ENTRY_INVALID,
--        DECTREE_TABLE_LINK,
--        DECTREE_SUBINSNS,
--        DECTREE_EXTSPACE,
--        DECTREE_TERMINAL
--    } type;
--} DectreeEntry;
--
--typedef struct DectreeTable {
--    unsigned int (*lookup_function)(int startbit, int width, uint32_t opcode);
--    unsigned int size;
--    unsigned int startbit;
--    unsigned int width;
--    const DectreeEntry table[];
--} DectreeTable;
--
--#define DECODE_NEW_TABLE(TAG, SIZE, WHATNOT) \
--    static const DectreeTable dectree_table_##TAG;
--#define TABLE_LINK(TABLE)                     /* NOTHING */
--#define TERMINAL(TAG, ENC)                    /* NOTHING */
--#define SUBINSNS(TAG, CLASSA, CLASSB, ENC)    /* NOTHING */
--#define EXTSPACE(TAG, ENC)                    /* NOTHING */
--#define INVALID()                             /* NOTHING */
--#define DECODE_END_TABLE(...)                 /* NOTHING */
--#define DECODE_MATCH_INFO(...)                /* NOTHING */
--#define DECODE_LEGACY_MATCH_INFO(...)         /* NOTHING */
--#define DECODE_OPINFO(...)                    /* NOTHING */
--
--#include "dectree_generated.h.inc"
--
--#undef DECODE_OPINFO
--#undef DECODE_MATCH_INFO
--#undef DECODE_LEGACY_MATCH_INFO
--#undef DECODE_END_TABLE
--#undef INVALID
--#undef TERMINAL
--#undef SUBINSNS
--#undef EXTSPACE
--#undef TABLE_LINK
--#undef DECODE_NEW_TABLE
--#undef DECODE_SEPARATOR_BITS
--
--#define DECODE_SEPARATOR_BITS(START, WIDTH) NULL, START, WIDTH
--#define DECODE_NEW_TABLE_HELPER(TAG, SIZE, FN, START, WIDTH) \
--    static const DectreeTable dectree_table_##TAG = { \
--        .size = SIZE, \
--        .lookup_function = FN, \
--        .startbit = START, \
--        .width = WIDTH, \
--        .table = {
--#define DECODE_NEW_TABLE(TAG, SIZE, WHATNOT) \
--    DECODE_NEW_TABLE_HELPER(TAG, SIZE, WHATNOT)
--
--#define TABLE_LINK(TABLE) \
--    { .type = DECTREE_TABLE_LINK, .table_link = &dectree_table_##TABLE },
--#define TERMINAL(TAG, ENC) \
--    { .type = DECTREE_TERMINAL, .opcode = TAG  },
--#define SUBINSNS(TAG, CLASSA, CLASSB, ENC) \
--    { \
--        .type = DECTREE_SUBINSNS, \
--        .table_link = &dectree_table_DECODE_SUBINSN_##CLASSA, \
--        .table_link_b = &dectree_table_DECODE_SUBINSN_##CLASSB \
--    },
--#define EXTSPACE(TAG, ENC) { .type = DECTREE_EXTSPACE },
--#define INVALID() { .type = DECTREE_ENTRY_INVALID, .opcode = XX_LAST_OPCODE },
--
--#define DECODE_END_TABLE(...) } };
--
--#define DECODE_MATCH_INFO(...)                /* NOTHING */
--#define DECODE_LEGACY_MATCH_INFO(...)         /* NOTHING */
--#define DECODE_OPINFO(...)                    /* NOTHING */
--
--#include "dectree_generated.h.inc"
--
--#undef DECODE_OPINFO
--#undef DECODE_MATCH_INFO
--#undef DECODE_LEGACY_MATCH_INFO
--#undef DECODE_END_TABLE
--#undef INVALID
--#undef TERMINAL
--#undef SUBINSNS
--#undef EXTSPACE
--#undef TABLE_LINK
--#undef DECODE_NEW_TABLE
--#undef DECODE_NEW_TABLE_HELPER
--#undef DECODE_SEPARATOR_BITS
--
--static const DectreeTable dectree_table_DECODE_EXT_EXT_noext = {
--    .size = 1, .lookup_function = NULL, .startbit = 0, .width = 0,
--    .table = {
--        { .type = DECTREE_ENTRY_INVALID, .opcode = XX_LAST_OPCODE },
--    }
--};
--
--static const DectreeTable *ext_trees[XX_LAST_EXT_IDX];
--
--static void decode_ext_init(void)
--{
--    int i;
--    for (i = EXT_IDX_noext; i < EXT_IDX_noext_AFTER; i++) {
--        ext_trees[i] = &dectree_table_DECODE_EXT_EXT_noext;
--    }
--    for (i = EXT_IDX_mmvec; i < EXT_IDX_mmvec_AFTER; i++) {
--        ext_trees[i] = &dectree_table_DECODE_EXT_EXT_mmvec;
--    }
--}
--
--typedef struct {
--    uint32_t mask;
--    uint32_t match;
--} DecodeITableEntry;
--
--#define DECODE_NEW_TABLE(TAG, SIZE, WHATNOT)  /* NOTHING */
--#define TABLE_LINK(TABLE)                     /* NOTHING */
--#define TERMINAL(TAG, ENC)                    /* NOTHING */
--#define SUBINSNS(TAG, CLASSA, CLASSB, ENC)    /* NOTHING */
--#define EXTSPACE(TAG, ENC)                    /* NOTHING */
--#define INVALID()                             /* NOTHING */
--#define DECODE_END_TABLE(...)                 /* NOTHING */
--#define DECODE_OPINFO(...)                    /* NOTHING */
--
--#define DECODE_MATCH_INFO_NORMAL(TAG, MASK, MATCH) \
--    [TAG] = { \
--        .mask = MASK, \
--        .match = MATCH, \
--    },
--
--#define DECODE_MATCH_INFO_NULL(TAG, MASK, MATCH) \
--    [TAG] = { .match = ~0 },
--
--#define DECODE_MATCH_INFO(...) DECODE_MATCH_INFO_NORMAL(__VA_ARGS__)
--#define DECODE_LEGACY_MATCH_INFO(...) /* NOTHING */
--
--static const DecodeITableEntry decode_itable[XX_LAST_OPCODE] = {
--#include "dectree_generated.h.inc"
--};
--
--#undef DECODE_MATCH_INFO
--#define DECODE_MATCH_INFO(...) DECODE_MATCH_INFO_NULL(__VA_ARGS__)
--
--#undef DECODE_LEGACY_MATCH_INFO
--#define DECODE_LEGACY_MATCH_INFO(...) DECODE_MATCH_INFO_NORMAL(__VA_ARGS__)
--
--static const DecodeITableEntry decode_legacy_itable[XX_LAST_OPCODE] = {
--#include "dectree_generated.h.inc"
--};
--
--#undef DECODE_OPINFO
--#undef DECODE_MATCH_INFO
--#undef DECODE_LEGACY_MATCH_INFO
--#undef DECODE_END_TABLE
--#undef INVALID
--#undef TERMINAL
--#undef SUBINSNS
--#undef EXTSPACE
--#undef TABLE_LINK
--#undef DECODE_NEW_TABLE
--#undef DECODE_SEPARATOR_BITS
--
--void decode_init(void)
--{
--    decode_ext_init();
--}
--
- void decode_send_insn_to(Packet *packet, int start, int newloc)
- {
-     Insn tmpinsn;
-@@ -587,7 +418,6 @@ apply_extender(Packet *pkt, int i, uint32_t extender)
-     uint32_t base_immed;
- 
-     immed_num = pkt->insn[i].which_extended;
--    g_assert(immed_num == opcode_which_immediate_is_extended(pkt->insn[i].opcode));
-     base_immed = pkt->insn[i].immed[immed_num];
- 
-     pkt->insn[i].immed[immed_num] = extender | fZXTN(6, 32, base_immed);
-@@ -630,174 +460,6 @@ static SlotMask get_valid_slots(const Packet *pkt, unsigned int slot)
-     }
- }
- 
--#define DECODE_NEW_TABLE(TAG, SIZE, WHATNOT)     /* NOTHING */
--#define TABLE_LINK(TABLE)                        /* NOTHING */
--#define TERMINAL(TAG, ENC)                       /* NOTHING */
--#define SUBINSNS(TAG, CLASSA, CLASSB, ENC)       /* NOTHING */
--#define EXTSPACE(TAG, ENC)                       /* NOTHING */
--#define INVALID()                                /* NOTHING */
--#define DECODE_END_TABLE(...)                    /* NOTHING */
--#define DECODE_MATCH_INFO(...)                   /* NOTHING */
--#define DECODE_LEGACY_MATCH_INFO(...)            /* NOTHING */
--
--#define DECODE_REG(REGNO, WIDTH, STARTBIT) \
--    insn->regno[REGNO] = ((encoding >> STARTBIT) & ((1 << WIDTH) - 1));
--
--#define DECODE_IMPL_REG(REGNO, VAL) \
--    insn->regno[REGNO] = VAL;
--
--#define DECODE_IMM(IMMNO, WIDTH, STARTBIT, VALSTART) \
--    insn->immed[IMMNO] |= (((encoding >> STARTBIT) & ((1 << WIDTH) - 1))) << \
--                          (VALSTART);
--
--#define DECODE_IMM_SXT(IMMNO, WIDTH) \
--    insn->immed[IMMNO] = ((((int32_t)insn->immed[IMMNO]) << (32 - WIDTH)) >> \
--                          (32 - WIDTH));
--
--#define DECODE_IMM_NEG(IMMNO, WIDTH) \
--    insn->immed[IMMNO] = -insn->immed[IMMNO];
--
--#define DECODE_IMM_SHIFT(IMMNO, SHAMT)                                 \
--    if ((!insn->extension_valid) || \
--        (insn->which_extended != IMMNO)) { \
--        insn->immed[IMMNO] <<= SHAMT; \
--    }
--
--#define DECODE_OPINFO(TAG, BEH) \
--    case TAG: \
--        { BEH  } \
--        break; \
--
--/*
-- * Fill in the operands of the instruction
-- * dectree_generated.h.inc has a DECODE_OPINFO entry for each opcode
-- * For example,
-- *     DECODE_OPINFO(A2_addi,
-- *          DECODE_REG(0,5,0)
-- *          DECODE_REG(1,5,16)
-- *          DECODE_IMM(0,7,21,9)
-- *          DECODE_IMM(0,9,5,0)
-- *          DECODE_IMM_SXT(0,16)
-- * with the macros defined above, we'll fill in a switch statement
-- * where each case is an opcode tag.
-- */
--static void
--decode_op(Insn *insn, Opcode tag, uint32_t encoding)
--{
--    insn->immed[0] = 0;
--    insn->immed[1] = 0;
--    insn->opcode = tag;
--    if (insn->extension_valid) {
--        insn->which_extended = opcode_which_immediate_is_extended(tag);
--    }
--
--    switch (tag) {
--#include "dectree_generated.h.inc"
--    default:
--        break;
--    }
--
--    insn->generate = opcode_genptr[tag];
--
--    insn->iclass = iclass_bits(encoding);
--}
--
--#undef DECODE_REG
--#undef DECODE_IMPL_REG
--#undef DECODE_IMM
--#undef DECODE_IMM_SHIFT
--#undef DECODE_OPINFO
--#undef DECODE_MATCH_INFO
--#undef DECODE_LEGACY_MATCH_INFO
--#undef DECODE_END_TABLE
--#undef INVALID
--#undef TERMINAL
--#undef SUBINSNS
--#undef EXTSPACE
--#undef TABLE_LINK
--#undef DECODE_NEW_TABLE
--#undef DECODE_SEPARATOR_BITS
--
--static unsigned int
--decode_subinsn_tablewalk(Insn *insn, const DectreeTable *table,
--                         uint32_t encoding)
--{
--    unsigned int i;
--    Opcode opc;
--    if (table->lookup_function) {
--        i = table->lookup_function(table->startbit, table->width, encoding);
--    } else {
--        i = extract32(encoding, table->startbit, table->width);
--    }
--    if (table->table[i].type == DECTREE_TABLE_LINK) {
--        return decode_subinsn_tablewalk(insn, table->table[i].table_link,
--                                        encoding);
--    } else if (table->table[i].type == DECTREE_TERMINAL) {
--        opc = table->table[i].opcode;
--        if ((encoding & decode_itable[opc].mask) != decode_itable[opc].match) {
--            return 0;
--        }
--        decode_op(insn, opc, encoding);
--        return 1;
--    } else {
--        return 0;
--    }
--}
--
--static unsigned int get_insn_a(uint32_t encoding)
--{
--    return extract32(encoding, 0, 13);
--}
--
--static unsigned int get_insn_b(uint32_t encoding)
--{
--    return extract32(encoding, 16, 13);
--}
--
--static unsigned int
--decode_insns_tablewalk(Insn *insn, const DectreeTable *table,
--                       uint32_t encoding)
--{
--    unsigned int i;
--    unsigned int a, b;
--    Opcode opc;
--    if (table->lookup_function) {
--        i = table->lookup_function(table->startbit, table->width, encoding);
--    } else {
--        i = extract32(encoding, table->startbit, table->width);
--    }
--    if (table->table[i].type == DECTREE_TABLE_LINK) {
--        return decode_insns_tablewalk(insn, table->table[i].table_link,
--                                      encoding);
--    } else if (table->table[i].type == DECTREE_SUBINSNS) {
--        a = get_insn_a(encoding);
--        b = get_insn_b(encoding);
--        b = decode_subinsn_tablewalk(insn, table->table[i].table_link_b, b);
--        a = decode_subinsn_tablewalk(insn + 1, table->table[i].table_link, a);
--        if ((a == 0) || (b == 0)) {
--            return 0;
--        }
--        return 2;
--    } else if (table->table[i].type == DECTREE_TERMINAL) {
--        opc = table->table[i].opcode;
--        if ((encoding & decode_itable[opc].mask) != decode_itable[opc].match) {
--            if ((encoding & decode_legacy_itable[opc].mask) !=
--                decode_legacy_itable[opc].match) {
--                return 0;
--            }
--        }
--        decode_op(insn, opc, encoding);
--        return 1;
--    } else if (table->table[i].type == DECTREE_EXTSPACE) {
--        /*
--         * For now, HVX will be the only coproc
--         */
--        return decode_insns_tablewalk(insn, ext_trees[EXT_IDX_mmvec], encoding);
--    } else {
--        return 0;
--    }
--}
--
- /*
-  * Section 10.3 of the Hexagon V73 Programmer's Reference Manual
-  *
-@@ -858,7 +520,6 @@ static uint16_t get_slot1_subinsn(uint32_t encoding)
- static unsigned int
- decode_insns(DisasContext *ctx, Insn *insn, uint32_t encoding)
- {
--    const DectreeTable *table;
-     if (parse_bits(encoding) != 0) {
-         if (decode_normal(ctx, encoding) ||
-             decode_hvx(ctx, encoding)) {
-@@ -866,8 +527,6 @@ decode_insns(DisasContext *ctx, Insn *insn, uint32_t encoding)
-             insn->iclass = iclass_bits(encoding);
-             return 1;
-         }
--        /* Start with PP table - 32 bit instructions */
--        table = &dectree_table_DECODE_ROOT_32;
-         g_assert_not_reached();
-     } else {
-         uint32_t iclass = get_duplex_iclass(encoding);
-@@ -889,11 +548,8 @@ decode_insns(DisasContext *ctx, Insn *insn, uint32_t encoding)
-                 return 2;
-             }
-         }
--        /* start with EE table - duplex instructions */
--        table = &dectree_table_DECODE_ROOT_EE;
-         g_assert_not_reached();
-     }
--    return decode_insns_tablewalk(insn, table, encoding);
- }
- 
- static void decode_add_endloop_insn(Insn *insn, int loopnum)
-diff --git a/target/hexagon/gen_dectree_import.c b/target/hexagon/gen_dectree_import.c
-index ee354677fd..87f20c14f1 100644
---- a/target/hexagon/gen_dectree_import.c
-+++ b/target/hexagon/gen_dectree_import.c
-@@ -56,24 +56,6 @@ const char * const opcode_syntax[XX_LAST_OPCODE] = {
- #undef EXTINSN
- };
- 
--const char * const opcode_rregs[] = {
--#define REGINFO(TAG, REGINFO, RREGS, WREGS) RREGS,
--#define IMMINFO(TAG, SIGN, SIZE, SHAMT, SIGN2, SIZE2, SHAMT2)  /* nothing */
--#include "op_regs_generated.h.inc"
--    NULL
--#undef REGINFO
--#undef IMMINFO
--};
--
--const char * const opcode_wregs[] = {
--#define REGINFO(TAG, REGINFO, RREGS, WREGS) WREGS,
--#define IMMINFO(TAG, SIGN, SIZE, SHAMT, SIGN2, SIZE2, SHAMT2)  /* nothing */
--#include "op_regs_generated.h.inc"
--    NULL
--#undef REGINFO
--#undef IMMINFO
--};
--
- const OpcodeEncoding opcode_encodings[] = {
- #define DEF_ENC32(TAG, ENCSTR) \
-     [TAG] = { .encoding = ENCSTR },
-@@ -130,8 +112,6 @@ static void gen_iset_table(FILE *out)
-         fprintf(out, "\t\'%s\' : {\n", opcode_names[i]);
-         fprintf(out, "\t\t\'tag\' : \'%s\',\n", opcode_names[i]);
-         fprintf(out, "\t\t\'syntax\' : \'%s\',\n", opcode_syntax[i]);
--        fprintf(out, "\t\t\'rregs\' : \'%s\',\n", opcode_rregs[i]);
--        fprintf(out, "\t\t\'wregs\' : \'%s\',\n", opcode_wregs[i]);
-         fprintf(out, "\t\t\'enc\' : \'%s\',\n", get_opcode_enc(i));
-         fprintf(out, "\t\t\'enc_class\' : \'%s\',\n", get_opcode_enc_class(i));
-         fprintf(out, "\t},\n");
-@@ -150,33 +130,6 @@ static void gen_tags_list(FILE *out)
-     fprintf(out, "];\n\n");
- }
- 
--static void gen_enc_ext_spaces_table(FILE *out)
--{
--    fprintf(out, "enc_ext_spaces = {\n");
--#define DEF_EXT_SPACE(SPACEID, ENCSTR) \
--    fprintf(out, "\t\'%s\' : \'%s\',\n", #SPACEID, ENCSTR);
--#include "imported/encode.def"
--#undef DEF_EXT_SPACE
--    fprintf(out, "};\n\n");
--}
--
--static void gen_subinsn_groupings_table(FILE *out)
--{
--    fprintf(out, "subinsn_groupings = {\n");
--#define DEF_PACKED32(TAG, TYPEA, TYPEB, ENCSTR) \
--    do { \
--        fprintf(out, "\t\'%s\' : {\n", #TAG); \
--        fprintf(out, "\t\t\'name\' : \'%s\',\n", #TAG); \
--        fprintf(out, "\t\t\'class_a\' : \'%s\',\n", #TYPEA); \
--        fprintf(out, "\t\t\'class_b\' : \'%s\',\n", #TYPEB); \
--        fprintf(out, "\t\t\'enc\' : \'%s\',\n", ENCSTR); \
--        fprintf(out, "\t},\n"); \
--    } while (0);
--#include "imported/encode.def"
--#undef DEF_PACKED32
--    fprintf(out, "};\n\n");
--}
--
- int main(int argc, char *argv[])
- {
-     FILE *outfile;
-@@ -193,8 +146,6 @@ int main(int argc, char *argv[])
- 
-     gen_iset_table(outfile);
-     gen_tags_list(outfile);
--    gen_enc_ext_spaces_table(outfile);
--    gen_subinsn_groupings_table(outfile);
- 
-     fclose(outfile);
-     return 0;
-diff --git a/target/hexagon/opcodes.c b/target/hexagon/opcodes.c
-index 35d790cdd5..1f7f3def38 100644
---- a/target/hexagon/opcodes.c
-+++ b/target/hexagon/opcodes.c
-@@ -111,33 +111,4 @@ void opcode_init(void)
- #include "op_attribs_generated.h.inc"
- #undef OP_ATTRIB
- #undef ATTRIBS
--
--    decode_init();
--}
--
--
--#define NEEDLE "IMMEXT("
--
--int opcode_which_immediate_is_extended(Opcode opcode)
--{
--    const char *p;
--
--    g_assert(opcode < XX_LAST_OPCODE);
--    g_assert(GET_ATTRIB(opcode, A_EXTENDABLE));
--
--    p = opcode_short_semantics[opcode];
--    p = strstr(p, NEEDLE);
--    g_assert(p);
--    p += strlen(NEEDLE);
--    while (isspace(*p)) {
--        p++;
--    }
--    /* lower is always imm 0, upper always imm 1. */
--    if (islower(*p)) {
--        return 0;
--    } else if (isupper(*p)) {
--        return 1;
--    } else {
--        g_assert_not_reached();
--    }
- }
-diff --git a/target/hexagon/dectree.py b/target/hexagon/dectree.py
-deleted file mode 100755
-index 3b32948a04..0000000000
---- a/target/hexagon/dectree.py
-+++ /dev/null
-@@ -1,403 +0,0 @@
--#!/usr/bin/env python3
--
--##
--##  Copyright(c) 2019-2023 Qualcomm Innovation Center, Inc. All Rights Reserved.
--##
--##  This program is free software; you can redistribute it and/or modify
--##  it under the terms of the GNU General Public License as published by
--##  the Free Software Foundation; either version 2 of the License, or
--##  (at your option) any later version.
--##
--##  This program is distributed in the hope that it will be useful,
--##  but WITHOUT ANY WARRANTY; without even the implied warranty of
--##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--##  GNU General Public License for more details.
--##
--##  You should have received a copy of the GNU General Public License
--##  along with this program; if not, see <http://www.gnu.org/licenses/>.
--##
--
--import io
--import re
--
--import sys
--import iset
--
--encs = {
--    tag: "".join(reversed(iset.iset[tag]["enc"].replace(" ", "")))
--    for tag in iset.tags
--    if iset.iset[tag]["enc"] != "MISSING ENCODING"
--}
--
--enc_classes = set([iset.iset[tag]["enc_class"] for tag in encs.keys()])
--subinsn_enc_classes = set(
--    [enc_class for enc_class in enc_classes if enc_class.startswith("SUBINSN_")]
--)
--ext_enc_classes = set(
--    [
--        enc_class
--        for enc_class in enc_classes
--        if enc_class not in ("NORMAL", "16BIT") and not enc_class.startswith("SUBINSN_")
--    ]
--)
--
--try:
--    subinsn_groupings = iset.subinsn_groupings
--except AttributeError:
--    subinsn_groupings = {}
--
--for tag, subinsn_grouping in subinsn_groupings.items():
--    encs[tag] = "".join(reversed(subinsn_grouping["enc"].replace(" ", "")))
--
--dectree_normal = {"leaves": set()}
--dectree_16bit = {"leaves": set()}
--dectree_subinsn_groupings = {"leaves": set()}
--dectree_subinsns = {name: {"leaves": set()} for name in subinsn_enc_classes}
--dectree_extensions = {name: {"leaves": set()} for name in ext_enc_classes}
--
--for tag in encs.keys():
--    if tag in subinsn_groupings:
--        dectree_subinsn_groupings["leaves"].add(tag)
--        continue
--    enc_class = iset.iset[tag]["enc_class"]
--    if enc_class.startswith("SUBINSN_"):
--        if len(encs[tag]) != 32:
--            encs[tag] = encs[tag] + "0" * (32 - len(encs[tag]))
--        dectree_subinsns[enc_class]["leaves"].add(tag)
--    elif enc_class == "16BIT":
--        if len(encs[tag]) != 16:
--            raise Exception(
--                'Tag "{}" has enc_class "{}" and not an encoding '
--                + "width of 16 bits!".format(tag, enc_class)
--            )
--        dectree_16bit["leaves"].add(tag)
--    else:
--        if len(encs[tag]) != 32:
--            raise Exception(
--                'Tag "{}" has enc_class "{}" and not an encoding '
--                + "width of 32 bits!".format(tag, enc_class)
--            )
--        if enc_class == "NORMAL":
--            dectree_normal["leaves"].add(tag)
--        else:
--            dectree_extensions[enc_class]["leaves"].add(tag)
--
--faketags = set()
--for tag, enc in iset.enc_ext_spaces.items():
--    faketags.add(tag)
--    encs[tag] = "".join(reversed(enc.replace(" ", "")))
--    dectree_normal["leaves"].add(tag)
--
--faketags |= set(subinsn_groupings.keys())
--
--
--def every_bit_counts(bitset):
--    for i in range(1, len(next(iter(bitset)))):
--        if len(set([bits[:i] + bits[i + 1 :] for bits in bitset])) == len(bitset):
--            return False
--    return True
--
--
--def auto_separate(node):
--    tags = node["leaves"]
--    if len(tags) <= 1:
--        return
--    enc_width = len(encs[next(iter(tags))])
--    opcode_bit_for_all = [
--        all([encs[tag][i] in "01" for tag in tags]) for i in range(enc_width)
--    ]
--    opcode_bit_is_0_for_all = [
--        opcode_bit_for_all[i] and all([encs[tag][i] == "0" for tag in tags])
--        for i in range(enc_width)
--    ]
--    opcode_bit_is_1_for_all = [
--        opcode_bit_for_all[i] and all([encs[tag][i] == "1" for tag in tags])
--        for i in range(enc_width)
--    ]
--    differentiator_opcode_bit = [
--        opcode_bit_for_all[i]
--        and not (opcode_bit_is_0_for_all[i] or opcode_bit_is_1_for_all[i])
--        for i in range(enc_width)
--    ]
--    best_width = 0
--    for width in range(4, 0, -1):
--        for lsb in range(enc_width - width, -1, -1):
--            bitset = set([encs[tag][lsb : lsb + width] for tag in tags])
--            if all(differentiator_opcode_bit[lsb : lsb + width]) and (
--                len(bitset) == len(tags) or every_bit_counts(bitset)
--            ):
--                best_width = width
--                best_lsb = lsb
--                caught_all_tags = len(bitset) == len(tags)
--                break
--        if best_width != 0:
--            break
--    if best_width == 0:
--        raise Exception(
--            "Could not find a way to differentiate the encodings "
--            + "of the following tags:\n{}".format("\n".join(tags))
--        )
--    if caught_all_tags:
--        for width in range(1, best_width):
--            for lsb in range(enc_width - width, -1, -1):
--                bitset = set([encs[tag][lsb : lsb + width] for tag in tags])
--                if all(differentiator_opcode_bit[lsb : lsb + width]) and len(
--                    bitset
--                ) == len(tags):
--                    best_width = width
--                    best_lsb = lsb
--                    break
--            else:
--                continue
--            break
--    node["separator_lsb"] = best_lsb
--    node["separator_width"] = best_width
--    node["children"] = []
--    for value in range(2**best_width):
--        child = {}
--        bits = "".join(reversed("{:0{}b}".format(value, best_width)))
--        child["leaves"] = set(
--            [tag for tag in tags if encs[tag][best_lsb : best_lsb + best_width] == bits]
--        )
--        node["children"].append(child)
--    for child in node["children"]:
--        auto_separate(child)
--
--
--auto_separate(dectree_normal)
--auto_separate(dectree_16bit)
--if subinsn_groupings:
--    auto_separate(dectree_subinsn_groupings)
--for dectree_subinsn in dectree_subinsns.values():
--    auto_separate(dectree_subinsn)
--for dectree_ext in dectree_extensions.values():
--    auto_separate(dectree_ext)
--
--for tag in faketags:
--    del encs[tag]
--
--
--def table_name(parents, node):
--    path = parents + [node]
--    root = path[0]
--    tag = next(iter(node["leaves"]))
--    if tag in subinsn_groupings:
--        enc_width = len(subinsn_groupings[tag]["enc"].replace(" ", ""))
--    else:
--        tag = next(iter(node["leaves"] - faketags))
--        enc_width = len(encs[tag])
--    determining_bits = ["_"] * enc_width
--    for parent, child in zip(path[:-1], path[1:]):
--        lsb = parent["separator_lsb"]
--        width = parent["separator_width"]
--        value = parent["children"].index(child)
--        determining_bits[lsb : lsb + width] = list(
--            reversed("{:0{}b}".format(value, width))
--        )
--    if tag in subinsn_groupings:
--        name = "DECODE_ROOT_EE"
--    else:
--        enc_class = iset.iset[tag]["enc_class"]
--        if enc_class in ext_enc_classes:
--            name = "DECODE_EXT_{}".format(enc_class)
--        elif enc_class in subinsn_enc_classes:
--            name = "DECODE_SUBINSN_{}".format(enc_class)
--        else:
--            name = "DECODE_ROOT_{}".format(enc_width)
--    if node != root:
--        name += "_" + "".join(reversed(determining_bits))
--    return name
--
--
--def print_node(f, node, parents):
--    if len(node["leaves"]) <= 1:
--        return
--    name = table_name(parents, node)
--    lsb = node["separator_lsb"]
--    width = node["separator_width"]
--    print(
--        "DECODE_NEW_TABLE({},{},DECODE_SEPARATOR_BITS({},{}))".format(
--            name, 2**width, lsb, width
--        ),
--        file=f,
--    )
--    for child in node["children"]:
--        if len(child["leaves"]) == 0:
--            print("INVALID()", file=f)
--        elif len(child["leaves"]) == 1:
--            (tag,) = child["leaves"]
--            if tag in subinsn_groupings:
--                class_a = subinsn_groupings[tag]["class_a"]
--                class_b = subinsn_groupings[tag]["class_b"]
--                enc = subinsn_groupings[tag]["enc"].replace(" ", "")
--                if "RESERVED" in tag:
--                    print("INVALID()", file=f)
--                else:
--                    print(
--                        'SUBINSNS({},{},{},"{}")'.format(tag, class_a, class_b, enc),
--                        file=f,
--                    )
--            elif tag in iset.enc_ext_spaces:
--                enc = iset.enc_ext_spaces[tag].replace(" ", "")
--                print('EXTSPACE({},"{}")'.format(tag, enc), file=f)
--            else:
--                enc = "".join(reversed(encs[tag]))
--                print('TERMINAL({},"{}")'.format(tag, enc), file=f)
--        else:
--            print("TABLE_LINK({})".format(table_name(parents + [node], child)), file=f)
--    print(
--        "DECODE_END_TABLE({},{},DECODE_SEPARATOR_BITS({},{}))".format(
--            name, 2**width, lsb, width
--        ),
--        file=f,
--    )
--    print(file=f)
--    parents.append(node)
--    for child in node["children"]:
--        print_node(f, child, parents)
--    parents.pop()
--
--
--def print_tree(f, tree):
--    print_node(f, tree, [])
--
--
--def print_match_info(f):
--    for tag in sorted(encs.keys(), key=iset.tags.index):
--        enc = "".join(reversed(encs[tag]))
--        mask = int(re.sub(r"[^1]", r"0", enc.replace("0", "1")), 2)
--        match = int(re.sub(r"[^01]", r"0", enc), 2)
--        suffix = ""
--        print(
--            "DECODE{}_MATCH_INFO({},0x{:x}U,0x{:x}U)".format(suffix, tag, mask, match),
--            file=f,
--        )
--
--
--regre = re.compile(r"((?<!DUP)[MNORCPQXSGVZA])([stuvwxyzdefg]+)([.]?[LlHh]?)(\d+S?)")
--immre = re.compile(r"[#]([rRsSuUm])(\d+)(?:[:](\d+))?")
--
--
--def ordered_unique(l):
--    return sorted(set(l), key=l.index)
--
--
--implicit_registers = {"SP": 29, "FP": 30, "LR": 31}
--
--num_registers = {"R": 32, "V": 32}
--
--
--def print_op_info(f):
--    for tag in sorted(encs.keys(), key=iset.tags.index):
--        enc = encs[tag]
--        print(file=f)
--        print("DECODE_OPINFO({},".format(tag), file=f)
--        regs = ordered_unique(regre.findall(iset.iset[tag]["syntax"]))
--        imms = ordered_unique(immre.findall(iset.iset[tag]["syntax"]))
--        regno = 0
--        for reg in regs:
--            reg_type = reg[0]
--            reg_letter = reg[1][0]
--            reg_num_choices = int(reg[3].rstrip("S"))
--            reg_mapping = reg[0] + "".join(["_" for letter in reg[1]]) + reg[3]
--            reg_enc_fields = re.findall(reg_letter + "+", enc)
--            if len(reg_enc_fields) == 0:
--                raise Exception('Tag "{}" missing register field!'.format(tag))
--            if len(reg_enc_fields) > 1:
--                raise Exception('Tag "{}" has split register field!'.format(tag))
--            reg_enc_field = reg_enc_fields[0]
--            if 2 ** len(reg_enc_field) != reg_num_choices:
--                raise Exception(
--                    'Tag "{}" has incorrect register field width!'.format(tag)
--                )
--            print(
--                "        DECODE_REG({},{},{})".format(
--                    regno, len(reg_enc_field), enc.index(reg_enc_field)
--                ),
--                file=f,
--            )
--            if reg_type in num_registers and reg_num_choices != num_registers[reg_type]:
--                print(
--                    "        DECODE_MAPPED_REG({},{})".format(regno, reg_mapping),
--                    file=f,
--                )
--            regno += 1
--
--        def implicit_register_key(reg):
--            return implicit_registers[reg]
--
--        for reg in sorted(
--            set(
--                [
--                    r
--                    for r in (
--                        iset.iset[tag]["rregs"].split(",")
--                        + iset.iset[tag]["wregs"].split(",")
--                    )
--                    if r in implicit_registers
--                ]
--            ),
--            key=implicit_register_key,
--        ):
--            print(
--                "        DECODE_IMPL_REG({},{})".format(regno, implicit_registers[reg]),
--                file=f,
--            )
--            regno += 1
--        if imms and imms[0][0].isupper():
--            imms = reversed(imms)
--        for imm in imms:
--            if imm[0].isupper():
--                immno = 1
--            else:
--                immno = 0
--            imm_type = imm[0]
--            imm_width = int(imm[1])
--            imm_shift = imm[2]
--            if imm_shift:
--                imm_shift = int(imm_shift)
--            else:
--                imm_shift = 0
--            if imm_type.islower():
--                imm_letter = "i"
--            else:
--                imm_letter = "I"
--            remainder = imm_width
--            for m in reversed(list(re.finditer(imm_letter + "+", enc))):
--                remainder -= m.end() - m.start()
--                print(
--                    "        DECODE_IMM({},{},{},{})".format(
--                        immno, m.end() - m.start(), m.start(), remainder
--                    ),
--                    file=f,
--                )
--            if remainder != 0:
--                if imm[2]:
--                    imm[2] = ":" + imm[2]
--                raise Exception(
--                    'Tag "{}" has an incorrect number of '
--                    + 'encoding bits for immediate "{}"'.format(tag, "".join(imm))
--                )
--            if imm_type.lower() in "sr":
--                print("        DECODE_IMM_SXT({},{})".format(immno, imm_width), file=f)
--            if imm_type.lower() == "n":
--                print("        DECODE_IMM_NEG({},{})".format(immno, imm_width), file=f)
--            if imm_shift:
--                print(
--                    "        DECODE_IMM_SHIFT({},{})".format(immno, imm_shift), file=f
--                )
--        print(")", file=f)
--
--
--if __name__ == "__main__":
--    with open(sys.argv[1], "w") as f:
--        print_tree(f, dectree_normal)
--        print_tree(f, dectree_16bit)
--        if subinsn_groupings:
--            print_tree(f, dectree_subinsn_groupings)
--        for name, dectree_subinsn in sorted(dectree_subinsns.items()):
--            print_tree(f, dectree_subinsn)
--        for name, dectree_ext in sorted(dectree_extensions.items()):
--            print_tree(f, dectree_ext)
--        print_match_info(f)
--        print_op_info(f)
-diff --git a/target/hexagon/meson.build b/target/hexagon/meson.build
-index 1bd1ebcba1..fb480afc03 100644
---- a/target/hexagon/meson.build
-+++ b/target/hexagon/meson.build
-@@ -122,18 +122,6 @@ hexagon_ss.add(iset_py)
- 
- #
- # Step 4
--# We use the dectree.py script to generate the decode tree header file
--#
--dectree_generated = custom_target(
--    'dectree_generated.h.inc',
--    output: 'dectree_generated.h.inc',
--    depends: [iset_py],
--    env: {'PYTHONPATH': meson.current_build_dir()},
--    command: [python, files('dectree.py'), '@OUTPUT@'],
--)
--hexagon_ss.add(dectree_generated)
--
--#
- # Generate the input to the QEMU decodetree.py script
- #
- normal_decode_generated = custom_target(
--- 
-2.34.1
+On 12/12/23 08:48, Cédric Le Goater wrote:
+> On 11/29/23 00:56, Ninad Palsule wrote:
+>> This is a part of patchset where IBM's Flexible Service Interface is
+>> introduced.
+>>
+>> The On-Chip Peripheral Bus (OPB): A low-speed bus typically found in
+>> POWER processors. This now makes an appearance in the ASPEED SoC due
+>> to tight integration of the FSI master IP with the OPB, mainly the
+>> existence of an MMIO-mapping of the CFAM address straight onto a
+>> sub-region of the OPB address space.
+>>
+>> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+>> Reviewed-by: Joel Stanley <joel@jms.id.au>
+>> [ clg: - removed FSIMasterState object and fsi_opb_realize()
+>>         - simplified OPBus ]
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>   include/hw/fsi/opb.h | 25 +++++++++++++++++++++++++
+>>   hw/fsi/opb.c         | 36 ++++++++++++++++++++++++++++++++++++
+>>   hw/fsi/Kconfig       |  4 ++++
+>>   hw/fsi/meson.build   |  1 +
+>>   4 files changed, 66 insertions(+)
+>>   create mode 100644 include/hw/fsi/opb.h
+>>   create mode 100644 hw/fsi/opb.c
+>>
+>> diff --git a/include/hw/fsi/opb.h b/include/hw/fsi/opb.h
+>> new file mode 100644
+>> index 0000000000..c112206f9e
+>> --- /dev/null
+>> +++ b/include/hw/fsi/opb.h
+>> @@ -0,0 +1,25 @@
+>> +/*
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + * Copyright (C) 2023 IBM Corp.
+>> + *
+>> + * IBM On-Chip Peripheral Bus
+>> + */
+>> +#ifndef FSI_OPB_H
+>> +#define FSI_OPB_H
+>> +
+>> +#include "exec/memory.h"
+>> +#include "hw/fsi/fsi-master.h"
+>> +
+>> +#define TYPE_OP_BUS "opb"
+>> +OBJECT_DECLARE_SIMPLE_TYPE(OPBus, OP_BUS)
+>> +
+>> +typedef struct OPBus {
+>> +        /*< private >*/
+>> +        BusState bus;
+>> +
+>> +        /*< public >*/
+>> +        MemoryRegion mr;
+>> +        AddressSpace as;
+>> +} OPBus;
+>> +
+>> +#endif /* FSI_OPB_H */
+>> diff --git a/hw/fsi/opb.c b/hw/fsi/opb.c
+>> new file mode 100644
+>> index 0000000000..6474754890
+>> --- /dev/null
+>> +++ b/hw/fsi/opb.c
+>> @@ -0,0 +1,36 @@
+>> +/*
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + * Copyright (C) 2023 IBM Corp.
+>> + *
+>> + * IBM On-chip Peripheral Bus
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +
+>> +#include "qapi/error.h"
+>> +#include "qemu/log.h"
+>> +
+>> +#include "hw/fsi/opb.h"
+>> +
+>> +static void fsi_opb_init(Object *o)
+>> +{
+>> +    OPBus *opb = OP_BUS(o);
+>> +
+>> +    memory_region_init_io(&opb->mr, OBJECT(opb), NULL, opb,
+>> +                          NULL, UINT32_MAX);
+>
+> Let's give the region some name.
+Added "fsi.opb" name.
+
+
+Thanks for the review.
+
+Regards,
+
+Ninad
 
 
