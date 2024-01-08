@@ -2,105 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E9D8279F3
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:06:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 658E3827928
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:29:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMwbK-0008FZ-Bw; Mon, 08 Jan 2024 15:52:02 -0500
+	id 1rMwDy-0003S8-6C; Mon, 08 Jan 2024 15:27:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rMwa9-0004ae-Ob; Mon, 08 Jan 2024 15:50:49 -0500
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rMwa4-00010A-4O; Mon, 08 Jan 2024 15:50:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Reply-To:Content-Type:Content-ID:Content-Description;
- bh=eaAFW36JmxXWmDyL503PHxB2uidAX+ONS5eunDGunx4=; b=bXRZhmKqy0KMbxNQ2VqUTO4fz9
- scNM0xmLPjyWIYQ3Gl4ffbtEMSnh6B40MB53OrOF44rVR5KTqrbsIdpUv+PTciMO1S+sa9ElOmQI2
- byu39cOOJs179txlBRh6J9Y4NL61hEy96HNxOFAKccIkhndFEN3ADJ+wkJjhDk7k3VuuX1BXTYWZP
- Eip9ztAl8vl0duIqFNc1DBpbrw5MIp2r4Q/+9IEVC6J/ueW2VxOSOgs7sthH/5TNq6Z9QxjTn/shJ
- 2UdqNMrSnCO8dkrClsFTOfSf2OeTekne0NFfasFqnq3fBvh/52IPDe/dYHEqTx0MfR+ctal3Hq3rv
- GugV2WmQ==;
-Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
- id 1rMwYn-007wY5-1J; Mon, 08 Jan 2024 20:49:27 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1rMwYm-002NHR-08; Mon, 08 Jan 2024 20:49:24 +0000
-From: David Woodhouse <dwmw2@infradead.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Niek Linnenbank <nieklinnenbank@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, Igor Mitsyanko <i.mitsyanko@gmail.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Rob Herring <robh@kernel.org>, Subbaraya Sundeep <sundeep.lkml@gmail.com>,
- Jan Kiszka <jan.kiszka@web.de>, Tyrone Ting <kfting@nuvoton.com>,
- Hao Wu <wuhaotsh@google.com>, Radoslaw Biernacki <rad@semihalf.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, Helge Deller <deller@gmx.de>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Song Gao <gaosong@loongson.cn>, Thomas Huth <huth@tuxfamily.org>,
- Laurent Vivier <laurent@vivier.eu>, Huacai Chen <chenhuacai@kernel.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Jason Wang <jasowang@redhat.com>,
- Jia Liu <proljc@gmail.com>, Stafford Horne <shorne@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v3 46/46] net: make nb_nics and nd_table[] static in net/net.c
-Date: Mon,  8 Jan 2024 20:27:15 +0000
-Message-ID: <20240108204909.564514-47-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240108204909.564514-1-dwmw2@infradead.org>
-References: <20240108204909.564514-1-dwmw2@infradead.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rMwDw-0003Qh-Af
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 15:27:52 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rMwDt-0002vw-Se
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 15:27:52 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 685A021CB1;
+ Mon,  8 Jan 2024 20:27:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1704745668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zj5CT/jnfTwatAQJrWTAehikQW/UUwXws4MXy5cmGtM=;
+ b=g4Dt9mTJS0QKFWciPFmRL/jx8DuaqFsPlhhg6Tgpuktd4HW6yRIoTXizvdktBytVpvVxMW
+ w2we0HSvmW6PyEtD2m9SpJCY+kNNaBrhR+VldP9LEjYyDg13+PBIApc8qquNwNU9jHnLir
+ Jv17fl7v0Jks5fnmKxh8i6dW+RCtWjg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1704745668;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zj5CT/jnfTwatAQJrWTAehikQW/UUwXws4MXy5cmGtM=;
+ b=8sbCvWran0twchoMpLXnsIqOgq85d+xs0WftsR6QkehxLQ1UHs7fF6/t1dZQ+GUijcXn7P
+ qo4ooYqSSkpDdhDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1704745666; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zj5CT/jnfTwatAQJrWTAehikQW/UUwXws4MXy5cmGtM=;
+ b=keD85qJ/5G/sEtbpL1DuUnfS/CZxyY+YKFZ/SVIa68TGoI7zAhIMOwGDZyyO7UCmzXSiqO
+ M7D0AnokDBQO6ZK3QQyXrmhsm0UR9yVVYXYRnDp2CK2GI9NtPfHHd5Zf7jgYaEJ+oh8u5Z
+ jhpEGg323fw4GbCBpzirCctozK1Pp9E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1704745666;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zj5CT/jnfTwatAQJrWTAehikQW/UUwXws4MXy5cmGtM=;
+ b=YjQyb2NucAuDFBr3805/6q+H1d2G2KAQ6R7xNoniG8WZdVu6LMC99wZGxRLdEovEGMgre9
+ 8mCgYaSSqTBly4BA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E6F1B1392C;
+ Mon,  8 Jan 2024 20:27:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id L3jGKsFanGU6RAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 08 Jan 2024 20:27:45 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: "Liu, Yuan1" <yuan1.liu@intel.com>, Hao Xiang <hao.xiang@bytedance.com>
+Cc: Bryan Zhang <bryan.zhang@bytedance.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "marcandre.lureau@redhat.com"
+ <marcandre.lureau@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "quintela@redhat.com" <quintela@redhat.com>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "berrange@redhat.com" <berrange@redhat.com>
+Subject: RE: [External] Re: [PATCH 3/5] migration: Introduce unimplemented
+ 'qatzip' compression method
+In-Reply-To: <PH7PR11MB5941E2494C523E92DAF57DF7A36B2@PH7PR11MB5941.namprd11.prod.outlook.com>
+References: <20231231205804.2366509-1-bryan.zhang@bytedance.com>
+ <20231231205804.2366509-4-bryan.zhang@bytedance.com>
+ <87jzon8ryv.fsf@suse.de>
+ <CAAYibXgNC1vL1i9M9Sj1J1GS_msxTMJS+B143qFO0pnF4UQGKA@mail.gmail.com>
+ <PH7PR11MB5941E2494C523E92DAF57DF7A36B2@PH7PR11MB5941.namprd11.prod.outlook.com>
+Date: Mon, 08 Jan 2024 17:27:43 -0300
+Message-ID: <87v883sh8g.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- desiato.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
- envelope-from=BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org;
- helo=desiato.infradead.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 685A021CB1
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b="keD85qJ/";
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YjQyb2Nu
+X-Spam-Score: -8.51
+X-Spamd-Result: default: False [-8.51 / 50.00]; TO_DN_EQ_ADDR_SOME(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ RCPT_COUNT_SEVEN(0.00)[9]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ MID_RHS_MATCH_FROM(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ ARC_NA(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCVD_DKIM_ARC_DNSWL_HI(-1.00)[]; FROM_HAS_DN(0.00)[];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,suse.de:email,suse.de:dkim,intel.com:email,bytedance.com:email,nongnu.org:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ RCVD_IN_DNSWL_HI(-1.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+ RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,58 +137,261 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+"Liu, Yuan1" <yuan1.liu@intel.com> writes:
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- include/net/net.h | 4 ----
- net/net.c         | 3 +++
- system/globals.c  | 2 --
- 3 files changed, 3 insertions(+), 6 deletions(-)
+>> -----Original Message-----
+>> From: Hao Xiang <hao.xiang@bytedance.com>
+>> Sent: Saturday, January 6, 2024 7:53 AM
+>> To: Fabiano Rosas <farosas@suse.de>
+>> Cc: Bryan Zhang <bryan.zhang@bytedance.com>; qemu-devel@nongnu.org;
+>> marcandre.lureau@redhat.com; peterx@redhat.com; quintela@redhat.com;
+>> peter.maydell@linaro.org; Liu, Yuan1 <yuan1.liu@intel.com>;
+>> berrange@redhat.com
+>> Subject: Re: [External] Re: [PATCH 3/5] migration: Introduce unimplement=
+ed
+>> 'qatzip' compression method
+>>=20
+>> On Fri, Jan 5, 2024 at 12:07=E2=80=AFPM Fabiano Rosas <farosas@suse.de> =
+wrote:
+>> >
+>> > Bryan Zhang <bryan.zhang@bytedance.com> writes:
+>> >
+>> > +cc Yuan Liu, Daniel Berrang=C3=A9
+>> >
+>> > > Adds support for 'qatzip' as an option for the multifd compression
+>> > > method parameter, but copy-pastes the no-op logic to leave the
+>> > > actual methods effectively unimplemented. This is in preparation of
+>> > > a subsequent commit that will implement actually using QAT for
+>> > > compression and decompression.
+>> > >
+>> > > Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
+>> > > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
+>> > > ---
+>> > >  hw/core/qdev-properties-system.c |  6 ++-
+>> > >  migration/meson.build            |  1 +
+>> > >  migration/multifd-qatzip.c       | 81
+>> ++++++++++++++++++++++++++++++++
+>> > >  migration/multifd.h              |  1 +
+>> > >  qapi/migration.json              |  5 +-
+>> > >  5 files changed, 92 insertions(+), 2 deletions(-)  create mode
+>> > > 100644 migration/multifd-qatzip.c
+>> > >
+>> > > diff --git a/hw/core/qdev-properties-system.c
+>> > > b/hw/core/qdev-properties-system.c
+>> > > index 1a396521d5..d8e48dcb0e 100644
+>> > > --- a/hw/core/qdev-properties-system.c
+>> > > +++ b/hw/core/qdev-properties-system.c
+>> > > @@ -658,7 +658,11 @@ const PropertyInfo qdev_prop_fdc_drive_type =3D=
+ {
+>> > > const PropertyInfo qdev_prop_multifd_compression =3D {
+>> > >      .name =3D "MultiFDCompression",
+>> > >      .description =3D "multifd_compression values, "
+>> > > -                   "none/zlib/zstd",
+>> > > +                   "none/zlib/zstd"
+>> > > +#ifdef CONFIG_QATZIP
+>> > > +                   "/qatzip"
+>> > > +#endif
+>> > > +                   ,
+>> > >      .enum_table =3D &MultiFDCompression_lookup,
+>> > >      .get =3D qdev_propinfo_get_enum,
+>> > >      .set =3D qdev_propinfo_set_enum,
+>> > > diff --git a/migration/meson.build b/migration/meson.build index
+>> > > 92b1cc4297..e20f318379 100644
+>> > > --- a/migration/meson.build
+>> > > +++ b/migration/meson.build
+>> > > @@ -40,6 +40,7 @@ if get_option('live_block_migration').allowed()
+>> > >    system_ss.add(files('block.c'))
+>> > >  endif
+>> > >  system_ss.add(when: zstd, if_true: files('multifd-zstd.c'))
+>> > > +system_ss.add(when: qatzip, if_true: files('multifd-qatzip.c'))
+>> > >
+>> > >  specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
+>> > >                  if_true: files('ram.c', diff --git
+>> > > a/migration/multifd-qatzip.c b/migration/multifd-qatzip.c new file
+>> > > mode 100644 index 0000000000..1733bbddb7
+>> > > --- /dev/null
+>> > > +++ b/migration/multifd-qatzip.c
+>> > > @@ -0,0 +1,81 @@
+>> > > +/*
+>> > > + * Multifd QATzip compression implementation
+>> > > + *
+>> > > + * Copyright (c) Bytedance
+>> > > + *
+>> > > + * Authors:
+>> > > + *  Bryan Zhang <bryan.zhang@bytedance.com>
+>> > > + *  Hao Xiang   <hao.xiang@bytedance.com>
+>> > > + *
+>> > > + * This work is licensed under the terms of the GNU GPL, version 2 =
+or
+>> later.
+>> > > + * See the COPYING file in the top-level directory.
+>> > > + */
+>> > > +
+>> > > +#include "qemu/osdep.h"
+>> > > +#include "exec/ramblock.h"
+>> > > +#include "exec/target_page.h"
+>> > > +#include "qapi/error.h"
+>> > > +#include "migration.h"
+>> > > +#include "options.h"
+>> > > +#include "multifd.h"
+>> > > +
+>> > > +static int qatzip_send_setup(MultiFDSendParams *p, Error **errp) {
+>> > > +    return 0;
+>> > > +}
+>> > > +
+>> > > +static void qatzip_send_cleanup(MultiFDSendParams *p, Error **errp)
+>> > > +{};
+>> > > +
+>> > > +static int qatzip_send_prepare(MultiFDSendParams *p, Error **errp)
+>> > > +{
+>> > > +    MultiFDPages_t *pages =3D p->pages;
+>> > > +
+>> > > +    for (int i =3D 0; i < p->normal_num; i++) {
+>> > > +        p->iov[p->iovs_num].iov_base =3D pages->block->host + p-
+>> >normal[i];
+>> > > +        p->iov[p->iovs_num].iov_len =3D p->page_size;
+>> > > +        p->iovs_num++;
+>> > > +    }
+>> > > +
+>> > > +    p->next_packet_size =3D p->normal_num * p->page_size;
+>> > > +    p->flags |=3D MULTIFD_FLAG_NOCOMP;
+>> > > +    return 0;
+>> > > +}
+>> > > +
+>> > > +static int qatzip_recv_setup(MultiFDRecvParams *p, Error **errp) {
+>> > > +    return 0;
+>> > > +}
+>> > > +
+>> > > +static void qatzip_recv_cleanup(MultiFDRecvParams *p) {};
+>> > > +
+>> > > +static int qatzip_recv_pages(MultiFDRecvParams *p, Error **errp) {
+>> > > +    uint32_t flags =3D p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
+>> > > +
+>> > > +    if (flags !=3D MULTIFD_FLAG_NOCOMP) {
+>> > > +        error_setg(errp, "multifd %u: flags received %x flags
+>> expected %x",
+>> > > +                   p->id, flags, MULTIFD_FLAG_NOCOMP);
+>> > > +        return -1;
+>> > > +    }
+>> > > +    for (int i =3D 0; i < p->normal_num; i++) {
+>> > > +        p->iov[i].iov_base =3D p->host + p->normal[i];
+>> > > +        p->iov[i].iov_len =3D p->page_size;
+>> > > +    }
+>> > > +    return qio_channel_readv_all(p->c, p->iov, p->normal_num,
+>> > > +errp); }
+>> > > +
+>> > > +static MultiFDMethods multifd_qatzip_ops =3D {
+>> > > +    .send_setup =3D qatzip_send_setup,
+>> > > +    .send_cleanup =3D qatzip_send_cleanup,
+>> > > +    .send_prepare =3D qatzip_send_prepare,
+>> > > +    .recv_setup =3D qatzip_recv_setup,
+>> > > +    .recv_cleanup =3D qatzip_recv_cleanup,
+>> > > +    .recv_pages =3D qatzip_recv_pages };
+>> > > +
+>> > > +static void multifd_qatzip_register(void) {
+>> > > +    multifd_register_ops(MULTIFD_COMPRESSION_QATZIP,
+>> > > +&multifd_qatzip_ops); }
+>> > > +
+>> > > +migration_init(multifd_qatzip_register);
+>> > > diff --git a/migration/multifd.h b/migration/multifd.h index
+>> > > a835643b48..5600f7fc82 100644
+>> > > --- a/migration/multifd.h
+>> > > +++ b/migration/multifd.h
+>> > > @@ -33,6 +33,7 @@ int multifd_queue_page(QEMUFile *f, RAMBlock
+>> > > *block, ram_addr_t offset);  #define MULTIFD_FLAG_NOCOMP (0 << 1)
+>> > > #define MULTIFD_FLAG_ZLIB (1 << 1)  #define MULTIFD_FLAG_ZSTD (2 <<
+>> > > 1)
+>> > > +#define MULTIFD_FLAG_QATZIP (3 << 1)
+>> > >
+>> > >  /* This value needs to be a multiple of qemu_target_page_size() */
+>> > > #define MULTIFD_PACKET_SIZE (512 * 1024) diff --git
+>> > > a/qapi/migration.json b/qapi/migration.json index
+>> > > 6d5a4b0489..e3cc195aed 100644
+>> > > --- a/qapi/migration.json
+>> > > +++ b/qapi/migration.json
+>> > > @@ -625,11 +625,14 @@
+>> > >  #
+>> > >  # @zstd: use zstd compression method.
+>> > >  #
+>> > > +# @qatzip: use qatzip compression method.
+>> > > +#
+>> > >  # Since: 5.0
+>> > >  ##
+>> > >  { 'enum': 'MultiFDCompression',
+>> > >    'data': [ 'none', 'zlib',
+>> > > -            { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
+>> > > +            { 'name': 'zstd', 'if': 'CONFIG_ZSTD' },
+>> > > +            { 'name': 'qatzip', 'if': 'CONFIG_QATZIP'} ] }
+>> >
+>> > In another thread adding support to another Intel accelerator (IAA) we
+>> > decided that it was better to select the offloading as an accelerator
+>> > method to multifd zlib rather than as an entirely new compression
+>> > format. Take a look at that discussion:
+>> > https://lore.kernel.org/r/ZTFCnqbbqlmsUkRC@redhat.com
+>>=20
+>> We had some early discussion with Intel folks (probably a different team
+>> than the one with the above patchset). The understanding at the time is
+>> that QAT is good at both bulk data compression and decompression. IAA is
+>> good at decompression with smaller data size but compression performance
+>> is not the best. In multifd, we are compressing up to 128 4k pages at a
+>> time and potentially this can increase by configuring the packet size, at
+>> the time we thought QAT could be a better fit in the multifd live
+>> migration scenario. We would like to hear more from Intel.
+>>=20
+>> From our benchmark testing, with two QAT devices, we can get deflate
+>> compression throughout to around 7GB/s with ~160% CPU. That's beating the
+>> current software implementation (zlib and zstd) by a lot. We are still
+>> tuning the configuration in QEMU live migration now.
+>>=20
+>> >
+>> > As I understand it, QAT + QATzip would be compatible with both zlib
+>> > and IAA + QPL, so we'd add another accelerator method like this:
+>> >
+>> > https://lore.kernel.org/r/20240103112851.908082-3-yuan1.liu@intel.com
+>> >
+>>=20
+>> I quickly read over the IAA patchset and I saw this:
+>>=20
+>> "However, due to some reasons, QPL is currently not compatible with the
+>> existing Zlib method that Zlib compressed data can be decompressed by QPl
+>> and vice versa."
+>>=20
+>> The above probably means the current zlib software implementation and IAA
+>> are not compatible.
+>>=20
+>> For QAT, although, both Intel's QATzip and zlib are internally using
+>> deflate, QATzip only supports deflate with a 4 byte header, deflate
+>> wrapped by Gzip header and footer, or deflate wrapped by Intel=C2=AE QAT
+>> Gzip* extension header and footer. None of the headers can be recognized
+>> by zlib software implementation is my understanding. So if we want to ma=
+ke
+>> them compatible with zlib, the QATzip library needs to support that.
+>
+> The QPL library currently cannot support the Z_SYNC_FLULSH operation of z=
+lib steaming.=20
+> This is the reason why it is not compatible with zlib.
+>
 
-diff --git a/include/net/net.h b/include/net/net.h
-index 19fb82833c..766201c62c 100644
---- a/include/net/net.h
-+++ b/include/net/net.h
-@@ -247,10 +247,6 @@ struct NICInfo {
-     int nvectors;
- };
- 
--extern int nb_nics;
--extern NICInfo nd_table[MAX_NICS];
--extern const char *host_net_devices[];
--
- /* from net.c */
- extern NetClientStateList net_clients;
- bool netdev_is_modern(const char *optstr);
-diff --git a/net/net.c b/net/net.c
-index 09ab0889f5..71cccb19da 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -77,6 +77,9 @@ static NetdevQueue nd_queue = QSIMPLEQ_HEAD_INITIALIZER(nd_queue);
- 
- static GHashTable *nic_model_help;
- 
-+static int nb_nics;
-+static NICInfo nd_table[MAX_NICS];
-+
- /***********************************************************/
- /* network device redirectors */
- 
-diff --git a/system/globals.c b/system/globals.c
-index e83b5428d1..b6d4e72530 100644
---- a/system/globals.c
-+++ b/system/globals.c
-@@ -36,8 +36,6 @@ int display_opengl;
- const char* keyboard_layout;
- bool enable_mlock;
- bool enable_cpu_pm;
--int nb_nics;
--NICInfo nd_table[MAX_NICS];
- int autostart = 1;
- int vga_interface_type = VGA_NONE;
- bool vga_interface_created;
--- 
-2.41.0
+I had understood from previous discussion that we'd be able to at least
+support compression with QPL and decompression with the existing
+zlib-based code. Is that not correct? I was about to suggest
+experimenting with the window size in the existing code to hopefully
+solve the 4kb window size issue. If there are other limitations, then
+that will not be enough.
 
+Also, can you point to the source of that statement about Z_SYNC_FLUSH,
+I couldn't find more information about it in the documentation.
+
+>> > All that, of course, assuming we even want to support both
+>> > accelerators. They're addressing the same problem after all. I wonder
+>> > how we'd choose a precedence, since both seem to be present in the
+>> > same processor family.
+>> >
+>> >
+>>=20
+>> That's an interesting question :-) I think overall performance (throughp=
+ut
+>> and CPU overhead) should both be considered. IAA and QAT accelerators
+>> don't present on all systems. We Bytedance choose to have both on our
+>> platform when purchasing from Intel.
 
