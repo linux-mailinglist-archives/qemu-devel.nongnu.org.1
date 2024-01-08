@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5817C82792C
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:32:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 980ED82792D
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:32:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMwHX-0004Ey-El; Mon, 08 Jan 2024 15:31:35 -0500
+	id 1rMwHd-0004Fh-9Z; Mon, 08 Jan 2024 15:31:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rMwHS-0004EK-0i; Mon, 08 Jan 2024 15:31:30 -0500
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ id 1rMwHR-0004EJ-Qx; Mon, 08 Jan 2024 15:31:29 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rMwHP-000597-5G; Mon, 08 Jan 2024 15:31:29 -0500
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2cd56dac1adso14993341fa.2; 
- Mon, 08 Jan 2024 12:31:24 -0800 (PST)
+ id 1rMwHO-00058T-Px; Mon, 08 Jan 2024 15:31:28 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-556c60c3f9aso2745512a12.3; 
+ Mon, 08 Jan 2024 12:31:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704745883; x=1705350683; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704745881; x=1705350681; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=m6xZFIXTW8KcgePBou+mANJ7I4C6HnRtN/q795tCnLo=;
- b=WaXWUhrh5zkbgUXm4JmUOTmIln/9RgAnv/pOZM/LjOQHbnhVG/tfeHkiBtiqjkdEXx
- 0ss/Lh8Uj2Lx41nrV6TKr63cU+bVznk1UbC1t0PASDP3i4fSd2ncoqcyyys40dErqp2K
- sgy7o7AgiTSx1bXQrfQPld2DMnER4DbfDaY1WxNrOX5hAibOqb5T/bAoOScfHSWnD2UJ
- y50zZeyqz7CjTqqi3pohMIuaQ70U1t+rWdi5gRqkjmj85VoJBAQloYSJC2+TAD5OoW01
- bh6U0F8zOk7eHDSTZPI2JEmS263+PFCSXdAdqgOwU7NtMGHPbBiGoF8BO830HJINSYDD
- jenQ==
+ bh=ROPCeEcuuNmV5OkUIo+Eex3dTWsiXlNFm4zKX3xMKFo=;
+ b=XrH9uePuPGzqb3UFxqp/f0KBGDB8As1p7ZBeG43AgkrGgBtq1PMhlWWC+zHX7QfLjI
+ oyeHPR/xAkcCqvjfHOHhZfEBsATMot/GoVpLU2+EiDCGgBN6f/pAz9rOACWjtvIf1q56
+ 7CrXbzNV1BFz5x13iw0d2dyKTpMJyOmLguCakfGA40CyqhG7hilSgoR6kY0Xs4zdTmut
+ VIwLSLRbuFKpS9k5mCFyvmbGo1+rFIrjgftEgXwMG8Nna6CA+L7v2l6maQ+bWO26k4C0
+ NitWkAxM+G19J5QuB4N8tOVye5LOxu9xvmBYrozVxAi9OAr28U0VKoDy4FgnQ3CRQXmT
+ HZOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704745883; x=1705350683;
+ d=1e100.net; s=20230601; t=1704745881; x=1705350681;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m6xZFIXTW8KcgePBou+mANJ7I4C6HnRtN/q795tCnLo=;
- b=dafoOM2PziKSVcY2YE/8KnL6oDE4ztcxlnh+qEDieNSOYA7XpDBIYDtXHSbG+Izdwh
- MKHbENwtWnxK4nn3UIuwOBJ+0qKEEwtufmBoTMsNWEfOi4zRURCRkTrpDThAtAGHapUt
- wHz1fPiQRcxPdNHJAtE8OujWPjAqTmUgL9MEkM1MVrjMKNQVJ1A51GI4UPftCVimwCQk
- P02/9lAGhdncbbDzHu1tffYjGSaN71KLeveMQTJcKQoS2aRpB4xkwnDxFioXAFOhhrLT
- saX4Tjg9Myv94wMHzLiL+wcZsSYbvI0UZq3Kvfspz8RGszj7gkvcg8LkMpjex2gKRyh1
- jhNg==
-X-Gm-Message-State: AOJu0YyO3GNHMyjqqGXOGg0imOudSXewCvePNcS+9IMbUC1wJYlJdQbU
- K6z6GfH9buurZs47Bot7nDs=
-X-Google-Smtp-Source: AGHT+IHQTlEWwmB7bvBmkL0saCw91GEhXg0JQWnsTTkxyzXPdusHKUaeWRPOAA1hO8erKvXjJWrfIg==
-X-Received: by 2002:a2e:3903:0:b0:2cc:fe03:4360 with SMTP id
- g3-20020a2e3903000000b002ccfe034360mr1992864lja.24.1704745883100; 
- Mon, 08 Jan 2024 12:31:23 -0800 (PST)
+ bh=ROPCeEcuuNmV5OkUIo+Eex3dTWsiXlNFm4zKX3xMKFo=;
+ b=iwHGvGqMjt4gtgl59/Alg1eIlb0+JaBzTU7kHMygvqqx9eLt7f/Yil9FChujF5OaMT
+ wMXzba/Z9mUXQVSYSMwAexMVuOr44ECIBjG3mBFAo9v5DqBdZgMrIOtvaueM54ICfICj
+ iqMqj0cm7cOz+g4GhWgJlDP9FenJsGFmCm25E7WfMDa9yRqwg95bVaKchPFSbE9tISW0
+ cjVYuRhGFLGG4m4Uxuqju1+rGgySNENcT0vtcCx8s5mMcMYRw3qjBqjrYYly4OPq5FPX
+ EPbOKjjqf3Zu2a8yJzT2aLpFFJaewk+HunUGioDxKHWTb2ZedDwO7ni3sbi/z3blB0c1
+ qlHw==
+X-Gm-Message-State: AOJu0YxxkOKagn3NlUKZVM5Y3auDi+reRER9MFhCyJUb2zLlpTY/QvIS
+ +/cyuo8DPm5behyHRi2znUs=
+X-Google-Smtp-Source: AGHT+IHLIGJQiBaB+Acwf1GJt6NKSkejJfswX8aiiWmkBuNld1wX6+z1h+N5tPtR+R+M1j7TmVJArw==
+X-Received: by 2002:a17:907:7245:b0:a28:cf59:60c8 with SMTP id
+ ds5-20020a170907724500b00a28cf5960c8mr5303ejc.33.1704745881169; 
+ Mon, 08 Jan 2024 12:31:21 -0800 (PST)
 Received: from [127.0.0.1] (dynamic-078-054-062-214.78.54.pool.telefonica.de.
  [78.54.62.214]) by smtp.gmail.com with ESMTPSA id
- f2-20020a056402150200b0055732bd1fc0sm184726edw.82.2024.01.08.12.31.21
+ a27-20020a1709062b1b00b00a28ee0680d1sm224271ejg.214.2024.01.08.12.31.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 12:31:21 -0800 (PST)
-Date: Mon, 08 Jan 2024 19:54:34 +0000
+ Mon, 08 Jan 2024 12:31:20 -0800 (PST)
+Date: Mon, 08 Jan 2024 20:07:37 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-CC: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+CC: Eduardo Habkost <eduardo@habkost.net>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, 
  =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
  =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>,
@@ -68,28 +68,26 @@ CC: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
  Richard Henderson <richard.henderson@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>,
  Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Juan Quintela <quintela@redhat.com>,
  =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
  qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Sergio Lopez <slp@redhat.com>, 
  Hanna Reitz <hreitz@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_10/11=5D_hw/ppc/pegasos2=3A_Let_p?=
- =?US-ASCII?Q?egasos2_machine_configure_SuperI/O_functions?=
-In-Reply-To: <fa7a9464-912c-19d7-e9d0-b1a0896e0cac@eik.bme.hu>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_00/11=5D_hw/isa/vt82c686=3A_Implemen?=
+ =?US-ASCII?Q?t_relocation_and_toggling_of_SuperI/O_functions?=
+In-Reply-To: <8e46217c-f28b-43b0-bea3-583d4b3cf42b@ilande.co.uk>
 References: <20240106210531.140542-1-shentey@gmail.com>
- <20240106210531.140542-11-shentey@gmail.com>
- <fa7a9464-912c-19d7-e9d0-b1a0896e0cac@eik.bme.hu>
-Message-ID: <0F015BDE-FF03-4BF3-80E9-6300E6B80C32@gmail.com>
+ <8e46217c-f28b-43b0-bea3-583d4b3cf42b@ilande.co.uk>
+Message-ID: <5393CA46-267C-444A-AE8E-BBD82DCDCC9A@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
- envelope-from=shentey@gmail.com; helo=mail-lj1-x22c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,71 +112,147 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 7=2E Januar 2024 13:54:57 UTC schrieb BALATON Zoltan <balaton@eik=2Ebme=
-=2Ehu>:
->On Sat, 6 Jan 2024, Bernhard Beschow wrote:
->> This is a preparation for implementing relocation and toggling of Super=
-I/O
->> functions in the VT8231 device model=2E Upon reset, all SuperI/O functi=
-ons will be
->> deactivated, so in case if no -bios is given, let the machine configure=
- those
->> functions the same way Pegasos II firmware would do=2E
->>=20
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->> ---
->> hw/ppc/pegasos2=2Ec | 15 +++++++++++++++
->> 1 file changed, 15 insertions(+)
->>=20
->> diff --git a/hw/ppc/pegasos2=2Ec b/hw/ppc/pegasos2=2Ec
->> index 3203a4a728=2E=2E0a40ebd542 100644
->> --- a/hw/ppc/pegasos2=2Ec
->> +++ b/hw/ppc/pegasos2=2Ec
->> @@ -285,6 +285,15 @@ static void pegasos2_pci_config_write(Pegasos2Mach=
-ineState *pm, int bus,
->>     pegasos2_mv_reg_write(pm, pcicfg + 4, len, val);
->> }
->>=20
->> +static void pegasos2_superio_write(Pegasos2MachineState *pm, uint32_t =
-addr,
->> +                                   uint32_t val)
->> +{
->> +    AddressSpace *as =3D CPU(pm->cpu)->as;
+Am 7=2E Januar 2024 14:13:44 UTC schrieb Mark Cave-Ayland <mark=2Ecave-ayl=
+and@ilande=2Eco=2Euk>:
+>On 06/01/2024 21:05, Bernhard Beschow wrote:
 >
->I think this function should not need Pegasos2MachineState *pm and can ju=
-st use cpu_physical_memory_write() instead=2E
+>> This series implements relocation of the SuperI/O functions of the VIA =
+south
+>> bridges which resolves some FIXME's=2E It is part of my via-apollo-pro-=
+133t
+>> branch [1] which is an extension of bringing the VIA south bridges to t=
+he PC
+>> machine [2]=2E This branch is able to run some real-world X86 BIOSes in=
+ the hope
+>> that it allows us to form a better understanding of the real vt82c686b =
+devices=2E
+>> Implementing relocation and toggling of the SuperI/O functions is one s=
+tep to
+>> make these BIOSes run without error messages, so here we go=2E
+>>=20
+>> The series is structured as follows: Patches 1-3 prepare the TYPE_ISA_F=
+DC,
+>> TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL to relocate and toggle (enable/di=
+sable)
+>> themselves without breaking encapsulation of their respective device st=
+ates=2E
+>> This is achieved by moving the MemoryRegions and PortioLists from the d=
+evice
+>> states into the encapsulating ISA devices since they will be relocated =
+and
+>> toggled=2E
+>>=20
+>> Inspired by the memory API patches 4-6 add two convenience functions to=
+ the
+>> portio_list API to toggle and relocate portio lists=2E Patch 5 is a pre=
+paration
+>> for that which removes some redundancies which otherwise had to be deal=
+t with
+>> during relocation=2E
+>>=20
+>> Patches 7-9 implement toggling and relocation for types TYPE_ISA_FDC,
+>> TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL=2E Patch 10 prepares the pegasos2=
+ machine
+>> which would end up with all SuperI/O functions disabled if no -bios arg=
+ument is
+>> given=2E Patch 11 finally implements the main feature which now relies =
+on
+>> firmware to configure the SuperI/O functions accordingly (except for pe=
+gasos2)=2E
+>>=20
+>> v4:
+>> * Drop incomplete SuperI/O vmstate handling (Zoltan)
+>>=20
+>> v3:
+>> * Rework various commit messages (Zoltan)
+>> * Drop patch "hw/char/serial: Free struct SerialState from MemoryRegion=
+"
+>>    (Zoltan)
+>> * Generalize wording in migration=2Erst to include portio_list API (Zol=
+tan)
+>>=20
+>> v2:
+>> * Improve commit messages (Zoltan)
+>> * Split pegasos2 from vt82c686 patch (Zoltan)
+>> * Avoid poking into device internals (Zoltan)
+>>=20
+>> Testing done:
+>> * `make check`
+>> * `make check-avocado`
+>> * Run MorphOS on pegasos2 with and without pegasos2=2Erom
+>> * Run Linux on amigaone
+>> * Run real-world BIOSes on via-apollo-pro-133t branch
+>> * Start rescue-yl on fuloong2e
+>>=20
+>> [1] https://github=2Ecom/shentok/qemu/tree/via-apollo-pro-133t
+>> [2] https://github=2Ecom/shentok/qemu/tree/pc-via
+>>=20
+>> Bernhard Beschow (11):
+>>    hw/block/fdc-isa: Move portio_list from FDCtrl to FDCtrlISABus
+>>    hw/block/fdc-sysbus: Move iomem from FDCtrl to FDCtrlSysBus
+>>    hw/char/parallel: Move portio_list from ParallelState to
+>>      ISAParallelState
+>>    exec/ioport: Resolve redundant =2Ebase attribute in struct
+>>      MemoryRegionPortio
+>>    exec/ioport: Add portio_list_set_address()
+>>    exec/ioport: Add portio_list_set_enabled()
+>>    hw/block/fdc-isa: Implement relocation and enabling/disabling for
+>>      TYPE_ISA_FDC
+>>    hw/char/serial-isa: Implement relocation and enabling/disabling for
+>>      TYPE_ISA_SERIAL
+>>    hw/char/parallel-isa: Implement relocation and enabling/disabling fo=
+r
+>>      TYPE_ISA_PARALLEL
+>>    hw/ppc/pegasos2: Let pegasos2 machine configure SuperI/O functions
+>>    hw/isa/vt82c686: Implement relocation and toggling of SuperI/O
+>>      functions
+>>=20
+>>   docs/devel/migration=2Erst       |  6 ++--
+>>   hw/block/fdc-internal=2Eh        |  4 ---
+>>   include/exec/ioport=2Eh          |  4 ++-
+>>   include/hw/block/fdc=2Eh         |  3 ++
+>>   include/hw/char/parallel-isa=2Eh |  5 +++
+>>   include/hw/char/parallel=2Eh     |  2 --
+>>   include/hw/char/serial=2Eh       |  2 ++
+>>   hw/block/fdc-isa=2Ec             | 18 +++++++++-
+>>   hw/block/fdc-sysbus=2Ec          |  6 ++--
+>>   hw/char/parallel-isa=2Ec         | 14 ++++++++
+>>   hw/char/parallel=2Ec             |  2 +-
+>>   hw/char/serial-isa=2Ec           | 14 ++++++++
+>>   hw/isa/vt82c686=2Ec              | 66 ++++++++++++++++++++++++++++---=
+---
+>>   hw/ppc/pegasos2=2Ec              | 15 ++++++++
+>>   system/ioport=2Ec                | 41 +++++++++++++++++----
+>>   15 files changed, 172 insertions(+), 30 deletions(-)
+>
+>I think this series generally looks good: the only thing I think it's wor=
+th checking is whether portio lists are considered exclusive to ISA devices=
+ or not? (Paolo?)=2E
 
-Okay, I'll change it=2E
+The modifications preserve the current design, so how is this question rel=
+ated to this series?
+
+I'd appreciate feedback from the maintainers indeed since this part hasn't=
+ received any comments so far=2E Thanks :)
+
+>
+>The portio_list_set_enabled() API looks interesting, and could be conside=
+red for use by my PCI IDE mode-switching changes too=2E
+>
+>Apologies I don't have a huge amount of time for review right now, but I =
+wanted to feed back that generally these patches look good, and if people a=
+re happy with the portio list changes then this series should be considered=
+ for merge=2E
+
+Never mind, it's still nice getting some confirmation from your side!
 
 Best regards,
 Bernhard
 
-> Otherwise
 >
->Reviewed-by: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
 >
->> +
->> +    stb_phys(as, PCI1_IO_BASE + 0x3f0, addr);
->> +    stb_phys(as, PCI1_IO_BASE + 0x3f1, val);
->> +}
->> +
->> static void pegasos2_machine_reset(MachineState *machine, ShutdownCause=
- reason)
->> {
->>     Pegasos2MachineState *pm =3D PEGASOS2_MACHINE(machine);
->> @@ -310,6 +319,12 @@ static void pegasos2_machine_reset(MachineState *m=
-achine, ShutdownCause reason)
->>=20
->>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
->>                               PCI_INTERRUPT_LINE, 2, 0x9);
->> +    pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
->> +                              0x50, 1, 0x6);
->> +    pegasos2_superio_write(pm, 0xf4, 0xbe);
->> +    pegasos2_superio_write(pm, 0xf6, 0xef);
->> +    pegasos2_superio_write(pm, 0xf7, 0xfc);
->> +    pegasos2_superio_write(pm, 0xf2, 0x14);
->>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
->>                               0x50, 1, 0x2);
->>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
->>=20
+>ATB,
+>
+>Mark=2E
+>
 
