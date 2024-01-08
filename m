@@ -2,117 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7024827939
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:40:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE198279DE
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:01:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMwPO-0008Mx-Kl; Mon, 08 Jan 2024 15:39:42 -0500
+	id 1rMwgs-0001F5-E5; Mon, 08 Jan 2024 15:57:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rMwPC-0008MR-MQ
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 15:39:32 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rMwP9-0003Fs-Pp
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 15:39:30 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id A70B421D0E;
- Mon,  8 Jan 2024 20:39:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704746364; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XEhYPUImz+WCc91z7/tJed36OGcLQ8lwF97ewVg/giA=;
- b=Y23iXvfTnDo4lzxaCCm5YNKWbiLy0UR//cnc7yug9iHAKD73qj6ZTv27izaQ5PhzLRW8v9
- zDH62DjKGGdUeYSo/OoFBP1vpw+PbS/cxOOC8Y+866l/wHLuo1eOaOVByqp+nCYk2fsLgA
- DHptapDYqSq854HFwtnKPuHqCz1vGdU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704746364;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XEhYPUImz+WCc91z7/tJed36OGcLQ8lwF97ewVg/giA=;
- b=KFwmAlaKKOzZvLDxChZY8PRr6Zo85REIGDrbZp5hgqBYhGnMFB5c1cc2+2hapmhdHG1zkO
- 6f7Ca8rm8nKaciDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704746364; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XEhYPUImz+WCc91z7/tJed36OGcLQ8lwF97ewVg/giA=;
- b=Y23iXvfTnDo4lzxaCCm5YNKWbiLy0UR//cnc7yug9iHAKD73qj6ZTv27izaQ5PhzLRW8v9
- zDH62DjKGGdUeYSo/OoFBP1vpw+PbS/cxOOC8Y+866l/wHLuo1eOaOVByqp+nCYk2fsLgA
- DHptapDYqSq854HFwtnKPuHqCz1vGdU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704746364;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XEhYPUImz+WCc91z7/tJed36OGcLQ8lwF97ewVg/giA=;
- b=KFwmAlaKKOzZvLDxChZY8PRr6Zo85REIGDrbZp5hgqBYhGnMFB5c1cc2+2hapmhdHG1zkO
- 6f7Ca8rm8nKaciDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2CF011392C;
- Mon,  8 Jan 2024 20:39:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id gcvGOHtdnGX1TAAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 08 Jan 2024 20:39:23 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Hao Xiang <hao.xiang@bytedance.com>, peter.maydell@linaro.org,
- peterx@redhat.com, marcandre.lureau@redhat.com, bryan.zhang@bytedance.com,
- qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH v3 01/20] multifd: Add capability to enable/disable
- zero_page
-In-Reply-To: <20240104004452.324068-2-hao.xiang@bytedance.com>
-References: <20240104004452.324068-1-hao.xiang@bytedance.com>
- <20240104004452.324068-2-hao.xiang@bytedance.com>
-Date: Mon, 08 Jan 2024 17:39:21 -0300
-Message-ID: <87r0irsgp2.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rMwgk-0001B4-BV; Mon, 08 Jan 2024 15:57:38 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rMwge-0006ND-Kn; Mon, 08 Jan 2024 15:57:36 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 967764E6DBE;
+ Mon,  8 Jan 2024 21:57:27 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id l-ZGTS-8CfiR; Mon,  8 Jan 2024 21:57:25 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id AA8C74E63FA; Mon,  8 Jan 2024 21:57:25 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id A675774577C;
+ Mon,  8 Jan 2024 21:57:25 +0100 (CET)
+Date: Mon, 8 Jan 2024 21:57:25 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>, 
+ Artyom Tarasenko <atar4qemu@gmail.com>, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Fabiano Rosas <farosas@suse.de>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
+ =?ISO-8859-15?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>, 
+ John Snow <jsnow@redhat.com>, qemu-block@nongnu.org, 
+ Kevin Wolf <kwolf@redhat.com>, Thomas Huth <huth@tuxfamily.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, 
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Juan Quintela <quintela@redhat.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Sergio Lopez <slp@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ =?ISO-8859-15?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>
+Subject: Re: [PATCH v4 11/11] hw/isa/vt82c686: Implement relocation and
+ toggling of SuperI/O functions
+In-Reply-To: <953F5075-4774-457F-BC9C-DA021DED8C0F@gmail.com>
+Message-ID: <eb8eed24-9ec9-0ad1-95f7-989edfb5199d@eik.bme.hu>
+References: <20240106210531.140542-1-shentey@gmail.com>
+ <20240106210531.140542-12-shentey@gmail.com>
+ <43de62e3-67d0-f013-2f4b-21ec1a78dbee@eik.bme.hu>
+ <953F5075-4774-457F-BC9C-DA021DED8C0F@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: 0.09
-X-Rspamd-Queue-Id: A70B421D0E
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Y23iXvfT;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KFwmAlaK
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Bar: /
-X-Spamd-Result: default: False [0.09 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
- BAYES_SPAM(5.10)[100.00%];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[7]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- MID_RHS_MATCH_FROM(0.00)[]; ARC_NA(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCVD_DKIM_ARC_DNSWL_HI(-1.00)[]; FROM_HAS_DN(0.00)[];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- RCVD_IN_DNSWL_HI(-0.50)[2a07:de40:b281:106:10:150:64:167:received];
- RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,92 +83,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hao Xiang <hao.xiang@bytedance.com> writes:
+On Mon, 8 Jan 2024, Bernhard Beschow wrote:
+> Am 7. Januar 2024 13:59:44 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>> On Sat, 6 Jan 2024, Bernhard Beschow wrote:
+>>> The VIA south bridges are able to relocate and toggle (enable or disable) their
+>>> SuperI/O functions. So far this is hardcoded such that all functions are always
+>>> enabled and are located at fixed addresses.
+>>>
+>>> Some PC BIOSes seem to probe for I/O occupancy before activating such a function
+>>> and issue an error in case of a conflict. Since the functions are currently
+>>> enabled on reset, conflicts are always detected. Prevent that by implementing
+>>> relocation and toggling of the SuperI/O functions.
+>>>
+>>> Note that all SuperI/O functions are now deactivated upon reset (except for
+>>> VT82C686B's serial ports where Fuloong 2e's rescue-yl seems to expect them to be
+>>> enabled by default). Rely on firmware to configure the functions accordingly.
+>>>
+>>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+>>> ---
+>>> hw/isa/vt82c686.c | 66 ++++++++++++++++++++++++++++++++++++++++-------
+>>> 1 file changed, 56 insertions(+), 10 deletions(-)
+>>>
+>>> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+>>> index d3e0f6d01f..9f62fb5964 100644
+>>> --- a/hw/isa/vt82c686.c
+>>> +++ b/hw/isa/vt82c686.c
+>>> @@ -15,6 +15,9 @@
+>>>
+>>> #include "qemu/osdep.h"
+>>> #include "hw/isa/vt82c686.h"
+>>> +#include "hw/block/fdc.h"
+>>> +#include "hw/char/parallel-isa.h"
+>>> +#include "hw/char/serial.h"
+>>> #include "hw/pci/pci.h"
+>>> #include "hw/qdev-properties.h"
+>>> #include "hw/ide/pci.h"
+>>> @@ -323,6 +326,18 @@ static uint64_t via_superio_cfg_read(void *opaque, hwaddr addr, unsigned size)
+>>>     return val;
+>>> }
+>>>
+>>> +static void via_superio_devices_enable(ViaSuperIOState *s, uint8_t data)
+>>> +{
+>>> +    ISASuperIOClass *ic = ISA_SUPERIO_GET_CLASS(s);
+>>> +    size_t i;
+>>
+>> The expected value for i is 0 or 1 (maybe up to 3 sometimes it there are more serial ports in a chip). so why use such big type?
+>
+> serial.count is of type size_t, that's why I chose it. Let me know if you still want an int, otherwise I'd leave it as is.
 
-> From: Juan Quintela <quintela@redhat.com>
->
-> We have to enable it by default until we introduce the new code.
->
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> ---
->  migration/options.c | 15 +++++++++++++++
->  migration/options.h |  1 +
->  qapi/migration.json |  8 +++++++-
->  3 files changed, 23 insertions(+), 1 deletion(-)
->
-> diff --git a/migration/options.c b/migration/options.c
-> index 8d8ec73ad9..0f6bd78b9f 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -204,6 +204,8 @@ Property migration_properties[] = {
->      DEFINE_PROP_MIG_CAP("x-switchover-ack",
->                          MIGRATION_CAPABILITY_SWITCHOVER_ACK),
->      DEFINE_PROP_MIG_CAP("x-dirty-limit", MIGRATION_CAPABILITY_DIRTY_LIMIT),
-> +    DEFINE_PROP_MIG_CAP("main-zero-page",
-> +            MIGRATION_CAPABILITY_MAIN_ZERO_PAGE),
->      DEFINE_PROP_END_OF_LIST(),
->  };
->  
-> @@ -284,6 +286,19 @@ bool migrate_multifd(void)
->      return s->capabilities[MIGRATION_CAPABILITY_MULTIFD];
->  }
->  
-> +bool migrate_use_main_zero_page(void)
-> +{
-> +    /* MigrationState *s; */
-> +
-> +    /* s = migrate_get_current(); */
-> +
-> +    /*
-> +     * We will enable this when we add the right code.
-> +     * return s->enabled_capabilities[MIGRATION_CAPABILITY_MAIN_ZERO_PAGE];
-> +     */
-> +    return true;
-> +}
-> +
->  bool migrate_pause_before_switchover(void)
->  {
->      MigrationState *s = migrate_get_current();
-> diff --git a/migration/options.h b/migration/options.h
-> index 246c160aee..c901eb57c6 100644
-> --- a/migration/options.h
-> +++ b/migration/options.h
-> @@ -88,6 +88,7 @@ int migrate_multifd_channels(void);
->  MultiFDCompression migrate_multifd_compression(void);
->  int migrate_multifd_zlib_level(void);
->  int migrate_multifd_zstd_level(void);
-> +bool migrate_use_main_zero_page(void);
->  uint8_t migrate_throttle_trigger_threshold(void);
->  const char *migrate_tls_authz(void);
->  const char *migrate_tls_creds(void);
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index eb2f883513..80c4b13516 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -531,6 +531,12 @@
->  #     and can result in more stable read performance.  Requires KVM
->  #     with accelerator property "dirty-ring-size" set.  (Since 8.1)
->  #
-> +#
-> +# @main-zero-page: If enabled, the detection of zero pages will be
-> +#                  done on the main thread.  Otherwise it is done on
-> +#                  the multifd threads.
-> +#                  (since 8.2)
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block is deprecated.  Use blockdev-mirror with
-> @@ -555,7 +561,7 @@
->             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
->             'validate-uuid', 'background-snapshot',
->             'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
-> -           'dirty-limit'] }
-> +           'dirty-limit', 'main-zero-page'] }
->  
->  ##
->  # @MigrationCapabilityStatus:
+I think int would suffice here but it's not a big deal. The count is 
+indeed size_t, not sure why. How many components were expected? But the 
+practical value is just a few so larger type seems to be an overkill.
 
-I'll extract this zero page work into a separate series and submit for
-review soon. I want to get people's opinion on it independently of this
-series.
+Regards,
+BALATON Zoltan
+
+> Best regards,
+> Bernhard
+>
+>> This should just be int. Newly it's also allowed to declare it within the for so if you want that you could do so but I have no preference on that and declaring it here is also OK. Otherwise:
+>>
+>> Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>
+>>> +
+>>> +    isa_parallel_set_enabled(s->superio.parallel[0], (data & 0x3) != 3);
+>>> +    for (i = 0; i < ic->serial.count; i++) {
+>>> +        isa_serial_set_enabled(s->superio.serial[i], data & BIT(i + 2));
+>>> +    }
+>>> +    isa_fdc_set_enabled(s->superio.floppy, data & BIT(4));
+>>> +}
+>>> +
+>>> static void via_superio_class_init(ObjectClass *klass, void *data)
+>>> {
+>>>     DeviceClass *dc = DEVICE_CLASS(klass);
+>>> @@ -368,7 +383,25 @@ static void vt82c686b_superio_cfg_write(void *opaque, hwaddr addr,
+>>>     case 0xfd ... 0xff:
+>>>         /* ignore write to read only registers */
+>>>         return;
+>>> -    /* case 0xe6 ... 0xe8: Should set base port of parallel and serial */
+>>> +    case 0xe2:
+>>> +        data &= 0x1f;
+>>> +        via_superio_devices_enable(sc, data);
+>>> +        break;
+>>> +    case 0xe3:
+>>> +        data &= 0xfc;
+>>> +        isa_fdc_set_iobase(sc->superio.floppy, data << 2);
+>>> +        break;
+>>> +    case 0xe6:
+>>> +        isa_parallel_set_iobase(sc->superio.parallel[0], data << 2);
+>>> +        break;
+>>> +    case 0xe7:
+>>> +        data &= 0xfe;
+>>> +        isa_serial_set_iobase(sc->superio.serial[0], data << 2);
+>>> +        break;
+>>> +    case 0xe8:
+>>> +        data &= 0xfe;
+>>> +        isa_serial_set_iobase(sc->superio.serial[1], data << 2);
+>>> +        break;
+>>>     default:
+>>>         qemu_log_mask(LOG_UNIMP,
+>>>                       "via_superio_cfg: unimplemented register 0x%x\n", idx);
+>>> @@ -395,9 +428,14 @@ static void vt82c686b_superio_reset(DeviceState *dev)
+>>>     /* Device ID */
+>>>     vt82c686b_superio_cfg_write(s, 0, 0xe0, 1);
+>>>     vt82c686b_superio_cfg_write(s, 1, 0x3c, 1);
+>>> -    /* Function select - all disabled */
+>>> +    /*
+>>> +     * Function select - only serial enabled
+>>> +     * Fuloong 2e's rescue-yl prints to the serial console w/o enabling it. This
+>>> +     * suggests that the serial ports are enabled by default, so override the
+>>> +     * datasheet.
+>>> +     */
+>>>     vt82c686b_superio_cfg_write(s, 0, 0xe2, 1);
+>>> -    vt82c686b_superio_cfg_write(s, 1, 0x03, 1);
+>>> +    vt82c686b_superio_cfg_write(s, 1, 0x0f, 1);
+>>>     /* Floppy ctrl base addr 0x3f0-7 */
+>>>     vt82c686b_superio_cfg_write(s, 0, 0xe3, 1);
+>>>     vt82c686b_superio_cfg_write(s, 1, 0xfc, 1);
+>>> @@ -465,6 +503,21 @@ static void vt8231_superio_cfg_write(void *opaque, hwaddr addr,
+>>>     case 0xfd:
+>>>         /* ignore write to read only registers */
+>>>         return;
+>>> +    case 0xf2:
+>>> +        data &= 0x17;
+>>> +        via_superio_devices_enable(sc, data);
+>>> +        break;
+>>> +    case 0xf4:
+>>> +        data &= 0xfe;
+>>> +        isa_serial_set_iobase(sc->superio.serial[0], data << 2);
+>>> +        break;
+>>> +    case 0xf6:
+>>> +        isa_parallel_set_iobase(sc->superio.parallel[0], data << 2);
+>>> +        break;
+>>> +    case 0xf7:
+>>> +        data &= 0xfc;
+>>> +        isa_fdc_set_iobase(sc->superio.floppy, data << 2);
+>>> +        break;
+>>>     default:
+>>>         qemu_log_mask(LOG_UNIMP,
+>>>                       "via_superio_cfg: unimplemented register 0x%x\n", idx);
+>>> @@ -513,12 +566,6 @@ static void vt8231_superio_init(Object *obj)
+>>>     VIA_SUPERIO(obj)->io_ops = &vt8231_superio_cfg_ops;
+>>> }
+>>>
+>>> -static uint16_t vt8231_superio_serial_iobase(ISASuperIODevice *sio,
+>>> -                                             uint8_t index)
+>>> -{
+>>> -        return 0x2f8; /* FIXME: This should be settable via registers f2-f4 */
+>>> -}
+>>> -
+>>> static void vt8231_superio_class_init(ObjectClass *klass, void *data)
+>>> {
+>>>     DeviceClass *dc = DEVICE_CLASS(klass);
+>>> @@ -526,7 +573,6 @@ static void vt8231_superio_class_init(ObjectClass *klass, void *data)
+>>>
+>>>     dc->reset = vt8231_superio_reset;
+>>>     sc->serial.count = 1;
+>>> -    sc->serial.get_iobase = vt8231_superio_serial_iobase;
+>>>     sc->parallel.count = 1;
+>>>     sc->ide.count = 0; /* emulated by via-ide */
+>>>     sc->floppy.count = 1;
+>>>
+>
+>
 
