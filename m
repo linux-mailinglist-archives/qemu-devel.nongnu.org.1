@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89704826F14
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:57:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B178C826F1D
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:59:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMpBu-00056c-NI; Mon, 08 Jan 2024 07:57:18 -0500
+	id 1rMpDg-0006WI-Pg; Mon, 08 Jan 2024 07:59:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMpBr-00054q-Cs
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:57:15 -0500
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
+ id 1rMpDe-0006Vb-Iw; Mon, 08 Jan 2024 07:59:06 -0500
+Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMpBp-0007L7-Hv
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:57:15 -0500
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2cd46e7ae8fso15411911fa.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 04:57:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
+ id 1rMpDd-0007kN-07; Mon, 08 Jan 2024 07:59:06 -0500
+Received: by mail-yw1-x112e.google.com with SMTP id
+ 00721157ae682-5edfcba97e3so16946377b3.2; 
+ Mon, 08 Jan 2024 04:59:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704718631; x=1705323431; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704718743; x=1705323543; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=oZyuVWGCu5K0Mnt6tPHwff3ZIwKlT3vQXX5uqiUTKkg=;
- b=N/XQF3YOyYWQMeq2vX4CSSFtMtJUB/CVWrVNiR73qUpr83qc0I2FkE/yhUr0Elxoi/
- pimOmGuQLE4tIs2bc8weYJXGdG8tKToyLDCUczknvKvvIFlti1ZenQq/v+pYlN+x0rBZ
- /4sdVm/O4socFOncf/mYWsJAuovHWUZvT02hWDN9b3ZxEmA2z9x+ypwyYENOWiGqIUng
- pGyi5d1CAi+bb6pA2L2MODPNqxL+oqxO8wllRW6rYiRjXup/iIW3qqskHniJmKP0ezcN
- MESCD8jxWkt8F9srxDbrNVGIjQNMzmYKnyjXctuj3OAphmjo+5LtnlGmeSlIOXqMMyEs
- OHtg==
+ bh=84mH5B/Jgrq4oAqmKeNIT8qz+4H+QI1lfy9c1DN9izQ=;
+ b=gMh31pLEvI66QNSHFGIiQYoNivIEZz6ZrQkdbev+GHMDTktgeE31tF9tCaDiO1wNPF
+ cVeY46T6KVAPbKKaS640bEjjahYMifZeoVYbFVhDTjUxWA6JSwvzJ4UgK53piYqekAbI
+ L0/CJymsiGISI7/gfQst64SLEWYOf0OqVieoUW59ij4NYf76MuSAe5Ee9i1AlgXELU15
+ a3Z4pNI2KPebtV/CIr+u3WDy6ioJH4hNfT6KVSEZ43QJnZtoBOuHcHqBK+5FWvfJ1cFg
+ uKt7vG18B7Ka0PTE8W7hopFiA9KdaYQ+ZzSRWtFS3GhhRP4akEgLTyifRHH5CPSCpbdk
+ pA7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704718631; x=1705323431;
+ d=1e100.net; s=20230601; t=1704718743; x=1705323543;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=oZyuVWGCu5K0Mnt6tPHwff3ZIwKlT3vQXX5uqiUTKkg=;
- b=kpBqdFr2zoF+2RnY9v8ESZQ77aierVKhZEI0BswqAN3w28aer6IT0ivX5du/RPYKMe
- oKKyBbR9OYNmp3a6m1KMWPCiCFLhtdeehv/xMg8KpjzjAYCSCj1p5UuuOnWY8eEI1yVm
- KWZvfKngqIlGHyTl3s26fQL5JT0tsf392x54GuouvkWK2hC6sKigb2DHH1t81Y9O0RR6
- N+9gJFjrKq3vf+i8KlzE8BkdcHe+cywAzlnOsdNMgHtaLG36rOxfudOK9aG4Bsf4lU32
- oG7DreNIJayewM974NRpNGYV/jy7TVgtaJrMWrDAbuNbITOA7crv1M09G11Ng2Rbt8Tf
- 9ObQ==
-X-Gm-Message-State: AOJu0YygXp2rym+4MhvzjvpIxfcZ1Ag7sQ6XdxpfZ/7WRtcOaV0iZ+LZ
- E70SN38ICVJXA8bEpToAyK93f8LqcLFmNEijB5xiWtYnw+WOzA==
-X-Google-Smtp-Source: AGHT+IEqy+IcPzjWhCoQMzVqp+WxAUCpOuMrvkqSSyhgXKb6IKKZokrDAthxPXgDCJH91KtPji28c78ywMac6uLTjxs=
-X-Received: by 2002:a2e:a48d:0:b0:2cd:35d6:d84d with SMTP id
- h13-20020a2ea48d000000b002cd35d6d84dmr683700lji.150.1704718631241; Mon, 08
- Jan 2024 04:57:11 -0800 (PST)
+ bh=84mH5B/Jgrq4oAqmKeNIT8qz+4H+QI1lfy9c1DN9izQ=;
+ b=gt7qkFPYZ6AiLJtc7mJ4C8mpsUumEcATbMkayPFw2flFO6yQO1cChANwv0kdUE0OFu
+ aW3AmqEgR3pRVJLKBy/smXXmw12mBZjMylhq9qlcdkfjjddILTZ3kY+0TKnnWLguN1kU
+ Je9R4Yift71ho/qaNAxNJFQuFHoq+PVfVrxH0YdeRS77gs85Fe8t6alZmnc2wjNOvOAw
+ kMqn8eMW91lhB+rNFP274dc+d3jol86EZrfzWoxpjWB+79n9zDFhueFij4JKtdi9hisL
+ Anj2zS8r4u1wiptsIUc4vGe8s8/q2c8AbdVLYWfg0W46LIRDi+bEu0d0dl2ZBppx/oyG
+ QRkw==
+X-Gm-Message-State: AOJu0Yz6nVYp1fllXdD5Q0cMV+osuawUKi6GfKfvnNkV0LiJV1UGN/L/
+ I29mAd6K+zkxvm6K46QkINX3QoxQgqNtfZ4cNKM=
+X-Google-Smtp-Source: AGHT+IHYZLxbUMgfLMUY1RGG26e79rYvsf77s2sSVJ52pKwezxEqjrKS75qf1FMBC32YJILuyuFb6ueYOa3Q45NpC2U=
+X-Received: by 2002:a25:800f:0:b0:da0:7d1e:6e0 with SMTP id
+ m15-20020a25800f000000b00da07d1e06e0mr1458451ybk.20.1704718743406; Mon, 08
+ Jan 2024 04:59:03 -0800 (PST)
 MIME-Version: 1.0
-References: <CAFEAcA93kpreNOOKz6-qbVE_9Kg6tgZNaMowNLwc+G_47MXLHg@mail.gmail.com>
- <9f0615dc-c162-4ac6-9ead-7f9d28e5d318@redhat.com>
- <CAFEAcA8j3aKMWzb2zSZ5gUaV4uosa2GLBaEKTcqf93iU42FbDA@mail.gmail.com>
-In-Reply-To: <CAFEAcA8j3aKMWzb2zSZ5gUaV4uosa2GLBaEKTcqf93iU42FbDA@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 8 Jan 2024 12:57:00 +0000
-Message-ID: <CAFEAcA8iz--o+mYZWwzT7BNxJZPjwBE5Qo3Jsu-5HAdQ7-UfSA@mail.gmail.com>
-Subject: Re: CI "pages" job failing with incomprehensible error message from
- htags
-To: Thomas Huth <thuth@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Bui Quang Minh <minhquangbui99@gmail.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
+References: <20240107165702.47819-1-n.ostrenkov@gmail.com>
+ <f030dc08-f010-43dd-9aaf-e9b8048a8e43@linaro.org>
+In-Reply-To: <f030dc08-f010-43dd-9aaf-e9b8048a8e43@linaro.org>
+From: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+Date: Mon, 8 Jan 2024 15:58:52 +0300
+Message-ID: <CAC8KSA1S8ruxXmGhppout+Y5bYyy5Ot==Kq6aBKAim8hG1OiYw@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm: add PCIe to Freescale i.MX6
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: multipart/alternative; boundary="00000000000024912f060e6ec3c3"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
+ envelope-from=n.ostrenkov@gmail.com; helo=mail-yw1-x112e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,34 +86,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 8 Jan 2024 at 12:34, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Mon, 8 Jan 2024 at 11:03, Thomas Huth <thuth@redhat.com> wrote:
-> >
-> > On 05/01/2024 20.11, Peter Maydell wrote:
-> > > https://gitlab.com/qemu-project/qemu/-/jobs/5871592479
-> > >
-> > > failed with
-> > >
-> > > $ htags -anT --tree-view=filetree -m qemu_init -t "Welcome to the QEMU
-> > > sourcecode"
-> > > htags: Negative exec line limit = -371
-> > >
-> > > Does anybody have any idea what this is about ?
-> >
-> > In case you haven't spotted it yet:
-> >
-> > https://www.mail-archive.com/qemu-devel@nongnu.org/msg1014394.html
-> >
-> > Is anybody already already creating a patch to clear CI_COMMIT_MESSAGE when
-> > invoking htags ?
->
-> As a first step, I filed a bug for us for it:
-> https://gitlab.com/qemu-project/qemu/-/issues/2080
->
-> We should probably report this upstream, I suppose.
+--00000000000024912f060e6ec3c3
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I've now sent an email to the bug-global list to do that.
+Hi! Thanks! I'll send a new version of this patch.
 
--- PMM
+But what about fsl imx7? Should it also have PCIE_DEVICES?
+
+=D0=BF=D0=BD, 8 =D1=8F=D0=BD=D0=B2. 2024=E2=80=AF=D0=B3. =D0=B2 15:20, Phil=
+ippe Mathieu-Daud=C3=A9 <philmd@linaro.org>:
+
+> Hi Nikita,
+>
+> On 7/1/24 17:57, Nikita Ostrenkov wrote:
+> > Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+> > ---
+> >   hw/arm/Kconfig            |  3 +++
+> >   hw/arm/fsl-imx6.c         | 25 ++++++++++++++++++++++
+> >   include/hw/arm/fsl-imx6.h | 44 ++++++++++++++++++++------------------=
+-
+> >   3 files changed, 51 insertions(+), 21 deletions(-)
+> >
+> > diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+> > index 660f49db49..575bb68c76 100644
+> > --- a/hw/arm/Kconfig
+> > +++ b/hw/arm/Kconfig
+> > @@ -530,13 +530,16 @@ config FSL_IMX31
+> >
+> >   config FSL_IMX6
+> >       bool
+> > +    imply PCI_DEVICES
+>
+> This should be PCIE_DEVICES.
+>
+> >       imply I2C_DEVICES
+> >       select A9MPCORE
+> > +    select PCI
+>
+> Incorrect, should be PCI_EXPRESS, but this is already
+> (indirectly) selected by PCI_EXPRESS_DESIGNWARE which
+> you select below, so not needed.
+>
+> >       select IMX
+> >       select IMX_FEC
+> >       select IMX_I2C
+> >       select IMX_USBPHY
+> >       select WDT_IMX2
+> > +    select PCI_EXPRESS_DESIGNWARE
+> >       select SDHCI
+>
+
+--00000000000024912f060e6ec3c3
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi! Thanks! I&#39;ll send a new version of this patch.=C2=
+=A0<div><br></div><div>But what about fsl imx7? Should it also have PCIE_DE=
+VICES?</div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"=
+gmail_attr">=D0=BF=D0=BD, 8 =D1=8F=D0=BD=D0=B2. 2024=E2=80=AF=D0=B3. =D0=B2=
+ 15:20, Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org=
+">philmd@linaro.org</a>&gt;:<br></div><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
+ng-left:1ex">Hi Nikita,<br>
+<br>
+On 7/1/24 17:57, Nikita Ostrenkov wrote:<br>
+&gt; Signed-off-by: Nikita Ostrenkov &lt;<a href=3D"mailto:n.ostrenkov@gmai=
+l.com" target=3D"_blank">n.ostrenkov@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0hw/arm/Kconfig=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=
+=C2=A0 3 +++<br>
+&gt;=C2=A0 =C2=A0hw/arm/fsl-imx6.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 25 ++=
+++++++++++++++++++++<br>
+&gt;=C2=A0 =C2=A0include/hw/arm/fsl-imx6.h | 44 ++++++++++++++++++++-------=
+------------<br>
+&gt;=C2=A0 =C2=A03 files changed, 51 insertions(+), 21 deletions(-)<br>
+&gt; <br>
+&gt; diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig<br>
+&gt; index 660f49db49..575bb68c76 100644<br>
+&gt; --- a/hw/arm/Kconfig<br>
+&gt; +++ b/hw/arm/Kconfig<br>
+&gt; @@ -530,13 +530,16 @@ config FSL_IMX31<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0config FSL_IMX6<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0bool<br>
+&gt; +=C2=A0 =C2=A0 imply PCI_DEVICES<br>
+<br>
+This should be PCIE_DEVICES.<br>
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0imply I2C_DEVICES<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0select A9MPCORE<br>
+&gt; +=C2=A0 =C2=A0 select PCI<br>
+<br>
+Incorrect, should be PCI_EXPRESS, but this is already<br>
+(indirectly) selected by PCI_EXPRESS_DESIGNWARE which<br>
+you select below, so not needed.<br>
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0select IMX<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0select IMX_FEC<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0select IMX_I2C<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0select IMX_USBPHY<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0select WDT_IMX2<br>
+&gt; +=C2=A0 =C2=A0 select PCI_EXPRESS_DESIGNWARE<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0select SDHCI<br>
+</blockquote></div>
+
+--00000000000024912f060e6ec3c3--
 
