@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B9E827193
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 15:40:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98545827196
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 15:40:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMqlt-0006YC-D1; Mon, 08 Jan 2024 09:38:33 -0500
+	id 1rMqlt-0006Y2-11; Mon, 08 Jan 2024 09:38:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMqlf-0006TN-JW
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMqle-0006T5-G9
  for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:38:20 -0500
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMqlb-0007iV-Ue
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:38:19 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMqlb-0007iZ-Ss
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:38:18 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 27F5761050;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 34D5361053;
+ Mon,  8 Jan 2024 14:38:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EECC433C8;
  Mon,  8 Jan 2024 14:38:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBDAC433C8;
- Mon,  8 Jan 2024 14:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1704724688;
- bh=8736TLy8Xcz4clNFx2YPANIAByh7vW48ap0a8DeNsGs=;
+ s=k20201202; t=1704724690;
+ bh=RfMF/F1MWgRkg/cJ7tX1IjaxKfhLcUlRTaP90CvwDNc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=hAukGIDQC7DQIxe2CtvXQEt6GRl8yASe034cdtQSIYpSJncEAMfZn6Xv4y0gCsTpX
- jkz/tDRygw1Boryyf0hPSAML7PKUpczc+DeXeAPATY0u9yUW9BQzzD5180XJPG8O71
- qRXyFskSOrtObGOOdk8VI/JWAFUoUDt98atK1neuHUXIB8lKCCpKKBnn/YW8bQfKvg
- rs3VPNHwZFFb8FFoGrwTritnuEQZpD8i0XgITSblDseSmVQyyxc8Q4yxJuPNY2bKKl
- 3eyvXYfnmeBWbGBm8WIE+3ZCiK+2OdQdDltSwp6FVr2NGY0RMn6MdDXa+3i+uId5Pr
- c8+uxcsFtfAtA==
+ b=LAze58PJgzIFIX2zpwmMljxRcxg7hsu2FNZ+jjofrcah7YMF92BTZrFyuB7zcBTpz
+ GNFSZQE5BOvtpXZ7Xps8hHgvlbLwiKQ64yBfU56IMZqDZ58itGw2jlVaCp6rFUwVOx
+ ylWGEF00mzmgXJv7fxJ9t7m9EGclu2dVj3MjZGqUQXcIJvDwQM6mE/3ucStkyxAgYq
+ T5Sgg7zBqLnuAzYUdRNerq2HMrmjdzOF6ma+jPBRf/gnIi40lhhqs6KJhYCTPl0yFL
+ D8TiD2Xw1j0Fp/bqx/mflJkuxvy4rC2EaYi8Sxyuo0Eak1MK1IiKcHOmZMm88OHuEl
+ Br3otCmwMiKbQ==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 3/9] hw/pci-host/astro: Add missing astro & elroy registers for
- NetBSD
-Date: Mon,  8 Jan 2024 15:37:56 +0100
-Message-ID: <20240108143802.50256-4-deller@kernel.org>
+Subject: [PULL 4/9] target/hppa: Fix PDC address translation on PA2.0 with
+ PSW.W=0
+Date: Mon,  8 Jan 2024 15:37:57 +0100
+Message-ID: <20240108143802.50256-5-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108143802.50256-1-deller@kernel.org>
 References: <20240108143802.50256-1-deller@kernel.org>
@@ -69,97 +69,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-NetBSD accesses some astro and elroy registers which aren't accessed
-by Linux yet. Add emulation for those registers to allow NetBSD to
-boot further.
-Please note that this patch is not sufficient to completely boot up
-NetBSD on the 64-bit C3700 machine yet.
+Fix the address translation for PDC space on PA2.0 if PSW.W=0.
+Basically, for any address in the 32-bit PDC range from 0xf0000000 to
+0xf1000000 keep the lower 32-bits and just set the upper 32-bits to
+0xfffffff0.
+
+This mapping fixes the emulated power button in PDC space for 32- and
+64-bit machines and is how the physical C3700 machine seems to map
+PDC.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/pci-host/astro.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ target/hppa/mem_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
-index 7d68ccee7e..cb2c8a828d 100644
---- a/hw/pci-host/astro.c
-+++ b/hw/pci-host/astro.c
-@@ -166,6 +166,8 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
-     trace_elroy_write(addr, size, val);
- 
-     switch ((addr >> 3) << 3) {
-+    case 0x000: /* PCI_ID & PCI_COMMAND_STATUS_REG */
-+        break;
-     case 0x080:
-         put_val_in_int64(&s->arb_mask, addr, size, val);
-         break;
-@@ -175,6 +177,9 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
-     case 0x200 ... 0x250 - 1:   /* LMMIO, GMMIO, WLMMIO, WGMMIO, ... */
-         put_val_in_arrary(s->mmio_base, 0x200, addr, size, val);
-         break;
-+    case 0x300: /* ibase */
-+    case 0x308: /* imask */
-+        break;
-     case 0x0680:
-         put_val_in_int64(&s->error_config, addr, size, val);
-         break;
-@@ -538,6 +543,9 @@ static MemTxResult astro_chip_read_with_attrs(void *opaque, hwaddr addr,
-     case 0x0030:        /* HP-UX 10.20 and 11.11 reads it. No idea. */
-         val = -1;
-         break;
-+    case 0x0078:        /* NetBSD reads 0x78 ? */
-+        val = -1;
-+        break;
-     case 0x0300 ... 0x03d8:     /* LMMIO_DIRECT0_BASE... */
-         index = (addr - 0x300) / 8;
-         val = s->ioc_ranges[index];
-@@ -624,31 +632,43 @@ static MemTxResult astro_chip_write_with_attrs(void *opaque, hwaddr addr,
-     case 0x10220:
-     case 0x10230:        /* HP-UX 11.11 reads it. No idea. */
-         break;
--    case 0x22108:        /* IOC STATUS_CONTROL */
--        put_val_in_int64(&s->ioc_status_ctrl, addr, size, val);
--        break;
-     case 0x20200 ... 0x20240 - 1: /* IOC Rope0_Control ... */
-         put_val_in_arrary(s->ioc_rope_control, 0x20200, addr, size, val);
-         break;
-     case 0x20040:        /* IOC Rope config */
-+    case 0x22040:
-         put_val_in_int64(&s->ioc_rope_config, addr, size, val);
-         break;
-     case 0x20300:
-+    case 0x22300:
-         put_val_in_int64(&s->tlb_ibase, addr, size, val);
-         break;
-     case 0x20308:
-+    case 0x22308:
-         put_val_in_int64(&s->tlb_imask, addr, size, val);
-         break;
-     case 0x20310:
-+    case 0x22310:
-         put_val_in_int64(&s->tlb_pcom, addr, size, val);
-         /* TODO: flush iommu */
-         break;
-     case 0x20318:
-+    case 0x22318:
-         put_val_in_int64(&s->tlb_tcnfg, addr, size, val);
-         break;
-     case 0x20320:
-+    case 0x22320:
-         put_val_in_int64(&s->tlb_pdir_base, addr, size, val);
-         break;
-+    case 0x22000:       /* func_id */
-+        break;
-+    case 0x22008:       /* func_class */
-+        break;
-+    case 0x22050:       /* rope_debug */
-+        break;
-+    case 0x22108:        /* IOC STATUS_CONTROL */
-+        put_val_in_int64(&s->ioc_status_ctrl, addr, size, val);
-+        break;
-     /*
-      * empty placeholders for non-existent elroys, e.g.
-      * func_class, pci config & data
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index 08abd1a9f9..011b192406 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -56,7 +56,7 @@ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
+         addr = (int32_t)addr;
+     } else {
+         /* PDC address space */
+-        addr &= MAKE_64BIT_MASK(0, 24);
++        addr = (uint32_t)addr;
+         addr |= -1ull << (TARGET_PHYS_ADDR_SPACE_BITS - 4);
+     }
+     return addr;
 -- 
 2.43.0
 
