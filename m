@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D273826C38
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 12:09:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF3C9826C3F
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 12:10:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMnVZ-00034q-Cc; Mon, 08 Jan 2024 06:09:29 -0500
+	id 1rMnWS-0004Fx-5t; Mon, 08 Jan 2024 06:10:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rMnVX-00034a-NL
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:09:27 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rMnWP-0004Fp-TF
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:10:21 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rMnVV-0003qd-L2
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:09:27 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rMnWO-0004DW-Fv
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:10:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704712165;
+ s=mimecast20190719; t=1704712219;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=+Ip1S/VBA8XutHSmv+yzD7EkpSzeTIPibp5CdRW/vMc=;
- b=BKIzBGp5eqYTStXc254LJP31bCVFmUWOxkoloZlrGDrL1LdJoCDkBmnrOQZnLsdeFQyy06
- 4qM7Gi+84Qt26FHxpidd35FvTQIz72Y4p089wJ9NNoLbon2kGNglHYZScjxW09UJM1QTwm
- 9iW3DRMtCwfNC+WRk3IFNgeH1q47Sb0=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DQrtrX0lM6DjbYGby2cU4VkaTIjpJ2N8SwTh+SsC+QI=;
+ b=OXuc8ZKGw2/q9WUEAd9QKzTb/HM+tn126bBOi0Qjx+uOwGysXYW7KQoy8gnWY8tE92JPsB
+ TmCUQTvjYKzYAayagUrgi81IU6xd95jntES2X2UpcpINHR0hRlDIRJJnxY/6L4jfA2JQ21
+ Db7QURCQfhC3O09y/VGtuM8GzUn3Xww=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-527-PzYcLhMrMGCctLyu4dOu3w-1; Mon, 08 Jan 2024 06:09:23 -0500
-X-MC-Unique: PzYcLhMrMGCctLyu4dOu3w-1
-Received: by mail-oi1-f199.google.com with SMTP id
- 5614622812f47-3bd24849608so2077404b6e.2
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 03:09:23 -0800 (PST)
+ us-mta-453-OaOpSoihO9SBos21hqRByg-1; Mon, 08 Jan 2024 06:10:18 -0500
+X-MC-Unique: OaOpSoihO9SBos21hqRByg-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-68109264e88so9861016d6.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 03:10:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704712163; x=1705316963;
+ d=1e100.net; s=20230601; t=1704712218; x=1705317018;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+Ip1S/VBA8XutHSmv+yzD7EkpSzeTIPibp5CdRW/vMc=;
- b=A0/EI4Juzl2Dwc16yaJ9d38WIMqcL+quiC8pfE9nVn72s+8fBOH9nmw30vpE8EQAPr
- jQqhC/uWA74Oq4elKcyJkMXTT8qKCQvfUTBklaT2RI27Yym5a/ro3fsh2DzRkxQSiQQP
- IFUSTqv0ZL2MhoeY9JIRldSg+bdHb2BvUX1OHIGojI9EwkeOn7ONQOc+7/GxrbfH5iRz
- mzaQL1e8uZ5JgyyHA19yheqccw3altHNRcmLcokpJFmROo//XiIyAhv3+vuBS/f7NXDe
- lI7Y34fw22sBBk+2n1/ZISz7IyKKSrx/Hh0GDK6FuZ5183QRZ4ifkPKQ/UHfUheKIsSt
- SJaQ==
-X-Gm-Message-State: AOJu0YxZ0HI6Zm67PklVqY6FyWxHgBZQCQ7hZgfks8quq1d+eBUM3m0u
- e3hd56bJj5PcLnuixQJqQ42aCSn7W8Csj7VabVfcFv9N8SEi7ZwFJDrwv4MLdwteCUjP7qLJgOE
- r5hyBXZ+EgfUNMuLuLd7JDME=
-X-Received: by 2002:a05:6808:189c:b0:3bd:3381:ee3e with SMTP id
- bi28-20020a056808189c00b003bd3381ee3emr765646oib.57.1704712163062; 
- Mon, 08 Jan 2024 03:09:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFrsFJJJ18f1UYstKzkam505QcF2wSQt4p6+GXtQ4GjyG9KbVAkgi2ovH912qxVAcrpmM5qRA==
-X-Received: by 2002:a05:6808:189c:b0:3bd:3381:ee3e with SMTP id
- bi28-20020a056808189c00b003bd3381ee3emr765637oib.57.1704712162852; 
- Mon, 08 Jan 2024 03:09:22 -0800 (PST)
+ bh=DQrtrX0lM6DjbYGby2cU4VkaTIjpJ2N8SwTh+SsC+QI=;
+ b=Rxr+MIc653qV7ERLy/L3JNWwTdyW5yKbkRo/lpaCGpHGuGU8QOUJ/Asky65Y6aYpSE
+ aYuJKAJrdmA36oKa+vwdjP3nzc4l/ZmsE+eBMzpjjF45LTMLtORV2bHllk0m8UcZytT1
+ 7mTmjxp6Y+YWn3lT/s3stN/s4gF9ydasIMbn6eELaXiVMId3NEssWsYMqVkaNkKL5B2E
+ Hjjdye78wSmx+uPcTEz2IcSLfX5bZUiaxQ8z6Wn8VPYP1KvYKAr0zruFERX8hh7gJCsW
+ xwq4kW3s552KDkUSwyyU4YDFxMIvvAwjZIjFtUJlpUoOLUxDesFcJKwHay65/6pflZrp
+ twXg==
+X-Gm-Message-State: AOJu0YyRXWTHNIuYgS4Osn8TH/Uu9sSy3zv288WgSRAYC/+ZOQ0/V346
+ QN3T4lI4USeCmXNTKPLEJYduJkDcy+sP1R/aRBhXsatoKAXdR3IlgLFWRF8x5/hQIs+PjywAhW+
+ OnFooJnf9alI5epbhDCv5s5A=
+X-Received: by 2002:ad4:576f:0:b0:67f:143d:b8ca with SMTP id
+ r15-20020ad4576f000000b0067f143db8camr5155081qvx.44.1704712218121; 
+ Mon, 08 Jan 2024 03:10:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEmCqjwROsar63XVVAcLUo2JmOf1Ffx99Xy+wd2mQDnPAP4tTctRkRSdx5Aiyf7aR8/kq/WAg==
+X-Received: by 2002:ad4:576f:0:b0:67f:143d:b8ca with SMTP id
+ r15-20020ad4576f000000b0067f143db8camr5155069qvx.44.1704712217901; 
+ Mon, 08 Jan 2024 03:10:17 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-179-78.web.vodafone.de.
  [109.43.179.78]) by smtp.gmail.com with ESMTPSA id
- l10-20020ad4444a000000b0067f4507b64dsm2729552qvt.63.2024.01.08.03.09.20
+ l10-20020ad4444a000000b0067f4507b64dsm2729552qvt.63.2024.01.08.03.10.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 03:09:22 -0800 (PST)
-Message-ID: <a8c05fb1-7409-4dba-910f-8fdd315d06d7@redhat.com>
-Date: Mon, 8 Jan 2024 12:09:18 +0100
+ Mon, 08 Jan 2024 03:10:17 -0800 (PST)
+Message-ID: <5d7ca124-6206-42be-a954-9d8db81819b3@redhat.com>
+Date: Mon, 8 Jan 2024 12:10:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/4] linux-headers: drop pvpanic.h
+Subject: Re: [PATCH v4 2/4] hw/misc/pvpanic: centralize definition of
+ supported events
 Content-Language: en-US
 To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
  "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>
 Cc: qemu-devel@nongnu.org
 References: <20240107-pvpanic-shutdown-v4-0-81500a7e4081@t-8ch.de>
- <20240107-pvpanic-shutdown-v4-1-81500a7e4081@t-8ch.de>
+ <20240107-pvpanic-shutdown-v4-2-81500a7e4081@t-8ch.de>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -116,7 +117,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240107-pvpanic-shutdown-v4-1-81500a7e4081@t-8ch.de>
+In-Reply-To: <20240107-pvpanic-shutdown-v4-2-81500a7e4081@t-8ch.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -145,30 +146,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 07/01/2024 15.05, Thomas Weißschuh wrote:
-> misc/pvpanic.h from the Linux UAPI does not define a Linux UAPI but a
-> qemu device API.
+> The different components of pvpanic duplicate the list of supported
+> events. Move it to the shared header file to minimize changes when new
+> events are added.
 > 
-> This leads to a weird process when updates to the interface are needed:
-> 1) Change to the specification in the qemu tree
-> 2) Change to the header in the Linux tree
-> 3) Re-import of the header into Qemu.
-> 
-> The kernel prefers to drop the header anyways.
-> 
-> Prepare for the removal from the Linux UAPI headers by moving the
-> contents to the existing pvpanic.h header.
-> 
-> Link: https://lore.kernel.org/lkml/2023110431-pacemaker-pruning-0e4c@gregkh/
 > Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
 > ---
->   hw/misc/pvpanic-isa.c                    | 1 -
->   hw/misc/pvpanic-pci.c                    | 1 -
->   hw/misc/pvpanic.c                        | 1 -
->   include/hw/misc/pvpanic.h                | 3 +++
->   include/standard-headers/linux/pvpanic.h | 9 ---------
->   scripts/update-linux-headers.sh          | 3 +--
->   6 files changed, 4 insertions(+), 14 deletions(-)
+>   hw/misc/pvpanic-isa.c     | 2 +-
+>   hw/misc/pvpanic-pci.c     | 2 +-
+>   hw/misc/pvpanic.c         | 2 +-
+>   include/hw/misc/pvpanic.h | 1 +
+>   4 files changed, 4 insertions(+), 3 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
