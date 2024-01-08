@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43236827775
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 19:27:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE8D82775C
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 19:25:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMuIX-0002up-FF; Mon, 08 Jan 2024 13:24:29 -0500
+	id 1rMuId-0002xf-Tw; Mon, 08 Jan 2024 13:24:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rMuIS-0002uE-1K
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:24 -0500
+ id 1rMuIW-0002vQ-9w
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rMuIO-0002le-LL
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:23 -0500
+ id 1rMuIU-0002oO-P7
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704738259;
+ s=mimecast20190719; t=1704738266;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=w93oSRBlIxOYPeVMxGoIRlTs6xkHTaR7cBYJz/SholU=;
- b=gMjjtUlCQrKU3YT2L2JSTis505P3ni82LLP+Axj9nQTaEWXC01rzTlUC/cW5EQpqQWv72N
- 2eQOVZh1OMgpmR5eiv+1J/bl9xMi/DwYj5Q5n9l5AXZ6FaLkim+eGD8K6Lqzj8izUXigIt
- 2CvvDJONdpLPuzLkzaHayvDRYWXYAvU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-500-qKpnwNMsO62WSH0hHl3NVQ-1; Mon,
- 08 Jan 2024 13:24:17 -0500
-X-MC-Unique: qKpnwNMsO62WSH0hHl3NVQ-1
+ bh=Fp482xqDk5BVfbU/+2icy8xz0xAfTqfg+Mjcr9pPtU0=;
+ b=HPUhYgeKILHQ9cM5meiD1NSFzWOh489m1OMmttVTFDqIMKsVMQcEMqBPMNre/7ozxDrsqU
+ WOcbq/T/RLQfAg8Act64A2C4AlcuKzzQCcNOU+vYv2TtLfPUIOxKeSUSHLA10Vf4uxg/NT
+ 4VKUD+kG3RKiOCqbLr0t6RK/4cbIDwU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-470-OvudDtHPPTu9fRhxvWSu0g-1; Mon, 08 Jan 2024 13:24:18 -0500
+X-MC-Unique: OvudDtHPPTu9fRhxvWSu0g-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 474583C0C107;
- Mon,  8 Jan 2024 18:24:17 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7BA95101A555;
+ Mon,  8 Jan 2024 18:24:18 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6B7663C2E;
- Mon,  8 Jan 2024 18:24:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8BD613C2E;
+ Mon,  8 Jan 2024 18:24:17 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 07/29] docs: adapt to new import path for qobject data type
+Subject: [PATCH 08/29] dump: adapt to new import path for qobject data type
  headers
-Date: Mon,  8 Jan 2024 18:23:43 +0000
-Message-ID: <20240108182405.1135436-8-berrange@redhat.com>
+Date: Mon,  8 Jan 2024 18:23:44 +0000
+Message-ID: <20240108182405.1135436-9-berrange@redhat.com>
 In-Reply-To: <20240108182405.1135436-1-berrange@redhat.com>
 References: <20240108182405.1135436-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -87,31 +87,50 @@ qobject/.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- docs/devel/qapi-code-gen.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ dump/dump-hmp-cmds.c | 2 +-
+ dump/dump.c          | 2 +-
+ dump/win_dump.c      | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
-index 7f78183cd4..580ff9cbe0 100644
---- a/docs/devel/qapi-code-gen.rst
-+++ b/docs/devel/qapi-code-gen.rst
-@@ -1797,7 +1797,7 @@ Example::
-     #ifndef EXAMPLE_QAPI_INIT_COMMANDS_H
-     #define EXAMPLE_QAPI_INIT_COMMANDS_H
+diff --git a/dump/dump-hmp-cmds.c b/dump/dump-hmp-cmds.c
+index b428ec33df..68ab383ece 100644
+--- a/dump/dump-hmp-cmds.c
++++ b/dump/dump-hmp-cmds.c
+@@ -10,7 +10,7 @@
+ #include "monitor/monitor.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-dump.h"
+-#include "qapi/qmp/qdict.h"
++#include "qobject/qdict.h"
  
--    #include "qapi/qmp/dispatch.h"
-+    #include "qapi/qmp-registry.h"
- 
-     void example_qmp_init_marshal(QmpCommandList *cmds);
- 
-@@ -1928,7 +1928,7 @@ Example::
-     #ifndef EXAMPLE_QAPI_INTROSPECT_H
-     #define EXAMPLE_QAPI_INTROSPECT_H
- 
--    #include "qapi/qmp/qlit.h"
-+    #include "qobject/qlit.h"
- 
-     extern const QLitObject example_qmp_schema_qlit;
- 
+ void hmp_dump_guest_memory(Monitor *mon, const QDict *qdict)
+ {
+diff --git a/dump/dump.c b/dump/dump.c
+index 4819050764..237ec0d56d 100644
+--- a/dump/dump.c
++++ b/dump/dump.c
+@@ -23,7 +23,7 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-dump.h"
+ #include "qapi/qapi-events-dump.h"
+-#include "qapi/qmp/qerror.h"
++#include "qobject/qerror.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+ #include "hw/misc/vmcoreinfo.h"
+diff --git a/dump/win_dump.c b/dump/win_dump.c
+index b7bfaff379..ad45312b6d 100644
+--- a/dump/win_dump.c
++++ b/dump/win_dump.c
+@@ -12,7 +12,7 @@
+ #include "sysemu/dump.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+-#include "qapi/qmp/qerror.h"
++#include "qobject/qerror.h"
+ #include "exec/cpu-defs.h"
+ #include "hw/core/cpu.h"
+ #include "qemu/win_dump_defs.h"
 -- 
 2.43.0
 
