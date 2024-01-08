@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAAC827A16
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:14:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84189827A1E
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:17:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMwwg-0005KG-6z; Mon, 08 Jan 2024 16:14:06 -0500
+	id 1rMwzE-00070X-FW; Mon, 08 Jan 2024 16:16:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rMwwe-0005HO-AX
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:14:04 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1rMwzC-00070I-HB
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:16:42 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rMwwb-0007Qx-Lg
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:14:04 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1d40eec5e12so18322765ad.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 13:14:00 -0800 (PST)
+ id 1rMwzB-0000ow-1n
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:16:42 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6d9b267007fso970628b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 13:16:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704748439; x=1705353239; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704748599; x=1705353399; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Q5rJw54yP4v7QbgPp1BiRs6Jtx3owK3bClJNsIzaE3I=;
- b=KZbe96kXblIQ6j56lUNvnsASEVJOJslRnvS7TR7KIeAhGe+Yn/5BOlKqBCUzP3m+02
- GNw1KPIY63rOw+4u+0iACp4/QV9xkDiJIWbsP3PJFcMDIo/P/S90IpYYoTN1x0Kil1Q0
- UFROXxP2rihZt+KQ/eKpKEOkJgFUJ7AuB+GAtDQCRTC+AXun3+gO3HdjIRsnYzNaMNEu
- Iq16Zhjxn1Mc2+7kJJ/XaOGCkjDZDJl6/4PgiR+4Sj0CEwUDvrqnM5N2nhB+VvnbcO6q
- 1w+aQPQtvPEITtexlBzE29sHvR/X2xO/kFA5L+6oPwMmigZRjrhneMLPXa10fhf4+TdP
- 3nmg==
+ bh=lbGaZWex2OUKKq6WOfTecnw9l714LReYotC+p6RZMpY=;
+ b=NCFUf9Q0uR80enXAkFINZGYJDRyJM2QbhPxecqH14MmJC471kWDR1cBC0YT+aZST01
+ oP7ybpBWh15hupyakV+NPb3KfXZMjbQLYRGT3KiewjyO6VfauaadGrGfJvEnMxwY/Q56
+ w1HHZs4kjWEYkTetkmmMPffXv8K9jfOrSKAlIf3njl6EnnAyFO2rqH54Wot2g0S20vOP
+ X4bT+Kk5774+oRcOND+U5jyklap3zkrWTYnIpvUg4sunjPg2g9OXX8Bg2/i1ASMym9JC
+ R64rH740BT1IOUMKQj5pDZudj6iG9uUwNjwXWfLkuFdJyD0UW55ikt/K9O9+lfqfktM5
+ hTXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704748439; x=1705353239;
+ d=1e100.net; s=20230601; t=1704748599; x=1705353399;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Q5rJw54yP4v7QbgPp1BiRs6Jtx3owK3bClJNsIzaE3I=;
- b=Ska7QIh8YZan4AB8CkVq+J6+dFgtbMf966pRyl3XrCj/Jvi7qy6kaZ/xNRHUMKOO7+
- hM5wOa3J7ZoCOto106raLCmBKtmrh7djS+fNlt1as8gYmj88QdCI1g7Vxzl/b05gqLt8
- mpocWZmTfdznvvXBq6gs02pHa35fq09gdfy4L06bskKcKY2Po8vic/FLLmIit/wIyuxw
- qVyQD959wPS4S62Pf/fclh3JCYSzzLs93N/RH6Bc/0HLsCcKJ3mCh1zUUyNxM9yRFr70
- ogK90uvHY9Ox+IWWVrCJDr4aKV+UA4ANzHPUev/KUNeKWIIVrtQHRZPQJ7HdUp/j6ZVS
- t7Aw==
-X-Gm-Message-State: AOJu0YxSt7aAo87Vy3GjfeOB6YL46i73BFiI4BzxYoJ3IbGK6Hlshghd
- S+ozVi9pYOiWmp/Sjqfp9G61T9D/Xo1Txg==
-X-Google-Smtp-Source: AGHT+IGrU+wWGGlNHzV57euIH5goJVtvcAgYBnapGXAG/8s2ZK7UDZsgZH2uGQE5yRRAbSuGKrW7xQ==
-X-Received: by 2002:a17:902:6f08:b0:1d4:868b:7ccc with SMTP id
- w8-20020a1709026f0800b001d4868b7cccmr4104960plk.111.1704748439578; 
- Mon, 08 Jan 2024 13:13:59 -0800 (PST)
+ bh=lbGaZWex2OUKKq6WOfTecnw9l714LReYotC+p6RZMpY=;
+ b=LecPNgHX2A2sPlz0rH1vOZr9t0PCSkzVP4jYv18WijTzMFEHIzZzTOKQK6o2SY7r1/
+ Y++7ueDWzBAKcl74I0MP6oJuOUGBWCoaRA82cOjpeorY0AyRT8K5YcTPzVayAn/7k7kr
+ kAonYLDYGL89GpAATpagQP3tDmvrrJYy96w47UurQA48aCwmU3zmH1b2v+GP1l/edIEG
+ /E1dMitJRT85UJ+jGbP74fNDJh0O3jOHiN4WFFjFnrbKRF3PVsS2r20xm6LzT7VsSdQn
+ ISiDfQOO7RoBGC34HjKMYldGnifh6Jr6uP6x0JWFigSekzhGQNoPxt7U9AC/2ZZGqZOk
+ QVWA==
+X-Gm-Message-State: AOJu0YyR0W2Vl2OKwC2w2A0ZzSFFdCwkRR71jtBiRKZ4gveqBOlBpS6o
+ WMe4DWHa0KvCoXAVezc4lNHoqT6tpV1m5g==
+X-Google-Smtp-Source: AGHT+IHWXDr0CijZZ6W7pd5AHNC64Bu5BeWmEJdvllecdfQw4nUY/WZhoQmwEYLD3eW3+TLu5GNnNA==
+X-Received: by 2002:a05:6a00:2e09:b0:6d9:b5ba:3ddb with SMTP id
+ fc9-20020a056a002e0900b006d9b5ba3ddbmr1907005pfb.11.1704748599522; 
+ Mon, 08 Jan 2024 13:16:39 -0800 (PST)
 Received: from [192.168.1.66] ([103.194.3.133])
  by smtp.gmail.com with ESMTPSA id
- n10-20020a1709026a8a00b001d1cd7e4ad2sm332117plk.125.2024.01.08.13.13.56
+ p30-20020a056a0026de00b006d99cbe22f5sm300466pfw.217.2024.01.08.13.16.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 13:13:59 -0800 (PST)
-Message-ID: <cd2f9cb8-9f79-438e-8ca8-a3bf1675b232@linaro.org>
-Date: Tue, 9 Jan 2024 08:13:55 +1100
+ Mon, 08 Jan 2024 13:16:39 -0800 (PST)
+Message-ID: <de87c8e2-7b16-42d0-b127-8b2961ce2f12@linaro.org>
+Date: Tue, 9 Jan 2024 08:16:31 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] util: fix build with musl libc on ppc64le
+Subject: Re: [PATCH-for-9.0] accel/tcg: Remove tb_invalidate_phys_page() from
+ system emulation
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Natanael Copa <ncopa@alpinelinux.org>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-References: <20231219105236.7059-1-ncopa@alpinelinux.org>
- <5f7b5921-b6e3-48f1-8bec-b4fdbfdac2f1@linaro.org>
+ qemu-devel@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20231130205600.35727-1-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <5f7b5921-b6e3-48f1-8bec-b4fdbfdac2f1@linaro.org>
+In-Reply-To: <20231130205600.35727-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,26 +96,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/5/24 03:26, Philippe Mathieu-Daudé wrote:
-> Hi Natanael,
+On 12/1/23 07:56, Philippe Mathieu-Daudé wrote:
+> Since previous commit, tb_invalidate_phys_page() is not used
+> anymore in system emulation. Make it static for user emulation
+> and remove its public declaration in "exec/translate-all.h".
 > 
-> On 19/12/23 11:51, Natanael Copa wrote:
->> Use PPC_FEATURE2_ISEL and PPC_FEATURE2_VEC_CRYPTO from linux headers
->> instead of the GNU specific PPC_FEATURE2_HAS_ISEL and
->> PPC_FEATURE2_HAS_VEC_CRYPTO. This fixes build with musl libc.
->>
->> Fixes: 623d7e3551a6 (util: Add cpuinfo-ppc.c)
-> 
-> Hmm this commit barely moved the code. Maybe it revealed the
-> issue from the following commits?
-> 
-> Fixes: 63922f467a ("tcg/ppc: Replace HAVE_ISEL macro with a variable")
-> Fixes: 68f340d4cd ("tcg/ppc: Enable Altivec detection")
-> 
-> Anyhow, changes LGTM.
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> Based-on: <20231130203241.31099-1-philmd@linaro.org>
+> ---
+>   include/exec/translate-all.h |  1 -
+>   accel/tcg/tb-maint.c         | 24 +-----------------------
+>   2 files changed, 1 insertion(+), 24 deletions(-)
 
-
-Queued, thanks.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
