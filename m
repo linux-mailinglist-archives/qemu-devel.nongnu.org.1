@@ -2,66 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FD3826F81
+	by mail.lfdr.de (Postfix) with ESMTPS id 963E6826F80
 	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 14:18:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMpV0-0005qx-8a; Mon, 08 Jan 2024 08:17:02 -0500
+	id 1rMpVf-00063z-CW; Mon, 08 Jan 2024 08:17:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMpUt-0005pn-En
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 08:16:57 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ id 1rMpVK-00061C-4L
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 08:17:27 -0500
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMpUr-00010s-OA
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 08:16:55 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-555e07761acso2076566a12.0
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 05:16:53 -0800 (PST)
+ id 1rMpVE-0001B8-5U
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 08:17:21 -0500
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-50eabbc3dccso1628324e87.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 05:17:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704719812; x=1705324612; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=cq6zbSpPaMegW9jDBOGqQn6o3L4sJ1psytReOr8+HwQ=;
- b=PmOtnafB8zZoBsFeeS6jotvfKMJTiCmRv1HSMJcXHeRuTbO1iAnA3+7UVWqNQzeCRH
- wvp/TAHCgi6nl4tTPtd6U/z6cUJXofAzo4RLSPfkgsk79pmRSWsGUGhm/BbRWi0d1QoX
- a2Z7Opy3QDouqgqmTBWRMONkpYJEw2O+uRIwunG2Jm7DmTan9s/I+YMF3gBsTBFwhSkN
- CcmiWUvHPnZBq9SHqo37fM31tutRcKP+4zVDiMsf0lQLrs46Vyg3Lhdi9pkwFXUIQNgA
- XPAc+59YsFukidAxJRtj45CV0cmqcfhfYdcR0WWfjY8ilWtYPWkr6DpjToq65RYD9ZIh
- 9fBg==
+ d=linaro.org; s=google; t=1704719827; x=1705324627; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GfSegeIh7wopyMD5hBdnvaa/4zTPrbAy35LwfLCht7g=;
+ b=XdH454vh3KsWe55gYhSVUf7Uy1RAhTSWju37k6o8tx77STnuucMwRQL9mBNw61MqZ1
+ JxaOgaeA2zctg4gKMnjyGufMIeomyXAaKIMybbPcJkZZYzQU/ukTMTscp+TTsq6RdO/U
+ fY3BdbuzpPP7xBaQVnRqB4E097oR/85GHVIGk7d2ay9+BZskUPewDyC6QkyekrejIRom
+ XisDwQGffC14OVAXezMbEMOGQG/Uo8UCLMd5vnadE7Q4Vghj7LewglnZhL/1ru3P/7He
+ NEIExzOj2LHBFI1xG8NvMk2jR4CPl6XPJQpI9skhONgF+M84TrYELPnE1P2k84IrsJYa
+ kQug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704719812; x=1705324612;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cq6zbSpPaMegW9jDBOGqQn6o3L4sJ1psytReOr8+HwQ=;
- b=q7VkYz/HKzF0YQ+/AHaYNckBlKLVUgAsLgkShZH4pFozCYDGkW7ADE0UrW3krPydm8
- qFETv1ZCfSdmzB7ADoWHzo7uJdIhlyRdpkElzyquNps9tntDb6OpCJXkFtHRndBJlhR7
- 2Ir655FL1ubV35t0fVndtYrASe9PeOQBg/HHzhIVxsEx6F6ikN4QVKt+7sOmoNRktS5N
- yRucNqhk/3T4Mm1VV1blH4Wb1ufvdwhuilyRiDuQ6Xo7RaTfk9WaeQOSfSxHwQoJBKQB
- sKh3Zayu/cReby6rLM4+SoIC+ztr5CrFPx4W2mkB82E1ulYgIlyLw66L2VSdIw0hir+6
- Ge0A==
-X-Gm-Message-State: AOJu0Yybu3FvwGQvZ9bYCkg/N3qPSvIQs/ZhqBwo2DTwC5oQYFvKz2BB
- dND+0IQ+9kA1WoeA0MOguWgb4ns6QknES+QU/XFZV6VxkJX0yUJ1+IrEtYh7
-X-Google-Smtp-Source: AGHT+IFMtwHazkYDnYtYw3JH3lbZo91tN7kC1lUVUgluxFM627p4UeUPEu5HRIYWQvEuVf+N/lVkxwgpmZ0rroGMxNc=
-X-Received: by 2002:a50:ab4a:0:b0:557:3f98:39 with SMTP id
- t10-20020a50ab4a000000b005573f980039mr1468917edc.11.1704719811901; 
- Mon, 08 Jan 2024 05:16:51 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704719827; x=1705324627;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GfSegeIh7wopyMD5hBdnvaa/4zTPrbAy35LwfLCht7g=;
+ b=qOg8QaTpx6Q40fq/cAT67O9oGTZ2wrVD/jQ96wIp4cs6AehbW34Mmz6GSuEWjfasES
+ wzVWbFapBvUHfC+G3bq4QnWDKx+ncTdCu9B19w3HbFc9vNvfF+TAN5X06rzIhO6Vt4Rc
+ 8tLtNuzn6qTzxD9EGdQFFTtW/LR+gm6vlFpwPj2pnmWu3Vvsq2psY20IMmwBniYeiEOC
+ YSugXHlOd1aYGmDXPd0/5Ek9seTTWktbNUxJCDZREKpJHVdINP2g1K+JNhU0r6QfAMgG
+ pUh1y/e+06lPGY4MpsmpCgz52GIJzkVsbyu8FIREPQpgm0LLSz6QJ2+JEho2PWJsSaWu
+ Jrbw==
+X-Gm-Message-State: AOJu0YwTBxRMP8bbMowu8ecR7HanFkrKqnE1IKvTrjWuXkUSC0y9Vlit
+ +viu6dIohxQ563vZff1uKBxoL3nTzgk6IHHhqKmbywzkljYjaw==
+X-Google-Smtp-Source: AGHT+IFhjJZx2/Ypa8G89+gqbizTAa/UDarS5hyzeC/AE2CJ9QHeDJR/v/QhikcKGk/XLv9Ne4tU/2qUx9VwIDotlFY=
+X-Received: by 2002:a05:6512:3288:b0:50e:2e88:1157 with SMTP id
+ p8-20020a056512328800b0050e2e881157mr545309lfe.107.1704719827296; Mon, 08 Jan
+ 2024 05:17:07 -0800 (PST)
 MIME-Version: 1.0
-References: <20240106021211.1418324-1-gaosong@loongson.cn>
-In-Reply-To: <20240106021211.1418324-1-gaosong@loongson.cn>
+References: <20240108073232.118228-1-clg@redhat.com>
+In-Reply-To: <20240108073232.118228-1-clg@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 8 Jan 2024 13:16:41 +0000
-Message-ID: <CAFEAcA87n60-ZvvX6xCYXo=vGGwQBeef4tnoYiiYHLmXHmL=6Q@mail.gmail.com>
-Subject: Re: [PULL v2 0/2] loongarch-to-apply queue
-To: Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org
+Date: Mon, 8 Jan 2024 13:16:56 +0000
+Message-ID: <CAFEAcA-7reB3bXzq2xdR_3kC7PtSGfqqUiRs5qTyWXt9Dk8trQ@mail.gmail.com>
+Subject: Re: [PULL 00/17] vfio queue
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>, 
+ Eric Auger <eric.auger@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,29 +87,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 6 Jan 2024 at 02:25, Song Gao <gaosong@loongson.cn> wrote:
+On Mon, 8 Jan 2024 at 07:34, C=C3=A9dric Le Goater <clg@redhat.com> wrote:
 >
-> The following changes since commit 0c1eccd368af8805ec0fb11e6cf25d0684d37328:
+> The following changes since commit 0c1eccd368af8805ec0fb11e6cf25d0684d373=
+28:
 >
->   Merge tag 'hw-cpus-20240105' of https://github.com/philmd/qemu into staging (2024-01-05 16:08:58 +0000)
+>   Merge tag 'hw-cpus-20240105' of https://github.com/philmd/qemu into sta=
+ging (2024-01-05 16:08:58 +0000)
 >
 > are available in the Git repository at:
 >
->   https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240106
+>   https://github.com/legoater/qemu/ tags/pull-vfio-20240107
 >
-> for you to fetch changes up to 5c23704e4725f935b3171787f00e9922a7fc58cb:
+> for you to fetch changes up to 19368b1905b4b917e915526fcbd5bfa3f7439451:
 >
->   target/loongarch: move translate modules to tcg/ (2024-01-06 10:18:52 +0800)
->
-> ----------------------------------------------------------------
-> pull-loongarch-20240106
->
-> Fixes patch conflict
+>   backends/iommufd: Remove mutex (2024-01-05 21:25:20 +0100)
 >
 > ----------------------------------------------------------------
-> Song Gao (2):
->       target/loongarch/meson: move gdbstub.c to loongarch.ss
->       target/loongarch: move translate modules to tcg/
+> vfio queue:
+>
+> * Minor cleanups
+> * Fix for a regression in device reset introduced in 8.2
+> * Coverity fixes, including the removal of the iommufd backend mutex
+> * Introduced VFIOIOMMUClass, to avoid compiling spapr when !CONFIG_PSERIE=
+S
 >
 
 
