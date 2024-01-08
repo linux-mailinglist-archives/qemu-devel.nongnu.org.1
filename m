@@ -2,81 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08CE826D9B
+	by mail.lfdr.de (Postfix) with ESMTPS id C509C826D9C
 	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:17:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMoYo-0008Lm-CL; Mon, 08 Jan 2024 07:16:54 -0500
+	id 1rMoYx-0008OQ-P1; Mon, 08 Jan 2024 07:17:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rMoYh-0008Kg-UN
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:16:49 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rMoYd-0004ME-Be
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:16:46 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-336c8ab0b20so1798011f8f.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 04:16:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704716200; x=1705321000; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OR69e3lAZEVaVghEoQAGh/Ja5wlCsQaKny79C/W3rwE=;
- b=zUxVm+oLte03Jt7cDboUJwTXIFK2om2u64i2ObUEWfKbbraiPRd/Jq07wc38WrKPci
- D1V6g33BYLUFvccsNlvPLSeGaujfWWXTguatNOekpDkpcoK/VtnaQueib9wBOCmc7i/1
- G334WFwkgaIsBsnOzhmql7CVI8mDUEFmDMfmXUS5eZDoxvjjMzUogZnKADj5+DSfCvEF
- IagpfvtI3WRVajld6pXqc4+kEGDVkxENtPc4/LI3x0U6dk/ZMnB+1FCQ7YA5AN+ngLYC
- xAAFuc3jQse94pBenFfe5UEhfERpZKWogBMVpG40AO/0e7cPETtQy4u2I8VAwWt1lvGr
- IhjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704716200; x=1705321000;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OR69e3lAZEVaVghEoQAGh/Ja5wlCsQaKny79C/W3rwE=;
- b=qLKfJGIOlZL744cPauJVg52pwvJjXuuM0qAMJ+95tC5/QiQefnj4nS00IS16imbOqW
- XgOKf9qgfKCx3uq0VoxI/y9xppwHU/7cT/bsdr4Xq2pS8g12y2BVuLPwN4j/PS+t2lE7
- H19Ah0yPX8a1P0aUNzFwCWQGwIOLXiKPr8mRAlRNZqfkpt0I3cV+DIfpxm7sXbvXw/L5
- nZTSo1Jwp71qiFy/CSL53hS8PG0bRnmLIndg8HfXfEpTuk/2gf6ROXGQftJJEq7mntrB
- mKbYgiPk04vEWMSMcYCLxqRHyBlm9cWQQ9kn0DvsnjWQiRJeoHJkf2cHsoraz4qlZfuE
- 5f3w==
-X-Gm-Message-State: AOJu0Yz9X57NO5i7tSA+cBer0lrxc8SQrFOJ0DHiSYTzMamTbhLo+qio
- 1hkHUbbFEFUSaUWncNh/WZwPCyY907MCZA==
-X-Google-Smtp-Source: AGHT+IFmsGrZM6k3vCfNAOLB7rx9AHC6m4kO+iz7DVxvs8exW/oL6Ja1st+89gOCD/9Ltj0a/Bj+eg==
-X-Received: by 2002:a5d:6c61:0:b0:336:5fa3:5f6a with SMTP id
- r1-20020a5d6c61000000b003365fa35f6amr2341265wrz.0.1704716200161; 
- Mon, 08 Jan 2024 04:16:40 -0800 (PST)
-Received: from [192.168.1.24] ([102.35.208.160])
- by smtp.gmail.com with ESMTPSA id
- t1-20020adfd001000000b0033672971fabsm7671953wrh.115.2024.01.08.04.16.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 04:16:39 -0800 (PST)
-Message-ID: <e8bbea10-b256-418b-8b8a-fe0a65b1e2c1@linaro.org>
-Date: Mon, 8 Jan 2024 16:16:36 +0400
+ (Exim 4.90_1) (envelope-from <SRS0=tOGw=IS=kaod.org=clg@ozlabs.org>)
+ id 1rMoYt-0008NI-VT; Mon, 08 Jan 2024 07:16:59 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=tOGw=IS=kaod.org=clg@ozlabs.org>)
+ id 1rMoYq-0004R2-WC; Mon, 08 Jan 2024 07:16:59 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T7tN26Ytqz4x22;
+ Mon,  8 Jan 2024 23:16:50 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T7tMy73Kfz4x1v;
+ Mon,  8 Jan 2024 23:16:46 +1100 (AEDT)
+Message-ID: <6e7ff0f1-40d7-4bd6-8f1c-8776202af075@kaod.org>
+Date: Mon, 8 Jan 2024 13:16:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 22/33] linux-user: Split out mmap_h_lt_g
+Subject: Re: [PATCH 9/9] tests/avocado: Add FreeBSD distro boot tests for ppc
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20240102015808.132373-1-richard.henderson@linaro.org>
- <20240102015808.132373-23-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240102015808.132373-23-richard.henderson@linaro.org>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ qemu-ppc@nongnu.org, Warner Losh <imp@bsdimp.com>
+References: <20240107170119.82222-1-npiggin@gmail.com>
+ <20240107170119.82222-10-npiggin@gmail.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240107170119.82222-10-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=tOGw=IS=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,190 +71,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/2/24 05:57, Richard Henderson wrote:
-> Work much harder to get alignment and mapping beyond the end
-> of the file correct.  Both of which are excercised by our
-> test-mmap for alpha (8k pages) on any 4k page host.
+On 1/7/24 18:01, Nicholas Piggin wrote:
+> FreeBSD project provides qcow2 images that work well for testing QEMU.
+> Add pseries tests for HPT and Radix, KVM and TCG. This uses a short
+> term VM image, because FreeBSD has not set up long term builds for
+> ppc64 at present.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Other architectures could be added so this does not get a ppc_ prefix
+> but is instead named similarly to boot_linux.
+> 
+> Reviewed-by: Warner Losh <imp@bsdimp.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   linux-user/mmap.c | 156 +++++++++++++++++++++++++++++++++++++---------
->   1 file changed, 125 insertions(+), 31 deletions(-)
-> 
-> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-> index 00003b8329..8b0a26e50d 100644
-> --- a/linux-user/mmap.c
-> +++ b/linux-user/mmap.c
-> @@ -552,6 +552,128 @@ static abi_long mmap_h_eq_g(abi_ulong start, abi_ulong len,
->       return mmap_end(start, last, start, last, flags, page_flags);
->   }
->   
-> +/*
-> + * Special case host page size < target page size.
-> + *
-> + * The two special cases are increased guest alignment, and mapping
-> + * past the end of a file.
-> + *
-> + * When mapping files into a memory area larger than the file,
-> + * accesses to pages beyond the file size will cause a SIGBUS.
-> + *
-> + * For example, if mmaping a file of 100 bytes on a host with 4K
-> + * pages emulating a target with 8K pages, the target expects to
-> + * be able to access the first 8K. But the host will trap us on
-> + * any access beyond 4K.
-> + *
-> + * When emulating a target with a larger page-size than the hosts,
-> + * we may need to truncate file maps at EOF and add extra anonymous
-> + * pages up to the targets page boundary.
-> + *
-> + * This workaround only works for files that do not change.
-> + * If the file is later extended (e.g. ftruncate), the SIGBUS
-> + * vanishes and the proper behaviour is that changes within the
-> + * anon page should be reflected in the file.
-> + *
-> + * However, this case is rather common with executable images,
-> + * so the workaround is important for even trivial tests, whereas
-> + * the mmap of of a file being extended is less common.
-> + */
-> +static abi_long mmap_h_lt_g(abi_ulong start, abi_ulong len, int host_prot,
-> +                            int mmap_flags, int page_flags, int fd,
-> +                            off_t offset, int host_page_size)
-> +{
-> +    void *p, *want_p = g2h_untagged(start);
-> +    off_t fileend_adj = 0;
-> +    int flags = mmap_flags;
-> +    abi_ulong last, pass_last;
-> +
-> +    if (!(flags & MAP_ANONYMOUS)) {
-> +        struct stat sb;
-> +
-> +        if (fstat(fd, &sb) == -1) {
-> +            return -1;
-> +        }
-> +        if (offset >= sb.st_size) {
-> +            /*
-> +             * The entire map is beyond the end of the file.
-> +             * Transform it to an anonymous mapping.
-> +             */
-> +            flags |= MAP_ANONYMOUS;
-> +            fd = -1;
-> +            offset = 0;
-> +        } else if (offset + len > sb.st_size) {
-> +            /*
-> +             * A portion of the map is beyond the end of the file.
-> +             * Truncate the file portion of the allocation.
-> +             */
-> +            fileend_adj = offset + len - sb.st_size;
-> +        }
-> +    }
-> +
-> +    if (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE)) {
-> +        if (fileend_adj) {
-> +            p = mmap(want_p, len, host_prot, flags | MAP_ANONYMOUS, -1, 0);
-> +        } else {
-> +            p = mmap(want_p, len, host_prot, flags, fd, offset);
-> +        }
-> +        if (p != want_p) {
-> +            if (p != MAP_FAILED) {
-> +                munmap(p, len);
-> +                errno = EEXIST;
-> +            }
-> +            return -1;
-> +        }
-> +
-> +        if (fileend_adj) {
-> +            void *t = mmap(p, len - fileend_adj, host_prot,
-> +                           (flags & ~MAP_FIXED_NOREPLACE) | MAP_FIXED,
-> +                           fd, offset);
-> +            assert(t != MAP_FAILED);
-> +        }
-> +    } else {
-> +        size_t host_len, part_len;
-> +
-> +        /*
-> +         * Take care to align the host memory.  Perform a larger anonymous
-> +         * allocation and extract the aligned portion.  Remap the file on
-> +         * top of that.
-> +         */
-> +        host_len = len + TARGET_PAGE_SIZE - host_page_size;
-> +        p = mmap(want_p, host_len, host_prot, flags | MAP_ANONYMOUS, -1, 0);
-> +        if (p == MAP_FAILED) {
-> +            return -1;
-> +        }
-> +
-> +        part_len = (uintptr_t)p & (TARGET_PAGE_SIZE - 1);
-> +        if (part_len) {
-> +            part_len = TARGET_PAGE_SIZE - part_len;
-> +            munmap(p, part_len);
-> +            p += part_len;
-> +            host_len -= part_len;
-> +        }
-> +        if (len < host_len) {
-> +            munmap(p + len, host_len - len);
-> +        }
-> +
-> +        if (!(flags & MAP_ANONYMOUS)) {
-> +            void *t = mmap(p, len - fileend_adj, host_prot,
-> +                           flags | MAP_FIXED, fd, offset);
-> +            assert(t != MAP_FAILED);
-> +        }
-> +
-> +        start = h2g(p);
-> +    }
-> +
-> +    last = start + len - 1;
-> +    if (fileend_adj) {
-> +        pass_last = ROUND_UP(last - fileend_adj, host_page_size) - 1;
-> +    } else {
-> +        pass_last = last;
-> +    }
-> +    return mmap_end(start, last, start, pass_last, mmap_flags, page_flags);
-> +}
-> +
->   static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
->                                       int target_prot, int flags, int page_flags,
->                                       int fd, off_t offset)
-> @@ -596,37 +718,9 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
->       if (host_page_size == TARGET_PAGE_SIZE) {
->           return mmap_h_eq_g(start, len, host_prot, flags,
->                              page_flags, fd, offset);
-> -    }
-> -
-> -    /*
-> -     * When mapping files into a memory area larger than the file, accesses
-> -     * to pages beyond the file size will cause a SIGBUS.
-> -     *
-> -     * For example, if mmaping a file of 100 bytes on a host with 4K pages
-> -     * emulating a target with 8K pages, the target expects to be able to
-> -     * access the first 8K. But the host will trap us on any access beyond
-> -     * 4K.
-> -     *
-> -     * When emulating a target with a larger page-size than the hosts, we
-> -     * may need to truncate file maps at EOF and add extra anonymous pages
-> -     * up to the targets page boundary.
-> -     */
-> -    if (host_page_size < TARGET_PAGE_SIZE && !(flags & MAP_ANONYMOUS)) {
-> -        struct stat sb;
-> -
-> -        if (fstat(fd, &sb) == -1) {
-> -            return -1;
-> -        }
-> -
-> -        /* Are we trying to create a map beyond EOF?.  */
-> -        if (offset + len > sb.st_size) {
-> -            /*
-> -             * If so, truncate the file map at eof aligned with
-> -             * the hosts real pagesize. Additional anonymous maps
-> -             * will be created beyond EOF.
-> -             */
-> -            len = ROUND_UP(sb.st_size - offset, host_page_size);
-> -        }
-> +    } else if (host_page_size < TARGET_PAGE_SIZE) {
-> +        return mmap_h_lt_g(start, len, host_prot, flags,
-> +                           page_flags, fd, offset, host_page_size);
->       }
->   
->       if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
+> Unfortunately the latest stable (14.0) x86-64 VM image does not seem to
+> output to console by default and I've not been able to find a reliable
+> way to edit the filesystem to change the boot loader options, or use
+> console input in the test case to change it on the fly.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+It would be interesting to add similar tests for the Big-Endian pseries
+image, may be not all tests, but at least TCG.
+
+Also, booting the kernel on a powernv9 machine would be nice. FreeBSD
+supports OPAL on POWER9 and it is not that common. It would exercise
+the PowerNV models differently from Linux.
+
+I tried the apple image on a mac99,G5 machine but the kernel panics on
+a DSI.
+
+
+> ---
+>   tests/avocado/boot_freebsd.py | 106 ++++++++++++++++++++++++++++++++++
+>   1 file changed, 106 insertions(+)
+>   create mode 100644 tests/avocado/boot_freebsd.py
+> 
+> diff --git a/tests/avocado/boot_freebsd.py b/tests/avocado/boot_freebsd.py
+> new file mode 100644
+> index 0000000000..79c68b149a
+> --- /dev/null
+> +++ b/tests/avocado/boot_freebsd.py
+> @@ -0,0 +1,106 @@
+> +# Functional tests that boot FreeBSD in various configurations
+> +#
+> +# Copyright (c) 2023 IBM Corporation
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2 or
+> +# later. See the COPYING file in the top-level directory.
+> +
+> +import os
+> +
+> +from avocado import skipUnless
+> +from avocado_qemu import QemuSystemTest
+> +from avocado_qemu import wait_for_console_pattern
+> +from avocado_qemu import exec_command
+> +from avocado.utils import archive
+> +from avocado.utils import process
+> +from avocado.utils.path import find_command
+> +
+> +@skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
+> +@skipUnless(os.getenv('AVOCADO_ALLOW_LONG_RUNTIME'), 'runtime limited')
+> +class BootFreeBSDPPC64(QemuSystemTest):
+> +    """
+> +    :avocado: tags=arch:ppc64
+> +    """
+> +
+> +    timeout = 360
+> +
+> +    def setUp(self):
+> +        super().setUp()
+> +
+> +        # We need zstd for all the tests
+> +        # See https://github.com/avocado-framework/avocado/issues/5609
+> +        zstd = find_command('zstd', False)
+> +        if zstd is False:
+> +            self.cancel('Could not find "zstd", which is required to '
+> +                        'decompress rootfs')
+> +        drive_url = ('https://artifact.ci.freebsd.org/snapshot/15.0-CURRENT/8a735ffdf04936c6785ac4fa31486639262dd416/powerpc/powerpc64le/disk.qcow2.zst')
+
+The problem is the sustainability of this snapshot. It seems FreeBSD keeps
+one year of history.
+
+Thanks,
+
+C.
+
+
+
+> +        drive_hash = '95d863dbbc4b60f4899d1ef21d6489fca05bf03d'
+> +        drive_path_zstd = self.fetch_asset(drive_url, asset_hash=drive_hash)
+> +        drive_path = os.path.join(self.workdir, 'disk.qcow2')
+> +
+> +        cmd = f"{zstd} -d {drive_path_zstd} -o {drive_path}"
+> +        process.run(cmd)
+> +
+> +        self.drive_opt = f"file={drive_path},format=qcow2,if=virtio"
+> +
+> +    def run_pseries_test(self, force_HPT=False):
+> +        if force_HPT:
+> +            self.vm.add_args('-m', '4g')
+> +        else:
+> +            self.vm.add_args('-m', '1g')
+> +        self.vm.add_args('-smp', '4')
+> +        self.vm.add_args('-drive', self.drive_opt)
+> +        self.vm.add_args('-net', 'nic,model=virtio')
+> +        self.vm.set_console()
+> +        self.vm.launch()
+> +
+> +        wait_for_console_pattern(self, 'Hit [Enter] to boot immediately, or any other key for command prompt.')
+> +        if force_HPT:
+> +            exec_command(self, 'x')
+> +            wait_for_console_pattern(self, 'OK')
+> +            exec_command(self, 'set radix_mmu=0')
+> +            exec_command(self, 'boot')
+> +            wait_for_console_pattern(self, 'cas: selected hash MMU', 'panic:')
+> +        else:
+> +            exec_command(self, '')
+> +            wait_for_console_pattern(self, 'cas: selected radix MMU', 'panic:')
+> +
+> +        wait_for_console_pattern(self, 'FreeBSD 15.0-CURRENT', 'panic:')
+> +        wait_for_console_pattern(self, 'FreeBSD/SMP: Multiprocessor System Detected: 4 CPUs', 'panic:')
+> +        wait_for_console_pattern(self, 'FreeBSD/powerpc (Amnesiac) (ttyu0)', 'panic:')
+> +
+> +    def test_pseries_tcg(self):
+> +        """
+> +        :avocado: tags=arch:ppc64
+> +        :avocado: tags=machine:pseries
+> +        :avocado: tags=accel:tcg
+> +        """
+> +        self.require_accelerator("tcg")
+> +        self.run_pseries_test()
+> +
+> +    def test_pseries_hpt_tcg(self):
+> +        """
+> +        :avocado: tags=arch:ppc64
+> +        :avocado: tags=machine:pseries
+> +        :avocado: tags=accel:tcg
+> +        """
+> +        self.require_accelerator("tcg")
+> +        self.run_pseries_test(force_HPT=True)
+> +
+> +    def test_pseries_kvm(self):
+> +        """
+> +        :avocado: tags=arch:ppc64
+> +        :avocado: tags=machine:pseries
+> +        :avocado: tags=accel:kvm
+> +        """
+> +        self.require_accelerator("kvm")
+> +        self.run_pseries_test()
+> +
+> +    def test_pseries_hpt_kvm(self):
+> +        """
+> +        :avocado: tags=arch:ppc64
+> +        :avocado: tags=machine:pseries
+> +        :avocado: tags=accel:kvm
+> +        """
+> +        self.require_accelerator("kvm")
+> +        self.run_pseries_test(force_HPT=True)
+
 
