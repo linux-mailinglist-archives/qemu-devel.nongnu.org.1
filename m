@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B1282761A
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8FF827619
 	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 18:15:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMtCf-0007fk-7S; Mon, 08 Jan 2024 12:14:21 -0500
+	id 1rMtCl-0007hq-12; Mon, 08 Jan 2024 12:14:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rMtCd-0007fY-Jj
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 12:14:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rMtCi-0007gs-U5
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 12:14:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rMtCO-0007Wr-Ec
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 12:14:19 -0500
+ id 1rMtCT-0007XZ-GG
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 12:14:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704734042;
+ s=mimecast20190719; t=1704734044;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=B8JQWOx5n+ozR7Kl09tVrFaRPtPSBEJhg0tIlvagQW0=;
- b=GrrEv43mUDUsbdgB68Kjykc5har9Na+WbcykUjnMHjZxkrEMzzl15bcrn7yonzWzXv+yzT
- jXc2DZy6ZMOeqXehMFV5o/dBY2s24ZYILhLcKRBhuQGni/2oA60n0xMWALaqQZwOixl9tF
- 1EFrMHBZZ3Ta9qYqklynSOpblVS9x4s=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZDiU/P4akxrPK7A1N68uyog7cxDlGiibG/DP3Uk0qsU=;
+ b=UYvg7wQCd3ws/KIIa8sL/JrbqupD0nv80o5DqZrPTC3m/EmlpTLaB/3V6PsQmg09NuZGp1
+ 1qTFOBaCdlCgNFP0Q6s7xze7pZ4gtCSKfVLo3EzqoBBKEv40fcN9wqd3SOqOFms3kxZAuc
+ ifbBexqGwrWb57lPzimjDklTdkXFrp8=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-HEi2i5G8MQOVuEQC-qkNmg-1; Mon,
- 08 Jan 2024 12:14:00 -0500
-X-MC-Unique: HEi2i5G8MQOVuEQC-qkNmg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-5VQX_uB1N_eJHDY12Xp5DA-1; Mon,
+ 08 Jan 2024 12:14:02 -0500
+X-MC-Unique: 5VQX_uB1N_eJHDY12Xp5DA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA4E63C025AC;
- Mon,  8 Jan 2024 17:13:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 35EC01C068C5;
+ Mon,  8 Jan 2024 17:14:02 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C0D005190;
- Mon,  8 Jan 2024 17:13:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 54D8B5190;
+ Mon,  8 Jan 2024 17:14:00 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -51,14 +52,17 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Cleber Rosa <crosa@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/2] trace: fix ability to use systemtap with qemu tools
-Date: Mon,  8 Jan 2024 17:13:54 +0000
-Message-ID: <20240108171356.1037059-1-berrange@redhat.com>
+Subject: [PATCH 1/2] tracetool: remove redundant --target-type / --target-name
+ args
+Date: Mon,  8 Jan 2024 17:13:55 +0000
+Message-ID: <20240108171356.1037059-2-berrange@redhat.com>
+In-Reply-To: <20240108171356.1037059-1-berrange@redhat.com>
+References: <20240108171356.1037059-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
@@ -82,19 +86,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we're only generating .stp definitions for the system and
-user emulators forgetting all about the tools which support tracing
-too.
+The --target-type and --target-name args are used to construct
+the default probe prefix if '--probe-prefix' is not given. The
+meson.build will always pass '--probe-prefix', so the other args
+are effectively redundant.
 
-Daniel P. Berrangé (2):
-  tracetool: remove redundant --target-type / --target-name args
-  meson: generate .stp files for tools too
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ docs/devel/tracing.rst |  3 +--
+ meson.build            |  2 --
+ scripts/tracetool.py   | 24 +++++-------------------
+ 3 files changed, 6 insertions(+), 23 deletions(-)
 
- docs/devel/tracing.rst |  3 +-
- meson.build            | 63 +++++++++++++++++++++++++++---------------
- scripts/tracetool.py   | 24 ++++------------
- 3 files changed, 46 insertions(+), 44 deletions(-)
-
+diff --git a/docs/devel/tracing.rst b/docs/devel/tracing.rst
+index d288480db1..043bed7fd0 100644
+--- a/docs/devel/tracing.rst
++++ b/docs/devel/tracing.rst
+@@ -357,8 +357,7 @@ probes::
+ 
+     scripts/tracetool.py --backends=dtrace --format=stap \
+                          --binary path/to/qemu-binary \
+-                         --target-type system \
+-                         --target-name x86_64 \
++                         --probe-prefix qemu.system.x86_64 \
+                          --group=all \
+                          trace-events-all \
+                          qemu.stp
+diff --git a/meson.build b/meson.build
+index 6c77d9687d..535f15da69 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3934,8 +3934,6 @@ foreach target : target_dirs
+                       command: [
+                         tracetool, '--group=all', '--format=' + stp['fmt'],
+                         '--binary=' + stp['bin'],
+-                        '--target-name=' + target_name,
+-                        '--target-type=' + target_type,
+                         '--probe-prefix=qemu.' + target_type + '.' + target_name,
+                         '@INPUT@', '@OUTPUT@'
+                       ],
+diff --git a/scripts/tracetool.py b/scripts/tracetool.py
+index ab7653a5ce..5de9ce96d3 100755
+--- a/scripts/tracetool.py
++++ b/scripts/tracetool.py
+@@ -44,12 +44,9 @@ def error_opt(msg = None):
+     --help                   This help message.
+     --list-backends          Print list of available backends.
+     --check-backends         Check if the given backend is valid.
+-    --binary <path>          Full path to QEMU binary.
+-    --target-type <type>     QEMU emulator target type ('system' or 'user').
+-    --target-name <name>     QEMU emulator target name.
+-    --group <name>           Name of the event group
+-    --probe-prefix <prefix>  Prefix for dtrace probe names
+-                             (default: qemu-<target-type>-<target-name>).\
++    --binary <path>          Full path to QEMU binary (required for 'stap' backend).
++    --group <name>           Name of the event group.
++    --probe-prefix <prefix>  Prefix for dtrace probe names (required for 'stap' backend).
+ """ % {
+             "script" : _SCRIPT,
+             "backends" : backend_descr,
+@@ -67,7 +64,7 @@ def main(args):
+ 
+     long_opts = ["backends=", "format=", "help", "list-backends",
+                  "check-backends", "group="]
+-    long_opts += ["binary=", "target-type=", "target-name=", "probe-prefix="]
++    long_opts += ["binary=", "probe-prefix="]
+ 
+     try:
+         opts, args = getopt.getopt(args[1:], "", long_opts)
+@@ -79,8 +76,6 @@ def main(args):
+     arg_format = ""
+     arg_group = None
+     binary = None
+-    target_type = None
+-    target_name = None
+     probe_prefix = None
+     for opt, arg in opts:
+         if opt == "--help":
+@@ -102,10 +97,6 @@ def main(args):
+ 
+         elif opt == "--binary":
+             binary = arg
+-        elif opt == '--target-type':
+-            target_type = arg
+-        elif opt == '--target-name':
+-            target_name = arg
+         elif opt == '--probe-prefix':
+             probe_prefix = arg
+ 
+@@ -127,13 +118,8 @@ def main(args):
+     if arg_format == "stap":
+         if binary is None:
+             error_opt("--binary is required for SystemTAP tapset generator")
+-        if probe_prefix is None and target_type is None:
+-            error_opt("--target-type is required for SystemTAP tapset generator")
+-        if probe_prefix is None and target_name is None:
+-            error_opt("--target-name is required for SystemTAP tapset generator")
+-
+         if probe_prefix is None:
+-            probe_prefix = ".".join(["qemu", target_type, target_name])
++            error_opt("--probe-prefix is required for SystemTAP tapset generator")
+ 
+     if len(args) < 2:
+         error_opt("missing trace-events and output filepaths")
 -- 
 2.43.0
 
