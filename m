@@ -2,98 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980ED82792D
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:32:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E284827921
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:25:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMwHd-0004Fh-9Z; Mon, 08 Jan 2024 15:31:41 -0500
+	id 1rMwAa-0001yK-E8; Mon, 08 Jan 2024 15:24:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rMwHR-0004EJ-Qx; Mon, 08 Jan 2024 15:31:29 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rMwAZ-0001yB-68
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 15:24:23 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rMwHO-00058T-Px; Mon, 08 Jan 2024 15:31:28 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-556c60c3f9aso2745512a12.3; 
- Mon, 08 Jan 2024 12:31:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704745881; x=1705350681; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ROPCeEcuuNmV5OkUIo+Eex3dTWsiXlNFm4zKX3xMKFo=;
- b=XrH9uePuPGzqb3UFxqp/f0KBGDB8As1p7ZBeG43AgkrGgBtq1PMhlWWC+zHX7QfLjI
- oyeHPR/xAkcCqvjfHOHhZfEBsATMot/GoVpLU2+EiDCGgBN6f/pAz9rOACWjtvIf1q56
- 7CrXbzNV1BFz5x13iw0d2dyKTpMJyOmLguCakfGA40CyqhG7hilSgoR6kY0Xs4zdTmut
- VIwLSLRbuFKpS9k5mCFyvmbGo1+rFIrjgftEgXwMG8Nna6CA+L7v2l6maQ+bWO26k4C0
- NitWkAxM+G19J5QuB4N8tOVye5LOxu9xvmBYrozVxAi9OAr28U0VKoDy4FgnQ3CRQXmT
- HZOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704745881; x=1705350681;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ROPCeEcuuNmV5OkUIo+Eex3dTWsiXlNFm4zKX3xMKFo=;
- b=iwHGvGqMjt4gtgl59/Alg1eIlb0+JaBzTU7kHMygvqqx9eLt7f/Yil9FChujF5OaMT
- wMXzba/Z9mUXQVSYSMwAexMVuOr44ECIBjG3mBFAo9v5DqBdZgMrIOtvaueM54ICfICj
- iqMqj0cm7cOz+g4GhWgJlDP9FenJsGFmCm25E7WfMDa9yRqwg95bVaKchPFSbE9tISW0
- cjVYuRhGFLGG4m4Uxuqju1+rGgySNENcT0vtcCx8s5mMcMYRw3qjBqjrYYly4OPq5FPX
- EPbOKjjqf3Zu2a8yJzT2aLpFFJaewk+HunUGioDxKHWTb2ZedDwO7ni3sbi/z3blB0c1
- qlHw==
-X-Gm-Message-State: AOJu0YxxkOKagn3NlUKZVM5Y3auDi+reRER9MFhCyJUb2zLlpTY/QvIS
- +/cyuo8DPm5behyHRi2znUs=
-X-Google-Smtp-Source: AGHT+IHLIGJQiBaB+Acwf1GJt6NKSkejJfswX8aiiWmkBuNld1wX6+z1h+N5tPtR+R+M1j7TmVJArw==
-X-Received: by 2002:a17:907:7245:b0:a28:cf59:60c8 with SMTP id
- ds5-20020a170907724500b00a28cf5960c8mr5303ejc.33.1704745881169; 
- Mon, 08 Jan 2024 12:31:21 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-078-054-062-214.78.54.pool.telefonica.de.
- [78.54.62.214]) by smtp.gmail.com with ESMTPSA id
- a27-20020a1709062b1b00b00a28ee0680d1sm224271ejg.214.2024.01.08.12.31.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 12:31:20 -0800 (PST)
-Date: Mon, 08 Jan 2024 20:07:37 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-CC: Eduardo Habkost <eduardo@habkost.net>,
- Artyom Tarasenko <atar4qemu@gmail.com>, 
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>,
- =?ISO-8859-1?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>,
- John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Peter Xu <peterx@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Juan Quintela <quintela@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Sergio Lopez <slp@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>,
- =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_00/11=5D_hw/isa/vt82c686=3A_Implemen?=
- =?US-ASCII?Q?t_relocation_and_toggling_of_SuperI/O_functions?=
-In-Reply-To: <8e46217c-f28b-43b0-bea3-583d4b3cf42b@ilande.co.uk>
-References: <20240106210531.140542-1-shentey@gmail.com>
- <8e46217c-f28b-43b0-bea3-583d4b3cf42b@ilande.co.uk>
-Message-ID: <5393CA46-267C-444A-AE8E-BBD82DCDCC9A@gmail.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rMwAS-0000v8-V4
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 15:24:21 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id D63611FD16;
+ Mon,  8 Jan 2024 20:24:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1704745453; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NfqiRbdWzSMBXczIljjEPhcZs72bWPMFzV4QtzDj6e8=;
+ b=ckKuM1L+tRS+PI7D8xR9dzDioaEx+DcHyFKWLZM770qAgmXHq8+h4wvW1jQvLMvEhBToCW
+ UTzXOCSAg6HTde4hui2bX9aU5yQDvZUZ1mc5asqnFrjPHRSJ2N+1czTxtPbQUfs5PBdxaL
+ 5E4jIbEkzXKjICaTzZa1ib07AHo/utQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1704745453;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NfqiRbdWzSMBXczIljjEPhcZs72bWPMFzV4QtzDj6e8=;
+ b=s+3X9l7VzpMN3gi3c5aUuq/6Trayf5ZoZJkUUPbe70B7Hkv3Jm5soaI7PHF3kFjxo+8tSe
+ d1xeB5cgxQa0KZCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1704745452; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NfqiRbdWzSMBXczIljjEPhcZs72bWPMFzV4QtzDj6e8=;
+ b=aqGPj7865z8UqCwc7oP9leqdwcndRL1seSJqKeq7PQVV5BnGdYqxL35mOlvlzCd6Rv18b6
+ RfeNiSZDhIlI15d0uFXr5eXuf+Sx5dSj+cMOtD+kQKLUhuW1/kGvKP/7JQ8oJCiTXFy1Ss
+ mwzyEDnq9RX45plbqeyETFrP4udxGs4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1704745452;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NfqiRbdWzSMBXczIljjEPhcZs72bWPMFzV4QtzDj6e8=;
+ b=51MkhhuvqHZh0rsQ+lifTXXxMoyeQC5Nmw4TlPXAl10nTBeYjfDWRyAS6phFX/z4hKKE6a
+ hnlo0HOLslM2szAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5CCA513686;
+ Mon,  8 Jan 2024 20:24:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id ZnCTCOxZnGWUQQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 08 Jan 2024 20:24:12 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Hao Xiang <hao.xiang@bytedance.com>
+Cc: Bryan Zhang <bryan.zhang@bytedance.com>, qemu-devel@nongnu.org,
+ marcandre.lureau@redhat.com, peterx@redhat.com, quintela@redhat.com,
+ peter.maydell@linaro.org, yuan1.liu@intel.com, berrange@redhat.com
+Subject: Re: [External] Re: [PATCH 3/5] migration: Introduce unimplemented
+ 'qatzip' compression method
+In-Reply-To: <CAAYibXgE+62nqDE1vZqXrSRFJK5J74CdBT66GVq=G0RwzJGHpQ@mail.gmail.com>
+References: <20231231205804.2366509-1-bryan.zhang@bytedance.com>
+ <20231231205804.2366509-4-bryan.zhang@bytedance.com>
+ <87jzon8ryv.fsf@suse.de>
+ <CAAYibXgNC1vL1i9M9Sj1J1GS_msxTMJS+B143qFO0pnF4UQGKA@mail.gmail.com>
+ <CAAYibXgE+62nqDE1vZqXrSRFJK5J74CdBT66GVq=G0RwzJGHpQ@mail.gmail.com>
+Date: Mon, 08 Jan 2024 17:24:09 -0300
+Message-ID: <87y1czshee.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spamd-Result: default: False [-4.30 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_SEVEN(0.00)[9];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,bytedance.com:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -4.30
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,149 +123,273 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hao Xiang <hao.xiang@bytedance.com> writes:
 
+> On Fri, Jan 5, 2024 at 3:52=E2=80=AFPM Hao Xiang <hao.xiang@bytedance.com=
+> wrote:
+>>
+>> On Fri, Jan 5, 2024 at 12:07=E2=80=AFPM Fabiano Rosas <farosas@suse.de> =
+wrote:
+>> >
+>> > Bryan Zhang <bryan.zhang@bytedance.com> writes:
+>> >
+>> > +cc Yuan Liu, Daniel Berrang=C3=A9
+>> >
+>> > > Adds support for 'qatzip' as an option for the multifd compression
+>> > > method parameter, but copy-pastes the no-op logic to leave the actual
+>> > > methods effectively unimplemented. This is in preparation of a
+>> > > subsequent commit that will implement actually using QAT for compres=
+sion
+>> > > and decompression.
+>> > >
+>> > > Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
+>> > > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
+>> > > ---
+>> > >  hw/core/qdev-properties-system.c |  6 ++-
+>> > >  migration/meson.build            |  1 +
+>> > >  migration/multifd-qatzip.c       | 81 +++++++++++++++++++++++++++++=
++++
+>> > >  migration/multifd.h              |  1 +
+>> > >  qapi/migration.json              |  5 +-
+>> > >  5 files changed, 92 insertions(+), 2 deletions(-)
+>> > >  create mode 100644 migration/multifd-qatzip.c
+>> > >
+>> > > diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-propert=
+ies-system.c
+>> > > index 1a396521d5..d8e48dcb0e 100644
+>> > > --- a/hw/core/qdev-properties-system.c
+>> > > +++ b/hw/core/qdev-properties-system.c
+>> > > @@ -658,7 +658,11 @@ const PropertyInfo qdev_prop_fdc_drive_type =3D=
+ {
+>> > >  const PropertyInfo qdev_prop_multifd_compression =3D {
+>> > >      .name =3D "MultiFDCompression",
+>> > >      .description =3D "multifd_compression values, "
+>> > > -                   "none/zlib/zstd",
+>> > > +                   "none/zlib/zstd"
+>> > > +#ifdef CONFIG_QATZIP
+>> > > +                   "/qatzip"
+>> > > +#endif
+>> > > +                   ,
+>> > >      .enum_table =3D &MultiFDCompression_lookup,
+>> > >      .get =3D qdev_propinfo_get_enum,
+>> > >      .set =3D qdev_propinfo_set_enum,
+>> > > diff --git a/migration/meson.build b/migration/meson.build
+>> > > index 92b1cc4297..e20f318379 100644
+>> > > --- a/migration/meson.build
+>> > > +++ b/migration/meson.build
+>> > > @@ -40,6 +40,7 @@ if get_option('live_block_migration').allowed()
+>> > >    system_ss.add(files('block.c'))
+>> > >  endif
+>> > >  system_ss.add(when: zstd, if_true: files('multifd-zstd.c'))
+>> > > +system_ss.add(when: qatzip, if_true: files('multifd-qatzip.c'))
+>> > >
+>> > >  specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
+>> > >                  if_true: files('ram.c',
+>> > > diff --git a/migration/multifd-qatzip.c b/migration/multifd-qatzip.c
+>> > > new file mode 100644
+>> > > index 0000000000..1733bbddb7
+>> > > --- /dev/null
+>> > > +++ b/migration/multifd-qatzip.c
+>> > > @@ -0,0 +1,81 @@
+>> > > +/*
+>> > > + * Multifd QATzip compression implementation
+>> > > + *
+>> > > + * Copyright (c) Bytedance
+>> > > + *
+>> > > + * Authors:
+>> > > + *  Bryan Zhang <bryan.zhang@bytedance.com>
+>> > > + *  Hao Xiang   <hao.xiang@bytedance.com>
+>> > > + *
+>> > > + * This work is licensed under the terms of the GNU GPL, version 2 =
+or later.
+>> > > + * See the COPYING file in the top-level directory.
+>> > > + */
+>> > > +
+>> > > +#include "qemu/osdep.h"
+>> > > +#include "exec/ramblock.h"
+>> > > +#include "exec/target_page.h"
+>> > > +#include "qapi/error.h"
+>> > > +#include "migration.h"
+>> > > +#include "options.h"
+>> > > +#include "multifd.h"
+>> > > +
+>> > > +static int qatzip_send_setup(MultiFDSendParams *p, Error **errp)
+>> > > +{
+>> > > +    return 0;
+>> > > +}
+>> > > +
+>> > > +static void qatzip_send_cleanup(MultiFDSendParams *p, Error **errp)=
+ {};
+>> > > +
+>> > > +static int qatzip_send_prepare(MultiFDSendParams *p, Error **errp)
+>> > > +{
+>> > > +    MultiFDPages_t *pages =3D p->pages;
+>> > > +
+>> > > +    for (int i =3D 0; i < p->normal_num; i++) {
+>> > > +        p->iov[p->iovs_num].iov_base =3D pages->block->host + p->no=
+rmal[i];
+>> > > +        p->iov[p->iovs_num].iov_len =3D p->page_size;
+>> > > +        p->iovs_num++;
+>> > > +    }
+>> > > +
+>> > > +    p->next_packet_size =3D p->normal_num * p->page_size;
+>> > > +    p->flags |=3D MULTIFD_FLAG_NOCOMP;
+>> > > +    return 0;
+>> > > +}
+>> > > +
+>> > > +static int qatzip_recv_setup(MultiFDRecvParams *p, Error **errp)
+>> > > +{
+>> > > +    return 0;
+>> > > +}
+>> > > +
+>> > > +static void qatzip_recv_cleanup(MultiFDRecvParams *p) {};
+>> > > +
+>> > > +static int qatzip_recv_pages(MultiFDRecvParams *p, Error **errp)
+>> > > +{
+>> > > +    uint32_t flags =3D p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
+>> > > +
+>> > > +    if (flags !=3D MULTIFD_FLAG_NOCOMP) {
+>> > > +        error_setg(errp, "multifd %u: flags received %x flags expec=
+ted %x",
+>> > > +                   p->id, flags, MULTIFD_FLAG_NOCOMP);
+>> > > +        return -1;
+>> > > +    }
+>> > > +    for (int i =3D 0; i < p->normal_num; i++) {
+>> > > +        p->iov[i].iov_base =3D p->host + p->normal[i];
+>> > > +        p->iov[i].iov_len =3D p->page_size;
+>> > > +    }
+>> > > +    return qio_channel_readv_all(p->c, p->iov, p->normal_num, errp);
+>> > > +}
+>> > > +
+>> > > +static MultiFDMethods multifd_qatzip_ops =3D {
+>> > > +    .send_setup =3D qatzip_send_setup,
+>> > > +    .send_cleanup =3D qatzip_send_cleanup,
+>> > > +    .send_prepare =3D qatzip_send_prepare,
+>> > > +    .recv_setup =3D qatzip_recv_setup,
+>> > > +    .recv_cleanup =3D qatzip_recv_cleanup,
+>> > > +    .recv_pages =3D qatzip_recv_pages
+>> > > +};
+>> > > +
+>> > > +static void multifd_qatzip_register(void)
+>> > > +{
+>> > > +    multifd_register_ops(MULTIFD_COMPRESSION_QATZIP, &multifd_qatzi=
+p_ops);
+>> > > +}
+>> > > +
+>> > > +migration_init(multifd_qatzip_register);
+>> > > diff --git a/migration/multifd.h b/migration/multifd.h
+>> > > index a835643b48..5600f7fc82 100644
+>> > > --- a/migration/multifd.h
+>> > > +++ b/migration/multifd.h
+>> > > @@ -33,6 +33,7 @@ int multifd_queue_page(QEMUFile *f, RAMBlock *bloc=
+k, ram_addr_t offset);
+>> > >  #define MULTIFD_FLAG_NOCOMP (0 << 1)
+>> > >  #define MULTIFD_FLAG_ZLIB (1 << 1)
+>> > >  #define MULTIFD_FLAG_ZSTD (2 << 1)
+>> > > +#define MULTIFD_FLAG_QATZIP (3 << 1)
+>> > >
+>> > >  /* This value needs to be a multiple of qemu_target_page_size() */
+>> > >  #define MULTIFD_PACKET_SIZE (512 * 1024)
+>> > > diff --git a/qapi/migration.json b/qapi/migration.json
+>> > > index 6d5a4b0489..e3cc195aed 100644
+>> > > --- a/qapi/migration.json
+>> > > +++ b/qapi/migration.json
+>> > > @@ -625,11 +625,14 @@
+>> > >  #
+>> > >  # @zstd: use zstd compression method.
+>> > >  #
+>> > > +# @qatzip: use qatzip compression method.
+>> > > +#
+>> > >  # Since: 5.0
+>> > >  ##
+>> > >  { 'enum': 'MultiFDCompression',
+>> > >    'data': [ 'none', 'zlib',
+>> > > -            { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
+>> > > +            { 'name': 'zstd', 'if': 'CONFIG_ZSTD' },
+>> > > +            { 'name': 'qatzip', 'if': 'CONFIG_QATZIP'} ] }
+>> >
+>> > In another thread adding support to another Intel accelerator (IAA) we
+>> > decided that it was better to select the offloading as an accelerator
+>> > method to multifd zlib rather than as an entirely new compression
+>> > format. Take a look at that discussion:
+>> > https://lore.kernel.org/r/ZTFCnqbbqlmsUkRC@redhat.com
+>>
+>> We had some early discussion with Intel folks (probably a different
+>> team than the one with the above patchset). The understanding at the
+>> time is that QAT is good at both bulk data compression and
+>> decompression. IAA is good at decompression with smaller data size but
+>> compression performance is not the best. In multifd, we are
+>> compressing up to 128 4k pages at a time and potentially this can
+>> increase by configuring the packet size, at the time we thought QAT
+>> could be a better fit in the multifd live migration scenario. We would
+>> like to hear more from Intel.
+>>
+>> From our benchmark testing, with two QAT devices, we can get deflate
+>> compression throughout to around 7GB/s with ~160% CPU. That's beating
+>> the current software implementation (zlib and zstd) by a lot. We are
+>> still tuning the configuration in QEMU live migration now.
+>>
+>> >
+>> > As I understand it, QAT + QATzip would be compatible with both zlib and
+>> > IAA + QPL, so we'd add another accelerator method like this:
+>> >
+>> > https://lore.kernel.org/r/20240103112851.908082-3-yuan1.liu@intel.com
+>> >
+>>
+>> I quickly read over the IAA patchset and I saw this:
+>>
+>> "However, due to some reasons, QPL is currently
+>> not compatible with the existing Zlib method that Zlib compressed data
+>> can be decompressed by QPl and vice versa."
+>>
+>> The above probably means the current zlib software implementation and
+>> IAA are not compatible.
+>>
+>> For QAT, although, both Intel's QATzip and zlib are internally using
+>> deflate, QATzip only supports deflate with a 4 byte header, deflate
+>> wrapped by Gzip header and footer, or deflate wrapped by Intel=C2=AE QAT
+>> Gzip* extension header and footer. None of the headers can be
+>> recognized by zlib software implementation is my understanding. So if
+>> we want to make them compatible with zlib, the QATzip library needs to
+>> support that.
+>
+> I took a closer look at Intel's documentation here
+> https://github.com/intel/QATzip
+> QATzip does have a compression format QZ_DEFLATE_RAW, which uses the
+> deflate format but no header at all. This looks like the same as what
+> QEMU's current zlib implementation does - using the raw deflate
+> format. I can have a quick test to confirm that. Meanwhile, the
+> documentation mentioned that if using the raw deflate format,
+> decompression cannot be offloaded by QAT hardware. So there is a
+> trade-off here if we want to avoid creating a new compression format
+> in QEMU.
 
-Am 7=2E Januar 2024 14:13:44 UTC schrieb Mark Cave-Ayland <mark=2Ecave-ayl=
-and@ilande=2Eco=2Euk>:
->On 06/01/2024 21:05, Bernhard Beschow wrote:
->
->> This series implements relocation of the SuperI/O functions of the VIA =
-south
->> bridges which resolves some FIXME's=2E It is part of my via-apollo-pro-=
-133t
->> branch [1] which is an extension of bringing the VIA south bridges to t=
-he PC
->> machine [2]=2E This branch is able to run some real-world X86 BIOSes in=
- the hope
->> that it allows us to form a better understanding of the real vt82c686b =
-devices=2E
->> Implementing relocation and toggling of the SuperI/O functions is one s=
-tep to
->> make these BIOSes run without error messages, so here we go=2E
->>=20
->> The series is structured as follows: Patches 1-3 prepare the TYPE_ISA_F=
-DC,
->> TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL to relocate and toggle (enable/di=
-sable)
->> themselves without breaking encapsulation of their respective device st=
-ates=2E
->> This is achieved by moving the MemoryRegions and PortioLists from the d=
-evice
->> states into the encapsulating ISA devices since they will be relocated =
-and
->> toggled=2E
->>=20
->> Inspired by the memory API patches 4-6 add two convenience functions to=
- the
->> portio_list API to toggle and relocate portio lists=2E Patch 5 is a pre=
-paration
->> for that which removes some redundancies which otherwise had to be deal=
-t with
->> during relocation=2E
->>=20
->> Patches 7-9 implement toggling and relocation for types TYPE_ISA_FDC,
->> TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL=2E Patch 10 prepares the pegasos2=
- machine
->> which would end up with all SuperI/O functions disabled if no -bios arg=
-ument is
->> given=2E Patch 11 finally implements the main feature which now relies =
-on
->> firmware to configure the SuperI/O functions accordingly (except for pe=
-gasos2)=2E
->>=20
->> v4:
->> * Drop incomplete SuperI/O vmstate handling (Zoltan)
->>=20
->> v3:
->> * Rework various commit messages (Zoltan)
->> * Drop patch "hw/char/serial: Free struct SerialState from MemoryRegion=
-"
->>    (Zoltan)
->> * Generalize wording in migration=2Erst to include portio_list API (Zol=
-tan)
->>=20
->> v2:
->> * Improve commit messages (Zoltan)
->> * Split pegasos2 from vt82c686 patch (Zoltan)
->> * Avoid poking into device internals (Zoltan)
->>=20
->> Testing done:
->> * `make check`
->> * `make check-avocado`
->> * Run MorphOS on pegasos2 with and without pegasos2=2Erom
->> * Run Linux on amigaone
->> * Run real-world BIOSes on via-apollo-pro-133t branch
->> * Start rescue-yl on fuloong2e
->>=20
->> [1] https://github=2Ecom/shentok/qemu/tree/via-apollo-pro-133t
->> [2] https://github=2Ecom/shentok/qemu/tree/pc-via
->>=20
->> Bernhard Beschow (11):
->>    hw/block/fdc-isa: Move portio_list from FDCtrl to FDCtrlISABus
->>    hw/block/fdc-sysbus: Move iomem from FDCtrl to FDCtrlSysBus
->>    hw/char/parallel: Move portio_list from ParallelState to
->>      ISAParallelState
->>    exec/ioport: Resolve redundant =2Ebase attribute in struct
->>      MemoryRegionPortio
->>    exec/ioport: Add portio_list_set_address()
->>    exec/ioport: Add portio_list_set_enabled()
->>    hw/block/fdc-isa: Implement relocation and enabling/disabling for
->>      TYPE_ISA_FDC
->>    hw/char/serial-isa: Implement relocation and enabling/disabling for
->>      TYPE_ISA_SERIAL
->>    hw/char/parallel-isa: Implement relocation and enabling/disabling fo=
-r
->>      TYPE_ISA_PARALLEL
->>    hw/ppc/pegasos2: Let pegasos2 machine configure SuperI/O functions
->>    hw/isa/vt82c686: Implement relocation and toggling of SuperI/O
->>      functions
->>=20
->>   docs/devel/migration=2Erst       |  6 ++--
->>   hw/block/fdc-internal=2Eh        |  4 ---
->>   include/exec/ioport=2Eh          |  4 ++-
->>   include/hw/block/fdc=2Eh         |  3 ++
->>   include/hw/char/parallel-isa=2Eh |  5 +++
->>   include/hw/char/parallel=2Eh     |  2 --
->>   include/hw/char/serial=2Eh       |  2 ++
->>   hw/block/fdc-isa=2Ec             | 18 +++++++++-
->>   hw/block/fdc-sysbus=2Ec          |  6 ++--
->>   hw/char/parallel-isa=2Ec         | 14 ++++++++
->>   hw/char/parallel=2Ec             |  2 +-
->>   hw/char/serial-isa=2Ec           | 14 ++++++++
->>   hw/isa/vt82c686=2Ec              | 66 ++++++++++++++++++++++++++++---=
----
->>   hw/ppc/pegasos2=2Ec              | 15 ++++++++
->>   system/ioport=2Ec                | 41 +++++++++++++++++----
->>   15 files changed, 172 insertions(+), 30 deletions(-)
->
->I think this series generally looks good: the only thing I think it's wor=
-th checking is whether portio lists are considered exclusive to ISA devices=
- or not? (Paolo?)=2E
+The default zlib behavior is to include the zlib header and trailer. To
+obtain a raw deflate stream we'd need to suppress the zlib wrapper. It
+might be an option to change QEMU code to make it produce a stream
+compatible with QAT provided we don't currently use any feature that
+needs the header.
 
-The modifications preserve the current design, so how is this question rel=
-ated to this series?
-
-I'd appreciate feedback from the maintainers indeed since this part hasn't=
- received any comments so far=2E Thanks :)
+One immediate issue I see is that without the header zlib defaults to
+the 32kb window size, which stops us from changing the window size to
+cope with QPL's 4kb limitation.
 
 >
->The portio_list_set_enabled() API looks interesting, and could be conside=
-red for use by my PCI IDE mode-switching changes too=2E
->
->Apologies I don't have a huge amount of time for review right now, but I =
-wanted to feed back that generally these patches look good, and if people a=
-re happy with the portio list changes then this series should be considered=
- for merge=2E
+>>
+>> > All that, of course, assuming we even want to support both
+>> > accelerators. They're addressing the same problem after all. I wonder
+>> > how we'd choose a precedence, since both seem to be present in the same
+>> > processor family.
+>> >
+>> >
+>>
+>> That's an interesting question :-) I think overall performance
+>> (throughput and CPU overhead) should both be considered. IAA and QAT
+>> accelerators don't present on all systems. We Bytedance choose to have
+>> both on our platform when purchasing from Intel.
 
-Never mind, it's still nice getting some confirmation from your side!
-
-Best regards,
-Bernhard
-
->
->
->ATB,
->
->Mark=2E
->
+We might need someone with the proper hardware to run a benchmark using
+both accelerators if we end up deciding to supporting both. Ideally we'd
+have a precedence defined so we don't need to force the user to select
+one of them when both are present.
 
