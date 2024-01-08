@@ -2,110 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3904B827A84
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 23:14:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F1BB827A94
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 23:29:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMxrG-0000qZ-Ee; Mon, 08 Jan 2024 17:12:35 -0500
+	id 1rMy69-0006kC-UX; Mon, 08 Jan 2024 17:27:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rMxrF-0000qO-DP; Mon, 08 Jan 2024 17:12:33 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rMxrD-000329-8Z; Mon, 08 Jan 2024 17:12:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=XWFuET+sga7liQVqoeI3cJH6e9/DwbrUWZsU88dVih8=; b=HZdp3kSBa+20LiIa+34ooZ3Xt4
- ZK8arHtcGfksT6GO4szaE1X5WXNX0Av4oXaRcFeiGVcdD73Pt+uGXlTwHDm7MjMMH+1OlYHtEv3zh
- ZSd+iOydKJ0bp45tZtPkvVuaPgoTCQRQx7lTn/7MbrhEF/jBGJFqZrylDMlc5nZmzn+Pfry2S9fC2
- 2AzBhiHTLsB+Yg3LUKZOZ1bX8wcNnSA5G9ErdUW1ihYf7GMBZD6baP8FJqrQC5BhXm2OUAGjSjUq4
- SGo/shy/2xB+8bbj1QdAO4M1fRqU8HeAKtBVwh2u2Z/LCdQo4x6YqRA97O3naJKuIV9y1wClXObK7
- SDq8yq1ORn8n5WVcUI7dLbjd9VPojQa3mZ5hj6PlHABD48Chl4SaSyQ4PzXmgr1nP/NxrQ4MQqh5A
- NiGtMzq5UgbPlKCAFpPANT8qamwy17qwQJLwGmqU7Ln7FuT6yKSjLeW9OHEV1aur6NBDmCCxUMGhm
- 3yDyoaR6MQ4IgyynEVClsFnDCX5RvVSI6WkbN9DjCrw/lx4oZFn/CCTMf+LJ2tXfDVN35+3t7OtaZ
- Ig+g10EbwEdvJHtVAefZXO/MUBUbx+fzwT+ldoH1EQTz1Zgzs6D4u9+fYSOBcYp+udUy5zKlduung
- 8jCphU5dzh7PZ79cDLxySzKTjZWFARsjwE3Dr5FOA=;
-Received: from [2a00:23c4:8bb1:9800:102b:b374:b08c:8889]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rMxqT-0001xS-7N; Mon, 08 Jan 2024 22:11:49 +0000
-Message-ID: <077a06e2-476a-4efb-bd92-5cf30e29ceb5@ilande.co.uk>
-Date: Mon, 8 Jan 2024 22:12:12 +0000
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
- John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Peter Xu <peterx@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Juan Quintela <quintela@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Sergio Lopez
- <slp@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>
-References: <20240106210531.140542-1-shentey@gmail.com>
- <8e46217c-f28b-43b0-bea3-583d4b3cf42b@ilande.co.uk>
- <5393CA46-267C-444A-AE8E-BBD82DCDCC9A@gmail.com>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <5393CA46-267C-444A-AE8E-BBD82DCDCC9A@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb1:9800:102b:b374:b08c:8889
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v4 00/11] hw/isa/vt82c686: Implement relocation and
- toggling of SuperI/O functions
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from
+ <353acZQwKCnolYZgfcqrcdYlemmejc.amkocks-bctcjlmlels.mpe@flex--nabihestefan.bounces.google.com>)
+ id 1rMy68-0006je-2g
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 17:27:56 -0500
+Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <353acZQwKCnolYZgfcqrcdYlemmejc.amkocks-bctcjlmlels.mpe@flex--nabihestefan.bounces.google.com>)
+ id 1rMy66-00042f-GV
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 17:27:55 -0500
+Received: by mail-yw1-x114a.google.com with SMTP id
+ 00721157ae682-5e744f7ca3bso32273117b3.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 14:27:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1704752872; x=1705357672; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=v8fECYvLPprgyM3CH5M7DgBKaqSDlj4SV5W/OLDRF4g=;
+ b=xnNmmhVxxpJX8u/ezuJ5UrszOQwfEstc09c8Ta+yDJGb1gy8deP8Noru+MjqUVZ4ZG
+ Ygf6jae4p6G6wIrjpyJUIvzVC+o4e//I4yZvGh40vkwgNiFTjSJ+/B5O4T7mWPTkrWbL
+ gbq752Ei+7k6f9+yfdzcHKrr4hBX1TtGW87pepKeZaTDC0bb5TCQcIF2JNEKAGdNBZCE
+ gaCGTtcvZFQ45PegxZW36dbPSMJTJNz4e9gXe4EQV7KWu/pjmSGdFIrKgJV3NUlahd1A
+ rwkh+o6GCQus8/PEFddfcOPaL9skmsv1/YSvGXkkBCFMLXR1DM6Rrqi98s9SD1oE5ev/
+ UhZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704752872; x=1705357672;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=v8fECYvLPprgyM3CH5M7DgBKaqSDlj4SV5W/OLDRF4g=;
+ b=rH7XRmKD40jDWrK3kPaFtiSLPXt77o0fJQOw8wIwluLohrR7Qfvqo1/9mADTQWqfrK
+ BIHYSGrkcXtZ2vztyutxsCGKD86+trP7p8Ra5ayNVmUoDvDxsZfsibury7AyfYBXkqQl
+ 29FI8VJ1Ow7yOCvdN+LsEsR0PKNnD/lje4aBn7Y53XHeJQ78Inn766PWSHFY2QmvgAP7
+ PaszxfeMmqldkSb2BdB7UfYEBODgMVDvP/N2WA1mZDF3a8j6NqMgVB+lCVOLKtCvxmFn
+ cA1gY1W21sSVPA9QX3/+4wASEi9S6n6YChM1/kHM9LiOHyXFyqkPKItZnx14BUhai+Zs
+ vojA==
+X-Gm-Message-State: AOJu0Yy9nGaSVIgyAJrCssndoD+zwAISDnVEGc0faJailVGvLkcRzBZk
+ rDqzpdPIcC9LF5whB2yPaL/uQOngUDtOrMZJMAZOMDPE4Q==
+X-Google-Smtp-Source: AGHT+IGzmmQqUbqo9g9pDm0nF9/Z0uNMGeP9KRShv1zKiNa6fzIYUmi81ZhQMg43TmE3H8zC2srkv0VvBLgw0WH6fVM=
+X-Received: from nabihestefan.c.googlers.com
+ ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
+ (user=nabihestefan job=sendgmr) by 2002:a05:690c:3507:b0:5e7:62e:75db with
+ SMTP id fq7-20020a05690c350700b005e7062e75dbmr1921296ywb.1.1704752871933;
+ Mon, 08 Jan 2024 14:27:51 -0800 (PST)
+Date: Mon,  8 Jan 2024 22:27:37 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+Message-ID: <20240108222747.2453106-1-nabihestefan@google.com>
+Subject: [PATCH v10 00/10] Implementation of NPI Mailbox and GMAC Networking
+ Module
+From: Nabih Estefan <nabihestefan@google.com>
+To: peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
+ wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com, 
+ nabihestefan@google.com, kwliu@nuvoton.com, tomer.maimon@nuvoton.com, 
+ Hila.Miranda-Kuzi@nuvoton.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
+ envelope-from=353acZQwKCnolYZgfcqrcdYlemmejc.amkocks-bctcjlmlels.mpe@flex--nabihestefan.bounces.google.com;
+ helo=mail-yw1-x114a.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,121 +92,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/01/2024 20:07, Bernhard Beschow wrote:
+From: Nabih Estefan Diaz <nabihestefan@google.com>
 
-> Am 7. Januar 2024 14:13:44 UTC schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
->> On 06/01/2024 21:05, Bernhard Beschow wrote:
->>
->>> This series implements relocation of the SuperI/O functions of the VIA south
->>> bridges which resolves some FIXME's. It is part of my via-apollo-pro-133t
->>> branch [1] which is an extension of bringing the VIA south bridges to the PC
->>> machine [2]. This branch is able to run some real-world X86 BIOSes in the hope
->>> that it allows us to form a better understanding of the real vt82c686b devices.
->>> Implementing relocation and toggling of the SuperI/O functions is one step to
->>> make these BIOSes run without error messages, so here we go.
->>>
->>> The series is structured as follows: Patches 1-3 prepare the TYPE_ISA_FDC,
->>> TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL to relocate and toggle (enable/disable)
->>> themselves without breaking encapsulation of their respective device states.
->>> This is achieved by moving the MemoryRegions and PortioLists from the device
->>> states into the encapsulating ISA devices since they will be relocated and
->>> toggled.
->>>
->>> Inspired by the memory API patches 4-6 add two convenience functions to the
->>> portio_list API to toggle and relocate portio lists. Patch 5 is a preparation
->>> for that which removes some redundancies which otherwise had to be dealt with
->>> during relocation.
->>>
->>> Patches 7-9 implement toggling and relocation for types TYPE_ISA_FDC,
->>> TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL. Patch 10 prepares the pegasos2 machine
->>> which would end up with all SuperI/O functions disabled if no -bios argument is
->>> given. Patch 11 finally implements the main feature which now relies on
->>> firmware to configure the SuperI/O functions accordingly (except for pegasos2).
->>>
->>> v4:
->>> * Drop incomplete SuperI/O vmstate handling (Zoltan)
->>>
->>> v3:
->>> * Rework various commit messages (Zoltan)
->>> * Drop patch "hw/char/serial: Free struct SerialState from MemoryRegion"
->>>     (Zoltan)
->>> * Generalize wording in migration.rst to include portio_list API (Zoltan)
->>>
->>> v2:
->>> * Improve commit messages (Zoltan)
->>> * Split pegasos2 from vt82c686 patch (Zoltan)
->>> * Avoid poking into device internals (Zoltan)
->>>
->>> Testing done:
->>> * `make check`
->>> * `make check-avocado`
->>> * Run MorphOS on pegasos2 with and without pegasos2.rom
->>> * Run Linux on amigaone
->>> * Run real-world BIOSes on via-apollo-pro-133t branch
->>> * Start rescue-yl on fuloong2e
->>>
->>> [1] https://github.com/shentok/qemu/tree/via-apollo-pro-133t
->>> [2] https://github.com/shentok/qemu/tree/pc-via
->>>
->>> Bernhard Beschow (11):
->>>     hw/block/fdc-isa: Move portio_list from FDCtrl to FDCtrlISABus
->>>     hw/block/fdc-sysbus: Move iomem from FDCtrl to FDCtrlSysBus
->>>     hw/char/parallel: Move portio_list from ParallelState to
->>>       ISAParallelState
->>>     exec/ioport: Resolve redundant .base attribute in struct
->>>       MemoryRegionPortio
->>>     exec/ioport: Add portio_list_set_address()
->>>     exec/ioport: Add portio_list_set_enabled()
->>>     hw/block/fdc-isa: Implement relocation and enabling/disabling for
->>>       TYPE_ISA_FDC
->>>     hw/char/serial-isa: Implement relocation and enabling/disabling for
->>>       TYPE_ISA_SERIAL
->>>     hw/char/parallel-isa: Implement relocation and enabling/disabling for
->>>       TYPE_ISA_PARALLEL
->>>     hw/ppc/pegasos2: Let pegasos2 machine configure SuperI/O functions
->>>     hw/isa/vt82c686: Implement relocation and toggling of SuperI/O
->>>       functions
->>>
->>>    docs/devel/migration.rst       |  6 ++--
->>>    hw/block/fdc-internal.h        |  4 ---
->>>    include/exec/ioport.h          |  4 ++-
->>>    include/hw/block/fdc.h         |  3 ++
->>>    include/hw/char/parallel-isa.h |  5 +++
->>>    include/hw/char/parallel.h     |  2 --
->>>    include/hw/char/serial.h       |  2 ++
->>>    hw/block/fdc-isa.c             | 18 +++++++++-
->>>    hw/block/fdc-sysbus.c          |  6 ++--
->>>    hw/char/parallel-isa.c         | 14 ++++++++
->>>    hw/char/parallel.c             |  2 +-
->>>    hw/char/serial-isa.c           | 14 ++++++++
->>>    hw/isa/vt82c686.c              | 66 ++++++++++++++++++++++++++++------
->>>    hw/ppc/pegasos2.c              | 15 ++++++++
->>>    system/ioport.c                | 41 +++++++++++++++++----
->>>    15 files changed, 172 insertions(+), 30 deletions(-)
->>
->> I think this series generally looks good: the only thing I think it's worth checking is whether portio lists are considered exclusive to ISA devices or not? (Paolo?).
-> 
-> The modifications preserve the current design, so how is this question related to this series?
+[Changes since v9]
+More cleanup and fixes based on suggestions from Peter Maydell
+(peter.maydell@linaro.org) suggestions.
 
-I was thinking about patches 1 and 3 where the portio_list variable is moved from the 
-core object to the ISA-specific child objects.
+[Changes since v8]
+Suggestions and Fixes from Peter Maydell (peter.maydell@linaro.org),
+also cleaned up changes so nothing is deleted in a later patch that was
+added in an earlier patch. Patch count decresed by 1 because this cleanup
+led to one of the patches being irrelevant.
 
-> I'd appreciate feedback from the maintainers indeed since this part hasn't received any comments so far. Thanks :)
+[Changes since v7]
+Fixed patch 4 declaration of new NIC based on comments by Peter Maydell
+(peter.maydell@linaro.org)
 
-Agreed. I *think* the portio_lists are ISA-specific as far as QEMU is concerned, but 
-a quick nod from an x86 maintainer would be a great help :)
+[Changes since v6]
+Remove the Change-Ids from the commit messages.
 
->> The portio_list_set_enabled() API looks interesting, and could be considered for use by my PCI IDE mode-switching changes too.
->>
->> Apologies I don't have a huge amount of time for review right now, but I wanted to feed back that generally these patches look good, and if people are happy with the portio list changes then this series should be considered for merge.
-> 
-> Never mind, it's still nice getting some confirmation from your side!
+[Changes since v5]
+Undid remove of some qtests that seem to have been caused by a merge
+conflict.
 
-No worries!
+[Changes since v4]
+Added Signed-off-by tag and fixed patch 4 commit message as suggested by
+Peter Maydell (peter.maydell@linaro.org)
 
+[Changes since v3]
+Fixed comments from Hao Wu (wuhaotsh@google.com)
 
-ATB,
+[Changes since v2]
+Fixed bugs related to the RC functionality of the GMAC. Added and
+squashed patches related to that.
 
-Mark.
+[Changes since v1]
+Fixed some errors in formatting.
+Fixed a merge error that I didn't see in v1.
+Removed Nuvoton 8xx references since that is a separate patch set.
+
+[Original Cover]
+Creates NPI Mailbox Module with data verification for read and write (internal and external),
+wiring to the Nuvoton SoC, and QTests.
+
+Also creates the GMAC Networking Module. Implements read and write functionalities with cooresponding descriptors
+and registers. Also includes QTests for the different functionalities.
+
+Hao Wu (5):
+  hw/misc: Add Nuvoton's PCI Mailbox Module
+  hw/arm: Add PCI mailbox module to Nuvoton SoC
+  hw/misc: Add qtest for NPCM7xx PCI Mailbox
+  hw/net: Add NPCMXXX GMAC device
+  hw/arm: Add GMAC devices to NPCM7XX SoC
+
+Nabih Estefan Diaz (5):
+  tests/qtest: Creating qtest for GMAC Module
+  include/hw/net: GMAC IRQ Implementation
+  hw/net: GMAC Rx Implementation
+  hw/net: GMAC Tx Implementation
+  tests/qtest: Adding PCS Module test to GMAC Qtest
+
+ docs/system/arm/nuvoton.rst         |   2 +
+ hw/arm/npcm7xx.c                    |  53 +-
+ hw/misc/meson.build                 |   1 +
+ hw/misc/npcm7xx_pci_mbox.c          | 324 ++++++++++
+ hw/misc/trace-events                |   5 +
+ hw/net/meson.build                  |   2 +-
+ hw/net/npcm_gmac.c                  | 939 ++++++++++++++++++++++++++++
+ hw/net/trace-events                 |  19 +
+ include/hw/arm/npcm7xx.h            |   4 +
+ include/hw/misc/npcm7xx_pci_mbox.h  |  81 +++
+ include/hw/net/npcm_gmac.h          | 340 ++++++++++
+ tests/qtest/meson.build             |   2 +
+ tests/qtest/npcm7xx_pci_mbox-test.c | 238 +++++++
+ tests/qtest/npcm_gmac-test.c        | 341 ++++++++++
+ 14 files changed, 2347 insertions(+), 4 deletions(-)
+ create mode 100644 hw/misc/npcm7xx_pci_mbox.c
+ create mode 100644 hw/net/npcm_gmac.c
+ create mode 100644 include/hw/misc/npcm7xx_pci_mbox.h
+ create mode 100644 include/hw/net/npcm_gmac.h
+ create mode 100644 tests/qtest/npcm7xx_pci_mbox-test.c
+ create mode 100644 tests/qtest/npcm_gmac-test.c
+
+-- 
+2.43.0.472.g3155946c3a-goog
 
 
