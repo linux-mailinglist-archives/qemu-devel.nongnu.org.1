@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF800827195
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3DB827192
 	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 15:40:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMqlt-0006Ym-RB; Mon, 08 Jan 2024 09:38:33 -0500
+	id 1rMqlr-0006Xb-Ro; Mon, 08 Jan 2024 09:38:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMqle-0006Sx-Ax
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:38:20 -0500
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMqlg-0006Td-KR
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:38:22 -0500
+Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMqlb-0007iO-Ta
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:38:17 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMqld-0007mX-91
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:38:20 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id CA91661040;
+ by sin.source.kernel.org (Postfix) with ESMTP id 97A8DCE119B;
+ Mon,  8 Jan 2024 14:38:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CFDC433C9;
  Mon,  8 Jan 2024 14:38:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FAEFC433C9;
- Mon,  8 Jan 2024 14:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1704724686;
- bh=x5HS85v9XKG7GpzaRkj/xQnL6uABu0jC0TxVzXDXJsc=;
+ s=k20201202; t=1704724687;
+ bh=oaMIfnlI/vyznx8Vsna73wbJCQNRediFZRBx4P/PiJk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=KZkY4e2svngKfRlRw2okonqLTp+nMUYsPXuJo81A9SME1GtprDsC54YbfEUSBd4Ag
- 4MvkOV0Q5zw4CXBRW4t2PBBbV2Br6cKD7aeUebypWMIkBiiiVzHvHHwFqaWasLLJJC
- JBzDiL4jZvJwqqyBT6Rx8F20wT4RG+2LGZ7ejwfBEGOkV9Nl9cmJZQtCtwLVEPEZSG
- Ig2Uwiy75gNUN3RlSTCibe8J3zBInsJHjXat7ZbostXQDhRsSq+Hair1OtKky8/kc7
- /H4bk6e9fJDCEUFAn14ph3ugs9kQkXKo+0LWdGN4DC4oJwk8ES96QLLLs1bH5Igh4+
- q1oI787Qm7iLQ==
+ b=kzkFEmt5bQGd0pQqydWHg4A8g1QEICrPwMcrEfPJig0ID48Q2fJRgkBHohpk7ujOV
+ +zkIPU9jwUdkFMIg9boJ560kFAOGo21OtHkQ9AfhRykSWY+ZWGEcD/SiHKS2ALs5pR
+ N6Imd4SZAn2hQVGqHMle0NLBuvPFXE1FeV3OOJ3UbWmCa32yTce9X6/FPSB9/4Dtp0
+ NDZFhmxo4pvpGPenAi+izjUGsuHo/WVLRArIrnCRAphag9t43AsjNmnbnaihuOUreO
+ I4mzhL2xGM7u565erg4hlS8qdQHrxhc4DDT64FhcgI8WVG5OLLULwM9VhWk/dbw+gI
+ ImL7Ew7MszYJQ==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>, "Nelson H . F . Beebe" <beebe@math.utah.edu>
-Subject: [PULL 1/9] hw/hppa/machine: Allow up to 3840 MB total memory
-Date: Mon,  8 Jan 2024 15:37:54 +0100
-Message-ID: <20240108143802.50256-2-deller@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PULL 2/9] hw/hppa/machine: Disable default devices with --nodefaults
+ option
+Date: Mon,  8 Jan 2024 15:37:55 +0100
+Message-ID: <20240108143802.50256-3-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108143802.50256-1-deller@kernel.org>
 References: <20240108143802.50256-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
+Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
+ helo=sin.source.kernel.org
 X-Spam_score_int: -66
 X-Spam_score: -6.7
 X-Spam_bar: ------
@@ -68,60 +69,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The physical hardware allows DIMMs of 4 MB size and above, allowing up
-to 3840 MB of memory, but is restricted by setup code to 3 GB.
-Increase the limit to allow up to the maximum amount of memory.
+Add support for the qemu --nodefaults option, which will disable the
+following default devices:
+- lsi53c895a SCSI controller,
+- artist graphics card,
+- LASI 82596 NIC,
+- tulip PCI NIC,
+- second serial PCI card,
+- USB OHCI controller.
 
-Btw. the memory area from 0xf000.0000 to 0xffff.ffff is reserved by
-the architecture for firmware and I/O memory and can not be used for
-standard memory.
-
-An upcoming 64-bit SeaBIOS-hppa firmware will allow more than 3.75GB
-on 64-bit HPPA64. In this case the ram_max for the pa20 case will change.
+Adding this option is very useful to allow manual testing and
+debugging of the other possible devices on the command line.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Noticed-by: Nelson H. F. Beebe <beebe@math.utah.edu>
-Fixes: b7746b1194c8 ("hw/hppa/machine: Restrict the total memory size to 3GB")
 ---
- hw/hppa/machine.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ hw/hppa/machine.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index c8da7c18d5..b11907617e 100644
+index b11907617e..8017002a2a 100644
 --- a/hw/hppa/machine.c
 +++ b/hw/hppa/machine.c
-@@ -276,6 +276,7 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
-     unsigned int smp_cpus = machine->smp.cpus;
-     TranslateFn *translate;
-     MemoryRegion *cpu_region;
-+    uint64_t ram_max;
+@@ -346,11 +346,14 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+     SysBusDevice *s;
  
-     /* Create CPUs.  */
-     for (unsigned int i = 0; i < smp_cpus; i++) {
-@@ -288,8 +289,10 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
-      */
-     if (hppa_is_pa20(&cpu[0]->env)) {
-         translate = translate_pa20;
-+        ram_max = 0xf0000000;      /* 3.75 GB (limited by 32-bit firmware) */
-     } else {
-         translate = translate_pa10;
-+        ram_max = 0xf0000000;      /* 3.75 GB (32-bit CPU) */
+     /* SCSI disk setup. */
+-    dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
+-    lsi53c8xx_handle_legacy_cmdline(dev);
++    if (defaults_enabled()) {
++        dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
++        lsi53c8xx_handle_legacy_cmdline(dev);
++    }
+ 
+     /* Graphics setup. */
+-    if (machine->enable_graphics && vga_interface_type != VGA_NONE) {
++    if (defaults_enabled() && machine->enable_graphics &&
++        vga_interface_type != VGA_NONE) {
+         vga_interface_created = true;
+         dev = qdev_new("artist");
+         s = SYS_BUS_DEVICE(dev);
+@@ -360,7 +363,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
      }
  
-     for (unsigned int i = 0; i < smp_cpus; i++) {
-@@ -311,9 +314,9 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
-                                 cpu_region);
- 
-     /* Main memory region. */
--    if (machine->ram_size > 3 * GiB) {
--        error_report("RAM size is currently restricted to 3GB");
--        exit(EXIT_FAILURE);
-+    if (machine->ram_size > ram_max) {
-+        info_report("Max RAM size limited to %" PRIu64 " MB", ram_max / MiB);
-+        machine->ram_size = ram_max;
+     /* Network setup. */
+-    if (enable_lasi_lan()) {
++    if (defaults_enabled() && enable_lasi_lan()) {
+         lasi_82596_init(addr_space, translate(NULL, LASI_LAN_HPA),
+                         qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA));
      }
-     memory_region_add_subregion_overlap(addr_space, 0, machine->ram, -1);
+@@ -385,7 +388,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+     pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_ID], 0x1227); /* Powerbar */
  
+     /* create a second serial PCI card when running Astro */
+-    if (!lasi_dev) {
++    if (defaults_enabled() && !lasi_dev) {
+         pci_dev = pci_new(-1, "pci-serial-4x");
+         qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(1));
+         qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(2));
+@@ -395,7 +398,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+     }
+ 
+     /* create USB OHCI controller for USB keyboard & mouse on Astro machines */
+-    if (!lasi_dev && machine->enable_graphics) {
++    if (defaults_enabled() && !lasi_dev && machine->enable_graphics) {
+         pci_create_simple(pci_bus, -1, "pci-ohci");
+         usb_create_simple(usb_bus_find(-1), "usb-kbd");
+         usb_create_simple(usb_bus_find(-1), "usb-mouse");
 -- 
 2.43.0
 
