@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6C0827977
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:51:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E59208279F6
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:06:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMwaT-0005Sr-Fp; Mon, 08 Jan 2024 15:51:09 -0500
+	id 1rMwbK-0008GW-Pi; Mon, 08 Jan 2024 15:52:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+41a72dc6539c0dfbbc31+7442+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rMwZu-000407-PS; Mon, 08 Jan 2024 15:50:34 -0500
+ id 1rMwZw-00042z-AI; Mon, 08 Jan 2024 15:50:36 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+41a72dc6539c0dfbbc31+7442+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rMwZq-0000v4-OL; Mon, 08 Jan 2024 15:50:33 -0500
+ id 1rMwZt-0000uv-Go; Mon, 08 Jan 2024 15:50:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=3IJgWxMmUdLOBVuYUZ4BO4uyS9hEOvqvAglyEu5N/aM=; b=ZlBVon3DzGBlJcC87Be0qL8RWU
- d6X4a+DxoBXqP/XC56vV646U0bCd4hdkyLAnU1gOfJvP0C/ZzRNMTkfwfzzf4mext7K0imLIVhvNI
- 7coUYjY/T7UNIgIG85T/i9YMGkx8TR8sSvrDQh1F/vqzMXuY8Xw2sKB9xvUSr0rc2ofICePdTnDEu
- 0o8fcUcIZB673qW57YhOeq/H8AT6j/TStiqxRQbHJKVAi0Q+dhqTf2bJMMW1B0HL8/8R3WbDQ5Xrx
- s5c7fcKmoTWB7pLR8xIRwnY+fyucp+GpIQICz922h/DyZTkH4cmVM6ML/C32nC8Zq5X6oEkYPxodk
- TwHGOZig==;
+ bh=EY5jroAc8MCOZn/iMIDqFzrV+uFS3P3alR9EbXNKjbA=; b=kZvFfEtvSc+2WEUAmbwYwJ2lf6
+ n8j+9PM0udQh+tjnaMb1GwsyPhPSCYiqzXKZ+7ja9QUTfMQlnTW2SfL2SqdoPU7uU3Di5YUulChIC
+ rXhFpsYJvt0S49LH4i0ZtFV5dkCCg34qbju1xyZqiAanXwwl30VSspYUIU+7pUX4t2aFjVvgUxeTb
+ bA7SlVUUNU2eoRcHjR/CXFmztWLt/jep5BA7wh6iwy7v39gbQuIuSXCh7BoPdr1DOuSksAS5XfkoJ
+ 1eqszgX250rXa8lfMFslqU5axeaRGQT2jgL4/A86sUNrel0drthWPDkvI9FxZTbQEtvM1UMFGv0Hd
+ 65ij8Cnw==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1rMwYl-008RQ9-31; Mon, 08 Jan 2024 20:49:24 +0000
+ id 1rMwYl-008RQB-0k; Mon, 08 Jan 2024 20:49:24 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1rMwYl-002NH5-2H; Mon, 08 Jan 2024 20:49:23 +0000
+ Hat Linux)) id 1rMwYl-002NHD-2V; Mon, 08 Jan 2024 20:49:23 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -82,9 +82,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v3 42/46] hw/xtensa/xtfpga: use qemu_create_nic_device()
-Date: Mon,  8 Jan 2024 20:27:11 +0000
-Message-ID: <20240108204909.564514-43-dwmw2@infradead.org>
+Subject: [PATCH v3 43/46] net: remove qemu_check_nic_model()
+Date: Mon,  8 Jan 2024 20:27:12 +0000
+Message-ID: <20240108204909.564514-44-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240108204909.564514-1-dwmw2@infradead.org>
 References: <20240108204909.564514-1-dwmw2@infradead.org>
@@ -121,45 +121,46 @@ From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/xtensa/xtfpga.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ include/net/net.h |  1 -
+ net/net.c         | 13 -------------
+ 2 files changed, 14 deletions(-)
 
-diff --git a/hw/xtensa/xtfpga.c b/hw/xtensa/xtfpga.c
-index fbad1c83a3..f49e6591dc 100644
---- a/hw/xtensa/xtfpga.c
-+++ b/hw/xtensa/xtfpga.c
-@@ -141,14 +141,16 @@ static void xtfpga_net_init(MemoryRegion *address_space,
-         hwaddr base,
-         hwaddr descriptors,
-         hwaddr buffers,
--        qemu_irq irq, NICInfo *nd)
-+        qemu_irq irq)
+diff --git a/include/net/net.h b/include/net/net.h
+index 31e63d1f0d..1be8b40074 100644
+--- a/include/net/net.h
++++ b/include/net/net.h
+@@ -204,7 +204,6 @@ int qemu_set_vnet_le(NetClientState *nc, bool is_le);
+ int qemu_set_vnet_be(NetClientState *nc, bool is_be);
+ void qemu_macaddr_default_if_unset(MACAddr *macaddr);
+ int qemu_show_nic_models(const char *arg, const char *const *models);
+-void qemu_check_nic_model(NICInfo *nd, const char *model);
+ int qemu_find_nic_model(NICInfo *nd, const char * const *models,
+                         const char *default_model);
+ NICInfo *qemu_find_nic_info(const char *typename, bool match_default,
+diff --git a/net/net.c b/net/net.c
+index 4651b3f443..ffd4b42d5a 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -992,19 +992,6 @@ int qemu_show_nic_models(const char *arg, const char *const *models)
+     return 1;
+ }
+ 
+-void qemu_check_nic_model(NICInfo *nd, const char *model)
+-{
+-    const char *models[2];
+-
+-    models[0] = model;
+-    models[1] = NULL;
+-
+-    if (qemu_show_nic_models(nd->model, models))
+-        exit(0);
+-    if (qemu_find_nic_model(nd, models, model) < 0)
+-        exit(1);
+-}
+-
+ int qemu_find_nic_model(NICInfo *nd, const char * const *models,
+                         const char *default_model)
  {
-     DeviceState *dev;
-     SysBusDevice *s;
-     MemoryRegion *ram;
- 
--    dev = qdev_new("open_eth");
--    qdev_set_nic_properties(dev, nd);
-+    dev = qemu_create_nic_device("open_eth", true, NULL);
-+    if (!dev) {
-+        return;
-+    }
- 
-     s = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(s, &error_fatal);
-@@ -301,10 +303,7 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
-         memory_region_add_subregion(system_memory, board->io[1], io);
-     }
-     xtfpga_fpga_init(system_io, 0x0d020000, freq);
--    if (nd_table[0].used) {
--        xtfpga_net_init(system_io, 0x0d030000, 0x0d030400, 0x0d800000,
--                        extints[1], nd_table);
--    }
-+    xtfpga_net_init(system_io, 0x0d030000, 0x0d030400, 0x0d800000, extints[1]);
- 
-     serial_mm_init(system_io, 0x0d050020, 2, extints[0],
-                    115200, serial_hd(0), DEVICE_NATIVE_ENDIAN);
 -- 
 2.41.0
 
