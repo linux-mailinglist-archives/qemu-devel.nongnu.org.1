@@ -2,81 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5152826F3F
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 14:07:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CDC826F48
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 14:08:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMpKC-0002Fr-SI; Mon, 08 Jan 2024 08:05:52 -0500
+	id 1rMpMC-0003DK-7Y; Mon, 08 Jan 2024 08:07:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMpK6-0002F5-BT
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 08:05:46 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMpK4-0004GS-7u
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 08:05:46 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40e49447463so4114225e9.0
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 05:05:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704719142; x=1705323942; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8j/CsYmYI28yxTkAI/629xc1lrXr+iCODj3HzU+ggC8=;
- b=T4Zv805inag4nL4vBXr9S0S2/Ha+OO5R5rNs78m+uS77pntIFs+XqxKmpqXu363uaU
- lX29NHE+iwIDTZsdvqvQtTinrkyKiPWpNfswzlaaDnMdCiH3Sqt+niXP3znyAC+QD+QP
- NuOKA8Nc9bA2c2mgtz1TbOaIe4BdfzSBvhpz6YsINitsTi4RQMMSroUODrGk3Bdd/PUR
- MkeUWqYXWOf5Sh9C8nqL67quxdBit5ExxXAfaUzg/RO5gl7OqKEUtLHj7cJ7Ee+G0odp
- 1Y6KpUdZIz+5hLhFSEdMHD1xZR/wEr7mvoPgHVr9TMFFVI3v2IuFNHWKsBGgEqOCBCt+
- D2DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704719142; x=1705323942;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8j/CsYmYI28yxTkAI/629xc1lrXr+iCODj3HzU+ggC8=;
- b=Rs4hm8EUX4/Gmeqqo25eZ9fQ0ndG2m2iZLSYvm/nx4ps+0gT2yfkv76hXrU/pWCOoS
- 1R2HeM6WjFoKV/YWWmKu+Zz0+YSdj0wfjzTMCXZ0ZLFJ0PHEweFF5Ul8FnVrHn3QKf4J
- r7PkjHKdFqfbXHesRynqHVDosTFdr478elQjvZiUy0w0Jvkp8HG8UO5DeENSO8x4McZM
- uakxzhKKy9MvA0ZgsQNAsG9fs3jPw/RUpAI+a8kxZ+TN7LqqGDbJ0wTsSD3aK43+oFfn
- CTeWDhcSCNMIRSMn9OaLS07CkHXd9gIq/3MJXLCh6kinLpBTUZsm+/GQbS6JckFgvHA2
- wzfA==
-X-Gm-Message-State: AOJu0Yz8addHbIPHdQHz+dQQzKrsdGdfZ1LIGrZXNCx6oXYC56BFH+dA
- ZUxogbvPZk5vGiUvNMXa/mYV/MrhSzH7WA==
-X-Google-Smtp-Source: AGHT+IH2vTqYgqu86MohB4cJ1OkA2adTUM9E5PIvB7+J1EgsNIr/FuI7+X1uRQxk+tr7YAyzMs3jBQ==
-X-Received: by 2002:a05:600c:4fc5:b0:40d:609d:d66a with SMTP id
- o5-20020a05600c4fc500b0040d609dd66amr1885838wmq.84.1704719141763; 
- Mon, 08 Jan 2024 05:05:41 -0800 (PST)
-Received: from [192.168.1.102] ([176.176.175.62])
- by smtp.gmail.com with ESMTPSA id
- w5-20020a05600c474500b0040e34835a58sm10961447wmo.22.2024.01.08.05.05.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 05:05:41 -0800 (PST)
-Message-ID: <39ff1c41-c7ea-4cdc-ab18-b299b91cafb8@linaro.org>
-Date: Mon, 8 Jan 2024 14:05:39 +0100
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rMpM9-0003Cw-8X; Mon, 08 Jan 2024 08:07:53 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rMpM6-0004q3-4d; Mon, 08 Jan 2024 08:07:52 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 408D2EA0020592; Mon, 8 Jan 2024 13:07:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=qRGkre4BD6hOHc5l0m0uf0cMrl5kOZ9XmzivJhgY/R0=;
+ b=NSl5oYXx12nrV3salCl7QgvLtaZaCyZ3hjsbPz4Wkn9DRZKQcHvMhAUQ/1AX2+6JjZB4
+ oOIRH1v4UvZwFKAgIzeb0+RPUN+7PSf5zvBgF+hlVA3RY1U62s+jjuMi2+cEqP+LYUDK
+ TncOicTUOdaXKRHqgZMu5PBBcUkWML4YK59VuF7+bL0XUti98ASmNWvsuVOsmt1eZTDx
+ 4IiQwahLEWHvb6ftcKaeLCzcugR8m3BbCz/pIv5JN4tV+r4QoVe2qw3saIrRrzgTBnNu
+ qKm8XNixGYoy56mnnujQ6+q1g0xwdGUfJkeyXkFTdPFrPiXBV66CfcAoAPRhUqayx8tp jw== 
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vghk385br-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Jan 2024 13:07:45 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 408Adjsq000893; Mon, 8 Jan 2024 13:07:43 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkdjynse-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Jan 2024 13:07:43 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 408D7gg244171952
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 8 Jan 2024 13:07:42 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 048782004B;
+ Mon,  8 Jan 2024 13:07:42 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D5DBD20043;
+ Mon,  8 Jan 2024 13:07:41 +0000 (GMT)
+Received: from [9.155.200.166] (unknown [9.155.200.166])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  8 Jan 2024 13:07:41 +0000 (GMT)
+Message-ID: <99bf8c28ebd44be8dc59a911985e571afc15b8b1.camel@linux.ibm.com>
+Subject: Re: [PATCH] tests/tcg: Don't #include <inttypes.h> in
+ aarch64/system/vtimer.c
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Peter
+ Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Date: Mon, 08 Jan 2024 14:07:41 +0100
+In-Reply-To: <1c18863a-ecf9-4522-af75-793cd358c745@linaro.org>
+References: <20240108125030.58569-1-iii@linux.ibm.com>
+ <1c18863a-ecf9-4522-af75-793cd358c745@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] hw/pflash: implement update buffer for block writes
-Content-Language: en-US
-To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>
-References: <20240108125342.48298-1-philmd@linaro.org>
- <20240108125342.48298-3-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240108125342.48298-3-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: sTyhFZiEd253q3Z29v0IB7-iJyzTyJZG
+X-Proofpoint-ORIG-GUID: sTyhFZiEd253q3Z29v0IB7-iJyzTyJZG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-08_04,2024-01-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 suspectscore=0 mlxlogscore=528 impostorscore=0 clxscore=1015
+ spamscore=0 malwarescore=0 mlxscore=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401080112
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,236 +107,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Gerd,
+On Mon, 2024-01-08 at 13:56 +0100, Philippe Mathieu-Daud=C3=A9 wrote:
+> Hi Ilya,
+>=20
+> On 8/1/24 13:50, Ilya Leoshkevich wrote:
+> > make check-tcg fails on Fedora with:
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0 vtimer.c:9:10: fatal error: inttypes.h: No suc=
+h file or
+> > directory
+> >=20
+> > Fedora has a minimal aarch64 cross-compiler, which satisfies the
+> > configure checks, so it's chosen instead of the dockerized one.
+> > There is no cross-version of inttypes.h, however.
+>=20
+> Presumably this isn't specific to aarch64 target, so what about
+> the other uses, shouldn't we clean all similar uses at once?
+>=20
+> $ git grep inttypes.h tests/tcg | wc -l
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 26
 
-On 8/1/24 13:53, Philippe Mathieu-Daudé wrote:
-> From: Gerd Hoffmann <kraxel@redhat.com>
-> 
-> Add an update buffer where all block updates are staged.
-> Flush or discard updates properly, so we should never see
-> half-completed block writes in pflash storage.
-> 
-> Drop a bunch of FIXME comments ;)
-> 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> Message-ID: <20240105135855.268064-3-kraxel@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/block/pflash_cfi01.c | 106 ++++++++++++++++++++++++++++++----------
->   1 file changed, 80 insertions(+), 26 deletions(-)
-> 
-> diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
-> index ce63ba43b6..0120462648 100644
-> --- a/hw/block/pflash_cfi01.c
-> +++ b/hw/block/pflash_cfi01.c
-> @@ -80,16 +80,39 @@ struct PFlashCFI01 {
->       uint16_t ident3;
->       uint8_t cfi_table[0x52];
->       uint64_t counter;
-> -    unsigned int writeblock_size;
-> +    uint32_t writeblock_size;
->       MemoryRegion mem;
->       char *name;
->       void *storage;
->       VMChangeStateEntry *vmstate;
->       bool old_multiple_chip_handling;
-> +
-> +    /* block update buffer */
-> +    unsigned char *blk_bytes;
+As far as I can see, these 26 occurrences are for user tests.
 
-I'd rather use a 'void *' type here, but then we need to
-use a (uinptr_t) cast in pflash_data_write().
+These work fine; I assume this is because the user cross-compiler is
+chosen using a stricter configure check:
 
-> +    uint32_t blk_offset;
->   };
->   
->   static int pflash_post_load(void *opaque, int version_id);
->   
-> +static bool pflash_blk_write_state_needed(void *opaque)
-> +{
-> +    PFlashCFI01 *pfl = opaque;
-> +
-> +    return (pfl->blk_offset != -1);
-> +}
-> +
-> +static const VMStateDescription vmstate_pflash_blk_write = {
-> +    .name = "pflash_cfi01_blk_write",
-> +    .version_id = 1,
-> +    .minimum_version_id = 1,
-> +    .needed = pflash_blk_write_state_needed,
-> +    .fields = (const VMStateField[]) {
-> +        VMSTATE_VBUFFER_UINT32(blk_bytes, PFlashCFI01, 0, NULL, writeblock_size),
+    write_c_skeleton
+    case $1 in
+      *-softmmu)
+        if do_compiler "$target_cc" $target_cflags -o $TMPO -c $TMPC &&
+          do_compiler "$target_cc" $target_cflags -r -nostdlib -o
+"${TMPDIR1}/${TMPB}2.o" "$TMPO" -lgcc; then
+          got_cross_cc=3Dyes
+          break
+        fi
+        ;;
+      *)
+        if do_compiler "$target_cc" $target_cflags -o $TMPE $TMPC -
+static ; then
+          build_static=3Dy
+          got_cross_cc=3Dyes
+          break
+        fi
+        if do_compiler "$target_cc" $target_cflags -o $TMPE $TMPC ;
+then
+          build_static=3D
+          got_cross_cc=3Dyes
+          break
+        fi
+        ;;
+    esac
 
-I don't get the difference with VMSTATE_VBUFFER_ALLOC_UINT32() which
-sets VMS_ALLOC. In this case pflash_cfi01_realize() does the alloc so
-we don't need VMS_ALLOC?
-
-> +        VMSTATE_UINT32(blk_offset, PFlashCFI01),
-> +        VMSTATE_END_OF_LIST()
-> +    }
-> +};
-> +
->   static const VMStateDescription vmstate_pflash = {
->       .name = "pflash_cfi01",
->       .version_id = 1,
-> @@ -101,6 +124,10 @@ static const VMStateDescription vmstate_pflash = {
->           VMSTATE_UINT8(status, PFlashCFI01),
->           VMSTATE_UINT64(counter, PFlashCFI01),
->           VMSTATE_END_OF_LIST()
-> +    },
-> +    .subsections = (const VMStateDescription * const []) {
-> +        &vmstate_pflash_blk_write,
-> +        NULL
->       }
->   };
->   
-> @@ -376,12 +403,51 @@ static void pflash_update(PFlashCFI01 *pfl, int offset,
->       }
->   }
->   
-> +/* copy current flash content to block update buffer */
-> +static void pflash_blk_write_start(PFlashCFI01 *pfl, hwaddr offset)
-> +{
-> +    hwaddr mask = ~(pfl->writeblock_size - 1);
-> +
-> +    pfl->blk_offset = offset & mask;
-> +    memcpy(pfl->blk_bytes, pfl->storage + pfl->blk_offset,
-> +           pfl->writeblock_size);
-> +}
-> +
-> +/* commit block update buffer changes */
-> +static void pflash_blk_write_flush(PFlashCFI01 *pfl)
-> +{
-> +    g_assert(pfl->blk_offset != -1);
-> +    memcpy(pfl->storage + pfl->blk_offset, pfl->blk_bytes,
-> +           pfl->writeblock_size);
-> +    pflash_update(pfl, pfl->blk_offset, pfl->writeblock_size);
-> +    pfl->blk_offset = -1;
-> +}
-> +
-> +/* discard block update buffer changes */
-> +static void pflash_blk_write_abort(PFlashCFI01 *pfl)
-> +{
-> +    pfl->blk_offset = -1;
-> +}
-> +
->   static inline void pflash_data_write(PFlashCFI01 *pfl, hwaddr offset,
->                                        uint32_t value, int width, int be)
->   {
-> -    uint8_t *p = pfl->storage;
-> +    uint8_t *p;
-> +
-> +    if (pfl->blk_offset != -1) {
-
-I'd rather have a trace event in this if() ladder.
-
-> +        /* block write: redirect writes to block update buffer */
-> +        if ((offset < pfl->blk_offset) ||
-> +            (offset + width > pfl->blk_offset + pfl->writeblock_size)) {
-> +            pfl->status |= 0x10; /* Programming error */
-> +            return;
-> +        }
-> +        p = pfl->blk_bytes + (offset - pfl->blk_offset);
-> +    } else {
-> +        /* write directly to storage */
-> +        trace_pflash_data_write(pfl->name, offset, width, value, pfl->counter);
-> +        p = pfl->storage + offset;
-> +    }
->   
-> -    trace_pflash_data_write(pfl->name, offset, width, value, pfl->counter);
->       if (be) {
->           stn_be_p(p, width, value);
->       } else {
-> @@ -504,6 +570,7 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
->               trace_pflash_write_block(pfl->name, value);
->               pfl->counter = value;
->               pfl->wcycle++;
-> +            pflash_blk_write_start(pfl, offset);
->               break;
->           case 0x60:
->               if (cmd == 0xd0) {
-> @@ -534,12 +601,7 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
->           switch (pfl->cmd) {
->           case 0xe8: /* Block write */
->               /* FIXME check @offset, @width */
-> -            if (!pfl->ro) {
-> -                /*
-> -                 * FIXME writing straight to memory is *wrong*.  We
-> -                 * should write to a buffer, and flush it to memory
-> -                 * only on confirm command (see below).
-> -                 */
-> +            if (!pfl->ro && (pfl->blk_offset != -1)) {
->                   pflash_data_write(pfl, offset, value, width, be);
->               } else {
->                   pfl->status |= 0x10; /* Programming error */
-> @@ -548,18 +610,8 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
->               pfl->status |= 0x80;
->   
->               if (!pfl->counter) {
-> -                hwaddr mask = pfl->writeblock_size - 1;
-> -                mask = ~mask;
-> -
->                   trace_pflash_write(pfl->name, "block write finished");
->                   pfl->wcycle++;
-> -                if (!pfl->ro) {
-> -                    /* Flush the entire write buffer onto backing storage.  */
-> -                    /* FIXME premature! */
-> -                    pflash_update(pfl, offset & mask, pfl->writeblock_size);
-> -                } else {
-> -                    pfl->status |= 0x10; /* Programming error */
-> -                }
->               }
->   
->               pfl->counter--;
-> @@ -571,20 +623,17 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
->       case 3: /* Confirm mode */
->           switch (pfl->cmd) {
->           case 0xe8: /* Block write */
-> -            if (cmd == 0xd0) {
-> -                /* FIXME this is where we should write out the buffer */
-> +            if ((cmd == 0xd0) && !(pfl->status & 0x10)) {
-> +                pflash_blk_write_flush(pfl);
->                   pfl->wcycle = 0;
->                   pfl->status |= 0x80;
->               } else {
-> -                qemu_log_mask(LOG_UNIMP,
-> -                    "%s: Aborting write to buffer not implemented,"
-> -                    " the data is already written to storage!\n"
-> -                    "Flash device reset into READ mode.\n",
-> -                    __func__);
-> +                pflash_blk_write_abort(pfl);
->                   goto mode_read_array;
->               }
->               break;
->           default:
-> +            pflash_blk_write_abort(pfl);
->               goto error_flash;
->           }
->           break;
-> @@ -818,6 +867,9 @@ static void pflash_cfi01_realize(DeviceState *dev, Error **errp)
->       pfl->cmd = 0x00;
->       pfl->status = 0x80; /* WSM ready */
->       pflash_cfi01_fill_cfi_table(pfl);
-> +
-> +    pfl->blk_bytes = g_malloc(pfl->writeblock_size);
-> +    pfl->blk_offset = -1;
->   }
->   
->   static void pflash_cfi01_system_reset(DeviceState *dev)
-> @@ -837,6 +889,8 @@ static void pflash_cfi01_system_reset(DeviceState *dev)
->        * This model deliberately ignores this delay.
->        */
->       pfl->status = 0x80;
-> +
-> +    pfl->blk_offset = -1;
->   }
->   
->   static Property pflash_cfi01_properties[] = {
-
-Patch LGTM. If you want I can apply the changes suggested
-and post a v3/queue.
-
-Regards,
-
-Phil.
+[...]
 
