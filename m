@@ -2,55 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0A9827874
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CBD827872
 	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 20:21:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMvAp-000754-PO; Mon, 08 Jan 2024 14:20:35 -0500
+	id 1rMvAq-000769-1d; Mon, 08 Jan 2024 14:20:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rMvAn-00072S-SV
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 14:20:33 -0500
+ id 1rMvAo-00072m-3B
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 14:20:34 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rMvAm-0002si-14
+ id 1rMvAm-0002vv-Gd
  for qemu-devel@nongnu.org; Mon, 08 Jan 2024 14:20:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=tvrLerdO/l3eBhHeqDWRFFhtTx80ILbee345/yTCM9k=; b=dg/84nCm1uoAYS3MxQ1MQ6B1ja
- jEOrRUffLMDfdPxXXiuQDtmTF3hdFFElQolXMavj0gqA9JKRSaQHjQUSpIyZI9NtFTopTBfGS6ZjY
- Radd4fUxDv9iHdPYAJAH1L5mQhaEDfapJ/rGZcWfDaf/hi85UGzdt8UHgqI4p90cqHF+e4uJyGkYy
- oRFW/JVv/p8AHnvZeDnl0tPdz+i9I9Lo+NYIVIA3R8m7BmJi46eeD3oH7HiM8aKWGqER+iuFXB+fG
- 1jRAKWlAamjlEmikRrTvrf8y31Imn8d++8f1grbIL/P/wIswgiX/KPQFzRwF7vUyWHCvgw1Nf8i8x
- NAXfEVKxGNeOrjsEcEYewGEJHD/hFQjluYtmWHr1YDd0UvPXEVhvkochxMftlJ2u/efHgIaTBZv4j
- lSexTjUiMAoNDJsWk8qbE9iCznO7HnTghfHWwz0LXqJWbgRk849vnZpRKW65/p+VIavqutD4mmcE/
- 3QbthbMwlhuZkvPMeqApn39mVnMTa9wZZoqSdPe7szf7+fvdYZDWI0KVMjgkGIE8eRtSLp6mWqhbe
- DWoQXTP6IFuJhOeWJb7YvJTb7aDJla3pKNXGSbRcZF6wTW+8m84/6AFpvh7wUK4F7A2JBWCUJiKMp
- Q+QYL9q+dnt6sE/TN6+/ZGuQFzR7qGLhK16900MJY=;
+ References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=CWD1RWZn0JyYjmI8Ws09PfuEYZ6K711mm6AOuu5s5gE=; b=AvIl4xBcocQz3ftZ4dnlRu6h4C
+ HiVVf3KiV+vljX05ZBf6SFrOSFkViiW03h/7jSiN7q0yoHXxBlPhQoPYw40jLBFZL+JmXTktuBU50
+ ONKcRRkPWgsyCLN58r3KkWwz2OPXYexay+lap+9Y0ReZClSZneP8CXrGgCgRBe0aHcjhjK0Ng990o
+ qZ3JPenjquZe+iIHVYCoIivDxoJhKIb4GIdomu4Mtv9lmdcnof2T2XJHdFlV/XHCduscww2Mgu70f
+ +e04QyWeLiht8JluCZC7AWp7zKlKetxJzmXqs/M6k22s2S9oTEVovpkmOj349K7p5zhq3dGsv4Nnl
+ ilUIlHluc3wcolqPKrZLy1HAkyZHdZsrLRUo1r8Mm7LT8TTBmqKsCZlXkd3hiGQDc9GurV8+ilKEk
+ LhpAPpIWcDZAiOYAv7WxfzFdZ6WNrmPLlOJ0e67SWF0EpDCeLIFDB1oSpKaW68nTr4KZnljUUfplb
+ ToQK0eqKVPomm1Ic1aVNxXkkcMvoVzunuW1ZY9/StDpKTz6wHARvCvEaH6Xnw5A1DdqpChFRRcyKY
+ AlYM/NOL5Vxu7PKTSVnZUw1fT+DM4wIxKX2259X4Lwhnn+C7xdBBf2JenVYHCmN8wRMMO1TCUou3w
+ BZAhT51hIhKLbLHiRb4KEb5q5spCX0bdykwihAV/Q=;
 Received: from [2a00:23c4:8bb1:9800:102b:b374:b08c:8889]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rMvA7-0000nV-V8; Mon, 08 Jan 2024 19:19:55 +0000
+ id 1rMvAC-0000nV-2i; Mon, 08 Jan 2024 19:20:00 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org,
 	elliotnunn@fastmail.com
-Date: Mon,  8 Jan 2024 19:20:11 +0000
-Message-Id: <20240108192013.272112-1-mark.cave-ayland@ilande.co.uk>
+Date: Mon,  8 Jan 2024 19:20:12 +0000
+Message-Id: <20240108192013.272112-2-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240108192013.272112-1-mark.cave-ayland@ilande.co.uk>
+References: <20240108192013.272112-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb1:9800:102b:b374:b08c:8889
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 0/2] nubus: add nubus-virtio-mmio device
+Subject: [PATCH v2 1/2] nubus-device: round Declaration ROM memory region
+ address to qemu_target_page_size()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -76,45 +79,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series introduces a new nubus-virtio-mmio device which can be plugged into
-the q800 machine to enable a 68k Classic MacOS guest to access virtio devices
-such as virtio-9p-device (host filesharing), virtio-gpu (extended framebuffer
-support) and virtio-tablet-device (absolute positioning).
+Declaration ROM binary images can be any arbitrary size, however if a host ROM
+memory region is not aligned to qemu_target_page_size() then we fail the
+"assert(!(iotlb & ~TARGET_PAGE_MASK))" check in tlb_set_page_full().
 
-Once the nubus-virtio-mmio device has been plugged into the q800 machine, virtio
-devices can be accessed by a Classic MacOS guest using the drivers from the
-classicvirtio project at https://github.com/elliotnunn/classicvirtio.
-
-The nubus-virtio-mmio device is purposefully designed to be similar to the
-virtio-mmio interface used by the existing 68k virt machine, making use of a
-similar memory layout and the goldfish PIC for simple interrupt management. The
-main difference is that only a single goldfish PIC is used, however that still
-allows up to 32 virtio devices to be connected using a single nubus card.
-
-Patch 1 fixes an alignment bug in the existing nubus-device Declaration ROM code
-whereby some ROM images could trigger an assert() in QEMU, whilst patch 2 adds
-the nubus-virtio-mmio device itself.
+Ensure that the host ROM memory region is aligned to qemu_target_page_size()
+and adjust the offset at which the Declaration ROM image is loaded, since Nubus
+ROM images are unusual in that they are aligned to the end of the slot address
+space.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+---
+ hw/nubus/nubus-device.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-v2:
-- Rebase onto master
-- Adjust comment in patch 1 as suggested by Phil
-
-
-Mark Cave-Ayland (2):
-  nubus-device: round Declaration ROM memory region address to
-    qemu_target_page_size()
-  nubus: add nubus-virtio-mmio device
-
- hw/nubus/meson.build                 |   1 +
- hw/nubus/nubus-device.c              |  16 +++--
- hw/nubus/nubus-virtio-mmio.c         | 102 +++++++++++++++++++++++++++
- include/hw/nubus/nubus-virtio-mmio.h |  36 ++++++++++
- 4 files changed, 151 insertions(+), 4 deletions(-)
- create mode 100644 hw/nubus/nubus-virtio-mmio.c
- create mode 100644 include/hw/nubus/nubus-virtio-mmio.h
-
+diff --git a/hw/nubus/nubus-device.c b/hw/nubus/nubus-device.c
+index 49008e4938..e4f824d58b 100644
+--- a/hw/nubus/nubus-device.c
++++ b/hw/nubus/nubus-device.c
+@@ -10,6 +10,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/datadir.h"
++#include "exec/target_page.h"
+ #include "hw/irq.h"
+ #include "hw/loader.h"
+ #include "hw/nubus/nubus.h"
+@@ -30,7 +31,7 @@ static void nubus_device_realize(DeviceState *dev, Error **errp)
+     NubusDevice *nd = NUBUS_DEVICE(dev);
+     char *name, *path;
+     hwaddr slot_offset;
+-    int64_t size;
++    int64_t size, align_size;
+     int ret;
+ 
+     /* Super */
+@@ -76,16 +77,23 @@ static void nubus_device_realize(DeviceState *dev, Error **errp)
+         }
+ 
+         name = g_strdup_printf("nubus-slot-%x-declaration-rom", nd->slot);
+-        memory_region_init_rom(&nd->decl_rom, OBJECT(dev), name, size,
++
++        /*
++         * Ensure ROM memory region is aligned to target page size regardless
++         * of the size of the Declaration ROM image
++         */
++        align_size = ROUND_UP(size, qemu_target_page_size());
++        memory_region_init_rom(&nd->decl_rom, OBJECT(dev), name, align_size,
+                                &error_abort);
+-        ret = load_image_mr(path, &nd->decl_rom);
++        ret = load_image_size(path, memory_region_get_ram_ptr(&nd->decl_rom) +
++                                    (uintptr_t)align_size - size, size);
+         g_free(path);
+         g_free(name);
+         if (ret < 0) {
+             error_setg(errp, "could not load romfile \"%s\"", nd->romfile);
+             return;
+         }
+-        memory_region_add_subregion(&nd->slot_mem, NUBUS_SLOT_SIZE - size,
++        memory_region_add_subregion(&nd->slot_mem, NUBUS_SLOT_SIZE - align_size,
+                                     &nd->decl_rom);
+     }
+ }
 -- 
 2.39.2
 
