@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851318266D9
+	by mail.lfdr.de (Postfix) with ESMTPS id C1BB88266DA
 	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 01:15:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMdH2-0005z5-2w; Sun, 07 Jan 2024 19:13:48 -0500
+	id 1rMdH4-0005zb-LR; Sun, 07 Jan 2024 19:13:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rMdGz-0005xy-6P; Sun, 07 Jan 2024 19:13:45 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rMdH3-0005zJ-5O; Sun, 07 Jan 2024 19:13:49 -0500
+Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rMdGx-0000IS-Hd; Sun, 07 Jan 2024 19:13:44 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d3e6c86868so11085865ad.1; 
- Sun, 07 Jan 2024 16:13:42 -0800 (PST)
+ id 1rMdH1-0000J6-Gf; Sun, 07 Jan 2024 19:13:48 -0500
+Received: by mail-il1-x12f.google.com with SMTP id
+ e9e14a558f8ab-3606e11d9cbso9816155ab.0; 
+ Sun, 07 Jan 2024 16:13:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704672821; x=1705277621; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704672826; x=1705277626; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ydyQcpoWwEBe73HeZcT4G88tDIBP8gJ14l5X8kcFbbM=;
- b=fu0lqz0+ffhOW8dzQnXy9r2q2y5BKZqYnKx7fql8O0eNC7BPflZSlgk4xEZ17+ZqeW
- sSaIuC/ie50DPxv/BYVU9D9JlMpU8tQBU86KfOLMiCIaQhGYAOCXUCmMgXiRTXEBPY+B
- PFejHSnupfbBzK1aF0/WBLAni5Lz7tEAHfi9uN/UibyHaEhJ6cIWmaAiL+aY/KNILeg4
- W4kjJRopEnPdLF498z1GSFH9JLA1W9ni/+ZmhxkzpfRv1p/phpIz34ctA6dmFRPAIspu
- hOr2FYAUyUEmhf/bTF8DVhMMJmFD3d5GCDCJpzjL+k+9twMgfQHdOwx8+o05tFQZzyib
- i9Mg==
+ bh=W6qFn/mU863Y6eJbLzzbeKxrgve7EDyIX8A/fR2qJTE=;
+ b=jnifR22zjzcjXA/iS/2QlWFNNG4QhQK35OczxD/ZFILkySec5uvgYICS3fKcP2kvSL
+ /4H6RTo5GVqM3MTQqlP0EouIEfu1CWRUWBPGniV1uluG0U+vjoM7/jHPbTIt71hR4B7y
+ VSCItkI9nlijX3q8Dj+RapmRqbzB1AnQbFFzOUMgSJT4dEtSvZf8Cv/wUQL1STzatZOn
+ Iki/SO6+FaxUDK0UU/Dy7kxTS4koTzZQ7jXFnqBtqZCgbQ8t/LZ4AzEBmOOqVmrvwliR
+ BtwrApMhQqv0phgIkIzxY4lPBYZDxx0YyFb6Qt+Lm9gwV6k59hRihgFluq2HZLFOdtYX
+ J4Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704672821; x=1705277621;
+ d=1e100.net; s=20230601; t=1704672826; x=1705277626;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ydyQcpoWwEBe73HeZcT4G88tDIBP8gJ14l5X8kcFbbM=;
- b=q/wQaqT+EdQk9mW4rbOWc/La5RJZRQ/Nb7f/idaitoyhFx+N+1/qZYsYSQ27IicFQw
- 9uyk3LpLaBU528DuoiypeqiGcL9e9tUwdwcUy9QMXAMlfD2StJSt1JC5qZbHyQzXM994
- Ru4jj9YQXzJVL7D5TBYH+GjxN/woe5yz/LjpdXtfxTSg5mtbocd4PVyPLRBzLEgp3LtA
- 3yAj0yxfpLp85/dsOFqHQ5KYVL2nD4rAA+f248RBaKGX43j3IbW8xrQIdD8BS+E+9yN7
- ogj7hVVI0nw65E4WgI3g+GcVX4LOotiGq1y1mURUyZRT1mVv8jatET7E0c9moe3u47+N
- 2DNA==
-X-Gm-Message-State: AOJu0YwLlnbBLBH6QLZp3+us/Q9OBykTE6Z5tdL1lvYSt4BG3Ql9JB7H
- pH5FbCZQoWgurJn1ggyEJks=
-X-Google-Smtp-Source: AGHT+IHdHUcyp/ly2k/G7eeBGv3Zh5M9TU4WmWE7CKh6o0oAWBQEnBN2t8AA3J06Zjf2QKEq0t3cvA==
-X-Received: by 2002:a17:903:24f:b0:1d4:75c8:6d2d with SMTP id
- j15-20020a170903024f00b001d475c86d2dmr3811976plh.49.1704672821594; 
- Sun, 07 Jan 2024 16:13:41 -0800 (PST)
+ bh=W6qFn/mU863Y6eJbLzzbeKxrgve7EDyIX8A/fR2qJTE=;
+ b=pVz+Mi+mWu+zIv8RrlUCCZWvwcJ0wtmxmUcLWU1YdieJhCKMSHgozGdfiLbxM7dHx+
+ kNoyVl2RucroyFqJzDJLUPzrq6txVWBXxJykh8YmHSTkW9xV+UrxEVNmH++SKZOeymop
+ MURnAkAVchN13apqJzqm2tvcd3i9R7VO/rgm0lp3Ecw05U20OuNXoCkYK40vj3gfkjAN
+ 4X03a7kecURgW0OgYMEE0ykPa/2c2PNMr9DamC0YBlnEoRlkH6pScuwrFKh+72CbaOmW
+ cnSK2JXwedVVWxDYB5qQISkImlyJ042nO0B/hIV4NUq3HndzLG42KVUnyR9EnfE7VEaZ
+ Oocw==
+X-Gm-Message-State: AOJu0YzkWwtLoarpJYvfE9a2j51NGRE9pQra5bXwiHD/WryPK2AD50O/
+ KZAtXT3qCdTuWoX4eyaDR0I=
+X-Google-Smtp-Source: AGHT+IFTs2HaEKoZrqjErG4QfDVra0ymDxIYgAM9gKYQgE0RmDuCm10BDN7er7vfcZk+xrTin2u2Hg==
+X-Received: by 2002:a05:6e02:330e:b0:360:5cd9:a726 with SMTP id
+ bm14-20020a056e02330e00b003605cd9a726mr6698449ilb.22.1704672825946; 
+ Sun, 07 Jan 2024 16:13:45 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d15-20020a170902b70f00b001d4974385d4sm4943434pls.250.2024.01.07.16.13.37
+ d15-20020a170902b70f00b001d4974385d4sm4943434pls.250.2024.01.07.16.13.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 07 Jan 2024 16:13:41 -0800 (PST)
+ Sun, 07 Jan 2024 16:13:45 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org, palmer@dabbelt.com,
@@ -63,16 +63,16 @@ To: zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org, palmer@dabbelt.com,
  liwei1518@gmail.com
 Cc: alistair23@gmail.com,
 	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH 1/3] target/riscv: Assert that the CSR numbers will be correct
-Date: Mon,  8 Jan 2024 10:13:26 +1000
-Message-ID: <20240108001328.280222-2-alistair.francis@wdc.com>
+Subject: [PATCH 2/3] target/riscv: Don't adjust vscause for exceptions
+Date: Mon,  8 Jan 2024 10:13:27 +1000
+Message-ID: <20240108001328.280222-3-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108001328.280222-1-alistair.francis@wdc.com>
 References: <20240108001328.280222-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12f;
+ envelope-from=alistair23@gmail.com; helo=mail-il1-x12f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,38 +96,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CSRs will always be between either CSR_MHPMCOUNTER3 and
-CSR_MHPMCOUNTER31 or CSR_MHPMCOUNTER3H and CSR_MHPMCOUNTER31H.
+We have been incorrectly adjusting both the interrupt and exception
+cause when using the hypervisor extension and trapping to VS-mode. This
+patch changes the conditional to ensure we only adjust the cause for
+interrupts and not exceptions.
 
-So although ctr_index can't be negative, Coverity doesn't know this and
-it isn't obvious to human readers either. Let's add an assert to ensure
-that Coverity knows the values will be within range.
-
-To simplify the code let's also change the RV32 adjustment.
-
-Fixes: Coverity CID 1523910
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1708
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/csr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ target/riscv/cpu_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index fde7ce1a53..336ec7eda7 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -195,8 +195,11 @@ static RISCVException mctr(CPURISCVState *env, int csrno)
- 
-     if ((riscv_cpu_mxl(env) == MXL_RV32) && csrno >= CSR_MCYCLEH) {
-         /* Offset for RV32 mhpmcounternh counters */
--        base_csrno += 0x80;
-+        csrno -= 0x80;
-     }
-+
-+    g_assert(csrno >= CSR_MHPMCOUNTER3 && csrno <= CSR_MHPMCOUNTER31);
-+
-     ctr_index = csrno - base_csrno;
-     if ((BIT(ctr_index) & pmu_avail_ctrs >> 3) == 0) {
-         /* The PMU is not enabled or counter is out of range */
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index e7e23b34f4..886a558a42 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1749,8 +1749,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+                  * See if we need to adjust cause. Yes if its VS mode interrupt
+                  * no if hypervisor has delegated one of hs mode's interrupt
+                  */
+-                if (cause == IRQ_VS_TIMER || cause == IRQ_VS_SOFT ||
+-                    cause == IRQ_VS_EXT) {
++                if (async && (cause == IRQ_VS_TIMER || cause == IRQ_VS_SOFT ||
++                              cause == IRQ_VS_EXT)) {
+                     cause = cause - 1;
+                 }
+                 write_gva = false;
 -- 
 2.43.0
 
