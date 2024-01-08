@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B557826BE7
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 11:54:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0172826BF1
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 11:59:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMnHH-0003Ot-Do; Mon, 08 Jan 2024 05:54:43 -0500
+	id 1rMnLZ-0004MJ-LQ; Mon, 08 Jan 2024 05:59:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rMnHF-0003Od-VX
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 05:54:41 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <shlomopongratz@gmail.com>)
+ id 1rMnLX-0004MB-OF
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 05:59:07 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rMnHE-0005o3-2i
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 05:54:41 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40d858c56cbso22592745e9.2
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 02:54:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shlomopongratz@gmail.com>)
+ id 1rMnLR-0006rX-FJ
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 05:59:07 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-336897b6bd6so1891597f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 02:59:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704711278; x=1705316078; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FjAJl9ozJLHoqNnVuqdi7pxmCZAU0/prJld4KC2Y11Q=;
- b=LVoLwPMrbRpxmx0uATYplM2JZQ3YPZozSk5GZ5a7JULoqe/hKRPHbD1aHaxhClmJov
- fjqrPZM+sTTsnjDC0LLOu/s0kk5Hb6HlttBQZlKAZeLj3oyr3wvOTlPxRIQ28D7FZB6g
- /M9mV8OeYSxehzsyChaFuz/h3/5fVE9POiB7EsDN6FKXcJbR1mL/BFZHauNRpKqOFUfV
- X7vyWxKw+dn5HE88NLfa8ivQ9NIfR6w/JtxJBny9ENP3ii58wCebR7XmfnjLDOKQfdaX
- dKuN3FYaVn/UT8juMNjP3hPRVJrrVwcM4yO2jMwPyNsLR/YCNSO6JE2Dve1ROqN5ggfE
- N7QA==
+ d=gmail.com; s=20230601; t=1704711538; x=1705316338; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=tYYOOvHfhkgck3QqF8kym4SroXyG/FWDJsLrhrUthYw=;
+ b=XtVbFKGk+pf9zn0/WrmsGK3cLxniDoIUwHsD5v/MvHbGJIbe0DpA3202hcubq4hdBH
+ N9eIHhOFAEBL2bHnnoY/xjohpnRG3kN2O+vafCj3YbHFpMGQN6yWZs7OmpJS3RVipP0Y
+ rkKgAKDEbE3EhU68fJdmXEvEkL43IdVN83RmuZwj70yuzxYq2Qj4DKQGwu15z9BtDeHI
+ pHp4K7VRDHApObtlLGdS3HoSIR8qReGOvNmHQqmJvdbCs81vbo5ZT+Tu3O9M1SfGvHRt
+ xq5XGT+e1BpjgT/TXjj/wYePr71QSq8o3AJOwNInevZsfhJb9aIRHpCrAI7uIqHZF8Wr
+ K2+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704711278; x=1705316078;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FjAJl9ozJLHoqNnVuqdi7pxmCZAU0/prJld4KC2Y11Q=;
- b=mbyVVXlR0frCYEbnw8bOmzniHRaWwNblGcETs9tANEyveR+92UE/73t7w14V/OaFh+
- VvJPaPN3dO7O2Rr/6vafxUy7hRDPeL6L0Hu+lCOFdntvi/rAF8KSBvgXGTxZClBftuKw
- PyvqSM6axLzkxLKzROiaRJdovaiHoE4/jDVebDC0xH39YSGALUJV2Py1I/U8Ysvspexw
- QZnecyOOH3Pb+qdL/9jvOdEyq/V0It4q1WTbv0YEWCrnWo67mbf6HY8FaKEgJdVGb+7s
- LEkpb0oyzGGJPoeYNx8PjgHT3kL8RqVPaFEq9lkjJ5xrjmphQ4iK41LxkWsgvzN3i19l
- eD/Q==
-X-Gm-Message-State: AOJu0Yw3oOA36bEjxspTKw2c9QHE9+tknw+25BqlrA7H8NHrjWAjP5qE
- i3lleeNzPLviM0UNrqsznujSEpGqeWJxBQ==
-X-Google-Smtp-Source: AGHT+IEfKu0NVJSUBVLzroGKPhStVcNQenuvFcBMoD+BMqlN0MoTokeS22ozxEYgl+8wvkLUv36eXg==
-X-Received: by 2002:a05:600c:3b99:b0:40e:4179:d060 with SMTP id
- n25-20020a05600c3b9900b0040e4179d060mr1383700wms.65.1704711278137; 
- Mon, 08 Jan 2024 02:54:38 -0800 (PST)
-Received: from [192.168.1.24] ([102.35.208.160])
- by smtp.gmail.com with ESMTPSA id
- c12-20020adfe70c000000b003373fe3d345sm7433674wrm.65.2024.01.08.02.54.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 02:54:37 -0800 (PST)
-Message-ID: <38019096-96a1-464d-824c-951a053c4e21@linaro.org>
-Date: Mon, 8 Jan 2024 14:54:34 +0400
+ d=1e100.net; s=20230601; t=1704711538; x=1705316338;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tYYOOvHfhkgck3QqF8kym4SroXyG/FWDJsLrhrUthYw=;
+ b=rxN6cfd3ElRPf/GQzoH+riiU2BEegfccKNFrHc+FyPMsKMofLZd+wJ9ZgoV1dmnswk
+ p8oYhD7m++xgRHvtP8JaTQHP736UoQG9/wNe1voT8nqLBCGNvHYSYAteiqMz8jW8QNEg
+ 9Ke+ojt6YbN9tfOz5caiWIEYKg1WLRNIt8ucxt7xoIGuEJj/EBg4UuThoovL7Wcq1V04
+ ov0DJH5963dpIJQKI8d5j+XP16Dn50b1CjLYLLzzbw84EjhTWywslE9zfSoX0zAFPc43
+ Dwh1a1DdR76xONMRbvnY8RtxdAl+ReNBjvUVC36IZXixTZHzAmaF2PbdHXfZE3ITHneK
+ XiLw==
+X-Gm-Message-State: AOJu0YwQxCbCxG92HmWwUa8CUKpgD3gr3ewYgYXrWPaSGEXtYVQ0V/ju
+ NLRXSsxV7UfWm10n5U9ft0bzemR2aXVPrA==
+X-Google-Smtp-Source: AGHT+IHdmlAZbvpVWVV8mt9t25my+50JXKk3WrFuKcwQrDo6JVHbgf2PCEGKIIcksQQr5QGd7sUZXw==
+X-Received: by 2002:a05:600c:190b:b0:40d:8ad9:b8f8 with SMTP id
+ j11-20020a05600c190b00b0040d8ad9b8f8mr1550431wmq.10.1704711537794; 
+ Mon, 08 Jan 2024 02:58:57 -0800 (PST)
+Received: from Dev-shlomop.pliops.ent ([213.8.195.28])
+ by smtp.googlemail.com with ESMTPSA id
+ f13-20020a05600c154d00b0040e3635ca65sm10651592wmg.2.2024.01.08.02.58.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Jan 2024 02:58:57 -0800 (PST)
+From: Shlomo Pongratz <shlomopongratz@gmail.com>
+X-Google-Original-From: Shlomo Pongratz <shlomop@pliops.com>
+To: qemu-devel@nongnu.org
+Cc: andrew.sminov@gmail.com, peter.maydell@linaro.com, shlomop@pliops.com,
+ shlomopongratz@gmail.com
+Subject: [PATCH] Hanlde wrap around caused by the fact that perior to version
+ 460A the limit was 32bit quantity. See Linux kernel code in:
+ drivers/pci/controllers/dwc/pcie-designware.c function:
+ __dw_pcie_prog_outbound_atu Now in a 64bit system the range can be above 4G
+ but as long as the limit itself is less then 4G the overflow is avoided
+Date: Mon,  8 Jan 2024 12:57:27 +0200
+Message-Id: <20240108105727.117431-1-shlomop@pliops.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 18/33] linux-user: Fix sub-host-page mmap
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20240102015808.132373-1-richard.henderson@linaro.org>
- <20240102015808.132373-19-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240102015808.132373-19-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x330.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=shlomopongratz@gmail.com; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,46 +94,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/2/24 05:57, Richard Henderson wrote:
-> We cannot skip over the_end1 to the_end, because we fail to
-> record the validity of the guest page with the interval tree.
-> Remove "the_end" and rename "the_end1" to "the_end".
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   linux-user/mmap.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-> index fbaea832c5..48fcdd4a32 100644
-> --- a/linux-user/mmap.c
-> +++ b/linux-user/mmap.c
-> @@ -643,7 +643,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
->                                  target_prot, flags, fd, offset)) {
->                       return -1;
->                   }
-> -                goto the_end1;
-> +                goto the_end;
->               }
->               if (!mmap_frag(real_start, start,
->                              real_start + host_page_size - 1,
-> @@ -690,7 +690,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
->               passthrough_last = real_last;
->           }
->       }
-> - the_end1:
-> + the_end:
->       if (flags & MAP_ANONYMOUS) {
->           page_flags |= PAGE_ANON;
->       }
-> @@ -708,7 +708,6 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
->           }
->       }
->       shm_region_rm_complete(start, last);
-> - the_end:
->       trace_target_mmap_complete(start);
->       if (qemu_loglevel_mask(CPU_LOG_PAGE)) {
->           FILE *f = qemu_log_trylock();
+Signed-off-by: Shlomo Pongratz <shlomop@pliops.com>
+---
+ hw/pci-host/designware.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
+index dd9e389c07..7ce4a6b64d 100644
+--- a/hw/pci-host/designware.c
++++ b/hw/pci-host/designware.c
+@@ -269,11 +269,24 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
+ {
+     const uint64_t target = viewport->target;
+     const uint64_t base   = viewport->base;
+-    const uint64_t size   = (uint64_t)viewport->limit - base + 1;
+     const bool enabled    = viewport->cr[1] & DESIGNWARE_PCIE_ATU_ENABLE;
++    uint64_t tbase, tlimit, size;
+ 
+     MemoryRegion *current, *other;
+ 
++    /*
++     * Hanlde wrap around caused by the fact that perior to version 460A
++     * the limit was 32bit quantity.
++     * See Linux kernel code in:
++     * drivers/pci/controllers/dwc/pcie-designware.c
++     * function: __dw_pcie_prog_outbound_atu
++     * Now in a 64bit system the range can be above 4G but as long as
++     * the limit itself is less then 4G the overflow is avoided
++     */
++    tbase = base & 0xffffffff;
++    tlimit = 0x100000000 + (uint64_t)viewport->limit;
++    size = ((tlimit - tbase) & 0xffffffff) + 1;
++
+     if (viewport->cr[0] == DESIGNWARE_PCIE_ATU_TYPE_MEM) {
+         current = &viewport->mem;
+         other   = &viewport->cfg;
+-- 
+2.25.1
+
 
