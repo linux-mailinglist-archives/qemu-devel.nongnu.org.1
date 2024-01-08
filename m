@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84189827A1E
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:17:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A90827A38
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:33:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMwzE-00070X-FW; Mon, 08 Jan 2024 16:16:44 -0500
+	id 1rMxE1-0003tx-PU; Mon, 08 Jan 2024 16:32:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rMwzC-00070I-HB
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:16:42 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMxDz-0003tJ-91
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:31:59 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rMwzB-0000ow-1n
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:16:42 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6d9b267007fso970628b3a.3
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 13:16:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMxDw-0001g4-Cp
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:31:59 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40e43fb2659so17427315e9.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 13:31:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704748599; x=1705353399; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704749514; x=1705354314; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lbGaZWex2OUKKq6WOfTecnw9l714LReYotC+p6RZMpY=;
- b=NCFUf9Q0uR80enXAkFINZGYJDRyJM2QbhPxecqH14MmJC471kWDR1cBC0YT+aZST01
- oP7ybpBWh15hupyakV+NPb3KfXZMjbQLYRGT3KiewjyO6VfauaadGrGfJvEnMxwY/Q56
- w1HHZs4kjWEYkTetkmmMPffXv8K9jfOrSKAlIf3njl6EnnAyFO2rqH54Wot2g0S20vOP
- X4bT+Kk5774+oRcOND+U5jyklap3zkrWTYnIpvUg4sunjPg2g9OXX8Bg2/i1ASMym9JC
- R64rH740BT1IOUMKQj5pDZudj6iG9uUwNjwXWfLkuFdJyD0UW55ikt/K9O9+lfqfktM5
- hTXg==
+ bh=OEhRa4ky0ClGTJnMw/IFLdTI/yN89QqMN3LqT6kC2ww=;
+ b=uARAAAEJcUH0t7OfCKtfzUh1G03xBLbFcoQ29LQHdxUGwc71MO6HlYbu9dylKu1b6a
+ 9Xtvh0vaJ6bwDJgowpnvpRNCI/NaYLJIyX/7+oEjPvIDLuns+nV0Dijm7bhY1U30N9HL
+ 0I+5a8GCmv+VFFe6u3UlZc6eOqtQa9/eKh/Xjh0rUr2Rp9vLeb4GOmMd8SD4czfKng+c
+ OJjoSFBZd9N7UDHhCColfISX/PR+pnqkXj3OgdT1rwWfjIWc34QpPEYTOyCk+JTXVXMC
+ 7VfdE8UHH2xtV3ugn6fxBBDab8TN2apa0X89ynt8nYPwvUOT+leZkv0Sj2WhyI7kPu/o
+ BRIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704748599; x=1705353399;
+ d=1e100.net; s=20230601; t=1704749514; x=1705354314;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lbGaZWex2OUKKq6WOfTecnw9l714LReYotC+p6RZMpY=;
- b=LecPNgHX2A2sPlz0rH1vOZr9t0PCSkzVP4jYv18WijTzMFEHIzZzTOKQK6o2SY7r1/
- Y++7ueDWzBAKcl74I0MP6oJuOUGBWCoaRA82cOjpeorY0AyRT8K5YcTPzVayAn/7k7kr
- kAonYLDYGL89GpAATpagQP3tDmvrrJYy96w47UurQA48aCwmU3zmH1b2v+GP1l/edIEG
- /E1dMitJRT85UJ+jGbP74fNDJh0O3jOHiN4WFFjFnrbKRF3PVsS2r20xm6LzT7VsSdQn
- ISiDfQOO7RoBGC34HjKMYldGnifh6Jr6uP6x0JWFigSekzhGQNoPxt7U9AC/2ZZGqZOk
- QVWA==
-X-Gm-Message-State: AOJu0YyR0W2Vl2OKwC2w2A0ZzSFFdCwkRR71jtBiRKZ4gveqBOlBpS6o
- WMe4DWHa0KvCoXAVezc4lNHoqT6tpV1m5g==
-X-Google-Smtp-Source: AGHT+IHWXDr0CijZZ6W7pd5AHNC64Bu5BeWmEJdvllecdfQw4nUY/WZhoQmwEYLD3eW3+TLu5GNnNA==
-X-Received: by 2002:a05:6a00:2e09:b0:6d9:b5ba:3ddb with SMTP id
- fc9-20020a056a002e0900b006d9b5ba3ddbmr1907005pfb.11.1704748599522; 
- Mon, 08 Jan 2024 13:16:39 -0800 (PST)
-Received: from [192.168.1.66] ([103.194.3.133])
+ bh=OEhRa4ky0ClGTJnMw/IFLdTI/yN89QqMN3LqT6kC2ww=;
+ b=Gpn8AdwEmO1nXq8O94AGDZc6oQkMKDhJZ8bbqEO6mIi3qMptPCo8M1gR2/RqHhQZg8
+ 0p5IrRisstVAH8w4UpjB9Ux/TzzlXPCkjg7HoolSUt8hoiGjPNzdnNJO5XS6UaIcMc4S
+ TgUUBnEuMpY6zFcsCjl4STNwxCPy5Rz0c2jrHpfV9WVuyDt7h5Eh9Oq8G6KGmNzTgLJj
+ 7U9ngqQ7R9RQ+uCe/WQdlsnTsLILoGShqtyGYBRoz/MfKGztOO+weD4ueF6OkW/IjLUf
+ +sL4K0zfi/dBYqETfBet4UO9BUi2tQmw5YA4FUCTjs35hK/g9MSgXyxos0+rphY1SUhV
+ a43Q==
+X-Gm-Message-State: AOJu0Yz3/Um9rgkbZ35/IroRFh/vuGFMKpjSL+7/+v/3myDarYGUcj7v
+ Mku01oTGtmEOZgaHux+pXa/bomgeMzbkjw==
+X-Google-Smtp-Source: AGHT+IHx/AqzULVHVo3eqFItecBDqN3mQcleK3fnzVHIlfacYCNbdNczHKoWgrHaQW2fBeaWxNnsnw==
+X-Received: by 2002:a05:600c:3551:b0:40d:8944:657b with SMTP id
+ i17-20020a05600c355100b0040d8944657bmr2227186wmq.26.1704749513978; 
+ Mon, 08 Jan 2024 13:31:53 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.194.16])
  by smtp.gmail.com with ESMTPSA id
- p30-20020a056a0026de00b006d99cbe22f5sm300466pfw.217.2024.01.08.13.16.36
+ k30-20020a05600c1c9e00b0040d887fda00sm1094810wms.26.2024.01.08.13.31.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 13:16:39 -0800 (PST)
-Message-ID: <de87c8e2-7b16-42d0-b127-8b2961ce2f12@linaro.org>
-Date: Tue, 9 Jan 2024 08:16:31 +1100
+ Mon, 08 Jan 2024 13:31:53 -0800 (PST)
+Message-ID: <d4fcdfd9-8ead-4adb-8a88-0f5999fa9659@linaro.org>
+Date: Mon, 8 Jan 2024 22:31:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.0] accel/tcg: Remove tb_invalidate_phys_page() from
- system emulation
+Subject: Re: [PATCH v6 3/3] tests/qtest: Add STM32L4x5 EXTI QTest testcase
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Max Filippov <jcmvbkbc@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20231130205600.35727-1-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231130205600.35727-1-philmd@linaro.org>
+To: =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
+ qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
+Cc: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>,
+ Laurent Vivier <lvivier@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+References: <20240108181104.46880-1-ines.varhol@telecom-paris.fr>
+ <20240108181104.46880-4-ines.varhol@telecom-paris.fr>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240108181104.46880-4-ines.varhol@telecom-paris.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,21 +97,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/1/23 07:56, Philippe Mathieu-Daudé wrote:
-> Since previous commit, tb_invalidate_phys_page() is not used
-> anymore in system emulation. Make it static for user emulation
-> and remove its public declaration in "exec/translate-all.h".
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hi Inès,
+
+On 8/1/24 19:03, Inès Varhol wrote:
+> Acked-by: Alistair Francis <alistair.francis@wdc.com>
+> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
 > ---
-> Based-on: <20231130203241.31099-1-philmd@linaro.org>
-> ---
->   include/exec/translate-all.h |  1 -
->   accel/tcg/tb-maint.c         | 24 +-----------------------
->   2 files changed, 1 insertion(+), 24 deletions(-)
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>   tests/qtest/meson.build           |   5 +
+>   tests/qtest/stm32l4x5_exti-test.c | 590 ++++++++++++++++++++++++++++++
+>   2 files changed, 595 insertions(+)
+>   create mode 100644 tests/qtest/stm32l4x5_exti-test.c
 
 
-r~
+> +static void test_reg_write_read(void)
+> +{
+> +    /* Test that non-reserved bits in xMR and xTSR can be set and cleared */
+> +
+> +    exti_writel(EXTI_IMR1, 0xFFFFFFFF);
+> +    uint32_t imr1 = exti_readl(EXTI_IMR1);
+> +    g_assert_cmpuint(imr1, ==, 0xFFFFFFFF);
+> +    exti_writel(EXTI_IMR1, 0x00000000);
+> +    imr1 = exti_readl(EXTI_IMR1);
+> +    g_assert_cmpuint(imr1, ==, 0x00000000);
+> +
+> +    exti_writel(EXTI_EMR1, 0xFFFFFFFF);
+> +    uint32_t emr1 = exti_readl(EXTI_EMR1);
+
+Per QEMU Coding Style [*]:
+
+   Mixed declarations (interleaving statements and declarations within
+   blocks) are generally not allowed; declarations should be at the
+   beginning of blocks.
+
+Up to the maintainers to accept as is or request a change. Personally
+this looks good enough, so:
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+[*] https://qemu-project.gitlab.io/qemu/devel/style.html#declarations
+
+> +    g_assert_cmpuint(emr1, ==, 0xFFFFFFFF);
+> +    exti_writel(EXTI_EMR1, 0x00000000);
+> +    emr1 = exti_readl(EXTI_EMR1);
+> +    g_assert_cmpuint(emr1, ==, 0x00000000);
+[...]
 
