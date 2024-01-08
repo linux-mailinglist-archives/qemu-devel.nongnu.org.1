@@ -2,88 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05BAA82725E
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:12:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0751882725C
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:12:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMrHL-00013Z-Sb; Mon, 08 Jan 2024 10:11:03 -0500
+	id 1rMrHN-000193-Ay; Mon, 08 Jan 2024 10:11:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.kanda@oracle.com>)
- id 1rMrHB-00010N-Ig
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:10:53 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.kanda@oracle.com>)
- id 1rMrH6-0007kI-IG
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:10:51 -0500
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 408F5kKH025336; Mon, 8 Jan 2024 15:10:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2023-11-20;
- bh=T4bDj8pr4zvAa8IoXSojRHKGw9qR10IC4Am5NtP6Ozg=;
- b=So4rc+QUTalbvWFNkobGqmjt0qnHjs+NEB53kqa9caj2yVpb6N8JHt3mU5p+DgCQpK7S
- VKk7oKnAP8Yqnr/qGuZX3UJxrYLgdI0a3XNFQIi+Xu1xDXt/fMj4DqkA6OHU9xGMAG49
- 3jsfA3jNl81IBFx6IMgqWeYggdj3GsuU0O8IZXr67tqI8ET/5kTQ2CRrPKRg9Nfi+XU4
- dMHEcvLsFx6kUjY0SayC4HffS23BLBIQJExIoHjTb5MD4bxtjlIvvOx/pUOLxDx3fADG
- 73q4Gl+9KpQqHnRmubc2qTSS+hfe3ahsh8Nd9AnWC7EJeEtGaP7Z8nXHvmro4fD7sJED 9A== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vgkcx80b2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 08 Jan 2024 15:10:38 +0000
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 408EhUOi035136; Mon, 8 Jan 2024 15:10:36 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3vfuu316g1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 08 Jan 2024 15:10:36 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 408FAX6O024665;
- Mon, 8 Jan 2024 15:10:36 GMT
-Received: from linux-3.us.oracle.com (dhcp-10-154-155-225.vpn.oracle.com
- [10.154.155.225])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3vfuu316bm-3; Mon, 08 Jan 2024 15:10:36 +0000
-From: Mark Kanda <mark.kanda@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: david@redhat.com, pbonzini@redhat.com, mark.kanda@oracle.com
-Subject: [PATCH v1 2/2] oslib-posix: initialize backend memory objects in
- parallel
-Date: Mon,  8 Jan 2024 09:10:41 -0600
-Message-Id: <20240108151041.529716-3-mark.kanda@oracle.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240108151041.529716-1-mark.kanda@oracle.com>
-References: <20240108151041.529716-1-mark.kanda@oracle.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rMrHG-00016y-W1
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:11:01 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rMrHE-0007pg-7L
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:10:58 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-553ba2f0c8fso2194370a12.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 07:10:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704726654; x=1705331454; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=zQ6DmBBGatx0tuuWQvekhU2tB298rQTKIGfmq3QuzW0=;
+ b=MWXygUOfTduQVMuPwZUooliypGA7dQ19xwOFnuc+SsZLlnJ3ZMxwkCYmnH0sgg5P6g
+ qMQ3IFh0vzT4DYaEL4iMNwkJ7BPwy2NMMpcsMNA82lbncgq3QEs6cAPK+vVXk1uotbYJ
+ vo5LqgwtwF9dAAd1Clz2oWCwGK6CeF/NZfHPtgLFteVCJ+55i3+fy22my1/U1Nk81IjF
+ cyoJOOihxbt2e6GCO7ZvFofxqPJf0JGDEVVbdFA08+H2QejgEWgu4cjAWWH1dqGg0fl2
+ v7pdhTAt0h92/IM+McYpRI6e2vbxeEkWPBr8w4o6qKoETD0ZhcoB/KM9hM/Y4IFzjimF
+ lFvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704726654; x=1705331454;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zQ6DmBBGatx0tuuWQvekhU2tB298rQTKIGfmq3QuzW0=;
+ b=fnapONZwpNzh1IkHekiUxBwl8UxwrLCshm9k6fzLqV+WsXhfxQEW6pA9jxND3iJNvl
+ bfL2cMn3iSueK6GKruHPnJit7e5f52X8yV1bdDTwsmrehxQOtXZEuI7WZRplJ7loQrBm
+ zzVFj2pzIjWWdRMEZi+rflWFhPtSHDdfU3R9X4Xwh1D4c3lcp9f6VBkOcuYOQsLQhcKk
+ eS09Z0xv7iP6RNdPY2baO4AXd+NeruUeJkGMDERp2DCAsaE1pdhEfWFxVoEW0k5LtuMO
+ 7ecD+T0CdJDsqFDzv3mHtdYsl9lRZw4sLqxGkUjHRh1WFKJ2ORY7JLZ+gKUDYyysxWNU
+ unbg==
+X-Gm-Message-State: AOJu0YwsekMcw3IrBslsHjl3V2JWDuX8PCbciUj01crPpXXz381UtV+T
+ 4tbMu4jo9E1u0dJuQ+k2Ho9A8ru7drGEedUN4o0x8wJCSlacWQ==
+X-Google-Smtp-Source: AGHT+IHZtxuZojHlQtCeE6YuX/bidM40uPr/G28jBQi11DAiuW1mmfgPN94fKnU/Q6AHYvWUZ+Gkzi6C5VAcNZUENLo=
+X-Received: by 2002:aa7:cd13:0:b0:554:dda2:dd63 with SMTP id
+ b19-20020aa7cd13000000b00554dda2dd63mr1310190edw.157.1704726654599; Mon, 08
+ Jan 2024 07:10:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-08_06,2024-01-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- phishscore=0 bulkscore=0
- mlxscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401080130
-X-Proofpoint-GUID: wM_di7bos4co6voKuOppZLGqxbGARK75
-X-Proofpoint-ORIG-GUID: wM_di7bos4co6voKuOppZLGqxbGARK75
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=mark.kanda@oracle.com; helo=mx0a-00069f02.pphosted.com
+References: <CAFEAcA93kpreNOOKz6-qbVE_9Kg6tgZNaMowNLwc+G_47MXLHg@mail.gmail.com>
+ <9f0615dc-c162-4ac6-9ead-7f9d28e5d318@redhat.com>
+ <0fecbb98-9019-4a3a-a764-38e848b5b238@gmail.com>
+In-Reply-To: <0fecbb98-9019-4a3a-a764-38e848b5b238@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 8 Jan 2024 15:10:43 +0000
+Message-ID: <CAFEAcA9OSCVmUW=Zw8EEkU-57QPKOdLcBn2nx5YbRY9K3XNtEw@mail.gmail.com>
+Subject: Re: CI "pages" job failing with incomprehensible error message from
+ htags
+To: Bui Quang Minh <minhquangbui99@gmail.com>
+Cc: Thomas Huth <thuth@redhat.com>, QEMU Developers <qemu-devel@nongnu.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,152 +92,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU initializes preallocated backend memory as the objects are parsed from
-the command line. This is not optimal in some cases (e.g. memory spanning
-multiple numa nodes) because the memory objects are initialized in series.
+On Mon, 8 Jan 2024 at 14:41, Bui Quang Minh <minhquangbui99@gmail.com> wrote:
+>
+> On 1/8/24 18:03, Thomas Huth wrote:
+> > On 05/01/2024 20.11, Peter Maydell wrote:
+> >> https://gitlab.com/qemu-project/qemu/-/jobs/5871592479
+> >>
+> >> failed with
+> >>
+> >> $ htags -anT --tree-view=filetree -m qemu_init -t "Welcome to the QEMU
+> >> sourcecode"
+> >> htags: Negative exec line limit = -371
+> >>
+> >> Does anybody have any idea what this is about ?
+> >
+> > In case you haven't spotted it yet:
+> >
+> > https://www.mail-archive.com/qemu-devel@nongnu.org/msg1014394.html
+> >
+> > Is anybody already already creating a patch to clear CI_COMMIT_MESSAGE
+> > when invoking htags ?
+>
+> That solution works fine on my CI, however, it is stated in Gitlab
+> documentation that overriding predefined variables is not recommended.
+>
+>         https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+>         Avoid overriding predefined variables, as it can cause the pipeline to
+> behave unexpectedly.
 
-Allow the initialization to occur in parallel. The performance increase is
-significant and scales with the number of objects. On a 2 socket Skylake VM
-with 128GB and 2 init threads per socket (256GB total), the memory init time
-decreases from ~27 seconds to ~14 seconds.
+https://docs.gitlab.com/ee/ci/variables/index.html#override-a-defined-cicd-variable
+says that what it means by "overriding" a pipeline variable is
+setting it *before* the pipeline is run, so that it changes
+the behaviour of the pipeline.
 
-Signed-off-by: Mark Kanda <mark.kanda@oracle.com>
----
- include/qemu/osdep.h |  6 ++++++
- system/vl.c          |  2 ++
- util/oslib-posix.c   | 46 +++++++++++++++++++++++++++++++++-----------
- util/oslib-win32.c   |  5 +++++
- 4 files changed, 48 insertions(+), 11 deletions(-)
+What we're proposing to do here is instead that within the
+pipeline we just effectively hide the environment variable
+from the htags process (which will not do anything complex
+like invoke other parts of the gitlab pipelin machinery).
+So it isn't what they mean by overriding things and should
+be fine.
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index d30ba73eda..57185e6309 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -682,6 +682,12 @@ typedef struct ThreadContext ThreadContext;
- void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
-                        ThreadContext *tc, Error **errp);
- 
-+/**
-+ * Wait for any outstanding memory prealloc initialization
-+ * to complete.
-+ */
-+void wait_mem_prealloc_init(void);
-+
- /**
-  * qemu_get_pid_name:
-  * @pid: pid of a process
-diff --git a/system/vl.c b/system/vl.c
-index 6b87bfa32c..9e04acbb2c 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2010,6 +2010,8 @@ static void qemu_create_late_backends(void)
- 
-     object_option_foreach_add(object_create_late);
- 
-+    wait_mem_prealloc_init();
-+
-     if (tpm_init() < 0) {
-         exit(1);
-     }
-diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index 293297ac6c..667d2d960c 100644
---- a/util/oslib-posix.c
-+++ b/util/oslib-posix.c
-@@ -91,6 +91,7 @@ static QemuMutex sigbus_mutex;
- 
- static QemuMutex page_mutex;
- static QemuCond page_cond;
-+static bool prealloc_init;
- 
- int qemu_get_thread_id(void)
- {
-@@ -487,6 +488,12 @@ static int wait_mem_prealloc(void)
- {
-     int i, ret = 0;
-     MemsetContext *context, *next_context;
-+
-+    /* Return if memory prealloc isn't enabled or active */
-+    if (QLIST_EMPTY(&memset_contexts) || !prealloc_init) {
-+        return 0;
-+    }
-+
-     qemu_mutex_lock(&page_mutex);
-     QLIST_FOREACH(context, &memset_contexts, next) {
-         context->all_threads_created = true;
-@@ -553,21 +560,23 @@ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
-         }
- 
-         qemu_mutex_lock(&sigbus_mutex);
--        memset(&act, 0, sizeof(act));
-+        if (!sigbus_oldact.sa_handler) {
-+            memset(&act, 0, sizeof(act));
- #ifdef CONFIG_LINUX
--        act.sa_sigaction = &sigbus_handler;
--        act.sa_flags = SA_SIGINFO;
-+            act.sa_sigaction = &sigbus_handler;
-+            act.sa_flags = SA_SIGINFO;
- #else /* CONFIG_LINUX */
--        act.sa_handler = &sigbus_handler;
--        act.sa_flags = 0;
-+            act.sa_handler = &sigbus_handler;
-+            act.sa_flags = 0;
- #endif /* CONFIG_LINUX */
- 
--        ret = sigaction(SIGBUS, &act, &sigbus_oldact);
--        if (ret) {
--            qemu_mutex_unlock(&sigbus_mutex);
--            error_setg_errno(errp, errno,
--                "qemu_prealloc_mem: failed to install signal handler");
--            return;
-+            ret = sigaction(SIGBUS, &act, &sigbus_oldact);
-+            if (ret) {
-+                qemu_mutex_unlock(&sigbus_mutex);
-+                error_setg_errno(errp, errno,
-+                    "qemu_prealloc_mem: failed to install signal handler");
-+                return;
-+            }
-         }
-     }
- 
-@@ -589,6 +598,21 @@ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
-     }
- }
- 
-+void wait_mem_prealloc_init(void)
-+{
-+    /*
-+     * Set prealloc_init true to make wait_mem_prealloc() wait for the
-+     * initialization to complete.
-+     */
-+    prealloc_init = true;
-+
-+    /* Wait for any outstanding init to complete */
-+    if (wait_mem_prealloc()) {
-+        perror("wait_mem_prealloc_init: failed waiting for memory prealloc");
-+        exit(1);
-+    }
-+}
-+
- char *qemu_get_pid_name(pid_t pid)
- {
-     char *name = NULL;
-diff --git a/util/oslib-win32.c b/util/oslib-win32.c
-index 55b0189dc3..72e050bee1 100644
---- a/util/oslib-win32.c
-+++ b/util/oslib-win32.c
-@@ -276,6 +276,11 @@ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
-     }
- }
- 
-+void wait_mem_prealloc_init(void)
-+{
-+    /* not supported */
-+}
-+
- char *qemu_get_pid_name(pid_t pid)
- {
-     /* XXX Implement me */
--- 
-2.39.3
-
+thanks
+-- PMM
 
