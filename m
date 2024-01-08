@@ -2,82 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B77282729C
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:14:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 545568272D8
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:20:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMrKN-0004Hl-Rs; Mon, 08 Jan 2024 10:14:11 -0500
+	id 1rMrQ8-0005s4-Oz; Mon, 08 Jan 2024 10:20:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rMrKL-0004Ga-42
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:14:09 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMrPv-0005qw-IE
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:19:56 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rMrKH-0001d8-GW
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:14:08 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-33678156e27so1931683f8f.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 07:14:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMrPo-0004wr-P2
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:19:52 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-336990fb8fbso1864368f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 07:19:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704726844; x=1705331644; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CCcg7ysSyOpy/NHtcycGrXvCgSegX/kK/v3WtacdHyY=;
- b=j0FXqPgotKUB+gP1zd3Wgzkh8Lp4s5pV5kV4A+WCacIdHiPPYUf9J1X7qgrwMADSlN
- o/xoTppEi+QbFNd/wpJPXUbXHJY39aL3/6G8a2K2rZZqJp7S/Pc2rCjCi+Udg9bix/qC
- kmcOS1rd5QKutNYK/kWLu35Ba5oCHXVO3QRya8taDXQDMt0bWPfuMrD1ZeptNVKrR4nB
- 9LvJqfB+/dRlB3amHriR9NMUyfUTwsznEtjSF+ctPA5w+KVJZG7p/OGU5tzYNc41iltC
- RNf8g7yNNQacoj8LzVsqzogobp1ap4M8SLl0lFG5pa0eCRvc/TmJyWXL1kaByiF8oPJ3
- ZPCw==
+ d=linaro.org; s=google; t=1704727178; x=1705331978; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=K+osPsFOJQ0Mo4THPwnyg9SyaD9dN1OwJU4TLjAUKa0=;
+ b=Inl02+or0gSuJ/nqbg4pDalEUKBaIIG/esgk53qdEqL8XEynycINQn+6l/cZI9FnxK
+ CmGf7DqfbjnztIM2KqmKQAtdPXe8jRnO5x3Y0H7NrQcfgsPaOU8tcQ+5XXknHHLka3fb
+ hFHZ9Wp7rLqxcGwIR2Uy/9vMP0DE/3cQGN+qZ5KEskIVPZrYvz/OUcNKwMN6m7SE1ajE
+ lMXAon/Q1yFPnt37NzbuHOdsgBlVu2y9la9KH1s/VD7Y3D9zEc8Od9uGr89SRFHtRREu
+ cYEtC9x4SH2D9LhiYeuXfeH6DchEsPPQCfEacIV0wmAuydopC8FdeCqwXFX2Piw1U7Hl
+ Hucw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704726844; x=1705331644;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CCcg7ysSyOpy/NHtcycGrXvCgSegX/kK/v3WtacdHyY=;
- b=gkmyn2LF/9V/S6n4Fyw+TPY6zMKH/7TIzHQy4nOMwfJETnF5NNIWKq/gKpJ5Q/AtOt
- UPR3LASNGKTyss9uCtr9VI9On5mW6bPryZYxlNJ2SMPwM1g+ZKmRKnhsv7JAoc3eDMyN
- bqlK8zk8K+zM6sd0POyytu4/sZeIEb1vjdYUKeDQvSR/FVSUGKJhc5Z9e2kr858LQoev
- jDQJBDlpmjQiaixo2uCvRDvaS2AirANkONXaP7Jn82piQZfHAM6uqOQBCIVGGVgKU6jG
- mBBq384+d6YELl4TCHXwybNiCBVd+j258HKQNKae+HXUkd4ksEw+E3OFyJc5WPgSPP+L
- S7LQ==
-X-Gm-Message-State: AOJu0YxSaoI0ePWoDTCwq84C7TBeHZAYkezvDYL6e7ytqDW2FhB81mZ1
- RLIsfvpvWbyxgb87VFMYwo3epGDIpUNP6w==
-X-Google-Smtp-Source: AGHT+IHO7TN/2B0xs17i1KQU9cO+wTzTrLElycVCv7GjDG0S/COOrW6Id/vyk+51O3n0m/xpbYZzMQ==
-X-Received: by 2002:a5d:4d01:0:b0:336:7e06:390e with SMTP id
- z1-20020a5d4d01000000b003367e06390emr2009413wrt.134.1704726843906; 
- Mon, 08 Jan 2024 07:14:03 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- o5-20020adfca05000000b00336ee9edbb3sm8028968wrh.94.2024.01.08.07.13.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Jan 2024 07:14:01 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id F2BEA5F951;
- Mon,  8 Jan 2024 15:13:53 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 13/13] tests/avocado: remove skips from replay_kernel
-Date: Mon,  8 Jan 2024 15:13:52 +0000
-Message-Id: <20240108151352.2199097-14-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240108151352.2199097-1-alex.bennee@linaro.org>
-References: <20240108151352.2199097-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1704727178; x=1705331978;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=K+osPsFOJQ0Mo4THPwnyg9SyaD9dN1OwJU4TLjAUKa0=;
+ b=ZpOGW2LllT1SQ7n9pYHhVi/Hp1younevEVjSxgjqjw2thwDDREYrT9O9A4u6M3gDVD
+ Q9aLBHGJki41p4W/nPAyr68x+QRVt3jq8wQkOh4DjSL6XMXiNexv9JIV+0AMOtgtbwr/
+ l/+gOLSs3bsVthBnuO2PFO6EakcIl8sKXoRN/R7RNlitPIzOlGv+tI1nnVEVN1cavOPm
+ 5k0F/freX7ZrsA2W90EBE6HTtmumhjY1yao8YFMq2sYpB08EoWsZZHDg2739Waf9KoWn
+ g/zGz95p65J63Iw00OraFavJEx0qTyyQpYdkxfobHXaPSDHZc4zTUSXmWXhuGB5KcCx+
+ V/KA==
+X-Gm-Message-State: AOJu0YzadOH6ya64CH2K/WU/e5lRqU6UKhmZAKWyEd0G1qBCtmS6ZC0N
+ SK9LZWNJwwOtSxAYxmk7eXScWuJ36A2RPxs5pEOWoZ536bc=
+X-Google-Smtp-Source: AGHT+IF/DPPljqoPLszV59aAo7I2+MpZ+dT1qxjyA6kedgXHVj7IJ378A2xn086QaxmXzaG3dOZENg==
+X-Received: by 2002:adf:fe8c:0:b0:337:689e:6616 with SMTP id
+ l12-20020adffe8c000000b00337689e6616mr1229999wrr.10.1704727178327; 
+ Mon, 08 Jan 2024 07:19:38 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.175.62])
+ by smtp.gmail.com with ESMTPSA id
+ d16-20020a5d4f90000000b003366e974cacsm8075538wru.73.2024.01.08.07.19.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 08 Jan 2024 07:19:37 -0800 (PST)
+Message-ID: <68443785-d97d-412b-8c65-36865dd38803@linaro.org>
+Date: Mon, 8 Jan 2024 16:19:35 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 08/10] hw/net: GMAC Rx Implementation
+Content-Language: en-US
+To: Nabih Estefan <nabihestefan@google.com>, peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com,
+ wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com,
+ kwliu@nuvoton.com, tomer.maimon@nuvoton.com, Hila.Miranda-Kuzi@nuvoton.com
+References: <20231219213255.604535-1-nabihestefan@google.com>
+ <20231219213255.604535-9-nabihestefan@google.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231219213255.604535-9-nabihestefan@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,80 +94,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With the latest fixes for #2010 and #2013 these tests look pretty
-stable now. Of course the only way to be really sure is to run it in
-the CI infrastructure and see what breaks.
+Hi Nabih,
 
-Acked-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231211091346.14616-14-alex.bennee@linaro.org>
+On 19/12/23 22:32, Nabih Estefan wrote:
+> From: Nabih Estefan Diaz <nabihestefan@google.com>
+> 
+> - Implementation of Receive function for packets
+> - Implementation for reading and writing from and to descriptors in
+>    memory for Rx
+> 
+> When RX starts, we need to flush the queued packets so that they
+> can be received by the GMAC device. Without this it won't work
+> with TAP NIC device.
+> 
+> When RX descriptor list is full, it returns a DMA_STATUS for software to handle it. But there's no way to indicate the software ha handled all RX descriptors and the whole pipeline stalls.
+> 
+> We do something similar to NPCM7XX EMC to handle this case.
+> 
+> 1. Return packet size when RX descriptor is full, effectively dropping these packets in such a case.
+> 2. When software clears RX descriptor full bit, continue receiving further packets by flushing QEMU packet queue.
+> 
+> Signed-off-by: Hao Wu <wuhaotsh@google.com>
+> Signed-off-by: Nabih Estefan <nabihestefan@google.com>
+> Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
+> ---
+>   hw/net/npcm_gmac.c | 330 ++++++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 328 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/net/npcm_gmac.c b/hw/net/npcm_gmac.c
+> index 44c4ffaff4..fe7b0421ef 100644
+> --- a/hw/net/npcm_gmac.c
+> +++ b/hw/net/npcm_gmac.c
+> @@ -23,7 +23,11 @@
+>   #include "hw/registerfields.h"
+>   #include "hw/net/mii.h"
+>   #include "hw/net/npcm_gmac.h"
+> +#include "linux/if_ether.h"
 
-diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
-index 1eaa36444cb..6fdcbd6ac3d 100644
---- a/tests/avocado/replay_kernel.py
-+++ b/tests/avocado/replay_kernel.py
-@@ -98,13 +98,10 @@ def test_i386_pc(self):
- 
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
- 
--    # See https://gitlab.com/qemu-project/qemu/-/issues/2010
--    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test sometimes gets stuck')
-     def test_x86_64_pc(self):
-         """
-         :avocado: tags=arch:x86_64
-         :avocado: tags=machine:pc
--        :avocado: tags=flaky
-         """
-         kernel_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
-                       '/linux/releases/29/Everything/x86_64/os/images/pxeboot'
-@@ -135,8 +132,6 @@ def test_mips_malta(self):
- 
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
- 
--    # See https://gitlab.com/qemu-project/qemu/-/issues/2013
--    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
-     def test_mips64el_malta(self):
-         """
-         This test requires the ar tool to extract "data.tar.gz" from
-@@ -152,7 +147,6 @@ def test_mips64el_malta(self):
- 
-         :avocado: tags=arch:mips64el
-         :avocado: tags=machine:malta
--        :avocado: tags=flaky
-         """
-         deb_url = ('http://snapshot.debian.org/archive/debian/'
-                    '20130217T032700Z/pool/main/l/linux-2.6/'
-@@ -200,13 +194,10 @@ def test_arm_virt(self):
- 
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=1)
- 
--    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
--
-     def test_arm_cubieboard_initrd(self):
-         """
-         :avocado: tags=arch:arm
-         :avocado: tags=machine:cubieboard
--        :avocado: tags=flaky
-         """
-         deb_url = ('https://apt.armbian.com/pool/main/l/'
-                    'linux-5.10.16-sunxi/linux-image-current-sunxi_21.02.2_armhf.deb')
-@@ -354,7 +345,6 @@ def test_m68k_mcf5208evb(self):
-         file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
-         self.do_test_advcal_2018(file_path, 'sanity-clause.elf')
- 
--    @skip("Test currently broken") # Console stuck as of 5.2-rc1
-     def test_microblaze_s3adsp1800(self):
-         """
-         :avocado: tags=arch:microblaze
-@@ -389,7 +379,6 @@ def test_or1k_sim(self):
-         file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
-         self.do_test_advcal_2018(file_path, 'vmlinux')
- 
--    @skip("nios2 emulation is buggy under record/replay")
-     def test_nios2_10m50(self):
-         """
-         :avocado: tags=arch:nios2
--- 
-2.39.2
+This doesn't build on macOS:
+
+[1116/1645] Compiling C object libcommon.fa.p/hw_net_npcm_gmac.c.o
+../../hw/net/npcm_gmac.c:26:10: fatal error: 'linux/if_ether.h' file not 
+found
+#include "linux/if_ether.h"
+          ^~~~~~~~~~~~~~~~~~
+1 error generated.
+FAILED: libcommon.fa.p/hw_net_npcm_gmac.c.o
+ninja: build stopped: subcommand failed.
+
+$ uname -o
+Darwin
+
+>   #include "migration/vmstate.h"
+> +#include "net/checksum.h"
+> +#include "net/net.h"
+> +#include "qemu/cutils.h"
+>   #include "qemu/log.h"
+>   #include "qemu/units.h"
+>   #include "sysemu/dma.h"
 
 
