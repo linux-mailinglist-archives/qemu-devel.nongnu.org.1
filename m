@@ -2,70 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2668268D3
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 08:45:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC46826921
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 09:14:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMkIe-0007c7-Dx; Mon, 08 Jan 2024 02:43:57 -0500
+	id 1rMklD-0007qJ-Rv; Mon, 08 Jan 2024 03:13:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rMkIO-0007bn-HK
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:43:41 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rMklB-0007q1-Ip
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 03:13:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rMkIM-0001f5-MU
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:43:40 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rMkl9-0006ZU-Q9
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 03:13:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704699817;
+ s=mimecast20190719; t=1704701601;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=bf0AYtKzIdP1WL09gQVf/zrTdEJ0JDyOaDrCfk3tjew=;
- b=bFkkrLYN3ueUNEl1sb0f0rs3QjGfhgO8mYze8eeEywxOEjyCuRqUeBYsClimCr+eYFIAzg
- cdNsaM1DQjfIN/YiYH+RECGNE+U/V0LETU2quEslUDyc79a57vY4+kVqpKwFx8/wd/ukoL
- R+GozHIPV3hShSFyQUdxOBFZDcacC6g=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/prONOFeZVYJ0ECtx9ozBEFdOoBoUxrJMXAv8eSHchs=;
+ b=iQy1bTcVYjR9CAiDVbFU/xL1Aob52IzQSHxN9FliH+Jt1GtwcmEoFp5XpBYvz0SzJWfJH7
+ ReuBBDuKrgT/gyFwXF0aBYZAqDwJijuTczjcXrkHjvsfns+7O9ESzZPldJSKO3dGjE8YcL
+ 7oBPJU0DeBn6CnFEB9ZSmMFR9SlH5x0=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-597-JvLuypwOPE-h_5iVww5JUA-1; Mon, 08 Jan 2024 02:43:33 -0500
-X-MC-Unique: JvLuypwOPE-h_5iVww5JUA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4CF13845DC2;
- Mon,  8 Jan 2024 07:43:33 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2884A2166B33;
- Mon,  8 Jan 2024 07:43:33 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2480C21E6682; Mon,  8 Jan 2024 08:43:32 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org,  Juan Quintela <quintela@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Fabiano
- Rosas <farosas@suse.de>,  Leonardo Bras <leobras@redhat.com>,  Eric Blake
- <eblake@redhat.com>
-Subject: Re: [PATCH V6 03/14] cpus: stop vm in suspended runstate
-In-Reply-To: <bcc1622d-fdc9-4faa-8f7e-6e76c8a6ec0e@oracle.com> (Steven
- Sistare's message of "Wed, 3 Jan 2024 09:47:20 -0500")
-References: <1701380247-340457-1-git-send-email-steven.sistare@oracle.com>
- <1701380247-340457-4-git-send-email-steven.sistare@oracle.com>
- <87bkaiig2s.fsf@pond.sub.org>
- <9d613137-24aa-4323-aee1-0d38b91339c5@oracle.com>
- <87sf3ta31i.fsf@pond.sub.org>
- <bcc1622d-fdc9-4faa-8f7e-6e76c8a6ec0e@oracle.com>
-Date: Mon, 08 Jan 2024 08:43:32 +0100
-Message-ID: <87y1d0w9qz.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ us-mta-43--up0gFN1Oj-wf6ST6oRRoA-1; Mon, 08 Jan 2024 03:13:19 -0500
+X-MC-Unique: -up0gFN1Oj-wf6ST6oRRoA-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-28bd331cb57so754625a91.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 00:13:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704701599; x=1705306399;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/prONOFeZVYJ0ECtx9ozBEFdOoBoUxrJMXAv8eSHchs=;
+ b=mdrAjWrDEDShCdK1fb7MIcXG9zoQMT10PNk+C44xg2shq5vuiuq3OIeIyY25ok/87+
+ MRanhBK4J5B/5hQ44tAxXqwO7lo71LyKbvyBtiApCkMlDQ8ogY6O5lkowOvzsQ4MnHzN
+ DEEvF4MPxbn3Ybzl9j2iNTUrsqaLy30Gn7wTjvlVNr+eAaUXQAXxLdPlpEnHit8VIYHa
+ Pd2vCt0+3F9ZNAzoHCKmAMr9doC47yVA0l+O58mD+jwXatbhfbLNGTJ7+PF1VVXpnbeJ
+ gEMnWTZ4VMygEIHz3mtNIRUEq92o+IdWZimpQM9h7DKmVylvNEoz1OQSDnEEweLTHLux
+ 1IDA==
+X-Gm-Message-State: AOJu0Yyb7xbx9hKUq5dhYZkqv/W+LFcXpNIe4oO+tmdjPhOEzkaTUj5b
+ 5Ylwb2PY3z7yq0TvfKtpbcF3sKcBF99hCWE6ARXegbAJQdO88/+psfwQnKUTf/8ZssVRDZVSju6
+ luqKkvLz5Y8ecWbBymNfH5MA=
+X-Received: by 2002:a05:6a20:ce95:b0:199:7546:74b0 with SMTP id
+ if21-20020a056a20ce9500b00199754674b0mr6204235pzb.5.1704701598747; 
+ Mon, 08 Jan 2024 00:13:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGoDc8gxkAoozymRhu+1/oOy7wUpT7XvV4n4hV+R0nqL+ViChSuMDv2qiKLMdjjsbbjSzsl3w==
+X-Received: by 2002:a05:6a20:ce95:b0:199:7546:74b0 with SMTP id
+ if21-20020a056a20ce9500b00199754674b0mr6204217pzb.5.1704701598238; 
+ Mon, 08 Jan 2024 00:13:18 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ x30-20020a056a000bde00b006d70b0d4639sm5432979pfu.107.2024.01.08.00.13.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Jan 2024 00:13:17 -0800 (PST)
+Date: Mon, 8 Jan 2024 16:13:10 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 2/4] tests/qtest/migration: Add infrastructure to skip
+ tests on older QEMUs
+Message-ID: <ZZuulnlKscT1ULS7@x1n>
+References: <20240105180449.11562-1-farosas@suse.de>
+ <20240105180449.11562-3-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240105180449.11562-3-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -90,17 +101,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steven Sistare <steven.sistare@oracle.com> writes:
+On Fri, Jan 05, 2024 at 03:04:47PM -0300, Fabiano Rosas wrote:
+> We can run the migration tests with two different QEMU binaries to
+> test migration compatibility between QEMU versions. This means we'll
+> be running the tests with an older QEMU in either source or
+> destination.
+> 
+> We need to avoid trying to test functionality that is unknown to the
+> older QEMU. This could mean new features, bug fixes, error message
+> changes, QEMU command line changes, migration API changes, etc.
+> 
+> Add a 'since' argument to the tests that inform when the functionality
+> that is being test has been added to QEMU so we can skip the test on
+> older versions.
+> 
+> Also add a version comparison function so we can adapt test code
+> depending on the QEMU binary version being used.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>  tests/qtest/migration-helpers.h |  1 +
+>  tests/qtest/migration-helpers.c | 48 +++++++++++++++++++++++++++++++++
+>  tests/qtest/migration-test.c    | 29 ++++++++++++++++++++
+>  3 files changed, 78 insertions(+)
+> 
+> diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+> index e31dc85cc7..7b4f8e851e 100644
+> --- a/tests/qtest/migration-helpers.h
+> +++ b/tests/qtest/migration-helpers.h
+> @@ -47,4 +47,5 @@ char *find_common_machine_version(const char *mtype, const char *var1,
+>                                    const char *var2);
+>  char *resolve_machine_version(const char *alias, const char *var1,
+>                                const char *var2);
+> +int migration_vercmp(QTestState *who, const char *tgt_version);
+>  #endif /* MIGRATION_HELPERS_H */
+> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+> index 24fb7b3525..bc4fd93e8c 100644
+> --- a/tests/qtest/migration-helpers.c
+> +++ b/tests/qtest/migration-helpers.c
+> @@ -292,3 +292,51 @@ char *resolve_machine_version(const char *alias, const char *var1,
+>  
+>      return find_common_machine_version(machine_name, var1, var2);
+>  }
+> +
+> +int migration_vercmp(QTestState *who, const char *tgt_version)
+> +{
+> +    g_autofree char *version = g_strdup(tgt_version);
+> +    int major = 0, minor = 0, micro = 0;
+> +    int tgt_major = 0, tgt_minor = 0, tgt_micro = 0;
+> +    const char *delim = ".";
+> +    char *tok;
+> +
+> +    qtest_query_version(who, &major, &minor, &micro);
+> +
+> +    tok = strtok(version, delim);
+> +    assert(tok);
+> +    tgt_major = atoi(tok);
+> +    assert(tgt_major);
 
-[...]
+I'd consider dropping this.  But I don't think "since: 0.8" is valid. :)
+More like a nitpick.
 
-> With these changes, can I add your Acked-by to the commit?
+> +
+> +    if (major > tgt_major) {
+> +        return -1;
 
-I'm afraid I lost context over the break.  Suggest you post v7, and I
-provide my Acked-by there.  Likely easier for me.
+This means the QEMU version is newer, the function will return negative.
+Is this what we want?  It seems it's inverted.
 
-Happy new year!
+In all cases, document this function with retval would be helpful too.
 
-[...]
+> +    }
+> +    if (major < tgt_major) {
+> +        return 1;
+> +    }
+
+Instead of all these, I'm wondering whether we can allow "since" to be an
+array of integers, like [8, 2, 0].  Would that be much easier?
+
+> +
+> +    tok = strtok(NULL, delim);
+> +    assert(tok);
+> +    tgt_minor = atoi(tok);
+> +
+> +    if (minor > tgt_minor) {
+> +        return -1;
+> +    }
+> +    if (minor < tgt_minor) {
+> +        return 1;
+> +    }
+> +
+> +    tok = strtok(NULL, delim);
+> +    if (tok) {
+> +        tgt_micro = atoi(tok);
+> +    }
+> +
+> +    if (micro > tgt_micro) {
+> +        return -1;
+> +    }
+> +    if (micro < tgt_micro) {
+> +        return 1;
+> +    }
+> +
+> +    return 0;
+> +}
+> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+> index d520c587f7..001470238b 100644
+> --- a/tests/qtest/migration-test.c
+> +++ b/tests/qtest/migration-test.c
+> @@ -637,6 +637,12 @@ typedef struct {
+>      bool use_dirty_ring;
+>      const char *opts_source;
+>      const char *opts_target;
+> +    /*
+> +     * If a test checks against new functionality that might not be
+> +     * present in older QEMUs this needs to be set so we can skip
+> +     * running it when doing compatibility testing.
+> +     */
+> +    const char *since;
+>  } MigrateStart;
+>  
+>  /*
+> @@ -850,6 +856,17 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>          qtest_qmp_set_event_callback(*from,
+>                                       migrate_watch_for_stop,
+>                                       &got_src_stop);
+> +
+> +        if (args->since && migration_vercmp(*from, args->since) < 0) {
+> +            g_autofree char *msg = NULL;
+> +
+> +            msg = g_strdup_printf("Test requires at least QEMU version %s",
+> +                                  args->since);
+> +            g_test_skip(msg);
+> +            qtest_quit(*from);
+> +
+> +            return -1;
+> +        }
+>      }
+>  
+>      cmd_target = g_strdup_printf("-accel kvm%s -accel tcg "
+> @@ -872,6 +889,18 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>                                   migrate_watch_for_resume,
+>                                   &got_dst_resume);
+>  
+> +    if (args->since && migration_vercmp(*to, args->since) < 0) {
+> +        g_autofree char *msg = NULL;
+> +
+> +        msg = g_strdup_printf("Test requires at least QEMU version %s",
+> +                              args->since);
+> +        g_test_skip(msg);
+> +        qtest_quit(*to);
+> +        qtest_quit(*from);
+> +
+> +        return -1;
+
+Nitpick: you can do both check here, then avoid duplicating some code, and
+always free from+to.
+
+> +    }
+> +
+>      /*
+>       * Remove shmem file immediately to avoid memory leak in test failed case.
+>       * It's valid because QEMU has already opened this file
+> -- 
+> 2.35.3
+> 
+
+-- 
+Peter Xu
 
 
