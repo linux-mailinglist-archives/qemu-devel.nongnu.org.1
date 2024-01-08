@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C3B8279B7
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:55:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F138279C4
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:57:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMwa0-00046o-2Q; Mon, 08 Jan 2024 15:50:40 -0500
+	id 1rMwba-0000BJ-9R; Mon, 08 Jan 2024 15:52:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+41a72dc6539c0dfbbc31+7442+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rMwZY-0003ny-GQ; Mon, 08 Jan 2024 15:50:13 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ <BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rMwa6-0004P1-OX; Mon, 08 Jan 2024 15:50:46 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+41a72dc6539c0dfbbc31+7442+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rMwZE-0000ur-4G; Mon, 08 Jan 2024 15:50:09 -0500
+ <BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rMwa3-00010O-FR; Mon, 08 Jan 2024 15:50:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=bVGb2+EtT3pxaWvqPLp7baiGIuRpc42koRGOsdWnaUk=; b=X43RH9AbD3fJNnSNp6zj09ltf+
- fnPjYoNKw/LCY4sLAJ0XSEgh2X0VrFVEH2/Vut01+TVDf27LqToIk4nMKZKNqcKYg2oSynHVvXXd3
- wmrcu6hDmlyRPIBBAhnwoSo8bNOJnWilocaH9Nm2K412zDTBq7bBxjJNgwltO0TK0jSQIuEkSb7aL
- Se/tAWZ770hs5e0RuJ33snAwDjPCpEgSuAWLwbQ5i6aeZt/wzTtrrt7by0kkrFLSSHIJsEcXIrnDR
- cmTyzT+yDJWk2Zpn1SCxFDMawd09aFiLD+4f2rSXJou7fbzNwluCxx0N+7DjZKEkPZkMnpmt+Tj1W
- cOTGJ6pg==;
+ bh=f2vF3BulUXFg8muFzHLRH93RIz10hzmoRdBIsGtJaGo=; b=hcrnaxHzdiEtxWpYBzTf6/1JHe
+ 2EMOr9Ek9v45wgVRjWelqPKdKdigM3bDNrPtyrTYwzk7B5wI+RdoBMwtGPXTDKhkEQzrHhub3xEv8
+ B0zrya3BSbSJ6nlEkU6vCAPQzkCJHSMaIkBld1P1KuKWhxUn6UdNcPJXh9aQcLctqvwQOvc/5/4RY
+ FyAukMmpR98tO4+ziwqm3CYjyW8kHA0a+pG6MYUkYv2513JVLVlSucK9wYC5hS08PPQbbvBy5btW3
+ NThKdg1aZshvcZvHijCd8hRAr3pK0NEFVIZFhXQt5JP5lfAYhtgmjgw0svaeQsAGmWW5u3fezhhea
+ O3Cr0b5g==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1rMwYi-008RPS-8o; Mon, 08 Jan 2024 20:49:21 +0000
+ by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+ id 1rMwYj-007wXM-2m; Mon, 08 Jan 2024 20:49:22 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1rMwYi-002NEN-37; Mon, 08 Jan 2024 20:49:20 +0000
+ Hat Linux)) id 1rMwYj-002NER-0G; Mon, 08 Jan 2024 20:49:21 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -82,19 +82,19 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v3 07/46] hw/alpha/dp264: use pci_init_nic_devices()
-Date: Mon,  8 Jan 2024 20:26:36 +0000
-Message-ID: <20240108204909.564514-8-dwmw2@infradead.org>
+Subject: [PATCH v3 08/46] hw/arm/sbsa-ref: use pci_init_nic_devices()
+Date: Mon,  8 Jan 2024 20:26:37 +0000
+Message-ID: <20240108204909.564514-9-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240108204909.564514-1-dwmw2@infradead.org>
 References: <20240108204909.564514-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+41a72dc6539c0dfbbc31+7442+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -120,25 +120,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
 ---
- hw/alpha/dp264.c | 4 +---
+ hw/arm/sbsa-ref.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/alpha/dp264.c b/hw/alpha/dp264.c
-index 03495e1e60..52a1fa310b 100644
---- a/hw/alpha/dp264.c
-+++ b/hw/alpha/dp264.c
-@@ -124,9 +124,7 @@ static void clipper_init(MachineState *machine)
-     pci_vga_init(pci_bus);
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index 477dca0637..f0171176ea 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -671,9 +671,7 @@ static void create_pcie(SBSAMachineState *sms)
  
-     /* Network setup.  e1000 is good enough, failing Tulip support.  */
--    for (i = 0; i < nb_nics; i++) {
--        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
--    }
-+    pci_init_nic_devices(pci_bus, mc->default_nic);
+     pci = PCI_HOST_BRIDGE(dev);
+     if (pci->bus) {
+-        for (i = 0; i < nb_nics; i++) {
+-            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
+-        }
++        pci_init_nic_devices(pci->bus, mc->default_nic);
+     }
  
-     /* Super I/O */
-     isa_create_simple(isa_bus, TYPE_SMC37C669_SUPERIO);
+     pci_create_simple(pci->bus, -1, "bochs-display");
 -- 
 2.41.0
 
