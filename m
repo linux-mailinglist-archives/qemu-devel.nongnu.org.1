@@ -2,86 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AEA826D61
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:03:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C53F826D7C
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:11:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMoLZ-0001hR-8G; Mon, 08 Jan 2024 07:03:13 -0500
+	id 1rMoSC-0003Yy-LZ; Mon, 08 Jan 2024 07:10:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMoLW-0001gs-Ie
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:03:10 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMoLV-0005bq-0h
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:03:10 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-336990fb8fbso1695382f8f.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 04:03:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704715387; x=1705320187; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zpymm/kt3CHzXmb7fCv0GtjP6/svBoF6IF2skQ/PclE=;
- b=Nus1EJW5PtDhVmkZVmUOwTmtEO4w5LsJWs88dHd8qt1h3Cexl7R+TIMaaLukV/7Fay
- p+0VjeN8HQ1GOP/PWOElCKxc4ng+2s9ceAWrlnixMWAywNMfauSm4pmmgdw5r0/2JOYu
- ReKhwb3AlLFxXO5yKlW3/t0wq2CPS8+bcagyprNg6o74JPpDaJRNR03CEjYg2E/fcckW
- 5pQgcSPML8lqQ5bb0TsUyqocJaIC/lqQW4s99nqdbDb3XfoTSX5DHA4udd3LkdjrR0dH
- Vevv/1Z7q85Qvvyg7czpumePDXd+qzeChQSQoB5RjblxGl1aBbgq+hO+zvY3yZrRDETa
- tQhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704715387; x=1705320187;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zpymm/kt3CHzXmb7fCv0GtjP6/svBoF6IF2skQ/PclE=;
- b=LwQai2j6jyZ0f8NbRQqGDuvqpj9/JWiP/O42TrBnEIuo/yD9PcUw509kliItzNtUjY
- Dbp9qK2bnLo4kLvVW7lAuRp5s04HX/NYk5olYV6Oqzt2RVCd1y7Cd/dwnQKDDHpb5j78
- z/tW7D1JBqkBagTdb50TJ4F+oa94Vgo19fcq9K0YaMOf/76OxiDNe0d1+kWV/YaUVrLv
- MLtFXxnvajCNL0iBUNc0YGezHRl0DYOCBbBbyr2O+00Rvv/HbHSD5TP2+E+vftgyTddp
- ADtkvfsVEaHpaSO2E7nM7muk2nFtv52QXT0cRVbnWfSMGC+L96Gxv7owYU0HEquvWALY
- fEFA==
-X-Gm-Message-State: AOJu0Yz4R/F+PwcYCqlfJ57m2C3Mf0nhQ0uMdI/qfz8Vou9tgNSzxGCA
- /8ln8leq0nDtuk7rFkqZvHwfUTxgyF+o9s6jTDzAZj2rUdY=
-X-Google-Smtp-Source: AGHT+IG4AWKp+4MA+E2hTaQLuUMbYXqp7gs8YxvhhAA+UGtO7eaAHJuvrXoIPAhSHcxKfym7cCjzDw==
-X-Received: by 2002:a05:600c:6907:b0:40d:88bc:a896 with SMTP id
- fo7-20020a05600c690700b0040d88bca896mr1859077wmb.62.1704715387557; 
- Mon, 08 Jan 2024 04:03:07 -0800 (PST)
-Received: from [192.168.1.102] ([176.176.175.62])
- by smtp.gmail.com with ESMTPSA id
- bg11-20020a05600c3c8b00b0040d6ffae526sm10813708wmb.39.2024.01.08.04.03.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 04:03:07 -0800 (PST)
-Message-ID: <0ba00ce5-0b4c-4e43-890d-9ebe6ecca6bc@linaro.org>
-Date: Mon, 8 Jan 2024 13:03:05 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rMoRu-0003Y9-8I
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:09:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rMoRi-0007kA-DX
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:09:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704715764;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+ydfLVrkZ7pJkLYd8BR7nMyvLuYvhX8AL5RDxFfkbWg=;
+ b=VQeMcWPiUBfQ/ojJ10Y+wyyEyM+4GP0Ov0HQpTPExZFBqgH0/yJ0eiuI4cIKMpGCZ0Ez9S
+ 2JEIC6Vnx/rP9R6CwkeDo60konJ8/PquiLvHWAlAaxTGkYPFexmrXEquAIlrUx1/qBz0Zd
+ 72zx127wX8WRRqzlvNxMq9I/wG8NHlA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-399-JMHaL6SvNeebYLR2qYpJ6g-1; Mon, 08 Jan 2024 07:09:21 -0500
+X-MC-Unique: JMHaL6SvNeebYLR2qYpJ6g-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9F375837183;
+ Mon,  8 Jan 2024 12:09:20 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4BBD31C060AF;
+ Mon,  8 Jan 2024 12:09:20 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 5821521E6806; Mon,  8 Jan 2024 13:09:19 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: <ankita@nvidia.com>
+Cc: <jgg@nvidia.com>,  <alex.williamson@redhat.com>,  <clg@redhat.com>,
+ <shannon.zhaosl@gmail.com>,  <peter.maydell@linaro.org>,
+ <ani@anisinha.ca>,  <berrange@redhat.com>,  <eduardo@habkost.net>,
+ <imammedo@redhat.com>,  <mst@redhat.com>,  <eblake@redhat.com>,
+ <david@redhat.com>,  <gshan@redhat.com>,  <Jonathan.Cameron@huawei.com>,
+ <aniketa@nvidia.com>,  <cjia@nvidia.com>,  <kwankhede@nvidia.com>,
+ <targupta@nvidia.com>,  <vsethi@nvidia.com>,  <acurrid@nvidia.com>,
+ <dnigam@nvidia.com>,  <udhoke@nvidia.com>,  <qemu-arm@nongnu.org>,
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v6 1/2] qom: new object to associate device to numa node
+In-Reply-To: <20231225045603.7654-2-ankita@nvidia.com> (ankita@nvidia.com's
+ message of "Mon, 25 Dec 2023 10:26:02 +0530")
+References: <20231225045603.7654-1-ankita@nvidia.com>
+ <20231225045603.7654-2-ankita@nvidia.com>
+Date: Mon, 08 Jan 2024 13:09:19 +0100
+Message-ID: <87v884t4b4.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] hw/arm/armv7m: alias the NVIC "num-prio-bits"
- property
-Content-Language: en-US
-To: Samuel Tardieu <sam@rfc1149.net>, qemu-devel@nongnu.org
-Cc: Anton Kochkov <anton.kochkov@proton.me>, qemu-arm@nongnu.org,
- Alexandre Iooss <erdnaxe@crans.org>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
- Alistair Francis <alistair@alistair23.me>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20240106181503.1746200-1-sam@rfc1149.net>
- <20240106181503.1746200-3-sam@rfc1149.net>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240106181503.1746200-3-sam@rfc1149.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,20 +89,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/1/24 19:15, Samuel Tardieu wrote:
-> A SoC will not have a direct access to the NVIC embedded in its ARM
-> core. By aliasing the "num-prio-bits" property similarly to what is
-> done for the "num-irq" one, a SoC can easily configure it on its
-> armv7m instance.
-> 
-> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   hw/arm/armv7m.c         | 2 ++
->   include/hw/arm/armv7m.h | 1 +
->   2 files changed, 3 insertions(+)
+<ankita@nvidia.com> writes:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> From: Ankit Agrawal <ankita@nvidia.com>
+>
+> NVIDIA GPU's support MIG (Mult-Instance GPUs) feature [1], which allows
+> partitioning of the GPU device resources (including device memory) into
+> several (upto 8) isolated instances. Each of the partitioned memory needs
+> a dedicated NUMA node to operate. The partitions are not fixed and they
+> can be created/deleted at runtime.
+>
+> Unfortunately Linux OS does not provide a means to dynamically create/destroy
+> NUMA nodes and such feature implementation is not expected to be trivial. The
+> nodes that OS discovers at the boot time while parsing SRAT remains fixed. So
+> we utilize the Generic Initiator Affinity structures that allows association
+> between nodes and devices. Multiple GI structures per BDF is possible,
+> allowing creation of multiple nodes by exposing unique PXM in each of these
+> structures.
+>
+> Introduce a new acpi-generic-initiator object to allow host admin provide the
+> device and the corresponding NUMA nodes. Qemu maintain this association and
+> use this object to build the requisite GI Affinity Structure. On a multi
+> device system, each device supporting the features needs a unique
+> acpi-generic-initiator object with its own set of NUMA nodes associated to it.
+>
+> An admin can provide the range of nodes through a uint16 array host-nodes
+> and link it to a device by providing its id. Currently, only PCI device is
+> supported. The following sample creates 8 nodes per PCI device for a VM
+> with 2 PCI devices and link them to the respecitve PCI device using
+> acpi-generic-initiator objects:
+>
+> -numa node,nodeid=2 -numa node,nodeid=3 -numa node,nodeid=4 \
+> -numa node,nodeid=5 -numa node,nodeid=6 -numa node,nodeid=7 \
+> -numa node,nodeid=8 -numa node,nodeid=9 \
+> -device vfio-pci-nohotplug,host=0009:01:00.0,bus=pcie.0,addr=04.0,rombar=0,id=dev0 \
+> -object acpi-generic-initiator,id=gi0,pci-dev=dev0,host-nodes=2-9 \
+>
+> -numa node,nodeid=10 -numa node,nodeid=11 -numa node,nodeid=12 \
+> -numa node,nodeid=13 -numa node,nodeid=14 -numa node,nodeid=15 \
+> -numa node,nodeid=16 -numa node,nodeid=17 \
+> -device vfio-pci-nohotplug,host=0009:01:01.0,bus=pcie.0,addr=05.0,rombar=0,id=dev1 \
+> -object acpi-generic-initiator,id=gi1,pci-dev=dev1,host-nodes=10-17 \
+>
+> [1] https://www.nvidia.com/en-in/technologies/multi-instance-gpu
+>
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
 
+Appreciate the improved commit message.
+
+[...]
+
+> diff --git a/qapi/qom.json b/qapi/qom.json
+> index c53ef978ff..7b33d4a53c 100644
+> --- a/qapi/qom.json
+> +++ b/qapi/qom.json
+> @@ -794,6 +794,21 @@
+>  { 'struct': 'VfioUserServerProperties',
+>    'data': { 'socket': 'SocketAddress', 'device': 'str' } }
+>  
+> +##
+> +# @AcpiGenericInitiatorProperties:
+> +#
+> +# Properties for acpi-generic-initiator objects.
+> +#
+> +# @pci-dev: PCI device ID to be associated with the node
+> +#
+> +# @host-nodes: numa node list associated with the PCI device.
+
+NUMA
+
+Suggest "list of NUMA nodes associated with ..."
+
+> +#
+> +# Since: 9.0
+> +##
+> +{ 'struct': 'AcpiGenericInitiatorProperties',
+> +  'data': { 'pci-dev': 'str',
+> +            'host-nodes': ['uint16'] } }
+> +
+>  ##
+>  # @RngProperties:
+>  #
+> @@ -911,6 +926,7 @@
+>  ##
+>  { 'enum': 'ObjectType',
+>    'data': [
+> +    'acpi-generic-initiator',
+>      'authz-list',
+>      'authz-listfile',
+>      'authz-pam',
+> @@ -981,6 +997,7 @@
+>              'id': 'str' },
+>    'discriminator': 'qom-type',
+>    'data': {
+> +      'acpi-generic-initiator':     'AcpiGenericInitiatorProperties',
+>        'authz-list':                 'AuthZListProperties',
+>        'authz-listfile':             'AuthZListFileProperties',
+>        'authz-pam':                  'AuthZPAMProperties',
+
+I'm holding my Acked-by until the interface design issues raised by
+Jason have been resolved.
 
 
