@@ -2,125 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0DC826DE2
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:29:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCC5826E2E
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:36:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMojS-0005n3-5D; Mon, 08 Jan 2024 07:27:54 -0500
+	id 1rMoq0-0008Ah-8i; Mon, 08 Jan 2024 07:34:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rMojN-0005gF-Qe; Mon, 08 Jan 2024 07:27:49 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rMoj9-0001Vd-M9; Mon, 08 Jan 2024 07:27:49 -0500
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 408CJ7eF011242; Mon, 8 Jan 2024 12:26:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=GWZ5VSSILwvZEYjs2ah+vKQhv71Sizq1i7905GYRhVg=;
- b=eXwElvQ2AvLzT8soE9YIYlVKrCndglb1kIKoouuKU76bE7+DNgp0fD6YYJ+loqDS/6/Y
- s80tA2b98JpSCfA26XiYwgSWexblKVBHX4Xx6JD+HvFcQ8zo+/eX/ydma+hAPoYeVjOM
- PDOAhMQQIx3k3pc/y9cz7QSzYvZPGvp4vtq3Esbc3L9f9SgRjzrjU4ujze8fLW6zHqOK
- nl/EGDZMcHZGPMw4AG1bXzVX9+MpaJYc/R7GPhMytjP10aIZKnbJnR0VuRQ/YW5qsQ7A
- u7ykuStrbzvnGdeK+TFvh1A2g5aO+yyOKXQIvJXzmqkOZUTOy9vaRtVnHOeZGrv1AFeF Jw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vggxs857n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jan 2024 12:26:47 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 408CMM9j023215;
- Mon, 8 Jan 2024 12:26:47 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vggxs856j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jan 2024 12:26:46 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 408C5E66022845; Mon, 8 Jan 2024 12:26:44 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfhjy7yjm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jan 2024 12:26:44 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 408CQgO538797722
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 8 Jan 2024 12:26:42 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 951E420043;
- Mon,  8 Jan 2024 12:26:42 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B6D5D20040;
- Mon,  8 Jan 2024 12:26:41 +0000 (GMT)
-Received: from [9.155.200.166] (unknown [9.155.200.166])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  8 Jan 2024 12:26:41 +0000 (GMT)
-Message-ID: <1e5fb129a184ce743365f3503bc3ba2e47676b5c.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 08/43] qtest: bump npcm7xx_pwn-test timeout to 5 minutes
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, Richard Henderson
- <richard.henderson@linaro.org>, Song Gao <gaosong@loongson.cn>,
- =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, David
- Hildenbrand <david@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Yanan Wang
- <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>, Laurent Vivier
- <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>, Alexandre Iooss
- <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>, Laurent Vivier
- <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>, Brian Cain
- <bcain@quicinc.com>, Daniel Henrique Barboza <danielhb413@gmail.com>,
- Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>, Mahmoud
- Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>, Liu
- Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Cleber Rosa <crosa@redhat.com>, kvm@vger.kernel.org,
- Peter Maydell <peter.maydell@linaro.org>, Wainer dos
- Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org, Weiwei Li
- <liwei1518@gmail.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, John Snow <jsnow@redhat.com>, Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>, Nicholas Piggin <npiggin@gmail.com>, Palmer
- Dabbelt <palmer@dabbelt.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, =?ISO-8859-1?Q?C=E9dric?= Le Goater
- <clg@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Eduardo
- Habkost <eduardo@habkost.net>, Pierrick Bouvier
- <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org, Alistair Francis
- <alistair.francis@wdc.com>, "Daniel P." =?ISO-8859-1?Q?Berrang=E9?=
- <berrange@redhat.com>
-Date: Mon, 08 Jan 2024 13:26:41 +0100
-In-Reply-To: <20240103173349.398526-9-alex.bennee@linaro.org>
-References: <20240103173349.398526-1-alex.bennee@linaro.org>
- <20240103173349.398526-9-alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rMopw-000892-SG
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:34:36 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rMops-0003sE-Rz
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:34:35 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-557bfc7f7b4so893247a12.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 04:34:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704717269; x=1705322069; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=byMq28vj5LAurtfTDW7cElHZIAVAUQdv3RGPOevF/jU=;
+ b=xhKqN3sjpfpanmht4weRlO4R6SjCN6GP7V5dopp56IhWNhcshthjffHiCwxAOoR+zJ
+ OYXgoDZrG+oo8XpOEGEsh0xgqnmk2+Vv5l5Y9eMLABURubdiyqV1btKkhkNE7tA/cRMi
+ /PStnYCzIUIVZOchgJaO2DsKsryecvbvjwMHpDkozTKsVqNCarn0AWDJEBv0wmwVw54v
+ XGupNFwZlhjyvB9WhxhpcDQZWJM3/kjWJJgfFcb/v60OMZK2DBKyTp+ZQ/dZIM1tGytm
+ kNPH77IKobiYsZd5piXp/CEKcDwFMZJ75L7Kk27UvWQ1YSbYxnTxafZC4V/kE+Lyx3qP
+ aI+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704717269; x=1705322069;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=byMq28vj5LAurtfTDW7cElHZIAVAUQdv3RGPOevF/jU=;
+ b=lAQ+oozTbbNIZMqG/ZDtp7nzzCIeXrJop+DYScy1E4t8h7OMLK7h00xBtUZeZzrpxY
+ 7qIWvVWsiQZvI73MYFWPNbl0DHhnxGf02tbDtc/lX7bLVH9n1s5OPDLFah99WjtedYvl
+ HKWQR89/p3LLdxpujQw4IHj+pvmCRsT7ytSUBKwoT62RzFM20CZ/o4d5i4ZN+JKF97GD
+ 9jjKWHKP5DkN8R5H9RXPrKMcSaLQwLq58oILqqI2Cb8kff1NfAu90uARuyDlFRgx7LQD
+ ZUcB5foFSTTtq7mvR5qjb0M3YlgQKy/G+WPaasFMDLQv32ZfhCAZrsAN/iv8r+tZSUpW
+ gH0A==
+X-Gm-Message-State: AOJu0Yzcv86Nc8hFL/j0GujuTk4JBs9G5FZSxVAVJlvP3MRdm01mHL42
+ StQ/xGF/6VDKlp4diToLBJ/x5sJ73SZyor+PNyFK19M905hMSA==
+X-Google-Smtp-Source: AGHT+IGGmDMM2mTizDPpXyXvVG+Ycjr2Mbasd8QpwLlXP45Yi/y3MQStIZLkXiNecB5EHJevQ+S9kDQ/h6JA8rapPeI=
+X-Received: by 2002:a50:c282:0:b0:556:d3d7:b7b with SMTP id
+ o2-20020a50c282000000b00556d3d70b7bmr3107288edf.20.1704717269241; Mon, 08 Jan
+ 2024 04:34:29 -0800 (PST)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 3n4703UJLu9UuNQtQwKGxRASFadYab6V
-X-Proofpoint-ORIG-GUID: uFOpD788Yz5ZHIHSnHD0G_5gxHCVFtIt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-08_04,2024-01-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxscore=0
- spamscore=0 clxscore=1011 phishscore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 mlxlogscore=922 suspectscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401080106
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <CAFEAcA93kpreNOOKz6-qbVE_9Kg6tgZNaMowNLwc+G_47MXLHg@mail.gmail.com>
+ <9f0615dc-c162-4ac6-9ead-7f9d28e5d318@redhat.com>
+In-Reply-To: <9f0615dc-c162-4ac6-9ead-7f9d28e5d318@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 8 Jan 2024 12:34:18 +0000
+Message-ID: <CAFEAcA8j3aKMWzb2zSZ5gUaV4uosa2GLBaEKTcqf93iU42FbDA@mail.gmail.com>
+Subject: Re: CI "pages" job failing with incomprehensible error message from
+ htags
+To: Thomas Huth <thuth@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Bui Quang Minh <minhquangbui99@gmail.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -137,35 +92,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2024-01-03 at 17:33 +0000, Alex Benn=C3=A9e wrote:
-> From: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->=20
-> The npcm7xx_pwn-test takes 3 & 1/2 minutes in a --enable-debug build.
-> Bumping to 5 minutes will give more headroom.
->=20
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Message-ID: <20230717182859.707658-5-berrange@redhat.com>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> Message-Id: <20231215070357.10888-5-thuth@redhat.com>
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> ---
-> =C2=A0tests/qtest/meson.build | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index 000ac54b7d6..84cec0a847d 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -1,7 +1,7 @@
-> =C2=A0slow_qtests =3D {
-> =C2=A0=C2=A0 'bios-tables-test' : 120,
-> =C2=A0=C2=A0 'migration-test' : 480,
-> -=C2=A0 'npcm7xx_pwm-test': 150,
-> +=C2=A0 'npcm7xx_pwm-test': 300,
-> =C2=A0=C2=A0 'qom-test' : 900,
-> =C2=A0=C2=A0 'test-hmp' : 120,
-> =C2=A0}
+On Mon, 8 Jan 2024 at 11:03, Thomas Huth <thuth@redhat.com> wrote:
+>
+> On 05/01/2024 20.11, Peter Maydell wrote:
+> > https://gitlab.com/qemu-project/qemu/-/jobs/5871592479
+> >
+> > failed with
+> >
+> > $ htags -anT --tree-view=filetree -m qemu_init -t "Welcome to the QEMU
+> > sourcecode"
+> > htags: Negative exec line limit = -371
+> >
+> > Does anybody have any idea what this is about ?
+>
+> In case you haven't spotted it yet:
+>
+> https://www.mail-archive.com/qemu-devel@nongnu.org/msg1014394.html
+>
+> Is anybody already already creating a patch to clear CI_COMMIT_MESSAGE when
+> invoking htags ?
 
-Nit: s/pwn/pwm/ in the commit subject and message.
+As a first step, I filed a bug for us for it:
+https://gitlab.com/qemu-project/qemu/-/issues/2080
+
+We should probably report this upstream, I suppose. It's
+easy to reproduce without requiring the QEMU source tree:
+
+mnementh$ mkdir htags-bug
+mnementh$ cd htags-bug/
+mnementh$ cat >hello.c
+#include <stdio.h>
+
+int main(void) {
+    printf("hello world\n");
+    return 0;
+}
+mnementh$ gtags
+mnementh$ htags -anT
+mnementh$ BIGVAR=$(perl -e 'print "x" x 100000') htags -anT
+htags: Negative exec line limit = -80391
+
+thanks
+-- PMM
 
