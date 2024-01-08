@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFF68275A4
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 17:46:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B298275B5
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 17:48:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMslQ-0004mS-6i; Mon, 08 Jan 2024 11:46:12 -0500
+	id 1rMsmh-0005jc-Hv; Mon, 08 Jan 2024 11:47:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMslM-0004m1-Ts
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 11:46:08 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMsme-0005fU-JA
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 11:47:29 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMslJ-0007tg-RZ
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 11:46:08 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3375a236525so1922283f8f.0
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 08:46:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMsmc-0008O5-PQ
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 11:47:28 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3366ddd1eddso2229166f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 08:47:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704732364; x=1705337164; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704732445; x=1705337245; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=KXvbBEkJ2YEZQ/1hX4sUWoCHwXflhHJTZZGzdRhdH0w=;
- b=VrUJRLZUro4csYbkI/lLFmy9SdSqoH8Jxfuk3feqPBBuspWlk++2oER1JyD1bs+D/a
- OgM3zb+ihVnMKkH4hTzdJcq8BKUMUXlkpHaA5k85ggqK+LrpAUSC28S8fiEMglbfxClz
- l3ZnougcdmdvIXhLsDTacBohHDRLl7bN4FdJ+AjRDArSCZgsl6OJNUSImT6ORMRGV67w
- jfhCQ9Yq2oya3awxMzIis3nmwfFd4K/iyJUo47CVNh+OqpFyxznki4UBHCuHZxg/SmPD
- bfgiFDOKbqKoUP/0BOVcwtCuPavxZMfFS/FfKvd8gCZfr35Jq/4Uf1Odim9L1oUP8K0P
- zSAA==
+ bh=3QLcArUfRYwNhpnoc8w9K8Ko4kzk0tTKn4jj/s0ot3k=;
+ b=Tyu7S21owzEHZU3BUeKsI6R6bFLoLaf6lp4rkVDFwfZKzb239ojI++0bcmW2FgZOn8
+ fFrTVq761Um11Yw45CdjmSOBKK7oSENHzb977dJSzdFd9VLCA5ef0J5RCMOMY2yIepLA
+ MdPP9P+3Cy3lIlHMON90eLqQtvKZrR15ce6WM7FM+zMYmZDz0NLVPWeq96WjC/5O0Z69
+ UE3id1sDq8pp49czRAFbCoFLaiZeJJVQed/yiY6V27qaIwbZGjOQcLg0fQdor/ER+oqi
+ 2qxLEZdwv+xjyZcUNVEjD9YqXL54CkQ9PKN/oKLBFToCA/zqvvk5bADhbTKIYyd0lG6G
+ B/Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704732364; x=1705337164;
+ d=1e100.net; s=20230601; t=1704732445; x=1705337245;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KXvbBEkJ2YEZQ/1hX4sUWoCHwXflhHJTZZGzdRhdH0w=;
- b=OoMYGVl0ueX8WS7RXXwmcahIwmALldPTOBWvQIOG9RdDJ6c0JwAIZScjX3ll8JWPeo
- fkoPNv99+Z/2j+y5CnoQ/53ajMXibKklQIJo2JwOtl4TcA6sedx+M68ju5IWImqiATOf
- o9QAmFcdcxhEmTYqGPLXB8VTjvwluKQGhGd28NWYq67BGwAXgGuElVuk1OFDQrfgpv16
- hDFEyUuO/JHpFxrrVqty00o/QqJZp1n5a3s+7S3Ot3cFZJdpSKe31UOUefGVEFzde/2u
- /SsjZWy62siah0vEXcEHqWMABp7yBEAu2f7gdOUjcz1hYGVu/wjNZapKCKHD8gdKiMcg
- QkGA==
-X-Gm-Message-State: AOJu0YwptAaFyXCO3PgU3FBIa7EOblIqc7ZWAKOFKM4pwdrjoGwClZ1o
- SVCS8VjlZiYlGn4uE81b63TWGCHtm/cPGw==
-X-Google-Smtp-Source: AGHT+IHJWtI431ULoCGNhdRnt8m/sZ16+eLgIMFEao0h4H+jZ1mD2Cgs7u8dLuBtz6XvXA7U4p0b+g==
-X-Received: by 2002:a5d:6e84:0:b0:336:6ed3:2ead with SMTP id
- k4-20020a5d6e84000000b003366ed32eadmr2059581wrz.17.1704732363830; 
- Mon, 08 Jan 2024 08:46:03 -0800 (PST)
+ bh=3QLcArUfRYwNhpnoc8w9K8Ko4kzk0tTKn4jj/s0ot3k=;
+ b=l1r3Z2H4POJnzi1J1ksAplSn+wucqcMuS4jBqryyx1QecLjbqj+xtHh8Kx1UxmGlGT
+ VEDHe4fLu9t1k7fnaUsG1vEr8Cs6YrSDyIa4+oRQ5Bp0IceIEl0XOfz41nev0XYQIxiI
+ 6JNBRhSjNRkZaKzg+jUHoOlVSPQozx7epiOUKxTAfeQJqCjANpJqbt1Q39bUJ0O7Uhns
+ r4WqJSVc0qIzOLSJ+xU8kqedmXXvfvYDOPoC4ZTkqEiWfqgcavY7zXp/5ZB6gnFek9P+
+ MKY9X7IlawmwKLvyPtWYqc+8JFgVMJv6HQmWOp9mI0lHe2AdWIVB6x1ocyvfECJxd6i0
+ 4gAQ==
+X-Gm-Message-State: AOJu0Yxmy30Ts31R5xUXaRRC+HmL9tQVxZagKoW79jXhqFKiytZzmUD0
+ XMF0mLQXTjg3O3Codgd7AwA6m+bzLCTKYIIXTfrxGN9kMXo=
+X-Google-Smtp-Source: AGHT+IGY7PbMTz19dkl7XyxzhIIXZUz4CViIiZijfsp2VUf52FTzt1kD9QPkwFsyiA/XqVpSL4cb0w==
+X-Received: by 2002:a5d:500b:0:b0:336:7472:8768 with SMTP id
+ e11-20020a5d500b000000b0033674728768mr1222202wrt.141.1704732445022; 
+ Mon, 08 Jan 2024 08:47:25 -0800 (PST)
 Received: from [192.168.1.102] ([176.176.175.62])
  by smtp.gmail.com with ESMTPSA id
- l17-20020a5d4bd1000000b00336a1f6ce7csm102034wrt.19.2024.01.08.08.46.03
+ l17-20020a5d4bd1000000b00336a1f6ce7csm102034wrt.19.2024.01.08.08.47.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 08:46:03 -0800 (PST)
-Message-ID: <8ce11ebb-a1c4-425b-8505-20da142c0b8d@linaro.org>
-Date: Mon, 8 Jan 2024 17:46:02 +0100
+ Mon, 08 Jan 2024 08:47:24 -0800 (PST)
+Message-ID: <017d7a83-de74-4a3a-a509-94eed9ce1f44@linaro.org>
+Date: Mon, 8 Jan 2024 17:47:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] target/xtensa: use generic instruction breakpoint
- infrastructure
+Subject: Re: [PATCH-for-9.0] accel/tcg: Remove tb_invalidate_phys_page() from
+ system emulation
 Content-Language: en-US
-To: Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-References: <20231130171920.3798954-1-jcmvbkbc@gmail.com>
+To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20231130205600.35727-1-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231130171920.3798954-1-jcmvbkbc@gmail.com>
+In-Reply-To: <20231130205600.35727-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,18 +93,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/11/23 18:19, Max Filippov wrote:
-> Hello,
-> 
-> this series makes target/xtensa use generic instruction breakpoint
-> infrastructure removing its use of tb_invalidate_phys_addr. It also adds
-> a new TCG test checking relative priority of icount and ibreak exceptions
-> for target/xtensa.
-> 
-> Max Filippov (2):
->    target/xtensa: use generic instruction breakpoint infrastructure
->    tests/tcg/xtensa: add icount/ibreak priority test
+ping?
 
-Thanks Max, series queued.
+On 30/11/23 21:56, Philippe Mathieu-Daudé wrote:
+> Since previous commit, tb_invalidate_phys_page() is not used
+> anymore in system emulation. Make it static for user emulation
+> and remove its public declaration in "exec/translate-all.h".
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> Based-on: <20231130203241.31099-1-philmd@linaro.org>
+> ---
+>   include/exec/translate-all.h |  1 -
+>   accel/tcg/tb-maint.c         | 24 +-----------------------
+>   2 files changed, 1 insertion(+), 24 deletions(-)
+> 
+> diff --git a/include/exec/translate-all.h b/include/exec/translate-all.h
+> index 88602ae8d8..85c9460c7c 100644
+> --- a/include/exec/translate-all.h
+> +++ b/include/exec/translate-all.h
+> @@ -23,7 +23,6 @@
+>   
+>   
+>   /* translate-all.c */
+> -void tb_invalidate_phys_page(tb_page_addr_t addr);
+>   void tb_check_watchpoint(CPUState *cpu, uintptr_t retaddr);
+>   
+>   #ifdef CONFIG_USER_ONLY
+> diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+> index 3d2a896220..da39a43bd8 100644
+> --- a/accel/tcg/tb-maint.c
+> +++ b/accel/tcg/tb-maint.c
+> @@ -1021,7 +1021,7 @@ void tb_invalidate_phys_range(tb_page_addr_t start, tb_page_addr_t last)
+>    * Called with mmap_lock held for user-mode emulation
+>    * NOTE: this function must not be called while a TB is running.
+>    */
+> -void tb_invalidate_phys_page(tb_page_addr_t addr)
+> +static void tb_invalidate_phys_page(tb_page_addr_t addr)
+>   {
+>       tb_page_addr_t start, last;
+>   
+> @@ -1160,28 +1160,6 @@ tb_invalidate_phys_page_range__locked(struct page_collection *pages,
+>   #endif
+>   }
+>   
+> -/*
+> - * Invalidate all TBs which intersect with the target physical
+> - * address page @addr.
+> - */
+> -void tb_invalidate_phys_page(tb_page_addr_t addr)
+> -{
+> -    struct page_collection *pages;
+> -    tb_page_addr_t start, last;
+> -    PageDesc *p;
+> -
+> -    p = page_find(addr >> TARGET_PAGE_BITS);
+> -    if (p == NULL) {
+> -        return;
+> -    }
+> -
+> -    start = addr & TARGET_PAGE_MASK;
+> -    last = addr | ~TARGET_PAGE_MASK;
+> -    pages = page_collection_lock(start, last);
+> -    tb_invalidate_phys_page_range__locked(pages, p, start, last, 0);
+> -    page_collection_unlock(pages);
+> -}
+> -
+>   /*
+>    * Invalidate all TBs which intersect with the target physical address range
+>    * [start;last]. NOTE: start and end may refer to *different* physical pages.
 
 
