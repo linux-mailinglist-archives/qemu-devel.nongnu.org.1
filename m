@@ -2,104 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DDB5827BAB
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 00:41:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95534827BAD
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 00:44:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMzCi-00022H-0d; Mon, 08 Jan 2024 18:38:48 -0500
+	id 1rMzHZ-0005zR-R5; Mon, 08 Jan 2024 18:43:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rMzCd-0001zO-Qp; Mon, 08 Jan 2024 18:38:43 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rMzHY-0005zJ-5s
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 18:43:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rMzCa-0005e8-4I; Mon, 08 Jan 2024 18:38:43 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 408NBegH021919; Mon, 8 Jan 2024 23:38:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=BnOVy1brSmNwOJlli/9cw4CpTyAc6Y9wcRr8LqAG3Kk=;
- b=qKWtiLhS3x7+1MwxCTYf9T6YIMJUCiHv7P0xcZRGE2Cm7j7bMlGMCG2BkGxSJr2x8aIi
- VQRs/vSph4NRJEEefqygQ12Q+cY/VrAoBuMTer3xHKAo2gqak4tLvKl76n+UH1kzB8Rx
- JXWHHpJud/NYfWGoA8oVUnVs9TH+8+WCB9zjn953/cio6w2cVtUVb+Rk97h2GmbiHeyX
- SHGs+xd37FWkDWvfpLu3g0ZxqQZuvDPD6C8LP3Rh1KJQGT4JErIb23wd6m5Kovr8Ccyo
- jIKf7M38KkZGVheWA2H3cG5BzY/9aMO7/AaaJt4qfd8BT8SlaOidhGOPFxiSFVlm2H3S rA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vgsf9a04g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jan 2024 23:38:37 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 408NUuX0017289;
- Mon, 8 Jan 2024 23:38:37 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vgsf9a049-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jan 2024 23:38:37 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 408M0Ism000906; Mon, 8 Jan 2024 23:38:36 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkdk2xau-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jan 2024 23:38:36 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 408NcYSC11862738
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 8 Jan 2024 23:38:34 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9CAF420043;
- Mon,  8 Jan 2024 23:38:34 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F36EC20040;
- Mon,  8 Jan 2024 23:38:33 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.15.162])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  8 Jan 2024 23:38:33 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- David Hildenbrand <david@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 3/3] tests/tcg: Add the PROT_NONE gdbstub test
-Date: Tue,  9 Jan 2024 00:34:08 +0100
-Message-ID: <20240108233821.201325-4-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240108233821.201325-1-iii@linux.ibm.com>
-References: <20240108233821.201325-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rMzHW-0000Ug-J1
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 18:43:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704757425;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WQb7AFsI6c30kO0xmXCDp/xi1mndiKAY1qXYE0X0YS0=;
+ b=ObgpgaUIuh4A/O47w4jSntCZ1uHItG74wwClxqlKC70jTWxfdyJLabVpBFX7Dhs7jpCjtM
+ DSUsKWy0bSMoWlLW8Aq+j9l27lMfEJd+O1PXKnMrdYDbgJKegyYrLQEJz1kRcAhx10J+VP
+ NeKzVRTK4gtRCcrY+HVlviKswfd7icM=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-504-R5zx3rR9MU2z_wD_EUcJNA-1; Mon, 08 Jan 2024 18:43:38 -0500
+X-MC-Unique: R5zx3rR9MU2z_wD_EUcJNA-1
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-28c5c622a3cso1343327a91.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 15:43:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704757417; x=1705362217;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WQb7AFsI6c30kO0xmXCDp/xi1mndiKAY1qXYE0X0YS0=;
+ b=DurXroI8uStYcvtywqZ+1LygTAXfgGsDE9vtWPsxtTxqd7nSqNVQCadiQ6CteBq5YM
+ 0U0vBwu7RyGWcH7O3IY1/i9ElUVbeytUC983mlqvUgUTNUITejBHisR9xD8zVfYR8OAe
+ jAojoguEZ7M+XxM98v7MD6fQxPKvqu/dd0fATNm1EFo2N5Mz6L4qev+67lSGa06bG0cf
+ KFsMPUfRmU1Bop8rFU/wX9ReHDIsLl5bSBXMd+saTzQgStQ3qCu1UnicSHNV2S473a9R
+ AXY1EGwh6SDg9yPup3DSieAwY13x2UGOInb9gMPc/MFwFXFNyX4DvR7Scynp1CbEQ1TZ
+ ZXAQ==
+X-Gm-Message-State: AOJu0YyqjW1ce50uWTLtB8PEvTIFzBl4zTsy7MrXXqqBGVLBG2sLG8Ow
+ QG9LaldUqrSofVNerJ1N5JqSbAbxSI3Pso58teH9eZPMhazEIGw4Mrwws2i/W58XVKmDzt32z35
+ ozTV0hps/F/B0f/gg1X0mfzqY2wuM9qyJ4CRYb1g=
+X-Received: by 2002:a17:90a:9509:b0:28b:ea0c:f9b8 with SMTP id
+ t9-20020a17090a950900b0028bea0cf9b8mr1716802pjo.64.1704757417071; 
+ Mon, 08 Jan 2024 15:43:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE57FlNolFkLNvAg6UkshSsKtrdXRzgv/V6EN5qhjmYIPTUZx3SObF4B5hVxBIqZnU320xO9Wmtz4PHxMLe8yw=
+X-Received: by 2002:a17:90a:9509:b0:28b:ea0c:f9b8 with SMTP id
+ t9-20020a17090a950900b0028bea0cf9b8mr1716796pjo.64.1704757416804; Mon, 08 Jan
+ 2024 15:43:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0jjNaVQ6eF2q4Zx9cBbQqlgWLdhqjMuw
-X-Proofpoint-GUID: OupBdXrGsL_EUL7o2M5iNZkCHmrijP5I
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-08_10,2024-01-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 spamscore=0 adultscore=0 mlxlogscore=862 suspectscore=0
- clxscore=1015 impostorscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401080192
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20231108153827.39692-1-davydov-max@yandex-team.ru>
+ <20231108153827.39692-5-davydov-max@yandex-team.ru>
+ <87o7faxncr.fsf@pond.sub.org>
+ <620bdb50-39fb-4096-a5eb-df724f31f505@yandex-team.ru>
+ <87jzpbsl5l.fsf@pond.sub.org>
+In-Reply-To: <87jzpbsl5l.fsf@pond.sub.org>
+From: John Snow <jsnow@redhat.com>
+Date: Mon, 8 Jan 2024 18:43:25 -0500
+Message-ID: <CAFn=p-a0m1xA-qfLBX7wAL=v+cJY_SkOgC5xYiXi5oKzOGzn8w@mail.gmail.com>
+Subject: Re: [PATCH v6 4/4] scripts: add script to compare compatible
+ properties
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Maksim Davydov <davydov-max@yandex-team.ru>, qemu-devel@nongnu.org, 
+ vsementsov@yandex-team.ru, eduardo@habkost.net, marcel.apfelbaum@gmail.com, 
+ philmd@linaro.org, wangyanan55@huawei.com, crosa@redhat.com, bleal@redhat.com, 
+ eblake@redhat.com, pbonzini@redhat.com, berrange@redhat.com, alxndr@bu.edu, 
+ bsd@redhat.com, stefanha@redhat.com, thuth@redhat.com, 
+ darren.kenny@oracle.com, Qiuhao.Li@outlook.com, lvivier@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,117 +102,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make sure that qemu gdbstub, like gdbserver, allows reading from and
-writing to PROT_NONE pages.
+On Mon, Dec 18, 2023 at 8:20=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
+m> wrote:
+>
+> Maksim Davydov <davydov-max@yandex-team.ru> writes:
+>
+> > On 12/1/23 12:51, Markus Armbruster wrote:
+> >> Review, anyone?
+> >
+> > Only Vladimir
+>
+> To be clear: I'm soliciting a second review.
+>
+> [...]
+>
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/multiarch/Makefile.target      |  9 +++++-
- tests/tcg/multiarch/gdbstub/prot-none.py | 22 ++++++++++++++
- tests/tcg/multiarch/prot-none.c          | 38 ++++++++++++++++++++++++
- 3 files changed, 68 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/multiarch/gdbstub/prot-none.py
- create mode 100644 tests/tcg/multiarch/prot-none.c
+I volunteer to review it from the Python maintenance POV, but please
+rebase and resend to fix the patchew desync. We still want review from
+a more holistic perspective, though ... but if it's not part of the
+build or test infrastructure, it doesn't have to be perfect.
 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index d31ba8d6ae4..315a2e13588 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -101,13 +101,20 @@ run-gdbstub-registers: sha512
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/registers.py, \
- 	checking register enumeration)
- 
-+run-gdbstub-prot-none: prot-none
-+	$(call run-test, $@, env PROT_NONE_PY=1 $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/prot-none.py, \
-+	accessing PROT_NONE memory)
-+
- else
- run-gdbstub-%:
- 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
- endif
- EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
- 	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint \
--	      run-gdbstub-registers
-+	      run-gdbstub-registers run-gdbstub-prot-none
- 
- # ARM Compatible Semi Hosting Tests
- #
-diff --git a/tests/tcg/multiarch/gdbstub/prot-none.py b/tests/tcg/multiarch/gdbstub/prot-none.py
-new file mode 100644
-index 00000000000..751e44d5b93
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/prot-none.py
-@@ -0,0 +1,22 @@
-+"""Test that GDB can access PROT_NONE pages.
-+
-+This runs as a sourced script (via -x, via run-test.py).
-+
-+SPDX-License-Identifier: GPL-2.0-or-later
-+"""
-+from test_gdbstub import main, report
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    gdb.Breakpoint("break_here")
-+    gdb.execute("continue")
-+    val = int(gdb.parse_and_eval("*p"))
-+    report(val == 42, "{} != 42".format(val))
-+    gdb.execute("set *p = 24")
-+    gdb.execute("continue")
-+    exitcode = int(gdb.parse_and_eval("$_exitcode"))
-+    report(exitcode == 0, "{} != 0".format(exitcode))
-+
-+
-+main(run_test)
-diff --git a/tests/tcg/multiarch/prot-none.c b/tests/tcg/multiarch/prot-none.c
-new file mode 100644
-index 00000000000..66e38065cf0
---- /dev/null
-+++ b/tests/tcg/multiarch/prot-none.c
-@@ -0,0 +1,38 @@
-+/*
-+ * Test that GDB can access PROT_NONE pages.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <stdlib.h>
-+#include <sys/mman.h>
-+#include <unistd.h>
-+
-+void break_here(long *p)
-+{
-+}
-+
-+int main(void)
-+{
-+    long pagesize = sysconf(_SC_PAGESIZE);
-+    int err;
-+    long *p;
-+
-+    p = mmap(NULL, pagesize, PROT_READ | PROT_WRITE,
-+             MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+    assert(p != MAP_FAILED);
-+    *p = 42;
-+
-+    err = mprotect(p, pagesize, PROT_NONE);
-+    assert(err == 0);
-+
-+    break_here(p);
-+
-+    err = mprotect(p, pagesize, PROT_READ);
-+    assert(err == 0);
-+    if (getenv("PROT_NONE_PY")) {
-+        assert(*p == 24);
-+    }
-+
-+    return EXIT_SUCCESS;
-+}
--- 
-2.43.0
+--js
 
 
