@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E713E8279F7
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:07:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8D9E8279A2
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:53:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMwbK-0008GU-Pe; Mon, 08 Jan 2024 15:52:02 -0500
+	id 1rMwaB-0004b3-OT; Mon, 08 Jan 2024 15:50:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rMwa8-0004Ue-AO; Mon, 08 Jan 2024 15:50:48 -0500
+ id 1rMwZb-0003ov-CR; Mon, 08 Jan 2024 15:50:19 -0500
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rMwa3-00010N-VG; Mon, 08 Jan 2024 15:50:47 -0500
+ id 1rMwZF-000107-70; Mon, 08 Jan 2024 15:50:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=mtEQ8glNGSSFRzQhjtP//D2DZrP1dRqKKnCW34ZZatU=; b=iwPMC3kkBzvkOv0oX7txfpHzxj
- Sd/Kwpy6LHNzbQF3U73tK9x6IqOIVXoxSpVC41lmoGleN7vzHitOUVXyuKD3Kym8xZAfMk5h5yMax
- /47F2INodkK8AZaWUD8oRUvHz7GwGnKBbZ+prHuzJGhyfqT8TS26tCCLYZj38z0JymIu7s7TXpCfS
- d0I5UL4dXBue3LvnuPFyH38JkWDjYeV7WIAXbDRHGNt2mbzdAgE0fTWfXlKLBu3pRRvZpZag7wPU+
- ALteFXAYMiXzOXAuoOnbqhaSYwTK4OtiztO+wfQaYLUORHoOqRQn0vvgAeTBD4JSCtzzMa/o1Wc5b
- cQPmhInQ==;
+ bh=4lC935ROrT9cdSd5oQM6qeAFiPZpcvmJXYZzwgJAsGw=; b=SngBht92quYvotDFFZz+ESmBl+
+ stBytuJNL74TSN7YaVNRQrxtI+ZFtBE3yoR8RODsbsh6tS0Z3au9uowMY2YMmDjHcNEuHEJLb2V5h
+ 7ixbCMWqxAkR5DgTJ2uOxrPoK1oZvcykURYA5UOS7YBZRVbDOldLdjwX24BHpwP38lH4TVrLzRu1l
+ FZcqOYMfM/slzODvCjZAy/C4BOCE3rfn+vEJwJ7+w4ZQ4eySBxtGBf3QOgWtnpmalUP9dO+SICrxB
+ GF9rf5sSaeyetBxtYXW8KkuI06IekJd3bxMg9Xa9lpPP9LGqlNVfZCI2lNVBAfbk4E/62ldnuef6/
+ zTfVwGOA==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
- id 1rMwYi-007wXH-2u; Mon, 08 Jan 2024 20:49:21 +0000
+ id 1rMwYi-007wXI-2u; Mon, 08 Jan 2024 20:49:21 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1rMwYi-002NDx-1F; Mon, 08 Jan 2024 20:49:20 +0000
+ Hat Linux)) id 1rMwYi-002NE2-1Z; Mon, 08 Jan 2024 20:49:20 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -82,10 +82,10 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v3 01/46] net: add qemu_{configure, create}_nic_device(),
- qemu_find_nic_info()
-Date: Mon,  8 Jan 2024 20:26:30 +0000
-Message-ID: <20240108204909.564514-2-dwmw2@infradead.org>
+Subject: [PATCH v3 02/46] net: report list of available models according to
+ platform
+Date: Mon,  8 Jan 2024 20:26:31 +0000
+Message-ID: <20240108204909.564514-3-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240108204909.564514-1-dwmw2@infradead.org>
 References: <20240108204909.564514-1-dwmw2@infradead.org>
@@ -120,107 +120,148 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Most code which directly accesses nd_table[] and nb_nics uses them for
-one of two things. Either "I have created a NIC device and I'd like a
-configuration for it", or "I will create a NIC device *if* there is a
-configuration for it".  With some variants on the theme around whether
-they actually *check* if the model specified in the configuration is
-the right one.
-
-Provide functions which perform both of those, allowing platforms to
-be a little more consistent and as a step towards making nd_table[]
-and nb_nics private to the net code.
-
-Also export the qemu_find_nic_info() helper, as some platforms have
-special cases they need to handle.
+By noting the models for which a configuration was requested, we can give
+the user an accurate list of which NIC models were actually available on
+the platform/configuration that was otherwise chosen.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Paul Durrant <paul@xen.org>
 ---
- include/net/net.h |  7 ++++++-
- net/net.c         | 51 +++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 57 insertions(+), 1 deletion(-)
+ net/net.c | 94 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 94 insertions(+)
 
-diff --git a/include/net/net.h b/include/net/net.h
-index ffbd2c8d56..25ea83fd12 100644
---- a/include/net/net.h
-+++ b/include/net/net.h
-@@ -207,7 +207,12 @@ int qemu_show_nic_models(const char *arg, const char *const *models);
- void qemu_check_nic_model(NICInfo *nd, const char *model);
- int qemu_find_nic_model(NICInfo *nd, const char * const *models,
-                         const char *default_model);
--
-+NICInfo *qemu_find_nic_info(const char *typename, bool match_default,
-+                            const char *alias);
-+bool qemu_configure_nic_device(DeviceState *dev, bool match_default,
-+                               const char *alias);
-+DeviceState *qemu_create_nic_device(const char *typename, bool match_default,
-+                                    const char *alias);
- void print_net_client(Monitor *mon, NetClientState *nc);
- void net_socket_rs_init(SocketReadState *rs,
-                         SocketReadStateFinalize *finalize,
 diff --git a/net/net.c b/net/net.c
-index 0520bc1681..aeb7f573fc 100644
+index aeb7f573fc..962904eaef 100644
 --- a/net/net.c
 +++ b/net/net.c
-@@ -1087,6 +1087,57 @@ static int net_init_nic(const Netdev *netdev, const char *name,
+@@ -75,6 +75,8 @@ typedef QSIMPLEQ_HEAD(, NetdevQueueEntry) NetdevQueue;
+ 
+ static NetdevQueue nd_queue = QSIMPLEQ_HEAD_INITIALIZER(nd_queue);
+ 
++static GHashTable *nic_model_help;
++
+ /***********************************************************/
+ /* network device redirectors */
+ 
+@@ -1087,12 +1089,94 @@ static int net_init_nic(const Netdev *netdev, const char *name,
      return idx;
  }
  
-+NICInfo *qemu_find_nic_info(const char *typename, bool match_default,
-+                            const char *alias)
++static gboolean add_nic_result(gpointer key, gpointer value, gpointer user_data)
 +{
-+    NICInfo *nd;
++    GPtrArray *results = user_data;
++    GPtrArray *alias_list = value;
++    const char *model = key;
++    char *result;
++
++    if (!alias_list) {
++        result = g_strdup(model);
++    } else {
++        GString *result_str = g_string_new(model);
++        int i;
++
++        g_string_append(result_str, " (aka ");
++        for (i = 0; i < alias_list->len; i++) {
++            if (i) {
++                g_string_append(result_str, ", ");
++            }
++            g_string_append(result_str, alias_list->pdata[i]);
++        }
++        g_string_append(result_str, ")");
++        result = result_str->str;
++        g_string_free(result_str, false);
++        g_ptr_array_unref(alias_list);
++    }
++    g_ptr_array_add(results, result);
++    return true;
++}
++
++static int model_cmp(char **a, char **b)
++{
++    return strcmp(*a, *b);
++}
++
++static void show_nic_models(void)
++{
++    GPtrArray *results = g_ptr_array_new();
 +    int i;
 +
-+    for (i = 0; i < nb_nics; i++) {
-+        nd = &nd_table[i];
++    g_hash_table_foreach_remove(nic_model_help, add_nic_result, results);
++    g_ptr_array_sort(results, (GCompareFunc)model_cmp);
 +
-+        if (!nd->used || nd->instantiated) {
-+            continue;
-+        }
-+
-+        if ((match_default && !nd->model) || !g_strcmp0(nd->model, typename)
-+            || (alias && !g_strcmp0(nd->model, alias))) {
-+            return nd;
-+        }
++    printf("Available NIC models for this configuration:\n");
++    for (i = 0 ; i < results->len; i++) {
++        printf("%s\n", (char *)results->pdata[i]);
 +    }
-+    return NULL;
++    g_hash_table_unref(nic_model_help);
++    nic_model_help = NULL;
 +}
 +
-+
-+/* "I have created a device. Please configure it if you can" */
-+bool qemu_configure_nic_device(DeviceState *dev, bool match_default,
-+                               const char *alias)
++static void add_nic_model_help(const char *model, const char *alias)
 +{
-+    NICInfo *nd = qemu_find_nic_info(object_get_typename(OBJECT(dev)),
-+                                     match_default, alias);
++    GPtrArray *alias_list = NULL;
 +
-+    if (nd) {
-+        qdev_set_nic_properties(dev, nd);
-+        return true;
++    if (g_hash_table_lookup_extended(nic_model_help, model, NULL,
++                                     (gpointer *)&alias_list)) {
++        /* Already exists, no alias to add: return */
++        if (!alias) {
++            return;
++        }
++        if (alias_list) {
++            /* Check if this alias is already in the list. Add if not. */
++            if (!g_ptr_array_find_with_equal_func(alias_list, alias,
++                                                  g_str_equal, NULL)) {
++                g_ptr_array_add(alias_list, g_strdup(alias));
++            }
++            return;
++        }
 +    }
-+    return false;
++    /* Either this model wasn't in the list already, or a first alias added */
++    if (alias) {
++        alias_list = g_ptr_array_new();
++        g_ptr_array_set_free_func(alias_list, g_free);
++        g_ptr_array_add(alias_list, g_strdup(alias));
++    }
++    g_hash_table_replace(nic_model_help, g_strdup(model), alias_list);
 +}
 +
-+/* "Please create a device, if you have a configuration for it" */
-+DeviceState *qemu_create_nic_device(const char *typename, bool match_default,
-+                                    const char *alias)
-+{
-+    NICInfo *nd = qemu_find_nic_info(typename, match_default, alias);
-+    DeviceState *dev;
-+
-+    if (!nd) {
-+        return NULL;
-+    }
-+
-+    dev = qdev_new(typename);
-+    qdev_set_nic_properties(dev, nd);
-+    return dev;
-+}
+ NICInfo *qemu_find_nic_info(const char *typename, bool match_default,
+                             const char *alias)
+ {
+     NICInfo *nd;
+     int i;
  
- static int (* const net_client_init_fun[NET_CLIENT_DRIVER__MAX])(
-     const Netdev *netdev,
++    if (nic_model_help) {
++        add_nic_model_help(typename, alias);
++    }
++
+     for (i = 0; i < nb_nics; i++) {
+         nd = &nd_table[i];
+ 
+@@ -1606,6 +1690,10 @@ void net_check_clients(void)
+     NetClientState *nc;
+     int i;
+ 
++    if (nic_model_help) {
++        show_nic_models();
++        exit(0);
++    }
+     net_hub_check_clients();
+ 
+     QTAILQ_FOREACH(nc, &net_clients, next) {
+@@ -1685,6 +1773,12 @@ static int net_param_nic(void *dummy, QemuOpts *opts, Error **errp)
+     memset(ni, 0, sizeof(*ni));
+     ni->model = qemu_opt_get_del(opts, "model");
+ 
++    if (!nic_model_help && !g_strcmp0(ni->model, "help")) {
++        nic_model_help = g_hash_table_new_full(g_str_hash, g_str_equal,
++                                               g_free, NULL);
++        return 0;
++    }
++
+     /* Create an ID if the user did not specify one */
+     nd_id = g_strdup(qemu_opts_id(opts));
+     if (!nd_id) {
 -- 
 2.41.0
 
