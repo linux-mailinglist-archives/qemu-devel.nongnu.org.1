@@ -2,80 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB345826DAD
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:21:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0DC826DE2
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:29:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMocJ-0001x2-Qf; Mon, 08 Jan 2024 07:20:31 -0500
+	id 1rMojS-0005n3-5D; Mon, 08 Jan 2024 07:27:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMocB-0001uT-Hn
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:20:24 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMoc3-0005r3-9a
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:20:17 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40d8902da73so16195885e9.2
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 04:20:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704716412; x=1705321212; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Yjv7QhUyk1DBe4G4f2saIb5DXmOwx/nc3h5PoIHWUzc=;
- b=X4RAZyrI1AuPGgUktPFKKQJB2xQ8XFh86hp5+u6469pOhAKxIaxN3MqpEMgtPudUVq
- oxlp3CGeJBv0mhsxdqxtBZdrQeGV0HL2LQ5kiN0zTDJXgQtFQADrpmN0wP2ceed8iETv
- pqwB1w+v/AJhw5/voCXXEn94Z2Yuhp6wfsZ76qyb0YCrswTZ6F6q6qJCRyy4I4cPaODh
- IURrJ+JQ0cwrHBRqvdS8hHUK3tvaZ2eZEi5iCODlzW8kD4JdSkEDt0rjFMnLvUDPHXtn
- BFNj+IsTyB8fJNpZGdg3RZFcFhA+ahMTlM0l4wc5kjZN8l3mIbHMLIa2XwvZeNQbz0Fz
- fjIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704716412; x=1705321212;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Yjv7QhUyk1DBe4G4f2saIb5DXmOwx/nc3h5PoIHWUzc=;
- b=oZ7af+eq9VgSp0OWbWteWg5mYknpxN++tqCLUgb9wT7MSOyEmmJ6YR6r72F8ejFeNR
- gYqVXfUVmTC9UGSdUedxpTry6+pbgmmSiV1WrJTnNws8QhweWQfRs3opcLOOkaHO1JUt
- wzDHhI2fm5L90V4bRtLLoD8UWn8veSDMWhG+VOM3xeqzRQOEqt0zEODW6RHrG5MprTFE
- LWs0jx1rycrph7wI0bNp5Ftzi2ay5/uKgSoenLB3MdzREBTVYUizIkA24/Oa3BTYs4qA
- l8nLyRaMmdrnPmW9LLf+FDp70ZmdShOPIJ4kk3wmcWjI5njWrAQIxfFzxf0DFoH2eHbT
- 7sag==
-X-Gm-Message-State: AOJu0YzixY9HoEf4NzQEL+OvJVnaBUfi4ue3+1HCquWjZ1s9AhLwqqfE
- lKv+phWtLvhamAh+rZk3NvwYbXahiCE95A==
-X-Google-Smtp-Source: AGHT+IEzAx4rngqDGA3xmnbPvKmgzFU+LXG/P1pDI5A9C9iNRGeKW2cTQ4Lkjd9S/idW8XDj9TOBTw==
-X-Received: by 2002:a05:600c:4fd1:b0:40e:3b47:eb71 with SMTP id
- o17-20020a05600c4fd100b0040e3b47eb71mr1962566wmq.73.1704716411804; 
- Mon, 08 Jan 2024 04:20:11 -0800 (PST)
-Received: from [192.168.1.102] ([176.176.175.62])
- by smtp.gmail.com with ESMTPSA id
- f9-20020a05600c4e8900b0040e3bdff98asm8825124wmq.23.2024.01.08.04.20.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 04:20:11 -0800 (PST)
-Message-ID: <f030dc08-f010-43dd-9aaf-e9b8048a8e43@linaro.org>
-Date: Mon, 8 Jan 2024 13:20:09 +0100
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rMojN-0005gF-Qe; Mon, 08 Jan 2024 07:27:49 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rMoj9-0001Vd-M9; Mon, 08 Jan 2024 07:27:49 -0500
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 408CJ7eF011242; Mon, 8 Jan 2024 12:26:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=GWZ5VSSILwvZEYjs2ah+vKQhv71Sizq1i7905GYRhVg=;
+ b=eXwElvQ2AvLzT8soE9YIYlVKrCndglb1kIKoouuKU76bE7+DNgp0fD6YYJ+loqDS/6/Y
+ s80tA2b98JpSCfA26XiYwgSWexblKVBHX4Xx6JD+HvFcQ8zo+/eX/ydma+hAPoYeVjOM
+ PDOAhMQQIx3k3pc/y9cz7QSzYvZPGvp4vtq3Esbc3L9f9SgRjzrjU4ujze8fLW6zHqOK
+ nl/EGDZMcHZGPMw4AG1bXzVX9+MpaJYc/R7GPhMytjP10aIZKnbJnR0VuRQ/YW5qsQ7A
+ u7ykuStrbzvnGdeK+TFvh1A2g5aO+yyOKXQIvJXzmqkOZUTOy9vaRtVnHOeZGrv1AFeF Jw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vggxs857n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Jan 2024 12:26:47 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 408CMM9j023215;
+ Mon, 8 Jan 2024 12:26:47 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vggxs856j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Jan 2024 12:26:46 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 408C5E66022845; Mon, 8 Jan 2024 12:26:44 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfhjy7yjm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Jan 2024 12:26:44 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 408CQgO538797722
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 8 Jan 2024 12:26:42 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 951E420043;
+ Mon,  8 Jan 2024 12:26:42 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B6D5D20040;
+ Mon,  8 Jan 2024 12:26:41 +0000 (GMT)
+Received: from [9.155.200.166] (unknown [9.155.200.166])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  8 Jan 2024 12:26:41 +0000 (GMT)
+Message-ID: <1e5fb129a184ce743365f3503bc3ba2e47676b5c.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 08/43] qtest: bump npcm7xx_pwn-test timeout to 5 minutes
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, Richard Henderson
+ <richard.henderson@linaro.org>, Song Gao <gaosong@loongson.cn>,
+ =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, David
+ Hildenbrand <david@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Yanan Wang
+ <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>, Laurent Vivier
+ <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>, Alexandre Iooss
+ <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>, Laurent Vivier
+ <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>, Brian Cain
+ <bcain@quicinc.com>, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>, Mahmoud
+ Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>, Liu
+ Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Cleber Rosa <crosa@redhat.com>, kvm@vger.kernel.org,
+ Peter Maydell <peter.maydell@linaro.org>, Wainer dos
+ Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org, Weiwei Li
+ <liwei1518@gmail.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, John Snow <jsnow@redhat.com>, Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>, Nicholas Piggin <npiggin@gmail.com>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, =?ISO-8859-1?Q?C=E9dric?= Le Goater
+ <clg@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Eduardo
+ Habkost <eduardo@habkost.net>, Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org, Alistair Francis
+ <alistair.francis@wdc.com>, "Daniel P." =?ISO-8859-1?Q?Berrang=E9?=
+ <berrange@redhat.com>
+Date: Mon, 08 Jan 2024 13:26:41 +0100
+In-Reply-To: <20240103173349.398526-9-alex.bennee@linaro.org>
+References: <20240103173349.398526-1-alex.bennee@linaro.org>
+ <20240103173349.398526-9-alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/arm: add PCIe to Freescale i.MX6
-Content-Language: en-US
-To: Nikita Ostrenkov <n.ostrenkov@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Jean-Christophe Dubois <jcd@tribudubois.net>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20240107165702.47819-1-n.ostrenkov@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240107165702.47819-1-n.ostrenkov@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 3n4703UJLu9UuNQtQwKGxRASFadYab6V
+X-Proofpoint-ORIG-GUID: uFOpD788Yz5ZHIHSnHD0G_5gxHCVFtIt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-08_04,2024-01-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxscore=0
+ spamscore=0 clxscore=1011 phishscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 mlxlogscore=922 suspectscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401080106
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,41 +137,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Nikita,
-
-On 7/1/24 17:57, Nikita Ostrenkov wrote:
-> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+On Wed, 2024-01-03 at 17:33 +0000, Alex Benn=C3=A9e wrote:
+> From: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>=20
+> The npcm7xx_pwn-test takes 3 & 1/2 minutes in a --enable-debug build.
+> Bumping to 5 minutes will give more headroom.
+>=20
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Message-ID: <20230717182859.707658-5-berrange@redhat.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Message-Id: <20231215070357.10888-5-thuth@redhat.com>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 > ---
->   hw/arm/Kconfig            |  3 +++
->   hw/arm/fsl-imx6.c         | 25 ++++++++++++++++++++++
->   include/hw/arm/fsl-imx6.h | 44 ++++++++++++++++++++-------------------
->   3 files changed, 51 insertions(+), 21 deletions(-)
-> 
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index 660f49db49..575bb68c76 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -530,13 +530,16 @@ config FSL_IMX31
->   
->   config FSL_IMX6
->       bool
-> +    imply PCI_DEVICES
+> =C2=A0tests/qtest/meson.build | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+> index 000ac54b7d6..84cec0a847d 100644
+> --- a/tests/qtest/meson.build
+> +++ b/tests/qtest/meson.build
+> @@ -1,7 +1,7 @@
+> =C2=A0slow_qtests =3D {
+> =C2=A0=C2=A0 'bios-tables-test' : 120,
+> =C2=A0=C2=A0 'migration-test' : 480,
+> -=C2=A0 'npcm7xx_pwm-test': 150,
+> +=C2=A0 'npcm7xx_pwm-test': 300,
+> =C2=A0=C2=A0 'qom-test' : 900,
+> =C2=A0=C2=A0 'test-hmp' : 120,
+> =C2=A0}
 
-This should be PCIE_DEVICES.
-
->       imply I2C_DEVICES
->       select A9MPCORE
-> +    select PCI
-
-Incorrect, should be PCI_EXPRESS, but this is already
-(indirectly) selected by PCI_EXPRESS_DESIGNWARE which
-you select below, so not needed.
-
->       select IMX
->       select IMX_FEC
->       select IMX_I2C
->       select IMX_USBPHY
->       select WDT_IMX2
-> +    select PCI_EXPRESS_DESIGNWARE
->       select SDHCI
+Nit: s/pwn/pwm/ in the commit subject and message.
 
