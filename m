@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C766F8279BA
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:55:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC75382795B
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:51:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMwZx-00042f-OB; Mon, 08 Jan 2024 15:50:37 -0500
+	id 1rMwa9-0004Rh-Ft; Mon, 08 Jan 2024 15:50:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rMwZb-0003ou-Bs; Mon, 08 Jan 2024 15:50:19 -0500
+ id 1rMwZa-0003os-OE; Mon, 08 Jan 2024 15:50:19 -0500
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rMwZF-000108-C6; Mon, 08 Jan 2024 15:50:15 -0500
+ id 1rMwZF-00010K-RH; Mon, 08 Jan 2024 15:50:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=OnWPh5hbzzJOk4js2nxRTuG9hB5F2v55vySQRb6M4tk=; b=eM4ZffAn4bADdkBWEqoCKrgnIf
- zU48GV4UpKFWM8AZjnxqAsNDiDBB40Ne9EVPaZMtoZW3+PQbyU1RJQBwqrdBybANNmBYcnUANdvi6
- 3jQwb23XEJbXAdB8z2wKtWej+vmfHbf3vSn+ZxIEFUbx+y5K5A9QzBWx4TC3PPhlXRzYcY30AtfaH
- j6ZB5C74ZawnoR9pbtMFkFqDbDyTMuwxT7v9W45Qi0rs+jHA1fBUjUB/VNLvF3cXnktKP6l8AZAKD
- e6XnCxIBYP21Ps9UYsQeSm9Whiu+stofElHMXnGyXFGQsxMKRqo1x/rCYc1S89DacBc8KVdsQ51kM
- kbc0tmgA==;
+ bh=nQ3rktK8dEdIEwAMeeCC6bqdVVt9BSYkg4MRVTEfqOM=; b=bGBRXYSbyRkskdXWh6m971dJdP
+ 5XIzUANuHbkSZaFKWvwYPX45SbDNG5Fp0a3TOesDsQ33yypvAO9Gi6u/0HEdR431TkjP7mk7K4Owp
+ /InUIPomiJAIvxOJdUaPkJ0/3jWUkebXuphh9ozi6hfKvahJI7sx0LZ0dBk9hueidmt0lg6F4KUDh
+ 6oLeCH7TDfP4T2HQ1qvRFGGNuPScQKbTgqryBva7FULnF52zKDcH4zrQvWY8+k/ImNsKHXBzRpLx/
+ vxaDexMsh4s2s1HV0EAaK8/YK8elERa4drs1WpWoMFzMXeFozgiifA/NpPu3cBnTFcbfZultK2uoE
+ JvzSk6Dg==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
- id 1rMwYj-007wXO-2l; Mon, 08 Jan 2024 20:49:22 +0000
+ id 1rMwYj-007wXP-2m; Mon, 08 Jan 2024 20:49:22 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1rMwYj-002NEa-0w; Mon, 08 Jan 2024 20:49:21 +0000
+ Hat Linux)) id 1rMwYj-002NEe-1A; Mon, 08 Jan 2024 20:49:21 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -82,9 +82,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v3 10/46] hw/hppa: use pci_init_nic_devices()
-Date: Mon,  8 Jan 2024 20:26:39 +0000
-Message-ID: <20240108204909.564514-11-dwmw2@infradead.org>
+Subject: [PATCH v3 11/46] hw/loongarch: use pci_init_nic_devices()
+Date: Mon,  8 Jan 2024 20:26:40 +0000
+Message-ID: <20240108204909.564514-12-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240108204909.564514-1-dwmw2@infradead.org>
 References: <20240108204909.564514-1-dwmw2@infradead.org>
@@ -121,34 +121,24 @@ From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/hppa/machine.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ hw/loongarch/virt.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index c8da7c18d5..19d477105e 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -338,7 +338,6 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-     uint64_t kernel_entry = 0, kernel_low, kernel_high;
-     MemoryRegion *addr_space = get_system_memory();
-     MemoryRegion *rom_region;
--    long i;
-     unsigned int smp_cpus = machine->smp.cpus;
-     SysBusDevice *s;
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 4b7dc67a2d..c48804ac38 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -504,9 +504,7 @@ static void loongarch_devices_init(DeviceState *pch_pic, LoongArchMachineState *
+     fdt_add_uart_node(lams);
  
-@@ -362,10 +361,8 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-                         qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA));
-     }
- 
+     /* Network init */
 -    for (i = 0; i < nb_nics; i++) {
--        if (!enable_lasi_lan()) {
--            pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
--        }
-+    if (!enable_lasi_lan()) {
-+        pci_init_nic_devices(pci_bus, mc->default_nic);
-     }
+-        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
+-    }
++    pci_init_nic_devices(pci_bus, mc->default_nic);
  
-     /* BMC board: HP Powerbar SP2 Diva (with console only) */
+     /*
+      * There are some invalid guest memory access.
 -- 
 2.41.0
 
