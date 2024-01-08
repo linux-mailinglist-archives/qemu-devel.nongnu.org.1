@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A8FF827619
+	by mail.lfdr.de (Postfix) with ESMTPS id 79FA782761B
 	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 18:15:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMtCl-0007hq-12; Mon, 08 Jan 2024 12:14:27 -0500
+	id 1rMtCj-0007gb-6A; Mon, 08 Jan 2024 12:14:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rMtCi-0007gs-U5
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 12:14:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rMtCg-0007g9-RW
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 12:14:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rMtCT-0007XZ-GG
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 12:14:24 -0500
+ id 1rMtCV-0007YU-JG
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 12:14:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704734044;
+ s=mimecast20190719; t=1704734046;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZDiU/P4akxrPK7A1N68uyog7cxDlGiibG/DP3Uk0qsU=;
- b=UYvg7wQCd3ws/KIIa8sL/JrbqupD0nv80o5DqZrPTC3m/EmlpTLaB/3V6PsQmg09NuZGp1
- 1qTFOBaCdlCgNFP0Q6s7xze7pZ4gtCSKfVLo3EzqoBBKEv40fcN9wqd3SOqOFms3kxZAuc
- ifbBexqGwrWb57lPzimjDklTdkXFrp8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-5VQX_uB1N_eJHDY12Xp5DA-1; Mon,
- 08 Jan 2024 12:14:02 -0500
-X-MC-Unique: 5VQX_uB1N_eJHDY12Xp5DA-1
+ bh=sQKkMMniJPq4dyGYEr2/n+gkqYYbxbxQDC7EpLRfCiw=;
+ b=D3IMATqdbbeGfsY2cidjV3XJwEkg7obNe+z7flvuat5L4CC+QOKugSU/qzBsGNTGtX2Gth
+ JttYHkLG3BrgcUWR9hiD3QB8eqpAQU9DldxfXfj97SolAyCJO0196wb78EssNMHxOShBAJ
+ tJ62hnOr2EyK0Fea/khTBnzkF+qvJTw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-594-vAG62R49MbqySw5-V3Tpvg-1; Mon, 08 Jan 2024 12:14:04 -0500
+X-MC-Unique: vAG62R49MbqySw5-V3Tpvg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 35EC01C068C5;
- Mon,  8 Jan 2024 17:14:02 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74F01845E62;
+ Mon,  8 Jan 2024 17:14:04 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 54D8B5190;
- Mon,  8 Jan 2024 17:14:00 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7973C5190;
+ Mon,  8 Jan 2024 17:14:02 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -52,25 +52,25 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Cleber Rosa <crosa@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/2] tracetool: remove redundant --target-type / --target-name
- args
-Date: Mon,  8 Jan 2024 17:13:55 +0000
-Message-ID: <20240108171356.1037059-2-berrange@redhat.com>
+Subject: [PATCH 2/2] meson: generate .stp files for tools too
+Date: Mon,  8 Jan 2024 17:13:56 +0000
+Message-ID: <20240108171356.1037059-3-berrange@redhat.com>
 In-Reply-To: <20240108171356.1037059-1-berrange@redhat.com>
 References: <20240108171356.1037059-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
 X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,109 +86,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The --target-type and --target-name args are used to construct
-the default probe prefix if '--probe-prefix' is not given. The
-meson.build will always pass '--probe-prefix', so the other args
-are effectively redundant.
+The qemu-img, qemu-io, qemu-nbd, qemu-storage-daemon tools all have
+support for systemtap tracing built-in, so should be given corresponding
+.stp files to define their probes.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- docs/devel/tracing.rst |  3 +--
- meson.build            |  2 --
- scripts/tracetool.py   | 24 +++++-------------------
- 3 files changed, 6 insertions(+), 23 deletions(-)
+ meson.build | 61 +++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 40 insertions(+), 21 deletions(-)
 
-diff --git a/docs/devel/tracing.rst b/docs/devel/tracing.rst
-index d288480db1..043bed7fd0 100644
---- a/docs/devel/tracing.rst
-+++ b/docs/devel/tracing.rst
-@@ -357,8 +357,7 @@ probes::
- 
-     scripts/tracetool.py --backends=dtrace --format=stap \
-                          --binary path/to/qemu-binary \
--                         --target-type system \
--                         --target-name x86_64 \
-+                         --probe-prefix qemu.system.x86_64 \
-                          --group=all \
-                          trace-events-all \
-                          qemu.stp
 diff --git a/meson.build b/meson.build
-index 6c77d9687d..535f15da69 100644
+index 535f15da69..4db6907a20 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -3934,8 +3934,6 @@ foreach target : target_dirs
-                       command: [
-                         tracetool, '--group=all', '--format=' + stp['fmt'],
-                         '--binary=' + stp['bin'],
--                        '--target-name=' + target_name,
--                        '--target-type=' + target_type,
-                         '--probe-prefix=qemu.' + target_type + '.' + target_name,
-                         '@INPUT@', '@OUTPUT@'
-                       ],
-diff --git a/scripts/tracetool.py b/scripts/tracetool.py
-index ab7653a5ce..5de9ce96d3 100755
---- a/scripts/tracetool.py
-+++ b/scripts/tracetool.py
-@@ -44,12 +44,9 @@ def error_opt(msg = None):
-     --help                   This help message.
-     --list-backends          Print list of available backends.
-     --check-backends         Check if the given backend is valid.
--    --binary <path>          Full path to QEMU binary.
--    --target-type <type>     QEMU emulator target type ('system' or 'user').
--    --target-name <name>     QEMU emulator target name.
--    --group <name>           Name of the event group
--    --probe-prefix <prefix>  Prefix for dtrace probe names
--                             (default: qemu-<target-type>-<target-name>).\
-+    --binary <path>          Full path to QEMU binary (required for 'stap' backend).
-+    --group <name>           Name of the event group.
-+    --probe-prefix <prefix>  Prefix for dtrace probe names (required for 'stap' backend).
- """ % {
-             "script" : _SCRIPT,
-             "backends" : backend_descr,
-@@ -67,7 +64,7 @@ def main(args):
+@@ -3752,6 +3752,7 @@ if targetos == 'darwin'
+   entitlement = find_program('scripts/entitlement.sh')
+ endif
  
-     long_opts = ["backends=", "format=", "help", "list-backends",
-                  "check-backends", "group="]
--    long_opts += ["binary=", "target-type=", "target-name=", "probe-prefix="]
-+    long_opts += ["binary=", "probe-prefix="]
++traceable = []
+ emulators = {}
+ foreach target : target_dirs
+   config_target = config_target_mak[target]
+@@ -3919,27 +3920,11 @@ foreach target : target_dirs
+       emulators += {exe['name']: emulator}
+     endif
  
-     try:
-         opts, args = getopt.getopt(args[1:], "", long_opts)
-@@ -79,8 +76,6 @@ def main(args):
-     arg_format = ""
-     arg_group = None
-     binary = None
--    target_type = None
--    target_name = None
-     probe_prefix = None
-     for opt, arg in opts:
-         if opt == "--help":
-@@ -102,10 +97,6 @@ def main(args):
+-    if stap.found()
+-      foreach stp: [
+-        {'ext': '.stp-build', 'fmt': 'stap', 'bin': meson.current_build_dir() / exe['name'], 'install': false},
+-        {'ext': '.stp', 'fmt': 'stap', 'bin': get_option('prefix') / get_option('bindir') / exe['name'], 'install': true},
+-        {'ext': '-simpletrace.stp', 'fmt': 'simpletrace-stap', 'bin': '', 'install': true},
+-        {'ext': '-log.stp', 'fmt': 'log-stap', 'bin': '', 'install': true},
+-      ]
+-        custom_target(exe['name'] + stp['ext'],
+-                      input: trace_events_all,
+-                      output: exe['name'] + stp['ext'],
+-                      install: stp['install'],
+-                      install_dir: get_option('datadir') / 'systemtap/tapset',
+-                      command: [
+-                        tracetool, '--group=all', '--format=' + stp['fmt'],
+-                        '--binary=' + stp['bin'],
+-                        '--probe-prefix=qemu.' + target_type + '.' + target_name,
+-                        '@INPUT@', '@OUTPUT@'
+-                      ],
+-                      depend_files: tracetool_depends)
+-      endforeach
+-    endif
++    traceable += [{
++      'exe': exe['name'],
++      'probe-prefix': 'qemu.' + target_type + '.' + target_name,
++    }]
++
+   endforeach
+ endforeach
  
-         elif opt == "--binary":
-             binary = arg
--        elif opt == '--target-type':
--            target_type = arg
--        elif opt == '--target-name':
--            target_name = arg
-         elif opt == '--probe-prefix':
-             probe_prefix = arg
+@@ -3974,6 +3959,14 @@ if have_tools
+                install: true)
  
-@@ -127,13 +118,8 @@ def main(args):
-     if arg_format == "stap":
-         if binary is None:
-             error_opt("--binary is required for SystemTAP tapset generator")
--        if probe_prefix is None and target_type is None:
--            error_opt("--target-type is required for SystemTAP tapset generator")
--        if probe_prefix is None and target_name is None:
--            error_opt("--target-name is required for SystemTAP tapset generator")
--
-         if probe_prefix is None:
--            probe_prefix = ".".join(["qemu", target_type, target_name])
-+            error_opt("--probe-prefix is required for SystemTAP tapset generator")
+   subdir('storage-daemon')
++
++  foreach exe: [ 'qemu-img', 'qemu-io', 'qemu-nbd', 'qemu-storage-daemon']
++    traceable += [{
++      'exe': exe,
++      'probe-prefix': 'qemu.' + exe.substring(5).replace('-', '_')
++    }]
++  endforeach
++
+   subdir('contrib/rdmacm-mux')
+   subdir('contrib/elf2dmp')
  
-     if len(args) < 2:
-         error_opt("missing trace-events and output filepaths")
+@@ -4006,6 +3999,32 @@ if have_tools
+   endif
+ endif
+ 
++if stap.found()
++  foreach t: traceable
++    foreach stp: [
++      {'ext': '.stp-build', 'fmt': 'stap', 'bin': meson.current_build_dir() / t['exe'], 'install': false},
++      {'ext': '.stp', 'fmt': 'stap', 'bin': get_option('prefix') / get_option('bindir') / t['exe'], 'install': true},
++      {'ext': '-simpletrace.stp', 'fmt': 'simpletrace-stap', 'bin': '', 'install': true},
++      {'ext': '-log.stp', 'fmt': 'log-stap', 'bin': '', 'install': true},
++    ]
++      cmd = [
++        tracetool, '--group=all', '--format=' + stp['fmt'],
++        '--binary=' + stp['bin'],
++        '--probe-prefix=' + t['probe-prefix'],
++        '@INPUT@', '@OUTPUT@'
++      ]
++
++      custom_target(t['exe'] + stp['ext'],
++                    input: trace_events_all,
++                    output: t['exe'] + stp['ext'],
++                    install: stp['install'],
++                    install_dir: get_option('datadir') / 'systemtap/tapset',
++                    command: cmd,
++                    depend_files: tracetool_depends)
++    endforeach
++  endforeach
++endif
++
+ subdir('scripts')
+ subdir('tools')
+ subdir('pc-bios')
 -- 
 2.43.0
 
