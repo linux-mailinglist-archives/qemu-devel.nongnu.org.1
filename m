@@ -2,71 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07DD82747F
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E47E82748A
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:56:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMrvM-0008Lz-Uh; Mon, 08 Jan 2024 10:52:24 -0500
+	id 1rMrz9-0000pM-8c; Mon, 08 Jan 2024 10:56:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMrvG-0008La-MN
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:52:20 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rMrz7-0000p6-9d
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:56:17 -0500
+Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMrvE-0007k2-Qk
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:52:18 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-557c46872d3so627381a12.3
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 07:52:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rMrz5-0001bG-Jm
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:56:17 -0500
+Received: by mail-oo1-xc2d.google.com with SMTP id
+ 006d021491bc7-59602557ff0so1278619eaf.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 07:56:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704729134; x=1705333934; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sWOvJQCyo5Mu6qlyfT/l/TSETsIQ8Mh8a+/P64TOwR0=;
- b=gjWYy8d23Z7//PO16fRUCc4wusFcRGtWNhvF98KXTJ4+UN3upOn8Uhsz45g5f1bIRi
- V9mJcCZDFyjLpMCS/rGsQV0vpAC0/TC8Nu7U5uzJYhycVAb5vNEMsT9w/f8BcGC+By6z
- hPQe4w/sAL/RNPUQu2ppZ55Gm2ahFpIbxxkZo1LHUQTtO9Rb3ByZUdqVdqFL4GK9fMZ8
- 7kk+jL+QL3zxbHQ1IX8lI6OCKRdv/Iq2MG/CACkiQSpVjV3LapUPdSDIJ+Aq8dyqc/Iy
- 3EsaX7GC7rW4Enzo3QWV2ApUcESYSYxKTPouFL2qN2hhiZHuMX6jYuLxfXZtEjLMFH+y
- fPuQ==
+ d=gmail.com; s=20230601; t=1704729374; x=1705334174; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2AqdTUG2m2/afDTqeTldEZ2BjzK2MXyeKiFvnB/M+OE=;
+ b=IscwD1pYAnXtxd7jDl7+hNpYkI0jsOBvXfg+2clQiK7tVXlfHzg616BPVubsEGrkPO
+ UAO0hT2vcYYdvaCdtVfVb76TwrL44ZXXotKVfwV8TMyKog1gQnL/nPTP/FDhutefqdJl
+ 4Vcs3QyYsCQGe4JQijKRHERndWW+WzlM5ECyfQAigAf32rrXM8Lfnn4dYZF/x8Qcmtec
+ L1iW36MhRb8xQFSvj1DDV6KbBxxXBcKMc5DPMpnUIN6fR/hoP3gu/3fu6PQkY/LdbBhd
+ 0OSSHLHbnl3O0JIKpFiwZWM/EVkfQXuv4PUnLZJnF9j27ccn8tOFCIVrrT9jEy5jU01M
+ Q7yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704729134; x=1705333934;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sWOvJQCyo5Mu6qlyfT/l/TSETsIQ8Mh8a+/P64TOwR0=;
- b=EKRNGYj+wKHnyTsrp4srmm5ULxhgbwSgIfWJfbgIFt45Ws88N2R8n7uIQ3DYrD3ewh
- R1wyFQjKvgB53HAmRBn1o0+T2XfNkbxBGjJtsCX4qmhSW8HP/NWu44hvk8hbYI6D4Afy
- igxscFcKmPZajFGnagup9e9SnQEdFI4eRgGIh/tb6ZKgDPvxormV2ogW967YHVDlc6A+
- VeTtJOHTfjOlBiZu0BwHCZAOWON43AvFq7+93e1RxQ4TCIC7LABxmTkpMWw2HqqQXEak
- qrvXNP3dKSfSfeTtAQcafCpJ6d1FWjMT1zt3juoO9OBRyPUEm3l08xTPdt1/dCT+y+a9
- 3paw==
-X-Gm-Message-State: AOJu0YzlgwgWC5nx1O4uLlQUT6nRgJtTkoSzx1vqPGXx/O3unHaW9GIl
- tStN16H0ZoTszyMJU9QBKyrymMG1JBurCvwnX+18rxIkqkHVZd+LwIHobrjR
-X-Google-Smtp-Source: AGHT+IHrqonjqMpAuzICGuQ7jHfX3dN8LcBZXv9hscgC5chtwGmRgLT+9PdiIsb4PXQX9J9cfhytmxiz0ATTydEvzHQ=
-X-Received: by 2002:a50:c050:0:b0:557:6958:2af6 with SMTP id
- u16-20020a50c050000000b0055769582af6mr2255441edd.26.1704729134402; Mon, 08
- Jan 2024 07:52:14 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704729374; x=1705334174;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=2AqdTUG2m2/afDTqeTldEZ2BjzK2MXyeKiFvnB/M+OE=;
+ b=LPxUWSPblcGG+DQifKYArjHEOObCWcZRmDhY4DWaaN6VWnm0iObythz9etwKvTr8ha
+ SchxGzZgJnofXn6I35b8ULZ6UquLWSkl8Izc9APrI7Yq7e242+U2PyUcfaeU7t+miTa4
+ 43fmx2q8i8XXfxr6amSAoXYNxBxy4drPIAbe57eIX4JZAWJFX8+vHXHEmw/1LSGYydTJ
+ F1LMPiRqq2kCX8OqMPXelV15vhZQBSFsYStKrjsSxWFLqXuxWo+r/4RBsyLO62IwyZ9x
+ YbFEmRYj0TJyO+5Ni1zXUYm4GdpHNoC0B5QGBzUZ1ER1QOAHRtOH4vBTVC5Btq3NAWde
+ aG2A==
+X-Gm-Message-State: AOJu0YwFVpH2FyEZs9ZnoxFBj/HZISBRRo3Jg2eu69THbfmfE1fM4m6S
+ wgqg327EsW7KEZLc8SCQTOyHkP3fVdhvImjpm68=
+X-Google-Smtp-Source: AGHT+IFXxC0ef+bYo7w/tcI1Xq+CSHNn1w0FjV6LoTaGa29iys4KRvYNTBRjQw+iGP4Ul8GEgx1c9+NnqyJ4LJSoxno=
+X-Received: by 2002:a4a:58c3:0:b0:590:95e0:bb6c with SMTP id
+ f186-20020a4a58c3000000b0059095e0bb6cmr2385221oob.1.1704729373786; Mon, 08
+ Jan 2024 07:56:13 -0800 (PST)
 MIME-Version: 1.0
-References: <20180622125713.15303-1-peter.maydell@linaro.org>
- <20180622125713.15303-14-peter.maydell@linaro.org>
-In-Reply-To: <20180622125713.15303-14-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 8 Jan 2024 15:52:03 +0000
-Message-ID: <CAFEAcA9ZQ7FCS=eTCvPNy+knpeia6r4GrF2UN5W2bE6znvonSA@mail.gmail.com>
-Subject: Re: [Qemu-devel] [PULL 13/28] hw/arm/virt: Use 256MB ECAM region by
- default
-To: qemu-devel@nongnu.org, Eric Auger <eric.auger@redhat.com>
+References: <20231207145545.783877-1-aesteve@redhat.com>
+ <CAJSP0QVGwTOgtRSaN3JbRKs4h2c_wH1WGTDLaBKme+vhTuDQsQ@mail.gmail.com>
+ <CADSE00Ja8fVJUfu5s+mHavoN-BYwSpxB35a44VwU0SWm5bbZzA@mail.gmail.com>
+In-Reply-To: <CADSE00Ja8fVJUfu5s+mHavoN-BYwSpxB35a44VwU0SWm5bbZzA@mail.gmail.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Mon, 8 Jan 2024 10:56:01 -0500
+Message-ID: <CAJSP0QU9FkyugF8T0654zkJodtf=YF+3iOeLWUW=QqhQP8bYWw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Virtio dmabuf improvements
+To: Albert Esteve <aesteve@redhat.com>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@gmail.com, kraxel@redhat.com, 
+ "Michael S. Tsirkin" <mst@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,62 +89,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 22 Jun 2018 at 14:09, Peter Maydell <peter.maydell@linaro.org> wrote:
+On Mon, 8 Jan 2024 at 10:49, Albert Esteve <aesteve@redhat.com> wrote:
+> On Mon, Dec 11, 2023 at 10:48=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail.=
+com> wrote:
+>>
+>> On Thu, 7 Dec 2023 at 09:55, Albert Esteve <aesteve@redhat.com> wrote:
+>> >
+>> > v1: https://www.mail-archive.com/qemu-devel@nongnu.org/msg1005257.html
+>> > v1 -> v2:
+>> >   - Solved an unitialized uuid value on vhost-user source
+>> >   - Changed cleanup strategy, and traverse all objects in the
+>> >     table to remove them instead.
+>>
+>> Please update the vhost-user specification
+>> (docs/interop/vhost-user.rst) so people implementing front-ends and
+>> back-ends are aware that only the back-end that added a shared
+>> resource can remove it.
+>>
+>> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+>>
 >
-> From: Eric Auger <eric.auger@redhat.com>
+> Will do :)
 >
-> With this patch, virt-3.0 machine uses a new 256MB ECAM region
-> by default instead of the legacy 16MB one, if highmem is set
-> (LPAE supported by the guest) and (!firmware_loaded || aarch64).
->
-> Indeed aarch32 mode FW may not support this high ECAM region.
+> Should I add the `Acked-by` manually to the commits or does it get automa=
+tically picked up later?
 
-This is a rather old change by now, but I've been looking
-at it because it exposes an issue which was previously
-masked by a different bug...
+Happy New Year! When a patch series is merged then the maintainer
+usually (automatically) picks up trailers from the latest revision on
+the mailing list. Trailers from earlier revisions may not be present.
 
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index d8abf89e8c8..0f8bfa57d7e 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -1318,6 +1318,7 @@ static void machvirt_init(MachineState *machine)
->      int n, virt_max_cpus;
->      MemoryRegion *ram = g_new(MemoryRegion, 1);
->      bool firmware_loaded = bios_name || drive_get(IF_PFLASH, 0, 0);
-> +    bool aarch64 = true;
->
->      /* We can probe only here because during property set
->       * KVM is not available yet
-> @@ -1433,6 +1434,8 @@ static void machvirt_init(MachineState *machine)
->          numa_cpu_pre_plug(&possible_cpus->cpus[cs->cpu_index], DEVICE(cpuobj),
->                            &error_fatal);
->
-> +        aarch64 &= object_property_get_bool(cpuobj, "aarch64", NULL);
-> +
->          if (!vms->secure) {
->              object_property_set_bool(cpuobj, false, "has_el3", NULL);
->          }
-> @@ -1491,6 +1494,8 @@ static void machvirt_init(MachineState *machine)
->          create_uart(vms, pic, VIRT_SECURE_UART, secure_sysmem, serial_hd(1));
->      }
->
-> +    vms->highmem_ecam &= vms->highmem && (!firmware_loaded || aarch64);
+When you respin the patch series then you can add trailers manually
+with git rebase -i by adding "x git commit --no-edit
+--trailer=3D'Acked-by: Stefan Hajnoczi <stefanha@redhat.com>'" lines in
+between each commit in the rebase list.
 
-Do you remember why this conditional is the way it is?
-As it stands, it will disable the high-memory ECAM for
-an AArch32 VM that's loaded firmware, but leaves it enabled
-if we're direct booting Linux. That's a problem because 32-bit
-Linux falls over if you pass it a highmem-ECAM, even if LPAE
-is enabled (somewhere along the line it discards the high 32
-bits of the address of the ECAM in the dtb, so it thinks the
-ECAM overlaps with another memory region, and won't recognize
-the pci controller; I have a feeling this is a regression in
-the kernel). Plus, we have no way to tell if the guest
-kernel has LPAE enabled at all.
-
-Maybe it would be safer to insist that the guest is aarch64
-before we enable highmem ECAM?
-
-thanks
--- PMM
+Stefan
 
