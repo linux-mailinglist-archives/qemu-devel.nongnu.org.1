@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F36D826D59
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:02:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84AEA826D61
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:03:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMoJq-0000un-Ut; Mon, 08 Jan 2024 07:01:26 -0500
+	id 1rMoLZ-0001hR-8G; Mon, 08 Jan 2024 07:03:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMoJa-0000sA-3F
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:01:10 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMoLW-0001gs-Ie
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:03:10 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMoJW-00050a-KZ
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:01:09 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40e461c1f5cso10843695e9.3
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 04:01:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMoLV-0005bq-0h
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 07:03:10 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-336990fb8fbso1695382f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 04:03:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704715263; x=1705320063; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ d=linaro.org; s=google; t=1704715387; x=1705320187; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=63hD7NV97qAtvHhrTepD1K2VRHp54OGg6fm+PARkOJA=;
- b=co+NdO9gJOfe6e1UHrxhMbWzYRBRJyqdFce5geal+PJQq7eV+l9mrnKyvnAjH7sap4
- 7J145Dk6bKlpnE4XBM+mrmwLGHRK3yjofhtR0R8n3+v/oDcXhDzT5IHSjbMIdVFB1fWk
- j5YCVRIf4sfHn1YSnTaJ5PUOC3aQiEd958IhsA1HxnEVLXNrw/E9PbGxKmz8wsa23oM/
- 208OHXAgILN85iOmLhyWVg/o4AZicPq3dqbmdwraEXrY0JC7mlpAEdtrEQkwGA3kRG/P
- iE+HEaQUcurcXjZ8wzTnl4hnBQe2dClO/KlVVLOfyss0R0DBHYVq1aPP+btC8C+eYgjd
- 93dA==
+ bh=zpymm/kt3CHzXmb7fCv0GtjP6/svBoF6IF2skQ/PclE=;
+ b=Nus1EJW5PtDhVmkZVmUOwTmtEO4w5LsJWs88dHd8qt1h3Cexl7R+TIMaaLukV/7Fay
+ p+0VjeN8HQ1GOP/PWOElCKxc4ng+2s9ceAWrlnixMWAywNMfauSm4pmmgdw5r0/2JOYu
+ ReKhwb3AlLFxXO5yKlW3/t0wq2CPS8+bcagyprNg6o74JPpDaJRNR03CEjYg2E/fcckW
+ 5pQgcSPML8lqQ5bb0TsUyqocJaIC/lqQW4s99nqdbDb3XfoTSX5DHA4udd3LkdjrR0dH
+ Vevv/1Z7q85Qvvyg7czpumePDXd+qzeChQSQoB5RjblxGl1aBbgq+hO+zvY3yZrRDETa
+ tQhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704715263; x=1705320063;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ d=1e100.net; s=20230601; t=1704715387; x=1705320187;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=63hD7NV97qAtvHhrTepD1K2VRHp54OGg6fm+PARkOJA=;
- b=Bgj3+OxOBW65uhFoyP3xLQueHU/3FXduZIygbJVE4R3/tYD4cqt/uUfIkHAhbLpPf/
- RoBKGLq+sra/Cklwy9hQZbN/jiBqEf3qTPsAxvKSNO0d52m1aaCOBZuokr4n9UIBQgus
- K6/Ofj84xcfH7LN2hPtXwh9HrQLuHT65lZDOadEhzlwBarktfFnn/xiIk1TvhBCahteX
- U4ShO4pjIrRvVhLBVOCEVk/1zcmJgjyLwaRfE/JnoA9L2NiEE2Gzu0jkPsa1litLTPXi
- 7hQhdRqBtTbxQZo8LBFFBT7eAowaSUbfwucqxP2zFACGIl3X9bsDS+kPROBmqry67Rwg
- PmQg==
-X-Gm-Message-State: AOJu0YzkpOCeDIDmtRrs4PtbhjlmTBKiw1MJ0N91tGSPpSFG8PXiB/UU
- RijS1jaQkGXDH1NUwTk4HC/fdJai/u4ACw==
-X-Google-Smtp-Source: AGHT+IGYojOe+hAnRcAD2P3QygCYYNiIsCXjQAF70e7PHo1BRGSBjuFBQ+ZDkGuCbbyhKOKikTXsPQ==
-X-Received: by 2002:a05:600c:204f:b0:40d:9237:daf5 with SMTP id
- p15-20020a05600c204f00b0040d9237daf5mr1326268wmg.69.1704715262879; 
- Mon, 08 Jan 2024 04:01:02 -0800 (PST)
+ bh=zpymm/kt3CHzXmb7fCv0GtjP6/svBoF6IF2skQ/PclE=;
+ b=LwQai2j6jyZ0f8NbRQqGDuvqpj9/JWiP/O42TrBnEIuo/yD9PcUw509kliItzNtUjY
+ Dbp9qK2bnLo4kLvVW7lAuRp5s04HX/NYk5olYV6Oqzt2RVCd1y7Cd/dwnQKDDHpb5j78
+ z/tW7D1JBqkBagTdb50TJ4F+oa94Vgo19fcq9K0YaMOf/76OxiDNe0d1+kWV/YaUVrLv
+ MLtFXxnvajCNL0iBUNc0YGezHRl0DYOCBbBbyr2O+00Rvv/HbHSD5TP2+E+vftgyTddp
+ ADtkvfsVEaHpaSO2E7nM7muk2nFtv52QXT0cRVbnWfSMGC+L96Gxv7owYU0HEquvWALY
+ fEFA==
+X-Gm-Message-State: AOJu0Yz4R/F+PwcYCqlfJ57m2C3Mf0nhQ0uMdI/qfz8Vou9tgNSzxGCA
+ /8ln8leq0nDtuk7rFkqZvHwfUTxgyF+o9s6jTDzAZj2rUdY=
+X-Google-Smtp-Source: AGHT+IG4AWKp+4MA+E2hTaQLuUMbYXqp7gs8YxvhhAA+UGtO7eaAHJuvrXoIPAhSHcxKfym7cCjzDw==
+X-Received: by 2002:a05:600c:6907:b0:40d:88bc:a896 with SMTP id
+ fo7-20020a05600c690700b0040d88bca896mr1859077wmb.62.1704715387557; 
+ Mon, 08 Jan 2024 04:03:07 -0800 (PST)
 Received: from [192.168.1.102] ([176.176.175.62])
  by smtp.gmail.com with ESMTPSA id
- d7-20020adfe2c7000000b00336d24b4847sm7613746wrj.114.2024.01.08.04.01.01
+ bg11-20020a05600c3c8b00b0040d6ffae526sm10813708wmb.39.2024.01.08.04.03.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 04:01:02 -0800 (PST)
-Message-ID: <685bc632-4cdb-499e-a23a-584578792681@linaro.org>
-Date: Mon, 8 Jan 2024 13:01:00 +0100
+ Mon, 08 Jan 2024 04:03:07 -0800 (PST)
+Message-ID: <0ba00ce5-0b4c-4e43-890d-9ebe6ecca6bc@linaro.org>
+Date: Mon, 8 Jan 2024 13:03:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] nubus-device: round Declaration ROM memory region
- address to qemu_target_page_size()
+Subject: Re: [PATCH v3 2/3] hw/arm/armv7m: alias the NVIC "num-prio-bits"
+ property
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>
-References: <20240107212538.227627-1-mark.cave-ayland@ilande.co.uk>
- <20240107212538.227627-2-mark.cave-ayland@ilande.co.uk>
-Cc: laurent@vivier.eu, elliotnunn@fastmail.com, qemu-devel@nongnu.org
+To: Samuel Tardieu <sam@rfc1149.net>, qemu-devel@nongnu.org
+Cc: Anton Kochkov <anton.kochkov@proton.me>, qemu-arm@nongnu.org,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20240106181503.1746200-1-sam@rfc1149.net>
+ <20240106181503.1746200-3-sam@rfc1149.net>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240107212538.227627-2-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20240106181503.1746200-3-sam@rfc1149.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,72 +98,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/1/24 22:25, Mark Cave-Ayland wrote:
-> Declaration ROM binary images can be any arbitrary size, however if a host ROM
-> memory region is not aligned to qemu_target_page_size() then we fail the
-> "assert(!(iotlb & ~TARGET_PAGE_MASK))" check in tlb_set_page_full().
-
-IIUC this isn't specific to NuBus but to any ROM used to execute code
-in place.
-
-Shouldn't this be handled in memory_region_init_rom()?
-
-> Ensure that the host ROM memory region is aligned to qemu_target_page_size()
-> and adjust the offset at which the Declaration ROM image is loaded so that the
-> image is still aligned to the end of the Nubus slot.
+On 6/1/24 19:15, Samuel Tardieu wrote:
+> A SoC will not have a direct access to the NVIC embedded in its ARM
+> core. By aliasing the "num-prio-bits" property similarly to what is
+> done for the "num-irq" one, a SoC can easily configure it on its
+> armv7m instance.
 > 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   hw/nubus/nubus-device.c | 16 ++++++++++++----
->   1 file changed, 12 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/nubus/nubus-device.c b/hw/nubus/nubus-device.c
-> index 49008e4938..e4f824d58b 100644
-> --- a/hw/nubus/nubus-device.c
-> +++ b/hw/nubus/nubus-device.c
-> @@ -10,6 +10,7 @@
->   
->   #include "qemu/osdep.h"
->   #include "qemu/datadir.h"
-> +#include "exec/target_page.h"
->   #include "hw/irq.h"
->   #include "hw/loader.h"
->   #include "hw/nubus/nubus.h"
-> @@ -30,7 +31,7 @@ static void nubus_device_realize(DeviceState *dev, Error **errp)
->       NubusDevice *nd = NUBUS_DEVICE(dev);
->       char *name, *path;
->       hwaddr slot_offset;
-> -    int64_t size;
-> +    int64_t size, align_size;
->       int ret;
->   
->       /* Super */
-> @@ -76,16 +77,23 @@ static void nubus_device_realize(DeviceState *dev, Error **errp)
->           }
->   
->           name = g_strdup_printf("nubus-slot-%x-declaration-rom", nd->slot);
-> -        memory_region_init_rom(&nd->decl_rom, OBJECT(dev), name, size,
-> +
-> +        /*
-> +         * Ensure ROM memory region is aligned to target page size regardless
-> +         * of the size of the Declaration ROM image
-> +         */
-> +        align_size = ROUND_UP(size, qemu_target_page_size());
-> +        memory_region_init_rom(&nd->decl_rom, OBJECT(dev), name, align_size,
->                                  &error_abort);
-> -        ret = load_image_mr(path, &nd->decl_rom);
-> +        ret = load_image_size(path, memory_region_get_ram_ptr(&nd->decl_rom) +
-> +                                    (uintptr_t)align_size - size, size);
->           g_free(path);
->           g_free(name);
->           if (ret < 0) {
->               error_setg(errp, "could not load romfile \"%s\"", nd->romfile);
->               return;
->           }
-> -        memory_region_add_subregion(&nd->slot_mem, NUBUS_SLOT_SIZE - size,
-> +        memory_region_add_subregion(&nd->slot_mem, NUBUS_SLOT_SIZE - align_size,
->                                       &nd->decl_rom);
->       }
->   }
+>   hw/arm/armv7m.c         | 2 ++
+>   include/hw/arm/armv7m.h | 1 +
+>   2 files changed, 3 insertions(+)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
 
