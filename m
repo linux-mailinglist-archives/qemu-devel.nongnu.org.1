@@ -2,61 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8843F8274B3
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 17:10:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F13788274D8
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 17:17:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMsBj-0006oZ-8x; Mon, 08 Jan 2024 11:09:19 -0500
+	id 1rMsIO-00022d-K5; Mon, 08 Jan 2024 11:16:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rMsBg-0006o0-64
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 11:09:16 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rMsI4-00021J-PM
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 11:15:52 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rMsBd-0000oc-B1
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 11:09:15 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rMsI1-000661-Q4
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 11:15:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704730146;
+ s=mimecast20190719; t=1704730548;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=r8mtw+h6B0EMxH6LprYC5smO9JVUNI4HSvZlhjoQ0uE=;
- b=NM/8lce4jMRNTHBfXCTnZGwY9YX/QiHDHRWicPrZQ6AGVPRrvx03L0v39muNLOCvp9p8kG
- onGIieSvDxMm6KkNCFqtWKqbWZS6Gr+cB9UMQHsRksW99WF7Ridm27pLtL3PP9BRTvEoyL
- uvI2jDygUp/Lyhyu2uYX3h8/E/0sv8w=
+ bh=wtJkDedwDHeF/y7ha9RF4keG1FriyOywCLFXDPSGFgg=;
+ b=gElPLcuuYDkNTB2+SMovuJX7WetFp5xhDRCpcSuPE7z01aheGb1n3a6qJZX7BBk4B55SaY
+ i78lZ2yk2DEHvjXg40z3tH0fAx9/TdQIkeog3WpqHdspw2b/OWzFIYtF8ndmR1dAKjmIy/
+ QfV5jKkybJCb2W+y+JO68v7bfROnIoU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-13-J7iEtQL5OymJMla8Rv6b8A-1; Mon, 08 Jan 2024 11:09:03 -0500
-X-MC-Unique: J7iEtQL5OymJMla8Rv6b8A-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-43-Ecuw40gPNEulI4lE6Z1Pvg-1; Mon, 08 Jan 2024 11:15:45 -0500
+X-MC-Unique: Ecuw40gPNEulI4lE6Z1Pvg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DE99C91856D;
- Mon,  8 Jan 2024 16:09:02 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.194.130])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 99E782166B33;
- Mon,  8 Jan 2024 16:09:02 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 4A4551800D67; Mon,  8 Jan 2024 17:09:00 +0100 (CET)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH v2 3/3] hw/pflash: implement update buffer for block writes
-Date: Mon,  8 Jan 2024 17:08:59 +0100
-Message-ID: <20240108160900.104835-4-kraxel@redhat.com>
-In-Reply-To: <20240108160900.104835-1-kraxel@redhat.com>
-References: <20240108160900.104835-1-kraxel@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DEEBE85A589;
+ Mon,  8 Jan 2024 16:15:44 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AC9045191;
+ Mon,  8 Jan 2024 16:15:44 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id A24AA21E680D; Mon,  8 Jan 2024 17:15:43 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: inesvarhol <inesvarhol@proton.me>,  =?utf-8?Q?In=C3=A8s?= Varhol
+ <ines.varhol@telecom-paris.fr>,  Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>,  Peter Maydell
+ <peter.maydell@linaro.org>,  Eduardo Habkost <eduardo@habkost.net>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  qemu-devel@nongnu.org,  Alistair Francis
+ <alistair@alistair23.me>,  Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Laurent Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>
+Subject: Re: [PATCH v5 2/3] tests/qtest: Add STM32L4x5 EXTI QTest testcase
+In-Reply-To: <805ca196-5464-4023-a1c1-97d5a6699c1b@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 5 Jan 2024 11:19:12
+ +0100")
+References: <20231228161944.303768-1-ines.varhol@telecom-paris.fr>
+ <20231228161944.303768-3-ines.varhol@telecom-paris.fr>
+ <61fd13b3-7cc9-4e27-bf91-bd2b4aedf97b@linaro.org>
+ <ZjC6phtwjcDoQP-NDP6GF-dvCVK8Ctk9EeW_JezuNBqnQq4-V6NU6eAhECMqxJzMDRxwjbb-LPcHTvysc6YGuLD7ckWhbtpqD1g9lnklofI=@proton.me>
+ <5f624a13-0ba0-4d9a-8910-2ef1c784a295@linaro.org>
+ <805ca196-5464-4023-a1c1-97d5a6699c1b@linaro.org>
+Date: Mon, 08 Jan 2024 17:15:43 +0100
+Message-ID: <87v883by34.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -65,7 +80,7 @@ X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,260 +96,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an update buffer where all block updates are staged.
-Flush or discard updates properly, so we should never see
-half-completed block writes in pflash storage.
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Drop a bunch of FIXME comments ;)
+> On 5/1/24 11:13, Philippe Mathieu-Daud=C3=A9 wrote:
+>> (+Mark & Eduardo)
+>> On 4/1/24 14:37, inesvarhol wrote:
+>>>
+>>> Le jeudi 4 janvier 2024 =C3=A0 14:05, Philippe Mathieu-Daud=C3=A9 <phil=
+md@linaro.org> a =C3=A9crit=C2=A0:
+>>>
+>>> Hello,
+>>>
+>>>>> +static void test_edge_selector(void)
+>>>>> +{
+>>>>> + enable_nvic_irq(EXTI0_IRQ);
+>>>>> +
+>>>>> + / Configure EXTI line 0 irq on rising edge */
+>>>>> + qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/exti",
+>>>>
+>>>>
+>>>> Markus, this qtest use seems to expect some stability in QOM path...
+>>>>
+>>>> In=C3=A8s, Arnaud, having the SoC unattached is dubious, it belongs to
+>>>> the machine.
+>>>
+>>> Noted, we will fix that.
+>>> Should we be concerned about the "stability in QOM path" ?
+>>
+>> Don't worry about this In=C3=A8s, I wanted to raise Markus attention on =
+this.
+>>
+>> You showed a legit use of stable QOM path, and Markus told me recently
+>> there is no contract for QOM paths (it shouldn't be considered as a
+>> stable API). IIRC Markus explanation, "/unattached" container was
+>> added as a temporary hack to allow migrating QDev objects to QOM (see
+>> around commit da57febfed "qdev: give all devices a canonical path",
+>> 11 years ago).
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- hw/block/pflash_cfi01.c | 110 ++++++++++++++++++++++++++++++----------
- hw/block/pflash_cfi02.c |   2 +-
- hw/block/trace-events   |   7 ++-
- 3 files changed, 89 insertions(+), 30 deletions(-)
+I'm not sure the hack was intended to be temporary.  Doesn't matter now.
 
-diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
-index 8434a45cabb0..f956f8bcf72a 100644
---- a/hw/block/pflash_cfi01.c
-+++ b/hw/block/pflash_cfi01.c
-@@ -80,16 +80,39 @@ struct PFlashCFI01 {
-     uint16_t ident3;
-     uint8_t cfi_table[0x52];
-     uint64_t counter;
--    unsigned int writeblock_size;
-+    uint32_t writeblock_size;
-     MemoryRegion mem;
-     char *name;
-     void *storage;
-     VMChangeStateEntry *vmstate;
-     bool old_multiple_chip_handling;
-+
-+    /* block update buffer */
-+    unsigned char *blk_bytes;
-+    uint32_t blk_offset;
- };
- 
- static int pflash_post_load(void *opaque, int version_id);
- 
-+static bool pflash_blk_write_state_needed(void *opaque)
-+{
-+    PFlashCFI01 *pfl = opaque;
-+
-+    return (pfl->blk_offset != -1);
-+}
-+
-+static const VMStateDescription vmstate_pflash_blk_write = {
-+    .name = "pflash_cfi01_blk_write",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = pflash_blk_write_state_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_VBUFFER_UINT32(blk_bytes, PFlashCFI01, 0, NULL, writeblock_size),
-+        VMSTATE_UINT32(blk_offset, PFlashCFI01),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static const VMStateDescription vmstate_pflash = {
-     .name = "pflash_cfi01",
-     .version_id = 1,
-@@ -101,6 +124,10 @@ static const VMStateDescription vmstate_pflash = {
-         VMSTATE_UINT8(status, PFlashCFI01),
-         VMSTATE_UINT64(counter, PFlashCFI01),
-         VMSTATE_END_OF_LIST()
-+    },
-+    .subsections = (const VMStateDescription * const []) {
-+        &vmstate_pflash_blk_write,
-+        NULL
-     }
- };
- 
-@@ -376,13 +403,55 @@ static void pflash_update(PFlashCFI01 *pfl, int offset,
-     }
- }
- 
-+/* copy current flash content to block update buffer */
-+static void pflash_blk_write_start(PFlashCFI01 *pfl, hwaddr offset)
-+{
-+    hwaddr mask = ~(pfl->writeblock_size - 1);
-+
-+    trace_pflash_write_block_start(pfl->name, pfl->counter);
-+    pfl->blk_offset = offset & mask;
-+    memcpy(pfl->blk_bytes, pfl->storage + pfl->blk_offset,
-+           pfl->writeblock_size);
-+}
-+
-+/* commit block update buffer changes */
-+static void pflash_blk_write_flush(PFlashCFI01 *pfl)
-+{
-+    g_assert(pfl->blk_offset != -1);
-+    trace_pflash_write_block_flush(pfl->name);
-+    memcpy(pfl->storage + pfl->blk_offset, pfl->blk_bytes,
-+           pfl->writeblock_size);
-+    pflash_update(pfl, pfl->blk_offset, pfl->writeblock_size);
-+    pfl->blk_offset = -1;
-+}
-+
-+/* discard block update buffer changes */
-+static void pflash_blk_write_abort(PFlashCFI01 *pfl)
-+{
-+    trace_pflash_write_block_abort(pfl->name);
-+    pfl->blk_offset = -1;
-+}
-+
- static inline void pflash_data_write(PFlashCFI01 *pfl, hwaddr offset,
-                                      uint32_t value, int width, int be)
- {
-     uint8_t *p;
- 
--    trace_pflash_data_write(pfl->name, offset, width, value, pfl->counter);
--    p = pfl->storage + offset;
-+    if (pfl->blk_offset != -1) {
-+        /* block write: redirect writes to block update buffer */
-+        if ((offset < pfl->blk_offset) ||
-+            (offset + width > pfl->blk_offset + pfl->writeblock_size)) {
-+            pfl->status |= 0x10; /* Programming error */
-+            return;
-+        }
-+        trace_pflash_data_write_block(pfl->name, offset, width, value,
-+                                      pfl->counter);
-+        p = pfl->blk_bytes + (offset - pfl->blk_offset);
-+    } else {
-+        /* write directly to storage */
-+        trace_pflash_data_write(pfl->name, offset, width, value);
-+        p = pfl->storage + offset;
-+    }
- 
-     if (be) {
-         stn_be_p(p, width, value);
-@@ -503,9 +572,9 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
-             } else {
-                 value = extract32(value, 0, pfl->bank_width * 8);
-             }
--            trace_pflash_write_block(pfl->name, value);
-             pfl->counter = value;
-             pfl->wcycle++;
-+            pflash_blk_write_start(pfl, offset);
-             break;
-         case 0x60:
-             if (cmd == 0xd0) {
-@@ -536,12 +605,7 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
-         switch (pfl->cmd) {
-         case 0xe8: /* Block write */
-             /* FIXME check @offset, @width */
--            if (!pfl->ro) {
--                /*
--                 * FIXME writing straight to memory is *wrong*.  We
--                 * should write to a buffer, and flush it to memory
--                 * only on confirm command (see below).
--                 */
-+            if (!pfl->ro && (pfl->blk_offset != -1)) {
-                 pflash_data_write(pfl, offset, value, width, be);
-             } else {
-                 pfl->status |= 0x10; /* Programming error */
-@@ -550,18 +614,8 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
-             pfl->status |= 0x80;
- 
-             if (!pfl->counter) {
--                hwaddr mask = pfl->writeblock_size - 1;
--                mask = ~mask;
--
-                 trace_pflash_write(pfl->name, "block write finished");
-                 pfl->wcycle++;
--                if (!pfl->ro) {
--                    /* Flush the entire write buffer onto backing storage.  */
--                    /* FIXME premature! */
--                    pflash_update(pfl, offset & mask, pfl->writeblock_size);
--                } else {
--                    pfl->status |= 0x10; /* Programming error */
--                }
-             }
- 
-             pfl->counter--;
-@@ -573,20 +627,17 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
-     case 3: /* Confirm mode */
-         switch (pfl->cmd) {
-         case 0xe8: /* Block write */
--            if (cmd == 0xd0) {
--                /* FIXME this is where we should write out the buffer */
-+            if ((cmd == 0xd0) && !(pfl->status & 0x10)) {
-+                pflash_blk_write_flush(pfl);
-                 pfl->wcycle = 0;
-                 pfl->status |= 0x80;
-             } else {
--                qemu_log_mask(LOG_UNIMP,
--                    "%s: Aborting write to buffer not implemented,"
--                    " the data is already written to storage!\n"
--                    "Flash device reset into READ mode.\n",
--                    __func__);
-+                pflash_blk_write_abort(pfl);
-                 goto mode_read_array;
-             }
-             break;
-         default:
-+            pflash_blk_write_abort(pfl);
-             goto error_flash;
-         }
-         break;
-@@ -820,6 +871,9 @@ static void pflash_cfi01_realize(DeviceState *dev, Error **errp)
-     pfl->cmd = 0x00;
-     pfl->status = 0x80; /* WSM ready */
-     pflash_cfi01_fill_cfi_table(pfl);
-+
-+    pfl->blk_bytes = g_malloc(pfl->writeblock_size);
-+    pfl->blk_offset = -1;
- }
- 
- static void pflash_cfi01_system_reset(DeviceState *dev)
-@@ -839,6 +893,8 @@ static void pflash_cfi01_system_reset(DeviceState *dev)
-      * This model deliberately ignores this delay.
-      */
-     pfl->status = 0x80;
-+
-+    pfl->blk_offset = -1;
- }
- 
- static Property pflash_cfi01_properties[] = {
-diff --git a/hw/block/pflash_cfi02.c b/hw/block/pflash_cfi02.c
-index 2a99b286b073..6fa56f14c020 100644
---- a/hw/block/pflash_cfi02.c
-+++ b/hw/block/pflash_cfi02.c
-@@ -546,7 +546,7 @@ static void pflash_write(void *opaque, hwaddr offset, uint64_t value,
-                 }
-                 goto reset_flash;
-             }
--            trace_pflash_data_write(pfl->name, offset, width, value, 0);
-+            trace_pflash_data_write(pfl->name, offset, width, value);
-             if (!pfl->ro) {
-                 p = (uint8_t *)pfl->storage + offset;
-                 if (pfl->be) {
-diff --git a/hw/block/trace-events b/hw/block/trace-events
-index bab21d3a1ca8..cc9a9f246039 100644
---- a/hw/block/trace-events
-+++ b/hw/block/trace-events
-@@ -12,7 +12,8 @@ fdctrl_tc_pulse(int level) "TC pulse: %u"
- pflash_chip_erase_invalid(const char *name, uint64_t offset) "%s: chip erase: invalid address 0x%" PRIx64
- pflash_chip_erase_start(const char *name) "%s: start chip erase"
- pflash_data_read(const char *name, uint64_t offset, unsigned size, uint32_t value) "%s: data offset:0x%04"PRIx64" size:%u value:0x%04x"
--pflash_data_write(const char *name, uint64_t offset, unsigned size, uint32_t value, uint64_t counter) "%s: data offset:0x%04"PRIx64" size:%u value:0x%04x counter:0x%016"PRIx64
-+pflash_data_write(const char *name, uint64_t offset, unsigned size, uint32_t value) "%s: data offset:0x%04"PRIx64" size:%u value:0x%04x"
-+pflash_data_write_block(const char *name, uint64_t offset, unsigned size, uint32_t value, uint64_t counter) "%s: data offset:0x%04"PRIx64" size:%u value:0x%04x counter:0x%016"PRIx64
- pflash_device_id(const char *name, uint16_t id) "%s: read device ID: 0x%04x"
- pflash_device_info(const char *name, uint64_t offset) "%s: read device information offset:0x%04" PRIx64
- pflash_erase_complete(const char *name) "%s: sector erase complete"
-@@ -32,7 +33,9 @@ pflash_unlock0_failed(const char *name, uint64_t offset, uint8_t cmd, uint16_t a
- pflash_unlock1_failed(const char *name, uint64_t offset, uint8_t cmd) "%s: unlock0 failed 0x%" PRIx64 " 0x%02x"
- pflash_unsupported_device_configuration(const char *name, uint8_t width, uint8_t max) "%s: unsupported device configuration: device_width:%d max_device_width:%d"
- pflash_write(const char *name, const char *str) "%s: %s"
--pflash_write_block(const char *name, uint32_t value) "%s: block write: bytes:0x%x"
-+pflash_write_block_start(const char *name, uint32_t value) "%s: block write start: bytes:0x%x"
-+pflash_write_block_flush(const char *name) "%s: block write flush"
-+pflash_write_block_abort(const char *name) "%s: block write abort"
- pflash_write_block_erase(const char *name, uint64_t offset, uint64_t len) "%s: block erase offset:0x%" PRIx64 " bytes:0x%" PRIx64
- pflash_write_failed(const char *name, uint64_t offset, uint8_t cmd) "%s: command failed 0x%" PRIx64 " 0x%02x"
- pflash_write_invalid(const char *name, uint8_t cmd) "%s: invalid write for command 0x%02x"
--- 
-2.43.0
+The connection between parent and child is a child property of the
+parent.  Like all properties, it has a name.  These names are the
+components of the canonical path.
+
+When the code that creates the child makes the connection, it can give
+the property a sensible name.
+
+When it doesn't, we sometimes do it in generic code, using the
+/machine/unattached orphanage, and a name that contains a counter, like
+
+    /machine/unattached/device[N]
+    /machine/unattached/non-qdev-gpio[N]
+
+The actual name depends on execution order, because the counter value
+does.  Brittle.
+
+> Hmm am I getting confused with "/peripheral-anon" (commit 8eb02831af
+> "dev: add an anonymous peripheral container")?
+
+Not the same, but related.  Devices added with -device / device_add go
+into /machine/peripheral/ID when they have id=3DID, else into
+/machine/peripheral/anon/device[N].  Before the commit you quoted, the
+latter were orphaned I believe.
+
+>> I agree anything under "/unattached" can be expected to be stable
+>> (but we need a community consensus). Then the big question remaining
+>> is "can any qom-path out of /unattached be considered stable?"
+
+Backwards?  Keeping /machine/unattached/FOO[N] stable is harder then the
+paths the code picks explicitly.
 
 
