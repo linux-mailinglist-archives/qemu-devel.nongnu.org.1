@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A4A82777D
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 19:28:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3311B827772
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 19:27:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMuIj-00030D-Gu; Mon, 08 Jan 2024 13:24:41 -0500
+	id 1rMuIj-00030G-Mf; Mon, 08 Jan 2024 13:24:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rMuIg-0002yl-SM
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:38 -0500
+ id 1rMuIi-0002ze-1p
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rMuIc-0002sP-3F
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:36 -0500
+ id 1rMuIg-0002sm-Hy
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704738273;
+ s=mimecast20190719; t=1704738274;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S2SmQ6oyqkWLOf2BpYupFP6G+/WBNFmeJ8OdwlOEfV8=;
- b=BhCt2+q4XQkNzkTF37zdSIGz791QQS9CIHR1nPvtfYWWhMwIv5/tQ2Iqm/S8a1byLbLpFV
- Bo3Ca6LcxmkC7lHDaZOgjofzTtrUAMky8jV+abMPCLiECgz2mAN9r5mcjgH36huOiBXKZW
- rsBu+E7LAqqezKQOu1YXL1yrXPgp5AU=
+ bh=QzaL3WnTeCkNEu8v592s18U3I5Rv1O1Ms0OvMSbTkbs=;
+ b=NwSBniBKh74yzVu48ZgG/UKpEDzOUQd9Nj6LFsKr6I/BKtVeidOb10/Ub4CONM1O5qCqrA
+ VrCSM4sshyJRQruc7kcke9x6h9ZUxfCUCKpOHbkS7jBZJDD7GiLRALKKmaPf+HDAY2XA/m
+ 41NybA2MH15R7KxigmjB/MaQW0y4HWQ=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-520-mS3BRYo6OaWzbCRjgfUieQ-1; Mon,
- 08 Jan 2024 13:24:30 -0500
-X-MC-Unique: mS3BRYo6OaWzbCRjgfUieQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-570-maqWPl2oO2y1wFgGbu7yVA-1; Mon,
+ 08 Jan 2024 13:24:31 -0500
+X-MC-Unique: maqWPl2oO2y1wFgGbu7yVA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D709C386914A;
- Mon,  8 Jan 2024 18:24:29 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 355FC386914A;
+ Mon,  8 Jan 2024 18:24:31 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B219E3C2E;
- Mon,  8 Jan 2024 18:24:28 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 40C173C2E;
+ Mon,  8 Jan 2024 18:24:30 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 17/29] qom: adapt to new import path for qobject data type
+Subject: [PATCH 18/29] replay: adapt to new import path for qobject data type
  headers
-Date: Mon,  8 Jan 2024 18:23:53 +0000
-Message-ID: <20240108182405.1135436-18-berrange@redhat.com>
+Date: Mon,  8 Jan 2024 18:23:54 +0000
+Message-ID: <20240108182405.1135436-19-berrange@redhat.com>
 In-Reply-To: <20240108182405.1135436-1-berrange@redhat.com>
 References: <20240108182405.1135436-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -87,89 +87,36 @@ qobject/.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qom/object.c            | 12 ++++++------
- qom/object_interfaces.c |  8 ++++----
- qom/qom-hmp-cmds.c      |  4 ++--
- qom/qom-qmp-cmds.c      |  4 ++--
- 4 files changed, 14 insertions(+), 14 deletions(-)
+ replay/replay-debugging.c | 2 +-
+ replay/replay-snapshot.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/qom/object.c b/qom/object.c
-index 654e1afaf2..16c2b467fc 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -23,17 +23,17 @@
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/forward-visitor.h"
- #include "qapi/qapi-builtin-visit.h"
--#include "qapi/qmp/qerror.h"
--#include "qapi/qmp/qjson.h"
-+#include "qobject/qerror.h"
-+#include "qobject/qjson.h"
- #include "trace.h"
- 
- /* TODO: replace QObject with a simpler visitor to avoid a dependency
-  * of the QOM core on QObject?  */
- #include "qom/qom-qobject.h"
--#include "qapi/qmp/qbool.h"
--#include "qapi/qmp/qlist.h"
--#include "qapi/qmp/qnum.h"
+diff --git a/replay/replay-debugging.c b/replay/replay-debugging.c
+index 82c66fff26..fd46a948d2 100644
+--- a/replay/replay-debugging.c
++++ b/replay/replay-debugging.c
+@@ -17,7 +17,7 @@
+ #include "monitor/hmp.h"
+ #include "monitor/monitor.h"
+ #include "qapi/qapi-commands-replay.h"
+-#include "qapi/qmp/qdict.h"
++#include "qobject/qdict.h"
+ #include "qemu/timer.h"
+ #include "block/snapshot.h"
+ #include "migration/snapshot.h"
+diff --git a/replay/replay-snapshot.c b/replay/replay-snapshot.c
+index e5e39161e3..18ae1f43a1 100644
+--- a/replay/replay-snapshot.c
++++ b/replay/replay-snapshot.c
+@@ -14,7 +14,7 @@
+ #include "sysemu/replay.h"
+ #include "replay-internal.h"
+ #include "monitor/monitor.h"
 -#include "qapi/qmp/qstring.h"
-+#include "qobject/qbool.h"
-+#include "qobject/qlist.h"
-+#include "qobject/qnum.h"
 +#include "qobject/qstring.h"
  #include "qemu/error-report.h"
- 
- #define MAX_INTERFACES 32
-diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
-index e0833c8bfe..756edd04d6 100644
---- a/qom/object_interfaces.c
-+++ b/qom/object_interfaces.c
-@@ -3,10 +3,10 @@
- #include "qemu/cutils.h"
- #include "qapi/error.h"
- #include "qapi/qapi-visit-qom.h"
--#include "qapi/qmp/qobject.h"
--#include "qapi/qmp/qdict.h"
--#include "qapi/qmp/qerror.h"
--#include "qapi/qmp/qjson.h"
-+#include "qobject/qobject.h"
-+#include "qobject/qdict.h"
-+#include "qobject/qerror.h"
-+#include "qobject/qjson.h"
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/qobject-output-visitor.h"
- #include "qom/object_interfaces.h"
-diff --git a/qom/qom-hmp-cmds.c b/qom/qom-hmp-cmds.c
-index 6e3a2175a4..a00a564b1e 100644
---- a/qom/qom-hmp-cmds.c
-+++ b/qom/qom-hmp-cmds.c
-@@ -11,8 +11,8 @@
- #include "monitor/monitor.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-qom.h"
--#include "qapi/qmp/qdict.h"
--#include "qapi/qmp/qjson.h"
-+#include "qobject/qdict.h"
-+#include "qobject/qjson.h"
- #include "qemu/readline.h"
- #include "qom/object.h"
- #include "qom/object_interfaces.h"
-diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
-index 7c087299de..1e36d4a8ce 100644
---- a/qom/qom-qmp-cmds.c
-+++ b/qom/qom-qmp-cmds.c
-@@ -20,8 +20,8 @@
- #include "qapi/qapi-commands-qdev.h"
- #include "qapi/qapi-commands-qom.h"
- #include "qapi/qapi-visit-qom.h"
--#include "qapi/qmp/qdict.h"
--#include "qapi/qmp/qerror.h"
-+#include "qobject/qdict.h"
-+#include "qobject/qerror.h"
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/qobject-output-visitor.h"
- #include "qemu/cutils.h"
+ #include "migration/vmstate.h"
+ #include "migration/snapshot.h"
 -- 
 2.43.0
 
