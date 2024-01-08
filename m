@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A689B827A15
+	by mail.lfdr.de (Postfix) with ESMTPS id ABAAC827A16
 	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:14:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMww0-0004cQ-5Z; Mon, 08 Jan 2024 16:13:24 -0500
+	id 1rMwwg-0005KG-6z; Mon, 08 Jan 2024 16:14:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rMwvx-0004bk-Uy
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:13:21 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1rMwwe-0005HO-AX
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:14:04 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rMwvw-000758-7d
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:13:21 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1d41bb4da91so8429095ad.0
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 13:13:19 -0800 (PST)
+ id 1rMwwb-0007Qx-Lg
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:14:04 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1d40eec5e12so18322765ad.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 13:14:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704748398; x=1705353198; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704748439; x=1705353239; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=7QmJgUYhxUnwQwy5HjZvdFZKJPqq5XiFXUCevP9wkOI=;
- b=YSZJnExmABPXdFIff58F7Hd/N/bdQPdsyzKtl0SDz4WvEAI8nhVpgp71orc5npa+pW
- cYoVAzsOxXa6vnDLMLVWVlADGgsJY5HQ/6m1PivBTDQvJAbcEjISAR/mdQa6Ppti3uMA
- Xji0p14ygQTOFxF1qZpC9tbvVT2muUSyiQINxib2Nah8vwyx+zHS/rstrD9/RYE5f9ai
- Bh1PC+nJVwKtTupa8L4mpY5s9fqyhSnSl4+STQvuaXxkqBbE72BBKimrykDnmbS4rNPD
- 7T7Myh5Edr77sn0iisetQCRl+iwaIFUAJ4k0od8lR29d5shH+xT0RFThB6yULWindw4N
- ZWOw==
+ bh=Q5rJw54yP4v7QbgPp1BiRs6Jtx3owK3bClJNsIzaE3I=;
+ b=KZbe96kXblIQ6j56lUNvnsASEVJOJslRnvS7TR7KIeAhGe+Yn/5BOlKqBCUzP3m+02
+ GNw1KPIY63rOw+4u+0iACp4/QV9xkDiJIWbsP3PJFcMDIo/P/S90IpYYoTN1x0Kil1Q0
+ UFROXxP2rihZt+KQ/eKpKEOkJgFUJ7AuB+GAtDQCRTC+AXun3+gO3HdjIRsnYzNaMNEu
+ Iq16Zhjxn1Mc2+7kJJ/XaOGCkjDZDJl6/4PgiR+4Sj0CEwUDvrqnM5N2nhB+VvnbcO6q
+ 1w+aQPQtvPEITtexlBzE29sHvR/X2xO/kFA5L+6oPwMmigZRjrhneMLPXa10fhf4+TdP
+ 3nmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704748398; x=1705353198;
+ d=1e100.net; s=20230601; t=1704748439; x=1705353239;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7QmJgUYhxUnwQwy5HjZvdFZKJPqq5XiFXUCevP9wkOI=;
- b=LgJYNf2e+LdO+j2Mt04quRrlYpO0rqnkHZd+v7Sp8Ju9FldSARGQ7CWfoGstg3E8kQ
- +SZIO8L/IysuRAUEhmACfgCwDvo0dRg3q44UfldprwupzwF6kMAPSFn6LAniTgajhSv1
- OrtuXSGa/OR2OLLrj679912maJK+5Vvez1i79OMQMmb6jqwjhkD6XqXv3kluKwTPvkiQ
- ktn30Pm4EUNbYhnKOMf0iuwRVqb6maI+3YMPRXipwL7F1QRN153Wyb+6TvLiilNuPN6V
- wWfLUSKEAgLQAF8rggxljDYZjSFL714SB6yQRGPB4+8qYTf3ylGl2bQeRZPkXZ7MxEAR
- yDMw==
-X-Gm-Message-State: AOJu0YwxiSTnJl9JmD68GQb6tBuuaAfGbWi/X0eF9g5OE9d4mq8BfdND
- i/yy/6nSOTBF6amwVuYuXCy3dnNq/sbHHw==
-X-Google-Smtp-Source: AGHT+IHceMH/+L9k30LCBRV6pg0Ia6yKipRGnxu4pO24WRyoKGyBTDufXYxFYdsGhAbyHd3VgT2B5w==
-X-Received: by 2002:a17:902:f685:b0:1d5:389b:d43e with SMTP id
- l5-20020a170902f68500b001d5389bd43emr1520816plg.5.1704748397982; 
- Mon, 08 Jan 2024 13:13:17 -0800 (PST)
+ bh=Q5rJw54yP4v7QbgPp1BiRs6Jtx3owK3bClJNsIzaE3I=;
+ b=Ska7QIh8YZan4AB8CkVq+J6+dFgtbMf966pRyl3XrCj/Jvi7qy6kaZ/xNRHUMKOO7+
+ hM5wOa3J7ZoCOto106raLCmBKtmrh7djS+fNlt1as8gYmj88QdCI1g7Vxzl/b05gqLt8
+ mpocWZmTfdznvvXBq6gs02pHa35fq09gdfy4L06bskKcKY2Po8vic/FLLmIit/wIyuxw
+ qVyQD959wPS4S62Pf/fclh3JCYSzzLs93N/RH6Bc/0HLsCcKJ3mCh1zUUyNxM9yRFr70
+ ogK90uvHY9Ox+IWWVrCJDr4aKV+UA4ANzHPUev/KUNeKWIIVrtQHRZPQJ7HdUp/j6ZVS
+ t7Aw==
+X-Gm-Message-State: AOJu0YxSt7aAo87Vy3GjfeOB6YL46i73BFiI4BzxYoJ3IbGK6Hlshghd
+ S+ozVi9pYOiWmp/Sjqfp9G61T9D/Xo1Txg==
+X-Google-Smtp-Source: AGHT+IGrU+wWGGlNHzV57euIH5goJVtvcAgYBnapGXAG/8s2ZK7UDZsgZH2uGQE5yRRAbSuGKrW7xQ==
+X-Received: by 2002:a17:902:6f08:b0:1d4:868b:7ccc with SMTP id
+ w8-20020a1709026f0800b001d4868b7cccmr4104960plk.111.1704748439578; 
+ Mon, 08 Jan 2024 13:13:59 -0800 (PST)
 Received: from [192.168.1.66] ([103.194.3.133])
  by smtp.gmail.com with ESMTPSA id
- n10-20020a1709026a8a00b001d1cd7e4ad2sm332117plk.125.2024.01.08.13.13.15
+ n10-20020a1709026a8a00b001d1cd7e4ad2sm332117plk.125.2024.01.08.13.13.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 13:13:17 -0800 (PST)
-Message-ID: <98572a44-c587-4591-b2e4-b07f6f28bde3@linaro.org>
-Date: Tue, 9 Jan 2024 08:13:10 +1100
+ Mon, 08 Jan 2024 13:13:59 -0800 (PST)
+Message-ID: <cd2f9cb8-9f79-438e-8ca8-a3bf1675b232@linaro.org>
+Date: Tue, 9 Jan 2024 08:13:55 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/6] linux-user: Add code for PR_GET/SET_UNALIGN
+Subject: Re: [PATCH] util: fix build with musl libc on ppc64le
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: laurent@vivier.eu, Warner Losh <imp@bsdimp.com>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-References: <20211220214135.189157-1-richard.henderson@linaro.org>
- <20211220214135.189157-4-richard.henderson@linaro.org>
- <bd92d4c4-8d12-4036-8d9d-385d67099e4e@linaro.org>
+ Natanael Copa <ncopa@alpinelinux.org>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+References: <20231219105236.7059-1-ncopa@alpinelinux.org>
+ <5f7b5921-b6e3-48f1-8bec-b4fdbfdac2f1@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <bd92d4c4-8d12-4036-8d9d-385d67099e4e@linaro.org>
+In-Reply-To: <5f7b5921-b6e3-48f1-8bec-b4fdbfdac2f1@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,36 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/9/24 04:15, Philippe Mathieu-Daudé wrote:
->> +/*
->> + * This can't go in hw/core/cpu.c because that file is compiled only
->> + * once for both user-mode and system builds.
->> + */
->>   static Property cpu_common_props[] = {
->> -#ifndef CONFIG_USER_ONLY
->> +#ifdef CONFIG_USER_ONLY
->>       /*
->> -     * Create a memory property for softmmu CPU object,
->> -     * so users can wire up its memory. (This can't go in hw/core/cpu.c
->> -     * because that file is compiled only once for both user-mode
->> -     * and system builds.) The default if no link is set up is to use
->> +     * Create a property for the user-only object, so users can
->> +     * adjust prctl(PR_SET_UNALIGN) from the command-line.
+On 1/5/24 03:26, Philippe Mathieu-Daudé wrote:
+> Hi Natanael,
 > 
-> How can I test this per-thread property?
+> On 19/12/23 11:51, Natanael Copa wrote:
+>> Use PPC_FEATURE2_ISEL and PPC_FEATURE2_VEC_CRYPTO from linux headers
+>> instead of the GNU specific PPC_FEATURE2_HAS_ISEL and
+>> PPC_FEATURE2_HAS_VEC_CRYPTO. This fixes build with musl libc.
+>>
+>> Fixes: 623d7e3551a6 (util: Add cpuinfo-ppc.c)
+> 
+> Hmm this commit barely moved the code. Maybe it revealed the
+> issue from the following commits?
+> 
+> Fixes: 63922f467a ("tcg/ppc: Replace HAVE_ISEL macro with a variable")
+> Fixes: 68f340d4cd ("tcg/ppc: Enable Altivec detection")
+> 
+> Anyhow, changes LGTM.
 
--cpu foo,prctl-unalign-sigbus=true
 
-
-> Shouldn't this be an accel (TCG/user) property, for all threads?
-
-There is always one cpu at user-only startup, and it is copied on clone.
-
-Logically it would be a kernel property, since it's something the kernel does, not the 
-cpu.  But cpu vs accel makes no difference to me; it was just easy here.
-
-IIRC, this is simply a proxy for not really being able to inherit this bit across 
-fork+exec like you can with the real kernel.
+Queued, thanks.
 
 
 r~
