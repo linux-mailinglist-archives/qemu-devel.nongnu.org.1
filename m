@@ -2,82 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4A1826AE2
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 10:40:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 014B7826B08
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 10:46:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMm64-0004lJ-Ul; Mon, 08 Jan 2024 04:39:04 -0500
+	id 1rMmCE-0006AT-SB; Mon, 08 Jan 2024 04:45:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rMm63-0004ju-3D
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 04:39:03 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rMm61-0004Nv-De
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 04:39:02 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-336990fb8fbso1585037f8f.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 01:39:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704706739; x=1705311539; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vDixlcU1XxwPxhGLWk/uMbdm1TE/wn893iJbxbxxk/A=;
- b=Ryc03H10UWORvc1rxBnsvmlV0kM1F2UWk0xPPmbPd2RPYn7Dk0eFOijawTjg0Ee3Mr
- un/2N0nKmcSFyAzsaXX6y26KbpS9M8NQUy7cTp+MkxxmphYUzyCCwV+qhq+3ykvG1Z/R
- 71oXUBDoP+LOTlFb/UJKZ0cQb63qrav3uqwZAa+RddN3Hb2PJ0uvTdvqw7OYRTQZYSr4
- mcd2bMNi6Ak7iuainCUI8WSgclVp4ww36rJ/DJ7Wu6SeUIO3K8DazUJFe8s6uatUet26
- G45hec7wSL9XKZ0oEcqisYlOgt//UtEQ9BMUb2amTEHxtSIuYrpvNHRvt4tYUjPgUIhR
- S+EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704706739; x=1705311539;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vDixlcU1XxwPxhGLWk/uMbdm1TE/wn893iJbxbxxk/A=;
- b=ZKM4OvZjc/jAo52iof/muBGCJDkKxI51zN9QiFVV8GLvH/cy//+WtN53RUF2U2sqsJ
- ipVOlJ9GVt6HzcVJX11XNXZNFiimtcXlfiKBNt0Tdq1IJT39LXmxB7rxM+FpivuQeghR
- LPRUG2zU6ddeejVHCFbJsI7QaZyvpQthXQVLomcfsd70VJwDwQzoOpWaW0Ur5dmDhOM1
- CehUA1JlLnhi1mYLW2UO78kaS6qPffIVLxiR/OGERD7nccFaXMsJ3s/3Wr7qEKRJLTju
- MxeDkIoCnlTA94dqS1Nl0PJQytQnLV6zRzgYvV0Z4+f+dAU+orBn3Lc0jEHK6/bFWaKv
- emtw==
-X-Gm-Message-State: AOJu0YynWx34zVIacrgY0btcQpR8oOac8pCApNkSL5k23lpw0rCyI9+2
- Nrt+2SbAfD4xZxLxJUxDzfby86SuwX089w==
-X-Google-Smtp-Source: AGHT+IG/RtHeQ3xqt83F/MAssug9BMQ4m27cSlzS66z2Mp53vqsiq/9O3lJhly9eiN2M2IJN+qIGQw==
-X-Received: by 2002:adf:fe8c:0:b0:337:689e:6616 with SMTP id
- l12-20020adffe8c000000b00337689e6616mr948739wrr.10.1704706738745; 
- Mon, 08 Jan 2024 01:38:58 -0800 (PST)
-Received: from [192.168.1.24] ([102.35.208.160])
- by smtp.gmail.com with ESMTPSA id
- i14-20020adfefce000000b00336e69fbc32sm7299020wrp.102.2024.01.08.01.38.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 01:38:58 -0800 (PST)
-Message-ID: <070c8e36-b208-4f3a-9725-64a3deaf9441@linaro.org>
-Date: Mon, 8 Jan 2024 13:38:53 +0400
+ (Exim 4.90_1) (envelope-from <SRS0=tOGw=IS=kaod.org=clg@ozlabs.org>)
+ id 1rMmC9-0006A8-Dt; Mon, 08 Jan 2024 04:45:22 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=tOGw=IS=kaod.org=clg@ozlabs.org>)
+ id 1rMmC6-0006bJ-68; Mon, 08 Jan 2024 04:45:21 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T7q113Ycqz4wcc;
+ Mon,  8 Jan 2024 20:45:09 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T7q0x6XLqz4wcH;
+ Mon,  8 Jan 2024 20:45:05 +1100 (AEDT)
+Message-ID: <d374a345-0f51-43a7-9376-c656cdda4fe7@kaod.org>
+Date: Mon, 8 Jan 2024 10:45:01 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/33] linux-user/arm: Remove qemu_host_page_size from
- init_guest_commpage
+Subject: Re: [PATCH 1/9] gitlab: fix s390x tag for avocado-system-centos
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20240102015808.132373-1-richard.henderson@linaro.org>
- <20240102015808.132373-8-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240102015808.132373-8-richard.henderson@linaro.org>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ qemu-ppc@nongnu.org, "open list:S390 general arch..." <qemu-s390x@nongnu.org>
+References: <20240107170119.82222-1-npiggin@gmail.com>
+ <20240107170119.82222-2-npiggin@gmail.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240107170119.82222-2-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=tOGw=IS=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,62 +71,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/2/24 05:57, Richard Henderson wrote:
-> Use qemu_real_host_page_size.
-> If the commpage is not within reserved_va, use MAP_FIXED_NOREPLACE.
+On 1/7/24 18:01, Nicholas Piggin wrote:
+> The 390x tag should be s390x.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
+
+C.
+
+
 > ---
->   linux-user/elfload.c | 13 ++++++++-----
->   1 file changed, 8 insertions(+), 5 deletions(-)
+>   .gitlab-ci.d/buildtest.yml | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-> index 4fcc490ce6..2e2b1b0784 100644
-> --- a/linux-user/elfload.c
-> +++ b/linux-user/elfload.c
-> @@ -459,6 +459,7 @@ enum {
->   static bool init_guest_commpage(void)
->   {
->       ARMCPU *cpu = ARM_CPU(thread_cpu);
-> +    int host_page_size = qemu_real_host_page_size();
->       abi_ptr commpage;
->       void *want;
->       void *addr;
-> @@ -471,10 +472,12 @@ static bool init_guest_commpage(void)
->           return true;
->       }
+> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+> index 91663946de..cfe737aca2 100644
+> --- a/.gitlab-ci.d/buildtest.yml
+> +++ b/.gitlab-ci.d/buildtest.yml
+> @@ -184,7 +184,7 @@ avocado-system-centos:
+>     variables:
+>       IMAGE: centos8
+>       MAKE_CHECK_ARGS: check-avocado
+> -    AVOCADO_TAGS: arch:ppc64 arch:or1k arch:390x arch:x86_64 arch:rx
+> +    AVOCADO_TAGS: arch:ppc64 arch:or1k arch:s390x arch:x86_64 arch:rx
+>         arch:sh4 arch:nios2
 >   
-> -    commpage = HI_COMMPAGE & -qemu_host_page_size;
-> +    commpage = HI_COMMPAGE & -host_page_size;
->       want = g2h_untagged(commpage);
-> -    addr = mmap(want, qemu_host_page_size, PROT_READ | PROT_WRITE,
-> -                MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
-> +    addr = mmap(want, host_page_size, PROT_READ | PROT_WRITE,
-> +                MAP_ANONYMOUS | MAP_PRIVATE |
-> +                (commpage < reserved_va ? MAP_FIXED : MAP_FIXED_NOREPLACE),
-> +                -1, 0);
->   
->       if (addr == MAP_FAILED) {
->           perror("Allocating guest commpage");
-> @@ -487,12 +490,12 @@ static bool init_guest_commpage(void)
->       /* Set kernel helper versions; rest of page is 0.  */
->       __put_user(5, (uint32_t *)g2h_untagged(0xffff0ffcu));
->   
-> -    if (mprotect(addr, qemu_host_page_size, PROT_READ)) {
-> +    if (mprotect(addr, host_page_size, PROT_READ)) {
->           perror("Protecting guest commpage");
->           exit(EXIT_FAILURE);
->       }
->   
-> -    page_set_flags(commpage, commpage | ~qemu_host_page_mask,
-> +    page_set_flags(commpage, commpage | (host_page_size - 1),
->                      PAGE_READ | PAGE_EXEC | PAGE_VALID);
->       return true;
->   }
+>   build-system-opensuse:
 
-To confirm if I understand correctly, when using a reserved va, the 
-contiguous address space is reserved using mmap, thus 
-MAP_FIXED_NOREPLACE would fail when hitting it?
-
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
