@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64238827705
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 19:12:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5126982770D
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 19:12:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMu4y-0004OL-5S; Mon, 08 Jan 2024 13:10:28 -0500
+	id 1rMu6g-0005Vs-Mv; Mon, 08 Jan 2024 13:12:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rMu4q-0004Ns-Ny
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:10:20 -0500
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+ id 1rMu66-0005Jj-IQ
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:11:38 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rMu4m-0002ri-NG
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:10:20 -0500
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-598704b5f5dso213630eaf.3
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 10:10:15 -0800 (PST)
+ id 1rMu64-0003NY-Pg
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:11:38 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1d4ba539f6cso19324175ad.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 10:11:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704737414; x=1705342214; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1704737494; x=1705342294; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NqTRpawr/am+wzndhUyeJTFUhtaRDugLW7g85/tKpaE=;
- b=SOd3gAg+6rApXWf+FNWCqnTIfhyPdV8Kqn77mv3C40e4weFyWwkYoIKXhF3f3ITC47
- 511WTh0clA76jodc3wtenk8ADcG8TNCa/gYKzNiI7ZrWF9i27YqKg9mW1a+yW+BIHnui
- YLIDpCvY2UyzIN6e2AI4HSD3+icvSSKiQuvnHCjPFOsHS6JCeL3T19z2KCaUdKoOYMbc
- XeQd6c+bqGDPq0x+llNugTt24FBYhWLWnB/RxsnktraC7T7aWV3biU/3EeR2I0vIInyg
- lWnAkDHGUdmtIW/4Tk/7hMPSv+WjyX5oa3/ucZVsafUhPu20715+FojTk7iN4HgXZf4g
- 6exQ==
+ bh=Y/Nvy1D1qwW8ddnqHbMNAjtSEyHgtqbhjhqVKgV2GXw=;
+ b=MX3R015nSDXh50EWjwQ+rrd6ctpjwxAvCmi3Vi6aaQe560VMbdoIMloVuVzrNHHLns
+ Rt4wrjkCu6yTrR10sK37diIiPY7mxkPBiTsxvYurJ26iczhZnHG13aw3l2TrC1iQPnH8
+ MFAp3EDodnSr0ZnVjUKFkJmxuaIlIN7wQ8V156WZev4LLdquXr65l4sjJdWIAOaekzVO
+ dJLORgPYek92KQbEScEIMU6uQFbRWi28L12OjcdutZafzqTHH0KEvTnbOU4tE6RtuSWx
+ RqBXuXtqz8VPLN69xFA3+EaUuNFNEKk1/OcR8nkUDo/KR6/vPK+1SEb8TapC1tR3QD+l
+ W5QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704737414; x=1705342214;
+ d=1e100.net; s=20230601; t=1704737494; x=1705342294;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NqTRpawr/am+wzndhUyeJTFUhtaRDugLW7g85/tKpaE=;
- b=aQfV4u23V+g0ECDfaXbikPUdGlgqkEz8Vtm+bEmJO85nzrTGKkAQ0xj8+xv3XqDA7B
- aSmjg4FmAAKUTBYgShBRbhxeuAhu7qZqL7aOnmdj41BWS2DnPGbMrldjNtZW2wgYLHHT
- 9EmzBnOr/CxEJu8OJrP2rgg1SW214/elw+irOGp+AB+d4O1cHq7wC7yu95fjBva19sV4
- rTHv8IC5I6pgw9Xw3ii5NzFQLHcTyPg4+Asditsrr1isC3cRCoH6DGQ/jWIUm5Pvwddf
- VWF02h51UdflhkE44Yd5T2MMtQ0iyG1BuRPmEF7dxEqZxb+5dRsyQH6sTXm9wwKfd+Wn
- QZgA==
-X-Gm-Message-State: AOJu0YyR9gGbiOJAJOPb4WE62i1hHZwuZ4wVHWOLfoEWPlvfXy/82Rrt
- 95kMkobyd2SvGOPIaQj22oTujTo3y2XveA==
-X-Google-Smtp-Source: AGHT+IGYmk6sTxmEdjZwn9UxNmNYLMnCd6FNTH/xrbYBnFv8ddjdDWh+/qwT0SrlpDff5rooxXJl8Q==
-X-Received: by 2002:a05:6358:3388:b0:174:fce5:6b87 with SMTP id
- i8-20020a056358338800b00174fce56b87mr3782543rwd.23.1704737414314; 
- Mon, 08 Jan 2024 10:10:14 -0800 (PST)
+ bh=Y/Nvy1D1qwW8ddnqHbMNAjtSEyHgtqbhjhqVKgV2GXw=;
+ b=eDoRf6R+1NR5dJ/1Vq6BtXz9Ak2K4qiYqjedR3gA9AxYeQnm36HWcLPyfsGy9xo4KF
+ PH/OSfy/QeE1hVWis3Z2QzrR7MivAUqF6JCZe81a4K/qAiMU9/nkhKjM4e98bbdTprwW
+ W69PhLFQ7uH4sMbeNMkMncCNKGyQ4xO6zBxzNgcLobrHCMVwh3wF4e/YxuribrztduUR
+ ixfccJkIbwiG491XTmVgMk3LJCUEQC2k7L+9GstbPf8KWjal2BM4m3sjX0GfZA8me/lN
+ dy0T+1YHfVVPv6TTLagV2laQYQokt34ZsmIOKMMhbLIzk2z5bsz16uRmpJVLTYXeKTHp
+ CZIQ==
+X-Gm-Message-State: AOJu0YxSqWjy5kDnT+pZntb5M7iDt8IrU0W9C2m3hSXee1vZZtXLhtEV
+ k2Fa1rrZJjIyrb0bIPQw/FuOCX0HmORPENqI7eDPkTp6u+3iYQ==
+X-Google-Smtp-Source: AGHT+IFOVZoLIH+bF+vhrZ8wtonpFMYmZ3DmTW8tgCoeke+mf/gnyEb5QbIO6eXXPUhWzyASfMWCsw==
+X-Received: by 2002:a17:902:6b81:b0:1d4:f1c:6378 with SMTP id
+ p1-20020a1709026b8100b001d40f1c6378mr4100504plk.27.1704737493937; 
+ Mon, 08 Jan 2024 10:11:33 -0800 (PST)
 Received: from [192.168.68.110] ([189.79.22.11])
  by smtp.gmail.com with ESMTPSA id
- d23-20020a634f17000000b005c67a388836sm146772pgb.62.2024.01.08.10.10.11
+ d23-20020a634f17000000b005c67a388836sm146772pgb.62.2024.01.08.10.11.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 10:10:13 -0800 (PST)
-Message-ID: <1a97eda9-480d-49f1-9fe5-a607ba08b818@ventanamicro.com>
-Date: Mon, 8 Jan 2024 15:10:08 -0300
+ Mon, 08 Jan 2024 10:11:33 -0800 (PST)
+Message-ID: <dcd747d7-03d4-4915-a54c-0df799049874@ventanamicro.com>
+Date: Mon, 8 Jan 2024 15:11:30 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/5] target/riscv: Add cycle & instret privilege mode
- filtering properties
+Subject: Re: [PATCH v3 3/5] target/riscv: Add cycle & instret privilege mode
+ filtering definitions
 Content-Language: en-US
 To: Atish Patra <atishp@rivosinc.com>
 Cc: Kaiwen Xue <kaiwenx@rivosinc.com>,
@@ -71,20 +71,20 @@ Cc: Kaiwen Xue <kaiwenx@rivosinc.com>,
  qemu-devel@nongnu.org, qemu-riscv@nongnu.org, Weiwei Li
  <liwei1518@gmail.com>, kaiwenxue1@gmail.com
 References: <20240105221327.176764-1-atishp@rivosinc.com>
- <20240105221327.176764-3-atishp@rivosinc.com>
+ <20240105221327.176764-4-atishp@rivosinc.com>
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240105221327.176764-3-atishp@rivosinc.com>
+In-Reply-To: <20240105221327.176764-4-atishp@rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,56 +105,88 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 1/5/24 19:13, Atish Patra wrote:
 > From: Kaiwen Xue <kaiwenx@rivosinc.com>
 > 
-> This adds the properties for ISA extension smcntrpmf. Patches
-> implementing it will follow.
+> This adds the definitions for ISA extension smcntrpmf.
 > 
-> Signed-off-by: Atish Patra <atishp@rivosinc.com>
 > Signed-off-by: Kaiwen Xue <kaiwenx@rivosinc.com>
+> Signed-off-by: Atish Patra <atishp@rivosinc.com>
 > ---
->   target/riscv/cpu.c     | 2 ++
->   target/riscv/cpu_cfg.h | 1 +
->   2 files changed, 3 insertions(+)
+
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+>   target/riscv/cpu.h      |  6 ++++++
+>   target/riscv/cpu_bits.h | 29 +++++++++++++++++++++++++++++
+>   2 files changed, 35 insertions(+)
 > 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 83c7c0cf07be..ea34ff2ae983 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -148,6 +148,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
->       ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
->       ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
->       ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
-> +    ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
->       ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
->       ISA_EXT_DATA_ENTRY(svadu, PRIV_VERSION_1_12_0, ext_svadu),
->       ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
-
-Sorry for not noticing this in the previous version. I believe we want the "smcntrpmf"
-entry to be right after "smaia" because the isa_edata_arr[] ordering matters when
-building the riscv,isa string in riscv_isa_string_ext().
-
-
-Thanks,
-
-Daniel
-
-> @@ -1296,6 +1297,7 @@ const char *riscv_get_misa_ext_description(uint32_t bit)
->   const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
->       /* Defaults for standard extensions */
->       MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
-> +    MULTI_EXT_CFG_BOOL("smcntrpmf", ext_smcntrpmf, false),
->       MULTI_EXT_CFG_BOOL("zifencei", ext_zifencei, true),
->       MULTI_EXT_CFG_BOOL("zicsr", ext_zicsr, true),
->       MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index f4605fb190b9..00c34fdd3209 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -72,6 +72,7 @@ struct RISCVCPUConfig {
->       bool ext_zihpm;
->       bool ext_smstateen;
->       bool ext_sstc;
-> +    bool ext_smcntrpmf;
->       bool ext_svadu;
->       bool ext_svinval;
->       bool ext_svnapot;
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index d74b361be641..34617c4c4bab 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -319,6 +319,12 @@ struct CPUArchState {
+>   
+>       target_ulong mcountinhibit;
+>   
+> +    /* PMU cycle & instret privilege mode filtering */
+> +    target_ulong mcyclecfg;
+> +    target_ulong mcyclecfgh;
+> +    target_ulong minstretcfg;
+> +    target_ulong minstretcfgh;
+> +
+>       /* PMU counter state */
+>       PMUCTRState pmu_ctrs[RV_MAX_MHPMCOUNTERS];
+>   
+> diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+> index ebd7917d490a..0ee91e502e8f 100644
+> --- a/target/riscv/cpu_bits.h
+> +++ b/target/riscv/cpu_bits.h
+> @@ -401,6 +401,10 @@
+>   /* Machine counter-inhibit register */
+>   #define CSR_MCOUNTINHIBIT   0x320
+>   
+> +/* Machine counter configuration registers */
+> +#define CSR_MCYCLECFG       0x321
+> +#define CSR_MINSTRETCFG     0x322
+> +
+>   #define CSR_MHPMEVENT3      0x323
+>   #define CSR_MHPMEVENT4      0x324
+>   #define CSR_MHPMEVENT5      0x325
+> @@ -431,6 +435,9 @@
+>   #define CSR_MHPMEVENT30     0x33e
+>   #define CSR_MHPMEVENT31     0x33f
+>   
+> +#define CSR_MCYCLECFGH      0x721
+> +#define CSR_MINSTRETCFGH    0x722
+> +
+>   #define CSR_MHPMEVENT3H     0x723
+>   #define CSR_MHPMEVENT4H     0x724
+>   #define CSR_MHPMEVENT5H     0x725
+> @@ -885,6 +892,28 @@ typedef enum RISCVException {
+>   /* PMU related bits */
+>   #define MIE_LCOFIE                         (1 << IRQ_PMU_OVF)
+>   
+> +#define MCYCLECFG_BIT_MINH                 BIT_ULL(62)
+> +#define MCYCLECFGH_BIT_MINH                BIT(30)
+> +#define MCYCLECFG_BIT_SINH                 BIT_ULL(61)
+> +#define MCYCLECFGH_BIT_SINH                BIT(29)
+> +#define MCYCLECFG_BIT_UINH                 BIT_ULL(60)
+> +#define MCYCLECFGH_BIT_UINH                BIT(28)
+> +#define MCYCLECFG_BIT_VSINH                BIT_ULL(59)
+> +#define MCYCLECFGH_BIT_VSINH               BIT(27)
+> +#define MCYCLECFG_BIT_VUINH                BIT_ULL(58)
+> +#define MCYCLECFGH_BIT_VUINH               BIT(26)
+> +
+> +#define MINSTRETCFG_BIT_MINH               BIT_ULL(62)
+> +#define MINSTRETCFGH_BIT_MINH              BIT(30)
+> +#define MINSTRETCFG_BIT_SINH               BIT_ULL(61)
+> +#define MINSTRETCFGH_BIT_SINH              BIT(29)
+> +#define MINSTRETCFG_BIT_UINH               BIT_ULL(60)
+> +#define MINSTRETCFGH_BIT_UINH              BIT(28)
+> +#define MINSTRETCFG_BIT_VSINH              BIT_ULL(59)
+> +#define MINSTRETCFGH_BIT_VSINH             BIT(27)
+> +#define MINSTRETCFG_BIT_VUINH              BIT_ULL(58)
+> +#define MINSTRETCFGH_BIT_VUINH             BIT(26)
+> +
+>   #define MHPMEVENT_BIT_OF                   BIT_ULL(63)
+>   #define MHPMEVENTH_BIT_OF                  BIT(31)
+>   #define MHPMEVENT_BIT_MINH                 BIT_ULL(62)
 
