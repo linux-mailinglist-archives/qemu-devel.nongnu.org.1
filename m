@@ -2,50 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D580826ED0
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:48:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35374826EEE
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 13:51:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMp3X-0000R1-Ox; Mon, 08 Jan 2024 07:48:39 -0500
+	id 1rMp5Z-0001oB-Ti; Mon, 08 Jan 2024 07:50:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=tOGw=IS=kaod.org=clg@ozlabs.org>)
- id 1rMp3L-0000GP-1l; Mon, 08 Jan 2024 07:48:30 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rMp5W-0001nY-Vc; Mon, 08 Jan 2024 07:50:43 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=tOGw=IS=kaod.org=clg@ozlabs.org>)
- id 1rMp3C-0002ch-PQ; Mon, 08 Jan 2024 07:48:22 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T7v4F0SNBz4x3D;
- Mon,  8 Jan 2024 23:48:13 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T7v4C5WpXz4x23;
- Mon,  8 Jan 2024 23:48:11 +1100 (AEDT)
-Message-ID: <914d9730-c631-457e-ba8c-6b8a6c26d530@kaod.org>
-Date: Mon, 8 Jan 2024 13:48:10 +0100
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rMp5U-0004tO-AR; Mon, 08 Jan 2024 07:50:42 -0500
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 408BRb0c009449; Mon, 8 Jan 2024 12:50:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=N0tHCZIWFjSHh1wasfe8VFzeR+j+9M76XHh9XfyjqoI=;
+ b=iPffQ+FZpt/LsLiFRaa6BpyCIjFx+P8CugopxnBarh1qZ3bym9hc2k+U5eprDoYhCMRE
+ BIibeVjBl2dlBoHcRUTIXKK5qR2KJjUkZ2v3QStKW75jBQShYR38E+UxAuFT4bXEdJ5v
+ 3iUT5EcZNGm20rQvKqv/bEEra3FvwbpWGQoB56Sx3OXsakeeqBVrQxoki8QXw7wBJJeJ
+ 7lmXF6kFHLNTYKgeu1NRvyjmvWzxPybcNEG2ClHptFunm1SnEqM7MEG9f0q6Hp4jCaiR
+ jTbYJTYGMrApajvNnepFRFOQDA/j2fvVsGAhgIkvsqqm5JOsxZckneR/Fwa8KtoQNb+W wg== 
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vgg6jsne1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Jan 2024 12:50:34 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 408C6DBg022781; Mon, 8 Jan 2024 12:50:34 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfhjy82jp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Jan 2024 12:50:34 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 408CoWN866060794
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 8 Jan 2024 12:50:32 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1795A20043;
+ Mon,  8 Jan 2024 12:50:32 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D7D5E20040;
+ Mon,  8 Jan 2024 12:50:31 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.200.166])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  8 Jan 2024 12:50:31 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH] tests/tcg: Don't #include <inttypes.h> in
+ aarch64/system/vtimer.c
+Date: Mon,  8 Jan 2024 13:50:00 +0100
+Message-ID: <20240108125030.58569-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/ppc: Fix crash on machine check caused by ifetch
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
-References: <20240107170559.82383-1-npiggin@gmail.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240107170559.82383-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=tOGw=IS=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 9ew2VzDaQ-HYg4BPfA0SArI_fQggQc6H
+X-Proofpoint-ORIG-GUID: 9ew2VzDaQ-HYg4BPfA0SArI_fQggQc6H
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-08_04,2024-01-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ malwarescore=0 bulkscore=0 adultscore=0 phishscore=0 clxscore=1015
+ suspectscore=0 spamscore=0 mlxlogscore=868 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401080109
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,150 +102,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/7/24 18:05, Nicholas Piggin wrote:
-> is_prefix_insn_excp() loads the first word of the instruction address
-> which caused an exception, to determine whether or not it was prefixed
-> so the prefix bit can be set in [H]SRR1.
-> 
-> In case it was the instruction fetch itself that caused the exception,
-> the [H]SRR1 prefix bit is not required to be set, because it is not the
-> instruction itself that causes the interrupt. If the load is attempted,
-> t could cause a recursive exception.
-> 
-> Instruction storage interrupts, HDSIs caused by ifetch are excluded from
-> the prefix check. Machine checks caused by ifetch are not, and these
-> can cause bugs. For example fetching from an unmapped physical address
-> can result in:
-> 
->    ERROR:../system/cpus.c:504:qemu_mutex_lock_iothread_impl:
->        assertion failed: (!qemu_mutex_iothread_locked())
->    #0  __pthread_kill_implementation
->        (threadid=<optimized out>, signo=signo@entry=6, no_tid=no_tid@entry=0)
->        at ./nptl/pthread_kill.c:44
->    #1  0x00007ffff705a15f in __pthread_kill_internal
->        (signo=6, threadid=<optimized out>) at ./nptl/pthread_kill.c:78
->    #2  0x00007ffff700c472 in __GI_raise (sig=sig@entry=6)
->        at ../sysdeps/posix/raise.c:26
->    #3  0x00007ffff6ff64b2 in __GI_abort () at ./stdlib/abort.c:79
->    #4  0x00007ffff73def08 in  () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
->    #5  0x00007ffff7445e4e in g_assertion_message_expr ()
->        at /lib/x86_64-linux-gnu/libglib-2.0.so.0
->    #6  0x0000555555a833f1 in qemu_mutex_lock_iothread_impl
->        (file=0x555555efda6e "../accel/tcg/cputlb.c", line=2033)
->        at ../system/cpus.c:504
->    #7  qemu_mutex_lock_iothread_impl
->        (file=file@entry=0x555555efda6e "../accel/tcg/cputlb.c", line=line@entry=2033) at ../system/cpus.c:500
->    #8  0x0000555555cbf786 in do_ld_mmio_beN
->        (cpu=cpu@entry=0x555556b72010, full=0x7fff5408e010, ret_be=ret_be@entry=0, addr=2310065133864353792, size=size@entry=4, mmu_idx=7, type=MMU_INST_FETCH, ra=0) at ../accel/tcg/cputlb.c:2033
->    #9  0x0000555555cc2ec6 in do_ld_4
->        (ra=0, memop=MO_BEUL, type=MMU_INST_FETCH, mmu_idx=<optimized out>, p=0x7fff67dfc660, cpu=0x555556b72010) at ../accel/tcg/cputlb.c:2336
->    #10 do_ld4_mmu
->        (cpu=cpu@entry=0x555556b72010, addr=<optimized out>, oi=<optimized out>, ra=ra@entry=0, access_type=access_type@entry=MMU_INST_FETCH)
->        at ../accel/tcg/cputlb.c:2418
->    #11 0x0000555555ccbaf6 in cpu_ldl_code
->        (env=env@entry=0x555556b747d0, addr=<optimized out>)
->        at ../accel/tcg/cputlb.c:2975
->    #12 0x0000555555b7a47c in ppc_ldl_code
->        (addr=<optimized out>, env=0x555556b747d0)
->        at ../target/ppc/excp_helper.c:147
->    #13 is_prefix_insn_excp (excp=1, cpu=0x555556b72010)
->        at ../target/ppc/excp_helper.c:1350
->    #14 powerpc_excp_books (excp=1, cpu=0x555556b72010)
->        at ../target/ppc/excp_helper.c:1415
->    #15 powerpc_excp (cpu=0x555556b72010, excp=<optimized out>)
->        at ../target/ppc/excp_helper.c:1733
->    #16 0x0000555555cb1c74 in cpu_handle_exception
->        (ret=<synthetic pointer>, cpu=<optimized out>)
-> 
-> Fix this by excluding machine checks caused by ifetch from the prefix
-> check.
-> 
-> Fixes: 55a7fa34f89 ("target/ppc: Machine check on invalid real address access on POWER9/10")
-> Fixes: 5a5d3b23cb2 ("target/ppc: Add SRR1 prefix indication to interrupt handlers")
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
+make check-tcg fails on Fedora with:
 
-Looks correct. I was wondering how complex it would be to add a prefix
-instruction test.
+    vtimer.c:9:10: fatal error: inttypes.h: No such file or directory
 
+Fedora has a minimal aarch64 cross-compiler, which satisfies the
+configure checks, so it's chosen instead of the dockerized one.
+There is no cross-version of inttypes.h, however.
 
-Thanks,
+Fix by using stdint.h instead. The test does not require anything
+from inttypes.h anyway.
 
-C.
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ tests/tcg/aarch64/system/vtimer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-
-
->   target/ppc/excp_helper.c | 32 +++++++++++++++++++++-----------
->   1 file changed, 21 insertions(+), 11 deletions(-)
-> 
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index a42743a3e0..34c307b572 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -1322,6 +1322,15 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
->       }
->   
->       switch (excp) {
-> +    case POWERPC_EXCP_MCHECK:
-> +        if (!(env->error_code & PPC_BIT(42))) {
-> +            /*
-> +             * Fetch attempt caused a machine check, so attempting to fetch
-> +             * again would cause a recursive machine check.
-> +             */
-> +            return false;
-> +        }
-> +        break;
->       case POWERPC_EXCP_HDSI:
->           /* HDSI PRTABLE_FAULT has the originating access type in error_code */
->           if ((env->spr[SPR_HDSISR] & DSISR_PRTABLE_FAULT) &&
-> @@ -1332,10 +1341,10 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
->                * instruction at NIP would cause recursive faults with the same
->                * translation).
->                */
-> -            break;
-> +            return false;
->           }
-> -        /* fall through */
-> -    case POWERPC_EXCP_MCHECK:
-> +        break;
-> +
->       case POWERPC_EXCP_DSI:
->       case POWERPC_EXCP_DSEG:
->       case POWERPC_EXCP_ALIGN:
-> @@ -1346,17 +1355,14 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
->       case POWERPC_EXCP_VPU:
->       case POWERPC_EXCP_VSXU:
->       case POWERPC_EXCP_FU:
-> -    case POWERPC_EXCP_HV_FU: {
-> -        uint32_t insn = ppc_ldl_code(env, env->nip);
-> -        if (is_prefix_insn(env, insn)) {
-> -            return true;
-> -        }
-> +    case POWERPC_EXCP_HV_FU:
->           break;
-> -    }
->       default:
-> -        break;
-> +        return false;
->       }
-> -    return false;
-> +
-> +
-> +    return is_prefix_insn(env, ppc_ldl_code(env, env->nip));
->   }
->   #else
->   static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
-> @@ -3245,6 +3251,10 @@ void ppc_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
->               env->error_code |= PPC_BIT(42);
->   
->           } else { /* Fetch */
-> +            /*
-> +             * is_prefix_insn_excp() tests !PPC_BIT(42) to avoid fetching
-> +             * the instruction, so that must always be clear for fetches.
-> +             */
->               env->error_code = PPC_BIT(36) | PPC_BIT(44) | PPC_BIT(45);
->           }
->           break;
+diff --git a/tests/tcg/aarch64/system/vtimer.c b/tests/tcg/aarch64/system/vtimer.c
+index 42f2f7796c7..7d725eced34 100644
+--- a/tests/tcg/aarch64/system/vtimer.c
++++ b/tests/tcg/aarch64/system/vtimer.c
+@@ -6,7 +6,7 @@
+  * SPDX-License-Identifier: GPL-2.0-or-later
+  */
+ 
+-#include <inttypes.h>
++#include <stdint.h>
+ #include <minilib.h>
+ 
+ /* grabbed from Linux */
+-- 
+2.43.0
 
 
