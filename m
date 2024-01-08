@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 510848272A8
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E360D8272A4
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:14:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMrKF-0004DZ-IA; Mon, 08 Jan 2024 10:14:03 -0500
+	id 1rMrKP-0004LU-Gw; Mon, 08 Jan 2024 10:14:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rMrKD-0004D0-Pu
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:14:01 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1rMrKO-0004Jx-0D
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:14:12 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rMrKA-0001YS-9j
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:14:01 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40e4ad831b0so3241505e9.2
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 07:13:57 -0800 (PST)
+ id 1rMrKA-0001Yf-TN
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:14:11 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40d87df95ddso21231725e9.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 07:13:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1704726837; x=1705331637; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MMV6mhc2gSysrpUH6HPMUt3N81sB5EX397Qla+10sMg=;
- b=JL/NBzuYAFFdo8/Nere2q28B9odOXr5Ls+Vpgc/3bsaw3iHYK+8t0JD72tU9iZjM8j
- rfrJNzBgsZy3AL5mI/Ubyc4lyokKNdnmTOhHkMqmfqVtYIax7qZpFEyHopl5WuczX1yO
- 5eEqqaT83Ji3UZXBz5rKcpcU7oH+FPYcOQMdJe2tdDGSpJU3dEmMUHbpB9q+iVzAQTO2
- q7iePPhBI72Mv5fZS4wL6rH5UaVVsKIb5Cs1l6s1BYDN1AuZUQmfDaNoq4ufTgBBv54C
- W8+aXROmSnL74DqerodEivlwAhLizeq0gh6GYSsNeCVU9ZWoezEtxdExTDDvpAnloEIZ
- r9Sw==
+ bh=sGtlVmj/cLSRItSFI6o6Pd2FVVc8E9gmG7YjPACLCW8=;
+ b=jPRLjZp3PetcpyNYsqbZve+HKDNZynXGDxa1QO7/T++T5HTUYpnndHHxndk8UPquUN
+ RlcxaeKjOC3R651AtOSsuWRZTEmfxs+SWPUrNy+cgshaj3a439+PA/uuOz6cK3hufso3
+ to6kXPSjaQCC5e1rdBMBRNGe3Rv6i7SkmW0Zo5SpN5UXbJNrBAQrmfPC1eZL1zbA0NxA
+ yiaXARki24AjlQrgB1QD8bJ846/bWS6aAetc5kkSSLWGcrJ/Ap16y92VKbvfmny+ggOX
+ lsydc9uI3kBG4eiFUmsMvIz18d8H6uwTRl8QZZvXJauQvASOj5XJBkif3uwMSL9dZLaL
+ h91g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1704726837; x=1705331637;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MMV6mhc2gSysrpUH6HPMUt3N81sB5EX397Qla+10sMg=;
- b=Ar0hj5nbdRua5u7hoSD2/jTpefx6m6UEZ0PFBSvm/TlZZYLv2JKU7OqsclZ3jFe4P0
- Xw6ufxdhcKkMPblbby9ejOH3XsDBq8XnMXeHAXMgWjxzo/CEZjxmgW9fFasSIB1uWa3r
- bsoUALiaKZlPtIoon184FqUD1RYNcnXTnTBEWYlD7faUpYfG/2UQlldscJG0LXnHcsz4
- jlwKWpnr+pEIcRHEKuRGrg3rUWJKPkSHJDzIdq9lbfRww5sdkye+ZYyZWXzxjGuX3lCG
- E9aNPRILhafLeXK7l/AbQiyMSlU9A+uSy4N4MNOJlQy3u6PcjdlPm7rj1kMiDAFf1NVe
- 5oTw==
-X-Gm-Message-State: AOJu0YzBIcTArW0aKIIs0PuM9mWPdzQiw0JUluLjqY2BjeHYweZSomAT
- FYGQ1j9uKB9ZK48gUlFZZPj0Uv/26amwIw==
-X-Google-Smtp-Source: AGHT+IHAVCFc/V2TEXHTz1z3YKCvpxHBRBoB3jJvRxiRiRGf6pUf9vB+7FtKUe5r8y3eD5nz1J98bA==
-X-Received: by 2002:a05:600c:1f11:b0:40e:49c6:45e0 with SMTP id
- bd17-20020a05600c1f1100b0040e49c645e0mr454314wmb.23.1704726836834; 
+ bh=sGtlVmj/cLSRItSFI6o6Pd2FVVc8E9gmG7YjPACLCW8=;
+ b=puUhRB7b7j+5nRGLHJ6ErYhwqcpfilozj+iq7GhD9oHfM6YuwLcZUSymVv77k8vTRP
+ hm4l2xdXzwNW5+RhXk6PAfZ3igIItlAGdhmEbkXpDikc7rX/h/RSiE9pBtt3pkQCzaes
+ rXgBw0uuMy3Qpubk6LCnWvOj6Aslp0Ettb7IaZaoPtJylc9Q8DAc1ASitNP1WvNqzVYP
+ gqnWQJORl7iRjqXxB7KTan8vbIrEielhmmfRFxyo7OFD5PVCF3y013DiK0WUcshzbVzY
+ D7+vVlEK2hkcG6d980UrcsXUqVa1v0acM4NE2R9Mlp29vtO/Y46FGlWZzmFYIKWWpB9h
+ TglA==
+X-Gm-Message-State: AOJu0Yx/boptH2Us+anGn4TyuEhQTwwzdrDan9AGMLGIyF+U3Y34V44z
+ HuaK66lvyzmF4nMLmCgUapBtOTxpJRHqMA==
+X-Google-Smtp-Source: AGHT+IF6/r/blh9ykR03g3UR7YNR7t3wTGE71UDHl93ONfvwScvHK2A2Ny7HQP+mmLed38GJagI3NA==
+X-Received: by 2002:a05:600c:1f16:b0:40e:4239:5075 with SMTP id
+ bd22-20020a05600c1f1600b0040e42395075mr876947wmb.364.1704726836992; 
  Mon, 08 Jan 2024 07:13:56 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- m21-20020a05600c3b1500b0040d5c58c41dsm140532wms.24.2024.01.08.07.13.53
+ u2-20020a7bc042000000b0040d79997731sm5233915wmc.0.2024.01.08.07.13.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 08 Jan 2024 07:13:56 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 63D705F948;
+ by draig.lan (Postfix) with ESMTP id 775185F949;
  Mon,  8 Jan 2024 15:13:53 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 06/13] replay: remove host_clock_last
-Date: Mon,  8 Jan 2024 15:13:45 +0000
-Message-Id: <20240108151352.2199097-7-alex.bennee@linaro.org>
+Subject: [PULL 07/13] replay: add proper kdoc for ReplayState
+Date: Mon,  8 Jan 2024 15:13:46 +0000
+Message-Id: <20240108151352.2199097-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240108151352.2199097-1-alex.bennee@linaro.org>
 References: <20240108151352.2199097-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,26 +98,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: a02fe2ca70 (replay: Remove host_clock_last)
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Remove the non-standard comment formatting and move the descriptions
+into a proper kdoc comment.
+
 Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231211091346.14616-7-alex.bennee@linaro.org>
+Message-Id: <20231211091346.14616-8-alex.bennee@linaro.org>
 
 diff --git a/replay/replay-internal.h b/replay/replay-internal.h
-index b6836354ac5..516147ddbca 100644
+index 516147ddbca..98ca3748edb 100644
 --- a/replay/replay-internal.h
 +++ b/replay/replay-internal.h
-@@ -80,8 +80,6 @@ typedef struct ReplayState {
-         This counter is global, because requests from different
-         block devices should not get overlapping ids. */
+@@ -63,24 +63,31 @@ enum ReplayEvents {
+     EVENT_COUNT
+ };
+ 
++/**
++ * typedef ReplayState - global tracking Replay state
++ *
++ * This structure tracks where we are in the current ReplayState
++ * including the logged events from the recorded replay stream. Some
++ * of the data is also stored/restored from VMStateDescription when VM
++ * save/restore events take place.
++ *
++ * @cached_clock: Cached clocks values
++ * @current_icount: number of processed instructions
++ * @instruction_count: number of instructions until next event
++ * @data_kind: current event
++ * @has_unread_data: 1 if event not yet processed
++ * @file_offset: offset into replay log at replay snapshot
++ * @block_request_id: current serialised block request id
++ * @read_event_id: current async read event id
++ */
+ typedef struct ReplayState {
+-    /*! Cached clock values. */
+     int64_t cached_clock[REPLAY_CLOCK_COUNT];
+-    /*! Current icount - number of processed instructions. */
+     uint64_t current_icount;
+-    /*! Number of instructions to be executed before other events happen. */
+     int instruction_count;
+-    /*! Type of the currently executed event. */
+     unsigned int data_kind;
+-    /*! Flag which indicates that event is not processed yet. */
+     unsigned int has_unread_data;
+-    /*! Temporary variable for saving current log offset. */
+     uint64_t file_offset;
+-    /*! Next block operation id.
+-        This counter is global, because requests from different
+-        block devices should not get overlapping ids. */
      uint64_t block_request_id;
--    /*! Prior value of the host clock */
--    uint64_t host_clock_last;
-     /*! Asynchronous event id read from the log */
+-    /*! Asynchronous event id read from the log */
      uint64_t read_event_id;
  } ReplayState;
+ extern ReplayState replay_state;
 -- 
 2.39.2
 
