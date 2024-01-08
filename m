@@ -2,35 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ECEC8268A1
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 08:34:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E23DF8268A0
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 08:34:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMk89-00039V-8O; Mon, 08 Jan 2024 02:33:05 -0500
+	id 1rMk8A-0003BL-US; Mon, 08 Jan 2024 02:33:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=P3fH=IS=redhat.com=clg@ozlabs.org>)
- id 1rMk86-00037h-Vy
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:33:03 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1rMk88-00039T-Mq
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:33:04 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=P3fH=IS=redhat.com=clg@ozlabs.org>)
- id 1rMk83-0004bl-BL
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:33:02 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T7m4T1yv0z4wxZ;
- Mon,  8 Jan 2024 18:32:57 +1100 (AEDT)
+ id 1rMk85-0004aS-8p
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:33:04 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T7m4W5nH3z4wy9;
+ Mon,  8 Jan 2024 18:32:59 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T7m4R1m1gz4wcc;
- Mon,  8 Jan 2024 18:32:54 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T7m4T5Y4Wz4wcc;
+ Mon,  8 Jan 2024 18:32:57 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -38,24 +36,23 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Eric Farman <farman@linux.ibm.com>
-Subject: [PULL 07/17] vfio/spapr: Introduce a sPAPR VFIOIOMMU QOM interface
-Date: Mon,  8 Jan 2024 08:32:22 +0100
-Message-ID: <20240108073232.118228-8-clg@redhat.com>
+Subject: [PULL 08/17] vfio/iommufd: Introduce a VFIOIOMMU iommufd QOM interface
+Date: Mon,  8 Jan 2024 08:32:23 +0100
+Message-ID: <20240108073232.118228-9-clg@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108073232.118228-1-clg@redhat.com>
 References: <20240108073232.118228-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=P3fH=IS=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.248, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,132 +68,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move vfio_spapr_container_setup() to a VFIOIOMMUClass::setup handler
-and convert the sPAPR VFIOIOMMUOps struct to a QOM interface. The
-sPAPR QOM interface inherits from the legacy QOM interface because
-because both have the same basic needs. The sPAPR interface is then
-extended with the handlers specific to the sPAPR IOMMU.
-
-This allows reuse and provides better abstraction of the backends. It
-will be useful to avoid compiling the sPAPR IOMMU backend on targets
-not supporting it.
+As previously done for the sPAPR and legacy IOMMU backends, convert
+the VFIOIOMMUOps struct to a QOM interface. The set of of operations
+for this backend can be referenced with a literal typename instead of
+a C struct.
 
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Tested-by: Eric Farman <farman@linux.ibm.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-container-base.h |  1 +
- hw/vfio/container.c                   | 18 +++++--------
- hw/vfio/spapr.c                       | 39 ++++++++++++++++-----------
- 3 files changed, 31 insertions(+), 27 deletions(-)
+ include/hw/vfio/vfio-common.h         |  1 -
+ include/hw/vfio/vfio-container-base.h |  2 +-
+ hw/vfio/common.c                      |  2 +-
+ hw/vfio/iommufd.c                     | 35 ++++++++++++++++++++-------
+ 4 files changed, 28 insertions(+), 12 deletions(-)
 
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 14c497b6b0a79466e8f567aceed384ec2c75ea90..9b7ef7d02b5a0ad5266bcc4d06cd6874178978e4 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -210,7 +210,6 @@ typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
+ typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
+ extern VFIOGroupList vfio_group_list;
+ extern VFIODeviceList vfio_device_list;
+-extern const VFIOIOMMUOps vfio_iommufd_ops;
+ extern const MemoryListener vfio_memory_listener;
+ extern int vfio_kvm_device_fd;
+ 
 diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index ce8b1fba88c145135adc20e96591bafd6050d5f1..9e21d7811f3810ca2c63d9f28bdcc9aa6f75f9ad 100644
+index 9e21d7811f3810ca2c63d9f28bdcc9aa6f75f9ad..b2813b0c117985425c842d91f011bb895955d738 100644
 --- a/include/hw/vfio/vfio-container-base.h
 +++ b/include/hw/vfio/vfio-container-base.h
-@@ -95,6 +95,7 @@ void vfio_container_destroy(VFIOContainerBase *bcontainer);
+@@ -17,7 +17,6 @@
  
+ typedef struct VFIODevice VFIODevice;
+ typedef struct VFIOIOMMUClass VFIOIOMMUClass;
+-#define VFIOIOMMUOps VFIOIOMMUClass /* To remove */
+ 
+ typedef struct {
+     unsigned long *bitmap;
+@@ -96,6 +95,7 @@ void vfio_container_destroy(VFIOContainerBase *bcontainer);
  #define TYPE_VFIO_IOMMU "vfio-iommu"
  #define TYPE_VFIO_IOMMU_LEGACY TYPE_VFIO_IOMMU "-legacy"
-+#define TYPE_VFIO_IOMMU_SPAPR TYPE_VFIO_IOMMU "-spapr"
+ #define TYPE_VFIO_IOMMU_SPAPR TYPE_VFIO_IOMMU "-spapr"
++#define TYPE_VFIO_IOMMU_IOMMUFD TYPE_VFIO_IOMMU "-iommufd"
  
  /*
   * VFIOContainerBase is not an abstract QOM object because it felt
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index c22bdd321677026e52c7cdffce853523ef679cd0..688cf23bab88f85246378bc5a7da3c51ea6b79d9 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -381,6 +381,10 @@ static const VFIOIOMMUClass *vfio_get_iommu_class(int iommu_type, Error **errp)
-     case VFIO_TYPE1_IOMMU:
-         klass = object_class_by_name(TYPE_VFIO_IOMMU_LEGACY);
-         break;
-+    case VFIO_SPAPR_TCE_v2_IOMMU:
-+    case VFIO_SPAPR_TCE_IOMMU:
-+        klass = object_class_by_name(TYPE_VFIO_IOMMU_SPAPR);
-+        break;
-     default:
-         g_assert_not_reached();
-     };
-@@ -623,19 +627,9 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-         goto free_container_exit;
-     }
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 2329d0efc8c1d617f0bfee5283e82b295d2d477d..89ff1c7aeda14d20b2e24f8bc251db0a71d4527c 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -1508,7 +1508,7 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
  
--    switch (container->iommu_type) {
--    case VFIO_TYPE1v2_IOMMU:
--    case VFIO_TYPE1_IOMMU:
--        ret = vfio_legacy_setup(bcontainer, errp);
--        break;
--    case VFIO_SPAPR_TCE_v2_IOMMU:
--    case VFIO_SPAPR_TCE_IOMMU:
--        ret = vfio_spapr_container_init(container, errp);
--        break;
--    default:
--        g_assert_not_reached();
--    }
-+    assert(bcontainer->ops->setup);
- 
-+    ret = bcontainer->ops->setup(bcontainer, errp);
-     if (ret) {
-         goto enable_discards_exit;
+ #ifdef CONFIG_IOMMUFD
+     if (vbasedev->iommufd) {
+-        ops = &vfio_iommufd_ops;
++        ops = VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_IOMMUFD));
      }
-diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-index 44617dfc6b5f1a2a3a1c37436b76042aebda8b63..0d949bb728212534a7e2296e491aa8d95f45945d 100644
---- a/hw/vfio/spapr.c
-+++ b/hw/vfio/spapr.c
-@@ -458,20 +458,11 @@ static void vfio_spapr_container_release(VFIOContainerBase *bcontainer)
-     }
- }
+ #endif
  
--static VFIOIOMMUOps vfio_iommu_spapr_ops;
--
--static void setup_spapr_ops(VFIOContainerBase *bcontainer)
--{
--    vfio_iommu_spapr_ops = *bcontainer->ops;
--    vfio_iommu_spapr_ops.add_window = vfio_spapr_container_add_section_window;
--    vfio_iommu_spapr_ops.del_window = vfio_spapr_container_del_section_window;
--    vfio_iommu_spapr_ops.release = vfio_spapr_container_release;
--    bcontainer->ops = &vfio_iommu_spapr_ops;
--}
--
--int vfio_spapr_container_init(VFIOContainer *container, Error **errp)
-+static int vfio_spapr_container_setup(VFIOContainerBase *bcontainer,
-+                                      Error **errp)
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 87a561c54580adc6d7b2711331a00940ff13bd43..d4c586e842def8f04d3a914843f5eece2c75ea30 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -319,6 +319,8 @@ static int iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+     int ret, devfd;
+     uint32_t ioas_id;
+     Error *err = NULL;
++    const VFIOIOMMUClass *iommufd_vioc =
++        VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_IOMMUFD));
+ 
+     if (vbasedev->fd < 0) {
+         devfd = iommufd_cdev_getfd(vbasedev->sysfsdev, errp);
+@@ -340,7 +342,7 @@ static int iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+     /* try to attach to an existing container in this space */
+     QLIST_FOREACH(bcontainer, &space->containers, next) {
+         container = container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
+-        if (bcontainer->ops != &vfio_iommufd_ops ||
++        if (bcontainer->ops != iommufd_vioc ||
+             vbasedev->iommufd != container->be) {
+             continue;
+         }
+@@ -374,7 +376,7 @@ static int iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+     container->ioas_id = ioas_id;
+ 
+     bcontainer = &container->bcontainer;
+-    vfio_container_init(bcontainer, space, &vfio_iommufd_ops);
++    vfio_container_init(bcontainer, space, iommufd_vioc);
+     QLIST_INSERT_HEAD(&space->containers, bcontainer, next);
+ 
+     ret = iommufd_cdev_attach_container(vbasedev, container, errp);
+@@ -476,9 +478,11 @@ static void iommufd_cdev_detach(VFIODevice *vbasedev)
+ static VFIODevice *iommufd_cdev_pci_find_by_devid(__u32 devid)
  {
--    VFIOContainerBase *bcontainer = &container->bcontainer;
-+    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-+                                            bcontainer);
-     VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
-                                                   container);
-     struct vfio_iommu_spapr_tce_info info;
-@@ -536,8 +527,6 @@ int vfio_spapr_container_init(VFIOContainer *container, Error **errp)
-                           0x1000);
-     }
+     VFIODevice *vbasedev_iter;
++    const VFIOIOMMUClass *iommufd_vioc =
++        VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_IOMMUFD));
  
--    setup_spapr_ops(bcontainer);
--
-     return 0;
- 
- listener_unregister_exit:
-@@ -546,3 +535,23 @@ listener_unregister_exit:
-     }
+     QLIST_FOREACH(vbasedev_iter, &vfio_device_list, global_next) {
+-        if (vbasedev_iter->bcontainer->ops != &vfio_iommufd_ops) {
++        if (vbasedev_iter->bcontainer->ops != iommufd_vioc) {
+             continue;
+         }
+         if (devid == vbasedev_iter->devid) {
+@@ -621,10 +625,23 @@ out_single:
      return ret;
  }
-+
-+static void vfio_iommu_spapr_class_init(ObjectClass *klass, void *data)
+ 
+-const VFIOIOMMUOps vfio_iommufd_ops = {
+-    .dma_map = iommufd_cdev_map,
+-    .dma_unmap = iommufd_cdev_unmap,
+-    .attach_device = iommufd_cdev_attach,
+-    .detach_device = iommufd_cdev_detach,
+-    .pci_hot_reset = iommufd_cdev_pci_hot_reset,
++static void vfio_iommu_iommufd_class_init(ObjectClass *klass, void *data)
 +{
 +    VFIOIOMMUClass *vioc = VFIO_IOMMU_CLASS(klass);
 +
-+    vioc->add_window = vfio_spapr_container_add_section_window;
-+    vioc->del_window = vfio_spapr_container_del_section_window;
-+    vioc->release = vfio_spapr_container_release;
-+    vioc->setup = vfio_spapr_container_setup;
-+};
++    vioc->dma_map = iommufd_cdev_map;
++    vioc->dma_unmap = iommufd_cdev_unmap;
++    vioc->attach_device = iommufd_cdev_attach;
++    vioc->detach_device = iommufd_cdev_detach;
++    vioc->pci_hot_reset = iommufd_cdev_pci_hot_reset;
+ };
 +
 +static const TypeInfo types[] = {
 +    {
-+        .name = TYPE_VFIO_IOMMU_SPAPR,
-+        .parent = TYPE_VFIO_IOMMU_LEGACY,
-+        .class_init = vfio_iommu_spapr_class_init,
++        .name = TYPE_VFIO_IOMMU_IOMMUFD,
++        .parent = TYPE_VFIO_IOMMU,
++        .class_init = vfio_iommu_iommufd_class_init,
 +    },
 +};
 +
