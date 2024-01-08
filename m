@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5204827199
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 15:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA28C827194
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 15:40:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMqlv-0006Zi-8j; Mon, 08 Jan 2024 09:38:35 -0500
+	id 1rMqls-0006Xc-Bw; Mon, 08 Jan 2024 09:38:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMqlf-0006TJ-9I
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMqle-0006Sl-3t
  for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:38:20 -0500
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMqlb-0007ih-TR
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:38:19 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rMqlb-0007in-TQ
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:38:17 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 6343A61052;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 96DB961057;
+ Mon,  8 Jan 2024 14:38:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4857C433C8;
  Mon,  8 Jan 2024 14:38:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715FCC433CA;
- Mon,  8 Jan 2024 14:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1704724691;
- bh=LY0zkxpueP44pcToUrKPByeb2NHmWUmMfllbYguP8jw=;
+ s=k20201202; t=1704724692;
+ bh=HlpONBE5xmYT5SPvJFAtSC7CZESRyr5y7DVv3L+OrJw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ooiZ1agzv9aLlEgC93+X2OTiPDN4fl9IclhM6lfOdYZce0jF3ZAfSO2RptPj+hNuX
- RNbij15nQiQweO9yPrmKpGO+qfywrR+M4SgDdkFiIGs+onQL6LcH5IH8/lYBioT/2R
- Zvk63ZnBGRv7bUMxVtvFRo3REaR+/pJ/ADpOlFbXd+aEhKRFkb3cxguuh7+eioi48e
- sxm1bbYaxKjj8jmvGHLKhEfmaSm8KgroqmRflkbcUgcr77+XhH7y5H2fSik2Q8pEwt
- d71Q/wzqt7pRgFckJo+70Uh1lR+M/IdfWbYgLcB8rNihBmhFVb5l2cPbYOFsgaZT63
- ilA07R3l512qA==
+ b=bL11xnrPFGsCw4ywRr5OkLq5EISebjuvWJyGZ8uMfgxTio5TILvtWuj55P/46e3cv
+ /DRoFMfyBFgEaFMmmawcQ+m1N80c5okBC6JZ+TIwIa8mOciqjeEFiOoZGF093dudQB
+ ZbOMORwYR55rgQb70jU3HsH4u6DkYQdG/UVV/KG5sbZvGx7nxQwt3VEDg/Nkb5M9Xb
+ 9aDVESTLo4YXhxz856uDBpT+jlhO62hVWXbnlGWuxHnFEdw0NfYZS1gk5qjN+85Oyp
+ GzYBXvkeUsiyYuoCRRZBykyp6kWJMM4KTCF0jMl1lV5R97tRZ2behgPMtEIzLjwOLi
+ 9csYLEiDJaX+Q==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 5/9] target/hppa: Strip upper 32-bits of IOR on error in probe
-Date: Mon,  8 Jan 2024 15:37:58 +0100
-Message-ID: <20240108143802.50256-6-deller@kernel.org>
+Subject: [PULL 6/9] target/hppa: Strip upper 32-bits of IOR on unaligned
+ access error
+Date: Mon,  8 Jan 2024 15:37:59 +0100
+Message-ID: <20240108143802.50256-7-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108143802.50256-1-deller@kernel.org>
 References: <20240108143802.50256-1-deller@kernel.org>
@@ -73,22 +74,22 @@ Keep patch short for easier backporting.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- target/hppa/op_helper.c | 2 +-
+ target/hppa/cpu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
-index 7f607c3afd..60c9014242 100644
---- a/target/hppa/op_helper.c
-+++ b/target/hppa/op_helper.c
-@@ -353,7 +353,7 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
-     if (excp >= 0) {
-         if (env->psw & PSW_Q) {
-             /* ??? Needs tweaking for hppa64.  */
--            env->cr[CR_IOR] = addr;
-+            env->cr[CR_IOR] = (uint32_t)addr;
-             env->cr[CR_ISR] = addr >> 32;
-         }
-         if (excp == EXCP_DTLB_MISS) {
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index 04de1689d7..3c384d5855 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -112,7 +112,7 @@ void hppa_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
+     cs->exception_index = EXCP_UNALIGN;
+     if (env->psw & PSW_Q) {
+         /* ??? Needs tweaking for hppa64.  */
+-        env->cr[CR_IOR] = addr;
++        env->cr[CR_IOR] = (uint32_t)addr;
+         env->cr[CR_ISR] = addr >> 32;
+     }
+ 
 -- 
 2.43.0
 
