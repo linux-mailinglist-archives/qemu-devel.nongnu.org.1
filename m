@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50AA82797E
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:52:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F188279E7
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:03:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMwZp-0003tf-FU; Mon, 08 Jan 2024 15:50:29 -0500
+	id 1rMwbo-00011C-0S; Mon, 08 Jan 2024 15:52:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+41a72dc6539c0dfbbc31+7442+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rMwZU-0003lT-Qn; Mon, 08 Jan 2024 15:50:10 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ <BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rMwaD-0004l3-3D; Mon, 08 Jan 2024 15:50:53 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+41a72dc6539c0dfbbc31+7442+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rMwZD-0000v8-01; Mon, 08 Jan 2024 15:50:08 -0500
+ <BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rMwa9-00017T-41; Mon, 08 Jan 2024 15:50:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=VTf9ESChukN9XGyPv1okfNdkBAYcUSzB3fr/CmKEMJg=; b=oxKakwKRBbdR5JESrinxxOmqFA
- Uh3CtKH69drB5Jwx5km4eFlyxBZ2n+IJmxkkjaOtxQ2p9wf9U0KyaDV83bWby21kGOlDSVeyW9DhV
- IlE5c4yG0NDJwmH/bjD8An2Y9c2JSGNzhTQXbmbh1BjH6EwJDTlN/DzyTgb55y0ILF9LpaoWH8E0u
- WAoh9nQSv6Y9yorUFp5XIvYPV6hEDFNG2dAQz+lH5DwfuWz0dUz5jHO9/cY63pvIgrKtBBnZhnswQ
- zPxYrWp/7JCb+47++eSPtjqpZvLzzo2HRKmOIUv5Rx4/5ts5bVOANCoZbE0jsvShSUOM9dLh+GxYH
- VkybhKfQ==;
+ bh=oLriCfKbYL3o15M6kYDB7N5HJ+JVsRg5ZZIf/+DvLkY=; b=E9vGlnFdFf3HV6UJCMFj6OIPyv
+ rvc5QUWb96PKjF6mE2I11Rl8ZWztiHGTr4ZIo7q12V0DCVEmsB60Ufi/rY1P+ELqqdgw3ToQmvV0X
+ cYttlyf1jmO2+WsWSZdZ7OMTG4bD+BSU8Qf4eQRS4DJo5cC40Xy8tqBwTCmaDN4xvZFyFKaHyyj8/
+ pqA/OmtEMtGz+uKiP4c8FlJKQlj8Ecj+bxfaDB9iLh1I5ekySmusMa5lce2qxre3ohO4Dcezwy1Jb
+ vMi8U49juUa0PUhxK/s7aT/B+0nveV59uDjFWnSair7sFYf0YKlXdlkmfvfK5/M0k14WMZ/VUlvYI
+ cFAbgGaQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1rMwYk-008RQ0-9s; Mon, 08 Jan 2024 20:49:23 +0000
+ by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+ id 1rMwYm-007wXk-0J; Mon, 08 Jan 2024 20:49:53 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1rMwYk-002NG7-2q; Mon, 08 Jan 2024 20:49:22 +0000
+ Hat Linux)) id 1rMwYk-002NGB-36; Mon, 08 Jan 2024 20:49:22 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -82,19 +82,19 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v3 30/46] hw/arm: use qemu_configure_nic_device()
-Date: Mon,  8 Jan 2024 20:26:59 +0000
-Message-ID: <20240108204909.564514-31-dwmw2@infradead.org>
+Subject: [PATCH v3 31/46] hw/net/etraxfs-eth: use qemu_configure_nic_device()
+Date: Mon,  8 Jan 2024 20:27:00 +0000
+Message-ID: <20240108204909.564514-32-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240108204909.564514-1-dwmw2@infradead.org>
 References: <20240108204909.564514-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+41a72dc6539c0dfbbc31+7442+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+a33e3d7a5f0474923369+7442+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -121,163 +121,70 @@ From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/arm/mps2-tz.c     |  8 ++------
- hw/arm/msf2-soc.c    |  6 +-----
- hw/arm/musicpal.c    |  3 +--
- hw/arm/xilinx_zynq.c | 11 ++++-------
- hw/arm/xlnx-versal.c |  7 +------
- hw/arm/xlnx-zynqmp.c |  8 +-------
- 6 files changed, 10 insertions(+), 33 deletions(-)
+ hw/cris/axis_dev88.c      | 9 ++++-----
+ hw/net/etraxfs_eth.c      | 5 ++---
+ include/hw/cris/etraxfs.h | 2 +-
+ 3 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/hw/arm/mps2-tz.c b/hw/arm/mps2-tz.c
-index 5d8cdc1a4c..a2d18afd79 100644
---- a/hw/arm/mps2-tz.c
-+++ b/hw/arm/mps2-tz.c
-@@ -503,14 +503,12 @@ static MemoryRegion *make_eth_dev(MPS2TZMachineState *mms, void *opaque,
-                                   const PPCExtraData *extradata)
- {
-     SysBusDevice *s;
--    NICInfo *nd = &nd_table[0];
+diff --git a/hw/cris/axis_dev88.c b/hw/cris/axis_dev88.c
+index d82050d927..5556634921 100644
+--- a/hw/cris/axis_dev88.c
++++ b/hw/cris/axis_dev88.c
+@@ -308,15 +308,14 @@ void axisdev88_init(MachineState *machine)
  
-     /* In hardware this is a LAN9220; the LAN9118 is software compatible
-      * except that it doesn't support the checksum-offload feature.
-      */
--    qemu_check_nic_model(nd, "lan9118");
-     mms->lan9118 = qdev_new(TYPE_LAN9118);
--    qdev_set_nic_properties(mms->lan9118, nd);
-+    qemu_configure_nic_device(mms->lan9118, true, NULL);
- 
-     s = SYS_BUS_DEVICE(mms->lan9118);
-     sysbus_realize_and_unref(s, &error_fatal);
-@@ -528,7 +526,6 @@ static MemoryRegion *make_eth_usb(MPS2TZMachineState *mms, void *opaque,
-      * irqs[] is the ethernet IRQ.
-      */
-     SysBusDevice *s;
--    NICInfo *nd = &nd_table[0];
- 
-     memory_region_init(&mms->eth_usb_container, OBJECT(mms),
-                        "mps2-tz-eth-usb-container", 0x200000);
-@@ -537,9 +534,8 @@ static MemoryRegion *make_eth_usb(MPS2TZMachineState *mms, void *opaque,
-      * In hardware this is a LAN9220; the LAN9118 is software compatible
-      * except that it doesn't support the checksum-offload feature.
-      */
--    qemu_check_nic_model(nd, "lan9118");
-     mms->lan9118 = qdev_new(TYPE_LAN9118);
--    qdev_set_nic_properties(mms->lan9118, nd);
-+    qemu_configure_nic_device(mms->lan9118, true, NULL);
- 
-     s = SYS_BUS_DEVICE(mms->lan9118);
-     sysbus_realize_and_unref(s, &error_fatal);
-diff --git a/hw/arm/msf2-soc.c b/hw/arm/msf2-soc.c
-index b5fe9f364d..35bf1d64e1 100644
---- a/hw/arm/msf2-soc.c
-+++ b/hw/arm/msf2-soc.c
-@@ -197,12 +197,8 @@ static void m2sxxx_soc_realize(DeviceState *dev_soc, Error **errp)
-         g_free(bus_name);
-     }
- 
--    /* FIXME use qdev NIC properties instead of nd_table[] */
--    if (nd_table[0].used) {
--        qemu_check_nic_model(&nd_table[0], TYPE_MSS_EMAC);
--        qdev_set_nic_properties(DEVICE(&s->emac), &nd_table[0]);
+     /* Add the two ethernet blocks.  */
+     dma_eth = g_malloc0(sizeof dma_eth[0] * 4); /* Allocate 4 channels.  */
+-    etraxfs_eth_init(&nd_table[0], 0x30034000, 1, &dma_eth[0], &dma_eth[1]);
+-    if (nb_nics > 1) {
+-        etraxfs_eth_init(&nd_table[1], 0x30036000, 2, &dma_eth[2], &dma_eth[3]);
 -    }
-     dev = DEVICE(&s->emac);
-+    qemu_configure_nic_device(dev, true, NULL);
-     object_property_set_link(OBJECT(&s->emac), "ahb-bus",
-                              OBJECT(get_system_memory()), &error_abort);
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->emac), errp)) {
-diff --git a/hw/arm/musicpal.c b/hw/arm/musicpal.c
-index 3200c9f68a..8781e99d27 100644
---- a/hw/arm/musicpal.c
-+++ b/hw/arm/musicpal.c
-@@ -1286,9 +1286,8 @@ static void musicpal_init(MachineState *machine)
+ 
++    etraxfs_eth_init(0x30034000, 1, &dma_eth[0], &dma_eth[1]);
+     /* The DMA Connector block is missing, hardwire things for now.  */
+     etraxfs_dmac_connect_client(etraxfs_dmac, 0, &dma_eth[0]);
+     etraxfs_dmac_connect_client(etraxfs_dmac, 1, &dma_eth[1]);
+-    if (nb_nics > 1) {
++
++    if (qemu_find_nic_info("etraxfs-eth", true, "fseth")) {
++        etraxfs_eth_init(0x30036000, 2, &dma_eth[2], &dma_eth[3]);
+         etraxfs_dmac_connect_client(etraxfs_dmac, 6, &dma_eth[2]);
+         etraxfs_dmac_connect_client(etraxfs_dmac, 7, &dma_eth[3]);
      }
-     sysbus_create_simple(TYPE_MV88W8618_FLASHCFG, MP_FLASHCFG_BASE, NULL);
+diff --git a/hw/net/etraxfs_eth.c b/hw/net/etraxfs_eth.c
+index ba57a978d1..5faf20c782 100644
+--- a/hw/net/etraxfs_eth.c
++++ b/hw/net/etraxfs_eth.c
+@@ -647,15 +647,14 @@ static void etraxfs_eth_class_init(ObjectClass *klass, void *data)
  
--    qemu_check_nic_model(&nd_table[0], "mv88w8618");
-     dev = qdev_new(TYPE_MV88W8618_ETH);
--    qdev_set_nic_properties(dev, &nd_table[0]);
-+    qemu_configure_nic_device(dev, true, "mv88w8618");
-     object_property_set_link(OBJECT(dev), "dma-memory",
-                              OBJECT(get_system_memory()), &error_fatal);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index dbb9793aa1..73a6472b91 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -108,16 +108,13 @@ static void zynq_write_board_setup(ARMCPU *cpu,
- 
- static struct arm_boot_info zynq_binfo = {};
- 
--static void gem_init(NICInfo *nd, uint32_t base, qemu_irq irq)
-+static void gem_init(uint32_t base, qemu_irq irq)
+ /* Instantiate an ETRAXFS Ethernet MAC.  */
+ DeviceState *
+-etraxfs_eth_init(NICInfo *nd, hwaddr base, int phyaddr,
++etraxfs_eth_init(hwaddr base, int phyaddr,
+                  struct etraxfs_dma_client *dma_out,
+                  struct etraxfs_dma_client *dma_in)
  {
      DeviceState *dev;
-     SysBusDevice *s;
+-    qemu_check_nic_model(nd, "fseth");
  
-     dev = qdev_new(TYPE_CADENCE_GEM);
--    if (nd->used) {
--        qemu_check_nic_model(nd, TYPE_CADENCE_GEM);
--        qdev_set_nic_properties(dev, nd);
--    }
-+    qemu_configure_nic_device(dev, true, NULL);
-     object_property_set_int(OBJECT(dev), "phy-addr", 7, &error_abort);
-     s = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(s, &error_fatal);
-@@ -279,8 +276,8 @@ static void zynq_init(MachineState *machine)
-     sysbus_create_varargs("cadence_ttc", 0xF8002000,
-             pic[69-IRQ_OFFSET], pic[70-IRQ_OFFSET], pic[71-IRQ_OFFSET], NULL);
+     dev = qdev_new("etraxfs-eth");
+-    qdev_set_nic_properties(dev, nd);
++    qemu_configure_nic_device(dev, true, "fseth");
+     qdev_prop_set_uint32(dev, "phyaddr", phyaddr);
  
--    gem_init(&nd_table[0], 0xE000B000, pic[54-IRQ_OFFSET]);
--    gem_init(&nd_table[1], 0xE000C000, pic[77-IRQ_OFFSET]);
-+    gem_init(0xE000B000, pic[54 - IRQ_OFFSET]);
-+    gem_init(0xE000C000, pic[77 - IRQ_OFFSET]);
+     /*
+diff --git a/include/hw/cris/etraxfs.h b/include/hw/cris/etraxfs.h
+index 467b529dc0..012c4e9974 100644
+--- a/include/hw/cris/etraxfs.h
++++ b/include/hw/cris/etraxfs.h
+@@ -31,7 +31,7 @@
+ #include "hw/sysbus.h"
+ #include "qapi/error.h"
  
-     for (n = 0; n < 2; n++) {
-         int hci_irq = n ? 79 : 56;
-diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
-index 9600551c44..01965ddf99 100644
---- a/hw/arm/xlnx-versal.c
-+++ b/hw/arm/xlnx-versal.c
-@@ -254,18 +254,13 @@ static void versal_create_gems(Versal *s, qemu_irq *pic)
-         static const int irqs[] = { VERSAL_GEM0_IRQ_0, VERSAL_GEM1_IRQ_0};
-         static const uint64_t addrs[] = { MM_GEM0, MM_GEM1 };
-         char *name = g_strdup_printf("gem%d", i);
--        NICInfo *nd = &nd_table[i];
-         DeviceState *dev;
-         MemoryRegion *mr;
+-DeviceState *etraxfs_eth_init(NICInfo *nd, hwaddr base, int phyaddr,
++DeviceState *etraxfs_eth_init(hwaddr base, int phyaddr,
+                               struct etraxfs_dma_client *dma_out,
+                               struct etraxfs_dma_client *dma_in);
  
-         object_initialize_child(OBJECT(s), name, &s->lpd.iou.gem[i],
-                                 TYPE_CADENCE_GEM);
-         dev = DEVICE(&s->lpd.iou.gem[i]);
--        /* FIXME use qdev NIC properties instead of nd_table[] */
--        if (nd->used) {
--            qemu_check_nic_model(nd, "cadence_gem");
--            qdev_set_nic_properties(dev, nd);
--        }
-+        qemu_configure_nic_device(dev, true, NULL);
-         object_property_set_int(OBJECT(dev), "phy-addr", 23, &error_abort);
-         object_property_set_int(OBJECT(dev), "num-priority-queues", 2,
-                                 &error_abort);
-diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
-index 5905a33015..4f1714e4a1 100644
---- a/hw/arm/xlnx-zynqmp.c
-+++ b/hw/arm/xlnx-zynqmp.c
-@@ -616,13 +616,7 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
-     }
- 
-     for (i = 0; i < XLNX_ZYNQMP_NUM_GEMS; i++) {
--        NICInfo *nd = &nd_table[i];
--
--        /* FIXME use qdev NIC properties instead of nd_table[] */
--        if (nd->used) {
--            qemu_check_nic_model(nd, TYPE_CADENCE_GEM);
--            qdev_set_nic_properties(DEVICE(&s->gem[i]), nd);
--        }
-+        qemu_configure_nic_device(DEVICE(&s->gem[i]), true, NULL);
-         object_property_set_int(OBJECT(&s->gem[i]), "revision", GEM_REVISION,
-                                 &error_abort);
-         object_property_set_int(OBJECT(&s->gem[i]), "phy-addr", 23,
 -- 
 2.41.0
 
