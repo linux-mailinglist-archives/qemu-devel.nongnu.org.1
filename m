@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0526082725B
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:12:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05BAA82725E
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:12:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMrHC-0000wn-Gu; Mon, 08 Jan 2024 10:10:54 -0500
+	id 1rMrHL-00013Z-Sb; Mon, 08 Jan 2024 10:11:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.kanda@oracle.com>)
- id 1rMrH6-0000sM-Kn
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:10:49 -0500
+ id 1rMrHB-00010N-Ig
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:10:53 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.kanda@oracle.com>)
- id 1rMrH1-0007kB-5A
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:10:47 -0500
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ id 1rMrH6-0007kI-IG
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:10:51 -0500
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 408F6SPp028595; Mon, 8 Jan 2024 15:10:37 GMT
+ 408F5kKH025336; Mon, 8 Jan 2024 15:10:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-11-20;
- bh=1fgXbIuhVvtVUO3xgFYWjmyz9OvirTq9361NEJF96s8=;
- b=OsCJg252iSY/E2Zvy4V7Swar7cFEnTJXlDUwTWC1J4lq48JOsG+NLQG4VxnolmNTu03K
- 7rmsY6iMJTBHxmjRkhkhXL/GNVm78r58UiPNi+R8x3lORPsAdTDEqbgH6a6cPtrSjK1U
- m/8ylYWV72CsjZf3F+xHLqsiDUXRDsXWX8RRFO3upyanaV+Mxqg7heyK3eBtlGDO9mMM
- d4AH1lttCa94vCJKZ0dI1uhXVGSAP7sJAFcC7vv5HW9GSIhOCPS/FR1Uj7+5BwcYjo9L
- DIMLU73ma8DbMG4NhbAAoxbbll2KRET1zT2t4Fu3m+cQ9BOL7/sEP6CbcitKwbk7v5mM pg== 
+ bh=T4bDj8pr4zvAa8IoXSojRHKGw9qR10IC4Am5NtP6Ozg=;
+ b=So4rc+QUTalbvWFNkobGqmjt0qnHjs+NEB53kqa9caj2yVpb6N8JHt3mU5p+DgCQpK7S
+ VKk7oKnAP8Yqnr/qGuZX3UJxrYLgdI0a3XNFQIi+Xu1xDXt/fMj4DqkA6OHU9xGMAG49
+ 3jsfA3jNl81IBFx6IMgqWeYggdj3GsuU0O8IZXr67tqI8ET/5kTQ2CRrPKRg9Nfi+XU4
+ dMHEcvLsFx6kUjY0SayC4HffS23BLBIQJExIoHjTb5MD4bxtjlIvvOx/pUOLxDx3fADG
+ 73q4Gl+9KpQqHnRmubc2qTSS+hfe3ahsh8Nd9AnWC7EJeEtGaP7Z8nXHvmro4fD7sJED 9A== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vgkd8r06x-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vgkcx80b2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 08 Jan 2024 15:10:36 +0000
+ Mon, 08 Jan 2024 15:10:38 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 408EcGDo035188; Mon, 8 Jan 2024 15:10:35 GMT
+ with ESMTP id 408EhUOi035136; Mon, 8 Jan 2024 15:10:36 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3vfuu316ev-1
+ 3vfuu316g1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 08 Jan 2024 15:10:35 +0000
+ Mon, 08 Jan 2024 15:10:36 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 408FAX6M024665;
- Mon, 8 Jan 2024 15:10:35 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 408FAX6O024665;
+ Mon, 8 Jan 2024 15:10:36 GMT
 Received: from linux-3.us.oracle.com (dhcp-10-154-155-225.vpn.oracle.com
  [10.154.155.225])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3vfuu316bm-2; Mon, 08 Jan 2024 15:10:34 +0000
+ 3vfuu316bm-3; Mon, 08 Jan 2024 15:10:36 +0000
 From: Mark Kanda <mark.kanda@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: david@redhat.com, pbonzini@redhat.com, mark.kanda@oracle.com
-Subject: [PATCH v1 1/2] oslib-posix: refactor memory prealloc threads
-Date: Mon,  8 Jan 2024 09:10:40 -0600
-Message-Id: <20240108151041.529716-2-mark.kanda@oracle.com>
+Subject: [PATCH v1 2/2] oslib-posix: initialize backend memory objects in
+ parallel
+Date: Mon,  8 Jan 2024 09:10:41 -0600
+Message-Id: <20240108151041.529716-3-mark.kanda@oracle.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240108151041.529716-1-mark.kanda@oracle.com>
 References: <20240108151041.529716-1-mark.kanda@oracle.com>
@@ -69,11 +70,11 @@ X-Proofpoint-Virus-Version: vendor=baseguard
  definitions=2024-01-08_06,2024-01-08_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  phishscore=0 bulkscore=0
- mlxscore=0 mlxlogscore=914 adultscore=0 malwarescore=0 suspectscore=0
+ mlxscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2401080130
-X-Proofpoint-GUID: FFiC29owb1wWsHZNn2YDeuyk2_cMEtEK
-X-Proofpoint-ORIG-GUID: FFiC29owb1wWsHZNn2YDeuyk2_cMEtEK
+X-Proofpoint-GUID: wM_di7bos4co6voKuOppZLGqxbGARK75
+X-Proofpoint-ORIG-GUID: wM_di7bos4co6voKuOppZLGqxbGARK75
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=mark.kanda@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
@@ -99,209 +100,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Refactor the memory prealloc threads support:
-- Make memset context a global qlist
-- Move the memset thread join/cleanup code to a separate routine
+QEMU initializes preallocated backend memory as the objects are parsed from
+the command line. This is not optimal in some cases (e.g. memory spanning
+multiple numa nodes) because the memory objects are initialized in series.
 
-This is functionally equivalent and facilitates multiple memset contexts
-(used in a subsequent patch).
+Allow the initialization to occur in parallel. The performance increase is
+significant and scales with the number of objects. On a 2 socket Skylake VM
+with 128GB and 2 init threads per socket (256GB total), the memory init time
+decreases from ~27 seconds to ~14 seconds.
 
 Signed-off-by: Mark Kanda <mark.kanda@oracle.com>
 ---
- util/oslib-posix.c | 104 +++++++++++++++++++++++++++++----------------
- 1 file changed, 68 insertions(+), 36 deletions(-)
+ include/qemu/osdep.h |  6 ++++++
+ system/vl.c          |  2 ++
+ util/oslib-posix.c   | 46 +++++++++++++++++++++++++++++++++-----------
+ util/oslib-win32.c   |  5 +++++
+ 4 files changed, 48 insertions(+), 11 deletions(-)
 
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index d30ba73eda..57185e6309 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -682,6 +682,12 @@ typedef struct ThreadContext ThreadContext;
+ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
+                        ThreadContext *tc, Error **errp);
+ 
++/**
++ * Wait for any outstanding memory prealloc initialization
++ * to complete.
++ */
++void wait_mem_prealloc_init(void);
++
+ /**
+  * qemu_get_pid_name:
+  * @pid: pid of a process
+diff --git a/system/vl.c b/system/vl.c
+index 6b87bfa32c..9e04acbb2c 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -2010,6 +2010,8 @@ static void qemu_create_late_backends(void)
+ 
+     object_option_foreach_add(object_create_late);
+ 
++    wait_mem_prealloc_init();
++
+     if (tpm_init() < 0) {
+         exit(1);
+     }
 diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index e86fd64e09..293297ac6c 100644
+index 293297ac6c..667d2d960c 100644
 --- a/util/oslib-posix.c
 +++ b/util/oslib-posix.c
-@@ -63,11 +63,15 @@
+@@ -91,6 +91,7 @@ static QemuMutex sigbus_mutex;
  
- struct MemsetThread;
+ static QemuMutex page_mutex;
+ static QemuCond page_cond;
++static bool prealloc_init;
  
-+static QLIST_HEAD(, MemsetContext) memset_contexts =
-+    QLIST_HEAD_INITIALIZER(memset_contexts);
-+
- typedef struct MemsetContext {
-     bool all_threads_created;
-     bool any_thread_failed;
-     struct MemsetThread *threads;
-     int num_threads;
-+    QLIST_ENTRY(MemsetContext) next;
- } MemsetContext;
- 
- struct MemsetThread {
-@@ -81,7 +85,7 @@ struct MemsetThread {
- typedef struct MemsetThread MemsetThread;
- 
- /* used by sigbus_handler() */
--static MemsetContext *sigbus_memset_context;
-+static bool sigbus_memset_context;
- struct sigaction sigbus_oldact;
- static QemuMutex sigbus_mutex;
- 
-@@ -295,13 +299,16 @@ static void sigbus_handler(int signal)
- #endif /* CONFIG_LINUX */
+ int qemu_get_thread_id(void)
  {
-     int i;
-+    MemsetContext *context;
- 
-     if (sigbus_memset_context) {
--        for (i = 0; i < sigbus_memset_context->num_threads; i++) {
--            MemsetThread *thread = &sigbus_memset_context->threads[i];
-+        QLIST_FOREACH(context, &memset_contexts, next) {
-+            for (i = 0; i < context->num_threads; i++) {
-+                MemsetThread *thread = &context->threads[i];
- 
--            if (qemu_thread_is_self(&thread->pgthread)) {
--                siglongjmp(thread->env, 1);
-+                if (qemu_thread_is_self(&thread->pgthread)) {
-+                    siglongjmp(thread->env, 1);
-+                }
-             }
-         }
-     }
-@@ -417,14 +424,15 @@ static int touch_all_pages(char *area, size_t hpagesize, size_t numpages,
-                            bool use_madv_populate_write)
+@@ -487,6 +488,12 @@ static int wait_mem_prealloc(void)
  {
-     static gsize initialized = 0;
--    MemsetContext context = {
--        .num_threads = get_memset_num_threads(hpagesize, numpages, max_threads),
--    };
-+    MemsetContext *context = g_malloc0(sizeof(MemsetContext));
-     size_t numpages_per_thread, leftover;
-     void *(*touch_fn)(void *);
--    int ret = 0, i = 0;
-+    int i = 0;
-     char *addr = area;
- 
-+    context->num_threads =
-+        get_memset_num_threads(hpagesize, numpages, max_threads);
+     int i, ret = 0;
+     MemsetContext *context, *next_context;
 +
-     if (g_once_init_enter(&initialized)) {
-         qemu_mutex_init(&page_mutex);
-         qemu_cond_init(&page_cond);
-@@ -433,7 +441,7 @@ static int touch_all_pages(char *area, size_t hpagesize, size_t numpages,
- 
-     if (use_madv_populate_write) {
-         /* Avoid creating a single thread for MADV_POPULATE_WRITE */
--        if (context.num_threads == 1) {
-+        if (context->num_threads == 1) {
-             if (qemu_madvise(area, hpagesize * numpages,
-                              QEMU_MADV_POPULATE_WRITE)) {
-                 return -errno;
-@@ -445,49 +453,74 @@ static int touch_all_pages(char *area, size_t hpagesize, size_t numpages,
-         touch_fn = do_touch_pages;
-     }
- 
--    context.threads = g_new0(MemsetThread, context.num_threads);
--    numpages_per_thread = numpages / context.num_threads;
--    leftover = numpages % context.num_threads;
--    for (i = 0; i < context.num_threads; i++) {
--        context.threads[i].addr = addr;
--        context.threads[i].numpages = numpages_per_thread + (i < leftover);
--        context.threads[i].hpagesize = hpagesize;
--        context.threads[i].context = &context;
-+    context->threads = g_new0(MemsetThread, context->num_threads);
-+    numpages_per_thread = numpages / context->num_threads;
-+    leftover = numpages % context->num_threads;
-+    for (i = 0; i < context->num_threads; i++) {
-+        context->threads[i].addr = addr;
-+        context->threads[i].numpages = numpages_per_thread + (i < leftover);
-+        context->threads[i].hpagesize = hpagesize;
-+        context->threads[i].context = context;
-         if (tc) {
--            thread_context_create_thread(tc, &context.threads[i].pgthread,
-+            thread_context_create_thread(tc, &context->threads[i].pgthread,
-                                          "touch_pages",
--                                         touch_fn, &context.threads[i],
-+                                         touch_fn, &context->threads[i],
-                                          QEMU_THREAD_JOINABLE);
-         } else {
--            qemu_thread_create(&context.threads[i].pgthread, "touch_pages",
--                               touch_fn, &context.threads[i],
-+            qemu_thread_create(&context->threads[i].pgthread, "touch_pages",
-+                               touch_fn, &context->threads[i],
-                                QEMU_THREAD_JOINABLE);
-         }
--        addr += context.threads[i].numpages * hpagesize;
-+        addr += context->threads[i].numpages * hpagesize;
-     }
- 
-+    QLIST_INSERT_HEAD(&memset_contexts, context, next);
-+
-     if (!use_madv_populate_write) {
--        sigbus_memset_context = &context;
-+        sigbus_memset_context = true;
-     }
- 
-+    return 0;
-+}
-+
-+static int wait_mem_prealloc(void)
-+{
-+    int i, ret = 0;
-+    MemsetContext *context, *next_context;
-     qemu_mutex_lock(&page_mutex);
--    context.all_threads_created = true;
-+    QLIST_FOREACH(context, &memset_contexts, next) {
-+        context->all_threads_created = true;
++    /* Return if memory prealloc isn't enabled or active */
++    if (QLIST_EMPTY(&memset_contexts) || !prealloc_init) {
++        return 0;
 +    }
-     qemu_cond_broadcast(&page_cond);
-     qemu_mutex_unlock(&page_mutex);
++
+     qemu_mutex_lock(&page_mutex);
+     QLIST_FOREACH(context, &memset_contexts, next) {
+         context->all_threads_created = true;
+@@ -553,21 +560,23 @@ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
+         }
  
--    for (i = 0; i < context.num_threads; i++) {
--        int tmp = (uintptr_t)qemu_thread_join(&context.threads[i].pgthread);
-+    QLIST_FOREACH(context, &memset_contexts, next) {
-+        for (i = 0; i < context->num_threads; i++) {
-+            int tmp =
-+                (uintptr_t)qemu_thread_join(&context->threads[i].pgthread);
+         qemu_mutex_lock(&sigbus_mutex);
+-        memset(&act, 0, sizeof(act));
++        if (!sigbus_oldact.sa_handler) {
++            memset(&act, 0, sizeof(act));
+ #ifdef CONFIG_LINUX
+-        act.sa_sigaction = &sigbus_handler;
+-        act.sa_flags = SA_SIGINFO;
++            act.sa_sigaction = &sigbus_handler;
++            act.sa_flags = SA_SIGINFO;
+ #else /* CONFIG_LINUX */
+-        act.sa_handler = &sigbus_handler;
+-        act.sa_flags = 0;
++            act.sa_handler = &sigbus_handler;
++            act.sa_flags = 0;
+ #endif /* CONFIG_LINUX */
  
--        if (tmp) {
--            ret = tmp;
-+            if (tmp) {
-+                ret = tmp;
+-        ret = sigaction(SIGBUS, &act, &sigbus_oldact);
+-        if (ret) {
+-            qemu_mutex_unlock(&sigbus_mutex);
+-            error_setg_errno(errp, errno,
+-                "qemu_prealloc_mem: failed to install signal handler");
+-            return;
++            ret = sigaction(SIGBUS, &act, &sigbus_oldact);
++            if (ret) {
++                qemu_mutex_unlock(&sigbus_mutex);
++                error_setg_errno(errp, errno,
++                    "qemu_prealloc_mem: failed to install signal handler");
++                return;
 +            }
          }
      }
  
--    if (!use_madv_populate_write) {
--        sigbus_memset_context = NULL;
-+    if (sigbus_oldact.sa_handler) {
-+        /* restore the previous sighandler */
-+        if (sigaction(SIGBUS, &sigbus_oldact, NULL)) {
-+            /* Terminate QEMU since it can't recover from error */
-+            perror("wait_mem_prealloc: failed to reinstall signal handler");
-+            exit(1);
-+        }
-+        memset(&sigbus_oldact, 0, sizeof(sigbus_oldact));
+@@ -589,6 +598,21 @@ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
      }
--    g_free(context.threads);
-+    sigbus_memset_context = false;
- 
-+    QLIST_FOREACH_SAFE(context, &memset_contexts, next, next_context) {
-+        QLIST_REMOVE(context, next);
-+        g_free(context->threads);
-+        g_free(context);
-+    }
-     return ret;
  }
  
-@@ -547,11 +580,10 @@ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
++void wait_mem_prealloc_init(void)
++{
++    /*
++     * Set prealloc_init true to make wait_mem_prealloc() wait for the
++     * initialization to complete.
++     */
++    prealloc_init = true;
++
++    /* Wait for any outstanding init to complete */
++    if (wait_mem_prealloc()) {
++        perror("wait_mem_prealloc_init: failed waiting for memory prealloc");
++        exit(1);
++    }
++}
++
+ char *qemu_get_pid_name(pid_t pid)
+ {
+     char *name = NULL;
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+index 55b0189dc3..72e050bee1 100644
+--- a/util/oslib-win32.c
++++ b/util/oslib-win32.c
+@@ -276,6 +276,11 @@ void qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
      }
+ }
  
-     if (!use_madv_populate_write) {
--        ret = sigaction(SIGBUS, &sigbus_oldact, NULL);
-+        ret = wait_mem_prealloc();
-         if (ret) {
--            /* Terminate QEMU since it can't recover from error */
--            perror("qemu_prealloc_mem: failed to reinstall signal handler");
--            exit(1);
-+            error_setg_errno(errp, -ret,
-+                "qemu_prealloc_mem: failed waiting for memory prealloc");
-         }
-         qemu_mutex_unlock(&sigbus_mutex);
-     }
++void wait_mem_prealloc_init(void)
++{
++    /* not supported */
++}
++
+ char *qemu_get_pid_name(pid_t pid)
+ {
+     /* XXX Implement me */
 -- 
 2.39.3
 
