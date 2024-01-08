@@ -2,83 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC65E826B15
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 10:48:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3D2826B63
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 11:14:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMmEN-0007ZH-FM; Mon, 08 Jan 2024 04:47:39 -0500
+	id 1rMmcG-0004IV-Ad; Mon, 08 Jan 2024 05:12:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rMmED-0007Y9-3z
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 04:47:30 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rMmEA-00077W-TR
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 04:47:28 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40e485c49acso4500555e9.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 01:47:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704707245; x=1705312045; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=spnOjLm89RZwx1uB6u0obnJwzkFs9TCdvWgM4Pn1EAU=;
- b=ky3R8ydhD3MQr3RcRnZkenexi2Hb26t4+uerMHaBXerjlONOLx4VvUoKc8eBIANXFL
- Sfm3hYG3Vs3WnV4AHYs7T0ETK03N97rdM9TQXrG4LEZ6sSajjQoViEcB3FuHQjEmn0Cz
- 8AFcb4F2HFflKunZROgqLcg7Kgo6DQGHerndB/stwh5cdKA18KLuRWJ9+eeyzQ7IMbII
- 98RhdsvzqowNALqCa9EZ/V2oOWN36FXiDXVXL9rTRVCKIpKxojsN0Cwp5aF4Hmfs2Q+R
- 1NP59Abkzxq6K7o3smH33HlBnqlQ2YYoj2ZZusA5amVRhllxOnrDhiw9aNhZBiMYy9iw
- sRSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704707245; x=1705312045;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=spnOjLm89RZwx1uB6u0obnJwzkFs9TCdvWgM4Pn1EAU=;
- b=mkc4kdEvHQqVSEv2qDaby3JGzUfP5+bgj6iXKNoOS1y5OZpWWleSnNFgz2EzDM/KEs
- PBqQxqIX3dzE/FPaPp74LRm/d/iZMoUCQGJ7LbM7OqOngx/BZFUayTqOh8hbr80Foi8S
- R2BE9KmFevdFvhnaGaM4zFZO8+X0r9z8Q95IDogHY0szTZjD+geinZ3VW6JEWEoTHcwP
- AgqsYfXf15pIGkLrhwZT3bMKAfNf+uypQPrD/tSBhNxHUIrPinzGA3Wq46ceKG/9Bxc1
- hMNE5NeDIgaraFJZXFciFWe9iBRkTDVMPs7iUqYY3xWGlvAQTWom7bCfLC7S5c1F6/hJ
- PCwA==
-X-Gm-Message-State: AOJu0YwI1YsnrHrGopqrkXJ6NGo0YnMYM4sxQIWCakfykmL/9GXJSqOz
- 8GbieRVrF7dXJxOvNko52xGLsKy5+sAhxQ==
-X-Google-Smtp-Source: AGHT+IE+5kKGzU4yGouGv23yo8wykBA3msqSP0xBCTgn6TLv1q/HaTXwog1hEkaW13OjQSKsAPz4YQ==
-X-Received: by 2002:a05:600c:4504:b0:40e:3edf:106f with SMTP id
- t4-20020a05600c450400b0040e3edf106fmr1590536wmo.35.1704707245112; 
- Mon, 08 Jan 2024 01:47:25 -0800 (PST)
-Received: from [192.168.1.24] ([102.35.208.160])
- by smtp.gmail.com with ESMTPSA id
- k5-20020a05600c1c8500b0040e418494absm6423193wms.46.2024.01.08.01.47.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 01:47:24 -0800 (PST)
-Message-ID: <eb59bc7a-ecad-472f-a808-146c2e12e275@linaro.org>
-Date: Mon, 8 Jan 2024 13:47:21 +0400
+ (Exim 4.90_1) (envelope-from <SRS0=tOGw=IS=kaod.org=clg@ozlabs.org>)
+ id 1rMmcE-0004Hy-6N; Mon, 08 Jan 2024 05:12:18 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=tOGw=IS=kaod.org=clg@ozlabs.org>)
+ id 1rMmcB-0002FU-W6; Mon, 08 Jan 2024 05:12:17 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T7qc96KH4z4wcd;
+ Mon,  8 Jan 2024 21:12:09 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T7qc32zmdz4wbr;
+ Mon,  8 Jan 2024 21:12:03 +1100 (AEDT)
+Message-ID: <ce645c24-7efb-444e-8c9b-0dd9a6584aa8@kaod.org>
+Date: Mon, 8 Jan 2024 11:12:01 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/33] linux-user: Remove qemu_host_page_{size, mask}
- from mmap.c
+Subject: Re: [PATCH 2/9] tests/avocado: mark boot_linux.py long runtime
+ instead of flaky
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20240102015808.132373-1-richard.henderson@linaro.org>
- <20240102015808.132373-9-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240102015808.132373-9-richard.henderson@linaro.org>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ qemu-ppc@nongnu.org
+References: <20240107170119.82222-1-npiggin@gmail.com>
+ <20240107170119.82222-3-npiggin@gmail.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240107170119.82222-3-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=tOGw=IS=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,284 +71,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/2/24 05:57, Richard Henderson wrote:
-> Use qemu_real_host_page_size instead.
+On 1/7/24 18:01, Nicholas Piggin wrote:
+> The ppc64 and s390x tests were first marked skipIf GITLAB_CI by commit
+> c0c8687ef0f ("tests/avocado: disable BootLinuxPPC64 test in CI"), and
+> commit 0f26d94ec9e ("tests/acceptance: skip s390x_ccw_vrtio_tcg on
+> GitLab") due to being very heavy-weight for gitlab CI.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Commit 9b45cc99318 ("docs/devel: rationalise unstable gitlab tests under
+> FLAKY_TESTS") changed this to being flaky but it isn't really, it just
+> had a long runtime.
+
+I agree. The same comment applies to the aspeed tests.
+  
+> So introduce a new AVOCADO_ALLOW_LONG_RUNTIME variable and make these
+> tests require it. Re-testing the s390x and ppc64 tests on gitlab shows
+> about 100-150s runtime each, which is similar to the x86-64 tests.
+> Since these are among the longest running avocado tests, make x86-64
+> require long runtime as well.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>
 > ---
->   linux-user/mmap.c | 66 +++++++++++++++++++++++------------------------
->   1 file changed, 33 insertions(+), 33 deletions(-)
+>   docs/devel/testing.rst      | 8 ++++++++
+>   tests/avocado/boot_linux.py | 8 ++------
+>   2 files changed, 10 insertions(+), 6 deletions(-)
 > 
-> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-> index 96c9433e27..4d3c8717b9 100644
-> --- a/linux-user/mmap.c
-> +++ b/linux-user/mmap.c
-> @@ -165,6 +165,7 @@ static int target_to_host_prot(int prot)
->   /* NOTE: all the constants are the HOST ones, but addresses are target. */
->   int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
->   {
-> +    int host_page_size = qemu_real_host_page_size();
->       abi_ulong starts[3];
->       abi_ulong lens[3];
->       int prots[3];
-> @@ -189,13 +190,13 @@ int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
->       }
+> diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
+> index bd132306c1..3a9c1327be 100644
+> --- a/docs/devel/testing.rst
+> +++ b/docs/devel/testing.rst
+> @@ -1346,6 +1346,14 @@ the environment.
+>   The definition of *large* is a bit arbitrary here, but it usually means an
+>   asset which occupies at least 1GB of size on disk when uncompressed.
 >   
->       last = start + len - 1;
-> -    host_start = start & qemu_host_page_mask;
-> +    host_start = start & -host_page_size;
->       host_last = HOST_PAGE_ALIGN(last) - 1;
->       nranges = 0;
->   
->       mmap_lock();
->   
-> -    if (host_last - host_start < qemu_host_page_size) {
-> +    if (host_last - host_start < host_page_size) {
->           /* Single host page contains all guest pages: sum the prot. */
->           prot1 = target_prot;
->           for (abi_ulong a = host_start; a < start; a += TARGET_PAGE_SIZE) {
-> @@ -205,7 +206,7 @@ int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
->               prot1 |= page_get_flags(a + 1);
->           }
->           starts[nranges] = host_start;
-> -        lens[nranges] = qemu_host_page_size;
-> +        lens[nranges] = host_page_size;
->           prots[nranges] = prot1;
->           nranges++;
->       } else {
-> @@ -218,10 +219,10 @@ int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
->               /* If the resulting sum differs, create a new range. */
->               if (prot1 != target_prot) {
->                   starts[nranges] = host_start;
-> -                lens[nranges] = qemu_host_page_size;
-> +                lens[nranges] = host_page_size;
->                   prots[nranges] = prot1;
->                   nranges++;
-> -                host_start += qemu_host_page_size;
-> +                host_start += host_page_size;
->               }
->           }
->   
-> @@ -233,9 +234,9 @@ int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
->               }
->               /* If the resulting sum differs, create a new range. */
->               if (prot1 != target_prot) {
-> -                host_last -= qemu_host_page_size;
-> +                host_last -= host_page_size;
->                   starts[nranges] = host_last + 1;
-> -                lens[nranges] = qemu_host_page_size;
-> +                lens[nranges] = host_page_size;
->                   prots[nranges] = prot1;
->                   nranges++;
->               }
-> @@ -270,6 +271,7 @@ int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
->   static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
->                         int prot, int flags, int fd, off_t offset)
->   {
-> +    int host_page_size = qemu_real_host_page_size();
->       abi_ulong real_last;
->       void *host_start;
->       int prot_old, prot_new;
-> @@ -286,7 +288,7 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
->           return false;
->       }
->   
-> -    real_last = real_start + qemu_host_page_size - 1;
-> +    real_last = real_start + host_page_size - 1;
->       host_start = g2h_untagged(real_start);
->   
->       /* Get the protection of the target pages outside the mapping. */
-> @@ -304,12 +306,12 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
->            * outside of the fragment we need to map.  Allocate a new host
->            * page to cover, discarding whatever else may have been present.
->            */
-> -        void *p = mmap(host_start, qemu_host_page_size,
-> +        void *p = mmap(host_start, host_page_size,
->                          target_to_host_prot(prot),
->                          flags | MAP_ANONYMOUS, -1, 0);
->           if (p != host_start) {
->               if (p != MAP_FAILED) {
-> -                munmap(p, qemu_host_page_size);
-> +                munmap(p, host_page_size);
->                   errno = EEXIST;
->               }
->               return false;
-> @@ -324,7 +326,7 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
->       /* Adjust protection to be able to write. */
->       if (!(host_prot_old & PROT_WRITE)) {
->           host_prot_old |= PROT_WRITE;
-> -        mprotect(host_start, qemu_host_page_size, host_prot_old);
-> +        mprotect(host_start, host_page_size, host_prot_old);
->       }
->   
->       /* Read or zero the new guest pages. */
-> @@ -338,7 +340,7 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
->   
->       /* Put final protection */
->       if (host_prot_new != host_prot_old) {
-> -        mprotect(host_start, qemu_host_page_size, host_prot_new);
-> +        mprotect(host_start, host_page_size, host_prot_new);
->       }
->       return true;
->   }
-> @@ -373,17 +375,18 @@ static abi_ulong mmap_find_vma_reserved(abi_ulong start, abi_ulong size,
->    */
->   abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
->   {
-> +    int host_page_size = qemu_real_host_page_size();
->       void *ptr, *prev;
->       abi_ulong addr;
->       int wrapped, repeat;
->   
-> -    align = MAX(align, qemu_host_page_size);
-> +    align = MAX(align, host_page_size);
->   
->       /* If 'start' == 0, then a default start address is used. */
->       if (start == 0) {
->           start = mmap_next_start;
->       } else {
-> -        start &= qemu_host_page_mask;
-> +        start &= -host_page_size;
->       }
->       start = ROUND_UP(start, align);
->   
-> @@ -492,6 +495,7 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
->   abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
->                        int flags, int fd, off_t offset)
->   {
-> +    int host_page_size = qemu_real_host_page_size();
->       abi_ulong ret, last, real_start, real_last, retaddr, host_len;
->       abi_ulong passthrough_start = -1, passthrough_last = 0;
->       int page_flags;
-> @@ -537,8 +541,8 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
->           }
->       }
->   
-> -    real_start = start & qemu_host_page_mask;
-> -    host_offset = offset & qemu_host_page_mask;
-> +    real_start = start & -host_page_size;
-> +    host_offset = offset & -host_page_size;
->   
->       /*
->        * If the user is asking for the kernel to find a location, do that
-> @@ -567,8 +571,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
->        * may need to truncate file maps at EOF and add extra anonymous pages
->        * up to the targets page boundary.
->        */
-> -    if ((qemu_real_host_page_size() < qemu_host_page_size) &&
-> -        !(flags & MAP_ANONYMOUS)) {
-> +    if (host_page_size < TARGET_PAGE_SIZE && !(flags & MAP_ANONYMOUS)) {
->           struct stat sb;
->   
->           if (fstat(fd, &sb) == -1) {
-> @@ -595,11 +598,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
->           host_len = HOST_PAGE_ALIGN(host_len);
->           host_prot = target_to_host_prot(target_prot);
->   
-> -        /*
-> -         * Note: we prefer to control the mapping address. It is
-> -         * especially important if qemu_host_page_size >
-> -         * qemu_real_host_page_size.
-> -         */
-> +        /* Note: we prefer to control the mapping address. */
->           p = mmap(g2h_untagged(start), host_len, host_prot,
->                    flags | MAP_FIXED | MAP_ANONYMOUS, -1, 0);
->           if (p == MAP_FAILED) {
-> @@ -665,7 +664,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
->            * aligned, so we read it
->            */
->           if (!(flags & MAP_ANONYMOUS) &&
-> -            (offset & ~qemu_host_page_mask) != (start & ~qemu_host_page_mask)) {
-> +            (offset & (host_page_size - 1)) != (start & (host_page_size - 1))) {
->               /*
->                * msync() won't work here, so we return an error if write is
->                * possible while it is a shared mapping
-> @@ -694,7 +693,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
->   
->           /* handle the start of the mapping */
->           if (start > real_start) {
-> -            if (real_last == real_start + qemu_host_page_size - 1) {
-> +            if (real_last == real_start + host_page_size - 1) {
->                   /* one single host page */
->                   if (!mmap_frag(real_start, start, last,
->                                  target_prot, flags, fd, offset)) {
-> @@ -703,21 +702,21 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
->                   goto the_end1;
->               }
->               if (!mmap_frag(real_start, start,
-> -                           real_start + qemu_host_page_size - 1,
-> +                           real_start + host_page_size - 1,
->                              target_prot, flags, fd, offset)) {
->                   goto fail;
->               }
-> -            real_start += qemu_host_page_size;
-> +            real_start += host_page_size;
->           }
->           /* handle the end of the mapping */
->           if (last < real_last) {
-> -            abi_ulong real_page = real_last - qemu_host_page_size + 1;
-> +            abi_ulong real_page = real_last - host_page_size + 1;
->               if (!mmap_frag(real_page, real_page, last,
->                              target_prot, flags, fd,
->                              offset + real_page - start)) {
->                   goto fail;
->               }
-> -            real_last -= qemu_host_page_size;
-> +            real_last -= host_page_size;
->           }
->   
->           /* map the middle (easier) */
-> @@ -784,6 +783,7 @@ fail:
->   
->   static int mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
->   {
-> +    int host_page_size = qemu_real_host_page_size();
->       abi_ulong real_start;
->       abi_ulong real_last;
->       abi_ulong real_len;
-> @@ -793,7 +793,7 @@ static int mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
->       int prot;
->   
->       last = start + len - 1;
-> -    real_start = start & qemu_host_page_mask;
-> +    real_start = start & -host_page_size;
->       real_last = HOST_PAGE_ALIGN(last) - 1;
->   
->       /*
-> @@ -802,7 +802,7 @@ static int mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
->        * The single page special case is required for the last page,
->        * lest real_start overflow to zero.
->        */
-> -    if (real_last - real_start < qemu_host_page_size) {
-> +    if (real_last - real_start < host_page_size) {
->           prot = 0;
->           for (a = real_start; a < start; a += TARGET_PAGE_SIZE) {
->               prot |= page_get_flags(a);
-> @@ -818,14 +818,14 @@ static int mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
->               prot |= page_get_flags(a);
->           }
->           if (prot != 0) {
-> -            real_start += qemu_host_page_size;
-> +            real_start += host_page_size;
->           }
->   
->           for (prot = 0, a = last; a < real_last; a += TARGET_PAGE_SIZE) {
->               prot |= page_get_flags(a + 1);
->           }
->           if (prot != 0) {
-> -            real_last -= qemu_host_page_size;
-> +            real_last -= host_page_size;
->           }
->   
->           if (real_last < real_start) {
+> +AVOCADO_ALLOW_LONG_RUNTIME
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +Tests which have a long runtime will not be run unless that
+> +``AVOCADO_ALLOW_LONG_RUNTIME=1`` is exported on the environment.
+> +
+> +The definition of *long* is a bit arbitrary here, but it usually means a
+> +test which takes more than 100 seconds to complete.
+Defining a limit is the difficult part. The Aspeed SDK tests have been
+tagged flaky for CI even though they run in less than 50s. Anyhow,
 
-For me, the transformation ~page_mask == page_size - 1 and page_mask == 
--page_size was not so intuitive, until I tried it on paper.
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-Could it be useful to have macros PAGE_BITS(page_size), and 
-PAGE_MASK(page_size) for this?. All would be defined from page_sz, so 
-there is no duplicated data, and it would avoid a subtle error when 
-forgetting an operator, while helping to read the code.
+Thanks,
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+C.
+
+
+
+
+> +
+>   AVOCADO_ALLOW_UNTRUSTED_CODE
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>   There are tests which will boot a kernel image or firmware that can be
+> diff --git a/tests/avocado/boot_linux.py b/tests/avocado/boot_linux.py
+> index 7c4769904e..6df0fc0489 100644
+> --- a/tests/avocado/boot_linux.py
+> +++ b/tests/avocado/boot_linux.py
+> @@ -93,13 +93,11 @@ class BootLinuxPPC64(LinuxTest):
+>   
+>       timeout = 360
+>   
+> -    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
+> -
+> +    @skipUnless(os.getenv('AVOCADO_ALLOW_LONG_RUNTIME'), 'runtime limited')
+>       def test_pseries_tcg(self):
+>           """
+>           :avocado: tags=machine:pseries
+>           :avocado: tags=accel:tcg
+> -        :avocado: tags=flaky
+>           """
+>           self.require_accelerator("tcg")
+>           self.vm.add_args("-accel", "tcg")
+> @@ -113,13 +111,11 @@ class BootLinuxS390X(LinuxTest):
+>   
+>       timeout = 240
+>   
+> -    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
+> -
+> +    @skipUnless(os.getenv('AVOCADO_ALLOW_LONG_RUNTIME'), 'runtime limited')
+>       def test_s390_ccw_virtio_tcg(self):
+>           """
+>           :avocado: tags=machine:s390-ccw-virtio
+>           :avocado: tags=accel:tcg
+> -        :avocado: tags=flaky
+>           """
+>           self.require_accelerator("tcg")
+>           self.vm.add_args("-accel", "tcg")
+
 
