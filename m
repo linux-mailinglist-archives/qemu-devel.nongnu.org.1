@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A44827B54
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 00:15:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39685827B64
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 00:22:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMypL-0003fU-8K; Mon, 08 Jan 2024 18:14:39 -0500
+	id 1rMywO-0005wZ-W1; Mon, 08 Jan 2024 18:21:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMypI-0003ba-LG
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 18:14:36 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMywM-0005wE-Kz
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 18:21:54 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMypG-0000aM-R3
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 18:14:36 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3374c693f92so1986838f8f.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 15:14:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMywK-0004fU-TK
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 18:21:54 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40d6b4e2945so29213185e9.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 15:21:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704755673; x=1705360473; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704756111; x=1705360911; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=cU9XPHoclqEeRy1KkF1HJKic3tB/ViVBZim3kjYaLVc=;
- b=KUZiQQg3o/Bco2Qw7AYjSbgO0T9X6INAFli9w4Ay1TBvECRvKIpoSGahwZark9KjR/
- XrN9YbrljW8eqXl73rRoDlFrNv7w7M4Hlx2+ChpWXsgGFcmXnEZXQQjwH7bIrS28fVO8
- hAFBZnHRLP7LmiDlF2hAYgtT/bS7fS81+f8nbthq5RhxHeApMRUq0TP94Wgu32J42R0E
- vcpYQ+Kf6azKQf6PV3LpcBFtb2DlTJneiKedP3aHZ8SvQ2cLVS4rSE6X9ArbF0n3LJRj
- rbf/IwVfNTtD3yYT9kF+dVzXGdCI4aV8BJGqe60yi2tqEPyI15ERTrpjpsl/fA2ndZxl
- H71g==
+ bh=juckxiv6Ncx6AbT5zGsOzKgw5eeVZ3TTw0n9AAfkLW0=;
+ b=iPocBL8jjUbfVFHIgzs2A/24AF5tlE8MOEfr92vDWDMbqoxMx/Sl6V5eBEa4ZJHuh8
+ ezmverf6W8A73eS46DvyEp6T4NzdjvxcYZQo3GV8eS2sXs5jp6SnmBVuUL9DoDTNevkd
+ JYbGiMVjhxkRqO1cRNFe+Ssi3dyBMb50LmgFqZPf/C79k2S9/sBh7UacAazWdonxg8pi
+ QdcCzsRShX3+tvuqzwzacDPUhO3pYg4AC8qg2QG3rDucvYzASUyo7rKMnuQwn4TJQT7x
+ DHjfcSpp2g9zGtkrfATzhtQK8u5V5iYlbr3uVh9HonRaGJADsPXz2YKdKQl5KW1W/VS4
+ xMwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704755673; x=1705360473;
+ d=1e100.net; s=20230601; t=1704756111; x=1705360911;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cU9XPHoclqEeRy1KkF1HJKic3tB/ViVBZim3kjYaLVc=;
- b=Ayr4Po1bm3YHmvVMaceUvOmB8eY/nK1UCE+f4ZyUsOaTII8645wunwzXB48jzOMGdd
- OzvYu/gkHevb7+WW32IchqPCuvfsJ49hXP9zeblx7dR7ufXXhLAFCEz4yFF372Z8De5W
- a3rDvUg3ODSf+2rnXK1+5j6P+6A7HCvohCBtB0rc6ARdDfCloJIZG//FMTkJsvw2EAyK
- mAP19nS/eoGUgNk7CaNNI/M7D6wR72+61yTVYM9S0jUDOz9PX7ZEvMpAnLRuJ0uxPc2K
- gFE2raEIAYknx41OqclxB8Qo6teJsHEZo6ybnM2wIbCkKorg0lSXcMx247bhhLsfSTrW
- JLdA==
-X-Gm-Message-State: AOJu0Yw1MljbZgxpsBQhtKw3bRGvgH0cKKU66xm104IyHvO82zEjp1Qv
- mMJjF9QxGVgxOO4+yoQDKw9ZYUEgOalOG1cVniM2dNUMRSs=
-X-Google-Smtp-Source: AGHT+IHA6A9cg/eCkTL470fBhbkWbBnARjoQUuupH3k8sGz5vabnhyXxWrSxHSu0HS8hlvMHI96ORQ==
-X-Received: by 2002:a5d:4046:0:b0:333:2fd2:815b with SMTP id
- w6-20020a5d4046000000b003332fd2815bmr90488wrp.120.1704755673236; 
- Mon, 08 Jan 2024 15:14:33 -0800 (PST)
+ bh=juckxiv6Ncx6AbT5zGsOzKgw5eeVZ3TTw0n9AAfkLW0=;
+ b=gO7DBoF40Jz5r0rfb2kWoxJSlB63PdPQ1LniI4tNqqn4tNEdCZxd30r1XZRfSIsD33
+ /o+MzcHt3kbzM+C+KmHA0nppOj7Ck+wcXKNt8XMHLZZi1cWa5q5DNFXtjB+bRsnGJX5X
+ Hhlhc8uDvo2XFV1v2Rogd4Ir6/+tMtI5d6UTSHe2cjnqlTOmdSNisxBofO8CIAfYJe3K
+ LYEOPVu4kebLPzjDF+WyxbOSbZ7+SlwKA2lnouRyzfKqMb03bUQ4kFfQ9VeBPiCEL7ie
+ IzLuEVnlHQnYHI6ihu61mtaAzfWhL/tbX93TVJv6Us5bAscoUUbBzH1W2pWnGgaHBm9B
+ MzEw==
+X-Gm-Message-State: AOJu0YzdAEqJ7SPXxhr6KJC+JCU8SrE7rceetjUka3T4VvOuFE1xBRpn
+ 2dwoo5PgFyvJbM7YdjlE/ugocW08IOEMeQ==
+X-Google-Smtp-Source: AGHT+IHEKxdzPqcpV/e6tsCtpqvhFwkNsETtFycpdPHqF8lNznm2tWDvCii9AxzLzfLa63LqLTV98Q==
+X-Received: by 2002:a05:600c:444c:b0:40e:47d8:c425 with SMTP id
+ v12-20020a05600c444c00b0040e47d8c425mr657978wmn.124.1704756111274; 
+ Mon, 08 Jan 2024 15:21:51 -0800 (PST)
 Received: from [192.168.69.100] ([176.187.194.16])
  by smtp.gmail.com with ESMTPSA id
- f3-20020a056000128300b003376dbc75e9sm788091wrx.14.2024.01.08.15.14.30
+ j15-20020adfb30f000000b003375c8f796bsm840602wrd.0.2024.01.08.15.21.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 15:14:31 -0800 (PST)
-Message-ID: <58a28201-7f26-4637-b311-4c291dd7aa7a@linaro.org>
-Date: Tue, 9 Jan 2024 00:14:29 +0100
+ Mon, 08 Jan 2024 15:21:50 -0800 (PST)
+Message-ID: <77aa582f-3c0c-47de-984b-69faabfaafdf@linaro.org>
+Date: Tue, 9 Jan 2024 00:21:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 08/10] hw/net: GMAC Rx Implementation
+Subject: Re: [PATCH 3/6] linux-user: Add code for PR_GET/SET_UNALIGN
 Content-Language: en-US
-To: Nabih Estefan <nabihestefan@google.com>, peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com,
- wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com,
- kwliu@nuvoton.com, tomer.maimon@nuvoton.com, Hila.Miranda-Kuzi@nuvoton.com
-References: <20240108222747.2453106-1-nabihestefan@google.com>
- <20240108222747.2453106-9-nabihestefan@google.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, Warner Losh <imp@bsdimp.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+References: <20211220214135.189157-1-richard.henderson@linaro.org>
+ <20211220214135.189157-4-richard.henderson@linaro.org>
+ <bd92d4c4-8d12-4036-8d9d-385d67099e4e@linaro.org>
+ <98572a44-c587-4591-b2e4-b07f6f28bde3@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240108222747.2453106-9-nabihestefan@google.com>
+In-Reply-To: <98572a44-c587-4591-b2e4-b07f6f28bde3@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,56 +96,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/1/24 23:27, Nabih Estefan wrote:
-> From: Nabih Estefan Diaz <nabihestefan@google.com>
+On 8/1/24 22:13, Richard Henderson wrote:
+> On 1/9/24 04:15, Philippe Mathieu-Daudé wrote:
+>>> +/*
+>>> + * This can't go in hw/core/cpu.c because that file is compiled only
+>>> + * once for both user-mode and system builds.
+>>> + */
+>>>   static Property cpu_common_props[] = {
+>>> -#ifndef CONFIG_USER_ONLY
+>>> +#ifdef CONFIG_USER_ONLY
+>>>       /*
+>>> -     * Create a memory property for softmmu CPU object,
+>>> -     * so users can wire up its memory. (This can't go in hw/core/cpu.c
+>>> -     * because that file is compiled only once for both user-mode
+>>> -     * and system builds.) The default if no link is set up is to use
+>>> +     * Create a property for the user-only object, so users can
+>>> +     * adjust prctl(PR_SET_UNALIGN) from the command-line.
+>>
+>> How can I test this per-thread property?
 > 
-> - Implementation of Receive function for packets
-> - Implementation for reading and writing from and to descriptors in
->    memory for Rx
+> -cpu foo,prctl-unalign-sigbus=true
 > 
-> When RX starts, we need to flush the queued packets so that they
-> can be received by the GMAC device. Without this it won't work
-> with TAP NIC device.
 > 
-> When RX descriptor list is full, it returns a DMA_STATUS for
-> software to handle it. But there's no way to indicate the software has
-> handled all RX descriptors and the whole pipeline stalls.
+>> Shouldn't this be an accel (TCG/user) property, for all threads?
 > 
-> We do something similar to NPCM7XX EMC to handle this case.
+> There is always one cpu at user-only startup, and it is copied on clone.
 > 
-> 1. Return packet size when RX descriptor is full, effectively dropping
-> these packets in such a case.
-> 2. When software clears RX descriptor full bit, continue receiving
-> further packets by flushing QEMU packet queue.
-> 
-> Added relevant trace-events
-> 
-> Change-Id: I132aa254a94cda1a586aba2ea33bbfc74ecdb831
-> Signed-off-by: Hao Wu <wuhaotsh@google.com>
-> Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-> Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
-> ---
->   hw/net/npcm_gmac.c  | 324 +++++++++++++++++++++++++++++++++++++++++++-
->   hw/net/trace-events |   5 +
->   2 files changed, 327 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/net/npcm_gmac.c b/hw/net/npcm_gmac.c
-> index 44c4ffaff4..54c8af3b41 100644
-> --- a/hw/net/npcm_gmac.c
-> +++ b/hw/net/npcm_gmac.c
-> @@ -23,7 +23,11 @@
->   #include "hw/registerfields.h"
->   #include "hw/net/mii.h"
->   #include "hw/net/npcm_gmac.h"
-> +#include "linux/if_ether.h"
+> Logically it would be a kernel property, since it's something the kernel 
+> does, not the cpu.  But cpu vs accel makes no difference to me; it was 
+> just easy here.
 
-Still doesn't build on macOS:
+Can a process started with prctl(PR_SET_UNALIGN) unset it before
+forking?
 
-[1215/1649] Compiling C object libcommon.fa.p/hw_net_npcm_gmac.c.o
-../../hw/net/npcm_gmac.c:26:10: fatal error: 'linux/if_ether.h' file not 
-found
-#include "linux/if_ether.h"
-          ^~~~~~~~~~~~~~~~~~
-1 error generated.
-FAILED: libcommon.fa.p/hw_net_npcm_gmac.c.o
+"kernel property" as "accel property" works for me.
+
+> IIRC, this is simply a proxy for not really being able to inherit this 
+> bit across fork+exec like you can with the real kernel.
+> 
+> 
+> r~
+
 
