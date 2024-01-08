@@ -2,88 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F237B827A72
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:52:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3904B827A84
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 23:14:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMxWf-0005Ta-18; Mon, 08 Jan 2024 16:51:17 -0500
+	id 1rMxrG-0000qZ-Ee; Mon, 08 Jan 2024 17:12:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rMxWa-0005TK-Fw
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:51:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rMxrF-0000qO-DP; Mon, 08 Jan 2024 17:12:33 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rMxWW-0007Cp-3y
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:51:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704750658;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BIBu8vdkmF8IZTajJR/DfnnFeC3N4cBaBe3yQDL23QM=;
- b=bXJLeHepkf67L9UbC5XBv/lHtR0MaJEyulQKQykZH1Y9OMtFgR1/F7YgCb8SyAMYbKtObU
- 3GiaYV8AVP48jHz+nV1nxZq3uUb7BH4lRXZowPf9JaBs+GoIEJC8bs5JYJpK6LwUH2EarZ
- T8LEDctY6msuT1UT2i8y6xYsGvU9d1g=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-576-EE8lGHiYP3q2o2Le0eevZA-1; Mon, 08 Jan 2024 16:50:54 -0500
-X-MC-Unique: EE8lGHiYP3q2o2Le0eevZA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-40d62d3ae0cso21322695e9.2
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 13:50:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704750653; x=1705355453;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BIBu8vdkmF8IZTajJR/DfnnFeC3N4cBaBe3yQDL23QM=;
- b=KE0cX/04l5lh9FQqFUCGthiVcC2Zgy1CBu999H344RyWEsrThIhPdJ9nCCgqeQ8VcK
- srmIJ/nO4aSHIjTgePjrzA67143fsEoi/YqkPTVo1I3xDDocz7V0E2obkBKib+INrKOv
- FCm+Xgai341C7xhMVlXM4KnAj7YD/R7B2ajGDWgHcW2xYbBvc8rBvZmD6tumdpRamXxV
- JB0RpACVZYe2+FRSv+uVF5pdBhh5UFeOmRSUpOJWrIwzwtksvhV6n+ubDCZMnV/N4fev
- PewHdKHi2gn2g/5jrJWFefnTJ5j3c4zUKvrqxTy19WZXFCs26iDoVAohZ4Ajk7QoL8vi
- hUxg==
-X-Gm-Message-State: AOJu0Yz2SDcp4zlnbJNXzmguDH8eZF2JOXvBFHK8cbW1BhJeMs6wV6zH
- SDu3Hu7rFMqzOl7hTTArXD/degd7RV8UjgK0tonoCYvVv5JjOWP0T3SvFn1x2v2zY7jCe+fWR6C
- GVV2IzsDdC/TvbfTJeVEuOMAm6b6+dV+SNMmHpQA=
-X-Received: by 2002:a05:600c:4e03:b0:40e:4b1a:b387 with SMTP id
- b3-20020a05600c4e0300b0040e4b1ab387mr423268wmq.52.1704750653317; 
- Mon, 08 Jan 2024 13:50:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE1Zqbbc4tPOsjTRDdiglYzdSWJzqt7MJ5NRGL6qra/uY3etR5DC2JPK9Dc15f/MVoQFb0x+O4nxnUgdNnKRlw=
-X-Received: by 2002:a05:600c:4e03:b0:40e:4b1a:b387 with SMTP id
- b3-20020a05600c4e0300b0040e4b1ab387mr423255wmq.52.1704750653012; Mon, 08 Jan
- 2024 13:50:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rMxrD-000329-8Z; Mon, 08 Jan 2024 17:12:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=XWFuET+sga7liQVqoeI3cJH6e9/DwbrUWZsU88dVih8=; b=HZdp3kSBa+20LiIa+34ooZ3Xt4
+ ZK8arHtcGfksT6GO4szaE1X5WXNX0Av4oXaRcFeiGVcdD73Pt+uGXlTwHDm7MjMMH+1OlYHtEv3zh
+ ZSd+iOydKJ0bp45tZtPkvVuaPgoTCQRQx7lTn/7MbrhEF/jBGJFqZrylDMlc5nZmzn+Pfry2S9fC2
+ 2AzBhiHTLsB+Yg3LUKZOZ1bX8wcNnSA5G9ErdUW1ihYf7GMBZD6baP8FJqrQC5BhXm2OUAGjSjUq4
+ SGo/shy/2xB+8bbj1QdAO4M1fRqU8HeAKtBVwh2u2Z/LCdQo4x6YqRA97O3naJKuIV9y1wClXObK7
+ SDq8yq1ORn8n5WVcUI7dLbjd9VPojQa3mZ5hj6PlHABD48Chl4SaSyQ4PzXmgr1nP/NxrQ4MQqh5A
+ NiGtMzq5UgbPlKCAFpPANT8qamwy17qwQJLwGmqU7Ln7FuT6yKSjLeW9OHEV1aur6NBDmCCxUMGhm
+ 3yDyoaR6MQ4IgyynEVClsFnDCX5RvVSI6WkbN9DjCrw/lx4oZFn/CCTMf+LJ2tXfDVN35+3t7OtaZ
+ Ig+g10EbwEdvJHtVAefZXO/MUBUbx+fzwT+ldoH1EQTz1Zgzs6D4u9+fYSOBcYp+udUy5zKlduung
+ 8jCphU5dzh7PZ79cDLxySzKTjZWFARsjwE3Dr5FOA=;
+Received: from [2a00:23c4:8bb1:9800:102b:b374:b08c:8889]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rMxqT-0001xS-7N; Mon, 08 Jan 2024 22:11:49 +0000
+Message-ID: <077a06e2-476a-4efb-bd92-5cf30e29ceb5@ilande.co.uk>
+Date: Mon, 8 Jan 2024 22:12:12 +0000
 MIME-Version: 1.0
-References: <20240108171356.1037059-1-berrange@redhat.com>
- <20240108171356.1037059-2-berrange@redhat.com>
-In-Reply-To: <20240108171356.1037059-2-berrange@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Mon, 8 Jan 2024 16:50:40 -0500
-Message-ID: <CAFn=p-bJNzH7_iFDjV-Fwg_yO3HPvwaSSxBnuhXD-T6tCTR1Fg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] tracetool: remove redundant --target-type /
- --target-name args
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
+ John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Peter Xu <peterx@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Sergio Lopez
+ <slp@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>
+References: <20240106210531.140542-1-shentey@gmail.com>
+ <8e46217c-f28b-43b0-bea3-583d4b3cf42b@ilande.co.uk>
+ <5393CA46-267C-444A-AE8E-BBD82DCDCC9A@gmail.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <5393CA46-267C-444A-AE8E-BBD82DCDCC9A@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb1:9800:102b:b374:b08c:8889
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v4 00/11] hw/isa/vt82c686: Implement relocation and
+ toggling of SuperI/O functions
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,137 +121,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 8, 2024 at 12:14=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com> wrote:
->
-> The --target-type and --target-name args are used to construct
-> the default probe prefix if '--probe-prefix' is not given. The
-> meson.build will always pass '--probe-prefix', so the other args
-> are effectively redundant.
->
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+On 08/01/2024 20:07, Bernhard Beschow wrote:
 
-Fine by me, provided there's no reason anyone is calling tracetool
-manually for some reason I haven't thought about. I assume we'll hear
-about it if so...
+> Am 7. Januar 2024 14:13:44 UTC schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
+>> On 06/01/2024 21:05, Bernhard Beschow wrote:
+>>
+>>> This series implements relocation of the SuperI/O functions of the VIA south
+>>> bridges which resolves some FIXME's. It is part of my via-apollo-pro-133t
+>>> branch [1] which is an extension of bringing the VIA south bridges to the PC
+>>> machine [2]. This branch is able to run some real-world X86 BIOSes in the hope
+>>> that it allows us to form a better understanding of the real vt82c686b devices.
+>>> Implementing relocation and toggling of the SuperI/O functions is one step to
+>>> make these BIOSes run without error messages, so here we go.
+>>>
+>>> The series is structured as follows: Patches 1-3 prepare the TYPE_ISA_FDC,
+>>> TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL to relocate and toggle (enable/disable)
+>>> themselves without breaking encapsulation of their respective device states.
+>>> This is achieved by moving the MemoryRegions and PortioLists from the device
+>>> states into the encapsulating ISA devices since they will be relocated and
+>>> toggled.
+>>>
+>>> Inspired by the memory API patches 4-6 add two convenience functions to the
+>>> portio_list API to toggle and relocate portio lists. Patch 5 is a preparation
+>>> for that which removes some redundancies which otherwise had to be dealt with
+>>> during relocation.
+>>>
+>>> Patches 7-9 implement toggling and relocation for types TYPE_ISA_FDC,
+>>> TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL. Patch 10 prepares the pegasos2 machine
+>>> which would end up with all SuperI/O functions disabled if no -bios argument is
+>>> given. Patch 11 finally implements the main feature which now relies on
+>>> firmware to configure the SuperI/O functions accordingly (except for pegasos2).
+>>>
+>>> v4:
+>>> * Drop incomplete SuperI/O vmstate handling (Zoltan)
+>>>
+>>> v3:
+>>> * Rework various commit messages (Zoltan)
+>>> * Drop patch "hw/char/serial: Free struct SerialState from MemoryRegion"
+>>>     (Zoltan)
+>>> * Generalize wording in migration.rst to include portio_list API (Zoltan)
+>>>
+>>> v2:
+>>> * Improve commit messages (Zoltan)
+>>> * Split pegasos2 from vt82c686 patch (Zoltan)
+>>> * Avoid poking into device internals (Zoltan)
+>>>
+>>> Testing done:
+>>> * `make check`
+>>> * `make check-avocado`
+>>> * Run MorphOS on pegasos2 with and without pegasos2.rom
+>>> * Run Linux on amigaone
+>>> * Run real-world BIOSes on via-apollo-pro-133t branch
+>>> * Start rescue-yl on fuloong2e
+>>>
+>>> [1] https://github.com/shentok/qemu/tree/via-apollo-pro-133t
+>>> [2] https://github.com/shentok/qemu/tree/pc-via
+>>>
+>>> Bernhard Beschow (11):
+>>>     hw/block/fdc-isa: Move portio_list from FDCtrl to FDCtrlISABus
+>>>     hw/block/fdc-sysbus: Move iomem from FDCtrl to FDCtrlSysBus
+>>>     hw/char/parallel: Move portio_list from ParallelState to
+>>>       ISAParallelState
+>>>     exec/ioport: Resolve redundant .base attribute in struct
+>>>       MemoryRegionPortio
+>>>     exec/ioport: Add portio_list_set_address()
+>>>     exec/ioport: Add portio_list_set_enabled()
+>>>     hw/block/fdc-isa: Implement relocation and enabling/disabling for
+>>>       TYPE_ISA_FDC
+>>>     hw/char/serial-isa: Implement relocation and enabling/disabling for
+>>>       TYPE_ISA_SERIAL
+>>>     hw/char/parallel-isa: Implement relocation and enabling/disabling for
+>>>       TYPE_ISA_PARALLEL
+>>>     hw/ppc/pegasos2: Let pegasos2 machine configure SuperI/O functions
+>>>     hw/isa/vt82c686: Implement relocation and toggling of SuperI/O
+>>>       functions
+>>>
+>>>    docs/devel/migration.rst       |  6 ++--
+>>>    hw/block/fdc-internal.h        |  4 ---
+>>>    include/exec/ioport.h          |  4 ++-
+>>>    include/hw/block/fdc.h         |  3 ++
+>>>    include/hw/char/parallel-isa.h |  5 +++
+>>>    include/hw/char/parallel.h     |  2 --
+>>>    include/hw/char/serial.h       |  2 ++
+>>>    hw/block/fdc-isa.c             | 18 +++++++++-
+>>>    hw/block/fdc-sysbus.c          |  6 ++--
+>>>    hw/char/parallel-isa.c         | 14 ++++++++
+>>>    hw/char/parallel.c             |  2 +-
+>>>    hw/char/serial-isa.c           | 14 ++++++++
+>>>    hw/isa/vt82c686.c              | 66 ++++++++++++++++++++++++++++------
+>>>    hw/ppc/pegasos2.c              | 15 ++++++++
+>>>    system/ioport.c                | 41 +++++++++++++++++----
+>>>    15 files changed, 172 insertions(+), 30 deletions(-)
+>>
+>> I think this series generally looks good: the only thing I think it's worth checking is whether portio lists are considered exclusive to ISA devices or not? (Paolo?).
+> 
+> The modifications preserve the current design, so how is this question related to this series?
 
-Python looks fine, of course.
+I was thinking about patches 1 and 3 where the portio_list variable is moved from the 
+core object to the ISA-specific child objects.
 
-Reviewed-by: John Snow <jsnow@redhat.com>
+> I'd appreciate feedback from the maintainers indeed since this part hasn't received any comments so far. Thanks :)
 
-(Happy New Year!)
+Agreed. I *think* the portio_lists are ISA-specific as far as QEMU is concerned, but 
+a quick nod from an x86 maintainer would be a great help :)
 
-> ---
->  docs/devel/tracing.rst |  3 +--
->  meson.build            |  2 --
->  scripts/tracetool.py   | 24 +++++-------------------
->  3 files changed, 6 insertions(+), 23 deletions(-)
->
-> diff --git a/docs/devel/tracing.rst b/docs/devel/tracing.rst
-> index d288480db1..043bed7fd0 100644
-> --- a/docs/devel/tracing.rst
-> +++ b/docs/devel/tracing.rst
-> @@ -357,8 +357,7 @@ probes::
->
->      scripts/tracetool.py --backends=3Ddtrace --format=3Dstap \
->                           --binary path/to/qemu-binary \
-> -                         --target-type system \
-> -                         --target-name x86_64 \
-> +                         --probe-prefix qemu.system.x86_64 \
->                           --group=3Dall \
->                           trace-events-all \
->                           qemu.stp
-> diff --git a/meson.build b/meson.build
-> index 6c77d9687d..535f15da69 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -3934,8 +3934,6 @@ foreach target : target_dirs
->                        command: [
->                          tracetool, '--group=3Dall', '--format=3D' + stp[=
-'fmt'],
->                          '--binary=3D' + stp['bin'],
-> -                        '--target-name=3D' + target_name,
-> -                        '--target-type=3D' + target_type,
->                          '--probe-prefix=3Dqemu.' + target_type + '.' + t=
-arget_name,
->                          '@INPUT@', '@OUTPUT@'
->                        ],
-> diff --git a/scripts/tracetool.py b/scripts/tracetool.py
-> index ab7653a5ce..5de9ce96d3 100755
-> --- a/scripts/tracetool.py
-> +++ b/scripts/tracetool.py
-> @@ -44,12 +44,9 @@ def error_opt(msg =3D None):
->      --help                   This help message.
->      --list-backends          Print list of available backends.
->      --check-backends         Check if the given backend is valid.
-> -    --binary <path>          Full path to QEMU binary.
-> -    --target-type <type>     QEMU emulator target type ('system' or 'use=
-r').
-> -    --target-name <name>     QEMU emulator target name.
-> -    --group <name>           Name of the event group
-> -    --probe-prefix <prefix>  Prefix for dtrace probe names
-> -                             (default: qemu-<target-type>-<target-name>)=
-.\
-> +    --binary <path>          Full path to QEMU binary (required for 'sta=
-p' backend).
-> +    --group <name>           Name of the event group.
-> +    --probe-prefix <prefix>  Prefix for dtrace probe names (required for=
- 'stap' backend).
->  """ % {
->              "script" : _SCRIPT,
->              "backends" : backend_descr,
-> @@ -67,7 +64,7 @@ def main(args):
->
->      long_opts =3D ["backends=3D", "format=3D", "help", "list-backends",
->                   "check-backends", "group=3D"]
-> -    long_opts +=3D ["binary=3D", "target-type=3D", "target-name=3D", "pr=
-obe-prefix=3D"]
-> +    long_opts +=3D ["binary=3D", "probe-prefix=3D"]
->
->      try:
->          opts, args =3D getopt.getopt(args[1:], "", long_opts)
-> @@ -79,8 +76,6 @@ def main(args):
->      arg_format =3D ""
->      arg_group =3D None
->      binary =3D None
-> -    target_type =3D None
-> -    target_name =3D None
->      probe_prefix =3D None
->      for opt, arg in opts:
->          if opt =3D=3D "--help":
-> @@ -102,10 +97,6 @@ def main(args):
->
->          elif opt =3D=3D "--binary":
->              binary =3D arg
-> -        elif opt =3D=3D '--target-type':
-> -            target_type =3D arg
-> -        elif opt =3D=3D '--target-name':
-> -            target_name =3D arg
->          elif opt =3D=3D '--probe-prefix':
->              probe_prefix =3D arg
->
-> @@ -127,13 +118,8 @@ def main(args):
->      if arg_format =3D=3D "stap":
->          if binary is None:
->              error_opt("--binary is required for SystemTAP tapset generat=
-or")
-> -        if probe_prefix is None and target_type is None:
-> -            error_opt("--target-type is required for SystemTAP tapset ge=
-nerator")
-> -        if probe_prefix is None and target_name is None:
-> -            error_opt("--target-name is required for SystemTAP tapset ge=
-nerator")
-> -
->          if probe_prefix is None:
-> -            probe_prefix =3D ".".join(["qemu", target_type, target_name]=
-)
-> +            error_opt("--probe-prefix is required for SystemTAP tapset g=
-enerator")
->
->      if len(args) < 2:
->          error_opt("missing trace-events and output filepaths")
-> --
-> 2.43.0
->
+>> The portio_list_set_enabled() API looks interesting, and could be considered for use by my PCI IDE mode-switching changes too.
+>>
+>> Apologies I don't have a huge amount of time for review right now, but I wanted to feed back that generally these patches look good, and if people are happy with the portio list changes then this series should be considered for merge.
+> 
+> Never mind, it's still nice getting some confirmation from your side!
+
+No worries!
+
+
+ATB,
+
+Mark.
 
 
