@@ -2,90 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB23826BA2
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 11:37:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F19D826BAB
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 11:39:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMn0E-0002As-Bw; Mon, 08 Jan 2024 05:37:06 -0500
+	id 1rMn2F-00045N-Sn; Mon, 08 Jan 2024 05:39:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rMn0C-0002Ae-Ah
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 05:37:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rMn2D-000450-MF
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 05:39:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rMn0A-0006R3-Kp
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 05:37:03 -0500
+ id 1rMn2A-000775-Qs
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 05:39:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704710221;
+ s=mimecast20190719; t=1704710346;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=14TRo9jTHiw5/wiV8jsJcgYUbYz2MJq8+Oopf4D3xPM=;
- b=HDfhbaSmXkuCzRuqbABG4enAhKbKiVqy5wZhly6x7SnKSo2xAFlZknoF9UeA+zi34zVWdP
- qf+r+rMUqVuHseHfkkO9nEM36O5bye1qamqOleQnCw7VxeGe0MhK9JzkqT6eEK13daa3nS
- dGXF51C6HnIOni46J7oylJ2xNQ2/aM0=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=31OZCjMI2QNySUtvmLVZIZhx9BGHZxlIFE4qehyMZgk=;
+ b=UdM/Fn5Q2TBthPWt6UNgd9R3Tjxo09f4uyIDZHK89Kj87DfyQbzg9+9jxJV6TQRFgu9rqM
+ 1zaYQ9nXKtlbPiL/VFeUWzkxtQUmIEU0BlTvT5/ArJSK7ABfvLHmKeZm5Fmi41Ew6g4QNA
+ j5VoYc1VNiiAtKO9XoM2omzyAi9hQ/0=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-393-kQ_3whgJN7-gs-rNbteGbA-1; Mon, 08 Jan 2024 05:37:00 -0500
-X-MC-Unique: kQ_3whgJN7-gs-rNbteGbA-1
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-5cdfd47de98so336372a12.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 02:37:00 -0800 (PST)
+ us-mta-324-T4aU_mNMMvOhVAJXIUGVXw-1; Mon, 08 Jan 2024 05:39:03 -0500
+X-MC-Unique: T4aU_mNMMvOhVAJXIUGVXw-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-6d9b09d1afaso2156687b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 02:39:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704710219; x=1705315019;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1704710340; x=1705315140;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=14TRo9jTHiw5/wiV8jsJcgYUbYz2MJq8+Oopf4D3xPM=;
- b=J5yPh1FR/+AoDnCW/nql9Npv3gyklbIMzB/4cZ21CnG9hivYGe1hWOEMPJMIPFn92O
- j56iUmmmF/GgPZGgvPV5rdulNZaDJiQ+Ipjx4Xvk61sLXOtSs+jOZb6ODty6nKdJVZts
- jYIom44HaKRZsSf55Ra+nin29mMuKsHRYmr2t8Xso5Mk2pMphuket6qfikHArYdY7EIj
- IT2I+euM4CWrTj6xNGKt+HbXXkfxGlYcSkS48SI9xkJ21tY70W0OLloOM/PKE9sIBjIS
- H9B4FlkvnKKM37N6jeD6oqWJbUOTMVWJmldEtr6kzd38eCxvs+/eLx/AT1fc5ErSXSbo
- 1P3g==
-X-Gm-Message-State: AOJu0YxxaUw6qX78/GO60kVpQpF7UOWkU8nS0qpnxlh/idBPxQU5x6JL
- lvBOoypKjf3ollBPmYPS++5Fx4ODgVIs7V/YMeCfjbnRWRYxataIJvmIDvCg0WMeV3KuEVI+hey
- iU8ed86dS34ShbvnXP+VbvB8=
-X-Received: by 2002:a05:6a20:54a7:b0:199:7b5e:f8c0 with SMTP id
- i39-20020a056a2054a700b001997b5ef8c0mr867345pzk.66.1704710219299; 
- Mon, 08 Jan 2024 02:36:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG3+po6G1IMMJUimBWi9rWYGVHUhnZYndrAJfZqvsxQNRwtVGQIJfQNcA5rWhqh5CMaGgAqvw==
-X-Received: by 2002:a05:6a20:54a7:b0:199:7b5e:f8c0 with SMTP id
- i39-20020a056a2054a700b001997b5ef8c0mr867335pzk.66.1704710218971; 
- Mon, 08 Jan 2024 02:36:58 -0800 (PST)
-Received: from localhost.localdomain ([116.73.134.99])
- by smtp.googlemail.com with ESMTPSA id
- u11-20020a17090282cb00b001d3563c87a6sm5899502plz.281.2024.01.08.02.36.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Jan 2024 02:36:58 -0800 (PST)
+ bh=31OZCjMI2QNySUtvmLVZIZhx9BGHZxlIFE4qehyMZgk=;
+ b=Dv/IIdS1hGD5UfVxK9+/HCtAt5VAXIIi9abdEkmUL3QLHEy0sl2vHrky/b9Dwg6XjD
+ nwqF0XlIdrOpooTe89T8QGLrgMIwe5p67ddKw+/+OYgzQIKKGDGP4GO/MFbADHtaxHVG
+ WSHL7VBJvu/Lx8Tl+WftvZ9gxx3DaHPkUBVLMhf7f5c22t+VHuqgmkd7wyQgnktnYFs4
+ skZljbZ9o1UkI82ope/B+R+o48N1OBVXMXISCt5bPstC+AUZoDOA2aK8g8VI8uE3g9ud
+ Dah+m6NRTsWVXo/KvGQTdwNOUaYucIyo/fTE3DwQ++W6BBAXfA2Uk+7y1aD+ZX0a+NaH
+ XOiA==
+X-Gm-Message-State: AOJu0Yytvl1V04MPFLpteFOOmhY89sz7NIlHbs0WZANFof1b7vm4CPWk
+ 6nEMm5kDtHclyGkB4qG1PumjqCG8sB1mKt+ojwUvPYgY9wD+jp46x5V0sEGul1Hh1cIevbNCZXg
+ c/bNw4CPR2gyqz74Yha1WiYk=
+X-Received: by 2002:a05:6a20:8e0b:b0:199:9acc:4db5 with SMTP id
+ y11-20020a056a208e0b00b001999acc4db5mr2741812pzj.28.1704710340355; 
+ Mon, 08 Jan 2024 02:39:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEVKyZYJfPgV5ZqgkgrdkXd6xejJHdWhEOP8YBjtt2IbM6LF5rMj7uviPM8AWFtfYFW1DiMBA==
+X-Received: by 2002:a05:6a20:8e0b:b0:199:9acc:4db5 with SMTP id
+ y11-20020a056a208e0b00b001999acc4db5mr2741799pzj.28.1704710340079; 
+ Mon, 08 Jan 2024 02:39:00 -0800 (PST)
+Received: from smtpclient.apple ([116.73.134.99])
+ by smtp.gmail.com with ESMTPSA id
+ z125-20020a626583000000b006d9bb753d2esm5984541pfb.166.2024.01.08.02.38.57
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 08 Jan 2024 02:38:59 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
+Subject: Re: acpiBitsTest.test_acpi_smbios_bits test intermittently times out
 From: Ani Sinha <anisinha@redhat.com>
-To: Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+In-Reply-To: <CAK3XEhM5BtPtFE5fmsxf8aC+gHo4QEkyhboCcfpsQg=bJOfsjQ@mail.gmail.com>
+Date: Mon, 8 Jan 2024 16:08:45 +0530
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?utf-8?Q?Phil_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Beraldo Leal <bleal@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>, peter.maydell@linaro.org, mst@redhat.com,
- qemu-devel@nongnu.org
-Subject: [PATCH 2/2] acpi/tests/avocado/bits: disable smilatency tests
-Date: Mon,  8 Jan 2024 16:06:43 +0530
-Message-ID: <20240108103643.4434-3-anisinha@redhat.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240108103643.4434-1-anisinha@redhat.com>
-References: <20240108103643.4434-1-anisinha@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <663FD10C-5544-471F-87E8-8144C9115DEC@redhat.com>
+References: <CAFEAcA_TGYZP2eV1C4Yn5a6vnAO-_1r98rY1Teahy_Pb1ocvjw@mail.gmail.com>
+ <CAK3XEhM75DW+eUFrx=73xPycKvxccdT-Tg5mfFyuW_hAMJJ3+w@mail.gmail.com>
+ <CAK3XEhNe4TO4oBavsuqJwP5e1nzB6+xpdWa-D0NEq_-rqXincw@mail.gmail.com>
+ <CAFEAcA-fjZw9x2RC+Czo8dQUuux1WUD6fDWCMJ-1xHdGevNWAw@mail.gmail.com>
+ <CAK3XEhM5BtPtFE5fmsxf8aC+gHo4QEkyhboCcfpsQg=bJOfsjQ@mail.gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+X-Mailer: Apple Mail (2.3774.300.61.1.2)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
 X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.098,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,39 +109,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-smilatncy tests in bios bits seems to generate some flakyness in running the
-bits avocado tests. Disable them for now.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2077
 
-CC: peter.maydell@linaro.org
-CC: crosa@redhat.com
-CC: philmd@linaro.org
-CC: bleal@redhat.com
-CC: mst@redhat.com
-CC: wainersm@redhat.com
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- tests/avocado/acpi-bits/bits-tests/smilatency.py2 | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+> On 07-Jan-2024, at 9:56=E2=80=AFPM, Ani Sinha <anisinha@redhat.com> =
+wrote:
+>=20
+> On Sat, Jan 6, 2024 at 5:39=E2=80=AFPM Peter Maydell =
+<peter.maydell@linaro.org> wrote:
+>>=20
+>> On Sat, 6 Jan 2024 at 05:41, Ani Sinha <anisinha@redhat.com> wrote:
+>>>=20
+>>> On Sat, Jan 6, 2024 at 10:05=E2=80=AFAM Ani Sinha =
+<anisinha@redhat.com> wrote:
+>>>>=20
+>>>> On Sat, Jan 6, 2024 at 12:11=E2=80=AFAM Peter Maydell =
+<peter.maydell@linaro.org> wrote:
+>>>>>=20
+>>>>> The avocado test acpiBitsTest.test_acpi_smbios_bits seems to be
+>>>>> flaky in CI -- sometimes it appears to time out.
+>>>>>=20
+>>>>> https://gitlab.com/qemu-project/qemu/-/issues/2077
+>>>>> has the details (including links to jobs etc).
+>>>>=20
+>>>> Do you have more data points in terms of the jobs that failed?
+>>>=20
+>>> I just noticed that you attached three examples of failed tests. In
+>>> all of them the test seems to be stuck at the ami latency test.
+>>=20
+>> OK, if you think that subtest is suspicious, could you send a
+>> patch that disables just that subpart, and we'll see if it helps?
+>=20
+> I pushed the patches here:
+> https://gitlab.com/anisinha/qemu/-/commits/disable-smilatency
+> and ran the pipeline. It passed
+> https://gitlab.com/anisinha/qemu/-/jobs/5878585312
+>=20
+> and the smilatency test was not run:
+> =
+https://anisinha.gitlab.io/-/qemu/-/jobs/5878585312/artifacts/build/tests/=
+results/latest/test-results/01-tests_avocado_acpi-bits.py_AcpiBitsTest.tes=
+t_acpi_smbios_bits/debug.log
+>=20
+> Not sure what we can do to have some confidence that disabling the
+> test got rid of the flakiness.
 
-diff --git a/tests/avocado/acpi-bits/bits-tests/smilatency.py2 b/tests/avocado/acpi-bits/bits-tests/smilatency.py2
-index 48083bfb0d..405af67e19 100644
---- a/tests/avocado/acpi-bits/bits-tests/smilatency.py2
-+++ b/tests/avocado/acpi-bits/bits-tests/smilatency.py2
-@@ -37,8 +37,9 @@ import time
- import usb
- 
- def register_tests():
--    testsuite.add_test("SMI latency test", smi_latency);
--    testsuite.add_test("SMI latency test with USB disabled via BIOS handoff", test_with_usb_disabled, runall=False);
-+     pass
-+#    testsuite.add_test("SMI latency test", smi_latency);
-+#    testsuite.add_test("SMI latency test with USB disabled via BIOS handoff", test_with_usb_disabled, runall=False);
- 
- def smi_latency():
-     MSR_SMI_COUNT = 0x34
--- 
-2.42.0
+I ran the avocado jobs avocado-system-centos and avocado-system-opensuse =
+a few times and all times they passed. So I sent out the patches. Hope =
+this settles it.
+
+
+> I can send out those two patches in the
+> list.
+
 
 
