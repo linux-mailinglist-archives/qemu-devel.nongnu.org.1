@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4285826FAB
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 14:26:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACAD6826FAC
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 14:26:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMpdJ-0002ZB-CC; Mon, 08 Jan 2024 08:25:37 -0500
+	id 1rMpe6-0002lp-2P; Mon, 08 Jan 2024 08:26:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMpdC-0002Yh-E1
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 08:25:32 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rMpdq-0002lR-Ns
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 08:26:10 -0500
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMpd8-0005ix-Tm
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 08:25:29 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40d89446895so10663605e9.0
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 05:25:26 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rMpdn-00061r-L6
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 08:26:10 -0500
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a1915034144so180080866b.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 05:26:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704720325; x=1705325125; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vTnnXlrhuEwkIizMkke5TeWd7a07TcdV7ORxe8C/r7s=;
- b=VhNezOKD+GNRqzVtKF1LnTVyLLH5gcPbhaxfnY1qMSbFB4ZapQLh1SzrOnaXc7Ru8i
- +/kIBH/kwArAGEbJW8oxSaMjkjQsbLrzaA/5w1Etdig4zX+uf0Lg3Vy4RzfKyR0b+tHf
- bA5d1iQTviQj1RfESpHBAs8D7sWKsXaDYSWqIZwSKsQdEh9qnzGR6s3shTcysN1IjXo7
- pYumQcRR0AR4s4PQMEgfp4Ppy/1oP6/YRk1V8hoXZ0evuIpVJlFMeZM819LHGQdmMMrI
- hZ1RocrkIdn+SVfsps1We/KSyJUfamRC+Tb4vLExW4wIfejoNqqn1vq34Xl59PGOk7AX
- gpvA==
+ d=ventanamicro.com; s=google; t=1704720364; x=1705325164; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=/KZ62goZuNjVqXyNsftNtz/FVUsZoAdoqOHBRqA+dis=;
+ b=Ppec/0gKGEg/TTn9LwKPYcKTR5K7ZcOPauQtyMRt1djT3m1OqCM9D90TVy1Obgr8RL
+ wpy8LKcG7RB7hYhWLWH7veB+ytW4jOiv7hnc+Xq0fUzizZC8TRyoI3SVTbmBgCbyblSR
+ MWWPFvCJ5889lPxmDLUkQi1V8aWKEgkyT+bzRe7ytVOKS4ig7S1TI7niqRaySttp+23S
+ IIn+5MyfVQUUAXy46sBo2SMsl5OlWhSgZaI2hPYZJ57jMYd0enQKIWMbFTNTDdmMwDNT
+ dygRm0WcEeXw05qKtM+sfYSsxfPrDy3OkXWHHDeQyY0y47fJcopJfxwIA4iA4m6RDTmD
+ i7hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704720325; x=1705325125;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vTnnXlrhuEwkIizMkke5TeWd7a07TcdV7ORxe8C/r7s=;
- b=RXnQb/r2uCMhPxcMMGhfeNMHFUrg5RgI3R86bQgRQRg9bnhygxPAvv/Qe5e808cOYb
- Ez9DBAG/ysHS7s4bl0mWixe2Hw00n0LzVlioLm8614TWd8Q1D2AG/JhIW8x340u+3tlK
- IwIBegBDOVDLir9J+aKvF2akx2oW+N1C7n2vrHfMHaBA7a0WKUga91qCxCVtHu9LSvS1
- V+CFG0E5GH9g13sJV3QTskaPAulj1BsjWpGP802pol8Pc2n1nSZox9bBBvidu943zq+n
- zs5liDJL51ffdQadDFygNHPps38hZGOKsUQS4eNiV/zuUZCkTq6ycngS4arEVD5WGleA
- 2fMg==
-X-Gm-Message-State: AOJu0YxcE8S+kih+vWFxbSOfCHYEQ1lklTt3u5DVZKAAtX1NGmnbiMWj
- 3ndewos0GM8rF510V5Yi9E7B7i7n7xEhwQ==
-X-Google-Smtp-Source: AGHT+IHWMZ8RBb9ok9MWd5V9dWmB4XZj156v8NUAdJakOb2NJQ/ozDqVpka+yAlSi8sTD0/TPHlVrQ==
-X-Received: by 2002:a05:600c:1d94:b0:40e:42c9:25a4 with SMTP id
- p20-20020a05600c1d9400b0040e42c925a4mr1319181wms.59.1704720325047; 
- Mon, 08 Jan 2024 05:25:25 -0800 (PST)
-Received: from [192.168.1.102] ([176.176.175.62])
+ d=1e100.net; s=20230601; t=1704720364; x=1705325164;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/KZ62goZuNjVqXyNsftNtz/FVUsZoAdoqOHBRqA+dis=;
+ b=mAiitKYAe+0zy9cp6JrwNORQ0X3PsYkq2Dyvq2kBZVl7NrN2wbvDJNCkfMp6LSDUuR
+ AbTGdpjcZ9mNbAtH6A4fpiCTwns4oiApvPgunPEgnV34BDpifVPFtAD2bycApoi8yG0r
+ 41N97gEk6nPcb+oT/tk+UCuOe/a5YJ8caDDiUFLIazsaD+Bh8a67eJS0CQ2yqUEyzmQ7
+ hj+qMvH9BneGPBaZ5CB3GttdS0kszmTrvTBD2lXDEc3t6MhnHBIK6jN2jHznCcc7DYqJ
+ CIbakswLGVCsAdb0WItsFxBSXILUzmLsWeZoza/ftODzLm8ALzF3Kka0J2YpNdAX9NiT
+ aLbg==
+X-Gm-Message-State: AOJu0YzS7+hcbpAvnkc9TrLci/SCIsjC/SegjXMqM1aZlZgQwRL14Qo8
+ wczuUXKJ2EqsMz9NSuTXVQuBTKZzSWnSZg==
+X-Google-Smtp-Source: AGHT+IHOueXGaR9PrrVoYzh2Wi3EHPne/bLqyUH+pnRriXa1r7WmAE7PyMl8X9PoDa2Su7Bm9Lc87A==
+X-Received: by 2002:a17:907:31c1:b0:a28:e42e:12da with SMTP id
+ xf1-20020a17090731c100b00a28e42e12damr2046403ejb.61.1704720364064; 
+ Mon, 08 Jan 2024 05:26:04 -0800 (PST)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
  by smtp.gmail.com with ESMTPSA id
- g18-20020adfa492000000b003365f5e87f4sm7893319wrb.95.2024.01.08.05.25.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 05:25:24 -0800 (PST)
-Message-ID: <4960bfc6-6ff7-468f-ad61-0c5b9be45a5f@linaro.org>
-Date: Mon, 8 Jan 2024 14:25:23 +0100
+ w16-20020a17090633d000b00a269f8e8869sm3921107eja.128.2024.01.08.05.26.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Jan 2024 05:26:03 -0800 (PST)
+Date: Mon, 8 Jan 2024 14:26:02 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: qemu-riscv@nongnu.org, Conor Dooley <conor.dooley@microchip.com>, 
+ Alistair Francis <Alistair.Francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] riscv: support new isa extension detection devicetree
+ properties
+Message-ID: <20240108-5648f1bbf24e9dd4170a20e2@orel>
+References: <20231208-sponge-thickness-c0e9511b1baf@spud>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/33] linux-user: Remove qemu_host_page_{size, mask}
- from mmap.c
-Content-Language: en-US
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20240102015808.132373-1-richard.henderson@linaro.org>
- <20240102015808.132373-9-richard.henderson@linaro.org>
- <eb59bc7a-ecad-472f-a808-146c2e12e275@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <eb59bc7a-ecad-472f-a808-146c2e12e275@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231208-sponge-thickness-c0e9511b1baf@spud>
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,298 +96,244 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/1/24 10:47, Pierrick Bouvier wrote:
-> On 1/2/24 05:57, Richard Henderson wrote:
->> Use qemu_real_host_page_size instead.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   linux-user/mmap.c | 66 +++++++++++++++++++++++------------------------
->>   1 file changed, 33 insertions(+), 33 deletions(-)
->>
->> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
->> index 96c9433e27..4d3c8717b9 100644
->> --- a/linux-user/mmap.c
->> +++ b/linux-user/mmap.c
->> @@ -165,6 +165,7 @@ static int target_to_host_prot(int prot)
->>   /* NOTE: all the constants are the HOST ones, but addresses are 
->> target. */
->>   int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
->>   {
->> +    int host_page_size = qemu_real_host_page_size();
->>       abi_ulong starts[3];
->>       abi_ulong lens[3];
->>       int prots[3];
->> @@ -189,13 +190,13 @@ int target_mprotect(abi_ulong start, abi_ulong 
->> len, int target_prot)
->>       }
->>       last = start + len - 1;
->> -    host_start = start & qemu_host_page_mask;
->> +    host_start = start & -host_page_size;
->>       host_last = HOST_PAGE_ALIGN(last) - 1;
->>       nranges = 0;
->>       mmap_lock();
->> -    if (host_last - host_start < qemu_host_page_size) {
->> +    if (host_last - host_start < host_page_size) {
->>           /* Single host page contains all guest pages: sum the prot. */
->>           prot1 = target_prot;
->>           for (abi_ulong a = host_start; a < start; a += 
->> TARGET_PAGE_SIZE) {
->> @@ -205,7 +206,7 @@ int target_mprotect(abi_ulong start, abi_ulong 
->> len, int target_prot)
->>               prot1 |= page_get_flags(a + 1);
->>           }
->>           starts[nranges] = host_start;
->> -        lens[nranges] = qemu_host_page_size;
->> +        lens[nranges] = host_page_size;
->>           prots[nranges] = prot1;
->>           nranges++;
->>       } else {
->> @@ -218,10 +219,10 @@ int target_mprotect(abi_ulong start, abi_ulong 
->> len, int target_prot)
->>               /* If the resulting sum differs, create a new range. */
->>               if (prot1 != target_prot) {
->>                   starts[nranges] = host_start;
->> -                lens[nranges] = qemu_host_page_size;
->> +                lens[nranges] = host_page_size;
->>                   prots[nranges] = prot1;
->>                   nranges++;
->> -                host_start += qemu_host_page_size;
->> +                host_start += host_page_size;
->>               }
->>           }
->> @@ -233,9 +234,9 @@ int target_mprotect(abi_ulong start, abi_ulong 
->> len, int target_prot)
->>               }
->>               /* If the resulting sum differs, create a new range. */
->>               if (prot1 != target_prot) {
->> -                host_last -= qemu_host_page_size;
->> +                host_last -= host_page_size;
->>                   starts[nranges] = host_last + 1;
->> -                lens[nranges] = qemu_host_page_size;
->> +                lens[nranges] = host_page_size;
->>                   prots[nranges] = prot1;
->>                   nranges++;
->>               }
->> @@ -270,6 +271,7 @@ int target_mprotect(abi_ulong start, abi_ulong 
->> len, int target_prot)
->>   static bool mmap_frag(abi_ulong real_start, abi_ulong start, 
->> abi_ulong last,
->>                         int prot, int flags, int fd, off_t offset)
->>   {
->> +    int host_page_size = qemu_real_host_page_size();
->>       abi_ulong real_last;
->>       void *host_start;
->>       int prot_old, prot_new;
->> @@ -286,7 +288,7 @@ static bool mmap_frag(abi_ulong real_start, 
->> abi_ulong start, abi_ulong last,
->>           return false;
->>       }
->> -    real_last = real_start + qemu_host_page_size - 1;
->> +    real_last = real_start + host_page_size - 1;
->>       host_start = g2h_untagged(real_start);
->>       /* Get the protection of the target pages outside the mapping. */
->> @@ -304,12 +306,12 @@ static bool mmap_frag(abi_ulong real_start, 
->> abi_ulong start, abi_ulong last,
->>            * outside of the fragment we need to map.  Allocate a new host
->>            * page to cover, discarding whatever else may have been 
->> present.
->>            */
->> -        void *p = mmap(host_start, qemu_host_page_size,
->> +        void *p = mmap(host_start, host_page_size,
->>                          target_to_host_prot(prot),
->>                          flags | MAP_ANONYMOUS, -1, 0);
->>           if (p != host_start) {
->>               if (p != MAP_FAILED) {
->> -                munmap(p, qemu_host_page_size);
->> +                munmap(p, host_page_size);
->>                   errno = EEXIST;
->>               }
->>               return false;
->> @@ -324,7 +326,7 @@ static bool mmap_frag(abi_ulong real_start, 
->> abi_ulong start, abi_ulong last,
->>       /* Adjust protection to be able to write. */
->>       if (!(host_prot_old & PROT_WRITE)) {
->>           host_prot_old |= PROT_WRITE;
->> -        mprotect(host_start, qemu_host_page_size, host_prot_old);
->> +        mprotect(host_start, host_page_size, host_prot_old);
->>       }
->>       /* Read or zero the new guest pages. */
->> @@ -338,7 +340,7 @@ static bool mmap_frag(abi_ulong real_start, 
->> abi_ulong start, abi_ulong last,
->>       /* Put final protection */
->>       if (host_prot_new != host_prot_old) {
->> -        mprotect(host_start, qemu_host_page_size, host_prot_new);
->> +        mprotect(host_start, host_page_size, host_prot_new);
->>       }
->>       return true;
->>   }
->> @@ -373,17 +375,18 @@ static abi_ulong 
->> mmap_find_vma_reserved(abi_ulong start, abi_ulong size,
->>    */
->>   abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong 
->> align)
->>   {
->> +    int host_page_size = qemu_real_host_page_size();
->>       void *ptr, *prev;
->>       abi_ulong addr;
->>       int wrapped, repeat;
->> -    align = MAX(align, qemu_host_page_size);
->> +    align = MAX(align, host_page_size);
->>       /* If 'start' == 0, then a default start address is used. */
->>       if (start == 0) {
->>           start = mmap_next_start;
->>       } else {
->> -        start &= qemu_host_page_mask;
->> +        start &= -host_page_size;
->>       }
->>       start = ROUND_UP(start, align);
->> @@ -492,6 +495,7 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong 
->> size, abi_ulong align)
->>   abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
->>                        int flags, int fd, off_t offset)
->>   {
->> +    int host_page_size = qemu_real_host_page_size();
->>       abi_ulong ret, last, real_start, real_last, retaddr, host_len;
->>       abi_ulong passthrough_start = -1, passthrough_last = 0;
->>       int page_flags;
->> @@ -537,8 +541,8 @@ abi_long target_mmap(abi_ulong start, abi_ulong 
->> len, int target_prot,
->>           }
->>       }
->> -    real_start = start & qemu_host_page_mask;
->> -    host_offset = offset & qemu_host_page_mask;
->> +    real_start = start & -host_page_size;
->> +    host_offset = offset & -host_page_size;
->>       /*
->>        * If the user is asking for the kernel to find a location, do that
->> @@ -567,8 +571,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong 
->> len, int target_prot,
->>        * may need to truncate file maps at EOF and add extra anonymous 
->> pages
->>        * up to the targets page boundary.
->>        */
->> -    if ((qemu_real_host_page_size() < qemu_host_page_size) &&
->> -        !(flags & MAP_ANONYMOUS)) {
->> +    if (host_page_size < TARGET_PAGE_SIZE && !(flags & MAP_ANONYMOUS)) {
->>           struct stat sb;
->>           if (fstat(fd, &sb) == -1) {
->> @@ -595,11 +598,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong 
->> len, int target_prot,
->>           host_len = HOST_PAGE_ALIGN(host_len);
->>           host_prot = target_to_host_prot(target_prot);
->> -        /*
->> -         * Note: we prefer to control the mapping address. It is
->> -         * especially important if qemu_host_page_size >
->> -         * qemu_real_host_page_size.
->> -         */
->> +        /* Note: we prefer to control the mapping address. */
->>           p = mmap(g2h_untagged(start), host_len, host_prot,
->>                    flags | MAP_FIXED | MAP_ANONYMOUS, -1, 0);
->>           if (p == MAP_FAILED) {
->> @@ -665,7 +664,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong 
->> len, int target_prot,
->>            * aligned, so we read it
->>            */
->>           if (!(flags & MAP_ANONYMOUS) &&
->> -            (offset & ~qemu_host_page_mask) != (start & 
->> ~qemu_host_page_mask)) {
->> +            (offset & (host_page_size - 1)) != (start & 
->> (host_page_size - 1))) {
->>               /*
->>                * msync() won't work here, so we return an error if 
->> write is
->>                * possible while it is a shared mapping
->> @@ -694,7 +693,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong 
->> len, int target_prot,
->>           /* handle the start of the mapping */
->>           if (start > real_start) {
->> -            if (real_last == real_start + qemu_host_page_size - 1) {
->> +            if (real_last == real_start + host_page_size - 1) {
->>                   /* one single host page */
->>                   if (!mmap_frag(real_start, start, last,
->>                                  target_prot, flags, fd, offset)) {
->> @@ -703,21 +702,21 @@ abi_long target_mmap(abi_ulong start, abi_ulong 
->> len, int target_prot,
->>                   goto the_end1;
->>               }
->>               if (!mmap_frag(real_start, start,
->> -                           real_start + qemu_host_page_size - 1,
->> +                           real_start + host_page_size - 1,
->>                              target_prot, flags, fd, offset)) {
->>                   goto fail;
->>               }
->> -            real_start += qemu_host_page_size;
->> +            real_start += host_page_size;
->>           }
->>           /* handle the end of the mapping */
->>           if (last < real_last) {
->> -            abi_ulong real_page = real_last - qemu_host_page_size + 1;
->> +            abi_ulong real_page = real_last - host_page_size + 1;
->>               if (!mmap_frag(real_page, real_page, last,
->>                              target_prot, flags, fd,
->>                              offset + real_page - start)) {
->>                   goto fail;
->>               }
->> -            real_last -= qemu_host_page_size;
->> +            real_last -= host_page_size;
->>           }
->>           /* map the middle (easier) */
->> @@ -784,6 +783,7 @@ fail:
->>   static int mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
->>   {
->> +    int host_page_size = qemu_real_host_page_size();
->>       abi_ulong real_start;
->>       abi_ulong real_last;
->>       abi_ulong real_len;
->> @@ -793,7 +793,7 @@ static int mmap_reserve_or_unmap(abi_ulong start, 
->> abi_ulong len)
->>       int prot;
->>       last = start + len - 1;
->> -    real_start = start & qemu_host_page_mask;
->> +    real_start = start & -host_page_size;
->>       real_last = HOST_PAGE_ALIGN(last) - 1;
->>       /*
->> @@ -802,7 +802,7 @@ static int mmap_reserve_or_unmap(abi_ulong start, 
->> abi_ulong len)
->>        * The single page special case is required for the last page,
->>        * lest real_start overflow to zero.
->>        */
->> -    if (real_last - real_start < qemu_host_page_size) {
->> +    if (real_last - real_start < host_page_size) {
->>           prot = 0;
->>           for (a = real_start; a < start; a += TARGET_PAGE_SIZE) {
->>               prot |= page_get_flags(a);
->> @@ -818,14 +818,14 @@ static int mmap_reserve_or_unmap(abi_ulong 
->> start, abi_ulong len)
->>               prot |= page_get_flags(a);
->>           }
->>           if (prot != 0) {
->> -            real_start += qemu_host_page_size;
->> +            real_start += host_page_size;
->>           }
->>           for (prot = 0, a = last; a < real_last; a += 
->> TARGET_PAGE_SIZE) {
->>               prot |= page_get_flags(a + 1);
->>           }
->>           if (prot != 0) {
->> -            real_last -= qemu_host_page_size;
->> +            real_last -= host_page_size;
->>           }
->>           if (real_last < real_start) {
+On Fri, Dec 08, 2023 at 12:07:22PM +0000, Conor Dooley wrote:
+> From: Conor Dooley <conor.dooley@microchip.com>
 > 
-> For me, the transformation ~page_mask == page_size - 1 and page_mask == 
-> -page_size was not so intuitive, until I tried it on paper.
-
-I have been there ;) Then when you have to deal with code related
-to pages, this become natural page-related operations.
-
-> Could it be useful to have macros PAGE_BITS(page_size), and 
-> PAGE_MASK(page_size) for this?. All would be defined from page_sz, so 
-> there is no duplicated data, and it would avoid a subtle error when 
-> forgetting an operator, while helping to read the code.
+> A few months ago I submitted a patch to various lists, deprecating
+> "riscv,isa" with a lengthy commit message [0] that is now commit
+> aeb71e42caae ("dt-bindings: riscv: deprecate riscv,isa") in the Linux
+> kernel tree. Primarily, the goal was to replace "riscv,isa" with a new
+> set of properties that allowed for strictly defining the meaning of
+> various extensions, where "riscv,isa" was tied to whatever definitions
+> inflicted upon us by the ISA manual, which have seen some variance over
+> time.
 > 
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> Two new properties were introduced: "riscv,isa-base" and
+> "riscv,isa-extensions". The former is a simple string to communicate the
+> base ISA implemented by a hart and the latter an array of strings used
+> to communicate the set of ISA extensions supported, per the definitions
+> of each substring in extensions.yaml [1]. A beneficial side effect was
+> also the ability to define vendor extensions in a more "official" way,
+> as the ISA manual and other RVI specifications only covered the format
+> for vendor extensions in the ISA string, but not the meaning of vendor
+> extensions, for obvious reasons.
 > 
+> Add support for setting these two new properties in the devicetrees for
+> the various devicetree platforms supported by QEMU for RISC-V. The Linux
+> kernel already supports parsing ISA extensions from these new
+> properties, and documenting them in the dt-binding is a requirement for
+> new extension detection being added to the kernel.
+> 
+> A side effect of the implementation is that the meaning for elements in
+> "riscv,isa" and in "riscv,isa-extensions" are now tied together as they
+> are constructed from the same source. The same applies to the ISA string
+> provided in ACPI tables, but there does not appear to be any strict
+> definitions of meanings in ACPI land either.
+> 
+> Link: https://lore.kernel.org/qemu-riscv/20230702-eats-scorebook-c951f170d29f@spud/ [0]
+> Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/riscv/extensions.yaml [1]
+> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+> ---
+> Changes in v2:
+> - use g_strdup() for multiletter extension string copying
+> - wrap stuff in #ifndef to prevent breaking the user mode build
+> - rename riscv_isa_set_props() -> riscv_isa_write_fdt()
+> 
+> CC: Alistair Francis <Alistair.Francis@wdc.com>
+> CC: Bin Meng <bin.meng@windriver.com>
+> CC: Palmer Dabbelt <palmer@dabbelt.com>
+> CC: Weiwei Li <liwei1518@gmail.com>
+> CC: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> CC: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+> CC: qemu-riscv@nongnu.org
+> CC: qemu-devel@nongnu.org
+> ---
+>  hw/riscv/sifive_u.c |  7 ++-----
+>  hw/riscv/spike.c    |  6 ++----
+>  hw/riscv/virt.c     |  6 ++----
+>  target/riscv/cpu.c  | 50 +++++++++++++++++++++++++++++++++++++++++++++
+>  target/riscv/cpu.h  |  1 +
+>  5 files changed, 57 insertions(+), 13 deletions(-)
+> 
+> diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+> index ec76dce6c9..2f227f15bc 100644
+> --- a/hw/riscv/sifive_u.c
+> +++ b/hw/riscv/sifive_u.c
+> @@ -171,7 +171,6 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
+>          int cpu_phandle = phandle++;
+>          nodename = g_strdup_printf("/cpus/cpu@%d", cpu);
+>          char *intc = g_strdup_printf("/cpus/cpu@%d/interrupt-controller", cpu);
+> -        char *isa;
+>          qemu_fdt_add_subnode(fdt, nodename);
+>          /* cpu 0 is the management hart that does not have mmu */
+>          if (cpu != 0) {
+> @@ -180,11 +179,10 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
+>              } else {
+>                  qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv48");
+>              }
+> -            isa = riscv_isa_string(&s->soc.u_cpus.harts[cpu - 1]);
+> +            riscv_isa_write_fdt(&s->soc.u_cpus.harts[cpu - 1], fdt, nodename);
+>          } else {
+> -            isa = riscv_isa_string(&s->soc.e_cpus.harts[0]);
+> +            riscv_isa_write_fdt(&s->soc.e_cpus.harts[0], fdt, nodename);
+>          }
+> -        qemu_fdt_setprop_string(fdt, nodename, "riscv,isa", isa);
+>          qemu_fdt_setprop_string(fdt, nodename, "compatible", "riscv");
+>          qemu_fdt_setprop_string(fdt, nodename, "status", "okay");
+>          qemu_fdt_setprop_cell(fdt, nodename, "reg", cpu);
+> @@ -194,7 +192,6 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
+>          qemu_fdt_setprop_string(fdt, intc, "compatible", "riscv,cpu-intc");
+>          qemu_fdt_setprop(fdt, intc, "interrupt-controller", NULL, 0);
+>          qemu_fdt_setprop_cell(fdt, intc, "#interrupt-cells", 1);
+> -        g_free(isa);
+>          g_free(intc);
+>          g_free(nodename);
+>      }
+> diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
+> index 81f7e53aed..64074395bc 100644
+> --- a/hw/riscv/spike.c
+> +++ b/hw/riscv/spike.c
+> @@ -59,7 +59,7 @@ static void create_fdt(SpikeState *s, const MemMapEntry *memmap,
+>      MachineState *ms = MACHINE(s);
+>      uint32_t *clint_cells;
+>      uint32_t cpu_phandle, intc_phandle, phandle = 1;
+> -    char *name, *mem_name, *clint_name, *clust_name;
+> +    char *mem_name, *clint_name, *clust_name;
+>      char *core_name, *cpu_name, *intc_name;
+>      static const char * const clint_compat[2] = {
+>          "sifive,clint0", "riscv,clint0"
+> @@ -113,9 +113,7 @@ static void create_fdt(SpikeState *s, const MemMapEntry *memmap,
+>              } else {
+>                  qemu_fdt_setprop_string(fdt, cpu_name, "mmu-type", "riscv,sv48");
+>              }
+> -            name = riscv_isa_string(&s->soc[socket].harts[cpu]);
+> -            qemu_fdt_setprop_string(fdt, cpu_name, "riscv,isa", name);
+> -            g_free(name);
+> +            riscv_isa_write_fdt(&s->soc[socket].harts[cpu], fdt, cpu_name);
+>              qemu_fdt_setprop_string(fdt, cpu_name, "compatible", "riscv");
+>              qemu_fdt_setprop_string(fdt, cpu_name, "status", "okay");
+>              qemu_fdt_setprop_cell(fdt, cpu_name, "reg",
+> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> index c7fc97e273..05beb0a297 100644
+> --- a/hw/riscv/virt.c
+> +++ b/hw/riscv/virt.c
+> @@ -238,7 +238,7 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
+>      int cpu;
+>      uint32_t cpu_phandle;
+>      MachineState *ms = MACHINE(s);
+> -    char *name, *cpu_name, *core_name, *intc_name, *sv_name;
+> +    char *cpu_name, *core_name, *intc_name, *sv_name;
+>      bool is_32_bit = riscv_is_32bit(&s->soc[0]);
+>      uint8_t satp_mode_max;
+>  
+> @@ -259,9 +259,7 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
+>              g_free(sv_name);
+>          }
+>  
+> -        name = riscv_isa_string(cpu_ptr);
+> -        qemu_fdt_setprop_string(ms->fdt, cpu_name, "riscv,isa", name);
+> -        g_free(name);
+> +        riscv_isa_write_fdt(cpu_ptr, ms->fdt, cpu_name);
+>  
+>          if (cpu_ptr->cfg.ext_zicbom) {
+>              qemu_fdt_setprop_cell(ms->fdt, cpu_name, "riscv,cbom-block-size",
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 83c7c0cf07..ce413b9f00 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -31,6 +31,7 @@
+>  #include "hw/qdev-properties.h"
+>  #include "migration/vmstate.h"
+>  #include "fpu/softfloat-helpers.h"
+> +#include "sysemu/device_tree.h"
+>  #include "sysemu/kvm.h"
+>  #include "sysemu/tcg.h"
+>  #include "kvm/kvm_riscv.h"
+> @@ -1735,6 +1736,55 @@ char *riscv_isa_string(RISCVCPU *cpu)
+>      return isa_str;
+>  }
+>  
+> +#ifndef CONFIG_USER_ONLY
+> +static char **riscv_isa_extensions_list(RISCVCPU *cpu, int *count)
+> +{
+> +    int maxlen = ARRAY_SIZE(riscv_single_letter_exts) + ARRAY_SIZE(isa_edata_arr);
+> +    char **extensions = g_new(char *, maxlen);
+> +
+> +    for (int i = 0; i < sizeof(riscv_single_letter_exts) - 1; i++) {
+> +        if (cpu->env.misa_ext & RV(riscv_single_letter_exts[i])) {
+> +            extensions[*count] = g_new(char, 2);
+> +            snprintf(extensions[*count], 2, "%c",
+> +                     qemu_tolower(riscv_single_letter_exts[i]));
+> +            (*count)++;
+> +        }
+> +    }
+> +
+> +    for (const RISCVIsaExtData *edata = isa_edata_arr; edata && edata->name; edata++) {
+                                                          ^ edata can never
+							  be NULL
+				(I know riscv_isa_string_ext() also has
+				that check though...)
 
+> +        if (isa_ext_is_enabled(cpu, edata->ext_enable_offset)) {
+> +            extensions[*count] = g_strdup(edata->name);
+> +            (*count)++;
+> +        }
+> +    }
+> +
+> +    return extensions;
+> +}
+> +
+> +void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename)
+> +{
+> +    const size_t maxlen = sizeof("rv128i");
+> +    g_autofree char *isa_base = g_new(char, maxlen);
+> +    g_autofree char *riscv_isa;
+> +    char **isa_extensions;
+> +    int count = 0;
+> +
+> +    riscv_isa = riscv_isa_string(cpu);
+> +    qemu_fdt_setprop_string(fdt, nodename, "riscv,isa", riscv_isa);
+> +
+> +    snprintf(isa_base, maxlen, "rv%di", TARGET_LONG_BITS);
+> +    qemu_fdt_setprop_string(fdt, nodename, "riscv,isa-base", isa_base);
+> +
+> +    isa_extensions = riscv_isa_extensions_list(cpu, &count);
+> +    qemu_fdt_setprop_string_array(fdt, nodename, "riscv,isa-extensions",
+> +                                  isa_extensions, count);
+> +
+> +    for (int i = 0; i < count; i++) {
+> +        g_free(isa_extensions[i]);
+> +    }
+
+Need g_free(isa_extensions) here.
+
+> +}
+> +#endif
+> +
+>  static gint riscv_cpu_list_compare(gconstpointer a, gconstpointer b)
+>  {
+>      ObjectClass *class_a = (ObjectClass *)a;
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index bf58b0f0b5..5bbce607c4 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -496,6 +496,7 @@ void riscv_cpu_list(void);
+>  #define cpu_mmu_index riscv_cpu_mmu_index
+>  
+>  #ifndef CONFIG_USER_ONLY
+> +void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename);
+>  void riscv_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
+>                                       vaddr addr, unsigned size,
+>                                       MMUAccessType access_type,
+> -- 
+> 2.39.2
+> 
+>
+
+Otherwise,
+
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+
+Thanks,
+drew
 
