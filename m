@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CA982792B
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:32:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5817C82792C
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 21:32:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMwHd-0004FY-9c; Mon, 08 Jan 2024 15:31:41 -0500
+	id 1rMwHX-0004Ey-El; Mon, 08 Jan 2024 15:31:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rMwHS-0004Ea-Bg; Mon, 08 Jan 2024 15:31:30 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1rMwHS-0004EK-0i; Mon, 08 Jan 2024 15:31:30 -0500
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rMwHP-00059N-FK; Mon, 08 Jan 2024 15:31:30 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5576ca4119cso2375084a12.2; 
- Mon, 08 Jan 2024 12:31:26 -0800 (PST)
+ id 1rMwHP-000597-5G; Mon, 08 Jan 2024 15:31:29 -0500
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2cd56dac1adso14993341fa.2; 
+ Mon, 08 Jan 2024 12:31:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704745885; x=1705350685; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704745883; x=1705350683; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Y8yI3Nzd2+Dx6OtwbthNwfIySXDAbgV8YEjE+oRwXeo=;
- b=bONAlaGI6/HnQDh9tIVOgt8DcY+xKzf+NTT6WE9HtNT8+8Bv2Ok+Y97E4E/1a+k0/i
- lCAgvwOCSbPZpQTHUegU2OuVX08DNB/FWb0jfFVkBNSvwJQgGX0EzbK0lmuHYmAdXNIY
- aSqjrNHrQMsZQmGH+E5Zovbvvlfoe5XsCEfzL/yD/rQGTW4J3/8/1/J35LXzLsrgOG5X
- CHlQSu+csSCUg35Dc0Fm9dPPTOmsfdN/bsDKt4KubfrtfAeA9U3dk+D0d2pxiu+FVslw
- cC59KnZoUyVmn00PdxfbfHv5vZQZEKUFYBMqNNk+Td46o7ymFdyG58nJfpwb+Tk3JODZ
- nmFg==
+ bh=m6xZFIXTW8KcgePBou+mANJ7I4C6HnRtN/q795tCnLo=;
+ b=WaXWUhrh5zkbgUXm4JmUOTmIln/9RgAnv/pOZM/LjOQHbnhVG/tfeHkiBtiqjkdEXx
+ 0ss/Lh8Uj2Lx41nrV6TKr63cU+bVznk1UbC1t0PASDP3i4fSd2ncoqcyyys40dErqp2K
+ sgy7o7AgiTSx1bXQrfQPld2DMnER4DbfDaY1WxNrOX5hAibOqb5T/bAoOScfHSWnD2UJ
+ y50zZeyqz7CjTqqi3pohMIuaQ70U1t+rWdi5gRqkjmj85VoJBAQloYSJC2+TAD5OoW01
+ bh6U0F8zOk7eHDSTZPI2JEmS263+PFCSXdAdqgOwU7NtMGHPbBiGoF8BO830HJINSYDD
+ jenQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704745885; x=1705350685;
+ d=1e100.net; s=20230601; t=1704745883; x=1705350683;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Y8yI3Nzd2+Dx6OtwbthNwfIySXDAbgV8YEjE+oRwXeo=;
- b=RRHRvXPWP8HemeChSSDaMfgrY41l1OueCzeLj9mgkMcNvHGXRqEnz136SZcSVuzCY9
- w2Ozvyg3SiD4J9lpHvvYvubkOg+BEXmWr9T0dyJF8bCcHoJnaWiOafMdl8YdUzLEXKnx
- 3gA93Kv9YvkavGpCBQvTyPfQXjF4VzjChwiKXMSiI+oEeCA8Ci/QmaBuVh7yL2ml7btq
- LaZaVbb9TLl8R/Sq5OfgTdlcHxRhBxT3/X5uxd6DXdiwitHBZJ6hW4igGG/yiv7DaQxk
- iAj6pZg/xJilaOVNj6FRZL1gJsvDcB19DgJ2cT4Ovady+Lchyltv5EDJqrr0qVKbnVab
- 1+Sg==
-X-Gm-Message-State: AOJu0YwnSktOqCy/ewO1AWxR120MF6AHF3KUdD6tht6H+nBkfGSPG9Th
- ptJnb3AyKBs7jWyYlgMRZi0=
-X-Google-Smtp-Source: AGHT+IECFBBaD6SU4TrEVcBuNsENd0aExj36M6lRiF20pQG53smhnciDdDklE+M5MuuRU9gHStUrKg==
-X-Received: by 2002:a50:cdd7:0:b0:550:e014:5254 with SMTP id
- h23-20020a50cdd7000000b00550e0145254mr2703877edj.27.1704745884620; 
- Mon, 08 Jan 2024 12:31:24 -0800 (PST)
+ bh=m6xZFIXTW8KcgePBou+mANJ7I4C6HnRtN/q795tCnLo=;
+ b=dafoOM2PziKSVcY2YE/8KnL6oDE4ztcxlnh+qEDieNSOYA7XpDBIYDtXHSbG+Izdwh
+ MKHbENwtWnxK4nn3UIuwOBJ+0qKEEwtufmBoTMsNWEfOi4zRURCRkTrpDThAtAGHapUt
+ wHz1fPiQRcxPdNHJAtE8OujWPjAqTmUgL9MEkM1MVrjMKNQVJ1A51GI4UPftCVimwCQk
+ P02/9lAGhdncbbDzHu1tffYjGSaN71KLeveMQTJcKQoS2aRpB4xkwnDxFioXAFOhhrLT
+ saX4Tjg9Myv94wMHzLiL+wcZsSYbvI0UZq3Kvfspz8RGszj7gkvcg8LkMpjex2gKRyh1
+ jhNg==
+X-Gm-Message-State: AOJu0YyO3GNHMyjqqGXOGg0imOudSXewCvePNcS+9IMbUC1wJYlJdQbU
+ K6z6GfH9buurZs47Bot7nDs=
+X-Google-Smtp-Source: AGHT+IHQTlEWwmB7bvBmkL0saCw91GEhXg0JQWnsTTkxyzXPdusHKUaeWRPOAA1hO8erKvXjJWrfIg==
+X-Received: by 2002:a2e:3903:0:b0:2cc:fe03:4360 with SMTP id
+ g3-20020a2e3903000000b002ccfe034360mr1992864lja.24.1704745883100; 
+ Mon, 08 Jan 2024 12:31:23 -0800 (PST)
 Received: from [127.0.0.1] (dynamic-078-054-062-214.78.54.pool.telefonica.de.
  [78.54.62.214]) by smtp.gmail.com with ESMTPSA id
- dy21-20020a05640231f500b00556e497cc96sm183153edb.84.2024.01.08.12.31.23
+ f2-20020a056402150200b0055732bd1fc0sm184726edw.82.2024.01.08.12.31.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 12:31:24 -0800 (PST)
-Date: Mon, 08 Jan 2024 19:53:38 +0000
+ Mon, 08 Jan 2024 12:31:21 -0800 (PST)
+Date: Mon, 08 Jan 2024 19:54:34 +0000
 From: Bernhard Beschow <shentey@gmail.com>
 To: BALATON Zoltan <balaton@eik.bme.hu>
 CC: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
@@ -77,19 +77,19 @@ CC: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
  Hanna Reitz <hreitz@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_11/11=5D_hw/isa/vt82c686=3A_Implemen?=
- =?US-ASCII?Q?t_relocation_and_toggling_of_SuperI/O_functions?=
-In-Reply-To: <43de62e3-67d0-f013-2f4b-21ec1a78dbee@eik.bme.hu>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_10/11=5D_hw/ppc/pegasos2=3A_Let_p?=
+ =?US-ASCII?Q?egasos2_machine_configure_SuperI/O_functions?=
+In-Reply-To: <fa7a9464-912c-19d7-e9d0-b1a0896e0cac@eik.bme.hu>
 References: <20240106210531.140542-1-shentey@gmail.com>
- <20240106210531.140542-12-shentey@gmail.com>
- <43de62e3-67d0-f013-2f4b-21ec1a78dbee@eik.bme.hu>
-Message-ID: <953F5075-4774-457F-BC9C-DA021DED8C0F@gmail.com>
+ <20240106210531.140542-11-shentey@gmail.com>
+ <fa7a9464-912c-19d7-e9d0-b1a0896e0cac@eik.bme.hu>
+Message-ID: <0F015BDE-FF03-4BF3-80E9-6300E6B80C32@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=shentey@gmail.com; helo=mail-lj1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,185 +114,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 7=2E Januar 2024 13:59:44 UTC schrieb BALATON Zoltan <balaton@eik=2Ebme=
+Am 7=2E Januar 2024 13:54:57 UTC schrieb BALATON Zoltan <balaton@eik=2Ebme=
 =2Ehu>:
 >On Sat, 6 Jan 2024, Bernhard Beschow wrote:
->> The VIA south bridges are able to relocate and toggle (enable or disabl=
-e) their
->> SuperI/O functions=2E So far this is hardcoded such that all functions =
-are always
->> enabled and are located at fixed addresses=2E
->>=20
->> Some PC BIOSes seem to probe for I/O occupancy before activating such a=
- function
->> and issue an error in case of a conflict=2E Since the functions are cur=
-rently
->> enabled on reset, conflicts are always detected=2E Prevent that by impl=
-ementing
->> relocation and toggling of the SuperI/O functions=2E
->>=20
->> Note that all SuperI/O functions are now deactivated upon reset (except=
- for
->> VT82C686B's serial ports where Fuloong 2e's rescue-yl seems to expect t=
-hem to be
->> enabled by default)=2E Rely on firmware to configure the functions acco=
-rdingly=2E
+>> This is a preparation for implementing relocation and toggling of Super=
+I/O
+>> functions in the VT8231 device model=2E Upon reset, all SuperI/O functi=
+ons will be
+>> deactivated, so in case if no -bios is given, let the machine configure=
+ those
+>> functions the same way Pegasos II firmware would do=2E
 >>=20
 >> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
 >> ---
->> hw/isa/vt82c686=2Ec | 66 ++++++++++++++++++++++++++++++++++++++++------=
--
->> 1 file changed, 56 insertions(+), 10 deletions(-)
+>> hw/ppc/pegasos2=2Ec | 15 +++++++++++++++
+>> 1 file changed, 15 insertions(+)
 >>=20
->> diff --git a/hw/isa/vt82c686=2Ec b/hw/isa/vt82c686=2Ec
->> index d3e0f6d01f=2E=2E9f62fb5964 100644
->> --- a/hw/isa/vt82c686=2Ec
->> +++ b/hw/isa/vt82c686=2Ec
->> @@ -15,6 +15,9 @@
->>=20
->> #include "qemu/osdep=2Eh"
->> #include "hw/isa/vt82c686=2Eh"
->> +#include "hw/block/fdc=2Eh"
->> +#include "hw/char/parallel-isa=2Eh"
->> +#include "hw/char/serial=2Eh"
->> #include "hw/pci/pci=2Eh"
->> #include "hw/qdev-properties=2Eh"
->> #include "hw/ide/pci=2Eh"
->> @@ -323,6 +326,18 @@ static uint64_t via_superio_cfg_read(void *opaque,=
- hwaddr addr, unsigned size)
->>     return val;
+>> diff --git a/hw/ppc/pegasos2=2Ec b/hw/ppc/pegasos2=2Ec
+>> index 3203a4a728=2E=2E0a40ebd542 100644
+>> --- a/hw/ppc/pegasos2=2Ec
+>> +++ b/hw/ppc/pegasos2=2Ec
+>> @@ -285,6 +285,15 @@ static void pegasos2_pci_config_write(Pegasos2Mach=
+ineState *pm, int bus,
+>>     pegasos2_mv_reg_write(pm, pcicfg + 4, len, val);
 >> }
 >>=20
->> +static void via_superio_devices_enable(ViaSuperIOState *s, uint8_t dat=
-a)
+>> +static void pegasos2_superio_write(Pegasos2MachineState *pm, uint32_t =
+addr,
+>> +                                   uint32_t val)
 >> +{
->> +    ISASuperIOClass *ic =3D ISA_SUPERIO_GET_CLASS(s);
->> +    size_t i;
+>> +    AddressSpace *as =3D CPU(pm->cpu)->as;
 >
->The expected value for i is 0 or 1 (maybe up to 3 sometimes it there are =
-more serial ports in a chip)=2E so why use such big type?
+>I think this function should not need Pegasos2MachineState *pm and can ju=
+st use cpu_physical_memory_write() instead=2E
 
-serial=2Ecount is of type size_t, that's why I chose it=2E Let me know if =
-you still want an int, otherwise I'd leave it as is=2E
+Okay, I'll change it=2E
 
 Best regards,
 Bernhard
 
-> This should just be int=2E Newly it's also allowed to declare it within =
-the for so if you want that you could do so but I have no preference on tha=
-t and declaring it here is also OK=2E Otherwise:
+> Otherwise
 >
 >Reviewed-by: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
 >
 >> +
->> +    isa_parallel_set_enabled(s->superio=2Eparallel[0], (data & 0x3) !=
-=3D 3);
->> +    for (i =3D 0; i < ic->serial=2Ecount; i++) {
->> +        isa_serial_set_enabled(s->superio=2Eserial[i], data & BIT(i + =
-2));
->> +    }
->> +    isa_fdc_set_enabled(s->superio=2Efloppy, data & BIT(4));
+>> +    stb_phys(as, PCI1_IO_BASE + 0x3f0, addr);
+>> +    stb_phys(as, PCI1_IO_BASE + 0x3f1, val);
 >> +}
 >> +
->> static void via_superio_class_init(ObjectClass *klass, void *data)
+>> static void pegasos2_machine_reset(MachineState *machine, ShutdownCause=
+ reason)
 >> {
->>     DeviceClass *dc =3D DEVICE_CLASS(klass);
->> @@ -368,7 +383,25 @@ static void vt82c686b_superio_cfg_write(void *opaq=
-ue, hwaddr addr,
->>     case 0xfd =2E=2E=2E 0xff:
->>         /* ignore write to read only registers */
->>         return;
->> -    /* case 0xe6 =2E=2E=2E 0xe8: Should set base port of parallel and =
-serial */
->> +    case 0xe2:
->> +        data &=3D 0x1f;
->> +        via_superio_devices_enable(sc, data);
->> +        break;
->> +    case 0xe3:
->> +        data &=3D 0xfc;
->> +        isa_fdc_set_iobase(sc->superio=2Efloppy, data << 2);
->> +        break;
->> +    case 0xe6:
->> +        isa_parallel_set_iobase(sc->superio=2Eparallel[0], data << 2);
->> +        break;
->> +    case 0xe7:
->> +        data &=3D 0xfe;
->> +        isa_serial_set_iobase(sc->superio=2Eserial[0], data << 2);
->> +        break;
->> +    case 0xe8:
->> +        data &=3D 0xfe;
->> +        isa_serial_set_iobase(sc->superio=2Eserial[1], data << 2);
->> +        break;
->>     default:
->>         qemu_log_mask(LOG_UNIMP,
->>                       "via_superio_cfg: unimplemented register 0x%x\n",=
- idx);
->> @@ -395,9 +428,14 @@ static void vt82c686b_superio_reset(DeviceState *d=
-ev)
->>     /* Device ID */
->>     vt82c686b_superio_cfg_write(s, 0, 0xe0, 1);
->>     vt82c686b_superio_cfg_write(s, 1, 0x3c, 1);
->> -    /* Function select - all disabled */
->> +    /*
->> +     * Function select - only serial enabled
->> +     * Fuloong 2e's rescue-yl prints to the serial console w/o enablin=
-g it=2E This
->> +     * suggests that the serial ports are enabled by default, so overr=
-ide the
->> +     * datasheet=2E
->> +     */
->>     vt82c686b_superio_cfg_write(s, 0, 0xe2, 1);
->> -    vt82c686b_superio_cfg_write(s, 1, 0x03, 1);
->> +    vt82c686b_superio_cfg_write(s, 1, 0x0f, 1);
->>     /* Floppy ctrl base addr 0x3f0-7 */
->>     vt82c686b_superio_cfg_write(s, 0, 0xe3, 1);
->>     vt82c686b_superio_cfg_write(s, 1, 0xfc, 1);
->> @@ -465,6 +503,21 @@ static void vt8231_superio_cfg_write(void *opaque,=
- hwaddr addr,
->>     case 0xfd:
->>         /* ignore write to read only registers */
->>         return;
->> +    case 0xf2:
->> +        data &=3D 0x17;
->> +        via_superio_devices_enable(sc, data);
->> +        break;
->> +    case 0xf4:
->> +        data &=3D 0xfe;
->> +        isa_serial_set_iobase(sc->superio=2Eserial[0], data << 2);
->> +        break;
->> +    case 0xf6:
->> +        isa_parallel_set_iobase(sc->superio=2Eparallel[0], data << 2);
->> +        break;
->> +    case 0xf7:
->> +        data &=3D 0xfc;
->> +        isa_fdc_set_iobase(sc->superio=2Efloppy, data << 2);
->> +        break;
->>     default:
->>         qemu_log_mask(LOG_UNIMP,
->>                       "via_superio_cfg: unimplemented register 0x%x\n",=
- idx);
->> @@ -513,12 +566,6 @@ static void vt8231_superio_init(Object *obj)
->>     VIA_SUPERIO(obj)->io_ops =3D &vt8231_superio_cfg_ops;
->> }
+>>     Pegasos2MachineState *pm =3D PEGASOS2_MACHINE(machine);
+>> @@ -310,6 +319,12 @@ static void pegasos2_machine_reset(MachineState *m=
+achine, ShutdownCause reason)
 >>=20
->> -static uint16_t vt8231_superio_serial_iobase(ISASuperIODevice *sio,
->> -                                             uint8_t index)
->> -{
->> -        return 0x2f8; /* FIXME: This should be settable via registers =
-f2-f4 */
->> -}
->> -
->> static void vt8231_superio_class_init(ObjectClass *klass, void *data)
->> {
->>     DeviceClass *dc =3D DEVICE_CLASS(klass);
->> @@ -526,7 +573,6 @@ static void vt8231_superio_class_init(ObjectClass *=
-klass, void *data)
->>=20
->>     dc->reset =3D vt8231_superio_reset;
->>     sc->serial=2Ecount =3D 1;
->> -    sc->serial=2Eget_iobase =3D vt8231_superio_serial_iobase;
->>     sc->parallel=2Ecount =3D 1;
->>     sc->ide=2Ecount =3D 0; /* emulated by via-ide */
->>     sc->floppy=2Ecount =3D 1;
+>>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
+>>                               PCI_INTERRUPT_LINE, 2, 0x9);
+>> +    pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
+>> +                              0x50, 1, 0x6);
+>> +    pegasos2_superio_write(pm, 0xf4, 0xbe);
+>> +    pegasos2_superio_write(pm, 0xf6, 0xef);
+>> +    pegasos2_superio_write(pm, 0xf7, 0xfc);
+>> +    pegasos2_superio_write(pm, 0xf2, 0x14);
+>>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
+>>                               0x50, 1, 0x2);
+>>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
 >>=20
 
