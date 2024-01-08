@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE9C8268AE
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 08:35:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 943548268A2
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 08:34:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMk8A-0003B3-EJ; Mon, 08 Jan 2024 02:33:06 -0500
+	id 1rMk83-000333-Dr; Mon, 08 Jan 2024 02:32:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=P3fH=IS=redhat.com=clg@ozlabs.org>)
- id 1rMk80-000334-Qn
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:32:56 -0500
+ id 1rMk7x-00032e-IZ
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:32:53 -0500
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=P3fH=IS=redhat.com=clg@ozlabs.org>)
- id 1rMk7r-0004Yq-NO
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:32:54 -0500
+ id 1rMk7t-0004ZB-BZ
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:32:53 -0500
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T7m4B06hhz4wnw;
- Mon,  8 Jan 2024 18:32:42 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T7m4D3wwYz4wnx;
+ Mon,  8 Jan 2024 18:32:44 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T7m474y5Mz4wcc;
- Mon,  8 Jan 2024 18:32:39 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T7m4B3dM9z4wcc;
+ Mon,  8 Jan 2024 18:32:42 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -38,9 +38,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Eric Farman <farman@linux.ibm.com>
-Subject: [PULL 01/17] vfio/spapr: Extend VFIOIOMMUOps with a release handler
-Date: Mon,  8 Jan 2024 08:32:16 +0100
-Message-ID: <20240108073232.118228-2-clg@redhat.com>
+Subject: [PULL 02/17] vfio/container: Introduce vfio_legacy_setup() for
+ further cleanups
+Date: Mon,  8 Jan 2024 08:32:17 +0100
+Message-ID: <20240108073232.118228-3-clg@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108073232.118228-1-clg@redhat.com>
 References: <20240108073232.118228-1-clg@redhat.com>
@@ -71,114 +72,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows to abstract a bit more the sPAPR IOMMU support in the
-legacy IOMMU backend.
+This will help subsequent patches to unify the initialization of type1
+and sPAPR IOMMU backends.
 
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Tested-by: Eric Farman <farman@linux.ibm.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-container-base.h |  1 +
- hw/vfio/container.c                   | 10 +++-----
- hw/vfio/spapr.c                       | 35 +++++++++++++++------------
- 3 files changed, 24 insertions(+), 22 deletions(-)
+ hw/vfio/container.c | 63 +++++++++++++++++++++++++--------------------
+ 1 file changed, 35 insertions(+), 28 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index 2ae297ccda93fd97986c852a8329b390fa1ab91f..5c9594b6c77681e5593236e711e7e391e5f2bdff 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -117,5 +117,6 @@ struct VFIOIOMMUOps {
-                       Error **errp);
-     void (*del_window)(VFIOContainerBase *bcontainer,
-                        MemoryRegionSection *section);
-+    void (*release)(VFIOContainerBase *bcontainer);
- };
- #endif /* HW_VFIO_VFIO_CONTAINER_BASE_H */
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index b22feb8ded0a0d9ed98d6e206b78c0c6e2554d5c..1e77a2929e90ed1d2ee84062549c477ae651c5a8 100644
+index 1e77a2929e90ed1d2ee84062549c477ae651c5a8..afcfe8048805c58291d1104ff0ef20bdc457f99c 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -632,9 +632,8 @@ listener_release_exit:
-     QLIST_REMOVE(bcontainer, next);
-     vfio_kvm_device_del_group(group);
-     memory_listener_unregister(&bcontainer->listener);
--    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU ||
--        container->iommu_type == VFIO_SPAPR_TCE_IOMMU) {
--        vfio_spapr_container_deinit(container);
-+    if (bcontainer->ops->release) {
-+        bcontainer->ops->release(bcontainer);
-     }
- 
- enable_discards_exit:
-@@ -667,9 +666,8 @@ static void vfio_disconnect_container(VFIOGroup *group)
-      */
-     if (QLIST_EMPTY(&container->group_list)) {
-         memory_listener_unregister(&bcontainer->listener);
--        if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU ||
--            container->iommu_type == VFIO_SPAPR_TCE_IOMMU) {
--            vfio_spapr_container_deinit(container);
-+        if (bcontainer->ops->release) {
-+            bcontainer->ops->release(bcontainer);
-         }
-     }
- 
-diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-index 5c6426e6973bec606667ebcaca5b0585b184a214..44617dfc6b5f1a2a3a1c37436b76042aebda8b63 100644
---- a/hw/vfio/spapr.c
-+++ b/hw/vfio/spapr.c
-@@ -440,6 +440,24 @@ vfio_spapr_container_del_section_window(VFIOContainerBase *bcontainer,
+@@ -474,6 +474,35 @@ static void vfio_get_iommu_info_migration(VFIOContainer *container,
      }
  }
  
-+static void vfio_spapr_container_release(VFIOContainerBase *bcontainer)
++static int vfio_legacy_setup(VFIOContainerBase *bcontainer, Error **errp)
 +{
 +    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
 +                                            bcontainer);
-+    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
-+                                                  container);
-+    VFIOHostDMAWindow *hostwin, *next;
++    g_autofree struct vfio_iommu_type1_info *info = NULL;
++    int ret;
 +
-+    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
-+        memory_listener_unregister(&scontainer->prereg_listener);
++    ret = vfio_get_iommu_info(container, &info);
++    if (ret) {
++        error_setg_errno(errp, -ret, "Failed to get VFIO IOMMU info");
++        return ret;
 +    }
-+    QLIST_FOREACH_SAFE(hostwin, &scontainer->hostwin_list, hostwin_next,
-+                       next) {
-+        QLIST_REMOVE(hostwin, hostwin_next);
-+        g_free(hostwin);
++
++    if (info->flags & VFIO_IOMMU_INFO_PGSIZES) {
++        bcontainer->pgsizes = info->iova_pgsizes;
++    } else {
++        bcontainer->pgsizes = qemu_real_host_page_size();
 +    }
++
++    if (!vfio_get_info_dma_avail(info, &bcontainer->dma_max_mappings)) {
++        bcontainer->dma_max_mappings = 65535;
++    }
++
++    vfio_get_info_iova_range(info, bcontainer);
++
++    vfio_get_iommu_info_migration(container, info);
++    return 0;
 +}
 +
- static VFIOIOMMUOps vfio_iommu_spapr_ops;
- 
- static void setup_spapr_ops(VFIOContainerBase *bcontainer)
-@@ -447,6 +465,7 @@ static void setup_spapr_ops(VFIOContainerBase *bcontainer)
-     vfio_iommu_spapr_ops = *bcontainer->ops;
-     vfio_iommu_spapr_ops.add_window = vfio_spapr_container_add_section_window;
-     vfio_iommu_spapr_ops.del_window = vfio_spapr_container_del_section_window;
-+    vfio_iommu_spapr_ops.release = vfio_spapr_container_release;
-     bcontainer->ops = &vfio_iommu_spapr_ops;
- }
- 
-@@ -527,19 +546,3 @@ listener_unregister_exit:
+ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+                                   Error **errp)
+ {
+@@ -570,40 +599,18 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+     switch (container->iommu_type) {
+     case VFIO_TYPE1v2_IOMMU:
+     case VFIO_TYPE1_IOMMU:
+-    {
+-        struct vfio_iommu_type1_info *info;
+-
+-        ret = vfio_get_iommu_info(container, &info);
+-        if (ret) {
+-            error_setg_errno(errp, -ret, "Failed to get VFIO IOMMU info");
+-            goto enable_discards_exit;
+-        }
+-
+-        if (info->flags & VFIO_IOMMU_INFO_PGSIZES) {
+-            bcontainer->pgsizes = info->iova_pgsizes;
+-        } else {
+-            bcontainer->pgsizes = qemu_real_host_page_size();
+-        }
+-
+-        if (!vfio_get_info_dma_avail(info, &bcontainer->dma_max_mappings)) {
+-            bcontainer->dma_max_mappings = 65535;
+-        }
+-
+-        vfio_get_info_iova_range(info, bcontainer);
+-
+-        vfio_get_iommu_info_migration(container, info);
+-        g_free(info);
++        ret = vfio_legacy_setup(bcontainer, errp);
+         break;
+-    }
+     case VFIO_SPAPR_TCE_v2_IOMMU:
+     case VFIO_SPAPR_TCE_IOMMU:
+-    {
+         ret = vfio_spapr_container_init(container, errp);
+-        if (ret) {
+-            goto enable_discards_exit;
+-        }
+         break;
++    default:
++        g_assert_not_reached();
      }
-     return ret;
- }
--
--void vfio_spapr_container_deinit(VFIOContainer *container)
--{
--    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
--                                                  container);
--    VFIOHostDMAWindow *hostwin, *next;
--
--    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
--        memory_listener_unregister(&scontainer->prereg_listener);
--    }
--    QLIST_FOREACH_SAFE(hostwin, &scontainer->hostwin_list, hostwin_next,
--                       next) {
--        QLIST_REMOVE(hostwin, hostwin_next);
--        g_free(hostwin);
--    }
--}
++
++    if (ret) {
++        goto enable_discards_exit;
+     }
+ 
+     vfio_kvm_device_add_group(group);
 -- 
 2.43.0
 
