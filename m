@@ -2,88 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A16826FB2
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 14:27:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B5F82707D
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 15:00:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMper-0003w3-R9; Mon, 08 Jan 2024 08:27:13 -0500
+	id 1rMq9q-0002rC-1E; Mon, 08 Jan 2024 08:59:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rMpep-0003vg-9U
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 08:27:11 -0500
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rMpen-0006IZ-KQ
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 08:27:11 -0500
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a2a1a584e8bso152105166b.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 05:27:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704720428; x=1705325228; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=1/S7NO6UwoWL1rC7ZAoUavDZDgBVHGYlMv41dSqoUZ0=;
- b=BO8Z8JviOKxj9vcq2YFyie3mITbBvsCz9WwoH7m5NxoQqTFF7OfDt2rJJU++av1X+S
- 6OUNIVnQFi4eAlFY7kbBFoA45Ud25JEDLODqNXj75MBUB6smZukNPdxcV9XBhO5BMeym
- neidDEhLd4T7LeqkjvKoLJna54hL3V5jAw016fvkvBgEzxofMGozB9NedUROVaNAb44O
- RK4AwbB4K0HGs4d/xlO8Q9UZBE3m3KHhuFdIux65Q1Uwe8JE6AH48YuMMoeYga6HBoTc
- xWab/l7VzBk7tF9loDF+Vsqamns8dP4jR20x+3iK9rSh1j314TjzK98W8Tohs5zLiZ+Y
- Blsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704720428; x=1705325228;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1/S7NO6UwoWL1rC7ZAoUavDZDgBVHGYlMv41dSqoUZ0=;
- b=mnSyHUWiQltOCqZH8wTFCIJc0fFp2uUig9Nhu1AnYGt4usKCRZPxxuLucY/gLkd7xL
- 2rJ8+nunmOP1iL4PA9Ap0LNGZhc9dH/0PWxjlBNvsKJeST3mJw4x4faAHnh6XvbpFhO4
- 8fWIBhPGpOgPzCXEMfInZ1P+9SZyCmtwD5J4s3oix1Sj8n8aG3nDx/Do3luGjcmfWkTv
- 4ulST7kXgeavEwf/IUQ0tZ13jm2CzvllfRHivYER7ukMb33Bc0UumjCxF8cfyLUIOxxk
- 5gKHQl+V0fIflWWNvaQTofYJzr96uVhPXOg8YGp9odUEyqs1IBFo61VZTp69QqbdEsAp
- 1MUA==
-X-Gm-Message-State: AOJu0Yy0ViaZZihP3T5qu39uavlXDYUgoSH8TBZR2n9JPNI7QVbfAcmd
- AuoxQ1SlZtkLezXyyZjUrj4G8Rhin9EOog==
-X-Google-Smtp-Source: AGHT+IE4hdAYNNXGz838FbeVHSo3EP6Mc17m6k6mIhwtiI2r+ErfogEGUsJRVovhow1p04sMb9OJbA==
-X-Received: by 2002:a17:906:f8c8:b0:a28:fbf4:5944 with SMTP id
- lh8-20020a170906f8c800b00a28fbf45944mr1540863ejb.104.1704720428024; 
- Mon, 08 Jan 2024 05:27:08 -0800 (PST)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- e5-20020a1709061e8500b00a19b7362dcfsm3909657ejj.139.2024.01.08.05.27.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Jan 2024 05:27:07 -0800 (PST)
-Date: Mon, 8 Jan 2024 14:27:06 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Conor Dooley <conor@kernel.org>, qemu-riscv@nongnu.org, 
- Conor Dooley <conor.dooley@microchip.com>,
- Alistair Francis <Alistair.Francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Subject: Re: Re: [PATCH v2] riscv: support new isa extension detection
- devicetree properties
-Message-ID: <20240108-efa3f83dcd3997dc0af458d7@orel>
-References: <20231208-sponge-thickness-c0e9511b1baf@spud>
- <CAKmqyKNmepRv7i43U-2V2LYzkQB1bG9WWvS1PUJdrF3ynX5NmQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rMq9n-0002po-Gc; Mon, 08 Jan 2024 08:59:11 -0500
+Received: from zproxy2.enst.fr ([137.194.2.221])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rMq9i-00053s-LJ; Mon, 08 Jan 2024 08:59:11 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy2.enst.fr (Postfix) with ESMTP id 6EB3C806EB;
+ Mon,  8 Jan 2024 14:58:59 +0100 (CET)
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id AGI5SoaeByTy; Mon,  8 Jan 2024 14:58:58 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy2.enst.fr (Postfix) with ESMTP id 9294780705;
+ Mon,  8 Jan 2024 14:58:58 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy2.enst.fr 9294780705
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1704722338;
+ bh=B0/YhQWcQBx7EmShbzqiqD9jFUU6McRZiKkR9+V2i9s=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=4I3ED294YGPMOfVz/96iJJDA94pPb2ytjD4ZQdUw9PurnS4smSwRDNVn2QXFHki3g
+ 4KCkEhY1azW+jz3XWzirYQND29XW4CySUj3/1aOnhkvtPq2/8QC5D6VgWg31l75652
+ 3Cct5okQRMkjcWKri2VPER7lk3nCJV5ALR/mN2JE=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id en5WBTNRUayr; Mon,  8 Jan 2024 14:58:58 +0100 (CET)
+Received: from inesv-Inspiron-3501.enst.fr (unknown
+ [IPv6:2a04:8ec0:0:240:f2a4:b1b:1eac:479c])
+ by zproxy2.enst.fr (Postfix) with ESMTPSA id 4D0B5806EB;
+ Mon,  8 Jan 2024 14:58:58 +0100 (CET)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Cc: Samuel Tardieu <sam@rfc1149.net>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Alexandre Iooss <erdnaxe@crans.org>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alistair Francis <alistair@alistair23.me>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v6 0/2] Add minimal support for the B-L475E-IOT01A board
+Date: Mon,  8 Jan 2024 14:58:27 +0100
+Message-ID: <20240108135849.351719-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKmqyKNmepRv7i43U-2V2LYzkQB1bG9WWvS1PUJdrF3ynX5NmQ@mail.gmail.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x631.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=137.194.2.221;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy2.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,26 +81,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 18, 2023 at 02:37:55PM +1000, Alistair Francis wrote:
-...
-> > +void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename)
-> > +{
-> > +    const size_t maxlen = sizeof("rv128i");
-> > +    g_autofree char *isa_base = g_new(char, maxlen);
-> > +    g_autofree char *riscv_isa;
-> > +    char **isa_extensions;
-> > +    int count = 0;
-> > +
-> > +    riscv_isa = riscv_isa_string(cpu);
-> > +    qemu_fdt_setprop_string(fdt, nodename, "riscv,isa", riscv_isa);
-> > +
-> > +    snprintf(isa_base, maxlen, "rv%di", TARGET_LONG_BITS);
-> 
-> This should dynamically come from misa_mxl_max not the compile time target
->
+This patch adds a new STM32L4x5 SoC, it is necessary to add support for
+the B-L475E-IOT01A board.
+The implementation is derived from the STM32F405 SoC and NetduinoPlus2
+board.
+The implementation contains no peripherals, only memory regions are
+implemented.
 
-Need to also fix riscv_isa_string()
+Changes from v5 to v6:
+- in `stm32l4x5_soc.c`: use boolean returned by `memory_region_init_rom()=
+`
+and `memory_region_init_ram()` instead of checking `errp`
 
-Thanks,
-drew
+Changes from v4 to v5:
+- in `b-l475e-iot01a.c`: adding missing machine/SoC parentship relation
+- in `b-l475e-iot01a.c`: renaming `SYSCLK_FRQ` macro
+to `MAIN_SYSCLK_FREQ_HZ`
+- in `b-l475e-iot01a.c`: fixing coding style issue
+- in `stm32l4x5_soc.h`: removing unused imports
+
+Changes from v3 to v4:
+- adding a documentation file for the B-L475E-IOT01A board
+
+Changes from v1 to v3:
+- changing the MIT license to GPL.
+
+Tested-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+
+In=C3=A8s Varhol (2):
+  hw/arm: Add minimal support for the STM32L4x5 SoC
+  hw/arm: Add minimal support for the B-L475E-IOT01A board
+
+ MAINTAINERS                             |  15 ++
+ configs/devices/arm-softmmu/default.mak |   1 +
+ docs/system/arm/b-l475e-iot01a.rst      |  46 ++++
+ docs/system/arm/stm32.rst               |   6 +-
+ docs/system/target-arm.rst              |   1 +
+ hw/arm/Kconfig                          |  11 +
+ hw/arm/b-l475e-iot01a.c                 |  72 +++++++
+ hw/arm/meson.build                      |   2 +
+ hw/arm/stm32l4x5_soc.c                  | 265 ++++++++++++++++++++++++
+ include/hw/arm/stm32l4x5_soc.h          |  57 +++++
+ 10 files changed, 474 insertions(+), 2 deletions(-)
+ create mode 100644 docs/system/arm/b-l475e-iot01a.rst
+ create mode 100644 hw/arm/b-l475e-iot01a.c
+ create mode 100644 hw/arm/stm32l4x5_soc.c
+ create mode 100644 include/hw/arm/stm32l4x5_soc.h
+
+--=20
+2.43.0
+
 
