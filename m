@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF9F82670A
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 02:13:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3BC826717
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 02:23:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMeBE-0004LC-Bn; Sun, 07 Jan 2024 20:11:52 -0500
+	id 1rMeLG-0007KC-6s; Sun, 07 Jan 2024 20:22:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1rMeBC-0004KR-7k
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 20:11:50 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1rMeLD-0007Jj-G3
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 20:22:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1rMeBA-0004gf-Gb
- for qemu-devel@nongnu.org; Sun, 07 Jan 2024 20:11:49 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1rMeLB-0007G1-Mg
+ for qemu-devel@nongnu.org; Sun, 07 Jan 2024 20:22:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704676306;
+ s=mimecast20190719; t=1704676928;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=o7cD/mjBrtIvD3wAR5CMXxLi16Tcka6XxLuFIx3iJzA=;
- b=W2ZSa8dLo+XKeJOva8HPZDfFOrcjVee9XVwQkbikf96QJ0cQno1bVd+INgQ5iXhFngmGiE
- 8CB6IvYrQolXVzuUw0p435sEafH+fq33HSNe9ahP/H1u+fmCd5uQfRzNB9r2Mhqdtd/wb6
- o9I+PgK2sZqFI+wFlp4TR5rKsQavAQc=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ksm2/s0Vd75lDfEQF9n6o4uocnJVvUszCCEf/csOooE=;
+ b=XzRPD6JuicGqvyMX+PkkBWltoRy2dcLJXcgz2nx9Nlwd/0fFbBehjukhaAuIjuaiEtZr6S
+ kvBY0AUdnRBSgOaEBeo2hlG9yKSgFvZmSyBKlq+Mh46Aw3hRCi/4kBiOSXBTJPP3Si0mmV
+ YA90ufs0rFkdzpXYmp+GQLbySV5LrE4=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-iWkNkGeROn6EyBEm7VwRSA-1; Sun, 07 Jan 2024 20:11:44 -0500
-X-MC-Unique: iWkNkGeROn6EyBEm7VwRSA-1
-Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-6d9ac6ecb54so399924b3a.3
- for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 17:11:44 -0800 (PST)
+ us-mta-639-ivGKG02cOTO23o0zKyJCWA-1; Sun, 07 Jan 2024 20:22:06 -0500
+X-MC-Unique: ivGKG02cOTO23o0zKyJCWA-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-28be574c1c4so1719868a91.1
+ for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 17:22:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704676304; x=1705281104;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1704676926; x=1705281726;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o7cD/mjBrtIvD3wAR5CMXxLi16Tcka6XxLuFIx3iJzA=;
- b=vGFoUg1MohUmeoCcoU0Nh7kjRWLqBMOYw+nW0trDz5h1wgt1WBh00a5SyEmXNc75Nc
- vrj0Use+F5ju9ymdUncXdoYmloTsjQaLE+FuL8pORRv6Es5FgYHBJM/qYStYrtK6hLhQ
- 660y+QLuKxHbBCsFfw97GGrLuq3g0v2YYqiX+78fJSuYMo5EPXjYlF9TV8be5g6MK5u9
- FLClFZoiN1DbpxE4IbX90s74seHnGiSqkl2GFftXEFwotStPvA3mm4sDOctP/aP/kfuB
- 9o+Qdcyz4SNfr1+8M5YqhWxQRV/hfC/TCXfAk6P9EZtlbztpLK7rePlfCIX5znLh0Ygh
- BDyg==
-X-Gm-Message-State: AOJu0Yx9J3kdgpT8SbwjyylVvRrWawip/hhCdbGhb+ddqck1mmoSsyyN
- pnKkN76gGz2ZLcYLLy76RqgGMMCJr4D9b8G4Zo5Gj90fy5boE2AsFVFFkRKmj+8YUtiDTrZ5RtO
- 574/1npN+SBsTjLUnc2JR0I0=
-X-Received: by 2002:a05:6a20:320e:b0:199:8b1c:7feb with SMTP id
- hl14-20020a056a20320e00b001998b1c7febmr385915pzc.36.1704676303377; 
- Sun, 07 Jan 2024 17:11:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHsCPs3jPOEWyiUCW/Xb/4rKjxrCUa8L8jHcn5FQdrEb5KkzMLdESyv71oWh3BC0BHanDloVg==
-X-Received: by 2002:a05:6a20:320e:b0:199:8b1c:7feb with SMTP id
- hl14-20020a056a20320e00b001998b1c7febmr385892pzc.36.1704676303060; 
- Sun, 07 Jan 2024 17:11:43 -0800 (PST)
+ bh=ksm2/s0Vd75lDfEQF9n6o4uocnJVvUszCCEf/csOooE=;
+ b=KmzBRx7WXka7wHX4busdfbno+M6WiNuHxEmZmP7QFXq66gU7JFQ+0GOQCyyaLD5/5+
+ yko4Iiqki3OREZhK2TfNxKl2BCrlzwN0IgHbQ/Gl/4zpY7DoeQLDvFwJ32i4EQ2FX7wp
+ MRmIsWoyZ3Kb0H2zikgeEXxB/03iZmrSSBUGbFWzLIluILriMjFtXKyVI4a61T/H8YKz
+ O1qy6iet0OB8fb7geJIqtGeazqTIgHc1RqLXqKZ5Uk3qYLGu8hSz+vZ4JWIYFS2NBD2q
+ t1JH/zvw2cVuV43Zr3WpxACFdluDGLSZTzOqq/IQ85r7Yd4nj91NHaWd8hmYls9YwF6V
+ qbdw==
+X-Gm-Message-State: AOJu0Yw9qL85S4QqdehWqvdosXk+iR+ChWAdsWIIOFZPfbTpMNCGaD74
+ MzJCroyqronJ6znpvSddNlGVAjsSNl1u5aPgZsrhsgeIrJPPhc4BlQI0RIXtA7aEW6L5XId6kQ1
+ Q8Z86OYYyJ43v0aUlhuf6lO0=
+X-Received: by 2002:a17:902:ecc1:b0:1d4:bc19:d7cc with SMTP id
+ a1-20020a170902ecc100b001d4bc19d7ccmr4092417plh.116.1704676925738; 
+ Sun, 07 Jan 2024 17:22:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG/M7WU+9PQ44R81JuuCUJy+iYIfrf0/obxGkNl+UIPSbfhOijlmbuxVK9V8+ZqnV66NlMx7A==
+X-Received: by 2002:a17:902:ecc1:b0:1d4:bc19:d7cc with SMTP id
+ a1-20020a170902ecc100b001d4bc19d7ccmr4092391plh.116.1704676925407; 
+ Sun, 07 Jan 2024 17:22:05 -0800 (PST)
 Received: from [10.72.112.108] ([43.228.180.230])
  by smtp.gmail.com with ESMTPSA id
- p2-20020a170902bd0200b001d38cae83e9sm4984833pls.104.2024.01.07.17.11.34
+ w21-20020a170902d3d500b001d3f5cfa741sm4960557plb.283.2024.01.07.17.21.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 07 Jan 2024 17:11:42 -0800 (PST)
-Message-ID: <5b667637-2fdb-477e-84c4-9334d473892a@redhat.com>
-Date: Mon, 8 Jan 2024 11:11:30 +1000
+ Sun, 07 Jan 2024 17:22:04 -0800 (PST)
+Message-ID: <de2e49be-4bc1-4cf0-a3eb-4f67630c8009@redhat.com>
+Date: Mon, 8 Jan 2024 11:21:53 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/9] machine: Use error handling when CPU type is
- checked
+Subject: Re: [PATCH v9 3/9] machine: Improve is_cpu_type_supported()
+Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- armbru@redhat.com
+ qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
  b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, imammedo@redhat.com,
  kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
  rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
- vijai@behindbytes.com, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com, qemu-arm@nongnu.org
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, armbru@redhat.com,
+ wangyanan55@huawei.com, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
 References: <20231204004726.483558-1-gshan@redhat.com>
- <20231204004726.483558-2-gshan@redhat.com>
- <0bbd5bff-2f38-4625-9e0b-12245f512c01@linaro.org>
-Content-Language: en-US
+ <20231204004726.483558-4-gshan@redhat.com>
+ <3ef0442a-800c-47ac-a685-2f31b0cb136c@linaro.org>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <0bbd5bff-2f38-4625-9e0b-12245f512c01@linaro.org>
+In-Reply-To: <3ef0442a-800c-47ac-a685-2f31b0cb136c@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
@@ -110,78 +109,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/5/24 21:00, Philippe Mathieu-Daudé wrote:
+On 1/6/24 08:09, Philippe Mathieu-Daudé wrote:
 > On 4/12/23 01:47, Gavin Shan wrote:
->> Functions that use an Error **errp parameter to return errors should
->> not also report them to the user, because reporting is the caller's
->> job. The principle is violated by machine_run_board_init() because
->> it calls error_report(), error_printf(), and exit(1) when the machine
->> doesn't support the requested CPU type.
+>> It's no sense to check the CPU type when mc->valid_cpu_types[0] is
+>> NULL, which is a program error. Raise an assert on this.
 >>
->> Clean this up by using error_setg() and error_append_hint() instead.
->> No functional change, as the only caller passes &error_fatal.
+>> A precise hint for the error message is given when mc->valid_cpu_types[0]
+>> is the only valid entry. Besides, enumeration on mc->valid_cpu_types[0]
+>> when we have mutiple valid entries there is avoided to increase the code
+>> readability, as suggested by Philippe Mathieu-Daudé.
 >>
->> Suggested-by: Igor Mammedov <imammedo@redhat.com>
+>> Besides, @cc comes from machine->cpu_type or mc->default_cpu_type. For
+>> the later case, it can be NULL and it's also a program error. We should
+>> use assert() in this case.
+>>
 >> Signed-off-by: Gavin Shan <gshan@redhat.com>
->> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+>> v9: assert(mc->valid_cpu_types[0] != NULL)                   (Phil)
+>>      assert(cc != NULL);                                      (Phil)
 >> ---
->> v9: Improved change log                                  (Markus)
->> ---
->>   hw/core/machine.c | 13 +++++++------
->>   1 file changed, 7 insertions(+), 6 deletions(-)
+>>   hw/core/machine.c | 20 ++++++++++++++------
+>>   1 file changed, 14 insertions(+), 6 deletions(-)
 >>
 >> diff --git a/hw/core/machine.c b/hw/core/machine.c
->> index 0c17398141..bde7f4af6d 100644
+>> index 1797e002f9..4ae9aaee8e 100644
 >> --- a/hw/core/machine.c
 >> +++ b/hw/core/machine.c
->> @@ -1466,15 +1466,16 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
->>           if (!machine_class->valid_cpu_types[i]) {
->>               /* The user specified CPU is not valid */
->> -            error_report("Invalid CPU type: %s", machine->cpu_type);
->> -            error_printf("The valid types are: %s",
->> -                         machine_class->valid_cpu_types[0]);
->> +            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
->> +            error_append_hint(errp, "The valid types are: %s",
->> +                              machine_class->valid_cpu_types[0]);
->>               for (i = 1; machine_class->valid_cpu_types[i]; i++) {
->> -                error_printf(", %s", machine_class->valid_cpu_types[i]);
->> +                error_append_hint(errp, ", %s",
->> +                                  machine_class->valid_cpu_types[i]);
+>> @@ -1400,6 +1400,7 @@ static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
+>>        * type is provided through '-cpu' option.
+>>        */
+>>       if (mc->valid_cpu_types && machine->cpu_type) {
+>> +        assert(mc->valid_cpu_types[0] != NULL);
+>>           for (i = 0; mc->valid_cpu_types[i]; i++) {
+>>               if (object_class_dynamic_cast(oc, mc->valid_cpu_types[i])) {
+>>                   break;
+>> @@ -1409,20 +1410,27 @@ static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
+>>           /* The user specified CPU type isn't valid */
+>>           if (!mc->valid_cpu_types[i]) {
+>>               error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
+>> -            error_append_hint(errp, "The valid types are: %s",
+>> -                              mc->valid_cpu_types[0]);
+>> -            for (i = 1; mc->valid_cpu_types[i]; i++) {
+>> -                error_append_hint(errp, ", %s", mc->valid_cpu_types[i]);
+>> +            if (!mc->valid_cpu_types[1]) {
+>> +                error_append_hint(errp, "The only valid type is: %s\n",
+>> +                                  mc->valid_cpu_types[0]);
+>> +            } else {
+>> +                error_append_hint(errp, "The valid types are: ");
+>> +                for (i = 0; mc->valid_cpu_types[i]; i++) {
+>> +                    error_append_hint(errp, "%s%s",
+>> +                                      mc->valid_cpu_types[i],
+>> +                                      mc->valid_cpu_types[i + 1] ? ", " : "");
+>> +                }
+>> +                error_append_hint(errp, "\n");
 >>               }
->> -            error_printf("\n");
->> -            exit(1);
->> +            error_append_hint(&errp, "\n");
+>> -            error_append_hint(errp, "\n");
+>>               return false;
+>>           }
+>>       }
+>>       /* Check if CPU type is deprecated and warn if so */
+>>       cc = CPU_CLASS(oc);
+>> -    if (cc && cc->deprecation_note) {
+>> +    assert(cc != NULL);
+>> +    if (cc->deprecation_note) {
+>>           warn_report("CPU model %s is deprecated -- %s",
+>>                       machine->cpu_type, cc->deprecation_note);
+>>       }
 > 
-> This doesn't build:
+> Since we were getting:
 > 
-> hw/core/machine.c:1488:31: error: incompatible pointer types passing 'Error ***' (aka 'struct Error ***') to parameter of type 'Error *const *' (aka 'struct Error *const *'); remove & [-Werror,-Wincompatible-pointer-types]
->              error_append_hint(&errp, "\n");
->                                ^~~~~
+> $ qemu-system-s390x -M none
+> QEMU 8.2.50 monitor - type 'help' for more information
+> qemu-system-s390x: ../../hw/core/machine.c:1444: _Bool is_cpu_type_supported(const MachineState *, Error **): Assertion `cc != NULL' failed.
+> Aborted (core dumped)
+> 
+> I added a check on mc->valid_cpu_types before calling
+> is_cpu_type_supported() in the previous patch. See commit acbadc5a29.
 > 
 
-Yes, &errp should have been errp. The problematic code was carried from
-previous revisions and has been corrected by PATCH[2/9]. It's how I missed
-the building error. Thanks for fixing it up!
+Phil, thanks for fixing it up and it looks good to me.
 
 Thanks,
 Gavin
-
->> +            return;
->>           }
->>       }
-> 
-> Squashing:
-> -- >8 --
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index 021044aaaf..1898d1d1d7 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -1487,3 +1487,3 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
-> 
-> -            error_append_hint(&errp, "\n");
-> +            error_append_hint(errp, "\n");
->               return;
-> ---
-> 
 
 
