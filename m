@@ -2,76 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09033827208
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:01:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96787827263
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:12:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMr80-0006CM-6H; Mon, 08 Jan 2024 10:01:25 -0500
+	id 1rMrIB-0002nJ-8y; Mon, 08 Jan 2024 10:11:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMr7l-0006Bp-PV
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:01:11 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMr7j-0002tE-1F
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:01:09 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-556c3f0d6c5so2207581a12.2
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 07:01:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704726065; x=1705330865; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=xjuJ8p64YYyiyxB8HtYFESOS8y/RlKCSYwiAqrSM4ZQ=;
- b=oYPQYYDcOXsTRWn3enElgBHjISZ7allLnbHvUWgCOZN/HGISDDgyQD5vXhzQ4BCdaG
- V+a+0XE8SPBqhzfh1cI6rxp+xdgcLCsNMRm3A/17ZaBs2ZbsedPrKKIUYOdB29R36Bjy
- pGmcZRwR+TI8mdvfblJ8hm3/MSZRU+IzmDivdpfJt26PqAK9FoArD/xG5b6QW58V8m4K
- n6cCbvufzosM2nKTLEJb2AJNtzAowUYNz3e8IRbCpzKRxDQfop8Nw+HKv5YZaNew0iRU
- UR3lohyJ5B/+FsSeY1TmDlqzO1/mTEQm5FhBV/rUbZYdf3ozn//7329umtPnvayNlOnO
- JJmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704726065; x=1705330865;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xjuJ8p64YYyiyxB8HtYFESOS8y/RlKCSYwiAqrSM4ZQ=;
- b=wbRc5cj1chd0C7Tb4+dJKdtVp3qb5rJbQ78IZhL0ILeX4djqqByL3IAFmwhD06pV8c
- NJCQb/4NWMH7G343ZBYMZyc3p68guSEo6mM5tfBjmSD40w+fNef9lQMcLm4hiSGTAoyO
- LzF6lG8i/0e6SiwUiQOdTZG3/OQRgo3R2khQEw9Lc/XCOdX0Qmrid2DHubXZYWjTS+XD
- HoLcuvWDYebwr4Glq2PCUHSg9SHkkfojTj1Anq9MzP+U6yYIknoag/a+BXkDrrQdqqaM
- dNXH9sGripOQYbcUDTtty4hN1T6yvGg3jJ8sXYH+Nh0tbYpE2NTlTnQRFPJdvUjaBvLs
- qRgw==
-X-Gm-Message-State: AOJu0YyPF05liXi+S5KI64Tzs0LT/P1gkKf6CLdWaeIkmT3aOLkHu945
- lViVUAV3BqEz2TVwjHYRmXN9KN0K+ROrVnnNi622uJQHgai29A==
-X-Google-Smtp-Source: AGHT+IG+oR/BcTzPdlZKFcij2b6iXoz4vVgzWp/hI7hxnQxjGDOkUR4eiIdYXJT2hsWYycUv3/K/SzqYpoVNB1KMuFs=
-X-Received: by 2002:a50:cd90:0:b0:557:e92:155f with SMTP id
- p16-20020a50cd90000000b005570e92155fmr1663909edi.71.1704726065390; Mon, 08
- Jan 2024 07:01:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <mark.kanda@oracle.com>)
+ id 1rMrI9-0002cp-7C
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:11:53 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.kanda@oracle.com>)
+ id 1rMrI7-0008Fb-Dw
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:11:52 -0500
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 408F5lF7025348; Mon, 8 Jan 2024 15:11:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2023-11-20; bh=ssNkE2jwL1n+Oc8S03amv9deLHH3x/TAijwSrUwjmak=;
+ b=oKYRq0UyfwewU+DbspSmdwkQ/lWjWsGdYgM9exMkgtv+IY1z8QzYxkl3hTNt4910Y+GC
+ DRqr8pv5cY1e8ec6uEj7nt1/wb4INu2zdYz+mQ2lfbx+Fm/zFC7bDenKo8WzUFXNx+VE
+ hf8YFixndalYj8mjYmpSs4y4JjNOK3RqSrSUJDjVXRca5jWbmB70XXrZ+Wy5PTps/cC2
+ Cd2vwOWBuvRoH5vd7r1ah6lY243hvyPOdg1UF30DSqE6iuoYw3MDnM6SNlQP8V6jW9/S
+ 8Xs9KWI4xBj0ptOAH3fatG8C74Da5CGr496g4izRTYzYnGQMEKssmmMzDwiXnBNdDyVc yQ== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vgkcx80gr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 08 Jan 2024 15:11:49 +0000
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 408EXZ0p035025; Mon, 8 Jan 2024 15:10:34 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3vfuu316dg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 08 Jan 2024 15:10:34 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 408FAX6K024665;
+ Mon, 8 Jan 2024 15:10:33 GMT
+Received: from linux-3.us.oracle.com (dhcp-10-154-155-225.vpn.oracle.com
+ [10.154.155.225])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 3vfuu316bm-1; Mon, 08 Jan 2024 15:10:33 +0000
+From: Mark Kanda <mark.kanda@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: david@redhat.com, pbonzini@redhat.com, mark.kanda@oracle.com
+Subject: [PATCH v1 0/2] Initialize backend memory objects in parallel
+Date: Mon,  8 Jan 2024 09:10:39 -0600
+Message-Id: <20240108151041.529716-1-mark.kanda@oracle.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-References: <20231219213255.604535-1-nabihestefan@google.com>
- <20231219213255.604535-9-nabihestefan@google.com>
-In-Reply-To: <20231219213255.604535-9-nabihestefan@google.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 8 Jan 2024 15:00:54 +0000
-Message-ID: <CAFEAcA8awaf=fdPGk+YcV9zPjGNbhP0n=-L0p0VEwPe1U6tXRg@mail.gmail.com>
-Subject: Re: [PATCH v9 08/10] hw/net: GMAC Rx Implementation
-To: Nabih Estefan <nabihestefan@google.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
- wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com, 
- kwliu@nuvoton.com, tomer.maimon@nuvoton.com, Hila.Miranda-Kuzi@nuvoton.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-08_06,2024-01-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ phishscore=0 bulkscore=0
+ mlxscore=0 mlxlogscore=872 adultscore=0 malwarescore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401080130
+X-Proofpoint-GUID: 5mtgZUPh-BGxxoNC2imsgYX0gaHKkaEE
+X-Proofpoint-ORIG-GUID: 5mtgZUPh-BGxxoNC2imsgYX0gaHKkaEE
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=mark.kanda@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,44 +96,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 19 Dec 2023 at 21:33, Nabih Estefan <nabihestefan@google.com> wrote:
->
-> From: Nabih Estefan Diaz <nabihestefan@google.com>
->
-> - Implementation of Receive function for packets
-> - Implementation for reading and writing from and to descriptors in
->   memory for Rx
->
-> When RX starts, we need to flush the queued packets so that they
-> can be received by the GMAC device. Without this it won't work
-> with TAP NIC device.
->
-> When RX descriptor list is full, it returns a DMA_STATUS for software to handle it. But there's no way to indicate the software ha handled all RX descriptors and the whole pipeline stalls.
+QEMU initializes preallocated backend memory when parsing the corresponding
+objects from the command line. In certain scenarios, such as memory being
+preallocated across multiple numa nodes, this approach is not optimal due to
+the unnecessary serialization.
 
-Please make sure you line wrap commit messages at an
-appropriate line length.
+This series addresses this issue by initializing the backend memory objects in
+parallel.
 
-> We do something similar to NPCM7XX EMC to handle this case.
->
-> 1. Return packet size when RX descriptor is full, effectively dropping these packets in such a case.
-> 2. When software clears RX descriptor full bit, continue receiving further packets by flushing QEMU packet queue.
->
-> Signed-off-by: Hao Wu <wuhaotsh@google.com>
-> Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-> Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
-> ---
+Mark Kanda (2):
+  oslib-posix: refactor memory prealloc threads
+  oslib-posix: initialize backend memory objects in parallel
 
-> +    /* write frame part to memory */
-> +    if (dma_memory_write(&address_space_memory, (uint64_t) rx_buf_addr,
-> +                         *frame_ptr, to_transfer, MEMTXATTRS_UNSPECIFIED))
-> +    {
+ include/qemu/osdep.h |   6 ++
+ system/vl.c          |   2 +
+ util/oslib-posix.c   | 150 +++++++++++++++++++++++++++++--------------
+ util/oslib-win32.c   |   5 ++
+ 4 files changed, 116 insertions(+), 47 deletions(-)
 
-Our coding style says the open brace of an if goes on the same line,
-not on a line of its own.
+-- 
+2.39.3
 
-> +        return -1;
-> +    }
-
-thanks
--- PMM
 
