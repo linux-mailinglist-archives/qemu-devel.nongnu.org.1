@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E368271C7
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 15:48:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0F88271C8
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 15:48:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMqvN-0008Pp-Cr; Mon, 08 Jan 2024 09:48:21 -0500
+	id 1rMqvr-0000iK-HA; Mon, 08 Jan 2024 09:48:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMqv2-0008P7-Hf
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:48:01 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1rMqvo-0000WZ-W4
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:48:49 -0500
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMqv1-00057o-2s
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:48:00 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-556c60c3f9aso2301975a12.3
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 06:47:58 -0800 (PST)
+ id 1rMqvn-0005wu-7I
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:48:48 -0500
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2ccbf8cbf3aso23657831fa.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 06:48:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704725277; x=1705330077; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=h1zjyM5K94HNzD0G3uJzO/KMoQm+1Hqsn7WyA7Mglyo=;
- b=xqGEtCSZsQhF2AwhLthfObhgn3rN8D9xZSorGOcykc2VYt7Av+5rt2H52bkVhN2Nol
- DqrKEonl/AULVaBJZzmaaZbBv+6i5eSnwlin/4iozirxUyIuYzv+YyCuGaVYVhRhQTqV
- LOrG8Yq4M5MIzjvGFG+aQG5aHHm8+ThyYSNnZfsg4lNssN+DxnqJRcm30Uix9FgbJiOf
- XC7T/rIomu4oApdv5sAO+WJtLe+vrckMJDDQqi23Dxv5caGrcbfJZ4xy6VaOqvQIT4cY
- sKMJOcQE15bT7+wV5gk47ic7YF2/954yaaT4KRgnyq+O0SCYsXef0Uj37MOT5kGwh9hO
- TNlQ==
+ d=linaro.org; s=google; t=1704725325; x=1705330125; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3FspZaKQHG1i5Q/8nnciNdbHwWn9XktaWFfP7cDi+wU=;
+ b=wl7wKZ1oZYqLqEc8KFB4YF5/6CUYylkHjtkyCvS9jHQjUJPZN/Z4d6bMEyTGYO/Lz6
+ JH/4FBS1AK69JFbbdEGmQ+/IdDlEhk52h/1NdE4p6LbIEHLC9Dp8slCq4CtjdbiQM99D
+ DfgYNrqNQ8ui8TzRLL2ddjRRJ22cTuyd2A/cLNayacd/FML/GiD52AY4eSohEwLq2B/9
+ vm06wgw29KYZaSSFA3QfVaPaLn0Bk3IaKu5of0GCLM+1giZeNhNNNcngDG3ioedKMbS7
+ nSiS+yawXd3ss7dngGZaP9Vi3Aii6dqbcGj9QOedCLGA1U1l7bI9zOFo9CPBUggoyH1E
+ LPfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704725277; x=1705330077;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=h1zjyM5K94HNzD0G3uJzO/KMoQm+1Hqsn7WyA7Mglyo=;
- b=bj2CDs/hJyTaicdrHOBDL2qvNTpOiDBhW4VpwQslk2eFyDskZsDWfHsvH5r4k3acjF
- hFUN4+efz49ymHOc9l8u37JcTZuJoQ4YyIKxUN6IIodvi7Vw92BaahuduDqgudRtwWRj
- 3MCgbSaogeY8//MBCjVwjcdIPYfiDUmjtFy2DYjepP+/k91fHoTHE6EFRZEFZ5E1NErJ
- 89gCz2WjJB5hhVhE9TBbWM2EERbjuk2jgtpHe7SdzyWzDPHgaPsvUXaiCnh75Yug022+
- UzsoZK/oNB+Uv0U/c2yztI0+ror1vhUrDeDYVjDMru0hTWapcaBDIrF+VyoxuPBEvUr2
- FUdQ==
-X-Gm-Message-State: AOJu0Yyx2EUMS0jjQ0Aqvg5uR5d7HdogG4ctPAkfdLT0uK1RQFoBxUf3
- 5VC7vZp5WLdERPO6vLc/gflsosnci2tfiaAqOY2OHP1NyHOccg==
-X-Google-Smtp-Source: AGHT+IEKlkHlvLr16a5dlUGEqNkcLnbglcyX1UP7iaki/JyCs99xwy6AcYQujK2eoDd5pbS8nm4CzypQzag3sSZb7xs=
-X-Received: by 2002:a50:9fcd:0:b0:556:51a4:1426 with SMTP id
- c71-20020a509fcd000000b0055651a41426mr2862716edf.0.1704725277617; Mon, 08 Jan
- 2024 06:47:57 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704725325; x=1705330125;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3FspZaKQHG1i5Q/8nnciNdbHwWn9XktaWFfP7cDi+wU=;
+ b=XSa5QwC+4oxHLQgNacCgHD+1DJzhEJPEa2LHe80tEgpTFhs1SzUhUQUyacnFmzLDTA
+ Sl/IvQ0R6tghtTcjiyewykidfH9qFQ2OZnO3L1ScYB+/IWx+udtU6cXAM1B6lhqygwvZ
+ yOn2B9IF/U2jk/xSmYjBzFYzHpYK050xlV719cOgy+dQMR/zKrO5C0o5o+rumVWWwKPz
+ 4KeLAQCh3rQ9o9n6GJheiegnIqf3MTQajZMr4/5fDfq6nSDiH7zEGcNSya9GNwnLutXI
+ ceXraUHKbuXd7FXrAmokGCh5LiR+zXxJCO/i02j2AfxWoZoJStVn27qyYeqHgjpbDpij
+ QVjw==
+X-Gm-Message-State: AOJu0YzsufCS7b1ffRVChSN2cUytx1a2o0cVZnTuBOPlQIk5Aqlz8bnA
+ 8MiqPhONFZa2V6YSDvQCWg1Pg1mOk9futh/0UhQX70dk/FA5EQ==
+X-Google-Smtp-Source: AGHT+IFGWfv5d+Va0HBX6zePiPmg06Q1YAqicwcovGOSvSVTZ38K8iapFXkRrXxHzAffpqSM+A++Hb30MReEVe8X2DA=
+X-Received: by 2002:a2e:8091:0:b0:2cd:13bf:78d7 with SMTP id
+ i17-20020a2e8091000000b002cd13bf78d7mr1607359ljg.10.1704725325618; Mon, 08
+ Jan 2024 06:48:45 -0800 (PST)
 MIME-Version: 1.0
-References: <20240106181503.1746200-1-sam@rfc1149.net>
-In-Reply-To: <20240106181503.1746200-1-sam@rfc1149.net>
+References: <20240104141159.53883-1-philmd@linaro.org>
+In-Reply-To: <20240104141159.53883-1-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 8 Jan 2024 14:47:46 +0000
-Message-ID: <CAFEAcA9o=ep2AjYS6e7q9g-mYZ8eM8iPfd9936k__jaDw7anKA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] Add "num-prio-bits" property for Cortex-M devices
-To: Samuel Tardieu <sam@rfc1149.net>
-Cc: qemu-devel@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>,
- qemu-arm@nongnu.org, Alexandre Iooss <erdnaxe@crans.org>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
+Date: Mon, 8 Jan 2024 14:48:34 +0000
+Message-ID: <CAFEAcA9uUMpBPxggnrN5tkCxjYwsNYvQGaxEjCOw6-PM+6DUsg@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm: Add missing QOM parent for v7-M SoCs
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+ qemu-arm@nongnu.org, 
+ Felipe Balbi <balbi@kernel.org>, Alexandre Iooss <erdnaxe@crans.org>, 
+ Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>, 
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
  Alistair Francis <alistair@alistair23.me>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,19 +92,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 6 Jan 2024 at 18:15, Samuel Tardieu <sam@rfc1149.net> wrote:
+On Thu, 4 Jan 2024 at 14:12, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
 >
-> This patch series builds on a discussion initiated by Anton Kochkov on
-> this list in 2022. It allows setting the appropriate number of priority
-> bits for Cortex-M devices. For example, FreeRTOS checks at startup that
-> the right number of priority bits is available in order to guarantee
-> its runtime structures safety. They have added a configuration option
-> to disable this check when running on QEMU because QEMU always use 2
-> bits for Cortex-M0/M0+/M1 and 8 bits for other devices.
+> QDev objects created with qdev_new() need to manually add
+> their parent relationship with object_property_add_child().
 >
-> While this change allows the number of priority bits to be properly
-> configured, it keeps the same default as before in order to preserve
-> backward compatibility unless the SoC configures the exact value.
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
 
 
