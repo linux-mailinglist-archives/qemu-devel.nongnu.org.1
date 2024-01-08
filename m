@@ -2,55 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B36827779
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 19:27:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 165DD827771
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 19:27:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMuIX-0002vr-Vx; Mon, 08 Jan 2024 13:24:30 -0500
+	id 1rMuIO-0002tF-UF; Mon, 08 Jan 2024 13:24:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rMuIQ-0002u4-Oj
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:22 -0500
+ id 1rMuIL-0002sz-9V
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:17 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rMuIJ-0002gt-Ai
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:18 -0500
+ id 1rMuII-0002gs-IY
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1704738252;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=JxnIriOYZR3XzfKbmwrPu8uav3xUzxadiQuUFqI9A4w=;
- b=TrM7ugBqGnTVl6kXddu9IjzDNRTb6MleRJRXPU0CSruKs/RxqBRtGX/hUdaVPd6hRG2+th
- JnCqHOeAar7yPr5HZ3I8HoMMLpCZXag39OlNeLOVpXsL7I5DgrvZ4DR54/RLfSB3mguzmu
- KSoRF0lgrHcknhYdRtnovRcUd/dBcDk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-417-OsAKrcm1O3iR5pjLENp36g-1; Mon, 08 Jan 2024 13:24:07 -0500
-X-MC-Unique: OsAKrcm1O3iR5pjLENp36g-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XWckCtCJf6O8T7CcE0XSnUICYhxc7Z6euxnyRpaukmY=;
+ b=C13F1OPSvLhirOOu2mQvKHaLXKPTil8fFS+p1epZyHuCgUpTf3EQWImbrhp/YcbzDat2s9
+ G9Phwed8UKsYGORcGQOGJZ9tQPVmvBiqsnWiYb75YEUQeX3TNxlU1lCNJwni1ZtdEz1sTR
+ gR5eQN33nFbjKSDPwNaqYAhGHLnQTRA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-Qw2eW9ehNDqqYJfbAE5W0Q-1; Mon,
+ 08 Jan 2024 13:24:09 -0500
+X-MC-Unique: Qw2eW9ehNDqqYJfbAE5W0Q-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9B9ED185A782;
- Mon,  8 Jan 2024 18:24:07 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D8A1229AB3E1;
+ Mon,  8 Jan 2024 18:24:08 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 724993C2E;
- Mon,  8 Jan 2024 18:24:06 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CE4F53C2E;
+ Mon,  8 Jan 2024 18:24:07 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 00/29] include: move include/qapi/qmp/ to include/qobject/
-Date: Mon,  8 Jan 2024 18:23:36 +0000
-Message-ID: <20240108182405.1135436-1-berrange@redhat.com>
+Subject: [PATCH 01/29] include: move include/qapi/qmp/ to include/qobject/
+Date: Mon,  8 Jan 2024 18:23:37 +0000
+Message-ID: <20240108182405.1135436-2-berrange@redhat.com>
+In-Reply-To: <20240108182405.1135436-1-berrange@redhat.com>
+References: <20240108182405.1135436-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
@@ -78,8 +81,6 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To repeat the 1st patch commit message...
-
 The general expectation is that header files should follow the same
 file/path naming scheme as the corresponding source file. There are
 various historical exceptions to this practice in QEMU, with one of
@@ -91,345 +92,245 @@ The only outlier is include/qapi/qmp/dispatch.h which gets renamed
 to include/qapi/qmp-registry.h.
 
 To allow the code to continue to build, symlinks are temporarily
-added in $QEMU/qapi/qmp/ to point to the new location. This allows
-git to show a simple 'rename' diff in the 1st patch, which isn't
-possible if we put the symlinks straight in $QEMU/include/qapi/qmp/.
-The 27 patches that follow are mechanical updates to each top level
-sub-directory. The final patch removes the temporary compat symlinks.
+added in $QEMU/qapi/qmp/ to point to the new location. They will
+be removed in a later commit.
 
-Since this touches pretty much every subsystem, get_maintainer.pl
-wanted to CC everyone in the world. I've trimmed to only the QAPI
-and QObject maintainers.
-
-This could invalidate (and/or be invalidated by) a bunch of pending
-patch series if they have any #include "qapi/qmp/...", so would be
-best to merge in one go, quickly :-)
-
-Daniel P. Berrangé (29):
-  include: move include/qapi/qmp/ to include/qobject/
-  audio: adapt to new import path for qobject data type headers
-  authz: adapt to new import path for qobject data type headers
-  block: adapt to new import path for qobject data type headers
-  backends: adapt to new import path for qobject data type headers
-  chardev: adapt to new import path for qobject data type headers
-  docs: adapt to new import path for qobject data type headers
-  dump: adapt to new import path for qobject data type headers
-  hw: adapt to new import path for qobject data type headers
-  include: adapt to new import path for qobject data type headers
-  migration: adapt to new import path for qobject data type headers
-  monitor: adapt to new import path for qobject data type headers
-  net: adapt to new import path for qobject data type headers
-  qapi: adapt to new import path for qobject data type headers
-  qga: adapt to new import path for qobject data type headers
-  qobject: adapt to new import path for qobject data type headers
-  qom: adapt to new import path for qobject data type headers
-  replay: adapt to new import path for qobject data type headers
-  scripts: adapt to new import path for qobject data type headers
-  scsi: adapt to new import path for qobject data type headers
-  stats: adapt to new import path for qobject data type headers
-  stubs: adapt to new import path for qobject data type headers
-  system: adapt to new import path for qobject data type headers
-  target: adapt to new import path for qobject data type headers
-  tests: adapt to new import path for qobject data type headers
-  trace: adapt to new import path for qobject data type headers
-  ui: adapt to new import path for qobject data type headers
-  util: adapt to new import path for qobject data type headers
-  qapi: remove header file compatibility symlinks
-
- MAINTAINERS                                     |  5 +----
- audio/audio-hmp-cmds.c                          |  2 +-
- audio/audio.c                                   |  2 +-
- authz/listfile.c                                |  4 ++--
- backends/cryptodev-hmp-cmds.c                   |  2 +-
- backends/cryptodev-vhost-user.c                 |  2 +-
- backends/dbus-vmstate.c                         |  2 +-
- backends/iommufd.c                              |  2 +-
- backends/rng-egd.c                              |  2 +-
- backends/rng-random.c                           |  2 +-
- block.c                                         |  8 ++++----
- block/blkdebug.c                                |  6 +++---
- block/blkio.c                                   |  2 +-
- block/blklogwrites.c                            |  4 ++--
- block/blkverify.c                               |  4 ++--
- block/copy-before-write.c                       |  2 +-
- block/copy-on-read.c                            |  2 +-
- block/curl.c                                    |  4 ++--
- block/file-posix.c                              |  4 ++--
- block/file-win32.c                              |  4 ++--
- block/gluster.c                                 |  4 ++--
- block/iscsi.c                                   |  4 ++--
- block/monitor/block-hmp-cmds.c                  |  4 ++--
- block/nbd.c                                     |  2 +-
- block/nfs.c                                     |  4 ++--
- block/null.c                                    |  4 ++--
- block/nvme.c                                    |  4 ++--
- block/parallels.c                               |  2 +-
- block/qapi-sysemu.c                             |  2 +-
- block/qapi.c                                    | 10 +++++-----
- block/qcow.c                                    |  4 ++--
- block/qcow2.c                                   |  4 ++--
- block/qed.c                                     |  2 +-
- block/quorum.c                                  |  8 ++++----
- block/rbd.c                                     |  8 ++++----
- block/replication.c                             |  2 +-
- block/snapshot.c                                |  6 +++---
- block/ssh.c                                     |  4 ++--
- block/stream.c                                  |  2 +-
- block/vhdx.c                                    |  2 +-
- block/vmdk.c                                    |  4 ++--
- block/vpc.c                                     |  2 +-
- block/vvfat.c                                   |  4 ++--
- blockdev.c                                      | 10 +++++-----
- blockjob.c                                      |  2 +-
- chardev/char-fe.c                               |  2 +-
- chardev/char-hmp-cmds.c                         |  2 +-
- chardev/char.c                                  |  2 +-
- docs/devel/qapi-code-gen.rst                    |  4 ++--
- dump/dump-hmp-cmds.c                            |  2 +-
- dump/dump.c                                     |  2 +-
- dump/win_dump.c                                 |  2 +-
- hw/arm/mps2-tz.c                                |  2 +-
- hw/arm/mps2.c                                   |  2 +-
- hw/arm/sbsa-ref.c                               |  2 +-
- hw/arm/stellaris.c                              |  2 +-
- hw/arm/vexpress.c                               |  2 +-
- hw/arm/virt.c                                   |  2 +-
- hw/arm/xlnx-versal.c                            |  2 +-
- hw/block/xen-block.c                            |  4 ++--
- hw/core/machine-hmp-cmds.c                      |  2 +-
- hw/core/machine-qmp-cmds.c                      |  2 +-
- hw/core/qdev-properties-system.c                |  2 +-
- hw/core/qdev-properties.c                       |  4 ++--
- hw/core/qdev.c                                  |  4 ++--
- hw/hyperv/hv-balloon.c                          |  2 +-
- hw/i386/acpi-build.c                            |  2 +-
- hw/i386/kvm/xen_evtchn.c                        |  2 +-
- hw/i386/pc.c                                    |  2 +-
- hw/intc/openpic.c                               |  2 +-
- hw/net/rocker/rocker-hmp-cmds.c                 |  2 +-
- hw/net/virtio-net.c                             |  2 +-
- hw/net/xen_nic.c                                |  2 +-
- hw/pci/pci-hmp-cmds.c                           |  2 +-
- hw/ppc/pegasos2.c                               |  2 +-
- hw/ppc/spapr_drc.c                              |  2 +-
- hw/ppc/spapr_pci.c                              |  2 +-
- hw/rx/rx62n.c                                   |  2 +-
- hw/s390x/s390-skeys.c                           |  2 +-
- hw/s390x/s390-stattrib.c                        |  2 +-
- hw/usb/redirect.c                               |  2 +-
- hw/usb/xen-usb.c                                |  4 ++--
- hw/vfio/pci.c                                   |  2 +-
- hw/virtio/virtio-hmp-cmds.c                     |  2 +-
- hw/virtio/virtio-qmp.c                          |  4 ++--
- hw/xen/xen-bus.c                                |  2 +-
- include/block/qdict.h                           |  2 +-
- include/qapi/{qmp/dispatch.h => qmp-registry.h} |  0
- include/{qapi/qmp => qobject}/json-parser.h     |  0
- include/{qapi/qmp => qobject}/json-writer.h     |  0
- include/{qapi/qmp => qobject}/qbool.h           |  2 +-
- include/{qapi/qmp => qobject}/qdict.h           |  2 +-
- include/{qapi/qmp => qobject}/qerror.h          |  0
- include/{qapi/qmp => qobject}/qjson.h           |  0
- include/{qapi/qmp => qobject}/qlist.h           |  2 +-
- include/{qapi/qmp => qobject}/qlit.h            |  0
- include/{qapi/qmp => qobject}/qnull.h           |  2 +-
- include/{qapi/qmp => qobject}/qnum.h            |  2 +-
- include/{qapi/qmp => qobject}/qobject.h         |  2 +-
- include/{qapi/qmp => qobject}/qstring.h         |  2 +-
- migration/dirtyrate.c                           |  2 +-
- migration/migration-hmp-cmds.c                  |  2 +-
- migration/migration.c                           |  4 ++--
- migration/migration.h                           |  2 +-
- migration/options.c                             |  4 ++--
- migration/page_cache.c                          |  2 +-
- migration/ram.c                                 |  2 +-
- migration/savevm.c                              |  2 +-
- migration/vmstate.c                             |  2 +-
- monitor/fds.c                                   |  2 +-
- monitor/hmp-cmds-target.c                       |  2 +-
- monitor/hmp-cmds.c                              |  2 +-
- monitor/hmp.c                                   |  4 ++--
- monitor/monitor-internal.h                      |  4 ++--
- monitor/monitor.c                               |  2 +-
- monitor/qmp-cmds.c                              |  2 +-
- monitor/qmp.c                                   |  6 +++---
- net/filter-buffer.c                             |  2 +-
- net/filter.c                                    |  2 +-
- net/net-hmp-cmds.c                              |  2 +-
- net/net.c                                       |  4 ++--
- net/slirp.c                                     |  2 +-
- qapi/opts-visitor.c                             |  2 +-
- qapi/qapi-clone-visitor.c                       |  2 +-
- qapi/qapi-dealloc-visitor.c                     |  2 +-
- qapi/qapi-forward-visitor.c                     | 16 ++++++++--------
- qapi/qapi-util.c                                |  2 +-
- qapi/qapi-visit-core.c                          |  2 +-
- qapi/qmp-dispatch.c                             |  8 ++++----
- qapi/qmp-event.c                                |  6 +++---
- qapi/qmp-registry.c                             |  2 +-
- qapi/qobject-input-visitor.c                    | 16 ++++++++--------
- qapi/qobject-output-visitor.c                   | 12 ++++++------
- qapi/string-input-visitor.c                     |  4 ++--
- qemu-img.c                                      |  4 ++--
- qemu-io-cmds.c                                  |  2 +-
- qemu-io.c                                       |  4 ++--
- qemu-nbd.c                                      |  4 ++--
- qga/commands-bsd.c                              |  2 +-
- qga/commands-posix.c                            |  2 +-
- qga/commands-win32.c                            |  2 +-
- qga/commands.c                                  |  2 +-
- qga/guest-agent-core.h                          |  2 +-
- qga/main.c                                      |  6 +++---
- qobject/block-qdict.c                           |  8 ++++----
- qobject/json-parser-int.h                       |  2 +-
- qobject/json-parser.c                           | 12 ++++++------
- qobject/json-writer.c                           |  2 +-
- qobject/qbool.c                                 |  2 +-
- qobject/qdict.c                                 | 10 +++++-----
- qobject/qjson.c                                 | 16 ++++++++--------
- qobject/qlist.c                                 | 10 +++++-----
- qobject/qlit.c                                  | 14 +++++++-------
- qobject/qnull.c                                 |  2 +-
- qobject/qnum.c                                  |  2 +-
- qobject/qobject-internal.h                      |  2 +-
- qobject/qobject.c                               | 12 ++++++------
- qobject/qstring.c                               |  2 +-
- qom/object.c                                    | 12 ++++++------
- qom/object_interfaces.c                         |  8 ++++----
- qom/qom-hmp-cmds.c                              |  4 ++--
- qom/qom-qmp-cmds.c                              |  4 ++--
- replay/replay-debugging.c                       |  2 +-
- replay/replay-snapshot.c                        |  2 +-
- scripts/qapi/commands.py                        |  6 +++---
- scripts/qapi/events.py                          |  2 +-
- scripts/qapi/introspect.py                      |  2 +-
- scripts/qapi/visit.py                           |  2 +-
- scsi/qemu-pr-helper.c                           |  2 +-
- stats/stats-hmp-cmds.c                          |  2 +-
- storage-daemon/qemu-storage-daemon.c            |  4 ++--
- stubs/qmp-command-available.c                   |  2 +-
- stubs/qmp-quit.c                                |  2 +-
- system/balloon.c                                |  2 +-
- system/cpus.c                                   |  2 +-
- system/device_tree.c                            |  2 +-
- system/dirtylimit.c                             |  2 +-
- system/qdev-monitor.c                           |  8 ++++----
- system/rtc.c                                    |  2 +-
- system/runstate-hmp-cmds.c                      |  2 +-
- system/tpm.c                                    |  2 +-
- system/vl.c                                     |  8 ++++----
- target/arm/arm-qmp-cmds.c                       |  4 ++--
- target/i386/cpu-sysemu.c                        |  2 +-
- target/i386/cpu.c                               |  2 +-
- target/i386/monitor.c                           |  2 +-
- target/loongarch/loongarch-qmp-cmds.c           |  4 ++--
- target/ppc/cpu_init.c                           |  2 +-
- target/riscv/riscv-qmp-cmds.c                   |  4 ++--
- target/s390x/cpu_models_sysemu.c                |  4 ++--
- tests/qtest/adm1266-test.c                      |  4 ++--
- tests/qtest/adm1272-test.c                      |  4 ++--
- tests/qtest/ahci-test.c                         |  2 +-
- tests/qtest/arm-cpu-features.c                  |  4 ++--
- tests/qtest/aspeed_gpio-test.c                  |  2 +-
- tests/qtest/boot-order-test.c                   |  2 +-
- tests/qtest/cdrom-test.c                        |  2 +-
- tests/qtest/cpu-plug-test.c                     |  4 ++--
- tests/qtest/device-introspect-test.c            |  6 +++---
- tests/qtest/device-plug-test.c                  |  4 ++--
- tests/qtest/drive_del-test.c                    |  4 ++--
- tests/qtest/emc141x-test.c                      |  2 +-
- tests/qtest/fdc-test.c                          |  2 +-
- tests/qtest/hd-geo-test.c                       |  2 +-
- tests/qtest/ide-test.c                          |  2 +-
- tests/qtest/isl_pmbus_vr-test.c                 |  4 ++--
- tests/qtest/libqmp.c                            |  4 ++--
- tests/qtest/libqmp.h                            |  2 +-
- tests/qtest/libqos/generic-pcihost.c            |  2 +-
- tests/qtest/libqos/libqos.c                     |  2 +-
- tests/qtest/libqos/pci-pc.c                     |  2 +-
- tests/qtest/libqos/qos_external.c               |  8 ++++----
- tests/qtest/libqtest.c                          |  8 ++++----
- tests/qtest/libqtest.h                          |  4 ++--
- tests/qtest/lsm303dlhc-mag-test.c               |  2 +-
- tests/qtest/machine-none-test.c                 |  2 +-
- tests/qtest/max34451-test.c                     |  4 ++--
- tests/qtest/migration-helpers.c                 |  2 +-
- tests/qtest/migration-test.c                    |  4 ++--
- tests/qtest/netdev-socket.c                     |  2 +-
- tests/qtest/npcm7xx_adc-test.c                  |  2 +-
- tests/qtest/npcm7xx_emc-test.c                  |  4 ++--
- tests/qtest/npcm7xx_pwm-test.c                  |  4 ++--
- tests/qtest/npcm7xx_watchdog_timer-test.c       |  2 +-
- tests/qtest/numa-test.c                         |  4 ++--
- tests/qtest/pvpanic-pci-test.c                  |  2 +-
- tests/qtest/pvpanic-test.c                      |  2 +-
- tests/qtest/q35-test.c                          |  2 +-
- tests/qtest/qmp-cmd-test.c                      |  2 +-
- tests/qtest/qmp-test.c                          |  6 +++---
- tests/qtest/qom-test.c                          |  4 ++--
- tests/qtest/qos-test.c                          |  2 +-
- tests/qtest/readconfig-test.c                   |  6 +++---
- tests/qtest/tco-test.c                          |  2 +-
- tests/qtest/test-filter-mirror.c                |  2 +-
- tests/qtest/test-filter-redirector.c            |  2 +-
- tests/qtest/test-netfilter.c                    |  2 +-
- tests/qtest/test-x86-cpuid-compat.c             |  8 ++++----
- tests/qtest/tmp105-test.c                       |  2 +-
- tests/qtest/tpm-emu.c                           |  4 ++--
- tests/qtest/tpm-util.c                          |  2 +-
- tests/qtest/vhost-user-test.c                   |  2 +-
- tests/qtest/virtio-net-failover.c               |  6 +++---
- tests/qtest/virtio-net-test.c                   |  2 +-
- tests/qtest/vmgenid-test.c                      |  2 +-
- tests/qtest/wdt_ib700-test.c                    |  2 +-
- tests/unit/check-block-qdict.c                  |  4 ++--
- tests/unit/check-qdict.c                        |  6 +++---
- tests/unit/check-qjson.c                        | 12 ++++++------
- tests/unit/check-qlist.c                        |  4 ++--
- tests/unit/check-qlit.c                         | 12 ++++++------
- tests/unit/check-qnull.c                        |  2 +-
- tests/unit/check-qnum.c                         |  2 +-
- tests/unit/check-qobject.c                      | 12 ++++++------
- tests/unit/check-qom-proplist.c                 |  4 ++--
- tests/unit/check-qstring.c                      |  2 +-
- tests/unit/test-block-iothread.c                |  2 +-
- tests/unit/test-blockjob-txn.c                  |  2 +-
- tests/unit/test-blockjob.c                      |  2 +-
- tests/unit/test-char.c                          |  2 +-
- tests/unit/test-forward-visitor.c               |  4 ++--
- tests/unit/test-image-locking.c                 |  2 +-
- tests/unit/test-keyval.c                        |  6 +++---
- tests/unit/test-qemu-opts.c                     |  4 ++--
- tests/unit/test-qga.c                           |  4 ++--
- tests/unit/test-qmp-cmds.c                      |  8 ++++----
- tests/unit/test-qmp-event.c                     | 10 +++++-----
- tests/unit/test-qobject-input-visitor.c         | 12 ++++++------
- tests/unit/test-qobject-output-visitor.c        | 12 ++++++------
- tests/unit/test-replication.c                   |  2 +-
- tests/unit/test-visitor-serialization.c         |  4 ++--
- trace/trace-hmp-cmds.c                          |  2 +-
- ui/input-barrier.c                              |  2 +-
- ui/ui-hmp-cmds.c                                |  2 +-
- ui/ui-qmp-cmds.c                                |  2 +-
- util/block-helpers.c                            |  2 +-
- util/keyval.c                                   |  6 +++---
- util/qemu-config.c                              |  4 ++--
- util/qemu-option.c                              | 10 +++++-----
- 279 files changed, 494 insertions(+), 497 deletions(-)
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ MAINTAINERS                                     | 5 +----
+ include/qapi/{qmp/dispatch.h => qmp-registry.h} | 0
+ include/{qapi/qmp => qobject}/json-parser.h     | 0
+ include/{qapi/qmp => qobject}/json-writer.h     | 0
+ include/{qapi/qmp => qobject}/qbool.h           | 0
+ include/{qapi/qmp => qobject}/qdict.h           | 0
+ include/{qapi/qmp => qobject}/qerror.h          | 0
+ include/{qapi/qmp => qobject}/qjson.h           | 0
+ include/{qapi/qmp => qobject}/qlist.h           | 0
+ include/{qapi/qmp => qobject}/qlit.h            | 0
+ include/{qapi/qmp => qobject}/qnull.h           | 0
+ include/{qapi/qmp => qobject}/qnum.h            | 0
+ include/{qapi/qmp => qobject}/qobject.h         | 0
+ include/{qapi/qmp => qobject}/qstring.h         | 0
+ qapi/qmp/dispatch.h                             | 1 +
+ qapi/qmp/json-parser.h                          | 1 +
+ qapi/qmp/json-writer.h                          | 1 +
+ qapi/qmp/qbool.h                                | 1 +
+ qapi/qmp/qdict.h                                | 1 +
+ qapi/qmp/qerror.h                               | 1 +
+ qapi/qmp/qjson.h                                | 1 +
+ qapi/qmp/qlist.h                                | 1 +
+ qapi/qmp/qlit.h                                 | 1 +
+ qapi/qmp/qnull.h                                | 1 +
+ qapi/qmp/qnum.h                                 | 1 +
+ qapi/qmp/qobject.h                              | 1 +
+ qapi/qmp/qstring.h                              | 1 +
+ 27 files changed, 14 insertions(+), 4 deletions(-)
  rename include/qapi/{qmp/dispatch.h => qmp-registry.h} (100%)
  rename include/{qapi/qmp => qobject}/json-parser.h (100%)
  rename include/{qapi/qmp => qobject}/json-writer.h (100%)
- rename include/{qapi/qmp => qobject}/qbool.h (94%)
- rename include/{qapi/qmp => qobject}/qdict.h (98%)
+ rename include/{qapi/qmp => qobject}/qbool.h (100%)
+ rename include/{qapi/qmp => qobject}/qdict.h (100%)
  rename include/{qapi/qmp => qobject}/qerror.h (100%)
  rename include/{qapi/qmp => qobject}/qjson.h (100%)
- rename include/{qapi/qmp => qobject}/qlist.h (98%)
+ rename include/{qapi/qmp => qobject}/qlist.h (100%)
  rename include/{qapi/qmp => qobject}/qlit.h (100%)
- rename include/{qapi/qmp => qobject}/qnull.h (94%)
- rename include/{qapi/qmp => qobject}/qnum.h (98%)
- rename include/{qapi/qmp => qobject}/qobject.h (98%)
- rename include/{qapi/qmp => qobject}/qstring.h (96%)
+ rename include/{qapi/qmp => qobject}/qnull.h (100%)
+ rename include/{qapi/qmp => qobject}/qnum.h (100%)
+ rename include/{qapi/qmp => qobject}/qobject.h (100%)
+ rename include/{qapi/qmp => qobject}/qstring.h (100%)
+ create mode 120000 qapi/qmp/dispatch.h
+ create mode 120000 qapi/qmp/json-parser.h
+ create mode 120000 qapi/qmp/json-writer.h
+ create mode 120000 qapi/qmp/qbool.h
+ create mode 120000 qapi/qmp/qdict.h
+ create mode 120000 qapi/qmp/qerror.h
+ create mode 120000 qapi/qmp/qjson.h
+ create mode 120000 qapi/qmp/qlist.h
+ create mode 120000 qapi/qmp/qlit.h
+ create mode 120000 qapi/qmp/qnull.h
+ create mode 120000 qapi/qmp/qnum.h
+ create mode 120000 qapi/qmp/qobject.h
+ create mode 120000 qapi/qmp/qstring.h
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 395f26ba86..d72e040a9a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3154,8 +3154,6 @@ S: Supported
+ F: qapi/
+ X: qapi/*.json
+ F: include/qapi/
+-X: include/qapi/qmp/
+-F: include/qapi/qmp/dispatch.h
+ F: tests/qapi-schema/
+ F: tests/unit/test-*-visitor.c
+ F: tests/unit/test-qapi-*.c
+@@ -3178,8 +3176,7 @@ QObject
+ M: Markus Armbruster <armbru@redhat.com>
+ S: Supported
+ F: qobject/
+-F: include/qapi/qmp/
+-X: include/qapi/qmp/dispatch.h
++F: include/qobject/
+ F: scripts/coccinelle/qobject.cocci
+ F: tests/unit/check-qdict.c
+ F: tests/unit/check-qjson.c
+diff --git a/include/qapi/qmp/dispatch.h b/include/qapi/qmp-registry.h
+similarity index 100%
+rename from include/qapi/qmp/dispatch.h
+rename to include/qapi/qmp-registry.h
+diff --git a/include/qapi/qmp/json-parser.h b/include/qobject/json-parser.h
+similarity index 100%
+rename from include/qapi/qmp/json-parser.h
+rename to include/qobject/json-parser.h
+diff --git a/include/qapi/qmp/json-writer.h b/include/qobject/json-writer.h
+similarity index 100%
+rename from include/qapi/qmp/json-writer.h
+rename to include/qobject/json-writer.h
+diff --git a/include/qapi/qmp/qbool.h b/include/qobject/qbool.h
+similarity index 100%
+rename from include/qapi/qmp/qbool.h
+rename to include/qobject/qbool.h
+diff --git a/include/qapi/qmp/qdict.h b/include/qobject/qdict.h
+similarity index 100%
+rename from include/qapi/qmp/qdict.h
+rename to include/qobject/qdict.h
+diff --git a/include/qapi/qmp/qerror.h b/include/qobject/qerror.h
+similarity index 100%
+rename from include/qapi/qmp/qerror.h
+rename to include/qobject/qerror.h
+diff --git a/include/qapi/qmp/qjson.h b/include/qobject/qjson.h
+similarity index 100%
+rename from include/qapi/qmp/qjson.h
+rename to include/qobject/qjson.h
+diff --git a/include/qapi/qmp/qlist.h b/include/qobject/qlist.h
+similarity index 100%
+rename from include/qapi/qmp/qlist.h
+rename to include/qobject/qlist.h
+diff --git a/include/qapi/qmp/qlit.h b/include/qobject/qlit.h
+similarity index 100%
+rename from include/qapi/qmp/qlit.h
+rename to include/qobject/qlit.h
+diff --git a/include/qapi/qmp/qnull.h b/include/qobject/qnull.h
+similarity index 100%
+rename from include/qapi/qmp/qnull.h
+rename to include/qobject/qnull.h
+diff --git a/include/qapi/qmp/qnum.h b/include/qobject/qnum.h
+similarity index 100%
+rename from include/qapi/qmp/qnum.h
+rename to include/qobject/qnum.h
+diff --git a/include/qapi/qmp/qobject.h b/include/qobject/qobject.h
+similarity index 100%
+rename from include/qapi/qmp/qobject.h
+rename to include/qobject/qobject.h
+diff --git a/include/qapi/qmp/qstring.h b/include/qobject/qstring.h
+similarity index 100%
+rename from include/qapi/qmp/qstring.h
+rename to include/qobject/qstring.h
+diff --git a/qapi/qmp/dispatch.h b/qapi/qmp/dispatch.h
+new file mode 120000
+index 0000000000..ffedc3971d
+--- /dev/null
++++ b/qapi/qmp/dispatch.h
+@@ -0,0 +1 @@
++../../include/qapi/qmp-registry.h
+\ No newline at end of file
+diff --git a/qapi/qmp/json-parser.h b/qapi/qmp/json-parser.h
+new file mode 120000
+index 0000000000..059cb73fa8
+--- /dev/null
++++ b/qapi/qmp/json-parser.h
+@@ -0,0 +1 @@
++../../include/qobject/json-parser.h
+\ No newline at end of file
+diff --git a/qapi/qmp/json-writer.h b/qapi/qmp/json-writer.h
+new file mode 120000
+index 0000000000..3e952f4c97
+--- /dev/null
++++ b/qapi/qmp/json-writer.h
+@@ -0,0 +1 @@
++../../include/qobject/json-writer.h
+\ No newline at end of file
+diff --git a/qapi/qmp/qbool.h b/qapi/qmp/qbool.h
+new file mode 120000
+index 0000000000..443c881cf8
+--- /dev/null
++++ b/qapi/qmp/qbool.h
+@@ -0,0 +1 @@
++../../include/qobject/qbool.h
+\ No newline at end of file
+diff --git a/qapi/qmp/qdict.h b/qapi/qmp/qdict.h
+new file mode 120000
+index 0000000000..8183614eae
+--- /dev/null
++++ b/qapi/qmp/qdict.h
+@@ -0,0 +1 @@
++../../include/qobject/qdict.h
+\ No newline at end of file
+diff --git a/qapi/qmp/qerror.h b/qapi/qmp/qerror.h
+new file mode 120000
+index 0000000000..cf210737a3
+--- /dev/null
++++ b/qapi/qmp/qerror.h
+@@ -0,0 +1 @@
++../../include/qobject/qerror.h
+\ No newline at end of file
+diff --git a/qapi/qmp/qjson.h b/qapi/qmp/qjson.h
+new file mode 120000
+index 0000000000..85b48c5bfd
+--- /dev/null
++++ b/qapi/qmp/qjson.h
+@@ -0,0 +1 @@
++../../include/qobject/qjson.h
+\ No newline at end of file
+diff --git a/qapi/qmp/qlist.h b/qapi/qmp/qlist.h
+new file mode 120000
+index 0000000000..d40db0a12b
+--- /dev/null
++++ b/qapi/qmp/qlist.h
+@@ -0,0 +1 @@
++../../include/qobject/qlist.h
+\ No newline at end of file
+diff --git a/qapi/qmp/qlit.h b/qapi/qmp/qlit.h
+new file mode 120000
+index 0000000000..5dd5ac8ccb
+--- /dev/null
++++ b/qapi/qmp/qlit.h
+@@ -0,0 +1 @@
++../../include/qobject/qlit.h
+\ No newline at end of file
+diff --git a/qapi/qmp/qnull.h b/qapi/qmp/qnull.h
+new file mode 120000
+index 0000000000..944769d44b
+--- /dev/null
++++ b/qapi/qmp/qnull.h
+@@ -0,0 +1 @@
++../../include/qobject/qnull.h
+\ No newline at end of file
+diff --git a/qapi/qmp/qnum.h b/qapi/qmp/qnum.h
+new file mode 120000
+index 0000000000..8038e2f4d6
+--- /dev/null
++++ b/qapi/qmp/qnum.h
+@@ -0,0 +1 @@
++../../include/qobject/qnum.h
+\ No newline at end of file
+diff --git a/qapi/qmp/qobject.h b/qapi/qmp/qobject.h
+new file mode 120000
+index 0000000000..89d9118cfd
+--- /dev/null
++++ b/qapi/qmp/qobject.h
+@@ -0,0 +1 @@
++../../include/qobject/qobject.h
+\ No newline at end of file
+diff --git a/qapi/qmp/qstring.h b/qapi/qmp/qstring.h
+new file mode 120000
+index 0000000000..24f48de18a
+--- /dev/null
++++ b/qapi/qmp/qstring.h
+@@ -0,0 +1 @@
++../../include/qobject/qstring.h
+\ No newline at end of file
 -- 
 2.43.0
 
