@@ -2,82 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A47826C7F
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 12:22:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC810826CEC
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 12:36:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMnh6-0007oe-RC; Mon, 08 Jan 2024 06:21:24 -0500
+	id 1rMnuA-000279-3c; Mon, 08 Jan 2024 06:34:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rMnh3-0007oS-UB
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:21:21 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1rMnu7-00026H-JF
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:34:51 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rMnh1-0000YP-Nc
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:21:21 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40d8e7a50c1so22410115e9.2
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 03:21:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1rMnu5-0006yA-50
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:34:51 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6d9bc8939d0so502498b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 03:34:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704712878; x=1705317678; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ALyo42dDPdqeG6xXZBd+jfqKWmcU7pQepYwvhS77O+w=;
- b=pJg0zdnH84AoK9zzf2iTk+f3TUjfw4aGw+IpKgTzFQif5QOVJfHjQtlL9MUOMpdY7c
- Pf3OGAgATcDYnMVCA5giKNh0VrY6KAx+n30t9F4PqMp1NL83N2aBJTfmOjwDmSriPYkd
- nvrodIvKkUXbXC1n+JpvdryTQ8/MuWkbNfJZUHezVk1gc2GdRqoG2UfUM1VVLGnjoLsv
- m6kk/KTLuUmVMh8WvFcrdFT/ZQxQiYTzSy3bK9o9ffeOzu2zwuRQvs7Wt4zCbJ0rm+xs
- iN/XbbA4RYUHnIqUb+3oGLof7lQGRk6RLYEmBYpiRWU9JHuZrZ6czTy7Vh7gI/x+StQo
- gOWQ==
+ d=ventanamicro.com; s=google; t=1704713686; x=1705318486; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=ykj9rb5faTIAKtTXYqY6/zCYcpj8jVy1GLb0MO00h10=;
+ b=Vsx0eRjrIzolNbNxwD8cV1w5n4L6RMeRNmObCi14yQ/90ZVRUEiwR8PzuV+y1kOjCj
+ Xbo4v/eOqOraevFhLrnIYhkgAO/E5ai0GF/UKt3EqG5/lHFQcRRndNgiZRoDPnH2AXYC
+ qjfI2352fqvjFej0QkhxVWBc6FxcmoF7lGEk00xgdAGdMi0a16IAM2CLIB6LAzXioJ8f
+ LXt6TAVMXBWVVv7Cvlcwpw2i2xwmIPsEx431+WdpJ0352AbiUxow2lSBEJJLU3BjZs4J
+ b6jqPVJ0+DHV0hmWahNSYxPCL0e3apUxrtelf+okQ1YNWF9EeJs+YQXLbUxusrRnJhBr
+ /B/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704712878; x=1705317678;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ALyo42dDPdqeG6xXZBd+jfqKWmcU7pQepYwvhS77O+w=;
- b=Wc5XLCKJud5oSWyeUt85AOCHZBS/vUHu1Ko/zkAb5wvFBdfzcFMgGpz7jzIE7sDtiq
- DxnA6lOWwKhrSiTV+F47SPYbFeBz6L6o59xtCVgceC/UxDmWxowqeDG5PLqa2E4ktFFJ
- pfi9n2ypgHRL147v2coXaO90RJ+hnUgzZIX92z9kF+yX/D14NbFHT9DQKvgWX0rZbyQQ
- G3P30GMa3fNxx0TXV9hPUtAXmxW3ZjvzTwJgn8GI/wZcBUgxhj8c8t5TbqM6BlGNRwbs
- Eyn2t3ZVoEqHOlBBNDC5EaJRXZWWTdlfKG73LpWanP7XRpm6QQztq51v8Dq6KhJ1mFM0
- vFHw==
-X-Gm-Message-State: AOJu0YxPAYVFtBjbqnCWZF7dw/XoBY8Byi1NkOODRmrux4Vqtf7a/y2J
- iZ9Iog5Zyhmn6rmA/q3VTST7F0sH9QAMkz9xSsIcgceIugo=
-X-Google-Smtp-Source: AGHT+IHsjkG0c4YemTqb4sMruvLAUSJ4HVgfnfEV7X5fzQ/SyYZFAz5HhNaQoIran1/SJICqBu7Cxw==
-X-Received: by 2002:a05:600c:220d:b0:40d:282f:7536 with SMTP id
- z13-20020a05600c220d00b0040d282f7536mr1735108wml.196.1704712877772; 
- Mon, 08 Jan 2024 03:21:17 -0800 (PST)
-Received: from [192.168.1.24] ([102.35.208.160])
+ d=1e100.net; s=20230601; t=1704713686; x=1705318486;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ykj9rb5faTIAKtTXYqY6/zCYcpj8jVy1GLb0MO00h10=;
+ b=AWqcFgDAYTLrQWc6Xi1HXu3ZbcYtAxpxaMEVGMzrzBSY/AQZJgrZHcVuwhpsGqGdpJ
+ 0F/8iqtZ/vW0km8keXicjgZ3B9qXXThOTn0zo1yxgaFJPLcjQvIk6Teh6vIqcLlC2j44
+ fhvYCATsn2AfShGcwd5wtuIX35rmuM/7Whed8ixfObHM5z+n4NKm6SF/LnpnazAR/7z6
+ 0bVFK8wEaUTEgcQgXuOTZhKv++bYq3Y3mlHJ7zSKngTGytsrlKAAqMAAmGQnhcJokl+s
+ jj5yglXY0dHK0K10M6EsO0jw2SRn8Ovt3rtIfi+Td/WaAf3REf1H07CdmrGQuRkpJl18
+ pmdA==
+X-Gm-Message-State: AOJu0Ywn/Jj3d0ovFLBsxJ1NujW0ZPNAOd9waPgIUGqBhRKnRoVwGdw2
+ Em2D00sYJUIbj6UGQ0AKI6uhrAu6pG40Ow==
+X-Google-Smtp-Source: AGHT+IH9L3hIGKOpWqNlUmBM3kk1cZVBtwbj2/TgosF4gUiYzMdraa86hxqzNmHUX86mxorkvrjLOg==
+X-Received: by 2002:a05:6a20:13d1:b0:196:d90:aa62 with SMTP id
+ ho17-20020a056a2013d100b001960d90aa62mr887356pzc.121.1704713686162; 
+ Mon, 08 Jan 2024 03:34:46 -0800 (PST)
+Received: from sunil-laptop ([106.51.188.200])
  by smtp.gmail.com with ESMTPSA id
- l3-20020a5d4bc3000000b00336843ae919sm7540624wrt.49.2024.01.08.03.21.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 03:21:17 -0800 (PST)
-Message-ID: <475d41f3-3438-44cb-afaa-5dfd4a30ff4d@linaro.org>
-Date: Mon, 8 Jan 2024 15:21:13 +0400
+ j23-20020a17090aeb1700b0028b89520c7asm5986211pjz.9.2024.01.08.03.34.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Jan 2024 03:34:45 -0800 (PST)
+Date: Mon, 8 Jan 2024 17:04:36 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org, mst@redhat.com,
+ imammedo@redhat.com, anisinha@redhat.com, peter.maydell@linaro.org,
+ shannon.zhaosl@gmail.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
+Subject: Re: [RESEND RFC v1 1/2] hw/arm/virt-acpi-build.c: Migrate SPCR
+ creation to common location
+Message-ID: <ZZvdzOjQBbxfmuRJ@sunil-laptop>
+References: <20240105090608.5745-1-jeeheng.sia@starfivetech.com>
+ <20240105090608.5745-2-jeeheng.sia@starfivetech.com>
+ <7cb2ab36-811a-477f-b2de-1f581150a595@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 23/33] linux-user: Split out mmap_h_gt_g
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20240102015808.132373-1-richard.henderson@linaro.org>
- <20240102015808.132373-24-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240102015808.132373-24-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x32d.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7cb2ab36-811a-477f-b2de-1f581150a595@ventanamicro.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,341 +98,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/2/24 05:57, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   linux-user/mmap.c | 288 ++++++++++++++++++++++------------------------
->   1 file changed, 139 insertions(+), 149 deletions(-)
+On Fri, Jan 05, 2024 at 09:19:14AM -0300, Daniel Henrique Barboza wrote:
 > 
-> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-> index 8b0a26e50d..552656edd4 100644
-> --- a/linux-user/mmap.c
-> +++ b/linux-user/mmap.c
-> @@ -267,7 +267,16 @@ int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
->       return ret;
->   }
->   
-> -/* map an incomplete host page */
-> +/*
-> + * Map an incomplete host page.
-> + *
-> + * Here be dragons.  This case will not work if there is an existing
-> + * overlapping host page, which is file mapped, and for which the mapping
-> + * is beyond the end of the file.  In that case, we will see SIGBUS when
-> + * trying to write a portion of this page.
-> + *
-> + * FIXME: Work around this with a temporary signal handler and longjmp.
-> + */
->   static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
->                         int prot, int flags, int fd, off_t offset)
->   {
-> @@ -674,19 +683,138 @@ static abi_long mmap_h_lt_g(abi_ulong start, abi_ulong len, int host_prot,
->       return mmap_end(start, last, start, pass_last, mmap_flags, page_flags);
->   }
->   
-> +/*
-> + * Special case host page size > target page size.
-> + *
-> + * The two special cases are address and file offsets that are valid
-> + * for the guest that cannot be directly represented by the host.
-> + */
-> +static abi_long mmap_h_gt_g(abi_ulong start, abi_ulong len,
-> +                            int target_prot, int host_prot,
-> +                            int flags, int page_flags, int fd,
-> +                            off_t offset, int host_page_size)
-> +{
-> +    void *p, *want_p = g2h_untagged(start);
-> +    off_t host_offset = offset & -host_page_size;
-> +    abi_ulong last, real_start, real_last;
-> +    bool misaligned_offset = false;
-> +    size_t host_len;
-> +
-> +    if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-> +        /*
-> +         * Adjust the offset to something representable on the host.
-> +         */
-> +        host_len = len + offset - host_offset;
-> +        p = mmap(want_p, host_len, host_prot, flags, fd, host_offset);
-> +        if (p == MAP_FAILED) {
-> +            return -1;
-> +        }
-> +
-> +        /* Update start to the file position at offset. */
-> +        p += offset - host_offset;
-> +
-> +        start = h2g(p);
-> +        last = start + len - 1;
-> +        return mmap_end(start, last, start, last, flags, page_flags);
-> +    }
-> +
-> +    if (!(flags & MAP_ANONYMOUS)) {
-> +        misaligned_offset = (start ^ offset) & (host_page_size - 1);
-> +
-> +        /*
-> +         * The fallback for misalignment is a private mapping + read.
-> +         * This carries none of semantics required of MAP_SHARED.
-> +         */
-> +        if (misaligned_offset && (flags & MAP_TYPE) != MAP_PRIVATE) {
-> +            errno = EINVAL;
-> +            return -1;
-> +        }
-> +    }
-> +
-> +    last = start + len - 1;
-> +    real_start = start & -host_page_size;
-> +    real_last = ROUND_UP(last, host_page_size) - 1;
-> +
-> +    /*
-> +     * Handle the start and end of the mapping.
-> +     */
-> +    if (real_start < start) {
-> +        abi_ulong real_page_last = real_start + host_page_size - 1;
-> +        if (last <= real_page_last) {
-> +            /* Entire allocation a subset of one host page. */
-> +            if (!mmap_frag(real_start, start, last, target_prot,
-> +                           flags, fd, offset)) {
-> +                return -1;
-> +            }
-> +            return mmap_end(start, last, -1, 0, flags, page_flags);
-> +        }
-> +
-> +        if (!mmap_frag(real_start, start, real_page_last, target_prot,
-> +                       flags, fd, offset)) {
-> +            return -1;
-> +        }
-> +        real_start = real_page_last + 1;
-> +    }
-> +
-> +    if (last < real_last) {
-> +        abi_ulong real_page_start = real_last - host_page_size + 1;
-> +        if (!mmap_frag(real_page_start, real_page_start, last,
-> +                       target_prot, flags, fd,
-> +                       offset + real_page_start - start)) {
-> +            return -1;
-> +        }
-> +        real_last = real_page_start - 1;
-> +    }
-> +
-> +    if (real_start > real_last) {
-> +        return mmap_end(start, last, -1, 0, flags, page_flags);
-> +    }
-> +
-> +    /*
-> +     * Handle the middle of the mapping.
-> +     */
-> +
-> +    host_len = real_last - real_start + 1;
-> +    want_p += real_start - start;
-> +
-> +    if (flags & MAP_ANONYMOUS) {
-> +        p = mmap(want_p, host_len, host_prot, flags, -1, 0);
-> +    } else if (!misaligned_offset) {
-> +        p = mmap(want_p, host_len, host_prot, flags, fd,
-> +                 offset + real_start - start);
-> +    } else {
-> +        p = mmap(want_p, host_len, host_prot | PROT_WRITE,
-> +                 flags | MAP_ANONYMOUS, -1, 0);
-> +    }
-> +    if (p != want_p) {
-> +        if (p != MAP_FAILED) {
-> +            munmap(p, host_len);
-> +            errno = EEXIST;
-> +        }
-> +        return -1;
-> +    }
-> +
-> +    if (misaligned_offset) {
-> +        /* TODO: The read could be short. */
-> +        if (pread(fd, p, host_len, offset + real_start - start) != host_len) {
-> +            munmap(p, host_len);
-> +            return -1;
-> +        }
-> +        if (!(host_prot & PROT_WRITE)) {
-> +            mprotect(p, host_len, host_prot);
-> +        }
-> +    }
-> +
-> +    return mmap_end(start, last, -1, 0, flags, page_flags);
-> +}
-> +
->   static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
->                                       int target_prot, int flags, int page_flags,
->                                       int fd, off_t offset)
->   {
->       int host_page_size = qemu_real_host_page_size();
-> -    abi_ulong ret, last, real_start, real_last, retaddr, host_len;
-> -    abi_ulong passthrough_start = -1, passthrough_last = 0;
-> -    off_t host_offset;
->       int host_prot;
->   
-> -    real_start = start & -host_page_size;
-> -    host_offset = offset & -host_page_size;
-> -
->       /*
->        * For reserved_va, we are in full control of the allocation.
->        * Find a suitible hole and convert to MAP_FIXED.
-> @@ -700,6 +828,8 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
->               }
->               flags = (flags & ~MAP_FIXED_NOREPLACE) | MAP_FIXED;
->           } else if (!(flags & MAP_FIXED)) {
-> +            abi_ulong real_start = start & -host_page_size;
-> +            off_t host_offset = offset & -host_page_size;
->               size_t real_len = len + offset - host_offset;
->               abi_ulong align = MAX(host_page_size, TARGET_PAGE_SIZE);
->   
-> @@ -721,150 +851,10 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
->       } else if (host_page_size < TARGET_PAGE_SIZE) {
->           return mmap_h_lt_g(start, len, host_prot, flags,
->                              page_flags, fd, offset, host_page_size);
-> -    }
-> -
-> -    if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-> -        uintptr_t host_start;
-> -        void *p;
-> -
-> -        host_len = len + offset - host_offset;
-> -        host_len = ROUND_UP(host_len, host_page_size);
-> -
-> -        /* Note: we prefer to control the mapping address. */
-> -        p = mmap(g2h_untagged(start), host_len, host_prot,
-> -                 flags | MAP_FIXED | MAP_ANONYMOUS, -1, 0);
-> -        if (p == MAP_FAILED) {
-> -            return -1;
-> -        }
-> -        /* update start so that it points to the file position at 'offset' */
-> -        host_start = (uintptr_t)p;
-> -        if (!(flags & MAP_ANONYMOUS)) {
-> -            p = mmap(g2h_untagged(start), len, host_prot,
-> -                     flags | MAP_FIXED, fd, host_offset);
-> -            if (p == MAP_FAILED) {
-> -                munmap(g2h_untagged(start), host_len);
-> -                return -1;
-> -            }
-> -            host_start += offset - host_offset;
-> -        }
-> -        start = h2g(host_start);
-> -        last = start + len - 1;
-> -        passthrough_start = start;
-> -        passthrough_last = last;
->       } else {
-> -        last = start + len - 1;
-> -        real_last = ROUND_UP(last, host_page_size) - 1;
-> -
-> -        if (flags & MAP_FIXED_NOREPLACE) {
-> -            /* Validate that the chosen range is empty. */
-> -            if (!page_check_range_empty(start, last)) {
-> -                errno = EEXIST;
-> -                return -1;
-> -            }
-> -
-> -            /*
-> -             * With reserved_va, the entire address space is mmaped in the
-> -             * host to ensure it isn't accidentally used for something else.
-> -             * We have just checked that the guest address is not mapped
-> -             * within the guest, but need to replace the host reservation.
-> -             *
-> -             * Without reserved_va, despite the guest address check above,
-> -             * keep MAP_FIXED_NOREPLACE so that the guest does not overwrite
-> -             * any host address mappings.
-> -             */
-> -            if (reserved_va) {
-> -                flags = (flags & ~MAP_FIXED_NOREPLACE) | MAP_FIXED;
-> -            }
-> -        }
-> -
-> -        /*
-> -         * worst case: we cannot map the file because the offset is not
-> -         * aligned, so we read it
-> -         */
-> -        if (!(flags & MAP_ANONYMOUS) &&
-> -            (offset & (host_page_size - 1)) != (start & (host_page_size - 1))) {
-> -            /*
-> -             * msync() won't work here, so we return an error if write is
-> -             * possible while it is a shared mapping
-> -             */
-> -            if ((flags & MAP_TYPE) == MAP_SHARED
-> -                && (target_prot & PROT_WRITE)) {
-> -                errno = EINVAL;
-> -                return -1;
-> -            }
-> -            retaddr = target_mmap(start, len, target_prot | PROT_WRITE,
-> -                                  (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))
-> -                                  | MAP_PRIVATE | MAP_ANONYMOUS,
-> -                                  -1, 0);
-> -            if (retaddr == -1) {
-> -                return -1;
-> -            }
-> -            if (pread(fd, g2h_untagged(start), len, offset) == -1) {
-> -                return -1;
-> -            }
-> -            if (!(target_prot & PROT_WRITE)) {
-> -                ret = target_mprotect(start, len, target_prot);
-> -                assert(ret == 0);
-> -            }
-> -            return mmap_end(start, last, -1, 0, flags, page_flags);
-> -        }
-> -
-> -        /* handle the start of the mapping */
-> -        if (start > real_start) {
-> -            if (real_last == real_start + host_page_size - 1) {
-> -                /* one single host page */
-> -                if (!mmap_frag(real_start, start, last,
-> -                               target_prot, flags, fd, offset)) {
-> -                    return -1;
-> -                }
-> -                return mmap_end(start, last, -1, 0, flags, page_flags);
-> -            }
-> -            if (!mmap_frag(real_start, start,
-> -                           real_start + host_page_size - 1,
-> -                           target_prot, flags, fd, offset)) {
-> -                return -1;
-> -            }
-> -            real_start += host_page_size;
-> -        }
-> -        /* handle the end of the mapping */
-> -        if (last < real_last) {
-> -            abi_ulong real_page = real_last - host_page_size + 1;
-> -            if (!mmap_frag(real_page, real_page, last,
-> -                           target_prot, flags, fd,
-> -                           offset + real_page - start)) {
-> -                return -1;
-> -            }
-> -            real_last -= host_page_size;
-> -        }
-> -
-> -        /* map the middle (easier) */
-> -        if (real_start < real_last) {
-> -            void *p, *want_p;
-> -            off_t offset1;
-> -            size_t len1;
-> -
-> -            if (flags & MAP_ANONYMOUS) {
-> -                offset1 = 0;
-> -            } else {
-> -                offset1 = offset + real_start - start;
-> -            }
-> -            len1 = real_last - real_start + 1;
-> -            want_p = g2h_untagged(real_start);
-> -
-> -            p = mmap(want_p, len1, host_prot, flags, fd, offset1);
-> -            if (p != want_p) {
-> -                if (p != MAP_FAILED) {
-> -                    munmap(p, len1);
-> -                    errno = EEXIST;
-> -                }
-> -                return -1;
-> -            }
-> -            passthrough_start = real_start;
-> -            passthrough_last = real_last;
-> -        }
-> +        return mmap_h_gt_g(start, len, target_prot, host_prot, flags,
-> +                           page_flags, fd, offset, host_page_size);
->       }
-> -    return mmap_end(start, last, passthrough_start, passthrough_last,
-> -                    flags, page_flags);
->   }
->   
->   /* NOTE: all the constants are the HOST ones */
+> 
+> On 1/5/24 06:06, Sia Jee Heng wrote:
+> > RISC-V should also generate the SPCR in a manner similar to ARM.
+> > Therefore, instead of replicating the code, relocate this function
+> > to the common AML build.
+> > 
+> > Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
+> > ---
+> >   hw/acpi/aml-build.c         | 51 ++++++++++++++++++++++++++++
+> >   hw/arm/virt-acpi-build.c    | 68 +++++++++++++++----------------------
+> >   include/hw/acpi/acpi-defs.h | 33 ++++++++++++++++++
+> >   include/hw/acpi/aml-build.h |  4 +++
+> >   4 files changed, 115 insertions(+), 41 deletions(-)
+> > 
+> > diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
+> > index af66bde0f5..1efa534aa8 100644
+> > --- a/hw/acpi/aml-build.c
+> > +++ b/hw/acpi/aml-build.c
+> > @@ -1994,6 +1994,57 @@ static void build_processor_hierarchy_node(GArray *tbl, uint32_t flags,
+> >       }
+> >   }
+> > +void build_spcr(GArray *table_data, BIOSLinker *linker,
+> > +                const AcpiSpcrData *f, const char *oem_id,
+> > +                const char *oem_table_id)
+> > +{
+> > +    AcpiTable table = { .sig = "SPCR", .rev = 2, .oem_id = oem_id,
+> > +                        .oem_table_id = oem_table_id };
+> > +
+> > +    acpi_table_begin(&table, table_data);
+> > +    /* Interface type */
+> > +    build_append_int_noprefix(table_data, f->interface_type, 1);
+> > +    /* Reserved */
+> > +    build_append_int_noprefix(table_data, 0, 3);
+> > +    /* Base Address */
+> > +    build_append_gas(table_data, f->base_addr.id, f->base_addr.width,
+> > +                     f->base_addr.offset, f->base_addr.size,
+> > +                     f->base_addr.addr);
+> > +    /* Interrupt type */
+> > +    build_append_int_noprefix(table_data, f->interrupt_type, 1);
+> > +    /* IRQ */
+> > +    build_append_int_noprefix(table_data, f->pc_interrupt, 1);
+> > +    /* Global System Interrupt */
+> > +    build_append_int_noprefix(table_data, f->interrupt, 4);
+> > +    /* Baud Rate */
+> > +    build_append_int_noprefix(table_data, f->baud_rate, 1);
+> > +    /* Parity */
+> > +    build_append_int_noprefix(table_data, f->parity, 1);
+> > +    /* Stop Bits */
+> > +    build_append_int_noprefix(table_data, f->stop_bits, 1);
+> > +    /* Flow Control */
+> > +    build_append_int_noprefix(table_data, f->flow_control, 1);
+> > +    /* Terminal Type */
+> > +    build_append_int_noprefix(table_data, f->terminal_type, 1);
+> > +    /* PCI Device ID  */
+> > +    build_append_int_noprefix(table_data, f->pci_device_id, 2);
+> > +    /* PCI Vendor ID */
+> > +    build_append_int_noprefix(table_data, f->pci_vendor_id, 2);
+> > +    /* PCI Bus Number */
+> > +    build_append_int_noprefix(table_data, f->pci_bus, 1);
+> > +    /* PCI Device Number */
+> > +    build_append_int_noprefix(table_data, f->pci_device, 1);
+> > +    /* PCI Function Number */
+> > +    build_append_int_noprefix(table_data, f->pci_function, 1);
+> > +    /* PCI Flags */
+> > +    build_append_int_noprefix(table_data, f->pci_flags, 4);
+> > +    /* PCI Segment */
+> > +    build_append_int_noprefix(table_data, f->pci_segment, 1);
+> > +    /* Reserved */
+> > +    build_append_int_noprefix(table_data, 0, 4);
+> > +
+> > +    acpi_table_end(linker, &table);
+> > +}
+> >   /*
+> >    * ACPI spec, Revision 6.3
+> >    * 5.2.29 Processor Properties Topology Table (PPTT)
+> > diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> > index 510ab0dcca..a31f736d1a 100644
+> > --- a/hw/arm/virt-acpi-build.c
+> > +++ b/hw/arm/virt-acpi-build.c
+> > @@ -431,48 +431,34 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+> >    * Rev: 1.07
+> >    */
+> >   static void
+> > -build_spcr(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+> > +build_spcr_v2(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+> 
+> Nit: I don't understand the '_v2' in the name of this function. Is it just to not collide
+> with the now public build_spcr()? Or does it have to do with the SPCR table being
+> '.rev = 2'? Because if it's the latter, you can name the common helper 'build_spcr_rev2'
+> (since both ARM and RISC-V use SPCR rev 2), keep this local build_spcr() initializing
+> the AcpiSpcrData struct with ARM attributes and then call the common build_spcr_rev2().
+> 
+My suggestion is, keep the build_spcr() generic and take version as the
+parameter.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Thanks,
+Sunil
 
