@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A90827A38
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BB0827A60
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 22:47:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMxE1-0003tx-PU; Mon, 08 Jan 2024 16:32:01 -0500
+	id 1rMxRQ-0003pU-9x; Mon, 08 Jan 2024 16:45:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMxDz-0003tJ-91
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:31:59 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rMxRO-0003o0-PI
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:45:50 -0500
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMxDw-0001g4-Cp
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:31:59 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40e43fb2659so17427315e9.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 13:31:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rMxRM-0002j5-VA
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 16:45:50 -0500
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-28cc07d8876so1247854a91.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 13:45:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704749514; x=1705354314; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704750347; x=1705355147; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=OEhRa4ky0ClGTJnMw/IFLdTI/yN89QqMN3LqT6kC2ww=;
- b=uARAAAEJcUH0t7OfCKtfzUh1G03xBLbFcoQ29LQHdxUGwc71MO6HlYbu9dylKu1b6a
- 9Xtvh0vaJ6bwDJgowpnvpRNCI/NaYLJIyX/7+oEjPvIDLuns+nV0Dijm7bhY1U30N9HL
- 0I+5a8GCmv+VFFe6u3UlZc6eOqtQa9/eKh/Xjh0rUr2Rp9vLeb4GOmMd8SD4czfKng+c
- OJjoSFBZd9N7UDHhCColfISX/PR+pnqkXj3OgdT1rwWfjIWc34QpPEYTOyCk+JTXVXMC
- 7VfdE8UHH2xtV3ugn6fxBBDab8TN2apa0X89ynt8nYPwvUOT+leZkv0Sj2WhyI7kPu/o
- BRIQ==
+ bh=dwvAVdhZerN0PvjGvngabAMvYcnQaxHuiJIPP8UILKk=;
+ b=tp1n7CM2IfPUGMCNeaSbdR3p31f2EdnVIrzeGpJzg5C5lZuSafD5jwPZQK8yfOMc3r
+ ep12w8fX160Yy/i7VGzA7LISHWTAJ/Uli3z7Vnn8WSnNKSdHw7P6W81hgSU5PqLQA3nn
+ Ax56BfSZbNnP2cITXjkYkQuqc15Rl2T7K6noBzp/JliEMeghDQPXiXHlyrFkDz3EX6/d
+ +hFwbjRiIjXFd+yKwbeX+YUi15af4bAGkY9RMiTFCxu9iBgLjOgbtdol8f+n0u1QaDBU
+ IEQpmTZAoTyKtMZvrHJGMpFWyc/o3gF/UB+UPhUZcFGivO3S9gYEPTGx9e5HJ2ZmqxR/
+ AWWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704749514; x=1705354314;
+ d=1e100.net; s=20230601; t=1704750347; x=1705355147;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OEhRa4ky0ClGTJnMw/IFLdTI/yN89QqMN3LqT6kC2ww=;
- b=Gpn8AdwEmO1nXq8O94AGDZc6oQkMKDhJZ8bbqEO6mIi3qMptPCo8M1gR2/RqHhQZg8
- 0p5IrRisstVAH8w4UpjB9Ux/TzzlXPCkjg7HoolSUt8hoiGjPNzdnNJO5XS6UaIcMc4S
- TgUUBnEuMpY6zFcsCjl4STNwxCPy5Rz0c2jrHpfV9WVuyDt7h5Eh9Oq8G6KGmNzTgLJj
- 7U9ngqQ7R9RQ+uCe/WQdlsnTsLILoGShqtyGYBRoz/MfKGztOO+weD4ueF6OkW/IjLUf
- +sL4K0zfi/dBYqETfBet4UO9BUi2tQmw5YA4FUCTjs35hK/g9MSgXyxos0+rphY1SUhV
- a43Q==
-X-Gm-Message-State: AOJu0Yz3/Um9rgkbZ35/IroRFh/vuGFMKpjSL+7/+v/3myDarYGUcj7v
- Mku01oTGtmEOZgaHux+pXa/bomgeMzbkjw==
-X-Google-Smtp-Source: AGHT+IHx/AqzULVHVo3eqFItecBDqN3mQcleK3fnzVHIlfacYCNbdNczHKoWgrHaQW2fBeaWxNnsnw==
-X-Received: by 2002:a05:600c:3551:b0:40d:8944:657b with SMTP id
- i17-20020a05600c355100b0040d8944657bmr2227186wmq.26.1704749513978; 
- Mon, 08 Jan 2024 13:31:53 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.194.16])
+ bh=dwvAVdhZerN0PvjGvngabAMvYcnQaxHuiJIPP8UILKk=;
+ b=VJFyYbfz9ayfiSiy2QcW/BjqG1JiH77iuGJ6UzTF8TCySj7ndrPW+o3jVRHKs2k+AW
+ 5aaSqalMdne1Vu8ENXI94+wDWO5ciHqH8B+KwPlBflvQ45R506b9O8NUeBrlVZdcDmCR
+ ab8SD6Vn4EVO074YgkeWhaHhrRQqlKr/5dJ/E/n+avthDf+TR+xdVQEzKxrhvvEmr63y
+ LEP2cPa3weZaY5Ao+4i6y9ysecUpI/slZi0s0R8Eu1a0nbk8dAlbAGt1kv4TklqShhfH
+ A4xS8LFQbD98rV8ICdGmA6yzLlpkcMWoO/9L2kWm4DBps40lnkZpqP4m0DseseP4wv72
+ 5IVg==
+X-Gm-Message-State: AOJu0Yz0/Us2edNAwbFuX9WTjamhFJTlHeODIHNDNeNNOcbqEXT8J/0x
+ sewU5WfZAU5cRajV476dL8AVoGtzGuqdBA==
+X-Google-Smtp-Source: AGHT+IEEHQgP25/sllFxNeseUIsfEUo/tVdmxRogIno+jNKU4SSWIjkfhIuZSZvYUTljY7mfkwlQHA==
+X-Received: by 2002:a17:90b:1991:b0:28b:894b:4494 with SMTP id
+ mv17-20020a17090b199100b0028b894b4494mr1768945pjb.55.1704750347341; 
+ Mon, 08 Jan 2024 13:45:47 -0800 (PST)
+Received: from [192.168.1.66] ([103.194.3.133])
  by smtp.gmail.com with ESMTPSA id
- k30-20020a05600c1c9e00b0040d887fda00sm1094810wms.26.2024.01.08.13.31.52
+ j3-20020a17090276c300b001d5389bd42fsm360040plt.57.2024.01.08.13.45.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 13:31:53 -0800 (PST)
-Message-ID: <d4fcdfd9-8ead-4adb-8a88-0f5999fa9659@linaro.org>
-Date: Mon, 8 Jan 2024 22:31:50 +0100
+ Mon, 08 Jan 2024 13:45:46 -0800 (PST)
+Message-ID: <6327ac54-6394-4648-b4b8-2294a37b1588@linaro.org>
+Date: Tue, 9 Jan 2024 08:45:41 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/3] tests/qtest: Add STM32L4x5 EXTI QTest testcase
+Subject: Re: [PATCH v2 00/35] tcg: Introduce TCG_COND_TST{EQ,NE}
 Content-Language: en-US
-To: =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
- qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
-Cc: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Alistair Francis <alistair@alistair23.me>,
- Laurent Vivier <lvivier@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-References: <20240108181104.46880-1-ines.varhol@telecom-paris.fr>
- <20240108181104.46880-4-ines.varhol@telecom-paris.fr>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240108181104.46880-4-ines.varhol@telecom-paris.fr>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org
+References: <20231028194522.245170-1-richard.henderson@linaro.org>
+ <CABgObfZme6gNZG=3ibXb8=+yAg=LHPeHYdncdx2LgN741bk_7A@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CABgObfZme6gNZG=3ibXb8=+yAg=LHPeHYdncdx2LgN741bk_7A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,49 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Inès,
+On 1/7/24 04:43, Paolo Bonzini wrote:
+> On Sat, Oct 28, 2023 at 9:45 PM Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> Expose a pair of comparison operators that map to the "test"
+>> comparison that is available on many architectures.
+>>
+>> Changes for v2:
+>>    * Add TCGCond to tcg_target_const_match.
+>>      This fixes a long-standing issue with ppc and s390x backends,
+>>      in that CMPI for signed comparisons has signed immediate and
+>>      CMPLI for unsigned comparisons has unsigned immediate.
+>>      But now allows different immediates for the TST comparisons.
+>>    * tcg/i386: Generate TEST x,x for power-of-two in {7,15,31,63}.
+>>    * tcg/i386: Generate BT n,x for other power-of-two.
+>>    * tcg/ppc: tcg_target_const_match improvements
+>>    * tcg/s390x: tcg_target_const_match improvements
+>>    * target/m68k: Use TST{EQ,NE} for gen_fcc_cond.
+> 
+> I updated the MIPS backend (untested though) and pushed the result to
+> branch i386 of https://gitlab.com/bonzini/qemu/.
 
-On 8/1/24 19:03, Inès Varhol wrote:
-> Acked-by: Alistair Francis <alistair.francis@wdc.com>
-> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-> ---
->   tests/qtest/meson.build           |   5 +
->   tests/qtest/stm32l4x5_exti-test.c | 590 ++++++++++++++++++++++++++++++
->   2 files changed, 595 insertions(+)
->   create mode 100644 tests/qtest/stm32l4x5_exti-test.c
+Thanks.
+
+> 
+> However I was thinking: a lot of RISC targets simply do AND/ANDI
+> followed by the sequence used for TCG_COND_NE.  Would it make sense to
+> have a TCG_TARGET_SUPPORTS_TST bit and, if absent, lower TSTEQ/TSTNE
+> to AND+EQ/NE directly in the optimizer?
+
+Probably best, yes.
+
+> And for brcond2/setcond2,
+> always using AND/AND/OR may work just as well as any backend-specific
+> trick, and will give more freedom to the register allocator.
+
+   test   a,b
+   testeq c,e
+
+for Arm32.  So I'll leave it to the backends.
 
 
-> +static void test_reg_write_read(void)
-> +{
-> +    /* Test that non-reserved bits in xMR and xTSR can be set and cleared */
-> +
-> +    exti_writel(EXTI_IMR1, 0xFFFFFFFF);
-> +    uint32_t imr1 = exti_readl(EXTI_IMR1);
-> +    g_assert_cmpuint(imr1, ==, 0xFFFFFFFF);
-> +    exti_writel(EXTI_IMR1, 0x00000000);
-> +    imr1 = exti_readl(EXTI_IMR1);
-> +    g_assert_cmpuint(imr1, ==, 0x00000000);
-> +
-> +    exti_writel(EXTI_EMR1, 0xFFFFFFFF);
-> +    uint32_t emr1 = exti_readl(EXTI_EMR1);
-
-Per QEMU Coding Style [*]:
-
-   Mixed declarations (interleaving statements and declarations within
-   blocks) are generally not allowed; declarations should be at the
-   beginning of blocks.
-
-Up to the maintainers to accept as is or request a change. Personally
-this looks good enough, so:
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-[*] https://qemu-project.gitlab.io/qemu/devel/style.html#declarations
-
-> +    g_assert_cmpuint(emr1, ==, 0xFFFFFFFF);
-> +    exti_writel(EXTI_EMR1, 0x00000000);
-> +    emr1 = exti_readl(EXTI_EMR1);
-> +    g_assert_cmpuint(emr1, ==, 0x00000000);
-[...]
+r~
 
