@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103F0827761
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 19:25:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6CCD8277BC
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 19:36:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMuIv-0003E1-GW; Mon, 08 Jan 2024 13:24:53 -0500
+	id 1rMuSr-0006Lx-2g; Mon, 08 Jan 2024 13:35:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rMuIs-00034i-Lx
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:50 -0500
+ id 1rMuSe-0006L3-Mx
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:34:57 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rMuIq-00031y-3Y
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:24:49 -0500
+ id 1rMuSV-0008C0-GF
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 13:34:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704738287;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1704738886;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3vpYPBks6eKPtj/ihRQfTyAH5/xAvDDip4pfSvLENTc=;
- b=JW40xWRR6+qEdQIh2+XpucgGLj/T1fS7RZywcSp455neP+xn/vWiE46Rjo4p4pBHfo/eYF
- /7W6krl8uOylB6PbwvexqksVUZkNfUca4C7Col+6DAO0izZTnzRhwsqV11bWyqek+erCid
- fhENBzm7wxuwYdQCHsP6R4oECS4Zlqk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-D2tV1BVUOgSaEdFO8zmkbg-1; Mon, 08 Jan 2024 13:24:45 -0500
-X-MC-Unique: D2tV1BVUOgSaEdFO8zmkbg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ bh=H7Vo1pmLBovjraaw+9ew6mM9QdIkIODcKE0/26rYCeo=;
+ b=Fi6CvDNM5CyZYgyoRqVcGhVSz+AXCR3pOK4dUj0o2E0+hgpLwXRzV6ZJXQ6rnXMiTxVuoJ
+ lYkhCSHcZECJt8ONmrX6uY1WCa9SsEgLl0AkmAMlJWx3bDVBV34sNhblHe13KK0Hvoe0im
+ EeekJjqt478GK5JMmq4f3sHw9EfZ3z8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-661-mIi9Qm01Olu0-GiZA9CxHw-1; Mon,
+ 08 Jan 2024 13:34:37 -0500
+X-MC-Unique: mIi9Qm01Olu0-GiZA9CxHw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 538C283DE2B;
- Mon,  8 Jan 2024 18:24:45 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 617643C2E;
- Mon,  8 Jan 2024 18:24:44 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 29/29] qapi: remove header file compatibility symlinks
-Date: Mon,  8 Jan 2024 18:24:05 +0000
-Message-ID: <20240108182405.1135436-30-berrange@redhat.com>
-In-Reply-To: <20240108182405.1135436-1-berrange@redhat.com>
-References: <20240108182405.1135436-1-berrange@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 03C901C05AA3;
+ Mon,  8 Jan 2024 18:34:37 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.90])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2B181C1596E;
+ Mon,  8 Jan 2024 18:34:35 +0000 (UTC)
+Date: Mon, 8 Jan 2024 18:34:34 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH] softmmu: remove obsolete comment about libvirt timeouts
+Message-ID: <ZZxAOiGQwUYBlOek@redhat.com>
+References: <20240103123042.2400677-1-berrange@redhat.com>
+ <ZZVz8Mt3InMvl5WO@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+In-Reply-To: <ZZVz8Mt3InMvl5WO@intel.com>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+X-Spam_score_int: -42
+X-Spam_score: -4.3
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,148 +81,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All code is converted to the new 'qobject/' import path, so
-the temporary header file compatibility symlinks are now
-redundant.
+On Wed, Jan 03, 2024 at 10:49:20PM +0800, Zhao Liu wrote:
+> On Wed, Jan 03, 2024 at 12:30:42PM +0000, Daniel P. Berrangé wrote:
+> > Date: Wed,  3 Jan 2024 12:30:42 +0000
+> > From: "Daniel P. Berrangé" <berrange@redhat.com>
+> > Subject: [PATCH] softmmu: remove obsolete comment about libvirt timeouts
+> > 
+> > For a long time now, libvirt has pre-created the monitor connection
+> > socket and passed the pre-opened FD into QEMU during startup. Thus
+> > libvirt does not have any timeouts waiting for the monitor socket
+> > to appear, it is immediately connected.
+> > 
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> >  system/vl.c | 1 -
+> >  1 file changed, 1 deletion(-)
+> > 
+> > diff --git a/system/vl.c b/system/vl.c
+> > index 6b87bfa32c..1d1508e28f 100644
+> > --- a/system/vl.c
+> > +++ b/system/vl.c
+> > @@ -1911,7 +1911,6 @@ static bool object_create_early(const char *type)
+> >       * Allocation of large amounts of memory may delay
+> >       * chardev initialization for too long, and trigger timeouts
+> >       * on software that waits for a monitor socket to be created
+> > -     * (e.g. libvirt).
+> 
+> From the commit message of 6546d0dba6c2 ("vl: Delay initialization of
+> memory backends"), and related bugzilla, I understand the only software
+> Eduardo wanted to describe is libvirt.
+> 
+> Do you know of any other software that has the similar timeout mechanism?
+> If there is no other software, the description of "trigger timeouts on
+> software ..." in the comment could be deleted as well.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- qapi/qmp/dispatch.h    | 1 -
- qapi/qmp/json-parser.h | 1 -
- qapi/qmp/json-writer.h | 1 -
- qapi/qmp/qbool.h       | 1 -
- qapi/qmp/qdict.h       | 1 -
- qapi/qmp/qerror.h      | 1 -
- qapi/qmp/qjson.h       | 1 -
- qapi/qmp/qlist.h       | 1 -
- qapi/qmp/qlit.h        | 1 -
- qapi/qmp/qnull.h       | 1 -
- qapi/qmp/qnum.h        | 1 -
- qapi/qmp/qobject.h     | 1 -
- qapi/qmp/qstring.h     | 1 -
- 13 files changed, 13 deletions(-)
- delete mode 120000 qapi/qmp/dispatch.h
- delete mode 120000 qapi/qmp/json-parser.h
- delete mode 120000 qapi/qmp/json-writer.h
- delete mode 120000 qapi/qmp/qbool.h
- delete mode 120000 qapi/qmp/qdict.h
- delete mode 120000 qapi/qmp/qerror.h
- delete mode 120000 qapi/qmp/qjson.h
- delete mode 120000 qapi/qmp/qlist.h
- delete mode 120000 qapi/qmp/qlit.h
- delete mode 120000 qapi/qmp/qnull.h
- delete mode 120000 qapi/qmp/qnum.h
- delete mode 120000 qapi/qmp/qobject.h
- delete mode 120000 qapi/qmp/qstring.h
+I haven't checked any other users recently, but waiting for the monitor
+socket with a timeout has been a common usage pattern, so I expect there
+are other users still besides libvirt which do this.
 
-diff --git a/qapi/qmp/dispatch.h b/qapi/qmp/dispatch.h
-deleted file mode 120000
-index ffedc3971d..0000000000
---- a/qapi/qmp/dispatch.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qapi/qmp-registry.h
-\ No newline at end of file
-diff --git a/qapi/qmp/json-parser.h b/qapi/qmp/json-parser.h
-deleted file mode 120000
-index 059cb73fa8..0000000000
---- a/qapi/qmp/json-parser.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qobject/json-parser.h
-\ No newline at end of file
-diff --git a/qapi/qmp/json-writer.h b/qapi/qmp/json-writer.h
-deleted file mode 120000
-index 3e952f4c97..0000000000
---- a/qapi/qmp/json-writer.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qobject/json-writer.h
-\ No newline at end of file
-diff --git a/qapi/qmp/qbool.h b/qapi/qmp/qbool.h
-deleted file mode 120000
-index 443c881cf8..0000000000
---- a/qapi/qmp/qbool.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qobject/qbool.h
-\ No newline at end of file
-diff --git a/qapi/qmp/qdict.h b/qapi/qmp/qdict.h
-deleted file mode 120000
-index 8183614eae..0000000000
---- a/qapi/qmp/qdict.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qobject/qdict.h
-\ No newline at end of file
-diff --git a/qapi/qmp/qerror.h b/qapi/qmp/qerror.h
-deleted file mode 120000
-index cf210737a3..0000000000
---- a/qapi/qmp/qerror.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qobject/qerror.h
-\ No newline at end of file
-diff --git a/qapi/qmp/qjson.h b/qapi/qmp/qjson.h
-deleted file mode 120000
-index 85b48c5bfd..0000000000
---- a/qapi/qmp/qjson.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qobject/qjson.h
-\ No newline at end of file
-diff --git a/qapi/qmp/qlist.h b/qapi/qmp/qlist.h
-deleted file mode 120000
-index d40db0a12b..0000000000
---- a/qapi/qmp/qlist.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qobject/qlist.h
-\ No newline at end of file
-diff --git a/qapi/qmp/qlit.h b/qapi/qmp/qlit.h
-deleted file mode 120000
-index 5dd5ac8ccb..0000000000
---- a/qapi/qmp/qlit.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qobject/qlit.h
-\ No newline at end of file
-diff --git a/qapi/qmp/qnull.h b/qapi/qmp/qnull.h
-deleted file mode 120000
-index 944769d44b..0000000000
---- a/qapi/qmp/qnull.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qobject/qnull.h
-\ No newline at end of file
-diff --git a/qapi/qmp/qnum.h b/qapi/qmp/qnum.h
-deleted file mode 120000
-index 8038e2f4d6..0000000000
---- a/qapi/qmp/qnum.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qobject/qnum.h
-\ No newline at end of file
-diff --git a/qapi/qmp/qobject.h b/qapi/qmp/qobject.h
-deleted file mode 120000
-index 89d9118cfd..0000000000
---- a/qapi/qmp/qobject.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qobject/qobject.h
-\ No newline at end of file
-diff --git a/qapi/qmp/qstring.h b/qapi/qmp/qstring.h
-deleted file mode 120000
-index 24f48de18a..0000000000
---- a/qapi/qmp/qstring.h
-+++ /dev/null
-@@ -1 +0,0 @@
--../../include/qobject/qstring.h
-\ No newline at end of file
+> 
+> Otherwise,
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> 
+> Regards,
+> Zhao
+> 
+> >       */
+> >      if (g_str_has_prefix(type, "memory-backend-")) {
+> >          return false;
+> > -- 
+> > 2.43.0
+> > 
+> > 
+> 
+
+With regards,
+Daniel
 -- 
-2.43.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
