@@ -2,128 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1898826C1A
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 12:07:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8624826C1F
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 12:07:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMnSv-000147-Ag; Mon, 08 Jan 2024 06:06:45 -0500
+	id 1rMnTT-0001ga-3g; Mon, 08 Jan 2024 06:07:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rMnSt-00012S-Fx
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:06:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rMnSV-0002ga-Ep
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:06:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704711978;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=tdyVklxi+KZbGIUEbkXg5wd8A+h/gjnKT9s6rw/9tG4=;
- b=HLvem79Os/8ilEQDYePzXS9BIZgAYstOFhl1B28mUygTpBHO1nxbfAFi2lUwZZSe13pb8n
- IlAOMpZiOgknf0yWaH6L37R8RpXKVGCVRB2cRZvVKDfpZkrHNfYwRJcJQFki51GXZU0cMB
- 0FOvgh7u9y3VYC5i219DwNOfUhCoqGI=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-130-HI12GIsWNnu_7RrPNVsnjQ-1; Mon, 08 Jan 2024 06:06:17 -0500
-X-MC-Unique: HI12GIsWNnu_7RrPNVsnjQ-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-680c8d21542so49026596d6.0
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 03:06:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rMnTI-0001V6-P0
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:07:10 -0500
+Received: from mail-qk1-x72b.google.com ([2607:f8b0:4864:20::72b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rMnTG-00036g-EM
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:07:08 -0500
+Received: by mail-qk1-x72b.google.com with SMTP id
+ af79cd13be357-7811db57cb4so142252985a.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 03:07:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704712025; x=1705316825; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NnkEp8gUOsdF2Aq//6qpECXLC0VnSwCYzR8pykb3uuk=;
+ b=JAE4Pl70ln7M19JUitEJS2KyCkPpxA/qCqMlIRmfkVBVDvgj1FX1t0ghqRt+EOyjOr
+ Xs9n5XrmWk+a8fC2kxEkmFycbzAuIbUR+ietP+CzuZ+RJaefBTepZqMaeBbTSh5Imbon
+ 3N+WOh43qoY3NnUUFzfQlyTOBKbBllyYPlQXfeEP6uQZvjWT+N4njxvuHkNAZeKQwWCy
+ Vq914hndYCUaAhBhP/jvkD8C5rCa23mwUL+tT6Ta7XHwFZkZvI1rctChmRD6NmlwZj+0
+ MdIcdxs+diiJdH39tZ3utQaWtcwEfyXIYCPVnOhccgfZcp/at5E3i3qOjk9es7zRaqWl
+ yrJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704711977; x=1705316777;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1704712025; x=1705316825;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tdyVklxi+KZbGIUEbkXg5wd8A+h/gjnKT9s6rw/9tG4=;
- b=oNWO2KN6NkXjzRwHNNYzWohbS1m6AFyBXVJQBFdzaA0j+jUqLdSiL/xht8N4T9f8qQ
- Y8+54s5CxUmsUlW74qX9uIqz3yuT1OZjcR46YY8GOYdAbvUK0AtE1Gl+0Lyvu9qHvMcg
- jXb7yyzuBL279ZRAeZEGgyFZHvMSUbvWXldNlyafWCaVN2+EN+OLeNDkery3aOveRFzg
- X8nNAC7yR+LvQUYwpWIql3t1UEerk2S22szwnq0dtp4j5IffgKcl2Cy4mvsxe+qXYMRl
- 6eK2yEB8TL28dfsRUwl62sWWJaD4+dEhO6xeD/2LiCKhV5f6MX3+htdDHAjgJfBEjwu0
- afng==
-X-Gm-Message-State: AOJu0YyN97mb4SgLLlyANQFi5GdRP9krYYF29wGcieyENbVkAZliVKT/
- siXKcEgnsCgq1YxxnvsLmka2EZGGhRPzqVp7Wvg1cZtjwgXrXfrqdF81tTS0zZn1Wul7kn0723J
- kQPFx868p0AUwXAbTR2krk7Q=
-X-Received: by 2002:a05:6214:250c:b0:680:cc00:3f49 with SMTP id
- gf12-20020a056214250c00b00680cc003f49mr9213614qvb.2.1704711977057; 
- Mon, 08 Jan 2024 03:06:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG/AgBqBTfcte3OpiEC+ox55l3GjWiOzu9+IGTFebEl3qUlJmkbLBeNy01AtFTNQZmwzFjVsw==
-X-Received: by 2002:a05:6214:250c:b0:680:cc00:3f49 with SMTP id
- gf12-20020a056214250c00b00680cc003f49mr9213606qvb.2.1704711976828; 
- Mon, 08 Jan 2024 03:06:16 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-179-78.web.vodafone.de.
- [109.43.179.78]) by smtp.gmail.com with ESMTPSA id
- lw2-20020a05621457c200b006810b5cf63dsm308122qvb.67.2024.01.08.03.06.15
+ bh=NnkEp8gUOsdF2Aq//6qpECXLC0VnSwCYzR8pykb3uuk=;
+ b=qYf12DPxD/e8NzKjlbEmv2yIidoAnfPdmgbUKGYfY56dqxf1jFFWZJ9SpnSJvqLsYI
+ 6pwDNmw2j9az7D5IPsAdkV2LJPGgQW+aCrDUmspfkmpEMbib4bhoh5frua03BNR00son
+ l5NbR7W7T55Uavg7AWBNKgxEf/BnR2RHKbNeFJ4f4EQ9NvU8zyp1wHD5e6hGnwXCvZlh
+ EeTaViPX2gkTqQnu5ENT0twKvt27tnirYeGkTWFFM4LGTtHSpVsEjwXi/+6xZkka4sYM
+ LNSKrz9MbUOx9B2NF4K7SGWYXQ+k5n15bx96+6Y0WEkueurXfWi3YMTF+3XxP3mcCn/X
+ QtWA==
+X-Gm-Message-State: AOJu0Ywbl4VYHc80FQ0P9AnlLt+cGbN+lIoaQcu8XAup3eIq9mkDuQ60
+ uotGi93wmat66eWIQFR8HIBKllhpZ28yicuGPAiytGj4dEg=
+X-Google-Smtp-Source: AGHT+IF2nsUtrdj6JCL3HiO8j7Blak+ecQZ1fhvAdDTDP3VxGn3QqvSg4JgTZOxpqC/3Ub9c5mmaKw==
+X-Received: by 2002:a05:620a:8221:b0:77f:25ef:eb92 with SMTP id
+ ow33-20020a05620a822100b0077f25efeb92mr7926235qkn.27.1704712025076; 
+ Mon, 08 Jan 2024 03:07:05 -0800 (PST)
+Received: from [192.168.1.24] ([102.35.208.160])
+ by smtp.gmail.com with ESMTPSA id
+ c10-20020a05620a164a00b00781663f3161sm2592930qko.85.2024.01.08.03.07.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 03:06:16 -0800 (PST)
-Message-ID: <b21810f0-2f35-46c7-b6a7-d78896b9c957@redhat.com>
-Date: Mon, 8 Jan 2024 12:06:14 +0100
+ Mon, 08 Jan 2024 03:07:04 -0800 (PST)
+Message-ID: <ae55d6b5-d520-4da0-b2d8-b5bfe9d97904@linaro.org>
+Date: Mon, 8 Jan 2024 15:07:02 +0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/qtest/virtio-ccw: Fix device presence checking
+Subject: Re: [PATCH v3 24/33] tests/tcg: Remove run-test-mmap-*
 Content-Language: en-US
-To: Samuel Tardieu <sam@rfc1149.net>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-References: <20240106130121.1244993-1-sam@rfc1149.net>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240106130121.1244993-1-sam@rfc1149.net>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240102015808.132373-1-richard.henderson@linaro.org>
+ <20240102015808.132373-25-richard.henderson@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20240102015808.132373-25-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.098,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-qk1-x72b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -140,34 +93,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06/01/2024 14.01, Samuel Tardieu wrote:
-> An apparent copy-paste error tests for the presence of the
-> virtio-rng-ccw device in order to perform tests on the virtio-scsi-ccw
-> device.
+On 1/2/24 05:57, Richard Henderson wrote:
+> These tests are confused, because -p does not change
+> the guest page size, but the host page size.
 > 
-> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   tests/qtest/virtio-ccw-test.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   tests/tcg/alpha/Makefile.target     |  3 ---
+>   tests/tcg/arm/Makefile.target       |  3 ---
+>   tests/tcg/hppa/Makefile.target      |  3 ---
+>   tests/tcg/i386/Makefile.target      |  3 ---
+>   tests/tcg/m68k/Makefile.target      |  3 ---
+>   tests/tcg/multiarch/Makefile.target |  9 ---------
+>   tests/tcg/ppc/Makefile.target       | 12 ------------
+>   tests/tcg/sh4/Makefile.target       |  3 ---
+>   tests/tcg/sparc64/Makefile.target   |  6 ------
+>   9 files changed, 45 deletions(-)
+>   delete mode 100644 tests/tcg/ppc/Makefile.target
+>   delete mode 100644 tests/tcg/sparc64/Makefile.target
 > 
-> diff --git a/tests/qtest/virtio-ccw-test.c b/tests/qtest/virtio-ccw-test.c
-> index f4f5858b84..7a5357c212 100644
-> --- a/tests/qtest/virtio-ccw-test.c
-> +++ b/tests/qtest/virtio-ccw-test.c
-> @@ -85,7 +85,7 @@ int main(int argc, char **argv)
->       if (qtest_has_device("virtio-rng-ccw")) {
->           qtest_add_func("/virtio/rng/nop", virtio_rng_nop);
->       }
-> -    if (qtest_has_device("virtio-rng-ccw")) {
-> +    if (qtest_has_device("virtio-scsi-ccw")) {
->           qtest_add_func("/virtio/scsi/nop", virtio_scsi_nop);
->           qtest_add_func("/virtio/scsi/hotplug", virtio_scsi_hotplug);
->       }
+> diff --git a/tests/tcg/alpha/Makefile.target b/tests/tcg/alpha/Makefile.target
+> index b94500a7d9..fdd7ddf64e 100644
+> --- a/tests/tcg/alpha/Makefile.target
+> +++ b/tests/tcg/alpha/Makefile.target
+> @@ -13,6 +13,3 @@ test-cmov: test-cond.c
+>   	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
+>   
+>   run-test-cmov: test-cmov
+> -
+> -# On Alpha Linux only supports 8k pages
+> -EXTRA_RUNS+=run-test-mmap-8192
+> diff --git a/tests/tcg/arm/Makefile.target b/tests/tcg/arm/Makefile.target
+> index 3473f4619e..0a1965fce7 100644
+> --- a/tests/tcg/arm/Makefile.target
+> +++ b/tests/tcg/arm/Makefile.target
+> @@ -79,6 +79,3 @@ sha512-vector: sha512.c
+>   ARM_TESTS += sha512-vector
+>   
+>   TESTS += $(ARM_TESTS)
+> -
+> -# On ARM Linux only supports 4k pages
+> -EXTRA_RUNS+=run-test-mmap-4096
+> diff --git a/tests/tcg/hppa/Makefile.target b/tests/tcg/hppa/Makefile.target
+> index cdd0d572a7..ea5ae2186d 100644
+> --- a/tests/tcg/hppa/Makefile.target
+> +++ b/tests/tcg/hppa/Makefile.target
+> @@ -2,9 +2,6 @@
+>   #
+>   # HPPA specific tweaks - specifically masking out broken tests
+>   
+> -# On parisc Linux supports 4K/16K/64K (but currently only 4k works)
+> -EXTRA_RUNS+=run-test-mmap-4096 # run-test-mmap-16384 run-test-mmap-65536
+> -
+>   # This triggers failures for hppa-linux about 1% of the time
+>   # HPPA is the odd target that can't use the sigtramp page;
+>   # it requires the full vdso with dwarf2 unwind info.
+> diff --git a/tests/tcg/i386/Makefile.target b/tests/tcg/i386/Makefile.target
+> index 3dec7c6c42..53540ac96a 100644
+> --- a/tests/tcg/i386/Makefile.target
+> +++ b/tests/tcg/i386/Makefile.target
+> @@ -71,9 +71,6 @@ endif
+>   I386_TESTS:=$(filter-out $(SKIP_I386_TESTS), $(ALL_X86_TESTS))
+>   TESTS=$(MULTIARCH_TESTS) $(I386_TESTS)
+>   
+> -# On i386 and x86_64 Linux only supports 4k pages (large pages are a different hack)
+> -EXTRA_RUNS+=run-test-mmap-4096
+> -
+>   sha512-sse: CFLAGS=-msse4.1 -O3
+>   sha512-sse: sha512.c
+>   	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
+> diff --git a/tests/tcg/m68k/Makefile.target b/tests/tcg/m68k/Makefile.target
+> index 6ff214e60a..33f7b1b127 100644
+> --- a/tests/tcg/m68k/Makefile.target
+> +++ b/tests/tcg/m68k/Makefile.target
+> @@ -5,6 +5,3 @@
+>   
+>   VPATH += $(SRC_PATH)/tests/tcg/m68k
+>   TESTS += trap denormal
+> -
+> -# On m68k Linux supports 4k and 8k pages (but 8k is currently broken)
+> -EXTRA_RUNS+=run-test-mmap-4096 # run-test-mmap-8192
+> diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+> index d31ba8d6ae..313f7417ba 100644
+> --- a/tests/tcg/multiarch/Makefile.target
+> +++ b/tests/tcg/multiarch/Makefile.target
+> @@ -51,18 +51,9 @@ run-plugin-vma-pthread-with-%: vma-pthread
+>   	$(call skip-test, $<, "flaky on CI?")
+>   endif
+>   
+> -# We define the runner for test-mmap after the individual
+> -# architectures have defined their supported pages sizes. If no
+> -# additional page sizes are defined we only run the default test.
+> -
+> -# default case (host page size)
+>   run-test-mmap: test-mmap
+>   	$(call run-test, test-mmap, $(QEMU) $<, $< (default))
+>   
+> -# additional page sizes (defined by each architecture adding to EXTRA_RUNS)
+> -run-test-mmap-%: test-mmap
+> -	$(call run-test, test-mmap-$*, $(QEMU) -p $* $<, $< ($* byte pages))
+> -
+>   ifneq ($(GDB),)
+>   GDB_SCRIPT=$(SRC_PATH)/tests/guest-debug/run-test.py
+>   
+> diff --git a/tests/tcg/ppc/Makefile.target b/tests/tcg/ppc/Makefile.target
+> deleted file mode 100644
+> index f5e08c7376..0000000000
+> --- a/tests/tcg/ppc/Makefile.target
+> +++ /dev/null
+> @@ -1,12 +0,0 @@
+> -# -*- Mode: makefile -*-
+> -#
+> -# PPC - included from tests/tcg/Makefile
+> -#
+> -
+> -ifneq (,$(findstring 64,$(TARGET_NAME)))
+> -# On PPC64 Linux can be configured with 4k (default) or 64k pages (currently broken)
+> -EXTRA_RUNS+=run-test-mmap-4096 #run-test-mmap-65536
+> -else
+> -# On PPC32 Linux supports 4K/16K/64K/256K (but currently only 4k works)
+> -EXTRA_RUNS+=run-test-mmap-4096 #run-test-mmap-16384 run-test-mmap-65536 run-test-mmap-262144
+> -endif
+> diff --git a/tests/tcg/sh4/Makefile.target b/tests/tcg/sh4/Makefile.target
+> index 47c39a44b6..16eaa850a8 100644
+> --- a/tests/tcg/sh4/Makefile.target
+> +++ b/tests/tcg/sh4/Makefile.target
+> @@ -3,9 +3,6 @@
+>   # SuperH specific tweaks
+>   #
+>   
+> -# On sh Linux supports 4k, 8k, 16k and 64k pages (but only 4k currently works)
+> -EXTRA_RUNS+=run-test-mmap-4096 # run-test-mmap-8192 run-test-mmap-16384 run-test-mmap-65536
+> -
+>   # This triggers failures for sh4-linux about 10% of the time.
+>   # Random SIGSEGV at unpredictable guest address, cause unknown.
+>   run-signals: signals
+> diff --git a/tests/tcg/sparc64/Makefile.target b/tests/tcg/sparc64/Makefile.target
+> deleted file mode 100644
+> index 408dace783..0000000000
+> --- a/tests/tcg/sparc64/Makefile.target
+> +++ /dev/null
+> @@ -1,6 +0,0 @@
+> -# -*- Mode: makefile -*-
+> -#
+> -# sparc specific tweaks
+> -
+> -# On Sparc64 Linux support 8k pages
+> -EXTRA_RUNS+=run-test-mmap-8192
 
-Ooops, thanks for catching it!
-
-I'll queue the patch for my next pull request.
-
-  Thomas
-
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
