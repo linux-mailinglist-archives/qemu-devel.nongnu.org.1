@@ -2,53 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE92C8268A3
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 08:34:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE9C8268AE
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 08:35:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMk85-00034C-SE; Mon, 08 Jan 2024 02:33:02 -0500
+	id 1rMk8A-0003B3-EJ; Mon, 08 Jan 2024 02:33:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=P3fH=IS=redhat.com=clg@ozlabs.org>)
- id 1rMk7x-00032d-Ar
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:32:53 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1rMk80-000334-Qn
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:32:56 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=P3fH=IS=redhat.com=clg@ozlabs.org>)
- id 1rMk7r-0004Yc-DO
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:32:52 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T7m471Wdlz4wd4;
- Mon,  8 Jan 2024 18:32:39 +1100 (AEDT)
+ id 1rMk7r-0004Yq-NO
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:32:54 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T7m4B06hhz4wnw;
+ Mon,  8 Jan 2024 18:32:42 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T7m454lQDz4wcc;
- Mon,  8 Jan 2024 18:32:37 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T7m474y5Mz4wcc;
+ Mon,  8 Jan 2024 18:32:39 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eric Auger <eric.auger@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 00/17] vfio queue
-Date: Mon,  8 Jan 2024 08:32:15 +0100
-Message-ID: <20240108073232.118228-1-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Eric Farman <farman@linux.ibm.com>
+Subject: [PULL 01/17] vfio/spapr: Extend VFIOIOMMUOps with a release handler
+Date: Mon,  8 Jan 2024 08:32:16 +0100
+Message-ID: <20240108073232.118228-2-clg@redhat.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240108073232.118228-1-clg@redhat.com>
+References: <20240108073232.118228-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=P3fH=IS=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,63 +71,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 0c1eccd368af8805ec0fb11e6cf25d0684d37328:
+This allows to abstract a bit more the sPAPR IOMMU support in the
+legacy IOMMU backend.
 
-  Merge tag 'hw-cpus-20240105' of https://github.com/philmd/qemu into staging (2024-01-05 16:08:58 +0000)
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Tested-by: Eric Farman <farman@linux.ibm.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ include/hw/vfio/vfio-container-base.h |  1 +
+ hw/vfio/container.c                   | 10 +++-----
+ hw/vfio/spapr.c                       | 35 +++++++++++++++------------
+ 3 files changed, 24 insertions(+), 22 deletions(-)
 
-are available in the Git repository at:
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index 2ae297ccda93fd97986c852a8329b390fa1ab91f..5c9594b6c77681e5593236e711e7e391e5f2bdff 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -117,5 +117,6 @@ struct VFIOIOMMUOps {
+                       Error **errp);
+     void (*del_window)(VFIOContainerBase *bcontainer,
+                        MemoryRegionSection *section);
++    void (*release)(VFIOContainerBase *bcontainer);
+ };
+ #endif /* HW_VFIO_VFIO_CONTAINER_BASE_H */
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index b22feb8ded0a0d9ed98d6e206b78c0c6e2554d5c..1e77a2929e90ed1d2ee84062549c477ae651c5a8 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -632,9 +632,8 @@ listener_release_exit:
+     QLIST_REMOVE(bcontainer, next);
+     vfio_kvm_device_del_group(group);
+     memory_listener_unregister(&bcontainer->listener);
+-    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU ||
+-        container->iommu_type == VFIO_SPAPR_TCE_IOMMU) {
+-        vfio_spapr_container_deinit(container);
++    if (bcontainer->ops->release) {
++        bcontainer->ops->release(bcontainer);
+     }
+ 
+ enable_discards_exit:
+@@ -667,9 +666,8 @@ static void vfio_disconnect_container(VFIOGroup *group)
+      */
+     if (QLIST_EMPTY(&container->group_list)) {
+         memory_listener_unregister(&bcontainer->listener);
+-        if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU ||
+-            container->iommu_type == VFIO_SPAPR_TCE_IOMMU) {
+-            vfio_spapr_container_deinit(container);
++        if (bcontainer->ops->release) {
++            bcontainer->ops->release(bcontainer);
+         }
+     }
+ 
+diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
+index 5c6426e6973bec606667ebcaca5b0585b184a214..44617dfc6b5f1a2a3a1c37436b76042aebda8b63 100644
+--- a/hw/vfio/spapr.c
++++ b/hw/vfio/spapr.c
+@@ -440,6 +440,24 @@ vfio_spapr_container_del_section_window(VFIOContainerBase *bcontainer,
+     }
+ }
+ 
++static void vfio_spapr_container_release(VFIOContainerBase *bcontainer)
++{
++    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
++                                            bcontainer);
++    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
++                                                  container);
++    VFIOHostDMAWindow *hostwin, *next;
++
++    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
++        memory_listener_unregister(&scontainer->prereg_listener);
++    }
++    QLIST_FOREACH_SAFE(hostwin, &scontainer->hostwin_list, hostwin_next,
++                       next) {
++        QLIST_REMOVE(hostwin, hostwin_next);
++        g_free(hostwin);
++    }
++}
++
+ static VFIOIOMMUOps vfio_iommu_spapr_ops;
+ 
+ static void setup_spapr_ops(VFIOContainerBase *bcontainer)
+@@ -447,6 +465,7 @@ static void setup_spapr_ops(VFIOContainerBase *bcontainer)
+     vfio_iommu_spapr_ops = *bcontainer->ops;
+     vfio_iommu_spapr_ops.add_window = vfio_spapr_container_add_section_window;
+     vfio_iommu_spapr_ops.del_window = vfio_spapr_container_del_section_window;
++    vfio_iommu_spapr_ops.release = vfio_spapr_container_release;
+     bcontainer->ops = &vfio_iommu_spapr_ops;
+ }
+ 
+@@ -527,19 +546,3 @@ listener_unregister_exit:
+     }
+     return ret;
+ }
+-
+-void vfio_spapr_container_deinit(VFIOContainer *container)
+-{
+-    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
+-                                                  container);
+-    VFIOHostDMAWindow *hostwin, *next;
+-
+-    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
+-        memory_listener_unregister(&scontainer->prereg_listener);
+-    }
+-    QLIST_FOREACH_SAFE(hostwin, &scontainer->hostwin_list, hostwin_next,
+-                       next) {
+-        QLIST_REMOVE(hostwin, hostwin_next);
+-        g_free(hostwin);
+-    }
+-}
+-- 
+2.43.0
 
-  https://github.com/legoater/qemu/ tags/pull-vfio-20240107
-
-for you to fetch changes up to 19368b1905b4b917e915526fcbd5bfa3f7439451:
-
-  backends/iommufd: Remove mutex (2024-01-05 21:25:20 +0100)
-
-----------------------------------------------------------------
-vfio queue:
-
-* Minor cleanups
-* Fix for a regression in device reset introduced in 8.2
-* Coverity fixes, including the removal of the iommufd backend mutex
-* Introduced VFIOIOMMUClass, to avoid compiling spapr when !CONFIG_PSERIES
-
-----------------------------------------------------------------
-Avihai Horon (1):
-      vfio/migration: Add helper function to set state or reset device
-
-Cédric Le Goater (14):
-      vfio/spapr: Extend VFIOIOMMUOps with a release handler
-      vfio/container: Introduce vfio_legacy_setup() for further cleanups
-      vfio/container: Initialize VFIOIOMMUOps under vfio_init_container()
-      vfio/container: Introduce a VFIOIOMMU QOM interface
-      vfio/container: Introduce a VFIOIOMMU legacy QOM interface
-      vfio/container: Intoduce a new VFIOIOMMUClass::setup handler
-      vfio/spapr: Introduce a sPAPR VFIOIOMMU QOM interface
-      vfio/iommufd: Introduce a VFIOIOMMU iommufd QOM interface
-      vfio/spapr: Only compile sPAPR IOMMU support when needed
-      vfio/iommufd: Remove CONFIG_IOMMUFD usage
-      vfio/container: Replace basename with g_path_get_basename
-      vfio/iommufd: Remove the use of stat() to check file existence
-      backends/iommufd: Remove check on number of backend users
-      backends/iommufd: Remove mutex
-
-Volker Rümelin (1):
-      hw/vfio: fix iteration over global VFIODevice list
-
-Zhenzhong Duan (1):
-      vfio/container: Rename vfio_init_container to vfio_set_iommu
-
- include/hw/vfio/vfio-common.h         |   2 -
- include/hw/vfio/vfio-container-base.h |  27 +++++-
- include/sysemu/iommufd.h              |   2 -
- backends/iommufd.c                    |  12 ---
- hw/vfio/common.c                      |  19 +++--
- hw/vfio/container-base.c              |  12 ++-
- hw/vfio/container.c                   | 153 +++++++++++++++++++++-------------
- hw/vfio/iommufd.c                     |  41 +++++----
- hw/vfio/migration.c                   |  41 ++++-----
- hw/vfio/pci.c                         |   2 +-
- hw/vfio/spapr.c                       |  60 +++++++------
- hw/vfio/meson.build                   |   2 +-
- 12 files changed, 222 insertions(+), 151 deletions(-)
 
