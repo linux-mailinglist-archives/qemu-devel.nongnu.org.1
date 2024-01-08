@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545568272D8
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:20:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C6A8272EB
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:23:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMrQ8-0005s4-Oz; Mon, 08 Jan 2024 10:20:09 -0500
+	id 1rMrST-0007PD-0m; Mon, 08 Jan 2024 10:22:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMrPv-0005qw-IE
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:19:56 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rMrSQ-0007L3-9D
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:22:30 -0500
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMrPo-0004wr-P2
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:19:52 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-336990fb8fbso1864368f8f.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 07:19:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rMrSO-0006Ba-3m
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:22:29 -0500
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-50e7c6e3c63so1792143e87.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 07:22:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704727178; x=1705331978; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=K+osPsFOJQ0Mo4THPwnyg9SyaD9dN1OwJU4TLjAUKa0=;
- b=Inl02+or0gSuJ/nqbg4pDalEUKBaIIG/esgk53qdEqL8XEynycINQn+6l/cZI9FnxK
- CmGf7DqfbjnztIM2KqmKQAtdPXe8jRnO5x3Y0H7NrQcfgsPaOU8tcQ+5XXknHHLka3fb
- hFHZ9Wp7rLqxcGwIR2Uy/9vMP0DE/3cQGN+qZ5KEskIVPZrYvz/OUcNKwMN6m7SE1ajE
- lMXAon/Q1yFPnt37NzbuHOdsgBlVu2y9la9KH1s/VD7Y3D9zEc8Od9uGr89SRFHtRREu
- cYEtC9x4SH2D9LhiYeuXfeH6DchEsPPQCfEacIV0wmAuydopC8FdeCqwXFX2Piw1U7Hl
- Hucw==
+ d=linaro.org; s=google; t=1704727346; x=1705332146; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=LvJQvzhO5jjL+q5UqXm2fqRqymZa+7h0l8JwxK1WpBU=;
+ b=js4lRbY+IHEe4Ono59wJKebCeDYD3RuzQN06f/0kMFtEheKM4HnwVVT3DcIjzddCC3
+ XKcwmc5gALQ79EgXV7mJZqavRp4cPIPQIHmq3BrLkmQfkp86ZZ0FHe/GHen4s9mHMlPw
+ BDI9GzsZVMEuL5QvdkYK4RMWWqJmc2pRqhRWCvZ04omK01P5QJSMQAtcll3s5Hp9iDIW
+ QyE6WfeVLg52lZwssF2Df/CBhUeSupJtsObPB/JiYgW+zzea74ZJ9te8J9Ag1YZhTXhd
+ b/KCda0ZywvV2HVM7WTGUAWAgXviDEPNx/TQsNCzeKLoCglHKlvPsdPnCFmY8PIJwqKw
+ Ng2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704727178; x=1705331978;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=K+osPsFOJQ0Mo4THPwnyg9SyaD9dN1OwJU4TLjAUKa0=;
- b=ZpOGW2LllT1SQ7n9pYHhVi/Hp1younevEVjSxgjqjw2thwDDREYrT9O9A4u6M3gDVD
- Q9aLBHGJki41p4W/nPAyr68x+QRVt3jq8wQkOh4DjSL6XMXiNexv9JIV+0AMOtgtbwr/
- l/+gOLSs3bsVthBnuO2PFO6EakcIl8sKXoRN/R7RNlitPIzOlGv+tI1nnVEVN1cavOPm
- 5k0F/freX7ZrsA2W90EBE6HTtmumhjY1yao8YFMq2sYpB08EoWsZZHDg2739Waf9KoWn
- g/zGz95p65J63Iw00OraFavJEx0qTyyQpYdkxfobHXaPSDHZc4zTUSXmWXhuGB5KcCx+
- V/KA==
-X-Gm-Message-State: AOJu0YzadOH6ya64CH2K/WU/e5lRqU6UKhmZAKWyEd0G1qBCtmS6ZC0N
- SK9LZWNJwwOtSxAYxmk7eXScWuJ36A2RPxs5pEOWoZ536bc=
-X-Google-Smtp-Source: AGHT+IF/DPPljqoPLszV59aAo7I2+MpZ+dT1qxjyA6kedgXHVj7IJ378A2xn086QaxmXzaG3dOZENg==
-X-Received: by 2002:adf:fe8c:0:b0:337:689e:6616 with SMTP id
- l12-20020adffe8c000000b00337689e6616mr1229999wrr.10.1704727178327; 
- Mon, 08 Jan 2024 07:19:38 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.175.62])
- by smtp.gmail.com with ESMTPSA id
- d16-20020a5d4f90000000b003366e974cacsm8075538wru.73.2024.01.08.07.19.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 07:19:37 -0800 (PST)
-Message-ID: <68443785-d97d-412b-8c65-36865dd38803@linaro.org>
-Date: Mon, 8 Jan 2024 16:19:35 +0100
+ d=1e100.net; s=20230601; t=1704727346; x=1705332146;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LvJQvzhO5jjL+q5UqXm2fqRqymZa+7h0l8JwxK1WpBU=;
+ b=ID5wbXcugGZbMGDJ+unib1ildfxhEknhNmXxx09mnJ/4wtJhe8JwWqu+b/GpyiWfFD
+ 6ivo5F5XkHnsm9XBfZHT8F5ojoZdrKsHGpaYvuh1Iy/rCoOF9P1glNB1EVAv7ZlGJuav
+ yp8212IjW+vonUXjoQyFXRzgiy0jsYFyqnzs0VMw2qkFTPbAEf59lTfdD1Tg58U61uzh
+ TqTSF0xzZ655YSOS53wTmcb8KS0cABOJatL3bXilBBITEKxKe6DQwzV97NT2w4/FgnYe
+ +2ZafO2ikFyRTpTz98M16JCKPI/fPMdyf4iv1vQwyyhXORAfcGenZxmvu7u8zdRlqiiV
+ JBow==
+X-Gm-Message-State: AOJu0YzRJqW0JkNSZGLpT5Hhj93GMQKiZBokjhq+oOkZ/5l552S3nRzh
+ ehIjSvWmPlSGzEtt8moVcG85GCFJ78vu5+bpqfYW8r/nQMtwAQ==
+X-Google-Smtp-Source: AGHT+IGV7hdmGxaM0bezHAvUluSSJsPZdKs7TbncHhSKCnKay0np9cjIexkGE697ETNb7x4UB9Wyq90n5l1I5HKeUfQ=
+X-Received: by 2002:ac2:4119:0:b0:50e:4d84:c5a2 with SMTP id
+ b25-20020ac24119000000b0050e4d84c5a2mr643187lfi.209.1704727345782; Mon, 08
+ Jan 2024 07:22:25 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 08/10] hw/net: GMAC Rx Implementation
-Content-Language: en-US
-To: Nabih Estefan <nabihestefan@google.com>, peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com,
- wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com,
- kwliu@nuvoton.com, tomer.maimon@nuvoton.com, Hila.Miranda-Kuzi@nuvoton.com
-References: <20231219213255.604535-1-nabihestefan@google.com>
- <20231219213255.604535-9-nabihestefan@google.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231219213255.604535-9-nabihestefan@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+References: <20240104043213.431566-1-peterx@redhat.com>
+ <CAFEAcA8iim9vr19DxRDVabdESvcz+pAx91Ff6a7wQB-rrsCxqg@mail.gmail.com>
+ <ZZqaGf6nt0wkZgbS@x1n>
+ <CAJSP0QVA3USmat7EodQ7eBk+sf0FCT7oYBen_251ZMeeZHJ5dg@mail.gmail.com>
+ <CAFEAcA9Wx4wcZj2MtBfb7u-y4wrbbjNhbLXA21pqmcrS+T8+hw@mail.gmail.com>
+ <CAJSP0QX2bmZboYPyQ5AQz-q=n2N4sp=zzzDYvoie=vhiAYQ+7A@mail.gmail.com>
+ <ZZtZkE7w9Rvv8_7H@x1n> <ZZtfTX-sTBR3aXti@x1n>
+In-Reply-To: <ZZtfTX-sTBR3aXti@x1n>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 8 Jan 2024 15:22:14 +0000
+Message-ID: <CAFEAcA8NRuQUP0KEi69QGSgitAXsshM7BiKrjKzH-F968vPpqg@mail.gmail.com>
+Subject: Re: [PULL 00/26] Migration 20240104 patches
+To: Peter Xu <peterx@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@gmail.com>, qemu-devel@nongnu.org, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Steve Sistare <steven.sistare@oracle.com>, Juan Quintela <quintela@trasno.org>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,63 +94,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Nabih,
+On Mon, 8 Jan 2024 at 02:35, Peter Xu <peterx@redhat.com> wrote:
+>
+> On Mon, Jan 08, 2024 at 10:10:24AM +0800, Peter Xu wrote:
+> > On Sun, Jan 07, 2024 at 11:28:25AM -0500, Stefan Hajnoczi wrote:
+> > > On Sun, 7 Jan 2024 at 10:23, Peter Maydell <peter.maydell@linaro.org> wrote:
+> > > >
+> > > > On Sun, 7 Jan 2024 at 12:41, Stefan Hajnoczi <stefanha@gmail.com> wrote:
+> > > > >
+> > > > > On Sun, 7 Jan 2024 at 07:34, Peter Xu <peterx@redhat.com> wrote:
+> > > > > >
+> > > > > > On Fri, Jan 05, 2024 at 04:08:40PM +0000, Peter Maydell wrote:
+> > > > > > > I notice that your gpg key doesn't seem to be signed by anybody
+> > > > > > > else; you might look at whether it's easy to get it signed
+> > > > > > > by somebody else (eg some of your redhat colleagues).
+> > > > > >
+> > > > > > Hmm, I think I have signed with at least Juan and Stefan.  Which is the key
+> > > > > > server we normally use?  Maybe I missed some steps there?
+> > > > >
+> > > > > Yes, Peter's key is signed by me:
+> > > > >
+> > > > > $ gpg --list-signatures 3B5FCCCDF3ABD706
+> > > > > pub   ed25519/0x3B5FCCCDF3ABD706 2023-10-03 [SC]
+> > > > >       Key fingerprint = B918 4DC2 0CC4 57DA CF7D  D1A9 3B5F CCCD F3AB D706
+> > > > > uid                   [  full  ] Peter Xu <xzpeter@gmail.com>
+> > > > > sig 3        0x3B5FCCCDF3ABD706 2023-10-03  [self-signature]
+> > > > > sig          0x9CA4ABB381AB73C8 2023-10-10  Stefan Hajnoczi
+> > > > > <stefanha@redhat.com>
+> > > > > uid                   [  full  ] Peter Xu <peterx@redhat.com>
+> > > > > sig 3        0x3B5FCCCDF3ABD706 2023-10-03  [self-signature]
+> > > > > sig          0x9CA4ABB381AB73C8 2023-10-10  Stefan Hajnoczi
+> > > > > <stefanha@redhat.com>
+> > > > > sub   cv25519/0xD5261EB1CB0C6E45 2023-10-03 [E]
+> > > > > sig          0x3B5FCCCDF3ABD706 2023-10-03  [self-signature]
+> > > > >
+> > > > > I have pushed to the keyservers again in case I forget.
+> > > >
+> > > > Thanks. Which keyservers did you use? I think these days the
+> > > > keyserver infrastructure is unfortunately fragmented; I
+> > > > probably didn't try refreshing from the right keyserver.
+> > >
+> > > I ran gpg --send-key again and it said hkps://keyserver.ubuntu.com.
+> >
+> > Thanks Stefan.  Indeed I can only see Stefan's sig there on the key server:
+> >
+> > https://keyserver.ubuntu.com/pks/lookup?search=3b5fcccdf3abd706&fingerprint=on&op=index
+> >
+> > I am guessing Juan forgot to do a "gpg --send-keys 3B5FCCCDF3ABD706". I'll
+> > also try to ask maybe one or two more people to exchange keys.  Maybe
+> > that'll also help.
+>
+> Besides that, just now I also tried to do a remote --recv-keys on my own
+> key and I found that indeed the signature from Stefan was not attached.
+>
+> Then I found this:
+>
+> https://daniel-lange.com/archives/178-Getting-gpg-to-import-signatures-again.html
+>
+> So it seems the default behavior of gpg command changed recently that it'll
+> stop to receive signatures besides the self signature to avoid DoS to the
+> keyservers.
+>
+> https://dev.gnupg.org/rG23c978640812d123eaffd4108744bdfcf48f7c93
+>
+> In short, now we seem to need:
+>
+>   $ gpg --recv-keys --keyserver-option no-self-sigs-only $KEY_ID
+>
+> To recover the old behavior to receive signs from others.
 
-On 19/12/23 22:32, Nabih Estefan wrote:
-> From: Nabih Estefan Diaz <nabihestefan@google.com>
-> 
-> - Implementation of Receive function for packets
-> - Implementation for reading and writing from and to descriptors in
->    memory for Rx
-> 
-> When RX starts, we need to flush the queued packets so that they
-> can be received by the GMAC device. Without this it won't work
-> with TAP NIC device.
-> 
-> When RX descriptor list is full, it returns a DMA_STATUS for software to handle it. But there's no way to indicate the software ha handled all RX descriptors and the whole pipeline stalls.
-> 
-> We do something similar to NPCM7XX EMC to handle this case.
-> 
-> 1. Return packet size when RX descriptor is full, effectively dropping these packets in such a case.
-> 2. When software clears RX descriptor full bit, continue receiving further packets by flushing QEMU packet queue.
-> 
-> Signed-off-by: Hao Wu <wuhaotsh@google.com>
-> Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-> Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
-> ---
->   hw/net/npcm_gmac.c | 330 ++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 328 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/net/npcm_gmac.c b/hw/net/npcm_gmac.c
-> index 44c4ffaff4..fe7b0421ef 100644
-> --- a/hw/net/npcm_gmac.c
-> +++ b/hw/net/npcm_gmac.c
-> @@ -23,7 +23,11 @@
->   #include "hw/registerfields.h"
->   #include "hw/net/mii.h"
->   #include "hw/net/npcm_gmac.h"
-> +#include "linux/if_ether.h"
+Ah, thank you. Yes, that did the trick and I now can see the
+signatures on your key from other people.
 
-This doesn't build on macOS:
-
-[1116/1645] Compiling C object libcommon.fa.p/hw_net_npcm_gmac.c.o
-../../hw/net/npcm_gmac.c:26:10: fatal error: 'linux/if_ether.h' file not 
-found
-#include "linux/if_ether.h"
-          ^~~~~~~~~~~~~~~~~~
-1 error generated.
-FAILED: libcommon.fa.p/hw_net_npcm_gmac.c.o
-ninja: build stopped: subcommand failed.
-
-$ uname -o
-Darwin
-
->   #include "migration/vmstate.h"
-> +#include "net/checksum.h"
-> +#include "net/net.h"
-> +#include "qemu/cutils.h"
->   #include "qemu/log.h"
->   #include "qemu/units.h"
->   #include "sysemu/dma.h"
-
+-- PMM
 
