@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DED4827B4E
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 00:08:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA9C827B4F
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 00:12:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMyhw-0007EA-Fi; Mon, 08 Jan 2024 18:07:00 -0500
+	id 1rMymX-0002Nc-Cd; Mon, 08 Jan 2024 18:11:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMyhu-0007Dy-AW
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 18:06:58 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMymV-0002N9-4Z
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 18:11:43 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMyhs-0003U7-88
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 18:06:58 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-33765009941so1964002f8f.3
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 15:06:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rMymS-0006XN-Un
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 18:11:42 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40d8902da73so22115705e9.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 15:11:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704755214; x=1705360014; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1704755498; x=1705360298; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QB4QWbe+SnCKOBCfZZ36siCOYNJ+x05fBJlGSyx1J8E=;
- b=GnfLyti9NBr8MABh/Efe2CqCfArzN5HE8XbuYQtD+i1SURbONCWrgYYknN5ffTshDD
- ELee0aNDaQBgLFwnkT8is5wrToDPuDBFAj9W/RPlJvLFlbF9BBM8cFMKhrchidQhUhNq
- KJxF6N8fFTNQaE0rcqqSvrsOmas1Snfi1m/fIrbdUqdHoerhIYf1eY8ktw+4aRNmnS9Q
- 8siap4IdlVvpaIehLf1DA0kBoJgvITuaPLBCIulDgFpo+UCQLPdlLO6Z8uVdj04t+cIj
- v3O2+avF/gFTrzY/HIxczXKjNHeDLPeyVer+x4yDbywSshz7CmF2004zHa9Q8ch7fhFN
- tqpg==
+ bh=SG32AEuv0G8eleWJzocVL/qwMWC3RU2VJS/Q+uRXSY4=;
+ b=IoUK0KV28c2Wna1eWlcFz78J9dXYECD/NylLstMUIsOPv/HbZCXyFl7XNFehoonlaK
+ QQ9hDzcGOhb2zMzEj4XndIVYj/asLJBhXYE154vcGJQyW3Cu26cBBOeeM7PRGWy83JOA
+ 00TumQOF9WteSLes1g7/nf2T+c+iFpYHUfNgDTFzUsdIdIPJ46FDbcE++uLqoyCMZI8s
+ Y9rbddefuY4yyb0F45AZhhII4FNSYUM1X8JwS8e9fblublTrDdRolxlYfvGnGfKwYJeb
+ SLDNlwjfSble26FDUXy8S0M7vmvvNvARaZNf6NAshDvKibPXWdUOjeYuGZMkwsi9bbxa
+ 1EeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704755214; x=1705360014;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1704755498; x=1705360298;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QB4QWbe+SnCKOBCfZZ36siCOYNJ+x05fBJlGSyx1J8E=;
- b=g91u+cbCe1Gs5wfur8bQX8Er8P4B/KXdAaa+LWynzSZtaF2oJSgeSWEFU75gX/QnBZ
- MFb9aHovBDpW2YSauCrDqV7lg7fIFIxzkQtYwYqn1V0lq7Aqd3Hx+0lg/oQkcUv6cbI/
- p58oEe2PivNByy6RKLkAyAhuqKrBYsDGWvKrCOXAfXQeQeNeyemnE9zPpVqVNUNgmIDW
- t9M/xIMIYuk8TGGEBv3hiQeg3XzU4zb7gIOAuT3jiMNIaPWeIiEiPDUzBWHcKFUobvsv
- Gd9auTuP/A+NoKS5PrOtYnuP1wNnI/sOnhTbBFcTkVE4ANYvrEBNQ9IUVKx1VpnoKKxN
- /FOg==
-X-Gm-Message-State: AOJu0Yx6oYPsAgTwfmxAPE/hNAxqibUNyKXt870mdPFnh7PEfS422A8+
- GGeSB/IZuZSowTPMvFtOcTeCyK0Xzq9kn93LAWKl6d/ceuo=
-X-Google-Smtp-Source: AGHT+IGswbOYh/3sjRPNeDWGE8xxKjcjO3sn1j6CEhuoKbzI3xZ3lRkKe3x7Rl08E/Ncl/qIdnHeYQ==
-X-Received: by 2002:a05:6000:1d99:b0:336:79df:6c35 with SMTP id
- bk25-20020a0560001d9900b0033679df6c35mr81520wrb.12.1704755214393; 
- Mon, 08 Jan 2024 15:06:54 -0800 (PST)
+ bh=SG32AEuv0G8eleWJzocVL/qwMWC3RU2VJS/Q+uRXSY4=;
+ b=rEKiGj/H1JT2keiTvaXlWPlzfZ4Sk4JCA8/b5LbSsQ9CXnivss0MK6xIn/LyVLCzyZ
+ r01Er5+AGKZQdtXsHHTlA4cnnuT2henGl+O6aZjckOX5raQ0bWb1N+HW/UZt7IVc7dnp
+ eTyRxGRJ3CxOy19UaGBIWqsvqmaN03dpkjpH7D4yJQiqOBiS10GwpFbwqYeUH/7/f4cs
+ hCPcewvPYlryMVAOZgnfNO6nr2xMwZZXj3YCeGrdes5la98ohWXXGaVvZ+JLoVIgG7p+
+ zIVZqeCn5zwtxkNAqkXlDH1xOhPq1C5pCISMACAphKQTh7ChcLwws2leCZMiWQIjzXkL
+ EIRg==
+X-Gm-Message-State: AOJu0Yzy87E+OCwOFD0zMsanXREJaspESwzjjMFEdbwgL3q/p9SRMXqM
+ GlBWdR6JXX9zF3UOFdFN4m4dH0N0CrAj5g==
+X-Google-Smtp-Source: AGHT+IFFuq1DAKx/V73ZG+X+7rKiL02+YruWdEeufnrxZylZN8xxiYAyy7qeZd3u+o0IWGrVTzLtow==
+X-Received: by 2002:a05:600c:3b9a:b0:40e:42b4:23b6 with SMTP id
+ n26-20020a05600c3b9a00b0040e42b423b6mr1873931wms.55.1704755498193; 
+ Mon, 08 Jan 2024 15:11:38 -0800 (PST)
 Received: from [192.168.69.100] ([176.187.194.16])
  by smtp.gmail.com with ESMTPSA id
- j8-20020a5d4488000000b00337464bf71bsm778336wrq.39.2024.01.08.15.06.53
+ k30-20020a05600c1c9e00b0040d887fda00sm1293186wms.26.2024.01.08.15.11.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 15:06:53 -0800 (PST)
-Message-ID: <cc1c2370-e516-478b-abfa-620cc8542118@linaro.org>
-Date: Tue, 9 Jan 2024 00:06:51 +0100
+ Mon, 08 Jan 2024 15:11:37 -0800 (PST)
+Message-ID: <55b697ed-381f-47f8-bcaa-d8258c75b2a2@linaro.org>
+Date: Tue, 9 Jan 2024 00:11:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] nubus-device: round Declaration ROM memory region
- address to qemu_target_page_size()
+Subject: Re: [PATCH 1/2] target/sh4: Deprecate the shix machine
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org, elliotnunn@fastmail.com
-References: <20240108192013.272112-1-mark.cave-ayland@ilande.co.uk>
- <20240108192013.272112-2-mark.cave-ayland@ilande.co.uk>
+To: Samuel Tardieu <sam@rfc1149.net>, qemu-devel@nongnu.org
+Cc: Magnus Damm <magnus.damm@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, devel@lists.libvirt.org, qemu-block@nongnu.org
+References: <20240108171523.2487291-1-sam@rfc1149.net>
+ <20240108171523.2487291-2-sam@rfc1149.net>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240108192013.272112-2-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20240108171523.2487291-2-sam@rfc1149.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,84 +94,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/1/24 20:20, Mark Cave-Ayland wrote:
-> Declaration ROM binary images can be any arbitrary size, however if a host ROM
-> memory region is not aligned to qemu_target_page_size() then we fail the
-> "assert(!(iotlb & ~TARGET_PAGE_MASK))" check in tlb_set_page_full().
+Hi Samuel,
+
+On 8/1/24 18:15, Samuel Tardieu wrote:
+> The shix machine has been designed and used at Télécom Paris from 2003
+> to 2010. It had been added to QEMU in 2005 and has not been maintained
+> since. Since nobody is using the physical board anymore nor interested
+> in maintaining the QEMU port, it is time to deprecate it.
 > 
-> Ensure that the host ROM memory region is aligned to qemu_target_page_size()
-> and adjust the offset at which the Declaration ROM image is loaded, since Nubus
-> ROM images are unusual in that they are aligned to the end of the slot address
-> space.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
 > ---
->   hw/nubus/nubus-device.c | 16 ++++++++++++----
->   1 file changed, 12 insertions(+), 4 deletions(-)
+>   docs/about/deprecated.rst | 5 +++++
+>   hw/sh4/shix.c             | 1 +
+>   2 files changed, 6 insertions(+)
 > 
-> diff --git a/hw/nubus/nubus-device.c b/hw/nubus/nubus-device.c
-> index 49008e4938..e4f824d58b 100644
-> --- a/hw/nubus/nubus-device.c
-> +++ b/hw/nubus/nubus-device.c
-> @@ -10,6 +10,7 @@
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 2e15040246..e6a12c9077 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -269,6 +269,11 @@ Nios II ``10m50-ghrd`` and ``nios2-generic-nommu`` machines (since 8.2)
 >   
->   #include "qemu/osdep.h"
->   #include "qemu/datadir.h"
-> +#include "exec/target_page.h"
->   #include "hw/irq.h"
->   #include "hw/loader.h"
->   #include "hw/nubus/nubus.h"
-> @@ -30,7 +31,7 @@ static void nubus_device_realize(DeviceState *dev, Error **errp)
->       NubusDevice *nd = NUBUS_DEVICE(dev);
->       char *name, *path;
->       hwaddr slot_offset;
-> -    int64_t size;
-> +    int64_t size, align_size;
-
-Both are 'size_t'.
-
->       int ret;
+>   The Nios II architecture is orphan.
 >   
->       /* Super */
-> @@ -76,16 +77,23 @@ static void nubus_device_realize(DeviceState *dev, Error **errp)
->           }
->   
->           name = g_strdup_printf("nubus-slot-%x-declaration-rom", nd->slot);
-> -        memory_region_init_rom(&nd->decl_rom, OBJECT(dev), name, size,
+> +``shix`` (since 9.0)
+> +''''''''''''''''''''
 > +
-> +        /*
-> +         * Ensure ROM memory region is aligned to target page size regardless
-> +         * of the size of the Declaration ROM image
-> +         */
-> +        align_size = ROUND_UP(size, qemu_target_page_size());
-> +        memory_region_init_rom(&nd->decl_rom, OBJECT(dev), name, align_size,
->                                  &error_abort);
-> -        ret = load_image_mr(path, &nd->decl_rom);
-> +        ret = load_image_size(path, memory_region_get_ram_ptr(&nd->decl_rom) +
-> +                                    (uintptr_t)align_size - size, size);
+> +The machine is no longer in existence and has been long unmaintained
+> +in QEMU.
+>   
+>   Backend options
+>   ---------------
+> diff --git a/hw/sh4/shix.c b/hw/sh4/shix.c
+> index aa812512f0..58530b8ede 100644
+> --- a/hw/sh4/shix.c
+> +++ b/hw/sh4/shix.c
+> @@ -80,6 +80,7 @@ static void shix_machine_init(MachineClass *mc)
+>       mc->init = shix_init;
+>       mc->is_default = true;
+>       mc->default_cpu_type = TYPE_SH7750R_CPU;
+> +    mc->deprecation_reason = "old and unmaintained - use a newer machine instead";
 
-memory_region_get_ram_ptr() returns a 'void *' so this looks dubious.
-Maybe use a local variable to ease offset calculation?
+"use a newer machine instead" bugs me, what would that be?
 
-   char *rombase = memory_region_get_ram_ptr(&nd->decl_rom);
-   ret = load_image_size(path, rombase + align_size - size, size);
+Could we stick to "old and unmaintained"?
 
-Otherwise KISS but ugly:
-
-   ret = load_image_size(path,
-             (void *)((uintptr_t)memory_region_get_ram_ptr(&nd->decl_rom)
-                      + align_size - size), size);
-
->           g_free(path);
->           g_free(name);
->           if (ret < 0) {
->               error_setg(errp, "could not load romfile \"%s\"", nd->romfile);
->               return;
->           }
-> -        memory_region_add_subregion(&nd->slot_mem, NUBUS_SLOT_SIZE - size,
-> +        memory_region_add_subregion(&nd->slot_mem, NUBUS_SLOT_SIZE - align_size,
->                                       &nd->decl_rom);
->       }
 >   }
+>   
+>   DEFINE_MACHINE("shix", shix_machine_init)
 
 
