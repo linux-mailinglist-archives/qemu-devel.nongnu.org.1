@@ -2,58 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6B7826BE5
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 11:54:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B557826BE7
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 11:54:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMnGF-00029u-Ir; Mon, 08 Jan 2024 05:53:39 -0500
+	id 1rMnHH-0003Ot-Do; Mon, 08 Jan 2024 05:54:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=tOGw=IS=kaod.org=clg@ozlabs.org>)
- id 1rMnG6-00028a-3x; Mon, 08 Jan 2024 05:53:32 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=tOGw=IS=kaod.org=clg@ozlabs.org>)
- id 1rMnG4-0005Sk-0b; Mon, 08 Jan 2024 05:53:29 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T7rWn3N8Hz4wy9;
- Mon,  8 Jan 2024 21:53:25 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T7rWj2lP6z4wxZ;
- Mon,  8 Jan 2024 21:53:21 +1100 (AEDT)
-Message-ID: <2bcfb9ef-4e82-4801-ae7f-35b8349501e3@kaod.org>
-Date: Mon, 8 Jan 2024 11:53:20 +0100
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rMnHF-0003Od-VX
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 05:54:41 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rMnHE-0005o3-2i
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 05:54:41 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40d858c56cbso22592745e9.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 02:54:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704711278; x=1705316078; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FjAJl9ozJLHoqNnVuqdi7pxmCZAU0/prJld4KC2Y11Q=;
+ b=LVoLwPMrbRpxmx0uATYplM2JZQ3YPZozSk5GZ5a7JULoqe/hKRPHbD1aHaxhClmJov
+ fjqrPZM+sTTsnjDC0LLOu/s0kk5Hb6HlttBQZlKAZeLj3oyr3wvOTlPxRIQ28D7FZB6g
+ /M9mV8OeYSxehzsyChaFuz/h3/5fVE9POiB7EsDN6FKXcJbR1mL/BFZHauNRpKqOFUfV
+ X7vyWxKw+dn5HE88NLfa8ivQ9NIfR6w/JtxJBny9ENP3ii58wCebR7XmfnjLDOKQfdaX
+ dKuN3FYaVn/UT8juMNjP3hPRVJrrVwcM4yO2jMwPyNsLR/YCNSO6JE2Dve1ROqN5ggfE
+ N7QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704711278; x=1705316078;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FjAJl9ozJLHoqNnVuqdi7pxmCZAU0/prJld4KC2Y11Q=;
+ b=mbyVVXlR0frCYEbnw8bOmzniHRaWwNblGcETs9tANEyveR+92UE/73t7w14V/OaFh+
+ VvJPaPN3dO7O2Rr/6vafxUy7hRDPeL6L0Hu+lCOFdntvi/rAF8KSBvgXGTxZClBftuKw
+ PyvqSM6axLzkxLKzROiaRJdovaiHoE4/jDVebDC0xH39YSGALUJV2Py1I/U8Ysvspexw
+ QZnecyOOH3Pb+qdL/9jvOdEyq/V0It4q1WTbv0YEWCrnWo67mbf6HY8FaKEgJdVGb+7s
+ LEkpb0oyzGGJPoeYNx8PjgHT3kL8RqVPaFEq9lkjJ5xrjmphQ4iK41LxkWsgvzN3i19l
+ eD/Q==
+X-Gm-Message-State: AOJu0Yw3oOA36bEjxspTKw2c9QHE9+tknw+25BqlrA7H8NHrjWAjP5qE
+ i3lleeNzPLviM0UNrqsznujSEpGqeWJxBQ==
+X-Google-Smtp-Source: AGHT+IEfKu0NVJSUBVLzroGKPhStVcNQenuvFcBMoD+BMqlN0MoTokeS22ozxEYgl+8wvkLUv36eXg==
+X-Received: by 2002:a05:600c:3b99:b0:40e:4179:d060 with SMTP id
+ n25-20020a05600c3b9900b0040e4179d060mr1383700wms.65.1704711278137; 
+ Mon, 08 Jan 2024 02:54:38 -0800 (PST)
+Received: from [192.168.1.24] ([102.35.208.160])
+ by smtp.gmail.com with ESMTPSA id
+ c12-20020adfe70c000000b003373fe3d345sm7433674wrm.65.2024.01.08.02.54.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 08 Jan 2024 02:54:37 -0800 (PST)
+Message-ID: <38019096-96a1-464d-824c-951a053c4e21@linaro.org>
+Date: Mon, 8 Jan 2024 14:54:34 +0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/9] tests/avocado: Add pseries KVM boot_linux test
+Subject: Re: [PATCH v3 18/33] linux-user: Fix sub-host-page mmap
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- qemu-ppc@nongnu.org
-References: <20240107170119.82222-1-npiggin@gmail.com>
- <20240107170119.82222-8-npiggin@gmail.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240107170119.82222-8-npiggin@gmail.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240102015808.132373-1-richard.henderson@linaro.org>
+ <20240102015808.132373-19-richard.henderson@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20240102015808.132373-19-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=tOGw=IS=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,42 +93,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/7/24 18:01, Nicholas Piggin wrote:
-> ppc has no avocado tests for the KVM backend. Add a KVM boot_linux.py
-> test for pseries.
+On 1/2/24 05:57, Richard Henderson wrote:
+> We cannot skip over the_end1 to the_end, because we fail to
+> record the validity of the guest page with the interval tree.
+> Remove "the_end" and rename "the_end1" to "the_end".
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   tests/avocado/boot_linux.py | 8 ++++++++
->   1 file changed, 8 insertions(+)
+>   linux-user/mmap.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/avocado/boot_linux.py b/tests/avocado/boot_linux.py
-> index a4a78122ac..b20b2fc620 100644
-> --- a/tests/avocado/boot_linux.py
-> +++ b/tests/avocado/boot_linux.py
-> @@ -102,6 +102,14 @@ def test_pseries_tcg(self):
->           self.vm.add_args("-accel", "tcg")
->           self.launch_and_wait(set_up_ssh_connection=False)
->   
-> +    def test_pseries_kvm(self):
-> +        """
-> +        :avocado: tags=machine:pseries
-> +        :avocado: tags=accel:kvm
-> +        """
-> +        self.require_accelerator("kvm")
-> +        self.vm.add_args("-accel", "kvm")
-> +        self.launch_and_wait(set_up_ssh_connection=False)
->   
->   class BootLinuxS390X(LinuxTest):
->       """
+> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+> index fbaea832c5..48fcdd4a32 100644
+> --- a/linux-user/mmap.c
+> +++ b/linux-user/mmap.c
+> @@ -643,7 +643,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+>                                  target_prot, flags, fd, offset)) {
+>                       return -1;
+>                   }
+> -                goto the_end1;
+> +                goto the_end;
+>               }
+>               if (!mmap_frag(real_start, start,
+>                              real_start + host_page_size - 1,
+> @@ -690,7 +690,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+>               passthrough_last = real_last;
+>           }
+>       }
+> - the_end1:
+> + the_end:
+>       if (flags & MAP_ANONYMOUS) {
+>           page_flags |= PAGE_ANON;
+>       }
+> @@ -708,7 +708,6 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+>           }
+>       }
+>       shm_region_rm_complete(start, last);
+> - the_end:
+>       trace_target_mmap_complete(start);
+>       if (qemu_loglevel_mask(CPU_LOG_PAGE)) {
+>           FILE *f = qemu_log_trylock();
 
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
