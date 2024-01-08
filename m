@@ -2,106 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76985827AE2
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 23:50:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA496827AEB
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 23:57:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMyRd-0000Wp-Cy; Mon, 08 Jan 2024 17:50:09 -0500
+	id 1rMyXm-0001bV-K9; Mon, 08 Jan 2024 17:56:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1rMyRa-0000W6-OI; Mon, 08 Jan 2024 17:50:06 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rMyXg-0001bK-3A
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 17:56:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1rMyRY-0000op-E6; Mon, 08 Jan 2024 17:50:06 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 408LZhFq028108; Mon, 8 Jan 2024 22:49:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=k7aE0cnTaUgabLuuTRS2mAtwa3Fe+rVt5Fwr/aWzuLg=;
- b=FKr+6FRVvkYCQcLvGNJioSvpE8NxZEBZm9LGPwZpfGjspCJHDAqFn7bxzKocSY0TUfzz
- x34MePnd8KrAcYTQYKCVYQgh+yJ0u6zuTrsjy/dhWtMqx9Ka2IipqBhWJDvEdnbx0dWO
- shnU2bVdAs4uXjSN/M4gnJPYEL5/CUw1QSg9CdmlwZr4fCNidjgY8pkcbSkDJqDQg4gO
- FFkmHv4pCXcMI2jduPy1oRwdDsA73qG+CZ4NczPISmwxDJml1WeRhYUQfHDkw4ruB13G
- uD45Iiez4WzBkz7TlUks//VcvkzDmDr9XkbvVKSfku/umG6Ce8D/KSBv3wcEJmhPULiw Ww== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vgnfj711a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jan 2024 22:49:45 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 408MNDFL009063;
- Mon, 8 Jan 2024 22:49:45 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vgnfj7111-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jan 2024 22:49:45 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 408M7bZs027254; Mon, 8 Jan 2024 22:49:44 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkw1tma8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jan 2024 22:49:44 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 408MnhU329033036
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 8 Jan 2024 22:49:43 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7CD5058055;
- Mon,  8 Jan 2024 22:49:43 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AF8845804B;
- Mon,  8 Jan 2024 22:49:42 +0000 (GMT)
-Received: from [9.61.145.235] (unknown [9.61.145.235])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  8 Jan 2024 22:49:42 +0000 (GMT)
-Message-ID: <3d9b40fa-c5d2-4243-9895-be892e992848@linux.ibm.com>
-Date: Mon, 8 Jan 2024 16:49:42 -0600
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rMyXe-0005KM-Hx
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 17:56:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704754581;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Qu1Ps0Ku3RvGsZ9TDJ4irjyxcBVgusX7BtZqRjA1+Uk=;
+ b=SdRMsAWnxaRH62wMJEO1bpFsgk+XLOPrGCX18AKn4Cjooy23xrt2+3jufFqBhrlQD2SkJO
+ ZSK2DBqmmLKL3fRXbER2JZDHy/whxHIJpKz3J3+9KSO9hYIPdN0yp49AdzSzNyL7hE650W
+ Gza48dLxad9FdnX94kmhrfJzq7pgDcg=
+Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com
+ [209.85.217.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-678-2tp1qbcgMIeF18NX0A2_HQ-1; Mon, 08 Jan 2024 17:56:14 -0500
+X-MC-Unique: 2tp1qbcgMIeF18NX0A2_HQ-1
+Received: by mail-vs1-f71.google.com with SMTP id
+ ada2fe7eead31-467404eb0a6so369283137.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 14:56:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704754573; x=1705359373;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Qu1Ps0Ku3RvGsZ9TDJ4irjyxcBVgusX7BtZqRjA1+Uk=;
+ b=DDZfrJ0gfClgcXbtg7QFzMcmzQirfX+/NW9ULtww3gYp7KSNMeADkwX7ApmkMOqONN
+ fUPUoPz31VbetMjejKtdXYVes0lTairzuNt6zVK53vVaexacQZt5aDg78Fk+Kj/DJSX9
+ VOMgUiom8dAaDTYE0AvtLu2xQEpivAQ5XWXbmCzVc/gD1EgE7K/t+rgOnmTAptRmDt6W
+ wttjvihOmovlWgT/oGHY+dJCnnVMnzDlet4lgCqQ+4O9090Z6YftP1bOmCu8x6plbcCX
+ 3IiwRijYA0pE9g6NKDBWUy195SvzzYgouOCh542jF6jue2UlOemTgbuJmfpRxBIRrsX3
+ esWQ==
+X-Gm-Message-State: AOJu0Yx8YQoNCPFOpGUKYhlRe772UuFqB+QZmxNVioIGxbSp9M1V6n7Q
+ qiLjJxaIhmPD69TIo+Qqz4r0HU8y+fDWwCHqrMip/T88HCvVJdQve7F3qNmiGsEANB7B5xCrsf6
+ LGlcqFPOhuCxC9IJoDXCdLGhffI6dHcy8D4/MT+ScEhPxg3Y=
+X-Received: by 2002:a05:6102:b16:b0:467:dfba:a28d with SMTP id
+ b22-20020a0561020b1600b00467dfbaa28dmr1164157vst.33.1704754573443; 
+ Mon, 08 Jan 2024 14:56:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGcp96HnaN5aPEHbyAr+sc/5FViJj8uaMetltL05hNr4y+1rTOpSozwhqtXzIPKOGoc8Rg5JZDwms7LfKg1YC4=
+X-Received: by 2002:a05:6102:b16:b0:467:dfba:a28d with SMTP id
+ b22-20020a0561020b1600b00467dfbaa28dmr1164153vst.33.1704754573181; Mon, 08
+ Jan 2024 14:56:13 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 04/10] hw/fsi: IBM's On-chip Peripheral Bus
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
-References: <20231128235700.599584-1-ninad@linux.ibm.com>
- <20231128235700.599584-5-ninad@linux.ibm.com>
- <d8b3b1c4-42df-4390-9b81-0a426fa43b77@kaod.org>
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <d8b3b1c4-42df-4390-9b81-0a426fa43b77@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: bMjxJcuA9BwPi6RmbJG8M4_W6b0xcSXX
-X-Proofpoint-GUID: nG7pKeYYYqTBt3atMBy1PmvXi7so0ryw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-08_10,2024-01-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0
- lowpriorityscore=0 clxscore=1015 suspectscore=0 phishscore=0
- malwarescore=0 mlxlogscore=760 priorityscore=1501 bulkscore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401080185
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20231028194522.245170-1-richard.henderson@linaro.org>
+ <CABgObfZme6gNZG=3ibXb8=+yAg=LHPeHYdncdx2LgN741bk_7A@mail.gmail.com>
+ <6327ac54-6394-4648-b4b8-2294a37b1588@linaro.org>
+In-Reply-To: <6327ac54-6394-4648-b4b8-2294a37b1588@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 8 Jan 2024 23:55:59 +0100
+Message-ID: <CABgObfYE_L=oF0-bKESJVcPhNr_-R3Yw4Uoi7vtV3iW6Q5=26A@mail.gmail.com>
+Subject: Re: [PATCH v2 00/35] tcg: Introduce TCG_COND_TST{EQ,NE}
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000c3a2b2060e771a15"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,101 +95,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
+--000000000000c3a2b2060e771a15
+Content-Type: text/plain; charset="UTF-8"
 
+Il lun 8 gen 2024, 22:45 Richard Henderson <richard.henderson@linaro.org>
+ha scritto:
 
-On 12/12/23 08:48, Cédric Le Goater wrote:
-> On 11/29/23 00:56, Ninad Palsule wrote:
->> This is a part of patchset where IBM's Flexible Service Interface is
->> introduced.
->>
->> The On-Chip Peripheral Bus (OPB): A low-speed bus typically found in
->> POWER processors. This now makes an appearance in the ASPEED SoC due
->> to tight integration of the FSI master IP with the OPB, mainly the
->> existence of an MMIO-mapping of the CFAM address straight onto a
->> sub-region of the OPB address space.
->>
->> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
->> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
->> Reviewed-by: Joel Stanley <joel@jms.id.au>
->> [ clg: - removed FSIMasterState object and fsi_opb_realize()
->>         - simplified OPBus ]
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>   include/hw/fsi/opb.h | 25 +++++++++++++++++++++++++
->>   hw/fsi/opb.c         | 36 ++++++++++++++++++++++++++++++++++++
->>   hw/fsi/Kconfig       |  4 ++++
->>   hw/fsi/meson.build   |  1 +
->>   4 files changed, 66 insertions(+)
->>   create mode 100644 include/hw/fsi/opb.h
->>   create mode 100644 hw/fsi/opb.c
->>
->> diff --git a/include/hw/fsi/opb.h b/include/hw/fsi/opb.h
->> new file mode 100644
->> index 0000000000..c112206f9e
->> --- /dev/null
->> +++ b/include/hw/fsi/opb.h
->> @@ -0,0 +1,25 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Copyright (C) 2023 IBM Corp.
->> + *
->> + * IBM On-Chip Peripheral Bus
->> + */
->> +#ifndef FSI_OPB_H
->> +#define FSI_OPB_H
->> +
->> +#include "exec/memory.h"
->> +#include "hw/fsi/fsi-master.h"
->> +
->> +#define TYPE_OP_BUS "opb"
->> +OBJECT_DECLARE_SIMPLE_TYPE(OPBus, OP_BUS)
->> +
->> +typedef struct OPBus {
->> +        /*< private >*/
->> +        BusState bus;
->> +
->> +        /*< public >*/
->> +        MemoryRegion mr;
->> +        AddressSpace as;
->> +} OPBus;
->> +
->> +#endif /* FSI_OPB_H */
->> diff --git a/hw/fsi/opb.c b/hw/fsi/opb.c
->> new file mode 100644
->> index 0000000000..6474754890
->> --- /dev/null
->> +++ b/hw/fsi/opb.c
->> @@ -0,0 +1,36 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Copyright (C) 2023 IBM Corp.
->> + *
->> + * IBM On-chip Peripheral Bus
->> + */
->> +
->> +#include "qemu/osdep.h"
->> +
->> +#include "qapi/error.h"
->> +#include "qemu/log.h"
->> +
->> +#include "hw/fsi/opb.h"
->> +
->> +static void fsi_opb_init(Object *o)
->> +{
->> +    OPBus *opb = OP_BUS(o);
->> +
->> +    memory_region_init_io(&opb->mr, OBJECT(opb), NULL, opb,
->> +                          NULL, UINT32_MAX);
+> > I was thinking: a lot of RISC targets simply do AND/ANDI
+> > followed by the sequence used for TCG_COND_NE.  Would it make sense to
+> > have a TCG_TARGET_SUPPORTS_TST bit and, if absent, lower TSTEQ/TSTNE
+> > to AND+EQ/NE directly in the optimizer?
 >
-> Let's give the region some name.
-Added "fsi.opb" name.
+> Probably best, yes.
+>
+
+Ok, I will give it a shot.
+
+> And for brcond2/setcond2,
+> > always using AND/AND/OR may work just as well as any backend-specific
+> > trick, and will give more freedom to the register allocator.
+>
+>    test   a,b
+>    testeq c,e
+>
+> for Arm32.  So I'll leave it to the backends.
+>
+
+Nice. :)
+
+Paolo
 
 
-Thanks for the review.
+>
+> r~
+>
+>
 
-Regards,
+--000000000000c3a2b2060e771a15
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ninad
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il lun 8 gen 2024, 22:45 Richard Henderson &lt;<a href=
+=3D"mailto:richard.henderson@linaro.org">richard.henderson@linaro.org</a>&g=
+t; ha scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0=
+ 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">&gt; I was thinking:=
+ a lot of RISC targets simply do AND/ANDI<br>
+&gt; followed by the sequence used for TCG_COND_NE.=C2=A0 Would it make sen=
+se to<br>
+&gt; have a TCG_TARGET_SUPPORTS_TST bit and, if absent, lower TSTEQ/TSTNE<b=
+r>
+&gt; to AND+EQ/NE directly in the optimizer?<br>
+<br>
+Probably best, yes.<br></blockquote></div></div><div dir=3D"auto"><br></div=
+><div dir=3D"auto">Ok, I will give it a shot.</div><div dir=3D"auto"><br></=
+div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail=
+_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:=
+1ex">
+&gt; And for brcond2/setcond2,<br>
+&gt; always using AND/AND/OR may work just as well as any backend-specific<=
+br>
+&gt; trick, and will give more freedom to the register allocator.<br>
+<br>
+=C2=A0 =C2=A0test=C2=A0 =C2=A0a,b<br>
+=C2=A0 =C2=A0testeq c,e<br>
+<br>
+for Arm32.=C2=A0 So I&#39;ll leave it to the backends.<br></blockquote></di=
+v></div><div dir=3D"auto"><br></div><div dir=3D"auto">Nice. :)</div><div di=
+r=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></d=
+iv><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_=
+quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1=
+ex">
+<br>
+<br>
+r~<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000c3a2b2060e771a15--
 
 
