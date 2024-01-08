@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2814C827203
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 15:59:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09033827208
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 16:01:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMr5t-00054i-UC; Mon, 08 Jan 2024 09:59:14 -0500
+	id 1rMr80-0006CM-6H; Mon, 08 Jan 2024 10:01:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMr5h-00054D-UA
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:59:03 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1rMr7l-0006Bp-PV
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:01:11 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rMr5f-0001yk-WF
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 09:59:01 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-557c188f313so1144337a12.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 06:58:58 -0800 (PST)
+ id 1rMr7j-0002tE-1F
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 10:01:09 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-556c3f0d6c5so2207581a12.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 07:01:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704725937; x=1705330737; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704726065; x=1705330865; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=c7iYMBVhBsrYnsJcY2FLpqUui1X0DuZ9loQO9NDMOOY=;
- b=Ld/8AJEW0iu14ebwL5kJhSqG3kiRX/Rx0f6LdYpYvKSsYdTk/lt//TZu9bV8oKKBVu
- hkULHwVsKIOE73kN0Wyd4970ruXhexjlgAFx8SsgY26ZLqsXlN065t58WLZ8k0oPd+ns
- O5DIGP1z+3jDb/1EwdgMVNUtwHoXaiNjexjbV30rCRU1FpiQRYTLU2ng6oEsxWo8D1D/
- lUSpqrYDmK9PZ8DM9bqx8dAa5c+YOUYt3krHGnO68BpnNlCJqLrsx2zGXk98AXr5g53J
- 4TblPvs8/4hQ7PZl4oERJLre3h6C7XldzqwViqZWzIw94GlMmJ7CObSg1fc+Z1u2Yy4+
- xlnA==
+ bh=xjuJ8p64YYyiyxB8HtYFESOS8y/RlKCSYwiAqrSM4ZQ=;
+ b=oYPQYYDcOXsTRWn3enElgBHjISZ7allLnbHvUWgCOZN/HGISDDgyQD5vXhzQ4BCdaG
+ V+a+0XE8SPBqhzfh1cI6rxp+xdgcLCsNMRm3A/17ZaBs2ZbsedPrKKIUYOdB29R36Bjy
+ pGmcZRwR+TI8mdvfblJ8hm3/MSZRU+IzmDivdpfJt26PqAK9FoArD/xG5b6QW58V8m4K
+ n6cCbvufzosM2nKTLEJb2AJNtzAowUYNz3e8IRbCpzKRxDQfop8Nw+HKv5YZaNew0iRU
+ UR3lohyJ5B/+FsSeY1TmDlqzO1/mTEQm5FhBV/rUbZYdf3ozn//7329umtPnvayNlOnO
+ JJmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704725937; x=1705330737;
+ d=1e100.net; s=20230601; t=1704726065; x=1705330865;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=c7iYMBVhBsrYnsJcY2FLpqUui1X0DuZ9loQO9NDMOOY=;
- b=naJbK+3VeUaRKhvsqBsGoWrrlimiYqg0Rr3c9WE2FYUKijw+JrFaOPVP72+763l0Sf
- IVy1GoHiqv+493UaeSXc5gIFC41bPxydO5+jH2OdMSLaeHVLvkbFUbE/oW9FftoV1U+S
- AoeyKw7J+zOcA6fnvexlsSQkQRDMkiB7Ca0w3WMizr8M38DxMaEjxKbudes55rCzZbXv
- 7rdLClDkqdfBU7TqNGrpmYL2tPrJQqdj5hxpj5ruF2UeaWauheVVtbWEWo6utTY2vlJU
- 8lXp5cLukj9ZuJcoMuEBNrHPweGAoL9QDs3aMH1Wg/SwB1yoze99r9ubQvXIPBv2M62y
- dC+w==
-X-Gm-Message-State: AOJu0YzWbnSWaJvM0/1c6TuRQZrGJhgjUg051kaChFRJd/NUFt9F9LW1
- dWJYv/09wohl/kqRWlRSLHEWNeYoAlWjQSbZ7qpy5Frs+4VXug==
-X-Google-Smtp-Source: AGHT+IG11vjmuTJV0mVDAKoavLJoChDVE9MIaSHkOM3KeTcth5NlelL7Jlkjv5yfEr27wPdWLsueooD5JnB9In7IGMc=
-X-Received: by 2002:a50:9ea2:0:b0:556:e101:535 with SMTP id
- a31-20020a509ea2000000b00556e1010535mr4281619edf.37.1704725937481; Mon, 08
- Jan 2024 06:58:57 -0800 (PST)
+ bh=xjuJ8p64YYyiyxB8HtYFESOS8y/RlKCSYwiAqrSM4ZQ=;
+ b=wbRc5cj1chd0C7Tb4+dJKdtVp3qb5rJbQ78IZhL0ILeX4djqqByL3IAFmwhD06pV8c
+ NJCQb/4NWMH7G343ZBYMZyc3p68guSEo6mM5tfBjmSD40w+fNef9lQMcLm4hiSGTAoyO
+ LzF6lG8i/0e6SiwUiQOdTZG3/OQRgo3R2khQEw9Lc/XCOdX0Qmrid2DHubXZYWjTS+XD
+ HoLcuvWDYebwr4Glq2PCUHSg9SHkkfojTj1Anq9MzP+U6yYIknoag/a+BXkDrrQdqqaM
+ dNXH9sGripOQYbcUDTtty4hN1T6yvGg3jJ8sXYH+Nh0tbYpE2NTlTnQRFPJdvUjaBvLs
+ qRgw==
+X-Gm-Message-State: AOJu0YyPF05liXi+S5KI64Tzs0LT/P1gkKf6CLdWaeIkmT3aOLkHu945
+ lViVUAV3BqEz2TVwjHYRmXN9KN0K+ROrVnnNi622uJQHgai29A==
+X-Google-Smtp-Source: AGHT+IG+oR/BcTzPdlZKFcij2b6iXoz4vVgzWp/hI7hxnQxjGDOkUR4eiIdYXJT2hsWYycUv3/K/SzqYpoVNB1KMuFs=
+X-Received: by 2002:a50:cd90:0:b0:557:e92:155f with SMTP id
+ p16-20020a50cd90000000b005570e92155fmr1663909edi.71.1704726065390; Mon, 08
+ Jan 2024 07:01:05 -0800 (PST)
 MIME-Version: 1.0
 References: <20231219213255.604535-1-nabihestefan@google.com>
- <20231219213255.604535-8-nabihestefan@google.com>
-In-Reply-To: <20231219213255.604535-8-nabihestefan@google.com>
+ <20231219213255.604535-9-nabihestefan@google.com>
+In-Reply-To: <20231219213255.604535-9-nabihestefan@google.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 8 Jan 2024 14:58:46 +0000
-Message-ID: <CAFEAcA82Bgh8qQ7sxdMTHTfdMO97qTdbdB4xCcGLnKXgoATGMg@mail.gmail.com>
-Subject: Re: [PATCH v9 07/10] include/hw/net: General GMAC Implementation
+Date: Mon, 8 Jan 2024 15:00:54 +0000
+Message-ID: <CAFEAcA8awaf=fdPGk+YcV9zPjGNbhP0n=-L0p0VEwPe1U6tXRg@mail.gmail.com>
+Subject: Re: [PATCH v9 08/10] hw/net: GMAC Rx Implementation
 To: Nabih Estefan <nabihestefan@google.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
  wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com, 
  kwliu@nuvoton.com, tomer.maimon@nuvoton.com, Hila.Miranda-Kuzi@nuvoton.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,96 +91,39 @@ On Tue, 19 Dec 2023 at 21:33, Nabih Estefan <nabihestefan@google.com> wrote:
 >
 > From: Nabih Estefan Diaz <nabihestefan@google.com>
 >
-> Implemented Classes and Masks for GMAC Descriptors
->  - Implemeted classes for GMAC Receive and Transmit Descriptors
->  - Implemented Masks for said descriptors
+> - Implementation of Receive function for packets
+> - Implementation for reading and writing from and to descriptors in
+>   memory for Rx
 >
-> - General GMAC Register handling
-> - GMAC IRQ Handling
+> When RX starts, we need to flush the queued packets so that they
+> can be received by the GMAC device. Without this it won't work
+> with TAP NIC device.
 >
+> When RX descriptor list is full, it returns a DMA_STATUS for software to handle it. But there's no way to indicate the software ha handled all RX descriptors and the whole pipeline stalls.
 
-This commit message doesn't match the changes in the patch:
-it claims it's adding a lot more than it actually does.
+Please make sure you line wrap commit messages at an
+appropriate line length.
 
-
+> We do something similar to NPCM7XX EMC to handle this case.
+>
+> 1. Return packet size when RX descriptor is full, effectively dropping these packets in such a case.
+> 2. When software clears RX descriptor full bit, continue receiving further packets by flushing QEMU packet queue.
+>
+> Signed-off-by: Hao Wu <wuhaotsh@google.com>
 > Signed-off-by: Nabih Estefan <nabihestefan@google.com>
 > Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
 > ---
->  hw/net/npcm_gmac.c  | 40 ++++++++++++++++++++++++++++++++++++++++
->  hw/net/trace-events |  8 ++++++++
->  2 files changed, 48 insertions(+)
->
-> diff --git a/hw/net/npcm_gmac.c b/hw/net/npcm_gmac.c
-> index 98b3c33c94..44c4ffaff4 100644
-> --- a/hw/net/npcm_gmac.c
-> +++ b/hw/net/npcm_gmac.c
-> @@ -149,6 +149,46 @@ static bool gmac_can_receive(NetClientState *nc)
->      return true;
->  }
->
-> +/*
-> + * Function that updates the GMAC IRQ
-> + * It find the logical OR of the enabled bits for NIS (if enabled)
-> + * It find the logical OR of the enabled bits for AIS (if enabled)
-> + */
-> +static void gmac_update_irq(NPCMGMACState *gmac)
-> +{
-> +    /*
-> +     * Check if the normal interrupts summary is enabled
-> +     * if so, add the bits for the summary that are enabled
-> +     */
-> +    if (gmac->regs[R_NPCM_DMA_INTR_ENA] & gmac->regs[R_NPCM_DMA_STATUS] &
-> +        (NPCM_DMA_INTR_ENAB_NIE_BITS)) {
-> +        gmac->regs[R_NPCM_DMA_STATUS] |=  NPCM_DMA_STATUS_NIS;
-> +    }
-> +    /*
-> +     * Check if the abnormal interrupts summary is enabled
-> +     * if so, add the bits for the summary that are enabled
-> +     */
-> +    if (gmac->regs[R_NPCM_DMA_INTR_ENA] & gmac->regs[R_NPCM_DMA_STATUS] &
-> +        (NPCM_DMA_INTR_ENAB_AIE_BITS)) {
-> +        gmac->regs[R_NPCM_DMA_STATUS] |=  NPCM_DMA_STATUS_AIS;
-> +    }
-> +
-> +    /* Get the logical OR of both normal and abnormal interrupts */
-> +    int level = !!((gmac->regs[R_NPCM_DMA_STATUS] &
-> +                    gmac->regs[R_NPCM_DMA_INTR_ENA] &
-> +                    NPCM_DMA_STATUS_NIS) |
-> +                   (gmac->regs[R_NPCM_DMA_STATUS] &
-> +                   gmac->regs[R_NPCM_DMA_INTR_ENA] &
-> +                   NPCM_DMA_STATUS_AIS));
-> +
-> +    /* Set the IRQ */
-> +    trace_npcm_gmac_update_irq(DEVICE(gmac)->canonical_path,
-> +                               gmac->regs[R_NPCM_DMA_STATUS],
-> +                               gmac->regs[R_NPCM_DMA_INTR_ENA],
-> +                               level);
-> +    qemu_set_irq(gmac->irq, level);
-> +}
-> +
->  static ssize_t gmac_receive(NetClientState *nc, const uint8_t *buf, size_t len)
->  {
->      /* Placeholder. Function will be filled in following patches */
-> diff --git a/hw/net/trace-events b/hw/net/trace-events
-> index 33514548b8..78efa2ec2c 100644
-> --- a/hw/net/trace-events
-> +++ b/hw/net/trace-events
-> @@ -473,6 +473,14 @@ npcm_gmac_reg_write(const char *name, uint64_t offset, uint32_t value) "%s: offs
->  npcm_gmac_mdio_access(const char *name, uint8_t is_write, uint8_t pa, uint8_t gr, uint16_t val) "%s: is_write: %" PRIu8 " pa: %" PRIu8 " gr: %" PRIu8 " val: 0x%04" PRIx16
->  npcm_gmac_reset(const char *name, uint16_t value) "%s: phy_regs[0][1]: 0x%04" PRIx16
->  npcm_gmac_set_link(bool active) "Set link: active=%u"
-> +npcm_gmac_update_irq(const char *name, uint32_t status, uint32_t intr_en, int level) "%s: Status Reg: 0x%04" PRIX32 " Interrupt Enable Reg: 0x%04" PRIX32 " IRQ Set: %d"
-> +npcm_gmac_packet_desc_read(const char* name, uint32_t desc_addr) "%s: attempting to read descriptor @0x%04" PRIX32
-> +npcm_gmac_packet_receive(const char* name, uint32_t len) "%s: RX packet length: 0x%04" PRIX32
-> +npcm_gmac_packet_receiving_buffer(const char* name, uint32_t buf_len, uint32_t rx_buf_addr) "%s: Receiving into Buffer size: 0x%04" PRIX32 " at address 0x%04" PRIX32
-> +npcm_gmac_packet_received(const char* name, uint32_t len) "%s: Reception finished, packet left: 0x%04" PRIX32
-> +npcm_gmac_packet_sent(const char* name, uint16_t len) "%s: TX packet sent!, length: 0x%04" PRIX16
-> +npcm_gmac_debug_desc_data(const char* name, void* addr, uint32_t des0, uint32_t des1, uint32_t des2, uint32_t des3)"%s: Address: %p Descriptor 0: 0x%04" PRIX32 " Descriptor 1: 0x%04" PRIX32 "Descriptor 2: 0x%04" PRIX32 " Descriptor 3: 0x%04" PRIX32
-> +npcm_gmac_packet_tx_desc_data(const char* name, uint32_t tdes0, uint32_t tdes1) "%s: Tdes0: 0x%04" PRIX32 " Tdes1: 0x%04" PRIX32
 
-Most of these trace events don't correspond to the code change
-in the patch; they should be added in the same patch which adds
-the call to the trace event.
+> +    /* write frame part to memory */
+> +    if (dma_memory_write(&address_space_memory, (uint64_t) rx_buf_addr,
+> +                         *frame_ptr, to_transfer, MEMTXATTRS_UNSPECIFIED))
+> +    {
+
+Our coding style says the open brace of an if goes on the same line,
+not on a line of its own.
+
+> +        return -1;
+> +    }
 
 thanks
 -- PMM
