@@ -2,86 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7654082688B
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 08:26:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE92C8268A3
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 08:34:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMk0E-00015T-Hn; Mon, 08 Jan 2024 02:24:54 -0500
+	id 1rMk85-00034C-SE; Mon, 08 Jan 2024 02:33:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rMk0C-000156-Kb
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:24:52 -0500
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rMk0A-00024b-V0
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:24:52 -0500
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-28bcc273833so1385320a91.1
- for <qemu-devel@nongnu.org>; Sun, 07 Jan 2024 23:24:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1704698689; x=1705303489;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=v6f7Q+DdgsijtuPqWcgW6WrwKIP/dbty9hWGfsSl3H0=;
- b=Mv2LUGKVFeyRewAcX7fpwCIFjCKJv75P0Op0DSDudu67wu1AOkPAksnn0Kh80A8HUP
- T4LBMH0MzkqDXqys8cVL3UM/k+LjbbW5on2Dc4mv9tgkKH7KXQYnlLU2SFG48SQLOl6+
- 3CWNIwHXgXDCOsUPaVJfzRCQZDZ0XZW62PbNO5r8No3EAAQytebCxXr942WZ/PWhCTiB
- DQf1140yUsuv8k66b7NcjcpSG1MgWV99mU/ACeqiz1Yzo3we2HVVsRPDihREMmD+r3z4
- 60utVqywPmISwUzavMWEVyWbgoxsW7E/HzuKjqcK+gqNqRjCS38z9ugflZZqhAkTLsMO
- du3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704698689; x=1705303489;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=v6f7Q+DdgsijtuPqWcgW6WrwKIP/dbty9hWGfsSl3H0=;
- b=KY63Vy4cL3c/xOUM4LzmO8lQl2XecOa5ah/XnW0sc+S/3erXUgqnr531ChWt7v1bCh
- 0rgNpeQyvJx1a5VpYC5NX9P+hZZlY2U2NqvsvFvskNoTLoB/ybd3plpUpBLrNPF8PJNq
- dJD4u/M58yIik8BoAMibM24tUOgh5rZHimGs0Y4youwIpLDEPVjgdirrQm2lyaVx9QzE
- /U1RFSbsacuzxj6aJnguPFifV/GKL3jO/i4UFmrTu3RuJtTPylocc4yiN0YvpRjVh909
- g8+UQLREVypEV8ACJum/mdCyeLA9fW9fKkEkKXSdG+D3FjAX6B1kefP9T6VqMz/jKZPX
- IynA==
-X-Gm-Message-State: AOJu0YxgqJoGuFRdClDV36PjpBOm5mrTITh2BHrOdltssspU97V0jilC
- hJ+ETHsZBaCyKLUqPA2rL82QfSlT24qZsQ==
-X-Google-Smtp-Source: AGHT+IHToq7z8/oGqdskFid37iUYmPDEdsrfyG/DP3WwoarQCe5DgBdRgReIxSHj9w9XZYcMFeXekw==
-X-Received: by 2002:a17:90a:4048:b0:28b:c860:fa59 with SMTP id
- k8-20020a17090a404800b0028bc860fa59mr1402522pjg.61.1704698689161; 
- Sun, 07 Jan 2024 23:24:49 -0800 (PST)
-Received: from [157.82.205.105] ([157.82.205.105])
- by smtp.gmail.com with ESMTPSA id
- o17-20020a17090ac09100b0028bdb4cc5basm4679180pjs.0.2024.01.07.23.24.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 07 Jan 2024 23:24:48 -0800 (PST)
-Message-ID: <37a58ca7-31e6-4d36-9ff2-16071992f43b@daynix.com>
-Date: Mon, 8 Jan 2024 16:24:45 +0900
+ (Exim 4.90_1)
+ (envelope-from <SRS0=P3fH=IS=redhat.com=clg@ozlabs.org>)
+ id 1rMk7x-00032d-Ar
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:32:53 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1)
+ (envelope-from <SRS0=P3fH=IS=redhat.com=clg@ozlabs.org>)
+ id 1rMk7r-0004Yc-DO
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 02:32:52 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T7m471Wdlz4wd4;
+ Mon,  8 Jan 2024 18:32:39 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T7m454lQDz4wcc;
+ Mon,  8 Jan 2024 18:32:37 +1100 (AEDT)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 00/17] vfio queue
+Date: Mon,  8 Jan 2024 08:32:15 +0100
+Message-ID: <20240108073232.118228-1-clg@redhat.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tcg/tci: Fix TCI on hppa host and update TCI test matrix
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Helge Deller <deller@kernel.org>, Laurent Vivier <laurent@vivier.eu>,
- Michael Tokarev <mjt@tls.msk.ru>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- qemu-trivial@nongnu.org
-References: <ZZpQZ77s2t81mXIT@p100>
- <4ca9e87d-1123-408c-ad49-71c01e332828@linaro.org>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <4ca9e87d-1123-408c-ad49-71c01e332828@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::1034;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=P3fH=IS=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,28 +64,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/01/07 19:54, Philippe Mathieu-Daudé wrote:
-> Cc'ing Akihiko for commit a1eaa6281f.
-> 
-> On 7/1/24 08:19, Helge Deller wrote:
->> Update the TCI interpreter test matrix for big-endian hosts with
->> big- (hppa, hppa64) and little-endian (x86,x96-64) targets.
->> I used native ppc64 and hppa hosts for those tests.
->>
->> Starting TCI on a hppa host crashed immediately, because hppa is
->> the only archive left where the stack grows upwards.
->> Write-protecting the stack guard page at the top of the stack
->> fixes the crash.
->>
-> 
-> Fixes: a1eaa6281f ("util: Delete checks for old host definitions")
+The following changes since commit 0c1eccd368af8805ec0fb11e6cf25d0684d37328:
 
-The change is intentional. If you need HP-PA host support, please 
-explain why you need to run latest QEMU on HP-PA. You may also look at 
-commit b1cef6d02f ("Drop remaining bits of ia64 host support"), which is 
-mentioned in commit a1eaa6281f ("util: Delete checks for old host 
-definitions"), if you are going to restore HP-PA host support.
+  Merge tag 'hw-cpus-20240105' of https://github.com/philmd/qemu into staging (2024-01-05 16:08:58 +0000)
 
-Regards,
-Akihiko Odaki
+are available in the Git repository at:
+
+  https://github.com/legoater/qemu/ tags/pull-vfio-20240107
+
+for you to fetch changes up to 19368b1905b4b917e915526fcbd5bfa3f7439451:
+
+  backends/iommufd: Remove mutex (2024-01-05 21:25:20 +0100)
+
+----------------------------------------------------------------
+vfio queue:
+
+* Minor cleanups
+* Fix for a regression in device reset introduced in 8.2
+* Coverity fixes, including the removal of the iommufd backend mutex
+* Introduced VFIOIOMMUClass, to avoid compiling spapr when !CONFIG_PSERIES
+
+----------------------------------------------------------------
+Avihai Horon (1):
+      vfio/migration: Add helper function to set state or reset device
+
+Cédric Le Goater (14):
+      vfio/spapr: Extend VFIOIOMMUOps with a release handler
+      vfio/container: Introduce vfio_legacy_setup() for further cleanups
+      vfio/container: Initialize VFIOIOMMUOps under vfio_init_container()
+      vfio/container: Introduce a VFIOIOMMU QOM interface
+      vfio/container: Introduce a VFIOIOMMU legacy QOM interface
+      vfio/container: Intoduce a new VFIOIOMMUClass::setup handler
+      vfio/spapr: Introduce a sPAPR VFIOIOMMU QOM interface
+      vfio/iommufd: Introduce a VFIOIOMMU iommufd QOM interface
+      vfio/spapr: Only compile sPAPR IOMMU support when needed
+      vfio/iommufd: Remove CONFIG_IOMMUFD usage
+      vfio/container: Replace basename with g_path_get_basename
+      vfio/iommufd: Remove the use of stat() to check file existence
+      backends/iommufd: Remove check on number of backend users
+      backends/iommufd: Remove mutex
+
+Volker Rümelin (1):
+      hw/vfio: fix iteration over global VFIODevice list
+
+Zhenzhong Duan (1):
+      vfio/container: Rename vfio_init_container to vfio_set_iommu
+
+ include/hw/vfio/vfio-common.h         |   2 -
+ include/hw/vfio/vfio-container-base.h |  27 +++++-
+ include/sysemu/iommufd.h              |   2 -
+ backends/iommufd.c                    |  12 ---
+ hw/vfio/common.c                      |  19 +++--
+ hw/vfio/container-base.c              |  12 ++-
+ hw/vfio/container.c                   | 153 +++++++++++++++++++++-------------
+ hw/vfio/iommufd.c                     |  41 +++++----
+ hw/vfio/migration.c                   |  41 ++++-----
+ hw/vfio/pci.c                         |   2 +-
+ hw/vfio/spapr.c                       |  60 +++++++------
+ hw/vfio/meson.build                   |   2 +-
+ 12 files changed, 222 insertions(+), 151 deletions(-)
 
