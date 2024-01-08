@@ -2,95 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E4B826C09
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 12:04:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B06826C14
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jan 2024 12:06:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMnQl-00076F-B2; Mon, 08 Jan 2024 06:04:31 -0500
+	id 1rMnRu-0008RR-5y; Mon, 08 Jan 2024 06:05:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rMnQh-00075S-5Z
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:04:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rMnQe-0001nY-Uv
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:04:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704711863;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vfVgBroixxjt6DG4TyTA6yHZ6iXsh5UI/9ybBmKwzNo=;
- b=COTwfD612E74AgMpBRnbiB7yJgfW9JITRr9089TZLZwOFimP7IYEXqYZ8Py7XsVzTLZwYn
- Hox2+LpFex+SNSHfkjA6GPBusxpZPNDAxd3daVstNfK7wRdzLvegjVACjNrblihasKq3hj
- /cHjHzbazp3BPtgI2PiLpMcfjbnTsbo=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-303-O4ck1MevOjGopqJK055drQ-1; Mon, 08 Jan 2024 06:04:16 -0500
-X-MC-Unique: O4ck1MevOjGopqJK055drQ-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1d4931d651aso17874145ad.2
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 03:04:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rMnRq-0008Qt-GL
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:05:38 -0500
+Received: from mail-qk1-x736.google.com ([2607:f8b0:4864:20::736])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rMnRl-0002Pv-20
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 06:05:38 -0500
+Received: by mail-qk1-x736.google.com with SMTP id
+ af79cd13be357-783234dd689so64712685a.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 03:05:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704711932; x=1705316732; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FMJS3FUYgeq0tN/94YGY7H+PUnw+pcyJL83oeew0uoM=;
+ b=Ro7I7kde0LAIyp8+urrF6Ca30o2wb/0eKs9gmfsXzkBOslYIxlXpHaibYcCIC4Ee0B
+ AXsqJVe3GnBHF0aWP0L3U9TRLdJhDUMAhDvrAwbV1bMevFer828kfZ1SdXyH2SHGtpNw
+ ElFyZZC3bOHN6melyl1NLcIgUAFl6JGcO0vgJ74V9r7w9Nr0TKmTlGGuIjDvZ/y2E9FF
+ 6noRxr8kvZiBw1IWlQPk/gp4IURlhIqj1ldvjvxalKZMF/4wUbZKgeRkg4se5la1LcwQ
+ wDjY6p4AFoc79TUFaFTGXPQrwa6rAU7fF72yCUc8jfyg4l0XXwvLO1DnrNwZQH7dEV85
+ k9ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704711855; x=1705316655;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vfVgBroixxjt6DG4TyTA6yHZ6iXsh5UI/9ybBmKwzNo=;
- b=cpY+ZGuVhtITe7FCbiSykPxPy80b3oNDeeuIjl+rni4/6F69AdblTqRFbmt34hn5/u
- P/KP6W8UT/avEAgPWCVHmeFNORNjBEakJJdMl9k5PAr9NN6wj8she/9Bm9pCUFQvUv8m
- hbnt5PwuSJNmzf28t5cdu810Sl2N3uQX83xJiNS5e3VEYRMk7IeeiBR4WfTLZVtfLHY0
- z7nPrmipHVV+7xxfamJlE64Dq7Y9SR7yUi6UskEGzk4xU/9dNCjiw4skNzj5s6IodZzZ
- FlYXkWPPJmvObljnKl71wv2SOCGjk+l+Q2N7iwtsgShAxqUsxjirmMfz4l0z18T1rJ6+
- 8h7Q==
-X-Gm-Message-State: AOJu0YzXGyRRYZm5P3ZxY0esUdeqv341XswN6FN4CGogwM5KVzSgiUX9
- t3d7sOGugfyV+YsdnPqxpG2eEN2/c7v48Q0A4i+2gr/lfzNby8/YYmTXhMoMQyFfgk+zkdkBl7s
- OJ7VNTrVqti2THqdzoDwpT+c=
-X-Received: by 2002:a17:903:228d:b0:1d5:4b18:17c6 with SMTP id
- b13-20020a170903228d00b001d54b1817c6mr43996plh.62.1704711855656; 
- Mon, 08 Jan 2024 03:04:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFLmfjEJr0N1sjzjn+uSomoUhm+G7t0gqH4sIzd8G4KuvVfDv0qeGMm8aE1RkQ1cu0eM0Ztgw==
-X-Received: by 2002:a17:903:228d:b0:1d5:4b18:17c6 with SMTP id
- b13-20020a170903228d00b001d54b1817c6mr43985plh.62.1704711855339; 
- Mon, 08 Jan 2024 03:04:15 -0800 (PST)
-Received: from smtpclient.apple ([116.73.134.99])
+ d=1e100.net; s=20230601; t=1704711932; x=1705316732;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FMJS3FUYgeq0tN/94YGY7H+PUnw+pcyJL83oeew0uoM=;
+ b=ne6ZKoKJGLVRZNj1iCemyAmWkPsWvZ5rE8fdpX8UUXU3ZLyAWwtpLS988SEN5V44s5
+ 7PDV4OgeILroWqkS7koDLoqJ6WOvp06XhOtvQuQQrcZIxS9hmQ+OZOEzgzZs+LHrdgIN
+ bGV5GFBPfsLXA90pfNXlaJdFiHAFhuH3y5IaFAi9ywWAt8Qj86AqMjawQXOp1I8WlQ4C
+ vbOeG3GaeAP+zn7voR7jH2dv4reOMHbaB8CjViOkZ+4AImKF8dBu1DZ7UnLr5gWbqi59
+ HWLJDKG/7FdnI4EmuKCUn1GsxqJgt12Hu3Hk2iJgZ061CnmsU4yJS2M5apvMuXCwGTpH
+ yIYQ==
+X-Gm-Message-State: AOJu0Yz0N4a+19rniqwyFIy8CLbg+d9n7CC3kEty20S0aBCR3goo0ZPf
+ hGOJ2xTDab9bPoy5715oWS2QnZFn7EnhRA==
+X-Google-Smtp-Source: AGHT+IGwpSgoGMcsukGH1Dvmakqe5yzfNHmtJhxOQTB4xWXhSZ6b7LGzLNPU8zY3ywvNG/0f5HvQPA==
+X-Received: by 2002:a05:620a:27c4:b0:783:18c9:8302 with SMTP id
+ i4-20020a05620a27c400b0078318c98302mr3514963qkp.153.1704711931961; 
+ Mon, 08 Jan 2024 03:05:31 -0800 (PST)
+Received: from [192.168.1.24] ([102.35.208.160])
  by smtp.gmail.com with ESMTPSA id
- o12-20020a1709026b0c00b001d536a910fasm1509401plk.77.2024.01.08.03.04.12
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 08 Jan 2024 03:04:15 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
-Subject: Re: [PATCH 1/2] acpi/tests/avocado/bits: import smilatency test from
- bits in order to disable it
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <CAFEAcA-1Te7mGCBON_z4tyu9pewjiyjAU8g6_is_7MrRrWb0=w@mail.gmail.com>
-Date: Mon, 8 Jan 2024 16:34:01 +0530
-Cc: Cleber Rosa <crosa@redhat.com>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, mst@redhat.com, qemu-devel@nongnu.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <57F8E018-0042-4873-A427-EF7B9EFD061E@redhat.com>
-References: <20240108103439.4369-1-anisinha@redhat.com>
- <20240108103439.4369-2-anisinha@redhat.com>
- <CAFEAcA-1Te7mGCBON_z4tyu9pewjiyjAU8g6_is_7MrRrWb0=w@mail.gmail.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-X-Mailer: Apple Mail (2.3774.300.61.1.2)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+ c10-20020a05620a164a00b00781663f3161sm2592930qko.85.2024.01.08.03.05.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 08 Jan 2024 03:05:31 -0800 (PST)
+Message-ID: <bbb6360c-f35e-4061-a066-66c1dc088fee@linaro.org>
+Date: Mon, 8 Jan 2024 15:05:29 +0400
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 20/33] linux-user: Do early mmap placement only for
+ reserved_va
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240102015808.132373-1-richard.henderson@linaro.org>
+ <20240102015808.132373-21-richard.henderson@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20240102015808.132373-21-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::736;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-qk1-x736.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.098,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,44 +94,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 1/2/24 05:57, Richard Henderson wrote:
+> For reserved_va, place all non-fixed maps then proceed
+> as for MAP_FIXED.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   linux-user/mmap.c | 12 +++++++-----
+>   1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+> index cc983bedbd..42eb3eb2b4 100644
+> --- a/linux-user/mmap.c
+> +++ b/linux-user/mmap.c
+> @@ -540,17 +540,19 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+>       host_offset = offset & -host_page_size;
+>   
+>       /*
+> -     * If the user is asking for the kernel to find a location, do that
+> -     * before we truncate the length for mapping files below.
+> +     * For reserved_va, we are in full control of the allocation.
+> +     * Find a suitible hole and convert to MAP_FIXED.
+>        */
+> -    if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
+> +    if (reserved_va && !(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
+>           host_len = len + offset - host_offset;
+> -        host_len = ROUND_UP(host_len, host_page_size);
+> -        start = mmap_find_vma(real_start, host_len, TARGET_PAGE_SIZE);
+> +        start = mmap_find_vma(real_start, host_len,
+> +                              MAX(host_page_size, TARGET_PAGE_SIZE));
+>           if (start == (abi_ulong)-1) {
+>               errno = ENOMEM;
+>               return -1;
+>           }
+> +        start += offset - host_offset;
+> +        flags |= MAP_FIXED;
+>       }
+>   
+>       /*
 
-
-> On 08-Jan-2024, at 4:28=E2=80=AFPM, Peter Maydell =
-<peter.maydell@linaro.org> wrote:
->=20
-> On Mon, 8 Jan 2024 at 10:35, Ani Sinha <anisinha@redhat.com> wrote:
->>=20
->> Add smilatency test script in the bits avocado tests from bios-bits. =
-No changes
->> have been made to the original test script. The test will be disabled =
-in the
->> subsequent patch.
->>=20
->> CC: peter.maydell@linaro.org
->> CC: crosa@redhat.com
->> CC: philmd@linaro.org
->> CC: bleal@redhat.com
->> CC: mst@redhat.com
->> CC: wainersm@redhat.com
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->> ---
->> .../acpi-bits/bits-tests/smilatency.py2       | 106 =
-++++++++++++++++++
->> 1 file changed, 106 insertions(+)
->> create mode 100644 tests/avocado/acpi-bits/bits-tests/smilatency.py2
->=20
-> I'm confused -- why do we need to *add* the test? This
-> test already exists somewhere,
-
-That =E2=80=9Csomewhere" is within the bios-bits image. See
-https://www.qemu.org/docs/master/devel/acpi-bits.html
-See "tests/avocado/acpi-bits/bits-tests=E2=80=9D section.
-
-> because we're running it.
-> So why isn't the patch "disable that existing test"?
->=20
-> thanks
-> -- PMM
-
-
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
