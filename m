@@ -2,78 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA43A8288C8
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 16:14:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BBCA8288F9
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 16:25:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNDmp-00033Y-2P; Tue, 09 Jan 2024 10:13:03 -0500
+	id 1rNDxl-0006Cd-UL; Tue, 09 Jan 2024 10:24:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rNDmm-00033P-DX
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 10:13:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rNDxd-0006AX-Fm; Tue, 09 Jan 2024 10:24:13 -0500
+Received: from zproxy3.enst.fr ([137.194.2.222])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rNDmi-0004oi-IS
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 10:13:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704813174;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=r6Uw16NrmnAM8qrnTlSt0XBsmAW4jzKIu/srpB35UKU=;
- b=hIJu74sjr4BcE2f6JbRbqZiKazVSQbXnsw2ahn/cYlj5eaxnQitXBcUHDtsN/IupTrb5dn
- JmVWFjVTQsZdtR+kp8Fvw8wpk/GVpinX7dIBdw1n4iBv6C42QGfANI1aFBqOAokCPoGUE5
- 9W2OeK+7NnpMgFHNYIwekK4RV1gk9Rw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-50-_WfWA6N4PS-CsTDs19KQlA-1; Tue,
- 09 Jan 2024 10:12:53 -0500
-X-MC-Unique: _WfWA6N4PS-CsTDs19KQlA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 08F703813F3A;
- Tue,  9 Jan 2024 15:12:53 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.86])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CA55D1121312;
- Tue,  9 Jan 2024 15:12:51 +0000 (UTC)
-Date: Tue, 9 Jan 2024 15:12:49 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH v2 1/2] meson: mitigate against ROP exploits with
- -fzero-call-used-regs
-Message-ID: <ZZ1icX6Ep0QOKIX5@redhat.com>
-References: <20240103123414.2401208-1-berrange@redhat.com>
- <20240103123414.2401208-2-berrange@redhat.com>
- <87bk9ulfqo.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rNDxY-0001EM-7d; Tue, 09 Jan 2024 10:24:13 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy3.enst.fr (Postfix) with ESMTP id B32A9A0820;
+ Tue,  9 Jan 2024 16:23:55 +0100 (CET)
+Received: from zproxy3.enst.fr ([IPv6:::1])
+ by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id Txb2vliHCfvb; Tue,  9 Jan 2024 16:23:55 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy3.enst.fr (Postfix) with ESMTP id 1D554A081E;
+ Tue,  9 Jan 2024 16:23:55 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy3.enst.fr 1D554A081E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1704813835;
+ bh=+5SAHEDUyOxy3ZotP8W6H6AwXXKntyVic+zI5JHEeYg=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=dKb1gQr4bYmzHTEOgAXL97H5xjW+ExlZpqcoFpV2+vu/Ze97UZFvtpPD6cwId/b7F
+ IDULOuMxya21NCJTy2PZ+qE2G8jiu0Ar+5TrrcsCnM/Bo3kR7i7yp18JvnKKoct+ob
+ EPqEb0VP5J/x+HR9H5wDKoPL5wYYUdMNTf//qvz4=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy3.enst.fr ([IPv6:::1])
+ by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id nN1-los0CHCO; Tue,  9 Jan 2024 16:23:55 +0100 (CET)
+Received: from inesv-Inspiron-3501.enst.fr (unknown
+ [IPv6:2a04:8ec0:0:240:3f5e:381b:bff9:b9ae])
+ by zproxy3.enst.fr (Postfix) with ESMTPSA id C44EEA0820;
+ Tue,  9 Jan 2024 16:23:54 +0100 (CET)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair@alistair23.me>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Laurent Vivier <lvivier@redhat.com>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Subject: [PATCH v7 0/3] Add device STM32L4x5 EXTI
+Date: Tue,  9 Jan 2024 16:21:36 +0100
+Message-ID: <20240109152350.303202-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87bk9ulfqo.fsf@pond.sub.org>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=137.194.2.222;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy3.enst.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,153 +78,109 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 09, 2024 at 03:54:07PM +0100, Markus Armbruster wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
-> 
-> > To quote wikipedia:
-> >
-> >   "Return-oriented programming (ROP) is a computer security exploit
-> >    technique that allows an attacker to execute code in the presence
-> >    of security defenses such as executable space protection and code
-> >    signing.
-> >
-> >    In this technique, an attacker gains control of the call stack to
-> >    hijack program control flow and then executes carefully chosen
-> >    machine instruction sequences that are already present in the
-> >    machine's memory, called "gadgets". Each gadget typically ends in
-> >    a return instruction and is located in a subroutine within the
-> >    existing program and/or shared library code. Chained together,
-> >    these gadgets allow an attacker to perform arbitrary operations
-> >    on a machine employing defenses that thwart simpler attacks."
-> >
-> > QEMU is by no means perfect with an ever growing set of CVEs from
-> > flawed hardware device emulation, which could potentially be
-> > exploited using ROP techniques.
-> >
-> > Since GCC 11 there has been a compiler option that can mitigate
-> > against this exploit technique:
-> >
-> >     -fzero-call-user-regs
-> >
-> > To understand it refer to these two resources:
-> >
-> >    https://www.jerkeby.se/newsletter/posts/rop-reduction-zero-call-user-regs/
-> >    https://gcc.gnu.org/pipermail/gcc-patches/2020-August/552262.html
-> >
-> > I used two programs to scan qemu-system-x86_64 for ROP gadgets:
-> >
-> >   https://github.com/0vercl0k/rp
-> >   https://github.com/JonathanSalwan/ROPgadget
-> >
-> > When asked to find 8 byte gadgets, the 'rp' tool reports:
-> >
-> >   A total of 440278 gadgets found.
-> >   You decided to keep only the unique ones, 156143 unique gadgets found.
-> >
-> > While the ROPgadget tool reports:
-> >
-> >   Unique gadgets found: 353122
-> >
-> > With the --ropchain argument, the latter attempts to use the found
-> > gadgets to product a chain that can execute arbitrary syscalls. With
-> > current QEMU it succeeds in this task, which is an undesirable
-> > situation.
-> >
-> > With QEMU modified to use -fzero-call-user-regs=used-gpr the 'rp' tool
-> > reports
-> >
-> >   A total of 528991 gadgets found.
-> >   You decided to keep only the unique ones, 121128 unique gadgets found.
-> >
-> > This is 22% fewer unique gadgets
-> >
-> > While the ROPgadget tool reports:
-> >
-> >   Unique gadgets found: 328605
-> >
-> > This is 7% fewer unique gadgets. Crucially though, despite this more
-> > modest reduction, the ROPgadget tool is no longer able to identify a
-> > chain of gadgets for executing arbitrary syscalls. It fails at the
-> > very first step, unable to find gadgets for populating registers for
-> > a future syscall. Having said that, more advanced tools do still
-> > manage to put together a viable ROP chain.
-> >
-> > Also this only takes into account QEMU code. QEMU links to many 3rd
-> > party shared libraries and ideally all of them would be compiled with
-> > this same hardening. That becomes a distro policy question though.
-> >
-> > In terms of performance impact, TCG was used as an evaluation test
-> > case. We're not interested in protecting TCG since it isn't designed
-> > to provide a security barrier, but it is performance sensitive code,
-> > so useful as a guide to how other areas of QEMU might be impacted.
-> > With the -fzero-call-user-regs=used-gpr argument present, using the
-> > real world test of booting a linux kernel and having init immediately
-> > poweroff, there is a ~1% slow down in performance under TCG. The QEMU
-> > binary size also grows by approximately 1%.
-> >
-> > By comparison, using the more aggressive -fzero-call-user-regs=all,
-> > results in a slowdown of over 25% in TCG, which is clearly not an
-> > acceptable impact, and a binary size increase of 5%.
-> >
-> > Considering that 'used-gpr' succesfully stopped ROPgadget assembling
-> > a chain, this more targetted protection is a justifiable hardening
-> > / performance tradeoff.
-> 
-> Have you also considered 'used-arg'?
+This patch adds a new device STM32L4x5 EXTI device and is part
+of a series implementing the STM32L4x5 with a few peripherals.
 
-No, not in any detail.  I was mostly guided by the writeup here:
+Changes from v6 to v7:
+- in `stm32l4x5_exti_write`: rename `n` to `bank`, use new helper
+function `regbank_index_by_irq`, use `HWADDR_PRIx` formatting in error lo=
+g,
+unify writes where only bank differs using new helper functions
+`valid_mask` and `configurable_mask`
+- in `stm32l4x5_exti_set_irq`: rename `n` to `bank`, use new helper
+function `regbank_index_by_irq` and new macro `EXTI_MAX_IRQ_PER_BANK`,
+explain why there's no `else` clause
+- in `stm32l4x5_exti_read`: rename `n` to `bank`, use new helper
+function `regbank_index_by_irq`, use `HWADDR_PRIx` formatting in error lo=
+g
+- in `stm32l4x5_exti_reset_hold`: unify register initialization
+using new array `exti_romask`
+- in `stm32l4x5_exti_init`: use `size_t` instead of `int` in for loop
+- in `stm32l4x5_exti-test.c`: instead of declaring intermediate
+variables, using `exti_readl` directly in `g_assert_cmpuint`
+so that QEMU coding style is respected
 
-  https://www.jerkeby.se/newsletter/posts/rop-reduction-zero-call-user-regs/
+Changes from v5 to v6:
+- in `stm32l4x5_exti-test.c` : using a helper function
+`exti_set_irq()` to help readability
+- in `stm32l4x5_exti-test.c` : correct a mistake in test
+`test_edge_selector` (adding a necessary NVIC interrupt unpend
+so that the assert actually checks something)
+- in `stm32l4x5_soc.c` : reducing scope of `i` used in for loops
+- in `stm32l4x5_soc.c` : removing useless variable `dev`
+- swapping commit 2 (add tests) and commit 3 (connects exti to SoC)
+so that the tests pass in the commit they're added
 
-which indicates Linux chose 'used-gpr'. I figured if Kees Cook
-decide that was a good tradeoff for Linux, we might as well follow
-it.
+Changes from v4 to v5:
+- update the documentation file
 
-'used-gpr' will target any general purpose registers
-that are used in a method.  'used-arg' will taget any registers
-used for parameters. IIUC, this makes 'used-gpr' be a slightly
-stronger protection as it covers register usage even for things
-which aren't args.
+Changes from v3 to v4:
+- add a test to check that irq trigger selection works correctly
+(`test_edge_selector`) and correct `stm32l4x5_exti_set_irq` accordingly
 
-> 
-> > Reviewed-by: Thomas Huth <thuth@redhat.com>
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >  meson.build | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> >
-> > diff --git a/meson.build b/meson.build
-> > index 6c77d9687d..eaa20d241d 100644
-> > --- a/meson.build
-> > +++ b/meson.build
-> > @@ -433,6 +433,17 @@ if get_option('fuzzing')
-> >    endif
-> >  endif
-> >  
-> > +# Check further flags that make QEMU more robust against malicious parties
-> > +
-> > +hardening_flags = [
-> > +    # Zero out registers used during a function call
-> > +    # upon its return. This makes it harder to assemble
-> > +    # ROP gadgets into something usable
-> > +    '-fzero-call-used-regs=used-gpr',
-> > +]
-> > +
-> > +qemu_common_flags += cc.get_supported_arguments(hardening_flags)
-> > +
-> >  add_global_arguments(qemu_common_flags, native: false, language: all_languages)
-> >  add_global_link_arguments(qemu_ldflags, native: false, language: all_languages)
-> 
+Changes from v2 to v3:
+- corrected the license to GPL
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Changes from v1 to v2:
+- correct the commit messages
+- remove a misleading comment
+
+Changes from v3 to v1:
+- separating the patch in 3 commits
+- justifying in the commit message why we implement a new model instead
+of changing the existing stm32f4xx_exti
+- changed irq_raise to irq_pulse in register SWIERx write
+(in `stm32l4x5_exti_write`) to be consistent with the irq_pulse in
+`stm32l4x5_exti_set_irq` (and also both these interrupts are
+edge-triggered)
+- changed the license to GPL
+
+Changes from v2 to v3:
+- adding more tests writing/reading in exti registers
+- adding tests checking that interrupt work by reading NVIC registers
+- correcting exti_write in SWIER (so it sets an irq only when a bit
+goes from '0' to '1')
+- correcting exti_set_irq (so it never writes in PR when the relevant
+bit in IMR is '0')
+
+Changes from v1 to v2:
+- use arrays to deduplicate code and logic
+- move internal constant `EXTI_NUM_GPIO_EVENT_IN_LINES` from the header
+to the .c file
+- Improve copyright headers
+- replace `static const` with `#define`
+- use the DEFINE_TYPES macro
+- fill the `impl` and `valid` field of the exti's `MemoryRegionOps`
+- fix invalid test caused by a last minute change
+
+Based-on: 20231221213838.54944-1-ines.varhol@telecom-paris.fr
+([PATCH v4 0/2] Add minimal support for the B-L475E-IOT01A board)
+
+In=C3=A8s Varhol (3):
+  hw/misc: Implement STM32L4x5 EXTI
+  hw/arm: Connect STM32L4x5 EXTI to STM32L4x5 SoC
+  tests/qtest: Add STM32L4x5 EXTI QTest testcase
+
+ docs/system/arm/b-l475e-iot01a.rst |   5 +-
+ hw/arm/Kconfig                     |   1 +
+ hw/arm/stm32l4x5_soc.c             |  52 ++-
+ hw/misc/Kconfig                    |   3 +
+ hw/misc/meson.build                |   1 +
+ hw/misc/stm32l4x5_exti.c           | 290 ++++++++++++++++
+ hw/misc/trace-events               |   5 +
+ include/hw/arm/stm32l4x5_soc.h     |   3 +
+ include/hw/misc/stm32l4x5_exti.h   |  51 +++
+ tests/qtest/meson.build            |   5 +
+ tests/qtest/stm32l4x5_exti-test.c  | 524 +++++++++++++++++++++++++++++
+ 11 files changed, 936 insertions(+), 4 deletions(-)
+ create mode 100644 hw/misc/stm32l4x5_exti.c
+ create mode 100644 include/hw/misc/stm32l4x5_exti.h
+ create mode 100644 tests/qtest/stm32l4x5_exti-test.c
+
+--=20
+2.43.0
 
 
