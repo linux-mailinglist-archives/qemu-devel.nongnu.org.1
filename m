@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7B0828737
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 14:37:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED07828767
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 14:51:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNCHI-0004oh-3o; Tue, 09 Jan 2024 08:36:24 -0500
+	id 1rNCUH-0008Gf-GZ; Tue, 09 Jan 2024 08:49:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNCHD-0004iz-LJ
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 08:36:19 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNCHB-0001aP-9Y
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 08:36:19 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40b5155e154so38442165e9.3
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 05:36:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704807375; x=1705412175; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BHC2kUTrpWJtNveirkWhsXgIu86cSKpU/ODpGiqaIjs=;
- b=oa6G91aads7KZTWJl5PFTs3x7s/MNFA6vXKkiq6gh9Zd0F20Lr6XZhma2QZ07AGuOT
- CdL9e5uXutX5kUme27B0PNve61vnmz747nboSMBqA3WGTIRrJ5Hy3yzpH2W3isgMGsQP
- H2fcPGV3fpmi3H29CapVucFu1L4YWIFHZ8VBddW+v1IczxrJv7IwvLGXQe6prkzmNJ8s
- mGgTQ3vYfqpJQ3Aig/OdUQ4cMUDOpex/+PpyVH1170zCsYBvumNATldXqCtWFg38bkYF
- /FHDQbgtYa6XPzvk5HHmtS3wE5eqP2LkRZ0WiTX3gXs86nDenLGNO1uLY+gurMuYtvAe
- A65g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704807375; x=1705412175;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BHC2kUTrpWJtNveirkWhsXgIu86cSKpU/ODpGiqaIjs=;
- b=WppGIpcBnJCnj71mQdfzmG8im48F6+KMpIhGp5Usy20kBRIfVuCIigh7xq6LuyOR0o
- 8E39kjel1RGPmOU8weYLKt0zyHwBE0EydPkeWbwt5aRGuyYv19psovz3ZOQbPBFa36V8
- fWS6emiXpQ9PKAftcs1fR6C6ewZSk94PpwywnGcpcVVBPJS+DTWTp3Mnqw4oyA1Q3ANc
- HsSrlm1wE2cF5rTAaASNG3Q03O/NSmw7WAM/WbPbNs00S+ro5W/0iWrepkbR0UA29XJD
- bPyuwPNcMs9WDvvLtLCwJ2/Bd+L+Q6NXNX2DIw1exW2RHkyU8hm8gbwknUIBCxajgVDZ
- Y+RQ==
-X-Gm-Message-State: AOJu0YxTEsCSxok88LVMet3n9MmCgrkecVjZBOH0MqgddMTpH37JG/7x
- lDE6MNF7AlAR8RWv4rAI+Aat0Web2yU3vg==
-X-Google-Smtp-Source: AGHT+IH7yj31/loIT+7tYmw3gewwKIbySeRmVS4Sa3VhOiWKFc39eFO4qMdYcn4tKQ3u0/8DGwJcXw==
-X-Received: by 2002:a05:600c:ca:b0:40e:4710:b33a with SMTP id
- u10-20020a05600c00ca00b0040e4710b33amr1491441wmm.45.1704807375098; 
- Tue, 09 Jan 2024 05:36:15 -0800 (PST)
-Received: from [192.168.69.100] (rsa59-h02-176-184-32-47.dsl.sta.abo.bbox.fr.
- [176.184.32.47]) by smtp.gmail.com with ESMTPSA id
- h4-20020a05600c314400b0040d7c3d5454sm14756870wmo.3.2024.01.09.05.36.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 05:36:14 -0800 (PST)
-Message-ID: <282dc91e-0f56-4a74-9110-ea4824e6d61d@linaro.org>
-Date: Tue, 9 Jan 2024 14:36:12 +0100
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rNCUF-0008GX-7i
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 08:49:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rNCU4-0008D9-S6
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 08:49:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704808174;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZEbfq1Jmbp8c9m0T2RO9gr80yl5sJbjesl62ILq3lts=;
+ b=XppiojOsB3ZJbU2zwpv/kEpNcqIQHdmkhvalznPWVtfPS8VEfslgj/sg6RnsZxUEurnEZX
+ AzP1DcFioT5Es85giOBy5Z+3I9OxAQtb79ECMJ8XY1tXyjbLvDKMlDhErtAvEnwRZxvx8q
+ 3RY3MDcpjEF8idTygV5l91teb/uKvPw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-404-7wgdjxRmNByEqLA93My54A-1; Tue,
+ 09 Jan 2024 08:49:31 -0500
+X-MC-Unique: 7wgdjxRmNByEqLA93My54A-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D10803C2A1C2;
+ Tue,  9 Jan 2024 13:49:30 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.86])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3D25C2166B32;
+ Tue,  9 Jan 2024 13:49:28 +0000 (UTC)
+Date: Tue, 9 Jan 2024 13:49:26 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 0/6] net: fix non-deterministic failures of the
+ 'netdev-socket' qtest
+Message-ID: <ZZ1O5m2i_lz1fLMr@redhat.com>
+References: <20240104162942.211458-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC/PATCH v1 07/11] gunyah: Specify device-tree location
-Content-Language: en-US
-To: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>, peter.maydell@linaro.org, 
- alex.bennee@linaro.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: quic_tsoni@quicinc.com, quic_pheragu@quicinc.com,
- quic_eberman@quicinc.com, quic_yvasi@quicinc.com, quic_cvanscha@quicinc.com,
- quic_mnalajal@quicinc.com
-References: <20240109090039.1636383-1-quic_svaddagi@quicinc.com>
- <20240109090039.1636383-8-quic_svaddagi@quicinc.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240109090039.1636383-8-quic_svaddagi@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240104162942.211458-1-berrange@redhat.com>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,67 +85,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/1/24 10:00, Srivatsa Vaddagiri wrote:
-> Specify the location of device-tree and its size, as Gunyah requires the
-> device-tree to be parsed before VM can begin its execution.
+Hi Jason,
+
+As the net/ maintainer, could you take a look at this series.
+This failure has been causing pain for CI for quite a while.
+
+If you're happy with it, I can include it in a pending pull
+request of other misc patches I have.
+
+On Thu, Jan 04, 2024 at 04:29:36PM +0000, Daniel P. Berrangé wrote:
+> We've previously bumped up the timeouts in the netdev-socket qtest
+> to supposedly fix non-deterministic failures, however, the failures
+> are still hitting CI.
 > 
-> Signed-off-by: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
-> ---
->   MAINTAINERS               |  1 +
->   accel/stubs/gunyah-stub.c |  5 +++++
->   hw/arm/virt.c             |  6 ++++++
->   include/sysemu/gunyah.h   |  2 ++
->   target/arm/gunyah.c       | 45 +++++++++++++++++++++++++++++++++++++++
->   target/arm/meson.build    |  3 +++
->   6 files changed, 62 insertions(+)
->   create mode 100644 target/arm/gunyah.c
+> A simple 'listen()' and 'connect()' pairing across 2 QEMU processes
+> should be very quick to execute, even under high system load, so it
+> was never likely that the test was failing due to timeouts being
+> reached.
+> 
+> The actual root cause was a race condition in the test design. It
+> was spawning a QEMU with a 'server' netdev, and then spawning one
+> with the 'client' netdev. There was insufficient synchronization,
+> however, so it was possible for the 2nd QEMU process to attempt
+> to 'connect()' before the 'listen()' call was made by the 1st QEMU.
+> 
+> In the test scenarios that did not use the 'reconnect' flag, this
+> would result in the client QEMU never getting into the expected
+> state. The test code would thus loop on 'info network' until
+> hitting the maximum wait time.
+> 
+> This series reverts the increased timeouts, and fixes synchronization
+> in the test scenarios. It also improves reporting of errors in the
+> socket netdev backend so that 'info network' reports what actually
+> went wrong rather than a useless generic 'connection error' string.
+> This will help us diagnose any future CI problems, should they occurr.
+> 
+> Daniel P. Berrangé (6):
+>   Revert "netdev: set timeout depending on loadavg"
+>   Revert "osdep: add getloadavg"
+>   Revert "tests/qtest/netdev-socket: Raise connection timeout to 120
+>     seconds"
+>   net: add explicit info about connecting/listening state
+>   net: handle QIOTask completion to report useful error message
+>   qtest: ensure netdev-socket tests have non-overlapping names
+> 
+>  include/qemu/osdep.h        | 10 ---------
+>  meson.build                 |  1 -
+>  net/stream.c                | 18 +++++++++++-----
+>  tests/qtest/netdev-socket.c | 42 +++++++------------------------------
+>  4 files changed, 21 insertions(+), 50 deletions(-)
+> 
+> -- 
+> 2.43.0
+> 
 
-
-> diff --git a/target/arm/gunyah.c b/target/arm/gunyah.c
-> new file mode 100644
-> index 0000000000..73c1c2a88a
-> --- /dev/null
-> +++ b/target/arm/gunyah.c
-> @@ -0,0 +1,45 @@
-> +/*
-> + * QEMU Gunyah hypervisor support
-> + *
-> + * Copyright(c) 2023 Qualcomm Innovation Center, Inc. All Rights Reserved.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu/error-report.h"
-> +#include "sysemu/gunyah.h"
-> +#include "sysemu/gunyah_int.h"
-> +#include "linux-headers/linux/gunyah.h"
-I'm getting on macOS:
-
-In file included from ../../target/arm/gunyah.c:13:
-linux-headers/linux/gunyah.h:13:10: fatal error: 'linux/types.h' file 
-not found
-#include <linux/types.h>
-          ^~~~~~~~~~~~~~~
-1 error generated.
-
-Maybe we need the following change?
-
--- >8 --
-diff --git a/meson.build b/meson.build
-index 6ded60063e..fb20ca04d1 100644
---- a/meson.build
-+++ b/meson.build
-@@ -712,5 +712,5 @@ endif
-
-  gunyah = not_found
--if get_option('gunyah').allowed()
-+if get_option('gunyah').allowed() and host_os == 'linux'
-      accelerators += 'CONFIG_GUNYAH'
-  endif
----
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
