@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF2B828398
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 10:59:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD2E8283A1
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 11:05:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN8sK-0005rW-F8; Tue, 09 Jan 2024 04:58:24 -0500
+	id 1rN8y7-00084H-6p; Tue, 09 Jan 2024 05:04:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rN8sG-0005rL-Qh
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 04:58:20 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1rN8y2-00083S-AP
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 05:04:18 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rN8sF-0004eJ-2j
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 04:58:20 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1d509222c11so7750405ad.1
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 01:58:17 -0800 (PST)
+ id 1rN8y0-00087d-IR
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 05:04:18 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6d9b050e88cso1165835b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 02:04:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704794296; x=1705399096; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1704794654; x=1705399454; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=YseRKKQFSzdDy9gl2pqQfajs8QCJKgkIsrKgczkQDCg=;
- b=MBFEOK1bJpFNzaHpcxSBqMTfT35hlcHLwOORT/K49sni0nvurPi8ya4pdwh3wPmB8z
- ctj/uDG6k3syuTaIOewAkww5k6o3ro8yc/s3jxi3yX9eyIK1yWxIicJe5VRVC8/vuwwQ
- qvSoIGu4MZ3N9/+2uaYS5cy+kIof5nnYJNVsakLSwvlF10NJ2RiYANc4YT8Fj+P4bDVE
- sFPLN2vhtnEJz8dwMGOQs55Fuq0YOCdckZEj6MxsmyVlPum3wUqb+OZ77ELLSKM7bRSd
- KOgS4cKg2Cxougtf1/JNVsxCyHGBbg0qUNJwY3zIyfhCdaxXn7J8AfXmsDVPUz3ISZrT
- U2IQ==
+ bh=SyFkUwihui8zlp39SsY9lEMIJM2wa1dwRzJAvypV2jM=;
+ b=ZKqdVG2Ry7wxLj3pQ57wlZqGGVjSU4+1dXhWIkepy7PK3TxILJgVvPFxmUsH8bsqJI
+ SrS2rKu8MonsHe1XdwhXuybi0Q2rxgWdFoXyLau0jn42CnxqiBG69JbvpPQII9jIcNWW
+ NsoxUj27ISp1+UzHiFwfmNHlNaRPfV80A7ThhMa+s0BnPzjKJtnZR7NJf83OHeAET/Dg
+ acDYpxTfHC7GiximPoTIP7ePl0eydAjg+esVPSQFqr0E8TmL0duZrryU2Skud8tzkN1u
+ zQSKXVogRb/gOzFp2udQinNV5vwNXieOmIDmqkZNHexfsWVL5bpBG6MOGRfXiFG/JdFO
+ DqQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704794296; x=1705399096;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1704794654; x=1705399454;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YseRKKQFSzdDy9gl2pqQfajs8QCJKgkIsrKgczkQDCg=;
- b=HKe0Bk2JzGytPZLnia0HEQEZqFLi3wQ1Hb9rL2TUYM1TriEBUTHiPkVocEriFv5wnu
- DO0uxPmq6Vx6xT2Kkd3wk1NeYhwtg2ILCAM2YgzD7rENMr1XCAyJgXxzchvn9QdYX1I+
- gFUnmdoE1PqSvEwTyiYo2fvFqnSbwM/0CtiBLPwuAsRiWtyWusD2O0XRz4o8M1fRjq3H
- HUAnnQ5VehJ7YScb9si1t2FlhagM8hIQLAOl7BDRZ0DjdXkFHSjuuVYywFEpJ3GybheQ
- XP5N2zy9uFk9P7/3uY2vVhlN19FboijfZHqm6GSEXstwsNmzOltDtwPsSM6DqYpOr7kU
- KVDw==
-X-Gm-Message-State: AOJu0YxbrZ+vpqBq+0Djq2yoOxPRaoFtSRC2nT/lfQ5Vc3bpKWIGS03a
- HEHkdxkoldAyMOk/U1j10AE+Gj0g6Kzd3Q==
-X-Google-Smtp-Source: AGHT+IGcZo7ralkQPUJA4rECf97XAt0IYgdflyNlYA4OnUlpOYHzohTYXVtubZ8/czyYoHu/Cnhpmg==
-X-Received: by 2002:a17:902:d2cb:b0:1d4:7e51:ff6c with SMTP id
- n11-20020a170902d2cb00b001d47e51ff6cmr2973523plc.121.1704794296593; 
- Tue, 09 Jan 2024 01:58:16 -0800 (PST)
+ bh=SyFkUwihui8zlp39SsY9lEMIJM2wa1dwRzJAvypV2jM=;
+ b=VRiiqhg/1+QSSYdK3xl881Sysqz5mW2c3Su15xVHTliAjwOvYWdIayumW7wrIAKqrU
+ 4Syken/0TtW/02pMYmSoSfU206z1e3IGMVe8e7i9Z30rvMQ03JvXF9yJ8KMs6V4KdoAy
+ tqUtmos32FKv2wwvY1MEeXzfKs/ODZXaNtHpgsfGxAC3qQQDifKZvb42ZkHIGgQRYERX
+ Rf/EB87SbWSWfyRmaUp2GSSe7qrXBJUHOBauApK4+3lNEx6uyoqjop4nX2CIrg/8OTj7
+ y3N+QuI4Sxw1nCEa5xAhr/jacP1N7PN5mCQWwqh1EcjcWeliZkjXQtyOKrMROdq02Kz4
+ 9TDA==
+X-Gm-Message-State: AOJu0YyE739HUaVY7pyG51tljtS4vQIQDLuCiYU+WLi9dUwcoIeHnv65
+ I7qdxjxKMRZOZt33PTPWkSHQtVJjl56wVA==
+X-Google-Smtp-Source: AGHT+IHK9vV8osK7IrrJB43LioVX2ftWi800G+0z8ou1Yqikn9AiBMfZfQluG3X866s9cFtHD1R9Bg==
+X-Received: by 2002:a05:6a20:6325:b0:199:b49f:4024 with SMTP id
+ h37-20020a056a20632500b00199b49f4024mr1454468pzf.83.1704794654608; 
+ Tue, 09 Jan 2024 02:04:14 -0800 (PST)
 Received: from [192.168.40.227] ([172.58.27.248])
  by smtp.gmail.com with ESMTPSA id
- g7-20020a1709026b4700b001c9d011581dsm1382600plt.164.2024.01.09.01.58.09
+ t3-20020a62d143000000b006d9a42f25b2sm1335766pfl.201.2024.01.09.02.04.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 01:58:16 -0800 (PST)
-Message-ID: <3cc1664c-9f5c-4d2f-b8f3-f8880c110e10@linaro.org>
-Date: Tue, 9 Jan 2024 20:57:56 +1100
+ Tue, 09 Jan 2024 02:04:14 -0800 (PST)
+Message-ID: <84ce492e-3b8e-4199-a277-8f9defa27b6a@linaro.org>
+Date: Tue, 9 Jan 2024 21:04:04 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/9] hw/hppa/machine: Disable default devices with
- --nodefaults option
+Subject: Re: [PATCH v2 5/9] target/hppa: Strip upper 32-bits of IOR on error
+ in probe
+Content-Language: en-US
 To: deller@kernel.org, qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, Bruno Haible <bruno@clisp.org>,
  "Nelson H . F . Beebe" <beebe@math.utah.edu>, Helge Deller <deller@gmx.de>
 References: <20240107132237.50553-1-deller@kernel.org>
- <20240107132237.50553-3-deller@kernel.org>
-Content-Language: en-US
+ <20240107132237.50553-6-deller@kernel.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240107132237.50553-3-deller@kernel.org>
+In-Reply-To: <20240107132237.50553-6-deller@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,75 +99,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 1/8/24 00:22, deller@kernel.org wrote:
 > From: Helge Deller <deller@gmx.de>
 > 
-> Add support for the qemu --nodefaults option, which will disable the
-> following default devices:
-> - lsi53c895a SCSI controller,
-> - artist graphics card,
-> - LASI 82596 NIC,
-> - tulip PCI NIC,
-> - second serial PCI card,
-> - USB OHCI controller.
-> 
-> Adding this option is very useful to allow manual testing and
-> debugging of the other possible devices on the command line.
+> Limit IOR to the lower 32-bits on failure.
+> Keep patch short for easier backporting.
 > 
 > Signed-off-by: Helge Deller <deller@gmx.de>
 > ---
->   hw/hppa/machine.c | 15 +++++++++------
->   1 file changed, 9 insertions(+), 6 deletions(-)
+>   target/hppa/op_helper.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-> index b11907617e..8017002a2a 100644
-> --- a/hw/hppa/machine.c
-> +++ b/hw/hppa/machine.c
-> @@ -346,11 +346,14 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
->       SysBusDevice *s;
->   
->       /* SCSI disk setup. */
-> -    dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
-> -    lsi53c8xx_handle_legacy_cmdline(dev);
-> +    if (defaults_enabled()) {
-> +        dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
-> +        lsi53c8xx_handle_legacy_cmdline(dev);
-> +    }
->   
->       /* Graphics setup. */
-> -    if (machine->enable_graphics && vga_interface_type != VGA_NONE) {
-> +    if (defaults_enabled() && machine->enable_graphics &&
-> +        vga_interface_type != VGA_NONE) {
->           vga_interface_created = true;
->           dev = qdev_new("artist");
->           s = SYS_BUS_DEVICE(dev);
-> @@ -360,7 +363,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
->       }
->   
->       /* Network setup. */
-> -    if (enable_lasi_lan()) {
-> +    if (defaults_enabled() && enable_lasi_lan()) {
->           lasi_82596_init(addr_space, translate(NULL, LASI_LAN_HPA),
->                           qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA));
->       }
-> @@ -385,7 +388,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
->       pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_ID], 0x1227); /* Powerbar */
->   
->       /* create a second serial PCI card when running Astro */
-> -    if (!lasi_dev) {
-> +    if (defaults_enabled() && !lasi_dev) {
->           pci_dev = pci_new(-1, "pci-serial-4x");
->           qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(1));
->           qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(2));
-> @@ -395,7 +398,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
->       }
->   
->       /* create USB OHCI controller for USB keyboard & mouse on Astro machines */
-> -    if (!lasi_dev && machine->enable_graphics) {
-> +    if (defaults_enabled() && !lasi_dev && machine->enable_graphics) {
->           pci_create_simple(pci_bus, -1, "pci-ohci");
->           usb_create_simple(usb_bus_find(-1), "usb-kbd");
->           usb_create_simple(usb_bus_find(-1), "usb-mouse");
+> diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
+> index 7f607c3afd..60c9014242 100644
+> --- a/target/hppa/op_helper.c
+> +++ b/target/hppa/op_helper.c
+> @@ -353,7 +353,7 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
+>       if (excp >= 0) {
+>           if (env->psw & PSW_Q) {
+>               /* ??? Needs tweaking for hppa64.  */
+> -            env->cr[CR_IOR] = addr;
+> +            env->cr[CR_IOR] = (uint32_t)addr;
+>               env->cr[CR_ISR] = addr >> 32;
+>           }
+>           if (excp == EXCP_DTLB_MISS) {
 
-This almost doubles the uses of default_enabled in the entire tree.  I wonder if some of 
-them are redundant or should be using a different test.
+We might need to export raise_exception_with_ior and use that.
+ISR needs adjusting as well for hppa64.
 
 
 r~
