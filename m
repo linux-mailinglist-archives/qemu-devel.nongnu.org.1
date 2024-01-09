@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41488282A7
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 10:03:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4418B8282A6
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 10:03:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN801-0008BZ-DR; Tue, 09 Jan 2024 04:02:17 -0500
+	id 1rN80V-0000EI-3o; Tue, 09 Jan 2024 04:02:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quic_svaddagi@quicinc.com>)
- id 1rN7zT-0007wj-Fp; Tue, 09 Jan 2024 04:01:48 -0500
+ id 1rN7zj-000899-Gc; Tue, 09 Jan 2024 04:02:00 -0500
 Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quic_svaddagi@quicinc.com>)
- id 1rN7zR-0003dh-HQ; Tue, 09 Jan 2024 04:01:43 -0500
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+ id 1rN7zZ-0003eQ-GZ; Tue, 09 Jan 2024 04:01:59 -0500
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
  by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 4098QA51025170; Tue, 9 Jan 2024 09:01:38 GMT
+ 4098vYXD011831; Tue, 9 Jan 2024 09:01:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding:content-type; s=
- qcppdkim1; bh=KI+BJ9lr8SvU0FpMJLFqLEVxC7u2XFjeSpfmV9DdH0A=; b=eR
- dV8ROEtitDx9zY94tkA8JoIOvZmCuwI3SP8xis8icSiIkUDmSzz7y0CxPm7PwjGO
- MO3Vru7cmY2M56albxhCIOxIu/Npc5Hsr/anvrKT+SeVGjcw3fddzkx3rHPM9KFP
- kf1RrpWVHk2lo/DEqlS8zqI+p1iPaIN1QzeskNk57TkPFVEYwzY8QIJi3rUIgqNc
- ENUA/ZgeABiMam6uu0f2euow5QkkQYl1mBJF848DyvrMQgU+sCXTjQqX27nSXxFr
- 2b/+ngM04BDL1h6ErDnaEV97M3xEXddZncl3L277FJqQQeIa6+vf3WIboqgb1c7y
- QXg55vcmttf+Y1kv+fIg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
+ qcppdkim1; bh=HqrplbixooBm+YzEUtPtIPoqstN8rnx9ua4MYlFmoOU=; b=oB
+ B+gdZRuKHYXiUha4bLh/Hdz2/L+e6CRJlUWTwQokl4rmB+lw3lCTQlYT+BliTnKP
+ rXp4TvlNZlFmHdSsgA63snLH20upPsJPNpJR/uvmd1Ob+8wiVd4mNhhK7MinxrBm
+ KxaUBeBQnTmhgjQaqXtVUbtGHkbsY2UTQgQrJpY2cpdXiyLszBO2Z8U8gKJVNF9b
+ uB/1laa+yyMGbkQDj9hTWpaWJO2t9HV5+yiVc0bg3mHIxqhbAOMRHtyMvh9qT4Eu
+ lKFrQj2BC7LVK+HOfpjodLlG7fkhDkB9+WEwT9Iki6dFHiCEUVBjfa8TG+mU2C06
+ UNoEHEdLLHRZkROmSFiA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com
  [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vgxxbgfvk-1
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vgwhs8n11-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 09:01:38 +0000 (GMT)
+ Tue, 09 Jan 2024 09:01:42 +0000 (GMT)
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com
  [10.47.209.197])
- by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40991bSJ027001
+ by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40991fZr029324
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 9 Jan 2024 09:01:37 GMT
+ Tue, 9 Jan 2024 09:01:41 GMT
 Received: from blr-ubuntu-31.qualcomm.com (10.80.80.8) by
  nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Tue, 9 Jan 2024 01:01:33 -0800
+ 15.2.1118.40; Tue, 9 Jan 2024 01:01:37 -0800
 From: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
 To: <peter.maydell@linaro.org>, <philmd@linaro.org>, <alex.bennee@linaro.org>, 
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
@@ -50,9 +50,9 @@ CC: <quic_svaddagi@quicinc.com>, <quic_tsoni@quicinc.com>,
  <quic_pheragu@quicinc.com>, <quic_eberman@quicinc.com>,
  <quic_yvasi@quicinc.com>, <quic_cvanscha@quicinc.com>,
  <quic_mnalajal@quicinc.com>
-Subject: [RFC/PATCH v1 10/11] gunyah: Workarounds (NOT FOR MERGE)
-Date: Tue, 9 Jan 2024 09:00:38 +0000
-Message-ID: <20240109090039.1636383-11-quic_svaddagi@quicinc.com>
+Subject: [RFC/PATCH v1 11/11] gunyah: Documentation
+Date: Tue, 9 Jan 2024 09:00:39 +0000
+Message-ID: <20240109090039.1636383-12-quic_svaddagi@quicinc.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240109090039.1636383-1-quic_svaddagi@quicinc.com>
 References: <20240109090039.1636383-1-quic_svaddagi@quicinc.com>
@@ -65,17 +65,17 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
-X-Proofpoint-ORIG-GUID: LRijOoScGZSwRUoYqEKAVQEVMP9kv4rL
-X-Proofpoint-GUID: LRijOoScGZSwRUoYqEKAVQEVMP9kv4rL
+X-Proofpoint-ORIG-GUID: zp-TfshzsPLujQmyZLsQulQZQA--Sbfa
+X-Proofpoint-GUID: zp-TfshzsPLujQmyZLsQulQZQA--Sbfa
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- lowpriorityscore=0 priorityscore=1501 bulkscore=0 phishscore=0 spamscore=0
- clxscore=1015 mlxscore=0 adultscore=0 impostorscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401090070
+ clxscore=1015 mlxlogscore=999
+ suspectscore=0 lowpriorityscore=0 phishscore=0 mlxscore=0 adultscore=0
+ spamscore=0 malwarescore=0 priorityscore=1501 impostorscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
+ definitions=main-2401090070
 Received-SPF: pass client-ip=205.220.168.131;
  envelope-from=quic_svaddagi@quicinc.com; helo=mx0a-0031df01.pphosted.com
 X-Spam_score_int: -20
@@ -100,104 +100,392 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are some work-arounds required temporarily until some limitations
-with Gunyah hypervisor are addressed.
+Add gunyah.rst that provide some informaiton on how to build and test
+'gunyah' accelerator with open-source Gunyah hypervisor.
 
 Signed-off-by: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
 ---
- accel/gunyah/gunyah-all.c   | 18 ++++++++++++++++++
- hw/arm/boot.c               |  3 ++-
- hw/arm/virt.c               |  3 ++-
- include/sysemu/gunyah_int.h |  1 +
- target/arm/gunyah.c         |  7 +++++++
- 5 files changed, 30 insertions(+), 2 deletions(-)
+ MAINTAINERS                |   1 +
+ docs/system/arm/gunyah.rst | 358 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 359 insertions(+)
+ create mode 100644 docs/system/arm/gunyah.rst
 
-diff --git a/accel/gunyah/gunyah-all.c b/accel/gunyah/gunyah-all.c
-index 3eeecfd286..7d300a16bd 100644
---- a/accel/gunyah/gunyah-all.c
-+++ b/accel/gunyah/gunyah-all.c
-@@ -145,6 +145,24 @@ static gunyah_slot *gunyah_find_overlap_slot(GUNYAHState *s,
-     return NULL;
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 171713bedc..cb5969fc2b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -546,6 +546,7 @@ F: include/sysemu/gunyah.h
+ F: include/sysemu/gunyah_int.h
+ F: target/arm/arm_gicv3_gunyah.c
+ F: hw/intc/arm_gicv3_gunyah.c
++F: docs/system/arm/gunyah.rst
  
-+gunyah_slot *gunyah_find_slot_by_addr(uint64_t addr)
-+{
-+    GUNYAHState *s = GUNYAH_STATE(current_accel());
-+    int i;
-+    gunyah_slot *slot = NULL;
+ WHPX CPUs
+ M: Sunil Muthuswamy <sunilmut@microsoft.com>
+diff --git a/docs/system/arm/gunyah.rst b/docs/system/arm/gunyah.rst
+new file mode 100644
+index 0000000000..5970c5190d
+--- /dev/null
++++ b/docs/system/arm/gunyah.rst
+@@ -0,0 +1,358 @@
++'gunyah' accelerator (``gunyah``)
++=================================
 +
-+    gunyah_slots_lock(s);
-+    for (i = 0; i < s->nr_slots; ++i) {
-+        slot = &s->slots[i];
-+        if (slot->size &&
-+            (addr >= slot->start && addr <= slot->start + slot->size))
-+                break;
-+    }
-+    gunyah_slots_unlock(s);
++Gunyah is a high performance, scalable and flexible hypervisor built for
++demanding battery powered, real-time, safety and security use cases.
 +
-+    return slot;
-+}
++The Gunyah Hypervisor open source project provides a reference Type-1 hypervisor
++configuration suitable for general purpose hosting of multiple trusted and
++dependent VMs. Further information on open-source version of Gunyah Hypervisor
++can be obtained from:
 +
- /* Called with s->slots_lock held */
- static gunyah_slot *gunyah_get_free_slot(GUNYAHState *s)
- {
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index 84ea6a807a..77aa16ee8c 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -413,7 +413,8 @@ static int fdt_add_memory_node(void *fdt, uint32_t acells, hwaddr mem_base,
-     char *nodename;
-     int ret;
- 
--    nodename = g_strdup_printf("/memory@%" PRIx64, mem_base);
-+    /* Workaround until RM can parse memory nodes of type memory@XYZ. */
-+    nodename = g_strdup_printf("/memory");
-     qemu_fdt_add_subnode(fdt, nodename);
-     qemu_fdt_setprop_string(fdt, nodename, "device_type", "memory");
-     ret = qemu_fdt_setprop_sized_cells(fdt, nodename, "reg", acells, mem_base,
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 1aaadc1e1d..798eb70af2 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -165,7 +165,8 @@ static const MemMapEntry base_memmap[] = {
-     [VIRT_PCIE_PIO] =           { 0x3eff0000, 0x00010000 },
-     [VIRT_PCIE_ECAM] =          { 0x3f000000, 0x01000000 },
-     /* Actual RAM size depends on initial RAM and device memory settings */
--    [VIRT_MEM] =                { GiB, LEGACY_RAMLIMIT_BYTES },
-+    /* Workaround until Gunyah can accept mapping that starts from GiB */
-+    [VIRT_MEM] =                { 2 * GiB, LEGACY_RAMLIMIT_BYTES },
- };
- 
- /*
-diff --git a/include/sysemu/gunyah_int.h b/include/sysemu/gunyah_int.h
-index 72b3027e4e..2534c8883f 100644
---- a/include/sysemu/gunyah_int.h
-+++ b/include/sysemu/gunyah_int.h
-@@ -62,5 +62,6 @@ int gunyah_add_irqfd(int irqfd, int label, Error **errp);
- GUNYAHState *get_gunyah_state(void);
- int gunyah_arch_put_registers(CPUState *cs, int level);
- void gunyah_cpu_synchronize_post_reset(CPUState *cpu);
-+gunyah_slot *gunyah_find_slot_by_addr(uint64_t addr);
- 
- #endif    /* GUNYAH_INT_H */
-diff --git a/target/arm/gunyah.c b/target/arm/gunyah.c
-index 06600dbdb7..55d5ccc2a4 100644
---- a/target/arm/gunyah.c
-+++ b/target/arm/gunyah.c
-@@ -34,6 +34,13 @@ int gunyah_arm_set_dtb(__u64 dtb_start, __u64 dtb_size)
- {
-     int ret;
-     struct gh_vm_dtb_config dtb;
-+    gunyah_slot *slot = gunyah_find_slot_by_addr(dtb_start);
++https://github.com/quic/gunyah-hypervisor
 +
-+    /*
-+     * RM should consider 'totalsize' field to be inclusive of free space. Use
-+     * this workaround until RM is fixed.
-+     */
-+    dtb_size = slot->start + slot->size - dtb_start;
- 
-     dtb.guest_phys_addr = dtb_start;
-     dtb.size = dtb_size;
++To get started with open-source version of Gunyah Hypervisor, refer to the
++instructions available at:
++
++https://github.com/quic/gunyah-support-scripts
++
++Build and testing
++-----------------
++
++Configure and build Qemu
++````````````````````````
++
++Apply the proposed patches for 'gunyah' accelerator support in Qemu and build
++it.
++
++.. code-block:: bash
++
++        $ ./configure --target-list=aarch64-softmmu --enable-debug --enable-gunyah --static
++        $ make -j4
++        $ mv build/qemu-system-aarch64 build/qemu-gunyah
++
++
++Clone gunyah-support scripts
++````````````````````````````
++
++.. code-block:: bash
++
++        $ git clone https://github.com/quic/gunyah-support-scripts
++
++Instructions in this document to build and test Gunyah hypervisor was validated
++with the latest commit in gunyah-support-scripts being:
++
++b8e3862 tools: Faster upgrades to latest versions
++
++
++Patch gunyah-support scripts
++````````````````````````````
++Apply below patch to gunyah-support scripts. This is required **temporarily** until
++the scripts can be updated to support Qemu as VMM (in addition to CrosVM) and
++also to fix some issues.
++
++.. code-block:: bash
++
++	diff --git a/scripts/build-docker-img.sh b/scripts/build-docker-img.sh
++	index 98e7881..a6aa774 100755
++	--- a/scripts/build-docker-img.sh
++	+++ b/scripts/build-docker-img.sh
++	@@ -38,7 +38,7 @@ DOCKER_OPTIONS=" build . "
++	 #DOCKER_OPTIONS+=" --progress=plain "
++	 
++	 #  no-cache alleviates some install errors for not finding some packages
++	-#DOCKER_OPTIONS+=" --no-cache "
++	+DOCKER_OPTIONS+=" --no-cache "
++	 
++	 # user environment related so the permissions will same as the host machine
++	 DOCKER_OPTIONS+=" --build-arg UID=$(id -u) "
++	diff --git a/scripts/core-utils/clone-linux.sh b/scripts/core-utils/clone-linux.sh
++	index 714162e..2b79bc7 100755
++	--- a/scripts/core-utils/clone-linux.sh
++	+++ b/scripts/core-utils/clone-linux.sh
++	@@ -26,8 +26,7 @@ cd ${LINUX_DIR}/src
++	 LINUX_VER="v6.5"
++	 echo -e "\nCloning Linux ${LINUX_VER}:"
++	 git clone \
++	-    --depth=1 --progress -c advice.detachedHead=false \
++	-    -b ${LINUX_VER}  \
++	+    --progress -c advice.detachedHead=false \
++	     https://github.com/torvalds/linux.git   || {
++	 	echo "Unable to clone Linux"
++	 	return
++	@@ -58,7 +57,11 @@ echo "Installed b4 to ${LINUX_DIR}/tools/b4"
++	 
++	 cd ${LINUX_DIR}/src/linux
++	 
++	-${LINUX_DIR}/tools/b4/b4.sh shazam https://lore.kernel.org/all/20230613172054.3959700-1-quic_eberman@quicinc.com/
++	+
++	+${LINUX_DIR}/tools/b4/b4.sh am https://lore.kernel.org/all/20230613172054.3959700-1-quic_eberman@quicinc.com/
++	+git checkout -b v14_20230613_quic_eberman_quicinc_com 858fd168a95c5b9669aac8db6c14a9aeab446375
++	+git am ./v14_20230613_quic_eberman_drivers_for_gunyah_hypervisor.mbx
++	+
++	 echo "Applied gunyah drivers patch successfully"
++	 
++	 echo "Generate gunyah.config"
++	diff --git a/scripts/dockerfile-hyp b/scripts/dockerfile-hyp
++	index f117290..29533b3 100644
++	--- a/scripts/dockerfile-hyp
++	+++ b/scripts/dockerfile-hyp
++	@@ -124,7 +124,7 @@ RUN echo ""                                           >> "${HOME}/.bashrc" && \
++	     echo                                           "" >> "${HOME}/.bashrc"
++	 
++	 ## Add any .bashrc user customizations to .bashrc
++	-COPY bashrc-extn .
++	+COPY --chown=$USER:$USER bashrc-extn .
++	 RUN cat bashrc-extn >> "${HOME}/.bashrc"  &&  rm -f bashrc-extn
++	 
++	 CMD /bin/bash
++	diff --git a/scripts/install-core-tools.sh b/scripts/install-core-tools.sh
++	index dc7a846..95c9d54 100755
++	--- a/scripts/install-core-tools.sh
++	+++ b/scripts/install-core-tools.sh
++	@@ -23,7 +23,8 @@ fi
++	 
++	 if [[ ! -d ${TOOLS_DIR} ]]; then
++	     echo "Creating tools mount folder"
++	-    mkdir -p ${TOOLS_DIR}
++	+    sudo mkdir -p ${TOOLS_DIR}
++	+    sudo chown $USER:$USER ${TOOLS_DIR}
++	 
++	     touch ${TOOLS_DIR}/.tools-env
++	     chmod 0775 ${TOOLS_DIR}/.tools-env
++	diff --git a/scripts/install-wsp-imgs.sh b/scripts/install-wsp-imgs.sh
++	index 12150f3..32107e0 100755
++	--- a/scripts/install-wsp-imgs.sh
++	+++ b/scripts/install-wsp-imgs.sh
++	@@ -100,15 +100,23 @@ if [[ ! -f ${WORKSPACE}/run-qemu.sh ]]; then
++	     cp ${BASE_DIR}/utils/run-qemu.sh ${WORKSPACE}/run-qemu.sh
++	 fi
++	 
++	-if [[ ! -f ${WORKSPACE}/crosvm/crosvm ]]; then
++	-    mkdir -p ${WORKSPACE}/crosvm
++	-    cd ${WORKSPACE}/crosvm
++	-    . clone-crosvm.sh
++	-    . build-crosvm.sh
++	-
++	-    echo -e 'export CROSVM_FILE_PATH=${WORKSPACE}/crosvm/crosvm' >> ${WORKSPACE}/.wsp-env
++	-    . ${WORKSPACE}/.wsp-env
++	-fi
++	+cp ${BASE_DIR}/utils/qemu-gunyah ${WORKSPACE}/
++	+cp ${BASE_DIR}/utils/efi-virtio.rom ${WORKSPACE}/
++	+cp ${BASE_DIR}/utils/en-us ${WORKSPACE}/
++	+cp ${BASE_DIR}/utils/svm_disk.img ${WORKSPACE}/
++	+
++	+#if [[ ! -f ${WORKSPACE}/crosvm/crosvm ]]; then
++	+#    mkdir -p ${WORKSPACE}/crosvm
++	+#    cd ${WORKSPACE}/crosvm
++	+#    . clone-crosvm.sh
++	+#    . build-crosvm.sh
++	+
++	+#    echo -e 'export CROSVM_FILE_PATH=${WORKSPACE}/crosvm/crosvm' >> ${WORKSPACE}/.wsp-env
++	+#    . ${WORKSPACE}/.wsp-env
++	+#fi
++	+
++	+echo -e 'export CROSVM_FILE_PATH=${WORKSPACE}/qemu-gunyah' >> ${WORKSPACE}/.wsp-env
++	+. ${WORKSPACE}/.wsp-env
++	 
++	 if [[ ! -f ${WORKSPACE}/rootfs/rootfs-extfs-disk.img ]]; then
++	     echo -e "\nrootfs image not found, creating new one"
++	diff --git a/scripts/migrate-tools-to-vol.sh b/scripts/migrate-tools-to-vol.sh
++	index e5240c6..330f807 100755
++	--- a/scripts/migrate-tools-to-vol.sh
++	+++ b/scripts/migrate-tools-to-vol.sh
++	@@ -76,14 +76,14 @@ if [[ ! -d ${WORKSPACE}/linux ]]; then
++	     echo "Done copying linux files"
++	 fi
++	 
++	-if [[ -d ~/share/docker-share/crosvm ]]; then
++	-    mv ~/share/docker-share/crosvm ${WORKSPACE}/
++	-    echo "Found crosvm, moved into workspace folder"
++	-    mv ${WORKSPACE}/crosvm/crosvm ${WORKSPACE}/crosvm/crosvm-src
++	-    cp ${WORKSPACE}/crosvm/crosvm-src/crosvm  ${WORKSPACE}/crosvm/crosvm
++	-    rm -rf ${WORKSPACE}/crosvm/crosvm-src
++	-    echo -e 'export CROSVM_FILE_PATH=${WORKSPACE}/crosvm/crosvm' >> ${WORKSPACE}/.wsp-env
++	-fi
++	+#if [[ -d ~/share/docker-share/crosvm ]]; then
++	+#    mv ~/share/docker-share/crosvm ${WORKSPACE}/
++	+#    echo "Found crosvm, moved into workspace folder"
++	+#    mv ${WORKSPACE}/crosvm/crosvm ${WORKSPACE}/crosvm/crosvm-src
++	+#    cp ${WORKSPACE}/crosvm/crosvm-src/crosvm  ${WORKSPACE}/crosvm/crosvm
++	+#    rm -rf ${WORKSPACE}/crosvm/crosvm-src
++	+#    echo -e 'export CROSVM_FILE_PATH=${WORKSPACE}/crosvm/crosvm' >> ${WORKSPACE}/.wsp-env
++	+#fi
++	 
++	 if [[ -d ~/share/docker-share/rootfs ]]; then
++	     mv ~/share/docker-share/rootfs ${WORKSPACE}/
++	diff --git a/scripts/utils/build-rootfs-img.sh b/scripts/utils/build-rootfs-img.sh
++	index d110965..9ffe530 100755
++	--- a/scripts/utils/build-rootfs-img.sh
++	+++ b/scripts/utils/build-rootfs-img.sh
++	@@ -177,6 +177,9 @@ if [[ ! -f ${SVM_DESTINATION}/svm.sh ]]; then
++	 	echo -e '--params "rw root=/dev/ram rdinit=/sbin/init earlyprintk=serial panic=0" \\' >> ./svm.sh
++	 	echo -e ' /usr/gunyah/Image $@\n' >> ./svm.sh
++	 
++	+	sudo cp ${WORKSPACE}/svm_disk.img ${SVM_DESTINATION}
++	+	sudo cp ${WORKSPACE}/efi-virtio.rom ${SVM_DESTINATION}
++	+	sudo cp ${WORKSPACE}/en-us ${SVM_DESTINATION}
++	 	sudo cp ./svm.sh ${SVM_DESTINATION}
++	 	rm -f ./svm.sh
++	 	sudo chmod 0775 ${SVM_DESTINATION}/svm.sh
++	@@ -216,13 +219,15 @@ if [[ ! -f ${ROOTFS_REFERENCE_DIR}/lib/libgcc_s.so.1 ]]; then
++	 	export MACHINE=qemuarm64
++	 	export DISTRO=rpb
++	 
++	-	mkdir ${ROOTFS_BASE}/oe-rpb
++	+	mkdir -p ${ROOTFS_BASE}/oe-rpb
++	 	cd ${ROOTFS_BASE}/oe-rpb
++	 
++	 	# fetch
++	 	~/bin/repo init -u https://github.com/96boards/oe-rpb-manifest.git -b qcom/master
++	 	~/bin/repo sync
++	 
++	+	rm layers/meta-qcom/recipes-kernel/linux/linux-yocto_6.5.bbappend
++	+
++	 	# add config for libgcc and other virtualization options
++	 	echo -e "\n" > ./extra_local.conf
++	 	echo "INHERIT += 'buildstats buildstats-summary'" >> ./extra_local.conf
++	@@ -269,5 +274,5 @@ if [[ -f ${WORKSPACE}/rootfs/rootfs-extfs-disk.img ]]; then
++	 else
++	 	echo "Creating rootfs image file from reference : `pwd`"
++	 	cd ${WORKSPACE}/rootfs
++	-	. ~/utils/bldextfs.sh -f ${WORKSPACE}/rootfs/reference -o ${WORKSPACE}/rootfs/rootfs-extfs-disk.img -s 800M
++	+	. ~/utils/bldextfs.sh -f ${WORKSPACE}/rootfs/reference -o ${WORKSPACE}/rootfs/rootfs-extfs-disk.img -s 2G
++	 fi
++
++Copy Qemu files
++```````````````
++
++Copy Qemu and related files to `utils` directory of gunyah-support scripts.
++
++.. code-block:: bash
++
++        # qemu-gunyah is nothing but qemu-system-aarch64 binary that supports gunyah accelerator
++        cp qemu-gunyah scripts/utils
++
++        # efi-virtio.rom is found under `pc-bios` directory of Qemu
++        cp efi-virtio.rom scripts/utils
++
++        # en-us is found under `pc-bios/keymaps` directory of Qemu
++        cp en-us scripts/utils
++
++        # svm_disk.img will serve as the root disk for VM. It will have init and
++        # other programs that are required to boot VM. It can be prepared from
++        # any aarch64-based distro such as Ubuntu.
++        cp svm_disk.img scripts/utils
++
++Build docker image
++``````````````````
++
++.. code-block:: bash
++
++        cd scripts
++        ./build-docker-img.sh
++
++Rest of steps below need to be run inside docker. Launch the docker as:
++
++.. code-block:: bash
++
++        # SOME_FOLDER is any directory on host. This will be accessible from
++        # inside docker and is useful to share files between host and docker
++        # environments.
++        export HOST_TO_DOCKER_SHARED_DIR=SOME_FOLDER
++        cd scripts
++        ./run-docker.sh
++
++
++Clone and build a Gunyah Hypervisor image
++`````````````````````````````````````````
++
++.. code-block:: bash
++
++        cd ~/share/gunyah
++        clone-gunyah.sh
++
++Cloned sources includes that for Resource Manager (RM) under `resource-manager`
++directory. RM is a privileged VM that acts as an extension of Gunyah
++hypervisor and assists the hypervisor in various tasks related to creation and
++management of VMs. More information on RM is provided at:
++
++https://github.com/quic/gunyah-resource-manager
++
++Gunyah hypervisor source is available under `hyp` directory.
++
++
++Patch Gunyah hypervisor and Resource Manager
++````````````````````````````````````````````
++
++Apply below changes to hypervisor and RM on which 'gunyah' Qemu accelerator
++currently depends. These changes are being discussed with maintainers and if
++accepted this document will be modified appropriately.
++
++RM patch (in 'resource-manager' directory):
++
++.. code-block:: bash
++
++	diff --git a/src/vm_creation/vm_creation.c b/src/vm_creation/vm_creation.c
++	index df8edfb..b73b37e 100644
++	--- a/src/vm_creation/vm_creation.c
++	+++ b/src/vm_creation/vm_creation.c
++	@@ -510,7 +510,10 @@ process_dtb(vm_t *vm)
++	        // Estimate a final dtb size after applying the overlay.
++	        size_t original_dtb_size =
++	                util_balign_up(fdt_totalsize(temp_addr), sizeof(uint32_t));
++	-       size_t final_dtb_size = original_dtb_size + dtbo_ret.size;
++	+       size_t final_dtb_size = util_balign_up(original_dtb_size + dtbo_ret.size, 8);
++
++
++Hypervisor patch (in 'hyp' directory):
++
++.. code-block:: bash
++
++	diff --git a/config/platform/qemu.conf b/config/platform/qemu.conf
++	index bc612f2..9a292a4 100644
++	--- a/config/platform/qemu.conf
++	+++ b/config/platform/qemu.conf
++	@@ -35,7 +35,7 @@ configs HLOS_RAM_FS_BASE=0x40800000
++	 configs PLATFORM_HEAP_PRIVATE_SIZE=0x200000
++	 configs PLATFORM_RW_DATA_SIZE=0x200000
++	 configs PLATFORM_ROOTVM_LMA_BASE=0x80480000U
++	-configs PLATFORM_ROOTVM_LMA_SIZE=0xa0000U
++	+configs PLATFORM_ROOTVM_LMA_SIZE=0x100000U
++	 configs PLATFORM_PHYS_ADDRESS_BITS=36
++	 configs PLATFORM_VM_ADDRESS_SPACE_BITS=36
++	 configs PLATFORM_PGTABLE_4K_GRANULE=1
++
++Build Gunyah hypervisor
++```````````````````````
++
++.. code-block:: bash
++
++        cd ~/share
++        build-gunyah.sh qemu
++
++Launch host-VM under Gunyah hypervisor
++``````````````````````````````````````
++
++.. code-block:: bash
++
++        cd ~/mnt/workspace
++        run-qemu.sh dtb
++        run-qemu.sh
++
++
++Running a secondary VM with Qemu as VMM
++```````````````````````````````````````
++
++.. code-block:: bash
++
++        $ cd /usr/gunyah
++        $ ./qemu-gunyah -cpu cortex-a57 -nographic -hda svm_disk.img -m 256M -smp cpus=8 --accel gunyah -machine virt,highmem=off -append "rw root=/dev/vda   rdinit=/sbin/init earlyprintk=serial panic=0" -kernel ./Image
++
++
++Limitations
++-----------
++
++Below features are not yet supported.
++
++* Protected VM (or confidential guests)
 -- 
 2.25.1
 
