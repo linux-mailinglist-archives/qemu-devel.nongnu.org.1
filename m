@@ -2,96 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E276828A77
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2D9828A7B
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:52:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNFKo-0005i0-HL; Tue, 09 Jan 2024 11:52:14 -0500
+	id 1rNFL9-0005qt-TP; Tue, 09 Jan 2024 11:52:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1rNFKh-0005WX-Hm
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:52:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rNFL3-0005qE-PS; Tue, 09 Jan 2024 11:52:29 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1rNFKf-0001Zu-F3
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:52:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704819123;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5bJ1JYzsmkIXYU8PY+PrtA7QOZq6OZmKYvDNZWpqw0Q=;
- b=glaIzIrF8d+LTiEow/N/V0xj4dZiKZXNT3yHTJ3ErSNcl4rNkT36VET3x8ds2grKy4kYO0
- SOMSRYO2i6Om3EdkbMWFu/3Rrsm0DThnzIMX/9OeQSFfFtY4herh7hH4qbaSoqvNoIuPGO
- RI9RPeUffIcUFSmCxSUahB0wQ3bOJAk=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-306-GQqVrB1MMIGa4YarisbGyg-1; Tue, 09 Jan 2024 11:52:02 -0500
-X-MC-Unique: GQqVrB1MMIGa4YarisbGyg-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-429abac743fso6488141cf.2
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 08:52:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704819122; x=1705423922;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5bJ1JYzsmkIXYU8PY+PrtA7QOZq6OZmKYvDNZWpqw0Q=;
- b=o9qb+OYNcwRfy9Qz5MOm7H5rNtf+iC0KkMJpEs5BHWNFN/WyLdsVcQxsjXADlRvVBY
- b92yJyR/Vxis4M0Q0bDqwBuQrCBD//9WaP1ffn39bkadzlIaJL3cxb4PYLmlDw8eqk6E
- R+GCOWnK9gEvZqpuR2mLxt72rikdSfKdLa+q027A5DvSLz3eJ9DalIQNCR53zaiGoHhk
- WTuLf7/AKcrKQAMCQxQm187bVJgnR9lJNONH5nvpF8Woq+ZSo072yx94rlnvI69pdiKL
- G+k5GU+mfANER06AAP4pFqlAW114uY+FjBQR3QFFMfcBBtXYMr/objmJAFtSPM7eOYAb
- GXUw==
-X-Gm-Message-State: AOJu0YyYVrThClEdRw8eusl0iMCxBaNLGkma9YZ65Ewp2GA+UWvWU4NZ
- H73QEWJuUwWK+iSSBalQmNcQCYmNHXTv8W2oW/jmCkth8ZsfbKbs2oks/EKUWSLaby4wI8z6WC+
- e6zF7a21u9vAZZIO/zlA6fu8=
-X-Received: by 2002:ac8:5751:0:b0:429:8a1d:45a9 with SMTP id
- 17-20020ac85751000000b004298a1d45a9mr6377257qtx.127.1704819121930; 
- Tue, 09 Jan 2024 08:52:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHvTNWFxoyLXCeQudNQVUmqnGvtsfOcIwkSa7rIpvMjZdB3WzgOX+ay7MniVSeftpQaJRL2GA==
-X-Received: by 2002:ac8:5751:0:b0:429:8a1d:45a9 with SMTP id
- 17-20020ac85751000000b004298a1d45a9mr6377248qtx.127.1704819121713; 
- Tue, 09 Jan 2024 08:52:01 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- v17-20020ac87291000000b0042837900d7bsm998377qto.11.2024.01.09.08.52.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 08:52:01 -0800 (PST)
-Message-ID: <9296cdea-3144-4f4c-af7a-d7cadf8ea107@redhat.com>
-Date: Tue, 9 Jan 2024 17:51:59 +0100
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rNFL0-0001pd-1V; Tue, 09 Jan 2024 11:52:28 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T8cPR6SfYz6K5xJ;
+ Wed, 10 Jan 2024 00:50:35 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id B50D3140736;
+ Wed, 10 Jan 2024 00:52:22 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 9 Jan
+ 2024 16:52:22 +0000
+Date: Tue, 9 Jan 2024 16:52:21 +0000
+To: Alex Williamson <alex.williamson@redhat.com>
+CC: Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ "clg@redhat.com" <clg@redhat.com>, "shannon.zhaosl@gmail.com"
+ <shannon.zhaosl@gmail.com>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "ani@anisinha.ca" <ani@anisinha.ca>,
+ "berrange@redhat.com" <berrange@redhat.com>, "eduardo@habkost.net"
+ <eduardo@habkost.net>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "eblake@redhat.com" <eblake@redhat.com>,
+ "armbru@redhat.com" <armbru@redhat.com>, "david@redhat.com"
+ <david@redhat.com>, "gshan@redhat.com" <gshan@redhat.com>, Aniket Agashe
+ <aniketa@nvidia.com>, Neo Jia <cjia@nvidia.com>, Kirti Wankhede
+ <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>, Vikram
+ Sethi <vsethi@nvidia.com>, Andy Currid <acurrid@nvidia.com>, "Dheeraj Nigam"
+ <dnigam@nvidia.com>, Uday Dhoke <udhoke@nvidia.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v6 1/2] qom: new object to associate device to numa node
+Message-ID: <20240109165221.00003b8b@Huawei.com>
+In-Reply-To: <20240104103941.019f9b54.alex.williamson@redhat.com>
+References: <20231225045603.7654-1-ankita@nvidia.com>
+ <20231225045603.7654-2-ankita@nvidia.com>
+ <20240102125821.00001aa0@Huawei.com>
+ <SA1PR12MB7199DF47EDDA9419E22FD79FB067A@SA1PR12MB7199.namprd12.prod.outlook.com>
+ <SA1PR12MB719917E2C9D98C04AE9058C4B0672@SA1PR12MB7199.namprd12.prod.outlook.com>
+ <20240104103941.019f9b54.alex.williamson@redhat.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/s390x/kvm/pv: Provide some more useful information
- if decryption fails
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, Halil Pasic <pasic@linux.ibm.com>
-References: <20240109143038.155512-1-thuth@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>
-In-Reply-To: <20240109143038.155512-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clegoate@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,107 +79,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, 4 Jan 2024 10:39:41 -0700
+Alex Williamson <alex.williamson@redhat.com> wrote:
 
-
-On 1/9/24 15:30, Thomas Huth wrote:
-> It's a common scenario to copy guest images from one host to another
-> to run the guest on the other machine. This (of course) does not work
-> with "secure exection" guests since they are encrypted with one certain
-> host key. However, if you still (accidentally) do it, you only get a
-> very user-unfriendly error message that looks like this:
+> On Thu, 4 Jan 2024 16:40:39 +0000
+> Ankit Agrawal <ankita@nvidia.com> wrote:
 > 
->   qemu-system-s390x: KVM PV command 2 (KVM_PV_SET_SEC_PARMS) failed:
->    header rc 108 rrc 5 IOCTL rc: -22
+> > Had a discussion with RH folks, summary follows:
+> > 
+> > 1. To align with the current spec description pointed by Jonathan, we first do
+> >      a separate object instance per GI node as suggested by Jonathan. i.e.
+> >      a acpi-generic-initiator would only link one node to the device. To 
+> >      associate a set of nodes, those number of object instances should be
+> >      created.
+> > 2. In parallel, we work to get the spec updated. After the update, we switch
+> >     to the current implementation to link a PCI device with a set of NUMA
+> >     nodes.
+> > 
+> > Alex/Jonathan, does this sound fine?
+> >   
 > 
-> Let's provide at least a somewhat nicer hint to the users so that they
-> are able to figure out what might have gone wrong.
+> Yes, as I understand Jonathan's comments, the acpi-generic-initiator
+> object should currently define a single device:node relationship to
+> match the ACPI definition.
+
+Doesn't matter for this, but it's a many_device:single_node
+relationship as currently defined. We should be able to support that
+in any new interfaces for QEMU.
+
+>  Separately a clarification of the spec
+> could be pursued that could allow us to reinstate a node list option
+> for the acpi-generic-initiator object.  In the interim, a user can
+> define multiple 1:1 objects to create the 1:N relationship that's
+> ultimately required here.  Thanks,
+
+Yes, a spec clarification would work, probably needs some text
+to say a GI might not be an initiator as well - my worry is
+theoretical backwards compatibility with a (probably
+nonexistent) OS that assumes the N:1 mapping. So you may be in 
+new SRAT entry territory.
+
+Given that, an alternative proposal that I think would work
+for you would be to add a 'placeholder' memory node definition
+in SRAT (so allow 0 size explicitly - might need a new SRAT
+entry to avoid backwards compat issues). Then put the GPU
+initiator part in a GI node and use the HMAT Memory Proximity
+Domain Attributes magic linkage entry "Proximity Domain for
+the Attached Initiator" to associate the placeholder memory
+nodes with the GI / GPU.
+
+I'd go to ASWG with a big diagram and ask 'how do I do this!'
+
+If you do it code first I'm happy to help out with refining
+the proposal. I just don't like the time of ASWG calls so tend
+to not make them in person.
+
+Or just emulate UEFI's CDAT (from CXL, but not CXL specific)
+from your GPU and make it a driver problem ;)
+
+Jonathan
+
+
 > 
-> Buglink: https://issues.redhat.com/browse/RHEL-18212
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   target/s390x/kvm/pv.c | 20 ++++++++++++++++----
->   1 file changed, 16 insertions(+), 4 deletions(-)
+> Alex
 > 
-> diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
-> index 6a69be7e5c..2833a255fa 100644
-> --- a/target/s390x/kvm/pv.c
-> +++ b/target/s390x/kvm/pv.c
-> @@ -29,7 +29,8 @@ static bool info_valid;
->   static struct kvm_s390_pv_info_vm info_vm;
->   static struct kvm_s390_pv_info_dump info_dump;
->   
-> -static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data)
-> +static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data,
-> +                         int *pvrc)
->   {
->       struct kvm_pv_cmd pv_cmd = {
->           .cmd = cmd,
-> @@ -46,6 +47,9 @@ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data)
->                        "IOCTL rc: %d", cmd, cmdname, pv_cmd.rc, pv_cmd.rrc,
->                        rc);
->       }
-> +    if (pvrc) {
-> +        *pvrc = pv_cmd.rc;
-> +    }
->       return rc;
->   }
->   
-> @@ -53,12 +57,13 @@ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data)
->    * This macro lets us pass the command as a string to the function so
->    * we can print it on an error.
->    */
-> -#define s390_pv_cmd(cmd, data) __s390_pv_cmd(cmd, #cmd, data)
-> +#define s390_pv_cmd(cmd, data) __s390_pv_cmd(cmd, #cmd, data, NULL)
-> +#define s390_pv_cmd_pvrc(cmd, data, pvrc) __s390_pv_cmd(cmd, #cmd, data, pvrc)
->   #define s390_pv_cmd_exit(cmd, data)    \
->   {                                      \
->       int rc;                            \
->                                          \
-> -    rc = __s390_pv_cmd(cmd, #cmd, data);\
-> +    rc = __s390_pv_cmd(cmd, #cmd, data, NULL); \
->       if (rc) {                          \
->           exit(1);                       \
->       }                                  \
-> @@ -144,12 +149,19 @@ bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms)
->   
->   int s390_pv_set_sec_parms(uint64_t origin, uint64_t length)
->   {
-> +    int ret, pvrc;
->       struct kvm_s390_pv_sec_parm args = {
->           .origin = origin,
->           .length = length,
->       };
->   
-> -    return s390_pv_cmd(KVM_PV_SET_SEC_PARMS, &args);
-> +    ret = s390_pv_cmd_pvrc(KVM_PV_SET_SEC_PARMS, &args, &pvrc);
-> +    if (ret && pvrc == 0x108) {
-
-why do we need to test for 0x108 also ? if this sub error code is important,
-adding a define would be a plus.
-
-> +        error_report("Can't set secure parameters, please check whether "
-> +                     "the image is correctly encrypted for this host");
-The error reporting in s390x_machine_protect() could be improved.
-
-I would add a 'Error *' argument to the routines called by
-s390x_machine_protect() and report the error in s390x_machine_protect()
-or above. s390_machine_protect() return value is ignored also, could be
-replaced by a bool.
-
-Thanks,
-
-C.
-
-
-
-> +    }
-> +
-> +    return ret;
->   }
->   
->   /*
 
 
