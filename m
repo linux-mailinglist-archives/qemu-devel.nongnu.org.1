@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09AF828E16
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 20:46:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B428828E0C
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 20:46:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNI1x-000177-C8; Tue, 09 Jan 2024 14:44:57 -0500
+	id 1rNI1v-00014y-Fi; Tue, 09 Jan 2024 14:44:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rNI1s-00013k-Jv; Tue, 09 Jan 2024 14:44:52 -0500
+ id 1rNI1t-00014P-49; Tue, 09 Jan 2024 14:44:53 -0500
 Received: from zproxy1.enst.fr ([2001:660:330f:2::dc])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rNI1q-0005cW-Rl; Tue, 09 Jan 2024 14:44:52 -0500
+ id 1rNI1q-0005cw-Qi; Tue, 09 Jan 2024 14:44:52 -0500
 Received: from localhost (localhost [IPv6:::1])
- by zproxy1.enst.fr (Postfix) with ESMTP id 66503C0CFD;
- Tue,  9 Jan 2024 20:44:47 +0100 (CET)
+ by zproxy1.enst.fr (Postfix) with ESMTP id 1583CC0CBA;
+ Tue,  9 Jan 2024 20:44:48 +0100 (CET)
 Received: from zproxy1.enst.fr ([IPv6:::1])
  by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id 81Cf4C__5-gE; Tue,  9 Jan 2024 20:44:46 +0100 (CET)
+ id mdXwjDboYyFK; Tue,  9 Jan 2024 20:44:47 +0100 (CET)
 Received: from localhost (localhost [IPv6:::1])
- by zproxy1.enst.fr (Postfix) with ESMTP id E3F4EC0CD2;
- Tue,  9 Jan 2024 20:44:46 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr E3F4EC0CD2
+ by zproxy1.enst.fr (Postfix) with ESMTP id 676B5C0D00;
+ Tue,  9 Jan 2024 20:44:47 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr 676B5C0D00
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
- s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1704829486;
- bh=B65dkOf/+kXOox5G20nemGGXcnc+XKTCWEO5UiPJr8Y=;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1704829487;
+ bh=yMzvz6qwSFKC5OyF4+vSQks97LFNIui3nYOUYqwTsWM=;
  h=From:To:Date:Message-ID:MIME-Version;
- b=04ZsbUpqDnCka6nyZHidLYJ42xgUOP+T7KrvRJJV8/JJyfVAOBf/A/YYB5nDJ/M8/
- FWZF0Eqy8ZaGhCO3jaakK1ri63aw0MS+mME0BavtAxH4Mo2lcu7GLWQ+r30ZYb8oyH
- 2bUZGMapk7s/fM/DnL3zV7pbCDcb0cps2QiHP5TA=
+ b=sVWtYUpFj/kXdZ9AUdv/mKyKOpX1xlrluICBfgoYOTEbTd3Ibxe0KwzkNwCd9At4T
+ wdxebBCvLKUborvfbwu1lCjA89sLAV+fXJEMwco6vXVQl5r9uCe0DNrEyw35KR9YSZ
+ jNHCSl0KStr9wlVUhhurz/+rAK3F+/pU2oEUPldk=
 X-Virus-Scanned: amavis at enst.fr
 Received: from zproxy1.enst.fr ([IPv6:::1])
  by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id yhLcuAl0Teee; Tue,  9 Jan 2024 20:44:46 +0100 (CET)
+ id 9AXEEhrzrCvf; Tue,  9 Jan 2024 20:44:47 +0100 (CET)
 Received: from localhost.localdomain (74.0.125.80.rev.sfr.net [80.125.0.74])
- by zproxy1.enst.fr (Postfix) with ESMTPSA id 549C8C0643;
+ by zproxy1.enst.fr (Postfix) with ESMTPSA id EAD1FC0CF2;
  Tue,  9 Jan 2024 20:44:46 +0100 (CET)
 From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
 To: qemu-devel@nongnu.org
@@ -49,10 +49,11 @@ Cc: Thomas Huth <thuth@redhat.com>, Alistair Francis <alistair@alistair23.me>,
  Arnaud Minier <arnaud.minier@telecom-paris.fr>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v4 2/3] hw/arm: Connect STM32L4x5 SYSCFG to STM32L4x5 SoC
-Date: Tue,  9 Jan 2024 20:41:58 +0100
-Message-ID: <20240109194438.70934-3-ines.varhol@telecom-paris.fr>
+ Laurent Vivier <lvivier@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PATCH v4 3/3] tests/qtest: Add STM32L4x5 SYSCFG QTest testcase
+Date: Tue,  9 Jan 2024 20:41:59 +0100
+Message-ID: <20240109194438.70934-4-ines.varhol@telecom-paris.fr>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240109194438.70934-1-ines.varhol@telecom-paris.fr>
 References: <20240109194438.70934-1-ines.varhol@telecom-paris.fr>
@@ -82,120 +83,371 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The SYSCFG input GPIOs aren't connected yet. When the STM32L4x5 GPIO
-device will be implemented, its output GPIOs will be connected to the
-SYSCFG input GPIOs.
-
 Tested-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 ---
- hw/arm/Kconfig                 |  1 +
- hw/arm/stm32l4x5_soc.c         | 21 ++++++++++++++++++++-
- include/hw/arm/stm32l4x5_soc.h |  2 ++
- 3 files changed, 23 insertions(+), 1 deletion(-)
+ tests/qtest/meson.build             |   3 +-
+ tests/qtest/stm32l4x5_syscfg-test.c | 331 ++++++++++++++++++++++++++++
+ 2 files changed, 333 insertions(+), 1 deletion(-)
+ create mode 100644 tests/qtest/stm32l4x5_syscfg-test.c
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 8c8488a70a..bb4693bfbb 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -459,6 +459,7 @@ config STM32L4X5_SOC
-     bool
-     select ARM_V7M
-     select OR_IRQ
-+    select STM32L4X5_SYSCFG
-     select STM32L4X5_EXTI
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index d890b6f333..a926af92f6 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -196,7 +196,8 @@ qtests_aspeed =3D \
+    'aspeed_gpio-test']
 =20
- config XLNX_ZYNQMP_ARM
-diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
-index fe46b7c6c0..431f982caf 100644
---- a/hw/arm/stm32l4x5_soc.c
-+++ b/hw/arm/stm32l4x5_soc.c
-@@ -37,6 +37,7 @@
- #define SRAM2_SIZE (32 * KiB)
+ qtests_stm32l4x5 =3D \
+-  ['stm32l4x5_exti-test']
++  ['stm32l4x5_exti-test',
++   'stm32l4x5_syscfg-test']
 =20
- #define EXTI_ADDR 0x40010400
-+#define SYSCFG_ADDR 0x40010000
-=20
- #define NUM_EXTI_IRQ 40
- /* Match exti line connections with their CPU IRQ number */
-@@ -80,6 +81,7 @@ static void stm32l4x5_soc_initfn(Object *obj)
-     Stm32l4x5SocState *s =3D STM32L4X5_SOC(obj);
-=20
-     object_initialize_child(obj, "exti", &s->exti, TYPE_STM32L4X5_EXTI);
-+    object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32L4X5_SY=
-SCFG);
-=20
-     s->sysclk =3D qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0)=
-;
-     s->refclk =3D qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0)=
-;
-@@ -154,6 +156,19 @@ static void stm32l4x5_soc_realize(DeviceState *dev_s=
-oc, Error **errp)
-         return;
-     }
-=20
-+    /* System configuration controller */
-+    busdev =3D SYS_BUS_DEVICE(&s->syscfg);
-+    if (!sysbus_realize(busdev, errp)) {
-+        return;
-+    }
-+    sysbus_mmio_map(busdev, 0, SYSCFG_ADDR);
+ qtests_arm =3D \
+   (config_all_devices.has_key('CONFIG_MPS2') ? ['sse-timer-test'] : []) =
++ \
+diff --git a/tests/qtest/stm32l4x5_syscfg-test.c b/tests/qtest/stm32l4x5_=
+syscfg-test.c
+new file mode 100644
+index 0000000000..ed4801798d
+--- /dev/null
++++ b/tests/qtest/stm32l4x5_syscfg-test.c
+@@ -0,0 +1,331 @@
++/*
++ * QTest testcase for STM32L4x5_SYSCFG
++ *
++ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or la=
+ter.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "libqtest-single.h"
++
++#define SYSCFG_BASE_ADDR 0x40010000
++#define SYSCFG_MEMRMP 0x00
++#define SYSCFG_CFGR1 0x04
++#define SYSCFG_EXTICR1 0x08
++#define SYSCFG_EXTICR2 0x0C
++#define SYSCFG_EXTICR3 0x10
++#define SYSCFG_EXTICR4 0x14
++#define SYSCFG_SCSR 0x18
++#define SYSCFG_CFGR2 0x1C
++#define SYSCFG_SWPR 0x20
++#define SYSCFG_SKR 0x24
++#define SYSCFG_SWPR2 0x28
++#define INVALID_ADDR 0x2C
++
++static void syscfg_writel(unsigned int offset, uint32_t value)
++{
++    writel(SYSCFG_BASE_ADDR + offset, value);
++}
++
++static uint32_t syscfg_readl(unsigned int offset)
++{
++    return readl(SYSCFG_BASE_ADDR + offset);
++}
++
++static void syscfg_set_irq(int num, int level)
++{
++   qtest_set_irq_in(global_qtest, "/machine/soc/syscfg",
++                    NULL, num, level);
++}
++
++static void system_reset(void)
++{
++    QDict *response;
++    response =3D qtest_qmp(global_qtest, "{'execute': 'system_reset'}");
++    g_assert(qdict_haskey(response, "return"));
++    qobject_unref(response);
++}
++
++static void test_reset(void)
++{
 +    /*
-+     * TODO: when the GPIO device is implemented, connect it
-+     * to SYCFG using `qdev_connect_gpio_out`, NUM_GPIOS and
-+     * GPIO_NUM_PINS.
++     * Test that registers are initialized at the correct values
++     */
++    g_assert_cmpuint(syscfg_readl(SYSCFG_MEMRMP), =3D=3D, 0x00000000);
++
++    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR1), =3D=3D, 0x7C000001);
++
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR1), =3D=3D, 0x00000000);
++
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR2), =3D=3D, 0x00000000);
++
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR3), =3D=3D, 0x00000000);
++
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR4), =3D=3D, 0x00000000);
++
++    g_assert_cmpuint(syscfg_readl(SYSCFG_SCSR), =3D=3D, 0x00000000);
++
++    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR2), =3D=3D, 0x00000000);
++
++    g_assert_cmpuint(syscfg_readl(SYSCFG_SWPR), =3D=3D, 0x00000000);
++
++    g_assert_cmpuint(syscfg_readl(SYSCFG_SKR), =3D=3D, 0x00000000);
++
++    g_assert_cmpuint(syscfg_readl(SYSCFG_SWPR2), =3D=3D, 0x00000000);
++}
++
++static void test_reserved_bits(void)
++{
++    /*
++     * Test that reserved bits stay at reset value
++     * (which is 0 for all of them) by writing '1'
++     * in all reserved bits (keeping reset value for
++     * other bits) and checking that the
++     * register is still at reset value
++     */
++    syscfg_writel(SYSCFG_MEMRMP, 0xFFFFFEF8);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_MEMRMP), =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_CFGR1, 0x7F00FEFF);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR1), =3D=3D, 0x7C000001);
++
++    syscfg_writel(SYSCFG_EXTICR1, 0xFFFF0000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR1), =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_EXTICR2, 0xFFFF0000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR2), =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_EXTICR3, 0xFFFF0000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR3), =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_EXTICR4, 0xFFFF0000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR4), =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_SKR, 0xFFFFFF00);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_SKR), =3D=3D, 0x00000000);
++}
++
++static void test_set_and_clear(void)
++{
++    /*
++     * Test that regular bits can be set and cleared
++     */
++    syscfg_writel(SYSCFG_MEMRMP, 0x00000107);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_MEMRMP), =3D=3D, 0x00000107);
++    syscfg_writel(SYSCFG_MEMRMP, 0x00000000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_MEMRMP), =3D=3D, 0x00000000);
++
++    /* cfgr1 bit 0 is clear only so we keep it set */
++    syscfg_writel(SYSCFG_CFGR1, 0xFCFF0101);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR1), =3D=3D, 0xFCFF0101);
++    syscfg_writel(SYSCFG_CFGR1, 0x00000001);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR1), =3D=3D, 0x00000001);
++
++    syscfg_writel(SYSCFG_EXTICR1, 0x0000FFFF);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR1), =3D=3D, 0x0000FFFF);
++    syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR1), =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_EXTICR2, 0x0000FFFF);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR2), =3D=3D, 0x0000FFFF);
++    syscfg_writel(SYSCFG_EXTICR2, 0x00000000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR2), =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_EXTICR3, 0x0000FFFF);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR3), =3D=3D, 0x0000FFFF);
++    syscfg_writel(SYSCFG_EXTICR3, 0x00000000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR3), =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_EXTICR4, 0x0000FFFF);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR4), =3D=3D, 0x0000FFFF);
++    syscfg_writel(SYSCFG_EXTICR4, 0x00000000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR4), =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_SKR, 0x000000FF);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_SKR), =3D=3D, 0x000000FF);
++    syscfg_writel(SYSCFG_SKR, 0x00000000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_SKR), =3D=3D, 0x00000000);
++}
++
++static void test_clear_by_writing_1(void)
++{
++    /*
++     * Test that writing '1' doesn't set the bit
++     */
++    syscfg_writel(SYSCFG_CFGR2, 0x00000100);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR2), =3D=3D, 0x00000000);
++}
++
++static void test_set_only_bits(void)
++{
++    /*
++     * Test that set only bits stay can't be cleared
++     */
++    syscfg_writel(SYSCFG_CFGR2, 0x0000000F);
++    syscfg_writel(SYSCFG_CFGR2, 0x00000000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR2), =3D=3D, 0x0000000F);
++
++    syscfg_writel(SYSCFG_SWPR, 0xFFFFFFFF);
++    syscfg_writel(SYSCFG_SWPR, 0x00000000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_SWPR), =3D=3D, 0xFFFFFFFF);
++
++    syscfg_writel(SYSCFG_SWPR2, 0xFFFFFFFF);
++    syscfg_writel(SYSCFG_SWPR2, 0x00000000);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_SWPR2), =3D=3D, 0xFFFFFFFF);
++
++    system_reset();
++}
++
++static void test_clear_only_bits(void)
++{
++    /*
++     * Test that clear only bits stay can't be set
++     */
++    syscfg_writel(SYSCFG_CFGR1, 0x00000000);
++    syscfg_writel(SYSCFG_CFGR1, 0x00000001);
++    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR1), =3D=3D, 0x00000000);
++
++    system_reset();
++}
++
++static void test_interrupt(void)
++{
++    /*
++     * Test that GPIO rising lines result in an irq
++     * with the right configuration
++     */
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/exti");
++
++    /* GPIOA is the default source for EXTI lines 0 to 15 */
++
++    syscfg_set_irq(0, 1);
++
++    g_assert_true(get_irq(0));
++
++
++    syscfg_set_irq(15, 1);
++
++    g_assert_true(get_irq(15));
++
++    /* Configure GPIOB[1] as the source input for EXTI1 */
++    syscfg_writel(SYSCFG_EXTICR1, 0x00000010);
++
++    syscfg_set_irq(17, 1);
++
++    g_assert_true(get_irq(1));
++
++    /* Clean the test */
++    syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
++    syscfg_set_irq(0, 0);
++    syscfg_set_irq(15, 0);
++    syscfg_set_irq(17, 0);
++}
++
++static void test_irq_pin_multiplexer(void)
++{
++    /*
++     * Test that syscfg irq sets the right exti irq
 +     */
 +
-+    /* EXTI device */
-     busdev =3D SYS_BUS_DEVICE(&s->exti);
-     if (!sysbus_realize(busdev, errp)) {
-         return;
-@@ -163,6 +178,11 @@ static void stm32l4x5_soc_realize(DeviceState *dev_s=
-oc, Error **errp)
-         sysbus_connect_irq(busdev, i, qdev_get_gpio_in(armv7m, exti_irq[=
-i]));
-     }
-=20
-+    for (unsigned i =3D 0; i < 16; i++) {
-+        qdev_connect_gpio_out(DEVICE(&s->syscfg), i,
-+                              qdev_get_gpio_in(DEVICE(&s->exti), i));
-+    }
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/exti");
 +
-     /* APB1 BUS */
-     create_unimplemented_device("TIM2",      0x40000000, 0x400);
-     create_unimplemented_device("TIM3",      0x40000400, 0x400);
-@@ -200,7 +220,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_so=
-c, Error **errp)
-     /* RESERVED:    0x40009800, 0x6800 */
-=20
-     /* APB2 BUS */
--    create_unimplemented_device("SYSCFG",    0x40010000, 0x30);
-     create_unimplemented_device("VREFBUF",   0x40010030, 0x1D0);
-     create_unimplemented_device("COMP",      0x40010200, 0x200);
-     /* RESERVED:    0x40010800, 0x1400 */
-diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_so=
-c.h
-index f7305568dc..baf70410b5 100644
---- a/include/hw/arm/stm32l4x5_soc.h
-+++ b/include/hw/arm/stm32l4x5_soc.h
-@@ -26,6 +26,7 @@
-=20
- #include "exec/memory.h"
- #include "hw/arm/armv7m.h"
-+#include "hw/misc/stm32l4x5_syscfg.h"
- #include "hw/misc/stm32l4x5_exti.h"
- #include "qom/object.h"
-=20
-@@ -41,6 +42,7 @@ struct Stm32l4x5SocState {
-     ARMv7MState armv7m;
-=20
-     Stm32l4x5ExtiState exti;
-+    Stm32l4x5SyscfgState syscfg;
-=20
-     MemoryRegion sram1;
-     MemoryRegion sram2;
++    syscfg_set_irq(0, 1);
++
++    /* Check that irq 0 was set and irq 15 wasn't */
++    g_assert_true(get_irq(0));
++    g_assert_false(get_irq(15));
++
++    /* Clean the test */
++    syscfg_set_irq(0, 0);
++
++    syscfg_set_irq(15, 1);
++
++    /* Check that irq 15 was set and irq 0 wasn't */
++    g_assert_true(get_irq(15));
++    g_assert_false(get_irq(0));
++
++    /* Clean the test */
++    syscfg_set_irq(15, 0);
++}
++
++static void test_irq_gpio_multiplexer(void)
++{
++    /*
++     * Test that an irq is generated only by the right GPIO
++     */
++
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/exti");
++
++    /* GPIOA is the default source for EXTI lines 0 to 15 */
++
++    /* Check that setting rising pin GPIOA[0] generates an irq */
++    syscfg_set_irq(0, 1);
++
++    g_assert_true(get_irq(0));
++
++    /* Clean the test */
++    syscfg_set_irq(0, 0);
++
++    /* Check that setting rising pin GPIOB[0] doesn't generate an irq */
++    syscfg_set_irq(16, 1);
++
++    g_assert_false(get_irq(0));
++
++    /* Clean the test */
++    syscfg_set_irq(16, 0);
++
++    /* Configure GPIOB[0] as the source input for EXTI0 */
++    syscfg_writel(SYSCFG_EXTICR1, 0x00000001);
++
++    /* Check that setting rising pin GPIOA[0] doesn't generate an irq */
++    syscfg_set_irq(0, 1);
++
++    g_assert_false(get_irq(0));
++
++    /* Clean the test */
++    syscfg_set_irq(0, 0);
++
++    /* Check that setting rising pin GPIOB[0] generates an irq */
++    syscfg_set_irq(16, 1);
++
++    g_assert_true(get_irq(0));
++
++    /* Clean the test */
++    syscfg_set_irq(16, 0);
++    syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
++}
++
++int main(int argc, char **argv)
++{
++    int ret;
++
++    g_test_init(&argc, &argv, NULL);
++    g_test_set_nonfatal_assertions();
++
++    qtest_add_func("stm32l4x5/syscfg/test_reset", test_reset);
++    qtest_add_func("stm32l4x5/syscfg/test_reserved_bits",
++                   test_reserved_bits);
++    qtest_add_func("stm32l4x5/syscfg/test_set_and_clear",
++                   test_set_and_clear);
++    qtest_add_func("stm32l4x5/syscfg/test_clear_by_writing_1",
++                   test_clear_by_writing_1);
++    qtest_add_func("stm32l4x5/syscfg/test_set_only_bits",
++                   test_set_only_bits);
++    qtest_add_func("stm32l4x5/syscfg/test_clear_only_bits",
++                   test_clear_only_bits);
++    qtest_add_func("stm32l4x5/syscfg/test_interrupt",
++                   test_interrupt);
++    qtest_add_func("stm32l4x5/syscfg/test_irq_pin_multiplexer",
++                   test_irq_pin_multiplexer);
++    qtest_add_func("stm32l4x5/syscfg/test_irq_gpio_multiplexer",
++                   test_irq_gpio_multiplexer);
++
++    qtest_start("-machine b-l475e-iot01a");
++    ret =3D g_test_run();
++    qtest_end();
++
++    return ret;
++}
 --=20
 2.43.0
 
