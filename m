@@ -2,155 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D25828F80
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 23:13:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ABCB828FE3
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 23:25:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNKLl-0001IR-BA; Tue, 09 Jan 2024 17:13:33 -0500
+	id 1rNKVm-0006QC-Jv; Tue, 09 Jan 2024 17:23:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1rNKLj-0001IH-KG
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 17:13:31 -0500
-Received: from mail-dm6nam10on20606.outbound.protection.outlook.com
- ([2a01:111:f400:7e88::606]
- helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1rNKVk-0006Pi-94; Tue, 09 Jan 2024 17:23:52 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1rNKLh-00061H-Mf
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 17:13:31 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QQVDOOMfaELg2GryXZTEop8+P+vApWjK8yLpG3OxTqag/793fioALzVXS6enkPRywRwX+H4IJcmoWb64RkI2BLEUcXi+jelv9pQgSvOsQBy8tNfmx1PU3Jbxz6kwCoeLbst5kWbY+nISStW8xFPywluot7K8dEtgFabaD6qzK1NfIsx0Fz5g0BzC02ERN0/cYOp+Waq7QEisWPorNHApPEfuaqLdDT9uTbUxH07VXSOVCSlsgWjAkw2g4Hp6Y0p37+ojK2daxq4pNUYTFsEydRhpNyQZtOkChMgQbTbYX4+R8HXyc3chz1AjTiDLCWewfu8FNdJYLmc5Yqpxbvu/Ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=65qihb84fqHHhm46bwIFk0YD1fMk2hM4l52W6FRIEAg=;
- b=falVZGBbD8KKZC3wtov0O2STroVwOWwaOS/XHvsFBaq8LaPN7xHx7TVCZFQx/Lggef/YT9MP5XHsvxk53kg3/J+I4lV7C7z5DzihphJ3miWgTDr9SsJfgfLykmBSdcLpnvCqLnnuciRnZAUnl00qEGYVLNh0LqUiRu6/Q0RF2Mt7FOEq2tlCN5Q5G6MAJ9140T7wEXkI84EHtFAzmovttl1IHy1We8J7wsC/YEHzH+xEWL1pBaKNNNQKRPiSkjZbGoouExAquh9IXRjBiBCNh27TEiKzlilODVCUZJWq1zhNDDekzjPxUMdUuRLRadsCZByPOW/x6w9az53ZXT1SKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
- dkim=pass header.d=memverge.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=65qihb84fqHHhm46bwIFk0YD1fMk2hM4l52W6FRIEAg=;
- b=GJpN5UeKZ1CqksWnecuOJUgzgwjs0hqsK/dqFBE2hycOnZ1cXikz0oZNF5OVLBt0iGJn050tRGJ9PsKSqyhHU/Hbi7zsFniJtxx351UsIqlGQD2w1ZxVDsFYAMrWcL1RanNrtxs9i1rPmVGVh8rDxsLcKUKjmdqU7JNKhxcubv0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=memverge.com;
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
- by MW4PR17MB4668.namprd17.prod.outlook.com (2603:10b6:303:105::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23; Tue, 9 Jan
- 2024 22:13:26 +0000
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::7a04:dc86:2799:2f15]) by SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::7a04:dc86:2799:2f15%5]) with mapi id 15.20.7159.020; Tue, 9 Jan 2024
- 22:13:26 +0000
-Date: Tue, 9 Jan 2024 17:13:21 -0500
-From: Gregory Price <gregory.price@memverge.com>
-To: Hao Xiang <hao.xiang@bytedance.com>
-Cc: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Gregory Price <gourry.memverge@gmail.com>,
- Fan Ni <fan.ni@samsung.com>, Ira Weiny <ira.weiny@intel.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
- "Ho-Ren (Jack) Chuang" <horenc@vt.edu>, linux-cxl@vger.kernel.org
-Subject: Re: [External] Re: [QEMU-devel][RFC PATCH 1/1] backends/hostmem:
- qapi/qom: Add an ObjectOption for memory-backend-* called HostMemType and
- its arg 'cxlram'
-Message-ID: <ZZ3FAegN/ezu9Ghy@memverge.com>
-References: <20240101075315.43167-2-horenchuang@bytedance.com>
- <ZZXX95yvk/WTIBT/@memverge.com>
- <CAAYibXjZ0HSCqMrzXGv62cMLncS_81R3e1uNV5Fu4CPm0zAtYw@mail.gmail.com>
- <ZZwtmiucNXxmrZ7S@memverge.com>
- <CAAYibXhfUu8dMwvBmWz4P6N9-yLao0QwAFozk4rS_0GPsEZd7Q@mail.gmail.com>
- <CAAYibXgf6i5+aqopCrVu5ZveDJ9WP2M2AJaUUaj5qFXFHQQxmQ@mail.gmail.com>
- <ZZydwBTS4NeSizzb@memverge.com>
- <CAAYibXhY5p6VN7yAMpmfAgHO+gsf51dvNw68y__RYV+43CVVLQ@mail.gmail.com>
- <ZZ2lNoTQ8hDHADTT@memverge.com>
- <CAAYibXjcVu-13h9jHpt2fZ3wmjz-_Dyj+WfUh0AEpid87GLriQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAYibXjcVu-13h9jHpt2fZ3wmjz-_Dyj+WfUh0AEpid87GLriQ@mail.gmail.com>
-X-ClientProxiedBy: BY5PR13CA0001.namprd13.prod.outlook.com
- (2603:10b6:a03:180::14) To SJ0PR17MB5512.namprd17.prod.outlook.com
- (2603:10b6:a03:394::19)
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1rNKVi-00025y-DM; Tue, 09 Jan 2024 17:23:51 -0500
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 409M4A7q022981; Tue, 9 Jan 2024 22:23:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=ehDLOWY8e3Uoj6KiAHXnx43mYM2iMoM6gnLe4cC5Q0I=;
+ b=d6cHpFlD/gu5uxZcre9/gNoM0iTm+rlC+UlJPYSpTZs7peSdZ2wOnK/UrtZhMErfIhoI
+ wT81YtouLMzQRcH13vZva4EONOX+xvlaOXTxlhoeEf2vG+Z8KT/B5Gdw4n7kDmXbQXBF
+ 0rCteM3luKwzF9zdrWwpYR4c1WX/MXAw4q/8z/FX8M8ms1zWT599ZQQukeMp6y+fjNAS
+ 91ue3zMZoRCVHsP2zPRxPGy/sm9SFq5qrVuHoj0kH6ifHbYT6Yy/OoHS+b2zycs0t15c
+ 1CyZOGjGPhbfj9xu+LMFahBi+LlbZZkUTfPo9LLndVMykgDZU0BtP3ypgXZ5dQT7UQPO vg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vhd1stfrp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 22:23:38 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 409M5wdT027361;
+ Tue, 9 Jan 2024 22:23:37 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vhd1stfra-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 22:23:37 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 409JswU7004384; Tue, 9 Jan 2024 22:23:37 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfjpksd72-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 22:23:36 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 409MNae537028242
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 9 Jan 2024 22:23:36 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2A28358051;
+ Tue,  9 Jan 2024 22:23:36 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C9E475805A;
+ Tue,  9 Jan 2024 22:23:35 +0000 (GMT)
+Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  9 Jan 2024 22:23:35 +0000 (GMT)
+From: Ninad Palsule <ninad@linux.ibm.com>
+To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
+ andrew@codeconstruct.com.au, joel@jms.id.au, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
+ philmd@linaro.org, lvivier@redhat.com
+Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org
+Subject: [PATCH v9 00/10] Introduce model for IBM's FSI
+Date: Tue,  9 Jan 2024 16:23:23 -0600
+Message-Id: <20240109222333.1225031-1-ninad@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|MW4PR17MB4668:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49649ec2-d783-4f23-49ca-08dc11603365
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 5hedSENaD7QctPwrw84AcZnlSYUL1PoSNX7y9fPN2RpUYVkfBcbaLu78iEHaoQx4a/Lw5blMQ7nvKUky2nD2BFmt/iCihWSdckH2vCU6NHxCi8gMHYgP0YxEYtbGpRBpVpJDJm4qbfUA0QXAUKrF1AhVA1F7cTbNGBOhaAIVlrr8qK9sMrRtJbKoC3k9BMBNPNw8CJGSo6+Gh/qDobllDat1JK6OkJ6jI88bxpG/arZinFfnGlWNefs53s6CExiGhPTcMI6MDBmQrqVyuDaNeBblKsBvHWalr2MirpuOk0/tOTZ0GCTco9r7WFrCjkUhaoXrAy+B1fHcDi85fyL1KJA6zbY73etCazlkYqa6bzcwRPuvg576OR0PENEDlby1XXzvXe4qTa+p4IEK+5NdgtDRX2NVWd5iteDeg+cqeb2SG5nNoBN1C8ZqnQwHpWGoj3a+n2oCBKV1IgG/XeiOzdqOmyFmqkyqwf4+IfR1DbmdZ3RDOzu0zFmnmK3VlNB4MyLPQdE/xff6xaFAdJ/5BvGyCYls6IFyb9emYpMCcwqv37cq/7OlAHT9Cif4jK15
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(136003)(39850400004)(376002)(396003)(346002)(230922051799003)(1800799012)(186009)(451199024)(64100799003)(478600001)(5660300002)(4326008)(7416002)(83380400001)(6506007)(2616005)(53546011)(66946007)(6512007)(6666004)(6486002)(6916009)(66556008)(8676002)(66476007)(26005)(8936002)(44832011)(2906002)(36756003)(54906003)(316002)(38100700002)(41300700001)(86362001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MXZBT2EwWFZnbGY3V09WZURjdDNueGJMRi9uYWxMb0tNdXQrZEdib1JnR0hz?=
- =?utf-8?B?YitqRWdlbGpFNThjZmFDRVZCRDVLTGsxb0NtUWFJckhJbTRScWx1Kzc1ODli?=
- =?utf-8?B?SmhTWXZpbEJNMC8zeGJuUFJKL0FGMko2Z2RnYWx1bXdJcHJTaWhIWllRWW52?=
- =?utf-8?B?dmp0M29YSkxnVVBWeHRHSmcramxFTDVBMU9xTE5LNTU4OUI0aGhFbDhPVDN0?=
- =?utf-8?B?QUdPcHllbmJqVjhNMnl2NGhhcmlmVnMzTHplQmxmTWtjVk0rR1o0cVBXZDhM?=
- =?utf-8?B?Y0ZwL1hJcjdMTTZFeGxBMmlydDdLTFY2bkw4ZmdsVnVvaVFqUVdPOEQ2YnE1?=
- =?utf-8?B?aGhZQUVsNjJFaWpmVVJERTMvWDNqTURIZjkrMXZOTFlNZEhJeHZmWGVRUDdn?=
- =?utf-8?B?K2JTNVcxMEZXQ0JFNnpMNWN6emNNYi9UNzhTN0lPNXJXKzlBbjI0MUZPc1dz?=
- =?utf-8?B?MDVTTlV6MWtSRmRMaVFxM1B5TDBURUZiR3lpRmV1ckQ1WFFvN1RRSGFLb1pu?=
- =?utf-8?B?YnVvcTFXVXNHdnRvZU9jT1B3TEE1ajIyNWRFSW1ZK1dMbnIxRHRzeGpXbS83?=
- =?utf-8?B?dnRtT3Z0dTFWVGdFVFJUdGV6TGVyQTQwajl0QTNPZzBnSEROUHRFTmdzd3I1?=
- =?utf-8?B?OWgwcHZKMlF0dEJnQWducXRSUTM4ZG5ES1pGR3ZLQVBHdXJxNUNvdk5vNE42?=
- =?utf-8?B?Q3VxWDRWaEhiQkpoTU9PTHpKS1ExVnduUVloYWxPMzVCUmxsNE5PTGlqQndF?=
- =?utf-8?B?LzdVQ2E2VWhTUEwxYTRyYjh5bmtkSE4xb3pzUE9yZUZOM2JaenVhcldhKzdh?=
- =?utf-8?B?ekp5OHlJcUdYN3FDUFU2aVI4RDkyazQwOGoxb3B3RWxVcHdlT2pEQ0ZrQjU0?=
- =?utf-8?B?ZndaZ1E3bW9mOTFDT1A0RUN1eHYzZ0xWZHhyVzh6bUMvZ3dPT3dlUHYwWUZC?=
- =?utf-8?B?bUpTQWFyd3BsZ1EwYyt1OVB6SENXRFhKZndOM0lhalUvZTJpRnEwdzdXVFRk?=
- =?utf-8?B?eWJyTlVYRkxmeDJDQnhqVTg1MFNrcmpHeStYWjkyNzcvOEhpM1ozUmVuNUZP?=
- =?utf-8?B?UHpHUDFqZFJpQS9RY2xjeEQxTlA4ZHI4R2pGWCtzQUNadGdpSU5qakpTbWFP?=
- =?utf-8?B?WmJFM1FkRGh0TTlyWEZyZ3dSMU03YnEwYTlvRWtkakZqR1E3NUozdHR4YzJD?=
- =?utf-8?B?UUc0bmthcDdoM01na09KbFExWkRQcHl2clF1RjRxTjlrWGdkWG0xRnlLR3hX?=
- =?utf-8?B?MUZJbGVMMlo5cGdlYXVpdmQ4YVJGZzNNcDhmWWtucTJKZ1U4aXZOMTlscUVs?=
- =?utf-8?B?c1VDOXFsY293NGpJdklpU2wrRTZ5YWVBNkJMSEdJbWhLZy9lUVhmWVJJU1E4?=
- =?utf-8?B?cnYzb0JES0FpS3dFcTE2djd6c282QWRJcThjWlduOHR4RUNUV2ZoUzVvdWVN?=
- =?utf-8?B?UHVyUjFsNzRvbUxYVDZqMENtRHRzaGQvUEpaS1k2Rk9HelVrcGM4NHpTMVJw?=
- =?utf-8?B?eXpGRGt1N0NwcDVwUEZjWjdmVGdkOWM5eFhOcCtKTGxwNWc2N0tOOEc1SjRl?=
- =?utf-8?B?LzZ3L2ltRXhwZDJsVUQ3d2dBSGp1Nm1ub2VMb1ExZlVRaDRodWFubUF6RmJp?=
- =?utf-8?B?bWxqa1A1TXJvVTR6dHVEZkZJbWYvTlBqZEllbXhnM3RueUthRGlJcFJET3BW?=
- =?utf-8?B?TUtBR1Y4Y2JIWVlMek5SMmVXQkZ0eUxkWjJYZTlNcTRsVVFzOWlQcWc3dVAz?=
- =?utf-8?B?YkpWMU52VXhxaWVqSE1tZWdDckFxVDJyd0xzQzhERGJMRWJyS1AzOGpwdjhX?=
- =?utf-8?B?YURWbm5aMzRmckwzU3NLdWtYZEg3NkxkYUNlUTZOTXA0dUUvazV0R0VmLzFx?=
- =?utf-8?B?TUNjb3FlaXBkQlFhRjJlWVd1MEs4akJkUEl6YVJMZXFvOHdMdURWdFRGUFFV?=
- =?utf-8?B?Q3hNVW9lZTdmZEpHOHJvVjl2NXVrdFZlR1Y3dHF6OG9sTWVHcnVkNmh0ZFFX?=
- =?utf-8?B?WER5NnNNUm9wM3BqMXNvejF1UHhHZGJpMHEzdVJXY0VNNXU0UXQvVHpXeXpi?=
- =?utf-8?B?Y1o2cGR5ZzBIbjBWaU5VdElsOEp3b2kxM3k1YmMvc2dzMy9LbitpSktpMmJE?=
- =?utf-8?B?QzZyeVZwdUFUc0h2TElCc0xJdFlIQ1hiSHZ6enFTZlhsdWJ1UVIxUVFqdjZY?=
- =?utf-8?B?c2c9PQ==?=
-X-OriginatorOrg: memverge.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49649ec2-d783-4f23-49ca-08dc11603365
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2024 22:13:25.8828 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rsJ/ov4EaG9txgAIAHRzPuz+rWkxJXtBx2GnMfwMwuH6VvK5C5PsuN0QJL56G9BzBTXKX3TlOxh33ZOa7TxN3RmBEMzadCNKrj+ts27Myuw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR17MB4668
-Received-SPF: pass client-ip=2a01:111:f400:7e88::606;
- envelope-from=gregory.price@memverge.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 8INPp8TU_UId747VWuJs3NvWbzV9y6XT
+X-Proofpoint-GUID: bonWcAqEykVVpVKTxX5kkYZll5y6sF7n
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-09_11,2024-01-09_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 mlxlogscore=245
+ spamscore=0 suspectscore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401090179
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,79 +112,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 09, 2024 at 01:27:28PM -0800, Hao Xiang wrote:
-> On Tue, Jan 9, 2024 at 11:58 AM Gregory Price
-> <gregory.price@memverge.com> wrote:
-> >
-> > If you drop this line:
-> >
-> > -numa node,memdev=vmem0,nodeid=1
-> 
-> We tried this as well and it works after going through the cxlcli
-> process and created the devdax device. The problem is that without the
-> "nodeid=1" configuration, we cannot connect with the explicit per numa
-> node latency/bandwidth configuration "-numa hmat-lb". I glanced at the
-> code in hw/numa.c, parse_numa_hmat_lb() looks like the one passing the
-> lb information to VM's hmat.
->
+Hello,
 
-Yeah, this is what Jonathan was saying - right now there isn't a good
-way (in QEMU) to pass the hmat/cdat stuff down through the device.
-Needs to be plumbed out.
+Please review the patch-set version 9.
+I have incorporated review comments from Cedric.
 
-In the meantime: You should just straight up drop the cxl device from
-your QEMU config.  It doesn't actually get you anything.
+Ninad Palsule (10):
+  hw/fsi: Introduce IBM's Local bus
+  hw/fsi: Introduce IBM's FSI Bus
+  hw/fsi: Introduce IBM's cfam,fsi-slave,scratchpad
+  hw/fsi: IBM's On-chip Peripheral Bus
+  hw/fsi: Introduce IBM's FSI master
+  hw/fsi: Aspeed APB2OPB interface
+  hw/arm: Hook up FSI module in AST2600
+  hw/fsi: Added qtest
+  hw/fsi: Added FSI documentation
+  hw/fsi: Update MAINTAINER list
 
-> From what I understand so far, the guest kernel will dynamically
-> create a numa node after a cxl devdax device is created. That means we
-> don't know the numa node until after VM boot. 2. QEMU can only
-> statically parse the lb information to the VM at boot time. How do we
-> connect these two things?
+ MAINTAINERS                     |   8 +
+ docs/specs/fsi.rst              | 138 ++++++++++++++
+ docs/specs/index.rst            |   1 +
+ meson.build                     |   1 +
+ hw/fsi/trace.h                  |   1 +
+ include/hw/arm/aspeed_soc.h     |   4 +
+ include/hw/fsi/aspeed-apb2opb.h |  34 ++++
+ include/hw/fsi/cfam.h           |  46 +++++
+ include/hw/fsi/fsi-master.h     |  32 ++++
+ include/hw/fsi/fsi-slave.h      |  27 +++
+ include/hw/fsi/fsi.h            |  24 +++
+ include/hw/fsi/lbus.h           |  41 +++++
+ include/hw/fsi/opb.h            |  27 +++
+ hw/arm/aspeed_ast2600.c         |  19 ++
+ hw/fsi/aspeed-apb2opb.c         | 314 ++++++++++++++++++++++++++++++++
+ hw/fsi/cfam.c                   | 253 +++++++++++++++++++++++++
+ hw/fsi/fsi-master.c             | 173 ++++++++++++++++++
+ hw/fsi/fsi-slave.c              | 101 ++++++++++
+ hw/fsi/fsi.c                    |  22 +++
+ hw/fsi/lbus.c                   |  51 ++++++
+ hw/fsi/opb.c                    |  36 ++++
+ tests/qtest/aspeed-fsi-test.c   | 205 +++++++++++++++++++++
+ hw/Kconfig                      |   1 +
+ hw/arm/Kconfig                  |   1 +
+ hw/fsi/Kconfig                  |  21 +++
+ hw/fsi/meson.build              |   5 +
+ hw/fsi/trace-events             |  13 ++
+ hw/meson.build                  |   1 +
+ tests/qtest/meson.build         |   1 +
+ 29 files changed, 1601 insertions(+)
+ create mode 100644 docs/specs/fsi.rst
+ create mode 100644 hw/fsi/trace.h
+ create mode 100644 include/hw/fsi/aspeed-apb2opb.h
+ create mode 100644 include/hw/fsi/cfam.h
+ create mode 100644 include/hw/fsi/fsi-master.h
+ create mode 100644 include/hw/fsi/fsi-slave.h
+ create mode 100644 include/hw/fsi/fsi.h
+ create mode 100644 include/hw/fsi/lbus.h
+ create mode 100644 include/hw/fsi/opb.h
+ create mode 100644 hw/fsi/aspeed-apb2opb.c
+ create mode 100644 hw/fsi/cfam.c
+ create mode 100644 hw/fsi/fsi-master.c
+ create mode 100644 hw/fsi/fsi-slave.c
+ create mode 100644 hw/fsi/fsi.c
+ create mode 100644 hw/fsi/lbus.c
+ create mode 100644 hw/fsi/opb.c
+ create mode 100644 tests/qtest/aspeed-fsi-test.c
+ create mode 100644 hw/fsi/Kconfig
+ create mode 100644 hw/fsi/meson.build
+ create mode 100644 hw/fsi/trace-events
 
-during boot, the kernel discovers all the memory regions exposed to
-bios. In this qemu configuration you have defined:
+-- 
+2.39.2
 
-region 0: CPU + DRAM node
-region 1: DRAM only node
-region 2: CXL Fixed Memory Window (the last line of the cxl stuff)
-
-The kernel reads this information on boot and reserves 1 numa node for
-each of these regions.
-
-The kernel then automatically brings up regions 0 and 1 in nodes 0 and 1
-respectively.
-
-Node2 sits dormant until you go through the cxl-cli startup sequence.
-
-
-What you're asking for is for the QEMU team to plumb hmat/cdat
-information down through the type3 device.  I *think* that is presently
-possible with a custom CDAT file - but Jonathan probably has more
-details on that.  You'll have to go digging for answers on that one.
-
-
-Now - even if you did that - the current state of the cxl-type3 device
-is *not what you want* because your memory accesses will be routed
-through the read/write functions in the emulated device.
-
-What Jonathan and I discussed on the other thread is how you might go
-about slimming this down to allow pass-through of the memory without the
-need for all the fluff.  This is a non-trivial refactor of the existing
-device, so i would not expect that any time soon.
-
-At the end of the day, quickest way to get-there-from-here is to just
-drop the cxl related lines from your QEMU config, and keep everything
-else.
-
-> 
-> Assuming that the same issue applies to a physical server with CXL.
-> Were you able to see a host kernel getting the correct lb information
-> for a CXL devdax device?
-> 
-
-Yes, if you bring up a CXL device via cxl-cli on real hardware, the
-subsequent numa node ends up in the "lower tier" of the memory-tiering
-infrastructure.
-
-~Gregory
 
