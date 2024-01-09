@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB776828658
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 13:57:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC2D82865A
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 13:57:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNBeo-00068C-2S; Tue, 09 Jan 2024 07:56:38 -0500
+	id 1rNBev-00069J-6w; Tue, 09 Jan 2024 07:56:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1rNBec-00067L-Rh
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 07:56:27 -0500
+ id 1rNBeg-00067r-4z
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 07:56:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1rNBea-0006iN-Sj
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 07:56:26 -0500
+ id 1rNBed-0006jU-Ez
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 07:56:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704804982;
+ s=mimecast20190719; t=1704804986;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wIn18bdB196CmcKnWWByvKyvKoQr67WRQlJjw+lMrYY=;
- b=KNjITzgx9eTVS1kaRPZLj52fecSTYGIW8C+iVZ/IBO4XcnZ6tv60DN7b05iz8cIGQ51qJy
- 4R5vJDqb8i8qWLVdWpSqOyG6PWoTBXkaskMt/QUIw1ezbsdgviOyD0C/F1He+DXzd+LgrW
- UgLjKmyGSqeW0nfjWvDDSpEBowuoRDI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-408-U5KlTBD0MYeyCwS-oPS14Q-1; Tue, 09 Jan 2024 07:56:21 -0500
-X-MC-Unique: U5KlTBD0MYeyCwS-oPS14Q-1
+ bh=IHvfAHQ8kVwT3xNtP0fjmHymKrmE/pbi5budCW03fGQ=;
+ b=Q22PKCV6ksWsh3AJMnl9cMWlfvLjbRbQUOzTR2ZVe8dbWMRXFnQq8wBOM++MkVULOqYZl9
+ Xoiztl36JJ0wj5yazvowio0KsL4goqAoYsiZbewyyiiSvvpdyqYF29S3OgpTaZfak41yDR
+ SFUD6Su4h+JG5S19ZXLTElk28lsHZL4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-266-W5eW7jWqNG2cNn1-lwVxGQ-1; Tue,
+ 09 Jan 2024 07:56:23 -0500
+X-MC-Unique: W5eW7jWqNG2cNn1-lwVxGQ-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1ED1B836F23;
- Tue,  9 Jan 2024 12:56:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E5D629AB3E3;
+ Tue,  9 Jan 2024 12:56:23 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.45.225.20])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7F09F2166B33;
- Tue,  9 Jan 2024 12:56:19 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 645C62166B35;
+ Tue,  9 Jan 2024 12:56:21 +0000 (UTC)
 From: Albert Esteve <aesteve@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com, Albert Esteve <aesteve@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, marcandre.lureau@gmail.com,
  kraxel@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH v3 2/3] hw/virtio: cleanup shared resources
-Date: Tue,  9 Jan 2024 13:56:13 +0100
-Message-ID: <20240109125614.220293-3-aesteve@redhat.com>
+Subject: [PATCH v3 3/3] hw/virtio: rename virtio dmabuf API
+Date: Tue,  9 Jan 2024 13:56:14 +0100
+Message-ID: <20240109125614.220293-4-aesteve@redhat.com>
 In-Reply-To: <20240109125614.220293-1-aesteve@redhat.com>
 References: <20240109125614.220293-1-aesteve@redhat.com>
 MIME-Version: 1.0
@@ -81,153 +81,371 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ensure that we cleanup all virtio shared
-resources when the vhost devices is cleaned
-up (after a hot unplug, or a crash).
+Functions in the virtio-dmabuf module
+start with 'virtio_*', which is too
+generic and may not correctly identify
+them as part of the virtio dmabuf API.
 
-To do so, we add a new function to the virtio_dmabuf
-API called `virtio_dmabuf_vhost_cleanup`, which
-loop through the table and removes all
-resources owned by the vhost device parameter.
-
-Also, add a test to verify that the new
-function in the API behaves as expected.
+Rename all functions to 'virtio_dmabuf_*'
+instead to avoid confusion.
 
 Signed-off-by: Albert Esteve <aesteve@redhat.com>
 Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- hw/display/virtio-dmabuf.c        | 22 +++++++++++++++++++++
- hw/virtio/vhost.c                 |  3 +++
- include/hw/virtio/virtio-dmabuf.h | 10 ++++++++++
- tests/unit/test-virtio-dmabuf.c   | 33 +++++++++++++++++++++++++++++++
- 4 files changed, 68 insertions(+)
+ hw/display/virtio-dmabuf.c        | 14 ++++----
+ hw/virtio/vhost-user.c            | 14 ++++----
+ include/hw/virtio/virtio-dmabuf.h | 33 +++++++++---------
+ tests/unit/test-virtio-dmabuf.c   | 58 +++++++++++++++----------------
+ 4 files changed, 60 insertions(+), 59 deletions(-)
 
 diff --git a/hw/display/virtio-dmabuf.c b/hw/display/virtio-dmabuf.c
-index 3dba4577ca..6688809777 100644
+index 6688809777..42495f87ec 100644
 --- a/hw/display/virtio-dmabuf.c
 +++ b/hw/display/virtio-dmabuf.c
-@@ -136,6 +136,28 @@ SharedObjectType virtio_object_type(const QemuUUID *uuid)
-     return vso->type;
+@@ -48,7 +48,7 @@ static bool virtio_add_resource(QemuUUID *uuid, VirtioSharedObject *value)
+     return result;
  }
  
-+static bool virtio_dmabuf_resource_is_owned(gpointer key,
-+                                            gpointer value,
-+                                            gpointer dev)
-+{
-+    VirtioSharedObject *vso;
-+
-+    vso = (VirtioSharedObject *) value;
-+    return vso->type == TYPE_VHOST_DEV && vso->value == dev;
-+}
-+
-+int virtio_dmabuf_vhost_cleanup(struct vhost_dev *dev)
-+{
-+    int num_removed;
-+
-+    g_mutex_lock(&lock);
-+    num_removed = g_hash_table_foreach_remove(
-+        resource_uuids, (GHRFunc) virtio_dmabuf_resource_is_owned, dev);
-+    g_mutex_unlock(&lock);
-+
-+    return num_removed;
-+}
-+
- void virtio_free_resources(void)
+-bool virtio_add_dmabuf(QemuUUID *uuid, int udmabuf_fd)
++bool virtio_dmabuf_add(QemuUUID *uuid, int udmabuf_fd)
+ {
+     bool result;
+     VirtioSharedObject *vso;
+@@ -66,7 +66,7 @@ bool virtio_add_dmabuf(QemuUUID *uuid, int udmabuf_fd)
+     return result;
+ }
+ 
+-bool virtio_add_vhost_device(QemuUUID *uuid, struct vhost_dev *dev)
++bool virtio_dmabuf_add_vhost_device(QemuUUID *uuid, struct vhost_dev *dev)
+ {
+     bool result;
+     VirtioSharedObject *vso;
+@@ -84,7 +84,7 @@ bool virtio_add_vhost_device(QemuUUID *uuid, struct vhost_dev *dev)
+     return result;
+ }
+ 
+-bool virtio_remove_resource(const QemuUUID *uuid)
++bool virtio_dmabuf_remove_resource(const QemuUUID *uuid)
+ {
+     bool result;
+     g_mutex_lock(&lock);
+@@ -107,7 +107,7 @@ static VirtioSharedObject *get_shared_object(const QemuUUID *uuid)
+     return (VirtioSharedObject *) lookup_res;
+ }
+ 
+-int virtio_lookup_dmabuf(const QemuUUID *uuid)
++int virtio_dmabuf_lookup(const QemuUUID *uuid)
+ {
+     VirtioSharedObject *vso = get_shared_object(uuid);
+     if (vso == NULL) {
+@@ -117,7 +117,7 @@ int virtio_lookup_dmabuf(const QemuUUID *uuid)
+     return GPOINTER_TO_INT(vso->value);
+ }
+ 
+-struct vhost_dev *virtio_lookup_vhost_device(const QemuUUID *uuid)
++struct vhost_dev *virtio_dmabuf_lookup_vhost_device(const QemuUUID *uuid)
+ {
+     VirtioSharedObject *vso = get_shared_object(uuid);
+     if (vso == NULL) {
+@@ -127,7 +127,7 @@ struct vhost_dev *virtio_lookup_vhost_device(const QemuUUID *uuid)
+     return (struct vhost_dev *) vso->value;
+ }
+ 
+-SharedObjectType virtio_object_type(const QemuUUID *uuid)
++SharedObjectType virtio_dmabuf_object_type(const QemuUUID *uuid)
+ {
+     VirtioSharedObject *vso = get_shared_object(uuid);
+     if (vso == NULL) {
+@@ -158,7 +158,7 @@ int virtio_dmabuf_vhost_cleanup(struct vhost_dev *dev)
+     return num_removed;
+ }
+ 
+-void virtio_free_resources(void)
++void virtio_dmabuf_free_resources(void)
  {
      g_mutex_lock(&lock);
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 2c9ac79468..c5622eac14 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -16,6 +16,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/virtio/vhost.h"
-+#include "hw/virtio/virtio-dmabuf.h"
- #include "qemu/atomic.h"
- #include "qemu/range.h"
- #include "qemu/error-report.h"
-@@ -1599,6 +1600,8 @@ void vhost_dev_cleanup(struct vhost_dev *hdev)
-     migrate_del_blocker(&hdev->migration_blocker);
-     g_free(hdev->mem);
-     g_free(hdev->mem_sections);
-+    /* free virtio shared objects */
-+    virtio_dmabuf_vhost_cleanup(hdev);
-     if (hdev->vhost_ops) {
-         hdev->vhost_ops->vhost_backend_cleanup(hdev);
+     g_hash_table_destroy(resource_uuids);
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index 1c3f2357be..2ab9e13f9e 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -1607,7 +1607,7 @@ vhost_user_backend_handle_shared_object_add(struct vhost_dev *dev,
+     QemuUUID uuid;
+ 
+     memcpy(uuid.data, object->uuid, sizeof(object->uuid));
+-    return virtio_add_vhost_device(&uuid, dev);
++    return virtio_dmabuf_add_vhost_device(&uuid, dev);
+ }
+ 
+ static int
+@@ -1617,10 +1617,10 @@ vhost_user_backend_handle_shared_object_remove(struct vhost_dev *dev,
+     QemuUUID uuid;
+ 
+     memcpy(uuid.data, object->uuid, sizeof(object->uuid));
+-    switch (virtio_object_type(&uuid)) {
++    switch (virtio_dmabuf_object_type(&uuid)) {
+     case TYPE_VHOST_DEV:
+     {
+-        struct vhost_dev *owner = virtio_lookup_vhost_device(&uuid);
++        struct vhost_dev *owner = virtio_dmabuf_lookup_vhost_device(&uuid);
+         if (owner == NULL || dev != owner) {
+             /* Not allowed to remove non-owned entries */
+             return 0;
+@@ -1632,7 +1632,7 @@ vhost_user_backend_handle_shared_object_remove(struct vhost_dev *dev,
+         return 0;
      }
+ 
+-    return virtio_remove_resource(&uuid);
++    return virtio_dmabuf_remove_resource(&uuid);
+ }
+ 
+ static bool vhost_user_send_resp(QIOChannel *ioc, VhostUserHeader *hdr,
+@@ -1710,13 +1710,13 @@ vhost_user_backend_handle_shared_object_lookup(struct vhost_user *u,
+     memcpy(uuid.data, payload->object.uuid, sizeof(payload->object.uuid));
+ 
+     payload->u64 = 0;
+-    switch (virtio_object_type(&uuid)) {
++    switch (virtio_dmabuf_object_type(&uuid)) {
+     case TYPE_DMABUF:
+-        dmabuf_fd = virtio_lookup_dmabuf(&uuid);
++        dmabuf_fd = virtio_dmabuf_lookup(&uuid);
+         break;
+     case TYPE_VHOST_DEV:
+     {
+-        struct vhost_dev *dev = virtio_lookup_vhost_device(&uuid);
++        struct vhost_dev *dev = virtio_dmabuf_lookup_vhost_device(&uuid);
+         if (dev == NULL) {
+             payload->u64 = -EINVAL;
+             break;
 diff --git a/include/hw/virtio/virtio-dmabuf.h b/include/hw/virtio/virtio-dmabuf.h
-index 627c3b6db7..73f70fb482 100644
+index 73f70fb482..186a18a33b 100644
 --- a/include/hw/virtio/virtio-dmabuf.h
 +++ b/include/hw/virtio/virtio-dmabuf.h
-@@ -91,6 +91,16 @@ struct vhost_dev *virtio_lookup_vhost_device(const QemuUUID *uuid);
-  */
- SharedObjectType virtio_object_type(const QemuUUID *uuid);
+@@ -28,7 +28,7 @@ typedef struct VirtioSharedObject {
+ } VirtioSharedObject;
  
-+/**
-+ * virtio_dmabuf_vhost_cleanup() - Destroys all entries of the shared
-+ * resources lookup table that are owned by the vhost backend
-+ * @dev: the pointer to the vhost device that owns the entries. Data is owned
-+ *       by the called of the function.
-+ * 
-+ * Return: the number of resource entries removed.
-+ */
-+int virtio_dmabuf_vhost_cleanup(struct vhost_dev *dev);
-+
  /**
-  * virtio_free_resources() - Destroys all keys and values of the shared
+- * virtio_add_dmabuf() - Add a new dma-buf resource to the lookup table
++ * virtio_dmabuf_add() - Add a new dma-buf resource to the lookup table
+  * @uuid: new resource's UUID
+  * @dmabuf_fd: the dma-buf descriptor that will be stored and shared with
+  *             other virtio devices. The caller retains ownership over the
+@@ -41,11 +41,11 @@ typedef struct VirtioSharedObject {
+  * Note that if it finds a repeated UUID, the resource is not inserted in
+  * the lookup table.
+  */
+-bool virtio_add_dmabuf(QemuUUID *uuid, int dmabuf_fd);
++bool virtio_dmabuf_add(QemuUUID *uuid, int dmabuf_fd);
+ 
+ /**
+- * virtio_add_vhost_device() - Add a new exporter vhost device that holds the
+- * resource with the associated UUID
++ * virtio_dmabuf_add_vhost_device() - Add a new exporter vhost device that
++ * holds the resource with the associated UUID
+  * @uuid: new resource's UUID
+  * @dev: the pointer to the vhost device that holds the resource. The caller
+  *       retains ownership over the device struct and its lifecycle.
+@@ -55,41 +55,42 @@ bool virtio_add_dmabuf(QemuUUID *uuid, int dmabuf_fd);
+  * Note that if it finds a repeated UUID, the resource is not inserted in
+  * the lookup table.
+  */
+-bool virtio_add_vhost_device(QemuUUID *uuid, struct vhost_dev *dev);
++bool virtio_dmabuf_add_vhost_device(QemuUUID *uuid, struct vhost_dev *dev);
+ 
+ /**
+- * virtio_remove_resource() - Removes a resource from the lookup table
++ * virtio_dmabuf_remove_resource() - Removes a resource from the lookup table
+  * @uuid: resource's UUID
+  *
+  * Return: true if the UUID has been found and removed from the lookup table.
+  */
+-bool virtio_remove_resource(const QemuUUID *uuid);
++bool virtio_dmabuf_remove_resource(const QemuUUID *uuid);
+ 
+ /**
+- * virtio_lookup_dmabuf() - Looks for a dma-buf resource in the lookup table
++ * virtio_dmabuf_lookup() - Looks for a dma-buf resource in the lookup table
+  * @uuid: resource's UUID
+  *
+  * Return: the dma-buf file descriptor integer, or -1 if the key is not found.
+  */
+-int virtio_lookup_dmabuf(const QemuUUID *uuid);
++int virtio_dmabuf_lookup(const QemuUUID *uuid);
+ 
+ /**
+- * virtio_lookup_vhost_device() - Looks for an exporter vhost device in the
+- * lookup table
++ * virtio_dmabuf_lookup_vhost_device() - Looks for an exporter vhost device
++ * in the lookup table
+  * @uuid: resource's UUID
+  *
+  * Return: pointer to the vhost_dev struct, or NULL if the key is not found.
+  */
+-struct vhost_dev *virtio_lookup_vhost_device(const QemuUUID *uuid);
++struct vhost_dev *virtio_dmabuf_lookup_vhost_device(const QemuUUID *uuid);
+ 
+ /**
+- * virtio_object_type() - Looks for the type of resource in the lookup table
++ * virtio_dmabuf_object_type() - Looks for the type of resource in the
++ * lookup table
+  * @uuid: resource's UUID
+  *
+  * Return: the type of resource associated with the UUID, or TYPE_INVALID if
+  * the key is not found.
+  */
+-SharedObjectType virtio_object_type(const QemuUUID *uuid);
++SharedObjectType virtio_dmabuf_object_type(const QemuUUID *uuid);
+ 
+ /**
+  * virtio_dmabuf_vhost_cleanup() - Destroys all entries of the shared
+@@ -102,9 +103,9 @@ SharedObjectType virtio_object_type(const QemuUUID *uuid);
+ int virtio_dmabuf_vhost_cleanup(struct vhost_dev *dev);
+ 
+ /**
+- * virtio_free_resources() - Destroys all keys and values of the shared
++ * virtio_dmabuf_free_resources() - Destroys all keys and values of the shared
   * resources lookup table, and frees them
+  */
+-void virtio_free_resources(void);
++void virtio_dmabuf_free_resources(void);
+ 
+ #endif /* VIRTIO_DMABUF_H */
 diff --git a/tests/unit/test-virtio-dmabuf.c b/tests/unit/test-virtio-dmabuf.c
-index a45ec52f42..1c8123c2d2 100644
+index 1c8123c2d2..4e67c1e67b 100644
 --- a/tests/unit/test-virtio-dmabuf.c
 +++ b/tests/unit/test-virtio-dmabuf.c
-@@ -103,6 +103,38 @@ static void test_add_invalid_resource(void)
+@@ -31,12 +31,12 @@ static void test_add_remove_resources(void)
+         qemu_uuid_generate(&uuid);
+         dmabuf_fd = g_random_int_range(3, 500);
+         /* Add a new resource */
+-        g_assert(virtio_add_dmabuf(&uuid, dmabuf_fd));
+-        g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, dmabuf_fd);
++        g_assert(virtio_dmabuf_add(&uuid, dmabuf_fd));
++        g_assert_cmpint(virtio_dmabuf_lookup(&uuid), ==, dmabuf_fd);
+         /* Remove the resource */
+-        g_assert(virtio_remove_resource(&uuid));
++        g_assert(virtio_dmabuf_remove_resource(&uuid));
+         /* Resource is not found anymore */
+-        g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, -1);
++        g_assert_cmpint(virtio_dmabuf_lookup(&uuid), ==, -1);
      }
  }
  
-+static void test_cleanup_res(void)
-+{
-+    QemuUUID uuids[20], uuid_alt;
-+    struct vhost_dev *dev = g_new0(struct vhost_dev, 1);
-+    struct vhost_dev *dev_alt = g_new0(struct vhost_dev, 1);
-+    int i, num_removed;
-+
-+    for (i = 0; i < ARRAY_SIZE(uuids); ++i) {
-+        qemu_uuid_generate(&uuids[i]);
-+        virtio_add_vhost_device(&uuids[i], dev);
-+        /* vhost device is found */
-+        g_assert(virtio_lookup_vhost_device(&uuids[i]) != NULL);
-+    }
-+    qemu_uuid_generate(&uuid_alt);
-+    virtio_add_vhost_device(&uuid_alt, dev_alt);
-+    /* vhost device is found */
-+    g_assert(virtio_lookup_vhost_device(&uuid_alt) != NULL);
-+    /* cleanup all dev resources */
-+    num_removed = virtio_dmabuf_vhost_cleanup(dev);
-+    g_assert_cmpint(num_removed, ==, ARRAY_SIZE(uuids));
-+    for (i = 0; i < ARRAY_SIZE(uuids); ++i) {
-+        /* None of the dev resources is found after free'd */
-+        g_assert_cmpint(virtio_lookup_dmabuf(&uuids[i]), ==, -1);
-+    }
-+    /* uuid_alt is still in the hash table */
-+    g_assert(virtio_lookup_vhost_device(&uuid_alt) != NULL);
-+
-+    virtio_free_resources();
-+    g_free(dev);
-+    g_free(dev_alt);
-+}
-+
- static void test_free_resources(void)
- {
-     QemuUUID uuids[20];
-@@ -131,6 +163,7 @@ int main(int argc, char **argv)
-                     test_remove_invalid_resource);
-     g_test_add_func("/virtio-dmabuf/add_invalid_res",
-                     test_add_invalid_resource);
-+    g_test_add_func("/virtio-dmabuf/cleanup_dev", test_cleanup_res);
-     g_test_add_func("/virtio-dmabuf/free_res", test_free_resources);
+@@ -48,13 +48,13 @@ static void test_add_remove_dev(void)
  
-     return g_test_run();
+     for (i = 0; i < 100; ++i) {
+         qemu_uuid_generate(&uuid);
+-        virtio_add_vhost_device(&uuid, dev);
++        virtio_dmabuf_add_vhost_device(&uuid, dev);
+         /* vhost device is found */
+-        g_assert(virtio_lookup_vhost_device(&uuid) != NULL);
++        g_assert(virtio_dmabuf_lookup_vhost_device(&uuid) != NULL);
+         /* Remove the vhost device */
+-        g_assert(virtio_remove_resource(&uuid));
++        g_assert(virtio_dmabuf_remove_resource(&uuid));
+         /* vhost device is not found anymore */
+-        g_assert(virtio_lookup_vhost_device(&uuid) == NULL);
++        g_assert(virtio_dmabuf_lookup_vhost_device(&uuid) == NULL);
+     }
+     g_free(dev);
+ }
+@@ -66,9 +66,9 @@ static void test_remove_invalid_resource(void)
+ 
+     for (i = 0; i < 20; ++i) {
+         qemu_uuid_generate(&uuid);
+-        g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, -1);
++        g_assert_cmpint(virtio_dmabuf_lookup(&uuid), ==, -1);
+         /* Removing a resource that does not exist returns false */
+-        g_assert_false(virtio_remove_resource(&uuid));
++        g_assert_false(virtio_dmabuf_remove_resource(&uuid));
+     }
+ }
+ 
+@@ -81,25 +81,25 @@ static void test_add_invalid_resource(void)
+     for (i = 0; i < 20; ++i) {
+         qemu_uuid_generate(&uuid);
+         /* Add a new resource with invalid (negative) resource fd */
+-        g_assert_false(virtio_add_dmabuf(&uuid, dmabuf_fd));
++        g_assert_false(virtio_dmabuf_add(&uuid, dmabuf_fd));
+         /* Resource is not found */
+-        g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, -1);
++        g_assert_cmpint(virtio_dmabuf_lookup(&uuid), ==, -1);
+         /* Add a new vhost device with invalid (NULL) pointer */
+-        g_assert_false(virtio_add_vhost_device(&uuid, dev));
++        g_assert_false(virtio_dmabuf_add_vhost_device(&uuid, dev));
+         /* vhost device is not found */
+-        g_assert(virtio_lookup_vhost_device(&uuid) == NULL);
++        g_assert(virtio_dmabuf_lookup_vhost_device(&uuid) == NULL);
+     }
+ 
+     for (i = 0; i < 20; ++i) {
+         /* Add a valid resource */
+         qemu_uuid_generate(&uuid);
+         dmabuf_fd = g_random_int_range(3, 500);
+-        g_assert(virtio_add_dmabuf(&uuid, dmabuf_fd));
+-        g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, dmabuf_fd);
++        g_assert(virtio_dmabuf_add(&uuid, dmabuf_fd));
++        g_assert_cmpint(virtio_dmabuf_lookup(&uuid), ==, dmabuf_fd);
+         /* Add a new resource with repeated uuid returns false */
+-        g_assert_false(virtio_add_dmabuf(&uuid, alt_dmabuf));
++        g_assert_false(virtio_dmabuf_add(&uuid, alt_dmabuf));
+         /* The value for the uuid key is not replaced */
+-        g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, dmabuf_fd);
++        g_assert_cmpint(virtio_dmabuf_lookup(&uuid), ==, dmabuf_fd);
+     }
+ }
+ 
+@@ -112,25 +112,25 @@ static void test_cleanup_res(void)
+ 
+     for (i = 0; i < ARRAY_SIZE(uuids); ++i) {
+         qemu_uuid_generate(&uuids[i]);
+-        virtio_add_vhost_device(&uuids[i], dev);
++        virtio_dmabuf_add_vhost_device(&uuids[i], dev);
+         /* vhost device is found */
+-        g_assert(virtio_lookup_vhost_device(&uuids[i]) != NULL);
++        g_assert(virtio_dmabuf_lookup_vhost_device(&uuids[i]) != NULL);
+     }
+     qemu_uuid_generate(&uuid_alt);
+-    virtio_add_vhost_device(&uuid_alt, dev_alt);
++    virtio_dmabuf_add_vhost_device(&uuid_alt, dev_alt);
+     /* vhost device is found */
+-    g_assert(virtio_lookup_vhost_device(&uuid_alt) != NULL);
++    g_assert(virtio_dmabuf_lookup_vhost_device(&uuid_alt) != NULL);
+     /* cleanup all dev resources */
+     num_removed = virtio_dmabuf_vhost_cleanup(dev);
+     g_assert_cmpint(num_removed, ==, ARRAY_SIZE(uuids));
+     for (i = 0; i < ARRAY_SIZE(uuids); ++i) {
+         /* None of the dev resources is found after free'd */
+-        g_assert_cmpint(virtio_lookup_dmabuf(&uuids[i]), ==, -1);
++        g_assert_cmpint(virtio_dmabuf_lookup(&uuids[i]), ==, -1);
+     }
+     /* uuid_alt is still in the hash table */
+-    g_assert(virtio_lookup_vhost_device(&uuid_alt) != NULL);
++    g_assert(virtio_dmabuf_lookup_vhost_device(&uuid_alt) != NULL);
+ 
+-    virtio_free_resources();
++    virtio_dmabuf_free_resources();
+     g_free(dev);
+     g_free(dev_alt);
+ }
+@@ -143,13 +143,13 @@ static void test_free_resources(void)
+     for (i = 0; i < ARRAY_SIZE(uuids); ++i) {
+         qemu_uuid_generate(&uuids[i]);
+         dmabuf_fd = g_random_int_range(3, 500);
+-        g_assert(virtio_add_dmabuf(&uuids[i], dmabuf_fd));
+-        g_assert_cmpint(virtio_lookup_dmabuf(&uuids[i]), ==, dmabuf_fd);
++        g_assert(virtio_dmabuf_add(&uuids[i], dmabuf_fd));
++        g_assert_cmpint(virtio_dmabuf_lookup(&uuids[i]), ==, dmabuf_fd);
+     }
+-    virtio_free_resources();
++    virtio_dmabuf_free_resources();
+     for (i = 0; i < ARRAY_SIZE(uuids); ++i) {
+         /* None of the resources is found after free'd */
+-        g_assert_cmpint(virtio_lookup_dmabuf(&uuids[i]), ==, -1);
++        g_assert_cmpint(virtio_dmabuf_lookup(&uuids[i]), ==, -1);
+     }
+ 
+ }
 -- 
 2.43.0
 
