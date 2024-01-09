@@ -2,91 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60249828A0E
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:33:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D651F828A19
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:36:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNF1s-0002F9-9P; Tue, 09 Jan 2024 11:32:40 -0500
+	id 1rNF4M-0004Xc-RM; Tue, 09 Jan 2024 11:35:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rNF1q-00029s-5s
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:32:38 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <vladimir.isaev@syntacore.com>)
+ id 1rNF4K-0004Wf-LJ; Tue, 09 Jan 2024 11:35:12 -0500
+Received: from mta-04.yadro.com ([89.207.88.248])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rNF1l-0008OH-GH
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:32:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704817953; x=1736353953;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=lq/alh0+QIDMJk8UzRpq0dUPGFZAHpyHNUvoUPsvRgQ=;
- b=HddSRRDGz4icyy0iAem9LMjzswLVEJxQVAQHL8W3Bd7F3hTTW4bZlsdd
- nY+oxyZIvxozuWH3naHdZQ6PG6K2crbEBz/SixTHtmMl7zfAAUDSDRhWG
- qTAT3+KCJ2ViJQ3xiMyv12oMFT+mLWYpvwg5F2pbXe9jMJpLOw+UPAWQQ
- KDsFlZ5izuV93HQf+u2Ush7IRjqKc+H+V2v8nSaP4RLSKVZ+nfvtcf5Gb
- HyqPUQuGp38pEOyCqN8XDjes7kaRxdHTX5r0B8B1r9Lk/KXi3Lx5lYpP1
- yrOXMrZdR2c1OnIrarET5YHLYFz/cnTT8/13YQTv8H5wiF80oEyc8LB2g Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="4996530"
-X-IronPort-AV: E=Sophos;i="6.04,183,1695711600"; 
-   d="scan'208";a="4996530"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jan 2024 08:32:30 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="872290734"
-X-IronPort-AV: E=Sophos;i="6.04,183,1695711600"; d="scan'208";a="872290734"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
- ([10.93.22.149])
- by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jan 2024 08:32:24 -0800
-Message-ID: <bd2679e7-46af-4875-ba42-b4ea413ec0a1@intel.com>
-Date: Wed, 10 Jan 2024 00:32:20 +0800
+ (Exim 4.90_1) (envelope-from <vladimir.isaev@syntacore.com>)
+ id 1rNF4H-0001Rd-Ts; Tue, 09 Jan 2024 11:35:12 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 8FBB1C0004
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-04; t=1704818102;
+ bh=vdgkDOM5/u+LqaNthNvKcbajs5dJP1bw6KRrHrXNcws=;
+ h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+ b=OgWk+3zUulOIkuQ4NEy/ujFxVCKXrQCIRXOnS5yJpaOZ8EJvdJh2+hO/LRqAnl3cj
+ jPiiFL+65Glt3ojEuDsuog4RJ1NxqqovvFx1/4wkotxZxqRQCRHVqOwbs14oL5jFu0
+ 686Z+pbQ2fU6ypjbNupZDWdOEnKeHG0OAPfIg5QvHP/Rv0Vjjwz6SZovvERjXh6aqt
+ DQMbwcZLSHfSER6YyjJhzagvufDyiViz/6//jLE/K2n9dn6XByCpDsvKY00aII750v
+ XrlO93Qhj68zMkYCwRsPs6kHUWKcF6hNVuRGIuijw0IBnMkqmbaUER4atIVSsEKiOo
+ NlwNv9ImH5/aA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-03; t=1704818102;
+ bh=vdgkDOM5/u+LqaNthNvKcbajs5dJP1bw6KRrHrXNcws=;
+ h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+ b=mr/VNQgWC43qrdrymATn4BmyyPWIt2uVAOOl7Xs96Wau3H0eQv4lbm25bqavH2Tim
+ 4CcxePBcGlBAEq/G1G3zsSLbt+4yNSsAjFe661Enti1VpoQnR65Ixax8FPnFVLHtjI
+ 8z5fHKu02tAN3efmKxkVUTPv4d1vDSDqhtW0XoM6Rbw1vdQ8lzFNRUvqynjOKzYS/U
+ 7W3Fk56wWWkjYHJ3a5TTWY3cWZAz7BqvtvBuM53uM5mMHBCGiRMc2FjH9tyfsszHUc
+ BYCSvQ6CovbIgNNHoSfx7GbJmJNTZgjcngPL+uOgPmH08kp14nSokDh9AUC991/Y0a
+ tcrIG1aPDiElQ==
+Message-ID: <f6c563b9-eddc-4d52-b523-ffffa9d7afd5@syntacore.com>
+Date: Tue, 9 Jan 2024 19:35:00 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/70] kvm: Introduce support for memory_attributes
-Content-Language: en-US
-To: "Wang, Wei W" <wei.w.wang@intel.com>, Paolo Bonzini
- <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- Michael Roth <michael.roth@amd.com>, Sean Christopherson
- <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
- Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
- <isaku.yamahata@gmail.com>, "Qiang, Chenyi" <chenyi.qiang@intel.com>
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-7-xiaoyao.li@intel.com>
- <DS0PR11MB6373D69ABBF4BDF7120438ACDC8EA@DS0PR11MB6373.namprd11.prod.outlook.com>
- <cc568b63-a129-4b23-8ac8-313193ea8126@intel.com>
- <DS0PR11MB63737AFCA458FA78423C0BB7DC95A@DS0PR11MB6373.namprd11.prod.outlook.com>
- <a0289f6d-2008-48d7-95fb-492066c38461@intel.com>
- <DS0PR11MB63730289975875A5B90D078CDC95A@DS0PR11MB6373.namprd11.prod.outlook.com>
- <1bc76559-20e7-4b20-a566-9491711f7a21@intel.com>
- <DS0PR11MB637348501D03A18EE7C394C4DC6A2@DS0PR11MB6373.namprd11.prod.outlook.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <DS0PR11MB637348501D03A18EE7C394C4DC6A2@DS0PR11MB6373.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v4 00/17] target/riscv: deprecate riscv_cpu_options[]
+Content-Language: en-US, ru-RU
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ <qemu-devel@nongnu.org>
+CC: <qemu-riscv@nongnu.org>, <alistair.francis@wdc.com>, <bmeng@tinylab.org>, 
+ <liwei1518@gmail.com>, <zhiwei_liu@linux.alibaba.com>,
+ <palmer@rivosinc.com>, <ajones@ventanamicro.com>
+References: <20240105230546.265053-1-dbarboza@ventanamicro.com>
+From: Vladimir Isaev <vladimir.isaev@syntacore.com>
+In-Reply-To: <20240105230546.265053-1-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+X-ClientProxiedBy: T-EXCH-09.corp.yadro.com (172.17.11.59) To
+ S-Exch-01.corp.yadro.com (10.78.5.241)
+Received-SPF: permerror client-ip=89.207.88.248;
+ envelope-from=vladimir.isaev@syntacore.com; helo=mta-04.yadro.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,55 +79,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/9/2024 10:53 PM, Wang, Wei W wrote:
-> On Tuesday, January 9, 2024 1:47 PM, Li, Xiaoyao wrote:
->> On 12/21/2023 9:47 PM, Wang, Wei W wrote:
->>> On Thursday, December 21, 2023 7:54 PM, Li, Xiaoyao wrote:
->>>> On 12/21/2023 6:36 PM, Wang, Wei W wrote:
->>>>> No need to specifically check for KVM_MEMORY_ATTRIBUTE_PRIVATE
->> there.
->>>>> I'm suggesting below:
->>>>>
->>>>> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c index
->>>>> 2d9a2455de..63ba74b221 100644
->>>>> --- a/accel/kvm/kvm-all.c
->>>>> +++ b/accel/kvm/kvm-all.c
->>>>> @@ -1375,6 +1375,11 @@ static int kvm_set_memory_attributes(hwaddr
->>>> start, hwaddr size, uint64_t attr)
->>>>>         struct kvm_memory_attributes attrs;
->>>>>         int r;
->>>>>
->>>>> +    if ((attr & kvm_supported_memory_attributes) != attr) {
->>>>> +        error_report("KVM doesn't support memory attr %lx\n", attr);
->>>>> +        return -EINVAL;
->>>>> +    }
->>>>
->>>> In the case of setting a range of memory to shared while KVM doesn't
->>>> support private memory. Above check doesn't work. and following IOCTL
->> fails.
->>>
->>> SHARED attribute uses the value 0, which indicates it's always supported, no?
->>> For the implementation, can you find in the KVM side where the ioctl
->>> would get failed in that case?
->>
->> I'm worrying about the future case, that KVM supports other memory attribute
->> than shared/private. For example, KVM supports RWX bits (bit 0
->> - 2) but not shared/private bit.
-> 
-> What's the exact issue?
-> +#define KVM_MEMORY_ATTRIBUTE_READ               (1ULL << 2)
-> +#define KVM_MEMORY_ATTRIBUTE_WRITE             (1ULL << 1)
-> +#define KVM_MEMORY_ATTRIBUTE_EXE                  (1ULL << 0)
-> 
-> They are checked via
-> "if ((attr & kvm_supported_memory_attributes) != attr)" shared above in
-> kvm_set_memory_attributes.
-> In the case you described, kvm_supported_memory_attributes will be 0x7.
-> Anything unexpected?
+Hi Daniel,
 
-Sorry that I thought for wrong case.
+06.01.2024 02:05, Daniel Henrique Barboza wrote:
+> 
+> Hi,
+> 
+> This new version contains changes due to a rebase with current
+> riscv-to-apply.next, after "[PATCH v13 00/26] riscv: RVA22 profiles
+> support" was queued.
+> 
+> Most notable change is a new patch (12) that was added to handle
+> 'cbop_blocksize' - zicbop was added by the profile work that just got
+> queued and was missing from v3.
+> 
+> A wrong 'cbom_blocksize' reference in patch 10 was also fixed.
+> 
+> Patches based on Alistair's riscv-to-apply.next.
+> 
+> Patches missing acks: 10, 12, 15, 16, 17
+> 
+> Changes from v3:
+> - patch 10:
+>   - changed wrong cbom_blocksize ref to cboz_blocksize
+> - patch 12 (new):
+>   - move cbop_blocksize to riscv_cpu_properties[]
+> - v3 link: https://lore.kernel.org/qemu-riscv/20240103174013.147279-1-dbarboza@ventanamicro.com/
+> 
+>
 
-It doesn't work on the case that KVM doesn't support memory_attribute, 
-e.g., an old KVM. In this case, 'kvm_supported_memory_attributes' is 0, 
-and 'attr' is 0 as well.
+This series work fine in my tests as well, thank you!  (sorry for the delay)
+
+TCG part:
+
+Tested-by: Vladimir Isaev <vladimir.isaev@syntacore.com>
+
+> Daniel Henrique Barboza (17):
+>   target/riscv/cpu_cfg.h: remove unused fields
+>   target/riscv: make riscv_cpu_is_vendor() public
+>   target/riscv: move 'pmu-mask' and 'pmu-num' to riscv_cpu_properties[]
+>   target/riscv: move 'mmu' to riscv_cpu_properties[]
+>   target/riscv: move 'pmp' to riscv_cpu_properties[]
+>   target/riscv: rework 'priv_spec'
+>   target/riscv: rework 'vext_spec'
+>   target/riscv: move 'vlen' to riscv_cpu_properties[]
+>   target/riscv: move 'elen' to riscv_cpu_properties[]
+>   target/riscv: create finalize_features() for KVM
+>   target/riscv: move 'cbom_blocksize' to riscv_cpu_properties[]
+>   target/riscv: move 'cbop_blocksize' to riscv_cpu_properties[]
+>   target/riscv: move 'cboz_blocksize' to riscv_cpu_properties[]
+>   target/riscv: remove riscv_cpu_options[]
+>   target/riscv/cpu.c: move 'mvendorid' to riscv_cpu_properties[]
+>   target/riscv/cpu.c: move 'mimpid' to riscv_cpu_properties[]
+>   target/riscv/cpu.c: move 'marchid' to riscv_cpu_properties[]
+> 
+>  target/riscv/cpu.c           | 755 ++++++++++++++++++++++++++++-------
+>  target/riscv/cpu.h           |   8 +-
+>  target/riscv/cpu_cfg.h       |   4 -
+>  target/riscv/kvm/kvm-cpu.c   |  94 +++--
+>  target/riscv/kvm/kvm_riscv.h |   1 +
+>  target/riscv/tcg/tcg-cpu.c   |  63 ---
+>  6 files changed, 676 insertions(+), 249 deletions(-)
+> 
+> --
+> 2.43.0
+> 
+> 
 
