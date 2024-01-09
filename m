@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C812C8284A1
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 12:18:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CDFA8284E0
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 12:24:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNA5u-0007vO-BI; Tue, 09 Jan 2024 06:16:30 -0500
+	id 1rNABu-0000fd-AQ; Tue, 09 Jan 2024 06:22:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rNA5o-0007v9-Tz
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 06:16:27 -0500
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rNABs-0000fQ-2f
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 06:22:40 -0500
 Received: from mout.gmx.net ([212.227.17.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rNA5m-0007fA-Et
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 06:16:24 -0500
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rNABm-0002KI-Ak
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 06:22:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
- t=1704798971; x=1705403771; i=deller@gmx.de;
- bh=eV9IiUWhkP7TboVtOLq6UlXRp1/qIOPM96dYYerCESg=;
+ t=1704799347; x=1705404147; i=deller@gmx.de;
+ bh=+kM53Z/WYI7ryBWNCa8eYV1nLOVSLugnJaJmnLoKGSE=;
  h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
  In-Reply-To;
- b=BZK045UeTfxh62DOxKR/6/RrwqV9StX5hJArsIHpOAEEtqylLkh17jZyda4D2BVN
- H8BeWLwgNoOmBEyhlRBEs+n9aCAq3D97ICfhkbFsIy6ss03q8LkmtFAhNRNAcgklw
- 9p9QRCLppwNHqXp9MJKtCgrKUGVPCSSJGcEQ1nUwcZFAGOat7WL2bwyOl2e+GVWz2
- AaIz5V/Y8uo5CUq2O8C+BqqV4U95PMentl2oc+9Vd+G98iz010/vWL5/miAh6W+2W
- rdA6SUoNKqA0kNxsBCAul5ghIR/rD/tEqqj5E3vWVgVnZCrmrSTHvFJFO11OKXHl2
- EPQm8hscKYwOs3O3fw==
+ b=PqrlcbWI4aW/JvOCoFGrUci/OQYZIIVK+suJXfX99VC7M2n+e8IS07ICSWXYAdPR
+ lI3kaRD/HkBSeh0f3QM5dg2i9hZtoNaER3yfQoNv3awpRx5H7d/efaPaUHl37CzRf
+ VXA6mDxcKQFIddduz/BzoPEtUlbWXiDkQxsTWcWFYH+Tx/boxPAAT986e2WMrBaOe
+ smHYOjl3oPNGECeI1J2sBBDu5H3eqLw96ejQhfIF9t/OzrxdxwyvS7lVHQVxMzfkf
+ Cw2OUe5St0L5l2ivLCIsufYTLUV+ppsU1sPssxpZTEuF7CNOmQxhU51Iu2OEH2ySZ
+ eXqAtfoXRuAinuf2Sw==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.55] ([94.134.149.181]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MOzSu-1rX8tD33tM-00PPxO; Tue, 09
- Jan 2024 12:16:11 +0100
-Message-ID: <1fde7d36-420a-4df5-821e-bcd4819ac6b7@gmx.de>
-Date: Tue, 9 Jan 2024 12:16:09 +0100
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MkHMP-1quO0Q0A6D-00kcF2; Tue, 09
+ Jan 2024 12:22:27 +0100
+Message-ID: <9c8e5d0a-99e7-4332-bf69-a7e56a62c2e3@gmx.de>
+Date: Tue, 9 Jan 2024 12:22:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/9] hw/hppa/machine: Disable default devices with
- --nodefaults option
+Subject: Re: [PATCH v2 4/9] target/hppa: Fix PDC address translation on PA2.0
+ with PSW.W=0
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, deller@kernel.org,
  qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, Bruno Haible <bruno@clisp.org>,
  "Nelson H . F . Beebe" <beebe@math.utah.edu>
 References: <20240107132237.50553-1-deller@kernel.org>
- <20240107132237.50553-3-deller@kernel.org>
- <3cc1664c-9f5c-4d2f-b8f3-f8880c110e10@linaro.org>
+ <20240107132237.50553-5-deller@kernel.org>
+ <48cc72dd-bf52-4cd2-a5e1-d7d1a7e08dd1@linaro.org>
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -89,38 +89,37 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <3cc1664c-9f5c-4d2f-b8f3-f8880c110e10@linaro.org>
+In-Reply-To: <48cc72dd-bf52-4cd2-a5e1-d7d1a7e08dd1@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:5XSHt3EqhHZBgZfV/givzgIf0J1UyBcsHJ9zOnvSgvtR830bfjS
- ac+1fzjIvDTm9RuQWSAS7GbIBJys5C1qupTbUZna0Qp9JnfuUXfuUvsp73bBjl4aunlYSeJ
- ZJbYx/ZIu7DXqDznbnwyd+l1ZzerVigUBDFbLY3GBT9IeDlW9dWxhzhOyIzVbdUcQIdolQ1
- oJ0UubsfKxEC4zT5ZuQqw==
-UI-OutboundReport: notjunk:1;M01:P0:wsAW0f8FUBk=;Htv/mDpjDtgfvcaMbDOJN6jE7y0
- pNO0pr0BNOJGpuVSBKANcSHkFvxpzKqibuMOFiJEPjHlJNKNcMSMpSUp6elqFNxb3tLq4QnRz
- XJFO7xFuM8AgDnHU4gqApTNQcotmzl+8Usgq4jiyco34aQRPqBYlcxq2v90oCEryblOcpdCAz
- /imNscQPmSgGIREtStsf0kFKXgvp1H1eRtgC5SWOvODr2wJna5fcC8laWxSoc8jN0AX6kAF2L
- bqZVVIhfNMfn7z2uyX+LknnPodLZ5NN6S9GMZMOvhg20epIaHXHCQ572j9od8OlLyVZ/QQHuj
- vvn6TDj7uNp/8hrDMIKSZ1P6Vmnt42/qKx68lmlx4CXTeA+wih36QWKPGEtxKjVUPxQbVSn+t
- vz0zZtQwMxD072A3M2aBO+Om2YLhAQhSOCO0oEp0CN57nxCR2a6/uWZGXmp+ZeMS1kys8UoYf
- KcTgAdEohtiywnI3zJEJk5a5wgeFNBswWKakuuYTcty73I0B8KuzgzVfnygHzPSa2/o6W2iv6
- 9S+NuVdAO3YThw3a0C6lOIB11vN5Fggaw1b6DBaJV9bZgZ+F8xnrarOjUqfMrVjkQx5/Dyet6
- Ux8oPbVprwkx6koQIkw0WR+HudYqpE2xQuistlpqnfxO3Lez+IuKlj+Rkxcs95/MQcqHe9dCK
- ySwuqlH1fSIN1HkmrcZMNec5JZf5ITfNbnjwY2ypVNdgfTASt2axXIHLd1t8nSNPJTu4BAy0N
- xa818jb3njiumMXujKlCjT/1n0zpX7uFWbiDJR26AFcNjt942v6JziMt/m/SSgmrpbIlANi0i
- 2MToGQrN7j2SRgdCNwCFhU98evt2YsPkXaF+l9equuo5rKNlcRthkxbbeYXw0hEjantMNxE2a
- 5pP7wbWETpwwntG7wzlbN90XRHi2lfHiyfunuQNlTgd7DtRSb5bWniwWNO21oiemd/ittWMmg
- 1J15o+uerLwNjsroPpOo/CeawGg=
+X-Provags-ID: V03:K1:zIFx9un9h3PfgGvrIKIvTO9bY9NRtSfucL74nARUCyJRXHIYFXQ
+ nuvTJuHa/yjhpdGWuzd+osc2tHkgDcujoduGTRt3CJFOuskZzgHtpxKUluNG7Ft2iyHw0tJ
+ B59R06aMOBKxKiOFjvXH8B2EsuFAKCbpVprnEioVM0acAMYYxjte8oDvGRJ1qlexpUcGHmT
+ eWJxlY1kqTwAlzQ8YNgGw==
+UI-OutboundReport: notjunk:1;M01:P0:LiRAij/2Rd0=;y6Iwl3oWdkrOtoHFZtIbB89dr0e
+ 6YL+dpdgI2ouCiOAp1+EK0sdmLri5ArHrBU0FU2j8RklKe0rihZLEn04r9m5uh1L7Djisr/yj
+ oVGEELI2cJ5fBlIij3hdGfzkOv7y7zNF+HNDLJiYNB7XR88BkicEXzQ/yVAOtzchlHY8zdLs/
+ aQvo7IhwCMoWtl3YsSVumU7GkekUwn9POsEXMQM2JcXc/NQwRc0VBGJW4aF8ecszjLIqD46DX
+ JQx3fjL6uv0zsO2C1K9KHfuluNQylLtIUj/2ENiPB9RloLUIFRXt0xEyyFsMwbXMMzQl3B/hN
+ cwendfQB8rTdjUHMBhEv3LiHkKgmpfSrV059SRgla93tbWfpQIkxEWIZWTz3pDruouMktdyYV
+ vV22Cpr2nNK6rrUbT47aTuJ1yOPrquqggupYUjrZHruTQgR65LMuaT3CZQyJlxY/tyH6JaqkR
+ 8JdbJVjMRB84mFldt4uWRC3+DLK5X1fHzU9lxcEDzFd5V77h4Ubib4lVFsJ+WBTgctiGsGLpk
+ AhCc+p4KBlOdyfNNRxQ7oUhMomX9glh2wfnYzvD/MQQDCYdXn84EL6cwwoemBj7e7nixcI0Mm
+ k14Ld261dA4vxYEq9dOzqWPeLe+Y/er6t8dRIVJeFldlR4zM+8uKIwYM+22uHLQx5j2FwYjvq
+ 7MqdOjN2pbga548a0hvD410n3Qvtdx8G/X+3BfXo1gSUxlplvMh0e6wqD7gKgwlsB76sZF1h0
+ kxBbBDDOzcWKrZS7YB2G8vcdQVbY6e4DW/fea4x1VyWOcuJ3JgEBLojNfhFVZueO3AQXK92Nm
+ x2KAAe9XJw6XQQ6rrwmyuD+32VLYpjlhcBP293/to6gaqPXPxbGQTUOObO0KQJwFG50nwaMOa
+ 4lRJ20mrKDLlSoKi8ME8pr8sPf87+hgw4mOWvnTXJ9WMZLieBZYzjY90LhJAs13ZA9gy+EBjs
+ CbSRUQ==
 Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -136,105 +135,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/9/24 10:57, Richard Henderson wrote:
+On 1/9/24 10:14, Richard Henderson wrote:
 > On 1/8/24 00:22, deller@kernel.org wrote:
 >> From: Helge Deller <deller@gmx.de>
 >>
->> Add support for the qemu --nodefaults option, which will disable the
->> following default devices:
->> - lsi53c895a SCSI controller,
->> - artist graphics card,
->> - LASI 82596 NIC,
->> - tulip PCI NIC,
->> - second serial PCI card,
->> - USB OHCI controller.
+>> Fix the address translation for PDC space on PA2.0 if PSW.W=3D0.
+>> Basically, for any address in the 32-bit PDC range from 0xf0000000 to
+>> 0xf1000000 keep the lower 32-bits and just set the upper 32-bits to
+>> 0xfffffff0.
 >>
->> Adding this option is very useful to allow manual testing and
->> debugging of the other possible devices on the command line.
+>> This mapping fixes the emulated power button in PDC space for 32- and
+>> 64-bit machines and is how the physical C3700 machine seems to map
+>> PDC.
 >>
 >> Signed-off-by: Helge Deller <deller@gmx.de>
 >> ---
->> =C2=A0 hw/hppa/machine.c | 15 +++++++++------
->> =C2=A0 1 file changed, 9 insertions(+), 6 deletions(-)
+>> =C2=A0 target/hppa/mem_helper.c | 2 +-
+>> =C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
 >>
->> diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
->> index b11907617e..8017002a2a 100644
->> --- a/hw/hppa/machine.c
->> +++ b/hw/hppa/machine.c
->> @@ -346,11 +346,14 @@ static void machine_HP_common_init_tail(MachineSt=
-ate *machine, PCIBus *pci_bus,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SysBusDevice *s;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* SCSI disk setup. */
->> -=C2=A0=C2=A0=C2=A0 dev =3D DEVICE(pci_create_simple(pci_bus, -1, "lsi5=
-3c895a"));
->> -=C2=A0=C2=A0=C2=A0 lsi53c8xx_handle_legacy_cmdline(dev);
->> +=C2=A0=C2=A0=C2=A0 if (defaults_enabled()) {
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev =3D DEVICE(pci_create_s=
-imple(pci_bus, -1, "lsi53c895a"));
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 lsi53c8xx_handle_legacy_cmd=
-line(dev);
->> +=C2=A0=C2=A0=C2=A0 }
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Graphics setup. */
->> -=C2=A0=C2=A0=C2=A0 if (machine->enable_graphics && vga_interface_type =
-!=3D VGA_NONE) {
->> +=C2=A0=C2=A0=C2=A0 if (defaults_enabled() && machine->enable_graphics =
-&&
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vga_interface_type !=3D VGA=
-_NONE) {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vga_interface_cr=
-eated =3D true;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev =3D qdev_new=
-("artist");
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 s =3D SYS_BUS_DE=
-VICE(dev);
->> @@ -360,7 +363,7 @@ static void machine_HP_common_init_tail(MachineStat=
-e *machine, PCIBus *pci_bus,
+>> diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+>> index 08abd1a9f9..011b192406 100644
+>> --- a/target/hppa/mem_helper.c
+>> +++ b/target/hppa/mem_helper.c
+>> @@ -56,7 +56,7 @@ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 addr =3D (int32_=
+t)addr;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* PDC address s=
+pace */
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 addr &=3D MAKE_64BIT_MASK(0=
+, 24);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 addr =3D (uint32_t)addr;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 addr |=3D -1ull =
+<< (TARGET_PHYS_ADDR_SPACE_BITS - 4);
 >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Network setup. */
->> -=C2=A0=C2=A0=C2=A0 if (enable_lasi_lan()) {
->> +=C2=A0=C2=A0=C2=A0 if (defaults_enabled() && enable_lasi_lan()) {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 lasi_82596_init(=
-addr_space, translate(NULL, LASI_LAN_HPA),
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA));
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->> @@ -385,7 +388,7 @@ static void machine_HP_common_init_tail(MachineStat=
-e *machine, PCIBus *pci_bus,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_set_word(&pci_dev->config[PCI_SUBSYS=
-TEM_ID], 0x1227); /* Powerbar */
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* create a second serial PCI card when =
-running Astro */
->> -=C2=A0=C2=A0=C2=A0 if (!lasi_dev) {
->> +=C2=A0=C2=A0=C2=A0 if (defaults_enabled() && !lasi_dev) {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_dev =3D pci_=
-new(-1, "pci-serial-4x");
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qdev_prop_set_ch=
-r(DEVICE(pci_dev), "chardev1", serial_hd(1));
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qdev_prop_set_ch=
-r(DEVICE(pci_dev), "chardev2", serial_hd(2));
->> @@ -395,7 +398,7 @@ static void machine_HP_common_init_tail(MachineStat=
-e *machine, PCIBus *pci_bus,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* create USB OHCI controller for USB ke=
-yboard & mouse on Astro machines */
->> -=C2=A0=C2=A0=C2=A0 if (!lasi_dev && machine->enable_graphics) {
->> +=C2=A0=C2=A0=C2=A0 if (defaults_enabled() && !lasi_dev && machine->ena=
-ble_graphics) {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_create_simpl=
-e(pci_bus, -1, "pci-ohci");
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 usb_create_simpl=
-e(usb_bus_find(-1), "usb-kbd");
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 usb_create_simpl=
-e(usb_bus_find(-1), "usb-mouse");
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return addr;
 >
-> This almost doubles the uses of default_enabled in the entire tree.
-> I wonder if some of them are redundant or should be using a different
-> test.
+> I believe this to be incorrect, as it contradicts Figures H-10 and H-11.
 
-Any proposal?
-Maybe introduce a local variable hppa_bare_metal =3D !defaults_enabled();
-and use that instead?
+Yes, but that seems to be how it's really implemented on physical hardware=
+.
+We have seen other figures as well, which didn't reflect the real world ei=
+ther.
+IMHO we can revert if it really turns out to be wrong and when we
+get a better solution.
 
 Helge
 
