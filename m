@@ -2,65 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260D38286E8
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 14:15:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDFFA8286FC
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 14:23:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNBvb-0006vj-Rd; Tue, 09 Jan 2024 08:13:59 -0500
+	id 1rNC33-0008JD-H5; Tue, 09 Jan 2024 08:21:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rNBvZ-0006vR-0q; Tue, 09 Jan 2024 08:13:57 -0500
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rNC31-0008Ig-EQ
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 08:21:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rNBvL-0006NB-TO; Tue, 09 Jan 2024 08:13:56 -0500
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:7d8d:0:640:c31b:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 7E49F61B5F;
- Tue,  9 Jan 2024 16:13:35 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b59d::1:13])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 9DhYvWNIkiE0-2Oj74Ebq; Tue, 09 Jan 2024 16:13:34 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1704806014;
- bh=sW5DdP9bkyKjIB76UbewfKRTCYono9YsK07kyFOl/0U=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=JZfE+EDIMT4QqvZU2oO7v77R7ng/5wF+ouKGC/xoGZ31szv/kQfQFBJhTZGy6f0SM
- awYepN5wLyJi+0NupisM45ySbT3T/g2w/1lfHv4PKPo1oHbrjtZFn/IFnP+TWmp2jP
- qGv/a6/nM5JAewsEGbIQ/7+JdtRSG12fxh7sEk94=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, eblake@redhat.com, hreitz@redhat.com,
- kwolf@redhat.com, armbru@redhat.com, zeil@yandex-team.ru,
- yc-core@yandex-team.ru, dave@treblig.org, vsementsov@yandex-team.ru,
- Leonid Kaplan <xeor@yandex-team.ru>
-Subject: [PATCH v2] block-backend: per-device throttling of BLOCK_IO_ERROR
- reports
-Date: Tue,  9 Jan 2024 16:13:08 +0300
-Message-Id: <20240109131308.455371-1-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rNC2z-0002Nn-Na
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 08:21:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704806496;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GTv7VgoEYRymaWy9m17VE8BNd2VzeudXl8qPB2ERN9I=;
+ b=MKdP6bc/XFVPM2iT9TnZ9C/7jlWpEWs2wB8IfS+Pv4AMPDnv9Ho8jxkLMo0Rxz2uaR6q2x
+ qmrzE1OwJiXs0aqMrpUyYmdJ5xQmMGCx6G7/txl8jcvcppscvEgEofqOgr/o0BNVhmdVK9
+ zfveVaryl9gsmOLMV4dIe93EzbkI1WI=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-214-R3UH_J7FPpOcQYlBaD6bVw-1; Tue, 09 Jan 2024 08:21:32 -0500
+X-MC-Unique: R3UH_J7FPpOcQYlBaD6bVw-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4297363e66bso51607901cf.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 05:21:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704806492; x=1705411292;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GTv7VgoEYRymaWy9m17VE8BNd2VzeudXl8qPB2ERN9I=;
+ b=N93CBNaJ/5Pz6joMdH2g2EY5HH+77KBkTg3/GnELKkcS14a1wNaS2SAD1Bl50WYvVJ
+ IGXhkQj3hLav/Ss3pMIHsrQfsp/a46bVWP4OnjTa0M103HGPqYau3KhXuBLdcCN62sn4
+ J9hWXqqF86FZkhklEHmsTCEVrXgxWSEUHV9kKT6wP1i5ZCZYw3fyWgcI/rHo0jhGqta9
+ UfR0cHeNvqsffpbvNjc1FVY23UapCxRs31GdvGuTuZ+ZPcVxn5R3pVeUgs/p9ngy45vn
+ 36JBwBqKiQN5NBgm8mHSY82Crh01ZDHMtoR3ECHd8KwLpU+0hGO2BqhKzrQPxYys6YWR
+ U5iQ==
+X-Gm-Message-State: AOJu0Yy7NENAR6EGe4adrw/wX/RpmqglMNdh+uGy3iXD/liirbdAPnDa
+ QVrUBcbWeHzqB1Ki5sntOnj5I4rgpAMIoPjNoqBJ0cD+l55NsYUhqZ1BLqJDes63e2HLCuZ5LMJ
+ 4TGvuH82+7GbW1dp/666eWVQ=
+X-Received: by 2002:a05:622a:54a:b0:41c:ad7f:5720 with SMTP id
+ m10-20020a05622a054a00b0041cad7f5720mr7935378qtx.61.1704806492555; 
+ Tue, 09 Jan 2024 05:21:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IETFC2x5pzPMjwLJKNGqnSOji6kFG4fQJUhpX6+oql4Ytql7fLP8cFi/c9qxSibsuV48TlCYg==
+X-Received: by 2002:a05:622a:54a:b0:41c:ad7f:5720 with SMTP id
+ m10-20020a05622a054a00b0041cad7f5720mr7935372qtx.61.1704806492317; 
+ Tue, 09 Jan 2024 05:21:32 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ bb3-20020a05622a1b0300b004281c19b277sm841321qtb.67.2024.01.09.05.21.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 09 Jan 2024 05:21:31 -0800 (PST)
+Message-ID: <1644d352-7ced-4ddc-90a8-8190fe863e87@redhat.com>
+Date: Tue, 9 Jan 2024 14:21:26 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/10] docs/migration: Reorganize migration documentations
+Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Bandan Das <bdas@redhat.com>,
+ Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
+References: <20240109064628.595453-1-peterx@redhat.com> <ZZ0kpnT741chs1np@x1n>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <ZZ0kpnT741chs1np@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -72,70 +103,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Leonid Kaplan <xeor@yandex-team.ru>
 
-BLOCK_IO_ERROR events comes from guest, so we must throttle them.
-We still want per-device throttling, so let's use device id as a key.
+> A few things I'd like to mention alongside, because it's documentation
+> relevant too, and I'd like to collect if there's any comment.
+> 
+> I just mostly rewrote two wiki pages completely:
+> 
+>    https://wiki.qemu.org/ToDo/LiveMigration
+>    https://wiki.qemu.org/Features/Migration>
+> I merged all the TODO items from Features/Migration into the ToDo page,
+> while kept the 2nd page mostly clean, just to route to other places.
+> 
+> I had a plan to make:
+> 
+>    https://qemu.org/docs/master
+> 
+> The solo place for migration documentations (aka, QEMU repo the source of
+> truth for migration docs, as it's peroidically built there), making all the
+> rest places pointing to that, as I already did in the wiki page.  While I
+> kept all the TODOs on the wiki page (not Features/Migration, but
+> ToDo/LiveMigration).> 
+> Fabiano / anyone: feel free to add / update / correct any entries there
+> where applicable.  Also if there's any thoughts on above feel free to let
+> me know too.
 
-Signed-off-by: Leonid Kaplan <xeor@yandex-team.ru>
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
+The Wiki has some limited value, the changelog for instance, but the rest
+is a bag of orphan and obsolete pages doomed to bit-rot since it is slowly
+being replaced by the in-tree documentation.
 
-v2: add Note: to QAPI doc
+The info in the Features/Migration page is redundant with what we have
+in-tree, a part from the CREDITS. The TODO list could be some file under :
 
- monitor/monitor.c    | 10 ++++++++++
- qapi/block-core.json |  2 ++
- 2 files changed, 12 insertions(+)
+	https://qemu.org/docs/master/devel/migration
 
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 01ede1babd..ad0243e9d7 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -309,6 +309,7 @@ int error_printf_unless_qmp(const char *fmt, ...)
- static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
-     /* Limit guest-triggerable events to 1 per second */
-     [QAPI_EVENT_RTC_CHANGE]        = { 1000 * SCALE_MS },
-+    [QAPI_EVENT_BLOCK_IO_ERROR]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_WATCHDOG]          = { 1000 * SCALE_MS },
-     [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
-@@ -498,6 +499,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
-         hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
-     }
- 
-+    if (evstate->event == QAPI_EVENT_BLOCK_IO_ERROR) {
-+        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
-+    }
-+
-     return hash;
- }
- 
-@@ -525,6 +530,11 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
-                        qdict_get_str(evb->data, "qom-path"));
-     }
- 
-+    if (eva->event == QAPI_EVENT_BLOCK_IO_ERROR) {
-+        return !strcmp(qdict_get_str(eva->data, "device"),
-+                       qdict_get_str(evb->data, "device"));
-+    }
-+
-     return TRUE;
- }
- 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index ca390c5700..32c2c2f030 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -5559,6 +5559,8 @@
- # Note: If action is "stop", a STOP event will eventually follow the
- #     BLOCK_IO_ERROR event
- #
-+# Note: This event is rate-limited.
-+#
- # Since: 0.13
- #
- # Example:
--- 
-2.34.1
+It would be easier to find and it would keep the Wiki to a strict minimum.
+
+Cheers,
+
+C.
+
 
 
