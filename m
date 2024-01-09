@@ -2,94 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 993BD828F4C
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 22:54:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F5D828F4D
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 22:54:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNK2f-0007L1-NR; Tue, 09 Jan 2024 16:53:49 -0500
+	id 1rNK3D-0007fe-Ed; Tue, 09 Jan 2024 16:54:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rNK2d-0007Kb-Dr
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:53:48 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rNK2Z-0005k4-G6
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:53:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=6Gp2sGV1o/qqM9GlxWOdN9EuqntXEM7LNT1DOO+qMXg=; b=SHlbvU13R4wG0Su+p0CtLxe+YS
- NIgDibvirVzGPN5WENQ11sMbZG8U/pxYF2tWWGLkS3AtEeqDKNTS9B38q7uTmTvQWEP0be4WQXkZ6
- dtsfd8HEHtlWZK8qSL2J+mCyX74x3Rw+nMCnlZja/c5p89NkVNZICizBqaHi8V6TmRmezO+IFSpta
- Tjt6TrTubtHsol7cFNGb49VJV1RHrx2z5d4SNCSzTzXbwkl6Iy2coJmfG9fFbg/cjyb0byIMGxawN
- wQVyouQZVWihzQLBYOhtOjAVMNUMH1zkb4UDvKSH03SbCG+D3vW4aJhsfSgO7RfTITOnp7VuQOQLE
- hnNDE/iKByrV337G0xSWdtTllCVEdxYzzQ/R7NdO7Zf4FN3whNthb6bcYq2gs2BlIbhisYD7JgRYT
- MnRqXjSjrrw6vPDMfsHRRSCpD//onn/dc3nV9YmMBVyGUSLZ52nlg9CMjd+isIWUDKcFrRa1ZpYvc
- tzOBbnyGLVQcE1H+IOZyWvn/9+X18rzOsHZkZlJOjM8IF0mPpKF/dadEtZl7EbAJFb1sX5XlCpYea
- oan3m7W8am2pOQO7i7BCGeB+rGtTkKEUQDQf+gpI6FjKhBvax6Z12IBe4ChJI7+pSyyhVanlc5jkt
- hNmBMKxDKj8vZdvcwBnvJjffnPxAuziA2wXg/VNFA=;
-Received: from [2a00:23c4:8bb1:9800:b804:1635:e423:adbd]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rNK1n-000BFT-0U; Tue, 09 Jan 2024 21:52:59 +0000
-Message-ID: <0c609e08-9f03-4dbb-a667-611b4ded7fb4@ilande.co.uk>
-Date: Tue, 9 Jan 2024 21:53:18 +0000
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rNK3A-0007f2-Te
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:54:20 -0500
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rNK39-0005xR-4h
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:54:20 -0500
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6dddf7ea893so877566a34.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 13:54:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704837257; x=1705442057; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vjdXptcDKX/t0PLPPJb/luCBab5AI24m2DuNpvTfHg0=;
+ b=Furdw9/qvznISmhJRRHblIYbIg6QUMFLj/A3z8G7D3YAKsGNH+hmcRPe0649YXNW/9
+ Hnyx3RPo1c+KNl54Sc6x+T6WA6M2nA8975hkNo1ZRx3Mxwbq4TjIiiw9zISfBGMx84aK
+ HS3j1YXReXLMJFLvr1xGISQ4+3bRMlVZjeyBSawbcfPNRoYInn+e/WH0RJLC1Uhs3XbD
+ PJge5SRq8zFeeXPtW6c5Stcyr771kQeS71rG1JmA9cQoN43Ch3PiwrUWe1GFY1Wtg7QL
+ +mNQqma+kS/0frLxy/f29KUTkTEn9HwM9ybbRP0NnuXBUCeCKEq4TGyQ71++vRlrXsKJ
+ xD4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704837257; x=1705442057;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vjdXptcDKX/t0PLPPJb/luCBab5AI24m2DuNpvTfHg0=;
+ b=ffCinzg/dcPMs4bhMMew+s8QbtZjruY0ZeP68CeBe/RbDK8keliUb5wKR63mwcE3RL
+ Ak88F6R8qy/7YHe0adG5nuTXJ/31Sq08NZG/dmeIjmWJaL5N3lQVBxEEHyP0/G3+WqU+
+ wo0SKuleONtsGygEzyodOqsH6gg9ABq0Kk5783nCNsj04ylPMJt19v9fwiqn4iR9znNd
+ HsfFWXoB+aj9Q3A1k9AvAwtTz+9wKEgjdD0adYuFGvgA4pdMVRHYZKg3BmgpF9AlAsfd
+ 9CE/sJvpYaKLAfwodVWaH8rwFU42Fog9fjLFfx1cn1Y9mNfoRWsd5lKz2SbB63z2si2B
+ I0iw==
+X-Gm-Message-State: AOJu0Yx6j2zplq9k0AfnRkNArwRtednPVqQLQJjpzu8/EQwj8+/oePIe
+ YZhPYq0YpbB3DsQVxxGRXRiADG68p0KsvA==
+X-Google-Smtp-Source: AGHT+IHygXInG6G/gbxX+uxHbw2o0jTvN8I1wba29j9WierOwLXWYCpeICgRMOQrocobBw/hbENdtg==
+X-Received: by 2002:a05:6830:2685:b0:6dd:ef0b:4f7c with SMTP id
+ l5-20020a056830268500b006ddef0b4f7cmr31544otu.34.1704837257627; 
+ Tue, 09 Jan 2024 13:54:17 -0800 (PST)
+Received: from [192.168.44.231] ([172.58.109.85])
+ by smtp.gmail.com with ESMTPSA id
+ q20-20020a05683022d400b006dc8ce3b8b6sm505460otc.69.2024.01.09.13.54.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 09 Jan 2024 13:54:17 -0800 (PST)
+Message-ID: <e48a1c7e-6a32-4905-ac5f-a5ebc0144d90@linaro.org>
+Date: Wed, 10 Jan 2024 08:54:06 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- laurent@vivier.eu, qemu-devel@nongnu.org, elliotnunn@fastmail.com
-References: <20240108192013.272112-1-mark.cave-ayland@ilande.co.uk>
- <20240108192013.272112-2-mark.cave-ayland@ilande.co.uk>
- <cc1c2370-e516-478b-abfa-620cc8542118@linaro.org>
+Subject: Re: [PATCH v2 4/9] target/hppa: Fix PDC address translation on PA2.0
+ with PSW.W=0
 Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <cc1c2370-e516-478b-abfa-620cc8542118@linaro.org>
+To: Helge Deller <deller@gmx.de>, deller@kernel.org, qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>, Bruno Haible <bruno@clisp.org>,
+ "Nelson H . F . Beebe" <beebe@math.utah.edu>
+References: <20240107132237.50553-1-deller@kernel.org>
+ <20240107132237.50553-5-deller@kernel.org>
+ <48cc72dd-bf52-4cd2-a5e1-d7d1a7e08dd1@linaro.org>
+ <9c8e5d0a-99e7-4332-bf69-a7e56a62c2e3@gmx.de>
+ <f8056d9d-803a-47b9-9e2e-007d164829b0@linaro.org>
+ <060dc700-e8f9-4bcc-bfda-0d09b81dc081@gmx.de>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <060dc700-e8f9-4bcc-bfda-0d09b81dc081@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb1:9800:b804:1635:e423:adbd
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 1/2] nubus-device: round Declaration ROM memory region
- address to qemu_target_page_size()
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,96 +100,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/01/2024 23:06, Philippe Mathieu-Daudé wrote:
-
-> On 8/1/24 20:20, Mark Cave-Ayland wrote:
->> Declaration ROM binary images can be any arbitrary size, however if a host ROM
->> memory region is not aligned to qemu_target_page_size() then we fail the
->> "assert(!(iotlb & ~TARGET_PAGE_MASK))" check in tlb_set_page_full().
->>
->> Ensure that the host ROM memory region is aligned to qemu_target_page_size()
->> and adjust the offset at which the Declaration ROM image is loaded, since Nubus
->> ROM images are unusual in that they are aligned to the end of the slot address
->> space.
->>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> ---
->>   hw/nubus/nubus-device.c | 16 ++++++++++++----
->>   1 file changed, 12 insertions(+), 4 deletions(-)
->>
->> diff --git a/hw/nubus/nubus-device.c b/hw/nubus/nubus-device.c
->> index 49008e4938..e4f824d58b 100644
->> --- a/hw/nubus/nubus-device.c
->> +++ b/hw/nubus/nubus-device.c
->> @@ -10,6 +10,7 @@
->>   #include "qemu/osdep.h"
->>   #include "qemu/datadir.h"
->> +#include "exec/target_page.h"
->>   #include "hw/irq.h"
->>   #include "hw/loader.h"
->>   #include "hw/nubus/nubus.h"
->> @@ -30,7 +31,7 @@ static void nubus_device_realize(DeviceState *dev, Error **errp)
->>       NubusDevice *nd = NUBUS_DEVICE(dev);
->>       char *name, *path;
->>       hwaddr slot_offset;
->> -    int64_t size;
->> +    int64_t size, align_size;
+On 1/10/24 08:06, Helge Deller wrote:
+>> What evidence?  So far, all I can see is for your seabios button, which doesn't run on 
+>> physical hardware.
 > 
-> Both are 'size_t'.
+> You are wrong on this.
+> My Seabios just mimics the real hardware. And the hardware has such a button
+> which is reported back by the PDC firmware.
+> Here is what the Linux kernel reports on *physical* hardware:
+> 64-bit kernel -> powersw: Soft power switch at 0xfffffff0f0400804 enabled.
+> 32-bit kernel -> powersw: Soft power switch at 0xf0400804 enabled
+> Just look at the old dmesg from another user (with Linux kernel 2.6.16):
+> http://ftp.parisc-linux.org/dmesg/dmesg_C3700.txt
+> (search for "power" in that log).
 
-I had a look at include/hw/loader.h, and the function signature for get_image_size() 
-returns int64_t. Does it not make sense to keep int64_t here and use uintptr_t for 
-the pointer arithmetic as below so that everything matches?
-
->>       int ret;
->>       /* Super */
->> @@ -76,16 +77,23 @@ static void nubus_device_realize(DeviceState *dev, Error **errp)
->>           }
->>           name = g_strdup_printf("nubus-slot-%x-declaration-rom", nd->slot);
->> -        memory_region_init_rom(&nd->decl_rom, OBJECT(dev), name, size,
->> +
->> +        /*
->> +         * Ensure ROM memory region is aligned to target page size regardless
->> +         * of the size of the Declaration ROM image
->> +         */
->> +        align_size = ROUND_UP(size, qemu_target_page_size());
->> +        memory_region_init_rom(&nd->decl_rom, OBJECT(dev), name, align_size,
->>                                  &error_abort);
->> -        ret = load_image_mr(path, &nd->decl_rom);
->> +        ret = load_image_size(path, memory_region_get_ram_ptr(&nd->decl_rom) +
->> +                                    (uintptr_t)align_size - size, size);
-> 
-> memory_region_get_ram_ptr() returns a 'void *' so this looks dubious.
-> Maybe use a local variable to ease offset calculation?
-> 
->    char *rombase = memory_region_get_ram_ptr(&nd->decl_rom);
->    ret = load_image_size(path, rombase + align_size - size, size);
-> 
-> Otherwise KISS but ugly:
-> 
->    ret = load_image_size(path,
->              (void *)((uintptr_t)memory_region_get_ram_ptr(&nd->decl_rom)
->                       + align_size - size), size);
-
-I prefer the first approach, but with uint8_t instead of char since it clarifies that 
-it is a pointer to an arbitrary set of bytes as opposed to a string. Does that seem 
-reasonable?
-
->>           g_free(path);
->>           g_free(name);
->>           if (ret < 0) {
->>               error_setg(errp, "could not load romfile \"%s\"", nd->romfile);
->>               return;
->>           }
->> -        memory_region_add_subregion(&nd->slot_mem, NUBUS_SLOT_SIZE - size,
->> +        memory_region_add_subregion(&nd->slot_mem, NUBUS_SLOT_SIZE - align_size,
->>                                       &nd->decl_rom);
->>       }
->>   }
+Ok, fair enough.  I just wish HP had been more accurate in their diagrams.  :-)
 
 
-ATB,
-
-Mark.
-
+r~
 
