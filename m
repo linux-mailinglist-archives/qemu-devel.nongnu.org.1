@@ -2,81 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CA7828ACC
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 18:14:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B063828B53
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 18:32:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNFfv-0008PV-AW; Tue, 09 Jan 2024 12:14:03 -0500
+	id 1rNFwt-0007NK-6I; Tue, 09 Jan 2024 12:31:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNFfs-0008Ox-6n
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:14:01 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rNFwp-0007Jx-4y
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:31:31 -0500
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNFff-0002GR-Fh
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:13:59 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3376d424a79so1709521f8f.1
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 09:13:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rNFwm-0002g0-TF
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:31:30 -0500
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6ddee0aa208so92950a34.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 09:31:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704820421; x=1705425221; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704821487; x=1705426287; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=CHC1NK96q6cWM/H+9W9W8XZwDAj/9wTds35KcQ/gzhg=;
- b=cEQ0C1kwKaHfEP7h5Z1SNQaPjh4nf8mgWB3VLjc12edZvxcg9lpP0oS7RHmMkjqEzw
- A1lZ7E05RQHA4LfycP8IXwJaZGZqN17TSnMnj1GEwJvODZO+7B4EFrkMcnAmqbQkdtNF
- mRVs9+bLYfsXIh9lSMoRtLBHWQu5ibN8GPvo4j/gsRfXYj9YKkugAM8iYaZmHZepEOge
- FQL43fRuDNSAgIywSEIndcgj8zE7yJSk0kLyrsgpXzm68pwR1b6o/KFAoa5L9cj1XimK
- DnPb3owkxbHelbcqqSri+2SvQr+xE8QW09mskHmJGSDsgIawzej5l3g7yOzluJWVc2Lt
- Z2Fw==
+ bh=kyKbw37FuAFsn7tDVaoN+dlh49bbhEBG8iRh/3jLC3I=;
+ b=wqauM7WA3uIc4EdDORvglBYkIaSTaE4r4PhCtuAYbv7uSnK487KIA0Pu9GoZ3C5jtM
+ aTBNQ3hNMrhb0uFsk/FZPscDiGfj3BSN0pxKOgTlZkfdNgSgw6zikvbCOsDX7pqf32dr
+ MWffefn72OtJtKRazsCkaJEXW/PovGOFPC5KTZwcZxgUtfwCoNPPVgPIb23PK4b8ICGj
+ ra2+PXbTPOmv11fOyDYnQApyy64g+mfv/YC/dUnJYUZ+bBu3AQPaPTaYyjWCYh58jp1w
+ TJRTxphiVn5PWJknTTjVDWEiXpHnuQpGL+CnPA10Cn8+EGlZWfEURlmnRAznAgBVuDZ6
+ clKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704820421; x=1705425221;
+ d=1e100.net; s=20230601; t=1704821487; x=1705426287;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CHC1NK96q6cWM/H+9W9W8XZwDAj/9wTds35KcQ/gzhg=;
- b=mznuMUrjQrEV5/AS5pvoIBLi6dFSv+p01hknYHlSqTxoU0/psbkYAWmzcH6IuMlmkj
- mZTCqUuBENlIxoQDw8QpTXBEYhRZCxmDsJcJN6ev0fCBzD43QiCXTwiDDc5zIZrXTEa4
- mMSd2jdPyLUXOo/W5n5OKgjlbr0fyxm1zdwhPnbcXaU39EalxHbXYLXGVLBy2RZ4B/df
- PZ3kACvMnTSGntZKt3mNO4TMbIwhEhHhaSkyIt6BwjKh84UZT+DImdbpQAxEAFAFLWh4
- CleygjVYpn/qNXR8iWrstkGxo6fLtZbMp/8HmdLxVYV3xvyBNQeqojDdSQIrirHBt7D6
- Z5UQ==
-X-Gm-Message-State: AOJu0YyPu7S5ValQAtkCp6rIERqp6Kiwhhh9xK+f/Euxg+oTXkvI0ZxD
- kYevdiRgUI1sVm2W7QC3Scqr0FgumQZ1AQ==
-X-Google-Smtp-Source: AGHT+IFlM3YF/vCcXhM6S2tUsDkLWD2ahxzeW/csSkNXeWQi4eS6yCjTqvFElPc9YrluQbOJ/psEKw==
-X-Received: by 2002:adf:fe09:0:b0:336:660d:20e1 with SMTP id
- n9-20020adffe09000000b00336660d20e1mr801164wrr.75.1704820421397; 
- Tue, 09 Jan 2024 09:13:41 -0800 (PST)
-Received: from [192.168.69.100] (rsa59-h02-176-184-32-47.dsl.sta.abo.bbox.fr.
- [176.184.32.47]) by smtp.gmail.com with ESMTPSA id
- g18-20020adff3d2000000b00336aac53e75sm2850512wrp.97.2024.01.09.09.13.39
+ bh=kyKbw37FuAFsn7tDVaoN+dlh49bbhEBG8iRh/3jLC3I=;
+ b=GVcv6JAvx5+GhWU0t/fmz+MTjC+ncB7X7dQCbQVpuxG2x+ZkeJKHxY/Qcw7xKUjA2D
+ JrQajRmW7G603QItJevND7LejkBc4MI47/8dBJ5AfZzA3LHq9Y1elBRJrRKCza4ffi6E
+ lffVWSZtykib64MKgWhSj2HOF7Pbwp1jjN6vNy9ieEST3XfHLAkILvv7oD9gOmvoV4wO
+ NEBVJzTwv8qIiAbPiYsIShyBeBfq0rbBfSmRMkeLJvcqGE5QOHQrEaGjHSDKCm1/Bazw
+ oZkDZhoFNClhfaLfHydGDAcpvyFOACzdDYvOh0YYjgTdvrhU4R1PUfUsEJCvjolGTQAq
+ qe+A==
+X-Gm-Message-State: AOJu0YwRM3JczcoYaSksUBPSBDTQcZeJqGBEx8CjuAXHIVVz9Fekrv0z
+ VlYwhteG/JZO4vspZe8OjslNDrcqJwi3RQ==
+X-Google-Smtp-Source: AGHT+IH1E3ZO4GzsGtCJbMbirm7O/eIq8Y8M6I3HVfWmhSKjO5vVzRnX01LZVXdHVuYla0JBrHiIjw==
+X-Received: by 2002:a9d:7a85:0:b0:6db:95ba:c422 with SMTP id
+ l5-20020a9d7a85000000b006db95bac422mr4175993otn.41.1704821487132; 
+ Tue, 09 Jan 2024 09:31:27 -0800 (PST)
+Received: from [192.168.47.227] ([172.58.111.136])
+ by smtp.gmail.com with ESMTPSA id
+ a2-20020a9d74c2000000b006dba1ec37ffsm430719otl.11.2024.01.09.09.31.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 09:13:41 -0800 (PST)
-Message-ID: <50a4ff56-65e5-4c14-86ba-c0759d1c5034@linaro.org>
-Date: Tue, 9 Jan 2024 18:13:38 +0100
+ Tue, 09 Jan 2024 09:31:26 -0800 (PST)
+Message-ID: <a40a7bbf-e94c-450d-969e-60f6d1cad43f@linaro.org>
+Date: Wed, 10 Jan 2024 04:31:19 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 1/3] hw/misc: Implement STM32L4x5 EXTI
+Subject: Re: [PATCH 5/9] target/sparc: implement asr17 feature for smp
 Content-Language: en-US
-To: =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>, qemu-arm@nongnu.org,
- Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
- Alistair Francis <alistair@alistair23.me>,
- Alistair Francis <alistair.francis@wdc.com>
-References: <20240109160658.311932-1-ines.varhol@telecom-paris.fr>
- <20240109160658.311932-2-ines.varhol@telecom-paris.fr>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240109160658.311932-2-ines.varhol@telecom-paris.fr>
+To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>, qemu-devel@nongnu.org
+Cc: Frederic Konrad <konrad.frederic@yahoo.fr>
+References: <20240105102421.163554-1-chigot@adacore.com>
+ <20240105102421.163554-6-chigot@adacore.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240105102421.163554-6-chigot@adacore.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,75 +94,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/1/24 17:06, Inès Varhol wrote:
-> Although very similar to the STM32F4xx EXTI, STM32L4x5 EXTI generates
-> more than 32 event/interrupt requests and thus uses more registers
-> than STM32F4xx EXTI which generates 23 event/interrupt requests.
+On 1/5/24 21:24, Clément Chigot wrote:
+> This allows the guest program to know its cpu id.
 > 
-> Acked-by: Alistair Francis <alistair.francis@wdc.com>
-> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+> Co-developed-by: Frederic Konrad<konrad.frederic@yahoo.fr>
+> Signed-off-by: Clément Chigot<chigot@adacore.com>
 > ---
->   docs/system/arm/b-l475e-iot01a.rst |   5 +-
->   hw/misc/Kconfig                    |   3 +
->   hw/misc/meson.build                |   1 +
->   hw/misc/stm32l4x5_exti.c           | 290 +++++++++++++++++++++++++++++
->   hw/misc/trace-events               |   5 +
->   include/hw/misc/stm32l4x5_exti.h   |  51 +++++
->   6 files changed, 352 insertions(+), 3 deletions(-)
->   create mode 100644 hw/misc/stm32l4x5_exti.c
->   create mode 100644 include/hw/misc/stm32l4x5_exti.h
+>   target/sparc/helper.c    | 16 ++++++++++++++++
+>   target/sparc/helper.h    |  1 +
+>   target/sparc/translate.c | 13 +++----------
+>   3 files changed, 20 insertions(+), 10 deletions(-)
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
-> +static unsigned configurable_mask(unsigned bank)
-> +{
-> +     return valid_mask(bank) & ~exti_romask[bank];
-> +}
-
-Excellent, I'm glad of all the improvement you made over
-the review process, great work!
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> +static void stm32l4x5_exti_write(void *opaque, hwaddr addr,
-> +                                 uint64_t val64, unsigned int size)
-> +{
-> +    Stm32l4x5ExtiState *s = opaque;
-> +    const unsigned bank = regbank_index_by_addr(addr);
-> +
-> +    trace_stm32l4x5_exti_write(addr, val64);
-> +
-> +    switch (addr) {
-> +    case EXTI_IMR1:
-> +    case EXTI_IMR2:
-> +        s->imr[bank] = val64 & valid_mask(bank);
-> +        return;
-> +    case EXTI_EMR1:
-> +    case EXTI_EMR2:
-> +        s->emr[bank] = val64 & valid_mask(bank);
-> +        return;
-> +    case EXTI_RTSR1:
-> +    case EXTI_RTSR2:
-> +        s->rtsr[bank] = val64 & configurable_mask(bank);
-> +        return;
-> +    case EXTI_FTSR1:
-> +    case EXTI_FTSR2:
-> +        s->ftsr[bank] = val64 & configurable_mask(bank);
-> +        return;
-> +    case EXTI_SWIER1:
-> +    case EXTI_SWIER2: {
-> +        const uint32_t set = val64 & configurable_mask(bank);
-> +        const uint32_t pend = set & ~s->swier[bank] & s->imr[bank] &
-> +                              ~s->pr[bank];
-> +        s->swier[bank] = set;
-> +        s->pr[bank] |= pend;
-> +        for (unsigned i = 0; i < irqs_per_bank[bank]; i++) {
-> +            if (extract32(pend, i, 1)) {
-> +                qemu_irq_pulse(s->irq[i + 32 * bank]);
-> +            }
-> +        }
-> +        return;
-> +    }
-
-[...]
+r~
 
