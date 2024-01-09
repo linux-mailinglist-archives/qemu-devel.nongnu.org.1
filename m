@@ -2,55 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E892828B5C
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 18:37:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BEFE828B5F
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 18:41:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNG1S-0001ox-4E; Tue, 09 Jan 2024 12:36:18 -0500
+	id 1rNG5i-0004xv-CG; Tue, 09 Jan 2024 12:40:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Gpa9=IT=kaod.org=clg@ozlabs.org>)
- id 1rNG1M-0001gz-5t; Tue, 09 Jan 2024 12:36:12 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rNG5a-0004tq-Du
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:40:34 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Gpa9=IT=kaod.org=clg@ozlabs.org>)
- id 1rNG16-0004iu-ND; Tue, 09 Jan 2024 12:36:10 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T8dPd0T1mz4wxZ;
- Wed, 10 Jan 2024 04:35:49 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T8dPZ1Cgsz4wx5;
- Wed, 10 Jan 2024 04:35:45 +1100 (AEDT)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH] tests/avocado/machine_aspeed.py: Update buildroot images to
- 2023.11
-Date: Tue,  9 Jan 2024 18:35:38 +0100
-Message-ID: <20240109173538.435781-1-clg@kaod.org>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rNG5X-00076S-Sn
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:40:34 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T8dSw407sz6K6DL;
+ Wed, 10 Jan 2024 01:38:40 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id 7B4E5140736;
+ Wed, 10 Jan 2024 01:40:27 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 9 Jan
+ 2024 17:40:27 +0000
+Date: Tue, 9 Jan 2024 17:40:26 +0000
+To: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+CC: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <fan.ni@samsung.com>, "Michael
+ S . Tsirkin" <mst@redhat.com>, <linux-cxl@vger.kernel.org>,
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v2 1/4] hw/cxl: fix build error in cxl_type3_stubs.c
+Message-ID: <20240109174026.00000760@Huawei.com>
+In-Reply-To: <20231222090051.3265307-2-42.hyeyoo@gmail.com>
+References: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
+ <20231222090051.3265307-2-42.hyeyoo@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=Gpa9=IT=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,100 +66,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Compared to mainline buildroot, these images have some customization :
+On Fri, 22 Dec 2023 18:00:48 +0900
+Hyeonggon Yoo <42.hyeyoo@gmail.com> wrote:
 
-- Linux version is bumped to 6.6.3 and built with a custom config
-- U-Boot is switched to the one provided by OpenBMC for more support
-- defconfigs extra tools for dev
+> Fix build errors in cxl_type3_stubs.c due to a the incorrect definition
+> of the qmp_cxl_{add,release}_dynamic_capacity functions.
+> 
+> Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 
-See branch [1] for more details.
+Fan, this one needs squashing into your
+hw/cxl/events: Add qmp interfaces to add/release dynamic capacity extents
+patch in the DCD series. I'll do that in my tree, but just wanted to
+make sure you noticed this so we don't end up reintroducing it again by
+accident!
 
-There are a few changes since last update, commit ed1f5ff84209. Images
-all have a password now and I2C devices have been updated in the Linux
-ast2600-evb device tree [2]. Do the necessary adjustements.
+Thanks Hyeonggon,
 
-[1] https://github.com/legoater/buildroot/commits/aspeed-2023.11
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9deb10cf160e
+Jonathan
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
- tests/avocado/machine_aspeed.py | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
-index 6fa5459a07bf..cec018142453 100644
---- a/tests/avocado/machine_aspeed.py
-+++ b/tests/avocado/machine_aspeed.py
-@@ -155,6 +155,7 @@ def do_test_arm_aspeed_buildroot_start(self, image, cpu_id, pattern='Aspeed EVB'
-         time.sleep(0.1)
-         exec_command(self, 'root')
-         time.sleep(0.1)
-+        exec_command(self, "passw0rd")
- 
-     def do_test_arm_aspeed_buildroot_poweroff(self):
-         exec_command_and_wait_for_pattern(self, 'poweroff',
-@@ -167,14 +168,14 @@ def test_arm_ast2500_evb_buildroot(self):
-         """
- 
-         image_url = ('https://github.com/legoater/qemu-aspeed-boot/raw/master/'
--                     'images/ast2500-evb/buildroot-2022.11-2-g15d3648df9/flash.img')
--        image_hash = ('f96d11db521fe7a2787745e9e391225deeeec3318ee0fc07c8b799b8833dd474')
-+                     'images/ast2500-evb/buildroot-2023.11/flash.img')
-+        image_hash = ('c23db6160cf77d0258397eb2051162c8473a56c441417c52a91ba217186e715f')
-         image_path = self.fetch_asset(image_url, asset_hash=image_hash,
-                                       algorithm='sha256')
- 
-         self.vm.add_args('-device',
-                          'tmp105,bus=aspeed.i2c.bus.3,address=0x4d,id=tmp-test');
--        self.do_test_arm_aspeed_buildroot_start(image_path, '0x0')
-+        self.do_test_arm_aspeed_buildroot_start(image_path, '0x0', 'Aspeed AST2500 EVB')
- 
-         exec_command_and_wait_for_pattern(self,
-              'echo lm75 0x4d > /sys/class/i2c-dev/i2c-3/device/new_device',
-@@ -195,8 +196,8 @@ def test_arm_ast2600_evb_buildroot(self):
-         """
- 
-         image_url = ('https://github.com/legoater/qemu-aspeed-boot/raw/master/'
--                     'images/ast2600-evb/buildroot-2022.11-2-g15d3648df9/flash.img')
--        image_hash = ('e598d86e5ea79671ca8b59212a326c911bc8bea728dec1a1f5390d717a28bb8b')
-+                     'images/ast2600-evb/buildroot-2023.11/flash.img')
-+        image_hash = ('b62808daef48b438d0728ee07662290490ecfa65987bb91294cafb1bb7ad1a68')
-         image_path = self.fetch_asset(image_url, asset_hash=image_hash,
-                                       algorithm='sha256')
- 
-@@ -206,17 +207,17 @@ def test_arm_ast2600_evb_buildroot(self):
-                          'ds1338,bus=aspeed.i2c.bus.3,address=0x32');
-         self.vm.add_args('-device',
-                          'i2c-echo,bus=aspeed.i2c.bus.3,address=0x42');
--        self.do_test_arm_aspeed_buildroot_start(image_path, '0xf00')
-+        self.do_test_arm_aspeed_buildroot_start(image_path, '0xf00', 'Aspeed AST2600 EVB')
- 
-         exec_command_and_wait_for_pattern(self,
-              'echo lm75 0x4d > /sys/class/i2c-dev/i2c-3/device/new_device',
-              'i2c i2c-3: new_device: Instantiated device lm75 at 0x4d');
-         exec_command_and_wait_for_pattern(self,
--                             'cat /sys/class/hwmon/hwmon0/temp1_input', '0')
-+                             'cat /sys/class/hwmon/hwmon1/temp1_input', '0')
-         self.vm.cmd('qom-set', path='/machine/peripheral/tmp-test',
-                     property='temperature', value=18000);
-         exec_command_and_wait_for_pattern(self,
--                             'cat /sys/class/hwmon/hwmon0/temp1_input', '18000')
-+                             'cat /sys/class/hwmon/hwmon1/temp1_input', '18000')
- 
-         exec_command_and_wait_for_pattern(self,
-              'echo ds1307 0x32 > /sys/class/i2c-dev/i2c-3/device/new_device',
-@@ -261,7 +262,6 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
-         self.vm.add_args('-device',
-                          'tpm-tis-i2c,tpmdev=tpm0,bus=aspeed.i2c.bus.12,address=0x2e')
-         self.do_test_arm_aspeed_buildroot_start(image_path, '0xf00', 'Aspeed AST2600 EVB')
--        exec_command(self, "passw0rd")
- 
-         exec_command_and_wait_for_pattern(self,
-             'echo tpm_tis_i2c 0x2e > /sys/bus/i2c/devices/i2c-12/new_device',
--- 
-2.43.0
+> ---
+>  hw/mem/cxl_type3_stubs.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
+> index 1b54ec028c..d913b11b4d 100644
+> --- a/hw/mem/cxl_type3_stubs.c
+> +++ b/hw/mem/cxl_type3_stubs.c
+> @@ -68,14 +68,14 @@ void qmp_cxl_inject_correctable_error(const char *path, CxlCorErrorType type,
+>      error_setg(errp, "CXL Type 3 support is not compiled in");
+>  }
+>  
+> -void qmp_cxl_add_dynamic_capacity(const char *path,
+> +void qmp_cxl_add_dynamic_capacity(const char *path, uint8_t region_id,
+>                                    CXLDCExtentRecordList  *records,
+>                                    Error **errp)
+>  {
+>      error_setg(errp, "CXL Type 3 support is not compiled in");
+>  }
+>  
+> -void qmp_cxl_release_dynamic_capacity(const char *path,
+> +void qmp_cxl_release_dynamic_capacity(const char *path, uint8_t region_id,
+>                                        CXLDCExtentRecordList  *records,
+>                                        Error **errp)
+>  {
 
 
