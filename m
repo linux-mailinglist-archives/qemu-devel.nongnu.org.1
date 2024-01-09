@@ -2,76 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387F7828AC9
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 18:13:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20CA7828ACC
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 18:14:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNFeB-0007P7-BT; Tue, 09 Jan 2024 12:12:16 -0500
+	id 1rNFfv-0008PV-AW; Tue, 09 Jan 2024 12:14:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNFe6-0007OQ-Ti
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:12:10 -0500
-Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNFfs-0008Ox-6n
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:14:01 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNFe3-0001j4-UQ
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:12:09 -0500
-Received: by mail-oa1-x2d.google.com with SMTP id
- 586e51a60fabf-2043e721daaso2220970fac.2
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 09:12:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNFff-0002GR-Fh
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:13:59 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3376d424a79so1709521f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 09:13:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704820326; x=1705425126; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1704820421; x=1705425221; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=FcH7a3HEDNtcNeDNTDcVX+QEyrxq/bzy9SsOX2YvokI=;
- b=De+L3vqPEoKXMWTejdkjnYFKfE8g4T/CqNgwUMDc1yAAo3EQvs1mxqcw5goYCQhh7S
- KMaeXMLvr4IZB/jmKgQzcXtJQZ1m23vMJPY3J3W9UG0qN1B8MExazoY4l1o3Le7uguEx
- 0Gr/CmZEHfd9zB7feVZ7fAfBhuOvko2xlEmlv4BSrKb+LPtuBhIRIk6cnWOAkh59wlNL
- F/9+kjWnM9zQunD0tynfe6acIZ6H+MAMBV/AN3Uz71XaL7QWVUbI9w1NEu2V0asj8RRJ
- g7rTEL9N80OzAQ9gGaOxy/TtchfrVi1yXSQMQvLIXnhkBPxvdmd4bQ5SQs6y8F9bV2wr
- bNnw==
+ bh=CHC1NK96q6cWM/H+9W9W8XZwDAj/9wTds35KcQ/gzhg=;
+ b=cEQ0C1kwKaHfEP7h5Z1SNQaPjh4nf8mgWB3VLjc12edZvxcg9lpP0oS7RHmMkjqEzw
+ A1lZ7E05RQHA4LfycP8IXwJaZGZqN17TSnMnj1GEwJvODZO+7B4EFrkMcnAmqbQkdtNF
+ mRVs9+bLYfsXIh9lSMoRtLBHWQu5ibN8GPvo4j/gsRfXYj9YKkugAM8iYaZmHZepEOge
+ FQL43fRuDNSAgIywSEIndcgj8zE7yJSk0kLyrsgpXzm68pwR1b6o/KFAoa5L9cj1XimK
+ DnPb3owkxbHelbcqqSri+2SvQr+xE8QW09mskHmJGSDsgIawzej5l3g7yOzluJWVc2Lt
+ Z2Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704820326; x=1705425126;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1704820421; x=1705425221;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FcH7a3HEDNtcNeDNTDcVX+QEyrxq/bzy9SsOX2YvokI=;
- b=ewuQWDAj10fn9Z6A5K6iALjDXdl6P5MrY5FFewmA5imY0Vt94DcX6LqfeUmke0hKDX
- fRVStz0A5+1bRNpgBXQ7zRXprKXelf4a2P4U6XtxaF7Rxup8mfh9ufta4He95g4wZ4lr
- BqAuXHvXVJHuU3IQMe2Ju9piPpqzj5Fz2K3ajNqlGBnPhTN2mYjfggSrbnFivlI3yQZK
- icbddBayphd/n9+HpAD3f1RWbItchk524g0GM2lM8+IqiNH5PAMQRWjXcXHwlAHAFlOE
- dWMHRV4eFumMlOjmrOjsUciLGox8aDCMcaQlt4nbF6mmo+hH40SnglBcg1P014xnp4dA
- yDTg==
-X-Gm-Message-State: AOJu0YwWfgLGAmoPZWaDvdHN02mGGX0ACyQcTrEd9fTHcK4wl+nJap9c
- Q6exGISDGl7RumM14R03ougrVz3IcbKdyg==
-X-Google-Smtp-Source: AGHT+IHeUf50nOv4sh65nQaTY7fbIHimAwPJ1LK5mniXEUUpgV0zqjPAjV9yMQ5h/iIyVvPnvqYPUg==
-X-Received: by 2002:a05:6870:920d:b0:205:c7cd:6e67 with SMTP id
- e13-20020a056870920d00b00205c7cd6e67mr7629715oaf.46.1704820326360; 
- Tue, 09 Jan 2024 09:12:06 -0800 (PST)
-Received: from [192.168.47.227] ([172.58.111.136])
- by smtp.gmail.com with ESMTPSA id
- v24-20020a05683011d800b006dbfdf808dbsm430018otq.0.2024.01.09.09.12.02
+ bh=CHC1NK96q6cWM/H+9W9W8XZwDAj/9wTds35KcQ/gzhg=;
+ b=mznuMUrjQrEV5/AS5pvoIBLi6dFSv+p01hknYHlSqTxoU0/psbkYAWmzcH6IuMlmkj
+ mZTCqUuBENlIxoQDw8QpTXBEYhRZCxmDsJcJN6ev0fCBzD43QiCXTwiDDc5zIZrXTEa4
+ mMSd2jdPyLUXOo/W5n5OKgjlbr0fyxm1zdwhPnbcXaU39EalxHbXYLXGVLBy2RZ4B/df
+ PZ3kACvMnTSGntZKt3mNO4TMbIwhEhHhaSkyIt6BwjKh84UZT+DImdbpQAxEAFAFLWh4
+ CleygjVYpn/qNXR8iWrstkGxo6fLtZbMp/8HmdLxVYV3xvyBNQeqojDdSQIrirHBt7D6
+ Z5UQ==
+X-Gm-Message-State: AOJu0YyPu7S5ValQAtkCp6rIERqp6Kiwhhh9xK+f/Euxg+oTXkvI0ZxD
+ kYevdiRgUI1sVm2W7QC3Scqr0FgumQZ1AQ==
+X-Google-Smtp-Source: AGHT+IFlM3YF/vCcXhM6S2tUsDkLWD2ahxzeW/csSkNXeWQi4eS6yCjTqvFElPc9YrluQbOJ/psEKw==
+X-Received: by 2002:adf:fe09:0:b0:336:660d:20e1 with SMTP id
+ n9-20020adffe09000000b00336660d20e1mr801164wrr.75.1704820421397; 
+ Tue, 09 Jan 2024 09:13:41 -0800 (PST)
+Received: from [192.168.69.100] (rsa59-h02-176-184-32-47.dsl.sta.abo.bbox.fr.
+ [176.184.32.47]) by smtp.gmail.com with ESMTPSA id
+ g18-20020adff3d2000000b00336aac53e75sm2850512wrp.97.2024.01.09.09.13.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 09:12:06 -0800 (PST)
-Message-ID: <c89b73e4-b966-48d9-867a-75acd74812bc@linaro.org>
-Date: Wed, 10 Jan 2024 04:11:55 +1100
+ Tue, 09 Jan 2024 09:13:41 -0800 (PST)
+Message-ID: <50a4ff56-65e5-4c14-86ba-c0759d1c5034@linaro.org>
+Date: Tue, 9 Jan 2024 18:13:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/arm: arm_pamax() no longer needs to do feature
- propagation
+Subject: Re: [PATCH v8 1/3] hw/misc: Implement STM32L4x5 EXTI
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+To: =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
  qemu-devel@nongnu.org
-References: <20240109143804.1118307-1-peter.maydell@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240109143804.1118307-1-peter.maydell@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>, qemu-arm@nongnu.org,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>,
+ Alistair Francis <alistair.francis@wdc.com>
+References: <20240109160658.311932-1-ines.varhol@telecom-paris.fr>
+ <20240109160658.311932-2-ines.varhol@telecom-paris.fr>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240109160658.311932-2-ines.varhol@telecom-paris.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2d.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,38 +99,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/10/24 01:38, Peter Maydell wrote:
-> In arm_pamax(), we need to cope with the virt board calling this
-> function on a CPU object which has been inited but not realize.
-> We used to do propagation of feature-flag implications (such as
-> "V7VE implies LPAE") at realize, so we have some code in arm_pamax()
-> which manually checks for both V7VE and LPAE feature flags.
+On 9/1/24 17:06, Inès Varhol wrote:
+> Although very similar to the STM32F4xx EXTI, STM32L4x5 EXTI generates
+> more than 32 event/interrupt requests and thus uses more registers
+> than STM32F4xx EXTI which generates 23 event/interrupt requests.
 > 
-> In commit b8f7959f28c4f36 we moved the feature propagation for
-> almost all features from realize to post-init. That means that
-> now when the virt board calls arm_pamax(), the feature propagation
-> has been done. So we can drop the manual propagation handling
-> and check only for the feature we actually care about, which
-> is ARM_FEATURE_LPAE.
-> 
-> Retain the comment that the virt board is calling this function
-> with a not completely realized CPU object, because that is a
-> potential beartrap for later changes which is worth calling out.
-> 
-> (Note that b8f7959f28c4f36 actually fixed a bug in the arm_pamax()
-> handling: arm_pamax() was missing a check for ARM_FEATURE_V8, so it
-> incorrectly thought that the qemu-system-arm 'max' CPU did not have
-> LPAE and turned off 'highmem' support in the virt board.  Following
-> b8f7959f28c4f36 qemu-system-arm 'max' is treated the same as
-> 'cortex-a15' and other v7 LPAE CPUs, because the generic feature
-> propagation code does correctly propagate V8 -> V7VE -> LPAE.)
-> 
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> Acked-by: Alistair Francis <alistair.francis@wdc.com>
+> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
 > ---
->   target/arm/ptw.c | 14 ++++++--------
->   1 file changed, 6 insertions(+), 8 deletions(-)
+>   docs/system/arm/b-l475e-iot01a.rst |   5 +-
+>   hw/misc/Kconfig                    |   3 +
+>   hw/misc/meson.build                |   1 +
+>   hw/misc/stm32l4x5_exti.c           | 290 +++++++++++++++++++++++++++++
+>   hw/misc/trace-events               |   5 +
+>   include/hw/misc/stm32l4x5_exti.h   |  51 +++++
+>   6 files changed, 352 insertions(+), 3 deletions(-)
+>   create mode 100644 hw/misc/stm32l4x5_exti.c
+>   create mode 100644 include/hw/misc/stm32l4x5_exti.h
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-r~
+> +static unsigned configurable_mask(unsigned bank)
+> +{
+> +     return valid_mask(bank) & ~exti_romask[bank];
+> +}
+
+Excellent, I'm glad of all the improvement you made over
+the review process, great work!
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +static void stm32l4x5_exti_write(void *opaque, hwaddr addr,
+> +                                 uint64_t val64, unsigned int size)
+> +{
+> +    Stm32l4x5ExtiState *s = opaque;
+> +    const unsigned bank = regbank_index_by_addr(addr);
+> +
+> +    trace_stm32l4x5_exti_write(addr, val64);
+> +
+> +    switch (addr) {
+> +    case EXTI_IMR1:
+> +    case EXTI_IMR2:
+> +        s->imr[bank] = val64 & valid_mask(bank);
+> +        return;
+> +    case EXTI_EMR1:
+> +    case EXTI_EMR2:
+> +        s->emr[bank] = val64 & valid_mask(bank);
+> +        return;
+> +    case EXTI_RTSR1:
+> +    case EXTI_RTSR2:
+> +        s->rtsr[bank] = val64 & configurable_mask(bank);
+> +        return;
+> +    case EXTI_FTSR1:
+> +    case EXTI_FTSR2:
+> +        s->ftsr[bank] = val64 & configurable_mask(bank);
+> +        return;
+> +    case EXTI_SWIER1:
+> +    case EXTI_SWIER2: {
+> +        const uint32_t set = val64 & configurable_mask(bank);
+> +        const uint32_t pend = set & ~s->swier[bank] & s->imr[bank] &
+> +                              ~s->pr[bank];
+> +        s->swier[bank] = set;
+> +        s->pr[bank] |= pend;
+> +        for (unsigned i = 0; i < irqs_per_bank[bank]; i++) {
+> +            if (extract32(pend, i, 1)) {
+> +                qemu_irq_pulse(s->irq[i + 32 * bank]);
+> +            }
+> +        }
+> +        return;
+> +    }
+
+[...]
 
