@@ -2,93 +2,153 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01DAF827C5F
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 02:07:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EECBE827C6C
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 02:15:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN0ZB-00017j-1Z; Mon, 08 Jan 2024 20:06:05 -0500
+	id 1rN0go-00046V-3a; Mon, 08 Jan 2024 20:13:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rN0Z6-00016s-DP
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 20:06:00 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rN0Yz-0000wx-MU
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 20:06:00 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-556c3f0d6c5so2837330a12.2
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 17:05:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1704762349; x=1705367149; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JbxYJbZW9KV2XDbSQtg5ohtaQ371q9pSmjvMPciRPY0=;
- b=MjlFwjNMlRckfOvWNKb05pyeGCIHRFhFZoc5BxwjsrGY3haWQAoJo80kqqkT4fCXro
- +E4dy6FCSvfEJPL8sdKowxLbauPcv4aGNlDvtk8AlJKYNvZ7l/wiIy0jqskH9uGSzsqf
- LQpcWQ31w2KTIkesUbYIowRqEXDZ59wLLiwEpUNUrXKgA1Kxmra9RQ1cbFep/4o0CwJn
- 9M+qc4qRbtZTiaEBVV4CnGqnVLKkBwRkPaXgESq+/OXNNfKjWhidbGP2tQzSB4upWMNr
- LPDqqX68CF7nMQ93gAW0Inr9UP6x6iL3L3cFEy4q5mBUAODr1hoGnm1rXHgOsVVdN2tg
- cxZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704762349; x=1705367149;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JbxYJbZW9KV2XDbSQtg5ohtaQ371q9pSmjvMPciRPY0=;
- b=tpbu5ZEL3P5TXuBaE7KFZsR6WEw3WuM/XVpqDEOS3H6jHWbXqc2+F80p7xFCCfNpeQ
- DOhKGDoV/sI05RFNlpU5LGYRPEh2i5bIR21N2ozbTdelY6PpEDA//BwKg96KD7tAJN+x
- R0krjkkkLOpHWxvlnEvUc0pUOGWjgTqiMKEc75HrUpRI3RS0oQ20pO3X5NSzXDBPLlWY
- cwbSnlilHE8FaqousxCi/A7fCb2ILIfVYtY1AXks7AA9qVOAHo5o60POW53AI+L0h+vf
- Pz/BsZ7mN2ctKZx0zLw/AH+Nt+PM8vr3fGJES8NK2TOb2Tv4joDxx+TKuNTgHj0d6TJB
- MOEQ==
-X-Gm-Message-State: AOJu0Yzf+uSIo0CKl9k5NeqbdoQ4Hlq6rMSi2dcbOF4kN1+eObNHCP+1
- G3sH8bh502XYcvwST90PK3hjGWuZaWXqUONc5IhpaZCMcHUYqA==
-X-Google-Smtp-Source: AGHT+IHyriWiMpInj+ARzn2z829bWUco4JuGpZ3Zuyxo2QyeqMKEsJUFVxipUVdPS9gnQ0j51yotkoM0J1WzwzC7J6A=
-X-Received: by 2002:a50:d6c5:0:b0:553:4e62:317a with SMTP id
- l5-20020a50d6c5000000b005534e62317amr1855949edj.16.1704762349213; Mon, 08 Jan
- 2024 17:05:49 -0800 (PST)
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1rN0gm-00046F-DK
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 20:13:56 -0500
+Received: from mail-mw2nam10on20600.outbound.protection.outlook.com
+ ([2a01:111:f403:2412::600]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1rN0gg-0005JA-2Z
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 20:13:54 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cUFSoB+0Gl4ESCGGXO0QnFQmuZUtZVtg8tbUAnXF0KueGHRSRZbcnLMUliC1Tc3UL4DaTUCN1dpqIHpG1qIoWVBaAiM3pnph8jtijM3LuIPkhp7abExj1v2/72zhMF5M7bKHHH6MqpmMWZ8xEbEF7JeT6fXzHhA3yMyavNL9pCzGZu7+2Exr8tqJ+c+aipHt9hgjo8Qoei04w+QY97c6SEoV2px918+eawC5KKWmJDzYW/ztsPYcPHHuCgujGSOX0g0MzsUA+EOhsjk0/NM5IwMZjaL5xsx3TP2VLQ3mofEOwLDO9eFKo5RgDU0wx0NTbBVl5JYNKRxnsarSr8TryQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6XvNA++Exg82aNSgJpEYnYac4uO5mIXMfdb5zyjA7uI=;
+ b=QB8r9wZnmyEsvA96tTBN/rBcnisrDMFjMChlZnU8oY95dPogJEpRXVprbem7LbtslrpE/rn2jqSn296JhCEqm/DcQJvWuoZvpQoOSa5buFuJeLn75xb4uUi8UI9QSe0mPaG2cV2cX2gofRXTPbAko6VLkAemOvKl/4zw9iJFVtAcH9pLU2gjv6mOTMviZJfNfVXa1qNUxvCRCrAtKIGJWmK6dxwMYbkA+aj5xsVS0YSgrIwAFbKfB4ymxDIvQ7LkVP2nHNbv1R/qKomwD4+Sprjg55hiFXy+nzRx7DT7i3ZEoKKdiS084CJELgGcBsvSLi3TSL9qI4+N42or6YOw6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
+ dkim=pass header.d=memverge.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6XvNA++Exg82aNSgJpEYnYac4uO5mIXMfdb5zyjA7uI=;
+ b=UXTXjZNencHmcQOZkAvvNzspO4m51LRMVGW2pp7IcLn1u+slH5VE06//C5icXYKRszKi8hnkHRFwxmc4w12ejz+K+EU4GO2E+GPCaocuRPASF881p9KyOIVaNFe0dcPONWmLA3x5NiJb4i9bGNLBhY2wB0oXj0e977wcE3pR1Oc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=memverge.com;
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
+ by PH0PR17MB4295.namprd17.prod.outlook.com (2603:10b6:510:c::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23; Tue, 9 Jan
+ 2024 01:13:40 +0000
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::7a04:dc86:2799:2f15]) by SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::7a04:dc86:2799:2f15%5]) with mapi id 15.20.7159.020; Tue, 9 Jan 2024
+ 01:13:40 +0000
+Date: Mon, 8 Jan 2024 20:13:36 -0500
+From: Gregory Price <gregory.price@memverge.com>
+To: Hao Xiang <hao.xiang@bytedance.com>
+Cc: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Ben Widawsky <ben.widawsky@intel.com>,
+ Gregory Price <gourry.memverge@gmail.com>,
+ Fan Ni <fan.ni@samsung.com>, Ira Weiny <ira.weiny@intel.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
+ "Ho-Ren (Jack) Chuang" <horenc@vt.edu>, linux-cxl@vger.kernel.org
+Subject: Re: [External] Re: [QEMU-devel][RFC PATCH 1/1] backends/hostmem:
+ qapi/qom: Add an ObjectOption for memory-backend-* called HostMemType and
+ its arg 'cxlram'
+Message-ID: <ZZydwBTS4NeSizzb@memverge.com>
 References: <20240101075315.43167-1-horenchuang@bytedance.com>
  <20240101075315.43167-2-horenchuang@bytedance.com>
  <ZZXX95yvk/WTIBT/@memverge.com>
  <CAAYibXjZ0HSCqMrzXGv62cMLncS_81R3e1uNV5Fu4CPm0zAtYw@mail.gmail.com>
  <ZZwtmiucNXxmrZ7S@memverge.com>
  <CAAYibXhfUu8dMwvBmWz4P6N9-yLao0QwAFozk4rS_0GPsEZd7Q@mail.gmail.com>
-In-Reply-To: <CAAYibXhfUu8dMwvBmWz4P6N9-yLao0QwAFozk4rS_0GPsEZd7Q@mail.gmail.com>
-From: Hao Xiang <hao.xiang@bytedance.com>
-Date: Mon, 8 Jan 2024 17:05:38 -0800
-Message-ID: <CAAYibXgf6i5+aqopCrVu5ZveDJ9WP2M2AJaUUaj5qFXFHQQxmQ@mail.gmail.com>
-Subject: Re: [External] Re: [QEMU-devel][RFC PATCH 1/1] backends/hostmem:
- qapi/qom: Add an ObjectOption for memory-backend-* called HostMemType and its
- arg 'cxlram'
-To: Gregory Price <gregory.price@memverge.com>
-Cc: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Ben Widawsky <ben.widawsky@intel.com>, 
- Gregory Price <gourry.memverge@gmail.com>, Fan Ni <fan.ni@samsung.com>, 
- Ira Weiny <ira.weiny@intel.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Eric Blake <eblake@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org, 
- "Ho-Ren (Jack) Chuang" <horenc@vt.edu>, linux-cxl@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=hao.xiang@bytedance.com; helo=mail-ed1-x531.google.com
+ <CAAYibXgf6i5+aqopCrVu5ZveDJ9WP2M2AJaUUaj5qFXFHQQxmQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAYibXgf6i5+aqopCrVu5ZveDJ9WP2M2AJaUUaj5qFXFHQQxmQ@mail.gmail.com>
+X-ClientProxiedBy: SJ0PR05CA0192.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::17) To SJ0PR17MB5512.namprd17.prod.outlook.com
+ (2603:10b6:a03:394::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|PH0PR17MB4295:EE_
+X-MS-Office365-Filtering-Correlation-Id: 104dd9e1-ae68-4a30-d0da-08dc10b036cc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ZiLj0Pn0cvhNMw4eID5U0n9osnrXh6wkiDaR36CUhgkCH3S9DTk0oiJPO8PKzY0+iTutfEMc5WsiS7wSHy4s6NpA73oZnjj2mhPzbDOAcrQKl/wft+9B+ApYqVwcYOUDQgKoWXBV7W4fa9kIS15RF+PwYUaVpICbKkPT9O5VO670M6W+gqDLCHi+5ZbWsEoBGg97qlh4OwrLHf31jWgV02ipRFy5cD6HR8Vuy9mPP9uLF6q0YJqn3NgbuX3htfVpn8bphyP52ukIxbtFvwtbCg0PwhTgoEFuHfogfSoCNRd8uWRjSqi0nrKZ7L+0pFtBFp9gmTLKnfmvAOP3/CXXBnlVFpac67V6ZWZhgQ09YxhmbmWD31lgxdYoEqz0geTdVgEZye9ORk0JpRclSZHNc3aoTmqe4yU0xxPtmQDMeQqOCuBNvCnhHsLs3ZwKV1iIk6wL/iYxjt0mb0e4qhj316YRkQ9DvZNwPfX0MkndDtEoSGNbnDSkdNbaSq6/aMzWdaMJQ4M+e6sz39f4vKpkFFmEzLb6DwKcC4QM4Ap0QXaJzHmn9JIY2eZV+XHyBZkL
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39840400004)(136003)(396003)(376002)(366004)(346002)(230922051799003)(64100799003)(1800799012)(186009)(451199024)(7416002)(38100700002)(41300700001)(2906002)(6916009)(5660300002)(54906003)(36756003)(6486002)(44832011)(53546011)(86362001)(6512007)(6666004)(6506007)(316002)(8676002)(8936002)(66946007)(66476007)(66556008)(4326008)(83380400001)(26005)(478600001)(2616005);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YW5IcDNEVTBwcEVpVE9HVVhiOHZnOXEyWjhva2NvSVg3R3cwbFFYOEo3NTNi?=
+ =?utf-8?B?L2FGV1JMeFptd3A5RzBBOXM1S3RzSmN3NzA1QnRBdk5SMlZlc3VTeEJabmZX?=
+ =?utf-8?B?WUd3NW5Ld2JGRzBjTHo3NHcxLzk3Z3RSQWV4NnBNS1ZmQnp0TDdjQXExa1JE?=
+ =?utf-8?B?L3FUSVBMcCsvOTIxUnhGZ21NdDhTZGJGQk5Ma3Y2YnM4cGdMQWExQjJBSSti?=
+ =?utf-8?B?enV4TmZDa09zakQwc2psSklHMzdUNlRqWS9vMHNwblRibkF5cmFKS01MWlZK?=
+ =?utf-8?B?ZUtBajc2ODJ2WVJUS0hoU3g2eDJ1cDFxL25EWXBSclkxMzducFZxSnExazBM?=
+ =?utf-8?B?bUtTNXBRUXZCcDh1MWZCdXlyb1hrRW1BZDR2Tm5mMjBZaDlnUEd5cDRwWEZu?=
+ =?utf-8?B?V0t5YXprSG5UekRtRkZtaFR0NG8vWVJORUdCZlV3emVKWjlaODNySWVzZjk1?=
+ =?utf-8?B?NGVvZXRidFRBQ2NxbDRGQ2ZtQWZPRmhQakp0Z0ZCSlJtYVgyTkI4MjV5Y09m?=
+ =?utf-8?B?amxoc2NlTVMyUDRDQXN4TW9HSmZPcXc0ZDRPWm1BTHBJYWpNVGRMSnZ6b3RC?=
+ =?utf-8?B?ZFdBcWY0V2drZWhoRDNFOW00SmlrWWpWNlBvcEZXaVlJb1ZmeGNTL2RmT1RY?=
+ =?utf-8?B?dzlzTHdIUnhzeGlQaTlHQlFaUlViSnRNa0pWUmhDNVZFR0trM2RJQWxheHU3?=
+ =?utf-8?B?N3NTbWNHSW1XZlpPcmtOTkk4WlBucERPby9IOUdNZzJFS21nM0FpazQ2aWxE?=
+ =?utf-8?B?SjNMeVdBZmM4T2Urd0tqWVptM1JDUVJFN25PNzVGOXZ2azYrakdROFlQeDNv?=
+ =?utf-8?B?VGN6ZkZYWm9MM1Npa05lYis5Nm5FMWZJMGh2cVdvQUNyT1VBUjA3SjZiSnpX?=
+ =?utf-8?B?NERGQU1ydk00WEQxUDY3MWd4aHZRdStheVJTTGI2VzFERHViT01NQ0lwb2t1?=
+ =?utf-8?B?OCtMdmwyN3Ztc3NraDZsYmdGL1oxeDZTOWlOYUUxMUhNOXlja2RCc2wydzJL?=
+ =?utf-8?B?M0dpVWY2U3Y1UWloQ1dNZndDbEFmekg1ZnpwdWdQSWlIZjZZWjN1RUpnZy9V?=
+ =?utf-8?B?MVRSM1Q4dHpTUng2dVJ2eUVTMzFReTlEcWlJSVBSZXBrK3orbTRISkNybjFK?=
+ =?utf-8?B?cXROeXV1RUp3aVpDSWJvMVMyN1B5VDhiVU45QWJoL3pqKzRIUjEvaGRWaGxK?=
+ =?utf-8?B?Q012dGlMV1RKc29vUzRSaE50b1U2SUl0LzIrQmI3Wk9ERlVmbXlmRDNobTZr?=
+ =?utf-8?B?OG1zZTcrcHByN0ZleU0vVUNlYUVrY1hsM1A4VmdJYWZ0anhSd1JVR2FETHVH?=
+ =?utf-8?B?QTdDa0w4cHl4VFowWlRtNkNkWEkzSkE2L055NHNsY2RBNHRwdUZaQlFiT3FL?=
+ =?utf-8?B?VDZ3OG0zZXljdjRNVmZuV2h3N043ZTlWMlQweHl2R0tTa0JBd0dsSTlhQzlE?=
+ =?utf-8?B?UlJvRGM3d3g0VUQ3UW43SnpOZjJJbmQ3aXNUSGY5alZlM01YYmRPN3loQk9R?=
+ =?utf-8?B?ZnhZTjJYcGRVME9ySG5NTEtnYS9xK3QyaTJVRCtMU2swOUtvbzhIRWlWZXJr?=
+ =?utf-8?B?QlVWY1JudXpMUTZGaGY3YUIxYitCMXgyMFQydURyZUxheFhkREtkYW56b1N6?=
+ =?utf-8?B?TmQwbHhMMnlMWHh2ZzVnSnlkeC9seGlNcmxJSVJMOUVZOW5KN0ZadVNnYnhV?=
+ =?utf-8?B?ckZIYkNWU3hRa0Yrd2M5QTlpS1lqWENKR1VWd3dwaEtNYUtaTkdjZzcza0dQ?=
+ =?utf-8?B?R1B6TFVlL0p5UjM4aHJITENzTndpVTluNlNYZ2FtcUE2V1VjcW1kZDVEREI0?=
+ =?utf-8?B?Y0lOc2VQRjJTcUdMTWZGbTNSazZ3Ry9xMXlId3MzbzRIdUgxTHpobGs3YzBQ?=
+ =?utf-8?B?dldqM2tqUkg2eVlkL1ZoT2l2V0xaSytmYy9FWGpTY3ZoT3gvamVoWWxJMnE1?=
+ =?utf-8?B?eGJkTjdGeEorUTJtNTU5RjFBUUdFY05wdTlBSVNsUFBDUkhSWkRDRkxkU1pE?=
+ =?utf-8?B?MEw3NHFtTXZNOWo3K3YrWTZpSGpwbVorNUhXV1hZa29mMWc5dXlwOUF0SlQr?=
+ =?utf-8?B?Z242VDEvWDJSN0NXMTR1Y1pkSjFFNWFFcS8zOHJJa21vaE80RXYrSHllaUVs?=
+ =?utf-8?B?OFdKZHd5U1ZMT1ZBd1dmRk03SGVjSWtKenFrNGdlMmJTdTBVQVFXRjBtQUpI?=
+ =?utf-8?B?aFE9PQ==?=
+X-OriginatorOrg: memverge.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 104dd9e1-ae68-4a30-d0da-08dc10b036cc
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2024 01:13:40.1291 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: D84gffIxupWVDZqeqOPKK6ZnOp6dDK/ST0Ew8Avwbh1JSBLtra4QkdlkLqdvMteiSCHbL+TYRuixJ6Ve8ebmpujVQajcWYb53CwkqDOlQBA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR17MB4295
+Received-SPF: pass client-ip=2a01:111:f403:2412::600;
+ envelope-from=gregory.price@memverge.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,135 +165,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 8, 2024 at 2:47=E2=80=AFPM Hao Xiang <hao.xiang@bytedance.com> =
-wrote:
->
-> On Mon, Jan 8, 2024 at 9:15=E2=80=AFAM Gregory Price <gregory.price@memve=
-rge.com> wrote:
+On Mon, Jan 08, 2024 at 05:05:38PM -0800, Hao Xiang wrote:
+> On Mon, Jan 8, 2024 at 2:47 PM Hao Xiang <hao.xiang@bytedance.com> wrote:
 > >
-> > On Fri, Jan 05, 2024 at 09:59:19PM -0800, Hao Xiang wrote:
-> > > On Wed, Jan 3, 2024 at 1:56=E2=80=AFPM Gregory Price <gregory.price@m=
-emverge.com> wrote:
+> > On Mon, Jan 8, 2024 at 9:15 AM Gregory Price <gregory.price@memverge.com> wrote:
+> > >
+> > > On Fri, Jan 05, 2024 at 09:59:19PM -0800, Hao Xiang wrote:
+> > > > On Wed, Jan 3, 2024 at 1:56 PM Gregory Price <gregory.price@memverge.com> wrote:
+> > > > >
+> > > > > For a variety of performance reasons, this will not work the way you
+> > > > > want it to.  You are essentially telling QEMU to map the vmem0 into a
+> > > > > virtual cxl device, and now any memory accesses to that memory region
+> > > > > will end up going through the cxl-type3 device logic - which is an IO
+> > > > > path from the perspective of QEMU.
 > > > >
-> > > > For a variety of performance reasons, this will not work the way yo=
-u
-> > > > want it to.  You are essentially telling QEMU to map the vmem0 into=
- a
-> > > > virtual cxl device, and now any memory accesses to that memory regi=
-on
-> > > > will end up going through the cxl-type3 device logic - which is an =
-IO
-> > > > path from the perspective of QEMU.
-> > >
-> > > I didn't understand exactly how the virtual cxl-type3 device works. I
-> > > thought it would go with the same "guest virtual address ->  guest
-> > > physical address -> host physical address" translation totally done b=
-y
-> > > CPU. But if it is going through an emulation path handled by virtual
-> > > cxl-type3, I agree the performance would be bad. Do you know why
-> > > accessing memory on a virtual cxl-type3 device can't go with the
-> > > nested page table translation?
-> > >
-> >
-> > Because a byte-access on CXL memory can have checks on it that must be
-> > emulated by the virtual device, and because there are caching
-> > implications that have to be emulated as well.
->
-> Interesting. Now that I see the cxl_type3_read/cxl_type3_write. If the
-> CXL memory data path goes through them, the performance would be
-> pretty problematic. We have actually run Intel's Memory Latency
-> Checker benchmark from inside a guest VM with both system-DRAM and
-> virtual CXL-type3 configured. The idle latency on the virtual CXL
-> memory is 2X of system DRAM, which is on-par with the benchmark
-> running from a physical host. I need to debug this more to understand
-> why the latency is actually much better than I would expect now.
-
-So we double checked on benchmark testing. What we see is that running
-Intel Memory Latency Checker from a guest VM with virtual CXL memory
-VS from a physical host with CXL1.1 memory expander has the same
-latency.
-
-From guest VM: local socket system-DRAM latency is 117.0ns, local
-socket CXL-DRAM latency is 269.4ns
-From physical host: local socket system-DRAM latency is 113.6ns ,
-local socket CXL-DRAM latency is 267.5ns
-
-I also set debugger breakpoints on cxl_type3_read/cxl_type3_write
-while running the benchmark testing but those two functions are not
-ever hit. We used the virtual CXL configuration while launching QEMU
-but the CXL memory is present as a separate NUMA node and we are not
-creating devdax devices. Does that make any difference?
-
->
-> >
-> > The cxl device you are using is an emulated CXL device - not a
-> > virtualization interface.  Nuanced difference:  the emulated device has
-> > to emulate *everything* that CXL device does.
-> >
-> > What you want is passthrough / managed access to a real device -
-> > virtualization.  This is not the way to accomplish that.  A better way
-> > to accomplish that is to simply pass the memory through as a static num=
-a
-> > node as I described.
->
-> That would work, too. But I think a kernel change is required to
-> establish the correct memory tiering if we go this routine.
->
-> >
-> > >
-> > > When we had a discussion with Intel, they told us to not use the KVM
-> > > option in QEMU while using virtual cxl type3 device. That's probably
-> > > related to the issue you described here? We enabled KVM though but
-> > > haven't seen the crash yet.
-> > >
-> >
-> > The crash really only happens, IIRC, if code ends up hosted in that
-> > memory.  I forget the exact scenario, but the working theory is it has
-> > to do with the way instruction caches are managed with KVM and this
-> > device.
-> >
+> > > > I didn't understand exactly how the virtual cxl-type3 device works. I
+> > > > thought it would go with the same "guest virtual address ->  guest
+> > > > physical address -> host physical address" translation totally done by
+> > > > CPU. But if it is going through an emulation path handled by virtual
+> > > > cxl-type3, I agree the performance would be bad. Do you know why
+> > > > accessing memory on a virtual cxl-type3 device can't go with the
+> > > > nested page table translation?
 > > > >
-> > > > You're better off just using the `host-nodes` field of host-memory
-> > > > and passing bandwidth/latency attributes though via `-numa hmat-lb`
 > > >
-> > > We tried this but it doesn't work from end to end right now. I
-> > > described the issue in another fork of this thread.
-> > >
-> > > >
-> > > > In that scenario, the guest software doesn't even need to know CXL
-> > > > exists at all, it can just read the attributes of the numa node
-> > > > that QEMU created for it.
-> > >
-> > > We thought about this before. But the current kernel implementation
-> > > requires a devdax device to be probed and recognized as a slow tier
-> > > (by reading the memory attributes). I don't think this can be done vi=
-a
-> > > the path you described. Have you tried this before?
-> > >
+> > > Because a byte-access on CXL memory can have checks on it that must be
+> > > emulated by the virtual device, and because there are caching
+> > > implications that have to be emulated as well.
 > >
-> > Right, because the memory tiering component lumps the nodes together.
-> >
-> > Better idea:  Fix the memory tiering component
-> >
-> > I cc'd you on another patch line that is discussing something relevant
-> > to this.
-> >
-> > https://lore.kernel.org/linux-mm/87fs00njft.fsf@yhuang6-desk2.ccr.corp.=
-intel.com/T/#m32d58f8cc607aec942995994a41b17ff711519c8
-> >
-> > The point is: There's no need for this to be a dax device at all, there
-> > is no need for the guest to even know what is providing the memory, or
-> > for the guest to have any management access to the memory.  It just
-> > wants the memory and the ability to tier it.
-> >
-> > So we should fix the memory tiering component to work with this
-> > workflow.
->
-> Agreed. We really don't need the devdax device at all. I thought that
-> choice was made due to the memory tiering concept being started with
-> pmem ... Let's continue this part of the discussion on the above
-> thread.
->
-> >
-> > ~Gregory
+> > Interesting. Now that I see the cxl_type3_read/cxl_type3_write. If the
+> > CXL memory data path goes through them, the performance would be
+> > pretty problematic. We have actually run Intel's Memory Latency
+> > Checker benchmark from inside a guest VM with both system-DRAM and
+> > virtual CXL-type3 configured. The idle latency on the virtual CXL
+> > memory is 2X of system DRAM, which is on-par with the benchmark
+> > running from a physical host. I need to debug this more to understand
+> > why the latency is actually much better than I would expect now.
+> 
+> So we double checked on benchmark testing. What we see is that running
+> Intel Memory Latency Checker from a guest VM with virtual CXL memory
+> VS from a physical host with CXL1.1 memory expander has the same
+> latency.
+> 
+> From guest VM: local socket system-DRAM latency is 117.0ns, local
+> socket CXL-DRAM latency is 269.4ns
+> From physical host: local socket system-DRAM latency is 113.6ns ,
+> local socket CXL-DRAM latency is 267.5ns
+> 
+> I also set debugger breakpoints on cxl_type3_read/cxl_type3_write
+> while running the benchmark testing but those two functions are not
+> ever hit. We used the virtual CXL configuration while launching QEMU
+> but the CXL memory is present as a separate NUMA node and we are not
+> creating devdax devices. Does that make any difference?
+> 
+
+Could you possibly share your full QEMU configuration and what OS/kernel
+you are running inside the guest?
+
+The only thing I'm surprised by is that the numa node appears without
+requiring the driver to generate the NUMA node.  It's possible I missed
+a QEMU update that allows this.
+
+~Gregory
 
