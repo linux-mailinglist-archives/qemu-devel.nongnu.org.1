@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02426828C80
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 19:23:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A84D828C88
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 19:24:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNGk4-0000PS-6S; Tue, 09 Jan 2024 13:22:24 -0500
+	id 1rNGlM-000164-RY; Tue, 09 Jan 2024 13:23:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNGjt-0000NR-O6
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:22:15 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNGl1-00015A-RX
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:23:25 -0500
 Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNGjr-0001Or-K4
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:22:13 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNGky-0001xn-Mo
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:23:23 -0500
 Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-50eab4bf47aso2923245e87.0
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 10:22:09 -0800 (PST)
+ 2adb3069b0e04-50e7b273352so3312259e87.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 10:23:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704824528; x=1705429328; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704824598; x=1705429398; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vnaDIUIfoY2hYCZsgiQ6ORd4ONxMPiat5cTnt+biCyo=;
- b=KuI9SHMgyEtfW07/WgYs/lzQZaTf3WFPIHCtc2zUjkXMzAsHdYHYjkt0I37kLSRy3E
- i7jnDw/dUuy9uS3FAXbz6DGqAIhwxwp3Izrlec/kbjdyZENbdTMHN72f95GmovIU6GBS
- RJ9hqssh+74TjXpEnIo+cQSBFu9qXZWCcgjbSm3H5WT5i7Mw7Ss1SoFyxxVHGttBQWv9
- htrB22R8qQwMVEi6d4Lm62U8tWJ58c1Lav9nCHu/aYRl4Z/tGVGX1bMv2A6Pvb57jmk2
- GbSU8zCPowmiiS+Zz145pBsjBoxs3NSDT4ivGT0XrFkOuJW0b3tb+bfhxaLgk32nGRH8
- b54Q==
+ bh=IwiYMRRiVitqny+M2/uSTF/IogCQlOZjF3fjjiHBnfg=;
+ b=xulN80hk5KVwLjcK6SfFueagcGJLf2eXiPGczmwSHkpPVBfyzbSZcDhKdBA8QwsLRc
+ o75261Iwa0DLpJS9aKSFfno6gQ3pJ4x3WFvJgOo4oVx37URe/uHY+1JXxyockh8VZYSV
+ NQrgrjoyUGh/t3j+cniBb/CybHwuh2QKwHZ03hJ9h6ks6ZWGj18GjQOIDX3/5C0cfsMy
+ MGtY33UzVKnCzA1IIDAGxjuMgTf2e0iOpArJ8JT1GwUkW/ox5AX463sx07+vtAfgnAkc
+ j87PetoILferjNOlL6XMx+dLp9e/emJMX+3CmP5k8DKKpRlnkRQg46WqK00OSpd2Q4gv
+ chnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704824528; x=1705429328;
+ d=1e100.net; s=20230601; t=1704824598; x=1705429398;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vnaDIUIfoY2hYCZsgiQ6ORd4ONxMPiat5cTnt+biCyo=;
- b=te0/4CbPLr4ZXeOgdaFmHuofH5Ez/MlK/YIYT9QqSXpwAScvHoYLaYrePlelodiq6L
- 6aDP/KGc3Ei78yoCj6ZFIfal3PpJyehib0tw9uKWP4pvqDtYw2etzRmvJfl4lcbFUV8y
- d2ONnlveDlQfmz1NrWclEU5rkagaPv6RzpgFhSgRrfMJmCnKE5qRVbBslO1SnRMOPNp0
- AlNReHqCtzdPiG18Dpgo6457LTjrduEaUd88HJ+1ff//DkrUmPStqqXyidzP7DnAFHhg
- UlO4e8Ksl4m6V3cQOQigwrUEiDgmx3kI8bS/6CU99VxnpZIfEFzZzHpzyOwlma9poPFE
- v+1w==
-X-Gm-Message-State: AOJu0YyJoBeYNilXAsEYENeKSy0qW06golbb18wNBW5KQledoMtkcCla
- Su/ucOdhDS/xk4XgotqSupKhip0Bt4vOEYzFdA8I42tiHgEyow==
-X-Google-Smtp-Source: AGHT+IH0X1Qq1R2tBkRAsm+nBYM29efXSYqnKue2nJe3obXJPfbLVFNziFfxi7kU4EpHwE6btty4FA==
-X-Received: by 2002:a05:6512:36cc:b0:50e:59d2:aaf0 with SMTP id
- e12-20020a05651236cc00b0050e59d2aaf0mr571253lfs.10.1704824527848; 
- Tue, 09 Jan 2024 10:22:07 -0800 (PST)
+ bh=IwiYMRRiVitqny+M2/uSTF/IogCQlOZjF3fjjiHBnfg=;
+ b=m1aNd6w1bLiicUuPdrHu2bmmHEtkiRwe/zRnNCy/Nblmf7f6wFyyDTIXgjzNdk0LZm
+ FRtsPAIsU/+Z1nioXcZpeQHntjgxwChwUIf4/BOoVzqzYIW5IpBRsBmK+q8EpQOeZZaR
+ QDmGKyBnCpUTHjUF8P8C3DqqLpryR7s1f4t992OK++bvZ+4/TRH5wej3BY5XsHy/7JjR
+ QEnqUrhIAcCTaIqB5YdtEKqNKkxRpdaFtyJhpdxhXO9JED7mlrh77/yK0Tpp3T9s5GP/
+ 2XjWA2H2I5sh63bDFHMeD3VO0fR0E9VKE9eScx3JipZTZLztmbntyeMe2eB+c96QhR5T
+ fFAw==
+X-Gm-Message-State: AOJu0Yy/st3zDvVe1nYv7AG0aY1g7fXSt3D+54E2wsxpZnq1aCSM+Pov
+ ExlkPnAQdS82dyYoQ/kzJsWRHrVEaCX+WjIO0+JF/tKcxceeLQ==
+X-Google-Smtp-Source: AGHT+IHEIR2743EpVRU2bJ5DdlpRvMkc9k+Jut6R9ZUI+r+wwOxB1WnLxr27Syz3Z0kGOSvPNoShdw==
+X-Received: by 2002:a05:6512:3b24:b0:50e:55bb:a453 with SMTP id
+ f36-20020a0565123b2400b0050e55bba453mr2831787lfv.3.1704824598519; 
+ Tue, 09 Jan 2024 10:23:18 -0800 (PST)
 Received: from [192.168.69.100] (rsa59-h02-176-184-32-47.dsl.sta.abo.bbox.fr.
  [176.184.32.47]) by smtp.gmail.com with ESMTPSA id
- o15-20020a198c0f000000b0050e7dcc05a5sm425817lfd.102.2024.01.09.10.22.05
+ o15-20020a198c0f000000b0050e7dcc05a5sm425817lfd.102.2024.01.09.10.23.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 10:22:07 -0800 (PST)
-Message-ID: <e233582b-67db-481d-90bd-bb2677ff8734@linaro.org>
-Date: Tue, 9 Jan 2024 19:22:04 +0100
+ Tue, 09 Jan 2024 10:23:18 -0800 (PST)
+Message-ID: <c71a6872-6e67-4384-9d28-b1c2da0bd521@linaro.org>
+Date: Tue, 9 Jan 2024 19:23:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/14] hw/arm: Prefer arm_feature(EL3) over
- object_property_find(has_el3)
+Subject: Re: [PATCH v2 10/14] hw/arm: Prefer arm_feature(EL2) over
+ object_property_find(has_el2)
 Content-Language: en-US
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
@@ -72,9 +72,9 @@ Cc: qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
  Peter Maydell <peter.maydell@linaro.org>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 References: <20240109180930.90793-1-philmd@linaro.org>
- <20240109180930.90793-10-philmd@linaro.org>
+ <20240109180930.90793-11-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240109180930.90793-10-philmd@linaro.org>
+In-Reply-To: <20240109180930.90793-11-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
@@ -85,7 +85,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,68 +102,51 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/1/24 19:09, Philippe Mathieu-Daudé wrote:
-> The "has_el3" property is added to ARMCPU when the
-> ARM_FEATURE_EL3 feature is available. Rather than
+> The "has_el2" property is added to ARMCPU when the
+> ARM_FEATURE_EL2 feature is available. Rather than
 > checking whether the QOM property is present, directly
 > check the feature.
 > 
 > Suggested-by: Markus Armbruster <armbru@redhat.com>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/arm/exynos4210.c   |  4 ++--
->   hw/arm/integratorcp.c |  5 ++---
->   hw/arm/realview.c     |  2 +-
->   hw/arm/versatilepb.c  |  5 ++---
->   hw/arm/xilinx_zynq.c  |  2 +-
->   hw/cpu/a15mpcore.c    | 11 +++++++----
->   hw/cpu/a9mpcore.c     |  6 +++---
->   7 files changed, 18 insertions(+), 17 deletions(-)
+>   hw/arm/vexpress.c  | 3 ++-
+>   hw/arm/virt.c      | 2 +-
+>   hw/cpu/a15mpcore.c | 6 ++++--
+>   3 files changed, 7 insertions(+), 4 deletions(-)
 
 
 > diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
-> index bfd8aa5644..cebfe142cf 100644
+> index cebfe142cf..1fa079b3b8 100644
 > --- a/hw/cpu/a15mpcore.c
 > +++ b/hw/cpu/a15mpcore.c
-> @@ -53,7 +53,6 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
->       DeviceState *gicdev;
->       SysBusDevice *busdev;
->       int i;
-> -    bool has_el3;
->       bool has_el2 = false;
->       Object *cpuobj;
->   
-> @@ -62,13 +61,17 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
->       qdev_prop_set_uint32(gicdev, "num-irq", s->num_irq);
->   
->       if (!kvm_irqchip_in_kernel()) {
-> +        CPUState *cpu;
-> +
->           /* Make the GIC's TZ support match the CPUs. We assume that
->            * either all the CPUs have TZ, or none do.
->            */
-> -        cpuobj = OBJECT(qemu_get_cpu(0));
-> -        has_el3 = object_property_find(cpuobj, "has_el3") &&
-> +        cpu = qemu_get_cpu(0);
-> +        cpuobj = OBJECT(cpu);
-> +        if (arm_feature(cpu_env(cpu), ARM_FEATURE_EL3)) {
->               object_property_get_bool(cpuobj, "has_el3", &error_abort);
+> @@ -73,9 +73,11 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
+>               qdev_prop_set_bit(gicdev, "has-security-extensions", true);
+>           }
+>           /* Similarly for virtualization support */
+> -        has_el2 = object_property_find(cpuobj, "has_el2") &&
+> +        has_el2 = arm_feature(cpu_env(cpu), ARM_FEATURE_EL2);
+> +        if (has_el2) {
+>               object_property_get_bool(cpuobj, "has_el2", &error_abort);
 
-This requires the same change than a9mp_priv_realize(), so squashing:
+Missing to be squashed on top:
 
 -- >8 --
-          if (arm_feature(cpu_env(cpu), ARM_FEATURE_EL3)) {
--            object_property_get_bool(cpuobj, "has_el3", &error_abort);
--            qdev_prop_set_bit(gicdev, "has-security-extensions", true);
-+            qdev_prop_set_bit(gicdev, "has-security-extensions",
-+                              object_property_get_bool(cpuobj, "has_el3",
+          if (has_el2) {
+-            object_property_get_bool(cpuobj, "has_el2", &error_abort);
+-            qdev_prop_set_bit(gicdev, "has-virtualization-extensions", 
+true);
++            qdev_prop_set_bit(gicdev, "has-virtualization-extensions",
++                              object_property_get_bool(cpuobj, "has_el2",
 +                                                       &error_abort));
           }
 ---
 
-> -        qdev_prop_set_bit(gicdev, "has-security-extensions", has_el3);
-> +            qdev_prop_set_bit(gicdev, "has-security-extensions", true);
+> -        qdev_prop_set_bit(gicdev, "has-virtualization-extensions", has_el2);
+> +            qdev_prop_set_bit(gicdev, "has-virtualization-extensions", true);
 > +        }
->           /* Similarly for virtualization support */
->           has_el2 = object_property_find(cpuobj, "has_el2") &&
->               object_property_get_bool(cpuobj, "has_el2", &error_abort);
+>       }
+>   
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->gic), errp)) {
+
 
