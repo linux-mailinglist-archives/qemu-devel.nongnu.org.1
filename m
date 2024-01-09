@@ -2,87 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90321828991
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:03:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 184558289BA
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:09:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNEXz-0002Jh-S4; Tue, 09 Jan 2024 11:01:47 -0500
+	id 1rNEdQ-0005Mk-6C; Tue, 09 Jan 2024 11:07:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNEXt-0002IV-7G
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:01:41 -0500
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNEXr-0003Fd-89
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:01:40 -0500
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-2045bedb806so2753156fac.3
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 08:01:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704816097; x=1705420897; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vaFk0hby1wLEbkRZ6447wz5y4wmYgdj3zM3KMgbT8m0=;
- b=rIowzgic1mwLs7DtF4r7/b05oiv6d3Jm0KZcFe4R6tQRy5GSjzDsSikzO3MzIBnEPY
- dh+doSxtnuAS/LyyFYMqAGfJ4FsPbgh2OVcyXiT3Ns57WiRqdU9NrBakiHmOYrleFyG4
- 9yk17nt0N5MNXAvLCPpj4cOaice7LQcY8UaU7SljNmJOa3iNBLLOsghVB4GgLh15Ctjm
- 266osqHszEto7A1M1CfA7bR1qwh8FWqWkrH+52ar9Xo0HKnRpohaWJGpczEep0B9mn0G
- iOmXUmtn422F23Nj6usX+g+cD7QAgaBbEWCmlMd+xoEi3E3JcFPwF27JT5jEIinoY5WH
- k/tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704816097; x=1705420897;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vaFk0hby1wLEbkRZ6447wz5y4wmYgdj3zM3KMgbT8m0=;
- b=IoaF0Bw3MDmv843fM4dmFyxEjPHMcUhH81JCMLDkk1tNXdHjpSz57d+M2FX0BOLO/B
- 2iujlgos2bFd3O2raiUzCrzoEomGdUF2vkDG5SjcHBFw6D0Qv9WZi6ivtQOm2Ak1ANcf
- dhxeyTquxv3Jh5nWJGqdgKFywBpPx5QzH5IPy0WhiEQB14WNgwyrNrUAAJIo/R9rpKUe
- NRhFsVpgQI9y7kQJ53TnsLS9EeU7cuuAiyggKhQq5YAj4/C2A5mTtzBWHk8005+QVffv
- C3mIQNA10Q+yD/jp4QriyfdGW/R8OKRdZk/pBnb2CjU3YXXtRFUQvywRls7LxShUXSAO
- PX4Q==
-X-Gm-Message-State: AOJu0Yw3Ay7PSctNTsjTCTXPcNHWMdOXSxSoPhaU1mlFQdFzOBvPn9MJ
- 7KpstL/vRkDIPCEZQUuv7jH8y6GCh+mfSWCvDJScBNniSF3SeA==
-X-Google-Smtp-Source: AGHT+IGzKI8qdoV3mHngFderVIAH1CYbqgQPJgz21ji7amlSjPtifG6Y2yHb9CPBnBHfVHspc/RboQ==
-X-Received: by 2002:a05:6871:80c7:b0:204:1583:c42a with SMTP id
- sm7-20020a05687180c700b002041583c42amr7822317oab.65.1704816096813; 
- Tue, 09 Jan 2024 08:01:36 -0800 (PST)
-Received: from [192.168.47.227] ([172.58.111.136])
- by smtp.gmail.com with ESMTPSA id
- w3-20020a9d77c3000000b006dbfdb1c9b2sm410181otl.43.2024.01.09.08.01.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 08:01:36 -0800 (PST)
-Message-ID: <5c6768a6-a487-4a82-a4e1-374dff074610@linaro.org>
-Date: Wed, 10 Jan 2024 03:01:26 +1100
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rNEdJ-0005JQ-Ka; Tue, 09 Jan 2024 11:07:17 -0500
+Received: from zproxy1.enst.fr ([2001:660:330f:2::dc])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rNEdG-0005eU-Gh; Tue, 09 Jan 2024 11:07:17 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy1.enst.fr (Postfix) with ESMTP id DE43DC065F;
+ Tue,  9 Jan 2024 17:07:03 +0100 (CET)
+Received: from zproxy1.enst.fr ([IPv6:::1])
+ by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id LEaEAEYWK3BX; Tue,  9 Jan 2024 17:07:03 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy1.enst.fr (Postfix) with ESMTP id ECEA3C0CF6;
+ Tue,  9 Jan 2024 17:07:02 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr ECEA3C0CF6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1704816423;
+ bh=Fa6iXOTxCJEHlEtFpkWRgg0sDhCwpacy0sY/3kGpfP8=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=8u+mRyFU7mD/8niFLReP+7lkwl3wqwQ55eRU/XL4bVV9o5svf7kLuWPnHK6D4Dix6
+ TriKKPh9X1ATzlF7gSz7OZPf4KRlfsKP1+5GTfwod2DluBR8zLILoUOiS4xALxcxLG
+ xQW/SBsdosJZX1vGa+RZIcABJd6CZZQH/W7oK4Qg=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy1.enst.fr ([IPv6:::1])
+ by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id mYA49N_WGErx; Tue,  9 Jan 2024 17:07:02 +0100 (CET)
+Received: from inesv-Inspiron-3501.enst.fr (unknown
+ [IPv6:2a04:8ec0:0:240:3f5e:381b:bff9:b9ae])
+ by zproxy1.enst.fr (Postfix) with ESMTPSA id 996EFC0CF3;
+ Tue,  9 Jan 2024 17:07:02 +0100 (CET)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>, qemu-arm@nongnu.org,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>
+Subject: [PATCH v8 0/3] Add device STM32L4x5 EXTI
+Date: Tue,  9 Jan 2024 17:06:01 +0100
+Message-ID: <20240109160658.311932-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/9] hw/hppa/machine: Disable default devices with
- --nodefaults option
-To: Helge Deller <deller@gmx.de>, deller@kernel.org, qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, Bruno Haible <bruno@clisp.org>,
- "Nelson H . F . Beebe" <beebe@math.utah.edu>
-References: <20240107132237.50553-1-deller@kernel.org>
- <20240107132237.50553-3-deller@kernel.org>
- <3cc1664c-9f5c-4d2f-b8f3-f8880c110e10@linaro.org>
- <1fde7d36-420a-4df5-821e-bcd4819ac6b7@gmx.de>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <1fde7d36-420a-4df5-821e-bcd4819ac6b7@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x35.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:660:330f:2::dc;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy1.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,92 +81,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/9/24 22:16, Helge Deller wrote:
-> On 1/9/24 10:57, Richard Henderson wrote:
->> On 1/8/24 00:22, deller@kernel.org wrote:
->>> From: Helge Deller <deller@gmx.de>
->>>
->>> Add support for the qemu --nodefaults option, which will disable the
->>> following default devices:
->>> - lsi53c895a SCSI controller,
->>> - artist graphics card,
->>> - LASI 82596 NIC,
->>> - tulip PCI NIC,
->>> - second serial PCI card,
->>> - USB OHCI controller.
->>>
->>> Adding this option is very useful to allow manual testing and
->>> debugging of the other possible devices on the command line.
->>>
->>> Signed-off-by: Helge Deller <deller@gmx.de>
->>> ---
->>>   hw/hppa/machine.c | 15 +++++++++------
->>>   1 file changed, 9 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
->>> index b11907617e..8017002a2a 100644
->>> --- a/hw/hppa/machine.c
->>> +++ b/hw/hppa/machine.c
->>> @@ -346,11 +346,14 @@ static void machine_HP_common_init_tail(MachineState *machine, 
->>> PCIBus *pci_bus,
->>>       SysBusDevice *s;
->>>       /* SCSI disk setup. */
->>> -    dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
->>> -    lsi53c8xx_handle_legacy_cmdline(dev);
->>> +    if (defaults_enabled()) {
->>> +        dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
->>> +        lsi53c8xx_handle_legacy_cmdline(dev);
->>> +    }
->>>       /* Graphics setup. */
->>> -    if (machine->enable_graphics && vga_interface_type != VGA_NONE) {
->>> +    if (defaults_enabled() && machine->enable_graphics &&
->>> +        vga_interface_type != VGA_NONE) {
->>>           vga_interface_created = true;
->>>           dev = qdev_new("artist");
->>>           s = SYS_BUS_DEVICE(dev);
->>> @@ -360,7 +363,7 @@ static void machine_HP_common_init_tail(MachineState *machine, 
->>> PCIBus *pci_bus,
->>>       }
->>>       /* Network setup. */
->>> -    if (enable_lasi_lan()) {
->>> +    if (defaults_enabled() && enable_lasi_lan()) {
->>>           lasi_82596_init(addr_space, translate(NULL, LASI_LAN_HPA),
->>>                           qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA));
->>>       }
->>> @@ -385,7 +388,7 @@ static void machine_HP_common_init_tail(MachineState *machine, 
->>> PCIBus *pci_bus,
->>>       pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_ID], 0x1227); /* Powerbar */
->>>       /* create a second serial PCI card when running Astro */
->>> -    if (!lasi_dev) {
->>> +    if (defaults_enabled() && !lasi_dev) {
->>>           pci_dev = pci_new(-1, "pci-serial-4x");
->>>           qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(1));
->>>           qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(2));
->>> @@ -395,7 +398,7 @@ static void machine_HP_common_init_tail(MachineState *machine, 
->>> PCIBus *pci_bus,
->>>       }
->>>       /* create USB OHCI controller for USB keyboard & mouse on Astro machines */
->>> -    if (!lasi_dev && machine->enable_graphics) {
->>> +    if (defaults_enabled() && !lasi_dev && machine->enable_graphics) {
->>>           pci_create_simple(pci_bus, -1, "pci-ohci");
->>>           usb_create_simple(usb_bus_find(-1), "usb-kbd");
->>>           usb_create_simple(usb_bus_find(-1), "usb-mouse");
->>
->> This almost doubles the uses of default_enabled in the entire tree.
->> I wonder if some of them are redundant or should be using a different
->> test.
-> 
-> Any proposal?
-> Maybe introduce a local variable hppa_bare_metal = !defaults_enabled();
-> and use that instead?
+This patch adds a new device STM32L4x5 EXTI device and is part
+of a series implementing the STM32L4x5 with a few peripherals.
 
-No, not like that.
+Hello,
+I see that the previous patch v7 couldn't be applied to master,
+the log is :
+...
+Applying: hw/arm: Connect STM32L4x5 EXTI to STM32L4x5 SoC
+error: sha1 information is lacking or useless (hw/arm/stm32l4x5_soc.c).
+error: could not build fake ancestor
+...
+I notice there was a wrong Based-on message ID in v7 and I figure
+that's the issue (since the relevant commit
+"hw/arm: Connect STM32L4x5 EXTI to STM32L4x5 SoC" didn't even change
+from v6). If that's not the case, I apologize in advance.
 
-In casual review I am surprised that !defaults_enabled() does not already imply 
-!enable_graphics, unless the command-line goes on to explicitly add a graphics device.
+Changes from v7 to v8:
+- none except for "Based-on" message-id correction
 
-Am I missing something?
+Changes from v6 to v7:
+- in `stm32l4x5_exti_reset_hold`: unify register initialization
+using new array `exti_romask`
+- in `stm32l4x5_exti_set_irq`: rename `n` to `bank`, use new helper
+function `regbank_index_by_irq` and new macro `EXTI_MAX_IRQ_PER_BANK`,
+explain why there's no `else` clause
+- in `stm32l4x5_exti_read`: rename `n` to `bank`, use new helper
+function `regbank_index_by_irq`, use `HWADDR_PRIx` formatting in error lo=
+g
+- in `stm32l4x5_exti_write`: rename `n` to `bank`, use new helper
+function `regbank_index_by_irq`, use `HWADDR_PRIx` formatting in error lo=
+g,
+unify writes where only bank differs using new helper functions
+`valid_mask` and `configurable_mask`
+- in `stm32l4x5_exti_init`: use `size_t` instead of `int` in for loop
+- in `stm32l4x5_exti-test.c`: instead of declaring intermediate
+variables, using `exti_readl` directly in `g_assert_cmpuint`
+so that QEMU coding style is respected
 
+Changes from v5 to v6:
+- in `stm32l4x5_exti-test.c` : using a helper function
+`exti_set_irq()` to help readability
+- in `stm32l4x5_exti-test.c` : correct a mistake in test
+`test_edge_selector` (adding a necessary NVIC interrupt unpend
+so that the assert actually checks something)
+- in `stm32l4x5_soc.c` : reducing scope of `i` used in for loops
+- in `stm32l4x5_soc.c` : removing useless variable `dev`
+- swapping commit 2 (add tests) and commit 3 (connects exti to SoC)
+so that the tests pass in the commit they're added
 
-r~
+Changes from v4 to v5:
+- update the documentation file
+
+Changes from v3 to v4:
+- add a test to check that irq trigger selection works correctly
+(`test_edge_selector`) and correct `stm32l4x5_exti_set_irq` accordingly
+
+Changes from v2 to v3:
+- corrected the license to GPL
+
+Changes from v1 to v2:
+- correct the commit messages
+- remove a misleading comment
+
+Changes from v3 to v1:
+- separating the patch in 3 commits
+- justifying in the commit message why we implement a new model instead
+of changing the existing stm32f4xx_exti
+- changed irq_raise to irq_pulse in register SWIERx write
+(in `stm32l4x5_exti_write`) to be consistent with the irq_pulse in
+`stm32l4x5_exti_set_irq` (and also both these interrupts are
+edge-triggered)
+- changed the license to GPL
+
+Changes from v2 to v3:
+- adding more tests writing/reading in exti registers
+- adding tests checking that interrupt work by reading NVIC registers
+- correcting exti_write in SWIER (so it sets an irq only when a bit
+goes from '0' to '1')
+- correcting exti_set_irq (so it never writes in PR when the relevant
+bit in IMR is '0')
+
+Changes from v1 to v2:
+- use arrays to deduplicate code and logic
+- move internal constant `EXTI_NUM_GPIO_EVENT_IN_LINES` from the header
+to the .c file
+- Improve copyright headers
+- replace `static const` with `#define`
+- use the DEFINE_TYPES macro
+- fill the `impl` and `valid` field of the exti's `MemoryRegionOps`
+- fix invalid test caused by a last minute change
+
+Based-on: 20240108135849.351719-1-ines.varhol@telecom-paris.fr
+([PATCH v6 0/2] Add minimal support for the B-L475E-IOT01A board)
+
+In=C3=A8s Varhol (3):
+  hw/misc: Implement STM32L4x5 EXTI
+  hw/arm: Connect STM32L4x5 EXTI to STM32L4x5 SoC
+  tests/qtest: Add STM32L4x5 EXTI QTest testcase
+
+ docs/system/arm/b-l475e-iot01a.rst |   5 +-
+ hw/arm/Kconfig                     |   1 +
+ hw/arm/stm32l4x5_soc.c             |  52 ++-
+ hw/misc/Kconfig                    |   3 +
+ hw/misc/meson.build                |   1 +
+ hw/misc/stm32l4x5_exti.c           | 290 ++++++++++++++++
+ hw/misc/trace-events               |   5 +
+ include/hw/arm/stm32l4x5_soc.h     |   3 +
+ include/hw/misc/stm32l4x5_exti.h   |  51 +++
+ tests/qtest/meson.build            |   5 +
+ tests/qtest/stm32l4x5_exti-test.c  | 524 +++++++++++++++++++++++++++++
+ 11 files changed, 936 insertions(+), 4 deletions(-)
+ create mode 100644 hw/misc/stm32l4x5_exti.c
+ create mode 100644 include/hw/misc/stm32l4x5_exti.h
+ create mode 100644 tests/qtest/stm32l4x5_exti-test.c
+
+--=20
+2.43.0
+
 
