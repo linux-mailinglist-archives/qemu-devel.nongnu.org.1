@@ -2,70 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D36827CF0
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 03:37:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE528827D96
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 04:53:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN1yr-0001qg-17; Mon, 08 Jan 2024 21:36:41 -0500
+	id 1rN39s-0004XQ-W8; Mon, 08 Jan 2024 22:52:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rN1yo-0001qX-WD
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 21:36:39 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rN1ym-0004Xm-TZ
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 21:36:38 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Dx_egwsZxlT1IDAA--.2284S3;
- Tue, 09 Jan 2024 10:36:32 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxG9wvsZxl1D8IAA--.21719S3; 
- Tue, 09 Jan 2024 10:36:31 +0800 (CST)
-Subject: Re: [PATCH v2 4/4] hw/intc/loongarch_extioi: Add vmstate post_load
- support
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: qemu-devel@nongnu.org
-References: <20231215100333.3933632-1-maobibo@loongson.cn>
- <20231215100333.3933632-5-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <0acf64a1-b352-023f-e472-32a496ca7122@loongson.cn>
-Date: Tue, 9 Jan 2024 10:36:31 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rN39r-0004XE-Ml
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 22:52:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rN39p-0006mO-Hb
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 22:52:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704772324;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UiYH74U3nqfqV028eKWgM0m3xQ56k+Byf8CorbaMnEo=;
+ b=TZHIagV2e+bOkgXDpx9xiyHAxgW1fo5F2uMWvqiSJkPv1pjB52mGQtzceSnVdAB+nl6z4T
+ mu4sqY7OLLqgL0xsGRLmBDDFigXPrATCh97GZdbv8wdetc/d9EajG9/S/LzMx5qoQr4KJC
+ MpTt7SGX+70sCvjPWh2OMw7yQYq5Bl8=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-623-3kIKbqEiN-61ICrTRAni-Q-1; Mon, 08 Jan 2024 22:52:01 -0500
+X-MC-Unique: 3kIKbqEiN-61ICrTRAni-Q-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-28bea0ff98cso564492a91.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 19:52:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704772319; x=1705377119;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=UiYH74U3nqfqV028eKWgM0m3xQ56k+Byf8CorbaMnEo=;
+ b=SGgtc4O0gIsvkI8GZu2tdWt9AUf6AdpL2mUJNrrRQ5ol4ozw+viyOR5UtnOcqakWmb
+ 4PcDYJbwdVzjwBjkxQSjUWfxlAwSIVP8hNist9SbJSgT/RAkt6Uj59u0BazjR9gWALhj
+ m9LW8Uf0N7QknAjfSNJabOuv8dAfPoKEvN6B8eO137kmVIdXmrhMO8lyeCs42QG2Y0Va
+ hrKkJ6kebQSNVximBZJxroWQU80BaHRCR7EkJ6efBG4VEISJiUtYZX6RFpHF7iSbkGCI
+ xgMQ9wfgYa0kpC4pyKGXtSCc1YGsjAdotIJM0thvAFK1wfQ64uBBuTDXnRKeA9/ZKmYj
+ XCuw==
+X-Gm-Message-State: AOJu0YyWKQa0KZJKhRDlKh5ptBmaXzlRljplXKjKR0+QUfGu9sAeD1IG
+ j6ac+uGpw2rKmJpGQe+tUchMl1Lr+jM3nicQlUaXKD1NxGGtpAaY0oBa3JeQVh48ZgLOSIsPTi7
+ 0AxtF1fjbzSWb1k1ii2nc+jM=
+X-Received: by 2002:a05:6a21:2706:b0:196:4d6a:ce0b with SMTP id
+ rm6-20020a056a21270600b001964d6ace0bmr8625072pzb.5.1704772319482; 
+ Mon, 08 Jan 2024 19:51:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF02yQQIo56XoLkn7hr45DKJWvocz2W+DNUXyiH+dYPDrtee4ss7YIlJFoaeo1yDD60gyd6Vw==
+X-Received: by 2002:a05:6a21:2706:b0:196:4d6a:ce0b with SMTP id
+ rm6-20020a056a21270600b001964d6ace0bmr8625056pzb.5.1704772319047; 
+ Mon, 08 Jan 2024 19:51:59 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ h15-20020a056a00000f00b006da13bc46c0sm622132pfk.171.2024.01.08.19.51.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Jan 2024 19:51:58 -0800 (PST)
+Date: Tue, 9 Jan 2024 11:51:50 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 4/4] [NOT FOR MERGE] tests/qtest/migration: Adapt
+ tests to use older QEMUs
+Message-ID: <ZZzC1n0GotQZukqJ@x1n>
+References: <20240105180449.11562-1-farosas@suse.de>
+ <20240105180449.11562-5-farosas@suse.de> <ZZuvDREDrQ07HsGs@x1n>
+ <877ckj3kfp.fsf@suse.de>
 MIME-Version: 1.0
-In-Reply-To: <20231215100333.3933632-5-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8AxG9wvsZxl1D8IAA--.21719S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3XFWUZryrXFy8JF4rGw45urX_yoW7AF4xpr
- W3uF9xKry3Wr17WwsFga4UWFn5Gr4fWFyavrnFgFyfKFn5Cry09FyvvrZ7tFZ7C3sYyr1Y
- v3Wruw47CF4qyrgCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UNvtZU
- UUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -7
-X-Spam_score: -0.8
-X-Spam_bar: /
-X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.383, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <877ckj3kfp.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
+X-Spam_bar: --
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,192 +102,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2023/12/15 ÏÂÎç6:03, Bibo Mao Ð´µÀ:
-> There are elements sw_ipmap and sw_coremap, which is usd to speed
-> up irq injection flow. They are saved and restored in vmstate during
-> migration, indeed they can calculated from hw registers. Here
-> post_load is added for get sw_ipmap and sw_coremap from extioi hw
-> state.
->
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   hw/intc/loongarch_extioi.c | 120 +++++++++++++++++++++++--------------
->   1 file changed, 76 insertions(+), 44 deletions(-)
+On Mon, Jan 08, 2024 at 12:37:46PM -0300, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
+> 
+> > On Fri, Jan 05, 2024 at 03:04:49PM -0300, Fabiano Rosas wrote:
+> >> [This patch is not necessary anymore after 8.2 has been released]
+> >> 
+> >> Add the 'since' annotations to recently added tests and adapt the
+> >> postcopy test to use the older "uri" API when needed.
+> >> 
+> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> >
+> > You marked this as not-for-merge.  Would something like this still be
+> > useful in the future?  IIUC it's a matter of whether we'd still want to
+> > test those old binaries.
+> >
+> 
+> Technically yes, but I fail to see what benefit testing old binaries
+> would bring us. I'm thinking maybe it could be useful for bisecting
+> compatibility issues, but I can't think of a scenario where we'd like to
+> change the older QEMU instead of the newer.
+> 
+> I'm of course open to suggestions if you or anyone else has an use case
+> that you'd like to keep viable.
+> 
+> So far, my idea is that once a new QEMU is released, all the "since:"
+> annotations become obsolete. We could even remove them. This series is
+> just infrastructure to make our life easier if a change is ever
+> introduced that is incompatible with the n-1 QEMU. IMO we cannot have
+> compatibility testing if a random change might break a test and make it
+> more difficult to run the remaining tests. So we'd use 'since' or the
+> vercmp function to skip/adapt the offending tests until the next QEMU is
+> released.
+> 
+> I'm basing myself on this loosely worded support statement from our
+> docs:
+> 
+>   "In general QEMU tries to maintain forward migration compatibility
+>   (i.e. migrating from QEMU n->n+1) and there are users who benefit from
+>   backward compatibility as well."
 
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+I think we could still have users migrating from e.g. 8.0 -> 9.0 as long as
+with the same machine type, especially when upgrading upper level stack
+(e.g. an openstack cluster upgrade), where IIUC can jump a few qemu major
+versions.  That does sound like a common use case, and I suspect the doc
+was only taking one example on why compatibility needs to be maintained,
+rather than emphasizing "+1 only".
 
-Thanks.
-Song Gao
-> diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
-> index d9d5066c3f..e0fd57f962 100644
-> --- a/hw/intc/loongarch_extioi.c
-> +++ b/hw/intc/loongarch_extioi.c
-> @@ -130,12 +130,66 @@ static inline void extioi_enable_irq(LoongArchExtIOI *s, int index,\
->       }
->   }
->   
-> +static inline void extioi_update_sw_coremap(LoongArchExtIOI *s, int irq,
-> +                                            uint64_t val, bool notify)
-> +{
-> +    int i, cpu;
-> +
-> +    /*
-> +     * loongarch only support little endian,
-> +     * so we paresd the value with little endian.
-> +     */
-> +    val = cpu_to_le64(val);
-> +
-> +    for (i = 0; i < 4; i++) {
-> +        cpu = val & 0xff;
-> +        cpu = ctz32(cpu);
-> +        cpu = (cpu >= 4) ? 0 : cpu;
-> +        val = val >> 8;
-> +
-> +        if (s->sw_coremap[irq + i] == cpu) {
-> +            continue;
-> +        }
-> +
-> +        if (notify && test_bit(irq, (unsigned long *)s->isr)) {
-> +            /*
-> +             * lower irq at old cpu and raise irq at new cpu
-> +             */
-> +            extioi_update_irq(s, irq + i, 0);
-> +            s->sw_coremap[irq + i] = cpu;
-> +            extioi_update_irq(s, irq + i, 1);
-> +        } else {
-> +            s->sw_coremap[irq + i] = cpu;
-> +        }
-> +    }
-> +}
-> +
-> +static inline void extioi_update_sw_ipmap(LoongArchExtIOI *s, int index,
-> +                                          uint64_t val)
-> +{
-> +    int i;
-> +    uint8_t ipnum;
-> +
-> +    /*
-> +     * loongarch only support little endian,
-> +     * so we paresd the value with little endian.
-> +     */
-> +    val = cpu_to_le64(val);
-> +    for (i = 0; i < 4; i++) {
-> +        ipnum = val & 0xff;
-> +        ipnum = ctz32(ipnum);
-> +        ipnum = (ipnum >= 4) ? 0 : ipnum;
-> +        s->sw_ipmap[index * 4 + i] = ipnum;
-> +        val = val >> 8;
-> +    }
-> +}
-> +
->   static MemTxResult extioi_writew(void *opaque, hwaddr addr,
->                             uint64_t val, unsigned size,
->                             MemTxAttrs attrs)
->   {
->       LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-> -    int i, cpu, index, old_data, irq;
-> +    int cpu, index, old_data, irq;
->       uint32_t offset;
->   
->       trace_loongarch_extioi_writew(addr, val);
-> @@ -153,20 +207,7 @@ static MemTxResult extioi_writew(void *opaque, hwaddr addr,
->            */
->           index = (offset - EXTIOI_IPMAP_START) >> 2;
->           s->ipmap[index] = val;
-> -        /*
-> -         * loongarch only support little endian,
-> -         * so we paresd the value with little endian.
-> -         */
-> -        val = cpu_to_le64(val);
-> -        for (i = 0; i < 4; i++) {
-> -            uint8_t ipnum;
-> -            ipnum = val & 0xff;
-> -            ipnum = ctz32(ipnum);
-> -            ipnum = (ipnum >= 4) ? 0 : ipnum;
-> -            s->sw_ipmap[index * 4 + i] = ipnum;
-> -            val = val >> 8;
-> -        }
-> -
-> +        extioi_update_sw_ipmap(s, index, val);
->           break;
->       case EXTIOI_ENABLE_START ... EXTIOI_ENABLE_END - 1:
->           index = (offset - EXTIOI_ENABLE_START) >> 2;
-> @@ -205,33 +246,8 @@ static MemTxResult extioi_writew(void *opaque, hwaddr addr,
->           irq = offset - EXTIOI_COREMAP_START;
->           index = irq / 4;
->           s->coremap[index] = val;
-> -        /*
-> -         * loongarch only support little endian,
-> -         * so we paresd the value with little endian.
-> -         */
-> -        val = cpu_to_le64(val);
-> -
-> -        for (i = 0; i < 4; i++) {
-> -            cpu = val & 0xff;
-> -            cpu = ctz32(cpu);
-> -            cpu = (cpu >= 4) ? 0 : cpu;
-> -            val = val >> 8;
-> -
-> -            if (s->sw_coremap[irq + i] == cpu) {
-> -                continue;
-> -            }
-> -
-> -            if (test_bit(irq, (unsigned long *)s->isr)) {
-> -                /*
-> -                 * lower irq at old cpu and raise irq at new cpu
-> -                 */
-> -                extioi_update_irq(s, irq + i, 0);
-> -                s->sw_coremap[irq + i] = cpu;
-> -                extioi_update_irq(s, irq + i, 1);
-> -            } else {
-> -                s->sw_coremap[irq + i] = cpu;
-> -            }
-> -        }
-> +
-> +        extioi_update_sw_coremap(s, irq, val, true);
->           break;
->       default:
->           break;
-> @@ -288,6 +304,23 @@ static void loongarch_extioi_finalize(Object *obj)
->       g_free(s->cpu);
->   }
->   
-> +static int vmstate_extioi_post_load(void *opaque, int version_id)
-> +{
-> +    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-> +    int i, start_irq;
-> +
-> +    for (i = 0; i < (EXTIOI_IRQS / 4); i++) {
-> +        start_irq = i * 4;
-> +        extioi_update_sw_coremap(s, start_irq, s->coremap[i], false);
-> +    }
-> +
-> +    for (i = 0; i < (EXTIOI_IRQS_IPMAP_SIZE / 4); i++) {
-> +        extioi_update_sw_ipmap(s, i, s->ipmap[i]);
-> +    }
-> +
-> +    return 0;
-> +}
-> +
->   static const VMStateDescription vmstate_extioi_core = {
->       .name = "extioi-core",
->       .version_id = 1,
-> @@ -302,6 +335,7 @@ static const VMStateDescription vmstate_loongarch_extioi = {
->       .name = TYPE_LOONGARCH_EXTIOI,
->       .version_id = 2,
->       .minimum_version_id = 2,
-> +    .post_load = vmstate_extioi_post_load,
->       .fields = (VMStateField[]) {
->           VMSTATE_UINT32_ARRAY(bounce, LoongArchExtIOI, EXTIOI_IRQS_GROUP_COUNT),
->           VMSTATE_UINT32_ARRAY(nodetype, LoongArchExtIOI,
-> @@ -310,8 +344,6 @@ static const VMStateDescription vmstate_loongarch_extioi = {
->           VMSTATE_UINT32_ARRAY(isr, LoongArchExtIOI, EXTIOI_IRQS / 32),
->           VMSTATE_UINT32_ARRAY(ipmap, LoongArchExtIOI, EXTIOI_IRQS_IPMAP_SIZE / 4),
->           VMSTATE_UINT32_ARRAY(coremap, LoongArchExtIOI, EXTIOI_IRQS / 4),
-> -        VMSTATE_UINT8_ARRAY(sw_ipmap, LoongArchExtIOI, EXTIOI_IRQS_IPMAP_SIZE),
-> -        VMSTATE_UINT8_ARRAY(sw_coremap, LoongArchExtIOI, EXTIOI_IRQS),
->   
->           VMSTATE_STRUCT_VARRAY_POINTER_UINT32(cpu, LoongArchExtIOI, num_cpu,
->                            vmstate_extioi_core, ExtIOICore),
+However then the question is whether those old binaries needs to be
+convered.
+
+Then I noticed that taking all these "since: XXX" and cmdline changes along
+with migration-test may be yet another burden even if we want to cover old
+binaries for whatever reason.  I am now more convinced myself that we
+should try to get rid of as much burden as we can for migration, because we
+already have enough, and it's not ideal to keep growing that unnecessarily.
+
+One good thing with CI in this case (I still don't have enough knowledge on
+CI, so I am hoping some CI people can review that patch, though) is that if
+we can always guarantee n-1 -> n works for the test cases we enabled, it
+most probably means when n boosts again to n+1, we keep making sure n ->
+n+1 works perfectly, then n-1 -> n+1 should not fail either, considering
+that we're testing the stream protocol matching each other.  There might be
+outliers (especially if not described with VMSDs) but should be corner
+cases.
+
+So I tend to agree with you on that we drop this patch, keep it simple
+until we're much more clear what we can get from that.
+
+But then if so - do we need "since" at all to be expressed in versions?
+
+Basically we keep qtest always be valid only on the latest qemu binary as
+before (which actually works the same as Linux v.s. kselftests, which makes
+sense), there's one exception now with "n-1" due to the CI we plan to add.
+Dropping this patch means we don't yet plan to support n-2.  Then maybe
+instead of a "since" we only need a boolean showing "whether one test needs
+to be covered by a cross-binary test"?  Then we set it in incompatible
+binaries (skip all cross-binary tests directly, rather than relying on any
+qemu versions, no compare needed), and can also drop that when a new
+release starts.
+
+Thanks,
+
+-- 
+Peter Xu
 
 
