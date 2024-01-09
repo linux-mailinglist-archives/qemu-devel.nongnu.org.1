@@ -2,88 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E22828B62
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 18:43:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64911828B6C
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 18:46:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNG7j-0006gm-PT; Tue, 09 Jan 2024 12:42:47 -0500
+	id 1rNGAu-0007xp-AW; Tue, 09 Jan 2024 12:46:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNG7f-0006dp-7U
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:42:43 -0500
-Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNG7a-000848-Gp
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:42:41 -0500
-Received: by mail-ot1-x335.google.com with SMTP id
- 46e09a7af769-6dde882e5ccso363763a34.3
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 09:42:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704822155; x=1705426955; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=53lziAUMWxraWZMqgeq7a80JdQqfRhcqMRb3/zt6Asw=;
- b=lZ5MMW4WbLGiJB0BYCXMvitV+r+Ev4VUFpxVttD3xiKvGs5j5jwDZrBDMDwZJj+qHf
- AjDO7xho3S8DcTsdA9cc8bKMbNHLiScBf68Rl12/OXufXmjLaFvQrLWZK4ITMZQnqd26
- G0GF30C4nmlS3yE+XUSwa+96hMA7k/ZA+QzZYMrLicKar44rF36FlJF6djJRJvKMoHLD
- 53J51M4+lsDQPfuLIKCxECD8PCjtscQvPD8QJGtHTH5h0jJdNlhR3Ta0qrgi6sXVTmyx
- XdmcXAvLwbT/KbZO+T9zLKZDpiiRAMMwldpSbu3xkMYLIBt+bSePEOW7hN816S0zZLh3
- lj6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704822155; x=1705426955;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=53lziAUMWxraWZMqgeq7a80JdQqfRhcqMRb3/zt6Asw=;
- b=TTjX2dG0EI8aeZ7AR3LIWedeSFnrlYhtSVMdEmomrsP/aqD6V+9doiIUUzjMB1YwFX
- X7T1YHyaVLSVzidsdRGnMAItxHRsMwhHdtaR4ZWP3PqrKq2x/z+5HA9GURON2AWoad5w
- bGTo23HUyO8KmT/zC2uF1/jdDVwgJgvp95VDgbhVje5Cpl5zJPC0ryl/fMF+58p7xFSY
- Nvqkrzy/70ii4OMJRW9Oc2jBsOxLnWFAmBGIgg8neBOP5X79pXo3+kcbK36BTMOg9w/j
- 7Z4Z5DhTqbgpctwttmlGvp24zJrchDPe8O6RHtAtRq58c9jyWDeIbYq90XyLwwJq6ZGC
- lwcw==
-X-Gm-Message-State: AOJu0YxpawoiQbO/MLHXsFzli/SpgWkdwASmkIg1s3xgj+AY2hB4ZFrA
- HtePN3FvTRoYAIZ55c1nmr0swl9e/UC7Zg==
-X-Google-Smtp-Source: AGHT+IHxUMMYJ/vAbIQlNFckjGkIgPJs+GLjgPsKFbCHiyvDz5gA/hBhrn4ZU0Ho1Nznt8vVdOJHEA==
-X-Received: by 2002:a05:6870:b613:b0:206:2550:d22d with SMTP id
- cm19-20020a056870b61300b002062550d22dmr4904922oab.46.1704822155304; 
- Tue, 09 Jan 2024 09:42:35 -0800 (PST)
-Received: from [192.168.47.227] ([172.58.111.136])
- by smtp.gmail.com with ESMTPSA id
- pt7-20020a0568709e4700b002064e3ae6e7sm535893oab.0.2024.01.09.09.42.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 09:42:34 -0800 (PST)
-Message-ID: <0195c274-0d5c-484b-9475-84a4d16bfae8@linaro.org>
-Date: Wed, 10 Jan 2024 04:42:25 +1100
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rNGAp-0007xY-1a
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:45:59 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rNGAl-0001IB-QQ
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:45:57 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T8db90DDjz67FVn;
+ Wed, 10 Jan 2024 01:44:05 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id EFCE3140B2A;
+ Wed, 10 Jan 2024 01:45:51 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 9 Jan
+ 2024 17:45:51 +0000
+Date: Tue, 9 Jan 2024 17:45:50 +0000
+To: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+CC: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <fan.ni@samsung.com>, "Michael
+ S . Tsirkin" <mst@redhat.com>, <linux-cxl@vger.kernel.org>,
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v2 2/4] hw/cxl/device: read from register values in
+ mdev_reg_read()
+Message-ID: <20240109174550.00000f6c@Huawei.com>
+In-Reply-To: <20231222090051.3265307-3-42.hyeyoo@gmail.com>
+References: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
+ <20231222090051.3265307-3-42.hyeyoo@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] linux-user: Allow gdbstub to ignore page protection
-Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- David Hildenbrand <david@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
-References: <20240108233821.201325-1-iii@linux.ibm.com>
- <20240108233821.201325-2-iii@linux.ibm.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240108233821.201325-2-iii@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,114 +67,96 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/9/24 10:34, Ilya Leoshkevich wrote:
-> gdbserver ignores page protection by virtue of using /proc/$pid/mem.
-> Teach qemu gdbstub to do this too. This will not work if /proc is not
-> mounted; accept this limitation.
+On Fri, 22 Dec 2023 18:00:49 +0900
+Hyeonggon Yoo <42.hyeyoo@gmail.com> wrote:
+
+> In the current mdev_reg_read() implementation, it consistently returns
+> that the Media Status is Ready (01b). This was fine until commit
+> 25a52959f99d ("hw/cxl: Add support for device sanitation") because the
+> media was presumed to be ready.
 > 
-> One alternative is to temporarily grant the missing PROT_* bit, but
-> this is inherently racy. Another alternative is self-debugging with
-> ptrace(POKE), which will break if QEMU itself is being debugged - a
-> much more severe limitation.
+> However, as per the CXL 3.0 spec "8.2.9.8.5.1 Sanitize (Opcode 4400h)",
+> during sanitation, the Media State should be set to Disabled (11b). The
+> mentioned commit correctly sets it to Disabled, but mdev_reg_read()
+> still returns Media Status as Ready.
 > 
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> To address this, update mdev_reg_read() to read register values instead
+> of returning dummy values.
+> 
+> Fixes: commit 25a52959f99d ("hw/cxl: Add support for device sanitation")
+> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+> Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+
+I've applied this one to my tree.  (I'll push that out in a day or two after
+tidying up some other outstanding stuff). 
+
+Sometime in next week or so I'll send out a set bundling together various
+fixes and cleanup with the intent for getting it applied.
+
+Thanks,
+
+Jonathan
+
 > ---
->   cpu-target.c | 55 ++++++++++++++++++++++++++++++++++++++--------------
->   1 file changed, 40 insertions(+), 15 deletions(-)
+>  hw/cxl/cxl-device-utils.c   | 17 +++++++++++------
+>  include/hw/cxl/cxl_device.h |  4 +++-
+>  2 files changed, 14 insertions(+), 7 deletions(-)
 > 
-> diff --git a/cpu-target.c b/cpu-target.c
-> index 5eecd7ea2d7..69e97f78980 100644
-> --- a/cpu-target.c
-> +++ b/cpu-target.c
-> @@ -406,6 +406,15 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
->       vaddr l, page;
->       void * p;
->       uint8_t *buf = ptr;
-> +    int ret = -1;
-> +    int mem_fd;
+> diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
+> index 29de298117..ba3f80e6e7 100644
+> --- a/hw/cxl/cxl-device-utils.c
+> +++ b/hw/cxl/cxl-device-utils.c
+> @@ -229,12 +229,9 @@ static void mailbox_reg_write(void *opaque, hwaddr offset, uint64_t value,
+>  
+>  static uint64_t mdev_reg_read(void *opaque, hwaddr offset, unsigned size)
+>  {
+> -    uint64_t retval = 0;
+> -
+> -    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
+> -    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MBOX_READY, 1);
+> +    CXLDeviceState *cxl_dstate = opaque;
+>  
+> -    return retval;
+> +    return cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
+>  }
+>  
+>  static void ro_reg_write(void *opaque, hwaddr offset, uint64_t value,
+> @@ -371,7 +368,15 @@ static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
+>      cxl_dstate->mbox_msi_n = msi_n;
+>  }
+>  
+> -static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) { }
+> +static void memdev_reg_init_common(CXLDeviceState *cxl_dstate)
+> +{
+> +    uint64_t memdev_status_reg;
 > +
-> +    /*
-> +     * Try ptrace first. If /proc is not mounted or if there is a different
-> +     * problem, fall back to the manual page access. Note that, unlike ptrace,
-> +     * it will not be able to ignore the protection bits.
-> +     */
-> +    mem_fd = open("/proc/self/mem", is_write ? O_WRONLY : O_RDONLY);
-
-Surely this is the unlikely fallback, and you don't need to open unless the page is 
-otherwise inaccessible.
-
-I see no handling for writes to pages that contain TranslationBlocks.
-
-
-r~
-
->   
->       while (len > 0) {
->           page = addr & TARGET_PAGE_MASK;
-> @@ -413,22 +422,33 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
->           if (l > len)
->               l = len;
->           flags = page_get_flags(page);
-> -        if (!(flags & PAGE_VALID))
-> -            return -1;
-> +        if (!(flags & PAGE_VALID)) {
-> +            goto out_close;
-> +        }
->           if (is_write) {
-> -            if (!(flags & PAGE_WRITE))
-> -                return -1;
-> +            if (mem_fd == -1 ||
-> +                pwrite(mem_fd, ptr, len, (off_t)g2h_untagged(addr)) != len) {
-> +                if (!(flags & PAGE_WRITE)) {
-> +                    goto out_close;
-> +                }
-> +                /* XXX: this code should not depend on lock_user */
-> +                p = lock_user(VERIFY_WRITE, addr, l, 0);
-> +                if (!p) {
-> +                    goto out_close;
-> +                }
-> +                memcpy(p, buf, l);
-> +                unlock_user(p, addr, l);
-> +            }
-> +        } else if (mem_fd == -1 ||
-> +                   pread(mem_fd, ptr, len, (off_t)g2h_untagged(addr)) != len) {
-> +            if (!(flags & PAGE_READ)) {
-> +                goto out_close;
-> +            }
->               /* XXX: this code should not depend on lock_user */
-> -            if (!(p = lock_user(VERIFY_WRITE, addr, l, 0)))
-> -                return -1;
-> -            memcpy(p, buf, l);
-> -            unlock_user(p, addr, l);
-> -        } else {
-> -            if (!(flags & PAGE_READ))
-> -                return -1;
-> -            /* XXX: this code should not depend on lock_user */
-> -            if (!(p = lock_user(VERIFY_READ, addr, l, 1)))
-> -                return -1;
-> +            p = lock_user(VERIFY_READ, addr, l, 1);
-> +            if (!p) {
-> +                goto out_close;
-> +            }
->               memcpy(buf, p, l);
->               unlock_user(p, addr, 0);
->           }
-> @@ -436,7 +456,12 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
->           buf += l;
->           addr += l;
->       }
-> -    return 0;
-> +    ret = 0;
-> +out_close:
-> +    if (mem_fd != -1) {
-> +        close(mem_fd);
-> +    }
-> +    return ret;
->   }
->   #endif
->   
+> +    memdev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
+> +    memdev_status_reg = FIELD_DP64(memdev_status_reg, CXL_MEM_DEV_STS,
+> +                                   MBOX_READY, 1);
+> +    cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] = memdev_status_reg;
+> +}
+>  
+>  void cxl_device_register_init_t3(CXLType3Dev *ct3d)
+>  {
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index b2cb280e16..b318d94b36 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -408,7 +408,9 @@ static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
+>  {
+>      uint64_t dev_status_reg;
+>  
+> -    dev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, val);
+> +    dev_status_reg = cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
+> +    dev_status_reg = FIELD_DP64(dev_status_reg, CXL_MEM_DEV_STS, MEDIA_STATUS,
+> +                                val);
+>      cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] = dev_status_reg;
+>  }
+>  #define cxl_dev_disable_media(cxlds)                    \
 
 
