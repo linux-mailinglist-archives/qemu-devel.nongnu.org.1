@@ -2,70 +2,177 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58B8827CDB
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC49827CDC
 	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 03:27:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN1oL-00077G-9K; Mon, 08 Jan 2024 21:25:49 -0500
+	id 1rN1oq-0007AX-A1; Mon, 08 Jan 2024 21:26:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rN1oI-000771-QM
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 21:25:46 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rN1oF-0005Jm-67
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 21:25:46 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8CxbbufrpxlwFEDAA--.2351S3;
- Tue, 09 Jan 2024 10:25:36 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxC96drpxl3jwIAA--.21844S3; 
- Tue, 09 Jan 2024 10:25:35 +0800 (CST)
-Subject: Re: [PATCH v2 2/4] hw/loongarch/virt: Set iocsr address space
- per-board rather than percpu
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: qemu-devel@nongnu.org
-References: <20231215100333.3933632-1-maobibo@loongson.cn>
- <20231215100333.3933632-3-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <31cd9e05-113d-bd40-7689-18dde701e575@loongson.cn>
-Date: Tue, 9 Jan 2024 10:25:33 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <20231215100333.3933632-3-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
+ (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
+ id 1rN1on-0007AE-FN
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 21:26:17 -0500
+Received: from mgamail.intel.com ([192.198.163.9])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
+ id 1rN1oj-0005oC-5H
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 21:26:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1704767173; x=1736303173;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=fh1FbDNXEtVaOucrRLikzWHh7WV1qBdfSyA8GHxtFn8=;
+ b=bhPECEjhDnS0CJmiex0UfDTA4KlHU2+sjuEiS5vdgGBk8Bt0vTyOhTwb
+ Qq/g0YBjpqr6tYiKbaDXBuxEUTIcTJGYW/2w16NcIWpWbLYwX39cIPfJP
+ 7M5cXIF6rgOuWkvdyWfpYR/w/WlgcioLQNyXtY9mpB+XA9SmtrElQQDUR
+ d80dFbns8GRX/uccFS8PeaBiMGh04D1aAbk7iYsbefjddUbxhT/W4itxJ
+ hc5XoAqBdqtXl+bQ27ZZK2/jeCpTQsxKvTAaqoCEccJ8RV0+l13Exv6RB
+ lwgLSdMb1idDyOiNTliu9z5wtQTwN3zoDGFkEC85FZ7zlC01VD+vCc0z/ w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="4841145"
+X-IronPort-AV: E=Sophos;i="6.04,181,1695711600"; 
+   d="scan'208";a="4841145"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jan 2024 18:26:10 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="731316561"
+X-IronPort-AV: E=Sophos;i="6.04,181,1695711600"; d="scan'208";a="731316561"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by orsmga003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 08 Jan 2024 18:26:09 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 8 Jan 2024 18:26:08 -0800
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 8 Jan 2024 18:26:08 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Mon, 8 Jan 2024 18:26:08 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 8 Jan 2024 18:26:08 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Uugk1cqIOewSCIm3l7QrXGKVMn4nS62Hzx6adCSxki94QSsNzkqO3R5fQ4B0LycsrOJQADzPZkXgH66ETq44N3UPSnrEDdDfwHbKCQ+6ww6+LaF+1Q1lLv8NSV7lGANuTQjnm9T41kdKSUZ39kX/V9RvTJJudjY6Bd+mrc2ht95SBEIsENxOmELc8q6GWURZGmAnGqxTx52Fk++AenjC0yojaPlQd5CJ5NJJFC+ufVllaHBzQRfqyxyId1LoOlI526J1okXcfAp/1gx6cOdUkcH6vczuPI5hpOtOqaTsxxAyhEgW0PXVP4Tp/bzpLUrShEQmde34FYDbVzKEWva+rw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fh1FbDNXEtVaOucrRLikzWHh7WV1qBdfSyA8GHxtFn8=;
+ b=ANZkL3e3OrTRdUQ2Exo/zhfiGe0iW4+0lFY7dhyZz9PL2BrPZMKhD6Vpb8sA/iNq4HlF8RJHPdLNEDuP55Ok6dZaGJizsbYdMRsG9ISRMsX5R0quz7eNYT7E7STisx6GsRYUEghLBhqxdW+BXvc0INfT41NZHRdM5XZqI969C0cW6hvr5VVQbH79TlPcXiTP5StbdTJCUEwHULlsRNf29oF9e8OvpXMQbjbrRGGbDzojWgWKxFSqzSxU/WTBRSyJq/JlRAQ2E68kyL/j345sw0Ri18+tOLGqDQ3hukOulcthPNmPBNCdH9YCFHcwDbCb4Zb66g5ntHZVC3gVo+pnXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB5941.namprd11.prod.outlook.com (2603:10b6:510:13d::20)
+ by SN7PR11MB6825.namprd11.prod.outlook.com (2603:10b6:806:2a0::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23; Tue, 9 Jan
+ 2024 02:26:06 +0000
+Received: from PH7PR11MB5941.namprd11.prod.outlook.com
+ ([fe80::f0ec:877c:fd93:a04c]) by PH7PR11MB5941.namprd11.prod.outlook.com
+ ([fe80::f0ec:877c:fd93:a04c%3]) with mapi id 15.20.7159.013; Tue, 9 Jan 2024
+ 02:26:06 +0000
+From: "Liu, Yuan1" <yuan1.liu@intel.com>
+To: Fabiano Rosas <farosas@suse.de>, Hao Xiang <hao.xiang@bytedance.com>
+CC: Bryan Zhang <bryan.zhang@bytedance.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "marcandre.lureau@redhat.com"
+ <marcandre.lureau@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "quintela@redhat.com" <quintela@redhat.com>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "berrange@redhat.com" <berrange@redhat.com>,
+ "Zou, Nanhai" <nanhai.zou@intel.com>
+Subject: RE: [External] Re: [PATCH 3/5] migration: Introduce unimplemented
+ 'qatzip' compression method
+Thread-Topic: [External] Re: [PATCH 3/5] migration: Introduce unimplemented
+ 'qatzip' compression method
+Thread-Index: AQHaQBLbbmpfHBoi10eEBscMUOnzCrDL5F2AgANemYCAAR8ogIAAX7UQ
+Date: Tue, 9 Jan 2024 02:26:06 +0000
+Message-ID: <PH7PR11MB5941922C2B1900E80D6ACF40A36A2@PH7PR11MB5941.namprd11.prod.outlook.com>
+References: <20231231205804.2366509-1-bryan.zhang@bytedance.com>
+ <20231231205804.2366509-4-bryan.zhang@bytedance.com> <87jzon8ryv.fsf@suse.de>
+ <CAAYibXgNC1vL1i9M9Sj1J1GS_msxTMJS+B143qFO0pnF4UQGKA@mail.gmail.com>
+ <PH7PR11MB5941E2494C523E92DAF57DF7A36B2@PH7PR11MB5941.namprd11.prod.outlook.com>
+ <87v883sh8g.fsf@suse.de>
+In-Reply-To: <87v883sh8g.fsf@suse.de>
+Accept-Language: en-US
 Content-Language: en-US
-X-CM-TRANSID: AQAAf8CxC96drpxl3jwIAA--.21844S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9fXoWfJry5Xw18tFWktryUXw1kJFc_yoW8Cr1UZo
- W5AFySva1rGr12vr9FyrZFvrW7tFnFkrZxAayfZa15Wa1IqFW5XayUKan0q3W3JFn5Kr4k
- J34UKFZ5Jryxtwn5l-sFpf9Il3svdjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8wcxFpf
- 9Il3svdxBIdaVrn0xqx4xG64xvF2IEw4CE5I8CrVC2j2Jv73VFW2AGmfu7bjvjm3AaLaJ3
- UjIYCTnIWjp_UUUYc7kC6x804xWl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI
- 8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xG
- Y2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14
- v26r1j6r4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
- 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
- AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
- rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAw
- CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
- 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
- 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzsqW
- UUUUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -7
-X-Spam_score: -0.8
-X-Spam_bar: /
-X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.383, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB5941:EE_|SN7PR11MB6825:EE_
+x-ms-office365-filtering-correlation-id: d36eaaea-c26a-448f-65af-08dc10ba5562
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: tRXFAa8Y4g4oAyWkmha0aYDfBX9Zg3WOCasKZbWcRlaAXdruT12YTLPsB/mtmVzzPk4/w89sAOptlv16HTxaVSOU4aPoBV5Cn8HSUUGOSbRKPBt2tG+F34Emtm1AXu+8Umcq5+YVhcZsgMHeuTXvHRyo21MYXgFLX2ifEhJwR+1YumP+fUeVslmulaOB/rrJErdUj64mKJEPLDtpldsxJ6yo5YtOGK8FaxEjwexf/xMg1gLk4/wwj4VDDkgHLjWvgpeVp1zY2/HKEavuc8N9yxGEAFeNz+eHk5Q0YG+bYUtEAv/56tGACENLTgTvRbDRSsYpaZ1IzvsILcwsrydeO289jcwmU4s2uf+vLNJrLx/t4dFvR4W2R9cBf9mpqSfPPiSzsAcqphzlUdpoL7/NVWKJAC6Gdrkac7/nokfuc0EXX5pjPIbnUMo9ILGojTH2EIifuQytaZ59/LuPhSKE5VqofUkFXxZnHD+zhtgi9pyrpPQfUXNjOSSxPNI1RJDm8+NIXFrhcdZEVAhpcTMyrHPz4psnm4rHdcyyvIseRWDmxqkADc8JLjasuj87OJ47ZYXSMoLUOi+yyuXRbC/b6CIdiqEe8/PotamP3WzNuZZwe+J5gKCUAgQdrzV5TuOuKkC50nkgvkiTspBu53aEf01Nif8mCQr2wghwJfweM05nfLhqb4RVikiJfrJY+tVi
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB5941.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(366004)(136003)(376002)(346002)(396003)(230273577357003)(230173577357003)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(55016003)(2906002)(5660300002)(30864003)(38070700009)(52536014)(8676002)(41300700001)(8936002)(4326008)(54906003)(316002)(66446008)(66476007)(66556008)(66946007)(64756008)(76116006)(110136005)(6506007)(478600001)(71200400001)(33656002)(966005)(86362001)(7696005)(9686003)(26005)(53546011)(107886003)(82960400001)(83380400001)(122000001)(38100700002);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dEk5RDJhRWYvYlJ1eGFSU2RDbXl6TW52ajlmQk8wbmFOSFduTnJqcmVUNlhB?=
+ =?utf-8?B?LzhHNStiZ3NFV0VmRTcyMkE3S0ZTZHE4L0F5RThWaXJUcUpHVlloVzlkTFRy?=
+ =?utf-8?B?dDhpNFJVQml3Zi8ybzFnOUJwL1VTR1F0WmZ3YndNcGdiOW43QktobERKL3pH?=
+ =?utf-8?B?dzR0S0dzOFZkNUdBVUhXNmtTWVdrQXoybGFTRVg4QXpnN0lTOUtxc00yc3Zl?=
+ =?utf-8?B?YS9Iajg0RlFzcmRqQS9xUXVNenFBeDlUdTFjZ0VScVZDRGJHN3BBd25PcjZU?=
+ =?utf-8?B?T3JSeE44aEoyc2JuOStrZDcySkMvUWJHeHRWdWRnYU4yd3BGU3hQd0NHNGVJ?=
+ =?utf-8?B?ZkZNcGtMSnZJQm9BL1BiWDdGanBoaWxrdXA0VUJVbkpxWW5XVXJiaVE2S3g3?=
+ =?utf-8?B?YW9mTVZ1QmFwc3dsbnRRZ0duZG94bUxzdk9HcUQwSE8yV0JhWTY0WW1xRlJm?=
+ =?utf-8?B?M2p2aHc2cUdGRkRvTENtZDdYRkFPV0ZEUXE0UXZrL3dMcXR4SUdEV2Y1Vk13?=
+ =?utf-8?B?WEZNbEdNTDNTOXBkNERsQXJ5ME51MVBMajc4cTYyVzRvMWlHdmU4QlVOcS95?=
+ =?utf-8?B?N3gwS3ZXeWk1N3JncnBTdXc0K3NIaDFnS1ZWNTJQbE9Tc3lqY2x4Vmt5MUVa?=
+ =?utf-8?B?YlZSS05iNmh2ZFQ1cU5FUzFRbHd6WmFZTlFodjFTRW55dUlCeGUrK2RYN1pS?=
+ =?utf-8?B?TDZUSHJ1b2t4T04xV1k1QkRjVGJKMzJCZVI4Qjd6bi83OWpTSlpscU1DeDlW?=
+ =?utf-8?B?Q25qVUxsTE1ud0toYnZnVnU4dndVdFdmRXJBemJYMlltTy9sSmNtQ1N6ZHV4?=
+ =?utf-8?B?QjJyZXZUZDVaYmM0YXB2Z1F3c1FuVUVQWHpUMUN3K2JXbG9iVHZyOFA3VG9z?=
+ =?utf-8?B?KzdUcDBaQ3FwaVF3aXhaSU9rTkRPK0xqTVgyRmdDcGJ1cXBmUS9Jc2dUNTho?=
+ =?utf-8?B?elhkcjcxcExXd29ZeGkyL1BBa1RMeDFtOENCeUVZaUlUVzRPSGphOTFLTXpH?=
+ =?utf-8?B?eDlHbnFLVTVhSkdEMmE5Q2s1cG9ZTzMycFlxNTNEOEFOT3EwcGpRTm1BYitO?=
+ =?utf-8?B?STVGK2FXSENyejcyTU9CeVpCZmtCc3JjOFQxbWp4dDNTYmZacUg0TjY0b042?=
+ =?utf-8?B?Y3VZemhDSDk1T29NTmFEdGtHbHR0cnpQTTQ4OWlNMloyU0tBUGxnM0dNbVUv?=
+ =?utf-8?B?b0dLWC9IZTdVcGxUMm1RVXRiT09mbHVVenNJb3NUWWNJRzVXQWxCUWRhNU5q?=
+ =?utf-8?B?VnQ4VHJaYUJTZTA4QTFEdW1sdlpRYTZTU3JvUHhlVXdMN0I3Y3QzNUxEeXVN?=
+ =?utf-8?B?eXVUb09LZUZUckpscExlS2g4YkErbE9EYys5bVhLb1hzdTI2SktiN1hYRUVM?=
+ =?utf-8?B?ZGJxcHJOTGdtUTROUVlqZy9VWFJVRjFEUTFBajcxZG5Ccnl1cUg1NmhsSG40?=
+ =?utf-8?B?Zy81OFNyWVVvYVdlaUx6dm02MXY3ejNQSTc4aGh4WmFqQW8vRStxQklpTjdI?=
+ =?utf-8?B?cjlwK09Na2pta25OK3lvUEZYeVJ2RWxWYlgyVGlYMWhWV3pFT2xMM3BKRFRY?=
+ =?utf-8?B?QjV5a0FYYVcwRENHWE5tbEJNZUNxd2p4WktPa1llbzNkQ1I4NEFlTU5Pb2Ew?=
+ =?utf-8?B?cUF5eVF2NTNkOUMvd24ybXFES2NZYU9HR1lUejJqQWwvSUVWUC9UaGRhdjJG?=
+ =?utf-8?B?d2x5NW4xc21OV2V0anhjZGZUa2tucy9IRTNHR2N1NWc3TTR3NmoybkUzMXpl?=
+ =?utf-8?B?emNQZVBtZ0tLRUZFRXpmU2RCZEFJNWVFdHoweGJld1kwWEJsaVpkTkVmRWxr?=
+ =?utf-8?B?VTVobFBHNEVhZ1Y5TW1RcUtlS1QyN0lUcXJqWU9pYmVldmUxTEcxWVhBMXk4?=
+ =?utf-8?B?MWZqV0NLUWd5RXN3c3VlbDdDdFlwcC9rbEowMWZZTTNmMFRhSTg2aDRkdCto?=
+ =?utf-8?B?TkJUTkY4SDZPYUVpaWJoWHZRSWxYUUNqa1hXRm43M2pRMzNvL3llWlRzRTVz?=
+ =?utf-8?B?UXlxT1R3d21hVERvMzVFZ1RjU0R0enJGRVJ6SjhtSW80Mk5WZmI0enNKcHZO?=
+ =?utf-8?B?dFJaRnlWSklJRlMrUW5zMXhvV3B6YXNPTDlsc3NQVGd5ZjNHOWV0Q3ZIdytt?=
+ =?utf-8?Q?eyCWvaoccEnRXC9Cnrwc0kTj5?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB5941.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d36eaaea-c26a-448f-65af-08dc10ba5562
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jan 2024 02:26:06.1800 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UiMV9GltOFmY+HYPK84uUfBFgdwrSk55V7uHVidvzQDygoaYJCspErCwpRInm7A8XJirBSEUye6xSayoPAkmPg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6825
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=yuan1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,520 +189,263 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2023/12/15 ÏÂÎç6:03, Bibo Mao Ð´µÀ:
-> LoongArch system has iocsr address space, most iocsr registers are
-> per-board, however some iocsr register spaces banked for percpu such
-> as ipi mailbox and extioi interrupt status. For banked iocsr space,
-> each cpu has the same iocsr space, but separate data.
->
-> This patch changes iocsr address space per-board rather percpu,
-> for iocsr registers specified for cpu, MemTxAttrs.requester_id
-> can be parsed for the cpu. With this patches, the total address space
-> on board will be simple, only iocsr address space and system memory,
-> rather than the number of cpu and system memory.
->
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   hw/intc/loongarch_extioi.c         |  3 -
->   hw/intc/loongarch_ipi.c            | 61 +++++++++++++++-----
->   hw/loongarch/virt.c                | 91 ++++++++++++++++++++++--------
->   include/hw/intc/loongarch_extioi.h |  1 -
->   include/hw/intc/loongarch_ipi.h    |  3 +-
->   include/hw/loongarch/virt.h        |  3 +
->   target/loongarch/cpu.c             | 48 ----------------
->   target/loongarch/cpu.h             |  4 +-
->   target/loongarch/iocsr_helper.c    | 16 +++---
->   9 files changed, 127 insertions(+), 103 deletions(-)
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-
-Thanks.
-Song Gao
-> diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
-> index 24fb3af8cc..77b4776958 100644
-> --- a/hw/intc/loongarch_extioi.c
-> +++ b/hw/intc/loongarch_extioi.c
-> @@ -282,9 +282,6 @@ static void loongarch_extioi_instance_init(Object *obj)
->       qdev_init_gpio_in(DEVICE(obj), extioi_setirq, EXTIOI_IRQS);
->   
->       for (cpu = 0; cpu < EXTIOI_CPUS; cpu++) {
-> -        memory_region_init_io(&s->extioi_iocsr_mem[cpu], OBJECT(s), &extioi_ops,
-> -                              s, "extioi_iocsr", 0x900);
-> -        sysbus_init_mmio(dev, &s->extioi_iocsr_mem[cpu]);
->           for (pin = 0; pin < LS3A_INTC_IP; pin++) {
->               qdev_init_gpio_out(DEVICE(obj), &s->parent_irq[cpu][pin], 1);
->           }
-> diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
-> index 1d3449e77d..bca01c88f6 100644
-> --- a/hw/intc/loongarch_ipi.c
-> +++ b/hw/intc/loongarch_ipi.c
-> @@ -9,6 +9,7 @@
->   #include "hw/sysbus.h"
->   #include "hw/intc/loongarch_ipi.h"
->   #include "hw/irq.h"
-> +#include "hw/qdev-properties.h"
->   #include "qapi/error.h"
->   #include "qemu/log.h"
->   #include "exec/address-spaces.h"
-> @@ -26,7 +27,7 @@ static MemTxResult loongarch_ipi_readl(void *opaque, hwaddr addr,
->       uint64_t ret = 0;
->       int index = 0;
->   
-> -    s = &ipi->ipi_core;
-> +    s = &ipi->cpu[attrs.requester_id];
->       addr &= 0xff;
->       switch (addr) {
->       case CORE_STATUS_OFF:
-> @@ -65,7 +66,7 @@ static void send_ipi_data(CPULoongArchState *env, uint64_t val, hwaddr addr,
->        * if the mask is 0, we need not to do anything.
->        */
->       if ((val >> 27) & 0xf) {
-> -        data = address_space_ldl(&env->address_space_iocsr, addr,
-> +        data = address_space_ldl(env->address_space_iocsr, addr,
->                                    attrs, NULL);
->           for (i = 0; i < 4; i++) {
->               /* get mask for byte writing */
-> @@ -77,7 +78,7 @@ static void send_ipi_data(CPULoongArchState *env, uint64_t val, hwaddr addr,
->   
->       data &= mask;
->       data |= (val >> 32) & ~mask;
-> -    address_space_stl(&env->address_space_iocsr, addr,
-> +    address_space_stl(env->address_space_iocsr, addr,
->                         data, attrs, NULL);
->   }
->   
-> @@ -172,7 +173,7 @@ static MemTxResult loongarch_ipi_writel(void *opaque, hwaddr addr, uint64_t val,
->       uint8_t vector;
->       CPUState *cs;
->   
-> -    s = &ipi->ipi_core;
-> +    s = &ipi->cpu[attrs.requester_id];
->       addr &= 0xff;loongarch_ipi_finalize
->       trace_loongarch_ipi_write(size, (uint64_t)addr, val);
->       switch (addr) {
-> @@ -214,7 +215,6 @@ static MemTxResult loongarch_ipi_writel(void *opaque, hwaddr addr, uint64_t val,
->   
->           /* override requester_id */
->           attrs.requester_id = cs->cpu_index;
-> -        ipi = LOONGARCH_IPI(LOONGARCH_CPU(cs)->env.ipistate);
->           loongarch_ipi_writel(ipi, CORE_SET_OFF, BIT(vector), 4, attrs);
->           break;
->       default:
-> @@ -265,12 +265,18 @@ static const MemoryRegionOps loongarch_ipi64_ops = {
->       .endianness = DEVICE_LITTLE_ENDIAN,
->   };
->   
-> -static void loongarch_ipi_init(Object *obj)
-> +static void loongarch_ipi_realize(DeviceState *dev, Error **errp)
->   {
-> -    LoongArchIPI *s = LOONGARCH_IPI(obj);
-> -    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-> +    LoongArchIPI *s = LOONGARCH_IPI(dev);
-> +    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-> +    int i;
-> +
-> +    if (s->num_cpu == 0) {
-> +        error_setg(errp, "num-cpu must be at least 1");
-> +        return;
-> +    }
->   
-> -    memory_region_init_io(&s->ipi_iocsr_mem, obj, &loongarch_ipi_ops,
-> +    memory_region_init_io(&s->ipi_iocsr_mem, OBJECT(dev), &loongarch_ipi_ops,
->                             s, "loongarch_ipi_iocsr", 0x48);
->   
->       /* loongarch_ipi_iocsr performs re-entrant IO through ipi_send */
-> @@ -278,10 +284,20 @@ static void loongarch_ipi_init(Object *obj)
->   
->       sysbus_init_mmio(sbd, &s->ipi_iocsr_mem);
->   
-> -    memory_region_init_io(&s->ipi64_iocsr_mem, obj, &loongarch_ipi64_ops,
-> +    memory_region_init_io(&s->ipi64_iocsr_mem, OBJECT(dev),
-> +                          &loongarch_ipi64_ops,
->                             s, "loongarch_ipi64_iocsr", 0x118);
->       sysbus_init_mmio(sbd, &s->ipi64_iocsr_mem);
-> -    qdev_init_gpio_out(DEVICE(obj), &s->ipi_core.irq, 1);
-> +
-> +    s->cpu = g_new0(IPICore, s->num_cpu);
-> +    if (s->cpu == NULL) {
-> +        error_setg(errp, "Memory allocation for ExtIOICore faile");
-> +        return;
-> +    }
-> +
-> +    for (i = 0; i < s->num_cpu; i++) {
-> +        qdev_init_gpio_out(dev, &s->cpu[i].irq, 1);
-> +    }
->   }
->   
->   static const VMStateDescription vmstate_ipi_core = {
-> @@ -300,27 +316,42 @@ static const VMStateDescription vmstate_ipi_core = {
->   
->   static const VMStateDescription vmstate_loongarch_ipi = {
->       .name = TYPE_LOONGARCH_IPI,
-> -    .version_id = 1,
-> -    .minimum_version_id = 1,
-> +    .version_id = 2,
-> +    .minimum_version_id = 2,
->       .fields = (VMStateField[]) {
-> -        VMSTATE_STRUCT(ipi_core, LoongArchIPI, 0, vmstate_ipi_core, IPICore),
-> +        VMSTATE_STRUCT_VARRAY_POINTER_UINT32(cpu, LoongArchIPI, num_cpu,
-> +                         vmstate_ipi_core, IPICore),
->           VMSTATE_END_OF_LIST()
->       }
->   };
->   
-> +static Property ipi_properties[] = {
-> +    DEFINE_PROP_UINT32("num-cpu", LoongArchIPI, num_cpu, 1),
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
->   static void loongarch_ipi_class_init(ObjectClass *klass, void *data)
->   {
->       DeviceClass *dc = DEVICE_CLASS(klass);
->   
-> +    dc->realize = loongarch_ipi_realize;
-> +    device_class_set_props(dc, ipi_properties);
->       dc->vmsd = &vmstate_loongarch_ipi;
->   }
->   
-> +static void loongarch_ipi_finalize(Object *obj)
-> +{
-> +    LoongArchIPI *s = LOONGARCH_IPI(obj);
-> +
-> +    g_free(s->cpu);
-> +}
-> +
->   static const TypeInfo loongarch_ipi_info = {
->       .name          = TYPE_LOONGARCH_IPI,
->       .parent        = TYPE_SYS_BUS_DEVICE,
->       .instance_size = sizeof(LoongArchIPI),
-> -    .instance_init = loongarch_ipi_init,
->       .class_init    = loongarch_ipi_class_init,
-> +    .instance_finalize = loongarch_ipi_finalize,
->   };
->   
->   static void loongarch_ipi_register_types(void)
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index 4b7dc67a2d..13d19b6da3 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -535,9 +535,6 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
->       CPUState *cpu_state;
->       int cpu, pin, i, start, num;
->   
-> -    extioi = qdev_new(TYPE_LOONGARCH_EXTIOI);
-> -    sysbus_realize_and_unref(SYS_BUS_DEVICE(extioi), &error_fatal);
-> -
->       /*
->        * The connection of interrupts:
->        *   +-----+    +---------+     +-------+
-> @@ -559,36 +556,36 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
->        * | UARTs  | | Devices | | Devices |
->        * +--------+ +---------+ +---------+
->        */
-> +
-> +    /* Create IPI device */
-> +    ipi = qdev_new(TYPE_LOONGARCH_IPI);
-> +    qdev_prop_set_uint32(ipi, "num-cpu", ms->smp.cpus);
-> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(ipi), &error_fatal);
-> +
-> +    /* IPI iocsr memory region */
-> +    memory_region_add_subregion(&lams->system_iocsr, SMP_IPI_MAILBOX,
-> +                   sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi), 0));
-> +    memory_region_add_subregion(&lams->system_iocsr, MAIL_SEND_ADDR,
-> +                   sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi), 1));
-> +
->       for (cpu = 0; cpu < ms->smp.cpus; cpu++) {
->           cpu_state = qemu_get_cpu(cpu);
->           cpudev = DEVICE(cpu_state);
->           lacpu = LOONGARCH_CPU(cpu_state);
->           env = &(lacpu->env);
-> -
-> -        ipi = qdev_new(TYPE_LOONGARCH_IPI);
-> -        sysbus_realize_and_unref(SYS_BUS_DEVICE(ipi), &error_fatal);
-> +        env->address_space_iocsr = &lams->as_iocsr;
->   
->           /* connect ipi irq to cpu irq */
-> -        qdev_connect_gpio_out(ipi, 0, qdev_get_gpio_in(cpudev, IRQ_IPI));
-> -        /* IPI iocsr memory region */
-> -        memory_region_add_subregion(&env->system_iocsr, SMP_IPI_MAILBOX,
-> -                                    sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi),
-> -                                    0));
-> -        memory_region_add_subregion(&env->system_iocsr, MAIL_SEND_ADDR,
-> -                                    sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi),
-> -                                    1));
-> -        /*
-> -	 * extioi iocsr memory region
-> -	 * only one extioi is added on loongarch virt machine
-> -	 * external device interrupt can only be routed to cpu 0-3
-> -	 */
-> -	if (cpu < EXTIOI_CPUS)
-> -            memory_region_add_subregion(&env->system_iocsr, APIC_BASE,
-> -                                sysbus_mmio_get_region(SYS_BUS_DEVICE(extioi),
-> -                                cpu));
-> +        qdev_connect_gpio_out(ipi, cpu, qdev_get_gpio_in(cpudev, IRQ_IPI));
->           env->ipistate = ipi;
->       }
->   
-> +    /* Create EXTIOI device */
-> +    extioi = qdev_new(TYPE_LOONGARCH_EXTIOI);
-> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(extioi), &error_fatal);
-> +    memory_region_add_subregion(&lams->system_iocsr, APIC_BASE,
-> +                   sysbus_mmio_get_region(SYS_BUS_DEVICE(extioi), 0));
-> +
->       /*
->        * connect ext irq to the cpu irq
->        * cpu_pin[9:2] <= intc_pin[7:0]
-> @@ -733,6 +730,43 @@ static void loongarch_direct_kernel_boot(LoongArchMachineState *lams,
->       }
->   }
->   
-> +static void loongarch_qemu_write(void *opaque, hwaddr addr,
-> +                                 uint64_t val, unsigned size)
-> +{
-> +}
-> +
-> +static uint64_t loongarch_qemu_read(void *opaque, hwaddr addr, unsigned size)
-> +{
-> +    switch (addr) {
-> +    case VERSION_REG:
-> +        return 0x11ULL;
-> +    case FEATURE_REG:
-> +        return 1ULL << IOCSRF_MSI | 1ULL << IOCSRF_EXTIOI |
-> +               1ULL << IOCSRF_CSRIPI;
-> +    case VENDOR_REG:
-> +        return 0x6e6f73676e6f6f4cULL; /* "Loongson" */
-> +    case CPUNAME_REG:
-> +        return 0x303030354133ULL;     /* "3A5000" */
-> +    case MISC_FUNC_REG:
-> +        return 1ULL << IOCSRM_EXTIOI_EN;
-> +    }
-> +    return 0ULL;
-> +}
-> +
-> +static const MemoryRegionOps loongarch_qemu_ops = {
-> +    .read = loongarch_qemu_read,
-> +    .write = loongarch_qemu_write,
-> +    .endianness = DEVICE_LITTLE_ENDIAN,
-> +    .valid = {
-> +        .min_access_size = 4,
-> +        .max_access_size = 8,
-> +    },
-> +    .impl = {
-> +        .min_access_size = 8,
-> +        .max_access_size = 8,
-> +    },
-> +};
-> +
->   static void loongarch_init(MachineState *machine)
->   {
->       LoongArchCPU *lacpu;
-> @@ -761,8 +795,17 @@ static void loongarch_init(MachineState *machine)
->           exit(1);
->       }
->       create_fdt(lams);
-> -    /* Init CPUs */
->   
-> +    /* Create IOCSR space */
-> +    memory_region_init_io(&lams->system_iocsr, OBJECT(machine), NULL,
-> +                          machine, "iocsr", UINT64_MAX);
-> +    address_space_init(&lams->as_iocsr, &lams->system_iocsr, "IOCSR");
-> +    memory_region_init_io(&lams->iocsr_mem, OBJECT(machine),
-> +                          &loongarch_qemu_ops,
-> +                          machine, "iocsr_misc", 0x428);
-> +    memory_region_add_subregion(&lams->system_iocsr, 0, &lams->iocsr_mem);
-> +
-> +    /* Init CPUs */
->       possible_cpus = mc->possible_cpu_arch_ids(machine);
->       for (i = 0; i < possible_cpus->len; i++) {
->           cpu = cpu_create(machine->cpu_type);
-> diff --git a/include/hw/intc/loongarch_extioi.h b/include/hw/intc/loongarch_extioi.h
-> index fbdef9a7b3..110e5e8873 100644
-> --- a/include/hw/intc/loongarch_extioi.h
-> +++ b/include/hw/intc/loongarch_extioi.h
-> @@ -58,7 +58,6 @@ struct LoongArchExtIOI {
->       uint8_t  sw_coremap[EXTIOI_IRQS];
->       qemu_irq parent_irq[EXTIOI_CPUS][LS3A_INTC_IP];
->       qemu_irq irq[EXTIOI_IRQS];
-> -    MemoryRegion extioi_iocsr_mem[EXTIOI_CPUS];
->       MemoryRegion extioi_system_mem;
->   };
->   #endif /* LOONGARCH_EXTIOI_H */
-> diff --git a/include/hw/intc/loongarch_ipi.h b/include/hw/intc/loongarch_ipi.h
-> index 6c6194786e..1c1e834849 100644
-> --- a/include/hw/intc/loongarch_ipi.h
-> +++ b/include/hw/intc/loongarch_ipi.h
-> @@ -47,7 +47,8 @@ struct LoongArchIPI {
->       SysBusDevice parent_obj;
->       MemoryRegion ipi_iocsr_mem;
->       MemoryRegion ipi64_iocsr_mem;
-> -    IPICore ipi_core;
-> +    uint32_t num_cpu;
-> +    IPICore *cpu;
->   };
->   
->   #endif
-> diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-> index 674f4655e0..373bf199f6 100644
-> --- a/include/hw/loongarch/virt.h
-> +++ b/include/hw/loongarch/virt.h
-> @@ -50,6 +50,9 @@ struct LoongArchMachineState {
->       DeviceState *platform_bus_dev;
->       PCIBus       *pci_bus;
->       PFlashCFI01  *flash;
-> +    MemoryRegion system_iocsr;
-> +    MemoryRegion iocsr_mem;
-> +    AddressSpace as_iocsr;
->   };
->   
->   #define TYPE_LOONGARCH_MACHINE  MACHINE_TYPE_NAME("virt")
-> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-> index fc075952e6..c7ccf0cefd 100644
-> --- a/target/loongarch/cpu.c
-> +++ b/target/loongarch/cpu.c
-> @@ -582,47 +582,6 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
->       lacc->parent_realize(dev, errp);
->   }
->   
-> -#ifndef CONFIG_USER_ONLY
-> -static void loongarch_qemu_write(void *opaque, hwaddr addr,
-> -                                 uint64_t val, unsigned size)
-> -{
-> -    qemu_log_mask(LOG_UNIMP, "[%s]: Unimplemented reg 0x%" HWADDR_PRIx "\n",
-> -                  __func__, addr);
-> -}
-> -
-> -static uint64_t loongarch_qemu_read(void *opaque, hwaddr addr, unsigned size)
-> -{
-> -    switch (addr) {
-> -    case VERSION_REG:
-> -        return 0x11ULL;
-> -    case FEATURE_REG:
-> -        return 1ULL << IOCSRF_MSI | 1ULL << IOCSRF_EXTIOI |
-> -               1ULL << IOCSRF_CSRIPI;
-> -    case VENDOR_REG:
-> -        return 0x6e6f73676e6f6f4cULL; /* "Loongson" */
-> -    case CPUNAME_REG:
-> -        return 0x303030354133ULL;     /* "3A5000" */
-> -    case MISC_FUNC_REG:
-> -        return 1ULL << IOCSRM_EXTIOI_EN;
-> -    }
-> -    return 0ULL;
-> -}
-> -
-> -static const MemoryRegionOps loongarch_qemu_ops = {
-> -    .read = loongarch_qemu_read,
-> -    .write = loongarch_qemu_write,
-> -    .endianness = DEVICE_LITTLE_ENDIAN,
-> -    .valid = {
-> -        .min_access_size = 4,
-> -        .max_access_size = 8,
-> -    },
-> -    .impl = {
-> -        .min_access_size = 8,
-> -        .max_access_size = 8,
-> -    },
-> -};
-> -#endif
-> -
->   static bool loongarch_get_lsx(Object *obj, Error **errp)
->   {
->       LoongArchCPU *cpu = LOONGARCH_CPU(obj);
-> @@ -693,17 +652,10 @@ static void loongarch_cpu_init(Object *obj)
->   {
->   #ifndef CONFIG_USER_ONLY
->       LoongArchCPU *cpu = LOONGARCH_CPU(obj);
-> -    CPULoongArchState *env = &cpu->env;
->   
->       qdev_init_gpio_in(DEVICE(cpu), loongarch_cpu_set_irq, N_IRQS);
->       timer_init_ns(&cpu->timer, QEMU_CLOCK_VIRTUAL,
->                     &loongarch_constant_timer_cb, cpu);
-> -    memory_region_init_io(&env->system_iocsr, OBJECT(cpu), NULL,
-> -                          env, "iocsr", UINT64_MAX);
-> -    address_space_init(&env->address_space_iocsr, &env->system_iocsr, "IOCSR");
-> -    memory_region_init_io(&env->iocsr_mem, OBJECT(cpu), &loongarch_qemu_ops,
-> -                          NULL, "iocsr_misc", 0x428);
-> -    memory_region_add_subregion(&env->system_iocsr, 0, &env->iocsr_mem);
->   #endif
->   }
->   
-> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-> index 00d1fba597..0075ebd549 100644
-> --- a/target/loongarch/cpu.h
-> +++ b/target/loongarch/cpu.h
-> @@ -355,9 +355,7 @@ typedef struct CPUArchState {
->   #ifndef CONFIG_USER_ONLY
->       LoongArchTLB  tlb[LOONGARCH_TLB_MAX];
->   
-> -    AddressSpace address_space_iocsr;
-> -    MemoryRegion system_iocsr;
-> -    MemoryRegion iocsr_mem;
-> +    AddressSpace *address_space_iocsr;
->       bool load_elf;
->       uint64_t elf_address;
->       /* Store ipistate to access from this struct */
-> diff --git a/target/loongarch/iocsr_helper.c b/target/loongarch/iocsr_helper.c
-> index 6cd01d5f09..b6916f53d2 100644
-> --- a/target/loongarch/iocsr_helper.c
-> +++ b/target/loongarch/iocsr_helper.c
-> @@ -17,52 +17,52 @@
->   
->   uint64_t helper_iocsrrd_b(CPULoongArchState *env, target_ulong r_addr)
->   {
-> -    return address_space_ldub(&env->address_space_iocsr, r_addr,
-> +    return address_space_ldub(env->address_space_iocsr, r_addr,
->                                 GET_MEMTXATTRS(env), NULL);
->   }
->   
->   uint64_t helper_iocsrrd_h(CPULoongArchState *env, target_ulong r_addr)
->   {
-> -    return address_space_lduw(&env->address_space_iocsr, r_addr,
-> +    return address_space_lduw(env->address_space_iocsr, r_addr,
->                                 GET_MEMTXATTRS(env), NULL);
->   }
->   
->   uint64_t helper_iocsrrd_w(CPULoongArchState *env, target_ulong r_addr)
->   {
-> -    return address_space_ldl(&env->address_space_iocsr, r_addr,
-> +    return address_space_ldl(env->address_space_iocsr, r_addr,
->                                GET_MEMTXATTRS(env), NULL);
->   }
->   
->   uint64_t helper_iocsrrd_d(CPULoongArchState *env, target_ulong r_addr)
->   {
-> -    return address_space_ldq(&env->address_space_iocsr, r_addr,
-> +    return address_space_ldq(env->address_space_iocsr, r_addr,
->                                GET_MEMTXATTRS(env), NULL);
->   }
->   
->   void helper_iocsrwr_b(CPULoongArchState *env, target_ulong w_addr,
->                         target_ulong val)
->   {
-> -    address_space_stb(&env->address_space_iocsr, w_addr,
-> +    address_space_stb(env->address_space_iocsr, w_addr,
->                         val, GET_MEMTXATTRS(env), NULL);
->   }
->   
->   void helper_iocsrwr_h(CPULoongArchState *env, target_ulong w_addr,
->                         target_ulong val)
->   {
-> -    address_space_stw(&env->address_space_iocsr, w_addr,
-> +    address_space_stw(env->address_space_iocsr, w_addr,
->                         val, GET_MEMTXATTRS(env), NULL);
->   }
->   
->   void helper_iocsrwr_w(CPULoongArchState *env, target_ulong w_addr,
->                         target_ulong val)
->   {
-> -    address_space_stl(&env->address_space_iocsr, w_addr,
-> +    address_space_stl(env->address_space_iocsr, w_addr,
->                         val, GET_MEMTXATTRS(env), NULL);
->   }
->   
->   void helper_iocsrwr_d(CPULoongArchState *env, target_ulong w_addr,
->                         target_ulong val)
->   {
-> -    address_space_stq(&env->address_space_iocsr, w_addr,
-> +    address_space_stq(env->address_space_iocsr, w_addr,
->                         val, GET_MEMTXATTRS(env), NULL);
->   }
-
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBGYWJpYW5vIFJvc2FzIDxmYXJv
+c2FzQHN1c2UuZGU+DQo+IFNlbnQ6IFR1ZXNkYXksIEphbnVhcnkgOSwgMjAyNCA0OjI4IEFNDQo+
+IFRvOiBMaXUsIFl1YW4xIDx5dWFuMS5saXVAaW50ZWwuY29tPjsgSGFvIFhpYW5nIDxoYW8ueGlh
+bmdAYnl0ZWRhbmNlLmNvbT4NCj4gQ2M6IEJyeWFuIFpoYW5nIDxicnlhbi56aGFuZ0BieXRlZGFu
+Y2UuY29tPjsgcWVtdS1kZXZlbEBub25nbnUub3JnOw0KPiBtYXJjYW5kcmUubHVyZWF1QHJlZGhh
+dC5jb207IHBldGVyeEByZWRoYXQuY29tOyBxdWludGVsYUByZWRoYXQuY29tOw0KPiBwZXRlci5t
+YXlkZWxsQGxpbmFyby5vcmc7IGJlcnJhbmdlQHJlZGhhdC5jb20NCj4gU3ViamVjdDogUkU6IFtF
+eHRlcm5hbF0gUmU6IFtQQVRDSCAzLzVdIG1pZ3JhdGlvbjogSW50cm9kdWNlIHVuaW1wbGVtZW50
+ZWQNCj4gJ3FhdHppcCcgY29tcHJlc3Npb24gbWV0aG9kDQo+IA0KPiAiTGl1LCBZdWFuMSIgPHl1
+YW4xLmxpdUBpbnRlbC5jb20+IHdyaXRlczoNCj4gDQo+ID4+IC0tLS0tT3JpZ2luYWwgTWVzc2Fn
+ZS0tLS0tDQo+ID4+IEZyb206IEhhbyBYaWFuZyA8aGFvLnhpYW5nQGJ5dGVkYW5jZS5jb20+DQo+
+ID4+IFNlbnQ6IFNhdHVyZGF5LCBKYW51YXJ5IDYsIDIwMjQgNzo1MyBBTQ0KPiA+PiBUbzogRmFi
+aWFubyBSb3NhcyA8ZmFyb3Nhc0BzdXNlLmRlPg0KPiA+PiBDYzogQnJ5YW4gWmhhbmcgPGJyeWFu
+LnpoYW5nQGJ5dGVkYW5jZS5jb20+OyBxZW11LWRldmVsQG5vbmdudS5vcmc7DQo+ID4+IG1hcmNh
+bmRyZS5sdXJlYXVAcmVkaGF0LmNvbTsgcGV0ZXJ4QHJlZGhhdC5jb207IHF1aW50ZWxhQHJlZGhh
+dC5jb207DQo+ID4+IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgTGl1LCBZdWFuMSA8eXVhbjEu
+bGl1QGludGVsLmNvbT47DQo+ID4+IGJlcnJhbmdlQHJlZGhhdC5jb20NCj4gPj4gU3ViamVjdDog
+UmU6IFtFeHRlcm5hbF0gUmU6IFtQQVRDSCAzLzVdIG1pZ3JhdGlvbjogSW50cm9kdWNlDQo+ID4+
+IHVuaW1wbGVtZW50ZWQgJ3FhdHppcCcgY29tcHJlc3Npb24gbWV0aG9kDQo+ID4+DQo+ID4+IE9u
+IEZyaSwgSmFuIDUsIDIwMjQgYXQgMTI6MDfigK9QTSBGYWJpYW5vIFJvc2FzIDxmYXJvc2FzQHN1
+c2UuZGU+IHdyb3RlOg0KPiA+PiA+DQo+ID4+ID4gQnJ5YW4gWmhhbmcgPGJyeWFuLnpoYW5nQGJ5
+dGVkYW5jZS5jb20+IHdyaXRlczoNCj4gPj4gPg0KPiA+PiA+ICtjYyBZdWFuIExpdSwgRGFuaWVs
+IEJlcnJhbmfDqQ0KPiA+PiA+DQo+ID4+ID4gPiBBZGRzIHN1cHBvcnQgZm9yICdxYXR6aXAnIGFz
+IGFuIG9wdGlvbiBmb3IgdGhlIG11bHRpZmQNCj4gPj4gPiA+IGNvbXByZXNzaW9uIG1ldGhvZCBw
+YXJhbWV0ZXIsIGJ1dCBjb3B5LXBhc3RlcyB0aGUgbm8tb3AgbG9naWMgdG8NCj4gPj4gPiA+IGxl
+YXZlIHRoZSBhY3R1YWwgbWV0aG9kcyBlZmZlY3RpdmVseSB1bmltcGxlbWVudGVkLiBUaGlzIGlz
+IGluDQo+ID4+ID4gPiBwcmVwYXJhdGlvbiBvZiBhIHN1YnNlcXVlbnQgY29tbWl0IHRoYXQgd2ls
+bCBpbXBsZW1lbnQgYWN0dWFsbHkNCj4gPj4gPiA+IHVzaW5nIFFBVCBmb3IgY29tcHJlc3Npb24g
+YW5kIGRlY29tcHJlc3Npb24uDQo+ID4+ID4gPg0KPiA+PiA+ID4gU2lnbmVkLW9mZi1ieTogQnJ5
+YW4gWmhhbmcgPGJyeWFuLnpoYW5nQGJ5dGVkYW5jZS5jb20+DQo+ID4+ID4gPiBTaWduZWQtb2Zm
+LWJ5OiBIYW8gWGlhbmcgPGhhby54aWFuZ0BieXRlZGFuY2UuY29tPg0KPiA+PiA+ID4gLS0tDQo+
+ID4+ID4gPiAgaHcvY29yZS9xZGV2LXByb3BlcnRpZXMtc3lzdGVtLmMgfCAgNiArKy0NCj4gPj4g
+PiA+ICBtaWdyYXRpb24vbWVzb24uYnVpbGQgICAgICAgICAgICB8ICAxICsNCj4gPj4gPiA+ICBt
+aWdyYXRpb24vbXVsdGlmZC1xYXR6aXAuYyAgICAgICB8IDgxDQo+ID4+ICsrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrDQo+ID4+ID4gPiAgbWlncmF0aW9uL211bHRpZmQuaCAgICAgICAg
+ICAgICAgfCAgMSArDQo+ID4+ID4gPiAgcWFwaS9taWdyYXRpb24uanNvbiAgICAgICAgICAgICAg
+fCAgNSArLQ0KPiA+PiA+ID4gIDUgZmlsZXMgY2hhbmdlZCwgOTIgaW5zZXJ0aW9ucygrKSwgMiBk
+ZWxldGlvbnMoLSkgIGNyZWF0ZSBtb2RlDQo+ID4+ID4gPiAxMDA2NDQgbWlncmF0aW9uL211bHRp
+ZmQtcWF0emlwLmMNCj4gPj4gPiA+DQo+ID4+ID4gPiBkaWZmIC0tZ2l0IGEvaHcvY29yZS9xZGV2
+LXByb3BlcnRpZXMtc3lzdGVtLmMNCj4gPj4gPiA+IGIvaHcvY29yZS9xZGV2LXByb3BlcnRpZXMt
+c3lzdGVtLmMNCj4gPj4gPiA+IGluZGV4IDFhMzk2NTIxZDUuLmQ4ZTQ4ZGNiMGUgMTAwNjQ0DQo+
+ID4+ID4gPiAtLS0gYS9ody9jb3JlL3FkZXYtcHJvcGVydGllcy1zeXN0ZW0uYw0KPiA+PiA+ID4g
+KysrIGIvaHcvY29yZS9xZGV2LXByb3BlcnRpZXMtc3lzdGVtLmMNCj4gPj4gPiA+IEBAIC02NTgs
+NyArNjU4LDExIEBAIGNvbnN0IFByb3BlcnR5SW5mbyBxZGV2X3Byb3BfZmRjX2RyaXZlX3R5cGUN
+Cj4gPj4gPiA+ID0geyBjb25zdCBQcm9wZXJ0eUluZm8gcWRldl9wcm9wX211bHRpZmRfY29tcHJl
+c3Npb24gPSB7DQo+ID4+ID4gPiAgICAgIC5uYW1lID0gIk11bHRpRkRDb21wcmVzc2lvbiIsDQo+
+ID4+ID4gPiAgICAgIC5kZXNjcmlwdGlvbiA9ICJtdWx0aWZkX2NvbXByZXNzaW9uIHZhbHVlcywg
+Ig0KPiA+PiA+ID4gLSAgICAgICAgICAgICAgICAgICAibm9uZS96bGliL3pzdGQiLA0KPiA+PiA+
+ID4gKyAgICAgICAgICAgICAgICAgICAibm9uZS96bGliL3pzdGQiDQo+ID4+ID4gPiArI2lmZGVm
+IENPTkZJR19RQVRaSVANCj4gPj4gPiA+ICsgICAgICAgICAgICAgICAgICAgIi9xYXR6aXAiDQo+
+ID4+ID4gPiArI2VuZGlmDQo+ID4+ID4gPiArICAgICAgICAgICAgICAgICAgICwNCj4gPj4gPiA+
+ICAgICAgLmVudW1fdGFibGUgPSAmTXVsdGlGRENvbXByZXNzaW9uX2xvb2t1cCwNCj4gPj4gPiA+
+ICAgICAgLmdldCA9IHFkZXZfcHJvcGluZm9fZ2V0X2VudW0sDQo+ID4+ID4gPiAgICAgIC5zZXQg
+PSBxZGV2X3Byb3BpbmZvX3NldF9lbnVtLCBkaWZmIC0tZ2l0DQo+ID4+ID4gPiBhL21pZ3JhdGlv
+bi9tZXNvbi5idWlsZCBiL21pZ3JhdGlvbi9tZXNvbi5idWlsZCBpbmRleA0KPiA+PiA+ID4gOTJi
+MWNjNDI5Ny4uZTIwZjMxODM3OSAxMDA2NDQNCj4gPj4gPiA+IC0tLSBhL21pZ3JhdGlvbi9tZXNv
+bi5idWlsZA0KPiA+PiA+ID4gKysrIGIvbWlncmF0aW9uL21lc29uLmJ1aWxkDQo+ID4+ID4gPiBA
+QCAtNDAsNiArNDAsNyBAQCBpZiBnZXRfb3B0aW9uKCdsaXZlX2Jsb2NrX21pZ3JhdGlvbicpLmFs
+bG93ZWQoKQ0KPiA+PiA+ID4gICAgc3lzdGVtX3NzLmFkZChmaWxlcygnYmxvY2suYycpKSAgZW5k
+aWYNCj4gPj4gPiA+ICBzeXN0ZW1fc3MuYWRkKHdoZW46IHpzdGQsIGlmX3RydWU6IGZpbGVzKCdt
+dWx0aWZkLXpzdGQuYycpKQ0KPiA+PiA+ID4gK3N5c3RlbV9zcy5hZGQod2hlbjogcWF0emlwLCBp
+Zl90cnVlOiBmaWxlcygnbXVsdGlmZC1xYXR6aXAuYycpKQ0KPiA+PiA+ID4NCj4gPj4gPiA+ICBz
+cGVjaWZpY19zcy5hZGQod2hlbjogJ0NPTkZJR19TWVNURU1fT05MWScsDQo+ID4+ID4gPiAgICAg
+ICAgICAgICAgICAgIGlmX3RydWU6IGZpbGVzKCdyYW0uYycsIGRpZmYgLS1naXQNCj4gPj4gPiA+
+IGEvbWlncmF0aW9uL211bHRpZmQtcWF0emlwLmMgYi9taWdyYXRpb24vbXVsdGlmZC1xYXR6aXAu
+YyBuZXcgZmlsZQ0KPiA+PiA+ID4gbW9kZSAxMDA2NDQgaW5kZXggMDAwMDAwMDAwMC4uMTczM2Ji
+ZGRiNw0KPiA+PiA+ID4gLS0tIC9kZXYvbnVsbA0KPiA+PiA+ID4gKysrIGIvbWlncmF0aW9uL211
+bHRpZmQtcWF0emlwLmMNCj4gPj4gPiA+IEBAIC0wLDAgKzEsODEgQEANCj4gPj4gPiA+ICsvKg0K
+PiA+PiA+ID4gKyAqIE11bHRpZmQgUUFUemlwIGNvbXByZXNzaW9uIGltcGxlbWVudGF0aW9uDQo+
+ID4+ID4gPiArICoNCj4gPj4gPiA+ICsgKiBDb3B5cmlnaHQgKGMpIEJ5dGVkYW5jZQ0KPiA+PiA+
+ID4gKyAqDQo+ID4+ID4gPiArICogQXV0aG9yczoNCj4gPj4gPiA+ICsgKiAgQnJ5YW4gWmhhbmcg
+PGJyeWFuLnpoYW5nQGJ5dGVkYW5jZS5jb20+DQo+ID4+ID4gPiArICogIEhhbyBYaWFuZyAgIDxo
+YW8ueGlhbmdAYnl0ZWRhbmNlLmNvbT4NCj4gPj4gPiA+ICsgKg0KPiA+PiA+ID4gKyAqIFRoaXMg
+d29yayBpcyBsaWNlbnNlZCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHUEwsIHZlcnNpb24g
+Mg0KPiBvcg0KPiA+PiBsYXRlci4NCj4gPj4gPiA+ICsgKiBTZWUgdGhlIENPUFlJTkcgZmlsZSBp
+biB0aGUgdG9wLWxldmVsIGRpcmVjdG9yeS4NCj4gPj4gPiA+ICsgKi8NCj4gPj4gPiA+ICsNCj4g
+Pj4gPiA+ICsjaW5jbHVkZSAicWVtdS9vc2RlcC5oIg0KPiA+PiA+ID4gKyNpbmNsdWRlICJleGVj
+L3JhbWJsb2NrLmgiDQo+ID4+ID4gPiArI2luY2x1ZGUgImV4ZWMvdGFyZ2V0X3BhZ2UuaCINCj4g
+Pj4gPiA+ICsjaW5jbHVkZSAicWFwaS9lcnJvci5oIg0KPiA+PiA+ID4gKyNpbmNsdWRlICJtaWdy
+YXRpb24uaCINCj4gPj4gPiA+ICsjaW5jbHVkZSAib3B0aW9ucy5oIg0KPiA+PiA+ID4gKyNpbmNs
+dWRlICJtdWx0aWZkLmgiDQo+ID4+ID4gPiArDQo+ID4+ID4gPiArc3RhdGljIGludCBxYXR6aXBf
+c2VuZF9zZXR1cChNdWx0aUZEU2VuZFBhcmFtcyAqcCwgRXJyb3IgKiplcnJwKSB7DQo+ID4+ID4g
+PiArICAgIHJldHVybiAwOw0KPiA+PiA+ID4gK30NCj4gPj4gPiA+ICsNCj4gPj4gPiA+ICtzdGF0
+aWMgdm9pZCBxYXR6aXBfc2VuZF9jbGVhbnVwKE11bHRpRkRTZW5kUGFyYW1zICpwLCBFcnJvcg0K
+PiAqKmVycnApDQo+ID4+ID4gPiAre307DQo+ID4+ID4gPiArDQo+ID4+ID4gPiArc3RhdGljIGlu
+dCBxYXR6aXBfc2VuZF9wcmVwYXJlKE11bHRpRkRTZW5kUGFyYW1zICpwLCBFcnJvciAqKmVycnAp
+DQo+ID4+ID4gPiArew0KPiA+PiA+ID4gKyAgICBNdWx0aUZEUGFnZXNfdCAqcGFnZXMgPSBwLT5w
+YWdlczsNCj4gPj4gPiA+ICsNCj4gPj4gPiA+ICsgICAgZm9yIChpbnQgaSA9IDA7IGkgPCBwLT5u
+b3JtYWxfbnVtOyBpKyspIHsNCj4gPj4gPiA+ICsgICAgICAgIHAtPmlvdltwLT5pb3ZzX251bV0u
+aW92X2Jhc2UgPSBwYWdlcy0+YmxvY2stPmhvc3QgKyBwLQ0KPiA+PiA+bm9ybWFsW2ldOw0KPiA+
+PiA+ID4gKyAgICAgICAgcC0+aW92W3AtPmlvdnNfbnVtXS5pb3ZfbGVuID0gcC0+cGFnZV9zaXpl
+Ow0KPiA+PiA+ID4gKyAgICAgICAgcC0+aW92c19udW0rKzsNCj4gPj4gPiA+ICsgICAgfQ0KPiA+
+PiA+ID4gKw0KPiA+PiA+ID4gKyAgICBwLT5uZXh0X3BhY2tldF9zaXplID0gcC0+bm9ybWFsX251
+bSAqIHAtPnBhZ2Vfc2l6ZTsNCj4gPj4gPiA+ICsgICAgcC0+ZmxhZ3MgfD0gTVVMVElGRF9GTEFH
+X05PQ09NUDsNCj4gPj4gPiA+ICsgICAgcmV0dXJuIDA7DQo+ID4+ID4gPiArfQ0KPiA+PiA+ID4g
+Kw0KPiA+PiA+ID4gK3N0YXRpYyBpbnQgcWF0emlwX3JlY3Zfc2V0dXAoTXVsdGlGRFJlY3ZQYXJh
+bXMgKnAsIEVycm9yICoqZXJycCkgew0KPiA+PiA+ID4gKyAgICByZXR1cm4gMDsNCj4gPj4gPiA+
+ICt9DQo+ID4+ID4gPiArDQo+ID4+ID4gPiArc3RhdGljIHZvaWQgcWF0emlwX3JlY3ZfY2xlYW51
+cChNdWx0aUZEUmVjdlBhcmFtcyAqcCkge307DQo+ID4+ID4gPiArDQo+ID4+ID4gPiArc3RhdGlj
+IGludCBxYXR6aXBfcmVjdl9wYWdlcyhNdWx0aUZEUmVjdlBhcmFtcyAqcCwgRXJyb3IgKiplcnJw
+KSB7DQo+ID4+ID4gPiArICAgIHVpbnQzMl90IGZsYWdzID0gcC0+ZmxhZ3MgJiBNVUxUSUZEX0ZM
+QUdfQ09NUFJFU1NJT05fTUFTSzsNCj4gPj4gPiA+ICsNCj4gPj4gPiA+ICsgICAgaWYgKGZsYWdz
+ICE9IE1VTFRJRkRfRkxBR19OT0NPTVApIHsNCj4gPj4gPiA+ICsgICAgICAgIGVycm9yX3NldGco
+ZXJycCwgIm11bHRpZmQgJXU6IGZsYWdzIHJlY2VpdmVkICV4IGZsYWdzDQo+ID4+IGV4cGVjdGVk
+ICV4IiwNCj4gPj4gPiA+ICsgICAgICAgICAgICAgICAgICAgcC0+aWQsIGZsYWdzLCBNVUxUSUZE
+X0ZMQUdfTk9DT01QKTsNCj4gPj4gPiA+ICsgICAgICAgIHJldHVybiAtMTsNCj4gPj4gPiA+ICsg
+ICAgfQ0KPiA+PiA+ID4gKyAgICBmb3IgKGludCBpID0gMDsgaSA8IHAtPm5vcm1hbF9udW07IGkr
+Kykgew0KPiA+PiA+ID4gKyAgICAgICAgcC0+aW92W2ldLmlvdl9iYXNlID0gcC0+aG9zdCArIHAt
+Pm5vcm1hbFtpXTsNCj4gPj4gPiA+ICsgICAgICAgIHAtPmlvdltpXS5pb3ZfbGVuID0gcC0+cGFn
+ZV9zaXplOw0KPiA+PiA+ID4gKyAgICB9DQo+ID4+ID4gPiArICAgIHJldHVybiBxaW9fY2hhbm5l
+bF9yZWFkdl9hbGwocC0+YywgcC0+aW92LCBwLT5ub3JtYWxfbnVtLA0KPiA+PiA+ID4gK2VycnAp
+OyB9DQo+ID4+ID4gPiArDQo+ID4+ID4gPiArc3RhdGljIE11bHRpRkRNZXRob2RzIG11bHRpZmRf
+cWF0emlwX29wcyA9IHsNCj4gPj4gPiA+ICsgICAgLnNlbmRfc2V0dXAgPSBxYXR6aXBfc2VuZF9z
+ZXR1cCwNCj4gPj4gPiA+ICsgICAgLnNlbmRfY2xlYW51cCA9IHFhdHppcF9zZW5kX2NsZWFudXAs
+DQo+ID4+ID4gPiArICAgIC5zZW5kX3ByZXBhcmUgPSBxYXR6aXBfc2VuZF9wcmVwYXJlLA0KPiA+
+PiA+ID4gKyAgICAucmVjdl9zZXR1cCA9IHFhdHppcF9yZWN2X3NldHVwLA0KPiA+PiA+ID4gKyAg
+ICAucmVjdl9jbGVhbnVwID0gcWF0emlwX3JlY3ZfY2xlYW51cCwNCj4gPj4gPiA+ICsgICAgLnJl
+Y3ZfcGFnZXMgPSBxYXR6aXBfcmVjdl9wYWdlcyB9Ow0KPiA+PiA+ID4gKw0KPiA+PiA+ID4gK3N0
+YXRpYyB2b2lkIG11bHRpZmRfcWF0emlwX3JlZ2lzdGVyKHZvaWQpIHsNCj4gPj4gPiA+ICsgICAg
+bXVsdGlmZF9yZWdpc3Rlcl9vcHMoTVVMVElGRF9DT01QUkVTU0lPTl9RQVRaSVAsDQo+ID4+ID4g
+PiArJm11bHRpZmRfcWF0emlwX29wcyk7IH0NCj4gPj4gPiA+ICsNCj4gPj4gPiA+ICttaWdyYXRp
+b25faW5pdChtdWx0aWZkX3FhdHppcF9yZWdpc3Rlcik7DQo+ID4+ID4gPiBkaWZmIC0tZ2l0IGEv
+bWlncmF0aW9uL211bHRpZmQuaCBiL21pZ3JhdGlvbi9tdWx0aWZkLmggaW5kZXgNCj4gPj4gPiA+
+IGE4MzU2NDNiNDguLjU2MDBmN2ZjODIgMTAwNjQ0DQo+ID4+ID4gPiAtLS0gYS9taWdyYXRpb24v
+bXVsdGlmZC5oDQo+ID4+ID4gPiArKysgYi9taWdyYXRpb24vbXVsdGlmZC5oDQo+ID4+ID4gPiBA
+QCAtMzMsNiArMzMsNyBAQCBpbnQgbXVsdGlmZF9xdWV1ZV9wYWdlKFFFTVVGaWxlICpmLCBSQU1C
+bG9jaw0KPiA+PiA+ID4gKmJsb2NrLCByYW1fYWRkcl90IG9mZnNldCk7ICAjZGVmaW5lIE1VTFRJ
+RkRfRkxBR19OT0NPTVAgKDAgPDwgMSkNCj4gPj4gPiA+ICNkZWZpbmUgTVVMVElGRF9GTEFHX1pM
+SUIgKDEgPDwgMSkgICNkZWZpbmUgTVVMVElGRF9GTEFHX1pTVEQgKDIgPDwNCj4gPj4gPiA+IDEp
+DQo+ID4+ID4gPiArI2RlZmluZSBNVUxUSUZEX0ZMQUdfUUFUWklQICgzIDw8IDEpDQo+ID4+ID4g
+Pg0KPiA+PiA+ID4gIC8qIFRoaXMgdmFsdWUgbmVlZHMgdG8gYmUgYSBtdWx0aXBsZSBvZiBxZW11
+X3RhcmdldF9wYWdlX3NpemUoKSAqLw0KPiA+PiA+ID4gI2RlZmluZSBNVUxUSUZEX1BBQ0tFVF9T
+SVpFICg1MTIgKiAxMDI0KSBkaWZmIC0tZ2l0DQo+ID4+ID4gPiBhL3FhcGkvbWlncmF0aW9uLmpz
+b24gYi9xYXBpL21pZ3JhdGlvbi5qc29uIGluZGV4DQo+ID4+ID4gPiA2ZDVhNGIwNDg5Li5lM2Nj
+MTk1YWVkIDEwMDY0NA0KPiA+PiA+ID4gLS0tIGEvcWFwaS9taWdyYXRpb24uanNvbg0KPiA+PiA+
+ID4gKysrIGIvcWFwaS9taWdyYXRpb24uanNvbg0KPiA+PiA+ID4gQEAgLTYyNSwxMSArNjI1LDE0
+IEBADQo+ID4+ID4gPiAgIw0KPiA+PiA+ID4gICMgQHpzdGQ6IHVzZSB6c3RkIGNvbXByZXNzaW9u
+IG1ldGhvZC4NCj4gPj4gPiA+ICAjDQo+ID4+ID4gPiArIyBAcWF0emlwOiB1c2UgcWF0emlwIGNv
+bXByZXNzaW9uIG1ldGhvZC4NCj4gPj4gPiA+ICsjDQo+ID4+ID4gPiAgIyBTaW5jZTogNS4wDQo+
+ID4+ID4gPiAgIyMNCj4gPj4gPiA+ICB7ICdlbnVtJzogJ011bHRpRkRDb21wcmVzc2lvbicsDQo+
+ID4+ID4gPiAgICAnZGF0YSc6IFsgJ25vbmUnLCAnemxpYicsDQo+ID4+ID4gPiAtICAgICAgICAg
+ICAgeyAnbmFtZSc6ICd6c3RkJywgJ2lmJzogJ0NPTkZJR19aU1REJyB9IF0gfQ0KPiA+PiA+ID4g
+KyAgICAgICAgICAgIHsgJ25hbWUnOiAnenN0ZCcsICdpZic6ICdDT05GSUdfWlNURCcgfSwNCj4g
+Pj4gPiA+ICsgICAgICAgICAgICB7ICduYW1lJzogJ3FhdHppcCcsICdpZic6ICdDT05GSUdfUUFU
+WklQJ30gXSB9DQo+ID4+ID4NCj4gPj4gPiBJbiBhbm90aGVyIHRocmVhZCBhZGRpbmcgc3VwcG9y
+dCB0byBhbm90aGVyIEludGVsIGFjY2VsZXJhdG9yIChJQUEpDQo+IHdlDQo+ID4+ID4gZGVjaWRl
+ZCB0aGF0IGl0IHdhcyBiZXR0ZXIgdG8gc2VsZWN0IHRoZSBvZmZsb2FkaW5nIGFzIGFuIGFjY2Vs
+ZXJhdG9yDQo+ID4+ID4gbWV0aG9kIHRvIG11bHRpZmQgemxpYiByYXRoZXIgdGhhbiBhcyBhbiBl
+bnRpcmVseSBuZXcgY29tcHJlc3Npb24NCj4gPj4gPiBmb3JtYXQuIFRha2UgYSBsb29rIGF0IHRo
+YXQgZGlzY3Vzc2lvbjoNCj4gPj4gPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9yL1pURkNucWJi
+cWxtc1VrUkNAcmVkaGF0LmNvbQ0KPiA+Pg0KPiA+PiBXZSBoYWQgc29tZSBlYXJseSBkaXNjdXNz
+aW9uIHdpdGggSW50ZWwgZm9sa3MgKHByb2JhYmx5IGEgZGlmZmVyZW50DQo+IHRlYW0NCj4gPj4g
+dGhhbiB0aGUgb25lIHdpdGggdGhlIGFib3ZlIHBhdGNoc2V0KS4gVGhlIHVuZGVyc3RhbmRpbmcg
+YXQgdGhlIHRpbWUgaXMNCj4gPj4gdGhhdCBRQVQgaXMgZ29vZCBhdCBib3RoIGJ1bGsgZGF0YSBj
+b21wcmVzc2lvbiBhbmQgZGVjb21wcmVzc2lvbi4gSUFBDQo+IGlzDQo+ID4+IGdvb2QgYXQgZGVj
+b21wcmVzc2lvbiB3aXRoIHNtYWxsZXIgZGF0YSBzaXplIGJ1dCBjb21wcmVzc2lvbg0KPiBwZXJm
+b3JtYW5jZQ0KPiA+PiBpcyBub3QgdGhlIGJlc3QuIEluIG11bHRpZmQsIHdlIGFyZSBjb21wcmVz
+c2luZyB1cCB0byAxMjggNGsgcGFnZXMgYXQgYQ0KPiA+PiB0aW1lIGFuZCBwb3RlbnRpYWxseSB0
+aGlzIGNhbiBpbmNyZWFzZSBieSBjb25maWd1cmluZyB0aGUgcGFja2V0IHNpemUsDQo+IGF0DQo+
+ID4+IHRoZSB0aW1lIHdlIHRob3VnaHQgUUFUIGNvdWxkIGJlIGEgYmV0dGVyIGZpdCBpbiB0aGUg
+bXVsdGlmZCBsaXZlDQo+ID4+IG1pZ3JhdGlvbiBzY2VuYXJpby4gV2Ugd291bGQgbGlrZSB0byBo
+ZWFyIG1vcmUgZnJvbSBJbnRlbC4NCj4gPj4NCj4gPj4gRnJvbSBvdXIgYmVuY2htYXJrIHRlc3Rp
+bmcsIHdpdGggdHdvIFFBVCBkZXZpY2VzLCB3ZSBjYW4gZ2V0IGRlZmxhdGUNCj4gPj4gY29tcHJl
+c3Npb24gdGhyb3VnaG91dCB0byBhcm91bmQgN0dCL3Mgd2l0aCB+MTYwJSBDUFUuIFRoYXQncyBi
+ZWF0aW5nDQo+IHRoZQ0KPiA+PiBjdXJyZW50IHNvZnR3YXJlIGltcGxlbWVudGF0aW9uICh6bGli
+IGFuZCB6c3RkKSBieSBhIGxvdC4gV2UgYXJlIHN0aWxsDQo+ID4+IHR1bmluZyB0aGUgY29uZmln
+dXJhdGlvbiBpbiBRRU1VIGxpdmUgbWlncmF0aW9uIG5vdy4NCj4gPj4NCj4gPj4gPg0KPiA+PiA+
+IEFzIEkgdW5kZXJzdGFuZCBpdCwgUUFUICsgUUFUemlwIHdvdWxkIGJlIGNvbXBhdGlibGUgd2l0
+aCBib3RoIHpsaWINCj4gPj4gPiBhbmQgSUFBICsgUVBMLCBzbyB3ZSdkIGFkZCBhbm90aGVyIGFj
+Y2VsZXJhdG9yIG1ldGhvZCBsaWtlIHRoaXM6DQo+ID4+ID4NCj4gPj4gPiBodHRwczovL2xvcmUu
+a2VybmVsLm9yZy9yLzIwMjQwMTAzMTEyODUxLjkwODA4Mi0zLXl1YW4xLmxpdUBpbnRlbC5jb20N
+Cj4gPj4gPg0KPiA+Pg0KPiA+PiBJIHF1aWNrbHkgcmVhZCBvdmVyIHRoZSBJQUEgcGF0Y2hzZXQg
+YW5kIEkgc2F3IHRoaXM6DQo+ID4+DQo+ID4+ICJIb3dldmVyLCBkdWUgdG8gc29tZSByZWFzb25z
+LCBRUEwgaXMgY3VycmVudGx5IG5vdCBjb21wYXRpYmxlIHdpdGggdGhlDQo+ID4+IGV4aXN0aW5n
+IFpsaWIgbWV0aG9kIHRoYXQgWmxpYiBjb21wcmVzc2VkIGRhdGEgY2FuIGJlIGRlY29tcHJlc3Nl
+ZCBieQ0KPiBRUGwNCj4gPj4gYW5kIHZpY2UgdmVyc2EuIg0KPiA+Pg0KPiA+PiBUaGUgYWJvdmUg
+cHJvYmFibHkgbWVhbnMgdGhlIGN1cnJlbnQgemxpYiBzb2Z0d2FyZSBpbXBsZW1lbnRhdGlvbiBh
+bmQNCj4gSUFBDQo+ID4+IGFyZSBub3QgY29tcGF0aWJsZS4NCj4gPj4NCj4gPj4gRm9yIFFBVCwg
+YWx0aG91Z2gsIGJvdGggSW50ZWwncyBRQVR6aXAgYW5kIHpsaWIgYXJlIGludGVybmFsbHkgdXNp
+bmcNCj4gPj4gZGVmbGF0ZSwgUUFUemlwIG9ubHkgc3VwcG9ydHMgZGVmbGF0ZSB3aXRoIGEgNCBi
+eXRlIGhlYWRlciwgZGVmbGF0ZQ0KPiA+PiB3cmFwcGVkIGJ5IEd6aXAgaGVhZGVyIGFuZCBmb290
+ZXIsIG9yIGRlZmxhdGUgd3JhcHBlZCBieSBJbnRlbMKuIFFBVA0KPiA+PiBHemlwKiBleHRlbnNp
+b24gaGVhZGVyIGFuZCBmb290ZXIuIE5vbmUgb2YgdGhlIGhlYWRlcnMgY2FuIGJlDQo+IHJlY29n
+bml6ZWQNCj4gPj4gYnkgemxpYiBzb2Z0d2FyZSBpbXBsZW1lbnRhdGlvbiBpcyBteSB1bmRlcnN0
+YW5kaW5nLiBTbyBpZiB3ZSB3YW50IHRvDQo+IG1ha2UNCj4gPj4gdGhlbSBjb21wYXRpYmxlIHdp
+dGggemxpYiwgdGhlIFFBVHppcCBsaWJyYXJ5IG5lZWRzIHRvIHN1cHBvcnQgdGhhdC4NCj4gPg0K
+PiA+IFRoZSBRUEwgbGlicmFyeSBjdXJyZW50bHkgY2Fubm90IHN1cHBvcnQgdGhlIFpfU1lOQ19G
+TFVMU0ggb3BlcmF0aW9uIG9mDQo+IHpsaWIgc3RlYW1pbmcuDQo+ID4gVGhpcyBpcyB0aGUgcmVh
+c29uIHdoeSBpdCBpcyBub3QgY29tcGF0aWJsZSB3aXRoIHpsaWIuDQo+ID4NCj4gDQo+IEkgaGFk
+IHVuZGVyc3Rvb2QgZnJvbSBwcmV2aW91cyBkaXNjdXNzaW9uIHRoYXQgd2UnZCBiZSBhYmxlIHRv
+IGF0IGxlYXN0DQo+IHN1cHBvcnQgY29tcHJlc3Npb24gd2l0aCBRUEwgYW5kIGRlY29tcHJlc3Np
+b24gd2l0aCB0aGUgZXhpc3RpbmcNCj4gemxpYi1iYXNlZCBjb2RlLiBJcyB0aGF0IG5vdCBjb3Jy
+ZWN0PyBJIHdhcyBhYm91dCB0byBzdWdnZXN0DQo+IGV4cGVyaW1lbnRpbmcgd2l0aCB0aGUgd2lu
+ZG93IHNpemUgaW4gdGhlIGV4aXN0aW5nIGNvZGUgdG8gaG9wZWZ1bGx5DQo+IHNvbHZlIHRoZSA0
+a2Igd2luZG93IHNpemUgaXNzdWUuIElmIHRoZXJlIGFyZSBvdGhlciBsaW1pdGF0aW9ucywgdGhl
+bg0KPiB0aGF0IHdpbGwgbm90IGJlIGVub3VnaC4NCj4gDQo+IEFsc28sIGNhbiB5b3UgcG9pbnQg
+dG8gdGhlIHNvdXJjZSBvZiB0aGF0IHN0YXRlbWVudCBhYm91dCBaX1NZTkNfRkxVU0gsDQo+IEkg
+Y291bGRuJ3QgZmluZCBtb3JlIGluZm9ybWF0aW9uIGFib3V0IGl0IGluIHRoZSBkb2N1bWVudGF0
+aW9uLg0KDQpzdGF0aWMgaW50IHpsaWJfc2VuZF9wcmVwYXJlKE11bHRpRkRTZW5kUGFyYW1zICpw
+LCBFcnJvciAqKmVycnApDQp7DQogICAgc3RydWN0IHpsaWJfZGF0YSAqeiA9IHAtPmRhdGE7DQog
+ICAgel9zdHJlYW0gKnpzID0gJnotPnpzOw0KICAgIOKApg0KICAgIGZvciAoaSA9IDA7IGkgPCBw
+LT5ub3JtYWxfbnVtOyBpKyspIHsNCiAgICAgICAgdWludDMyX3QgYXZhaWxhYmxlID0gei0+emJ1
+ZmZfbGVuIC0gb3V0X3NpemU7DQogICAgICAgIGludCBmbHVzaCA9IFpfTk9fRkxVU0g7DQoNCiAg
+ICAgICAgaWYgKGkgPT0gcC0+bm9ybWFsX251bSAtIDEpIHsNCiAgICAgICAgICAgIGZsdXNoID0g
+Wl9TWU5DX0ZMVVNIOw0KICAgICAgICB9DQpJZiBJIHVuZGVyc3RhbmQgY29ycmVjdGx5LCB0aGUg
+Y3VycmVudCBpbXBsZW1lbnRhdGlvbiBvZiBtdWx0aWZkIHpsaWIgdHJlYXRzIGVhY2ggbXVsdGlm
+ZCB0aHJlYWQgYXMgYSBzZXBhcmF0ZSBzdHJlYW0uIFRoaXMgaW1wbGVtZW50YXRpb24gYWRkcyB6
+bGliIGhlYWRlcnMgYW5kIGZvb3RlcnMgb25seSB0byB0aGUgYmVnaW5uaW5nIGFuZCBlbmQgb2Yg
+dGhlIGRhdGEsIGFuZCB0aGUgZGF0YSB0cmFuc21pdHRlZCBpbiBiZXR3ZWVuIGRvZXMgbm90IHJl
+cXVpcmUgaGVhZGVycyBhbmQgZm9vdGVycy4NCg0KVGhlIGN1cnJlbnQgaW1wbGVtZW50YXRpb24g
+Zm9yIElBQSBzdXBwb3J0cyBjb21wcmVzc2luZyBkYXRhIGluZGljYXRlZCBieSBwLT5ub3JtYWxf
+bnVtIGFzIGEgc2luZ2xlIHN0cmVhbS4gRWFjaCBjb21wcmVzc2VkIGRhdGEgc2VnbWVudCBoYXMg
+emxpYiBoZWFkZXJzIGFuZCBmb290ZXJzLiBTaW5jZSBaX1NZTkNfRkxVU0ggaXMgbm90IHN1cHBv
+cnRlZCwgdGhpcyBtZWFucyBJQUEgaGFzIHRvIGNvbXBsZXRlIHRoZSBjb21wcmVzc2lvbiBmb3Ig
+YSBzdHJlYW0gYXQgb25jZSBhbmQgY2Fubm90IG91dHB1dCBwYXJ0cyBvZiBhIHN0cmVhbSBpbiBh
+ZHZhbmNlLiBUaGVyZWZvcmUsIHRoZSBjdXJyZW50IElBQSBpcyBub3QgY29tcGF0aWJsZSB3aXRo
+IGV4aXN0aW5nIHpsaWIuIEN1cnJlbnRseSwgaXQgc2VlbXMgdGhhdCB0aGUgUUFUIGltcGxlbWVu
+dGF0aW9uIGZvbGxvd3MgYSBzaW1pbGFyIGFwcHJvYWNoLg0KDQpSZWdhcmRpbmcgdGhlIHJlZmVy
+ZW5jZSB0byBaX1NZTkNfRkxVU0gsIHlvdSBjYW4gZmluZCBpdCBhdCBodHRwczovL3d3dy56bGli
+Lm5ldC9tYW51YWwuaHRtbDoNCuKAnElmIHRoZSBwYXJhbWV0ZXIgZmx1c2ggaXMgc2V0IHRvIFpf
+U1lOQ19GTFVTSCwgYWxsIHBlbmRpbmcgb3V0cHV0IGlzIGZsdXNoZWQgdG8gdGhlIG91dHB1dCBi
+dWZmZXIgYW5kIHRoZSBvdXRwdXQgaXMgYWxpZ25lZCBvbiBhIGJ5dGUgYm91bmRhcnksIHNvIHRo
+YXQgdGhlIGRlY29tcHJlc3NvciBjYW4gZ2V0IGFsbCBpbnB1dCBkYXRhIGF2YWlsYWJsZSBzbyBm
+YXIuIChJbiBwYXJ0aWN1bGFyIGF2YWlsX2luIGlzIHplcm8gYWZ0ZXIgdGhlIGNhbGwgaWYgZW5v
+dWdoIG91dHB1dCBzcGFjZSBoYXMgYmVlbiBwcm92aWRlZCBiZWZvcmUgdGhlIGNhbGwuKSBGbHVz
+aGluZyBtYXkgZGVncmFkZSBjb21wcmVzc2lvbiBmb3Igc29tZSBjb21wcmVzc2lvbiBhbGdvcml0
+aG1zIGFuZCBzbyBpdCBzaG91bGQgYmUgdXNlZCBvbmx5IHdoZW4gbmVjZXNzYXJ5LiBUaGlzIGNv
+bXBsZXRlcyB0aGUgY3VycmVudCBkZWZsYXRlIGJsb2NrIGFuZCBmb2xsb3dzIGl0IHdpdGggYW4g
+ZW1wdHkgc3RvcmVkIGJsb2NrIHRoYXQgaXMgdGhyZWUgYml0cyBwbHVzIGZpbGxlciBiaXRzIHRv
+IHRoZSBuZXh0IGJ5dGUsIGZvbGxvd2VkIGJ5IGZvdXIgYnl0ZXMgKDAwIDAwIGZmIGZmKS7igJ0N
+Cg0KQmFzZWQgb24gdGhlIGluZm9ybWF0aW9uIGFib3ZlLCBJIHN1Z2dlc3QgdGhlIGZvbGxvd2lu
+ZyBvcHRpb25zOg0KDQoxLiBNb2RpZnkgbXVsdGlmZCB6bGliIHRvIHBlcmZvcm0gc3RyZWFtIGNv
+bXByZXNzaW9uIGVhY2ggdGltZSB3aXRoIHAtPm5vcm1hbF9udW0gcGFnZXMuIElmIHRoaXMgbW9k
+aWZpY2F0aW9uIG1ha2VzIElBQSBjb21wYXRpYmxlIHdpdGggemxpYiwgSSB3aWxsIGltcGxlbWVu
+dCBpdCBpbiB0aGUgbmV4dCB2ZXJzaW9uIGFzIHBlciBodHRwczovL2xvcmUua2VybmVsLm9yZy9h
+bGwvMjAyNDAxMDMxMTI4NTEuOTA4MDgyLTQteXVhbjEubGl1QGludGVsLmNvbS9ULyBhbmQgcHJv
+dmlkZSBwZXJmb3JtYW5jZSBkYXRhLiBXZSB3aWxsIGFsc28gdmVyaWZ5IHRoZSBmZWFzaWJpbGl0
+eSB3aXRoIFFBVC4NCg0KMi4gVXNlIHpsaWIgY29tcHJlc3Npb24gd2l0aG91dCBzdHJlYW0gY29t
+cHJlc3Npb24sIG1lYW5pbmcgZWFjaCBwYWdlIGlzIGluZGVwZW5kZW50bHkgY29tcHJlc3NlZC4g
+VGhlIGFkdmFudGFnZSBpcyB0aGF0IGFjY2VsZXJhdG9ycyBjYW4gY29uY3VycmVudGx5IHByb2Nl
+c3MgbW9yZSBwYWdlcywgYW5kIHRoZSBjdXJyZW50IElBQSBhbmQgUUFUIGNhbiBib3RoIGJlIGNv
+bXBhdGlibGUuIFRoZSBkb3duc2lkZSBpcyBhIGxvc3MgaW4gY29tcHJlc3Npb24gcmF0aW8sIGFu
+ZCB0aGUgbGVuZ3RoIG9mIHRoZSBkYXRhIGFmdGVyIGNvbXByZXNzaW5nIGVhY2ggcGFnZSBuZWVk
+cyB0byBiZSBhZGRlZCB0byBNdWx0aUZEUGFja2V0X3QuIElmIGZ1dHVyZSBjb21wcmVzc2lvbiBm
+dW5jdGlvbmFsaXR5IGNvbnNpZGVycyBzdXBwb3J0IG9ubHkgb24gYWNjZWxlcmF0b3JzLCB0aGUg
+Y29tcHJlc3Npb24gcmF0aW8gY2FuIGJlIGltcHJvdmVkIHRocm91Z2ggY29tcHJlc3Npb24gbGV2
+ZWxzIG9yIG90aGVyIGZlYXR1cmVzIHdpdGhvdXQgYWRkaXRpb25hbCBob3N0IENQVSBvdmVyaGVh
+ZC4NCg0KQWRkaXRpb25hbGx5LCB0aGUgZGVmYXVsdCB3aW5kb3cgc2l6ZSBpcyBzZXQgdG8gNEss
+IHdoaWNoIHNob3VsZCBlZmZlY3RpdmVseSBzdXBwb3J0IElBQSBoYXJkd2FyZS4NCg0KPiA+PiA+
+IEFsbCB0aGF0LCBvZiBjb3Vyc2UsIGFzc3VtaW5nIHdlIGV2ZW4gd2FudCB0byBzdXBwb3J0IGJv
+dGgNCj4gPj4gPiBhY2NlbGVyYXRvcnMuIFRoZXkncmUgYWRkcmVzc2luZyB0aGUgc2FtZSBwcm9i
+bGVtIGFmdGVyIGFsbC4gSSB3b25kZXINCj4gPj4gPiBob3cgd2UnZCBjaG9vc2UgYSBwcmVjZWRl
+bmNlLCBzaW5jZSBib3RoIHNlZW0gdG8gYmUgcHJlc2VudCBpbiB0aGUNCj4gPj4gPiBzYW1lIHBy
+b2Nlc3NvciBmYW1pbHkuDQo+ID4+ID4NCj4gPj4gPg0KPiA+Pg0KPiA+PiBUaGF0J3MgYW4gaW50
+ZXJlc3RpbmcgcXVlc3Rpb24gOi0pIEkgdGhpbmsgb3ZlcmFsbCBwZXJmb3JtYW5jZQ0KPiAodGhy
+b3VnaHB1dA0KPiA+PiBhbmQgQ1BVIG92ZXJoZWFkKSBzaG91bGQgYm90aCBiZSBjb25zaWRlcmVk
+LiBJQUEgYW5kIFFBVCBhY2NlbGVyYXRvcnMNCj4gPj4gZG9uJ3QgcHJlc2VudCBvbiBhbGwgc3lz
+dGVtcy4gV2UgQnl0ZWRhbmNlIGNob29zZSB0byBoYXZlIGJvdGggb24gb3VyDQo+ID4+IHBsYXRm
+b3JtIHdoZW4gcHVyY2hhc2luZyBmcm9tIEludGVsLg0K
 
