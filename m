@@ -2,69 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D91C828A25
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:39:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D07F7828A2E
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:42:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNF7d-0007EC-7I; Tue, 09 Jan 2024 11:38:37 -0500
+	id 1rNFAp-0000sA-EJ; Tue, 09 Jan 2024 11:41:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rNF7T-0007DB-RH; Tue, 09 Jan 2024 11:38:28 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rNF7R-00038c-1B; Tue, 09 Jan 2024 11:38:27 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T8c4C2TwZz6K6c6;
- Wed, 10 Jan 2024 00:35:39 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id EFB74140A36;
- Wed, 10 Jan 2024 00:38:13 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 9 Jan
- 2024 16:38:13 +0000
-Date: Tue, 9 Jan 2024 16:38:12 +0000
-To: Ankit Agrawal <ankita@nvidia.com>
-CC: Jason Gunthorpe <jgg@nvidia.com>, "alex.williamson@redhat.com"
- <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
- "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
- <ani@anisinha.ca>, "berrange@redhat.com" <berrange@redhat.com>,
- "eduardo@habkost.net" <eduardo@habkost.net>, "imammedo@redhat.com"
- <imammedo@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "eblake@redhat.com"
- <eblake@redhat.com>, "armbru@redhat.com" <armbru@redhat.com>,
- "david@redhat.com" <david@redhat.com>, "gshan@redhat.com" <gshan@redhat.com>, 
- Aniket Agashe <aniketa@nvidia.com>, Neo Jia <cjia@nvidia.com>, Kirti Wankhede
- <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>, Vikram
- Sethi <vsethi@nvidia.com>, Andy Currid <acurrid@nvidia.com>, Dheeraj Nigam
- <dnigam@nvidia.com>, "Uday Dhoke" <udhoke@nvidia.com>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v6 1/2] qom: new object to associate device to numa node
-Message-ID: <20240109163812.000030a3@Huawei.com>
-In-Reply-To: <SA1PR12MB7199DF47EDDA9419E22FD79FB067A@SA1PR12MB7199.namprd12.prod.outlook.com>
-References: <20231225045603.7654-1-ankita@nvidia.com>
- <20231225045603.7654-2-ankita@nvidia.com>
- <20240102125821.00001aa0@Huawei.com>
- <SA1PR12MB7199DF47EDDA9419E22FD79FB067A@SA1PR12MB7199.namprd12.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rNFAd-0000qu-EL
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:41:47 -0500
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rNFAZ-0004kw-B4
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:41:41 -0500
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-50e7af5f618so3413326e87.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 08:41:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704818496; x=1705423296; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=T4gYJ9a2z6T6xGbeYuRLyHysVXA79r1YTQYdgAOJOt8=;
+ b=JLNG1Ppzv7P3S0/adQ6H6z/Csl/7ZidhCZk9401k1+G8NNUVCVXYgtxHTs2nTgyDG5
+ fATaGz3i0P/KR1RmXP6MAEtIpXP3Ff2qAXzZfMWHGQNcLvRDcM3cv5ZoptteI7ZukCZw
+ yjNKE2mYljEOaTVIsGZYjGT3h3vJ4pUsbBrWZTd1B0Dx7OMrdTD6ZIsRITNlT82jNNzY
+ CMzGervrWm8SYrW/07AyQd8hpZKacfom3DaUaez8V7VpuvoI5GFfz8iNcS9JK7z6O9no
+ jjCsPDo4Uz3eZ0r5+AnvnXaAXHy37hOleyzH9byVMW6svUE8t5hiB3Vw9iljlBv84p61
+ 3XCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704818496; x=1705423296;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=T4gYJ9a2z6T6xGbeYuRLyHysVXA79r1YTQYdgAOJOt8=;
+ b=SXo/V4PB+iMmaRqPXUO+paSCTRJm+3BYJIf/gW8vijm8U1Yki3+0UdP+/lqmTqk27u
+ 01vdCdg4F5y2W446k/bNDkyFGFD6a9yBcl5+caK9MFtFphtH4L3XZDBZUGCGgHGdZWzC
+ oBjF15jtjryxjU7fDFAH6KcAEo7hP6cDQ8YLo+vzrytk+ixhMg/8uhucOlsmZzpBiqBL
+ I2LQH4VwGyCY+GDgZCLDmOzPnWwqGWxu4pHMWvKNbeKCHG0euQnxVpdGqn/W6C43OHmG
+ +SbqJNmlknF0w4wpaJa5LP6dvq0u6K/Wi0X5cD+EHzP7n9mCdcSFTN620ZLnUJHV/06F
+ htEQ==
+X-Gm-Message-State: AOJu0Yz62C73IkTuPQAAEQUTqAmDsZJAcqXEjJ3j/HRbyTbHzBGb65Jo
+ /nBz43HzE2IWAE27no0x7wt0nVwO8TbtLX2sP+RnEfVMy3eKvQ==
+X-Google-Smtp-Source: AGHT+IFcdLGpWb07PlQHHGlVMUJo2EkPmZ4+PtwsNeBWGiYQ23YTxVpM0fb6nfcXEZ4CHBJkC7r8DCpYEir3+NbbOO8=
+X-Received: by 2002:a05:6512:45a:b0:50b:f841:c1e7 with SMTP id
+ y26-20020a056512045a00b0050bf841c1e7mr2119695lfk.63.1704818495970; Tue, 09
+ Jan 2024 08:41:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_FILL_THIS_FORM_SHORT=0.01,
+References: <90d7351c-2680-4ab6-95ee-5dac4e3f21c5@tls.msk.ru>
+ <CAFEAcA8DdsHQ0eCYnh4vNoybodj0mcHCnOMEr9b_aOk7yO2Osw@mail.gmail.com>
+ <ea7dd9f7-b40f-436c-a469-97ef26ac66a2@tls.msk.ru>
+ <d08930a4-7e01-41eb-b118-b20fea0f8556@tls.msk.ru>
+ <CAFEAcA_wnSF-OAKNaDNjbEiMi-AXv2srJ5JjmiaT4+_wWee9aw@mail.gmail.com>
+ <560c9f56-f0d8-4def-863a-63ba4226209e@tls.msk.ru>
+ <CAFEAcA-hkd=VQdqw7-P1RGwu-c9JLn-NUHC1kgU-YgZ1FOMQww@mail.gmail.com>
+ <CAFEAcA87qdWR-GLEjkGpGHxMhviFidi2=k7c=OFC3+hzn1P0Dw@mail.gmail.com>
+ <2a34bd5d-2997-48cf-bcb8-32d97e3f7690@tls.msk.ru>
+ <CAFEAcA83r12Y6d5Ba-3v1eNe1TfA9kO-PLtkots8C1SzgDNeaA@mail.gmail.com>
+In-Reply-To: <CAFEAcA83r12Y6d5Ba-3v1eNe1TfA9kO-PLtkots8C1SzgDNeaA@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 9 Jan 2024 16:41:25 +0000
+Message-ID: <CAFEAcA9ZR9DDM5Y5Ot6heH8C3aK_otKer4sz8ncddTX0K6PzvA@mail.gmail.com>
+Subject: Re: virtio-pci in qemu-system-arm is broken in 8.2
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,102 +90,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 4 Jan 2024 03:36:06 +0000
-Ankit Agrawal <ankita@nvidia.com> wrote:
-
-> Thanks Jonathan for the review.
->=20
-> > As per reply to the cover letter I definitely want to see SRAT table du=
-mps
-> > in here though so we can easily see what this is actually building. =20
->=20
-> Ack.
->=20
-> > I worry that some OS might make the assumption that it's one GI node
-> > per PCI device though. The language in the ACPI specification is:
-> >=20
-> > "The Generic Initiator Affinity Structure provides the association betw=
-een _a_
-> > generic initiator and _the_ proximity domain to which the initiator bel=
-ongs".
-> >=20
-> > The use of _a_ and _the_ in there makes it pretty explicitly a N:1 rela=
-tionship
-> > (multiple devices can be in same proximity domain, but a device may onl=
-y be in one).
-> > To avoid that confusion you will need an ACPI spec change.=A0 I'd be ha=
-ppy to
-> > support =20
->=20
-> Yeah, that's a good point. It won't hurt to make the spec change to make =
-the
-> possibility of the association between a device with multiple domains.
->=20
-> > The reason you can get away with this in Linux today is that I only imp=
-lemented
-> > a very minimal support for GIs with the mappings being provided the oth=
-er way
-> > around (_PXM in a PCIe node in DSDT).=A0 If we finish that support off =
-I'd assume =20
->=20
-> Not sure if I understand this. Can you provide a reference to this DSDT r=
-elated
-> change?
-
-You need to add the PCI tree down to the device which is a bit fiddly if th=
-ere
-are switches etc. I'm also not sure I ever followed up in getting the PCI
-fix in after we finally dealt with the issue this triggered on old AMD boxes
-(they had devices that claimed to be in non existent proximity domains :(
-later at least one path to hit that was closed down - I'm not sure all of t=
-hem
-were).
-
-Anyhow, the fix for PCI include an example where the EP has a different PXM
-to the root bridge.  In this example 0x02 is the GI node.
-
-https://lore.kernel.org/all/20180912152140.3676-2-Jonathan.Cameron@huawei.c=
-om/
-
->   Device (PCI2)
->   {
->     Name (_HID, "PNP0A08") // PCI Express Root Bridge
->     Name (_CID, "PNP0A03") // Compatible PCI Root Bridge
->     Name(_SEG, 2) // Segment of this Root complex
->     Name(_BBN, 0xF8) // Base Bus Number
->     Name(_CCA, 1)
->     Method (_PXM, 0, NotSerialized) {
->       Return(0x00)
->     }
->=20
-> ...
->     Device (BRI0) {
->       Name (_HID, "19E51610")
->       Name (_ADR, 0)
->       Name (_BBN, 0xF9)
->       Device (CAR0) {
->         Name (_HID, "97109912")
->         Name (_ADR, 0)
->         Method (_PXM, 0, NotSerialized) {
->           Return(0x02)
->         }
->       }
->     }
+On Tue, 9 Jan 2024 at 16:31, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Tue, 9 Jan 2024 at 16:24, Michael Tokarev <mjt@tls.msk.ru> wrote:
+> >
+> > 09.01.2024 16:52, Peter Maydell:
+> > ..
+> > > Oh, your kernel isn't an LPAE one (i.e. CONFIG_LPAE is not
+> > > set). That will obviously never be able to access registers
+> > > above the 4GB mark (though the kernel's error message in this
+> > > situation is a bit unhelpful and could perhaps be improved).
+> > > If I set CONFIG_LPAE on the non-working config it starts working.
+> > >
+> > > I think then the answer is:
+> > >   * if you want to use the (default) highmem setup, use an LPAE kernel
+> > >   * if you want to use a non-LPAE kernel, tell QEMU to avoid
+> > >     highmem using '-machine virt,highmem=off'
+> > >
+> > > It was just a bug that we were accidentally disabling highmem
+> > > for the 32-bit 'max' CPU before b8f7959f28c4f3.
+> >
+> > Wow wow wow.  So it's a pebkac bug, not qemu bug.. :)
+> > I didn't even know about LPAE before this email, and knew very
+> > little about arm stuff too.
+> >
+> > Thank you very much for your work and time!
+> >
+> > The diagnostics here is definitely.. "interesting", so to say, it's
+> > very "obvious" what the problem is.. from the kernel messages :)
+>
+> Yeah. I don't personally have the time to try to follow up
+> on improving the kernel handling of this, but if anybody else
+> does, I think the problem is that the function __of_address_to_resource()
+> which fills in a 'struct resource' from a DTB entry silently
+> truncates over-large values when it fills in r->start and r->end
+> (which are of type phys_addr_t, and so only 32 bits on non-LPAE
+> kernels). So that function seems like a good place to put some
+>
+>   if (taddr or taddr + size are above 4GB) {
+>       warn("resource foo is too high in the address space to use
+>             (did you forget to enable CONFIG_LPAE?)\n");
+>       return -EINVAL;
 >   }
+>
+> type handling which would then catch this user error relatively
+> comprehensibly for most devices.
 
-Without that PCI fix, you'll only see correct GI mappings in Linux
-for platform devices.
+...and the less pseudocodey version of that probably looks
+like the similar check in of_pci_range_to_resource(), viz
 
-Sorry for slow reply - I missed the rest of this thread until I was
-brandishing as an argument for another discussion on GIs and noticed
-it had carried on with out me.
+    if (sizeof(resource_size_t) < 8) &&
+        (upper_32_bits(taddr) || upper_32_bits(taddr + size)) {
+        ...
+    }
 
-Jonathan
-
-
+-- PMM
 
