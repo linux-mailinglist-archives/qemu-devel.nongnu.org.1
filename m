@@ -2,78 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3EE828635
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 13:47:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA752828659
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 13:57:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNBUU-0004Py-93; Tue, 09 Jan 2024 07:45:58 -0500
+	id 1rNBej-00067c-WA; Tue, 09 Jan 2024 07:56:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shlomopongratz@gmail.com>)
- id 1rNBUN-0004Pm-GJ
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 07:45:51 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shlomopongratz@gmail.com>)
- id 1rNBUF-0000oX-IB
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 07:45:48 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40d8902da73so27445295e9.2
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 04:45:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704804300; x=1705409100; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=3qMiaar5IOtsCSNqZb+svB+dENrjorAlUkTx9SCX+Ng=;
- b=ZBAnows9k3GRqNZVNguzx0BubgcDWNmy6CkrrNTAw0CdxW+sAwXib1kREZ6LfxoyDY
- K9aFpkv/lemceW/AjTr8/Y37n5DcxPlVR7TkGniuyQW0WTj7rqNn2a/hs3kXGTIrc+xd
- fcd3HYKAr/SoLIjvoRR/j0GhhkcSw/CzRFzKdkAdLlCDpLY9zfPJXcRt75uYSXtrKT1z
- cWFY9TEZ3NY7m2W9xXJKu8emD90xXHKHVMlOYY7CrjRaBk3ZATa4hrJ58UGj0MnzBb8p
- YOujfHoLQIcVqJtihgYQTo9YHcSfY6GMCNxj8fVWJuU46k32aQGLREflaF/+TZlitDIm
- Pdlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704804300; x=1705409100;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3qMiaar5IOtsCSNqZb+svB+dENrjorAlUkTx9SCX+Ng=;
- b=pl/E+VT5d1axi5QYp+A9nectzcQXDNZ+RedM7GxNNgJFkDRNIsO/jGOyxoskQ7JiZY
- 4yKTYJ5F2LeHqA+6fxMb072p7FGQvUXm1nhPIGQdZ+1foTQN8N69dZEdVVjG40Pwsqox
- DloFUSEV/CSQWN+wBfmWXECh9I9iWARDn0nUAy9j0YTL9wC207q5JJtCxntGqHWzHxyr
- Z4TXStWrE+ZRDY8V63SF1bqykh3+W8B5rEN7NA0BXciAQ3Oci94up7l0VQOcb7T3n4zq
- OVaqON9nqWAGJjD0wLsIciP+HV2xmJvzxd2/S0aePti+1kqF8ropXv2jHn/zU8+VrzUX
- Ix8A==
-X-Gm-Message-State: AOJu0YyGx7rHod3EzzfYVje4vIkUwGWYtDclGI8N1pt9sLSICXI1FtcI
- mj2f9C4XV48AJI8sQIHkjeU9uyxJQ/IUaQ==
-X-Google-Smtp-Source: AGHT+IGu26SFknSKcEI3uyTyUoV4wfmRqGikgT9u9WvO6UhrSZ6LkaXEKe3S/i7aIx2HQNsTkg14tg==
-X-Received: by 2002:a05:600c:1c02:b0:40e:3bf4:3a92 with SMTP id
- j2-20020a05600c1c0200b0040e3bf43a92mr3004669wms.45.1704804300040; 
- Tue, 09 Jan 2024 04:45:00 -0800 (PST)
-Received: from Dev-shlomop.pliops.ent ([213.8.195.28])
- by smtp.googlemail.com with ESMTPSA id
- gw24-20020a05600c851800b0040d3276ba19sm3569210wmb.25.2024.01.09.04.44.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jan 2024 04:44:59 -0800 (PST)
-From: Shlomo Pongratz <shlomopongratz@gmail.com>
-X-Google-Original-From: Shlomo Pongratz <shlomop@pliops.com>
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1rNBeZ-000672-3v
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 07:56:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1rNBeX-0006hh-9T
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 07:56:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704804978;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=r5YLNq50+vjTnWqaME3Rs4VG8PUOwNV2k7OkdOHq5BQ=;
+ b=YTBEiycMT6RrE59wdzp0Vu7dN85G62amY2mcaJCAyGcZEbfyJFXGX1hSqTmxniITKV0lav
+ CjzNLrI7wohaXK8LSYakxzi0+HmEfKCFEkbJ3Mb34ZWFyAqvlKDXlScuImO1JuM/bgcWOD
+ EAA/OwneHZFBC5i8Q2ymRk3dy/+PqBs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-533-CfjFW1cGN3GY5EiZd9GgKw-1; Tue,
+ 09 Jan 2024 07:56:17 -0500
+X-MC-Unique: CfjFW1cGN3GY5EiZd9GgKw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 191483C0ED45;
+ Tue,  9 Jan 2024 12:56:17 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.45.225.20])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 738D22166B33;
+ Tue,  9 Jan 2024 12:56:15 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: andrew.sminov@gmail.com, peter.maydell@linaro.com, shlomop@pliops.com,
- shlomopongratz@gmail.com
-Subject: [PATCH V2] Handle wrap around in limit calculation
-Date: Tue,  9 Jan 2024 14:43:33 +0200
-Message-Id: <20240109124333.224240-1-shlomop@pliops.com>
-X-Mailer: git-send-email 2.25.1
+Cc: stefanha@gmail.com, Albert Esteve <aesteve@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, marcandre.lureau@gmail.com,
+ kraxel@redhat.com
+Subject: [PATCH v3 0/3] Virtio dmabuf improvements
+Date: Tue,  9 Jan 2024 13:56:11 +0100
+Message-ID: <20240109125614.220293-1-aesteve@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=shlomopongratz@gmail.com; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,55 +79,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hanlde wrap around caused by the fact that perior to version 460A
-the limit was 32bit quantity.
-See Linux kernel code in:
-drivers/pci/controllers/dwc/pcie-designware.c
-function: __dw_pcie_prog_outbound_atu
-Now in a 64bit system the range can be above 4G but as long as
-the limit itself is less then 4G the overflow is avoided
+v1: https://www.mail-archive.com/qemu-devel@nongnu.org/msg1005257.html
+v2: https://www.mail-archive.com/qemu-devel@nongnu.org/msg1014615.html
+v2 -> v3
+  - Documented the new owner check for shared object removal
+  - Updated test function names error in the last patch
 
-Signed-off-by: Shlomo Pongratz <shlomop@pliops.com>
+Various improvements for the virtio-dmabuf module.
+This patch includes:
 
-----
+- Check for ownership before allowing a vhost device
+  to remove an object from the table.
+- Properly cleanup shared resources if a vhost device
+  object gets cleaned up.
+- Rename virtio dmabuf functions to `virtio_dmabuf_*`
 
-Changes since v1:
- * Seperate subject and description
----
- hw/pci-host/designware.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+Albert Esteve (3):
+  hw/virtio: check owner for removing objects
+  hw/virtio: cleanup shared resources
+  hw/virtio: rename virtio dmabuf API
 
-diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-index dd9e389c07..7ce4a6b64d 100644
---- a/hw/pci-host/designware.c
-+++ b/hw/pci-host/designware.c
-@@ -269,11 +269,24 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
- {
-     const uint64_t target = viewport->target;
-     const uint64_t base   = viewport->base;
--    const uint64_t size   = (uint64_t)viewport->limit - base + 1;
-     const bool enabled    = viewport->cr[1] & DESIGNWARE_PCIE_ATU_ENABLE;
-+    uint64_t tbase, tlimit, size;
- 
-     MemoryRegion *current, *other;
- 
-+    /*
-+     * Hanlde wrap around caused by the fact that perior to version 460A
-+     * the limit was 32bit quantity.
-+     * See Linux kernel code in:
-+     * drivers/pci/controllers/dwc/pcie-designware.c
-+     * function: __dw_pcie_prog_outbound_atu
-+     * Now in a 64bit system the range can be above 4G but as long as
-+     * the limit itself is less then 4G the overflow is avoided
-+     */
-+    tbase = base & 0xffffffff;
-+    tlimit = 0x100000000 + (uint64_t)viewport->limit;
-+    size = ((tlimit - tbase) & 0xffffffff) + 1;
-+
-     if (viewport->cr[0] == DESIGNWARE_PCIE_ATU_TYPE_MEM) {
-         current = &viewport->mem;
-         other   = &viewport->cfg;
+ docs/interop/vhost-user.rst       |  4 +-
+ hw/display/virtio-dmabuf.c        | 36 ++++++++++++---
+ hw/virtio/vhost-user.c            | 31 ++++++++++---
+ hw/virtio/vhost.c                 |  3 ++
+ include/hw/virtio/virtio-dmabuf.h | 43 ++++++++++-------
+ tests/unit/test-virtio-dmabuf.c   | 77 ++++++++++++++++++++++---------
+ 6 files changed, 141 insertions(+), 53 deletions(-)
+
 -- 
-2.25.1
+2.43.0
 
 
