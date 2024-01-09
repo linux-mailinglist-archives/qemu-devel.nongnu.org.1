@@ -2,34 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 731E18289EF
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:26:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 292218289F2
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:27:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNEuS-0008Is-Te; Tue, 09 Jan 2024 11:25:01 -0500
+	id 1rNEwI-0000af-IY; Tue, 09 Jan 2024 11:26:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rNEuM-0008Ic-0t
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:24:54 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1rNEwG-0000aS-HE
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:26:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rNEuI-0004yd-GN
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:24:52 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9659B41C03;
- Tue,  9 Jan 2024 19:24:57 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0162E5ED91;
- Tue,  9 Jan 2024 19:24:45 +0300 (MSK)
-Message-ID: <2a34bd5d-2997-48cf-bcb8-32d97e3f7690@tls.msk.ru>
-Date: Tue, 9 Jan 2024 19:24:45 +0300
+ (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1rNEwE-0005np-9k
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:26:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704817608;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=t0z2JZsw1x3ZSh3unAsilXoIlwco6jjNm/Itxgx2VV4=;
+ b=FWiyOQR6Ckl8hhb5iVhkhse6pyaiqANdmtsU1mGvmyUyxoeE8BwubcGzW6/UomZWGoZSW4
+ Pud/KHr26vjs93nLIqhSMMhitjBaXwkqG78n/eAQ81+5K7Hkb7N4GtGpaXds3RholMr1D3
+ 2G+z94NJOxyt3MazD2Qc6HSJhkkWnho=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-201-HgLpYtNUMOqtgPWcW6GnWg-1; Tue, 09 Jan 2024 11:26:47 -0500
+X-MC-Unique: HgLpYtNUMOqtgPWcW6GnWg-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-6800aa45af1so59337006d6.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 08:26:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704817606; x=1705422406;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=t0z2JZsw1x3ZSh3unAsilXoIlwco6jjNm/Itxgx2VV4=;
+ b=ZdfebzAzLhZQjDDZP28bPvCFXbQIQJ8D0xHgQKCiYSBXdyeli7kLACcSAFgFMrbBsr
+ ikp8doHJFLk4O3iH3DH5X6QUAQtyb7lGdrkxuYqUB6Ue9SuP7iXbAawTyFiKs85DsdpB
+ 2fm5rCCRdN3cEqkKSDnFF/3CgiIZ2aI2t0LfXRHtDoz5ylUXF5dqCiftMuQcrU1JxL+P
+ 6wl8kN7h0aIE8oHwUTQDe+AeZzMeCeSLBRDHGCqiI99Az1OkbSgEJKYra4E0ZPImYBYr
+ VapXoZ0sCznAYJQG3NjYlUCpfi6joVhT1yt0iLy+FuLno7/3QEgJ55cco7jFSeRkDYzQ
+ m5+Q==
+X-Gm-Message-State: AOJu0YxiT8n7cwl4q+C35MtK5zud4csJA/5SQxCEkDDK82FA1BsYvviq
+ Q8ptMJgH81WZGMT0aT2AesNNQmB4YPe+2R1lypns1hctc1n1S+U2MRZ+0qmV+UuXCcGGaeatTK8
+ ls+w/ea41GoqnmPDObaByLEI=
+X-Received: by 2002:a05:620a:2223:b0:783:19aa:4423 with SMTP id
+ n3-20020a05620a222300b0078319aa4423mr4113323qkh.109.1704817606537; 
+ Tue, 09 Jan 2024 08:26:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHOIt9dYvGWgo3xfh1dAzjVl39B3+Gw44htWkGop8aG7llTCy6gZU2L77pX5HRMSdAinhd3Kw==
+X-Received: by 2002:a05:620a:2223:b0:783:19aa:4423 with SMTP id
+ n3-20020a05620a222300b0078319aa4423mr4113318qkh.109.1704817606211; 
+ Tue, 09 Jan 2024 08:26:46 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ z29-20020a05620a08dd00b0078325efbaa6sm908131qkz.61.2024.01.09.08.26.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 09 Jan 2024 08:26:45 -0800 (PST)
+Message-ID: <33244ed3-a065-4afb-a321-53ae46707d46@redhat.com>
+Date: Tue, 9 Jan 2024 17:26:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: virtio-pci in qemu-system-arm is broken in 8.2
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, QEMU Developers <qemu-devel@nongnu.org>
 References: <90d7351c-2680-4ab6-95ee-5dac4e3f21c5@tls.msk.ru>
  <CAFEAcA8DdsHQ0eCYnh4vNoybodj0mcHCnOMEr9b_aOk7yO2Osw@mail.gmail.com>
  <ea7dd9f7-b40f-436c-a469-97ef26ac66a2@tls.msk.ru>
@@ -38,40 +79,20 @@ References: <90d7351c-2680-4ab6-95ee-5dac4e3f21c5@tls.msk.ru>
  <560c9f56-f0d8-4def-863a-63ba4226209e@tls.msk.ru>
  <CAFEAcA-hkd=VQdqw7-P1RGwu-c9JLn-NUHC1kgU-YgZ1FOMQww@mail.gmail.com>
  <CAFEAcA87qdWR-GLEjkGpGHxMhviFidi2=k7c=OFC3+hzn1P0Dw@mail.gmail.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <CAFEAcA87qdWR-GLEjkGpGHxMhviFidi2=k7c=OFC3+hzn1P0Dw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ <87bk9uh9jd.fsf@draig.linaro.org>
+ <CAFEAcA9K2jf3BfHY3xpP4T-_iH9nNX=XLrNp=mPg5nqZURBOrw@mail.gmail.com>
+From: Eric Auger <eauger@redhat.com>
+In-Reply-To: <CAFEAcA9K2jf3BfHY3xpP4T-_iH9nNX=XLrNp=mPg5nqZURBOrw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eauger@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,49 +110,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-09.01.2024 16:52, Peter Maydell:
-..
-> Oh, your kernel isn't an LPAE one (i.e. CONFIG_LPAE is not
-> set). That will obviously never be able to access registers
-> above the 4GB mark (though the kernel's error message in this
-> situation is a bit unhelpful and could perhaps be improved).
-> If I set CONFIG_LPAE on the non-working config it starts working.
+
+
+On 1/9/24 15:31, Peter Maydell wrote:
+> On Tue, 9 Jan 2024 at 14:21, Alex Bennée <alex.bennee@linaro.org> wrote:
+>>
+>> Peter Maydell <peter.maydell@linaro.org> writes:
+>>
+>>> On Tue, 9 Jan 2024 at 11:33, Peter Maydell <peter.maydell@linaro.org> wrote:
+>>>> On Mon, 8 Jan 2024 at 17:38, Michael Tokarev <mjt@tls.msk.ru> wrote:
+>>>>> Speaking of config. This is standard debian config, I'm attaching one
+>>>>> to this email.  It can be found in the package, eg
+>>>>> http://deb.debian.org/debian/pool/main/l/linux/linux-image-6.6.9-armmp_6.6.9-1_armhf.deb
+>>>>> in /boot/config-$(uname -r).
+>>>>
+>>>> It does seem to be a config thing -- on a plain upstream
+>>>> v6.6.9 my config works and that debian default one does
+>>>> not. Now to try to identify which particular config
+>>>> difference is at fault. (It's not the CONFIG_VMSPLIT one,
+>>>> I just tried that.)
+>>>
+>>> Oh, your kernel isn't an LPAE one (i.e. CONFIG_LPAE is not
+>>> set). That will obviously never be able to access registers
+>>> above the 4GB mark (though the kernel's error message in this
+>>> situation is a bit unhelpful and could perhaps be improved).
+>>> If I set CONFIG_LPAE on the non-working config it starts working.
+>>>
+>>> I think then the answer is:
+>>>  * if you want to use the (default) highmem setup, use an LPAE kernel
+>>>  * if you want to use a non-LPAE kernel, tell QEMU to avoid
+>>>    highmem using '-machine virt,highmem=off'
+>>
+>> Could we expand the "highmem" description in
+>> https://www.qemu.org/docs/master/system/arm/virt.html to make it
+>> clearer. I'm sure this isn't the first time there have been 32bit
+>> difficulties with non-LPAE kernels?
 > 
-> I think then the answer is:
->   * if you want to use the (default) highmem setup, use an LPAE kernel
->   * if you want to use a non-LPAE kernel, tell QEMU to avoid
->     highmem using '-machine virt,highmem=off'
+> Sure. We could make the highmem property description read:
 > 
-> It was just a bug that we were accidentally disabling highmem
-> for the 32-bit 'max' CPU before b8f7959f28c4f3.
+> # Set on/off to enable/disable placing devices and RAM in physical
+> # address space above 32 bits. The default is on for machine types
+> # later than virt-2.12 when the CPU supports an address space
+> # bigger than 32 bits (i.e. 64-bit CPUs, and 32-bit CPUs with the
+> # Large Physical Address Extension (LPAE) feature). If you want to
+> # boot a 32-bit kernel which does not have CONFIG_LPAE enabled on
+> # a CPU type which implements LPAE, you will need to manually set
+> # this to 'off'; otherwise some devices, such as the PCI controller,
+> # will not be accessible.
+> 
+> How's that ?
 
-Wow wow wow.  So it's a pebkac bug, not qemu bug.. :)
-I didn't even know about LPAE before this email, and knew very
-little about arm stuff too.
+Looks good to me.
 
-Thank you very much for your work and time!
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-The diagnostics here is definitely.. "interesting", so to say, it's
-very "obvious" what the problem is.. from the kernel messages :)
-
-And the author(s) of the tool used in debian to run arm guest (which
-triggered this issue with qemu 8.2) didn't know this thing either,
-obviously.  Also, it seems to be a little-known fact that qemu has
-highmem enabled for 32bit arm by default and that one - unlike e.g
-i386 - actually breaks system (with pci bus being unaccessible),
-while on i386 the only outcome is not all memory is available.
-That feels like unfortunate decision to enable highmem by default
-on arm in qemu 2.12.
-
-> The linux-image-6.6.9-armmp-lpae_6.6.9-1_armhf.deb kernel
-> will probably work (though I haven't tested it).
-
-Yes, it works.  Also -machine virt,highmem=off works.  There's
-no bug per se.
+Eric
 
 
-Thank you for all the findings, Peter!  Much appreciated!
-
-/mjt
+> 
+> thanks
+> -- PMM
+> 
 
 
