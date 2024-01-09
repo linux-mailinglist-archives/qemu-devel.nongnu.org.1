@@ -2,97 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7189828D83
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 20:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1D8828D9C
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 20:39:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNHtr-0004RC-W7; Tue, 09 Jan 2024 14:36:36 -0500
+	id 1rNHwA-0005vQ-Hs; Tue, 09 Jan 2024 14:38:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dan.j.williams@intel.com>)
- id 1rNHtc-0004QT-9U; Tue, 09 Jan 2024 14:36:20 -0500
-Received: from mgamail.intel.com ([198.175.65.12])
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>)
+ id 1rNHw8-0005tA-G5; Tue, 09 Jan 2024 14:38:56 -0500
+Received: from mail-sn1nam02on20610.outbound.protection.outlook.com
+ ([2a01:111:f400:7ea9::610]
+ helo=NAM02-SN1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dan.j.williams@intel.com>)
- id 1rNHta-0001Up-6J; Tue, 09 Jan 2024 14:36:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704828978; x=1736364978;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=+duKtoOArticCnYrgElMQQwyqMmLvc3J9tW7+ZquuFg=;
- b=GmD7zR88jlTc+TjqbnVcEZto7MT2PkxANhJPG2QmlzzLC8nVOOxT2Nrf
- BgqPIj6vNQJjA8VzVXvGfvxM8gMrh4bbHj2Ucb+LUBowWPvTyUJa0ypag
- 1/WEaIV8+yb+VmbhsLnVRRpK/hBj6g7QsXl0frW37iubvDAN6uqUaDs/R
- g6BXNi0j/WlyYgp5RMhURRp2BDhcNG/ZG2MHhfEDQgZ46BqaALl0K85Ao
- lmoTBGMfJbIJwJmQlqSh+tCb5C/GgX3rDtz5GG12uZo9mZC7AIV9vMouY
- waS1DgGsMyM0kbeKThIyFq4oovDm5du41N86dfRGITobt3G5nflvFtC95 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="5664338"
-X-IronPort-AV: E=Sophos;i="6.04,183,1695711600"; 
-   d="scan'208";a="5664338"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jan 2024 11:36:13 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="774967991"
-X-IronPort-AV: E=Sophos;i="6.04,183,1695711600"; d="scan'208";a="774967991"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by orsmga007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 09 Jan 2024 11:36:12 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 9 Jan 2024 11:36:11 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 9 Jan 2024 11:36:11 -0800
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.169)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 9 Jan 2024 11:36:11 -0800
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>)
+ id 1rNHw6-0002oq-Cd; Tue, 09 Jan 2024 14:38:56 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KzOLDZVd4lo5mWuu7qJVwZ/xISvfXNTX/o6z1JO3u3aSA/jaHCAeQ7v2Y7WkyrfkcncCivTEEgdH1zerPyNGxK2e6+OSIc0L0ZvQyK0+tehvBMzISrnEkjzpPdODW4QLrwec5LvVrGPJoFlKDlvqN3AtBLCbqAKq8tKZlq1TRQikrnajBYCKUDnKCfnVA+us+CZS1QIGLHnHdliuZhSDyZyOxZmKu3gZaTSlBNUem8Ykpc6iEB0uxVuSQkg9wfgyPPwvvcXxdCWN1bVqGfXZC1tvu5hHWM/UMrTfntAV9Lqa2+R/0/FBjDl0X7Ma/4tw+iQmARPudcviQu1Sac+HPw==
+ b=loncMlhobnB2ylEN5WShgtMtGmSjqTvRq9jLPW5B/SsRiGjDKRPnWa58Yyl7AJWbUsgxGFLiTTPSgCbgQCPCS4nckatJ7R4zkSkvbOr9AH4jRVhjV55y4vldWSFu5eoEIPbmxd9XJxJltA7r/KzJEuLER6BffqW7zpn/4ihWygu9PeFImrGXf1mLAIKGDsxTyGv48XwLTHszsgi02OMK7w+gUSfx6Uw8Hyf9i3oLdOWqtmiY2Gn6E6F8+SuA01qx+kbsrfV4PCJ3egm09vq76GtZI4JnEU+fohCZnTkblZlaicktPqS9O4GAvgkqQxiVMD4fLDGbFPgxoZdhKeAutQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gk+sBhGEZOQXttWy5Tevj2tWS7Yv274EomyKvG+24Sk=;
- b=Cil5+trXWGjbArrjErEOV6UiGy00gUU3sq85bvDOH1Mp7w0toYUtyunjiH4dfrEaPH7uNvm2boEBndpkrBax8bho5VZ7f9C5cAlpvllW0c4ULBbbbsmS+dzobHlapHYRkxJK2AricTTZ+l723jqixz/HYCWZHjj6XFOawCLH5CLbmCMFzEovAUb/cbd9MOQzRHuvd9F4c+fbr0/+GE2IG31pwjGD0Zx0juSiYwnB1HZK9t0v9ZmSYjSqsI5ZvHuhsuW4v+g76BhUFCjEzqoCcpataTvgz/mWVw1t8JQ2l/YhQGHORbHIkYwdmn1Re+2fQsZdlfEvQk4ODKv79qvFcw==
+ bh=tA3o7NnQjDSN/nqTygo5/+BRrkAwg4R10Id71m2xzLY=;
+ b=fpsIYwUlottehzXxnhdqXqm2JFMcWY7KsIpUx8yjhS1juKgGf30zdLpAPZEWb0qmPq3MNommoMziHrly/8DlEygPDQ73zYD3zLICU/uN06tHhXDIdCsVgiaihkFmtXbKYaQ7upUOLau5N6lXs89wJjG89GqYeFU1qQ2uf2yn3slf94p7I842mUE3+hTvTRPtbbmF3AK828xBT+smfgbCVQPpcnUK7YOhlzCcAYpQ8NBz9Vdzib/YKWUB3LBlIb9Ljc4iJ/tBbZXKlz0NXOjHr3PxnqQeX/tT+oRqdVYZTz9eG6D463yvs/rI0brdxdmAbg/+QyrURu9KTk10o7tY4w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tA3o7NnQjDSN/nqTygo5/+BRrkAwg4R10Id71m2xzLY=;
+ b=k++uzrUFyxLSMqScxHG+UuP65M3mhJyCrv8MlI06Q5qzWFQ37pvM9nV0ESluFLZxf9jMMYI9ALfNbwtBITmE7FJLD+hB10hreh3okoVineLnePBpK4y+4b62tpaoVZV1ndQb3bqtfbEjBIKe2AnoEAAtvNq7izmUnMoH4PR1utjrjoGI2KeB3pxO6uwefwN96qhc2/WAZvZhbQMMFDJqqvqp3XTwZ8+v0uNlrduQKtYWaRy68vTS3N08TxvMQfAWY73EiKN2r2wblioWmDiGyd2EJ0iHNyD3WSjh8BNPT4DoRQCJH6GH2iYN/8SiXHuoo528MPcGHeIGRmdX8kkw6Q==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by CY8PR11MB7945.namprd11.prod.outlook.com (2603:10b6:930:7b::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23; Tue, 9 Jan
- 2024 19:36:08 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6257:f90:c7dd:f0b2]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6257:f90:c7dd:f0b2%4]) with mapi id 15.20.7181.015; Tue, 9 Jan 2024
- 19:36:07 +0000
-Date: Tue, 9 Jan 2024 11:36:03 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>, David Hildenbrand <david@redhat.com>
-CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Alex Williamson
- <alex.williamson@redhat.com>, Ankit Agrawal <ankita@nvidia.com>,
- "clg@redhat.com" <clg@redhat.com>, "shannon.zhaosl@gmail.com"
- <shannon.zhaosl@gmail.com>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "ani@anisinha.ca" <ani@anisinha.ca>,
- "berrange@redhat.com" <berrange@redhat.com>, "eduardo@habkost.net"
- <eduardo@habkost.net>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by DM4PR12MB6469.namprd12.prod.outlook.com (2603:10b6:8:b6::6) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7159.23; Tue, 9 Jan 2024 19:38:48 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::60d4:c1e3:e1aa:8f93]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::60d4:c1e3:e1aa:8f93%4]) with mapi id 15.20.7159.020; Tue, 9 Jan 2024
+ 19:38:48 +0000
+Date: Tue, 9 Jan 2024 15:38:47 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: David Hildenbrand <david@redhat.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Ankit Agrawal <ankita@nvidia.com>, "clg@redhat.com" <clg@redhat.com>,
+ "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "ani@anisinha.ca" <ani@anisinha.ca>,
+ "berrange@redhat.com" <berrange@redhat.com>,
+ "eduardo@habkost.net" <eduardo@habkost.net>,
+ "imammedo@redhat.com" <imammedo@redhat.com>,
  "mst@redhat.com" <mst@redhat.com>, "eblake@redhat.com" <eblake@redhat.com>,
- "armbru@redhat.com" <armbru@redhat.com>, "gshan@redhat.com"
- <gshan@redhat.com>, Aniket Agashe <aniketa@nvidia.com>, Neo Jia
- <cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta
- (SW-GPU)" <targupta@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, "Andy
- Currid" <acurrid@nvidia.com>, Dheeraj Nigam <dnigam@nvidia.com>, Uday Dhoke
- <udhoke@nvidia.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "armbru@redhat.com" <armbru@redhat.com>,
+ "gshan@redhat.com" <gshan@redhat.com>,
+ Aniket Agashe <aniketa@nvidia.com>, Neo Jia <cjia@nvidia.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>,
+ "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>,
+ Vikram Sethi <vsethi@nvidia.com>, Andy Currid <acurrid@nvidia.com>,
+ Dheeraj Nigam <dnigam@nvidia.com>, Uday Dhoke <udhoke@nvidia.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 Subject: Re: [PATCH v6 1/2] qom: new object to associate device to numa node
-Message-ID: <659da02316cab_24a829418@dwillia2-xfh.jf.intel.com.notmuch>
+Message-ID: <20240109193847.GF439767@nvidia.com>
 References: <20231225045603.7654-1-ankita@nvidia.com>
  <20231225045603.7654-2-ankita@nvidia.com>
  <20240102125821.00001aa0@Huawei.com>
@@ -102,72 +78,72 @@ References: <20231225045603.7654-1-ankita@nvidia.com>
  <20240109165221.00003b8b@Huawei.com>
  <16d54fd2-9bab-46cd-a1b7-9742674453d6@redhat.com>
  <20240109171030.GE439767@nvidia.com>
-Content-Type: text/plain; charset="us-ascii"
+ <659da02316cab_24a829418@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240109171030.GE439767@nvidia.com>
-X-ClientProxiedBy: MW4PR04CA0087.namprd04.prod.outlook.com
- (2603:10b6:303:6b::32) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+In-Reply-To: <659da02316cab_24a829418@dwillia2-xfh.jf.intel.com.notmuch>
+X-ClientProxiedBy: MN2PR20CA0034.namprd20.prod.outlook.com
+ (2603:10b6:208:e8::47) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|CY8PR11MB7945:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63678b21-9601-4545-4be5-08dc114a39a5
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|DM4PR12MB6469:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4211d5e-96b9-4509-3c93-08dc114a99be
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 6iEh7+p7+jwqwnSpsm8D7VEr56mb3QZ40n9bEFTeC+XkzenQLBrSl47wFK1rPS+R5xD10j0J+hMU0dLZYSHBg/AqpahQT36QjMX7C4EN+L3R9hWZLHFmLUzm9owVzX44EUxEaQIntiQOxsV64HzcrWwmruKKFdnyidIwouvpTo17sL8iRIbVcMIgtScgCxCvjxhXLJlPQRhxDSocHQVv5dyGCK2r93T/1n8kxWYYobAlsTyu65A0eTzwWSY8uW6Qr3pUySdluRPOFe/imFZ9PfURx96Rd6OFAdAYbrnwDZ4ORanQs57nTHYCzs9h1cA0JtLfTHIgOOQ/v3hyHqCZaSQcMVyovgou++9Go+Y9ZJFEeJ02g+yxw/2+dvpXzgmCq9FrGGa4/SDQSOiZtha1upH/MGJoLf635pkqv71bCGDsUxMDOonfbBnAcS51GJaZhkEBuBf9pcVhkqbUNFXL4VX4CQhFgfzm5FFg/asHTmD/e8k2XujMH6bPYYlmAeH66P8QU//KO9Y65+hRkL2QJnuAB8hXuESjZlLmJsRn1J6gMU6UcKXpFwsjyG2t/hVf
+X-Microsoft-Antispam-Message-Info: dr41iDrPNgsCTMo11TbV4lArzm2UAtl9U9ofZpybwvcm5FfgFPOoPglcOH78djF5jIvWVFNC+kGDAQX7TL+fZ4RxwnMhlUZtOdSTT3GRjudKFnqhk06pb1zl67KbRoc9duLF7THsz9jVbxzAKA2peAHeL8pzT6QrzR7PexCyvigrO3LLY5XF+e4bd2L3Wv6TxgDJ8o4XCApdXtgfaw+A/0NQN3HkQSQwzYFgj0zxx0C+lMeescq80en6dEp1kioD2NMQcvZklmoPeXOdHLnot+u51yQAINY7krYepS1bvA8B1l8bn9N78YZrhFpCw6//ZNn3Dy947XaKnp5PJJ4ovA4ZYHdtQRPrq6IHf9eBq2mxrMD5NwPcvFimYgaQkSILzYFE/VOArOxqbKMH/le7ybieLLXwTIVoJUf1A5GrHam6yalMjsLLfT91FMXNTEw1tz1/t+rF9vXKFOTmpW3ysMYKCggb9jASTcf9yGo4Fp6LUqGIQzDPlL8Q2UoGfzQsUq2SqC7QJVJxA6JIhIs//lYH1ArVH+35G8f6m2HOP3PnDnNbsv6uk8qFZ4d35tU+vABh9wUII6rmHI5MAHf4G6Xg7LgJt+EyckoZdcDv9GRP9j8SJiw9/RV7ozdnBNrO
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR11MB8107.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(39860400002)(346002)(366004)(376002)(136003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(9686003)(38100700002)(478600001)(6486002)(6512007)(6506007)(26005)(6666004)(86362001)(82960400001)(2906002)(5660300002)(7416002)(41300700001)(83380400001)(66946007)(54906003)(66556008)(8936002)(66476007)(110136005)(8676002)(316002)(4326008);
- DIR:OUT; SFP:1102; 
+ IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(136003)(346002)(376002)(366004)(39860400002)(396003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(41300700001)(86362001)(8936002)(6486002)(8676002)(6916009)(7416002)(2906002)(5660300002)(66476007)(66556008)(36756003)(316002)(1076003)(66946007)(2616005)(26005)(54906003)(6512007)(33656002)(83380400001)(478600001)(6506007)(4326008)(38100700002)(27376004);
+ DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8nEKhfs8XY0mMNsg+4d3e5gSjaf6SJrfC9KFrgv4/b5nQbFGN6Irb+Xfzwyk?=
- =?us-ascii?Q?UoLktBjNuDmk8Qqx77eTRcuufR+dUHAYgDb8UyXMTZwcvRf78s+tqw2NKlSf?=
- =?us-ascii?Q?RNCkd0do7xtyYr3yEQuNIvjKzJpjZ8z5ZB4X/RhB8KIlZfEKH0M7k76PWt/n?=
- =?us-ascii?Q?va9ZQ/6sgckVvrLtNYakxxudL5HuIRTS4QnlLlE0M0rkvMg+g2+HlRt/qIzd?=
- =?us-ascii?Q?xuyrsS1TgLImlYAw0zzlf3TyFusIU+A97Z3H4KHZ3vkLY5IeaUTtrxYD+6cL?=
- =?us-ascii?Q?raBsBHWlJb1vXq40Cdv+4EBk2PzSG0Abnu3RS6zcQ4wnLAs8cy2I3TWSGdSI?=
- =?us-ascii?Q?38cmjt3SO6nUOlH1OuRXdAGHzYcxf+Htn39Wz+ZvciF45q4UpaNn3KIFzqak?=
- =?us-ascii?Q?wgpeh9K9YCRZRsn60x3yqSPxicRiQW8tHOb2uepCAuWg6cIyoARzNsCIYDj6?=
- =?us-ascii?Q?Sar4IlvM6S024ce9CemENdUMu39AiHVokWbGbbrBdNpw2oFekaua7av1C608?=
- =?us-ascii?Q?MU/0dwaxIXeJjJ9ea9QejQZGEZoEu5oHNqIDGNAIS+AIBhTAVNQN/ZpDUeEK?=
- =?us-ascii?Q?yPFi+UC6r4mhDoOpM2SIz4PDyhdR4NrXQYXfkKxXRuYO6RWZxsy6mcwLXlL+?=
- =?us-ascii?Q?262CMimSSII/seKwM3aHElK5F+LQl3VimyHk5AWcjP/ukw59Y3bBAksF1GXG?=
- =?us-ascii?Q?MyG+chSaLCtWzJ5ktcscwLIBhAN+LU5dedF9i9jH54LsL3bcSqyR9worxQDC?=
- =?us-ascii?Q?2Tztpu3JeaHyGZIeKlDIJAcym6S39GjWdWCfAotO4+nBQe10VC3bpYiSpfTY?=
- =?us-ascii?Q?AsamSNWZenP0VnKX1A2gsS2S91N7ZEagbzJmiR6B1h37dEvnK84muskwFGTQ?=
- =?us-ascii?Q?s+JXag/RmmMak77Gt9icZ8Op5sJlm52r0J/Kx2T0g2W+zxO/CsFI/WkBj7s0?=
- =?us-ascii?Q?YOvYHAa+M8DLGxNqq/h+oCyazrkA/+GXNl1mQxTVpPyY2+EDoUvfP34nA/vJ?=
- =?us-ascii?Q?QeaH4bDuzufM/vN7t7XlFM6UpeAltSVsaoLrkvbM6lvaLRNXkJTsqG0NI26o?=
- =?us-ascii?Q?wyNWSNRyxCjTr4Us/ifAa5HgZJIx39b3zWpzjGJ/Ge0+nvCpNu/kUvGInNXQ?=
- =?us-ascii?Q?hyDsX9JLIjTNKx++5IPT5X5dgPnU4pcDneWKqGZVOW79QsX1phOCbb4Waw9G?=
- =?us-ascii?Q?HL+zUbI1Dqw1cfR5hazveAwWd/H2dRsMj9c6bx4P1cYE6dDmHnf65vRjnU8r?=
- =?us-ascii?Q?irSk62JZMBnRFJtv73gIjnvs+rCZAexWiOcnI+gnTyYSKzMawHIjDtztU1eY?=
- =?us-ascii?Q?TpHLrL+dD6jFMbkQQ/xwzmE6D6OGBeBGm+ZpnjPs9B3Fkscc/iC4WvBqgsOV?=
- =?us-ascii?Q?LZvEH7tBbYrvCe7oK19MmGwuCpqmsctFOyge2XJtzDYTnFDkTli23rM0GXG+?=
- =?us-ascii?Q?nKbVvnmZFnQUpO5GYyelxmCMt9TIYvNOf4j7BSUQZo/YqvpPFbb+qIIrayxQ?=
- =?us-ascii?Q?X93ZkAxhTBhYorEG6wS5B4/GR7WqXs1swvfYzCG2zc8sD/EVFSNjxTYYlbav?=
- =?us-ascii?Q?2kL4K5YOAHLaottiQaQHcZ3MSKB6YwSTTCmSPOD3oMM1tc637tCBbz8fmaPV?=
- =?us-ascii?Q?aw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63678b21-9601-4545-4be5-08dc114a39a5
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?epo02Z2cW/J6ZlZU2BJGzAmlqQ82vfrqnVHZDo0pS8TWGGGY9pok44isirFV?=
+ =?us-ascii?Q?go6vMFaiwxUJ6Msr//ssAtdFDgdLH39dZFBZbHaJrYS8/oj3Gaj1BnDohy2z?=
+ =?us-ascii?Q?KXxbWXElLvY5pB4yjWweKL+whdzoDV/C8zY/HG/bTQc4YTuVNa9/7rhQJQiN?=
+ =?us-ascii?Q?a+/aQa4ESGH6i+9J8UUmtt/erM8VycAyjoN99gpotpijBoNNTUySnHmmgGcg?=
+ =?us-ascii?Q?fGdeFT5SOPx29cn2BWMjtowd7cao42lG4v8E5ODF3u80E4ZGZVPT2BGp7PsD?=
+ =?us-ascii?Q?iIZRiNwN9VL1vOgXGAdNOPmgXRt/VbwHv+tPQ10DqMZoKQ6I9Bak5qxqnXUy?=
+ =?us-ascii?Q?deSJIlXJuYGLgb1xgsL0PmXCDc+AMs3Y/76Bh5e2fAQ+pUpo6w/H4ecK0SZo?=
+ =?us-ascii?Q?B04bS7t2tFwhkuOcy+cDuzqvGlCsDNixVL9anx4f7GWWZrSFThXHJT1eqBMq?=
+ =?us-ascii?Q?XPkQkVauRDEeuVlQJVDsvI00gj8eKTTZEsSSy0yUL7JsHL3YX3lOSmp5INoH?=
+ =?us-ascii?Q?6J5AWpk39scKvWPJ84Kjl2SVEG7nnZht/Rz2q2C96tH90x4f1oRQG1YZfEMk?=
+ =?us-ascii?Q?rgF1R8ZjkryzAvWchaPP0OrgEyuxsrCcH4ix/1X1r7O5AWcIHIT8GJMY/cT/?=
+ =?us-ascii?Q?MVvCeh8bOdZQWrZaw6hDpKnHMFMr8G3FKlltPZ/scJVSxWz0lSSLliHxjeu3?=
+ =?us-ascii?Q?Z1lg4jKRJ9I3uEf8+Jeqi7eNvulv8BH1bj543Jp0VjlcxqhGMnCAEV4cqp8f?=
+ =?us-ascii?Q?CG6Us0ya3uvHmvcQFLhSk8iFe75W/JsxEEvJZ60KCYstEq8nPeLMPcGVMzlb?=
+ =?us-ascii?Q?sSQRUTEzX09SEgBBtFfuzYsuAspgRmjcTszOwo5Mrqn9x5KoKkypw4Gh/BjD?=
+ =?us-ascii?Q?LW+9+kehye6lM7BvbhY6EBmMuFnWUXqs3FUT6JooRd7htvKkYLYXo+mk0UBK?=
+ =?us-ascii?Q?4XK8ktK16Qhqa6m8bACnu6NwL2RmIhQAwcnBSX+UaoWgbDtqsgd+edxOy507?=
+ =?us-ascii?Q?8JmLCCyyUypUYR4ExUtR1q2znjjlw3W8JD1hKiYLfySmiiTyk5i+kqZz2F+F?=
+ =?us-ascii?Q?CtFAvsY5zYOqAUnpstNxda1/ArpiRHMYREUEzMxGAlTAgpMeFJ80YI46txk1?=
+ =?us-ascii?Q?s30GJ1DHD0X8brm7N5kLyXkKnuZCSlxNDayr1MbPTmuxiM+uCxKfMeX5YaVG?=
+ =?us-ascii?Q?zLz9p/X7NQAFPTcuPruTTcjg1mdpAdL6yoAMjGmvcgCrS5TswaqGuefAFc51?=
+ =?us-ascii?Q?FJZNgKk7/DKiTz8IA7aGZcLk6zjHqwEVtCQZEY0u1pirTUZturMMZQuDKcVs?=
+ =?us-ascii?Q?d8jyzmvtJZE9qe5BKPdILhi32wWYXZPmkfWscdL+QjxjwYgeZ1KcjiBrzb8j?=
+ =?us-ascii?Q?JULfDvwhbQsJIS69ZhFUTCRV5BFo4fwa8jhKkVlZJ3LZLoBaWPbxAKJcAsQI?=
+ =?us-ascii?Q?3z7vHGX4/I5A44ClS/95RV1SDvVG5wH4UoY2vKFEV+8DQkpIWsRpp8DJEwHy?=
+ =?us-ascii?Q?7ET5Z/Bn4tOhX1xsv68tdYv9g6aO4amMIUn7nhu1fJuNRl6OCXpuYYZhG1lc?=
+ =?us-ascii?Q?hmm2Ip9KIxzc5QZNUZ1C3hLS3QpsBVgMJzyXpjtz?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4211d5e-96b9-4509-3c93-08dc114a99be
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2024 19:36:07.4651 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2024 19:38:48.6359 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4DuBw/oZ+50YaL2A4S7FfUMZ8rBNwKhXAWMOSdEXg6EsucOO5I8muzoeAxpGhiXKRW+r3WVhJMbEx+aW2nuAUhBxVSWu5Y03ErHymk4rv5Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7945
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.12;
- envelope-from=dan.j.williams@intel.com; helo=mgamail.intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: bd45fVkSwSp662Fa6LF/gwpAOoz2owRHaCdP0PeXAy7emdWzWPBYZDolhowkgOfl
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6469
+Received-SPF: softfail client-ip=2a01:111:f400:7ea9::610;
+ envelope-from=jgg@nvidia.com;
+ helo=NAM02-SN1-obe.outbound.protection.outlook.com
 X-Spam_score_int: -45
 X-Spam_score: -4.6
 X-Spam_bar: ----
 X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -184,54 +160,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jason Gunthorpe wrote:
-> On Tue, Jan 09, 2024 at 06:02:03PM +0100, David Hildenbrand wrote:
-> > > Given that, an alternative proposal that I think would work
-> > > for you would be to add a 'placeholder' memory node definition
-> > > in SRAT (so allow 0 size explicitly - might need a new SRAT
-> > > entry to avoid backwards compat issues).
+On Tue, Jan 09, 2024 at 11:36:03AM -0800, Dan Williams wrote:
+> Jason Gunthorpe wrote:
+> > On Tue, Jan 09, 2024 at 06:02:03PM +0100, David Hildenbrand wrote:
+> > > > Given that, an alternative proposal that I think would work
+> > > > for you would be to add a 'placeholder' memory node definition
+> > > > in SRAT (so allow 0 size explicitly - might need a new SRAT
+> > > > entry to avoid backwards compat issues).
+> > > 
+> > > Putting all the PCI/GI/... complexity aside, I'll just raise again that for
+> > > virtio-mem something simple like that might be helpful as well, IIUC.
+> > > 
+> > > 	-numa node,nodeid=2 \
+> > > 	...
+> > > 	-device virtio-mem-pci,node=2,... \
+> > > 
+> > > All we need is the OS to prepare for an empty node that will get populated
+> > > with memory later.
 > > 
-> > Putting all the PCI/GI/... complexity aside, I'll just raise again that for
-> > virtio-mem something simple like that might be helpful as well, IIUC.
+> > That is all this is doing too, the NUMA relationship of the actual
+> > memory is desribed already by the PCI device since it is a BAR on the
+> > device.
 > > 
-> > 	-numa node,nodeid=2 \
-> > 	...
-> > 	-device virtio-mem-pci,node=2,... \
+> > The only purpose is to get the empty nodes into Linux :(
 > > 
-> > All we need is the OS to prepare for an empty node that will get populated
-> > with memory later.
+> > > So if that's what a "placeholder" node definition in srat could achieve as
+> > > well, even without all of the other acpi-generic-initiator stuff, that would
+> > > be great.
+> > 
+> > Seems like there are two use quite similar cases.. virtio-mem is going
+> > to be calling the same family of kernel API I suspect :)
 > 
-> That is all this is doing too, the NUMA relationship of the actual
-> memory is desribed already by the PCI device since it is a BAR on the
-> device.
+> It seems sad that we, as an industry, went through all of this trouble
+> to define a dynamically enumerable CXL device model only to turn around
+> and require static ACPI tables to tell us how to enumerate it.
 > 
-> The only purpose is to get the empty nodes into Linux :(
+> A similar problem exists on the memory target side and the approach
+> taken there was to have Linux statically reserve at least enough numa
+> node numbers for all the platform CXL memory ranges (defined in the
+> ACPI.CEDT.CFMWS), but with the promise to come back and broach the
+> dynamic node creation problem "if the need arises".
 > 
-> > So if that's what a "placeholder" node definition in srat could achieve as
-> > well, even without all of the other acpi-generic-initiator stuff, that would
-> > be great.
+> This initiator-node enumeration case seems like that occasion where the
+> need has arisen to get Linux out of the mode of needing to declare all
+> possible numa nodes early in boot. Allow for nodes to be discoverable
+> post NUMA-init.
 > 
-> Seems like there are two use quite similar cases.. virtio-mem is going
-> to be calling the same family of kernel API I suspect :)
+> One strawman scheme that comes to mind is instead of "add nodes early" in
+> boot, "delete unused nodes late" in boot after the device topology has
+> been enumerated. Otherwise, requiring static ACPI tables to further
+> enumerate an industry-standard dynamically enumerated bus seems to be
+> going in the wrong direction.
 
-It seems sad that we, as an industry, went through all of this trouble
-to define a dynamically enumerable CXL device model only to turn around
-and require static ACPI tables to tell us how to enumerate it.
+Fully agree, and I think this will get increasingly painful as we go
+down the CXL road.
 
-A similar problem exists on the memory target side and the approach
-taken there was to have Linux statically reserve at least enough numa
-node numbers for all the platform CXL memory ranges (defined in the
-ACPI.CEDT.CFMWS), but with the promise to come back and broach the
-dynamic node creation problem "if the need arises".
-
-This initiator-node enumeration case seems like that occasion where the
-need has arisen to get Linux out of the mode of needing to declare all
-possible numa nodes early in boot. Allow for nodes to be discoverable
-post NUMA-init.
-
-One strawman scheme that comes to mind is instead of "add nodes early" in
-boot, "delete unused nodes late" in boot after the device topology has
-been enumerated. Otherwise, requiring static ACPI tables to further
-enumerate an industry-standard dynamically enumerated bus seems to be
-going in the wrong direction.
+Jason
 
