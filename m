@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1988282A5
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 10:03:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB828282AC
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 10:03:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN7zO-0007vs-DA; Tue, 09 Jan 2024 04:01:38 -0500
+	id 1rN7zb-0007wC-UM; Tue, 09 Jan 2024 04:01:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quic_svaddagi@quicinc.com>)
- id 1rN7zL-0007v4-9w; Tue, 09 Jan 2024 04:01:35 -0500
+ id 1rN7zO-0007vu-OP; Tue, 09 Jan 2024 04:01:38 -0500
 Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quic_svaddagi@quicinc.com>)
- id 1rN7zI-0003ad-DP; Tue, 09 Jan 2024 04:01:35 -0500
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+ id 1rN7zM-0003d7-Gt; Tue, 09 Jan 2024 04:01:38 -0500
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
  by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 4093qk6B030231; Tue, 9 Jan 2024 09:01:30 GMT
+ 4096Ivn8002203; Tue, 9 Jan 2024 09:01:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding:content-type; s=
- qcppdkim1; bh=Qg6et82kQFPHGaGzJ9Fv3XINC5+HT9KBW7Q2TRZWo0M=; b=Cl
- BuAWkk+jAQQZ70MJuVKIaFGmzzjHADanYpFH7NYlQscz/Lc4S2ejeNiW2/RJZwfH
- dS7kxDJFV+gzOR8PfRZkrt4a3XlBXym6NcLTcpIKTLyRD+5Fpv6tdCMy9kX+f8Xf
- u7dw9nO3oqjbsCajcnSSqXmB6f4HwXqggzR3gXLxyew2Twuv/wAv4+gvKkGTe2c1
- eiEX3MBZ1zWB1xzF63NxmIY5UIPxgMUkB/Vxfq8gG+nrfrCcnBHxxfnzGwwIxyoL
- eNjcEaS1J5NKWbpsWb1C8f/cxsmokVTE9mFtLGoNiJFEbcwacPh+PCI+WL0fZY+1
- uRbBmG/eHq67HITKO+mA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
+ qcppdkim1; bh=QXcESR7lil4F97hbtdqsuTdH30F3JZRqRBmUFs97KDc=; b=Kt
+ ayLad+++MPEdnblr0pCuMThRoWanO5PsFNNeU1fGAJtXJjPNCL41oFqVQBVgH4m0
+ 2XeLuCsQHcdXDWqEi4MF5T21diL8bsrWTbxPfO9SY///xQ1smF612hp6Jur3zPqg
+ ugK0w7iCb9slihIRVkuRsGEKJtojiUMWm9PDjxV7kNaVvdO4fOBBNQk6+cFf0LsU
+ pQ15tw+T9M7YukfWgh3Tftj86d6gBybmoJ9GFlgETpt2l/gx3soUS/R3kZItppAD
+ gUKOFlNvGwq0qcVeL7ItV6onGHQaga5M+8gquJljPDXyFlz286NBnQ0ZrshXPN4H
+ uHR6HZtQJxLPmBPwPDQg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
  [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vgwsjrkrk-1
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vgw1k0nxa-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 09:01:29 +0000 (GMT)
+ Tue, 09 Jan 2024 09:01:34 +0000 (GMT)
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com
  [10.47.209.197])
- by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40991SLO026771
+ by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40991Xef003270
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 9 Jan 2024 09:01:28 GMT
+ Tue, 9 Jan 2024 09:01:33 GMT
 Received: from blr-ubuntu-31.qualcomm.com (10.80.80.8) by
  nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Tue, 9 Jan 2024 01:01:24 -0800
+ 15.2.1118.40; Tue, 9 Jan 2024 01:01:28 -0800
 From: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
 To: <peter.maydell@linaro.org>, <philmd@linaro.org>, <alex.bennee@linaro.org>, 
  <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
@@ -50,9 +50,9 @@ CC: <quic_svaddagi@quicinc.com>, <quic_tsoni@quicinc.com>,
  <quic_pheragu@quicinc.com>, <quic_eberman@quicinc.com>,
  <quic_yvasi@quicinc.com>, <quic_cvanscha@quicinc.com>,
  <quic_mnalajal@quicinc.com>
-Subject: [RFC/PATCH v1 08/11] gunyah: Customize device-tree
-Date: Tue, 9 Jan 2024 09:00:36 +0000
-Message-ID: <20240109090039.1636383-9-quic_svaddagi@quicinc.com>
+Subject: [RFC/PATCH v1 09/11] gunyah: CPU execution loop
+Date: Tue, 9 Jan 2024 09:00:37 +0000
+Message-ID: <20240109090039.1636383-10-quic_svaddagi@quicinc.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240109090039.1636383-1-quic_svaddagi@quicinc.com>
 References: <20240109090039.1636383-1-quic_svaddagi@quicinc.com>
@@ -65,16 +65,16 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
-X-Proofpoint-GUID: d5M5TsRJt9QdCWpH_zocoRj0VLdTeKQP
-X-Proofpoint-ORIG-GUID: d5M5TsRJt9QdCWpH_zocoRj0VLdTeKQP
+X-Proofpoint-GUID: Ygjc9xBnNsLPP85Gy8jd9ffXAvAUomOA
+X-Proofpoint-ORIG-GUID: Ygjc9xBnNsLPP85Gy8jd9ffXAvAUomOA
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0
- lowpriorityscore=0 phishscore=0 priorityscore=1501 adultscore=0
- spamscore=0 impostorscore=0 mlxscore=0 bulkscore=0 mlxlogscore=999
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ clxscore=1015 adultscore=0
+ impostorscore=0 suspectscore=0 spamscore=0 bulkscore=0 mlxlogscore=661
+ lowpriorityscore=0 phishscore=0 mlxscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2311290000 definitions=main-2401090070
 Received-SPF: pass client-ip=205.220.180.131;
  envelope-from=quic_svaddagi@quicinc.com; helo=mx0b-0031df01.pphosted.com
@@ -99,165 +99,348 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Customize device-tree with Gunyah specific properties. Some of these
-properties include specification of doorbells that need to be created
-and associated with various interrupts.
+Complete the cpu execution loop. At this time, we recognize exits
+associated with only MMIO access. Future patches will add support for
+recognizing other exit reasons, such as PSCI calls made by guest.
 
 Signed-off-by: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
 ---
- accel/stubs/gunyah-stub.c |  5 +++
- hw/arm/virt.c             | 11 ++++++
- include/sysemu/gunyah.h   |  2 +
- target/arm/gunyah.c       | 79 +++++++++++++++++++++++++++++++++++++++
- 4 files changed, 97 insertions(+)
+ accel/gunyah/gunyah-accel-ops.c |   7 ++
+ accel/gunyah/gunyah-all.c       | 201 +++++++++++++++++++++++++++++++-
+ include/hw/core/cpu.h           |   1 +
+ include/sysemu/gunyah_int.h     |   9 ++
+ target/arm/gunyah.c             |  13 +++
+ 5 files changed, 230 insertions(+), 1 deletion(-)
 
-diff --git a/accel/stubs/gunyah-stub.c b/accel/stubs/gunyah-stub.c
-index faeb2af915..e9a8752bb4 100644
---- a/accel/stubs/gunyah-stub.c
-+++ b/accel/stubs/gunyah-stub.c
-@@ -16,3 +16,8 @@ int gunyah_arm_set_dtb(__u64 dtb_start, __u64 dtb_size)
- {
-     return -1;
+diff --git a/accel/gunyah/gunyah-accel-ops.c b/accel/gunyah/gunyah-accel-ops.c
+index fe732a1d47..a13b1c8cb5 100644
+--- a/accel/gunyah/gunyah-accel-ops.c
++++ b/accel/gunyah/gunyah-accel-ops.c
+@@ -91,6 +91,11 @@ static void gunyah_set_protected_vm(Object *obj, bool value, Error **errp)
+     s->is_protected_vm = value;
  }
-+
-+void gunyah_arm_fdt_customize(void *fdt, uint64_t mem_base,
-+                uint32_t gic_phandle) {
-+    return;
+ 
++static void gunyah_setup_post(MachineState *ms, AccelState *accel)
++{
++    gunyah_start_vm();
 +}
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 60fbe2f7c4..1aaadc1e1d 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2005,6 +2005,14 @@ static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
++
+ static void gunyah_accel_class_init(ObjectClass *oc, void *data)
+ {
+     AccelClass *ac = ACCEL_CLASS(oc);
+@@ -98,6 +103,7 @@ static void gunyah_accel_class_init(ObjectClass *oc, void *data)
+     ac->name = "GUNYAH";
+     ac->init_machine = gunyah_init;
+     ac->allowed = &gunyah_allowed;
++    ac->setup_post = gunyah_setup_post;
+ 
+     object_class_property_add_bool(oc, "protected-vm",
+                     gunyah_get_protected_vm, gunyah_set_protected_vm);
+@@ -156,6 +162,7 @@ static void gunyah_accel_ops_class_init(ObjectClass *oc, void *data)
+     ops->create_vcpu_thread = gunyah_start_vcpu_thread;
+     ops->kick_vcpu_thread = gunyah_kick_vcpu_thread;
+     ops->cpu_thread_is_idle = gunyah_vcpu_thread_is_idle;
++    ops->synchronize_post_reset = gunyah_cpu_synchronize_post_reset;
+ };
+ 
+ static const TypeInfo gunyah_accel_ops_type = {
+diff --git a/accel/gunyah/gunyah-all.c b/accel/gunyah/gunyah-all.c
+index 4e4a2b89db..3eeecfd286 100644
+--- a/accel/gunyah/gunyah-all.c
++++ b/accel/gunyah/gunyah-all.c
+@@ -25,6 +25,9 @@
+ #include "exec/address-spaces.h"
+ #include "qapi/error.h"
+ #include "qemu/event_notifier.h"
++#include "qemu/main-loop.h"
++#include "sysemu/runstate.h"
++#include "qemu/guest-random.h"
+ 
+ static void gunyah_region_add(MemoryListener *listener,
+                            MemoryRegionSection *section);
+@@ -69,6 +72,18 @@ int gunyah_vm_ioctl(int type, ...)
+     return ioctl(s->vmfd, type, arg);
+ }
+ 
++static int gunyah_vcpu_ioctl(CPUState *cpu, int type, ...)
++{
++    void *arg;
++    va_list ap;
++
++    va_start(ap, type);
++    arg = va_arg(ap, void *);
++    va_end(ap);
++
++    return ioctl(cpu->accel->fd, type, arg);
++}
++
+ static MemoryListener gunyah_memory_listener = {
+     .name = "gunyah",
+     .priority = MEMORY_LISTENER_PRIORITY_ACCEL,
+@@ -276,6 +291,11 @@ static void gunyah_set_phys_mem(GUNYAHState *s,
+             error_report("Overlapping slot registration not supported!");
+             exit(1);
+         }
++
++        if (qatomic_read(&s->vm_started)) {
++            error_report("Memory map changes after VM start not supported!");
++            exit(1);
++        }
      }
+ 
+     if (area->readonly ||
+@@ -405,13 +425,192 @@ GUNYAHState *get_gunyah_state(void)
+     return GUNYAH_STATE(current_accel());
  }
  
-+static void virt_modify_dtb(const struct arm_boot_info *binfo, void *fdt)
++static void gunyah_ipi_signal(int sig)
 +{
-+    const VirtMachineState *vms = container_of(binfo, VirtMachineState,
-+                                                 bootinfo);
-+
-+    gunyah_arm_fdt_customize(fdt, vms->memmap[VIRT_MEM].base, vms->gic_phandle);
++    if (current_cpu) {
++        qatomic_set(&current_cpu->accel->run->immediate_exit, 1);
++    }
 +}
 +
- static void machvirt_init(MachineState *machine)
- {
-     VirtMachineState *vms = VIRT_MACHINE(machine);
-@@ -2311,6 +2319,9 @@ static void machvirt_init(MachineState *machine)
-     vms->bootinfo.skip_dtb_autoload = true;
-     vms->bootinfo.firmware_loaded = firmware_loaded;
-     vms->bootinfo.psci_conduit = vms->psci_conduit;
-+    if (gunyah_enabled()) {
-+        vms->bootinfo.modify_dtb = virt_modify_dtb;
-+    }
-     arm_load_kernel(ARM_CPU(first_cpu), machine, &vms->bootinfo);
- 
-     vms->machine_done.notify = virt_machine_done;
-diff --git a/include/sysemu/gunyah.h b/include/sysemu/gunyah.h
-index a73d17bfb9..d0c1d8564c 100644
---- a/include/sysemu/gunyah.h
-+++ b/include/sysemu/gunyah.h
-@@ -28,5 +28,7 @@ DECLARE_INSTANCE_CHECKER(GUNYAHState, GUNYAH_STATE,
-                          TYPE_GUNYAH_ACCEL)
- 
- int gunyah_arm_set_dtb(__u64 dtb_start, __u64 dtb_size);
-+void gunyah_arm_fdt_customize(void *fdt, uint64_t mem_base,
-+                uint32_t gic_phandle);
- 
- #endif  /* QEMU_GUNYAH_H */
-diff --git a/target/arm/gunyah.c b/target/arm/gunyah.c
-index 73c1c2a88a..1521f2d414 100644
---- a/target/arm/gunyah.c
-+++ b/target/arm/gunyah.c
-@@ -11,6 +11,9 @@
- #include "sysemu/gunyah.h"
- #include "sysemu/gunyah_int.h"
- #include "linux-headers/linux/gunyah.h"
-+#include "exec/memory.h"
-+#include "sysemu/device_tree.h"
-+#include "hw/arm/fdt.h"
- 
- /*
-  * Specify location of device-tree in guest address space.
-@@ -43,3 +46,79 @@ int gunyah_arm_set_dtb(__u64 dtb_start, __u64 dtb_size)
- 
-     return 0;
- }
-+
-+void gunyah_arm_fdt_customize(void *fdt, uint64_t mem_base,
-+            uint32_t gic_phandle)
++static void gunyah_cpu_kick_self(void)
 +{
-+    char *nodename;
-+    int i;
-+    GUNYAHState *state = get_gunyah_state();
++    qatomic_set(&current_cpu->accel->run->immediate_exit, 1);
++}
 +
-+    qemu_fdt_add_subnode(fdt, "/gunyah-vm-config");
-+    qemu_fdt_setprop_string(fdt, "/gunyah-vm-config",
-+                                "image-name", "qemu-vm");
-+    qemu_fdt_setprop_string(fdt, "/gunyah-vm-config", "os-type", "linux");
++static int gunyah_init_vcpu(CPUState *cpu, Error **errp)
++{
++    int ret;
++    struct gh_fn_desc fdesc;
++    struct gh_fn_vcpu_arg vcpu;
++    struct sigaction sigact;
++    sigset_t set;
 +
-+    nodename = g_strdup_printf("/gunyah-vm-config/memory");
-+    qemu_fdt_add_subnode(fdt, nodename);
-+    qemu_fdt_setprop_cell(fdt, nodename, "#address-cells", 2);
-+    qemu_fdt_setprop_cell(fdt, nodename, "#size-cells", 2);
-+    qemu_fdt_setprop_u64(fdt, nodename, "base-address", mem_base);
++    cpu->accel = g_new0(AccelCPUState, 1);
 +
-+    g_free(nodename);
++    /* init cpu signals */
++    memset(&sigact, 0, sizeof(sigact));
++    sigact.sa_handler = gunyah_ipi_signal;
++    sigaction(SIG_IPI, &sigact, NULL);
 +
-+    nodename = g_strdup_printf("/gunyah-vm-config/interrupts");
-+    qemu_fdt_add_subnode(fdt, nodename);
-+    qemu_fdt_setprop_cell(fdt, nodename, "config", gic_phandle);
-+    g_free(nodename);
++    pthread_sigmask(SIG_BLOCK, NULL, &set);
++    sigdelset(&set, SIG_IPI);
 +
-+    nodename = g_strdup_printf("/gunyah-vm-config/vcpus");
-+    qemu_fdt_add_subnode(fdt, nodename);
-+    qemu_fdt_setprop_string(fdt, nodename, "affinity", "proxy");
-+    g_free(nodename);
++    ret = pthread_sigmask(SIG_SETMASK, &set, NULL);
++    if (ret) {
++        error_report("pthread_sigmask: %s", strerror(ret));
++        exit(1);
++    }
 +
-+    nodename = g_strdup_printf("/gunyah-vm-config/vdevices");
-+    qemu_fdt_add_subnode(fdt, nodename);
-+    qemu_fdt_setprop_string(fdt, nodename, "generate", "/hypervisor");
-+    g_free(nodename);
++    vcpu.id = cpu->cpu_index;
++    fdesc.type = GH_FN_VCPU;
++    fdesc.arg_size = sizeof(struct gh_fn_vcpu_arg);
++    fdesc.arg = (__u64)(&vcpu);
 +
-+    for (i = 0; i < state->nr_slots; ++i) {
-+        if (!state->slots[i].start || state->slots[i].lend ||
-+                state->slots[i].start == mem_base) {
-+            continue;
++    ret = gunyah_vm_ioctl(GH_VM_ADD_FUNCTION, &fdesc);
++    if (ret < 0) {
++        error_report("could not create VCPU %d: %s", vcpu.id, strerror(errno));
++        exit(1);
++    }
++
++    cpu->accel->fd = ret;
++    cpu->accel->run = mmap(0, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, ret, 0);
++    if (cpu->accel->run == MAP_FAILED) {
++        error_report("mmap of vcpu run structure failed : %s", strerror(errno));
++        exit(1);
++    }
++
++    return 0;
++}
++
++static void gunyah_vcpu_destroy(CPUState *cpu)
++{
++    int ret;
++
++    ret = munmap(cpu->accel->run, 4096);
++    if (ret < 0) {
++        error_report("munmap of vcpu run structure failed: %s",
++                strerror(errno));
++        exit(1);
++    }
++
++    close(cpu->accel->fd);
++    g_free(cpu->accel);
++}
++
++void gunyah_start_vm(void)
++{
++    int ret;
++    GUNYAHState *s = GUNYAH_STATE(current_accel());
++
++    ret = gunyah_vm_ioctl(GH_VM_START);
++    if (ret != 0) {
++        error_report("Failed to start VM: %s", strerror(errno));
++        exit(1);
++    }
++    qatomic_set(&s->vm_started, 1);
++}
++
++static int gunyah_vcpu_exec(CPUState *cpu)
++{
++    int ret;
++
++    qemu_mutex_unlock_iothread();
++    cpu_exec_start(cpu);
++
++    do {
++        struct gh_vcpu_run *run = cpu->accel->run;
++        int exit_reason;
++
++        if (qatomic_read(&cpu->exit_request)) {
++            gunyah_cpu_kick_self();
 +        }
 +
-+        nodename = g_strdup_printf("/gunyah-vm-config/vdevices/shm-%x", i);
-+        qemu_fdt_add_subnode(fdt, nodename);
-+        qemu_fdt_setprop_string(fdt, nodename, "vdevice-type", "shm");
-+        qemu_fdt_setprop_string(fdt, nodename, "push-compatible", "dma");
-+        qemu_fdt_setprop(fdt, nodename, "peer-default", NULL, 0);
-+        qemu_fdt_setprop_u64(fdt, nodename, "dma_base", 0);
-+        g_free(nodename);
++        /* Todo: Check need for smp_rmb() here */
 +
-+        nodename = g_strdup_printf("/gunyah-vm-config/vdevices/shm-%x/memory",
-+                                                                        i);
-+        qemu_fdt_add_subnode(fdt, nodename);
-+        qemu_fdt_setprop_cell(fdt, nodename, "label", i);
-+        qemu_fdt_setprop_cell(fdt, nodename, "#address-cells", 2);
-+        qemu_fdt_setprop_u64(fdt, nodename, "base", state->slots[i].start);
-+        g_free(nodename);
++        ret = gunyah_vcpu_ioctl(cpu, GH_VCPU_RUN);
++        if (ret < 0) {
++            if (errno == EINTR || errno == EAGAIN) {
++                qatomic_set(&run->immediate_exit, 0);
++                /* Todo: Check need for smp_wmb() here */
++                ret = EXCP_INTERRUPT;
++                break;
++            }
++
++            error_report("GH_VCPU_RUN: %s", strerror(errno));
++            ret = -1;
++            break;
++        }
++
++        exit_reason = run->exit_reason;
++        switch (exit_reason) {
++        case GH_VCPU_EXIT_MMIO:
++            address_space_rw(&address_space_memory,
++                run->mmio.phys_addr, MEMTXATTRS_UNSPECIFIED,
++                run->mmio.data,
++                run->mmio.len,
++                run->mmio.is_write);
++            break;
++
++        /* Todo: Handle VM shutdown */
++        default:
++            error_report("unhandled exit %d", exit_reason);
++        }
++    } while (ret == 0);
++
++    cpu_exec_end(cpu);
++    qemu_mutex_lock_iothread();
++
++    if (ret < 0) {
++        cpu_dump_state(cpu, stderr, CPU_DUMP_CODE);
++        vm_stop(RUN_STATE_INTERNAL_ERROR);
 +    }
 +
-+    for (i = 0; i < state->nr_irqs; ++i) {
-+        nodename = g_strdup_printf("/gunyah-vm-config/vdevices/bell-%x", i);
-+        qemu_fdt_add_subnode(fdt, nodename);
-+        qemu_fdt_setprop_string(fdt, nodename, "vdevice-type", "doorbell");
-+        char *p = g_strdup_printf("/hypervisor/bell-%x", i);
-+        qemu_fdt_setprop_string(fdt, nodename, "generate", p);
-+        g_free(p);
-+        qemu_fdt_setprop_cell(fdt, nodename, "label", i);
-+        qemu_fdt_setprop(fdt, nodename, "peer-default", NULL, 0);
-+        qemu_fdt_setprop(fdt, nodename, "source-can-clear", NULL, 0);
++    qatomic_set(&cpu->exit_request, 0);
 +
-+        qemu_fdt_setprop_cells(fdt, nodename, "interrupts",
-+                GIC_FDT_IRQ_TYPE_SPI, i, GIC_FDT_IRQ_FLAGS_LEVEL_HI);
++    return ret;
++}
 +
-+        g_free(nodename);
-+    }
+ void *gunyah_cpu_thread_fn(void *arg)
+ {
+     CPUState *cpu = arg;
+ 
++    rcu_register_thread();
++
++    qemu_mutex_lock_iothread();
++    qemu_thread_get_self(cpu->thread);
++
++    cpu->thread_id = qemu_get_thread_id();
++    cpu->neg.can_do_io = true;
++    current_cpu = cpu;
++
++    gunyah_init_vcpu(cpu, &error_fatal);
++
++    /* signal CPU creation */
++    cpu_thread_signal_created(cpu);
++    qemu_guest_random_seed_thread_part2(cpu->random_seed);
++
+     do {
+-        /* Do nothing */
++        if (cpu_can_run(cpu)) {
++            gunyah_vcpu_exec(cpu);
++        }
++        qemu_wait_io_event(cpu);
+     } while (!cpu->unplug || cpu_can_run(cpu));
+ 
++    gunyah_vcpu_destroy(cpu);
++    cpu_thread_signal_destroyed(cpu);
++    qemu_mutex_unlock_iothread();
++    rcu_unregister_thread();
+     return NULL;
+ }
++
++static void do_gunyah_cpu_synchronize_post_reset(CPUState *cpu,
++                                run_on_cpu_data arg)
++{
++    gunyah_arch_put_registers(cpu, 0);
++    cpu->vcpu_dirty = false;
++}
++
++void gunyah_cpu_synchronize_post_reset(CPUState *cpu)
++{
++    run_on_cpu(cpu, do_gunyah_cpu_synchronize_post_reset, RUN_ON_CPU_NULL);
++}
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 238c02c05e..ef248a658b 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -371,6 +371,7 @@ struct CPUWatchpoint {
+ 
+ struct KVMState;
+ struct kvm_run;
++struct gh_vcpu_run;
+ 
+ /* work queue */
+ 
+diff --git a/include/sysemu/gunyah_int.h b/include/sysemu/gunyah_int.h
+index dc5b4847a9..72b3027e4e 100644
+--- a/include/sysemu/gunyah_int.h
++++ b/include/sysemu/gunyah_int.h
+@@ -46,12 +46,21 @@ struct GUNYAHState {
+     bool preshmem_reserved;
+     uint32_t preshmem_size;
+     uint32_t nr_irqs;
++    uint32_t vm_started;
++};
++
++struct AccelCPUState {
++    int fd;
++    struct gh_vcpu_run *run;
+ };
+ 
+ int gunyah_create_vm(void);
++void gunyah_start_vm(void);
+ int gunyah_vm_ioctl(int type, ...);
+ void *gunyah_cpu_thread_fn(void *arg);
+ int gunyah_add_irqfd(int irqfd, int label, Error **errp);
+ GUNYAHState *get_gunyah_state(void);
++int gunyah_arch_put_registers(CPUState *cs, int level);
++void gunyah_cpu_synchronize_post_reset(CPUState *cpu);
+ 
+ #endif    /* GUNYAH_INT_H */
+diff --git a/target/arm/gunyah.c b/target/arm/gunyah.c
+index 1521f2d414..06600dbdb7 100644
+--- a/target/arm/gunyah.c
++++ b/target/arm/gunyah.c
+@@ -122,3 +122,16 @@ void gunyah_arm_fdt_customize(void *fdt, uint64_t mem_base,
+         g_free(nodename);
+     }
+ }
++
++int gunyah_arch_put_registers(CPUState *cs, int level)
++{
++    /*
++     * No support (yet) to set/get vCPU registers. We specify device-tree
++     * location, which is passed on to VM via X0. Image entry point is assumed
++     * to be the beginning of slot containing device-tree, which seems to be
++     * true currently. In future, Gunyah could add API to set boot CPU's
++     * register context.
++     */
++
++    return 0;
 +}
 -- 
 2.25.1
