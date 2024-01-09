@@ -2,111 +2,126 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05470828EB1
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 22:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02DEB828EBD
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 22:08:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNJBR-00016f-2Z; Tue, 09 Jan 2024 15:58:49 -0500
+	id 1rNJJV-0003ln-87; Tue, 09 Jan 2024 16:07:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rNJBL-00015S-2o
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 15:58:43 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rNJBJ-0006tq-7C
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 15:58:42 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A792F1F826;
- Tue,  9 Jan 2024 20:58:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704833919; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qmOw1c3+EuRes3x+t+I8pSPvo5ioRaoUS051I+lDZ94=;
- b=JCuALOmY/AHeniR8Rg9VX5S21Rm2ATSUfAUkW1qTWzupeVzfxea0qq+7aUj7uHTDkmwqEU
- SL1iRoPvIyqy/2yaUoSkTiQs1IOyOcm5GsXXuy7+mPVxFmGvzeL2jOZKevnL4/vqUh0IUa
- 2/ZH0LTcaIlOKpwhE6DFjBrn3KTVWMU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704833919;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qmOw1c3+EuRes3x+t+I8pSPvo5ioRaoUS051I+lDZ94=;
- b=b0w+L5uyJ9QgpeOFHDRqmLaCOyiRhvwQKpFyVMylbFEzQ6Fzxf8gekYYtG1M4j5sK7dVGE
- SXEVFFIotqZ1ClDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704833919; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qmOw1c3+EuRes3x+t+I8pSPvo5ioRaoUS051I+lDZ94=;
- b=JCuALOmY/AHeniR8Rg9VX5S21Rm2ATSUfAUkW1qTWzupeVzfxea0qq+7aUj7uHTDkmwqEU
- SL1iRoPvIyqy/2yaUoSkTiQs1IOyOcm5GsXXuy7+mPVxFmGvzeL2jOZKevnL4/vqUh0IUa
- 2/ZH0LTcaIlOKpwhE6DFjBrn3KTVWMU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704833919;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qmOw1c3+EuRes3x+t+I8pSPvo5ioRaoUS051I+lDZ94=;
- b=b0w+L5uyJ9QgpeOFHDRqmLaCOyiRhvwQKpFyVMylbFEzQ6Fzxf8gekYYtG1M4j5sK7dVGE
- SXEVFFIotqZ1ClDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2DDA2134E8;
- Tue,  9 Jan 2024 20:58:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 68s4OX6znWXQSwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 09 Jan 2024 20:58:38 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, Peter Xu
- <peterx@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Thomas
- Huth <thuth@redhat.com>, Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Wainer dos
- Santos Moschetta <wainersm@redhat.com>, Beraldo Leal <bleal@redhat.com>
-Subject: Re: [PATCH v3 3/4] ci: Add a migration compatibility test job
-In-Reply-To: <7036da8a-7a52-49e0-bcd1-8484ae86b336@redhat.com>
-References: <20240105180449.11562-1-farosas@suse.de>
- <20240105180449.11562-4-farosas@suse.de>
- <7036da8a-7a52-49e0-bcd1-8484ae86b336@redhat.com>
-Date: Tue, 09 Jan 2024 17:58:36 -0300
-Message-ID: <878r4y8br7.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rNJJO-0003l6-Ni
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:07:04 -0500
+Received: from mout.gmx.net ([212.227.17.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rNJJL-0001HN-L9
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:07:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+ t=1704834412; x=1705439212; i=deller@gmx.de;
+ bh=LHm4VrIjcC4s1Uxm4kz8nACqVPY5/pAgyMkEunz8Dr8=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+ In-Reply-To;
+ b=U9KLsMDL+OAqo+MwDm3OwXurZaCU6LcCYRCrAcn+yby6Iq6aiCwF6DI1adWs+CA9
+ MZ4wooLUxIOgBBwaEEs7WYR1QRuC7rlP1Rzb6ZMv89oxItstPFaof0orzNOi3rsb1
+ hCenAXjYrj9F0CPgKCMOLGt117cFQyNF8/wrd646dquGTdP5QD0x2sYesIflU//+t
+ 16NJk2FmmseWcoYeiYj+smnBdMrQlBKz1POJ+s0ieWlLkFdBrmGdeVkgEP6XtUo4+
+ 8lq6smuK4bUIGJ+DE9roh1WrNnSgE9oRHQ+3spM0A2uCww3ATUht1+YLpkHZJCZQO
+ DBdHYNSfeMxyVtifKA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([94.134.149.181]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1McH5Q-1qkgEa2MDU-00ckH3; Tue, 09
+ Jan 2024 22:06:52 +0100
+Message-ID: <060dc700-e8f9-4bcc-bfda-0d09b81dc081@gmx.de>
+Date: Tue, 9 Jan 2024 22:06:49 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/9] target/hppa: Fix PDC address translation on PA2.0
+ with PSW.W=0
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, deller@kernel.org,
+ qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>, Bruno Haible <bruno@clisp.org>,
+ "Nelson H . F . Beebe" <beebe@math.utah.edu>
+References: <20240107132237.50553-1-deller@kernel.org>
+ <20240107132237.50553-5-deller@kernel.org>
+ <48cc72dd-bf52-4cd2-a5e1-d7d1a7e08dd1@linaro.org>
+ <9c8e5d0a-99e7-4332-bf69-a7e56a62c2e3@gmx.de>
+ <f8056d9d-803a-47b9-9e2e-007d164829b0@linaro.org>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <f8056d9d-803a-47b9-9e2e-007d164829b0@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [-4.30 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_SEVEN(0.00)[9];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Provags-ID: V03:K1:6ON/jFsy7HCR0DADVfBa7PPUFwOyQP/MFVsF5MREsSEKwegWa+n
+ n5n8wVgMlvRoJ47L5RaBuhmeCPy/0HuPnOKf2g0gdZwrjtBjnHSFcaWGsVWMa6PlsGKkYUl
+ Kq1ZzDyhSHfLeXe+wZyzOXBkpDfVAh7SzyhCT9l/d6BFwAoAxvhCG8GxsI2kYhaKiuJ5t+D
+ uljXsp6VynHGoS1AUz5lQ==
+UI-OutboundReport: notjunk:1;M01:P0:jJZ6jY39fJQ=;DigpBPxrbTMCImtHx5SRMziStbb
+ 6f/gbc0QK3oBR2ZRMRnlItYkYuvYMRQPxFgpVfTji/W7OixI5vZ5yYl5zE/mT8PGIcFnOKKGh
+ RMYIaA4Z2USlepxE+2dj6JvKFpmoNSlebnJxqBnDUNhCGXkvldNDD1pylaGzrlP8W7RyEkWB9
+ No+PmrbgJe7su/aXkb+EtINlXcrFkh9W8O0VGvOPZU9kn+CI4L1FIA1bDlRXs3reTBb7/GjMB
+ TzLhu49xID8UoIQCcE8d/TAU48trnI7W23EIVWbqT374ErGriGrNgHLXPYAXESMCHcQETjK/x
+ w7Sh9PnTToEOeGP8XSIsAZ8D/VPoV/l/Ht5xl3hQurXCTBsjZhdGVwph6945ufb/3MyNnFQ2s
+ AMfzY480QzLBrpB64rNCGW6Z3EWHBEdApW1J+36CX3ZFbIoVfKROV6P7j0etLkHu1Rvs77Mj9
+ HZ3faLcmJppGhLShh5a6d+FKr5+Cq7GSeyzH6YXu05D1cVSggsG0Bt+W2vMTlgevUbmDUddy0
+ PkeAxEW64J0OpFDOtaljbyTTdH/0oUCqI+MNNIwayg5Omok+jbvZDVj7RBfi2Cmc59DrHLadD
+ 4AkrkEIrqNYYqQmUhfGfjWr9XpH3TSSUi8oc65uDevBQOdPtjSk6y0JiMofqlmK1hzBLxEZYw
+ oSaK3sPN8NQnUxFLeEgohkFg4E8aXpvI9gks2Awcm4LOkjq3BoVF4hLNvPFwMMQkQES7+Iazu
+ RrOEhGLlWIuVM1nliy5WrI5CWVnIuLqnwJblECKveCnbCASYOD6+x/nKMd3hsf6LA+SQ/SueP
+ Hins5tBEwWz6TKGxUBjgBAShrBPN+m4E0Fz9rxi5P5LQH6EOHxvZOSRmWyTsmssCdXeIaclyv
+ 1yaYngshahl9j2vhKPXW2ShY2kr+A7g2VaI4+VxJ7mPqyQX7lL2HYnw7iLw1QM2tOAwYZAcBk
+ gSaMeSi/rOlRfA1WeVzac3S5k0o=
+Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -123,132 +138,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-C=C3=A9dric Le Goater <clg@redhat.com> writes:
-
-> On 1/5/24 19:04, Fabiano Rosas wrote:
->> The migration tests have support for being passed two QEMU binaries to
->> test migration compatibility.
->>=20
->> Add a CI job that builds the lastest release of QEMU and another job
->> that uses that version plus an already present build of the current
->> version and run the migration tests with the two, both as source and
->> destination. I.e.:
->>=20
->>   old QEMU (n-1) -> current QEMU (development tree)
->>   current QEMU (development tree) -> old QEMU (n-1)
->>=20
->> The purpose of this CI job is to ensure the code we're about to merge
->> will not cause a migration compatibility problem when migrating the
->> next release (which will contain that code) to/from the previous
->> release.
->>=20
->> I'm leaving the jobs as manual for now because using an older QEMU in
->> tests could hit bugs that were already fixed in the current
->> development tree and we need to handle those case-by-case.
->>=20
->> Note: for user forks, the version tags need to be pushed to gitlab
->> otherwise it won't be able to checkout a different version.
->>=20
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->>   .gitlab-ci.d/buildtest.yml | 53 ++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 53 insertions(+)
->>=20
->> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
->> index 91663946de..81163a3f6a 100644
->> --- a/.gitlab-ci.d/buildtest.yml
->> +++ b/.gitlab-ci.d/buildtest.yml
->> @@ -167,6 +167,59 @@ build-system-centos:
->>         x86_64-softmmu rx-softmmu sh4-softmmu nios2-softmmu
->>       MAKE_CHECK_ARGS: check-build
->>=20=20=20
->> +build-previous-qemu:
->> +  extends: .native_build_job_template
->> +  artifacts:
->> +    when: on_success
->> +    expire_in: 2 days
->> +    paths:
->> +      - build-previous
->> +    exclude:
->> +      - build-previous/**/*.p
->> +      - build-previous/**/*.a.p
->> +      - build-previous/**/*.fa.p
->> +      - build-previous/**/*.c.o
->> +      - build-previous/**/*.c.o.d
->> +      - build-previous/**/*.fa
->> +  needs:
->> +    job: amd64-opensuse-leap-container
->> +  variables:
->> +    QEMU_JOB_OPTIONAL: 1
->> +    IMAGE: opensuse-leap
->> +    TARGETS: x86_64-softmmu aarch64-softmmu
->> +  before_script:
->> +    - export QEMU_PREV_VERSION=3D"$(sed 's/\([0-9.]*\)\.[0-9]*/v\1.0/' =
-VERSION)"
->> +    - git checkout $QEMU_PREV_VERSION
->> +  after_script:
->> +    - mv build build-previous
->> +
->> +.migration-compat-common:
->> +  extends: .common_test_job_template
->> +  needs:
->> +    - job: build-previous-qemu
->> +    - job: build-system-opensuse
->> +  allow_failure: true
->> +  variables:
->> +    QEMU_JOB_OPTIONAL: 1
->> +    IMAGE: opensuse-leap
->> +    MAKE_CHECK_ARGS: check-build
->> +  script:
->> +    - cd build
->> +    - QTEST_QEMU_BINARY_SRC=3D../build-previous/qemu-system-${TARGET}
->> +          QTEST_QEMU_BINARY=3D./qemu-system-${TARGET} ./tests/qtest/mig=
-ration-test
->> +    - QTEST_QEMU_BINARY_DST=3D../build-previous/qemu-system-${TARGET}
->> +          QTEST_QEMU_BINARY=3D./qemu-system-${TARGET} ./tests/qtest/mig=
-ration-test
->> +
->> +migration-compat-aarch64:
->> +  extends: .migration-compat-common
->> +  variables:
->> +    TARGET: aarch64
->> +
->> +migration-compat-x86_64:
->> +  extends: .migration-compat-common
->> +  variables:
->> +    TARGET: x86_64
+On 1/9/24 17:18, Richard Henderson wrote:
+> On 1/9/24 22:22, Helge Deller wrote:
+>> On 1/9/24 10:14, Richard Henderson wrote:
+>>> On 1/8/24 00:22, deller@kernel.org wrote:
+>>>> From: Helge Deller <deller@gmx.de>
+>>>>
+>>>> Fix the address translation for PDC space on PA2.0 if PSW.W=3D0.
+>>>> Basically, for any address in the 32-bit PDC range from 0xf0000000 to
+>>>> 0xf1000000 keep the lower 32-bits and just set the upper 32-bits to
+>>>> 0xfffffff0.
+>>>>
+>>>> This mapping fixes the emulated power button in PDC space for 32- and
+>>>> 64-bit machines and is how the physical C3700 machine seems to map
+>>>> PDC.
+>>>>
+>>>> Signed-off-by: Helge Deller <deller@gmx.de>
+>>>> ---
+>>>> =C2=A0 target/hppa/mem_helper.c | 2 +-
+>>>> =C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+>>>> index 08abd1a9f9..011b192406 100644
+>>>> --- a/target/hppa/mem_helper.c
+>>>> +++ b/target/hppa/mem_helper.c
+>>>> @@ -56,7 +56,7 @@ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 addr =3D (int3=
+2_t)addr;
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* PDC address=
+ space */
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 addr &=3D MAKE_64BIT_MASK=
+(0, 24);
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 addr =3D (uint32_t)addr;
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 addr |=3D -1ul=
+l << (TARGET_PHYS_ADDR_SPACE_BITS - 4);
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return addr;
+>>>
+>>> I believe this to be incorrect, as it contradicts Figures H-10 and H-1=
+1.
+>>
+>> Yes, but that seems to be how it's really implemented on physical hardw=
+are.
+>> We have seen other figures as well, which didn't reflect the real world=
+ either.
+>> IMHO we can revert if it really turns out to be wrong and when we
+>> get a better solution.
 >
->
-> What about the others archs, s390x and ppc ? Do you lack the resources
-> or are there any problems to address ?
+> What evidence?=C2=A0 So far, all I can see is for your seabios button, w=
+hich doesn't run on physical hardware.
 
-Currently s390x and ppc are only tested on KVM. Which means they are not
-tested at all unless someone runs migration-test on a custom runner. The
-same is true for this test.
+You are wrong on this.
+My Seabios just mimics the real hardware. And the hardware has such a butt=
+on
+which is reported back by the PDC firmware.
+Here is what the Linux kernel reports on *physical* hardware:
+64-bit kernel -> powersw: Soft power switch at 0xfffffff0f0400804 enabled.
+32-bit kernel -> powersw: Soft power switch at 0xf0400804 enabled
+Just look at the old dmesg from another user (with Linux kernel 2.6.16):
+http://ftp.parisc-linux.org/dmesg/dmesg_C3700.txt
+(search for "power" in that log).
 
-The TCG tests have been disabled:
-    /*
-     * On ppc64, the test only works with kvm-hv, but not with kvm-pr and T=
-CG
-     * is touchy due to race conditions on dirty bits (especially on PPC for
-     * some reason)
-     */
+As you can see, even the real C3700 reports the power button inside the
+firmware region. And on 64-bit the higher 32-bits are at 0xfffffff0.
+That's exactly what I do with this patch.
 
-    /*
-     * Similar to ppc64, s390x seems to be touchy with TCG, so disable it
-     * there until the problems are resolved
-     */
+> In any case, there is a comment just above pointing to the spec, which y=
+ou are now deviating from.=C2=A0 You need to expand that comment to say wh=
+y and how.
 
-It would be great if we could figure out what these issues are and fix
-them so we can at least test with TCG like we do for aarch64.
+Ok.
 
-Doing a TCG run of migration-test with both archs (one binary only, not
-this series):
-
-- ppc survived one run, taking 6 minutes longer than x86/Aarch64.
-- s390x survived one run, taking 40s less than x86/aarch64.
-
-I'll leave them enabled on my machine and do some runs here and there,
-see if I spot something. If not, we can consider re-enabling them once
-we figure out why ppc takes so long.
+Helge
 
