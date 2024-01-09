@@ -2,84 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456228283B9
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 11:11:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31340828409
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 11:31:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN944-0002yl-LS; Tue, 09 Jan 2024 05:10:32 -0500
+	id 1rN9Mn-00060l-B4; Tue, 09 Jan 2024 05:29:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rN943-0002y8-8K
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 05:10:31 -0500
-Received: from mail-qv1-xf2f.google.com ([2607:f8b0:4864:20::f2f])
+ (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
+ id 1rN9Mm-00060Z-0h; Tue, 09 Jan 2024 05:29:52 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rN93o-0003LV-9M
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 05:10:30 -0500
-Received: by mail-qv1-xf2f.google.com with SMTP id
- 6a1803df08f44-67f9ace0006so11274226d6.0
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 02:10:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
+ id 1rN9Mk-0005uR-9F; Tue, 09 Jan 2024 05:29:51 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a28b0207c1dso217764766b.3; 
+ Tue, 09 Jan 2024 02:29:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704795015; x=1705399815; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FtTN0Js4pLIM3D8VWSYZPlGx0hfktwGOQRJXuU9wkrU=;
- b=mPOvL60qgcQWIZTXwx8vEq+dtrFa//jIUP5NqJg48ZxO6vv6Kkq5QjMeWPu81/IwuC
- FH3hN+BXqTEiqSfyEi2yiabRBVkWbBPNPCOoJY8xV8r/XEupLdh2dDska1XbG372GVMw
- NdVEFN4xfh8smuyZ5Fkp+Vg7rRX0Cd+N/u8RxuQSaDUbsx3tUpESDolQJzsZ+71qFwfA
- QIlT8PdJenvmatYr+GiC7n4e/P4/SG+d9daYdW5XeZoUw7JEmdopfGW1ooBV5Jy2q2vz
- tIAa/6dwB55r4yh5pX+hbcEOyJXPdeFmmmCzVP/Pa9dUw+kxC4guXzNn5uS8AgH8xvZU
- yDfQ==
+ d=gmail.com; s=20230601; t=1704796188; x=1705400988; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dAYTIfDCE5g+bcnygdv+D7K3dVVQAb4JjeyknTKTilo=;
+ b=UgYgaUZQCPcfZHiQAErudC3/HGrI/pnGKdvDQpdpcsTJTF/MVxs+QUoMR6qw335sZn
+ Dt7unyuuyLKtYn6Rvk6e8e7NxCKRb7QdDLXdvVyEq8elidEe/z2HfHXvTVZqyUsnciR1
+ wekSGNWW+weFPAPd3rBAaEvGrpFnCyRCtpZJXbDk+Wkqc2hTBnex86oKTfbuOITL3oLS
+ 3fuBiPlCpbHSIKsQzONeU7vAv2eNBsL78v245My/V1Iua2Jk5EYnoyHcDcfrLIOW9wyj
+ aJbpnOpq9BMnQalaFyD4CE0FlF8XmMzQH0aM9tw2hzkKLga5hkAupJ7E3PJkbh3VgUhn
+ GQIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704795015; x=1705399815;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FtTN0Js4pLIM3D8VWSYZPlGx0hfktwGOQRJXuU9wkrU=;
- b=gkCaM5tSk4mBpmZzBDlRfRjTEff/fvCn9+beWkdC2mUrRvzoLvaJcBbI7Glb7yGNmk
- vJQkLK0psNr1b5G06Re9kxyEuMUzdj/QoRzPjMnz6FIXio5o1ufq+ApZhn2y3o5E+3Fx
- RMXooMWRPeJ10zBgCEB38MIT3gEYE0hkD4MLUhkPUlJ54L7m2xlSb+qddkK0BciN54um
- 94NKCQdtVx0SqAq6cCbfmI6UiwqlUDWi34aEBjZN9kUj9hHz1TpielD4yrnlNqMfVTC2
- qFOPAklZibuje/UhQDRIaO5KNuMVLE0FHGxTghincodPvy6Zz1TbpeWllTvlkuyJkFft
- BHtQ==
-X-Gm-Message-State: AOJu0YzmiSGwGNn0uF1egguxRqrETZaZt4W0WjmZXbMhc6DqR19nLkuV
- PrTxu7Sy3Bcrk5AxMFMp826QEut4UTFy7g==
-X-Google-Smtp-Source: AGHT+IG+TcpjjrIhCG12Fr/QhLX2NwsPx8u4c+YQd1kbx23ikHsJF+Dw9D9Y8/AEWyPQ5mP/ASu5qw==
-X-Received: by 2002:a05:6214:2b09:b0:680:d265:6652 with SMTP id
- jx9-20020a0562142b0900b00680d2656652mr4023232qvb.83.1704795015029; 
- Tue, 09 Jan 2024 02:10:15 -0800 (PST)
-Received: from [192.168.40.227] ([172.58.27.248])
- by smtp.gmail.com with ESMTPSA id
- z8-20020a0cfec8000000b00681092cb7b4sm756712qvs.103.2024.01.09.02.10.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 02:10:14 -0800 (PST)
-Message-ID: <dbeaf8b4-8b5f-43ca-9360-606f99da7ed9@linaro.org>
-Date: Tue, 9 Jan 2024 21:10:04 +1100
+ d=1e100.net; s=20230601; t=1704796188; x=1705400988;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dAYTIfDCE5g+bcnygdv+D7K3dVVQAb4JjeyknTKTilo=;
+ b=oAvP1TYibKr84lBCR7regfu7t7BXg7o2uWQ4bc7p1A1cnD5tsuvyZE6fZ2rPlG8KXk
+ NDkrI3FbgS/lqeT630XS6AnvnlTGDQy4O0yrXrtOr8AJph92YbFmb3m7qflZHAiYj9FH
+ sqNHaCtOCFx5G8i9XtofS0MjUiSE4kmW40T/f/kFms9zvGwZauJugquqyUlSLQh2UVRs
+ CbJ1hK/8riOsVGmQ0iuk1Xy3lhOV0loEzoi8/TK/lKxcrvccjcYGAZFvWNaFwP3cyVCb
+ g7I6IcELd3o9FIOllgT5PY9DgYb+3vOnj3W29fZZ7Vr7Y537etRa2Cvyl+G7jz59lGZ8
+ UB9A==
+X-Gm-Message-State: AOJu0YyYy3PCtmZ3iVKWR4sVnqQ6DCe45ncw2KWunMvTV1fAFcAxaSf9
+ j7gwM4fxkGXZ8tVYQ4Df04M=
+X-Google-Smtp-Source: AGHT+IGgacSf3fDp8r5wpCHzbTsnw8OTmAM9pFDNlXBWyy+vkTTRtasdkwWO9mIg8p6ux0reWjdS1Q==
+X-Received: by 2002:a17:907:764f:b0:a27:773b:fcf1 with SMTP id
+ kj15-20020a170907764f00b00a27773bfcf1mr475888ejc.9.1704796187755; 
+ Tue, 09 Jan 2024 02:29:47 -0800 (PST)
+Received: from freya.midgard (broadband-188-255-126-251.ip.moscow.rt.ru.
+ [188.255.126.251]) by smtp.gmail.com with ESMTPSA id
+ d24-20020a170906175800b00a26ac037ff3sm869643eje.132.2024.01.09.02.29.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Jan 2024 02:29:46 -0800 (PST)
+From: Alexey Baturo <baturo.alexey@gmail.com>
+X-Google-Original-From: Alexey Baturo <me@deliversmonkey.space>
+To: 
+Cc: baturo.alexey@gmail.com, richard.henderson@linaro.org,
+ zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com, Alistair.Francis@wdc.com,
+ sagark@eecs.berkeley.edu, kbastian@mail.uni-paderborn.de,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Subject: [PATCH v4 0/6] Pointer Masking update for Zjpm v0.8
+Date: Tue,  9 Jan 2024 10:29:24 +0000
+Message-Id: <20240109102930.405323-1-me@deliversmonkey.space>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: testing without the translation cache
-Content-Language: en-US
-To: Brian Cain <bcain@quicinc.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-Cc: Sid Manning <sidneym@quicinc.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "Matheus Bernardino (QUIC)" <quic_mathbern@quicinc.com>
-References: <SN6PR02MB420583215DEF63E921BBB758B86B2@SN6PR02MB4205.namprd02.prod.outlook.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <SN6PR02MB420583215DEF63E921BBB758B86B2@SN6PR02MB4205.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2f;
- envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf2f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=baturo.alexey@gmail.com; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,19 +90,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/9/24 09:34, Brian Cain wrote:
-> Alex,
-> 
-> A very long time ago QEMU supported disabling the translation cache via “-translation 
-> no-cache”.  That option was deliberately removed.  We are looking into a hexagon-specific 
-> failure when there’s a TB lookup miss from a cpu_loop_exit_restore().   I’d like to test 
-> our fix for this failure and was wondering if there’s any mechanism to disable the cache.  
-> There’s a “-accel tcg,tb-size=0” – but this won’t accomplish what I’m looking to do – will 
-> it?  If not, is there another way to disable the cache?
+From: Alexey Baturo <baturo.alexey@gmail.com>
 
-There is no way to disable the cache, only to make it small so that it overflows often.
+Hi,
 
+Patch series updated after the suggested comments:
+- removed J-letter extension as it's unused
+- renamed and fixed function to detect if address should be sign-extended
+- zeroed unused context variables and moved computation logic to another patch
+- bumped pointer masking version_id and minimum_version_id by 1
 
-r~
+Thanks
+
+[v3]:
+There patches are updated after Richard's comments:
+- moved new tb flags to the end
+- used tcg_gen_(s)extract to get the final address
+- properly handle CONFIG_USER_ONLY
+
+Thanks
+
+[v2]:
+As per Richard's suggestion I made pmm field part of tb_flags.
+It allowed to get rid of global variable to store pmlen.
+Also it allowed to simplify all the machinery around it.
+
+Thanks
+
+[v1]:
+Hi all,
+
+It looks like Zjpm v0.8 is almost frozen and we don't expect it change drastically anymore.
+Compared to the original implementation with explicit base and mask CSRs, we now only have
+several fixed options for number of masked bits which are set using existing CSRs.
+The changes have been tested with handwritten assembly tests and LLVM HWASAN
+test suite.
+
+Thanks
+
+Alexey Baturo (6):
+  target/riscv: Remove obsolete pointer masking extension code.
+  target/riscv: Add new CSR fields for S{sn,mn,m}pm extensions as part
+    of Zjpm v0.8
+  target/riscv: Add helper functions to calculate current number of
+    masked bits for pointer masking
+  target/riscv: Add pointer masking tb flags
+  target/riscv: Update address modify functions to take into account
+    pointer masking
+  target/riscv: Enable updates for pointer masking variables and thus
+    enable pointer masking extension
+
+ target/riscv/cpu.c           |  21 +--
+ target/riscv/cpu.h           |  46 +++--
+ target/riscv/cpu_bits.h      |  90 +---------
+ target/riscv/cpu_cfg.h       |   3 +
+ target/riscv/cpu_helper.c    |  96 +++++-----
+ target/riscv/csr.c           | 337 ++---------------------------------
+ target/riscv/machine.c       |  16 +-
+ target/riscv/pmp.c           |  13 +-
+ target/riscv/pmp.h           |  11 +-
+ target/riscv/tcg/tcg-cpu.c   |   5 +-
+ target/riscv/translate.c     |  46 ++---
+ target/riscv/vector_helper.c |  14 +-
+ 12 files changed, 153 insertions(+), 545 deletions(-)
+
+-- 
+2.34.1
 
 
