@@ -2,110 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4DC6828802
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 15:25:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F73C8287FD
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 15:25:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rND21-0005ZN-D6; Tue, 09 Jan 2024 09:24:41 -0500
+	id 1rND23-0005ma-J9; Tue, 09 Jan 2024 09:24:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rND1r-0005SI-6q
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:24:32 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rND1n-0008JH-1J
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:24:30 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40e461c1f5cso24750245e9.3
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 06:24:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704810263; x=1705415063; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7TaTwDNJKCApijCrofUkZrcv+VK9ZM/YluE5dtA8j8M=;
- b=INUWArXqXN5aDbtrWsv+JVZF7sJj/5eWb4t+e3rihzEzpqSqKfjbxHoBFpN12m35uM
- 6g+7FlEgnQZrWUeTDWeAS971kXHGzUFOJOpjaomRlulrmTHFxRl5PfTGsGEDoH2MYA0S
- NszNlRT5Z6gr+/wV3//4ofhTGNmYM9SUXDzfxEDvyCewVlY4V7LYDJHebQMlveWTrCWt
- Pg4eCwRCURQW0EN4kG5iK3BwCZXOewgziIVQlI+5yxNKr7QsWc7XrwarLaBmcU6gjoPi
- v3V/0gWUKcoxdwpUcKV6EV7So2dPeTBpJt7kVIJz/uzMwyvPcy18m2Yb6sAQRmauZPY1
- wRnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704810263; x=1705415063;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7TaTwDNJKCApijCrofUkZrcv+VK9ZM/YluE5dtA8j8M=;
- b=ZO4NWMU5Rbv/9rlBbAGFNkNC4kapIFQ0nTkya2fNMkoW417BpUkSjfXKgqK6zNbtLX
- lG3DmG2YC6qao03cRqadxOCHTN/g2/6G+mOuN0sCb/C9axEM/xOqivBZsXMCzZ6XsdnQ
- RmaYMjEkgp99ldPXdVcQaCBaoCO/NqlNFXvuFB2xpwmsJauXEQl/ZPw31OZJfytcYdR7
- v3pRxs89pGhRs2oxXoFf/ZsEKqTnqtzgtLIyqAvm1fc3C7gzSf4+PD2vP8cgWK4uIpm9
- TPJuvvKBE3RZzAdL4KAQnqCWb6Wsd93vqQ+7VCpzkPPuhDxXdqDNIkN45nDn6wElPWar
- p3iw==
-X-Gm-Message-State: AOJu0Ywrm1OPrvyfpDLdB8VD6wFN96sRHg50tQzcRIETEEKNuDNkYdIJ
- /Si3aSkgqCveTlyH/pAoaIfhTHc70Bzenw==
-X-Google-Smtp-Source: AGHT+IFBiWbbDS9xbrZz3ME3I+vcc+TfRmzAikG49gMGGqgDT673KWV87mP5tbIvB/CQl9/MctYIwQ==
-X-Received: by 2002:a7b:c041:0:b0:40d:7247:b01f with SMTP id
- u1-20020a7bc041000000b0040d7247b01fmr1871048wmc.98.1704810263508; 
- Tue, 09 Jan 2024 06:24:23 -0800 (PST)
-Received: from [192.168.1.24] ([102.35.208.160])
- by smtp.gmail.com with ESMTPSA id
- ay26-20020a05600c1e1a00b0040e53f24ceasm7614wmb.16.2024.01.09.06.24.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 06:24:22 -0800 (PST)
-Message-ID: <a4554149-4dcf-449f-893d-e3ca70754f93@linaro.org>
-Date: Tue, 9 Jan 2024 18:24:07 +0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rND1v-0005Uy-6o
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:24:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rND1p-0008LA-Lv
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:24:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704810267;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=s1pfYPdowOYwfhJ76cMX39pyh95o+l68DPOd009Rn4w=;
+ b=jJmNl1sYhEzV7M5UVqa9WELBjNJPdl6Knk7Rt0pwPuJzySgqh4t80h8s8ruegBE6A9K03F
+ 3TlMqwozGJ9ltMGRmwcLbzzjRSxEG15Dh1upicBtenFOo1xn34F9LlTYMvxn2EXpqAfX91
+ 9LYxZDz+Me6dvLJcPk83upL/uBWnvMI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-357-_Qgq8ZtZPxWisvwIbTe-nQ-1; Tue, 09 Jan 2024 09:24:24 -0500
+X-MC-Unique: _Qgq8ZtZPxWisvwIbTe-nQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BCDA1185A78E;
+ Tue,  9 Jan 2024 14:24:23 +0000 (UTC)
+Received: from localhost (unknown [10.39.195.93])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 96E343C39;
+ Tue,  9 Jan 2024 14:24:22 +0000 (UTC)
+Date: Tue, 9 Jan 2024 09:24:20 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Christophe Fergeau <cfergeau@redhat.com>
+Subject: Static qemu-user-x86_64 "Unable to find a guest_base to satisfy all
+ guest address mapping requirements"
+Message-ID: <20240109142420.GA425733@fedora>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 36/43] plugins: Use different helpers when reading
- registers
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
- Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Brian Cain <bcain@quicinc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Cleber Rosa <crosa@redhat.com>,
- kvm@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, John Snow <jsnow@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-riscv@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-References: <20240103173349.398526-1-alex.bennee@linaro.org>
- <20240103173349.398526-37-alex.bennee@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240103173349.398526-37-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="ZBCSiAdsRnXPAJKc"
+Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,151 +78,197 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-UmV2aWV3ZWQtYnk6IFBpZXJyaWNrIEJvdXZpZXIgPHBpZXJyaWNrLmJvdXZpZXJAbGluYXJv
-Lm9yZz4NCg0KT24gMS8zLzI0IDIxOjMzLCBBbGV4IEJlbm7DqWUgd3JvdGU6DQo+IEZyb206
-IEFraWhpa28gT2Rha2kgPGFraWhpa28ub2Rha2lAZGF5bml4LmNvbT4NCj4gDQo+IFRoaXMg
-YXZvaWRzIG9wdGltaXphdGlvbnMgaW5jb21wYXRpYmxlIHdoZW4gcmVhZGluZyByZWdpc3Rl
-cnMuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBBa2loaWtvIE9kYWtpIDxha2loaWtvLm9kYWtp
-QGRheW5peC5jb20+DQo+IE1lc3NhZ2UtSWQ6IDwyMDIzMTIxMy1nZGItdjE3LTEyLTc3NzA0
-NzM4MDU5MUBkYXluaXguY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBBbGV4IEJlbm7DqWUgPGFs
-ZXguYmVubmVlQGxpbmFyby5vcmc+DQo+IC0tLQ0KPiAgIGFjY2VsL3RjZy9wbHVnaW4taGVs
-cGVycy5oIHwgIDMgKystDQo+ICAgaW5jbHVkZS9xZW11L3BsdWdpbi5oICAgICAgfCAgMSAr
-DQo+ICAgYWNjZWwvdGNnL3BsdWdpbi1nZW4uYyAgICAgfCA0MyArKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrLS0tLQ0KPiAgIHBsdWdpbnMvYXBpLmMgICAgICAgICAgICAg
-IHwgMTIgKysrKysrKysrLS0NCj4gICA0IGZpbGVzIGNoYW5nZWQsIDUyIGluc2VydGlvbnMo
-KyksIDcgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvYWNjZWwvdGNnL3BsdWdp
-bi1oZWxwZXJzLmggYi9hY2NlbC90Y2cvcGx1Z2luLWhlbHBlcnMuaA0KPiBpbmRleCA4ZTY4
-NWUwNjU0NS4uMTE3OTY0MzZmMzUgMTAwNjQ0DQo+IC0tLSBhL2FjY2VsL3RjZy9wbHVnaW4t
-aGVscGVycy5oDQo+ICsrKyBiL2FjY2VsL3RjZy9wbHVnaW4taGVscGVycy5oDQo+IEBAIC0x
-LDQgKzEsNSBAQA0KPiAgICNpZmRlZiBDT05GSUdfUExVR0lODQo+IC1ERUZfSEVMUEVSX0ZM
-QUdTXzIocGx1Z2luX3ZjcHVfdWRhdGFfY2IsIFRDR19DQUxMX05PX1JXRyB8IFRDR19DQUxM
-X1BMVUdJTiwgdm9pZCwgaTMyLCBwdHIpDQo+ICtERUZfSEVMUEVSX0ZMQUdTXzIocGx1Z2lu
-X3ZjcHVfdWRhdGFfY2Jfbm9fd2csIFRDR19DQUxMX05PX1dHIHwgVENHX0NBTExfUExVR0lO
-LCB2b2lkLCBpMzIsIHB0cikNCj4gK0RFRl9IRUxQRVJfRkxBR1NfMihwbHVnaW5fdmNwdV91
-ZGF0YV9jYl9ub19yd2csIFRDR19DQUxMX05PX1JXRyB8IFRDR19DQUxMX1BMVUdJTiwgdm9p
-ZCwgaTMyLCBwdHIpDQo+ICAgREVGX0hFTFBFUl9GTEFHU180KHBsdWdpbl92Y3B1X21lbV9j
-YiwgVENHX0NBTExfTk9fUldHIHwgVENHX0NBTExfUExVR0lOLCB2b2lkLCBpMzIsIGkzMiwg
-aTY0LCBwdHIpDQo+ICAgI2VuZGlmDQo+IGRpZmYgLS1naXQgYS9pbmNsdWRlL3FlbXUvcGx1
-Z2luLmggYi9pbmNsdWRlL3FlbXUvcGx1Z2luLmgNCj4gaW5kZXggN2ZkYzNhNDg0OWYuLmIw
-YzVhYzY4MjkzIDEwMDY0NA0KPiAtLS0gYS9pbmNsdWRlL3FlbXUvcGx1Z2luLmgNCj4gKysr
-IGIvaW5jbHVkZS9xZW11L3BsdWdpbi5oDQo+IEBAIC03Myw2ICs3Myw3IEBAIGVudW0gcGx1
-Z2luX2R5bl9jYl90eXBlIHsNCj4gICANCj4gICBlbnVtIHBsdWdpbl9keW5fY2Jfc3VidHlw
-ZSB7DQo+ICAgICAgIFBMVUdJTl9DQl9SRUdVTEFSLA0KPiArICAgIFBMVUdJTl9DQl9SRUdV
-TEFSX1IsDQo+ICAgICAgIFBMVUdJTl9DQl9JTkxJTkUsDQo+ICAgICAgIFBMVUdJTl9OX0NC
-X1NVQlRZUEVTLA0KPiAgIH07DQo+IGRpZmYgLS1naXQgYS9hY2NlbC90Y2cvcGx1Z2luLWdl
-bi5jIGIvYWNjZWwvdGNnL3BsdWdpbi1nZW4uYw0KPiBpbmRleCA3OGIzMzFiMjUxMC4uYjM3
-Y2U3NjgzZTYgMTAwNjQ0DQo+IC0tLSBhL2FjY2VsL3RjZy9wbHVnaW4tZ2VuLmMNCj4gKysr
-IGIvYWNjZWwvdGNnL3BsdWdpbi1nZW4uYw0KPiBAQCAtNzksNiArNzksNyBAQCBlbnVtIHBs
-dWdpbl9nZW5fZnJvbSB7DQo+ICAgDQo+ICAgZW51bSBwbHVnaW5fZ2VuX2NiIHsNCj4gICAg
-ICAgUExVR0lOX0dFTl9DQl9VREFUQSwNCj4gKyAgICBQTFVHSU5fR0VOX0NCX1VEQVRBX1Is
-DQo+ICAgICAgIFBMVUdJTl9HRU5fQ0JfSU5MSU5FLA0KPiAgICAgICBQTFVHSU5fR0VOX0NC
-X01FTSwNCj4gICAgICAgUExVR0lOX0dFTl9FTkFCTEVfTUVNX0hFTFBFUiwNCj4gQEAgLTkw
-LDcgKzkxLDEwIEBAIGVudW0gcGx1Z2luX2dlbl9jYiB7DQo+ICAgICogVGhlc2UgaGVscGVy
-cyBhcmUgc3R1YnMgdGhhdCBnZXQgZHluYW1pY2FsbHkgc3dpdGNoZWQgb3V0IGZvciBjYWxs
-cw0KPiAgICAqIGRpcmVjdCB0byB0aGUgcGx1Z2luIGlmIHRoZXkgYXJlIHN1YnNjcmliZWQg
-dG8uDQo+ICAgICovDQo+IC12b2lkIEhFTFBFUihwbHVnaW5fdmNwdV91ZGF0YV9jYikodWlu
-dDMyX3QgY3B1X2luZGV4LCB2b2lkICp1ZGF0YSkNCj4gK3ZvaWQgSEVMUEVSKHBsdWdpbl92
-Y3B1X3VkYXRhX2NiX25vX3dnKSh1aW50MzJfdCBjcHVfaW5kZXgsIHZvaWQgKnVkYXRhKQ0K
-PiAreyB9DQo+ICsNCj4gK3ZvaWQgSEVMUEVSKHBsdWdpbl92Y3B1X3VkYXRhX2NiX25vX3J3
-ZykodWludDMyX3QgY3B1X2luZGV4LCB2b2lkICp1ZGF0YSkNCj4gICB7IH0NCj4gICANCj4g
-ICB2b2lkIEhFTFBFUihwbHVnaW5fdmNwdV9tZW1fY2IpKHVuc2lnbmVkIGludCB2Y3B1X2lu
-ZGV4LA0KPiBAQCAtOTgsNyArMTAyLDcgQEAgdm9pZCBIRUxQRVIocGx1Z2luX3ZjcHVfbWVt
-X2NiKSh1bnNpZ25lZCBpbnQgdmNwdV9pbmRleCwNCj4gICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHZvaWQgKnVzZXJkYXRhKQ0KPiAgIHsgfQ0KPiAgIA0KPiAtc3RhdGlj
-IHZvaWQgZ2VuX2VtcHR5X3VkYXRhX2NiKHZvaWQpDQo+ICtzdGF0aWMgdm9pZCBnZW5fZW1w
-dHlfdWRhdGFfY2Iodm9pZCAoKmdlbl9oZWxwZXIpKFRDR3ZfaTMyLCBUQ0d2X3B0cikpDQo+
-ICAgew0KPiAgICAgICBUQ0d2X2kzMiBjcHVfaW5kZXggPSB0Y2dfdGVtcF9lYmJfbmV3X2kz
-MigpOw0KPiAgICAgICBUQ0d2X3B0ciB1ZGF0YSA9IHRjZ190ZW1wX2ViYl9uZXdfcHRyKCk7
-DQo+IEBAIC0xMDYsMTIgKzExMCwyMiBAQCBzdGF0aWMgdm9pZCBnZW5fZW1wdHlfdWRhdGFf
-Y2Iodm9pZCkNCj4gICAgICAgdGNnX2dlbl9tb3ZpX3B0cih1ZGF0YSwgMCk7DQo+ICAgICAg
-IHRjZ19nZW5fbGRfaTMyKGNwdV9pbmRleCwgdGNnX2VudiwNCj4gICAgICAgICAgICAgICAg
-ICAgICAgLW9mZnNldG9mKEFyY2hDUFUsIGVudikgKyBvZmZzZXRvZihDUFVTdGF0ZSwgY3B1
-X2luZGV4KSk7DQo+IC0gICAgZ2VuX2hlbHBlcl9wbHVnaW5fdmNwdV91ZGF0YV9jYihjcHVf
-aW5kZXgsIHVkYXRhKTsNCj4gKyAgICBnZW5faGVscGVyKGNwdV9pbmRleCwgdWRhdGEpOw0K
-PiAgIA0KPiAgICAgICB0Y2dfdGVtcF9mcmVlX3B0cih1ZGF0YSk7DQo+ICAgICAgIHRjZ190
-ZW1wX2ZyZWVfaTMyKGNwdV9pbmRleCk7DQo+ICAgfQ0KPiAgIA0KPiArc3RhdGljIHZvaWQg
-Z2VuX2VtcHR5X3VkYXRhX2NiX25vX3dnKHZvaWQpDQo+ICt7DQo+ICsgICAgZ2VuX2VtcHR5
-X3VkYXRhX2NiKGdlbl9oZWxwZXJfcGx1Z2luX3ZjcHVfdWRhdGFfY2Jfbm9fd2cpOw0KPiAr
-fQ0KPiArDQo+ICtzdGF0aWMgdm9pZCBnZW5fZW1wdHlfdWRhdGFfY2Jfbm9fcndnKHZvaWQp
-DQo+ICt7DQo+ICsgICAgZ2VuX2VtcHR5X3VkYXRhX2NiKGdlbl9oZWxwZXJfcGx1Z2luX3Zj
-cHVfdWRhdGFfY2Jfbm9fcndnKTsNCj4gK30NCj4gKw0KPiAgIC8qDQo+ICAgICogRm9yIG5v
-dyB3ZSBvbmx5IHN1cHBvcnQgYWRkaV9pNjQuDQo+ICAgICogV2hlbiB3ZSBzdXBwb3J0IG1v
-cmUgb3BzLCB3ZSBjYW4gZ2VuZXJhdGUgb25lIGVtcHR5IGlubGluZSBjYiBmb3IgZWFjaC4N
-Cj4gQEAgLTE5Miw3ICsyMDYsOCBAQCBzdGF0aWMgdm9pZCBwbHVnaW5fZ2VuX2VtcHR5X2Nh
-bGxiYWNrKGVudW0gcGx1Z2luX2dlbl9mcm9tIGZyb20pDQo+ICAgICAgICAgICAgICAgICAg
-ICAgICBnZW5fZW1wdHlfbWVtX2hlbHBlcik7DQo+ICAgICAgICAgICAvKiBmYWxsIHRocm91
-Z2ggKi8NCj4gICAgICAgY2FzZSBQTFVHSU5fR0VOX0ZST01fVEI6DQo+IC0gICAgICAgIGdl
-bl93cmFwcGVkKGZyb20sIFBMVUdJTl9HRU5fQ0JfVURBVEEsIGdlbl9lbXB0eV91ZGF0YV9j
-Yik7DQo+ICsgICAgICAgIGdlbl93cmFwcGVkKGZyb20sIFBMVUdJTl9HRU5fQ0JfVURBVEEs
-IGdlbl9lbXB0eV91ZGF0YV9jYl9ub19yd2cpOw0KPiArICAgICAgICBnZW5fd3JhcHBlZChm
-cm9tLCBQTFVHSU5fR0VOX0NCX1VEQVRBX1IsIGdlbl9lbXB0eV91ZGF0YV9jYl9ub193Zyk7
-DQo+ICAgICAgICAgICBnZW5fd3JhcHBlZChmcm9tLCBQTFVHSU5fR0VOX0NCX0lOTElORSwg
-Z2VuX2VtcHR5X2lubGluZV9jYik7DQo+ICAgICAgICAgICBicmVhazsNCj4gICAgICAgZGVm
-YXVsdDoNCj4gQEAgLTU4OCw2ICs2MDMsMTIgQEAgc3RhdGljIHZvaWQgcGx1Z2luX2dlbl90
-Yl91ZGF0YShjb25zdCBzdHJ1Y3QgcWVtdV9wbHVnaW5fdGIgKnB0YiwNCj4gICAgICAgaW5q
-ZWN0X3VkYXRhX2NiKHB0Yi0+Y2JzW1BMVUdJTl9DQl9SRUdVTEFSXSwgYmVnaW5fb3ApOw0K
-PiAgIH0NCj4gICANCj4gK3N0YXRpYyB2b2lkIHBsdWdpbl9nZW5fdGJfdWRhdGFfcihjb25z
-dCBzdHJ1Y3QgcWVtdV9wbHVnaW5fdGIgKnB0YiwNCj4gKyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBUQ0dPcCAqYmVnaW5fb3ApDQo+ICt7DQo+ICsgICAgaW5qZWN0X3Vk
-YXRhX2NiKHB0Yi0+Y2JzW1BMVUdJTl9DQl9SRUdVTEFSX1JdLCBiZWdpbl9vcCk7DQo+ICt9
-DQo+ICsNCj4gICBzdGF0aWMgdm9pZCBwbHVnaW5fZ2VuX3RiX2lubGluZShjb25zdCBzdHJ1
-Y3QgcWVtdV9wbHVnaW5fdGIgKnB0YiwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBUQ0dPcCAqYmVnaW5fb3ApDQo+ICAgew0KPiBAQCAtNjAyLDYgKzYyMywxNCBA
-QCBzdGF0aWMgdm9pZCBwbHVnaW5fZ2VuX2luc25fdWRhdGEoY29uc3Qgc3RydWN0IHFlbXVf
-cGx1Z2luX3RiICpwdGIsDQo+ICAgICAgIGluamVjdF91ZGF0YV9jYihpbnNuLT5jYnNbUExV
-R0lOX0NCX0lOU05dW1BMVUdJTl9DQl9SRUdVTEFSXSwgYmVnaW5fb3ApOw0KPiAgIH0NCj4g
-ICANCj4gK3N0YXRpYyB2b2lkIHBsdWdpbl9nZW5faW5zbl91ZGF0YV9yKGNvbnN0IHN0cnVj
-dCBxZW11X3BsdWdpbl90YiAqcHRiLA0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgVENHT3AgKmJlZ2luX29wLCBpbnQgaW5zbl9pZHgpDQo+ICt7DQo+ICsgICAg
-c3RydWN0IHFlbXVfcGx1Z2luX2luc24gKmluc24gPSBnX3B0cl9hcnJheV9pbmRleChwdGIt
-Pmluc25zLCBpbnNuX2lkeCk7DQo+ICsNCj4gKyAgICBpbmplY3RfdWRhdGFfY2IoaW5zbi0+
-Y2JzW1BMVUdJTl9DQl9JTlNOXVtQTFVHSU5fQ0JfUkVHVUxBUl9SXSwgYmVnaW5fb3ApOw0K
-PiArfQ0KPiArDQo+ICAgc3RhdGljIHZvaWQgcGx1Z2luX2dlbl9pbnNuX2lubGluZShjb25z
-dCBzdHJ1Y3QgcWVtdV9wbHVnaW5fdGIgKnB0YiwNCj4gICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIFRDR09wICpiZWdpbl9vcCwgaW50IGluc25faWR4KQ0KPiAgIHsN
-Cj4gQEAgLTcyMSw2ICs3NTAsOSBAQCBzdGF0aWMgdm9pZCBwbHVnaW5fZ2VuX2luamVjdChz
-dHJ1Y3QgcWVtdV9wbHVnaW5fdGIgKnBsdWdpbl90YikNCj4gICAgICAgICAgICAgICAgICAg
-Y2FzZSBQTFVHSU5fR0VOX0NCX1VEQVRBOg0KPiAgICAgICAgICAgICAgICAgICAgICAgcGx1
-Z2luX2dlbl90Yl91ZGF0YShwbHVnaW5fdGIsIG9wKTsNCj4gICAgICAgICAgICAgICAgICAg
-ICAgIGJyZWFrOw0KPiArICAgICAgICAgICAgICAgIGNhc2UgUExVR0lOX0dFTl9DQl9VREFU
-QV9SOg0KPiArICAgICAgICAgICAgICAgICAgICBwbHVnaW5fZ2VuX3RiX3VkYXRhX3IocGx1
-Z2luX3RiLCBvcCk7DQo+ICsgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiAgICAgICAg
-ICAgICAgICAgICBjYXNlIFBMVUdJTl9HRU5fQ0JfSU5MSU5FOg0KPiAgICAgICAgICAgICAg
-ICAgICAgICAgcGx1Z2luX2dlbl90Yl9pbmxpbmUocGx1Z2luX3RiLCBvcCk7DQo+ICAgICAg
-ICAgICAgICAgICAgICAgICBicmVhazsNCj4gQEAgLTczNyw2ICs3NjksOSBAQCBzdGF0aWMg
-dm9pZCBwbHVnaW5fZ2VuX2luamVjdChzdHJ1Y3QgcWVtdV9wbHVnaW5fdGIgKnBsdWdpbl90
-YikNCj4gICAgICAgICAgICAgICAgICAgY2FzZSBQTFVHSU5fR0VOX0NCX1VEQVRBOg0KPiAg
-ICAgICAgICAgICAgICAgICAgICAgcGx1Z2luX2dlbl9pbnNuX3VkYXRhKHBsdWdpbl90Yiwg
-b3AsIGluc25faWR4KTsNCj4gICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiArICAg
-ICAgICAgICAgICAgIGNhc2UgUExVR0lOX0dFTl9DQl9VREFUQV9SOg0KPiArICAgICAgICAg
-ICAgICAgICAgICBwbHVnaW5fZ2VuX2luc25fdWRhdGFfcihwbHVnaW5fdGIsIG9wLCBpbnNu
-X2lkeCk7DQo+ICsgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiAgICAgICAgICAgICAg
-ICAgICBjYXNlIFBMVUdJTl9HRU5fQ0JfSU5MSU5FOg0KPiAgICAgICAgICAgICAgICAgICAg
-ICAgcGx1Z2luX2dlbl9pbnNuX2lubGluZShwbHVnaW5fdGIsIG9wLCBpbnNuX2lkeCk7DQo+
-ICAgICAgICAgICAgICAgICAgICAgICBicmVhazsNCj4gZGlmZiAtLWdpdCBhL3BsdWdpbnMv
-YXBpLmMgYi9wbHVnaW5zL2FwaS5jDQo+IGluZGV4IDU1MjFiMGFkMzZjLi5hYzM5Y2RlYTBi
-MyAxMDA2NDQNCj4gLS0tIGEvcGx1Z2lucy9hcGkuYw0KPiArKysgYi9wbHVnaW5zL2FwaS5j
-DQo+IEBAIC04OSw3ICs4OSwxMSBAQCB2b2lkIHFlbXVfcGx1Z2luX3JlZ2lzdGVyX3ZjcHVf
-dGJfZXhlY19jYihzdHJ1Y3QgcWVtdV9wbHVnaW5fdGIgKnRiLA0KPiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZvaWQgKnVkYXRhKQ0KPiAgIHsNCj4g
-ICAgICAgaWYgKCF0Yi0+bWVtX29ubHkpIHsNCj4gLSAgICAgICAgcGx1Z2luX3JlZ2lzdGVy
-X2R5bl9jYl9fdWRhdGEoJnRiLT5jYnNbUExVR0lOX0NCX1JFR1VMQVJdLA0KPiArICAgICAg
-ICBpbnQgaW5kZXggPSBmbGFncyA9PSBRRU1VX1BMVUdJTl9DQl9SX1JFR1MgfHwNCj4gKyAg
-ICAgICAgICAgICAgICAgICAgZmxhZ3MgPT0gUUVNVV9QTFVHSU5fQ0JfUldfUkVHUyA/DQo+
-ICsgICAgICAgICAgICAgICAgICAgIFBMVUdJTl9DQl9SRUdVTEFSX1IgOiBQTFVHSU5fQ0Jf
-UkVHVUxBUjsNCj4gKw0KPiArICAgICAgICBwbHVnaW5fcmVnaXN0ZXJfZHluX2NiX191ZGF0
-YSgmdGItPmNic1tpbmRleF0sDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBjYiwgZmxhZ3MsIHVkYXRhKTsNCj4gICAgICAgfQ0KPiAgIH0NCj4gQEAgLTEw
-OSw3ICsxMTMsMTEgQEAgdm9pZCBxZW11X3BsdWdpbl9yZWdpc3Rlcl92Y3B1X2luc25fZXhl
-Y19jYihzdHJ1Y3QgcWVtdV9wbHVnaW5faW5zbiAqaW5zbiwNCj4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZvaWQgKnVkYXRhKQ0KPiAgIHsNCj4g
-ICAgICAgaWYgKCFpbnNuLT5tZW1fb25seSkgew0KPiAtICAgICAgICBwbHVnaW5fcmVnaXN0
-ZXJfZHluX2NiX191ZGF0YSgmaW5zbi0+Y2JzW1BMVUdJTl9DQl9JTlNOXVtQTFVHSU5fQ0Jf
-UkVHVUxBUl0sDQo+ICsgICAgICAgIGludCBpbmRleCA9IGZsYWdzID09IFFFTVVfUExVR0lO
-X0NCX1JfUkVHUyB8fA0KPiArICAgICAgICAgICAgICAgICAgICBmbGFncyA9PSBRRU1VX1BM
-VUdJTl9DQl9SV19SRUdTID8NCj4gKyAgICAgICAgICAgICAgICAgICAgUExVR0lOX0NCX1JF
-R1VMQVJfUiA6IFBMVUdJTl9DQl9SRUdVTEFSOw0KPiArDQo+ICsgICAgICAgIHBsdWdpbl9y
-ZWdpc3Rlcl9keW5fY2JfX3VkYXRhKCZpbnNuLT5jYnNbUExVR0lOX0NCX0lOU05dW2luZGV4
-XSwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNiLCBmbGFn
-cywgdWRhdGEpOw0KPiAgICAgICB9DQo+ICAgfQ0K
+
+--ZBCSiAdsRnXPAJKc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi Richard,
+Christophe Fergeau found that Fedora's
+qemu-user-static-x86-8.1.3-1.fc39.aarch64 fails when running a
+statically linked hello world binary:
+
+  qemu-x86_64-static: /root/podman_hello_world.alpine: Unable to find a gue=
+st_base to satisfy all guest address mapping requirements
+  0000000000000000-0000000000000fff
+  0000000000400000-00000000004047ef
+
+That error message was introduced in QEMU 8.1 commit dd55885516f4
+("linux-user: Rewrite non-fixed probe_guest_base").
+
+Fedora's qemu-x86_64-static /proc/self/maps looks like this on aarch64:
+
+00400000-00401000 r--p 00000000 00:22 78921                              /u=
+sr/bin/qemu-x86_64-static
+^^^^^^^^^^^^^^^^^
+00410000-0066b000 r-xp 00010000 00:22 78921                              /u=
+sr/bin/qemu-x86_64-static
+00670000-0078e000 r--p 00270000 00:22 78921                              /u=
+sr/bin/qemu-x86_64-static
+00793000-007b0000 r--p 00393000 00:22 78921                              /u=
+sr/bin/qemu-x86_64-static
+007b0000-007dd000 rw-p 003b0000 00:22 78921                              /u=
+sr/bin/qemu-x86_64-static
+007dd000-007ef000 rw-p 00000000 00:00 0                                  [h=
+eap]
+007ef000-008b7000 rw-p 00000000 00:00 0                                  [h=
+eap]
+ffffe8000000-ffffeffff000 rwxp 00000000 00:00 0=20
+ffffeffff000-fffff0000000 ---p 00000000 00:00 0=20
+fffff0000000-fffff0021000 rw-p 00000000 00:00 0=20
+fffff0021000-fffff4000000 ---p 00000000 00:00 0=20
+fffff776c000-fffff77ed000 rw-p 00000000 00:00 0=20
+fffff77ed000-fffff77fd000 ---p 00000000 00:00 0=20
+fffff77fd000-fffff7ffd000 rw-p 00000000 00:00 0=20
+fffff7ffd000-fffff7fff000 r--p 00000000 00:00 0                          [v=
+var]
+fffff7fff000-fffff8000000 r-xp 00000000 00:00 0                          [v=
+dso]
+fffffffdf000-1000000000000 rw-p 00000000 00:00 0                         [s=
+tack]
+
+Address 0x400000 is used by both the statically linked QEMU and the
+statically linked hello world binary:
+
+$ readelf -a podman_hello_world.alpine
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Version:                           0x1
+  Entry point address:               0x401047
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          75000 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         9
+  Size of section headers:           64 (bytes)
+  Number of section headers:         27
+  Section header string table index: 26
+
+Section Headers:
+  [Nr] Name              Type             Address           Offset
+       Size              EntSize          Flags  Link  Info  Align
+  [ 0]                   NULL             0000000000000000  00000000
+       0000000000000000  0000000000000000           0     0     0
+  [ 1] .note.gnu.pr[...] NOTE             0000000000400238  00000238
+       0000000000000030  0000000000000000   A       0     0     8
+  [ 2] .note.gnu.bu[...] NOTE             0000000000400268  00000268
+       0000000000000024  0000000000000000   A       0     0     4
+  [ 3] .init             PROGBITS         0000000000401000  00001000
+       0000000000000003  0000000000000000  AX       0     0     1
+  [ 4] .text             PROGBITS         0000000000401010  00001010
+       0000000000000e90  0000000000000000  AX       0     0     16
+  [ 5] .fini             PROGBITS         0000000000401ea0  00001ea0
+       0000000000000003  0000000000000000  AX       0     0     1
+  [ 6] .rodata           PROGBITS         0000000000402000  00002000
+       00000000000001ad  0000000000000001 AMS       0     0     8
+  [ 7] .eh_frame         PROGBITS         00000000004021b0  000021b0
+       0000000000000034  0000000000000000   A       0     0     8
+  [ 8] .init_array       INIT_ARRAY       0000000000403fb8  00002fb8
+       0000000000000008  0000000000000008  WA       0     0     8
+  [ 9] .fini_array       FINI_ARRAY       0000000000403fc0  00002fc0
+       0000000000000008  0000000000000008  WA       0     0     8
+  [10] .data.rel.ro      PROGBITS         0000000000403fc8  00002fc8
+       0000000000000010  0000000000000000  WA       0     0     8
+  [11] .got              PROGBITS         0000000000403fd8  00002fd8
+       0000000000000028  0000000000000008  WA       0     0     8
+  [12] .data             PROGBITS         0000000000404000  00003000
+       0000000000000110  0000000000000000  WA       0     0     32
+  [13] .bss              NOBITS           0000000000404120  00003110
+       00000000000006d0  0000000000000000  WA       0     0     32
+  [14] .comment          PROGBITS         0000000000000000  00003110
+       0000000000000031  0000000000000001  MS       0     0     1
+  [15] .debug_aranges    PROGBITS         0000000000000000  00003150
+       00000000000006a0  0000000000000000           0     0     16
+  [16] .debug_info       PROGBITS         0000000000000000  000037f0
+       0000000000006157  0000000000000000           0     0     1
+  [17] .debug_abbrev     PROGBITS         0000000000000000  00009947
+       000000000000247d  0000000000000000           0     0     1
+  [18] .debug_line       PROGBITS         0000000000000000  0000bdc4
+       0000000000001d6c  0000000000000000           0     0     1
+  [19] .debug_frame      PROGBITS         0000000000000000  0000db30
+       0000000000000858  0000000000000000           0     0     8
+  [20] .debug_str        PROGBITS         0000000000000000  0000e388
+       0000000000000ea5  0000000000000001  MS       0     0     1
+  [21] .debug_line_str   PROGBITS         0000000000000000  0000f22d
+       000000000000044d  0000000000000001  MS       0     0     1
+  [22] .debug_loclists   PROGBITS         0000000000000000  0000f67a
+       00000000000016bc  0000000000000000           0     0     1
+  [23] .debug_rnglists   PROGBITS         0000000000000000  00010d36
+       0000000000000431  0000000000000000           0     0     1
+  [24] .symtab           SYMTAB           0000000000000000  00011168
+       0000000000000c90  0000000000000018          25    62     8
+  [25] .strtab           STRTAB           0000000000000000  00011df8
+       00000000000005e0  0000000000000000           0     0     1
+  [26] .shstrtab         STRTAB           0000000000000000  000123d8
+       0000000000000120  0000000000000000           0     0     1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), l (large), p (processor specific)
+
+There are no section groups in this file.
+
+Program Headers:
+  Type           Offset             VirtAddr           PhysAddr
+                 FileSiz            MemSiz              Flags  Align
+  LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                 0x000000000000028c 0x000000000000028c  R      0x1000
+  LOAD           0x0000000000001000 0x0000000000401000 0x0000000000401000
+                 0x0000000000000ea3 0x0000000000000ea3  R E    0x1000
+  LOAD           0x0000000000002000 0x0000000000402000 0x0000000000402000
+                 0x00000000000001e4 0x00000000000001e4  R      0x1000
+  LOAD           0x0000000000002fb8 0x0000000000403fb8 0x0000000000403fb8
+                 0x0000000000000158 0x0000000000000838  RW     0x1000
+  NOTE           0x0000000000000238 0x0000000000400238 0x0000000000400238
+                 0x0000000000000030 0x0000000000000030  R      0x8
+  NOTE           0x0000000000000268 0x0000000000400268 0x0000000000400268
+                 0x0000000000000024 0x0000000000000024  R      0x4
+  GNU_PROPERTY   0x0000000000000238 0x0000000000400238 0x0000000000400238
+                 0x0000000000000030 0x0000000000000030  R      0x8
+  GNU_STACK      0x0000000000000000 0x0000000000000000 0x0000000000000000
+                 0x0000000000000000 0x0000000000000000  RW     0x10
+  GNU_RELRO      0x0000000000002fb8 0x0000000000403fb8 0x0000000000403fb8
+                 0x0000000000000048 0x0000000000000048  R      0x1
+
+Oddly, when I compile static QEMU from source on this machine, then the
+resulting binary does not use 0x400000 and it can successfully run the
+hello world binary. Maybe the address is related to the compiler flags
+or something else in Fedora's RPM build environment.
+
+There is a bugzilla tracking this here:
+https://bugzilla.redhat.com/show_bug.cgi?id=3D2256916
+
+Any ideas what can be done to solve this problem?
+
+Thanks,
+Stefan
+
+--ZBCSiAdsRnXPAJKc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmWdVxQACgkQnKSrs4Gr
+c8iwTQgAnyrA69CFY3YmtOmDpeXDeF5W/CKxuwxuUKQm6S1NNB4d84QQ0Vf0gIdw
+k0mGgTP54MMeem6NwNsbRbzexfwwTE7eLoVdlTddG/Gr0P6jZfXwICoa9Wx6kJcd
+MaBQlnsAStBHhS6pCewErpirj1ZwpxHwzW9igVi6I61nlwL85hVXzCQNcMCN94IN
++oAw0OYsgHXFNaiAQk+qzfnSceYC/bSrXeKllYss/XQ1oKjrqGv/axnWZkn3XC25
+ove/2JzXxsuzh2uPsvF7hNDMnDvFtjqJBXCX+u10NxrDB7Xi4qdt0UbTz5o+Fm3W
+lSFMcev30qtvNzZR+A3d6J05XZ/T6A==
+=OeAg
+-----END PGP SIGNATURE-----
+
+--ZBCSiAdsRnXPAJKc--
+
 
