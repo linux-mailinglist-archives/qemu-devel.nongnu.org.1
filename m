@@ -2,73 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F376828BF5
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 19:08:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 898BC828C02
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 19:10:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNGV9-000140-SD; Tue, 09 Jan 2024 13:06:59 -0500
+	id 1rNGXy-0002Pu-OZ; Tue, 09 Jan 2024 13:09:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Gpa9=IT=kaod.org=clg@ozlabs.org>)
- id 1rNGV5-00013I-MJ; Tue, 09 Jan 2024 13:06:56 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Gpa9=IT=kaod.org=clg@ozlabs.org>)
- id 1rNGUz-0002fE-J9; Tue, 09 Jan 2024 13:06:51 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T8f5G0RL4z4wx8;
- Wed, 10 Jan 2024 05:06:42 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T8f561MDXz4wbR;
- Wed, 10 Jan 2024 05:06:33 +1100 (AEDT)
-Message-ID: <d5c0b9fb-8b09-4f68-b3ab-c8adffd484a9@kaod.org>
-Date: Tue, 9 Jan 2024 19:06:30 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in
- A7/A15 MPCore priv
-Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNGXq-0002PC-Kn
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:09:48 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNGXm-0003sC-Oj
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:09:46 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40d8902da73so30909435e9.2
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 10:09:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704823774; x=1705428574; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ih59QO5Uf+GiDwqnPD0KnU4KBtIrojXxz4NGhpA5s9c=;
+ b=hU8X55hks41EC19p8gbY4fFRpk62n3XQSPlVLcNIAhjUlTTMOyCWGO8qVFZZ1vBwF4
+ YJPBwglN00ssXAb/+y4M1tqAZpv5/Xpr991GMZVjFOumzJOPcQbYaHM8PjEEpzOeIz6J
+ mKkgBfFeLr2egySuH6S+kmrWhTM8vFTMJIB0PRrWAubpl3ise1IXwPIzobRN66rbhoSY
+ 7Xn+2Zj4XcJvcLxU/HFt4baJ8pwy/a1ZkMD36tzoQba5QBYB+VgtL18Z4tPSsPmbyt86
+ +2+uqu4u2EKCR9GtlsRYQ6vgXf6y2JwGmyXJ95uFtCF6tR5NQf9MaqKq6js5PJ/d801K
+ 5Hng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704823774; x=1705428574;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ih59QO5Uf+GiDwqnPD0KnU4KBtIrojXxz4NGhpA5s9c=;
+ b=BTAkzufGBPiOdGvPAWZVKgwJW1tmx5sQ0ldnNiXItatJ9h7/wNlNXYTi9KbBLR4nu8
+ rus1yWbFnijZoLtxv0Ry/zRYxcr5hcxqCtko6ecNIT9T60jub3oVxlqoHs9pQw3BU6M1
+ s7xxZDHsyvjM2fceimTRoHstPRvVr3gJcEJf0i/zQd4L3ljvXDPXFQUpXSZEaWfoyqgZ
+ J4WhJOFXFrBea4vIVKUS7cdkOuDIUWwHVf36VFQLQwLIBFoCJpdEDbIzL5rB9Hg9rsVV
+ UrZkFOgmmAPG9o5AwP36wtAG8BdRlEXrW0WPIee52qNiXIhySxdKFkgrqlHmUH6KKyKo
+ LXuQ==
+X-Gm-Message-State: AOJu0YyG0z+U0pWgXipHtWPwzKcB2/n9Pkm7E1da+jM6LpDM+laX6aSI
+ OZoW8kviG89/oKdtDu5TyYCHnX66U6HobKe1FG4VAX5+X8VEIw==
+X-Google-Smtp-Source: AGHT+IHrifeKELkHacXcTTxsVDBQKHRYqMM2IGqnfqAvppq0dVY/cV5k/wMH1c+qfpdCnDfx78L/Ng==
+X-Received: by 2002:a05:600c:4f14:b0:40d:85a0:d0f3 with SMTP id
+ l20-20020a05600c4f1400b0040d85a0d0f3mr3027381wmq.51.1704823773988; 
+ Tue, 09 Jan 2024 10:09:33 -0800 (PST)
+Received: from m1x-phil.lan (rsa59-h02-176-184-32-47.dsl.sta.abo.bbox.fr.
+ [176.184.32.47]) by smtp.gmail.com with ESMTPSA id
+ bi26-20020a05600c3d9a00b0040d53588d94sm15630529wmb.46.2024.01.09.10.09.32
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 09 Jan 2024 10:09:33 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Radoslaw Biernacki <rad@semihalf.com>, Kevin Wolf <kwolf@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
- qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Xu <peterx@redhat.com>
-References: <20231212162935.42910-1-philmd@linaro.org>
- <03b969d3-1947-4186-b3ee-15e3cddc5f34@kaod.org>
- <18a38b88-8f20-420c-9916-a03d1b4930a7@linaro.org>
- <38cfa9de-874b-41dd-873e-5ad1f5a5805e@kaod.org>
- <fe4d463f-b646-4b7b-9063-d16ad5dbb128@linaro.org> <87y1d6i47m.fsf@suse.de>
- <597186d9-af21-46e8-8075-f21d36c01c07@kaod.org> <87plya76cu.fsf@suse.de>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <87plya76cu.fsf@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Igor Mitsyanko <i.mitsyanko@gmail.com>, Rob Herring <robh@kernel.org>,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 00/14] hw/arm: Prefer arm_feature() over
+ object_property_find()
+Date: Tue,  9 Jan 2024 19:09:15 +0100
+Message-ID: <20240109180930.90793-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=Gpa9=IT=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.248, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,88 +98,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/9/24 18:40, Fabiano Rosas wrote:
-> Cédric Le Goater <clg@kaod.org> writes:
-> 
->> On 1/3/24 20:53, Fabiano Rosas wrote:
->>> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
->>>
->>>> +Peter/Fabiano
->>>>
->>>> On 2/1/24 17:41, Cédric Le Goater wrote:
->>>>> On 1/2/24 17:15, Philippe Mathieu-Daudé wrote:
->>>>>> Hi Cédric,
->>>>>>
->>>>>> On 2/1/24 15:55, Cédric Le Goater wrote:
->>>>>>> On 12/12/23 17:29, Philippe Mathieu-Daudé wrote:
->>>>>>>> Hi,
->>>>>>>>
->>>>>>>> When a MPCore cluster is used, the Cortex-A cores belong the the
->>>>>>>> cluster container, not to the board/soc layer. This series move
->>>>>>>> the creation of vCPUs to the MPCore private container.
->>>>>>>>
->>>>>>>> Doing so we consolidate the QOM model, moving common code in a
->>>>>>>> central place (abstract MPCore parent).
->>>>>>>
->>>>>>> Changing the QOM hierarchy has an impact on the state of the machine
->>>>>>> and some fixups are then required to maintain migration compatibility.
->>>>>>> This can become a real headache for KVM machines like virt for which
->>>>>>> migration compatibility is a feature, less for emulated ones.
->>>>>>
->>>>>> All changes are either moving properties (which are not migrated)
->>>>>> or moving non-migrated QOM members (i.e. pointers of ARMCPU, which
->>>>>> is still migrated elsewhere). So I don't see any obvious migration
->>>>>> problem, but I might be missing something, so I Cc'ed Juan :>
->>>
->>> FWIW, I didn't spot anything problematic either.
->>>
->>> I've ran this through my migration compatibility series [1] and it
->>> doesn't regress aarch64 migration from/to 8.2. The tests use '-M
->>> virt -cpu max', so the cortex-a7 and cortex-a15 are not covered. I don't
->>> think we even support migration of anything non-KVM on arm.
->>
->> it happens we do.
->>
-> 
-> Oh, sorry, I didn't mean TCG here. Probably meant to say something like
-> non-KVM-capable cpus, as in 32-bit. Nevermind.
+Since RFC [*]:
+- Split one patch per feature
+- Addressed Peter's review comments
 
-Theoretically, we should be able to migrate to a TCG guest. Well, this
-worked in the past for PPC. When I was doing more KVM related changes,
-this was very useful for dev. Also, some machines are partially emulated.
-Anyhow I agree this is not a strong requirement and we often break it.
-Let's focus on KVM only.
+[*] https://lore.kernel.org/qemu-devel/20231214171447.44025-1-philmd@linaro.org/
 
->>> 1- https://gitlab.com/farosas/qemu/-/jobs/5853599533
->>
->> yes it depends on the QOM hierarchy and virt seems immune to the changes.
->> Good.
->>
->> However, changing the QOM topology clearly breaks migration compat,
-> 
-> Well, "clearly" is relative =) You've mentioned pseries and aspeed
-> already, do you have a pointer to one of those cases were we broke
-> migration 
+Based-on: <20231123143813.42632-1-philmd@linaro.org>
+  "hw: Simplify accesses to CPUState::'start-powered-off' property"
 
-Regarding pseries, migration compat broke because of 5bc8d26de20c
-("spapr: allocate the ICPState object from under sPAPRCPUCore") which
-is similar to the changes proposed by this series, it impacts the QOM
-hierarchy. Here is the workaround/fix from Greg : 46f7afa37096
-("spapr: fix migration of ICPState objects from/to older QEMU") which
-is quite an headache and this turned out to raise another problem some
-months ago ... :/ That's why I sent [1] to prepare removal of old
-machines and workarounds becoming a burden.
+Philippe Mathieu-Daudé (14):
+  target/arm/cpu: Simplify checking A64_MTE bit in FEATURE_ID register
+  hw/arm/armv7m: Introduce cpudev variable in armv7m_realize()
+  hw/arm/armv7m: Ensure requested CPU type implements ARM_FEATURE_M
+  hw/arm/armv7m: Move code setting 'start-powered-off' property around
+  hw/arm/armv7m: Always set 'init-nsvtor' property for Cortex-M CPUs
+  hw/arm: Prefer arm_feature(M_SECURITY) over object_property_find()
+  hw/arm: Prefer arm_feature(THUMB_DSP) over object_property_find(dsp)
+  hw/arm: Prefer arm_feature(V7) over
+    object_property_find(pmsav7-dregion)
+  hw/arm: Prefer arm_feature(EL3) over object_property_find(has_el3)
+  hw/arm: Prefer arm_feature(EL2) over object_property_find(has_el2)
+  hw/arm: Prefer arm_feature(CBAR*) over
+    object_property_find(reset-cbar)
+  hw/arm: Prefer arm_feature(PMU) over object_property_find(pmu)
+  hw/arm: Prefer cpu_isar_feature(aa64_mte) over
+    property_find(tag-memory)
+  hw/arm: Prefer arm_feature(GENERIC_TMR) over 'kvm-no-adjvtime'
+    property
 
-Regarding aspeed, this series breaks compat. Not that we care much
-but ​this caught my attention because of my past experience on pseries.
-Same kind of QOM change which could impact other machines, like virt.
-Since you checked that migration compat is preserved on virt, we should
-be fine.
+ hw/arm/armv7m.c       | 36 ++++++++++++++++--------------------
+ hw/arm/exynos4210.c   |  4 ++--
+ hw/arm/highbank.c     |  3 ++-
+ hw/arm/integratorcp.c |  5 ++---
+ hw/arm/realview.c     |  2 +-
+ hw/arm/sbsa-ref.c     |  3 ++-
+ hw/arm/versatilepb.c  |  5 ++---
+ hw/arm/vexpress.c     |  6 ++++--
+ hw/arm/virt.c         | 24 ++++++++++++------------
+ hw/arm/xilinx_zynq.c  |  2 +-
+ hw/cpu/a15mpcore.c    | 17 +++++++++++------
+ hw/cpu/a9mpcore.c     |  6 +++---
+ target/arm/cpu.c      |  3 +--
+ 13 files changed, 59 insertions(+), 57 deletions(-)
 
-Thanks,
-
-C.
-
-[1] https://lore.kernel.org/qemu-devel/20231214181723.1520854-1-clg@kaod.org/
+-- 
+2.41.0
 
 
