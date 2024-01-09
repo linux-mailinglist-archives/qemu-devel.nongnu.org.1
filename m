@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE02827F09
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 08:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD269827F17
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 08:16:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN6Bp-000311-1j; Tue, 09 Jan 2024 02:06:21 -0500
+	id 1rN6KO-0007xu-6p; Tue, 09 Jan 2024 02:15:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rN6Bm-00030U-Gp
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 02:06:18 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rN6KJ-0007wm-4F
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 02:15:07 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rN6Bk-0005y1-Jp
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 02:06:18 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rN6KA-0001Cz-Tl
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 02:15:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704783975;
+ s=mimecast20190719; t=1704784497;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ms8mec23jFd0Kg6MnFCmO89OHH+nziWUMSlALmMngeo=;
- b=PkCCZLAPE7kanjr+K5GVz8lAT1p5ciQvw8CNQ+99Ypjgo+VkrzG+sS6Is2D8BdLbjsvmxO
- aXZPtJ95jOL8CGUW+owmHsGf3pPXsddW2BJczNQY9dLhG8CXPg3y1rV89QRNWtdpwA39KV
- kG3WfttOai1r7euEM5Melsg3WsdYk3Q=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=h98Xsku7wk+kfIGM4qhYCdOfqicsonishslSH3Ji0F8=;
+ b=OBodKZeL/iMylFU+NnloWdyVacbaCoPlRnN9ux0hLjUm0Zr+Ze2JnttjDfxalY1ar4Opww
+ Itwr/wxeBKlka1aA7Hbou9VIXySr0UktXD0KoLw1Yn5sKXM9VXYyjeEvt0Svp2UWJ2FU+2
+ qOl+qSQFNXFHbKCBbT0WRtLsm9nkAY8=
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
+ [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-XsJLKS_SN7mU1y2Mnvei1A-1; Tue, 09 Jan 2024 02:06:12 -0500
-X-MC-Unique: XsJLKS_SN7mU1y2Mnvei1A-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-427cf4a843cso22591011cf.2
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 23:06:12 -0800 (PST)
+ us-mta-391-gidEvPTWOQW6-h0z4K0egQ-1; Tue, 09 Jan 2024 02:14:56 -0500
+X-MC-Unique: gidEvPTWOQW6-h0z4K0egQ-1
+Received: by mail-oo1-f70.google.com with SMTP id
+ 006d021491bc7-59880be5eb0so62285eaf.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 23:14:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704783972; x=1705388772;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ms8mec23jFd0Kg6MnFCmO89OHH+nziWUMSlALmMngeo=;
- b=Sy7RgdnyQGDGo/TMVMmZSKXVORksFaaF+aHhKJNb4rcLLIuur7IQVhHe2vhqKkoqD9
- zHEI6jBEu95EkBaKiowhBLk/WrCuUW+Olv4z5F6b2MHTZsrLAHva2ePAKhkYGnmOCUBH
- +a3ZUvyIlGvstdFmE1QAhzLsHOBpCERTD1/uRfWw7olGNZl1uQly8u2OK5wmhtwXI8Wl
- +hAfUCzNg+T8pXVsma5e8hh72qMbCKM56e7HYaTINBDcwaNtb/06lusHhrk/XIMZl3QD
- OLo+a5VVwTCCo69t3+DJS8ZDeE0XHLb21QRs+Jb7bqwYp0NbDK3HNiUyAGkfUjgZxUWA
- 2gHA==
-X-Gm-Message-State: AOJu0YxnybngdsnK60ELBxRNv9WTJgc/NNZq3vHyLxby5g1EfCRNEuoK
- /9O9WoExVYO7QzOEeKM+rJlPuPMLuOk4fSDFEfoTb+OpWv/kHGKO6NdFItg6h/pl1zC94MFOT+X
- RJwaPnIqbJB4FUKWufedh+Yw=
-X-Received: by 2002:ac8:594e:0:b0:429:a32a:9e9e with SMTP id
- 14-20020ac8594e000000b00429a32a9e9emr651355qtz.78.1704783972118; 
- Mon, 08 Jan 2024 23:06:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGbsOdkwcJ1u557NrgaFmplJsBdWKBOghVcR9L/2WI//0sHr1UsxWtrT5ef60bGatL9ospfgQ==
-X-Received: by 2002:ac8:594e:0:b0:429:a32a:9e9e with SMTP id
- 14-20020ac8594e000000b00429a32a9e9emr651348qtz.78.1704783971840; 
- Mon, 08 Jan 2024 23:06:11 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- cr14-20020a05622a428e00b0042997333149sm605370qtb.63.2024.01.08.23.06.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Jan 2024 23:06:11 -0800 (PST)
-Message-ID: <b7291ce6-8c42-473c-b406-f65e9ec9fa31@redhat.com>
-Date: Tue, 9 Jan 2024 08:06:09 +0100
+ d=1e100.net; s=20230601; t=1704784495; x=1705389295;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=h98Xsku7wk+kfIGM4qhYCdOfqicsonishslSH3Ji0F8=;
+ b=J66lm8elDt57EF+u+qk0v/7COrntJ6mTWNgYIHPD3bLV+fv78NiVhxRrEBq2H9q4uy
+ rXy2m3NHlDqGjp7+p7ZTZRyC098Rwkf+JbHeLXrck1VZ1hxc5yaLS6bhuSj2FGJ+s7Vs
+ 5zmepJu+MBvGzMpj8TPOzr5ZlriLM9FXxY2Ysu5cYY9stkfczx8hhhMtK/IJVR3tfxdE
+ NA6GcQ/WNajFjuLZY7BNCC75c04e2YoMlpeMQ8UnKS6ZNKEzS7cn9fCcKrT5WluV2/dZ
+ +PnoTbcy6q3XPAhDrBmgmmyw+B06YOH+2tsV8xiRdjeWLM7nq4jWScWYc1WGtWogvXNL
+ RBCg==
+X-Gm-Message-State: AOJu0Yyz7ymHgpqhgqmy7RUPpQbUTsPiASrgAL7yFd7X1wOSzht0O5SR
+ aNv2pDi6TSbmgZZvCyOLQukxGXNdT1sq8MFt7pvbGTd3vncMt5zo4ZtGY6ZU8qlN9CaCHzaNQn7
+ gHi+hXfGLnbf7/k5qoTQEUOM=
+X-Received: by 2002:a05:6358:c39b:b0:175:89aa:1300 with SMTP id
+ fl27-20020a056358c39b00b0017589aa1300mr6217756rwb.1.1704784495040; 
+ Mon, 08 Jan 2024 23:14:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFWbgMsN9ljWXoIHhAzT1YGBKIORAVrp9RqXhA8ujaX8T3lpb9mJ9uzJ25veu51M6v4aEjDkg==
+X-Received: by 2002:a05:6358:c39b:b0:175:89aa:1300 with SMTP id
+ fl27-20020a056358c39b00b0017589aa1300mr6217741rwb.1.1704784494714; 
+ Mon, 08 Jan 2024 23:14:54 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ 2-20020a631742000000b005bd980cca56sm963009pgx.29.2024.01.08.23.14.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Jan 2024 23:14:54 -0800 (PST)
+Date: Tue, 9 Jan 2024 15:14:46 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: Re: [PATCH v3 3/4] ci: Add a migration compatibility test job
+Message-ID: <ZZzyZhUbgt9WhaAP@x1n>
+References: <20240105180449.11562-1-farosas@suse.de>
+ <20240105180449.11562-4-farosas@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/10] docs/migration: Split "dirty limit"
-Content-Language: en-US
-To: peterx@redhat.com, qemu-devel@nongnu.org
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Bandan Das <bdas@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Yong Huang <yong.huang@smartx.com>
-References: <20240109064628.595453-1-peterx@redhat.com>
- <20240109064628.595453-8-peterx@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20240109064628.595453-8-peterx@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240105180449.11562-4-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -105,194 +102,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/9/24 07:46, peterx@redhat.com wrote:
-> From: Peter Xu <peterx@redhat.com>
+On Fri, Jan 05, 2024 at 03:04:48PM -0300, Fabiano Rosas wrote:
+> The migration tests have support for being passed two QEMU binaries to
+> test migration compatibility.
 > 
-> Split that into a separate file, put under "features".
+> Add a CI job that builds the lastest release of QEMU and another job
+> that uses that version plus an already present build of the current
+> version and run the migration tests with the two, both as source and
+> destination. I.e.:
 > 
-> Cc: Yong Huang <yong.huang@smartx.com>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+>  old QEMU (n-1) -> current QEMU (development tree)
+>  current QEMU (development tree) -> old QEMU (n-1)
+> 
+> The purpose of this CI job is to ensure the code we're about to merge
+> will not cause a migration compatibility problem when migrating the
+> next release (which will contain that code) to/from the previous
+> release.
+> 
+> I'm leaving the jobs as manual for now because using an older QEMU in
+> tests could hit bugs that were already fixed in the current
+> development tree and we need to handle those case-by-case.
 
+Can we opt-out those broken tests using either your "since:" thing or
+anything similar?
 
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+I hope we can start to run something by default in the CI in 9.0 to cover
+n-1 -> n, even if starting with a subset of tests.  Is it possible?
 
 Thanks,
 
-C.
-
-
-> ---
->   docs/devel/migration/dirty-limit.rst | 71 ++++++++++++++++++++++++++++
->   docs/devel/migration/features.rst    |  1 +
->   docs/devel/migration/main.rst        | 71 ----------------------------
->   3 files changed, 72 insertions(+), 71 deletions(-)
->   create mode 100644 docs/devel/migration/dirty-limit.rst
-> 
-> diff --git a/docs/devel/migration/dirty-limit.rst b/docs/devel/migration/dirty-limit.rst
-> new file mode 100644
-> index 0000000000..8f32329d5f
-> --- /dev/null
-> +++ b/docs/devel/migration/dirty-limit.rst
-> @@ -0,0 +1,71 @@
-> +Dirty limit
-> +===========
-> +
-> +The dirty limit, short for dirty page rate upper limit, is a new capability
-> +introduced in the 8.1 QEMU release that uses a new algorithm based on the KVM
-> +dirty ring to throttle down the guest during live migration.
-> +
-> +The algorithm framework is as follows:
-> +
-> +::
-> +
-> +  ------------------------------------------------------------------------------
-> +  main   --------------> throttle thread ------------> PREPARE(1) <--------
-> +  thread  \                                                |              |
-> +           \                                               |              |
-> +            \                                              V              |
-> +             -\                                        CALCULATE(2)       |
-> +               \                                           |              |
-> +                \                                          |              |
-> +                 \                                         V              |
-> +                  \                                    SET PENALTY(3) -----
-> +                   -\                                      |
-> +                     \                                     |
-> +                      \                                    V
-> +                       -> virtual CPU thread -------> ACCEPT PENALTY(4)
-> +  ------------------------------------------------------------------------------
-> +
-> +When the qmp command qmp_set_vcpu_dirty_limit is called for the first time,
-> +the QEMU main thread starts the throttle thread. The throttle thread, once
-> +launched, executes the loop, which consists of three steps:
-> +
-> +  - PREPARE (1)
-> +
-> +     The entire work of PREPARE (1) is preparation for the second stage,
-> +     CALCULATE(2), as the name implies. It involves preparing the dirty
-> +     page rate value and the corresponding upper limit of the VM:
-> +     The dirty page rate is calculated via the KVM dirty ring mechanism,
-> +     which tells QEMU how many dirty pages a virtual CPU has had since the
-> +     last KVM_EXIT_DIRTY_RING_FULL exception; The dirty page rate upper
-> +     limit is specified by caller, therefore fetch it directly.
-> +
-> +  - CALCULATE (2)
-> +
-> +     Calculate a suitable sleep period for each virtual CPU, which will be
-> +     used to determine the penalty for the target virtual CPU. The
-> +     computation must be done carefully in order to reduce the dirty page
-> +     rate progressively down to the upper limit without oscillation. To
-> +     achieve this, two strategies are provided: the first is to add or
-> +     subtract sleep time based on the ratio of the current dirty page rate
-> +     to the limit, which is used when the current dirty page rate is far
-> +     from the limit; the second is to add or subtract a fixed time when
-> +     the current dirty page rate is close to the limit.
-> +
-> +  - SET PENALTY (3)
-> +
-> +     Set the sleep time for each virtual CPU that should be penalized based
-> +     on the results of the calculation supplied by step CALCULATE (2).
-> +
-> +After completing the three above stages, the throttle thread loops back
-> +to step PREPARE (1) until the dirty limit is reached.
-> +
-> +On the other hand, each virtual CPU thread reads the sleep duration and
-> +sleeps in the path of the KVM_EXIT_DIRTY_RING_FULL exception handler, that
-> +is ACCEPT PENALTY (4). Virtual CPUs tied with writing processes will
-> +obviously exit to the path and get penalized, whereas virtual CPUs involved
-> +with read processes will not.
-> +
-> +In summary, thanks to the KVM dirty ring technology, the dirty limit
-> +algorithm will restrict virtual CPUs as needed to keep their dirty page
-> +rate inside the limit. This leads to more steady reading performance during
-> +live migration and can aid in improving large guest responsiveness.
-> diff --git a/docs/devel/migration/features.rst b/docs/devel/migration/features.rst
-> index 0054e0c900..e257d0d100 100644
-> --- a/docs/devel/migration/features.rst
-> +++ b/docs/devel/migration/features.rst
-> @@ -7,3 +7,4 @@ Migration has plenty of features to support different use cases.
->      :maxdepth: 2
->   
->      postcopy
-> +   dirty-limit
-> diff --git a/docs/devel/migration/main.rst b/docs/devel/migration/main.rst
-> index 051ea43f0e..00b9c3d32f 100644
-> --- a/docs/devel/migration/main.rst
-> +++ b/docs/devel/migration/main.rst
-> @@ -573,74 +573,3 @@ path.
->        Return path  - opened by main thread, written by main thread AND postcopy
->        thread (protected by rp_mutex)
->   
-> -Dirty limit
-> -=====================
-> -The dirty limit, short for dirty page rate upper limit, is a new capability
-> -introduced in the 8.1 QEMU release that uses a new algorithm based on the KVM
-> -dirty ring to throttle down the guest during live migration.
-> -
-> -The algorithm framework is as follows:
-> -
-> -::
-> -
-> -  ------------------------------------------------------------------------------
-> -  main   --------------> throttle thread ------------> PREPARE(1) <--------
-> -  thread  \                                                |              |
-> -           \                                               |              |
-> -            \                                              V              |
-> -             -\                                        CALCULATE(2)       |
-> -               \                                           |              |
-> -                \                                          |              |
-> -                 \                                         V              |
-> -                  \                                    SET PENALTY(3) -----
-> -                   -\                                      |
-> -                     \                                     |
-> -                      \                                    V
-> -                       -> virtual CPU thread -------> ACCEPT PENALTY(4)
-> -  ------------------------------------------------------------------------------
-> -
-> -When the qmp command qmp_set_vcpu_dirty_limit is called for the first time,
-> -the QEMU main thread starts the throttle thread. The throttle thread, once
-> -launched, executes the loop, which consists of three steps:
-> -
-> -  - PREPARE (1)
-> -
-> -     The entire work of PREPARE (1) is preparation for the second stage,
-> -     CALCULATE(2), as the name implies. It involves preparing the dirty
-> -     page rate value and the corresponding upper limit of the VM:
-> -     The dirty page rate is calculated via the KVM dirty ring mechanism,
-> -     which tells QEMU how many dirty pages a virtual CPU has had since the
-> -     last KVM_EXIT_DIRTY_RING_FULL exception; The dirty page rate upper
-> -     limit is specified by caller, therefore fetch it directly.
-> -
-> -  - CALCULATE (2)
-> -
-> -     Calculate a suitable sleep period for each virtual CPU, which will be
-> -     used to determine the penalty for the target virtual CPU. The
-> -     computation must be done carefully in order to reduce the dirty page
-> -     rate progressively down to the upper limit without oscillation. To
-> -     achieve this, two strategies are provided: the first is to add or
-> -     subtract sleep time based on the ratio of the current dirty page rate
-> -     to the limit, which is used when the current dirty page rate is far
-> -     from the limit; the second is to add or subtract a fixed time when
-> -     the current dirty page rate is close to the limit.
-> -
-> -  - SET PENALTY (3)
-> -
-> -     Set the sleep time for each virtual CPU that should be penalized based
-> -     on the results of the calculation supplied by step CALCULATE (2).
-> -
-> -After completing the three above stages, the throttle thread loops back
-> -to step PREPARE (1) until the dirty limit is reached.
-> -
-> -On the other hand, each virtual CPU thread reads the sleep duration and
-> -sleeps in the path of the KVM_EXIT_DIRTY_RING_FULL exception handler, that
-> -is ACCEPT PENALTY (4). Virtual CPUs tied with writing processes will
-> -obviously exit to the path and get penalized, whereas virtual CPUs involved
-> -with read processes will not.
-> -
-> -In summary, thanks to the KVM dirty ring technology, the dirty limit
-> -algorithm will restrict virtual CPUs as needed to keep their dirty page
-> -rate inside the limit. This leads to more steady reading performance during
-> -live migration and can aid in improving large guest responsiveness.
-> -
+-- 
+Peter Xu
 
 
