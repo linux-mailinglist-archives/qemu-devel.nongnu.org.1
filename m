@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56BCA827E66
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 06:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B174827E79
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 06:45:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN4ou-0006Ri-G7; Tue, 09 Jan 2024 00:38:36 -0500
+	id 1rN4uW-0000uJ-R1; Tue, 09 Jan 2024 00:44:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rN4os-0006RL-J3
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 00:38:34 -0500
-Received: from mgamail.intel.com ([192.198.163.11])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rN4uU-0000rm-ON; Tue, 09 Jan 2024 00:44:22 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rN4op-0002qW-VR
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 00:38:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704778712; x=1736314712;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=XrUn2EeNuhQURB9JbWxsm1XG8XAZDv9HlyO2tI0QvME=;
- b=IgblVrBHC2P00NOPFXzObvmXQWOEjhP2We50NG8lbE3HW61tQR8LZwaq
- AyR8hZWzwlzeBHWJba7i2YPd0sKjAXx0lAuqiXrGMM9mTNsVBsJoFujYJ
- op1qiwZoVJ+O7GgSQKz8Hl4XiHMmFJB3bfec/A4V9ojTSztju3QMQDfGn
- +weegfRYcmBvPW5fExG3dsxLZNx6eBlU/D5PaK1e1aNWOkYcRlv2JgOVX
- kXdaxmg8vDOaO1KUfk5WBRxJQq3EgGyzjWilXDTMUU9wgvKpL40vFuD6I
- o4bL/gSg5dpf2GJlNxxVwPAB679Yksh+KjunleSCmayUdJLpTzAzD9/Np Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="4848051"
-X-IronPort-AV: E=Sophos;i="6.04,181,1695711600"; 
-   d="scan'208";a="4848051"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jan 2024 21:38:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="781664636"
-X-IronPort-AV: E=Sophos;i="6.04,181,1695711600"; d="scan'208";a="781664636"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
- ([10.93.22.149])
- by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jan 2024 21:38:22 -0800
-Message-ID: <62b421de-33d2-4c2f-81a3-4b5a0abb64c5@intel.com>
-Date: Tue, 9 Jan 2024 13:38:19 +0800
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rN4uS-0005fM-NH; Tue, 09 Jan 2024 00:44:22 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 2236341864;
+ Tue,  9 Jan 2024 08:44:28 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 77C6A5DD89;
+ Tue,  9 Jan 2024 08:44:17 +0300 (MSK)
+Message-ID: <6c043607-d5ba-41d3-94df-5618fc05c15f@tls.msk.ru>
+Date: Tue, 9 Jan 2024 08:44:17 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 52/70] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
+Subject: Re: [PATCH trivial] colo: examples: remove mentions of script= and
+ (wrong) downscript=
 Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
- <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
- Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
- Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
- <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-53-xiaoyao.li@intel.com>
- <ZVUGtpZDTW27F8Um@redhat.com>
- <db4330cf-d25a-48d3-b681-cf2326c16912@intel.com>
- <ZZwKPH3fVHo9EyBy@redhat.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <ZZwKPH3fVHo9EyBy@redhat.com>
+To: "Zhang, Chen" <chen.zhang@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "qemu-trivial@nongnu.org" <qemu-trivial@nongnu.org>,
+ Li Zhijian <lizhijian@fujitsu.com>
+References: <20240107112459.335594-1-mjt@tls.msk.ru>
+ <CYYPR11MB843238AD2090FC1B9B309DBA9B6A2@CYYPR11MB8432.namprd11.prod.outlook.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <CYYPR11MB843238AD2090FC1B9B309DBA9B6A2@CYYPR11MB8432.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,113 +86,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/8/2024 10:44 PM, Daniel P. Berrangé wrote:
-> On Fri, Dec 29, 2023 at 10:30:15AM +0800, Xiaoyao Li wrote:
->> On 11/16/2023 1:58 AM, Daniel P. Berrangé wrote:
->>> On Wed, Nov 15, 2023 at 02:15:01AM -0500, Xiaoyao Li wrote:
->>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
->>>>
->>>> For GetQuote, delegate a request to Quote Generation Service.
->>>> Add property "quote-generation-socket" to tdx-guest, whihc is a property
->>>> of type SocketAddress to specify Quote Generation Service(QGS).
->>>>
->>>> On request, connect to the QGS, read request buffer from shared guest
->>>> memory, send the request buffer to the server and store the response
->>>> into shared guest memory and notify TD guest by interrupt.
->>>>
->>>> command line example:
->>>>     qemu-system-x86_64 \
->>>>       -object '{"qom-type":"tdx-guest","id":"tdx0","quote-generation-socket":{"type": "vsock", "cid":"2","port":"1234"}}' \
->>>>       -machine confidential-guest-support=tdx0
->>>>
->>>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
->>>> Codeveloped-by: Chenyi Qiang <chenyi.qiang@intel.com>
->>>> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
->>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->>>> ---
->>>> Changes in v3:
->>>> - rename property "quote-generation-service" to "quote-generation-socket";
->>>> - change the type of "quote-generation-socket" from str to
->>>>     SocketAddress;
->>>> - squash next patch into this one;
->>>> ---
->>>>    qapi/qom.json         |   5 +-
->>>>    target/i386/kvm/tdx.c | 430 ++++++++++++++++++++++++++++++++++++++++++
->>>>    target/i386/kvm/tdx.h |   6 +
->>>>    3 files changed, 440 insertions(+), 1 deletion(-)
->>>>
->>>> +static void tdx_handle_get_quote_connected(QIOTask *task, gpointer opaque)
->>>> +{
->>>> +    struct tdx_get_quote_task *t = opaque;
->>>> +    Error *err = NULL;
->>>> +    char *in_data = NULL;
->>>> +    MachineState *ms;
->>>> +    TdxGuest *tdx;
->>>> +
->>>> +    t->hdr.error_code = cpu_to_le64(TDX_VP_GET_QUOTE_ERROR);
->>>> +    if (qio_task_propagate_error(task, NULL)) {
->>>> +        t->hdr.error_code = cpu_to_le64(TDX_VP_GET_QUOTE_QGS_UNAVAILABLE);
->>>> +        goto error;
->>>> +    }
->>>> +
->>>> +    in_data = g_malloc(le32_to_cpu(t->hdr.in_len));
->>>> +    if (!in_data) {
->>>> +        goto error;
->>>> +    }
->>>> +
->>>> +    if (address_space_read(&address_space_memory, t->gpa + sizeof(t->hdr),
->>>> +                           MEMTXATTRS_UNSPECIFIED, in_data,
->>>> +                           le32_to_cpu(t->hdr.in_len)) != MEMTX_OK) {
->>>> +        goto error;
->>>> +    }
->>>> +
->>>> +    qio_channel_set_blocking(QIO_CHANNEL(t->ioc), false, NULL);
->>>
->>> You've set the channel to non-blocking, but....
->>>
->>>> +
->>>> +    if (qio_channel_write_all(QIO_CHANNEL(t->ioc), in_data,
->>>> +                              le32_to_cpu(t->hdr.in_len), &err) ||
->>>> +        err) {
->>>
->>> ...this method will block execution of this thread, by either
->>> sleeping in poll() or doing a coroutine yield.
->>>
->>> I don't think this is in coroutine context, so presumably this
->>> is just blocking.  So what was the point in marking the channel
->>> non-blocking ?
->>
->> Hi Dainel,
->>
->> First of all, I'm not good at socket or qio channel thing. Please correct me
->> and teach me when I'm wrong.
->>
->> I'm not the author of this patch. My understanding is that, set it to
->> non-blocking is for the qio_channel_write_all() to proceed immediately?
+09.01.2024 05:08, Zhang, Chen :
 > 
-> The '_all' suffixed methods are implemented such that they will
-> sleep in poll(), or a coroutine yield when seeing EAGAIN.
 > 
->> If set non-blocking is not needed, I can remove it.
+>> -----Original Message-----
+>> From: Michael Tokarev <mjt@tls.msk.ru>
+>> Sent: Sunday, January 7, 2024 7:25 PM
+>> To: qemu-devel@nongnu.org
+>> Cc: Michael Tokarev <mjt@tls.msk.ru>; qemu-trivial@nongnu.org; Zhang,
+>> Chen <chen.zhang@intel.com>; Li Zhijian <lizhijian@fujitsu.com>
+>> Subject: [PATCH trivial] colo: examples: remove mentions of script= and
+>> (wrong) downscript=
 >>
->>> You are setting up a background watch to wait for the reply
->>> so we don't block this thread, so you seem to want non-blocking
->>> behaviour.
->>
->> Both sending and receiving are in a new thread created by
->> qio_channel_socket_connect_async(). So I think both of then can be blocking
->> and don't need to be in another background thread.
->>
->> what's your suggestion on it? Make both sending and receiving blocking or
->> non-blocking?
+>> There's no need to repeat script=/etc/qemu-ifup in examples, as it is already
+>> in there.  More, all examples uses incorrect "down script=" (which should be
+>> "downscript=").
 > 
-> I think the code /should/ be non-blocking, which would mean
-> using   qio_channel_write, instead of qio_channel_write_all,
-> and using a .
+> Yes, good catch.
+> Reviewed-by: Zhang Chen <chen.zhang@intel.com>
+> 
+>> ---
+>> I'm not sure we need so many identical examples, and why it uses vnet=off, -
+>> it looks like vnet= should also be dropped.
+> 
+> Do you means the "vnet_hdr_support" in docs?
 
-I see. will implement in the next version.
+Nope, it was a thinko on my part, I mean vhost=off parameter - which is right next to script=.
+Why vhost is explicitly disabled here, while it isn't even enabled by default?
 
-> With regards,
-> Daniel
+And do we really need that many examples like this, maybe it's a good idea to
+remove half of them and refer to the other place instead?
 
+/mjt
 
