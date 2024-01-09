@@ -2,109 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865888286AA
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 14:01:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 260D38286E8
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 14:15:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNBia-0000I6-Vc; Tue, 09 Jan 2024 08:00:33 -0500
+	id 1rNBvb-0006vj-Rd; Tue, 09 Jan 2024 08:13:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rNBiT-0000Eb-OJ
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 08:00:25 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rNBiR-00007b-S4
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 08:00:25 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 682831F7FD;
- Tue,  9 Jan 2024 13:00:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704805220; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JxDBxcW036CVK4/xghT7i5fvh6aUZH7F0Qpa5F+y7Hw=;
- b=tyquDihnDvZ9FPBUhTGvKO3CdwH85ZpSp4oqvKpbacEEfk/SaotUhn13K6JLLGkolFPu9B
- OiYHILMKVXbA8gUf694WH1qW44CLxVfEkzsesukesfPY7VwcTCZui+qFVYKaXRPvdH8IoT
- CesquuceQak6eX4h9sJcGF5KEoZ9doo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704805220;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JxDBxcW036CVK4/xghT7i5fvh6aUZH7F0Qpa5F+y7Hw=;
- b=lz2LiYduxFnipltrGGqVlABToDw/o6s5kYVcvVV695UqRdeIKl/75HkccDsDY/8Cb+xwGs
- jTYSXGYDZXaM8rBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704805220; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JxDBxcW036CVK4/xghT7i5fvh6aUZH7F0Qpa5F+y7Hw=;
- b=tyquDihnDvZ9FPBUhTGvKO3CdwH85ZpSp4oqvKpbacEEfk/SaotUhn13K6JLLGkolFPu9B
- OiYHILMKVXbA8gUf694WH1qW44CLxVfEkzsesukesfPY7VwcTCZui+qFVYKaXRPvdH8IoT
- CesquuceQak6eX4h9sJcGF5KEoZ9doo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704805220;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JxDBxcW036CVK4/xghT7i5fvh6aUZH7F0Qpa5F+y7Hw=;
- b=lz2LiYduxFnipltrGGqVlABToDw/o6s5kYVcvVV695UqRdeIKl/75HkccDsDY/8Cb+xwGs
- jTYSXGYDZXaM8rBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E4BF21392C;
- Tue,  9 Jan 2024 13:00:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 4CfVKWNDnWWfRwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 09 Jan 2024 13:00:19 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Thomas Huth
- <thuth@redhat.com>, Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Wainer dos
- Santos Moschetta <wainersm@redhat.com>, Beraldo Leal <bleal@redhat.com>
-Subject: Re: [PATCH v3 3/4] ci: Add a migration compatibility test job
-In-Reply-To: <ZZzyZhUbgt9WhaAP@x1n>
-References: <20240105180449.11562-1-farosas@suse.de>
- <20240105180449.11562-4-farosas@suse.de> <ZZzyZhUbgt9WhaAP@x1n>
-Date: Tue, 09 Jan 2024 10:00:17 -0300
-Message-ID: <8734v68xwe.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rNBvZ-0006vR-0q; Tue, 09 Jan 2024 08:13:57 -0500
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rNBvL-0006NB-TO; Tue, 09 Jan 2024 08:13:56 -0500
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:7d8d:0:640:c31b:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 7E49F61B5F;
+ Tue,  9 Jan 2024 16:13:35 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b59d::1:13])
+ by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 9DhYvWNIkiE0-2Oj74Ebq; Tue, 09 Jan 2024 16:13:34 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1704806014;
+ bh=sW5DdP9bkyKjIB76UbewfKRTCYono9YsK07kyFOl/0U=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=JZfE+EDIMT4QqvZU2oO7v77R7ng/5wF+ouKGC/xoGZ31szv/kQfQFBJhTZGy6f0SM
+ awYepN5wLyJi+0NupisM45ySbT3T/g2w/1lfHv4PKPo1oHbrjtZFn/IFnP+TWmp2jP
+ qGv/a6/nM5JAewsEGbIQ/7+JdtRSG12fxh7sEk94=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, eblake@redhat.com, hreitz@redhat.com,
+ kwolf@redhat.com, armbru@redhat.com, zeil@yandex-team.ru,
+ yc-core@yandex-team.ru, dave@treblig.org, vsementsov@yandex-team.ru,
+ Leonid Kaplan <xeor@yandex-team.ru>
+Subject: [PATCH v2] block-backend: per-device throttling of BLOCK_IO_ERROR
+ reports
+Date: Tue,  9 Jan 2024 16:13:08 +0300
+Message-Id: <20240109131308.455371-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [-4.30 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_SEVEN(0.00)[8];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -116,46 +72,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+From: Leonid Kaplan <xeor@yandex-team.ru>
 
-> On Fri, Jan 05, 2024 at 03:04:48PM -0300, Fabiano Rosas wrote:
->> The migration tests have support for being passed two QEMU binaries to
->> test migration compatibility.
->> 
->> Add a CI job that builds the lastest release of QEMU and another job
->> that uses that version plus an already present build of the current
->> version and run the migration tests with the two, both as source and
->> destination. I.e.:
->> 
->>  old QEMU (n-1) -> current QEMU (development tree)
->>  current QEMU (development tree) -> old QEMU (n-1)
->> 
->> The purpose of this CI job is to ensure the code we're about to merge
->> will not cause a migration compatibility problem when migrating the
->> next release (which will contain that code) to/from the previous
->> release.
->> 
->> I'm leaving the jobs as manual for now because using an older QEMU in
->> tests could hit bugs that were already fixed in the current
->> development tree and we need to handle those case-by-case.
->
-> Can we opt-out those broken tests using either your "since:" thing or
-> anything similar?
+BLOCK_IO_ERROR events comes from guest, so we must throttle them.
+We still want per-device throttling, so let's use device id as a key.
 
-If it's something migration related, then yes. But there might be other
-types of breakages that have nothing to do with migration. Our tests are
-not resilent enough (nor they should) to detect when QEMU aborted for
-other reasons. Think about the -audio issue: the old QEMU would just say
-"there's no -audio option, abort" and that's a test failure of course.
+Signed-off-by: Leonid Kaplan <xeor@yandex-team.ru>
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
 
-> I hope we can start to run something by default in the CI in 9.0 to cover
-> n-1 -> n, even if starting with a subset of tests.  Is it possible?
+v2: add Note: to QAPI doc
 
-We could maybe have it enabled with "allow_failure" set. The important
-thing here is that we don't want to get reports of "flaky test". These
-tests are kind of flaky by definition, there's no way to backport a fix
-to the older QEMU, so there's always the chance that this test will be
-broken for a whole release cycle. We should act fast in adding the
-"since" annotation or other workaround, but that depends on our
-availability and the type of bug that we hit.
+ monitor/monitor.c    | 10 ++++++++++
+ qapi/block-core.json |  2 ++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/monitor/monitor.c b/monitor/monitor.c
+index 01ede1babd..ad0243e9d7 100644
+--- a/monitor/monitor.c
++++ b/monitor/monitor.c
+@@ -309,6 +309,7 @@ int error_printf_unless_qmp(const char *fmt, ...)
+ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
+     /* Limit guest-triggerable events to 1 per second */
+     [QAPI_EVENT_RTC_CHANGE]        = { 1000 * SCALE_MS },
++    [QAPI_EVENT_BLOCK_IO_ERROR]    = { 1000 * SCALE_MS },
+     [QAPI_EVENT_WATCHDOG]          = { 1000 * SCALE_MS },
+     [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
+     [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
+@@ -498,6 +499,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
+         hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
+     }
+ 
++    if (evstate->event == QAPI_EVENT_BLOCK_IO_ERROR) {
++        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
++    }
++
+     return hash;
+ }
+ 
+@@ -525,6 +530,11 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
+                        qdict_get_str(evb->data, "qom-path"));
+     }
+ 
++    if (eva->event == QAPI_EVENT_BLOCK_IO_ERROR) {
++        return !strcmp(qdict_get_str(eva->data, "device"),
++                       qdict_get_str(evb->data, "device"));
++    }
++
+     return TRUE;
+ }
+ 
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index ca390c5700..32c2c2f030 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -5559,6 +5559,8 @@
+ # Note: If action is "stop", a STOP event will eventually follow the
+ #     BLOCK_IO_ERROR event
+ #
++# Note: This event is rate-limited.
++#
+ # Since: 0.13
+ #
+ # Example:
+-- 
+2.34.1
+
 
