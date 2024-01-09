@@ -2,76 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D06982843B
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 11:49:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5AA82843C
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 11:49:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN9eK-0006zL-Lp; Tue, 09 Jan 2024 05:48:00 -0500
+	id 1rN9fi-0007fn-JA; Tue, 09 Jan 2024 05:49:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rN9eI-0006yj-Jz
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 05:47:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rN9fg-0007fA-AR
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 05:49:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rN9eF-0007L0-Dr
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 05:47:58 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rN9fe-0008Ue-OG
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 05:49:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704797273;
+ s=mimecast20190719; t=1704797361;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WeE9p1KtNiMS+m1qiSiYi66/Rm0PEV09UDX3wJbs64A=;
- b=ZT3Bcj6e2NmULIF87C4NaotYT1W5P1l5/xjwqKGNDXs1074gDNx8WDOhrs+T8UA1Aejqru
- Ktr+7ZwfQvJH04OvkgXlvSWPHjHiMMyw6BeJwMnmnbjdyM80TsxfI4CZaRqMODOVnbmWBY
- uAtd2kZOk5DS+QZYhQixeVajGXWXRzE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CbwsHUX/yhY5so1qWQwyfaffVikW51lX+Ec+PLMVlLk=;
+ b=huN3FrY20VtE+3b5tFw6mMn+rGZRGHOQLBqQ6BBdyC78aFy0vGjPHpkfWX9eBaIFoSHqWj
+ W/7mcTLnS390HAtpKFTZfF4/F3RxxfGitsI8fUvogYtLUY2dBBSku/MBgHmxZFWVpwKmoo
+ MsS7BGT6QXSB+JMwx6L3joaOHMEmA6I=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-327-5dXObOloPIqrJU1vnaNEbA-1; Tue, 09 Jan 2024 05:47:49 -0500
-X-MC-Unique: 5dXObOloPIqrJU1vnaNEbA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8B8F68E4ABA;
- Tue,  9 Jan 2024 10:47:48 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.130])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id BADF7C15E6A;
- Tue,  9 Jan 2024 10:47:46 +0000 (UTC)
-Date: Tue, 9 Jan 2024 11:47:45 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Eric Blake <eblake@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, Luc Michel <luc.michel@amd.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Eduardo Habkost <eduardo@habkost.net>, Frederic Konrad <fkonrad@amd.com>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH 0/5] qdev-properties: Try to improve use of dynamic
- property introspection
-Message-ID: <ZZ0kUcy14YA8t3Pd@redhat.com>
-References: <20240102160455.68612-1-philmd@linaro.org>
+ us-mta-374-EGnAsnyvPp2IcEEq3lWV-g-1; Tue, 09 Jan 2024 05:49:20 -0500
+X-MC-Unique: EGnAsnyvPp2IcEEq3lWV-g-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-28cfa4a37c2so1135877a91.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 02:49:20 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704797359; x=1705402159;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CbwsHUX/yhY5so1qWQwyfaffVikW51lX+Ec+PLMVlLk=;
+ b=hCFN5zodSy8bWr+WoU4SNnns10cFfm5cPU1REfrie5eUd0xgNDu4Wdumyavh6mRZni
+ 6FjeNIEeGFq/bJ6ZG/22IOdSpBxft2YHmSvwA4HO3O61DCvqiJi4/FSqP6xptRJnMHK+
+ 2YLehnqkiPNe8J+P/ovbQ2ZJYBK6NCflliYZKoOQqaVm96Is0fYfox/n+i3K8UW9xqot
+ 0gwhvAbS+SlNbTif4F5vA3AUuxHiRaRhfBF7SCLpX11AvLW0rt52nSsTfbvHXOCKutPZ
+ Sa6+Gi3nuVEEzD+QM6OixvmKf9t1YkgpE4vca0NPIjPk7aeF7Wv6jWQqiJy/W55ev2Jz
+ 513A==
+X-Gm-Message-State: AOJu0YzTNj7yHOTtD1DWiOmpAcqiNG9Qw3cyEW6+nYHkbN8Pr4HTYHSv
+ F+RUifhuFOKvppbFaP3ZYhh8H8pXGDTAFWULXTMEuhOqdt6Vg1vgtBfokDY3biqMNpRWkzZS4kB
+ qE5BQ7Moube+ulzO3ljCHhOfYgHZr0wkQ9zCuaNUE47ELxFupu30i1kEqQFNvoxrX+vYWfYDD6w
+ mxT8VaYNM=
+X-Received: by 2002:a05:6a21:1c84:b0:199:d6b5:20bc with SMTP id
+ sf4-20020a056a211c8400b00199d6b520bcmr2659470pzb.3.1704797359222; 
+ Tue, 09 Jan 2024 02:49:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE6TV/8Jm1jzLTO30UQc0a7mkcjmlWWNp37fw5E/LyQAl3edJQR8rdery++G67YhCQiS0hMYw==
+X-Received: by 2002:a05:6a21:1c84:b0:199:d6b5:20bc with SMTP id
+ sf4-20020a056a211c8400b00199d6b520bcmr2659452pzb.3.1704797358731; 
+ Tue, 09 Jan 2024 02:49:18 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ gu8-20020a056a004e4800b006d980fa11e9sm1369386pfb.51.2024.01.09.02.49.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Jan 2024 02:49:18 -0800 (PST)
+Date: Tue, 9 Jan 2024 18:49:10 +0800
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Bandan Das <bdas@redhat.com>,
+ Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH 00/10] docs/migration: Reorganize migration documentations
+Message-ID: <ZZ0kpnT741chs1np@x1n>
+References: <20240109064628.595453-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240102160455.68612-1-philmd@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+In-Reply-To: <20240109064628.595453-1-peterx@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,73 +100,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 02.01.2024 um 17:04 hat Philippe Mathieu-Daudé geschrieben:
-> Hi,
+On Tue, Jan 09, 2024 at 02:46:18PM +0800, peterx@redhat.com wrote:
+> From: Peter Xu <peterx@redhat.com>
 > 
-> This RFC series tries to work over some limitations exposed in
-> https://lore.kernel.org/qemu-devel/9293e63b-8032-4ea0-b516-9db6949fb607@linaro.org/
+> Migration docs grow larger and larger.  There are plenty of things we can
+> do here in the future, but to start that we'd better reorganize the current
+> bloated doc files first and properly organize them into separate files.
+> This series kicks that off.
 > 
-> Eventually all QDev objects would use static QOM properties,
-> but in some cases we can not. ARMv7MState is a such example
-> adding properties that might end up irrelevant.
+> This series mostly does the movement only, so please don't be scared of the
+> slightly large diff.  I did touch up things here and there, but I didn't
+> yet started writting much.  One thing I did is I converted virtio.txt to
+> rST, but that's trivial and no real content I touched.
 > 
-> This is just an example, but thinking long term (in particular
-> in the context of dynamic machines) I'm looking at how this
-> could be improved. Thus this series. I don't like much this
-> current approach (because more boiler place and complexity)
-> however this seems to DTRT for the user.
+> I am copying both virtio and vfio people because I'm merging the two
+> separate files into the new docs/devel/migration/ folder.
 
-This doesn't feel like the right approach to me. If you were to describe
-the properties of armv7m in the QAPI schema language without looking at
-the implementation, you would never add something like OptionalBool.
+Firstly.. thanks Cedric for the super fast review.
 
-I'm not entirely sure if I understand the details of the problem, so if
-I make wrong assumptions below, please correct me.
+A few things I'd like to mention alongside, because it's documentation
+relevant too, and I'd like to collect if there's any comment.
 
-I think what you would get instead is a union with the different CPU
-types as union variants. You would have few fields in the base type
-(cpu-type, memory, etc.), and everything specific to the variant, you
-wouldn't even want to look at in armv7m, but just forward it to the CPU.
+I just mostly rewrote two wiki pages completely:
 
-Now of course actually getting this QAPIfied is not something to expect
-in the next few days, so let's get back to the QOM level, but keep the
-general idea in mind.
+  https://wiki.qemu.org/ToDo/LiveMigration
+  https://wiki.qemu.org/Features/Migration
 
-Based on the above, I'd argue that armv7m shouldn't even have the
-properties that it only uses to forward them. Instead, we should let the
-CPU grab its properties directly from the configuration. The way we
-create objects currently is not really designed for this. But let's get
-back to the QOM/QAPI integration patches [1] I sent two years ago and
-suddently it becomes quite easy: armv7m's .instance_config simply calls
-the CPU's .instance_config and passes its visitor. Then the CPU takes
-the options it needs for its properties and that's it.
+I merged all the TODO items from Features/Migration into the ToDo page,
+while kept the 2nd page mostly clean, just to route to other places.
 
-I discussed this series with Markus recently, and I actually assume that
-he at least mentioned it to you when you discussed things with him. I
-believe the part that you would need here (only up to patch 4 really) is
-pretty much uncontroversial.
+I had a plan to make:
 
-Of course, I ignored several "details" here, but I think the idea should
-still be workable. Some of those details:
+  https://qemu.org/docs/master
 
-* This approach requires that the CPUs are first converted to have
-  static properties, but given that making everything static is your
-  goal, I assume that's not a problem.
+The solo place for migration documentations (aka, QEMU repo the source of
+truth for migration docs, as it's peroidically built there), making all the
+rest places pointing to that, as I already did in the wiki page.  While I
+kept all the TODOs on the wiki page (not Features/Migration, but
+ToDo/LiveMigration).
 
-* The CPU must actually exist when you want to set properties for it.
-  This probably means moving creating the CPU from realize to the new
-  instance_config.
+Fabiano / anyone: feel free to add / update / correct any entries there
+where applicable.  Also if there's any thoughts on above feel free to let
+me know too.
 
-* My patches are for object-add, but we're coming from board code here.
-  So the callers would have to be changed to call .instance_config
-  (probalby indirectly through object_configure()) instead of setting
-  individual properties.
+Thanks,
 
-All of this is additional work, but it doesn't look like exceedingly
-hard work.
-
-Kevin
-
-[1] https://patchew.org/QEMU/20211103173002.209906-1-kwolf@redhat.com/
+-- 
+Peter Xu
 
 
