@@ -2,59 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570AC828B93
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 18:57:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F376828BF5
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 19:08:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNGKp-0004om-NJ; Tue, 09 Jan 2024 12:56:19 -0500
+	id 1rNGV9-000140-SD; Tue, 09 Jan 2024 13:06:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rNGKh-0004jS-Fw
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:56:13 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <SRS0=Gpa9=IT=kaod.org=clg@ozlabs.org>)
+ id 1rNGV5-00013I-MJ; Tue, 09 Jan 2024 13:06:56 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rNGKT-0006C4-8u
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:56:11 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T8dpm0tfSz6K5pf;
- Wed, 10 Jan 2024 01:54:08 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 17D4F140736;
- Wed, 10 Jan 2024 01:55:55 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 9 Jan
- 2024 17:55:54 +0000
-Date: Tue, 9 Jan 2024 17:55:54 +0000
-To: Davidlohr Bueso <dave@stgolabs.net>
-CC: Hyeonggon Yoo <42.hyeyoo@gmail.com>, Fan Ni <fan.ni@samsung.com>, "Michael
- S . Tsirkin" <mst@redhat.com>, <linux-cxl@vger.kernel.org>,
- <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v2 4/4] hw/cxl/events: discard all event records during
- sanitation
-Message-ID: <20240109175554.0000467f@Huawei.com>
-In-Reply-To: <20240101213828.nxayq6ps3azk2eic@offworld>
-References: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
- <20231222090051.3265307-5-42.hyeyoo@gmail.com>
- <20240101213828.nxayq6ps3azk2eic@offworld>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <SRS0=Gpa9=IT=kaod.org=clg@ozlabs.org>)
+ id 1rNGUz-0002fE-J9; Tue, 09 Jan 2024 13:06:51 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4T8f5G0RL4z4wx8;
+ Wed, 10 Jan 2024 05:06:42 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4T8f561MDXz4wbR;
+ Wed, 10 Jan 2024 05:06:33 +1100 (AEDT)
+Message-ID: <d5c0b9fb-8b09-4f68-b3ab-c8adffd484a9@kaod.org>
+Date: Tue, 9 Jan 2024 19:06:30 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in
+ A7/A15 MPCore priv
+Content-Language: en-US
+To: Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
+ Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
+ qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Xu <peterx@redhat.com>
+References: <20231212162935.42910-1-philmd@linaro.org>
+ <03b969d3-1947-4186-b3ee-15e3cddc5f34@kaod.org>
+ <18a38b88-8f20-420c-9916-a03d1b4930a7@linaro.org>
+ <38cfa9de-874b-41dd-873e-5ad1f5a5805e@kaod.org>
+ <fe4d463f-b646-4b7b-9063-d16ad5dbb128@linaro.org> <87y1d6i47m.fsf@suse.de>
+ <597186d9-af21-46e8-8075-f21d36c01c07@kaod.org> <87plya76cu.fsf@suse.de>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <87plya76cu.fsf@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=Gpa9=IT=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,91 +81,91 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 1 Jan 2024 13:38:28 -0800
-Davidlohr Bueso <dave@stgolabs.net> wrote:
-
-> On Fri, 22 Dec 2023, Hyeonggon Yoo wrote:
+On 1/9/24 18:40, Fabiano Rosas wrote:
+> Cédric Le Goater <clg@kaod.org> writes:
 > 
-> >Per spec 8.2.9.9.5.1 Sanitize (Opcode 4400h), sanitize command should
-> >delete all event logs. Introduce cxl_discard_all_event_logs() and call
-> >this in __do_sanitization().  
+>> On 1/3/24 20:53, Fabiano Rosas wrote:
+>>> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+>>>
+>>>> +Peter/Fabiano
+>>>>
+>>>> On 2/1/24 17:41, Cédric Le Goater wrote:
+>>>>> On 1/2/24 17:15, Philippe Mathieu-Daudé wrote:
+>>>>>> Hi Cédric,
+>>>>>>
+>>>>>> On 2/1/24 15:55, Cédric Le Goater wrote:
+>>>>>>> On 12/12/23 17:29, Philippe Mathieu-Daudé wrote:
+>>>>>>>> Hi,
+>>>>>>>>
+>>>>>>>> When a MPCore cluster is used, the Cortex-A cores belong the the
+>>>>>>>> cluster container, not to the board/soc layer. This series move
+>>>>>>>> the creation of vCPUs to the MPCore private container.
+>>>>>>>>
+>>>>>>>> Doing so we consolidate the QOM model, moving common code in a
+>>>>>>>> central place (abstract MPCore parent).
+>>>>>>>
+>>>>>>> Changing the QOM hierarchy has an impact on the state of the machine
+>>>>>>> and some fixups are then required to maintain migration compatibility.
+>>>>>>> This can become a real headache for KVM machines like virt for which
+>>>>>>> migration compatibility is a feature, less for emulated ones.
+>>>>>>
+>>>>>> All changes are either moving properties (which are not migrated)
+>>>>>> or moving non-migrated QOM members (i.e. pointers of ARMCPU, which
+>>>>>> is still migrated elsewhere). So I don't see any obvious migration
+>>>>>> problem, but I might be missing something, so I Cc'ed Juan :>
+>>>
+>>> FWIW, I didn't spot anything problematic either.
+>>>
+>>> I've ran this through my migration compatibility series [1] and it
+>>> doesn't regress aarch64 migration from/to 8.2. The tests use '-M
+>>> virt -cpu max', so the cortex-a7 and cortex-a15 are not covered. I don't
+>>> think we even support migration of anything non-KVM on arm.
+>>
+>> it happens we do.
+>>
 > 
-> lgtm
+> Oh, sorry, I didn't mean TCG here. Probably meant to say something like
+> non-KVM-capable cpus, as in 32-bit. Nevermind.
+
+Theoretically, we should be able to migrate to a TCG guest. Well, this
+worked in the past for PPC. When I was doing more KVM related changes,
+this was very useful for dev. Also, some machines are partially emulated.
+Anyhow I agree this is not a strong requirement and we often break it.
+Let's focus on KVM only.
+
+>>> 1- https://gitlab.com/farosas/qemu/-/jobs/5853599533
+>>
+>> yes it depends on the QOM hierarchy and virt seems immune to the changes.
+>> Good.
+>>
+>> However, changing the QOM topology clearly breaks migration compat,
 > 
-> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+> Well, "clearly" is relative =) You've mentioned pseries and aspeed
+> already, do you have a pointer to one of those cases were we broke
+> migration 
 
-I'll carry this on my tree on top of where I put the previous patch.
-Seems to apply there at least :)
+Regarding pseries, migration compat broke because of 5bc8d26de20c
+("spapr: allocate the ICPState object from under sPAPRCPUCore") which
+is similar to the changes proposed by this series, it impacts the QOM
+hierarchy. Here is the workaround/fix from Greg : 46f7afa37096
+("spapr: fix migration of ICPState objects from/to older QEMU") which
+is quite an headache and this turned out to raise another problem some
+months ago ... :/ That's why I sent [1] to prepare removal of old
+machines and workarounds becoming a burden.
 
-If it makes sense to remix these patches a bit to provide cleaner
-history I'll do so once these are ready to send for Michael to look
-at.
+Regarding aspeed, this series breaks compat. Not that we care much
+but ​this caught my attention because of my past experience on pseries.
+Same kind of QOM change which could impact other machines, like virt.
+Since you checked that migration compat is preserved on virt, we should
+be fine.
 
-Jonathan
+Thanks,
 
-> 
-> >Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-> >---
-> > hw/cxl/cxl-events.c         | 13 +++++++++++++
-> > hw/cxl/cxl-mailbox-utils.c  |  1 +
-> > include/hw/cxl/cxl_device.h |  1 +
-> > 3 files changed, 15 insertions(+)
-> >
-> >diff --git a/hw/cxl/cxl-events.c b/hw/cxl/cxl-events.c
-> >index bee6dfaf14..837b18ab47 100644
-> >--- a/hw/cxl/cxl-events.c
-> >+++ b/hw/cxl/cxl-events.c
-> >@@ -141,6 +141,19 @@ bool cxl_event_insert(CXLDeviceState *cxlds, CXLEventLogType log_type,
-> >     return cxl_event_count(log) == 1;
-> > }
-> >
-> >+void cxl_discard_all_event_records(CXLDeviceState *cxlds)
-> >+{
-> >+    CXLEventLogType log_type;
-> >+    CXLEventLog *log;
-> >+
-> >+    for (log_type = 0; log_type < CXL_EVENT_TYPE_MAX; log_type++) {
-> >+        log = &cxlds->event_logs[log_type];
-> >+        while (!cxl_event_empty(log)) {
-> >+            cxl_event_delete_head(cxlds, log_type, log);
-> >+        }
-> >+    }
-> >+}
-> >+
-> > CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
-> >                                  uint8_t log_type, int max_recs,
-> >                                  size_t *len)
-> >diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> >index efeb5f8174..2ade351d82 100644
-> >--- a/hw/cxl/cxl-mailbox-utils.c
-> >+++ b/hw/cxl/cxl-mailbox-utils.c
-> >@@ -1150,6 +1150,7 @@ static void __do_sanitization(CXLType3Dev *ct3d)
-> >             memset(lsa, 0, memory_region_size(mr));
-> >         }
-> >     }
-> >+    cxl_discard_all_event_records(&ct3d->cxl_dstate);
-> > }
-> >
-> > /*
-> >diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> >index 5618061ebe..8f05dd9beb 100644
-> >--- a/include/hw/cxl/cxl_device.h
-> >+++ b/include/hw/cxl/cxl_device.h
-> >@@ -604,6 +604,7 @@ CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
-> >                                  size_t *len);
-> > CXLRetCode cxl_event_clear_records(CXLDeviceState *cxlds,
-> >                                    CXLClearEventPayload *pl);
-> >+void cxl_discard_all_event_records(CXLDeviceState *cxlds);
-> >
-> > void cxl_event_irq_assert(CXLType3Dev *ct3d);
-> >
-> >-- 
-> >2.39.3
-> >  
+C.
+
+[1] https://lore.kernel.org/qemu-devel/20231214181723.1520854-1-clg@kaod.org/
 
 
