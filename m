@@ -2,77 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D3682887A
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 15:49:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB41828889
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 15:54:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNDPT-0005kC-1T; Tue, 09 Jan 2024 09:48:55 -0500
+	id 1rNDTe-0000sG-Cz; Tue, 09 Jan 2024 09:53:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNDPQ-0005jo-L6
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:48:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNDTc-0000qS-58
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:53:12 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNDPO-0002M8-Px
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:48:52 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNDTa-0004o5-JG
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:53:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704811727;
+ s=mimecast20190719; t=1704811989;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=f0kkdzu6O2et3bnqvUGLEJulAQ/TCEAMYLMu0Bx5OP4=;
- b=MLHLeHViktS5L3SmiwthRQqZz7eLSFk0zigjJZBG+HU35+ofSHZ4BNlVfhwBOxAyI9eSOo
- 35kTDZfBssx+wAqEzhbQmmhyljaNB6Hyr1cT8VFymh41HURqOHtC9GmTOMsnceVN4T/lvc
- xOvWbXweL5rQjJ7OdR3GcEDqOsfV59w=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=CJsEJCfB7o9V4cCNwv1klVAYFzQBWvUmkH9K9jF2Ksw=;
+ b=Bpp9kWUZ7JGckOSqybFTp4GfwdsyM1azA/9mRjO/ajAB8og22tdnBhgm4umUXRRxrawl+p
+ YRss/R31skHXZPsygZwvfwUmPUAE4PKPF87bowHmS3MaTu9TkCLAZ+Hxnyw7BEL7ENCFp1
+ uJg5mhvR9Cs3Ti6azy8ti4brOwLoD84=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-OMh3mXgoODy0KI73SJH6uQ-1; Tue, 09 Jan 2024 09:48:44 -0500
-X-MC-Unique: OMh3mXgoODy0KI73SJH6uQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C861A836F8A;
- Tue,  9 Jan 2024 14:48:43 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A83132026D66;
- Tue,  9 Jan 2024 14:48:43 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A506F21E6691; Tue,  9 Jan 2024 15:48:42 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH v2 2/2] meson: mitigate against use of uninitialize
- stack for exploits
-In-Reply-To: <20240103123414.2401208-3-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Wed, 3 Jan 2024 12:34:14
- +0000")
-References: <20240103123414.2401208-1-berrange@redhat.com>
- <20240103123414.2401208-3-berrange@redhat.com>
-Date: Tue, 09 Jan 2024 15:48:42 +0100
-Message-ID: <87frz6lfzp.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ us-mta-537-eRiSSrsiPfuF4i52f_nSOQ-1; Tue, 09 Jan 2024 09:53:03 -0500
+X-MC-Unique: eRiSSrsiPfuF4i52f_nSOQ-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-6805f615543so63640386d6.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 06:53:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704811983; x=1705416783;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CJsEJCfB7o9V4cCNwv1klVAYFzQBWvUmkH9K9jF2Ksw=;
+ b=Y7r/xoPmaTbonvlL7Wb6LRVF8pHU52PLmkh0HQkfYlTErfmff/6TGSyk/Jvgsk8S8z
+ hDYro/Ymqh9o91fTr885MNO8NfvHGK6+sY3iToYOdyGWTCEi6ljJRosX3tHnhi2YR2Iq
+ mG1TZcFkLtjKnZoOlhYguX8QiuAUepQDB4/vuX297Osq7bFm4bOR1a7p9CJnX795/J6p
+ 9QnuMIo3x2pYycRH0FyL088rvCyepIQ2QXqogDzEdLAflcSZJN6xtoLV7PfjlaUEBs1d
+ rBLJ1JPWJl8Ufl2GYg+dStFimePXFW7+3os57Jas/CwRKhH75PQwJjJL7q1IKWK9Qs89
+ vEdg==
+X-Gm-Message-State: AOJu0Ywbcy5aYie8+xaxTfSikmZwH5ubd9U5tJAvoO7w1wf8m8ppyKm6
+ NNDrdGylALgwk5bdH7SuiNhNPqM4GMYBP3yUKydtHv0EjGU7EFK2rD98RXeo8YAhZgKcKYJfTej
+ LVtqGZiXXb5a5g6SCBkgIxqo=
+X-Received: by 2002:a05:6214:d6d:b0:681:12c5:ded7 with SMTP id
+ 13-20020a0562140d6d00b0068112c5ded7mr1862716qvs.111.1704811983028; 
+ Tue, 09 Jan 2024 06:53:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGtar+oqysBlIruJ3+KjOtoz437ZKz53peLGtDzjxzU0US+u+gCiyI8WT0SUAloGKpOSe0eYQ==
+X-Received: by 2002:a05:6214:d6d:b0:681:12c5:ded7 with SMTP id
+ 13-20020a0562140d6d00b0068112c5ded7mr1862703qvs.111.1704811982742; 
+ Tue, 09 Jan 2024 06:53:02 -0800 (PST)
+Received: from [192.168.0.9] (ip-109-43-176-232.web.vodafone.de.
+ [109.43.176.232]) by smtp.gmail.com with ESMTPSA id
+ c4-20020ad44304000000b0067f77ca8d18sm938478qvs.96.2024.01.09.06.53.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 09 Jan 2024 06:53:02 -0800 (PST)
+Message-ID: <d89b6903-0d15-415b-88ec-6f23cf436172@redhat.com>
+Date: Tue, 9 Jan 2024 15:52:58 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/s390x/kvm/pv: Provide some more useful information
+ if decryption fails
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ David Hildenbrand <david@redhat.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>, qemu-devel@nongnu.org,
+ Halil Pasic <pasic@linux.ibm.com>
+References: <20240109143038.155512-1-thuth@redhat.com>
+ <ZZ1bY3qm3EvKxLWl@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <ZZ1bY3qm3EvKxLWl@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
+X-Spam_score_int: -12
+X-Spam_score: -1.3
+X-Spam_bar: -
+X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,66 +147,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+On 09/01/2024 15.42, Daniel P. Berrangé wrote:
+> On Tue, Jan 09, 2024 at 03:30:38PM +0100, Thomas Huth wrote:
+>> It's a common scenario to copy guest images from one host to another
+>> to run the guest on the other machine. This (of course) does not work
+>> with "secure exection" guests since they are encrypted with one certain
+>> host key. However, if you still (accidentally) do it, you only get a
+>> very user-unfriendly error message that looks like this:
+> 
+> Not a comment on the patch, but my own interest how/where does the
+> disk image encryption/decryption happen ?  Is that in guest kernel
+> context, and any info on what format the encryption uses ?
 
-> When variables are used without being initialized, there is potential
-> to take advantage of data that was pre-existing on the stack from an
-> earlier call, to drive an exploit.
->
-> It is good practice to always initialize variables, and the compiler
-> can warn about flaws when -Wuninitialized is present. This warning,
-> however, is by no means foolproof with its output varying depending
-> on compiler version and which optimizations are enabled.
->
-> The -ftrivial-auto-var-init option can be used to tell the compiler
-> to always initialize all variables. This increases the security and
-> predictability of the program, closing off certain attack vectors,
-> reducing the risk of unsafe memory disclosure.
->
-> While the option takes several possible values, using 'zero' is
-> considered to be the  option that is likely to lead to semantically
-> correct or safe behaviour[1]. eg sizes/indexes are not likely to
-> lead to out-of-bounds accesses when initialized to zero. Pointers
-> are less likely to point something useful if initialized to zero.
->
-> Even with -ftrivial-auto-var-init=3Dzero set, GCC will still issue
-> warnings with -Wuninitialized if it discovers a problem, so we are
-> not loosing diagnostics for developers, just hardening runtime
-> behaviour and making QEMU behave more predictably in case of hitting
-> bad codepaths.
->
-> [1] https://lists.llvm.org/pipermail/cfe-dev/2020-April/065221.html
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> ---
->  meson.build | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/meson.build b/meson.build
-> index eaa20d241d..efc1b4dd14 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -440,6 +440,11 @@ hardening_flags =3D [
->      # upon its return. This makes it harder to assemble
->      # ROP gadgets into something usable
->      '-fzero-call-used-regs=3Dused-gpr',
-> +
-> +    # Initialize all stack variables to zero. This makes
-> +    # it harder to take advantage of uninitialized stack
-> +    # data to drive exploits
-> +    '-ftrivial-auto-var-init=3Dzero',
->  ]
->=20=20
->  qemu_common_flags +=3D cc.get_supported_arguments(hardening_flags)
+There is an "ultravisor" (part of the host firmware) that takes care of the 
+decryption. See e.g. Claudio's talk here:
 
-Have you tried to throw in -Wtrivial-auto-var-init?
+  https://www.youtube.com/watch?v=J2YibrLfB4s
 
-Documentation, for your convenience:
+  HTH,
+   Thomas
 
-=E2=80=98-Wtrivial-auto-var-init=E2=80=99
-     Warn when =E2=80=98-ftrivial-auto-var-init=E2=80=99 cannot initialize =
-the automatic
-     variable.  A common situation is an automatic variable that is
-     declared between the controlling expression and the first case
-     label of a =E2=80=98switch=E2=80=99 statement.
 
 
