@@ -2,71 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63ED48288AD
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 16:03:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F235C8288AF
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 16:03:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNDdN-0006Qt-Dz; Tue, 09 Jan 2024 10:03:17 -0500
+	id 1rNDdK-0006Oc-LM; Tue, 09 Jan 2024 10:03:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Gpa9=IT=kaod.org=clg@ozlabs.org>)
- id 1rNDdK-0006Pe-Rb; Tue, 09 Jan 2024 10:03:15 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Gpa9=IT=kaod.org=clg@ozlabs.org>)
- id 1rNDdH-0000mx-OX; Tue, 09 Jan 2024 10:03:14 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4T8Z1P6zKQz4xG8;
- Wed, 10 Jan 2024 02:03:05 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4T8Z1G1RxHz4xFD;
- Wed, 10 Jan 2024 02:02:57 +1100 (AEDT)
-Message-ID: <597186d9-af21-46e8-8075-f21d36c01c07@kaod.org>
-Date: Tue, 9 Jan 2024 16:02:53 +0100
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rNDdH-0006NC-Lp
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 10:03:13 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rNDdF-0000nh-31
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 10:03:10 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40e4f692d06so4515945e9.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 07:03:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704812587; x=1705417387; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bMCIZkhJJvpb7DyTODzhTGE3JWll8OFtAiYyBvwGmik=;
+ b=b+Aes26zrtE8ilgFD4/Jeor5fulinVwt0HffC7712j7VWHV1Uw+qJjCqpKsFDKkZ2r
+ IO4/BlbqQEzIUUNr5C8/cjj1L9W27NdQjWI+mtyA0XbgN+Uqr3t9NMMlCY9DvKdtzL3l
+ iMEqwWFpvcV/WuzFS5/V16PKCAAjZvA6XaW5HGFojqaJpZpQR84KwBWlyWomXYI4x2hb
+ cXb/Wm+8EgHvnp4mWQUN2mQvry9hnuAxVTV0wPAUTPHWpNqOLNmPDx1rU7zOia4CfaYL
+ i7W4Mmfsq8v790mhddY6HEf/ioebYVGnTGGCniA44lwkWamPst3yIIW87h/air+c5X+K
+ LJvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704812587; x=1705417387;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=bMCIZkhJJvpb7DyTODzhTGE3JWll8OFtAiYyBvwGmik=;
+ b=CjgDtTMtzbLYQsFE0BLZ4kAf8g0Aimd/aBGHhYZUTzQaSh4VfTRI9DOnD7p+2vnoyn
+ /SgRroCUy3HSXa9UAQPNAZCwllafiHFKbsMSXjsG0tuOsTipZI0eqOU1LZTNzebkGI49
+ FrcxeH7+2+nS/gk9Zl8lZjQM/pICa91BNqWn3Ea/YKJdRQ7h+elJIH5uI3vpStUbtNer
+ cV5TAW5gsQKVqz5JhTkt9xN/uPNi3VhYgizFMCDOiDzrffyvCGHh5ejwSzgj7xv52m14
+ j9RRnM64mqRIUQ/hHI0E+4DjGdjPTX2AQ+wVaAJ0CKwWuf9apbbMLJDJr7axfOi3udps
+ tAZA==
+X-Gm-Message-State: AOJu0Yy1CodjE1tg+2BRBCw4belksYwigWL+Ws9NrRc2+G7pc1EeUzAa
+ FtELB2Ih8XtU6dRUzkDknx4zpN5J3GWtUA==
+X-Google-Smtp-Source: AGHT+IGLsy7eKNgCuG4w7hafs0T2A1r/89JKgtzIFTDqXG9YXodo/+FY1pz3y/RmNSPdA2A7hy/b5Q==
+X-Received: by 2002:a7b:cc0d:0:b0:40d:785e:34a8 with SMTP id
+ f13-20020a7bcc0d000000b0040d785e34a8mr498924wmh.65.1704812586952; 
+ Tue, 09 Jan 2024 07:03:06 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ f9-20020a05600c154900b0040e4ca7fcb4sm3795922wmg.37.2024.01.09.07.03.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Jan 2024 07:03:06 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 2A0C45F785;
+ Tue,  9 Jan 2024 15:03:06 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, QEMU Developers <qemu-devel@nongnu.org>
+Subject: Re: virtio-pci in qemu-system-arm is broken in 8.2
+In-Reply-To: <CAFEAcA9K2jf3BfHY3xpP4T-_iH9nNX=XLrNp=mPg5nqZURBOrw@mail.gmail.com>
+ (Peter Maydell's message of "Tue, 9 Jan 2024 14:31:45 +0000")
+References: <90d7351c-2680-4ab6-95ee-5dac4e3f21c5@tls.msk.ru>
+ <CAFEAcA8DdsHQ0eCYnh4vNoybodj0mcHCnOMEr9b_aOk7yO2Osw@mail.gmail.com>
+ <ea7dd9f7-b40f-436c-a469-97ef26ac66a2@tls.msk.ru>
+ <d08930a4-7e01-41eb-b118-b20fea0f8556@tls.msk.ru>
+ <CAFEAcA_wnSF-OAKNaDNjbEiMi-AXv2srJ5JjmiaT4+_wWee9aw@mail.gmail.com>
+ <560c9f56-f0d8-4def-863a-63ba4226209e@tls.msk.ru>
+ <CAFEAcA-hkd=VQdqw7-P1RGwu-c9JLn-NUHC1kgU-YgZ1FOMQww@mail.gmail.com>
+ <CAFEAcA87qdWR-GLEjkGpGHxMhviFidi2=k7c=OFC3+hzn1P0Dw@mail.gmail.com>
+ <87bk9uh9jd.fsf@draig.linaro.org>
+ <CAFEAcA9K2jf3BfHY3xpP4T-_iH9nNX=XLrNp=mPg5nqZURBOrw@mail.gmail.com>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Tue, 09 Jan 2024 15:03:06 +0000
+Message-ID: <875y02h7md.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in
- A7/A15 MPCore priv
-Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
- qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Xu <peterx@redhat.com>
-References: <20231212162935.42910-1-philmd@linaro.org>
- <03b969d3-1947-4186-b3ee-15e3cddc5f34@kaod.org>
- <18a38b88-8f20-420c-9916-a03d1b4930a7@linaro.org>
- <38cfa9de-874b-41dd-873e-5ad1f5a5805e@kaod.org>
- <fe4d463f-b646-4b7b-9063-d16ad5dbb128@linaro.org> <87y1d6i47m.fsf@suse.de>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <87y1d6i47m.fsf@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=Gpa9=IT=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.248, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,103 +104,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/3/24 20:53, Fabiano Rosas wrote:
-> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
-> 
->> +Peter/Fabiano
+Peter Maydell <peter.maydell@linaro.org> writes:
+
+> On Tue, 9 Jan 2024 at 14:21, Alex Benn=C3=A9e <alex.bennee@linaro.org> wr=
+ote:
 >>
->> On 2/1/24 17:41, Cédric Le Goater wrote:
->>> On 1/2/24 17:15, Philippe Mathieu-Daudé wrote:
->>>> Hi Cédric,
->>>>
->>>> On 2/1/24 15:55, Cédric Le Goater wrote:
->>>>> On 12/12/23 17:29, Philippe Mathieu-Daudé wrote:
->>>>>> Hi,
->>>>>>
->>>>>> When a MPCore cluster is used, the Cortex-A cores belong the the
->>>>>> cluster container, not to the board/soc layer. This series move
->>>>>> the creation of vCPUs to the MPCore private container.
->>>>>>
->>>>>> Doing so we consolidate the QOM model, moving common code in a
->>>>>> central place (abstract MPCore parent).
->>>>>
->>>>> Changing the QOM hierarchy has an impact on the state of the machine
->>>>> and some fixups are then required to maintain migration compatibility.
->>>>> This can become a real headache for KVM machines like virt for which
->>>>> migration compatibility is a feature, less for emulated ones.
->>>>
->>>> All changes are either moving properties (which are not migrated)
->>>> or moving non-migrated QOM members (i.e. pointers of ARMCPU, which
->>>> is still migrated elsewhere). So I don't see any obvious migration
->>>> problem, but I might be missing something, so I Cc'ed Juan :>
-> 
-> FWIW, I didn't spot anything problematic either.
-> 
-> I've ran this through my migration compatibility series [1] and it
-> doesn't regress aarch64 migration from/to 8.2. The tests use '-M
-> virt -cpu max', so the cortex-a7 and cortex-a15 are not covered. I don't
-> think we even support migration of anything non-KVM on arm.
+>> Peter Maydell <peter.maydell@linaro.org> writes:
+>>
+>> > On Tue, 9 Jan 2024 at 11:33, Peter Maydell <peter.maydell@linaro.org> =
+wrote:
+>> >> On Mon, 8 Jan 2024 at 17:38, Michael Tokarev <mjt@tls.msk.ru> wrote:
+>> >> > Speaking of config. This is standard debian config, I'm attaching o=
+ne
+>> >> > to this email.  It can be found in the package, eg
+>> >> > http://deb.debian.org/debian/pool/main/l/linux/linux-image-6.6.9-ar=
+mmp_6.6.9-1_armhf.deb
+>> >> > in /boot/config-$(uname -r).
+>> >>
+>> >> It does seem to be a config thing -- on a plain upstream
+>> >> v6.6.9 my config works and that debian default one does
+>> >> not. Now to try to identify which particular config
+>> >> difference is at fault. (It's not the CONFIG_VMSPLIT one,
+>> >> I just tried that.)
+>> >
+>> > Oh, your kernel isn't an LPAE one (i.e. CONFIG_LPAE is not
+>> > set). That will obviously never be able to access registers
+>> > above the 4GB mark (though the kernel's error message in this
+>> > situation is a bit unhelpful and could perhaps be improved).
+>> > If I set CONFIG_LPAE on the non-working config it starts working.
+>> >
+>> > I think then the answer is:
+>> >  * if you want to use the (default) highmem setup, use an LPAE kernel
+>> >  * if you want to use a non-LPAE kernel, tell QEMU to avoid
+>> >    highmem using '-machine virt,highmem=3Doff'
+>>
+>> Could we expand the "highmem" description in
+>> https://www.qemu.org/docs/master/system/arm/virt.html to make it
+>> clearer. I'm sure this isn't the first time there have been 32bit
+>> difficulties with non-LPAE kernels?
+>
+> Sure. We could make the highmem property description read:
+>
+> # Set on/off to enable/disable placing devices and RAM in physical
+> # address space above 32 bits. The default is on for machine types
+> # later than virt-2.12 when the CPU supports an address space
+> # bigger than 32 bits (i.e. 64-bit CPUs, and 32-bit CPUs with the
+> # Large Physical Address Extension (LPAE) feature). If you want to
+> # boot a 32-bit kernel which does not have CONFIG_LPAE enabled on
+> # a CPU type which implements LPAE, you will need to manually set
+> # this to 'off'; otherwise some devices, such as the PCI controller,
+> # will not be accessible.
+>
+> How's that ?
 
-it happens we do.
+LGTM and even if the users don't read it hopefully the LLMs will ;-)
 
-> 
-> 1- https://gitlab.com/farosas/qemu/-/jobs/5853599533
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-yes it depends on the QOM hierarchy and virt seems immune to the changes.
-Good.
-
-However, changing the QOM topology clearly breaks migration compat,
-at least on the Aspeed SoC. The question is : do we care ? For Aspeed
-probably not, but the series should say so.
-
-Thanks,
-
-C.
-
-
-
-  
-> 
->>> We broke migration compatibility by moving the IC object in the QOM
->>> hierarchy of the pseries machines in the past. These changes might
->>> be different. Here is the QOM tree of the ast2600 SoC.
->>>
->>> before :
->>>
->>>     /soc (ast2600-a3)
->>>       /a7mpcore (a15mpcore_priv)
->>>         /a15mp-priv-container[0] (memory-region)
->>>         /gic (arm_gic)
->>>           /gic_cpu[0] (memory-region)
->>>           /gic_cpu[1] (memory-region)
->>>           /gic_cpu[2] (memory-region)
->>>           /gic_dist[0] (memory-region)
->>>           /gic_vcpu[0] (memory-region)
->>>           /gic_viface[0] (memory-region)
->>>           /gic_viface[1] (memory-region)
->>>           /gic_viface[2] (memory-region)
->>>       /cpu[0] (cortex-a7-arm-cpu)
->>>       /cpu[1] (cortex-a7-arm-cpu)
->>>
->>> after :
->>>
->>>     /soc (ast2600-a3)
->>>       /a7mpcore (a7mpcore_priv)
->>>         /cpu[0] (cortex-a7-arm-cpu)
->>>         /cpu[1] (cortex-a7-arm-cpu)
->>>         /gic (arm_gic)
->>>           /gic_cpu[0] (memory-region)
->>>           /gic_cpu[1] (memory-region)
->>>           /gic_cpu[2] (memory-region)
->>>           /gic_dist[0] (memory-region)
->>>         /mpcore-priv-container[0] (memory-region)
->>>
->>>
->>> Thanks,
->>>
->>> C.
->>>
->>>
->>>
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
