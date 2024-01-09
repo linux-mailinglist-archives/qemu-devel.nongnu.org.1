@@ -2,75 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B174827E79
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 06:45:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6320C827E7A
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 06:45:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN4uW-0000uJ-R1; Tue, 09 Jan 2024 00:44:24 -0500
+	id 1rN4ur-0000y4-WB; Tue, 09 Jan 2024 00:44:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rN4uU-0000rm-ON; Tue, 09 Jan 2024 00:44:22 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rN4uS-0005fM-NH; Tue, 09 Jan 2024 00:44:22 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2236341864;
- Tue,  9 Jan 2024 08:44:28 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 77C6A5DD89;
- Tue,  9 Jan 2024 08:44:17 +0300 (MSK)
-Message-ID: <6c043607-d5ba-41d3-94df-5618fc05c15f@tls.msk.ru>
-Date: Tue, 9 Jan 2024 08:44:17 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH trivial] colo: examples: remove mentions of script= and
- (wrong) downscript=
-Content-Language: en-US
-To: "Zhang, Chen" <chen.zhang@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "qemu-trivial@nongnu.org" <qemu-trivial@nongnu.org>,
- Li Zhijian <lizhijian@fujitsu.com>
-References: <20240107112459.335594-1-mjt@tls.msk.ru>
- <CYYPR11MB843238AD2090FC1B9B309DBA9B6A2@CYYPR11MB8432.namprd11.prod.outlook.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <CYYPR11MB843238AD2090FC1B9B309DBA9B6A2@CYYPR11MB8432.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <ysato@users.sourceforge.jp>)
+ id 1rN4um-0000xh-C1; Tue, 09 Jan 2024 00:44:40 -0500
+Received: from ik1-413-38519.vs.sakura.ne.jp ([153.127.30.23]
+ helo=sakura.ysato.name) by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <ysato@users.sourceforge.jp>)
+ id 1rN4ug-0005mV-RZ; Tue, 09 Jan 2024 00:44:39 -0500
+Received: from SIOS1075.ysato.ml (ZM005235.ppp.dion.ne.jp [222.8.5.235])
+ by sakura.ysato.name (Postfix) with ESMTPSA id 8093B1C00D1;
+ Tue,  9 Jan 2024 14:44:28 +0900 (JST)
+Date: Tue, 09 Jan 2024 14:44:25 +0900
+Message-ID: <874jfnvz5y.wl-ysato@users.sourceforge.jp>
+From: Yoshinori Sato <ysato@users.sourceforge.jp>
+To: Samuel Tardieu <sam@rfc1149.net>
+Cc: qemu-devel@nongnu.org, Magnus Damm <magnus.damm@gmail.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ devel@lists.libvirt.org, qemu-block@nongnu.org
+Subject: Re: [PATCH 1/2] target/sh4: Deprecate the shix machine
+In-Reply-To: <20240108171523.2487291-2-sam@rfc1149.net>
+References: <20240108171523.2487291-1-sam@rfc1149.net>
+ <20240108171523.2487291-2-sam@rfc1149.net>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: softfail client-ip=153.127.30.23;
+ envelope-from=ysato@users.sourceforge.jp; helo=sakura.ysato.name
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, KHOP_HELO_FCRDNS=0.001,
+ SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,36 +59,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-09.01.2024 05:08, Zhang, Chen :
-> 
-> 
->> -----Original Message-----
->> From: Michael Tokarev <mjt@tls.msk.ru>
->> Sent: Sunday, January 7, 2024 7:25 PM
->> To: qemu-devel@nongnu.org
->> Cc: Michael Tokarev <mjt@tls.msk.ru>; qemu-trivial@nongnu.org; Zhang,
->> Chen <chen.zhang@intel.com>; Li Zhijian <lizhijian@fujitsu.com>
->> Subject: [PATCH trivial] colo: examples: remove mentions of script= and
->> (wrong) downscript=
->>
->> There's no need to repeat script=/etc/qemu-ifup in examples, as it is already
->> in there.  More, all examples uses incorrect "down script=" (which should be
->> "downscript=").
-> 
-> Yes, good catch.
-> Reviewed-by: Zhang Chen <chen.zhang@intel.com>
-> 
->> ---
->> I'm not sure we need so many identical examples, and why it uses vnet=off, -
->> it looks like vnet= should also be dropped.
-> 
-> Do you means the "vnet_hdr_support" in docs?
+On Tue, 09 Jan 2024 02:15:21 +0900,
+Samuel Tardieu wrote:
+>=20
+> The shix machine has been designed and used at T=E9l=E9com Paris from 2003
+> to 2010. It had been added to QEMU in 2005 and has not been maintained
+> since. Since nobody is using the physical board anymore nor interested
+> in maintaining the QEMU port, it is time to deprecate it.
+>=20
+> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+> ---
+>  docs/about/deprecated.rst | 5 +++++
+>  hw/sh4/shix.c             | 1 +
+>  2 files changed, 6 insertions(+)
+>=20
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 2e15040246..e6a12c9077 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -269,6 +269,11 @@ Nios II ``10m50-ghrd`` and ``nios2-generic-nommu`` m=
+achines (since 8.2)
+> =20
+>  The Nios II architecture is orphan.
+> =20
+> +``shix`` (since 9.0)
+> +''''''''''''''''''''
+> +
+> +The machine is no longer in existence and has been long unmaintained
+> +in QEMU.
+> =20
+>  Backend options
+>  ---------------
+> diff --git a/hw/sh4/shix.c b/hw/sh4/shix.c
+> index aa812512f0..58530b8ede 100644
+> --- a/hw/sh4/shix.c
+> +++ b/hw/sh4/shix.c
+> @@ -80,6 +80,7 @@ static void shix_machine_init(MachineClass *mc)
+>      mc->init =3D shix_init;
+>      mc->is_default =3D true;
+>      mc->default_cpu_type =3D TYPE_SH7750R_CPU;
+> +    mc->deprecation_reason =3D "old and unmaintained - use a newer machi=
+ne instead";
+>  }
+> =20
+>  DEFINE_MACHINE("shix", shix_machine_init)
+> --=20
+> 2.42.0
+>=20
 
-Nope, it was a thinko on my part, I mean vhost=off parameter - which is right next to script=.
-Why vhost is explicitly disabled here, while it isn't even enabled by default?
+I can't maintain this either.
+Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 
-And do we really need that many examples like this, maybe it's a good idea to
-remove half of them and refer to the other place instead?
-
-/mjt
+--=20
+Yosinori Sato
 
