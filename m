@@ -2,110 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C3688288B6
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 16:06:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA43A8288C8
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 16:14:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNDfb-0000A1-GX; Tue, 09 Jan 2024 10:05:35 -0500
+	id 1rNDmp-00033Y-2P; Tue, 09 Jan 2024 10:13:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rNDfX-0008Vv-02
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 10:05:31 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rNDfS-0001fs-NG
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 10:05:30 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3373a30af67so2901665f8f.0
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 07:05:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704812725; x=1705417525; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OdLIh7YhTDuZWsjEAOESckJCOOUpBDjEHB+IHlWuUz0=;
- b=PkF/ZtDVcHKZIybcvNQPVEgYO2RVQnhFH1gTD/g3TeNgvd23+hPHd5k5ySA9ij5Mtt
- u2njT0JKl+oLFs4ZNFR4XhL+LT0ePLhW70SmJq8TPCMOcbzqrHNnt8N7L3OGdk8kAni7
- wIrnIklHesQAOwG/vVcF+o7WzJok2aj3W0allCG14Ewp1i7DZiVzfU0QN99W8UOKux3l
- 9p3++oGBbUShBJ0gPK9xJJbfgw39Y/8VpLfsw9YcwXF+TRoFgyd99BZDU7oryumkGC6l
- eeRZ1IN27WlUiLwCcseIEAFue6EXo/j9qyXj7lzzydcF67PKnlPDuNisCaoGt4WySGCW
- XmnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704812725; x=1705417525;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OdLIh7YhTDuZWsjEAOESckJCOOUpBDjEHB+IHlWuUz0=;
- b=YHTjpR6E6YnnYFoZWqlK5dks3vy8wV+/F04gMIMMdxy7vuRAGQPbPRSBtOKUcc2uyn
- Dg1117BVZ3y7++E9/iSE5jNhLfZRkaY95VCiVhx+4Uc9Z2n6FeIxt/GvhAXSr4b5Nu4Y
- CUksAQ3vC6OYVKcVaYS/tjGe/idfPpP1rG2JJAN8jKGKQrhpvXMQmYluet0Guvm295/y
- VlhFVcZeS/3EQKXT5KfCBA9rQm82OJcMNjN9m8JrK5X82Rnxd1RYQ+YA/GCVyf9H5ZX0
- R3ULqrhX7mY16JM9SNpP7EXCV3uFxIzAj4ECRJqU7HhYQMpjYkgLGG7uCyoTiCH87QR5
- RQAQ==
-X-Gm-Message-State: AOJu0YyqH3bwxTwcXqU7FHKwwu+iVCLYPHAFZuN1uhAtvuWbhPQ8piMr
- 8sj9PxiPCqqkWZ1D0qafQSc1bCRSbrRvOw==
-X-Google-Smtp-Source: AGHT+IGLZvzPXlrjqFLT0I9xL4CCZMxYp9AqmpILXYKgOZeO+8smk9/WWmznsyFpJpAbVXRJ0Ews6Q==
-X-Received: by 2002:a05:6000:400c:b0:336:7b76:2b4a with SMTP id
- cp12-20020a056000400c00b003367b762b4amr552081wrb.181.1704812724926; 
- Tue, 09 Jan 2024 07:05:24 -0800 (PST)
-Received: from [192.168.1.24] ([102.35.208.160])
- by smtp.gmail.com with ESMTPSA id
- d7-20020adfe887000000b0033672971fabsm2609637wrm.115.2024.01.09.07.05.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 07:05:24 -0800 (PST)
-Message-ID: <6c22ed26-7906-47a2-ab66-57d545ef59f5@linaro.org>
-Date: Tue, 9 Jan 2024 19:05:12 +0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rNDmm-00033P-DX
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 10:13:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rNDmi-0004oi-IS
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 10:13:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704813174;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=r6Uw16NrmnAM8qrnTlSt0XBsmAW4jzKIu/srpB35UKU=;
+ b=hIJu74sjr4BcE2f6JbRbqZiKazVSQbXnsw2ahn/cYlj5eaxnQitXBcUHDtsN/IupTrb5dn
+ JmVWFjVTQsZdtR+kp8Fvw8wpk/GVpinX7dIBdw1n4iBv6C42QGfANI1aFBqOAokCPoGUE5
+ 9W2OeK+7NnpMgFHNYIwekK4RV1gk9Rw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-50-_WfWA6N4PS-CsTDs19KQlA-1; Tue,
+ 09 Jan 2024 10:12:53 -0500
+X-MC-Unique: _WfWA6N4PS-CsTDs19KQlA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 08F703813F3A;
+ Tue,  9 Jan 2024 15:12:53 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.86])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CA55D1121312;
+ Tue,  9 Jan 2024 15:12:51 +0000 (UTC)
+Date: Tue, 9 Jan 2024 15:12:49 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH v2 1/2] meson: mitigate against ROP exploits with
+ -fzero-call-used-regs
+Message-ID: <ZZ1icX6Ep0QOKIX5@redhat.com>
+References: <20240103123414.2401208-1-berrange@redhat.com>
+ <20240103123414.2401208-2-berrange@redhat.com>
+ <87bk9ulfqo.fsf@pond.sub.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 38/43] plugins: add an API to read registers
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
- Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Brian Cain <bcain@quicinc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Cleber Rosa <crosa@redhat.com>,
- kvm@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, John Snow <jsnow@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-riscv@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-References: <20240103173349.398526-1-alex.bennee@linaro.org>
- <20240103173349.398526-39-alex.bennee@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240103173349.398526-39-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87bk9ulfqo.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,185 +86,153 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCk9uIDEvMy8yNCAyMTozMywgQWxleCBCZW5uw6llIHdyb3RlOg0KPiBXZSBjYW4gb25s
-eSByZXF1ZXN0IGEgbGlzdCBvZiByZWdpc3RlcnMgb25jZSB0aGUgdkNQVSBoYXMgYmVlbg0K
-PiBpbml0aWFsaXNlZCBzbyB0aGUgdXNlciBuZWVkcyB0byB1c2UgZWl0aGVyIGNhbGwgdGhl
-IGdldCBmdW5jdGlvbiBvbg0KPiB2Q1BVIGluaXRpYWxpc2F0aW9uIG9yIGR1cmluZyB0aGUg
-dHJhbnNsYXRpb24gcGhhc2UuDQo+IA0KPiBXZSBkb24ndCBleHBvc2UgdGhlIHJlZyBudW1i
-ZXIgdG8gdGhlIHBsdWdpbiBpbnN0ZWFkIGhpZGluZyBpdCBiZWhpbmQNCj4gYW4gb3BhcXVl
-IGhhbmRsZS4gVGhpcyBhbGxvd3MgZm9yIGEgYml0IG9mIGZ1dHVyZSBwcm9vZmluZyBzaG91
-bGQgdGhlDQo+IGludGVybmFscyBuZWVkIHRvIGJlIGNoYW5nZWQgd2hpbGUgYWxzbyBiZWlu
-ZyBoYXNoZWQgYWdhaW5zdCB0aGUNCj4gQ1BVQ2xhc3Mgc28gd2UgY2FuIGhhbmRsZSBkaWZm
-ZXJlbnQgcmVnaXN0ZXIgc2V0cyBwZXItdkNQVSBpbg0KPiBoZXRyb2dlbm91cyBzaXR1YXRp
-b25zLg0KPiANCj4gSGF2aW5nIGFuIGludGVybmFsIHN0YXRlIHdpdGhpbiB0aGUgcGx1Z2lu
-cyBhbHNvIGFsbG93cyB1cyB0byBleHBhbmQNCj4gdGhlIGludGVyZmFjZSBpbiBmdXR1cmUg
-KGZvciBleGFtcGxlIHByb3ZpZGluZyBjYWxsYmFja3Mgb24gcmVnaXN0ZXINCj4gY2hhbmdl
-IGlmIHRoZSB0cmFuc2xhdG9yIGNhbiB0cmFjayBjaGFuZ2VzKS4NCj4gDQo+IFJlc29sdmVz
-OiBodHRwczovL2dpdGxhYi5jb20vcWVtdS1wcm9qZWN0L3FlbXUvLS9pc3N1ZXMvMTcwNg0K
-PiBDYzogQWtpaGlrbyBPZGFraSA8YWtpaGlrby5vZGFraUBkYXluaXguY29tPg0KPiBCYXNl
-ZC1vbjogPDIwMjMxMDI1MDkzMTI4LjMzMTE2LTE4LWFraWhpa28ub2Rha2lAZGF5bml4LmNv
-bT4NCj4gU2lnbmVkLW9mZi1ieTogQWxleCBCZW5uw6llIDxhbGV4LmJlbm5lZUBsaW5hcm8u
-b3JnPg0KPiANCj4gLS0tDQo+IHYzDQo+ICAgIC0gYWxzbyBnX2ludGVybl9zdHJpbmcgdGhl
-IHJlZ2lzdGVyIG5hbWUNCj4gICAgLSBtYWtlIGdldF9yZWdpc3RlcnMgZG9jdW1lbnRhdGlv
-biBhIGJpdCBsZXNzIHZlcmJvc2UNCj4gdjINCj4gICAgLSB1c2UgbmV3IGdldCB3aG9sZSBs
-aXN0IGFwaSwgYW5kIGV4cG9zZSB1cHdhcmRzDQo+IA0KPiB2QUpCOg0KPiANCj4gVGhlIG1h
-aW4gZGlmZmVyZW5jZSB0byBBa2lraW8ncyB2ZXJzaW9uIGlzIGhpZGluZyB0aGUgZ2RiIHJl
-Z2lzdGVyDQo+IGRldGFpbCBmcm9tIHRoZSBwbHVnaW4gZm9yIHRoZSByZWFzb25zIGRlc2Ny
-aWJlZCBhYm92ZS4NCj4gLS0tDQo+ICAgaW5jbHVkZS9xZW11L3FlbXUtcGx1Z2luLmggICB8
-ICA1MSArKysrKysrKysrKysrKysrKy0NCj4gICBwbHVnaW5zL2FwaS5jICAgICAgICAgICAg
-ICAgIHwgMTAyICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ICAgcGx1
-Z2lucy9xZW11LXBsdWdpbnMuc3ltYm9scyB8ICAgMiArDQo+ICAgMyBmaWxlcyBjaGFuZ2Vk
-LCAxNTMgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQg
-YS9pbmNsdWRlL3FlbXUvcWVtdS1wbHVnaW4uaCBiL2luY2x1ZGUvcWVtdS9xZW11LXBsdWdp
-bi5oDQo+IGluZGV4IDRkYWFiNmVmZDI5Li45NTM4MDg5NWY4MSAxMDA2NDQNCj4gLS0tIGEv
-aW5jbHVkZS9xZW11L3FlbXUtcGx1Z2luLmgNCj4gKysrIGIvaW5jbHVkZS9xZW11L3FlbXUt
-cGx1Z2luLmgNCj4gQEAgLTExLDYgKzExLDcgQEANCj4gICAjaWZuZGVmIFFFTVVfUUVNVV9Q
-TFVHSU5fSA0KPiAgICNkZWZpbmUgUUVNVV9RRU1VX1BMVUdJTl9IDQo+ICAgDQo+ICsjaW5j
-bHVkZSA8Z2xpYi5oPg0KPiAgICNpbmNsdWRlIDxpbnR0eXBlcy5oPg0KPiAgICNpbmNsdWRl
-IDxzdGRib29sLmg+DQo+ICAgI2luY2x1ZGUgPHN0ZGRlZi5oPg0KPiBAQCAtMjI3LDggKzIy
-OCw4IEBAIHN0cnVjdCBxZW11X3BsdWdpbl9pbnNuOw0KPiAgICAqIEBRRU1VX1BMVUdJTl9D
-Ql9SX1JFR1M6IGNhbGxiYWNrIHJlYWRzIHRoZSBDUFUncyByZWdzDQo+ICAgICogQFFFTVVf
-UExVR0lOX0NCX1JXX1JFR1M6IGNhbGxiYWNrIHJlYWRzIGFuZCB3cml0ZXMgdGhlIENQVSdz
-IHJlZ3MNCj4gICAgKg0KPiAtICogTm90ZTogY3VycmVudGx5IHVudXNlZCwgcGx1Z2lucyBj
-YW5ub3QgcmVhZCBvciBjaGFuZ2Ugc3lzdGVtDQo+IC0gKiByZWdpc3RlciBzdGF0ZS4NCj4g
-KyAqIE5vdGU6IGN1cnJlbnRseSBRRU1VX1BMVUdJTl9DQl9SV19SRUdTIGlzIHVudXNlZCwg
-cGx1Z2lucyBjYW5ub3QgY2hhbmdlDQo+ICsgKiBzeXN0ZW0gcmVnaXN0ZXIgc3RhdGUuDQo+
-ICAgICovDQo+ICAgZW51bSBxZW11X3BsdWdpbl9jYl9mbGFncyB7DQo+ICAgICAgIFFFTVVf
-UExVR0lOX0NCX05PX1JFR1MsDQo+IEBAIC03MDgsNCArNzA5LDUwIEBAIHVpbnQ2NF90IHFl
-bXVfcGx1Z2luX2VuZF9jb2RlKHZvaWQpOw0KPiAgIFFFTVVfUExVR0lOX0FQSQ0KPiAgIHVp
-bnQ2NF90IHFlbXVfcGx1Z2luX2VudHJ5X2NvZGUodm9pZCk7DQo+ICAgDQo+ICsvKiogc3Ry
-dWN0IHFlbXVfcGx1Z2luX3JlZ2lzdGVyIC0gT3BhcXVlIGhhbmRsZSBmb3IgcmVnaXN0ZXIg
-YWNjZXNzICovDQo+ICtzdHJ1Y3QgcWVtdV9wbHVnaW5fcmVnaXN0ZXI7DQo+ICsNCj4gKy8q
-Kg0KPiArICogdHlwZWRlZiBxZW11X3BsdWdpbl9yZWdfZGVzY3JpcHRvciAtIHJlZ2lzdGVy
-IGRlc2NyaXB0aW9ucw0KPiArICoNCj4gKyAqIEBoYW5kbGU6IG9wYXF1ZSBoYW5kbGUgZm9y
-IHJldHJpZXZpbmcgdmFsdWUgd2l0aCBxZW11X3BsdWdpbl9yZWFkX3JlZ2lzdGVyDQo+ICsg
-KiBAbmFtZTogcmVnaXN0ZXIgbmFtZQ0KPiArICogQGZlYXR1cmU6IG9wdGlvbmFsIGZlYXR1
-cmUgZGVzY3JpcHRvciwgY2FuIGJlIE5VTEwNCj4gKyAqLw0KPiArdHlwZWRlZiBzdHJ1Y3Qg
-ew0KPiArICAgIHN0cnVjdCBxZW11X3BsdWdpbl9yZWdpc3RlciAqaGFuZGxlOw0KPiArICAg
-IGNvbnN0IGNoYXIgKm5hbWU7DQo+ICsgICAgY29uc3QgY2hhciAqZmVhdHVyZTsNCj4gK30g
-cWVtdV9wbHVnaW5fcmVnX2Rlc2NyaXB0b3I7DQo+ICsNCj4gKy8qKg0KPiArICogcWVtdV9w
-bHVnaW5fZ2V0X3JlZ2lzdGVycygpIC0gcmV0dXJuIHJlZ2lzdGVyIGxpc3QgZm9yIHZDUFUN
-Cj4gKyAqIEB2Y3B1X2luZGV4OiB2Y3B1IHRvIHF1ZXJ5DQo+ICsgKg0KPiArICogUmV0dXJu
-cyBhIEdBcnJheSBvZiBxZW11X3BsdWdpbl9yZWdfZGVzY3JpcHRvciBvciBOVUxMLiBDYWxs
-ZXINCj4gKyAqIGZyZWVzIHRoZSBhcnJheSAoYnV0IG5vdCB0aGUgY29uc3Qgc3RyaW5ncyku
-DQo+ICsgKg0KPiArICogU2hvdWxkIGJlIHVzZWQgZnJvbSBhIHFlbXVfcGx1Z2luX3JlZ2lz
-dGVyX3ZjcHVfaW5pdF9jYigpIGNhbGxiYWNrDQo+ICsgKiBhZnRlciB0aGUgdkNQVSBpcyBp
-bml0aWFsaXNlZC4NCj4gKyAqLw0KPiArR0FycmF5ICogcWVtdV9wbHVnaW5fZ2V0X3JlZ2lz
-dGVycyh1bnNpZ25lZCBpbnQgdmNwdV9pbmRleCk7DQo+ICsNCj4gKy8qKg0KPiArICogcWVt
-dV9wbHVnaW5fcmVhZF9yZWdpc3RlcigpIC0gcmVhZCByZWdpc3Rlcg0KPiArICoNCj4gKyAq
-IEB2Y3B1OiB2Y3B1IGluZGV4DQo+ICsgKiBAaGFuZGxlOiBhIEBxZW11X3BsdWdpbl9yZWdf
-aGFuZGxlIGhhbmRsZQ0KPiArICogQGJ1ZjogQSBHQnl0ZUFycmF5IGZvciB0aGUgZGF0YSBv
-d25lZCBieSB0aGUgcGx1Z2luDQo+ICsgKg0KPiArICogVGhpcyBmdW5jdGlvbiBpcyBvbmx5
-IGF2YWlsYWJsZSBpbiBhIGNvbnRleHQgdGhhdCByZWdpc3RlciByZWFkIGFjY2VzcyBpcw0K
-PiArICogZXhwbGljaXRseSByZXF1ZXN0ZWQuDQo+ICsgKg0KPiArICogUmV0dXJucyB0aGUg
-c2l6ZSBvZiB0aGUgcmVhZCByZWdpc3Rlci4gVGhlIGNvbnRlbnQgb2YgQGJ1ZiBpcyBpbiB0
-YXJnZXQgYnl0ZQ0KPiArICogb3JkZXIuIE9uIGZhaWx1cmUgcmV0dXJucyAtMQ0KPiArICov
-DQo+ICtpbnQgcWVtdV9wbHVnaW5fcmVhZF9yZWdpc3Rlcih1bnNpZ25lZCBpbnQgdmNwdSwN
-Cj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBxZW11X3BsdWdpbl9y
-ZWdpc3RlciAqaGFuZGxlLA0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgR0J5
-dGVBcnJheSAqYnVmKTsNCj4gKw0KPiArDQo+ICAgI2VuZGlmIC8qIFFFTVVfUUVNVV9QTFVH
-SU5fSCAqLw0KPiBkaWZmIC0tZ2l0IGEvcGx1Z2lucy9hcGkuYyBiL3BsdWdpbnMvYXBpLmMN
-Cj4gaW5kZXggYWMzOWNkZWEwYjMuLmY4OTA1MzI1YzQzIDEwMDY0NA0KPiAtLS0gYS9wbHVn
-aW5zL2FwaS5jDQo+ICsrKyBiL3BsdWdpbnMvYXBpLmMNCj4gQEAgLTgsNiArOCw3IEBADQo+
-ICAgICoNCj4gICAgKiAgcWVtdV9wbHVnaW5fdGINCj4gICAgKiAgcWVtdV9wbHVnaW5faW5z
-bg0KPiArICogIHFlbXVfcGx1Z2luX3JlZ2lzdGVyDQo+ICAgICoNCj4gICAgKiBXaGljaCBj
-YW4gdGhlbiBiZSBwYXNzZWQgYmFjayBpbnRvIHRoZSBBUEkgdG8gZG8gYWRkaXRpb25hbCB0
-aGluZ3MuDQo+ICAgICogQXMgc3VjaCBhbGwgdGhlIHB1YmxpYyBmdW5jdGlvbnMgaW4gaGVy
-ZSBhcmUgZXhwb3J0ZWQgaW4NCj4gQEAgLTM1LDEwICszNiwxMiBAQA0KPiAgICAqLw0KPiAg
-IA0KPiAgICNpbmNsdWRlICJxZW11L29zZGVwLmgiDQo+ICsjaW5jbHVkZSAicWVtdS9tYWlu
-LWxvb3AuaCINCj4gICAjaW5jbHVkZSAicWVtdS9wbHVnaW4uaCINCj4gICAjaW5jbHVkZSAi
-cWVtdS9sb2cuaCINCj4gICAjaW5jbHVkZSAidGNnL3RjZy5oIg0KPiAgICNpbmNsdWRlICJl
-eGVjL2V4ZWMtYWxsLmgiDQo+ICsjaW5jbHVkZSAiZXhlYy9nZGJzdHViLmgiDQo+ICAgI2lu
-Y2x1ZGUgImV4ZWMvcmFtX2FkZHIuaCINCj4gICAjaW5jbHVkZSAiZGlzYXMvZGlzYXMuaCIN
-Cj4gICAjaW5jbHVkZSAicGx1Z2luLmgiDQo+IEBAIC00MzUsMyArNDM4LDEwMiBAQCB1aW50
-NjRfdCBxZW11X3BsdWdpbl9lbnRyeV9jb2RlKHZvaWQpDQo+ICAgI2VuZGlmDQo+ICAgICAg
-IHJldHVybiBlbnRyeTsNCj4gICB9DQo+ICsNCj4gKy8qDQo+ICsgKiBSZWdpc3RlciBoYW5k
-bGVzDQo+ICsgKg0KPiArICogVGhlIHBsdWdpbiBpbmZyYXN0cnVjdHVyZSBrZWVwcyBob2xk
-IG9mIHRoZXNlIGludGVybmFsIGRhdGENCj4gKyAqIHN0cnVjdHVyZXMgd2hpY2ggYXJlIHBy
-ZXNlbnRlZCB0byBwbHVnaW5zIGFzIG9wYXF1ZSBoYW5kbGVzLiBUaGV5DQo+ICsgKiBhcmUg
-Z2xvYmFsIHRvIHRoZSBzeXN0ZW0gYW5kIHRoZXJlZm9yIGFkZGl0aW9ucyB0byB0aGUgaGFz
-aCB0YWJsZQ0KPiArICogbXVzdCBiZSBwcm90ZWN0ZWQgYnkgdGhlIEByZWdfaGFuZGxlX2xv
-Y2suDQo+ICsgKg0KPiArICogSW4gb3JkZXIgdG8gZnV0dXJlIHByb29mIGZvciB1cC1jb21p
-bmcgaGV0ZXJvZ2VuZW91cyB3b3JrIHdlIHdhbnQNCj4gKyAqIGRpZmZlcmVudCBlbnRyaWVz
-IGZvciBlYWNoIENQVSB0eXBlIHdoaWxlIHNoYXJpbmcgdGhlbSBpbiB0aGUNCj4gKyAqIGNv
-bW1vbiBjYXNlIG9mIG11bHRpcGxlIGNvcmVzIG9mIHRoZSBzYW1lIHR5cGUuDQo+ICsgKi8N
-Cj4gKw0KPiArc3RhdGljIFFlbXVNdXRleCByZWdfaGFuZGxlX2xvY2s7DQo+ICsNCj4gK3N0
-cnVjdCBxZW11X3BsdWdpbl9yZWdpc3RlciB7DQo+ICsgICAgY29uc3QgY2hhciAqbmFtZTsN
-Cj4gKyAgICBpbnQgZ2RiX3JlZ19udW07DQo+ICt9Ow0KPiArDQo+ICtzdGF0aWMgR0hhc2hU
-YWJsZSAqcmVnX2hhbmRsZXM7IC8qIGhhc2ggdGFibGUgb2YgUGx1Z2luUmVnICovDQo+ICsN
-Cj4gKy8qIEdlbmVyYXRlIGEgc3RhYmxlIGtleSAtIHdvdWxkIHh4aGFzaCBiZSBvdmVya2ls
-bD8gKi8NCj4gK3N0YXRpYyBncG9pbnRlciBjcHVfcGx1c19yZWdfdG9fa2V5KENQVVN0YXRl
-ICpjcywgaW50IGdkYl9yZWdudW0pDQo+ICt7DQo+ICsgICAgdWludHB0cl90IGtleSA9ICh1
-aW50cHRyX3QpIGNzLT5jYzsNCj4gKyAgICBrZXkgXj0gZ2RiX3JlZ251bTsNCj4gKyAgICBy
-ZXR1cm4gR1VJTlRfVE9fUE9JTlRFUihrZXkpOw0KPiArfQ0KPiArDQo+ICsvKg0KPiArICog
-Q3JlYXRlIHJlZ2lzdGVyIGhhbmRsZXMuDQo+ICsgKg0KPiArICogV2UgbmVlZCB0byBjcmVh
-dGUgYSBoYW5kbGUgZm9yIGVhY2ggcmVnaXN0ZXIgc28gdGhlIHBsdWdpbg0KPiArICogaW5m
-cmFzdHJ1Y3R1cmUgY2FuIGNhbGwgZ2Ric3R1YiB0byByZWFkIGEgcmVnaXN0ZXIuIFdlIGFs
-c28NCj4gKyAqIGNvbnN0cnVjdCBhIHJlc3VsdCBhcnJheSB3aXRoIHRob3NlIGhhbmRsZXMg
-YW5kIHNvbWUgYW5jaWxsYXJ5IGRhdGENCj4gKyAqIHRoZSBwbHVnaW4gbWlnaHQgZmluZCB1
-c2VmdWwuDQo+ICsgKi8NCj4gKw0KPiArc3RhdGljIEdBcnJheSAqIGNyZWF0ZV9yZWdpc3Rl
-cl9oYW5kbGVzKENQVVN0YXRlICpjcywgR0FycmF5ICpnZGJzdHViX3JlZ3MpIHsNCj4gKyAg
-ICBHQXJyYXkgKmZpbmRfZGF0YSA9IGdfYXJyYXlfbmV3KHRydWUsIHRydWUsIHNpemVvZihx
-ZW11X3BsdWdpbl9yZWdfZGVzY3JpcHRvcikpOw0KPiArDQo+ICsgICAgV0lUSF9RRU1VX0xP
-Q0tfR1VBUkQoJnJlZ19oYW5kbGVfbG9jaykgew0KPiArDQo+ICsgICAgICAgIGlmICghcmVn
-X2hhbmRsZXMpIHsNCj4gKyAgICAgICAgICAgIHJlZ19oYW5kbGVzID0gZ19oYXNoX3RhYmxl
-X25ldyhnX2RpcmVjdF9oYXNoLCBnX2RpcmVjdF9lcXVhbCk7DQo+ICsgICAgICAgIH0NCj4g
-Kw0KPiArICAgICAgICBmb3IgKGludCBpPTA7IGkgPCBnZGJzdHViX3JlZ3MtPmxlbjsgaSsr
-KSB7DQo+ICsgICAgICAgICAgICBHREJSZWdEZXNjICpncmQgPSAmZ19hcnJheV9pbmRleChn
-ZGJzdHViX3JlZ3MsIEdEQlJlZ0Rlc2MsIGkpOw0KPiArICAgICAgICAgICAgZ3BvaW50ZXIg
-a2V5ID0gY3B1X3BsdXNfcmVnX3RvX2tleShjcywgZ3JkLT5nZGJfcmVnKTsNCj4gKyAgICAg
-ICAgICAgIHN0cnVjdCBxZW11X3BsdWdpbl9yZWdpc3RlciAqdmFsID0gZ19oYXNoX3RhYmxl
-X2xvb2t1cChyZWdfaGFuZGxlcywga2V5KTsNCj4gKw0KPiArICAgICAgICAgICAgLyogRG9l
-c24ndCBleGlzdCwgY3JlYXRlIG9uZSAqLw0KPiArICAgICAgICAgICAgaWYgKCF2YWwpIHsN
-Cj4gKyAgICAgICAgICAgICAgICB2YWwgPSBnX25ldzAoc3RydWN0IHFlbXVfcGx1Z2luX3Jl
-Z2lzdGVyLCAxKTsNCj4gKyAgICAgICAgICAgICAgICB2YWwtPmdkYl9yZWdfbnVtID0gZ3Jk
-LT5nZGJfcmVnOw0KPiArICAgICAgICAgICAgICAgIHZhbC0+bmFtZSA9IGdfaW50ZXJuX3N0
-cmluZyhncmQtPm5hbWUpOw0KPiArDQo+ICsgICAgICAgICAgICAgICAgZ19oYXNoX3RhYmxl
-X2luc2VydChyZWdfaGFuZGxlcywga2V5LCB2YWwpOw0KPiArICAgICAgICAgICAgfQ0KPiAr
-DQo+ICsgICAgICAgICAgICAvKiBDcmVhdGUgYSByZWNvcmQgZm9yIHRoZSBwbHVnaW4gKi8N
-Cj4gKyAgICAgICAgICAgIHFlbXVfcGx1Z2luX3JlZ19kZXNjcmlwdG9yIGRlc2MgPSB7DQo+
-ICsgICAgICAgICAgICAgICAgLmhhbmRsZSA9IHZhbCwNCj4gKyAgICAgICAgICAgICAgICAu
-bmFtZSA9IHZhbC0+bmFtZSwNCj4gKyAgICAgICAgICAgICAgICAuZmVhdHVyZSA9IGdfaW50
-ZXJuX3N0cmluZyhncmQtPmZlYXR1cmVfbmFtZSkNCj4gKyAgICAgICAgICAgIH07DQo+ICsg
-ICAgICAgICAgICBnX2FycmF5X2FwcGVuZF92YWwoZmluZF9kYXRhLCBkZXNjKTsNCj4gKyAg
-ICAgICAgfQ0KPiArICAgIH0NCj4gKw0KPiArICAgIHJldHVybiBmaW5kX2RhdGE7DQo+ICt9
-DQo+ICsNCj4gK0dBcnJheSAqIHFlbXVfcGx1Z2luX2dldF9yZWdpc3RlcnModW5zaWduZWQg
-aW50IHZjcHUpDQo+ICt7DQo+ICsgICAgQ1BVU3RhdGUgKmNzID0gcWVtdV9nZXRfY3B1KHZj
-cHUpOw0KPiArICAgIGlmIChjcykgew0KPiArICAgICAgICBnX2F1dG9wdHIoR0FycmF5KSBy
-ZWdzID0gZ2RiX2dldF9yZWdpc3Rlcl9saXN0KGNzKTsNCj4gKyAgICAgICAgcmV0dXJuIHJl
-Z3MtPmxlbiA/IGNyZWF0ZV9yZWdpc3Rlcl9oYW5kbGVzKGNzLCByZWdzKSA6IE5VTEw7DQo+
-ICsgICAgfSBlbHNlIHsNCj4gKyAgICAgICAgcmV0dXJuIE5VTEw7DQo+ICsgICAgfQ0KPiAr
-fQ0KDQpXb3VsZCB0aGF0IGJlIHVzZWZ1bCB0byBjYWNoZSB0aGUgcmV0dXJuZWQgdmFsdWUg
-b24gcGx1Z2luIHJ1bnRpbWUgc2lkZSANCihwZXIgdmNwdSk/IFRoaXMgd2F5LCBhIHBsdWdp
-biBjb3VsZCBjYWxsIHFlbXVfcGx1Z2luX2dldF9yZWdpc3RlcnMgYXMgDQptYW55IHRpbWUg
-YXMgaXQgd2FudHMgd2l0aG91dCBoYXZpbmcgdG8gcGF5IGZvciB0aGUgY3JlYXRpb24gb2Yg
-dGhlIGFycmF5Lg0KDQpJbiBtb3JlLCBjb3VsZCB3ZSByZXR1cm4gYSBoYXNodGFibGUgKGlu
-ZGV4ZWQgYnkgcmVnbmFtZSBzdHJpbmcpIGluc3RlYWQgDQpvZiBhbiBhcnJheT8NCg0KV2l0
-aCBib3RoIGNoYW5nZXMsIGEgcGx1Z2luIGNvdWxkIHNpbXBseSBwZXJmb3JtIGEgbG9va3Vw
-IGluIHRhYmxlIA0KcmV0dXJuZWQgYnkgcWVtdV9wbHVnaW5fZ2V0X3JlZ2lzdGVycyB3aXRo
-b3V0IGhhdmluZyB0byBrZWVwIGFueXRoaW5nIG9uIA0KaXRzIHNpZGUuDQoNCj4gKw0KPiAr
-aW50IHFlbXVfcGx1Z2luX3JlYWRfcmVnaXN0ZXIodW5zaWduZWQgaW50IHZjcHUsIHN0cnVj
-dCBxZW11X3BsdWdpbl9yZWdpc3RlciAqcmVnLCBHQnl0ZUFycmF5ICpidWYpDQo+ICt7DQo+
-ICsgICAgQ1BVU3RhdGUgKmNzID0gcWVtdV9nZXRfY3B1KHZjcHUpOw0KPiArICAgIC8qIGFz
-c2VydCB3aXRoIGRlYnVnZ2luZyBvbj8gKi8NCj4gKyAgICByZXR1cm4gZ2RiX3JlYWRfcmVn
-aXN0ZXIoY3MsIGJ1ZiwgcmVnLT5nZGJfcmVnX251bSk7DQo+ICt9DQo+ICsNCj4gK3N0YXRp
-YyB2b2lkIF9fYXR0cmlidXRlX18oKF9fY29uc3RydWN0b3JfXykpIHFlbXVfYXBpX2luaXQo
-dm9pZCkNCj4gK3sNCj4gKyAgICBxZW11X211dGV4X2luaXQoJnJlZ19oYW5kbGVfbG9jayk7
-DQo+ICsNCj4gK30NCj4gZGlmZiAtLWdpdCBhL3BsdWdpbnMvcWVtdS1wbHVnaW5zLnN5bWJv
-bHMgYi9wbHVnaW5zL3FlbXUtcGx1Z2lucy5zeW1ib2xzDQo+IGluZGV4IDcxZjZjOTA1NDlk
-Li42OTYzNTg1YzFlYSAxMDA2NDQNCj4gLS0tIGEvcGx1Z2lucy9xZW11LXBsdWdpbnMuc3lt
-Ym9scw0KPiArKysgYi9wbHVnaW5zL3FlbXUtcGx1Z2lucy5zeW1ib2xzDQo+IEBAIC0zLDYg
-KzMsNyBAQA0KPiAgICAgcWVtdV9wbHVnaW5fZW5kX2NvZGU7DQo+ICAgICBxZW11X3BsdWdp
-bl9lbnRyeV9jb2RlOw0KPiAgICAgcWVtdV9wbHVnaW5fZ2V0X2h3YWRkcjsNCj4gKyAgcWVt
-dV9wbHVnaW5fZ2V0X3JlZ2lzdGVyczsNCj4gICAgIHFlbXVfcGx1Z2luX2h3YWRkcl9kZXZp
-Y2VfbmFtZTsNCj4gICAgIHFlbXVfcGx1Z2luX2h3YWRkcl9pc19pbzsNCj4gICAgIHFlbXVf
-cGx1Z2luX2h3YWRkcl9waHlzX2FkZHI7DQo+IEBAIC0yMCw2ICsyMSw3IEBADQo+ICAgICBx
-ZW11X3BsdWdpbl9uX3ZjcHVzOw0KPiAgICAgcWVtdV9wbHVnaW5fb3V0czsNCj4gICAgIHFl
-bXVfcGx1Z2luX3BhdGhfdG9fYmluYXJ5Ow0KPiArICBxZW11X3BsdWdpbl9yZWFkX3JlZ2lz
-dGVyOw0KPiAgICAgcWVtdV9wbHVnaW5fcmVnaXN0ZXJfYXRleGl0X2NiOw0KPiAgICAgcWVt
-dV9wbHVnaW5fcmVnaXN0ZXJfZmx1c2hfY2I7DQo+ICAgICBxZW11X3BsdWdpbl9yZWdpc3Rl
-cl92Y3B1X2V4aXRfY2I7DQo=
+On Tue, Jan 09, 2024 at 03:54:07PM +0100, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > To quote wikipedia:
+> >
+> >   "Return-oriented programming (ROP) is a computer security exploit
+> >    technique that allows an attacker to execute code in the presence
+> >    of security defenses such as executable space protection and code
+> >    signing.
+> >
+> >    In this technique, an attacker gains control of the call stack to
+> >    hijack program control flow and then executes carefully chosen
+> >    machine instruction sequences that are already present in the
+> >    machine's memory, called "gadgets". Each gadget typically ends in
+> >    a return instruction and is located in a subroutine within the
+> >    existing program and/or shared library code. Chained together,
+> >    these gadgets allow an attacker to perform arbitrary operations
+> >    on a machine employing defenses that thwart simpler attacks."
+> >
+> > QEMU is by no means perfect with an ever growing set of CVEs from
+> > flawed hardware device emulation, which could potentially be
+> > exploited using ROP techniques.
+> >
+> > Since GCC 11 there has been a compiler option that can mitigate
+> > against this exploit technique:
+> >
+> >     -fzero-call-user-regs
+> >
+> > To understand it refer to these two resources:
+> >
+> >    https://www.jerkeby.se/newsletter/posts/rop-reduction-zero-call-user-regs/
+> >    https://gcc.gnu.org/pipermail/gcc-patches/2020-August/552262.html
+> >
+> > I used two programs to scan qemu-system-x86_64 for ROP gadgets:
+> >
+> >   https://github.com/0vercl0k/rp
+> >   https://github.com/JonathanSalwan/ROPgadget
+> >
+> > When asked to find 8 byte gadgets, the 'rp' tool reports:
+> >
+> >   A total of 440278 gadgets found.
+> >   You decided to keep only the unique ones, 156143 unique gadgets found.
+> >
+> > While the ROPgadget tool reports:
+> >
+> >   Unique gadgets found: 353122
+> >
+> > With the --ropchain argument, the latter attempts to use the found
+> > gadgets to product a chain that can execute arbitrary syscalls. With
+> > current QEMU it succeeds in this task, which is an undesirable
+> > situation.
+> >
+> > With QEMU modified to use -fzero-call-user-regs=used-gpr the 'rp' tool
+> > reports
+> >
+> >   A total of 528991 gadgets found.
+> >   You decided to keep only the unique ones, 121128 unique gadgets found.
+> >
+> > This is 22% fewer unique gadgets
+> >
+> > While the ROPgadget tool reports:
+> >
+> >   Unique gadgets found: 328605
+> >
+> > This is 7% fewer unique gadgets. Crucially though, despite this more
+> > modest reduction, the ROPgadget tool is no longer able to identify a
+> > chain of gadgets for executing arbitrary syscalls. It fails at the
+> > very first step, unable to find gadgets for populating registers for
+> > a future syscall. Having said that, more advanced tools do still
+> > manage to put together a viable ROP chain.
+> >
+> > Also this only takes into account QEMU code. QEMU links to many 3rd
+> > party shared libraries and ideally all of them would be compiled with
+> > this same hardening. That becomes a distro policy question though.
+> >
+> > In terms of performance impact, TCG was used as an evaluation test
+> > case. We're not interested in protecting TCG since it isn't designed
+> > to provide a security barrier, but it is performance sensitive code,
+> > so useful as a guide to how other areas of QEMU might be impacted.
+> > With the -fzero-call-user-regs=used-gpr argument present, using the
+> > real world test of booting a linux kernel and having init immediately
+> > poweroff, there is a ~1% slow down in performance under TCG. The QEMU
+> > binary size also grows by approximately 1%.
+> >
+> > By comparison, using the more aggressive -fzero-call-user-regs=all,
+> > results in a slowdown of over 25% in TCG, which is clearly not an
+> > acceptable impact, and a binary size increase of 5%.
+> >
+> > Considering that 'used-gpr' succesfully stopped ROPgadget assembling
+> > a chain, this more targetted protection is a justifiable hardening
+> > / performance tradeoff.
+> 
+> Have you also considered 'used-arg'?
+
+No, not in any detail.  I was mostly guided by the writeup here:
+
+  https://www.jerkeby.se/newsletter/posts/rop-reduction-zero-call-user-regs/
+
+which indicates Linux chose 'used-gpr'. I figured if Kees Cook
+decide that was a good tradeoff for Linux, we might as well follow
+it.
+
+'used-gpr' will target any general purpose registers
+that are used in a method.  'used-arg' will taget any registers
+used for parameters. IIUC, this makes 'used-gpr' be a slightly
+stronger protection as it covers register usage even for things
+which aren't args.
+
+> 
+> > Reviewed-by: Thomas Huth <thuth@redhat.com>
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> >  meson.build | 11 +++++++++++
+> >  1 file changed, 11 insertions(+)
+> >
+> > diff --git a/meson.build b/meson.build
+> > index 6c77d9687d..eaa20d241d 100644
+> > --- a/meson.build
+> > +++ b/meson.build
+> > @@ -433,6 +433,17 @@ if get_option('fuzzing')
+> >    endif
+> >  endif
+> >  
+> > +# Check further flags that make QEMU more robust against malicious parties
+> > +
+> > +hardening_flags = [
+> > +    # Zero out registers used during a function call
+> > +    # upon its return. This makes it harder to assemble
+> > +    # ROP gadgets into something usable
+> > +    '-fzero-call-used-regs=used-gpr',
+> > +]
+> > +
+> > +qemu_common_flags += cc.get_supported_arguments(hardening_flags)
+> > +
+> >  add_global_arguments(qemu_common_flags, native: false, language: all_languages)
+> >  add_global_link_arguments(qemu_ldflags, native: false, language: all_languages)
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
