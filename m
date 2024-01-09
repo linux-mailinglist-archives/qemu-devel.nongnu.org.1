@@ -2,89 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F5D828F4D
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 22:54:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0C3828F5B
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 23:00:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNK3D-0007fe-Ed; Tue, 09 Jan 2024 16:54:23 -0500
+	id 1rNK88-0000jQ-Bp; Tue, 09 Jan 2024 16:59:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNK3A-0007f2-Te
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:54:20 -0500
-Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNK39-0005xR-4h
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:54:20 -0500
-Received: by mail-ot1-x331.google.com with SMTP id
- 46e09a7af769-6dddf7ea893so877566a34.1
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 13:54:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704837257; x=1705442057; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vjdXptcDKX/t0PLPPJb/luCBab5AI24m2DuNpvTfHg0=;
- b=Furdw9/qvznISmhJRRHblIYbIg6QUMFLj/A3z8G7D3YAKsGNH+hmcRPe0649YXNW/9
- Hnyx3RPo1c+KNl54Sc6x+T6WA6M2nA8975hkNo1ZRx3Mxwbq4TjIiiw9zISfBGMx84aK
- HS3j1YXReXLMJFLvr1xGISQ4+3bRMlVZjeyBSawbcfPNRoYInn+e/WH0RJLC1Uhs3XbD
- PJge5SRq8zFeeXPtW6c5Stcyr771kQeS71rG1JmA9cQoN43Ch3PiwrUWe1GFY1Wtg7QL
- +mNQqma+kS/0frLxy/f29KUTkTEn9HwM9ybbRP0NnuXBUCeCKEq4TGyQ71++vRlrXsKJ
- xD4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704837257; x=1705442057;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vjdXptcDKX/t0PLPPJb/luCBab5AI24m2DuNpvTfHg0=;
- b=ffCinzg/dcPMs4bhMMew+s8QbtZjruY0ZeP68CeBe/RbDK8keliUb5wKR63mwcE3RL
- Ak88F6R8qy/7YHe0adG5nuTXJ/31Sq08NZG/dmeIjmWJaL5N3lQVBxEEHyP0/G3+WqU+
- wo0SKuleONtsGygEzyodOqsH6gg9ABq0Kk5783nCNsj04ylPMJt19v9fwiqn4iR9znNd
- HsfFWXoB+aj9Q3A1k9AvAwtTz+9wKEgjdD0adYuFGvgA4pdMVRHYZKg3BmgpF9AlAsfd
- 9CE/sJvpYaKLAfwodVWaH8rwFU42Fog9fjLFfx1cn1Y9mNfoRWsd5lKz2SbB63z2si2B
- I0iw==
-X-Gm-Message-State: AOJu0Yx6j2zplq9k0AfnRkNArwRtednPVqQLQJjpzu8/EQwj8+/oePIe
- YZhPYq0YpbB3DsQVxxGRXRiADG68p0KsvA==
-X-Google-Smtp-Source: AGHT+IHygXInG6G/gbxX+uxHbw2o0jTvN8I1wba29j9WierOwLXWYCpeICgRMOQrocobBw/hbENdtg==
-X-Received: by 2002:a05:6830:2685:b0:6dd:ef0b:4f7c with SMTP id
- l5-20020a056830268500b006ddef0b4f7cmr31544otu.34.1704837257627; 
- Tue, 09 Jan 2024 13:54:17 -0800 (PST)
-Received: from [192.168.44.231] ([172.58.109.85])
- by smtp.gmail.com with ESMTPSA id
- q20-20020a05683022d400b006dc8ce3b8b6sm505460otc.69.2024.01.09.13.54.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 13:54:17 -0800 (PST)
-Message-ID: <e48a1c7e-6a32-4905-ac5f-a5ebc0144d90@linaro.org>
-Date: Wed, 10 Jan 2024 08:54:06 +1100
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rNK85-0000jI-Ac
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:59:26 -0500
+Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rNK83-0007p3-Aq
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:59:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
+ t=1704837557; bh=sq7HBpU2k4EP/4RkOG6Bn59dhftr2Ynq3EaaJkEy8EM=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=r2ldAvb88vb1CTMfPG/RqQZzETvMCC0m2rtWjRosi+7I+6oi2hYJexSpAbJEvnjQV
+ BXkl4nidYkebo/ZrP8VsA+Z+O1qvRL1vz5JdDGJ8fvGbAxE9Fs8MTQkdJeZMZOpUYy
+ 0dG6EI7zkuptlcHQQLhT8CA0Vs5hji/Am9jFF3EM=
+Date: Tue, 9 Jan 2024 22:59:17 +0100
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
+Subject: Re: Re: [PATCH v2 0/2] linux-user: two fixes to coredump generation
+Message-ID: <f7ece567-1d04-4ab6-b41f-9ca32d0b4f2f@t-8ch.de>
+References: <20240107-qemu-user-dumpable-v2-0-54e3bcfc00c9@t-8ch.de>
+ <26f604c1-f3e6-4ae8-a502-a7b92c1c1d30@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/9] target/hppa: Fix PDC address translation on PA2.0
- with PSW.W=0
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, deller@kernel.org, qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, Bruno Haible <bruno@clisp.org>,
- "Nelson H . F . Beebe" <beebe@math.utah.edu>
-References: <20240107132237.50553-1-deller@kernel.org>
- <20240107132237.50553-5-deller@kernel.org>
- <48cc72dd-bf52-4cd2-a5e1-d7d1a7e08dd1@linaro.org>
- <9c8e5d0a-99e7-4332-bf69-a7e56a62c2e3@gmx.de>
- <f8056d9d-803a-47b9-9e2e-007d164829b0@linaro.org>
- <060dc700-e8f9-4bcc-bfda-0d09b81dc081@gmx.de>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <060dc700-e8f9-4bcc-bfda-0d09b81dc081@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x331.google.com
+In-Reply-To: <26f604c1-f3e6-4ae8-a502-a7b92c1c1d30@linaro.org>
+Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
+ envelope-from=thomas@t-8ch.de; helo=todd.t-8ch.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,22 +58,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/10/24 08:06, Helge Deller wrote:
->> What evidence?  So far, all I can see is for your seabios button, which doesn't run on 
->> physical hardware.
+On 2024-01-10 08:33:11+1100, Richard Henderson wrote:
+> On 1/8/24 01:01, Thomas Weißschuh wrote:
+> > Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+> > ---
+> > Changes in v2:
+> > - Rebase on 8.2 master
+> > - Resend after closed tree and holidays
+> > - Link to v1: https://lore.kernel.org/r/20231115-qemu-user-dumpable-v1-0-edbe7f0fbb02@t-8ch.de
+> > 
+> > ---
+> > Thomas Weißschuh (2):
+> >        linux-user/elfload: test return value of getrlimit
+> >        linux-user/elfload: check PR_GET_DUMPABLE before creating coredump
+> > 
+> >   linux-user/elfload.c | 8 ++++++--
+> >   1 file changed, 6 insertions(+), 2 deletions(-)
+> > ---
+> > base-commit: 0c1eccd368af8805ec0fb11e6cf25d0684d37328
+> > change-id: 20231115-qemu-user-dumpable-d499c0396103
+> > 
+> > Best regards,
 > 
-> You are wrong on this.
-> My Seabios just mimics the real hardware. And the hardware has such a button
-> which is reported back by the PDC firmware.
-> Here is what the Linux kernel reports on *physical* hardware:
-> 64-bit kernel -> powersw: Soft power switch at 0xfffffff0f0400804 enabled.
-> 32-bit kernel -> powersw: Soft power switch at 0xf0400804 enabled
-> Just look at the old dmesg from another user (with Linux kernel 2.6.16):
-> http://ftp.parisc-linux.org/dmesg/dmesg_C3700.txt
-> (search for "power" in that log).
+> Both patches look good for correctness, but both have style issues: need
+> braces on those if statements.
+> 
+> With that fixed,
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Ok, fair enough.  I just wish HP had been more accurate in their diagrams.  :-)
+Thanks,
 
-
-r~
+I added the braces for the next revision, which I'll send after waiting
+some more feedback.
 
