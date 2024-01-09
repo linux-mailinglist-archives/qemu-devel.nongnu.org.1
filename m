@@ -2,47 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C347B828171
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 09:32:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77291828160
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 09:31:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN7Vm-000411-AS; Tue, 09 Jan 2024 03:31:03 -0500
+	id 1rN7Vp-00048z-1M; Tue, 09 Jan 2024 03:31:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
- id 1rN7Vh-0003uR-BZ; Tue, 09 Jan 2024 03:30:57 -0500
+ id 1rN7Vi-0003uw-LZ; Tue, 09 Jan 2024 03:30:59 -0500
 Received: from zoidberg.rfc1149.net ([195.154.227.159])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
- id 1rN7Vf-0004mQ-J1; Tue, 09 Jan 2024 03:30:57 -0500
+ id 1rN7Vg-0004mj-Oo; Tue, 09 Jan 2024 03:30:58 -0500
 Received: from 127.0.0.1 (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (Client did not present a certificate)
- by zoidberg.rfc1149.net (Postfix) with ESMTPSA id 0444380024;
+ by zoidberg.rfc1149.net (Postfix) with ESMTPSA id 2921180026;
  Tue,  9 Jan 2024 09:30:54 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rfc1149.net; s=smtp;
- t=1704789054; bh=HNiUK49oZHkgFUxKn3Q0TQPjJMoqu+JCF9gCepiQyYQ=;
- h=From:To:Cc:Subject:Date;
- b=wNYvqZ7xdX21QrkzehXQ8Npy4ssmcdcoyxuArji80GSDmBAymygbQN7OkqZoX59/S
- PsUCptJtgjKSKDIqycJ+N/PBLPRDcYgjXQ7F+rFLYLOQZNjOEbe/4QYofjrByfpooO
- fe9fHQkISDLNHm4CeOHypez3zeXQg7uwxDmp7YQPI6sugnenq2FoniAbiD1zCgcYhz
- i9yraTq4hoTkbYj8m7nhCh9Wt8vc+PZakHqjtBNpOCfYplul25eyWaoQ0+qirg+ZJ1
- FRPx2HtgDapAcyF9AIcd8aVui/Z0p8yTFVdttPqPtSQ9t9SNd2jCtKIbop2lsjyWXy
- zclIh94HkI2LA==
+ t=1704789054; bh=EHiQGjec6QFK7MExqkhkOlwjNKmbWP2uDH2Ev+/wKds=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=dbFGZSvI13Ph4XaS4ZyZrxrm0j6VA8RZad82EnjLtKf+TfOqXHmBe2pXV6hlhOvuM
+ hDZjlUNJ8GkpYKc8FkVam1woy/LB/Zt3qmB3MijhV0m5nOmjYjw1hnAa7y3wt0RfCi
+ ol3lxrdELZzpvqv2oqA1FwFyx4BJH+daN6jZ+y1nWgqwUiFj2OUfZOAkiS1vs+tv9+
+ bF29120rLyMFIoZkZ+/bJwkU5d7ylKNIgV5CNp1941vKEJIl9UBG0CxhNCPV7MIoXS
+ gIqBaV8w5tBdWj5zgtF01adtNzz+5e1VNhariupwBIYiiNVrB+vghXKKTtcce9/ioz
+ YfIIlYvBnhk8g==
 From: Samuel Tardieu <sam@rfc1149.net>
 To: qemu-devel@nongnu.org
 Cc: Magnus Damm <magnus.damm@gmail.com>, Hanna Reitz <hreitz@redhat.com>,
  devel@lists.libvirt.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
  Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Samuel Tardieu <sam@rfc1149.net>
-Subject: [PATCH v2 0/2] Deprecate the shix machine and the TC58128 flash device
-Date: Tue,  9 Jan 2024 09:30:51 +0100
-Message-ID: <20240109083053.2581588-1-sam@rfc1149.net>
+ Samuel Tardieu <sam@rfc1149.net>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v2 1/2] target/sh4: Deprecate the shix machine
+Date: Tue,  9 Jan 2024 09:30:52 +0100
+Message-ID: <20240109083053.2581588-2-sam@rfc1149.net>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20240109083053.2581588-1-sam@rfc1149.net>
+References: <20240109083053.2581588-1-sam@rfc1149.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=195.154.227.159; envelope-from=sam@rfc1149.net;
  helo=zoidberg.rfc1149.net
@@ -67,28 +70,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The shix machine was a research project started around 2003 at
-Télécom Paris. Preliminary support in QEMU was added in 2005
-back when the QEMU architecture was less structured than it is
-now. Unfortunately, the support for the shix machine and its
-peripherals, such as the TC58128 16MiB flash device, has never
-been maintained as the research project used the real machine.
+The shix machine has been designed and used at Télécom Paris from 2003
+to 2010. It had been added to QEMU in 2005 and has not been maintained
+since. Since nobody is using the physical board anymore nor interested
+in maintaining the QEMU port, it is time to deprecate it.
 
-This project stopped around 2010 and to the best of my knowledge
-and after consulting with the original author Alexis Polti,
-I propose to deprecate it in QEMU as well as the TC58128
-flash device which does not implement the QOM model and still
-contains debug fprintf statements.
-
-Samuel Tardieu (2):
-  target/sh4: Deprecate the shix machine
-  hw/block: Deprecate the TC58128 block device
-
+Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
+---
  docs/about/deprecated.rst | 5 +++++
- hw/block/tc58128.c        | 1 +
  hw/sh4/shix.c             | 1 +
- 3 files changed, 7 insertions(+)
+ 2 files changed, 6 insertions(+)
 
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 2e15040246..e6a12c9077 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -269,6 +269,11 @@ Nios II ``10m50-ghrd`` and ``nios2-generic-nommu`` machines (since 8.2)
+ 
+ The Nios II architecture is orphan.
+ 
++``shix`` (since 9.0)
++''''''''''''''''''''
++
++The machine is no longer in existence and has been long unmaintained
++in QEMU.
+ 
+ Backend options
+ ---------------
+diff --git a/hw/sh4/shix.c b/hw/sh4/shix.c
+index aa812512f0..eb3150b5bc 100644
+--- a/hw/sh4/shix.c
++++ b/hw/sh4/shix.c
+@@ -80,6 +80,7 @@ static void shix_machine_init(MachineClass *mc)
+     mc->init = shix_init;
+     mc->is_default = true;
+     mc->default_cpu_type = TYPE_SH7750R_CPU;
++    mc->deprecation_reason = "old and unmaintained";
+ }
+ 
+ DEFINE_MACHINE("shix", shix_machine_init)
 -- 
 2.42.0
 
