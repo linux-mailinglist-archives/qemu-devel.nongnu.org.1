@@ -2,101 +2,155 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424D2828F73
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 23:10:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D25828F80
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 23:13:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNKIG-0007pm-9j; Tue, 09 Jan 2024 17:09:56 -0500
+	id 1rNKLl-0001IR-BA; Tue, 09 Jan 2024 17:13:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rNKIE-0007nW-Ht; Tue, 09 Jan 2024 17:09:54 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rNKIC-0004Y2-G2; Tue, 09 Jan 2024 17:09:54 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a28a6cef709so369623066b.1; 
- Tue, 09 Jan 2024 14:09:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704838188; x=1705442988; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=EJtU3cH8/L9ElLV5ygkwhrU/E1fgow2ytaeAREi8TVI=;
- b=b+jQ3THcF1WnJ9HaD857d23IovvOLOmf4Tfykthf8QkxfEtuLk277suWiJT/WaCUp0
- IohtFk37RYcfZKhgiYFdz524DMVCZr66g3Ej1y46JLfgIFM/rV5NlaVQVuLfBi2i4Wvj
- HkWUR+m/6r8bJgpMqCFZKf3DIiczHcD2siZ0qDFgemTKV8mumDrpMI8Mn6eD13tLqnE+
- NrfjDFhr83Kls1WJ78AwZH8zWvg+kqtIK67vSpNQtXs8R0NKTxxEnpfQAJXq3KYHmsGx
- 1w/+4T+mAZSXoqTawO1+Ac1Yb5EZWisStErmCZa9CgTMYW5DiPwAYBXK4sm4qrQx1DLF
- 24/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704838188; x=1705442988;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=EJtU3cH8/L9ElLV5ygkwhrU/E1fgow2ytaeAREi8TVI=;
- b=q9fec6Y4tnr8S5kmMX4BuV5fpwtONU45NZYwfMG7q9nB28LkUiVCgCElCU6/w9v+vr
- gSfAUvubw9zDgjBIIpNfbIUXXI5Tc9g5Ogv5aFQWIOQ1pzXuKxreT/vLCCNd5oaFbKtL
- 1Sb9vOYBLRQvf4czQ0be12gksjGF7mRRVyCbjm6/bEF/G37K8owcHOOFmaaZ24aH3kiE
- a5pSSJFvfJyxFrna8dKAarCg2hAhKtZ39Nj8/A5gQQJ4MrZv2NG3+qhY/jYFD0NQmlP8
- 9bYrPX0rzY4vkudUxnoPSudmYMhPCPPs/bhKrkO4D4i+wHx5CVzVF/Asygm8kzRudXa0
- jm6g==
-X-Gm-Message-State: AOJu0YyP86BFN+H98jqZluRLFzxViRTK1mlg6Y4o6agSyMI9Wpi5VSzu
- pFizVnYrGiqyIDo8gmubkNVwHtdzlxM=
-X-Google-Smtp-Source: AGHT+IEU7D1GyoaBWxFz6ZIso+dTOvXxj9AcL6b5wmb54NgtRQOhPsC2XQfQpdWERyz8BFxNgR/uyQ==
-X-Received: by 2002:a17:906:b4a:b0:a23:6075:52a2 with SMTP id
- v10-20020a1709060b4a00b00a23607552a2mr83125ejg.6.1704838187778; 
- Tue, 09 Jan 2024 14:09:47 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-077-183-075-077.77.183.pool.telefonica.de.
- [77.183.75.77]) by smtp.gmail.com with ESMTPSA id
- v12-20020a1709061dcc00b00a2af672cdd8sm1448048ejh.161.2024.01.09.14.09.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 14:09:47 -0800 (PST)
-Date: Tue, 09 Jan 2024 22:09:43 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-CC: Eduardo Habkost <eduardo@habkost.net>,
- Artyom Tarasenko <atar4qemu@gmail.com>, 
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>,
- =?ISO-8859-1?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>,
- John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Peter Xu <peterx@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1rNKLj-0001IH-KG
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 17:13:31 -0500
+Received: from mail-dm6nam10on20606.outbound.protection.outlook.com
+ ([2a01:111:f400:7e88::606]
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1rNKLh-00061H-Mf
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 17:13:31 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QQVDOOMfaELg2GryXZTEop8+P+vApWjK8yLpG3OxTqag/793fioALzVXS6enkPRywRwX+H4IJcmoWb64RkI2BLEUcXi+jelv9pQgSvOsQBy8tNfmx1PU3Jbxz6kwCoeLbst5kWbY+nISStW8xFPywluot7K8dEtgFabaD6qzK1NfIsx0Fz5g0BzC02ERN0/cYOp+Waq7QEisWPorNHApPEfuaqLdDT9uTbUxH07VXSOVCSlsgWjAkw2g4Hp6Y0p37+ojK2daxq4pNUYTFsEydRhpNyQZtOkChMgQbTbYX4+R8HXyc3chz1AjTiDLCWewfu8FNdJYLmc5Yqpxbvu/Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=65qihb84fqHHhm46bwIFk0YD1fMk2hM4l52W6FRIEAg=;
+ b=falVZGBbD8KKZC3wtov0O2STroVwOWwaOS/XHvsFBaq8LaPN7xHx7TVCZFQx/Lggef/YT9MP5XHsvxk53kg3/J+I4lV7C7z5DzihphJ3miWgTDr9SsJfgfLykmBSdcLpnvCqLnnuciRnZAUnl00qEGYVLNh0LqUiRu6/Q0RF2Mt7FOEq2tlCN5Q5G6MAJ9140T7wEXkI84EHtFAzmovttl1IHy1We8J7wsC/YEHzH+xEWL1pBaKNNNQKRPiSkjZbGoouExAquh9IXRjBiBCNh27TEiKzlilODVCUZJWq1zhNDDekzjPxUMdUuRLRadsCZByPOW/x6w9az53ZXT1SKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
+ dkim=pass header.d=memverge.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=65qihb84fqHHhm46bwIFk0YD1fMk2hM4l52W6FRIEAg=;
+ b=GJpN5UeKZ1CqksWnecuOJUgzgwjs0hqsK/dqFBE2hycOnZ1cXikz0oZNF5OVLBt0iGJn050tRGJ9PsKSqyhHU/Hbi7zsFniJtxx351UsIqlGQD2w1ZxVDsFYAMrWcL1RanNrtxs9i1rPmVGVh8rDxsLcKUKjmdqU7JNKhxcubv0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=memverge.com;
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
+ by MW4PR17MB4668.namprd17.prod.outlook.com (2603:10b6:303:105::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23; Tue, 9 Jan
+ 2024 22:13:26 +0000
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::7a04:dc86:2799:2f15]) by SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::7a04:dc86:2799:2f15%5]) with mapi id 15.20.7159.020; Tue, 9 Jan 2024
+ 22:13:26 +0000
+Date: Tue, 9 Jan 2024 17:13:21 -0500
+From: Gregory Price <gregory.price@memverge.com>
+To: Hao Xiang <hao.xiang@bytedance.com>
+Cc: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Sergio Lopez <slp@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>,
- =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_00/11=5D_hw/isa/vt82c686=3A_Implemen?=
- =?US-ASCII?Q?t_relocation_and_toggling_of_SuperI/O_functions?=
-In-Reply-To: <077a06e2-476a-4efb-bd92-5cf30e29ceb5@ilande.co.uk>
-References: <20240106210531.140542-1-shentey@gmail.com>
- <8e46217c-f28b-43b0-bea3-583d4b3cf42b@ilande.co.uk>
- <5393CA46-267C-444A-AE8E-BBD82DCDCC9A@gmail.com>
- <077a06e2-476a-4efb-bd92-5cf30e29ceb5@ilande.co.uk>
-Message-ID: <5A46E62D-ED9A-47A4-9EA2-11A522923DF7@gmail.com>
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Gregory Price <gourry.memverge@gmail.com>,
+ Fan Ni <fan.ni@samsung.com>, Ira Weiny <ira.weiny@intel.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
+ "Ho-Ren (Jack) Chuang" <horenc@vt.edu>, linux-cxl@vger.kernel.org
+Subject: Re: [External] Re: [QEMU-devel][RFC PATCH 1/1] backends/hostmem:
+ qapi/qom: Add an ObjectOption for memory-backend-* called HostMemType and
+ its arg 'cxlram'
+Message-ID: <ZZ3FAegN/ezu9Ghy@memverge.com>
+References: <20240101075315.43167-2-horenchuang@bytedance.com>
+ <ZZXX95yvk/WTIBT/@memverge.com>
+ <CAAYibXjZ0HSCqMrzXGv62cMLncS_81R3e1uNV5Fu4CPm0zAtYw@mail.gmail.com>
+ <ZZwtmiucNXxmrZ7S@memverge.com>
+ <CAAYibXhfUu8dMwvBmWz4P6N9-yLao0QwAFozk4rS_0GPsEZd7Q@mail.gmail.com>
+ <CAAYibXgf6i5+aqopCrVu5ZveDJ9WP2M2AJaUUaj5qFXFHQQxmQ@mail.gmail.com>
+ <ZZydwBTS4NeSizzb@memverge.com>
+ <CAAYibXhY5p6VN7yAMpmfAgHO+gsf51dvNw68y__RYV+43CVVLQ@mail.gmail.com>
+ <ZZ2lNoTQ8hDHADTT@memverge.com>
+ <CAAYibXjcVu-13h9jHpt2fZ3wmjz-_Dyj+WfUh0AEpid87GLriQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAYibXjcVu-13h9jHpt2fZ3wmjz-_Dyj+WfUh0AEpid87GLriQ@mail.gmail.com>
+X-ClientProxiedBy: BY5PR13CA0001.namprd13.prod.outlook.com
+ (2603:10b6:a03:180::14) To SJ0PR17MB5512.namprd17.prod.outlook.com
+ (2603:10b6:a03:394::19)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|MW4PR17MB4668:EE_
+X-MS-Office365-Filtering-Correlation-Id: 49649ec2-d783-4f23-49ca-08dc11603365
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 5hedSENaD7QctPwrw84AcZnlSYUL1PoSNX7y9fPN2RpUYVkfBcbaLu78iEHaoQx4a/Lw5blMQ7nvKUky2nD2BFmt/iCihWSdckH2vCU6NHxCi8gMHYgP0YxEYtbGpRBpVpJDJm4qbfUA0QXAUKrF1AhVA1F7cTbNGBOhaAIVlrr8qK9sMrRtJbKoC3k9BMBNPNw8CJGSo6+Gh/qDobllDat1JK6OkJ6jI88bxpG/arZinFfnGlWNefs53s6CExiGhPTcMI6MDBmQrqVyuDaNeBblKsBvHWalr2MirpuOk0/tOTZ0GCTco9r7WFrCjkUhaoXrAy+B1fHcDi85fyL1KJA6zbY73etCazlkYqa6bzcwRPuvg576OR0PENEDlby1XXzvXe4qTa+p4IEK+5NdgtDRX2NVWd5iteDeg+cqeb2SG5nNoBN1C8ZqnQwHpWGoj3a+n2oCBKV1IgG/XeiOzdqOmyFmqkyqwf4+IfR1DbmdZ3RDOzu0zFmnmK3VlNB4MyLPQdE/xff6xaFAdJ/5BvGyCYls6IFyb9emYpMCcwqv37cq/7OlAHT9Cif4jK15
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(136003)(39850400004)(376002)(396003)(346002)(230922051799003)(1800799012)(186009)(451199024)(64100799003)(478600001)(5660300002)(4326008)(7416002)(83380400001)(6506007)(2616005)(53546011)(66946007)(6512007)(6666004)(6486002)(6916009)(66556008)(8676002)(66476007)(26005)(8936002)(44832011)(2906002)(36756003)(54906003)(316002)(38100700002)(41300700001)(86362001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MXZBT2EwWFZnbGY3V09WZURjdDNueGJMRi9uYWxMb0tNdXQrZEdib1JnR0hz?=
+ =?utf-8?B?YitqRWdlbGpFNThjZmFDRVZCRDVLTGsxb0NtUWFJckhJbTRScWx1Kzc1ODli?=
+ =?utf-8?B?SmhTWXZpbEJNMC8zeGJuUFJKL0FGMko2Z2RnYWx1bXdJcHJTaWhIWllRWW52?=
+ =?utf-8?B?dmp0M29YSkxnVVBWeHRHSmcramxFTDVBMU9xTE5LNTU4OUI0aGhFbDhPVDN0?=
+ =?utf-8?B?QUdPcHllbmJqVjhNMnl2NGhhcmlmVnMzTHplQmxmTWtjVk0rR1o0cVBXZDhM?=
+ =?utf-8?B?Y0ZwL1hJcjdMTTZFeGxBMmlydDdLTFY2bkw4ZmdsVnVvaVFqUVdPOEQ2YnE1?=
+ =?utf-8?B?aGhZQUVsNjJFaWpmVVJERTMvWDNqTURIZjkrMXZOTFlNZEhJeHZmWGVRUDdn?=
+ =?utf-8?B?K2JTNVcxMEZXQ0JFNnpMNWN6emNNYi9UNzhTN0lPNXJXKzlBbjI0MUZPc1dz?=
+ =?utf-8?B?MDVTTlV6MWtSRmRMaVFxM1B5TDBURUZiR3lpRmV1ckQ1WFFvN1RRSGFLb1pu?=
+ =?utf-8?B?YnVvcTFXVXNHdnRvZU9jT1B3TEE1ajIyNWRFSW1ZK1dMbnIxRHRzeGpXbS83?=
+ =?utf-8?B?dnRtT3Z0dTFWVGdFVFJUdGV6TGVyQTQwajl0QTNPZzBnSEROUHRFTmdzd3I1?=
+ =?utf-8?B?OWgwcHZKMlF0dEJnQWducXRSUTM4ZG5ES1pGR3ZLQVBHdXJxNUNvdk5vNE42?=
+ =?utf-8?B?Q3VxWDRWaEhiQkpoTU9PTHpKS1ExVnduUVloYWxPMzVCUmxsNE5PTGlqQndF?=
+ =?utf-8?B?LzdVQ2E2VWhTUEwxYTRyYjh5bmtkSE4xb3pzUE9yZUZOM2JaenVhcldhKzdh?=
+ =?utf-8?B?ekp5OHlJcUdYN3FDUFU2aVI4RDkyazQwOGoxb3B3RWxVcHdlT2pEQ0ZrQjU0?=
+ =?utf-8?B?ZndaZ1E3bW9mOTFDT1A0RUN1eHYzZ0xWZHhyVzh6bUMvZ3dPT3dlUHYwWUZC?=
+ =?utf-8?B?bUpTQWFyd3BsZ1EwYyt1OVB6SENXRFhKZndOM0lhalUvZTJpRnEwdzdXVFRk?=
+ =?utf-8?B?eWJyTlVYRkxmeDJDQnhqVTg1MFNrcmpHeStYWjkyNzcvOEhpM1ozUmVuNUZP?=
+ =?utf-8?B?UHpHUDFqZFJpQS9RY2xjeEQxTlA4ZHI4R2pGWCtzQUNadGdpSU5qakpTbWFP?=
+ =?utf-8?B?WmJFM1FkRGh0TTlyWEZyZ3dSMU03YnEwYTlvRWtkakZqR1E3NUozdHR4YzJD?=
+ =?utf-8?B?UUc0bmthcDdoM01na09KbFExWkRQcHl2clF1RjRxTjlrWGdkWG0xRnlLR3hX?=
+ =?utf-8?B?MUZJbGVMMlo5cGdlYXVpdmQ4YVJGZzNNcDhmWWtucTJKZ1U4aXZOMTlscUVs?=
+ =?utf-8?B?c1VDOXFsY293NGpJdklpU2wrRTZ5YWVBNkJMSEdJbWhLZy9lUVhmWVJJU1E4?=
+ =?utf-8?B?cnYzb0JES0FpS3dFcTE2djd6c282QWRJcThjWlduOHR4RUNUV2ZoUzVvdWVN?=
+ =?utf-8?B?UHVyUjFsNzRvbUxYVDZqMENtRHRzaGQvUEpaS1k2Rk9HelVrcGM4NHpTMVJw?=
+ =?utf-8?B?eXpGRGt1N0NwcDVwUEZjWjdmVGdkOWM5eFhOcCtKTGxwNWc2N0tOOEc1SjRl?=
+ =?utf-8?B?LzZ3L2ltRXhwZDJsVUQ3d2dBSGp1Nm1ub2VMb1ExZlVRaDRodWFubUF6RmJp?=
+ =?utf-8?B?bWxqa1A1TXJvVTR6dHVEZkZJbWYvTlBqZEllbXhnM3RueUthRGlJcFJET3BW?=
+ =?utf-8?B?TUtBR1Y4Y2JIWVlMek5SMmVXQkZ0eUxkWjJYZTlNcTRsVVFzOWlQcWc3dVAz?=
+ =?utf-8?B?YkpWMU52VXhxaWVqSE1tZWdDckFxVDJyd0xzQzhERGJMRWJyS1AzOGpwdjhX?=
+ =?utf-8?B?YURWbm5aMzRmckwzU3NLdWtYZEg3NkxkYUNlUTZOTXA0dUUvazV0R0VmLzFx?=
+ =?utf-8?B?TUNjb3FlaXBkQlFhRjJlWVd1MEs4akJkUEl6YVJMZXFvOHdMdURWdFRGUFFV?=
+ =?utf-8?B?Q3hNVW9lZTdmZEpHOHJvVjl2NXVrdFZlR1Y3dHF6OG9sTWVHcnVkNmh0ZFFX?=
+ =?utf-8?B?WER5NnNNUm9wM3BqMXNvejF1UHhHZGJpMHEzdVJXY0VNNXU0UXQvVHpXeXpi?=
+ =?utf-8?B?Y1o2cGR5ZzBIbjBWaU5VdElsOEp3b2kxM3k1YmMvc2dzMy9LbitpSktpMmJE?=
+ =?utf-8?B?QzZyeVZwdUFUc0h2TElCc0xJdFlIQ1hiSHZ6enFTZlhsdWJ1UVIxUVFqdjZY?=
+ =?utf-8?B?c2c9PQ==?=
+X-OriginatorOrg: memverge.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 49649ec2-d783-4f23-49ca-08dc11603365
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2024 22:13:25.8828 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rsJ/ov4EaG9txgAIAHRzPuz+rWkxJXtBx2GnMfwMwuH6VvK5C5PsuN0QJL56G9BzBTXKX3TlOxh33ZOa7TxN3RmBEMzadCNKrj+ts27Myuw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR17MB4668
+Received-SPF: pass client-ip=2a01:111:f400:7e88::606;
+ envelope-from=gregory.price@memverge.com;
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,172 +166,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Jan 09, 2024 at 01:27:28PM -0800, Hao Xiang wrote:
+> On Tue, Jan 9, 2024 at 11:58 AM Gregory Price
+> <gregory.price@memverge.com> wrote:
+> >
+> > If you drop this line:
+> >
+> > -numa node,memdev=vmem0,nodeid=1
+> 
+> We tried this as well and it works after going through the cxlcli
+> process and created the devdax device. The problem is that without the
+> "nodeid=1" configuration, we cannot connect with the explicit per numa
+> node latency/bandwidth configuration "-numa hmat-lb". I glanced at the
+> code in hw/numa.c, parse_numa_hmat_lb() looks like the one passing the
+> lb information to VM's hmat.
+>
+
+Yeah, this is what Jonathan was saying - right now there isn't a good
+way (in QEMU) to pass the hmat/cdat stuff down through the device.
+Needs to be plumbed out.
+
+In the meantime: You should just straight up drop the cxl device from
+your QEMU config.  It doesn't actually get you anything.
+
+> From what I understand so far, the guest kernel will dynamically
+> create a numa node after a cxl devdax device is created. That means we
+> don't know the numa node until after VM boot. 2. QEMU can only
+> statically parse the lb information to the VM at boot time. How do we
+> connect these two things?
+
+during boot, the kernel discovers all the memory regions exposed to
+bios. In this qemu configuration you have defined:
+
+region 0: CPU + DRAM node
+region 1: DRAM only node
+region 2: CXL Fixed Memory Window (the last line of the cxl stuff)
+
+The kernel reads this information on boot and reserves 1 numa node for
+each of these regions.
+
+The kernel then automatically brings up regions 0 and 1 in nodes 0 and 1
+respectively.
+
+Node2 sits dormant until you go through the cxl-cli startup sequence.
 
 
-Am 8=2E Januar 2024 22:12:12 UTC schrieb Mark Cave-Ayland <mark=2Ecave-ayl=
-and@ilande=2Eco=2Euk>:
->On 08/01/2024 20:07, Bernhard Beschow wrote:
->
->> Am 7=2E Januar 2024 14:13:44 UTC schrieb Mark Cave-Ayland <mark=2Ecave-=
-ayland@ilande=2Eco=2Euk>:
->>> On 06/01/2024 21:05, Bernhard Beschow wrote:
->>>=20
->>>> This series implements relocation of the SuperI/O functions of the VI=
-A south
->>>> bridges which resolves some FIXME's=2E It is part of my via-apollo-pr=
-o-133t
->>>> branch [1] which is an extension of bringing the VIA south bridges to=
- the PC
->>>> machine [2]=2E This branch is able to run some real-world X86 BIOSes =
-in the hope
->>>> that it allows us to form a better understanding of the real vt82c686=
-b devices=2E
->>>> Implementing relocation and toggling of the SuperI/O functions is one=
- step to
->>>> make these BIOSes run without error messages, so here we go=2E
->>>>=20
->>>> The series is structured as follows: Patches 1-3 prepare the TYPE_ISA=
-_FDC,
->>>> TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL to relocate and toggle (enable/=
-disable)
->>>> themselves without breaking encapsulation of their respective device =
-states=2E
->>>> This is achieved by moving the MemoryRegions and PortioLists from the=
- device
->>>> states into the encapsulating ISA devices since they will be relocate=
-d and
->>>> toggled=2E
->>>>=20
->>>> Inspired by the memory API patches 4-6 add two convenience functions =
-to the
->>>> portio_list API to toggle and relocate portio lists=2E Patch 5 is a p=
-reparation
->>>> for that which removes some redundancies which otherwise had to be de=
-alt with
->>>> during relocation=2E
->>>>=20
->>>> Patches 7-9 implement toggling and relocation for types TYPE_ISA_FDC,
->>>> TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL=2E Patch 10 prepares the pegaso=
-s2 machine
->>>> which would end up with all SuperI/O functions disabled if no -bios a=
-rgument is
->>>> given=2E Patch 11 finally implements the main feature which now relie=
-s on
->>>> firmware to configure the SuperI/O functions accordingly (except for =
-pegasos2)=2E
->>>>=20
->>>> v4:
->>>> * Drop incomplete SuperI/O vmstate handling (Zoltan)
->>>>=20
->>>> v3:
->>>> * Rework various commit messages (Zoltan)
->>>> * Drop patch "hw/char/serial: Free struct SerialState from MemoryRegi=
-on"
->>>>     (Zoltan)
->>>> * Generalize wording in migration=2Erst to include portio_list API (Z=
-oltan)
->>>>=20
->>>> v2:
->>>> * Improve commit messages (Zoltan)
->>>> * Split pegasos2 from vt82c686 patch (Zoltan)
->>>> * Avoid poking into device internals (Zoltan)
->>>>=20
->>>> Testing done:
->>>> * `make check`
->>>> * `make check-avocado`
->>>> * Run MorphOS on pegasos2 with and without pegasos2=2Erom
->>>> * Run Linux on amigaone
->>>> * Run real-world BIOSes on via-apollo-pro-133t branch
->>>> * Start rescue-yl on fuloong2e
->>>>=20
->>>> [1] https://github=2Ecom/shentok/qemu/tree/via-apollo-pro-133t
->>>> [2] https://github=2Ecom/shentok/qemu/tree/pc-via
->>>>=20
->>>> Bernhard Beschow (11):
->>>>     hw/block/fdc-isa: Move portio_list from FDCtrl to FDCtrlISABus
->>>>     hw/block/fdc-sysbus: Move iomem from FDCtrl to FDCtrlSysBus
->>>>     hw/char/parallel: Move portio_list from ParallelState to
->>>>       ISAParallelState
->>>>     exec/ioport: Resolve redundant =2Ebase attribute in struct
->>>>       MemoryRegionPortio
->>>>     exec/ioport: Add portio_list_set_address()
->>>>     exec/ioport: Add portio_list_set_enabled()
->>>>     hw/block/fdc-isa: Implement relocation and enabling/disabling for
->>>>       TYPE_ISA_FDC
->>>>     hw/char/serial-isa: Implement relocation and enabling/disabling f=
-or
->>>>       TYPE_ISA_SERIAL
->>>>     hw/char/parallel-isa: Implement relocation and enabling/disabling=
- for
->>>>       TYPE_ISA_PARALLEL
->>>>     hw/ppc/pegasos2: Let pegasos2 machine configure SuperI/O function=
-s
->>>>     hw/isa/vt82c686: Implement relocation and toggling of SuperI/O
->>>>       functions
->>>>=20
->>>>    docs/devel/migration=2Erst       |  6 ++--
->>>>    hw/block/fdc-internal=2Eh        |  4 ---
->>>>    include/exec/ioport=2Eh          |  4 ++-
->>>>    include/hw/block/fdc=2Eh         |  3 ++
->>>>    include/hw/char/parallel-isa=2Eh |  5 +++
->>>>    include/hw/char/parallel=2Eh     |  2 --
->>>>    include/hw/char/serial=2Eh       |  2 ++
->>>>    hw/block/fdc-isa=2Ec             | 18 +++++++++-
->>>>    hw/block/fdc-sysbus=2Ec          |  6 ++--
->>>>    hw/char/parallel-isa=2Ec         | 14 ++++++++
->>>>    hw/char/parallel=2Ec             |  2 +-
->>>>    hw/char/serial-isa=2Ec           | 14 ++++++++
->>>>    hw/isa/vt82c686=2Ec              | 66 ++++++++++++++++++++++++++++=
-------
->>>>    hw/ppc/pegasos2=2Ec              | 15 ++++++++
->>>>    system/ioport=2Ec                | 41 +++++++++++++++++----
->>>>    15 files changed, 172 insertions(+), 30 deletions(-)
->>>=20
->>> I think this series generally looks good: the only thing I think it's =
-worth checking is whether portio lists are considered exclusive to ISA devi=
-ces or not? (Paolo?)=2E
->>=20
->> The modifications preserve the current design, so how is this question =
-related to this series?
->
->I was thinking about patches 1 and 3 where the portio_list variable is mo=
-ved from the core object to the ISA-specific child objects=2E
+What you're asking for is for the QEMU team to plumb hmat/cdat
+information down through the type3 device.  I *think* that is presently
+possible with a custom CDAT file - but Jonathan probably has more
+details on that.  You'll have to go digging for answers on that one.
 
-I think of patches 1 - 3 more as cleanups where an attribute unused in the=
- core is moved one level up to where it is needed=2E In addition, the flopp=
-y core had two attributes where only one was ever used in a specific device=
-=2E From that perspective I think the question of whether the portio_list A=
-PI is ISA specific or not is unrelated to this series, i=2Ee=2E should be d=
-iscussed separately=2E
 
->
->> I'd appreciate feedback from the maintainers indeed since this part has=
-n't received any comments so far=2E Thanks :)
->
->Agreed=2E I *think* the portio_lists are ISA-specific as far as QEMU is c=
-oncerned, but a quick nod from an x86 maintainer would be a great help :)
+Now - even if you did that - the current state of the cxl-type3 device
+is *not what you want* because your memory accesses will be routed
+through the read/write functions in the emulated device.
 
-A quick nod shall be in scope ;)
+What Jonathan and I discussed on the other thread is how you might go
+about slimming this down to allow pass-through of the memory without the
+need for all the fluff.  This is a non-trivial refactor of the existing
+device, so i would not expect that any time soon.
 
-Best regards,
-Bernhard
+At the end of the day, quickest way to get-there-from-here is to just
+drop the cxl related lines from your QEMU config, and keep everything
+else.
 
->
->>> The portio_list_set_enabled() API looks interesting, and could be cons=
-idered for use by my PCI IDE mode-switching changes too=2E
->>>=20
->>> Apologies I don't have a huge amount of time for review right now, but=
- I wanted to feed back that generally these patches look good, and if peopl=
-e are happy with the portio list changes then this series should be conside=
-red for merge=2E
->>=20
->> Never mind, it's still nice getting some confirmation from your side!
->
->No worries!
->
->
->ATB,
->
->Mark=2E
->
+> 
+> Assuming that the same issue applies to a physical server with CXL.
+> Were you able to see a host kernel getting the correct lb information
+> for a CXL devdax device?
+> 
+
+Yes, if you bring up a CXL device via cxl-cli on real hardware, the
+subsequent numa node ends up in the "lower tier" of the memory-tiering
+infrastructure.
+
+~Gregory
 
