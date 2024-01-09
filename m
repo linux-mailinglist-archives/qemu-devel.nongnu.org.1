@@ -2,97 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8B2827BB6
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 00:54:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC77827BCC
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 01:04:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rMzQb-0008I2-Bl; Mon, 08 Jan 2024 18:53:09 -0500
+	id 1rMzZv-0002Hk-CU; Mon, 08 Jan 2024 19:02:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rMzQW-0008H3-Cl
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 18:53:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rMzQU-0006Kg-PC
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 18:53:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704757981;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=N33w+Lj8Kaf73NR/DDcxzQgq2RkNhr5kAx/De1wM0sQ=;
- b=H+8LVnAAl79F+x9VTqlN6CCedY+EOLUpjy1wdA4Ym+jl90n7m0BZxujJKRTHndFZiBuDaV
- R8lp6bYO8sPdvfo9aG78wysLH6kIzzbb9VX0MtsPLh52IkBK8cL+Z3Rs1ioaLlVPVpiNeE
- CCI4CEuLYxEX5eyQ1TXGiSasp3/MQZY=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-449-o0TJcez4P8mT7D9K64cOwA-1; Mon, 08 Jan 2024 18:52:59 -0500
-X-MC-Unique: o0TJcez4P8mT7D9K64cOwA-1
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-28cbd4aaf29so1057816a91.2
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 15:52:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <3HY2cZQwKCtwL89GFCQRCD8LEMMEJC.AMKOCKS-BCTCJLMLELS.MPE@flex--nabihestefan.bounces.google.com>)
+ id 1rMzZt-0002Fp-20
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 19:02:45 -0500
+Received: from mail-yb1-xb49.google.com ([2607:f8b0:4864:20::b49])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3HY2cZQwKCtwL89GFCQRCD8LEMMEJC.AMKOCKS-BCTCJLMLELS.MPE@flex--nabihestefan.bounces.google.com>)
+ id 1rMzZo-0002pT-Sh
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 19:02:44 -0500
+Received: by mail-yb1-xb49.google.com with SMTP id
+ 3f1490d57ef6-dbe02d0c945so1400394276.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 16:02:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1704758557; x=1705363357; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=lo2y+3Kxpi5o71dRFLd+CcN35f2ucT4g03dBFKBsl+c=;
+ b=U788Rm1hjCNIXg0DFkMDEzUKGVv05CZJ+j2t0iqFUKtU9Db7y8eJqj9XKW/w8P1ATY
+ salmfFTc6K3Eo4L6Okqy+S34uH248/RmwOfk2Mcu++p0oN8HoW2d0RJoKHTkWcTJfjJZ
+ TwyOiuqPwHUF68zE/08Y9KiNOdsK6iQgHK3BFH1i3/ysoPVt3VReAnGGLmBSqDx19xow
+ FHo/Iguj6htU+k7VgFZ72Yte7uk/SGrclfNUkNwssT0ur+aw2HlnueYiETelk4s/XYKO
+ 4KSGwytjpvi4W9IPiOT4i7+yZyx2GP0JslWYLRvegzQbkwYErNSgHocLQIdzWoM2xI40
+ BZ0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704757978; x=1705362778;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=N33w+Lj8Kaf73NR/DDcxzQgq2RkNhr5kAx/De1wM0sQ=;
- b=hvMQ3tnhL5cvcEd6S+KRBbEDRf+VA0A9NPEdD3Q+EdmPfFyFjXTyNWZjwf45FTfU1L
- DmHyWkfXf9OyPApI4TzAMV4SQaNyHI7jmERhXHB1hmE/eqg966uJUo4p6O+n1WKfOS/0
- dieMEVMnQWzMo5A2yfosLgnYU14TDJbBTuPI6xv38c61CWN0+ofxB69HN7kOa4xUvwhC
- p47T3Q1Y0FFX0URqhZ3MfxDCkWYm68wnmqFhqD4yST4QYdSWZjGw8dej7fbSF17A8e2u
- 035kjJjhcYnY6/gyXZLIyEpEZQ+WyBk9B/+2OQPSP2DTKcKNTZ+ToD57hQgrbH+2nKdN
- szvg==
-X-Gm-Message-State: AOJu0YzjkjmF6U+tFhCiTLNDpI7SummHxMJRjxBAXbSBjk4At5vkxAAb
- CypBsYQmvpB/deZ8g23Pm4ZYGAQorsDYLmCWgiP9Sezpvo7hn3Dw97HfnP6tfXky5rwhLufRiKr
- k/QwRJBR/zHH76g0Ab2+mVZi7jlm3pU1d9rUKRN4=
-X-Received: by 2002:a17:90b:3682:b0:28d:504d:d6dc with SMTP id
- mj2-20020a17090b368200b0028d504dd6dcmr1299594pjb.65.1704757978184; 
- Mon, 08 Jan 2024 15:52:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEVTfkLmUcd4PKzUcFcdwBHRLcGegXe34MK+u5j84nIIwvQteOpqn2jmOqyUKWpXuHzuy2vr4pz6szRn33VIIw=
-X-Received: by 2002:a17:90b:3682:b0:28d:504d:d6dc with SMTP id
- mj2-20020a17090b368200b0028d504dd6dcmr1299573pjb.65.1704757977886; Mon, 08
- Jan 2024 15:52:57 -0800 (PST)
-MIME-Version: 1.0
-References: <20231114163115.298041-1-thuth@redhat.com>
- <12b4420e-1440-4516-8276-e0e907003c16@linaro.org>
- <9f6247e4-7e81-44f8-a63b-8ee11f722710@redhat.com>
- <CWYYRW53VEPJ.3UL1X7GB1P4H2@wheely>
- <6877d6d6-bfbf-4475-8c61-dd537265b278@redhat.com>
- <ZVTETYrfL8f48qe3@redhat.com> <ZVT-bY9YOr69QTPX@redhat.com>
- <CAFn=p-aDO_fZOsiBMdHhn6GP3ZadCrUAN4=C6o4d95UVMo3vOA@mail.gmail.com>
- <CAFEAcA-kvS0TJN=wEeHYrG0Fqqm9Mj5Bx_0TFHwnTts6jXvFfw@mail.gmail.com>
-In-Reply-To: <CAFEAcA-kvS0TJN=wEeHYrG0Fqqm9Mj5Bx_0TFHwnTts6jXvFfw@mail.gmail.com>
-From: John Snow <jsnow@redhat.com>
-Date: Mon, 8 Jan 2024 18:52:46 -0500
-Message-ID: <CAFn=p-YgXanRxPBQL5juwKs0deO4seD8t-WiPCnYuRv0e_sK3g@mail.gmail.com>
-Subject: Re: [PATCH] tests/avocado/reverse_debugging: Disable the ppc64 tests
- by default
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1704758557; x=1705363357;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lo2y+3Kxpi5o71dRFLd+CcN35f2ucT4g03dBFKBsl+c=;
+ b=jzDcuJ6RQZvGELK0icUsISfclCsECbsd7TkPSRXvH82lLeBKP5tGWOgGRwq31zV3So
+ HvCoaeBUx6LOABFcnIc+KejubpjEucN3ZRfBFu/SYe5m0qYziaSyXvXWMrXrKfWkHTzR
+ ACGuw1JqAhIx0LZj4KfMnS1mKGUYKBdSrLV3+Ir4YcRDvtV/XSlVxawJPXtI6FhD6w0/
+ CuJ7Qxp9l3iTqo/bsV887xgjZAHG8fQiVejycDSz5n+Lu+JjAJoHGqxbhLKWoLRMekR4
+ I4BSOuDn4hIxJkM7FsM/JrZWyWHO1NfIEjMGhqOvT6A0ca2tF7mOXev0BR74hzQwWIIL
+ OssQ==
+X-Gm-Message-State: AOJu0YyMCQDNZflisBCiTaKzjeVTiRHcFAdOOyb1LATJ8FmDgRXfg8Ki
+ iIBoTq7rozCadiqur7YAxoDSAMPg7oYb+4n8xrRaleE4Gg==
+X-Google-Smtp-Source: AGHT+IEwCnyK5ONQES4/affmfvbjpbFPa/kTHdlYIY1ARM1DL9WYqT4eXOgNS1GD2EJ0L/2HyxwMfw/bDgz/Jfwptjc=
+X-Received: from nabihestefan.c.googlers.com
+ ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
+ (user=nabihestefan job=sendgmr) by 2002:a25:8203:0:b0:dbe:30cd:8fcb with SMTP
+ id q3-20020a258203000000b00dbe30cd8fcbmr126857ybk.0.1704758557158; Mon, 08
+ Jan 2024 16:02:37 -0800 (PST)
+Date: Tue,  9 Jan 2024 00:02:24 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+Message-ID: <20240109000234.2799153-1-nabihestefan@google.com>
+Subject: [PATCH v11 00/10] Implementation of NPI Mailbox and GMAC Networking
+ Module
+From: Nabih Estefan <nabihestefan@google.com>
+To: peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
+ wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com, 
+ nabihestefan@google.com, kwliu@nuvoton.com, tomer.maimon@nuvoton.com, 
+ Hila.Miranda-Kuzi@nuvoton.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b49;
+ envelope-from=3HY2cZQwKCtwL89GFCQRCD8LEMMEJC.AMKOCKS-BCTCJLMLELS.MPE@flex--nabihestefan.bounces.google.com;
+ helo=mail-yb1-xb49.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,61 +92,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 23, 2023 at 5:53=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
-.org> wrote:
->
-> On Mon, 20 Nov 2023 at 19:19, John Snow <jsnow@redhat.com> wrote:
-> >
-> > On Wed, Nov 15, 2023 at 12:23=E2=80=AFPM Daniel P. Berrang=C3=A9 <berra=
-nge@redhat.com> wrote:
-> > > The Python  Machine() class has passed one of a pre-created socketpai=
-r
-> > > FDs for the serial port chardev. The guest is trying to write to this
-> > > and blocking.  Nothing in the Machine() class is reading from the
-> > > other end of the serial port console.
->
-> > > The Machine class doesn't know if anything will ever use the console,
-> > > so as is the change is unsafe.
-> > >
-> > > The original goal of John's change was to guarantee we capture early
-> > > boot messages as some test need that.
-> > >
-> > > I think we need to be able to have a flag to say whether the caller n=
-eeds
-> > > an "early console" facility, and only use the pre-opened FD passing f=
-or
-> > > that case. Tests we need early console will have to ask for that guar=
-antee
-> > > explicitly.
-> >
-> > Tch. I see. Thank you for diagnosing this.
-> >
-> > From the machine.py perspective, you have to *opt in* to having a
-> > console, so I hadn't considered that a caller would enable the console
-> > and then ... not read from it. Surely that's a bug in the caller?
->
-> From an Avocado test perspective, I would expect that the test case
-> should have to explicitly opt *out* of "the console messages appear
-> in the avocado test log, even if the test case doesn't care about them
-> for the purposes of identifying when to end the test or whatever".
-> The console logs are important for after-the-fact human diagnosis
-> of why a test might have failed, so we should always collect them.
->
-> thanks
-> -- PMM
->
+From: Nabih Estefan Diaz <nabihestefan@google.com>
 
-Understood. In that case, fixing the test would involve engaging's the
-avocado suite's draining utility to ensure that the log is being
-consumed and logged.
+[Changes since v10]
+Fixed macOS build issue. Changed imports to not be linux-specific.
 
-I think there's a potential here to simplify all of the
-draining-and-logging code we have split across the avocado test suite,
-console_socket.py and machine.py, but I can't promise that the rewrite
-I've been working on will be ready quickly, so if this is still busted
-(I'm still catching back up with my mail post-holidays) then we want a
-quicker fix if we haven't committed one yet.
+[Changes since v9]
+More cleanup and fixes based on suggestions from Peter Maydell
+(peter.maydell@linaro.org) suggestions.
 
---js
+[Changes since v8]
+Suggestions and Fixes from Peter Maydell (peter.maydell@linaro.org),
+also cleaned up changes so nothing is deleted in a later patch that was
+added in an earlier patch. Patch count decresed by 1 because this cleanup
+led to one of the patches being irrelevant.
+
+[Changes since v7]
+Fixed patch 4 declaration of new NIC based on comments by Peter Maydell
+(peter.maydell@linaro.org)
+
+[Changes since v6]
+Remove the Change-Ids from the commit messages.
+
+[Changes since v5]
+Undid remove of some qtests that seem to have been caused by a merge
+conflict.
+
+[Changes since v4]
+Added Signed-off-by tag and fixed patch 4 commit message as suggested by
+Peter Maydell (peter.maydell@linaro.org)
+
+[Changes since v3]
+Fixed comments from Hao Wu (wuhaotsh@google.com)
+
+[Changes since v2]
+Fixed bugs related to the RC functionality of the GMAC. Added and
+squashed patches related to that.
+
+[Changes since v1]
+Fixed some errors in formatting.
+Fixed a merge error that I didn't see in v1.
+Removed Nuvoton 8xx references since that is a separate patch set.
+
+[Original Cover]
+Creates NPI Mailbox Module with data verification for read and write (internal and external),
+wiring to the Nuvoton SoC, and QTests.
+
+Also creates the GMAC Networking Module. Implements read and write functionalities with cooresponding descriptors
+and registers. Also includes QTests for the different functionalities.
+
+Hao Wu (5):
+  hw/misc: Add Nuvoton's PCI Mailbox Module
+  hw/arm: Add PCI mailbox module to Nuvoton SoC
+  hw/misc: Add qtest for NPCM7xx PCI Mailbox
+  hw/net: Add NPCMXXX GMAC device
+  hw/arm: Add GMAC devices to NPCM7XX SoC
+
+Nabih Estefan Diaz (5):
+  tests/qtest: Creating qtest for GMAC Module
+  include/hw/net: GMAC IRQ Implementation
+  hw/net: GMAC Rx Implementation
+  hw/net: GMAC Tx Implementation
+  tests/qtest: Adding PCS Module test to GMAC Qtest
+
+ docs/system/arm/nuvoton.rst         |   2 +
+ hw/arm/npcm7xx.c                    |  53 +-
+ hw/misc/meson.build                 |   1 +
+ hw/misc/npcm7xx_pci_mbox.c          | 324 ++++++++++
+ hw/misc/trace-events                |   5 +
+ hw/net/meson.build                  |   2 +-
+ hw/net/npcm_gmac.c                  | 939 ++++++++++++++++++++++++++++
+ hw/net/trace-events                 |  19 +
+ include/hw/arm/npcm7xx.h            |   4 +
+ include/hw/misc/npcm7xx_pci_mbox.h  |  81 +++
+ include/hw/net/npcm_gmac.h          | 340 ++++++++++
+ tests/qtest/meson.build             |   2 +
+ tests/qtest/npcm7xx_pci_mbox-test.c | 238 +++++++
+ tests/qtest/npcm_gmac-test.c        | 341 ++++++++++
+ 14 files changed, 2347 insertions(+), 4 deletions(-)
+ create mode 100644 hw/misc/npcm7xx_pci_mbox.c
+ create mode 100644 hw/net/npcm_gmac.c
+ create mode 100644 include/hw/misc/npcm7xx_pci_mbox.h
+ create mode 100644 include/hw/net/npcm_gmac.h
+ create mode 100644 tests/qtest/npcm7xx_pci_mbox-test.c
+ create mode 100644 tests/qtest/npcm_gmac-test.c
+
+-- 
+2.43.0.472.g3155946c3a-goog
 
 
