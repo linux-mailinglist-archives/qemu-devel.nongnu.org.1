@@ -2,91 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD269827F17
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 08:16:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83DAF827F26
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 08:21:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN6KO-0007xu-6p; Tue, 09 Jan 2024 02:15:12 -0500
+	id 1rN6PR-0002oU-FN; Tue, 09 Jan 2024 02:20:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rN6KJ-0007wm-4F
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 02:15:07 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rN6PP-0002oI-Em
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 02:20:23 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rN6KA-0001Cz-Tl
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 02:15:01 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rN6PH-000435-8T
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 02:20:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704784497;
+ s=mimecast20190719; t=1704784814;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h98Xsku7wk+kfIGM4qhYCdOfqicsonishslSH3Ji0F8=;
- b=OBodKZeL/iMylFU+NnloWdyVacbaCoPlRnN9ux0hLjUm0Zr+Ze2JnttjDfxalY1ar4Opww
- Itwr/wxeBKlka1aA7Hbou9VIXySr0UktXD0KoLw1Yn5sKXM9VXYyjeEvt0Svp2UWJ2FU+2
- qOl+qSQFNXFHbKCBbT0WRtLsm9nkAY8=
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
- [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Ay3V288Konu0/dMX1QEGKWdHKwUGM3ykOnamiRrBI9M=;
+ b=W5CIn56riz+UqRJfggZkcQuYpP28eeZuyQb6hQHJig3qhlHAxAdnJj5Mlsu0qA/SabwKjs
+ cwOWMcGpA++eBOayjKA0eNo37aK/lqfMl7DfpxGbkEascyOVpXO1e16LaHCPaq6zwkZPUs
+ z369REecbq70sUlFA8JRacCKL2OvvTE=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-391-gidEvPTWOQW6-h0z4K0egQ-1; Tue, 09 Jan 2024 02:14:56 -0500
-X-MC-Unique: gidEvPTWOQW6-h0z4K0egQ-1
-Received: by mail-oo1-f70.google.com with SMTP id
- 006d021491bc7-59880be5eb0so62285eaf.0
- for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 23:14:55 -0800 (PST)
+ us-mta-673-tUGJQx2mPFiHS3NHrpWRNQ-1; Tue, 09 Jan 2024 02:20:13 -0500
+X-MC-Unique: tUGJQx2mPFiHS3NHrpWRNQ-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7831ed4bb2aso286855885a.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jan 2024 23:20:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704784495; x=1705389295;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=h98Xsku7wk+kfIGM4qhYCdOfqicsonishslSH3Ji0F8=;
- b=J66lm8elDt57EF+u+qk0v/7COrntJ6mTWNgYIHPD3bLV+fv78NiVhxRrEBq2H9q4uy
- rXy2m3NHlDqGjp7+p7ZTZRyC098Rwkf+JbHeLXrck1VZ1hxc5yaLS6bhuSj2FGJ+s7Vs
- 5zmepJu+MBvGzMpj8TPOzr5ZlriLM9FXxY2Ysu5cYY9stkfczx8hhhMtK/IJVR3tfxdE
- NA6GcQ/WNajFjuLZY7BNCC75c04e2YoMlpeMQ8UnKS6ZNKEzS7cn9fCcKrT5WluV2/dZ
- +PnoTbcy6q3XPAhDrBmgmmyw+B06YOH+2tsV8xiRdjeWLM7nq4jWScWYc1WGtWogvXNL
- RBCg==
-X-Gm-Message-State: AOJu0Yyz7ymHgpqhgqmy7RUPpQbUTsPiASrgAL7yFd7X1wOSzht0O5SR
- aNv2pDi6TSbmgZZvCyOLQukxGXNdT1sq8MFt7pvbGTd3vncMt5zo4ZtGY6ZU8qlN9CaCHzaNQn7
- gHi+hXfGLnbf7/k5qoTQEUOM=
-X-Received: by 2002:a05:6358:c39b:b0:175:89aa:1300 with SMTP id
- fl27-20020a056358c39b00b0017589aa1300mr6217756rwb.1.1704784495040; 
- Mon, 08 Jan 2024 23:14:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFWbgMsN9ljWXoIHhAzT1YGBKIORAVrp9RqXhA8ujaX8T3lpb9mJ9uzJ25veu51M6v4aEjDkg==
-X-Received: by 2002:a05:6358:c39b:b0:175:89aa:1300 with SMTP id
- fl27-20020a056358c39b00b0017589aa1300mr6217741rwb.1.1704784494714; 
- Mon, 08 Jan 2024 23:14:54 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- 2-20020a631742000000b005bd980cca56sm963009pgx.29.2024.01.08.23.14.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Jan 2024 23:14:54 -0800 (PST)
-Date: Tue, 9 Jan 2024 15:14:46 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: Re: [PATCH v3 3/4] ci: Add a migration compatibility test job
-Message-ID: <ZZzyZhUbgt9WhaAP@x1n>
-References: <20240105180449.11562-1-farosas@suse.de>
- <20240105180449.11562-4-farosas@suse.de>
+ d=1e100.net; s=20230601; t=1704784812; x=1705389612;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ay3V288Konu0/dMX1QEGKWdHKwUGM3ykOnamiRrBI9M=;
+ b=I8rpKsBXrxSflj48P9WVljs9KRoq1aTTk+59gbW9A6SmhAgHkbBqkDKZjCb2GUHxgq
+ 2HTaSlaBB8LiGaHwlVXnik7z5FGDwPPYoY+UJvHWymPnQle0f6e/54/0+JLIxf/DDw49
+ fa078lWcfkXoBvmBvvFRJvTICdSGwCOuvVRIlGj0Q7cdGVe90BSoOBI73fQXWafAYS1K
+ MsiPpVW9OWdfOsOFVDOsTheJ/ZDOSC2PQllgEtk6y8C1yg7f3nUp0i6hIFbit5NPxipL
+ yBktiN5CwZ17FIfLRYeGuFaLHdlYFHTL84S27HHegzuHA7BN1jJRKqJDCPRZHNunR0uE
+ Caxw==
+X-Gm-Message-State: AOJu0Yx6UQ+O9G0XVCIdgDN0pXrOouNJhi2ISGY2U3nvoxy0v0GyM+Vd
+ FA4CXDUReeFn25D15UL4oO8VMdUdWZWRXO6YjVLTwNVZ02Hg2ST5jYDIz4o6zb8f/y9KVeMIvnI
+ G860W+vPULQS76+QkoF4jo9yQ42IvX60=
+X-Received: by 2002:a05:620a:c4b:b0:781:e37c:d77e with SMTP id
+ u11-20020a05620a0c4b00b00781e37cd77emr6972410qki.39.1704784812197; 
+ Mon, 08 Jan 2024 23:20:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFyGqzoqGcvEpWrsQ5+EgCejjM3nY6v3n9QMcNtbnyWixaTYUB7WrXNmLFziLtClE4YseMmLA==
+X-Received: by 2002:a05:620a:c4b:b0:781:e37c:d77e with SMTP id
+ u11-20020a05620a0c4b00b00781e37cd77emr6972397qki.39.1704784811918; 
+ Mon, 08 Jan 2024 23:20:11 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ n19-20020a05620a223300b00783148d1269sm582626qkh.62.2024.01.08.23.20.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 08 Jan 2024 23:20:11 -0800 (PST)
+Message-ID: <485eca29-8a73-4fc5-83dc-5f8971b8ab0c@redhat.com>
+Date: Tue, 9 Jan 2024 08:20:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240105180449.11562-4-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/10] docs/migration: Organize "Postcopy" page
+Content-Language: en-US
+To: peterx@redhat.com, qemu-devel@nongnu.org
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Bandan Das <bdas@redhat.com>,
+ Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
+References: <20240109064628.595453-1-peterx@redhat.com>
+ <20240109064628.595453-9-peterx@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240109064628.595453-9-peterx@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,36 +104,234 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 05, 2024 at 03:04:48PM -0300, Fabiano Rosas wrote:
-> The migration tests have support for being passed two QEMU binaries to
-> test migration compatibility.
+On 1/9/24 07:46, peterx@redhat.com wrote:
+> From: Peter Xu <peterx@redhat.com>
 > 
-> Add a CI job that builds the lastest release of QEMU and another job
-> that uses that version plus an already present build of the current
-> version and run the migration tests with the two, both as source and
-> destination. I.e.:
+> Reorganize the page, moving things around, and add a few
+> headlines ("Postcopy internals", "Postcopy features") to cover sub-areas.
 > 
->  old QEMU (n-1) -> current QEMU (development tree)
->  current QEMU (development tree) -> old QEMU (n-1)
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>   docs/devel/migration/postcopy.rst | 159 ++++++++++++++++--------------
+>   1 file changed, 84 insertions(+), 75 deletions(-)
 > 
-> The purpose of this CI job is to ensure the code we're about to merge
-> will not cause a migration compatibility problem when migrating the
-> next release (which will contain that code) to/from the previous
-> release.
-> 
-> I'm leaving the jobs as manual for now because using an older QEMU in
-> tests could hit bugs that were already fixed in the current
-> development tree and we need to handle those case-by-case.
+> diff --git a/docs/devel/migration/postcopy.rst b/docs/devel/migration/postcopy.rst
+> index d60eec06ab..6c51e96d79 100644
+> --- a/docs/devel/migration/postcopy.rst
+> +++ b/docs/devel/migration/postcopy.rst
+> @@ -1,6 +1,9 @@
+> +========
+>   Postcopy
+>   ========
+>   
+> +.. contents::
+> +
+>   'Postcopy' migration is a way to deal with migrations that refuse to converge
 
-Can we opt-out those broken tests using either your "since:" thing or
-anything similar?
+The quote character is used in a few places to emphasize words
+which should be reworked. The rest looks good, so
 
-I hope we can start to run something by default in the CI in 9.0 to cover
-n-1 -> n, even if starting with a subset of tests.  Is it possible?
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
--- 
-Peter Xu
+C.
+
+
+
+>   (or take too long to converge) its plus side is that there is an upper bound on
+>   the amount of migration traffic and time it takes, the down side is that during
+> @@ -14,7 +17,7 @@ Postcopy can be combined with precopy (i.e. normal migration) so that if precopy
+>   doesn't finish in a given time the switch is made to postcopy.
+>   
+>   Enabling postcopy
+> ------------------
+> +=================
+>   
+>   To enable postcopy, issue this command on the monitor (both source and
+>   destination) prior to the start of migration:
+> @@ -49,8 +52,71 @@ time per vCPU.
+>     ``migrate_set_parameter`` is ignored (to avoid delaying requested pages that
+>     the destination is waiting for).
+>   
+> -Postcopy device transfer
+> -------------------------
+> +Postcopy internals
+> +==================
+> +
+> +State machine
+> +-------------
+> +
+> +Postcopy moves through a series of states (see postcopy_state) from
+> +ADVISE->DISCARD->LISTEN->RUNNING->END
+> +
+> + - Advise
+> +
+> +    Set at the start of migration if postcopy is enabled, even
+> +    if it hasn't had the start command; here the destination
+> +    checks that its OS has the support needed for postcopy, and performs
+> +    setup to ensure the RAM mappings are suitable for later postcopy.
+> +    The destination will fail early in migration at this point if the
+> +    required OS support is not present.
+> +    (Triggered by reception of POSTCOPY_ADVISE command)
+> +
+> + - Discard
+> +
+> +    Entered on receipt of the first 'discard' command; prior to
+> +    the first Discard being performed, hugepages are switched off
+> +    (using madvise) to ensure that no new huge pages are created
+> +    during the postcopy phase, and to cause any huge pages that
+> +    have discards on them to be broken.
+> +
+> + - Listen
+> +
+> +    The first command in the package, POSTCOPY_LISTEN, switches
+> +    the destination state to Listen, and starts a new thread
+> +    (the 'listen thread') which takes over the job of receiving
+> +    pages off the migration stream, while the main thread carries
+> +    on processing the blob.  With this thread able to process page
+> +    reception, the destination now 'sensitises' the RAM to detect
+> +    any access to missing pages (on Linux using the 'userfault'
+> +    system).
+> +
+> + - Running
+> +
+> +    POSTCOPY_RUN causes the destination to synchronise all
+> +    state and start the CPUs and IO devices running.  The main
+> +    thread now finishes processing the migration package and
+> +    now carries on as it would for normal precopy migration
+> +    (although it can't do the cleanup it would do as it
+> +    finishes a normal migration).
+> +
+> + - Paused
+> +
+> +    Postcopy can run into a paused state (normally on both sides when
+> +    happens), where all threads will be temporarily halted mostly due to
+> +    network errors.  When reaching paused state, migration will make sure
+> +    the qemu binary on both sides maintain the data without corrupting
+> +    the VM.  To continue the migration, the admin needs to fix the
+> +    migration channel using the QMP command 'migrate-recover' on the
+> +    destination node, then resume the migration using QMP command 'migrate'
+> +    again on source node, with resume=true flag set.
+> +
+> + - End
+> +
+> +    The listen thread can now quit, and perform the cleanup of migration
+> +    state, the migration is now complete.
+> +
+> +Device transfer
+> +---------------
+>   
+>   Loading of device data may cause the device emulation to access guest RAM
+>   that may trigger faults that have to be resolved by the source, as such
+> @@ -130,7 +196,20 @@ processing.
+>      is no longer used by migration, while the listen thread carries on servicing
+>      page data until the end of migration.
+>   
+> -Postcopy Recovery
+> +Source side page bitmap
+> +-----------------------
+> +
+> +The 'migration bitmap' in postcopy is basically the same as in the precopy,
+> +where each of the bit to indicate that page is 'dirty' - i.e. needs
+> +sending.  During the precopy phase this is updated as the CPU dirties
+> +pages, however during postcopy the CPUs are stopped and nothing should
+> +dirty anything any more. Instead, dirty bits are cleared when the relevant
+> +pages are sent during postcopy.
+> +
+> +Postcopy features
+> +=================
+> +
+> +Postcopy recovery
+>   -----------------
+>   
+>   Comparing to precopy, postcopy is special on error handlings.  When any
+> @@ -166,76 +245,6 @@ configurations of the guest.  For example, when with async page fault
+>   enabled, logically the guest can proactively schedule out the threads
+>   accessing missing pages.
+>   
+> -Postcopy states
+> ----------------
+> -
+> -Postcopy moves through a series of states (see postcopy_state) from
+> -ADVISE->DISCARD->LISTEN->RUNNING->END
+> -
+> - - Advise
+> -
+> -    Set at the start of migration if postcopy is enabled, even
+> -    if it hasn't had the start command; here the destination
+> -    checks that its OS has the support needed for postcopy, and performs
+> -    setup to ensure the RAM mappings are suitable for later postcopy.
+> -    The destination will fail early in migration at this point if the
+> -    required OS support is not present.
+> -    (Triggered by reception of POSTCOPY_ADVISE command)
+> -
+> - - Discard
+> -
+> -    Entered on receipt of the first 'discard' command; prior to
+> -    the first Discard being performed, hugepages are switched off
+> -    (using madvise) to ensure that no new huge pages are created
+> -    during the postcopy phase, and to cause any huge pages that
+> -    have discards on them to be broken.
+> -
+> - - Listen
+> -
+> -    The first command in the package, POSTCOPY_LISTEN, switches
+> -    the destination state to Listen, and starts a new thread
+> -    (the 'listen thread') which takes over the job of receiving
+> -    pages off the migration stream, while the main thread carries
+> -    on processing the blob.  With this thread able to process page
+> -    reception, the destination now 'sensitises' the RAM to detect
+> -    any access to missing pages (on Linux using the 'userfault'
+> -    system).
+> -
+> - - Running
+> -
+> -    POSTCOPY_RUN causes the destination to synchronise all
+> -    state and start the CPUs and IO devices running.  The main
+> -    thread now finishes processing the migration package and
+> -    now carries on as it would for normal precopy migration
+> -    (although it can't do the cleanup it would do as it
+> -    finishes a normal migration).
+> -
+> - - Paused
+> -
+> -    Postcopy can run into a paused state (normally on both sides when
+> -    happens), where all threads will be temporarily halted mostly due to
+> -    network errors.  When reaching paused state, migration will make sure
+> -    the qemu binary on both sides maintain the data without corrupting
+> -    the VM.  To continue the migration, the admin needs to fix the
+> -    migration channel using the QMP command 'migrate-recover' on the
+> -    destination node, then resume the migration using QMP command 'migrate'
+> -    again on source node, with resume=true flag set.
+> -
+> - - End
+> -
+> -    The listen thread can now quit, and perform the cleanup of migration
+> -    state, the migration is now complete.
+> -
+> -Source side page map
+> ---------------------
+> -
+> -The 'migration bitmap' in postcopy is basically the same as in the precopy,
+> -where each of the bit to indicate that page is 'dirty' - i.e. needs
+> -sending.  During the precopy phase this is updated as the CPU dirties
+> -pages, however during postcopy the CPUs are stopped and nothing should
+> -dirty anything any more. Instead, dirty bits are cleared when the relevant
+> -pages are sent during postcopy.
+> -
+>   Postcopy with hugepages
+>   -----------------------
+>   
+> @@ -293,7 +302,7 @@ Retro-fitting postcopy to existing clients is possible:
+>        guest memory access is made while holding a lock then all other
+>        threads waiting for that lock will also be blocked.
+>   
+> -Postcopy Preemption Mode
+> +Postcopy preemption mode
+>   ------------------------
+>   
+>   Postcopy preempt is a new capability introduced in 8.0 QEMU release, it
 
 
