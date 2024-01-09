@@ -2,81 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFDB0828A09
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:32:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60249828A0E
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:33:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNF0t-0001nU-72; Tue, 09 Jan 2024 11:31:39 -0500
+	id 1rNF1s-0002F9-9P; Tue, 09 Jan 2024 11:32:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNF0r-0001nI-5q
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:31:37 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNF0p-0007w7-EC
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:31:36 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-555e07761acso3798284a12.0
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 08:31:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704817893; x=1705422693; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=XCFz67O30cGWCwumEtc0V6mGc2glrm95RBgOYxVSigg=;
- b=aTAwCystk4plvGi2mMKPdly63chz9MYKccrl7SAZpYXzZLt9rxSsEzQOUDldAx4Gg2
- 2ECjoA0n/jQGN1r83lv5m7EJ7m/4Nn7K5TrchYUofiv/ib7VP2NCOSLM7KCwIYEnnqNS
- tLRgbFa3diWGoJKKpdsEF/CWqeRjMYQT4ske2XsMugRKchOtkPnvr+q2TjjaTn23rs/d
- d2lbsXDFOxZVxsempnqV1kOQj1wSNF7vatKbR/p42hucGNT8vNWl7EoJ5AZtf1y018iq
- aZpD1XkNPiJpfBCuc4a6tLfyJHfGUIBlNeHe0a9EiCxUKl+gDV5seO8VCQxE/JbODfDT
- scyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704817893; x=1705422693;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XCFz67O30cGWCwumEtc0V6mGc2glrm95RBgOYxVSigg=;
- b=r47zrPkqF7SfqiHLM1h2nT040+XFwTr7CqvF7wU1v2NU/lE8W75TWrMVzEZTL46Lby
- gQvuguKSosBQwR1XNBDgukjWYI6SUTEKWt1ToRSdV8OVXPtRx0C4AZJ6DhAJLDJlXx49
- AOWaMy+AIJbKXj3E+INGyFm2j6mao7bL+ycSj6Wfqzb0XIe8BfGq7xCY7G0S7i8qJpC5
- ldoC02aifHUQIIVPfZXBkqqLQLPvRl8WHwua2fORXvXEskNf3pm5PQpH85eszIxt0wdo
- zB7o5TQCG+bQ6dNcnnDjC8ZO/9TuilJPNQORhXjABvonOKnwqr7rIi6ndHYzAkbF5pPg
- L5PA==
-X-Gm-Message-State: AOJu0Yx45pkm3LKHk3Ffv6/c2byiSTqyUoUT3FuEjimIYmdYSvoE6xME
- WBmHv5BJjypFazRqCsFMCkxkqq8kg3I5B4+mXVlCR+H8qkaW+A==
-X-Google-Smtp-Source: AGHT+IFCgDvyB8118SkZGV7Fxyx0OMDjykk40thCj5YloQ4qE0hC7qjZ2kW85nXIWgNDh23aSpCwFw/S5kPZpsYXVIo=
-X-Received: by 2002:a50:a444:0:b0:557:dffe:e9ba with SMTP id
- v4-20020a50a444000000b00557dffee9bamr777473edb.45.1704817893045; Tue, 09 Jan
- 2024 08:31:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rNF1q-00029s-5s
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:32:38 -0500
+Received: from mgamail.intel.com ([198.175.65.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rNF1l-0008OH-GH
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:32:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1704817953; x=1736353953;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=lq/alh0+QIDMJk8UzRpq0dUPGFZAHpyHNUvoUPsvRgQ=;
+ b=HddSRRDGz4icyy0iAem9LMjzswLVEJxQVAQHL8W3Bd7F3hTTW4bZlsdd
+ nY+oxyZIvxozuWH3naHdZQ6PG6K2crbEBz/SixTHtmMl7zfAAUDSDRhWG
+ qTAT3+KCJ2ViJQ3xiMyv12oMFT+mLWYpvwg5F2pbXe9jMJpLOw+UPAWQQ
+ KDsFlZ5izuV93HQf+u2Ush7IRjqKc+H+V2v8nSaP4RLSKVZ+nfvtcf5Gb
+ HyqPUQuGp38pEOyCqN8XDjes7kaRxdHTX5r0B8B1r9Lk/KXi3Lx5lYpP1
+ yrOXMrZdR2c1OnIrarET5YHLYFz/cnTT8/13YQTv8H5wiF80oEyc8LB2g Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="4996530"
+X-IronPort-AV: E=Sophos;i="6.04,183,1695711600"; 
+   d="scan'208";a="4996530"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jan 2024 08:32:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="872290734"
+X-IronPort-AV: E=Sophos;i="6.04,183,1695711600"; d="scan'208";a="872290734"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
+ ([10.93.22.149])
+ by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jan 2024 08:32:24 -0800
+Message-ID: <bd2679e7-46af-4875-ba42-b4ea413ec0a1@intel.com>
+Date: Wed, 10 Jan 2024 00:32:20 +0800
 MIME-Version: 1.0
-References: <90d7351c-2680-4ab6-95ee-5dac4e3f21c5@tls.msk.ru>
- <CAFEAcA8DdsHQ0eCYnh4vNoybodj0mcHCnOMEr9b_aOk7yO2Osw@mail.gmail.com>
- <ea7dd9f7-b40f-436c-a469-97ef26ac66a2@tls.msk.ru>
- <d08930a4-7e01-41eb-b118-b20fea0f8556@tls.msk.ru>
- <CAFEAcA_wnSF-OAKNaDNjbEiMi-AXv2srJ5JjmiaT4+_wWee9aw@mail.gmail.com>
- <560c9f56-f0d8-4def-863a-63ba4226209e@tls.msk.ru>
- <CAFEAcA-hkd=VQdqw7-P1RGwu-c9JLn-NUHC1kgU-YgZ1FOMQww@mail.gmail.com>
- <CAFEAcA87qdWR-GLEjkGpGHxMhviFidi2=k7c=OFC3+hzn1P0Dw@mail.gmail.com>
- <2a34bd5d-2997-48cf-bcb8-32d97e3f7690@tls.msk.ru>
-In-Reply-To: <2a34bd5d-2997-48cf-bcb8-32d97e3f7690@tls.msk.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 9 Jan 2024 16:31:21 +0000
-Message-ID: <CAFEAcA83r12Y6d5Ba-3v1eNe1TfA9kO-PLtkots8C1SzgDNeaA@mail.gmail.com>
-Subject: Re: virtio-pci in qemu-system-arm is broken in 8.2
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/70] kvm: Introduce support for memory_attributes
+Content-Language: en-US
+To: "Wang, Wei W" <wei.w.wang@intel.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ Michael Roth <michael.roth@amd.com>, Sean Christopherson
+ <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, "Qiang, Chenyi" <chenyi.qiang@intel.com>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-7-xiaoyao.li@intel.com>
+ <DS0PR11MB6373D69ABBF4BDF7120438ACDC8EA@DS0PR11MB6373.namprd11.prod.outlook.com>
+ <cc568b63-a129-4b23-8ac8-313193ea8126@intel.com>
+ <DS0PR11MB63737AFCA458FA78423C0BB7DC95A@DS0PR11MB6373.namprd11.prod.outlook.com>
+ <a0289f6d-2008-48d7-95fb-492066c38461@intel.com>
+ <DS0PR11MB63730289975875A5B90D078CDC95A@DS0PR11MB6373.namprd11.prod.outlook.com>
+ <1bc76559-20e7-4b20-a566-9491711f7a21@intel.com>
+ <DS0PR11MB637348501D03A18EE7C394C4DC6A2@DS0PR11MB6373.namprd11.prod.outlook.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <DS0PR11MB637348501D03A18EE7C394C4DC6A2@DS0PR11MB6373.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,72 +102,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 9 Jan 2024 at 16:24, Michael Tokarev <mjt@tls.msk.ru> wrote:
->
-> 09.01.2024 16:52, Peter Maydell:
-> ..
-> > Oh, your kernel isn't an LPAE one (i.e. CONFIG_LPAE is not
-> > set). That will obviously never be able to access registers
-> > above the 4GB mark (though the kernel's error message in this
-> > situation is a bit unhelpful and could perhaps be improved).
-> > If I set CONFIG_LPAE on the non-working config it starts working.
-> >
-> > I think then the answer is:
-> >   * if you want to use the (default) highmem setup, use an LPAE kernel
-> >   * if you want to use a non-LPAE kernel, tell QEMU to avoid
-> >     highmem using '-machine virt,highmem=off'
-> >
-> > It was just a bug that we were accidentally disabling highmem
-> > for the 32-bit 'max' CPU before b8f7959f28c4f3.
->
-> Wow wow wow.  So it's a pebkac bug, not qemu bug.. :)
-> I didn't even know about LPAE before this email, and knew very
-> little about arm stuff too.
->
-> Thank you very much for your work and time!
->
-> The diagnostics here is definitely.. "interesting", so to say, it's
-> very "obvious" what the problem is.. from the kernel messages :)
+On 1/9/2024 10:53 PM, Wang, Wei W wrote:
+> On Tuesday, January 9, 2024 1:47 PM, Li, Xiaoyao wrote:
+>> On 12/21/2023 9:47 PM, Wang, Wei W wrote:
+>>> On Thursday, December 21, 2023 7:54 PM, Li, Xiaoyao wrote:
+>>>> On 12/21/2023 6:36 PM, Wang, Wei W wrote:
+>>>>> No need to specifically check for KVM_MEMORY_ATTRIBUTE_PRIVATE
+>> there.
+>>>>> I'm suggesting below:
+>>>>>
+>>>>> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c index
+>>>>> 2d9a2455de..63ba74b221 100644
+>>>>> --- a/accel/kvm/kvm-all.c
+>>>>> +++ b/accel/kvm/kvm-all.c
+>>>>> @@ -1375,6 +1375,11 @@ static int kvm_set_memory_attributes(hwaddr
+>>>> start, hwaddr size, uint64_t attr)
+>>>>>         struct kvm_memory_attributes attrs;
+>>>>>         int r;
+>>>>>
+>>>>> +    if ((attr & kvm_supported_memory_attributes) != attr) {
+>>>>> +        error_report("KVM doesn't support memory attr %lx\n", attr);
+>>>>> +        return -EINVAL;
+>>>>> +    }
+>>>>
+>>>> In the case of setting a range of memory to shared while KVM doesn't
+>>>> support private memory. Above check doesn't work. and following IOCTL
+>> fails.
+>>>
+>>> SHARED attribute uses the value 0, which indicates it's always supported, no?
+>>> For the implementation, can you find in the KVM side where the ioctl
+>>> would get failed in that case?
+>>
+>> I'm worrying about the future case, that KVM supports other memory attribute
+>> than shared/private. For example, KVM supports RWX bits (bit 0
+>> - 2) but not shared/private bit.
+> 
+> What's the exact issue?
+> +#define KVM_MEMORY_ATTRIBUTE_READ               (1ULL << 2)
+> +#define KVM_MEMORY_ATTRIBUTE_WRITE             (1ULL << 1)
+> +#define KVM_MEMORY_ATTRIBUTE_EXE                  (1ULL << 0)
+> 
+> They are checked via
+> "if ((attr & kvm_supported_memory_attributes) != attr)" shared above in
+> kvm_set_memory_attributes.
+> In the case you described, kvm_supported_memory_attributes will be 0x7.
+> Anything unexpected?
 
-Yeah. I don't personally have the time to try to follow up
-on improving the kernel handling of this, but if anybody else
-does, I think the problem is that the function __of_address_to_resource()
-which fills in a 'struct resource' from a DTB entry silently
-truncates over-large values when it fills in r->start and r->end
-(which are of type phys_addr_t, and so only 32 bits on non-LPAE
-kernels). So that function seems like a good place to put some
+Sorry that I thought for wrong case.
 
-  if (taddr or taddr + size are above 4GB) {
-      warn("resource foo is too high in the address space to use
-            (did you forget to enable CONFIG_LPAE?)\n");
-      return -EINVAL;
-  }
-
-type handling which would then catch this user error relatively
-comprehensibly for most devices.
-
-> And the author(s) of the tool used in debian to run arm guest (which
-> triggered this issue with qemu 8.2) didn't know this thing either,
-> obviously.  Also, it seems to be a little-known fact that qemu has
-> highmem enabled for 32bit arm by default and that one - unlike e.g
-> i386 - actually breaks system (with pci bus being unaccessible),
-> while on i386 the only outcome is not all memory is available.
-> That feels like unfortunate decision to enable highmem by default
-> on arm in qemu 2.12.
-
-Yeah, in retrospect the other option might have been better.
-But at this late date it doesn't seem worth revisiting.
-
-> > The linux-image-6.6.9-armmp-lpae_6.6.9-1_armhf.deb kernel
-> > will probably work (though I haven't tested it).
->
-> Yes, it works.  Also -machine virt,highmem=off works.  There's
-> no bug per se.
->
->
-> Thank you for all the findings, Peter!  Much appreciated!
-
-No worries.
-
--- PMM
+It doesn't work on the case that KVM doesn't support memory_attribute, 
+e.g., an old KVM. In this case, 'kvm_supported_memory_attributes' is 0, 
+and 'attr' is 0 as well.
 
