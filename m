@@ -2,91 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297F18290CB
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 00:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 196C78290C9
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 00:24:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNLRd-00044c-8e; Tue, 09 Jan 2024 18:23:41 -0500
+	id 1rNLRe-00044h-My; Tue, 09 Jan 2024 18:23:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rNLRa-00044A-RL; Tue, 09 Jan 2024 18:23:38 -0500
+ id 1rNLRb-00044H-5K; Tue, 09 Jan 2024 18:23:39 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rNLRT-0005PF-SV; Tue, 09 Jan 2024 18:23:38 -0500
+ id 1rNLRU-0005Q0-Nc; Tue, 09 Jan 2024 18:23:38 -0500
 Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 409LHe2s022678; Tue, 9 Jan 2024 23:23:27 GMT
+ 409M5VjE018197; Tue, 9 Jan 2024 23:23:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=gS8YcNgjQ4VogCR5HsIMsYMQmFDWq3FQ6tFrLtsVuWw=;
- b=XHm83H3obTUHyBm1SAUnEgv9RaZBjH2rbc5wPpaTKZerlGyh99QCLnI3+F1i4We5/lo5
- LT0APfCb/iJ6mOmS2Rj7IBAOstC9gCcsvqSJ1aFkvsQzk7hGcRThT6C6nFF86PLhUH4c
- RVQDICnlk8SPvWJE5/n5Mr+EtmdnpFTh0kvUjr+Or73sa+jdTNsUQYsrmgLcZ054D6Ve
- cjYKLTZgOQtGPyE+VmsQuCX1CEXajsTveZ2Gb3d7CTvvUjSpICwLXgDqVrW+7GJHnAyW
- TV1QLSoFwekWN1xICaKh8ujiRL/tc/WoFnuJEgDH9ESGuyYIMKP7+4/bauw+ivLuI9C5 XQ== 
+ bh=G19NID2aSlYql9rQq5RhGSegCnfaWL9AR0yiCQNgxMQ=;
+ b=E/eTq6xzZtmgTUAVV3PmmROYeZkqVwugLYzsdaKeBmLaRQcGwtofhBKGoMPSDLKUyxs3
+ prXmhdz2uwt/nveX9OSdalhhxcQS8LSmLUlSZ3okAkwtbEor1FDSHxgSCtTSJ8WKd0Oq
+ GsrO9tDErE1XWKuFoA6csfmCZPVAUwspJUqN5wDVkTvHKVs0gnYFb+nAQbx900X9u0gm
+ naMtqXngi3ER7i8lBkkelQKM2PSlOLzdUVMZVogCwAhWn/IMqS7xpVCjwuvwuduOcIg9
+ JLYolpGaJrkR4kPj6eUxwVqn8xiC01YAO1Wn6YHVeQSGP6BVcrDhzzIgR81cnSNtpEqf yA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vhdx4j7vd-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vhdx4j7wb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 23:23:26 +0000
+ Tue, 09 Jan 2024 23:23:28 +0000
 Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 409MuDVT005115;
- Tue, 9 Jan 2024 23:23:26 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vhdx4j7ux-1
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 409MsL4c000394;
+ Tue, 9 Jan 2024 23:23:27 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vhdx4j7vg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 23:23:27 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 409MSp3d022916; Tue, 9 Jan 2024 23:23:26 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfj6nhs0v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Tue, 09 Jan 2024 23:23:26 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 409L0IjB027253; Tue, 9 Jan 2024 23:23:25 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkw21awu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 23:23:25 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 409NNN2U19202574
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 409NNOMX9175664
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Jan 2024 23:23:23 GMT
+ Tue, 9 Jan 2024 23:23:24 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B87B520043;
- Tue,  9 Jan 2024 23:23:23 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 946D120043;
+ Tue,  9 Jan 2024 23:23:24 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3B74D20040;
- Tue,  9 Jan 2024 23:23:23 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 31E8420040;
+ Tue,  9 Jan 2024 23:23:24 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.60.193])
  by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  9 Jan 2024 23:23:23 +0000 (GMT)
+ Tue,  9 Jan 2024 23:23:24 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, Ido Plat <Ido.Plat@ibm.com>,
- qemu-stable@nongnu.org
-Subject: [PATCH 1/2] target/s390x: Fix LAE setting a wrong access register
-Date: Wed, 10 Jan 2024 00:22:22 +0100
-Message-ID: <20240109232319.600102-2-iii@linux.ibm.com>
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 2/2] tests/tcg/s390x: Test LOAD ADDRESS EXTENDED
+Date: Wed, 10 Jan 2024 00:22:23 +0100
+Message-ID: <20240109232319.600102-3-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240109232319.600102-1-iii@linux.ibm.com>
 References: <20240109232319.600102-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PPGAzUOXoH0gNRRhOjMbIWMqpcrbtuLX
-X-Proofpoint-ORIG-GUID: Bb_Dwh3LbTySvwH6LDPdyMJAiW_aeVKQ
+X-Proofpoint-GUID: fpcERjsQ5VWOBspQjHuIx57VBeKWecER
+X-Proofpoint-ORIG-GUID: G8G-ZgqmWReH6KWIDjMnA45jRFxuOAXe
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-09_11,2024-01-09_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  impostorscore=0 phishscore=0
  lowpriorityscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
- mlxscore=0 clxscore=1011 bulkscore=0 adultscore=0 mlxlogscore=605
+ mlxscore=0 clxscore=1015 bulkscore=0 adultscore=0 mlxlogscore=737
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2401090188
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
@@ -113,38 +112,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LAE should set the access register corresponding to the first operand,
-instead, it always modifies access register 1.
+Add a small test to prevent regressions. Userspace runs in primary
+mode, so LAE should always set the access register to 0.
 
-Co-developed-by: Ido Plat <Ido.Plat@ibm.com>
-Cc: qemu-stable@nongnu.org
-Fixes: a1c7610a6879 ("target-s390x: implement LAY and LAEY instructions")
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- target/s390x/tcg/translate.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/tcg/s390x/Makefile.target |  1 +
+ tests/tcg/s390x/lae.c           | 25 +++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
+ create mode 100644 tests/tcg/s390x/lae.c
 
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 62ab2be8b12..8df00b7df9f 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -3221,6 +3221,7 @@ static DisasJumpType op_mov2e(DisasContext *s, DisasOps *o)
- {
-     int b2 = get_field(s, b2);
-     TCGv ar1 = tcg_temp_new_i64();
-+    int r1 = get_field(s, r1);
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index 0e670f3f8b9..30994dcf9c2 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -44,6 +44,7 @@ TESTS+=clgebr
+ TESTS+=clc
+ TESTS+=laalg
+ TESTS+=add-logical-with-carry
++TESTS+=lae
  
-     o->out = o->in2;
-     o->in2 = NULL;
-@@ -3244,7 +3245,7 @@ static DisasJumpType op_mov2e(DisasContext *s, DisasOps *o)
-         break;
-     }
- 
--    tcg_gen_st32_i64(ar1, tcg_env, offsetof(CPUS390XState, aregs[1]));
-+    tcg_gen_st32_i64(ar1, tcg_env, offsetof(CPUS390XState, aregs[r1]));
-     return DISAS_NEXT;
- }
- 
+ cdsg: CFLAGS+=-pthread
+ cdsg: LDFLAGS+=-pthread
+diff --git a/tests/tcg/s390x/lae.c b/tests/tcg/s390x/lae.c
+new file mode 100644
+index 00000000000..661e95f9978
+--- /dev/null
++++ b/tests/tcg/s390x/lae.c
+@@ -0,0 +1,25 @@
++/*
++ * Test the LOAD ADDRESS EXTENDED instruction.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <stdlib.h>
++
++int main(void)
++{
++    unsigned long long ar = -1, b2 = 100000, r, x2 = 500;
++    int tmp;
++
++    asm("ear %[tmp],%[r]\n"
++        "lae %[r],42(%[x2],%[b2])\n"
++        "ear %[ar],%[r]\n"
++        "sar %[r],%[tmp]"
++        : [tmp] "=&r" (tmp), [r] "=&r" (r), [ar] "+r" (ar)
++        : [b2] "r" (b2), [x2] "r" (x2)
++        : "memory");
++    assert(ar == 0xffffffff00000000ULL);
++    assert(r == 100542);
++
++    return EXIT_SUCCESS;
++}
 -- 
 2.43.0
 
