@@ -2,101 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196C78290C9
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 00:24:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A79F829117
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 00:58:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNLRe-00044h-My; Tue, 09 Jan 2024 18:23:42 -0500
+	id 1rNLxL-00069W-Ia; Tue, 09 Jan 2024 18:56:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rNLRb-00044H-5K; Tue, 09 Jan 2024 18:23:39 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rNLRU-0005Q0-Nc; Tue, 09 Jan 2024 18:23:38 -0500
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 409M5VjE018197; Tue, 9 Jan 2024 23:23:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=G19NID2aSlYql9rQq5RhGSegCnfaWL9AR0yiCQNgxMQ=;
- b=E/eTq6xzZtmgTUAVV3PmmROYeZkqVwugLYzsdaKeBmLaRQcGwtofhBKGoMPSDLKUyxs3
- prXmhdz2uwt/nveX9OSdalhhxcQS8LSmLUlSZ3okAkwtbEor1FDSHxgSCtTSJ8WKd0Oq
- GsrO9tDErE1XWKuFoA6csfmCZPVAUwspJUqN5wDVkTvHKVs0gnYFb+nAQbx900X9u0gm
- naMtqXngi3ER7i8lBkkelQKM2PSlOLzdUVMZVogCwAhWn/IMqS7xpVCjwuvwuduOcIg9
- JLYolpGaJrkR4kPj6eUxwVqn8xiC01YAO1Wn6YHVeQSGP6BVcrDhzzIgR81cnSNtpEqf yA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vhdx4j7wb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 23:23:28 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 409MsL4c000394;
- Tue, 9 Jan 2024 23:23:27 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vhdx4j7vg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 23:23:27 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 409MSp3d022916; Tue, 9 Jan 2024 23:23:26 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfj6nhs0v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 23:23:26 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 409NNOMX9175664
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Jan 2024 23:23:24 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 946D120043;
- Tue,  9 Jan 2024 23:23:24 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 31E8420040;
- Tue,  9 Jan 2024 23:23:24 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.60.193])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  9 Jan 2024 23:23:24 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 2/2] tests/tcg/s390x: Test LOAD ADDRESS EXTENDED
-Date: Wed, 10 Jan 2024 00:22:23 +0100
-Message-ID: <20240109232319.600102-3-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240109232319.600102-1-iii@linux.ibm.com>
-References: <20240109232319.600102-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1rNLxJ-00069O-H7
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 18:56:25 -0500
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1rNLx8-0004QI-VG
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 18:56:25 -0500
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-50eaa8b447bso3748704e87.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 15:56:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1704844559; x=1705449359; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=deI9GyKmvHyCD066H+Wu2YAjGfRVp8M+T1N2HV8O5I4=;
+ b=ZWQZMk6WwM4wkC6dlWdlFUws+eI2qskBnDOU4ZFnPFLE9nrZMd2n+0zhUyOD4jAmrN
+ 5S26/BH299ssTGgkldn0rk3m48bIbDqm5uCUXRRrmMgUZMroO+bXZLFzD+IgeMMcuudp
+ 6SWkj9/AbBvFF12ztdfdOF+gogxuAJ+LjVtwiqy1PLhewoai9Ov0s5Ris+gs+T46jnfA
+ dcZgeuMSk+sU12qUWHZLqVHu4aXS7dvCnVMBIpDVa1f5YPKjddeWO+b3YfatGFk59q3G
+ 1qo8uPzDNbgyWM2CMmwUp5kEq0+9BiY/j8xapZMTVHnk1LsfPpe7Thg2I99UjEe91t1j
+ awNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704844559; x=1705449359;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=deI9GyKmvHyCD066H+Wu2YAjGfRVp8M+T1N2HV8O5I4=;
+ b=emlBqUInUCjj25JVdq8zcYoDVdA/jIkvDzoUEh5DoKhLzUmkAliVNBLeUj8YPavaAK
+ LanhoTdTwq3ZgZzjPcePjdD9qLk8HutYSKk5vN793vdthJiKq8NP/FuwPloh6LFmaKyJ
+ At1ZzZlXoH3Z7k5fGfVIRnPS9q36jD3mz4Hs/w34lR/nToKJBQqTzMCKSSNLpaTzi8ZP
+ NniLKvfkIaC17eyS0SqdEgzc8/2ZO6gnsyHWVpj5nECgYGJcVARr6HUjD4Y4UFPiCt4X
+ QSH7XPAW/0lwgBZax+LmUzMMUA9tbFOy0vIqWkgfjFEysA4LkKIhyknfgTxR3QkQbTzb
+ 2Htw==
+X-Gm-Message-State: AOJu0YyhQ/fWlGH46pLgrXKsrrnAXx5UN8YcoIUrW1sIaX8Z5g7Mg4Iw
+ KprHIzGj6ADMDsiWG/7AYBTUfmRokkGwSj5G/b5DcYZSjSHVkQ==
+X-Google-Smtp-Source: AGHT+IH8niV1qNroh8QduYcojlVVDQFS9X2GkpYdi7ulR8Zvv4CkOMPH0UDDuHXqgIb4u1lPoAwHj9mmHs1ntGL5UpY=
+X-Received: by 2002:a05:6512:1587:b0:50e:7be8:4705 with SMTP id
+ bp7-20020a056512158700b0050e7be84705mr24917lfb.260.1704844558979; Tue, 09 Jan
+ 2024 15:55:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fpcERjsQ5VWOBspQjHuIx57VBeKWecER
-X-Proofpoint-ORIG-GUID: G8G-ZgqmWReH6KWIDjMnA45jRFxuOAXe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-09_11,2024-01-09_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
- mlxscore=0 clxscore=1015 bulkscore=0 adultscore=0 mlxlogscore=737
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401090188
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20240101075315.43167-2-horenchuang@bytedance.com>
+ <ZZXX95yvk/WTIBT/@memverge.com>
+ <CAAYibXjZ0HSCqMrzXGv62cMLncS_81R3e1uNV5Fu4CPm0zAtYw@mail.gmail.com>
+ <ZZwtmiucNXxmrZ7S@memverge.com>
+ <CAAYibXhfUu8dMwvBmWz4P6N9-yLao0QwAFozk4rS_0GPsEZd7Q@mail.gmail.com>
+ <CAAYibXgf6i5+aqopCrVu5ZveDJ9WP2M2AJaUUaj5qFXFHQQxmQ@mail.gmail.com>
+ <ZZydwBTS4NeSizzb@memverge.com>
+ <CAAYibXhY5p6VN7yAMpmfAgHO+gsf51dvNw68y__RYV+43CVVLQ@mail.gmail.com>
+ <ZZ2lNoTQ8hDHADTT@memverge.com>
+ <CAAYibXjcVu-13h9jHpt2fZ3wmjz-_Dyj+WfUh0AEpid87GLriQ@mail.gmail.com>
+ <ZZ3FAegN/ezu9Ghy@memverge.com>
+In-Reply-To: <ZZ3FAegN/ezu9Ghy@memverge.com>
+From: Hao Xiang <hao.xiang@bytedance.com>
+Date: Tue, 9 Jan 2024 15:55:46 -0800
+Message-ID: <CAAYibXhTUgd+z3Xqk7yeWqQmHxtDmf3Ud_01iEHS0KRj9GhjUw@mail.gmail.com>
+Subject: Re: [External] Re: [QEMU-devel][RFC PATCH 1/1] backends/hostmem:
+ qapi/qom: Add an ObjectOption for memory-backend-* called HostMemType and its
+ arg 'cxlram'
+To: Gregory Price <gregory.price@memverge.com>
+Cc: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Gregory Price <gourry.memverge@gmail.com>, 
+ Fan Ni <fan.ni@samsung.com>, Ira Weiny <ira.weiny@intel.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eric Blake <eblake@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org, 
+ "Ho-Ren (Jack) Chuang" <horenc@vt.edu>, linux-cxl@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-lf1-x130.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,60 +108,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a small test to prevent regressions. Userspace runs in primary
-mode, so LAE should always set the access register to 0.
+On Tue, Jan 9, 2024 at 2:13=E2=80=AFPM Gregory Price <gregory.price@memverg=
+e.com> wrote:
+>
+> On Tue, Jan 09, 2024 at 01:27:28PM -0800, Hao Xiang wrote:
+> > On Tue, Jan 9, 2024 at 11:58=E2=80=AFAM Gregory Price
+> > <gregory.price@memverge.com> wrote:
+> > >
+> > > If you drop this line:
+> > >
+> > > -numa node,memdev=3Dvmem0,nodeid=3D1
+> >
+> > We tried this as well and it works after going through the cxlcli
+> > process and created the devdax device. The problem is that without the
+> > "nodeid=3D1" configuration, we cannot connect with the explicit per num=
+a
+> > node latency/bandwidth configuration "-numa hmat-lb". I glanced at the
+> > code in hw/numa.c, parse_numa_hmat_lb() looks like the one passing the
+> > lb information to VM's hmat.
+> >
+>
+> Yeah, this is what Jonathan was saying - right now there isn't a good
+> way (in QEMU) to pass the hmat/cdat stuff down through the device.
+> Needs to be plumbed out.
+>
+> In the meantime: You should just straight up drop the cxl device from
+> your QEMU config.  It doesn't actually get you anything.
+>
+> > From what I understand so far, the guest kernel will dynamically
+> > create a numa node after a cxl devdax device is created. That means we
+> > don't know the numa node until after VM boot. 2. QEMU can only
+> > statically parse the lb information to the VM at boot time. How do we
+> > connect these two things?
+>
+> during boot, the kernel discovers all the memory regions exposed to
+> bios. In this qemu configuration you have defined:
+>
+> region 0: CPU + DRAM node
+> region 1: DRAM only node
+> region 2: CXL Fixed Memory Window (the last line of the cxl stuff)
+>
+> The kernel reads this information on boot and reserves 1 numa node for
+> each of these regions.
+>
+> The kernel then automatically brings up regions 0 and 1 in nodes 0 and 1
+> respectively.
+>
+> Node2 sits dormant until you go through the cxl-cli startup sequence.
+>
+>
+> What you're asking for is for the QEMU team to plumb hmat/cdat
+> information down through the type3 device.  I *think* that is presently
+> possible with a custom CDAT file - but Jonathan probably has more
+> details on that.  You'll have to go digging for answers on that one.
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/s390x/Makefile.target |  1 +
- tests/tcg/s390x/lae.c           | 25 +++++++++++++++++++++++++
- 2 files changed, 26 insertions(+)
- create mode 100644 tests/tcg/s390x/lae.c
+I think this is exactly what I was looking for. When we started with
+the idea of having an explicit CXL memory backend, we wanted to
+1) Bind a virtual CXL device to an actual CXL memory node on host.
+2) Pass the latency/bandwidth information from the CXL backend into
+the virtual CXL device.
+I didn't have a concrete idea of how to do 2)
+With the discussion here, I learned that the information is passed
+from CDAT. Just looked into the virtual CXL code and found that
+ct3_build_cdat_entries_for_mr() is the function that builds this
+information. But the latency and bandwidth there are currently
+hard-coded. I think it makes sense to have an explicit CXL memory
+backend where QEMU can query the CXL memory attributes from the host
+and pass that information from the CXL backend into the virtual CXL
+type-3 device.
 
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 0e670f3f8b9..30994dcf9c2 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -44,6 +44,7 @@ TESTS+=clgebr
- TESTS+=clc
- TESTS+=laalg
- TESTS+=add-logical-with-carry
-+TESTS+=lae
- 
- cdsg: CFLAGS+=-pthread
- cdsg: LDFLAGS+=-pthread
-diff --git a/tests/tcg/s390x/lae.c b/tests/tcg/s390x/lae.c
-new file mode 100644
-index 00000000000..661e95f9978
---- /dev/null
-+++ b/tests/tcg/s390x/lae.c
-@@ -0,0 +1,25 @@
-+/*
-+ * Test the LOAD ADDRESS EXTENDED instruction.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <stdlib.h>
-+
-+int main(void)
-+{
-+    unsigned long long ar = -1, b2 = 100000, r, x2 = 500;
-+    int tmp;
-+
-+    asm("ear %[tmp],%[r]\n"
-+        "lae %[r],42(%[x2],%[b2])\n"
-+        "ear %[ar],%[r]\n"
-+        "sar %[r],%[tmp]"
-+        : [tmp] "=&r" (tmp), [r] "=&r" (r), [ar] "+r" (ar)
-+        : [b2] "r" (b2), [x2] "r" (x2)
-+        : "memory");
-+    assert(ar == 0xffffffff00000000ULL);
-+    assert(r == 100542);
-+
-+    return EXIT_SUCCESS;
-+}
--- 
-2.43.0
+>
+>
+> Now - even if you did that - the current state of the cxl-type3 device
+> is *not what you want* because your memory accesses will be routed
+> through the read/write functions in the emulated device.
+>
+> What Jonathan and I discussed on the other thread is how you might go
+> about slimming this down to allow pass-through of the memory without the
+> need for all the fluff.  This is a non-trivial refactor of the existing
+> device, so i would not expect that any time soon.
+>
+> At the end of the day, quickest way to get-there-from-here is to just
+> drop the cxl related lines from your QEMU config, and keep everything
+> else.
 
+Agreed. We need the kernel to be capable of reading the memory
+attributes from HMAT and establish the correct memory tier for
+system-DRAM (on a CPUless numa node). Currently system-DRAM is assumed
+to always be fast tier.
+
+>
+> >
+> > Assuming that the same issue applies to a physical server with CXL.
+> > Were you able to see a host kernel getting the correct lb information
+> > for a CXL devdax device?
+> >
+>
+> Yes, if you bring up a CXL device via cxl-cli on real hardware, the
+> subsequent numa node ends up in the "lower tier" of the memory-tiering
+> infrastructure.
+>
+> ~Gregory
 
