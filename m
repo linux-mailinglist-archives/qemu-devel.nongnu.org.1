@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6E3828C27
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 19:11:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A8E828C3A
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 19:13:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNGZJ-0004Ju-RM; Tue, 09 Jan 2024 13:11:17 -0500
+	id 1rNGZL-0004dL-Tl; Tue, 09 Jan 2024 13:11:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNGYm-0002wj-80
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:10:45 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNGYt-00034u-Vr
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:10:53 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNGYk-0004Pk-31
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:10:43 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-33761e291c1so1894867f8f.0
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 10:10:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNGYp-0004Rr-MT
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:10:50 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40e5521db08so125035e9.2
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 10:10:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704823838; x=1705428638; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704823844; x=1705428644; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZzKRv8rSt0g4enhYH8TEbkEK8L7Z/ollqT46K3u21b8=;
- b=v8HxgRQN9EeB06GcX5hDLJ/nJIVOVpjJ+53DlAJRyrS80bSSmW4Yb+xXMSiNL5hXO0
- 17OPdlnPNvb2MeOOlOZWGKAPcInbtrKAfQWAHehraAy+gE5enCZozL6x16shc28NVjX7
- j0/2MMC0c9bFzorPiB5rvgpPRUdtAI6wozoiEXClDJ1+CDzgIMY3fpaSjoIiLbmedMst
- 7HHjcOMH7AfPfM5R3qTR1TADJACHWU0RVrOisPg1h7hIkG5uJJAI8keSpBp7gbtKQCiw
- x0Gs8n6M+UDl+NiRvMAn1JuVqOS34rscO2Fcx73YzqFyDam6RX3NB9qXOgfbIHWjSO0p
- arXQ==
+ bh=rKXURkFhsCy0V0ubg/nJYR4pTGn8xQxbtylatTgX1X4=;
+ b=jyKL/EmkJBfcvnSk2PlAVIRimiezjSgltVr4D4EaSb3l8Kr9EboA1kir9CBRR+CCik
+ uCz127rGl50WbWPnyLodN8I4M2mzAvAoGjUBrTxC8EEGpiy6ri9YwQkC8ib1r6erIFZ4
+ wj70R6daC+0cM0d3TlMmIXSeYU2DTrpqRM49IiSU6jWM7oOGUvYyNUqGnGwTdT1FyRPr
+ 9OSdQ8lwSJyOW3ZHEgqSoTqI3qKjilnitAh++qwGV0SKMZtUGMr9j/kZ6TbScrBAeSg6
+ YmEvaqV1+ev84lpnjf8RDyDdYHP8f1xrfE9B0Y9zgCr1v29cKoSfYgDR5xKEx+AIULJD
+ Dwfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704823838; x=1705428638;
+ d=1e100.net; s=20230601; t=1704823844; x=1705428644;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZzKRv8rSt0g4enhYH8TEbkEK8L7Z/ollqT46K3u21b8=;
- b=xObnmBE3tPoLvJLb3UMUmlsKAiTbO1B8iTDGcdDM6M1+HWlOXAVy7JuMo3Du/LrZsR
- evwwxICZLm6R/Ezy595b7X8Pde7BdLO9rqhifvNtXvD5g/ULY07eKsQwMzcTEk2MYL2c
- JxO4Om8vIyKjmWz9Zar3b+Vgq3jpmnWb92Fym4kNY1SIKBxqHlOdR5cc8UWhGLQOLVkY
- hjuN5ZElVejzG3tugSA4lqLg9lxi6HkjWAeiU5I/XtzVbA0l6ZybLB3UIWkAixK6VPvi
- 7W6zOhhvG/DMcGnjifieRDGzRARjThr4kd4rn3T65R0mncFm4MbV5sr4peNHr0fFyJ2v
- kyXw==
-X-Gm-Message-State: AOJu0YwFoVHzyDWXxHCEDLn4vC7HIijQTSWKVcIreZBZBCB+zYxdPhFT
- S8C6MgBKVU+qTbsrZrnISILbk87pOSX7TUACnnfqQ3OArxUHoA==
-X-Google-Smtp-Source: AGHT+IH/3kbQYMH94lAPMzxFc6qC/itYnaoRJaclfEFfMxujnUkK+tg1K29wr/U1N6iYR3akTCtTTg==
-X-Received: by 2002:a05:600c:298c:b0:40d:5aea:c89b with SMTP id
- r12-20020a05600c298c00b0040d5aeac89bmr648301wmd.64.1704823838301; 
- Tue, 09 Jan 2024 10:10:38 -0800 (PST)
+ bh=rKXURkFhsCy0V0ubg/nJYR4pTGn8xQxbtylatTgX1X4=;
+ b=IHwsnuuCVzSRrv5RzryQNOuuSI3dd7GLvcTuqBdhRcux9MK7tkWPAU6IoHR3eslDJx
+ 6CWgRLakwfcHfK6Fw7RVP4hUycfH7zUXxeUpRB6RYHrE4m56zwqVd5xj7o9XpM3m+/Vi
+ Y8vnBnBhK2tnAmyNpCeTqitnueK+0deQwpAzT5ryMpyM9J7hoh3AJDUD/gchz97xmOr3
+ AsInkcjS8S2plX8aT4FHwB9aZGj7ju08flR41s0eFlNcYq5RMRmtziC8udIN5CPeUMbv
+ QFqP6w1PtIsahZ9QKW8it9py+I29GosLxLYMe4ZIisb+VvCV5E+Ahd53LnbFjd6AJSxM
+ 9ZUg==
+X-Gm-Message-State: AOJu0YwLtQrkqc/UjSQLbaM24GK/EdP9LwSmpbC/BKk9KEMyV+A5w8SI
+ Ypmb65fTNtgYBrLV05uoKpKBDfKklV8pVV7fQ/C5FxM0QEbAiA==
+X-Google-Smtp-Source: AGHT+IHjV0TvmBLA9WFnSsyWWHMR3APuO4MZjZIF0jPXU/Ws3vRpGE54iQvFItP+9NQO3t8cNQKgAQ==
+X-Received: by 2002:a05:600c:154d:b0:40e:3dad:efe8 with SMTP id
+ f13-20020a05600c154d00b0040e3dadefe8mr3265076wmg.87.1704823844642; 
+ Tue, 09 Jan 2024 10:10:44 -0800 (PST)
 Received: from m1x-phil.lan (rsa59-h02-176-184-32-47.dsl.sta.abo.bbox.fr.
  [176.184.32.47]) by smtp.gmail.com with ESMTPSA id
- t6-20020a05600c198600b0040e4a7a7ca3sm4385674wmq.43.2024.01.09.10.10.36
+ p11-20020a5d59ab000000b00336ebf93416sm3047825wrr.17.2024.01.09.10.10.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 09 Jan 2024 10:10:37 -0800 (PST)
+ Tue, 09 Jan 2024 10:10:44 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
@@ -67,18 +67,18 @@ Cc: qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 10/14] hw/arm: Prefer arm_feature(EL2) over
- object_property_find(has_el2)
-Date: Tue,  9 Jan 2024 19:09:25 +0100
-Message-ID: <20240109180930.90793-11-philmd@linaro.org>
+Subject: [PATCH v2 11/14] hw/arm: Prefer arm_feature(CBAR*) over
+ object_property_find(reset-cbar)
+Date: Tue,  9 Jan 2024 19:09:26 +0100
+Message-ID: <20240109180930.90793-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240109180930.90793-1-philmd@linaro.org>
 References: <20240109180930.90793-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,69 +101,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "has_el2" property is added to ARMCPU when the
-ARM_FEATURE_EL2 feature is available. Rather than
+The "reset-cbar" property is added to ARMCPU when the
+ARM_FEATURE_CBAR[_RO] features are available. Rather than
 checking whether the QOM property is present, directly
-check the feature.
+check the features.
 
 Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/vexpress.c  | 3 ++-
- hw/arm/virt.c      | 2 +-
- hw/cpu/a15mpcore.c | 6 ++++--
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ hw/arm/highbank.c | 3 ++-
+ hw/arm/sbsa-ref.c | 3 ++-
+ hw/arm/vexpress.c | 3 ++-
+ hw/arm/virt.c     | 3 ++-
+ 4 files changed, 8 insertions(+), 4 deletions(-)
 
+diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
+index c21e18d08f..b06a727c06 100644
+--- a/hw/arm/highbank.c
++++ b/hw/arm/highbank.c
+@@ -211,7 +211,8 @@ static void calxeda_init(MachineState *machine, enum cxmachines machine_id)
+         object_property_set_int(cpuobj, "psci-conduit", QEMU_PSCI_CONDUIT_SMC,
+                                 &error_abort);
+ 
+-        if (object_property_find(cpuobj, "reset-cbar")) {
++        if (arm_feature(&cpu->env, ARM_FEATURE_CBAR) ||
++            arm_feature(&cpu->env, ARM_FEATURE_CBAR_RO)) {
+             object_property_set_int(cpuobj, "reset-cbar", MPCORE_PERIPHBASE,
+                                     &error_abort);
+         }
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index 477dca0637..c073c462c7 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -770,7 +770,8 @@ static void sbsa_ref_init(MachineState *machine)
+         numa_cpu_pre_plug(&possible_cpus->cpus[cs->cpu_index], DEVICE(cpuobj),
+                           &error_fatal);
+ 
+-        if (object_property_find(cpuobj, "reset-cbar")) {
++        if (arm_feature(cpu_env(cs), ARM_FEATURE_CBAR) ||
++            arm_feature(cpu_env(cs), ARM_FEATURE_CBAR_RO)) {
+             object_property_set_int(cpuobj, "reset-cbar",
+                                     sbsa_ref_memmap[SBSA_CPUPERIPHS].base,
+                                     &error_abort);
 diff --git a/hw/arm/vexpress.c b/hw/arm/vexpress.c
-index fd981f4c33..753a645c05 100644
+index 753a645c05..ea3c76f3e1 100644
 --- a/hw/arm/vexpress.c
 +++ b/hw/arm/vexpress.c
-@@ -218,12 +218,13 @@ static void init_cpus(MachineState *ms, const char *cpu_type,
-     /* Create the actual CPUs */
-     for (n = 0; n < smp_cpus; n++) {
-         Object *cpuobj = object_new(cpu_type);
-+        ARMCPU *cpu = ARM_CPU(cpuobj);
- 
-         if (!secure) {
-             object_property_set_bool(cpuobj, "has_el3", false, NULL);
-         }
-         if (!virt) {
--            if (object_property_find(cpuobj, "has_el2")) {
-+            if (arm_feature(&cpu->env, ARM_FEATURE_EL2)) {
-                 object_property_set_bool(cpuobj, "has_el2", false, NULL);
+@@ -229,7 +229,8 @@ static void init_cpus(MachineState *ms, const char *cpu_type,
              }
          }
+ 
+-        if (object_property_find(cpuobj, "reset-cbar")) {
++        if (arm_feature(&cpu->env, ARM_FEATURE_CBAR) ||
++            arm_feature(&cpu->env, ARM_FEATURE_CBAR_RO)) {
+             object_property_set_int(cpuobj, "reset-cbar", periphbase,
+                                     &error_abort);
+         }
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 2793121cb4..35eb01a3dc 100644
+index 35eb01a3dc..7e7350fec2 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -2146,7 +2146,7 @@ static void machvirt_init(MachineState *machine)
-             object_property_set_bool(cpuobj, "has_el3", false, NULL);
+@@ -2168,7 +2168,8 @@ static void machvirt_init(MachineState *machine)
+             object_property_set_bool(cpuobj, "lpa2", false, NULL);
          }
  
--        if (!vms->virt && object_property_find(cpuobj, "has_el2")) {
-+        if (!vms->virt &&  arm_feature(cpu_env(cs), ARM_FEATURE_EL2)) {
-             object_property_set_bool(cpuobj, "has_el2", false, NULL);
-         }
- 
-diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
-index cebfe142cf..1fa079b3b8 100644
---- a/hw/cpu/a15mpcore.c
-+++ b/hw/cpu/a15mpcore.c
-@@ -73,9 +73,11 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
-             qdev_prop_set_bit(gicdev, "has-security-extensions", true);
-         }
-         /* Similarly for virtualization support */
--        has_el2 = object_property_find(cpuobj, "has_el2") &&
-+        has_el2 = arm_feature(cpu_env(cpu), ARM_FEATURE_EL2);
-+        if (has_el2) {
-             object_property_get_bool(cpuobj, "has_el2", &error_abort);
--        qdev_prop_set_bit(gicdev, "has-virtualization-extensions", has_el2);
-+            qdev_prop_set_bit(gicdev, "has-virtualization-extensions", true);
-+        }
-     }
- 
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->gic), errp)) {
+-        if (object_property_find(cpuobj, "reset-cbar")) {
++        if (arm_feature(cpu_env(cs), ARM_FEATURE_CBAR) ||
++            arm_feature(cpu_env(cs), ARM_FEATURE_CBAR_RO)) {
+             object_property_set_int(cpuobj, "reset-cbar",
+                                     vms->memmap[VIRT_CPUPERIPHS].base,
+                                     &error_abort);
 -- 
 2.41.0
 
