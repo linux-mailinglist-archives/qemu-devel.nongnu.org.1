@@ -2,110 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F8A828AA5
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 18:04:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E38828B09
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 18:20:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNFVS-0002qz-Iz; Tue, 09 Jan 2024 12:03:14 -0500
+	id 1rNFl8-0001y6-T4; Tue, 09 Jan 2024 12:19:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rNFVQ-0002mb-LA
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:03:12 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1rNFl6-0001xO-4K
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:19:24 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rNFVO-0006RT-Uw
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:03:12 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id B7C221F809;
- Tue,  9 Jan 2024 17:03:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704819787; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uYXFNZRsF0NjaEtss/CRMckN4kOG7hn5WO9W9DLnkNs=;
- b=pfSubKhVmE3ljVYsk3NFT86Vkr20SN+kjffmGpPztC1rYy13o2s/dhZ/CoNFCpEQUTOnvI
- N5im0m2yOpinMrkS1H5i4QQ0Am8APaXkdtG/gziEAvo1KUJRlcPl7TwzvqOiCjq2zueQeV
- kdV3rxuFNIBV1ysTlKzDFTAhkN0j9n8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704819787;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uYXFNZRsF0NjaEtss/CRMckN4kOG7hn5WO9W9DLnkNs=;
- b=aRX9ONCI5IcVPU3oCUpuGqyILAYDhaUmaSOMWCoEbjLn10WzjoXQFcnvFG2i1CA5TjLTk7
- Vl77KwYMWjoAhuCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704819787; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uYXFNZRsF0NjaEtss/CRMckN4kOG7hn5WO9W9DLnkNs=;
- b=pfSubKhVmE3ljVYsk3NFT86Vkr20SN+kjffmGpPztC1rYy13o2s/dhZ/CoNFCpEQUTOnvI
- N5im0m2yOpinMrkS1H5i4QQ0Am8APaXkdtG/gziEAvo1KUJRlcPl7TwzvqOiCjq2zueQeV
- kdV3rxuFNIBV1ysTlKzDFTAhkN0j9n8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704819787;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uYXFNZRsF0NjaEtss/CRMckN4kOG7hn5WO9W9DLnkNs=;
- b=aRX9ONCI5IcVPU3oCUpuGqyILAYDhaUmaSOMWCoEbjLn10WzjoXQFcnvFG2i1CA5TjLTk7
- Vl77KwYMWjoAhuCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2A7A51370C;
- Tue,  9 Jan 2024 17:03:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 74RvOEp8nWV1FgAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 09 Jan 2024 17:03:06 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: peterx@redhat.com, qemu-devel@nongnu.org
-Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, peterx@redhat.com, Alex Williamson
- <alex.williamson@redhat.com>, Jason Wang <jasowang@redhat.com>, Bandan Das
- <bdas@redhat.com>, Prasad Pandit <ppandit@redhat.com>
-Subject: Re: [PATCH 05/10] docs/migration: Split "Debugging" and "Firmware"
-In-Reply-To: <20240109064628.595453-6-peterx@redhat.com>
-References: <20240109064628.595453-1-peterx@redhat.com>
- <20240109064628.595453-6-peterx@redhat.com>
-Date: Tue, 09 Jan 2024 14:03:04 -0300
-Message-ID: <87sf36783b.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1rNFkq-0004xG-CQ
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 12:19:23 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40e461c1f5cso26855405e9.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 09:19:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1704820746; x=1705425546;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TbCumLLjYRCuAyIHcutRJ3p/VueAcKdHkiZb64FNRoo=;
+ b=C+0ih+TXKmnygJgMLBAILDXrJg0UsnOIDtzONtEvE5h5B70Bx8NgNf8lVHPUOWk2eO
+ KEC72NOVB2jqbQD+i16VyVBsH7ESl6l9CLECc2s/6PIefrDWBJprRZNTmpFPRL2oEvEy
+ 1cbPMoxbEtx0WqXyTY8vUzgM7JePDCVl2Y1+lDgzE9a0QuUUpmO+1VQjPJFTTEe3Uq3w
+ Wn50jKGErBcWc8VP5pihEfZOqJNnMUHPUDyIwhmO0GoXPZ8mZ3ookkSXIWGhJxuNWpSq
+ Kd+GfmK6IbmgvBbUeer0ZY1X8Or4TzZOdpocM8tu6+9GCvwlHg1jQwHlt/beskIohPB6
+ UDIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704820746; x=1705425546;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TbCumLLjYRCuAyIHcutRJ3p/VueAcKdHkiZb64FNRoo=;
+ b=iJ3aJ+v+HN5VnN0AvjXOG7OGEXqDrRvanoJUmQEJP6omqRDVSehgSZ6h7pJexsQ7+A
+ z2b7W+61RHJkHUk3dPZZp68QcsvqGLWpocphoYOFs21DoYTW7qRubAt/vukse220A/VG
+ mfa6z5hHana+vJjbMcsqbmdkk8mmaeMFFZoQ0v+kQFRdpYF/M2sssrppdD9H2SE8INTH
+ XLl+lZxLMNUG2TgApmmlJSQeEnW0Rx31CuEkyz8TRhyQ5r9/RFkhEOSQ/yqrMcF1omm9
+ xBo9Hmk8fbzrNjETPpUevBwsU2lwzVjv5g1VZds+b+i5DC04+0BMuxkZaiqTat7mHU7L
+ /YCQ==
+X-Gm-Message-State: AOJu0YwYfpubW2ohzZ7V2bxPt8RvIEllNYU83pE4B0S4sUHFGqIQtPaK
+ WZ75YEWWtw+4if6VMwbismLNMLJuJZAHB/anhsOz/D9dn8uZkw==
+X-Google-Smtp-Source: AGHT+IEE5T8PHcP2iom7puaFp2dzwp6v3Dz5FC3IYTUUgGSDAQqhq1fyNvRx403NSIpulg4HkOkiLA==
+X-Received: by 2002:a7b:c38f:0:b0:40e:4e65:a6e0 with SMTP id
+ s15-20020a7bc38f000000b0040e4e65a6e0mr496441wmj.5.1704820745891; 
+ Tue, 09 Jan 2024 09:19:05 -0800 (PST)
+Received: from rockhopper.ba.rivosinc.com (214.11.169.217.in-addr.arpa.
+ [217.169.11.214]) by smtp.gmail.com with ESMTPSA id
+ bg30-20020a05600c3c9e00b0040d62f89381sm4350308wmb.35.2024.01.09.09.19.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Jan 2024 09:19:05 -0800 (PST)
+From: Rob Bradford <rbradford@rivosinc.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ Rob Bradford <rbradford@rivosinc.com>
+Subject: [PATCH 0/3] target/riscv: Add support for 'B' extension
+Date: Tue,  9 Jan 2024 17:07:34 +0000
+Message-ID: <20240109171848.32237-1-rbradford@rivosinc.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: B7C221F809
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pfSubKhV;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aRX9ONCI
-X-Spam-Score: -6.40
-X-Spamd-Result: default: False [-6.40 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-2.89)[99.54%];
- MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[9]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,12 +91,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-peterx@redhat.com writes:
+Add support for the new (fast track) 'B' extension [1] this extension
+uses the misa.B bit to indicate that the Zba, Zbb and Zbs extensions are
+present.
 
-> From: Peter Xu <peterx@redhat.com>
->
-> Move the two sections into a separate file called "best-practises.rst".
+Since this extension is not yet frozen it is exposed via the 'x-b' cpu
+option. The validation logic is based on the new approach taken for the
+'G' extension. [2]
 
-s/practises/practices/
+The specification handles backward compatability: The misa.B bit may be
+set if Zba, Zbb and Zbs are present but in order to not break existing
+systems the bit is not required to be set if they are present. As such
+even though Zba, Zbb and Zbs default to on in QEMU this extension is not
+enabled by default in any cpu other than the 'max' variant.
+
+Cheers,
+
+Rob
+
+[1] - https://github.com/riscv/riscv-b
+[2] - https://patchew.org/QEMU/20231218125334.37184-1-dbarboza@ventanamicro.com/20231218125334.37184-16-dbarboza@ventanamicro.com/
+
+Rob Bradford (3):
+  target/riscv: Add infrastructure for 'B' MISA extension
+  target/riscv: Add step to validate 'B' extension
+  target/riscv: Enable 'B' extension on max CPU type
+
+ target/riscv/cpu.c         |  5 +++--
+ target/riscv/cpu.h         |  1 +
+ target/riscv/tcg/tcg-cpu.c | 37 ++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 40 insertions(+), 3 deletions(-)
+
+-- 
+2.43.0
 
 
