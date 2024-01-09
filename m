@@ -2,85 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA422828F6A
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 23:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4F7828F74
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 23:10:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNKDS-000445-2h; Tue, 09 Jan 2024 17:04:58 -0500
+	id 1rNKHb-0007IX-6Y; Tue, 09 Jan 2024 17:09:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rNKDN-0003xy-MT
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 17:04:53 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rNKD8-0001x8-9M
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 17:04:53 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d3ec3db764so12874675ad.2
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 14:04:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704837873; x=1705442673; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fvgMdSQZGX0dlFUyDOqK4oqeb8GiJWe/DqC6EyWEp2o=;
- b=iiW9b/jNIyo0fdVrYLXZUk6EMXCaCDFlTMw//egD/Ybd/QSQ9lKKQg9R8mOisAIqct
- Eb0vx9dUY8bz6m8ZTzGqeGQiA2AgJV8ueMQfTLSwb5NHQOYl238lK7kfSX3aso+1WKzM
- XZdpnX7NuPn9Raru2EPReSXNt60xmyM6+k5xFEJvO7bWmaS51jz1b+VGCxM2hYvRDLDY
- HvZA0fq+DSc0yxPi85xCZi13/fnYfA7sKIHfHY4dj6AvGiyC3iYfsam6RMKmlcReyZUA
- NTHGOkhn1UeBkslr+AdWimfnBSP5R/ft/DFAOVEFg1Umk19kWMczn3D8XBvniwAv0r6T
- y7DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704837873; x=1705442673;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fvgMdSQZGX0dlFUyDOqK4oqeb8GiJWe/DqC6EyWEp2o=;
- b=tQwpOaLcazYJrmtwJjHWkMoIon/+inEQ2ZntHPeP509zNg2KYSfQakA2+6YhwXVJgF
- iQ52zPWs4SBGHQAKR9TwEn7gpUbf57D2bjzVk4GXLPm8dAwVxIVmTLZXmKHbdFP0jn97
- nzPP8F8RLLExRCEHxMm922tcC+KImQz5YZzxjJL7aiwR6g5hLDEOWaOnb12HES8ShLdB
- 9MUj6w4HYFr1IpMopzfQoFrELUqpxwNPf4ewTGMKEuqZ/evsfDr94aViUMKFZGIjUMFx
- 8YDzIHArKoDfR7xLCWKZau3ZPE3g5Xvq1AIRiRqUWJHmSheEhrXWYYMlhtvLSJEdOc1/
- 0nuA==
-X-Gm-Message-State: AOJu0Yz1SODdRUBqVqSGlGEq8enPBlRe2bBTkAyb2O7s1b4gjbzYKSQ4
- JsrTgtJtG0cTH2CWp0k6dI798ognVY+lkDlqzbUGobOnKtyVhA==
-X-Google-Smtp-Source: AGHT+IG9jOT2Tix292OIMOb/M2OJpHoo8G5GVooQu6DbRIA5fbTGQT+6FTU8omIevulOVT9jJyp1TA==
-X-Received: by 2002:a17:902:e806:b0:1d4:c245:a5b with SMTP id
- u6-20020a170902e80600b001d4c2450a5bmr84751plg.58.1704837873092; 
- Tue, 09 Jan 2024 14:04:33 -0800 (PST)
-Received: from [192.168.68.110] ([152.234.123.64])
- by smtp.gmail.com with ESMTPSA id
- b6-20020a170902a9c600b001d5383ae01csm1892830plr.121.2024.01.09.14.04.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 14:04:32 -0800 (PST)
-Message-ID: <8b57cb47-6344-4563-95f7-21f6b090c1b0@ventanamicro.com>
-Date: Tue, 9 Jan 2024 19:04:28 -0300
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1rNKHJ-0007Gq-O0; Tue, 09 Jan 2024 17:08:57 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1rNKHG-0004AZ-1H; Tue, 09 Jan 2024 17:08:56 -0500
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 409LY7xx016383; Tue, 9 Jan 2024 22:08:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=lyQ55igLuzLNmSMuTQ2CxmrWrBO01F1GMmLRqq07uoE=;
+ b=iYGsh+bJKvlXH8Oc/E+uQdNX4DEsHJJz+1LvsAGh30ZYc2WWee8DItzc1NF0oNhYaV7d
+ vt7noLnISRc5BTa1c+zRZewzhNH4Rya5Z7MBmUub+S2yJMfxw/JXRJfHw5CSvOXsmZn0
+ lsPfj01WElTEAQJ9NEIMX2pMyQDFzlXCofOQLffIE68Whp2VT5wihVh0AFpLHJsZ4zNH
+ QwhB1p7B/xvAYHyGPY0ucPgHepsu+/kLs/JlroTqRJT4K1q79QQ+o58snunTpXVvC4xA
+ 8bZxy4KrTh+jhOgPp0mF7MBaEKdlRRZWlf7akPHQEPYgZrjlUnIsYSzA4q7DeB8ukNPj hQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vh9f906we-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 22:08:33 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 409LkUTC012220;
+ Tue, 9 Jan 2024 22:08:32 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vh9f906w5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 22:08:32 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 409KbaCj000926; Tue, 9 Jan 2024 22:08:31 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkdk94q4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 22:08:31 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 409M8UAB42074418
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 9 Jan 2024 22:08:31 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C737B5805D;
+ Tue,  9 Jan 2024 22:08:30 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5C48058057;
+ Tue,  9 Jan 2024 22:08:30 +0000 (GMT)
+Received: from [9.61.145.235] (unknown [9.61.145.235])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  9 Jan 2024 22:08:30 +0000 (GMT)
+Message-ID: <3a0efed2-620f-48e1-b400-a0313694476b@linux.ibm.com>
+Date: Tue, 9 Jan 2024 16:08:30 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] target/riscv: Implement optional CSR mcontext of debug
- Sdtrig extension
+Subject: Re: [PATCH v8 03/10] hw/fsi: Introduce IBM's cfam,fsi-slave,scratchpad
 Content-Language: en-US
-To: Alvin Chang <alvinga@andestech.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Cc: alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com
-References: <20231219123244.290935-1-alvinga@andestech.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231219123244.290935-1-alvinga@andestech.com>
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
+References: <20231128235700.599584-1-ninad@linux.ibm.com>
+ <20231128235700.599584-4-ninad@linux.ibm.com>
+ <4bce745f-c70f-414a-bf1a-f53503d5bc1a@kaod.org>
+From: Ninad Palsule <ninad@linux.ibm.com>
+In-Reply-To: <4bce745f-c70f-414a-bf1a-f53503d5bc1a@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kzX97PInrku-9liL0AvFBW0WlX3OYYQ9
+X-Proofpoint-ORIG-GUID: LvatMcKMKLvNttfx6MdfR5FhnJPChDbt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-09_11,2024-01-09_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ mlxlogscore=999 impostorscore=0 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 suspectscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401090177
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,137 +117,272 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 12/19/23 09:32, Alvin Chang wrote:
-> The debug Sdtrig extension defines an CSR "mcontext". This commit
-> implements its predicate and read/write operations into CSR table.
-> Its value is reset as 0 when the trigger module is reset.
-> 
-> Signed-off-by: Alvin Chang <alvinga@andestech.com>
-> ---
-
-The patch per se LGTM:
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Hello Cedric,
 
 
-But I have a question: shouldn't we just go ahead and add the 'sdtrig' extension?
-We have a handful of its CSRs already. Adding the extension would also add 'sdtrig'
-in riscv,isa, allowing software to be aware of its existence in QEMU.
+>> +
+>> +#define TYPE_FSI_SCRATCHPAD "fsi.scratchpad"
+>> +#define SCRATCHPAD(obj) OBJECT_CHECK(FSIScratchPad, (obj), 
+>> TYPE_FSI_SCRATCHPAD)
+>> +
+>> +typedef struct FSIScratchPad {
+>> +        FSILBusDevice parent;
+>> +
+>> +        uint32_t reg;
+>> +} FSIScratchPad;
+>
+> We could extend to 4 regs possibly.
+OK, Added 4 registers.
+>
+>> +
+>> +#define TYPE_FSI_CFAM "cfam"
+>> +#define FSI_CFAM(obj) OBJECT_CHECK(FSICFAMState, (obj), TYPE_FSI_CFAM)
+>> +
+>> +/* P9-ism */
+>> +#define CFAM_CONFIG_NR_REGS 0x28
+>> +
+>> +typedef struct FSICFAMState {
+>> +    /* < private > */
+>> +    FSISlaveState parent;
+>> +
+>> +    /* CFAM config address space */
+>> +    MemoryRegion config_iomem;
+>> +
+>> +    MemoryRegion mr;
+>> +    AddressSpace as;
+>
+> The address space is not used. please remove.
+Removed address space.
+>
+>>
+>> +#include "exec/memory.h"
+>> +#include "hw/qdev-core.h"
+>> +
+>> +#include "hw/fsi/lbus.h"
+>> +
+>> +#include <stdint.h>
+>
+> Not needed. Please remove.
+Removed the header file.
+>
+>> +
+>> +static uint64_t fsi_cfam_config_read(void *opaque, hwaddr addr, 
+>> unsigned size)
+>> +{
+>> +    FSICFAMState *cfam = FSI_CFAM(opaque);
+>> +    BusChild *kid;
+>> +    int i;
+>> +
+>> +    trace_fsi_cfam_config_read(addr, size);
+>> +
+>> +    switch (addr) {
+>> +    case 0x00:
+>> +        return CFAM_CONFIG_CHIP_ID_P9;
+>> +    case 0x04:
+>> +        return ENGINE_CONFIG_NEXT       |   /* valid */
+>> +               0x00010000               |   /* slots */
+>> +               0x00001000               |   /* version */
+>> +               ENGINE_CONFIG_TYPE_PEEK  |   /* type */
+>> +               0x0000000c;                  /* crc */
+>> +    case 0x08:
+>> +        return ENGINE_CONFIG_NEXT       |   /* valid */
+>> +               0x00010000               |   /* slots */
+>> +               0x00005000               |   /* version */
+>> +               ENGINE_CONFIG_TYPE_FSI   |   /* type */
+>> +               0x0000000a;                  /* crc */
+>
+> Please introduce a macro to build these register values.
+Added macros
+>
+>> +        break;
+>> +    default:
+>> +        /* The config table contains different engines from 0xc 
+>> onwards. */
+>> +        i = 0xc;
+>> +        QTAILQ_FOREACH(kid, &cfam->lbus.bus.children, sibling) {
+>> +            if (i == addr) {
+>> +                DeviceState *ds = kid->child;
+>> +                FSILBusDevice *dev = FSI_LBUS_DEVICE(ds);
+>> +                return FSI_LBUS_DEVICE_GET_CLASS(dev)->config;
+>> +            }
+>> +            i += size;
+>> +        }
+>> +
+>> +        if (i == addr) {
+>> +            return 0;
+>> +        }
+>
+> If I understand correctly, the register 0xC contains some static config
+> value for the first device engine, the scratchpad device mapped at 0xC00,
+> and following registers would do the same for other devices if they were
+> modelled.
+>
+> This is certtainly hardwired in HW, so I would simplify to :
+>
+>     case 0xC:
+>         return ldc->config
+>     default:
+>         /* log not implemented */
+>
+> And extend the list when more devices are modeled.
+Simplified as per your suggestion.
+>
+>> +        /*
+>> +         * As per FSI specification, This is a magic value at 
+>> address 0 of
+>> +         * given FSI port. This causes FSI master to send BREAK 
+>> command for
+>> +         * initialization and recovery.
+>> +         */
+>> +        return CFAM_CONFIG_CHIP_ID_BREAK;
+>
+> This looks weird. I don't understant to which offset this value belongs.
+Yes, Removed it for now. We are handling break command in the config write.
+>
+>> +    }
+>> +}
+>> +
+>> +static void fsi_cfam_config_write(void *opaque, hwaddr addr, 
+>> uint64_t data,
+>> +                                  unsigned size)
+>> +{
+>> +    FSICFAMState *cfam = FSI_CFAM(opaque);
+>> +
+>> +    trace_fsi_cfam_config_write(addr, size, data);
+>> +
+>> +    switch (TO_REG(addr)) {
+>> +    case CFAM_CONFIG_CHIP_ID:
+>> +    case CFAM_CONFIG_CHIP_ID + 4:
+>
+> Couldn't we introduce a proper define for this reg ? and can we write to
+> the config space ? This break command seems to be sent to the FSI master,
+> according to Linux. Why is it handled in the CFAM config space ?
+Added new PEEK_STATUS register. The BREAK command is send by FSI-master 
+to FSI-slave and FSI-slave is embedded into CFAM hence we are handling 
+it here.
+>
+>> +        if (data == CFAM_CONFIG_CHIP_ID_BREAK) {
+>> +            bus_cold_reset(BUS(&cfam->lbus));
+>> +        }
+>> +    break;
+>
+> alignment is not good.
+Fixed the alignment.
+>
+>>
+>> +static void fsi_cfam_realize(DeviceState *dev, Error **errp)
+>> +{
+>> +    FSICFAMState *cfam = FSI_CFAM(dev);
+>> +    FSISlaveState *slave = FSI_SLAVE(dev);
+>> +
+>> +    /* Each slave has a 2MiB address space */
+>> +    memory_region_init_io(&cfam->mr, OBJECT(cfam), 
+>> &fsi_cfam_unimplemented_ops,
+>> +                          cfam, TYPE_FSI_CFAM, 2 * 1024 * 1024);
+>
+> 2 * MiB
+Now using MiB.
+>
+>> +
+>> +    /* Add scratchpad engine */
+>> +    if (!qdev_realize_and_unref(DEVICE(&cfam->scratchpad), 
+>> BUS(&cfam->lbus),
+>
+> cfam->scratchpad is not allocated. We should use qdev_realize instead.
+Fixed it.
+>
+>>
+>> +    /* TODO: clarify scratchpad mapping */
+>
+> You can remove the TODO now. All Local bus devices are mapped at offset
+> 0xc00.
+Removed it.
+>
+>>
+>> +static void fsi_scratchpad_reset(DeviceState *dev)
+>> +{
+>> +    FSIScratchPad *s = SCRATCHPAD(dev);
+>> +
+>> +    s->reg = 0;
+>
+> Just one reg ! Too easy :) let's have a few more.
+Now clear 4 registers.
+>
+>
+>>
+>> +    ldc->config =
+>> +          ENGINE_CONFIG_NEXT            | /* valid */
+>> +          0x00010000                    | /* slots */
+>> +          0x00001000                    | /* version */
+>> +          ENGINE_CONFIG_TYPE_SCRATCHPAD | /* type */
+>> +          0x00000007;                     /* crc */
+>
+> This class and attribute do not  look useful. Please use a macro
+> to build the value and return it in the CFAM config read operation.
+Added macro for SCARTCHPAD config value but keeping the class as new 
+devices need it.
+>
+>
+>>
+>> +
+>> +static uint64_t fsi_slave_read(void *opaque, hwaddr addr, unsigned 
+>> size)
+>> +{
+>> +    FSISlaveState *s = FSI_SLAVE(opaque);
+>> +
+>> +    trace_fsi_slave_read(addr, size);
+>> +
+>> +    if (addr + size > sizeof(s->regs)) {
+>
+> This test is mixing memory region offsets and memop size. These are two
+> fields of different nature. So this is quite incorrect !
+>
+> Ideally, we should have a switch statement with handlers for implemented
+> registers and a default for the rest. Please see the aspeed_scu model
+> for an example.
+I have fixed the limit check but registers are simply used as a memory 
+region hence did not add switch statement.
+>
+>> +        qemu_log_mask(LOG_GUEST_ERROR,
+>> +                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for 
+>> %u\n",
+>> +                      __func__, addr, size);
+>> +        return 0;
+>> +    }
+>> +
+>> +    return s->regs[TO_REG(addr)];
+>> +}
+>> +
+>> +static void fsi_slave_write(void *opaque, hwaddr addr, uint64_t data,
+>> +                                 unsigned size)
+>> +{
+>> +    FSISlaveState *s = FSI_SLAVE(opaque);
+>> +
+>> +    trace_fsi_slave_write(addr, size, data);
+>> +
+>> +    if (addr + size > sizeof(s->regs)) {
+>
+> Same here.
+Fixed the limit check.
+>
+>> +
+>> +static void fsi_slave_init(Object *o)
+>> +{
+>> +    FSISlaveState *s = FSI_SLAVE(o);
+>> +
+>> +    memory_region_init_io(&s->iomem, OBJECT(s), &fsi_slave_ops,
+>> +                          s, TYPE_FSI_SLAVE, 0x400);
+>> +}
+>
+>
+> No reset handler ?
 
+Added reset handler.
 
-Thanks,
+Thanks for the review.
 
-Daniel
+Regards,
 
+Ninad
 
-
-> Changes from v1: Remove dedicated cfg, always implement mcontext.
-> 
->   target/riscv/cpu.h      |  1 +
->   target/riscv/cpu_bits.h |  7 +++++++
->   target/riscv/csr.c      | 36 +++++++++++++++++++++++++++++++-----
->   target/riscv/debug.c    |  2 ++
->   4 files changed, 41 insertions(+), 5 deletions(-)
-> 
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index d74b361..e117641 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -345,6 +345,7 @@ struct CPUArchState {
->       target_ulong tdata1[RV_MAX_TRIGGERS];
->       target_ulong tdata2[RV_MAX_TRIGGERS];
->       target_ulong tdata3[RV_MAX_TRIGGERS];
-> +    target_ulong mcontext;
->       struct CPUBreakpoint *cpu_breakpoint[RV_MAX_TRIGGERS];
->       struct CPUWatchpoint *cpu_watchpoint[RV_MAX_TRIGGERS];
->       QEMUTimer *itrigger_timer[RV_MAX_TRIGGERS];
-> diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-> index ebd7917..3296648 100644
-> --- a/target/riscv/cpu_bits.h
-> +++ b/target/riscv/cpu_bits.h
-> @@ -361,6 +361,7 @@
->   #define CSR_TDATA2          0x7a2
->   #define CSR_TDATA3          0x7a3
->   #define CSR_TINFO           0x7a4
-> +#define CSR_MCONTEXT        0x7a8
->   
->   /* Debug Mode Registers */
->   #define CSR_DCSR            0x7b0
-> @@ -905,4 +906,10 @@ typedef enum RISCVException {
->   /* JVT CSR bits */
->   #define JVT_MODE                           0x3F
->   #define JVT_BASE                           (~0x3F)
-> +
-> +/* Debug Sdtrig CSR masks */
-> +#define MCONTEXT32                         0x0000003F
-> +#define MCONTEXT64                         0x0000000000001FFFULL
-> +#define MCONTEXT32_HCONTEXT                0x0000007F
-> +#define MCONTEXT64_HCONTEXT                0x0000000000003FFFULL
->   #endif
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index fde7ce1..ff1e128 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -3900,6 +3900,31 @@ static RISCVException read_tinfo(CPURISCVState *env, int csrno,
->       return RISCV_EXCP_NONE;
->   }
->   
-> +static RISCVException read_mcontext(CPURISCVState *env, int csrno,
-> +                                    target_ulong *val)
-> +{
-> +    *val = env->mcontext;
-> +    return RISCV_EXCP_NONE;
-> +}
-> +
-> +static RISCVException write_mcontext(CPURISCVState *env, int csrno,
-> +                                     target_ulong val)
-> +{
-> +    bool rv32 = riscv_cpu_mxl(env) == MXL_RV32 ? true : false;
-> +    int32_t mask;
-> +
-> +    if (riscv_has_ext(env, RVH)) {
-> +        /* Spec suggest 7-bit for RV32 and 14-bit for RV64 w/ H extension */
-> +        mask = rv32 ? MCONTEXT32_HCONTEXT : MCONTEXT64_HCONTEXT;
-> +    } else {
-> +        /* Spec suggest 6-bit for RV32 and 13-bit for RV64 w/o H extension */
-> +        mask = rv32 ? MCONTEXT32 : MCONTEXT64;
-> +    }
-> +
-> +    env->mcontext = val & mask;
-> +    return RISCV_EXCP_NONE;
-> +}
-> +
->   /*
->    * Functions to access Pointer Masking feature registers
->    * We have to check if current priv lvl could modify
-> @@ -4794,11 +4819,12 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
->       [CSR_PMPADDR15] =  { "pmpaddr15", pmp, read_pmpaddr, write_pmpaddr },
->   
->       /* Debug CSRs */
-> -    [CSR_TSELECT]   =  { "tselect", debug, read_tselect, write_tselect },
-> -    [CSR_TDATA1]    =  { "tdata1",  debug, read_tdata,   write_tdata   },
-> -    [CSR_TDATA2]    =  { "tdata2",  debug, read_tdata,   write_tdata   },
-> -    [CSR_TDATA3]    =  { "tdata3",  debug, read_tdata,   write_tdata   },
-> -    [CSR_TINFO]     =  { "tinfo",   debug, read_tinfo,   write_ignore  },
-> +    [CSR_TSELECT]   =  { "tselect",  debug, read_tselect,  write_tselect  },
-> +    [CSR_TDATA1]    =  { "tdata1",   debug, read_tdata,    write_tdata    },
-> +    [CSR_TDATA2]    =  { "tdata2",   debug, read_tdata,    write_tdata    },
-> +    [CSR_TDATA3]    =  { "tdata3",   debug, read_tdata,    write_tdata    },
-> +    [CSR_TINFO]     =  { "tinfo",    debug, read_tinfo,    write_ignore   },
-> +    [CSR_MCONTEXT]  =  { "mcontext", debug, read_mcontext, write_mcontext },
->   
->       /* User Pointer Masking */
->       [CSR_UMTE]    =    { "umte",    pointer_masking, read_umte,  write_umte },
-> diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-> index 4945d1a..e30d99c 100644
-> --- a/target/riscv/debug.c
-> +++ b/target/riscv/debug.c
-> @@ -940,4 +940,6 @@ void riscv_trigger_reset_hold(CPURISCVState *env)
->           env->cpu_watchpoint[i] = NULL;
->           timer_del(env->itrigger_timer[i]);
->       }
-> +
-> +    env->mcontext = 0;
->   }
 
