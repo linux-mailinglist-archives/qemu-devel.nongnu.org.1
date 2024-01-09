@@ -2,108 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF8D828813
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 15:29:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A99D7828821
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 15:31:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rND5u-00033k-5k; Tue, 09 Jan 2024 09:28:42 -0500
+	id 1rND84-0003sS-T0; Tue, 09 Jan 2024 09:30:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rND5r-00032r-Pm
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:28:39 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rND5n-0001PB-GD
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:28:39 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-336897b6bd6so3096712f8f.2
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 06:28:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704810510; x=1705415310; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Pn5mJSy6+IPUiDDo8gfQUfaMovq3bcwda2oYtY3vgIw=;
- b=G9tfFnVESf2+OLIg6rKIGF81B9NoAYiv16VdxfLurQqQDtYAuH2FCTNJLEYy8yFN/I
- VR5LxsJwMiSztJJDgKpePkkUASc/pBjgft5dClS5NC/VQRur1KeWMYF7xFXX7wLK8WmG
- aJGHQzB70vNlRSu5TUGPsyTqI5U3QpH6RrtSNagVPPsyuU4B5GVEG9TAWNR08xSJbyww
- zzcl94WLRhAp6aXTzLjjMg7OADZHXEfj0blJbO/SgecmgKnQNsbRhrRRhUImZiotFGoH
- tCHsgcERBQywTOrjO0YsbEiumYUY9WTFCB05n/1yOIcbl5XfysJ2cLdR/E30gV6ac406
- R3Fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704810510; x=1705415310;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Pn5mJSy6+IPUiDDo8gfQUfaMovq3bcwda2oYtY3vgIw=;
- b=ozhxNKtCWn40e6bwqiFRMFaXMfhTt2XHMsBFgomWfA1m3m5NuBMAF3OP2w2AgrSZqV
- k0niZeaMj4hBTNRGOHJc+hXqqpLkoLsVcRmAkmaAdASBBDDSr96fC9H6+4Qi/kCZDVb/
- Dz7EridJzgUy391LpJ7qq9WesCC5d5wOyMTuqxPWFHQR378+zze2gWL5NO4hyQlYaesB
- 5qlW/tTsnyDbLMEtLVD9uTojuwhY/Cl9hUieM9s3+4meyf7pN7EyfDnySZI72+tWpk0R
- 8E+mQnt8zcoXl+7RUktuGETzXPdRp5vllET1WZI7x0zaD10oR9c08NnRm8fwOaEI/6K9
- OjEg==
-X-Gm-Message-State: AOJu0YwLGkY68U2WpxhHTLxyHiFf/6JovXQqZurahqgBXmeBKIPAnD6/
- zWrLiqcEZppGc+qxLIpwUgSgJ0Odg+TtsA==
-X-Google-Smtp-Source: AGHT+IEMfFwF5fvLeUZ0AaWVyWVBLuAVIpiU1k8nqhqE7npOWTXGjdkDfY+e8W66evzYBoSR2N9pbQ==
-X-Received: by 2002:a5d:51c3:0:b0:336:b52d:30cf with SMTP id
- n3-20020a5d51c3000000b00336b52d30cfmr548248wrv.61.1704810510205; 
- Tue, 09 Jan 2024 06:28:30 -0800 (PST)
-Received: from [192.168.1.24] ([102.35.208.160])
- by smtp.gmail.com with ESMTPSA id
- j15-20020adfb30f000000b003375c8f796bsm2627787wrd.0.2024.01.09.06.28.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 06:28:29 -0800 (PST)
-Message-ID: <8ce7c705-8f11-4ed0-ba7c-7965a1dd1fff@linaro.org>
-Date: Tue, 9 Jan 2024 18:28:17 +0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rND82-0003rh-P7
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:30:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rND7z-0002YG-SK
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:30:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704810651;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=9N4gycUEULhuN9S+EMRx9Hg91SExvYOOJFzNEx7PFno=;
+ b=UCoSspfDQ9Icz06WsGLnYue0DpjbzGQXKrhSja+SXNKrDGCoNbRGm1vbOKgDYflLwq1XUK
+ uPwDD8EZCqJjfyr2enwDT4NavI/KLAzxlUOb8auQQtaqSaeGDDEObbFQ3IeCC/mSQ1BYFU
+ Ie3mBgZ/m+WNgR6knJgT41Z08hW1/cM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-610-vXxmdMypNdWywALpo0LHmA-1; Tue, 09 Jan 2024 09:30:42 -0500
+X-MC-Unique: vXxmdMypNdWywALpo0LHmA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B11FD8352A1;
+ Tue,  9 Jan 2024 14:30:41 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.195.73])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BCA0CC15A0C;
+ Tue,  9 Jan 2024 14:30:39 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>
+Cc: qemu-devel@nongnu.org,
+	Halil Pasic <pasic@linux.ibm.com>
+Subject: [PATCH] target/s390x/kvm/pv: Provide some more useful information if
+ decryption fails
+Date: Tue,  9 Jan 2024 15:30:38 +0100
+Message-ID: <20240109143038.155512-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 43/43] docs/devel: document some plugin assumptions
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
- Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Brian Cain <bcain@quicinc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Cleber Rosa <crosa@redhat.com>,
- kvm@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, John Snow <jsnow@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-riscv@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>
-References: <20240103173349.398526-1-alex.bennee@linaro.org>
- <20240103173349.398526-44-alex.bennee@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240103173349.398526-44-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -120,62 +79,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-UmV2aWV3ZWQtYnk6IFBpZXJyaWNrIEJvdXZpZXIgPHBpZXJyaWNrLmJvdXZpZXJAbGluYXJv
-Lm9yZz4NCg0KT24gMS8zLzI0IDIxOjMzLCBBbGV4IEJlbm7DqWUgd3JvdGU6DQo+IFdoaWxl
-IHdlIGF0dGVtcHQgdG8gaGlkZSBpbXBsZW1lbnRhdGlvbiBkZXRhaWxzIGZyb20gdGhlIHBs
-dWdpbiB3ZQ0KPiBzaG91bGRuJ3QgYmUgdG90YWxseSBvYnR1c2UuIExldCB0aGUgdXNlciBr
-bm93IHdoYXQgdGhleSBjYW4gYW5kIGNhbid0DQo+IGV4cGVjdCB3aXRoIHRoZSB2YXJpb3Vz
-IGluc3RydW1lbnRhdGlvbiBvcHRpb25zLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQWxleCBC
-ZW5uw6llIDxhbGV4LmJlbm5lZUBsaW5hcm8ub3JnPg0KPiAtLS0NCj4gICBkb2NzL2RldmVs
-L3RjZy1wbHVnaW5zLnJzdCB8IDQ5ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrDQo+ICAgMSBmaWxlIGNoYW5nZWQsIDQ5IGluc2VydGlvbnMoKykNCj4gDQo+IGRp
-ZmYgLS1naXQgYS9kb2NzL2RldmVsL3RjZy1wbHVnaW5zLnJzdCBiL2RvY3MvZGV2ZWwvdGNn
-LXBsdWdpbnMucnN0DQo+IGluZGV4IDUzNWE3NDY4NGM1Li45Y2MwOWQ4YzNkYSAxMDA2NDQN
-Cj4gLS0tIGEvZG9jcy9kZXZlbC90Y2ctcGx1Z2lucy5yc3QNCj4gKysrIGIvZG9jcy9kZXZl
-bC90Y2ctcGx1Z2lucy5yc3QNCj4gQEAgLTExMiw2ICsxMTIsNTUgQEAgZGV0YWlscyBhcmUg
-b3BhcXVlIHRvIHBsdWdpbnMuIFRoZSBwbHVnaW4gaXMgYWJsZSB0byBxdWVyeSBzZWxlY3QN
-Cj4gICBkZXRhaWxzIG9mIGluc3RydWN0aW9ucyBhbmQgc3lzdGVtIGNvbmZpZ3VyYXRpb24g
-b25seSB0aHJvdWdoIHRoZQ0KPiAgIGV4cG9ydGVkICpxZW11X3BsdWdpbiogZnVuY3Rpb25z
-Lg0KPiAgIA0KPiArSG93ZXZlciB0aGUgZm9sbG93aW5nIGFzc3VtcHRpb25zIGNhbiBiZSBt
-YWRlOg0KPiArDQo+ICtUcmFuc2xhdGlvbiBCbG9ja3MNCj4gKysrKysrKysrKysrKysrKysr
-Kw0KPiArDQo+ICtBbGwgY29kZSB3aWxsIGdvIHRocm91Z2ggYSB0cmFuc2xhdGlvbiBwaGFz
-ZSBhbHRob3VnaCBub3QgYWxsDQo+ICt0cmFuc2xhdGlvbnMgd2lsbCBiZSBuZWNlc3Nhcmls
-eSBiZSBleGVjdXRlZC4gWW91IG5lZWQgdG8gaW5zdHJ1bWVudA0KPiArYWN0dWFsIGV4ZWN1
-dGlvbnMgdG8gdHJhY2sgd2hhdCBpcyBoYXBwZW5pbmcuDQo+ICsNCj4gK0l0IGlzIHF1aXRl
-IG5vcm1hbCB0byBzZWUgdGhlIHNhbWUgYWRkcmVzcyB0cmFuc2xhdGVkIG11bHRpcGxlIHRp
-bWVzLg0KPiArSWYgeW91IHdhbnQgdG8gdHJhY2sgdGhlIGNvZGUgaW4gc3lzdGVtIGVtdWxh
-dGlvbiB5b3Ugc2hvdWxkIGV4YW1pbmUNCj4gK3RoZSB1bmRlcmx5aW5nIHBoeXNpY2FsIGFk
-ZHJlc3MgKGBgcWVtdV9wbHVnaW5faW5zbl9oYWRkcmBgKSB0byB0YWtlDQo+ICtpbnRvIGFj
-Y291bnQgdGhlIGVmZmVjdHMgb2YgdmlydHVhbCBtZW1vcnkgYWx0aG91Z2ggaWYgdGhlIHN5
-c3RlbSBkb2VzDQo+ICtwYWdpbmcgdGhpcyB3aWxsIGNoYW5nZSB0b28uDQo+ICsNCj4gK05v
-dCBhbGwgaW5zdHJ1Y3Rpb25zIGluIGEgYmxvY2sgd2lsbCBhbHdheXMgZXhlY3V0ZSBzbyBp
-ZiBpdHMNCj4gK2ltcG9ydGFudCB0byB0cmFjayBpbmRpdmlkdWFsIGluc3RydWN0aW9uIGV4
-ZWN1dGlvbiB5b3UgbmVlZCB0bw0KPiAraW5zdHJ1bWVudCB0aGVtIGRpcmVjdGx5LiBIb3dl
-dmVyIGFzeW5jaHJvbm91cyBpbnRlcnJ1cHRzIHdpbGwgbm90DQo+ICtjaGFuZ2UgY29udHJv
-bCBmbG93IG1pZC1ibG9jay4NCj4gKw0KPiArSW5zdHJ1Y3Rpb25zDQo+ICsrKysrKysrKysr
-KysNCj4gKw0KPiArSW5zdHJ1Y3Rpb24gaW5zdHJ1bWVudGF0aW9uIHJ1bnMgYmVmb3JlIHRo
-ZSBpbnN0cnVjdGlvbiBleGVjdXRlcy4gWW91DQo+ICtjYW4gYmUgY2FuIGJlIHN1cmUgdGhl
-IGluc3RydWN0aW9uIHdpbGwgYmUgZGlzcGF0Y2hlZCwgYnV0IHlvdSBjYW4ndA0KPiArYmUg
-c3VyZSBpdCB3aWxsIGNvbXBsZXRlLiBHZW5lcmFsbHkgdGhpcyB3aWxsIGJlIGJlY2F1c2Ug
-b2YgYQ0KPiArc3luY2hyb25vdXMgZXhjZXB0aW9uIChlLmcuIFNJR0lMTCkgdHJpZ2dlcmVk
-IGJ5IHRoZSBpbnN0cnVjdGlvbg0KPiArYXR0ZW1wdGluZyB0byBleGVjdXRlLiBJZiB5b3Ug
-d2FudCB0byBiZSBzdXJlIHlvdSB3aWxsIG5lZWQgdG8NCj4gK2luc3RydW1lbnQgdGhlIG5l
-eHQgaW5zdHJ1Y3Rpb24gYXMgd2VsbC4gU2VlIHRoZSBgYGV4ZWNsb2cuY2BgIHBsdWdpbg0K
-PiArZm9yIGV4YW1wbGVzIG9mIGhvdyB0byB0cmFjayB0aGlzIGFuZCBmaW5hbGlzZSBkZXRh
-aWxzIGFmdGVyIGV4ZWN1dGlvbi4NCj4gKw0KPiArTWVtb3J5IEFjY2Vzc2VzDQo+ICsrKysr
-KysrKysrKysrKysNCj4gKw0KPiArTWVtb3J5IGNhbGxiYWNrcyBhcmUgY2FsbGVkIGFmdGVy
-IGEgc3VjY2Vzc2Z1bCBsb2FkIG9yIHN0b3JlLg0KPiArVW5zdWNjZXNzZnVsIG9wZXJhdGlv
-bnMgKGkuZS4gZmF1bHRzKSB3aWxsIG5vdCBiZSB2aXNpYmxlIHRvIG1lbW9yeQ0KPiAraW5z
-dHJ1bWVudGF0aW9uIGFsdGhvdWdoIHRoZSBleGVjdXRpb24gc2lkZSBlZmZlY3RzIGNhbiBi
-ZSBvYnNlcnZlZA0KPiArKGUuZy4gZW50ZXJpbmcgYSBleGNlcHRpb24gaGFuZGxlcikuDQo+
-ICsNCj4gK1N5c3RlbSBJZGxlIGFuZCBSZXN1bWUgU3RhdGVzDQo+ICsrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKw0KPiArDQo+ICtUaGUgYGBxZW11X3BsdWdpbl9yZWdpc3Rlcl92
-Y3B1X2lkbGVfY2JgYCBhbmQNCj4gK2BgcWVtdV9wbHVnaW5fcmVnaXN0ZXJfdmNwdV9yZXN1
-bWVfY2JgYCBmdW5jdGlvbnMgY2FuIGJlIHVzZWQgdG8gdHJhY2sNCj4gK3doZW4gQ1BVcyBn
-byBpbnRvIGFuZCByZXR1cm4gZnJvbSBzbGVlcCBzdGF0ZXMgd2hlbiB3YWl0aW5nIGZvcg0K
-PiArZXh0ZXJuYWwgSS9PLiBCZSBhd2FyZSB0aG91Z2ggdGhhdCB0aGVzZSBtYXkgb2NjdXIg
-bGVzcyBmcmVxdWVudGx5DQo+ICt0aGFuIGluIHJlYWwgSFcgZHVlIHRvIHRoZSBpbmVmZmlj
-aWVuY2llcyBvZiBlbXVsYXRpb24gZ2l2aW5nIGxlc3MNCj4gK2NoYW5jZSBmb3IgdGhlIENQ
-VSB0byBpZGxlLg0KPiArDQo+ICAgSW50ZXJuYWxzDQo+ICAgLS0tLS0tLS0tDQo+ICAgDQo=
+It's a common scenario to copy guest images from one host to another
+to run the guest on the other machine. This (of course) does not work
+with "secure exection" guests since they are encrypted with one certain
+host key. However, if you still (accidentally) do it, you only get a
+very user-unfriendly error message that looks like this:
+
+ qemu-system-s390x: KVM PV command 2 (KVM_PV_SET_SEC_PARMS) failed:
+  header rc 108 rrc 5 IOCTL rc: -22
+
+Let's provide at least a somewhat nicer hint to the users so that they
+are able to figure out what might have gone wrong.
+
+Buglink: https://issues.redhat.com/browse/RHEL-18212
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ target/s390x/kvm/pv.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
+
+diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
+index 6a69be7e5c..2833a255fa 100644
+--- a/target/s390x/kvm/pv.c
++++ b/target/s390x/kvm/pv.c
+@@ -29,7 +29,8 @@ static bool info_valid;
+ static struct kvm_s390_pv_info_vm info_vm;
+ static struct kvm_s390_pv_info_dump info_dump;
+ 
+-static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data)
++static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data,
++                         int *pvrc)
+ {
+     struct kvm_pv_cmd pv_cmd = {
+         .cmd = cmd,
+@@ -46,6 +47,9 @@ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data)
+                      "IOCTL rc: %d", cmd, cmdname, pv_cmd.rc, pv_cmd.rrc,
+                      rc);
+     }
++    if (pvrc) {
++        *pvrc = pv_cmd.rc;
++    }
+     return rc;
+ }
+ 
+@@ -53,12 +57,13 @@ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data)
+  * This macro lets us pass the command as a string to the function so
+  * we can print it on an error.
+  */
+-#define s390_pv_cmd(cmd, data) __s390_pv_cmd(cmd, #cmd, data)
++#define s390_pv_cmd(cmd, data) __s390_pv_cmd(cmd, #cmd, data, NULL)
++#define s390_pv_cmd_pvrc(cmd, data, pvrc) __s390_pv_cmd(cmd, #cmd, data, pvrc)
+ #define s390_pv_cmd_exit(cmd, data)    \
+ {                                      \
+     int rc;                            \
+                                        \
+-    rc = __s390_pv_cmd(cmd, #cmd, data);\
++    rc = __s390_pv_cmd(cmd, #cmd, data, NULL); \
+     if (rc) {                          \
+         exit(1);                       \
+     }                                  \
+@@ -144,12 +149,19 @@ bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms)
+ 
+ int s390_pv_set_sec_parms(uint64_t origin, uint64_t length)
+ {
++    int ret, pvrc;
+     struct kvm_s390_pv_sec_parm args = {
+         .origin = origin,
+         .length = length,
+     };
+ 
+-    return s390_pv_cmd(KVM_PV_SET_SEC_PARMS, &args);
++    ret = s390_pv_cmd_pvrc(KVM_PV_SET_SEC_PARMS, &args, &pvrc);
++    if (ret && pvrc == 0x108) {
++        error_report("Can't set secure parameters, please check whether "
++                     "the image is correctly encrypted for this host");
++    }
++
++    return ret;
+ }
+ 
+ /*
+-- 
+2.43.0
 
 
