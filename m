@@ -2,106 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D272828DB4
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 20:40:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF8F828E0B
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 20:46:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNHwk-0006GU-I8; Tue, 09 Jan 2024 14:39:34 -0500
+	id 1rNI1t-00013f-Du; Tue, 09 Jan 2024 14:44:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rNHwP-000601-LV; Tue, 09 Jan 2024 14:39:14 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rNI1r-00013N-7B; Tue, 09 Jan 2024 14:44:51 -0500
+Received: from zproxy1.enst.fr ([137.194.2.220])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rNHwL-00030K-6l; Tue, 09 Jan 2024 14:39:11 -0500
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 409Hukja017531; Tue, 9 Jan 2024 19:39:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=v1Ys5UoQvqyvOZVHNyK2gndac13fXVfP3voCbvZiAYc=;
- b=i1zPGhpz82WlDqqfPyCpNZ+9SWNaa+velY+1i4iL5x+RtYKWfhxXYgst2VFKsAjgLJuS
- Rw5rnHPgH6erdTlh3l0bPKjbsoYffOqkGxpLGoWo6J7pEnX5G6hdLIT+kLsIvB1JbXx/
- CgfiR8ZzCgToPrFO/WEgUUNdeMureLdk116+L3wSWAybQXnWnC5PyOoNxS4PaAhtLkWw
- 6Oh0gibKTQWtZxY1Fvl4K91btNe/d7cdLX5AW0iw8MIIFyAOT+ZcuWjhr9Ol9RiR+5d5
- VaZs6BilZFSdmk5RiyK+KDWmUlsH0VlXMn582wcliYjG5cGQN0lUHyXUYDUSk5cTJFHi TA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vh9f8w4tu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 19:39:04 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 409JEbt5019696;
- Tue, 9 Jan 2024 19:39:04 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vh9f8w4th-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 19:39:04 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 409IZXLN022781; Tue, 9 Jan 2024 19:39:03 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfhjygx1w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 19:39:03 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 409Jd1di42139958
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Jan 2024 19:39:01 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 823A92004B;
- Tue,  9 Jan 2024 19:39:01 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1A8FC20043;
- Tue,  9 Jan 2024 19:39:01 +0000 (GMT)
-Received: from [9.171.60.193] (unknown [9.171.60.193])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  9 Jan 2024 19:39:01 +0000 (GMT)
-Message-ID: <139c997f23a3e7edd8334de124d0ba7820cf6dc9.camel@linux.ibm.com>
-Subject: Re: [PATCH 1/3] linux-user: Allow gdbstub to ignore page protection
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>, Peter Maydell
- <peter.maydell@linaro.org>, Alex =?ISO-8859-1?Q?Benn=E9e?=
- <alex.bennee@linaro.org>, David Hildenbrand <david@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
-Date: Tue, 09 Jan 2024 20:39:00 +0100
-In-Reply-To: <0195c274-0d5c-484b-9475-84a4d16bfae8@linaro.org>
-References: <20240108233821.201325-1-iii@linux.ibm.com>
- <20240108233821.201325-2-iii@linux.ibm.com>
- <0195c274-0d5c-484b-9475-84a4d16bfae8@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rNI1p-0005c4-2j; Tue, 09 Jan 2024 14:44:50 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy1.enst.fr (Postfix) with ESMTP id 8D9F4C0CDE;
+ Tue,  9 Jan 2024 20:44:46 +0100 (CET)
+Received: from zproxy1.enst.fr ([IPv6:::1])
+ by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id Iy8tK8_qiNsi; Tue,  9 Jan 2024 20:44:45 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy1.enst.fr (Postfix) with ESMTP id A77C0C0CF6;
+ Tue,  9 Jan 2024 20:44:45 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr A77C0C0CF6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1704829485;
+ bh=AALDtbxiHDFlIUTu8ehdDRQQJ3tSs7nKyZkmY3F09Ng=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=owQmPfSHTFVjw87NWKV0zwa6Zk17qwcJn5h87NuKdlGS0Cdx5wpveA8uCn0CDtQ/z
+ MIj+tRGhbgoyzbl+wNxaPTLowQOYlruVq2tz5ZkaJw40p4EHx0REZAgGP7WNz9BcDj
+ 9DXUTvNeEy9OJzptB0ZDlNB2nPFnFLTF0iMbCq6w=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy1.enst.fr ([IPv6:::1])
+ by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id ad4DrU6UqU8m; Tue,  9 Jan 2024 20:44:45 +0100 (CET)
+Received: from localhost.localdomain (74.0.125.80.rev.sfr.net [80.125.0.74])
+ by zproxy1.enst.fr (Postfix) with ESMTPSA id 0AC82C0643;
+ Tue,  9 Jan 2024 20:44:44 +0100 (CET)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Alistair Francis <alistair@alistair23.me>,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH v4 0/3] Add device STM32L4x5 SYSCFG
+Date: Tue,  9 Jan 2024 20:41:56 +0100
+Message-ID: <20240109194438.70934-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HmV9mEOLbVoQzvmFEp3lT72JAtKOu76U
-X-Proofpoint-ORIG-GUID: DSOadI09zZmVdANh_PCXDrM340jHBLxp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-09_09,2024-01-09_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- mlxlogscore=805 impostorscore=0 lowpriorityscore=0 malwarescore=0
- bulkscore=0 suspectscore=0 priorityscore=1501 spamscore=0 adultscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401090158
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=137.194.2.220;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy1.enst.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,78 +80,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2024-01-10 at 04:42 +1100, Richard Henderson wrote:
-> On 1/9/24 10:34, Ilya Leoshkevich wrote:
-> > gdbserver ignores page protection by virtue of using
-> > /proc/$pid/mem.
-> > Teach qemu gdbstub to do this too. This will not work if /proc is
-> > not
-> > mounted; accept this limitation.
-> >=20
-> > One alternative is to temporarily grant the missing PROT_* bit, but
-> > this is inherently racy. Another alternative is self-debugging with
-> > ptrace(POKE), which will break if QEMU itself is being debugged - a
-> > much more severe limitation.
-> >=20
-> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> > ---
-> > =C2=A0 cpu-target.c | 55 ++++++++++++++++++++++++++++++++++++++--------=
--
-> > -----
-> > =C2=A0 1 file changed, 40 insertions(+), 15 deletions(-)
-> >=20
-> > diff --git a/cpu-target.c b/cpu-target.c
-> > index 5eecd7ea2d7..69e97f78980 100644
-> > --- a/cpu-target.c
-> > +++ b/cpu-target.c
-> > @@ -406,6 +406,15 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr
-> > addr,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vaddr l, page;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 void * p;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint8_t *buf =3D ptr;
-> > +=C2=A0=C2=A0=C2=A0 int ret =3D -1;
-> > +=C2=A0=C2=A0=C2=A0 int mem_fd;
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /*
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 * Try ptrace first. If /proc is not mounted o=
-r if there is a
-> > different
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 * problem, fall back to the manual page acces=
-s. Note that,
-> > unlike ptrace,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 * it will not be able to ignore the protectio=
-n bits.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 */
-> > +=C2=A0=C2=A0=C2=A0 mem_fd =3D open("/proc/self/mem", is_write ? O_WRON=
-LY :
-> > O_RDONLY);
->=20
-> Surely this is the unlikely fallback, and you don't need to open
-> unless the page is=20
-> otherwise inaccessible.
+This patch adds a new device STM32L4x5 SYSCFG device and is part
+of a series implementing the STM32L4x5 with a few peripherals.
 
-Ok, I can move this under (flags & PAGE_*) checks.
+Changes from v3 to v4:
+- swapping commit 2 (add tests) and commit 3 (connect syscfg to SoC)
+so that the tests pass in the commit they're added
+- in `stm32l4x5_syscfg-test.c`: instead of declaring intermediate
+variables, using `syscfg_readl` directly in `g_assert_cmpuint`
+so that QEMU coding style is respected
+- in `stm32l4x5_syscfg-test.c`: the tests are now independant
+from the EXTI device (the reads in EXTI registers were unnecessary)
+- in `stm32l4x5_syscfg-test.c` : using a helper function
+`syscfg_set_irq()` to help readability
+- in `stm32l4x5_soc.c` : reducing scope of `i` used in for loops
+- in `stm32l4x5_soc.c` : removing useless variable `dev`
+- in `stm32l4x5_syscfg.c`: add macro `NUM_LINES_PER_EXTICR_REG`,
+correct some coding styles issues
 
-> I see no handling for writes to pages that contain TranslationBlocks.
+Changes from v2 to v3:
+- updating the B-L475E-IOT01A machine's documentation file
+- using `GPIO_NUM_PINS` instead of 16 in `stm32l4x5_syscfg_init`
+- correcting the formatting of multiline indents
+- renaming a trace function (`trace_stm32l4x5_syscfg_forward_exti`
+instead of `trace_stm32l4x5_syscfg_pulse_exti`)
 
-Sorry, I completely missed that. I'm currently experimenting with the
-following:
+Changes from v1 to v2:
+- explain in 3rd commit why SYSCFG input GPIOs aren't connected and add
+a TODO comment in stm32l4x5_soc.c
+- use macros `NUM_GPIOS` and `GPIO_NUM_PINS` in
+`stm32l4x5_syscfg_set_irq`
+- rename STM32L4XX to STM32L4X5, Stm32l4xx to Stm32l4x5
+(the SYSCFG implementation is only valid for STM32L4x5 and STM32L4x6
+but not for STM32L41xx/42xx/43xx/44xx)
+- refactor `STM32L4x5SyscfgState` to `Stm32l4x5SyscfgState` to be
+consistent with other peripherals
 
-	/*
-	 * If there is a TranslationBlock and we weren't bypassing
-host
-	 * page protection, the memcpy() above would SEGV, ultimately
-	 * leading to page_unprotect(). So invalidate the translations
-	 * manually. Both invalidation and pwrite() must be under
-	 * mmap_lock() in order to prevent the creation of another
-	 * TranslationBlock in between.
-	 */
-	mmap_lock();
-	tb_invalidate_phys_page(page);
-	written =3D pwrite(fd, buf, l, (off_t)g2h_untagged(addr));
-	mmap_unlock();
+Based-on: 20240109160658.311932-1-ines.varhol@telecom-paris.fr
+([PATCH v8 0/3] Add device STM32L4x5 EXTI)
 
-Does that look okay?
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 
-[...]
+In=C3=A8s Varhol (3):
+  hw/misc: Implement STM32L4x5 SYSCFG
+  hw/arm: Connect STM32L4x5 SYSCFG to STM32L4x5 SoC
+  tests/qtest: Add STM32L4x5 SYSCFG QTest testcase
+
+ docs/system/arm/b-l475e-iot01a.rst  |   2 +-
+ hw/arm/Kconfig                      |   1 +
+ hw/arm/stm32l4x5_soc.c              |  21 +-
+ hw/misc/Kconfig                     |   3 +
+ hw/misc/meson.build                 |   1 +
+ hw/misc/stm32l4x5_syscfg.c          | 266 ++++++++++++++++++++++
+ hw/misc/trace-events                |   6 +
+ include/hw/arm/stm32l4x5_soc.h      |   2 +
+ include/hw/misc/stm32l4x5_syscfg.h  |  54 +++++
+ tests/qtest/meson.build             |   3 +-
+ tests/qtest/stm32l4x5_syscfg-test.c | 331 ++++++++++++++++++++++++++++
+ 11 files changed, 687 insertions(+), 3 deletions(-)
+ create mode 100644 hw/misc/stm32l4x5_syscfg.c
+ create mode 100644 include/hw/misc/stm32l4x5_syscfg.h
+ create mode 100644 tests/qtest/stm32l4x5_syscfg-test.c
+
+--=20
+2.43.0
+
 
