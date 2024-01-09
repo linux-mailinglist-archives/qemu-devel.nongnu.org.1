@@ -2,72 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A6F828833
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 15:34:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB19828855
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 15:39:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNDBJ-0005la-Ld; Tue, 09 Jan 2024 09:34:19 -0500
+	id 1rNDFQ-00089a-P5; Tue, 09 Jan 2024 09:38:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNDAz-0005l0-Jg
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:33:57 -0500
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ id 1rNDF9-00088P-0l
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:38:18 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNDAv-0003gH-V7
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:33:56 -0500
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-50e7c6f0487so2902798e87.3
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 06:33:53 -0800 (PST)
+ id 1rNDF2-0005oB-7i
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 09:38:11 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-33761e291c1so1721300f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 06:38:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704810832; x=1705415632; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cKpiQmUug1k+ONhUsi7k1absNM74ek0qI+Tl6MsSYKc=;
- b=uF2CD7CViqoXDZ25UxO31jeg9gqv0z1uIyZWqge/lhS55umEp05Cqa/N7PsK55EOOl
- KEg+H19UVrUSRtHXCi9LOUacMxLhokNaGOUn6L+2p29L8Idr0bSNp+vY981h/tRGTXmR
- 1gk5MEmZxpl8JifsJ9UHcLw3sCdXhQdBQfewpJunXCI1+N7dW+VJSUztVRt6y8uyMga2
- B4C9DfNx8MGcftzvWaphbADzdCTqHPDSqO5H57ur9nKygCH07t0Rt3zmRmoiH4QAJpJx
- wJCO8ro3ydRz8XXZafb2cr0s+xusLIfJVdbQ/0oVc4Zb9jPq6eZ4yxPgvekionCJUdkI
- AU9A==
+ d=linaro.org; s=google; t=1704811086; x=1705415886; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=/BAAkIR06a0xBg8aGBGeK/Zu3znoiAARSVRC2ZZbjsY=;
+ b=FYvb4CGQ6PORoiUwWxQiHVC/CXrODTFF5JrDGoR7ZkpsGj+mgbf+v+SNVIIfVYxJsf
+ teVz1wlGuOqqxisPRu1WZ9kXOmwIsbFovDVkfuq7lwF6UhwP9j0EvuPn4lVh221Sp/cX
+ J6nQ7zm+Wb6E6E3iCwbHWhgf60C2gq2EwmIH/0pRnmvc1K8tTKrQqps9R0dgifgFKHLL
+ iiSatLBHn3G6HSK2WNmOwRey7sqmHd0tO/G9nKp4hA9yQ6AbWD/OAaPTN3ifUbvtqKMg
+ LX3EEC3dmo563Qothd7XSwC47Sq2jZlWFh0MJWUJyfTKnRuv3w6dAQm/Mm4VFBn13b0B
+ snWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704810832; x=1705415632;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cKpiQmUug1k+ONhUsi7k1absNM74ek0qI+Tl6MsSYKc=;
- b=LbQDWXbC3GnL6j50j3P+dIpTDer5+2jmZr9da1lbEsI/ZGjStX+W+xvI5SeyX0LJ8T
- SZMGGpRQ/LzngyTOoimDvxacwQ+EOeSsykOd1AUPxWRu0Qwd6H/OlSFiy7L8Ro0CgKqp
- SYU9Z6Bmow/PSkZvW/5MttKkJ75g2SqgXRt2dg22VPA1OlXB09jcdRYqUGQi2j19LKFR
- giHzENs6kbWoI/DxP11q+nH7soh5iJSiaPyCKn+CLtiLqcOCtA+HlU7Krr5AI8DBvQo2
- mg9n8J0yXuFAUK9+/1/buIwZshAXqfhcc9IjoOMZt2kZi4T7EsVaCQmSRK+Tr4I53sHU
- +ykw==
-X-Gm-Message-State: AOJu0Yw+kiGzg+TohAw8biVxrJcvTaBZLn3q68wxb44sZyUEmI2OHhNg
- F38pSka/tNsGXIqIuYcmQF3m+aOAK4qtwmCOfw53exqw57Tegg==
-X-Google-Smtp-Source: AGHT+IE5m6xVtiy3AwYkC+7EfPfJcnlLrnRf1ru49SQoFHhaBXQ34RRr0IgipBBwh8OCveY0e3PagOB2iTLMwmSA91g=
-X-Received: by 2002:a05:6512:b9d:b0:50e:6c1d:5dec with SMTP id
- b29-20020a0565120b9d00b0050e6c1d5decmr1962461lfv.23.1704810832007; Tue, 09
- Jan 2024 06:33:52 -0800 (PST)
-MIME-Version: 1.0
-References: <20240105154307.21385-1-philmd@linaro.org>
- <20240105154307.21385-30-philmd@linaro.org>
-In-Reply-To: <20240105154307.21385-30-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1704811086; x=1705415886;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/BAAkIR06a0xBg8aGBGeK/Zu3znoiAARSVRC2ZZbjsY=;
+ b=AaqFwjU0NHoqlt7tSiZXWeOHxkIDutU+kC7uvYmBm1rYMXPhnRbWqMzvWTYVdgocx1
+ Zp9thj9NM0u/aV19PG9grMo0rTf225XJqEVhXi9GR/G/uN2CNYVMBCGJS/YzLUpH/Zqa
+ ZYOzPuZgqEBEJ7dwS51LARBIHG2rhEagMxyIhDO94tvruBg5oOGOvbAyXw+Sl3T542m2
+ wNSOO6xSt+PEgDusX4IkDSo9j+2krDLkn5Z83s6YQvapMB2U6dtAxccR0B45TPeXzWtv
+ ixHnXRMnMz4FREaFLCdtVRYwdM5+6ybnypnNcgU00gyPDbbE8hmklLkrqK0Nz0fO6z7r
+ JKnA==
+X-Gm-Message-State: AOJu0Yw5dhUNHAuielS5b9ZbMgYOEupwUD/4/QxPuPfa9KEHBzGDxv4j
+ dCtA1iWRfMATKRZrDeOKq4TXeIxnljDg+Q==
+X-Google-Smtp-Source: AGHT+IEU8zP3IoTnRHVihVmEsLVR9nyj1XO0eOhMYbgqml3tZuJIiWv1JTuj1+RPFhLt9RoZLb4oVQ==
+X-Received: by 2002:a05:600c:3488:b0:40e:52ab:d09b with SMTP id
+ a8-20020a05600c348800b0040e52abd09bmr338077wmq.50.1704811085654; 
+ Tue, 09 Jan 2024 06:38:05 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ h6-20020a5d5486000000b003375d8b0460sm2596466wrv.1.2024.01.09.06.38.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Jan 2024 06:38:05 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 9 Jan 2024 14:33:41 +0000
-Message-ID: <CAFEAcA8P+kDHv_crqDmrbzzJHDpy1fe4T_tXsu8+nWggmjymgQ@mail.gmail.com>
-Subject: Re: [PULL 29/71] hw/arm/virt: Check CPU type in
- machine_run_board_init()
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org, 
- qemu-riscv@nongnu.org, Gavin Shan <gshan@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH] target/arm: arm_pamax() no longer needs to do feature
+ propagation
+Date: Tue,  9 Jan 2024 14:38:04 +0000
+Message-Id: <20240109143804.1118307-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,30 +88,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 5 Jan 2024 at 15:46, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> From: Gavin Shan <gshan@redhat.com>
->
-> Set mc->valid_cpu_types so that the user specified CPU type can be
-> validated in machine_run_board_init(). We needn't to do the check
-> by ourselves.
+In arm_pamax(), we need to cope with the virt board calling this
+function on a CPU object which has been inited but not realize.
+We used to do propagation of feature-flag implications (such as
+"V7VE implies LPAE") at realize, so we have some code in arm_pamax()
+which manually checks for both V7VE and LPAE feature flags.
 
-Hi; after this change if you try to use the 'virt' board from
-qemu-system-arm with an invalid CPU type you get an odd
-error message full of "(null)"s:
+In commit b8f7959f28c4f36 we moved the feature propagation for
+almost all features from realize to post-init. That means that
+now when the virt board calls arm_pamax(), the feature propagation
+has been done. So we can drop the manual propagation handling
+and check only for the feature we actually care about, which
+is ARM_FEATURE_LPAE.
 
-$ ./build/x86/qemu-system-arm -machine virt -cpu cortex-a9
-qemu-system-arm: Invalid CPU model: cortex-a9
-The valid models are: cortex-a7, cortex-a15, (null), (null), (null),
-(null), (null), (null), (null), (null), (null), (null), (null), max
+Retain the comment that the virt board is calling this function
+with a not completely realized CPU object, because that is a
+potential beartrap for later changes which is worth calling out.
 
-This seems to be because we print a "(null)" for every 64-bit
-only CPU in the list, instead of either ignoring them or not
-compiling them into the list in the first place.
+(Note that b8f7959f28c4f36 actually fixed a bug in the arm_pamax()
+handling: arm_pamax() was missing a check for ARM_FEATURE_V8, so it
+incorrectly thought that the qemu-system-arm 'max' CPU did not have
+LPAE and turned off 'highmem' support in the virt board.  Following
+b8f7959f28c4f36 qemu-system-arm 'max' is treated the same as
+'cortex-a15' and other v7 LPAE CPUs, because the generic feature
+propagation code does correctly propagate V8 -> V7VE -> LPAE.)
 
-https://gitlab.com/qemu-project/qemu/-/issues/2084
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/ptw.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-thanks
--- PMM
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 1762b058aec..0da1caae117 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -95,7 +95,10 @@ static const uint8_t pamax_map[] = {
+     [6] = 52,
+ };
+ 
+-/* The cpu-specific constant value of PAMax; also used by hw/arm/virt. */
++/*
++ * The cpu-specific constant value of PAMax; also used by hw/arm/virt.
++ * Note that machvirt_init calls this on a CPU that is inited but not realized!
++ */
+ unsigned int arm_pamax(ARMCPU *cpu)
+ {
+     if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
+@@ -110,13 +113,8 @@ unsigned int arm_pamax(ARMCPU *cpu)
+         return pamax_map[parange];
+     }
+ 
+-    /*
+-     * In machvirt_init, we call arm_pamax on a cpu that is not fully
+-     * initialized, so we can't rely on the propagation done in realize.
+-     */
+-    if (arm_feature(&cpu->env, ARM_FEATURE_LPAE) ||
+-        arm_feature(&cpu->env, ARM_FEATURE_V7VE)) {
+-        /* v7 with LPAE */
++    if (arm_feature(&cpu->env, ARM_FEATURE_LPAE)) {
++        /* v7 or v8 with LPAE */
+         return 40;
+     }
+     /* Anything else */
+-- 
+2.34.1
+
 
