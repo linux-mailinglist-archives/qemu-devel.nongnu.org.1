@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1536C828EE9
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 22:34:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D517828F0C
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 22:41:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNJiy-0007fU-Ut; Tue, 09 Jan 2024 16:33:28 -0500
+	id 1rNJq1-0002Ip-9B; Tue, 09 Jan 2024 16:40:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNJiv-0007fD-N3
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:33:25 -0500
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ id 1rNJpz-0002ID-AP
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:40:43 -0500
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNJit-0004OM-Sg
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:33:25 -0500
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-6ddeb7b4366so407853a34.2
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 13:33:22 -0800 (PST)
+ id 1rNJpx-0007xY-Nx
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 16:40:43 -0500
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-59879870ff3so628618eaf.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 13:40:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704836002; x=1705440802; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1704836440; x=1705441240; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=oNbOEDHJn/VRYAoKZg2JXvPMgzLrLAYiKfGuGTnH6FU=;
- b=ZrlvwETkvOQ/bjGsUI/jqLC7XkPfEtcisGiY2vLIia96+nRpJLXo1AsKr+GaYfjqNN
- m7WuPkY46cX0Ry32LbJh6YG1wmmtGAWG4xFnwXYazf5Vz5ULT/xsCuq4z4R0RX4fysjQ
- N7SN1XNEXipnsSOIe5Wwks+j2Yr2CDUropmbAHfhpJcJ3KMS0UXYtF8wdqJsXXqsF0RT
- iKnn7tI/ym8oPC971lV3+rNCVkPZSqN29z05fedPuk/QK5QV/7BhgoyJ2+yd6ZHMNvBF
- TPsQWO2UdKpZxozLblXsdL7sNmPHeBlRuupn59vT2r25JMke8xuLh4i9ny5J3eifFOyn
- grBw==
+ bh=QQ9sqdUSpl1mccmrRssHU2tPBwKEfVyU7cwSvuD37aU=;
+ b=yNgIDe7gqJ6MMJieGVE7f5d6AlYgdAULaPU+HPKhVZosvXF70OCXeynuEyfydlf3Lk
+ vzi9deyfGwBjZQ8LJEDbuS0YrDChdf4D7cB2ymE0Wab0ynsoxceY8yupmMrHjDmrm6xz
+ n5a12CKP3HilYXCOgC+lmxmLiucoRT9t9khhZQcPoi80qtgfqQZrYdMFIMOGULGz4Rij
+ 09Zg6vpI0cRKHwxiZ+5F9Tuu7HxcpwhCjqa4ifix68wUMI2HPchcOmwwv0zhZSNxYPsv
+ FZJLLG6fc/W89PzlnkL36lrofuaUjX2e0/p1/o7GdMlue0FRKNHTpMQE2XBbwb5W3W1x
+ Utzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704836002; x=1705440802;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1704836440; x=1705441240;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oNbOEDHJn/VRYAoKZg2JXvPMgzLrLAYiKfGuGTnH6FU=;
- b=G7ZX2Mc6N77ZOLes3tx9/bAyQaAos5jyTZfhjq4aUJmWDxRaclbFYOHdXcbdJPC2yN
- jEuyReIcM7y93oT+P03cQiFqAc2kb6tulQGYwUQaHbcT1V43POuOE5kxEPWnG2Zh9uO/
- 8dUHkW+PB2YfJ8g+jbdTTkwHJHjR9n0sC1Msmp7ntTGQMbkSjgp6hZIWUFkE/65dgNAW
- fUdRXfedA2itWHRYhYt4EDSW2dsKFSx6++yA1bMhk2XyUToEGIPdtIvLtPeanXN2qaGm
- M6MnnBP72X1FQ5dcDj0gbi9EdN0jMAELS9mZanHn3BTfabEQLIqB+Fr3H0ij5ctDkXoa
- vhIw==
-X-Gm-Message-State: AOJu0YxdlFDwFo3LkydTwZLpN0YYyGbVopNCeS8n5oLMrKWnUIYr43an
- t6twQQbxZDRz25gN+pQg+XzCR9otTHk/QLQYgVXmytHwdxG21g==
-X-Google-Smtp-Source: AGHT+IGQjfjr8RBGShQo+wTrQRMWSEXkFjUk4adla/efi/iofo5MKej8x7BO4hHOHJT3cfdhHlsX5g==
-X-Received: by 2002:a05:6830:1645:b0:6db:bcb5:7ed8 with SMTP id
- h5-20020a056830164500b006dbbcb57ed8mr9389otr.1.1704836001930; 
- Tue, 09 Jan 2024 13:33:21 -0800 (PST)
+ bh=QQ9sqdUSpl1mccmrRssHU2tPBwKEfVyU7cwSvuD37aU=;
+ b=Gr62rXIWFIoOzYqmYFeHo0sWKpYA4tv2fMthxIXWgRmJjlglSsNPIP3nwmhUvq/loA
+ ed8FPDB44HkWo3I+6GW8JyPHTJn1Db/wRiJ1FCHvCdFIMM0jX+sqc7eIJqF4A0NTFZIJ
+ /AHeGtLDY6yaVXIMkvNEumU5OhbklmRVtEbM8mTshyjxSLXinRo0EkJr4icJuehwx1mO
+ D11ckPfk73ekMGq6a4RNh+O8y5wW1DVvs5uCrI6zdgMgSx6p7bMPGNKtJXIp/lISEh6e
+ PXRvXDJaY3NEN5WGEqUEaKheo9yUN6yM/fvIDtXZxI6gM0xL18v1/u5h3Punzo9WLHSb
+ CWEA==
+X-Gm-Message-State: AOJu0YzHypfWZNZ0dL2HZKGRYp4+Y7xKQM/lQToKTc90gFNaYptB0wKM
+ NYLKiIMcdo5doVJrUVhkEaqGMjIfjQI2nA==
+X-Google-Smtp-Source: AGHT+IG7kqw0aAGVP2IRx/5rsWIvb9MP5Ji1Owlwne7sQ/RALD9zOkmeqHQYaEMvO5jlAPN8dJyNSA==
+X-Received: by 2002:a4a:af4c:0:b0:591:4ee7:76ca with SMTP id
+ x12-20020a4aaf4c000000b005914ee776camr49365oon.17.1704836440475; 
+ Tue, 09 Jan 2024 13:40:40 -0800 (PST)
 Received: from [192.168.44.231] ([172.58.109.85])
  by smtp.gmail.com with ESMTPSA id
- h1-20020a9d6401000000b006dbcd704e8asm517193otl.45.2024.01.09.13.33.19
+ 185-20020a4a17c2000000b0059870e7b02csm554867ooe.30.2024.01.09.13.40.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 13:33:21 -0800 (PST)
-Message-ID: <26f604c1-f3e6-4ae8-a502-a7b92c1c1d30@linaro.org>
-Date: Wed, 10 Jan 2024 08:33:11 +1100
+ Tue, 09 Jan 2024 13:40:40 -0800 (PST)
+Message-ID: <6b45dc49-9eb9-4cfb-8b87-78fd51ddbd0e@linaro.org>
+Date: Wed, 10 Jan 2024 08:40:28 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] linux-user: two fixes to coredump generation
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
- Laurent Vivier <laurent@vivier.eu>
-Cc: qemu-devel@nongnu.org
-References: <20240107-qemu-user-dumpable-v2-0-54e3bcfc00c9@t-8ch.de>
+Subject: Re: [PATCH v2 2/2] hw/pflash: implement update buffer for block writes
 Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>
+References: <20240108125342.48298-1-philmd@linaro.org>
+ <20240108125342.48298-3-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240107-qemu-user-dumpable-v2-0-54e3bcfc00c9@t-8ch.de>
+In-Reply-To: <20240108125342.48298-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,32 +96,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/8/24 01:01, Thomas Weißschuh wrote:
-> Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-> ---
-> Changes in v2:
-> - Rebase on 8.2 master
-> - Resend after closed tree and holidays
-> - Link to v1: https://lore.kernel.org/r/20231115-qemu-user-dumpable-v1-0-edbe7f0fbb02@t-8ch.de
-> 
-> ---
-> Thomas Weißschuh (2):
->        linux-user/elfload: test return value of getrlimit
->        linux-user/elfload: check PR_GET_DUMPABLE before creating coredump
-> 
->   linux-user/elfload.c | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
-> ---
-> base-commit: 0c1eccd368af8805ec0fb11e6cf25d0684d37328
-> change-id: 20231115-qemu-user-dumpable-d499c0396103
-> 
-> Best regards,
+On 1/8/24 23:53, Philippe Mathieu-Daudé wrote:
+> @@ -818,6 +867,9 @@ static void pflash_cfi01_realize(DeviceState *dev, Error **errp)
+>       pfl->cmd = 0x00;
+>       pfl->status = 0x80; /* WSM ready */
+>       pflash_cfi01_fill_cfi_table(pfl);
+> +
+> +    pfl->blk_bytes = g_malloc(pfl->writeblock_size);
 
-Both patches look good for correctness, but both have style issues: need braces on those 
-if statements.
-
-With that fixed,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Do you need an unrealize to free?
 
 
 r~
