@@ -2,105 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4F7828F74
+	by mail.lfdr.de (Postfix) with ESMTPS id 424D2828F73
 	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 23:10:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNKHb-0007IX-6Y; Tue, 09 Jan 2024 17:09:15 -0500
+	id 1rNKIG-0007pm-9j; Tue, 09 Jan 2024 17:09:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1rNKHJ-0007Gq-O0; Tue, 09 Jan 2024 17:08:57 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1rNKHG-0004AZ-1H; Tue, 09 Jan 2024 17:08:56 -0500
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 409LY7xx016383; Tue, 9 Jan 2024 22:08:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=lyQ55igLuzLNmSMuTQ2CxmrWrBO01F1GMmLRqq07uoE=;
- b=iYGsh+bJKvlXH8Oc/E+uQdNX4DEsHJJz+1LvsAGh30ZYc2WWee8DItzc1NF0oNhYaV7d
- vt7noLnISRc5BTa1c+zRZewzhNH4Rya5Z7MBmUub+S2yJMfxw/JXRJfHw5CSvOXsmZn0
- lsPfj01WElTEAQJ9NEIMX2pMyQDFzlXCofOQLffIE68Whp2VT5wihVh0AFpLHJsZ4zNH
- QwhB1p7B/xvAYHyGPY0ucPgHepsu+/kLs/JlroTqRJT4K1q79QQ+o58snunTpXVvC4xA
- 8bZxy4KrTh+jhOgPp0mF7MBaEKdlRRZWlf7akPHQEPYgZrjlUnIsYSzA4q7DeB8ukNPj hQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vh9f906we-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 22:08:33 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 409LkUTC012220;
- Tue, 9 Jan 2024 22:08:32 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vh9f906w5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 22:08:32 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 409KbaCj000926; Tue, 9 Jan 2024 22:08:31 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkdk94q4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jan 2024 22:08:31 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 409M8UAB42074418
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Jan 2024 22:08:31 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C737B5805D;
- Tue,  9 Jan 2024 22:08:30 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5C48058057;
- Tue,  9 Jan 2024 22:08:30 +0000 (GMT)
-Received: from [9.61.145.235] (unknown [9.61.145.235])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  9 Jan 2024 22:08:30 +0000 (GMT)
-Message-ID: <3a0efed2-620f-48e1-b400-a0313694476b@linux.ibm.com>
-Date: Tue, 9 Jan 2024 16:08:30 -0600
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rNKIE-0007nW-Ht; Tue, 09 Jan 2024 17:09:54 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rNKIC-0004Y2-G2; Tue, 09 Jan 2024 17:09:54 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a28a6cef709so369623066b.1; 
+ Tue, 09 Jan 2024 14:09:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1704838188; x=1705442988; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EJtU3cH8/L9ElLV5ygkwhrU/E1fgow2ytaeAREi8TVI=;
+ b=b+jQ3THcF1WnJ9HaD857d23IovvOLOmf4Tfykthf8QkxfEtuLk277suWiJT/WaCUp0
+ IohtFk37RYcfZKhgiYFdz524DMVCZr66g3Ej1y46JLfgIFM/rV5NlaVQVuLfBi2i4Wvj
+ HkWUR+m/6r8bJgpMqCFZKf3DIiczHcD2siZ0qDFgemTKV8mumDrpMI8Mn6eD13tLqnE+
+ NrfjDFhr83Kls1WJ78AwZH8zWvg+kqtIK67vSpNQtXs8R0NKTxxEnpfQAJXq3KYHmsGx
+ 1w/+4T+mAZSXoqTawO1+Ac1Yb5EZWisStErmCZa9CgTMYW5DiPwAYBXK4sm4qrQx1DLF
+ 24/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704838188; x=1705442988;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EJtU3cH8/L9ElLV5ygkwhrU/E1fgow2ytaeAREi8TVI=;
+ b=q9fec6Y4tnr8S5kmMX4BuV5fpwtONU45NZYwfMG7q9nB28LkUiVCgCElCU6/w9v+vr
+ gSfAUvubw9zDgjBIIpNfbIUXXI5Tc9g5Ogv5aFQWIOQ1pzXuKxreT/vLCCNd5oaFbKtL
+ 1Sb9vOYBLRQvf4czQ0be12gksjGF7mRRVyCbjm6/bEF/G37K8owcHOOFmaaZ24aH3kiE
+ a5pSSJFvfJyxFrna8dKAarCg2hAhKtZ39Nj8/A5gQQJ4MrZv2NG3+qhY/jYFD0NQmlP8
+ 9bYrPX0rzY4vkudUxnoPSudmYMhPCPPs/bhKrkO4D4i+wHx5CVzVF/Asygm8kzRudXa0
+ jm6g==
+X-Gm-Message-State: AOJu0YyP86BFN+H98jqZluRLFzxViRTK1mlg6Y4o6agSyMI9Wpi5VSzu
+ pFizVnYrGiqyIDo8gmubkNVwHtdzlxM=
+X-Google-Smtp-Source: AGHT+IEU7D1GyoaBWxFz6ZIso+dTOvXxj9AcL6b5wmb54NgtRQOhPsC2XQfQpdWERyz8BFxNgR/uyQ==
+X-Received: by 2002:a17:906:b4a:b0:a23:6075:52a2 with SMTP id
+ v10-20020a1709060b4a00b00a23607552a2mr83125ejg.6.1704838187778; 
+ Tue, 09 Jan 2024 14:09:47 -0800 (PST)
+Received: from [127.0.0.1] (dynamic-077-183-075-077.77.183.pool.telefonica.de.
+ [77.183.75.77]) by smtp.gmail.com with ESMTPSA id
+ v12-20020a1709061dcc00b00a2af672cdd8sm1448048ejh.161.2024.01.09.14.09.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 09 Jan 2024 14:09:47 -0800 (PST)
+Date: Tue, 09 Jan 2024 22:09:43 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+CC: Eduardo Habkost <eduardo@habkost.net>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, 
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>,
+ =?ISO-8859-1?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>,
+ John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Peter Xu <peterx@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Sergio Lopez <slp@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>,
+ =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_00/11=5D_hw/isa/vt82c686=3A_Implemen?=
+ =?US-ASCII?Q?t_relocation_and_toggling_of_SuperI/O_functions?=
+In-Reply-To: <077a06e2-476a-4efb-bd92-5cf30e29ceb5@ilande.co.uk>
+References: <20240106210531.140542-1-shentey@gmail.com>
+ <8e46217c-f28b-43b0-bea3-583d4b3cf42b@ilande.co.uk>
+ <5393CA46-267C-444A-AE8E-BBD82DCDCC9A@gmail.com>
+ <077a06e2-476a-4efb-bd92-5cf30e29ceb5@ilande.co.uk>
+Message-ID: <5A46E62D-ED9A-47A4-9EA2-11A522923DF7@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 03/10] hw/fsi: Introduce IBM's cfam,fsi-slave,scratchpad
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
-References: <20231128235700.599584-1-ninad@linux.ibm.com>
- <20231128235700.599584-4-ninad@linux.ibm.com>
- <4bce745f-c70f-414a-bf1a-f53503d5bc1a@kaod.org>
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <4bce745f-c70f-414a-bf1a-f53503d5bc1a@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kzX97PInrku-9liL0AvFBW0WlX3OYYQ9
-X-Proofpoint-ORIG-GUID: LvatMcKMKLvNttfx6MdfR5FhnJPChDbt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-09_11,2024-01-09_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- mlxlogscore=999 impostorscore=0 lowpriorityscore=0 malwarescore=0
- bulkscore=0 suspectscore=0 priorityscore=1501 spamscore=0 adultscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401090177
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,272 +112,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
 
 
->> +
->> +#define TYPE_FSI_SCRATCHPAD "fsi.scratchpad"
->> +#define SCRATCHPAD(obj) OBJECT_CHECK(FSIScratchPad, (obj), 
->> TYPE_FSI_SCRATCHPAD)
->> +
->> +typedef struct FSIScratchPad {
->> +        FSILBusDevice parent;
->> +
->> +        uint32_t reg;
->> +} FSIScratchPad;
+Am 8=2E Januar 2024 22:12:12 UTC schrieb Mark Cave-Ayland <mark=2Ecave-ayl=
+and@ilande=2Eco=2Euk>:
+>On 08/01/2024 20:07, Bernhard Beschow wrote:
 >
-> We could extend to 4 regs possibly.
-OK, Added 4 registers.
+>> Am 7=2E Januar 2024 14:13:44 UTC schrieb Mark Cave-Ayland <mark=2Ecave-=
+ayland@ilande=2Eco=2Euk>:
+>>> On 06/01/2024 21:05, Bernhard Beschow wrote:
+>>>=20
+>>>> This series implements relocation of the SuperI/O functions of the VI=
+A south
+>>>> bridges which resolves some FIXME's=2E It is part of my via-apollo-pr=
+o-133t
+>>>> branch [1] which is an extension of bringing the VIA south bridges to=
+ the PC
+>>>> machine [2]=2E This branch is able to run some real-world X86 BIOSes =
+in the hope
+>>>> that it allows us to form a better understanding of the real vt82c686=
+b devices=2E
+>>>> Implementing relocation and toggling of the SuperI/O functions is one=
+ step to
+>>>> make these BIOSes run without error messages, so here we go=2E
+>>>>=20
+>>>> The series is structured as follows: Patches 1-3 prepare the TYPE_ISA=
+_FDC,
+>>>> TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL to relocate and toggle (enable/=
+disable)
+>>>> themselves without breaking encapsulation of their respective device =
+states=2E
+>>>> This is achieved by moving the MemoryRegions and PortioLists from the=
+ device
+>>>> states into the encapsulating ISA devices since they will be relocate=
+d and
+>>>> toggled=2E
+>>>>=20
+>>>> Inspired by the memory API patches 4-6 add two convenience functions =
+to the
+>>>> portio_list API to toggle and relocate portio lists=2E Patch 5 is a p=
+reparation
+>>>> for that which removes some redundancies which otherwise had to be de=
+alt with
+>>>> during relocation=2E
+>>>>=20
+>>>> Patches 7-9 implement toggling and relocation for types TYPE_ISA_FDC,
+>>>> TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL=2E Patch 10 prepares the pegaso=
+s2 machine
+>>>> which would end up with all SuperI/O functions disabled if no -bios a=
+rgument is
+>>>> given=2E Patch 11 finally implements the main feature which now relie=
+s on
+>>>> firmware to configure the SuperI/O functions accordingly (except for =
+pegasos2)=2E
+>>>>=20
+>>>> v4:
+>>>> * Drop incomplete SuperI/O vmstate handling (Zoltan)
+>>>>=20
+>>>> v3:
+>>>> * Rework various commit messages (Zoltan)
+>>>> * Drop patch "hw/char/serial: Free struct SerialState from MemoryRegi=
+on"
+>>>>     (Zoltan)
+>>>> * Generalize wording in migration=2Erst to include portio_list API (Z=
+oltan)
+>>>>=20
+>>>> v2:
+>>>> * Improve commit messages (Zoltan)
+>>>> * Split pegasos2 from vt82c686 patch (Zoltan)
+>>>> * Avoid poking into device internals (Zoltan)
+>>>>=20
+>>>> Testing done:
+>>>> * `make check`
+>>>> * `make check-avocado`
+>>>> * Run MorphOS on pegasos2 with and without pegasos2=2Erom
+>>>> * Run Linux on amigaone
+>>>> * Run real-world BIOSes on via-apollo-pro-133t branch
+>>>> * Start rescue-yl on fuloong2e
+>>>>=20
+>>>> [1] https://github=2Ecom/shentok/qemu/tree/via-apollo-pro-133t
+>>>> [2] https://github=2Ecom/shentok/qemu/tree/pc-via
+>>>>=20
+>>>> Bernhard Beschow (11):
+>>>>     hw/block/fdc-isa: Move portio_list from FDCtrl to FDCtrlISABus
+>>>>     hw/block/fdc-sysbus: Move iomem from FDCtrl to FDCtrlSysBus
+>>>>     hw/char/parallel: Move portio_list from ParallelState to
+>>>>       ISAParallelState
+>>>>     exec/ioport: Resolve redundant =2Ebase attribute in struct
+>>>>       MemoryRegionPortio
+>>>>     exec/ioport: Add portio_list_set_address()
+>>>>     exec/ioport: Add portio_list_set_enabled()
+>>>>     hw/block/fdc-isa: Implement relocation and enabling/disabling for
+>>>>       TYPE_ISA_FDC
+>>>>     hw/char/serial-isa: Implement relocation and enabling/disabling f=
+or
+>>>>       TYPE_ISA_SERIAL
+>>>>     hw/char/parallel-isa: Implement relocation and enabling/disabling=
+ for
+>>>>       TYPE_ISA_PARALLEL
+>>>>     hw/ppc/pegasos2: Let pegasos2 machine configure SuperI/O function=
+s
+>>>>     hw/isa/vt82c686: Implement relocation and toggling of SuperI/O
+>>>>       functions
+>>>>=20
+>>>>    docs/devel/migration=2Erst       |  6 ++--
+>>>>    hw/block/fdc-internal=2Eh        |  4 ---
+>>>>    include/exec/ioport=2Eh          |  4 ++-
+>>>>    include/hw/block/fdc=2Eh         |  3 ++
+>>>>    include/hw/char/parallel-isa=2Eh |  5 +++
+>>>>    include/hw/char/parallel=2Eh     |  2 --
+>>>>    include/hw/char/serial=2Eh       |  2 ++
+>>>>    hw/block/fdc-isa=2Ec             | 18 +++++++++-
+>>>>    hw/block/fdc-sysbus=2Ec          |  6 ++--
+>>>>    hw/char/parallel-isa=2Ec         | 14 ++++++++
+>>>>    hw/char/parallel=2Ec             |  2 +-
+>>>>    hw/char/serial-isa=2Ec           | 14 ++++++++
+>>>>    hw/isa/vt82c686=2Ec              | 66 ++++++++++++++++++++++++++++=
+------
+>>>>    hw/ppc/pegasos2=2Ec              | 15 ++++++++
+>>>>    system/ioport=2Ec                | 41 +++++++++++++++++----
+>>>>    15 files changed, 172 insertions(+), 30 deletions(-)
+>>>=20
+>>> I think this series generally looks good: the only thing I think it's =
+worth checking is whether portio lists are considered exclusive to ISA devi=
+ces or not? (Paolo?)=2E
+>>=20
+>> The modifications preserve the current design, so how is this question =
+related to this series?
 >
->> +
->> +#define TYPE_FSI_CFAM "cfam"
->> +#define FSI_CFAM(obj) OBJECT_CHECK(FSICFAMState, (obj), TYPE_FSI_CFAM)
->> +
->> +/* P9-ism */
->> +#define CFAM_CONFIG_NR_REGS 0x28
->> +
->> +typedef struct FSICFAMState {
->> +    /* < private > */
->> +    FSISlaveState parent;
->> +
->> +    /* CFAM config address space */
->> +    MemoryRegion config_iomem;
->> +
->> +    MemoryRegion mr;
->> +    AddressSpace as;
->
-> The address space is not used. please remove.
-Removed address space.
->
->>
->> +#include "exec/memory.h"
->> +#include "hw/qdev-core.h"
->> +
->> +#include "hw/fsi/lbus.h"
->> +
->> +#include <stdint.h>
->
-> Not needed. Please remove.
-Removed the header file.
->
->> +
->> +static uint64_t fsi_cfam_config_read(void *opaque, hwaddr addr, 
->> unsigned size)
->> +{
->> +    FSICFAMState *cfam = FSI_CFAM(opaque);
->> +    BusChild *kid;
->> +    int i;
->> +
->> +    trace_fsi_cfam_config_read(addr, size);
->> +
->> +    switch (addr) {
->> +    case 0x00:
->> +        return CFAM_CONFIG_CHIP_ID_P9;
->> +    case 0x04:
->> +        return ENGINE_CONFIG_NEXT       |   /* valid */
->> +               0x00010000               |   /* slots */
->> +               0x00001000               |   /* version */
->> +               ENGINE_CONFIG_TYPE_PEEK  |   /* type */
->> +               0x0000000c;                  /* crc */
->> +    case 0x08:
->> +        return ENGINE_CONFIG_NEXT       |   /* valid */
->> +               0x00010000               |   /* slots */
->> +               0x00005000               |   /* version */
->> +               ENGINE_CONFIG_TYPE_FSI   |   /* type */
->> +               0x0000000a;                  /* crc */
->
-> Please introduce a macro to build these register values.
-Added macros
->
->> +        break;
->> +    default:
->> +        /* The config table contains different engines from 0xc 
->> onwards. */
->> +        i = 0xc;
->> +        QTAILQ_FOREACH(kid, &cfam->lbus.bus.children, sibling) {
->> +            if (i == addr) {
->> +                DeviceState *ds = kid->child;
->> +                FSILBusDevice *dev = FSI_LBUS_DEVICE(ds);
->> +                return FSI_LBUS_DEVICE_GET_CLASS(dev)->config;
->> +            }
->> +            i += size;
->> +        }
->> +
->> +        if (i == addr) {
->> +            return 0;
->> +        }
->
-> If I understand correctly, the register 0xC contains some static config
-> value for the first device engine, the scratchpad device mapped at 0xC00,
-> and following registers would do the same for other devices if they were
-> modelled.
->
-> This is certtainly hardwired in HW, so I would simplify to :
->
->     case 0xC:
->         return ldc->config
->     default:
->         /* log not implemented */
->
-> And extend the list when more devices are modeled.
-Simplified as per your suggestion.
->
->> +        /*
->> +         * As per FSI specification, This is a magic value at 
->> address 0 of
->> +         * given FSI port. This causes FSI master to send BREAK 
->> command for
->> +         * initialization and recovery.
->> +         */
->> +        return CFAM_CONFIG_CHIP_ID_BREAK;
->
-> This looks weird. I don't understant to which offset this value belongs.
-Yes, Removed it for now. We are handling break command in the config write.
->
->> +    }
->> +}
->> +
->> +static void fsi_cfam_config_write(void *opaque, hwaddr addr, 
->> uint64_t data,
->> +                                  unsigned size)
->> +{
->> +    FSICFAMState *cfam = FSI_CFAM(opaque);
->> +
->> +    trace_fsi_cfam_config_write(addr, size, data);
->> +
->> +    switch (TO_REG(addr)) {
->> +    case CFAM_CONFIG_CHIP_ID:
->> +    case CFAM_CONFIG_CHIP_ID + 4:
->
-> Couldn't we introduce a proper define for this reg ? and can we write to
-> the config space ? This break command seems to be sent to the FSI master,
-> according to Linux. Why is it handled in the CFAM config space ?
-Added new PEEK_STATUS register. The BREAK command is send by FSI-master 
-to FSI-slave and FSI-slave is embedded into CFAM hence we are handling 
-it here.
->
->> +        if (data == CFAM_CONFIG_CHIP_ID_BREAK) {
->> +            bus_cold_reset(BUS(&cfam->lbus));
->> +        }
->> +    break;
->
-> alignment is not good.
-Fixed the alignment.
->
->>
->> +static void fsi_cfam_realize(DeviceState *dev, Error **errp)
->> +{
->> +    FSICFAMState *cfam = FSI_CFAM(dev);
->> +    FSISlaveState *slave = FSI_SLAVE(dev);
->> +
->> +    /* Each slave has a 2MiB address space */
->> +    memory_region_init_io(&cfam->mr, OBJECT(cfam), 
->> &fsi_cfam_unimplemented_ops,
->> +                          cfam, TYPE_FSI_CFAM, 2 * 1024 * 1024);
->
-> 2 * MiB
-Now using MiB.
->
->> +
->> +    /* Add scratchpad engine */
->> +    if (!qdev_realize_and_unref(DEVICE(&cfam->scratchpad), 
->> BUS(&cfam->lbus),
->
-> cfam->scratchpad is not allocated. We should use qdev_realize instead.
-Fixed it.
->
->>
->> +    /* TODO: clarify scratchpad mapping */
->
-> You can remove the TODO now. All Local bus devices are mapped at offset
-> 0xc00.
-Removed it.
->
->>
->> +static void fsi_scratchpad_reset(DeviceState *dev)
->> +{
->> +    FSIScratchPad *s = SCRATCHPAD(dev);
->> +
->> +    s->reg = 0;
->
-> Just one reg ! Too easy :) let's have a few more.
-Now clear 4 registers.
->
->
->>
->> +    ldc->config =
->> +          ENGINE_CONFIG_NEXT            | /* valid */
->> +          0x00010000                    | /* slots */
->> +          0x00001000                    | /* version */
->> +          ENGINE_CONFIG_TYPE_SCRATCHPAD | /* type */
->> +          0x00000007;                     /* crc */
->
-> This class and attribute do not  look useful. Please use a macro
-> to build the value and return it in the CFAM config read operation.
-Added macro for SCARTCHPAD config value but keeping the class as new 
-devices need it.
->
->
->>
->> +
->> +static uint64_t fsi_slave_read(void *opaque, hwaddr addr, unsigned 
->> size)
->> +{
->> +    FSISlaveState *s = FSI_SLAVE(opaque);
->> +
->> +    trace_fsi_slave_read(addr, size);
->> +
->> +    if (addr + size > sizeof(s->regs)) {
->
-> This test is mixing memory region offsets and memop size. These are two
-> fields of different nature. So this is quite incorrect !
->
-> Ideally, we should have a switch statement with handlers for implemented
-> registers and a default for the rest. Please see the aspeed_scu model
-> for an example.
-I have fixed the limit check but registers are simply used as a memory 
-region hence did not add switch statement.
->
->> +        qemu_log_mask(LOG_GUEST_ERROR,
->> +                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for 
->> %u\n",
->> +                      __func__, addr, size);
->> +        return 0;
->> +    }
->> +
->> +    return s->regs[TO_REG(addr)];
->> +}
->> +
->> +static void fsi_slave_write(void *opaque, hwaddr addr, uint64_t data,
->> +                                 unsigned size)
->> +{
->> +    FSISlaveState *s = FSI_SLAVE(opaque);
->> +
->> +    trace_fsi_slave_write(addr, size, data);
->> +
->> +    if (addr + size > sizeof(s->regs)) {
->
-> Same here.
-Fixed the limit check.
->
->> +
->> +static void fsi_slave_init(Object *o)
->> +{
->> +    FSISlaveState *s = FSI_SLAVE(o);
->> +
->> +    memory_region_init_io(&s->iomem, OBJECT(s), &fsi_slave_ops,
->> +                          s, TYPE_FSI_SLAVE, 0x400);
->> +}
->
->
-> No reset handler ?
+>I was thinking about patches 1 and 3 where the portio_list variable is mo=
+ved from the core object to the ISA-specific child objects=2E
 
-Added reset handler.
+I think of patches 1 - 3 more as cleanups where an attribute unused in the=
+ core is moved one level up to where it is needed=2E In addition, the flopp=
+y core had two attributes where only one was ever used in a specific device=
+=2E From that perspective I think the question of whether the portio_list A=
+PI is ISA specific or not is unrelated to this series, i=2Ee=2E should be d=
+iscussed separately=2E
 
-Thanks for the review.
+>
+>> I'd appreciate feedback from the maintainers indeed since this part has=
+n't received any comments so far=2E Thanks :)
+>
+>Agreed=2E I *think* the portio_lists are ISA-specific as far as QEMU is c=
+oncerned, but a quick nod from an x86 maintainer would be a great help :)
 
-Regards,
+A quick nod shall be in scope ;)
 
-Ninad
+Best regards,
+Bernhard
 
+>
+>>> The portio_list_set_enabled() API looks interesting, and could be cons=
+idered for use by my PCI IDE mode-switching changes too=2E
+>>>=20
+>>> Apologies I don't have a huge amount of time for review right now, but=
+ I wanted to feed back that generally these patches look good, and if peopl=
+e are happy with the portio list changes then this series should be conside=
+red for merge=2E
+>>=20
+>> Never mind, it's still nice getting some confirmation from your side!
+>
+>No worries!
+>
+>
+>ATB,
+>
+>Mark=2E
+>
 
