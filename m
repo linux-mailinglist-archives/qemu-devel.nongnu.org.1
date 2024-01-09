@@ -2,75 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292218289F2
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:27:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFDB0828A09
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 17:32:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNEwI-0000af-IY; Tue, 09 Jan 2024 11:26:54 -0500
+	id 1rNF0t-0001nU-72; Tue, 09 Jan 2024 11:31:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1rNEwG-0000aS-HE
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:26:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1rNEwE-0005np-9k
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:26:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704817608;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=t0z2JZsw1x3ZSh3unAsilXoIlwco6jjNm/Itxgx2VV4=;
- b=FWiyOQR6Ckl8hhb5iVhkhse6pyaiqANdmtsU1mGvmyUyxoeE8BwubcGzW6/UomZWGoZSW4
- Pud/KHr26vjs93nLIqhSMMhitjBaXwkqG78n/eAQ81+5K7Hkb7N4GtGpaXds3RholMr1D3
- 2G+z94NJOxyt3MazD2Qc6HSJhkkWnho=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-201-HgLpYtNUMOqtgPWcW6GnWg-1; Tue, 09 Jan 2024 11:26:47 -0500
-X-MC-Unique: HgLpYtNUMOqtgPWcW6GnWg-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6800aa45af1so59337006d6.3
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 08:26:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rNF0r-0001nI-5q
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:31:37 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rNF0p-0007w7-EC
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 11:31:36 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-555e07761acso3798284a12.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 08:31:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704817893; x=1705422693; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=XCFz67O30cGWCwumEtc0V6mGc2glrm95RBgOYxVSigg=;
+ b=aTAwCystk4plvGi2mMKPdly63chz9MYKccrl7SAZpYXzZLt9rxSsEzQOUDldAx4Gg2
+ 2ECjoA0n/jQGN1r83lv5m7EJ7m/4Nn7K5TrchYUofiv/ib7VP2NCOSLM7KCwIYEnnqNS
+ tLRgbFa3diWGoJKKpdsEF/CWqeRjMYQT4ske2XsMugRKchOtkPnvr+q2TjjaTn23rs/d
+ d2lbsXDFOxZVxsempnqV1kOQj1wSNF7vatKbR/p42hucGNT8vNWl7EoJ5AZtf1y018iq
+ aZpD1XkNPiJpfBCuc4a6tLfyJHfGUIBlNeHe0a9EiCxUKl+gDV5seO8VCQxE/JbODfDT
+ scyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704817606; x=1705422406;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t0z2JZsw1x3ZSh3unAsilXoIlwco6jjNm/Itxgx2VV4=;
- b=ZdfebzAzLhZQjDDZP28bPvCFXbQIQJ8D0xHgQKCiYSBXdyeli7kLACcSAFgFMrbBsr
- ikp8doHJFLk4O3iH3DH5X6QUAQtyb7lGdrkxuYqUB6Ue9SuP7iXbAawTyFiKs85DsdpB
- 2fm5rCCRdN3cEqkKSDnFF/3CgiIZ2aI2t0LfXRHtDoz5ylUXF5dqCiftMuQcrU1JxL+P
- 6wl8kN7h0aIE8oHwUTQDe+AeZzMeCeSLBRDHGCqiI99Az1OkbSgEJKYra4E0ZPImYBYr
- VapXoZ0sCznAYJQG3NjYlUCpfi6joVhT1yt0iLy+FuLno7/3QEgJ55cco7jFSeRkDYzQ
- m5+Q==
-X-Gm-Message-State: AOJu0YxiT8n7cwl4q+C35MtK5zud4csJA/5SQxCEkDDK82FA1BsYvviq
- Q8ptMJgH81WZGMT0aT2AesNNQmB4YPe+2R1lypns1hctc1n1S+U2MRZ+0qmV+UuXCcGGaeatTK8
- ls+w/ea41GoqnmPDObaByLEI=
-X-Received: by 2002:a05:620a:2223:b0:783:19aa:4423 with SMTP id
- n3-20020a05620a222300b0078319aa4423mr4113323qkh.109.1704817606537; 
- Tue, 09 Jan 2024 08:26:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHOIt9dYvGWgo3xfh1dAzjVl39B3+Gw44htWkGop8aG7llTCy6gZU2L77pX5HRMSdAinhd3Kw==
-X-Received: by 2002:a05:620a:2223:b0:783:19aa:4423 with SMTP id
- n3-20020a05620a222300b0078319aa4423mr4113318qkh.109.1704817606211; 
- Tue, 09 Jan 2024 08:26:46 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- z29-20020a05620a08dd00b0078325efbaa6sm908131qkz.61.2024.01.09.08.26.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 08:26:45 -0800 (PST)
-Message-ID: <33244ed3-a065-4afb-a321-53ae46707d46@redhat.com>
-Date: Tue, 9 Jan 2024 17:26:43 +0100
+ d=1e100.net; s=20230601; t=1704817893; x=1705422693;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XCFz67O30cGWCwumEtc0V6mGc2glrm95RBgOYxVSigg=;
+ b=r47zrPkqF7SfqiHLM1h2nT040+XFwTr7CqvF7wU1v2NU/lE8W75TWrMVzEZTL46Lby
+ gQvuguKSosBQwR1XNBDgukjWYI6SUTEKWt1ToRSdV8OVXPtRx0C4AZJ6DhAJLDJlXx49
+ AOWaMy+AIJbKXj3E+INGyFm2j6mao7bL+ycSj6Wfqzb0XIe8BfGq7xCY7G0S7i8qJpC5
+ ldoC02aifHUQIIVPfZXBkqqLQLPvRl8WHwua2fORXvXEskNf3pm5PQpH85eszIxt0wdo
+ zB7o5TQCG+bQ6dNcnnDjC8ZO/9TuilJPNQORhXjABvonOKnwqr7rIi6ndHYzAkbF5pPg
+ L5PA==
+X-Gm-Message-State: AOJu0Yx45pkm3LKHk3Ffv6/c2byiSTqyUoUT3FuEjimIYmdYSvoE6xME
+ WBmHv5BJjypFazRqCsFMCkxkqq8kg3I5B4+mXVlCR+H8qkaW+A==
+X-Google-Smtp-Source: AGHT+IFCgDvyB8118SkZGV7Fxyx0OMDjykk40thCj5YloQ4qE0hC7qjZ2kW85nXIWgNDh23aSpCwFw/S5kPZpsYXVIo=
+X-Received: by 2002:a50:a444:0:b0:557:dffe:e9ba with SMTP id
+ v4-20020a50a444000000b00557dffee9bamr777473edb.45.1704817893045; Tue, 09 Jan
+ 2024 08:31:33 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: virtio-pci in qemu-system-arm is broken in 8.2
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, QEMU Developers <qemu-devel@nongnu.org>
 References: <90d7351c-2680-4ab6-95ee-5dac4e3f21c5@tls.msk.ru>
  <CAFEAcA8DdsHQ0eCYnh4vNoybodj0mcHCnOMEr9b_aOk7yO2Osw@mail.gmail.com>
  <ea7dd9f7-b40f-436c-a469-97ef26ac66a2@tls.msk.ru>
@@ -79,21 +59,23 @@ References: <90d7351c-2680-4ab6-95ee-5dac4e3f21c5@tls.msk.ru>
  <560c9f56-f0d8-4def-863a-63ba4226209e@tls.msk.ru>
  <CAFEAcA-hkd=VQdqw7-P1RGwu-c9JLn-NUHC1kgU-YgZ1FOMQww@mail.gmail.com>
  <CAFEAcA87qdWR-GLEjkGpGHxMhviFidi2=k7c=OFC3+hzn1P0Dw@mail.gmail.com>
- <87bk9uh9jd.fsf@draig.linaro.org>
- <CAFEAcA9K2jf3BfHY3xpP4T-_iH9nNX=XLrNp=mPg5nqZURBOrw@mail.gmail.com>
-From: Eric Auger <eauger@redhat.com>
-In-Reply-To: <CAFEAcA9K2jf3BfHY3xpP4T-_iH9nNX=XLrNp=mPg5nqZURBOrw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eauger@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ <2a34bd5d-2997-48cf-bcb8-32d97e3f7690@tls.msk.ru>
+In-Reply-To: <2a34bd5d-2997-48cf-bcb8-32d97e3f7690@tls.msk.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 9 Jan 2024 16:31:21 +0000
+Message-ID: <CAFEAcA83r12Y6d5Ba-3v1eNe1TfA9kO-PLtkots8C1SzgDNeaA@mail.gmail.com>
+Subject: Re: virtio-pci in qemu-system-arm is broken in 8.2
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,66 +92,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 9 Jan 2024 at 16:24, Michael Tokarev <mjt@tls.msk.ru> wrote:
+>
+> 09.01.2024 16:52, Peter Maydell:
+> ..
+> > Oh, your kernel isn't an LPAE one (i.e. CONFIG_LPAE is not
+> > set). That will obviously never be able to access registers
+> > above the 4GB mark (though the kernel's error message in this
+> > situation is a bit unhelpful and could perhaps be improved).
+> > If I set CONFIG_LPAE on the non-working config it starts working.
+> >
+> > I think then the answer is:
+> >   * if you want to use the (default) highmem setup, use an LPAE kernel
+> >   * if you want to use a non-LPAE kernel, tell QEMU to avoid
+> >     highmem using '-machine virt,highmem=off'
+> >
+> > It was just a bug that we were accidentally disabling highmem
+> > for the 32-bit 'max' CPU before b8f7959f28c4f3.
+>
+> Wow wow wow.  So it's a pebkac bug, not qemu bug.. :)
+> I didn't even know about LPAE before this email, and knew very
+> little about arm stuff too.
+>
+> Thank you very much for your work and time!
+>
+> The diagnostics here is definitely.. "interesting", so to say, it's
+> very "obvious" what the problem is.. from the kernel messages :)
 
+Yeah. I don't personally have the time to try to follow up
+on improving the kernel handling of this, but if anybody else
+does, I think the problem is that the function __of_address_to_resource()
+which fills in a 'struct resource' from a DTB entry silently
+truncates over-large values when it fills in r->start and r->end
+(which are of type phys_addr_t, and so only 32 bits on non-LPAE
+kernels). So that function seems like a good place to put some
 
-On 1/9/24 15:31, Peter Maydell wrote:
-> On Tue, 9 Jan 2024 at 14:21, Alex Bennée <alex.bennee@linaro.org> wrote:
->>
->> Peter Maydell <peter.maydell@linaro.org> writes:
->>
->>> On Tue, 9 Jan 2024 at 11:33, Peter Maydell <peter.maydell@linaro.org> wrote:
->>>> On Mon, 8 Jan 2024 at 17:38, Michael Tokarev <mjt@tls.msk.ru> wrote:
->>>>> Speaking of config. This is standard debian config, I'm attaching one
->>>>> to this email.  It can be found in the package, eg
->>>>> http://deb.debian.org/debian/pool/main/l/linux/linux-image-6.6.9-armmp_6.6.9-1_armhf.deb
->>>>> in /boot/config-$(uname -r).
->>>>
->>>> It does seem to be a config thing -- on a plain upstream
->>>> v6.6.9 my config works and that debian default one does
->>>> not. Now to try to identify which particular config
->>>> difference is at fault. (It's not the CONFIG_VMSPLIT one,
->>>> I just tried that.)
->>>
->>> Oh, your kernel isn't an LPAE one (i.e. CONFIG_LPAE is not
->>> set). That will obviously never be able to access registers
->>> above the 4GB mark (though the kernel's error message in this
->>> situation is a bit unhelpful and could perhaps be improved).
->>> If I set CONFIG_LPAE on the non-working config it starts working.
->>>
->>> I think then the answer is:
->>>  * if you want to use the (default) highmem setup, use an LPAE kernel
->>>  * if you want to use a non-LPAE kernel, tell QEMU to avoid
->>>    highmem using '-machine virt,highmem=off'
->>
->> Could we expand the "highmem" description in
->> https://www.qemu.org/docs/master/system/arm/virt.html to make it
->> clearer. I'm sure this isn't the first time there have been 32bit
->> difficulties with non-LPAE kernels?
-> 
-> Sure. We could make the highmem property description read:
-> 
-> # Set on/off to enable/disable placing devices and RAM in physical
-> # address space above 32 bits. The default is on for machine types
-> # later than virt-2.12 when the CPU supports an address space
-> # bigger than 32 bits (i.e. 64-bit CPUs, and 32-bit CPUs with the
-> # Large Physical Address Extension (LPAE) feature). If you want to
-> # boot a 32-bit kernel which does not have CONFIG_LPAE enabled on
-> # a CPU type which implements LPAE, you will need to manually set
-> # this to 'off'; otherwise some devices, such as the PCI controller,
-> # will not be accessible.
-> 
-> How's that ?
+  if (taddr or taddr + size are above 4GB) {
+      warn("resource foo is too high in the address space to use
+            (did you forget to enable CONFIG_LPAE?)\n");
+      return -EINVAL;
+  }
 
-Looks good to me.
+type handling which would then catch this user error relatively
+comprehensibly for most devices.
 
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+> And the author(s) of the tool used in debian to run arm guest (which
+> triggered this issue with qemu 8.2) didn't know this thing either,
+> obviously.  Also, it seems to be a little-known fact that qemu has
+> highmem enabled for 32bit arm by default and that one - unlike e.g
+> i386 - actually breaks system (with pci bus being unaccessible),
+> while on i386 the only outcome is not all memory is available.
+> That feels like unfortunate decision to enable highmem by default
+> on arm in qemu 2.12.
 
-Eric
+Yeah, in retrospect the other option might have been better.
+But at this late date it doesn't seem worth revisiting.
 
+> > The linux-image-6.6.9-armmp-lpae_6.6.9-1_armhf.deb kernel
+> > will probably work (though I haven't tested it).
+>
+> Yes, it works.  Also -machine virt,highmem=off works.  There's
+> no bug per se.
+>
+>
+> Thank you for all the findings, Peter!  Much appreciated!
 
-> 
-> thanks
-> -- PMM
-> 
+No worries.
 
+-- PMM
 
