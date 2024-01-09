@@ -2,52 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F260382815D
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 09:31:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C347B828171
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 09:32:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN7Uq-0003Ui-5j; Tue, 09 Jan 2024 03:30:04 -0500
+	id 1rN7Vm-000411-AS; Tue, 09 Jan 2024 03:31:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
- id 1rN7Ug-0003TW-Mt; Tue, 09 Jan 2024 03:29:55 -0500
+ id 1rN7Vh-0003uR-BZ; Tue, 09 Jan 2024 03:30:57 -0500
 Received: from zoidberg.rfc1149.net ([195.154.227.159])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
- id 1rN7Ue-0003yT-8T; Tue, 09 Jan 2024 03:29:54 -0500
+ id 1rN7Vf-0004mQ-J1; Tue, 09 Jan 2024 03:30:57 -0500
 Received: from 127.0.0.1 (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits)
- server-digest SHA256) (Client did not present a certificate)
- by zoidberg.rfc1149.net (Postfix) with ESMTPSA id 4568180026;
- Tue,  9 Jan 2024 09:29:47 +0100 (CET)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by zoidberg.rfc1149.net (Postfix) with ESMTPSA id 0444380024;
+ Tue,  9 Jan 2024 09:30:54 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rfc1149.net; s=smtp;
- t=1704788987; bh=8255yFKtZgQ1dqXQ7zPrXu5DImJwFdNFD0bVNeJGHp4=;
- h=References:From:To:Cc:Subject:Date:In-reply-to;
- b=YRP78kYb74cSrIptkhSGVjnsqCKshOSZIlDUt66naAwGi3JPMIsP5NS/aYHVEKhxT
- TKMK4xxh98ncyp2W8cjOhquiY7eIb0WlKQVZn3deRB5jMWCimAvUAW6nCdybDYvmsi
- 9BQg3tw5KWZkMqBZn+X7RrSFnaePE500RmNFB1ejfEBwXIunVCDboAE0AsHrkG/q5j
- ZfgeiyayaIldvJKYlfylKJVpZ0asbjhEwCFxOopxVdbvsDaw0G/qfuoLwsOtB7UGl+
- 8OxOXBe6nlmd5reAyNWxKk1HKFnboUyN+vnuSPeMNwQKikWq6dObY2zxfxeBiyh4LM
- LuBGjS6uk2Wtw==
-References: <20240108171523.2487291-1-sam@rfc1149.net>
- <20240108171523.2487291-2-sam@rfc1149.net>
- <55b697ed-381f-47f8-bcaa-d8258c75b2a2@linaro.org>
-User-agent: mu4e 1.10.8; emacs 29.1
+ t=1704789054; bh=HNiUK49oZHkgFUxKn3Q0TQPjJMoqu+JCF9gCepiQyYQ=;
+ h=From:To:Cc:Subject:Date;
+ b=wNYvqZ7xdX21QrkzehXQ8Npy4ssmcdcoyxuArji80GSDmBAymygbQN7OkqZoX59/S
+ PsUCptJtgjKSKDIqycJ+N/PBLPRDcYgjXQ7F+rFLYLOQZNjOEbe/4QYofjrByfpooO
+ fe9fHQkISDLNHm4CeOHypez3zeXQg7uwxDmp7YQPI6sugnenq2FoniAbiD1zCgcYhz
+ i9yraTq4hoTkbYj8m7nhCh9Wt8vc+PZakHqjtBNpOCfYplul25eyWaoQ0+qirg+ZJ1
+ FRPx2HtgDapAcyF9AIcd8aVui/Z0p8yTFVdttPqPtSQ9t9SNd2jCtKIbop2lsjyWXy
+ zclIh94HkI2LA==
 From: Samuel Tardieu <sam@rfc1149.net>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Magnus Damm <magnus.damm@gmail.com>, Kevin Wolf
- <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, Yoshinori Sato
- <ysato@users.sourceforge.jp>, devel@lists.libvirt.org,
- qemu-block@nongnu.org
-Subject: Re: [PATCH 1/2] target/sh4: Deprecate the shix machine
-Date: Tue, 09 Jan 2024 09:29:33 +0100
-In-reply-to: <55b697ed-381f-47f8-bcaa-d8258c75b2a2@linaro.org>
-Message-ID: <871qaqzz7p.fsf@rfc1149.net>
+To: qemu-devel@nongnu.org
+Cc: Magnus Damm <magnus.damm@gmail.com>, Hanna Reitz <hreitz@redhat.com>,
+ devel@lists.libvirt.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Samuel Tardieu <sam@rfc1149.net>
+Subject: [PATCH v2 0/2] Deprecate the shix machine and the TC58128 flash device
+Date: Tue,  9 Jan 2024 09:30:51 +0100
+Message-ID: <20240109083053.2581588-1-sam@rfc1149.net>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=195.154.227.159; envelope-from=sam@rfc1149.net;
  helo=zoidberg.rfc1149.net
 X-Spam_score_int: -20
@@ -71,20 +67,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+The shix machine was a research project started around 2003 at
+Télécom Paris. Preliminary support in QEMU was added in 2005
+back when the QEMU architecture was less structured than it is
+now. Unfortunately, the support for the shix machine and its
+peripherals, such as the TC58128 16MiB flash device, has never
+been maintained as the research project used the real machine.
 
->>       mc->default_cpu_type =3D TYPE_SH7750R_CPU;
->> +    mc->deprecation_reason =3D "old and unmaintained - use a=20
->> newer machine instead";
->
-> "use a newer machine instead" bugs me, what would that be?
->
-> Could we stick to "old and unmaintained"?
+This project stopped around 2010 and to the best of my knowledge
+and after consulting with the original author Alexis Polti,
+I propose to deprecate it in QEMU as well as the TC58128
+flash device which does not implement the QOM model and still
+contains debug fprintf statements.
 
-You're right. I removed the extra part in both the shix and the=20
-tc58128 deprecation messages.
+Samuel Tardieu (2):
+  target/sh4: Deprecate the shix machine
+  hw/block: Deprecate the TC58128 block device
 
-  Sam
---=20
-Samuel Tardieu
+ docs/about/deprecated.rst | 5 +++++
+ hw/block/tc58128.c        | 1 +
+ hw/sh4/shix.c             | 1 +
+ 3 files changed, 7 insertions(+)
+
+-- 
+2.42.0
+
 
