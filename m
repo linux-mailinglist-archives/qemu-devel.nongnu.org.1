@@ -2,64 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9146E828C58
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 19:18:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02426828C80
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 19:23:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNGfP-000759-Jd; Tue, 09 Jan 2024 13:17:35 -0500
+	id 1rNGk4-0000PS-6S; Tue, 09 Jan 2024 13:22:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rNGfK-00071C-Ay
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:17:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rNGfH-0007up-TQ
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:17:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704824246;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=2F3tfQEkz8dsB15xoODuG9mIj8K3dNgWQjWwtttjtKc=;
- b=LYE7TcRXleYqE1BGr0vEwJCk/Tjfv6eUnwJXKRi68kP+4KDlMGy/TDG9mYVBVb5ukZJcOG
- rWxyynEtUR5nmmRay+UXciZ9Awec2tEGVIuhySYA7D0qIN5rncOCLsQRa1Ob8NnIQrZiEm
- NGERz89RTPk1UYPm3UfyVsnSZNTLR2c=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-7Xsds5lYOkC9kUfk07M6Dw-1; Tue, 09 Jan 2024 13:17:25 -0500
-X-MC-Unique: 7Xsds5lYOkC9kUfk07M6Dw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D3175185A784;
- Tue,  9 Jan 2024 18:17:24 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.39.194.130])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D7DA13C2E;
- Tue,  9 Jan 2024 18:17:23 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com, aliang@redhat.com, stefanha@redhat.com,
- armbru@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH] string-output-visitor: Fix (pseudo) struct handling
-Date: Tue,  9 Jan 2024 19:17:17 +0100
-Message-ID: <20240109181717.42493-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNGjt-0000NR-O6
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:22:15 -0500
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNGjr-0001Or-K4
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 13:22:13 -0500
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-50eab4bf47aso2923245e87.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 10:22:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704824528; x=1705429328; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vnaDIUIfoY2hYCZsgiQ6ORd4ONxMPiat5cTnt+biCyo=;
+ b=KuI9SHMgyEtfW07/WgYs/lzQZaTf3WFPIHCtc2zUjkXMzAsHdYHYjkt0I37kLSRy3E
+ i7jnDw/dUuy9uS3FAXbz6DGqAIhwxwp3Izrlec/kbjdyZENbdTMHN72f95GmovIU6GBS
+ RJ9hqssh+74TjXpEnIo+cQSBFu9qXZWCcgjbSm3H5WT5i7Mw7Ss1SoFyxxVHGttBQWv9
+ htrB22R8qQwMVEi6d4Lm62U8tWJ58c1Lav9nCHu/aYRl4Z/tGVGX1bMv2A6Pvb57jmk2
+ GbSU8zCPowmiiS+Zz145pBsjBoxs3NSDT4ivGT0XrFkOuJW0b3tb+bfhxaLgk32nGRH8
+ b54Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704824528; x=1705429328;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vnaDIUIfoY2hYCZsgiQ6ORd4ONxMPiat5cTnt+biCyo=;
+ b=te0/4CbPLr4ZXeOgdaFmHuofH5Ez/MlK/YIYT9QqSXpwAScvHoYLaYrePlelodiq6L
+ 6aDP/KGc3Ei78yoCj6ZFIfal3PpJyehib0tw9uKWP4pvqDtYw2etzRmvJfl4lcbFUV8y
+ d2ONnlveDlQfmz1NrWclEU5rkagaPv6RzpgFhSgRrfMJmCnKE5qRVbBslO1SnRMOPNp0
+ AlNReHqCtzdPiG18Dpgo6457LTjrduEaUd88HJ+1ff//DkrUmPStqqXyidzP7DnAFHhg
+ UlO4e8Ksl4m6V3cQOQigwrUEiDgmx3kI8bS/6CU99VxnpZIfEFzZzHpzyOwlma9poPFE
+ v+1w==
+X-Gm-Message-State: AOJu0YyJoBeYNilXAsEYENeKSy0qW06golbb18wNBW5KQledoMtkcCla
+ Su/ucOdhDS/xk4XgotqSupKhip0Bt4vOEYzFdA8I42tiHgEyow==
+X-Google-Smtp-Source: AGHT+IH0X1Qq1R2tBkRAsm+nBYM29efXSYqnKue2nJe3obXJPfbLVFNziFfxi7kU4EpHwE6btty4FA==
+X-Received: by 2002:a05:6512:36cc:b0:50e:59d2:aaf0 with SMTP id
+ e12-20020a05651236cc00b0050e59d2aaf0mr571253lfs.10.1704824527848; 
+ Tue, 09 Jan 2024 10:22:07 -0800 (PST)
+Received: from [192.168.69.100] (rsa59-h02-176-184-32-47.dsl.sta.abo.bbox.fr.
+ [176.184.32.47]) by smtp.gmail.com with ESMTPSA id
+ o15-20020a198c0f000000b0050e7dcc05a5sm425817lfd.102.2024.01.09.10.22.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 09 Jan 2024 10:22:07 -0800 (PST)
+Message-ID: <e233582b-67db-481d-90bd-bb2677ff8734@linaro.org>
+Date: Tue, 9 Jan 2024 19:22:04 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 09/14] hw/arm: Prefer arm_feature(EL3) over
+ object_property_find(has_el3)
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Radoslaw Biernacki <rad@semihalf.com>, Kevin Wolf <kwolf@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>, Rob Herring <robh@kernel.org>,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+References: <20240109180930.90793-1-philmd@linaro.org>
+ <20240109180930.90793-10-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240109180930.90793-10-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,174 +101,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit ff32bb53 tried to get minimal struct support into the string
-output visitor by just making it return "<omitted>". Unfortunately, it
-forgot that the caller will still make more visitor calls for the
-content of the struct.
+On 9/1/24 19:09, Philippe Mathieu-Daudé wrote:
+> The "has_el3" property is added to ARMCPU when the
+> ARM_FEATURE_EL3 feature is available. Rather than
+> checking whether the QOM property is present, directly
+> check the feature.
+> 
+> Suggested-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/arm/exynos4210.c   |  4 ++--
+>   hw/arm/integratorcp.c |  5 ++---
+>   hw/arm/realview.c     |  2 +-
+>   hw/arm/versatilepb.c  |  5 ++---
+>   hw/arm/xilinx_zynq.c  |  2 +-
+>   hw/cpu/a15mpcore.c    | 11 +++++++----
+>   hw/cpu/a9mpcore.c     |  6 +++---
+>   7 files changed, 18 insertions(+), 17 deletions(-)
 
-If the struct is contained in a list, such as IOThreadVirtQueueMapping,
-in the better case its fields show up as separate list entries. In the
-worse case, it contains another list, and the string output visitor
-doesn't support nested lists and asserts that this doesn't happen. So as
-soon as the optional "vqs" field in IOThreadVirtQueueMapping is
-specified, we get a crash.
 
-This can be reproduced with the following command line:
+> diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
+> index bfd8aa5644..cebfe142cf 100644
+> --- a/hw/cpu/a15mpcore.c
+> +++ b/hw/cpu/a15mpcore.c
+> @@ -53,7 +53,6 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
+>       DeviceState *gicdev;
+>       SysBusDevice *busdev;
+>       int i;
+> -    bool has_el3;
+>       bool has_el2 = false;
+>       Object *cpuobj;
+>   
+> @@ -62,13 +61,17 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
+>       qdev_prop_set_uint32(gicdev, "num-irq", s->num_irq);
+>   
+>       if (!kvm_irqchip_in_kernel()) {
+> +        CPUState *cpu;
+> +
+>           /* Make the GIC's TZ support match the CPUs. We assume that
+>            * either all the CPUs have TZ, or none do.
+>            */
+> -        cpuobj = OBJECT(qemu_get_cpu(0));
+> -        has_el3 = object_property_find(cpuobj, "has_el3") &&
+> +        cpu = qemu_get_cpu(0);
+> +        cpuobj = OBJECT(cpu);
+> +        if (arm_feature(cpu_env(cpu), ARM_FEATURE_EL3)) {
+>               object_property_get_bool(cpuobj, "has_el3", &error_abort);
 
-  echo "info qtree" | ./qemu-system-x86_64 \
-    -object iothread,id=t0 \
-    -blockdev null-co,node-name=disk \
-    -device '{"driver": "virtio-blk-pci", "drive": "disk",
-              "iothread-vq-mapping": [{"iothread": "t0", "vqs": [0]}]}' \
-    -monitor stdio
+This requires the same change than a9mp_priv_realize(), so squashing:
 
-Fix the problem by counting the nesting level of structs and ignoring
-any visitor calls for values (apart from start/end_struct) while we're
-not on the top level.
-
-Fixes: ff32bb53476539d352653f4ed56372dced73a388
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2069
-Reported-by: Aihua Liang <aliang@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+-- >8 --
+          if (arm_feature(cpu_env(cpu), ARM_FEATURE_EL3)) {
+-            object_property_get_bool(cpuobj, "has_el3", &error_abort);
+-            qdev_prop_set_bit(gicdev, "has-security-extensions", true);
++            qdev_prop_set_bit(gicdev, "has-security-extensions",
++                              object_property_get_bool(cpuobj, "has_el3",
++                                                       &error_abort));
+          }
 ---
- qapi/string-output-visitor.c | 46 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
 
-diff --git a/qapi/string-output-visitor.c b/qapi/string-output-visitor.c
-index f0c1dea89e..5115536b15 100644
---- a/qapi/string-output-visitor.c
-+++ b/qapi/string-output-visitor.c
-@@ -65,6 +65,7 @@ struct StringOutputVisitor
-     } range_start, range_end;
-     GList *ranges;
-     void *list; /* Only needed for sanity checking the caller */
-+    unsigned int struct_nesting;
- };
- 
- static StringOutputVisitor *to_sov(Visitor *v)
-@@ -144,6 +145,10 @@ static bool print_type_int64(Visitor *v, const char *name, int64_t *obj,
-     StringOutputVisitor *sov = to_sov(v);
-     GList *l;
- 
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     switch (sov->list_mode) {
-     case LM_NONE:
-         string_output_append(sov, *obj);
-@@ -231,6 +236,10 @@ static bool print_type_size(Visitor *v, const char *name, uint64_t *obj,
-     uint64_t val;
-     char *out, *psize;
- 
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     if (!sov->human) {
-         out = g_strdup_printf("%"PRIu64, *obj);
-         string_output_set(sov, out);
-@@ -250,6 +259,11 @@ static bool print_type_bool(Visitor *v, const char *name, bool *obj,
-                             Error **errp)
- {
-     StringOutputVisitor *sov = to_sov(v);
-+
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     string_output_set(sov, g_strdup(*obj ? "true" : "false"));
-     return true;
- }
-@@ -260,6 +274,10 @@ static bool print_type_str(Visitor *v, const char *name, char **obj,
-     StringOutputVisitor *sov = to_sov(v);
-     char *out;
- 
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     if (sov->human) {
-         out = *obj ? g_strdup_printf("\"%s\"", *obj) : g_strdup("<null>");
-     } else {
-@@ -273,6 +291,11 @@ static bool print_type_number(Visitor *v, const char *name, double *obj,
-                               Error **errp)
- {
-     StringOutputVisitor *sov = to_sov(v);
-+
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     string_output_set(sov, g_strdup_printf("%.17g", *obj));
-     return true;
- }
-@@ -283,6 +306,10 @@ static bool print_type_null(Visitor *v, const char *name, QNull **obj,
-     StringOutputVisitor *sov = to_sov(v);
-     char *out;
- 
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     if (sov->human) {
-         out = g_strdup("<null>");
-     } else {
-@@ -295,6 +322,9 @@ static bool print_type_null(Visitor *v, const char *name, QNull **obj,
- static bool start_struct(Visitor *v, const char *name, void **obj,
-                          size_t size, Error **errp)
- {
-+    StringOutputVisitor *sov = to_sov(v);
-+
-+    sov->struct_nesting++;
-     return true;
- }
- 
-@@ -302,6 +332,10 @@ static void end_struct(Visitor *v, void **obj)
- {
-     StringOutputVisitor *sov = to_sov(v);
- 
-+    if (--sov->struct_nesting) {
-+        return;
-+    }
-+
-     /* TODO actually print struct fields */
-     string_output_set(sov, g_strdup("<omitted>"));
- }
-@@ -312,6 +346,10 @@ start_list(Visitor *v, const char *name, GenericList **list, size_t size,
- {
-     StringOutputVisitor *sov = to_sov(v);
- 
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     /* we can't traverse a list in a list */
-     assert(sov->list_mode == LM_NONE);
-     /* We don't support visits without a list */
-@@ -329,6 +367,10 @@ static GenericList *next_list(Visitor *v, GenericList *tail, size_t size)
-     StringOutputVisitor *sov = to_sov(v);
-     GenericList *ret = tail->next;
- 
-+    if (sov->struct_nesting) {
-+        return ret;
-+    }
-+
-     if (ret && !ret->next) {
-         sov->list_mode = LM_END;
-     }
-@@ -339,6 +381,10 @@ static void end_list(Visitor *v, void **obj)
- {
-     StringOutputVisitor *sov = to_sov(v);
- 
-+    if (sov->struct_nesting) {
-+        return;
-+    }
-+
-     assert(sov->list == obj);
-     assert(sov->list_mode == LM_STARTED ||
-            sov->list_mode == LM_END ||
--- 
-2.43.0
-
+> -        qdev_prop_set_bit(gicdev, "has-security-extensions", has_el3);
+> +            qdev_prop_set_bit(gicdev, "has-security-extensions", true);
+> +        }
+>           /* Similarly for virtualization support */
+>           has_el2 = object_property_find(cpuobj, "has_el2") &&
+>               object_property_get_bool(cpuobj, "has_el2", &error_abort);
 
