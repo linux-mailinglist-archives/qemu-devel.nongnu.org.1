@@ -2,71 +2,154 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B428828E0C
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 20:46:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B97828E59
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 21:04:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNI1v-00014y-Fi; Tue, 09 Jan 2024 14:44:55 -0500
+	id 1rNIJW-0003Pp-Jh; Tue, 09 Jan 2024 15:03:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rNI1t-00014P-49; Tue, 09 Jan 2024 14:44:53 -0500
-Received: from zproxy1.enst.fr ([2001:660:330f:2::dc])
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1rNIJR-0003Nb-P0
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 15:03:02 -0500
+Received: from mail-bn1nam02on2087.outbound.protection.outlook.com
+ ([40.107.212.87] helo=NAM02-BN1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rNI1q-0005cw-Qi; Tue, 09 Jan 2024 14:44:52 -0500
-Received: from localhost (localhost [IPv6:::1])
- by zproxy1.enst.fr (Postfix) with ESMTP id 1583CC0CBA;
- Tue,  9 Jan 2024 20:44:48 +0100 (CET)
-Received: from zproxy1.enst.fr ([IPv6:::1])
- by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id mdXwjDboYyFK; Tue,  9 Jan 2024 20:44:47 +0100 (CET)
-Received: from localhost (localhost [IPv6:::1])
- by zproxy1.enst.fr (Postfix) with ESMTP id 676B5C0D00;
- Tue,  9 Jan 2024 20:44:47 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr 676B5C0D00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
- s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1704829487;
- bh=yMzvz6qwSFKC5OyF4+vSQks97LFNIui3nYOUYqwTsWM=;
- h=From:To:Date:Message-ID:MIME-Version;
- b=sVWtYUpFj/kXdZ9AUdv/mKyKOpX1xlrluICBfgoYOTEbTd3Ibxe0KwzkNwCd9At4T
- wdxebBCvLKUborvfbwu1lCjA89sLAV+fXJEMwco6vXVQl5r9uCe0DNrEyw35KR9YSZ
- jNHCSl0KStr9wlVUhhurz/+rAK3F+/pU2oEUPldk=
-X-Virus-Scanned: amavis at enst.fr
-Received: from zproxy1.enst.fr ([IPv6:::1])
- by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id 9AXEEhrzrCvf; Tue,  9 Jan 2024 20:44:47 +0100 (CET)
-Received: from localhost.localdomain (74.0.125.80.rev.sfr.net [80.125.0.74])
- by zproxy1.enst.fr (Postfix) with ESMTPSA id EAD1FC0CF2;
- Tue,  9 Jan 2024 20:44:46 +0100 (CET)
-From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Alistair Francis <alistair@alistair23.me>,
- Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
- Laurent Vivier <lvivier@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v4 3/3] tests/qtest: Add STM32L4x5 SYSCFG QTest testcase
-Date: Tue,  9 Jan 2024 20:41:59 +0100
-Message-ID: <20240109194438.70934-4-ines.varhol@telecom-paris.fr>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240109194438.70934-1-ines.varhol@telecom-paris.fr>
-References: <20240109194438.70934-1-ines.varhol@telecom-paris.fr>
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1rNIJN-000508-8W
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 15:03:01 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JzkTdUcrjqFsmL4s7XQT98hclT/9lZzYReEBtygbQBIHLinv14UuAAKUTx1BFaUCk9yZ+B95r5VBidqlGZm4QKZafOpguaHYlTKABBo9eRJpoup6Wux2jEKtiBcnUikMQCAeFnZE8LFVFXk+sNT7fC5sG9XRkKgUmT8bL/oUoZLIei0gVs2Cx6Tj0z7zSLEVUPexWJElDF8Ei5JXy3lHm0Bn10wJ3UmM7PjAsI2ePnvI3Ucl0VRBEvdDmo922RIxVYf09NyR5fvhwCmcwqBuJ4pKNnFfAWbu6pphGgxpoIPCXn5muVR3AVW5NwZT7b7qyIDVCYdWl+TeKo/Yn2ROzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s7ApKQuZvOdAuhtFDKKDijSuyrJpTYz3GqK15EGCoIw=;
+ b=nLW0JnbwjihiQiLe6BppxBNfRsu3JweqE4RNdBBnMyFTJ7ABG2aDid0JngmGVc9+XAQpmT8VN4PJDJBezhKHlLbt/YrPoCW8RNGem++ZpBHM36Sf/c/b6Rtt3Bni4RcVdgk1K5FPBE1rgP2onUOK8LeTitxPU+E1w05q2ODh+iYD2hxo6308lxr/q8UMCS8F50P4alq2t1wvFK97MyopukonzxnTuwPWaa/wbQD4G5oV9ZD2n9JPTlUOZqocW9HmTNq8Cm0llKYY+3dnr0S4uHN/348IxwNaORyb7muzSOPMIC5P9agthNsFCEZxp1RWtUTZ3ndvBP+1vFP6tqL/Yg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
+ dkim=pass header.d=memverge.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=s7ApKQuZvOdAuhtFDKKDijSuyrJpTYz3GqK15EGCoIw=;
+ b=trcNJkdhus8gwCWZAN5EhzapNPnNePbrPLxDaM4blHLyZpCVXQ9WEKEppXykyyvKJqAAycpDIEVHmBrhr8UgJfGIK6oME7f8JNj3x5iVCEh3jrqwDo0kMR29GB74CMiDHeTpyxYc+X+3jZDTArpQ5w8fn72UH/Vds8BFX19EQ5c=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=memverge.com;
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
+ by PH8PR17MB6810.namprd17.prod.outlook.com (2603:10b6:510:23b::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23; Tue, 9 Jan
+ 2024 19:57:51 +0000
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::7a04:dc86:2799:2f15]) by SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::7a04:dc86:2799:2f15%5]) with mapi id 15.20.7159.020; Tue, 9 Jan 2024
+ 19:57:51 +0000
+Date: Tue, 9 Jan 2024 14:57:42 -0500
+From: Gregory Price <gregory.price@memverge.com>
+To: Hao Xiang <hao.xiang@bytedance.com>
+Cc: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Ben Widawsky <ben.widawsky@intel.com>,
+ Gregory Price <gourry.memverge@gmail.com>,
+ Fan Ni <fan.ni@samsung.com>, Ira Weiny <ira.weiny@intel.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
+ "Ho-Ren (Jack) Chuang" <horenc@vt.edu>, linux-cxl@vger.kernel.org
+Subject: Re: [External] Re: [QEMU-devel][RFC PATCH 1/1] backends/hostmem:
+ qapi/qom: Add an ObjectOption for memory-backend-* called HostMemType and
+ its arg 'cxlram'
+Message-ID: <ZZ2lNoTQ8hDHADTT@memverge.com>
+References: <20240101075315.43167-1-horenchuang@bytedance.com>
+ <20240101075315.43167-2-horenchuang@bytedance.com>
+ <ZZXX95yvk/WTIBT/@memverge.com>
+ <CAAYibXjZ0HSCqMrzXGv62cMLncS_81R3e1uNV5Fu4CPm0zAtYw@mail.gmail.com>
+ <ZZwtmiucNXxmrZ7S@memverge.com>
+ <CAAYibXhfUu8dMwvBmWz4P6N9-yLao0QwAFozk4rS_0GPsEZd7Q@mail.gmail.com>
+ <CAAYibXgf6i5+aqopCrVu5ZveDJ9WP2M2AJaUUaj5qFXFHQQxmQ@mail.gmail.com>
+ <ZZydwBTS4NeSizzb@memverge.com>
+ <CAAYibXhY5p6VN7yAMpmfAgHO+gsf51dvNw68y__RYV+43CVVLQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAYibXhY5p6VN7yAMpmfAgHO+gsf51dvNw68y__RYV+43CVVLQ@mail.gmail.com>
+X-ClientProxiedBy: SJ0PR05CA0143.namprd05.prod.outlook.com
+ (2603:10b6:a03:33d::28) To SJ0PR17MB5512.namprd17.prod.outlook.com
+ (2603:10b6:a03:394::19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:660:330f:2::dc;
- envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy1.enst.fr
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|PH8PR17MB6810:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4a01937d-4a92-4cd2-21de-08dc114d429c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 9NgylcsxBMmoInpY9rxJngs/XFEq8WZUcZx9HW2u+mbXlKpddX16hu6UP5+Lpo8QDuEo+fNpIlh29rcUagNUblHVCGx4XzEyjYfw0JhQgn33UqrjTkw5LWBtu3QzRZG0EI6V4TkkAJfGF/j5PDU2cfAKOz87JcHuvNAR7eOIxe2HJgiRNGhXymXjSQLB9dzijtnW+WJowhQGLMKwds/SZTBmlq68s3V2i5GEXdCg09tDGxL8xKtecSI2LytYnemrZcreSdBx6G5Lxkhm3r1BKPZQrxbtbEc2pOkXOFFKdlnIsK1wyP50D/zNebhtY3qvcCQdhgYWlJiLh+RzH+Y0SiF02o8kS48IP8fk/rmlPyxgR9Xv7WNIwWpnN2Z0KbaoXJzm9PA7T2zZqgiLehn9vPCczdmoOSIuwCOfyZKqyJ9siS+lXRge7jIjSgFI60mUwA54V51VGSups5Maq8PlCRTaIjDDM2fzY+XYuY7QLAKxKhRZI+Bm5/Yiycgcd2RA8e/faoXt6RoLgShfTqUgXmquZ6gxXKPQWjuXH+BwLve3s8sQ+ffWFIx1O6nU/tQU
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(376002)(396003)(346002)(136003)(39840400004)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(66946007)(66556008)(66476007)(316002)(4326008)(8676002)(8936002)(478600001)(26005)(2616005)(83380400001)(2906002)(5660300002)(7416002)(41300700001)(38100700002)(6916009)(86362001)(6666004)(6512007)(6506007)(6486002)(54906003)(53546011)(44832011)(36756003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NU01VDR6MVJhNWJXenFDaHdhVlJTTFZHOURwbHYzdDBCYkNheWYrUjlGV0tB?=
+ =?utf-8?B?MDEzcmVuTWY5M1JKMDdpVjBJNTk3SjA3SGkyUTJnUHRGbTAxcEdFclQrMmtJ?=
+ =?utf-8?B?dGJEVldlNUZ2eXphN3RIV1diZnVsM3Y2T3U1NnJUTlJPblcrMTFXQVhEbWp4?=
+ =?utf-8?B?NitSY011L3MzcEdLSXkyWHYzODd1eXBaYmZZU3dSRzdvQVlyZXhHS2dHbnRw?=
+ =?utf-8?B?L29KNEVPUlVMcEZrcmNWMEdBSTFZRHlPeVI4MjlQd3dEQUluQVd4ZkFXdG1s?=
+ =?utf-8?B?QVV3TGtQQUlGSW9aSGZmYmE1OTBGVWdqbXFSOHpEZHI2VkR4ZVY4NldZcmtP?=
+ =?utf-8?B?RjcxSFYwNnpKVnhpVlJXR0NMTUoraUxZRmFVSkpUWXNEU1NyQ3ZrRHhuUTIy?=
+ =?utf-8?B?UkUyVFJlU2xkQ1c0QVJuRkRVNGJVYThIcTkvWlNtZmdiUXdKNjA2ZERFMktp?=
+ =?utf-8?B?Ynl6NDRVVDEzZ3IxYitscVd0SURYbUFjenhqTE9zNGFhck1tV3hNMGlwbHdt?=
+ =?utf-8?B?TWN0TVJJRThCT0hCTXUvOXp6V0thTXRVODVqajZKK3BzbmJ5N1dmMHNiVW9z?=
+ =?utf-8?B?OTFQUWFhNm1YYlYzTDVDUzdYWHlkWWE4L3R2MG0wYXlyZ2xqR1Z6MEMvTjJD?=
+ =?utf-8?B?OTk2bHBNQXNCd2VFKzVzbnJyMVF5MDR2M0dEZGMyQ1k2VjRuQWRXOXU3Q0E1?=
+ =?utf-8?B?K1lUbmRkangvbzNDV3hjdjZEbDFOUHk4cDhPS2N6NWl1bU90RzRlYVgwU250?=
+ =?utf-8?B?MkhocndEcnJvbjd4NkNUSHdEM1dFWmErREJNdE5NRWMyc1RoMFppR1dZbENu?=
+ =?utf-8?B?c0NOcXJ3OHdpOURyZVhMeWppbmhzcmM2a0pXckprNzNFN1pPN3BCekVFM2VC?=
+ =?utf-8?B?NGExZ0xhNW1QZWFzM2E2aTRxMXUza21VeVRnUnNtRWZRK3NtYVJvSDFYU0tz?=
+ =?utf-8?B?bnIwNUZvMlhvZUdyY3ZxV3Urb3V6YVNjR3BuaWFEZzB3eU9ZdXNrNStaSFJK?=
+ =?utf-8?B?MTJ4c2ZPVUM5UlFuR1hUNjhnL1JtZmF3SVhhaitFWDRFRkh1QzQ1VmFZRCtH?=
+ =?utf-8?B?K1pQQnlicUMvNndVeWJUVWJsSUp0QnBpVC9mQlFGdmUwZGdCdmpDd1FGZmw1?=
+ =?utf-8?B?MlZKWWw1SFBXejF1Y3ZpcFFwUmJ4bCtxK24wRUd5MmVoMCtFanBMNHloWUU4?=
+ =?utf-8?B?TW1MRk1zYjI2dCtBUisrOVFEdGR6cFRGcUlnNDdUTHcwTGR1QlhxUkZRMm5q?=
+ =?utf-8?B?ZytrNW9CQVhTWEZPU2xRSW9Jd2ZhbUZPNUliQUpkcWZJUWd5WW1VWW9CelBl?=
+ =?utf-8?B?VE9sTldHbzE1RlNZMWhXVVVLZTZLdU5mUXIydzg3VVBRN1N6Z0ppWlViRFZr?=
+ =?utf-8?B?WjNsNDI1SmNUS2N6MmJXRmt6MXNZNk5nWTd2c1ovYmk5aE9HRTh5YzliZ1F5?=
+ =?utf-8?B?VkZzdzdlUlk2V3JabEpiejEzcTFMYXFsS1JZbXpqQWc1RkRlbm50dkU3RXF3?=
+ =?utf-8?B?K2FnTlZDcU4ydmRsUHJqMm01OHhScnJnNjBIUDkvSVUrbXc4US9WWk94V3FO?=
+ =?utf-8?B?TXBIWGhpa3UwcGVhVmhTaG9mZmk3cUdCdVVKUVdNeFIzQll5QUtYdHEwNDZa?=
+ =?utf-8?B?djdabDJIK0ZaVGhIcE1lUVdVQjYyS0g4ajRLNnZJNURyb3I5Uk8zSlNrZlBz?=
+ =?utf-8?B?MGcxVTIwdUdHS2FJNWNwMHJWNzZFT0RDS2FJQUZGeHlVNnYxamNxUWdmVS92?=
+ =?utf-8?B?NEZtUkdLcDFGVWhWcy9VYmtKRFhoWU44eVpSd3RkS2RqSHhFa2tjTjd2b240?=
+ =?utf-8?B?enNhamtiREN6NDFzbjA2WG9mL1RpY2IwZ2g0YldXdVAyVWZXaUpGbmF6a2t4?=
+ =?utf-8?B?eHNSMnlvZmpudXpkZzBwNVgwT0tOOVJGUEdSd2RHdTZCL1JTdE10T3p1cFdl?=
+ =?utf-8?B?UytURkpFeEpkZURMeHBvVngxTnQrL1I0MzJmRjFrTVUrU0VVNU9PVkdsdFNU?=
+ =?utf-8?B?T1VSYzh0N1FQbzBQQmpOTk1zRlRid3lyb2kyeGJzMUw0SUJLVm9KQ1ZLVkV2?=
+ =?utf-8?B?Tmc1cmRDZHlVY0FOMytaRzdvL2tWek1pSk5TOEliS3Y1SldEa0diTGFtL0FY?=
+ =?utf-8?B?SXJXOC9jR0dWbFRLUzlFR1RtSDUwWm1aZHNVc1B6VkNlc1dIZndndmI1MXZr?=
+ =?utf-8?B?QVE9PQ==?=
+X-OriginatorOrg: memverge.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a01937d-4a92-4cd2-21de-08dc114d429c
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2024 19:57:50.9086 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: f6W+lfJ4cWqhHqv0I1I2j7cNdRvLpyhk0b+JTARkQ8U0DAFAL17vi16NNcUPSwqeIFFo5Qqek7gbFRrDXgVI0M8Zte8v+Rz5VEDOoYqI7YA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR17MB6810
+Received-SPF: pass client-ip=40.107.212.87;
+ envelope-from=gregory.price@memverge.com;
+ helo=NAM02-BN1-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,372 +166,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tested-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
----
- tests/qtest/meson.build             |   3 +-
- tests/qtest/stm32l4x5_syscfg-test.c | 331 ++++++++++++++++++++++++++++
- 2 files changed, 333 insertions(+), 1 deletion(-)
- create mode 100644 tests/qtest/stm32l4x5_syscfg-test.c
+On Tue, Jan 09, 2024 at 11:33:04AM -0800, Hao Xiang wrote:
+> On Mon, Jan 8, 2024 at 5:13 PM Gregory Price <gregory.price@memverge.com> wrote:
+> 
+> Sounds like the technical details are explained on the other thread.
+> From what I understand now, if we don't go through a complex CXL
+> setup, it wouldn't go through the emulation path.
+> 
+> Here is our exact setup. Guest runs Linux kernel 6.6rc2
+> 
+> taskset --cpu-list 0-47,96-143 \
+> numactl -N 0 -m 0 ${QEMU} \
+> -M q35,cxl=on,hmat=on \
+> -m 64G \
+> -smp 8,sockets=1,cores=8,threads=1 \
+> -object memory-backend-ram,id=ram0,size=45G \
+> -numa node,memdev=ram0,cpus=0-7,nodeid=0 \
+> -msg timestamp=on -L /usr/share/seabios \
+> -enable-kvm \
+> -object memory-backend-ram,id=vmem0,size=19G,host-nodes=${HOST_CXL_NODE},policy=bind
+> \
+> -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
+> -device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
+> -device cxl-type3,bus=root_port13,volatile-memdev=vmem0,id=cxl-vmem0 \
+> -numa node,memdev=vmem0,nodeid=1 \
+> -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=19G,cxl-fmw.0.interleave-granularity=8k
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index d890b6f333..a926af92f6 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -196,7 +196,8 @@ qtests_aspeed =3D \
-    'aspeed_gpio-test']
-=20
- qtests_stm32l4x5 =3D \
--  ['stm32l4x5_exti-test']
-+  ['stm32l4x5_exti-test',
-+   'stm32l4x5_syscfg-test']
-=20
- qtests_arm =3D \
-   (config_all_devices.has_key('CONFIG_MPS2') ? ['sse-timer-test'] : []) =
-+ \
-diff --git a/tests/qtest/stm32l4x5_syscfg-test.c b/tests/qtest/stm32l4x5_=
-syscfg-test.c
-new file mode 100644
-index 0000000000..ed4801798d
---- /dev/null
-+++ b/tests/qtest/stm32l4x5_syscfg-test.c
-@@ -0,0 +1,331 @@
-+/*
-+ * QTest testcase for STM32L4x5_SYSCFG
-+ *
-+ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-+ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or la=
-ter.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest-single.h"
-+
-+#define SYSCFG_BASE_ADDR 0x40010000
-+#define SYSCFG_MEMRMP 0x00
-+#define SYSCFG_CFGR1 0x04
-+#define SYSCFG_EXTICR1 0x08
-+#define SYSCFG_EXTICR2 0x0C
-+#define SYSCFG_EXTICR3 0x10
-+#define SYSCFG_EXTICR4 0x14
-+#define SYSCFG_SCSR 0x18
-+#define SYSCFG_CFGR2 0x1C
-+#define SYSCFG_SWPR 0x20
-+#define SYSCFG_SKR 0x24
-+#define SYSCFG_SWPR2 0x28
-+#define INVALID_ADDR 0x2C
-+
-+static void syscfg_writel(unsigned int offset, uint32_t value)
-+{
-+    writel(SYSCFG_BASE_ADDR + offset, value);
-+}
-+
-+static uint32_t syscfg_readl(unsigned int offset)
-+{
-+    return readl(SYSCFG_BASE_ADDR + offset);
-+}
-+
-+static void syscfg_set_irq(int num, int level)
-+{
-+   qtest_set_irq_in(global_qtest, "/machine/soc/syscfg",
-+                    NULL, num, level);
-+}
-+
-+static void system_reset(void)
-+{
-+    QDict *response;
-+    response =3D qtest_qmp(global_qtest, "{'execute': 'system_reset'}");
-+    g_assert(qdict_haskey(response, "return"));
-+    qobject_unref(response);
-+}
-+
-+static void test_reset(void)
-+{
-+    /*
-+     * Test that registers are initialized at the correct values
-+     */
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_MEMRMP), =3D=3D, 0x00000000);
-+
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR1), =3D=3D, 0x7C000001);
-+
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR1), =3D=3D, 0x00000000);
-+
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR2), =3D=3D, 0x00000000);
-+
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR3), =3D=3D, 0x00000000);
-+
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR4), =3D=3D, 0x00000000);
-+
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_SCSR), =3D=3D, 0x00000000);
-+
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR2), =3D=3D, 0x00000000);
-+
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_SWPR), =3D=3D, 0x00000000);
-+
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_SKR), =3D=3D, 0x00000000);
-+
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_SWPR2), =3D=3D, 0x00000000);
-+}
-+
-+static void test_reserved_bits(void)
-+{
-+    /*
-+     * Test that reserved bits stay at reset value
-+     * (which is 0 for all of them) by writing '1'
-+     * in all reserved bits (keeping reset value for
-+     * other bits) and checking that the
-+     * register is still at reset value
-+     */
-+    syscfg_writel(SYSCFG_MEMRMP, 0xFFFFFEF8);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_MEMRMP), =3D=3D, 0x00000000);
-+
-+    syscfg_writel(SYSCFG_CFGR1, 0x7F00FEFF);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR1), =3D=3D, 0x7C000001);
-+
-+    syscfg_writel(SYSCFG_EXTICR1, 0xFFFF0000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR1), =3D=3D, 0x00000000);
-+
-+    syscfg_writel(SYSCFG_EXTICR2, 0xFFFF0000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR2), =3D=3D, 0x00000000);
-+
-+    syscfg_writel(SYSCFG_EXTICR3, 0xFFFF0000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR3), =3D=3D, 0x00000000);
-+
-+    syscfg_writel(SYSCFG_EXTICR4, 0xFFFF0000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR4), =3D=3D, 0x00000000);
-+
-+    syscfg_writel(SYSCFG_SKR, 0xFFFFFF00);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_SKR), =3D=3D, 0x00000000);
-+}
-+
-+static void test_set_and_clear(void)
-+{
-+    /*
-+     * Test that regular bits can be set and cleared
-+     */
-+    syscfg_writel(SYSCFG_MEMRMP, 0x00000107);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_MEMRMP), =3D=3D, 0x00000107);
-+    syscfg_writel(SYSCFG_MEMRMP, 0x00000000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_MEMRMP), =3D=3D, 0x00000000);
-+
-+    /* cfgr1 bit 0 is clear only so we keep it set */
-+    syscfg_writel(SYSCFG_CFGR1, 0xFCFF0101);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR1), =3D=3D, 0xFCFF0101);
-+    syscfg_writel(SYSCFG_CFGR1, 0x00000001);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR1), =3D=3D, 0x00000001);
-+
-+    syscfg_writel(SYSCFG_EXTICR1, 0x0000FFFF);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR1), =3D=3D, 0x0000FFFF);
-+    syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR1), =3D=3D, 0x00000000);
-+
-+    syscfg_writel(SYSCFG_EXTICR2, 0x0000FFFF);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR2), =3D=3D, 0x0000FFFF);
-+    syscfg_writel(SYSCFG_EXTICR2, 0x00000000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR2), =3D=3D, 0x00000000);
-+
-+    syscfg_writel(SYSCFG_EXTICR3, 0x0000FFFF);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR3), =3D=3D, 0x0000FFFF);
-+    syscfg_writel(SYSCFG_EXTICR3, 0x00000000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR3), =3D=3D, 0x00000000);
-+
-+    syscfg_writel(SYSCFG_EXTICR4, 0x0000FFFF);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR4), =3D=3D, 0x0000FFFF);
-+    syscfg_writel(SYSCFG_EXTICR4, 0x00000000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_EXTICR4), =3D=3D, 0x00000000);
-+
-+    syscfg_writel(SYSCFG_SKR, 0x000000FF);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_SKR), =3D=3D, 0x000000FF);
-+    syscfg_writel(SYSCFG_SKR, 0x00000000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_SKR), =3D=3D, 0x00000000);
-+}
-+
-+static void test_clear_by_writing_1(void)
-+{
-+    /*
-+     * Test that writing '1' doesn't set the bit
-+     */
-+    syscfg_writel(SYSCFG_CFGR2, 0x00000100);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR2), =3D=3D, 0x00000000);
-+}
-+
-+static void test_set_only_bits(void)
-+{
-+    /*
-+     * Test that set only bits stay can't be cleared
-+     */
-+    syscfg_writel(SYSCFG_CFGR2, 0x0000000F);
-+    syscfg_writel(SYSCFG_CFGR2, 0x00000000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR2), =3D=3D, 0x0000000F);
-+
-+    syscfg_writel(SYSCFG_SWPR, 0xFFFFFFFF);
-+    syscfg_writel(SYSCFG_SWPR, 0x00000000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_SWPR), =3D=3D, 0xFFFFFFFF);
-+
-+    syscfg_writel(SYSCFG_SWPR2, 0xFFFFFFFF);
-+    syscfg_writel(SYSCFG_SWPR2, 0x00000000);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_SWPR2), =3D=3D, 0xFFFFFFFF);
-+
-+    system_reset();
-+}
-+
-+static void test_clear_only_bits(void)
-+{
-+    /*
-+     * Test that clear only bits stay can't be set
-+     */
-+    syscfg_writel(SYSCFG_CFGR1, 0x00000000);
-+    syscfg_writel(SYSCFG_CFGR1, 0x00000001);
-+    g_assert_cmpuint(syscfg_readl(SYSCFG_CFGR1), =3D=3D, 0x00000000);
-+
-+    system_reset();
-+}
-+
-+static void test_interrupt(void)
-+{
-+    /*
-+     * Test that GPIO rising lines result in an irq
-+     * with the right configuration
-+     */
-+    qtest_irq_intercept_in(global_qtest, "/machine/soc/exti");
-+
-+    /* GPIOA is the default source for EXTI lines 0 to 15 */
-+
-+    syscfg_set_irq(0, 1);
-+
-+    g_assert_true(get_irq(0));
-+
-+
-+    syscfg_set_irq(15, 1);
-+
-+    g_assert_true(get_irq(15));
-+
-+    /* Configure GPIOB[1] as the source input for EXTI1 */
-+    syscfg_writel(SYSCFG_EXTICR1, 0x00000010);
-+
-+    syscfg_set_irq(17, 1);
-+
-+    g_assert_true(get_irq(1));
-+
-+    /* Clean the test */
-+    syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
-+    syscfg_set_irq(0, 0);
-+    syscfg_set_irq(15, 0);
-+    syscfg_set_irq(17, 0);
-+}
-+
-+static void test_irq_pin_multiplexer(void)
-+{
-+    /*
-+     * Test that syscfg irq sets the right exti irq
-+     */
-+
-+    qtest_irq_intercept_in(global_qtest, "/machine/soc/exti");
-+
-+    syscfg_set_irq(0, 1);
-+
-+    /* Check that irq 0 was set and irq 15 wasn't */
-+    g_assert_true(get_irq(0));
-+    g_assert_false(get_irq(15));
-+
-+    /* Clean the test */
-+    syscfg_set_irq(0, 0);
-+
-+    syscfg_set_irq(15, 1);
-+
-+    /* Check that irq 15 was set and irq 0 wasn't */
-+    g_assert_true(get_irq(15));
-+    g_assert_false(get_irq(0));
-+
-+    /* Clean the test */
-+    syscfg_set_irq(15, 0);
-+}
-+
-+static void test_irq_gpio_multiplexer(void)
-+{
-+    /*
-+     * Test that an irq is generated only by the right GPIO
-+     */
-+
-+    qtest_irq_intercept_in(global_qtest, "/machine/soc/exti");
-+
-+    /* GPIOA is the default source for EXTI lines 0 to 15 */
-+
-+    /* Check that setting rising pin GPIOA[0] generates an irq */
-+    syscfg_set_irq(0, 1);
-+
-+    g_assert_true(get_irq(0));
-+
-+    /* Clean the test */
-+    syscfg_set_irq(0, 0);
-+
-+    /* Check that setting rising pin GPIOB[0] doesn't generate an irq */
-+    syscfg_set_irq(16, 1);
-+
-+    g_assert_false(get_irq(0));
-+
-+    /* Clean the test */
-+    syscfg_set_irq(16, 0);
-+
-+    /* Configure GPIOB[0] as the source input for EXTI0 */
-+    syscfg_writel(SYSCFG_EXTICR1, 0x00000001);
-+
-+    /* Check that setting rising pin GPIOA[0] doesn't generate an irq */
-+    syscfg_set_irq(0, 1);
-+
-+    g_assert_false(get_irq(0));
-+
-+    /* Clean the test */
-+    syscfg_set_irq(0, 0);
-+
-+    /* Check that setting rising pin GPIOB[0] generates an irq */
-+    syscfg_set_irq(16, 1);
-+
-+    g_assert_true(get_irq(0));
-+
-+    /* Clean the test */
-+    syscfg_set_irq(16, 0);
-+    syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    int ret;
-+
-+    g_test_init(&argc, &argv, NULL);
-+    g_test_set_nonfatal_assertions();
-+
-+    qtest_add_func("stm32l4x5/syscfg/test_reset", test_reset);
-+    qtest_add_func("stm32l4x5/syscfg/test_reserved_bits",
-+                   test_reserved_bits);
-+    qtest_add_func("stm32l4x5/syscfg/test_set_and_clear",
-+                   test_set_and_clear);
-+    qtest_add_func("stm32l4x5/syscfg/test_clear_by_writing_1",
-+                   test_clear_by_writing_1);
-+    qtest_add_func("stm32l4x5/syscfg/test_set_only_bits",
-+                   test_set_only_bits);
-+    qtest_add_func("stm32l4x5/syscfg/test_clear_only_bits",
-+                   test_clear_only_bits);
-+    qtest_add_func("stm32l4x5/syscfg/test_interrupt",
-+                   test_interrupt);
-+    qtest_add_func("stm32l4x5/syscfg/test_irq_pin_multiplexer",
-+                   test_irq_pin_multiplexer);
-+    qtest_add_func("stm32l4x5/syscfg/test_irq_gpio_multiplexer",
-+                   test_irq_gpio_multiplexer);
-+
-+    qtest_start("-machine b-l475e-iot01a");
-+    ret =3D g_test_run();
-+    qtest_end();
-+
-+    return ret;
-+}
---=20
-2.43.0
+:] you did what i thought you did
 
+-numa node,memdev=vmem0,nodeid=1
+
+"""
+Another possiblity: You mapped this memory-backend into another numa
+node explicitly and never onlined the memory via cxlcli.  I've done
+this, and it works, but it's a "hidden feature" that probably should
+not exist / be supported.
+"""
+
+You're mapping vmem0 into an explicit numa node *and* into the type3
+device.  You don't need to do both - and technically this shouldn't be
+allowed.
+
+With this configuration, you can go thorugh the cxl-cli setup process
+for the CXL device, you'll find that you can create *another* node
+(node 2 in this case) that maps to the same memory you mapped to node1..
+
+
+You can drop the cxl devices objects in here and the memory will still
+come up the way you want it to.
+
+If you drop this line:
+
+-numa node,memdev=vmem0,nodeid=1
+
+You have to use the CXL driver to instantiate the dax device and the
+numa node, and at *that* point you will see the read/write functions
+being called.
+
+~Gregory
 
