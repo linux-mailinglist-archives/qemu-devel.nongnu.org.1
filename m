@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8979828772
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 14:54:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7570F828372
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 10:46:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNCXx-0001Av-SV; Tue, 09 Jan 2024 08:53:37 -0500
+	id 1rN8gU-0003PK-Dl; Tue, 09 Jan 2024 04:46:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=1738d0d938=kai.kang@windriver.com>)
- id 1rN8Hc-0003o6-46
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 04:20:29 -0500
-Received: from mx0b-0064b401.pphosted.com ([205.220.178.238])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=1738d0d938=kai.kang@windriver.com>)
- id 1rN8HZ-00033J-SM
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 04:20:27 -0500
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
- by mx0a-0064b401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 4097cffQ029611
- for <qemu-devel@nongnu.org>; Tue, 9 Jan 2024 09:20:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
- h=from:to:subject:date:message-id:mime-version
- :content-transfer-encoding:content-type; s=PPS06212021; bh=3wHm8
- f9LXSOsx4ncjMyJ2rNfqL5xRHhbU+5nZ4vjcRw=; b=rLkwEJjKcmKzF/8pdqtcI
- TVgLQB7v4rDI1guYgw4n/HzH/XA92Rxt5/rdTevnuTM3KaDVDr7ReLkIYWEHVvQ6
- yRBWGFAq7Vj0xvJFm7914TUkOMSbSf/mcQ9q2hQJIVLbaQcxSs7jlW6R8aHUXh07
- qzj3XRXFyTN1Idq9cwPXYGLGXziLbN/tYU0OE12Rxzz2pvwYQR0YBPEFSq3c2s7j
- eELg1uD7YVAIqDgOUWEftUMUkVtpGyot5Bs8ySpZyZ9ccKjypIYx2Vif+6MQkXMC
- 9c6ibHHy1Y7NVHi61ftKXus6CJCjjviG4yjzggn1LySj0oWO36QCcGhv2Hv0NqKN
- g==
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com
- [147.11.82.252])
- by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3vewekb2e5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 09:20:22 +0000 (GMT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 9 Jan 2024 01:20:55 -0800
-Received: from pek-kkang-d2.wrs.com (128.224.34.219) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Tue, 9 Jan 2024 01:20:54 -0800
-From: Kai Kang <kai.kang@windriver.com>
-To: <qemu-devel@nongnu.org>
-Subject: [PATCH] qdev: not add devices to bus in reverse order
-Date: Tue, 9 Jan 2024 17:20:15 +0800
-Message-ID: <20240109092015.4136865-1-kai.kang@windriver.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rN8g7-0003Ff-N1
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 04:46:06 -0500
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rN8fy-0006jV-33
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 04:45:42 -0500
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6dbb8698312so845570a34.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 01:45:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704793536; x=1705398336; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=h///6VR4NKCMWERJOW4/MgQYa9QP2gRlZfc3iKJYG6c=;
+ b=qJMm54wnMenaFO+H50VvmlddEw3peFEWOt1dNGlKCCk836IWNGfjL2hPvx1nKHoGbg
+ EmqSX2niIoF85DIWQj/6zg4TitpveHfrv7uo05/w7yMp15mFSBHYtneg24T+AyO1BEu1
+ 6uFm320LFDy5C5F211zvgUre6XJO1U/OkUEYVeyWehJNuaqSpA24TXIArTifhdXPn6Zd
+ 2kPtFSRIDYGqGMB3UcyCi10akabLFN/Ub8uThLtneZGPpg71lhR51b3cmjXlJEsoX8h2
+ wxMtzOZ0YwJbfy/34mqQoMIS7n1mrUwUGFubbD6+ocUxkFejgqBk8whRtW9g80ptGros
+ IiGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704793536; x=1705398336;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=h///6VR4NKCMWERJOW4/MgQYa9QP2gRlZfc3iKJYG6c=;
+ b=IVqEmm0Etu0LJX8wOrLeo+BuuNJMnJbwBLc1krN4HuIaxmGmWH5CeCAgfKC2rckJE2
+ TMQyhzmNrnZUoz5ySWApHV9P0eUgfh95BT4zGkUL63RlvOu4HioxE2MCst/DL3aNja15
+ cKBWgxLlE8CYbc4YlYlx2LiwdtPWn8xi+jK5gXms0L6zwE6Gd9X47YTlYQZydz5EiYky
+ OtHNpkZ1rLDosSAsEZ7Ly6k2KF3z926q3UoMPt0oW/spMj4IbdGa3tBi5RQZhyLkczT+
+ LJM+yYAOsYXVaRCjQ/+Tr9H+K+hFIFDJ6Diouom/VqELc0oN29rPfz3HYBcODfpB6j7R
+ 2Ucw==
+X-Gm-Message-State: AOJu0YzBwgFYHo447L/Fbmr76PzwSXEUDtXiW1t4Q0k351cm/hKBvB3x
+ Jgnc94PTyRi1cwc8hwhcnzkiCqPQ2O6oNQ==
+X-Google-Smtp-Source: AGHT+IFfK2qrlUu7vPvczPtRp+3q8dYjXqSDTtgyDdHSH8TldhFNAoKkxQ/+j1K79YnmIqT6SaM6+A==
+X-Received: by 2002:a9d:7a56:0:b0:6dd:e334:f2cf with SMTP id
+ z22-20020a9d7a56000000b006dde334f2cfmr493336otm.23.1704793536423; 
+ Tue, 09 Jan 2024 01:45:36 -0800 (PST)
+Received: from [192.168.51.162] ([172.58.109.255])
+ by smtp.gmail.com with ESMTPSA id
+ p4-20020a9d76c4000000b006dbc5410868sm309275otl.21.2024.01.09.01.45.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 09 Jan 2024 01:45:36 -0800 (PST)
+Message-ID: <c495e107-4094-45b7-9166-7674910e7781@linaro.org>
+Date: Tue, 9 Jan 2024 20:21:40 +1100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: aXWGTiPkT_saVuNfVY65mMM3XbDOmWYK
-X-Proofpoint-ORIG-GUID: aXWGTiPkT_saVuNfVY65mMM3XbDOmWYK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-16_25,2023-11-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 bulkscore=0
- phishscore=0 spamscore=0 clxscore=1015 mlxscore=0 suspectscore=0
- mlxlogscore=858 lowpriorityscore=0 impostorscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401090074
-Received-SPF: pass client-ip=205.220.178.238;
- envelope-from=prvs=1738d0d938=kai.kang@windriver.com;
- helo=mx0b-0064b401.pphosted.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/9] hw/hppa/machine: Allow up to 3840 MB total memory
+Content-Language: en-US
+To: deller@kernel.org, qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>, Bruno Haible <bruno@clisp.org>,
+ "Nelson H . F . Beebe" <beebe@math.utah.edu>, Helge Deller <deller@gmx.de>
+References: <20240107132237.50553-1-deller@kernel.org>
+ <20240107132237.50553-2-deller@kernel.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240107132237.50553-2-deller@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 09 Jan 2024 08:53:14 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,41 +95,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When this section of source codes were added via commit:
+On 1/8/24 00:22, deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
+> 
+> The physical hardware allows DIMMs of 4 MB size and above, allowing up
+> to 3840 MB of memory, but is restricted by setup code to 3 GB.
+> Increase the limit to allow up to the maximum amount of memory.
+> 
+> Btw. the memory area from 0xf000.0000 to 0xffff.ffff is reserved by
+> the architecture for firmware and I/O memory and can not be used for
+> standard memory.
+> 
+> An upcoming 64-bit SeaBIOS-hppa firmware will allow more than 3.75GB
+> on 64-bit HPPA64. In this case the ram_max for the pa20 case will change.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Noticed-by: Nelson H. F. Beebe <beebe@math.utah.edu>
+> Fixes: b7746b1194c8 ("hw/hppa/machine: Restrict the total memory size to 3GB")
+> ---
+>   hw/hppa/machine.c | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
 
-* 02e2da45c4 Add common BusState
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-it added devices to bus with LIST_INSERT_HEAD() which operated on the
-single direction list. It didn't have something like LIST_INSERT_TAIL()
-at that time and kept that way when turned to QTAILQ.
 
-Then it causes the fist device in qemu command line inserted at the end
-of the bus child link list. And when realize them, the first device will
-be the last one to be realized.
-
-Replace QTAILQ_INSERT_HEAD_RCU() with QTAILQ_INSERT_TAIL_RCU() to make
-sure that devices are added to bus with the sequence in the command
-line.
-
-Signed-off-by: Kai Kang <kai.kang@windriver.com>
----
- hw/core/qdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index 43d863b0c5..5e2ff43715 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -89,7 +89,7 @@ static void bus_add_child(BusState *bus, DeviceState *child)
-     kid->child = child;
-     object_ref(OBJECT(kid->child));
- 
--    QTAILQ_INSERT_HEAD_RCU(&bus->children, kid, sibling);
-+    QTAILQ_INSERT_TAIL_RCU(&bus->children, kid, sibling);
- 
-     /* This transfers ownership of kid->child to the property.  */
-     snprintf(name, sizeof(name), "child[%d]", kid->index);
--- 
-2.34.1
-
+r~
 
