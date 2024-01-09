@@ -2,86 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 243DA82822E
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 09:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDB6828256
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 09:45:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN7fi-0003Eo-8i; Tue, 09 Jan 2024 03:41:18 -0500
+	id 1rN7jM-0004fn-TV; Tue, 09 Jan 2024 03:45:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rN7fh-0003Eg-EX
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 03:41:17 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rN7ff-0001VC-HB
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 03:41:17 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1d3ec3db764so7847435ad.2
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 00:41:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704789673; x=1705394473; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SmXcImIVxWxiPq142HoSGr/nabmNhgAEQtTOPNP71MM=;
- b=Q/wfSXb7OAYFJgdSjXIC6psySyeCU9ozHHFMmZiK4QuGnsJgbyqZIboBqcPT7zful1
- E5fKJyizArhNoGJC8ZPrG1zmDClk4MYhtiRfv4iXz3/FpnQf/qW7z32JjK7oKdjJZK3B
- wxPVzGM3kcJnDb6kobn4tD1hLFTVNwro7KWSTzI8jfofSBJACsqhFx9/0T66P8jTq1Fl
- EwQQ3SO5L5GqF4DMZoL5T6bJLEuDX4Zig7fOKBfxcfZGdnFibLXgZRON96WnOgn4Mf+n
- fVNPyYC8xqWKvxH2FvxOgVW6rFdVnKHPjri2mATsrxM2YnLixHf0L7p01UItoffLTMCw
- upmw==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rN7jK-0004dH-RV
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 03:45:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rN7jJ-0003NH-0K
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 03:45:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704789899;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=FAyA8pwyoAZXvd8xi1gEyEdW7jCyGnrljGoXZOUNmEE=;
+ b=VuAUM0z/yyp9dETpnCFKWwHLloLh/+sb3yMhtFrIZaLH8CDewP9Epujb9XZ3MoKh3Wjhdg
+ NzF86Gglm02bEGmVQcFXLWjYeujJouxCA4qHOclT7DlUwlShyHJLuaKpt2YH66iOBN1OEQ
+ uASVeVeVjrQ1RWRrSu172zBkLmV/uqA=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-633-fOOxaYPBPmyaCCqDs6r3dg-1; Tue, 09 Jan 2024 03:44:52 -0500
+X-MC-Unique: fOOxaYPBPmyaCCqDs6r3dg-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-557a615aa33so828692a12.2
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 00:44:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704789673; x=1705394473;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1704789891; x=1705394691;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SmXcImIVxWxiPq142HoSGr/nabmNhgAEQtTOPNP71MM=;
- b=JPjxUTi2u+9af/XQ8oTH7RnW1ggP2Zs3uSK8ap+NOmWJ4eZ4QMY3UGZVTkJpYdy6R+
- tKEH/I/uxaPA4hKPt80mzmsUL0MXLJOLDhJkPH4IWBnwpt57c8k6eqsSMF+e0uvdiRkQ
- znwuW/3pxCfWFTSVSuM4EGsjVQaVD11Kmq/bvsOUENVuvGqVZ8uguuLdS5vPVI+LxkL7
- WOg3ZtfSojH1s77kRgs+My2Hs1n5gfqc89+pCUxkdqWjJM5Zs8Hd81VncBPW6SEMm5IW
- yxGeG89HJQcdexlk3j/+PCvb/bwjEFsMPhecDYm1Tl7COMnpc7aEIstqf6dmxOSQAiWK
- Pplw==
-X-Gm-Message-State: AOJu0Yycuk7dEjXd8yI2LSZU77ZhiKXGhtRBGXSbgpIILWKtU2xR/dVT
- uV0n7zC7e7LQHzjW/KBQUbHhQuSYTAVEVA==
-X-Google-Smtp-Source: AGHT+IH46VRV7mzJhj+H+DMot1xhoV3gLF5U/yWCrmmRWKEoFbk8OT65b6eCRU+wtE0Z07IuOTOjUA==
-X-Received: by 2002:a17:902:780e:b0:1d4:79b7:b8ce with SMTP id
- p14-20020a170902780e00b001d479b7b8cemr2247199pll.44.1704789673639; 
- Tue, 09 Jan 2024 00:41:13 -0800 (PST)
-Received: from [192.168.40.227] ([172.58.27.248])
- by smtp.gmail.com with ESMTPSA id
- i10-20020a170902eb4a00b001d4ca3087dfsm1205827pli.234.2024.01.09.00.41.10
+ bh=FAyA8pwyoAZXvd8xi1gEyEdW7jCyGnrljGoXZOUNmEE=;
+ b=YfBVqAKIKCSPTVsfnMTPMq6xpBcym6/JNw1JraLHYv6Ak8RaMdNhuqlpHvnqRI/51j
+ PADKx8UrGQA9+bz2AI8InWIp9JtV8oirgt+t4kfVWBn7FX4BtNDAYHin2TVkZ8MUctfv
+ 2UJVTTJPrMkhpRG/lKzsYO179IZPG9OfRGJzKWsVzRX/VUc3TCzc4d+/X1GusvkerIrJ
+ 2HO+iTIZgNpE4a1LPGyRlGUu5y7HhXH9Z9nlZ9GngVWXpLSxZfRTaFS8RUpm9aR++qfF
+ ConeQ10nUlXRkq2Nd9J7Vt/Zn+QUfNEX0L0gaPQwL2OSPFJ8GYTtfu6CgmCA2c+SgdxJ
+ uBpw==
+X-Gm-Message-State: AOJu0YyOdAkw0g3Wu0q3LYOYKM74+F6knEFfqe3gkfR6k9lVwYn+yUd6
+ xK74Z8eH6ntLernNmOPNY2PWP2/Ol9qmj5DyqW5PXhIezjtfml3/NN9IvKbRsNTAdkMwR8VGcT/
+ F48qMXr6w+59Q1LLFVH/Irpc=
+X-Received: by 2002:a50:fb15:0:b0:557:1655:b11f with SMTP id
+ d21-20020a50fb15000000b005571655b11fmr3018033edq.42.1704789891071; 
+ Tue, 09 Jan 2024 00:44:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGqh+5EuIZvgyFQFRTLhYnD+mhwiev2anSBq+FuFwwHFzLgoqz94h0z8wnKAk7D4kCGqCN3Yw==
+X-Received: by 2002:a50:fb15:0:b0:557:1655:b11f with SMTP id
+ d21-20020a50fb15000000b005571655b11fmr3018029edq.42.1704789890789; 
+ Tue, 09 Jan 2024 00:44:50 -0800 (PST)
+Received: from [192.168.0.9] (ip-109-43-176-232.web.vodafone.de.
+ [109.43.176.232]) by smtp.gmail.com with ESMTPSA id
+ a7-20020aa7d907000000b00557a2e4b585sm689911edr.66.2024.01.09.00.44.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 00:41:13 -0800 (PST)
-Message-ID: <dd1ea56b-8347-4536-bf2b-1be63f260496@linaro.org>
-Date: Tue, 9 Jan 2024 19:40:59 +1100
+ Tue, 09 Jan 2024 00:44:50 -0800 (PST)
+Message-ID: <a7f57c82-48d7-4a4b-8ab6-4016f48f5be2@redhat.com>
+Date: Tue, 9 Jan 2024 09:44:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 26/35] target/arm: Implement FEAT_NV2 redirection of
- sysregs to RAM
+Subject: Re: [PATCH 3/3] tests/qtest: Re-enable multifd cancel test
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-References: <20231218113305.2511480-1-peter.maydell@linaro.org>
- <20231218113305.2511480-27-peter.maydell@linaro.org>
- <88dcdb40-2fa3-449e-a3f7-41d75269a968@linaro.org>
- <CAFEAcA88=EjttEfaVdthnn2vLgWRY1NqYd3cti1VE+4EqsboMg@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA88=EjttEfaVdthnn2vLgWRY1NqYd3cti1VE+4EqsboMg@mail.gmail.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jiang Jiacheng <jiangjiacheng@huawei.com>, Leonardo Bras
+ <leobras@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230606144551.24367-1-farosas@suse.de>
+ <20230606144551.24367-4-farosas@suse.de> <87ttvjoexo.fsf@secure.mitica>
+ <ZZuZcCxxIS6j_jHD@x1n> <87frz73nr7.fsf@suse.de> <ZZyrqnk3nJ3WIX8v@x1n>
+ <5219f49a-c75d-4c42-86ba-4e4d90e58968@redhat.com> <ZZz6T8YU0_s-kNAt@x1n>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
+ yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
+ 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
+ tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
+ 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
+ O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
+ 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
+ gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
+ 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
+ zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
+ aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
+ QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
+ EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
+ 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
+ eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
+ ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
+ zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
+ tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
+ WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
+ UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
+ BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
+ 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
+ +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
+ 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
+ gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
+ WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
+ VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
+ knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
+ cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
+ X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
+ AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
+ ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
+ fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
+ 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
+ cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
+ ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
+ Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
+ oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
+ IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
+ yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
+In-Reply-To: <ZZz6T8YU0_s-kNAt@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -9
+X-Spam_score: -1.0
+X-Spam_bar: -
+X-Spam_report: (-1.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,66 +148,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/5/24 03:23, Peter Maydell wrote:
-> On Wed, 27 Dec 2023 at 23:55, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> On 12/18/23 22:32, Peter Maydell wrote:
->>> +    if (s->nv && s->nv2 && ri->nv2_redirect_offset) {
->>
->> Again, s->nv test is redundant.
+On 09/01/2024 08.48, Peter Xu wrote:
+> Hi, Thomas,
 > 
-> Fixed, thanks.
+> On Tue, Jan 09, 2024 at 08:21:53AM +0100, Thomas Huth wrote:
+>> Sorry for that :-(
 > 
->>> +        /*
->>> +         * Some registers always redirect to memory; some only do so if
->>> +         * HCR_EL2.NV1 is 0, and some only if NV1 is 1 (these come in
->>> +         * pairs which share an offset; see the table in R_CSRPQ).
->>> +         */
->>> +        if (ri->nv2_redirect_offset & NV2_REDIR_NV1) {
->>> +            nv2_mem_redirect = s->nv1;
->>> +        } else if (ri->nv2_redirect_offset & NV2_REDIR_NO_NV1) {
->>> +            nv2_mem_redirect = !s->nv1;
->>> +        } else {
->>> +            nv2_mem_redirect = true;
->>> +        }
->>
->> I wondered if it would be clearer with the "both" case having both bits set.  While I see
->> that the first defined offset is 0x20, offset 0x00 is still reserved and *could* be used.
->> At which point ri->nv2_redirect_offset would need a non-zero value for a zero offset.
->>
->> Maybe clearer as
->>
->>       nv2_mem_redirect = (ri->nv2_redirect_offset &
->>                           (s->nv1 ? NV2_REDIR_NV1_1 : NV2_REDIR_NV1_0));
->>
->> ?
->>
->> This is more verbose for the (common?) case of redirect regardless of nv1, so maybe not.
+> Not at all!  I actually appreciate more people looking after it.
 > 
-> Yes, my motivation for the notation I used is that I wanted to
-> make the specification of the cpreg structs in the common case
-> simple and not too long-winded. If offset 0 does ever get
-> allocated, we'll have to come back and revisit this. But
-> new entries clearly seem to be being allocated at the other
-> end of the table, so I think our chances are good...
-> 
->>> +        if (s->nv2_mem_be) {
->>> +            mop |= MO_BE;
->>> +        }
+>> Maybe it's better if we remove the migration-test from
+>> the qtest section in MAINTAINERS? Since the migration test is very well
+>> maintained already, there's IMHO no need for picking up the patches via the
+>> qtest tree, so something like this should prevent these problems:
 >>
->> MO_BSWAP is host dependent -- needs
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -3269,6 +3269,7 @@ F: tests/qtest/
+>>   F: docs/devel/qgraph.rst
+>>   F: docs/devel/qtest.rst
+>>   X: tests/qtest/bios-tables-test*
+>> +X: tests/qtest/migration-*
 >>
->>       mop |= (s->nv2_mem_be ? MO_BE : MO_LE);
+>>   Device Fuzzing
+>>   M: Alexander Bulekov <alxndr@bu.edu>
+>>
+>> (as you can see, we're doing it in a similar way for the bios tables test
+>> already)
+>>
+>> If you agree, I can send out a proper patch for this later today.
 > 
-> Fixed.
+> Currently the file is covered by both groups of people, which is the best
+> condition to me:
 > 
-> With those two fixes, can I have a reviewed-by? This is the
-> only patch without one, and all the fixes seem to me like
-> very minor things not worth sending out a full v2 for.
+> $ ./scripts/get_maintainer.pl -f tests/qtest/migration-test.c
+> Peter Xu <peterx@redhat.com> (maintainer:Migration)
+> Fabiano Rosas <farosas@suse.de> (maintainer:Migration)
+> Thomas Huth <thuth@redhat.com> (maintainer:qtest)
+> Laurent Vivier <lvivier@redhat.com> (maintainer:qtest)
+> Paolo Bonzini <pbonzini@redhat.com> (reviewer:qtest)
+> qemu-devel@nongnu.org (open list:All patches CC here)
+> 
+> It makes sense to me e.g. when qtest reworks the framework, and we'd like
+> migration-test.c to be covered in that same reworks series and
+> reviewed/pulled together, for example, then those can go via qtest's tree
+> directly.
+> 
+> If patch submitter follows the MAINTAINERS file it means all of us will be
+> in the loop and that's the perfect condition, IMHO.  It's just that this
+> patch didn't have any migration people copied, which caused a very slight
+> confusion.
+> 
+> It'll be great in that case if qtest maintainers can help submitters to
+> copy us if the submitters forgot to do so.  I think we should do the same
+> when there's major changes for qtest framework for a new migration test.
+> Would that work the best for us?
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Ok, makes sense, let's try it that way!
+
+  Thomas
 
 
-r~
 
