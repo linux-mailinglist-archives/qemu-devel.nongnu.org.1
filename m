@@ -2,100 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F0D827DD7
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 05:31:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC444827CEF
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 03:37:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rN3ky-00054b-11; Mon, 08 Jan 2024 23:30:28 -0500
+	id 1rN1y8-0001fq-QI; Mon, 08 Jan 2024 21:35:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <minwoo.im@samsung.com>)
- id 1rN1sX-0000mY-Hv
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 21:30:09 -0500
-Received: from mailout3.samsung.com ([203.254.224.33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <minwoo.im@samsung.com>)
- id 1rN1sS-0007iF-Nl
- for qemu-devel@nongnu.org; Mon, 08 Jan 2024 21:30:09 -0500
-Received: from epcas2p2.samsung.com (unknown [182.195.41.54])
- by mailout3.samsung.com (KnoxPortal) with ESMTP id
- 20240109022955epoutp0309c61564a1af783d82bb760885ab3bd8~ojOnv1_0h2416524165epoutp031
- for <qemu-devel@nongnu.org>; Tue,  9 Jan 2024 02:29:55 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
- 20240109022955epoutp0309c61564a1af783d82bb760885ab3bd8~ojOnv1_0h2416524165epoutp031
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1704767395;
- bh=a7/1URsyASyYPXK/mb9Do6V32dB33UOBZcMFHu65fnE=;
- h=Subject:Reply-To:From:To:CC:Date:References:From;
- b=lGD5rI1RrSIiLoVG0hAlh01xgJRFr9QERkyeUZo8+A4ctUF4guBcIhhzl78KYD5wd
- H+eNJRE4bN7HnaJOjbwsHxgi1wZYCAdaipibE34arr2P4OLyvuoh9DTf6Tq7ynMJAR
- Ttl3Ozh8xsLH9No/8VOdgSrPoIQ/twozormHCr3I=
-Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
- epcas2p4.samsung.com (KnoxPortal) with ESMTP id
- 20240109022955epcas2p4bd1312f484ae48fb49a8492a2aea1325~ojOnfPgIE2859528595epcas2p4K;
- Tue,  9 Jan 2024 02:29:55 +0000 (GMT)
-Received: from epsmges2p1.samsung.com (unknown [182.195.36.102]) by
- epsnrtp3.localdomain (Postfix) with ESMTP id 4T8FJL388Qz4x9Px; Tue,  9 Jan
- 2024 02:29:54 +0000 (GMT)
-X-AuditID: b6c32a45-3ebfd70000002716-ea-659cafa204af
-Received: from epcas2p1.samsung.com ( [182.195.41.53]) by
- epsmges2p1.samsung.com (Symantec Messaging Gateway) with SMTP id
- C6.DA.10006.2AFAC956; Tue,  9 Jan 2024 11:29:54 +0900 (KST)
-Mime-Version: 1.0
-Subject: hw: nvme: Separate 'serial' property for VFs
-From: Minwoo Im <minwoo.im@samsung.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "qemu-stable@nongnu.org" <qemu-stable@nongnu.org>,
- "minwoo.im.dev@gmail.com" <minwoo.im.dev@gmail.com>, Minwoo Im
- <minwoo.im@samsung.com>
-X-Priority: 3
-X-Content-Kind-Code: NORMAL
-X-CPGS-Detection: blocking_info_exchange
-X-Drm-Type: N,general
-X-Msg-Generator: Mail
-X-Msg-Type: PERSONAL
-X-Reply-Demand: N
-Message-ID: <20240109022953epcms2p54550dcfc9f831a515206513ae98e7511@epcms2p5>
-Date: Tue, 09 Jan 2024 11:29:53 +0900
-X-CMS-MailID: 20240109022953epcms2p54550dcfc9f831a515206513ae98e7511
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrFKsWRmVeSWpSXmKPExsWy7bCmqe6i9XNSDa6sELT41clt8ez0AWaL
- 4707WCzmL93J4sDisXPWXXaPJ9c2M3n0bVnFGMAclW2TkZqYklqkkJqXnJ+SmZduq+QdHO8c
- b2pmYKhraGlhrqSQl5ibaqvk4hOg65aZA7RNSaEsMacUKBSQWFyspG9nU5RfWpKqkJFfXGKr
- lFqQklNgXqBXnJhbXJqXrpeXWmJlaGBgZApUmJCdsexhTcElnopd+1exNDDe5exi5OSQEDCR
- 6H7SwNLFyMUhJLCDUWLS3lmsXYwcHLwCghJ/dwiD1AgLmEp8mv+eBSQsJCAv8eOVAURYU+Ld
- 7jOsIDabgLpEw9RXLCC2iICxxLHDS5hBRjILTGSU6OjsYIXYxSsxo/0pC4QtLbF9+VZGCFtD
- 4seyXmYIW1Ti5uq37DD2+2PzoWpEJFrvnYWqEZR48HM3VFxKYv/8uVB2tUTD8WdMEHaFxK/3
- D6DqzSV+398NdgOvgK/EtbfrwX5hEVCVeDHdC6LERWL61TVsIDYz0Ivb385hBilhBvpx/S59
- EFNCQFniyC0WiAo+iY7Df9lhntox7wnUUmWJj4cOQS2VlFh+6TUbhO0hsXfefrC4kECgxJdl
- +9knMCrMQgTzLCR7ZyHsXcDIvIpRLLWgODc9tdiowBAescn5uZsYwYlOy3UH4+S3H/QOMTJx
- MB5ilOBgVhLhlZwxO1WINyWxsiq1KD++qDQntfgQoynQwxOZpUST84GpNq8k3tDE0sDEzMzQ
- 3MjUwFxJnPde69wUIYH0xJLU7NTUgtQimD4mDk6pBqZVMZ6LTlp+F3BL3b/y8H/NNfZHT+9J
- /rUpeX/NAe2FCbkXqrjCrnn9vbQ+csFzrcM3owS4V6yW5Lt3dfofdkae3OuRdlE2VgFnNiXn
- fPupdC2Lq5t36+O8byb3RLdNVz7OFcSbP4NHwzFDY3nd9fDe7f8n1kxdq7h3eemnc383bDed
- wHNOk983cu6T9kJ3hy+1vivvtT4RfOB4/Mqj3YIqeyRqXExXGCiflhWbnLN81axtyjIvasxr
- rgVPOJXvsI7xqZXA1RuMJVe23Ole9vCzx72ZKwXM5TxdTOvfR515JPd2ltikBdILHr6SevGi
- 0uLSrkvf7h9W51wVKeQ7meXVy5f72PcXM7dcUSnjiXk9TYmlOCPRUIu5qDgRAJTPZAD9AwAA
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240109022953epcms2p54550dcfc9f831a515206513ae98e7511
-References: <CGME20240109022953epcms2p54550dcfc9f831a515206513ae98e7511@epcms2p5>
-Received-SPF: pass client-ip=203.254.224.33;
- envelope-from=minwoo.im@samsung.com; helo=mailout3.samsung.com
-X-Spam_score_int: -66
-X-Spam_score: -6.7
-X-Spam_bar: ------
-X-Spam_report: (-6.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.243,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rN1y5-0001e7-3d
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 21:35:53 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rN1y0-0003Zg-Nn
+ for qemu-devel@nongnu.org; Mon, 08 Jan 2024 21:35:52 -0500
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8CxLun+sJxlSVIDAA--.2345S3;
+ Tue, 09 Jan 2024 10:35:43 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8DxXN78sJxlpj8IAA--.21582S3; 
+ Tue, 09 Jan 2024 10:35:42 +0800 (CST)
+Subject: Re: [PATCH v2 3/4] hw/intc/loongarch_extioi: Add dynamic cpu number
+ support
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: qemu-devel@nongnu.org
+References: <20231215100333.3933632-1-maobibo@loongson.cn>
+ <20231215100333.3933632-4-maobibo@loongson.cn>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <dd2350b7-1544-6a9b-db58-3bec708d975b@loongson.cn>
+Date: Tue, 9 Jan 2024 10:35:39 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20231215100333.3933632-4-maobibo@loongson.cn>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8DxXN78sJxlpj8IAA--.21582S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3KFWrAr45uF47JrW7tw4DKFX_yoWDAFW3pr
+ WUuFy5Kr48GFZ7X39Fg3WDurykGr1fWr1a9Fyaka4fuF4DCry0934vyrZrZF4rC34kZ34j
+ va95C3W7WF1qy3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAF
+ wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+ 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MI
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+ W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UWHqcU
+ UUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -7
+X-Spam_score: -0.8
+X-Spam_bar: /
+X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-1.383, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 08 Jan 2024 23:30:25 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,49 +79,275 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: minwoo.im@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, when a VF is created, it uses the 'params' object of the PF
-as it is. In other words, the 'params.serial' string memory area is
-also shared. In this situation, if the VF is removed from the system,
-the PF's 'params.serial' object is released with object_finalize()
-followed by object_property_del_all() which release the memory for
-'serial' property. If that happens, the next VF created will inherit
-a serial from a corrupted memory area.
+ÔÚ 2023/12/15 ÏÂÎç6:03, Bibo Mao Ð´µÀ:
+> On LoongArch physical machine, one extioi interrupt controller only
+> supports 4 cpus. With processor more than 4 cpus, there are multiple
+> extioi interrupt controllers; if interrupts need to be routed to
+> other cpus, they are forwarded from extioi node0 to other extioi nodes.
+>
+> On virt machine model, there is simple extioi interrupt device model.
+> All cpus can access register of extioi interrupt controller, however
+> interrupt can only be route to 4 vcpu for compatible with old kernel.
+>
+> This patch adds dynamic cpu number support about extioi interrupt.
+> With old kernel legacy extioi model is used, however kernel can detect
+> and choose new route method in future, so that interrupt can be routed to
+> all vcpus.
+>
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>   hw/intc/loongarch_extioi.c         | 107 +++++++++++++++++++----------
+>   hw/loongarch/virt.c                |   3 +-
+>   include/hw/intc/loongarch_extioi.h |  11 ++-
+>   3 files changed, 81 insertions(+), 40 deletions(-)
 
-If this happens, an error will occur when comparing subsys->serial and
-n->params.serial in the nvme_subsys_register_ctrl() function.
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 
-Cc: qemu-stable@nongnu.org
-Fixes: 44c2c09488db ("hw/nvme: Add support for SR-IOV")
-Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
----
- hw/nvme/ctrl.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Thanks. Song Gao
+> diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
+> index 77b4776958..d9d5066c3f 100644
+> --- a/hw/intc/loongarch_extioi.c
+> +++ b/hw/intc/loongarch_extioi.c
+> @@ -8,6 +8,7 @@
+>   #include "qemu/osdep.h"
+>   #include "qemu/module.h"
+>   #include "qemu/log.h"
+> +#include "qapi/error.h"
+>   #include "hw/irq.h"
+>   #include "hw/sysbus.h"
+>   #include "hw/loongarch/virt.h"
+> @@ -32,23 +33,23 @@ static void extioi_update_irq(LoongArchExtIOI *s, int irq, int level)
+>           if (((s->enable[irq_index]) & irq_mask) == 0) {
+>               return;
+>           }
+> -        s->coreisr[cpu][irq_index] |= irq_mask;
+> -        found = find_first_bit(s->sw_isr[cpu][ipnum], EXTIOI_IRQS);
+> -        set_bit(irq, s->sw_isr[cpu][ipnum]);
+> +        s->cpu[cpu].coreisr[irq_index] |= irq_mask;
+> +        found = find_first_bit(s->cpu[cpu].sw_isr[ipnum], EXTIOI_IRQS);
+> +        set_bit(irq, s->cpu[cpu].sw_isr[ipnum]);
+>           if (found < EXTIOI_IRQS) {
+>               /* other irq is handling, need not update parent irq level */
+>               return;
+>           }
+>       } else {
+> -        s->coreisr[cpu][irq_index] &= ~irq_mask;
+> -        clear_bit(irq, s->sw_isr[cpu][ipnum]);
+> -        found = find_first_bit(s->sw_isr[cpu][ipnum], EXTIOI_IRQS);
+> +        s->cpu[cpu].coreisr[irq_index] &= ~irq_mask;
+> +        clear_bit(irq, s->cpu[cpu].sw_isr[ipnum]);
+> +        found = find_first_bit(s->cpu[cpu].sw_isr[ipnum], EXTIOI_IRQS);
+>           if (found < EXTIOI_IRQS) {
+>               /* other irq is handling, need not update parent irq level */
+>               return;
+>           }
+>       }
+> -    qemu_set_irq(s->parent_irq[cpu][ipnum], level);
+> +    qemu_set_irq(s->cpu[cpu].parent_irq[ipnum], level);
+>   }
+>   
+>   static void extioi_setirq(void *opaque, int irq, int level)
+> @@ -96,7 +97,7 @@ static MemTxResult extioi_readw(void *opaque, hwaddr addr, uint64_t *data,
+>           index = (offset - EXTIOI_COREISR_START) >> 2;
+>           /* using attrs to get current cpu index */
+>           cpu = attrs.requester_id;
+> -        *data = s->coreisr[cpu][index];
+> +        *data = s->cpu[cpu].coreisr[index];
+>           break;
+>       case EXTIOI_COREMAP_START ... EXTIOI_COREMAP_END - 1:
+>           index = (offset - EXTIOI_COREMAP_START) >> 2;
+> @@ -189,8 +190,8 @@ static MemTxResult extioi_writew(void *opaque, hwaddr addr,
+>           index = (offset - EXTIOI_COREISR_START) >> 2;
+>           /* using attrs to get current cpu index */
+>           cpu = attrs.requester_id;
+> -        old_data = s->coreisr[cpu][index];
+> -        s->coreisr[cpu][index] = old_data & ~val;
+> +        old_data = s->cpu[cpu].coreisr[index];
+> +        s->cpu[cpu].coreisr[index] = old_data & ~val;
+>           /* write 1 to clear interrupt */
+>           old_data &= val;
+>           irq = ctz32(old_data);
+> @@ -248,14 +249,61 @@ static const MemoryRegionOps extioi_ops = {
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+>   };
+>   
+> -static const VMStateDescription vmstate_loongarch_extioi = {
+> -    .name = TYPE_LOONGARCH_EXTIOI,
+> +static void loongarch_extioi_realize(DeviceState *dev, Error **errp)
+> +{
+> +    LoongArchExtIOI *s = LOONGARCH_EXTIOI(dev);
+> +    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+> +    int i, pin;
+> +
+> +    if (s->num_cpu == 0) {
+> +        error_setg(errp, "num-cpu must be at least 1");
+> +        return;
+> +    }
+> +
+> +    for (i = 0; i < EXTIOI_IRQS; i++) {
+> +        sysbus_init_irq(sbd, &s->irq[i]);
+> +    }
+> +
+> +    qdev_init_gpio_in(dev, extioi_setirq, EXTIOI_IRQS);
+> +    memory_region_init_io(&s->extioi_system_mem, OBJECT(s), &extioi_ops,
+> +                          s, "extioi_system_mem", 0x900);
+> +    sysbus_init_mmio(sbd, &s->extioi_system_mem);
+> +    s->cpu = g_new0(ExtIOICore, s->num_cpu);
+> +    if (s->cpu == NULL) {
+> +        error_setg(errp, "Memory allocation for ExtIOICore faile");
+> +        return;
+> +    }
+> +
+> +    for (i = 0; i < s->num_cpu; i++) {
+> +        for (pin = 0; pin < LS3A_INTC_IP; pin++) {
+> +            qdev_init_gpio_out(dev, &s->cpu[i].parent_irq[pin], 1);
+> +        }
+> +    }
+> +}
+> +
+> +static void loongarch_extioi_finalize(Object *obj)
+> +{
+> +    LoongArchExtIOI *s = LOONGARCH_EXTIOI(obj);
+> +
+> +    g_free(s->cpu);
+> +}
+> +
+> +static const VMStateDescription vmstate_extioi_core = {
+> +    .name = "extioi-core",
+>       .version_id = 1,
+>       .minimum_version_id = 1,
+> +    .fields = (VMStateField[]) {
+> +        VMSTATE_UINT32_ARRAY(coreisr, ExtIOICore, EXTIOI_IRQS_GROUP_COUNT),
+> +        VMSTATE_END_OF_LIST()
+> +    }
+> +};
+> +
+> +static const VMStateDescription vmstate_loongarch_extioi = {
+> +    .name = TYPE_LOONGARCH_EXTIOI,
+> +    .version_id = 2,
+> +    .minimum_version_id = 2,
+>       .fields = (VMStateField[]) {
+>           VMSTATE_UINT32_ARRAY(bounce, LoongArchExtIOI, EXTIOI_IRQS_GROUP_COUNT),
+> -        VMSTATE_UINT32_2DARRAY(coreisr, LoongArchExtIOI, EXTIOI_CPUS,
+> -                               EXTIOI_IRQS_GROUP_COUNT),
+>           VMSTATE_UINT32_ARRAY(nodetype, LoongArchExtIOI,
+>                                EXTIOI_IRQS_NODETYPE_COUNT / 2),
+>           VMSTATE_UINT32_ARRAY(enable, LoongArchExtIOI, EXTIOI_IRQS / 32),
+> @@ -265,45 +313,32 @@ static const VMStateDescription vmstate_loongarch_extioi = {
+>           VMSTATE_UINT8_ARRAY(sw_ipmap, LoongArchExtIOI, EXTIOI_IRQS_IPMAP_SIZE),
+>           VMSTATE_UINT8_ARRAY(sw_coremap, LoongArchExtIOI, EXTIOI_IRQS),
+>   
+> +        VMSTATE_STRUCT_VARRAY_POINTER_UINT32(cpu, LoongArchExtIOI, num_cpu,
+> +                         vmstate_extioi_core, ExtIOICore),
+>           VMSTATE_END_OF_LIST()
+>       }
+>   };
+>   
+> -static void loongarch_extioi_instance_init(Object *obj)
+> -{
+> -    SysBusDevice *dev = SYS_BUS_DEVICE(obj);
+> -    LoongArchExtIOI *s = LOONGARCH_EXTIOI(obj);
+> -    int i, cpu, pin;
+> -
+> -    for (i = 0; i < EXTIOI_IRQS; i++) {
+> -        sysbus_init_irq(dev, &s->irq[i]);
+> -    }
+> -
+> -    qdev_init_gpio_in(DEVICE(obj), extioi_setirq, EXTIOI_IRQS);
+> -
+> -    for (cpu = 0; cpu < EXTIOI_CPUS; cpu++) {
+> -        for (pin = 0; pin < LS3A_INTC_IP; pin++) {
+> -            qdev_init_gpio_out(DEVICE(obj), &s->parent_irq[cpu][pin], 1);
+> -        }
+> -    }
+> -    memory_region_init_io(&s->extioi_system_mem, OBJECT(s), &extioi_ops,
+> -                          s, "extioi_system_mem", 0x900);
+> -    sysbus_init_mmio(dev, &s->extioi_system_mem);
+> -}
+> +static Property extioi_properties[] = {
+> +    DEFINE_PROP_UINT32("num-cpu", LoongArchExtIOI, num_cpu, 1),
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
+>   
+>   static void loongarch_extioi_class_init(ObjectClass *klass, void *data)
+>   {
+>       DeviceClass *dc = DEVICE_CLASS(klass);
+>   
+> +    dc->realize = loongarch_extioi_realize;
+> +    device_class_set_props(dc, extioi_properties);
+>       dc->vmsd = &vmstate_loongarch_extioi;
+>   }
+>   
+>   static const TypeInfo loongarch_extioi_info = {
+>       .name          = TYPE_LOONGARCH_EXTIOI,
+>       .parent        = TYPE_SYS_BUS_DEVICE,
+> -    .instance_init = loongarch_extioi_instance_init,
+>       .instance_size = sizeof(struct LoongArchExtIOI),
+>       .class_init    = loongarch_extioi_class_init,
+> +    .instance_finalize = loongarch_extioi_finalize,
+>   };
+>   
+>   static void loongarch_extioi_register_types(void)
+> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+> index 13d19b6da3..c9a680e61a 100644
+> --- a/hw/loongarch/virt.c
+> +++ b/hw/loongarch/virt.c
+> @@ -582,6 +582,7 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
+>   
+>       /* Create EXTIOI device */
+>       extioi = qdev_new(TYPE_LOONGARCH_EXTIOI);
+> +    qdev_prop_set_uint32(extioi, "num-cpu", ms->smp.cpus);
+>       sysbus_realize_and_unref(SYS_BUS_DEVICE(extioi), &error_fatal);
+>       memory_region_add_subregion(&lams->system_iocsr, APIC_BASE,
+>                      sysbus_mmio_get_region(SYS_BUS_DEVICE(extioi), 0));
+> @@ -590,7 +591,7 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
+>        * connect ext irq to the cpu irq
+>        * cpu_pin[9:2] <= intc_pin[7:0]
+>        */
+> -    for (cpu = 0; cpu < MIN(ms->smp.cpus, EXTIOI_CPUS); cpu++) {
+> +    for (cpu = 0; cpu < ms->smp.cpus; cpu++) {
+>           cpudev = DEVICE(qemu_get_cpu(cpu));
+>           for (pin = 0; pin < LS3A_INTC_IP; pin++) {
+>               qdev_connect_gpio_out(extioi, (cpu * 8 + pin),
+> diff --git a/include/hw/intc/loongarch_extioi.h b/include/hw/intc/loongarch_extioi.h
+> index 110e5e8873..a0a46b888c 100644
+> --- a/include/hw/intc/loongarch_extioi.h
+> +++ b/include/hw/intc/loongarch_extioi.h
+> @@ -40,24 +40,29 @@
+>   #define EXTIOI_COREMAP_START         (0xC00 - APIC_OFFSET)
+>   #define EXTIOI_COREMAP_END           (0xD00 - APIC_OFFSET)
+>   
+> +typedef struct ExtIOICore {
+> +    uint32_t coreisr[EXTIOI_IRQS_GROUP_COUNT];
+> +    DECLARE_BITMAP(sw_isr[LS3A_INTC_IP], EXTIOI_IRQS);
+> +    qemu_irq parent_irq[LS3A_INTC_IP];
+> +} ExtIOICore;
+> +
+>   #define TYPE_LOONGARCH_EXTIOI "loongarch.extioi"
+>   OBJECT_DECLARE_SIMPLE_TYPE(LoongArchExtIOI, LOONGARCH_EXTIOI)
+>   struct LoongArchExtIOI {
+>       SysBusDevice parent_obj;
+> +    uint32_t num_cpu;
+>       /* hardware state */
+>       uint32_t nodetype[EXTIOI_IRQS_NODETYPE_COUNT / 2];
+>       uint32_t bounce[EXTIOI_IRQS_GROUP_COUNT];
+>       uint32_t isr[EXTIOI_IRQS / 32];
+> -    uint32_t coreisr[EXTIOI_CPUS][EXTIOI_IRQS_GROUP_COUNT];
+>       uint32_t enable[EXTIOI_IRQS / 32];
+>       uint32_t ipmap[EXTIOI_IRQS_IPMAP_SIZE / 4];
+>       uint32_t coremap[EXTIOI_IRQS / 4];
+>       uint32_t sw_pending[EXTIOI_IRQS / 32];
+> -    DECLARE_BITMAP(sw_isr[EXTIOI_CPUS][LS3A_INTC_IP], EXTIOI_IRQS);
+>       uint8_t  sw_ipmap[EXTIOI_IRQS_IPMAP_SIZE];
+>       uint8_t  sw_coremap[EXTIOI_IRQS];
+> -    qemu_irq parent_irq[EXTIOI_CPUS][LS3A_INTC_IP];
+>       qemu_irq irq[EXTIOI_IRQS];
+> +    ExtIOICore *cpu;
+>       MemoryRegion extioi_system_mem;
+>   };
+>   #endif /* LOONGARCH_EXTIOI_H */
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index f026245d1e..a0ba3529cd 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8309,9 +8309,15 @@ static void nvme_realize(PCIDevice *pci_dev, Error **errp)
-     if (pci_is_vf(pci_dev)) {
-         /*
-          * VFs derive settings from the parent. PF's lifespan exceeds
--         * that of VF's, so it's safe to share params.serial.
-+         * that of VF's.
-          */
-         memcpy(&n->params, &pn->params, sizeof(NvmeParams));
-+
-+        /*
-+         * Set PF's serial value to a new string memory to prevent 'serial'
-+         * property object release of PF when a VF is removed from the system.
-+         */
-+        n->params.serial = g_strdup(pn->params.serial);
-         n->subsys = pn->subsys;
-     }
- 
--- 
-2.34.1
 
