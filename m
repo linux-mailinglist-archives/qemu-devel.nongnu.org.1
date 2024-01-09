@@ -2,148 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA1D8828D9C
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 20:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D272828DB4
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 20:40:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNHwA-0005vQ-Hs; Tue, 09 Jan 2024 14:38:58 -0500
+	id 1rNHwk-0006GU-I8; Tue, 09 Jan 2024 14:39:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jgg@nvidia.com>)
- id 1rNHw8-0005tA-G5; Tue, 09 Jan 2024 14:38:56 -0500
-Received: from mail-sn1nam02on20610.outbound.protection.outlook.com
- ([2a01:111:f400:7ea9::610]
- helo=NAM02-SN1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rNHwP-000601-LV; Tue, 09 Jan 2024 14:39:14 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jgg@nvidia.com>)
- id 1rNHw6-0002oq-Cd; Tue, 09 Jan 2024 14:38:56 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=loncMlhobnB2ylEN5WShgtMtGmSjqTvRq9jLPW5B/SsRiGjDKRPnWa58Yyl7AJWbUsgxGFLiTTPSgCbgQCPCS4nckatJ7R4zkSkvbOr9AH4jRVhjV55y4vldWSFu5eoEIPbmxd9XJxJltA7r/KzJEuLER6BffqW7zpn/4ihWygu9PeFImrGXf1mLAIKGDsxTyGv48XwLTHszsgi02OMK7w+gUSfx6Uw8Hyf9i3oLdOWqtmiY2Gn6E6F8+SuA01qx+kbsrfV4PCJ3egm09vq76GtZI4JnEU+fohCZnTkblZlaicktPqS9O4GAvgkqQxiVMD4fLDGbFPgxoZdhKeAutQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tA3o7NnQjDSN/nqTygo5/+BRrkAwg4R10Id71m2xzLY=;
- b=fpsIYwUlottehzXxnhdqXqm2JFMcWY7KsIpUx8yjhS1juKgGf30zdLpAPZEWb0qmPq3MNommoMziHrly/8DlEygPDQ73zYD3zLICU/uN06tHhXDIdCsVgiaihkFmtXbKYaQ7upUOLau5N6lXs89wJjG89GqYeFU1qQ2uf2yn3slf94p7I842mUE3+hTvTRPtbbmF3AK828xBT+smfgbCVQPpcnUK7YOhlzCcAYpQ8NBz9Vdzib/YKWUB3LBlIb9Ljc4iJ/tBbZXKlz0NXOjHr3PxnqQeX/tT+oRqdVYZTz9eG6D463yvs/rI0brdxdmAbg/+QyrURu9KTk10o7tY4w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tA3o7NnQjDSN/nqTygo5/+BRrkAwg4R10Id71m2xzLY=;
- b=k++uzrUFyxLSMqScxHG+UuP65M3mhJyCrv8MlI06Q5qzWFQ37pvM9nV0ESluFLZxf9jMMYI9ALfNbwtBITmE7FJLD+hB10hreh3okoVineLnePBpK4y+4b62tpaoVZV1ndQb3bqtfbEjBIKe2AnoEAAtvNq7izmUnMoH4PR1utjrjoGI2KeB3pxO6uwefwN96qhc2/WAZvZhbQMMFDJqqvqp3XTwZ8+v0uNlrduQKtYWaRy68vTS3N08TxvMQfAWY73EiKN2r2wblioWmDiGyd2EJ0iHNyD3WSjh8BNPT4DoRQCJH6GH2iYN/8SiXHuoo528MPcGHeIGRmdX8kkw6Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
- by DM4PR12MB6469.namprd12.prod.outlook.com (2603:10b6:8:b6::6) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7159.23; Tue, 9 Jan 2024 19:38:48 +0000
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::60d4:c1e3:e1aa:8f93]) by LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::60d4:c1e3:e1aa:8f93%4]) with mapi id 15.20.7159.020; Tue, 9 Jan 2024
- 19:38:48 +0000
-Date: Tue, 9 Jan 2024 15:38:47 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: David Hildenbrand <david@redhat.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Ankit Agrawal <ankita@nvidia.com>, "clg@redhat.com" <clg@redhat.com>,
- "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "ani@anisinha.ca" <ani@anisinha.ca>,
- "berrange@redhat.com" <berrange@redhat.com>,
- "eduardo@habkost.net" <eduardo@habkost.net>,
- "imammedo@redhat.com" <imammedo@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "eblake@redhat.com" <eblake@redhat.com>,
- "armbru@redhat.com" <armbru@redhat.com>,
- "gshan@redhat.com" <gshan@redhat.com>,
- Aniket Agashe <aniketa@nvidia.com>, Neo Jia <cjia@nvidia.com>,
- Kirti Wankhede <kwankhede@nvidia.com>,
- "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>,
- Vikram Sethi <vsethi@nvidia.com>, Andy Currid <acurrid@nvidia.com>,
- Dheeraj Nigam <dnigam@nvidia.com>, Uday Dhoke <udhoke@nvidia.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v6 1/2] qom: new object to associate device to numa node
-Message-ID: <20240109193847.GF439767@nvidia.com>
-References: <20231225045603.7654-1-ankita@nvidia.com>
- <20231225045603.7654-2-ankita@nvidia.com>
- <20240102125821.00001aa0@Huawei.com>
- <SA1PR12MB7199DF47EDDA9419E22FD79FB067A@SA1PR12MB7199.namprd12.prod.outlook.com>
- <SA1PR12MB719917E2C9D98C04AE9058C4B0672@SA1PR12MB7199.namprd12.prod.outlook.com>
- <20240104103941.019f9b54.alex.williamson@redhat.com>
- <20240109165221.00003b8b@Huawei.com>
- <16d54fd2-9bab-46cd-a1b7-9742674453d6@redhat.com>
- <20240109171030.GE439767@nvidia.com>
- <659da02316cab_24a829418@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <659da02316cab_24a829418@dwillia2-xfh.jf.intel.com.notmuch>
-X-ClientProxiedBy: MN2PR20CA0034.namprd20.prod.outlook.com
- (2603:10b6:208:e8::47) To LV2PR12MB5869.namprd12.prod.outlook.com
- (2603:10b6:408:176::16)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rNHwL-00030K-6l; Tue, 09 Jan 2024 14:39:11 -0500
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 409Hukja017531; Tue, 9 Jan 2024 19:39:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=v1Ys5UoQvqyvOZVHNyK2gndac13fXVfP3voCbvZiAYc=;
+ b=i1zPGhpz82WlDqqfPyCpNZ+9SWNaa+velY+1i4iL5x+RtYKWfhxXYgst2VFKsAjgLJuS
+ Rw5rnHPgH6erdTlh3l0bPKjbsoYffOqkGxpLGoWo6J7pEnX5G6hdLIT+kLsIvB1JbXx/
+ CgfiR8ZzCgToPrFO/WEgUUNdeMureLdk116+L3wSWAybQXnWnC5PyOoNxS4PaAhtLkWw
+ 6Oh0gibKTQWtZxY1Fvl4K91btNe/d7cdLX5AW0iw8MIIFyAOT+ZcuWjhr9Ol9RiR+5d5
+ VaZs6BilZFSdmk5RiyK+KDWmUlsH0VlXMn582wcliYjG5cGQN0lUHyXUYDUSk5cTJFHi TA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vh9f8w4tu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 19:39:04 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 409JEbt5019696;
+ Tue, 9 Jan 2024 19:39:04 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vh9f8w4th-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 19:39:04 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 409IZXLN022781; Tue, 9 Jan 2024 19:39:03 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfhjygx1w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 19:39:03 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 409Jd1di42139958
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 9 Jan 2024 19:39:01 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 823A92004B;
+ Tue,  9 Jan 2024 19:39:01 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1A8FC20043;
+ Tue,  9 Jan 2024 19:39:01 +0000 (GMT)
+Received: from [9.171.60.193] (unknown [9.171.60.193])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  9 Jan 2024 19:39:01 +0000 (GMT)
+Message-ID: <139c997f23a3e7edd8334de124d0ba7820cf6dc9.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/3] linux-user: Allow gdbstub to ignore page protection
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Alex =?ISO-8859-1?Q?Benn=E9e?=
+ <alex.bennee@linaro.org>, David Hildenbrand <david@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
+Date: Tue, 09 Jan 2024 20:39:00 +0100
+In-Reply-To: <0195c274-0d5c-484b-9475-84a4d16bfae8@linaro.org>
+References: <20240108233821.201325-1-iii@linux.ibm.com>
+ <20240108233821.201325-2-iii@linux.ibm.com>
+ <0195c274-0d5c-484b-9475-84a4d16bfae8@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|DM4PR12MB6469:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4211d5e-96b9-4509-3c93-08dc114a99be
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: dr41iDrPNgsCTMo11TbV4lArzm2UAtl9U9ofZpybwvcm5FfgFPOoPglcOH78djF5jIvWVFNC+kGDAQX7TL+fZ4RxwnMhlUZtOdSTT3GRjudKFnqhk06pb1zl67KbRoc9duLF7THsz9jVbxzAKA2peAHeL8pzT6QrzR7PexCyvigrO3LLY5XF+e4bd2L3Wv6TxgDJ8o4XCApdXtgfaw+A/0NQN3HkQSQwzYFgj0zxx0C+lMeescq80en6dEp1kioD2NMQcvZklmoPeXOdHLnot+u51yQAINY7krYepS1bvA8B1l8bn9N78YZrhFpCw6//ZNn3Dy947XaKnp5PJJ4ovA4ZYHdtQRPrq6IHf9eBq2mxrMD5NwPcvFimYgaQkSILzYFE/VOArOxqbKMH/le7ybieLLXwTIVoJUf1A5GrHam6yalMjsLLfT91FMXNTEw1tz1/t+rF9vXKFOTmpW3ysMYKCggb9jASTcf9yGo4Fp6LUqGIQzDPlL8Q2UoGfzQsUq2SqC7QJVJxA6JIhIs//lYH1ArVH+35G8f6m2HOP3PnDnNbsv6uk8qFZ4d35tU+vABh9wUII6rmHI5MAHf4G6Xg7LgJt+EyckoZdcDv9GRP9j8SJiw9/RV7ozdnBNrO
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(346002)(376002)(366004)(39860400002)(396003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(41300700001)(86362001)(8936002)(6486002)(8676002)(6916009)(7416002)(2906002)(5660300002)(66476007)(66556008)(36756003)(316002)(1076003)(66946007)(2616005)(26005)(54906003)(6512007)(33656002)(83380400001)(478600001)(6506007)(4326008)(38100700002)(27376004);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?epo02Z2cW/J6ZlZU2BJGzAmlqQ82vfrqnVHZDo0pS8TWGGGY9pok44isirFV?=
- =?us-ascii?Q?go6vMFaiwxUJ6Msr//ssAtdFDgdLH39dZFBZbHaJrYS8/oj3Gaj1BnDohy2z?=
- =?us-ascii?Q?KXxbWXElLvY5pB4yjWweKL+whdzoDV/C8zY/HG/bTQc4YTuVNa9/7rhQJQiN?=
- =?us-ascii?Q?a+/aQa4ESGH6i+9J8UUmtt/erM8VycAyjoN99gpotpijBoNNTUySnHmmgGcg?=
- =?us-ascii?Q?fGdeFT5SOPx29cn2BWMjtowd7cao42lG4v8E5ODF3u80E4ZGZVPT2BGp7PsD?=
- =?us-ascii?Q?iIZRiNwN9VL1vOgXGAdNOPmgXRt/VbwHv+tPQ10DqMZoKQ6I9Bak5qxqnXUy?=
- =?us-ascii?Q?deSJIlXJuYGLgb1xgsL0PmXCDc+AMs3Y/76Bh5e2fAQ+pUpo6w/H4ecK0SZo?=
- =?us-ascii?Q?B04bS7t2tFwhkuOcy+cDuzqvGlCsDNixVL9anx4f7GWWZrSFThXHJT1eqBMq?=
- =?us-ascii?Q?XPkQkVauRDEeuVlQJVDsvI00gj8eKTTZEsSSy0yUL7JsHL3YX3lOSmp5INoH?=
- =?us-ascii?Q?6J5AWpk39scKvWPJ84Kjl2SVEG7nnZht/Rz2q2C96tH90x4f1oRQG1YZfEMk?=
- =?us-ascii?Q?rgF1R8ZjkryzAvWchaPP0OrgEyuxsrCcH4ix/1X1r7O5AWcIHIT8GJMY/cT/?=
- =?us-ascii?Q?MVvCeh8bOdZQWrZaw6hDpKnHMFMr8G3FKlltPZ/scJVSxWz0lSSLliHxjeu3?=
- =?us-ascii?Q?Z1lg4jKRJ9I3uEf8+Jeqi7eNvulv8BH1bj543Jp0VjlcxqhGMnCAEV4cqp8f?=
- =?us-ascii?Q?CG6Us0ya3uvHmvcQFLhSk8iFe75W/JsxEEvJZ60KCYstEq8nPeLMPcGVMzlb?=
- =?us-ascii?Q?sSQRUTEzX09SEgBBtFfuzYsuAspgRmjcTszOwo5Mrqn9x5KoKkypw4Gh/BjD?=
- =?us-ascii?Q?LW+9+kehye6lM7BvbhY6EBmMuFnWUXqs3FUT6JooRd7htvKkYLYXo+mk0UBK?=
- =?us-ascii?Q?4XK8ktK16Qhqa6m8bACnu6NwL2RmIhQAwcnBSX+UaoWgbDtqsgd+edxOy507?=
- =?us-ascii?Q?8JmLCCyyUypUYR4ExUtR1q2znjjlw3W8JD1hKiYLfySmiiTyk5i+kqZz2F+F?=
- =?us-ascii?Q?CtFAvsY5zYOqAUnpstNxda1/ArpiRHMYREUEzMxGAlTAgpMeFJ80YI46txk1?=
- =?us-ascii?Q?s30GJ1DHD0X8brm7N5kLyXkKnuZCSlxNDayr1MbPTmuxiM+uCxKfMeX5YaVG?=
- =?us-ascii?Q?zLz9p/X7NQAFPTcuPruTTcjg1mdpAdL6yoAMjGmvcgCrS5TswaqGuefAFc51?=
- =?us-ascii?Q?FJZNgKk7/DKiTz8IA7aGZcLk6zjHqwEVtCQZEY0u1pirTUZturMMZQuDKcVs?=
- =?us-ascii?Q?d8jyzmvtJZE9qe5BKPdILhi32wWYXZPmkfWscdL+QjxjwYgeZ1KcjiBrzb8j?=
- =?us-ascii?Q?JULfDvwhbQsJIS69ZhFUTCRV5BFo4fwa8jhKkVlZJ3LZLoBaWPbxAKJcAsQI?=
- =?us-ascii?Q?3z7vHGX4/I5A44ClS/95RV1SDvVG5wH4UoY2vKFEV+8DQkpIWsRpp8DJEwHy?=
- =?us-ascii?Q?7ET5Z/Bn4tOhX1xsv68tdYv9g6aO4amMIUn7nhu1fJuNRl6OCXpuYYZhG1lc?=
- =?us-ascii?Q?hmm2Ip9KIxzc5QZNUZ1C3hLS3QpsBVgMJzyXpjtz?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4211d5e-96b9-4509-3c93-08dc114a99be
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2024 19:38:48.6359 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bd45fVkSwSp662Fa6LF/gwpAOoz2owRHaCdP0PeXAy7emdWzWPBYZDolhowkgOfl
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6469
-Received-SPF: softfail client-ip=2a01:111:f400:7ea9::610;
- envelope-from=jgg@nvidia.com;
- helo=NAM02-SN1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: HmV9mEOLbVoQzvmFEp3lT72JAtKOu76U
+X-Proofpoint-ORIG-GUID: DSOadI09zZmVdANh_PCXDrM340jHBLxp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-09_09,2024-01-09_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ mlxlogscore=805 impostorscore=0 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 suspectscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401090158
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -160,60 +117,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 09, 2024 at 11:36:03AM -0800, Dan Williams wrote:
-> Jason Gunthorpe wrote:
-> > On Tue, Jan 09, 2024 at 06:02:03PM +0100, David Hildenbrand wrote:
-> > > > Given that, an alternative proposal that I think would work
-> > > > for you would be to add a 'placeholder' memory node definition
-> > > > in SRAT (so allow 0 size explicitly - might need a new SRAT
-> > > > entry to avoid backwards compat issues).
-> > > 
-> > > Putting all the PCI/GI/... complexity aside, I'll just raise again that for
-> > > virtio-mem something simple like that might be helpful as well, IIUC.
-> > > 
-> > > 	-numa node,nodeid=2 \
-> > > 	...
-> > > 	-device virtio-mem-pci,node=2,... \
-> > > 
-> > > All we need is the OS to prepare for an empty node that will get populated
-> > > with memory later.
-> > 
-> > That is all this is doing too, the NUMA relationship of the actual
-> > memory is desribed already by the PCI device since it is a BAR on the
-> > device.
-> > 
-> > The only purpose is to get the empty nodes into Linux :(
-> > 
-> > > So if that's what a "placeholder" node definition in srat could achieve as
-> > > well, even without all of the other acpi-generic-initiator stuff, that would
-> > > be great.
-> > 
-> > Seems like there are two use quite similar cases.. virtio-mem is going
-> > to be calling the same family of kernel API I suspect :)
-> 
-> It seems sad that we, as an industry, went through all of this trouble
-> to define a dynamically enumerable CXL device model only to turn around
-> and require static ACPI tables to tell us how to enumerate it.
-> 
-> A similar problem exists on the memory target side and the approach
-> taken there was to have Linux statically reserve at least enough numa
-> node numbers for all the platform CXL memory ranges (defined in the
-> ACPI.CEDT.CFMWS), but with the promise to come back and broach the
-> dynamic node creation problem "if the need arises".
-> 
-> This initiator-node enumeration case seems like that occasion where the
-> need has arisen to get Linux out of the mode of needing to declare all
-> possible numa nodes early in boot. Allow for nodes to be discoverable
-> post NUMA-init.
-> 
-> One strawman scheme that comes to mind is instead of "add nodes early" in
-> boot, "delete unused nodes late" in boot after the device topology has
-> been enumerated. Otherwise, requiring static ACPI tables to further
-> enumerate an industry-standard dynamically enumerated bus seems to be
-> going in the wrong direction.
+On Wed, 2024-01-10 at 04:42 +1100, Richard Henderson wrote:
+> On 1/9/24 10:34, Ilya Leoshkevich wrote:
+> > gdbserver ignores page protection by virtue of using
+> > /proc/$pid/mem.
+> > Teach qemu gdbstub to do this too. This will not work if /proc is
+> > not
+> > mounted; accept this limitation.
+> >=20
+> > One alternative is to temporarily grant the missing PROT_* bit, but
+> > this is inherently racy. Another alternative is self-debugging with
+> > ptrace(POKE), which will break if QEMU itself is being debugged - a
+> > much more severe limitation.
+> >=20
+> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> > ---
+> > =C2=A0 cpu-target.c | 55 ++++++++++++++++++++++++++++++++++++++--------=
+-
+> > -----
+> > =C2=A0 1 file changed, 40 insertions(+), 15 deletions(-)
+> >=20
+> > diff --git a/cpu-target.c b/cpu-target.c
+> > index 5eecd7ea2d7..69e97f78980 100644
+> > --- a/cpu-target.c
+> > +++ b/cpu-target.c
+> > @@ -406,6 +406,15 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr
+> > addr,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vaddr l, page;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 void * p;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint8_t *buf =3D ptr;
+> > +=C2=A0=C2=A0=C2=A0 int ret =3D -1;
+> > +=C2=A0=C2=A0=C2=A0 int mem_fd;
+> > +
+> > +=C2=A0=C2=A0=C2=A0 /*
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 * Try ptrace first. If /proc is not mounted o=
+r if there is a
+> > different
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 * problem, fall back to the manual page acces=
+s. Note that,
+> > unlike ptrace,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 * it will not be able to ignore the protectio=
+n bits.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > +=C2=A0=C2=A0=C2=A0 mem_fd =3D open("/proc/self/mem", is_write ? O_WRON=
+LY :
+> > O_RDONLY);
+>=20
+> Surely this is the unlikely fallback, and you don't need to open
+> unless the page is=20
+> otherwise inaccessible.
 
-Fully agree, and I think this will get increasingly painful as we go
-down the CXL road.
+Ok, I can move this under (flags & PAGE_*) checks.
 
-Jason
+> I see no handling for writes to pages that contain TranslationBlocks.
+
+Sorry, I completely missed that. I'm currently experimenting with the
+following:
+
+	/*
+	 * If there is a TranslationBlock and we weren't bypassing
+host
+	 * page protection, the memcpy() above would SEGV, ultimately
+	 * leading to page_unprotect(). So invalidate the translations
+	 * manually. Both invalidation and pwrite() must be under
+	 * mmap_lock() in order to prevent the creation of another
+	 * TranslationBlock in between.
+	 */
+	mmap_lock();
+	tb_invalidate_phys_page(page);
+	written =3D pwrite(fd, buf, l, (off_t)g2h_untagged(addr));
+	mmap_unlock();
+
+Does that look okay?
+
+[...]
 
