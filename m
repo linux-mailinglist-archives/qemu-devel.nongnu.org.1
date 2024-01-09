@@ -2,85 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A5A828FF0
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jan 2024 23:30:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96247829091
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 00:09:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNKbB-0006Ke-4r; Tue, 09 Jan 2024 17:29:29 -0500
+	id 1rNLCo-0003Qx-NN; Tue, 09 Jan 2024 18:08:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rNKb8-0006KU-Nd
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 17:29:26 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rNKb7-0004qO-4b
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 17:29:26 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40e5521db08so3784295e9.2
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 14:29:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704839363; x=1705444163; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6eShGOOYzJgkxXcf3BN0KmzlHl9tWf4UCVl9RkW3Vs4=;
- b=Mb8NeV5fp9+oaY07C+fUElSg1IZ1BbhZcOcULQFlwzWBQYGlpbVgWP7XHapsOrbS8I
- yn8m6clJE8+1s6YFfJR4YFW4M71ostvW6zaMcYNrwCNifR3+KQfICkRnsaaNMKSgTXBR
- lN5jPGMSRdxlvbd4J9/OQS8SrKU/2TnCO8EOIyHlFkYx7aDTf6hqKHHFwlLq1T0D0ayr
- XmdkrItO6ZzDW71KtvB8f4dJfxXryAEyIrGIH4Qgol5vck+r9GuJinPFPyqh4Y7Maj3q
- xD1n3d5yJ7LC2DZLoJ6l3vRsYJ1fElLNZh10u/qu+M3sYxmWqEtbONkjKuy2dHvpl4OB
- Ztlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704839363; x=1705444163;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6eShGOOYzJgkxXcf3BN0KmzlHl9tWf4UCVl9RkW3Vs4=;
- b=QJhD6eKBVKtMaj1MaLAd//FzumgaeA0yp/6njJlZpwytck4GOrais3bSqoOSUBomMV
- qjnuZKp+czjwMPPsNo/rTfgxtJyPlKf4TayHoOFZbDuwwan0yBEDsLICK7MTInuvjyuF
- kJgRxEThYSrNY5ii9Ak7CzJwrPG2lYvmvCBfu0qxwqpzhRinMtSlRlVsW3tieg8bxynf
- YCoZ7zGliat8EvYHsCmewRq8zDE3ObNac7GGfnPbyd31oX8oZIvmBznRnlqOvyT1ar7c
- /mJ+XQe8KI7vF/i0puUww9ZU6NNu1Aqs9aFSq0Bfk9jqtFHFkhe9QfZWDZm0nal4EcVe
- W7+g==
-X-Gm-Message-State: AOJu0YzZAGSHGr/IzIqd/Z66+cmoxa966EcyXfvGPEFrUQFOe7i8mtm0
- iP7ZRuycpoicUPu8uh9/dJ0=
-X-Google-Smtp-Source: AGHT+IGsBx67M/CXG5ZKy9tf7B4FVsHy9jr6Taj33qNRJvhUESGymMQxI/zxyIILVvrQVh9ToM40Dw==
-X-Received: by 2002:a05:600c:68d4:b0:40e:48e6:a6e3 with SMTP id
- jd20-20020a05600c68d400b0040e48e6a6e3mr8858wmb.149.1704839362816; 
- Tue, 09 Jan 2024 14:29:22 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-077-183-075-077.77.183.pool.telefonica.de.
- [77.183.75.77]) by smtp.gmail.com with ESMTPSA id
- gv2-20020a170906f10200b00a26a80a58fcsm1436941ejb.196.2024.01.09.14.29.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jan 2024 14:29:22 -0800 (PST)
-Date: Tue, 09 Jan 2024 22:29:14 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-CC: Chuck Zmudzinski <brchuckz@aol.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, xen-devel@lists.xenproject.org,
- Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paul Durrant <paul@xen.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Anthony PERARD <anthony.perard@citrix.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_hw/i386/pc=5Fpiix=3A_Make_piix=5Fintx=5Fr?=
- =?US-ASCII?Q?outing=5Fnotifier=5Fxen=28=29_more_device_independent?=
-In-Reply-To: <7d24b5aa384a492b3bd33f50906e3f000b1ff6a0.camel@infradead.org>
-References: <20240107231623.5282-1-shentey@gmail.com>
- <7d24b5aa384a492b3bd33f50906e3f000b1ff6a0.camel@infradead.org>
-Message-ID: <9FEEB450-CA3D-4960-8C7D-BC837C93E58D@gmail.com>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rNLCm-0003Oh-4K; Tue, 09 Jan 2024 18:08:20 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rNLCj-0006Ql-QF; Tue, 09 Jan 2024 18:08:19 -0500
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 409MF6au028583; Tue, 9 Jan 2024 23:08:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=A0s5Mr4Jzof5SnKIeNox8cnL/bIAyWOAdsRpeuHqFaA=;
+ b=hWctXQDatracJTza4VOeEJ7NeViQ+GEMACmjYrBVkFDQt7HcIC0Y+s1z3WTUtBfOZTfx
+ XLlAnBuofLL4G2TNmukbxwouOvDgy/qHuI6m6L5w9hm4Ae0nFi7whGhIG0EehDoLYGV1
+ GmR3ZJXj5Qg/pIpADU57E2T+p79UYyz8t5tOsfHSPlE9/5JGVB0/JAhjukMtZE2Hr1Ik
+ YHVyD7NxINV6C1JN313vcMA45Fp/QUeuCdHvVIuaBuPOkYb/dGXjiA1TmlDpSRXypT7K
+ vjQb8zU6Z5XTaAqd5Ldjnw0g0H0sYNMZicqKyG69ybBhznaJcXPElx5VpZ2YW2gowZFi SA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vh9f91n04-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 23:08:14 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 409Mpa9x008108;
+ Tue, 9 Jan 2024 23:08:13 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vh9f91myc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 23:08:13 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 409LIqpe027421; Tue, 9 Jan 2024 23:08:12 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkw218us-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jan 2024 23:08:12 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 409N8B9e25756316
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 9 Jan 2024 23:08:11 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0EA1D20043;
+ Tue,  9 Jan 2024 23:08:11 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9129320040;
+ Tue,  9 Jan 2024 23:08:10 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.60.193])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  9 Jan 2024 23:08:10 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2 0/3] linux-user: Allow gdbstub to ignore page protection
+Date: Wed, 10 Jan 2024 00:05:52 +0100
+Message-ID: <20240109230808.583012-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: scAaSRplPvUgjbDknyyL-fMUr0uBPcQ_
+X-Proofpoint-ORIG-GUID: OA-ZZ68_N2V5tawb6PWxZeC7ZbCoHM6X
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-09_11,2024-01-09_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ mlxlogscore=743 impostorscore=0 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 suspectscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401090186
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,43 +114,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+v1 -> v2: Use /proc/self/mem as a fallback. Handle TB invalidation
+          (Richard).
+          Test cross-page accesses.
 
+RFC: https://lists.gnu.org/archive/html/qemu-devel/2023-12/msg02044.html
+RFC -> v1: Use /proc/self/mem and accept that this will not work
+           without /proc.
+           Factor out a couple functions for gdbstub testing.
+           Add a test.
 
-Am 9=2E Januar 2024 08:51:37 UTC schrieb David Woodhouse <dwmw2@infradead=
-=2Eorg>:
->On Mon, 2024-01-08 at 00:16 +0100, Bernhard Beschow wrote:
->> This is a follow-up on commit 89965db43cce "hw/isa/piix3: Avoid Xen-spe=
-cific
->> variant of piix3_write_config()" which introduced
->> piix_intx_routing_notifier_xen()=2E This function is implemented in boa=
-rd code but
->> accesses the PCI configuration space of the PIIX ISA function to determ=
-ine the
->> PCI interrupt routes=2E Avoid this by reusing pci_device_route_intx_to_=
-irq() which
->> makes piix_intx_routing_notifier_xen() more device-agnostic=2E
->>=20
->> One remaining improvement would be making piix_intx_routing_notifier_xe=
-n()
->> agnostic towards the number of PCI interrupt routes and move it to xen-=
-hvm=2E
->> This might be useful for possible Q35 Xen efforts but remains a future =
-exercise
->> for now=2E
->>=20
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->
->I'm still moderately unhappy that all this code is written with the
->apparent assumption that there is only *one* IRQ# which is the target
->for a given INTx, when in fact it gets routed to that pin# on the
->legacy PIC and a potentially *different* pin# on the I/O APIC=2E
+Hi,
 
-Would TYPE_SPLIT_IRQ help in any way?
+I've noticed that gdbstub behaves differently from gdbserver in that it
+doesn't allow reading non-readable pages. This series improves the
+situation by using the same mechanism as gdbserver: /proc/self/mem.
 
->
->But you aren't making that worse, so
->
->Reviewed-by: David Woodhouse <dwmw@amazon=2Eco=2Euk>
+Best regards,
+Ilya
 
-Thanks!
+Ilya Leoshkevich (3):
+  linux-user: Allow gdbstub to ignore page protection
+  tests/tcg: Factor out gdbstub test functions
+  tests/tcg: Add the PROT_NONE gdbstub test
+
+ cpu-target.c                                  | 76 +++++++++++++++----
+ tests/guest-debug/run-test.py                 |  7 +-
+ tests/guest-debug/test_gdbstub.py             | 56 ++++++++++++++
+ tests/tcg/aarch64/gdbstub/test-sve-ioctl.py   | 34 +--------
+ tests/tcg/aarch64/gdbstub/test-sve.py         | 33 +-------
+ tests/tcg/multiarch/Makefile.target           |  9 ++-
+ tests/tcg/multiarch/gdbstub/interrupt.py      | 47 ++----------
+ tests/tcg/multiarch/gdbstub/memory.py         | 41 +---------
+ tests/tcg/multiarch/gdbstub/prot-none.py      | 22 ++++++
+ tests/tcg/multiarch/gdbstub/registers.py      | 41 ++--------
+ tests/tcg/multiarch/gdbstub/sha1.py           | 40 ++--------
+ .../multiarch/gdbstub/test-proc-mappings.py   | 39 +---------
+ .../multiarch/gdbstub/test-qxfer-auxv-read.py | 37 +--------
+ .../gdbstub/test-thread-breakpoint.py         | 37 +--------
+ tests/tcg/multiarch/prot-none.c               | 40 ++++++++++
+ tests/tcg/s390x/gdbstub/test-signals-s390x.py | 42 +---------
+ tests/tcg/s390x/gdbstub/test-svc.py           | 39 +---------
+ 17 files changed, 227 insertions(+), 413 deletions(-)
+ create mode 100644 tests/guest-debug/test_gdbstub.py
+ create mode 100644 tests/tcg/multiarch/gdbstub/prot-none.py
+ create mode 100644 tests/tcg/multiarch/prot-none.c
+
+-- 
+2.43.0
+
 
