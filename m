@@ -2,97 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A79F829117
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 00:58:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C377182912C
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 01:16:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNLxL-00069W-Ia; Tue, 09 Jan 2024 18:56:27 -0500
+	id 1rNMFP-0003un-HM; Tue, 09 Jan 2024 19:15:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rNLxJ-00069O-H7
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 18:56:25 -0500
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rNLx8-0004QI-VG
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 18:56:25 -0500
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-50eaa8b447bso3748704e87.1
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 15:56:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1704844559; x=1705449359; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=deI9GyKmvHyCD066H+Wu2YAjGfRVp8M+T1N2HV8O5I4=;
- b=ZWQZMk6WwM4wkC6dlWdlFUws+eI2qskBnDOU4ZFnPFLE9nrZMd2n+0zhUyOD4jAmrN
- 5S26/BH299ssTGgkldn0rk3m48bIbDqm5uCUXRRrmMgUZMroO+bXZLFzD+IgeMMcuudp
- 6SWkj9/AbBvFF12ztdfdOF+gogxuAJ+LjVtwiqy1PLhewoai9Ov0s5Ris+gs+T46jnfA
- dcZgeuMSk+sU12qUWHZLqVHu4aXS7dvCnVMBIpDVa1f5YPKjddeWO+b3YfatGFk59q3G
- 1qo8uPzDNbgyWM2CMmwUp5kEq0+9BiY/j8xapZMTVHnk1LsfPpe7Thg2I99UjEe91t1j
- awNQ==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rNMFM-0003uV-7L
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 19:15:04 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rNMFJ-0006SY-Tw
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 19:15:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704845699;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Gb68bVCK9BYQYeORF7aiNFMo0yD+fNaoHS5e0JOpY+4=;
+ b=QFKffSMhmB3UB1WtkXjSWfokiCzYhUfmGy1asGFP/uQJtL/xRXkXzfiZ0vDagUgNLQkj48
+ lSwgyvx6Hodef9jTUc7UUDDEH0vYFcLJ8FDect0zIYPCwtXxyDPRM+m4D+h4EW3oYy1HwL
+ hIS62pIPs0PV14IBMnjNvms/gIipTKY=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-208-GIilcdFLODGiiyIUrr8D7A-1; Tue, 09 Jan 2024 19:14:52 -0500
+X-MC-Unique: GIilcdFLODGiiyIUrr8D7A-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-6d9ba60e1c1so2334946b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 16:14:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704844559; x=1705449359;
+ d=1e100.net; s=20230601; t=1704845691; x=1705450491;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=deI9GyKmvHyCD066H+Wu2YAjGfRVp8M+T1N2HV8O5I4=;
- b=emlBqUInUCjj25JVdq8zcYoDVdA/jIkvDzoUEh5DoKhLzUmkAliVNBLeUj8YPavaAK
- LanhoTdTwq3ZgZzjPcePjdD9qLk8HutYSKk5vN793vdthJiKq8NP/FuwPloh6LFmaKyJ
- At1ZzZlXoH3Z7k5fGfVIRnPS9q36jD3mz4Hs/w34lR/nToKJBQqTzMCKSSNLpaTzi8ZP
- NniLKvfkIaC17eyS0SqdEgzc8/2ZO6gnsyHWVpj5nECgYGJcVARr6HUjD4Y4UFPiCt4X
- QSH7XPAW/0lwgBZax+LmUzMMUA9tbFOy0vIqWkgfjFEysA4LkKIhyknfgTxR3QkQbTzb
- 2Htw==
-X-Gm-Message-State: AOJu0YyhQ/fWlGH46pLgrXKsrrnAXx5UN8YcoIUrW1sIaX8Z5g7Mg4Iw
- KprHIzGj6ADMDsiWG/7AYBTUfmRokkGwSj5G/b5DcYZSjSHVkQ==
-X-Google-Smtp-Source: AGHT+IH8niV1qNroh8QduYcojlVVDQFS9X2GkpYdi7ulR8Zvv4CkOMPH0UDDuHXqgIb4u1lPoAwHj9mmHs1ntGL5UpY=
-X-Received: by 2002:a05:6512:1587:b0:50e:7be8:4705 with SMTP id
- bp7-20020a056512158700b0050e7be84705mr24917lfb.260.1704844558979; Tue, 09 Jan
- 2024 15:55:58 -0800 (PST)
+ bh=Gb68bVCK9BYQYeORF7aiNFMo0yD+fNaoHS5e0JOpY+4=;
+ b=lQGhPGJGUVaBDGh1wVgsRuulrbGZpxYqiKfv5/wNGa2BsUI1a/cwW9yVE3nlSNqT8C
+ 14DlNRSF6UzWWIh/S1ADPmohmPcCIeRvHqE/c2OQ+ibUUgXhO1rFxBH5p86JgcwhaThG
+ RZb0g0exx0F5P0VtXB2U+WXrCm8cmNMdwUQrH4J/Wt/0/6W3Fi0hmKy0UzaUt8FH3IJq
+ ugcSg20BNPTKT9KELgXRlCmw7VKpCCb+L3GPcyYROFZTXDZxabAlfuEAjE0MvKMD7rXN
+ OvqTxDmRJhEL7YY0hMKLcQ3/y0UANS3sUmUTdZgdUEeFekCz8wSWvAq3ZdfxrPgmMn2x
+ 0EcQ==
+X-Gm-Message-State: AOJu0Yw335lRh5Exm9lzoNbkl4DVRO/Y3kDXyzONPwUR5yztYQDaDwzJ
+ nRM72ANXnViN46PjdEAKic/ElLZ8xCATvbPs6pRbt1JET1fLWMf8b+GqcvzAm2I5YNrcnTcArbk
+ dESjDI5HVRuSE8sSF+v2xRzMfQLAHcaoDwrLcIR+k5SYC8S4=
+X-Received: by 2002:a05:6a20:3946:b0:199:f47c:6a90 with SMTP id
+ r6-20020a056a20394600b00199f47c6a90mr97777pzg.116.1704845690967; 
+ Tue, 09 Jan 2024 16:14:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGaeBZ1S0GKsBeL9WJwduMRaLBN8zG3vqQr5Dhs1LQOZHFtGV+mcaIxAwXFpMSPF42TVKLcEj1lrAlcrRSjGvk=
+X-Received: by 2002:a05:6a20:3946:b0:199:f47c:6a90 with SMTP id
+ r6-20020a056a20394600b00199f47c6a90mr97771pzg.116.1704845690536; Tue, 09 Jan
+ 2024 16:14:50 -0800 (PST)
 MIME-Version: 1.0
-References: <20240101075315.43167-2-horenchuang@bytedance.com>
- <ZZXX95yvk/WTIBT/@memverge.com>
- <CAAYibXjZ0HSCqMrzXGv62cMLncS_81R3e1uNV5Fu4CPm0zAtYw@mail.gmail.com>
- <ZZwtmiucNXxmrZ7S@memverge.com>
- <CAAYibXhfUu8dMwvBmWz4P6N9-yLao0QwAFozk4rS_0GPsEZd7Q@mail.gmail.com>
- <CAAYibXgf6i5+aqopCrVu5ZveDJ9WP2M2AJaUUaj5qFXFHQQxmQ@mail.gmail.com>
- <ZZydwBTS4NeSizzb@memverge.com>
- <CAAYibXhY5p6VN7yAMpmfAgHO+gsf51dvNw68y__RYV+43CVVLQ@mail.gmail.com>
- <ZZ2lNoTQ8hDHADTT@memverge.com>
- <CAAYibXjcVu-13h9jHpt2fZ3wmjz-_Dyj+WfUh0AEpid87GLriQ@mail.gmail.com>
- <ZZ3FAegN/ezu9Ghy@memverge.com>
-In-Reply-To: <ZZ3FAegN/ezu9Ghy@memverge.com>
-From: Hao Xiang <hao.xiang@bytedance.com>
-Date: Tue, 9 Jan 2024 15:55:46 -0800
-Message-ID: <CAAYibXhTUgd+z3Xqk7yeWqQmHxtDmf3Ud_01iEHS0KRj9GhjUw@mail.gmail.com>
-Subject: Re: [External] Re: [QEMU-devel][RFC PATCH 1/1] backends/hostmem:
- qapi/qom: Add an ObjectOption for memory-backend-* called HostMemType and its
- arg 'cxlram'
-To: Gregory Price <gregory.price@memverge.com>
-Cc: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Gregory Price <gourry.memverge@gmail.com>, 
- Fan Ni <fan.ni@samsung.com>, Ira Weiny <ira.weiny@intel.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Eric Blake <eblake@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org, 
- "Ho-Ren (Jack) Chuang" <horenc@vt.edu>, linux-cxl@vger.kernel.org
+References: <20231116014350.653792-1-jsnow@redhat.com>
+ <20231116014350.653792-16-jsnow@redhat.com>
+ <8734ww4kz4.fsf@pond.sub.org>
+In-Reply-To: <8734ww4kz4.fsf@pond.sub.org>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 9 Jan 2024 19:14:39 -0500
+Message-ID: <CAFn=p-bD5h2h8p=Fre1y5pdKWEQ_Y9GX3vwNJCTAZwz9KpUuiA@mail.gmail.com>
+Subject: Re: [PATCH 15/19] qapi/parser: demote QAPIExpression to Dict[str, Any]
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
+ Michael Roth <michael.roth@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=hao.xiang@bytedance.com; helo=mail-lf1-x130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,105 +95,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 9, 2024 at 2:13=E2=80=AFPM Gregory Price <gregory.price@memverg=
-e.com> wrote:
+On Thu, Nov 23, 2023 at 9:12=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
+m> wrote:
 >
-> On Tue, Jan 09, 2024 at 01:27:28PM -0800, Hao Xiang wrote:
-> > On Tue, Jan 9, 2024 at 11:58=E2=80=AFAM Gregory Price
-> > <gregory.price@memverge.com> wrote:
-> > >
-> > > If you drop this line:
-> > >
-> > > -numa node,memdev=3Dvmem0,nodeid=3D1
+> John Snow <jsnow@redhat.com> writes:
+>
+> > Dict[str, object] is a stricter type, but with the way that code is
+> > currently arranged, it is infeasible to enforce this strictness.
 > >
-> > We tried this as well and it works after going through the cxlcli
-> > process and created the devdax device. The problem is that without the
-> > "nodeid=3D1" configuration, we cannot connect with the explicit per num=
-a
-> > node latency/bandwidth configuration "-numa hmat-lb". I glanced at the
-> > code in hw/numa.c, parse_numa_hmat_lb() looks like the one passing the
-> > lb information to VM's hmat.
+> > In particular, although expr.py's entire raison d'=C3=AAtre is normaliz=
+ation
+> > and type-checking of QAPI Expressions, that type information is not
+> > "remembered" in any meaningful way by mypy because each individual
+> > expression is not downcast to a specific expression type that holds all
+> > the details of each expression's unique form.
 > >
->
-> Yeah, this is what Jonathan was saying - right now there isn't a good
-> way (in QEMU) to pass the hmat/cdat stuff down through the device.
-> Needs to be plumbed out.
->
-> In the meantime: You should just straight up drop the cxl device from
-> your QEMU config.  It doesn't actually get you anything.
->
-> > From what I understand so far, the guest kernel will dynamically
-> > create a numa node after a cxl devdax device is created. That means we
-> > don't know the numa node until after VM boot. 2. QEMU can only
-> > statically parse the lb information to the VM at boot time. How do we
-> > connect these two things?
->
-> during boot, the kernel discovers all the memory regions exposed to
-> bios. In this qemu configuration you have defined:
->
-> region 0: CPU + DRAM node
-> region 1: DRAM only node
-> region 2: CXL Fixed Memory Window (the last line of the cxl stuff)
->
-> The kernel reads this information on boot and reserves 1 numa node for
-> each of these regions.
->
-> The kernel then automatically brings up regions 0 and 1 in nodes 0 and 1
-> respectively.
->
-> Node2 sits dormant until you go through the cxl-cli startup sequence.
->
->
-> What you're asking for is for the QEMU team to plumb hmat/cdat
-> information down through the type3 device.  I *think* that is presently
-> possible with a custom CDAT file - but Jonathan probably has more
-> details on that.  You'll have to go digging for answers on that one.
-
-I think this is exactly what I was looking for. When we started with
-the idea of having an explicit CXL memory backend, we wanted to
-1) Bind a virtual CXL device to an actual CXL memory node on host.
-2) Pass the latency/bandwidth information from the CXL backend into
-the virtual CXL device.
-I didn't have a concrete idea of how to do 2)
-With the discussion here, I learned that the information is passed
-from CDAT. Just looked into the virtual CXL code and found that
-ct3_build_cdat_entries_for_mr() is the function that builds this
-information. But the latency and bandwidth there are currently
-hard-coded. I think it makes sense to have an explicit CXL memory
-backend where QEMU can query the CXL memory attributes from the host
-and pass that information from the CXL backend into the virtual CXL
-type-3 device.
-
->
->
-> Now - even if you did that - the current state of the cxl-type3 device
-> is *not what you want* because your memory accesses will be routed
-> through the read/write functions in the emulated device.
->
-> What Jonathan and I discussed on the other thread is how you might go
-> about slimming this down to allow pass-through of the memory without the
-> need for all the fluff.  This is a non-trivial refactor of the existing
-> device, so i would not expect that any time soon.
->
-> At the end of the day, quickest way to get-there-from-here is to just
-> drop the cxl related lines from your QEMU config, and keep everything
-> else.
-
-Agreed. We need the kernel to be capable of reading the memory
-attributes from HMAT and establish the correct memory tier for
-system-DRAM (on a CPUless numa node). Currently system-DRAM is assumed
-to always be fast tier.
-
->
+> > As a result, all of the code in schema.py that deals with actually
+> > creating type-safe specialized structures has no guarantee (myopically)
+> > that the data it is being passed is correct.
 > >
-> > Assuming that the same issue applies to a physical server with CXL.
-> > Were you able to see a host kernel getting the correct lb information
-> > for a CXL devdax device?
+> > There are two ways to solve this:
 > >
+> > (1) Re-assert that the incoming data is in the shape we expect it to be=
+, or
+> > (2) Disable type checking for this data.
+> >
+> > (1) is appealing to my sense of strictness, but I gotta concede that it
+> > is asinine to re-check the shape of a QAPIExpression in schema.py when
+> > expr.py has just completed that work at length. The duplication of code
+> > and the nightmare thought of needing to update both locations if and
+> > when we change the shape of these structures makes me extremely
+> > reluctant to go down this route.
+> >
+> > (2) allows us the chance to miss updating types in the case that types
+> > are updated in expr.py, but it *is* an awful lot simpler and,
+> > importantly, gets us closer to type checking schema.py *at
+> > all*. Something is better than nothing, I'd argue.
+> >
+> > So, do the simpler dumber thing and worry about future strictness
+> > improvements later.
 >
-> Yes, if you bring up a CXL device via cxl-cli on real hardware, the
-> subsequent numa node ends up in the "lower tier" of the memory-tiering
-> infrastructure.
+> Yes.
 >
-> ~Gregory
+
+(You were right, again.)
+
+> While Dict[str, object] is stricter than Dict[str, Any], both are miles
+> away from the actual, recursive type.
+>
+> > Signed-off-by: John Snow <jsnow@redhat.com>
+> > ---
+> >  scripts/qapi/parser.py | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+> > index bf31018aef0..b7f08cf36f2 100644
+> > --- a/scripts/qapi/parser.py
+> > +++ b/scripts/qapi/parser.py
+> > @@ -19,6 +19,7 @@
+> >  import re
+> >  from typing import (
+> >      TYPE_CHECKING,
+> > +    Any,
+> >      Dict,
+> >      List,
+> >      Mapping,
+> > @@ -43,7 +44,7 @@
+> >  _ExprValue =3D Union[List[object], Dict[str, object], str, bool]
+> >
+> >
+> > -class QAPIExpression(Dict[str, object]):
+> > +class QAPIExpression(Dict[str, Any]):
+> >      # pylint: disable=3Dtoo-few-public-methods
+> >      def __init__(self,
+> >                   data: Mapping[str, object],
+>
+> There are several occurences of Dict[str, object] elsewhere.  Would your
+> argument for dumbing down QAPIExpression apply to (some of) them, too?
+
+When and if they piss me off, sure. I'm just wary of making the types
+too permissive because it can obscure typing errors; by using Any, you
+really disable any further checks and might lead to false confidence
+in the static checker. I still have a weird grudge against Any and
+would like to fully eliminate it from any statically checked Python
+code, but it's just not always feasible and I have to admit that "good
+enough" is good enough. Doesn't have me running to lessen the
+strictness in areas that didn't cause me pain, though...
+
+> Skimming them, I found this in introspect.py:
+>
+>     # These types are based on structures defined in QEMU's schema, so we
+>     # lack precise types for them here. Python 3.6 does not offer
+>     # TypedDict constructs, so they are broadly typed here as simple
+>     # Python Dicts.
+>     SchemaInfo =3D Dict[str, object]
+>     SchemaInfoEnumMember =3D Dict[str, object]
+>     SchemaInfoObject =3D Dict[str, object]
+>     SchemaInfoObjectVariant =3D Dict[str, object]
+>     SchemaInfoObjectMember =3D Dict[str, object]
+>     SchemaInfoCommand =3D Dict[str, object]
+>
+> Can we do better now we have 3.8?
+
+A little bit, but it involves reproducing these types -- which are
+ultimately meant to represent QAPI types defined in introspect.json --
+with "redundant" type info. i.e. I have to reproduce the existing type
+definitions in Python-ese, and then we have the maintenance burden of
+making sure they match.
+
+Maybe too much work to come up with a crazy dynamic definition thing
+where we take the QAPI definition and build Python types from them ...
+without some pretty interesting work to avoid the Ouroboros that'd
+result. introspection.py wants static types based on types defined
+dynamically by the schema definition; but we are not guaranteed to
+have a suitable schema with these types at all. I'm not sure how to
+express this kind of dependency without some interesting re-work. This
+is a rare circumstance of the QAPI generator relying on the contents
+of the Schema to provide static type assistance.
+
+Now, I COULD do it statically, since I don't expect these types to
+change much, but I'm wary of how quickly it might get out of hand
+trying to achieve better type specificity.
+
+General impression: "Not worth the hassle for this series, but we can
+discuss proposals for future improvements"
+
 
