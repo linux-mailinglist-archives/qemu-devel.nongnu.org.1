@@ -2,93 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2776829D78
+	by mail.lfdr.de (Postfix) with ESMTPS id BE80F829D77
 	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 16:22:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNaPC-0004gg-Dm; Wed, 10 Jan 2024 10:22:10 -0500
+	id 1rNaOj-0004X8-PO; Wed, 10 Jan 2024 10:21:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rNaPB-0004gS-3J
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 10:22:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <ari@tuxera.com>)
+ id 1rNaOe-0004WX-N8; Wed, 10 Jan 2024 10:21:36 -0500
+Received: from mail-vi1eur05on20701.outbound.protection.outlook.com
+ ([2a01:111:f403:2613::701]
+ helo=EUR05-VI1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rNaP9-0006GZ-55
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 10:22:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704900125;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IMNesO/uKeBaOKargm9HGvs62hGZ+V7XjIUPz0llCC8=;
- b=hz5Lfzc/T37cl37lWaoZXTs28uOgu6BdC/lo7h5HsP8yVgW4Lay+1gZEMLDReZHHZKXYGR
- X6bFkco+67nEPYaIvqEUjQiwZjv0aT5O1TOoCC3LG+c+jbArYXeXW29KBB2oGQ06hLKKSs
- isp2UQyFW69YaxFX4OafHS7jvEgwiyU=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-QiXWEOmYP5i5ZSHkS6TLIg-1; Wed, 10 Jan 2024 10:22:03 -0500
-X-MC-Unique: QiXWEOmYP5i5ZSHkS6TLIg-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7817253831cso635684885a.0
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 07:22:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704900123; x=1705504923;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IMNesO/uKeBaOKargm9HGvs62hGZ+V7XjIUPz0llCC8=;
- b=nMKJJGFxClBtlQ/xo3BWCPUSkrWrh0PDP4qb96PFdOp+1/3efWzs510Q6h9bv6tX0b
- oHZadHKgfKMCqhEQj+oBzzkPQvzU+jJI5a+DgxE9gY9BzZ5t3nr/nXi3o4DfSF0pfDBN
- jTZZMAfed+d5CXF+vEzJ23Rcb67b5hz4yTDd3V0nzYQgNbotkjUYMYv2g2Z0g19SIzAM
- Dxeecg9nfoewayGcAtpw3ICEXFiUjUzICMJDfeYE6jCUnCpUjYmGW2Vs5v1FBo/IktCE
- Vwebcw3ZHoSsPiy1AjG3SrGk1o+VhzhZHWwzzBGbmk9BKvkzAMUbuBqlxN9H+mBaQhwn
- 5SFA==
-X-Gm-Message-State: AOJu0Yx/zsEErcYRDUx08aTLPTMn15/jWeAeM9fEOFPQLuvlKMOqsOQV
- jLpv7FStxRTn6gWSSP7EOphVQEvxzobHYifVtG2t7Ly5uNT5dGW+1e6WSULcgdHxx+aOq1lTrLy
- FzdsyDXhaTqow75g/oj48Cm8=
-X-Received: by 2002:a05:620a:2719:b0:783:3423:c76d with SMTP id
- b25-20020a05620a271900b007833423c76dmr1509699qkp.1.1704900123167; 
- Wed, 10 Jan 2024 07:22:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF8HXUjE6KFjNoNWajCloQpJxbj9GpqxJxrXLbFYPKrBwMoyzwWf1f4NASQ+k13w+XuZFXgew==
-X-Received: by 2002:a05:620a:2719:b0:783:3423:c76d with SMTP id
- b25-20020a05620a271900b007833423c76dmr1509679qkp.1.1704900122837; 
- Wed, 10 Jan 2024 07:22:02 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- s9-20020ae9f709000000b007811da87cefsm1657603qkg.127.2024.01.10.07.22.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Jan 2024 07:22:02 -0800 (PST)
-Message-ID: <8f357390-5a65-458d-875f-7c5c11ce8abd@redhat.com>
-Date: Wed, 10 Jan 2024 16:21:12 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/10] docs/migration: Reorganize migration documentations
+ (Exim 4.90_1) (envelope-from <ari@tuxera.com>)
+ id 1rNaOc-00061b-V5; Wed, 10 Jan 2024 10:21:36 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EnFhl8CLt6EnwLankSfeH34y/GIiuAThKNb0UoZNS2BTaC6O8VIQYNKHXQkYprBRcmK+3qSVFeD8szKLjd17H2UgSj7OBIhehghWWL5uczjH0EnKdeeyerQUI4BvXwQNRU4KtVLV1+Q6q2p1VNIAFenyfliB1fXfQsQEjeE2v7B8kwNNeL3bSPJK2DTNSqUr4c+Xs2Gbkrco/Z9bMKih24VqVFEwRyLVQJR4/tE6TEZkkDZUhUDmjLlbbgKQv/ysyRCTgPLFvt9LWySESJ2UqHuD0FaqWp+54PEymhjVWE7nxNUcpKtIZ95NgFix2W/TOkFoNaflpkiYY8WaHrgd1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TK5ExxdgXGntOhJmPpaa5hfYnfOZgW8sYQ6yDgWqjhc=;
+ b=X5x8MRVC7QAPVdcVsRJ1AqJ26R7/Pr9wzjbYYHQpSpbITqekYVhCEEIBZaN5lYgvlyOtBauEr+uGvvv+2V4jPrXSGA1Ojmm6oMDRGHUzHXfSp7htBY2kh4wXp+6zqLbqcbP5+KkVwBQVxOgdLiRoM37T3KsCEcYUEWK3+icddzFrP2Guh3Zhtu0wuhelQfAiLd5Tw5dm8vA4Kra+RYOlRrbBeXeXdjWd/4FZezRseZ83lYxrynklhywPCXMwPaEEDgSj8lvXT1PW8wdk5pblCJQcTWZP0JQbKj6Ij1WTzDGukedwdGmbiQgzdCCRg2ba89BVPIiMj6Tnww4DVag1nw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=tuxera.com; dmarc=pass action=none header.from=tuxera.com;
+ dkim=pass header.d=tuxera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TK5ExxdgXGntOhJmPpaa5hfYnfOZgW8sYQ6yDgWqjhc=;
+ b=O9ddJElDiLnhJbjGvv30hDdGdi53xFOKPEDXZkfkPUPwpHgmKbwlKZnquyzYe47E+wwtGJXn+HRXaxb7mraPQU+CBxzYP/gbqwCwOI2evn8tLXJbIMM4zIBh5OkoKq9PQaNvOzjr1sTxynGKMrTf9e9aDugHwFVH322MvUP3gR0/rUz1hGXDs0RuWNYlQGKPEpNtOfLHuJXoMGgYRsyFGnSyHHfbo+6qNNkbDYlpBxvuBZXtCZiUfgvAEcYpprBMVYLxyMFAauuYTkccC19TFzcqSxwqRmjWmTDHQtn7h/Xf8EY+4ZaVJV+KsdCHlPvWsPlI47gyPZD35yVfo/zYgg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=tuxera.com;
+Received: from DB9PR06MB7818.eurprd06.prod.outlook.com (2603:10a6:10:252::7)
+ by AS8PR06MB7365.eurprd06.prod.outlook.com (2603:10a6:20b:33c::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23; Wed, 10 Jan
+ 2024 15:21:30 +0000
+Received: from DB9PR06MB7818.eurprd06.prod.outlook.com
+ ([fe80::9e26:58bf:b2c5:4bb5]) by DB9PR06MB7818.eurprd06.prod.outlook.com
+ ([fe80::9e26:58bf:b2c5:4bb5%6]) with mapi id 15.20.7181.015; Wed, 10 Jan 2024
+ 15:21:30 +0000
+Message-ID: <f1960d8d-352e-4e1b-4d28-7a110e272356@tuxera.com>
+Date: Wed, 10 Jan 2024 17:21:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] block/blklogwrites: Fix a bug when logging "write zeroes"
+ operations.
 Content-Language: en-US
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Bandan Das <bdas@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
-References: <20240109064628.595453-1-peterx@redhat.com> <ZZ0kpnT741chs1np@x1n>
- <1644d352-7ced-4ddc-90a8-8190fe863e87@redhat.com>
- <ZZ4C08Jrb-76WHW9@x1n>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <ZZ4C08Jrb-76WHW9@x1n>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org, qemu-stable@nongnu.org, stefanha@redhat.com
+References: <20240109184646.1128475-1-megari@gmx.com>
+ <ZZ6eB32kR-Np1BQR@redhat.com>
+From: Ari Sundholm <ari@tuxera.com>
+In-Reply-To: <ZZ6eB32kR-Np1BQR@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR04CA0132.eurprd04.prod.outlook.com
+ (2603:10a6:208:55::37) To DB9PR06MB7818.eurprd06.prod.outlook.com
+ (2603:10a6:10:252::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR06MB7818:EE_|AS8PR06MB7365:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2f22dcbe-dc98-4775-c3f7-08dc11efd233
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: jVngcCQNisQox6ih1IFdUTmJy6vVT0y0s1EjY5rkDt1yU+P6FvWVBRa7YS2G54Fr32N5U8Vz2xwP5TEL+rlKShAygjau6xWc2L+seupLHv6WfxnenYsj8INN00GRen8RsxKkysrkkuz+S+Sa+ngTykyL7LqzIQy2zcpYTq2qOBHGmM09DmBauKxkkg6VVE978z9yRvk3mFwpRByzgfaOiRbPeiUPxmKFewL0drLB0iUrtbmXCfYTWEcJK5uBYiTlzdmdEMhTRApGbGa+8n/AIqkU/43QeTvCp8AfvgoiH33h8Epo5f6HFzZF0IkETCh0IFlhWhtrWisjV4FlSzB9qHiG+OUtqWJuOemfaM1dxqFPl7KUYD4xlNNi846rxxOIpkWrITRjSFg7Yt1TAZYpWpDxJzeWKkvvwAj0QfQFGEyuM2kSII9GOe/F8YyC2UI/SHit8a4eVyO+LWxh6VL0Jd7lLXm5cz+/Sa6C3XF1DINS+m4T70Co+vgAilzr3dCOgUAi5XaiNoA9qppRWxghkohNgQ2zu3salzTa/5Wo1ee+Mkjg6FbxrEyNtA+JpUnL3LiAmES6L6ix4hHINb1biNIhFCoe4AKr99o96Cj9GvHA2VaMeUi1RxhNqnrQE17vjHVAMhmJO3WC4lqbQOVgUN1CEx5og2KgkLwqUa/fqwIHzDakfVM0ILk1CSQwg7uW
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DB9PR06MB7818.eurprd06.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(396003)(376002)(346002)(39840400004)(136003)(366004)(230922051799003)(451199024)(64100799003)(186009)(1800799012)(38100700002)(53546011)(6506007)(2906002)(478600001)(66556008)(66946007)(6512007)(8676002)(8936002)(6916009)(316002)(4326008)(66476007)(5660300002)(6486002)(41300700001)(2616005)(26005)(83380400001)(31686004)(86362001)(31696002)(36756003)(518174003)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eFdHUHRSRWMzcDk4NWM1bm9NVEoxUFpiVVUyZlN3aHhmR2wyN09KVHJhVjlC?=
+ =?utf-8?B?bmNreUgvdkxrNXdDTURqUFlNcERwcVZLZXNmN3EwUmRpQlR4ak12OFhROWww?=
+ =?utf-8?B?SFVVOGl1N1lha1VYandibVF1L3ZURi9rZGRiWlFmRDZJLzE3eXRuM2ozRStp?=
+ =?utf-8?B?VmtCMHNGQ0xFWkZLTEJ6clBhTUU0dWFIRkdpUjV6bEJDejlEbmthanYrUk4r?=
+ =?utf-8?B?ajlDU0t4Smg1V0I3cGRzNVI4N3U3SVVwMGJZaEJpZlhaR3hGUXlrUVJER2I0?=
+ =?utf-8?B?MmxBblMzbTlrUDBmUHNGSHpaT01uMzZGMWQxNWJxL1h3WElHeEtTYWZGbkp1?=
+ =?utf-8?B?NzZ5MkM1bVZmWndRMmFVVlFRUWJHM3NDdUxYZXlQV0pWY0VCdkV2MlVaQ1Vr?=
+ =?utf-8?B?b3JjWEVGemtOaFFkRURjOFYzTm1iek5TSTJ0QStGdVNjUTdUaCtYV1pnVWVl?=
+ =?utf-8?B?ZlhhcU5MQ1BEODE1UHVCQjFsTnZCcEpnWlNOc3ZINStGMUVxVzd2NE9NckNt?=
+ =?utf-8?B?TXF1NmpJaUVPNU9LbXhiNG93aUZSZmlvckNtdDNudTUwTDlmbDVucWJPL3hj?=
+ =?utf-8?B?ZkxVK0R1Qi9Iam5zL0xGNzAvVjJ6NGlLd1pBRENzWTB2WFJTTUJvL2xjSE1B?=
+ =?utf-8?B?alRnVVlDaE9NQWczK3QrbXV3WURDKzhKZzFhKytKTHZ4cWJ3WGhTK3BvU2tn?=
+ =?utf-8?B?cURGVDYvang3bm8yNTlPRlVYWnFrVlhrSVFOemJHREU4bndVWlhndEhoMjZR?=
+ =?utf-8?B?ZUZ1dlplRDlvTWo5eW1xeHJ4T1k3dFl4M2hHRGpIako1THVpRlhUVkVVUkNM?=
+ =?utf-8?B?MkFhZC9uSWV0TGk4c3dzQ3laMHpjNVhWNVJXOUoxUTlsZDVBMXdldFJhekxz?=
+ =?utf-8?B?UFVxNkdYVWxoWG16YUVZZnVhSG9tSTNKaWJ2NTVXUDVXcFhybXAwMzZScHZl?=
+ =?utf-8?B?MUMyUTU2YkRvdXRKckFSZUIrS0JCREkwanFETjF0MUU2azNGYUxnM0M3K3U1?=
+ =?utf-8?B?c0wxM3ROM1lDaHMySFplbGRIallnRFo3VWF2ZE4wQVhzdklKckpUSDMxdmVv?=
+ =?utf-8?B?VEtNTmYvRjgrOVBjaTdRZnlSNEVLT3BZN2VoMFJwQ1VxeGpLYVhqWlB0K2g0?=
+ =?utf-8?B?cE1ZTDlBaUx1dWVpanNQT2cvRTBmWUlwLzNmNXVjRndlbXlIVCtZMTlveFlH?=
+ =?utf-8?B?QXlqVDFHc2x6QVpHWEZEZTZFT3o1d1FBT1hNOTgydFZwRHVZZ1dwSGdnUmRI?=
+ =?utf-8?B?UHhZa1NMck1BbnpnYWNNUHloN05yUHhENWg4alV4Qm5JOWVWQ0h3d3Q4REpT?=
+ =?utf-8?B?MCtpY1lqRE1pa1l2Q2lzVzdLMUlVZUM0VDZCOXVxUHJwY1FFREpaakF6MjF1?=
+ =?utf-8?B?bnNhRFk3Wk1CMWlaU21NTno0aSsrMVlYQ0NlS1NFOE9iTFJNUm5qa1NUU3F6?=
+ =?utf-8?B?M3ZXZURmYnFMbGJHNXdvL1NDUTBYa0xobGxQL1dvaTNNRGpOU0VVY1k3WDFn?=
+ =?utf-8?B?cUppOWFLL3FibnFodUdrTU90Y3Y4aFVvV2wzRUw0bnFjTS8zV21ySkx3bFgy?=
+ =?utf-8?B?cVlzL2JLbGdINTZMZUMveVVLZTBKTFFzR09CdCtoTlJyL291QVF0UWxKQkc5?=
+ =?utf-8?B?cDFONGQxd2p1Y0MrZnNRckxMVGlzK0VSNTExb3crbjZNUVZ2Zzh4Nm9pY0Rm?=
+ =?utf-8?B?S0JJT0hxMFhEWm9hT25pSFk2VTM0ZytFemFkanV6NW1OZVdnSFAxZDJ2THpa?=
+ =?utf-8?B?NkhHQ3lSZC91bk9jaHg0bW1Vd1dmY3BLYlp2QjBMQUUyM0dQVjA1R1p0MDhM?=
+ =?utf-8?B?aWoxbGVna21rZjl2SFJiSWpiUjJjeXFPY2dqUHoyMHhaRktRZkdDNkZ3Wmti?=
+ =?utf-8?B?a21vcWVDZ0FxWHJPeEc5Zm9aT2JlRFNKU3lxUmppclVSU2swUXhNU3V5MUhl?=
+ =?utf-8?B?Vzg4ZjBHRFR4V3YrVUV4WWNSYmE2UktqS0dlZTVNRmp6RnRXZ2U0dXlKSjJU?=
+ =?utf-8?B?d2NMVVBtNUVDcEkyaVZxQU1RdExMQlozYzA3bVBXbk9NRFlhRFl4ZVkzd2RP?=
+ =?utf-8?B?WFJob09jWHUwT0tSMlUvSU0wREZ5YUNHZUlmaUFSRFVpcVlxUml2TFBHei9v?=
+ =?utf-8?Q?lAmM=3D?=
+X-OriginatorOrg: tuxera.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f22dcbe-dc98-4775-c3f7-08dc11efd233
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR06MB7818.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jan 2024 15:21:30.2334 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: e7fd1de3-6111-47e9-bf5d-4c1ca2ed0b84
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HfEoU/2wQAUSpde5o6+GZpO0uSDHRtx6Fbc0mku6MezcVNkX6otOnpR0G11mR1Zu
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR06MB7365
+Received-SPF: pass client-ip=2a01:111:f403:2613::701;
+ envelope-from=ari@tuxera.com;
+ helo=EUR05-VI1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.07,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,77 +147,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/10/24 03:37, Peter Xu wrote:
-> On Tue, Jan 09, 2024 at 02:21:26PM +0100, Cédric Le Goater wrote:
->>
->>> A few things I'd like to mention alongside, because it's documentation
->>> relevant too, and I'd like to collect if there's any comment.
->>>
->>> I just mostly rewrote two wiki pages completely:
->>>
->>>     https://wiki.qemu.org/ToDo/LiveMigration
->>>     https://wiki.qemu.org/Features/Migration>
->>> I merged all the TODO items from Features/Migration into the ToDo page,
->>> while kept the 2nd page mostly clean, just to route to other places.
->>>
->>> I had a plan to make:
->>>
->>>     https://qemu.org/docs/master
->>>
->>> The solo place for migration documentations (aka, QEMU repo the source of
->>> truth for migration docs, as it's peroidically built there), making all the
->>> rest places pointing to that, as I already did in the wiki page.  While I
->>> kept all the TODOs on the wiki page (not Features/Migration, but
->>> ToDo/LiveMigration).> Fabiano / anyone: feel free to add / update /
->>> correct any entries there
->>> where applicable.  Also if there's any thoughts on above feel free to let
->>> me know too.
->>
->> The Wiki has some limited value, the changelog for instance, but the rest
->> is a bag of orphan and obsolete pages doomed to bit-rot since it is slowly
->> being replaced by the in-tree documentation.
->>
->> The info in the Features/Migration page is redundant with what we have
->> in-tree, a part from the CREDITS. The TODO list could be some file under :
->>
->> 	https://qemu.org/docs/master/devel/migration
->>
->> It would be easier to find and it would keep the Wiki to a strict minimum.
-> 
-> Thanks for the suggestions.  I agree that we should minimize the wiki use,
-> especially on docs.  It'll be nice we use a solo source of truth for the
-> docs, always accessable via qemu.org/docs, and also makes it easier for us
-> to ask for docs altogether as patches when new features are merged.
-> 
-> I see that most of the ToDos for the other part of qemus still use the wiki
-> page, even though they're indeed mostly outdated just like the migration
-> ToDo before I updated it.
-> 
-> IMHO one thing that the wiki services well for ToDo is that it allows easy
-> & frequent updates on the projects, without the need to require a review
-> process like most of the patches being posted on the list.  The wiki page
-> still maintains a diff, and IMHO that may not even be required, as a
-> history record of a ToDo list may not help much in most cases.
-> 
-> The other issue regarding ToDo is that, some of the ToDo idea (or when
-> someone frequently updates with details on a project of an ongoing item)
-> may not be mature enough to be mentioned in an official documents. So even
-> if some can be considered to be put together with the qemu repo, there may
-> always be some that may not be suitable, then we will still need some place
-> for those.  I still don't know what's the ideal way to do this.
+Hi, Kevin!
 
-OK. I see how you want to use the wiki for the TODO ideas and it makes
-sense for mid/long term projects which are not mature enough to be
-mentioned in the official docs. That said, I think we should mention
-not supported features, incomplete modelling, etc. in the official docs,
-which is a bit different than a TODO, I agree.
+On 1/10/24 15:39, Kevin Wolf wrote:
+> Am 09.01.2024 um 19:46 hat megari@gmx.com geschrieben:
+>> From: Ari Sundholm <ari@tuxera.com>
+>>
+>> There is a bug in the blklogwrites driver pertaining to logging "write
+>> zeroes" operations, causing log corruption. This can be easily observed
+>> by setting detect-zeroes to something other than "off" for the driver.
+>>
+>> The issue is caused by a concurrency bug pertaining to the fact that
+>> "write zeroes" operations have to be logged in two parts: first the log
+>> entry metadata, then the zeroed-out region. While the log entry
+>> metadata is being written by bdrv_co_pwritev(), another operation may
+>> begin in the meanwhile and modify the state of the blklogwrites driver.
+>> This is as intended by the coroutine-driven I/O model in QEMU, of
+>> course.
+>>
+>> Unfortunately, this specific scenario is mishandled. A short example:
+>>      1. Initially, in the current operation (#1), the current log sector
+>> number in the driver state is only incremented by the number of sectors
+>> taken by the log entry metadata, after which the log entry metadata is
+>> written. The current operation yields.
+>>      2. Another operation (#2) may start while the log entry metadata is
+>> being written. It uses the current log position as the start offset for
+>> its log entry. This is in the sector right after the operation #1 log
+>> entry metadata, which is bad!
+>>      3. After bdrv_co_pwritev() returns (#1), the current log sector
+>> number is reread from the driver state in order to find out the start
+>> offset for bdrv_co_pwrite_zeroes(). This is an obvious blunder, as the
+>> offset will be the sector right after the (misplaced) operation #2 log
+>> entry, which means that the zeroed-out region begins at the wrong
+>> offset.
+>>      4. As a result of the above, the log is corrupt.
+>>
+>> Fix this by only reading the driver metadata once, computing the
+>> offsets and sizes in one go (including the optional zeroed-out region)
+>> and setting the log sector number to the appropriate value for the next
+>> operation in line.
+>>
+>> Signed-off-by: Ari Sundholm <ari@tuxera.com>
+>> Cc: qemu-stable@nongnu.org
+> 
+> Thanks, applied to the block branch.
+> 
 
-We also have a [feature request] label under gitlab and some issues are
-tagged with it. I wonder how we can consolidate the 3 sources : wiki,
-gitlab, https://www.qemu.org/docs/master/
+Thank you.
 
-Thanks,
+> Note that while this fixes the single threaded case, it is not thread
+> safe and will still break with multiqueue enabled (see the new
+> iothread-vq-mapping option added to virtio-blk very recently). Most
+> block drivers already take a lock when modifying their global state, and
+> it looks like we missed blklogwrites when checking what needs to be
+> prepared for the block layer to be thread safe.
+> 
 
-C.
+I see. Thanks for the heads up. I had missed this new development.
+
+> So I think we'll want another patch to add a QemuMutex that can be taken
+> while you do the calculations on s->cur_log_sector. But this patch is
+> a good first step because it means that we don't need to keep a lock
+> across an I/O request (just for the sake of completeness, this would
+> have had to be a CoMutex rather than a QemuMutex).
+> 
+
+OK. I guess I have a bit of additional work to do, then. What release 
+would these fixes realistically make it to? Just trying to gauge the 
+urgency for the fix for the multi-threaded case for prioritization purposes.
+
+And yes, holding a CoMutex while doing I/O would have fixed this issue, 
+with the tiny drawback of killing any concurrency in the driver. ;)
+
+Best regards,
+Ari Sundholm
+ari@tuxera.com
+
+> Kevin
+> 
 
 
