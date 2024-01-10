@@ -2,86 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7E28293FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 08:06:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 623F8829405
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 08:10:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNSeH-00049b-SB; Wed, 10 Jan 2024 02:05:13 -0500
+	id 1rNSiz-0006H4-SE; Wed, 10 Jan 2024 02:10:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rNSeF-00049I-Sl; Wed, 10 Jan 2024 02:05:11 -0500
+ id 1rNSiw-0006Gq-9H
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 02:10:02 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rNSeD-00030O-Us; Wed, 10 Jan 2024 02:05:11 -0500
+ id 1rNSiu-0005RY-I3
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 02:10:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:References:Cc:To:From:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=mWov6SjLzOWE5RpHEnMMvpt0uuKxigxvA15kPD+FN8Q=; b=dv/urBvpQm+O3BJVQA7w56aoRc
- MPFP1kSpeQCRD5cVYocUVOPqFG3hxic0yWKzSFAXGN6jK/g5HplQaBsHcjOgUALuv4ilM9GdzgBfM
- wBuER6LXmhha7+Fj+U1Ni/NXXtZEANkD/usQaziTKOONcYNvhEcbFIrJdf0EOZgD6u+nFbAAtRkFp
- Wp8RlULdtbBvfjBIO8kmu9w2IO4w4EHZPC32ICJCn8Kp/ylEq7u+S2pf1AExoQ30j7HNXuDjqxDQ/
- w6Bwqjl4XgPEDFPKUbEYGcoIwOspU/26JSza6RJ3MvrxPs4E+dOssfqn9k1PzXF7fnx6zK4FEidxB
- hUjnFuPKJVKKP5ARMWnsI/nfJArQeg6V2zTGzNWxEl7wdvfMEMBoCahugD7ySMjgclPAhStTRu2dj
- fGw0lv27ZvrWf5r3BiAV26JsrqmlBnmB3oOBH3pbvJMyXUFQccProZEfaxs6/7tkSEP2lYp3+N1u0
- S+zNh1W/yJUezX2zq73m+hYa3SEuHZAKqZspV4nIXlfxbGNblXcspombBQNOETh/e25I5aeXZ9Axi
- 6NzEjO+SLbvIcXWnc1zA04sUfhOe9XjaaY8ZvxHly8O8pzQwK2+l1K2evoEKjIHqZfGMaEpjAjrQ3
- QSSDLJmTUWjEUJBVAaNb6RzbpmB+m6EPT7Vfo1EVc=;
+ bh=2dPlD4b7y06PPkcjBMYTnPZ6PfuCJ5mp3/yge0IguUo=; b=z3lsfG7/zG7e2K6CJiACmkRzAt
+ V+qobZrRyb9eTrF+NyPjvO+tIFAdqHP1PZRJAfY+ERzq1H807QtKCm75eDGs2lI/7N+2Pp4gXI3So
+ tbJcopQLEPaROCpRblyyG0IIl/JeV1lX6cGsEdLMI0lXv0vT9/gt+nHML/NknMDhotPsPEANiwbcB
+ Bb2XeRaGI0hWz49o1z1k8gEPEpCTNDksh29YiZkPcW0uYca/mJtcyIqm6Y5+n0ysJiwcmb2VlqNbV
+ L3pNViOSWcnziagP96R3GLDLnoEulVU0R3LDE485g5edxN0U6fY/vsRWIT0HB5RdpANWacfa22xLp
+ 1hh9cXfls2iAgwWKl3JUtEpY1ihPUqHRBXrjTnAOQvVAk9BnOz78BShYftoP2PV1axtXiQ3ZfkLSV
+ ytReMp8OrlznsqswtGmf6icaZXHF9oyZGpYpg8uIdPW3j9aBuPsLr8XZK926d6UgnFv21g9hqHkNV
+ LU+yMGPcJZf3UQ/RcJG5ZkHH+8+Br3k2zTwR8f51dys8b5sCnVeVVM+8+tVjWiDggAXDG38ETVv83
+ raO9c076HjN7odNBCasf61WOI8XxbLc8DlqCK4nLzpiWqenjZL/aw6x7kTKnpzaP7I+jSaFWLXCDL
+ vSyChRv4i5CoNMnGXA5+CDwAx1tAszfeWovUMiOB8=;
 Received: from [2a00:23c4:8bb1:9800:b804:1635:e423:adbd]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (helo=localhost.localdomain)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rNSde-0001WG-1V; Wed, 10 Jan 2024 07:04:34 +0000
-Message-ID: <3a1ba17f-2bfe-4639-8527-a69c13290f3b@ilande.co.uk>
-Date: Wed, 10 Jan 2024 07:05:01 +0000
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
+ id 1rNSiL-0001XX-QB; Wed, 10 Jan 2024 07:09:29 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Gavin Shan <gshan@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Evgeny Iakovlev <eiakovlev@linux.microsoft.com>, qemu-arm@nongnu.org
-References: <20231109192814.95977-1-philmd@linaro.org>
- <525885a8-59f0-44e1-b210-0b4bcbbe4258@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <525885a8-59f0-44e1-b210-0b4bcbbe4258@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: qemu-devel@nongnu.org,
+	peter.maydell@linaro.org
+Date: Wed, 10 Jan 2024 07:08:06 +0000
+Message-Id: <20240110070808.369516-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb1:9800:b804:1635:e423:adbd
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH-for-8.2 v4 00/10] hw/char/pl011: Implement TX (async) FIFO
- to avoid blocking the main loop
+Subject: [PULL 0/2] qemu-sparc queue 20240110
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -107,65 +76,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/01/2024 07:50, Mark Cave-Ayland wrote:
+The following changes since commit 9468484fe904ab4691de6d9c34616667f377ceac:
 
-> On 09/11/2023 19:28, Philippe Mathieu-Daudé wrote:
-> 
->> Missing review: #10
->>
->> Hi,
->>
->> This series add support for (async) FIFO on the transmit path
->> of the PL011 UART.
->>
->> Since v3:
->> - Document migration bits (Alex, Richard)
->> - Just check FIFO is not empty in pl011_xmit_fifo_state_needed (rth)
->> - In pl011_xmit check TX enabled first, and ignore < 8-bit TX (rth)
->>
->> Since v2:
->> - Added R-b tags
->> - Addressed Richard comments on migration
->>
->> Since v1:
->> - Restrict pl011_ops[] impl access_size,
->> - Do not check transmitter is enabled (Peter),
->> - Addressed Alex's review comments,
->> - Simplified migration trying to care about backward compat,
->>    but still unsure...
->>
->> Philippe Mathieu-Daudé (10):
->>    util/fifo8: Allow fifo8_pop_buf() to not populate popped length
->>    util/fifo8: Introduce fifo8_peek_buf()
->>    hw/char/pl011: Split RX/TX path of pl011_reset_fifo()
->>    hw/char/pl011: Extract pl011_write_txdata() from pl011_write()
->>    hw/char/pl011: Extract pl011_read_rxdata() from pl011_read()
->>    hw/char/pl011: Warn when using disabled transmitter
->>    hw/char/pl011: Check if receiver is enabled
->>    hw/char/pl011: Rename RX FIFO methods
->>    hw/char/pl011: Add transmit FIFO to PL011State
->>    hw/char/pl011: Implement TX FIFO
->>
->>   include/hw/char/pl011.h |   2 +
->>   include/qemu/fifo8.h    |  37 ++++++-
->>   hw/char/pl011.c         | 239 +++++++++++++++++++++++++++++++++-------
->>   util/fifo8.c            |  28 ++++-
->>   hw/char/trace-events    |   8 +-
->>   5 files changed, 263 insertions(+), 51 deletions(-)
-> 
-> Hi Phil,
-> 
-> Happy New Year! Are there plans to queue this series for 9.0 soon? I'm particularly 
-> interested in the first 2 patches as I've made use of the new fifo8_peek_buf() 
-> function as part of my latest ESP updates.
+  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2024-01-09 10:32:23 +0000)
 
-I've spoken to Phil, and as patches 1 and 2 implementing fifo8_peek_buf() have R-B 
-tags he is happy for me to take them separately via my qemu-sparc branch. I'll send a 
-PR with those patches shortly.
+are available in the Git repository at:
 
+  https://github.com/mcayland/qemu.git tags/qemu-sparc-20240110
 
-ATB,
+for you to fetch changes up to 995d8348eb3d8ddf24882ed384a5c50eaf3aeae9:
 
-Mark.
+  util/fifo8: Introduce fifo8_peek_buf() (2024-01-10 06:58:50 +0000)
 
+----------------------------------------------------------------
+qemu-sparc queue
+- introduce fifo8_peek_buf() function
+
+----------------------------------------------------------------
+Philippe Mathieu-Daudé (2):
+      util/fifo8: Allow fifo8_pop_buf() to not populate popped length
+      util/fifo8: Introduce fifo8_peek_buf()
+
+ include/qemu/fifo8.h | 37 ++++++++++++++++++++++++++++++++-----
+ util/fifo8.c         | 28 +++++++++++++++++++++++-----
+ 2 files changed, 55 insertions(+), 10 deletions(-)
 
