@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA398829335
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 06:11:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D082482935E
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 06:35:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNQqg-0000nq-ND; Wed, 10 Jan 2024 00:09:54 -0500
+	id 1rNREZ-0004JX-Ih; Wed, 10 Jan 2024 00:34:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tom.leiming@gmail.com>)
- id 1rNQqe-0000nQ-8O
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 00:09:52 -0500
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ (Exim 4.90_1) (envelope-from <wsh@wshooper.org>) id 1rNREX-0004JH-UT
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 00:34:34 -0500
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tom.leiming@gmail.com>)
- id 1rNQqV-0004Nz-LL
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 00:09:52 -0500
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-28c179bf45cso3272604a91.1
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 21:09:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <wsh@wshooper.org>) id 1rNREW-0001xU-6W
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 00:34:33 -0500
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6ddef319fabso348606a34.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 21:34:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704863382; x=1705468182; darn=nongnu.org;
- h=content-transfer-encoding:content-disposition:mime-version
- :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+ d=wshooper-org.20230601.gappssmtp.com; s=20230601; t=1704864870; x=1705469670;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6TXu1lgSVjLAAqP9gWPHXNyMgUpUyuzr2NqOI+V8YgE=;
- b=B6HAbbDacUFCpirXpylTe/HH1735l/hdYm9VM/LcDkm0VdwgDeMUaNBdkXy4IAjYSA
- f1dKZh8Ql4DvGBB+Gqnhl7DRoJPLl5pezl5MfSYrDVg4dxrCdIQWmV9MP1Et8KiC1VEx
- cm3ptfD46HE7sMSoG67cYk367GFX/oXVZPTSxeIIO/TCBjoGX7WTqBnXlV84FklFFuZL
- 1slkAd0MzyDY/8f73Q9bxqMriziemSVFSl/dlbE8WN1BfrrafB+chgL7bInomwUJ7KFl
- N0EmApyCDlbvBZaIHfWAjwRIeM04Vz4wcHk0tWutN4eRZidgdWGVxQ4bTW/L0j/gVebu
- kaKA==
+ bh=6luq9iKTm6AKLTaqhXJtRo9hECc6hlK4KK2Yh9BCegs=;
+ b=ka7IEC5I5u+98Tm4DGLRqqK2Pf3SE4o0Z3qfaEVCxVhSm+gRVil5Zm3hn2YIGT/ShP
+ ojbYFwvYjaEwbtUX80i88hurN9yjtmtIai38wwucHZywBGPov8whL1xchsm5ymkvCuwA
+ dhwvL9dnlOYETQTnWuXKZ7AiLsg9+bNlILVw5xv2BGFLM5gq9A+PMqJpLG+qwJfvd+0R
+ 5uNB1Bj8vRGZ6uAv5HVPxXRjXqjZDw3XbCv5O39vWt2qvKn5F6XKarE1LW16rtvzvFEq
+ HjXSFoI7WaDgpTTy1SPAwWYJeq3et8RpcoRaUCkMDtTO1o6lyd5ny64VhXbWQrSu6vHg
+ bHaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704863382; x=1705468182;
- h=content-transfer-encoding:content-disposition:mime-version
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1704864870; x=1705469670;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6TXu1lgSVjLAAqP9gWPHXNyMgUpUyuzr2NqOI+V8YgE=;
- b=UypHgJtowH0cFAwu+cafLixvdnyPjLGIzEwPVXP6GGP9VMpgVwqn/ETKMMoqkfvEfs
- w/lhcc5TERmBiWsEB4Mas3exEWMinq6sxFiPW4VUa6wWfutdAfY2nPdFKrGSt82lLiDC
- 20v+x4OLQHahDL67REy2LU0P/K06JAsYXKnjXsHFcaPRuZmlxwdPlIJ/VP+JFP7Mxygy
- ZyGVYT5iIZzSB250iASby0GQOOLsDhC1paDdgcQyWZFEK2ODOmHhk+ygeve+dFO9ixP1
- c9je2i7/mCJCv0D+Iyb7fiKSaJTEtdroUJOD8sS4S3Io53OP5ZfapBKxsLLz/w3MQqKN
- 1lKQ==
-X-Gm-Message-State: AOJu0YxwhyS3tUdqXZMfbf94EzpqPC3j++iRA7MM8T4zQarj6CGADYGA
- r2WI7KIImzH30HQ/xunUR1NYOOdR97GFGg==
-X-Google-Smtp-Source: AGHT+IGLLAQ7xOVSKsTT9b3lrN6e6c+i372O3S7iEDQbQ2yiWRutECY8jskHgXt35UkGlmv2nWoknA==
-X-Received: by 2002:a17:90b:150:b0:28d:280a:2ac5 with SMTP id
- em16-20020a17090b015000b0028d280a2ac5mr316696pjb.11.1704863381696; 
- Tue, 09 Jan 2024 21:09:41 -0800 (PST)
-Received: from fedora ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- sf6-20020a17090b51c600b0028cb82a8da0sm439774pjb.31.2024.01.09.21.09.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jan 2024 21:09:41 -0800 (PST)
-Date: Wed, 10 Jan 2024 13:09:37 +0800
-From: Ming Lei <tom.leiming@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: linux-block@vger.kernel.org, Hanna Czenczek <hreitz@redhat.com>
-Subject: qcow2-rs v0.1 and rublk-qcow2
-Message-ID: <ZZ4mkYSPEQQz6JcW@fedora>
+ bh=6luq9iKTm6AKLTaqhXJtRo9hECc6hlK4KK2Yh9BCegs=;
+ b=J0RTD6cUS1fhTmlFtqYVqtL+M16BGTTttBZXbjPJERFt1T1ROjWhlIv7ymTgSl5Ly0
+ ZftM5XrhBULZ/ujzyM6J7PuUbynJU3CRM3lJX4VBtd7Ym/FEvtesR69W9LnYQeAtpbL/
+ OGgPdwK/LZykLdFYT+iXxzmLYwlLUQpBWFQeJEOkwuTngd8Bx6rwFqXHmlGLRuy+8fUL
+ uLtXkwZTNdWg9irBS7QSbOP+N6jrO8AVkum8FeFDEnoDafZvhaL1YjABZGRndLPGZq1A
+ FtKX5gwTHUvVV8XxZn2JiPoo6h+Eg4jvffoMtuasKmlnudfhHh8HSa3tJp61GBq0S77T
+ YC2w==
+X-Gm-Message-State: AOJu0YwfardngtdelSW/2FRTGBqWojW+0XY0+ufy3bztYKlgMzj56WTx
+ TylHG/ZIxe5AEMAiEE4Jus1O4V9yaaaT7GI8UR6yrmHe7f/mOw==
+X-Google-Smtp-Source: AGHT+IEEepf6XO97k+ljxJkNQWonxljQhPcZJKFUTXOgNdMFuyXHdFIvggZJIUj5C4YfVk0wqgSuVQInBEyhSAQGsBs=
+X-Received: by 2002:a9d:6b10:0:b0:6dd:edb0:b7fd with SMTP id
+ g16-20020a9d6b10000000b006ddedb0b7fdmr215186otp.36.1704864870061; Tue, 09 Jan
+ 2024 21:34:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=tom.leiming@gmail.com; helo=mail-pj1-x1029.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240106223546.44460-1-wsh@wshooper.org>
+ <4b8365e2-9316-4540-a739-b5e195140ebc@linaro.org>
+In-Reply-To: <4b8365e2-9316-4540-a739-b5e195140ebc@linaro.org>
+From: William Hooper <wsh@wshooper.org>
+Date: Tue, 9 Jan 2024 21:34:35 -0800
+Message-ID: <CANto9c6QV-KAuUau_CqK-rVsyNB=42HQ3AHuQPn34yMs2-iPkg@mail.gmail.com>
+Subject: Re: [PATCH] net/vmnet: Pad short Ethernet frames
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Bin Meng <bin.meng@windriver.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: none client-ip=2607:f8b0:4864:20::335;
+ envelope-from=wsh@wshooper.org; helo=mail-ot1-x335.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,74 +85,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+On Mon, Jan 8, 2024 at 7:36=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 <philmd@=
+linaro.org> wrote:
+> Don't we want to initialize min_pktsz here ...
+>
+>                min_pktsz =3D sizeof(min_pkt);
+>
+> > +            if (eth_pad_short_frame(min_pkt, &min_pktsz, pkt, pktsz)) =
+{
+>
+> ... because eth_pad_short_frame() update it?
 
-qcow2-rs[1] is one pure Rust library for reading/writing qcow2 image, it is
-based on rsd's[2] internal qcow2 implementation, but with lots of change, so far:
+Thanks for the review.
 
-- supports read/write on data file, backing file and compressed image
+The results would be the same, since eth_pad_short_frame() sets
+min_pktsz, if at all, to ETH_ZLEN, the same value as the initializer.
 
-- block device like interface, minimized read/write unit is aligned with block
-size of image, so that direct io can be supported
+I have no objection to re-initializing min_pktsz for each packet,
+however, if only to reduce the risk of a bug being introduced if this
+behavior of eth_pad_short_frame() were ever to be changed.
 
-- l2 table & refcount block load & store in slice way, and the minimized
-slice size is block size, and the maximized size is cluster size
-
-- built over Rust async/await, low level IO handling is abstracted by async
-traits, and multiple low level io engines can be supported, so far, verified
-on tokio-uring[3], raw linux sync IO syscall and io-uring[4] with smol[5]
-runtime
-
-Attributed to excellent async/.await, any IO(include meta IO) is handled in
-async way actually, but the programming looks just like writing sync code,
-so this library can be well-designed & implemented, and it is easy to add
-new features & run further optimization with current code base.
-
-rublk-qcow2[6] wires qcow2-rs, libublk-rs[7], smol(LocalExecutor) and io-uring
-together, and provides block device interface for qcow2 image in 500 LoC.
-
-Inside rublk-qcow2 async implementation, io-uring future is mapped to
-(waker, result) by using unique cqe.user_data as key via HashMap, this easy way
-does work, even though it may slow things a bit, but performance is still not
-bad. In simple 'fio/t/io_uring $DEV' test, IOPS of rublk-qcow2 is better than
-vdpa-virtio-blk by 20% with same setting(cache.direct=on,aio=io_uring) when
-reading from fully allocated image in my test VM.
-
-The initial motivation is for supporting rblk-qcow2, but I can’t find any
-Rust qcow2 library with read/write support & simple interfaces and efficient
-AIOs support, finally it is evolved into one generic qcow2 library. Many
-qcow2 test cases are added. Also one utility is included in this project,
-which can dump qcow2 meta, show any meta related statistics of the image,
-check image meta integrity & host cluster leak, format qcow2 image,
-read & write, ...
-
-Any comments are welcome!
-
-
-
-[1] qcow2-rs
-https://github.com/ublk-org/qcow2-rs
-
-[2] rsd
-https://gitlab.com/hreitz/rsd/-/tree/main/src/node/qcow2?ref_type=heads
-
-[3] tokio-uring
-https://docs.rs/tokio-uring
-
-[4] io-uring
-https://docs.rs/io-uring
-
-[5] smol
-https://docs.rs/smol
-
-[6] rublk-qcow2
-https://github.com/ublk-org/rublk
-
-[7] libublk-rs
-https://github.com/ublk-org/libublk-rs
-
-
-
-Thanks, 
-Ming
+Would you like me to post a revised patch?
 
