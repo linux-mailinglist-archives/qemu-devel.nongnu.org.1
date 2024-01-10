@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484F98295AC
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 10:05:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E1C8295C1
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 10:07:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNUSz-00038m-8H; Wed, 10 Jan 2024 04:01:44 -0500
+	id 1rNUTj-0003Yg-Qy; Wed, 10 Jan 2024 04:02:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNUSY-0002w8-8B
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:01:14 -0500
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1rNUSb-000380-T7
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:01:19 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNUSW-0005Or-DC
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:01:13 -0500
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6d9b5c4f332so2083716b3a.3
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 01:01:11 -0800 (PST)
+ id 1rNUSa-0005Uz-7s
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:01:17 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6daa822be30so1734934b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 01:01:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704877270; x=1705482070; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704877275; x=1705482075; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=98U4oU6QyYIjFXPReF2BbuPWqRX5URTGZmXI6rweO/Y=;
- b=QF6Z+VlQPdIkTafggLJpn4sd7CwCuXWSHEVKlzapEVNJkMz4glAdafIbegiDHbEwxr
- tUBlabbXcrIyNV6oQX3MHrfkZeSpEvU0IKdcLRKpnVpBEmEgg6jxa2O6TnNK9ieGIhQt
- oMGT0zgZW5WPScpEl/Am4N4nWnMNOfoSkkjoqtQEzIUmRA9oA2bQj3ee5/pJ/iNNivF8
- m+ySgFw+RdFDj2Sy1zJCyg4nBrIUZGM/n88/BAQacGLVrciT6F9pgSQKd7odvntEvG9e
- Wm1aDcFNSv4Zdc5E7iuuXzsRv5ylsPlVw6J8pSrZJOD1WHg7PbKHJ64p6+t6shKUBSPJ
- 9O9g==
+ bh=+OG6UZAqD9KMd4LJIr4sSC1wfQDaNJBfhbmtsdNuSKw=;
+ b=KWW0MV0S24BWrRZYC8y5z4QktUDCr/Jkk4Gvu+RYT8qyCOU/X5u5lwpzBFakCWn6m/
+ jIBsOysyjux+cz/DTLOB1tT4s/WhgbVI+UT1LAy3HOPYptCNESuLk4VRk/FnyEpycEgz
+ OLISph2br7tNSN22ASzZkNbbujDWgauTj6tOFfaaxFW3lrLlYsKehQ/L55USxWGX1meb
+ RNfjSx3376ISsV1CrbGxwx9ABbC7mOUIdCkpNyz22DiwnuVoxPYpAQooB7Wf9jKOv/5q
+ Ft9ocM2m6SA/zYKv/Km7q/w+stUkK+aQykK6HtKBFRRlRnV5twSlehKxVxSNZT+S5Bg7
+ FL0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704877270; x=1705482070;
+ d=1e100.net; s=20230601; t=1704877275; x=1705482075;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=98U4oU6QyYIjFXPReF2BbuPWqRX5URTGZmXI6rweO/Y=;
- b=Y4H/q4Jk0RfuZKFbvqEtwLM7dETF7NMLr5fQgqLHcldVQwrjNsWbT+tmsiggpbX9lg
- cg3MIhnwfnQ/YvYHT14Bd+bS9YNL+VPYW9j5nb2UrZVL15nN1GUT220CKPK9bfvd5Eb9
- OGasu/bV1uRV6ZKP79rJERS8Fk6fDtEUXBTPJ/rPyS2+N+PN8IVAzykz0zccDhe03xDQ
- H19vqtqD5ao1HlHYNG+lPOxEFNARK++OH1RnhJLfKjr/1ABjD/W42om5S0A68dR8HWwP
- HeAVZReEzEjxkHmhLa+QTnM62M1z3UhpJCNweLXXuT/C3CU0D4FlYjvkhkEjm4Hq6ZLN
- mj8Q==
-X-Gm-Message-State: AOJu0Yxjs97yQGfmLiUT8YcczWYJ09kwhx6aVlQIqluLBeP3ZR9JEWu+
- Wm993Mm/+8uVSlsTjBek7lxSCxpk3FGF5IXJ
-X-Google-Smtp-Source: AGHT+IHXel3rGQ+Xzm5xFbzN7GycW+T/jRwF2RWX8s9nRV5XCnxpKnyFKQREp1gWew8lzaVswTJu0Q==
-X-Received: by 2002:a05:6a20:244a:b0:19a:2dd3:75df with SMTP id
- t10-20020a056a20244a00b0019a2dd375dfmr171886pzc.8.1704877270566; 
- Wed, 10 Jan 2024 01:01:10 -0800 (PST)
+ bh=+OG6UZAqD9KMd4LJIr4sSC1wfQDaNJBfhbmtsdNuSKw=;
+ b=CO4I4hy1msS3ePebNh8aJ8G5zKnFlL93VYQUiMv6WnSlHfc79hVohs7iU+y8AjH7Tq
+ CJMxHvCXSo8YHkHXadbojT3oHh+gMddd3NsNnKlZyikLcafcLAsK631zBVJT8vJN5FZm
+ UMUqjrtZGY8yuVV0odsg6c2jh3VGznxI74Zc9Ooz8GHHZixXsZAQ0tknVvpHxdY0cdRu
+ FiChW7B6b4yL38VuFoeFPNdOuC/CKaU7C2rPGORJIdFNU9sBI8jFX64QIjMT8zLjh9bg
+ hmfHJU8sTueS0DggI8Bvomt4ILKvEtiHjNi//WSCcnI08Hp42xFBgtIVBchCdUigExLS
+ wyvg==
+X-Gm-Message-State: AOJu0Yzrp/o85YheKI9ciQQboawwqS/0bv5ntRp8Wc53X2N8i0RrCSWe
+ SdbxNjR8Xw2TVo/m3NYLPD4koFjaFwjI3rR4
+X-Google-Smtp-Source: AGHT+IGHl9onGMqqb2zZQITYFAWM6hr3XWZ0/h/okS9ZLZTN2FQhwFK2RBkWJru6QfP+/xLl1wjr7g==
+X-Received: by 2002:a05:6a00:3d4f:b0:6d9:b11e:dae0 with SMTP id
+ lp15-20020a056a003d4f00b006d9b11edae0mr683708pfb.14.1704877274679; 
+ Wed, 10 Jan 2024 01:01:14 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.01.01.06
+ t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.01.01.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 01:01:09 -0800 (PST)
+ Wed, 10 Jan 2024 01:01:14 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>,
+Cc: alistair23@gmail.com, Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+ Jim Shu <jim.shu@sifive.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 54/65] target/riscv: add rva22s64 cpu
-Date: Wed, 10 Jan 2024 18:57:22 +1000
-Message-ID: <20240110085733.1607526-55-alistair.francis@wdc.com>
+Subject: [PULL 55/65] target/riscv/kvm.c: remove group setting of KVM AIA if
+ the machine only has 1 socket
+Date: Wed, 10 Jan 2024 18:57:23 +1000
+Message-ID: <20240110085733.1607526-56-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240110085733.1607526-1-alistair.francis@wdc.com>
 References: <20240110085733.1607526-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,62 +99,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-Add a new profile CPU 'rva22s64' to work as an alias of
+The emulated AIA within the Linux kernel restores the HART index
+of the IMSICs according to the configured AIA settings. During
+this process, the group setting is used only when the machine
+partitions harts into groups. It's unnecessary to set the group
+configuration if the machine has only one socket, as its address
+space might not contain the group shift.
 
--cpu rv64i,rva22s64
-
-Like the existing rva22u64 CPU already does with the RVA22U64 profile.
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20231218125334.37184-27-dbarboza@ventanamicro.com>
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Jim Shu <jim.shu@sifive.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20231218090543.22353-2-yongxuan.wang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu-qom.h | 1 +
- target/riscv/cpu.c     | 8 ++++++++
- 2 files changed, 9 insertions(+)
+ target/riscv/kvm/kvm-cpu.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index 12fe78fc52..9219c2fcc3 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -36,6 +36,7 @@
- #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x-rv128")
- #define TYPE_RISCV_CPU_RV64I            RISCV_CPU_TYPE_NAME("rv64i")
- #define TYPE_RISCV_CPU_RVA22U64         RISCV_CPU_TYPE_NAME("rva22u64")
-+#define TYPE_RISCV_CPU_RVA22S64         RISCV_CPU_TYPE_NAME("rva22s64")
- #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibex")
- #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
- #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index a8f4081922..b32681f7f3 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1623,6 +1623,13 @@ static void rva22u64_profile_cpu_init(Object *obj)
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 2c5217102c..841756ab9b 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1390,21 +1390,24 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+         exit(1);
+     }
  
-     RVA22U64.enabled = true;
- }
+-    socket_bits = find_last_bit(&socket_count, BITS_PER_LONG) + 1;
+-    ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+-                            KVM_DEV_RISCV_AIA_CONFIG_GROUP_BITS,
+-                            &socket_bits, true, NULL);
+-    if (ret < 0) {
+-        error_report("KVM AIA: failed to set group_bits");
+-        exit(1);
+-    }
+ 
+-    ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+-                            KVM_DEV_RISCV_AIA_CONFIG_GROUP_SHIFT,
+-                            &group_shift, true, NULL);
+-    if (ret < 0) {
+-        error_report("KVM AIA: failed to set group_shift");
+-        exit(1);
++    if (socket_count > 1) {
++        socket_bits = find_last_bit(&socket_count, BITS_PER_LONG) + 1;
++        ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
++                                KVM_DEV_RISCV_AIA_CONFIG_GROUP_BITS,
++                                &socket_bits, true, NULL);
++        if (ret < 0) {
++            error_report("KVM AIA: failed to set group_bits");
++            exit(1);
++        }
 +
-+static void rva22s64_profile_cpu_init(Object *obj)
-+{
-+    rv64i_bare_cpu_init(obj);
-+
-+    RVA22S64.enabled = true;
-+}
- #endif
++        ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
++                                KVM_DEV_RISCV_AIA_CONFIG_GROUP_SHIFT,
++                                &group_shift, true, NULL);
++        if (ret < 0) {
++            error_report("KVM AIA: failed to set group_shift");
++            exit(1);
++        }
+     }
  
- static const gchar *riscv_gdb_arch_name(CPUState *cs)
-@@ -1938,6 +1945,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,  rv128_base_cpu_init),
-     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64I, rv64i_bare_cpu_init),
-     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64, rva22u64_profile_cpu_init),
-+    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22S64, rva22s64_profile_cpu_init),
- #endif
- };
- 
+     guest_bits = guest_num == 0 ? 0 :
 -- 
 2.43.0
 
