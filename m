@@ -2,115 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1DD829CBD
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 15:43:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2776829D78
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 16:22:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNZmm-0004ok-35; Wed, 10 Jan 2024 09:42:28 -0500
+	id 1rNaPC-0004gg-Dm; Wed, 10 Jan 2024 10:22:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rNZmj-0004oG-IO
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 09:42:25 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rNZmh-0004Xr-T9
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 09:42:25 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 8576121D10;
- Wed, 10 Jan 2024 14:42:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704897741; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rNaPB-0004gS-3J
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 10:22:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rNaP9-0006GZ-55
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 10:22:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704900125;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eMyz/S/2QLSbHXMX3Jhe/vKYVlCvWteWyykfrZKEC+4=;
- b=bhy/ncx2ebbtAGNPgOQe1720w04FsQx+HSUuE2muXamlIWwn76cT/BSHYW+ndv3Yyi/4+Y
- uUGSTzML0eIZ/wt+VG6ICydcZF9ZeWYcO527ULsLdloUenysWSWcyKlM6057ofW+FQSERB
- tYtbEqISucseASRc1PwTmi8sssSYyO8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704897741;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=eMyz/S/2QLSbHXMX3Jhe/vKYVlCvWteWyykfrZKEC+4=;
- b=q92o+trF/npREN7wnyO24KHtLCndWvjQmojq7Z5pdxHTAx2B7HivX8PEfTIbHFz9YzW2vQ
- V5GovqV+egyAmdDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1704897741; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=eMyz/S/2QLSbHXMX3Jhe/vKYVlCvWteWyykfrZKEC+4=;
- b=bhy/ncx2ebbtAGNPgOQe1720w04FsQx+HSUuE2muXamlIWwn76cT/BSHYW+ndv3Yyi/4+Y
- uUGSTzML0eIZ/wt+VG6ICydcZF9ZeWYcO527ULsLdloUenysWSWcyKlM6057ofW+FQSERB
- tYtbEqISucseASRc1PwTmi8sssSYyO8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1704897741;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=eMyz/S/2QLSbHXMX3Jhe/vKYVlCvWteWyykfrZKEC+4=;
- b=q92o+trF/npREN7wnyO24KHtLCndWvjQmojq7Z5pdxHTAx2B7HivX8PEfTIbHFz9YzW2vQ
- V5GovqV+egyAmdDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0C7601398A;
- Wed, 10 Jan 2024 14:42:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id XXraMMysnmUIIAAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 10 Jan 2024 14:42:20 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Thomas Huth
- <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 4/4] [NOT FOR MERGE] tests/qtest/migration: Adapt
- tests to use older QEMUs
-In-Reply-To: <ZZ4YOw6Cy5EYo_f4@x1n>
-References: <20240105180449.11562-1-farosas@suse.de>
- <20240105180449.11562-5-farosas@suse.de> <ZZuvDREDrQ07HsGs@x1n>
- <877ckj3kfp.fsf@suse.de> <ZZzC1n0GotQZukqJ@x1n> <87zfxe7eev.fsf@suse.de>
- <ZZ4YOw6Cy5EYo_f4@x1n>
-Date: Wed, 10 Jan 2024 11:42:18 -0300
-Message-ID: <87zfxd6yid.fsf@suse.de>
+ bh=IMNesO/uKeBaOKargm9HGvs62hGZ+V7XjIUPz0llCC8=;
+ b=hz5Lfzc/T37cl37lWaoZXTs28uOgu6BdC/lo7h5HsP8yVgW4Lay+1gZEMLDReZHHZKXYGR
+ X6bFkco+67nEPYaIvqEUjQiwZjv0aT5O1TOoCC3LG+c+jbArYXeXW29KBB2oGQ06hLKKSs
+ isp2UQyFW69YaxFX4OafHS7jvEgwiyU=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-435-QiXWEOmYP5i5ZSHkS6TLIg-1; Wed, 10 Jan 2024 10:22:03 -0500
+X-MC-Unique: QiXWEOmYP5i5ZSHkS6TLIg-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7817253831cso635684885a.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 07:22:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704900123; x=1705504923;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IMNesO/uKeBaOKargm9HGvs62hGZ+V7XjIUPz0llCC8=;
+ b=nMKJJGFxClBtlQ/xo3BWCPUSkrWrh0PDP4qb96PFdOp+1/3efWzs510Q6h9bv6tX0b
+ oHZadHKgfKMCqhEQj+oBzzkPQvzU+jJI5a+DgxE9gY9BzZ5t3nr/nXi3o4DfSF0pfDBN
+ jTZZMAfed+d5CXF+vEzJ23Rcb67b5hz4yTDd3V0nzYQgNbotkjUYMYv2g2Z0g19SIzAM
+ Dxeecg9nfoewayGcAtpw3ICEXFiUjUzICMJDfeYE6jCUnCpUjYmGW2Vs5v1FBo/IktCE
+ Vwebcw3ZHoSsPiy1AjG3SrGk1o+VhzhZHWwzzBGbmk9BKvkzAMUbuBqlxN9H+mBaQhwn
+ 5SFA==
+X-Gm-Message-State: AOJu0Yx/zsEErcYRDUx08aTLPTMn15/jWeAeM9fEOFPQLuvlKMOqsOQV
+ jLpv7FStxRTn6gWSSP7EOphVQEvxzobHYifVtG2t7Ly5uNT5dGW+1e6WSULcgdHxx+aOq1lTrLy
+ FzdsyDXhaTqow75g/oj48Cm8=
+X-Received: by 2002:a05:620a:2719:b0:783:3423:c76d with SMTP id
+ b25-20020a05620a271900b007833423c76dmr1509699qkp.1.1704900123167; 
+ Wed, 10 Jan 2024 07:22:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF8HXUjE6KFjNoNWajCloQpJxbj9GpqxJxrXLbFYPKrBwMoyzwWf1f4NASQ+k13w+XuZFXgew==
+X-Received: by 2002:a05:620a:2719:b0:783:3423:c76d with SMTP id
+ b25-20020a05620a271900b007833423c76dmr1509679qkp.1.1704900122837; 
+ Wed, 10 Jan 2024 07:22:02 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ s9-20020ae9f709000000b007811da87cefsm1657603qkg.127.2024.01.10.07.22.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 10 Jan 2024 07:22:02 -0800 (PST)
+Message-ID: <8f357390-5a65-458d-875f-7c5c11ce8abd@redhat.com>
+Date: Wed, 10 Jan 2024 16:21:12 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b="bhy/ncx2";
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=q92o+trF
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.51 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[]; DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
- RCVD_COUNT_THREE(0.00)[3]; DKIM_TRACE(0.00)[suse.de:+];
- MX_GOOD(-0.01)[]; RCPT_COUNT_SEVEN(0.00)[7];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; MID_RHS_MATCH_FROM(0.00)[];
- BAYES_HAM(-3.00)[100.00%]; ARC_NA(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: 8576121D10
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/10] docs/migration: Reorganize migration documentations
+Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Bandan Das <bdas@redhat.com>,
+ Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
+References: <20240109064628.595453-1-peterx@redhat.com> <ZZ0kpnT741chs1np@x1n>
+ <1644d352-7ced-4ddc-90a8-8190fe863e87@redhat.com>
+ <ZZ4C08Jrb-76WHW9@x1n>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <ZZ4C08Jrb-76WHW9@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -127,46 +105,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On 1/10/24 03:37, Peter Xu wrote:
+> On Tue, Jan 09, 2024 at 02:21:26PM +0100, Cédric Le Goater wrote:
+>>
+>>> A few things I'd like to mention alongside, because it's documentation
+>>> relevant too, and I'd like to collect if there's any comment.
+>>>
+>>> I just mostly rewrote two wiki pages completely:
+>>>
+>>>     https://wiki.qemu.org/ToDo/LiveMigration
+>>>     https://wiki.qemu.org/Features/Migration>
+>>> I merged all the TODO items from Features/Migration into the ToDo page,
+>>> while kept the 2nd page mostly clean, just to route to other places.
+>>>
+>>> I had a plan to make:
+>>>
+>>>     https://qemu.org/docs/master
+>>>
+>>> The solo place for migration documentations (aka, QEMU repo the source of
+>>> truth for migration docs, as it's peroidically built there), making all the
+>>> rest places pointing to that, as I already did in the wiki page.  While I
+>>> kept all the TODOs on the wiki page (not Features/Migration, but
+>>> ToDo/LiveMigration).> Fabiano / anyone: feel free to add / update /
+>>> correct any entries there
+>>> where applicable.  Also if there's any thoughts on above feel free to let
+>>> me know too.
+>>
+>> The Wiki has some limited value, the changelog for instance, but the rest
+>> is a bag of orphan and obsolete pages doomed to bit-rot since it is slowly
+>> being replaced by the in-tree documentation.
+>>
+>> The info in the Features/Migration page is redundant with what we have
+>> in-tree, a part from the CREDITS. The TODO list could be some file under :
+>>
+>> 	https://qemu.org/docs/master/devel/migration
+>>
+>> It would be easier to find and it would keep the Wiki to a strict minimum.
+> 
+> Thanks for the suggestions.  I agree that we should minimize the wiki use,
+> especially on docs.  It'll be nice we use a solo source of truth for the
+> docs, always accessable via qemu.org/docs, and also makes it easier for us
+> to ask for docs altogether as patches when new features are merged.
+> 
+> I see that most of the ToDos for the other part of qemus still use the wiki
+> page, even though they're indeed mostly outdated just like the migration
+> ToDo before I updated it.
+> 
+> IMHO one thing that the wiki services well for ToDo is that it allows easy
+> & frequent updates on the projects, without the need to require a review
+> process like most of the patches being posted on the list.  The wiki page
+> still maintains a diff, and IMHO that may not even be required, as a
+> history record of a ToDo list may not help much in most cases.
+> 
+> The other issue regarding ToDo is that, some of the ToDo idea (or when
+> someone frequently updates with details on a project of an ongoing item)
+> may not be mature enough to be mentioned in an official documents. So even
+> if some can be considered to be put together with the qemu repo, there may
+> always be some that may not be suitable, then we will still need some place
+> for those.  I still don't know what's the ideal way to do this.
 
-> On Tue, Jan 09, 2024 at 11:46:32AM -0300, Fabiano Rosas wrote:
->> Hm, it would be better to avoid the extra maintenance task at the start
->> of every release, no? It also blocks us from doing n-2 even
->> experimentally.
->
-> See my other reply, on whether we can use "n-1" for migration-test.  If
-> that can work for us, then IIUC we can avoid either "since:" or any
-> relevant flag, neither do we need to unmask tests after each releases.  All
-> old tests should always "just work" with a new qemu binary.
+OK. I see how you want to use the wiki for the TODO ideas and it makes
+sense for mid/long term projects which are not mature enough to be
+mentioned in the official docs. That said, I think we should mention
+not supported features, incomplete modelling, etc. in the official docs,
+which is a bit different than a TODO, I agree.
 
-Hmm.. There are some assumptions here:
+We also have a [feature request] label under gitlab and some issues are
+tagged with it. I wonder how we can consolidate the 3 sources : wiki,
+gitlab, https://www.qemu.org/docs/master/
 
-1) New code will always be compatible with old tests. E.g. some
-   patchseries changed code and changed a test to match the new
-   code. Then we'd need a flag like 'since' anyway to mark that the new
-   QEMU cannot be used with the old test.
+Thanks,
 
-   (if new QEMU is not compatible with old tests without any good
-   reason, then that's just a regression I think)
+C.
 
-2) There would not be issues when fixing bugs/refactoring
-   tests. E.g. old tests had a bug that is now fixed, but since we're
-   not using the new tests, the bug is always there until next
-   release. This could block the entire test suite, specially with
-   concurrency bugs which can start triggering due to changes in timing.
-
-3) New code that can only be reached via new tests cannot cause
-   regressions. E.g. new code is added but is kept under a machine
-   property or migration capability. That code will only show the
-   regression after the new test enables that cap/property. At that
-   point it's too late because it was already released.
-
-In general I like the simplicity of your approach, but it would be
-annoying to change this series only to find out we still need some sort
-of flag later. Even worse, #3 would miss the point of this kind of
-testing entirely.
-
-#1 could be mitigated by a "no changes to tests rule". We'd start
-requiring that new tests be written and an existing test is never
-altered. For #2 and #3 I don't have a solution.
 
