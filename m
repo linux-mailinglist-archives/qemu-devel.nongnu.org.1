@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D35829578
+	by mail.lfdr.de (Postfix) with ESMTPS id A24BB82957C
 	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 09:59:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNUPe-0001PW-6l; Wed, 10 Jan 2024 03:58:14 -0500
+	id 1rNUPi-0001QD-7K; Wed, 10 Jan 2024 03:58:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNUPb-0001No-6z
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:58:11 -0500
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1rNUPg-0001Q1-4d
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:58:16 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNUPZ-0003Qe-K3
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:58:10 -0500
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-5cdfed46372so2926073a12.3
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 00:58:09 -0800 (PST)
+ id 1rNUPe-0003SM-4o
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:58:15 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6d9bec20980so2059330b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 00:58:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704877088; x=1705481888; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704877092; x=1705481892; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1mI2EZpLl3aeKnOvhBM+B+MVkGjLo6WuRuI3uYWA2A8=;
- b=mGKXKlWrOAeq7HxfznHMukF2oONCOknxMe2xBOA1Q7SsQ9BLrfoJU/lZ2RFM/1PacH
- d7kvuugwjuH81CijsGIKdivnGhmXmEXTG5HzRta4PsZQBqMZoCHL0QJ16r+pmiepGCJs
- fetLGfpK4tzfM+6zhNKfJHrgFY57wX/EM7EevuOAeDCffKJaa17SHiy4R2uOSnOZNqgO
- FSx+H3PEdZT6AaKHLNZNXlY+1829A4YNucxGF0qgUHQrFASHrUq32Qz43zAiz5Q31m3U
- 9pVymbnL5SKSk7MzEcZiKo2O8p/Fr/i8wLI0ZWUCSajlrDYRJmAoLE12ie3DgGJecbgr
- PXxA==
+ bh=B5ZPOEp/Bgg3nxSrbT4RIPE8g35MEWBNgL4Nz/T7n2g=;
+ b=NiXf905RaANO+SJCFZqzQzXL+/+FVZfk/jquWwWcaPnV9tMR3nkIeMxTVfc7d1opQH
+ Nhh6IXs5yGYdzlyYBz9mUuE8W0srqdJAf1sjVR14OZGFkC2zP2lUAeQWcMJjRfwawg1N
+ cB7ju2Cnt1akPE3KBLKESio6zYQp0r/WwZY4unIAa/NMjcN+b63HXRWmYd8zFmKrmpgI
+ l5u0VD0wFSsMT+U/FFsfbHSozYvvn7LgWpoLeDjkV/3fHc29ihESgc1OAgU7CaJ1vB4O
+ HQIvmUxZdgaSraJQ5jZM34zWIW2N/iFmMfh4+1nbYf9K6SII2D0fUMuI1GnAnhqOmUsC
+ b7MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704877088; x=1705481888;
+ d=1e100.net; s=20230601; t=1704877092; x=1705481892;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1mI2EZpLl3aeKnOvhBM+B+MVkGjLo6WuRuI3uYWA2A8=;
- b=u3w+VPQ/1oNXsV5/qLcnNSUs6s29SEtzT0sgTmfQ3lC00Gevb6Ims2zZUp7TTLY6ts
- KCPDGjxytk4EM7tjMI+BBvlIh2LBT46rzoI2kD/i6J4BSR6JWtfksqybrAOAcyatx41Q
- ikjnrzoeUmadjVzVGUZYeaS5NezyC1qjLE/VNEjSt+x6JHy18gI2IBo+YdSsi3e54ZjH
- qDVaaVvDboXPxTsWhZBx2+HZ6/VM7TYSdOBn6ZRKYy1cXrRerMn8sh7aM6QquVHtfRKl
- llVokzh/+t5LGyyN0ydEkUeGRBau2qkoa0iceiR0k4g0paPh5+2FqR7QkCvTVfLq4wYJ
- LfXw==
-X-Gm-Message-State: AOJu0Ywfw4z/2Vr5FrPCvy9wfDQjWkA/OpVHb2OWTKROzsSfbL1xInuk
- 3n7NRW/L6ofxUvXZrIPNOpTHrhNVqL8gM7TQ
-X-Google-Smtp-Source: AGHT+IFnUZUJsV3W3MVt8lK0fwLs9WFgwFDqGVJptJpvJQSSbXkib4rq1IahHsNKNZ1DdygRaAiBBw==
-X-Received: by 2002:a05:6a20:914e:b0:19a:2f3f:88b7 with SMTP id
- x14-20020a056a20914e00b0019a2f3f88b7mr190350pzc.80.1704877087932; 
- Wed, 10 Jan 2024 00:58:07 -0800 (PST)
+ bh=B5ZPOEp/Bgg3nxSrbT4RIPE8g35MEWBNgL4Nz/T7n2g=;
+ b=PzHd1W44dXP1pCeo+IoJ9+pz21knM4MPj1Qp+1U5JUtxYhm17ZRNWf09YpdAxcVzez
+ l5n7fSAtKn/uci6AlYDzH6tGvSDvWysCPP8sPwbd28VHrTbqXAxB9MayG4g4eJl6h6v+
+ UdMbChFBQJ/HUs1b/Jc8ldxnf1RmYHbUUVr0hCZ7Wjigs1p6Cf7UlbOUNy8DaQ1okR90
+ VeL0eSI0XCWLZ7sXQ/Y1nIjWlmA6P0gEflgSlYBt45Ye/0J6Riw6uywPUYdY20zBkO0A
+ 82qcoGrZX46qZR13WVtPIr/Ibkh+YpxncIAradGTEYoqtDwKZUqDCkjFJA8CXdseY5ls
+ Ihzg==
+X-Gm-Message-State: AOJu0YznZgWlwq2DY3f6MF2Uk5MtQ+ls8uWzX2wKWQCJZtf0s9JBHA8r
+ kCezbVgVpTFRKHqU4/NbEFwauBkRR91kNRSR
+X-Google-Smtp-Source: AGHT+IFGAyfi/CH1TCePImlVKOxhd8huavaQENEMb+hGD8hl93yrGvcvqDODWeNUZqljdMxwk4sY1Q==
+X-Received: by 2002:a05:6a00:2e92:b0:6da:4d92:a098 with SMTP id
+ fd18-20020a056a002e9200b006da4d92a098mr745241pfb.0.1704877091834; 
+ Wed, 10 Jan 2024 00:58:11 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.00.58.04
+ t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.00.58.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 00:58:07 -0800 (PST)
+ Wed, 10 Jan 2024 00:58:11 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Andrew Jones <ajones@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 07/65] target/riscv/kvm: change KVM_REG_RISCV_FP_F to u32
-Date: Wed, 10 Jan 2024 18:56:35 +1000
-Message-ID: <20240110085733.1607526-8-alistair.francis@wdc.com>
+Subject: [PULL 08/65] target/riscv/kvm: change KVM_REG_RISCV_FP_D to u64
+Date: Wed, 10 Jan 2024 18:56:36 +1000
+Message-ID: <20240110085733.1607526-9-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240110085733.1607526-1-alistair.francis@wdc.com>
 References: <20240110085733.1607526-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,64 +99,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-KVM_REG_RISCV_FP_F regs have u32 size according to the API, but by using
-kvm_riscv_reg_id() in RISCV_FP_F_REG() we're returning u64 sizes when
-running with TARGET_RISCV64. The most likely reason why no one noticed
-this is because we're not implementing kvm_cpu_synchronize_state() in
-RISC-V yet.
+KVM_REG_RISCV_FP_D regs are always u64 size. Using kvm_riscv_reg_id() in
+RISCV_FP_D_REG() ends up encoding the wrong size if we're running with
+TARGET_RISCV32.
 
-Create a new helper that returns a KVM ID with u32 size and use it in
-RISCV_FP_F_REG().
+Create a new helper that returns a KVM ID with u64 size and use it with
+RISCV_FP_D_REG().
 
 Reported-by: Andrew Jones <ajones@ventanamicro.com>
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Message-ID: <20231208183835.2411523-2-dbarboza@ventanamicro.com>
+Message-ID: <20231208183835.2411523-3-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
  target/riscv/kvm/kvm-cpu.c | 11 ++++++++---
  1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 117e33cf90..375c8e7f33 100644
+index 375c8e7f33..9370c72f9b 100644
 --- a/target/riscv/kvm/kvm-cpu.c
 +++ b/target/riscv/kvm/kvm-cpu.c
-@@ -72,6 +72,11 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
-     return id;
+@@ -77,6 +77,11 @@ static uint64_t kvm_riscv_reg_id_u32(uint64_t type, uint64_t idx)
+     return KVM_REG_RISCV | KVM_REG_SIZE_U32 | type | idx;
  }
  
-+static uint64_t kvm_riscv_reg_id_u32(uint64_t type, uint64_t idx)
++static uint64_t kvm_riscv_reg_id_u64(uint64_t type, uint64_t idx)
 +{
-+    return KVM_REG_RISCV | KVM_REG_SIZE_U32 | type | idx;
++    return KVM_REG_RISCV | KVM_REG_SIZE_U64 | type | idx;
 +}
 +
  #define RISCV_CORE_REG(env, name)  kvm_riscv_reg_id(env, KVM_REG_RISCV_CORE, \
                   KVM_REG_RISCV_CORE_REG(name))
  
-@@ -81,7 +86,7 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
- #define RISCV_TIMER_REG(env, name)  kvm_riscv_reg_id(env, KVM_REG_RISCV_TIMER, \
-                  KVM_REG_RISCV_TIMER_REG(name))
+@@ -88,7 +93,7 @@ static uint64_t kvm_riscv_reg_id_u32(uint64_t type, uint64_t idx)
  
--#define RISCV_FP_F_REG(env, idx)  kvm_riscv_reg_id(env, KVM_REG_RISCV_FP_F, idx)
-+#define RISCV_FP_F_REG(idx)  kvm_riscv_reg_id_u32(KVM_REG_RISCV_FP_F, idx)
+ #define RISCV_FP_F_REG(idx)  kvm_riscv_reg_id_u32(KVM_REG_RISCV_FP_F, idx)
  
- #define RISCV_FP_D_REG(env, idx)  kvm_riscv_reg_id(env, KVM_REG_RISCV_FP_D, idx)
+-#define RISCV_FP_D_REG(env, idx)  kvm_riscv_reg_id(env, KVM_REG_RISCV_FP_D, idx)
++#define RISCV_FP_D_REG(idx)  kvm_riscv_reg_id_u64(KVM_REG_RISCV_FP_D, idx)
  
-@@ -586,7 +591,7 @@ static int kvm_riscv_get_regs_fp(CPUState *cs)
-     if (riscv_has_ext(env, RVF)) {
-         uint32_t reg;
+ #define KVM_RISCV_GET_CSR(cs, env, csr, reg) \
+     do { \
+@@ -579,7 +584,7 @@ static int kvm_riscv_get_regs_fp(CPUState *cs)
+     if (riscv_has_ext(env, RVD)) {
+         uint64_t reg;
          for (i = 0; i < 32; i++) {
--            ret = kvm_get_one_reg(cs, RISCV_FP_F_REG(env, i), &reg);
-+            ret = kvm_get_one_reg(cs, RISCV_FP_F_REG(i), &reg);
+-            ret = kvm_get_one_reg(cs, RISCV_FP_D_REG(env, i), &reg);
++            ret = kvm_get_one_reg(cs, RISCV_FP_D_REG(i), &reg);
              if (ret) {
                  return ret;
              }
-@@ -620,7 +625,7 @@ static int kvm_riscv_put_regs_fp(CPUState *cs)
-         uint32_t reg;
+@@ -613,7 +618,7 @@ static int kvm_riscv_put_regs_fp(CPUState *cs)
+         uint64_t reg;
          for (i = 0; i < 32; i++) {
              reg = env->fpr[i];
--            ret = kvm_set_one_reg(cs, RISCV_FP_F_REG(env, i), &reg);
-+            ret = kvm_set_one_reg(cs, RISCV_FP_F_REG(i), &reg);
+-            ret = kvm_set_one_reg(cs, RISCV_FP_D_REG(env, i), &reg);
++            ret = kvm_set_one_reg(cs, RISCV_FP_D_REG(i), &reg);
              if (ret) {
                  return ret;
              }
