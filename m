@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6E682958A
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 10:00:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A77C2829590
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 10:01:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNURo-0006V1-Ec; Wed, 10 Jan 2024 04:00:28 -0500
+	id 1rNURh-0005Rq-Qp; Wed, 10 Jan 2024 04:00:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNUQr-0004Vb-JP
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:59:32 -0500
-Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ id 1rNUQu-0004aP-8p
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:59:34 -0500
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNUQo-000458-Qt
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:59:28 -0500
-Received: by mail-oi1-x229.google.com with SMTP id
- 5614622812f47-3bbc755167fso3576566b6e.0
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 00:59:26 -0800 (PST)
+ id 1rNUQr-00047S-Le
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:59:31 -0500
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6d9bee259c5so2355621b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 00:59:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704877164; x=1705481964; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704877168; x=1705481968; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=clFhRyKOA0pSu/+l5L0nBfk45kGRHvF3FLF32sssB6M=;
- b=fLaJXhmOkhezNzJhiU2cdJO4QtZWe7DIvLC4/t0Ct5Ba98kld+r24mPSBgfDMA2M8M
- 0C07IijCpZfFLzAgKPZnzlrUcUUZWBcRgmJK+VGq57UXvN/cI6JHV3QXHF+/TBcfLYqP
- I3o+xHjsTJe7H8b2IHo4F6GjWBDF7s008n7hffc1hQy/QvIkukN2lEWLfccmUNDe2C4h
- ishsh6W7viIsqtFNThgbk8AIfUdiLeR37FKb3phEbM3VHYzPJN+KiC0XcP4ZbfnuzFxO
- ud7HOIYfN+tMjS5Ky7MbiWLedey52QsYiqN/aixDmR+6iQgypJ5RpL+ToZr1R0EdkUdw
- CAvQ==
+ bh=skrIjpTonLy9YNzwgam7TCIyIKFDcGU+qkrH3ZhJDXg=;
+ b=Xvd/zM0aXl2x7prj6fQK9VQMdvgkZPW7aSdrlTfGXADkmK27hS4/1sutyfUSnavL7r
+ 9wEMaPqPKHQQ73pR0UgzUDoTcNxjoeCnhPEtzPvsssNjV31Sp0y8vwr5cJaE8bm2xFb+
+ oDFoWk2t2tiy17F48uXK34zGOj89mC7joA0MTcANHdvfPUu9ktkW85C01JIWJCkeFdIZ
+ +GdocGRD5L9ZC4KtM/no5lO01qdSIyczADRQCtjnLdMv+9RsLb7B7uwldN6yJmaftmRy
+ 4xoUBC+yxvQUeQMzm0/l02y14W4FfoqticUnfaEGex80YDiDEHlEZwQiiGxQdkLANllj
+ j+jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704877164; x=1705481964;
+ d=1e100.net; s=20230601; t=1704877168; x=1705481968;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=clFhRyKOA0pSu/+l5L0nBfk45kGRHvF3FLF32sssB6M=;
- b=TIY1KAlTF/OmkjysPbibA94BXFPi0bAsd1uZWgwAS3ojiqiX3yFhdYB4D1hTv/Xrzt
- 2VRh19kqK+Lk/+v16R3w4IwFNza855rRzSfrrhdeVVThMk30nrlJNVmOlYMN+TP3vG2o
- FDqZfux4IK2bHlAtQUFDnUshUVMprwIQmeyAJq+bDvZHwvQdRsvOZ74D/BeIMml8ua1X
- R+bz3VtyMYoD9OEi3KGqKUqonjzA/ecXbhBarmVj4dQnE5nY06N6xkbf+FkPmdWHNqli
- zFv91qRxXi1MpJZM7wc3gg4pf5KTme1Py7onip0vROKq6ZuTnQKC/MF7cZ80UfSPUl/9
- fF+A==
-X-Gm-Message-State: AOJu0YxR9oi6bIzJxCGJBd1NKh0lB5mmCtd0nnWpxRBMW7gVjERzVmz9
- ifZERtmCKwXyKTgT/f2SMgN+UkFHvlqhPyug
-X-Google-Smtp-Source: AGHT+IG52d+F4h84Vxr3vPGC8a/iaRTIclmIjFN6FtBT7dCzDwnHM5Wa+E22ITNpNnOVf2DCFeZQCg==
-X-Received: by 2002:a05:6358:9192:b0:172:cfec:416f with SMTP id
- j18-20020a056358919200b00172cfec416fmr721189rwa.13.1704877164353; 
- Wed, 10 Jan 2024 00:59:24 -0800 (PST)
+ bh=skrIjpTonLy9YNzwgam7TCIyIKFDcGU+qkrH3ZhJDXg=;
+ b=kzoCMd0USb0/z3Df47WBpyLts+gHVcAmwetD3d1RK+t0SYLQRs0nXDbu0N2/olaN3w
+ dWMZC7B+EYl7QhkUz3MHtSh0cNkXsk/lWKflzVMc+V13T6o7RH7RnI5NrzJ8cZ0IIuBY
+ DJus20owkjB9X6LVxVp+XWI9j9O6XBUtFKep8YBUJFXXRdNbhiioRbt0T5CI4FzlAdp1
+ Z5QQTCLhrYuXple0qFAvkpmR0JqM50+uaoAZsIbCnhQxjrs+6Pne6iq9L9S+6c2MR51c
+ rShutjBz3miMv2KEcT3z5dk1suZ+BlGXWSehgPWCV21aqYbo6pP+sTKMskanZ1R79C+g
+ ESqg==
+X-Gm-Message-State: AOJu0YwAMhYy1vMXoi3xFNf18puuW+iTbtc7CfKNTV48hqPBmLG1ploD
+ AW8tQDG4BFjGQdWQmCWgazXEhd+58K6ncnAi
+X-Google-Smtp-Source: AGHT+IFdZdk66ABcEg+g6SWlQbeTWR/OnCVeZFXUzUwWw/JsaDCE2T0hVtvVH/vNmYfMUqGuCdnfFw==
+X-Received: by 2002:a05:6a00:4f59:b0:6d9:a908:2659 with SMTP id
+ lc25-20020a056a004f5900b006d9a9082659mr533963pfb.62.1704877167840; 
+ Wed, 10 Jan 2024 00:59:27 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.00.59.20
+ t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.00.59.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 00:59:23 -0800 (PST)
+ Wed, 10 Jan 2024 00:59:27 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Weiwei Li <liweiwei@iscas.ac.cn>,
- Junqiang Wang <wangjunqiang@iscas.ac.cn>,
- Rob Bradford <rbradford@rivosinc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 26/65] target/riscv: Add support for Zacas extension
-Date: Wed, 10 Jan 2024 18:56:54 +1000
-Message-ID: <20240110085733.1607526-27-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL 27/65] disas/riscv: Add amocas.[w,d,q] instructions
+Date: Wed, 10 Jan 2024 18:56:55 +1000
+Message-ID: <20240110085733.1607526-28-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240110085733.1607526-1-alistair.francis@wdc.com>
 References: <20240110085733.1607526-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
- envelope-from=alistair23@gmail.com; helo=mail-oi1-x229.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,257 +97,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Weiwei Li <liweiwei@iscas.ac.cn>
+From: Rob Bradford <rbradford@rivosinc.com>
 
-Add support for amocas.w/d/q instructions which are part of the ratified
-Zacas extension: https://github.com/riscv/riscv-zacas
-
-Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
 Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20231207153842.32401-2-rbradford@rivosinc.com>
+Message-ID: <20231207153842.32401-3-rbradford@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_cfg.h                      |   1 +
- target/riscv/insn32.decode                  |   6 +
- target/riscv/cpu.c                          |   2 +
- target/riscv/tcg/tcg-cpu.c                  |   5 +
- target/riscv/translate.c                    |   1 +
- target/riscv/insn_trans/trans_rvzacas.c.inc | 150 ++++++++++++++++++++
- 6 files changed, 165 insertions(+)
- create mode 100644 target/riscv/insn_trans/trans_rvzacas.c.inc
+ disas/riscv.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index f4605fb190..d516de4a44 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -77,6 +77,7 @@ struct RISCVCPUConfig {
-     bool ext_svnapot;
-     bool ext_svpbmt;
-     bool ext_zdinx;
-+    bool ext_zacas;
-     bool ext_zawrs;
-     bool ext_zfa;
-     bool ext_zfbfmin;
-diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index 33597fe2bb..f22df04cfd 100644
---- a/target/riscv/insn32.decode
-+++ b/target/riscv/insn32.decode
-@@ -1004,3 +1004,9 @@ vgmul_vv    101000 1 ..... 10001 010 ..... 1110111 @r2_vm_1
- vsm4k_vi    100001 1 ..... ..... 010 ..... 1110111 @r_vm_1
- vsm4r_vv    101000 1 ..... 10000 010 ..... 1110111 @r2_vm_1
- vsm4r_vs    101001 1 ..... 10000 010 ..... 1110111 @r2_vm_1
-+
-+# *** RV32 Zacas Standard Extension ***
-+amocas_w    00101 . . ..... ..... 010 ..... 0101111 @atom_st
-+amocas_d    00101 . . ..... ..... 011 ..... 0101111 @atom_st
-+# *** RV64 Zacas Standard Extension ***
-+amocas_q    00101 . . ..... ..... 100 ..... 0101111 @atom_st
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 53b82cc581..21b0eddf6f 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -87,6 +87,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
-     ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_zihpm),
-     ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
-+    ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
-     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
-     ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
-     ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_0, ext_zfbfmin),
-@@ -1297,6 +1298,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("zicsr", ext_zicsr, true),
-     MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
-     MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
-+    MULTI_EXT_CFG_BOOL("zacas", ext_zacas, false),
-     MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
-     MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
-     MULTI_EXT_CFG_BOOL("zfh", ext_zfh, false),
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 8a35683a34..29b5a88931 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -343,6 +343,11 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         return;
-     }
+diff --git a/disas/riscv.c b/disas/riscv.c
+index e9458e574b..8a546d5ea5 100644
+--- a/disas/riscv.c
++++ b/disas/riscv.c
+@@ -903,6 +903,9 @@ typedef enum {
+     rv_op_vwsll_vv = 872,
+     rv_op_vwsll_vx = 873,
+     rv_op_vwsll_vi = 874,
++    rv_op_amocas_w = 875,
++    rv_op_amocas_d = 876,
++    rv_op_amocas_q = 877,
+ } rv_op;
  
-+    if ((cpu->cfg.ext_zacas) && !riscv_has_ext(env, RVA)) {
-+        error_setg(errp, "Zacas extension requires A extension");
-+        return;
-+    }
-+
-     if ((cpu->cfg.ext_zawrs) && !riscv_has_ext(env, RVA)) {
-         error_setg(errp, "Zawrs extension requires A extension");
-         return;
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index f0be79bb16..071fbad7ef 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -1089,6 +1089,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
- #include "insn_trans/trans_rvv.c.inc"
- #include "insn_trans/trans_rvb.c.inc"
- #include "insn_trans/trans_rvzicond.c.inc"
-+#include "insn_trans/trans_rvzacas.c.inc"
- #include "insn_trans/trans_rvzawrs.c.inc"
- #include "insn_trans/trans_rvzicbo.c.inc"
- #include "insn_trans/trans_rvzfa.c.inc"
-diff --git a/target/riscv/insn_trans/trans_rvzacas.c.inc b/target/riscv/insn_trans/trans_rvzacas.c.inc
-new file mode 100644
-index 0000000000..5d274d4c08
---- /dev/null
-+++ b/target/riscv/insn_trans/trans_rvzacas.c.inc
-@@ -0,0 +1,150 @@
-+/*
-+ * RISC-V translation routines for the RV64 Zacas Standard Extension.
-+ *
-+ * Copyright (c) 2020-2023 PLCT Lab
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2 or later, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#define REQUIRE_ZACAS(ctx) do {          \
-+    if (!ctx->cfg_ptr->ext_zacas) {      \
-+        return false;                     \
-+    }                                     \
-+} while (0)
-+
-+static bool gen_cmpxchg(DisasContext *ctx, arg_atomic *a, MemOp mop)
-+{
-+    TCGv dest = get_gpr(ctx, a->rd, EXT_NONE);
-+    TCGv src1 = get_address(ctx, a->rs1, 0);
-+    TCGv src2 = get_gpr(ctx, a->rs2, EXT_NONE);
-+
-+    decode_save_opc(ctx);
-+    tcg_gen_atomic_cmpxchg_tl(dest, src1, dest, src2, ctx->mem_idx, mop);
-+
-+    gen_set_gpr(ctx, a->rd, dest);
-+    return true;
-+}
-+
-+static bool trans_amocas_w(DisasContext *ctx, arg_amocas_w *a)
-+{
-+    REQUIRE_ZACAS(ctx);
-+    return gen_cmpxchg(ctx, a, MO_ALIGN | MO_TESL);
-+}
-+
-+static TCGv_i64 get_gpr_pair(DisasContext *ctx, int reg_num)
-+{
-+    TCGv_i64 t;
-+
-+    assert(get_ol(ctx) == MXL_RV32);
-+
-+    if (reg_num == 0) {
-+        return tcg_constant_i64(0);
-+    }
-+
-+    t = tcg_temp_new_i64();
-+    tcg_gen_concat_tl_i64(t, cpu_gpr[reg_num], cpu_gpr[reg_num + 1]);
-+    return t;
-+}
-+
-+static void gen_set_gpr_pair(DisasContext *ctx, int reg_num, TCGv_i64 t)
-+{
-+    assert(get_ol(ctx) == MXL_RV32);
-+
-+    if (reg_num != 0) {
-+#ifdef TARGET_RISCV32
-+        tcg_gen_extr_i64_i32(cpu_gpr[reg_num], cpu_gpr[reg_num + 1], t);
-+#else
-+        tcg_gen_ext32s_i64(cpu_gpr[reg_num], t);
-+        tcg_gen_sari_i64(cpu_gpr[reg_num + 1], t, 32);
-+#endif
-+
-+        if (get_xl_max(ctx) == MXL_RV128) {
-+            tcg_gen_sari_tl(cpu_gprh[reg_num], cpu_gpr[reg_num], 63);
-+            tcg_gen_sari_tl(cpu_gprh[reg_num + 1], cpu_gpr[reg_num + 1], 63);
-+        }
-+    }
-+}
-+
-+static bool gen_cmpxchg64(DisasContext *ctx, arg_atomic *a, MemOp mop)
-+{
-+    /*
-+     * Encodings with odd numbered registers specified in rs2 and rd are
-+     * reserved.
-+     */
-+    if ((a->rs2 | a->rd) & 1) {
-+        return false;
-+    }
-+
-+    TCGv_i64 dest = get_gpr_pair(ctx, a->rd);
-+    TCGv src1 = get_address(ctx, a->rs1, 0);
-+    TCGv_i64 src2 = get_gpr_pair(ctx, a->rs2);
-+
-+    decode_save_opc(ctx);
-+    tcg_gen_atomic_cmpxchg_i64(dest, src1, dest, src2, ctx->mem_idx, mop);
-+
-+    gen_set_gpr_pair(ctx, a->rd, dest);
-+    return true;
-+}
-+
-+static bool trans_amocas_d(DisasContext *ctx, arg_amocas_d *a)
-+{
-+    REQUIRE_ZACAS(ctx);
-+    switch (get_ol(ctx)) {
-+    case MXL_RV32:
-+        return gen_cmpxchg64(ctx, a, MO_ALIGN | MO_TEUQ);
-+    case MXL_RV64:
-+    case MXL_RV128:
-+        return gen_cmpxchg(ctx, a, MO_ALIGN | MO_TEUQ);
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
-+static bool trans_amocas_q(DisasContext *ctx, arg_amocas_q *a)
-+{
-+    REQUIRE_ZACAS(ctx);
-+    REQUIRE_64BIT(ctx);
-+
-+    /*
-+     * Encodings with odd numbered registers specified in rs2 and rd are
-+     * reserved.
-+     */
-+    if ((a->rs2 | a->rd) & 1) {
-+        return false;
-+    }
-+
-+#ifdef TARGET_RISCV64
-+    TCGv_i128 dest = tcg_temp_new_i128();
-+    TCGv src1 = get_address(ctx, a->rs1, 0);
-+    TCGv_i128 src2 = tcg_temp_new_i128();
-+    TCGv_i64 src2l = get_gpr(ctx, a->rs2, EXT_NONE);
-+    TCGv_i64 src2h = get_gpr(ctx, a->rs2 == 0 ? 0 : a->rs2 + 1, EXT_NONE);
-+    TCGv_i64 destl = get_gpr(ctx, a->rd, EXT_NONE);
-+    TCGv_i64 desth = get_gpr(ctx, a->rd == 0 ? 0 : a->rd + 1, EXT_NONE);
-+
-+    tcg_gen_concat_i64_i128(src2, src2l, src2h);
-+    tcg_gen_concat_i64_i128(dest, destl, desth);
-+    decode_save_opc(ctx);
-+    tcg_gen_atomic_cmpxchg_i128(dest, src1, dest, src2, ctx->mem_idx,
-+                                (MO_ALIGN | MO_TEUO));
-+
-+    tcg_gen_extr_i128_i64(destl, desth, dest);
-+
-+    if (a->rd != 0) {
-+        gen_set_gpr(ctx, a->rd, destl);
-+        gen_set_gpr(ctx, a->rd + 1, desth);
-+    }
-+#endif
-+
-+    return true;
-+}
+ /* register names */
+@@ -2090,6 +2093,9 @@ const rv_opcode_data rvi_opcode_data[] = {
+     { "vwsll.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1_vm, NULL, 0, 0, 0 },
+     { "vwsll.vx", rv_codec_v_r, rv_fmt_vd_vs2_rs1_vm, NULL, 0, 0, 0 },
+     { "vwsll.vi", rv_codec_v_i, rv_fmt_vd_vs2_uimm_vm, NULL, 0, 0, 0 },
++    { "amocas.w", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
++    { "amocas.d", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
++    { "amocas.q", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
+ };
+ 
+ /* CSR names */
+@@ -2841,6 +2847,9 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+             case 34: op = rv_op_amoxor_w; break;
+             case 35: op = rv_op_amoxor_d; break;
+             case 36: op = rv_op_amoxor_q; break;
++            case 42: op = rv_op_amocas_w; break;
++            case 43: op = rv_op_amocas_d; break;
++            case 44: op = rv_op_amocas_q; break;
+             case 66: op = rv_op_amoor_w; break;
+             case 67: op = rv_op_amoor_d; break;
+             case 68: op = rv_op_amoor_q; break;
 -- 
 2.43.0
 
