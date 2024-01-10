@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7638295BF
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 10:07:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 394698295BD
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 10:07:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNURu-0007C9-Do; Wed, 10 Jan 2024 04:00:34 -0500
+	id 1rNURy-0007nR-2x; Wed, 10 Jan 2024 04:00:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNURW-0005dj-JW
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:00:12 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1rNURY-0005iv-Ua
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:00:15 -0500
+Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNURU-0004iv-ND
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:00:10 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6d9b37f4804so3141661b3a.1
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 01:00:08 -0800 (PST)
+ id 1rNURW-0004l4-WB
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:00:12 -0500
+Received: by mail-oi1-x229.google.com with SMTP id
+ 5614622812f47-3bbbf5a59b7so3534733b6e.3
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 01:00:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704877207; x=1705482007; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704877209; x=1705482009; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uRYwGnRvNaF66+ZgD+qJDnGYw78KjfSr86sf9gWXd4E=;
- b=HQMrjDKv/lpfC4c3pqBitbTcKH8mIDMlMvKu8lsw6sbKMbqikI8uiBeDylkwArPrc7
- lC1rCX9mat3S0gCS1oupit4TO+X5hev7Cr5W+LhtrLsWGKYZzT4uX1K70t5bySr92WSN
- tz4yNR4Px+XeHLcJJw9lzgaYt01wekurKgtQa4Agmy78pa0v+uhPC7Va7yGSgKXfjJJz
- iBWazG6nxEJo4EwHQ6mBXYlI13hbY6wyl8bHA5Eqx+pONCQP3obYPfFJ7vf1ryKecs7G
- 4X1FaYEXE6wDo/szdILDLv+1TKHeL68RsG6n1Esf7I4AdtwSCAreAR3XEURoT5FWCgwv
- haeA==
+ bh=qMHclOSf6qVt4kU3bDRKPZmEtxqORxYsuLvB7CuuViM=;
+ b=AiC+aMMR6NgklOrEB1dmvstCP6DREICFCDotg1dd3TWvrsme8njWGykbXHCNwA/kl5
+ 954Pjfa+hWGyGbzH8M4AVhwFvcrigpRWdGHSvxjvyuV862GVuYNJZPlNuumV0dKmfNKN
+ imlPzi1rsxaZyR7Ex3dPBTEpSXsPy7opIUmlqwzjeBCnTCwY4ESyqgG4MYuMllcR3gJf
+ 7MZDefZKw23BGLs03D6gej1E8CQxT8owIoStA/4zFmuXjkgOf+mI3bs0VXJOIKwo5V7f
+ 1++NBpMCrbCeyfcHf3uSTssIo5dGBxBqIo8xNrbb3bdbTICqyUaosp1Z0r10zHj6VlR/
+ tAZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704877207; x=1705482007;
+ d=1e100.net; s=20230601; t=1704877209; x=1705482009;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uRYwGnRvNaF66+ZgD+qJDnGYw78KjfSr86sf9gWXd4E=;
- b=vMPF8UJWdTYR8omrKJ4Mk7GLo2bWuZNF5uDxHqwnrWIUq0UT0ZkfOxAUO+C/eC+xMM
- eBuGAIKCzMrdL9T5N0XA78gWXyYKkDMPB7RYsQw8/21QByfJFJNKFKdoCAkB0Vvcac83
- FyrFedgUxWvOjimB7sc/GE6DUV1TChApToAyrYe+1AgoFnor1LWXnE0yT4P5A5jd163N
- g8kcSOYmfYJt1NZDzofGVqS+xqMoQKugf+Tc2N3E8LOoRH+4ZItO0N98LxBwDxU3EO2S
- bBgpeVJ6sh9GmiiGQee3z6L7RhHP6yKRtykRDYHCLHXR12kQagaXYVChycfKpAJK5QRC
- TwVw==
-X-Gm-Message-State: AOJu0YxNW0Usay/12aQ8MdZGsm2AxoNXyd70vjlzUqidSfSZ9kvLySRA
- pioy9Q1H9vcBtWrPve88y/VrDjWtsXvfiM1u
-X-Google-Smtp-Source: AGHT+IGxkRNv1yguM1cKjp6wc6tTB6PrkQv11J3vV57ReChQ0PQbDlPzmQOinCGcfgL0I0J5GL2FwA==
-X-Received: by 2002:a05:6a20:244a:b0:19a:288a:60a9 with SMTP id
- t10-20020a056a20244a00b0019a288a60a9mr592924pzc.18.1704877206023; 
- Wed, 10 Jan 2024 01:00:06 -0800 (PST)
+ bh=qMHclOSf6qVt4kU3bDRKPZmEtxqORxYsuLvB7CuuViM=;
+ b=c0UtE+1U7aK0zpYlCvevfqd3JZtBBfacGnSgyF6pD7wd37V3lYQ5jsD8wuyg6I/gVh
+ bUtdFMP3mHy3jRwzq2fvCcaDOov+u8DRqTvwGwrTr79pxxoUxsWbx2TFdE8xaldDkeqb
+ 2Kgj0iYty/1ur/Ezr/xKNlv6fv4vByUB28KEpO1XqzisLCZecS3w3ieKfptMGnPREPpa
+ 8mFfcPi3BC0IMuSCVogE0b8mH+h9URaY/ExQ/MyEKAQwqqNW7rDETRtDry8HvsDCXELx
+ hPZbnDwHNcA+xI6L1M3j0v5yOBYbGi02a5vCecvSKpNeQh1+xlwCn/A+e4ilxdErlr95
+ jXAQ==
+X-Gm-Message-State: AOJu0Yw49SxQGB3mn6zcm3x4C/++TJZ7oYTfJIvv1LMg4nthNqRYeoY0
+ g9GA6qAdOndc53+euDnEtkLlPdwBG43n1IRD
+X-Google-Smtp-Source: AGHT+IGexGvJUSwmhcmNHy7WPwMuykeMJ7LnA/JWPf8W42WwGi3dOr5f7fnuUIhh46bC0qxk/nnHbA==
+X-Received: by 2002:a05:6358:98a7:b0:175:745e:dbef with SMTP id
+ q39-20020a05635898a700b00175745edbefmr729876rwa.61.1704877209210; 
+ Wed, 10 Jan 2024 01:00:09 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.01.00.02
+ t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.01.00.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 01:00:05 -0800 (PST)
+ Wed, 10 Jan 2024 01:00:08 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Andrew Jones <ajones@ventanamicro.com>
-Subject: [PULL 37/65] target/riscv/kvm: add 'rva22u64' flag as unavailable
-Date: Wed, 10 Jan 2024 18:57:05 +1000
-Message-ID: <20240110085733.1607526-38-alistair.francis@wdc.com>
+ Andrew Jones <ajones@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 38/65] target/riscv/tcg: add user flag for profile support
+Date: Wed, 10 Jan 2024 18:57:06 +1000
+Message-ID: <20240110085733.1607526-39-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240110085733.1607526-1-alistair.francis@wdc.com>
 References: <20240110085733.1607526-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
+ envelope-from=alistair23@gmail.com; helo=mail-oi1-x229.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,57 +99,155 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-KVM does not have the means to support enabling the rva22u64 profile.
-The main reasons are:
+The TCG emulation implements all the extensions described in the
+RVA22U64 profile, both mandatory and optional. The mandatory extensions
+will be enabled via the profile flag. We'll leave the optional
+extensions to be enabled by hand.
 
-- we're missing support for some mandatory rva22u64 extensions in the
-  KVM module;
+Given that this is the first profile we're implementing in TCG we'll
+need some ground work first:
 
-- we can't make promises about enabling a profile since it all depends
-  on host support in the end.
+- all profiles declared in riscv_profiles[] will be exposed to users.
+TCG is the main accelerator we're considering when adding profile
+support in QEMU, so for now it's safe to assume that all profiles in
+riscv_profiles[] will be relevant to TCG;
 
-We'll revisit this decision in the future if needed. For now mark the
-'rva22u64' profile as unavailable when running a KVM CPU:
+- we'll not support user profile settings for vendor CPUs. The flags
+will still be exposed but users won't be able to change them;
 
-$ qemu-system-riscv64 -machine virt,accel=kvm -cpu rv64,rva22u64=true
-qemu-system-riscv64: can't apply global rv64-riscv-cpu.rva22u64=true:
-    'rva22u64' is not available with KVM
+- profile support, albeit available for all non-vendor CPUs, will be
+based on top of the new 'rv64i' CPU. Setting a profile to 'true' means
+enable all mandatory extensions of this profile, setting it to 'false'
+will disable all mandatory profile extensions of the CPU, which will
+obliterate preset defaults. This is not a problem for a bare CPU like
+rv64i but it can allow for silly scenarios when using other CPUs. E.g.
+an user can do "-cpu rv64,rva22u64=false" and have a bunch of default
+rv64 extensions disabled. The recommended way of using profiles is the
+rv64i CPU, but users are free to experiment.
+
+For now we'll handle multi-letter extensions only. MISA extensions need
+additional steps that we'll take care later. At this point we can boot a
+Linux buildroot using rva22u64 using the following options:
+
+-cpu rv64i,rva22u64=true,sv39=true,g=true,c=true,s=true
+
+Note that being an usermode/application profile we still need to
+explicitly set 's=true' to enable Supervisor mode to boot Linux.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Message-ID: <20231218125334.37184-10-dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20231218125334.37184-11-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ target/riscv/tcg/tcg-cpu.c | 80 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 80 insertions(+)
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index a31df6e273..2c5217102c 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -414,7 +414,7 @@ static void cpu_set_cfg_unavailable(Object *obj, Visitor *v,
-     }
- 
-     if (value) {
--        error_setg(errp, "extension %s is not available with KVM",
-+        error_setg(errp, "'%s' is not available with KVM",
-                    propname);
-     }
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index f12e0620e5..9234254772 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -127,6 +127,19 @@ static bool cpu_cfg_offset_is_named_feat(uint32_t ext_offset)
+     return false;
  }
-@@ -495,6 +495,11 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
-     riscv_cpu_add_kvm_unavail_prop_array(cpu_obj, riscv_cpu_extensions);
-     riscv_cpu_add_kvm_unavail_prop_array(cpu_obj, riscv_cpu_vendor_exts);
-     riscv_cpu_add_kvm_unavail_prop_array(cpu_obj, riscv_cpu_experimental_exts);
-+
-+   /* We don't have the needed KVM support for profiles */
-+    for (i = 0; riscv_profiles[i] != NULL; i++) {
-+        riscv_cpu_add_kvm_unavail_prop(cpu_obj, riscv_profiles[i]->name);
+ 
++static void riscv_cpu_enable_named_feat(RISCVCPU *cpu, uint32_t feat_offset)
++{
++    switch (feat_offset) {
++    case CPU_CFG_OFFSET(zic64b):
++        cpu->cfg.cbom_blocksize = 64;
++        cpu->cfg.cbop_blocksize = 64;
++        cpu->cfg.cboz_blocksize = 64;
++        break;
++    default:
++        g_assert_not_reached();
 +    }
++}
++
+ static void cpu_bump_multi_ext_priv_ver(CPURISCVState *env,
+                                         uint32_t ext_offset)
+ {
+@@ -890,6 +903,71 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+     }
  }
  
- static int kvm_riscv_get_regs_core(CPUState *cs)
++static void cpu_set_profile(Object *obj, Visitor *v, const char *name,
++                            void *opaque, Error **errp)
++{
++    RISCVCPUProfile *profile = opaque;
++    RISCVCPU *cpu = RISCV_CPU(obj);
++    bool value;
++    int i, ext_offset;
++
++    if (riscv_cpu_is_vendor(obj)) {
++        error_setg(errp, "Profile %s is not available for vendor CPUs",
++                   profile->name);
++        return;
++    }
++
++    if (cpu->env.misa_mxl != MXL_RV64) {
++        error_setg(errp, "Profile %s only available for 64 bit CPUs",
++                   profile->name);
++        return;
++    }
++
++    if (!visit_type_bool(v, name, &value, errp)) {
++        return;
++    }
++
++    profile->user_set = true;
++    profile->enabled = value;
++
++    for (i = 0; profile->ext_offsets[i] != RISCV_PROFILE_EXT_LIST_END; i++) {
++        ext_offset = profile->ext_offsets[i];
++
++        if (profile->enabled) {
++            if (cpu_cfg_offset_is_named_feat(ext_offset)) {
++                riscv_cpu_enable_named_feat(cpu, ext_offset);
++            }
++
++            cpu_bump_multi_ext_priv_ver(&cpu->env, ext_offset);
++        }
++
++        g_hash_table_insert(multi_ext_user_opts,
++                            GUINT_TO_POINTER(ext_offset),
++                            (gpointer)profile->enabled);
++        isa_ext_update_enabled(cpu, ext_offset, profile->enabled);
++    }
++}
++
++static void cpu_get_profile(Object *obj, Visitor *v, const char *name,
++                            void *opaque, Error **errp)
++{
++    RISCVCPUProfile *profile = opaque;
++    bool value = profile->enabled;
++
++    visit_type_bool(v, name, &value, errp);
++}
++
++static void riscv_cpu_add_profiles(Object *cpu_obj)
++{
++    for (int i = 0; riscv_profiles[i] != NULL; i++) {
++        const RISCVCPUProfile *profile = riscv_profiles[i];
++
++        object_property_add(cpu_obj, profile->name, "bool",
++                            cpu_get_profile, cpu_set_profile,
++                            NULL, (void *)profile);
++    }
++}
++
+ static bool cpu_ext_is_deprecated(const char *ext_name)
+ {
+     return isupper(ext_name[0]);
+@@ -1017,6 +1095,8 @@ static void riscv_cpu_add_user_properties(Object *obj)
+ 
+     riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_deprecated_exts);
+ 
++    riscv_cpu_add_profiles(obj);
++
+     for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
+         qdev_property_add_static(DEVICE(obj), prop);
+     }
 -- 
 2.43.0
 
