@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE57C829DEC
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 16:50:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FAE4829DFF
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 16:54:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNapY-0007aT-LK; Wed, 10 Jan 2024 10:49:24 -0500
+	id 1rNati-0000Ta-Lh; Wed, 10 Jan 2024 10:53:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNapW-0007Zx-II
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 10:49:22 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNath-0000TJ-2T
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 10:53:41 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNapU-0002rB-NE
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 10:49:22 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-336c9acec03so3889574f8f.2
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 07:49:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNatf-0005dQ-CM
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 10:53:40 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40d5336986cso55786985e9.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 07:53:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704901759; x=1705506559; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704902017; x=1705506817; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
  bh=NZRqVuenPWIeJ0HEFm/EdEMDQu8jxtzURv+23qvhkQs=;
- b=POCI+gS7iKW+2WXYYYLWLBUnolPgW7Y7ThVVuxgAVvtDaGD4IP+iN5+l/1bNljl8N9
- QDaiQptC/tV3LbpzGiUlFPmprXx2mn30M8QwgbFu5WTcrkkptJQ2DBW80wDs5EoOWctx
- t0lsEDZ0Cn85sNnfWA6xvbLde+mXXp4EivCplLBSlOa+qRNofClhYLhrm3DpZMDtAkoM
- Sz33arlxfqU/tgRZMwHVs8VRFZlqPgQJ1kcQNf85JKSyiYGis/OzerVZoxFhSgmkcOpi
- X/eF+3A0Mvr0rl3QolrUfBno0ODKui0I5Vh314M3cZ8m0XBAnLGsfzvCWv/cD9rRGqDN
- 6Crw==
+ b=gLOVWOiE9yqPJFE8j5l0vJKFsSvkB08dzEPDRlk0cubfyv295ZHRsRNikNm9wt0USq
+ Vwiiftf0BUS4iGVX9bA42bE03AGHAS0oZ+uX7S+EZZsfUDz7L842kYR+TtGUvvh25v4f
+ wub6uf1/8a5gDpol2IRFlYDgDRHCB4G2pOvNGR9jBx8rNsjmYIKEPs7uyfhmojqIV0NX
+ gLp+H7Ms9EIgmvwmWT5ijD16d+VqHvtC/QyALdCSHNJy47l/zHZapErXaAx2+/UwOjCc
+ w9YazxqYis8tXNlaR/fMwbJy90XyhQcI5hJmklLEUfoZiWlKXdU/oWb7O4J4jDQGGdrS
+ ljig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704901759; x=1705506559;
+ d=1e100.net; s=20230601; t=1704902017; x=1705506817;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
  bh=NZRqVuenPWIeJ0HEFm/EdEMDQu8jxtzURv+23qvhkQs=;
- b=l3UGSQzSk6zf+6s4RK6HV0/39d2uXP/Wi0mtwC2wvP4mjtbZhWJin/xBK67ZJSKk72
- zGeBafCwNl3BL9MuodnK0koKLz70xKajAgg6+7blIKFHnuZUD62ZPF1dJLoWKNv5/wif
- ez6a8C2QflDfxguATAhVTmMAF8RR5f7RZsiQB2HjLLNAKNPM4eaeYhI/jq8lYv5xPiBE
- BsqIwo8PouTfKjl0rZmMU7y6a9dBesDuNVP6MCGSmSf1XVWBOk15pRuw2Uf8pyzctGEx
- SuKILNr7FG3YBVDha79Fzo4JYL0VXIREforavhZ1cBqJKsl4bgtFbDPxPGjpg0I/PcKk
- rdzA==
-X-Gm-Message-State: AOJu0YzVvRNoJEASDqFFX+Xf1AfPKUAJRZQGZbS70XTWx0lFwyEgmbTC
- jT2cIryE5SmyL2K05PpyH6viGZI4FgqKVA==
-X-Google-Smtp-Source: AGHT+IFxNI5vhPQCV5LzUmJPobJtINCRB0tNkmx3QMkuJ1PwzLGXQC+feJmWLQLEOPpY/NDrET3CJg==
-X-Received: by 2002:a5d:5309:0:b0:336:73d6:b42b with SMTP id
- e9-20020a5d5309000000b0033673d6b42bmr664244wrv.117.1704901759168; 
- Wed, 10 Jan 2024 07:49:19 -0800 (PST)
+ b=IeRPZ4WTuoU3jrGyakTQ0Kr+FEGf0J9kMq4Ai7W+6D7ivkAyE1HzCYSDzPkmVEbQkU
+ XbuS4NuQi22XazSgDPxc3lGeeJ3ifvhqqxwUq3Rk5fby1iuwMseFMy/mjn1ntKm4w011
+ d69iPA/SJPC3FCTM6GL/F6Nf4ncIpGSktHmIqnIEZRzRVbfExr1vfs64+d6wK7Vr1gvK
+ L1nLP+A2TlVQoJK6rS7RhX4Xe0F/oVRMim30dTl4XsUu8v3RK7Hlf15b97Y4u+iNBqfy
+ xJld9xL3HUxw/s1wamwoaR+WRuZwfjer+h8iGMr8QTgkTuePugfwZfYd9Hyc7yxN0KvR
+ 7QsQ==
+X-Gm-Message-State: AOJu0Yx2UmIWUIocdti7WWYO9G7nfXxp1aOaHkqeOv2YSXcPVC1zSx7N
+ X5Rbl7iTjYgIJswzSIXl08B/tKPK36LHxQ==
+X-Google-Smtp-Source: AGHT+IGFuT7224gSV3NRAuDK9vMsaQlN4qgzNy+xdyE9QiKhn6tSOLLiKkQ6MFisG1W9c5g80JcBtw==
+X-Received: by 2002:a05:600c:3484:b0:40e:3f83:fc34 with SMTP id
+ a4-20020a05600c348400b0040e3f83fc34mr684764wmq.0.1704902017496; 
+ Wed, 10 Jan 2024 07:53:37 -0800 (PST)
 Received: from [192.168.69.100] (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
  [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
- m2-20020adfa3c2000000b00336c9ad1173sm5236966wrb.26.2024.01.10.07.49.17
+ fl13-20020a05600c0b8d00b0040d8cd116e4sm2632002wmb.37.2024.01.10.07.53.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Jan 2024 07:49:18 -0800 (PST)
-Message-ID: <c6c3f9e3-c658-4f5f-b0d9-c57d83a61610@linaro.org>
-Date: Wed, 10 Jan 2024 16:49:16 +0100
+ Wed, 10 Jan 2024 07:53:37 -0800 (PST)
+Message-ID: <a6b05997-cc3f-453c-93a6-66dce2cd9a2e@linaro.org>
+Date: Wed, 10 Jan 2024 16:53:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC/PATCH v1 09/11] gunyah: CPU execution loop
@@ -71,8 +71,8 @@ From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 In-Reply-To: <20240109090039.1636383-10-quic_svaddagi@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
