@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68821829E6D
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A100829E6E
 	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 17:23:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNbLF-00025k-F5; Wed, 10 Jan 2024 11:22:09 -0500
+	id 1rNbLX-0002BK-KK; Wed, 10 Jan 2024 11:22:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNbLD-00025b-TD
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 11:22:07 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1rNbLW-0002Ad-6v
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 11:22:26 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNbLC-0005Kj-3c
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 11:22:07 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-55783b7b47aso4320741a12.0
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 08:22:05 -0800 (PST)
+ id 1rNbLS-0005UY-IH
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 11:22:25 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-555f581aed9so5069827a12.3
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 08:22:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704903724; x=1705508524; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704903740; x=1705508540; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=RQbVWWV0iLbOgc1sqt3l1d55SP51d5YX5F/43B21edQ=;
- b=BGqPkcuWcImWtxHnTmDjL+ZVQOZmQjw8XRqEXMgRdFau0KHoDsEUx0c3W9cJJlYfbu
- i9DQcC3sq07ufTbfPUfPS/SUafa9UVkKzYrTa4umqbBVY6J30Oqan0fVFy85XVMGYJC+
- o6auVH/JdJ5MSGOkVkz7/DWM4mAU6xDUpcBMo4fdRKATN3VZYaYWBdiH4id5E2ky9+eP
- A86Gmnr3gAjOBAeeWjwfyNWfx0tS31Q4Wvj8tr7ip4EnyPzNffgBcYq1reATg8YOtVMJ
- HVZEYupkVJBQjXGCC3CeIbxx3/hXVkeJwTwxxUqGL5gjpecWGD1jo/8w2gUmW7nitt1g
- 9TMg==
+ bh=Oo54KFymR/TSXwQNyoX3TwFxxLpTGuKsOz/RqEI6Kjo=;
+ b=jSyWzGf0TSC0MEDHZVdK160i93XPsZNLWxr8KXg/GFB2r8oFyPBJv+Xgwm7GtS3Hpq
+ xT7Ko0tZN6+FFcE/ayVZDuMeYvZm9y5cX0VtiPNED9pL8Nx9+bslhkf20S91yXVpwZ7K
+ BG6nftyM41UH+nO87PWkk+YzNfk6qCpYrDXDgxXAdKcnFCwaZyvySyIAjnR4sUSc73oC
+ b5gnYa5sH3AmWLtYizmmNLMSKHr+QPaPINGa58VvCqW7TnM567QCHPAoW1ONGq4xQ5vI
+ zltJb3j7/354BJ+Vo0ZCFH3QnIlcoKz9aoRGcE0o8OpuXLLERl+fow9XjCwz9lVHjMLn
+ kXnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704903724; x=1705508524;
+ d=1e100.net; s=20230601; t=1704903740; x=1705508540;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=RQbVWWV0iLbOgc1sqt3l1d55SP51d5YX5F/43B21edQ=;
- b=QBnz7gUtLqnYrLcOcfVU7ZpyP8jG1pls9CRnZQ32m06oG/zZPpNWCkYxSQUdcl20NF
- 2w5IR1EWsW4EnOmvkueKD/JK9+jooOrb6hzJrbdjkkLBNeoBrWebZgHUKDd6bZyBxjko
- 7jD6Bk8KeD8vQi6V1R4MMy43ejdg0ctw+gfs4oxYihev3IIZngpwQ7NiDPgoObMKNuJ4
- uTBcoMIIW/Oncs4FTSaGuw/3Z3O7NUlhXub8FkNOwem7uKdp8OKEM4MCxHGzROIYbyJx
- MXZaEjN6BUBRcXMufd0URTQGgi1KWwlIfShum0dK1X47bcMz+3wVWQ2vovDkjQoRQOjn
- YElg==
-X-Gm-Message-State: AOJu0YyIYCnQb/f9Eiz0GflfRSc5CKau2ChvxSGT9w9L0AQwGykvJClo
- Ujo6K9BjCvQqd+3NiWSO3DeX67RvcDVrNaxPysBRYHnxKy146NhakfnbHUWZ
-X-Google-Smtp-Source: AGHT+IGU7WKhaAnqmxddygqHL5Cv/TDrcW21DzikxPZcRo+vlmplggp/4Cuj+rsed5DlT1IkgjOqis4L3c0NqFdXQi0=
-X-Received: by 2002:a05:6402:3cf:b0:557:6d4e:d087 with SMTP id
- t15-20020a05640203cf00b005576d4ed087mr594841edw.77.1704903723947; Wed, 10 Jan
- 2024 08:22:03 -0800 (PST)
+ bh=Oo54KFymR/TSXwQNyoX3TwFxxLpTGuKsOz/RqEI6Kjo=;
+ b=L5mesEL/Qckzq/qGC629lI3XgFkwoM9oQjqTDvh7bIGnaYPNWruzSyVNlaI/qJvG63
+ sTruFSk1hG9KBw7+hqOZcWPrqhTEtyb3le9190e82qTBTYmIwP7iDxrzvHI1flOf49pm
+ 8SSTqwj93cFEAslpv+CAQXtf1zU33FGBcuGzcGv6HCd16RXpfG91z44KQjJD2+2N6yvu
+ JB7BZI/WG8ViZfAPo9jLWZ95dA0qG4Jgc2mXgqV7/T6bZTwCtN4wjWAIaebn+0TBHtr1
+ mAoiZR1/LeRHpHknBTZy2CuZZYT9CPWiRAvzFlTqazLyZAqFlBCsQ8k9zKfLEPC9zFaI
+ xDjw==
+X-Gm-Message-State: AOJu0Yywop6LVZOdXfl4cRZePNJGz/7E2xacXzkDLZAMAo0oWDkUesYv
+ QSKM4xW4kcDMCrAQiEzdNlvTNddrf2FWorrEeLSGjwwm/n692w==
+X-Google-Smtp-Source: AGHT+IFsnyKeIrw6xrNmqzrKbVVOTanF8vtyAJ/lApf0Jyfh4crzqBENn5sHQ60KteyZtxE6V25HTtxJsvWA8zJLW4k=
+X-Received: by 2002:a05:6402:22bc:b0:557:dc52:32e0 with SMTP id
+ cx28-20020a05640222bc00b00557dc5232e0mr618720edb.24.1704903740421; Wed, 10
+ Jan 2024 08:22:20 -0800 (PST)
 MIME-Version: 1.0
-References: <20240110070808.369516-1-mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <20240110070808.369516-1-mark.cave-ayland@ilande.co.uk>
+References: <20240110085733.1607526-1-alistair.francis@wdc.com>
+In-Reply-To: <20240110085733.1607526-1-alistair.francis@wdc.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 10 Jan 2024 16:21:30 +0000
-Message-ID: <CAFEAcA9_iDwgGr9n9HeYUGL3=NyJ0=8Vrp9O2P23APzYaiL7FQ@mail.gmail.com>
-Subject: Re: [PULL 0/2] qemu-sparc queue 20240110
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: qemu-devel@nongnu.org
+Date: Wed, 10 Jan 2024 16:21:47 +0000
+Message-ID: <CAFEAcA9b59b91b=FO4Yg+or9PwFMRe-UvCNT77ENtJOiSDe2EA@mail.gmail.com>
+Subject: Re: [PULL 00/65] riscv-to-apply queue
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,8 +84,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 10 Jan 2024 at 07:09, Mark Cave-Ayland
-<mark.cave-ayland@ilande.co.uk> wrote:
+On Wed, 10 Jan 2024 at 08:58, Alistair Francis <alistair23@gmail.com> wrote:
 >
 > The following changes since commit 9468484fe904ab4691de6d9c34616667f377ceac:
 >
@@ -93,17 +92,36 @@ On Wed, 10 Jan 2024 at 07:09, Mark Cave-Ayland
 >
 > are available in the Git repository at:
 >
->   https://github.com/mcayland/qemu.git tags/qemu-sparc-20240110
+>   https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20240110
 >
-> for you to fetch changes up to 995d8348eb3d8ddf24882ed384a5c50eaf3aeae9:
+> for you to fetch changes up to 71b76da33a1558bcd59100188f5753737ef6fa21:
 >
->   util/fifo8: Introduce fifo8_peek_buf() (2024-01-10 06:58:50 +0000)
->
-> ----------------------------------------------------------------
-> qemu-sparc queue
-> - introduce fifo8_peek_buf() function
+>   target/riscv: Ensure mideleg is set correctly on reset (2024-01-10 18:47:47 +1000)
 >
 > ----------------------------------------------------------------
+> RISC-V PR for 9.0
+>
+> * Make vector whole-register move (vmv) depend on vtype register
+> * Fix th.dcache.cval1 priviledge check
+> * Don't allow write mstatus_vs without RVV
+> * Use hwaddr instead of target_ulong for RV32
+> * Fix machine IDs QOM getters\
+> * Fix KVM reg id sizes
+> * ACPI: Enable AIA, PLIC and update RHCT
+> * Fix the interrupts-extended property format of PLIC
+> * Add support for Zacas extension
+> * Add amocas.[w,d,q] instructions
+> * Document acpi parameter of virt machine
+> * RVA22 profiles support
+> * Remove group setting of KVM AIA if the machine only has 1 socket
+> * Add RVV CSRs to KVM
+> * sifive_u: Update S-mode U-Boot image build instructions
+> * Upgrade OpenSBI from v1.3.1 to v1.4
+> * pmp: Ignore writes when RW=01 and MML=0
+> * Assert that the CSR numbers will be correct
+> * Don't adjust vscause for exceptions
+> * Ensure mideleg is set correctly on reset
+>
 
 
 Applied, thanks.
