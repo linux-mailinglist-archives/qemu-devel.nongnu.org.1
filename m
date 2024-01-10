@@ -2,77 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B177182A3C9
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 23:14:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB6C82A41C
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 23:45:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNgpO-0002fF-Cp; Wed, 10 Jan 2024 17:13:38 -0500
+	id 1rNhJI-0004QX-LH; Wed, 10 Jan 2024 17:44:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNgpB-0002f5-0U
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 17:13:25 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1rNhJG-0004Q6-1q
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 17:44:30 -0500
+Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNgp8-00082h-Cn
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 17:13:24 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6d9af1f52bcso2458581b3a.3
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 14:13:21 -0800 (PST)
+ id 1rNhJE-0002Og-82
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 17:44:29 -0500
+Received: by mail-yb1-xb2e.google.com with SMTP id
+ 3f1490d57ef6-dbed0710c74so3834076276.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 14:44:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704924800; x=1705529600; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=NUIq2JSFXzRKcxQi031nqn7Z14OJlcBGvqH6MIFJrh8=;
- b=fWaBv3PlNxlnNZX/k1SraYNpBhw/1YtWbx+NraDVQvjDOyAx+M1+PpUs41Ik6z+d30
- WXBseYHsZzlhQyfg6AksdfSOU/q80wJEoXPvENxg7ylFdgCmCjjlC10NIwZDqlbHrdbk
- A2QBbjRbh0g+yJrqFjT42Vb1PNNP3ms4wGf5Wf0wKAbRI1oVLvpTnz3Fz6J7Ht5hXY2e
- SgjFxj/wdIBMKtqLwhZmYtRkfrsWkcl0boNCxwV2GSv+RuD52SVbdKecZUWPCcMuv9z7
- vS+51s5uOWOJ3MIR8tOjxNl0cWP/g7umXMp9dnl30GFYITqMFqAzN/A1FsM43BYKoeS3
- EAUA==
+ d=linaro.org; s=google; t=1704926666; x=1705531466; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=sDLkiIiuMWJLnnYxUs/vsP2E2v2LV+NUnxs22kj9jnQ=;
+ b=tlCDzn6q8zsjXDCxtHLwrWRHADV+bDBPtZaczBxgllKJbzNJX/eZHdW0urNyoFDYqE
+ Y2v4i9QKoZxuAe2wq8GVK2YaJQDRds4zo9MwJ+OtQQnUPinbLt2H4lJOsARdK4qDOH9A
+ 4CHTRPpCooOIVWtXJFclxngGpoZUeFk6SOkQ+6ABB8kh9Tk9CPWSMyD8yIBAimGNYQuT
+ 1wufd6QmYN1dqAvqKMgVhx6NXNOYHMHOC/ltRmIRwpIPuwoFFf9o6TzSzxwlSzEO5GeD
+ x7Cf5WShfySuhc9PUSd/0u0HP6bRFxnnpC6ZnVbUSmIW4jFruPZXx+8EpIdiadAnv+cS
+ Vl6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704924800; x=1705529600;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NUIq2JSFXzRKcxQi031nqn7Z14OJlcBGvqH6MIFJrh8=;
- b=H8k49SWLoO1h0Qlv+m72t2yhyEagrnoz23QqX42mP1zyQ1mIJ0P15HZMVlA05odXT0
- Ss7BQHrxyolGYQN3WpfbmhccPHNiqSYj6wVGZqLHh+pZnOGBeHGp+JxSuT1xPc0Gjv3o
- SjtJlCKGUXqNtWKXvO9vUHmsxjwH0xC2v3FCak3qPj4wtodj+3SYs4E9jkLa1sZFVhfl
- 7OzJ/7w4MxUAroNZ/eNbOhXgBwzhbYLMNTQ5q786JGqbBTjaPPnRKE5JABu1usbltfVh
- GJTM7ItDfQKWXBK8+Lw7PAZIzeW3hY1JOfapDrIkFjTpNFlenUkO/HG/H3YeusnFmi1h
- F73g==
-X-Gm-Message-State: AOJu0YyDxWKyXcjMbdgxXV7QvJO1T5Ijh9/sJRnYwIrmjDi4/RJE/paq
- q0swA9p25alJ4EZrO5VPkP8YyTloOLJQXw==
-X-Google-Smtp-Source: AGHT+IE2rFoFC9lIQmAGOBO62FgY0YZhQnzQI/AGaEg84tBc6cE/QY4C1eyBaV6JUXhOueSHoW9Rpw==
-X-Received: by 2002:a05:6a20:8405:b0:197:1e78:8a79 with SMTP id
- c5-20020a056a20840500b001971e788a79mr114173pzd.50.1704924800207; 
- Wed, 10 Jan 2024 14:13:20 -0800 (PST)
-Received: from [192.168.40.227] ([172.58.27.160])
- by smtp.gmail.com with ESMTPSA id
- mf6-20020a17090b184600b0028dd956835bsm308556pjb.2.2024.01.10.14.12.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Jan 2024 14:13:19 -0800 (PST)
-Message-ID: <7c278618-3094-4978-85a5-4074f79e97fa@linaro.org>
-Date: Thu, 11 Jan 2024 09:12:34 +1100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/33] linux-user/arm: Remove qemu_host_page_size from
- init_guest_commpage
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-References: <20240102015808.132373-1-richard.henderson@linaro.org>
- <20240102015808.132373-8-richard.henderson@linaro.org>
- <070c8e36-b208-4f3a-9725-64a3deaf9441@linaro.org>
-Content-Language: en-US
+ d=1e100.net; s=20230601; t=1704926666; x=1705531466;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=sDLkiIiuMWJLnnYxUs/vsP2E2v2LV+NUnxs22kj9jnQ=;
+ b=ee1TuTrpbv/8cT55HrxnA//Tb1IDFgQfI12eGN7gG5s2rEI1qVIb71gBKIpBc1ULhn
+ dLZdiUVYys6XmxjohHL9m3qCt29D0GyspXhl7deP4cgY40fC9XsDEiMc+9KwMssIp/7w
+ KP8aXQ3SV+jH0wugz4Gusxb0vtgWONwhqv6LtQS/EMszkFXhgW1nFU6vUqa7UC4EI3Wu
+ GEQVFtBUXhmo8cALJdGBzjX7CuGwurekzENst3uWH+fYtLkAA068MLH1S6mO8Y71s7fJ
+ WK1j+fqmIgcRmKnP+tu7T3HXzRZDDZl2aAiXDrVbCd+1f4Mc4EF3L5Rf8t4dERAJ4he4
+ iwuA==
+X-Gm-Message-State: AOJu0YzIFnrXsI+wu8vbBrwUPbzHKikvbpfzjDcpQYLeZEUPXVQ9/1uk
+ QoPsicTflhdv54nkC3E9nrXLQSRhc89nEN2SfHIK/45gq8Rwe1d3
+X-Google-Smtp-Source: AGHT+IFzxzvcBEg/vxAS4AoNjP6dezmrcXGtqAYMJA23t6qhjSZ8muuqczFFGFAy9hrxji9hviV8JQ==
+X-Received: by 2002:a25:4fd7:0:b0:dbe:3abd:3e7c with SMTP id
+ d206-20020a254fd7000000b00dbe3abd3e7cmr320766ybb.83.1704926666545; 
+ Wed, 10 Jan 2024 14:44:26 -0800 (PST)
+Received: from stoup.. ([172.58.27.160]) by smtp.gmail.com with ESMTPSA id
+ ks23-20020ac86217000000b0042987f6874bsm2092281qtb.92.2024.01.10.14.44.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 10 Jan 2024 14:44:26 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <070c8e36-b208-4f3a-9725-64a3deaf9441@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org,
+	pbonzini@redhat.com
+Subject: [PATCH v3 00/38] tcg: Introduce TCG_COND_TST{EQ,NE}
+Date: Thu, 11 Jan 2024 09:43:30 +1100
+Message-Id: <20240110224408.10444-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-yb1-xb2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,60 +89,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/8/24 20:38, Pierrick Bouvier wrote:
-> On 1/2/24 05:57, Richard Henderson wrote:
->> Use qemu_real_host_page_size.
->> If the commpage is not within reserved_va, use MAP_FIXED_NOREPLACE.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   linux-user/elfload.c | 13 ++++++++-----
->>   1 file changed, 8 insertions(+), 5 deletions(-)
->>
->> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
->> index 4fcc490ce6..2e2b1b0784 100644
->> --- a/linux-user/elfload.c
->> +++ b/linux-user/elfload.c
->> @@ -459,6 +459,7 @@ enum {
->>   static bool init_guest_commpage(void)
->>   {
->>       ARMCPU *cpu = ARM_CPU(thread_cpu);
->> +    int host_page_size = qemu_real_host_page_size();
->>       abi_ptr commpage;
->>       void *want;
->>       void *addr;
->> @@ -471,10 +472,12 @@ static bool init_guest_commpage(void)
->>           return true;
->>       }
->> -    commpage = HI_COMMPAGE & -qemu_host_page_size;
->> +    commpage = HI_COMMPAGE & -host_page_size;
->>       want = g2h_untagged(commpage);
->> -    addr = mmap(want, qemu_host_page_size, PROT_READ | PROT_WRITE,
->> -                MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
->> +    addr = mmap(want, host_page_size, PROT_READ | PROT_WRITE,
->> +                MAP_ANONYMOUS | MAP_PRIVATE |
->> +                (commpage < reserved_va ? MAP_FIXED : MAP_FIXED_NOREPLACE),
->> +                -1, 0);
->>       if (addr == MAP_FAILED) {
->>           perror("Allocating guest commpage");
->> @@ -487,12 +490,12 @@ static bool init_guest_commpage(void)
->>       /* Set kernel helper versions; rest of page is 0.  */
->>       __put_user(5, (uint32_t *)g2h_untagged(0xffff0ffcu));
->> -    if (mprotect(addr, qemu_host_page_size, PROT_READ)) {
->> +    if (mprotect(addr, host_page_size, PROT_READ)) {
->>           perror("Protecting guest commpage");
->>           exit(EXIT_FAILURE);
->>       }
->> -    page_set_flags(commpage, commpage | ~qemu_host_page_mask,
->> +    page_set_flags(commpage, commpage | (host_page_size - 1),
->>                      PAGE_READ | PAGE_EXEC | PAGE_VALID);
->>       return true;
->>   }
-> 
-> To confirm if I understand correctly, when using a reserved va, the contiguous address 
-> space is reserved using mmap, thus MAP_FIXED_NOREPLACE would fail when hitting it?
+Expose a pair of comparison operators that map to the "test"
+comparison that is available on many architectures.
 
-Correct.
+Changes for v3:
+  * Make support for TCG_COND_TST* optional (paolo)
+  * Drop riscv, loongarch64 and (unposted) mips backend changes.
+  * Incorporate Paolo's tcg/i386 TEST improvements
+  * Convert some target/s390x cases for even more testing.
+  * Probably some bug fixes in there too...
+
 
 r~
+
+
+Paolo Bonzini (1):
+  tcg/i386: Use TEST r,r to test 8/16/32 bits
+
+Richard Henderson (37):
+  tcg: Introduce TCG_COND_TST{EQ,NE}
+  tcg: Introduce TCG_TARGET_HAS_tst
+  tcg/optimize: Split out arg_is_const_val
+  tcg/optimize: Split out do_constant_folding_cond1
+  tcg/optimize: Do swap_commutative2 in do_constant_folding_cond2
+  tcg/optimize: Handle TCG_COND_TST{EQ,NE}
+  tcg/optimize: Lower TCG_COND_TST{EQ,NE} if unsupported
+  target/alpha: Pass immediate value to gen_bcond_internal()
+  target/alpha: Use TCG_COND_TST{EQ,NE} for BLB{C,S}
+  target/alpha: Use TCG_COND_TST{EQ,NE} for CMOVLB{C,S}
+  target/alpha: Use TCG_COND_TSTNE for gen_fold_mzero
+  target/m68k: Use TCG_COND_TST{EQ,NE} in gen_fcc_cond
+  target/sparc: Use TCG_COND_TSTEQ in gen_op_mulscc
+  target/s390x: Use TCG_COND_TSTNE for CC_OP_{TM,ICM}
+  target/s390x: Improve general case of disas_jcc
+  tcg: Add TCGConst argument to tcg_target_const_match
+  tcg/aarch64: Support TCG_COND_TST{EQ,NE}
+  tcg/aarch64: Generate TBZ, TBNZ
+  tcg/aarch64: Generate CBNZ for TSTNE of UINT32_MAX
+  tcg/arm: Factor tcg_out_cmp() out
+  tcg/arm: Support TCG_COND_TST{EQ,NE}
+  tcg/i386: Pass x86 condition codes to tcg_out_cmov
+  tcg/i386: Move tcg_cond_to_jcc[] into tcg_out_cmp
+  tcg/i386: Support TCG_COND_TST{EQ,NE}
+  tcg/i386: Improve TSTNE/TESTEQ vs powers of two
+  tcg/sparc64: Hoist read of tcg_cond_to_rcond
+  tcg/sparc64: Pass TCGCond to tcg_out_cmp
+  tcg/sparc64: Support TCG_COND_TST{EQ,NE}
+  tcg/ppc: Sink tcg_to_bc usage into tcg_out_bc
+  tcg/ppc: Use cr0 in tcg_to_bc and tcg_to_isel
+  tcg/ppc: Tidy up tcg_target_const_match
+  tcg/ppc: Add TCG_CT_CONST_CMP
+  tcg/ppc: Support TCG_COND_TST{EQ,NE}
+  tcg/s390x: Split constraint A into J+U
+  tcg/s390x: Add TCG_CT_CONST_CMP
+  tcg/s390x: Support TCG_COND_TST{EQ,NE}
+  tcg/tci: Support TCG_COND_TST{EQ,NE}
+
+ docs/devel/tcg-ops.rst           |   2 +
+ include/tcg/tcg-cond.h           |  74 +++--
+ tcg/aarch64/tcg-target-con-set.h |   5 +-
+ tcg/aarch64/tcg-target-con-str.h |   1 +
+ tcg/aarch64/tcg-target.h         |   2 +
+ tcg/arm/tcg-target.h             |   2 +
+ tcg/i386/tcg-target-con-set.h    |   6 +-
+ tcg/i386/tcg-target-con-str.h    |   1 +
+ tcg/i386/tcg-target.h            |   2 +
+ tcg/loongarch64/tcg-target.h     |   2 +
+ tcg/mips/tcg-target.h            |   2 +
+ tcg/ppc/tcg-target-con-set.h     |   5 +-
+ tcg/ppc/tcg-target-con-str.h     |   1 +
+ tcg/ppc/tcg-target.h             |   2 +
+ tcg/riscv/tcg-target.h           |   2 +
+ tcg/s390x/tcg-target-con-set.h   |   8 +-
+ tcg/s390x/tcg-target-con-str.h   |   3 +-
+ tcg/s390x/tcg-target.h           |   2 +
+ tcg/sparc64/tcg-target.h         |   2 +
+ tcg/tcg-internal.h               |   2 +
+ tcg/tci/tcg-target.h             |   2 +
+ target/alpha/translate.c         |  94 +++---
+ target/m68k/translate.c          |  74 +++--
+ target/s390x/tcg/translate.c     | 100 +++----
+ target/sparc/translate.c         |   4 +-
+ tcg/optimize.c                   | 474 +++++++++++++++++++++++--------
+ tcg/tcg.c                        |  40 ++-
+ tcg/tci.c                        |  14 +
+ tcg/aarch64/tcg-target.c.inc     | 165 ++++++++---
+ tcg/arm/tcg-target.c.inc         |  62 ++--
+ tcg/i386/tcg-target.c.inc        | 201 +++++++++----
+ tcg/loongarch64/tcg-target.c.inc |   3 +-
+ tcg/mips/tcg-target.c.inc        |   3 +-
+ tcg/ppc/tcg-target.c.inc         | 294 ++++++++++++++-----
+ tcg/riscv/tcg-target.c.inc       |   3 +-
+ tcg/s390x/tcg-target.c.inc       | 246 +++++++++++-----
+ tcg/sparc64/tcg-target.c.inc     |  65 +++--
+ tcg/tci/tcg-target.c.inc         |   3 +-
+ 38 files changed, 1378 insertions(+), 595 deletions(-)
+
+-- 
+2.34.1
+
 
