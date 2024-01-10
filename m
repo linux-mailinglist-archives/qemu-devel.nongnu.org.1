@@ -2,70 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3B0829280
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 03:48:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACBA08292D1
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 04:38:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNOdV-0001G1-W8; Tue, 09 Jan 2024 21:48:10 -0500
+	id 1rNPOV-0004iw-4A; Tue, 09 Jan 2024 22:36:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rNOdU-0001Fn-K7
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 21:48:08 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rNOdR-0008RY-RG
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 21:48:07 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Bx2elgBZ5lIbUDAA--.7095S3;
- Wed, 10 Jan 2024 10:48:01 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Cxid1eBZ5liw4KAA--.26803S3; 
- Wed, 10 Jan 2024 10:47:59 +0800 (CST)
-Subject: Re: [PATCH v2 0/4] hw/loongarch/virt: Set iocsr address space
- per-board rather percpu
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: qemu-devel@nongnu.org
-References: <20231215100333.3933632-1-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <e6a57a0e-888b-3d1d-f601-083ba0f6469a@loongson.cn>
-Date: Wed, 10 Jan 2024 10:47:59 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNPOU-0004ik-0Z
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 22:36:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNPOS-0001oV-3f
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 22:36:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704857799;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Z6wNPZVyTsb6/Il0PjvU4wZq4/+5curYOG/Y/WmD2Kw=;
+ b=LUsXiYmkn7Xk7845hFlA81T3kaPoxdFAuzVI9ReqWCzdtmlKUrSIRXiImQHZbtmc6o03T1
+ UYAU74IafdQxBGFAKbaZaICO3yrk3YOnxryipnKgbfENuvlCuvh7oZuCWd2JgSfipAEyrB
+ Hyq33o6gtVL9EQ7kucRYpvAPucOVJwQ=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-355-9_PSG51vMRiIYd7OHYAGJQ-1; Tue, 09 Jan 2024 22:36:26 -0500
+X-MC-Unique: 9_PSG51vMRiIYd7OHYAGJQ-1
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-1d50d0e552dso5510695ad.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 19:36:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704857784; x=1705462584;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Z6wNPZVyTsb6/Il0PjvU4wZq4/+5curYOG/Y/WmD2Kw=;
+ b=YPMyGvmyiNBEDHntQKjpMoif8BOp4JaB6WHVI2CH9V20VHbj33iSnCNwBxtaKJ0xK8
+ 4gVKBJFn9GcPbMLmDgyO7ypopBK8uEsu+RH1Qqkz7NSdNUTr+oQDiyompnT74q+zjTW2
+ q/8T3QYQmYzqdF37LriJN5MJKtz8KJgcMlMoq+Uxxu6Yt7j9mi5tsxq6T6UgwcMUgM2Y
+ 5GdRSQiUrK4B4dKxoUQ6Hc02ywh8NTxIQpYx1gFt86F+4GjQwV+oRXvUY3fmP0nBUJaW
+ XzDELvD46GV9QJL23+xCciyRde0MsRP/792iwXhE+eQubXhLCWtlXlXx3XVvLdpUueol
+ kSww==
+X-Gm-Message-State: AOJu0YzeedHySn782EXn2m7aTfONFZezACudAa2/x5DvXbBo7MDYNakf
+ pElWRP8lYNDhwh6vglRrNsx7g5NdyxEW5Cr5IICKj6GzBNQ3re53GPUdwK7lg7ceP9xy6jPZei+
+ jc+HZEC2WABfD1one8iNsn9E=
+X-Received: by 2002:a17:902:8a92:b0:1d4:3abc:29e2 with SMTP id
+ p18-20020a1709028a9200b001d43abc29e2mr817088plo.0.1704857784424; 
+ Tue, 09 Jan 2024 19:36:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEeEBjDGj5HRMuTTjhQ+VbYzOglxeBQ0xje2mbHmqwmzZRphuxD7++UhrQRWqa37P/d3zT3Pg==
+X-Received: by 2002:a17:902:8a92:b0:1d4:3abc:29e2 with SMTP id
+ p18-20020a1709028a9200b001d43abc29e2mr817078plo.0.1704857784094; 
+ Tue, 09 Jan 2024 19:36:24 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ t10-20020a1709028c8a00b001d1d27259cesm2510389plo.180.2024.01.09.19.36.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Jan 2024 19:36:23 -0800 (PST)
+Date: Wed, 10 Jan 2024 11:36:13 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Fabiano Rosas <farosas@suse.de>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
+ Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in
+ A7/A15 MPCore priv
+Message-ID: <ZZ4Qrfis4XHWGN0j@x1n>
+References: <03b969d3-1947-4186-b3ee-15e3cddc5f34@kaod.org>
+ <18a38b88-8f20-420c-9916-a03d1b4930a7@linaro.org>
+ <38cfa9de-874b-41dd-873e-5ad1f5a5805e@kaod.org>
+ <fe4d463f-b646-4b7b-9063-d16ad5dbb128@linaro.org>
+ <87y1d6i47m.fsf@suse.de>
+ <597186d9-af21-46e8-8075-f21d36c01c07@kaod.org>
+ <87plya76cu.fsf@suse.de>
+ <d5c0b9fb-8b09-4f68-b3ab-c8adffd484a9@kaod.org>
+ <87bk9u8dhs.fsf@suse.de>
+ <2fa344b7-ccd2-4e6a-8c32-5ad7e4c960d6@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <20231215100333.3933632-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8Cxid1eBZ5liw4KAA--.26803S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7tr4fZFy8JrW3JryxCFWUWrX_yoW8Jw43pr
- W3uwsIgr4kJr9xAwnag345Wr98GFn7Wr12q3W3K348Cr4avF1jvr18A3s5XFy7K34kGryv
- qr1rGw1UWF1DAwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UM
- pBfUUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-3.045, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <2fa344b7-ccd2-4e6a-8c32-5ad7e4c960d6@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,38 +123,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-‘⁄ 2023/12/15 œ¬ŒÁ6:03, Bibo Mao –¥µ¿:
-> On LoongArch system, there is iocsr address space simliar system io
-> address space on x86. And each cpu has its separate iocsr address space now,
-> with this patch, iocsr address space is changed with per-board, and
-> MemTxAttrs.requester_id is used to differentiate cpu cores.
->
-> ---
-> Changes in v2:
->    1. Add num-cpu property for extioi interrupt controller
->    2. Add post_load support for extioi vmstate to calculate sw_ipmap/sw_coremap info
-> ---
-> Bibo Mao (4):
->    hw/intc/loongarch_ipi: Use MemTxAttrs interface for ipi ops
->    hw/loongarch/virt: Set iocsr address space per-board rather than
->      percpu
->    hw/intc/loongarch_extioi: Add dynamic cpu number support
->    hw/intc/loongarch_extioi: Add vmstate post_load support
->
->   hw/intc/loongarch_extioi.c         | 230 ++++++++++++++++++-----------
->   hw/intc/loongarch_ipi.c            | 191 +++++++++++++++---------
->   hw/loongarch/virt.c                |  94 ++++++++----
->   include/hw/intc/loongarch_extioi.h |  12 +-
->   include/hw/intc/loongarch_ipi.h    |   3 +-
->   include/hw/loongarch/virt.h        |   3 +
->   target/loongarch/cpu.c             |  48 ------
->   target/loongarch/cpu.h             |   4 +-
->   target/loongarch/iocsr_helper.c    |  16 +-
->   9 files changed, 358 insertions(+), 243 deletions(-)
->
-Applied to loongarch-next.
+On Tue, Jan 09, 2024 at 10:22:31PM +0100, Philippe Mathieu-Daud√© wrote:
+> Hi Fabiano,
+> 
+> On 9/1/24 21:21, Fabiano Rosas wrote:
+> > C√©dric Le Goater <clg@kaod.org> writes:
+> > 
+> > > On 1/9/24 18:40, Fabiano Rosas wrote:
+> > > > C√©dric Le Goater <clg@kaod.org> writes:
+> > > > 
+> > > > > On 1/3/24 20:53, Fabiano Rosas wrote:
+> > > > > > Philippe Mathieu-Daud√© <philmd@linaro.org> writes:
+> > > > > > 
+> > > > > > > +Peter/Fabiano
+> > > > > > > 
+> > > > > > > On 2/1/24 17:41, C√©dric Le Goater wrote:
+> > > > > > > > On 1/2/24 17:15, Philippe Mathieu-Daud√© wrote:
+> > > > > > > > > Hi C√©dric,
+> > > > > > > > > 
+> > > > > > > > > On 2/1/24 15:55, C√©dric Le Goater wrote:
+> > > > > > > > > > On 12/12/23 17:29, Philippe Mathieu-Daud√© wrote:
+> > > > > > > > > > > Hi,
+> > > > > > > > > > > 
+> > > > > > > > > > > When a MPCore cluster is used, the Cortex-A cores belong the the
+> > > > > > > > > > > cluster container, not to the board/soc layer. This series move
+> > > > > > > > > > > the creation of vCPUs to the MPCore private container.
+> > > > > > > > > > > 
+> > > > > > > > > > > Doing so we consolidate the QOM model, moving common code in a
+> > > > > > > > > > > central place (abstract MPCore parent).
+> > > > > > > > > > 
+> > > > > > > > > > Changing the QOM hierarchy has an impact on the state of the machine
+> > > > > > > > > > and some fixups are then required to maintain migration compatibility.
+> > > > > > > > > > This can become a real headache for KVM machines like virt for which
+> > > > > > > > > > migration compatibility is a feature, less for emulated ones.
+> > > > > > > > > 
+> > > > > > > > > All changes are either moving properties (which are not migrated)
+> > > > > > > > > or moving non-migrated QOM members (i.e. pointers of ARMCPU, which
+> > > > > > > > > is still migrated elsewhere). So I don't see any obvious migration
+> > > > > > > > > problem, but I might be missing something, so I Cc'ed Juan :>
+> > > > > > 
+> > > > > > FWIW, I didn't spot anything problematic either.
+> > > > > > 
+> > > > > > I've ran this through my migration compatibility series [1] and it
+> > > > > > doesn't regress aarch64 migration from/to 8.2. The tests use '-M
+> > > > > > virt -cpu max', so the cortex-a7 and cortex-a15 are not covered. I don't
+> > > > > > think we even support migration of anything non-KVM on arm.
+> > > > > 
+> > > > > it happens we do.
+> > > > > 
+> > > > 
+> > > > Oh, sorry, I didn't mean TCG here. Probably meant to say something like
+> > > > non-KVM-capable cpus, as in 32-bit. Nevermind.
+> > > 
+> > > Theoretically, we should be able to migrate to a TCG guest. Well, this
+> > > worked in the past for PPC. When I was doing more KVM related changes,
+> > > this was very useful for dev. Also, some machines are partially emulated.
+> > > Anyhow I agree this is not a strong requirement and we often break it.
+> > > Let's focus on KVM only.
+> > > 
+> > > > > > 1- https://gitlab.com/farosas/qemu/-/jobs/5853599533
+> > > > > 
+> > > > > yes it depends on the QOM hierarchy and virt seems immune to the changes.
+> > > > > Good.
+> > > > > 
+> > > > > However, changing the QOM topology clearly breaks migration compat,
+> > > > 
+> > > > Well, "clearly" is relative =) You've mentioned pseries and aspeed
+> > > > already, do you have a pointer to one of those cases were we broke
+> > > > migration
+> > > 
+> > > Regarding pseries, migration compat broke because of 5bc8d26de20c
+> > > ("spapr: allocate the ICPState object from under sPAPRCPUCore") which
+> > > is similar to the changes proposed by this series, it impacts the QOM
+> > > hierarchy. Here is the workaround/fix from Greg : 46f7afa37096
+> > > ("spapr: fix migration of ICPState objects from/to older QEMU") which
+> > > is quite an headache and this turned out to raise another problem some
+> > > months ago ... :/ That's why I sent [1] to prepare removal of old
+> > > machines and workarounds becoming a burden.
+> > 
+> > This feels like something that could be handled by the vmstate code
+> > somehow. The state is there, just under a different path.
+> 
+> What, the QOM path is used in migration? ...
 
-Thanks.
-Song Gao
+Hopefully not..
+
+> 
+> See recent discussions on "QOM path stability":
+> https://lore.kernel.org/qemu-devel/ZZfYvlmcxBCiaeWE@redhat.com/
+> https://lore.kernel.org/qemu-devel/87jzojbxt7.fsf@pond.sub.org/
+> https://lore.kernel.org/qemu-devel/87v883by34.fsf@pond.sub.org/
+
+If I read it right, the commit 46f7afa37096 example is pretty special that
+the QOM path more or less decided more than the hierachy itself but changes
+the existances of objects.
+
+> 
+> > No one wants
+> > to be policing QOM hierarchy changes in every single series that shows
+> > up on the list.
+> > 
+> > Anyway, thanks for the pointers. I'll study that code a bit more, maybe
+> > I can come up with some way to handle these cases.
+> > 
+> > Hopefully between the analyze-migration test and the compat tests we'll
+> > catch the next bug of this kind before it gets merged.
+
+Things like that might be able to be detected via vmstate-static-checker.py.
+But I'm not 100% sure, also its coverage is limited.
+
+For example, I don't think it can detect changes to objects that will only
+be created dynamically, e.g., I think sometimes we create objects after
+some guest behaviors (consider guest enables the device, then QEMU
+emulation creates some objects on demand of device setup?), and since the
+static checker shouldn't ever start the VM and run any code, they won't
+trigger.
+
+-- 
+Peter Xu
 
 
