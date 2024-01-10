@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42498295E0
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 10:09:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7620F8295DD
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 10:09:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNUSK-0001W9-25; Wed, 10 Jan 2024 04:01:00 -0500
+	id 1rNUSM-0001kl-FN; Wed, 10 Jan 2024 04:01:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNUSF-0001JM-W7
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:00:56 -0500
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ id 1rNUSJ-0001fQ-P2
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:00:59 -0500
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNUSD-0005Al-H4
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:00:55 -0500
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3bbbe583e04so2377220b6e.3
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 01:00:53 -0800 (PST)
+ id 1rNUSH-0005CP-Qw
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:00:59 -0500
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6d99980b2e0so3348631b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 01:00:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704877252; x=1705482052; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704877256; x=1705482056; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PU6Ueeeh90sUK8jzNNcOqoNQ/a1N5Q1K2FQlbLJ6+j8=;
- b=HtiFMeQV8XHV+ssoDe8EdaCHI8fierK3UbUcNsWDddh07giGJnp4xz/OGH5DV5G1jq
- aHgodA98SRFylSAQxGzqLgUqAdLRYdrcRFikvD5MEVvSS/yMaLpWerFkeyhWCYS9KS0v
- zk8pSyZ5+PJ+TimqWdtjqhtX/xpEBlLjmoAyGuHCzhI2/3SXBCf9YODAGjQ4N2abewYn
- fhFNCOQ3jTxCYZzgP5zf2U1jUMhBvJXCu8cMOF4EVvLcdLKN49HydgrNWdZlGo/aYYvW
- deN89vtugoQz1FO2CDGpoEkGenZbDgHqydoLWyw4WRLbpN207oKuqEh61AGEerKYA9PR
- X4iQ==
+ bh=YVA1sFK0PhjE2ujUp8aKIMU8p8U/MGPBI/jd2QjUi9Q=;
+ b=Wut/4OxuZim8mvlv9YLk23W1eyfEnQAaIdF1xR1YaXI0dxxozLz62Z6keExrhyvWIv
+ X8K++rR984DWZ8Ay+8nqLsKdYWXnGJSIW27VIgalTuqhKNLn4oHR9fwi1WPOUFXcxfdv
+ CT1ZyBSurDA2CY9PsWEjISOafRzyr6qJCvb38AVQnyLASqm34I7nGa+AGG6LYQh5CaWW
+ JKa0xDvTf0Y9Uuz8nzEJ+4tHEuxvd2KNO0ivcwtp1DWulfPaOsX17XbSqKcWO5bTtzG+
+ N9Zly+T41uql4WJNqtTO8CbejPe4kgn4f9kMUopSS0eUwKbcsIQvjWrq3ZzpUeYNu4ig
+ ltsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704877252; x=1705482052;
+ d=1e100.net; s=20230601; t=1704877256; x=1705482056;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PU6Ueeeh90sUK8jzNNcOqoNQ/a1N5Q1K2FQlbLJ6+j8=;
- b=izykpyt1vC7kIdeGfR8tfisW27ZO0C8Y8p15oRqHj5fVpzK+GP+2W5y8N76Pl4QUtT
- lnPHaOE4n0e97TkbynqbQGoMHt2VrTf1qchhOIBR381SFgTJjn/V/wcTEnPmO+S4qMa3
- oTwOgYUeb6UBtmA0h2WJnWLH9jurePGdHTycm97vOq0UU85OqCM8d5nsoBem4AuaPzCD
- PV5c7ZGkUXeeT3TFVj9778ycV7T2/a+b1duAwvCJ+wZcVzdO873ZIH9k7a5/N95TiUmI
- cOGN2/ZCdUpOOzrePsGQ3UiCD4WuJlKoqFVzVoYUDJNf0xhysEfedjP4ShVHAxrJkEUJ
- sN1Q==
-X-Gm-Message-State: AOJu0YzRoZNSH6atOazEuyaM64y3sh0GTnlxX+QNx+dbYVLM3pg0Fduk
- 1fkRezPVLTd3xgQDg7T+WQL3c4mAl1qUeBpI
-X-Google-Smtp-Source: AGHT+IFv43Q7N0FsYKf6FNFMElEtMgtMc0MBdIz/MC5CI7DTURUDcN2OoEl6kNfwaE6v52tKcFkAsw==
-X-Received: by 2002:a54:4417:0:b0:3ba:11ee:ac86 with SMTP id
- k23-20020a544417000000b003ba11eeac86mr598031oiw.102.1704877252004; 
- Wed, 10 Jan 2024 01:00:52 -0800 (PST)
+ bh=YVA1sFK0PhjE2ujUp8aKIMU8p8U/MGPBI/jd2QjUi9Q=;
+ b=G6h3LzQwjgBCx0ssFfHQR3Cpwh6IdqGtw5gshBz4phywYip0a5Yk/TyMitUDns9tHX
+ vtU0T+kuwc08dP9JCtnNQxe6dfHvb11/kwNluE9hBYFyHjLkVetrMuWDZZdGyaBs8HN7
+ mN1XEyoxCGOCvzknJYpFJ0s4Ga+W3Co7W8vhHbHDWU16gdKK5UM2r+yHRHhFOlzlbvYT
+ gPoUcdbxiG3V1G/MIC98xuQJr0RoyP8FUOEDzV/DXukzljnxhvlwWt9+e6k+wAiuahUX
+ Z2dQ2TmDAjpPEcw4ywpwDqCvFkUKTnTggGW5im+1KW0+pdoACLua2Fuu/9TahmvbBzgW
+ adGg==
+X-Gm-Message-State: AOJu0YxF0M45VDfBxtMs3dBQuwar+I/HkDIjOc2I+jwIW9JkCWWtSPzu
+ SowxKVXLpLK6sQ5CAogStMDu+T6uQ+PemUeP
+X-Google-Smtp-Source: AGHT+IFShsqj/r1UJ5nA2h3eQTC6AAAjy28T/y+S4IunADGMc1gFdnwp/cpwvyk141q8Xow5yYubrQ==
+X-Received: by 2002:a05:6a00:bf5:b0:6d9:a96f:9865 with SMTP id
+ x53-20020a056a000bf500b006d9a96f9865mr744680pfu.47.1704877255957; 
+ Wed, 10 Jan 2024 01:00:55 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.01.00.48
+ t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.01.00.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 01:00:51 -0800 (PST)
+ Wed, 10 Jan 2024 01:00:55 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Andrew Jones <ajones@ventanamicro.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 49/65] target/riscv/cpu.c: finalize satp_mode earlier
-Date: Wed, 10 Jan 2024 18:57:17 +1000
-Message-ID: <20240110085733.1607526-50-alistair.francis@wdc.com>
+Subject: [PULL 50/65] target/riscv/cpu.c: add riscv_cpu_is_32bit()
+Date: Wed, 10 Jan 2024 18:57:18 +1000
+Message-ID: <20240110085733.1607526-51-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240110085733.1607526-1-alistair.francis@wdc.com>
 References: <20240110085733.1607526-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=alistair23@gmail.com; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,54 +101,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Profiles will need to validate satp_mode during their own finalize
-methods. This will occur inside riscv_tcg_cpu_finalize_features() for
-TCG. Given that satp_mode does not have any pre-req from the accelerator
-finalize() method, it's safe to finalize it earlier.
+Next patch will need to retrieve if a given RISCVCPU is 32 or 64 bit.
+The existing helper riscv_is_32bit() (hw/riscv/boot.c) will always check
+the first CPU of a given hart array, not any given CPU.
+
+Create a helper to retrieve the info for any given CPU, not the first
+CPU of the hart array. The helper is using the same 32 bit check that
+riscv_cpu_satp_mode_finalize() was doing.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20231218125334.37184-22-dbarboza@ventanamicro.com>
+Message-ID: <20231218125334.37184-23-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ target/riscv/cpu.h | 1 +
+ target/riscv/cpu.c | 7 ++++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 3d1c347b71..a0f768e77d 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -693,6 +693,7 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+                           uint64_t *cs_base, uint32_t *pflags);
+ 
+ void riscv_cpu_update_mask(CPURISCVState *env);
++bool riscv_cpu_is_32bit(RISCVCPU *cpu);
+ 
+ RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
+                            target_ulong *ret_value,
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 563fd4f722..65f69a7dd3 100644
+index 65f69a7dd3..4d1fd7fd48 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1054,6 +1054,14 @@ void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
- {
-     Error *local_err = NULL;
+@@ -53,6 +53,11 @@ const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
+ #define BYTE(x)   (x)
+ #endif
  
-+#ifndef CONFIG_USER_ONLY
-+    riscv_cpu_satp_mode_finalize(cpu, &local_err);
-+    if (local_err != NULL) {
-+        error_propagate(errp, local_err);
-+        return;
-+    }
-+#endif
++bool riscv_cpu_is_32bit(RISCVCPU *cpu)
++{
++    return riscv_cpu_mxl(&cpu->env) == MXL_RV32;
++}
 +
-     /*
-      * KVM accel does not have a specialized finalize()
-      * callback because its extensions are validated
-@@ -1066,14 +1074,6 @@ void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
-             return;
-         }
-     }
--
--#ifndef CONFIG_USER_ONLY
--    riscv_cpu_satp_mode_finalize(cpu, &local_err);
--    if (local_err != NULL) {
--        error_propagate(errp, local_err);
--        return;
--    }
--#endif
- }
+ #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
+     {#_name, _min_ver, CPU_CFG_OFFSET(_prop)}
  
- static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+@@ -978,7 +983,7 @@ static void riscv_cpu_disas_set_info(CPUState *s, disassemble_info *info)
+ #ifndef CONFIG_USER_ONLY
+ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
+ {
+-    bool rv32 = riscv_cpu_mxl(&cpu->env) == MXL_RV32;
++    bool rv32 = riscv_cpu_is_32bit(cpu);
+     uint8_t satp_mode_map_max, satp_mode_supported_max;
+ 
+     /* The CPU wants the OS to decide which satp mode to use */
 -- 
 2.43.0
 
