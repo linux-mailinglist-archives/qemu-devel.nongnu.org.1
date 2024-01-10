@@ -2,91 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8FDA82942D
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 08:19:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B32829CB7
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 15:39:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNSrk-0003c0-Er; Wed, 10 Jan 2024 02:19:08 -0500
+	id 1rNZie-00011a-Dd; Wed, 10 Jan 2024 09:38:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNSri-0003b8-Bu
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 02:19:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNSrg-00017o-E4
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 02:19:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704871143;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ib69lHgX9BqBm4h0qNJxi+DoaaYUfrXUTb36l/1Nkp0=;
- b=Bsw4T9e8kX7Okr6+DAWc5PPPCr5y7MR1C5Wi7ROKPsqJlzCPwe1QNQcyC5KwApc84pq/0N
- YZwdGJ1e665yZ8T8RbLMKKBv/gVKnXRermgq1nsRI4YuAZ/X7Q/tcpgQDQ1ycY/xyX6Aek
- L9lvhi2G4hSLhYMT/Glwz4UUSOm/OZE=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-37-FaaJUSV2MUO9rc0k2bNu7A-1; Wed, 10 Jan 2024 02:19:01 -0500
-X-MC-Unique: FaaJUSV2MUO9rc0k2bNu7A-1
-Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-6d99a379dacso487505b3a.1
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 23:19:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peng.ji@smartx.com>)
+ id 1rNTG8-0001Qm-CM
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 02:44:20 -0500
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peng.ji@smartx.com>)
+ id 1rNTG4-0002XR-AH
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 02:44:18 -0500
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-50ea9daac4cso3990935e87.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 23:42:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1704872532; x=1705477332;
+ darn=nongnu.org; 
+ h=cc:subject:message-id:date:from:in-reply-to:references:mime-version
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lPFexRQiU0fkcWAZ01Bxe4+xbvNSM3v/uXvymNl6aMI=;
+ b=ncedmw8kB20ryQNxq8omC0sMQIj9gbKKyoVVpG5dSiuLnjwrC/UhjtmQ68gHSnSNIH
+ t8isbycXeAKLA8BnkownWHkncDifTO+VmG7KFjTx4riXurhTcx2fccqRUA29Caj/06x7
+ sN3l1+I5HsU18EXgFqPcPMcXRNz3SeekW3gyAR0xB9Jk5HSqWLDIXe8D1vQUXOQaCIe7
+ YLXqJSNCB+gJSDOJdeo2pF79d13XIV/tybzE/1o96MCRDjMj9OK/sO1whZEgXNWFn6Wj
+ 8nX5OQ6KSoD3pSS5SXF2nbohPbBW6EaZNjT+OfnTUMONE4gKYc1xzmFBF5iQ1sYnI2q2
+ PJNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704871140; x=1705475940;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ib69lHgX9BqBm4h0qNJxi+DoaaYUfrXUTb36l/1Nkp0=;
- b=wK2RG+WFKhXyaOo+puBNfwqnyzBQFH3Vn+X+Et7rPu61uXDEF6x6P2IIylGw6122qN
- Sm3c1sV8/bET/cp4/tN5Verh1fr/V546XhNyl50DSCTJjeUysEDgdJZg9hLzft/OMZLQ
- +gSdeYFKCI9UgktxJaZPUfqSdFzyaeMcTvdq4lASVahzjj4ir7+HOxNFAzckqnJSEt7n
- Rvt4Z34CoYK6QP6rJE0BiiOuLkNbI3vPX2XVbBdDJhqVekBDkvtKewIVCF2BDOF0X/8g
- acEig+T8R7g+YIEbcQQOo21k1ETuo294YvUTx5uzV1lpDtWNzQs6W6ztqZt/Gnp2LJ/w
- RBGA==
-X-Gm-Message-State: AOJu0Yyatu89rBRKQ1fDCg3ssVWdV6UgcJsykL8g6CHzfYY42pdI52B9
- 5vWCv6weMKKwkNTB3RQCIQS/60F0z+NmqxV7DONsh3jP85k2PwRyFo+GVRjt+poIdqRchW+ZTqT
- o0KEsWdYkUlz/N7tCWKdv6pk=
-X-Received: by 2002:a05:6a00:390a:b0:6d9:edd1:4ede with SMTP id
- fh10-20020a056a00390a00b006d9edd14edemr1455924pfb.2.1704871139995; 
- Tue, 09 Jan 2024 23:18:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG4JubxShX9MXvWiLz9RFdM4qyRPIhBSst0OwwwuV/ShzaJ0QlLfO3FzZ2jsD3II3mqQ9cvVQ==
-X-Received: by 2002:a05:6a00:390a:b0:6d9:edd1:4ede with SMTP id
- fh10-20020a056a00390a00b006d9edd14edemr1455911pfb.2.1704871139648; 
- Tue, 09 Jan 2024 23:18:59 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- l8-20020a056a00140800b006d9ce7d3258sm2786829pfu.204.2024.01.09.23.18.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jan 2024 23:18:59 -0800 (PST)
-Date: Wed, 10 Jan 2024 15:18:50 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Marc-Andre Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH V1 2/3] migration: notifier error reporting
-Message-ID: <ZZ5E2ubl9XRdXDmh@x1n>
-References: <1702491093-383782-1-git-send-email-steven.sistare@oracle.com>
- <1702491093-383782-3-git-send-email-steven.sistare@oracle.com>
+ d=1e100.net; s=20230601; t=1704872532; x=1705477332;
+ h=cc:subject:message-id:date:from:in-reply-to:references:mime-version
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lPFexRQiU0fkcWAZ01Bxe4+xbvNSM3v/uXvymNl6aMI=;
+ b=Hsp0WmMrsYaAywst+6MBzxgWJcxWLEx8OKJYiz2CiJenGWp2xafh7CzoVXd0AsasG1
+ EzBV8c7BjnHsqi4FOLWJMaJe0M3tleRMfAz2ejzcIJj/LDPqTbzcYyVvldanvFp3a7Ul
+ NIuARQISWp2Ofuzv8ytM7+8+FmO5cMDEbyM1lLI5mP9Z3H3/Ri/mgmWMIdgpsIig4txR
+ vDf91M0XUEf3aACPVqadvXHYxAzVTb+GChZCC3LNiKpmmPH49+U9qKtwAjPpr+mfYBv6
+ gVTWr4DTAkXnhTv8K7gdCg9tD+caYu0s71tKsOnGsohlBLnR+1W320wFgVtlTcqF2wED
+ bU6A==
+X-Gm-Message-State: AOJu0YxW3e+/mRsqT5mJPT5ASymaDXYzIdWj+NMUSzSVDWJauOi6jtuy
+ u73llqbHxmSwHLg5yxa8qD1TsmOWN8gBjMjY+2CNGc2eIgWven4b2g99y99+CKDD7NUU
+X-Received: by 2002:a05:6512:684:b0:50e:3e13:e142 with SMTP id
+ t4-20020a056512068400b0050e3e13e142mt166315lfe.118.1704872531638; Tue, 09 Jan
+ 2024 23:42:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1702491093-383782-3-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20231227071540.4035803-1-peng.ji@smartx.com>
+ <5492018d-8b72-4aea-b33c-bb9f4f6b4f48@linaro.org>
+In-Reply-To: <5492018d-8b72-4aea-b33c-bb9f4f6b4f48@linaro.org>
+From: Peng Ji <peng.ji@smartx.com>
+Date: Wed, 10 Jan 2024 15:42:00 +0800
+Message-ID: <CACbqNXcjB7p=xpYPPY01dJ2W97h608SGCr4-_xDtQovBOodACw@mail.gmail.com>
+Subject: Re: [PATCH] qga-win: Fix guest-get-fsinfo multi-disks collection
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>, 
+ Michael Roth <michael.roth@amd.com>, Yan Vugenfirer <yvugenfi@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000a3b2d9060e92916c"
+Received-SPF: none client-ip=2a00:1450:4864:20::12b;
+ envelope-from=peng.ji@smartx.com; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, MISSING_HEADERS=1.021,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 10 Jan 2024 09:37:56 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,122 +86,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 13, 2023 at 10:11:32AM -0800, Steve Sistare wrote:
-> After calling notifiers, check if an error has been reported via
-> migrate_set_error, and halt the migration.
-> 
-> None of the notifiers call migrate_set_error at this time, so no
-> functional change.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->  include/migration/misc.h |  2 +-
->  migration/migration.c    | 26 ++++++++++++++++++++++----
->  2 files changed, 23 insertions(+), 5 deletions(-)
-> 
-> diff --git a/include/migration/misc.h b/include/migration/misc.h
-> index 901d117..231d7e4 100644
-> --- a/include/migration/misc.h
-> +++ b/include/migration/misc.h
-> @@ -65,7 +65,7 @@ MigMode migrate_mode_of(MigrationState *);
->  void migration_add_notifier(Notifier *notify,
->                              void (*func)(Notifier *notifier, void *data));
->  void migration_remove_notifier(Notifier *notify);
-> -void migration_call_notifiers(MigrationState *s);
-> +int migration_call_notifiers(MigrationState *s);
->  bool migration_in_setup(MigrationState *);
->  bool migration_has_finished(MigrationState *);
->  bool migration_has_failed(MigrationState *);
-> diff --git a/migration/migration.c b/migration/migration.c
-> index d5bfe70..29a9a92 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -1280,6 +1280,8 @@ void migrate_set_state(int *state, int old_state, int new_state)
->  
->  static void migrate_fd_cleanup(MigrationState *s)
->  {
-> +    bool already_failed;
-> +
->      qemu_bh_delete(s->cleanup_bh);
->      s->cleanup_bh = NULL;
->  
-> @@ -1327,11 +1329,20 @@ static void migrate_fd_cleanup(MigrationState *s)
->                            MIGRATION_STATUS_CANCELLED);
->      }
->  
-> +    already_failed = migration_has_failed(s);
-> +    if (migration_call_notifiers(s)) {
-> +        if (!already_failed) {
-> +            migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
-> +            /* Notify again to recover from this late failure. */
-> +            migration_call_notifiers(s);
-> +        }
-> +    }
-> +
->      if (s->error) {
->          /* It is used on info migrate.  We can't free it */
->          error_report_err(error_copy(s->error));
->      }
-> -    migration_call_notifiers(s);
-> +
->      block_cleanup_parameters();
->      yank_unregister_instance(MIGRATION_YANK_INSTANCE);
->  }
-> @@ -1450,9 +1461,10 @@ void migration_remove_notifier(Notifier *notify)
->      }
->  }
->  
-> -void migration_call_notifiers(MigrationState *s)
-> +int migration_call_notifiers(MigrationState *s)
->  {
->      notifier_list_notify(&migration_state_notifiers, s);
-> +    return (s->error != NULL);
+--000000000000a3b2d9060e92916c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Exporting more migration_*() functions is pretty ugly to me..
+ping !
+please review this patch :
+https://patchew.org/QEMU/20231227071540.4035803-1-peng.ji@smartx.com/
 
-Would it be better to pass in "Error** errp" into each notifiers?  That may
-need an open coded notifier_list_notify(), breaking the loop if "*errp".
+thanks
 
-And the notifier API currently only support one arg..  maybe we should
-implement the notifiers ourselves, ideally passing in "(int state, Error
-**errp)" instead of "(MigrationState *s)".
 
-Ideally with that MigrationState* shouldn't be visible outside migration/.
 
-Thanks,
+On Fri, Jan 5, 2024 at 9:47=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd@=
+linaro.org>
+wrote:
 
->  }
->  
->  bool migration_in_setup(MigrationState *s)
-> @@ -2520,7 +2532,9 @@ static int postcopy_start(MigrationState *ms, Error **errp)
->       * spice needs to trigger a transition now
->       */
->      ms->postcopy_after_devices = true;
-> -    migration_call_notifiers(ms);
-> +    if (migration_call_notifiers(ms)) {
-> +        goto fail;
-> +    }
->  
->      migration_downtime_end(ms);
->  
-> @@ -3589,7 +3603,11 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
->          rate_limit = migrate_max_bandwidth();
->  
->          /* Notify before starting migration thread */
-> -        migration_call_notifiers(s);
-> +        if (migration_call_notifiers(s)) {
-> +            migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
-> +            migrate_fd_cleanup(s);
-> +            return;
-> +        }
->      }
->  
->      migration_rate_set(rate_limit);
-> -- 
-> 1.8.3.1
-> 
+> On 27/12/23 08:15, peng.ji@smartx.com wrote:
+> > From: Peng Ji <peng.ji@smartx.com>
+> >
+> > When a volume has more than one disk, all disks cannot be
+> > returned correctly because there is not enough malloced memory
+> > for disk extents, so before executing DeviceIoControl for the
+> > second time, get the correct size of the required memory space
+> > to store all disk extents.
+> >
+> > Signed-off-by: Peng Ji <peng.ji@smartx.com>
+>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2075
+>
+> > ---
+> >   qga/commands-win32.c | 2 ++
+> >   1 file changed, 2 insertions(+)
+> >
+> > diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+> > index 697c65507c..a1015757d8 100644
+> > --- a/qga/commands-win32.c
+> > +++ b/qga/commands-win32.c
+> > @@ -935,6 +935,8 @@ static GuestDiskAddressList
+> *build_guest_disk_info(char *guid, Error **errp)
+> >           DWORD last_err =3D GetLastError();
+> >           if (last_err =3D=3D ERROR_MORE_DATA) {
+> >               /* Try once more with big enough buffer */
+> > +            size =3D sizeof(VOLUME_DISK_EXTENTS) +
+> > +               (sizeof(DISK_EXTENT) * (extents->NumberOfDiskExtents -
+> 1));
+> >               g_free(extents);
+> >               extents =3D g_malloc0(size);
+> >               if (!DeviceIoControl(
+>
+>
 
--- 
-Peter Xu
+--000000000000a3b2d9060e92916c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr"><pre id=3D"gmail-b" style=3D"font-size:13px;background-ima=
+ge:initial;background-position:initial;background-size:initial;background-r=
+epeat:initial;background-origin:initial;background-clip:initial;color:rgb(0=
+,0,51)">ping !
+please review this patch : <a href=3D"https://patchew.org/QEMU/202312270715=
+40.4035803-1-peng.ji@smartx.com/">https://patchew.org/QEMU/20231227071540.4=
+035803-1-peng.ji@smartx.com/</a></pre><pre id=3D"gmail-b" style=3D"font-siz=
+e:13px;background-image:initial;background-position:initial;background-size=
+:initial;background-repeat:initial;background-origin:initial;background-cli=
+p:initial;color:rgb(0,0,51)">thanks<br></pre></div><div dir=3D"ltr"><br></d=
+iv><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On =
+Fri, Jan 5, 2024 at 9:47=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 &lt;<a href=
+=3D"mailto:philmd@linaro.org" target=3D"_blank">philmd@linaro.org</a>&gt; w=
+rote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0p=
+x 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On 27/12/2=
+3 08:15, <a href=3D"mailto:peng.ji@smartx.com" target=3D"_blank">peng.ji@sm=
+artx.com</a> wrote:<br>
+&gt; From: Peng Ji &lt;<a href=3D"mailto:peng.ji@smartx.com" target=3D"_bla=
+nk">peng.ji@smartx.com</a>&gt;<br>
+&gt; <br>
+&gt; When a volume has more than one disk, all disks cannot be<br>
+&gt; returned correctly because there is not enough malloced memory<br>
+&gt; for disk extents, so before executing DeviceIoControl for the<br>
+&gt; second time, get the correct size of the required memory space<br>
+&gt; to store all disk extents.<br>
+&gt; <br>
+&gt; Signed-off-by: Peng Ji &lt;<a href=3D"mailto:peng.ji@smartx.com" targe=
+t=3D"_blank">peng.ji@smartx.com</a>&gt;<br>
+<br>
+Resolves: <a href=3D"https://gitlab.com/qemu-project/qemu/-/issues/2075" re=
+l=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-project/qemu/-/i=
+ssues/2075</a><br>
+<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0qga/commands-win32.c | 2 ++<br>
+&gt;=C2=A0 =C2=A01 file changed, 2 insertions(+)<br>
+&gt; <br>
+&gt; diff --git a/qga/commands-win32.c b/qga/commands-win32.c<br>
+&gt; index 697c65507c..a1015757d8 100644<br>
+&gt; --- a/qga/commands-win32.c<br>
+&gt; +++ b/qga/commands-win32.c<br>
+&gt; @@ -935,6 +935,8 @@ static GuestDiskAddressList *build_guest_disk_info=
+(char *guid, Error **errp)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0DWORD last_err =3D GetLastErro=
+r();<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (last_err =3D=3D ERROR_MORE=
+_DATA) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Try once more=
+ with big enough buffer */<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 size =3D sizeof(VOLUME_DISK=
+_EXTENTS) +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0(sizeof(DISK_E=
+XTENT) * (extents-&gt;NumberOfDiskExtents - 1));<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0g_free(extents);=
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0extents =3D g_ma=
+lloc0(size);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!DeviceIoCon=
+trol(<br>
+<br>
+</blockquote></div>
+
+--000000000000a3b2d9060e92916c--
 
