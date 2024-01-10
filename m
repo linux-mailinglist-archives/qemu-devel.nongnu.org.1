@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D926B82A43A
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 23:48:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8807682A426
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 23:46:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNhKi-0005Pt-Rg; Wed, 10 Jan 2024 17:46:01 -0500
+	id 1rNhKk-0005np-Aj; Wed, 10 Jan 2024 17:46:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNhKG-0004y2-Fh
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 17:45:33 -0500
-Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
+ id 1rNhKK-00057C-Cy
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 17:45:38 -0500
+Received: from mail-qt1-x835.google.com ([2607:f8b0:4864:20::835])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNhKC-0002wZ-Ce
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 17:45:29 -0500
-Received: by mail-qt1-x832.google.com with SMTP id
- d75a77b69052e-429be919998so1957051cf.0
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 14:45:27 -0800 (PST)
+ id 1rNhKG-0002xF-8K
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 17:45:34 -0500
+Received: by mail-qt1-x835.google.com with SMTP id
+ d75a77b69052e-42998e38716so16949541cf.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 14:45:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704926727; x=1705531527; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704926730; x=1705531530; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/Mi02s/8pPhslq92YCDg9owTXJVUIjB51aqomHFCjPA=;
- b=UFG6cNwE2nYjK72QtMVbbEHP1lnq6X+5vqew8499JX0guQ+h1tLEciNXnleoEzIdN2
- ZIOwyu0tjs53t1T7YAFZNkvxVQTe/49vHGYknCN5Vh9oj+fo1nTJHwv9WOlDDNC+Gu8w
- rhy/zq2ZLSQFqDGYvJ5SMqGtrQj7x+DrXceoowxqFnjmr/FI4pn+yZH8P3/bcAsfm2Mm
- DXU8Hzz2ZzIw2DX3Zh3qXGRp0vC8diSIYXk2rvaSfvE/wG9+SUryy3Klk6oy+WHPYCU6
- 0gcDcVhvQl8SPz4MrhfRZe0POFBdNQveuRK4F9kWMgHG0atKpGYJySw/VHA3fM91B0O8
- vv4g==
+ bh=9Wfu8qLoAolc0Teqm8g6ViWX6SdHYrms61Q6QJWJ8CE=;
+ b=GIEQAiShYlkwY6mR3myTLpdadbeEWUYIVBAzM5/tYt0DZuKPxDfaQ1jG+QNfU11Ga1
+ wpXMEL+cr9C5vkAx66sdWqT/nfLpSyeRteGXyYbMX0zcauGngOVOJQWcGF06sPNl7vpY
+ bjAKvqPHwQ40mf6Os5p0j1AOSPg+X13aoba+LlyF0TEtphXb6bVwhdwyx1VsPdj1q4f3
+ VFO7s6pnvMqvH8xbOrwIFr8g3kPoZMu5svsjQeqyUdmlWDR8JE0Vj4wyWbBWbvDQNva7
+ pvtAkfD+KsqYKsYDKT/RSFlju889yOL6Tvr3Ju6SzPX9J4xFpi4epyJaW3PVSVCY/ALy
+ 39nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704926727; x=1705531527;
+ d=1e100.net; s=20230601; t=1704926730; x=1705531530;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/Mi02s/8pPhslq92YCDg9owTXJVUIjB51aqomHFCjPA=;
- b=lXsIIgd1heKGzQ13QXc4DbJqkNP+69mDYLfqxG3fsFRWuKZ8Jl5HIoORZsFbbaLaSP
- 3Yq+FVjJ55PB4XJltrGqzW9GuzIjP/ruzJu3QBuyKHxPRq0AdE5X7XpgvNKxxz+GdFcG
- 4Uf5vwskuFYV4DkOndQlZmc3qumYTkv25SFAcmQeV1HIZYgdasyo/63gfHkFS0u6emFn
- NCClukPre6LFp1kveGSMyA5BwknyKZTmsiXkOWcyHK1k45muK7HZWNQfz5F9ZosHswsJ
- bl0v+1Y2Jo97OH2ya+OQlie9yBlpE4hqdG1pLkYnJwOw7kHpecvATa4f1jOFbo6mxXju
- ypaA==
-X-Gm-Message-State: AOJu0YzfhJ258NRoHRR8uMcNLb102+PcXFCVEag56IZUqd3xi5r8CYLR
- DL9VceGsqoK5XKa2JLlmeDf1WNO1v0ZnCtSusi8+B0LvECxo0reU
-X-Google-Smtp-Source: AGHT+IGKypzb+F1Ao0IiRN76RS4P8UOOH42hixf+LFKc8wtWQ9lIowdjVCeZ6UdsHUgefUA9nldHtQ==
-X-Received: by 2002:a05:622a:e:b0:429:bb88:6f1e with SMTP id
- x14-20020a05622a000e00b00429bb886f1emr252029qtw.118.1704926727080; 
- Wed, 10 Jan 2024 14:45:27 -0800 (PST)
+ bh=9Wfu8qLoAolc0Teqm8g6ViWX6SdHYrms61Q6QJWJ8CE=;
+ b=Bz4x0NkiD8CXQldbe4V3xHcIpq7gcAoGu6UVoz7xjPWdB2aDv3Z9hglXhHkpnH8jXN
+ 8y3M8oLjBOvIHso9LopmRuHJPjUkkAd21AV4o5jKnGKSlcYEvpbB2gJCQuCwriK0RGex
+ p2GAD3yma7zYpln4Rl5e1FmCMWadixa+BMtJGdNr2muaVuKIu2H5+E78lgUELxmn7ci1
+ +x2hsdct+0RNcg/+w6Xib/0yNR7ObziJzgnzhQntihh/keCa7ksFJOYz1qLZY+U0QMgZ
+ lvdapbMCmywmV4TZawxCJEu927ivASJHzOjs8C7X4RfiBqbyVsjDLm/kUoxGLxdgmkA0
+ h/vA==
+X-Gm-Message-State: AOJu0YyOZXX/NWVxENRhtkPlIrAqLwk0E2DShTP0Vrt4+6nd5RQpxaIK
+ A/FhgNGcjeVSpSji8zlvAI2aQuOOS8RLM5fCCHNXmzYKxNiAg1ID
+X-Google-Smtp-Source: AGHT+IHB6gR9wBZgANJS2AkLuy0ivK0VotvH6u00D3nIt/KSIcMjpougzwBv2Eun1mTKWb2POyVzvA==
+X-Received: by 2002:a05:622a:11cb:b0:429:b971:593c with SMTP id
+ n11-20020a05622a11cb00b00429b971593cmr302151qtk.9.1704926730574; 
+ Wed, 10 Jan 2024 14:45:30 -0800 (PST)
 Received: from stoup.. ([172.58.27.160]) by smtp.gmail.com with ESMTPSA id
- ks23-20020ac86217000000b0042987f6874bsm2092281qtb.92.2024.01.10.14.45.23
+ ks23-20020ac86217000000b0042987f6874bsm2092281qtb.92.2024.01.10.14.45.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 14:45:26 -0800 (PST)
+ Wed, 10 Jan 2024 14:45:30 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	pbonzini@redhat.com
-Subject: [PATCH v3 11/38] target/alpha: Use TCG_COND_TSTNE for gen_fold_mzero
-Date: Thu, 11 Jan 2024 09:43:41 +1100
-Message-Id: <20240110224408.10444-12-richard.henderson@linaro.org>
+Subject: [PATCH v3 12/38] target/m68k: Use TCG_COND_TST{EQ, NE} in gen_fcc_cond
+Date: Thu, 11 Jan 2024 09:43:42 +1100
+Message-Id: <20240110224408.10444-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240110224408.10444-1-richard.henderson@linaro.org>
 References: <20240110224408.10444-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
- envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x832.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::835;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x835.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,96 +91,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/alpha/translate.c | 49 +++++++++++++++++++---------------------
- 1 file changed, 23 insertions(+), 26 deletions(-)
+ target/m68k/translate.c | 74 ++++++++++++++++++-----------------------
+ 1 file changed, 33 insertions(+), 41 deletions(-)
 
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index c7daf46de7..c68c2bcd21 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -490,56 +490,53 @@ static DisasJumpType gen_bcond(DisasContext *ctx, TCGCond cond, int ra,
- 
- /* Fold -0.0 for comparison with COND.  */
- 
--static void gen_fold_mzero(TCGCond cond, TCGv dest, TCGv src)
-+static TCGv_i64 gen_fold_mzero(TCGCond *pcond, uint64_t *pimm, TCGv_i64 src)
+diff --git a/target/m68k/translate.c b/target/m68k/translate.c
+index 4a0b0b2703..f30b92f2d4 100644
+--- a/target/m68k/translate.c
++++ b/target/m68k/translate.c
+@@ -5129,46 +5129,44 @@ undef:
+ static void gen_fcc_cond(DisasCompare *c, DisasContext *s, int cond)
  {
--    uint64_t mzero = 1ull << 63;
-+    TCGv_i64 tmp;
+     TCGv fpsr;
++    int imm = 0;
  
--    switch (cond) {
-+    *pimm = 0;
-+    switch (*pcond) {
-     case TCG_COND_LE:
-     case TCG_COND_GT:
-         /* For <= or >, the -0.0 value directly compares the way we want.  */
--        tcg_gen_mov_i64(dest, src);
--        break;
-+        return src;
- 
-     case TCG_COND_EQ:
-     case TCG_COND_NE:
--        /* For == or !=, we can simply mask off the sign bit and compare.  */
--        tcg_gen_andi_i64(dest, src, mzero - 1);
--        break;
-+        /* For == or !=, we can compare without the sign bit. */
-+        *pcond = *pcond == TCG_COND_EQ ? TCG_COND_TSTEQ : TCG_COND_TSTNE;
-+        *pimm = INT64_MAX;
-+        return src;
- 
-     case TCG_COND_GE:
-     case TCG_COND_LT:
-         /* For >= or <, map -0.0 to +0.0. */
--        tcg_gen_movcond_i64(TCG_COND_NE, dest, src, tcg_constant_i64(mzero),
--                            src, tcg_constant_i64(0));
--        break;
-+        tmp = tcg_temp_new_i64();
-+        tcg_gen_movcond_i64(TCG_COND_EQ, tmp,
-+                            src, tcg_constant_i64(INT64_MIN),
-+                            tcg_constant_i64(0), src);
-+        return tmp;
- 
-     default:
--        abort();
-+        g_assert_not_reached();
+-    c->v2 = tcg_constant_i32(0);
+     /* TODO: Raise BSUN exception.  */
+     fpsr = tcg_temp_new();
+     gen_load_fcr(s, fpsr, M68K_FPSR);
++    c->v1 = fpsr;
++
+     switch (cond) {
+     case 0:  /* False */
+     case 16: /* Signaling False */
+-        c->v1 = c->v2;
+         c->tcond = TCG_COND_NEVER;
+         break;
+     case 1:  /* EQual Z */
+     case 17: /* Signaling EQual Z */
+-        c->v1 = tcg_temp_new();
+-        tcg_gen_andi_i32(c->v1, fpsr, FPSR_CC_Z);
+-        c->tcond = TCG_COND_NE;
++        imm = FPSR_CC_Z;
++        c->tcond = TCG_COND_TSTNE;
+         break;
+     case 2:  /* Ordered Greater Than !(A || Z || N) */
+     case 18: /* Greater Than !(A || Z || N) */
+-        c->v1 = tcg_temp_new();
+-        tcg_gen_andi_i32(c->v1, fpsr,
+-                         FPSR_CC_A | FPSR_CC_Z | FPSR_CC_N);
+-        c->tcond = TCG_COND_EQ;
++        imm = FPSR_CC_A | FPSR_CC_Z | FPSR_CC_N;
++        c->tcond = TCG_COND_TSTEQ;
+         break;
+     case 3:  /* Ordered Greater than or Equal Z || !(A || N) */
+     case 19: /* Greater than or Equal Z || !(A || N) */
+         c->v1 = tcg_temp_new();
+         tcg_gen_andi_i32(c->v1, fpsr, FPSR_CC_A);
+         tcg_gen_shli_i32(c->v1, c->v1, ctz32(FPSR_CC_N) - ctz32(FPSR_CC_A));
+-        tcg_gen_andi_i32(fpsr, fpsr, FPSR_CC_Z | FPSR_CC_N);
+         tcg_gen_or_i32(c->v1, c->v1, fpsr);
+         tcg_gen_xori_i32(c->v1, c->v1, FPSR_CC_N);
+-        c->tcond = TCG_COND_NE;
++        imm = FPSR_CC_Z | FPSR_CC_N;
++        c->tcond = TCG_COND_TSTNE;
+         break;
+     case 4:  /* Ordered Less Than !(!N || A || Z); */
+     case 20: /* Less Than !(!N || A || Z); */
+         c->v1 = tcg_temp_new();
+         tcg_gen_xori_i32(c->v1, fpsr, FPSR_CC_N);
+-        tcg_gen_andi_i32(c->v1, c->v1, FPSR_CC_N | FPSR_CC_A | FPSR_CC_Z);
+-        c->tcond = TCG_COND_EQ;
++        imm = FPSR_CC_N | FPSR_CC_A | FPSR_CC_Z;
++        c->tcond = TCG_COND_TSTEQ;
+         break;
+     case 5:  /* Ordered Less than or Equal Z || (N && !A) */
+     case 21: /* Less than or Equal Z || (N && !A) */
+@@ -5176,49 +5174,45 @@ static void gen_fcc_cond(DisasCompare *c, DisasContext *s, int cond)
+         tcg_gen_andi_i32(c->v1, fpsr, FPSR_CC_A);
+         tcg_gen_shli_i32(c->v1, c->v1, ctz32(FPSR_CC_N) - ctz32(FPSR_CC_A));
+         tcg_gen_andc_i32(c->v1, fpsr, c->v1);
+-        tcg_gen_andi_i32(c->v1, c->v1, FPSR_CC_Z | FPSR_CC_N);
+-        c->tcond = TCG_COND_NE;
++        imm = FPSR_CC_Z | FPSR_CC_N;
++        c->tcond = TCG_COND_TSTNE;
+         break;
+     case 6:  /* Ordered Greater or Less than !(A || Z) */
+     case 22: /* Greater or Less than !(A || Z) */
+-        c->v1 = tcg_temp_new();
+-        tcg_gen_andi_i32(c->v1, fpsr, FPSR_CC_A | FPSR_CC_Z);
+-        c->tcond = TCG_COND_EQ;
++        imm = FPSR_CC_A | FPSR_CC_Z;
++        c->tcond = TCG_COND_TSTEQ;
+         break;
+     case 7:  /* Ordered !A */
+     case 23: /* Greater, Less or Equal !A */
+-        c->v1 = tcg_temp_new();
+-        tcg_gen_andi_i32(c->v1, fpsr, FPSR_CC_A);
+-        c->tcond = TCG_COND_EQ;
++        imm = FPSR_CC_A;
++        c->tcond = TCG_COND_TSTEQ;
+         break;
+     case 8:  /* Unordered A */
+     case 24: /* Not Greater, Less or Equal A */
+-        c->v1 = tcg_temp_new();
+-        tcg_gen_andi_i32(c->v1, fpsr, FPSR_CC_A);
+-        c->tcond = TCG_COND_NE;
++        imm = FPSR_CC_A;
++        c->tcond = TCG_COND_TSTNE;
+         break;
+     case 9:  /* Unordered or Equal A || Z */
+     case 25: /* Not Greater or Less then A || Z */
+-        c->v1 = tcg_temp_new();
+-        tcg_gen_andi_i32(c->v1, fpsr, FPSR_CC_A | FPSR_CC_Z);
+-        c->tcond = TCG_COND_NE;
++        imm = FPSR_CC_A | FPSR_CC_Z;
++        c->tcond = TCG_COND_TSTNE;
+         break;
+     case 10: /* Unordered or Greater Than A || !(N || Z)) */
+     case 26: /* Not Less or Equal A || !(N || Z)) */
+         c->v1 = tcg_temp_new();
+         tcg_gen_andi_i32(c->v1, fpsr, FPSR_CC_Z);
+         tcg_gen_shli_i32(c->v1, c->v1, ctz32(FPSR_CC_N) - ctz32(FPSR_CC_Z));
+-        tcg_gen_andi_i32(fpsr, fpsr, FPSR_CC_A | FPSR_CC_N);
+         tcg_gen_or_i32(c->v1, c->v1, fpsr);
+         tcg_gen_xori_i32(c->v1, c->v1, FPSR_CC_N);
+-        c->tcond = TCG_COND_NE;
++        imm = FPSR_CC_A | FPSR_CC_N;
++        c->tcond = TCG_COND_TSTNE;
+         break;
+     case 11: /* Unordered or Greater or Equal A || Z || !N */
+     case 27: /* Not Less Than A || Z || !N */
+         c->v1 = tcg_temp_new();
+-        tcg_gen_andi_i32(c->v1, fpsr, FPSR_CC_A | FPSR_CC_Z | FPSR_CC_N);
+-        tcg_gen_xori_i32(c->v1, c->v1, FPSR_CC_N);
+-        c->tcond = TCG_COND_NE;
++        tcg_gen_xori_i32(c->v1, fpsr, FPSR_CC_N);
++        imm = FPSR_CC_A | FPSR_CC_Z | FPSR_CC_N;
++        c->tcond = TCG_COND_TSTNE;
+         break;
+     case 12: /* Unordered or Less Than A || (N && !Z) */
+     case 28: /* Not Greater than or Equal A || (N && !Z) */
+@@ -5226,27 +5220,25 @@ static void gen_fcc_cond(DisasCompare *c, DisasContext *s, int cond)
+         tcg_gen_andi_i32(c->v1, fpsr, FPSR_CC_Z);
+         tcg_gen_shli_i32(c->v1, c->v1, ctz32(FPSR_CC_N) - ctz32(FPSR_CC_Z));
+         tcg_gen_andc_i32(c->v1, fpsr, c->v1);
+-        tcg_gen_andi_i32(c->v1, c->v1, FPSR_CC_A | FPSR_CC_N);
+-        c->tcond = TCG_COND_NE;
++        imm = FPSR_CC_A | FPSR_CC_N;
++        c->tcond = TCG_COND_TSTNE;
+         break;
+     case 13: /* Unordered or Less or Equal A || Z || N */
+     case 29: /* Not Greater Than A || Z || N */
+-        c->v1 = tcg_temp_new();
+-        tcg_gen_andi_i32(c->v1, fpsr, FPSR_CC_A | FPSR_CC_Z | FPSR_CC_N);
+-        c->tcond = TCG_COND_NE;
++        imm = FPSR_CC_A | FPSR_CC_Z | FPSR_CC_N;
++        c->tcond = TCG_COND_TSTNE;
+         break;
+     case 14: /* Not Equal !Z */
+     case 30: /* Signaling Not Equal !Z */
+-        c->v1 = tcg_temp_new();
+-        tcg_gen_andi_i32(c->v1, fpsr, FPSR_CC_Z);
+-        c->tcond = TCG_COND_EQ;
++        imm = FPSR_CC_Z;
++        c->tcond = TCG_COND_TSTEQ;
+         break;
+     case 15: /* True */
+     case 31: /* Signaling True */
+-        c->v1 = c->v2;
+         c->tcond = TCG_COND_ALWAYS;
+         break;
      }
++    c->v2 = tcg_constant_i32(imm);
  }
  
- static DisasJumpType gen_fbcond(DisasContext *ctx, TCGCond cond, int ra,
-                                 int32_t disp)
- {
--    TCGv cmp_tmp = tcg_temp_new();
--    DisasJumpType ret;
--
--    gen_fold_mzero(cond, cmp_tmp, load_fpr(ctx, ra));
--    ret = gen_bcond_internal(ctx, cond, cmp_tmp, 0, disp);
--    return ret;
-+    uint64_t imm;
-+    TCGv_i64 tmp = gen_fold_mzero(&cond, &imm, load_fpr(ctx, ra));
-+    return gen_bcond_internal(ctx, cond, tmp, imm, disp);
- }
- 
- static void gen_fcmov(DisasContext *ctx, TCGCond cond, int ra, int rb, int rc)
- {
--    TCGv_i64 va, vb, z;
--
--    z = load_zero(ctx);
--    vb = load_fpr(ctx, rb);
--    va = tcg_temp_new();
--    gen_fold_mzero(cond, va, load_fpr(ctx, ra));
--
--    tcg_gen_movcond_i64(cond, dest_fpr(ctx, rc), va, z, vb, load_fpr(ctx, rc));
-+    uint64_t imm;
-+    TCGv_i64 tmp = gen_fold_mzero(&cond, &imm, load_fpr(ctx, ra));
-+    tcg_gen_movcond_i64(cond, dest_fpr(ctx, rc),
-+                        tmp, tcg_constant_i64(imm),
-+                        load_fpr(ctx, rb), load_fpr(ctx, rc));
- }
- 
- #define QUAL_RM_N       0x080   /* Round mode nearest even */
+ static void gen_fjmpcc(DisasContext *s, int cond, TCGLabel *l1)
 -- 
 2.34.1
 
