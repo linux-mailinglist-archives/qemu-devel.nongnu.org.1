@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B246B82A0F9
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 20:21:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DA282A110
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 20:34:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNe7C-0005KS-UY; Wed, 10 Jan 2024 14:19:50 -0500
+	id 1rNeKP-0001NI-Lh; Wed, 10 Jan 2024 14:33:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rNe72-0005Jw-W1
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 14:19:41 -0500
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rNe71-0001JF-1b
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 14:19:40 -0500
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-5ce07cf1e5dso2346635a12.2
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 11:19:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704914377; x=1705519177; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:cc:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DMkSGgS33676tpYdvMeRICZTtCOuZc4rIkE8xlipUlY=;
- b=PYqvC9z2mziyXCB58BMH5sqxFqiygNscrudxbjUUnbrhnDeTWkDS2Ez5ED7mJuzXX1
- lrg2UX8YI1IKKgIDyZQ5HZVKpEx+pTfjQQkFzCBdPtydXd+e+/4/JsFWl8sYSS3DCc4+
- V0Jc0ImlZDDMVrrLhbk/RuisMqsdypqqz2mJgF0X/UQSvX1Yq8VWNZOd5AsvEAfbPKiU
- yuZ9QnJCMCqf9z7lo1NFZckTvBi1CZEqWXVjv3+TaMh482u4rjK+H//+gkaxrY8pKOcv
- GPa5BnrEk/zefLtV+cOCLN98Rie5LiUV0mZ6hvALwurA9xr+QZfzfle2HgTN/F+rhbWA
- xOCA==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rNeKN-0001Mu-Oc
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 14:33:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rNeKK-0007r5-4H
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 14:33:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704915202;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=NjSQ5KLN0K0E082PvDvuAqjXvGu4//QU9m0R4zAiTs4=;
+ b=LR9FRcCW+6yAgiS3eleMuWUqT+2FiX2/ZdKR3UEI4idp3IzmKpDToASDHBiPABwhsLXGIP
+ hQ4gEW/8OqdB/wLzWWPIX9FKfFN5ofo48PM5T+QwstmLA9FOYkTJCZwAKT2tpftvyTxHIK
+ J3ieXbYj5B9Phv5pgX5l1pHRQKQiO80=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-13-sWjs8zPaO9uouDy2dRtRxw-1; Wed, 10 Jan 2024 14:33:18 -0500
+X-MC-Unique: sWjs8zPaO9uouDy2dRtRxw-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-5cf1c5f68dcso782600a12.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 11:33:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704914377; x=1705519177;
- h=content-transfer-encoding:in-reply-to:cc:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DMkSGgS33676tpYdvMeRICZTtCOuZc4rIkE8xlipUlY=;
- b=oUN8bY90oL3RtM0SL99w33G2Vc9hiFc/L+cqWarFS5pQ9ZhKWH8uHpPikkm/AhbBPJ
- zGQ3Do9fs4yD8Rue8LTXI098fn/ZMo3ageeZ5PdrxRabtpxyoBzM3I0jRLInOgiCrrm9
- FMJ5KC2JKX0aHZmTIprxDmsOihu6wrcXfZGws5loAwRDOAoGfLwQrSwq7wKQr19fE/WZ
- H5QBz+BdUNyxwnbc9tEyt6bazbLviYq5Rb1K0BfNdIhOVUdabNGj38BU/XTq60U1KDRY
- axAPEoJjvr7R2zr7xuKxPNnmNxBOtgbXtM3WjbciDhRjExd/do7P7qBPBKHC+GCBaO/G
- cRNQ==
-X-Gm-Message-State: AOJu0YyTmsRIuZ7w+UvN2Nx/RttmWgUaPxzc2OvTlGENu25HKDbK+Twr
- ClMr7U0zrCf4NeYzfGTTwq0/n9HeUQv3cw==
-X-Google-Smtp-Source: AGHT+IGofCkDdgNQf5tj4ahD44Yon8Nkf3uMpLCvOekIMOXsXDqUVPjm7uFVEFeYbOoVAqFE5+42MQ==
-X-Received: by 2002:a05:6a20:9143:b0:19a:404b:86c3 with SMTP id
- x3-20020a056a20914300b0019a404b86c3mr444378pzc.70.1704914376870; 
- Wed, 10 Jan 2024 11:19:36 -0800 (PST)
-Received: from [192.168.68.110] ([152.234.123.64])
- by smtp.gmail.com with ESMTPSA id
- h15-20020a056a00000f00b006da13bc46c0sm3966840pfk.171.2024.01.10.11.19.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Jan 2024 11:19:36 -0800 (PST)
-Message-ID: <e2763db2-fade-482d-b433-1bfce6acf7d3@ventanamicro.com>
-Date: Wed, 10 Jan 2024 16:19:32 -0300
+ d=1e100.net; s=20230601; t=1704915197; x=1705519997;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NjSQ5KLN0K0E082PvDvuAqjXvGu4//QU9m0R4zAiTs4=;
+ b=op6eK+Dv/8qyVwL0nXK4pkOa53A2BqmKUezr0+fcgsPkJnwM7Qv13W0rSFKvAv9Xfb
+ xw+I3l0Te+CXrsvv0VsPnyJdDfffSoCVpCqLyGn5c72PwrzkmGrbySsbZbDstT8XneE9
+ PiQCt683oKbBJIyeCjWgyAwcoPDAXSSwkf7EweCW9a1Gc7dPnZULBCbGYD7s5YsMVUzi
+ nAoekvL2qT+aFNT3Eak1UU1u1H5OviKyWjlEUzMYvK3J64gUXwCtyo/wWThdJ2+c9zwI
+ AYVfN+q6cjQMs5zEV7Vpw6Cg0E/QhzooGuK6dKq3OtxFd3yfCfYgLOPMaXxWzRDbWCnl
+ dOoQ==
+X-Gm-Message-State: AOJu0Yzju3u1be/Pg5gyD08/juwdmVZqRWi6dgZWu10DFB/ftR8H/ciG
+ /HP3ns6y2iPIwwTkw7P6r010jQCcYylrur4Tm1J8nCLsxKLOgdJR866cVyRVU96uMFHoGKHSity
+ UKIncbmQpq0QHdkt1+ERuvSTL9zzieEUsAgifDQs=
+X-Received: by 2002:a17:90a:df8b:b0:28b:b4d5:c3e9 with SMTP id
+ p11-20020a17090adf8b00b0028bb4d5c3e9mr12537pjv.11.1704915197363; 
+ Wed, 10 Jan 2024 11:33:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEtpTUCM9fdwD3q38Ln8aCVd1keesAYP596lNuGqZ3P1AQNb8cWpD1Bl6cbHnQOV+4AytyZGduKrpkHWCdzD78=
+X-Received: by 2002:a17:90a:df8b:b0:28b:b4d5:c3e9 with SMTP id
+ p11-20020a17090adf8b00b0028bb4d5c3e9mr12527pjv.11.1704915197015; Wed, 10 Jan
+ 2024 11:33:17 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] Export debug triggers as an extension
-Content-Language: en-US
-To: Himanshu Chauhan <hchauhan@ventanamicro.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-References: <20240110040203.1920924-1-hchauhan@ventanamicro.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: Alvin Chang <alvinga@andestech.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Andrew Jones <ajones@ventanamicro.com>
-In-Reply-To: <20240110040203.1920924-1-hchauhan@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20231116014350.653792-1-jsnow@redhat.com>
+ <20231116014350.653792-12-jsnow@redhat.com>
+ <874jhedjv0.fsf@pond.sub.org>
+ <CAFn=p-YZAZtX1SKAs2mFpGL7XhFPvsr68ipFqv+E_ZM_wV_Kig@mail.gmail.com>
+ <87wmu84o6a.fsf@pond.sub.org>
+In-Reply-To: <87wmu84o6a.fsf@pond.sub.org>
+From: John Snow <jsnow@redhat.com>
+Date: Wed, 10 Jan 2024 14:33:05 -0500
+Message-ID: <CAFn=p-aFOhQ8+96cRasYmnF64g1CH_bdH0LiUAa98rkV9cbZXA@mail.gmail.com>
+Subject: Re: [PATCH 11/19] qapi/schema: fix QAPISchemaArrayType.check's call
+ to resolve_type
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Michael Roth <michael.roth@amd.com>
+Content-Type: multipart/alternative; boundary="000000000000b0d004060e9c8039"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,74 +97,512 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Himanshu,
+--000000000000b0d004060e9c8039
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-We spoke offline but let's make everyone aware:
+On Thu, Nov 23, 2023, 8:03 AM Markus Armbruster <armbru@redhat.com> wrote:
 
-- 'sdtrig' should be marked with 'x-' and be an experimental extension since
-the spec isn't yet frozen;
+> John Snow <jsnow@redhat.com> writes:
+>
+> > On Wed, Nov 22, 2023 at 7:59=E2=80=AFAM Markus Armbruster <armbru@redha=
+t.com>
+> wrote:
+> >>
+> >> John Snow <jsnow@redhat.com> writes:
+> >>
+> >> > There's more conditionals in here than we can reasonably pack into a
+> >> > terse little statement, so break it apart into something more
+> explicit.
+> >> >
+> >> > (When would a built-in array ever cause a QAPISemError? I don't know=
+,
+> >> > maybe never - but the type system wasn't happy all the same.)
+> >> >
+> >> > Signed-off-by: John Snow <jsnow@redhat.com>
+> >> > ---
+> >> >  scripts/qapi/schema.py | 11 +++++++++--
+> >> >  1 file changed, 9 insertions(+), 2 deletions(-)
+> >> >
+> >> > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+> >> > index 462acb2bb61..164d86c4064 100644
+> >> > --- a/scripts/qapi/schema.py
+> >> > +++ b/scripts/qapi/schema.py
+> >> > @@ -384,9 +384,16 @@ def need_has_if_optional(self):
+> >> >
+> >> >      def check(self, schema):
+> >> >          super().check(schema)
+> >> > +
+> >> > +        if self.info:
+> >> > +            assert self.info.defn_meta  # guaranteed to be set by
+> expr.py
+> >> > +            what =3D self.info.defn_meta
+> >> > +        else:
+> >> > +            what =3D 'built-in array'
+> >> > +
+> >> >          self._element_type =3D schema.resolve_type(
+> >> > -            self._element_type_name, self.info,
+> >> > -            self.info and self.info.defn_meta)
+> >> > +            self._element_type_name, self.info, what
+> >> > +        )
+> 0>> >          assert not isinstance(self.element_type,
+> QAPISchemaArrayType)
+> >> >
+> >> >      def set_module(self, schema):
+> >>
+> >> What problem are you solving here?
+> >>
+> >
+> > 1. "self.info and self.info.defn_meta" is the wrong type ifn't self.inf=
+o
+>
+> self.info is Optional[QAPISourceInfo].
+>
+> When self.info, then self.info.defn_meta is is Optional[str].
+>
+> Naive me expects self.info and self.info.defn_meta to be Optional[str].
+> Playing with mypy...  it seems to be Union[QAPISourceInfo, None, str].
+> Type inference too weak.
+>
 
-- Alvin sent a patch to the ML adding the 'mcontext' CSR for 'sdtrig' some time
-ago:
+I think my expectations match yours: "x and y" should return either x or y,
+so the resulting type would naively be Union[X | Y], which would indeed be
+Union[QAPISourceInfo | None | str], but:
 
-"[PATCH v2] target/riscv: Implement optional CSR mcontext of debug Sdtrig extension​"
+If QAPISourceInfo is *false-y*, but not None, it'd be possible for the
+expression to yield a QAPISourceInfo. mypy does not understand that
+QAPISourceInfo can never be false-y.
 
-It would be good to put his patch on top of this series to ease the review for everyone.
-The changes done in patch 2 would also be applicable to the mcontext CSR;
-
-
-- last but probably the most important: the existing 'debug' flag seems to be acting as
-the actual 'sdtrig' extension due to how the flag is gating trigger code, e.g.:
-
-   if (cpu->cfg.debug) {
-         riscv_trigger_realize(&cpu->env);
-     }
-
-and
-
-     if (cpu->cfg.debug) {
-         riscv_trigger_reset_hold(env);
-     }
+(That I know of. Maybe there's a trick to annotate it. I like your solution
+below better anyway, just curious about the exact nature of this
+limitation.)
 
 
-If that's really the case, all the checks with cpu->cfg.debug will need to also include
-cpu->cfg.ext_sdtrig (one or the other). And now we'll have to make an option: do we leave
-the debug triggers (i.e. the 'debug' flag) as always enabled?
+> > 2. self.info.defn_meta is *also* not guaranteed by static types
+>
+> Yes.  We know it's not None ("guaranteed to be set by expr.py"), but the
+> type system doesn't.
+>
 
-If it's up to me I would make 'debug' as default 'false' and deprecate it. Users will need
-to enable the debug triggers via x-sdtrig=true from now on. This will break existing behavior,
-but the way it is now we're always enabling an extension (via the debug flag) that isn't even
-frozen, so we're already in the wrong.
-
-
-Alistair, any thoughts?
+Mmhmm.
 
 
-Thanks,
+> > ultimately: we need to assert self.info and self.info.defn_meta both;
+> > but it's possible (?) that we don't have self.info in the case that
+> > we're a built-in array, so I handle that.
+>
+> This bring us back to the question in your commit message: "When would a
+> built-in array ever cause a QAPISemError?"  Short answer: never.
+>
+
+Right, okay. I just couldn't guarantee it statically. I knew this patch was
+a little bananas, sorry for tossing you the stinkbomb.
 
 
-Daniel
+> Long answer.  We're dealing with a *specific* QAPISemError here, namely
+> .resolve_type()'s "uses unknown type".  If this happens for a built-in
+> array, it's a programming error.
+>
+> Let's commit such an error to see what happens: stick
+>
+>         self._make_array_type('xxx', None)
+>
+> Dies like this:
+>
+>     Traceback (most recent call last):
+>       File "/work/armbru/qemu/scripts/qapi/main.py", line 94, in main
+>         generate(args.schema,
+>       File "/work/armbru/qemu/scripts/qapi/main.py", line 50, in generate
+>         schema =3D QAPISchema(schema_file)
+>                  ^^^^^^^^^^^^^^^^^^^^^^^
+>       File "/work/armbru/qemu/scripts/qapi/schema.py", line 938, in
+> __init__
+>         self.check()
+>       File "/work/armbru/qemu/scripts/qapi/schema.py", line 1225, in chec=
+k
+>         ent.check(self)
+>       File "/work/armbru/qemu/scripts/qapi/schema.py", line 373, in check
+>         self.element_type =3D schema.resolve_type(
+>                             ^^^^^^^^^^^^^^^^^^^^
+>       File "/work/armbru/qemu/scripts/qapi/schema.py", line 973, in
+> resolve_type
+>         raise QAPISemError(
+>     qapi.error.QAPISemError: <exception str() failed>
+>
+>     During handling of the above exception, another exception occurred:
+>
+>     Traceback (most recent call last):
+>       File "/work/armbru/qemu/scripts/qapi-gen.py", line 19, in <module>
+>         sys.exit(main.main())
+>                  ^^^^^^^^^^^
+>       File "/work/armbru/qemu/scripts/qapi/main.py", line 101, in main
+>         print(err, file=3Dsys.stderr)
+>       File "/work/armbru/qemu/scripts/qapi/error.py", line 41, in __str__
+>         assert self.info is not None
+>                ^^^^^^^^^^^^^^^^^^^^^
+>     AssertionError
+>
+> Same before and after your patch.  The patch's change of what=3DNone to
+> what=3D'built-in array' has no effect.
+>
+> Here's a slightly simpler patch:
+>
+> diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+> index 46004689f0..feb0023d25 100644
+> --- a/scripts/qapi/schema.py
+> +++ b/scripts/qapi/schema.py
+> @@ -479,7 +479,7 @@ def check(self, schema: QAPISchema) -> None:
+>          super().check(schema)
+>          self._element_type =3D schema.resolve_type(
+>              self._element_type_name, self.info,
+> -            self.info and self.info.defn_meta)
+> +            self.info.defn_meta if self.info else None)
+>
+
+Yep.
+
+         assert not isinstance(self.element_type, QAPISchemaArrayType)
+>
+>      def set_module(self, schema: QAPISchema) -> None:
+> @@ -1193,7 +1193,7 @@ def resolve_type(
+>          self,
+>          name: str,
+>          info: Optional[QAPISourceInfo],
+> -        what: Union[str, Callable[[Optional[QAPISourceInfo]], str]],
+> +        what: Union[None, str, Callable[[Optional[QAPISourceInfo]], str]=
+],
+>      ) -> QAPISchemaType:
+>          typ =3D self.lookup_type(name)
+>          if not typ:
+>
+> The first hunk works around mypy's type inference weakness.  It rewrites
+>
+>     A and B
+>
+> as
+>
+>     B if A else A
+>
+> and then partially evaluates to
+>
+>     B if A else None
+>
+> exploiting the fact that falsy A can only be None.  It replaces this
+> patch.
+>
+
+Sounds good to me!
 
 
-On 1/10/24 01:02, Himanshu Chauhan wrote:
-> All the CPUs may or may not implement the debug trigger (sdtrig)
-> extension. The presence of it should be dynamically detectable.
-> This patch exports the debug triggers as an extension which
-> can be turned on or off by sdtrig=<true/false> option. It is
-> turned on by default.
-> 
-> "sdtrig" is concatenated to ISA string when it is enabled.
-> Like so:
-> rv64imafdch_zicbom_*_sdtrig_*_sstc_svadu
-> 
-> 
-> Himanshu Chauhan (2):
->    target/riscv: Export sdtrig as an extension and ISA string
->    target/riscv: Raise an exception when sdtrig is turned off
-> 
->   target/riscv/cpu.c     |  2 ++
->   target/riscv/cpu_cfg.h |  1 +
->   target/riscv/csr.c     | 20 ++++++++++++++++++++
->   3 files changed, 23 insertions(+)
-> 
+> The second hunk corrects .resolve_type()'s typing to accept what=3DNone.
+> It's meant to be squashed into PATCH 16.
+>
+> What do you think?
+>
+
+I'm on my mobile again, but at a glance I like it. Except that I'm a little
+reluctant to allow what to be None if this is the *only* caller known to
+possibly do it, and only in a circumstance that we assert elsewhere that it
+should never happen.
+
+Can we do:
+
+what =3D self.info.defn_meta if self.info else None
+assert what [is not None]  # Depending on taste
+
+instead?
+
+No sem error, no new unit test needed, assertion provides the correct frame
+of mind (programmer error), stronger typing on resolve_type.
+
+(I really love eliminating None when I can as a rule because I like how
+much more it tells you about the nature of all callers, it's a much
+stronger decree. Worth pursuing where you can, IMO, but I'm not gonna die
+on the hill for a patch like this - just sharing my tendencies for
+discussion.)
+
+--js
+
+>
+
+--000000000000b0d004060e9c8039
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Thu, Nov 23, 2023, 8:03 AM Markus Armbruster &lt;<a=
+ href=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; wrote:<br></di=
+v><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:=
+1px #ccc solid;padding-left:1ex">John Snow &lt;<a href=3D"mailto:jsnow@redh=
+at.com" target=3D"_blank" rel=3D"noreferrer">jsnow@redhat.com</a>&gt; write=
+s:<br>
+<br>
+&gt; On Wed, Nov 22, 2023 at 7:59=E2=80=AFAM Markus Armbruster &lt;<a href=
+=3D"mailto:armbru@redhat.com" target=3D"_blank" rel=3D"noreferrer">armbru@r=
+edhat.com</a>&gt; wrote:<br>
+&gt;&gt;<br>
+&gt;&gt; John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" target=3D"_blank=
+" rel=3D"noreferrer">jsnow@redhat.com</a>&gt; writes:<br>
+&gt;&gt;<br>
+&gt;&gt; &gt; There&#39;s more conditionals in here than we can reasonably =
+pack into a<br>
+&gt;&gt; &gt; terse little statement, so break it apart into something more=
+ explicit.<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt; (When would a built-in array ever cause a QAPISemError? I don=
+&#39;t know,<br>
+&gt;&gt; &gt; maybe never - but the type system wasn&#39;t happy all the sa=
+me.)<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt; Signed-off-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat.c=
+om" target=3D"_blank" rel=3D"noreferrer">jsnow@redhat.com</a>&gt;<br>
+&gt;&gt; &gt; ---<br>
+&gt;&gt; &gt;=C2=A0 scripts/qapi/schema.py | 11 +++++++++--<br>
+&gt;&gt; &gt;=C2=A0 1 file changed, 9 insertions(+), 2 deletions(-)<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt; diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py<=
+br>
+&gt;&gt; &gt; index 462acb2bb61..164d86c4064 100644<br>
+&gt;&gt; &gt; --- a/scripts/qapi/schema.py<br>
+&gt;&gt; &gt; +++ b/scripts/qapi/schema.py<br>
+&gt;&gt; &gt; @@ -384,9 +384,16 @@ def need_has_if_optional(self):<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 def check(self, schema):<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 super().check(schema)<br>
+&gt;&gt; &gt; +<br>
+&gt;&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if <a href=3D"http://self.info" =
+rel=3D"noreferrer noreferrer" target=3D"_blank">self.info</a>:<br>
+&gt;&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 assert self.info.d=
+efn_meta=C2=A0 # guaranteed to be set by expr.py<br>
+&gt;&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 what =3D self.info=
+.defn_meta<br>
+&gt;&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 else:<br>
+&gt;&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 what =3D &#39;buil=
+t-in array&#39;<br>
+&gt;&gt; &gt; +<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self._element_type =3D sche=
+ma.resolve_type(<br>
+&gt;&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self._element_type=
+_name, <a href=3D"http://self.info" rel=3D"noreferrer noreferrer" target=3D=
+"_blank">self.info</a>,<br>
+&gt;&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"http://=
+self.info" rel=3D"noreferrer noreferrer" target=3D"_blank">self.info</a> an=
+d self.info.defn_meta)<br>
+&gt;&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self._element_type=
+_name, <a href=3D"http://self.info" rel=3D"noreferrer noreferrer" target=3D=
+"_blank">self.info</a>, what<br>
+&gt;&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 )<br>
+0&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 assert not isinstance(self=
+.element_type, QAPISchemaArrayType)<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 def set_module(self, schema):<br>
+&gt;&gt;<br>
+&gt;&gt; What problem are you solving here?<br>
+&gt;&gt;<br>
+&gt;<br>
+&gt; 1. &quot;<a href=3D"http://self.info" rel=3D"noreferrer noreferrer" ta=
+rget=3D"_blank">self.info</a> and self.info.defn_meta&quot; is the wrong ty=
+pe ifn&#39;t <a href=3D"http://self.info" rel=3D"noreferrer noreferrer" tar=
+get=3D"_blank">self.info</a><br>
+<br>
+<a href=3D"http://self.info" rel=3D"noreferrer noreferrer" target=3D"_blank=
+">self.info</a> is Optional[QAPISourceInfo].<br>
+<br>
+When <a href=3D"http://self.info" rel=3D"noreferrer noreferrer" target=3D"_=
+blank">self.info</a>, then self.info.defn_meta is is Optional[str].<br>
+<br>
+Naive me expects <a href=3D"http://self.info" rel=3D"noreferrer noreferrer"=
+ target=3D"_blank">self.info</a> and self.info.defn_meta to be Optional[str=
+].<br>
+Playing with mypy...=C2=A0 it seems to be Union[QAPISourceInfo, None, str].=
+<br>
+Type inference too weak.<br></blockquote></div></div><div dir=3D"auto"><br>=
+</div><div dir=3D"auto">I think my expectations match yours: &quot;x and y&=
+quot; should return either x or y, so the resulting type would naively be U=
+nion[X | Y], which would indeed be Union[QAPISourceInfo | None | str], but:=
+</div><div dir=3D"auto"><br></div><div dir=3D"auto">If QAPISourceInfo is *f=
+alse-y*, but not None, it&#39;d be possible for the expression to yield a Q=
+APISourceInfo. mypy does not understand that QAPISourceInfo can never be fa=
+lse-y.</div><div dir=3D"auto"><br></div><div dir=3D"auto">(That I know of. =
+Maybe there&#39;s a trick to annotate it. I like your solution below better=
+ anyway, just curious about the exact nature of this limitation.)</div><div=
+ dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><block=
+quote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc=
+ solid;padding-left:1ex">
+<br>
+&gt; 2. self.info.defn_meta is *also* not guaranteed by static types<br>
+<br>
+Yes.=C2=A0 We know it&#39;s not None (&quot;guaranteed to be set by expr.py=
+&quot;), but the<br>
+type system doesn&#39;t.<br></blockquote></div></div><div dir=3D"auto"><br>=
+</div><div dir=3D"auto">Mmhmm.</div><div dir=3D"auto"><br></div><div dir=3D=
+"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=
+=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+<br>
+&gt; ultimately: we need to assert <a href=3D"http://self.info" rel=3D"nore=
+ferrer noreferrer" target=3D"_blank">self.info</a> and self.info.defn_meta =
+both;<br>
+&gt; but it&#39;s possible (?) that we don&#39;t have <a href=3D"http://sel=
+f.info" rel=3D"noreferrer noreferrer" target=3D"_blank">self.info</a> in th=
+e case that<br>
+&gt; we&#39;re a built-in array, so I handle that.<br>
+<br>
+This bring us back to the question in your commit message: &quot;When would=
+ a<br>
+built-in array ever cause a QAPISemError?&quot;=C2=A0 Short answer: never.<=
+br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">R=
+ight, okay. I just couldn&#39;t guarantee it statically. I knew this patch =
+was a little bananas, sorry for tossing you the stinkbomb.</div><div dir=3D=
+"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;=
+padding-left:1ex">
+<br>
+Long answer.=C2=A0 We&#39;re dealing with a *specific* QAPISemError here, n=
+amely<br>
+.resolve_type()&#39;s &quot;uses unknown type&quot;.=C2=A0 If this happens =
+for a built-in<br>
+array, it&#39;s a programming error.<br>
+<br>
+Let&#39;s commit such an error to see what happens: stick<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 self._make_array_type(&#39;xxx&#39;, None)<br>
+<br>
+Dies like this:<br>
+<br>
+=C2=A0 =C2=A0 Traceback (most recent call last):<br>
+=C2=A0 =C2=A0 =C2=A0 File &quot;/work/armbru/qemu/scripts/qapi/main.py&quot=
+;, line 94, in main<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 generate(args.schema,<br>
+=C2=A0 =C2=A0 =C2=A0 File &quot;/work/armbru/qemu/scripts/qapi/main.py&quot=
+;, line 50, in generate<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 schema =3D QAPISchema(schema_file)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0^^^^^^^^^^^^^=
+^^^^^^^^^^<br>
+=C2=A0 =C2=A0 =C2=A0 File &quot;/work/armbru/qemu/scripts/qapi/schema.py&qu=
+ot;, line 938, in __init__<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 self.check()<br>
+=C2=A0 =C2=A0 =C2=A0 File &quot;/work/armbru/qemu/scripts/qapi/schema.py&qu=
+ot;, line 1225, in check<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 ent.check(self)<br>
+=C2=A0 =C2=A0 =C2=A0 File &quot;/work/armbru/qemu/scripts/qapi/schema.py&qu=
+ot;, line 373, in check<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 self.element_type =3D schema.resolve_type(<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 ^^^^^^^^^^^^^^^^^^^^<br>
+=C2=A0 =C2=A0 =C2=A0 File &quot;/work/armbru/qemu/scripts/qapi/schema.py&qu=
+ot;, line 973, in resolve_type<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 raise QAPISemError(<br>
+=C2=A0 =C2=A0 qapi.error.QAPISemError: &lt;exception str() failed&gt;<br>
+<br>
+=C2=A0 =C2=A0 During handling of the above exception, another exception occ=
+urred:<br>
+<br>
+=C2=A0 =C2=A0 Traceback (most recent call last):<br>
+=C2=A0 =C2=A0 =C2=A0 File &quot;/work/armbru/qemu/scripts/qapi-gen.py&quot;=
+, line 19, in &lt;module&gt;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 sys.exit(main.main())<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0^^^^^^^^^^^<b=
+r>
+=C2=A0 =C2=A0 =C2=A0 File &quot;/work/armbru/qemu/scripts/qapi/main.py&quot=
+;, line 101, in main<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 print(err, file=3Dsys.stderr)<br>
+=C2=A0 =C2=A0 =C2=A0 File &quot;/work/armbru/qemu/scripts/qapi/error.py&quo=
+t;, line 41, in __str__<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 assert <a href=3D"http://self.info" rel=3D"nore=
+ferrer noreferrer" target=3D"_blank">self.info</a> is not None<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0^^^^^^^^^^^^^^^^^^^^=
+^<br>
+=C2=A0 =C2=A0 AssertionError<br>
+<br>
+Same before and after your patch.=C2=A0 The patch&#39;s change of what=3DNo=
+ne to<br>
+what=3D&#39;built-in array&#39; has no effect.<br>
+<br>
+Here&#39;s a slightly simpler patch:<br>
+<br>
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py<br>
+index 46004689f0..feb0023d25 100644<br>
+--- a/scripts/qapi/schema.py<br>
++++ b/scripts/qapi/schema.py<br>
+@@ -479,7 +479,7 @@ def check(self, schema: QAPISchema) -&gt; None:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0super().check(schema)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0self._element_type =3D schema.resolve_typ=
+e(<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0self._element_type_name, <a=
+ href=3D"http://self.info" rel=3D"noreferrer noreferrer" target=3D"_blank">=
+self.info</a>,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"http://self.info" rel=
+=3D"noreferrer noreferrer" target=3D"_blank">self.info</a> and self.info.de=
+fn_meta)<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.info.defn_meta if <a href=
+=3D"http://self.info" rel=3D"noreferrer noreferrer" target=3D"_blank">self.=
+info</a> else None)<br></blockquote></div></div><div dir=3D"auto"><br></div=
+><div dir=3D"auto">Yep.</div><div dir=3D"auto"><br></div><div dir=3D"auto">=
+<div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margi=
+n:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0assert not isinstance(self.element_type, =
+QAPISchemaArrayType)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0def set_module(self, schema: QAPISchema) -&gt; None:<br=
+>
+@@ -1193,7 +1193,7 @@ def resolve_type(<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0self,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0name: str,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0info: Optional[QAPISourceInfo],<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 what: Union[str, Callable[[Optional[QAPISource=
+Info]], str]],<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 what: Union[None, str, Callable[[Optional[QAPI=
+SourceInfo]], str]],<br>
+=C2=A0 =C2=A0 =C2=A0) -&gt; QAPISchemaType:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0typ =3D self.lookup_type(name)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if not typ:<br>
+<br>
+The first hunk works around mypy&#39;s type inference weakness.=C2=A0 It re=
+writes<br>
+<br>
+=C2=A0 =C2=A0 A and B<br>
+<br>
+as<br>
+<br>
+=C2=A0 =C2=A0 B if A else A<br>
+<br>
+and then partially evaluates to<br>
+<br>
+=C2=A0 =C2=A0 B if A else None<br>
+<br>
+exploiting the fact that falsy A can only be None.=C2=A0 It replaces this<b=
+r>
+patch.<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"=
+auto">Sounds good to me!</div><div dir=3D"auto"><br></div><div dir=3D"auto"=
+><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+<br>
+The second hunk corrects .resolve_type()&#39;s typing to accept what=3DNone=
+.<br>
+It&#39;s meant to be squashed into PATCH 16.<br>
+<br>
+What do you think?<br></blockquote></div></div><div dir=3D"auto"><br></div>=
+<div dir=3D"auto">I&#39;m on my mobile again, but at a glance I like it. Ex=
+cept that I&#39;m a little reluctant to allow what to be None if this is th=
+e *only* caller known to possibly do it, and only in a circumstance that we=
+ assert elsewhere that it should never happen.=C2=A0</div><div dir=3D"auto"=
+><br></div><div dir=3D"auto">Can we do:</div><div dir=3D"auto"><br></div><d=
+iv dir=3D"auto">what =3D self.info.defn_meta if=C2=A0<a href=3D"http://self=
+.info/">self.info</a>=C2=A0else None</div><div dir=3D"auto">assert what [is=
+ not None]=C2=A0 # Depending on taste</div><div dir=3D"auto"><br></div><div=
+ dir=3D"auto">instead?</div><div dir=3D"auto"><br></div><div dir=3D"auto">N=
+o sem error, no new unit test needed, assertion provides the correct frame =
+of mind (programmer error), stronger typing on resolve_type.</div><div dir=
+=3D"auto"><br></div><div dir=3D"auto">(I really love eliminating None when =
+I can as a rule because I like how much more it tells you about the nature =
+of all callers, it&#39;s a much stronger decree. Worth pursuing where you c=
+an, IMO, but I&#39;m not gonna die on the hill for a patch like this - just=
+ sharing my tendencies for discussion.)</div><div dir=3D"auto"><br></div><d=
+iv dir=3D"auto">--js</div><div dir=3D"auto"><div class=3D"gmail_quote"><blo=
+ckquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #c=
+cc solid;padding-left:1ex">
+</blockquote></div></div></div>
+
+--000000000000b0d004060e9c8039--
+
 
