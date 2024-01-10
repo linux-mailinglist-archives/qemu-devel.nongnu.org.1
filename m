@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E72E8295F7
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 10:12:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 263D98295EF
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 10:11:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNUYV-0002WN-HL; Wed, 10 Jan 2024 04:07:23 -0500
+	id 1rNUZo-00051q-JE; Wed, 10 Jan 2024 04:08:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rNUYR-0002PB-Tj
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:07:20 -0500
+ id 1rNUZK-0004rj-EB
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:08:16 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rNUYP-0007wX-Qi
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:07:19 -0500
+ id 1rNUZG-0008EX-3Z
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:08:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704877636;
+ s=mimecast20190719; t=1704877689;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=K/4oNAsIoAUw1f7rT2JCwpy/Y6hb8uRmDgqt0M6tsEI=;
- b=DFpPCUolPXusRGR+SrmAGCMgEtEDTYmDEQ7Htvg6T6a0tQyV2kQ7mSUZ/iL5BkBaLKE59P
- v06i7DrlD1dJtnfQiVebxtfV+uPOoi9ZaccRvsKIh6esImJApZSudISe3jWYcQuwNrDuye
- w7lExmyisfyYVhr0nuAT8ugF+vwa11g=
+ bh=7KtvwjG/LVgIBCEIC8IU0hU92YUftuVeQuq66HFaKXo=;
+ b=Cfzc+nCrokJCdHsnW+HaayXesHFJkbbk8DCmlSCYIHbJpF8E0nNix+KSicCSJPo/zMu+Ln
+ ntzNnb1/v4F9KsohYLDGiGXxRdNBIw8UXZEGe66JnHSfDS7D+OxdJGG8pjhBV/t1N+ezh+
+ VNWd58LwuFT1fiQ/Jr0NT4SOgjO+pC8=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-5d51By3PONyeb1_xHOux6w-1; Wed,
- 10 Jan 2024 04:07:14 -0500
-X-MC-Unique: 5d51By3PONyeb1_xHOux6w-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-264-vAN9shHVMkOmn2iPPeI01g-1; Wed,
+ 10 Jan 2024 04:08:04 -0500
+X-MC-Unique: vAN9shHVMkOmn2iPPeI01g-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7BE182803021;
- Wed, 10 Jan 2024 09:07:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 35C8B2803027;
+ Wed, 10 Jan 2024 09:08:04 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.108])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0480C492BC7;
- Wed, 10 Jan 2024 09:07:12 +0000 (UTC)
-Date: Wed, 10 Jan 2024 09:07:10 +0000
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5765651E3;
+ Wed, 10 Jan 2024 09:08:02 +0000 (UTC)
+Date: Wed, 10 Jan 2024 09:08:00 +0000
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org, armbru@redhat.com,
  Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>,
  Nikolay Borisov <nborisov@suse.com>
-Subject: Re: [RFC PATCH v3 02/30] io: Add generic pwritev/preadv interface
-Message-ID: <ZZ5ePjkUQlsWpXND@redhat.com>
+Subject: Re: [RFC PATCH v3 03/30] io: implement io_pwritev/preadv for
+ QIOChannelFile
+Message-ID: <ZZ5ecIHBBFYNxSN-@redhat.com>
 References: <20231127202612.23012-1-farosas@suse.de>
- <20231127202612.23012-3-farosas@suse.de>
+ <20231127202612.23012-4-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231127202612.23012-3-farosas@suse.de>
+In-Reply-To: <20231127202612.23012-4-farosas@suse.de>
 User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -45
@@ -88,22 +89,22 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 27, 2023 at 05:25:44PM -0300, Fabiano Rosas wrote:
+On Mon, Nov 27, 2023 at 05:25:45PM -0300, Fabiano Rosas wrote:
 > From: Nikolay Borisov <nborisov@suse.com>
 > 
-> Introduce basic pwritev/preadv support in the generic channel layer.
-> Specific implementation will follow for the file channel as this is
-> required in order to support migration streams with fixed location of
-> each ram page.
+> The upcoming 'fixed-ram' feature will require qemu to write data to
+> (and restore from) specific offsets of the migration file.
+> 
+> Add a minimal implementation of pwritev/preadv and expose them via the
+> io_pwritev and io_preadv interfaces.
 > 
 > Signed-off-by: Nikolay Borisov <nborisov@suse.com>
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
-> - fixed naming: s/pwritev_full/pwritev
+> - check CONFIG_PREADV to avoid breaking Windows
 > ---
->  include/io/channel.h | 82 ++++++++++++++++++++++++++++++++++++++++++++
->  io/channel.c         | 58 +++++++++++++++++++++++++++++++
->  2 files changed, 140 insertions(+)
+>  io/channel-file.c | 56 +++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 56 insertions(+)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
