@@ -2,87 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6088293D8
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 07:54:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4606A8293EB
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 07:59:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNSRp-0000XV-K2; Wed, 10 Jan 2024 01:52:21 -0500
+	id 1rNSYX-0001dm-EP; Wed, 10 Jan 2024 01:59:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1rNSRm-0000Wf-Cv; Wed, 10 Jan 2024 01:52:18 -0500
+ id 1rNSYV-0001dT-3V; Wed, 10 Jan 2024 01:59:15 -0500
 Received: from out5-smtp.messagingengine.com ([66.111.4.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1rNSRj-00059K-Sd; Wed, 10 Jan 2024 01:52:18 -0500
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailout.nyi.internal (Postfix) with ESMTP id 88CD55C0134;
- Wed, 10 Jan 2024 01:52:12 -0500 (EST)
+ id 1rNSYR-0000MD-8H; Wed, 10 Jan 2024 01:59:14 -0500
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id ECFA95C00C5;
+ Wed, 10 Jan 2024 01:59:09 -0500 (EST)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute3.internal (MEProxy); Wed, 10 Jan 2024 01:52:12 -0500
+ by compute2.internal (MEProxy); Wed, 10 Jan 2024 01:59:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-type:content-type:date:date:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm1; t=1704869532; x=
- 1704955932; bh=jlpdSqNIwnHKbnPVjiMm2XqeeuV9/lvrzgXY/df370I=; b=A
- 1XL6JS18r29Xh5YtubaAp+C2znPoX4CnTepCXBnqOBB6Os/iMvRebxCsVu1SiXZS
- gcmGSNxeRbvP2GRhecYiANeuaf18MN4S94LJG89wyv5bUcZki5YvKsbMLrBC4KDh
- h48Ekv8HgaFOhh75Vnb3FhhfSoWZpKrqgnbSTOXSBPQOZoBnf0DT/JMYk1bfQ4L1
- U2gOuZOrG3h77+x2sMvIB9D1Wedmpi9HlAWgudEoIx5ZpgCfmVRoyVQWWYONS3vS
- ZGfXz14XBzGaagyjshNvzzMiAPzSM+Q3oxMfVhdvDojgpM2cKBcNbmXIWq1uVZig
- +2igdE5ZBGUlJe8PEva+A==
+ :reply-to:subject:subject:to:to; s=fm1; t=1704869949; x=
+ 1704956349; bh=xc2DFbirMJREdDlgq8WKUKorg2TVgzHfkcm2CQKGA/M=; b=m
+ SP8YFuJEIY6CnAUI6/JoLVpw7KFUA8R91E+jFL0R49vXB03vr4stIkqJAfJEH2Ma
+ eTQcsp0Hsr2mXcHAJGAt5ouwUhcKl+iXGwAxDQYNplPxr+BFUJwnNeAE5LPaGIRW
+ Gp9jr1uyKZKvNqjPR99xjtAJ+H7S5K7WGqhkJhV+QCH3uHisgoAxNtY/1BevCx8q
+ Ip9/El7vxZ4QPL82OihHTsDas8tZhJO+UU18nGLj/TQJsFmF/89DCH/ICD4QBcfg
+ 7NjZ0SARBodCgQCNmHKmZSr4edPxRuH1QFP+7cBeVpRJZKHFCbuZIlou+NRrvr07
+ gm6vK1we7xeESAmKbvbvw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-type:content-type:date:date
  :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
  :message-id:mime-version:references:reply-to:subject:subject:to
  :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm2; t=1704869532; x=1704955932; bh=jlpdSqNIwnHKbnPVjiMm2XqeeuV9
- /lvrzgXY/df370I=; b=Cr1SB8+01KJY561zmbav0FTiSu+FltWGrsNGi7wnBVSb
- qD4sHLFmJt3062kgV0iG8cZsNtR6dNWKKiYM3d4qPcuaMfqMr6outEXGWFNCQ+ek
- ZuKAa9JQ+9JBHPOxbn2jmDs78dmcRrOCq7WmaYh9axOckah2A6oEigANai5S4l+u
- pBPg4qKuP1J0f82SG5YN/AZXpZU+DdHv+8tfBPYL80D0u+a7icixEGdv64jDHNTJ
- 9vUms1+BE+j+ScIqNlCWnlpzToSSlXeLTilEfyHWo6eM/idoYw4b9XDuoUY4NfOh
- VHLrJnpGeeYRLR9Ah/SrfO17IgWdfWrF2n+RTo6yew==
-X-ME-Sender: <xms:mz6eZbyX0FtZ-Mn0leU5pweypD43ucCLYHeEl-k_P7_o9ker2KPgMQ>
- <xme:mz6eZTSfabHkC5b6WLGYrWbdF71-YB3Ru7mGqKeQDNR9hpU7orBtVgxVinJUu8kVl
- 7V_RWPruxVpGWSTxDU>
-X-ME-Received: <xmr:mz6eZVXZUUJGQbDkPAXWf566gtdeS8gV2QSQVQJfh0x0iBHHusDbkaig6sru>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdeitddguddttdcutefuodetggdotefrod
+ fm2; t=1704869949; x=1704956349; bh=xc2DFbirMJREdDlgq8WKUKorg2TV
+ gzHfkcm2CQKGA/M=; b=Xc4/nXFxXtNrEZIh/E8nAOVvhMupSisy/Y1JVThFVxVb
+ DK+DnuRJI//pv4DRVSzZefDQ3JZubNXZzORoP1cowExzF8WYc/0LJ22Gshk3oOI6
+ mNvJkc/XE8+DmGVHwu7UZ0hffdVbbB34KLgNatR3zu+rX71fKqG1Uwa3JNlrVaH3
+ W+A7Ci/i1Al4Bc94V6H6fUKTolhvKuhzD/R+JQ2hojSSWboq4Zt6of+OO3zknPjN
+ Bx6SRVTAiLVIMl2FIBAuFr2csgxYAQQMJfMLCK47uq1TUvwCtM3dzavdeOybpzQs
+ UgxUBLZmF58l1xTEYw31mLeHcMtc/SU8lmKVqGPJbg==
+X-ME-Sender: <xms:PUCeZakN1lvvJj3UQy1ojsyeQ_f2ntWQquDhu1yBK0CrpnDangzaRQ>
+ <xme:PUCeZR3DK9iP4CtXOeQBLWnE_KbacL0lGyF-gPPC2XNYN0XZ76VL3XH02ZV7ejD8z
+ TJ7TqZGsZ5tEhAxrKw>
+X-ME-Received: <xmr:PUCeZYp5ClgrYpV92zsEQ91mNMiCgI4Pad7FIJWphbxvAQ_NvcoYS9hoYiNp>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdeitddguddtudcutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
  necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
  enucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgr
  uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
- htthgvrhhnpeffuddvhfehjedugfeijeeuieelgeevuddvlefhkefhgfettefftddvkeev
- ieelfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
- eptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgu
- kh
-X-ME-Proxy: <xmx:mz6eZVhTWxvOylGVyBsRuFQh7wa9VkFPQyjJ9fTW_t5sc5fNAy09fA>
- <xmx:mz6eZdBQJxTxkOjPBSGVK3BGS8asLNor03-yEohrRtbxTqS0EbLIiA>
- <xmx:mz6eZeLk_kfWZNuUrhTsnWJ0lh8dwIzSq5aOoWIVRaP2aYQX3_hG_g>
- <xmx:nD6eZXTI6iXeTM2Elab9JCBYyxQ51n8fuDdsvGkBTn3t6F8rDSKx1Q>
+ htthgvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeevjeevtdduudegieegteff
+ ffejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+ hithhssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:PUCeZeknw-EYb0G316jdyQ0ZKVQlH5ygL76sY55z07LWbxIxaiuHmg>
+ <xmx:PUCeZY0YA4u0mcPIwhS7JABsoufWPZhc-ZiWSSFwrN3zBNY3HnNPvA>
+ <xmx:PUCeZVu-QmGK7CgqRquNaYgwmB3uEaB8puWhMmvFhudHAOlYvCpfxw>
+ <xmx:PUCeZVx0pOvRdqX7tA84U_JkIFVdbDt7Q9VmrnEpT0EIIdlelbBKnQ>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 10 Jan 2024 01:52:11 -0500 (EST)
-Date: Wed, 10 Jan 2024 07:52:06 +0100
+ 10 Jan 2024 01:59:09 -0500 (EST)
+Date: Wed, 10 Jan 2024 07:59:04 +0100
 From: Klaus Jensen <its@irrelevant.dk>
-To: Sam Li <faithilikerun@gmail.com>
-Cc: qemu-devel@nongnu.org, stefanha@redhat.com, qemu-block@nongnu.org,
- hare@suse.de, David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Keith Busch <kbusch@kernel.org>, Hanna Reitz <hreitz@redhat.com>,
- dmitry.fomichev@wdc.com, Kevin Wolf <kwolf@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Eric Blake <eblake@redhat.com>, Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, dlemoal@kernel.org
-Subject: Re: [RFC v2 0/7] Add persistence to NVMe ZNS emulation
-Message-ID: <ZZ4-lo64mGubad5t@cormorant.local>
-References: <20231127085641.3729-1-faithilikerun@gmail.com>
+To: Minwoo Im <minwoo.im@samsung.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-stable@nongnu.org" <qemu-stable@nongnu.org>,
+ "minwoo.im.dev@gmail.com" <minwoo.im.dev@gmail.com>
+Subject: Re: hw: nvme: Separate 'serial' property for VFs
+Message-ID: <ZZ5AOHe-rhK0lZSC@cormorant.local>
+References: <CGME20240109022953epcms2p54550dcfc9f831a515206513ae98e7511@epcms2p5>
+ <20240109022953epcms2p54550dcfc9f831a515206513ae98e7511@epcms2p5>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="Mvyc+4wEFE/kwUpr"
+ protocol="application/pgp-signature"; boundary="JqEpRg7xMQmQ++Yz"
 Content-Disposition: inline
-In-Reply-To: <20231127085641.3729-1-faithilikerun@gmail.com>
+In-Reply-To: <20240109022953epcms2p54550dcfc9f831a515206513ae98e7511@epcms2p5>
 Received-SPF: pass client-ip=66.111.4.29; envelope-from=its@irrelevant.dk;
  helo=out5-smtp.messagingengine.com
 X-Spam_score_int: -27
@@ -109,96 +104,45 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---Mvyc+4wEFE/kwUpr
+--JqEpRg7xMQmQ++Yz
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Nov 27 16:56, Sam Li wrote:
-> ZNS emulation follows NVMe ZNS spec but the state of namespace
-> zones does not persist accross restarts of QEMU. This patch makes the
-> metadata of ZNS emulation persistent by using new block layer APIs and
-> the qcow2 img as backing file. It is the second part after the patches
-> - adding full zoned storage emulation to qcow2 driver.
-> https://patchwork.kernel.org/project/qemu-devel/cover/20231127043703.4948=
-9-1-faithilikerun@gmail.com/
+On Jan  9 11:29, Minwoo Im wrote:
+> Currently, when a VF is created, it uses the 'params' object of the PF
+> as it is. In other words, the 'params.serial' string memory area is
+> also shared. In this situation, if the VF is removed from the system,
+> the PF's 'params.serial' object is released with object_finalize()
+> followed by object_property_del_all() which release the memory for
+> 'serial' property. If that happens, the next VF created will inherit
+> a serial from a corrupted memory area.
 >=20
-> The metadata of ZNS emulation divides into two parts, zone metadata and
-> zone descriptor extension data. The zone metadata is composed of zone
-> states, zone type, wp and zone attributes. The zone information can be
-> stored at an uint64_t wp to save space and easy access. The structure of
-> wp of each zone is as follows:
-> |0000(4)| zone type (1)| zone attr (8)| wp (51) ||
+> If this happens, an error will occur when comparing subsys->serial and
+> n->params.serial in the nvme_subsys_register_ctrl() function.
 >=20
-> The zone descriptor extension data is relatively small comparing to the
-> overall size therefore we adopt the option that store zded of all zones
-> in an array regardless of the valid bit set.
->=20
-> Creating a zns format qcow2 image file adds one more option zd_extension_=
-size
-> to zoned device configurations.
->=20
-> To attach this file as emulated zns drive in the command line of QEMU, us=
-e:
->   -drive file=3D${znsimg},id=3Dnvmezns0,format=3Dqcow2,if=3Dnone \
->   -device nvme-ns,drive=3Dnvmezns0,bus=3Dnvme0,nsid=3D1,uuid=3Dxxx \
->=20
-> Sorry, send this one more time due to network problems.
->=20
-> v1->v2:
-> - split [v1 2/5] patch to three (doc, config, block layer API)
-> - adapt qcow2 v6
->=20
-> Sam Li (7):
->   docs/qcow2: add zd_extension_size option to the zoned format feature
->   qcow2: add zd_extension configurations to zoned metadata
->   hw/nvme: use blk_get_*() to access zone info in the block layer
->   hw/nvme: add blk_get_zone_extension to access zd_extensions
->   hw/nvme: make the metadata of ZNS emulation persistent
->   hw/nvme: refactor zone append write using block layer APIs
->   hw/nvme: make ZDED persistent
->=20
->  block/block-backend.c             |   88 ++
->  block/qcow2.c                     |  119 ++-
->  block/qcow2.h                     |    2 +
->  docs/interop/qcow2.txt            |    3 +
->  hw/nvme/ctrl.c                    | 1247 ++++++++---------------------
->  hw/nvme/ns.c                      |  162 +---
->  hw/nvme/nvme.h                    |   95 +--
->  include/block/block-common.h      |    9 +
->  include/block/block_int-common.h  |    8 +
->  include/sysemu/block-backend-io.h |   11 +
->  include/sysemu/dma.h              |    3 +
->  qapi/block-core.json              |    4 +
->  system/dma-helpers.c              |   17 +
->  13 files changed, 647 insertions(+), 1121 deletions(-)
->=20
-> --=20
-> 2.40.1
->=20
+> Cc: qemu-stable@nongnu.org
+> Fixes: 44c2c09488db ("hw/nvme: Add support for SR-IOV")
+> Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
 
-Hi Sam,
+Thanks Minwoo! Queued on nvme-next.
 
-This is awesome. For the hw/nvme parts,
+Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
 
-Acked-by: Klaus Jensen <k.jensen@samsung.com>
-
-I'll give it a proper R-b when you drop the RFC status.
-
---Mvyc+4wEFE/kwUpr
+--JqEpRg7xMQmQ++Yz
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmWePpUACgkQTeGvMW1P
-DemQfAgAnLHKHp2F098Vu0Ah/NuC0eTR9gmqXZ/6ALLT53tbntdgqEEIsPGqN78r
-jNseCZBd/7vzZIT0WfyUy4bq9944sFqyjnH6XoyyLf4EpXpNfosvSAskx4iuOSqw
-HqE6KA3lNAY67GmHgDIubo2dH2WtA71TXd2J8EhUjRqbYWk3SuBEqBwhKNJKT3Ie
-tNCv5Qo65rtcCqWK/nv3Ge5Vs0Uc6FozW+pR6pI7ydftcpwKACfhWRMzx2Q6a20s
-6amOo5bkk8vsChAOaA/p3ADgtHO6ITHBIqRizIBCKtHCdYiWfs94hKhee3LdheQ5
-AuCcYgh5vrSoZIONz2u5GCI83NQpEw==
-=0zj4
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmWeQDgACgkQTeGvMW1P
+DemKsgf6AgdIcdpRUyhBRucQU8imHyg8oLRgaKyh+gEvdfZroHO2ch8/ndwPyKj4
+HUfOpuGTZn5vfnpv91fRMwYNpAIir7a9ieFQ2fQHi3bMFyaqvYmpypRYKknYUqw/
+CdU7QeLtRH37S9TVJR4sjPgaf1a4LBRg4iFcmWYR3Na37gstUX7Dwf70hVl6ZAJc
+zHjl24TMouoQtS/1weNwWswunqzXpEVrtSWO9Ca7FOlYX5TK6GDVQ8cgcg2iCOHg
+9snTRyAfCxsErv7FVV8PiSAhSw5BW1GqHJFlBawqXuZIEEkBeK6TPmIZGvrWJ5Re
+ZNlyDNTB4ba4vDjSPhuWLZB4Jr2bVw==
+=cF8D
 -----END PGP SIGNATURE-----
 
---Mvyc+4wEFE/kwUpr--
+--JqEpRg7xMQmQ++Yz--
 
