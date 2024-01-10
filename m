@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC44D8295F3
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 10:11:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 601628295BC
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 10:07:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNUS7-0000cH-Kh; Wed, 10 Jan 2024 04:00:47 -0500
+	id 1rNUSA-0000rM-Uu; Wed, 10 Jan 2024 04:00:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNUS4-0000Q1-S5
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:00:44 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1rNUS7-0000jh-VW
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:00:48 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNUS2-00055p-P7
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:00:44 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6d9cdd0a5e6so2018759b3a.3
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 01:00:42 -0800 (PST)
+ id 1rNUS5-00056y-Vn
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 04:00:47 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6daa89a6452so2412264b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 01:00:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704877241; x=1705482041; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704877244; x=1705482044; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qrYI739WxkwcLq7V1+5AMpOlAwm7py90P+M9mgGxOJI=;
- b=JytcL/Bna02RbmUp1iXALOmpFDLdASudMvp4bF8qsKHiqRvuzre6djnFLRNRNJdx4C
- eNN+TlQeNYuARJzjjqWAKniTL4wfkIcCOdvEmThlJ0VNRtNL13poWSayOsiAhyBeNNvS
- AjLZCCiy50sa+3NWdNKtahY2u6yoGAvS6hJWD66fD+pDx4w12zrAxlt7STTDCB33FjjM
- X13OudCSNdp95ZOBTy99OIGpyGjGVjinDnjLVnpMmihQaSS79HiQUEMPKaPq6fmEGVrF
- c3HNqPSoR59J9lBGHmyzt0y+myS+vwnUVJ0QI0AIM9Hpiq6zJB/DE0IeTp8OQ31Qf2Ih
- 0XbA==
+ bh=jWqDADFnGT/rELbIwCmOw6Ap/aeZVVGdlGLkAswuX/o=;
+ b=dboYn4bSuKV+kBUpD9YyrbzuLaBcfTPgXWtAeD+p+cUcQjtA718STWycgODTskkazj
+ 6UduyqzS833ksHrrzxGSLIo2GCa5louca1ZnJ3ChLX8GWvyRv4iDnfzeqGJz+0uzrHWN
+ /uZ35QuLTj1JhXNQ9ZHU68ZpaQ9bDSYgheqjeAwN0jSCFrfSsL6Cwc7LK0BFg8csVOrG
+ trLXNhuhUxvVbrnroIY1yQP2NViKj6book2hQUsMf97XrRSLl0czWQoeDuwKhUQigJsz
+ 2/PjE8IhpTVZqZWcuw0C4ALvVZ8K4NjARZNWSeTzdn9Rj8mBT+OOUCt9041NV5WmbuSh
+ 8WUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704877241; x=1705482041;
+ d=1e100.net; s=20230601; t=1704877244; x=1705482044;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qrYI739WxkwcLq7V1+5AMpOlAwm7py90P+M9mgGxOJI=;
- b=hsPSOwmxBOovVf57LaZSAWKAxZGcHoijW/7jdTsQG0Ey6vcCqlCD/57aj6G4uO91pN
- t0vd4RSrSnff54nt/mOTSdVDN0/q8ND00tI21GTn7gCECTOgRzmRxgaeuSbRZHV582c9
- /6srhM1RjwqVPqg8iBjuzeOLm7Y2CsxkvWnXlNUdjJib+03GLIs+84YgS/9P/vxrWoky
- wx3HuNgKQsWGi4/Ynnr6g3KvHkJi0PyVl4lRVCadGAUnTM31OjZWpVtso8+Z2m/DDPRu
- rXF02ixf17yetVmuE6xpRzUEwExcRy4llVdpaQhwqPcrAhLCnx5wSYNnBjpMagfxNrZe
- 4gkg==
-X-Gm-Message-State: AOJu0Yw+LJBauux/g//Pq0uyNgYMVZyVE1AFPoc9DZn0khM7jUVy7N7I
- tB0vpISAOBUHqMWrlEOaQO7xTjlCA/hSKgqY
-X-Google-Smtp-Source: AGHT+IHIRiaUx2xNSzd+iIC6ek5JrRD+kmH2GbKpeeofKN0omMBnGUt4ObJr+J5Yq2iHGyzHcODC7Q==
-X-Received: by 2002:a05:6a00:b34:b0:6d9:ecbc:14cd with SMTP id
- f52-20020a056a000b3400b006d9ecbc14cdmr592530pfu.0.1704877240754; 
- Wed, 10 Jan 2024 01:00:40 -0800 (PST)
+ bh=jWqDADFnGT/rELbIwCmOw6Ap/aeZVVGdlGLkAswuX/o=;
+ b=miAm0UbPrXkaT80ehQTMyQcQ1E1qwwGkVkahmwlA8dEcbQPZAHT8U3PMVH+0azReMH
+ 9eaT3IpjST0FGiC5slJepKI++JCT/BVFv051EYFrOMgQYJwHZ6CK5qOqIFvBUontrbe2
+ IRrN8ZFJxms918f1bIlqtyXH383AjkXTqI605y+NydRAiI0uKFG3DGhXW6QBslVoUMTD
+ 8Zeg6Qw1zwy4EkV8776pPDR85jWsKpYDVny8MvGCRkg8wv7s1bD4lrbCI1lX8WiUfrwS
+ vgAXYbM6Pc/8Ab7ml15b22F9yW3TEYrKZBEITP9jkS4cYepGSN0RLv9Nll+7lgOJOx/e
+ yLVA==
+X-Gm-Message-State: AOJu0YxwCke87/x9TDFkSV9ReD3XVfMOmI9Sf/2SJjUZfWvBn0pymo9/
+ Ql5vI550M6eCwCdj67fQ8NfrOPby1Nsps8SV
+X-Google-Smtp-Source: AGHT+IGu5gC0sZ0f6pQhw9usCk2D61taGVBVdXAh8qege9rGOGuD5ppvNHa/nm2FoCWJSh0KSur6jw==
+X-Received: by 2002:a05:6a00:ac1:b0:6d9:ac97:66a4 with SMTP id
+ c1-20020a056a000ac100b006d9ac9766a4mr657476pfl.18.1704877244528; 
+ Wed, 10 Jan 2024 01:00:44 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.01.00.37
+ t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.01.00.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 01:00:40 -0800 (PST)
+ Wed, 10 Jan 2024 01:00:44 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Andrew Jones <ajones@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 46/65] target/riscv: add 'rva22u64' CPU
-Date: Wed, 10 Jan 2024 18:57:14 +1000
-Message-ID: <20240110085733.1607526-47-alistair.francis@wdc.com>
+Subject: [PULL 47/65] target/riscv: implement svade
+Date: Wed, 10 Jan 2024 18:57:15 +1000
+Message-ID: <20240110085733.1607526-48-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240110085733.1607526-1-alistair.francis@wdc.com>
 References: <20240110085733.1607526-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,105 +99,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-This CPU was suggested by Alistair [1] and others during the profile
-design discussions. It consists of the bare 'rv64i' CPU with rva22u64
-enabled by default, like an alias of '-cpu rv64i,rva22u64=true'.
+'svade' is a RVA22S64 profile requirement, a profile we're going to add
+shortly. It is a named feature (i.e. not a formal extension, not defined
+in riscv,isa DT at this moment) defined in [1] as:
 
-Users now have an even easier way of consuming this user-mode profile by
-doing '-cpu rva22u64'. Extensions can be enabled/disabled at will on top
-of it.
+"Page-fault exceptions are raised when a page is accessed when A bit is
+clear, or written when D bit is clear.".
 
-We can boot Linux with this "user-mode" CPU by doing:
+As far as the spec goes, 'svade' is one of the two distinct modes of
+handling PTE_A and PTE_D. The other way, i.e. update PTE_A/PTE_D when
+they're cleared, is defined by the 'svadu' extension. Checking
+cpu_helper.c, get_physical_address(), we can verify that QEMU is
+compliant with that: we will update PTE_A/PTE_D if 'svadu' is enabled,
+or throw a page-fault exception if 'svadu' isn't enabled.
 
--cpu rva22u64,sv39=true,s=true,zifencei=true
+So, as far as we're concerned, 'svade' translates to 'svadu must be
+disabled'.
 
-[1] https://lore.kernel.org/qemu-riscv/CAKmqyKP7xzZ9Sx=-Lbx2Ob0qCfB7Z+JO944FQ2TQ+49mqo0q_Q@mail.gmail.com/
+We'll implement it like 'zic64b': an internal flag that profiles can
+enable. The flag will not be exposed to users.
+
+[1] https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20231218125334.37184-19-dbarboza@ventanamicro.com>
+Message-ID: <20231218125334.37184-20-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu-qom.h     |  1 +
- target/riscv/cpu.c         | 17 +++++++++++++++++
- target/riscv/tcg/tcg-cpu.c |  9 +++++++++
- 3 files changed, 27 insertions(+)
+ target/riscv/cpu_cfg.h     | 1 +
+ target/riscv/cpu.c         | 1 +
+ target/riscv/tcg/tcg-cpu.c | 5 +++++
+ 3 files changed, 7 insertions(+)
 
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index 4d1aa54311..12fe78fc52 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -35,6 +35,7 @@
- #define TYPE_RISCV_CPU_BASE64           RISCV_CPU_TYPE_NAME("rv64")
- #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x-rv128")
- #define TYPE_RISCV_CPU_RV64I            RISCV_CPU_TYPE_NAME("rv64i")
-+#define TYPE_RISCV_CPU_RVA22U64         RISCV_CPU_TYPE_NAME("rva22u64")
- #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibex")
- #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
- #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 350ea44e50..780ae6ef17 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -117,6 +117,7 @@ struct RISCVCPUConfig {
+     bool ext_smepmp;
+     bool rvv_ta_all_1s;
+     bool rvv_ma_all_1s;
++    bool svade;
+     bool zic64b;
+ 
+     uint32_t mvendorid;
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 199b581380..cd3c22e92b 100644
+index cd3c22e92b..0ec0d89070 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1575,6 +1575,15 @@ static Property riscv_cpu_properties[] = {
+@@ -1444,6 +1444,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
+ };
+ 
+ const RISCVCPUMultiExtConfig riscv_cpu_named_features[] = {
++    MULTI_EXT_CFG_BOOL("svade", svade, true),
+     MULTI_EXT_CFG_BOOL("zic64b", zic64b, true),
+ 
      DEFINE_PROP_END_OF_LIST(),
- };
- 
-+#if defined(TARGET_RISCV64)
-+static void rva22u64_profile_cpu_init(Object *obj)
-+{
-+    rv64i_bare_cpu_init(obj);
-+
-+    RVA22U64.enabled = true;
-+}
-+#endif
-+
- static const gchar *riscv_gdb_arch_name(CPUState *cs)
- {
-     RISCVCPU *cpu = RISCV_CPU(cs);
-@@ -1836,6 +1845,13 @@ char *riscv_isa_string(RISCVCPU *cpu)
-         .instance_init = initfn            \
-     }
- 
-+#define DEFINE_PROFILE_CPU(type_name, initfn) \
-+    {                                         \
-+        .name = type_name,                    \
-+        .parent = TYPE_RISCV_BARE_CPU,        \
-+        .instance_init = initfn               \
-+    }
-+
- static const TypeInfo riscv_cpu_type_infos[] = {
-     {
-         .name = TYPE_RISCV_CPU,
-@@ -1880,6 +1896,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,   rv64_veyron_v1_cpu_init),
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,  rv128_base_cpu_init),
-     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64I, rv64i_bare_cpu_init),
-+    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64, rva22u64_profile_cpu_init),
- #endif
- };
- 
 diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 6c9e2e9a28..f2a9558737 100644
+index f2a9558737..e90d929ac1 100644
 --- a/target/riscv/tcg/tcg-cpu.c
 +++ b/target/riscv/tcg/tcg-cpu.c
-@@ -1100,6 +1100,15 @@ static void riscv_cpu_add_profiles(Object *cpu_obj)
-         object_property_add(cpu_obj, profile->name, "bool",
-                             cpu_get_profile, cpu_set_profile,
-                             NULL, (void *)profile);
-+
-+        /*
-+         * CPUs might enable a profile right from the start.
-+         * Enable its mandatory extensions right away in this
-+         * case.
-+         */
-+        if (profile->enabled) {
-+            object_property_set_bool(cpu_obj, profile->name, true, NULL);
-+        }
+@@ -188,6 +188,9 @@ static void riscv_cpu_enable_named_feat(RISCVCPU *cpu, uint32_t feat_offset)
+         cpu->cfg.cbop_blocksize = 64;
+         cpu->cfg.cboz_blocksize = 64;
+         break;
++    case CPU_CFG_OFFSET(svade):
++        cpu->cfg.ext_svadu = false;
++        break;
+     default:
+         g_assert_not_reached();
      }
+@@ -381,6 +384,8 @@ static void riscv_cpu_update_named_features(RISCVCPU *cpu)
+     cpu->cfg.zic64b = cpu->cfg.cbom_blocksize == 64 &&
+                       cpu->cfg.cbop_blocksize == 64 &&
+                       cpu->cfg.cboz_blocksize == 64;
++
++    cpu->cfg.svade = !cpu->cfg.ext_svadu;
  }
  
+ static void riscv_cpu_validate_g(RISCVCPU *cpu)
 -- 
 2.43.0
 
