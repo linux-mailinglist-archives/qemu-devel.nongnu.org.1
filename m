@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83B2B82A398
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 22:53:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A5582A399
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 22:53:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNgUj-0003WM-QP; Wed, 10 Jan 2024 16:52:17 -0500
+	id 1rNgUn-0003Zs-8Q; Wed, 10 Jan 2024 16:52:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNgUi-0003Vn-1E
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 16:52:16 -0500
-Received: from mail-qk1-x72a.google.com ([2607:f8b0:4864:20::72a])
+ id 1rNgUk-0003Z8-U7
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 16:52:18 -0500
+Received: from mail-qk1-x733.google.com ([2607:f8b0:4864:20::733])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNgUg-0005bN-6K
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 16:52:15 -0500
-Received: by mail-qk1-x72a.google.com with SMTP id
- af79cd13be357-78333ad3a17so147135685a.3
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 13:52:13 -0800 (PST)
+ id 1rNgUj-0005do-3E
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 16:52:18 -0500
+Received: by mail-qk1-x733.google.com with SMTP id
+ af79cd13be357-7831ed13d39so347692385a.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 13:52:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704923532; x=1705528332; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=4p8c+vfJoRRyQj9v97EkFmXpw6AYGkJaKiPXa9IouCI=;
- b=MReBrWZm1ii3auM5syUWjAESwQwwhOSAG+SdB+HHklxkbD0Q6nsB5gg5Ql/KQt9asQ
- oRAbSnmzEAEC9XpPhiB5Ar6Fu+yNMl1H3hTGMf5CRYe1AK6kB0pe4JTzywQoJha/5mci
- HJgwcI7AdVrJNNL9CG+O89B2+4uc3wDDYhpkbfwA2Wel7RvgYsP3qNq91Y7tZzwufhn5
- zaz7lvf0I/1GinWZCsskwdiW7s7ItrGE81bQR8uVkwODeDXOIvSzymMuTVFocM1IkdZl
- kn7eFuvd2JrdL+n24Q0Kp/xhPJQ/U1UabKo3wCyiq3ccJGXDnmOPbflr1jdxE0qUgk6B
- uu6A==
+ d=linaro.org; s=google; t=1704923536; x=1705528336; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cc2RPo52FmEiV7m0RK0jR9X26iVBZu5+1nh1fPIm+Uk=;
+ b=fokUvWvk2xld39RpsmFlisSwNN4F+LmUGPj2vhC/+WlJD6PVOXuC7vfrZT7oX0MoE8
+ xiDrLN8BzDUNYAGRDuewB2R3r4vDVquJyHlIGpoQNF+yhN6UpDo5QoLfRXt6zgBdpJLj
+ E/mHloBvePojQeEIMs3M5NYaasObM75c/CQ7tZDZSnqqEX0vd+UcuocmuOH8bHZiFo7s
+ ESPfDVQIwP1XLVUKzhdfilaLbAHLbtm8zTUT2YTbTwyqqhPIpaeOkmN1LNKWHc+KzV5L
+ P97iByWa5SqWlQC/H3Sp2JVt8qC0GNeZck1C5nDIdqKQf1UL8xDxCx4pgRyd/jpB8mVl
+ 2q3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704923532; x=1705528332;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4p8c+vfJoRRyQj9v97EkFmXpw6AYGkJaKiPXa9IouCI=;
- b=t2f6SQoyAJK/s+sERbVRtJ+zSziYTvMYe4wbO6JVLMS26PaiMaTIcXT2TjkBP/DLHr
- 0SgFKmPsucIvFwdxr+sEQbDvTGj7VH7Sb8wRCfCX6vLa27AjEmmOR2/G0xWNb3SUuP9D
- qn0sHiIFhXtTcQq8wkVtlhbBqfAN3H+hdVgMumUtCoca6SRUpB9vJel000ltjqYs44nU
- PwveKU2LLoPXmwKSJURlm4RTI8/cOHPkyxeI7h1ahnBUl1yPTFRcY3SxQNSSgP2gd0yZ
- jOjb/Z9lAbGSYyN+MtWTI60N9FPXRoRrKAWRKONP1+tbdifb1Mn7CuSjFXu10e3PTUHg
- EUHw==
-X-Gm-Message-State: AOJu0Yz8pMoyYk08GQ7cxX2KgH3iDf1bk2+vznhmBCN7ko8bBheD+WPh
- 64SQ4NTdgLidbbq6i2RP45ApNnNovA47U8Nb9g8idhLjTie+1m0f
-X-Google-Smtp-Source: AGHT+IGgAk6BWXI8HBFQ0bPWSrIsdUDvY5Nh2ckcB54Ma8euJ/u3yY2KvmipG59kKzA2AmpIEBx7mw==
-X-Received: by 2002:a05:620a:22cd:b0:783:14b5:6569 with SMTP id
- o13-20020a05620a22cd00b0078314b56569mr283672qki.19.1704923532522; 
- Wed, 10 Jan 2024 13:52:12 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704923536; x=1705528336;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cc2RPo52FmEiV7m0RK0jR9X26iVBZu5+1nh1fPIm+Uk=;
+ b=BTe5iS2TWsRUIs2t5i53xC5z3fWhkRErLMd6kcvVl5Su2et1CS+yaFhmp7Yha/l2Q9
+ pBaTcM8G55L3UtLb42zllqDkVmxg0kC4HCvy0aZi1kEgboNLaeBf0ejA/5X3eX+xSZQg
+ CYIDRo4kaos3jIDFKaBjdDZSP9VTcVLZmP6mDjXaqSTNe0dQNIXwUjewCzKj45uvpR95
+ 84SBTUIKvNUXqifvvNioR4fJ20skWLGB0XEs86TOX/9h+6oGQi9IBJYx/YtVXj52fHmb
+ sy2Xg+fTMlzYbIgP+8Nmx5aCGz+X3ff+B+uLgcZozWVhvnE/pK5LEbdV8NnKTZB1KJ3A
+ oOQA==
+X-Gm-Message-State: AOJu0YyefAj9ZqeVZ/qNypVZAzMcOmrJvescEWoHeoQmr7xowp9VwuM5
+ 7InOC9MuodfOVxL8B/mY0MaEmUVWgkd/z1g4frjiDCYBUOE0zhd1
+X-Google-Smtp-Source: AGHT+IFQuy3k+nEPduIywR1jiEuPyjLb5l1EmGhVebDDyee5uI5h0kGBdl9HybmPOnY3mjiiC9Dwyw==
+X-Received: by 2002:a05:620a:288d:b0:781:5e3a:a85f with SMTP id
+ j13-20020a05620a288d00b007815e3aa85fmr374385qkp.17.1704923535987; 
+ Wed, 10 Jan 2024 13:52:15 -0800 (PST)
 Received: from stoup.. ([172.58.27.160]) by smtp.gmail.com with ESMTPSA id
- z8-20020ae9c108000000b0078313c87609sm1888387qki.100.2024.01.10.13.52.10
- for <qemu-devel@nongnu.org>
+ z8-20020ae9c108000000b0078313c87609sm1888387qki.100.2024.01.10.13.52.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 13:52:12 -0800 (PST)
+ Wed, 10 Jan 2024 13:52:15 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/4] tcg patch queue
-Date: Thu, 11 Jan 2024 08:52:00 +1100
-Message-Id: <20240110215204.9353-1-richard.henderson@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 1/4] tcg/i386: convert add/sub of 128 to sub/add of -128
+Date: Thu, 11 Jan 2024 08:52:01 +1100
+Message-Id: <20240110215204.9353-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240110215204.9353-1-richard.henderson@linaro.org>
+References: <20240110215204.9353-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72a;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x72a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::733;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x733.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,38 +90,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 34eac35f893664eb8545b98142e23d9954722766:
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-  Merge tag 'pull-riscv-to-apply-20240110' of https://github.com/alistair23/qemu into staging (2024-01-10 11:41:56 +0000)
+Extend the existing conditional that generates INC/DEC, to also swap an
+ADD for a SUB and vice versa when the immediate is 128.  This facilitates
+using OPC_ARITH_EvIb instead of OPC_ARITH_EvIz.
 
-are available in the Git repository at:
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-Id: <20231228120514.70205-1-pbonzini@redhat.com>
+[rth: Use a switch on C]
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/i386/tcg-target.c.inc | 49 +++++++++++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 15 deletions(-)
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240111
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index a83f8aab30..29e80af78b 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -1316,23 +1316,41 @@ static void tgen_arithi(TCGContext *s, int c, int r0,
+         c &= 7;
+     }
+ 
+-    /* ??? While INC is 2 bytes shorter than ADDL $1, they also induce
+-       partial flags update stalls on Pentium4 and are not recommended
+-       by current Intel optimization manuals.  */
+-    if (!cf && (c == ARITH_ADD || c == ARITH_SUB) && (val == 1 || val == -1)) {
+-        int is_inc = (c == ARITH_ADD) ^ (val < 0);
+-        if (TCG_TARGET_REG_BITS == 64) {
+-            /* The single-byte increment encodings are re-tasked as the
+-               REX prefixes.  Use the MODRM encoding.  */
+-            tcg_out_modrm(s, OPC_GRP5 + rexw,
+-                          (is_inc ? EXT5_INC_Ev : EXT5_DEC_Ev), r0);
+-        } else {
+-            tcg_out8(s, (is_inc ? OPC_INC_r32 : OPC_DEC_r32) + r0);
++    switch (c) {
++    case ARITH_ADD:
++    case ARITH_SUB:
++        if (!cf) {
++            /*
++             * ??? While INC is 2 bytes shorter than ADDL $1, they also induce
++             * partial flags update stalls on Pentium4 and are not recommended
++             * by current Intel optimization manuals.
++             */
++            if (val == 1 || val == -1) {
++                int is_inc = (c == ARITH_ADD) ^ (val < 0);
++                if (TCG_TARGET_REG_BITS == 64) {
++                    /*
++                     * The single-byte increment encodings are re-tasked
++                     * as the REX prefixes.  Use the MODRM encoding.
++                     */
++                    tcg_out_modrm(s, OPC_GRP5 + rexw,
++                                  (is_inc ? EXT5_INC_Ev : EXT5_DEC_Ev), r0);
++                } else {
++                    tcg_out8(s, (is_inc ? OPC_INC_r32 : OPC_DEC_r32) + r0);
++                }
++                return;
++            }
++            if (val == 128) {
++                /*
++                 * Facilitate using an 8-bit immediate.  Carry is inverted
++                 * by this transformation, so do it only if cf == 0.
++                 */
++                c ^= ARITH_ADD ^ ARITH_SUB;
++                val = -128;
++            }
+         }
+-        return;
+-    }
++        break;
+ 
+-    if (c == ARITH_AND) {
++    case ARITH_AND:
+         if (TCG_TARGET_REG_BITS == 64) {
+             if (val == 0xffffffffu) {
+                 tcg_out_ext32u(s, r0, r0);
+@@ -1351,6 +1369,7 @@ static void tgen_arithi(TCGContext *s, int c, int r0,
+             tcg_out_ext16u(s, r0, r0);
+             return;
+         }
++        break;
+     }
+ 
+     if (val == (int8_t)val) {
+-- 
+2.34.1
 
-for you to fetch changes up to 1d513e06d96697f44de4a1b85c6ff627c443e306:
-
-  util: fix build with musl libc on ppc64le (2024-01-11 08:48:16 +1100)
-
-----------------------------------------------------------------
-tcg/i386: Use more 8-bit immediate forms for add, sub, or, xor
-tcg/ppc: Use new registers for LQ destination
-util: fix build with musl libc on ppc64le
-
-----------------------------------------------------------------
-Natanael Copa (1):
-      util: fix build with musl libc on ppc64le
-
-Paolo Bonzini (2):
-      tcg/i386: convert add/sub of 128 to sub/add of -128
-      tcg/i386: use 8-bit OR or XOR for unsigned 8-bit immediates
-
-Richard Henderson (1):
-      tcg/ppc: Use new registers for LQ destination
-
- tcg/ppc/tcg-target-con-set.h |  2 +-
- tcg/tcg.c                    | 21 ++++++++++++----
- util/cpuinfo-ppc.c           |  6 ++---
- tcg/i386/tcg-target.c.inc    | 60 +++++++++++++++++++++++++++++++++-----------
- tcg/ppc/tcg-target.c.inc     |  3 ++-
- 5 files changed, 67 insertions(+), 25 deletions(-)
 
