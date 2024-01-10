@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884F582A395
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C2282A396
 	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 22:53:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNgUp-0003ab-Oj; Wed, 10 Jan 2024 16:52:23 -0500
+	id 1rNgV8-0003fV-RB; Wed, 10 Jan 2024 16:52:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNgUn-0003aA-Mk
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 16:52:21 -0500
-Received: from mail-qk1-x72c.google.com ([2607:f8b0:4864:20::72c])
+ id 1rNgUt-0003bA-Jd
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 16:52:27 -0500
+Received: from mail-qk1-x734.google.com ([2607:f8b0:4864:20::734])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rNgUm-0005fn-3f
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 16:52:21 -0500
-Received: by mail-qk1-x72c.google.com with SMTP id
- af79cd13be357-783182d4a09so482344485a.2
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 13:52:19 -0800 (PST)
+ id 1rNgUp-0005iT-KH
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 16:52:25 -0500
+Received: by mail-qk1-x734.google.com with SMTP id
+ af79cd13be357-7833c5d5c77so28888785a.3
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 13:52:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704923539; x=1705528339; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704923543; x=1705528343; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OBBeoirsyv5/OFQlIRCs3B1+YR9/kciezwI6H7ohodM=;
- b=jcBFQ2hwa1ZICpmBR0Ac7N8axgc1pbmlbmzb1xdlzIyw4wc2rYQRc2NbREnNJBTeBC
- Rr/rypm4r+qTwC56tF24s60nhNRXQNWqHrbz4CL56g69MQk21ECfMz8mYIhw6mW2M2qe
- PrhC4iBgLrcrcPLszVKRVvFT1dBx+Q/kMHfvuEuWnuAXAD3CY4cG625/Y4eawlVBXgPb
- 77aaurMpKIVZAVaot44BvyZHvaoFY3/S4+P9T2TITghjX2q7PlQNnQ9rduDguZWwsDZt
- +O9DW0Aw8HDIPVcOHS2X5xs+cQjhNJukmETKYUlKEnQNzTyG3eBJeIuDlgRXXGPTWsL2
- xYEA==
+ bh=HwFKj5Pn5DjJGhI9eC5OFFV9tA3PvMraO52aS5I9wUY=;
+ b=rridXl3+jdqbF7VGMLtTvQ0Yonrw6h4zHrKsfStlGzXFX6sEwUTCAfQgE9tzC1L3zR
+ O6KqHRBVmJhBUJu8Stu5ijr+ZNz8iX3+SpnCFWq4Wa4eeY+SD0GAPIuqsGQMda0ZtoSA
+ HzJGmi65fSLsid8JG60XuFZlBBug4qrGjXkicsWcEbTlxVY9W7rfkjzD6uzHaibOVBUe
+ Iat3Cv/G+Ns1dP997/ieLu8h11puMVU0qrFLT0QJd9cVbUg1rUWxyKlcSjnIHQoZE3cg
+ mgGYlhWqsxhIh37L+vJDq6e5UikkHrWvP8rgCFfjstDTuKuC77FhiSRCRonHmW8VMi40
+ HxUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704923539; x=1705528339;
+ d=1e100.net; s=20230601; t=1704923543; x=1705528343;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OBBeoirsyv5/OFQlIRCs3B1+YR9/kciezwI6H7ohodM=;
- b=NLwgo4ulKgjbQFmzSzVlPUZ9PFt2ONlDpj+gzQ55aS1yRwsjl9BkU0WalUXD2KVa3f
- cxY5NA86/ALUJN9x11Z6IcPgI8k6BSb5biQXQMqXbidxnG4JqwRmTS7kJ2/oIuOucMfW
- wKVFdSuEnriPiHTqGSfblPU51EY1gw7wjLikpwZU71KXaq01U4MhJPOt0TyznvB6x7na
- C5WC3VEEDtsTugvLRU664OwwcnZPxs8Wql+pvrq51VtSNAYPAAtRZLrRfO6fG2oh4jVz
- 5MrUylnHOngUeebH8ClSuhsH1E7lTcJZLh3qRL/FMGDaIMorsyoNxNUldl7TATJAyVgg
- HnuQ==
-X-Gm-Message-State: AOJu0YyL3pm0fQ89jn+5hibQLEk6jZXL079uEmDQ5oM6SfjB8wZ7+Ua0
- exc58IkKMyWkzT2JQvKkYJrlpJz+jAhMWM/ZyDSvWXLeuP/S8BFS
-X-Google-Smtp-Source: AGHT+IHFPkixC0BUvPVzLcX2wSjTI9QqI2JpICkO2B1iBDwJISqo3pNd+LXcL42yLKyLYH+qPpo3bQ==
-X-Received: by 2002:a05:620a:13ed:b0:783:23a1:8b45 with SMTP id
- h13-20020a05620a13ed00b0078323a18b45mr328613qkl.108.1704923539157; 
- Wed, 10 Jan 2024 13:52:19 -0800 (PST)
+ bh=HwFKj5Pn5DjJGhI9eC5OFFV9tA3PvMraO52aS5I9wUY=;
+ b=RgFo+qekcviHHeyhGD0GHO0e6rmxC5I+SJHzSqybKbH7Z2EhGzZuAP835lZdCoSRkY
+ ultOkPQJO0qlmWLZ81HtgZf1Y0DTwvI2SSnUo1QsCsz6Zj0mD+K3ImJ0ExPSlpVn0pBR
+ mA6VPBqBWyzbeWvR0p8BPRGzBRSxAGCUi2IHiPVN82E79wfp5lDwcOGz7J2UpXMFUCV8
+ Yu/Dei+zx4YoJjZbIFsvbdSgq38dn6s406A2fL8oH8h3qc/P4nutNmMWlJ8c3B2fLVWI
+ WcaIjbp6wC7MUpRKxIliXk/v97mQ4nsmTTcNRt1ghKGy2UR/dyZmMsqplHf3PkQWICSn
+ pk1A==
+X-Gm-Message-State: AOJu0YwPFDksURV+Oxiqm3IlYZ90wxM1CeCPyRPiXpJ0XE3aIfauf+aZ
+ 33+05fVPv2lQfPg108ZcFWgbqEKFiZzxPHi2K03VDY9DrW5RhPYJ
+X-Google-Smtp-Source: AGHT+IEb9FewlU6zcIzwO9ISoe8I6qtl57Oil2dp63eCvwjrzbtHHrlPxqzDEVyCc16TzBh0lYgeEg==
+X-Received: by 2002:a05:620a:3914:b0:783:2a6a:7b82 with SMTP id
+ qr20-20020a05620a391400b007832a6a7b82mr388836qkn.98.1704923542755; 
+ Wed, 10 Jan 2024 13:52:22 -0800 (PST)
 Received: from stoup.. ([172.58.27.160]) by smtp.gmail.com with ESMTPSA id
- z8-20020ae9c108000000b0078313c87609sm1888387qki.100.2024.01.10.13.52.16
+ z8-20020ae9c108000000b0078313c87609sm1888387qki.100.2024.01.10.13.52.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 13:52:18 -0800 (PST)
+ Wed, 10 Jan 2024 13:52:22 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 2/4] tcg/i386: use 8-bit OR or XOR for unsigned 8-bit immediates
-Date: Thu, 11 Jan 2024 08:52:02 +1100
-Message-Id: <20240110215204.9353-3-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 3/4] tcg/ppc: Use new registers for LQ destination
+Date: Thu, 11 Jan 2024 08:52:03 +1100
+Message-Id: <20240110215204.9353-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240110215204.9353-1-richard.henderson@linaro.org>
 References: <20240110215204.9353-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72c;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x72c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::734;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x734.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,49 +92,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+LQ has a constraint that RTp != RA, else SIGILL.
+Therefore, force the destination of INDEX_op_qemu_*_ld128 to be a
+new register pair, so that it cannot overlap the input address.
 
-In the case where OR or XOR has an 8-bit immediate between 128 and 255,
-we can operate on a low-byte register and shorten the output by two or
-three bytes (two if a prefix byte is needed for REX.B).
+This requires new support in process_op_defs and tcg_reg_alloc_op.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-Id: <20231228120524.70239-1-pbonzini@redhat.com>
-[rth: Incorporate into switch.]
+Cc: qemu-stable@nongnu.org
+Fixes: 526cd4ec01f ("tcg/ppc: Support 128-bit load/store")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240102013456.131846-1-richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/i386/tcg-target.c.inc | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tcg/ppc/tcg-target-con-set.h |  2 +-
+ tcg/tcg.c                    | 21 ++++++++++++++++-----
+ tcg/ppc/tcg-target.c.inc     |  3 ++-
+ 3 files changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index 29e80af78b..d268199fc1 100644
---- a/tcg/i386/tcg-target.c.inc
-+++ b/tcg/i386/tcg-target.c.inc
-@@ -244,6 +244,7 @@ static bool tcg_target_const_match(int64_t val, TCGType type, int ct, int vece)
- #define P_VEXL          0x80000         /* Set VEX.L = 1 */
- #define P_EVEX          0x100000        /* Requires EVEX encoding */
+diff --git a/tcg/ppc/tcg-target-con-set.h b/tcg/ppc/tcg-target-con-set.h
+index bbd7b21247..cb47b29452 100644
+--- a/tcg/ppc/tcg-target-con-set.h
++++ b/tcg/ppc/tcg-target-con-set.h
+@@ -35,7 +35,7 @@ C_O1_I3(v, v, v, v)
+ C_O1_I4(r, r, ri, rZ, rZ)
+ C_O1_I4(r, r, r, ri, ri)
+ C_O2_I1(r, r, r)
+-C_O2_I1(o, m, r)
++C_N1O1_I1(o, m, r)
+ C_O2_I2(r, r, r, r)
+ C_O2_I4(r, r, rI, rZM, r, r)
+ C_O2_I4(r, r, r, r, rI, rZM)
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 896a36caeb..e2c38f6d11 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -653,6 +653,7 @@ static void tcg_out_movext3(TCGContext *s, const TCGMovExtend *i1,
+ #define C_O1_I4(O1, I1, I2, I3, I4)     C_PFX5(c_o1_i4_, O1, I1, I2, I3, I4),
  
-+#define OPC_ARITH_EbIb	(0x80)
- #define OPC_ARITH_EvIz	(0x81)
- #define OPC_ARITH_EvIb	(0x83)
- #define OPC_ARITH_GvEv	(0x03)		/* ... plus (ARITH_FOO << 3) */
-@@ -1370,6 +1371,16 @@ static void tgen_arithi(TCGContext *s, int c, int r0,
-             return;
-         }
-         break;
-+
-+    case ARITH_OR:
-+    case ARITH_XOR:
-+        if (val >= 0x80 && val <= 0xff
-+            && (r0 < 4 || TCG_TARGET_REG_BITS == 64)) {
-+            tcg_out_modrm(s, OPC_ARITH_EbIb + P_REXB_RM, c, r0);
-+            tcg_out8(s, val);
-+            return;
-+        }
-+        break;
-     }
+ #define C_N1_I2(O1, I1, I2)             C_PFX3(c_n1_i2_, O1, I1, I2),
++#define C_N1O1_I1(O1, O2, I1)           C_PFX3(c_n1o1_i1_, O1, O2, I1),
+ #define C_N2_I1(O1, O2, I1)             C_PFX3(c_n2_i1_, O1, O2, I1),
  
-     if (val == (int8_t)val) {
+ #define C_O2_I1(O1, O2, I1)             C_PFX3(c_o2_i1_, O1, O2, I1),
+@@ -676,6 +677,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
+ #undef C_O1_I3
+ #undef C_O1_I4
+ #undef C_N1_I2
++#undef C_N1O1_I1
+ #undef C_N2_I1
+ #undef C_O2_I1
+ #undef C_O2_I2
+@@ -696,6 +698,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
+ #define C_O1_I4(O1, I1, I2, I3, I4)     { .args_ct_str = { #O1, #I1, #I2, #I3, #I4 } },
+ 
+ #define C_N1_I2(O1, I1, I2)             { .args_ct_str = { "&" #O1, #I1, #I2 } },
++#define C_N1O1_I1(O1, O2, I1)           { .args_ct_str = { "&" #O1, #O2, #I1 } },
+ #define C_N2_I1(O1, O2, I1)             { .args_ct_str = { "&" #O1, "&" #O2, #I1 } },
+ 
+ #define C_O2_I1(O1, O2, I1)             { .args_ct_str = { #O1, #O2, #I1 } },
+@@ -718,6 +721,7 @@ static const TCGTargetOpDef constraint_sets[] = {
+ #undef C_O1_I3
+ #undef C_O1_I4
+ #undef C_N1_I2
++#undef C_N1O1_I1
+ #undef C_N2_I1
+ #undef C_O2_I1
+ #undef C_O2_I2
+@@ -738,6 +742,7 @@ static const TCGTargetOpDef constraint_sets[] = {
+ #define C_O1_I4(O1, I1, I2, I3, I4)     C_PFX5(c_o1_i4_, O1, I1, I2, I3, I4)
+ 
+ #define C_N1_I2(O1, I1, I2)             C_PFX3(c_n1_i2_, O1, I1, I2)
++#define C_N1O1_I1(O1, O2, I1)           C_PFX3(c_n1o1_i1_, O1, O2, I1)
+ #define C_N2_I1(O1, O2, I1)             C_PFX3(c_n2_i1_, O1, O2, I1)
+ 
+ #define C_O2_I1(O1, O2, I1)             C_PFX3(c_o2_i1_, O1, O2, I1)
+@@ -2988,6 +2993,7 @@ static void process_op_defs(TCGContext *s)
+                     .pair = 2,
+                     .pair_index = o,
+                     .regs = def->args_ct[o].regs << 1,
++                    .newreg = def->args_ct[o].newreg,
+                 };
+                 def->args_ct[o].pair = 1;
+                 def->args_ct[o].pair_index = i;
+@@ -3004,6 +3010,7 @@ static void process_op_defs(TCGContext *s)
+                     .pair = 1,
+                     .pair_index = o,
+                     .regs = def->args_ct[o].regs >> 1,
++                    .newreg = def->args_ct[o].newreg,
+                 };
+                 def->args_ct[o].pair = 2;
+                 def->args_ct[o].pair_index = i;
+@@ -5036,17 +5043,21 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
+                 break;
+ 
+             case 1: /* first of pair */
+-                tcg_debug_assert(!arg_ct->newreg);
+                 if (arg_ct->oalias) {
+                     reg = new_args[arg_ct->alias_index];
+-                    break;
++                } else if (arg_ct->newreg) {
++                    reg = tcg_reg_alloc_pair(s, arg_ct->regs,
++                                             i_allocated_regs | o_allocated_regs,
++                                             output_pref(op, k),
++                                             ts->indirect_base);
++                } else {
++                    reg = tcg_reg_alloc_pair(s, arg_ct->regs, o_allocated_regs,
++                                             output_pref(op, k),
++                                             ts->indirect_base);
+                 }
+-                reg = tcg_reg_alloc_pair(s, arg_ct->regs, o_allocated_regs,
+-                                         output_pref(op, k), ts->indirect_base);
+                 break;
+ 
+             case 2: /* second of pair */
+-                tcg_debug_assert(!arg_ct->newreg);
+                 if (arg_ct->oalias) {
+                     reg = new_args[arg_ct->alias_index];
+                 } else {
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index 856c3b18f5..54816967bc 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -2595,6 +2595,7 @@ static void tcg_out_qemu_ldst_i128(TCGContext *s, TCGReg datalo, TCGReg datahi,
+         tcg_debug_assert(!need_bswap);
+         tcg_debug_assert(datalo & 1);
+         tcg_debug_assert(datahi == datalo - 1);
++        tcg_debug_assert(!is_ld || datahi != index);
+         insn = is_ld ? LQ : STQ;
+         tcg_out32(s, insn | TAI(datahi, index, 0));
+     } else {
+@@ -4071,7 +4072,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+ 
+     case INDEX_op_qemu_ld_a32_i128:
+     case INDEX_op_qemu_ld_a64_i128:
+-        return C_O2_I1(o, m, r);
++        return C_N1O1_I1(o, m, r);
+     case INDEX_op_qemu_st_a32_i128:
+     case INDEX_op_qemu_st_a64_i128:
+         return C_O0_I3(o, m, r);
 -- 
 2.34.1
 
