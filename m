@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC25D8299F6
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 12:58:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26255829A00
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 12:59:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNXDQ-0000Ae-09; Wed, 10 Jan 2024 06:57:48 -0500
+	id 1rNXEg-00010H-OV; Wed, 10 Jan 2024 06:59:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNXCv-00005l-Ol
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 06:57:19 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNXCu-0001sX-16
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 06:57:17 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40e43fb2659so35482585e9.1
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 03:57:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704887833; x=1705492633; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GXlImAB9RzSyZJAsyx6tNS2Cai8oqPlw9CPpszy2ykk=;
- b=tibDpEryMNUSd42S8JC8MUgGU3w4KzAlhMxTPgnd5yOsekpt9bvYrHqs3HEnvY53Y7
- v9/AzFoivcag+Jy5Rk+e8VsQr89BRKUNKppfXGrtyjA4j3A5/ZVwAal+3i+ebBfNnhsa
- SmgTJfxBYRU2XauoYEG3eEWLNHCpBFmeMzN6HmqQv4IXnXYg2m4G+ziGjx8zoEezhBS3
- AAaJ7sYEXh3JeagduoVt4koQf7zuCk2qIYRv+L+LVRe6YdibeFfVTjPGvY8nyDZHzLxV
- kCcjyy0wuYZV9edTwCQsVTNQ2MOzGJpBzA3WBm0NvLnRYqO0GZo2qtjIh8jyjM+Wvcw7
- 8TAA==
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1rNXEX-0000zM-O7
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 06:58:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1rNXES-0002QH-S7
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 06:58:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704887930;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=OtFE1dJsK2MDS7eACPV30aak8Vu9wcFVMJE44VX6vMY=;
+ b=d94kAU970FYsuYrGSRKDunSxXIU3YWLs6RE4S3Tx6YRikiWlWylGyiA/0LEc5mOAS7PTJP
+ eoQBvgGqioIG2vmWD71kzv4M6h7Hx/riU5ongUi+ne8eKTyESF+/W4VlnKFP242XtINw5B
+ JaUHDu6gdYMmAHYMfwrtYbKjuN3M8kw=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-526-6hGFCRJGMVmCYdnXfkIWGA-1; Wed, 10 Jan 2024 06:58:48 -0500
+X-MC-Unique: 6hGFCRJGMVmCYdnXfkIWGA-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a28d6f071b2so158402066b.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 03:58:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704887833; x=1705492633;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GXlImAB9RzSyZJAsyx6tNS2Cai8oqPlw9CPpszy2ykk=;
- b=pE4Idrz1HGoFNfb9bNAyEvCQycK0KruS9QXoxa6zRXA7fPn1kog6DSuVV5Q+NojKfS
- AOXyerNTsXA0l/Os4qP3HbnlmjImMpU4/VqkChmimH6cV2JDLKHDWlBWGlFn8VG6a3Nh
- 4hixk2DbR6gE8/K8V50f7aX5JjBTaMvbf0kP2q73G80Oz1YbdfV+AUTw9tT7Q9YpSN8H
- Ahi16NkGY3ElhBh91D0lXtVT/Rsd0l8eOmm69NlXhhsRHtzq8h31K/bB2vQ0QUENWrN7
- RN5FNheZhhvHmip/U1RicKgnIaGJ2zH8ey85mLbi7cZShnfWwxC1YVlIseJH8eWtB28y
- Hifg==
-X-Gm-Message-State: AOJu0YzS0z+bq5idtYWXfKeddHQ7mC69t3r0EJszJ5poJL6JuGOWepOH
- 1xtmPkNNirvrU4sXBX9azstMiL9kYY9M4mAuyiF03KyRqFI=
-X-Google-Smtp-Source: AGHT+IGjQGOxdMFvoWbQlpmcbGk2gvq3SZLcfayqxwX16f206nvY99MhrOgT+lkAuHtK11Ltjmv9Cg==
-X-Received: by 2002:a05:600c:3b15:b0:40d:763c:e7d6 with SMTP id
- m21-20020a05600c3b1500b0040d763ce7d6mr566010wms.175.1704887833482; 
- Wed, 10 Jan 2024 03:57:13 -0800 (PST)
-Received: from [192.168.1.102] ([176.167.134.179])
- by smtp.gmail.com with ESMTPSA id
- fs23-20020a05600c3f9700b0040c11fbe581sm2002808wmb.27.2024.01.10.03.57.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Jan 2024 03:57:13 -0800 (PST)
-Message-ID: <29d2d67f-504f-451d-919c-fe2b2dd5c696@linaro.org>
-Date: Wed, 10 Jan 2024 12:57:11 +0100
+ d=1e100.net; s=20230601; t=1704887928; x=1705492728;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=OtFE1dJsK2MDS7eACPV30aak8Vu9wcFVMJE44VX6vMY=;
+ b=qF3uvKdCpUn2XmhR34br+zTXd4FOS2RzSax5vLcm6KNB/B/i2tGEOzoEPFI2a4tqrO
+ V4iI46oXt2zDrMUWvd3ey+5FnBm6m2pyumZNCMQpx8iWHENbcBzT4pCRdA33g86fUoU4
+ CFGOPE8u1MqLuGXB1thHZSRk5UBj357A2ZLeeNRLYLG9u3Bb908dHX8LCOEl4k3KC9CW
+ tMSWZZNElgACtpuV6TGRafQtASdpgtNjP/MekoYiljmfzcbH5012MFe1geDeA1H+eTlv
+ 63KT/pJ+C8Ex0t6f7Dr1F46xaAwCn/CQ/VTBpB5lRlEMXZgC5fdGq4uHIuw2TP73EenH
+ PuTQ==
+X-Gm-Message-State: AOJu0YymvQaNetcyVEkdgkCIgrQ1aLAitQoFZGkjuMj8F1qNC1pTkXH3
+ 6au+mRPMCXlBH7p/m1lqpdVqFHqt2Btk/tW+3jrNvrNf+wUstl6k1/NvTClYcQetWqYVaKlWDmT
+ YkSTefHGUUxo7lFezUI6ErF+4sODdwk9SwmYklx0=
+X-Received: by 2002:aa7:d484:0:b0:557:4797:bcb9 with SMTP id
+ b4-20020aa7d484000000b005574797bcb9mr403823edr.77.1704887927952; 
+ Wed, 10 Jan 2024 03:58:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH8IIgQD//8AxtFh+Fif2mQnq8wR5j1ezQwQ/Cl/WilJj0u+1RXzqR1vO/YPriV0kFSIEOvLfbaCLskEZkbiIY=
+X-Received: by 2002:aa7:d484:0:b0:557:4797:bcb9 with SMTP id
+ b4-20020aa7d484000000b005574797bcb9mr403817edr.77.1704887927724; Wed, 10 Jan
+ 2024 03:58:47 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] io: add trace event when cancelling TLS handshake
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-References: <20240110111615.28004-1-berrange@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240110111615.28004-1-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240110111644.28294-1-berrange@redhat.com>
+In-Reply-To: <20240110111644.28294-1-berrange@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Wed, 10 Jan 2024 15:58:36 +0400
+Message-ID: <CAMxuvayPK=68vNQ7ZCm3YgR8+PuTDHJJGAVRr-YGPpVDnTQ7pg@mail.gmail.com>
+Subject: Re: [PATCH] chardev: close QIOChannel before unref'ing
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ jiangyegen <jiangyegen@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,14 +95,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/1/24 12:16, Daniel P. Berrangé wrote:
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Hi
+
+On Wed, Jan 10, 2024 at 3:16=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com> wrote:
+>
+> The chardev socket backend will unref the QIOChannel object while
+> it is still potentially open. When using TLS there could be a
+> pending TLS handshake taking place. If the channel is left open
+> then when the TLS handshake callback runs, it can end up accessing
+> free'd memory in the tcp_chr_tls_handshake method.
+>
+> Closing the QIOChannel will unregister any pending handshake
+> source.
+
+ooh oh, one of those little things..
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+
+(weak refs could be a solution? but it's also sometime tricky, and we
+don't have those..)
+
+>
+> Reported-by: jiangyegen <jiangyegen@huawei.com>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 > ---
->   io/channel-tls.c | 1 +
->   io/trace-events  | 1 +
->   2 files changed, 2 insertions(+)
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+>  chardev/char-socket.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/chardev/char-socket.c b/chardev/char-socket.c
+> index 73947da188..7105753815 100644
+> --- a/chardev/char-socket.c
+> +++ b/chardev/char-socket.c
+> @@ -378,6 +378,10 @@ static void tcp_chr_free_connection(Chardev *chr)
+>                                   char_socket_yank_iochannel,
+>                                   QIO_CHANNEL(s->sioc));
+>      }
+> +
+> +    if (s->ioc) {
+> +        qio_channel_close(s->ioc, NULL);
+> +    }
+>      object_unref(OBJECT(s->sioc));
+>      s->sioc =3D NULL;
+>      object_unref(OBJECT(s->ioc));
+> --
+> 2.43.0
+>
 
 
