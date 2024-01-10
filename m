@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64255829569
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 09:52:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78ABB82957A
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 09:59:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNUJJ-00008I-BP; Wed, 10 Jan 2024 03:51:41 -0500
+	id 1rNUPO-0001Kl-BQ; Wed, 10 Jan 2024 03:57:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierre-eric@damsy.net>)
- id 1rNUJH-000081-43
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:51:39 -0500
-Received: from mail.damsy.net ([85.90.245.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierre-eric@damsy.net>)
- id 1rNUJD-0000Ui-U7
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:51:38 -0500
-Message-ID: <c986f552-60b8-471a-a439-a8714936fa47@damsy.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=damsy.net; s=201803;
- t=1704876692;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=S2fvswJdo6J2JGwBNLrVoFk8Od2kF+yoajWWFUZHpYc=;
- b=aTvUsh2dkUxkLjC/FCfYwnMc4ThKi/NCM4KFDN40SLKaQCKF8chQGcOEKEg2gu0H+7cQ1+
- GmUSflL7JueR4sdoBDJX+fa/WqGg4lLJ2Jxqgt71sRXqQdM7GNpka+K8ozn4+j8F6I1wcQ
- s73s2Sri1Kh6I0L9NmlPS0Ii4jCvIfevg9iD5IO4SYicXTpWZsM82UU9e8/meoY3u0kQvw
- yTNhaSIL1XlRE2DlvPGlhV+LU+Dv51B8sjRvT5v1mGhO32ofX476Pxhg6okpC4f5OewRI6
- OLVx387dpB5U22sezxNImTFouZOI6xX+Li0nDA5ZPurOK3+4D3yaHzTUrREfiw==
-Date: Wed, 10 Jan 2024 09:51:31 +0100
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rNUPK-0001KD-M5
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:57:54 -0500
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rNUPB-0003Na-2N
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:57:48 -0500
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-3bbd6e3795eso3323936b6e.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 00:57:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1704877063; x=1705481863; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vBelU8jCUh9cQ9ENgZWx/KbpAFMr9lO9AQi8G9EtZ1Y=;
+ b=Ef/q2F77ZI0zllLo6pAAA8UZpNAc8Wq2FNASLx+mW0rWT4nWmHsgKEydnbQAORq4C4
+ tYxxVl2bRhOX4Jx0TkLP6HtUHz/x9yAgrmpac3EA7ks45WL9oY8COJboahZWCoYYd83N
+ wsqBqVx5qrUwx6MP9Rh89rtwE63qTTbkCEMgW65/7VGD5BionWI26OJnTq8ZfOA5fvKO
+ pc1DFuTrUvP3VK4NlwN0voIWJPk1vn48vNdpxg3zDygRpIrM3Qr0aL9w0dGWKde2nA5A
+ F4mlKB9x2SehgOR90tYHINFoydu20M2ObU1XL1WKxvzSU5eYMANRVh3JaVAmytyvqZlF
+ 1roA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704877063; x=1705481863;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vBelU8jCUh9cQ9ENgZWx/KbpAFMr9lO9AQi8G9EtZ1Y=;
+ b=BwQM2tHih9uXiGNOLs6OG0ZQmTZkOoCawW0LIoBCoHcCdnEUOdU9uM+Yb9/L6oQIrY
+ IcTMiIBXWJ/VisqXjCF3G0B8PMefeLVCu1E3yo6/g90LB3ZwVuo40Cik0WcVBMYRl1tJ
+ fPgBjdp/dYWlsd+UJRzDAHD2d7qD7hqwHyX9uO0WazTLZcJ04KbtMD/aGmTQ3US2viwI
+ tcTrFqCvup/HIZa59qFFXvchjSc+Xw8xCPBFFPUQTYdmpZcdKr6IIQ4UuzDFxa7GiSpc
+ tbRECIMDny52SPdyZASK8hJjJDb4P4AEq8QM3QOeX/fvZl17LtaCYzcZD8YkpDy87tYo
+ UzUA==
+X-Gm-Message-State: AOJu0Yx5cc+xw9EPRlhcUoA2Hi7B4fFOVbEWh2mT2vCf5JprRQ0sO0ZA
+ VQRlmxGp90ZgZLTaQpNgLMYlXiQ2CM1cerQZ
+X-Google-Smtp-Source: AGHT+IGhp6Q/e5nWGkV5GM69GAkH0OKs7TgllCAtFnjxBdC5/nQ7em6CJcukLOSFLpYw8a96IMt5zg==
+X-Received: by 2002:a05:6808:17a9:b0:3bd:3b39:c400 with SMTP id
+ bg41-20020a05680817a900b003bd3b39c400mr853117oib.48.1704877063211; 
+ Wed, 10 Jan 2024 00:57:43 -0800 (PST)
+Received: from toolbox.alistair23.me
+ (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
+ [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
+ by smtp.gmail.com with ESMTPSA id
+ t65-20020a628144000000b006d9879ba6besm3223814pfd.170.2024.01.10.00.57.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 10 Jan 2024 00:57:42 -0800 (PST)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: qemu-devel@nongnu.org
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 00/65] riscv-to-apply queue
+Date: Wed, 10 Jan 2024 18:56:28 +1000
+Message-ID: <20240110085733.1607526-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: Re: [PATCH v6 07/11] virtio-gpu: Handle resource blob commands
-From: Pierre-Eric Pelloux-Prayer <pierre-eric@damsy.net>
-To: Huang Rui <ray.huang@amd.com>, Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: xen-devel@lists.xenproject.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, ernunes@redhat.com,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>
-References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-8-ray.huang@amd.com>
- <ccc34ce0-44af-425e-8634-6f7a0583ee12@damsy.net>
-Content-Language: fr
-In-Reply-To: <ccc34ce0-44af-425e-8634-6f7a0583ee12@damsy.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=85.90.245.9; envelope-from=pierre-eric@damsy.net;
- helo=mail.damsy.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=alistair23@gmail.com; helo=mail-oi1-x22c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,428 +94,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit 9468484fe904ab4691de6d9c34616667f377ceac:
 
+  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2024-01-09 10:32:23 +0000)
 
-Le 09/01/2024 à 17:50, Pierre-Eric Pelloux-Prayer a écrit :
-> 
-> 
-> Le 19/12/2023 à 08:53, Huang Rui a écrit :
->> From: Antonio Caggiano <antonio.caggiano@collabora.com>
->>
->> Support BLOB resources creation, mapping and unmapping by calling the
->> new stable virglrenderer 0.10 interface. Only enabled when available and
->> via the blob config. E.g. -device virtio-vga-gl,blob=true
->>
->> Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
->> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
->> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
->> Signed-off-by: Huang Rui <ray.huang@amd.com>
->> ---
->>
->> Changes in v6:
->> - Use new struct virgl_gpu_resource.
->> - Unmap, unref and destroy the resource only after the memory region
->>    has been completely removed.
->> - In unref check whether the resource is still mapped.
->> - In unmap_blob check whether the resource has been already unmapped.
->> - Fix coding style
->>
->>   hw/display/virtio-gpu-virgl.c | 274 +++++++++++++++++++++++++++++++++-
->>   hw/display/virtio-gpu.c       |   4 +-
->>   meson.build                   |   4 +
->>   3 files changed, 276 insertions(+), 6 deletions(-)
->>
->> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
->> index faab374336..5a3a292f79 100644
->> --- a/hw/display/virtio-gpu-virgl.c
->> +++ b/hw/display/virtio-gpu-virgl.c
->> @@ -17,6 +17,7 @@
->>   #include "trace.h"
->>   #include "hw/virtio/virtio.h"
->>   #include "hw/virtio/virtio-gpu.h"
->> +#include "hw/virtio/virtio-gpu-bswap.h"
->>   #include "ui/egl-helpers.h"
->> @@ -24,8 +25,62 @@
->>   struct virgl_gpu_resource {
->>       struct virtio_gpu_simple_resource res;
->> +    uint32_t ref;
->> +    VirtIOGPU *g;
->> +
->> +#ifdef HAVE_VIRGL_RESOURCE_BLOB
->> +    /* only blob resource needs this region to be mapped as guest mmio */
->> +    MemoryRegion *region;
->> +#endif
->>   };
->> +static void vres_get_ref(struct virgl_gpu_resource *vres)
->> +{
->> +    uint32_t ref;
->> +
->> +    ref = qatomic_fetch_inc(&vres->ref);
->> +    g_assert(ref < INT_MAX);
->> +}
->> +
->> +static void virgl_resource_destroy(struct virgl_gpu_resource *vres)
->> +{
->> +    struct virtio_gpu_simple_resource *res;
->> +    VirtIOGPU *g;
->> +
->> +    if (!vres) {
->> +        return;
->> +    }
->> +
->> +    g = vres->g;
->> +    res = &vres->res;
->> +    QTAILQ_REMOVE(&g->reslist, res, next);
->> +    virtio_gpu_cleanup_mapping(g, res);
->> +    g_free(vres);
->> +}
->> +
->> +static void virgl_resource_unref(struct virgl_gpu_resource *vres)
->> +{
->> +    struct virtio_gpu_simple_resource *res;
->> +
->> +    if (!vres) {
->> +        return;
->> +    }
->> +
->> +    res = &vres->res;
->> +    virgl_renderer_resource_detach_iov(res->resource_id, NULL, NULL);
->> +    virgl_renderer_resource_unref(res->resource_id);
->> +}
->> +
->> +static void vres_put_ref(struct virgl_gpu_resource *vres)
->> +{
->> +    g_assert(vres->ref > 0);
->> +
->> +    if (qatomic_fetch_dec(&vres->ref) == 1) {
->> +        virgl_resource_unref(vres);
->> +        virgl_resource_destroy(vres);
->> +    }
->> +}
->> +
->>   static struct virgl_gpu_resource *
->>   virgl_gpu_find_resource(VirtIOGPU *g, uint32_t resource_id)
->>   {
->> @@ -59,6 +114,8 @@ static void virgl_cmd_create_resource_2d(VirtIOGPU *g,
->>                                          c2d.width, c2d.height);
->>       vres = g_new0(struct virgl_gpu_resource, 1);
->> +    vres_get_ref(vres);
->> +    vres->g = g;
->>       vres->res.width = c2d.width;
->>       vres->res.height = c2d.height;
->>       vres->res.format = c2d.format;
->> @@ -91,6 +148,8 @@ static void virgl_cmd_create_resource_3d(VirtIOGPU *g,
->>                                          c3d.width, c3d.height, c3d.depth);
->>       vres = g_new0(struct virgl_gpu_resource, 1);
->> +    vres_get_ref(vres);
->> +    vres->g = g;
->>       vres->res.width = c3d.width;
->>       vres->res.height = c3d.height;
->>       vres->res.format = c3d.format;
->> @@ -126,12 +185,21 @@ static void virgl_cmd_resource_unref(VirtIOGPU *g,
->>           return;
->>       }
->> -    virgl_renderer_resource_detach_iov(unref.resource_id, NULL, NULL);
->> -    virgl_renderer_resource_unref(unref.resource_id);
->> +#ifdef HAVE_VIRGL_RESOURCE_BLOB
->> +    if (vres->region) {
->> +        VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
->> +        MemoryRegion *mr = vres->region;
->> +
->> +        warn_report("%s: blob resource %d not unmapped",
->> +                    __func__, unref.resource_id);
->> +        vres->region = NULL;
-> 
-> Shouldn't there be a call to memory_region_unref(mr)?
-> 
->> +        memory_region_set_enabled(mr, false);
->> +        memory_region_del_subregion(&b->hostmem, mr);
->> +        object_unparent(OBJECT(mr));
->> +    }
->> +#endif /* HAVE_VIRGL_RESOURCE_BLOB */
->> -    QTAILQ_REMOVE(&g->reslist, &vres->res, next);
->> -    virtio_gpu_cleanup_mapping(g, &vres->res);
->> -    g_free(vres);
->> +    vres_put_ref(vres);
->>   }
->>   static void virgl_cmd_context_create(VirtIOGPU *g,
->> @@ -470,6 +538,191 @@ static void virgl_cmd_get_capset(VirtIOGPU *g,
->>       g_free(resp);
->>   }
->> +#ifdef HAVE_VIRGL_RESOURCE_BLOB
->> +
->> +static void virgl_resource_unmap(struct virgl_gpu_resource *vres)
->> +{
->> +    if (!vres) {
->> +        return;
->> +    }
->> +
->> +    virgl_renderer_resource_unmap(vres->res.resource_id);
->> +
->> +    vres_put_ref(vres);
->> +}
->> +
->> +static void virgl_resource_blob_async_unmap(void *obj)
->> +{
->> +    MemoryRegion *mr = MEMORY_REGION(obj);
->> +    struct virgl_gpu_resource *vres = mr->opaque;
->> +
->> +    virgl_resource_unmap(vres);
->> +
->> +    g_free(obj);
->> +}
->> +
->> +static void virgl_cmd_resource_create_blob(VirtIOGPU *g,
->> +                                           struct virtio_gpu_ctrl_command *cmd)
->> +{
->> +    struct virgl_gpu_resource *vres;
->> +    struct virtio_gpu_resource_create_blob cblob;
->> +    struct virgl_renderer_resource_create_blob_args virgl_args = { 0 };
->> +    int ret;
->> +
->> +    VIRTIO_GPU_FILL_CMD(cblob);
->> +    virtio_gpu_create_blob_bswap(&cblob);
->> +    trace_virtio_gpu_cmd_res_create_blob(cblob.resource_id, cblob.size);
->> +
->> +    if (cblob.resource_id == 0) {
->> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource id 0 is not allowed\n",
->> +                      __func__);
->> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->> +        return;
->> +    }
->> +
->> +    vres = virgl_gpu_find_resource(g, cblob.resource_id);
->> +    if (vres) {
->> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource already exists %d\n",
->> +                      __func__, cblob.resource_id);
->> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->> +        return;
->> +    }
->> +
->> +    vres = g_new0(struct virgl_gpu_resource, 1);
->> +    vres_get_ref(vres);
->> +    vres->g = g;
->> +    vres->res.resource_id = cblob.resource_id;
->> +    vres->res.blob_size = cblob.size;
->> +
->> +    if (cblob.blob_mem != VIRTIO_GPU_BLOB_MEM_HOST3D) {
->> +        ret = virtio_gpu_create_mapping_iov(g, cblob.nr_entries, sizeof(cblob),
->> +                                            cmd, &vres->res.addrs,
->> +                                            &vres->res.iov, &vres->res.iov_cnt);
->> +        if (!ret) {
->> +            g_free(vres);
->> +            cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
->> +            return;
->> +        }
->> +    }
->> +
->> +    QTAILQ_INSERT_HEAD(&g->reslist, &vres->res, next);
->> +
->> +    virgl_args.res_handle = cblob.resource_id;
->> +    virgl_args.ctx_id = cblob.hdr.ctx_id;
->> +    virgl_args.blob_mem = cblob.blob_mem;
->> +    virgl_args.blob_id = cblob.blob_id;
->> +    virgl_args.blob_flags = cblob.blob_flags;
->> +    virgl_args.size = cblob.size;
->> +    virgl_args.iovecs = vres->res.iov;
->> +    virgl_args.num_iovs = vres->res.iov_cnt;
->> +
->> +    ret = virgl_renderer_resource_create_blob(&virgl_args);
->> +    if (ret) {
->> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: virgl blob create error: %s\n",
->> +                      __func__, strerror(-ret));
->> +        cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
->> +    }
->> +}
->> +
->> +static void virgl_cmd_resource_map_blob(VirtIOGPU *g,
->> +                                        struct virtio_gpu_ctrl_command *cmd)
->> +{
->> +    struct virgl_gpu_resource *vres;
->> +    struct virtio_gpu_resource_map_blob mblob;
->> +    int ret;
->> +    void *data;
->> +    uint64_t size;
->> +    struct virtio_gpu_resp_map_info resp;
->> +    VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
->> +
->> +    VIRTIO_GPU_FILL_CMD(mblob);
->> +    virtio_gpu_map_blob_bswap(&mblob);
->> +
->> +    if (mblob.resource_id == 0) {
->> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource id 0 is not allowed\n",
->> +                      __func__);
->> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->> +        return;
->> +    }
->> +
->> +    vres = virgl_gpu_find_resource(g, mblob.resource_id);
->> +    if (!vres) {
->> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource does not exist %d\n",
->> +                      __func__, mblob.resource_id);
->> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->> +        return;
->> +    }
->> +    if (vres->region) {
->> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource already mapped %d\n",
->> +                      __func__, mblob.resource_id);
->> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->> +        return;
->> +    }
->> +
->> +    ret = virgl_renderer_resource_map(vres->res.resource_id, &data, &size);
->> +    if (ret) {
->> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource map error: %s\n",
->> +                      __func__, strerror(-ret));
->> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->> +        return;
->> +    }
->> +
->> +    vres_get_ref(vres);
-> 
-> Why is this needed? And if it is, shouldn't virgl_cmd_resource_unmap_blob
-> call "vres_put_ref(vres)" ?
-> 
->> +    vres->region = g_new0(MemoryRegion, 1);
->> +    memory_region_init_ram_ptr(vres->region, OBJECT(g), NULL, size, data);
->> +    vres->region->opaque = vres;
->> +    OBJECT(vres->region)->free = virgl_resource_blob_async_unmap;
->> +    memory_region_add_subregion(&b->hostmem, mblob.offset, vres->region);
->> +    memory_region_set_enabled(vres->region, true);
->> +
->> +    memset(&resp, 0, sizeof(resp));
->> +    resp.hdr.type = VIRTIO_GPU_RESP_OK_MAP_INFO;
->> +    virgl_renderer_resource_get_map_info(mblob.resource_id, &resp.map_info);
->> +    virtio_gpu_ctrl_response(g, cmd, &resp.hdr, sizeof(resp));
->> +}
->> +
->> +static void virgl_cmd_resource_unmap_blob(VirtIOGPU *g,
->> +                                          struct virtio_gpu_ctrl_command *cmd)
->> +{
->> +    struct virgl_gpu_resource *vres;
->> +    struct virtio_gpu_resource_unmap_blob ublob;
->> +    VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
->> +    MemoryRegion *mr;
->> +
->> +    VIRTIO_GPU_FILL_CMD(ublob);
->> +    virtio_gpu_unmap_blob_bswap(&ublob);
->> +
->> +    if (ublob.resource_id == 0) {
->> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource id 0 is not allowed\n",
->> +                      __func__);
->> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->> +        return;
->> +    }
->> +
->> +    vres = virgl_gpu_find_resource(g, ublob.resource_id);
->> +    if (!vres) {
->> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource does not exist %d\n",
->> +                      __func__, ublob.resource_id);
->> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->> +        return;
->> +    }
->> +
->> +    if (!vres->region) {
->> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource already unmapped %d\n",
->> +                      __func__, ublob.resource_id);
->> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->> +        return;
->> +    }
->> +
->> +    mr = vres->region;
->> +    vres->region = NULL;
-> 
-> memory_region_unref(mr)?
-> 
-> Note that AFAICT without the added memory_region_unref() calls virgl_resource_unmap()
-> was never called.
+are available in the Git repository at:
 
+  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20240110
 
-Xenia and I figured out the refcounting issue: this code is written based on the
-assumption that:
-  
-    object_unparent(OBJECT(mr));
+for you to fetch changes up to 71b76da33a1558bcd59100188f5753737ef6fa21:
 
+  target/riscv: Ensure mideleg is set correctly on reset (2024-01-10 18:47:47 +1000)
 
-Will decrement the refcount. But this assumption is only true if mr->parent_obj.parent
-is non-NULL.
+----------------------------------------------------------------
+RISC-V PR for 9.0
 
-The map_blob function uses the following arguments:
+* Make vector whole-register move (vmv) depend on vtype register
+* Fix th.dcache.cval1 priviledge check
+* Don't allow write mstatus_vs without RVV
+* Use hwaddr instead of target_ulong for RV32
+* Fix machine IDs QOM getters\
+* Fix KVM reg id sizes
+* ACPI: Enable AIA, PLIC and update RHCT
+* Fix the interrupts-extended property format of PLIC
+* Add support for Zacas extension
+* Add amocas.[w,d,q] instructions
+* Document acpi parameter of virt machine
+* RVA22 profiles support
+* Remove group setting of KVM AIA if the machine only has 1 socket
+* Add RVV CSRs to KVM
+* sifive_u: Update S-mode U-Boot image build instructions
+* Upgrade OpenSBI from v1.3.1 to v1.4
+* pmp: Ignore writes when RW=01 and MML=0
+* Assert that the CSR numbers will be correct
+* Don't adjust vscause for exceptions
+* Ensure mideleg is set correctly on reset
 
-    memory_region_init_ram_ptr(vres->region, OBJECT(g), NULL, size, data);
+----------------------------------------------------------------
+Alistair Francis (3):
+      target/riscv: Assert that the CSR numbers will be correct
+      target/riscv: Don't adjust vscause for exceptions
+      target/riscv: Ensure mideleg is set correctly on reset
 
-Since name is NULL, mr won't be added as a child of 'g' and thus object_unparent()
-does nothing.
+Bin Meng (2):
+      docs/system/riscv: sifive_u: Update S-mode U-Boot image build instructions
+      roms/opensbi: Upgrade from v1.3.1 to v1.4
 
-I'd suggest 2 changes:
-    * use a name ("blob_memory"?) to so mr can be a child of g
-    * increment mr's refcount when setting vres->region and decrement it when clearing it.
-      This change is not needed technically but when a variable is refcounted it seems
-      clearer to increment/decrement the refcount in these situations.
+Daniel Henrique Barboza (36):
+      target/riscv/cpu.c: fix machine IDs getters
+      target/riscv/kvm: change KVM_REG_RISCV_FP_F to u32
+      target/riscv/kvm: change KVM_REG_RISCV_FP_D to u64
+      target/riscv/kvm: change timer regs size to u64
+      target/riscv/kvm: add RISCV_CONFIG_REG()
+      target/riscv/kvm: rename riscv_reg_id() to riscv_reg_id_ulong()
+      target/riscv: create TYPE_RISCV_VENDOR_CPU
+      target/riscv/tcg: do not use "!generic" CPU checks
+      target/riscv/tcg: update priv_ver on user_set extensions
+      target/riscv: add rv64i CPU
+      target/riscv: add zicbop extension flag
+      target/riscv/tcg: add 'zic64b' support
+      riscv-qmp-cmds.c: expose named features in cpu_model_expansion
+      target/riscv: add rva22u64 profile definition
+      target/riscv/kvm: add 'rva22u64' flag as unavailable
+      target/riscv/tcg: add user flag for profile support
+      target/riscv/tcg: add MISA user options hash
+      target/riscv/tcg: add riscv_cpu_write_misa_bit()
+      target/riscv/tcg: handle profile MISA bits
+      target/riscv/tcg: add hash table insert helpers
+      target/riscv/tcg: honor user choice for G MISA bits
+      target/riscv/tcg: validate profiles during finalize
+      riscv-qmp-cmds.c: add profile flags in cpu-model-expansion
+      target/riscv: add 'rva22u64' CPU
+      target/riscv: implement svade
+      target/riscv: add priv ver restriction to profiles
+      target/riscv/cpu.c: finalize satp_mode earlier
+      target/riscv/cpu.c: add riscv_cpu_is_32bit()
+      target/riscv: add satp_mode profile support
+      target/riscv: add 'parent' in profile description
+      target/riscv: add RVA22S64 profile
+      target/riscv: add rva22s64 cpu
+      linux-headers: Update to Linux v6.7-rc5
+      linux-headers: riscv: add ptrace.h
+      target/riscv/kvm: do PR_RISCV_V_SET_CONTROL during realize()
+      target/riscv/kvm: add RVV and Vector CSR regs
 
+Heinrich Schuchardt (1):
+      docs/system/riscv: document acpi parameter of virt machine
 
-Pierre-Eric
+Ivan Klokov (2):
+      target/riscv/pmp: Use hwaddr instead of target_ulong for RV32
+      target/riscv: pmp: Ignore writes when RW=01 and MML=0
 
+LIU Zhiwei (2):
+      target/riscv: Fix th.dcache.cval1 priviledge check
+      target/riscv: Not allow write mstatus_vs without RVV
 
-> 
->> +    memory_region_set_enabled(mr, false);
->> +    memory_region_del_subregion(&b->hostmem, mr);
->> +    object_unparent(OBJECT(mr));
->> +}
->> +
->> +#endif /* HAVE_VIRGL_RESOURCE_BLOB */
->> +
->>   void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
->>                                         struct virtio_gpu_ctrl_command *cmd)
->>   {
->> @@ -536,6 +789,17 @@ void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
->>       case VIRTIO_GPU_CMD_GET_EDID:
->>           virtio_gpu_get_edid(g, cmd);
->>           break;
->> +#ifdef HAVE_VIRGL_RESOURCE_BLOB
->> +    case VIRTIO_GPU_CMD_RESOURCE_CREATE_BLOB:
->> +        virgl_cmd_resource_create_blob(g, cmd);
->> +        break;
->> +    case VIRTIO_GPU_CMD_RESOURCE_MAP_BLOB:
->> +        virgl_cmd_resource_map_blob(g, cmd);
->> +        break;
->> +    case VIRTIO_GPU_CMD_RESOURCE_UNMAP_BLOB:
->> +        virgl_cmd_resource_unmap_blob(g, cmd);
->> +        break;
->> +#endif /* HAVE_VIRGL_RESOURCE_BLOB */
->>       default:
->>           cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
->>           break;
->> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
->> index 4c3ec9d0ea..8189c392dc 100644
->> --- a/hw/display/virtio-gpu.c
->> +++ b/hw/display/virtio-gpu.c
->> @@ -1449,10 +1449,12 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
->>               return;
->>           }
->> +#ifndef HAVE_VIRGL_RESOURCE_BLOB
->>           if (virtio_gpu_virgl_enabled(g->parent_obj.conf)) {
->> -            error_setg(errp, "blobs and virgl are not compatible (yet)");
->> +            error_setg(errp, "Linked virglrenderer does not support blob resources");
->>               return;
->>           }
->> +#endif
->>       }
->>       if (!virtio_gpu_base_device_realize(qdev,
->> diff --git a/meson.build b/meson.build
->> index ea52ef1b9c..629407128e 100644
->> --- a/meson.build
->> +++ b/meson.build
->> @@ -1054,6 +1054,10 @@ if not get_option('virglrenderer').auto() or have_system or have_vhost_user_gpu
->>                            cc.has_function('virgl_renderer_context_create_with_flags',
->>                                            prefix: '#include <virglrenderer.h>',
->>                                            dependencies: virgl))
->> +    config_host_data.set('HAVE_VIRGL_RESOURCE_BLOB',
->> +                         cc.has_function('virgl_renderer_resource_create_blob',
->> +                                         prefix: '#include <virglrenderer.h>',
->> +                                         dependencies: virgl))
->>     endif
->>   endif
->>   rutabaga = not_found
-> 
+Max Chou (2):
+      target/riscv: Add vill check for whole vector register move instructions
+      target/riscv: The whole vector register move instructions depend on vsew
+
+Rob Bradford (1):
+      disas/riscv: Add amocas.[w,d,q] instructions
+
+Sunil V L (13):
+      hw/arm/virt-acpi-build.c: Migrate fw_cfg creation to common location
+      hw/arm/virt-acpi-build.c: Migrate virtio creation to common location
+      hw/i386/acpi-microvm.c: Use common function to add virtio in DSDT
+      hw/riscv: virt: Make few IMSIC macros and functions public
+      hw/riscv/virt-acpi-build.c: Add AIA support in RINTC
+      hw/riscv/virt-acpi-build.c: Add IMSIC in the MADT
+      hw/riscv/virt-acpi-build.c: Add APLIC in the MADT
+      hw/riscv/virt-acpi-build.c: Add CMO information in RHCT
+      hw/riscv/virt-acpi-build.c: Add MMU node in RHCT
+      hw/pci-host/gpex: Define properties for MMIO ranges
+      hw/riscv/virt: Update GPEX MMIO related properties
+      hw/riscv/virt-acpi-build.c: Add IO controllers and devices
+      hw/riscv/virt-acpi-build.c: Add PLIC in MADT
+
+Weiwei Li (1):
+      target/riscv: Add support for Zacas extension
+
+Yong-Xuan Wang (2):
+      hw/riscv/virt.c: fix the interrupts-extended property format of PLIC
+      target/riscv/kvm.c: remove group setting of KVM AIA if the machine only has 1 socket
+
+ docs/system/riscv/sifive_u.rst                 |  33 +-
+ docs/system/riscv/virt.rst                     |   5 +
+ include/hw/nvram/fw_cfg_acpi.h                 |  15 +
+ include/hw/pci-host/gpex.h                     |  28 +-
+ include/hw/riscv/virt.h                        |  26 ++
+ include/hw/virtio/virtio-acpi.h                |  16 +
+ include/standard-headers/drm/drm_fourcc.h      |   2 +
+ include/standard-headers/linux/pci_regs.h      |  24 +-
+ include/standard-headers/linux/vhost_types.h   |   7 +
+ include/standard-headers/linux/virtio_config.h |   5 +
+ include/standard-headers/linux/virtio_pci.h    |  11 +
+ linux-headers/asm-arm64/kvm.h                  |  32 ++
+ linux-headers/asm-generic/unistd.h             |  14 +-
+ linux-headers/asm-loongarch/bitsperlong.h      |   1 +
+ linux-headers/asm-loongarch/kvm.h              | 108 ++++++
+ linux-headers/asm-loongarch/mman.h             |   1 +
+ linux-headers/asm-loongarch/unistd.h           |   5 +
+ linux-headers/asm-mips/unistd_n32.h            |   4 +
+ linux-headers/asm-mips/unistd_n64.h            |   4 +
+ linux-headers/asm-mips/unistd_o32.h            |   4 +
+ linux-headers/asm-powerpc/unistd_32.h          |   4 +
+ linux-headers/asm-powerpc/unistd_64.h          |   4 +
+ linux-headers/asm-riscv/kvm.h                  |  12 +
+ linux-headers/asm-riscv/ptrace.h               | 132 +++++++
+ linux-headers/asm-s390/unistd_32.h             |   4 +
+ linux-headers/asm-s390/unistd_64.h             |   4 +
+ linux-headers/asm-x86/unistd_32.h              |   4 +
+ linux-headers/asm-x86/unistd_64.h              |   3 +
+ linux-headers/asm-x86/unistd_x32.h             |   3 +
+ linux-headers/linux/iommufd.h                  | 180 +++++++++-
+ linux-headers/linux/kvm.h                      |  11 +
+ linux-headers/linux/psp-sev.h                  |   1 +
+ linux-headers/linux/stddef.h                   |   9 +-
+ linux-headers/linux/userfaultfd.h              |   9 +-
+ linux-headers/linux/vfio.h                     |  47 ++-
+ linux-headers/linux/vhost.h                    |   8 +
+ target/riscv/cpu-qom.h                         |   5 +
+ target/riscv/cpu.h                             |  18 +
+ target/riscv/cpu_cfg.h                         |   5 +
+ target/riscv/pmp.h                             |   8 +-
+ target/riscv/insn32.decode                     |   6 +
+ disas/riscv.c                                  |   9 +
+ hw/arm/virt-acpi-build.c                       |  51 +--
+ hw/i386/acpi-microvm.c                         |  15 +-
+ hw/nvram/fw_cfg-acpi.c                         |  23 ++
+ hw/pci-host/gpex-acpi.c                        |  13 +
+ hw/pci-host/gpex.c                             |  12 +
+ hw/riscv/virt-acpi-build.c                     | 323 ++++++++++++++++--
+ hw/riscv/virt.c                                | 124 +++----
+ hw/virtio/virtio-acpi.c                        |  33 ++
+ target/riscv/cpu.c                             | 223 ++++++++++--
+ target/riscv/cpu_helper.c                      |   4 +-
+ target/riscv/csr.c                             |  10 +-
+ target/riscv/kvm/kvm-cpu.c                     | 250 ++++++++++----
+ target/riscv/pmp.c                             |  28 +-
+ target/riscv/riscv-qmp-cmds.c                  |  44 ++-
+ target/riscv/tcg/tcg-cpu.c                     | 455 ++++++++++++++++++++++---
+ target/riscv/translate.c                       |   1 +
+ target/riscv/insn_trans/trans_rvv.c.inc        |   8 +-
+ target/riscv/insn_trans/trans_rvzacas.c.inc    | 150 ++++++++
+ target/riscv/insn_trans/trans_xthead.c.inc     |   2 +-
+ hw/nvram/meson.build                           |   1 +
+ hw/riscv/Kconfig                               |   1 +
+ hw/virtio/meson.build                          |   1 +
+ pc-bios/opensbi-riscv32-generic-fw_dynamic.bin | Bin 135376 -> 267416 bytes
+ pc-bios/opensbi-riscv64-generic-fw_dynamic.bin | Bin 138368 -> 270808 bytes
+ roms/opensbi                                   |   2 +-
+ scripts/update-linux-headers.sh                |   3 +
+ 68 files changed, 2248 insertions(+), 360 deletions(-)
+ create mode 100644 include/hw/nvram/fw_cfg_acpi.h
+ create mode 100644 include/hw/virtio/virtio-acpi.h
+ create mode 100644 linux-headers/asm-loongarch/bitsperlong.h
+ create mode 100644 linux-headers/asm-loongarch/kvm.h
+ create mode 100644 linux-headers/asm-loongarch/mman.h
+ create mode 100644 linux-headers/asm-loongarch/unistd.h
+ create mode 100644 linux-headers/asm-riscv/ptrace.h
+ create mode 100644 hw/nvram/fw_cfg-acpi.c
+ create mode 100644 hw/virtio/virtio-acpi.c
+ create mode 100644 target/riscv/insn_trans/trans_rvzacas.c.inc
 
