@@ -2,89 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94BF5829278
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 03:38:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D07EF82927E
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 03:48:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNOT6-0003rZ-Nr; Tue, 09 Jan 2024 21:37:24 -0500
+	id 1rNOc6-0000Qp-Sf; Tue, 09 Jan 2024 21:46:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNOT4-0003rR-VL
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 21:37:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNOT3-0002bu-1g
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 21:37:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704854239;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LVqZ/21nh+G/2hdutxQ7/ykcyTClGz0BUHcHya4id+c=;
- b=InYHkzg4vYZfvvB/zTHd3O8e+0PnwAgnjzNQ08dT52LC1v9jC2TbnaaX4UupmJwo/8c6iB
- Ba+53jladBOooSqeqzhUaAEdKWc8efuuB7b6UBtxoMyJ5XGEU7BkWVug7eBIbkYMQ/gOUp
- ug/vmRZzD1A4yet96Ssd7acdYsjL4yU=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661-eB0fGsd6Plqvmk5oGrbkAA-1; Tue, 09 Jan 2024 21:37:16 -0500
-X-MC-Unique: eB0fGsd6Plqvmk5oGrbkAA-1
-Received: by mail-pf1-f199.google.com with SMTP id
- d2e1a72fcca58-6d9bf77a474so1164162b3a.0
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 18:37:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704854235; x=1705459035;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LVqZ/21nh+G/2hdutxQ7/ykcyTClGz0BUHcHya4id+c=;
- b=OD42W8l8Hh6S93rZV87j0fE0gjBMayETICuCranz/hkpggSdls01FsIM65/PshkF/a
- afbydgb3VF85bU4di9wwM96+25SV90z814OMXJ24vHHnMG7RztnhfSP5xhk6Dki3SVdi
- DbAgIfSTlQ/HUS8+SxDMCd3JEJyZPckAzI6WmO13ocyPFUj9R2U9WfWeuUeydleFk+nu
- faWCzO6LBdxX5V2EwBaRct1bfq+1eCCtaOO9H/X2qIwed5u7MLw8oG+Pe+CgvJEGB43U
- apb7dsMu1NFyI3RKm2YlMipJgI5r7tAWggoDYwSuWq7rnhq5yLMQsVORSkdZCEAEv54h
- ngtQ==
-X-Gm-Message-State: AOJu0YwxSsProVrhEcWWmlSc9tK0mHI188AVuRtlFtzJfIp0TX77Hrl7
- cjnrb+WB+kuwHvNn/62RiS5urwECahS5r4kc5Ns/4ofhuVWr82hs3K/hxTI99dO6lOdxbT7A0BN
- odmF1mwHJRH2i2JUPbfLrtGU=
-X-Received: by 2002:a05:6a00:887:b0:6da:83a2:1d9a with SMTP id
- q7-20020a056a00088700b006da83a21d9amr936425pfj.1.1704854235281; 
- Tue, 09 Jan 2024 18:37:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHt/Y4xSNY+5UCLfQ0G4cV2CtaAg0Zuru8rZ0TuMmGgn967CVnevrj+62CvgkUxixl3/qdyhQ==
-X-Received: by 2002:a05:6a00:887:b0:6da:83a2:1d9a with SMTP id
- q7-20020a056a00088700b006da83a21d9amr936409pfj.1.1704854234954; 
- Tue, 09 Jan 2024 18:37:14 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- e8-20020a056a0000c800b006d9ecb8e956sm2407713pfj.173.2024.01.09.18.37.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jan 2024 18:37:14 -0800 (PST)
-Date: Wed, 10 Jan 2024 10:37:07 +0800
-From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Bandan Das <bdas@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 00/10] docs/migration: Reorganize migration documentations
-Message-ID: <ZZ4C08Jrb-76WHW9@x1n>
-References: <20240109064628.595453-1-peterx@redhat.com> <ZZ0kpnT741chs1np@x1n>
- <1644d352-7ced-4ddc-90a8-8190fe863e87@redhat.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rNOc3-0000Ne-Fq
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 21:46:39 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rNObv-0007bE-P0
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 21:46:39 -0500
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8CxbbsBBZ5lCbUDAA--.3229S3;
+ Wed, 10 Jan 2024 10:46:25 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Cxid3+BJ5lDg4KAA--.26792S3; 
+ Wed, 10 Jan 2024 10:46:24 +0800 (CST)
+Subject: Re: [PATCH v4 0/9] Add loongarch kvm accel support
+To: Tianrui Zhao <zhaotianrui@loongson.cn>, qemu-devel@nongnu.org
+Cc: maobibo@loongson.cn, mst@redhat.com, cohuck@redhat.com,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, richard.henderson@linaro.org,
+ peter.maydell@linaro.org, yangxiaojuan@loongson.cn
+References: <20240105075804.1228596-1-zhaotianrui@loongson.cn>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <a51860ec-26f7-6567-bee5-86b03afb9dad@loongson.cn>
+Date: Wed, 10 Jan 2024 10:46:22 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <20240105075804.1228596-1-zhaotianrui@loongson.cn>
+Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1644d352-7ced-4ddc-90a8-8190fe863e87@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Cxid3+BJ5lDg4KAA--.26792S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3Wr45Ww1ruF1rWF4rtw4UWrX_yoW7Kw17p3
+ 47Zr1DGrs8JrZrJF1kZasxXr1DXF4xGFsF9a4Sq3s2k3yavry8Z3s293srWFWqy347GFy0
+ qF1fAw1UuF1UZ3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GF
+ ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UN
+ vtZUUUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-3.045, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,67 +83,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 09, 2024 at 02:21:26PM +0100, CÃ©dric Le Goater wrote:
-> 
-> > A few things I'd like to mention alongside, because it's documentation
-> > relevant too, and I'd like to collect if there's any comment.
-> > 
-> > I just mostly rewrote two wiki pages completely:
-> > 
-> >    https://wiki.qemu.org/ToDo/LiveMigration
-> >    https://wiki.qemu.org/Features/Migration>
-> > I merged all the TODO items from Features/Migration into the ToDo page,
-> > while kept the 2nd page mostly clean, just to route to other places.
-> > 
-> > I had a plan to make:
-> > 
-> >    https://qemu.org/docs/master
-> > 
-> > The solo place for migration documentations (aka, QEMU repo the source of
-> > truth for migration docs, as it's peroidically built there), making all the
-> > rest places pointing to that, as I already did in the wiki page.  While I
-> > kept all the TODOs on the wiki page (not Features/Migration, but
-> > ToDo/LiveMigration).> Fabiano / anyone: feel free to add / update /
-> > correct any entries there
-> > where applicable.  Also if there's any thoughts on above feel free to let
-> > me know too.
-> 
-> The Wiki has some limited value, the changelog for instance, but the rest
-> is a bag of orphan and obsolete pages doomed to bit-rot since it is slowly
-> being replaced by the in-tree documentation.
-> 
-> The info in the Features/Migration page is redundant with what we have
-> in-tree, a part from the CREDITS. The TODO list could be some file under :
-> 
-> 	https://qemu.org/docs/master/devel/migration
-> 
-> It would be easier to find and it would keep the Wiki to a strict minimum.
+ÔÚ 2024/1/5 ÏÂÎç3:57, Tianrui Zhao Ð´µÀ:
+> The linux headers in this patch synchronized from linux kernel
+> v6.7.0-rc8, and the loongarch kvm part of this patch series
+> based on the header files. And the linux kernel has added the
+> loongarch kvm support in master branch.
+>
+> This series add loongarch kvm support, mainly implement
+> some interfaces used by kvm, such as kvm_arch_get/set_regs,
+> kvm_arch_handle_exit, kvm_loongarch_set_interrupt, etc.
+>
+> Currently, we are able to boot LoongArch KVM Linux Guests.
+> In loongarch VM, mmio devices and iocsr devices are emulated
+> in user space such as APIC, IPI, pci devices, etc, other
+> hardwares such as MMU, timer and csr are emulated in kernel.
+>
+> The running environment of LoongArch virt machine:
+> 1. Get the Linux KVM environment of LoongArch in Linux mainline.
+>     make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu- loongson3_defconfig
+>     make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu-
+> 2. Get the qemu source: https://github.com/loongson/qemu
+>     git checkout kvm-loongarch
+>     ./configure --target-list="loongarch64-softmmu"  --enable-kvm
+>     make
+> 3. Get uefi bios of LoongArch virt machine:
+>     Link: https://github.com/tianocore/edk2-platforms/tree/master/Platform/Loongson/LoongArchQemuPkg#readme
+> 4. Also you can access the binary files we have already built:
+>     https://github.com/yangxiaojuan-loongson/qemu-binary
+>
+> The command to boot loongarch virt machine:
+>     $ qemu-system-loongarch64 -machine virt -m 4G -cpu la464 \
+>     -smp 1 -bios QEMU_EFI.fd -kernel vmlinuz.efi -initrd ramdisk \
+>     -serial stdio   -monitor telnet:localhost:4495,server,nowait \
+>     -append "root=/dev/ram rdinit=/sbin/init console=ttyS0,115200" \
+>     --nographic
+>
+> Changes for v4:
+> 1. Synchronize linux headers from linux v6.7.0-rc8.
+> 2. Move kvm.c and kvm_loongarch.h into target/loongarch/kvm/
+>     directory.
+> 3. Add "#ifndef CONFIG_USER_ONLY" before loongarch_cpu_do_interrupt
+>     to fix compiling issue.
+> 4. Remove "#ifdef CONFIG_TCG" before "#include "exec/cpu_ldst.h""
+>     in fpu_helper.c, As it has been changed in other patches.
+>
+> Changes for v3:
+> 1. Synchronize linux headers from linux v6.7.0-rc7.
+> 2. Fix compiling error when config enable-kvm and disable-tcg
+> at one time.
+>
+> Changes for v2:
+> 1. Synchronize linux headers from linux v6.7.0-rc6.
+> 2. Remove the stub function: kvm_loongarch_set_interrupt, as kvm_enabled
+> 3. Move the kvm function such as kvm_arch_reset_vcpu from cpu.h to
+> loongarch_kvm.h, and supplement "#include <cpu.h>" in loongarch_kvm.h.
+>
+> Changes for v1:
+> 1. Synchronous KVM headers about LoongArch KVM form linux kernel,
+> as the LoongArch KVM patch series have been accepted by linux kernel.
+> 2. Remove the KVM_GET/SET_ONE_UREG64 macro in target/loongarch, and
+> use the common interface kvm_get/set_one_reg to replace it.
+> 3. Resolve the compiling errors when LoongArch is built by other archs.
+>
+> Tianrui Zhao (9):
+>    linux-headers: Synchronize linux headers from linux v6.7.0-rc8
+>    target/loongarch: Define some kvm_arch interfaces
+>    target/loongarch: Supplement vcpu env initial when vcpu reset
+>    target/loongarch: Implement kvm get/set registers
+>    target/loongarch: Implement kvm_arch_init function
+>    target/loongarch: Implement kvm_arch_init_vcpu
+>    target/loongarch: Implement kvm_arch_handle_exit
+>    target/loongarch: Implement set vcpu intr for kvm
+>    target/loongarch: Add loongarch kvm into meson build
+>
+>   include/standard-headers/drm/drm_fourcc.h     |   2 +
+>   include/standard-headers/linux/fuse.h         |  10 +-
+>   include/standard-headers/linux/pci_regs.h     |  24 +-
+>   include/standard-headers/linux/vhost_types.h  |   7 +
+>   .../standard-headers/linux/virtio_config.h    |   5 +
+>   include/standard-headers/linux/virtio_pci.h   |  11 +
+>   linux-headers/asm-arm64/kvm.h                 |  32 +
+>   linux-headers/asm-generic/unistd.h            |  14 +-
+>   linux-headers/asm-loongarch/bitsperlong.h     |   1 +
+>   linux-headers/asm-loongarch/kvm.h             | 108 +++
+>   linux-headers/asm-loongarch/mman.h            |   1 +
+>   linux-headers/asm-loongarch/unistd.h          |   5 +
+>   linux-headers/asm-mips/unistd_n32.h           |   4 +
+>   linux-headers/asm-mips/unistd_n64.h           |   4 +
+>   linux-headers/asm-mips/unistd_o32.h           |   4 +
+>   linux-headers/asm-powerpc/unistd_32.h         |   4 +
+>   linux-headers/asm-powerpc/unistd_64.h         |   4 +
+>   linux-headers/asm-riscv/kvm.h                 |  12 +
+>   linux-headers/asm-s390/unistd_32.h            |   4 +
+>   linux-headers/asm-s390/unistd_64.h            |   4 +
+>   linux-headers/asm-x86/unistd_32.h             |   4 +
+>   linux-headers/asm-x86/unistd_64.h             |   3 +
+>   linux-headers/asm-x86/unistd_x32.h            |   3 +
+>   linux-headers/linux/iommufd.h                 | 180 +++-
+>   linux-headers/linux/kvm.h                     |  11 +
+>   linux-headers/linux/psp-sev.h                 |   1 +
+>   linux-headers/linux/stddef.h                  |   9 +-
+>   linux-headers/linux/userfaultfd.h             |   9 +-
+>   linux-headers/linux/vfio.h                    |  47 +-
+>   linux-headers/linux/vhost.h                   |   8 +
+>   meson.build                                   |   3 +
+>   target/loongarch/cpu.c                        |  39 +-
+>   target/loongarch/cpu.h                        |   5 +-
+>   target/loongarch/internals.h                  |   5 +-
+>   target/loongarch/kvm/kvm.c                    | 768 ++++++++++++++++++
+>   target/loongarch/kvm/kvm_loongarch.h          |  16 +
+>   target/loongarch/kvm/meson.build              |   1 +
+>   target/loongarch/meson.build                  |   1 +
+>   target/loongarch/trace-events                 |  15 +
+>   target/loongarch/trace.h                      |   1 +
+>   40 files changed, 1348 insertions(+), 41 deletions(-)
+>   create mode 100644 linux-headers/asm-loongarch/bitsperlong.h
+>   create mode 100644 linux-headers/asm-loongarch/kvm.h
+>   create mode 100644 linux-headers/asm-loongarch/mman.h
+>   create mode 100644 linux-headers/asm-loongarch/unistd.h
+>   create mode 100644 target/loongarch/kvm/kvm.c
+>   create mode 100644 target/loongarch/kvm/kvm_loongarch.h
+>   create mode 100644 target/loongarch/kvm/meson.build
+>   create mode 100644 target/loongarch/trace-events
+>   create mode 100644 target/loongarch/trace.h
+>
+Applied to loongarch-next.
 
-Thanks for the suggestions.  I agree that we should minimize the wiki use,
-especially on docs.  It'll be nice we use a solo source of truth for the
-docs, always accessable via qemu.org/docs, and also makes it easier for us
-to ask for docs altogether as patches when new features are merged.
-
-I see that most of the ToDos for the other part of qemus still use the wiki
-page, even though they're indeed mostly outdated just like the migration
-ToDo before I updated it.
-
-IMHO one thing that the wiki services well for ToDo is that it allows easy
-& frequent updates on the projects, without the need to require a review
-process like most of the patches being posted on the list.  The wiki page
-still maintains a diff, and IMHO that may not even be required, as a
-history record of a ToDo list may not help much in most cases.
-
-The other issue regarding ToDo is that, some of the ToDo idea (or when
-someone frequently updates with details on a project of an ongoing item)
-may not be mature enough to be mentioned in an official documents. So even
-if some can be considered to be put together with the qemu repo, there may
-always be some that may not be suitable, then we will still need some place
-for those.  I still don't know what's the ideal way to do this.
-
-Thanks,
-
--- 
-Peter Xu
+Thanks.
+Song Gao
 
 
