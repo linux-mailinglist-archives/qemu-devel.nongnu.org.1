@@ -2,73 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A100829E6E
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 17:23:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4463829EB9
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 17:41:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNbLX-0002BK-KK; Wed, 10 Jan 2024 11:22:27 -0500
+	id 1rNbcj-0001EH-6E; Wed, 10 Jan 2024 11:40:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNbLW-0002Ad-6v
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 11:22:26 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1rNbcg-0001DZ-Lu
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 11:40:10 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNbLS-0005UY-IH
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 11:22:25 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-555f581aed9so5069827a12.3
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 08:22:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1rNbca-0007l9-DT
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 11:40:05 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40e586a62f7so7300415e9.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 08:40:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704903740; x=1705508540; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Oo54KFymR/TSXwQNyoX3TwFxxLpTGuKsOz/RqEI6Kjo=;
- b=jSyWzGf0TSC0MEDHZVdK160i93XPsZNLWxr8KXg/GFB2r8oFyPBJv+Xgwm7GtS3Hpq
- xT7Ko0tZN6+FFcE/ayVZDuMeYvZm9y5cX0VtiPNED9pL8Nx9+bslhkf20S91yXVpwZ7K
- BG6nftyM41UH+nO87PWkk+YzNfk6qCpYrDXDgxXAdKcnFCwaZyvySyIAjnR4sUSc73oC
- b5gnYa5sH3AmWLtYizmmNLMSKHr+QPaPINGa58VvCqW7TnM567QCHPAoW1ONGq4xQ5vI
- zltJb3j7/354BJ+Vo0ZCFH3QnIlcoKz9aoRGcE0o8OpuXLLERl+fow9XjCwz9lVHjMLn
- kXnQ==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1704904802; x=1705509602;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=fjRyselwmJTU8eOOdownlztREoNuiWTCNW2P76UG0N8=;
+ b=CTUQTq5Nybn1iGDukOpqRruDJybDEalt7dcks4h6vZVqZFpTRO458Ct0c+9nARmUTx
+ JZGY3VXvOU+92iomA3CigXnxU4I5icMvbsPRklCUFcwxfns7YWpkIr2NbebqQFKxHuER
+ Ji8/Z2x6va1J0j9noJXS/hkomtSYlFiaNcuD06ZxSOFQYUX7Gpk/CAAjKubf1nIFInGn
+ wEqT6ypdQSD9lVT+8wVylYPewVfxZWZ6hl6T3lPuDLtygIgL+CqUBCfWem0VXhhBiMvS
+ e0SKfH7DOk+eBbAtOBzI+aDqaZB9zWkibyT0KeGnVQHKAi76WJTU1nreLhaPS8xVyzeJ
+ zATw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704903740; x=1705508540;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1704904802; x=1705509602;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Oo54KFymR/TSXwQNyoX3TwFxxLpTGuKsOz/RqEI6Kjo=;
- b=L5mesEL/Qckzq/qGC629lI3XgFkwoM9oQjqTDvh7bIGnaYPNWruzSyVNlaI/qJvG63
- sTruFSk1hG9KBw7+hqOZcWPrqhTEtyb3le9190e82qTBTYmIwP7iDxrzvHI1flOf49pm
- 8SSTqwj93cFEAslpv+CAQXtf1zU33FGBcuGzcGv6HCd16RXpfG91z44KQjJD2+2N6yvu
- JB7BZI/WG8ViZfAPo9jLWZ95dA0qG4Jgc2mXgqV7/T6bZTwCtN4wjWAIaebn+0TBHtr1
- mAoiZR1/LeRHpHknBTZy2CuZZYT9CPWiRAvzFlTqazLyZAqFlBCsQ8k9zKfLEPC9zFaI
- xDjw==
-X-Gm-Message-State: AOJu0Yywop6LVZOdXfl4cRZePNJGz/7E2xacXzkDLZAMAo0oWDkUesYv
- QSKM4xW4kcDMCrAQiEzdNlvTNddrf2FWorrEeLSGjwwm/n692w==
-X-Google-Smtp-Source: AGHT+IFsnyKeIrw6xrNmqzrKbVVOTanF8vtyAJ/lApf0Jyfh4crzqBENn5sHQ60KteyZtxE6V25HTtxJsvWA8zJLW4k=
-X-Received: by 2002:a05:6402:22bc:b0:557:dc52:32e0 with SMTP id
- cx28-20020a05640222bc00b00557dc5232e0mr618720edb.24.1704903740421; Wed, 10
- Jan 2024 08:22:20 -0800 (PST)
+ bh=fjRyselwmJTU8eOOdownlztREoNuiWTCNW2P76UG0N8=;
+ b=Ek669e9yhZhB8a0U84Ajk/3A+AuRck8mhj+sUQZSN8zW4GmhIX/9Wn2SLxV3PiHpZU
+ acar4KMaaHxSVD2nbF0HKOSfJaDtZzsOrUEJyclSgHGQLOsDrM1IDCgZlTktqW1cazpG
+ pGzupWZeJO/IdtZ5+s87i/bsUyhd869hiREOads4/edpn+yATHpuY453xDYB1K+qECaz
+ FkDDTluh5aHG9FRwaE4RQjz+D1s8MtodVPcidZ3R9t0MdvegTPL9IYxpYx0bD/3IRzOg
+ jhUZSEC4W3xwscLPq4+/Gqw1hFAS8ER0j8CtGMYhj9hYltUAHRB9shmr9a/dBg+Kpe6t
+ d8tg==
+X-Gm-Message-State: AOJu0Yz0dyAyGfpn/SuM0BqyA9O9PvGB2MFpf5XyjLt/DP8OJ+w+WlQ+
+ hpWyJkuV3mREW4z++viWu8gbC3j9LHBT35DQFRLbZ1ibWriw1Q==
+X-Google-Smtp-Source: AGHT+IEZMM7kB3WUkx5dx2iz/SbbyEYpmTA6DvEDufkvbiPSUCJiS1/eKN8GfgYyV89jVfif41JKgA==
+X-Received: by 2002:a05:600c:4e86:b0:40e:55b0:64df with SMTP id
+ f6-20020a05600c4e8600b0040e55b064dfmr808239wmq.101.1704904802376; 
+ Wed, 10 Jan 2024 08:40:02 -0800 (PST)
+Received: from rockhopper.ba.rivosinc.com (214.11.169.217.in-addr.arpa.
+ [217.169.11.214]) by smtp.gmail.com with ESMTPSA id
+ fs23-20020a05600c3f9700b0040c11fbe581sm2805970wmb.27.2024.01.10.08.40.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 10 Jan 2024 08:40:02 -0800 (PST)
+From: Rob Bradford <rbradford@rivosinc.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ Rob Bradford <rbradford@rivosinc.com>
+Subject: [PATCH] target/riscv: Check for 'A' extension on all atomic
+ instructions
+Date: Wed, 10 Jan 2024 16:39:59 +0000
+Message-ID: <20240110163959.31291-1-rbradford@rivosinc.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20240110085733.1607526-1-alistair.francis@wdc.com>
-In-Reply-To: <20240110085733.1607526-1-alistair.francis@wdc.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 10 Jan 2024 16:21:47 +0000
-Message-ID: <CAFEAcA9b59b91b=FO4Yg+or9PwFMRe-UvCNT77ENtJOiSDe2EA@mail.gmail.com>
-Subject: Re: [PULL 00/65] riscv-to-apply queue
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,50 +93,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 10 Jan 2024 at 08:58, Alistair Francis <alistair23@gmail.com> wrote:
->
-> The following changes since commit 9468484fe904ab4691de6d9c34616667f377ceac:
->
->   Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2024-01-09 10:32:23 +0000)
->
-> are available in the Git repository at:
->
->   https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20240110
->
-> for you to fetch changes up to 71b76da33a1558bcd59100188f5753737ef6fa21:
->
->   target/riscv: Ensure mideleg is set correctly on reset (2024-01-10 18:47:47 +1000)
->
-> ----------------------------------------------------------------
-> RISC-V PR for 9.0
->
-> * Make vector whole-register move (vmv) depend on vtype register
-> * Fix th.dcache.cval1 priviledge check
-> * Don't allow write mstatus_vs without RVV
-> * Use hwaddr instead of target_ulong for RV32
-> * Fix machine IDs QOM getters\
-> * Fix KVM reg id sizes
-> * ACPI: Enable AIA, PLIC and update RHCT
-> * Fix the interrupts-extended property format of PLIC
-> * Add support for Zacas extension
-> * Add amocas.[w,d,q] instructions
-> * Document acpi parameter of virt machine
-> * RVA22 profiles support
-> * Remove group setting of KVM AIA if the machine only has 1 socket
-> * Add RVV CSRs to KVM
-> * sifive_u: Update S-mode U-Boot image build instructions
-> * Upgrade OpenSBI from v1.3.1 to v1.4
-> * pmp: Ignore writes when RW=01 and MML=0
-> * Assert that the CSR numbers will be correct
-> * Don't adjust vscause for exceptions
-> * Ensure mideleg is set correctly on reset
->
+Add requirement that 'A' is enabled for all atomic instructions that
+lack the check. This makes the 64-bit versions consistent with the
+32-bit versions in the same file.
 
+Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+---
+ target/riscv/insn_trans/trans_rva.c.inc | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Applied, thanks.
+diff --git a/target/riscv/insn_trans/trans_rva.c.inc b/target/riscv/insn_trans/trans_rva.c.inc
+index 5f194a447b..f0368de3e4 100644
+--- a/target/riscv/insn_trans/trans_rva.c.inc
++++ b/target/riscv/insn_trans/trans_rva.c.inc
+@@ -163,65 +163,76 @@ static bool trans_amomaxu_w(DisasContext *ctx, arg_amomaxu_w *a)
+ static bool trans_lr_d(DisasContext *ctx, arg_lr_d *a)
+ {
+     REQUIRE_64BIT(ctx);
++    REQUIRE_EXT(ctx, RVA);
+     return gen_lr(ctx, a, MO_ALIGN | MO_TEUQ);
+ }
+ 
+ static bool trans_sc_d(DisasContext *ctx, arg_sc_d *a)
+ {
+     REQUIRE_64BIT(ctx);
++    REQUIRE_EXT(ctx, RVA);
+     return gen_sc(ctx, a, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amoswap_d(DisasContext *ctx, arg_amoswap_d *a)
+ {
+     REQUIRE_64BIT(ctx);
++    REQUIRE_EXT(ctx, RVA);
+     return gen_amo(ctx, a, &tcg_gen_atomic_xchg_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amoadd_d(DisasContext *ctx, arg_amoadd_d *a)
+ {
+     REQUIRE_64BIT(ctx);
++    REQUIRE_EXT(ctx, RVA);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_add_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amoxor_d(DisasContext *ctx, arg_amoxor_d *a)
+ {
+     REQUIRE_64BIT(ctx);
++    REQUIRE_EXT(ctx, RVA);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_xor_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amoand_d(DisasContext *ctx, arg_amoand_d *a)
+ {
+     REQUIRE_64BIT(ctx);
++    REQUIRE_EXT(ctx, RVA);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_and_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amoor_d(DisasContext *ctx, arg_amoor_d *a)
+ {
+     REQUIRE_64BIT(ctx);
++    REQUIRE_EXT(ctx, RVA);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_or_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amomin_d(DisasContext *ctx, arg_amomin_d *a)
+ {
+     REQUIRE_64BIT(ctx);
++    REQUIRE_EXT(ctx, RVA);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smin_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amomax_d(DisasContext *ctx, arg_amomax_d *a)
+ {
+     REQUIRE_64BIT(ctx);
++    REQUIRE_EXT(ctx, RVA);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smax_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amominu_d(DisasContext *ctx, arg_amominu_d *a)
+ {
+     REQUIRE_64BIT(ctx);
++    REQUIRE_EXT(ctx, RVA);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umin_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amomaxu_d(DisasContext *ctx, arg_amomaxu_d *a)
+ {
+     REQUIRE_64BIT(ctx);
++    REQUIRE_EXT(ctx, RVA);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umax_tl, (MO_ALIGN | MO_TEUQ));
+ }
+-- 
+2.43.0
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
-
--- PMM
 
