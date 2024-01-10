@@ -2,68 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E55829894
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 12:17:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D59829902
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 12:27:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNWZp-0002a8-7D; Wed, 10 Jan 2024 06:16:53 -0500
+	id 1rNWj7-0006Lk-D0; Wed, 10 Jan 2024 06:26:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rNWZm-0002ZF-T9
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 06:16:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1rNWj0-0006KZ-QJ
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 06:26:23 -0500
+Received: from mx20.baidu.com ([111.202.115.85] helo=baidu.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rNWZl-0007Ss-Ep
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 06:16:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704885408;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=MPi5QLbvAJvYm5CDS4bDTSfdB/ICs0cpDwBl7iy+UwE=;
- b=V8GSkxVk0wB7oyfoKYfQHA5FhyJ2yv0Vs4y5x2GlUvqPFhSOP27pbQs+Q9soW+HYoLLc/2
- s1IRUdO2ngpfrU9lNkOxZdSTFe6fuJ1AAiC5Nl2Mcjj9tRxli+0TG06rW0UT9IU95jeWY4
- 2huvnwwjMCe1Ft6fDE+NAdbZOvo1334=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-542-ZNRaZ23oMD-lun-7llpmlw-1; Wed, 10 Jan 2024 06:16:47 -0500
-X-MC-Unique: ZNRaZ23oMD-lun-7llpmlw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0EFE4185A780;
- Wed, 10 Jan 2024 11:16:47 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.108])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E0A995012;
- Wed, 10 Jan 2024 11:16:45 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- jiangyegen <jiangyegen@huawei.com>
-Subject: [PATCH] chardev: close QIOChannel before unref'ing
-Date: Wed, 10 Jan 2024 11:16:44 +0000
-Message-ID: <20240110111644.28294-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1rNWiw-0003uA-24
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 06:26:22 -0500
+To: "Gao,Shiyuan" <gaoshiyuan@baidu.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "mtosatti@redhat.com"
+ <mtosatti@redhat.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH] kvm: limit the maximum CPUID.0xA.edx[0..4] to 3
+Thread-Topic: [PATCH] kvm: limit the maximum CPUID.0xA.edx[0..4] to 3
+Thread-Index: AQHZlSVPiltb1wEK5Ue4tpzTEkfwMrDTqtuAgACacYA=
+Date: Wed, 10 Jan 2024 11:26:03 +0000
+Message-ID: <35A93E08-3407-4815-A574-56BC5AFD0805@baidu.com>
+References: <20230602073857.96790-1-gaoshiyuan@baidu.com>
+ <20240110101317.46344-1-gaoshiyuan@baidu.com>
+In-Reply-To: <20240110101317.46344-1-gaoshiyuan@baidu.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.22.192.140]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <4F0368F29CB0274C8CB81DAB78E803FB@internal.baidu.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-FEAS-Client-IP: 172.31.51.58
+X-FE-Last-Public-Client-IP: 100.100.100.60
+X-FE-Policy-ID: 15:10:21:SYSTEM
+Received-SPF: pass client-ip=111.202.115.85; envelope-from=gaoshiyuan@baidu.com;
+ helo=baidu.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,40 +62,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  "Gao,Shiyuan" <gaoshiyuan@baidu.com>
+From:  "Gao,Shiyuan" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The chardev socket backend will unref the QIOChannel object while
-it is still potentially open. When using TLS there could be a
-pending TLS handshake taking place. If the channel is left open
-then when the TLS handshake callback runs, it can end up accessing
-free'd memory in the tcp_chr_tls_handshake method.
-
-Closing the QIOChannel will unregister any pending handshake
-source.
-
-Reported-by: jiangyegen <jiangyegen@huawei.com>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- chardev/char-socket.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/chardev/char-socket.c b/chardev/char-socket.c
-index 73947da188..7105753815 100644
---- a/chardev/char-socket.c
-+++ b/chardev/char-socket.c
-@@ -378,6 +378,10 @@ static void tcp_chr_free_connection(Chardev *chr)
-                                  char_socket_yank_iochannel,
-                                  QIO_CHANNEL(s->sioc));
-     }
-+
-+    if (s->ioc) {
-+        qio_channel_close(s->ioc, NULL);
-+    }
-     object_unref(OBJECT(s->sioc));
-     s->sioc = NULL;
-     object_unref(OBJECT(s->ioc));
--- 
-2.43.0
-
+PiBBbnlvbmUgaGFzIHN1Z2dlc3Rpb24/DQo+DQo+IFdoZW4gdGhlIGhvc3Qga2VybmVsIGJlZm9y
+ZSB0aGlzIGNvbW1pdCAyZThjZDdhM2I4MjggKCJrdm06IHg4NjogbGltaXQgdGhlIG1heGltdW0g
+bnVtYmVyIG9mIHZQTVUNCj4gZml4ZWQgY291bnRlcnMgdG8gMyIpIG9uIGljZWxha2UgbWljcm9h
+cmNoaXRlY3R1cmUgYW5kIG5ld2VyLCBleGVjdXRlIGNwdWlkIGluIHRoZSBHdWVzdDoNCj4NCj4g
+QXJjaGl0ZWN0dXJlIFBlcmZvcm1hbmNlIE1vbml0b3JpbmcgRmVhdHVyZXMgKDB4YS9lZHgpOg0K
+PiAgICAgbnVtYmVyIG9mIGZpeGVkIGNvdW50ZXJzICAgID0gMHg0ICg0KQ0KPg0KPiBUaGlzIGlz
+IG5vdCBpbmNvbnNpc3RlbnQgd2l0aCBudW1fYXJjaGl0ZWN0dXJhbF9wbXVfZml4ZWRfY291bnRl
+cnMgaW4gUUVNVS4NCg0KVGhpcyBpcyB0aGUgb3JnaW5hbCBwYXRjaC4NCg0Ka3ZtOiBsaW1pdCB0
+aGUgbWF4aW11bSBDUFVJRC4weEEuZWR4WzAuLjRdIHRvIDMNCg0KTm93LCB0aGUgQ1BVSUQuMHhB
+IGRlcGVuZHMgb24gdGhlIEtWTSByZXBvcnQuIFRoZSB2YWx1ZSBvZiBDUFVJRC4weEEuZWR4WzAu
+LjRdDQphbmQgbnVtX2FyY2hpdGVjdHVyYWxfcG11X2ZpeGVkX2NvdW50ZXJzIGFyZSBpbmNvbnNp
+c3RlbnQgd2hlbiB0aGUgaG9zdCBrZXJuZWwNCmJlZm9yZSB0aGlzIGNvbW1pdCAyZThjZDdhM2I4
+MjggKCJrdm06IHg4NjogbGltaXQgdGhlIG1heGltdW0gbnVtYmVyIG9mIHZQTVUNCmZpeGVkIGNv
+dW50ZXJzIHRvIDMiKSBvbiBpY2VsYWtlIG1pY3JvYXJjaGl0ZWN0dXJlLg0KDQpUaGlzIGFsc28g
+YnJlYWsgdGhlIGxpdmUtbWlncmF0aW9uIGJldHdlZW4gc291cmNlIGhvc3Qga2VybmVsIGJlZm9y
+ZSBjb21taXQNCjJlOGNkN2EzYjgyOCBhbmQgZGVzdCBob3N0IGtlcm5lbCBhZnRlciB0aGUgY29t
+bWl0IG9uIGljZWxha2UgbWljcm9hcmNoaXRlY3R1cmUuDQoNClNpZ25lZC1vZmYtYnk6IFNoaXl1
+YW4gR2FvIDxnYW9zaGl5dWFuQGJhaWR1LmNvbT4NCi0tLQ0KIHRhcmdldC9pMzg2L2t2bS9rdm0u
+YyB8IDEzICsrKysrKysrKysrLS0NCiAxIGZpbGUgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKSwg
+MiBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL3RhcmdldC9pMzg2L2t2bS9rdm0uYyBiL3Rh
+cmdldC9pMzg2L2t2bS9rdm0uYw0KaW5kZXggZGU1MzE4NDJmNi4uZTc3MTI5YjczNyAxMDA2NDQN
+Ci0tLSBhL3RhcmdldC9pMzg2L2t2bS9rdm0uYw0KKysrIGIvdGFyZ2V0L2kzODYva3ZtL2t2bS5j
+DQpAQCAtMTc2MSw3ICsxNzYxLDcgQEAgaW50IGt2bV9hcmNoX2luaXRfdmNwdShDUFVTdGF0ZSAq
+Y3MpDQoNCiAgICAgWDg2Q1BVICpjcHUgPSBYODZfQ1BVKGNzKTsNCiAgICAgQ1BVWDg2U3RhdGUg
+KmVudiA9ICZjcHUtPmVudjsNCi0gICAgdWludDMyX3QgbGltaXQsIGksIGosIGNwdWlkX2k7DQor
+ICAgIHVpbnQzMl90IGxpbWl0LCBpLCBqLCBjcHVpZF9pLCBjcHVpZF8weGE7DQogICAgIHVpbnQz
+Ml90IHVudXNlZDsNCiAgICAgc3RydWN0IGt2bV9jcHVpZF9lbnRyeTIgKmM7DQogICAgIHVpbnQz
+Ml90IHNpZ25hdHVyZVszXTsNCkBAIC0xNzczLDYgKzE3NzMsNyBAQCBpbnQga3ZtX2FyY2hfaW5p
+dF92Y3B1KENQVVN0YXRlICpjcykNCiAgICAgbWVtc2V0KCZjcHVpZF9kYXRhLCAwLCBzaXplb2Yo
+Y3B1aWRfZGF0YSkpOw0KDQogICAgIGNwdWlkX2kgPSAwOw0KKyAgICBjcHVpZF8weGEgPSAwOw0K
+DQogICAgIGhhc194c2F2ZTIgPSBrdm1fY2hlY2tfZXh0ZW5zaW9uKGNzLT5rdm1fc3RhdGUsIEtW
+TV9DQVBfWFNBVkUyKTsNCg0KQEAgLTIwNDUsNiArMjA0Niw5IEBAIGludCBrdm1fYXJjaF9pbml0
+X3ZjcHUoQ1BVU3RhdGUgKmNzKQ0KICAgICAgICAgICAgIGMtPmZ1bmN0aW9uID0gaTsNCiAgICAg
+ICAgICAgICBjLT5mbGFncyA9IDA7DQogICAgICAgICAgICAgY3B1X3g4Nl9jcHVpZChlbnYsIGks
+IDAsICZjLT5lYXgsICZjLT5lYngsICZjLT5lY3gsICZjLT5lZHgpOw0KKyAgICAgICAgICAgIGlm
+ICgweDBhID09IGkpIHsNCisgICAgICAgICAgICAgICAgY3B1aWRfMHhhID0gY3B1aWRfaSAtIDE7
+DQorICAgICAgICAgICAgfQ0KICAgICAgICAgICAgIGlmICghYy0+ZWF4ICYmICFjLT5lYnggJiYg
+IWMtPmVjeCAmJiAhYy0+ZWR4KSB7DQogICAgICAgICAgICAgICAgIC8qDQogICAgICAgICAgICAg
+ICAgICAqIEtWTSBhbHJlYWR5IHJldHVybnMgYWxsIHplcm9lcyBpZiBhIENQVUlEIGVudHJ5IGlz
+IG1pc3NpbmcsDQpAQCAtMjA1OSw3ICsyMDYzLDExIEBAIGludCBrdm1fYXJjaF9pbml0X3ZjcHUo
+Q1BVU3RhdGUgKmNzKQ0KICAgICBpZiAobGltaXQgPj0gMHgwYSkgew0KICAgICAgICAgdWludDMy
+X3QgZWF4LCBlZHg7DQoNCi0gICAgICAgIGNwdV94ODZfY3B1aWQoZW52LCAweDBhLCAwLCAmZWF4
+LCAmdW51c2VkLCAmdW51c2VkLCAmZWR4KTsNCisgICAgICAgIGFzc2VydChjcHVpZF8weGEgPj0g
+MHgwYSk7DQorDQorICAgICAgICBjID0gJmNwdWlkX2RhdGEuZW50cmllc1tjcHVpZF8weGFdOw0K
+KyAgICAgICAgZWF4ID0gYy0+ZWF4Ow0KKyAgICAgICAgZWR4ID0gYy0+ZWR4Ow0KDQogICAgICAg
+ICBoYXNfYXJjaGl0ZWN0dXJhbF9wbXVfdmVyc2lvbiA9IGVheCAmIDB4ZmY7DQogICAgICAgICBp
+ZiAoaGFzX2FyY2hpdGVjdHVyYWxfcG11X3ZlcnNpb24gPiAwKSB7DQpAQCAtMjA3OCw2ICsyMDg2
+LDcgQEAgaW50IGt2bV9hcmNoX2luaXRfdmNwdShDUFVTdGF0ZSAqY3MpDQoNCiAgICAgICAgICAg
+ICAgICAgaWYgKG51bV9hcmNoaXRlY3R1cmFsX3BtdV9maXhlZF9jb3VudGVycyA+IE1BWF9GSVhF
+RF9DT1VOVEVSUykgew0KICAgICAgICAgICAgICAgICAgICAgbnVtX2FyY2hpdGVjdHVyYWxfcG11
+X2ZpeGVkX2NvdW50ZXJzID0gTUFYX0ZJWEVEX0NPVU5URVJTOw0KKyAgICAgICAgICAgICAgICAg
+ICAgYy0+ZWR4ID0gKGVkeCAmIH4weDFmKSB8IG51bV9hcmNoaXRlY3R1cmFsX3BtdV9maXhlZF9j
+b3VudGVyczsNCiAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgIH0NCiAgICAgICAgIH0N
+Cg0K
 
