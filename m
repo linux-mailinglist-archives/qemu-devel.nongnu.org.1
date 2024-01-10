@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650CE8292E9
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 05:03:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 470C88292EA
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 05:03:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNPnQ-0003yP-5k; Tue, 09 Jan 2024 23:02:28 -0500
+	id 1rNPnP-0003xr-Tc; Tue, 09 Jan 2024 23:02:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
- id 1rNPnJ-0003wJ-57
+ id 1rNPnJ-0003wQ-8q
  for qemu-devel@nongnu.org; Tue, 09 Jan 2024 23:02:21 -0500
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
- id 1rNPnF-0007wH-Ku
+ id 1rNPnF-0007wV-Ld
  for qemu-devel@nongnu.org; Tue, 09 Jan 2024 23:02:20 -0500
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6d9ac0521c6so401808b3a.0
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 20:02:12 -0800 (PST)
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-5ce99e1d807so274473a12.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 20:02:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704859331; x=1705464131; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1704859334; x=1705464134; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=IaLEx32OdMoqBCO5aI8gHBzINiie6pzsOORbjY47syU=;
- b=AsWG3AQqbGyJ9feKTh6I81ibVN2ZMbB/3ToqxvTyT2AIZ95IiadbiW85+08zw28Zwc
- qVXd+NUn86P7+uEPpj3U2+29C1UcXnPoC7pPwCgXO34s9DbGANCPGwh/1OASFBZerlIl
- 43XRMoeyPTrge3Y69xmdfAfHaGMwUzoB245T3qpcgOgBE8D91lMx8JyC+xQeeXzx4lbY
- WUtyO7NT41g2aaeaVlzvb6o9zdL8GtTXpSOMmxC6dyZ+Z+2Jb4/t3GupsXPaKvfvVW2x
- 4P5l0bTbPiaTdbfMvBYWg0aICSMgKMVtvn5Y4PafqiKJs5PMfn2KnzHwI4KJydkd4WU/
- M5wQ==
+ :reply-to; bh=pZf1hyWR1m2tNHwFIBBr/aCRqXfcHRnMqh91SNDt++A=;
+ b=I0sO+jJ/Av/MMTufWhMhNDmpcYtiu3LxLxRLnd/b5nHSJDchScL4S1pTxvyQc945FK
+ nWJE31PnDqm89i04dme78xf6Vgz/UxN8klk/j7OMYJ0gGzQYW3cJjmqzJviWJR8DLO39
+ nzGh5c6Kj+4Kt8b81j1wG1waVkEOY/wxT8mPcSTqLjHNwIGhpZM6u79Bh36g+xCLzvhi
+ KmFUNU95J9rUBSjrafdzZOl/1peAwBKMJ/L8I2KOhtk6xRbLiz24UXxnRmeMhRpBeT8J
+ 4yciyu6gcFkf88RTIbmXg8z4SGD33N095jFY5RKf/m6I9iMmp39dI5wg4kUCoJmqMMFJ
+ B86Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704859331; x=1705464131;
+ d=1e100.net; s=20230601; t=1704859334; x=1705464134;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IaLEx32OdMoqBCO5aI8gHBzINiie6pzsOORbjY47syU=;
- b=gRWpTo9vitPRiIWOlp+gx/Y/tbA5PjIbpXo/TUbFasvmh1Ex1FwqLnW+pz7DkblpYd
- 9jbgN41h/WaZ9zB8q+708uoLZ7B8n67Mn+W54/iSfCXOjCgrDaXKBEtHXCl0gLrK/6O5
- fIRQuzt/p7NdSuFVKz7QVt7MJuro8CC/ySRtRg7QOz9O74+lNk5rFnN85LbN9I/tYtSw
- nN6jP5wtK3+yW0bBXv9Z81T/Ny9jqzPazHXvdW37xOVEFD4gQA74ZPIjjKOG9kC62hH7
- /d9A5nlXMIX0EksBXK9YGBYr4TurkCCLswDGucnnS51INJ+fTWdqOorcyuHzsecojYbo
- 3bfg==
-X-Gm-Message-State: AOJu0Yx9G4dWjzBni+ymFWXQwTW1E/0/q5m7QL/4GUcSOzdahWT4WhtZ
- pw/aEx3AF+5AfUq0+fExiv6d6lQCDlnvpYz5ETDqzW7/Od8=
-X-Google-Smtp-Source: AGHT+IET0+gGrULpaZMfIle4dA8foq6Jh/BacMhp5KHIbJsRMR4V2KMckXbgGMdiGwWjAF79pzDPLQ==
-X-Received: by 2002:a05:6a20:20c5:b0:199:bbca:35ee with SMTP id
- t5-20020a056a2020c500b00199bbca35eemr580708pza.0.1704859331343; 
- Tue, 09 Jan 2024 20:02:11 -0800 (PST)
+ bh=pZf1hyWR1m2tNHwFIBBr/aCRqXfcHRnMqh91SNDt++A=;
+ b=m31cEZ5Lk6te3HvyEBvGDAqrkFd+Pyo4sKVx/o4yg0OAfpxUmUWe7yUo/LtRFj8vhU
+ RXh44w3Yj2N73SWBdSgyv5HFJRqz8D2uwwxACB6LzyD6iJItb4IlLUuBg66XcbpifpW/
+ +uNxMrUAIqRnP5WZQMt9f4FdQO7lO/gxJflphZTergdv0tiEt4RD5hDiI9GeOJTiLwIt
+ OkigZa5Ly38N8dlZ9ODSaWZnu/H/wQFjjHxWG2WAFJTm1a3wL3vdXfE3oIovwu6PwA/1
+ X32GiWiuu2Xm7Bi9kTQ5d/7UQb0lZVs+oJRFmgZA5pqpxbZ5dU+eUg69CKPjC69sWQzK
+ pbdA==
+X-Gm-Message-State: AOJu0YyGA9qzheBrY3Z93BUhW4DxT1AHufR9r+mW2ZJV25GaSGVjbwoG
+ /ga1SPJTl5mpkcP6T8+mXfOKq4YqrOjPyJeuCvUYQg9Haq8=
+X-Google-Smtp-Source: AGHT+IGrTUQRxIWWr6AHH+0g6yp9b7ByJaIhbB27xF9gDUZZ+sLhBBM/awSGe4DAwapRDV2dCeBDKQ==
+X-Received: by 2002:a05:6a20:3d8b:b0:199:dad4:d821 with SMTP id
+ s11-20020a056a203d8b00b00199dad4d821mr811963pzi.1.1704859333653; 
+ Tue, 09 Jan 2024 20:02:13 -0800 (PST)
 Received: from brahaspati.localdomain ([152.58.210.84])
  by smtp.gmail.com with ESMTPSA id
- ca8-20020a17090af30800b0028cf4cb2c85sm313893pjb.40.2024.01.09.20.02.09
+ ca8-20020a17090af30800b0028cf4cb2c85sm313893pjb.40.2024.01.09.20.02.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jan 2024 20:02:11 -0800 (PST)
+ Tue, 09 Jan 2024 20:02:13 -0800 (PST)
 From: Himanshu Chauhan <hchauhan@ventanamicro.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 1/2] target/riscv: Export sdtrig as an extension and ISA string
-Date: Wed, 10 Jan 2024 09:32:02 +0530
-Message-Id: <20240110040203.1920924-2-hchauhan@ventanamicro.com>
+Subject: [PATCH 2/2] target/riscv: Raise an exception when sdtrig is turned off
+Date: Wed, 10 Jan 2024 09:32:03 +0530
+Message-Id: <20240110040203.1920924-3-hchauhan@ventanamicro.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240110040203.1920924-1-hchauhan@ventanamicro.com>
 References: <20240110040203.1920924-1-hchauhan@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=hchauhan@ventanamicro.com; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=hchauhan@ventanamicro.com; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,51 +90,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch makes the debug trigger (sdtrig) capability
-as an extension and exports it as an ISA string. The sdtrig
-extension may or may not be implemented in a system. The
-	-cpu rv64,sdtrig=<true/false>
-option can be used to dynamicaly turn sdtrig extension
-on or off.
+When sdtrig is turned off by "sdtrig=false" option, raise
+and illegal instruction exception on any read/write to
+sdtrig CSRs.
 
 Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
 ---
- target/riscv/cpu.c     | 2 ++
- target/riscv/cpu_cfg.h | 1 +
- 2 files changed, 3 insertions(+)
+ target/riscv/csr.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index b07a76ef6b..aaa2d4ff1d 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -143,6 +143,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zvkt, PRIV_VERSION_1_12_0, ext_zvkt),
-     ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
-     ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
-+    ISA_EXT_DATA_ENTRY(sdtrig, PRIV_VERSION_1_12_0, ext_sdtrig),
-     ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
-     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
-     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
-@@ -1306,6 +1307,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("zve64d", ext_zve64d, false),
-     MULTI_EXT_CFG_BOOL("sstc", ext_sstc, true),
- 
-+    MULTI_EXT_CFG_BOOL("sdtrig", ext_sdtrig, true),
-     MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
-     MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
-     MULTI_EXT_CFG_BOOL("svadu", ext_svadu, true),
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index f4605fb190..3d3acc7f90 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -113,6 +113,7 @@ struct RISCVCPUConfig {
-     bool ext_ssaia;
-     bool ext_sscofpmf;
-     bool ext_smepmp;
-+    bool ext_sdtrig;
-     bool rvv_ta_all_1s;
-     bool rvv_ma_all_1s;
- 
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index c50a33397c..b9ca016ef2 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -3854,6 +3854,10 @@ static RISCVException write_pmpaddr(CPURISCVState *env, int csrno,
+ static RISCVException read_tselect(CPURISCVState *env, int csrno,
+                                    target_ulong *val)
+ {
++    if (!riscv_cpu_cfg(env)->ext_sdtrig) {
++        return RISCV_EXCP_ILLEGAL_INST;
++    }
++
+     *val = tselect_csr_read(env);
+     return RISCV_EXCP_NONE;
+ }
+@@ -3861,6 +3865,10 @@ static RISCVException read_tselect(CPURISCVState *env, int csrno,
+ static RISCVException write_tselect(CPURISCVState *env, int csrno,
+                                     target_ulong val)
+ {
++    if (!riscv_cpu_cfg(env)->ext_sdtrig) {
++        return RISCV_EXCP_ILLEGAL_INST;
++    }
++
+     tselect_csr_write(env, val);
+     return RISCV_EXCP_NONE;
+ }
+@@ -3868,6 +3876,10 @@ static RISCVException write_tselect(CPURISCVState *env, int csrno,
+ static RISCVException read_tdata(CPURISCVState *env, int csrno,
+                                  target_ulong *val)
+ {
++    if (!riscv_cpu_cfg(env)->ext_sdtrig) {
++        return RISCV_EXCP_ILLEGAL_INST;
++    }
++
+     /* return 0 in tdata1 to end the trigger enumeration */
+     if (env->trigger_cur >= RV_MAX_TRIGGERS && csrno == CSR_TDATA1) {
+         *val = 0;
+@@ -3885,6 +3897,10 @@ static RISCVException read_tdata(CPURISCVState *env, int csrno,
+ static RISCVException write_tdata(CPURISCVState *env, int csrno,
+                                   target_ulong val)
+ {
++    if (!riscv_cpu_cfg(env)->ext_sdtrig) {
++        return RISCV_EXCP_ILLEGAL_INST;
++    }
++
+     if (!tdata_available(env, csrno - CSR_TDATA1)) {
+         return RISCV_EXCP_ILLEGAL_INST;
+     }
+@@ -3896,6 +3912,10 @@ static RISCVException write_tdata(CPURISCVState *env, int csrno,
+ static RISCVException read_tinfo(CPURISCVState *env, int csrno,
+                                  target_ulong *val)
+ {
++    if (!riscv_cpu_cfg(env)->ext_sdtrig) {
++        return RISCV_EXCP_ILLEGAL_INST;
++    }
++
+     *val = tinfo_csr_read(env);
+     return RISCV_EXCP_NONE;
+ }
 -- 
 2.34.1
 
