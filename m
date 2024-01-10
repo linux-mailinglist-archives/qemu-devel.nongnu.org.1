@@ -2,84 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E29B82A038
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 19:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C38F82A04B
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 19:32:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNdHL-0005m4-68; Wed, 10 Jan 2024 13:26:15 -0500
+	id 1rNdLz-0006xx-V4; Wed, 10 Jan 2024 13:31:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rNdHI-0005lV-3k
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 13:26:13 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rNdHG-0001bw-AP
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 13:26:11 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6d9bee259c5so2765436b3a.1
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 10:26:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704911169; x=1705515969; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vH57QS3GpCPRyTxw+0Wf6Wt6n6YVM5kYbKb5iKtrHCo=;
- b=ARJgxGuz4UBPKPJWVy6E5mvEDT12tQ9xj6sSV1NYn65Rzb1aqSO2Lka0+BkG97/A4c
- rPB/wUPdvVGvPieLSzQWaHwaCapfCGdBOx0YuRuhqk4Zooe8c3foWIf4RF1khWNeEMON
- O5b+AzMBOEhy7NltTFYITROACJhcYoSjz39csh3LtBNXeHUS+LibX0/AhSEnooJRq5Fa
- Qx8PKMt3/IVG+BBfxdc83yvRJ9oIE7Mjdt0beqJaeNg499AeuyPelnEvU4sNrshHgqDC
- wOte09q1btVcbD+8/kN7zZF39tIrSTi2OXRAoKXQmrtN9E5fsugDj7T5sQ8a2uCkfGFG
- GSUQ==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rNdLn-0006xY-B3
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 13:30:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rNdLh-0003Vs-3C
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 13:30:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704911443;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pKYRFmP7XGYaBLUjE91Eyy2PONpEIiZPfslTAhDCtdM=;
+ b=DbALvIcH36V49zAvkgSon//OI6/Gbg1cMoNjzrxsHnha5SxTF48G1fxFHufUVi4W7ZuUr2
+ UMpqJY7oas5VA0YQ/7CeUzpwo7lcxPKc4e37xdFYCg1yBkdMMgE37jPFv9eEIwdiM0iy7J
+ JvTQwzk8DAt1GBngB0nDTntN4MdlSoU=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-386-2aUZRv1ZMbCMM62EJDtDMA-1; Wed, 10 Jan 2024 13:30:42 -0500
+X-MC-Unique: 2aUZRv1ZMbCMM62EJDtDMA-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-781d8e14fd8so529833985a.3
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 10:30:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704911169; x=1705515969;
+ d=1e100.net; s=20230601; t=1704911440; x=1705516240;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vH57QS3GpCPRyTxw+0Wf6Wt6n6YVM5kYbKb5iKtrHCo=;
- b=POkOH0HjdE/JIRANV4NuxJEftQkrLXay9U8H6CVGMvIlmLG9RyRPNyEihxFx1clYNO
- A44IWvr6D4YZd2rublTh/IXGehwr/HlCUy8UdbCM4vvRhwQwwJ3mkMvfooFEL6USJSPR
- XQAb/b129uFDfQgaUEJ+tntMKN+MNEMdCPabjKggyTdMoUSnU7rsjrVtm+j3gSgx2dYW
- NckVC+2uq7AQyj2ie+9HDmMK9BLfe7XbjauawFIfz5eTu2a9GWJDT+ixadr8zNFfQE0c
- 4L7oHfJWLceK5tyWj1WvBsrffaEu/E3NYixI5cTyrBWXGiT1TIA6tmt3sWUPXtxu5dgF
- DOcw==
-X-Gm-Message-State: AOJu0Yx+sXnlU+pmnWlvhD9jWaHTwJqDTMy2odJ9sJa3KHKAAZTeWNh4
- bW4yMVRddkro/IUe8jJzf3z301Mh8Oa+zw==
-X-Google-Smtp-Source: AGHT+IEcjQGytGqP8jUKJiFx/4nmFGGyIDLNRJv6GYED+6PdzyOFJM88JrZ26BAuvtsOUiHa0PuLOQ==
-X-Received: by 2002:a05:6a00:38d8:b0:6db:1a5f:ad70 with SMTP id
- ey24-20020a056a0038d800b006db1a5fad70mr62810pfb.2.1704911168968; 
- Wed, 10 Jan 2024 10:26:08 -0800 (PST)
-Received: from [192.168.68.110] ([152.234.123.64])
+ bh=pKYRFmP7XGYaBLUjE91Eyy2PONpEIiZPfslTAhDCtdM=;
+ b=oYLoani9+j2w3LqzzwSNFgkVcsbr8nDPe5VYG0F+3HdqJ7UYKbmOAOIl9yo+/0/L4/
+ 92Of19xxJDT/gitPn6Zyuk4u9l/FPe5vj9oW2eo89heRE0J4s/IbVnVbui+RkpMYLxdN
+ v0Tq0umBkTG+ZQv92w9QdusVo8WXDGsmH1uxP0HpmolCE9E4QfIt8s9+kcpxkeDuusi9
+ 2u7rlEtKeVx0ZGVN77SGRZ8SGYRJfZ+XyBMvnPK9Er0BALU/OcUhBOvJk9WUZS1AmAP4
+ x4VTCjDMAUAV65zewOyWkRIz9QN1aF08fog4Uk923b+hnmSAw967eemThThQen8OM+a7
+ 3NRA==
+X-Gm-Message-State: AOJu0YxS3PieTYE3SIu490nVr3FkPCQEQ9zIjtMykbZ1cOJI3MCTX8A3
+ XnvgHChCli7kxDunhck9yjIZOIxEanp3jIwXonCsCHfERiY/OqqEQYZw/Qgk2wGtMOwUEpBHB8F
+ TxzX1pXWNWTM5HRU87RxuQ/VqtOI9L/E=
+X-Received: by 2002:a37:de01:0:b0:783:3167:472f with SMTP id
+ h1-20020a37de01000000b007833167472fmr61655qkj.3.1704911440718; 
+ Wed, 10 Jan 2024 10:30:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF7PAP+QgZ9Xi4IVAhbXcT5eTCZxA9g0CUqcWgIAsxAdIDXH+6ILAkK3H9GCMKRDHbzklM9HQ==
+X-Received: by 2002:a37:de01:0:b0:783:3167:472f with SMTP id
+ h1-20020a37de01000000b007833167472fmr61642qkj.3.1704911440453; 
+ Wed, 10 Jan 2024 10:30:40 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- h34-20020a63f922000000b005c66e25497dsm3811372pgi.83.2024.01.10.10.26.06
+ q9-20020a05620a0d8900b007816e4e9bf8sm1788948qkl.102.2024.01.10.10.30.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Jan 2024 10:26:08 -0800 (PST)
-Message-ID: <07cbdc64-3965-42af-b106-30e6afdc48ee@ventanamicro.com>
-Date: Wed, 10 Jan 2024 15:26:03 -0300
+ Wed, 10 Jan 2024 10:30:39 -0800 (PST)
+Message-ID: <6aec238b-b983-4b24-9bd9-a90f840d060c@redhat.com>
+Date: Wed, 10 Jan 2024 19:30:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] target/riscv: Add step to validate 'B' extension
+Subject: Re: [PULL 2/7] s390x: do a subsystem reset before the unprotect on
+ reboot
 Content-Language: en-US
-To: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com
-References: <20240109171848.32237-1-rbradford@rivosinc.com>
- <20240109171848.32237-3-rbradford@rivosinc.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240109171848.32237-3-rbradford@rivosinc.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Viktor Mihajlovski <mihajlov@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>
+References: <20230912114112.296428-1-thuth@redhat.com>
+ <20230912114112.296428-3-thuth@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20230912114112.296428-3-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,83 +106,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 1/9/24 14:07, Rob Bradford wrote:
-> If the B extension is enabled warn if the user has disabled any of the
-> required extensions that are part of the 'B' extension. Conversely
-> enable the extensions that make up the 'B' extension if it is enabled.
+On 9/12/23 13:41, Thomas Huth wrote:
+> From: Janosch Frank <frankja@linux.ibm.com>
 > 
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> Bound APQNs have to be reset before tearing down the secure config via
+> s390_machine_unprotect(). Otherwise the Ultravisor will return a error
+> code.
+> 
+> So let's do a subsystem_reset() which includes a AP reset before the
+> unprotect call. We'll do a full device_reset() afterwards which will
+> reset some devices twice. That's ok since we can't move the
+> device_reset() before the unprotect as it includes a CPU clear reset
+> which the Ultravisor does not expect at that point in time.
+> 
+> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+> Message-ID: <20230901114851.154357-1-frankja@linux.ibm.com>
+> Tested-by: Viktor Mihajlovski <mihajlov@linux.ibm.com>
+> Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
-
-This patch doesn't apply cleanly on current master. Which is normal, since we just
-had a RISC-V PR merged.
-
-I'm afraid you'll need to resend the series rebased on top of master (since it's newer
-than Alistair's riscv-to-apply.next now).
-
-
->   target/riscv/tcg/tcg-cpu.c | 33 +++++++++++++++++++++++++++++++++
->   1 file changed, 33 insertions(+)
+>   hw/s390x/s390-virtio-ccw.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
 > 
+> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+> index 3dd0b2372d..2d75f2131f 100644
+> --- a/hw/s390x/s390-virtio-ccw.c
+> +++ b/hw/s390x/s390-virtio-ccw.c
+> @@ -438,10 +438,20 @@ static void s390_machine_reset(MachineState *machine, ShutdownCause reason)
+>       switch (reset_type) {
+>       case S390_RESET_EXTERNAL:
+>       case S390_RESET_REIPL:
+> +        /*
+> +         * Reset the subsystem which includes a AP reset. If a PV
+> +         * guest had APQNs attached the AP reset is a prerequisite to
+> +         * unprotecting since the UV checks if all APQNs are reset.
+> +         */
+> +        subsystem_reset();
 
-I fixed the conflicts and applied the patch and it works for me. So:
+
+This commit introduced a regression with pass-though ISM devices.
+
+After startup, a reboot will generate extra device resets (vfio-pci in
+this case) which break the pass-though ISM device in a subtle way,
+probably related to IOMMU mapping according to 03451953c79e
+("s390x/pci: reset ISM passthrough devices on shutdown and system
+reset"). After poweroff, the device is left in a sort-of-a-use state
+on the host and the LPAR has to be rebooted to clear the invalid state
+of the device. To be noted, that standard PCI devices are immune to
+this change.
+
+The extra resets should avoided in some ways, (a shutdown notifier and
+a reset callback are already registered for ISM devices by 03451953c79e)
+and, most important, once the VM terminates, the device resources
+should be cleared in the host kernel. So there seem to be two issues
+to address in mainline QEMU and in Linux AFAICT.
+
+Thanks,
+
+C.
 
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-
-
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index fda54671d5..f10871d352 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -273,6 +273,35 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
->       }
->   }
+>           if (s390_is_pv()) {
+>               s390_machine_unprotect(ms);
+>           }
 >   
-> +static void riscv_cpu_validate_b(RISCVCPU *cpu)
-> +{
-> +    const char *warn_msg = "RVB mandates disabled extension %s";
-> +
-> +    if (!cpu->cfg.ext_zba) {
-> +        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zba))) {
-> +            cpu->cfg.ext_zba = true;
-> +        } else {
-> +            warn_report(warn_msg, "zba");
-> +        }
-> +    }
-> +
-> +    if (!cpu->cfg.ext_zbb) {
-> +        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zbb))) {
-> +            cpu->cfg.ext_zbb = true;
-> +        } else {
-> +            warn_report(warn_msg, "zbb");
-> +        }
-> +    }
-> +
-> +    if (!cpu->cfg.ext_zbs) {
-> +        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zbs))) {
-> +            cpu->cfg.ext_zbs = true;
-> +        } else {
-> +            warn_report(warn_msg, "zbs");
-> +        }
-> +    }
-> +}
-> +
->   /*
->    * Check consistency between chosen extensions while setting
->    * cpu->cfg accordingly.
-> @@ -309,6 +338,10 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->           env->misa_ext_mask |= RVI | RVM | RVA | RVF | RVD;
->       }
+> +        /*
+> +         * Device reset includes CPU clear resets so this has to be
+> +         * done AFTER the unprotect call above.
+> +         */
+>           qemu_devices_reset(reason);
+>           s390_crypto_reset();
 >   
-> +    if (riscv_has_ext(env, RVB)) {
-> +        riscv_cpu_validate_b(cpu);
-> +    }
-> +
->       if (riscv_has_ext(env, RVI) && riscv_has_ext(env, RVE)) {
->           error_setg(errp,
->                      "I and E extensions are incompatible");
+
 
