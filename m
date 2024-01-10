@@ -2,110 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E9348293B3
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 07:28:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6088293D8
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 07:54:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNS36-0001lG-TR; Wed, 10 Jan 2024 01:26:48 -0500
+	id 1rNSRp-0000XV-K2; Wed, 10 Jan 2024 01:52:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNS34-0001ko-8C
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 01:26:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1rNSRm-0000Wf-Cv; Wed, 10 Jan 2024 01:52:18 -0500
+Received: from out5-smtp.messagingengine.com ([66.111.4.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNS31-0001Gv-6c
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 01:26:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704868001;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GSBkUcgNCSBjY6U3vHPbVrlY0wCbao82Fb5YTqfAByI=;
- b=FEF0SE2tNdy+Vi8KTt2E1IIcbrjFVuoq7LDIXb3P8YiPhtBLPRxycItGDHj6RUkT7ohCva
- rsEUIMSDlM19yBM4R7BqdO5+l+xRw7Ny38mC0dmVk7hf5Spj/F2iZL7PJpuxO99RXJjGLs
- 8jtu+ddsE/Q5w8LLx3sQbWimeLv5w7g=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-x1sRti1oPjuoih-FLwRb2g-1; Wed, 10 Jan 2024 01:26:40 -0500
-X-MC-Unique: x1sRti1oPjuoih-FLwRb2g-1
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-1d44608e379so5975925ad.1
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 22:26:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704867997; x=1705472797;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GSBkUcgNCSBjY6U3vHPbVrlY0wCbao82Fb5YTqfAByI=;
- b=WIi7Rie0sqImZjGFgnUeWnrzfucetaxBVFSd8NKqQwaw96lg23X2zupnOt0AAQXuDI
- BiFM8mGO4dyuceh/yAuA5FJeSUkRasZpvesdnVAZvonnchthZocSgpFxyauuYEtdAETn
- auyb2BFwGzS1GXxNMcP/Gbje9/4IQBG+UfEM1qlFzPpAKnrV3i64j8JO4H2Ww8tM/Ut1
- CP/jNP9jAKbA6OXJUfbh1khQHuKLvGGJ9AZkQPGKjcVDOw2lyQhORjA8T7q/KW6QPnfH
- FqQcUVspSdkozO9QhVhUuEf2C5n7wjttV3dWBWi0ULUyZQ69YPEg1Dzht+2GePmIo51r
- ov/w==
-X-Gm-Message-State: AOJu0YxlEEBfh+42i2Hq+sbJtmr5zlRob0ek2jGFcIRroZ/FFFAaGEH0
- t/tZdfTF19C/rO6Nu8pKz9+XfpLrhCgQldXuetSu0viO6DzH6ZT4uCu9qFF6Xgx3scjhGI4zpxG
- rldV27/79uiNYpB6dHL4/owk=
-X-Received: by 2002:a17:902:8a92:b0:1d4:3abc:29e2 with SMTP id
- p18-20020a1709028a9200b001d43abc29e2mr1086808plo.0.1704867997125; 
- Tue, 09 Jan 2024 22:26:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG1JbYLlIJV0JeYJwfkXsnjp3N2ZouT1Ac0whGb5KOKxCJSdya4fVlzXiQYw5xucJyFfdnJmw==
-X-Received: by 2002:a17:902:8a92:b0:1d4:3abc:29e2 with SMTP id
- p18-20020a1709028a9200b001d43abc29e2mr1086783plo.0.1704867996745; 
- Tue, 09 Jan 2024 22:26:36 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- w7-20020a1709029a8700b001d56f8f0e10sm551756plp.26.2024.01.09.22.26.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jan 2024 22:26:36 -0800 (PST)
-Date: Wed, 10 Jan 2024 14:26:17 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, qemu-devel@nongnu.org,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: Re: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in
- A7/A15 MPCore priv
-Message-ID: <ZZ44iQRPrdDpfov7@x1n>
-References: <38cfa9de-874b-41dd-873e-5ad1f5a5805e@kaod.org>
- <fe4d463f-b646-4b7b-9063-d16ad5dbb128@linaro.org>
- <87y1d6i47m.fsf@suse.de>
- <597186d9-af21-46e8-8075-f21d36c01c07@kaod.org>
- <87plya76cu.fsf@suse.de>
- <d5c0b9fb-8b09-4f68-b3ab-c8adffd484a9@kaod.org>
- <87bk9u8dhs.fsf@suse.de>
- <2fa344b7-ccd2-4e6a-8c32-5ad7e4c960d6@linaro.org>
- <ZZ4Qrfis4XHWGN0j@x1n> <87cyu9hgit.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1rNSRj-00059K-Sd; Wed, 10 Jan 2024 01:52:18 -0500
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+ by mailout.nyi.internal (Postfix) with ESMTP id 88CD55C0134;
+ Wed, 10 Jan 2024 01:52:12 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute3.internal (MEProxy); Wed, 10 Jan 2024 01:52:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-type:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:subject:subject:to:to; s=fm1; t=1704869532; x=
+ 1704955932; bh=jlpdSqNIwnHKbnPVjiMm2XqeeuV9/lvrzgXY/df370I=; b=A
+ 1XL6JS18r29Xh5YtubaAp+C2znPoX4CnTepCXBnqOBB6Os/iMvRebxCsVu1SiXZS
+ gcmGSNxeRbvP2GRhecYiANeuaf18MN4S94LJG89wyv5bUcZki5YvKsbMLrBC4KDh
+ h48Ekv8HgaFOhh75Vnb3FhhfSoWZpKrqgnbSTOXSBPQOZoBnf0DT/JMYk1bfQ4L1
+ U2gOuZOrG3h77+x2sMvIB9D1Wedmpi9HlAWgudEoIx5ZpgCfmVRoyVQWWYONS3vS
+ ZGfXz14XBzGaagyjshNvzzMiAPzSM+Q3oxMfVhdvDojgpM2cKBcNbmXIWq1uVZig
+ +2igdE5ZBGUlJe8PEva+A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm2; t=1704869532; x=1704955932; bh=jlpdSqNIwnHKbnPVjiMm2XqeeuV9
+ /lvrzgXY/df370I=; b=Cr1SB8+01KJY561zmbav0FTiSu+FltWGrsNGi7wnBVSb
+ qD4sHLFmJt3062kgV0iG8cZsNtR6dNWKKiYM3d4qPcuaMfqMr6outEXGWFNCQ+ek
+ ZuKAa9JQ+9JBHPOxbn2jmDs78dmcRrOCq7WmaYh9axOckah2A6oEigANai5S4l+u
+ pBPg4qKuP1J0f82SG5YN/AZXpZU+DdHv+8tfBPYL80D0u+a7icixEGdv64jDHNTJ
+ 9vUms1+BE+j+ScIqNlCWnlpzToSSlXeLTilEfyHWo6eM/idoYw4b9XDuoUY4NfOh
+ VHLrJnpGeeYRLR9Ah/SrfO17IgWdfWrF2n+RTo6yew==
+X-ME-Sender: <xms:mz6eZbyX0FtZ-Mn0leU5pweypD43ucCLYHeEl-k_P7_o9ker2KPgMQ>
+ <xme:mz6eZTSfabHkC5b6WLGYrWbdF71-YB3Ru7mGqKeQDNR9hpU7orBtVgxVinJUu8kVl
+ 7V_RWPruxVpGWSTxDU>
+X-ME-Received: <xmr:mz6eZVXZUUJGQbDkPAXWf566gtdeS8gV2QSQVQJfh0x0iBHHusDbkaig6sru>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdeitddguddttdcutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+ necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+ enucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgr
+ uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
+ htthgvrhhnpeffuddvhfehjedugfeijeeuieelgeevuddvlefhkefhgfettefftddvkeev
+ ieelfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+ eptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgu
+ kh
+X-ME-Proxy: <xmx:mz6eZVhTWxvOylGVyBsRuFQh7wa9VkFPQyjJ9fTW_t5sc5fNAy09fA>
+ <xmx:mz6eZdBQJxTxkOjPBSGVK3BGS8asLNor03-yEohrRtbxTqS0EbLIiA>
+ <xmx:mz6eZeLk_kfWZNuUrhTsnWJ0lh8dwIzSq5aOoWIVRaP2aYQX3_hG_g>
+ <xmx:nD6eZXTI6iXeTM2Elab9JCBYyxQ51n8fuDdsvGkBTn3t6F8rDSKx1Q>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 10 Jan 2024 01:52:11 -0500 (EST)
+Date: Wed, 10 Jan 2024 07:52:06 +0100
+From: Klaus Jensen <its@irrelevant.dk>
+To: Sam Li <faithilikerun@gmail.com>
+Cc: qemu-devel@nongnu.org, stefanha@redhat.com, qemu-block@nongnu.org,
+ hare@suse.de, David Hildenbrand <david@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Keith Busch <kbusch@kernel.org>, Hanna Reitz <hreitz@redhat.com>,
+ dmitry.fomichev@wdc.com, Kevin Wolf <kwolf@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, dlemoal@kernel.org
+Subject: Re: [RFC v2 0/7] Add persistence to NVMe ZNS emulation
+Message-ID: <ZZ4-lo64mGubad5t@cormorant.local>
+References: <20231127085641.3729-1-faithilikerun@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="Mvyc+4wEFE/kwUpr"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87cyu9hgit.fsf@pond.sub.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+In-Reply-To: <20231127085641.3729-1-faithilikerun@gmail.com>
+Received-SPF: pass client-ip=66.111.4.29; envelope-from=its@irrelevant.dk;
+ helo=out5-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,167 +108,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 10, 2024 at 07:03:06AM +0100, Markus Armbruster wrote:
-> Peter Xu <peterx@redhat.com> writes:
-> 
-> > On Tue, Jan 09, 2024 at 10:22:31PM +0100, Philippe Mathieu-Daudé wrote:
-> >> Hi Fabiano,
-> >> 
-> >> On 9/1/24 21:21, Fabiano Rosas wrote:
-> >> > Cédric Le Goater <clg@kaod.org> writes:
-> >> > 
-> >> > > On 1/9/24 18:40, Fabiano Rosas wrote:
-> >> > > > Cédric Le Goater <clg@kaod.org> writes:
-> >> > > > 
-> >> > > > > On 1/3/24 20:53, Fabiano Rosas wrote:
-> >> > > > > > Philippe Mathieu-Daudé <philmd@linaro.org> writes:
-> >> > > > > > 
-> >> > > > > > > +Peter/Fabiano
-> >> > > > > > > 
-> >> > > > > > > On 2/1/24 17:41, Cédric Le Goater wrote:
-> >> > > > > > > > On 1/2/24 17:15, Philippe Mathieu-Daudé wrote:
-> >> > > > > > > > > Hi Cédric,
-> >> > > > > > > > > 
-> >> > > > > > > > > On 2/1/24 15:55, Cédric Le Goater wrote:
-> >> > > > > > > > > > On 12/12/23 17:29, Philippe Mathieu-Daudé wrote:
-> >> > > > > > > > > > > Hi,
-> >> > > > > > > > > > > 
-> >> > > > > > > > > > > When a MPCore cluster is used, the Cortex-A cores belong the the
-> >> > > > > > > > > > > cluster container, not to the board/soc layer. This series move
-> >> > > > > > > > > > > the creation of vCPUs to the MPCore private container.
-> >> > > > > > > > > > > 
-> >> > > > > > > > > > > Doing so we consolidate the QOM model, moving common code in a
-> >> > > > > > > > > > > central place (abstract MPCore parent).
-> >> > > > > > > > > > 
-> >> > > > > > > > > > Changing the QOM hierarchy has an impact on the state of the machine
-> >> > > > > > > > > > and some fixups are then required to maintain migration compatibility.
-> >> > > > > > > > > > This can become a real headache for KVM machines like virt for which
-> >> > > > > > > > > > migration compatibility is a feature, less for emulated ones.
-> >> > > > > > > > > 
-> >> > > > > > > > > All changes are either moving properties (which are not migrated)
-> >> > > > > > > > > or moving non-migrated QOM members (i.e. pointers of ARMCPU, which
-> >> > > > > > > > > is still migrated elsewhere). So I don't see any obvious migration
-> >> > > > > > > > > problem, but I might be missing something, so I Cc'ed Juan :>
-> >> > > > > > 
-> >> > > > > > FWIW, I didn't spot anything problematic either.
-> >> > > > > > 
-> >> > > > > > I've ran this through my migration compatibility series [1] and it
-> >> > > > > > doesn't regress aarch64 migration from/to 8.2. The tests use '-M
-> >> > > > > > virt -cpu max', so the cortex-a7 and cortex-a15 are not covered. I don't
-> >> > > > > > think we even support migration of anything non-KVM on arm.
-> >> > > > > 
-> >> > > > > it happens we do.
-> >> > > > > 
-> >> > > > 
-> >> > > > Oh, sorry, I didn't mean TCG here. Probably meant to say something like
-> >> > > > non-KVM-capable cpus, as in 32-bit. Nevermind.
-> >> > > 
-> >> > > Theoretically, we should be able to migrate to a TCG guest. Well, this
-> >> > > worked in the past for PPC. When I was doing more KVM related changes,
-> >> > > this was very useful for dev. Also, some machines are partially emulated.
-> >> > > Anyhow I agree this is not a strong requirement and we often break it.
-> >> > > Let's focus on KVM only.
-> >> > > 
-> >> > > > > > 1- https://gitlab.com/farosas/qemu/-/jobs/5853599533
-> >> > > > > 
-> >> > > > > yes it depends on the QOM hierarchy and virt seems immune to the changes.
-> >> > > > > Good.
-> >> > > > > 
-> >> > > > > However, changing the QOM topology clearly breaks migration compat,
-> >> > > > 
-> >> > > > Well, "clearly" is relative =) You've mentioned pseries and aspeed
-> >> > > > already, do you have a pointer to one of those cases were we broke
-> >> > > > migration
-> >> > > 
-> >> > > Regarding pseries, migration compat broke because of 5bc8d26de20c
-> >> > > ("spapr: allocate the ICPState object from under sPAPRCPUCore") which
-> >> > > is similar to the changes proposed by this series, it impacts the QOM
-> >> > > hierarchy. Here is the workaround/fix from Greg : 46f7afa37096
-> >> > > ("spapr: fix migration of ICPState objects from/to older QEMU") which
-> >> > > is quite an headache and this turned out to raise another problem some
-> >> > > months ago ... :/ That's why I sent [1] to prepare removal of old
-> >> > > machines and workarounds becoming a burden.
-> >> > 
-> >> > This feels like something that could be handled by the vmstate code
-> >> > somehow. The state is there, just under a different path.
-> >> 
-> >> What, the QOM path is used in migration? ...
-> >
-> > Hopefully not..
-> >
-> >> 
-> >> See recent discussions on "QOM path stability":
-> >> https://lore.kernel.org/qemu-devel/ZZfYvlmcxBCiaeWE@redhat.com/
-> >> https://lore.kernel.org/qemu-devel/87jzojbxt7.fsf@pond.sub.org/
-> >> https://lore.kernel.org/qemu-devel/87v883by34.fsf@pond.sub.org/
-> >
-> > If I read it right, the commit 46f7afa37096 example is pretty special that
-> > the QOM path more or less decided more than the hierachy itself but changes
-> > the existances of objects.
-> 
-> Let's see whether I got this...
-> 
-> We removed some useless objects, moved the useful ones to another home.
-> The move changed their QOM path.
-> 
-> The problem was the removal of useless objects, because this also
-> removed their vmstate.
-> 
-> The fix was adding the vmstate back as a dummy.
-> 
-> The QOM patch changes are *not* part of the problem.
-> 
-> Correct?
 
-[I'd leave this to Cedric]
+--Mvyc+4wEFE/kwUpr
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> >> > No one wants
-> >> > to be policing QOM hierarchy changes in every single series that shows
-> >> > up on the list.
-> >> > 
-> >> > Anyway, thanks for the pointers. I'll study that code a bit more, maybe
-> >> > I can come up with some way to handle these cases.
-> >> > 
-> >> > Hopefully between the analyze-migration test and the compat tests we'll
-> >> > catch the next bug of this kind before it gets merged.
-> >
-> > Things like that might be able to be detected via vmstate-static-checker.py.
-> > But I'm not 100% sure, also its coverage is limited.
-> >
-> > For example, I don't think it can detect changes to objects that will only
-> > be created dynamically, e.g., I think sometimes we create objects after
-> > some guest behaviors (consider guest enables the device, then QEMU
-> > emulation creates some objects on demand of device setup?),
-> 
-> Feels nuts to me.
-> 
-> In real hardware, software enabling a device that is disabled by default
-> doesn't create the device.  The device is always there, it just happens
-> to be inactive unless enabled.  We should model the device just like
-> that.
+On Nov 27 16:56, Sam Li wrote:
+> ZNS emulation follows NVMe ZNS spec but the state of namespace
+> zones does not persist accross restarts of QEMU. This patch makes the
+> metadata of ZNS emulation persistent by using new block layer APIs and
+> the qcow2 img as backing file. It is the second part after the patches
+> - adding full zoned storage emulation to qcow2 driver.
+> https://patchwork.kernel.org/project/qemu-devel/cover/20231127043703.4948=
+9-1-faithilikerun@gmail.com/
+>=20
+> The metadata of ZNS emulation divides into two parts, zone metadata and
+> zone descriptor extension data. The zone metadata is composed of zone
+> states, zone type, wp and zone attributes. The zone information can be
+> stored at an uint64_t wp to save space and easy access. The structure of
+> wp of each zone is as follows:
+> |0000(4)| zone type (1)| zone attr (8)| wp (51) ||
+>=20
+> The zone descriptor extension data is relatively small comparing to the
+> overall size therefore we adopt the option that store zded of all zones
+> in an array regardless of the valid bit set.
+>=20
+> Creating a zns format qcow2 image file adds one more option zd_extension_=
+size
+> to zoned device configurations.
+>=20
+> To attach this file as emulated zns drive in the command line of QEMU, us=
+e:
+>   -drive file=3D${znsimg},id=3Dnvmezns0,format=3Dqcow2,if=3Dnone \
+>   -device nvme-ns,drive=3Dnvmezns0,bus=3Dnvme0,nsid=3D1,uuid=3Dxxx \
+>=20
+> Sorry, send this one more time due to network problems.
+>=20
+> v1->v2:
+> - split [v1 2/5] patch to three (doc, config, block layer API)
+> - adapt qcow2 v6
+>=20
+> Sam Li (7):
+>   docs/qcow2: add zd_extension_size option to the zoned format feature
+>   qcow2: add zd_extension configurations to zoned metadata
+>   hw/nvme: use blk_get_*() to access zone info in the block layer
+>   hw/nvme: add blk_get_zone_extension to access zd_extensions
+>   hw/nvme: make the metadata of ZNS emulation persistent
+>   hw/nvme: refactor zone append write using block layer APIs
+>   hw/nvme: make ZDED persistent
+>=20
+>  block/block-backend.c             |   88 ++
+>  block/qcow2.c                     |  119 ++-
+>  block/qcow2.h                     |    2 +
+>  docs/interop/qcow2.txt            |    3 +
+>  hw/nvme/ctrl.c                    | 1247 ++++++++---------------------
+>  hw/nvme/ns.c                      |  162 +---
+>  hw/nvme/nvme.h                    |   95 +--
+>  include/block/block-common.h      |    9 +
+>  include/block/block_int-common.h  |    8 +
+>  include/sysemu/block-backend-io.h |   11 +
+>  include/sysemu/dma.h              |    3 +
+>  qapi/block-core.json              |    4 +
+>  system/dma-helpers.c              |   17 +
+>  13 files changed, 647 insertions(+), 1121 deletions(-)
+>=20
+> --=20
+> 2.40.1
+>=20
 
-It doesn't need to be the device itself to be dynamically created, but some
-other sub-objects that do not require to exist until the device is enabled,
-or some specific function of that device is enabled.  It is logically doable.
+Hi Sam,
 
-Is the example Cedric provided looks like some case like this?  I am not
-sure, that's also why I'm not sure the static checker would work here.  But
-logically it seems possible, e.g. with migration VMSD needed() facilities.
-Consider a device has a sub-function that requires a sub-object.  It may
-not need to migrate that object if that sub-feature is not even enabled.
-If that object is very large, it might be wise to do so if possible to not
-send chunks of junk during the VM downtime.
+This is awesome. For the hw/nvme parts,
 
-But then after a 2nd thought I do agree it's probably not sensible, because
-even if the src may know whether the sub-object will be needed, there's
-probably no good way for the dest QEMU to know.  It can only know in
-something like a post_load() hook, but logically that can happen only after
-a full load of that device state, so might already be too late.
+Acked-by: Klaus Jensen <k.jensen@samsung.com>
 
-Thanks,
+I'll give it a proper R-b when you drop the RFC status.
 
--- 
-Peter Xu
+--Mvyc+4wEFE/kwUpr
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmWePpUACgkQTeGvMW1P
+DemQfAgAnLHKHp2F098Vu0Ah/NuC0eTR9gmqXZ/6ALLT53tbntdgqEEIsPGqN78r
+jNseCZBd/7vzZIT0WfyUy4bq9944sFqyjnH6XoyyLf4EpXpNfosvSAskx4iuOSqw
+HqE6KA3lNAY67GmHgDIubo2dH2WtA71TXd2J8EhUjRqbYWk3SuBEqBwhKNJKT3Ie
+tNCv5Qo65rtcCqWK/nv3Ge5Vs0Uc6FozW+pR6pI7ydftcpwKACfhWRMzx2Q6a20s
+6amOo5bkk8vsChAOaA/p3ADgtHO6ITHBIqRizIBCKtHCdYiWfs94hKhee3LdheQ5
+AuCcYgh5vrSoZIONz2u5GCI83NQpEw==
+=0zj4
+-----END PGP SIGNATURE-----
+
+--Mvyc+4wEFE/kwUpr--
 
