@@ -2,94 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C38F82A04B
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 19:32:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A0582A04E
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 19:32:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNdLz-0006xx-V4; Wed, 10 Jan 2024 13:31:03 -0500
+	id 1rNdNV-0007fZ-Fy; Wed, 10 Jan 2024 13:32:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rNdLn-0006xY-B3
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 13:30:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rNdLh-0003Vs-3C
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 13:30:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704911443;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pKYRFmP7XGYaBLUjE91Eyy2PONpEIiZPfslTAhDCtdM=;
- b=DbALvIcH36V49zAvkgSon//OI6/Gbg1cMoNjzrxsHnha5SxTF48G1fxFHufUVi4W7ZuUr2
- UMpqJY7oas5VA0YQ/7CeUzpwo7lcxPKc4e37xdFYCg1yBkdMMgE37jPFv9eEIwdiM0iy7J
- JvTQwzk8DAt1GBngB0nDTntN4MdlSoU=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-386-2aUZRv1ZMbCMM62EJDtDMA-1; Wed, 10 Jan 2024 13:30:42 -0500
-X-MC-Unique: 2aUZRv1ZMbCMM62EJDtDMA-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-781d8e14fd8so529833985a.3
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 10:30:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rNdNN-0007dV-Mh
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 13:32:29 -0500
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rNdNM-0004Ld-1h
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 13:32:29 -0500
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-5ce07cf1e5dso2309346a12.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 10:32:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1704911546; x=1705516346; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pWiq8kTUh+mdL1XsRJNdTllaoAxLxDDvBnyzL1CSrv0=;
+ b=chFOXK/2XOdioiotdSmsh8J93WI0XYhmJ/0UhzyiqE+VZEVh49AUKBsCXXfAGEZhqq
+ Ki2H1gqRB0JAPWFHETuxIxf5rx06Pgo71WmnLenZUxh+LLuIxlgC/AQ29kn9WGg/fiY7
+ UsOvy0C4Ux7xw2etBtaqrFfFnylTwAYo3/cpY4yUMFZzvOExGF2626CGDASRhLpGjuL9
+ rH5ZfGr9GVBZLhJt1e7f1Ys9cT2AsInKzHxb5PoKSlHzpYq0A8MbQEPixYkgEGCszOnp
+ dWgcQx3+71o/WaCo9zpzJdCATZE48rlR7iB2Q+gqWAF/ZJia2/QFqyRnum+pRkRPAHZJ
+ ijQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704911440; x=1705516240;
+ d=1e100.net; s=20230601; t=1704911546; x=1705516346;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pKYRFmP7XGYaBLUjE91Eyy2PONpEIiZPfslTAhDCtdM=;
- b=oYLoani9+j2w3LqzzwSNFgkVcsbr8nDPe5VYG0F+3HdqJ7UYKbmOAOIl9yo+/0/L4/
- 92Of19xxJDT/gitPn6Zyuk4u9l/FPe5vj9oW2eo89heRE0J4s/IbVnVbui+RkpMYLxdN
- v0Tq0umBkTG+ZQv92w9QdusVo8WXDGsmH1uxP0HpmolCE9E4QfIt8s9+kcpxkeDuusi9
- 2u7rlEtKeVx0ZGVN77SGRZ8SGYRJfZ+XyBMvnPK9Er0BALU/OcUhBOvJk9WUZS1AmAP4
- x4VTCjDMAUAV65zewOyWkRIz9QN1aF08fog4Uk923b+hnmSAw967eemThThQen8OM+a7
- 3NRA==
-X-Gm-Message-State: AOJu0YxS3PieTYE3SIu490nVr3FkPCQEQ9zIjtMykbZ1cOJI3MCTX8A3
- XnvgHChCli7kxDunhck9yjIZOIxEanp3jIwXonCsCHfERiY/OqqEQYZw/Qgk2wGtMOwUEpBHB8F
- TxzX1pXWNWTM5HRU87RxuQ/VqtOI9L/E=
-X-Received: by 2002:a37:de01:0:b0:783:3167:472f with SMTP id
- h1-20020a37de01000000b007833167472fmr61655qkj.3.1704911440718; 
- Wed, 10 Jan 2024 10:30:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF7PAP+QgZ9Xi4IVAhbXcT5eTCZxA9g0CUqcWgIAsxAdIDXH+6ILAkK3H9GCMKRDHbzklM9HQ==
-X-Received: by 2002:a37:de01:0:b0:783:3167:472f with SMTP id
- h1-20020a37de01000000b007833167472fmr61642qkj.3.1704911440453; 
- Wed, 10 Jan 2024 10:30:40 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ bh=pWiq8kTUh+mdL1XsRJNdTllaoAxLxDDvBnyzL1CSrv0=;
+ b=qrwLCewexlQFvB9GTtKBy2XyneUCPE1IwNpc/B8aP26TVILoaedIPPYq9LKOF3xQ4f
+ w10cUvZUM/1m0fc3EpRtvus2EQnyQVJ+N9bqJ8SyOkyntnchUkKQVc7L2vHTBlRohsbX
+ uJtCigGS+EdZQRw42VfG1at4vM+Ru09J9rc0j1vpfRQNg8xXwjiitsOqvN+ID6ckzext
+ bXNeHT+JWg0Sc5WPNUmDOipev3BHsGATNBF/iNtOlyZLtbiPD/hH5uC+ZuvsdFJz7eRt
+ H9VbSkieJiS74mlFaLcm6nDSUjPN9M784BrHCBv/TeNCoqgv+1b6/JL0hKrMqD4jQNaK
+ iMHQ==
+X-Gm-Message-State: AOJu0YzejzNal26zTglvt8JtlR89wKgxwmSOS+GClgqgnH6Wms8Cuj0T
+ p/CHYieu32p1donbY2O3GANpseeu3VNqAA==
+X-Google-Smtp-Source: AGHT+IGVNiBTr6nIEP1vCVzDHHnFKArHMz4EWw7ScuFg9qwE6fhPEj1cQsss0C6P9G4SzkHJjouttw==
+X-Received: by 2002:a17:90b:1d8c:b0:28b:ea0c:f9b8 with SMTP id
+ pf12-20020a17090b1d8c00b0028bea0cf9b8mr920866pjb.64.1704911546278; 
+ Wed, 10 Jan 2024 10:32:26 -0800 (PST)
+Received: from [192.168.68.110] ([152.234.123.64])
  by smtp.gmail.com with ESMTPSA id
- q9-20020a05620a0d8900b007816e4e9bf8sm1788948qkl.102.2024.01.10.10.30.38
+ d11-20020a170902aa8b00b001d4cb49a28bsm3932331plr.277.2024.01.10.10.32.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Jan 2024 10:30:39 -0800 (PST)
-Message-ID: <6aec238b-b983-4b24-9bd9-a90f840d060c@redhat.com>
-Date: Wed, 10 Jan 2024 19:30:37 +0100
+ Wed, 10 Jan 2024 10:32:25 -0800 (PST)
+Message-ID: <de442ad9-0479-4a7e-bccf-97fcd081a35e@ventanamicro.com>
+Date: Wed, 10 Jan 2024 15:32:21 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 2/7] s390x: do a subsystem reset before the unprotect on
- reboot
+Subject: Re: [PATCH 3/3] target/riscv: Enable 'B' extension on max CPU type
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Viktor Mihajlovski <mihajlov@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20230912114112.296428-1-thuth@redhat.com>
- <20230912114112.296428-3-thuth@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230912114112.296428-3-thuth@redhat.com>
+To: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com
+References: <20240109171848.32237-1-rbradford@rivosinc.com>
+ <20240109171848.32237-4-rbradford@rivosinc.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20240109171848.32237-4-rbradford@rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,77 +96,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/12/23 13:41, Thomas Huth wrote:
-> From: Janosch Frank <frankja@linux.ibm.com>
-> 
-> Bound APQNs have to be reset before tearing down the secure config via
-> s390_machine_unprotect(). Otherwise the Ultravisor will return a error
-> code.
-> 
-> So let's do a subsystem_reset() which includes a AP reset before the
-> unprotect call. We'll do a full device_reset() afterwards which will
-> reset some devices twice. That's ok since we can't move the
-> device_reset() before the unprotect as it includes a CPU clear reset
-> which the Ultravisor does not expect at that point in time.
-> 
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-> Message-ID: <20230901114851.154357-1-frankja@linux.ibm.com>
-> Tested-by: Viktor Mihajlovski <mihajlov@linux.ibm.com>
-> Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+
+
+On 1/9/24 14:07, Rob Bradford wrote:
+> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
 > ---
->   hw/s390x/s390-virtio-ccw.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
+>   target/riscv/tcg/tcg-cpu.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> index 3dd0b2372d..2d75f2131f 100644
-> --- a/hw/s390x/s390-virtio-ccw.c
-> +++ b/hw/s390x/s390-virtio-ccw.c
-> @@ -438,10 +438,20 @@ static void s390_machine_reset(MachineState *machine, ShutdownCause reason)
->       switch (reset_type) {
->       case S390_RESET_EXTERNAL:
->       case S390_RESET_REIPL:
-> +        /*
-> +         * Reset the subsystem which includes a AP reset. If a PV
-> +         * guest had APQNs attached the AP reset is a prerequisite to
-> +         * unprotecting since the UV checks if all APQNs are reset.
-> +         */
-> +        subsystem_reset();
-
-
-This commit introduced a regression with pass-though ISM devices.
-
-After startup, a reboot will generate extra device resets (vfio-pci in
-this case) which break the pass-though ISM device in a subtle way,
-probably related to IOMMU mapping according to 03451953c79e
-("s390x/pci: reset ISM passthrough devices on shutdown and system
-reset"). After poweroff, the device is left in a sort-of-a-use state
-on the host and the LPAR has to be rebooted to clear the invalid state
-of the device. To be noted, that standard PCI devices are immune to
-this change.
-
-The extra resets should avoided in some ways, (a shutdown notifier and
-a reset callback are already registered for ISM devices by 03451953c79e)
-and, most important, once the VM terminates, the device resources
-should be cleared in the host kernel. So there seem to be two issues
-to address in mainline QEMU and in Linux AFAICT.
-
-Thanks,
-
-C.
-
-
-
->           if (s390_is_pv()) {
->               s390_machine_unprotect(ms);
->           }
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index f10871d352..9705daec93 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -999,7 +999,8 @@ static void riscv_init_max_cpu_extensions(Object *obj)
+>       const RISCVCPUMultiExtConfig *prop;
 >   
-> +        /*
-> +         * Device reset includes CPU clear resets so this has to be
-> +         * done AFTER the unprotect call above.
-> +         */
->           qemu_devices_reset(reason);
->           s390_crypto_reset();
->   
+>       /* Enable RVG, RVJ and RVV that are disabled by default */
+> -    riscv_cpu_set_misa(env, env->misa_mxl, env->misa_ext | RVG | RVJ | RVV);
+> +    riscv_cpu_set_misa(env, env->misa_mxl,
+> +                       env->misa_ext | RVG | RVJ | RVV | RVB);
 
+I'm aware that we decided a while ago the 'max' CPU could only have non-vendor and
+non-experimental extensions enabled. RVB is experimental, so in theory we shouldn't
+enable it.
+
+But RVB is an alias for zba, zbb and zbs, extensions that the 'max' CPU is already
+enabling. In this case I think it's sensible to enable RVB here since it would just
+reflect stuff that it's already happening.
+
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+
+
+
+>   
+>       for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
+>           isa_ext_update_enabled(cpu, prop->offset, true);
 
