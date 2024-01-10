@@ -2,91 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F5F8292EE
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 05:09:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA398829335
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 06:11:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNPtU-0006Rj-Ew; Tue, 09 Jan 2024 23:08:44 -0500
+	id 1rNQqg-0000nq-ND; Wed, 10 Jan 2024 00:09:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNPtS-0006RY-DM
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 23:08:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNPtP-00033n-0T
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 23:08:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704859717;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=+AXXu1W3mDpD0TmehhM9Zt/WsR60MOvS2VATDd6Y/kI=;
- b=IOtrjIh7xEKu94BBtPQJ3rQhg1DkRYM36F6woUo0ittK5fO6Dnid7PssWsf2Ek18tS0JPe
- 6O9ao1ZmKCjpBKwnYi8OsOrxWsvCzy/z6try7hvA0zdBu+cbcM9MEpT731ISb1+jg6PcTV
- klcejYWKTV5P7eSWf1JbH9tgPcsOxfU=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-659-z6hTJx13NCGc3MKeN3iFRQ-1; Tue, 09 Jan 2024 23:08:36 -0500
-X-MC-Unique: z6hTJx13NCGc3MKeN3iFRQ-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1d50d0e552dso5550525ad.0
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 20:08:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704859715; x=1705464515;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <tom.leiming@gmail.com>)
+ id 1rNQqe-0000nQ-8O
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 00:09:52 -0500
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tom.leiming@gmail.com>)
+ id 1rNQqV-0004Nz-LL
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 00:09:52 -0500
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-28c179bf45cso3272604a91.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 21:09:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1704863382; x=1705468182; darn=nongnu.org;
+ h=content-transfer-encoding:content-disposition:mime-version
+ :message-id:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+AXXu1W3mDpD0TmehhM9Zt/WsR60MOvS2VATDd6Y/kI=;
- b=a/lCEy5fEYfBUZR6nN4yAYJ+hx19z34wm6Vdnq56fSfcR7o0XrOZ/0sXUbCzLvKvtF
- P08mbGPCw3LkQiVgIxdKDw+OdVx7f7GCprG+2MhGr+AF2GaszU6pzP8I+SPWJDn45Hmz
- iskXV+g3XKshIF08TEfG/ThVq3jVO0ENjykkWWEwMEgpIPPshepVrGYtrXXuZCE5suk5
- NkcKQdGgFjwkKgDC6GHt/jUiePgCWOWmxvjbgN7XsGHJs2jB6ZSl6vyxZSbQhwIMOZoF
- Uy9OQ+YsALQJRV3925s+bPwM4N+3c44v4vkKCFNsO2fZggPlmY3JIHN1f6dD9sz1r9R5
- 0/iw==
-X-Gm-Message-State: AOJu0YxHuT+gYuzC5aRh5KdUVoUXFC09ylkK2YE0DjbFVTG60+NBH0dX
- MLPUnP1FBQVSci0JxwZzKeUnlV4GxE5+Sj1XXkno8ccFA8W0B9fYVmnx8Gf9LcFTW0rvLW+PHCD
- XImPPecdp6hvZDqqVzjfxbUU=
-X-Received: by 2002:a17:902:aa90:b0:1d4:b46d:81fe with SMTP id
- d16-20020a170902aa9000b001d4b46d81femr788690plr.3.1704859715071; 
- Tue, 09 Jan 2024 20:08:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IERop7EcWaAdGvxYCvjCs2EMwFtjpGaYlCLxCyMH3STFfngvDFyj0yOd8NTMvOFJBqAAqXJ/A==
-X-Received: by 2002:a17:902:aa90:b0:1d4:b46d:81fe with SMTP id
- d16-20020a170902aa9000b001d4b46d81femr788678plr.3.1704859714744; 
- Tue, 09 Jan 2024 20:08:34 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- l10-20020a170902eb0a00b001c61073b076sm2561441plb.144.2024.01.09.20.08.31
+ bh=6TXu1lgSVjLAAqP9gWPHXNyMgUpUyuzr2NqOI+V8YgE=;
+ b=B6HAbbDacUFCpirXpylTe/HH1735l/hdYm9VM/LcDkm0VdwgDeMUaNBdkXy4IAjYSA
+ f1dKZh8Ql4DvGBB+Gqnhl7DRoJPLl5pezl5MfSYrDVg4dxrCdIQWmV9MP1Et8KiC1VEx
+ cm3ptfD46HE7sMSoG67cYk367GFX/oXVZPTSxeIIO/TCBjoGX7WTqBnXlV84FklFFuZL
+ 1slkAd0MzyDY/8f73Q9bxqMriziemSVFSl/dlbE8WN1BfrrafB+chgL7bInomwUJ7KFl
+ N0EmApyCDlbvBZaIHfWAjwRIeM04Vz4wcHk0tWutN4eRZidgdWGVxQ4bTW/L0j/gVebu
+ kaKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704863382; x=1705468182;
+ h=content-transfer-encoding:content-disposition:mime-version
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6TXu1lgSVjLAAqP9gWPHXNyMgUpUyuzr2NqOI+V8YgE=;
+ b=UypHgJtowH0cFAwu+cafLixvdnyPjLGIzEwPVXP6GGP9VMpgVwqn/ETKMMoqkfvEfs
+ w/lhcc5TERmBiWsEB4Mas3exEWMinq6sxFiPW4VUa6wWfutdAfY2nPdFKrGSt82lLiDC
+ 20v+x4OLQHahDL67REy2LU0P/K06JAsYXKnjXsHFcaPRuZmlxwdPlIJ/VP+JFP7Mxygy
+ ZyGVYT5iIZzSB250iASby0GQOOLsDhC1paDdgcQyWZFEK2ODOmHhk+ygeve+dFO9ixP1
+ c9je2i7/mCJCv0D+Iyb7fiKSaJTEtdroUJOD8sS4S3Io53OP5ZfapBKxsLLz/w3MQqKN
+ 1lKQ==
+X-Gm-Message-State: AOJu0YxwhyS3tUdqXZMfbf94EzpqPC3j++iRA7MM8T4zQarj6CGADYGA
+ r2WI7KIImzH30HQ/xunUR1NYOOdR97GFGg==
+X-Google-Smtp-Source: AGHT+IGLLAQ7xOVSKsTT9b3lrN6e6c+i372O3S7iEDQbQ2yiWRutECY8jskHgXt35UkGlmv2nWoknA==
+X-Received: by 2002:a17:90b:150:b0:28d:280a:2ac5 with SMTP id
+ em16-20020a17090b015000b0028d280a2ac5mr316696pjb.11.1704863381696; 
+ Tue, 09 Jan 2024 21:09:41 -0800 (PST)
+Received: from fedora ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ sf6-20020a17090b51c600b0028cb82a8da0sm439774pjb.31.2024.01.09.21.09.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jan 2024 20:08:34 -0800 (PST)
-Date: Wed, 10 Jan 2024 12:08:27 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 4/4] [NOT FOR MERGE] tests/qtest/migration: Adapt
- tests to use older QEMUs
-Message-ID: <ZZ4YOw6Cy5EYo_f4@x1n>
-References: <20240105180449.11562-1-farosas@suse.de>
- <20240105180449.11562-5-farosas@suse.de> <ZZuvDREDrQ07HsGs@x1n>
- <877ckj3kfp.fsf@suse.de> <ZZzC1n0GotQZukqJ@x1n>
- <87zfxe7eev.fsf@suse.de>
+ Tue, 09 Jan 2024 21:09:41 -0800 (PST)
+Date: Wed, 10 Jan 2024 13:09:37 +0800
+From: Ming Lei <tom.leiming@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: linux-block@vger.kernel.org, Hanna Czenczek <hreitz@redhat.com>
+Subject: qcow2-rs v0.1 and rublk-qcow2
+Message-ID: <ZZ4mkYSPEQQz6JcW@fedora>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87zfxe7eev.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=tom.leiming@gmail.com; helo=mail-pj1-x1029.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,24 +89,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 09, 2024 at 11:46:32AM -0300, Fabiano Rosas wrote:
-> Hm, it would be better to avoid the extra maintenance task at the start
-> of every release, no? It also blocks us from doing n-2 even
-> experimentally.
+Hello,
 
-See my other reply, on whether we can use "n-1" for migration-test.  If
-that can work for us, then IIUC we can avoid either "since:" or any
-relevant flag, neither do we need to unmask tests after each releases.  All
-old tests should always "just work" with a new qemu binary.
+qcow2-rs[1] is one pure Rust library for reading/writing qcow2 image, it is
+based on rsd's[2] internal qcow2 implementation, but with lots of change, so far:
 
-One drawback I can think of is, new tests (even if applicable to old qemu
-binaries) will only start to take effect on cross-binary test until the
-next release, but that's not so bad I assume.
+- supports read/write on data file, backing file and compressed image
 
-Since the QTEST_QEMU_BINARY_SRC|DST function is already merged in 8.2, I
-think we can already start kicking them and enable them for 9.0 if it works.
+- block device like interface, minimized read/write unit is aligned with block
+size of image, so that direct io can be supported
 
--- 
-Peter Xu
+- l2 table & refcount block load & store in slice way, and the minimized
+slice size is block size, and the maximized size is cluster size
 
+- built over Rust async/await, low level IO handling is abstracted by async
+traits, and multiple low level io engines can be supported, so far, verified
+on tokio-uring[3], raw linux sync IO syscall and io-uring[4] with smol[5]
+runtime
+
+Attributed to excellent async/.await, any IO(include meta IO) is handled in
+async way actually, but the programming looks just like writing sync code,
+so this library can be well-designed & implemented, and it is easy to add
+new features & run further optimization with current code base.
+
+rublk-qcow2[6] wires qcow2-rs, libublk-rs[7], smol(LocalExecutor) and io-uring
+together, and provides block device interface for qcow2 image in 500 LoC.
+
+Inside rublk-qcow2 async implementation, io-uring future is mapped to
+(waker, result) by using unique cqe.user_data as key via HashMap, this easy way
+does work, even though it may slow things a bit, but performance is still not
+bad. In simple 'fio/t/io_uring $DEV' test, IOPS of rublk-qcow2 is better than
+vdpa-virtio-blk by 20% with same setting(cache.direct=on,aio=io_uring) when
+reading from fully allocated image in my test VM.
+
+The initial motivation is for supporting rblk-qcow2, but I can’t find any
+Rust qcow2 library with read/write support & simple interfaces and efficient
+AIOs support, finally it is evolved into one generic qcow2 library. Many
+qcow2 test cases are added. Also one utility is included in this project,
+which can dump qcow2 meta, show any meta related statistics of the image,
+check image meta integrity & host cluster leak, format qcow2 image,
+read & write, ...
+
+Any comments are welcome!
+
+
+
+[1] qcow2-rs
+https://github.com/ublk-org/qcow2-rs
+
+[2] rsd
+https://gitlab.com/hreitz/rsd/-/tree/main/src/node/qcow2?ref_type=heads
+
+[3] tokio-uring
+https://docs.rs/tokio-uring
+
+[4] io-uring
+https://docs.rs/io-uring
+
+[5] smol
+https://docs.rs/smol
+
+[6] rublk-qcow2
+https://github.com/ublk-org/rublk
+
+[7] libublk-rs
+https://github.com/ublk-org/libublk-rs
+
+
+
+Thanks, 
+Ming
 
