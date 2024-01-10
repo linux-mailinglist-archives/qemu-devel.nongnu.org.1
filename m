@@ -2,107 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D09B0829556
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 09:45:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11894829564
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 09:50:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNUCH-0005AC-09; Wed, 10 Jan 2024 03:44:25 -0500
+	id 1rNUH7-0007mj-E7; Wed, 10 Jan 2024 03:49:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNUCC-00059e-Kp
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:44:22 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNUH4-0007mF-Ux
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:49:22 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNUCB-00058J-2I
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:44:20 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNUH3-0007fM-Ip
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 03:49:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704876257;
+ s=mimecast20190719; t=1704876560;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=609N03LdjpkxAYKf0CfIMFNH4ZnJqwVCDxCBxZ9EZlM=;
- b=MCm2JSzcXit1wb0r7qGW6c/e7EZAh4Pngk//9hEkWnKQzilF3HCD5gQTwLXRrYWP7Loui+
- tG0/i6f/yRJoue7nc13tgZ/YHATHo1gJOXA5hvEz5BzkAwxm9DrgBFXvqCb1SsiMd6D062
- yY2Ho/ctaKFYYKZ8ExBhsDHpJw223DM=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=U9Ay0uW4aKzseVVG9+XAeotn3kB9O7PfaKW+PiV4K1A=;
+ b=RSM7sZwjXa9rR77IGZuEvJ1b9AgYAtoVEqw5MQiBN1ivQd+Z0ckk5hs1z+sEI/riTt6nbV
+ jd6ZgEm5mB3SzOqeEfaQb406vCRv1ak8hATShFlz0NM9rWVO17OT4JoOzMNt21dk3Imd81
+ 6+ZTSz6JHkcg5+qR1Gpde27r12LvBA8=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-343-W7gUsjCwMFOZilxFPCoF0A-1; Wed, 10 Jan 2024 03:44:15 -0500
-X-MC-Unique: W7gUsjCwMFOZilxFPCoF0A-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1d53d51c62aso5751085ad.0
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 00:44:15 -0800 (PST)
+ us-mta-633-83VQVlk4Ntml-wCpwgNNbQ-1; Wed, 10 Jan 2024 03:49:19 -0500
+X-MC-Unique: 83VQVlk4Ntml-wCpwgNNbQ-1
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-6d99cdbeb9dso1032775b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 00:49:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704876255; x=1705481055;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=609N03LdjpkxAYKf0CfIMFNH4ZnJqwVCDxCBxZ9EZlM=;
- b=TZNwvIL5QVYhdzDv5CC0KqJQXNJ2dXPsArpCVMZ6/RTdram3K83zb4gmOC3HhHHUtU
- +eD8unEh58017nAxoLgf9kFiPcMC3lrbgkOV0Q4cpUwznVHh36WG0oTr9FdVMJQrCfkO
- Uq5uq0pQlh1eX9qRD3DnNyTjp5RQeoUTYRF7bMzV1gimWr60F0F+9SCtT/832vqrKQ9l
- Kziinp5KxMYXFk9vGb8XtnFkLLdBIWHxgXXQh0YeJ7LPpsAjGja/MZoNQmMecwNwfjrD
- QuGRVTBUhpMbvbui0t8DOGDdEJK68bGlM0x8tKIqyZ/x4bV8+0Fu/zB7J7HrUBo6xEqN
- JYmA==
-X-Gm-Message-State: AOJu0Yweml6KiXX+w3TppMhPQShTTqLUJk5m35MLPM+IA3aqMqBUzgmP
- 9WrZ345vjX0zw/T8d98XERVM8D/cQie8NpvNa8nlcwaAJeyc5XYyCanSCCc2uS4M8bHkZe6wn6E
- xaWoAD7KjJBzWuQ9LX5i9Oaw=
-X-Received: by 2002:a17:902:7297:b0:1d5:4c03:9988 with SMTP id
- d23-20020a170902729700b001d54c039988mr1289587pll.2.1704876254846; 
- Wed, 10 Jan 2024 00:44:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGMlRiiPdA3rkz3DsPFdBNYCLGtX9b99x8506hBP0HXztw/G3GkX86Ay3fyQ3wCYhLqjq9sjQ==
-X-Received: by 2002:a17:902:7297:b0:1d5:4c03:9988 with SMTP id
- d23-20020a170902729700b001d54c039988mr1289560pll.2.1704876254547; 
- Wed, 10 Jan 2024 00:44:14 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704876558; x=1705481358;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=U9Ay0uW4aKzseVVG9+XAeotn3kB9O7PfaKW+PiV4K1A=;
+ b=AQlHtMrPX0VkdqH1Ln8in8XhUWFGvklmRJNY4QvhPdlF8Vwy51qLWq+QIpebjuprb7
+ HL/bHEYWArxt3UmlCP7R9rF3YM/RPtBm4vDnAphgSNgjCtzmDettJpI9ymr4KWRGAF5p
+ FSgAgLBPZLKz+H5vdvWjgS0m9b5JqZZbO4K2c3+3Cl42oWZUHtxYsapPICPgbEi3y3yH
+ z+18ZAKBenWqOC3OvZoL2TBFOsr32wUEnV716w2a6HQS30/mKcoEq/SgOEb2cHpqznRn
+ E5HzDINFF57MxdqCTZt3aPDvSh9M5unHYZ8IpWplnf8W3MJFQuEEPlmaNyPKF5QtdZgZ
+ PEXA==
+X-Gm-Message-State: AOJu0Yww2mLHMKk0P3hSSguv+Ahm4eu7/f1tZolQ0s0R2/qg6utkWg2w
+ 44LqGzUG2yIuBC33bsutKlRsjyFXfagj/9QUZobfDeoSFHFGGy2DrAelX959PpnA0u3x4csV0Nc
+ 3q/w1wyDTkrFK6qzTJj/LAyQ=
+X-Received: by 2002:a05:6a00:2e90:b0:6da:838f:b004 with SMTP id
+ fd16-20020a056a002e9000b006da838fb004mr1679808pfb.1.1704876558194; 
+ Wed, 10 Jan 2024 00:49:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEETlpETOXXMyWzVNvJTxHH7gpPiWAKZd6YX3lThRbNqNgVGehGoSPYJBsExrRwl9MqGAuwqw==
+X-Received: by 2002:a05:6a00:2e90:b0:6da:838f:b004 with SMTP id
+ fd16-20020a056a002e9000b006da838fb004mr1679798pfb.1.1704876557895; 
+ Wed, 10 Jan 2024 00:49:17 -0800 (PST)
 Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- t24-20020a1709028c9800b001ce5b859a59sm3089659plo.305.2024.01.10.00.44.07
+ p29-20020a056a000a1d00b006dab0d72cd0sm2961537pfh.214.2024.01.10.00.49.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 00:44:14 -0800 (PST)
-Date: Wed, 10 Jan 2024 16:44:01 +0800
+ Wed, 10 Jan 2024 00:49:17 -0800 (PST)
+Date: Wed, 10 Jan 2024 16:49:11 +0800
 From: Peter Xu <peterx@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, qemu-devel@nongnu.org,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: Re: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in
- A7/A15 MPCore priv
-Message-ID: <ZZ5Y0UMA2h2x_tb9@x1n>
-References: <87y1d6i47m.fsf@suse.de>
- <597186d9-af21-46e8-8075-f21d36c01c07@kaod.org>
- <87plya76cu.fsf@suse.de>
- <d5c0b9fb-8b09-4f68-b3ab-c8adffd484a9@kaod.org>
- <87bk9u8dhs.fsf@suse.de>
- <2fa344b7-ccd2-4e6a-8c32-5ad7e4c960d6@linaro.org>
- <ZZ4Qrfis4XHWGN0j@x1n> <87cyu9hgit.fsf@pond.sub.org>
- <ZZ44iQRPrdDpfov7@x1n> <87sf35ehio.fsf@pond.sub.org>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>, Nikolay Borisov <nborisov@suse.com>
+Subject: Re: [RFC PATCH v3 01/30] io: add and implement
+ QIO_CHANNEL_FEATURE_SEEKABLE for channel file
+Message-ID: <ZZ5aBzsrV55hAmJX@x1n>
+References: <20231127202612.23012-1-farosas@suse.de>
+ <20231127202612.23012-2-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87sf35ehio.fsf@pond.sub.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231127202612.23012-2-farosas@suse.de>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,49 +101,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 10, 2024 at 09:09:51AM +0100, Markus Armbruster wrote:
-> If an object has state that needs to be migrated only sometimes, and
-> that part of the state is large enough to bother, we can put it in an
-> optional subsection, can't we?
+On Mon, Nov 27, 2023 at 05:25:43PM -0300, Fabiano Rosas wrote:
+> From: Nikolay Borisov <nborisov@suse.com>
 > 
-> Destination: if present, take it.  If absent, initialize to default.
+> Add a generic QIOChannel feature SEEKABLE which would be used by the
+> qemu_file* apis. For the time being this will be only implemented for
+> file channels.
 > 
-> Source: send unless (known to be) in default state.
+> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-Hmm.. correct. I think I messed up VMSD's needed() hook with field_exists()
-of the fields; my apologies.
-
-The trick should be that VMSD's subsections is more flexible, due to the
-fact that vmstate_subsection_load() has:
-
-    while (qemu_peek_byte(f, 0) == QEMU_VM_SUBSECTION) {
-        ...
-        sub_vmsd = vmstate_get_subsection(vmsd->subsections, idstr);
-        ...
-    }
-
-So it tolerates the case where the subsection doesn't exist, or out of
-order subsections.
-
-While field_exists() hook seems not that flexible, as it's implemented as
-this in vmstate_load_state():
-
-    while (field->name) {
-        ...
-        if (vmstate_field_exists(vmsd, field, opaque, version_id)) {
-           ...
-        }
-        ...
-        field++;
-    }
-
-So that vmstate_field_exists() needs to be known even on dest before the
-main vmsd got loaded, and it should always return the same value as the
-source.  Also, the field has ordering requirements.
-
-Then yes, subsection should work for dynamic objects.
-
-Thanks,
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
 -- 
 Peter Xu
