@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4D682A191
+	by mail.lfdr.de (Postfix) with ESMTPS id B805C82A193
 	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 20:55:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNee2-0006uv-Vm; Wed, 10 Jan 2024 14:53:47 -0500
+	id 1rNeeP-0007EC-Rf; Wed, 10 Jan 2024 14:54:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNee0-0006q8-4z
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 14:53:44 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNeeI-0007A7-7P
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 14:54:05 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNedy-0001oE-I6
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 14:53:43 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-33761e291c1so2714746f8f.0
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 11:53:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNeeC-0001sx-8B
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 14:54:00 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40e4f71288bso24150755e9.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 11:53:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704916421; x=1705521221; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704916428; x=1705521228; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W5YYwF8QpDX8Jtsvrc0+qop9CxJbiTqbmmnqrqDqyeI=;
- b=xCoOXTYSU3tG6dOoEPKMBQK0p7U5v6jSUytnCJUQFkM/a7cdrJfXkrf1/g/wxiFOjS
- 3KcJh6JM/W+uSTbupMu/mK3BG7xP4+/v1ArigX67uEHNPjybHsVqrW648vRGTCmsO8jc
- 6gnUgAUdrmBbqorxdov8hyBtEK1WLALQPs2zgUfTcPJlUn9XLnqheow3eg26q3tbiDBt
- qA/1Qt4qRTFJi7Bnq/6OgjWVvXQ2un0nnVpITh7gfGpMUOZLUHlTtGy1+DtMwIFC0lHx
- NmEwaju5ZJf139zZ27o7a4/JNDgOzHCJZFSY7N7UiL/w0UDduGLOY/IHmN9iU3zSnbJc
- 5QWA==
+ bh=mdirajlt6qC945MCVDYIpUTSXSVbweTZjiyf2mppVOc=;
+ b=FtrDxUIdss5ih2QFqGCkUlXq15n0ZxZLNY5lfr2jCFUokq0NTr4P5pdZJZg6C0cGBi
+ hXN0mCyxiOKppkUfvMKGPP/L4/M5tcacu1SDIDd4FuIBpIg8qhPacjcuu4Pa/LTR//DZ
+ SKI3iHVvW8vZdmb5EZiy81qOhteLLgr74JVKpkaopyy7hHPpQP5sjuxmFr1Fj0KzoNLg
+ XSINusudfLTwhz2yCAerLOmXxf4oEHBIW/p6D8s0gRnDD41LuDdtSY6tMz2Zj27BxIrW
+ AS2CixolMaNad8+t39XFF6Fum3XP7cSEDYcJBM4kd0m5mL/IyY3GuYWH4LK5hko40yjh
+ xzPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704916421; x=1705521221;
+ d=1e100.net; s=20230601; t=1704916428; x=1705521228;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W5YYwF8QpDX8Jtsvrc0+qop9CxJbiTqbmmnqrqDqyeI=;
- b=W9L3VgZQZkgztOaoRQQ8WC/fs3JU+rAJu0Fyo7Dd05LsfoN00S/3riaQz6a1K50Arw
- ++GW0xfZysjL1Xsp6WqPOkZ1XmCNWCKOsTDTHjEIXl+st18oBABaUyECV3spyRufwSPD
- OeslzOQSLP4omeytMwiWkOXQpScTnCumMLLgaq+PmKIAma3Wvn30JuDMyKASWYln8zka
- MIbZEN7sEJva2ZMAvvr8L/6a/W3m1iI3T++0he6r7RSw3V16uBuAY7kmMn0VbvXuly5F
- c6bRRxvxICpWGBcYphwiEFxRkc1yth3UtfH4YWJhT9SmP91PzbDqTgv+z/cNzmjxJZd7
- k3sw==
-X-Gm-Message-State: AOJu0YxXmCbdTl/qNhwEeCv1n6NhNLjGcNcjy2YWAPbmZ98eF5pzEIiK
- /p01tIcSQQFXKSNcJGYK+t/utWDpsLIhHPTmgTxg/0hrdrU=
-X-Google-Smtp-Source: AGHT+IGxC/nnlqKU3ONI5WNDIBxZz59NGE+y4irL+gMYhAm8f5/ZbCysM0p/xD4AuA5tSqpwOHjIUA==
-X-Received: by 2002:a05:600c:3c9c:b0:40d:5d0a:cf4a with SMTP id
- bg28-20020a05600c3c9c00b0040d5d0acf4amr370282wmb.34.1704916420849; 
- Wed, 10 Jan 2024 11:53:40 -0800 (PST)
+ bh=mdirajlt6qC945MCVDYIpUTSXSVbweTZjiyf2mppVOc=;
+ b=eZO6O/3+Y0dttAwd94EVjBL8hDmZvtixDAKq5Kr8QsQscquIhoM1qR10bhcBzlxnjI
+ i4xVtqoozDoZUursvh+YsNM3egMvtUStmYZljhT+ZzxMdT+bqposYkkz3vw6+Hp/ZIE6
+ +yTxxkPvjP45jTuuuGDqzsWJoSeg915WmXJt2jcemEH25Ufinbcf48nxbGHzGOBLlTtd
+ sK7u58yrA/T37rgtEQgiFzNwkDThHs593+9LChLIFWZGvYX+VbKkfzazEZFdidHWdk2D
+ v/RIsxtYfC8V1GTuwg6L6YZQX+odfCOLwg92WtTE+Li26ZPF3wv/xGOvuZkmRoXGylNy
+ zPCg==
+X-Gm-Message-State: AOJu0Ywtrs2medQV6dAcizXmNZGSMSYeJubdOF7y6NRRT/acSKt0RySe
+ MM4SQ90zVKsME6XUY8QPtF7hEDGwRBHdjXacLL86Vkm0Lag=
+X-Google-Smtp-Source: AGHT+IEM5mBA0vZDP7an5Du71JWNSy2KsfIX9laU0cGrvyWevak0CP3DGoYOyKFOF1yj1S3cqIiJHw==
+X-Received: by 2002:a05:600c:35c9:b0:40e:4557:4d0a with SMTP id
+ r9-20020a05600c35c900b0040e45574d0amr515035wmq.252.1704916427834; 
+ Wed, 10 Jan 2024 11:53:47 -0800 (PST)
 Received: from m1x-phil.lan (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
  [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
- jh3-20020a05600ca08300b0040e50d82af5sm3155192wmb.32.2024.01.10.11.53.38
+ k20-20020a05600c1c9400b0040e54f15d3dsm3212195wms.31.2024.01.10.11.53.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 10 Jan 2024 11:53:40 -0800 (PST)
+ Wed, 10 Jan 2024 11:53:47 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-arm@nongnu.org,
@@ -66,18 +66,18 @@ Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-arm@nongnu.org,
  Alistair Francis <alistair@alistair23.me>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 01/14] hw/arm/armv7m: Introduce cpudev variable in
- armv7m_realize()
-Date: Wed, 10 Jan 2024 20:53:15 +0100
-Message-ID: <20240110195329.3995-2-philmd@linaro.org>
+Subject: [PATCH v3 02/14] hw/arm/armv7m: Ensure requested CPU type implements
+ ARM_FEATURE_M
+Date: Wed, 10 Jan 2024 20:53:16 +0100
+Message-ID: <20240110195329.3995-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240110195329.3995-1-philmd@linaro.org>
 References: <20240110195329.3995-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,54 +100,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We are going to cast s->cpu as DeviceState multiple times.
-Add a local 'cpudev' variable to simplify code review, having
-a single DEVICE(s->cpu) conversion.
+ARMV7M container can only accept M-profile CPU types.
+Check requested type is valid once to allow further simplifications.
 
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/armv7m.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ hw/arm/armv7m.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
-index 50c6c6b1f5..d239468558 100644
+index d239468558..8900730e53 100644
 --- a/hw/arm/armv7m.c
 +++ b/hw/arm/armv7m.c
-@@ -277,6 +277,7 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
- {
-     ARMv7MState *s = ARMV7M(dev);
-     SysBusDevice *sbd;
-+    DeviceState *cpudev;
-     Error *err = NULL;
-     int i;
- 
-@@ -299,6 +300,7 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
+@@ -300,6 +300,10 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
          error_propagate(errp, err);
          return;
      }
-+    cpudev = DEVICE(s->cpu);
++    if (!arm_feature(&s->cpu->env, ARM_FEATURE_M)) {
++        error_setg(errp, "armv7m: CPU must be of Cortex-M family");
++        return;
++    }
+     cpudev = DEVICE(s->cpu);
  
      object_property_set_link(OBJECT(s->cpu), "memory", OBJECT(&s->container),
-                              &error_abort);
-@@ -356,7 +358,7 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
-     s->cpu->env.nvic = &s->nvic;
-     s->nvic.cpu = s->cpu;
- 
--    if (!qdev_realize(DEVICE(s->cpu), NULL, errp)) {
-+    if (!qdev_realize(cpudev, NULL, errp)) {
-         return;
-     }
- 
-@@ -426,8 +428,7 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
- 
-     /* Wire the NVIC up to the CPU */
-     sbd = SYS_BUS_DEVICE(&s->nvic);
--    sysbus_connect_irq(sbd, 0,
--                       qdev_get_gpio_in(DEVICE(s->cpu), ARM_CPU_IRQ));
-+    sysbus_connect_irq(sbd, 0, qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
- 
-     memory_region_add_subregion(&s->container, 0xe000e000,
-                                 sysbus_mmio_get_region(sbd, 0));
 -- 
 2.41.0
 
