@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FAE4829DFF
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 16:54:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9C2829E25
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 17:02:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNati-0000Ta-Lh; Wed, 10 Jan 2024 10:53:42 -0500
+	id 1rNb10-0001wk-Qe; Wed, 10 Jan 2024 11:01:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNath-0000TJ-2T
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 10:53:41 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNb0y-0001wa-E5
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 11:01:12 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNatf-0005dQ-CM
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 10:53:40 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40d5336986cso55786985e9.1
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 07:53:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNb0w-0001TU-J3
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 11:01:12 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40e461c1f5bso38216335e9.3
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 08:01:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704902017; x=1705506817; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1704902468; x=1705507268; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:cc:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NZRqVuenPWIeJ0HEFm/EdEMDQu8jxtzURv+23qvhkQs=;
- b=gLOVWOiE9yqPJFE8j5l0vJKFsSvkB08dzEPDRlk0cubfyv295ZHRsRNikNm9wt0USq
- Vwiiftf0BUS4iGVX9bA42bE03AGHAS0oZ+uX7S+EZZsfUDz7L842kYR+TtGUvvh25v4f
- wub6uf1/8a5gDpol2IRFlYDgDRHCB4G2pOvNGR9jBx8rNsjmYIKEPs7uyfhmojqIV0NX
- gLp+H7Ms9EIgmvwmWT5ijD16d+VqHvtC/QyALdCSHNJy47l/zHZapErXaAx2+/UwOjCc
- w9YazxqYis8tXNlaR/fMwbJy90XyhQcI5hJmklLEUfoZiWlKXdU/oWb7O4J4jDQGGdrS
- ljig==
+ bh=o8hJLVV6ac+MaDIfvX/KqWJ5Tuvnjxo0NEX31B3hfD8=;
+ b=uvUxXey2Ixoak/2UfDfGyex6+MXgpQuRnf+ntaYyf6h9HtM9+GjcbKxg90fgDYAdm9
+ nTJcDcivGMHxxKi7u8Vm70XVV3catAzY1+kPIBPfCDBAYiJHhUqOVVSn1hWaNwE37nvv
+ YvOmP/oDDUSqrRsd3wX1R7r+qZCxKhpEsszOwMIk/nsqUEudQaTe4q+qDr5WMrXyPQPi
+ VVqPPfe/3SCxBwvCOBAzI8DZPW/0m8QSuuaS4v13iWb5Kmwszn6eT9raU0+zZIJRoLsv
+ TMJdvuGnb+I7uRhKgUac4fazCttMccp7x98JXk26KVedADZAZ4+CfgRb686Zait8xUF1
+ iKKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704902017; x=1705506817;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1704902468; x=1705507268;
+ h=content-transfer-encoding:in-reply-to:from:cc:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NZRqVuenPWIeJ0HEFm/EdEMDQu8jxtzURv+23qvhkQs=;
- b=IeRPZ4WTuoU3jrGyakTQ0Kr+FEGf0J9kMq4Ai7W+6D7ivkAyE1HzCYSDzPkmVEbQkU
- XbuS4NuQi22XazSgDPxc3lGeeJ3ifvhqqxwUq3Rk5fby1iuwMseFMy/mjn1ntKm4w011
- d69iPA/SJPC3FCTM6GL/F6Nf4ncIpGSktHmIqnIEZRzRVbfExr1vfs64+d6wK7Vr1gvK
- L1nLP+A2TlVQoJK6rS7RhX4Xe0F/oVRMim30dTl4XsUu8v3RK7Hlf15b97Y4u+iNBqfy
- xJld9xL3HUxw/s1wamwoaR+WRuZwfjer+h8iGMr8QTgkTuePugfwZfYd9Hyc7yxN0KvR
- 7QsQ==
-X-Gm-Message-State: AOJu0Yx2UmIWUIocdti7WWYO9G7nfXxp1aOaHkqeOv2YSXcPVC1zSx7N
- X5Rbl7iTjYgIJswzSIXl08B/tKPK36LHxQ==
-X-Google-Smtp-Source: AGHT+IGFuT7224gSV3NRAuDK9vMsaQlN4qgzNy+xdyE9QiKhn6tSOLLiKkQ6MFisG1W9c5g80JcBtw==
-X-Received: by 2002:a05:600c:3484:b0:40e:3f83:fc34 with SMTP id
- a4-20020a05600c348400b0040e3f83fc34mr684764wmq.0.1704902017496; 
- Wed, 10 Jan 2024 07:53:37 -0800 (PST)
+ bh=o8hJLVV6ac+MaDIfvX/KqWJ5Tuvnjxo0NEX31B3hfD8=;
+ b=rVzKoBJ6TNGwCxNhZ3kwJGtFvXUcVPwgTIP67D5Tq42AT912b4DNelqHr8Ya12Y/ke
+ YoVGjbc5ZgRO2ydeNlViJEBpWkA5aXvpHaz9IHxGtxwTBVR1NSgLdDOaIK6KFm//6nZz
+ 9eYpvt6KuiGdK5ICHjXOoejjaKwuRAW+uft700jD7kmUIdMZl/va07Je/dt8GpDk8Ce0
+ eGVG4v723uqw3fkKtxKsng0LkfBM0gQk8ZKr2R8e0qrD6dNxcLuLMReWpq765meTlfb4
+ e5G1d1p9zco+mB3mWRR0ZvUD3t1OaEx8h+5eQssQedVcBNAceNV0XM0HPaldTPr+0pCz
+ 0VEw==
+X-Gm-Message-State: AOJu0YyHZSBkyViE2QRphxw8KB+/PyV+YMKoMNesR6dHutv5zjjMbtZ+
+ Eznjvd17k/o4e11Lzz6qB0HcfdfEOIRc7lyF8MY/K2Wagpk=
+X-Google-Smtp-Source: AGHT+IHQKQXXGS2VriJ93glzZzGJttEHd9U2YjzNHNbHOH0ljwZJjgml0RR0icyeiFsYD4qBARTLuw==
+X-Received: by 2002:a05:600c:3113:b0:40e:4cae:a3df with SMTP id
+ g19-20020a05600c311300b0040e4caea3dfmr643125wmo.128.1704902468503; 
+ Wed, 10 Jan 2024 08:01:08 -0800 (PST)
 Received: from [192.168.69.100] (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
  [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
- fl13-20020a05600c0b8d00b0040d8cd116e4sm2632002wmb.37.2024.01.10.07.53.36
+ c18-20020a7bc2b2000000b0040d5c58c41dsm2541135wmk.24.2024.01.10.08.01.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Jan 2024 07:53:37 -0800 (PST)
-Message-ID: <a6b05997-cc3f-453c-93a6-66dce2cd9a2e@linaro.org>
-Date: Wed, 10 Jan 2024 16:53:35 +0100
+ Wed, 10 Jan 2024 08:01:07 -0800 (PST)
+Message-ID: <20f3d501-7ff4-4094-8f34-9393c4c7c1e0@linaro.org>
+Date: Wed, 10 Jan 2024 17:01:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC/PATCH v1 09/11] gunyah: CPU execution loop
+Subject: Re: Goldfish TTY enhancement
 Content-Language: en-US
-To: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>, peter.maydell@linaro.org, 
- alex.bennee@linaro.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: quic_tsoni@quicinc.com, quic_pheragu@quicinc.com,
- quic_eberman@quicinc.com, quic_yvasi@quicinc.com, quic_cvanscha@quicinc.com,
- quic_mnalajal@quicinc.com
-References: <20240109090039.1636383-1-quic_svaddagi@quicinc.com>
- <20240109090039.1636383-10-quic_svaddagi@quicinc.com>
+To: Jason Thorpe <thorpej@me.com>, qemu-devel@nongnu.org
+References: <8FAAD163-46DD-426F-AF69-1DDAB45B2A9B@me.com>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, David 'Digit' Turner <digit@android.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240109090039.1636383-10-quic_svaddagi@quicinc.com>
+In-Reply-To: <8FAAD163-46DD-426F-AF69-1DDAB45B2A9B@me.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,63 +92,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Srivatsa,
+Hi Jason,
 
-On 9/1/24 10:00, Srivatsa Vaddagiri wrote:
-> Complete the cpu execution loop. At this time, we recognize exits
-> associated with only MMIO access. Future patches will add support for
-> recognizing other exit reasons, such as PSCI calls made by guest.
+On 10/1/24 16:24, Jason Thorpe wrote:
+> Having recently written a driver for the Goldfish TTY for NetBSD, I found it a bit odd (and a little annoying) that the device has a PUT_CHAR register but not a GET_CHAR register, something particularly useful for early-console or in-kernel debugger use.  As it stands, to get a single character from the device, you have to first poke a DMA address into 1 (or 2) registers and then poke the command register.  Depending on the operating system environment, this might involve a lot of kernel machinery.  My current driver works around this, but makes an explicit assumption that a physical address is a valid DMA address, which is the true for the m68k virt platform, but is the sort of assumption one shouldn’t be making these days.
 > 
-> Signed-off-by: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
-> ---
->   accel/gunyah/gunyah-accel-ops.c |   7 ++
->   accel/gunyah/gunyah-all.c       | 201 +++++++++++++++++++++++++++++++-
->   include/hw/core/cpu.h           |   1 +
->   include/sysemu/gunyah_int.h     |   9 ++
->   target/arm/gunyah.c             |  13 +++
->   5 files changed, 230 insertions(+), 1 deletion(-)
+> Would there be an objection to adding a single-register-read get-char operation to the Goldfish TTY?  The change I have in mind is to bump the version to 2 (so that driver software can identity the capability) and then allow reads of the PUT_CHAR register to return the first pending byte or -1 if the FIFO is empty.  Happy to create an additional register for the purpose if that’s preferred, but it seemed better to keep the footprint of the device the same.
 
+IIUC Goldfish virtual HW is maintained externally by Google
+https://android.googlesource.com/platform/external/qemu/+/master/docs/GOLDFISH-VIRTUAL-HARDWARE.TXT
 
-> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-> index 238c02c05e..ef248a658b 100644
-> --- a/include/hw/core/cpu.h
-> +++ b/include/hw/core/cpu.h
-> @@ -371,6 +371,7 @@ struct CPUWatchpoint {
->   
->   struct KVMState;
->   struct kvm_run;
-> +struct gh_vcpu_run;
+I suppose the spec needs to be updated before the change can be
+accepted in mainstream QEMU, but since I'm not sure I Cc'ed Alex,
+David and Laurent.
 
-Please do not forward-declare this structure here, it is not required.
+Regards,
 
->   
->   /* work queue */
->   
-> diff --git a/include/sysemu/gunyah_int.h b/include/sysemu/gunyah_int.h
-> index dc5b4847a9..72b3027e4e 100644
-> --- a/include/sysemu/gunyah_int.h
-> +++ b/include/sysemu/gunyah_int.h
-> @@ -46,12 +46,21 @@ struct GUNYAHState {
->       bool preshmem_reserved;
->       uint32_t preshmem_size;
->       uint32_t nr_irqs;
-> +    uint32_t vm_started;
-> +};
-> +
-> +struct AccelCPUState {
-> +    int fd;
-> +    struct gh_vcpu_run *run;
->   };
->   
->   int gunyah_create_vm(void);
-> +void gunyah_start_vm(void);
->   int gunyah_vm_ioctl(int type, ...);
->   void *gunyah_cpu_thread_fn(void *arg);
->   int gunyah_add_irqfd(int irqfd, int label, Error **errp);
->   GUNYAHState *get_gunyah_state(void);
-> +int gunyah_arch_put_registers(CPUState *cs, int level);
-> +void gunyah_cpu_synchronize_post_reset(CPUState *cpu);
->   
->   #endif    /* GUNYAH_INT_H */
+Phil.
+
+> 
+> If the consensus is that this is a worthwhile enhancement, I’ll post a patch.
+> 
+> Cheers.
+> 
+> -- thorpej
+> 
+> 
 
 
