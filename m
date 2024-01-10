@@ -2,86 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF65829966
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 12:43:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B778299DA
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 12:54:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNWyG-00057i-9y; Wed, 10 Jan 2024 06:42:08 -0500
+	id 1rNX8g-0007Bd-CC; Wed, 10 Jan 2024 06:52:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rNWyF-00057O-4V
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 06:42:07 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rNWyC-0002ZO-I5
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 06:42:06 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40e490c2115so17447035e9.0
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 03:42:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704886922; x=1705491722; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=MazOYqJHWlJ2EFPfzzjFsA17e+Wrldgt49eESIgEqo8=;
- b=cofwPwd5fenTuNNkeAV0v9EHI+kKvepCv6f8+dYNz17Ga4n5AC/oNpv5GaS/aDWijs
- kNTX9LJ3WfTYSqY/oRIAE/VfNvWCMSxglekWhxaCO+Ca1AaVATIQWqaeTPVvr+enKNFR
- 2KgCSgIhJ+p602li2N00zZxWkHMKDfDjwoPA5BXOtq7ipI4zvq33qrKYa//UzjIgu7Bc
- 9vHAJCgcULikKUYp9nkjWhxMCrrMv4J0Bk+luf7qr/C7tM0Jc2FbM1w5EKYKxwmObgrm
- WCfhdYOpYlRbboFplJvEQgaamTO6lqjTM4V/Wj8QfOu/TSAQVbDH0FjfI3vmD1Ys2cNg
- quTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704886922; x=1705491722;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MazOYqJHWlJ2EFPfzzjFsA17e+Wrldgt49eESIgEqo8=;
- b=gHjHq28NRlmEI3nC5tqV7RcfVi2FGR7oL/NZdpokZSvA2aFMgzhBYjvGujHJ1ZcCFK
- cg9Ktp9M7vhqXY5fvTtMytLO6yAa8VMqlFsKm/UeT9sDQCfyzcFj9WMkRFopglj9orYU
- 5aoWSFceIkSz7vOqjnqDgPrBNfOMbfFjCqRP5pwf3TzqY+4A9TJZOrnFBnuh65D3CBxX
- AycHZKOUosOE4hSENX8Me3Ewc1AmdWCm+BZ+opNltxMNTmDqv8Db/JLj1Yea81kHf1mP
- pyUwIQO8UTX+paCGiEHD7RsmqdI46A/uVNTdbXyiVf56dZeEc0lII4v0jGyNYXkI2y+z
- wyoQ==
-X-Gm-Message-State: AOJu0Ywz4GIknHZrOLot4bXnzZ6bZQ1OvZf2pSzGiDRHEvizwkfVutn0
- 6gjZ+oQT1vM+0oCGE7AktgleAgLDaeFjYw==
-X-Google-Smtp-Source: AGHT+IHSoCM9y3FIvaH3i6ii00VRiuNOuPKkjhABlfnri1UZ1NI3gmfYE9lo70Xr8laTIdbXrL/f0A==
-X-Received: by 2002:a05:600c:3799:b0:40e:4554:c8e8 with SMTP id
- o25-20020a05600c379900b0040e4554c8e8mr585244wmr.119.1704886922461; 
- Wed, 10 Jan 2024 03:42:02 -0800 (PST)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- c18-20020a7bc2b2000000b0040d5c58c41dsm1844204wmk.24.2024.01.10.03.42.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 03:42:02 -0800 (PST)
-Date: Wed, 10 Jan 2024 12:42:01 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: qemu-riscv@nongnu.org, Conor Dooley <conor.dooley@microchip.com>, 
- Alistair Francis <Alistair.Francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 2/2] target/riscv: support new isa extension detection
- devicetree properties
-Message-ID: <20240110-1a8341d0b2a02f1396f14c5b@orel>
-References: <20240110-mold-renovate-256db1b5c70e@spud>
- <20240110-sasquatch-vaporizer-b1d92e7ea9dc@spud>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rNX8d-0007B0-8h
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 06:52:51 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rNX8b-0008LA-6V
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 06:52:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1704887569; x=1736423569;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=PpTniVRf/mUrjDL1i7K82KKY0DYSCGANpu49oItuHkE=;
+ b=gAkJjPTTQJiKoydwXyAzul4njV+0qIK+okSQhCnC76JQY3o349GDqt4E
+ /1Ubv135vyady7Rr2HPW3lrv2zyee/h4aRH8a2k8eStCh+0ow1vqZneQ9
+ yJuHqG/MQRK+sa+TSjIjOBBcQPLfBg1csvg+2nftOsuGmgz7DMoLU+Nxg
+ c7I46iOsFbSFT9NA/I4gZjyjiYD9MIl3fiewg2GnQ6RXF+cmIwb7kB05Q
+ DxT9JC8VcPIEpL5T1Ml1jo9sOCvDXwqjq9rNTqF2vq7RCp6kMxMlb8690
+ ipgO2RoHnJ5fNB6PYaf24Ab+a1v36AX4bOfsgLbmAQs8eGVUxS08Nclgj g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10948"; a="11977274"
+X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; d="scan'208";a="11977274"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jan 2024 03:52:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10948"; a="905505974"
+X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; d="scan'208";a="905505974"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
+ ([10.93.22.149])
+ by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jan 2024 03:52:41 -0800
+Message-ID: <ddb911d0-6054-43ab-a763-242216b9c8d9@intel.com>
+Date: Wed, 10 Jan 2024 19:52:38 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240110-sasquatch-vaporizer-b1d92e7ea9dc@spud>
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 03/16] i386/cpu: Consolidate the use of topo_info in
+ cpu_x86_cpuid()
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Robert Hoo <robert.hu@linux.intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-4-zhao1.liu@linux.intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20240108082727.420817-4-zhao1.liu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,219 +90,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 10, 2024 at 10:25:37AM +0000, Conor Dooley wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
+On 1/8/2024 4:27 PM, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
 > 
-> A few months ago I submitted a patch to various lists, deprecating
-> "riscv,isa" with a lengthy commit message [0] that is now commit
-> aeb71e42caae ("dt-bindings: riscv: deprecate riscv,isa") in the Linux
-> kernel tree. Primarily, the goal was to replace "riscv,isa" with a new
-> set of properties that allowed for strictly defining the meaning of
-> various extensions, where "riscv,isa" was tied to whatever definitions
-> inflicted upon us by the ISA manual, which have seen some variance over
-> time.
-> 
-> Two new properties were introduced: "riscv,isa-base" and
-> "riscv,isa-extensions". The former is a simple string to communicate the
-> base ISA implemented by a hart and the latter an array of strings used
-> to communicate the set of ISA extensions supported, per the definitions
-> of each substring in extensions.yaml [1]. A beneficial side effect was
-> also the ability to define vendor extensions in a more "official" way,
-> as the ISA manual and other RVI specifications only covered the format
-> for vendor extensions in the ISA string, but not the meaning of vendor
-> extensions, for obvious reasons.
-> 
-> Add support for setting these two new properties in the devicetrees for
-> the various devicetree platforms supported by QEMU for RISC-V. The Linux
-> kernel already supports parsing ISA extensions from these new
-> properties, and documenting them in the dt-binding is a requirement for
-> new extension detection being added to the kernel.
-> 
-> A side effect of the implementation is that the meaning for elements in
-> "riscv,isa" and in "riscv,isa-extensions" are now tied together as they
-> are constructed from the same source. The same applies to the ISA string
-> provided in ACPI tables, but there does not appear to be any strict
-> definitions of meanings in ACPI land either.
-> 
-> Link: https://lore.kernel.org/qemu-riscv/20230702-eats-scorebook-c951f170d29f@spud/ [0]
-> Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/riscv/extensions.yaml [1]
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-> ---
->  hw/riscv/sifive_u.c |  7 ++----
->  hw/riscv/spike.c    |  6 ++---
->  hw/riscv/virt.c     |  6 ++---
->  target/riscv/cpu.c  | 53 +++++++++++++++++++++++++++++++++++++++++++++
->  target/riscv/cpu.h  |  1 +
->  5 files changed, 60 insertions(+), 13 deletions(-)
-> 
-> diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
-> index ec76dce6c9..2f227f15bc 100644
-> --- a/hw/riscv/sifive_u.c
-> +++ b/hw/riscv/sifive_u.c
-> @@ -171,7 +171,6 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
->          int cpu_phandle = phandle++;
->          nodename = g_strdup_printf("/cpus/cpu@%d", cpu);
->          char *intc = g_strdup_printf("/cpus/cpu@%d/interrupt-controller", cpu);
-> -        char *isa;
->          qemu_fdt_add_subnode(fdt, nodename);
->          /* cpu 0 is the management hart that does not have mmu */
->          if (cpu != 0) {
-> @@ -180,11 +179,10 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
->              } else {
->                  qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv48");
->              }
-> -            isa = riscv_isa_string(&s->soc.u_cpus.harts[cpu - 1]);
-> +            riscv_isa_write_fdt(&s->soc.u_cpus.harts[cpu - 1], fdt, nodename);
->          } else {
-> -            isa = riscv_isa_string(&s->soc.e_cpus.harts[0]);
-> +            riscv_isa_write_fdt(&s->soc.e_cpus.harts[0], fdt, nodename);
->          }
-> -        qemu_fdt_setprop_string(fdt, nodename, "riscv,isa", isa);
->          qemu_fdt_setprop_string(fdt, nodename, "compatible", "riscv");
->          qemu_fdt_setprop_string(fdt, nodename, "status", "okay");
->          qemu_fdt_setprop_cell(fdt, nodename, "reg", cpu);
-> @@ -194,7 +192,6 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
->          qemu_fdt_setprop_string(fdt, intc, "compatible", "riscv,cpu-intc");
->          qemu_fdt_setprop(fdt, intc, "interrupt-controller", NULL, 0);
->          qemu_fdt_setprop_cell(fdt, intc, "#interrupt-cells", 1);
-> -        g_free(isa);
->          g_free(intc);
->          g_free(nodename);
->      }
-> diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
-> index 81f7e53aed..64074395bc 100644
-> --- a/hw/riscv/spike.c
-> +++ b/hw/riscv/spike.c
-> @@ -59,7 +59,7 @@ static void create_fdt(SpikeState *s, const MemMapEntry *memmap,
->      MachineState *ms = MACHINE(s);
->      uint32_t *clint_cells;
->      uint32_t cpu_phandle, intc_phandle, phandle = 1;
-> -    char *name, *mem_name, *clint_name, *clust_name;
-> +    char *mem_name, *clint_name, *clust_name;
->      char *core_name, *cpu_name, *intc_name;
->      static const char * const clint_compat[2] = {
->          "sifive,clint0", "riscv,clint0"
-> @@ -113,9 +113,7 @@ static void create_fdt(SpikeState *s, const MemMapEntry *memmap,
->              } else {
->                  qemu_fdt_setprop_string(fdt, cpu_name, "mmu-type", "riscv,sv48");
->              }
-> -            name = riscv_isa_string(&s->soc[socket].harts[cpu]);
-> -            qemu_fdt_setprop_string(fdt, cpu_name, "riscv,isa", name);
-> -            g_free(name);
-> +            riscv_isa_write_fdt(&s->soc[socket].harts[cpu], fdt, cpu_name);
->              qemu_fdt_setprop_string(fdt, cpu_name, "compatible", "riscv");
->              qemu_fdt_setprop_string(fdt, cpu_name, "status", "okay");
->              qemu_fdt_setprop_cell(fdt, cpu_name, "reg",
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index f9fd1341fc..c47b2d397a 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -215,7 +215,7 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
->      int cpu;
->      uint32_t cpu_phandle;
->      MachineState *ms = MACHINE(s);
-> -    char *name, *cpu_name, *core_name, *intc_name, *sv_name;
-> +    char *cpu_name, *core_name, *intc_name, *sv_name;
->      bool is_32_bit = riscv_is_32bit(&s->soc[0]);
->      uint8_t satp_mode_max;
->  
-> @@ -236,9 +236,7 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
->              g_free(sv_name);
->          }
->  
-> -        name = riscv_isa_string(cpu_ptr);
-> -        qemu_fdt_setprop_string(ms->fdt, cpu_name, "riscv,isa", name);
-> -        g_free(name);
-> +        riscv_isa_write_fdt(cpu_ptr, ms->fdt, cpu_name);
->  
->          if (cpu_ptr->cfg.ext_zicbom) {
->              qemu_fdt_setprop_cell(ms->fdt, cpu_name, "riscv,cbom-block-size",
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 5b5da970f2..1c8c81ca4c 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -31,6 +31,7 @@
->  #include "hw/qdev-properties.h"
->  #include "migration/vmstate.h"
->  #include "fpu/softfloat-helpers.h"
-> +#include "sysemu/device_tree.h"
->  #include "sysemu/kvm.h"
->  #include "sysemu/tcg.h"
->  #include "kvm/kvm_riscv.h"
-> @@ -1875,6 +1876,58 @@ char *riscv_isa_string(RISCVCPU *cpu)
->      return isa_str;
->  }
->  
-> +#ifndef CONFIG_USER_ONLY
-> +static char **riscv_isa_extensions_list(RISCVCPU *cpu, int *count)
-> +{
-> +    int maxlen = ARRAY_SIZE(riscv_single_letter_exts) + ARRAY_SIZE(isa_edata_arr);
-> +    char **extensions = g_new(char *, maxlen);
-> +
-> +    for (int i = 0; i < sizeof(riscv_single_letter_exts) - 1; i++) {
-> +        if (cpu->env.misa_ext & RV(riscv_single_letter_exts[i])) {
-> +            extensions[*count] = g_new(char, 2);
-> +            snprintf(extensions[*count], 2, "%c",
-> +                     qemu_tolower(riscv_single_letter_exts[i]));
-> +            (*count)++;
-> +        }
-> +    }
-> +
-> +    for (const RISCVIsaExtData *edata = isa_edata_arr; edata->name; edata++) {
-> +        if (isa_ext_is_enabled(cpu, edata->ext_enable_offset)) {
-> +            extensions[*count] = g_strdup(edata->name);
-> +            (*count)++;
-> +        }
-> +    }
-> +
-> +    return extensions;
-> +}
-> +
-> +void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename)
-> +{
-> +    const size_t maxlen = sizeof("rv128i");
-> +    g_autofree char *isa_base = g_new(char, maxlen);
-> +    g_autofree char *riscv_isa;
-> +    char **isa_extensions;
-> +    int count = 0;
-> +    int xlen = 16 << cpu->env.misa_mxl_max;
-> +
-> +    riscv_isa = riscv_isa_string(cpu);
-> +    qemu_fdt_setprop_string(fdt, nodename, "riscv,isa", riscv_isa);
-> +
-> +    snprintf(isa_base, maxlen, "rv%di", xlen);
-> +    qemu_fdt_setprop_string(fdt, nodename, "riscv,isa-base", isa_base);
-> +
-> +    isa_extensions = riscv_isa_extensions_list(cpu, &count);
-> +    qemu_fdt_setprop_string_array(fdt, nodename, "riscv,isa-extensions",
-> +                                  isa_extensions, count);
-> +
-> +    for (int i = 0; i < count; i++) {
-> +        g_free(isa_extensions[i]);
-> +    }
-> +
-> +    g_free(isa_extensions);
-> +}
-> +#endif
-> +
->  #define DEFINE_CPU(type_name, initfn)      \
->      {                                      \
->          .name = type_name,                 \
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 5f3955c38d..192d0c2d31 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -510,6 +510,7 @@ char *riscv_isa_string(RISCVCPU *cpu);
->  #define cpu_mmu_index riscv_cpu_mmu_index
->  
->  #ifndef CONFIG_USER_ONLY
-> +void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename);
->  void riscv_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
->                                       vaddr addr, unsigned size,
->                                       MMUAccessType access_type,
-> -- 
-> 2.39.2
->
+> In cpu_x86_cpuid(), there are many variables in representing the cpu
+> topology, e.g., topo_info, cs->nr_cores/cs->nr_threads.
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Please use comma instead of slash. cs->nr_cores/cs->nr_threads looks 
+like one variable.
+
+> Since the names of cs->nr_cores/cs->nr_threads does not accurately
+> represent its meaning, the use of cs->nr_cores/cs->nr_threads is prone
+> to confusion and mistakes.
+> 
+> And the structure X86CPUTopoInfo names its members clearly, thus the
+> variable "topo_info" should be preferred.
+> 
+> In addition, in cpu_x86_cpuid(), to uniformly use the topology variable,
+> replace env->dies with topo_info.dies_per_pkg as well.
+> 
+> Suggested-by: Robert Hoo <robert.hu@linux.intel.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Tested-by: Babu Moger <babu.moger@amd.com>
+> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
+> Changes since v3:
+>   * Fix typo. (Babu)
+> 
+> Changes since v1:
+>   * Extract cores_per_socket from the code block and use it as a local
+>     variable for cpu_x86_cpuid(). (Yanan)
+>   * Remove vcpus_per_socket variable and use cpus_per_pkg directly.
+>     (Yanan)
+>   * Replace env->dies with topo_info.dies_per_pkg in cpu_x86_cpuid().
+> ---
+>   target/i386/cpu.c | 31 ++++++++++++++++++-------------
+>   1 file changed, 18 insertions(+), 13 deletions(-)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index c8d2a585723a..6f8fa772ecf8 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -6017,11 +6017,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>       uint32_t limit;
+>       uint32_t signature[3];
+>       X86CPUTopoInfo topo_info;
+> +    uint32_t cores_per_pkg;
+> +    uint32_t cpus_per_pkg;
+
+I prefer to lps_per_pkg or threads_per_pkg.
+
+Other than it,
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+>   
+>       topo_info.dies_per_pkg = env->nr_dies;
+>       topo_info.cores_per_die = cs->nr_cores / env->nr_dies;
+>       topo_info.threads_per_core = cs->nr_threads;
+>   
+> +    cores_per_pkg = topo_info.cores_per_die * topo_info.dies_per_pkg;
+> +    cpus_per_pkg = cores_per_pkg * topo_info.threads_per_core;
+> +
+>       /* Calculate & apply limits for different index ranges */
+>       if (index >= 0xC0000000) {
+>           limit = env->cpuid_xlevel2;
+> @@ -6057,8 +6062,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>               *ecx |= CPUID_EXT_OSXSAVE;
+>           }
+>           *edx = env->features[FEAT_1_EDX];
+> -        if (cs->nr_cores * cs->nr_threads > 1) {
+> -            *ebx |= (cs->nr_cores * cs->nr_threads) << 16;
+> +        if (cpus_per_pkg > 1) {
+> +            *ebx |= cpus_per_pkg << 16;
+>               *edx |= CPUID_HT;
+>           }
+>           if (!cpu->enable_pmu) {
+> @@ -6095,8 +6100,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>                */
+>               if (*eax & 31) {
+>                   int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
+> -                int vcpus_per_socket = cs->nr_cores * cs->nr_threads;
+> -                if (cs->nr_cores > 1) {
+> +
+> +                if (cores_per_pkg > 1) {
+>                       int addressable_cores_offset =
+>                                                   apicid_pkg_offset(&topo_info) -
+>                                                   apicid_core_offset(&topo_info);
+> @@ -6104,7 +6109,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>                       *eax &= ~0xFC000000;
+>                       *eax |= (1 << (addressable_cores_offset - 1)) << 26;
+>                   }
+> -                if (host_vcpus_per_cache > vcpus_per_socket) {
+> +                if (host_vcpus_per_cache > cpus_per_pkg) {
+>                       int pkg_offset = apicid_pkg_offset(&topo_info);
+>   
+>                       *eax &= ~0x3FFC000;
+> @@ -6249,12 +6254,12 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>           switch (count) {
+>           case 0:
+>               *eax = apicid_core_offset(&topo_info);
+> -            *ebx = cs->nr_threads;
+> +            *ebx = topo_info.threads_per_core;
+>               *ecx |= CPUID_TOPOLOGY_LEVEL_SMT;
+>               break;
+>           case 1:
+>               *eax = apicid_pkg_offset(&topo_info);
+> -            *ebx = cs->nr_cores * cs->nr_threads;
+> +            *ebx = cpus_per_pkg;
+>               *ecx |= CPUID_TOPOLOGY_LEVEL_CORE;
+>               break;
+>           default:
+> @@ -6274,7 +6279,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>           break;
+>       case 0x1F:
+>           /* V2 Extended Topology Enumeration Leaf */
+> -        if (env->nr_dies < 2) {
+> +        if (topo_info.dies_per_pkg < 2) {
+>               *eax = *ebx = *ecx = *edx = 0;
+>               break;
+>           }
+> @@ -6284,7 +6289,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>           switch (count) {
+>           case 0:
+>               *eax = apicid_core_offset(&topo_info);
+> -            *ebx = cs->nr_threads;
+> +            *ebx = topo_info.threads_per_core;
+>               *ecx |= CPUID_TOPOLOGY_LEVEL_SMT;
+>               break;
+>           case 1:
+> @@ -6294,7 +6299,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>               break;
+>           case 2:
+>               *eax = apicid_pkg_offset(&topo_info);
+> -            *ebx = cs->nr_cores * cs->nr_threads;
+> +            *ebx = cpus_per_pkg;
+>               *ecx |= CPUID_TOPOLOGY_LEVEL_DIE;
+>               break;
+>           default:
+> @@ -6518,7 +6523,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>            * discards multiple thread information if it is set.
+>            * So don't set it here for Intel to make Linux guests happy.
+>            */
+> -        if (cs->nr_cores * cs->nr_threads > 1) {
+> +        if (cpus_per_pkg > 1) {
+>               if (env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1 ||
+>                   env->cpuid_vendor2 != CPUID_VENDOR_INTEL_2 ||
+>                   env->cpuid_vendor3 != CPUID_VENDOR_INTEL_3) {
+> @@ -6584,7 +6589,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>                *eax |= (cpu_x86_virtual_addr_width(env) << 8);
+>           }
+>           *ebx = env->features[FEAT_8000_0008_EBX];
+> -        if (cs->nr_cores * cs->nr_threads > 1) {
+> +        if (cpus_per_pkg > 1) {
+>               /*
+>                * Bits 15:12 is "The number of bits in the initial
+>                * Core::X86::Apic::ApicId[ApicId] value that indicate
+> @@ -6592,7 +6597,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>                * Bits 7:0 is "The number of threads in the package is NC+1"
+>                */
+>               *ecx = (apicid_pkg_offset(&topo_info) << 12) |
+> -                   ((cs->nr_cores * cs->nr_threads) - 1);
+> +                   (cpus_per_pkg - 1);
+>           } else {
+>               *ecx = 0;
+>           }
+
 
