@@ -2,75 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D2B82948F
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 08:59:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17CBF829496
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 09:01:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNTTo-0007kz-8V; Wed, 10 Jan 2024 02:58:28 -0500
+	id 1rNTWT-0000Aq-5t; Wed, 10 Jan 2024 03:01:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNTTb-0007kW-Dv
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 02:58:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jeeheng.sia@starfivetech.com>)
+ id 1rNTWO-000089-Ag; Wed, 10 Jan 2024 03:01:08 -0500
+Received: from mail-sh0chn02on20624.outbound.protection.partner.outlook.cn
+ ([2406:e500:4420:2::624]
+ helo=CHN02-SH0-obe.outbound.protection.partner.outlook.cn)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNTTZ-0001hW-IU
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 02:58:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704873492;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DrsYZGpQx5lT44HOPtxvCS+n9LzOt+k4tJ0mEZPhTg0=;
- b=UxKhmk0pAipdbE+MOgI+5VZ4/EUPjuYlSly/V/TVIbI/zB+9cEGAn2p9h2NumyF/WzNow5
- Q2MUmwMFMv6dAn8Qa4xX5n4RWfNu/ZKuM8Vtk+5a/Y1FIWLIaSgtLTP+IGL5+XgT9PpM5d
- Dh59g9aiWgmd5OMjER8krfRW/PvUTjo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-Hs3Gol2BPVSI7nT9X56rLA-1; Wed,
- 10 Jan 2024 02:58:08 -0500
-X-MC-Unique: Hs3Gol2BPVSI7nT9X56rLA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 843D41C04B70;
- Wed, 10 Jan 2024 07:58:08 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 490751121306;
- Wed, 10 Jan 2024 07:58:08 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6142A21E6740; Wed, 10 Jan 2024 08:58:07 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,  qemu-devel@nongnu.org,  Peter
- Maydell <peter.maydell@linaro.org>,  Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH 15/19] qapi/parser: demote QAPIExpression to Dict[str, Any]
-In-Reply-To: <CAFn=p-bD5h2h8p=Fre1y5pdKWEQ_Y9GX3vwNJCTAZwz9KpUuiA@mail.gmail.com>
- (John Snow's message of "Tue, 9 Jan 2024 19:14:39 -0500")
-References: <20231116014350.653792-1-jsnow@redhat.com>
- <20231116014350.653792-16-jsnow@redhat.com>
- <8734ww4kz4.fsf@pond.sub.org>
- <CAFn=p-bD5h2h8p=Fre1y5pdKWEQ_Y9GX3vwNJCTAZwz9KpUuiA@mail.gmail.com>
-Date: Wed, 10 Jan 2024 08:58:07 +0100
-Message-ID: <877ckhfwmo.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <jeeheng.sia@starfivetech.com>)
+ id 1rNTWG-000320-Fd; Wed, 10 Jan 2024 03:01:06 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cpgdXF6FVGk0YJrQXgnQSFaqMXm/bFTsXklqHMFXaZF9sEhFhzqa1h7yllz59yj4+J9bpLeKz2NjXTv8yZ+FVVtkmUmv9DUMna6a/wPMVDwMIUAVxucPtj7KVCbuszaLOLNK4qR5nQwvY0ZZ6kqUuMRAWRlWvX7bLUtSJDHUR2Au1OQvTxs/WEPEgGrxmmB95yn6KE9p7VI5oHuMVZABl5XvXqol+p2ARUSc4SaRZ7RcbgKfKCnurNLTY2l5fiuAg4W1Pk2WTHq0w/0VeE9VYZjhVBHAW+3bBGkn2wlLyOJoECdendEu6xr2XCsu0QW+mvtmyYx8j0I4mb+0CIw/HA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R2H3t0k1LAJMnGnQRKjykHm5ipSnYYUcR1qO+HcxDbk=;
+ b=btRWmKiDPoTcKBbu92BZCc8NSTEs0dZmfWVeZivkoyG5R48V0zPGQoCmH4jB/xnmu3k4+FATgcbzLhNjppDt72vMEex0ekzztb5H1er8Wcr7QKyPFSqJpMZu6Iz8PB1G82bZDMRsZC9YF6izab8eBQ4yoaE01XIiIUJF6evPlCbFCHHnQAc1X5+dvA9sXObLGAzcHzvp+fk5xFkxfohaBypSjVdapN/agAMZbP2/IVjL7gCWrximxzjppDZlz7BTRGKcE19+UW5lw+CcmkHHgL5iyFkOXXobhIIr7yPIr+TFgqj96/SOH2saFy6xGLPPQW/K6bsaPOU4oM0WylbKLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Received: from SHXPR01MB0574.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:1c::14) by SHXPR01MB0621.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:1e::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.32; Wed, 10 Jan
+ 2024 08:00:48 +0000
+Received: from SHXPR01MB0574.CHNPR01.prod.partner.outlook.cn
+ ([fe80::535d:fb55:ed0:334f]) by SHXPR01MB0574.CHNPR01.prod.partner.outlook.cn
+ ([fe80::535d:fb55:ed0:334f%3]) with mapi id 15.20.7135.032; Wed, 10 Jan 2024
+ 08:00:48 +0000
+From: JeeHeng Sia <jeeheng.sia@starfivetech.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>
+CC: "mst@redhat.com" <mst@redhat.com>, "imammedo@redhat.com"
+ <imammedo@redhat.com>, "anisinha@redhat.com" <anisinha@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
+ "sunilvl@ventanamicro.com" <sunilvl@ventanamicro.com>, "palmer@dabbelt.com"
+ <palmer@dabbelt.com>, "alistair.francis@wdc.com" <alistair.francis@wdc.com>,
+ "bin.meng@windriver.com" <bin.meng@windriver.com>, "liwei1518@gmail.com"
+ <liwei1518@gmail.com>, "zhiwei_liu@linux.alibaba.com"
+ <zhiwei_liu@linux.alibaba.com>
+Subject: RE: [RESEND RFC v1 2/2] hw/riscv/virt-acpi-build.c: Generate SPCR
+ table
+Thread-Topic: [RESEND RFC v1 2/2] hw/riscv/virt-acpi-build.c: Generate SPCR
+ table
+Thread-Index: AQHaP7Z4JAGSGYV8t02yA4Q90Z9warDLJZQAgAeP3AA=
+Date: Wed, 10 Jan 2024 08:00:47 +0000
+Message-ID: <SHXPR01MB05740B3922874949A41885979C69A@SHXPR01MB0574.CHNPR01.prod.partner.outlook.cn>
+References: <20240105090608.5745-1-jeeheng.sia@starfivetech.com>
+ <20240105090608.5745-3-jeeheng.sia@starfivetech.com>
+ <e7ee041b-4e71-458c-8a56-f0b91a3ace0f@ventanamicro.com>
+In-Reply-To: <e7ee041b-4e71-458c-8a56-f0b91a3ace0f@ventanamicro.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SHXPR01MB0574:EE_|SHXPR01MB0621:EE_
+x-ms-office365-filtering-correlation-id: 508bd727-1bb0-4ff5-05f7-08dc11b24174
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: NVbp9x0eg6IWuWVNDmi6Jt/S5FXgq/gv2VV84XfJWwdvBZB3zKEfge4HG2zO2eLp8+Gt/HUrzOg0PW+Dt8lQMN20dAlUZe8yVOTvYOQkbmnQUeg1OIKEk6MA3zsHWbRgE/HztUrvcmwjQ/r5uBi/D0QgShvh41JjicAUCUr/BmBtQkBqmhcDei5FJG08Sj2em9f6KnGQAh+9UcGqeW7jVez0UP+NyHP7VcBy8gAo3esBFzFNG1CyGEi14ZstVIsN4YKAthnSfw6mElKBK6YUemjpCttYXF7gg2GtBPo8lP0xHBQpAcSlJT2lwGU3q++SicLniJrCJ1I7d11M7UOEiRfQVk8OXG4rm0W2OkYxEVsq81Bfjal2sVuQNgLY2KVDXCpB2uNJeUCTOdF7H529Le42X8v4SQ/CVjkDUJH4FbfbYVBOjZxVEx0N2/ncA/FD/nhrS7NNS2iYedi0fc03LdTG4tSak+WZ4Wm8Tv6Uoo7hjpT4KBy1f8D2hJzc1eLRObbY1c4o5dvrTYkIzfWcRJ/5TXzoB5jj1qxbJRvMk2yG/CqyF1BoeU/TSXKd61oD
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SHXPR01MB0574.CHNPR01.prod.partner.outlook.cn; PTR:;
+ CAT:NONE;
+ SFS:(13230031)(39830400003)(396003)(346002)(136003)(366004)(230922051799003)(1800799012)(451199024)(186009)(64100799003)(83380400001)(38100700002)(122000001)(7416002)(54906003)(8676002)(41300700001)(8936002)(110136005)(71200400001)(2906002)(64756008)(5660300002)(4326008)(66476007)(7696005)(66446008)(66946007)(9686003)(53546011)(76116006)(38070700009)(66556008)(86362001)(33656002)(508600001)(40160700002)(41320700001)(55016003)(40180700001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?U2UyNWFITUlaa01OR1lEcEJKWmVaMnF6alFSelpIRUJDWG5OS1Z3YmlzNFRq?=
+ =?utf-8?B?c0NoaHYrczR1SVJ1Wmt1cmJ4MDNxN1F3L1RtUkFwemNtL3F4RElTTjlYNjcz?=
+ =?utf-8?B?TTI0ZHFMYUZjam1nSVJzejVRL0d5M1diYldxcnNBRy9JaVVhcjRtQ2tYT1FK?=
+ =?utf-8?B?VlFhbWdmbGwwbzFFWGYyNzlyMXZSczdyaXJRcGRmN3pUM2I3dXhvdmhNNCtl?=
+ =?utf-8?B?V3JCNkwzQlA3N29rZHhsOUw1UjhiYllJNFhocU9FOVZLeHMvWkFEa1M2eEVI?=
+ =?utf-8?B?MmpmTEo4OXdyVmFCWjgrcVBQZGhIa2laMG9FQVlIb1J1RXFYZ2N2QTRBQXdz?=
+ =?utf-8?B?NWdzVUNjSHdPeEJwRUYvaEtRSjYyd0llZnBKaWxiOTkzbE1EWG9CM0g5NWlm?=
+ =?utf-8?B?Y1ZmenNsYVFRZmVkby9vY1Y4NlVYYXVzc1lOMEx2clo4OTdLUXJ4WjZsVm1U?=
+ =?utf-8?B?VHAvSGd5N3BQcVhkcGpRd1lWdTBsUVRYQU83eWVvVWxEbW5RY00wTG9ITGdy?=
+ =?utf-8?B?eHRQNjltVzA4bTk5bWlFbkRSR0lMc1h1d0ZXa2xWUHREaWpqQXBwZTFjWlFU?=
+ =?utf-8?B?WUFoUnhRZm05U0hjaEx3a2dKQzZZbmJ2WTRkNk54KzRqOEc0MlNWTnBRL0xK?=
+ =?utf-8?B?UzJDODVQaG5kV0Y5aDJpVjBJRHZGUGlhR254cHFta0x3NXB5bk1EUDJ4eWFZ?=
+ =?utf-8?B?bDVYVkc2NjJEREhtUnZkakZtU2RyRnNHdjB5VXMvWTAzTmdlYWJpSG5vdm50?=
+ =?utf-8?B?ZW1lRVhmWFpEOTBzZDkxZFYrcC9LMG40cjJaMGhXOFhVZm1uMzlKd3YrVG9C?=
+ =?utf-8?B?V3VMdE9hQzhzWlhtWXo5V3FHZzdHTS9rU2Q1aTc2M29leHRzb0JRcmFDakR3?=
+ =?utf-8?B?ZFBwc0FRU1J1NkxZY0xVNElMajczZUszdHdrM0syRDg5L0JiZGh4STllWE9z?=
+ =?utf-8?B?T0FQdlpKN2QyNStVcXRoL3ArVkwvVmZXOUwrWUtVd1huVlh6SWVXV3JYOG0y?=
+ =?utf-8?B?WXlGWkFnaFRnNi9jWitQeTRuS1dQSStva21jdXplR2ViY1M3TXhyTy9kdjA3?=
+ =?utf-8?B?NjMySHNJaXJmQmdFUDk4dHEyd2JSVE04aHVNQk5zWGVFWnA0MkdMc1RDbzE5?=
+ =?utf-8?B?eDZCM1dOcDFLa1hTWTVwN2tXM0lIcmcwYm5iVEgzUUh0cTZGa0s4Z1pxS1lv?=
+ =?utf-8?B?MGd3UE1oNUdXZGFnYkVTeXk2RnhvK0dueC81TFdlSXJJTk1zQm1QMFl5QjNs?=
+ =?utf-8?B?VzJaUWRvNWNFWGszblgvaEgwMHJJWWFuRUpYSCtWLzRBcG4zaVpXWFpKYUJQ?=
+ =?utf-8?B?UmpKbHhWYkJpTU1sV3dPZEdRYzBncjJvd05aaDdRQlJCZUIwdDJncGRkTW9K?=
+ =?utf-8?B?Rkd0dWwrRVFhM0JoK1B6NlpzS1o5RlNJYVZtbjc4c1FxUkM2SnorT2M3ekhX?=
+ =?utf-8?B?S1p1bVI3QUc1MmhHYXZYNTMxamJHNFkzbHlCbTJEQlA4L0dHcjZQWGJkYjZt?=
+ =?utf-8?B?OTlEZERRVmloWUd0UmgrUXVrRFJleEtyMjBseFIvY0hHdUlKSjRjUHZ6Umpt?=
+ =?utf-8?B?clpjM3lRUnZ2elFpUmtUeHQzZWM5a3YwRWFwY2t0bTQwY0swYTRnVnFqWmlL?=
+ =?utf-8?B?UTVvNjM1OUlxRTV3OGVzN0liMjI1dWtSR2NKYmw5WnZkdmI2K0l2bWxaMURK?=
+ =?utf-8?B?K1hHU2RnaDNWKzBSVEhycHpVYTZJQjRuTTJzYWpqM3lDcjROUmhZelZtaWR3?=
+ =?utf-8?B?V0dnRWxXZjBNaWcvb3I3YUFqL01raXNjK0JLTG16N1AyYUJXczc4S05xck83?=
+ =?utf-8?B?T1lvZXowMjVlS2tzUWlzUzB3Qk1RQUZhRG9uR1FkTzMzWERMam9RQ2p1Wjlq?=
+ =?utf-8?B?YUl2bmFFN3UwK3l5YlRxTkppQWxUOXJtQWNVQkRJbDl2Q2kyRjkrNnM0cDhh?=
+ =?utf-8?B?Mk1KaE9KUjIreFhkUklRSGRDdml2eGFadW1CUXphMURqTURJQmVJeGd3WDN2?=
+ =?utf-8?B?YlNiZkliQjRhR09JYytMSjJkcGZ4L010Rmdwcmd6cmwvS3U4M0VkVW5wTnNl?=
+ =?utf-8?B?VmN0aDNEeldrV0VBTGV2WlNydGY2eUtldmZWS1pqMnRvUjVGZWh1NUxXMHpH?=
+ =?utf-8?B?TnpsdzB6bGhvaHI2U2NjbEIwaUZFTVZEVjkwMkRlN2JNQmczREJmTVpJL3Fz?=
+ =?utf-8?B?bkRUaXlkcHZaTCtPT0Z0cUJBUnNMaCtHNmJLb2tKTmFFSVBhZzgybUxqRzNB?=
+ =?utf-8?B?K1htcUlET2F6VEpQc1pHaFp4OGdRPT0=?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0574.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-Network-Message-Id: 508bd727-1bb0-4ff5-05f7-08dc11b24174
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jan 2024 08:00:47.9304 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Lu6k+G15DtcQFSBe3mrbv6VJSOIqjXxQD+M8t/9mX7RWnENEZlDBXX65PbSAUSFE/BzvUCAb1hRaGNspFMZ5o9Ovka6dYiaSb/QOvKPr7LQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0621
+Received-SPF: pass client-ip=2406:e500:4420:2::624;
+ envelope-from=jeeheng.sia@starfivetech.com;
+ helo=CHN02-SH0-obe.outbound.protection.partner.outlook.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,136 +153,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
-
-> On Thu, Nov 23, 2023 at 9:12=E2=80=AFAM Markus Armbruster <armbru@redhat.=
-com> wrote:
->>
->> John Snow <jsnow@redhat.com> writes:
->>
->> > Dict[str, object] is a stricter type, but with the way that code is
->> > currently arranged, it is infeasible to enforce this strictness.
->> >
->> > In particular, although expr.py's entire raison d'=C3=AAtre is normali=
-zation
->> > and type-checking of QAPI Expressions, that type information is not
->> > "remembered" in any meaningful way by mypy because each individual
->> > expression is not downcast to a specific expression type that holds all
->> > the details of each expression's unique form.
->> >
->> > As a result, all of the code in schema.py that deals with actually
->> > creating type-safe specialized structures has no guarantee (myopically)
->> > that the data it is being passed is correct.
->> >
->> > There are two ways to solve this:
->> >
->> > (1) Re-assert that the incoming data is in the shape we expect it to b=
-e, or
->> > (2) Disable type checking for this data.
->> >
->> > (1) is appealing to my sense of strictness, but I gotta concede that it
->> > is asinine to re-check the shape of a QAPIExpression in schema.py when
->> > expr.py has just completed that work at length. The duplication of code
->> > and the nightmare thought of needing to update both locations if and
->> > when we change the shape of these structures makes me extremely
->> > reluctant to go down this route.
->> >
->> > (2) allows us the chance to miss updating types in the case that types
->> > are updated in expr.py, but it *is* an awful lot simpler and,
->> > importantly, gets us closer to type checking schema.py *at
->> > all*. Something is better than nothing, I'd argue.
->> >
->> > So, do the simpler dumber thing and worry about future strictness
->> > improvements later.
->>
->> Yes.
->
-> (You were right, again.)
-
-Occasionally happens ;)
-
->> While Dict[str, object] is stricter than Dict[str, Any], both are miles
->> away from the actual, recursive type.
->>
->> > Signed-off-by: John Snow <jsnow@redhat.com>
->> > ---
->> >  scripts/qapi/parser.py | 3 ++-
->> >  1 file changed, 2 insertions(+), 1 deletion(-)
->> >
->> > diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
->> > index bf31018aef0..b7f08cf36f2 100644
->> > --- a/scripts/qapi/parser.py
->> > +++ b/scripts/qapi/parser.py
->> > @@ -19,6 +19,7 @@
->> >  import re
->> >  from typing import (
->> >      TYPE_CHECKING,
->> > +    Any,
->> >      Dict,
->> >      List,
->> >      Mapping,
->> > @@ -43,7 +44,7 @@
->> >  _ExprValue =3D Union[List[object], Dict[str, object], str, bool]
->> >
->> >
->> > -class QAPIExpression(Dict[str, object]):
->> > +class QAPIExpression(Dict[str, Any]):
->> >      # pylint: disable=3Dtoo-few-public-methods
->> >      def __init__(self,
->> >                   data: Mapping[str, object],
->>
->> There are several occurences of Dict[str, object] elsewhere.  Would your
->> argument for dumbing down QAPIExpression apply to (some of) them, too?
->
-> When and if they piss me off, sure. I'm just wary of making the types
-> too permissive because it can obscure typing errors; by using Any, you
-> really disable any further checks and might lead to false confidence
-> in the static checker. I still have a weird grudge against Any and
-> would like to fully eliminate it from any statically checked Python
-> code, but it's just not always feasible and I have to admit that "good
-> enough" is good enough. Doesn't have me running to lessen the
-> strictness in areas that didn't cause me pain, though...
->
->> Skimming them, I found this in introspect.py:
->>
->>     # These types are based on structures defined in QEMU's schema, so we
->>     # lack precise types for them here. Python 3.6 does not offer
->>     # TypedDict constructs, so they are broadly typed here as simple
->>     # Python Dicts.
->>     SchemaInfo =3D Dict[str, object]
->>     SchemaInfoEnumMember =3D Dict[str, object]
->>     SchemaInfoObject =3D Dict[str, object]
->>     SchemaInfoObjectVariant =3D Dict[str, object]
->>     SchemaInfoObjectMember =3D Dict[str, object]
->>     SchemaInfoCommand =3D Dict[str, object]
->>
->> Can we do better now we have 3.8?
->
-> A little bit, but it involves reproducing these types -- which are
-> ultimately meant to represent QAPI types defined in introspect.json --
-> with "redundant" type info. i.e. I have to reproduce the existing type
-> definitions in Python-ese, and then we have the maintenance burden of
-> making sure they match.
->
-> Maybe too much work to come up with a crazy dynamic definition thing
-> where we take the QAPI definition and build Python types from them ...
-> without some pretty interesting work to avoid the Ouroboros that'd
-> result. introspection.py wants static types based on types defined
-> dynamically by the schema definition; but we are not guaranteed to
-> have a suitable schema with these types at all. I'm not sure how to
-> express this kind of dependency without some interesting re-work. This
-> is a rare circumstance of the QAPI generator relying on the contents
-> of the Schema to provide static type assistance.
->
-> Now, I COULD do it statically, since I don't expect these types to
-> change much, but I'm wary of how quickly it might get out of hand
-> trying to achieve better type specificity.
->
-> General impression: "Not worth the hassle for this series, but we can
-> discuss proposals for future improvements"
-
-Fair enough.
-
-Thanks!
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGFuaWVsIEhlbnJpcXVl
+IEJhcmJvemEgPGRiYXJib3phQHZlbnRhbmFtaWNyby5jb20+DQo+IFNlbnQ6IEZyaWRheSwgSmFu
+dWFyeSA1LCAyMDI0IDg6MjcgUE0NCj4gVG86IEplZUhlbmcgU2lhIDxqZWVoZW5nLnNpYUBzdGFy
+Zml2ZXRlY2guY29tPjsgcWVtdS1hcm1Abm9uZ251Lm9yZzsgcWVtdS1kZXZlbEBub25nbnUub3Jn
+OyBxZW11LXJpc2N2QG5vbmdudS5vcmcNCj4gQ2M6IG1zdEByZWRoYXQuY29tOyBpbWFtbWVkb0By
+ZWRoYXQuY29tOyBhbmlzaW5oYUByZWRoYXQuY29tOyBwZXRlci5tYXlkZWxsQGxpbmFyby5vcmc7
+IHNoYW5ub24uemhhb3NsQGdtYWlsLmNvbTsNCj4gc3VuaWx2bEB2ZW50YW5hbWljcm8uY29tOyBw
+YWxtZXJAZGFiYmVsdC5jb207IGFsaXN0YWlyLmZyYW5jaXNAd2RjLmNvbTsgYmluLm1lbmdAd2lu
+ZHJpdmVyLmNvbTsgbGl3ZWkxNTE4QGdtYWlsLmNvbTsNCj4gemhpd2VpX2xpdUBsaW51eC5hbGli
+YWJhLmNvbQ0KPiBTdWJqZWN0OiBSZTogW1JFU0VORCBSRkMgdjEgMi8yXSBody9yaXNjdi92aXJ0
+LWFjcGktYnVpbGQuYzogR2VuZXJhdGUgU1BDUiB0YWJsZQ0KPiANCj4gDQo+IA0KPiBPbiAxLzUv
+MjQgMDY6MDYsIFNpYSBKZWUgSGVuZyB3cm90ZToNCj4gPiBHZW5lcmF0ZSBTZXJpYWwgUG9ydCBD
+b25zb2xlIFJlZGlyZWN0aW9uIFRhYmxlIChTUENSKSBmb3IgUklTQy1WDQo+ID4gdmlydHVhbCBt
+YWNoaW5lLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogU2lhIEplZSBIZW5nIDxqZWVoZW5nLnNp
+YUBzdGFyZml2ZXRlY2guY29tPg0KPiA+IC0tLQ0KPiA+ICAgaHcvcmlzY3YvdmlydC1hY3BpLWJ1
+aWxkLmMgfCAzOSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiA+ICAg
+MSBmaWxlIGNoYW5nZWQsIDM5IGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9o
+dy9yaXNjdi92aXJ0LWFjcGktYnVpbGQuYyBiL2h3L3Jpc2N2L3ZpcnQtYWNwaS1idWlsZC5jDQo+
+ID4gaW5kZXggZDRhMDI1NzlkNi4uMzg4YjNkMWE4NCAxMDA2NDQNCj4gPiAtLS0gYS9ody9yaXNj
+di92aXJ0LWFjcGktYnVpbGQuYw0KPiA+ICsrKyBiL2h3L3Jpc2N2L3ZpcnQtYWNwaS1idWlsZC5j
+DQo+ID4gQEAgLTE3NCw2ICsxNzQsNDIgQEAgYWNwaV9kc2R0X2FkZF91YXJ0KEFtbCAqc2NvcGUs
+IGNvbnN0IE1lbU1hcEVudHJ5ICp1YXJ0X21lbW1hcCwNCj4gPiAgICAgICBhbWxfYXBwZW5kKHNj
+b3BlLCBkZXYpOw0KPiA+ICAgfQ0KPiA+DQo+ID4gKy8qDQo+ID4gKyAqIFNlcmlhbCBQb3J0IENv
+bnNvbGUgUmVkaXJlY3Rpb24gVGFibGUgKFNQQ1IpDQo+ID4gKyAqIFJldjogMS4wNw0KPiANCj4g
+U2hvdWxkbid0IGl0IGJlICJSZXY6IDIuMCI/IFRoZSBmdW5jdGlvbiBpcyBjYWxsaW5nIHRoZSBj
+b21tb24gYnVpbGRfc3BjcigpIHRoYXQNCj4gc3BlY2lmaWVzDQpJIHdpbGwgZ2l2ZSB0aGVtIGEg
+Z2VuZXJpYyBuYW1lIGZvciBib3RoIHRoZSBhcmNoIGJ1aWxkX3NwY3IoKSBhbmQgdGhlDQpjb21t
+b24gYnVpbGRfc3BjcigpLiBUaGUgcmV2aXNpb24gaW5mbyBzaG91bGQgYmUgcGFzc2VkIHRvIHRo
+ZSBjb21tb24NCmJ1aWxkX3NwY3IoKS4NCj4gDQo+ICsgICAgQWNwaVRhYmxlIHRhYmxlID0geyAu
+c2lnID0gIlNQQ1IiLCAucmV2ID0gMiwgLm9lbV9pZCA9IG9lbV9pZCwNCj4gKyAgICAgICAgICAg
+ICAgICAgICAgICAgIC5vZW1fdGFibGVfaWQgPSBvZW1fdGFibGVfaWQgfTsNCj4gDQo+IA0KPiAN
+Cj4gQ29kZSBMR1RNIHJlZ2FyZGxlc3Mgb2YgdGhlICJSZXY6ICIgY29tbWVudCB2YWx1ZS4NCj4g
+DQo+IA0KPiBSZXZpZXdlZC1ieTogRGFuaWVsIEhlbnJpcXVlIEJhcmJvemEgPGRiYXJib3phQHZl
+bnRhbmFtaWNyby5jb20+DQo+IA0KPiANCj4gDQo+IA0KPiANCj4gPiArICovDQo+ID4gKw0KPiA+
+ICtzdGF0aWMgdm9pZA0KPiA+ICtidWlsZF9zcGNyX3JldjIoR0FycmF5ICp0YWJsZV9kYXRhLCBC
+SU9TTGlua2VyICpsaW5rZXIsIFJJU0NWVmlydFN0YXRlICpzKQ0KPiA+ICt7DQo+ID4gKyAgICBB
+Y3BpU3BjckRhdGEgc2VyaWFsID0gew0KPiA+ICsgICAgICAgIC5pbnRlcmZhY2VfdHlwZSA9IDAs
+ICAgICAgIC8qIDE2NTUwIGNvbXBhdGlibGUgKi8NCj4gPiArICAgICAgICAuYmFzZV9hZGRyLmlk
+ID0gQU1MX0FTX1NZU1RFTV9NRU1PUlksDQo+ID4gKyAgICAgICAgLmJhc2VfYWRkci53aWR0aCA9
+IDMyLA0KPiA+ICsgICAgICAgIC5iYXNlX2FkZHIub2Zmc2V0ID0gMCwNCj4gPiArICAgICAgICAu
+YmFzZV9hZGRyLnNpemUgPSAxLA0KPiA+ICsgICAgICAgIC5iYXNlX2FkZHIuYWRkciA9IHMtPm1l
+bW1hcFtWSVJUX1VBUlQwXS5iYXNlLA0KPiA+ICsgICAgICAgIC5pbnRlcnJ1cHRfdHlwZSA9ICgx
+IDw8IDQpLC8qIEJpdFs0XSBSSVNDLVYgUExJQy9BUExJQyAqLw0KPiA+ICsgICAgICAgIC5wY19p
+bnRlcnJ1cHQgPSAwLA0KPiA+ICsgICAgICAgIC5pbnRlcnJ1cHQgPSBVQVJUMF9JUlEsDQo+ID4g
+KyAgICAgICAgLmJhdWRfcmF0ZSA9IDcsICAgICAgICAgICAgLyogMTUyMDAgKi8NCj4gPiArICAg
+ICAgICAucGFyaXR5ID0gMCwNCj4gPiArICAgICAgICAuc3RvcF9iaXRzID0gMSwNCj4gPiArICAg
+ICAgICAuZmxvd19jb250cm9sID0gMCwNCj4gPiArICAgICAgICAudGVybWluYWxfdHlwZSA9IDMs
+ICAgICAgICAvKiBBTlNJICovDQo+ID4gKyAgICAgICAgLmxhbmd1YWdlID0gMCwgICAgICAgICAg
+ICAgLyogTGFuZ3VhZ2UgKi8NCj4gPiArICAgICAgICAucGNpX2RldmljZV9pZCA9IDB4ZmZmZiwg
+ICAvKiBub3QgYSBQQ0kgZGV2aWNlKi8NCj4gPiArICAgICAgICAucGNpX3ZlbmRvcl9pZCA9IDB4
+ZmZmZiwgICAvKiBub3QgYSBQQ0kgZGV2aWNlKi8NCj4gPiArICAgICAgICAucGNpX2J1cyA9IDAs
+DQo+ID4gKyAgICAgICAgLnBjaV9kZXZpY2UgPSAwLA0KPiA+ICsgICAgICAgIC5wY2lfZnVuY3Rp
+b24gPSAwLA0KPiA+ICsgICAgICAgIC5wY2lfZmxhZ3MgPSAwLA0KPiA+ICsgICAgICAgIC5wY2lf
+c2VnbWVudCA9IDAsDQo+ID4gKyAgICB9Ow0KPiA+ICsNCj4gPiArICAgIGJ1aWxkX3NwY3IodGFi
+bGVfZGF0YSwgbGlua2VyLCAmc2VyaWFsLCBzLT5vZW1faWQsIHMtPm9lbV90YWJsZV9pZCk7DQo+
+ID4gK30NCj4gPiArDQo+ID4gICAvKiBSSENUIE5vZGVbTl0gc3RhcnRzIGF0IG9mZnNldCA1NiAq
+Lw0KPiA+ICAgI2RlZmluZSBSSENUX05PREVfQVJSQVlfT0ZGU0VUIDU2DQo+ID4NCj4gPiBAQCAt
+NTU1LDYgKzU5MSw5IEBAIHN0YXRpYyB2b2lkIHZpcnRfYWNwaV9idWlsZChSSVNDVlZpcnRTdGF0
+ZSAqcywgQWNwaUJ1aWxkVGFibGVzICp0YWJsZXMpDQo+ID4gICAgICAgYWNwaV9hZGRfdGFibGUo
+dGFibGVfb2Zmc2V0cywgdGFibGVzX2Jsb2IpOw0KPiA+ICAgICAgIGJ1aWxkX3JoY3QodGFibGVz
+X2Jsb2IsIHRhYmxlcy0+bGlua2VyLCBzKTsNCj4gPg0KPiA+ICsgICAgYWNwaV9hZGRfdGFibGUo
+dGFibGVfb2Zmc2V0cywgdGFibGVzX2Jsb2IpOw0KPiA+ICsgICAgYnVpbGRfc3Bjcl9yZXYyKHRh
+Ymxlc19ibG9iLCB0YWJsZXMtPmxpbmtlciwgcyk7DQo+ID4gKw0KPiA+ICAgICAgIGFjcGlfYWRk
+X3RhYmxlKHRhYmxlX29mZnNldHMsIHRhYmxlc19ibG9iKTsNCj4gPiAgICAgICB7DQo+ID4gICAg
+ICAgICAgIEFjcGlNY2ZnSW5mbyBtY2ZnID0gew0K
 
