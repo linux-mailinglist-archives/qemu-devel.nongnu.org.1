@@ -2,92 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F125B8292E6
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 05:00:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BBB58292E8
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jan 2024 05:03:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNPkD-0003DI-0v; Tue, 09 Jan 2024 22:59:09 -0500
+	id 1rNPnP-0003xI-IW; Tue, 09 Jan 2024 23:02:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNPk9-0003Cz-SM
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 22:59:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNPk4-0006CV-Jy
- for qemu-devel@nongnu.org; Tue, 09 Jan 2024 22:59:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704859139;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=VVXpYsiX+RCwfFpvr9eZjQilgn0Ln5LmxAb4vtB6T/8=;
- b=JR1EnU7jG0o/w2fv0jgRHAOsD4Pnjnu9yKi6iMKPHCGP7KGB4JgS+RT8gC7pSw5/Wi2aEc
- zhoAA5HmqMwcvhLkO1Imto12yf1jFVe2xib1FMHDuvc0R0DJ4AHGj+z5QqI0SJ59HgUzxI
- yGybFOZjPBByV/zuh0bmYiXb+2c6JI0=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-663-JsaRA4wUMW2XGL7jtIauIg-1; Tue, 09 Jan 2024 22:58:57 -0500
-X-MC-Unique: JsaRA4wUMW2XGL7jtIauIg-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1d44608e379so5800375ad.1
- for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 19:58:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
+ id 1rNPnH-0003wG-Vi
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 23:02:21 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
+ id 1rNPnF-0007vx-Kt
+ for qemu-devel@nongnu.org; Tue, 09 Jan 2024 23:02:19 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1d3fe03b6b7so6928775ad.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Jan 2024 20:02:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1704859329; x=1705464129; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=B9VYd6p2cowcyrY5xrLrsUO88JEYC9+34V/ihqnKpyM=;
+ b=H4QxcRNK7OA3Yo1DCaia09aE043FPAArnW0J8d2K93GFd9rYL4zJXjjLd8l+bPJ6uk
+ sxRo3UnQrARbvN1ApVH+kuitalrlxF5aQkn+BBqKRK0P/Byzofnq5GvRdq1SpZO3S3v9
+ 37lJ9YWBRGjuQV+ZkTdsPFtFEP99tdFrc9oyXhEHE9ujELSvFH0qrwMNfnC8nGq+MvH8
+ 0dFoAthWk2hUTJv+tsjBOmqtO9N6t+SiW6f3CGZ0BEL7k3sUgtWJDpz9b4ToaM4etMOt
+ zjjim4iqhV1QRWE+PcKONy+jFeeAY5n7tc6i0HZf9wMKy2FdVlNYXHYwJGv7sRGQeLVW
+ eS7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704859136; x=1705463936;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VVXpYsiX+RCwfFpvr9eZjQilgn0Ln5LmxAb4vtB6T/8=;
- b=wahmtVB1wIwv+XeN8uWejRfiuW/mGKWyUtsbxz/AE7pkOzu+Si02rkPilqFZlA0i/l
- 05GfS1txqu617fKDIC6KJN5QnADqqbVhrEl9LXXi8/v5H73/IBzP9vKiDC0JwouTEQ3W
- 1d3JwmCYDhlfPH9whiRPdowpUz/za3SN0qIfd2nI1w0eAp6+JACX56JOPK6WAh6JoZq0
- LwvpXPnT96WEyWKS/3eRDXP5UycPBN/qKo2EA0uNFv01A6iZV43YMZEJtXaFdPMjN6Ls
- zM3Zil7zLWCi0pp4sh7yGbhqHRwFAB3V0no36qZE/bz43RuvtCVVmAV4vE7Pq9jJGgXm
- AdBw==
-X-Gm-Message-State: AOJu0YwT+7ZXM6YDiFf4RizHh+cTJMsL8AGkYvYpI3E6OxJZ5TzMZFj7
- mnNMdIUeCSiFVCDKhflBGy1eHQq8s1BGUkB5F1A2tB+q6kBJ2Xrgj6z8LqflzY+oBdGRasuWf2H
- vdy7AvzI1lqNc43sxdfuSm3/c71w+RjKIWA==
-X-Received: by 2002:a17:902:9f88:b0:1d5:82e:e95c with SMTP id
- g8-20020a1709029f8800b001d5082ee95cmr772787plq.4.1704859136408; 
- Tue, 09 Jan 2024 19:58:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF18GkvtRGFJh5Aq2dZwiK2kbyVO/9PZDRiUhdPIyeXhU9wKhMINK+bpBDotO6KvqW8cKpO4A==
-X-Received: by 2002:a17:902:9f88:b0:1d5:82e:e95c with SMTP id
- g8-20020a1709029f8800b001d5082ee95cmr772769plq.4.1704859136130; 
- Tue, 09 Jan 2024 19:58:56 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- i7-20020a17090332c700b001d38a7e6a30sm2553744plr.70.2024.01.09.19.58.53
+ d=1e100.net; s=20230601; t=1704859329; x=1705464129;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=B9VYd6p2cowcyrY5xrLrsUO88JEYC9+34V/ihqnKpyM=;
+ b=u5YfuLy3Dd7XJSB1QbN9fPOfwDNYMZWVmHx8ULsTrjV9pRNmWDyrjBwtQzepAfYmsk
+ JTVUHivMDyvU6u2AU6w9qgPkrICQVNJxmV51iCQG31GE2DryaK2RwzzI2WaXAZeY80rN
+ QzQqOoe+aFWkyq14XiN5cc4T6si1ys1pxdyXH128NSt6XCRjEoe+J2CxpC68ldSlnHei
+ 0GYxh9sCp+JGBu2BEk6d0o9aBrhBX6EMpFqZqHcHf/mvYVwXoW5cOLnxLyk9b3Yyj8Am
+ ruE6jSL7dXy+fzTsVTBBrtqCGZGX0CWrj2ghnrfK7qyP5w9pZoQSPa8WE5GAoPzHW33S
+ O3pQ==
+X-Gm-Message-State: AOJu0YxSzyQDph2Ugqv8KswSgD1lSMO/fQr6g7YctlKEteziyEkSzhcz
+ Y2vnXfpuDmqbDp3ZjYqL9k2TlXt+azeTAQ==
+X-Google-Smtp-Source: AGHT+IGw05qTTf15AGfRf3LPFAVuajEMrOsVuh5gmrfzDNnSeWkqC4lZNC8WZc9sKVX/PWgg2q5xnw==
+X-Received: by 2002:a17:90a:fd03:b0:28c:fe8c:aa93 with SMTP id
+ cv3-20020a17090afd0300b0028cfe8caa93mr615257pjb.1.1704859329142; 
+ Tue, 09 Jan 2024 20:02:09 -0800 (PST)
+Received: from brahaspati.localdomain ([152.58.210.84])
+ by smtp.gmail.com with ESMTPSA id
+ ca8-20020a17090af30800b0028cf4cb2c85sm313893pjb.40.2024.01.09.20.02.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jan 2024 19:58:55 -0800 (PST)
-Date: Wed, 10 Jan 2024 11:58:48 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: Re: [PATCH v3 3/4] ci: Add a migration compatibility test job
-Message-ID: <ZZ4V-FukI0jN5-F1@x1n>
-References: <20240105180449.11562-1-farosas@suse.de>
- <20240105180449.11562-4-farosas@suse.de> <ZZzyZhUbgt9WhaAP@x1n>
- <8734v68xwe.fsf@suse.de>
+ Tue, 09 Jan 2024 20:02:08 -0800 (PST)
+From: Himanshu Chauhan <hchauhan@ventanamicro.com>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH 0/2] Export debug triggers as an extension
+Date: Wed, 10 Jan 2024 09:32:01 +0530
+Message-Id: <20240110040203.1920924-1-hchauhan@ventanamicro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <8734v68xwe.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.493,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=hchauhan@ventanamicro.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,24 +87,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 09, 2024 at 10:00:17AM -0300, Fabiano Rosas wrote:
-> > Can we opt-out those broken tests using either your "since:" thing or
-> > anything similar?
-> 
-> If it's something migration related, then yes. But there might be other
-> types of breakages that have nothing to do with migration. Our tests are
-> not resilent enough (nor they should) to detect when QEMU aborted for
-> other reasons. Think about the -audio issue: the old QEMU would just say
-> "there's no -audio option, abort" and that's a test failure of course.
+All the CPUs may or may not implement the debug trigger (sdtrig)
+extension. The presence of it should be dynamically detectable.
+This patch exports the debug triggers as an extension which
+can be turned on or off by sdtrig=<true/false> option. It is
+turned on by default.
 
-I'm wondering whether we can more or less remedy that by running
-migration-test under the build-previous directory for cross-binary tests.
-We don't necessarily need to cross-test anything new happening anyway.
+"sdtrig" is concatenated to ISA string when it is enabled.
+Like so:
+rv64imafdch_zicbom_*_sdtrig_*_sstc_svadu
 
-IOW, we use both old QEMU / migration-test for "n-1", and we only use "n"
-for the new QEMU binary?
+
+Himanshu Chauhan (2):
+  target/riscv: Export sdtrig as an extension and ISA string
+  target/riscv: Raise an exception when sdtrig is turned off
+
+ target/riscv/cpu.c     |  2 ++
+ target/riscv/cpu_cfg.h |  1 +
+ target/riscv/csr.c     | 20 ++++++++++++++++++++
+ 3 files changed, 23 insertions(+)
 
 -- 
-Peter Xu
+2.34.1
 
 
