@@ -2,85 +2,132 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF3382A928
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC08182A939
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:38:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNqSh-0005YC-HP; Thu, 11 Jan 2024 03:30:51 -0500
+	id 1rNqZA-00020l-Og; Thu, 11 Jan 2024 03:37:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rNqSc-0005Vc-QU
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:30:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNqZ8-0001zm-DX
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:37:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rNqSa-0006mR-Jl
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:30:45 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNqZ6-0001Jh-79
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:37:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704961843;
+ s=mimecast20190719; t=1704962246;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bilEEIW32jOimN5+zJQy7hhqrXVuVooym0WZ/ZxJA1o=;
- b=fIhWldI94sAoJ6JEh/M7Yt29scv0eAHoTexvggxBfFVsCOgugQ62GXtnlC5s6xj+ZT68M7
- DVJ3M1EXsdNA39WfAcwL+jUOMpxUILtM1N0q/hhwiqfEqkwTLOcLaqta1ewYLer/2Vagbv
- KBsYAWnndKRz9LA7kn9douDNAX032b4=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=yCdu45MX4ChSDI03nGfhPynyvS0MgURWVZiI9dvYaYA=;
+ b=Ei0cE4JIeWSokSDWbeVUyYQmmGmcpxL6uzInDp7/xHeLefirdbhCqVSc10O3XQuaGhu0ew
+ w67SYbZfG2Ee2T7PfsDHR2qVS3ziytwakaroET8HH/s691cf5cKa74wb0ACQ29lA+yaEkE
+ km764jVsLwoX1RgdqN04JdJvajSLx2g=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-73-E4aQYw1wPLiCnqIEcSvbJA-1; Thu, 11 Jan 2024 03:30:42 -0500
-X-MC-Unique: E4aQYw1wPLiCnqIEcSvbJA-1
-Received: by mail-oi1-f197.google.com with SMTP id
- 5614622812f47-3bd4b623e4aso2530254b6e.3
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 00:30:42 -0800 (PST)
+ us-mta-438-JmXw9BBkPxmOi3ZWTsoQPQ-1; Thu, 11 Jan 2024 03:37:25 -0500
+X-MC-Unique: JmXw9BBkPxmOi3ZWTsoQPQ-1
+Received: by mail-yw1-f197.google.com with SMTP id
+ 00721157ae682-5f7942a16c3so69420207b3.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 00:37:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704961841; x=1705566641;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bilEEIW32jOimN5+zJQy7hhqrXVuVooym0WZ/ZxJA1o=;
- b=ABKLmn3sJ6gnvzaSPHbsKyudgKNvpqOk1HS4vbxv8PNg9Rt0Ta3ZwB69N5cyQedCUf
- CzXRamP+P+dB1ev5qxeI0PN6cXDizRIQiZwJDoYdmUMfy5qTYxG55gkAwJ30y0IoMp06
- 5r9bOwcwzyzaFNlkza3IHca+fIscy8S/EfmzLFy/Un6Dxz8DLyJ2SIzPWkjpnLq69I7f
- ppa78QhQypuGcQajQR1VaD2+EN9dZc5krCz9MeSgBG4/EyR+5tcyqvWmD/pQkyMv9p5x
- RIlrGSx/qH0aBS40+VoM5ruXhLBVPJyWe+R+o+ZGDnrxvyPQk2M4v/NJvET+xnF08e83
- 5CIw==
-X-Gm-Message-State: AOJu0YxCiVfVTHqiZiLdSeuQ0P8/au8JmSUI9AhmhsPilwJ7Dk74uQ5b
- +dRmks3Z1iD1AaSH7ix+bBe2vOfYSouJAQEOiFFd1mre1zDWzIgjy8SodudB7twWhMJMONpb4iG
- vDCTPlTQDgToqNS37yZJTOyEmjmL+D5lbLPWElDY=
-X-Received: by 2002:a05:6808:38ce:b0:3bd:5507:3a2e with SMTP id
- el14-20020a05680838ce00b003bd55073a2emr500953oib.87.1704961841561; 
- Thu, 11 Jan 2024 00:30:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IETebHPAFALgKqMrVSrH5cU8LPGsSumArL1AxXKWMPvZ5yEVOnxygCPNDtvzMrSVRshNORINyHWbFMjawKPC8Q=
-X-Received: by 2002:a05:6808:38ce:b0:3bd:5507:3a2e with SMTP id
- el14-20020a05680838ce00b003bd55073a2emr500947oib.87.1704961841374; Thu, 11
- Jan 2024 00:30:41 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704962245; x=1705567045;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yCdu45MX4ChSDI03nGfhPynyvS0MgURWVZiI9dvYaYA=;
+ b=rD1zFd6elHkWBoBUctWHBTLdXHwoxCTN0wfnhvGSHCf7MRyytFtAEymZhB/Y//GaSG
+ X4dpNcpqU9LhwOUc9xpXrNiitAv8qG/QibNULVFLdyXbAcvMk2v7sAtVXy2gTQVisZsJ
+ jGvs5yJMG09rQ/EXEScKXhSs2keKO4/EG2gbv/2K549Osspij/y75qzJhH246qHrdkMd
+ PyNJ/3PCeczYe6FSHD4kvqjx7qqYFOiw7eblpK5nEzv/Vl051Iru5N3wLjFS38wLnbbP
+ bpI55e28Ss8PRSV2T56CkDWWYgwLzqA9kUB1fv3r3jc10BloPUPdp/rX3OmuaqR3MqJ+
+ or7A==
+X-Gm-Message-State: AOJu0YwBhNBaYoEdEUOyWTafG4TACYMvN4ek7aG3q/LX6jqGVMYFlW6n
+ B9mdGKNKqcRKypZ4bvLjuUJAQf5zDGSgwpsIApNuvVItIcXbvnE6xDpvAS+mEz/CXdBiIt0G8AZ
+ v5USnTgUTL8oFY5om6XSpmRVvuKeDCIA=
+X-Received: by 2002:a25:d310:0:b0:dbf:22ac:953e with SMTP id
+ e16-20020a25d310000000b00dbf22ac953emr808458ybf.46.1704962245025; 
+ Thu, 11 Jan 2024 00:37:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGHzNr8pHJrO4qmmrPz70RsIbJ/BvBxZ9crpPro6xmizgOeJOgkLy3mvqyrVl76iYHCUPmhZA==
+X-Received: by 2002:a25:d310:0:b0:dbf:22ac:953e with SMTP id
+ e16-20020a25d310000000b00dbf22ac953emr808454ybf.46.1704962244722; 
+ Thu, 11 Jan 2024 00:37:24 -0800 (PST)
+Received: from [10.33.192.181] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ by smtp.gmail.com with ESMTPSA id
+ cg5-20020a05622a408500b00429ab4df47csm263849qtb.17.2024.01.11.00.37.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 11 Jan 2024 00:37:24 -0800 (PST)
+Message-ID: <22d8218a-70ee-4ab6-a284-2fbaeceb7052@redhat.com>
+Date: Thu, 11 Jan 2024 09:37:22 +0100
 MIME-Version: 1.0
-References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-21-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-21-git-send-email-si-wei.liu@oracle.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 11 Jan 2024 16:30:29 +0800
-Message-ID: <CACGkMEtoExzYP57PT-W14wh+B9j3DGTu-FQd+dYW5zWP4oaUYQ@mail.gmail.com>
-Subject: Re: [PATCH 20/40] vdpa: avoid mapping flush across reset
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
- leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
- jonah.palmer@oracle.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] tests/tcg/s390x: Test LOAD ADDRESS EXTENDED
+Content-Language: en-US
+To: Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+References: <20240109232319.600102-1-iii@linux.ibm.com>
+ <20240109232319.600102-3-iii@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240109232319.600102-3-iii@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,76 +144,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 8, 2023 at 2:52=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
-rote:
->
-> Leverage the IOTLB_PERSIST and DESC_ASID features to achieve
-> a slightly light weight reset path, without resorting to
-> suspend and resume. Not as best but it offers significant
-> time saving too, which should somehow play its role in live
-> migration down time reduction by large.
->
-> It benefits two cases:
->   - normal virtio reset in the VM, e.g. guest reboot, don't
->     have to tear down all iotlb mapping and set up again.
->   - SVQ switching, in which data vq's descriptor table and
->     vrings are moved to a different ASID than where its
->     buffers reside. Along with the use of persistent iotlb,
->     it would save substantial time from pinning and mapping
->     unneccessarily when moving descriptors on to or out of
->     shadow mode.
->
-> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-
-Looks good to me.
-
-Thanks
-
+On 10/01/2024 00.22, Ilya Leoshkevich wrote:
+> Add a small test to prevent regressions. Userspace runs in primary
+> mode, so LAE should always set the access register to 0.
+> 
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 > ---
->  hw/virtio/vhost-vdpa.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> index 31e0a55..47c764b 100644
-> --- a/hw/virtio/vhost-vdpa.c
-> +++ b/hw/virtio/vhost-vdpa.c
-> @@ -633,6 +633,7 @@ static int vhost_vdpa_init(struct vhost_dev *dev, voi=
-d *opaque, Error **errp)
->                                       0x1ULL << VHOST_BACKEND_F_IOTLB_BAT=
-CH |
->                                       0x1ULL << VHOST_BACKEND_F_IOTLB_ASI=
-D |
->                                       0x1ULL << VHOST_BACKEND_F_DESC_ASID=
- |
-> +                                     0x1ULL << VHOST_BACKEND_F_IOTLB_PER=
-SIST |
->                                       0x1ULL << VHOST_BACKEND_F_SUSPEND;
->      int ret;
->
-> @@ -1493,8 +1494,6 @@ static void vhost_vdpa_maybe_flush_map(struct vhost=
-_dev *dev)
->
->  static void vhost_vdpa_reset_status(struct vhost_dev *dev)
->  {
-> -    struct vhost_vdpa *v =3D dev->opaque;
-> -
->      if (!vhost_vdpa_last_dev(dev)) {
->          return;
->      }
-> @@ -1502,9 +1501,7 @@ static void vhost_vdpa_reset_status(struct vhost_de=
-v *dev)
->      vhost_vdpa_reset_device(dev);
->      vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
->                                 VIRTIO_CONFIG_S_DRIVER);
-> -    memory_listener_unregister(&v->shared->listener);
-> -    v->shared->listener_registered =3D false;
-> -
-> +    vhost_vdpa_maybe_flush_map(dev);
->  }
->
->  static int vhost_vdpa_set_log_base(struct vhost_dev *dev, uint64_t base,
-> --
-> 1.8.3.1
->
+>   tests/tcg/s390x/Makefile.target |  1 +
+>   tests/tcg/s390x/lae.c           | 25 +++++++++++++++++++++++++
+>   2 files changed, 26 insertions(+)
+>   create mode 100644 tests/tcg/s390x/lae.c
+> 
+> diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+> index 0e670f3f8b9..30994dcf9c2 100644
+> --- a/tests/tcg/s390x/Makefile.target
+> +++ b/tests/tcg/s390x/Makefile.target
+> @@ -44,6 +44,7 @@ TESTS+=clgebr
+>   TESTS+=clc
+>   TESTS+=laalg
+>   TESTS+=add-logical-with-carry
+> +TESTS+=lae
+>   
+>   cdsg: CFLAGS+=-pthread
+>   cdsg: LDFLAGS+=-pthread
+> diff --git a/tests/tcg/s390x/lae.c b/tests/tcg/s390x/lae.c
+> new file mode 100644
+> index 00000000000..661e95f9978
+> --- /dev/null
+> +++ b/tests/tcg/s390x/lae.c
+> @@ -0,0 +1,25 @@
+> +/*
+> + * Test the LOAD ADDRESS EXTENDED instruction.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +#include <assert.h>
+> +#include <stdlib.h>
+> +
+> +int main(void)
+> +{
+> +    unsigned long long ar = -1, b2 = 100000, r, x2 = 500;
+> +    int tmp;
+> +
+> +    asm("ear %[tmp],%[r]\n"
+> +        "lae %[r],42(%[x2],%[b2])\n"
+> +        "ear %[ar],%[r]\n"
+> +        "sar %[r],%[tmp]"
+> +        : [tmp] "=&r" (tmp), [r] "=&r" (r), [ar] "+r" (ar)
+> +        : [b2] "r" (b2), [x2] "r" (x2)
+> +        : "memory");
+> +    assert(ar == 0xffffffff00000000ULL);
+> +    assert(r == 100542);
+> +
+> +    return EXIT_SUCCESS;
+> +}
+
+I'm sorry, but it fails when building with Clang (version 17):
+
+.../qemu/tests/tcg/s390x/lae.c:14:9: error: invalid operand for instruction
+    14 |     asm("ear %[tmp],%[r]\n"
+       |         ^
+<inline asm>:1:10: note: instantiated into assembly here
+     1 |         ear %r2,%r1
+       |                 ^
+.../qemu/tests/tcg/s390x/lae.c:16:10: error: invalid operand for instruction
+    16 |         "ear %[ar],%[r]\n"
+       |          ^
+<inline asm>:3:9: note: instantiated into assembly here
+     3 | ear %r0,%r1
+       |         ^
+.../qemu/tests/tcg/s390x/lae.c:17:10: error: invalid operand for instruction
+    17 |         "sar %[r],%[tmp]"
+       |          ^
+<inline asm>:4:5: note: instantiated into assembly here
+     4 | sar %r1,%r2
+       |     ^
+3 errors generated.
+
+Any suggestions how to fix it best?
+
+  Thomas
 
 
