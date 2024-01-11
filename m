@@ -2,88 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5EE82B3F0
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 18:21:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF7182B404
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 18:25:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNyjg-0005s5-Ez; Thu, 11 Jan 2024 12:20:56 -0500
+	id 1rNynm-00005f-Bs; Thu, 11 Jan 2024 12:25:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rNyjd-0005ox-On
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:20:53 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rNyjb-0005gQ-Vj
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:20:53 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40e490c2115so26746585e9.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 09:20:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704993650; x=1705598450; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BYJGfaWD+wmivfyM5OCQmiMNo/7Sa4bLA5yRLCAhZtI=;
- b=LYBi2fyqAlKIX71TVFZcpdZnl82W+uPu8je41HMkzvdNUMrw65vZo2cLxkoNhgprm1
- kNHw8I1HFIt3eptuJd11DZHRZQcwbVtT8UHJ6NdbjcOEy1NXXtkmK4UpPF6OKSG4OrCA
- 3IbZYq5N21NrGUaSXUDjQJFy7Hl0ly7dDMU0d19zBHlBrJwx7R8PmWxPOAHUMkIB0XZU
- HSEMI9xgP/j8FhKGJkeaeQHYR3KWldSHKzJOsAJiD8a4Q+a0YPWa6UY449huVsPqR5TW
- TdD9vkAuV5Rxx0FJwxou4x2oycmbw/TYPdFfOC2ufZ188lxWphWoDzhB8YfgWEdgEgIP
- Vukg==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rNynk-0008WC-6P
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:25:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rNynh-000794-Nm
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:25:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704993904;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Yx0qXcUBJwN4LNtTRsU8hKhpzp8VerROHmmUPukV3Lw=;
+ b=dUEoo8koL09p4MxM4lgKMgOsPEy0AvObMeDXMHyDkjUXw+EYxr1PmzlRN6NCnEznls04Oy
+ l7XLK+PeKzSLUeDC+GDIsx9i98PziUPVbNiH+n5Lf6NSyoxQQgzBpX6iVA+/7van+ZFtIW
+ kpv1QYfCv5iq1JvsZ+iCodOWw6UYd0E=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-541-XkKEMlm5O2K0Soc-2F02Wg-1; Thu, 11 Jan 2024 12:25:03 -0500
+X-MC-Unique: XkKEMlm5O2K0Soc-2F02Wg-1
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-1d4a9860225so34735025ad.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 09:25:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704993650; x=1705598450;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1704993902; x=1705598702;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BYJGfaWD+wmivfyM5OCQmiMNo/7Sa4bLA5yRLCAhZtI=;
- b=QpNqQFJB3mEHfdJ2Mweru0dsq8N8FIORr50h4HZ+o7bGWubsUN0IO9ns+GaiV2RL01
- Hp4cIHbh31KAq4qh0Q8uSNz1VR63LIpWGqpykL0mwHdwEBbCwKZmdpeFR60ukURQOV0A
- 8JrgqnL0LbA7R6KvI/awaCtihmLp3JOhGoMdP+dOuuKGIkEKJmzOOGtQduibWdgRwskc
- y2d2GvAuJ4fkph9WOU+dgGaYc22RxcG+jo6t7WGnA+ON+8FPuxJXhtJLGPpeu/ofhTJT
- Lk0qsBc0Q/0rHMlaT44XNzeECQxsRXKojAkoL9+vzXq26d5bev5zlmvXBxS1AeV8zGx/
- WxHA==
-X-Gm-Message-State: AOJu0Yzi55fqSZ8Z+AhouJxdJMseWRchHkjQrT9PD0qZZF1h6BFV57vL
- oQwJRiVcN2hPvCKvmHDM1nSmgc/ALeFF7Q==
-X-Google-Smtp-Source: AGHT+IFUOPnneDLEvm/VylQSR5PHUVfIruZDMjYw8SHK/cCh0SBRsWhOpadsqGNbUEwIi2pf1fSmEw==
-X-Received: by 2002:a05:600c:358b:b0:40e:4560:6cf5 with SMTP id
- p11-20020a05600c358b00b0040e45606cf5mr102138wmq.25.1704993650314; 
- Thu, 11 Jan 2024 09:20:50 -0800 (PST)
-Received: from [192.168.1.24] ([102.35.208.160])
+ bh=Yx0qXcUBJwN4LNtTRsU8hKhpzp8VerROHmmUPukV3Lw=;
+ b=uOMX6jb1Jz1Im1yWeUmBGOAXCwLUsx+zTRx6URrFBnTypJta4GimGqqkAASAhaLXed
+ EpMqCUX6/fI+eSPouOw6nPLq/oBb+81RkaqdUGyaUp0raXhPSu5tscniWq/BY27+o2Hx
+ hUNDfJ4bMGkJ5feCdpXZYkcSjF+9RBT3CJ/B6HwfkQOMR9eqZBEKckjTq9ZvdnV24Vbo
+ 99jvdEaPcLxv/zqq4hPpZaLPqMvNEYT/xGeO9xkxISAOBq7NMufukJl1/oa5RekeQsjz
+ cGOTrKpIoFEoGbDRG7FfxpiR0ffd+v/q2Lw/pznGBzPoXNajhrrGs4caJzF5bqkf/F8s
+ CcDA==
+X-Gm-Message-State: AOJu0YyJFLN5eCh32PISpebJDOXn5WzZibBdasKii/u85a2GHAiq39xs
+ E68M63rCrVE35oS1OUmyv9CEbdgQ6ER/Oln59jCBGrS1jJT3Xdqt5XCUmvS7Dea6I/xA77I99Aa
+ Ndbu5WhvwGMtg79OEfazWuSHd1Lgtrmk=
+X-Received: by 2002:a17:902:f545:b0:1d4:c7d5:3587 with SMTP id
+ h5-20020a170902f54500b001d4c7d53587mr58341plf.9.1704993901689; 
+ Thu, 11 Jan 2024 09:25:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF0fyeA4dziOv/U4LTrxAOMT7f/pIJsSrkXCpgQA2sZCbXYhyk4Idloo1ZY4yOcc/M7My+zcQ==
+X-Received: by 2002:a17:902:f545:b0:1d4:c7d5:3587 with SMTP id
+ h5-20020a170902f54500b001d4c7d53587mr58333plf.9.1704993901418; 
+ Thu, 11 Jan 2024 09:25:01 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- fc19-20020a05600c525300b0040d839e7bb3sm6626509wmb.19.2024.01.11.09.20.47
+ mm4-20020a1709030a0400b001d05456394csm1414675plb.28.2024.01.11.09.24.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 09:20:50 -0800 (PST)
-Message-ID: <ae4227fc-58b5-4a6b-97d5-8fae34eb7514@linaro.org>
-Date: Thu, 11 Jan 2024 21:20:45 +0400
+ Thu, 11 Jan 2024 09:25:01 -0800 (PST)
+Message-ID: <a8102d77-8dd3-4c3b-907a-fe2e94fb2d20@redhat.com>
+Date: Thu, 11 Jan 2024 18:24:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/12] tests/plugin: add test plugin for inline operations
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>
-References: <20240111142326.1743444-1-pierrick.bouvier@linaro.org>
- <20240111142326.1743444-4-pierrick.bouvier@linaro.org>
- <49bfa786-e549-43d4-ac03-9337b9342d16@linaro.org>
+Subject: Re: [PATCH 1/2] target/ppc/cpu-models: Rename power5+ and power7+ for
+ new QOM naming rules
 Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <49bfa786-e549-43d4-ac03-9337b9342d16@linaro.org>
+To: Thomas Huth <thuth@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ qemu-devel@nongnu.org
+Cc: devel@lists.libvirt.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>
+References: <20240111164652.908182-1-thuth@redhat.com>
+ <20240111164652.908182-2-thuth@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240111164652.908182-2-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,33 +107,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gMS8xMS8yNCAxOTo1NywgUGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgd3JvdGU6DQo+IEhp
-IFBpZXJyaWNrLA0KPiANCj4gT24gMTEvMS8yNCAxNToyMywgUGllcnJpY2sgQm91dmllciB3
-cm90ZToNCj4+IEZvciBub3csIGl0IHNpbXBseSBwZXJmb3JtcyBpbnN0cnVjdGlvbiwgYmIg
-YW5kIG1lbSBjb3VudCwgYW5kIGVuc3VyZQ0KPj4gdGhhdCBpbmxpbmUgdnMgY2FsbGJhY2sg
-dmVyc2lvbnMgaGF2ZSB0aGUgc2FtZSByZXN1bHQuIExhdGVyLCB3ZSdsbA0KPj4gZXh0ZW5k
-IGl0IHdoZW4gbmV3IGlubGluZSBvcGVyYXRpb25zIGFyZSBhZGRlZC4NCj4+DQo+PiBVc2Ug
-ZXhpc3RpbmcgcGx1Z2lucyB0byB0ZXN0IGV2ZXJ5dGhpbmcgd29ya3MgaXMgYSBiaXQgY3Vt
-YmVyc29tZSwgYXMNCj4+IGRpZmZlcmVudCBldmVudHMgYXJlIHRyZWF0ZWQgaW4gZGlmZmVy
-ZW50IHBsdWdpbnMuIFRodXMsIHRoaXMgbmV3IG9uZS4NCj4+DQo+PiBTaWduZWQtb2ZmLWJ5
-OiBQaWVycmljayBCb3V2aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+DQo+PiAt
-LS0NCj4+ICAgIHRlc3RzL3BsdWdpbi9pbmxpbmUuYyAgICB8IDE4MyArKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysNCj4+ICAgIHRlc3RzL3BsdWdpbi9tZXNvbi5i
-dWlsZCB8ICAgMiArLQ0KPj4gICAgMiBmaWxlcyBjaGFuZ2VkLCAxODQgaW5zZXJ0aW9ucygr
-KSwgMSBkZWxldGlvbigtKQ0KPj4gICAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL3BsdWdp
-bi9pbmxpbmUuYw0KPiANCj4+ICsjZGVmaW5lIE1BWF9DUFVTIDgNCj4gDQo+IFdoZXJlIGRv
-ZXMgdGhpcyB2YWx1ZSBjb21lIGZyb20/DQo+IA0KDQpUaGUgcGx1Z2luIHRlc3RzL3BsdWdp
-bi9pbnNuLmMgaGFkIHRoaXMgY29uc3RhbnQsIHNvIEkgcGlja2VkIGl0IHVwIGZyb20gDQpo
-ZXJlLg0KDQo+IFNob3VsZCB0aGUgcGx1Z2dpbiBBUEkgcHJvdmlkZSBhIGhlbHBlciB0byBh
-c2sgVENHIGhvdyBtYW55DQo+IHZDUFVzIGFyZSBjcmVhdGVkPw0KDQpJbiB1c2VyIG1vZGUs
-IHdlIGNhbid0IGtub3cgaG93IG1hbnkgc2ltdWx0YW5lb3VzIHRocmVhZHMgKGFuZCB0aHVz
-IA0KdmNwdSkgd2lsbCBiZSB0cmlnZ2VyZWQgYnkgYWR2YW5jZS4gSSdtIG5vdCBzdXJlIGlm
-IGFkZGl0aW9uYWwgY3B1cyBjYW4gDQpiZSBhZGRlZCBpbiBzeXN0ZW0gbW9kZS4NCg0KT25l
-IHByb2JsZW0gdGhvdWdoLCBpcyB0aGF0IHdoZW4geW91IHJlZ2lzdGVyIGFuIGlubGluZSBv
-cCB3aXRoIGEgDQpkeW5hbWljIGFycmF5LCB3aGVuIHlvdSByZXNpemUgaXQgKHdoZW4gZGV0
-ZWN0aW5nIGEgbmV3IHZjcHUpLCB5b3UgY2FuJ3QgDQpjaGFuZ2UgaXQgYWZ0ZXJ3YXJkcy4g
-U28sIHlvdSBuZWVkIGEgc3RvcmFnZSBzdGF0aWNhbGx5IHNpemVkIHNvbWV3aGVyZS4NCg0K
-WW91ciBxdWVzdGlvbiBpcyBnb29kLCBhbmQgbWF5YmUgd2Ugc2hvdWxkIGRlZmluZSBhIE1B
-WCBjb25zdGFudCB0aGF0IA0KcGx1Z2lucyBzaG91bGQgcmVseSBvbiwgaW5zdGVhZCBvZiBh
-IHJhbmRvbSBhbW91bnQuDQo=
+On 1/11/24 17:46, Thomas Huth wrote:
+> The character "+" is now forbidden in QOM device names (see commit
+> b447378e1217 - "Limit type names to alphanumerical and some few special
+> characters"). For the "power5+" and "power7+" CPU names, there is
+> currently a hack in type_name_is_valid() to still allow them for
+> compatibility reasons. However, there is a much nicer solution for this:
+> Simply use aliases! This way we can still support the old names without
+> the need for the ugly hack in type_name_is_valid().
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
+
+
+
 
