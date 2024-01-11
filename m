@@ -2,67 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C622182B04B
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 15:07:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6B982B05A
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 15:12:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNvho-0005ul-90; Thu, 11 Jan 2024 09:06:48 -0500
+	id 1rNvm7-0007sw-HJ; Thu, 11 Jan 2024 09:11:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rNvhk-0005u8-22
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:06:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1)
+ (envelope-from <frederic.petrot@univ-grenoble-alpes.fr>)
+ id 1rNvm1-0007qi-41; Thu, 11 Jan 2024 09:11:09 -0500
+Received: from zm-mta-out-3.u-ga.fr ([152.77.200.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rNvhh-0000wD-Hc
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:06:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704982000;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=u9bLRmooHLl4RSqkDRvc4W+yK9t+LZA/vABkoYtkJWA=;
- b=Hq+V+snGw8pYPAiW65zvpt49Z9N6wZnNj8Q+eGdVnwufAKXUg+/GLTEO0Qsc2sbLmiiGUy
- WPYuNDssnLoGWPM0X9JRbkbXZh2Vbz7LxCkv7JyV4Jo9kutUWsN4joN/gGklmCTdWj8VgP
- cG0obKYqPjQHU3cj9uky7x8Y3L4aVF8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-gy0FsaDmM_CIxKxgoYK18g-1; Thu, 11 Jan 2024 09:06:38 -0500
-X-MC-Unique: gy0FsaDmM_CIxKxgoYK18g-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ (Exim 4.90_1)
+ (envelope-from <frederic.petrot@univ-grenoble-alpes.fr>)
+ id 1rNvlv-00038O-GS; Thu, 11 Jan 2024 09:11:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=univ-grenoble-alpes.fr; s=2020; t=1704982255;
+ bh=x0/ipQPWqSHacSiRBq9fO1VBshIH0+O/MI6pZ6mLI0U=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=uRM70xENMgTV/yQ6eEl0w02FpOXIAaARMzT/4Z7spRO1DIUK5Onv6y+l3KYEVkkNj
+ SZxRY6idytA5McYZCEOFrEj7L6toItAQwTLSarCMbQ4IQdqgBLogdo927jl6O9rRNT
+ qvecxcD37DDI+Gx/PQUcA7qCslTcr/bnEablYL58JTZKjNsvhukZ0w6SijGRsvUy/V
+ KuRVu6FDmWW4oOgj/WxqlhCpWkfMxj4xGFMj89VyJoMJxG0F4jLZCA3M0e/89nik1T
+ 2xHJ2ZqRLP+6XgvNMf8At6oFhmXryXjzewcUAiIYyAqaHU8vPf2GuwSIx9Mf+JX/qd
+ 5qyCNxNqEEUtg==
+Received: from mailhub.u-ga.fr (mailhub-1.u-ga.fr [129.88.178.98])
+ by zm-mta-out-3.u-ga.fr (Postfix) with ESMTP id EB31C4021B;
+ Thu, 11 Jan 2024 15:10:54 +0100 (CET)
+Received: from smtps.univ-grenoble-alpes.fr (smtps2.u-ga.fr [152.77.18.2])
+ by mailhub.u-ga.fr (Postfix) with ESMTP id C814E10005A;
+ Thu, 11 Jan 2024 15:10:54 +0100 (CET)
+Received: from [192.168.1.62] (35.201.90.79.rev.sfr.net [79.90.201.35])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3CB6385A588;
- Thu, 11 Jan 2024 14:06:38 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.126])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7EA43492BF0;
- Thu, 11 Jan 2024 14:06:37 +0000 (UTC)
-Date: Thu, 11 Jan 2024 15:06:36 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Ari Sundholm <ari@tuxera.com>
-Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: Re: [PATCH] block/blklogwrites: Protect mutable driver state with a
- mutex.
-Message-ID: <ZZ_17BiyiQcS2kV5@redhat.com>
-References: <f1960d8d-352e-4e1b-4d28-7a110e272356@tuxera.com>
- <20240110195005.1263619-1-ari@tuxera.com>
+ (Authenticated sender: petrotf@univ-grenoble-alpes.fr)
+ by smtps.univ-grenoble-alpes.fr (Postfix) with ESMTPSA id D95DB140052;
+ Thu, 11 Jan 2024 15:10:50 +0100 (CET)
+Message-ID: <e61e8c50-e09c-4d2b-9d24-467018b62e55@univ-grenoble-alpes.fr>
+Date: Thu, 11 Jan 2024 15:10:50 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240110195005.1263619-1-ari@tuxera.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 40/43] contrib/plugins: extend execlog to track
+ register changes
+Content-Language: fr, en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
+ Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Brian Cain <bcain@quicinc.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Cleber Rosa <crosa@redhat.com>,
+ kvm@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
+ Weiwei Li <liwei1518@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, John Snow <jsnow@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+References: <20240103173349.398526-1-alex.bennee@linaro.org>
+ <20240103173349.398526-41-alex.bennee@linaro.org>
+ <9f9b8359-d33b-4c94-8eb1-fc500d8fc2b4@univ-grenoble-alpes.fr>
+ <87o7dsf46x.fsf@draig.linaro.org>
+From: =?UTF-8?B?RnLDqWTDqXJpYyBQw6l0cm90?=
+ <frederic.petrot@univ-grenoble-alpes.fr>
+Autocrypt: addr=frederic.petrot@univ-grenoble-alpes.fr; keydata=
+ xsDiBEzGfDQRBACnR+QhOOA6gstLMoL8vexXgQ/shw+w6zEsACrydiwCrAXMOQfyozlXyGYf
+ XBO0cf4RKMh51NLdgntJbYlOoFalY7iGRwo8U64iy8kHBcXlfdFYGrYFbFYervlMwXoY89D6
+ 02uMzWK/UossWWWX2PkqfBenmYd0zk+JwghTwY8MVwCgtr1Z52ZRv8vPA7ZLn4WSJLC/qv0D
+ /1hBIaSsCAT/nO78oFZq9hzY51GsmiBT88hTofCma2PIotJT9qocJglgqzA9B+2ja4bgXJ1f
+ 0WFlvxyLTjga8jJ/lcdNpAGi13sFEhP6nyi2Zh2hFhrXlTPH+VtdnjTHSnzK23eLphZJv031
+ SxCqEYT6pgJPwwHIWOHyeDZq0ORdA/4+2U4eYUhCGfi9u60L3zRDzUVULScq3vXah1ak1yBs
+ Nxz/F1iMYVBUmp4SGSM6XFxVwvJxvSRPD+4zXIkr7+MfIheiXbiSzNoZdH3AwaAK6jGxhfWb
+ f8Jm8KuLvGkR2QaS7QT+rhhv0OLEhVBMmm8EXZpsrOV3ZVmE934+WoRDd807RnLDqWTDqXJp
+ YyBQw6l0cm90IDxmcmVkZXJpYy5wZXRyb3RAdW5pdi1ncmVub2JsZS1hbHBlcy5mcj7CeAQT
+ EQIAOBYhBGyr6EloIPZXrmtYU0QWC1i+uhtgBQJa/b5sAhsDBQsJCAcCBhUKCQgLAgQWAgMB
+ Ah4BAheAAAoJEEQWC1i+uhtgNooAnjAwrIMPDJ+mQr1svgh9+NFFZBUWAJwONXxE5DrxP9OV
+ R0tsDROd3EbvXs7BTQRMxnw0EAgA8XI4FU6LH2NryyrydYoopZfixTvfS3rra8Q3UN+eHvuG
+ jM4+oebZO+ZZ6KtdGj/RDpXtn0KW6SdFynKuLS5obLx8GGfq1tj5KGep14kr1/BRp3xTqKE+
+ rleeWvR1fGXryJhxIV/AQ/tY2Le1ExsgLbD5dbPQKJhpQUlScz6Y1U2UsyxnMV4c7PlCNNb9
+ 1ZWfxPN8c/w8XBSZDaE5UcBmxYxH9959yte9hsczuzqbMgiGa0DCN+iIgsQOYtD2csDxVQUL
+ vxtD530vdTB32tdlmcumIgZCH4X7RyLhdbv1Xj6gcZ9InGf2tRLHbnd0/uPY6qTX/5teXQ7g
+ 0xzVlvcWQwADBggAvXpFpXACegDPqglkroyA8+LQWNyumsFtcrlAc9mcC5WwDBqNsSeCbGcx
+ TXsUckRAC3DpJkzKLbBsFki4fcYEx3tjfJGkknxInPYmOIlKRinSnIMS0qFqXdy37w7vPhqv
+ KMLwbeHYronnGUAW0Z//ZXZZTl1KbEeKOEXK2dyE0aLUtoWj/aLwM1c2zuJCctI38GENtRC6
+ qaqFzCHKTqxjl7aL1LILSvKQ1sZGKdKjApw5KLoKnk6WbspFIfgIirXoC2gRo/lhhd1ctVZK
+ IptiyHp7dw2Rr6TEzjy+Z/rDHVf9lGCzUkMDJHm5XQB8+f/Va5kddgZ9gznRo17IPvR0jcJJ
+ BBgRAgAJBQJMxnw0AhsMAAoJEEQWC1i+uhtgg90An139WxG/GTGPRFVQCaxQRkycFiI3AJ40
+ aR3/xWYMOEUWfcXpCS8dzPbdDA==
+In-Reply-To: <87o7dsf46x.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Greylist: Whitelist-UGA SMTP Authentifie (petrotf@univ-grenoble-alpes.fr)
+ via submission-587 ACL (42)
+Received-SPF: pass client-ip=152.77.200.56;
+ envelope-from=frederic.petrot@univ-grenoble-alpes.fr;
+ helo=zm-mta-out-3.u-ga.fr
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,142 +138,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 10.01.2024 um 20:50 hat Ari Sundholm geschrieben:
-> During the review of a fix for a concurrency issue in blklogwrites,
-> it was found that the driver needs an additional fix when enabling
-> multiqueue, which is a new feature introduced in QEMU 9.0, as the
-> driver state may be read and written by multiple threads at the same
-> time, which was not the case when the driver was originally written.
+Le 11/01/2024 à 13:24, Alex Bennée a écrit :
+> Frédéric Pétrot <frederic.petrot@univ-grenoble-alpes.fr> writes:
 > 
-> Fix the multi-threaded scenario by introducing a mutex to protect the
-> mutable fields in the driver state, and always having the mutex locked
-> by the current thread when accessing them.
+>> Hello Alex,
+>>
+>>    just reporting below what might be a riscv only oddity (also applies to
+>>    patch 41 but easier to report here).
+>>
+>> Le 03/01/2024 à 18:33, Alex Bennée a écrit :
+>>> With the new plugin register API we can now track changes to register
+>>> values. Currently the implementation is fairly dumb which will slow
+>>> down if a large number of register values are being tracked. This
+>>> could be improved by only instrumenting instructions which mention
+>>> registers we are interested in tracking.
+>>> Example usage:
+>>>     ./qemu-aarch64 -D plugin.log -d plugin \
+>>>        -cpu max,sve256=on \
+>>>        -plugin contrib/plugins/libexeclog.so,reg=sp,reg=z\* \
+>>>        ./tests/tcg/aarch64-linux-user/sha512-sve
+>>> will display in the execlog any changes to the stack pointer (sp)
+>>> and
+>>> the SVE Z registers.
+>>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+>>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> Based-On: <20231025093128.33116-19-akihiko.odaki@daynix.com>
+>>
+>>> +static registers_init(int vcpu_index)
+>>> +{
+>>> +    GPtrArray *registers = g_ptr_array_new();
+>>> +    g_autoptr(GArray) reg_list = qemu_plugin_get_registers(vcpu_index);
+>>> +
+>>> +    if (reg_list && reg_list->len) {
+>>> +        /*
+>>> +         * Go through each register in the complete list and
+>>> +         * see if we want to track it.
+>>> +         */
+>>> +        for (int r = 0; r < reg_list->len; r++) {
+>>> +            qemu_plugin_reg_descriptor *rd = &g_array_index(
+>>> +                reg_list, qemu_plugin_reg_descriptor, r);
+>>
+>> riscv csrs are not continously numbered and the dynamically generated gdb xml
+>> seems to follow that scheme.
+>> So the calls to Glib string functions output quite a few assertion
+>> warnings because for the non existing csrs rd->name is NULL (and there
+>> are a bit less than 4000 such cases for rv64g).
+>> Checking for NULL and then continue is a simple way to solve the issue, but
+>> I am not sure this is the proper way to proceed, as it might stand in the
+>> generation of the riscv xml description for gdb.
 > 
-> Additionally, add the const qualifier to a few BDRVBlkLogWritesState
-> pointer targets in contexts where the driver state is not written to.
-> 
-> Signed-off-by: Ari Sundholm <ari@tuxera.com>
-> ---
->  block/blklogwrites.c | 29 +++++++++++++++++++++++------
->  1 file changed, 23 insertions(+), 6 deletions(-)
-> 
-> diff --git a/block/blklogwrites.c b/block/blklogwrites.c
-> index ba717dab4d..50f68df2a6 100644
-> --- a/block/blklogwrites.c
-> +++ b/block/blklogwrites.c
-> @@ -3,7 +3,7 @@
->   *
->   * Copyright (c) 2017 Tuomas Tynkkynen <tuomas@tuxera.com>
->   * Copyright (c) 2018 Aapo Vienamo <aapo@tuxera.com>
-> - * Copyright (c) 2018 Ari Sundholm <ari@tuxera.com>
-> + * Copyright (c) 2018-2024 Ari Sundholm <ari@tuxera.com>
->   *
->   * This work is licensed under the terms of the GNU GPL, version 2 or later.
->   * See the COPYING file in the top-level directory.
-> @@ -55,9 +55,18 @@ typedef struct {
->      BdrvChild *log_file;
->      uint32_t sectorsize;
->      uint32_t sectorbits;
-> +    uint64_t update_interval;
-> +
-> +    /*
-> +     * The mutable state of the driver, consisting of the current log sector
-> +     * and the number of log entries.
-> +     *
-> +     * May be read and/or written from multiple threads, and the mutex must be
-> +     * held when accessing these fields.
-> +     */
->      uint64_t cur_log_sector;
->      uint64_t nr_entries;
-> -    uint64_t update_interval;
-> +    QemuMutex mutex;
->  } BDRVBlkLogWritesState;
->  
->  static QemuOptsList runtime_opts = {
-> @@ -149,6 +158,7 @@ static int blk_log_writes_open(BlockDriverState *bs, QDict *options, int flags,
->      uint64_t log_sector_size;
->      bool log_append;
->  
-> +    qemu_mutex_init(&s->mutex);
->      opts = qemu_opts_create(&runtime_opts, NULL, 0, &error_abort);
->      if (!qemu_opts_absorb_qdict(opts, options, errp)) {
->          ret = -EINVAL;
-> @@ -255,6 +265,7 @@ fail_log:
->          bdrv_unref_child(bs, s->log_file);
->          bdrv_graph_wrunlock();
->          s->log_file = NULL;
-> +        qemu_mutex_destroy(&s->mutex);
->      }
->  fail:
->      qemu_opts_del(opts);
-> @@ -269,6 +280,7 @@ static void blk_log_writes_close(BlockDriverState *bs)
->      bdrv_unref_child(bs, s->log_file);
->      s->log_file = NULL;
->      bdrv_graph_wrunlock();
-> +    qemu_mutex_destroy(&s->mutex);
->  }
->  
->  static int64_t coroutine_fn GRAPH_RDLOCK
-> @@ -295,7 +307,7 @@ static void blk_log_writes_child_perm(BlockDriverState *bs, BdrvChild *c,
->  
->  static void blk_log_writes_refresh_limits(BlockDriverState *bs, Error **errp)
->  {
-> -    BDRVBlkLogWritesState *s = bs->opaque;
-> +    const BDRVBlkLogWritesState *s = bs->opaque;
->      bs->bl.request_alignment = s->sectorsize;
->  }
->  
-> @@ -338,15 +350,18 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
->       * driver may be modified by other driver operations while waiting for the
->       * I/O to complete.
->       */
-> +    qemu_mutex_lock(&s->mutex);
->      const uint64_t entry_start_sector = s->cur_log_sector;
->      const uint64_t entry_offset = entry_start_sector << s->sectorbits;
->      const uint64_t qiov_aligned_size = ROUND_UP(lr->qiov->size, s->sectorsize);
->      const uint64_t entry_aligned_size = qiov_aligned_size +
->          ROUND_UP(lr->zero_size, s->sectorsize);
->      const uint64_t entry_nr_sectors = entry_aligned_size >> s->sectorbits;
-> +    const uint64_t entry_seq = s->nr_entries + 1;
->  
-> -    s->nr_entries++;
-> +    s->nr_entries = entry_seq;
->      s->cur_log_sector += entry_nr_sectors;
-> +    qemu_mutex_unlock(&s->mutex);
->  
->      /*
->       * Write the log entry. Note that if this is a "write zeroes" operation,
-> @@ -366,14 +381,16 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
->  
->      /* Update super block on flush or every update interval */
->      if (lr->log_ret == 0 && ((lr->entry.flags & LOG_FLUSH_FLAG)
-> -        || (s->nr_entries % s->update_interval == 0)))
-> +        || (entry_seq % s->update_interval == 0)))
->      {
-> +        qemu_mutex_lock(&s->mutex);
->          struct log_write_super super = {
->              .magic      = cpu_to_le64(WRITE_LOG_MAGIC),
->              .version    = cpu_to_le64(WRITE_LOG_VERSION),
->              .nr_entries = cpu_to_le64(s->nr_entries),
->              .sectorsize = cpu_to_le32(s->sectorsize),
->          };
-> +        qemu_mutex_unlock(&s->mutex);
+> I think in this case it might be easier to not expose it to the plugin
+> user at all. Is the lack of names an omission? How does gdb see them?
 
-This hunk looks odd. Is the only thing the lock does here that
-s->nr_entries is accessed atomically?
+   Well, info all-registers in gdb dumps only the subset of cs registers
+   that are defined for the current parameters of the gdbarch.
+   Interestingly enough, riscv_print_registers_info, the function that dumps
+   register values for riscv in gdb, contains the following comment :
+   1385           /* Registers with no name are not valid on this ISA.  */
+   and then a check on the "nullness" of the register name to avoid outputting
+   something.
+   I guess we could follow the same path in QEMU, as having access to the csrs
+   in the plugins is really very useful.
 
-Looking a bit closer, if s->nr_entries has been changed (increased)
-meanwhile by another request, I assume that we indeed want the newer
-value to be stored in the superblock rather than using the value that
-was current when we did the calculations. So superficially, this part
-looks good.
-
-But the other thing I notice is that a few lines down you can get
-concurrent write requests to the superblock, and there is no guaranteed
-order, so an older update could overwrite a newer one. Don't we need to
-serialise writes to the superblock? (I would actually expect this to be
-a problem already without multithreading.)
-
-Kevin
-
+   Thanks,
+   Frédéric
 
