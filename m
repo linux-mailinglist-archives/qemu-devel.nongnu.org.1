@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958F382A74F
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 06:48:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C026682A754
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 06:55:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNnue-0004p0-QQ; Thu, 11 Jan 2024 00:47:32 -0500
+	id 1rNo15-0005tA-Hu; Thu, 11 Jan 2024 00:54:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rNnuc-0004ol-AN
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 00:47:30 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rNnuU-0001Mn-Dm
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 00:47:23 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5589cfe4b88so162003a12.2
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 21:47:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1704952039; x=1705556839; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=s6nluNoFG/LD7gTfbq0RZgNsbo2/X6L/QnvCZAfZwDI=;
- b=kj+BEoBBPqNqsgKPy3/asTeHrgZscbBvKIie4oVtAQDoaNU/GH2Dd1ygTEDL5QYA33
- DwGTzrkgxk2CT11kS+8MOiVPvnUrsnX8vVP87TMGcgSFZkdTTCGqpi3pwlyGZ+C9a3pc
- C6Y/hS/h1EwMvkGMHsBrYROAfpgOt3rZeZh0UCwNADNq2u/KeISmY+LnKFQJrXi1bE8y
- I6Z0x5ZIPGswpFQmiT6KymkK+Fr56csBn7WyTp40nKXRFvRCsmu2GMUkIZiOeYu7QMqV
- VzntBxI6IUAoAcOj3Kp1QDsn/48WJvq7MSMJqTxXYN7pCXOUx/h0hTmh7YpU5txc8sE7
- QiDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704952039; x=1705556839;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=s6nluNoFG/LD7gTfbq0RZgNsbo2/X6L/QnvCZAfZwDI=;
- b=ffsMHjBvlGkV3zkgovGIbl258B4sObE/f7fai6tLfOqwzxUHLKzz2LxpQsIcFolAZW
- eH4v/YVCAb+GUNHQ4+RcHxGTzDOOl7yFbyjZiRA1z/qL17wxzYPbGb3Ub8S7a9bfu/oq
- fXnT475eGmBfL0Q+DpBY9a7F6PG2QooRb57XXCO/x7hDQKPxpTosq183H9UUBGZzqT4s
- S5nOQ38N2XbfDQefvwjcAWDCTxrMlwGv3sHgblB+HsDA//oFiFaXGlZ5m/5+6zIh9z/j
- C6W64u0v24jrC+wUaK4dWDHU8TtfQnFYcMaeIvspGIpXu//9vxAaz2Ni1W13Dl4umhpM
- G37A==
-X-Gm-Message-State: AOJu0YzhO9uyK/YuhTM1Ul2Ll4X21/Ms6AFMUy8QkFp3D6jYedlOmF2o
- MaFYXDOLSE4UU/sCoP61RuZ92fTE9TbOAUqceX2zM9tsVXKbmg==
-X-Google-Smtp-Source: AGHT+IHD/TPFik7wtxju4XVCGug/MIfSB2VqYW/xdPA+2kg4pGNdRhTm0wPy208ZQJHjBJrQ38E5fuXkQhflsoEBHo0=
-X-Received: by 2002:aa7:c419:0:b0:557:bee6:48ed with SMTP id
- j25-20020aa7c419000000b00557bee648edmr289832edq.65.1704952039194; Wed, 10 Jan
- 2024 21:47:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rNo12-0005t2-8Z
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 00:54:08 -0500
+Received: from mgamail.intel.com ([192.198.163.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rNo0z-0005dR-Kh
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 00:54:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1704952446; x=1736488446;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=sAoUH8ZBvemh/CjIaJFZIR8239N0TlWDc3kD6VlGl7c=;
+ b=jKEh2wR2mpPcet4y5D9j6/dtbEB0lfzlj7sXg+Pn16q5hAeK7/nzenL7
+ bjrUyxetk2+W2FekqTfTztfftnQtlvHswL7oY6z/xbrdF5PkDh4Ui6QIe
+ dnA5+Iq0XjFiG4tYSO2O6AmZajchQiMnxwBxFvfwPB/YoHvO4UBZp0bSp
+ HTttWHeNdc6dFI4HCiObWISUubScY+J33OTmVcfhsu2W2V0+34+qS+Rlc
+ XcnRUgXU58X2KNFEq+AUFFN24qNEI6em835Kyo9gEaamhVX6Q42mI5Ta9
+ icUrZRWyTAIQIY9es+2NtOeV9afCisPZ6MiewAbtYKLFMkrGtdSeU13+/ A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="6105137"
+X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; 
+   d="scan'208";a="6105137"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jan 2024 21:54:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="758642311"
+X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; d="scan'208";a="758642311"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
+ ([10.93.22.149])
+ by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jan 2024 21:53:57 -0800
+Message-ID: <866a3a37-cba8-425c-9d9b-57ad05b16bc4@intel.com>
+Date: Thu, 11 Jan 2024 13:53:53 +0800
 MIME-Version: 1.0
-References: <20240104004452.324068-1-hao.xiang@bytedance.com>
- <20240104004452.324068-2-hao.xiang@bytedance.com> <87r0irsgp2.fsf@suse.de>
-In-Reply-To: <87r0irsgp2.fsf@suse.de>
-From: Hao Xiang <hao.xiang@bytedance.com>
-Date: Wed, 10 Jan 2024 21:47:08 -0800
-Message-ID: <CAAYibXgfa7ExypAKP5AVjgYWajVgqh=mn4Ph4m8_v5=q6p-aQw@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v3 01/20] multifd: Add capability to
- enable/disable zero_page
-To: Fabiano Rosas <farosas@suse.de>
-Cc: peter.maydell@linaro.org, peterx@redhat.com, marcandre.lureau@redhat.com, 
- bryan.zhang@bytedance.com, qemu-devel@nongnu.org, 
- Juan Quintela <quintela@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=hao.xiang@bytedance.com; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 07/16] i386: Support modules_per_die in X86CPUTopoInfo
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-8-zhao1.liu@linux.intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20240108082727.420817-8-zhao1.liu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,99 +89,273 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 8, 2024 at 12:39=E2=80=AFPM Fabiano Rosas <farosas@suse.de> wro=
-te:
->
-> Hao Xiang <hao.xiang@bytedance.com> writes:
->
-> > From: Juan Quintela <quintela@redhat.com>
-> >
-> > We have to enable it by default until we introduce the new code.
-> >
-> > Signed-off-by: Juan Quintela <quintela@redhat.com>
-> > ---
-> >  migration/options.c | 15 +++++++++++++++
-> >  migration/options.h |  1 +
-> >  qapi/migration.json |  8 +++++++-
-> >  3 files changed, 23 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/migration/options.c b/migration/options.c
-> > index 8d8ec73ad9..0f6bd78b9f 100644
-> > --- a/migration/options.c
-> > +++ b/migration/options.c
-> > @@ -204,6 +204,8 @@ Property migration_properties[] =3D {
-> >      DEFINE_PROP_MIG_CAP("x-switchover-ack",
-> >                          MIGRATION_CAPABILITY_SWITCHOVER_ACK),
-> >      DEFINE_PROP_MIG_CAP("x-dirty-limit", MIGRATION_CAPABILITY_DIRTY_LI=
-MIT),
-> > +    DEFINE_PROP_MIG_CAP("main-zero-page",
-> > +            MIGRATION_CAPABILITY_MAIN_ZERO_PAGE),
-> >      DEFINE_PROP_END_OF_LIST(),
-> >  };
-> >
-> > @@ -284,6 +286,19 @@ bool migrate_multifd(void)
-> >      return s->capabilities[MIGRATION_CAPABILITY_MULTIFD];
-> >  }
-> >
-> > +bool migrate_use_main_zero_page(void)
-> > +{
-> > +    /* MigrationState *s; */
-> > +
-> > +    /* s =3D migrate_get_current(); */
-> > +
-> > +    /*
-> > +     * We will enable this when we add the right code.
-> > +     * return s->enabled_capabilities[MIGRATION_CAPABILITY_MAIN_ZERO_P=
-AGE];
-> > +     */
-> > +    return true;
-> > +}
-> > +
-> >  bool migrate_pause_before_switchover(void)
-> >  {
-> >      MigrationState *s =3D migrate_get_current();
-> > diff --git a/migration/options.h b/migration/options.h
-> > index 246c160aee..c901eb57c6 100644
-> > --- a/migration/options.h
-> > +++ b/migration/options.h
-> > @@ -88,6 +88,7 @@ int migrate_multifd_channels(void);
-> >  MultiFDCompression migrate_multifd_compression(void);
-> >  int migrate_multifd_zlib_level(void);
-> >  int migrate_multifd_zstd_level(void);
-> > +bool migrate_use_main_zero_page(void);
-> >  uint8_t migrate_throttle_trigger_threshold(void);
-> >  const char *migrate_tls_authz(void);
-> >  const char *migrate_tls_creds(void);
-> > diff --git a/qapi/migration.json b/qapi/migration.json
-> > index eb2f883513..80c4b13516 100644
-> > --- a/qapi/migration.json
-> > +++ b/qapi/migration.json
-> > @@ -531,6 +531,12 @@
-> >  #     and can result in more stable read performance.  Requires KVM
-> >  #     with accelerator property "dirty-ring-size" set.  (Since 8.1)
-> >  #
-> > +#
-> > +# @main-zero-page: If enabled, the detection of zero pages will be
-> > +#                  done on the main thread.  Otherwise it is done on
-> > +#                  the multifd threads.
-> > +#                  (since 8.2)
-> > +#
-> >  # Features:
-> >  #
-> >  # @deprecated: Member @block is deprecated.  Use blockdev-mirror with
-> > @@ -555,7 +561,7 @@
-> >             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
-> >             'validate-uuid', 'background-snapshot',
-> >             'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
-> > -           'dirty-limit'] }
-> > +           'dirty-limit', 'main-zero-page'] }
-> >
-> >  ##
-> >  # @MigrationCapabilityStatus:
->
-> I'll extract this zero page work into a separate series and submit for
-> review soon. I want to get people's opinion on it independently of this
-> series.
+On 1/8/2024 4:27 PM, Zhao Liu wrote:
+> From: Zhuocheng Ding <zhuocheng.ding@intel.com>
+> 
+> Support module level in i386 cpu topology structure "X86CPUTopoInfo".
+> 
+> Since x86 does not yet support the "clusters" parameter in "-smp",
+> X86CPUTopoInfo.modules_per_die is currently always 1. Therefore, the
+> module level width in APIC ID, which can be calculated by
+> "apicid_bitwidth_for_count(topo_info->modules_per_die)", is always 0
+> for now, so we can directly add APIC ID related helpers to support
+> module level parsing.
+> 
+> In addition, update topology structure in test-x86-topo.c.
+> 
+> Signed-off-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
+> Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Tested-by: Babu Moger <babu.moger@amd.com>
+> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
+> Changes since v3:
+>   * Drop the description about not exposing module level in commit
+>     message.
+>   * Update topology related calculation in newly added helpers:
+>     num_cpus_by_topo_level() and apicid_offset_by_topo_level().
+> 
+> Changes since v1:
+>   * Include module level related helpers (apicid_module_width() and
+>     apicid_module_offset()) in this patch. (Yanan)
+> ---
+>   hw/i386/x86.c              |  3 ++-
+>   include/hw/i386/topology.h | 22 +++++++++++++++----
+>   target/i386/cpu.c          | 17 +++++++++-----
+>   tests/unit/test-x86-topo.c | 45 ++++++++++++++++++++------------------
+>   4 files changed, 55 insertions(+), 32 deletions(-)
+> 
+> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+> index 1d19a8c609b1..85b847ac7914 100644
+> --- a/hw/i386/x86.c
+> +++ b/hw/i386/x86.c
+> @@ -72,7 +72,8 @@ static void init_topo_info(X86CPUTopoInfo *topo_info,
+>       MachineState *ms = MACHINE(x86ms);
+>   
+>       topo_info->dies_per_pkg = ms->smp.dies;
+> -    topo_info->cores_per_die = ms->smp.cores;
+> +    topo_info->modules_per_die = ms->smp.clusters;
+> +    topo_info->cores_per_module = ms->smp.cores;
+>       topo_info->threads_per_core = ms->smp.threads;
+>   }
+>   
+> diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
+> index d4eeb7ab8290..517e51768c13 100644
+> --- a/include/hw/i386/topology.h
+> +++ b/include/hw/i386/topology.h
+> @@ -56,7 +56,8 @@ typedef struct X86CPUTopoIDs {
+>   
+>   typedef struct X86CPUTopoInfo {
+>       unsigned dies_per_pkg;
+> -    unsigned cores_per_die;
+> +    unsigned modules_per_die;
+> +    unsigned cores_per_module;
+>       unsigned threads_per_core;
+>   } X86CPUTopoInfo;
+>   
+> @@ -77,7 +78,13 @@ static inline unsigned apicid_smt_width(X86CPUTopoInfo *topo_info)
+>   /* Bit width of the Core_ID field */
+>   static inline unsigned apicid_core_width(X86CPUTopoInfo *topo_info)
+>   {
+> -    return apicid_bitwidth_for_count(topo_info->cores_per_die);
+> +    return apicid_bitwidth_for_count(topo_info->cores_per_module);
+> +}
+> +
+> +/* Bit width of the Module_ID (cluster ID) field */
+> +static inline unsigned apicid_module_width(X86CPUTopoInfo *topo_info)
+> +{
+> +    return apicid_bitwidth_for_count(topo_info->modules_per_die);
+>   }
+>   
+>   /* Bit width of the Die_ID field */
+> @@ -92,10 +99,16 @@ static inline unsigned apicid_core_offset(X86CPUTopoInfo *topo_info)
+>       return apicid_smt_width(topo_info);
+>   }
+>   
+> +/* Bit offset of the Module_ID (cluster ID) field */
+> +static inline unsigned apicid_module_offset(X86CPUTopoInfo *topo_info)
+> +{
+> +    return apicid_core_offset(topo_info) + apicid_core_width(topo_info);
+> +}
+> +
+>   /* Bit offset of the Die_ID field */
+>   static inline unsigned apicid_die_offset(X86CPUTopoInfo *topo_info)
+>   {
+> -    return apicid_core_offset(topo_info) + apicid_core_width(topo_info);
+> +    return apicid_module_offset(topo_info) + apicid_module_width(topo_info);
+>   }
+>   
+>   /* Bit offset of the Pkg_ID (socket ID) field */
+> @@ -127,7 +140,8 @@ static inline void x86_topo_ids_from_idx(X86CPUTopoInfo *topo_info,
+>                                            X86CPUTopoIDs *topo_ids)
+>   {
+>       unsigned nr_dies = topo_info->dies_per_pkg;
+> -    unsigned nr_cores = topo_info->cores_per_die;
+> +    unsigned nr_cores = topo_info->cores_per_module *
+> +                        topo_info->modules_per_die;
+>       unsigned nr_threads = topo_info->threads_per_core;
+>   
+>       topo_ids->pkg_id = cpu_index / (nr_dies * nr_cores * nr_threads);
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 0a2ce9b92b1f..294ca6b8947a 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -278,10 +278,11 @@ static uint32_t num_cpus_by_topo_level(X86CPUTopoInfo *topo_info,
+>       case CPU_TOPO_LEVEL_CORE:
+>           return topo_info->threads_per_core;
+>       case CPU_TOPO_LEVEL_DIE:
+> -        return topo_info->threads_per_core * topo_info->cores_per_die;
+> +        return topo_info->threads_per_core * topo_info->cores_per_module *
+> +               topo_info->modules_per_die;
+>       case CPU_TOPO_LEVEL_PACKAGE:
+> -        return topo_info->threads_per_core * topo_info->cores_per_die *
+> -               topo_info->dies_per_pkg;
+> +        return topo_info->threads_per_core * topo_info->cores_per_module *
+> +               topo_info->modules_per_die * topo_info->dies_per_pkg;
+>       default:
+>           g_assert_not_reached();
+>       }
+> @@ -450,7 +451,9 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
+>   
+>       /* L3 is shared among multiple cores */
+>       if (cache->level == 3) {
+> -        l3_threads = topo_info->cores_per_die * topo_info->threads_per_core;
+> +        l3_threads = topo_info->modules_per_die *
+> +                     topo_info->cores_per_module *
+> +                     topo_info->threads_per_core;
+>           *eax |= (l3_threads - 1) << 14;
+>       } else {
+>           *eax |= ((topo_info->threads_per_core - 1) << 14);
+> @@ -6131,10 +6134,12 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>       uint32_t cpus_per_pkg;
+>   
+>       topo_info.dies_per_pkg = env->nr_dies;
+> -    topo_info.cores_per_die = cs->nr_cores / env->nr_dies;
+> +    topo_info.modules_per_die = env->nr_modules;
+> +    topo_info.cores_per_module = cs->nr_cores / env->nr_dies / env->nr_modules;
+>       topo_info.threads_per_core = cs->nr_threads;
+>   
+> -    cores_per_pkg = topo_info.cores_per_die * topo_info.dies_per_pkg;
+> +    cores_per_pkg = topo_info.cores_per_module * topo_info.modules_per_die *
+> +                    topo_info.dies_per_pkg;
 
-Sounds good. Thanks.
+Nit. maybe we can introduce some helper function like
+
+static inline uint32_t topo_info_cores_per_pkg(X86CPUTopoInfo *topo_info) {
+	return topo_info.cores_per_module * topo_info.modules_per_die *
+                topo_info.dies_per_pkg;
+}
+
+so we don't need to care how it calculates.
+
+Besides,
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+>       cpus_per_pkg = cores_per_pkg * topo_info.threads_per_core;
+>   
+>       /* Calculate & apply limits for different index ranges */
+> diff --git a/tests/unit/test-x86-topo.c b/tests/unit/test-x86-topo.c
+> index 2b104f86d7c2..f21b8a5d95c2 100644
+> --- a/tests/unit/test-x86-topo.c
+> +++ b/tests/unit/test-x86-topo.c
+> @@ -30,13 +30,16 @@ static void test_topo_bits(void)
+>   {
+>       X86CPUTopoInfo topo_info = {0};
+>   
+> -    /* simple tests for 1 thread per core, 1 core per die, 1 die per package */
+> -    topo_info = (X86CPUTopoInfo) {1, 1, 1};
+> +    /*
+> +     * simple tests for 1 thread per core, 1 core per module,
+> +     *                  1 module per die, 1 die per package
+> +     */
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 1, 1};
+>       g_assert_cmpuint(apicid_smt_width(&topo_info), ==, 0);
+>       g_assert_cmpuint(apicid_core_width(&topo_info), ==, 0);
+>       g_assert_cmpuint(apicid_die_width(&topo_info), ==, 0);
+>   
+> -    topo_info = (X86CPUTopoInfo) {1, 1, 1};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 1, 1};
+>       g_assert_cmpuint(x86_apicid_from_cpu_idx(&topo_info, 0), ==, 0);
+>       g_assert_cmpuint(x86_apicid_from_cpu_idx(&topo_info, 1), ==, 1);
+>       g_assert_cmpuint(x86_apicid_from_cpu_idx(&topo_info, 2), ==, 2);
+> @@ -45,39 +48,39 @@ static void test_topo_bits(void)
+>   
+>       /* Test field width calculation for multiple values
+>        */
+> -    topo_info = (X86CPUTopoInfo) {1, 1, 2};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 1, 2};
+>       g_assert_cmpuint(apicid_smt_width(&topo_info), ==, 1);
+> -    topo_info = (X86CPUTopoInfo) {1, 1, 3};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 1, 3};
+>       g_assert_cmpuint(apicid_smt_width(&topo_info), ==, 2);
+> -    topo_info = (X86CPUTopoInfo) {1, 1, 4};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 1, 4};
+>       g_assert_cmpuint(apicid_smt_width(&topo_info), ==, 2);
+>   
+> -    topo_info = (X86CPUTopoInfo) {1, 1, 14};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 1, 14};
+>       g_assert_cmpuint(apicid_smt_width(&topo_info), ==, 4);
+> -    topo_info = (X86CPUTopoInfo) {1, 1, 15};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 1, 15};
+>       g_assert_cmpuint(apicid_smt_width(&topo_info), ==, 4);
+> -    topo_info = (X86CPUTopoInfo) {1, 1, 16};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 1, 16};
+>       g_assert_cmpuint(apicid_smt_width(&topo_info), ==, 4);
+> -    topo_info = (X86CPUTopoInfo) {1, 1, 17};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 1, 17};
+>       g_assert_cmpuint(apicid_smt_width(&topo_info), ==, 5);
+>   
+>   
+> -    topo_info = (X86CPUTopoInfo) {1, 30, 2};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 30, 2};
+>       g_assert_cmpuint(apicid_core_width(&topo_info), ==, 5);
+> -    topo_info = (X86CPUTopoInfo) {1, 31, 2};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 31, 2};
+>       g_assert_cmpuint(apicid_core_width(&topo_info), ==, 5);
+> -    topo_info = (X86CPUTopoInfo) {1, 32, 2};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 32, 2};
+>       g_assert_cmpuint(apicid_core_width(&topo_info), ==, 5);
+> -    topo_info = (X86CPUTopoInfo) {1, 33, 2};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 33, 2};
+>       g_assert_cmpuint(apicid_core_width(&topo_info), ==, 6);
+>   
+> -    topo_info = (X86CPUTopoInfo) {1, 30, 2};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 30, 2};
+>       g_assert_cmpuint(apicid_die_width(&topo_info), ==, 0);
+> -    topo_info = (X86CPUTopoInfo) {2, 30, 2};
+> +    topo_info = (X86CPUTopoInfo) {2, 1, 30, 2};
+>       g_assert_cmpuint(apicid_die_width(&topo_info), ==, 1);
+> -    topo_info = (X86CPUTopoInfo) {3, 30, 2};
+> +    topo_info = (X86CPUTopoInfo) {3, 1, 30, 2};
+>       g_assert_cmpuint(apicid_die_width(&topo_info), ==, 2);
+> -    topo_info = (X86CPUTopoInfo) {4, 30, 2};
+> +    topo_info = (X86CPUTopoInfo) {4, 1, 30, 2};
+>       g_assert_cmpuint(apicid_die_width(&topo_info), ==, 2);
+>   
+>       /* build a weird topology and see if IDs are calculated correctly
+> @@ -85,18 +88,18 @@ static void test_topo_bits(void)
+>   
+>       /* This will use 2 bits for thread ID and 3 bits for core ID
+>        */
+> -    topo_info = (X86CPUTopoInfo) {1, 6, 3};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 6, 3};
+>       g_assert_cmpuint(apicid_smt_width(&topo_info), ==, 2);
+>       g_assert_cmpuint(apicid_core_offset(&topo_info), ==, 2);
+>       g_assert_cmpuint(apicid_die_offset(&topo_info), ==, 5);
+>       g_assert_cmpuint(apicid_pkg_offset(&topo_info), ==, 5);
+>   
+> -    topo_info = (X86CPUTopoInfo) {1, 6, 3};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 6, 3};
+>       g_assert_cmpuint(x86_apicid_from_cpu_idx(&topo_info, 0), ==, 0);
+>       g_assert_cmpuint(x86_apicid_from_cpu_idx(&topo_info, 1), ==, 1);
+>       g_assert_cmpuint(x86_apicid_from_cpu_idx(&topo_info, 2), ==, 2);
+>   
+> -    topo_info = (X86CPUTopoInfo) {1, 6, 3};
+> +    topo_info = (X86CPUTopoInfo) {1, 1, 6, 3};
+>       g_assert_cmpuint(x86_apicid_from_cpu_idx(&topo_info, 1 * 3 + 0), ==,
+>                        (1 << 2) | 0);
+>       g_assert_cmpuint(x86_apicid_from_cpu_idx(&topo_info, 1 * 3 + 1), ==,
+
 
