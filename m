@@ -2,66 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492E982B190
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:18:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E6A82B18E
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:18:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNwne-0003aV-Uf; Thu, 11 Jan 2024 10:16:54 -0500
+	id 1rNwnp-0003cJ-Jt; Thu, 11 Jan 2024 10:17:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNwnY-0003Zs-4g
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:16:49 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1rNwnn-0003c4-SO
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:17:03 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNwnV-00034U-PP
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:16:47 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-55745901085so6923173a12.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 07:16:43 -0800 (PST)
+ id 1rNwnm-0003GR-18
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:17:03 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-558b5f4cf2dso204872a12.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 07:17:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704986202; x=1705591002; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=kHN9fLArQ5Bdlh01dLw3W0RYwz3pPva/EzX/o5HF0Bw=;
- b=QHIPaB9jxqvtekIPs/YVzyc9fx4qXY+CokyFi8GmWKZHhmEA1NOWy/0yhcK50xu4PW
- 7icKHEyGGb13kjBifBk/h850ov9Y+XjeScsXVSkekUCjvER3NtMPuDrSPCQbkGiFCtmY
- k9L9+IQGWsQ4XGC8NvI+8O1esbsXwThvAIq9408Ysrbpo7Avv5Y0G3Djbyaz9O5OF4S9
- jr8LEON7jAtj0zXX2YBf/pS7a7KZOfpTgeisFiAKyaEuuNH++65ch5IUkk8qTDDOtQna
- kgzXmkTJJANFFMQGQwvOe1Be7+7kVzEwgnGrxuH5/07Y57HpTeyHG7Mk9CQgVBE1kIM6
- wTuQ==
+ d=linaro.org; s=google; t=1704986219; x=1705591019; darn=nongnu.org;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ZycYT00B4IWTzJUn9rHbFLUeg4ZWPl8AtfsBeUtk8dY=;
+ b=e2zh4G5TI9qIqjCTTX6rlUqCa5h/fez/BU7BEeTLTtRK8RTsJwEcD+ow0GndxrZ9iv
+ axgVQ8hjnpW+9M9maroUX/GHzNrVl2jJUukHtLS4PyHyc9693rMvPMsFKFTTabcbH9i9
+ rHyJr75ipmsbb1WCpkNL6v0JxrBX5IPgkeI8PEFh1mTr8AO58bM89waUZXsLjEq3zupB
+ v0YNKXDoQBHZw8IZiinQHiela3LBcmLrigKjmxd9dyHBsCwl00O+vtvCLdx67nrxxhZw
+ 4TSzo4VumfB/plqaj/GBl8fDkKehDQwHQaQqif4HibBIuw15nB3MEGFjgYMoT4EQILH3
+ Rmag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704986202; x=1705591002;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kHN9fLArQ5Bdlh01dLw3W0RYwz3pPva/EzX/o5HF0Bw=;
- b=o/WELvx4/71Wg4/6EpBPQZY5gNsShi5293lgCQy6m6MhdjneVTJjTyvUdax5WSy6+e
- Zq7zHtNGzlsQsWWhdY6z8+u/Nd6oiYV6eSngLGYC8sPVW1O2+XsmZJj6dpAJSry2quCv
- vBPxIsloPU31NhU/ZGkInOaps7GEstjuvzU0E0H2rxtwgab4DJsN+SVbDOC5eUnE79gq
- wS5ANKYhRmGGda68Zme0HbMCHyZYPOTUNKSIHMETaTOYmf+8XVL3jCK3bFaqtzNYPou2
- ZMq0tmAjGC+zDkpWPdN23xl4zeccaBa8ltwpKSUxmDVTY57+uyXyU1Vp4QxtxFm0IgpP
- qJ/w==
-X-Gm-Message-State: AOJu0YxFTTczWqHDNNpcWKfwvTsBQlbegvDxCs2biO2ua2/g5dI4oTcH
- 2MlwlCD4GRDPe35RAqtZqbr/vz3HSJ+Gso6Ccbjnxaib4wS1DA==
-X-Google-Smtp-Source: AGHT+IGMKRRQlWuDfq5x6RAEr3k/fCW4sdSvd4RQSSeiMCJvabN8tUKwFavQf+V2nmQOWfOoVx+LFr5S9o2j5Q6G0nw=
-X-Received: by 2002:a05:6402:40c1:b0:557:d5c1:a4ae with SMTP id
- z1-20020a05640240c100b00557d5c1a4aemr747737edb.47.1704986202639; Thu, 11 Jan
- 2024 07:16:42 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704986219; x=1705591019;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZycYT00B4IWTzJUn9rHbFLUeg4ZWPl8AtfsBeUtk8dY=;
+ b=wVyfXdh4KtTqekCfcLNwDBR5vZYaW+0Ayg65Lrw5jaXavojXFwpq0Iw/fYYYnIiEeA
+ OXkbU2f7kvuDhKzKmfx3NbmmN2qo2BhL6fFXPsyg1lI+wvkyZPklX3kPsZOiVvQsWGVU
+ CHk1sFdBSRQMlAzvLIIL7s+7CvxYlj3t0QYPH92w/HgKsc+itcifEQurCY7ixZxi1gw6
+ IbxGqJXAb+EmRK4A3rOComOhZYIgKHub+7niz9/sWsH9HXtlSGP8YIF9g42mUVyechUA
+ gPQKOStyzCnkUHMRl+Vg5qmkZ4XjxnlaA112sPW1uo3vR1n2qtipAneM1S8JpcSmjhMf
+ yKzQ==
+X-Gm-Message-State: AOJu0YyKp7AvvF8Bvve7U/1MmGD9I0VXVnpWZUIIdFbZIR7Ty0KMc3RT
+ 0zDe/uZngltBlxDGWsSj3Fc8/+CT1Mo0KB3lCFvkZf2F5l1UBJElaSfLFUPh
+X-Google-Smtp-Source: AGHT+IG0HUaf2wPNWWdnGg0+POjc4Hhcx02ujZc8I/Pza4FicDsXcJ2UsY7rhqwK7hyg2Q5pNqx/Al52F5I0X45gAas=
+X-Received: by 2002:a05:6402:5155:b0:557:c9ec:a47e with SMTP id
+ n21-20020a056402515500b00557c9eca47emr772313edd.0.1704986219486; Thu, 11 Jan
+ 2024 07:16:59 -0800 (PST)
 MIME-Version: 1.0
-References: <20240110215204.9353-1-richard.henderson@linaro.org>
-In-Reply-To: <20240110215204.9353-1-richard.henderson@linaro.org>
+References: <20240111110505.1563291-1-peter.maydell@linaro.org>
+In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 11 Jan 2024 15:16:31 +0000
-Message-ID: <CAFEAcA-p+fT13+pLVXMpCbOLcrzWXeg=QGwbJfokRA37sp-snw@mail.gmail.com>
-Subject: Re: [PULL 0/4] tcg patch queue
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
+Date: Thu, 11 Jan 2024 15:16:48 +0000
+Message-ID: <CAFEAcA-2_ErgwyzDzfEC+VsAVgUaZyzA4faBxk7r2iUgqUrs-w@mail.gmail.com>
+Subject: Re: [PULL 00/41] target-arm queue
+To: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,26 +82,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 10 Jan 2024 at 21:52, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On Thu, 11 Jan 2024 at 11:05, Peter Maydell <peter.maydell@linaro.org> wrote:
 >
-> The following changes since commit 34eac35f893664eb8545b98142e23d9954722766:
+> Mostly my FEAT_NV/NV2 stuff, but some other smaller series too.
 >
->   Merge tag 'pull-riscv-to-apply-20240110' of https://github.com/alistair23/qemu into staging (2024-01-10 11:41:56 +0000)
+> -- PMM
+>
+> The following changes since commit 9468484fe904ab4691de6d9c34616667f377ceac:
+>
+>   Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2024-01-09 10:32:23 +0000)
 >
 > are available in the Git repository at:
 >
->   https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240111
+>   https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240111
 >
-> for you to fetch changes up to 1d513e06d96697f44de4a1b85c6ff627c443e306:
+> for you to fetch changes up to e2862554c257e908a3833265e38365e794abd362:
 >
->   util: fix build with musl libc on ppc64le (2024-01-11 08:48:16 +1100)
+>   target/arm: Add FEAT_NV2 to max, neoverse-n2, neoverse-v1 CPUs (2024-01-09 14:44:45 +0000)
 >
 > ----------------------------------------------------------------
-> tcg/i386: Use more 8-bit immediate forms for add, sub, or, xor
-> tcg/ppc: Use new registers for LQ destination
-> util: fix build with musl libc on ppc64le
+> target-arm queue:
+>  * Emulate FEAT_NV, FEAT_NV2
+>  * add cache controller for Freescale i.MX6
+>  * Add minimal support for the B-L475E-IOT01A board
+>  * Allow SoC models to configure M-profile CPUs with correct number
+>    of NVIC priority bits
+>  * Add missing QOM parent for v7-M SoCs
+>  * Set CTR_EL0.{IDC,DIC} for the 'max' CPU
+>  * hw/intc/arm_gicv3_cpuif: handle LPIs in in the list registers
 >
+> ----------------------------------------------------------------
 
 
 Applied, thanks.
