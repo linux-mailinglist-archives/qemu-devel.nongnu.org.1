@@ -2,78 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADDEC82B429
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 18:32:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F9182B43E
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 18:40:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNyte-0003AI-2t; Thu, 11 Jan 2024 12:31:14 -0500
+	id 1rNz1F-000886-Ly; Thu, 11 Jan 2024 12:39:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rNytI-00039T-Gu
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:30:52 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <slongfield@google.com>)
+ id 1rNz1C-00087p-JY
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:39:02 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rNytA-0000wo-L1
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:30:49 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1d595de968bso4044945ad.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 09:30:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <slongfield@google.com>)
+ id 1rNz1A-0004RJ-DD
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:39:02 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40e43e55b87so54895e9.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 09:38:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704994239; x=1705599039; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=E6M8v2P914ljYAUSolw34Nw6Wxs2yrKklUlzq72RZNA=;
- b=YPldbSUuUxq8NaWPdzYTEZqO9mRiHWiZZ45t4sDxkmx4FR4fWg1y/lGal71aPQ7wLI
- 9+7Qx7FvyxRED0N7A62SYWmWmoTzmfXBmKctupwYPrwcQP8qZA0vodVjIrQXTPSBxJRG
- gQBCJJZcNUGMGBMqd6P2mRNZuf1PfGFLJnpPcY3R/4gKrLfZUdKyenyq80OZ3UXIkj5Y
- edugRh4HBMA6XhaomoJX5axrt/Cj9AqcpbJ4iqNEGjXBH2utrylEFGoU83dSaclBsT67
- X3avOAiZ7HCVHCKTKQ8yC0BSogLzFSWofZalPMVgzNu5rBEgVa1FDmwIxS/VZXMwI0lN
- RLGw==
+ d=google.com; s=20230601; t=1704994737; x=1705599537; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=H0k9eKyINbYZZS+337oodqwdJCLvEaFxfTk6UtguO2I=;
+ b=z6HUWqEoWC5+LaTVXkaDz/5lBexsUE2hfnFQQV9cqUtlrWjhfJh6kWBUPfkLLCYha7
+ 3EXEr4+5/BeB+n+zbZJfDRvY3UIwxGt9AplWyYlg4Up0RhaCvxw7KLq5keTrKgSaynWX
+ HBCxSEhr2MdmRKA5+7WTEn3cpB5QMekiVWHKkJlo5nr/6crF6WnJLkCawrlCWrqYRyix
+ J3I7Y7QdWgINvNrjV27NIsKL+jI2xQ9XhdtK+Q50GGBiV47kBdAADYhrQByC8oeQEyRz
+ X899MNMopNlvYdv8EOnwoxHpGQ2dWaec+Iy2gSt+U2fBMnUm8ASJqeg60Uw+5G7NqhZL
+ 95lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704994239; x=1705599039;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=E6M8v2P914ljYAUSolw34Nw6Wxs2yrKklUlzq72RZNA=;
- b=p6ly/2CFXw2meAlV1jz5btGkjpz2rT3MyYOM42fnWeXwNkE63PhMT0G/s2y/DHNcy8
- v2oxh/MKZ9MVOzQhDxBs5FI3MUsymYiM+ANgGa1T8WUskUcnIJAC2LwsBHDQlLLEBG/M
- 7rn3VZJsSgOQdLP8WSD/kntw9V/JwlKcywhkKZeTfSinEnLrVTMwUsXD+GsvfIofRqsP
- VJN7BTM5BtdgY4rN6EKhKWdTNa/AmvTm+zP+4Qj6akK0DstX0fMUcgwUfvWGeHK/31SW
- 7Lxz5CBmfdPF1Y6UR/d/yRo6af9q1XOqMVwAuPbTwnsIWQOfPXCztwjraacF42CSZPyk
- b8ew==
-X-Gm-Message-State: AOJu0YznYJBl8dHI6EoHSb0o2lXqW8BmmUzJ3i9d+nex2VyO8mmPl82R
- 3WmNTZKBJk7bJ0QQe7PCbOsdvm+s0iCiYg==
-X-Google-Smtp-Source: AGHT+IH3hXZ3+F84z0r2yIHVePhmJ9MO2ufRLAyCKMC4CmGcnkIU/nMP9muXmQ13uZmYtL87oi7UiA==
-X-Received: by 2002:a17:902:6b02:b0:1d0:7adc:1af0 with SMTP id
- o2-20020a1709026b0200b001d07adc1af0mr38237plk.35.1704994239482; 
- Thu, 11 Jan 2024 09:30:39 -0800 (PST)
-Received: from akshara-VivoBook-ASUSLaptop-X409DA-M409DA.mshome.net
- ([218.185.248.66]) by smtp.gmail.com with ESMTPSA id
- a20-20020a170902ee9400b001d3dacffde3sm1403941pld.226.2024.01.11.09.30.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jan 2024 09:30:38 -0800 (PST)
-From: Abhiram Tilak <atp.exp@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: kwolf@redhat.com,
-	hreitz@redhat.com,
-	Abhiram Tilak <atp.exp@gmail.com>
-Subject: [PATCH v3] qemu-img: Fix Column Width and Improve Formatting in
- snapshot list
-Date: Thu, 11 Jan 2024 22:55:47 +0530
-Message-Id: <20240111172546.823263-1-atp.exp@gmail.com>
-X-Mailer: git-send-email 2.40.1
+ d=1e100.net; s=20230601; t=1704994737; x=1705599537;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=H0k9eKyINbYZZS+337oodqwdJCLvEaFxfTk6UtguO2I=;
+ b=siNaZWnATTwzQfcW9bcQKNQdqtLTPDl9XYQFt7zLV5qShGjTpxJTQ8eTOuvZy7a7/X
+ U8kFCH7qaMi/tqdi1Oqsmgc7QnAfzVEe5i173WojJEK6Or6kTWomkLypOPrp+NawrhgW
+ Vu533YTHFK8M8xQoPsUqtsaUUJPtwcz1nMRoAx7grMuvGTc0ALUSROkXORuBfwVidSQK
+ hgVdUlCx6jcSr0i+HC6QqcsP9mTQFRmklhQXQcwH0kn7UcVjOI1+ZhOteSiplBzpNKSi
+ oFVr1y3cotDhSrMKGBamhuo6NYkYcW29D6vR+Yu6mwDQ4NQWZV2v9OdMygppTSMYXsUL
+ T7sw==
+X-Gm-Message-State: AOJu0Yz/xmw4MejKzpnbz/6MlbtOc1FpTLRdeGR4yn+VM/vK9Kkmq6wz
+ NIRDjeQFbE7VFEqrNiXvdcMrF9SNZtKTJEwwH0V5PD7MI4ZNRbqNDHOciLnvivWQ
+X-Google-Smtp-Source: AGHT+IFEPLrQYvjpOtI3dXwE70sAgRCZERMWMWKQBRU8eoaMuC+idwOE83/04KKclMsZJ5LgHtEX/JfbR+c811/gQRM=
+X-Received: by 2002:a05:600c:1d26:b0:40e:6206:a492 with SMTP id
+ l38-20020a05600c1d2600b0040e6206a492mr79723wms.7.1704994737346; Thu, 11 Jan
+ 2024 09:38:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=atp.exp@gmail.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+From: Stephen Longfield <slongfield@google.com>
+Date: Thu, 11 Jan 2024 09:38:41 -0800
+Message-ID: <CAK_0=F+RznDdq27z3r3H1d4pj=QTD-9WZP8xH7jOP75QXJhHpw@mail.gmail.com>
+Subject: Possible race condition in aspeed ast2600 smp boot on TCG QEMU
+To: qemu-devel@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au
+Cc: Joe Komlodi <komlodi@google.com>, Patrick Venture <venture@google.com>
+Content-Type: multipart/alternative; boundary="000000000000aa2214060eaf0517"
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=slongfield@google.com; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,234 +84,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When running the command `qemu-img snapshot -l SNAPSHOT` the output of
-VM_CLOCK (measures the offset between host and VM clock) cannot to
-accommodate values in the order of thousands (4-digit).
+--000000000000aa2214060eaf0517
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This line [1] hints on the problem. Additionally, the column width for
-the VM_CLOCK field was reduced from 15 to 13 spaces in commit b39847a5
-in line [2], resulting in a shortage of space.
+We=E2=80=99ve noticed inconsistent behavior when running a large number of =
+aspeed
+ast2600 executions, that seems to be tied to a race condition in the smp
+boot when executing on TCG-QEMU, and were wondering what a good mediation
+strategy might be.
 
-[1]: https://gitlab.com/qemu-project/qemu/-/blob/master/block/qapi.c?ref_type=heads#L753
-[2]: https://gitlab.com/qemu-project/qemu/-/blob/master/block/qapi.c?ref_type=heads#L763
+The problem first shows up as part of SMP boot. On a run that=E2=80=99s lik=
+ely to
+later run into issues, we=E2=80=99ll see something like:
 
-This patch restores the column width to 15 spaces and makes adjustments
-to the affected iotests accordingly. Furthermore, addresses a potential source
-of confusion by removing whitespace in column headers. Example, VM CLOCK
-is modified to VM_CLOCK. Additionally a '--' symbol is introduced when
-ICOUNT returns no output for clarity.
+```
+[    0.008350] smp: Bringing up secondary CPUs ...
+[    1.168584] CPU1: failed to come online
+[    1.187277] smp: Brought up 1 node, 1 CPU
+```
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2062
-Fixes: b39847a50553 (migration: introduce icount field for snapshots )
-Signed-off-by: Abhiram Tilak <atp.exp@gmail.com>
+Compared to the more likely to succeed:
+
+```
+[    0.080313] smp: Bringing up secondary CPUs ...
+[    0.093166] smp: Brought up 1 node, 2 CPUs
+[    0.093345] SMP: Total of 2 processors activated (4800.00 BogoMIPS).
+```
+
+It=E2=80=99s somewhat reliably reproducible by running the ast2600-evb with=
+ an
+OpenBMC image, using =E2=80=98-icount auto=E2=80=99 to slow execution and m=
+ake the race
+condition more frequent (it happens without this, just easier to debug if
+we can reproduce):
+
+
+```
+./aarch64-softmmu/qemu-system-aarch64 -machine ast2600-evb -nographic
+-drive file=3D~/bmc-bin/image-obmc-ast2600,if=3Dmtd,bus=3D0,unit=3D0,snapsh=
+ot=3Don
+-nic user -icount auto
+```
+
+Our current hypothesis is that the problem comes up in the platform uboot.
+As part of the boot, the secondary core waits for the smp mailbox to get a
+magic number written by the primary core:
+
+https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/a=
+rm/mach-aspeed/ast2600/platform.S#L168
+
+However, this memory address is cleared on boot:
+
+https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/a=
+rm/mach-aspeed/ast2600/platform.S#L146
+
+The race condition occurs if the primary core runs far ahead of the
+secondary core: if the primary core gets to the point where it signals the
+secondary core=E2=80=99s mailbox before the secondary core gets past the po=
+int
+where it does the initial reset and starts waiting, the reset will clear
+the signal, and then the secondary core will never get past the point where
+it=E2=80=99s looping in `poll_smp_mbox_ready`.
+
+We=E2=80=99ve observed this race happening by dumping all SCU reads and wri=
+tes, and
+validated that this is the problem by using a modified `platform.S` that
+doesn=E2=80=99t clear the =3DSCU_SMP_READY mailbox on reset, but would rath=
+er not
+have to use a modified version of SMP boot just for QEMU-TCG execution.
+
+Is there a way to have QEMU insert a barrier synchronization at some point
+in the bootloader?  I think getting both cores past the =3DSCU_SMP_READY
+reset would get rid of this race, but I=E2=80=99m not aware of a way to do =
+that
+kind of thing in QEMU-TCG.
+
+Thanks for any insights!
+
+--Stephen
+
 ---
- v3:
-    * Make a patch by avoid changing the .patch file
- v2:
-    * Change email provider to 'gmail' to avoid auto-wrapping patches
-    * Modify iotests for file 'qcow2-internal-snapshots.out'
 
- block/qapi.c                                  | 10 ++--
- tests/qemu-iotests/267.out                    | 48 +++++++++----------
- .../tests/qcow2-internal-snapshots.out        | 10 ++--
- 3 files changed, 35 insertions(+), 33 deletions(-)
+P.S. Additional note about the aspeed platform.S:
 
-diff --git a/block/qapi.c b/block/qapi.c
-index 9e806fa230..ee066ee53c 100644
---- a/block/qapi.c
-+++ b/block/qapi.c
-@@ -742,15 +742,15 @@ void bdrv_snapshot_dump(QEMUSnapshotInfo *sn)
-     char *sizing = NULL;
- 
-     if (!sn) {
--        qemu_printf("%-10s%-17s%8s%20s%13s%11s",
--                    "ID", "TAG", "VM SIZE", "DATE", "VM CLOCK", "ICOUNT");
-+        qemu_printf("%-10s%-17s%8s%20s%15s%11s",
-+                    "ID", "TAG", "VM_SIZE", "DATE", "VM_CLOCK", "ICOUNT");
-     } else {
-         g_autoptr(GDateTime) date = g_date_time_new_from_unix_local(sn->date_sec);
-         g_autofree char *date_buf = g_date_time_format(date, "%Y-%m-%d %H:%M:%S");
- 
-         secs = sn->vm_clock_nsec / 1000000000;
-         snprintf(clock_buf, sizeof(clock_buf),
--                 "%02d:%02d:%02d.%03d",
-+                 "%04d:%02d:%02d.%03d",
-                  (int)(secs / 3600),
-                  (int)((secs / 60) % 60),
-                  (int)(secs % 60),
-@@ -759,8 +759,10 @@ void bdrv_snapshot_dump(QEMUSnapshotInfo *sn)
-         if (sn->icount != -1ULL) {
-             snprintf(icount_buf, sizeof(icount_buf),
-                 "%"PRId64, sn->icount);
-+        } else {
-+            snprintf(icount_buf, sizeof(icount_buf), "--");
-         }
--        qemu_printf("%-9s %-16s %8s%20s%13s%11s",
-+        qemu_printf("%-9s %-16s %8s%20s%15s%11s",
-                     sn->id_str, sn->name,
-                     sizing,
-                     date_buf,
-diff --git a/tests/qemu-iotests/267.out b/tests/qemu-iotests/267.out
-index 7176e376e1..21339e67ad 100644
---- a/tests/qemu-iotests/267.out
-+++ b/tests/qemu-iotests/267.out
-@@ -33,8 +33,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
- (qemu) savevm snap0
- (qemu) info snapshots
- List of snapshots present on all disks:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
----        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000           
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- (qemu) loadvm snap0
- (qemu) quit
- 
-@@ -44,8 +44,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
- (qemu) savevm snap0
- (qemu) info snapshots
- List of snapshots present on all disks:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
----        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000           
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- (qemu) loadvm snap0
- (qemu) quit
- 
-@@ -69,8 +69,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
- (qemu) savevm snap0
- (qemu) info snapshots
- List of snapshots present on all disks:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
----        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000           
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- (qemu) loadvm snap0
- (qemu) quit
- 
-@@ -94,8 +94,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
- (qemu) savevm snap0
- (qemu) info snapshots
- List of snapshots present on all disks:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
----        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000           
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- (qemu) loadvm snap0
- (qemu) quit
- 
-@@ -105,8 +105,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
- (qemu) savevm snap0
- (qemu) info snapshots
- List of snapshots present on all disks:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
----        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000           
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- (qemu) loadvm snap0
- (qemu) quit
- 
-@@ -119,8 +119,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
- (qemu) savevm snap0
- (qemu) info snapshots
- List of snapshots present on all disks:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
----        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000           
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- (qemu) loadvm snap0
- (qemu) quit
- 
-@@ -134,8 +134,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
- (qemu) savevm snap0
- (qemu) info snapshots
- List of snapshots present on all disks:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
----        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000           
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- (qemu) loadvm snap0
- (qemu) quit
- 
-@@ -145,15 +145,15 @@ QEMU X.Y.Z monitor - type 'help' for more information
- (qemu) savevm snap0
- (qemu) info snapshots
- List of snapshots present on all disks:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
----        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000           
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- (qemu) loadvm snap0
- (qemu) quit
- 
- Internal snapshots on overlay:
- Snapshot list:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
--1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000           
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+1         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- Internal snapshots on backing file:
- 
- === -blockdev with NBD server on the backing file ===
-@@ -166,17 +166,17 @@ QEMU X.Y.Z monitor - type 'help' for more information
- (qemu) savevm snap0
- (qemu) info snapshots
- List of snapshots present on all disks:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
----        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000           
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- (qemu) loadvm snap0
- (qemu) quit
- 
- Internal snapshots on overlay:
- Snapshot list:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
--1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000           
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+1         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- Internal snapshots on backing file:
- Snapshot list:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
--1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000           
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+1         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- *** done
-diff --git a/tests/qemu-iotests/tests/qcow2-internal-snapshots.out b/tests/qemu-iotests/tests/qcow2-internal-snapshots.out
-index 438f535e6a..c324131561 100644
---- a/tests/qemu-iotests/tests/qcow2-internal-snapshots.out
-+++ b/tests/qemu-iotests/tests/qcow2-internal-snapshots.out
-@@ -14,8 +14,8 @@ wrote 524288/524288 bytes at offset 0
- (qemu) quit
- 
- Snapshot list:
--ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
--1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
-+ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
-+1         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- No errors were found on the image.
- 
- === Verify that loading the snapshot reverts to the old content ===
-@@ -48,8 +48,8 @@ read 64512/64512 bytes at offset 66560
- 
- Snapshot list:
- ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
--1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
--2         snap1                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
-+1         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
-+2         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- No errors were found on the image.
- 
- === qemu-img snapshot can revert to snapshots ===
-@@ -80,7 +80,7 @@ read 64512/64512 bytes at offset 66560
- 
- Snapshot list:
- ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
--1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
-+1         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
- No errors were found on the image.
- 
- === Error cases ===
--- 
-2.40.1
+Clearing the mailbox was added in this patch:
 
+https://github.com/AspeedTech-BMC/u-boot/commit/55825c55d1dabc00e37999a3849=
+5ed05c901bec2
+
+At the time, the write to what was then known as
+`=3DAST_SMP_MBOX_FIELD_READY` (now `=3DSCU_SMP_READY`) happened after
+`scu_unlock`.  But, when the boot flow was revised in
+
+https://github.com/AspeedTech-BMC/u-boot/commit/46a48bbe56c1e790c9bd1794364=
+db86ec609c48e
+the scu_unlock was moved to primary core boot, so, unless the primary core
+wins the race, it doesn=E2=80=99t seem like the mailbox ready clear actuall=
+y will
+have any effect, since it=E2=80=99ll be writing while the SCU is locked.
+
+--000000000000aa2214060eaf0517
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">We=E2=80=99ve noticed inconsistent behavior when running a=
+ large number of aspeed ast2600 executions, that seems to be tied to a race=
+ condition in the smp boot when executing on TCG-QEMU, and were wondering w=
+hat a good mediation strategy might be.<br><br>The problem first shows up a=
+s part of SMP boot. On a run that=E2=80=99s likely to later run into issues=
+, we=E2=80=99ll see something like:<br><br>```<br>[ =C2=A0 =C2=A00.008350] =
+smp: Bringing up secondary CPUs ...<br>[ =C2=A0 =C2=A01.168584] CPU1: faile=
+d to come online<br>[ =C2=A0 =C2=A01.187277] smp: Brought up 1 node, 1 CPU<=
+br>```<br><br>Compared to the more likely to succeed:<br><br>```<br>[ =C2=
+=A0 =C2=A00.080313] smp: Bringing up secondary CPUs ...<br>[ =C2=A0 =C2=A00=
+.093166] smp: Brought up 1 node, 2 CPUs<br>[ =C2=A0 =C2=A00.093345] SMP: To=
+tal of 2 processors activated (4800.00 BogoMIPS).<br>```<br><br>It=E2=80=99=
+s somewhat reliably reproducible by running the ast2600-evb with an OpenBMC=
+ image, using =E2=80=98-icount auto=E2=80=99 to slow execution and make the=
+ race condition more frequent (it happens without this, just easier to debu=
+g if we can reproduce):<br><br><br>```<br>./aarch64-softmmu/qemu-system-aar=
+ch64 -machine ast2600-evb -nographic -drive file=3D~/bmc-bin/image-obmc-ast=
+2600,if=3Dmtd,bus=3D0,unit=3D0,snapshot=3Don -nic user -icount auto<br>```<=
+br><br>Our current hypothesis is that the problem comes up in the platform =
+uboot.=C2=A0 As part of the boot, the secondary core waits for the smp mail=
+box to get a magic number written by the primary core:<br><br><a href=3D"ht=
+tps://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/arm=
+/mach-aspeed/ast2600/platform.S#L168">https://github.com/AspeedTech-BMC/u-b=
+oot/blob/aspeed-master-v2019.04/arch/arm/mach-aspeed/ast2600/platform.S#L16=
+8</a><br><br>However, this memory address is cleared on boot:<br><br><a hre=
+f=3D"https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/a=
+rch/arm/mach-aspeed/ast2600/platform.S#L146">https://github.com/AspeedTech-=
+BMC/u-boot/blob/aspeed-master-v2019.04/arch/arm/mach-aspeed/ast2600/platfor=
+m.S#L146</a><br><br>The race condition occurs if the primary core runs far =
+ahead of the secondary core: if the primary core gets to the point where it=
+ signals the secondary core=E2=80=99s mailbox before the secondary core get=
+s past the point where it does the initial reset and starts waiting, the re=
+set will clear the signal, and then the secondary core will never get past =
+the point where it=E2=80=99s looping in `poll_smp_mbox_ready`.<br><br>We=E2=
+=80=99ve observed this race happening by dumping all SCU reads and writes, =
+and validated that this is the problem by using a modified `platform.S` tha=
+t doesn=E2=80=99t clear the =3DSCU_SMP_READY mailbox on reset, but would ra=
+ther not have to use a modified version of SMP boot just for QEMU-TCG execu=
+tion.<br><br>Is there a way to have QEMU insert a barrier synchronization a=
+t some point in the bootloader?=C2=A0 I think getting both cores past the =
+=3DSCU_SMP_READY reset would get rid of this race, but I=E2=80=99m not awar=
+e of a way to do that kind of thing in QEMU-TCG.<br><br>Thanks for any insi=
+ghts!<br><br>--Stephen<br><br>---<br><br>P.S. Additional note about the asp=
+eed platform.S:<br><br>Clearing the mailbox was added in this patch:<br><br=
+><a href=3D"https://github.com/AspeedTech-BMC/u-boot/commit/55825c55d1dabc0=
+0e37999a38495ed05c901bec2">https://github.com/AspeedTech-BMC/u-boot/commit/=
+55825c55d1dabc00e37999a38495ed05c901bec2</a><br><br>At the time, the write =
+to what was then known as `=3DAST_SMP_MBOX_FIELD_READY` (now `=3DSCU_SMP_RE=
+ADY`) happened after `scu_unlock`.=C2=A0 But, when the boot flow was revise=
+d in<br><br><a href=3D"https://github.com/AspeedTech-BMC/u-boot/commit/46a4=
+8bbe56c1e790c9bd1794364db86ec609c48e">https://github.com/AspeedTech-BMC/u-b=
+oot/commit/46a48bbe56c1e790c9bd1794364db86ec609c48e</a> the scu_unlock was =
+moved to primary core boot, so, unless the primary core wins the race, it d=
+oesn=E2=80=99t seem like the mailbox ready clear actually will have any eff=
+ect, since it=E2=80=99ll be writing while the SCU is locked.</div>
+
+--000000000000aa2214060eaf0517--
 
