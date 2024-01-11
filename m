@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074E882A7FC
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 08:05:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFB182A804
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 08:07:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNp78-00041L-2X; Thu, 11 Jan 2024 02:04:30 -0500
+	id 1rNp9a-0005sx-3w; Thu, 11 Jan 2024 02:07:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNp75-00040v-Gt
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:04:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rNp9X-0005sJ-Td
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:06:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNp73-0003PE-WF
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:04:27 -0500
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rNp9W-0005AD-Bt
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:06:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704956665;
+ s=mimecast20190719; t=1704956817;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PYaf3Oo4/8OWonRZl+2k9uoHqtgAxzBQMDg7FiWDVNQ=;
- b=hlToSRYNW1EmiEkYpr4I2qY1Lkeqn6rNbnj7vwmBg8F2PR5AuXuwR83HaJs8/xyoaJgjqA
- h6qZplLSYEcC8wPfYVs1Nwz6RJa0m1IFMrF9FHaq0edyIIAXM5eKBUitKPyT69ZKMwG0Bq
- C6tN5ZmsIuvyen6IMBPoyUuTjEWFzsY=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=J5vznvnlmRwI1rNFz63taMLN5NRQy15z18EFywvU5nM=;
+ b=SNXx15nL96ifkmmQ+/EgqJ4Mg0hyo+rVT1/glNYjOdxAOFNk4HEyGiDsSVy2tcAIj1xyPR
+ oIhvWpLbJHJfIHdWpXHpSXl+XrKZ2mRMqjYMR6u/9GTg/mMY6jFFMVoqYY3For3/v9KSm5
+ NxoBQseT5nxTIsL86HZNfwsAAvBXgno=
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
+ [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-A6jaGvmSPXqY_mT5Ed8dYw-1; Thu, 11 Jan 2024 02:04:23 -0500
-X-MC-Unique: A6jaGvmSPXqY_mT5Ed8dYw-1
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-28db680c0f7so402628a91.0
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 23:04:23 -0800 (PST)
+ us-mta-496-J91XZXXnPyqasLelgdoo_g-1; Thu, 11 Jan 2024 02:06:56 -0500
+X-MC-Unique: J91XZXXnPyqasLelgdoo_g-1
+Received: by mail-oi1-f197.google.com with SMTP id
+ 5614622812f47-3bd4b623e4aso2417646b6e.3
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 23:06:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704956662; x=1705561462;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PYaf3Oo4/8OWonRZl+2k9uoHqtgAxzBQMDg7FiWDVNQ=;
- b=Z8Wnd0X+VGFC3Sjr3PvsaoRUSU+ssqNeyOrf4WGnS44TGWP9GKKF/keylIOJpiVrvJ
- bKlYQk1hD+7D+vgsoYGDmIsV/7y6MT8bdjGsL2z17HP5QfW1X0gld/FO3C19f81POyr/
- SkxiLRZCbv0ottSTRCH6hId8dsdCfG017tc4sL52CkDpO144jiyO0OzbOgN1TqG+4sqH
- JrtGv52w82nW2AoaB/N/fEqyDfNuKeRLjpyI1WFg0Uy2oyZ8RRmCKDtG3jzl8XnRZCym
- 8+3d3KLd+G8jSDduxQ+rUyEIUS8NZV4aQkABEcMOb8oGuHqGXGbBO9v2qwj1xeYSrPhb
- eQYg==
-X-Gm-Message-State: AOJu0YyC8ghBU7+n9e8NeCX4kTJ41ivyezQg3Cl5bS0f7flHWGmjVomc
- H8QXiHSeDbf4S2FD3YUx0ry1LOx4s4/9OgNO9pzsJPHo+tFaqf/AOm79X8YOY35rNKnvM/o2EUq
- LzVedDrLIrMAxpKzdgWmfkUg=
-X-Received: by 2002:a17:90b:33c8:b0:286:4055:63e0 with SMTP id
- lk8-20020a17090b33c800b00286405563e0mr1380201pjb.0.1704956662615; 
- Wed, 10 Jan 2024 23:04:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IElEilmnsZ51hg0ScQwXHREoL8YUMGbhqew7Lq8T7NzKaxaRwrxe5zN7K8y1XPRyr0Gvj8hcw==
-X-Received: by 2002:a17:90b:33c8:b0:286:4055:63e0 with SMTP id
- lk8-20020a17090b33c800b00286405563e0mr1380187pjb.0.1704956662265; 
- Wed, 10 Jan 2024 23:04:22 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- z18-20020a17090ab11200b0028ddf2efa58sm748077pjq.16.2024.01.10.23.04.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 23:04:21 -0800 (PST)
-Date: Thu, 11 Jan 2024 15:04:14 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Nikolay Borisov <nborisov@suse.com>
-Subject: Re: [RFC PATCH v3 03/30] io: implement io_pwritev/preadv for
- QIOChannelFile
-Message-ID: <ZZ-S7st40VtguUyx@x1n>
-References: <20231127202612.23012-1-farosas@suse.de>
- <20231127202612.23012-4-farosas@suse.de>
+ d=1e100.net; s=20230601; t=1704956815; x=1705561615;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=J5vznvnlmRwI1rNFz63taMLN5NRQy15z18EFywvU5nM=;
+ b=RVxEYNaJ/9Y9UHNsQkisPS1LpeNa9x61/Y9aruZq7CAZrQU4CQHrv+U7EUuK58HQ6x
+ 3ucbCuhmf/64ZcOS77TvRd7kKOtTN6yQPId/NP795uH1K9vGpTWg/N4Swsr71hfSIYpG
+ QaTjirIjGRx1OwIaJD9pPvrDJrO+UHZr0VUzliJADAvW5QPD4GfLkwjQH8lUiN8+jBTt
+ 3OrNCNVvqA3NUNryh1Gr7RAZkved+SzUHAcqHzeADCMnD2hgLSSnsRHzDW1fEM1zYeDB
+ GdrlmoKBLNeuMxYfZV/FmvdFu6/SifX8DZWKG6MTwHDDUsdp23rt/B4Ihj9+c7F9A3RS
+ Nrfg==
+X-Gm-Message-State: AOJu0Yxops8E6C5TGvKKF8/WKxJ8x4eoBDAyk3T/MxTGKDN5EFjXRxlf
+ AdEePT/4kHO4QB3FzEQ9o/3sUr6Imh/qWrJBEK7+7W+ZjNvPRNQjgCGpGQLe5jSJClTOnDDDFjA
+ vo1caNCtXke9qSLBo5VSy6QnYdfVREFCBS1RL1vI=
+X-Received: by 2002:a05:6808:1152:b0:3bd:4022:79aa with SMTP id
+ u18-20020a056808115200b003bd402279aamr1319879oiu.19.1704956815372; 
+ Wed, 10 Jan 2024 23:06:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGjz2ZoVyaSsQWr61jrpiM2ZSJbKdBhy81Xmxp7iWqnIIpTnGUYwwHwxshmcFNJK0UuQ2dkYl/QxOHRPSCD0Cs=
+X-Received: by 2002:a05:6808:1152:b0:3bd:4022:79aa with SMTP id
+ u18-20020a056808115200b003bd402279aamr1319863oiu.19.1704956815099; Wed, 10
+ Jan 2024 23:06:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231127202612.23012-4-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-5-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-5-git-send-email-si-wei.liu@oracle.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Thu, 11 Jan 2024 15:06:44 +0800
+Message-ID: <CACGkMEtXjyAfBwKCiB=3PKkEh6kpxFqM9wvKnXx9mVsNkYk1EA@mail.gmail.com>
+Subject: Re: [PATCH 04/40] vdpa: piggyback desc_group index when probing
+ isolated cvq
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
+ leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
+ jonah.palmer@oracle.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,21 +98,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 27, 2023 at 05:25:45PM -0300, Fabiano Rosas wrote:
-> From: Nikolay Borisov <nborisov@suse.com>
-> 
-> The upcoming 'fixed-ram' feature will require qemu to write data to
-> (and restore from) specific offsets of the migration file.
-> 
-> Add a minimal implementation of pwritev/preadv and expose them via the
-> io_pwritev and io_preadv interfaces.
-> 
-> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+On Fri, Dec 8, 2023 at 2:50=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
+rote:
+>
+> Same as the previous commit, but do it for cvq instead of data vqs.
+>
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+> ---
+>  net/vhost-vdpa.c | 21 +++++++++++++++++----
+>  1 file changed, 17 insertions(+), 4 deletions(-)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 0cf3147..cb5705d 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -1601,16 +1601,19 @@ static const VhostShadowVirtqueueOps vhost_vdpa_n=
+et_svq_ops =3D {
+>  };
+>
+>  /**
+> - * Probe if CVQ is isolated
+> + * Probe if CVQ is isolated, and piggyback its descriptor group
+> + * index if supported
+>   *
+>   * @device_fd         The vdpa device fd
+>   * @features          Features offered by the device.
+>   * @cvq_index         The control vq pair index
+> + * @desc_grpidx       The CVQ's descriptor group index to return
+>   *
+> - * Returns <0 in case of failure, 0 if false and 1 if true.
+> + * Returns <0 in case of failure, 0 if false and 1 if true (isolated).
+>   */
+>  static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t featur=
+es,
+> -                                          int cvq_index, Error **errp)
+> +                                          int cvq_index, int64_t *desc_g=
+rpidx,
+> +                                          Error **errp)
+>  {
+>      uint64_t backend_features;
+>      int64_t cvq_group;
+> @@ -1667,6 +1670,13 @@ static int vhost_vdpa_probe_cvq_isolation(int devi=
+ce_fd, uint64_t features,
+>          goto out;
+>      }
+>
+> +    if (backend_features & BIT_ULL(VHOST_BACKEND_F_DESC_ASID)) {
+> +        int64_t desc_group =3D vhost_vdpa_get_vring_desc_group(device_fd=
+,
+> +                                                             cvq_index, =
+errp);
+> +        if (likely(desc_group >=3D 0) && desc_group !=3D cvq_group)
+> +            *desc_grpidx =3D desc_group;
+> +    }
+> +
+>      for (int i =3D 0; i < cvq_index; ++i) {
+>          int64_t group =3D vhost_vdpa_get_vring_group(device_fd, i, errp)=
+;
+>          if (unlikely(group < 0)) {
+> @@ -1685,6 +1695,8 @@ static int vhost_vdpa_probe_cvq_isolation(int devic=
+e_fd, uint64_t features,
+>  out:
+>      status =3D 0;
+>      ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+> +    status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE | VIRTIO_CONFIG_S_DRIVER;
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Is this a bug fix or I don't see the connection with the descriptor group.
 
--- 
-Peter Xu
+Thanks
+
+> +    ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+>      return r;
+>  }
+>
+> @@ -1791,6 +1803,7 @@ static NetClientState *net_vhost_vdpa_init(NetClien=
+tState *peer,
+>                                         Error **errp)
+>  {
+>      NetClientState *nc =3D NULL;
+> +    int64_t desc_group =3D -1;
+>      VhostVDPAState *s;
+>      int ret =3D 0;
+>      assert(name);
+> @@ -1802,7 +1815,7 @@ static NetClientState *net_vhost_vdpa_init(NetClien=
+tState *peer,
+>      } else {
+>          cvq_isolated =3D vhost_vdpa_probe_cvq_isolation(vdpa_device_fd, =
+features,
+>                                                        queue_pair_index *=
+ 2,
+> -                                                      errp);
+> +                                                      &desc_group, errp)=
+;
+>          if (unlikely(cvq_isolated < 0)) {
+>              return NULL;
+>          }
+> --
+> 1.8.3.1
+>
 
 
