@@ -2,113 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6073882ABD0
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 11:20:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4B382AC01
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 11:31:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNs99-0003wh-3x; Thu, 11 Jan 2024 05:18:47 -0500
+	id 1rNsKC-0005bd-0m; Thu, 11 Jan 2024 05:30:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1rNs90-0003wN-Fa
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 05:18:40 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rNsK9-0005a7-8B
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 05:30:09 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1rNs8r-0006W4-PV
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 05:18:34 -0500
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40B9VjlP031632
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 10:18:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=4BHCbuxrZNrUyEN+keTjK+yWiuvQxZasgGe5U6IZeWA=;
- b=leo/aeKm5N9o24g0z/Nr9i8ITc/F39Wu6lXMIOFcYwH/uCKO7worA6nRC+7UakhHI98d
- foNmktdQEWI6y45ry/SNhiou4kJXy51C7TGa8FuB9/PWtNTzlARXg38bgL1f18brO2XH
- Jvl2pEpia46dGWnOZSiebYgbKL7OK52LNEqHCVZ2ib+yZ+KxSD0hv3jR2NEuXAJxL/dH
- gVZwBYKek64p3HzpqJWjus4isCOTBWfwUEETkJ1534y0sHhoDkyL3ttirm691O9hQwyj
- z/TSdl/lK6ZGB7esobLxMjL4sTnJmi4s3q7JgIHpQZaaHNptSMoMmK9EaN3+ETdEk9/u IA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjdgh1ffc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 10:18:25 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40BA15Zi008455
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 10:18:24 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjdgh1ff0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jan 2024 10:18:24 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40B9psW9027254; Thu, 11 Jan 2024 10:18:24 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkw2abn1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jan 2024 10:18:23 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40BAILjg57934164
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 11 Jan 2024 10:18:21 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 01C6C2004E;
- Thu, 11 Jan 2024 10:18:21 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BFFD42004B;
- Thu, 11 Jan 2024 10:18:20 +0000 (GMT)
-Received: from [9.152.224.222] (unknown [9.152.224.222])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 11 Jan 2024 10:18:20 +0000 (GMT)
-Message-ID: <16605225-77ca-4086-9446-329805a1bf90@linux.ibm.com>
-Date: Thu, 11 Jan 2024 11:18:20 +0100
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rNsK6-00042b-Ny
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 05:30:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=xGobqxSVFZG+BinerjtA0WNZNCUtmVFFi9LFfoN9dtk=; b=RTRQ2u/+b5X71s/wHO2DRNLF43
+ m+uqSwtp3VPAHl/SkMxBiIbNe9IkL2TbzyawYyOWkQhRXnSc4dlSHvPf+pH7H9aZG0rLczgHMR9JV
+ C309SMeUdTxK8CbF8UmDzBUvf6oTCCgjVg2Iz9/oL2+/uw83P8csY3DvaXRgH0EoZJBEyQjCcbKLr
+ zse19Qzw1QBfdD1WJjWpx3IhD5A9/5jglyJfwn0/Q50JxdpU7T7ixcnGrFljnBnwFP8PNmPEsZ4sn
+ 4iEqTAcT5QdFpYpbwuf3FPniHcUv01oDQhyAq3aNTB9Hz3Un/KO7ld0khLo2x46c4lOU+6H4w/M3w
+ 9qs81OFd2SxqK0DNTeiljJTvOc4vyUVgNh+RArVxmT4ZiKSZwcNe7YCosnL33QcubYLtwIe+OIjTg
+ evDm8tShWRzT4PaGCQx4VuC51CMZqeupoHg0WzDCsvQab7g6ppBQaVrdJEXRIRktYyk1Fh+QO1R3W
+ JRm7D+Enw1LQSBZgqVLIUfymoEHz4IKuQzU9jBNu9Fejp+5HIJOhqOm4s7VBc4trhXNa9xE2XEaGL
+ oR+f7JQY6ZrKGbxeoh2ALOUUqKtjvubvlzsRBlx9E1jp4coDxU4ZWmPp5PmwazQjotIp5raWBrPWB
+ ZAtkDv7Gd1bSTBSHNRoQtQEslUu9pJj8grBgdEKHo=;
+Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
+ (helo=cheesecake.fritz.box)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rNsJW-000CMC-Hs; Thu, 11 Jan 2024 10:29:34 +0000
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: laurent@vivier.eu,
+	qemu-devel@nongnu.org,
+	elliotnunn@fastmail.com
+Date: Thu, 11 Jan 2024 10:29:51 +0000
+Message-Id: <20240111102954.449462-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 2/7] s390x: do a subsystem reset before the unprotect on
- reboot
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Michael Mueller <mimu@linux.ibm.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Janosch Frank <frankja@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>
-References: <20230912114112.296428-1-thuth@redhat.com>
- <20230912114112.296428-3-thuth@redhat.com>
- <6aec238b-b983-4b24-9bd9-a90f840d060c@redhat.com>
- <287dbe42-5a10-4667-b3fa-111270242b1d@linux.ibm.com>
- <e22ebb27-26d0-4e1d-86ab-ab9feb44d645@redhat.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <e22ebb27-26d0-4e1d-86ab-ab9feb44d645@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: cu5_6SzXMlY9FFhtkJNY7Jqb5cw2SBl8
-X-Proofpoint-GUID: 3qLz3EK6ez-Eaddyxtqdy22iq7jD9MKG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-11_05,2024-01-10_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0
- adultscore=0 bulkscore=0 clxscore=1011 priorityscore=1501 suspectscore=0
- lowpriorityscore=0 mlxscore=0 spamscore=0 mlxlogscore=391 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401110083
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=borntraeger@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH v3 0/3] nubus: add nubus-virtio-mmio device
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,54 +77,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This series introduces a new nubus-virtio-mmio device which can be plugged into
+the q800 machine to enable a 68k Classic MacOS guest to access virtio devices
+such as virtio-9p-device (host filesharing), virtio-gpu (extended framebuffer
+support) and virtio-tablet-device (absolute positioning).
+
+Once the nubus-virtio-mmio device has been plugged into the q800 machine, virtio
+devices can be accessed by a Classic MacOS guest using the drivers from the
+classicvirtio project at https://github.com/elliotnunn/classicvirtio.
+
+The nubus-virtio-mmio device is purposefully designed to be similar to the
+virtio-mmio interface used by the existing 68k virt machine, making use of a
+similar memory layout and the goldfish PIC for simple interrupt management. The
+main difference is that only a single goldfish PIC is used, however that still
+allows up to 32 virtio devices to be connected using a single nubus card.
+
+Patch 1 fixes an alignment bug in the existing nubus-device Declaration ROM code
+whereby some ROM images could trigger an assert() in QEMU, patch 2 increases the
+maximum Declaration ROM size (to aid development), whilst patch 3 adds the
+nubus-virtio-mmio device itself.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+[Patches still needing review: 2, 3]
+
+v3:
+- Rebase onto master
+- Update patch 1 alignment calculation to use intermediatery uint8_t rom_ptr
+  variable, add Phil's R-B tag
+- Add patch 2 to increase maximum Declaration ROM size to 1MB
+
+v2:
+- Rebase onto master
+- Adjust comment in patch 1 as suggested by Phil
 
 
-Am 11.01.24 um 10:43 schrieb Cédric Le Goater:
-[...]
-> 
-> 
-> On a side note, I am also seeing :
+Mark Cave-Ayland (3):
+  nubus-device: round Declaration ROM memory region address to
+    qemu_target_page_size()
+  nubus.h: increase maximum Declaration ROM size from 128k to 1Mb
+  nubus: add nubus-virtio-mmio device
 
-Michael?
+ hw/nubus/meson.build                 |   1 +
+ hw/nubus/nubus-device.c              |  18 +++--
+ hw/nubus/nubus-virtio-mmio.c         | 102 +++++++++++++++++++++++++++
+ include/hw/nubus/nubus-virtio-mmio.h |  36 ++++++++++
+ include/hw/nubus/nubus.h             |   2 +-
+ 5 files changed, 154 insertions(+), 5 deletions(-)
+ create mode 100644 hw/nubus/nubus-virtio-mmio.c
+ create mode 100644 include/hw/nubus/nubus-virtio-mmio.h
 
-> 
-> [   73.989688] ------------[ cut here ]------------
-> [   73.989696] unexpected non zero alert.mask 0x20
-> [   73.989748] WARNING: CPU: 9 PID: 4503 at arch/s390/kvm/interrupt.c:3214 kvm_s390_gisa_destroy+0xd4/0xe8 [kvm]
-> [   73.989791] Modules linked in: vfio_pci vfio_pci_core irqbypass vhost_net vhost vhost_iotlb tap tun xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4 nft_compat nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables nfnetlink 8021q garp mrp rfkill sunrpc ext4 mbcache jbd2 vfio_ap zcrypt_cex4 vfio_ccw mdev vfio_iommu_type1 vfio drm fuse i2c_core drm_panel_orientation_quirks xfs libcrc32c dm_service_time mlx5_core sd_mod t10_pi ghash_s390 sg prng des_s390 libdes sha3_512_s390 sha3_256_s390 mlxfw tls scm_block psample eadm_sch qeth_l2 bridge stp llc dasd_eckd_mod zfcp qeth dasd_mod scsi_transport_fc ccwgroup qdio dm_multipath dm_mirror dm_region_hash dm_log dm_mod pkey zcrypt kvm aes_s390
-> [   73.989825] CPU: 9 PID: 4503 Comm: worker Kdump: loaded Not tainted 6.7.0-clg-dirty #52
-> [   73.989827] Hardware name: IBM 3931 LA1 400 (LPAR)
-> [   73.989829] Krnl PSW : 0704c00180000000 000003ff7fcd2198 (kvm_s390_gisa_destroy+0xd8/0xe8 [kvm])
-> [   73.989845]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-> [   73.989847] Krnl GPRS: c0000000fffeffff 0000000700000027 0000000000000023 00000007df4249c8
-> [   73.989849]            000003800649b858 000003800649b850 00000007fcb9db00 0000000000000000
-> [   73.989851]            000000008ebae8c8 0000000083a8c4f0 0000000000b69900 000000008ebac000
-> [   73.989853]            000003ff903aef68 000003800649bd98 000003ff7fcd2194 000003800649b9f8
-> [   73.989859] Krnl Code: 000003ff7fcd2188: c02000024f88    larl    %r2,000003ff7fd1c098
->                            000003ff7fcd218e: c0e5fffea360    brasl    %r14,000003ff7fca684e
->                           #000003ff7fcd2194: af000000        mc    0,0
->                           >000003ff7fcd2198: e310b7680204    lg    %r1,10088(%r11)
->                            000003ff7fcd219e: a7f4ffae        brc    15,000003ff7fcd20fa
->                            000003ff7fcd21a2: 0707        bcr    0,%r7
->                            000003ff7fcd21a4: 0707        bcr    0,%r7
->                            000003ff7fcd21a6: 0707        bcr    0,%r7
-> [   73.989929] Call Trace:
-> [   73.989931]  [<000003ff7fcd2198>] kvm_s390_gisa_destroy+0xd8/0xe8 [kvm]
-> [   73.989946] ([<000003ff7fcd2194>] kvm_s390_gisa_destroy+0xd4/0xe8 [kvm])
-> [   73.989960]  [<000003ff7fcc1578>] kvm_arch_destroy_vm+0x50/0x118 [kvm]
-> [   73.989974]  [<000003ff7fcb00a2>] kvm_destroy_vm+0x15a/0x260 [kvm]
-> [   73.989985]  [<000003ff7fcb021e>] kvm_vm_release+0x36/0x48 [kvm]
-> [   73.989996]  [<00000007de4f830c>] __fput+0x94/0x2d0
-> [   73.990009]  [<00000007de20d838>] task_work_run+0x88/0xe8
-> [   73.990013]  [<00000007de1e75e0>] do_exit+0x2e0/0x4e0
-> [   73.990016]  [<00000007de1e79c0>] do_group_exit+0x40/0xb8
-> [   73.990017]  [<00000007de1f96e8>] send_sig_info+0x0/0xa8
-> [   73.990021]  [<00000007de194b26>] arch_do_signal_or_restart+0x56/0x318
-> [   73.990025]  [<00000007de28bf12>] exit_to_user_mode_prepare+0x10a/0x1a0
-> [   73.990028]  [<00000007deb607d2>] __do_syscall+0x152/0x1f8
-> [   73.990032]  [<00000007deb70ac8>] system_call+0x70/0x98
-> [   73.990036] Last Breaking-Event-Address:
-> [   73.990037]  [<00000007de1e0c58>] __warn_printk+0x78/0xe8
-> 
-> 
+-- 
+2.39.2
+
 
