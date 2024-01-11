@@ -2,67 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C313582B4FB
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 20:00:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F13782B503
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 20:03:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rO0GK-0000y3-WE; Thu, 11 Jan 2024 13:58:45 -0500
+	id 1rO0K2-0001xB-As; Thu, 11 Jan 2024 14:02:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thorpej@me.com>) id 1rO0GK-0000xv-57
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 13:58:44 -0500
-Received: from pv34p98im-ztdg02172101.me.com ([17.143.234.142])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rO0Jz-0001x0-Sd
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 14:02:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thorpej@me.com>) id 1rO0GI-0000BY-Hr
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 13:58:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
- t=1704999518; bh=KQCwymrVwWrwm1PB6fp/XRtKLfQRlYa6D0JO2iEG/Dk=;
- h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
- b=EOpLGltJvIqtToFjKII3OdZpvvWPAtbP2q/AyGDMoGIAuHUjjuzUL748mdaGrYZxf
- whsFIP/dUdaoZTXdWEgEKaql5cuUML2t1nXj6eelfQWFwnBJd4i0KaWKzXYRiJ5bai
- UmlvkekF5zx44C6Dd+N12uFc3S0e+yr4+8TSa+dMQhx/IcpFhIUT0kdlRH4ATw4J+G
- 9Dfun2lqWmfoh9XzKOKUSfHspbzB36UJe9Rk9jP+Vgdfz9Zy1cFO1q3123p8n5eHHZ
- rGq4RzIJTjU1ntvfDaBueDPyZZOecVrKYB2O5Z7Xw47vFuu6lZhFgrXLgXEmpWyxAF
- mUVaUqNI3cKQQ==
-Received: from smtpclient.apple (pv43p00im-smtp.me.com [17.56.9.9])
- by pv34p98im-ztdg02172101.me.com (Postfix) with ESMTPSA id B61C2CC00FE;
- Thu, 11 Jan 2024 18:58:36 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.122\))
-Subject: Re: Goldfish TTY enhancement
-From: Jason Thorpe <thorpej@me.com>
-In-Reply-To: <20f3d501-7ff4-4094-8f34-9393c4c7c1e0@linaro.org>
-Date: Thu, 11 Jan 2024 10:58:26 -0800
-Cc: qemu-devel@nongnu.org,
- =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>,
- David 'Digit' Turner <digit@android.com>
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rO0Jx-0002KL-Ug
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 14:02:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704999748;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=N+psGPCNp1A3MJtkEUzDWqFXD2joADq29LbRaMx5pNY=;
+ b=hLAENekDBQEhPFTDJ2wZL8MISpj2PftAMYloIctrdGci8KDYSm0WWw34pyPhxNfiC5QQ8i
+ +iPe14hAIDj0zN9oTtGsQPacXjFhC4Tc4anhluC5EiCIJCu+7kKYeFm2fGbHeYYggru6dO
+ P/+JgHjfkjc1X/l4ie3jc5Sd7+0WPjQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-631-COOmojc-Ml6y0un1K0Ub3w-1; Thu, 11 Jan 2024 14:02:26 -0500
+X-MC-Unique: COOmojc-Ml6y0un1K0Ub3w-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3B269185A780;
+ Thu, 11 Jan 2024 19:02:26 +0000 (UTC)
+Received: from eperezma.remote.csb (unknown [10.39.194.34])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6B3DE492BF0;
+ Thu, 11 Jan 2024 19:02:24 +0000 (UTC)
+From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+To: mst@redhat.com,
+	qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Zhu Lingshan <lingshan.zhu@intel.com>, Jason Wang <jasowang@redhat.com>,
+ Lei Yang <leiyang@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ si-wei.liu@oracle.com, Stefano Garzarella <sgarzare@redhat.com>,
+ Parav Pandit <parav@mellanox.com>
+Subject: [PATCH 0/6] Move memory listener register to vhost_vdpa_init
+Date: Thu, 11 Jan 2024 20:02:16 +0100
+Message-Id: <20240111190222.496695-1-eperezma@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <286AB63F-6453-42FF-9CF4-5C75C22C6559@me.com>
-References: <8FAAD163-46DD-426F-AF69-1DDAB45B2A9B@me.com>
- <20f3d501-7ff4-4094-8f34-9393c4c7c1e0@linaro.org>
-To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-X-Mailer: Apple Mail (2.3774.500.122)
-X-Proofpoint-GUID: _8a7F5egTbc_ixrK5-zzBDRzoOAA3ZYu
-X-Proofpoint-ORIG-GUID: _8a7F5egTbc_ixrK5-zzBDRzoOAA3ZYu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-11_11,2024-01-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- adultscore=0 mlxlogscore=931
- spamscore=0 phishscore=0 suspectscore=0 clxscore=1011 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2401110148
-Received-SPF: pass client-ip=17.143.234.142; envelope-from=thorpej@me.com;
- helo=pv34p98im-ztdg02172101.me.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,41 +82,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-> On Jan 10, 2024, at 8:01=E2=80=AFAM, Philippe Mathieu-Daud=C3=A9 =
-<philmd@linaro.org> wrote:
->=20
-> IIUC Goldfish virtual HW is maintained externally by Google
-> =
-https://android.googlesource.com/platform/external/qemu/+/master/docs/GOLD=
-FISH-VIRTUAL-HARDWARE.TXT
->=20
-> I suppose the spec needs to be updated before the change can be
-> accepted in mainstream QEMU, but since I'm not sure I Cc'ed Alex,
-> David and Laurent.
-
-Hey Philippe,
-
-I have seen that document didn=E2=80=99t realize that it was the source =
-of truth for the Goldfish devices in Qemu, as Qemu already has Goldfish =
-devices that deviate in behavior from that document.  In particular:
-
-1. There is no distinction between =E2=80=9Crtc=E2=80=9D and =E2=80=9Ctime=
-r=E2=80=9D in Qemu.
-
-2. The Goldfish =E2=80=9Cpic=E2=80=9D device does not behave as that =
-document describes.  In particular, the =E2=80=9CNUMBER=E2=80=9D =
-register is described in that document as returning the lowest pending =
-interrupt index or 0 for none (i.e. a number in the range 0..32).  But =
-Qemu returns a bitmask of pending interrupts when that register is read. =
- And despite the name =E2=80=9CDISABLE_ALL=E2=80=9D that document claims =
-that writing to it merely clears the pending interrupts without =
-disabling them (which would be quite the trick with level-triggered =
-interrupt sources) whereas in Qemu, it does both clear and disable.
-
-(I am not, in any way, advocating for a behavior change in Qemu, BTW=E2=80=
-=A6 I just thought that referenced docuemnt was no longer relevant.)
-
--- thorpej
+Current memory operations like pinning may take a lot of time at the=0D
+destination.  Currently they are done after the source of the migration is=
+=0D
+stopped, and before the workload is resumed at the destination.  This is a=
+=0D
+period where neigher traffic can flow, nor the VM workload can continue=0D
+(downtime).=0D
+=0D
+We can do better as we know the memory layout of the guest RAM at the=0D
+destination from the moment that all devices are initializaed.  So=0D
+moving that operation allows QEMU to communicate the kernel the maps=0D
+while the workload is still running in the source, so Linux can start=0D
+mapping them.=0D
+=0D
+As a small drawback, there is a time in the initialization where QEMU=0D
+cannot respond to QMP etc.  By some testing, this time is about=0D
+0.2seconds.  This may be further reduced (or increased) depending on the=0D
+vdpa driver and the platform hardware, and it is dominated by the cost=0D
+of memory pinning.=0D
+=0D
+This matches the time that we move out of the called downtime window.=0D
+The downtime is measured as checking the trace timestamp from the moment=0D
+the source suspend the device to the moment the destination starts the=0D
+eight and last virtqueue pair.  For a 39G guest, it goes from ~2.2526=0D
+secs to 2.0949.=0D
+=0D
+Future directions on top of this series may include to move more things ahe=
+ad=0D
+of the migration time, like set DRIVER_OK or perform actual iterative migra=
+tion=0D
+of virtio-net devices.=0D
+=0D
+Comments are welcome.=0D
+=0D
+This series is a different approach of series [1]. As the title does not=0D
+reflect the changes anymore, please refer to the previous one to know the=0D
+series history.=0D
+=0D
+[1] https://patchwork.kernel.org/project/qemu-devel/cover/20231215172830.25=
+40987-1-eperezma@redhat.com/=0D
+=0D
+Eugenio P=C3=A9rez (6):=0D
+  vdpa: check for iova tree initialized at net_client_start=0D
+  vdpa: reorder vhost_vdpa_set_backend_cap=0D
+  vdpa: set backend capabilities at vhost_vdpa_init=0D
+  vdpa: add listener_registered=0D
+  vdpa: reorder listener assignment=0D
+  vdpa: move memory listener register to vhost_vdpa_init=0D
+=0D
+ include/hw/virtio/vhost-vdpa.h |  6 +++=0D
+ hw/virtio/vhost-vdpa.c         | 87 +++++++++++++++++++++-------------=0D
+ net/vhost-vdpa.c               |  4 +-=0D
+ 3 files changed, 63 insertions(+), 34 deletions(-)=0D
+=0D
+-- =0D
+2.39.3=0D
+=0D
 
 
