@@ -2,91 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C4182AE4A
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:05:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F1482AE40
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:04:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNtn2-0003RI-1I; Thu, 11 Jan 2024 07:04:04 -0500
+	id 1rNtnF-0003TI-5x; Thu, 11 Jan 2024 07:04:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtm8-0002tu-JH
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:10 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtm2-0007NZ-9c
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:05 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3368ac0f74dso3652125f8f.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 04:03:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704974579; x=1705579379; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=c3GnBwtsWZjmvkynj7oUUXZs0ui1nia9dU8ifkh5Y4E=;
- b=LS7arI4DLSdd0rFkc+l/YR82iFnHs6UWVxJBPyDY7qNtU+pwJb4vVb0zl8xx0L4dUd
- K+78UT62cBthZ3mhKAsByh2kpxJn1mJoR8fzZ6tNP+pyj/DuQdynM4MGVg+QxIQ187fc
- XUtVtyt6euO/AH0Bi/NJ/YQlR+8WZ9mIiD/OKtFemuNJl1zrphvuPgdfaA18H+xwquPs
- fxLy9MaJKA0gXZixaKBcghQT5POJhnwY/qLjglHBbFVQL0n7yrdstwKKSTMP3aNNTXL0
- EKFBHBrIMW17COSdS7wQI1TiUzi04Judo1LlmehMJLstap9vgJSt2RsjmsfQhq4+nMIM
- Ochg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704974579; x=1705579379;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=c3GnBwtsWZjmvkynj7oUUXZs0ui1nia9dU8ifkh5Y4E=;
- b=Sxs+6PGTUt623lSBoqQSX9+Zr/NaXA7SJfh+HIhCIhvLZweWP3SnalkTvPPDJusNED
- KNfuiXvNnehTv9ZLGY/u5ZA5+gnXtbcUt0BOmuIOd63fIFMN0WZPIFKLI+jaPsQ/z8IB
- e8Hm5qWgToyoO/1o8hLM5ziFiHHk0OCYzimLv0kGCrqpe0e2Yr/KbYSxrXxef8fjPUzD
- Ep8YJPYWRpApcJNZTMd7KvF82S5CI8L3NmI97VQKTE1/KCjDzIDMJsRnWz9I7ivKQO+/
- DJjGfm7bBWyUMnrYr/IGNJMoDavmD/jFTHbgRZUueqDYfxe9UlqiQXGnsw/0uuGwXoSm
- 8bPg==
-X-Gm-Message-State: AOJu0Yz2tTyV+jGnRiU903Z/wEOAPZn+2CKlyfcOBekSj80FtAiztvtW
- 8W8GjEPmQQGsgKDOEuXD5Z0bjGxlyLAwGpyWHEsRvFtemtNsnw==
-X-Google-Smtp-Source: AGHT+IHSzMOPp0ALbe0wKJFLAJaKBIcNQ1+plizv5OIIgz5u7iXTLYDdRorDgArTrQmWFgad4eBWDQ==
-X-Received: by 2002:adf:ed12:0:b0:337:628f:55a1 with SMTP id
- a18-20020adfed12000000b00337628f55a1mr537162wro.78.1704974578904; 
- Thu, 11 Jan 2024 04:02:58 -0800 (PST)
-Received: from m1x-phil.lan (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
- [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
- z11-20020a5d44cb000000b00336898daceasm1048278wrr.96.2024.01.11.04.02.56
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Jan 2024 04:02:58 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Weiwei Li <liwei1518@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>, qemu-s390x@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>, David Hildenbrand <david@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-riscv@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
- qemu-trivial@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Eduardo Habkost <eduardo@habkost.net>, Laurent Vivier <laurent@vivier.eu>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5/5] target/riscv: Rename tcg_cpu_FOO() to include 'riscv'
-Date: Thu, 11 Jan 2024 13:02:21 +0100
-Message-ID: <20240111120221.35072-6-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240111120221.35072-1-philmd@linaro.org>
-References: <20240111120221.35072-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNtmv-0003Ck-46
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNtmr-0007sf-Ig
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704974631;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=MnDCpR8iwHs29qPqwC1oRAoXUMrophlAnBaXqkXprn0=;
+ b=Q5bi+YQKUnnMxDY9eOtjeIgaOZ803ewZ0M50uu3C9nek1I0VqG4ZabHYl8u9Q7pF0VYfPM
+ cQbtq/sIjIbYI1eejz37EuGpw6TstwzTL3GdaRhOpZm0PfzulK6y52Sfrw0KPJ4zOpQRkd
+ XpurYVTXtuKCTZKo3zzeWaZz4Jj3TKg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-687-hEKZ-eY0OWuNVq-QnZzcMg-1; Thu, 11 Jan 2024 07:03:50 -0500
+X-MC-Unique: hEKZ-eY0OWuNVq-QnZzcMg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DF85C85A588;
+ Thu, 11 Jan 2024 12:03:49 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9D2F12166B33;
+ Thu, 11 Jan 2024 12:03:49 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 8810821E6682; Thu, 11 Jan 2024 13:03:48 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH v2 1/2] meson: mitigate against ROP exploits with
+ -fzero-call-used-regs
+In-Reply-To: <ZZ1icX6Ep0QOKIX5@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Tue, 9 Jan 2024 15:12:49 +0000")
+References: <20240103123414.2401208-1-berrange@redhat.com>
+ <20240103123414.2401208-2-berrange@redhat.com>
+ <87bk9ulfqo.fsf@pond.sub.org> <ZZ1icX6Ep0QOKIX5@redhat.com>
+Date: Thu, 11 Jan 2024 13:03:48 +0100
+Message-ID: <87il40xejf.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,89 +89,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The tcg_cpu_FOO() names are riscv specific, so rename
-them as riscv_tcg_cpu_FOO() (as other names in this file)
-to ease navigating the code.
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/riscv/tcg/tcg-cpu.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+> On Tue, Jan 09, 2024 at 03:54:07PM +0100, Markus Armbruster wrote:
+>> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>>=20
+>> > To quote wikipedia:
+>> >
+>> >   "Return-oriented programming (ROP) is a computer security exploit
+>> >    technique that allows an attacker to execute code in the presence
+>> >    of security defenses such as executable space protection and code
+>> >    signing.
+>> >
+>> >    In this technique, an attacker gains control of the call stack to
+>> >    hijack program control flow and then executes carefully chosen
+>> >    machine instruction sequences that are already present in the
+>> >    machine's memory, called "gadgets". Each gadget typically ends in
+>> >    a return instruction and is located in a subroutine within the
+>> >    existing program and/or shared library code. Chained together,
+>> >    these gadgets allow an attacker to perform arbitrary operations
+>> >    on a machine employing defenses that thwart simpler attacks."
+>> >
+>> > QEMU is by no means perfect with an ever growing set of CVEs from
+>> > flawed hardware device emulation, which could potentially be
+>> > exploited using ROP techniques.
+>> >
+>> > Since GCC 11 there has been a compiler option that can mitigate
+>> > against this exploit technique:
+>> >
+>> >     -fzero-call-user-regs
+>> >
+>> > To understand it refer to these two resources:
+>> >
+>> >    https://www.jerkeby.se/newsletter/posts/rop-reduction-zero-call-use=
+r-regs/
+>> >    https://gcc.gnu.org/pipermail/gcc-patches/2020-August/552262.html
+>> >
+>> > I used two programs to scan qemu-system-x86_64 for ROP gadgets:
+>> >
+>> >   https://github.com/0vercl0k/rp
+>> >   https://github.com/JonathanSalwan/ROPgadget
+>> >
+>> > When asked to find 8 byte gadgets, the 'rp' tool reports:
+>> >
+>> >   A total of 440278 gadgets found.
+>> >   You decided to keep only the unique ones, 156143 unique gadgets foun=
+d.
+>> >
+>> > While the ROPgadget tool reports:
+>> >
+>> >   Unique gadgets found: 353122
+>> >
+>> > With the --ropchain argument, the latter attempts to use the found
+>> > gadgets to product a chain that can execute arbitrary syscalls. With
+>> > current QEMU it succeeds in this task, which is an undesirable
+>> > situation.
+>> >
+>> > With QEMU modified to use -fzero-call-user-regs=3Dused-gpr the 'rp' to=
+ol
+>> > reports
+>> >
+>> >   A total of 528991 gadgets found.
+>> >   You decided to keep only the unique ones, 121128 unique gadgets foun=
+d.
+>> >
+>> > This is 22% fewer unique gadgets
+>> >
+>> > While the ROPgadget tool reports:
+>> >
+>> >   Unique gadgets found: 328605
+>> >
+>> > This is 7% fewer unique gadgets. Crucially though, despite this more
+>> > modest reduction, the ROPgadget tool is no longer able to identify a
+>> > chain of gadgets for executing arbitrary syscalls. It fails at the
+>> > very first step, unable to find gadgets for populating registers for
+>> > a future syscall. Having said that, more advanced tools do still
+>> > manage to put together a viable ROP chain.
+>> >
+>> > Also this only takes into account QEMU code. QEMU links to many 3rd
+>> > party shared libraries and ideally all of them would be compiled with
+>> > this same hardening. That becomes a distro policy question though.
+>> >
+>> > In terms of performance impact, TCG was used as an evaluation test
+>> > case. We're not interested in protecting TCG since it isn't designed
+>> > to provide a security barrier, but it is performance sensitive code,
+>> > so useful as a guide to how other areas of QEMU might be impacted.
+>> > With the -fzero-call-user-regs=3Dused-gpr argument present, using the
+>> > real world test of booting a linux kernel and having init immediately
+>> > poweroff, there is a ~1% slow down in performance under TCG. The QEMU
+>> > binary size also grows by approximately 1%.
+>> >
+>> > By comparison, using the more aggressive -fzero-call-user-regs=3Dall,
+>> > results in a slowdown of over 25% in TCG, which is clearly not an
+>> > acceptable impact, and a binary size increase of 5%.
+>> >
+>> > Considering that 'used-gpr' succesfully stopped ROPgadget assembling
+>> > a chain, this more targetted protection is a justifiable hardening
+>> > / performance tradeoff.
+>>=20
+>> Have you also considered 'used-arg'?
+>
+> No, not in any detail.  I was mostly guided by the writeup here:
+>
+>   https://www.jerkeby.se/newsletter/posts/rop-reduction-zero-call-user-re=
+gs/
+>
+> which indicates Linux chose 'used-gpr'. I figured if Kees Cook
+> decide that was a good tradeoff for Linux, we might as well follow
+> it.
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 14133ff665..994ca1cdf9 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -929,7 +929,7 @@ static bool riscv_cpu_is_vendor(Object *cpu_obj)
-  *   -> cpu_exec_realizefn()
-  *      -> tcg_cpu_realize() (via accel_cpu_common_realize())
-  */
--static bool tcg_cpu_realize(CPUState *cs, Error **errp)
-+static bool riscv_tcg_cpu_realize(CPUState *cs, Error **errp)
- {
-     RISCVCPU *cpu = RISCV_CPU(cs);
-     Error *local_err = NULL;
-@@ -1372,7 +1372,7 @@ static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
-     return object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_MAX) != NULL;
- }
- 
--static void tcg_cpu_instance_init(CPUState *cs)
-+static void riscv_tcg_cpu_instance_init(CPUState *cs)
- {
-     RISCVCPU *cpu = RISCV_CPU(cs);
-     Object *obj = OBJECT(cpu);
-@@ -1386,7 +1386,7 @@ static void tcg_cpu_instance_init(CPUState *cs)
-     }
- }
- 
--static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
-+static void riscv_tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
- {
-     /*
-      * All cpus use the same set of operations.
-@@ -1394,30 +1394,30 @@ static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
-     cc->tcg_ops = &riscv_tcg_ops;
- }
- 
--static void tcg_cpu_class_init(CPUClass *cc)
-+static void riscv_tcg_cpu_class_init(CPUClass *cc)
- {
--    cc->init_accel_cpu = tcg_cpu_init_ops;
-+    cc->init_accel_cpu = riscv_tcg_cpu_init_ops;
- }
- 
--static void tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
-+static void riscv_tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
- {
-     AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
- 
--    acc->cpu_class_init = tcg_cpu_class_init;
--    acc->cpu_instance_init = tcg_cpu_instance_init;
--    acc->cpu_target_realize = tcg_cpu_realize;
-+    acc->cpu_class_init = riscv_tcg_cpu_class_init;
-+    acc->cpu_instance_init = riscv_tcg_cpu_instance_init;
-+    acc->cpu_target_realize = riscv_tcg_cpu_realize;
- }
- 
--static const TypeInfo tcg_cpu_accel_type_info = {
-+static const TypeInfo riscv_tcg_cpu_accel_type_info = {
-     .name = ACCEL_CPU_NAME("tcg"),
- 
-     .parent = TYPE_ACCEL_CPU,
--    .class_init = tcg_cpu_accel_class_init,
-+    .class_init = riscv_tcg_cpu_accel_class_init,
-     .abstract = true,
- };
- 
--static void tcg_cpu_accel_register_types(void)
-+static void riscv_tcg_cpu_accel_register_types(void)
- {
--    type_register_static(&tcg_cpu_accel_type_info);
-+    type_register_static(&riscv_tcg_cpu_accel_type_info);
- }
--type_init(tcg_cpu_accel_register_types);
-+type_init(riscv_tcg_cpu_accel_register_types);
--- 
-2.41.0
+Makes sense.
+
+> 'used-gpr' will target any general purpose registers
+> that are used in a method.  'used-arg' will taget any registers
+> used for parameters. IIUC, this makes 'used-gpr' be a slightly
+> stronger protection as it covers register usage even for things
+> which aren't args.
+
+The docs lead me to suspect it will *not* cover non-gpr registers that
+are used for passing arguments.  Requires a calling convention that can
+pass arguments in non-gpr registers, such as floating-point and vector
+registers.  I figure these are less useful for exploits than gprs.
+
+Thanks!
+
+[...]
 
 
