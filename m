@@ -2,75 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A23182B17A
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:11:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 492E982B190
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:18:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNwhJ-0001qn-Cd; Thu, 11 Jan 2024 10:10:21 -0500
+	id 1rNwne-0003aV-Uf; Thu, 11 Jan 2024 10:16:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rNwhG-0001og-9a
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:10:18 -0500
-Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rNwnY-0003Zs-4g
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:16:49 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rNwhE-00089a-Q0
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:10:18 -0500
-Received: by mail-qt1-x831.google.com with SMTP id
- d75a77b69052e-4298bd85e33so29663301cf.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 07:10:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rNwnV-00034U-PP
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:16:47 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-55745901085so6923173a12.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 07:16:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704985815; x=1705590615; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6UlqTKv4fw/yfjCPrqY9+/AmdQWijzb6GvZRXamfiyU=;
- b=MMYXwRxVlfCM70RqAN/sH+nwC6SyB4oGAWCQPgiuYG2v7aTizwTN6q04bItzu5g9cM
- W2mhjR7IBZhj8jmrNatymNg/HFxp01WA42siSKV7GNo2A4n7bXzEJyGqchRPOtFfKe82
- qVpxKNhgkImeb7pzP3RYa7GV8tponRS3tRy3kS4ZT1Fh2dA52hhBHD2ioDEvoE5pDSco
- PYQP0Cqg1yX+7yJtwwWvzi1mKDh7V9hqUpddfF0/KEcFuUwGIQfXIHUAU3HJ2f0WxVKO
- zUqV7YzZSTpyEVIzv9ZqWtdXTQzpZc5+PTgq8ghtj1eEsjRUmnJ75pQsMf2CtPZmVh6V
- 355g==
+ d=linaro.org; s=google; t=1704986202; x=1705591002; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=kHN9fLArQ5Bdlh01dLw3W0RYwz3pPva/EzX/o5HF0Bw=;
+ b=QHIPaB9jxqvtekIPs/YVzyc9fx4qXY+CokyFi8GmWKZHhmEA1NOWy/0yhcK50xu4PW
+ 7icKHEyGGb13kjBifBk/h850ov9Y+XjeScsXVSkekUCjvER3NtMPuDrSPCQbkGiFCtmY
+ k9L9+IQGWsQ4XGC8NvI+8O1esbsXwThvAIq9408Ysrbpo7Avv5Y0G3Djbyaz9O5OF4S9
+ jr8LEON7jAtj0zXX2YBf/pS7a7KZOfpTgeisFiAKyaEuuNH++65ch5IUkk8qTDDOtQna
+ kgzXmkTJJANFFMQGQwvOe1Be7+7kVzEwgnGrxuH5/07Y57HpTeyHG7Mk9CQgVBE1kIM6
+ wTuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704985815; x=1705590615;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6UlqTKv4fw/yfjCPrqY9+/AmdQWijzb6GvZRXamfiyU=;
- b=TzqFhEJuOH5oEVOh1zq/7ip4dIya+q580xKYuJmXVtbrA3Ln2cM84mK6D5ZJZr7Zlt
- fLh6gD6JlkjKaue1UuKaUQi7H2DkKT4wbCd6gFQmocfu+JCo7Fo0IweuiB/el5ynOb4w
- 71DIs6c1p8ktwx2f72FdHi4pagO8TmpWNr5/BvdvZL71yoHrNiO5P6FhZSoHg4zzMqKQ
- x6sXMEb6jny2Ol71XWEMoVQzJ2xEwl+SJ2vdsZfrUyYHy8fIMiOgs+9YevFaS0eDf9JP
- uBJe989+6MsgK0lxuWXQGeoqwhbHhNwXvfvZVupc5+hl92obsdqVl212OsOTGZvasxUk
- GtqQ==
-X-Gm-Message-State: AOJu0Yw7l6OExvaGSmAI5aUHA7YUvabcJOGLAOoKkfOg7LHAdbbVhp31
- HZSVmTMCOK1wwq6YMzriygBDRmSmqL2KtZVYmXs=
-X-Google-Smtp-Source: AGHT+IH7YBJ9FIPppEXIabJfM0S8FCfUxopc3Z/9C+uhzrY84yi18u1iqNsTdAbnaFX1//7tcrV2l3eHqnQq0wUO8eo=
-X-Received: by 2002:ac8:5bd5:0:b0:429:c960:e525 with SMTP id
- b21-20020ac85bd5000000b00429c960e525mr377804qtb.25.1704985815276; Thu, 11 Jan
- 2024 07:10:15 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704986202; x=1705591002;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kHN9fLArQ5Bdlh01dLw3W0RYwz3pPva/EzX/o5HF0Bw=;
+ b=o/WELvx4/71Wg4/6EpBPQZY5gNsShi5293lgCQy6m6MhdjneVTJjTyvUdax5WSy6+e
+ Zq7zHtNGzlsQsWWhdY6z8+u/Nd6oiYV6eSngLGYC8sPVW1O2+XsmZJj6dpAJSry2quCv
+ vBPxIsloPU31NhU/ZGkInOaps7GEstjuvzU0E0H2rxtwgab4DJsN+SVbDOC5eUnE79gq
+ wS5ANKYhRmGGda68Zme0HbMCHyZYPOTUNKSIHMETaTOYmf+8XVL3jCK3bFaqtzNYPou2
+ ZMq0tmAjGC+zDkpWPdN23xl4zeccaBa8ltwpKSUxmDVTY57+uyXyU1Vp4QxtxFm0IgpP
+ qJ/w==
+X-Gm-Message-State: AOJu0YxFTTczWqHDNNpcWKfwvTsBQlbegvDxCs2biO2ua2/g5dI4oTcH
+ 2MlwlCD4GRDPe35RAqtZqbr/vz3HSJ+Gso6Ccbjnxaib4wS1DA==
+X-Google-Smtp-Source: AGHT+IGMKRRQlWuDfq5x6RAEr3k/fCW4sdSvd4RQSSeiMCJvabN8tUKwFavQf+V2nmQOWfOoVx+LFr5S9o2j5Q6G0nw=
+X-Received: by 2002:a05:6402:40c1:b0:557:d5c1:a4ae with SMTP id
+ z1-20020a05640240c100b00557d5c1a4aemr747737edb.47.1704986202639; Thu, 11 Jan
+ 2024 07:16:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20231222093827.951039-1-armbru@redhat.com>
- <20231222093827.951039-2-armbru@redhat.com>
- <87cyu8vyj4.fsf@pond.sub.org>
-In-Reply-To: <87cyu8vyj4.fsf@pond.sub.org>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 11 Jan 2024 19:10:03 +0400
-Message-ID: <CAJ+F1C+c1VPOE8umoSED2EeKQcttcv=Y=3UQ=gGP6_hOCGL8Sg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] dump: Fix HMP dump-guest-memory -z without -R
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Stephen Brennan <stephen.s.brennan@oracle.com>
+References: <20240110215204.9353-1-richard.henderson@linaro.org>
+In-Reply-To: <20240110215204.9353-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 11 Jan 2024 15:16:31 +0000
+Message-ID: <CAFEAcA-p+fT13+pLVXMpCbOLcrzWXeg=QGwbJfokRA37sp-snw@mail.gmail.com>
+Subject: Re: [PULL 0/4] tcg patch queue
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,51 +84,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Markus
-
-On Thu, Jan 11, 2024 at 4:36=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
-m> wrote:
+On Wed, 10 Jan 2024 at 21:52, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> Any takers?
+> The following changes since commit 34eac35f893664eb8545b98142e23d9954722766:
 >
-
-I have it in my "dump" queue, but it's the only patch I got so far (I
-could have missed others).
-
-If it can go through my other means, that's fine with me
-
-> Markus Armbruster <armbru@redhat.com> writes:
+>   Merge tag 'pull-riscv-to-apply-20240110' of https://github.com/alistair23/qemu into staging (2024-01-10 11:41:56 +0000)
 >
-> > -z without -R has no effect: the dump format remains @elf.  Fix the
-> > logic error so it becomes @kdump-zlib.
-> >
-> > Fixes: e6549197f7ed (dump: Add command interface for kdump-raw formats)
-> > Fixes: CID 1523841
-> > Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> > Reviewed-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-> > Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > ---
-> >  dump/dump-hmp-cmds.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/dump/dump-hmp-cmds.c b/dump/dump-hmp-cmds.c
-> > index b428ec33df..d9340427c3 100644
-> > --- a/dump/dump-hmp-cmds.c
-> > +++ b/dump/dump-hmp-cmds.c
-> > @@ -41,7 +41,7 @@ void hmp_dump_guest_memory(Monitor *mon, const QDict =
-*qdict)
-> >          dump_format =3D DUMP_GUEST_MEMORY_FORMAT_WIN_DMP;
-> >      }
-> >
-> > -    if (zlib && raw) {
-> > +    if (zlib) {
-> >          if (raw) {
-> >              dump_format =3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_ZLIB;
-> >          } else {
+> are available in the Git repository at:
 >
+>   https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240111
+>
+> for you to fetch changes up to 1d513e06d96697f44de4a1b85c6ff627c443e306:
+>
+>   util: fix build with musl libc on ppc64le (2024-01-11 08:48:16 +1100)
+>
+> ----------------------------------------------------------------
+> tcg/i386: Use more 8-bit immediate forms for add, sub, or, xor
+> tcg/ppc: Use new registers for LQ destination
+> util: fix build with musl libc on ppc64le
 >
 
 
---=20
-Marc-Andr=C3=A9 Lureau
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
+
+-- PMM
 
