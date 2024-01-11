@@ -2,112 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908FC82B042
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 15:05:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 049A882B045
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 15:05:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNvg0-00024F-AS; Thu, 11 Jan 2024 09:04:58 -0500
+	id 1rNvgl-00051F-OL; Thu, 11 Jan 2024 09:05:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1rNvfM-0001jg-3w; Thu, 11 Jan 2024 09:04:24 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNvgj-00050i-Tn
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:05:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1rNvfF-0007h0-66; Thu, 11 Jan 2024 09:04:13 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40BDVtbR018443; Thu, 11 Jan 2024 14:04:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=pmP7aW5w/9VohmEo1Es3sf7zGdZg5oHodDJGOfVpxdc=;
- b=gKUf0xgJUUKI4lAwmtXapH/3XnagL7wZ6UilhoafZJVJ/mWATDsG841OeouEdj2M63KT
- RWc6H3/aRfkn34kkYdd/UtCxt2rDIDjOl/yngz647rYH7FrzWgfk7+96VYo4K+hrnP0/
- +ERY6V4k6sw627jgL7P7Bb0SHEji2MN1jJsrIm/95k0jdo3xDoEhCjEkWLXBMDrx9xG4
- jdI1J02c1P4eradqu7PK75eWzvWvwLMGCq11ajxkgqCqJNjx0WUfBIU01yB7U/GkNf3N
- eQFxQZV5mXLEW1lcuHlPbWXGA8aiC9OiIPvg9T6QgPr6dpK1HNVhocIbmN9yMmwA9gCF KA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjbejt48w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jan 2024 14:04:01 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40BE1tAh027293;
- Thu, 11 Jan 2024 14:04:00 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjbejt46a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jan 2024 14:04:00 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40BB5nGd022819; Thu, 11 Jan 2024 14:03:58 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfhjyuxhp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jan 2024 14:03:58 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40BE3vJB21692968
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 11 Jan 2024 14:03:57 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EBA585805B;
- Thu, 11 Jan 2024 14:03:56 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 97ED55805F;
- Thu, 11 Jan 2024 14:03:54 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.162.96]) by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 11 Jan 2024 14:03:54 +0000 (GMT)
-Message-ID: <828428af43af0eb78b1ea6462fd854ec9375543a.camel@linux.ibm.com>
-Subject: Re: [PATCH 3/5] hw/s390x: Rename cpu_class_init() to include 'sclp'
-From: Eric Farman <farman@linux.ibm.com>
-To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>, Weiwei Li
- <liwei1518@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>, qemu-s390x@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>, David Hildenbrand <david@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng
- <bin.meng@windriver.com>, qemu-trivial@nongnu.org, Halil Pasic
- <pasic@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, Ilya
- Leoshkevich <iii@linux.ibm.com>, Eduardo Habkost <eduardo@habkost.net>,
- Laurent Vivier <laurent@vivier.eu>, Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>, Thomas Huth <thuth@redhat.com>, Daniel
- Henrique Barboza <dbarboza@ventanamicro.com>
-Date: Thu, 11 Jan 2024 09:03:54 -0500
-In-Reply-To: <20240111120221.35072-4-philmd@linaro.org>
-References: <20240111120221.35072-1-philmd@linaro.org>
- <20240111120221.35072-4-philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNvgi-0000Px-GF
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:05:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704981939;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=BFr3HAoVYQpD3igtE2tqY/5mp+kMjNs6OZtaotocYTk=;
+ b=Gu3Apcq1xc8p4LzejkBup4uv4nVenjdDG/ckqu53gBMUKcqOi6SI+BchO1Qxvj4Y9ImhnZ
+ TrzRe+5mzDoUdndP0Tv2zf8HdXTrGiRD6JtejcKfVIR4s4Wm2Y6kQ3cJP18g08NNbrv4yP
+ PuZAl9RCI0S2KwVON3S92ZBisQ6Bouc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-674-uxQYkkTyOqeHnEmczfWp6w-1; Thu, 11 Jan 2024 09:05:37 -0500
+X-MC-Unique: uxQYkkTyOqeHnEmczfWp6w-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F2DAA881C82;
+ Thu, 11 Jan 2024 14:05:36 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BC5CA3C25;
+ Thu, 11 Jan 2024 14:05:36 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id B6EDC21E680D; Thu, 11 Jan 2024 15:05:35 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Hyman Huang <yong.huang@smartx.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,  Kevin Wolf <kwolf@redhat.com>,
+ Daniel P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Hanna Reitz
+ <hreitz@redhat.com>,  Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH RESEND v3 06/10] block: Support detached LUKS header
+ creation using blockdev-create
+In-Reply-To: <20ab47b728492cedb7ea671239f0397a141c3f5a.1703482349.git.yong.huang@smartx.com>
+ (Hyman Huang's message of "Mon, 25 Dec 2023 13:45:08 +0800")
+References: <cover.1703482349.git.yong.huang@smartx.com>
+ <20ab47b728492cedb7ea671239f0397a141c3f5a.1703482349.git.yong.huang@smartx.com>
+Date: Thu, 11 Jan 2024 15:05:35 +0100
+Message-ID: <87o7dsufrk.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: mOnwhgb2jZG-2ySHsKuIxssQWKOPVirX
-X-Proofpoint-ORIG-GUID: IimjlcGxbd-2dh_CqiFwVT63SzmXOEqS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-11_07,2024-01-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 mlxlogscore=841
- spamscore=0 malwarescore=0 impostorscore=0 lowpriorityscore=0
- priorityscore=1501 suspectscore=0 phishscore=0 bulkscore=0 adultscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401110111
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=farman@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -124,16 +86,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2024-01-11 at 13:02 +0100, Philippe Mathieu-Daud=C3=A9 wrote:
-> cpu_class_init() is specific to s390x SCLP, so rename
-> it as sclp_cpu_class_init() (as other names in this file)
-> to ease navigating the code.
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
-> =C2=A0hw/s390x/sclpcpu.c | 4 ++--
-> =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
+Fails to compile for me:
 
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
+../block/crypto.c: In function =E2=80=98block_crypto_co_create_luks=E2=80=
+=99:
+../block/crypto.c:784:1: error: control reaches end of non-void function [-=
+Werror=3Dreturn-type]
+  784 | }
+      | ^
 
 
