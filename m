@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D41482A77B
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 07:21:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD6C82A780
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 07:23:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNoRJ-0006EI-LS; Thu, 11 Jan 2024 01:21:17 -0500
+	id 1rNoT1-0007Er-Qs; Thu, 11 Jan 2024 01:23:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNoRA-0006Ds-Vb
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 01:21:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNoR4-0004N3-7I
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 01:21:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704954053;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=b9pTbPTTYwdc0VHl4C06GsC15HFQ0VPfRYyIxOSHxgM=;
- b=a7zHOGQQV40BSIJkev218CHeNHRK4xdcresrACuZgZCLZ6VScn9ulXd/0YsTDdiHz1Xvxc
- YGxhmlpElZvaP+e9LRjeeZvRghC+uskY20sREyBpmkgggV+83wDjoWKtPA0oW4Rq0h/3bD
- PAF147pgr9APFd2zIuKgZrxlbRY6SDQ=
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
- [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-356-_PC8ubQkOAKqGzvrXSufGA-1; Thu, 11 Jan 2024 01:20:52 -0500
-X-MC-Unique: _PC8ubQkOAKqGzvrXSufGA-1
-Received: by mail-ot1-f72.google.com with SMTP id
- 46e09a7af769-6de00338d8eso356920a34.1
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 22:20:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNoSz-0007E4-NF
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 01:23:01 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNoSx-0005HG-CZ
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 01:23:01 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40e60e1373eso411585e9.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 22:22:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704954177; x=1705558977; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FkqT7sOC6Gxi7fgkUyNuqtrbt8msCaC9vuthx3NJRqA=;
+ b=C30DPDIcEYRt2ICx3qiR1KGuMU1eWH0OPsp08oqjFS505XJorzqsCw46NoGrYEM3eK
+ PgKYhzs6tvnLddmhEbcQslfZLGwIDFnb+/rVgpOs2tkrIPd0BykAA2OwIC8nCGjjaG/C
+ iPrgTBcZhBxNvfmishZKVbcNu3QZvEYQLA0UZa61DkG1jQF4J/dmOAKPCD8pBXfJOPgt
+ 8jPyPNbzUkSYIWC/fQYF6Ydmb/xDDIawXmciYNhepKLwc8VC4KCH4J3zfsEQXSUN/+mx
+ VMuoq187x6AJ80XDA467N9dueGq2NjMmn19ZLYjRYPVNT0O3sQ+93i03tIc6ytxG7KG/
+ jDFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704954051; x=1705558851;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=b9pTbPTTYwdc0VHl4C06GsC15HFQ0VPfRYyIxOSHxgM=;
- b=olFi+CkU0mB0XgwkLnLergP4leLlmsA8K+KsuyMtiO1C3M3LVyx/0veRUxI2A33gWP
- jrUT5RPj5IdyjKMC/zQe0zaWC1tefZI/QhVQTJz1+SGdnmUw4g/34tcHwZMB/C0apj8Y
- GQ08IM7CHdOVWbATJ2oa+TR0UBUlmmyymUWJyjNHOeczWC74kudp4tMP/Vle3ava1c7D
- 9DNwb7+jFpFFjd+XQn2Ss40+7y1X3flmf8ArEh9MdB2huGbifE5ap3N3k2Ycx4ma7TSH
- bNyUY8RshUkj2PeGEM+WR6GTiJhsAUUzAUEjqTNJVsX9G/CQb23ghbFrCzPf0Xjtvqmr
- 3g6Q==
-X-Gm-Message-State: AOJu0YxGNvFOPjwEOR48YZMN03ef6d7Pr1/vfpP4MD4sgL2R2U1dG7pN
- 9ROoZ+J/oGYMIaFotAt8U2KV63thEfl30aCGV5LPoSlcAm12zbcDABZCoFHXbghqhCKKjnqJsU+
- GqLymOqgbNgn8UdpnGE2ht46fzLCiNZBDP4euDbHiAHf6xavRYk+qlclFhHj3qgCVRsKaFXGfaZ
- notzaE
-X-Received: by 2002:a05:6830:4115:b0:6dd:e5bc:c6d7 with SMTP id
- w21-20020a056830411500b006dde5bcc6d7mr2110598ott.1.1704954051371; 
- Wed, 10 Jan 2024 22:20:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGCUB5LdFNdUpIaKRX5+vy+xFVVofQUJ8fPvu/CMcVAibEB3FemaJ3sfGXmf+tbimvBXdGJnQ==
-X-Received: by 2002:a05:6830:4115:b0:6dd:e5bc:c6d7 with SMTP id
- w21-20020a056830411500b006dde5bcc6d7mr2110576ott.1.1704954051038; 
- Wed, 10 Jan 2024 22:20:51 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- z4-20020a636504000000b005ceb4a6d72bsm364094pgb.65.2024.01.10.22.20.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 22:20:50 -0800 (PST)
-Date: Thu, 11 Jan 2024 14:20:38 +0800
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Bandan Das <bdas@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 00/10] docs/migration: Reorganize migration documentations
-Message-ID: <ZZ-ItufGb9Udvxh6@x1n>
-References: <20240109064628.595453-1-peterx@redhat.com>
+ d=1e100.net; s=20230601; t=1704954177; x=1705558977;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FkqT7sOC6Gxi7fgkUyNuqtrbt8msCaC9vuthx3NJRqA=;
+ b=ejbVzoZVZfYFGUUu6+6RlLeCk5FpK5pZ4rhTmMkMOgNSggK40k3/jo4yOLTCpwZ8nc
+ uzyxSVRIw/2nAgPcjD1YHR3+XMKDBuHtUwf+51M7hr8WYBXXfV5NOU1Hqa0llRNl2BEK
+ nOBX8uX5yOSJuAEn6FOwwxZ8c2+AZqIL3BEv/fIg1LVRucOlvKNj07HsiLObkT//pA7h
+ ABXpjFMUpZJMErh+5gMbM2AYDHOrciRWhHvcLDhsKf2y/Cc5LQ4oEDugK/KzoGNyLmym
+ jF0mtt9HBPhdNRGF9rf/qzuQXDWxLzYozoLhoU4Rx7yeyRKOeU4mQHWMwD/13ILHCygb
+ acrw==
+X-Gm-Message-State: AOJu0YziF/7ksKvmSgxYQbsJjp0wePnLe/F8/0oQhCsbIzqPYyg6pD8J
+ UU7I/PsF2LPUCIVZet1XMlj+vHSzwLFfCg==
+X-Google-Smtp-Source: AGHT+IEADBZqr1j+kmaFUPZsm55/Qwa41OSqLn3Dycv2Y6LRALvVKo/j2Zq61WaAHE9PM1kdLghdQA==
+X-Received: by 2002:a05:600c:458c:b0:40d:5ce8:d3e0 with SMTP id
+ r12-20020a05600c458c00b0040d5ce8d3e0mr79311wmo.11.1704954177406; 
+ Wed, 10 Jan 2024 22:22:57 -0800 (PST)
+Received: from [192.168.69.100] (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
+ [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
+ r1-20020adfce81000000b0033667867a66sm311971wrn.101.2024.01.10.22.22.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 10 Jan 2024 22:22:57 -0800 (PST)
+Message-ID: <20357abb-90e1-47d7-8af0-738eb77528fc@linaro.org>
+Date: Thu, 11 Jan 2024 07:22:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240109064628.595453-1-peterx@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] nubus-device: round Declaration ROM memory region
+ address to qemu_target_page_size()
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
+ qemu-devel@nongnu.org, elliotnunn@fastmail.com
+References: <20240108192013.272112-1-mark.cave-ayland@ilande.co.uk>
+ <20240108192013.272112-2-mark.cave-ayland@ilande.co.uk>
+ <cc1c2370-e516-478b-abfa-620cc8542118@linaro.org>
+ <0c609e08-9f03-4dbb-a667-611b4ded7fb4@ilande.co.uk>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <0c609e08-9f03-4dbb-a667-611b4ded7fb4@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,26 +95,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 09, 2024 at 02:46:18PM +0800, peterx@redhat.com wrote:
-> From: Peter Xu <peterx@redhat.com>
+On 9/1/24 22:53, Mark Cave-Ayland wrote:
+> On 08/01/2024 23:06, Philippe Mathieu-Daudé wrote:
 > 
-> Migration docs grow larger and larger.  There are plenty of things we can
-> do here in the future, but to start that we'd better reorganize the current
-> bloated doc files first and properly organize them into separate files.
-> This series kicks that off.
+>> On 8/1/24 20:20, Mark Cave-Ayland wrote:
+>>> Declaration ROM binary images can be any arbitrary size, however if a 
+>>> host ROM
+>>> memory region is not aligned to qemu_target_page_size() then we fail the
+>>> "assert(!(iotlb & ~TARGET_PAGE_MASK))" check in tlb_set_page_full().
+>>>
+>>> Ensure that the host ROM memory region is aligned to 
+>>> qemu_target_page_size()
+>>> and adjust the offset at which the Declaration ROM image is loaded, 
+>>> since Nubus
+>>> ROM images are unusual in that they are aligned to the end of the 
+>>> slot address
+>>> space.
+>>>
+>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>> ---
+>>>   hw/nubus/nubus-device.c | 16 ++++++++++++----
+>>>   1 file changed, 12 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/hw/nubus/nubus-device.c b/hw/nubus/nubus-device.c
+>>> index 49008e4938..e4f824d58b 100644
+>>> --- a/hw/nubus/nubus-device.c
+>>> +++ b/hw/nubus/nubus-device.c
+>>> @@ -10,6 +10,7 @@
+>>>   #include "qemu/osdep.h"
+>>>   #include "qemu/datadir.h"
+>>> +#include "exec/target_page.h"
+>>>   #include "hw/irq.h"
+>>>   #include "hw/loader.h"
+>>>   #include "hw/nubus/nubus.h"
+>>> @@ -30,7 +31,7 @@ static void nubus_device_realize(DeviceState *dev, 
+>>> Error **errp)
+>>>       NubusDevice *nd = NUBUS_DEVICE(dev);
+>>>       char *name, *path;
+>>>       hwaddr slot_offset;
+>>> -    int64_t size;
+>>> +    int64_t size, align_size;
+>>
+>> Both are 'size_t'.
 > 
-> This series mostly does the movement only, so please don't be scared of the
-> slightly large diff.  I did touch up things here and there, but I didn't
-> yet started writting much.  One thing I did is I converted virtio.txt to
-> rST, but that's trivial and no real content I touched.
-> 
-> I am copying both virtio and vfio people because I'm merging the two
-> separate files into the new docs/devel/migration/ folder.
+> I had a look at include/hw/loader.h, and the function signature for 
+> get_image_size() returns int64_t. Does it not make sense to keep int64_t 
+> here and use uintptr_t for the pointer arithmetic as below so that 
+> everything matches?
 
-I fixed all the spelling of "practice"s in patch 5, and queued it for now
-into staging.
+Oh you are right:
 
--- 
-Peter Xu
+$ git grep -E '(get_image_size|qemu_target_page_size|load_image_size)\(' 
+include
+include/exec/target_page.h:17:size_t qemu_target_page_size(void);
+include/hw/loader.h:13:int64_t get_image_size(const char *filename);
+include/hw/loader.h:30:ssize_t load_image_size(const char *filename, 
+void *addr, size_t size);
+
+So I guess int64_t is safer.
+
+>>>       int ret;
+>>>       /* Super */
+>>> @@ -76,16 +77,23 @@ static void nubus_device_realize(DeviceState 
+>>> *dev, Error **errp)
+>>>           }
+>>>           name = g_strdup_printf("nubus-slot-%x-declaration-rom", 
+>>> nd->slot);
+>>> -        memory_region_init_rom(&nd->decl_rom, OBJECT(dev), name, size,
+>>> +
+>>> +        /*
+>>> +         * Ensure ROM memory region is aligned to target page size 
+>>> regardless
+>>> +         * of the size of the Declaration ROM image
+>>> +         */
+>>> +        align_size = ROUND_UP(size, qemu_target_page_size());
+>>> +        memory_region_init_rom(&nd->decl_rom, OBJECT(dev), name, 
+>>> align_size,
+>>>                                  &error_abort);
+>>> -        ret = load_image_mr(path, &nd->decl_rom);
+>>> +        ret = load_image_size(path, 
+>>> memory_region_get_ram_ptr(&nd->decl_rom) +
+>>> +                                    (uintptr_t)align_size - size, 
+>>> size);
+>>
+>> memory_region_get_ram_ptr() returns a 'void *' so this looks dubious.
+>> Maybe use a local variable to ease offset calculation?
+>>
+>>    char *rombase = memory_region_get_ram_ptr(&nd->decl_rom);
+>>    ret = load_image_size(path, rombase + align_size - size, size);
+>>
+>> Otherwise KISS but ugly:
+>>
+>>    ret = load_image_size(path,
+>>              (void *)((uintptr_t)memory_region_get_ram_ptr(&nd->decl_rom)
+>>                       + align_size - size), size);
+> 
+> I prefer the first approach, but with uint8_t instead of char since it 
+> clarifies that it is a pointer to an arbitrary set of bytes as opposed 
+> to a string. Does that seem reasonable?
+
+Sure! Then with that:
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> 
+>>>           g_free(path);
+>>>           g_free(name);
+>>>           if (ret < 0) {
+>>>               error_setg(errp, "could not load romfile \"%s\"", 
+>>> nd->romfile);
+>>>               return;
+>>>           }
+>>> -        memory_region_add_subregion(&nd->slot_mem, NUBUS_SLOT_SIZE - 
+>>> size,
+>>> +        memory_region_add_subregion(&nd->slot_mem, NUBUS_SLOT_SIZE - 
+>>> align_size,
+>>>                                       &nd->decl_rom);
+>>>       }
+>>>   }
+> 
+> 
+> ATB,
+> 
+> Mark.
+> 
 
 
