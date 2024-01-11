@@ -2,138 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED1C82A9BE
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:53:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3077C82A9C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:54:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNqo5-0005kw-PN; Thu, 11 Jan 2024 03:52:57 -0500
+	id 1rNqpP-0006wF-4D; Thu, 11 Jan 2024 03:54:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNqo3-0005kR-96
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:52:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rNqpL-0006w2-Mp
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:54:15 -0500
+Received: from mgamail.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNqo0-0005kG-Ut
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:52:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704963171;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=0BUqBXXzdcv1NcZbDFVQy0bX57YILgVBvQVMZVq8OAY=;
- b=EmCiPTf/9itZdhy71Aa/qxTYmDXB2BzJR12E1y/2cqzfn6CrLwxf+WBxil+arUeNDN+eT8
- KgZQhPkmr7RgVsOkcFYgurnLk6dWaoCBNHPBWds0Vftw6XHYzFnFr9UTj8ADJZCGnQsAKK
- 5SHe+lAfehauxTvyAfaWnZQSEDu+ds4=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-677-DGwuVo57NOW99POcMl6UVA-1; Thu, 11 Jan 2024 03:52:50 -0500
-X-MC-Unique: DGwuVo57NOW99POcMl6UVA-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-78333746457so202202985a.2
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 00:52:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704963169; x=1705567969;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0BUqBXXzdcv1NcZbDFVQy0bX57YILgVBvQVMZVq8OAY=;
- b=wN5L0nH3czjzAzqMpUgVXBvmJtiwTo3TJYFRhNFr/PeLty42KlAm0KS1yzGZYQA15t
- kACoKcf7M3szoVn0oJ1hfVBjggA8h+FALB76HreD1WjsLbl7qSrjSlv0rl7rd1651Z6+
- HLCwo00zdD1DrJWkhAvr0fQz+6hZ0DzF+hWIO3fo8G+ShBKd2J9AVHFnANLeeOI2+af7
- 0aht9nw200pJzfX14rScjooj4lrO4kX7b84RYfuPZsS8pLvkO/sL8VETflB6d6lgFAUF
- bfxRt9wc+TV/BMtS6pmYVnQUqfWBN4MhmTQXl2ldTl0+URlQa3mBgrAodS6BijIFmxy4
- oiIA==
-X-Gm-Message-State: AOJu0Ywb99ohMwrfoPX3brFfdPbRc+PODueUe7NptbxxkTLke46QQTrh
- xt2fJ3Orq4XTRTX55dsxvjfBGWcjcMxRmihly1kiza0lTkfUHBSST/UWXbaZUOwRDgxRLgeKkZ0
- 7oy8NWl5oJONFtTQlZoFydu8=
-X-Received: by 2002:a05:620a:559c:b0:783:688:ed2 with SMTP id
- vq28-20020a05620a559c00b0078306880ed2mr1117794qkn.10.1704963169617; 
- Thu, 11 Jan 2024 00:52:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFhPwCfm5mwFKcLdf+Jyl29bsbv+4OxrnTmQmiuNidtTkqtDXVmZzBrceAmBWayAFdnFNE9Ng==
-X-Received: by 2002:a05:620a:559c:b0:783:688:ed2 with SMTP id
- vq28-20020a05620a559c00b0078306880ed2mr1117783qkn.10.1704963169356; 
- Thu, 11 Jan 2024 00:52:49 -0800 (PST)
-Received: from [10.33.192.181] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- bm26-20020a05620a199a00b007831c391234sm213365qkb.21.2024.01.11.00.52.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 00:52:48 -0800 (PST)
-Message-ID: <72c3cf5f-29ef-4adf-925d-7d5e36c65b7e@redhat.com>
-Date: Thu, 11 Jan 2024 09:52:46 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] scripts/checkpatch: Support codespell checking
-Content-Language: en-US
-To: Zhao Liu <zhao1.liu@linux.intel.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rNqpJ-0006a5-HL
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:54:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1704963253; x=1736499253;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=SLxjjko8qKGRdIGBrm/PZpmWi4YJzLg3fbqCblM3LrI=;
+ b=j2tBNW6HKg5EC8osjBYrowO4HO/4a/5Ktvr7tQhhdkzEVLE62fTT0fME
+ 0y1fgBEr1Q2MzPPY2UzjlIk504uMuOMP1L1u/y8tcCP/Jpdcy4WKl0/k3
+ QOHQaAVCA7WIyptThwygpsFLnTWjoUqCNn0MwzWTbxSmHPRUUGWVCHPmf
+ hZerwsg8UICp7VkKbl/GXXm7qmfHXcnm7QHw+UlV9ATQW10hMzfaJd/8q
+ fQAldh1g+YMwkE20II/sFoYRMRPGI7IUoz6Dl1bBhfQaUF+GDnuDsGNeb
+ YVbWQ7LIafEW0CMUwDTEUvGXzDQ5P4jSFoc6BUC0zNPDCP9BA6Kr1Mh5Q A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="397657380"
+X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; d="scan'208";a="397657380"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jan 2024 00:54:10 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="852886314"
+X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; d="scan'208";a="852886314"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmsmga004.fm.intel.com with ESMTP; 11 Jan 2024 00:54:07 -0800
+Date: Thu, 11 Jan 2024 17:07:03 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Darren Kenny <darren.kenny@oracle.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Alexander Bulekov <alxndr@bu.edu>,
- qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Samuel Tardieu <sam@rfc1149.net>
-References: <20240105083848.267192-1-zhao1.liu@linux.intel.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240105083848.267192-1-zhao1.liu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v7 05/16] i386: Decouple CPUID[0x1F] subleaf with
+ specific topology level
+Message-ID: <ZZ+vt/JxXaAgdl9d@intel.com>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-6-zhao1.liu@linux.intel.com>
+ <cb75fcea-7e3a-4062-8d1c-3067f5e53bcc@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cb75fcea-7e3a-4062-8d1c-3067f5e53bcc@intel.com>
+Received-SPF: none client-ip=192.55.52.120;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -60
+X-Spam_score: -6.1
+X-Spam_bar: ------
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -150,26 +88,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/01/2024 09.38, Zhao Liu wrote:
-> From: Zhao Liu <zhao1.liu@intel.com>
-> 
-> Add two spelling check options (--codespell and --codespellfile) to
-> enhance spelling check through dictionary, which copied the Linux
-> kernel's implementation in checkpatch.pl.
-> 
-> This check uses the dictionary at "/usr/share/codespell/dictionary.txt"
-> by default, if there is no dictionary specified under this path, it
-> will look for the dictionary of python3's codespell (This requires user
-> to add python3's path in environment variable $PATH, and to install
-> codespell by "pip install codespell").
-> 
-> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> Tested-by: Samuel Tardieu <sam@rfc1149.net>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Hi Xiaoyao,
 
-Tested-by: Thomas Huth <thuth@redhat.com>
+On Thu, Jan 11, 2024 at 11:19:34AM +0800, Xiaoyao Li wrote:
+> Date: Thu, 11 Jan 2024 11:19:34 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH v7 05/16] i386: Decouple CPUID[0x1F] subleaf with
+>  specific topology level
+> 
+> On 1/8/2024 4:27 PM, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > At present, the subleaf 0x02 of CPUID[0x1F] is bound to the "die" level.
+> > 
+> > In fact, the specific topology level exposed in 0x1F depends on the
+> > platform's support for extension levels (module, tile and die).
+> > 
+> > To help expose "module" level in 0x1F, decouple CPUID[0x1F] subleaf
+> > with specific topology level.
+> > 
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > Tested-by: Babu Moger <babu.moger@amd.com>
+> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> > ---
+> > Changes since v3:
+> >   * New patch to prepare to expose module level in 0x1F.
+> >   * Move the CPUTopoLevel enumeration definition from "i386: Add cache
+> >     topology info in CPUCacheInfo" to this patch. Note, to align with
+> >     topology types in SDM, revert the name of CPU_TOPO_LEVEL_UNKNOW to
+> >     CPU_TOPO_LEVEL_INVALID.
+> > ---
+> >   target/i386/cpu.c | 136 +++++++++++++++++++++++++++++++++++++---------
+> >   target/i386/cpu.h |  15 +++++
+> >   2 files changed, 126 insertions(+), 25 deletions(-)
+> > 
+> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> > index bc440477d13d..5c295c9a9e2d 100644
+> > --- a/target/i386/cpu.c
+> > +++ b/target/i386/cpu.c
+> > @@ -269,6 +269,116 @@ static void encode_cache_cpuid4(CPUCacheInfo *cache,
+> >              (cache->complex_indexing ? CACHE_COMPLEX_IDX : 0);
+> >   }
+> > +static uint32_t num_cpus_by_topo_level(X86CPUTopoInfo *topo_info,
+> > +                                       enum CPUTopoLevel topo_level)
+> > +{
+> > +    switch (topo_level) {
+> > +    case CPU_TOPO_LEVEL_SMT:
+> > +        return 1;
+> > +    case CPU_TOPO_LEVEL_CORE:
+> > +        return topo_info->threads_per_core;
+> > +    case CPU_TOPO_LEVEL_DIE:
+> > +        return topo_info->threads_per_core * topo_info->cores_per_die;
+> > +    case CPU_TOPO_LEVEL_PACKAGE:
+> > +        return topo_info->threads_per_core * topo_info->cores_per_die *
+> > +               topo_info->dies_per_pkg;
+> > +    default:
+> > +        g_assert_not_reached();
+> > +    }
+> > +    return 0;
+> > +}
+> > +
+> > +static uint32_t apicid_offset_by_topo_level(X86CPUTopoInfo *topo_info,
+> > +                                            enum CPUTopoLevel topo_level)
+> > +{
+> > +    switch (topo_level) {
+> > +    case CPU_TOPO_LEVEL_SMT:
+> > +        return 0;
+> > +    case CPU_TOPO_LEVEL_CORE:
+> > +        return apicid_core_offset(topo_info);
+> > +    case CPU_TOPO_LEVEL_DIE:
+> > +        return apicid_die_offset(topo_info);
+> > +    case CPU_TOPO_LEVEL_PACKAGE:
+> > +        return apicid_pkg_offset(topo_info);
+> > +    default:
+> > +        g_assert_not_reached();
+> > +    }
+> > +    return 0;
+> > +}
+> > +
+> > +static uint32_t cpuid1f_topo_type(enum CPUTopoLevel topo_level)
+> > +{
+> > +    switch (topo_level) {
+> > +    case CPU_TOPO_LEVEL_INVALID:
+> > +        return CPUID_1F_ECX_TOPO_LEVEL_INVALID;
+> > +    case CPU_TOPO_LEVEL_SMT:
+> > +        return CPUID_1F_ECX_TOPO_LEVEL_SMT;
+> > +    case CPU_TOPO_LEVEL_CORE:
+> > +        return CPUID_1F_ECX_TOPO_LEVEL_CORE;
+> > +    case CPU_TOPO_LEVEL_DIE:
+> > +        return CPUID_1F_ECX_TOPO_LEVEL_DIE;
+> > +    default:
+> > +        /* Other types are not supported in QEMU. */
+> > +        g_assert_not_reached();
+> > +    }
+> > +    return 0;
+> > +}
+> > +
+> > +static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
+> > +                                X86CPUTopoInfo *topo_info,
+> > +                                uint32_t *eax, uint32_t *ebx,
+> > +                                uint32_t *ecx, uint32_t *edx)
+> > +{
+> > +    static DECLARE_BITMAP(topo_bitmap, CPU_TOPO_LEVEL_MAX);
+> > +    X86CPU *cpu = env_archcpu(env);
+> > +    unsigned long level, next_level;
+> > +    uint32_t num_cpus_next_level, offset_next_level;
+> 
+> again, I dislike the name of cpus to represent the logical process or
+> thread. we can call it, num_lps_next_level, or num_threads_next_level;
 
-Thanks, I'll add it to my next pull request.
+Okay, will use num_threads_next_level ;-)
 
+> 
+> > +
+> > +    /*
+> > +     * Initialize the bitmap to decide which levels should be
+> > +     * encoded in 0x1f.
+> > +     */
+> > +    if (!count) {
+> 
+> using static bitmap and initialize the bitmap on (count == 0), looks bad to
+> me. It highly relies on the order of how encode_topo_cpuid1f() is called,
+> and fragile.
+> 
+> Instead, we can maintain an array in CPUX86State, e.g.,
+> 
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -1904,6 +1904,8 @@ typedef struct CPUArchState {
+> 
+>      /* Number of dies within this CPU package. */
+>      unsigned nr_dies;
+> +
+> +    unint8_t valid_cpu_topo[CPU_TOPO_LEVEL_MAX];
+>  } CPUX86State;
+> 
+> 
+> and initialize it as below, when initializing the env
+> 
+> env->valid_cpu_topo[0] = CPU_TOPO_LEVEL_SMT;
+> env->valid_cpu_topo[1] = CPU_TOPO_LEVEL_CORE;
+> if (env->nr_dies > 1) {
+> 	env->valid_cpu_topo[2] = CPU_TOPO_LEVEL_DIE;
+> }
+> 
+> then in encode_topo_cpuid1f(), we can get level and next_level as
+> 
+> level = env->valid_cpu_topo[count];
+> next_level = env->valid_cpu_topo[count + 1];
+> 
+
+Good idea, let me try this way.
+
+Thanks,
+Zhao
 
 
