@@ -2,82 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E51EB82ADB8
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:42:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7088E82ADBC
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:46:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNtRS-00075l-Ll; Thu, 11 Jan 2024 06:41:46 -0500
+	id 1rNtVF-000859-T2; Thu, 11 Jan 2024 06:45:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rNtRO-00075U-N7
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:41:42 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rNtRL-0004TI-Lj
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:41:42 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Cx6ent059lhkAEAA--.8467S3;
- Thu, 11 Jan 2024 19:41:34 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxbNzr059lo_kPAA--.42054S3; 
- Thu, 11 Jan 2024 19:41:33 +0800 (CST)
-Subject: Re: [NOTFORMERGE PATCH 2/2] gitlab: Add Loongarch64 KVM-only build
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNtVC-00084f-Dv
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:45:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNtV8-00070t-LP
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:45:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704973533;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=saFR7FAncgkLBqVR1h48nLPtt+cuwotjHAGNIVD1KQQ=;
+ b=fKGdfpITJUHCeKnbnjNtCInVXPVLacHW/KE+UFljSkN8DusLH79QoDGVQDQROf+edpv0fX
+ +2KPDamoL2OmgLvY4JQ3nHlQJ4rzsOxcMNsgrynEN0FijKbK+wkgfqc4vRiebuPn+thmB0
+ DlXz+E54OTzlMV9yGz8QctTn+Gxetao=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-645-NFTyCPu4O1GnNAWYQcRfcg-1; Thu, 11 Jan 2024 06:45:31 -0500
+X-MC-Unique: NFTyCPu4O1GnNAWYQcRfcg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9CC4585A589;
+ Thu, 11 Jan 2024 11:45:31 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 613D751D5;
+ Thu, 11 Jan 2024 11:45:31 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 75C9E21E680D; Thu, 11 Jan 2024 12:45:30 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org,  aliang@redhat.com,  stefanha@redhat.com,
  qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Zhiguo Wu <wuzhiguo@loongson.cn>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Bibo Mao <maobibo@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Beraldo Leal <bleal@redhat.com>, WANG Xuerui <git@xen0n.name>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Xianglai Li <lixianglai@loongson.cn>, Tianrui Zhao <zhaotianrui@loongson.cn>
-References: <20240102172239.69452-1-philmd@linaro.org>
- <20240102172239.69452-3-philmd@linaro.org>
- <dbc7f2c6-15c0-4d5a-abf7-8946ff2d03cb@redhat.com>
- <4cc9ab90-c1bc-03d3-d82e-a763199fa029@loongson.cn>
- <96bdddb5-e15c-469f-b74b-7e82049888f1@redhat.com>
- <3766d853-8dc5-f455-e0ea-dd970c65a6c5@loongson.cn>
- <6f17d2f1-6876-4f1c-beb5-c6a4e89340d8@redhat.com>
- <94b84fa3-4a10-3fef-0415-6b87f2aa255b@loongson.cn>
- <0964ddb6-f403-4bec-8f90-23f8b9b0dfd6@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <41993aec-6bf3-c3c1-23f4-ac04a2c765b3@loongson.cn>
-Date: Thu, 11 Jan 2024 19:41:30 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Subject: Re: [PATCH] string-output-visitor: Fix (pseudo) struct handling
+In-Reply-To: <20240109181717.42493-1-kwolf@redhat.com> (Kevin Wolf's message
+ of "Tue, 9 Jan 2024 19:17:17 +0100")
+References: <20240109181717.42493-1-kwolf@redhat.com>
+Date: Thu, 11 Jan 2024 12:45:30 +0100
+Message-ID: <87mstcxfdx.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-In-Reply-To: <0964ddb6-f403-4bec-8f90-23f8b9b0dfd6@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8BxbNzr059lo_kPAA--.42054S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoWrurWxCFWDWF15ur13tw1DurX_yoWDWFb_ZF
- 47urn5Ga1jkwsYya95trn3AFnrZFZIvr4rK3yjvrW0qwnrX398Jr45K3savan8Ka1FqFnI
- kF90vay5ZryUJosvyTuYvTs0mTUanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvT
- s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
- cSsGvfJTRUUUbqkYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
- vaj40_Wr0E3s1l1IIY67AEw4v_JrI_Jryl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
- w2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
- W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
- xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y
- 6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
- 1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxG
- rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUtVW8ZwC20s026c02F40E14
- v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkG
- c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
- MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jza0PUUU
- UU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.982,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,34 +81,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2024/1/11 下午7:26, Philippe Mathieu-Daudé 写道:
-> On 11/1/24 10:51, gaosong wrote:
->> 在 2024/1/11 下午5:04, Thomas Huth 写道:
->>> On 11/01/2024 09.50, gaosong wrote:
->>>> 在 2024/1/11 下午4:20, Thomas Huth 写道:
->>>>> On 11/01/2024 08.37, gaosong wrote:
->
->>>> LoongArch no support these cmds  or some problems .
->>>> -    "gva2gpa 0",
->>>> -    "memsave 0 4096 \"/dev/null\"",
->>>> -    "x /8i 0x100",
->>>> -    "xp /16x 0",
->>>>
->>>> Could we disable these 4 cmds or the test_temp check?
->>>> After we fix the cmds problems, we can enable them.
->>>
->>> Even if loongarch does not support one of these commands, it should 
->>> not crash QEMU. So please fix the crashes first before considering 
->>> to enable the KVM-only test in the CI.
->>>
->>
->> Sure,  we will fix the cmds problems first.
->
-> The issue might be missing get_phys_page_attrs_debug() implementation.
+Kevin Wolf <kwolf@redhat.com> writes:
 
-yes, I see,  from  hmp_gva2gpa().  I think we need implement it.
+> Commit ff32bb53 tried to get minimal struct support into the string
+> output visitor by just making it return "<omitted>". Unfortunately, it
+> forgot that the caller will still make more visitor calls for the
+> content of the struct.
+>
+> If the struct is contained in a list, such as IOThreadVirtQueueMapping,
+> in the better case its fields show up as separate list entries. In the
+> worse case, it contains another list, and the string output visitor
+> doesn't support nested lists and asserts that this doesn't happen.
 
-Thanks.
-Song Gao
+What it actually asserts, or rather tries to assert is this constraint
+from visit_end_list()'s contract:
+
+ * @list must match what was passed to the paired visit_start_list().
+
+Since it's not prepared for nested lists, it actually asserts "match
+what was passed the last visit_start_list() for this visitor", which is
+correct only as long as there is no nesting.
+
+I'm not sure whether this is relevant enough to justify tweaking your
+commit message.
+
+> doesn't support nested lists and asserts that this doesn't happen. So as
+> soon as the optional "vqs" field in IOThreadVirtQueueMapping is
+> specified, we get a crash.
+>
+> This can be reproduced with the following command line:
+>
+>   echo "info qtree" | ./qemu-system-x86_64 \
+>     -object iothread,id=t0 \
+>     -blockdev null-co,node-name=disk \
+>     -device '{"driver": "virtio-blk-pci", "drive": "disk",
+>               "iothread-vq-mapping": [{"iothread": "t0", "vqs": [0]}]}' \
+>     -monitor stdio
+
+Appreciate the easy reproducer.
+
+> Fix the problem by counting the nesting level of structs and ignoring
+> any visitor calls for values (apart from start/end_struct) while we're
+> not on the top level.
+>
+> Fixes: ff32bb53476539d352653f4ed56372dced73a388
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2069
+> Reported-by: Aihua Liang <aliang@redhat.com>
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  qapi/string-output-visitor.c | 46 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 46 insertions(+)
+>
+> diff --git a/qapi/string-output-visitor.c b/qapi/string-output-visitor.c
+> index f0c1dea89e..5115536b15 100644
+> --- a/qapi/string-output-visitor.c
+> +++ b/qapi/string-output-visitor.c
+> @@ -65,6 +65,7 @@ struct StringOutputVisitor
+>      } range_start, range_end;
+>      GList *ranges;
+>      void *list; /* Only needed for sanity checking the caller */
+> +    unsigned int struct_nesting;
+>  };
+>  
+>  static StringOutputVisitor *to_sov(Visitor *v)
+> @@ -144,6 +145,10 @@ static bool print_type_int64(Visitor *v, const char *name, int64_t *obj,
+>      StringOutputVisitor *sov = to_sov(v);
+>      GList *l;
+>  
+> +    if (sov->struct_nesting) {
+> +        return true;
+> +    }
+> +
+>      switch (sov->list_mode) {
+>      case LM_NONE:
+>          string_output_append(sov, *obj);
+> @@ -231,6 +236,10 @@ static bool print_type_size(Visitor *v, const char *name, uint64_t *obj,
+>      uint64_t val;
+>      char *out, *psize;
+>  
+> +    if (sov->struct_nesting) {
+> +        return true;
+> +    }
+> +
+>      if (!sov->human) {
+>          out = g_strdup_printf("%"PRIu64, *obj);
+>          string_output_set(sov, out);
+> @@ -250,6 +259,11 @@ static bool print_type_bool(Visitor *v, const char *name, bool *obj,
+>                              Error **errp)
+>  {
+>      StringOutputVisitor *sov = to_sov(v);
+> +
+> +    if (sov->struct_nesting) {
+> +        return true;
+> +    }
+> +
+>      string_output_set(sov, g_strdup(*obj ? "true" : "false"));
+>      return true;
+>  }
+> @@ -260,6 +274,10 @@ static bool print_type_str(Visitor *v, const char *name, char **obj,
+>      StringOutputVisitor *sov = to_sov(v);
+>      char *out;
+>  
+> +    if (sov->struct_nesting) {
+> +        return true;
+> +    }
+> +
+>      if (sov->human) {
+>          out = *obj ? g_strdup_printf("\"%s\"", *obj) : g_strdup("<null>");
+>      } else {
+> @@ -273,6 +291,11 @@ static bool print_type_number(Visitor *v, const char *name, double *obj,
+>                                Error **errp)
+>  {
+>      StringOutputVisitor *sov = to_sov(v);
+> +
+> +    if (sov->struct_nesting) {
+> +        return true;
+> +    }
+> +
+>      string_output_set(sov, g_strdup_printf("%.17g", *obj));
+>      return true;
+>  }
+> @@ -283,6 +306,10 @@ static bool print_type_null(Visitor *v, const char *name, QNull **obj,
+>      StringOutputVisitor *sov = to_sov(v);
+>      char *out;
+>  
+> +    if (sov->struct_nesting) {
+> +        return true;
+> +    }
+> +
+>      if (sov->human) {
+>          out = g_strdup("<null>");
+>      } else {
+> @@ -295,6 +322,9 @@ static bool print_type_null(Visitor *v, const char *name, QNull **obj,
+>  static bool start_struct(Visitor *v, const char *name, void **obj,
+>                           size_t size, Error **errp)
+>  {
+> +    StringOutputVisitor *sov = to_sov(v);
+> +
+> +    sov->struct_nesting++;
+>      return true;
+>  }
+>  
+> @@ -302,6 +332,10 @@ static void end_struct(Visitor *v, void **obj)
+>  {
+>      StringOutputVisitor *sov = to_sov(v);
+>  
+> +    if (--sov->struct_nesting) {
+> +        return;
+> +    }
+> +
+>      /* TODO actually print struct fields */
+>      string_output_set(sov, g_strdup("<omitted>"));
+>  }
+> @@ -312,6 +346,10 @@ start_list(Visitor *v, const char *name, GenericList **list, size_t size,
+>  {
+>      StringOutputVisitor *sov = to_sov(v);
+>  
+> +    if (sov->struct_nesting) {
+> +        return true;
+> +    }
+> +
+>      /* we can't traverse a list in a list */
+>      assert(sov->list_mode == LM_NONE);
+>      /* We don't support visits without a list */
+> @@ -329,6 +367,10 @@ static GenericList *next_list(Visitor *v, GenericList *tail, size_t size)
+>      StringOutputVisitor *sov = to_sov(v);
+>      GenericList *ret = tail->next;
+>  
+> +    if (sov->struct_nesting) {
+> +        return ret;
+> +    }
+> +
+>      if (ret && !ret->next) {
+>          sov->list_mode = LM_END;
+>      }
+> @@ -339,6 +381,10 @@ static void end_list(Visitor *v, void **obj)
+>  {
+>      StringOutputVisitor *sov = to_sov(v);
+>  
+> +    if (sov->struct_nesting) {
+> +        return;
+> +    }
+> +
+>      assert(sov->list == obj);
+>      assert(sov->list_mode == LM_STARTED ||
+>             sov->list_mode == LM_END ||
+
+@struct_nesting is what its name suggests: the *struct* nesting level.
+
+The patch's idea is to turn all methods into no-ops inside a struct.  To
+make that work, start_struct() and end_struct() aren't actually no-ops;
+they track the nesting level.
+
+What about nested lists that are not inside any struct?
+
+Ceterum censeo: the struct visitors need to go.  But I'm *not* asking
+you to do that now.
 
 
