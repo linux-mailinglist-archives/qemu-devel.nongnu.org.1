@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CD082B26B
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 17:06:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D8B82B266
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 17:05:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNxZU-0007yL-RI; Thu, 11 Jan 2024 11:06:22 -0500
+	id 1rNxYi-0007CO-TY; Thu, 11 Jan 2024 11:05:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rNxZG-0007s3-Jn
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:06:07 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rNxZE-0000C5-Hm
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:06:06 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1d3aa0321b5so46454105ad.2
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 08:03:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1704989037; x=1705593837;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=8/lk4OVomEx4I00F5QHPLA58OMzGmQGpiKOVEXjT2kA=;
- b=GleMjt+qQx2CYPiS5moMX/zpzWbDq3gDqfCGIa4jxM+q57aIOHcoX654OC+cR4TpmK
- fNZ2w2Icka2i/Zf3Zes0a1h/6NQ70VllYQwpGEziXc86qo1tJDNgGY5u+xDHpW0hHNb+
- Dg78uxUFvSKoxXGTVicnJw06azin96xskGsSMMcrYDsOanwJi+zv5O1It1mxYkUv7nvg
- t7MmZL3k/uCarADPqQ6BNy5bg/b/GjVkHiVWaKExuNvhpIxsGy0UDtwQgZ2bwzNgMWru
- aXEcbmSngj0PWmhHo9jMaKrnxdN5vBYtfLL1BdSWj+r1D+oEipYLtE2WRLrO7gFg1yjN
- Sg2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704989037; x=1705593837;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8/lk4OVomEx4I00F5QHPLA58OMzGmQGpiKOVEXjT2kA=;
- b=WaQ5OJfYFSSAYjL9I3tOBf+2WSuMiNEqH+hXySaD9bE7iaND/Hp2JVTaehIys4kYcH
- DRGkUJylfufos2xbDV2nS94rDB+XIjn2SLuSqUIuegEFpSAbLLiJdkeI7Y/PsNd1tygE
- hRRZKfOgxHzUV6nAXo3lsEBDq+CZzFTxmCn8RkU8yzhRme/Tf4ItBTDbwxWzhme+tvtx
- 9yrAnkfzVlsx6XTBTthIio5d+w2e4h9BHPrlNeS/asXonfwOTjNQzZ30vInnK+PC0uxE
- czvtHp/9aicSJpHpazmYGRuXODXyGLmckbRXxl/6hKQnIAGI77Nvzb2V+3+j+K4rHZ9Q
- qU3g==
-X-Gm-Message-State: AOJu0YytSCTxh0XodTQx42mXjJWd0x26IPmAlLCU6cJc8UVFMvRXZ4l5
- AalxGwTFN+s4Z8B6uXzsgisiITpUxSyOoI2o8gD8C6Xy6t/bt5+8zxcwiFO7KrzpY/Gv
-X-Google-Smtp-Source: AGHT+IF6yJy8G2fC46Tn0SyI9zks5C3IfZqx+oU/xpnyeNQDARY+sJ5cY8ldnc8veAak7XKehjtmL9BG8/vSDlqD0h4=
-X-Received: by 2002:a17:90b:3b45:b0:28d:bd27:f81 with SMTP id
- ot5-20020a17090b3b4500b0028dbd270f81mr1116103pjb.15.1704988978173; Thu, 11
- Jan 2024 08:02:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNxYY-0007BO-IP
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:05:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNxYV-0000kX-Ct
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:05:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704989115;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NKVd+DRmVJsVeaohR1mZypDtz2D65qz+Sgea77ugSk0=;
+ b=jI+yYgkZ+afQdyl+cWatDlUmQSkCzjJWmZEHPJPcUifcbocPFMrYufKuGN9w2hRRnzrcPd
+ B4qNndfdz7tAz/mi8ncEsVrJ9NTXa0clt2/tIRUQI7Jnq1NDa2NvgP9BeX2B/hFhUGACTG
+ +83p6yRztSJi4TQt/zvt2BPjSTpmvIY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-385-8IkOwqzxO4qhJq_FoH6BLg-1; Thu,
+ 11 Jan 2024 11:05:11 -0500
+X-MC-Unique: 8IkOwqzxO4qhJq_FoH6BLg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C0915380606E;
+ Thu, 11 Jan 2024 16:05:10 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9E1FF5012;
+ Thu, 11 Jan 2024 16:05:10 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id B66AA21E6691; Thu, 11 Jan 2024 17:05:09 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org,  Stephen Brennan <stephen.s.brennan@oracle.com>,
+ qemu-trivial@nongnu.org
+Subject: Re: [PATCH v2 1/1] dump: Fix HMP dump-guest-memory -z without -R
+In-Reply-To: <CAJ+F1C+c1VPOE8umoSED2EeKQcttcv=Y=3UQ=gGP6_hOCGL8Sg@mail.gmail.com>
+ (=?utf-8?Q?=22Marc-Andr=C3=A9?= Lureau"'s message of "Thu, 11 Jan 2024
+ 19:10:03 +0400")
+References: <20231222093827.951039-1-armbru@redhat.com>
+ <20231222093827.951039-2-armbru@redhat.com>
+ <87cyu8vyj4.fsf@pond.sub.org>
+ <CAJ+F1C+c1VPOE8umoSED2EeKQcttcv=Y=3UQ=gGP6_hOCGL8Sg@mail.gmail.com>
+Date: Thu, 11 Jan 2024 17:05:09 +0100
+Message-ID: <87ply7svnu.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <cover.1703482349.git.yong.huang@smartx.com>
- <a34c12048198cea06d5d1a69a3fa8b76ab13cbba.1703482349.git.yong.huang@smartx.com>
- <87h6jkuee9.fsf@pond.sub.org> <ZaACIZlPRnJidSE_@redhat.com>
-In-Reply-To: <ZaACIZlPRnJidSE_@redhat.com>
-From: Yong Huang <yong.huang@smartx.com>
-Date: Fri, 12 Jan 2024 00:02:42 +0800
-Message-ID: <CAK9dgmaFpzvmnTm12Am+UJWYwikA48RWqUWX5PQ3zFphVT8K3w@mail.gmail.com>
-Subject: Re: [PATCH RESEND v3 01/10] crypto: Introduce option and structure
- for detached LUKS header
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel <qemu-devel@nongnu.org>, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Eric Blake <eblake@redhat.com>
-Content-Type: multipart/alternative; boundary="00000000000063efc4060eadae33"
-Received-SPF: none client-ip=2607:f8b0:4864:20::631;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,287 +87,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000063efc4060eadae33
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> writes:
 
-On Thu, Jan 11, 2024 at 10:58=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@=
-redhat.com>
-wrote:
+> Hi Markus
+>
+> On Thu, Jan 11, 2024 at 4:36=E2=80=AFPM Markus Armbruster <armbru@redhat.=
+com> wrote:
+>>
+>> Any takers?
+>>
+>
+> I have it in my "dump" queue, but it's the only patch I got so far (I
+> could have missed others).
+>
+> If it can go through my other means, that's fine with me
 
-> On Thu, Jan 11, 2024 at 03:35:10PM +0100, Markus Armbruster wrote:
-> > Hyman Huang <yong.huang@smartx.com> writes:
-> >
-> > > Add the "header" option for the LUKS format. This field would be
-> > > used to identify the blockdev's position where a detachable LUKS
-> > > header is stored.
-> > >
-> > > In addition, introduce header field in struct BlockCrypto
-> > >
-> > > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-> > > Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> > > Message-Id: <
-> 5b99f60c7317092a563d7ca3fb4b414197015eb2.1701879996.git.yong.huang@smartx=
-.com
-> >
-> > > ---
-> > >  block/crypto.c       | 1 +
-> > >  qapi/block-core.json | 6 +++++-
-> > >  2 files changed, 6 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/block/crypto.c b/block/crypto.c
-> > > index 921933a5e5..f82b13d32b 100644
-> > > --- a/block/crypto.c
-> > > +++ b/block/crypto.c
-> > > @@ -39,6 +39,7 @@ typedef struct BlockCrypto BlockCrypto;
-> > >  struct BlockCrypto {
-> > >      QCryptoBlock *block;
-> > >      bool updating_keys;
-> > > +    BdrvChild *header;  /* Reference to the detached LUKS header */
-> > >  };
-> > >
-> > >
-> > > diff --git a/qapi/block-core.json b/qapi/block-core.json
-> > > index ca390c5700..10be08d08f 100644
-> > > --- a/qapi/block-core.json
-> > > +++ b/qapi/block-core.json
-> > > @@ -3352,11 +3352,15 @@
-> > >  #     decryption key (since 2.6). Mandatory except when doing a
-> > >  #     metadata-only probe of the image.
-> > >  #
-> > > +# @header: optional reference to the location of a blockdev
-> > > +#     storing a detached LUKS header. (since 9.0)
-> >
-> > This will come out like
-> >
-> >     "header": "BlockdevRef" (optional)
-> >        optional reference to the location of a blockdev storing a
-> detached
-> >        LUKS header. (since 9.0)
-> >
-> > in the manual.  Scratch "optional".
-> >
-> > Moreover, a BlockdevRef is a "Reference to a block device" (quote from
-> > its doc comment), not a "reference to the location of a blockdev".
-> > Better simplify to something like "block device holding a detached LUKS
-> > header".
-> >
-> > But that's just phrasing.  The contents could perhaps use improvement,
-> > too.  Let's start with this question: what's a detachable LUKS header,
-> > and why would anybody want to use it?
->
-> Normally a LUKS volume has a layout:
->
->   disk:  | header | key material | disk payload data |
->
-> With a detached LUKS header, you need 2 disks so getting
->
->   disk1:  | header | key material |
->   disk2:  | disk payload data |
->
-> There are a variety of reasons to do this
->
->  * Secrecy - the disk2 cannot be identified as containing LUKS volume
->              since there's no header
->
->  * Control - if access to the disk1 is restricted, then even if someone
->              has access to disk2 they can't unlock it. Might be useful
->              if you have disks on NFS but want to restrict which host
->              can launch a VM instance from it, by dynamically providing
->              access to the header to a designated host
->
->  * Flexibility - your application data volume may be a given size and
->                  it is inconvenient to resize it to add encryption.
->                  You can store the LUKS header separately and use
->                  the existing storage volume for payload
->
->  * Recovery - corruption of a bit in the header may make the entire
->               payload inaccessible. It might be convenient to take
->               backups of the header. If your primary disk header
->               becomes corrupt, you can unlock the data still by
->               pointing to the backup detached header.
->
-Thank you, Daniel, for the incisive summary. IMHO, the reason listed
-above could be added to the document directly :) .
+Let's try qemu-trivial (cc'ed).  Thanks!
 
->
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-
-> https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-
-> https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-
-> https://www.instagram.com/dberrange :|
->
->
+>> Markus Armbruster <armbru@redhat.com> writes:
 
---=20
-Best regards
-
---00000000000063efc4060eadae33
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
-t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
-ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jan 11, 20=
-24 at 10:58=E2=80=AFPM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berran=
-ge@redhat.com">berrange@redhat.com</a>&gt; wrote:<br></div><blockquote clas=
-s=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;b=
-order-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex"=
->On Thu, Jan 11, 2024 at 03:35:10PM +0100, Markus Armbruster wrote:<br>
-&gt; Hyman Huang &lt;<a href=3D"mailto:yong.huang@smartx.com" target=3D"_bl=
-ank">yong.huang@smartx.com</a>&gt; writes:<br>
-&gt; <br>
-&gt; &gt; Add the &quot;header&quot; option for the LUKS format. This field=
- would be<br>
-&gt; &gt; used to identify the blockdev&#39;s position where a detachable L=
-UKS<br>
-&gt; &gt; header is stored.<br>
-&gt; &gt;<br>
-&gt; &gt; In addition, introduce header field in struct BlockCrypto<br>
-&gt; &gt;<br>
-&gt; &gt; Signed-off-by: Hyman Huang &lt;<a href=3D"mailto:yong.huang@smart=
-x.com" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
-&gt; &gt; Reviewed-by: Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berran=
-ge@redhat.com" target=3D"_blank">berrange@redhat.com</a>&gt;<br>
-&gt; &gt; Message-Id: &lt;<a href=3D"mailto:5b99f60c7317092a563d7ca3fb4b414=
-197015eb2.1701879996.git.yong.huang@smartx.com" target=3D"_blank">5b99f60c7=
-317092a563d7ca3fb4b414197015eb2.1701879996.git.yong.huang@smartx.com</a>&gt=
-;<br>
-&gt; &gt; ---<br>
-&gt; &gt;=C2=A0 block/crypto.c=C2=A0 =C2=A0 =C2=A0 =C2=A0| 1 +<br>
-&gt; &gt;=C2=A0 qapi/block-core.json | 6 +++++-<br>
-&gt; &gt;=C2=A0 2 files changed, 6 insertions(+), 1 deletion(-)<br>
-&gt; &gt;<br>
-&gt; &gt; diff --git a/block/crypto.c b/block/crypto.c<br>
-&gt; &gt; index 921933a5e5..f82b13d32b 100644<br>
-&gt; &gt; --- a/block/crypto.c<br>
-&gt; &gt; +++ b/block/crypto.c<br>
-&gt; &gt; @@ -39,6 +39,7 @@ typedef struct BlockCrypto BlockCrypto;<br>
-&gt; &gt;=C2=A0 struct BlockCrypto {<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 QCryptoBlock *block;<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 bool updating_keys;<br>
-&gt; &gt; +=C2=A0 =C2=A0 BdrvChild *header;=C2=A0 /* Reference to the detac=
-hed LUKS header */<br>
-&gt; &gt;=C2=A0 };<br>
-&gt; &gt;=C2=A0 <br>
-&gt; &gt;=C2=A0 <br>
-&gt; &gt; diff --git a/qapi/block-core.json b/qapi/block-core.json<br>
-&gt; &gt; index ca390c5700..10be08d08f 100644<br>
-&gt; &gt; --- a/qapi/block-core.json<br>
-&gt; &gt; +++ b/qapi/block-core.json<br>
-&gt; &gt; @@ -3352,11 +3352,15 @@<br>
-&gt; &gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0decryption key (since 2.6). Mandatory =
-except when doing a<br>
-&gt; &gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0metadata-only probe of the image.<br>
-&gt; &gt;=C2=A0 #<br>
-&gt; &gt; +# @header: optional reference to the location of a blockdev<br>
-&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0storing a detached LUKS header. (since 9.0)=
-<br>
-&gt; <br>
-&gt; This will come out like<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0&quot;header&quot;: &quot;BlockdevRef&quot; (option=
-al)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 optional reference to the location of a blo=
-ckdev storing a detached<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 LUKS header. (since 9.0)<br>
-&gt; <br>
-&gt; in the manual.=C2=A0 Scratch &quot;optional&quot;.<br>
-&gt; <br>
-&gt; Moreover, a BlockdevRef is a &quot;Reference to a block device&quot; (=
-quote from<br>
-&gt; its doc comment), not a &quot;reference to the location of a blockdev&=
-quot;.<br>
-&gt; Better simplify to something like &quot;block device holding a detache=
-d LUKS<br>
-&gt; header&quot;.<br>
-&gt; <br>
-&gt; But that&#39;s just phrasing.=C2=A0 The contents could perhaps use imp=
-rovement,<br>
-&gt; too.=C2=A0 Let&#39;s start with this question: what&#39;s a detachable=
- LUKS header,<br>
-&gt; and why would anybody want to use it?<br>
-<br>
-Normally a LUKS volume has a layout:<br>
-<br>
-=C2=A0 disk:=C2=A0 | header | key material | disk payload data |<br>
-<br>
-With a detached LUKS header, you need 2 disks so getting<br>
-<br>
-=C2=A0 disk1:=C2=A0 | header | key material |<br>
-=C2=A0 disk2:=C2=A0 | disk payload data |<br>
-<br>
-There are a variety of reasons to do this<br>
-<br>
-=C2=A0* Secrecy - the disk2 cannot be identified as containing LUKS volume<=
-br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0since there&#39;s no header=
-<br>
-<br>
-=C2=A0* Control - if access to the disk1 is restricted, then even if someon=
-e<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0has access to disk2 they ca=
-n&#39;t unlock it. Might be useful<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if you have disks on NFS bu=
-t want to restrict which host<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0can launch a VM instance fr=
-om it, by dynamically providing<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0access to the header to a d=
-esignated host<br>
-<br>
-=C2=A0* Flexibility - your application data volume may be a given size and<=
-br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0it is inconve=
-nient to resize it to add encryption.<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0You can store=
- the LUKS header separately and use<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0the existing =
-storage volume for payload<br>
-<br>
-=C2=A0* Recovery - corruption of a bit in the header may make the entire<br=
->
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 payload inaccessible. It m=
-ight be convenient to take<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 backups of the header. If =
-your primary disk header<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 becomes corrupt, you can u=
-nlock the data still by<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pointing to the backup det=
-ached header.<br></blockquote><div><div class=3D"gmail_default"><font face=
-=3D"comic sans ms, sans-serif"></font></div><div class=3D"gmail_default"><f=
-ont face=3D"comic sans ms, sans-serif">Thank you, Daniel, for the incisive =
-summary. IMHO, the reason listed</font></div><div class=3D"gmail_default"><=
-font face=3D"comic sans ms, sans-serif">above=C2=A0</font><span style=3D"fo=
-nt-family:&quot;comic sans ms&quot;,sans-serif">could be added to the docum=
-ent directly :)=C2=A0</span><span style=3D"font-family:&quot;comic sans ms&=
-quot;,sans-serif">.</span></div></div><blockquote class=3D"gmail_quote" sty=
-le=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:soli=
-d;border-left-color:rgb(204,204,204);padding-left:1ex">
-<br>
-With regards,<br>
-Daniel<br>
--- <br>
-|: <a href=3D"https://berrange.com" rel=3D"noreferrer" target=3D"_blank">ht=
-tps://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D"http=
-s://www.flickr.com/photos/dberrange" rel=3D"noreferrer" target=3D"_blank">h=
-ttps://www.flickr.com/photos/dberrange</a> :|<br>
-|: <a href=3D"https://libvirt.org" rel=3D"noreferrer" target=3D"_blank">htt=
-ps://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com" rel=3D"n=
-oreferrer" target=3D"_blank">https://fstop138.berrange.com</a> :|<br>
-|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer" target=3D"_bla=
-nk">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D=
-"https://www.instagram.com/dberrange" rel=3D"noreferrer" target=3D"_blank">=
-https://www.instagram.com/dberrange</a> :|<br>
-<br>
-</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
-iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
-</div></div></div>
-
---00000000000063efc4060eadae33--
 
