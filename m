@@ -2,107 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 477BA82AFB3
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 14:32:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0E782AFC1
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 14:34:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNv9O-0004EM-J6; Thu, 11 Jan 2024 08:31:14 -0500
+	id 1rNvC7-0005vw-JJ; Thu, 11 Jan 2024 08:34:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNv9H-00049a-57
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:31:07 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
+ id 1rNvC4-0005vV-VQ; Thu, 11 Jan 2024 08:34:01 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNv9D-00020q-Gm
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:31:06 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a2c29418ad5so128167366b.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 05:31:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
+ id 1rNvC2-0003iu-Lu; Thu, 11 Jan 2024 08:34:00 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1d4a2526a7eso30943395ad.3; 
+ Thu, 11 Jan 2024 05:33:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704979861; x=1705584661; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ApFCZe++K6mdEosZ5Zb18U8fI6FgBHYQCdfmSUN0e0A=;
- b=a7IOfG9UuaOG3lnH0t/JGdH03kHjfmGVkpcPLFisNPjzLL+YZ1SxGjK1fDE67Qy/XR
- l9+G64raVAOd5ldHjCC+CURUqEjz/pEiQKER31AcQ02O/9dUCP7sQUF6A7+4ht/qJtpL
- K4P7pwwFtLDdC67TsV4toqNOEv5Xq1ShAfkLL2HpuHSxrvG6OfKT8wJFAcpY2gbYoBWb
- etaFl9RykOeG5omueCBbTPSdO+FuXKP7W73Ypvrf2DRhsOOHXW4BEICRHgHczFbMwj5N
- Ppa3U9c9P7rRP3iR/r2smzfphP5f6DAbXOoE8qZXQEaWJdlKES0UOWM0juXmNxTaeRvF
- FuEw==
+ d=gmail.com; s=20230601; t=1704980036; x=1705584836; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q0WSZ5xNE3MipExZS0UbFPPpcyxTj+Sy/E4k9/1ukW8=;
+ b=Q1keqeJAzIKSU/2muHhrBOxB9zgbO08XzFG8eF9aXlPFiaoLT8uCKhYbZXjwqy/juw
+ xmwA9p2g5yE9wvpA05dBSNb8ByltsYNO117dIk1KmtMTEDGcykG41fRTlPKB4+PXfywH
+ 3sWcchiENjA+LfPbn2BB6dMBIm1b9Sci50z/uFKTfpV0mZM6IPPJa6uR9EXOmHjG+5FH
+ gXxPyy2oB3GVJfzBan7ZRBlAGLPJMzTEh7biVUoUoufDStkp0AIfCl2gfL24Z51O7B+S
+ 3zaL1a+U4eITmuebmdUuQxokOaYUC8YEBXsQpnV6ncDqAbWo6gE6kkanAsgJxfh2ODVE
+ RcCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704979861; x=1705584661;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ApFCZe++K6mdEosZ5Zb18U8fI6FgBHYQCdfmSUN0e0A=;
- b=T8Ot6DhD3TQCU0FuKfTj3bLSmWcQVuG73QcPwrBn/p/K6Gt23FnUkj8VFXEG+3j8QC
- UwUqGsEeu2sElzjSrXtL50ck+qU9IHrY6aXx/OnneJD+21ougvDM/MrgtwcJsmpZ7/w5
- rTUKOUKYIczWyYmaBJn7h3NNbEtn3ven7RI6u/xNRnd47GtfoRGAOLL6ttNedC+5pnrg
- FmfWt3skNAH2LdTDpgIiKcc/5P9ilcbepL5/hZu7FBp9ta2EioP2uUPxBWiukWoBEwxc
- UebObvzcd6L4jthkwH4z2OnWRjT3AE3nxGQaKDNJ1xumqAQAoAh4I3cO7+0gTx/pnktZ
- QEmw==
-X-Gm-Message-State: AOJu0YxqQVNNqBCaE/1VOI5ThtZca6f6fiRvaJNrJmpOKzg9ZHKCHrB2
- F/bJSlW9v23IQiuQdRZCv3vVZDK5zLjctJSCdDSd//kP1minWA==
-X-Google-Smtp-Source: AGHT+IGYBUsAOKsLaP5iAzdHj6bGoHc74gul6QIY/5Uc9BDjtowkPwGrU9YvGcitLnOVH9KFRdeKqw==
-X-Received: by 2002:a17:907:8022:b0:a2c:7293:d724 with SMTP id
- ft34-20020a170907802200b00a2c7293d724mr275807ejc.44.1704979860745; 
- Thu, 11 Jan 2024 05:31:00 -0800 (PST)
-Received: from [192.168.69.100] (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
- [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
- l10-20020a1709061c4a00b00a2b9bbd6d73sm572899ejg.214.2024.01.11.05.30.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 05:31:00 -0800 (PST)
-Message-ID: <f8cd806a-4e87-4e19-b898-acd675f9daa6@linaro.org>
-Date: Thu, 11 Jan 2024 14:30:55 +0100
+ d=1e100.net; s=20230601; t=1704980036; x=1705584836;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Q0WSZ5xNE3MipExZS0UbFPPpcyxTj+Sy/E4k9/1ukW8=;
+ b=iS1+Crb6EYm5+e8YNMrLDNemOgkjqvIh6iHav9bort15ANswW35IcmV/n6bcp8uvhz
+ qRcOi4KfZ2QxG/itXSM/AeRVTaB+DSKJ5ftPMW6k2jvikRas1RBqvP1J7C0QtaOTPRdb
+ vLtI2/i3mUQdTN/Jo1jUQ8n/KmvuRrprK+tT+7qao7XYqhzeLgaF2YhrAwArHYT1VrGD
+ 4yaRawgXqa3jhUWBgoNT+QYtjv6UPjrZKiCPlSeHcuHf9dmNrMW6bSpOs0m9gsRbCcFN
+ dRVyjhFmnSz70b93tPEh1XlaWvqiBAgM5vSPyd3QbEO9PBbXS7OAKAoZHzacry5l4hcp
+ J5KA==
+X-Gm-Message-State: AOJu0Yz9P9XUhlKPIRQ80DoerbGbMJpg5JZB6kvstpjLUzh99jTwG9Hm
+ 6w/yah6uuF96HtfxehGY7YhnYeY5T0L0pnGR
+X-Google-Smtp-Source: AGHT+IFg8yxBk/mT9LGiWSVSrFPEKD16LO2BzCjySzhcmyAtHrfYIb+GQLCVLQqINkMY4V9YU6Vctg==
+X-Received: by 2002:a17:902:b197:b0:1d4:2d8d:3544 with SMTP id
+ s23-20020a170902b19700b001d42d8d3544mr928501plr.69.1704980036462; 
+ Thu, 11 Jan 2024 05:33:56 -0800 (PST)
+Received: from localhost.localdomain ([49.37.225.171])
+ by smtp.gmail.com with ESMTPSA id
+ u11-20020a170902e80b00b001cffd42711csm1145895plg.199.2024.01.11.05.33.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Jan 2024 05:33:56 -0800 (PST)
+From: Rayhan Faizel <rayhan.faizel@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Rayhan Faizel <rayhan.faizel@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org (open list:i.MX31 (kzm))
+Subject: [PATCH] hw/char/imx_serial: Implement receive FIFO and ageing timer
+ for imx serial.
+Date: Thu, 11 Jan 2024 19:03:50 +0530
+Message-Id: <20240111133350.66558-1-rayhan.faizel@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/43] tests/avocado: use snapshot=on in kvm_xen_guest
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
- Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Brian Cain <bcain@quicinc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Cleber Rosa <crosa@redhat.com>,
- kvm@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, John Snow <jsnow@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>
-References: <20240103173349.398526-1-alex.bennee@linaro.org>
- <20240103173349.398526-3-alex.bennee@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240103173349.398526-3-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=rayhan.faizel@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,15 +91,268 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/1/24 18:33, Alex Bennée wrote:
-> This ensures the rootfs is never permanently changed as we don't need
-> persistence between tests anyway.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   tests/avocado/kvm_xen_guest.py | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+This patch implements a 32 half word FIFO as per imx serial device
+specifications. If a non empty FIFO is below the trigger level, an ageing
+timer will tick for a duration of 8 characters. On expiry, AGTIM will be set
+triggering an interrupt. AGTIM timer resets when there is activity in
+the receive FIFO.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Otherwise, RRDY is set when trigger level is
+exceeded. The receive trigger level is 8 in newer kernel versions and 1 in
+older ones.
+
+Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
+---
+ hw/char/imx_serial.c         | 116 ++++++++++++++++++++++++++++++-----
+ include/hw/char/imx_serial.h |  22 ++++++-
+ 2 files changed, 121 insertions(+), 17 deletions(-)
+
+diff --git a/hw/char/imx_serial.c b/hw/char/imx_serial.c
+index 1df862eb7f..6ec67be282 100644
+--- a/hw/char/imx_serial.c
++++ b/hw/char/imx_serial.c
+@@ -44,7 +44,11 @@ static const VMStateDescription vmstate_imx_serial = {
+     .version_id = 2,
+     .minimum_version_id = 2,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_INT32(readbuff, IMXSerialState),
++        VMSTATE_INT32_ARRAY(rx_fifo, IMXSerialState,
++                            FIFO_SIZE),
++        VMSTATE_UINT8(rx_start, IMXSerialState),
++        VMSTATE_UINT8(rx_end, IMXSerialState),
++        VMSTATE_UINT8(rx_used, IMXSerialState),
+         VMSTATE_UINT32(usr1, IMXSerialState),
+         VMSTATE_UINT32(usr2, IMXSerialState),
+         VMSTATE_UINT32(ucr1, IMXSerialState),
+@@ -64,13 +68,16 @@ static void imx_update(IMXSerialState *s)
+     uint32_t usr1;
+     uint32_t usr2;
+     uint32_t mask;
+-
+     /*
+      * Lucky for us TRDY and RRDY has the same offset in both USR1 and
+      * UCR1, so we can get away with something as simple as the
+      * following:
+      */
+     usr1 = s->usr1 & s->ucr1 & (USR1_TRDY | USR1_RRDY);
++    /*
++     * Interrupt if AGTIM is set (ageing timer interrupt in RxFIFO)
++     */
++    usr1 |= (s->ucr2 & UCR2_ATEN) ? (s->usr1 & USR1_AGTIM) : 0;
+     /*
+      * Bits that we want in USR2 are not as conveniently laid out,
+      * unfortunately.
+@@ -85,11 +92,73 @@ static void imx_update(IMXSerialState *s)
+     usr2 = s->usr2 & mask;
+ 
+     qemu_set_irq(s->irq, usr1 || usr2);
++
+ }
+ 
+-static void imx_serial_reset(IMXSerialState *s)
++static void imx_serial_rx_fifo_push(IMXSerialState *s, uint32_t value)
++{
++    uint8_t new_rx_end = (s->rx_end + 1) % FIFO_SIZE;
++    s->rx_used++;
++
++    if (s->rx_used > FIFO_SIZE) {
++        /*
++         * Handle 33rd character in filled RxFIFO
++         */
++        s->rx_start = (s->rx_start + 1) % FIFO_SIZE;
++        s->rx_used--;
++    }
++    s->rx_fifo[s->rx_end] = value;
++    s->rx_end = new_rx_end;
++}
++
++static int32_t imx_serial_rx_fifo_pop(IMXSerialState *s)
++{
++    int32_t front;
++    if (s->rx_used == 0) {
++        /*
++         * FIFO is already empty
++         */
++        return URXD_ERR;
++    }
++    front = s->rx_fifo[s->rx_start];
++
++    s->rx_start = (s->rx_start + 1) % FIFO_SIZE;
++    s->rx_used--;
++
++    return front;
++}
++
++static void imx_serial_rx_fifo_ageing_timer_int(void *opaque)
++{
++    IMXSerialState* s = (IMXSerialState *) opaque;
++    s->usr1 |= USR1_AGTIM;
++
++    imx_update(s);
++}
++
++static void imx_serial_rx_fifo_ageing_timer_restart(void *opaque)
+ {
++    /*
++     * Ageing timer starts ticking when
++     * RX FIFO is non empty and below trigger level.
++     * Timer is reset if new character is received or
++     * a FIFO read occurs.
++     * Timer triggers an interrupt when duration of
++     * 8 characters has passed ( assuming 115200 baudrate ).
++     */
++    IMXSerialState* s = (IMXSerialState *) opaque;
++    uint8_t rxtl = s->ufcr & TL_MASK;
++
++    if (s->rx_used > 0 && s->rx_used < rxtl) {
++        timer_mod_ns(&s->ageing_timer,
++            qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + AGE_DURATION_NS);
++    } else {
++        timer_del(&s->ageing_timer);
++    }
++}
+ 
++static void imx_serial_reset(IMXSerialState *s)
++{
+     s->usr1 = USR1_TRDY | USR1_RXDS;
+     /*
+      * Fake attachment of a terminal: assert RTS.
+@@ -102,13 +171,20 @@ static void imx_serial_reset(IMXSerialState *s)
+     s->ucr3 = 0x700;
+     s->ubmr = 0;
+     s->ubrc = 4;
+-    s->readbuff = URXD_ERR;
++
++
++    memset(s->rx_fifo, 0, sizeof(s->rx_fifo));
++    s->rx_used = 0;
++    s->rx_start = 0;
++    s->rx_end = 0;
++
++    timer_init_ns(&s->ageing_timer, QEMU_CLOCK_VIRTUAL,
++        imx_serial_rx_fifo_ageing_timer_int, s);
+ }
+ 
+ static void imx_serial_reset_at_boot(DeviceState *dev)
+ {
+     IMXSerialState *s = IMX_SERIAL(dev);
+-
+     imx_serial_reset(s);
+ 
+     /*
+@@ -126,19 +202,24 @@ static uint64_t imx_serial_read(void *opaque, hwaddr offset,
+ {
+     IMXSerialState *s = (IMXSerialState *)opaque;
+     uint32_t c;
+-
++    uint8_t rxtl = s->ufcr & TL_MASK;
+     DPRINTF("read(offset=0x%" HWADDR_PRIx ")\n", offset);
+-
+     switch (offset >> 2) {
+     case 0x0: /* URXD */
+-        c = s->readbuff;
++        c = imx_serial_rx_fifo_pop(s);
+         if (!(s->uts1 & UTS1_RXEMPTY)) {
+             /* Character is valid */
+             c |= URXD_CHARRDY;
+-            s->usr1 &= ~USR1_RRDY;
+-            s->usr2 &= ~USR2_RDR;
+-            s->uts1 |= UTS1_RXEMPTY;
++            /* Clear RRDY if below threshold */
++            if (s->rx_used < rxtl) {
++                s->usr1 &= ~USR1_RRDY;
++            }
++            if (s->rx_used == 0) {
++                s->usr2 &= ~USR2_RDR;
++                s->uts1 |= UTS1_RXEMPTY;
++            }
+             imx_update(s);
++            imx_serial_rx_fifo_ageing_timer_restart(s);
+             qemu_chr_fe_accept_input(&s->chr);
+         }
+         return c;
+@@ -300,19 +381,24 @@ static void imx_serial_write(void *opaque, hwaddr offset,
+ static int imx_can_receive(void *opaque)
+ {
+     IMXSerialState *s = (IMXSerialState *)opaque;
+-    return !(s->usr1 & USR1_RRDY);
++    return s->ucr1 & UCR1_RRDYEN &&
++        s->ucr2 & UCR2_RXEN && s->rx_used < FIFO_SIZE;
+ }
+ 
+ static void imx_put_data(void *opaque, uint32_t value)
+ {
+     IMXSerialState *s = (IMXSerialState *)opaque;
+-
++    uint8_t rxtl = s->ufcr & TL_MASK;
+     DPRINTF("received char\n");
++    imx_serial_rx_fifo_push(s, value);
++    if (s->rx_used >= rxtl) {
++        s->usr1 |= USR1_RRDY;
++    }
++
++    imx_serial_rx_fifo_ageing_timer_restart(s);
+ 
+-    s->usr1 |= USR1_RRDY;
+     s->usr2 |= USR2_RDR;
+     s->uts1 &= ~UTS1_RXEMPTY;
+-    s->readbuff = value;
+     if (value & URXD_BRK) {
+         s->usr2 |= USR2_BRCD;
+     }
+diff --git a/include/hw/char/imx_serial.h b/include/hw/char/imx_serial.h
+index b823f94519..86a0a102a5 100644
+--- a/include/hw/char/imx_serial.h
++++ b/include/hw/char/imx_serial.h
+@@ -25,6 +25,8 @@
+ #define TYPE_IMX_SERIAL "imx.serial"
+ OBJECT_DECLARE_SIMPLE_TYPE(IMXSerialState, IMX_SERIAL)
+ 
++#define FIFO_SIZE       32
++
+ #define URXD_CHARRDY    (1<<15)   /* character read is valid */
+ #define URXD_ERR        (1<<14)   /* Character has error */
+ #define URXD_FRMERR     (1<<12)   /* Character has frame error */
+@@ -65,6 +67,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IMXSerialState, IMX_SERIAL)
+ #define UCR1_TXMPTYEN   (1<<6)    /* Tx Empty Interrupt Enable */
+ #define UCR1_UARTEN     (1<<0)    /* UART Enable */
+ 
++#define UCR2_ATEN       BIT(3)    /* Ageing Timer Enable */
+ #define UCR2_TXEN       (1<<2)    /* Transmitter enable */
+ #define UCR2_RXEN       (1<<1)    /* Receiver enable */
+ #define UCR2_SRST       (1<<0)    /* Reset complete */
+@@ -78,13 +81,28 @@ OBJECT_DECLARE_SIMPLE_TYPE(IMXSerialState, IMX_SERIAL)
+ #define UTS1_TXFULL     (1<<4)
+ #define UTS1_RXFULL     (1<<3)
+ 
++#define TL_MASK         0x3f
++
++ /* Bit time in nanoseconds assuming maximum baud rate of 115200 */
++#define BIT_TIME_NS     8681
++
++/* Assume 8 bits per character */
++#define NUM_BITS        8
++
++/* Ageing timer triggers after 8 characters */
++#define AGE_DURATION_NS (8 * NUM_BITS * BIT_TIME_NS)
++
+ struct IMXSerialState {
+     /*< private >*/
+     SysBusDevice parent_obj;
+-
+     /*< public >*/
+     MemoryRegion iomem;
+-    int32_t readbuff;
++    QEMUTimer ageing_timer;
++
++    int32_t rx_fifo[FIFO_SIZE];
++    uint8_t rx_start;
++    uint8_t rx_end;
++    uint8_t rx_used;
+ 
+     uint32_t usr1;
+     uint32_t usr2;
+-- 
+2.34.1
 
 
