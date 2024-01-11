@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAEF482A8DC
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C35BE82A8E3
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:18:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNqEs-0005nD-Rc; Thu, 11 Jan 2024 03:16:34 -0500
+	id 1rNqGB-00070h-N3; Thu, 11 Jan 2024 03:17:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rNqEp-0005mY-Kr
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:16:31 -0500
+ id 1rNqGA-00070Y-9o
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:17:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rNqEo-00086t-7Z
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:16:31 -0500
+ id 1rNqG8-0000TD-46
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:17:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704960989;
+ s=mimecast20190719; t=1704961070;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mipgOnygIQW/EkgHpbMaNVp7oietiUxG3Mr+/AMIOHw=;
- b=WwztgVZe6kP7ofI/BpZQNLxmJ46+hQvtt+G86Nq/8vdUQETjoHuHnsUdOJ/ujjLWSwr72S
- 7BC1PqsiOnhQT1DUB6Kpx6pY81LdDJ50+jbdB6w8t+S0ZmT/PRNosSeLOGkLE4Tt9hd5mK
- XYSBUB/bHM3FUtjw90vn3p/yes8GrQ4=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JH0ggIt+9t2t3k2wxQ5TXL39mrGGiv50mFwT4t11ZrA=;
+ b=e1vPC7E8pK256OW+PeZW/bLiepAzvUYfwYlMy5b7xs9nqcoQGetzrsgDJncfcBEF6v3Vj5
+ QikRakhfH6kfufmKOU+6EvN9bRtJVOTIOvFMDQtSuthxvhcwOY4xEWbfjhjY8siVTUB0Mv
+ nHnwB9qzkicUHgYAqAvUcbeAxAEbpA8=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-411-PMIDV_4eNCKLMoVnCFehRw-1; Thu, 11 Jan 2024 03:16:27 -0500
-X-MC-Unique: PMIDV_4eNCKLMoVnCFehRw-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-6da57e2d2b9so3302663b3a.2
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 00:16:27 -0800 (PST)
+ us-mta-299-cijW_WYHOcq0HgY6UAg0Ow-1; Thu, 11 Jan 2024 03:17:49 -0500
+X-MC-Unique: cijW_WYHOcq0HgY6UAg0Ow-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-6d9bd2deabfso2960103b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 00:17:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704960987; x=1705565787;
+ d=1e100.net; s=20230601; t=1704961068; x=1705565868;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mipgOnygIQW/EkgHpbMaNVp7oietiUxG3Mr+/AMIOHw=;
- b=vPmWOZZU8zGJQqMWQLTRvZVWkaJqcYwsDQPtD4PGUPQGv6lphdSTMnigizASgkWfNQ
- muXNWIHYU+I2pgVSplaoP3IOaxfhh4lcgLWqhOn/u9IPstYbXib+umhfRLCStueFLZ4O
- qgd6D21F8QWz/v2OYweGVs9nVWDQ8fzMQHy44GyiZYMZCecuNxN83Nw/6XTuQLR5/NYK
- hrJjcbguREV05HQNL4y4NawnjQPFFBzHSRcQiQHidwqqgqt/y+F5mW9Bor9uBlpcWcr+
- o2Htua8TOm3+Cy/PQyHEcUOyZPNO0csQqeu3f59/zISESBjkwbnZbzVwN/0um02olfde
- inBg==
-X-Gm-Message-State: AOJu0YzBE/nbMsR7KV2eciOqRu15ccKFbc3Q7S+qDYBY0a1FKap/aaT2
- kdiXjPVpHL908Ox1cM39Qhy2Oyphvanhnm1iavwf60HgWXifCAcuoXOkMnjHO/GGB8ZM05Y8gX4
- QQKDEij/+K+x44DnMSdrkzkTvE/J1vmV9CO14wc8=
-X-Received: by 2002:aa7:8b90:0:b0:6da:1cee:ea32 with SMTP id
- r16-20020aa78b90000000b006da1ceeea32mr694080pfd.57.1704960986770; 
- Thu, 11 Jan 2024 00:16:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFTihcnsGV9mzI9WJpHo0tSj0cQsV9mC9tPTPZXTYgco4JSj0g1sPwZ0jfPRTAektnF1a94s2+RwNWdSnuff3U=
-X-Received: by 2002:aa7:8b90:0:b0:6da:1cee:ea32 with SMTP id
- r16-20020aa78b90000000b006da1ceeea32mr694075pfd.57.1704960986479; Thu, 11 Jan
- 2024 00:16:26 -0800 (PST)
+ bh=JH0ggIt+9t2t3k2wxQ5TXL39mrGGiv50mFwT4t11ZrA=;
+ b=advoaGiKolVOGmjfZ1sJSnKuyC95v3csRctFpcrVOcxzdswHCtk6Zi6/gsSBNBkBj6
+ BZzUS5za3XGNLLgpochGpdpIG88JuS2FstKRKlP6LWIAycUXy+/xHgsVDIyvHjbpW+dP
+ kWjw/HJKteSsFGJhYiI6wzqOiTMAgvG5yTD5vXaIccAjEPWUGg41wQNUmPtqjiwfWTLE
+ uQx8jpTziiq4DJXUoJB0R6MQdnnNVz/RWu2hevKeGCSjo3iatvUkoBIy0m524CCTnft2
+ 7odIeliY08sukKmDR1g59e0fKlPHRb+Lmy4J9cP9j/+iAq/pYeIs9MMuIsMKfpyO/ZZP
+ s6Tg==
+X-Gm-Message-State: AOJu0YzceSmMnbQHDDsoUP5BZOCetNRP++tl64yLoiu+BfL3Xb7CpenN
+ mco2rBwkU4Cu+YacG7GgIxMjR9MzocG9d+BGJIvDPN3DHaQmTFt35DZNyXGBLVqV6N31o8lSy2m
+ wIQAGGo1rPi50eACwfVvjq9UulE4c08kuAZB7w68=
+X-Received: by 2002:a05:6a00:928f:b0:6d0:8b0d:b8c6 with SMTP id
+ jw15-20020a056a00928f00b006d08b0db8c6mr1138685pfb.34.1704961068327; 
+ Thu, 11 Jan 2024 00:17:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFrGZIs14BBmAovAHimitjQGnFX/dLVkmJPFFJKfnrHnHvVQALNKdnafHvCGCX/tKIcjpA04zRJgadqBnAUoj4=
+X-Received: by 2002:a05:6a00:928f:b0:6d0:8b0d:b8c6 with SMTP id
+ jw15-20020a056a00928f00b006d08b0db8c6mr1138651pfb.34.1704961067260; Thu, 11
+ Jan 2024 00:17:47 -0800 (PST)
 MIME-Version: 1.0
 References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-16-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-16-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-17-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-17-git-send-email-si-wei.liu@oracle.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 11 Jan 2024 16:16:15 +0800
-Message-ID: <CACGkMEs8sFvdkwM90Ydy-1TTOSXoY4v6ppdKkO-J5_K7ouLn8A@mail.gmail.com>
-Subject: Re: [PATCH 15/40] vdpa: add svq_switching and flush_map to header
+Date: Thu, 11 Jan 2024 16:17:36 +0800
+Message-ID: <CACGkMEvfzviAsjV8W_4RYN0AdMhcRGq0Z4qbxMt2nUoDya2khQ@mail.gmail.com>
+Subject: Re: [PATCH 16/40] vdpa: indicate SVQ switching via flag
 To: Si-Wei Liu <si-wei.liu@oracle.com>
 Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
  leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
@@ -100,36 +100,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Fri, Dec 8, 2023 at 2:50=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
 rote:
 >
-> Will be used in next patches.
->
-> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-> ---
->  include/hw/virtio/vhost-vdpa.h | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdp=
-a.h
-> index 7b8d3bf..0fe0f60 100644
-> --- a/include/hw/virtio/vhost-vdpa.h
-> +++ b/include/hw/virtio/vhost-vdpa.h
-> @@ -72,6 +72,12 @@ typedef struct vhost_vdpa_shared {
->      bool shadow_data;
->
->      unsigned refcnt;
-> +
-> +    /* SVQ switching is in progress? 1: turn on SVQ, -1: turn off SVQ */
-> +    int svq_switching;
+> svq_switching indicates the case where SVQ mode change
+> is on going. Positive (1) means switching from the
+> normal passthrough mode to SVQ mode, and negative (-1)
+> meaning switch SVQ back to the passthrough; zero (0)
+> indicates that there's no SVQ mode switch taking place.
 
-Nit: just curious about any reason why 0, 1 or true false is not used?
+Ok, so the previous patch forgot to describe the zero(0).
+
+And it looks to me we'd better use enum instead of the magic number here.
 
 Thanks
 
-> +
-> +    /* Flush mappings on reset due to shared address space */
-> +    bool flush_map;
->  } VhostVDPAShared;
 >
->  typedef struct vhost_vdpa {
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+> ---
+>  net/vhost-vdpa.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 7b8f047..04718b2 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -320,6 +320,7 @@ static void vhost_vdpa_net_log_global_enable(VhostVDP=
+AState *s, bool enable)
+>      data_queue_pairs =3D n->multiqueue ? n->max_queue_pairs : 1;
+>      cvq =3D virtio_vdev_has_feature(vdev, VIRTIO_NET_F_CTRL_VQ) ?
+>                                    n->max_ncs - n->max_queue_pairs : 0;
+> +    v->shared->svq_switching =3D enable ? 1 : -1;
+>      /*
+>       * TODO: vhost_net_stop does suspend, get_base and reset. We can be =
+smarter
+>       * in the future and resume the device if read-only operations betwe=
+en
+> @@ -332,6 +333,7 @@ static void vhost_vdpa_net_log_global_enable(VhostVDP=
+AState *s, bool enable)
+>      if (unlikely(r < 0)) {
+>          error_report("unable to start vhost net: %s(%d)", g_strerror(-r)=
+, -r);
+>      }
+> +    v->shared->svq_switching =3D 0;
+>  }
+>
+>  static void vdpa_net_migration_state_notifier(Notifier *notifier, void *=
+data)
 > --
 > 1.8.3.1
 >
