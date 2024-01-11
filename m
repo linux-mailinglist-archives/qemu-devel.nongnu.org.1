@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A4B382AE44
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:04:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C4182AE4A
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:05:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNtmd-0002yC-9s; Thu, 11 Jan 2024 07:03:41 -0500
+	id 1rNtn2-0003RI-1I; Thu, 11 Jan 2024 07:04:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtm3-0002pw-Qx
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:05 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtm8-0002tu-JH
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:10 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtlx-0007Lz-Fe
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:00 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3368ac0f74dso3652047f8f.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 04:02:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtm2-0007NZ-9c
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:05 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3368ac0f74dso3652125f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 04:03:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704974572; x=1705579372; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704974579; x=1705579379; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pZ+Rk66u59cimifcoy3fRichLBCz2Ca8YjXNADwDWao=;
- b=UJSH7zgeVXaBghWOpUxn5/HMliyj6vWy/9Fax/5Z4VyVUWVoCjAWRtDwL7fOCGAWtr
- TPyc4E+AzEr401hL3gQ6RcTongOxYITnUNPdB8sN3yOYHEcoGjD7E0muUuvLYzlVrzkv
- 2zpeGV+6AvKPcboJB495bUAZ5EJQndkusTyBjrgZ4U8fNoW4AJ0dJWaiGEW6M2J45985
- U0HvhUFoYoTMelydsSkw1D7Y7BiHx4TRtfj2Zc9y0bOPWNKpVjfET6HCzRQhf5WuZfCx
- 6tgle1XAUITWKMOnsEFS3CB7Prscv35WKwDLfsmEMY4FfSbAIDSpbtLRN3Ozy/T4RUbc
- 6ymQ==
+ bh=c3GnBwtsWZjmvkynj7oUUXZs0ui1nia9dU8ifkh5Y4E=;
+ b=LS7arI4DLSdd0rFkc+l/YR82iFnHs6UWVxJBPyDY7qNtU+pwJb4vVb0zl8xx0L4dUd
+ K+78UT62cBthZ3mhKAsByh2kpxJn1mJoR8fzZ6tNP+pyj/DuQdynM4MGVg+QxIQ187fc
+ XUtVtyt6euO/AH0Bi/NJ/YQlR+8WZ9mIiD/OKtFemuNJl1zrphvuPgdfaA18H+xwquPs
+ fxLy9MaJKA0gXZixaKBcghQT5POJhnwY/qLjglHBbFVQL0n7yrdstwKKSTMP3aNNTXL0
+ EKFBHBrIMW17COSdS7wQI1TiUzi04Judo1LlmehMJLstap9vgJSt2RsjmsfQhq4+nMIM
+ Ochg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704974572; x=1705579372;
+ d=1e100.net; s=20230601; t=1704974579; x=1705579379;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pZ+Rk66u59cimifcoy3fRichLBCz2Ca8YjXNADwDWao=;
- b=M56twew4CS1f6uWATwsSKIKN/nAXWDMNz4RrQE13evpJlLyBunFQJhN3u01a0vPFUw
- 591Bfpw12ZjILUN23KWZoZWUUZiYCvhGJVmXeNv9b1b+y6eEVtN8cDi3ucwc/5OZlZob
- KuIdBtFhHktO+NnxeNqCyH/Rshp+uizzRWEBOzpX6jKvNqZ1Lg30/UzX9VvsrawCx7Ur
- qI/K8tjE2vhP7KYyyTp6nQul7rdLrj6GV3YEXPUZUw5SeQSjwGhasoxU+dsqOL/PCt+i
- dfgOE3hDvyZDYhuSHCmE77Wdva7E1dlwmX5k8KbhPOcmn58Yt81v21qTDOttrj4dlBsm
- p9Lg==
-X-Gm-Message-State: AOJu0YzFp2zoJ3pWOMCu40JYVzo9vWrMfl3ZYwGENSqUThk84a5zINcO
- MAQ/STB2Y6nU01k2lR2gqUDkSkvj1cxr5p3NCujpe6yljyTGSQ==
-X-Google-Smtp-Source: AGHT+IFjPXsyB08Y1eRcYbIW/MFzO5v7OwfM1FFtqTC9MGr4pukRGYPSAXI82nsmvO/Xd1bIObIM8g==
-X-Received: by 2002:a05:6000:507:b0:336:8ddc:a470 with SMTP id
- a7-20020a056000050700b003368ddca470mr686899wrf.43.1704974572389; 
- Thu, 11 Jan 2024 04:02:52 -0800 (PST)
+ bh=c3GnBwtsWZjmvkynj7oUUXZs0ui1nia9dU8ifkh5Y4E=;
+ b=Sxs+6PGTUt623lSBoqQSX9+Zr/NaXA7SJfh+HIhCIhvLZweWP3SnalkTvPPDJusNED
+ KNfuiXvNnehTv9ZLGY/u5ZA5+gnXtbcUt0BOmuIOd63fIFMN0WZPIFKLI+jaPsQ/z8IB
+ e8Hm5qWgToyoO/1o8hLM5ziFiHHk0OCYzimLv0kGCrqpe0e2Yr/KbYSxrXxef8fjPUzD
+ Ep8YJPYWRpApcJNZTMd7KvF82S5CI8L3NmI97VQKTE1/KCjDzIDMJsRnWz9I7ivKQO+/
+ DJjGfm7bBWyUMnrYr/IGNJMoDavmD/jFTHbgRZUueqDYfxe9UlqiQXGnsw/0uuGwXoSm
+ 8bPg==
+X-Gm-Message-State: AOJu0Yz2tTyV+jGnRiU903Z/wEOAPZn+2CKlyfcOBekSj80FtAiztvtW
+ 8W8GjEPmQQGsgKDOEuXD5Z0bjGxlyLAwGpyWHEsRvFtemtNsnw==
+X-Google-Smtp-Source: AGHT+IHSzMOPp0ALbe0wKJFLAJaKBIcNQ1+plizv5OIIgz5u7iXTLYDdRorDgArTrQmWFgad4eBWDQ==
+X-Received: by 2002:adf:ed12:0:b0:337:628f:55a1 with SMTP id
+ a18-20020adfed12000000b00337628f55a1mr537162wro.78.1704974578904; 
+ Thu, 11 Jan 2024 04:02:58 -0800 (PST)
 Received: from m1x-phil.lan (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
  [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
- d15-20020adf9c8f000000b00336c43b366fsm1082920wre.12.2024.01.11.04.02.50
+ z11-20020a5d44cb000000b00336898daceasm1048278wrr.96.2024.01.11.04.02.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Jan 2024 04:02:51 -0800 (PST)
+ Thu, 11 Jan 2024 04:02:58 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -69,17 +69,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/5] target/i386: Rename tcg_cpu_FOO() to include 'x86'
-Date: Thu, 11 Jan 2024 13:02:20 +0100
-Message-ID: <20240111120221.35072-5-philmd@linaro.org>
+Subject: [PATCH 5/5] target/riscv: Rename tcg_cpu_FOO() to include 'riscv'
+Date: Thu, 11 Jan 2024 13:02:21 +0100
+Message-ID: <20240111120221.35072-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240111120221.35072-1-philmd@linaro.org>
 References: <20240111120221.35072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,99 +102,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The tcg_cpu_FOO() names are x86 specific, so rename
-them as x86_tcg_cpu_FOO() (as other names in this file)
+The tcg_cpu_FOO() names are riscv specific, so rename
+them as riscv_tcg_cpu_FOO() (as other names in this file)
 to ease navigating the code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/tcg/tcg-cpu.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ target/riscv/tcg/tcg-cpu.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
-index 6e881e9e27..e56489caea 100644
---- a/target/i386/tcg/tcg-cpu.c
-+++ b/target/i386/tcg/tcg-cpu.c
-@@ -114,18 +114,18 @@ static const struct TCGCPUOps x86_tcg_ops = {
- #endif /* !CONFIG_USER_ONLY */
- };
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 14133ff665..994ca1cdf9 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -929,7 +929,7 @@ static bool riscv_cpu_is_vendor(Object *cpu_obj)
+  *   -> cpu_exec_realizefn()
+  *      -> tcg_cpu_realize() (via accel_cpu_common_realize())
+  */
+-static bool tcg_cpu_realize(CPUState *cs, Error **errp)
++static bool riscv_tcg_cpu_realize(CPUState *cs, Error **errp)
+ {
+     RISCVCPU *cpu = RISCV_CPU(cs);
+     Error *local_err = NULL;
+@@ -1372,7 +1372,7 @@ static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
+     return object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_MAX) != NULL;
+ }
+ 
+-static void tcg_cpu_instance_init(CPUState *cs)
++static void riscv_tcg_cpu_instance_init(CPUState *cs)
+ {
+     RISCVCPU *cpu = RISCV_CPU(cs);
+     Object *obj = OBJECT(cpu);
+@@ -1386,7 +1386,7 @@ static void tcg_cpu_instance_init(CPUState *cs)
+     }
+ }
  
 -static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
-+static void x86_tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
++static void riscv_tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
  {
-     /* for x86, all cpus use the same set of operations */
-     cc->tcg_ops = &x86_tcg_ops;
+     /*
+      * All cpus use the same set of operations.
+@@ -1394,30 +1394,30 @@ static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
+     cc->tcg_ops = &riscv_tcg_ops;
  }
  
 -static void tcg_cpu_class_init(CPUClass *cc)
-+static void x86_tcg_cpu_class_init(CPUClass *cc)
++static void riscv_tcg_cpu_class_init(CPUClass *cc)
  {
 -    cc->init_accel_cpu = tcg_cpu_init_ops;
-+    cc->init_accel_cpu = x86_tcg_cpu_init_ops;
- }
- 
--static void tcg_cpu_xsave_init(void)
-+static void x86_tcg_cpu_xsave_init(void)
- {
- #define XO(bit, field) \
-     x86_ext_save_areas[bit].offset = offsetof(X86XSaveArea, field);
-@@ -147,25 +147,25 @@ static void tcg_cpu_xsave_init(void)
-  * TCG-specific defaults that override cpudef models when using TCG.
-  * Only for builtin_x86_defs models initialized with x86_register_cpudef_types.
-  */
--static PropValue tcg_default_props[] = {
-+static PropValue x86_tcg_default_props[] = {
-     { "vme", "off" },
-     { NULL, NULL },
- };
- 
--static void tcg_cpu_instance_init(CPUState *cs)
-+static void x86_tcg_cpu_instance_init(CPUState *cs)
- {
-     X86CPU *cpu = X86_CPU(cs);
-     X86CPUClass *xcc = X86_CPU_GET_CLASS(cpu);
- 
-     if (xcc->model) {
-         /* Special cases not set in the X86CPUDefinition structs: */
--        x86_cpu_apply_props(cpu, tcg_default_props);
-+        x86_cpu_apply_props(cpu, x86_tcg_default_props);
-     }
- 
--    tcg_cpu_xsave_init();
-+    x86_tcg_cpu_xsave_init();
++    cc->init_accel_cpu = riscv_tcg_cpu_init_ops;
  }
  
 -static void tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
-+static void x86_tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
++static void riscv_tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
  {
      AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
  
-@@ -173,18 +173,18 @@ static void tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
-     acc->cpu_target_realize = tcg_cpu_realizefn;
- #endif /* CONFIG_USER_ONLY */
- 
 -    acc->cpu_class_init = tcg_cpu_class_init;
 -    acc->cpu_instance_init = tcg_cpu_instance_init;
-+    acc->cpu_class_init = x86_tcg_cpu_class_init;
-+    acc->cpu_instance_init = x86_tcg_cpu_instance_init;
+-    acc->cpu_target_realize = tcg_cpu_realize;
++    acc->cpu_class_init = riscv_tcg_cpu_class_init;
++    acc->cpu_instance_init = riscv_tcg_cpu_instance_init;
++    acc->cpu_target_realize = riscv_tcg_cpu_realize;
  }
+ 
 -static const TypeInfo tcg_cpu_accel_type_info = {
-+static const TypeInfo x86_tcg_cpu_accel_type_info = {
++static const TypeInfo riscv_tcg_cpu_accel_type_info = {
      .name = ACCEL_CPU_NAME("tcg"),
  
      .parent = TYPE_ACCEL_CPU,
 -    .class_init = tcg_cpu_accel_class_init,
-+    .class_init = x86_tcg_cpu_accel_class_init,
++    .class_init = riscv_tcg_cpu_accel_class_init,
      .abstract = true,
  };
+ 
 -static void tcg_cpu_accel_register_types(void)
-+static void x86_tcg_cpu_accel_register_types(void)
++static void riscv_tcg_cpu_accel_register_types(void)
  {
 -    type_register_static(&tcg_cpu_accel_type_info);
-+    type_register_static(&x86_tcg_cpu_accel_type_info);
++    type_register_static(&riscv_tcg_cpu_accel_type_info);
  }
 -type_init(tcg_cpu_accel_register_types);
-+type_init(x86_tcg_cpu_accel_register_types);
++type_init(riscv_tcg_cpu_accel_register_types);
 -- 
 2.41.0
 
