@@ -2,79 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0185482AE56
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:06:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E54B182AEAB
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:26:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNtpC-0000R6-Vv; Thu, 11 Jan 2024 07:06:19 -0500
+	id 1rNu7E-00086p-5d; Thu, 11 Jan 2024 07:24:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rNtp2-0000Kj-Mv
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:06:09 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rNtov-0000gZ-2I
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:06:04 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Cxbbui2Z9l60EEAA--.4395S3;
- Thu, 11 Jan 2024 20:05:54 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Ax692d2Z9l5A8QAA--.42440S3; 
- Thu, 11 Jan 2024 20:05:51 +0800 (CST)
-Subject: Re: [PATCH 1/2] gitlab: Introduce Loongarch64 runner
-To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, qemu-devel@nongnu.org
-Cc: Zhiguo Wu <wuzhiguo@loongson.cn>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Bibo Mao <maobibo@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Beraldo Leal <bleal@redhat.com>, WANG Xuerui <git@xen0n.name>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Xianglai Li <lixianglai@loongson.cn>, Tianrui Zhao <zhaotianrui@loongson.cn>
-References: <20240102172239.69452-1-philmd@linaro.org>
- <20240102172239.69452-2-philmd@linaro.org>
- <3d30c1b6-1de1-418e-80f6-3d693375142a@redhat.com>
- <6134cdb3-1884-5d7f-fc2d-4a6a2fa2126a@loongson.cn>
- <9fcd71ae-8a65-4f60-ab98-5a3e5807070d@redhat.com>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <93861775-6cc5-fb52-8926-9c85fe42b932@loongson.cn>
-Date: Thu, 11 Jan 2024 20:05:49 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rNu79-00085E-M7
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:24:51 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rNu72-0002Ym-86
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:24:48 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3374eb61cbcso4742606f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 04:24:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704975880; x=1705580680; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=A1RkaaWOJSu3tRt3fMogcSn7L2SZU/h+k8yCADoRVlk=;
+ b=Nzm10UBhRRiOy1ikGXyY0mur8k+jy0DCPeqqTOd3zdGD85tA9GhNugh0nxRJ0TNIJT
+ ZWO1IR41hpTbn4LJTZDap8r4J0UgzBj8B5AFxR/BBlFyUwhNYWLq7gzOrh6xsGqcf/5U
+ 8xwRPf3xD4BGp/SZuBqdzNYkvZmQEKcXYT+d7kEn/lIfvFsIxQkodS//V3DWMBhz8Hj8
+ N4gyRGgY42qmO/2EIO8l55lHbJlBGEzmE/lFXX2ozQr6NAEahy3pSVIDzndyaE3i9rq4
+ 24B7DH1aNHK8MD5PmtJhcDKKV2eQ/tPgT9XbiFlLOPZ3pdcHRjY3AbEk/D+mMSqDUSvY
+ hxCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704975880; x=1705580680;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=A1RkaaWOJSu3tRt3fMogcSn7L2SZU/h+k8yCADoRVlk=;
+ b=rD637TAPwGqZMLZNP1HmJzIxNKAgX9tUTxC4FjAZPr5RcpY8WMd6piwFe0wtfR3Ovi
+ 0jxEqXNbnh+81IrCT4ohMcEXEshmkD9hzttXqikRZGQy75kfXVzYMB/+tKHr9jmQoByT
+ AOfVSA6OA8B2f0B5z1Bm7s2dC9HbilnAUtRf/euLl2uZqWpyHDpyqCcClX67Y+bGw20S
+ 3wfdt1Mwg3bali2nLUYGudNBt8vVlmOyt4n0bbZ43rvGCS5Iip5udQZg8TH4os1kJxoY
+ z4xGX4+Oz380fZEXxwbewGoUOJm0GmEeHuEaK+6F6NbFrzydS47QTnnlSwD8QJpm7dhN
+ e0SQ==
+X-Gm-Message-State: AOJu0Yy3sGTQWLcnTfeBT9Z3Tz/c7IIZM6oIv8G1RsbgxyZOpASLBcCr
+ 3CFlei21wq47JRO31nkPVMMI1a43I9Vcgg==
+X-Google-Smtp-Source: AGHT+IEqJmabPEzUTHGU1RLVecC2ffwvZaKXWABKkEz3S4ahDb+PVctSP5LR9cXaQbb+fPNjjPq6rg==
+X-Received: by 2002:a5d:4b4e:0:b0:336:6db3:1d7a with SMTP id
+ w14-20020a5d4b4e000000b003366db31d7amr644820wrs.103.1704975879726; 
+ Thu, 11 Jan 2024 04:24:39 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ p19-20020adf9d93000000b003378ea9a7desm303358wre.33.2024.01.11.04.24.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Jan 2024 04:24:39 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id F36AA5F7AD;
+ Thu, 11 Jan 2024 12:24:38 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: =?utf-8?B?RnLDqWTDqXJpYyBQw6l0cm90?=
+ <frederic.petrot@univ-grenoble-alpes.fr>
+Cc: qemu-devel@nongnu.org,  qemu-s390x@nongnu.org,  qemu-ppc@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,  Song Gao
+ <gaosong@loongson.cn>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ David Hildenbrand <david@redhat.com>,  Aurelien Jarno
+ <aurelien@aurel32.net>,  Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Yanan Wang <wangyanan55@huawei.com>,  Bin Meng <bin.meng@windriver.com>,
+ Laurent Vivier <lvivier@redhat.com>,  Michael Rolnik <mrolnik@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,  David Woodhouse
+ <dwmw2@infradead.org>,  Laurent Vivier <laurent@vivier.eu>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Brian Cain <bcain@quicinc.com>,  Daniel Henrique
+ Barboza <danielhb413@gmail.com>,  Beraldo Leal <bleal@redhat.com>,  Paul
+ Durrant <paul@xen.org>,  Mahmoud Mandour <ma.mandourr@gmail.com>,  Thomas
+ Huth <thuth@redhat.com>,  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Cleber Rosa <crosa@redhat.com>,  kvm@vger.kernel.org,  Peter Maydell
+ <peter.maydell@linaro.org>,  Wainer dos Santos Moschetta
+ <wainersm@redhat.com>,  qemu-arm@nongnu.org,  Weiwei Li
+ <liwei1518@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  John
+ Snow <jsnow@redhat.com>,  Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>,  Nicholas Piggin <npiggin@gmail.com>,  Palmer
+ Dabbelt <palmer@dabbelt.com>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>,  Eduardo Habkost <eduardo@habkost.net>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,  qemu-riscv@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>,  Akihiko Odaki
+ <akihiko.odaki@daynix.com>
+Subject: Re: [PATCH v2 40/43] contrib/plugins: extend execlog to track
+ register changes
+In-Reply-To: <9f9b8359-d33b-4c94-8eb1-fc500d8fc2b4@univ-grenoble-alpes.fr>
+ (=?utf-8?Q?=22Fr=C3=A9d=C3=A9ric_P=C3=A9trot=22's?= message of "Fri, 5 Jan
+ 2024 11:40:07 +0100")
+References: <20240103173349.398526-1-alex.bennee@linaro.org>
+ <20240103173349.398526-41-alex.bennee@linaro.org>
+ <9f9b8359-d33b-4c94-8eb1-fc500d8fc2b4@univ-grenoble-alpes.fr>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Thu, 11 Jan 2024 12:24:38 +0000
+Message-ID: <87o7dsf46x.fsf@draig.linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <9fcd71ae-8a65-4f60-ab98-5a3e5807070d@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8Ax692d2Z9l5A8QAA--.42440S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxKr1fXw1xXFy5ZrWrCrW7Awc_yoW3Zw4fpF
- ySkF12gryUJr1xJw18tw1UJFyYyr47tw1UJFy8t3W0yr4Uur12qr1jqr1qgF1DXr48Gr1Y
- vw15Gws8uw1rGrcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
- 67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GF
- ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jO
- F4_UUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,203 +127,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2024/1/11 下午4:26, Thomas Huth 写道:
-> On 11/01/2024 08.25, gaosong wrote:
->> Hi,
->>
->> 在 2024/1/11 下午3:08, Thomas Huth 写道:
->>> On 02/01/2024 18.22, Philippe Mathieu-Daudé wrote:
->>>> Full build config to run CI tests on a Loongarch64 host.
->>>>
->>>> Forks might enable this by setting LOONGARCH64_RUNNER_AVAILABLE
->>>> in their CI namespace settings, see:
->>>> https://www.qemu.org/docs/master/devel/ci.html#maintainer-controlled-job-variables 
->>>>
->>>>
->>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>> ---
->>>>   docs/devel/ci-jobs.rst.inc                    |  6 ++++++
->>>>   .gitlab-ci.d/custom-runners.yml               |  1 +
->>>>   .../openeuler-22.03-loongarch64.yml           | 21 
->>>> +++++++++++++++++++
->>>>   3 files changed, 28 insertions(+)
->>>>   create mode 100644 
->>>> .gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml
->>>>
->>> ...
->>>> diff --git a/.gitlab-ci.d/custom-runners.yml 
->>>> b/.gitlab-ci.d/custom-runners.yml
->>>> index 8e5b9500f4..152ace4492 100644
->>>> --- a/.gitlab-ci.d/custom-runners.yml
->>>> +++ b/.gitlab-ci.d/custom-runners.yml
->>>> @@ -32,3 +32,4 @@ include:
->>>>     - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch64.yml'
->>>>     - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch32.yml'
->>>>     - local: '/.gitlab-ci.d/custom-runners/centos-stream-8-x86_64.yml'
->>>> +  - local: 
->>>> '/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml'
->>>> diff --git 
->>>> a/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml 
->>>> b/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml
->>>> new file mode 100644
->>>> index 0000000000..86d18f820e
->>>> --- /dev/null
->>>> +++ b/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml
->>>> @@ -0,0 +1,21 @@
->>>> +openeuler-22.03-loongarch64-all:
->>>> + extends: .custom_runner_template :-)
->>>> + needs: []
->>>> + stage: build
->>>> + tags:
->>>> + - oe2203
->>>> + - loongarch64
->>>> + rules:
->>>> + - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && 
->>>> $CI_COMMIT_BRANCH =~ /^staging/'
->>>> +   when: manual
->>>> +   allow_failure: true
->>>> + - if: "$LOONGARCH64_RUNNER_AVAILABLE"
->>>> +   when: manual
->>>> +   allow_failure: true
->>>> + script:
->>>> + - mkdir build
->>>> + - cd build
->>>> + - ../configure
->>>> +   || { cat config.log meson-logs/meson-log.txt; exit 1; }
->>>> + - make --output-sync -j`nproc --ignore=40`
->>>> + - make --output-sync -j`nproc --ignore=40` check
->>>
->>> Does this system really have more than 40 CPU threads? Or is this a 
->>> copy-n-past from one of the other scripts? In the latter case, I'd 
->>> suggest to adjust the --ignore=40 to a more reasonable value.
->>>
->>>  Thomas
->> No,  only 32.   I think it should be --ignore=32 or 16.
+Fr=C3=A9d=C3=A9ric P=C3=A9trot <frederic.petrot@univ-grenoble-alpes.fr> wri=
+tes:
+
+> Hello Alex,
 >
-> --ignore=32 then also does not make much sense, that would still be 
-> the same as simply omitting the -j parameter. I guess --ignore=16 
-> should be fine.
+>   just reporting below what might be a riscv only oddity (also applies to
+>   patch 41 but easier to report here).
 >
->> I create a same runner on this machine, and I  find  some check error.
->> but I am not sure how to fix it. :-)
->>
->> See:
->>
->> https://gitlab.com/gaosong/qemu/-/jobs/5906269934
+> Le 03/01/2024 =C3=A0 18:33, Alex Benn=C3=A9e a =C3=A9crit=C2=A0:
+>> With the new plugin register API we can now track changes to register
+>> values. Currently the implementation is fairly dumb which will slow
+>> down if a large number of register values are being tracked. This
+>> could be improved by only instrumenting instructions which mention
+>> registers we are interested in tracking.
+>> Example usage:
+>>    ./qemu-aarch64 -D plugin.log -d plugin \
+>>       -cpu max,sve256=3Don \
+>>       -plugin contrib/plugins/libexeclog.so,reg=3Dsp,reg=3Dz\* \
+>>       ./tests/tcg/aarch64-linux-user/sha512-sve
+>> will display in the execlog any changes to the stack pointer (sp)
+>> and
+>> the SVE Z registers.
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> Based-On: <20231025093128.33116-19-akihiko.odaki@daynix.com>
 >
-> Seems to be related to RAM backing... for example, the erst-test is 
-> failing, which is doing something like:
+>> +static registers_init(int vcpu_index)
+>> +{
+>> +    GPtrArray *registers =3D g_ptr_array_new();
+>> +    g_autoptr(GArray) reg_list =3D qemu_plugin_get_registers(vcpu_index=
+);
+>> +
+>> +    if (reg_list && reg_list->len) {
+>> +        /*
+>> +         * Go through each register in the complete list and
+>> +         * see if we want to track it.
+>> +         */
+>> +        for (int r =3D 0; r < reg_list->len; r++) {
+>> +            qemu_plugin_reg_descriptor *rd =3D &g_array_index(
+>> +                reg_list, qemu_plugin_reg_descriptor, r);
 >
->     setup_vm_cmd(&state,
->         "-object memory-backend-file,"
->             "mem-path=acpi-erst.XXXXXX,"
->             "size=64K,"
->             "share=on,"
->             "id=nvram "
->         "-device acpi-erst,"
->             "memdev=nvram");
->
-> So it seems like -object memory-backend-file" is not correctly working 
-> in your gitlab runner? Is there some setup missing?
->
->  Thomas
->
->
-This is my runner config.
+> riscv csrs are not continously numbered and the dynamically generated gdb=
+ xml
+> seems to follow that scheme.
+> So the calls to Glib string functions output quite a few assertion
+> warnings because for the non existing csrs rd->name is NULL (and there
+> are a bit less than 4000 such cases for rv64g).
+> Checking for NULL and then continue is a simple way to solve the issue, b=
+ut
+> I am not sure this is the proper way to proceed, as it might stand in the
+> generation of the riscv xml description for gdb.
 
-     concurrent = 32
-     check_interval = 0
-     shutdown_timeout = 0
+I think in this case it might be easier to not expose it to the plugin
+user at all. Is the lack of names an omission? How does gdb see them?
 
-     [session_server]
-       session_timeout = 1800
-
-     ...
-
-     [[runners]]
-       name = "loongarch64"
-       request_concurrency = 24
-       url = "https://gitlab.com"
-       id = 31426483
-       token = "glrt-bGugocYrR2yqcu3ma7ka"
-       token_obtained_at = 2024-01-10T08:31:29Z
-       token_expires_at = 0001-01-01T00:00:00Z
-       executor = "shell"
-       builds_dir = "/data/gitlab-runner/builds"
-       cache_dir = "/data/gitlab-runner/cache"
-       [runners.cache]
-         MaxUploadedArchiveSize = 0
-
-I create a project runner 'loongarch64' for my branch ci-master.
-Do we need some special configuration?
-
-and  I just './configure  --target-list="x86_64-softmmu" 
---enable-debug'  on LoongArch host.   make , make check.
-I got the same error.
-
-[7/361] 🌗 qemu:qtest+qtest-x86_64 / 
-qtest-x86_64/qos-test                                    2928s   60 
-subtests passed
-
-^CWARNING: Received SIGTERM, exiting
-   7/361 qemu:qtest+qtest-x86_64 / 
-qtest-x86_64/qos-test                        INTERRUPT 4671.32s   killed 
-by signal 11 SIGSEGV
- >>> PYTHON=/home/gs/gitlab/qemu/build/pyvenv/bin/python3 
-G_TEST_DBUS_DAEMON=/home/gs/gitlab/qemu/tests/dbus-vmstate-daemon.sh 
-MALLOC_PERTURB_=198 QTEST_QEMU_IMG=./qemu-img 
-QTEST_QEMU_BINARY=./qemu-system-x86_64 
-QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon 
-/home/gs/gitlab/qemu/build/tests/qtest/qos-test --tap -k
-――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀ 
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-stderr:
-qemu-system-x86_64: unable to map backing store for guest RAM: Invalid 
-argument
-Broken pipe
-../tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU 
-process but encountered exit status 1 (expected 0)
-
-TAP parsing error: Too few tests run (expected 119, got 60)
-
-
-I also use V=2  to check.
-
-
-  PYTHON=/home/gs/gitlab/qemu/build/pyvenv/bin/python3 
-G_TEST_DBUS_DAEMON=/home/gs/gitlab/qemu/tests/dbus-vmstate-daemon.sh 
-QTEST_QEMU_IMG=./qemu-img V=2 QTEST_QEMU_BINARY=./qemu-system-x86_64 
-QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon 
-MALLOC_PERTURB_=220 
-/home/gs/gitlab/qemu/build/tests/qtest/bios-tables-test --tap -k
-
-I got the error:
-
-...
-Looking for expected file 'tests/data/acpi/pc/FACS'
-Using expected file 'tests/data/acpi/pc/FACS'
-Looking for expected file 'tests/data/acpi/pc/DSDT.acpihmat'
-Using expected file 'tests/data/acpi/pc/DSDT.acpihmat'
-ok 15 /x86_64/acpi/piix4/acpihmat
-# starting QEMU: exec ./qemu-system-x86_64 -qtest 
-unix:/tmp/qtest-923048.sock -qtest-log /dev/null -chardev 
-socket,path=/tmp/qtest-923048.qmp,id=char0 -mon 
-chardev=char0,mode=control -display none -audio none -machine pc -accel 
-kvm -accel tcg -net none  -object 
-memory-backend-file,id=erstnvram,mem-path=/tmp/qemu-test-erst.N41SG2,size=0x10000,share=on 
--device acpi-erst,memdev=erstnvram -drive 
-id=hd0,if=none,file=tests/acpi-test-disk-KIDwOM,format=raw -device 
-ide-hd,drive=hd0  -accel qtest
-qemu-system-x86_64: unable to map backing store for guest RAM: Invalid 
-argument
-Broken pipe
-../tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU 
-process but encountered exit status 1 (expected 0)
-Aborted (core dumped)
-
-is there need some  special  package for '-object memory-backend-file' ?
-
-Thanks.
-Song Gao
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
