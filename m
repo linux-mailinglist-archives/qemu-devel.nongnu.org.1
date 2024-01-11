@@ -2,42 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278DD82AD7B
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:32:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE7182AD64
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:30:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNtFR-0007nK-2a; Thu, 11 Jan 2024 06:29:22 -0500
+	id 1rNtFY-0007od-FK; Thu, 11 Jan 2024 06:29:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rNtFI-0007lR-9c
+ id 1rNtFI-0007lS-9S
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:29:13 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rNtFB-0006qt-Pm
+ (envelope-from <gaosong@loongson.cn>) id 1rNtFB-0006qy-Q9
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:29:09 -0500
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxzvD+0J9ljT8EAA--.12634S3;
+ by gateway (Coremail) with SMTP id _____8DxzvD+0J9ljj8EAA--.12635S3;
  Thu, 11 Jan 2024 19:29:02 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bx34f80J9l6+4PAA--.41647S3; 
+ AQAAf8Bx34f80J9l6+4PAA--.41647S4; 
  Thu, 11 Jan 2024 19:29:02 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: 
 Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org,
- Tianrui Zhao <zhaotianrui@loongson.cn>
-Subject: [PULL 01/14] linux-headers: Synchronize linux headers from linux
- v6.7.0-rc8
-Date: Thu, 11 Jan 2024 19:15:56 +0800
-Message-Id: <20240111111609.899183-2-gaosong@loongson.cn>
+ Tianrui Zhao <zhaotianrui@loongson.cn>,
+ xianglai li <lixianglai@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL  02/14] target/loongarch: Define some kvm_arch interfaces
+Date: Thu, 11 Jan 2024 19:15:57 +0800
+Message-Id: <20240111111609.899183-3-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240111111609.899183-1-gaosong@loongson.cn>
 References: <20240111111609.899183-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bx34f80J9l6+4PAA--.41647S3
+X-CM-TRANSID: AQAAf8Bx34f80J9l6+4PAA--.41647S4
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -66,54 +67,160 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tianrui Zhao <zhaotianrui@loongson.cn>
 
-Use the scripts/update-linux-headers.sh to synchronize linux
-headers from linux v6.7.0-rc8. We mainly want to add the
-loongarch linux headers and then add the loongarch kvm support
-based on it.
+Define some functions in target/loongarch/kvm/kvm.c,
+such as kvm_arch_put_registers, kvm_arch_get_registers
+and kvm_arch_handle_exit, etc. which are needed by
+kvm/kvm-all.c. Now the most functions has no content
+and they will be implemented in the next patches.
 
 Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
-Acked-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240105075804.1228596-2-zhaotianrui@loongson.cn>
+Signed-off-by: xianglai li <lixianglai@loongson.cn>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20240105075804.1228596-3-zhaotianrui@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- include/standard-headers/linux/fuse.h | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ target/loongarch/kvm/kvm.c | 131 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 131 insertions(+)
+ create mode 100644 target/loongarch/kvm/kvm.c
 
-diff --git a/include/standard-headers/linux/fuse.h b/include/standard-headers/linux/fuse.h
-index 6b9793842c..fc0dcd10ae 100644
---- a/include/standard-headers/linux/fuse.h
-+++ b/include/standard-headers/linux/fuse.h
-@@ -209,7 +209,7 @@
-  *  - add FUSE_HAS_EXPIRE_ONLY
-  *
-  *  7.39
-- *  - add FUSE_DIRECT_IO_RELAX
-+ *  - add FUSE_DIRECT_IO_ALLOW_MMAP
-  *  - add FUSE_STATX and related structures
-  */
- 
-@@ -405,8 +405,7 @@ struct fuse_file_lock {
-  * FUSE_CREATE_SUPP_GROUP: add supplementary group info to create, mkdir,
-  *			symlink and mknod (single group that matches parent)
-  * FUSE_HAS_EXPIRE_ONLY: kernel supports expiry-only entry invalidation
-- * FUSE_DIRECT_IO_RELAX: relax restrictions in FOPEN_DIRECT_IO mode, for now
-- *                       allow shared mmap
-+ * FUSE_DIRECT_IO_ALLOW_MMAP: allow shared mmap in FOPEN_DIRECT_IO mode.
-  */
- #define FUSE_ASYNC_READ		(1 << 0)
- #define FUSE_POSIX_LOCKS	(1 << 1)
-@@ -445,7 +444,10 @@ struct fuse_file_lock {
- #define FUSE_HAS_INODE_DAX	(1ULL << 33)
- #define FUSE_CREATE_SUPP_GROUP	(1ULL << 34)
- #define FUSE_HAS_EXPIRE_ONLY	(1ULL << 35)
--#define FUSE_DIRECT_IO_RELAX	(1ULL << 36)
-+#define FUSE_DIRECT_IO_ALLOW_MMAP (1ULL << 36)
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+new file mode 100644
+index 0000000000..0d67322fd9
+--- /dev/null
++++ b/target/loongarch/kvm/kvm.c
+@@ -0,0 +1,131 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * QEMU LoongArch KVM
++ *
++ * Copyright (c) 2023 Loongson Technology Corporation Limited
++ */
 +
-+/* Obsolete alias for FUSE_DIRECT_IO_ALLOW_MMAP */
-+#define FUSE_DIRECT_IO_RELAX	FUSE_DIRECT_IO_ALLOW_MMAP
- 
- /**
-  * CUSE INIT request/reply flags
++#include "qemu/osdep.h"
++#include <sys/ioctl.h>
++#include <linux/kvm.h>
++
++#include "qemu/timer.h"
++#include "qemu/error-report.h"
++#include "qemu/main-loop.h"
++#include "sysemu/sysemu.h"
++#include "sysemu/kvm.h"
++#include "sysemu/kvm_int.h"
++#include "hw/pci/pci.h"
++#include "exec/memattrs.h"
++#include "exec/address-spaces.h"
++#include "hw/boards.h"
++#include "hw/irq.h"
++#include "qemu/log.h"
++#include "hw/loader.h"
++#include "migration/migration.h"
++#include "sysemu/runstate.h"
++#include "cpu-csr.h"
++#include "kvm_loongarch.h"
++
++static bool cap_has_mp_state;
++const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
++    KVM_CAP_LAST_INFO
++};
++
++int kvm_arch_get_registers(CPUState *cs)
++{
++    return 0;
++}
++int kvm_arch_put_registers(CPUState *cs, int level)
++{
++    return 0;
++}
++
++int kvm_arch_init_vcpu(CPUState *cs)
++{
++    return 0;
++}
++
++int kvm_arch_destroy_vcpu(CPUState *cs)
++{
++    return 0;
++}
++
++unsigned long kvm_arch_vcpu_id(CPUState *cs)
++{
++    return cs->cpu_index;
++}
++
++int kvm_arch_release_virq_post(int virq)
++{
++    return 0;
++}
++
++int kvm_arch_msi_data_to_gsi(uint32_t data)
++{
++    abort();
++}
++
++int kvm_arch_fixup_msi_route(struct kvm_irq_routing_entry *route,
++                             uint64_t address, uint32_t data, PCIDevice *dev)
++{
++    return 0;
++}
++
++int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
++                                int vector, PCIDevice *dev)
++{
++    return 0;
++}
++
++void kvm_arch_init_irq_routing(KVMState *s)
++{
++}
++
++int kvm_arch_get_default_type(MachineState *ms)
++{
++    return 0;
++}
++
++int kvm_arch_init(MachineState *ms, KVMState *s)
++{
++    return 0;
++}
++
++int kvm_arch_irqchip_create(KVMState *s)
++{
++    return 0;
++}
++
++void kvm_arch_pre_run(CPUState *cs, struct kvm_run *run)
++{
++}
++
++MemTxAttrs kvm_arch_post_run(CPUState *cs, struct kvm_run *run)
++{
++    return MEMTXATTRS_UNSPECIFIED;
++}
++
++int kvm_arch_process_async_events(CPUState *cs)
++{
++    return cs->halted;
++}
++
++bool kvm_arch_stop_on_emulation_error(CPUState *cs)
++{
++    return true;
++}
++
++bool kvm_arch_cpu_check_are_resettable(void)
++{
++    return true;
++}
++
++int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
++{
++    return 0;
++}
++
++void kvm_arch_accel_class_init(ObjectClass *oc)
++{
++}
 -- 
 2.25.1
 
