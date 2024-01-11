@@ -2,73 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F9182B43E
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 18:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB02982B475
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 19:02:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNz1F-000886-Ly; Thu, 11 Jan 2024 12:39:05 -0500
+	id 1rNzMY-0005pP-Ja; Thu, 11 Jan 2024 13:01:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <slongfield@google.com>)
- id 1rNz1C-00087p-JY
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:39:02 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <slongfield@google.com>)
- id 1rNz1A-0004RJ-DD
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:39:02 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40e43e55b87so54895e9.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 09:38:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1704994737; x=1705599537; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=H0k9eKyINbYZZS+337oodqwdJCLvEaFxfTk6UtguO2I=;
- b=z6HUWqEoWC5+LaTVXkaDz/5lBexsUE2hfnFQQV9cqUtlrWjhfJh6kWBUPfkLLCYha7
- 3EXEr4+5/BeB+n+zbZJfDRvY3UIwxGt9AplWyYlg4Up0RhaCvxw7KLq5keTrKgSaynWX
- HBCxSEhr2MdmRKA5+7WTEn3cpB5QMekiVWHKkJlo5nr/6crF6WnJLkCawrlCWrqYRyix
- J3I7Y7QdWgINvNrjV27NIsKL+jI2xQ9XhdtK+Q50GGBiV47kBdAADYhrQByC8oeQEyRz
- X899MNMopNlvYdv8EOnwoxHpGQ2dWaec+Iy2gSt+U2fBMnUm8ASJqeg60Uw+5G7NqhZL
- 95lQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNzML-0005oN-Tl
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 13:00:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNzMD-0005dz-0I
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 13:00:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704996044;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=kh8stwKBgYn/rinhc5TuWZQrnBCBdvT1n8mHW2rR+6E=;
+ b=EQ1X9a1boX7wE69Kvqh/qBIf8N0aikR6UH/12PeQDW11gv//IxItIK5RX/0OgM/wKROw/P
+ q/HLNhEsgI6Wjd2fq2G6xUIo7rSnKBWQm2C4rOr0vDLG2OpBxGiPHyTohTHVepACjRlguq
+ LM5OBjSd0SQ0n7lTMDlGWPqkG2/JTXE=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-659-rrmpG_2ZOTubJLeIpTcqNw-1; Thu, 11 Jan 2024 13:00:42 -0500
+X-MC-Unique: rrmpG_2ZOTubJLeIpTcqNw-1
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-5c65e666609so4609590a12.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 10:00:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704994737; x=1705599537;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=H0k9eKyINbYZZS+337oodqwdJCLvEaFxfTk6UtguO2I=;
- b=siNaZWnATTwzQfcW9bcQKNQdqtLTPDl9XYQFt7zLV5qShGjTpxJTQ8eTOuvZy7a7/X
- U8kFCH7qaMi/tqdi1Oqsmgc7QnAfzVEe5i173WojJEK6Or6kTWomkLypOPrp+NawrhgW
- Vu533YTHFK8M8xQoPsUqtsaUUJPtwcz1nMRoAx7grMuvGTc0ALUSROkXORuBfwVidSQK
- hgVdUlCx6jcSr0i+HC6QqcsP9mTQFRmklhQXQcwH0kn7UcVjOI1+ZhOteSiplBzpNKSi
- oFVr1y3cotDhSrMKGBamhuo6NYkYcW29D6vR+Yu6mwDQ4NQWZV2v9OdMygppTSMYXsUL
- T7sw==
-X-Gm-Message-State: AOJu0Yz/xmw4MejKzpnbz/6MlbtOc1FpTLRdeGR4yn+VM/vK9Kkmq6wz
- NIRDjeQFbE7VFEqrNiXvdcMrF9SNZtKTJEwwH0V5PD7MI4ZNRbqNDHOciLnvivWQ
-X-Google-Smtp-Source: AGHT+IFEPLrQYvjpOtI3dXwE70sAgRCZERMWMWKQBRU8eoaMuC+idwOE83/04KKclMsZJ5LgHtEX/JfbR+c811/gQRM=
-X-Received: by 2002:a05:600c:1d26:b0:40e:6206:a492 with SMTP id
- l38-20020a05600c1d2600b0040e6206a492mr79723wms.7.1704994737346; Thu, 11 Jan
- 2024 09:38:57 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704996041; x=1705600841;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kh8stwKBgYn/rinhc5TuWZQrnBCBdvT1n8mHW2rR+6E=;
+ b=tZaTiLQjvDbdDjmleP11n0OBkwkkWvA45yn4x4NTGwHDJdUqBODxZ6jatSsDUrhJy+
+ PHTQmF3tDJd+OuBZ3kfXBrFwvSzrGTwQM2k8R6PCerAsoIbEmns4534SZN3PvjysYaw7
+ SAEo6HWufyldZm0Zv61jMa59JCTOMZ6Mty8ZBYS7RmJ5KN6EPyA8KjVRFcij5djHlnOO
+ yonl///gayX0574myoJAroc+5uSkmPwntYDwc1o06dahejFkC5iN1vRsmtMBW3R8jEQD
+ 77RFtp7bHYh1cdNvoyaJ7tCcJME5iEJ6zF8/EfOzY2uCWzVF6h42NBqdhMxdGWH2JHuT
+ 8HTg==
+X-Gm-Message-State: AOJu0YwbGcqbUoeR8eF2EWgMiAO6SPw4hxoMK2GSkTfl3819Bjt9Ax0H
+ TG5PU8PlfNL/tlMy0oYRmlsTAjfLML346qnvJzj5jCWAYnjKfLmu1cvPGO4TudtjvP28aK7WTBG
+ krDHA6AHwGyyKiLiykwou0Ws=
+X-Received: by 2002:a05:6a20:a107:b0:19a:3785:474c with SMTP id
+ q7-20020a056a20a10700b0019a3785474cmr269066pzk.47.1704996041548; 
+ Thu, 11 Jan 2024 10:00:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHOHi0gIcdPFAANnMQ3UbL/TlFWu3uXL0qEoH0YcSWbg4UzL8gnMHTf0iSR1M2wxh/+Bq+SPw==
+X-Received: by 2002:a05:6a20:a107:b0:19a:3785:474c with SMTP id
+ q7-20020a056a20a10700b0019a3785474cmr269038pzk.47.1704996041235; 
+ Thu, 11 Jan 2024 10:00:41 -0800 (PST)
+Received: from [192.168.0.9] (ip-109-43-176-232.web.vodafone.de.
+ [109.43.176.232]) by smtp.gmail.com with ESMTPSA id
+ du9-20020a056a002b4900b006da2b1e4fabsm1466871pfb.163.2024.01.11.10.00.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 11 Jan 2024 10:00:40 -0800 (PST)
+Message-ID: <d8c66952-8e65-4fd8-8701-7b599e261b4b@redhat.com>
+Date: Thu, 11 Jan 2024 19:00:24 +0100
 MIME-Version: 1.0
-From: Stephen Longfield <slongfield@google.com>
-Date: Thu, 11 Jan 2024 09:38:41 -0800
-Message-ID: <CAK_0=F+RznDdq27z3r3H1d4pj=QTD-9WZP8xH7jOP75QXJhHpw@mail.gmail.com>
-Subject: Possible race condition in aspeed ast2600 smp boot on TCG QEMU
-To: qemu-devel@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au
-Cc: Joe Komlodi <komlodi@google.com>, Patrick Venture <venture@google.com>
-Content-Type: multipart/alternative; boundary="000000000000aa2214060eaf0517"
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=slongfield@google.com; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] hw/s390x: Rename cpu_class_init() to include 'sclp'
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Weiwei Li <liwei1518@gmail.com>, Alistair Francis
+ <alistair.francis@wdc.com>, qemu-s390x@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>, David Hildenbrand <david@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-riscv@nongnu.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
+ qemu-trivial@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Laurent Vivier <laurent@vivier.eu>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Eric Farman
+ <farman@linux.ibm.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+References: <20240111120221.35072-1-philmd@linaro.org>
+ <20240111120221.35072-4-philmd@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240111120221.35072-4-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,165 +153,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000aa2214060eaf0517
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 11/01/2024 13.02, Philippe Mathieu-Daudé wrote:
+> cpu_class_init() is specific to s390x SCLP, so rename
+> it as sclp_cpu_class_init() (as other names in this file)
+> to ease navigating the code.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/s390x/sclpcpu.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/s390x/sclpcpu.c b/hw/s390x/sclpcpu.c
+> index f2b1a4b037..fa79891f5a 100644
+> --- a/hw/s390x/sclpcpu.c
+> +++ b/hw/s390x/sclpcpu.c
+> @@ -73,7 +73,7 @@ static int read_event_data(SCLPEvent *event, EventBufferHeader *evt_buf_hdr,
+>       return 1;
+>   }
+>   
+> -static void cpu_class_init(ObjectClass *oc, void *data)
+> +static void sclp_cpu_class_init(ObjectClass *oc, void *data)
+>   {
+>       SCLPEventClass *k = SCLP_EVENT_CLASS(oc);
+>       DeviceClass *dc = DEVICE_CLASS(oc);
+> @@ -94,7 +94,7 @@ static const TypeInfo sclp_cpu_info = {
+>       .name          = TYPE_SCLP_CPU_HOTPLUG,
+>       .parent        = TYPE_SCLP_EVENT,
+>       .instance_size = sizeof(SCLPEvent),
+> -    .class_init    = cpu_class_init,
+> +    .class_init    = sclp_cpu_class_init,
+>       .class_size    = sizeof(SCLPEventClass),
+>   };
+>   
 
-We=E2=80=99ve noticed inconsistent behavior when running a large number of =
-aspeed
-ast2600 executions, that seems to be tied to a race condition in the smp
-boot when executing on TCG-QEMU, and were wondering what a good mediation
-strategy might be.
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-The problem first shows up as part of SMP boot. On a run that=E2=80=99s lik=
-ely to
-later run into issues, we=E2=80=99ll see something like:
-
-```
-[    0.008350] smp: Bringing up secondary CPUs ...
-[    1.168584] CPU1: failed to come online
-[    1.187277] smp: Brought up 1 node, 1 CPU
-```
-
-Compared to the more likely to succeed:
-
-```
-[    0.080313] smp: Bringing up secondary CPUs ...
-[    0.093166] smp: Brought up 1 node, 2 CPUs
-[    0.093345] SMP: Total of 2 processors activated (4800.00 BogoMIPS).
-```
-
-It=E2=80=99s somewhat reliably reproducible by running the ast2600-evb with=
- an
-OpenBMC image, using =E2=80=98-icount auto=E2=80=99 to slow execution and m=
-ake the race
-condition more frequent (it happens without this, just easier to debug if
-we can reproduce):
-
-
-```
-./aarch64-softmmu/qemu-system-aarch64 -machine ast2600-evb -nographic
--drive file=3D~/bmc-bin/image-obmc-ast2600,if=3Dmtd,bus=3D0,unit=3D0,snapsh=
-ot=3Don
--nic user -icount auto
-```
-
-Our current hypothesis is that the problem comes up in the platform uboot.
-As part of the boot, the secondary core waits for the smp mailbox to get a
-magic number written by the primary core:
-
-https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/a=
-rm/mach-aspeed/ast2600/platform.S#L168
-
-However, this memory address is cleared on boot:
-
-https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/a=
-rm/mach-aspeed/ast2600/platform.S#L146
-
-The race condition occurs if the primary core runs far ahead of the
-secondary core: if the primary core gets to the point where it signals the
-secondary core=E2=80=99s mailbox before the secondary core gets past the po=
-int
-where it does the initial reset and starts waiting, the reset will clear
-the signal, and then the secondary core will never get past the point where
-it=E2=80=99s looping in `poll_smp_mbox_ready`.
-
-We=E2=80=99ve observed this race happening by dumping all SCU reads and wri=
-tes, and
-validated that this is the problem by using a modified `platform.S` that
-doesn=E2=80=99t clear the =3DSCU_SMP_READY mailbox on reset, but would rath=
-er not
-have to use a modified version of SMP boot just for QEMU-TCG execution.
-
-Is there a way to have QEMU insert a barrier synchronization at some point
-in the bootloader?  I think getting both cores past the =3DSCU_SMP_READY
-reset would get rid of this race, but I=E2=80=99m not aware of a way to do =
-that
-kind of thing in QEMU-TCG.
-
-Thanks for any insights!
-
---Stephen
-
----
-
-P.S. Additional note about the aspeed platform.S:
-
-Clearing the mailbox was added in this patch:
-
-https://github.com/AspeedTech-BMC/u-boot/commit/55825c55d1dabc00e37999a3849=
-5ed05c901bec2
-
-At the time, the write to what was then known as
-`=3DAST_SMP_MBOX_FIELD_READY` (now `=3DSCU_SMP_READY`) happened after
-`scu_unlock`.  But, when the boot flow was revised in
-
-https://github.com/AspeedTech-BMC/u-boot/commit/46a48bbe56c1e790c9bd1794364=
-db86ec609c48e
-the scu_unlock was moved to primary core boot, so, unless the primary core
-wins the race, it doesn=E2=80=99t seem like the mailbox ready clear actuall=
-y will
-have any effect, since it=E2=80=99ll be writing while the SCU is locked.
-
---000000000000aa2214060eaf0517
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">We=E2=80=99ve noticed inconsistent behavior when running a=
- large number of aspeed ast2600 executions, that seems to be tied to a race=
- condition in the smp boot when executing on TCG-QEMU, and were wondering w=
-hat a good mediation strategy might be.<br><br>The problem first shows up a=
-s part of SMP boot. On a run that=E2=80=99s likely to later run into issues=
-, we=E2=80=99ll see something like:<br><br>```<br>[ =C2=A0 =C2=A00.008350] =
-smp: Bringing up secondary CPUs ...<br>[ =C2=A0 =C2=A01.168584] CPU1: faile=
-d to come online<br>[ =C2=A0 =C2=A01.187277] smp: Brought up 1 node, 1 CPU<=
-br>```<br><br>Compared to the more likely to succeed:<br><br>```<br>[ =C2=
-=A0 =C2=A00.080313] smp: Bringing up secondary CPUs ...<br>[ =C2=A0 =C2=A00=
-.093166] smp: Brought up 1 node, 2 CPUs<br>[ =C2=A0 =C2=A00.093345] SMP: To=
-tal of 2 processors activated (4800.00 BogoMIPS).<br>```<br><br>It=E2=80=99=
-s somewhat reliably reproducible by running the ast2600-evb with an OpenBMC=
- image, using =E2=80=98-icount auto=E2=80=99 to slow execution and make the=
- race condition more frequent (it happens without this, just easier to debu=
-g if we can reproduce):<br><br><br>```<br>./aarch64-softmmu/qemu-system-aar=
-ch64 -machine ast2600-evb -nographic -drive file=3D~/bmc-bin/image-obmc-ast=
-2600,if=3Dmtd,bus=3D0,unit=3D0,snapshot=3Don -nic user -icount auto<br>```<=
-br><br>Our current hypothesis is that the problem comes up in the platform =
-uboot.=C2=A0 As part of the boot, the secondary core waits for the smp mail=
-box to get a magic number written by the primary core:<br><br><a href=3D"ht=
-tps://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/arm=
-/mach-aspeed/ast2600/platform.S#L168">https://github.com/AspeedTech-BMC/u-b=
-oot/blob/aspeed-master-v2019.04/arch/arm/mach-aspeed/ast2600/platform.S#L16=
-8</a><br><br>However, this memory address is cleared on boot:<br><br><a hre=
-f=3D"https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/a=
-rch/arm/mach-aspeed/ast2600/platform.S#L146">https://github.com/AspeedTech-=
-BMC/u-boot/blob/aspeed-master-v2019.04/arch/arm/mach-aspeed/ast2600/platfor=
-m.S#L146</a><br><br>The race condition occurs if the primary core runs far =
-ahead of the secondary core: if the primary core gets to the point where it=
- signals the secondary core=E2=80=99s mailbox before the secondary core get=
-s past the point where it does the initial reset and starts waiting, the re=
-set will clear the signal, and then the secondary core will never get past =
-the point where it=E2=80=99s looping in `poll_smp_mbox_ready`.<br><br>We=E2=
-=80=99ve observed this race happening by dumping all SCU reads and writes, =
-and validated that this is the problem by using a modified `platform.S` tha=
-t doesn=E2=80=99t clear the =3DSCU_SMP_READY mailbox on reset, but would ra=
-ther not have to use a modified version of SMP boot just for QEMU-TCG execu=
-tion.<br><br>Is there a way to have QEMU insert a barrier synchronization a=
-t some point in the bootloader?=C2=A0 I think getting both cores past the =
-=3DSCU_SMP_READY reset would get rid of this race, but I=E2=80=99m not awar=
-e of a way to do that kind of thing in QEMU-TCG.<br><br>Thanks for any insi=
-ghts!<br><br>--Stephen<br><br>---<br><br>P.S. Additional note about the asp=
-eed platform.S:<br><br>Clearing the mailbox was added in this patch:<br><br=
-><a href=3D"https://github.com/AspeedTech-BMC/u-boot/commit/55825c55d1dabc0=
-0e37999a38495ed05c901bec2">https://github.com/AspeedTech-BMC/u-boot/commit/=
-55825c55d1dabc00e37999a38495ed05c901bec2</a><br><br>At the time, the write =
-to what was then known as `=3DAST_SMP_MBOX_FIELD_READY` (now `=3DSCU_SMP_RE=
-ADY`) happened after `scu_unlock`.=C2=A0 But, when the boot flow was revise=
-d in<br><br><a href=3D"https://github.com/AspeedTech-BMC/u-boot/commit/46a4=
-8bbe56c1e790c9bd1794364db86ec609c48e">https://github.com/AspeedTech-BMC/u-b=
-oot/commit/46a48bbe56c1e790c9bd1794364db86ec609c48e</a> the scu_unlock was =
-moved to primary core boot, so, unless the primary core wins the race, it d=
-oesn=E2=80=99t seem like the mailbox ready clear actually will have any eff=
-ect, since it=E2=80=99ll be writing while the SCU is locked.</div>
-
---000000000000aa2214060eaf0517--
 
