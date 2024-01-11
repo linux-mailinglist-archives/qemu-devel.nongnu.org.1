@@ -2,77 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF96E82B244
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:59:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E55182B25F
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 17:04:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNxRM-0003us-HX; Thu, 11 Jan 2024 10:57:56 -0500
+	id 1rNxWG-0005Sa-EP; Thu, 11 Jan 2024 11:03:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNxRH-0003uZ-Hb
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:57:51 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rNxWE-0005S5-7f
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:02:58 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNxRE-0005tB-Vp
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:57:51 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40e624a8cbbso3836175e9.2
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 07:57:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rNxW7-0008Cw-Sn
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:02:53 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-55753dc5cf0so6535995a12.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 08:02:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704988667; x=1705593467; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=n0KwsztfPWCxHdZ2RSAomStdzb+IxXc221ZKdWIjKFg=;
- b=dcTj70IpXHrI7/vWgd2rRPDHBMNp+cLQlQ29AJwApZTfW98xdyJ9XViGhBDohIoFES
- ZRrOCeYv7m/IusP7aKdG/+GroFZsJ1GkXnSek+2Mq0JSEYmhUh8VqqKKY35MZ9LhsQnA
- sMOSb58eU5fyzpsBA1vl+mKBLfFpgXUF8pjYCJ9L7fRuRejUNwJA1jh95Uhhg6zcMSJ3
- +ECZt5qD/dkCruGYG+YmQy9JcwnXVmQEA4rCyhMFIIzzJuKRMRGBqh4yomxpgDEjTMnl
- sPGaIFCcuxgt2oEy9tS1GPx5QXfKwCMDAa7WA6ktBtr7kd0+OSTXG+u94PKItlY2/lZr
- v2zA==
+ d=linaro.org; s=google; t=1704988970; x=1705593770; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=8H0rx9m7YGiKumSE3asPeIo0RgyQ8ZJEpezCz81G4F0=;
+ b=PuoauV4Gdor9kNYPRgOCMB8n6X32WXvt1/SK1i2PnKzGKHgdAyXXxTLIgC9iLbQ8OI
+ VRwiX1FF5L95YLpiBhZb/cmN0PAEOGVxLzlsyx86XgCu5fOZcGJEuQB3nxzwus3kQPup
+ A+MXbpCSAWXAdNW0+sY+ItlC2JVfidCJ6q5W8ghvPdouxiNdkrKDH4U2Ky8cVdJzUfgj
+ 1x23sO4xOR+GdJRO1n86wJ4yO5z8x2TPp5xozKptmauLOUoOoLUh4OLeb6q5YSi/EKX7
+ q1JUDM+VpZEMtJMAA5DLIar2j9Q1/bw6uwt8DjllH7dNiXVmkEo5AQGfsw6dHwqjNqYv
+ UKJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704988667; x=1705593467;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=n0KwsztfPWCxHdZ2RSAomStdzb+IxXc221ZKdWIjKFg=;
- b=xPpp+fz44t+mv49fqpNx6tHEelHlNye2EziheN+AtqiFnP4HYSuwCbjzcHiuMWx9M9
- W0HELalDctJxZ6nYxV0+MO+c+LuWkhtBTWm2L4J0LCvswnhelh/nr118X+nCKaNKntm4
- PfOKcCbuDaaKNhTTocp+R3IO78P1xpR0MjsUlKmySqpMZ5ItR/5csrqrr2EiR0obbvNA
- KI/m2F8r3Lr66hxFNyR0p/6pqFWWdBtOdC8vdAEEgKHZtrw1Uo6BoZMsDkpChK8HnO3Q
- 24s6/AJ4QZzg05+zdwOHy9TzlsmP26dwPTQ3HTEy4XnYpQZsnCoz6nRlxX0P5IlBw7h9
- UdbQ==
-X-Gm-Message-State: AOJu0YxSmBti2GVnYtp6o1NLZbxwJKtkuk/CjUnLAxbIAznl7xdwPnFo
- s/U2YgRPVGtklStUdmDqu8ZSHke1XZEgdQ==
-X-Google-Smtp-Source: AGHT+IFYlN///2FIOs1S6m6da9TnBrSDtC26koqXd8BGqU3jYZ8T08UUoLkuKwhu8fXdd//b7EAIEA==
-X-Received: by 2002:a05:600c:4f48:b0:40e:6195:239c with SMTP id
- m8-20020a05600c4f4800b0040e6195239cmr17543wmq.90.1704988667118; 
- Thu, 11 Jan 2024 07:57:47 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.202.145])
- by smtp.gmail.com with ESMTPSA id
- g16-20020a05600c4ed000b0040d91912f2csm2447332wmq.1.2024.01.11.07.57.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 07:57:46 -0800 (PST)
-Message-ID: <49bfa786-e549-43d4-ac03-9337b9342d16@linaro.org>
-Date: Thu, 11 Jan 2024 16:57:44 +0100
+ d=1e100.net; s=20230601; t=1704988970; x=1705593770;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8H0rx9m7YGiKumSE3asPeIo0RgyQ8ZJEpezCz81G4F0=;
+ b=rg9riAOX8FKKiO6uGqNR2drxKfnpWD0RJmK7/szEFvQF1r93PQRAjp90fvqwJFG3hw
+ shMa+P52zQBUrR1IdyiVmW2VeK1nDRuITfGmS4WTdDq8Yo1jW6OOTMHeqOlyg6T3drNF
+ BvvAj1JLQhmPlpi9OqMvrtidn1kWvz+wH+CPSNzuKZwaL+POx2w/tOh44QUiybid1Pel
+ 9Mk8kZwOqc65oNSq3jr8rMVltavH4Fq1jMsI/q+04N5faYGw0BptBwvi0jqOKUhLlzCz
+ q+sN0wmwAun5RuYcRkXLc0z5fMbGDZHWQI7CYqr9fUrVsNTMh+pPoTPacmHRtN57kcX3
+ 0zmw==
+X-Gm-Message-State: AOJu0YzRBDaYjWWdd6GBmpPI9faVnJ9igEOKUbwAuf0Q++ly7USl9OOS
+ mHFSfg5+15FtlrOPuI5yVRyRzgRMiySBFBeztDikGmHtIDZfCQ==
+X-Google-Smtp-Source: AGHT+IEdViI3na6PjkW07BzJ1O/E09Q6mbwdTPt9h63P/5hIRyQnehqXiERaPSk9FN7dEhcBnUJcFOpYR8hRhpCRl9M=
+X-Received: by 2002:a05:6402:3cd:b0:558:adf8:9168 with SMTP id
+ t13-20020a05640203cd00b00558adf89168mr377243edw.69.1704988969742; Thu, 11 Jan
+ 2024 08:02:49 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/12] tests/plugin: add test plugin for inline operations
-Content-Language: en-US
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>
-References: <20240111142326.1743444-1-pierrick.bouvier@linaro.org>
- <20240111142326.1743444-4-pierrick.bouvier@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240111142326.1743444-4-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+References: <20231213105026.1944656-1-kraxel@redhat.com>
+ <y2kuootd3k2tqe2245zggbuusg2kaaqrxlvxfwy2wrcbdxg3cn@zgj6tl7gd4lp>
+ <CAFEAcA8H6kVNiSk6CEVun5KWQH-sqWxBKxZ9Rf7haQhZHEKiow@mail.gmail.com>
+In-Reply-To: <CAFEAcA8H6kVNiSk6CEVun5KWQH-sqWxBKxZ9Rf7haQhZHEKiow@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 11 Jan 2024 16:02:38 +0000
+Message-ID: <CAFEAcA-sw2FNgTft0PYL=GW0JQhdRX9Zn0B6muUjC68nmVXHnA@mail.gmail.com>
+Subject: Re: [PULL 0/6] Firmware/edk2 20231213 patches
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org, Igor Mammedov <imammedo@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-stable <qemu-stable@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,27 +89,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Pierrick,
+On Thu, 11 Jan 2024 at 15:52, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Thu, 11 Jan 2024 at 14:01, Gerd Hoffmann <kraxel@redhat.com> wrote:
+> >
+> > On Wed, Dec 13, 2023 at 11:50:12AM +0100, Gerd Hoffmann wrote:
+> > > The following changes since commit 9c74490bff6c8886a922008d0c9ce6cae70dd17e:
+> > >
+> > >   Update version for v8.2.0-rc3 release (2023-12-06 14:34:20 -0500)
+> > >
+> > > are available in the Git repository at:
+> > >
+> > >   https://gitlab.com/kraxel/qemu.git tags/firmware/edk2-20231213-pull-request
+> > >
+> > > for you to fetch changes up to 704f7cad5105246822686f65765ab92045f71a3b:
+> > >
+> > >   tests/acpi: disallow tests/data/acpi/virt/SSDT.memhp changes (2023-12-13 11:23:11 +0100)
+> > >
+> > > ----------------------------------------------------------------
+> > > edk2: update to git snapshot (maybe for-8.2)
+> > >
+> > > This updates edk2 to git master as of today.  This picks up a patch
+> > > (merged only yesterday, that's why this last-minute PR) which allows to
+> > > work around a bug in shim, and enables that workaround in the qemu
+> > > firmware builds.
+> > >
+> > > This solves a real-world problem on arm hardware, walk over to
+> > > https://gitlab.com/qemu-project/qemu/-/issues/1990 to see the details.
+> > >
+> > > Merging this firmware update that close to the 8.2 release clearly is
+> > > not without risks.  If I get a 'no', I'm not going to complain.
+> > >
+> > > That said I'm not aware of any bugs, and landing this in 8.2.0 would
+> > > make a bunch of folks hanging around in issue 1990 very happy.
+> > >
+> > > Alternative plan would be to merge this after the release, give it some
+> > > time for testing, and assuming everything goes well schedule a backport
+> > > for 8.2.1
+> >
+> > Ping.
+> >
+> > As expected this missed the 8.2 boat.  Now the devel tree is open again
+> > and people are back from xmas + new year vacations, can this be picked
+> > up for master and eventually 8.2-stable?
+>
+> I can queue it, sure. Do we need to respin it to add cc: qemu-stable
+> tags, or can it be applied as-is ?
 
-On 11/1/24 15:23, Pierrick Bouvier wrote:
-> For now, it simply performs instruction, bb and mem count, and ensure
-> that inline vs callback versions have the same result. Later, we'll
-> extend it when new inline operations are added.
-> 
-> Use existing plugins to test everything works is a bit cumbersome, as
-> different events are treated in different plugins. Thus, this new one.
-> 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   tests/plugin/inline.c    | 183 +++++++++++++++++++++++++++++++++++++++
->   tests/plugin/meson.build |   2 +-
->   2 files changed, 184 insertions(+), 1 deletion(-)
->   create mode 100644 tests/plugin/inline.c
+...PS did you mean to cc qemu-stable, not the nonexistent edk2-stable
+on this pullreq email?
 
-> +#define MAX_CPUS 8
-
-Where does this value come from?
-
-Should the pluggin API provide a helper to ask TCG how many
-vCPUs are created?
+thanks
+-- PMM
 
