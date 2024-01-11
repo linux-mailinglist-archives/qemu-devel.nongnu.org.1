@@ -2,47 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8AA882B309
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 17:34:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B684182B34B
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 17:48:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNxzF-0006aF-Q2; Thu, 11 Jan 2024 11:32:57 -0500
+	id 1rNyCz-00078h-Rf; Thu, 11 Jan 2024 11:47:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <megari@iki.fi>)
- id 1rNxzD-0006Zq-2p; Thu, 11 Jan 2024 11:32:55 -0500
-Received: from meesny.iki.fi ([195.140.195.201])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyCu-00074g-1I
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:47:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <megari@iki.fi>)
- id 1rNxzA-0004uc-Oa; Thu, 11 Jan 2024 11:32:54 -0500
-Received: from asuna.localdomain (dqtkhhyj8rfbp6-pnnpzy-3.rev.dnainternet.fi
- [IPv6:2001:14ba:6c10:6300:fc71:2cd:7d8b:5b28])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyCs-0003lJ-Fy
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:47:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704991621;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=z9NwLNEMyZKOyFqMVJfX/hLi0hmlFgWeDhvdsupp2Ms=;
+ b=U8qo85jrND5KIk5kl0mqKyc9FWHZerxh//Sf/HmJkwvOgl8IpRr72BHvYlZ7dBgT8o6pgx
+ 2y1dXuC1laU7ES5PgybQdLIyCGZcMwFE3jC7NYhwjOU7JBqqSxm00fGHcdBmU9/m3YfU1L
+ VoPlWrLoS9CFroITJqKYsUUqoQbhviQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-577-la38jOgVO5Og4V71Gkq62w-1; Thu, 11 Jan 2024 11:46:56 -0500
+X-MC-Unique: la38jOgVO5Og4V71Gkq62w-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested) (Authenticated sender: megari)
- by meesny.iki.fi (Postfix) with ESMTPSA id 4T9qvx4ydszyQb;
- Thu, 11 Jan 2024 18:32:45 +0200 (EET)
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org, Ari Sundholm <ari@tuxera.com>
-Subject: [PATCH v2] block/blklogwrites: Protect mutable driver state with a
- mutex.
-Date: Thu, 11 Jan 2024 18:32:38 +0200
-Message-ID: <20240111163238.1346482-1-ari@tuxera.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <f1960d8d-352e-4e1b-4d28-7a110e272356@tuxera.com>
-References: <f1960d8d-352e-4e1b-4d28-7a110e272356@tuxera.com>
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9B17310B9489;
+ Thu, 11 Jan 2024 16:46:55 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.197])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5176C492BC6;
+ Thu, 11 Jan 2024 16:46:53 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Nicholas Piggin <npiggin@gmail.com>,
+	qemu-devel@nongnu.org
+Cc: devel@lists.libvirt.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH 0/2] ppc: Rename power5+ and power7+ for the new QOM naming
+ rules
+Date: Thu, 11 Jan 2024 17:46:50 +0100
+Message-ID: <20240111164652.908182-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.140.195.201; envelope-from=megari@iki.fi;
- helo=meesny.iki.fi
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -55,209 +78,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Ari Sundholm <ari@tuxera.com>
-From:  Ari Sundholm via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-During the review of a fix for a concurrency issue in blklogwrites,
-it was found that the driver needs an additional fix when enabling
-multiqueue, which is a new feature introduced in QEMU 9.0, as the
-driver state may be read and written by multiple threads at the same
-time, which was not the case when the driver was originally written.
+We can get rid of the "power5+" / "power7+" hack in qom/object.c
+by using CPU aliases for those names instead (first patch).
 
-Fix the multi-threaded scenario by introducing a mutex to protect the
-mutable fields in the driver state, and always having the mutex locked
-by the current thread when accessing them. Also use the mutex and a
-condition variable to ensure that the super block is not being written
-to by multiple threads concurrently.
+I think in the long run, we should get rid of the names with a "+"
+in it completely, so the second patch suggests to deprecate those,
+but I'd also be fine if we keep the aliases around, so in that case
+please ignore the second patch.
 
-Additionally, add the const qualifier to a few BDRVBlkLogWritesState
-pointer targets in contexts where the driver state is not written to.
+Thomas Huth (2):
+  target/ppc/cpu-models: Rename power5+ and power7+ for new QOM naming
+    rules
+  docs/about: Deprecate the old "power5+" and "power7+" CPU names
 
-Signed-off-by: Ari Sundholm <ari@tuxera.com>
+ docs/about/deprecated.rst |  9 +++++++++
+ hw/ppc/spapr_cpu_core.c   |  4 ++--
+ qom/object.c              |  4 ----
+ target/ppc/cpu-models.c   | 10 ++++++----
+ 4 files changed, 17 insertions(+), 10 deletions(-)
 
-v1->v2: Ensure that the super block is not written to concurrently.
----
- block/blklogwrites.c | 77 +++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 69 insertions(+), 8 deletions(-)
-
-diff --git a/block/blklogwrites.c b/block/blklogwrites.c
-index ba717dab4d..f8bec7c863 100644
---- a/block/blklogwrites.c
-+++ b/block/blklogwrites.c
-@@ -3,7 +3,7 @@
-  *
-  * Copyright (c) 2017 Tuomas Tynkkynen <tuomas@tuxera.com>
-  * Copyright (c) 2018 Aapo Vienamo <aapo@tuxera.com>
-- * Copyright (c) 2018 Ari Sundholm <ari@tuxera.com>
-+ * Copyright (c) 2018-2024 Ari Sundholm <ari@tuxera.com>
-  *
-  * This work is licensed under the terms of the GNU GPL, version 2 or later.
-  * See the COPYING file in the top-level directory.
-@@ -55,9 +55,34 @@ typedef struct {
-     BdrvChild *log_file;
-     uint32_t sectorsize;
-     uint32_t sectorbits;
-+    uint64_t update_interval;
-+
-+    /*
-+     * The mutable state of the driver, consisting of the current log sector
-+     * and the number of log entries.
-+     *
-+     * May be read and/or written from multiple threads, and the mutex must be
-+     * held when accessing these fields.
-+     */
-     uint64_t cur_log_sector;
-     uint64_t nr_entries;
--    uint64_t update_interval;
-+    QemuMutex mutex;
-+
-+    /*
-+     * The super block sequence number. Non-zero if a super block update is in
-+     * progress.
-+     *
-+     * The mutex must be held when accessing this field.
-+     */
-+    uint64_t super_update_seq;
-+
-+    /*
-+     * A condition variable to wait for and signal finished superblock updates.
-+     *
-+     * Used with the mutex to ensure that only one thread be updating the super
-+     * block at a time.
-+     */
-+    QemuCond super_updated;
- } BDRVBlkLogWritesState;
- 
- static QemuOptsList runtime_opts = {
-@@ -169,6 +194,9 @@ static int blk_log_writes_open(BlockDriverState *bs, QDict *options, int flags,
-         goto fail;
-     }
- 
-+    qemu_mutex_init(&s->mutex);
-+    qemu_cond_init(&s->super_updated);
-+
-     log_append = qemu_opt_get_bool(opts, "log-append", false);
- 
-     if (log_append) {
-@@ -231,6 +259,8 @@ static int blk_log_writes_open(BlockDriverState *bs, QDict *options, int flags,
-         s->nr_entries = 0;
-     }
- 
-+    s->super_update_seq = 0;
-+
-     if (!blk_log_writes_sector_size_valid(log_sector_size)) {
-         ret = -EINVAL;
-         error_setg(errp, "Invalid log sector size %"PRIu64, log_sector_size);
-@@ -255,6 +285,8 @@ fail_log:
-         bdrv_unref_child(bs, s->log_file);
-         bdrv_graph_wrunlock();
-         s->log_file = NULL;
-+        qemu_cond_destroy(&s->super_updated);
-+        qemu_mutex_destroy(&s->mutex);
-     }
- fail:
-     qemu_opts_del(opts);
-@@ -269,6 +301,8 @@ static void blk_log_writes_close(BlockDriverState *bs)
-     bdrv_unref_child(bs, s->log_file);
-     s->log_file = NULL;
-     bdrv_graph_wrunlock();
-+    qemu_cond_destroy(&s->super_updated);
-+    qemu_mutex_destroy(&s->mutex);
- }
- 
- static int64_t coroutine_fn GRAPH_RDLOCK
-@@ -295,7 +329,7 @@ static void blk_log_writes_child_perm(BlockDriverState *bs, BdrvChild *c,
- 
- static void blk_log_writes_refresh_limits(BlockDriverState *bs, Error **errp)
- {
--    BDRVBlkLogWritesState *s = bs->opaque;
-+    const BDRVBlkLogWritesState *s = bs->opaque;
-     bs->bl.request_alignment = s->sectorsize;
- }
- 
-@@ -338,15 +372,18 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
-      * driver may be modified by other driver operations while waiting for the
-      * I/O to complete.
-      */
-+    qemu_mutex_lock(&s->mutex);
-     const uint64_t entry_start_sector = s->cur_log_sector;
-     const uint64_t entry_offset = entry_start_sector << s->sectorbits;
-     const uint64_t qiov_aligned_size = ROUND_UP(lr->qiov->size, s->sectorsize);
-     const uint64_t entry_aligned_size = qiov_aligned_size +
-         ROUND_UP(lr->zero_size, s->sectorsize);
-     const uint64_t entry_nr_sectors = entry_aligned_size >> s->sectorbits;
-+    const uint64_t entry_seq = s->nr_entries + 1;
- 
--    s->nr_entries++;
-+    s->nr_entries = entry_seq;
-     s->cur_log_sector += entry_nr_sectors;
-+    qemu_mutex_unlock(&s->mutex);
- 
-     /*
-      * Write the log entry. Note that if this is a "write zeroes" operation,
-@@ -366,17 +403,34 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
- 
-     /* Update super block on flush or every update interval */
-     if (lr->log_ret == 0 && ((lr->entry.flags & LOG_FLUSH_FLAG)
--        || (s->nr_entries % s->update_interval == 0)))
-+        || (entry_seq % s->update_interval == 0)))
-     {
-         struct log_write_super super = {
-             .magic      = cpu_to_le64(WRITE_LOG_MAGIC),
-             .version    = cpu_to_le64(WRITE_LOG_VERSION),
--            .nr_entries = cpu_to_le64(s->nr_entries),
-+            .nr_entries = const_le64(0),
-             .sectorsize = cpu_to_le32(s->sectorsize),
-         };
--        void *zeroes = g_malloc0(s->sectorsize - sizeof(super));
-+        void *zeroes;
-         QEMUIOVector qiov;
- 
-+        /*
-+         * Wait if a super block update is already in progress.
-+         * Bail out if a newer update got its turn before us.
-+         */
-+        WITH_QEMU_LOCK_GUARD(&s->mutex) {
-+            while (s->super_update_seq) {
-+                if (entry_seq < s->super_update_seq) {
-+                    return;
-+                }
-+                qemu_cond_wait(&s->super_updated, &s->mutex);
-+            }
-+            s->super_update_seq = entry_seq;
-+            super.nr_entries = cpu_to_le64(s->nr_entries);
-+        }
-+
-+        zeroes = g_malloc0(s->sectorsize - sizeof(super));
-+
-         qemu_iovec_init(&qiov, 2);
-         qemu_iovec_add(&qiov, &super, sizeof(super));
-         qemu_iovec_add(&qiov, zeroes, s->sectorsize - sizeof(super));
-@@ -386,6 +440,13 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
-         if (lr->log_ret == 0) {
-             lr->log_ret = bdrv_co_flush(s->log_file->bs);
-         }
-+
-+        /* The super block has been updated. Let another thread have a go. */
-+        qemu_mutex_lock(&s->mutex);
-+        s->super_update_seq = 0;
-+        qemu_cond_signal(&s->super_updated);
-+        qemu_mutex_unlock(&s->mutex);
-+
-         qemu_iovec_destroy(&qiov);
-         g_free(zeroes);
-     }
-@@ -405,7 +466,7 @@ blk_log_writes_co_log(BlockDriverState *bs, uint64_t offset, uint64_t bytes,
- {
-     QEMUIOVector log_qiov;
-     size_t niov = qiov ? qiov->niov : 0;
--    BDRVBlkLogWritesState *s = bs->opaque;
-+    const BDRVBlkLogWritesState *s = bs->opaque;
-     BlkLogWritesFileReq fr = {
-         .bs         = bs,
-         .offset     = offset,
 -- 
 2.43.0
 
