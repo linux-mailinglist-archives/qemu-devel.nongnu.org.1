@@ -2,76 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FDFB82A6B5
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 04:56:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0983F82A6B7
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 05:04:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNmB5-0000E9-2Y; Wed, 10 Jan 2024 22:56:23 -0500
+	id 1rNmHN-0001OR-DJ; Wed, 10 Jan 2024 23:02:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNmB3-0000Ck-JH; Wed, 10 Jan 2024 22:56:21 -0500
-Received: from mail-ua1-x935.google.com ([2607:f8b0:4864:20::935])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rNmB1-0003Hv-UD; Wed, 10 Jan 2024 22:56:21 -0500
-Received: by mail-ua1-x935.google.com with SMTP id
- a1e0cc1a2514c-7cd4d77e2ebso1240978241.3; 
- Wed, 10 Jan 2024 19:56:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704945378; x=1705550178; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=M5u8iZUt0xzspJdtDx2KwRkuonkhiUyf8JF2IbRzzYs=;
- b=SodyO+wpv2y7IuYJTvJBPKzy1li21xgJAaouAe5NTsQNCHwXhOCPIYoDc8ud7i2gJe
- I5dcUPzTzmyzYPStTVtO6d/50jujaS2gWfE+ThNuhqvnrgxWW4Qsai9GQ3uMHOJHfMkp
- Jw9cfAzwzBVny7nuIVXRHLBa+Na/q5P9uzdXafD8oklFXWWSsAMRy9V8IweO3DwU1mQ/
- PJrjFcZ6sRFNzWQKEedkW28HbhqUHdxAYYG8/juV39l1m/Z5lZPs4unsYIPltcvUxHws
- 0A4g4AVR+QrDVF8FeOwoLShBiePBqlyuSCJHRG0J0cn4ex2JHN1ck8x39zDEhBTw9AGl
- CaaA==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rNmHL-0001Nc-DH
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 23:02:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rNmHJ-00072q-Ap
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 23:02:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704945768;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ciuR0nHWkge73Dg5iQ5PCK7AsS010i+Tuj/JU1uAoqQ=;
+ b=btwRtCAeQizdi8Cu4EmqMODrHLkTr0WL441J+VHvjoPbBfDEuFMKAzkKnt2N1ROCous08N
+ 37k31qKj84j3/pogjaGeGvMhIXr1EWrW4tt2Nh2ZpUuZgkzHblAHtIEbo9zf0JUlzHA6aD
+ Ufg1YsT+nFOn23CJLIrj7k1y3m1oUJg=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-210-1MpOGQ9xO1Cqhk7Unk0ykw-1; Wed, 10 Jan 2024 23:02:46 -0500
+X-MC-Unique: 1MpOGQ9xO1Cqhk7Unk0ykw-1
+Received: by mail-oi1-f199.google.com with SMTP id
+ 5614622812f47-3bd3af050ddso4504467b6e.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 20:02:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704945378; x=1705550178;
+ d=1e100.net; s=20230601; t=1704945766; x=1705550566;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M5u8iZUt0xzspJdtDx2KwRkuonkhiUyf8JF2IbRzzYs=;
- b=HtlcWGA39/DjmlZ0TOozJRkt5hNQAUiFCUUvAXlWO6vH9QtoBbW2LB02Y1/mqztw7r
- 9qcklwpFZGDgJ/sUJMFP4Xe41HgaHIC4ga9krS+xVWMa3gBynKuZdBKySjCY0qHNt3im
- JWnghKhDlSc95GiOZNzNkaDBvRaOfuw6wqMbuIHPnOXsL+wfTuqvABYoy+h8mceekOcG
- a7qAWUkuahg3objo/uhdaiACprOLqp0DIOrcim2F9JwfwmpAPf46S4s0LXsjbnSZacQ0
- 3ah1k56xCMRN5hQglpW102XGfCn0YWnlJBJUYlg4sTBUBqprvRwgI+v6oQBq71eStlwu
- HtVA==
-X-Gm-Message-State: AOJu0Yx8fS0vEKdVuBzmdx/0ABIYIC9aMavySQCBK7QuGRXOf/HhZR+U
- 4LaUE7Eo3Dygw2VUYjKNmB4kwDqV1nPA7VE5dnY=
-X-Google-Smtp-Source: AGHT+IGeucXFfuLbLzkh3qcPug5s8iC0+7kY709Pv3wgyYOyc5hs3qQlccpEh45B9eay8bJNUUKEnZumCXwfemzsPyg=
-X-Received: by 2002:a67:b44b:0:b0:468:115:4c23 with SMTP id
- c11-20020a67b44b000000b0046801154c23mr11421vsm.29.1704945378224; Wed, 10 Jan
- 2024 19:56:18 -0800 (PST)
+ bh=ciuR0nHWkge73Dg5iQ5PCK7AsS010i+Tuj/JU1uAoqQ=;
+ b=Jh/dXgLyWyLND2BAHi16TCBH8mbtHQWxrZIHZVybPkEYSmpsltGiEA9HQ4Nzl76yZx
+ Cx4K7ZstGdv0t4eFMH7B2bPd+0KhR/Ew3y4/Jb7hAv/3BA/Ekyq6t9/3mqmh1umPmc1z
+ x7OP7j1MWBkqUc3utXq8R3MubuGSIKLzgGHe+ADb82mItQnITC6cAPn9XCGxHMJCPcqZ
+ VJCfSMzPvn6HhAQH5rHHmg5ETPN94r9naqr0Ged8w/+DZytRdv7fNWHHTPdKsvFqSMGg
+ DvmMbxHaTYXtfozLwLNgO4yFYm8kVrnweLZFtWb2dfjxTQmlzfL0JLkxVkpWmjINFyjZ
+ YETw==
+X-Gm-Message-State: AOJu0Yyq66Qo3a6jXJ1YUf39mbZrfVKLM71nAbBSDUnkx+/8zaYeNFhI
+ +vq7T35J+su3MzPP8zfSOHpKMzoXG4iTRkxfcduC8/8t6Tb9rYEwI0HriBhtfbOg8Cb5V2zItkd
+ C58XYVGBltnZCsAggNCpwWJG9uaBVY4KaApsIBBY=
+X-Received: by 2002:a05:6808:2112:b0:3bb:d622:14c2 with SMTP id
+ r18-20020a056808211200b003bbd62214c2mr874862oiw.9.1704945765928; 
+ Wed, 10 Jan 2024 20:02:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFaTOkWhUa7G/8v7PDRewc2MMPTeMQo8+P3KAfL5lNZ8GGIvYnOV31PNj4n9xcQX8WwQqQfe9IQ9lh6aKqqCds=
+X-Received: by 2002:a05:6808:2112:b0:3bb:d622:14c2 with SMTP id
+ r18-20020a056808211200b003bbd62214c2mr874846oiw.9.1704945765655; Wed, 10 Jan
+ 2024 20:02:45 -0800 (PST)
 MIME-Version: 1.0
-References: <20240110163959.31291-1-rbradford@rivosinc.com>
-In-Reply-To: <20240110163959.31291-1-rbradford@rivosinc.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 11 Jan 2024 13:55:51 +1000
-Message-ID: <CAKmqyKPmMHvmuN3XkL4e9vxefpeCoEOdN-DeMVpkxQvATE7FWg@mail.gmail.com>
-Subject: Re: [PATCH] target/riscv: Check for 'A' extension on all atomic
- instructions
-To: Rob Bradford <rbradford@rivosinc.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, atishp@rivosinc.com, 
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
- liwei1518@gmail.com, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-4-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-4-git-send-email-si-wei.liu@oracle.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Thu, 11 Jan 2024 12:02:34 +0800
+Message-ID: <CACGkMEtQL8JdkFkyBQ8adt--TK88oTfuPuUnDRkpVT6ZoDuOeQ@mail.gmail.com>
+Subject: Re: [PATCH 03/40] vdpa: probe descriptor group index for data vqs
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
+ leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
+ jonah.palmer@oracle.com, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::935;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x935.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,117 +97,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 11, 2024 at 3:44=E2=80=AFAM Rob Bradford <rbradford@rivosinc.co=
-m> wrote:
+On Fri, Dec 8, 2023 at 2:53=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
+rote:
 >
-> Add requirement that 'A' is enabled for all atomic instructions that
-> lack the check. This makes the 64-bit versions consistent with the
-> 32-bit versions in the same file.
+> Getting it ahead at initialization time instead of start time allows
+> decision making independent of device status, while reducing failure
+> possibility in starting device or during migration.
 >
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-
-Alistair
-
+> Adding function vhost_vdpa_probe_desc_group() for that end. This
+> function will be used to probe the descriptor group for data vqs.
+>
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 > ---
->  target/riscv/insn_trans/trans_rva.c.inc | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+>  net/vhost-vdpa.c | 89 ++++++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 89 insertions(+)
 >
-> diff --git a/target/riscv/insn_trans/trans_rva.c.inc b/target/riscv/insn_=
-trans/trans_rva.c.inc
-> index 5f194a447b..f0368de3e4 100644
-> --- a/target/riscv/insn_trans/trans_rva.c.inc
-> +++ b/target/riscv/insn_trans/trans_rva.c.inc
-> @@ -163,65 +163,76 @@ static bool trans_amomaxu_w(DisasContext *ctx, arg_=
-amomaxu_w *a)
->  static bool trans_lr_d(DisasContext *ctx, arg_lr_d *a)
->  {
->      REQUIRE_64BIT(ctx);
-> +    REQUIRE_EXT(ctx, RVA);
->      return gen_lr(ctx, a, MO_ALIGN | MO_TEUQ);
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 887c329..0cf3147 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -1688,6 +1688,95 @@ out:
+>      return r;
 >  }
 >
->  static bool trans_sc_d(DisasContext *ctx, arg_sc_d *a)
->  {
->      REQUIRE_64BIT(ctx);
-> +    REQUIRE_EXT(ctx, RVA);
->      return gen_sc(ctx, a, (MO_ALIGN | MO_TEUQ));
->  }
->
->  static bool trans_amoswap_d(DisasContext *ctx, arg_amoswap_d *a)
->  {
->      REQUIRE_64BIT(ctx);
-> +    REQUIRE_EXT(ctx, RVA);
->      return gen_amo(ctx, a, &tcg_gen_atomic_xchg_tl, (MO_ALIGN | MO_TEUQ)=
+> +static int vhost_vdpa_probe_desc_group(int device_fd, uint64_t features,
+> +                                       int vq_index, int64_t *desc_grpid=
+x,
+> +                                       Error **errp)
+> +{
+> +    uint64_t backend_features;
+> +    int64_t vq_group, desc_group;
+> +    uint8_t saved_status =3D 0;
+> +    uint8_t status =3D 0;
+> +    int r;
+> +
+> +    ERRP_GUARD();
+> +
+> +    r =3D ioctl(device_fd, VHOST_GET_BACKEND_FEATURES, &backend_features=
 );
->  }
->
->  static bool trans_amoadd_d(DisasContext *ctx, arg_amoadd_d *a)
->  {
->      REQUIRE_64BIT(ctx);
-> +    REQUIRE_EXT(ctx, RVA);
->      return gen_amo(ctx, a, &tcg_gen_atomic_fetch_add_tl, (MO_ALIGN | MO_=
-TEUQ));
->  }
->
->  static bool trans_amoxor_d(DisasContext *ctx, arg_amoxor_d *a)
->  {
->      REQUIRE_64BIT(ctx);
-> +    REQUIRE_EXT(ctx, RVA);
->      return gen_amo(ctx, a, &tcg_gen_atomic_fetch_xor_tl, (MO_ALIGN | MO_=
-TEUQ));
->  }
->
->  static bool trans_amoand_d(DisasContext *ctx, arg_amoand_d *a)
->  {
->      REQUIRE_64BIT(ctx);
-> +    REQUIRE_EXT(ctx, RVA);
->      return gen_amo(ctx, a, &tcg_gen_atomic_fetch_and_tl, (MO_ALIGN | MO_=
-TEUQ));
->  }
->
->  static bool trans_amoor_d(DisasContext *ctx, arg_amoor_d *a)
->  {
->      REQUIRE_64BIT(ctx);
-> +    REQUIRE_EXT(ctx, RVA);
->      return gen_amo(ctx, a, &tcg_gen_atomic_fetch_or_tl, (MO_ALIGN | MO_T=
-EUQ));
->  }
->
->  static bool trans_amomin_d(DisasContext *ctx, arg_amomin_d *a)
->  {
->      REQUIRE_64BIT(ctx);
-> +    REQUIRE_EXT(ctx, RVA);
->      return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smin_tl, (MO_ALIGN | MO=
-_TEUQ));
->  }
->
->  static bool trans_amomax_d(DisasContext *ctx, arg_amomax_d *a)
->  {
->      REQUIRE_64BIT(ctx);
-> +    REQUIRE_EXT(ctx, RVA);
->      return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smax_tl, (MO_ALIGN | MO=
-_TEUQ));
->  }
->
->  static bool trans_amominu_d(DisasContext *ctx, arg_amominu_d *a)
->  {
->      REQUIRE_64BIT(ctx);
-> +    REQUIRE_EXT(ctx, RVA);
->      return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umin_tl, (MO_ALIGN | MO=
-_TEUQ));
->  }
->
->  static bool trans_amomaxu_d(DisasContext *ctx, arg_amomaxu_d *a)
->  {
->      REQUIRE_64BIT(ctx);
-> +    REQUIRE_EXT(ctx, RVA);
->      return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umax_tl, (MO_ALIGN | MO=
-_TEUQ));
->  }
-> --
-> 2.43.0
->
->
+> +    if (unlikely(r < 0)) {
+> +        error_setg_errno(errp, errno, "Cannot get vdpa backend_features"=
+);
+> +        return r;
+> +    }
+> +
+> +    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID))) {
+> +        return 0;
+> +    }
+> +
+> +    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_DESC_ASID))) {
+> +        return 0;
+> +    }
+> +
+> +    r =3D ioctl(device_fd, VHOST_VDPA_GET_STATUS, &saved_status);
+> +    if (unlikely(r)) {
+> +        error_setg_errno(errp, -r, "Cannot get device status");
+> +        goto out;
+> +    }
+
+I wonder what's the reason for the status being saved and restored?
+
+We don't do this in vhost_vdpa_probe_cvq_isolation().
+
+Thanks
+
 
