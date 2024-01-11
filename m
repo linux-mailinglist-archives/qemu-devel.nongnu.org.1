@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B74282A8F7
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:21:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 428FE82A8FB
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:22:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNqJU-0000Gz-1c; Thu, 11 Jan 2024 03:21:20 -0500
+	id 1rNqK8-0001H2-N9; Thu, 11 Jan 2024 03:22:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNqJR-000095-D5
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:21:17 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNqJP-0002Ck-JK
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:21:17 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40e60e137a3so1753745e9.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 00:21:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704961274; x=1705566074; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5TZoZwVbqpVHzs0xtso3QFWX7Z11nZ42Jc+3vcZbepQ=;
- b=HCUsGyg86pwM5UlA+bDHuKKktIqPwnY8PAhokKTiPpq0xt5LLruYhAEDXthjNwItnV
- wIqruOnFzMRDTtOE6dqa5hrQrgIlLc5oumWR8uBY1NUZJKwHd52P7kigL5la9neQTRKM
- m446xJ0GCyI3cEjMV+qolD0dMIsKG8rUVn1f5rJsh4QPVv4TiLBYYFn3voXVsYJaq+Jh
- UJSQO6khftUjCO6o2G4ZxqEpCW/3Q39HJLsQTPHm4dLEPZJbBlj7KH+IGBBc3YRQ5Hf1
- 1jQGl0lfbFDQH25VIipCdZ3iUK6iegGCF9V/dc0NL77RFjfSon4z3117MktwVm6x6Akx
- C08w==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rNqK6-0001CJ-8G
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:21:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rNqK4-0002aY-BL
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:21:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704961315;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=I4VW7Wem0nPmWOFgPwf96jaJPKynpKKnIW6PbXT1Dpw=;
+ b=eHDRBlOH/XMmXX4x3SFgBE6sLQ9+exvg1CjUTsPPT2TCXqeaHfw7siNy72UH79yfPn77BA
+ 5tiMbhKgtxWZ7JFxLAJjlNfAhZ5a0B1YU22U0TpzaqF/eZzIf/bwIbogSwO14fTv/6XM8j
+ Phlx4jANfdDFAxzJl089DxNFRVyrXdQ=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-474-UlYmibKuMNSibwFNBa6Ymg-1; Thu, 11 Jan 2024 03:21:52 -0500
+X-MC-Unique: UlYmibKuMNSibwFNBa6Ymg-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-28ccb055d6eso4820088a91.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 00:21:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704961274; x=1705566074;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5TZoZwVbqpVHzs0xtso3QFWX7Z11nZ42Jc+3vcZbepQ=;
- b=VS+Izq7OXhKx9TosOkawpPLcpSTjOoLTi+6bJKasJnNneHP1l9FlRiNURc6+tw9671
- DBI4I/Udh9zZ/L7dUtnVDS8U++4YUlBwHfzKg/bbNdjS5t3gqvPQHqwQiImvfqB20z6M
- YEumODBu+6c9bJLX9Lq57BAFrWuEYXNjQc43XwQimJ/rj4HD1c6XXTMa+bPK/rWZNE8I
- wBEVUov1f3zisod7a3+KDf0xDcgKDhdezHthAOozRZ6FSvWkEsiJtManBFM57CDI/eIC
- 6Qaswm3KoeJYvsqYSDfwJ3MSeVoKgIOocytK/kHJzbyN/9I7PO+sVg/g6tf1ypCpn8ms
- xcBQ==
-X-Gm-Message-State: AOJu0Yys91aDmtnN2KhUC0+9sx0f+6MiId5XfVVdFEqcD/JN6ouu36Rz
- uoAL2AQsRYCz5KO1ZIPke7KgSmyXu8xkdQ==
-X-Google-Smtp-Source: AGHT+IGNeAgULU2BF8V8eArv1aKW4fs5Hyfb91+0jO11QQibX1IHYCUrN/++/88ZWr9mq7uyCFTsiQ==
-X-Received: by 2002:a05:600c:358b:b0:40d:5d9a:adc with SMTP id
- p11-20020a05600c358b00b0040d5d9a0adcmr190595wmq.11.1704961273943; 
- Thu, 11 Jan 2024 00:21:13 -0800 (PST)
-Received: from [192.168.207.175] (83.red-88-28-3.dynamicip.rima-tde.net.
- [88.28.3.83]) by smtp.gmail.com with ESMTPSA id
- d14-20020a05600c34ce00b0040e60c00d2csm831061wmq.12.2024.01.11.00.21.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 00:21:13 -0800 (PST)
-Message-ID: <4f73c8d8-ea98-47b0-9296-bd9ccb76908d@linaro.org>
-Date: Thu, 11 Jan 2024 09:21:06 +0100
+ d=1e100.net; s=20230601; t=1704961311; x=1705566111;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=I4VW7Wem0nPmWOFgPwf96jaJPKynpKKnIW6PbXT1Dpw=;
+ b=DlTqNyccP6PMGossJhabKaTTJ0v5FY1IJyGX7633hfCYmcIhDM/t9qFIPSv8Bj8q2j
+ 4vOWOIwuCHZLP26WLxezGlhYoJgnbFW0Kqs+cGrrnDyIYpCVwIb7dEo9xo/kHRPdWoIe
+ s7PrVIgKRodpQMRW2yym5qfN/+TDJs+e063LjkeTXRCEuAc6u2z/kWa9ex4h1C7EdT2s
+ pnL90Nl7ykd3vlVAG8edZHaEGrxgKX4lk5voq8isLl+YfWf484rgZJxWrJi29gdyiU2F
+ SpdY3RcYz3++/PDKvYHZlipvN96riVQyXx3MdwRDV/R7ITL6i6iJy9UPhF+jQE2GxqnT
+ 3EKw==
+X-Gm-Message-State: AOJu0YzNExmvYqOOEKosbKrTN3BOYxUuQEOLGXw4fZDdPLBiR5I5cTx4
+ wL+9zG8k1QQ42LvCT137yeBBc/TFKZHe3B6nsuNzmJKhpuhoKlDCgA+8qeCNjFnsOCBbUDWqxMI
+ BkLrV1PzPERmWaCzqImKbLiniTkpwZr3VvIohPrI=
+X-Received: by 2002:a17:90a:bc84:b0:28d:c79b:6cdc with SMTP id
+ x4-20020a17090abc8400b0028dc79b6cdcmr620651pjr.13.1704961311307; 
+ Thu, 11 Jan 2024 00:21:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHGlNrC+Ls6qQcjasQpi/ZiVo/AGqR1bhnrr6TIva86q+NDYbhIuCb4pyasRhdQ0JN+Fb+EHjHCFLN/Bod5dA0=
+X-Received: by 2002:a17:90a:bc84:b0:28d:c79b:6cdc with SMTP id
+ x4-20020a17090abc8400b0028dc79b6cdcmr620641pjr.13.1704961311033; Thu, 11 Jan
+ 2024 00:21:51 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/core: Handle cpu_model_from_type() returning NULL value
-Content-Language: en-US
-To: Gavin Shan <gshan@redhat.com>, qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20240111064723.6920-1-philmd@linaro.org>
- <cdfc3049-8b9b-4a24-9e0e-8db396acc6c1@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <cdfc3049-8b9b-4a24-9e0e-8db396acc6c1@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Thu, 11 Jan 2024 16:21:39 +0800
+Message-ID: <CACGkMEvPpbCaAt_7PiKnTEEvB+YRVoscpVNaE-sVqZ1EKyRYdw@mail.gmail.com>
+Subject: Re: [PATCH 00/40] vdpa-net: improve migration downtime through
+ descriptor ASID and persistent IOTLB
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
+ leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
+ jonah.palmer@oracle.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,116 +97,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Gavin,
+On Fri, Dec 8, 2023 at 2:50=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
+rote:
+>
+> This patch series contain several enhancements to SVQ live migration down=
+time
+> for vDPA-net hardware device, specifically on mlx5_vdpa. Currently it is =
+based
+> off of Eugenio's RFC v2 .load_setup series [1] to utilize the shared faci=
+lity
+> and reduce frictions in merging or duplicating code if at all possible.
+>
+> It's stacked up in particular order as below, as the optimization for one=
+ on
+> the top has to depend on others on the bottom. Here's a breakdown for wha=
+t
+> each part does respectively:
+>
+> Patch #  |          Feature / optimization
+> ---------V---------------------------------------------------------------=
+----
+> 35 - 40  | trace events
+> 34       | migrate_cancel bug fix
+> 21 - 33  | (Un)map batching at stop-n-copy to further optimize LM down ti=
+me
+> 11 - 20  | persistent IOTLB [3] to improve LM down time
+> 02 - 10  | SVQ descriptor ASID [2] to optimize SVQ switching
+> 01       | dependent linux headers
+>          V
+>
+> Let's first define 2 sources of downtime that this work is concerned with=
+:
+>
+> * SVQ switching downtime (Downtime #1): downtime at the start of migratio=
+n.
+>   Time spent on teardown and setup for SVQ mode switching, and this downt=
+ime
+>   is regarded as the maxium time for an individual vdpa-net device.
+>   No memory transfer is involved during SVQ switching, hence no .
+>
+> * LM downtime (Downtime #2): aggregated downtime for all vdpa-net devices=
+ on
+>   resource teardown and setup in the last stop-n-copy phase on source hos=
+t.
+>
+> With each part of the optimizations applied bottom up, the effective outc=
+ome
+> in terms of down time (in seconds) performance can be observed in this ta=
+ble:
+>
+>
+>                     |    Downtime #1    |    Downtime #2
+> --------------------+-------------------+-------------------
+> Baseline QEMU       |     20s ~ 30s     |        20s
+>                     |                   |
+> Iterative map       |                   |
+> at destination[1]   |        5s         |        20s
+>                     |                   |
+> SVQ descriptor      |                   |
+>     ASID [2]        |        2s         |         5s
+>                     |                   |
+>                     |                   |
+> persistent IOTLB    |        2s         |         2s
+>       [3]           |                   |
+>                     |                   |
+> (Un)map batching    |                   |
+> at stop-n-copy      |      1.7s         |       1.5s
+> before switchover   |                   |
+>
+> (VM config: 128GB mem, 2 mlx5_vdpa devices, each w/ 4 data vqs)
 
-On 11/1/24 08:30, Gavin Shan wrote:
-> Hi Phil,
-> 
-> On 1/11/24 16:47, Philippe Mathieu-Daudé wrote:
->> Per cpu_model_from_type() docstring (added in commit 445946f4dd):
->>
->>    * Returns: CPU model name or NULL if the CPU class doesn't exist
->>
->> We must check the return value in order to avoid surprises, i.e.:
->>
->>   $ qemu-system-arm -machine virt -cpu cortex-a9
->>    qemu-system-arm: Invalid CPU model: cortex-a9
->>    The valid models are: cortex-a7, cortex-a15, (null), (null), 
->> (null), (null), (null), (null), (null), (null), (null), (null), 
->> (null), max
->>
->> Add assertions when the call can not fail (because the CPU type
->> must be registered).
->>
->> Fixes: 5422d2a8fa ("machine: Print CPU model name instead of CPU type")
->> Reported-by: Peter Maydell <peter.maydell@linaro.org>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   cpu-target.c          | 1 +
->>   hw/core/machine.c     | 5 +++++
->>   target/ppc/cpu_init.c | 1 +
->>   3 files changed, 7 insertions(+)
->>
->> diff --git a/cpu-target.c b/cpu-target.c
->> index 5eecd7ea2d..b0f6deb13b 100644
->> --- a/cpu-target.c
->> +++ b/cpu-target.c
->> @@ -291,6 +291,7 @@ static void cpu_list_entry(gpointer data, gpointer 
->> user_data)
->>       const char *typename = object_class_get_name(OBJECT_CLASS(data));
->>       g_autofree char *model = cpu_model_from_type(typename);
->> +    assert(model);
->>       if (cc->deprecation_note) {
->>           qemu_printf("  %s (deprecated)\n", model);
->>       } else {
->> diff --git a/hw/core/machine.c b/hw/core/machine.c
->> index fc239101f9..730ec10328 100644
->> --- a/hw/core/machine.c
->> +++ b/hw/core/machine.c
->> @@ -1422,16 +1422,21 @@ static bool is_cpu_type_supported(const 
->> MachineState *machine, Error **errp)
->>           /* The user specified CPU type isn't valid */
->>           if (!mc->valid_cpu_types[i]) {
->>               g_autofree char *requested = 
->> cpu_model_from_type(machine->cpu_type);
->> +            assert(requested);
->>               error_setg(errp, "Invalid CPU model: %s", requested);
->>               if (!mc->valid_cpu_types[1]) {
->>                   g_autofree char *model = cpu_model_from_type(
->>                                                    
->> mc->valid_cpu_types[0]);
->> +                assert(model);
->>                   error_append_hint(errp, "The only valid type is: 
->> %s\n", model);
->>               } else {
->>                   error_append_hint(errp, "The valid models are: ");
->>                   for (i = 0; mc->valid_cpu_types[i]; i++) {
->>                       g_autofree char *model = cpu_model_from_type(
->>                                                    
->> mc->valid_cpu_types[i]);
->> +                    if (!model) {
->> +                        continue;
->> +                    }
-> 
-> Shall we assert(model) for this case, to be consistent with other cases? :)
+This looks promising!
 
-No, this is the "(null)" cases displayed in the example.
+But the series looks a little bit huge, can we split them into 2 or 3 serie=
+s?
 
-IOW, mc->valid_cpu_types[] contains a CPU type which isn't registered,
-so we just skip it.
+It helps to speed up the reviewing and merging.
 
-> 
->>                       error_append_hint(errp, "%s%s",
->>                                         model,
->>                                         mc->valid_cpu_types[i + 1] ? 
->> ", " : "");
-> 
-> Otherwise, the separator here need to be adjusted because it's uncertain 
-> that
-> mc->valid_cpu_types[i+1] ... mc->valid_cpu_types[END] are valid.
+Thanks
 
-Here we know mc->valid_cpu_types[i] is *not* NULL, but
-mc->valid_cpu_types[i + 1] might be (signaling the end
-of the array).
-
-This seems correct to me, but I might be missing something.
-
-> 
->> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
->> index 344196a8ce..58f0c1e30e 100644
->> --- a/target/ppc/cpu_init.c
->> +++ b/target/ppc/cpu_init.c
->> @@ -7037,6 +7037,7 @@ static void ppc_cpu_list_entry(gpointer data, 
->> gpointer user_data)
->>       }
->>       name = cpu_model_from_type(typename);
->> +    assert(name);
->>       qemu_printf("PowerPC %-16s PVR %08x\n", name, pcc->pvr);
->>       for (i = 0; ppc_cpu_aliases[i].alias != NULL; i++) {
->>           PowerPCCPUAlias *alias = &ppc_cpu_aliases[i];
-> 
+>
+> Please find the details regarding each enhancement on the commit log.
+>
 > Thanks,
-> Gavin
-> 
+> -Siwei
+>
+>
+> [1] [RFC PATCH v2 00/10] Map memory at destination .load_setup in vDPA-ne=
+t migration
+> https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg05711.html
+> [2] VHOST_BACKEND_F_DESC_ASID
+> https://lore.kernel.org/virtualization/20231018171456.1624030-2-dtatulea@=
+nvidia.com/
+> [3] VHOST_BACKEND_F_IOTLB_PERSIST
+> https://lore.kernel.org/virtualization/1698304480-18463-1-git-send-email-=
+si-wei.liu@oracle.com/
+>
+> ---
+>
+> Si-Wei Liu (40):
+>   linux-headers: add vhost_types.h and vhost.h
+>   vdpa: add vhost_vdpa_get_vring_desc_group
+>   vdpa: probe descriptor group index for data vqs
+>   vdpa: piggyback desc_group index when probing isolated cvq
+>   vdpa: populate desc_group from net_vhost_vdpa_init
+>   vhost: make svq work with gpa without iova translation
+>   vdpa: move around vhost_vdpa_set_address_space_id
+>   vdpa: add back vhost_vdpa_net_first_nc_vdpa
+>   vdpa: no repeat setting shadow_data
+>   vdpa: assign svq descriptors a separate ASID when possible
+>   vdpa: factor out vhost_vdpa_last_dev
+>   vdpa: check map_thread_enabled before join maps thread
+>   vdpa: ref counting VhostVDPAShared
+>   vdpa: convert iova_tree to ref count based
+>   vdpa: add svq_switching and flush_map to header
+>   vdpa: indicate SVQ switching via flag
+>   vdpa: judge if map can be kept across reset
+>   vdpa: unregister listener on last dev cleanup
+>   vdpa: should avoid map flushing with persistent iotlb
+>   vdpa: avoid mapping flush across reset
+>   vdpa: vhost_vdpa_dma_batch_end_once rename
+>   vdpa: factor out vhost_vdpa_map_batch_begin
+>   vdpa: vhost_vdpa_dma_batch_begin_once rename
+>   vdpa: factor out vhost_vdpa_dma_batch_end
+>   vdpa: add asid to dma_batch_once API
+>   vdpa: return int for dma_batch_once API
+>   vdpa: add asid to all dma_batch call sites
+>   vdpa: support iotlb_batch_asid
+>   vdpa: expose API vhost_vdpa_dma_batch_once
+>   vdpa: batch map/unmap op per svq pair basis
+>   vdpa: batch map and unmap around cvq svq start/stop
+>   vdpa: factor out vhost_vdpa_net_get_nc_vdpa
+>   vdpa: batch multiple dma_unmap to a single call for vm stop
+>   vdpa: fix network breakage after cancelling migration
+>   vdpa: add vhost_vdpa_set_address_space_id trace
+>   vdpa: add vhost_vdpa_get_vring_base trace for svq mode
+>   vdpa: add vhost_vdpa_set_dev_vring_base trace for svq mode
+>   vdpa: add trace events for eval_flush
+>   vdpa: add trace events for vhost_vdpa_net_load_cmd
+>   vdpa: add trace event for vhost_vdpa_net_load_mq
+>
+>  hw/virtio/trace-events                       |   9 +-
+>  hw/virtio/vhost-shadow-virtqueue.c           |  35 ++-
+>  hw/virtio/vhost-vdpa.c                       | 156 +++++++---
+>  include/hw/virtio/vhost-vdpa.h               |  16 +
+>  include/standard-headers/linux/vhost_types.h |  13 +
+>  linux-headers/linux/vhost.h                  |   9 +
+>  net/trace-events                             |   8 +
+>  net/vhost-vdpa.c                             | 434 +++++++++++++++++++++=
++-----
+>  8 files changed, 558 insertions(+), 122 deletions(-)
+>
+> --
+> 1.8.3.1
+>
 
 
