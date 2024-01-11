@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA0E82AE49
+	by mail.lfdr.de (Postfix) with ESMTPS id B30C882AE4B
 	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:05:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNtmx-0003EP-VB; Thu, 11 Jan 2024 07:04:00 -0500
+	id 1rNtmv-00033R-F4; Thu, 11 Jan 2024 07:03:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtm4-0002qB-JQ
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtm3-0002px-R8
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:05 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtlz-0007Ij-CS
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:02 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40e54f233abso21501625e9.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 04:02:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtly-0007Jj-1D
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:00 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40e5afc18f5so10577985e9.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 04:02:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704974546; x=1705579346; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Np3VcKjCEmoCcQ1sC27/JjnaozcQhcX+4VGjkjhIPyU=;
- b=Fm6SGHQrC1MbNDRTPbmjoH8rDsqJhozLT53Z2n5Ihczo6xJJWHPnjb4eupB6qALs/T
- qmP6+QHFgBnplg8RSm1fRxeR/q0b5v8kXDhGd0FEIL50FLn9ikmCS9Lt0YzOx16GgntL
- 5LJCze9y0+nZOfZXgymt1gkVt50FvnaL0iG4+oDvq0SHApxZykMkpsyeIzcxYVWEONEd
- +QkIf+zoGVKoRpGMBvDg48t+S6JK+J7Wxt4ffz0pa9UUM68nrpIUQoReQEbQ6q1tgvdv
- rRpE+b4+k2HG0ZIaGaJnQfiRa67aSUswMRViaHcIaDziWsU4YIstsHeaSIxISH1h3cb9
- /R5w==
+ d=linaro.org; s=google; t=1704974552; x=1705579352; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4BIuwPbYdxJMB/pV1cRmbXcNLrWs80/U0Lys0z45UQg=;
+ b=j4Nmo328umgO0ft337tUcbwpLadOQftuZn5wcFyxZ+BvxGKYWNj16MDn13oYIfQtQI
+ XP3aKyGUg0iFGi3cPc/KM+0EoDPyYDoMzsSyhpwywBqOYkH/PaJURcB3cNlG6V6AYD8k
+ jZHftEbjt2E1VlUD9Bk2RnR7Bn/VbkUGvBxwbJE2X+qYTnLXzIi1AxO+ZAP1uusD+ZFl
+ gxiAIJnlgpf3z8SJXCQZGkG2+xom6xj12S7WoyfTDRMyAC4wVQ/hgh91ahZKr8g/U0sY
+ mkAGF4081pRzLNxv6E2SYGH53JFSUuYqTTCQKDYNkQxfrpvdd/aMscZ7+8ydf+Guffrs
+ /HwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704974546; x=1705579346;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Np3VcKjCEmoCcQ1sC27/JjnaozcQhcX+4VGjkjhIPyU=;
- b=SwPSW+mUg24tdtdQsHLhy4I2fMVsRp1jeyPyncNuOo2mpTEvUOyimBh8s1TtLTN2+i
- FJW+D0kS1mokaLfQ8ANoHMuoHy3Fp307TIDnDTxpL3YUOjmMbQuw1BdCkcjxyn8eAXRQ
- krKAn7lsvHGkkKny2TV8YcnPCfKU/pXaxvEStHdzuzL+FsldIpsjd/Y8YJUizKgpDofN
- 9dWkHQH1ZYJ8MijJflLF+V5B8tK9F+G71W++dONWeEv6VXF8Cr9THcuNSt/OSbAJ8m/M
- SzXpo8y/wIV6w+VDR5uZMXrZDVESQSgtLAvxCnitNKFKv6LWICiHBSPphcf7TEqDm3LI
- s4gg==
-X-Gm-Message-State: AOJu0YykgNwKGKl4ncShkpeQfiQLZKhOsJ5O86RvIPr7x//KJHIvbbi/
- MPaVUgmgSwZc4uK665w4v4+9fU2tBf1fkv63UkDILOvwntArJA==
-X-Google-Smtp-Source: AGHT+IGW98HvKQmBMk05A28qpHHkj3PVNY44IdoDoGHUxvKU5rKjCPlJBlyDMJB6qIIZkmTH/bQVYw==
-X-Received: by 2002:a05:600c:314c:b0:40d:8590:a310 with SMTP id
- h12-20020a05600c314c00b0040d8590a310mr309464wmo.88.1704974545898; 
- Thu, 11 Jan 2024 04:02:25 -0800 (PST)
+ d=1e100.net; s=20230601; t=1704974552; x=1705579352;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4BIuwPbYdxJMB/pV1cRmbXcNLrWs80/U0Lys0z45UQg=;
+ b=GXxgbThUVufkjqH3rfWdliQKokpsTcWfdtbmjONshPm3rQeEQJ0kjhdK4CLj52fmh/
+ rLym4HQgrRkQQIPjr323FTUPQyYFXgtbavqB3O3X984CXCU4b+fbvv9fpo0gwe1OGCS9
+ gdjlVhu2P3qC/NQpKxC5ymC4mAasSpUn0SOG8Ff7EuieJ7Y+2RSjxt12zZCLfFRZbcbn
+ 5kggRJJs8Ngo+GbPtTgSXUpmULTMB0cPhOHGYXGSWI9WvkhC5ES+EAh5xHw2ghaPkvmA
+ 8dp61oDsojRLGAr/vqVXvkVNhE2Wi/DoVRKTIwhrZy+fYxvCaDG23R650MPp6LF/hqeu
+ Q5qw==
+X-Gm-Message-State: AOJu0Yzafmepi1k+1tqJmzTcKAkl+WswM1egclOJ7ZRy6uYEmjh69IXf
+ nAZYCVpfG6omo8r9ZcA9Xr7vfrVL44fSKuBuriRQnwHIaZG0aw==
+X-Google-Smtp-Source: AGHT+IE+hrlD1H9iWgurMjmKWjTj8HDtEoDAtrB8OJN9xImsPHSOwX/Iu1kp8SYp5MziSOe3lDvjYQ==
+X-Received: by 2002:a05:600c:4ec7:b0:40e:51bc:6b19 with SMTP id
+ g7-20020a05600c4ec700b0040e51bc6b19mr320010wmq.170.1704974552387; 
+ Thu, 11 Jan 2024 04:02:32 -0800 (PST)
 Received: from m1x-phil.lan (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
  [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
- f10-20020adfb60a000000b003368849129dsm1050123wre.15.2024.01.11.04.02.23
+ p21-20020a05600c359500b0040e3488f16dsm1679412wmq.12.2024.01.11.04.02.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Jan 2024 04:02:25 -0800 (PST)
+ Thu, 11 Jan 2024 04:02:32 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -68,15 +69,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/5] misc: Trivial code rename cleanup
-Date: Thu, 11 Jan 2024 13:02:16 +0100
-Message-ID: <20240111120221.35072-1-philmd@linaro.org>
+Subject: [PATCH 1/5] accel: Rename accel_init_ops_interfaces() to include
+ 'system'
+Date: Thu, 11 Jan 2024 13:02:17 +0100
+Message-ID: <20240111120221.35072-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240111120221.35072-1-philmd@linaro.org>
+References: <20240111120221.35072-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,31 +103,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename some code names to ease navigating / grepping
-the code.
+accel_init_ops_interfaces() is system specific, so
+rename it as accel_system_init_ops_interfaces() to
+ease navigating the code.
 
-I plan to queue these patches once reviewed.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ accel/accel-system.h | 2 +-
+ accel/accel-system.c | 2 +-
+ accel/accel-target.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-Thanks,
-
-Phil.
-
-Philippe Mathieu-Daudé (5):
-  accel: Rename accel_init_ops_interfaces() to include 'system'
-  hw/core/cpu: Rename cpu_class_init() to include 'common'
-  hw/s390x: Rename cpu_class_init() to include 'sclp'
-  target/i386: Rename tcg_cpu_FOO() to include 'x86'
-  target/riscv: Rename tcg_cpu_FOO() to include 'riscv'
-
- accel/accel-system.h       |  2 +-
- accel/accel-system.c       |  2 +-
- accel/accel-target.c       |  2 +-
- hw/core/cpu-common.c       |  4 ++--
- hw/s390x/sclpcpu.c         |  4 ++--
- target/i386/tcg/tcg-cpu.c  | 32 ++++++++++++++++----------------
- target/riscv/tcg/tcg-cpu.c | 28 ++++++++++++++--------------
- 7 files changed, 37 insertions(+), 37 deletions(-)
-
+diff --git a/accel/accel-system.h b/accel/accel-system.h
+index d41c62f21b..2d37c73c97 100644
+--- a/accel/accel-system.h
++++ b/accel/accel-system.h
+@@ -10,6 +10,6 @@
+ #ifndef ACCEL_SYSTEM_H
+ #define ACCEL_SYSTEM_H
+ 
+-void accel_init_ops_interfaces(AccelClass *ac);
++void accel_system_init_ops_interfaces(AccelClass *ac);
+ 
+ #endif /* ACCEL_SYSTEM_H */
+diff --git a/accel/accel-system.c b/accel/accel-system.c
+index fa8f43757c..f6c947dd82 100644
+--- a/accel/accel-system.c
++++ b/accel/accel-system.c
+@@ -62,7 +62,7 @@ void accel_setup_post(MachineState *ms)
+ }
+ 
+ /* initialize the arch-independent accel operation interfaces */
+-void accel_init_ops_interfaces(AccelClass *ac)
++void accel_system_init_ops_interfaces(AccelClass *ac)
+ {
+     const char *ac_name;
+     char *ops_name;
+diff --git a/accel/accel-target.c b/accel/accel-target.c
+index 7e3cbde5df..08626c00c2 100644
+--- a/accel/accel-target.c
++++ b/accel/accel-target.c
+@@ -104,7 +104,7 @@ static void accel_init_cpu_interfaces(AccelClass *ac)
+ void accel_init_interfaces(AccelClass *ac)
+ {
+ #ifndef CONFIG_USER_ONLY
+-    accel_init_ops_interfaces(ac);
++    accel_system_init_ops_interfaces(ac);
+ #endif /* !CONFIG_USER_ONLY */
+ 
+     accel_init_cpu_interfaces(ac);
 -- 
 2.41.0
 
