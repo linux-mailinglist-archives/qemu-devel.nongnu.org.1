@@ -2,73 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C173982AECD
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:35:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9FD82AED6
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:38:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNuHJ-0005qc-TE; Thu, 11 Jan 2024 07:35:22 -0500
+	id 1rNuJV-0000Uh-61; Thu, 11 Jan 2024 07:37:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNuH1-0005Wt-4I
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:35:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNuGy-0006MX-0x
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:35:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704976498;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cCoAI8KxMdLfNcMwvhgWEu+8HfOlFYH1qErLIwRtpAU=;
- b=i0OKTITV8dFPopMcCms1Kvh1neI87Uph8cFFZ5AoRkTwJHV6V+7fiQBnba3t3COVeRwt52
- hB53Wca3UKUmVup0kQtcebqdvA3I529ez6tVaqnb9VlQU9UU3tm7Ph1vKLpKsk/YVnp8uF
- rNpiTf87ny/lkRyuJGOvaJrXUlmGo3Q=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-134-zxXgXFebMnSrxiBZ3QxPzA-1; Thu, 11 Jan 2024 07:34:57 -0500
-X-MC-Unique: zxXgXFebMnSrxiBZ3QxPzA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 17FEE85A589;
- Thu, 11 Jan 2024 12:34:57 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E9186492C2E;
- Thu, 11 Jan 2024 12:34:56 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E58BB21E6682; Thu, 11 Jan 2024 13:34:55 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rNuJS-0000TD-Ei
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:37:34 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rNuJP-0007oi-AA
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:37:34 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-33765009941so4163443f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 04:37:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704976649; x=1705581449; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XjWVrWLBuhexZhNzqcbaaji/ra/r9VF4ONEQ8D3AprU=;
+ b=yZPFGqiG0LI22OIAHxdFL4L3OmR4S2CrjvWBlKI+K/0v9jcsu3pm98uAQeacvUg2iO
+ DH7debgPOPf0me68Mg8XrFdGbKQ7/nsMX1i2/Yz7by11zeO5Mb+H1tvkrVQnYY8uEJMq
+ j7ST5pybWNG4ePsbLSBLXaEwVsrEDNe+Ysk31LNP72njLlHxDGSZCF80rzo74lSjd+4p
+ kDnRjNNGDuGea4TgGPBj+KiNuWAmxic3QFG1LhK/ZbasZGpb8wH94i5isI15f+uLoVCK
+ +9jVKJgkCzBNjukZSwL04lr3yBEQlZttXgM7A32shgJn04hWQFUrNzwz27/5I8EY7yoF
+ sF8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704976649; x=1705581449;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=XjWVrWLBuhexZhNzqcbaaji/ra/r9VF4ONEQ8D3AprU=;
+ b=YM1PGlP3/Enn39OEW2gk0yjItQAhgPC6fqlT0y7glHh/ZfILCy6XczOG7pibGC2zLB
+ 12ncqW0wFkINgkTFesywSgmbOEO2Tk961qi2oJnWidIAH/MmQzZMCnxJTCGnD02INP8+
+ 6QgIoErpzPBLJL43AdaKTrXYrDxlZzN0AbmZd/7/e0kUVfs6SQaAAqkbPwfGySVYDDJ+
+ 1tK85jRRBcrcTn//SoU0N60zqBAIzqddMXLiKXiQ0cGj4yE7fsB4Xu7lkRoydu7F13tc
+ NJPDpxom/RM99tUSSbz1t3xaljWh/fZqfSmrFpwaj3tpl1l4sA8aYcAe1dL8wyRAEWPq
+ ttwg==
+X-Gm-Message-State: AOJu0YxKm5r7hyrJVOskm9lkaogTgisvkKb1pwO+pvYcbghO77Mmy1fz
+ xoH1wk9j0NGMUKG542xm93kMrg/toe7DBw==
+X-Google-Smtp-Source: AGHT+IFZRj0uozQ33Kz3/zEEIWAh2I8FM6ycWyYCYl25J9YmcIK8POHwIM0XSklNJwKChNuv51rsAg==
+X-Received: by 2002:a5d:4d84:0:b0:336:6dad:2c71 with SMTP id
+ b4-20020a5d4d84000000b003366dad2c71mr672153wru.111.1704976649448; 
+ Thu, 11 Jan 2024 04:37:29 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ l4-20020adffe84000000b003375cf3b17dsm1130163wrr.42.2024.01.11.04.37.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Jan 2024 04:37:29 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 93E4C5F7AD;
+ Thu, 11 Jan 2024 12:37:28 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Stephen Brennan <stephen.s.brennan@oracle.com>,  =?utf-8?Q?Marc-Andr?=
- =?utf-8?Q?=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH v2 1/1] dump: Fix HMP dump-guest-memory -z without -R
-In-Reply-To: <20231222093827.951039-2-armbru@redhat.com> (Markus Armbruster's
- message of "Fri, 22 Dec 2023 10:38:27 +0100")
-References: <20231222093827.951039-1-armbru@redhat.com>
- <20231222093827.951039-2-armbru@redhat.com>
-Date: Thu, 11 Jan 2024 13:34:55 +0100
-Message-ID: <87cyu8vyj4.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+Cc: qemu-s390x@nongnu.org,  qemu-ppc@nongnu.org,  Richard Henderson
+ <richard.henderson@linaro.org>,  Song Gao <gaosong@loongson.cn>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  David
+ Hildenbrand
+ <david@redhat.com>,  Aurelien Jarno <aurelien@aurel32.net>,  Yoshinori
+ Sato <ysato@users.sourceforge.jp>,  Yanan Wang <wangyanan55@huawei.com>,
+ Bin Meng <bin.meng@windriver.com>,  Laurent Vivier <lvivier@redhat.com>,
+ Michael Rolnik <mrolnik@gmail.com>,  Alexandre Iooss <erdnaxe@crans.org>,
+ David Woodhouse <dwmw2@infradead.org>,  Laurent Vivier
+ <laurent@vivier.eu>,  Paolo Bonzini <pbonzini@redhat.com>,  Brian Cain
+ <bcain@quicinc.com>,  Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Beraldo Leal <bleal@redhat.com>,  Paul Durrant <paul@xen.org>,  Mahmoud
+ Mandour <ma.mandourr@gmail.com>,  Thomas Huth <thuth@redhat.com>,  Liu
+ Zhiwei <zhiwei_liu@linux.alibaba.com>,  Cleber Rosa <crosa@redhat.com>,
+ kvm@vger.kernel.org,  Peter Maydell <peter.maydell@linaro.org>,  Wainer
+ dos Santos Moschetta <wainersm@redhat.com>,  qemu-arm@nongnu.org,  Weiwei
+ Li <liwei1518@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, John Snow <jsnow@redhat.com>,  Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>,  Nicholas Piggin <npiggin@gmail.com>,  Palmer
+ Dabbelt <palmer@dabbelt.com>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>,  Eduardo Habkost <eduardo@habkost.net>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,  qemu-riscv@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [PATCH v2 00/43] testing and plugin updates for 9.0 (pre-PR)
+In-Reply-To: <20240103173349.398526-1-alex.bennee@linaro.org> ("Alex
+ =?utf-8?Q?Benn=C3=A9e=22's?=
+ message of "Wed, 3 Jan 2024 17:33:06 +0000")
+References: <20240103173349.398526-1-alex.bennee@linaro.org>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Thu, 11 Jan 2024 12:37:28 +0000
+Message-ID: <87cyu8f3lj.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,35 +120,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Any takers?
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
-Markus Armbruster <armbru@redhat.com> writes:
-
-> -z without -R has no effect: the dump format remains @elf.  Fix the
-> logic error so it becomes @kdump-zlib.
+> This brings in the first batch of testing updates for the next
+> release. The main bulk of these is Daniel and Thomas' cleanups of the
+> qtest timeouts and allowing meson control them. There are a few minor
+> tweaks I've made to some avocado and gitlab tests.
 >
-> Fixes: e6549197f7ed (dump: Add command interface for kdump-raw formats)
-> Fixes: CID 1523841
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> Reviewed-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> ---
->  dump/dump-hmp-cmds.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> The big update is support for reading register values in TCG plugins.
+> After feedback from Akihiko I've left all the smarts to the plugin and
+> made the interface a simple "all the registers" dump. There is a
+> follow on patch to make the register code a little more efficient by
+> checking disassembly. However we can leave the door open for future
+> API enhancements if the translator ever learns to reliably know when
+> registers might be touched.
 >
-> diff --git a/dump/dump-hmp-cmds.c b/dump/dump-hmp-cmds.c
-> index b428ec33df..d9340427c3 100644
-> --- a/dump/dump-hmp-cmds.c
-> +++ b/dump/dump-hmp-cmds.c
-> @@ -41,7 +41,7 @@ void hmp_dump_guest_memory(Monitor *mon, const QDict *q=
-dict)
->          dump_format =3D DUMP_GUEST_MEMORY_FORMAT_WIN_DMP;
->      }
->=20=20
-> -    if (zlib && raw) {
-> +    if (zlib) {
->          if (raw) {
->              dump_format =3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_ZLIB;
->          } else {
+> v2
+> --
+>
+>  - Review feedback for register API
+>  - readthedocs update
+>  - add expectation docs for plugins
+>
+> The following still need review:
+>
+>   docs/devel: document some plugin assumptions
+>   docs/devel: lift example and plugin API sections up
+>   contrib/plugins: optimise the register value tracking
+>   contrib/plugins: extend execlog to track register changes
+>   contrib/plugins: fix imatch
+>   plugins: add an API to read registers
+>   gdbstub: expose api to find registers
+>   readthodocs: fully specify a build environment
+>   gitlab: include microblazeel in testing
+>   tests/avocado: use snapshot=3Don in kvm_xen_guest
 
+Ping for final review? I'd at least like to get the testing stuff
+cleared out of my tree.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
