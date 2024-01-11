@@ -2,124 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F3582AEFF
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D65782AF00
 	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:55:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNuYo-0008K3-Ls; Thu, 11 Jan 2024 07:53:26 -0500
+	id 1rNuYy-0008LS-Pl; Thu, 11 Jan 2024 07:53:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1rNuYh-0008JB-OY; Thu, 11 Jan 2024 07:53:20 -0500
+ id 1rNuYu-0008Kl-Ul; Thu, 11 Jan 2024 07:53:32 -0500
 Received: from mail-am6eur05on20701.outbound.protection.outlook.com
  ([2a01:111:f403:2612::701]
  helo=EUR05-AM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1rNuYe-0007Yv-85; Thu, 11 Jan 2024 07:53:18 -0500
+ id 1rNuYi-0007Yv-Tc; Thu, 11 Jan 2024 07:53:31 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IV0x/rLSeiNWJKFPATXOAYVdSPRavHmAN7UED4bz8bcucUH1p0s2NYKnDHoe3jhGVRl6XFRPTSxakTeQLTFdpLX2lLWBACITmJdvDREDhizRpBefE1KwGlKsreXZqBbUb2Ob5wRiOXVAVXbeitiFt8nE0mJWMnDC1NQ9ZwZzAc1F0Mq52GMAUhwI98MCE3U2EwCtss0ghz9HAeBOl5cvGDkfb/w6wTzYSLhZNscNkhUoM1hluLkC8XvP7CI/82NRUUIz8WVhfjusrWQFKVocP0CxeeZyDQRowv1hLbPuUtpa1r8ZEDrYaOaD+oWmKmJlb3jKSOlI9H0XCZClqJl25w==
+ b=eCIWF7/rRCEqWbcbMWzg60mPS+P2fWpPF4XZMVxLS/X9IlhEETZdQ+HDNbpSu5HNyy0ISFQoRnxWNKsdKDxfANMY97P63vbfnMTo4mGg6ZTmoRUOghXVXUYoF27TKFyZhdeiiiPIOOfNsG0GwqJa85ds06ba62JSjhu75KgfaBHe+gv2CN6VUbpz4sI/Ouqu34Xulb1MLufQxkzEYcgkTlhvweB6UilguLWSfxpjR6B949jAzwm4p81tL9Qsg7w7OaNq0Qx7idOFmUXYaE7E1cLoH6taOJRhT++JBcJBbny6Chc4DMVDq5/QR0ji/BgyxOQq7vwoXxoT+NICT1BhsQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L/PJW9NDBCQOoZzrANVZqCkblJnqEmnyG5QIqCrSDSo=;
- b=DAgzxKpge3bg+8hyQCaUVkmN6bLQncssULSftOiKTywsMm+ByxlR9NL03hurJ7PcbErNC7chWlIZPjtDLXkxg86/+5c8J7lS2NvP3we71OpSl6bouDoNc4ahmM2n0xJCAb2QQ/1XKFcilXIoLcGymHkoaVsZC52j8CrExO/bnNyOwbsfmn6vZ78iADKGXAObU/+DRNmVf79KF//W4y6IJo8CaSWxx3wn4VBDMgCUbpqoifCSTnCv43xXisdM5jGOTJRMwqSSHhFwYFHfvBl084QRdqIfkEjBWQDTXuI6MrIacKQoJzyKM85czT6mcKq+DFTQ2nLJr/0wdugSKckZZg==
+ bh=DOden6J9BppNg3FeEgsJhjwVbyhcxE/C8/znp5JRy+4=;
+ b=F9Sm7PbPtz2CmXyOccF/I7WLP1l1c5ZxdR56Mr+anVhDcwYrrDmboqg7qmCtGwQm6W73Kcu/UuwqCDRVPMWjBeGiHQc3ESkJY2ltflSXW51EpymQZftZfNjTeXbXFMdtJatuRsnRajC4vpv0ZZ4YYnvS0EuPvi8/0LJOr1wQq8B/vPVJ/DuK+56eD3iIdsaLQ1s4+iAv3bdL3izkGFiKf3Ls/VMo00gBtZwCSxVZqk7MJII8+GGbX4gsjI0dCC3ierPIHsi58mhd636FPzac/encezHep8ymQF5muUzTbK45KWxLGjHZ1Rclkwb7F07UK8b5zPFbIV7vIWHmuowRVQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
  header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L/PJW9NDBCQOoZzrANVZqCkblJnqEmnyG5QIqCrSDSo=;
- b=WsPhFI4fLQscW7K3AAD034FS/skb5Cn+kdr8w8i7QLovBNxxOQdmCEher3aVFcoNuflL251l3Gw1XBdjNITttX5LE3vRVydwXP2cfR/cZJcidOpl2DQkqBvuFq4egYtK/Y3gnGRqnL23rMh14citr9b0TDHfVfKT7G7+MBXCJ9CiCVf+juzTW0VlIyKxokfNhA/b6j5TM9ti/0p/aj05SCGDC4uuwRTTFbVdU+Zgem0nBu2ZmUolixvPeCA6IgdfRJx21SG6e9zooNq4H6xeyIDDtUjCD8J08c6yaAFb98miYuaPSAGy7tB2u2lB3B4RUMhXlYWgCPJ8NIzMN96o0Q==
+ bh=DOden6J9BppNg3FeEgsJhjwVbyhcxE/C8/znp5JRy+4=;
+ b=Z2Zyz+O0v2Z4MkDEvfne9FmK2wPsFObXFpsYNVhSbIpGSiCNs+lyTqVx+1vxCebqwPgWMyzf/RTZOld6e9j075eRjQ6ZHITS2hWHEzuMI2tITsQ5zUtKD9Y5c+LVBzS/CTwPMy1C16OORWbUdOE5fQk66w5cMy0UXKyzxkiLukc9Cb/o3YpRqvtsH20zGZDMv1wgaRcnB5iyIuU5zdnRs7ID+oZJxPUT7p9XwiVHSn8A0m0Ysbe3bg92kNaKe2nndEPz0YxjDnxYna6YAvMD29rayxZQdfRj8qI7zI4waARbbWAtT+DShRllpWOswCgTlZv5vX5POmPR8nVtTr0ZjQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=virtuozzo.com;
 Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
  (2603:10a6:800:20a::12) by AM8PR08MB5634.eurprd08.prod.outlook.com
  (2603:10a6:20b:1d1::18) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.17; Thu, 11 Jan
- 2024 12:53:10 +0000
+ 2024 12:53:16 +0000
 Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
  ([fe80::4e27:1464:bac8:f696]) by VI0PR08MB10656.eurprd08.prod.outlook.com
  ([fe80::4e27:1464:bac8:f696%5]) with mapi id 15.20.7159.020; Thu, 11 Jan 2024
- 12:53:10 +0000
-Message-ID: <cfe9a043-43c1-4054-bc99-5576cd0c34e7@virtuozzo.com>
-Date: Thu, 11 Jan 2024 14:53:11 +0200
+ 12:53:16 +0000
+Message-ID: <78ef37d4-a4de-4481-8630-26ae9bbcdb63@virtuozzo.com>
+Date: Thu, 11 Jan 2024 14:53:18 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iotests: don't run tests requiring cached writes in
- '-nocache' mode
-Content-Language: en-US
-To: qemu-block@nongnu.org
+Subject: Re: [PATCH] block: allocate aligned write buffer for 'truncate -m
+ full'
+To: "Denis V. Lunev" <den@virtuozzo.com>, qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
- den@virtuozzo.com
-References: <20231211133223.695048-1-andrey.drobyshev@virtuozzo.com>
+ vsementsov@yandex-team.ru
+References: <20231211105559.316897-1-andrey.drobyshev@virtuozzo.com>
+ <c197c97a-e296-45fb-ad8b-5ca5dff81ca8@virtuozzo.com>
+Content-Language: en-US
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-In-Reply-To: <20231211133223.695048-1-andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <c197c97a-e296-45fb-ad8b-5ca5dff81ca8@virtuozzo.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-ClientProxiedBy: FR4P281CA0123.DEUP281.PROD.OUTLOOK.COM
  (2603:10a6:d10:b9::15) To VI0PR08MB10656.eurprd08.prod.outlook.com
  (2603:10a6:800:20a::12)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AM8PR08MB5634:EE_
-X-MS-Office365-Filtering-Correlation-Id: e2dbdb50-d7d7-45f4-9dea-08dc12a443cd
+X-MS-Office365-Filtering-Correlation-Id: 9997bda7-744b-45c5-cd7c-08dc12a4475e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: JxzQ/19k1VV7dlWBN1txV3uVAcjVLGkUiQ3utBQsyh+tGa+cgxjFDW74AQtzqgHTK8fMtsmJSUHrfwLbOGscsBVGRwXvzPuZQ3YtJptalUobH/Td+QbE90TZzoRz3xKafr5L097TowRs2NTOEWWHUBGU9MXG/vd6xaomiSOzD9pyaRt3r44NJJulU2/37C/ysfo/P4xt3ZlojfRoc36bCzDPpewVo1Hc0Apn+Tm4/Bl56pxGIVJsTzDAKXVnePHmiu85ltWpJRJMEKdYK8TXU4eSPx4nxEkHhUF2ZLuFjfE4wbN8ejtCVfSdE6PjJMv6t3IVT+t2UeZIeXdeom3bRTPO2RJV4vJEX08bRqiUmYxqqdHW+lCeOYcZws38yQU3cAI0UWbo8WGr27YMWWv1+NZnGXFHrsZKczSXWbwcZOyl+TirEovqZMIuI0S/+QIF/tj8WCUdYv8Iiy3eFIKypLkThoqjb4E2uDmJH1vigMmRjMGOka5mxbhQn+BiwRodzsW/4dSeECepteir+0bsdjTwrCLyKt2W53l6oHhoham+tzHO5Xj7jGeTGk8VEI+ZkJ+vOdQdj76etyogvkeAruFe/6NUuNLitlTS6qgLNBXOrPHaG/bld69kb/8puD8yw6+1WUdi94G0SQvmbuPmTw==
+X-Microsoft-Antispam-Message-Info: wrZQ1H7T9cYYVnWHwOb2O7p1PMaBIDQ2RlUub82MmhgFj5TO3kVHg01/9i3ru+OY3zyj5BFJkodCY5zWHVOFEQvgybbgvOinqDKP9Lsv+OXXFyCLb+sDxwi74qpUkGYYS960f3++3V9EumI5EHRszPtTM87khEi4sk2Ln+7Tj2iruLyM/fFh3dVTurNUD20bXa9ly7RoslgFyvIf33cGcXfC63Vr0r4d3IyQyTbw6ja6MEdetrx5aN1r1rZa2K8d4VZOowijzo9zRaoHkuqiV8xtq5sSsR6R0Va6IMnDje9a/azC4xw0Q/wr8yjFO73KVhY0jKDBG3IZlz5KhNsGKA0Vsy6AeLSqrydcooRK6KdSzh9/hQWsRZMfhLpb7/FUvtWHVafwVmmKhGjRdmJKPX6LegGUsGvVym+3jG/Cnsoa23gD38ltXNvCt5N15YJ3qlhiFHhp/kPVjpljpaP0KmWhHFeL4mz1eYJcT54LJnM/g5KWC6ZUCFaMGDi17DH1fgyCT0x0IMk4KgfDp25TOVheA5l12g2w+YILmdnboQ1eMKrsc2B4j/8feRFDfAgQkPI/0sO2P/CaYSs4JOTJl9cazb07eczvesrlLeYsHZtAa5VlAMSGktLCs47VPo3XQHQS6ccEoqlx3Onjal6CLg==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:VI0PR08MB10656.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(396003)(136003)(39850400004)(346002)(366004)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(966005)(38100700002)(478600001)(83380400001)(86362001)(316002)(66946007)(66556008)(66476007)(6916009)(31686004)(6486002)(31696002)(53546011)(6506007)(2616005)(107886003)(26005)(55236004)(6512007)(4326008)(8676002)(8936002)(5660300002)(44832011)(36756003)(41300700001)(2906002)(45980500001)(43740500002);
+ SFS:(13230031)(376002)(396003)(136003)(39850400004)(346002)(366004)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(38100700002)(478600001)(83380400001)(86362001)(316002)(66946007)(66556008)(66476007)(31686004)(6486002)(31696002)(53546011)(6506007)(2616005)(26005)(55236004)(6512007)(4326008)(8676002)(8936002)(5660300002)(44832011)(36756003)(41300700001)(2906002)(45980500001)(43740500002);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aDl3K2RDT2RkQ0kzK3hYSzMybTc2NTJ1aE5BeUdCbDdQWmxEZmExRjN0d3BC?=
- =?utf-8?B?N3c2YjdiRWsvNkZFcjVrSEpWL3hsZUlpVkk4TzlReERNUDVTejlRRngycTJj?=
- =?utf-8?B?SWhoTW1paDFGalk0NnZVeGYrdEdNcUxWWmR4RFR3TkRUKzlFcWxHamViU0g3?=
- =?utf-8?B?NTZYeXM5Sjk2RzQrWDhEYnQ2cXZHRVB2MzZkVms5NkM1SVhyekg2RVhaclJP?=
- =?utf-8?B?bXduYjBmaFkvRHk1UW5uM1BxN2hkNFh5c080SjlOSzNkZ3hZS2FjQk9Oc01O?=
- =?utf-8?B?SlBNZlZoUXMraTdPMHFFaHI5QXU5L1FYdHZ4dXM0eE9FNVIzNkEwZTUyQnc4?=
- =?utf-8?B?Q3JmdW1KNDlYYmFZQ0JodzdDYTVYcG9HUC90YTBiS1Nldk9VUHljVGhnRUJ4?=
- =?utf-8?B?bHMzMWVWYzEvdnBLMDhKL29uaWxTMituY0pFdnFpRTZLU2tqTWpXWDRqSGkz?=
- =?utf-8?B?T09CRDRMQTBXMDNTdVdkdUVUY2ZiNU1icGdvdHgvNFIrM1lHQmlvTjNycXNW?=
- =?utf-8?B?eFIvdjUzdXkvSGU0RlNCNUlMVHRVeGRFQUJYQXd2RGZEMDJ4OVJmMUdxUlZH?=
- =?utf-8?B?K0I0ZEJTSDdpdEt6YlF1dXN4YVdjZ2pEeG5tV1FMUzIzVDBTR0dBN1dYcWt1?=
- =?utf-8?B?dHNEa0JIZG1WWW93MXpyMlhrWkJjVFZSMEE2MzRreXFMbXVZRDlIcWZSaC9C?=
- =?utf-8?B?WFQ1NFo2TzhTSHBwT2oyaUppaHdyRDNVY1psNFFlZW1yc28vYUc0MFFzMlBl?=
- =?utf-8?B?b2UyQ21wOFhNN2p5cDFYdG11dHJnT0FmUjhkcjRtMjZkYk1RcjNPblh1RitS?=
- =?utf-8?B?eGVqR2Z0VGF3azI2N0hNVVhNMjFsUEU1WFBPa2tSNmFIcjVwYkd1RlA2Z251?=
- =?utf-8?B?dE5RWnQ1Y0wvWllGUVp0WEVSbnNPWHhhN0FkYkZhdkJHZjFNSGYvYmh0My9v?=
- =?utf-8?B?Ky9tTkZ4aWd5am9sWFFOcTJxN0lhUzFqdzJxSEJxSHpiUzEzRkdnOG8rWjFT?=
- =?utf-8?B?clY1UVhCNEhpU3IybEVnOGdLbEYzaklEcWhTRTgwVHhTS1BDRWQrYi9oN1FN?=
- =?utf-8?B?d0ZVNWxrTlN2NWRMTUREd0FsKzkvY05KK05oU29wMytwUkVxRll3bW9LRXp3?=
- =?utf-8?B?dWVtSWFPejhveEk2ZXpxeWdvTGoyM3M1eDNjWHFZRFpMQmt2QzF4K0pkMTRY?=
- =?utf-8?B?TXA2MWhGYmYvVkpORDAxYmRjQWU1Vk9hUGNVZGkyK3FWYml6MG9qQ3RkVVdt?=
- =?utf-8?B?bVJEaXozWU1BMVpYOUtWQUtyY0U1a0M5eTkvSGRETDdFakIrUjYrdS9mV0lO?=
- =?utf-8?B?d3NKWHZBNTZOd0NjaXRFUnM5ZXlEaEF2Z0VwRWFMUGZyUTYrMjB3a2p3REJo?=
- =?utf-8?B?Wmd6bXlxaEN4dTBaSVJta3k5a2RHWCtDQ0g4WDErTk44L1F0cHFYaDJoQmtN?=
- =?utf-8?B?RmE2d2hFMWhiUlJpa3NIWU15TlB6Z2NBZnlJeFg0OFMyVXBUREZVTTkwNWF4?=
- =?utf-8?B?MllTdFVmUzhlV3h4YUtTcmZPYjlEZUVwRklaRkE4OVEvcSsxR3g1NlZ3SXIz?=
- =?utf-8?B?WnoxYmZldy8yeUlzNXppRHBPOERnbHJvRlJJZEgrK3VVdktuTEVKeGJnTUNQ?=
- =?utf-8?B?ZVJPS2xIYTlpMWh0dWxzeEovKzdXNEZnVXVyN2lsa0NFUnFQeWExTHN1RGVN?=
- =?utf-8?B?cGxqdEZnVWQ3WGxSUENGdVBnZGNneVdXNVFZN1VPMkM5OEcxV3dRbWRJTU5O?=
- =?utf-8?B?QXFmcy91UStUbVl2NUhnSE11eko1YTRYUld2b0V0dVA1VFVsQXdyT3VTM2Nn?=
- =?utf-8?B?QmcrSlM0SDU4cHlpQTFhT0ZsVG1Rc3J6T2hPdVpwNC84cldxdy9VOFZiZDE1?=
- =?utf-8?B?SWlLdE05aGxjK3hiSERIQkRzbGkyeFN6K2lXL1JIaVYyUkMwU1BxUzhES0hz?=
- =?utf-8?B?RkFxY0xPWitZdmREemJQc25aSVF2ZHM3MDQ3MnVBNk9KSm96TVNUTkJSWWk5?=
- =?utf-8?B?UFpDSHUvZkx4M2RicEs2Y0RsdE1PdkpjS3lPaEtMdG9RZG16M2FSRCtmNFpw?=
- =?utf-8?B?QythTU8xaHRIcGNUdEQyUm90YW1SWjhUMjIwUXZ2RjM1Q2NKZlBpYTR6RmdK?=
- =?utf-8?B?NUoyNGRiSUNhV0tiaWlvNUZTN2FTRHdyNnNJREoyaDBYL0NzZERxMy9VV0hz?=
- =?utf-8?B?YkE9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L3RHK0U5Ti9lcXhnUGFwejJwc0FRWUpkbHZQYThQeVV6VDRRZnppN3NHTzgr?=
+ =?utf-8?B?aFUwbm9OY1BETnRucDg2cUJ4YWxnY0h6NC9tV1djVXM0cTJZZ0xub0dPYXN4?=
+ =?utf-8?B?ekIvd2xPMzVHR1VjVHE3T2lsamV2VWdSTHdyenE4S2VOK3dldmxGRGxYZnNt?=
+ =?utf-8?B?Nyt3V3Y2d01URXB0bUV5aWRaMENlV3MyQzZVc0p5NDAwcUxTMHZMSlpnR2pZ?=
+ =?utf-8?B?S1RHVjdibEU5d1U3TDJIRWxRVVpncEF0eFhwVGc4VkJYc0doVEJQOTE0ci9T?=
+ =?utf-8?B?TFRLTldNTUVueWJnUmxoVFQ4N2luMFFNQlM4THhpYUhKcDlFV0p2NDk3RXcy?=
+ =?utf-8?B?QjBkK0tweHRTRzE2WXRPNEl0NXZxQmduSm8wK3NZTGVBSHhGK1RKSVdadkMz?=
+ =?utf-8?B?cTR0Y3lTa3hFQldCWjlKMXN2cXJHSCtOZkxJWnJ6WXRyeVQreXdncUx0aHE2?=
+ =?utf-8?B?dzhLVU5lWFJ5M0RrTFNwQXdwOEYreEZsMWNsSDNFTkNNTHhWK3hrWTRyZkky?=
+ =?utf-8?B?UHA0M1JQclZXb0sya3QyYmRraTdCR09aazVBeDhjNU9kOW12WWtQRFVidkJu?=
+ =?utf-8?B?ZkxHeks2enRvWGgwdnNiR1p5ZWExdkpnUTBJOTRLYmYvcHdFOHozekhDczRN?=
+ =?utf-8?B?Zy9ma1JEVFQrci9iUVlzRTNvelkzSHMxdVdGeVFydFo5TWdhdS9oamtTNU84?=
+ =?utf-8?B?YTBKRDRFeGVHTnRUWWp4T2RtaU5jUzN5cXlOSWZQV3A1cGZhL2t6TGhRWjl6?=
+ =?utf-8?B?Z3d4QXJvQXM3NEcwajlBQ1JVQ2VBeGNVQVluVGxBN01nQXlJYVVjYStmekdw?=
+ =?utf-8?B?TTY3bklTYzhaeTAwSWlLL1BhWUJBTnYySWpRQ1k1WHAvUEcyZlVUTXZiV3Zz?=
+ =?utf-8?B?MllNYTEySzlQcmhlaHROTVlVT016Zk55ZUljajFoMzNKTTVOelcwNHdpUlpY?=
+ =?utf-8?B?MlFtRG1yMSs3Q29oR1IyRTBaUmdkL1ZlejN4SURCRS9kUXlwRjRidWE4SHFV?=
+ =?utf-8?B?RjJXdWc3RlhaaUNTSVEwTGE0UFpvTHd5QzRlM0QrbzVNWG82MHRiRDlVUkdp?=
+ =?utf-8?B?T1VuSEdIemtzaEJWSTdKTWdYMy82VlJLdGEvcE9jYk1VaTlsdHowM3F1aDl4?=
+ =?utf-8?B?STJvR2p2MmczbXhzWUdZV2xNek5uRWZTQm5Hcm1uKytYN0F6TDZYRHdLNU5z?=
+ =?utf-8?B?N0JDQmpWSTVRYkV4ZnE5ZE81LzlaS2h0c3dRRHkrcEhraHlnVFV4QWk2dUMx?=
+ =?utf-8?B?ZjJzMS9rc0ZGc2lkNEh1K0k2YUhnbTRNWjcrSytaTDBPa0hTeUpqN3ZZWUxx?=
+ =?utf-8?B?dWFDUFBNaERIRlBhNnpLeW8vMmlLWnhQYTBmVDNzeFEvUzM1Nk15ZE9zSnhU?=
+ =?utf-8?B?c0dFNnozTzNyaXpyRmM1M1B3SXMwTW9Ec3p3eVFYdjdvWGFkNEdRSXh1Nngy?=
+ =?utf-8?B?Z0h1eW10N3phUENrNElaeWlEQWtFS1RNb2xmajUvSWpZV25DMjhaM0V0RnNn?=
+ =?utf-8?B?SEs3SlE2WjkrTzZEZ0hweHFQVGJ3dmJvMFRjRGlFMENwQkpRQWlhRzhnazFn?=
+ =?utf-8?B?UU1hcjNvdW5FYTZLZDhUSnhkM0paNFFSZXBqNkUxclp4UXVzb3RnZll6Wms1?=
+ =?utf-8?B?ZjR2TW16dCtHdFA5Skg4bU1LeGMxN2Zmb1I5Y1oyTHFtT2pMRTk5R3hsekYr?=
+ =?utf-8?B?VUlNTUZKMEk4eVZWeU5WS0RsK1k4WTR6VFMyTEhCM2NSYTNpSkZ4REVGME1K?=
+ =?utf-8?B?WEpreVp0MWwzbFpSMVYrZ0MyRjhKZ3VBbEc4c1FSc3NENXF5d0xPN3FaVWpG?=
+ =?utf-8?B?WFo2bW1hR2JCdWdzWWxsRXZGL0Qyd3g3WC91aGs3dm1QVDZXQytIbDJsa20w?=
+ =?utf-8?B?QkNVT0JwTHJNdXRBREEyckZEOXZsdlJ4NklpeUNnVWhBVFQ2QXd4bmZHUmI2?=
+ =?utf-8?B?MUVLcDBkQ1dValJBUitKZ3N3a25LOGZzZTA1S3VtdHY3Z3VHL2NnNUgramVN?=
+ =?utf-8?B?blY2a2VFT29BSmVNYjAzUGloOUJzbEpXS3ZzeU16dTRhcDBIMjNCS2tSY3I0?=
+ =?utf-8?B?UkhxZHVocmpOOFRjS2dZU2U1TjZVWDZkT0VqdUNWZ1FyVzRIV2F1WE1xMUkv?=
+ =?utf-8?B?Si9pR3NvTUtBTStXUTBpc1F6VkZleThRbFoxQ2hKN1A1UWxmeE92eHlUWGdE?=
+ =?utf-8?B?SGc9PQ==?=
 X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2dbdb50-d7d7-45f4-9dea-08dc12a443cd
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9997bda7-744b-45c5-cd7c-08dc12a4475e
 X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jan 2024 12:53:10.3211 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jan 2024 12:53:16.4861 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c6lxrSHlYGidaE/arao1IuSeFIX/927h2X8jRVWLWX6WHJul2kUOYKQmJVVXFIiyP8LJJ01Y+o2/zy1V1ETmknEEYfCz2IfA6N69wwyS2xE=
+X-MS-Exchange-CrossTenant-UserPrincipalName: mULLZBVhwYqI5BDU1f/uwaQQvViu5ioPShrbpu3xTBylO5hbEiS2g9PZyyP1CtDPqxilJfGGMT0c+hhyWNEaadM5ojyeNOlQJjVfYCmc0x8=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR08MB5634
 Received-SPF: pass client-ip=2a01:111:f403:2612::701;
  envelope-from=andrey.drobyshev@virtuozzo.com;
@@ -145,89 +146,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/11/23 15:32, Andrey Drobyshev wrote:
-> There're tests whose logic implies running without O_DIRECT set,
-> otherwise they fail when running iotests in '-nocache' mode.  For these
-> tests let's add _require_no_o_direct() helper which can be put in the
-> preabmle and which makes sure '-nocache' isn't set.  Use it to skip
-> running the following tests:
-> 
->   * 271: creates files with unaligned sizes, thus producing multiple
->     errors like:
-> 
-> qemu-io: can't open device /path/to/t.qcow2.raw: Cannot get 'write'
-> permission without 'resize': Image size is not a multiple of request alignment
-> 
->   * 308, file-io-error: use fuse exports.  Though fuse does have
->     'direct-io' mode (see https://docs.kernel.org/filesystems/fuse-io.html)
->     we aren't using it yet, thus getting errors like:
-> 
-> qemu-io: can't open device /path/to/t.qcow2.fuse: Could not open
-> '/path/to/t.qcow2.fuse': filesystem does not support O_DIRECT
-> 
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> ---
->  tests/qemu-iotests/271                 | 1 +
->  tests/qemu-iotests/308                 | 2 ++
->  tests/qemu-iotests/common.rc           | 7 +++++++
->  tests/qemu-iotests/tests/file-io-error | 1 +
->  4 files changed, 11 insertions(+)
-> 
-> diff --git a/tests/qemu-iotests/271 b/tests/qemu-iotests/271
-> index 59a6fafa2f..1424b6954d 100755
-> --- a/tests/qemu-iotests/271
-> +++ b/tests/qemu-iotests/271
-> @@ -44,6 +44,7 @@ _supported_fmt qcow2
->  _supported_proto file nfs
->  _supported_os Linux
->  _unsupported_imgopts extended_l2 compat=0.10 cluster_size data_file refcount_bits=1[^0-9]
-> +_require_no_o_direct
->  
->  l2_offset=$((0x40000))
->  
-> diff --git a/tests/qemu-iotests/308 b/tests/qemu-iotests/308
-> index de12b2b1b9..535455e5b1 100755
-> --- a/tests/qemu-iotests/308
-> +++ b/tests/qemu-iotests/308
-> @@ -52,6 +52,8 @@ _unsupported_fmt vpc
->  _supported_proto file # We create the FUSE export manually
->  _supported_os Linux # We need /dev/urandom
->  
-> +_require_no_o_direct
-> +
->  # $1: Export ID
->  # $2: Options (beyond the node-name and ID)
->  # $3: Expected return value (defaults to 'return')
-> diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
-> index 95c12577dd..f61eae73b4 100644
-> --- a/tests/qemu-iotests/common.rc
-> +++ b/tests/qemu-iotests/common.rc
-> @@ -857,6 +857,13 @@ _check_o_direct()
->      [[ "$out" != *"O_DIRECT"* ]]
->  }
->  
-> +_require_no_o_direct()
-> +{
-> +    if [ $CACHEMODE == "none" ] || [ $CACHEMODE == "directsync" ]; then
-> +        _notrun "not suitable for cache mode: $CACHEMODE (implies O_DIRECT)"
-> +    fi
-> +}
-> +
->  _require_o_direct()
->  {
->      if ! _check_o_direct; then
-> diff --git a/tests/qemu-iotests/tests/file-io-error b/tests/qemu-iotests/tests/file-io-error
-> index 88ee5f670c..2b8dc7f009 100755
-> --- a/tests/qemu-iotests/tests/file-io-error
-> +++ b/tests/qemu-iotests/tests/file-io-error
-> @@ -40,6 +40,7 @@ trap "_cleanup; exit \$status" 0 1 2 3 15
->  # Format-agnostic (we do not use any), but we do test the file protocol
->  _supported_proto file
->  _require_drivers blkdebug null-co
-> +_require_no_o_direct
->  
->  if [ "$IMGOPTSSYNTAX" = "true" ]; then
->      # We need `$QEMU_IO -f file` to work; IMGOPTSSYNTAX uses --image-opts,
+On 12/11/23 13:27, Denis V. Lunev wrote:
+> On 12/11/23 11:55, Andrey Drobyshev wrote:
+>> In case we're truncating an image opened with O_DIRECT, we might get
+>> -EINVAL on write with unaligned buffer.  In particular, when running
+>> iotests/298 with '-nocache' we get:
+>>
+>> qemu-io: Failed to resize underlying file: Could not write zeros for
+>> preallocation: Invalid argument
+>>
+>> Let's just allocate the buffer using qemu_blockalign0() instead.
+>>
+>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>> ---
+>>   block/file-posix.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/block/file-posix.c b/block/file-posix.c
+>> index b862406c71..cee8de510b 100644
+>> --- a/block/file-posix.c
+>> +++ b/block/file-posix.c
+>> @@ -2354,7 +2354,7 @@ static int handle_aiocb_truncate(void *opaque)
+>>               goto out;
+>>           }
+>>   -        buf = g_malloc0(65536);
+>> +        buf = qemu_blockalign0(aiocb->bs, 65536);
+>>             seek_result = lseek(fd, current_length, SEEK_SET);
+>>           if (seek_result < 0) {
+>> @@ -2413,7 +2413,7 @@ out:
+>>           }
+>>       }
+>>   -    g_free(buf);
+>> +    qemu_vfree(buf);
+>>       return result;
+>>   }
+>>   
+> Reviewed-by: Denis V. Lunev <den@openvz.org>
 
 Ping
 
