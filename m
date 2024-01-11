@@ -2,71 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E6A82B18E
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:18:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 391C982B18F
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:18:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNwnp-0003cJ-Jt; Thu, 11 Jan 2024 10:17:05 -0500
+	id 1rNwoH-0003kk-Ls; Thu, 11 Jan 2024 10:17:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNwnn-0003c4-SO
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:17:03 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1rNwoE-0003ii-Na
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:17:30 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNwnm-0003GR-18
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:17:03 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-558b5f4cf2dso204872a12.2
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 07:17:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1rNwoC-0003X9-MD
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:17:30 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-337874b8164so560700f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 07:17:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704986219; x=1705591019; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ZycYT00B4IWTzJUn9rHbFLUeg4ZWPl8AtfsBeUtk8dY=;
- b=e2zh4G5TI9qIqjCTTX6rlUqCa5h/fez/BU7BEeTLTtRK8RTsJwEcD+ow0GndxrZ9iv
- axgVQ8hjnpW+9M9maroUX/GHzNrVl2jJUukHtLS4PyHyc9693rMvPMsFKFTTabcbH9i9
- rHyJr75ipmsbb1WCpkNL6v0JxrBX5IPgkeI8PEFh1mTr8AO58bM89waUZXsLjEq3zupB
- v0YNKXDoQBHZw8IZiinQHiela3LBcmLrigKjmxd9dyHBsCwl00O+vtvCLdx67nrxxhZw
- 4TSzo4VumfB/plqaj/GBl8fDkKehDQwHQaQqif4HibBIuw15nB3MEGFjgYMoT4EQILH3
- Rmag==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1704986246; x=1705591046;
+ darn=nongnu.org; 
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=8QYhKldxNt1TMQmAu9UVIDbUbhZ82SeG1htSGPK80fY=;
+ b=jSpMa4Dk4F1yIxcHPbyG3mnEqBCs9T72ZNqIkf0fsPekNxuZW9Oi6J264weqUPf3/+
+ o3IIZZ5/NSiFCh1oNuOjuYTKbJAYYdRyLgtFlbC1WP4uIDzi2lwCofrlnC97lBkJXjk4
+ Kpd69Z4/sR1UEX7cYW8fZOh4yOM3dQv5P2Zc5GYtNEyc00zXaSUGI3oYAbVGymAgkNq4
+ 7oIqiMrF/IJmgdTMQwYJ464J8LC2wi16swrq27XH+cwgaMb/p4cP5yLSVTMUdN2inN1+
+ BCJFXnFwYIBUXrVN4g1Ly0jwvTeDdSjhz4vXZxVX9H7XNr30mcxQSR2e0W/9QLeJK2yZ
+ v9iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704986219; x=1705591019;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZycYT00B4IWTzJUn9rHbFLUeg4ZWPl8AtfsBeUtk8dY=;
- b=wVyfXdh4KtTqekCfcLNwDBR5vZYaW+0Ayg65Lrw5jaXavojXFwpq0Iw/fYYYnIiEeA
- OXkbU2f7kvuDhKzKmfx3NbmmN2qo2BhL6fFXPsyg1lI+wvkyZPklX3kPsZOiVvQsWGVU
- CHk1sFdBSRQMlAzvLIIL7s+7CvxYlj3t0QYPH92w/HgKsc+itcifEQurCY7ixZxi1gw6
- IbxGqJXAb+EmRK4A3rOComOhZYIgKHub+7niz9/sWsH9HXtlSGP8YIF9g42mUVyechUA
- gPQKOStyzCnkUHMRl+Vg5qmkZ4XjxnlaA112sPW1uo3vR1n2qtipAneM1S8JpcSmjhMf
- yKzQ==
-X-Gm-Message-State: AOJu0YyKp7AvvF8Bvve7U/1MmGD9I0VXVnpWZUIIdFbZIR7Ty0KMc3RT
- 0zDe/uZngltBlxDGWsSj3Fc8/+CT1Mo0KB3lCFvkZf2F5l1UBJElaSfLFUPh
-X-Google-Smtp-Source: AGHT+IG0HUaf2wPNWWdnGg0+POjc4Hhcx02ujZc8I/Pza4FicDsXcJ2UsY7rhqwK7hyg2Q5pNqx/Al52F5I0X45gAas=
-X-Received: by 2002:a05:6402:5155:b0:557:c9ec:a47e with SMTP id
- n21-20020a056402515500b00557c9eca47emr772313edd.0.1704986219486; Thu, 11 Jan
- 2024 07:16:59 -0800 (PST)
-MIME-Version: 1.0
-References: <20240111110505.1563291-1-peter.maydell@linaro.org>
-In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 11 Jan 2024 15:16:48 +0000
-Message-ID: <CAFEAcA-2_ErgwyzDzfEC+VsAVgUaZyzA4faBxk7r2iUgqUrs-w@mail.gmail.com>
-Subject: Re: [PULL 00/41] target-arm queue
-To: qemu-devel@nongnu.org
+ d=1e100.net; s=20230601; t=1704986246; x=1705591046;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8QYhKldxNt1TMQmAu9UVIDbUbhZ82SeG1htSGPK80fY=;
+ b=kSYoOdtVMNoupClXCgdog2NH2yHvLmzntseKIXz/FriUo1jhjRFKFd4I8Jb6c05cML
+ uV+EQ5CPrcc2Ig6ExJBy+litQvea4AD2nMs7mLWL5sqQyoT2sgG7dMTN/ODxInm0eVH3
+ uyfDO7W4+0VrlNo+6/B0DD6GjsRm7bSF2nqmBOnNowv178ZOXxfFbkx+XaHf01FQc77H
+ sPpFHjJprnyvCeZfUTgaJHmg0t4vAg+CKtpXgK9pHVACgHPGKZ0Hi05kl9kW0kEtC1Qe
+ 5NayJEW481gRfVyEShJyKYgaf1jNDzNoxLz2J7RSSVRkh6Y721FfgiQbh7BDfjop2jpJ
+ 66Mg==
+X-Gm-Message-State: AOJu0YzPRsITjds52+qmrvhgyfqIzKhb9n6tVePUg5fKC8qDgPRy7T9G
+ fPi5nmbJpSK9rSjGc+4LbQUmITdmQJjsNw==
+X-Google-Smtp-Source: AGHT+IEjFBwMiIciK6FHvVN7rBxQJS6Ez0FpLs2duRGDTsn2QDdq9qJe5PumdCinbi57B9IsWv+djA==
+X-Received: by 2002:adf:ef12:0:b0:336:ec3f:fcf5 with SMTP id
+ e18-20020adfef12000000b00336ec3ffcf5mr762005wro.49.1704986246418; 
+ Thu, 11 Jan 2024 07:17:26 -0800 (PST)
+Received: from [192.168.1.9] (214.11.169.217.in-addr.arpa. [217.169.11.214])
+ by smtp.gmail.com with ESMTPSA id
+ n3-20020a5d6603000000b00333404e9935sm1427192wru.54.2024.01.11.07.17.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Jan 2024 07:17:26 -0800 (PST)
+Message-ID: <3dbd3fa1cbad80948175f98dcc0c76b886e2376e.camel@rivosinc.com>
+Subject: Re: Re: [PATCH 1/3] target/riscv: Add infrastructure for 'B' MISA
+ extension
+From: Rob Bradford <rbradford@rivosinc.com>
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, atishp@rivosinc.com, 
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com,  ved@rivosinc.com
+Date: Thu, 11 Jan 2024 15:17:25 +0000
+In-Reply-To: <20240111-df7a6acf3109b630469591a1@orel>
+References: <20240109171848.32237-1-rbradford@rivosinc.com>
+ <20240109171848.32237-2-rbradford@rivosinc.com>
+ <20240111-585fe1291fcaa1e0432674e3@orel>
+ <20240111-df7a6acf3109b630469591a1@orel>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.module_f38+17164+63eeee4a) 
+MIME-Version: 1.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,42 +100,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 11 Jan 2024 at 11:05, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> Mostly my FEAT_NV/NV2 stuff, but some other smaller series too.
->
-> -- PMM
->
-> The following changes since commit 9468484fe904ab4691de6d9c34616667f377ceac:
->
->   Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2024-01-09 10:32:23 +0000)
->
-> are available in the Git repository at:
->
->   https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240111
->
-> for you to fetch changes up to e2862554c257e908a3833265e38365e794abd362:
->
->   target/arm: Add FEAT_NV2 to max, neoverse-n2, neoverse-v1 CPUs (2024-01-09 14:44:45 +0000)
->
-> ----------------------------------------------------------------
-> target-arm queue:
->  * Emulate FEAT_NV, FEAT_NV2
->  * add cache controller for Freescale i.MX6
->  * Add minimal support for the B-L475E-IOT01A board
->  * Allow SoC models to configure M-profile CPUs with correct number
->    of NVIC priority bits
->  * Add missing QOM parent for v7-M SoCs
->  * Set CTR_EL0.{IDC,DIC} for the 'max' CPU
->  * hw/intc/arm_gicv3_cpuif: handle LPIs in in the list registers
->
-> ----------------------------------------------------------------
++ Ved
 
+On Thu, 2024-01-11 at 14:14 +0100, Andrew Jones wrote:
+> On Thu, Jan 11, 2024 at 02:07:34PM +0100, Andrew Jones wrote:
+> > On Tue, Jan 09, 2024 at 05:07:35PM +0000, Rob Bradford wrote:
+> > > Add the infrastructure for the 'B' extension which is the union
+> > > of the
+> > > Zba, Zbb and Zbs instructions.
+> > >=20
+> > > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> > > ---
+> > > =C2=A0target/riscv/cpu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 | 5 +++--
+> > > =C2=A0target/riscv/cpu.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 | 1 +
+> > > =C2=A0target/riscv/tcg/tcg-cpu.c | 1 +
+> > > =C2=A03 files changed, 5 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> > > index b07a76ef6b..22f8e527ff 100644
+> > > --- a/target/riscv/cpu.c
+> > > +++ b/target/riscv/cpu.c
+> > > @@ -38,9 +38,9 @@
+> > > =C2=A0#include "tcg/tcg.h"
+> > > =C2=A0
+> > > =C2=A0/* RISC-V CPU definitions */
+> > > -static const char riscv_single_letter_exts[] =3D "IEMAFDQCPVH";
+> > > +static const char riscv_single_letter_exts[] =3D "IEMAFDQCBPVH";
+> >=20
+> > Is there a corresponding proposed change to table 29.1 of the
+> > nonpriv spec
+> > which states B comes after C and before P? If so, can you provide a
+> > link
+> > to it? Otherwise, how do we know that?
+>=20
+> Oh, I see. The unpriv spec B chapter comes after the C chapter (and
+> before
+> J, P, ...). I still wonder if we'll have a 29.1 table update with the
+> ratification of this extension though.
+>=20
+>=20
 
-Applied, thanks.
+I agree it's a bit confusing - but the order is established by the
+table in the unprivileged spec and the table explanation also makes
+this clear.
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
+"""
+Table 27.1: Standard ISA extension names. The table also defines the
+canonical order in which
+extension names must appear in the name string, with top-to-bottom in
+table indicating first-to-last
+in the name string, e.g., RV32IMACV is legal, whereas RV32IMAVC is not.
+"""
 
--- PMM
+The proposed B specification does not make any remarks about the
+ordering in the ISA definition string. [1] I would worry there would be
+a lot of software churn if this ordering were to be changed.
+
+Cheers,
+
+Rob
+
+> Thanks,
+> drew
+
+[1] - https://github.com/riscv/riscv-b
 
