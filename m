@@ -2,113 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C76D82B1CD
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:28:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B29BF82B1FF
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:42:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNwxj-00085U-0J; Thu, 11 Jan 2024 10:27:19 -0500
+	id 1rNxBE-0005D6-MH; Thu, 11 Jan 2024 10:41:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1rNwxg-000855-K2
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:27:16 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1rNwxf-0008S8-14
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:27:16 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40BEkWfF025686
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 15:27:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=p+3Ny6e3+4ReiHAKj1O0HLdaZk2IURCRHcWooOwP6Us=;
- b=o3gyc9lPKXfPtm/ZjZ3ZNaLzTzOwuyEfkAi9Qw4Fy731Kyq454m4+n6sp4k2XmeiA8XE
- FzZmG13C/IYkKFMPlT4wdbSs7+DE8/TDs8WF7OpeMOO59nwRCS4oUMaOD+l5y4PKlfzu
- 2S68KzIjuKDN8rl0NalKQm1ugYHY8s8yhF45KywAvsdvXHBdPN2Guo1XPBLn0TI6h4Ug
- aZxR5pHqVoBDQMZdaZBBEbvQ4bNUuQlXV4fQY2LXcVS1L7fMb1c96nJoABQNaqKVfOy2
- W66VaXZye3PIwsJDORvfknIfAW5GORJpScfp1o83KYLj86nGw77L4Huke+zD0aACmgv7 ow== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjj671hr2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 15:27:13 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40BEWHWq005542
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 15:27:12 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjj671hq1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jan 2024 15:27:12 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40BERMMh022781; Thu, 11 Jan 2024 15:27:11 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfhjyvcw8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jan 2024 15:27:11 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40BFRAuD3539672
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 11 Jan 2024 15:27:10 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6A91458055;
- Thu, 11 Jan 2024 15:27:10 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9237B58059;
- Thu, 11 Jan 2024 15:27:09 +0000 (GMT)
-Received: from [9.61.0.193] (unknown [9.61.0.193])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 11 Jan 2024 15:27:09 +0000 (GMT)
-Message-ID: <0021d6d6-7381-4c8a-a89e-3e65bf3cf3b4@linux.ibm.com>
-Date: Thu, 11 Jan 2024 10:27:09 -0500
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rNxBC-0005CP-SF
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:41:14 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rNxBB-0005t4-0y
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:41:14 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5534dcfdd61so9688819a12.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 07:41:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704987671; x=1705592471; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=iEz7sPILT/HMrC7NOzt7pd9/3qFxaGBIjK04DG6KQo8=;
+ b=WpRC2Xph05dC0SMDf8VLXWWeTVUeVw4bZGKbizFFUYWTpzcg3Sny6ig9g+iffbojiD
+ M44QOzF24iZMsGBS1sqMVs1GrjPgJlLHAVaFQ6XZkO9E3cqj2gYrKbrNPQGuyrd40rg1
+ GND0vLw5HW6WqUM7GjLX7rJSCq34H2onB3PQjkueewIFxqxuZdXXQBk1R4CG6H0HaRj4
+ 5aK5rtLM3IdINls5zwm5Hu0L77EjboC+7u2zBRyx/G1LYuO6puiR46pZ3uQD18nTIsc1
+ 2yfu/pFzMVDabBuLVg6DCyOAZ2z6BFgzThNRvAKc9V7l8T8FloT9EpjiZofzL845UUKd
+ NGfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704987671; x=1705592471;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iEz7sPILT/HMrC7NOzt7pd9/3qFxaGBIjK04DG6KQo8=;
+ b=rxrTM3SZbAIHMG5yE9PL1Ruo/n/IrMftpM/2MKTuQoviQNFn3Ucd3mujWIoHATrS5R
+ qAEYI0lsBp5DPQQelML36Nk66jjXB2WOZU+OaUtDVx1CHtM/UlywHA5Ut5hqXJpgpmIi
+ nDQbSiUjSNeWdB0FuqV5oCu0qrujRM8JTqC2XBIiXkCoQGXRi6S/8FhQ12X2ylWnSVZX
+ ey6DBqNJx1Gr9I4/JYayWe0B3KAFnTPS02SusQUvv+0kgOdFZArVdGRJ+H0jKg6K+8Uc
+ m2oPdG4Ol/2RCHjobRCT+moWaDRPm/WhcJI6xbNHbLidk5T6YZfrUp+3pdlr5jzLSxVL
+ Hd5A==
+X-Gm-Message-State: AOJu0Ywsblnu/s9pU92rTMIR1CgRdStKCHWlGK11s8dIXz2xZmHMftag
+ IQv0ZLKWHzoe5AowwGMiXEB0T4XR/3Jw1ZDdRat2/QipKFmZkg==
+X-Google-Smtp-Source: AGHT+IFmYQwcvByHnAdTd1OAPfy2GUwnbqx39gK260JlZskM+pgrBlPAbvyV+jQ0qdMTUPqB79X5L//PGYKkKPZZS3c=
+X-Received: by 2002:a05:6402:34c6:b0:557:de62:4be0 with SMTP id
+ w6-20020a05640234c600b00557de624be0mr10621edc.28.1704987671033; Thu, 11 Jan
+ 2024 07:41:11 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 2/7] s390x: do a subsystem reset before the unprotect on
- reboot
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Viktor Mihajlovski <mihajlov@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>
-References: <20230912114112.296428-1-thuth@redhat.com>
- <20230912114112.296428-3-thuth@redhat.com>
- <6aec238b-b983-4b24-9bd9-a90f840d060c@redhat.com>
- <287dbe42-5a10-4667-b3fa-111270242b1d@linux.ibm.com>
- <e22ebb27-26d0-4e1d-86ab-ab9feb44d645@redhat.com>
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <e22ebb27-26d0-4e1d-86ab-ab9feb44d645@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: V9lbK8RQ_O5XBW2G1AXD0YW1_Xf22ltZ
-X-Proofpoint-ORIG-GUID: bJsOq2YjOvulMrkqCeDK36JG4C6X2stq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-11_07,2024-01-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- adultscore=0 mlxlogscore=737 priorityscore=1501 mlxscore=0 bulkscore=0
- impostorscore=0 phishscore=0 spamscore=0 clxscore=1015 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401110121
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20230721104437.1199866-1-gshan@redhat.com>
+ <CAFEAcA9Sr=eE6PNR7e4jnGVj65wnFgDfbUTHpm+PzSU_5Fy+HQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA9Sr=eE6PNR7e4jnGVj65wnFgDfbUTHpm+PzSU_5Fy+HQ@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 11 Jan 2024 15:41:00 +0000
+Message-ID: <CAFEAcA-8aTiMNr1op_DDMcZmT+FLyQb7mV0YEh4Eq_DsG73rsw@mail.gmail.com>
+Subject: Re: [PATCH] numa: Skip invalidation of cluster and NUMA node boundary
+ for qtest
+To: Gavin Shan <gshan@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, eduardo@habkost.net, 
+ marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com, 
+ imammedo@redhat.com, pbonzini@redhat.com, shan.gavin@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -125,15 +88,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/11/24 4:43 AM, Cédric Le Goater wrote:
+On Fri, 21 Jul 2023 at 12:29, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Fri, 21 Jul 2023 at 11:44, Gavin Shan <gshan@redhat.com> wrote:
+> >
+> > There are warning messages printed from tests/qtest/numa-test.c,
+> > to complain the CPU cluster and NUMA node boundary is broken. Since
+> > the broken boundary is expected, we don't want to see the warning
+> > messages.
+> >
+> >   # cd /home/gavin/sandbox/qemu.main/build
+> >   # MALLOC_PERTURB_=255 QTEST_QEMU_BINARY=./qemu-system-aarch64           \
+> >     G_TEST_DBUS_DAEMON=../tests/dbus-vmstate-daemon.sh                    \
+> >     QTEST_QEMU_IMG=./qemu-img                                             \
+> >     QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon \
+> >     tests/qtest/numa-test --tap -k
+> >       :
+> >     qemu-system-aarch64: warning: CPU-0 and CPU-4 in socket-0-cluster-0   \
+> >     have been associated with node-0 and node-1 respectively.             \
+> >     It can cause OSes like Linux to misbehave
+> >       :
+> >
+> > Skip the invalidation of CPU cluster and NUMA node boundary when
+> > qtest is enabled, to avoid the warning messages.
+> >
+> > Fixes: a494fdb715 ("numa: Validate cluster and NUMA node boundary if required")
+> > Signed-off-by: Gavin Shan <gshan@redhat.com>
+>
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-> OK. this condition is considered serious enough to be reported to a
-> management level. This seems a bit excessive since the recovery can be
-> handled by software, but manually. Are there any plans to address this
-> problem ?
+Looks like this got lost last year. I'm going to pick it up and
+apply it since the warnings it suppresses are still in the
+test output.
 
-Yes, eventually.  Currently for drivers other than QEMU+vfio-pci we rely on automated PCI recovery to handle this event, but today we do not forward the event to QEMU when using vfio-pci because the code in vfio_err_notifier_handler will halt the guest.  This leaves the device in an error state to be recovered manually.  The intent is to eventually address this by triggering the guest to initiate the recovery action rather than halting the guest for s390.
-
-
-
+thanks
+-- PMM
 
