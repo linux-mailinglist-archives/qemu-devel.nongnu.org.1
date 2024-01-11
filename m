@@ -2,158 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290D682AF50
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F40482AF4F
 	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 14:16:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNuuc-0007YH-Fy; Thu, 11 Jan 2024 08:15:58 -0500
+	id 1rNuua-0007QW-TF; Thu, 11 Jan 2024 08:15:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNuuY-0007M6-Jl
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:15:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNuuN-0002Jc-Mk
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:15:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704978938;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=xw3SWpM/KIaawoj6jcf1qA1DNhbkp83hVnVG7AQGJLI=;
- b=Me/Wp3sp9RfC2U7VBpnocFZQZcE/GTdYPfTIIzV3o6ihUWD0/+xkWRBObpzw7tC1gxgk/I
- 2t5ZcBpKlQQqqi0A+g7xWlmDr7lR00Xi8cgB63lxwTrOGzwzA+k01GzoD+spu/bs0avQOC
- F4pshqKaQBH82H7aJCi2NIZalBo1mvU=
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
- [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-347-Jg9pE5otMi25vSJBd2XOGw-1; Thu, 11 Jan 2024 08:15:37 -0500
-X-MC-Unique: Jg9pE5otMi25vSJBd2XOGw-1
-Received: by mail-oo1-f70.google.com with SMTP id
- 006d021491bc7-5953e534a96so6185673eaf.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 05:15:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rNuuH-0007Bn-LK
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:15:39 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rNuuC-0002E4-MX
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:15:35 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-556c3f0d6c5so6270251a12.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 05:15:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1704978930; x=1705583730; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=h0K06ZXbOyxiBDKfO2g5T4zjXYvc65UdXgQLYDUK9F8=;
+ b=ej+g4SDEUjpk2Gdu4z5QuxBci/IBth9LUQ1pI+sGqL12ZLjCPpqU9g9eds/QxBiSZF
+ 7Q7N4ccIRrj+gT4EIEJO0iMTbraBoz2LspYWGfmdzELKeQUstQR+WBvP4E7Gg8mabj9u
+ ChV6G2gRDZDWzJPRnQx0k/LQ8h99mbBVMS7Ryg8PYKy7tVeJpjWi+O2fxy0Vq4ZrI9DF
+ +Jc8nevDRRV+rmdJvkxMv4gEeW5Vwj7IlY0cvPAwImkqdkvpNv/w8fKQ83q8I9W5kvIr
+ 7njeGCjaQF/mbmb063F98KMw3BFwcHa6Fjj4TQucpNBL7cxHXB5wpzPGqEX3nXW7n6N4
+ 7Wdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704978937; x=1705583737;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xw3SWpM/KIaawoj6jcf1qA1DNhbkp83hVnVG7AQGJLI=;
- b=grTFuARicjXdzuLCCpynLI51PXeE/7MVvSLr4JQXgdJV2m0ZYh+38f573RN4O9ZQ7B
- e/1kQdmU5ZsQZUrA2JApeEuZ9NUBK/6nCC2Hu7cWaLH9VIKy0Pnqe0iROVqlCH5l/G9R
- iB+NBpIHjzk+CmN8085+VS9U4HZin5WuLmTMFyHv0OdjMt1dgw/1nBmcjWEh0UK44npE
- 9dBOqt91ynD/FU1T9APi7YDYluqZ3l7EZPTXYpVaR4LnMkmf+gc5Cg1DejT5YO9uvvSM
- lWNp/vNMrTDJ+1Gl52AGkseb1SDNtAzKXe44QyerqebZbP4BDY4VdDL6YZjlgyaYoyrH
- feTw==
-X-Gm-Message-State: AOJu0Yy031DWi9xUyYpla1Ww/3hbMDODuq3h+4EmV2Rn2MWzMYnZsPsZ
- 7h0y6Py+2TDJm+kPN6255ZhW6shsI3OcV1G6HscsvqNllsmN3wSDfKp+GlJopXNWVeHFDxny5IO
- ddl3HpV29Ewj3xASsNuidBTs=
-X-Received: by 2002:a05:6358:3a0e:b0:170:c1a7:254 with SMTP id
- g14-20020a0563583a0e00b00170c1a70254mr1339475rwe.2.1704978936785; 
- Thu, 11 Jan 2024 05:15:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGhW3oWhXBB/jyrxNCN0oXOgLftYm94m7vT41AUEZgonbfR3zRCae2HNWnU6qeQbzwq0rr7cQ==
-X-Received: by 2002:a05:6358:3a0e:b0:170:c1a7:254 with SMTP id
- g14-20020a0563583a0e00b00170c1a70254mr1339434rwe.2.1704978936366; 
- Thu, 11 Jan 2024 05:15:36 -0800 (PST)
-Received: from [10.33.192.181] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ d=1e100.net; s=20230601; t=1704978930; x=1705583730;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=h0K06ZXbOyxiBDKfO2g5T4zjXYvc65UdXgQLYDUK9F8=;
+ b=B1MkNsDuOodakpcHwe8JxTLHUbkj9gRmIXdepeR90AC4AA15T/C7l3iHx+On3bPC3t
+ 86WbUx+1Dfq/8eKiAFn/XjZcU/7YOrvUGncojIgEdZis8zQBIYJS6pmAPkSIjU68jDCD
+ NnLyz9fgj6OM3gBtYx/eQzC+E2TIntQPKufAZF6gDxJxGTsrVYG7CHbjf0lOPIfZc/G+
+ dyBrzT8mcqGn/uyc6k6qaa5XzC4SgezUuShcrGGhfbw2UtytntsaK6Jmb9oKoxHEOwrZ
+ CYUKDPK0VZ5U/eO6YEWCTmL2oaZhciKyav7uGdbtT/JDiTweU6su1fgwIPMvVyw4tags
+ 2siw==
+X-Gm-Message-State: AOJu0YxIo/W12q7YjzWhcjDwu2wQ4RQlvEquUt8h2C5C0vowyTzW5yy4
+ NB53X14G6KEPB6HR0jN7qGWrk0m2fm767Q==
+X-Google-Smtp-Source: AGHT+IEvXoVR73cDVQfBxH4DXEBKyDPLgeJbvL8kMos6RaZC+z3AycHUPExwh9kC9H3g1T8iBdXwOg==
+X-Received: by 2002:a17:906:b088:b0:a26:90a0:695f with SMTP id
+ x8-20020a170906b08800b00a2690a0695fmr391475ejy.83.1704978929817; 
+ Thu, 11 Jan 2024 05:15:29 -0800 (PST)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
  by smtp.gmail.com with ESMTPSA id
- j17-20020a62b611000000b006dacbe57efbsm1144621pff.90.2024.01.11.05.15.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 05:15:36 -0800 (PST)
-Message-ID: <88294892-8ec3-451f-badf-1454b5ae53fd@redhat.com>
-Date: Thu, 11 Jan 2024 14:15:10 +0100
+ j25-20020a1709066dd900b00a26af4d96c6sm568831ejt.4.2024.01.11.05.15.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Jan 2024 05:15:29 -0800 (PST)
+Date: Thu, 11 Jan 2024 14:15:28 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Rob Bradford <rbradford@rivosinc.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, atishp@rivosinc.com, 
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
+ liwei1518@gmail.com, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+Subject: Re: [PATCH 1/3] target/riscv: Add infrastructure for 'B' MISA
+ extension
+Message-ID: <20240111-44114ecff921e28798180fd9@orel>
+References: <20240109171848.32237-1-rbradford@rivosinc.com>
+ <20240109171848.32237-2-rbradford@rivosinc.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/43] gitlab: include microblazeel in testing
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
- Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Brian Cain <bcain@quicinc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Cleber Rosa <crosa@redhat.com>,
- kvm@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, John Snow <jsnow@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>
-References: <20240103173349.398526-1-alex.bennee@linaro.org>
- <20240103173349.398526-4-alex.bennee@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240103173349.398526-4-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240109171848.32237-2-rbradford@rivosinc.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -169,39 +94,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03/01/2024 18.33, Alex Bennée wrote:
-> This reverts aeb5f8f248e (gitlab: build the correct microblaze target)
-> now we actually have a little-endian test in avocado thanks to this
-> years advent calendar.
+On Tue, Jan 09, 2024 at 05:07:35PM +0000, Rob Bradford wrote:
+> Add the infrastructure for the 'B' extension which is the union of the
+> Zba, Zbb and Zbs instructions.
 > 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
 > ---
->   .gitlab-ci.d/buildtest.yml | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>  target/riscv/cpu.c         | 5 +++--
+>  target/riscv/cpu.h         | 1 +
+>  target/riscv/tcg/tcg-cpu.c | 1 +
+>  3 files changed, 5 insertions(+), 2 deletions(-)
 > 
-> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-> index 91663946de4..ef71dfe8665 100644
-> --- a/.gitlab-ci.d/buildtest.yml
-> +++ b/.gitlab-ci.d/buildtest.yml
-> @@ -41,7 +41,7 @@ build-system-ubuntu:
->     variables:
->       IMAGE: ubuntu2204
->       CONFIGURE_ARGS: --enable-docs
-> -    TARGETS: alpha-softmmu microblaze-softmmu mips64el-softmmu
-> +    TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
->       MAKE_CHECK_ARGS: check-build
->   
->   check-system-ubuntu:
-> @@ -61,7 +61,7 @@ avocado-system-ubuntu:
->     variables:
->       IMAGE: ubuntu2204
->       MAKE_CHECK_ARGS: check-avocado
-> -    AVOCADO_TAGS: arch:alpha arch:microblaze arch:mips64el
-> +    AVOCADO_TAGS: arch:alpha arch:microblazeel arch:mips64el
->   
->   build-system-debian:
->     extends:
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index b07a76ef6b..22f8e527ff 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -38,9 +38,9 @@
+>  #include "tcg/tcg.h"
+>  
+>  /* RISC-V CPU definitions */
+> -static const char riscv_single_letter_exts[] = "IEMAFDQCPVH";
+> +static const char riscv_single_letter_exts[] = "IEMAFDQCBPVH";
+>  const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
+> -                              RVC, RVS, RVU, RVH, RVJ, RVG, 0};
+> +                              RVC, RVS, RVU, RVH, RVJ, RVG, RVB, 0};
+>  
+>  /*
+>   * From vector_helper.c
+> @@ -1251,6 +1251,7 @@ static const MISAExtInfo misa_ext_info_arr[] = {
+>      MISA_EXT_INFO(RVJ, "x-j", "Dynamic translated languages"),
+>      MISA_EXT_INFO(RVV, "v", "Vector operations"),
+>      MISA_EXT_INFO(RVG, "g", "General purpose (IMAFD_Zicsr_Zifencei)"),
+> +    MISA_EXT_INFO(RVB, "x-b", "Bit manipulation (Zba_Zbb_Zbs)")
+>  };
+>  
+>  static int riscv_validate_misa_info_idx(uint32_t bit)
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 2725528bb5..756a345513 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -69,6 +69,7 @@ typedef struct CPUArchState CPURISCVState;
+>  #define RVH RV('H')
+>  #define RVJ RV('J')
+>  #define RVG RV('G')
+> +#define RVB RV('B')
+>  
+>  extern const uint32_t misa_bits[];
+>  const char *riscv_get_misa_ext_name(uint32_t bit);
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index 8a35683a34..fda54671d5 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -791,6 +791,7 @@ static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
+>      MISA_CFG(RVJ, false),
+>      MISA_CFG(RVV, false),
+>      MISA_CFG(RVG, false),
+> +    MISA_CFG(RVB, false)
+>  };
+>  
+>  /*
+> -- 
+> 2.43.0
+> 
+>
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
