@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F028882B505
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 20:03:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B785182B532
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 20:26:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rO0KG-0001zx-KT; Thu, 11 Jan 2024 14:02:48 -0500
+	id 1rO0gR-0005v8-20; Thu, 11 Jan 2024 14:25:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rO0KF-0001zo-2c
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 14:02:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rO0KD-0002RC-EN
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 14:02:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704999764;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xfHj4a+1kkW3IuoRJ+D3rPLEa+55ok5buRdNGYoGEhQ=;
- b=cFs5RcuGJsCXX/briUVUbYdraCV1hz6xBV5fmk/P43OxGeaC4v5OCodxCoVDXY3qt0DXjL
- X2iNn2ckNaeJu5uN+LTa4u8HQMngAoaqmJccKaRTMzBciWw6J5fcDXM+xYsCeP4Lq+6SS3
- nwdZiGHon4Yh56auIvYyEi6y0PngCr8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-RWZ7LSwLOdeF1csfGnAqog-1; Thu,
- 11 Jan 2024 14:02:39 -0500
-X-MC-Unique: RWZ7LSwLOdeF1csfGnAqog-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DCD422999B28;
- Thu, 11 Jan 2024 19:02:38 +0000 (UTC)
-Received: from eperezma.remote.csb (unknown [10.39.194.34])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 20559492BF0;
- Thu, 11 Jan 2024 19:02:36 +0000 (UTC)
-From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-To: mst@redhat.com,
-	qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>,
- Zhu Lingshan <lingshan.zhu@intel.com>, Jason Wang <jasowang@redhat.com>,
- Lei Yang <leiyang@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- si-wei.liu@oracle.com, Stefano Garzarella <sgarzare@redhat.com>,
- Parav Pandit <parav@mellanox.com>
-Subject: [PATCH 6/6] vdpa: move memory listener register to vhost_vdpa_init
-Date: Thu, 11 Jan 2024 20:02:22 +0100
-Message-Id: <20240111190222.496695-7-eperezma@redhat.com>
-In-Reply-To: <20240111190222.496695-1-eperezma@redhat.com>
-References: <20240111190222.496695-1-eperezma@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
+ (Exim 4.90_1) (envelope-from
+ <3pUCgZQQKCtoBHSQCKKCHA.8KIMAIQ-9ARAHJKJCJQ.KNC@flex--flwu.bounces.google.com>)
+ id 1rO0gJ-0005u3-7W
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 14:25:36 -0500
+Received: from mail-pj1-x1049.google.com ([2607:f8b0:4864:20::1049])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3pUCgZQQKCtoBHSQCKKCHA.8KIMAIQ-9ARAHJKJCJQ.KNC@flex--flwu.bounces.google.com>)
+ id 1rO0gE-0004CQ-KH
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 14:25:32 -0500
+Received: by mail-pj1-x1049.google.com with SMTP id
+ 98e67ed59e1d1-28b77ca8807so3559042a91.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 11:25:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1705001125; x=1705605925; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=2+ixT0xQP+mP0HStWNqLdMTqR4OnTrGkx2KULhxhIHc=;
+ b=sfbFSDOotWa4K1IF1whLoJ/MnX8qd9OqcUsFJr9HNCf6XtkiT15EGRmolqIB/SDY+2
+ h2Loq12OonxxhQ2MXHtAPn1Qslfp380gGKUh5Da+7m2/501JE1ZzBWr3jqyI+b7A+5EG
+ b++1UNDi/2BtH+UHiBBv+UaJ4f9qXVHtndCPSIfsVB5RUKjvPyiosE+b9UE2AMgMu+m8
+ mlfYzSnvv3z0ytinMKGiUj9C11lEh3YI8J7eyS0QzoDwUkCk95Ttlpf7kGLLravAg1DX
+ S3+VLliqvmnY3BTtOsaJXZiTzy0zukjpjsshS1cmkUPcvCP44mdk+r3u3gdXCv9DGuQD
+ Go0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705001125; x=1705605925;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=2+ixT0xQP+mP0HStWNqLdMTqR4OnTrGkx2KULhxhIHc=;
+ b=pdTNxwSepwa/8xsR7Eij9QRcM5it8AUPPOb4HXljmii92BMOs69EdDyZF5MJCicLTl
+ CfL3s6ZphP4GcW/GCdA0VJBS7iKELDmVjovVyr8p7f7Mwx+hfPdy/8j6alG1c9zC/1d/
+ KOyK51d8V9f69OccPJwKD3ANVHi1u3lZReCArIfEbq6YQnataGNJQsTl7uSVzCG/sfQu
+ O0QTHpfpTFiLwW/c7f02Wuh6IRApfe8K1707BD+ZU7Kmf678irC3iA/UWYIxnrYcQ/Zc
+ 8S9rAvzNIgaFldUvrYiM4oUfG/Rb2FSvgRnMvSByAwAG20Dnv/jea2eSyZQ5fu/h5d1t
+ nDuQ==
+X-Gm-Message-State: AOJu0YyXPKquiLfyRPaF7fX4wH6Vy4fhmkbjYUKNLc3cwOjJg+c+NdCr
+ 8vxUS5ss+npx/bhUH535Y8R4Zw2aUIuwhb8=
+X-Google-Smtp-Source: AGHT+IFm/TBhXF+KOTW0/BxTLXT5prarEsh4JDaTxEllCH7yx4f/EvS8UZIro4w2wIz8YPzcqi2NPVkN
+X-Received: from flwu-kvm.c.googlers.com
+ ([fda3:e722:ac3:cc00:7f:e700:c0a8:5ceb])
+ (user=flwu job=sendgmr) by 2002:a17:90b:538e:b0:28c:c1ab:89a2 with SMTP id
+ sv14-20020a17090b538e00b0028cc1ab89a2mr1290pjb.7.1705001125304; Thu, 11 Jan
+ 2024 11:25:25 -0800 (PST)
+Date: Thu, 11 Jan 2024 19:25:21 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.275.g3460e3d667-goog
+Message-ID: <20240111192522.2795498-1-flwu@google.com>
+Subject: [PATCH 0/1] smbios_build_type_8_table should use T8_BASE.
+From: Felix Wu <flwu@google.com>
+To: peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Felix Wu <flwu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1049;
+ envelope-from=3pUCgZQQKCtoBHSQCKKCHA.8KIMAIQ-9ARAHJKJCJQ.KNC@flex--flwu.bounces.google.com;
+ helo=mail-pj1-x1049.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,66 +88,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current memory operations like pinning may take a lot of time at the
-destination.  Currently they are done after the source of the migration is
-stopped, and before the workload is resumed at the destination.  This is a
-period where neigher traffic can flow, nor the VM workload can continue
-(downtime).
+It should use T8_BASE instead of T0_BASE.
 
-We can do better as we know the memory layout of the guest RAM at the
-destination from the moment that all devices are initializaed.  So
-moving that operation allows QEMU to communicate the kernel the maps
-while the workload is still running in the source, so Linux can start
-mapping them.
+Felix Wu (1):
+  SMBIOS type 8 should use T8_BASE.
 
-As a small drawback, there is a time in the initialization where QEMU
-cannot respond to QMP etc.  By some testing, this time is about
-0.2seconds.  This may be further reduced (or increased) depending on the
-vdpa driver and the platform hardware, and it is dominated by the cost
-of memory pinning.
+ hw/smbios/smbios.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-This matches the time that we move out of the called downtime window.
-The downtime is measured as checking the trace timestamp from the moment
-the source suspend the device to the moment the destination starts the
-eight and last virtqueue pair.  For a 39G guest, it goes from ~2.2526
-secs to 2.0949.
-
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
----
- hw/virtio/vhost-vdpa.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 521a889104..eae8b790dd 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -660,7 +660,13 @@ static int vhost_vdpa_init(struct vhost_dev *dev, void *opaque, Error **errp)
-     vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
-                                VIRTIO_CONFIG_S_DRIVER);
- 
-+    /*
-+     * Being optimistic and listening address space memory. If the device
-+     * uses vIOMMU, it is changed at vhost_vdpa_dev_start.
-+     */
-     v->shared->listener = vhost_vdpa_memory_listener;
-+    memory_listener_register(&v->shared->listener, &address_space_memory);
-+    v->shared->listener_registered = true;
-     return 0;
- }
- 
-@@ -1331,6 +1337,11 @@ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
-                          "IOMMU and try again");
-             return -1;
-         }
-+        if (v->shared->listener_registered &&
-+            dev->vdev->dma_as != v->shared->listener.address_space) {
-+            memory_listener_unregister(&v->shared->listener);
-+            v->shared->listener_registered = false;
-+        }
-         if (!v->shared->listener_registered) {
-             memory_listener_register(&v->shared->listener, dev->vdev->dma_as);
-             v->shared->listener_registered = true;
 -- 
-2.39.3
+2.43.0.275.g3460e3d667-goog
 
 
