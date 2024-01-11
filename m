@@ -2,78 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA3782A66B
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 04:21:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1582A82A686
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 04:34:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNlbp-00012A-L1; Wed, 10 Jan 2024 22:19:57 -0500
+	id 1rNloJ-0002gO-CT; Wed, 10 Jan 2024 22:32:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rNlbo-000122-89
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 22:19:56 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rNloH-0002gG-Si
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 22:32:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rNlbl-0006Ee-SR
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 22:19:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704943193; x=1736479193;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=NVh/3cv2dwof8sh7cNZVWD2gD5Xl6mpN/Th2e4lYKic=;
- b=E/xgrjgIKx4eJJCtfy7gAKWFc1PHS3/5ORXOwSBXrwZhswazjiv31jHM
- was6W1TYyiO4fMApnN0KTG+ueL6QdCgfspRtRnAzSBascv6ZjPSwlDtOC
- pVClAzwbOkT8BfSga0tmGqpHmyNLFv0+hM1YiHT9bIGosk2afH8MUyzeW
- ikcvdnKlzuEMUCfBvW8P+zpwGXiiiYlz0HbHzcfpqeYNCOzk95d7WvB/Q
- eDaEcuWSAgS6y0xbc2eQ+MvNxDOQrz6AFwUTTXna8NkwPkrvprE05FdZj
- lcerE5CUToxjpWM7O2M7OTB8wjBnNdS1ByjBjCoVkX8eUb7V7rd1Ji4yM w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="12212844"
-X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; d="scan'208";a="12212844"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jan 2024 19:19:40 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="1029383508"
-X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; d="scan'208";a="1029383508"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
- ([10.93.22.149])
- by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jan 2024 19:19:37 -0800
-Message-ID: <cb75fcea-7e3a-4062-8d1c-3067f5e53bcc@intel.com>
-Date: Thu, 11 Jan 2024 11:19:34 +0800
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rNloF-0005sv-Qy
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 22:32:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704943966;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wMxY1+yflmEV4B4lDl46nS63zCWBLJbCY22RoPFVzEs=;
+ b=DFifpiC9lco6OCccb8zkPSe9jKOIDkKccHBfLDzPBRW6DT7SkzRpwfbBD+ZqfZ9HpzFQOj
+ y87/kSBZnaJZIGOEvm3HLMuKtqYB8DoAZqazXJHBpzKQP+KDg8S3VksIoJrjH0eUrLJag6
+ 7cldtmj129G9PiWWQXPC+ily2R0d+Ts=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-393-fI4Sr1XzNwW4ttjxCO0TgQ-1; Wed, 10 Jan 2024 22:32:44 -0500
+X-MC-Unique: fI4Sr1XzNwW4ttjxCO0TgQ-1
+Received: by mail-pf1-f198.google.com with SMTP id
+ d2e1a72fcca58-6d9b0c58e39so4758987b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 19:32:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704943963; x=1705548763;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wMxY1+yflmEV4B4lDl46nS63zCWBLJbCY22RoPFVzEs=;
+ b=IzIKYLmoKdv20JvrUGskOE1/+wICh17rv6C4CtnuOBetvJe9kxsXeU0tH3rbAPzBI8
+ S60Hx9ND90+qSBNO93+uQ4D06KF4HtB1YfrNgbwBku+WNj7qcRWrs0mSKCFT8f+0dwwj
+ LoSPQLmRh6jhNSphCEUZJlnUkfI7W/vTaX8Zpdtjqo6XByPdJ8ICxWC9PhsFP9Qs5J8X
+ EyWa0Y71IFiFiOgzVwFCweOG5i6UFNPtxmADqXb+YEA2/q8GyTJLu6XcVyK60aNz6yT8
+ nS805aiuw326zmE29yzp9nZb0ZhDowmRXyrUksO0Az6xuwWwUbU5jS9TNrZ7Kq1cyx/s
+ zSnw==
+X-Gm-Message-State: AOJu0YyZVTYW9vW3l4gJ08d0vEPdicj5I6CRcXJFbw1o1WtIq0mN9Ei9
+ aWz8XUtH4YPRkaByvaRg43HkzBbs9yqJJOZ9JELpXwn3ffBdVsxkSOuOWijeUctr2QsF50YQGTc
+ FpoU+FYpWif5UfxzSM94GqLmHumYl5patL6C8hME=
+X-Received: by 2002:a05:6a00:1d8f:b0:6d9:b5ce:f17e with SMTP id
+ z15-20020a056a001d8f00b006d9b5cef17emr643317pfw.5.1704943963542; 
+ Wed, 10 Jan 2024 19:32:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEF9GwSLcAAAHxbYwXXNz9twVL3Nqd8Vc84WaVGac0s2WnuM/3JYfKBb1L8kFf7UiD7Cfb8RkCWl1PO9e40V44=
+X-Received: by 2002:a05:6a00:1d8f:b0:6d9:b5ce:f17e with SMTP id
+ z15-20020a056a001d8f00b006d9b5cef17emr643312pfw.5.1704943963307; Wed, 10 Jan
+ 2024 19:32:43 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 05/16] i386: Decouple CPUID[0x1F] subleaf with specific
- topology level
-Content-Language: en-US
-To: Zhao Liu <zhao1.liu@linux.intel.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-6-zhao1.liu@linux.intel.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20240108082727.420817-6-zhao1.liu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-2-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-2-git-send-email-si-wei.liu@oracle.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Thu, 11 Jan 2024 11:32:32 +0800
+Message-ID: <CACGkMEsn=dibiuav8RKHYEWn6CrXPL2PxSyNqsrtj-k6Z0WhmA@mail.gmail.com>
+Subject: Re: [PATCH 01/40] linux-headers: add vhost_types.h and vhost.h
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
+ leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
+ jonah.palmer@oracle.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,248 +97,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/8/2024 4:27 PM, Zhao Liu wrote:
-> From: Zhao Liu <zhao1.liu@intel.com>
-> 
-> At present, the subleaf 0x02 of CPUID[0x1F] is bound to the "die" level.
-> 
-> In fact, the specific topology level exposed in 0x1F depends on the
-> platform's support for extension levels (module, tile and die).
-> 
-> To help expose "module" level in 0x1F, decouple CPUID[0x1F] subleaf
-> with specific topology level.
-> 
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> Tested-by: Babu Moger <babu.moger@amd.com>
-> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+On Fri, Dec 8, 2023 at 2:50=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
+rote:
+>
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+
+It's better to document which version did this commit sync to.
+
+Thanks
+
 > ---
-> Changes since v3:
->   * New patch to prepare to expose module level in 0x1F.
->   * Move the CPUTopoLevel enumeration definition from "i386: Add cache
->     topology info in CPUCacheInfo" to this patch. Note, to align with
->     topology types in SDM, revert the name of CPU_TOPO_LEVEL_UNKNOW to
->     CPU_TOPO_LEVEL_INVALID.
-> ---
->   target/i386/cpu.c | 136 +++++++++++++++++++++++++++++++++++++---------
->   target/i386/cpu.h |  15 +++++
->   2 files changed, 126 insertions(+), 25 deletions(-)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index bc440477d13d..5c295c9a9e2d 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -269,6 +269,116 @@ static void encode_cache_cpuid4(CPUCacheInfo *cache,
->              (cache->complex_indexing ? CACHE_COMPLEX_IDX : 0);
->   }
->   
-> +static uint32_t num_cpus_by_topo_level(X86CPUTopoInfo *topo_info,
-> +                                       enum CPUTopoLevel topo_level)
-> +{
-> +    switch (topo_level) {
-> +    case CPU_TOPO_LEVEL_SMT:
-> +        return 1;
-> +    case CPU_TOPO_LEVEL_CORE:
-> +        return topo_info->threads_per_core;
-> +    case CPU_TOPO_LEVEL_DIE:
-> +        return topo_info->threads_per_core * topo_info->cores_per_die;
-> +    case CPU_TOPO_LEVEL_PACKAGE:
-> +        return topo_info->threads_per_core * topo_info->cores_per_die *
-> +               topo_info->dies_per_pkg;
-> +    default:
-> +        g_assert_not_reached();
-> +    }
-> +    return 0;
-> +}
-> +
-> +static uint32_t apicid_offset_by_topo_level(X86CPUTopoInfo *topo_info,
-> +                                            enum CPUTopoLevel topo_level)
-> +{
-> +    switch (topo_level) {
-> +    case CPU_TOPO_LEVEL_SMT:
-> +        return 0;
-> +    case CPU_TOPO_LEVEL_CORE:
-> +        return apicid_core_offset(topo_info);
-> +    case CPU_TOPO_LEVEL_DIE:
-> +        return apicid_die_offset(topo_info);
-> +    case CPU_TOPO_LEVEL_PACKAGE:
-> +        return apicid_pkg_offset(topo_info);
-> +    default:
-> +        g_assert_not_reached();
-> +    }
-> +    return 0;
-> +}
-> +
-> +static uint32_t cpuid1f_topo_type(enum CPUTopoLevel topo_level)
-> +{
-> +    switch (topo_level) {
-> +    case CPU_TOPO_LEVEL_INVALID:
-> +        return CPUID_1F_ECX_TOPO_LEVEL_INVALID;
-> +    case CPU_TOPO_LEVEL_SMT:
-> +        return CPUID_1F_ECX_TOPO_LEVEL_SMT;
-> +    case CPU_TOPO_LEVEL_CORE:
-> +        return CPUID_1F_ECX_TOPO_LEVEL_CORE;
-> +    case CPU_TOPO_LEVEL_DIE:
-> +        return CPUID_1F_ECX_TOPO_LEVEL_DIE;
-> +    default:
-> +        /* Other types are not supported in QEMU. */
-> +        g_assert_not_reached();
-> +    }
-> +    return 0;
-> +}
-> +
-> +static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
-> +                                X86CPUTopoInfo *topo_info,
-> +                                uint32_t *eax, uint32_t *ebx,
-> +                                uint32_t *ecx, uint32_t *edx)
-> +{
-> +    static DECLARE_BITMAP(topo_bitmap, CPU_TOPO_LEVEL_MAX);
-> +    X86CPU *cpu = env_archcpu(env);
-> +    unsigned long level, next_level;
-> +    uint32_t num_cpus_next_level, offset_next_level;
-
-again, I dislike the name of cpus to represent the logical process or 
-thread. we can call it, num_lps_next_level, or num_threads_next_level;
-
-> +
-> +    /*
-> +     * Initialize the bitmap to decide which levels should be
-> +     * encoded in 0x1f.
-> +     */
-> +    if (!count) {
-
-using static bitmap and initialize the bitmap on (count == 0), looks bad 
-to me. It highly relies on the order of how encode_topo_cpuid1f() is 
-called, and fragile.
-
-Instead, we can maintain an array in CPUX86State, e.g.,
-
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1904,6 +1904,8 @@ typedef struct CPUArchState {
-
-      /* Number of dies within this CPU package. */
-      unsigned nr_dies;
-+
-+    unint8_t valid_cpu_topo[CPU_TOPO_LEVEL_MAX];
-  } CPUX86State;
-
-
-and initialize it as below, when initializing the env
-
-env->valid_cpu_topo[0] = CPU_TOPO_LEVEL_SMT;
-env->valid_cpu_topo[1] = CPU_TOPO_LEVEL_CORE;
-if (env->nr_dies > 1) {
-	env->valid_cpu_topo[2] = CPU_TOPO_LEVEL_DIE;
-}
-
-then in encode_topo_cpuid1f(), we can get level and next_level as
-
-level = env->valid_cpu_topo[count];
-next_level = env->valid_cpu_topo[count + 1];
-
-
-> +        /* SMT and core levels are exposed in 0x1f leaf by default. */
-> +        set_bit(CPU_TOPO_LEVEL_SMT, topo_bitmap);
-> +        set_bit(CPU_TOPO_LEVEL_CORE, topo_bitmap);
-> +
-> +        if (env->nr_dies > 1) {
-> +            set_bit(CPU_TOPO_LEVEL_DIE, topo_bitmap);
-> +        }
-> +    }
-> +
-> +    *ecx = count & 0xff;
-> +    *edx = cpu->apic_id;
-> +
-> +    level = find_first_bit(topo_bitmap, CPU_TOPO_LEVEL_MAX);
-> +    if (level == CPU_TOPO_LEVEL_MAX) {
-> +        num_cpus_next_level = 0;
-> +        offset_next_level = 0;
-> +
-> +        /* Encode CPU_TOPO_LEVEL_INVALID into the last subleaf of 0x1f. */
-> +        level = CPU_TOPO_LEVEL_INVALID;
-> +    } else {
-> +        next_level = find_next_bit(topo_bitmap, CPU_TOPO_LEVEL_MAX, level + 1);
-> +        if (next_level == CPU_TOPO_LEVEL_MAX) {
-> +            next_level = CPU_TOPO_LEVEL_PACKAGE;
-> +        }
-> +
-> +        num_cpus_next_level = num_cpus_by_topo_level(topo_info, next_level);
-> +        offset_next_level = apicid_offset_by_topo_level(topo_info, next_level);
-> +    }
-> +
-> +    *eax = offset_next_level;
-> +    *ebx = num_cpus_next_level;
-> +    *ecx |= cpuid1f_topo_type(level) << 8;
-> +
-> +    assert(!(*eax & ~0x1f));
-> +    *ebx &= 0xffff; /* The count doesn't need to be reliable. */
-> +    if (level != CPU_TOPO_LEVEL_MAX) {
-> +        clear_bit(level, topo_bitmap);
-> +    }
-> +}
-> +
->   /* Encode cache info for CPUID[0x80000005].ECX or CPUID[0x80000005].EDX */
->   static uint32_t encode_cache_cpuid80000005(CPUCacheInfo *cache)
->   {
-> @@ -6284,31 +6394,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->               break;
->           }
->   
-> -        *ecx = count & 0xff;
-> -        *edx = cpu->apic_id;
-> -        switch (count) {
-> -        case 0:
-> -            *eax = apicid_core_offset(&topo_info);
-> -            *ebx = topo_info.threads_per_core;
-> -            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_SMT << 8;
-> -            break;
-> -        case 1:
-> -            *eax = apicid_die_offset(&topo_info);
-> -            *ebx = topo_info.cores_per_die * topo_info.threads_per_core;
-> -            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_CORE << 8;
-> -            break;
-> -        case 2:
-> -            *eax = apicid_pkg_offset(&topo_info);
-> -            *ebx = cpus_per_pkg;
-> -            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_DIE << 8;
-> -            break;
-> -        default:
-> -            *eax = 0;
-> -            *ebx = 0;
-> -            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_INVALID << 8;
-> -        }
-> -        assert(!(*eax & ~0x1f));
-> -        *ebx &= 0xffff; /* The count doesn't need to be reliable. */
-> +        encode_topo_cpuid1f(env, count, &topo_info, eax, ebx, ecx, edx);
->           break;
->       case 0xD: {
->           /* Processor Extended State */
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index f47bad46db5e..9c78cfc3f322 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -1008,6 +1008,21 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
->   #define CPUID_MWAIT_IBE     (1U << 1) /* Interrupts can exit capability */
->   #define CPUID_MWAIT_EMX     (1U << 0) /* enumeration supported */
->   
-> +/*
-> + * CPUTopoLevel is the general i386 topology hierarchical representation,
-> + * ordered by increasing hierarchical relationship.
-> + * Its enumeration value is not bound to the type value of Intel (CPUID[0x1F])
-> + * or AMD (CPUID[0x80000026]).
+>  include/standard-headers/linux/vhost_types.h | 13 +++++++++++++
+>  linux-headers/linux/vhost.h                  |  9 +++++++++
+>  2 files changed, 22 insertions(+)
+>
+> diff --git a/include/standard-headers/linux/vhost_types.h b/include/stand=
+ard-headers/linux/vhost_types.h
+> index 5ad07e1..c39199b 100644
+> --- a/include/standard-headers/linux/vhost_types.h
+> +++ b/include/standard-headers/linux/vhost_types.h
+> @@ -185,5 +185,18 @@ struct vhost_vdpa_iova_range {
+>   * DRIVER_OK
+>   */
+>  #define VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK  0x6
+> +/* Device can be resumed */
+> +#define VHOST_BACKEND_F_RESUME  0x5
+> +/* Device supports the driver enabling virtqueues both before and after
+> + * DRIVER_OK
 > + */
-> +enum CPUTopoLevel {
-> +    CPU_TOPO_LEVEL_INVALID,
-> +    CPU_TOPO_LEVEL_SMT,
-> +    CPU_TOPO_LEVEL_CORE,
-> +    CPU_TOPO_LEVEL_DIE,
-> +    CPU_TOPO_LEVEL_PACKAGE,
-> +    CPU_TOPO_LEVEL_MAX,
-> +};
+> +#define VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK  0x6
+> +/* Device may expose the virtqueue's descriptor area, driver area and
+> + * device area to a different group for ASID binding than where its
+> + * buffers may reside. Requires VHOST_BACKEND_F_IOTLB_ASID.
+> + */
+> +#define VHOST_BACKEND_F_DESC_ASID    0x7
+> +/* IOTLB don't flush memory mapping across device reset */
+> +#define VHOST_BACKEND_F_IOTLB_PERSIST  0x8
+>
+>  #endif
+> diff --git a/linux-headers/linux/vhost.h b/linux-headers/linux/vhost.h
+> index f5c48b6..c61c687 100644
+> --- a/linux-headers/linux/vhost.h
+> +++ b/linux-headers/linux/vhost.h
+> @@ -219,4 +219,13 @@
+>   */
+>  #define VHOST_VDPA_RESUME              _IO(VHOST_VIRTIO, 0x7E)
+>
+> +/* Get the dedicated group for the descriptor table of a virtqueue:
+> + * read index, write group in num.
+> + * The virtqueue index is stored in the index field of vhost_vring_state=
+.
+> + * The group id for the descriptor table of this specific virtqueue
+> + * is returned via num field of vhost_vring_state.
+> + */
+> +#define VHOST_VDPA_GET_VRING_DESC_GROUP        _IOWR(VHOST_VIRTIO, 0x7F,=
+       \
+> +                                             struct vhost_vring_state)
 > +
->   /* CPUID[0xB].ECX level types */
->   #define CPUID_B_ECX_TOPO_LEVEL_INVALID  0
->   #define CPUID_B_ECX_TOPO_LEVEL_SMT      1
+>  #endif
+> --
+> 1.8.3.1
+>
 
 
