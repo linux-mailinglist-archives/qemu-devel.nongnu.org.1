@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 990A682A8B5
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F2A82A8CA
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:14:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNq2j-0001OY-P7; Thu, 11 Jan 2024 03:04:01 -0500
+	id 1rNqBE-0003CT-9t; Thu, 11 Jan 2024 03:12:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rNq2i-0001OQ-CN
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:04:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rNqB9-0003AQ-5a
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:12:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rNq2g-0001Sx-So
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:04:00 -0500
+ id 1rNqB6-0006Jn-9Q
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:12:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704960237;
+ s=mimecast20190719; t=1704960758;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JqomWg3P5JvDTKAPaHo96MpbiGHYLwZRQnt2Nb8E8lk=;
- b=Gi3u+hl2n1KMWIIS3NRqY4krF0wDUnGF0frBR8JXtFvhsCaLAn7FwQAAKZev/7LNheSe1U
- VKre+pExAX1GU4TY6IcBbFcP/fdS+CW4Xt5scaviP8XSoL4LZX5wK+ftRbs0R4q4/IkVKf
- CA8msqmnmpR7NJvweXhTuLP9afUh5P4=
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
- [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rg7Ao1Tlb+e0EAKKgDqHLM3yNC/FThl66zCeDT+EIsA=;
+ b=OR7JJXobSh/hqB33MtcygMtSiLTq/hlpj0geuZcbYWY/6/Mk77YLnXZxYLg/0AdcXntjNo
+ cJvf+LjBZcUhMnumN+DoKzxWgaChd/shDCpRJKWJtLAwvB8xS7JLkMWC+AGf9h/S686tgN
+ RBomLIsCxaR5CFVCr5FRlg5RLYw2X34=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-GcXuntcyNfK8LEyONTtTVQ-1; Thu, 11 Jan 2024 03:03:56 -0500
-X-MC-Unique: GcXuntcyNfK8LEyONTtTVQ-1
-Received: by mail-oi1-f198.google.com with SMTP id
- 5614622812f47-3bd44263113so3026476b6e.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 00:03:56 -0800 (PST)
+ us-mta-381-oAiMMjXcO3W4YVfinTitXA-1; Thu, 11 Jan 2024 03:12:37 -0500
+X-MC-Unique: oAiMMjXcO3W4YVfinTitXA-1
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-6d9b8ff5643so2923664b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 00:12:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704960236; x=1705565036;
+ d=1e100.net; s=20230601; t=1704960756; x=1705565556;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JqomWg3P5JvDTKAPaHo96MpbiGHYLwZRQnt2Nb8E8lk=;
- b=DEdWLqNgznvfCPURVN1BhGGwp0GOc7TwNa9beo8arVr7KM+oEJSr/Fzgchb0SybeDu
- rz1aFs4/qjr6FfcpPgVWJ+cyDeg1ye+Xzpn0gk1MC2VVY8y+xdlXFiweM1jYxAN+z851
- kVGrC0Kuvb1IHAJM/SvvZ0juK98v/3wIkEY4oZZJdZ9Nu7Eb8quy461VPK/jCqgJ+EAg
- 2IbZ9GhZAm8lW5+utIZa+r6gfk+AZEKsvko7RJYwy72E++E7HKcKwjuDZYY/WLXIMspC
- EKKUAD/Hy+JZofnCon53qKKrwmE5C6FZzTPdxpmkaV/XuOvmdCID/G/ON5VX9AcXJwUQ
- xrSQ==
-X-Gm-Message-State: AOJu0Yw9gqa0eUAcBwccD7+YwWZnwZm49z3JyLsbD2y5ooXTpWVN5BhR
- LERoQe598bLt12dJcUvpUoUR8r1F5zQ/quGX1loPX6knwDNfDsfpy85JQoM/ETZ+rk6kh48RsnJ
- hYswH4+QgGW9yehQXfw5BYDHtJN3Nx/OgDgRTeI8=
-X-Received: by 2002:a05:6358:4403:b0:175:7309:4228 with SMTP id
- z3-20020a056358440300b0017573094228mr891329rwc.37.1704960235893; 
- Thu, 11 Jan 2024 00:03:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHk47JzPrhdX0ubFxPubV7Du1S1Sv/7gK8/czzaH1mFa3kaZZOy/hgZywmkILKjkTEoRctKqlMQ2ckwQNiZ0WE=
-X-Received: by 2002:a05:6358:4403:b0:175:7309:4228 with SMTP id
- z3-20020a056358440300b0017573094228mr891316rwc.37.1704960235636; Thu, 11 Jan
- 2024 00:03:55 -0800 (PST)
+ bh=rg7Ao1Tlb+e0EAKKgDqHLM3yNC/FThl66zCeDT+EIsA=;
+ b=Ni9jUfDx8y0mQ66krQxy5PcxlD/ePaTEfBepZCAyvd5ldIMR9hr8jHFG5BhMpv0cIz
+ 24rXsvmfJ3j4cOVfer09StFcmBXLI4yWDuVHx2lcoYOkxkpdZwZ3CNTgEc3esojv+ZBF
+ 4f/9ucVol8GPyaF4CbMVWTkOdn/Hgb8hr5/EaYUd4qL002Qbu2jmIkc+vwXh83uywO4e
+ vRRWBctHiGxweFZaEoHy8lvoXyStuB65xe5rZIn1nReHGKlsIOpZ3UKnnYyNIMq4ORIS
+ MdqqEwdozLYGKvnG4DGKGiU6T5e4a9cIBosaZIGMv+VfL38sKTX5sn/jLebRktN7ABFs
+ yslA==
+X-Gm-Message-State: AOJu0Yxt12KPACj33qZpwOoX+M0Q2RE1G3wmkA9vJDt4QSEFKXeac9Ua
+ RPVGxVToL7TB4/4m07nZG5u+jqaEnt4qJxRULN2z2Q5rFA/qYllgsUiiiThjkddN7eeZqVYZ3v3
+ 8stP4gYQv66HA0AyMdb0XUuJ4iIO/w09GYna4e14=
+X-Received: by 2002:aa7:8a09:0:b0:6d9:bb7c:a56a with SMTP id
+ m9-20020aa78a09000000b006d9bb7ca56amr738948pfa.36.1704960755915; 
+ Thu, 11 Jan 2024 00:12:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGE4k8xSLKdeHXYlorFH+fyD11DPujTw6aY3EAe4dezuNdeyjgmDvNEdmjrbk0hq5pScJHHCTcFs/vmCVVvC8U=
+X-Received: by 2002:aa7:8a09:0:b0:6d9:bb7c:a56a with SMTP id
+ m9-20020aa78a09000000b006d9bb7ca56amr738935pfa.36.1704960755605; Thu, 11 Jan
+ 2024 00:12:35 -0800 (PST)
 MIME-Version: 1.0
 References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-12-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-12-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-14-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-14-git-send-email-si-wei.liu@oracle.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 11 Jan 2024 16:03:44 +0800
-Message-ID: <CACGkMEtR2fBhNjBBz16PpQA4XLt-WMCMCS=0G_6rnN0XibVghA@mail.gmail.com>
-Subject: Re: [PATCH 11/40] vdpa: factor out vhost_vdpa_last_dev
+Date: Thu, 11 Jan 2024 16:12:24 +0800
+Message-ID: <CACGkMEuJjb8st2PZAWENF2xd-Xj_PaAKTgbLTCO7w7ZDQKPbJg@mail.gmail.com>
+Subject: Re: [PATCH 13/40] vdpa: ref counting VhostVDPAShared
 To: Si-Wei Liu <si-wei.liu@oracle.com>
 Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
  leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
  jonah.palmer@oracle.com, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
 X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,56 +100,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Fri, Dec 8, 2023 at 2:50=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
 rote:
 >
-> Generalize duplicated condition check for the last vq of vdpa
-> device to a common function.
+> Subsequent patches attempt to release VhostVDPAShared resources,
+> for example iova tree to free and memory listener to unregister,
+> in vdpa_dev_cleanup(). Instead of checking against the vq index,
+> which is not always available in all of the callers, counting
+> the usage by reference. Then it'll be easy to free resource
+> upon the last deref.
 >
 > Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+> ---
+>  include/hw/virtio/vhost-vdpa.h |  2 ++
+>  net/vhost-vdpa.c               | 14 ++++++++++----
+>  2 files changed, 12 insertions(+), 4 deletions(-)
+>
+> diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdp=
+a.h
+> index 63493ff..7b8d3bf 100644
+> --- a/include/hw/virtio/vhost-vdpa.h
+> +++ b/include/hw/virtio/vhost-vdpa.h
+> @@ -70,6 +70,8 @@ typedef struct vhost_vdpa_shared {
+>
+>      /* Vdpa must send shadow addresses as IOTLB key for data queues, not=
+ GPA */
+>      bool shadow_data;
+> +
+> +    unsigned refcnt;
+>  } VhostVDPAShared;
+>
+>  typedef struct vhost_vdpa {
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index aebaa53..a126e5c 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -236,11 +236,11 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
+>          g_free(s->vhost_net);
+>          s->vhost_net =3D NULL;
+>      }
+> -    if (s->vhost_vdpa.index !=3D 0) {
+> -        return;
+> +    if (--s->vhost_vdpa.shared->refcnt =3D=3D 0) {
+> +        qemu_close(s->vhost_vdpa.shared->device_fd);
+> +        g_free(s->vhost_vdpa.shared);
+>      }
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+I'd suggest having a get and put helper, then we can check and do
+cleanup in the put when refcnt is zero.
 
 Thanks
 
-> ---
->  hw/virtio/vhost-vdpa.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> index 30dff95..2b1cc14 100644
-> --- a/hw/virtio/vhost-vdpa.c
-> +++ b/hw/virtio/vhost-vdpa.c
-> @@ -593,6 +593,11 @@ static bool vhost_vdpa_first_dev(struct vhost_dev *d=
-ev)
->      return v->index =3D=3D 0;
+> -    qemu_close(s->vhost_vdpa.shared->device_fd);
+> -    g_free(s->vhost_vdpa.shared);
+> +    s->vhost_vdpa.shared =3D NULL;
 >  }
 >
-> +static bool vhost_vdpa_last_dev(struct vhost_dev *dev)
-> +{
-> +    return dev->vq_index + dev->nvqs =3D=3D dev->vq_index_end;
-> +}
-> +
->  static int vhost_vdpa_get_dev_features(struct vhost_dev *dev,
->                                         uint64_t *features)
->  {
-> @@ -1432,7 +1437,7 @@ static int vhost_vdpa_dev_start(struct vhost_dev *d=
-ev, bool started)
->          goto out_stop;
+>  /** Dummy SetSteeringEBPF to support RSS for vhost-vdpa backend  */
+> @@ -1896,6 +1896,7 @@ static NetClientState *net_vhost_vdpa_init(NetClien=
+tState *peer,
+>          s->vhost_vdpa.shared->device_fd =3D vdpa_device_fd;
+>          s->vhost_vdpa.shared->iova_range =3D iova_range;
+>          s->vhost_vdpa.shared->shadow_data =3D svq;
+> +        s->vhost_vdpa.shared->refcnt++;
+>      } else if (!is_datapath) {
+>          s->cvq_cmd_out_buffer =3D mmap(NULL, vhost_vdpa_net_cvq_cmd_page=
+_len(),
+>                                       PROT_READ | PROT_WRITE,
+> @@ -1910,6 +1911,7 @@ static NetClientState *net_vhost_vdpa_init(NetClien=
+tState *peer,
+>      }
+>      if (queue_pair_index !=3D 0) {
+>          s->vhost_vdpa.shared =3D shared;
+> +        s->vhost_vdpa.shared->refcnt++;
 >      }
 >
-> -    if (dev->vq_index + dev->nvqs !=3D dev->vq_index_end) {
-> +    if (!vhost_vdpa_last_dev(dev)) {
->          return 0;
->      }
+>      ret =3D vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index,=
+ nvqs);
+> @@ -1928,6 +1930,10 @@ static NetClientState *net_vhost_vdpa_init(NetClie=
+ntState *peer,
+>      return nc;
 >
-> @@ -1467,7 +1472,7 @@ static void vhost_vdpa_reset_status(struct vhost_de=
-v *dev)
->  {
->      struct vhost_vdpa *v =3D dev->opaque;
->
-> -    if (dev->vq_index + dev->nvqs !=3D dev->vq_index_end) {
-> +    if (!vhost_vdpa_last_dev(dev)) {
->          return;
->      }
->
+>  err:
+> +    if (--s->vhost_vdpa.shared->refcnt =3D=3D 0) {
+> +        g_free(s->vhost_vdpa.shared);
+> +    }
+> +    s->vhost_vdpa.shared =3D NULL;
+>      qemu_del_net_client(nc);
+>      return NULL;
+>  }
 > --
 > 1.8.3.1
 >
