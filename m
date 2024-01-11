@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8DD82AD22
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:14:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3E7A82ACF9
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:10:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNssZ-0001Rs-MK; Thu, 11 Jan 2024 06:05:43 -0500
+	id 1rNssk-0001gm-B5; Thu, 11 Jan 2024 06:05:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss9-0001M2-HT
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:17 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1rNss9-0001MZ-Rs
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:18 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss7-0004QY-LE
+ id 1rNss7-0004Qj-Lt
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:17 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-337874b8164so359055f8f.2
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:14 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-336990fb8fbso4247977f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704971113; x=1705575913; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704971114; x=1705575914; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=w7B/8lPK1MV7k06ckol/zGTOa+v925bmxBrmmGd2s5s=;
- b=lMdQ6KlH9D1xcB4PL4MD0/UD6UOgg5PwYhQ3RgCoea8T/btwxvcAirG3xHsVFBPX/p
- JoNMiZYzJ1TfRSXExVTdQtURkgPMycDTVfmOh72Doi51G0Pc195YiXv796ygH3BrpMLk
- OGZbY8uoSSXsx3L6OqgSd3q1KWAz8604MXA0IWqzjNVzKsnn3L/OmhqoCZvPH0h+i/R+
- A65aurv/0UMvfjC5smMSsmmNpQTYWCqx4iNNKPG+4wQeUuMKBlcnE+G31GmFuCsGngoC
- HlbuS6Fu+5S7PHtp1UrrCjtOJYFr4xsYIEHyECBIWRfE10W/L7vKsQfKMfqnYVzxl8uF
- tONA==
+ :reply-to; bh=p08aMxgI1IXtfa2vzBRi+z+GrjTOXr7+5t5A30IuGRM=;
+ b=Flk69zezy2jJwOxNLyABRoxIOzMLmVuuwgLbsF0h5OPoGIVJQnh211wy/SiYemt/uB
+ YDescplGwvKkM/GIaOuvlHg3HCgbpideoFIKwbciz+JOmUAGD78sPmVZeG6G3D6SMJbD
+ aUmnpd91kScvCnqDbdAxJ7x8UTO8JL6TBxGyqvBIu/cMWoy8fWPC5iO8/rHeACMVPJ75
+ LVyG8x57o1alZFWgK0yOg+REP/kfx9SOWdh3Gc160agGInokKpGg2U+J3z+KkBc/zimj
+ A9ITYO6sLLzI+6+vvklBCOuHZjdEcJezbjzIWnrJmKWUtyUe6Qe7si5n6Y9mpkh8Gn1O
+ N3UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704971113; x=1705575913;
+ d=1e100.net; s=20230601; t=1704971114; x=1705575914;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w7B/8lPK1MV7k06ckol/zGTOa+v925bmxBrmmGd2s5s=;
- b=fKV92kXtbekHf/VfhZquDaunlQPemNQzUjrESQdJOxuhQUXCEw9awHLeVpdjVo0MBT
- 7VjY7QTHHCgN3oh1UFyp4h9mlR3ROTQDaB9WOwuLk5EI6JbTa4jBI0JxrXKYPdDWkYxB
- 1rrTmLxDUciN5hYVZ0TaAGEdKaPufs1xy+xQHsjX3YDZ5qUmKPmeAIY/9g/3Q7s1R5rJ
- Ue9Unb5b6ooFp7PW+whyY8duT22J/b9sJtBHbcQVKy4mgl41IYF2ojlzH06ZHPvqi2uF
- hm6vFFPjxl5HuCctKB7r2aBTpjkYsDNJ/iRGoR1nrn/or34qqUCMRy8JTOHRYEhJy+25
- 57Hg==
-X-Gm-Message-State: AOJu0YyqvcCI7uBq3f52vzLx3AZeh5etW/DOyWwiFlsnKBmTxV2AOput
- XXRN8mepBYnpHrVYP5zEuFrX0p3dMo1MtTH/ZhQDPTPX4kw=
-X-Google-Smtp-Source: AGHT+IEbPVU9UaxIQF/4tPfqHZVn3GBAkkclkZ8a7CbX0aj2A58gDlJtYylo1GVJwpBxrPF3zFBKqg==
-X-Received: by 2002:adf:ce83:0:b0:336:7790:6a36 with SMTP id
- r3-20020adfce83000000b0033677906a36mr542344wrn.129.1704971113683; 
- Thu, 11 Jan 2024 03:05:13 -0800 (PST)
+ bh=p08aMxgI1IXtfa2vzBRi+z+GrjTOXr7+5t5A30IuGRM=;
+ b=Fy/G0yvw+bM9LhiksJ84X/lVBl/hw74rpPtPtIHaiZE06ldb0QqYLVi3no6s8gorow
+ 2LSpAZoIRkDh6CEHXElRTe0dbRbvyUbXajaXQygPchaIV6zdilzz7DT2CWkxR4ToGefC
+ JVheBCoOoyzYa/tCiw/qJVAftxMrXwQEymm0Beb0veDRT6l+shQ5TRuW4KmTVQnoqXZb
+ E1kjbRT9I1xtj4/n0/5l0wO8LGn0Vx1Dgw0Wjrx/+BqCjkkGs1ep72ZvG1f1Jpsbb/h6
+ o2Ui56iZWNKRdbU8d7oFdcyQkPl40NNTxu7/HWDsUbCOgJ+aIHuWTct1BOIQs63VIIQ8
+ 2KeA==
+X-Gm-Message-State: AOJu0YyxjVAHplsR6qxaOkfOnUC+DMeNf0UApA7u2PatB+s10f5wWEGg
+ VvdGE+N02oIutHS5TfJSCyd1I2HEcMy0PB/vR8co/lxmRjw=
+X-Google-Smtp-Source: AGHT+IFPkPP5pbgpwfzOT9B/y1CgsfCZsMNICw4/YiYTDAbTHY2Hqz2XTRSaNpW8QOVUFX2gyODCfw==
+X-Received: by 2002:a5d:4652:0:b0:337:2994:15b1 with SMTP id
+ j18-20020a5d4652000000b00337299415b1mr584244wrs.135.1704971114117; 
+ Thu, 11 Jan 2024 03:05:14 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.13
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 11 Jan 2024 03:05:13 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/41] target/arm: *_EL12 registers should UNDEF when
- HCR_EL2.E2H is 0
-Date: Thu, 11 Jan 2024 11:04:40 +0000
-Message-Id: <20240111110505.1563291-17-peter.maydell@linaro.org>
+Subject: [PULL 17/41] target/arm: Make EL2 cpreg accessfns safe for FEAT_NV
+ EL1 accesses
+Date: Thu, 11 Jan 2024 11:04:41 +0000
+Message-Id: <20240111110505.1563291-18-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 References: <20240111110505.1563291-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,81 +91,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The alias registers like SCTLR_EL12 only exist when HCR_EL2.E2H
-is 1; they should UNDEF otherwise. We weren't implementing this.
-Add an intercept of the accessfn for these aliases, and implement
-the UNDEF check.
+FEAT_NV and FEAT_NV2 will allow EL1 to attempt to access cpregs that
+only exist at EL2. This means we're going to want to run their
+accessfns when the CPU is at EL1. In almost all cases, the behaviour
+we want is "the accessfn returns OK if at EL1".
+
+Mostly the accessfn already does the right thing; in a few cases we
+need to explicitly check that the EL is not 1 before applying various
+trap controls, or split out an accessfn used both for an _EL1 and an
+_EL2 register into two so we can handle the FEAT_NV case correctly
+for the _EL2 register.
+
+There are two registers where we want the accessfn to trap for
+a FEAT_NV EL1 access: VSTTBR_EL2 and VSTCR_EL2 should UNDEF
+an access from NonSecure EL1, not trap to EL2 under FEAT_NV.
+The way we have written sel2_access() already results in this
+behaviour.
+
+We can identify the registers we care about here because they
+all have opc1 == 4 or 5.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Miguel Luis <miguel.luis@oracle.com>
 ---
- target/arm/cpregs.h |  3 ++-
- target/arm/helper.c | 16 ++++++++++++++++
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ target/arm/debug_helper.c | 12 +++++++-
+ target/arm/helper.c       | 65 ++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 69 insertions(+), 8 deletions(-)
 
-diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
-index f1293d16c07..e748d184cb6 100644
---- a/target/arm/cpregs.h
-+++ b/target/arm/cpregs.h
-@@ -937,7 +937,7 @@ struct ARMCPRegInfo {
-     CPResetFn *resetfn;
- 
-     /*
--     * "Original" writefn and readfn.
-+     * "Original" readfn, writefn, accessfn.
-      * For ARMv8.1-VHE register aliases, we overwrite the read/write
-      * accessor functions of various EL1/EL0 to perform the runtime
-      * check for which sysreg should actually be modified, and then
-@@ -948,6 +948,7 @@ struct ARMCPRegInfo {
-      */
-     CPReadFn *orig_readfn;
-     CPWriteFn *orig_writefn;
-+    CPAccessFn *orig_accessfn;
- };
- 
- /*
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index dc2471eda7e..797b7518f61 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -6535,6 +6535,20 @@ static void el2_e2h_e12_write(CPUARMState *env, const ARMCPRegInfo *ri,
-     return ri->orig_writefn(env, ri->opaque, value);
+diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
+index 83d2619080f..b39144d5b93 100644
+--- a/target/arm/debug_helper.c
++++ b/target/arm/debug_helper.c
+@@ -844,6 +844,16 @@ static CPAccessResult access_tda(CPUARMState *env, const ARMCPRegInfo *ri,
+     return CP_ACCESS_OK;
  }
  
-+static CPAccessResult el2_e2h_e12_access(CPUARMState *env,
-+                                         const ARMCPRegInfo *ri,
-+                                         bool isread)
++static CPAccessResult access_dbgvcr32(CPUARMState *env, const ARMCPRegInfo *ri,
++                                      bool isread)
 +{
-+    /* FOO_EL12 aliases only exist when E2H is 1; otherwise they UNDEF */
-+    if (!(arm_hcr_el2_eff(env) & HCR_E2H)) {
-+        return CP_ACCESS_TRAP_UNCATEGORIZED;
-+    }
-+    if (ri->orig_accessfn) {
-+        return ri->orig_accessfn(env, ri->opaque, isread);
++    /* MCDR_EL3.TDMA doesn't apply for FEAT_NV traps */
++    if (arm_current_el(env) == 2 && (env->cp15.mdcr_el3 & MDCR_TDA)) {
++        return CP_ACCESS_TRAP_EL3;
 +    }
 +    return CP_ACCESS_OK;
 +}
 +
- static void define_arm_vh_e2h_redirects_aliases(ARMCPU *cpu)
- {
-     struct E2HAlias {
-@@ -6648,6 +6662,7 @@ static void define_arm_vh_e2h_redirects_aliases(ARMCPU *cpu)
-         new_reg->opaque = src_reg;
-         new_reg->orig_readfn = src_reg->readfn ?: raw_read;
-         new_reg->orig_writefn = src_reg->writefn ?: raw_write;
-+        new_reg->orig_accessfn = src_reg->accessfn;
-         if (!new_reg->raw_readfn) {
-             new_reg->raw_readfn = raw_read;
-         }
-@@ -6656,6 +6671,7 @@ static void define_arm_vh_e2h_redirects_aliases(ARMCPU *cpu)
-         }
-         new_reg->readfn = el2_e2h_e12_read;
-         new_reg->writefn = el2_e2h_e12_write;
-+        new_reg->accessfn = el2_e2h_e12_access;
+ /*
+  * Check for traps to Debug Comms Channel registers. If FEAT_FGT
+  * is implemented then these are controlled by MDCR_EL2.TDCC for
+@@ -1062,7 +1072,7 @@ static const ARMCPRegInfo debug_aa32_el1_reginfo[] = {
+      */
+     { .name = "DBGVCR32_EL2", .state = ARM_CP_STATE_AA64,
+       .opc0 = 2, .opc1 = 4, .crn = 0, .crm = 7, .opc2 = 0,
+-      .access = PL2_RW, .accessfn = access_tda,
++      .access = PL2_RW, .accessfn = access_dbgvcr32,
+       .type = ARM_CP_NOP | ARM_CP_EL3_NO_EL2_KEEP },
+ };
  
-         ok = g_hash_table_insert(cpu->cp_regs,
-                                  (gpointer)(uintptr_t)a->new_key, new_reg);
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 797b7518f61..7c7f92c16de 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -3324,6 +3324,11 @@ static const ARMCPRegInfo generic_timer_cp_reginfo[] = {
+ static CPAccessResult e2h_access(CPUARMState *env, const ARMCPRegInfo *ri,
+                                  bool isread)
+ {
++    if (arm_current_el(env) == 1) {
++        /* This must be a FEAT_NV access */
++        /* TODO: FEAT_ECV will need to check CNTHCTL_EL2 here */
++        return CP_ACCESS_OK;
++    }
+     if (!(arm_hcr_el2_eff(env) & HCR_E2H)) {
+         return CP_ACCESS_TRAP;
+     }
+@@ -6014,7 +6019,7 @@ static void hcrx_write(CPUARMState *env, const ARMCPRegInfo *ri,
+ static CPAccessResult access_hxen(CPUARMState *env, const ARMCPRegInfo *ri,
+                                   bool isread)
+ {
+-    if (arm_current_el(env) < 3
++    if (arm_current_el(env) == 2
+         && arm_feature(env, ARM_FEATURE_EL3)
+         && !(env->cp15.scr_el3 & SCR_HXEN)) {
+         return CP_ACCESS_TRAP_EL3;
+@@ -6539,6 +6544,15 @@ static CPAccessResult el2_e2h_e12_access(CPUARMState *env,
+                                          const ARMCPRegInfo *ri,
+                                          bool isread)
+ {
++    if (arm_current_el(env) == 1) {
++        /*
++         * This must be a FEAT_NV access (will either trap or redirect
++         * to memory). None of the registers with _EL12 aliases want to
++         * apply their trap controls for this kind of access, so don't
++         * call the orig_accessfn or do the "UNDEF when E2H is 0" check.
++         */
++        return CP_ACCESS_OK;
++    }
+     /* FOO_EL12 aliases only exist when E2H is 1; otherwise they UNDEF */
+     if (!(arm_hcr_el2_eff(env) & HCR_E2H)) {
+         return CP_ACCESS_TRAP_UNCATEGORIZED;
+@@ -7015,10 +7029,21 @@ static CPAccessResult access_tpidr2(CPUARMState *env, const ARMCPRegInfo *ri,
+     return CP_ACCESS_OK;
+ }
+ 
+-static CPAccessResult access_esm(CPUARMState *env, const ARMCPRegInfo *ri,
+-                                 bool isread)
++static CPAccessResult access_smprimap(CPUARMState *env, const ARMCPRegInfo *ri,
++                                      bool isread)
++{
++    /* If EL1 this is a FEAT_NV access and CPTR_EL3.ESM doesn't apply */
++    if (arm_current_el(env) == 2
++        && arm_feature(env, ARM_FEATURE_EL3)
++        && !FIELD_EX64(env->cp15.cptr_el[3], CPTR_EL3, ESM)) {
++        return CP_ACCESS_TRAP_EL3;
++    }
++    return CP_ACCESS_OK;
++}
++
++static CPAccessResult access_smpri(CPUARMState *env, const ARMCPRegInfo *ri,
++                                   bool isread)
+ {
+-    /* TODO: FEAT_FGT for SMPRI_EL1 but not SMPRIMAP_EL2 */
+     if (arm_current_el(env) < 3
+         && arm_feature(env, ARM_FEATURE_EL3)
+         && !FIELD_EX64(env->cp15.cptr_el[3], CPTR_EL3, ESM)) {
+@@ -7137,12 +7162,12 @@ static const ARMCPRegInfo sme_reginfo[] = {
+      */
+     { .name = "SMPRI_EL1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 0, .crn = 1, .crm = 2, .opc2 = 4,
+-      .access = PL1_RW, .accessfn = access_esm,
++      .access = PL1_RW, .accessfn = access_smpri,
+       .fgt = FGT_NSMPRI_EL1,
+       .type = ARM_CP_CONST, .resetvalue = 0 },
+     { .name = "SMPRIMAP_EL2", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 4, .crn = 1, .crm = 2, .opc2 = 5,
+-      .access = PL2_RW, .accessfn = access_esm,
++      .access = PL2_RW, .accessfn = access_smprimap,
+       .type = ARM_CP_CONST, .resetvalue = 0 },
+ };
+ 
+@@ -7792,7 +7817,33 @@ static CPAccessResult access_mte(CPUARMState *env, const ARMCPRegInfo *ri,
+                                  bool isread)
+ {
+     int el = arm_current_el(env);
++    if (el < 2 && arm_is_el2_enabled(env)) {
++        uint64_t hcr = arm_hcr_el2_eff(env);
++        if (!(hcr & HCR_ATA) && (!(hcr & HCR_E2H) || !(hcr & HCR_TGE))) {
++            return CP_ACCESS_TRAP_EL2;
++        }
++    }
++    if (el < 3 &&
++        arm_feature(env, ARM_FEATURE_EL3) &&
++        !(env->cp15.scr_el3 & SCR_ATA)) {
++        return CP_ACCESS_TRAP_EL3;
++    }
++    return CP_ACCESS_OK;
++}
+ 
++static CPAccessResult access_tfsr_el2(CPUARMState *env, const ARMCPRegInfo *ri,
++                                      bool isread)
++{
++    /*
++     * TFSR_EL2: similar to generic access_mte(), but we need to
++     * account for FEAT_NV. At EL1 this must be a FEAT_NV access;
++     * we will trap to EL2 and the HCR/SCR traps do not apply.
++     */
++    int el = arm_current_el(env);
++
++    if (el == 1) {
++        return CP_ACCESS_OK;
++    }
+     if (el < 2 && arm_is_el2_enabled(env)) {
+         uint64_t hcr = arm_hcr_el2_eff(env);
+         if (!(hcr & HCR_ATA) && (!(hcr & HCR_E2H) || !(hcr & HCR_TGE))) {
+@@ -7828,7 +7879,7 @@ static const ARMCPRegInfo mte_reginfo[] = {
+       .fieldoffset = offsetof(CPUARMState, cp15.tfsr_el[1]) },
+     { .name = "TFSR_EL2", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 4, .crn = 5, .crm = 6, .opc2 = 0,
+-      .access = PL2_RW, .accessfn = access_mte,
++      .access = PL2_RW, .accessfn = access_tfsr_el2,
+       .fieldoffset = offsetof(CPUARMState, cp15.tfsr_el[2]) },
+     { .name = "TFSR_EL3", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 6, .crn = 5, .crm = 6, .opc2 = 0,
 -- 
 2.34.1
 
