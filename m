@@ -2,77 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E690F82B13B
+	by mail.lfdr.de (Postfix) with ESMTPS id CE75382B13A
 	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:00:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNwWL-0000YX-0J; Thu, 11 Jan 2024 09:59:01 -0500
+	id 1rNwWS-0000a9-H1; Thu, 11 Jan 2024 09:59:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rNwWI-0000Y7-FZ
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:58:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rNwWQ-0000Zp-JF
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:59:06 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rNwWC-0003U7-3H
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:58:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704985129;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uPvY8hHnlKKCrzTLw/MTSFkuwnTALP0XhujwZy0yRm8=;
- b=GfJony6S58WMeeM3WEcEsP5BqEk0kjrukXXhQCPHw9sjCRlTL9Bnfy+jwNSjAwKXWp+qDM
- 45aLAopZI5j3O5kNa2Eb7hSGndP3cpV9b+eoUNHjSo5f0AnSOSy5pvZuQjxvmzq9QzqljP
- s+xfDOWaZvNTLkrC3Q3iWdQwK36DWg8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-482-Qiwid2qUPDW5VzDdo5gaWQ-1; Thu, 11 Jan 2024 09:58:45 -0500
-X-MC-Unique: Qiwid2qUPDW5VzDdo5gaWQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6BF3E108C0A4;
- Thu, 11 Jan 2024 14:58:45 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.28])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2584A3C25;
- Thu, 11 Jan 2024 14:58:44 +0000 (UTC)
-Date: Thu, 11 Jan 2024 14:58:41 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Hyman Huang <yong.huang@smartx.com>, qemu-devel <qemu-devel@nongnu.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH RESEND v3 01/10] crypto: Introduce option and structure
- for detached LUKS header
-Message-ID: <ZaACIZlPRnJidSE_@redhat.com>
-References: <cover.1703482349.git.yong.huang@smartx.com>
- <a34c12048198cea06d5d1a69a3fa8b76ab13cbba.1703482349.git.yong.huang@smartx.com>
- <87h6jkuee9.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rNwWN-0003Vm-Sf
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:59:06 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T9nml3B1Dz6J6C1;
+ Thu, 11 Jan 2024 22:56:23 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id DB8EA140CB9;
+ Thu, 11 Jan 2024 22:59:00 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 11 Jan 2024 14:59:00 +0000
+To: <linux-cxl@vger.kernel.org>, <qemu-devel@nongnu.org>, Davidlohr Bueso
+ <dave@stgolabs.net>, Hyeonggon Yoo <42.hyeyoo@gmail.com>, Fan Ni
+ <fan.ni@samsung.com>
+CC: <linuxarm@huawei.com>
+Subject: [PATCH v2 qemu] hw/cxl/device: read from register values in
+ mdev_reg_read()
+Date: Thu, 11 Jan 2024 14:59:05 +0000
+Message-ID: <20240111145905.19797-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87h6jkuee9.fsf@pond.sub.org>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
+Content-Type: text/plain
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,103 +63,113 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 11, 2024 at 03:35:10PM +0100, Markus Armbruster wrote:
-> Hyman Huang <yong.huang@smartx.com> writes:
-> 
-> > Add the "header" option for the LUKS format. This field would be
-> > used to identify the blockdev's position where a detachable LUKS
-> > header is stored.
-> >
-> > In addition, introduce header field in struct BlockCrypto
-> >
-> > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-> > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> > Message-Id: <5b99f60c7317092a563d7ca3fb4b414197015eb2.1701879996.git.yong.huang@smartx.com>
-> > ---
-> >  block/crypto.c       | 1 +
-> >  qapi/block-core.json | 6 +++++-
-> >  2 files changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/block/crypto.c b/block/crypto.c
-> > index 921933a5e5..f82b13d32b 100644
-> > --- a/block/crypto.c
-> > +++ b/block/crypto.c
-> > @@ -39,6 +39,7 @@ typedef struct BlockCrypto BlockCrypto;
-> >  struct BlockCrypto {
-> >      QCryptoBlock *block;
-> >      bool updating_keys;
-> > +    BdrvChild *header;  /* Reference to the detached LUKS header */
-> >  };
-> >  
-> >  
-> > diff --git a/qapi/block-core.json b/qapi/block-core.json
-> > index ca390c5700..10be08d08f 100644
-> > --- a/qapi/block-core.json
-> > +++ b/qapi/block-core.json
-> > @@ -3352,11 +3352,15 @@
-> >  #     decryption key (since 2.6). Mandatory except when doing a
-> >  #     metadata-only probe of the image.
-> >  #
-> > +# @header: optional reference to the location of a blockdev
-> > +#     storing a detached LUKS header. (since 9.0)
-> 
-> This will come out like
-> 
->     "header": "BlockdevRef" (optional)
->        optional reference to the location of a blockdev storing a detached
->        LUKS header. (since 9.0)
-> 
-> in the manual.  Scratch "optional".
-> 
-> Moreover, a BlockdevRef is a "Reference to a block device" (quote from
-> its doc comment), not a "reference to the location of a blockdev".
-> Better simplify to something like "block device holding a detached LUKS
-> header".
-> 
-> But that's just phrasing.  The contents could perhaps use improvement,
-> too.  Let's start with this question: what's a detachable LUKS header,
-> and why would anybody want to use it?
+From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 
-Normally a LUKS volume has a layout:
+In the current mdev_reg_read() implementation, it consistently returns
+that the Media Status is Ready (01b). This was fine until commit
+25a52959f99d ("hw/cxl: Add support for device sanitation") because the
+media was presumed to be ready.
 
-  disk:  | header | key material | disk payload data |
+However, as per the CXL 3.0 spec "8.2.9.8.5.1 Sanitize (Opcode 4400h)",
+during sanitation, the Media State should be set to Disabled (11b). The
+mentioned commit correctly sets it to Disabled, but mdev_reg_read()
+still returns Media Status as Ready.
 
-With a detached LUKS header, you need 2 disks so getting
+To address this, update mdev_reg_read() to read register values instead
+of returning dummy values.
 
-  disk1:  | header | key material |
-  disk2:  | disk payload data |
+Note __toggle_media() was overwriting the mailbox capability
+register, but nothing was reading that after this so that bug had no
+obvious effect unless the driver was reloaded.
 
-There are a variety of reasons to do this
+Fixes: commit 25a52959f99d ("hw/cxl: Add support for device sanitation")
+Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Link: https://lore.kernel.org/r/20231222090051.3265307-3-42.hyeyoo@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
- * Secrecy - the disk2 cannot be identified as containing LUKS volume
-             since there's no header
+--
 
- * Control - if access to the disk1 is restricted, then even if someone
-             has access to disk2 they can't unlock it. Might be useful
-	     if you have disks on NFS but want to restrict which host
-	     can launch a VM instance from it, by dynamically providing
-	     access to the header to a designated host
+Hyeonggon - I've kept your sign-off. Let me know if this is ok.
+Dropped RBs etc as this has changed quite a bit.
 
- * Flexibility - your application data volume may be a given size and
-                 it is inconvenient to resize it to add encryption.
-		 You can store the LUKS header separately and use
-		 the existing storage volume for payload
+I plan to send out a group of fixes including this soon, but given
+I've been pointing out the original fix didn't work thought I'd send
+this one out for early review!
 
- * Recovery - corruption of a bit in the header may make the entire
-              payload inaccessible. It might be convenient to take
-	      backups of the header. If your primary disk header
-	      becomes corrupt, you can unlock the data still by
-	      pointing to the backup detached header.
+---
+ include/hw/cxl/cxl_device.h |  9 +++++++--
+ hw/cxl/cxl-device-utils.c   | 17 +++++++++++------
+ 2 files changed, 18 insertions(+), 8 deletions(-)
 
-With regards,
-Daniel
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index befb5f884b..31d2afcd3d 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -202,6 +202,9 @@ typedef struct cxl_device_state {
+         };
+     };
+ 
++    /* Stash the memory device status value */
++    uint64_t memdev_status;
++
+     struct {
+         bool set;
+         uint64_t last_set;
+@@ -353,8 +356,10 @@ static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
+ {
+     uint64_t dev_status_reg;
+ 
+-    dev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, val);
+-    cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] = dev_status_reg;
++    dev_status_reg = cxl_dstate->memdev_status;
++    dev_status_reg = FIELD_DP64(dev_status_reg, CXL_MEM_DEV_STS, MEDIA_STATUS,
++                                val);
++    cxl_dstate->memdev_status = dev_status_reg;
+ }
+ #define cxl_dev_disable_media(cxlds)                    \
+         do { __toggle_media((cxlds), 0x3); } while (0)
+diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
+index 61a3c4dc2e..40b619ffd9 100644
+--- a/hw/cxl/cxl-device-utils.c
++++ b/hw/cxl/cxl-device-utils.c
+@@ -229,12 +229,9 @@ static void mailbox_reg_write(void *opaque, hwaddr offset, uint64_t value,
+ 
+ static uint64_t mdev_reg_read(void *opaque, hwaddr offset, unsigned size)
+ {
+-    uint64_t retval = 0;
+-
+-    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
+-    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MBOX_READY, 1);
++    CXLDeviceState *cxl_dstate = opaque;
+ 
+-    return retval;
++    return cxl_dstate->memdev_status;
+ }
+ 
+ static void ro_reg_write(void *opaque, hwaddr offset, uint64_t value,
+@@ -371,7 +368,15 @@ static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
+     cxl_dstate->mbox_msi_n = msi_n;
+ }
+ 
+-static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) { }
++static void memdev_reg_init_common(CXLDeviceState *cxl_dstate)
++{
++    uint64_t memdev_status_reg;
++
++    memdev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
++    memdev_status_reg = FIELD_DP64(memdev_status_reg, CXL_MEM_DEV_STS,
++                                   MBOX_READY, 1);
++    cxl_dstate->memdev_status = memdev_status_reg;
++}
+ 
+ void cxl_device_register_init_t3(CXLType3Dev *ct3d)
+ {
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.39.2
 
 
