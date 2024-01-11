@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6609382A85E
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 08:32:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C123E82A867
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 08:34:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNpXx-0007be-T0; Thu, 11 Jan 2024 02:32:14 -0500
+	id 1rNpZM-0008SB-Lq; Thu, 11 Jan 2024 02:33:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rNpXq-0007Y6-8r
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:32:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rNpZK-0008Rz-Qs
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:33:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rNpXm-0003cP-78
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:32:03 -0500
+ id 1rNpZJ-0004Rv-5l
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:33:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704958321;
+ s=mimecast20190719; t=1704958415;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ax7oh+01qsdGQNUVt/z25iCgrqtidWp6XOCwFq7RlII=;
- b=U2H4rYzBxtiIMhCzolVoIJSAnL1fmhwKbn5E3UG6waOu/aUHbDoeIY+wudPw2uGEdtnZb/
- RuS4yDOl01t8QlKUEvJw0gcNuWc83saWTLJaKhxKOR+8iQwNBFIojFaLSYOyTdwpzwh74w
- QS1OiZ7OIY93/kcY13qmgJLK+Wyprfs=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=r1OCs0j3m/mOgE0zJTxOyNn0ddtwlqYwsDI7UO7zhLA=;
+ b=LL31xgNUwjwaDI1zq83w3KpX7UatLGXtWRTcPy8wEYm3VmYD7LzrD87iONArnaBGhrZycF
+ mwL+XBhI+R8ko+Eo8whBJ9RPCcy+z0+TNMcsxY03eEWWqcBq2k65h5eaM+hinkGKqErwWv
+ wdrfXCI594g2VODBczEaOPy0kL1iVjo=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-0Bo0TFBnM8KoNEYbQDJvKA-1; Thu, 11 Jan 2024 02:31:59 -0500
-X-MC-Unique: 0Bo0TFBnM8KoNEYbQDJvKA-1
-Received: by mail-oi1-f199.google.com with SMTP id
- 5614622812f47-3bbacb61978so4125114b6e.3
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 23:31:59 -0800 (PST)
+ us-mta-132-CtOqo79vMv6B2dx2TFEoYw-1; Thu, 11 Jan 2024 02:33:33 -0500
+X-MC-Unique: CtOqo79vMv6B2dx2TFEoYw-1
+Received: by mail-pf1-f198.google.com with SMTP id
+ d2e1a72fcca58-6d9b8fef16aso3741025b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 23:33:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704958319; x=1705563119;
+ d=1e100.net; s=20230601; t=1704958413; x=1705563213;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ax7oh+01qsdGQNUVt/z25iCgrqtidWp6XOCwFq7RlII=;
- b=US7w/BEJH3EEkw8iJSKvh0voCCJ8BvV6S80iBAcfaMMrt4rk0oWzvY8mrQgvEZyBd5
- ZwnmbxA8fYCuIbrVcmu6RHoeaOfA+cqF2mRiRqlmFEn2CfLVx0gTmb3MjYVd58qAdkDj
- Ki0l0c4vHetL+R6HsKazGRyXQLPU2iORtDkxhxdpcI+8hBrCiGOXcEp7NLWB1MmCRxLy
- TN989/N3vg5LSg34nNiiga5Sw+j1iNScLyKhgcMmG65i76+L75LwPeTDIbM/zUO0k23P
- FmgNEgSioBqp1A8tHm/F7JDVTUQHSl1Oe0OIvKKn9aV3+Zf4RS5XcmsAkS5Iu0FXOF7C
- gJVA==
-X-Gm-Message-State: AOJu0Yw2SUTgH30WlJMK3XDEVmE4Admd3ibB+A3Uh5ZIDqTlMlbYCfwZ
- gha/yJDTtMNYO8BomN2GHK7tpdztMLCfJX70m/8mQ4jDTY0dNvVGEViFwkN9maiYSNQZQOOEf26
- K3OsCH37OXKbDsHwXr6ETaDD8hUMrYP6qm/ceMFw=
-X-Received: by 2002:a05:6808:10c5:b0:3bd:5308:371c with SMTP id
- s5-20020a05680810c500b003bd5308371cmr703266ois.87.1704958319048; 
- Wed, 10 Jan 2024 23:31:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IESgFj0uZn2PgUF3l6UrXDt2Lc0Jv0DcPfxpy5Saby4WbIM2G81dOPy29eglEDbq3LeVAslew/DYXRdJ3r/O+w=
-X-Received: by 2002:a05:6808:10c5:b0:3bd:5308:371c with SMTP id
- s5-20020a05680810c500b003bd5308371cmr703259ois.87.1704958318805; Wed, 10 Jan
- 2024 23:31:58 -0800 (PST)
+ bh=r1OCs0j3m/mOgE0zJTxOyNn0ddtwlqYwsDI7UO7zhLA=;
+ b=vzxiZGtlYYEEHOl3KKraOSg7XLmcZ4VTYZYjJsjqJGCB9i2DFqzEewbtWDLJ0l+ES9
+ KG32jw2JGPcprgmkNo2S4i0HBt3xoTY6bci9hpXtmvqJjJ5SX096tGW/Yqn3KKvBaQz7
+ U22cXITIJTaAToc2Yaq4T3rbVFwWxqv+RBhowA8kcWGnUwEnJ5HtYCiAjFVSmmNKzbHf
+ TOgXlWrEXeQ41nlxEpgLSKw20vRl9H4SIoEOxxMvMO9jkkMpJ8OspYsPDMz5ZFlJPSDy
+ 0k3atilVQataibXBryRKrj1/EAValnYE39IxSbKb6kshlkGa5cQ6JvwSbjbiyA/Fhu7n
+ lYLA==
+X-Gm-Message-State: AOJu0YzeV3OMDpxGOPSYnRHGa8f7vQPvp2ZQGnFSSoilKLQFyHMpfprx
+ 6qgRZLGRsNxxiV/emEMMd8Jw0By3UmU5EdQG5KmvrN+mIa+Ouhb7gRzw4iRvlQ+z/aJgLwczJ5U
+ ZgtC+NRoQKm8wW8ng3/iAX4+N30Dj8DO7617Yncw=
+X-Received: by 2002:a05:6a00:3c92:b0:6db:984:8783 with SMTP id
+ lm18-20020a056a003c9200b006db09848783mr586511pfb.6.1704958412943; 
+ Wed, 10 Jan 2024 23:33:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH9hzylZpSh2Xl2E6Kvq+aTWVDDwdJ10a5HVnTGGMhBEhfLpNN/PqobFrc49De8SnxM60KmTSO+Kdv5g3sKOVE=
+X-Received: by 2002:a05:6a00:3c92:b0:6db:984:8783 with SMTP id
+ lm18-20020a056a003c9200b006db09848783mr586504pfb.6.1704958412639; Wed, 10 Jan
+ 2024 23:33:32 -0800 (PST)
 MIME-Version: 1.0
 References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-7-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-7-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-8-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-8-git-send-email-si-wei.liu@oracle.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 11 Jan 2024 15:31:47 +0800
-Message-ID: <CACGkMEv=EVdE2MGTqS5bzVFkxmX=jr+cTpWSKkmegtr+MS3ZLg@mail.gmail.com>
-Subject: Re: [PATCH 06/40] vhost: make svq work with gpa without iova
- translation
+Date: Thu, 11 Jan 2024 15:33:21 +0800
+Message-ID: <CACGkMEtKkL4GBekRuqpFpDeN54+_HvQjH4xeYpz2PBdYS4-j9w@mail.gmail.com>
+Subject: Re: [PATCH 07/40] vdpa: move around vhost_vdpa_set_address_space_id
 To: Si-Wei Liu <si-wei.liu@oracle.com>
 Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
  leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
  jonah.palmer@oracle.com, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,138 +100,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Fri, Dec 8, 2023 at 2:50=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
 rote:
 >
-> Make vhost_svq_vring_write_descs able to work with GPA directly
-> without going through iova tree for translation. This will be
-> needed in the next few patches where the SVQ has dedicated
-> address space to host its virtqueues. Instead of having to
-> translate qemu's VA to IOVA via the iova tree, with dedicated
-> or isolated address space for SVQ descriptors, the IOVA is
-> exactly same as the guest GPA space where translation would
-> not be needed any more.
+> Move it a few lines ahead to make function call easier for those
+> before it.  No funtional change involved.
+
+Typo for functional.
+
 >
 > Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-> ---
->  hw/virtio/vhost-shadow-virtqueue.c | 35 +++++++++++++++++++++++---------=
----
->  1 file changed, 23 insertions(+), 12 deletions(-)
->
-> diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-=
-virtqueue.c
-> index fc5f408..97ccd45 100644
-> --- a/hw/virtio/vhost-shadow-virtqueue.c
-> +++ b/hw/virtio/vhost-shadow-virtqueue.c
-> @@ -136,8 +136,8 @@ static bool vhost_svq_translate_addr(const VhostShado=
-wVirtqueue *svq,
->   * Return true if success, false otherwise and print error.
->   */
->  static bool vhost_svq_vring_write_descs(VhostShadowVirtqueue *svq, hwadd=
-r *sg,
-> -                                        const struct iovec *iovec, size_=
-t num,
-> -                                        bool more_descs, bool write)
-> +                                        const struct iovec *iovec, hwadd=
-r *addr,
-> +                                        size_t num, bool more_descs, boo=
-l write)
->  {
->      uint16_t i =3D svq->free_head, last =3D svq->free_head;
->      unsigned n;
-> @@ -149,8 +149,15 @@ static bool vhost_svq_vring_write_descs(VhostShadowV=
-irtqueue *svq, hwaddr *sg,
->          return true;
->      }
->
-> -    ok =3D vhost_svq_translate_addr(svq, sg, iovec, num);
-> -    if (unlikely(!ok)) {
-> +    if (svq->iova_tree) {
-> +        ok =3D vhost_svq_translate_addr(svq, sg, iovec, num);
-> +        if (unlikely(!ok)) {
-> +            return false;
-> +        }
 
-So the idea is when shadow virtqueue can work directly for GPA, there
-won't be an iova_tree here?
-
-If yes, I think we need a comment around iova_tree or here to explain this.
-
-> +    } else if (!addr) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "No translation found for vaddr 0x%p\n",
-> +                      iovec[0].iov_base);
->          return false;
->      }
->
-> @@ -161,7 +168,7 @@ static bool vhost_svq_vring_write_descs(VhostShadowVi=
-rtqueue *svq, hwaddr *sg,
->          } else {
->              descs[i].flags =3D flags;
->          }
-> -        descs[i].addr =3D cpu_to_le64(sg[n]);
-> +        descs[i].addr =3D cpu_to_le64(svq->iova_tree ? sg[n] : addr[n]);
-
-Or maybe a helper and do the switch there with the comments.
+Acked-by: Jason Wang <jasowang@redhat.com>
 
 Thanks
 
->          descs[i].len =3D cpu_to_le32(iovec[n].iov_len);
+> ---
+>  net/vhost-vdpa.c | 36 ++++++++++++++++++------------------
+>  1 file changed, 18 insertions(+), 18 deletions(-)
 >
->          last =3D i;
-> @@ -173,9 +180,10 @@ static bool vhost_svq_vring_write_descs(VhostShadowV=
-irtqueue *svq, hwaddr *sg,
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 1a738b2..dbfa192 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -335,6 +335,24 @@ static void vdpa_net_migration_state_notifier(Notifi=
+er *notifier, void *data)
+>      }
 >  }
 >
->  static bool vhost_svq_add_split(VhostShadowVirtqueue *svq,
-> -                                const struct iovec *out_sg, size_t out_n=
-um,
-> -                                const struct iovec *in_sg, size_t in_num=
-,
-> -                                unsigned *head)
-> +                                const struct iovec *out_sg, hwaddr *out_=
-addr,
-> +                                size_t out_num,
-> +                                const struct iovec *in_sg, hwaddr *in_ad=
-dr,
-> +                                size_t in_num, unsigned *head)
+> +static int vhost_vdpa_set_address_space_id(struct vhost_vdpa *v,
+> +                                           unsigned vq_group,
+> +                                           unsigned asid_num)
+> +{
+> +    struct vhost_vring_state asid =3D {
+> +        .index =3D vq_group,
+> +        .num =3D asid_num,
+> +    };
+> +    int r;
+> +
+> +    r =3D ioctl(v->shared->device_fd, VHOST_VDPA_SET_GROUP_ASID, &asid);
+> +    if (unlikely(r < 0)) {
+> +        error_report("Can't set vq group %u asid %u, errno=3D%d (%s)",
+> +                     asid.index, asid.num, errno, g_strerror(errno));
+> +    }
+> +    return r;
+> +}
+> +
+>  static void vhost_vdpa_net_data_start_first(VhostVDPAState *s)
 >  {
->      unsigned avail_idx;
->      vring_avail_t *avail =3D svq->vring.avail;
-> @@ -191,13 +199,14 @@ static bool vhost_svq_add_split(VhostShadowVirtqueu=
-e *svq,
->          return false;
->      }
+>      struct vhost_vdpa *v =3D &s->vhost_vdpa;
+> @@ -490,24 +508,6 @@ static int64_t vhost_vdpa_get_vring_desc_group(int d=
+evice_fd,
+>      return state.num;
+>  }
 >
-> -    ok =3D vhost_svq_vring_write_descs(svq, sgs, out_sg, out_num, in_num=
- > 0,
-> -                                     false);
-> +    ok =3D vhost_svq_vring_write_descs(svq, sgs, out_sg, out_addr, out_n=
-um,
-> +                                     in_num > 0, false);
->      if (unlikely(!ok)) {
->          return false;
->      }
->
-> -    ok =3D vhost_svq_vring_write_descs(svq, sgs, in_sg, in_num, false, t=
-rue);
-> +    ok =3D vhost_svq_vring_write_descs(svq, sgs, in_sg, in_addr, in_num,
-> +                                     false, true);
->      if (unlikely(!ok)) {
->          return false;
->      }
-> @@ -258,7 +267,9 @@ int vhost_svq_add(VhostShadowVirtqueue *svq, const st=
-ruct iovec *out_sg,
->          return -ENOSPC;
->      }
->
-> -    ok =3D vhost_svq_add_split(svq, out_sg, out_num, in_sg, in_num, &qem=
-u_head);
-> +    ok =3D vhost_svq_add_split(svq, out_sg, elem ? elem->out_addr : NULL=
-,
-> +                             out_num, in_sg, elem ? elem->in_addr : NULL=
-,
-> +                             in_num, &qemu_head);
->      if (unlikely(!ok)) {
->          return -EINVAL;
->      }
+> -static int vhost_vdpa_set_address_space_id(struct vhost_vdpa *v,
+> -                                           unsigned vq_group,
+> -                                           unsigned asid_num)
+> -{
+> -    struct vhost_vring_state asid =3D {
+> -        .index =3D vq_group,
+> -        .num =3D asid_num,
+> -    };
+> -    int r;
+> -
+> -    r =3D ioctl(v->shared->device_fd, VHOST_VDPA_SET_GROUP_ASID, &asid);
+> -    if (unlikely(r < 0)) {
+> -        error_report("Can't set vq group %u asid %u, errno=3D%d (%s)",
+> -                     asid.index, asid.num, errno, g_strerror(errno));
+> -    }
+> -    return r;
+> -}
+> -
+>  static void vhost_vdpa_cvq_unmap_buf(struct vhost_vdpa *v, void *addr)
+>  {
+>      VhostIOVATree *tree =3D v->shared->iova_tree;
 > --
 > 1.8.3.1
 >
