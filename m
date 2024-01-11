@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278B882B265
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 17:05:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CD082B26B
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 17:06:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNxYY-0007AV-0R; Thu, 11 Jan 2024 11:05:22 -0500
+	id 1rNxZU-0007yL-RI; Thu, 11 Jan 2024 11:06:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rNxYT-000796-Ta
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:05:18 -0500
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1rNxZG-0007s3-Jn
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:06:07 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rNxYH-0008Ld-Ru
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:05:12 -0500
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-517ab9a4a13so4233941a12.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 08:03:01 -0800 (PST)
+ id 1rNxZE-0000C5-Hm
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:06:06 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1d3aa0321b5so46454105ad.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 08:03:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1704988980; x=1705593780;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1704989037; x=1705593837;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
  bh=8/lk4OVomEx4I00F5QHPLA58OMzGmQGpiKOVEXjT2kA=;
- b=VNF9Fmop3jqtb4rmxrGVlHwzKV4iq/yW4SaCCCp0GmjhC74Sfdif35K1oqac+EFj7u
- rtwuTNfWPpQwTYdctN9v8CRlwpJr3oOW9Rw+45qTWk3NLOZryywX93IHO+KXEIIQzxiG
- Ex+TzpcwCC7dmTbI6QdTEF3FtcMj1eUfM29/mFKJfhz1oWTWGEhU5ny7X3jU+HrYkTDF
- AZCdpevAOYyrK8lO2YTSJwIo867I9uu9+lWDMJf/nA/4F+rYz4LiO1mI1DRy/D54Cgx9
- H9Jnxb4vbaLW8VbtmPS9n3w4g8mPBh+RI+B/CMcrR3BtXaZyuj4xI0ChK0Cw91d/Y50i
- 91Gw==
+ b=GleMjt+qQx2CYPiS5moMX/zpzWbDq3gDqfCGIa4jxM+q57aIOHcoX654OC+cR4TpmK
+ fNZ2w2Icka2i/Zf3Zes0a1h/6NQ70VllYQwpGEziXc86qo1tJDNgGY5u+xDHpW0hHNb+
+ Dg78uxUFvSKoxXGTVicnJw06azin96xskGsSMMcrYDsOanwJi+zv5O1It1mxYkUv7nvg
+ t7MmZL3k/uCarADPqQ6BNy5bg/b/GjVkHiVWaKExuNvhpIxsGy0UDtwQgZ2bwzNgMWru
+ aXEcbmSngj0PWmhHo9jMaKrnxdN5vBYtfLL1BdSWj+r1D+oEipYLtE2WRLrO7gFg1yjN
+ Sg2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704988980; x=1705593780;
+ d=1e100.net; s=20230601; t=1704989037; x=1705593837;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
  bh=8/lk4OVomEx4I00F5QHPLA58OMzGmQGpiKOVEXjT2kA=;
- b=kPFoXcw6tYwDz9RgapKbgUcsvKED0meEXYIkhZAADq7+hCiUAygGummxEiuO2JwRqV
- xLd5+e3gBipXTpbADBrDv8QZ7nFunFMjXvZ1GdiZV0SNwaeFTfjKblRGdOn5O9ReMWqE
- h/7qi7fcMZxKPnTaqGDkKlcClix02wNeGmUQe24qtAIfQLU635/emnDuikqaMWmJESWO
- Z/XSYCVpM/1GTZvvyTL4CpsoGAAHW6KgYi/1GPJ1p4okT0uWsw32pDwb6Hma8LKVHxH3
- dzv9EkPMAh4Qc/1fIR7bkcxf885bttKbNWb4aq8avouS/sNZpIjDeUxEIdCQmvSJSkZz
- MtOA==
-X-Gm-Message-State: AOJu0YzduuV0eAH6QQRTN6u3eM46vDIG/I8n/lsJv+QGrwf2k1GXhYMt
- EqxMCAKwXRdQwCFyK18mXNyFWfcow77s/FboP7wBCfd8UzT5iw==
+ b=WaQ5OJfYFSSAYjL9I3tOBf+2WSuMiNEqH+hXySaD9bE7iaND/Hp2JVTaehIys4kYcH
+ DRGkUJylfufos2xbDV2nS94rDB+XIjn2SLuSqUIuegEFpSAbLLiJdkeI7Y/PsNd1tygE
+ hRRZKfOgxHzUV6nAXo3lsEBDq+CZzFTxmCn8RkU8yzhRme/Tf4ItBTDbwxWzhme+tvtx
+ 9yrAnkfzVlsx6XTBTthIio5d+w2e4h9BHPrlNeS/asXonfwOTjNQzZ30vInnK+PC0uxE
+ czvtHp/9aicSJpHpazmYGRuXODXyGLmckbRXxl/6hKQnIAGI77Nvzb2V+3+j+K4rHZ9Q
+ qU3g==
+X-Gm-Message-State: AOJu0YytSCTxh0XodTQx42mXjJWd0x26IPmAlLCU6cJc8UVFMvRXZ4l5
+ AalxGwTFN+s4Z8B6uXzsgisiITpUxSyOoI2o8gD8C6Xy6t/bt5+8zxcwiFO7KrzpY/Gv
 X-Google-Smtp-Source: AGHT+IF6yJy8G2fC46Tn0SyI9zks5C3IfZqx+oU/xpnyeNQDARY+sJ5cY8ldnc8veAak7XKehjtmL9BG8/vSDlqD0h4=
 X-Received: by 2002:a17:90b:3b45:b0:28d:bd27:f81 with SMTP id
  ot5-20020a17090b3b4500b0028dbd270f81mr1116103pjb.15.1704988978173; Thu, 11
@@ -66,15 +66,15 @@ Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Eric Blake <eblake@redhat.com>
 Content-Type: multipart/alternative; boundary="00000000000063efc4060eadae33"
-Received-SPF: none client-ip=2607:f8b0:4864:20::529;
- envelope-from=yong.huang@smartx.com; helo=mail-pg1-x529.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::631;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
  SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
