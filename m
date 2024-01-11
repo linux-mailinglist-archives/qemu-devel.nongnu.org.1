@@ -2,70 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F6182A606
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 03:31:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6039382A619
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 03:36:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNkpX-0006pg-EJ; Wed, 10 Jan 2024 21:30:03 -0500
+	id 1rNkua-0000ZB-Hs; Wed, 10 Jan 2024 21:35:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rNkpU-0006pF-1T
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 21:30:00 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rNkpQ-0002Ng-GG
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 21:29:59 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8CxLLucUp9lLR0EAA--.4125S3;
- Thu, 11 Jan 2024 10:29:49 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxK9yaUp9lkw0OAA--.37431S3; 
- Thu, 11 Jan 2024 10:29:48 +0800 (CST)
-Subject: Re: [PATCH v4 8/9b] target/loongarch: Implement set vcpu intr for kvm
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>,
- xianglai li <lixianglai@loongson.cn>
-References: <20240105075804.1228596-9-zhaotianrui@loongson.cn>
- <20240110094152.52138-2-philmd@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <a9ebc41a-64b6-3662-23ff-452bd98052f9@loongson.cn>
-Date: Thu, 11 Jan 2024 10:29:46 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNkuY-0000Yz-MD
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 21:35:14 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNkuW-0005cK-P3
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 21:35:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704940511;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MaBlF5Lk8/ZMF8qV3YwV9ogFpSDVDnDCCGCeio6u090=;
+ b=ZsqqYjtdOk7hM4CWmVg4pXTqrpDXqFgyyecOOct5PNLoZ7kBLgIF1yTyoTeYo5/lmQgQcX
+ y4/zB2I5bAZhxugalYkJ9us/SpggTxboEMOxSk8v1q8rt0pEVfTpSmmRBhkIZJyC3WiXfQ
+ 1K1rMiftKg5xLCmvzYBGn53peb5heu8=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-516-tATRF3wWPAO27PFoxkmS3Q-1; Wed, 10 Jan 2024 21:35:09 -0500
+X-MC-Unique: tATRF3wWPAO27PFoxkmS3Q-1
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-28bd331cb57so1618325a91.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 18:35:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704940509; x=1705545309;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MaBlF5Lk8/ZMF8qV3YwV9ogFpSDVDnDCCGCeio6u090=;
+ b=odArMY0Dpj3Me6so0cx8K7+P5JRgTGo0Mwt4nT+PdtbvZOyQDqzXIuqwVrUBLy0+Bs
+ ksZvbj5XrkCwiJ0D/eAbjABnEf+KybUKauP3ypMyJt9EgLtAZ5W3pYV2nNgrPeHfQJOV
+ ZVsPOsNAE3eHFlXGyph8JMhu4ypBCAEXqADnT+gsdT0SwSeb5LwqkZHZXfeESp4tl6Or
+ MDGVInSEbRvBt5ZbrCJifvPu3BPx4QXiHi8GbwUlqMcshvJFwX1qHEwRIBbynnOSRPz6
+ IgjcIY8/e7uZFSYTWm/krqBMcVhiM0qirphEfqeb6NH8NHlycpc8vMLh1JJn79Ia9P3q
+ OeDw==
+X-Gm-Message-State: AOJu0YxMe1s8CWBu+EmdDSE/weLdnIvwq12afctElY7cXQ+VSwcRKbet
+ 7mFSsdFJIHeGZShxl8VEZoLkpOrk/9Ca0OqYdmbvqkojmBGjxF1rOPneaXmkwGCqEVWu1A24Qui
+ Zvph3+36WCkorbXrb3Tuw1ck=
+X-Received: by 2002:a17:90b:3903:b0:28c:fe8c:aa93 with SMTP id
+ ob3-20020a17090b390300b0028cfe8caa93mr914906pjb.1.1704940508799; 
+ Wed, 10 Jan 2024 18:35:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF2cNWZIs/XeiKAHA9J7gtddOKHaZu4+EBCgRtOmcUxvB4jYPL1ArA1OLD/S9Bn8rXksGQGVA==
+X-Received: by 2002:a17:90b:3903:b0:28c:fe8c:aa93 with SMTP id
+ ob3-20020a17090b390300b0028cfe8caa93mr914896pjb.1.1704940508434; 
+ Wed, 10 Jan 2024 18:35:08 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ sd5-20020a17090b514500b0028d573397dcsm2329150pjb.42.2024.01.10.18.35.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 10 Jan 2024 18:35:07 -0800 (PST)
+Date: Thu, 11 Jan 2024 10:35:05 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 4/4] [NOT FOR MERGE] tests/qtest/migration: Adapt
+ tests to use older QEMUs
+Message-ID: <ZZ9T2XSy3zaOEu_W@x1n>
+References: <20240105180449.11562-1-farosas@suse.de>
+ <20240105180449.11562-5-farosas@suse.de> <ZZuvDREDrQ07HsGs@x1n>
+ <877ckj3kfp.fsf@suse.de> <ZZzC1n0GotQZukqJ@x1n>
+ <87zfxe7eev.fsf@suse.de> <ZZ4YOw6Cy5EYo_f4@x1n>
+ <87zfxd6yid.fsf@suse.de>
 MIME-Version: 1.0
-In-Reply-To: <20240110094152.52138-2-philmd@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8BxK9yaUp9lkw0OAA--.37431S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Gw18KrWkGw1fJrWxZw17twc_yoW7WF18pF
- ZruFn8KrWrJrZ7Jas3Za45Z34DXr4fGw12vayxta4xCr47try0qF1vqrnFgFy5G3y8WFyI
- qF1fC3Wj9F1UXwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
- 05UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.07,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87zfxd6yid.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,144 +104,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+On Wed, Jan 10, 2024 at 11:42:18AM -0300, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
+> 
+> > On Tue, Jan 09, 2024 at 11:46:32AM -0300, Fabiano Rosas wrote:
+> >> Hm, it would be better to avoid the extra maintenance task at the start
+> >> of every release, no? It also blocks us from doing n-2 even
+> >> experimentally.
+> >
+> > See my other reply, on whether we can use "n-1" for migration-test.  If
+> > that can work for us, then IIUC we can avoid either "since:" or any
+> > relevant flag, neither do we need to unmask tests after each releases.  All
+> > old tests should always "just work" with a new qemu binary.
+> 
+> Hmm.. There are some assumptions here:
+> 
+> 1) New code will always be compatible with old tests. E.g. some
+>    patchseries changed code and changed a test to match the new
+>    code. Then we'd need a flag like 'since' anyway to mark that the new
+>    QEMU cannot be used with the old test.
+> 
+>    (if new QEMU is not compatible with old tests without any good
+>    reason, then that's just a regression I think)
 
-在 2024/1/10 下午5:41, Philippe Mathieu-Daudé 写道:
-> From: Tianrui Zhao <zhaotianrui@loongson.cn>
->
-> Implement loongarch kvm set vcpu interrupt interface,
-> when a irq is set in vcpu, we use the KVM_INTERRUPT
-> ioctl to set intr into kvm.
->
-> Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
-> Signed-off-by: xianglai li <lixianglai@loongson.cn>
-> Reviewed-by: Song Gao <gaosong@loongson.cn>
-> Message-ID: <20240105075804.1228596-9-zhaotianrui@loongson.cn>
-> [PMD: Split from bigger patch, part 2]
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/loongarch/kvm/kvm_loongarch.h | 16 ++++++++++++++++
->   target/loongarch/cpu.c               |  9 ++++++++-
->   target/loongarch/kvm/kvm.c           | 15 +++++++++++++++
->   target/loongarch/trace-events        |  1 +
->   4 files changed, 40 insertions(+), 1 deletion(-)
->   create mode 100644 target/loongarch/kvm/kvm_loongarch.h
->
-> diff --git a/target/loongarch/kvm/kvm_loongarch.h b/target/loongarch/kvm/kvm_loongarch.h
-> new file mode 100644
-> index 0000000000..d945b6bb82
-> --- /dev/null
-> +++ b/target/loongarch/kvm/kvm_loongarch.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * QEMU LoongArch kvm interface
-> + *
-> + * Copyright (c) 2023 Loongson Technology Corporation Limited
-> + */
-> +
-> +#include "cpu.h"
-> +
-> +#ifndef QEMU_KVM_LOONGARCH_H
-> +#define QEMU_KVM_LOONGARCH_H
-> +
-> +int  kvm_loongarch_set_interrupt(LoongArchCPU *cpu, int irq, int level);
-> +void kvm_arch_reset_vcpu(CPULoongArchState *env);
-> +
-> +#endif
-> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-> index d9f8661cfd..d3a8a2f521 100644
-> --- a/target/loongarch/cpu.c
-> +++ b/target/loongarch/cpu.c
-> @@ -12,6 +12,7 @@
->   #include "qemu/module.h"
->   #include "sysemu/qtest.h"
->   #include "sysemu/tcg.h"
-> +#include "sysemu/kvm.h"
->   #include "exec/exec-all.h"
->   #include "cpu.h"
->   #include "internals.h"
-> @@ -21,6 +22,10 @@
->   #include "sysemu/reset.h"
->   #endif
->   #include "vec.h"
-> +#ifdef CONFIG_KVM
-> +#include "kvm/kvm_loongarch.h"
+Exactly what you are saying here.  We can't make new QEMU not working on
+old tests.
 
-This broken  tcg 'loongarch64-softmmu' build on X86 host, :-[
+One way to simplify the understanding is, we can imagine the old tests as
+"some user currently using the old QEMU, and who would like to migrate to
+the master QEMU binary".  Such user only uses exactly the same cmdline we
+used for testing migration-test in exactly that n-1 qemu release binary.
 
-../target/loongarch/cpu.c: In function ‘loongarch_cpu_set_irq’:
-../target/loongarch/cpu.c:122:9: error: implicit declaration of function 
-‘kvm_loongarch_set_interrupt’ [-Werror=implicit-function-declaration]
-   122 |         kvm_loongarch_set_interrupt(cpu, irq, level);
-       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-../target/loongarch/cpu.c:122:9: error: nested extern declaration of 
-‘kvm_loongarch_set_interrupt’ [-Werror=nested-externs]
-../target/loongarch/cpu.c: In function ‘loongarch_cpu_reset_hold’:
-../target/loongarch/cpu.c:557:9: error: implicit declaration of function 
-‘kvm_arch_reset_vcpu’; did you mean ‘kvm_arch_init_vcpu’? 
-[-Werror=implicit-function-declaration]
-   557 |         kvm_arch_reset_vcpu(env);
-       |         ^~~~~~~~~~~~~~~~~~~
-       |         kvm_arch_init_vcpu
-../target/loongarch/cpu.c:557:9: error: nested extern declaration of 
-‘kvm_arch_reset_vcpu’ [-Werror=nested-externs]
-cc1: all warnings being treated as errors
+If we fail that old test, it means we can already fail such an user.
+That's destined a regression to me, no?  Or, do you have a solid example?
 
-I will move it out of  '#ifdef CONFIG_KVM'
+The only thing I can think of is, when we want to e.g. obsolete a QEMU
+cmdline that is used in migration-test.  But then that cmdline needs to be
+declared obsolete first for a few releases (let's say, 4), and before that
+deadline we should already rewrite migration-test to not use it, and as
+long as we do it in 3 releases I suppose nothing will be affected.
 
-Thanks.
-Song Gao
-> +#include <linux/kvm.h>
-> +#endif
->   #ifdef CONFIG_TCG
->   #include "exec/cpu_ldst.h"
->   #include "tcg/tcg.h"
-> @@ -113,7 +118,9 @@ void loongarch_cpu_set_irq(void *opaque, int irq, int level)
->           return;
->       }
->   
-> -    if (tcg_enabled()) {
-> +    if (kvm_enabled()) {
-> +        kvm_loongarch_set_interrupt(cpu, irq, level);
-> +    } else if (tcg_enabled()) {
->           env->CSR_ESTAT = deposit64(env->CSR_ESTAT, irq, 1, level != 0);
->           if (FIELD_EX64(env->CSR_ESTAT, CSR_ESTAT, IS)) {
->               cpu_interrupt(cs, CPU_INTERRUPT_HARD);
-> diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-> index d2dab3fef4..bd33ec2114 100644
-> --- a/target/loongarch/kvm/kvm.c
-> +++ b/target/loongarch/kvm/kvm.c
-> @@ -748,6 +748,21 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
->       return ret;
->   }
->   
-> +int kvm_loongarch_set_interrupt(LoongArchCPU *cpu, int irq, int level)
-> +{
-> +    struct kvm_interrupt intr;
-> +    CPUState *cs = CPU(cpu);
-> +
-> +    if (level) {
-> +        intr.irq = irq;
-> +    } else {
-> +        intr.irq = -irq;
-> +    }
-> +
-> +    trace_kvm_set_intr(irq, level);
-> +    return kvm_vcpu_ioctl(cs, KVM_INTERRUPT, &intr);
-> +}
-> +
->   void kvm_arch_accel_class_init(ObjectClass *oc)
->   {
->   }
-> diff --git a/target/loongarch/trace-events b/target/loongarch/trace-events
-> index 021839880e..dea11edc0f 100644
-> --- a/target/loongarch/trace-events
-> +++ b/target/loongarch/trace-events
-> @@ -12,3 +12,4 @@ kvm_failed_put_counter(const char *msg) "Failed to put counter into KVM: %s"
->   kvm_failed_get_cpucfg(const char *msg) "Failed to get cpucfg from KVM: %s"
->   kvm_failed_put_cpucfg(const char *msg) "Failed to put cpucfg into KVM: %s"
->   kvm_arch_handle_exit(int num) "kvm arch handle exit, the reason number: %d"
-> +kvm_set_intr(int irq, int level) "kvm set interrupt, irq num: %d, level: %d"
+> 
+> 2) There would not be issues when fixing bugs/refactoring
+>    tests. E.g. old tests had a bug that is now fixed, but since we're
+>    not using the new tests, the bug is always there until next
+>    release. This could block the entire test suite, specially with
+>    concurrency bugs which can start triggering due to changes in timing.
+
+Yes this might be a problem.  Note that the old tests we're using will be
+exactly the same test we released previous QEMU.  I am "assuming" that the
+test case is as stable as the released QEMU, since we kept running it for
+all pulls in CI runs.  If we see anything flaky, we should mark it
+especially right before the release, then the released tests will be
+considerably stable.
+
+The worst case is we still keep a knob in the CI file, and we can turn off
+n-1 -> n tests for the CI for some release if there's some unfortunate
+accident.  But I hope in reality that can be avoided.
+
+> 
+> 3) New code that can only be reached via new tests cannot cause
+>    regressions. E.g. new code is added but is kept under a machine
+>    property or migration capability. That code will only show the
+>    regression after the new test enables that cap/property. At that
+>    point it's too late because it was already released.
+
+I can't say I fully get the point here.  New code, if with a new cap with
+it, should run exactly like the old code if the cap is not turned on.  I
+suppose that's the case for when we only run n-1 version of migration-test.
+IMHO it's the same issue as 1) above, that we just should not break it, and
+if we do, that's exactly what we want to capture and fix in master, not n-1
+branch.
+
+But as I said, perhaps I didn't really get the issue you wanted to describe..
+
+> 
+> In general I like the simplicity of your approach, but it would be
+> annoying to change this series only to find out we still need some sort
+> of flag later. Even worse, #3 would miss the point of this kind of
+> testing entirely.
+> 
+> #1 could be mitigated by a "no changes to tests rule". We'd start
+> requiring that new tests be written and an existing test is never
+> altered. For #2 and #3 I don't have a solution.
+> 
+
+-- 
+Peter Xu
 
 
