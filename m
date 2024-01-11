@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6EF82B20D
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:46:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFE682B20B
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:46:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNxEa-0007uJ-Dl; Thu, 11 Jan 2024 10:44:44 -0500
+	id 1rNxEi-0007yo-6U; Thu, 11 Jan 2024 10:44:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1rNxEZ-0007uB-5I
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:44:43 -0500
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1rNxEf-0007yG-MH
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:44:49 -0500
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1rNxEW-0007db-Ba
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:44:42 -0500
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6d9af1f52bcso2921941b3a.3
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 07:44:39 -0800 (PST)
+ id 1rNxEd-0007hC-Bv
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:44:49 -0500
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-6dde00025faso2146778a34.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 07:44:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704987878; x=1705592678; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704987885; x=1705592685; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TZH44eZszskRjBYU30KPzfHh0gOjoTFra0LHhZXgdFo=;
- b=K/DokeJZyx6fpaCVSWe/v8KgrBK6jssroVGeMOPsi0/i3QjMdXmpoXGnVQWBss9fEt
- 5J/8RLsRxf+dcQSB+QmaREno/JM5BKQ7SUhMdyn7fp8uNYo6Dr/7XsxiyscT9t+rC6ad
- HVXE8wNL6VtXvJVnDdknu7ChU0ETjs+uQOnKq5CSmjBxoeGjguY3snDlEtlbrsM7MzvG
- ncuOHwg2glnp7hOJgH8Z1JpFmUThexDlO2anGv0CPAdHWI+x0PmaMLzqO0vtDAwkFyuP
- /RfNo54pFyIPsYdLNg5q6W7DilZK1e4rwkGO+mZ1h6sd6uSu7HtQi7IsvZmGFVUOW22q
- 6foA==
+ bh=M4YAayI4Nhb9dLh0Pr4zL1RlcoFRATyGM3hu2fAqMt4=;
+ b=bdHyLtqGDfT2za32CNvfMPjbtRbq9/J/aii56D1zvxwy5iyza1/EO4exzKOaPw9Wd/
+ rqb4oHbslABsGMu64+xPs+PLQTWkZLcsJ65sgBDQgfW9xJNQ/2kysz0sQvrq+b6HjDR8
+ B5pSEfj7lw643hjtW0DvvYqrV6dQgCeAzjQzu7SaSZwNPGAXhdSiHobxsni2kNko6wCc
+ x6x3qZ/subPh4Lt3MTIqTNjPxRgb5ISEsTYbTEeZnuVVPwmiJNfEDCPrfSkNrip75jF3
+ T8TFGbr3CvSfKOKjegL0O67DUpNQJZmt3KUyxRGfmSipr2Ogq2HC8KP49Jsm9z7iYW3V
+ 7rkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704987878; x=1705592678;
+ d=1e100.net; s=20230601; t=1704987885; x=1705592685;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TZH44eZszskRjBYU30KPzfHh0gOjoTFra0LHhZXgdFo=;
- b=l2yxSZVMpoxIfcn1r3PgTqjkomT3htLPdbd5YqIekaVmqNiRXdFW6nxaQ4vzYBfIgY
- Ffsii1ofGRGYzkeoaR5Xi/bWOUGO6itG51/mhMaW0i/xAeNXkFE79HAsWCooDWTrDUNU
- mF12cxpqqYZahLX8Qa+ak6WnAOBQB2rP4Uj8l1wBjziHJUFApmum+1K9qEHUMUzIXYxj
- EvHipJ52cqbEvrTnRRtjgm0uDJ+UiiEZ1EoHlNG+9Qhejwj+NQi0QB2Zb7bV812Gm2Mc
- JfN1tIi0C9fetRHExtGCq/sI2CJQey61rjFrxAwHTIAFX39YWKpFdmrRShEPQPqoA+d3
- M+Ng==
-X-Gm-Message-State: AOJu0YyNHeZgDKrghpYV6jyOhIneYZ4fD+AEBzJJxziymWZKN6cmsJY/
- G/nCop01ZMcWCxVr2APqbJ5SRdHDvsnCJHWM
-X-Google-Smtp-Source: AGHT+IG5/ALANq7Q7UC25iiSwhQHhx4w9IPhhCt0CgKJhMKRSThwShsrIz8isJ8eCvB9b5DSVyXCig==
-X-Received: by 2002:a05:6a00:b1d:b0:6d9:b242:e47 with SMTP id
- f29-20020a056a000b1d00b006d9b2420e47mr1280941pfu.42.1704987877975; 
- Thu, 11 Jan 2024 07:44:37 -0800 (PST)
+ bh=M4YAayI4Nhb9dLh0Pr4zL1RlcoFRATyGM3hu2fAqMt4=;
+ b=i3Do1PwvVpcbAInqBSC3Mi3wzk/oa5Smq2XvGAPqCRs9GgOu0+HB18V859vtIiiHx7
+ guqg0ProXqkhueHBocnJKIv5BVzf1isoARq6pn+/DE3RJBN907ulZQzle6QcuR5laoFS
+ BSzNXxWXfppT4VIBpJdtXaRa2vktOaEjRxMU8V/k4/huueVKBh6Ox9W6KTNptE57eEA9
+ 5dHvkp0+/7Qnte31F8WuBW5yjXZv5GnbcBmNkL1kGagArsN5LSRbNi+SIUW000jnhYk7
+ d52AxhOPqDCbKWS1M6HjMCACxS1rH03qmSNIAJyDZKrlKfQRA0iJKrZ8eqxIwgI8bhuT
+ eIBw==
+X-Gm-Message-State: AOJu0YydQ0wRJBw0gA7gLBHigxHv3hvNaT1TZ3lwF4HX6rLU2AiFJIYB
+ zC5ikYEbyj8ezyT+QLqiEH2tlpIa+TT6FIRy
+X-Google-Smtp-Source: AGHT+IFqfzwvdffFi8MO0xt8vHCjrJL7u3XJvmUcI1GKPDr35XcD+96Kb3351kUKYMJ/WaGg61c4lw==
+X-Received: by 2002:a05:6358:511d:b0:172:ee90:8e1f with SMTP id
+ 29-20020a056358511d00b00172ee908e1fmr17964rwi.34.1704987885036; 
+ Thu, 11 Jan 2024 07:44:45 -0800 (PST)
 Received: from localhost.localdomain ([2001:ee0:50f4:9050:e868:3e48:c113:4a7f])
  by smtp.googlemail.com with ESMTPSA id
- fb9-20020a056a002d8900b006da550512d8sm1317887pfb.126.2024.01.11.07.44.33
+ fb9-20020a056a002d8900b006da550512d8sm1317887pfb.126.2024.01.11.07.44.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jan 2024 07:44:37 -0800 (PST)
+ Thu, 11 Jan 2024 07:44:44 -0800 (PST)
 From: Bui Quang Minh <minhquangbui99@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -71,16 +71,16 @@ Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
  Phil Dennis-Jordan <lists@philjordan.eu>,
  Santosh Shukla <santosh.shukla@amd.com>,
  Bui Quang Minh <minhquangbui99@gmail.com>
-Subject: [PATCH v12 2/7] apic: add support for x2APIC mode
-Date: Thu, 11 Jan 2024 22:43:59 +0700
-Message-Id: <20240111154404.5333-3-minhquangbui99@gmail.com>
+Subject: [PATCH v12 3/7] apic, i386/tcg: add x2apic transitions
+Date: Thu, 11 Jan 2024 22:44:00 +0700
+Message-Id: <20240111154404.5333-4-minhquangbui99@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240111154404.5333-1-minhquangbui99@gmail.com>
 References: <20240111154404.5333-1-minhquangbui99@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=minhquangbui99@gmail.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
+ envelope-from=minhquangbui99@gmail.com; helo=mail-ot1-x329.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -104,640 +104,285 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit extends the APIC ID to 32-bit long and remove the 255 max APIC
-ID limit in userspace APIC. The array that manages local APICs is now
-dynamically allocated based on the max APIC ID of created x86 machine.
-Also, new x2APIC IPI destination determination scheme, self IPI and x2APIC
-mode register access are supported.
+This commit adds support for x2APIC transitions when writing to
+MSR_IA32_APICBASE register and finally adds CPUID_EXT_X2APIC to
+TCG_EXT_FEATURES.
+
+The set_base in APICCommonClass now returns an integer to indicate error in
+execution. apic_set_base return -1 on invalid APIC state transition,
+accelerator can use this to raise appropriate exception.
 
 Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
 ---
- hw/i386/x86.c                   |   6 +-
- hw/intc/apic.c                  | 289 ++++++++++++++++++++++++--------
- hw/intc/apic_common.c           |   9 +
- include/hw/i386/apic.h          |   3 +-
- include/hw/i386/apic_internal.h |   7 +-
- target/i386/cpu-sysemu.c        |  18 +-
- target/i386/cpu.h               |   2 +
- 7 files changed, 259 insertions(+), 75 deletions(-)
+ hw/i386/kvm/apic.c                   |  3 +-
+ hw/i386/xen/xen_apic.c               |  3 +-
+ hw/intc/apic.c                       | 62 +++++++++++++++++++++++++++-
+ hw/intc/apic_common.c                | 13 +++---
+ include/hw/i386/apic.h               |  2 +-
+ include/hw/i386/apic_internal.h      |  2 +-
+ target/i386/cpu.c                    |  9 ++--
+ target/i386/cpu.h                    |  4 ++
+ target/i386/tcg/sysemu/misc_helper.c | 14 ++++++-
+ target/i386/whpx/whpx-apic.c         |  3 +-
+ 10 files changed, 96 insertions(+), 19 deletions(-)
 
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index 2b6291ad8d..3d1bdd334e 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -137,7 +137,7 @@ void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
-      * a literal `0` in configurations where kvm_* aren't defined)
-      */
-     if (kvm_enabled() && x86ms->apic_id_limit > 255 &&
--        (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
-+        kvm_irqchip_in_kernel() && !kvm_enable_x2apic()) {
-         error_report("current -smp configuration requires kernel "
-                      "irqchip and X2APIC API support.");
-         exit(EXIT_FAILURE);
-@@ -147,6 +147,10 @@ void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
-         kvm_set_max_apic_id(x86ms->apic_id_limit);
-     }
- 
-+    if (!kvm_irqchip_in_kernel()) {
-+        apic_set_max_apic_id(x86ms->apic_id_limit);
-+    }
-+
-     possible_cpus = mc->possible_cpu_arch_ids(ms);
-     for (i = 0; i < ms->smp.cpus; i++) {
-         x86_cpu_new(x86ms, possible_cpus->cpus[i].arch_id, &error_fatal);
-diff --git a/hw/intc/apic.c b/hw/intc/apic.c
-index 7a349c0723..178fb26b47 100644
---- a/hw/intc/apic.c
-+++ b/hw/intc/apic.c
-@@ -32,14 +32,13 @@
- #include "qapi/error.h"
- #include "qom/object.h"
- 
--#define MAX_APICS 255
--#define MAX_APIC_WORDS 8
--
- #define SYNC_FROM_VAPIC                 0x1
- #define SYNC_TO_VAPIC                   0x2
- #define SYNC_ISR_IRR_TO_VAPIC           0x4
- 
--static APICCommonState *local_apics[MAX_APICS + 1];
-+static APICCommonState **local_apics;
-+static uint32_t max_apics;
-+static uint32_t max_apic_words;
- 
- #define TYPE_APIC "apic"
- /*This is reusing the APICCommonState typedef from APIC_COMMON */
-@@ -49,7 +48,19 @@ DECLARE_INSTANCE_CHECKER(APICCommonState, APIC,
- static void apic_set_irq(APICCommonState *s, int vector_num, int trigger_mode);
- static void apic_update_irq(APICCommonState *s);
- static void apic_get_delivery_bitmask(uint32_t *deliver_bitmask,
--                                      uint8_t dest, uint8_t dest_mode);
-+                                      uint32_t dest, uint8_t dest_mode);
-+
-+void apic_set_max_apic_id(uint32_t max_apic_id)
-+{
-+    int word_size = 32;
-+
-+    /* round up the max apic id to next multiple of words */
-+    max_apics = (max_apic_id + word_size - 1) & ~(word_size - 1);
-+
-+    local_apics = g_malloc0(sizeof(*local_apics) * max_apics);
-+    max_apic_words = max_apics >> 5;
-+}
-+
- 
- /* Find first bit starting from msb */
- static int apic_fls_bit(uint32_t value)
-@@ -199,10 +210,10 @@ static void apic_external_nmi(APICCommonState *s)
- #define foreach_apic(apic, deliver_bitmask, code) \
- {\
-     int __i, __j;\
--    for(__i = 0; __i < MAX_APIC_WORDS; __i++) {\
-+    for (__i = 0; __i < max_apic_words; __i++) {\
-         uint32_t __mask = deliver_bitmask[__i];\
-         if (__mask) {\
--            for(__j = 0; __j < 32; __j++) {\
-+            for (__j = 0; __j < 32; __j++) {\
-                 if (__mask & (1U << __j)) {\
-                     apic = local_apics[__i * 32 + __j];\
-                     if (apic) {\
-@@ -226,7 +237,7 @@ static void apic_bus_deliver(const uint32_t *deliver_bitmask,
-             {
-                 int i, d;
-                 d = -1;
--                for(i = 0; i < MAX_APIC_WORDS; i++) {
-+                for (i = 0; i < max_apic_words; i++) {
-                     if (deliver_bitmask[i]) {
-                         d = i * 32 + apic_ffs_bit(deliver_bitmask[i]);
-                         break;
-@@ -276,16 +287,18 @@ static void apic_bus_deliver(const uint32_t *deliver_bitmask,
-                  apic_set_irq(apic_iter, vector_num, trigger_mode) );
+diff --git a/hw/i386/kvm/apic.c b/hw/i386/kvm/apic.c
+index 1e89ca0899..a72c28e8a7 100644
+--- a/hw/i386/kvm/apic.c
++++ b/hw/i386/kvm/apic.c
+@@ -95,9 +95,10 @@ void kvm_get_apic_state(DeviceState *dev, struct kvm_lapic_state *kapic)
+     apic_next_timer(s, s->initial_count_load_time);
  }
  
--void apic_deliver_irq(uint8_t dest, uint8_t dest_mode, uint8_t delivery_mode,
--                      uint8_t vector_num, uint8_t trigger_mode)
-+static void apic_deliver_irq(uint32_t dest, uint8_t dest_mode,
-+                             uint8_t delivery_mode, uint8_t vector_num,
-+                             uint8_t trigger_mode)
+-static void kvm_apic_set_base(APICCommonState *s, uint64_t val)
++static int kvm_apic_set_base(APICCommonState *s, uint64_t val)
  {
--    uint32_t deliver_bitmask[MAX_APIC_WORDS];
-+    uint32_t *deliver_bitmask = g_malloc(max_apic_words * sizeof(uint32_t));
- 
-     trace_apic_deliver_irq(dest, dest_mode, delivery_mode, vector_num,
-                            trigger_mode);
- 
-     apic_get_delivery_bitmask(deliver_bitmask, dest, dest_mode);
-     apic_bus_deliver(deliver_bitmask, delivery_mode, vector_num, trigger_mode);
-+    g_free(deliver_bitmask);
+     s->apicbase = val;
++    return 0;
  }
  
- bool is_x2apic_mode(DeviceState *dev)
-@@ -442,57 +455,123 @@ static void apic_eoi(APICCommonState *s)
-     apic_update_irq(s);
- }
- 
--static int apic_find_dest(uint8_t dest)
-+static bool apic_match_dest(APICCommonState *apic, uint32_t dest)
- {
--    APICCommonState *apic = local_apics[dest];
-+    if (is_x2apic_mode(&apic->parent_obj)) {
-+        return apic->initial_apic_id == dest;
-+    } else {
-+        return apic->id == (uint8_t)dest;
-+    }
-+}
-+
-+static void apic_find_dest(uint32_t *deliver_bitmask, uint32_t dest)
-+{
-+    APICCommonState *apic = NULL;
-     int i;
- 
--    if (apic && apic->id == dest)
--        return dest;  /* shortcut in case apic->id == local_apics[dest]->id */
--
--    for (i = 0; i < MAX_APICS; i++) {
-+    for (i = 0; i < max_apics; i++) {
-         apic = local_apics[i];
--        if (apic && apic->id == dest)
--            return i;
--        if (!apic)
--            break;
-+        if (apic && apic_match_dest(apic, dest)) {
-+            apic_set_bit(deliver_bitmask, i);
-+        }
-     }
--
--    return -1;
- }
- 
--static void apic_get_delivery_bitmask(uint32_t *deliver_bitmask,
--                                      uint8_t dest, uint8_t dest_mode)
-+/*
-+ * Deliver interrupt to x2APIC CPUs if it is x2APIC broadcast.
-+ * Otherwise, deliver interrupt to xAPIC CPUs if it is xAPIC
-+ * broadcast.
-+ */
-+static void apic_get_broadcast_bitmask(uint32_t *deliver_bitmask,
-+                                       bool is_x2apic_broadcast)
- {
-+    int i;
-     APICCommonState *apic_iter;
-+
-+    for (i = 0; i < max_apics; i++) {
-+        apic_iter = local_apics[i];
-+        if (apic_iter) {
-+            bool apic_in_x2apic = is_x2apic_mode(&apic_iter->parent_obj);
-+
-+            if (is_x2apic_broadcast && apic_in_x2apic) {
-+                apic_set_bit(deliver_bitmask, i);
-+            } else if (!is_x2apic_broadcast && !apic_in_x2apic) {
-+                apic_set_bit(deliver_bitmask, i);
-+            }
-+        }
-+    }
-+}
-+
-+static void apic_get_delivery_bitmask(uint32_t *deliver_bitmask,
-+                                      uint32_t dest, uint8_t dest_mode)
-+{
-+    APICCommonState *apic;
-     int i;
- 
--    if (dest_mode == 0) {
-+    memset(deliver_bitmask, 0x00, max_apic_words * sizeof(uint32_t));
-+
-+    /*
-+     * x2APIC broadcast is delivered to all x2APIC CPUs regardless of
-+     * destination mode. In case the destination mode is physical, it is
-+     * broadcasted to all xAPIC CPUs too. Otherwise, if the destination
-+     * mode is logical, we need to continue checking if xAPIC CPUs accepts
-+     * the interrupt.
-+     */
-+    if (dest == 0xffffffff) {
-+        if (dest_mode == APIC_DESTMODE_PHYSICAL) {
-+            memset(deliver_bitmask, 0xff, max_apic_words * sizeof(uint32_t));
-+            return;
-+        } else {
-+            apic_get_broadcast_bitmask(deliver_bitmask, true);
-+        }
-+    }
-+
-+    if (dest_mode == APIC_DESTMODE_PHYSICAL) {
-+        apic_find_dest(deliver_bitmask, dest);
-+        /* Any APIC in xAPIC mode will interpret 0xFF as broadcast */
-         if (dest == 0xff) {
--            memset(deliver_bitmask, 0xff, MAX_APIC_WORDS * sizeof(uint32_t));
--        } else {
--            int idx = apic_find_dest(dest);
--            memset(deliver_bitmask, 0x00, MAX_APIC_WORDS * sizeof(uint32_t));
--            if (idx >= 0)
--                apic_set_bit(deliver_bitmask, idx);
-+            apic_get_broadcast_bitmask(deliver_bitmask, false);
-         }
-     } else {
--        /* XXX: cluster mode */
--        memset(deliver_bitmask, 0x00, MAX_APIC_WORDS * sizeof(uint32_t));
--        for(i = 0; i < MAX_APICS; i++) {
--            apic_iter = local_apics[i];
--            if (apic_iter) {
--                if (apic_iter->dest_mode == 0xf) {
--                    if (dest & apic_iter->log_dest)
--                        apic_set_bit(deliver_bitmask, i);
--                } else if (apic_iter->dest_mode == 0x0) {
--                    if ((dest & 0xf0) == (apic_iter->log_dest & 0xf0) &&
--                        (dest & apic_iter->log_dest & 0x0f)) {
-+        /* XXX: logical mode */
-+        for (i = 0; i < max_apics; i++) {
-+            apic = local_apics[i];
-+            if (apic) {
-+                /* x2APIC logical mode */
-+                if (apic->apicbase & MSR_IA32_APICBASE_EXTD) {
-+                    if ((dest >> 16) == (apic->extended_log_dest >> 16) &&
-+                        (dest & apic->extended_log_dest & 0xffff)) {
-                         apic_set_bit(deliver_bitmask, i);
-                     }
-+                    continue;
-                 }
--            } else {
--                break;
-+
-+                /* xAPIC logical mode */
-+                dest = (uint8_t)dest;
-+                if (apic->dest_mode == APIC_DESTMODE_LOGICAL_FLAT) {
-+                    if (dest & apic->log_dest) {
-+                        apic_set_bit(deliver_bitmask, i);
-+                    }
-+                } else if (apic->dest_mode == APIC_DESTMODE_LOGICAL_CLUSTER) {
-+                    /*
-+                     * In cluster model of xAPIC logical mode IPI, 4 higher
-+                     * bits are used as cluster address, 4 lower bits are
-+                     * the bitmask for local APICs in the cluster. The IPI
-+                     * is delivered to an APIC if the cluster address
-+                     * matches and the APIC's address bit in the cluster is
-+                     * set in bitmask of destination ID in IPI.
-+                     *
-+                     * The cluster address ranges from 0 - 14, the cluster
-+                     * address 15 (0xf) is the broadcast address to all
-+                     * clusters.
-+                     */
-+                    if ((dest & 0xf0) == 0xf0 ||
-+                        (dest & 0xf0) == (apic->log_dest & 0xf0)) {
-+                        if (dest & apic->log_dest & 0x0f) {
-+                            apic_set_bit(deliver_bitmask, i);
-+                        }
-+                    }
-+               }
-             }
-         }
-     }
-@@ -516,29 +595,36 @@ void apic_sipi(DeviceState *dev)
-     s->wait_for_sipi = 0;
- }
- 
--static void apic_deliver(DeviceState *dev, uint8_t dest, uint8_t dest_mode,
-+static void apic_deliver(DeviceState *dev, uint32_t dest, uint8_t dest_mode,
-                          uint8_t delivery_mode, uint8_t vector_num,
--                         uint8_t trigger_mode)
-+                         uint8_t trigger_mode, uint8_t dest_shorthand)
- {
-     APICCommonState *s = APIC(dev);
--    uint32_t deliver_bitmask[MAX_APIC_WORDS];
--    int dest_shorthand = (s->icr[0] >> 18) & 3;
-     APICCommonState *apic_iter;
-+    uint32_t deliver_bitmask_size = max_apic_words * sizeof(uint32_t);
-+    uint32_t *deliver_bitmask = g_malloc(deliver_bitmask_size);
-+    uint32_t current_apic_id;
-+
-+    if (is_x2apic_mode(dev)) {
-+        current_apic_id = s->initial_apic_id;
-+    } else {
-+        current_apic_id = s->id;
-+    }
- 
-     switch (dest_shorthand) {
-     case 0:
-         apic_get_delivery_bitmask(deliver_bitmask, dest, dest_mode);
-         break;
-     case 1:
--        memset(deliver_bitmask, 0x00, sizeof(deliver_bitmask));
--        apic_set_bit(deliver_bitmask, s->id);
-+        memset(deliver_bitmask, 0x00, deliver_bitmask_size);
-+        apic_set_bit(deliver_bitmask, current_apic_id);
-         break;
-     case 2:
--        memset(deliver_bitmask, 0xff, sizeof(deliver_bitmask));
-+        memset(deliver_bitmask, 0xff, deliver_bitmask_size);
-         break;
-     case 3:
--        memset(deliver_bitmask, 0xff, sizeof(deliver_bitmask));
--        apic_reset_bit(deliver_bitmask, s->id);
-+        memset(deliver_bitmask, 0xff, deliver_bitmask_size);
-+        apic_reset_bit(deliver_bitmask, current_apic_id);
-         break;
-     }
- 
-@@ -562,6 +648,7 @@ static void apic_deliver(DeviceState *dev, uint8_t dest, uint8_t dest_mode,
-     }
- 
-     apic_bus_deliver(deliver_bitmask, delivery_mode, vector_num, trigger_mode);
-+    g_free(deliver_bitmask);
- }
- 
- static bool apic_check_pic(APICCommonState *s)
-@@ -658,7 +745,11 @@ static int apic_register_read(int index, uint64_t *value)
- 
-     switch(index) {
-     case 0x02: /* id */
--        val = s->id << 24;
-+        if (is_x2apic_mode(dev)) {
-+            val = s->initial_apic_id;
-+        } else {
-+            val = s->id << 24;
-+        }
-         break;
-     case 0x03: /* version */
-         val = s->version | ((APIC_LVT_NB - 1) << 16);
-@@ -681,10 +772,19 @@ static int apic_register_read(int index, uint64_t *value)
-         val = 0;
-         break;
-     case 0x0d:
--        val = s->log_dest << 24;
-+        if (is_x2apic_mode(dev)) {
-+            val = s->extended_log_dest;
-+        } else {
-+            val = s->log_dest << 24;
-+        }
-         break;
-     case 0x0e:
--        val = (s->dest_mode << 28) | 0xfffffff;
-+        if (is_x2apic_mode(dev)) {
-+            val = 0;
-+            ret = -1;
-+        } else {
-+            val = (s->dest_mode << 28) | 0xfffffff;
-+        }
-         break;
-     case 0x0f:
-         val = s->spurious_vec;
-@@ -764,7 +864,12 @@ static void apic_send_msi(MSIMessage *msi)
- {
-     uint64_t addr = msi->address;
-     uint32_t data = msi->data;
--    uint8_t dest = (addr & MSI_ADDR_DEST_ID_MASK) >> MSI_ADDR_DEST_ID_SHIFT;
-+    uint32_t dest = (addr & MSI_ADDR_DEST_ID_MASK) >> MSI_ADDR_DEST_ID_SHIFT;
-+    /*
-+     * The higher 3 bytes of destination id is stored in higher word of
-+     * msi address. See x86_iommu_irq_to_msi_message()
-+     */
-+    dest = dest | (addr >> 32);
-     uint8_t vector = (data & MSI_DATA_VECTOR_MASK) >> MSI_DATA_VECTOR_SHIFT;
-     uint8_t dest_mode = (addr >> MSI_ADDR_DEST_MODE_SHIFT) & 0x1;
-     uint8_t trigger_mode = (data >> MSI_DATA_TRIGGER_SHIFT) & 0x1;
-@@ -788,6 +893,10 @@ static int apic_register_write(int index, uint64_t val)
- 
-     switch(index) {
-     case 0x02:
-+        if (is_x2apic_mode(dev)) {
-+            return -1;
-+        }
-+
-         s->id = (val >> 24);
-         break;
-     case 0x03:
-@@ -807,9 +916,17 @@ static int apic_register_write(int index, uint64_t val)
-         apic_eoi(s);
-         break;
-     case 0x0d:
-+        if (is_x2apic_mode(dev)) {
-+            return -1;
-+        }
-+
-         s->log_dest = val >> 24;
-         break;
-     case 0x0e:
-+        if (is_x2apic_mode(dev)) {
-+            return -1;
-+        }
-+
-         s->dest_mode = val >> 28;
-         break;
-     case 0x0f:
-@@ -821,13 +938,27 @@ static int apic_register_write(int index, uint64_t val)
-     case 0x20 ... 0x27:
-     case 0x28:
-         break;
--    case 0x30:
-+    case 0x30: {
-+        uint32_t dest;
-+
-         s->icr[0] = val;
--        apic_deliver(dev, (s->icr[1] >> 24) & 0xff, (s->icr[0] >> 11) & 1,
-+        if (is_x2apic_mode(dev)) {
-+            s->icr[1] = val >> 32;
-+            dest = s->icr[1];
-+        } else {
-+            dest = (s->icr[1] >> 24) & 0xff;
-+        }
-+
-+        apic_deliver(dev, dest, (s->icr[0] >> 11) & 1,
-                      (s->icr[0] >> 8) & 7, (s->icr[0] & 0xff),
--                     (s->icr[0] >> 15) & 1);
-+                     (s->icr[0] >> 15) & 1, (s->icr[0] >> 18) & 3);
-         break;
-+    }
-     case 0x31:
-+        if (is_x2apic_mode(dev)) {
-+            return -1;
-+        }
-+
-         s->icr[1] = val;
-         break;
-     case 0x32 ... 0x37:
-@@ -856,6 +987,23 @@ static int apic_register_write(int index, uint64_t val)
-             s->count_shift = (v + 1) & 7;
-         }
-         break;
-+    case 0x3f: {
-+        int vector = val & 0xff;
-+
-+        if (!is_x2apic_mode(dev)) {
-+            return -1;
-+        }
-+
-+        /*
-+         * Self IPI is identical to IPI with
-+         * - Destination shorthand: 1 (Self)
-+         * - Trigger mode: 0 (Edge)
-+         * - Delivery mode: 0 (Fixed)
-+         */
-+        apic_deliver(dev, 0, 0, APIC_DM_FIXED, vector, 0, 1);
-+
-+        break;
-+    }
-     default:
-         s->esr |= APIC_ESR_ILLEGAL_ADDRESS;
-         return -1;
-@@ -933,12 +1081,6 @@ static void apic_realize(DeviceState *dev, Error **errp)
- {
-     APICCommonState *s = APIC(dev);
- 
--    if (s->id >= MAX_APICS) {
--        error_setg(errp, "%s initialization failed. APIC ID %d is invalid",
--                   object_get_typename(OBJECT(dev)), s->id);
--        return;
--    }
--
-     if (kvm_enabled()) {
-         warn_report("Userspace local APIC is deprecated for KVM.");
-         warn_report("Do not use kernel-irqchip except for the -M isapc machine type.");
-@@ -955,7 +1097,16 @@ static void apic_realize(DeviceState *dev, Error **errp)
-     s->io_memory.disable_reentrancy_guard = true;
- 
-     s->timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, apic_timer, s);
--    local_apics[s->id] = s;
-+
-+    /*
-+     * The --machine none does not call apic_set_max_apic_id before creating
-+     * apic, so we need to call it here and set it to 1 which is the max cpus
-+     * in machine none.
-+     */
-+    if (!local_apics) {
-+        apic_set_max_apic_id(1);
-+    }
-+    local_apics[s->initial_apic_id] = s;
- 
+ static void kvm_apic_set_tpr(APICCommonState *s, uint8_t val)
+diff --git a/hw/i386/xen/xen_apic.c b/hw/i386/xen/xen_apic.c
+index 7c7a60b166..101e16a766 100644
+--- a/hw/i386/xen/xen_apic.c
++++ b/hw/i386/xen/xen_apic.c
+@@ -49,8 +49,9 @@ static void xen_apic_realize(DeviceState *dev, Error **errp)
      msi_nonbroken = true;
  }
-@@ -965,7 +1116,7 @@ static void apic_unrealize(DeviceState *dev)
-     APICCommonState *s = APIC(dev);
  
-     timer_free(s->timer);
--    local_apics[s->id] = NULL;
-+    local_apics[s->initial_apic_id] = NULL;
+-static void xen_apic_set_base(APICCommonState *s, uint64_t val)
++static int xen_apic_set_base(APICCommonState *s, uint64_t val)
+ {
++    return 0;
  }
  
- static void apic_class_init(ObjectClass *klass, void *data)
-diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
-index 6c100b48d6..3c43ac9a1d 100644
---- a/hw/intc/apic_common.c
-+++ b/hw/intc/apic_common.c
-@@ -287,6 +287,10 @@ static void apic_common_realize(DeviceState *dev, Error **errp)
-     }
-     vmstate_register_with_alias_id(NULL, instance_id, &vmstate_apic_common,
-                                    s, -1, 0, NULL);
-+
-+    /* APIC LDR in x2APIC mode */
-+    s->extended_log_dest = ((s->initial_apic_id >> 4) << 16) |
-+                            (1 << (s->initial_apic_id & 0xf));
+ static void xen_apic_set_tpr(APICCommonState *s, uint8_t val)
+diff --git a/hw/intc/apic.c b/hw/intc/apic.c
+index 178fb26b47..1d887d66b8 100644
+--- a/hw/intc/apic.c
++++ b/hw/intc/apic.c
+@@ -308,8 +308,49 @@ bool is_x2apic_mode(DeviceState *dev)
+     return s->apicbase & MSR_IA32_APICBASE_EXTD;
  }
  
- static void apic_common_unrealize(DeviceState *dev)
-@@ -427,6 +431,11 @@ static void apic_common_set_id(Object *obj, Visitor *v, const char *name,
-         return;
-     }
- 
-+    if (value >= 255 && !cpu_has_x2apic_feature(&s->cpu->env)) {
-+        error_setg(errp, "APIC ID %d requires x2APIC feature in CPU", value);
-+        return;
+-static void apic_set_base(APICCommonState *s, uint64_t val)
++static int apic_set_base_check(APICCommonState *s, uint64_t val)
+ {
++    /* Enable x2apic when x2apic is not supported by CPU */
++    if (!cpu_has_x2apic_feature(&s->cpu->env) &&
++        val & MSR_IA32_APICBASE_EXTD) {
++        return -1;
 +    }
 +
-     s->initial_apic_id = value;
-     s->id = (uint8_t)value;
++    /*
++     * Transition into invalid state
++     * (s->apicbase & MSR_IA32_APICBASE_ENABLE == 0) &&
++     * (s->apicbase & MSR_IA32_APICBASE_EXTD) == 1
++     */
++    if (!(val & MSR_IA32_APICBASE_ENABLE) &&
++        (val & MSR_IA32_APICBASE_EXTD)) {
++        return -1;
++    }
++
++    /* Invalid transition from disabled mode to x2APIC */
++    if (!(s->apicbase & MSR_IA32_APICBASE_ENABLE) &&
++        !(s->apicbase & MSR_IA32_APICBASE_EXTD) &&
++        (val & MSR_IA32_APICBASE_ENABLE) &&
++        (val & MSR_IA32_APICBASE_EXTD)) {
++        return -1;
++    }
++
++    /* Invalid transition from x2APIC to xAPIC */
++    if ((s->apicbase & MSR_IA32_APICBASE_ENABLE) &&
++        (s->apicbase & MSR_IA32_APICBASE_EXTD) &&
++        (val & MSR_IA32_APICBASE_ENABLE) &&
++        !(val & MSR_IA32_APICBASE_EXTD)) {
++        return -1;
++    }
++
++    return 0;
++}
++
++static int apic_set_base(APICCommonState *s, uint64_t val)
++{
++    if (apic_set_base_check(s, val) < 0) {
++        return -1;
++    }
++
+     s->apicbase = (val & 0xfffff000) |
+         (s->apicbase & (MSR_IA32_APICBASE_BSP | MSR_IA32_APICBASE_ENABLE));
+     /* if disabled, cannot be enabled again */
+@@ -318,6 +359,25 @@ static void apic_set_base(APICCommonState *s, uint64_t val)
+         cpu_clear_apic_feature(&s->cpu->env);
+         s->spurious_vec &= ~APIC_SV_ENABLE;
+     }
++
++    /* Transition from disabled mode to xAPIC */
++    if (!(s->apicbase & MSR_IA32_APICBASE_ENABLE) &&
++        (val & MSR_IA32_APICBASE_ENABLE)) {
++        s->apicbase |= MSR_IA32_APICBASE_ENABLE;
++        cpu_set_apic_feature(&s->cpu->env);
++    }
++
++    /* Transition from xAPIC to x2APIC */
++    if (cpu_has_x2apic_feature(&s->cpu->env) &&
++        !(s->apicbase & MSR_IA32_APICBASE_EXTD) &&
++        (val & MSR_IA32_APICBASE_EXTD)) {
++        s->apicbase |= MSR_IA32_APICBASE_EXTD;
++
++        s->log_dest = ((s->initial_apic_id & 0xffff0) << 16) |
++                      (1 << (s->initial_apic_id & 0xf));
++    }
++
++    return 0;
  }
+ 
+ static void apic_set_tpr(APICCommonState *s, uint8_t val)
+diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
+index 3c43ac9a1d..16ab40a35f 100644
+--- a/hw/intc/apic_common.c
++++ b/hw/intc/apic_common.c
+@@ -35,20 +35,19 @@
+ 
+ bool apic_report_tpr_access;
+ 
+-void cpu_set_apic_base(DeviceState *dev, uint64_t val)
++int cpu_set_apic_base(DeviceState *dev, uint64_t val)
+ {
+     trace_cpu_set_apic_base(val);
+ 
+     if (dev) {
+         APICCommonState *s = APIC_COMMON(dev);
+         APICCommonClass *info = APIC_COMMON_GET_CLASS(s);
+-        /* switching to x2APIC, reset possibly modified xAPIC ID */
+-        if (!(s->apicbase & MSR_IA32_APICBASE_EXTD) &&
+-            (val & MSR_IA32_APICBASE_EXTD)) {
+-            s->id = s->initial_apic_id;
+-        }
+-        info->set_base(s, val);
++        /* Reset possibly modified xAPIC ID */
++        s->id = s->initial_apic_id;
++        return info->set_base(s, val);
+     }
++
++    return 0;
+ }
+ 
+ uint64_t cpu_get_apic_base(DeviceState *dev)
 diff --git a/include/hw/i386/apic.h b/include/hw/i386/apic.h
-index ddea4213db..c8ca41ab44 100644
+index c8ca41ab44..f6e7489f2d 100644
 --- a/include/hw/i386/apic.h
 +++ b/include/hw/i386/apic.h
-@@ -3,8 +3,7 @@
- 
- 
- /* apic.c */
--void apic_deliver_irq(uint8_t dest, uint8_t dest_mode, uint8_t delivery_mode,
--                      uint8_t vector_num, uint8_t trigger_mode);
-+void apic_set_max_apic_id(uint32_t max_apic_id);
- int apic_accept_pic_intr(DeviceState *s);
+@@ -8,7 +8,7 @@ int apic_accept_pic_intr(DeviceState *s);
  void apic_deliver_pic_intr(DeviceState *s, int level);
  void apic_deliver_nmi(DeviceState *d);
+ int apic_get_interrupt(DeviceState *s);
+-void cpu_set_apic_base(DeviceState *s, uint64_t val);
++int cpu_set_apic_base(DeviceState *s, uint64_t val);
+ uint64_t cpu_get_apic_base(DeviceState *s);
+ void cpu_set_apic_tpr(DeviceState *s, uint8_t val);
+ uint8_t cpu_get_apic_tpr(DeviceState *s);
 diff --git a/include/hw/i386/apic_internal.h b/include/hw/i386/apic_internal.h
-index 5f2ba24bfc..e796e6cae3 100644
+index e796e6cae3..d6e85833da 100644
 --- a/include/hw/i386/apic_internal.h
 +++ b/include/hw/i386/apic_internal.h
-@@ -46,8 +46,10 @@
- #define APIC_DM_EXTINT                  7
+@@ -137,7 +137,7 @@ struct APICCommonClass {
  
- /* APIC destination mode */
--#define APIC_DESTMODE_FLAT              0xf
--#define APIC_DESTMODE_CLUSTER           1
-+#define APIC_DESTMODE_PHYSICAL          0
-+#define APIC_DESTMODE_LOGICAL           1
-+#define APIC_DESTMODE_LOGICAL_FLAT      0xf
-+#define APIC_DESTMODE_LOGICAL_CLUSTER   0
+     DeviceRealize realize;
+     DeviceUnrealize unrealize;
+-    void (*set_base)(APICCommonState *s, uint64_t val);
++    int (*set_base)(APICCommonState *s, uint64_t val);
+     void (*set_tpr)(APICCommonState *s, uint8_t val);
+     uint8_t (*get_tpr)(APICCommonState *s);
+     void (*enable_tpr_reporting)(APICCommonState *s, bool enable);
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 2524881ce2..75eef1566a 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -631,8 +631,8 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+  * in CPL=3; remove them if they are ever implemented for system emulation.
+  */
+ #if defined CONFIG_USER_ONLY
+-#define CPUID_EXT_KERNEL_FEATURES (CPUID_EXT_PCID | CPUID_EXT_TSC_DEADLINE_TIMER | \
+-                                 CPUID_EXT_X2APIC)
++#define CPUID_EXT_KERNEL_FEATURES \
++          (CPUID_EXT_PCID | CPUID_EXT_TSC_DEADLINE_TIMER)
+ #else
+ #define CPUID_EXT_KERNEL_FEATURES 0
+ #endif
+@@ -642,12 +642,13 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+           CPUID_EXT_XSAVE | /* CPUID_EXT_OSXSAVE is dynamic */   \
+           CPUID_EXT_MOVBE | CPUID_EXT_AES | CPUID_EXT_HYPERVISOR | \
+           CPUID_EXT_RDRAND | CPUID_EXT_AVX | CPUID_EXT_F16C | \
+-          CPUID_EXT_FMA | CPUID_EXT_KERNEL_FEATURES)
++          CPUID_EXT_FMA | CPUID_EXT_X2APIC | CPUID_EXT_KERNEL_FEATURES)
+           /* missing:
+           CPUID_EXT_DTES64, CPUID_EXT_DSCPL, CPUID_EXT_VMX, CPUID_EXT_SMX,
+           CPUID_EXT_EST, CPUID_EXT_TM2, CPUID_EXT_CID,
+           CPUID_EXT_XTPR, CPUID_EXT_PDCM, CPUID_EXT_PCID, CPUID_EXT_DCA,
+-          CPUID_EXT_X2APIC, CPUID_EXT_TSC_DEADLINE_TIMER */
++          CPUID_EXT_TSC_DEADLINE_TIMER
++          */
  
- #define APIC_TRIGGER_EDGE               0
- #define APIC_TRIGGER_LEVEL              1
-@@ -187,6 +189,7 @@ struct APICCommonState {
-     DeviceState *vapic;
-     hwaddr vapic_paddr; /* note: persistence via kvmvapic */
-     bool legacy_instance_id;
-+    uint32_t extended_log_dest;
- };
- 
- typedef struct VAPICState {
-diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
-index 2375e48178..7422096737 100644
---- a/target/i386/cpu-sysemu.c
-+++ b/target/i386/cpu-sysemu.c
-@@ -235,6 +235,16 @@ void cpu_clear_apic_feature(CPUX86State *env)
-     env->features[FEAT_1_EDX] &= ~CPUID_APIC;
- }
- 
-+void cpu_set_apic_feature(CPUX86State *env)
-+{
-+    env->features[FEAT_1_EDX] |= CPUID_APIC;
-+}
-+
-+bool cpu_has_x2apic_feature(CPUX86State *env)
-+{
-+    return env->features[FEAT_1_ECX] & CPUID_EXT_X2APIC;
-+}
-+
- bool cpu_is_bsp(X86CPU *cpu)
- {
-     return cpu_get_apic_base(cpu->apic_state) & MSR_IA32_APICBASE_BSP;
-@@ -281,11 +291,17 @@ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
-                               OBJECT(cpu->apic_state));
-     object_unref(OBJECT(cpu->apic_state));
- 
--    qdev_prop_set_uint32(cpu->apic_state, "id", cpu->apic_id);
-     /* TODO: convert to link<> */
-     apic = APIC_COMMON(cpu->apic_state);
-     apic->cpu = cpu;
-     apic->apicbase = APIC_DEFAULT_ADDRESS | MSR_IA32_APICBASE_ENABLE;
-+
-+    /*
-+     * apic_common_set_id needs to check if the CPU has x2APIC
-+     * feature in case APIC ID >= 255, so we need to set apic->cpu
-+     * before setting APIC ID
-+     */
-+    qdev_prop_set_uint32(cpu->apic_state, "id", cpu->apic_id);
- }
- 
- void x86_cpu_apic_realize(X86CPU *cpu, Error **errp)
+ #ifdef TARGET_X86_64
+ #define TCG_EXT2_X86_64_FEATURES CPUID_EXT2_LM
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 5138dd9ff2..e954f989ef 100644
+index e954f989ef..ffcbd49ad7 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -2239,8 +2239,10 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-                    uint32_t *eax, uint32_t *ebx,
-                    uint32_t *ecx, uint32_t *edx);
- void cpu_clear_apic_feature(CPUX86State *env);
-+void cpu_set_apic_feature(CPUX86State *env);
- void host_cpuid(uint32_t function, uint32_t count,
-                 uint32_t *eax, uint32_t *ebx, uint32_t *ecx, uint32_t *edx);
-+bool cpu_has_x2apic_feature(CPUX86State *env);
+@@ -379,6 +379,10 @@ typedef enum X86Seg {
+ #define MSR_IA32_APICBASE_ENABLE        (1<<11)
+ #define MSR_IA32_APICBASE_EXTD          (1 << 10)
+ #define MSR_IA32_APICBASE_BASE          (0xfffffU<<12)
++#define MSR_IA32_APICBASE_RESERVED \
++        (~(uint64_t)(MSR_IA32_APICBASE_BSP | MSR_IA32_APICBASE_ENABLE \
++                     | MSR_IA32_APICBASE_EXTD | MSR_IA32_APICBASE_BASE))
++
+ #define MSR_IA32_FEATURE_CONTROL        0x0000003a
+ #define MSR_TSC_ADJUST                  0x0000003b
+ #define MSR_IA32_SPEC_CTRL              0x48
+diff --git a/target/i386/tcg/sysemu/misc_helper.c b/target/i386/tcg/sysemu/misc_helper.c
+index 1c43a9f4f7..7de0a6e866 100644
+--- a/target/i386/tcg/sysemu/misc_helper.c
++++ b/target/i386/tcg/sysemu/misc_helper.c
+@@ -158,9 +158,19 @@ void helper_wrmsr(CPUX86State *env)
+     case MSR_IA32_SYSENTER_EIP:
+         env->sysenter_eip = val;
+         break;
+-    case MSR_IA32_APICBASE:
+-        cpu_set_apic_base(env_archcpu(env)->apic_state, val);
++    case MSR_IA32_APICBASE: {
++        int ret;
++
++        if (val & MSR_IA32_APICBASE_RESERVED) {
++            goto error;
++        }
++
++        ret = cpu_set_apic_base(env_archcpu(env)->apic_state, val);
++        if (ret < 0) {
++            goto error;
++        }
+         break;
++    }
+     case MSR_EFER:
+         {
+             uint64_t update_mask;
+diff --git a/target/i386/whpx/whpx-apic.c b/target/i386/whpx/whpx-apic.c
+index 8710e37567..7e14ded978 100644
+--- a/target/i386/whpx/whpx-apic.c
++++ b/target/i386/whpx/whpx-apic.c
+@@ -90,9 +90,10 @@ static void whpx_get_apic_state(APICCommonState *s,
+     apic_next_timer(s, s->initial_count_load_time);
+ }
  
- /* helper.c */
- void x86_cpu_set_a20(X86CPU *cpu, int a20_state);
+-static void whpx_apic_set_base(APICCommonState *s, uint64_t val)
++static int whpx_apic_set_base(APICCommonState *s, uint64_t val)
+ {
+     s->apicbase = val;
++    return 0;
+ }
+ 
+ static void whpx_put_apic_base(CPUState *cpu, uint64_t val)
 -- 
 2.25.1
 
