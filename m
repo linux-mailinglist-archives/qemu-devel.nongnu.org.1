@@ -2,69 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4593D82B39E
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 18:04:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5977882B39D
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 18:04:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNyQi-00047P-TS; Thu, 11 Jan 2024 12:01:20 -0500
+	id 1rNyQi-00044P-5p; Thu, 11 Jan 2024 12:01:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyQU-0003qm-Q6
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:01:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyQS-0003ZO-7J
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyQU-0003pb-0o
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:01:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyQS-0003ZY-6c
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:01:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1704992458;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7Q02gRkJO6TAV33QJiNFZq3YjsRE1X+PYnOjPa8di5Q=;
- b=dMXH+AQBPw8tLF+jsp/blq0v8aIjUhppWVCoBIxVS3YDr/lhMdBlPKSohINn3Q1BN50ICv
- GKlrAXcVg8o3rmIlRFi6QDvNRqeWjaFMcIgckvK8+cHUtRihDEu+b8C7cGOsVAiZoLUCdl
- PvhwFj7yTX1kiwXKtfDtZCC9PQH5/hA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-6AZKRmujNLGrjYnD_XECEA-1; Thu,
- 11 Jan 2024 12:00:52 -0500
-X-MC-Unique: 6AZKRmujNLGrjYnD_XECEA-1
+ bh=r77E7M5I85w1T8zdFWc4wKXIoTfETTc9mtCRu+/w1eI=;
+ b=KuoGztuamAzge9ABfZsvs9XwUF7R33qYh/jngY+/MW31lC/p8R/BfGIruXmw0RL9ijiplx
+ vB88dAVFB2EgEPS7ohX1MJI8MZrShUizdceQe7bhkwkm3Jorrx8tROszRyQU5+mj1J6gBw
+ NrC3VlXpITdDT9DdAolpsjJikFe3jWE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-556-tCVnAmsjNOiJ4C6ILFrbDQ-1; Thu, 11 Jan 2024 12:00:55 -0500
+X-MC-Unique: tCVnAmsjNOiJ4C6ILFrbDQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AE68B3816B60;
- Thu, 11 Jan 2024 17:00:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E9CDD8352A1;
+ Thu, 11 Jan 2024 17:00:54 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.197])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A475C51D5;
- Thu, 11 Jan 2024 17:00:49 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 06A7F51D5;
+ Thu, 11 Jan 2024 17:00:53 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Thomas Huth <huth@tuxfamily.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 01/17] q800: move dp8393x_prom memory region to Q800MachineState
-Date: Thu, 11 Jan 2024 18:00:30 +0100
-Message-ID: <20240111170047.909117-2-thuth@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 03/17] Revert "netdev: set timeout depending on loadavg"
+Date: Thu, 11 Jan 2024 18:00:32 +0100
+Message-ID: <20240111170047.909117-4-thuth@redhat.com>
 In-Reply-To: <20240111170047.909117-1-thuth@redhat.com>
 References: <20240111170047.909117-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -45
 X-Spam_score: -4.6
 X-Spam_bar: ----
 X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,62 +80,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-There is no need to dynamically allocate the memory region from the heap.
+This reverts commit cadfc7293977ecadc2d6c48d7cffc553ed2f85f1.
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-ID: <20231227210212.245106-1-mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+The test was not timing out because of slow execution. It was
+timing out due to a race condition leading to the client QEMU
+attempting (and fatally failing) to connect before the server
+QEMU was listening.
+
+Signed-off-by: "Daniel P. Berrangé" <berrange@redhat.com>
+Message-ID: <20240104162942.211458-2-berrange@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/m68k/q800.h | 1 +
- hw/m68k/q800.c         | 7 +++----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ tests/qtest/netdev-socket.c | 28 +---------------------------
+ 1 file changed, 1 insertion(+), 27 deletions(-)
 
-diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index a9661f65f6..34365c9860 100644
---- a/include/hw/m68k/q800.h
-+++ b/include/hw/m68k/q800.h
-@@ -55,6 +55,7 @@ struct Q800MachineState {
-     MOS6522Q800VIA1State via1;
-     MOS6522Q800VIA2State via2;
-     dp8393xState dp8393x;
-+    MemoryRegion dp8393x_prom;
-     ESCCState escc;
-     OrIRQState escc_orgate;
-     SysBusESPState esp;
-diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 83d1571d02..b80a3b6d5f 100644
---- a/hw/m68k/q800.c
-+++ b/hw/m68k/q800.c
-@@ -253,7 +253,6 @@ static void q800_machine_init(MachineState *machine)
-     int bios_size;
-     ram_addr_t initrd_base;
-     int32_t initrd_size;
--    MemoryRegion *dp8393x_prom = g_new(MemoryRegion, 1);
-     uint8_t *prom;
-     int i, checksum;
-     MacFbMode *macfb_mode;
-@@ -406,13 +405,13 @@ static void q800_machine_init(MachineState *machine)
-     sysbus_connect_irq(sysbus, 0,
-                        qdev_get_gpio_in(DEVICE(&m->glue), GLUE_IRQ_IN_SONIC));
+diff --git a/tests/qtest/netdev-socket.c b/tests/qtest/netdev-socket.c
+index bb99d08b5e..7ba1eff120 100644
+--- a/tests/qtest/netdev-socket.c
++++ b/tests/qtest/netdev-socket.c
+@@ -18,32 +18,6 @@
  
--    memory_region_init_rom(dp8393x_prom, NULL, "dp8393x-q800.prom",
-+    memory_region_init_rom(&m->dp8393x_prom, NULL, "dp8393x-q800.prom",
-                            SONIC_PROM_SIZE, &error_fatal);
-     memory_region_add_subregion(get_system_memory(), SONIC_PROM_BASE,
--                                dp8393x_prom);
-+                                &m->dp8393x_prom);
+ #define CONNECTION_TIMEOUT    120
  
-     /* Add MAC address with valid checksum to PROM */
--    prom = memory_region_get_ram_ptr(dp8393x_prom);
-+    prom = memory_region_get_ram_ptr(&m->dp8393x_prom);
-     checksum = 0;
-     for (i = 0; i < 6; i++) {
-         prom[i] = revbit8(nd_table[0].macaddr.a[i]);
+-static double connection_timeout(void)
+-{
+-    double load;
+-    int ret = getloadavg(&load, 1);
+-
+-    /*
+-     * If we can't get load data, or load is low because we just started
+-     * running, assume load of 1 (we are alone in this system).
+-     */
+-    if (ret < 1 || load < 1.0) {
+-        load = 1.0;
+-    }
+-    /*
+-     * No one wants to wait more than 10 minutes for this test. Higher load?
+-     * Too bad.
+-     */
+-    if (load > 10.0) {
+-        fprintf(stderr, "Warning: load %f higher than 10 - test might timeout\n",
+-                load);
+-        load = 10.0;
+-    }
+-
+-    /* if load is high increase timeout as we might not get a chance to run */
+-    return load * CONNECTION_TIMEOUT;
+-}
+-
+ #define EXPECT_STATE(q, e, t)                             \
+ do {                                                      \
+     char *resp = NULL;                                    \
+@@ -57,7 +31,7 @@ do {                                                      \
+         if (g_str_equal(resp, e)) {                       \
+             break;                                        \
+         }                                                 \
+-    } while (g_test_timer_elapsed() < connection_timeout()); \
++    } while (g_test_timer_elapsed() < CONNECTION_TIMEOUT); \
+     g_assert_cmpstr(resp, ==, e);                         \
+     g_free(resp);                                         \
+ } while (0)
 -- 
 2.43.0
 
