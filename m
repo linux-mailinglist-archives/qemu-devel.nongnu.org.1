@@ -2,50 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1987E82B394
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 18:03:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B3D82B38F
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 18:02:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNyQg-00041b-OU; Thu, 11 Jan 2024 12:01:18 -0500
+	id 1rNyQf-0003zW-N5; Thu, 11 Jan 2024 12:01:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyQS-0003nk-3Y
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:01:04 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyQU-0003qo-U2
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:01:08 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyQK-0003T6-Ks
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:00:58 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyQS-0003ZK-75
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:01:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704992451;
+ s=mimecast20190719; t=1704992458;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=YBwJadbocxSEu6aV35OaHQGN2+uRoLoJ1qQsp+kMyEw=;
- b=abIPEjQEJnWHjAEXwO8cB9a55LxOxJ04QJjgXwBqGl2FCiiD1hJ6PJ/Y8DQMXAf0SLhzSk
- Vz4E89xVdyK3zbPO83yoicHPCJ23pG39JKUnLOZR/G3JShlbkxP7JOX10R4sC3ucmnjwjO
- gFy8Jog4zIKMiQg00vjSmd79CAikI9g=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-203-WUoKNXN1NcG6ZpfMYlsroA-1; Thu,
- 11 Jan 2024 12:00:49 -0500
-X-MC-Unique: WUoKNXN1NcG6ZpfMYlsroA-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=AA0bJvA5gnRtUl/OdOVdH08UPrx2pU6ILB4irBcvPSI=;
+ b=diWVRlxIV0uxe9su37bbKQSz9XrAcpFRTOhcsYenuDMABhG7vk4GRB2vkx3OOe/zhlg5gC
+ eHF6+mnuKUEgn6VG+T648uE5ZoVHTiPC4vuOuAm3FvwFmeo3RJISxuE8CaBIHBHClwBiGL
+ 4FJfIyJiXAfOdKeFiNMyj1EW2rZYg1w=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-563-LKcwpistOGOQkfdE4l7E9g-1; Thu, 11 Jan 2024 12:00:53 -0500
+X-MC-Unique: LKcwpistOGOQkfdE4l7E9g-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2BC3C28AC1F4;
- Thu, 11 Jan 2024 17:00:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8219B8371CB;
+ Thu, 11 Jan 2024 17:00:53 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.197])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 64CE551D5;
- Thu, 11 Jan 2024 17:00:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F03B751D5;
+ Thu, 11 Jan 2024 17:00:51 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/17] Misc patches (qtests, s390x, m68k, gitlab-ci)
-Date: Thu, 11 Jan 2024 18:00:29 +0100
-Message-ID: <20240111170047.909117-1-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 02/17] qtest: use correct boolean type for failover property
+Date: Thu, 11 Jan 2024 18:00:31 +0100
+Message-ID: <20240111170047.909117-3-thuth@redhat.com>
+In-Reply-To: <20240111170047.909117-1-thuth@redhat.com>
+References: <20240111170047.909117-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -75,82 +80,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi Peter!
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-The following changes since commit 34eac35f893664eb8545b98142e23d9954722766:
+QMP device_add does not historically validate the parameter types.
+At some point it will likely change to enforce correct types, to
+match behaviour of -device. The failover property is expected to
+be a boolean in JSON.
 
-  Merge tag 'pull-riscv-to-apply-20240110' of https://github.com/alistair23/qemu into staging (2024-01-10 11:41:56 +0000)
+Signed-off-by: "Daniel P. Berrangé" <berrange@redhat.com>
+Message-ID: <20240103123005.2400437-1-berrange@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/qtest/virtio-net-failover.c | 36 +++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-are available in the Git repository at:
-
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-01-11
-
-for you to fetch changes up to 52a21689cd829c1cc931b59b5ee5bdb10dd578c1:
-
-  .gitlab-ci.d/buildtest.yml: Work around htags bug when environment is large (2024-01-11 17:49:21 +0100)
-
-----------------------------------------------------------------
-* Fix non-deterministic failures of the 'netdev-socket' qtest
-* Fix device presence checking in the virtio-ccw qtest
-* Support codespell checking in checkpatch.pl
-* Fix emulation of LAE s390x instruction
-* Work around htags bug when environment is large
-* Some other small clean-ups here and there
-
-----------------------------------------------------------------
-Daniel P. Berrangé (7):
-      qtest: use correct boolean type for failover property
-      Revert "netdev: set timeout depending on loadavg"
-      Revert "osdep: add getloadavg"
-      Revert "tests/qtest/netdev-socket: Raise connection timeout to 120 seconds"
-      net: add explicit info about connecting/listening state
-      net: handle QIOTask completion to report useful error message
-      qtest: ensure netdev-socket tests have non-overlapping names
-
-Ilya Leoshkevich (2):
-      target/s390x: Fix LAE setting a wrong access register
-      tests/tcg/s390x: Test LOAD ADDRESS EXTENDED
-
-Mark Cave-Ayland (1):
-      q800: move dp8393x_prom memory region to Q800MachineState
-
-Nicholas Piggin (1):
-      gitlab: fix s390x tag for avocado-system-centos
-
-Peter Maydell (1):
-      .gitlab-ci.d/buildtest.yml: Work around htags bug when environment is large
-
-Samuel Tardieu (1):
-      tests/qtest/virtio-ccw: Fix device presence checking
-
-Thomas Huth (1):
-      target/s390x/kvm/pv: Provide some more useful information if decryption fails
-
-Zhao Liu (3):
-      hw/s390x/ccw: Replace basename() with g_path_get_basename()
-      hw/s390x/ccw: Replace dirname() with g_path_get_dirname()
-      scripts/checkpatch: Support codespell checking
-
- meson.build                       |   1 -
- hw/s390x/ipl.h                    |   2 +-
- include/hw/m68k/q800.h            |   1 +
- include/qemu/osdep.h              |  10 ---
- target/s390x/kvm/pv.h             |   5 +-
- hw/m68k/q800.c                    |   7 +--
- hw/s390x/ipl.c                    |   5 +-
- hw/s390x/s390-ccw.c               |   7 ++-
- hw/s390x/s390-virtio-ccw.c        |   5 +-
- net/stream.c                      |  18 ++++--
- target/s390x/kvm/pv.c             |  25 ++++++--
- target/s390x/tcg/translate.c      |   3 +-
- tests/qtest/netdev-socket.c       |  42 +++----------
- tests/qtest/virtio-ccw-test.c     |   2 +-
- tests/qtest/virtio-net-failover.c |  36 +++++------
- tests/tcg/s390x/lae.c             |  31 ++++++++++
- .gitlab-ci.d/buildtest.yml        |   7 ++-
- scripts/checkpatch.pl             | 125 ++++++++++++++++++++++++++++++++------
- tests/tcg/s390x/Makefile.target   |   1 +
- 19 files changed, 223 insertions(+), 110 deletions(-)
- create mode 100644 tests/tcg/s390x/lae.c
+diff --git a/tests/qtest/virtio-net-failover.c b/tests/qtest/virtio-net-failover.c
+index 0d40bc1f2d..73dfabc272 100644
+--- a/tests/qtest/virtio-net-failover.c
++++ b/tests/qtest/virtio-net-failover.c
+@@ -486,7 +486,7 @@ static void test_hotplug_1_reverse(void)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -517,7 +517,7 @@ static void test_hotplug_2(void)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -566,7 +566,7 @@ static void test_hotplug_2_reverse(void)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'rombar': 0,"
+                          "'romfile': '',"
+@@ -639,7 +639,7 @@ static void test_migrate_out(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -754,7 +754,7 @@ static void test_migrate_in(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -808,7 +808,7 @@ static void test_off_migrate_out(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'off',"
++                         "'failover': false,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -876,7 +876,7 @@ static void test_off_migrate_in(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'off',"
++                         "'failover': false,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -927,7 +927,7 @@ static void test_guest_off_migrate_out(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -1003,7 +1003,7 @@ static void test_guest_off_migrate_in(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -1054,7 +1054,7 @@ static void test_migrate_guest_off_abort(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -1154,7 +1154,7 @@ static void test_migrate_abort_wait_unplug(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -1243,7 +1243,7 @@ static void test_migrate_abort_active(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -1342,7 +1342,7 @@ static void test_migrate_off_abort(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'off',"
++                         "'failover': false,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -1434,7 +1434,7 @@ static void test_migrate_abort_timeout(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -1530,7 +1530,7 @@ static void test_multi_out(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -1561,7 +1561,7 @@ static void test_multi_out(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby1",
+                          "{'bus': 'root2',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs2',"
+                          "'mac': '"MAC_STANDBY1"'}");
+ 
+@@ -1700,7 +1700,7 @@ static void test_multi_in(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby0",
+                          "{'bus': 'root0',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs0',"
+                          "'mac': '"MAC_STANDBY0"'}");
+ 
+@@ -1724,7 +1724,7 @@ static void test_multi_in(gconstpointer opaque)
+ 
+     qtest_qmp_device_add(qts, "virtio-net", "standby1",
+                          "{'bus': 'root2',"
+-                         "'failover': 'on',"
++                         "'failover': true,"
+                          "'netdev': 'hs2',"
+                          "'mac': '"MAC_STANDBY1"'}");
+ 
+-- 
+2.43.0
 
 
