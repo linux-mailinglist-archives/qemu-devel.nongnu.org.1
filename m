@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C998D82AE41
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:04:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4B382AE44
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:04:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNtmy-0003Lp-US; Thu, 11 Jan 2024 07:04:00 -0500
+	id 1rNtmd-0002yC-9s; Thu, 11 Jan 2024 07:03:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtm3-0002pv-RF
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtm3-0002pw-Qx
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:05 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtly-0007Kn-1V
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNtlx-0007Lz-Fe
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:03:00 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40e60e135a7so3524545e9.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 04:02:46 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3368ac0f74dso3652047f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 04:02:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704974565; x=1705579365; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704974572; x=1705579372; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9oDADZ7OQkBJhilNI7y3OkwoRjc/uWOL4l0/5ZjzT+c=;
- b=hrWEwSN3xaVIO1pzvQBlZOIGNyMX3cNp84yVaTPgWuGgKyvub81M0dfT2XTFZFiLTM
- xOULxOekq0fMLb7tH/PWhIORjYvF2DMq9qP6sPRN2Nmi9jXbCjR6t9VgGx6thsrO5y/z
- Hm0wjb8zk77zSfDsA3XySu47BeVAxJn6oIDT31byEVpL0c8PItuAewqX1byTV//SsVb0
- lpjePB27K9f2SbR50ukwvTff/febyarvDyPfNAnfYM0nqsgnDcKsE8OndKNSzO8wIS3U
- 6DmwgkrqmahsQ9ON7B0gekuXBMMy/IVU+mScBZLELlz+XVS60Z4tPfqAQUwlO+qE3q35
- Hv7Q==
+ bh=pZ+Rk66u59cimifcoy3fRichLBCz2Ca8YjXNADwDWao=;
+ b=UJSH7zgeVXaBghWOpUxn5/HMliyj6vWy/9Fax/5Z4VyVUWVoCjAWRtDwL7fOCGAWtr
+ TPyc4E+AzEr401hL3gQ6RcTongOxYITnUNPdB8sN3yOYHEcoGjD7E0muUuvLYzlVrzkv
+ 2zpeGV+6AvKPcboJB495bUAZ5EJQndkusTyBjrgZ4U8fNoW4AJ0dJWaiGEW6M2J45985
+ U0HvhUFoYoTMelydsSkw1D7Y7BiHx4TRtfj2Zc9y0bOPWNKpVjfET6HCzRQhf5WuZfCx
+ 6tgle1XAUITWKMOnsEFS3CB7Prscv35WKwDLfsmEMY4FfSbAIDSpbtLRN3Ozy/T4RUbc
+ 6ymQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704974565; x=1705579365;
+ d=1e100.net; s=20230601; t=1704974572; x=1705579372;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9oDADZ7OQkBJhilNI7y3OkwoRjc/uWOL4l0/5ZjzT+c=;
- b=Uva+OPSocfb8tbxPfPvbY3vA592N4fjwRuz56z2BfPX9OZxLmCfikXBY4WoAzxOhCw
- ZVUx5BiTAdV9hlit/vIq0NtH6AHuEDbMuADUcICxc/qGkMqoetH8GYvongg69o9xgSWN
- hqyGFLClx0R0EWX5pMuB1iRIcqGv12HXZkDcwHweDB1sbRInLn/ix+6DywysNT4SAQ06
- naF8Cq5UVMNQdHeg6NCPMS/FytB3DryfFFkmdOP8fQIm692gcxrdJjppZip5FMg7il/Q
- OfPEiVEpqo3Y/oteHJTMKuUhVUPg+7j3jHIbteWMlucSGRU2sTX5mnFqBPMVi70xcmlx
- 0Lxw==
-X-Gm-Message-State: AOJu0YzdRsAnO9ldcGbozHa33eq3RIkEhe/EYm+1FhhpK9pDXKxaVCAd
- ODctDnLeau67d3cF0wuYQFbdDvyIVitD3SdqL3iZpCKBKH4uAA==
-X-Google-Smtp-Source: AGHT+IHUy2rDKzOcAGPqrz1cWpY8bjDMaLqeYdAZU4p19oR22q+kOJSKHkxiRPj8CF6RdVzDH6fu6Q==
-X-Received: by 2002:a05:600c:3515:b0:40e:4e48:513b with SMTP id
- h21-20020a05600c351500b0040e4e48513bmr359496wmq.12.1704974565669; 
- Thu, 11 Jan 2024 04:02:45 -0800 (PST)
+ bh=pZ+Rk66u59cimifcoy3fRichLBCz2Ca8YjXNADwDWao=;
+ b=M56twew4CS1f6uWATwsSKIKN/nAXWDMNz4RrQE13evpJlLyBunFQJhN3u01a0vPFUw
+ 591Bfpw12ZjILUN23KWZoZWUUZiYCvhGJVmXeNv9b1b+y6eEVtN8cDi3ucwc/5OZlZob
+ KuIdBtFhHktO+NnxeNqCyH/Rshp+uizzRWEBOzpX6jKvNqZ1Lg30/UzX9VvsrawCx7Ur
+ qI/K8tjE2vhP7KYyyTp6nQul7rdLrj6GV3YEXPUZUw5SeQSjwGhasoxU+dsqOL/PCt+i
+ dfgOE3hDvyZDYhuSHCmE77Wdva7E1dlwmX5k8KbhPOcmn58Yt81v21qTDOttrj4dlBsm
+ p9Lg==
+X-Gm-Message-State: AOJu0YzFp2zoJ3pWOMCu40JYVzo9vWrMfl3ZYwGENSqUThk84a5zINcO
+ MAQ/STB2Y6nU01k2lR2gqUDkSkvj1cxr5p3NCujpe6yljyTGSQ==
+X-Google-Smtp-Source: AGHT+IFjPXsyB08Y1eRcYbIW/MFzO5v7OwfM1FFtqTC9MGr4pukRGYPSAXI82nsmvO/Xd1bIObIM8g==
+X-Received: by 2002:a05:6000:507:b0:336:8ddc:a470 with SMTP id
+ a7-20020a056000050700b003368ddca470mr686899wrf.43.1704974572389; 
+ Thu, 11 Jan 2024 04:02:52 -0800 (PST)
 Received: from m1x-phil.lan (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
  [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
- t6-20020a05600c198600b0040e48abec33sm5550904wmq.45.2024.01.11.04.02.43
+ d15-20020adf9c8f000000b00336c43b366fsm1082920wre.12.2024.01.11.04.02.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Jan 2024 04:02:45 -0800 (PST)
+ Thu, 11 Jan 2024 04:02:51 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -69,17 +69,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/5] hw/s390x: Rename cpu_class_init() to include 'sclp'
-Date: Thu, 11 Jan 2024 13:02:19 +0100
-Message-ID: <20240111120221.35072-4-philmd@linaro.org>
+Subject: [PATCH 4/5] target/i386: Rename tcg_cpu_FOO() to include 'x86'
+Date: Thu, 11 Jan 2024 13:02:20 +0100
+Message-ID: <20240111120221.35072-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240111120221.35072-1-philmd@linaro.org>
 References: <20240111120221.35072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,37 +102,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpu_class_init() is specific to s390x SCLP, so rename
-it as sclp_cpu_class_init() (as other names in this file)
+The tcg_cpu_FOO() names are x86 specific, so rename
+them as x86_tcg_cpu_FOO() (as other names in this file)
 to ease navigating the code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/s390x/sclpcpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/i386/tcg/tcg-cpu.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/hw/s390x/sclpcpu.c b/hw/s390x/sclpcpu.c
-index f2b1a4b037..fa79891f5a 100644
---- a/hw/s390x/sclpcpu.c
-+++ b/hw/s390x/sclpcpu.c
-@@ -73,7 +73,7 @@ static int read_event_data(SCLPEvent *event, EventBufferHeader *evt_buf_hdr,
-     return 1;
- }
- 
--static void cpu_class_init(ObjectClass *oc, void *data)
-+static void sclp_cpu_class_init(ObjectClass *oc, void *data)
- {
-     SCLPEventClass *k = SCLP_EVENT_CLASS(oc);
-     DeviceClass *dc = DEVICE_CLASS(oc);
-@@ -94,7 +94,7 @@ static const TypeInfo sclp_cpu_info = {
-     .name          = TYPE_SCLP_CPU_HOTPLUG,
-     .parent        = TYPE_SCLP_EVENT,
-     .instance_size = sizeof(SCLPEvent),
--    .class_init    = cpu_class_init,
-+    .class_init    = sclp_cpu_class_init,
-     .class_size    = sizeof(SCLPEventClass),
+diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
+index 6e881e9e27..e56489caea 100644
+--- a/target/i386/tcg/tcg-cpu.c
++++ b/target/i386/tcg/tcg-cpu.c
+@@ -114,18 +114,18 @@ static const struct TCGCPUOps x86_tcg_ops = {
+ #endif /* !CONFIG_USER_ONLY */
  };
  
+-static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
++static void x86_tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
+ {
+     /* for x86, all cpus use the same set of operations */
+     cc->tcg_ops = &x86_tcg_ops;
+ }
+ 
+-static void tcg_cpu_class_init(CPUClass *cc)
++static void x86_tcg_cpu_class_init(CPUClass *cc)
+ {
+-    cc->init_accel_cpu = tcg_cpu_init_ops;
++    cc->init_accel_cpu = x86_tcg_cpu_init_ops;
+ }
+ 
+-static void tcg_cpu_xsave_init(void)
++static void x86_tcg_cpu_xsave_init(void)
+ {
+ #define XO(bit, field) \
+     x86_ext_save_areas[bit].offset = offsetof(X86XSaveArea, field);
+@@ -147,25 +147,25 @@ static void tcg_cpu_xsave_init(void)
+  * TCG-specific defaults that override cpudef models when using TCG.
+  * Only for builtin_x86_defs models initialized with x86_register_cpudef_types.
+  */
+-static PropValue tcg_default_props[] = {
++static PropValue x86_tcg_default_props[] = {
+     { "vme", "off" },
+     { NULL, NULL },
+ };
+ 
+-static void tcg_cpu_instance_init(CPUState *cs)
++static void x86_tcg_cpu_instance_init(CPUState *cs)
+ {
+     X86CPU *cpu = X86_CPU(cs);
+     X86CPUClass *xcc = X86_CPU_GET_CLASS(cpu);
+ 
+     if (xcc->model) {
+         /* Special cases not set in the X86CPUDefinition structs: */
+-        x86_cpu_apply_props(cpu, tcg_default_props);
++        x86_cpu_apply_props(cpu, x86_tcg_default_props);
+     }
+ 
+-    tcg_cpu_xsave_init();
++    x86_tcg_cpu_xsave_init();
+ }
+ 
+-static void tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
++static void x86_tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
+ {
+     AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
+ 
+@@ -173,18 +173,18 @@ static void tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
+     acc->cpu_target_realize = tcg_cpu_realizefn;
+ #endif /* CONFIG_USER_ONLY */
+ 
+-    acc->cpu_class_init = tcg_cpu_class_init;
+-    acc->cpu_instance_init = tcg_cpu_instance_init;
++    acc->cpu_class_init = x86_tcg_cpu_class_init;
++    acc->cpu_instance_init = x86_tcg_cpu_instance_init;
+ }
+-static const TypeInfo tcg_cpu_accel_type_info = {
++static const TypeInfo x86_tcg_cpu_accel_type_info = {
+     .name = ACCEL_CPU_NAME("tcg"),
+ 
+     .parent = TYPE_ACCEL_CPU,
+-    .class_init = tcg_cpu_accel_class_init,
++    .class_init = x86_tcg_cpu_accel_class_init,
+     .abstract = true,
+ };
+-static void tcg_cpu_accel_register_types(void)
++static void x86_tcg_cpu_accel_register_types(void)
+ {
+-    type_register_static(&tcg_cpu_accel_type_info);
++    type_register_static(&x86_tcg_cpu_accel_type_info);
+ }
+-type_init(tcg_cpu_accel_register_types);
++type_init(x86_tcg_cpu_accel_register_types);
 -- 
 2.41.0
 
