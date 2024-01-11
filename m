@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D9C82ACDA
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:07:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBF0882ACFA
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:10:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNsso-0001nE-Pj; Thu, 11 Jan 2024 06:05:58 -0500
+	id 1rNssW-0001Rl-2m; Thu, 11 Jan 2024 06:05:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssL-0001PM-78
+ id 1rNssN-0001PW-9b
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:31 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssH-0004Yq-Uv
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:28 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40e54b2e437so22224185e9.2
+ id 1rNssI-0004Z7-2m
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:30 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-33677fb38a3so4874139f8f.0
  for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1704971124; x=1705575924; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=dPASAMQebICClfujL1GDn0UotimEe/hhOLtey9oE2+o=;
- b=Q/05WpzGsDdIawxHn9Z30sZQqyGHZ/PLccuxBrgFbl4TBXAuNIHoeMUFpoGPOZjM05
- 4KGdUwS0AUpzTT/OKxuU/zxtDYliCjnq/iL7xFiVqER12fOzBn2+E7+FY5E3sjGyArEr
- kVXhvzixdkJIjgllAkAu80Ncce6l+6FKHz+dljbjVEIbChxheNSD+QW4et2gfhCV/LyB
- kEBiSw/1LEu9HnYDS0/hlqDOA8AmY4X7f5u0gx55kMrl+yysdk1qWqqcP8CoE7g+Am6e
- 82vdg91YJzlQaq7xxIYWIPj76PILcjID30pF15jz+OxRO9a3GyOipQKNiQ5sFWvS85aA
- 6zww==
+ :reply-to; bh=AoPQ2VhrOauUZxXZpUbSBMmD7E3ILO63LwCrzpMDSt8=;
+ b=ITIOxvywMw7zpBoPRuxxeCHqdygMdY+MSvbAHG9SG0MAE33B9oAFlFApIHmfrctb0j
+ Sf19gl7y7SMms0PgTfENZ4YKiQF6L86RJQoYtNYtsfN3hU0SD/VFDTsqVRSrBhQIt0VW
+ poRb11IJULhjV35r/prHfvhhsN1N6oL9k/t81NLcm8D9WJxTpP/iT9vUh/PdCC6FthMA
+ Vx5jAG5ZvgVhFOBsdvJ7E4KyUyiHO7o+DWoxV9oAX3FN1qbVj/JFNlMlXeTBIi89jdrM
+ /wzB/riSYfEIHNxJdajYmFT0IIIRQHpN8WVBawBrB4EgHT/HXeD84B6O8w7gnPgBDN6h
+ EY6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1704971124; x=1705575924;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dPASAMQebICClfujL1GDn0UotimEe/hhOLtey9oE2+o=;
- b=k7RdBBZO7WzqVoqD6KVbJDcUe12S0mYSMEYpnxgqCLdw/pj1jkH2mRbUhzWt2BTXsx
- SeLKKymHxLMZimetvgn0HVtqj1uY1qj1WRFc+XcGakxbcJ+s84gaMrofdVtYNaakn971
- U2iuY98SXEcGWAywiLZggA2+CJ7sCX6l9zTd/PzcGMIJVekQQSC5ZTdc0Oo3E/fHdopw
- 9IlxebuxkmO3DoLR6xB1w/AF/2zpOW4yj+fEbgbiqGsNCiJdkJsYkcCLDcnQLmE+B3LN
- MSdtFfTb3X69ckpUM2G7abAo6R+sW8NzHT+GwuMLU6OCUwH0lyHCtC8uQaoB1GOQskwS
- KoMg==
-X-Gm-Message-State: AOJu0YzuuPGGPxW4++B5rc+HbsnzBmIsoDLbutoz6aqEtDdHdGuJOnx9
- gXSOf0aHrj52iH4beGYRV5wgMu1Wjc/fvxjsHT4UpXtSHiM=
-X-Google-Smtp-Source: AGHT+IGMwvcc6BqpGSa5vGtMqKVa0Wze5Pp2NTg4jhuwMcqLBsNLz+/6cei7AYMHxs5mduWsKEbT2w==
-X-Received: by 2002:a05:600c:3c83:b0:40e:4d77:dbf7 with SMTP id
- bg3-20020a05600c3c8300b0040e4d77dbf7mr298265wmb.163.1704971124385; 
+ bh=AoPQ2VhrOauUZxXZpUbSBMmD7E3ILO63LwCrzpMDSt8=;
+ b=r/AhRMNVUBjIKvW74YUWU+atOeIXrLCzexN5iWRyZWic9sedi4YO1sPVxqNQ5nD2DO
+ uMdCPyz8tvRM7nrVDYI0fBd00L/WwjP2uSIaOh4ENKy1HfHgyZDQ0afCOROMI8s7+JSm
+ cOR9i4Ajepn4WnWHFaARV3SxdHGOLNdV7Gt8fh4z3f5YOAsWWJNlzggodaONhai8f5ae
+ DeUgCNhZUbqCOztTr8kYIkVERJv6oBwqC199CslQh3EqREOAqdPIelJLY+UGEy8pSfNa
+ 1M4hBhptYkfO2ah0tj8hLu3ljXjnUdAE2mq8qD7NI7p1MRNMixQL3TwrPxqtYzaZjgXb
+ up3w==
+X-Gm-Message-State: AOJu0YwD75YaYdPIgDHQxvNkIB+8rD2LTkDI2y1KtYbvOQkoy9a6ByFH
+ bY01wMJS9KOU8NfzKb0PJadXv7VbZhY7Wyxayg6dGx8edm8=
+X-Google-Smtp-Source: AGHT+IH7dGrEWBAsrZm8WfGyLEGWPtxAbGI1iVvka8+Hk/oEoryHVsroecxPDirFfD1ZxyvGx53Ckg==
+X-Received: by 2002:adf:ef43:0:b0:336:6797:485c with SMTP id
+ c3-20020adfef43000000b003366797485cmr511605wrp.27.1704971124763; 
  Thu, 11 Jan 2024 03:05:24 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 11 Jan 2024 03:05:24 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 40/41] target/arm: Enhance CPU_LOG_INT to show SPSR on AArch64
- exception-entry
-Date: Thu, 11 Jan 2024 11:05:04 +0000
-Message-Id: <20240111110505.1563291-41-peter.maydell@linaro.org>
+Subject: [PULL 41/41] target/arm: Add FEAT_NV2 to max, neoverse-n2,
+ neoverse-v1 CPUs
+Date: Thu, 11 Jan 2024 11:05:05 +0000
+Message-Id: <20240111110505.1563291-42-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 References: <20240111110505.1563291-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,31 +91,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We already print various lines of information when we take an
-exception, including the ELR and (if relevant) the FAR. Now
-that FEAT_NV means that we might report something other than
-the old PSTATE to the guest as the SPSR, it's worth logging
-this as well.
+Enable FEAT_NV2 on the 'max' CPU, and stop filtering it out for
+the Neoverse N2 and Neoverse V1 CPUs.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Miguel Luis <miguel.luis@oracle.com>
 ---
- target/arm/helper.c | 1 +
- 1 file changed, 1 insertion(+)
+ docs/system/arm/emulation.rst | 1 +
+ target/arm/cpu.c              | 5 -----
+ target/arm/tcg/cpu64.c        | 2 +-
+ 3 files changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 4550ff7ffde..dc8f14f4331 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -11416,6 +11416,7 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
+diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
+index d827b42de79..f67aea2d836 100644
+--- a/docs/system/arm/emulation.rst
++++ b/docs/system/arm/emulation.rst
+@@ -64,6 +64,7 @@ the following architecture extensions:
+ - FEAT_MTE2 (Memory Tagging Extension)
+ - FEAT_MTE3 (MTE Asymmetric Fault Handling)
+ - FEAT_NV (Nested Virtualization)
++- FEAT_NV2 (Enhanced nested virtualization support)
+ - FEAT_PACIMP (Pointer authentication - IMPLEMENTATION DEFINED algorithm)
+ - FEAT_PACQARMA3 (Pointer authentication - QARMA3 algorithm)
+ - FEAT_PACQARMA5 (Pointer authentication - QARMA5 algorithm)
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 7d763786d88..826ce842c09 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -2243,11 +2243,6 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+         /* FEAT_MPAM (Memory Partitioning and Monitoring Extension) */
+         cpu->isar.id_aa64pfr0 =
+             FIELD_DP64(cpu->isar.id_aa64pfr0, ID_AA64PFR0, MPAM, 0);
+-        /* FEAT_NV2 (Enhanced Nested Virtualization support) */
+-        if (FIELD_EX64(cpu->isar.id_aa64mmfr2, ID_AA64MMFR2, NV) > 1) {
+-            cpu->isar.id_aa64mmfr2 =
+-                FIELD_DP64(cpu->isar.id_aa64mmfr2, ID_AA64MMFR2, NV, 1);
+-        }
      }
-     env->banked_spsr[aarch64_banked_spsr_index(new_el)] = old_mode;
  
-+    qemu_log_mask(CPU_LOG_INT, "...with SPSR 0x%x\n", old_mode);
-     qemu_log_mask(CPU_LOG_INT, "...with ELR 0x%" PRIx64 "\n",
-                   env->elr_el[new_el]);
- 
+     /* MPU can be configured out of a PMSA CPU either by setting has-mpu
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index 93f040e6e96..5fba2c0f040 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1204,7 +1204,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+     t = FIELD_DP64(t, ID_AA64MMFR2, UAO, 1);      /* FEAT_UAO */
+     t = FIELD_DP64(t, ID_AA64MMFR2, IESB, 1);     /* FEAT_IESB */
+     t = FIELD_DP64(t, ID_AA64MMFR2, VARANGE, 1);  /* FEAT_LVA */
+-    t = FIELD_DP64(t, ID_AA64MMFR2, NV, 1);       /* FEAT_NV */
++    t = FIELD_DP64(t, ID_AA64MMFR2, NV, 2);       /* FEAT_NV2 */
+     t = FIELD_DP64(t, ID_AA64MMFR2, ST, 1);       /* FEAT_TTST */
+     t = FIELD_DP64(t, ID_AA64MMFR2, AT, 1);       /* FEAT_LSE2 */
+     t = FIELD_DP64(t, ID_AA64MMFR2, IDS, 1);      /* FEAT_IDST */
 -- 
 2.34.1
 
