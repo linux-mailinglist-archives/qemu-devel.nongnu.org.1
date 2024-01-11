@@ -2,133 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC08182A939
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8F282A927
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:30:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNqZA-00020l-Og; Thu, 11 Jan 2024 03:37:32 -0500
+	id 1rNqSV-0005SE-Fa; Thu, 11 Jan 2024 03:30:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNqZ8-0001zm-DX
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:37:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rNqSB-0005RJ-JR
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:30:21 -0500
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNqZ6-0001Jh-79
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:37:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704962246;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=yCdu45MX4ChSDI03nGfhPynyvS0MgURWVZiI9dvYaYA=;
- b=Ei0cE4JIeWSokSDWbeVUyYQmmGmcpxL6uzInDp7/xHeLefirdbhCqVSc10O3XQuaGhu0ew
- w67SYbZfG2Ee2T7PfsDHR2qVS3ziytwakaroET8HH/s691cf5cKa74wb0ACQ29lA+yaEkE
- km764jVsLwoX1RgdqN04JdJvajSLx2g=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-438-JmXw9BBkPxmOi3ZWTsoQPQ-1; Thu, 11 Jan 2024 03:37:25 -0500
-X-MC-Unique: JmXw9BBkPxmOi3ZWTsoQPQ-1
-Received: by mail-yw1-f197.google.com with SMTP id
- 00721157ae682-5f7942a16c3so69420207b3.3
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 00:37:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704962245; x=1705567045;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yCdu45MX4ChSDI03nGfhPynyvS0MgURWVZiI9dvYaYA=;
- b=rD1zFd6elHkWBoBUctWHBTLdXHwoxCTN0wfnhvGSHCf7MRyytFtAEymZhB/Y//GaSG
- X4dpNcpqU9LhwOUc9xpXrNiitAv8qG/QibNULVFLdyXbAcvMk2v7sAtVXy2gTQVisZsJ
- jGvs5yJMG09rQ/EXEScKXhSs2keKO4/EG2gbv/2K549Osspij/y75qzJhH246qHrdkMd
- PyNJ/3PCeczYe6FSHD4kvqjx7qqYFOiw7eblpK5nEzv/Vl051Iru5N3wLjFS38wLnbbP
- bpI55e28Ss8PRSV2T56CkDWWYgwLzqA9kUB1fv3r3jc10BloPUPdp/rX3OmuaqR3MqJ+
- or7A==
-X-Gm-Message-State: AOJu0YwBhNBaYoEdEUOyWTafG4TACYMvN4ek7aG3q/LX6jqGVMYFlW6n
- B9mdGKNKqcRKypZ4bvLjuUJAQf5zDGSgwpsIApNuvVItIcXbvnE6xDpvAS+mEz/CXdBiIt0G8AZ
- v5USnTgUTL8oFY5om6XSpmRVvuKeDCIA=
-X-Received: by 2002:a25:d310:0:b0:dbf:22ac:953e with SMTP id
- e16-20020a25d310000000b00dbf22ac953emr808458ybf.46.1704962245025; 
- Thu, 11 Jan 2024 00:37:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGHzNr8pHJrO4qmmrPz70RsIbJ/BvBxZ9crpPro6xmizgOeJOgkLy3mvqyrVl76iYHCUPmhZA==
-X-Received: by 2002:a25:d310:0:b0:dbf:22ac:953e with SMTP id
- e16-20020a25d310000000b00dbf22ac953emr808454ybf.46.1704962244722; 
- Thu, 11 Jan 2024 00:37:24 -0800 (PST)
-Received: from [10.33.192.181] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- cg5-20020a05622a408500b00429ab4df47csm263849qtb.17.2024.01.11.00.37.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 00:37:24 -0800 (PST)
-Message-ID: <22d8218a-70ee-4ab6-a284-2fbaeceb7052@redhat.com>
-Date: Thu, 11 Jan 2024 09:37:22 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] tests/tcg/s390x: Test LOAD ADDRESS EXTENDED
-Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rNqS9-0006ds-1c
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:30:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1704961817; x=1736497817;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=J+deJNjpIEK00V1p9zxYsDXB9a23bGaVRqJ2YriWaYE=;
+ b=e8jWTEKAVVZldFEQ7e1u6LlXLAd1sv2yL5zdFYqO6qBd+QCTiMQj0CuD
+ wkXRoKluDerrzRZzf4PSvJ2UnM3CUmH/4drPfGz9OOMV8uA97NWpCwkuA
+ vnHJq+jV1sh2nIVFkcDNc4/tJ5ASwcrGZWS1YAxzLzChdH8iW0AjQsWmF
+ 4sVx+/o/LK/ZzaUeaJNNvxvhVu3FBNTEcAjQTc9HWqloBa3kSEA2agyg1
+ oeM/mFFjWOS8kXZk3LXdmRGvTLFROcNRovexyV0+Q4IvDvOjAJybfWuVH
+ hzU8155vyxrul44cwyCFsHNb4iJOsB9LNY61MfmOLkWxmblI9cJVu0WBx g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="5521918"
+X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; 
+   d="scan'208";a="5521918"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jan 2024 00:30:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="905866973"
+X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; d="scan'208";a="905866973"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga004.jf.intel.com with ESMTP; 11 Jan 2024 00:30:08 -0800
+Date: Thu, 11 Jan 2024 16:43:05 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-References: <20240109232319.600102-1-iii@linux.ibm.com>
- <20240109232319.600102-3-iii@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240109232319.600102-3-iii@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Robert Hoo <robert.hu@linux.intel.com>,
+ Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v7 02/16] i386/cpu: Use APIC ID offset to encode cache
+ topo in CPUID[4]
+Message-ID: <ZZ+qGfykupOEFPA2@intel.com>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-3-zhao1.liu@linux.intel.com>
+ <f5202ebd-6bc8-44b1-b22b-f3a033e0f283@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f5202ebd-6bc8-44b1-b22b-f3a033e0f283@intel.com>
+Received-SPF: none client-ip=192.198.163.11;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
 X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,85 +88,190 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/01/2024 00.22, Ilya Leoshkevich wrote:
-> Add a small test to prevent regressions. Userspace runs in primary
-> mode, so LAE should always set the access register to 0.
+Hi Xiaoyao,
+
+On Wed, Jan 10, 2024 at 05:31:28PM +0800, Xiaoyao Li wrote:
+> Date: Wed, 10 Jan 2024 17:31:28 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH v7 02/16] i386/cpu: Use APIC ID offset to encode cache
+>  topo in CPUID[4]
 > 
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
->   tests/tcg/s390x/Makefile.target |  1 +
->   tests/tcg/s390x/lae.c           | 25 +++++++++++++++++++++++++
->   2 files changed, 26 insertions(+)
->   create mode 100644 tests/tcg/s390x/lae.c
+> On 1/8/2024 4:27 PM, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > Refer to the fixes of cache_info_passthrough ([1], [2]) and SDM, the
+> > CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26] should use the
+> > nearest power-of-2 integer.
+> > 
+> > The nearest power-of-2 integer can be calculated by pow2ceil() or by
+> > using APIC ID offset (like L3 topology using 1 << die_offset [3]).
+> > 
+> > But in fact, CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26]
+> > are associated with APIC ID. For example, in linux kernel, the field
+> > "num_threads_sharing" (Bits 25 - 14) is parsed with APIC ID.
 > 
-> diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-> index 0e670f3f8b9..30994dcf9c2 100644
-> --- a/tests/tcg/s390x/Makefile.target
-> +++ b/tests/tcg/s390x/Makefile.target
-> @@ -44,6 +44,7 @@ TESTS+=clgebr
->   TESTS+=clc
->   TESTS+=laalg
->   TESTS+=add-logical-with-carry
-> +TESTS+=lae
->   
->   cdsg: CFLAGS+=-pthread
->   cdsg: LDFLAGS+=-pthread
-> diff --git a/tests/tcg/s390x/lae.c b/tests/tcg/s390x/lae.c
-> new file mode 100644
-> index 00000000000..661e95f9978
-> --- /dev/null
-> +++ b/tests/tcg/s390x/lae.c
-> @@ -0,0 +1,25 @@
-> +/*
-> + * Test the LOAD ADDRESS EXTENDED instruction.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +#include <assert.h>
-> +#include <stdlib.h>
-> +
-> +int main(void)
-> +{
-> +    unsigned long long ar = -1, b2 = 100000, r, x2 = 500;
-> +    int tmp;
-> +
-> +    asm("ear %[tmp],%[r]\n"
-> +        "lae %[r],42(%[x2],%[b2])\n"
-> +        "ear %[ar],%[r]\n"
-> +        "sar %[r],%[tmp]"
-> +        : [tmp] "=&r" (tmp), [r] "=&r" (r), [ar] "+r" (ar)
-> +        : [b2] "r" (b2), [x2] "r" (x2)
-> +        : "memory");
-> +    assert(ar == 0xffffffff00000000ULL);
-> +    assert(r == 100542);
-> +
-> +    return EXIT_SUCCESS;
-> +}
+> And for
+> > another example, on Alder Lake P, the CPUID.04H:EAX[bits 31:26] is not
+> > matched with actual core numbers and it's calculated by:
+> > "(1 << (pkg_offset - core_offset)) - 1".
+> 
+> could you elaborate it more? what is the value of actual core numbers on
+> Alder lake P? and what is the pkg_offset and core_offset?
 
-I'm sorry, but it fails when building with Clang (version 17):
+For example, the following's the CPUID dump of an ADL-S machine:
 
-.../qemu/tests/tcg/s390x/lae.c:14:9: error: invalid operand for instruction
-    14 |     asm("ear %[tmp],%[r]\n"
-       |         ^
-<inline asm>:1:10: note: instantiated into assembly here
-     1 |         ear %r2,%r1
-       |                 ^
-.../qemu/tests/tcg/s390x/lae.c:16:10: error: invalid operand for instruction
-    16 |         "ear %[ar],%[r]\n"
-       |          ^
-<inline asm>:3:9: note: instantiated into assembly here
-     3 | ear %r0,%r1
-       |         ^
-.../qemu/tests/tcg/s390x/lae.c:17:10: error: invalid operand for instruction
-    17 |         "sar %[r],%[tmp]"
-       |          ^
-<inline asm>:4:5: note: instantiated into assembly here
-     4 | sar %r1,%r2
-       |     ^
-3 errors generated.
+CPUID.04H:
 
-Any suggestions how to fix it best?
+0x00000004 0x00: eax=0xfc004121 ebx=0x01c0003f ecx=0x0000003f edx=0x00000000
+0x00000004 0x01: eax=0xfc004122 ebx=0x01c0003f ecx=0x0000007f edx=0x00000000
+0x00000004 0x02: eax=0xfc01c143 ebx=0x03c0003f ecx=0x000007ff edx=0x00000000
+0x00000004 0x03: eax=0xfc1fc163 ebx=0x0240003f ecx=0x00009fff edx=0x00000004
+0x00000004 0x04: eax=0x00000000 ebx=0x00000000 ecx=0x00000000 edx=0x00000000
 
-  Thomas
+
+CPUID.1FH:
+
+0x0000001f 0x00: eax=0x00000001 ebx=0x00000001 ecx=0x00000100 edx=0x0000004c
+0x0000001f 0x01: eax=0x00000007 ebx=0x00000014 ecx=0x00000201 edx=0x0000004c
+0x0000001f 0x02: eax=0x00000000 ebx=0x00000000 ecx=0x00000002 edx=0x0000004c
+
+The CPUID.04H:EAX[bits 31:26] is 63.
+From CPUID.1FH.00H:EAX[bits 04:00], the core_offset is 1, and from
+CPUID.1FH.01H:EAX[bits 04:00], the pkg_offset is 7.
+
+Thus we can verify that the above equation as:
+
+1 << (0x7 - 0x1) - 1 = 63.
+
+"Maximum number of addressable IDs" refers to the maximum number of IDs
+that can be enumerated in the APIC ID's topology layout, which does not
+necessarily correspond to the actual number of topology domains.
+
+> 
+> > Therefore the offset of APIC ID should be preferred to calculate nearest
+> > power-of-2 integer for CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits
+> > 31:26]:
+> > 1. d/i cache is shared in a core, 1 << core_offset should be used
+> >     instand of "cs->nr_threads" in encode_cache_cpuid4() for
+> 
+> /s/instand/instead
+
+Thanks!
+
+> 
+> >     CPUID.04H.00H:EAX[bits 25:14] and CPUID.04H.01H:EAX[bits 25:14].
+> > 2. L2 cache is supposed to be shared in a core as for now, thereby
+> >     1 << core_offset should also be used instand of "cs->nr_threads" in
+> 
+> ditto
+
+Okay.
+
+> 
+> >     encode_cache_cpuid4() for CPUID.04H.02H:EAX[bits 25:14].
+> > 3. Similarly, the value for CPUID.04H:EAX[bits 31:26] should also be
+> >     calculated with the bit width between the Package and SMT levels in
+> >     the APIC ID (1 << (pkg_offset - core_offset) - 1).
+> > 
+> > In addition, use APIC ID offset to replace "pow2ceil()" for
+> > cache_info_passthrough case.
+> > 
+> > [1]: efb3934adf9e ("x86: cpu: make sure number of addressable IDs for processor cores meets the spec")
+> > [2]: d7caf13b5fcf ("x86: cpu: fixup number of addressable IDs for logical processors sharing cache")
+> > [3]: d65af288a84d ("i386: Update new x86_apicid parsing rules with die_offset support")
+> > 
+> > Fixes: 7e3482f82480 ("i386: Helpers to encode cache information consistently")
+> > Suggested-by: Robert Hoo <robert.hu@linux.intel.com>
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > Tested-by: Babu Moger <babu.moger@amd.com>
+> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> > ---
+> > Changes since v3:
+> >   * Fix compile warnings. (Babu)
+> >   * Fix spelling typo.
+> > 
+> > Changes since v1:
+> >   * Use APIC ID offset to replace "pow2ceil()" for cache_info_passthrough
+> >     case. (Yanan)
+> >   * Split the L1 cache fix into a separate patch.
+> >   * Rename the title of this patch (the original is "i386/cpu: Fix number
+> >     of addressable IDs in CPUID.04H").
+> > ---
+> >   target/i386/cpu.c | 30 +++++++++++++++++++++++-------
+> >   1 file changed, 23 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> > index 5a3678a789cf..c8d2a585723a 100644
+> > --- a/target/i386/cpu.c
+> > +++ b/target/i386/cpu.c
+> > @@ -6014,7 +6014,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+> >   {
+> >       X86CPU *cpu = env_archcpu(env);
+> >       CPUState *cs = env_cpu(env);
+> > -    uint32_t die_offset;
+> >       uint32_t limit;
+> >       uint32_t signature[3];
+> >       X86CPUTopoInfo topo_info;
+> > @@ -6098,39 +6097,56 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+> >                   int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
+> >                   int vcpus_per_socket = cs->nr_cores * cs->nr_threads;
+> >                   if (cs->nr_cores > 1) {
+> > +                    int addressable_cores_offset =
+> > +                                                apicid_pkg_offset(&topo_info) -
+> > +                                                apicid_core_offset(&topo_info);
+> > +
+> >                       *eax &= ~0xFC000000;
+> > -                    *eax |= (pow2ceil(cs->nr_cores) - 1) << 26;
+> > +                    *eax |= (1 << (addressable_cores_offset - 1)) << 26;
+> 
+> it should be ((1 << addressable_cores_offset) - 1) << 26
+
+Good catch! The helper wrapped in a subsequent patch masks the error here.
+
+> 
+> I think naming it addressable_cores_width is better than
+> addressable_cores_offset. It's not offset because offset means the bit
+> position from bit 0.
+
+I agree, "width" is better.
+
+> 
+> And we can get the width by another algorithm:
+> 
+> int addressable_cores_width = apicid_core_width(&topo_info) +
+> apicid_die_width(&topo_info);
+> *eax |= ((1 << addressable_cores_width) - 1)) << 26;
+
+This algorithm lacks flexibility because there will be more topology
+levels between package and core, such as the cluster being introduced...
+
+Using "addressable_cores_width" is clear enough.
+
+> 		
+> >                   }
+> >                   if (host_vcpus_per_cache > vcpus_per_socket) {
+> > +                    int pkg_offset = apicid_pkg_offset(&topo_info);
+> > +
+> >                       *eax &= ~0x3FFC000;
+> > -                    *eax |= (pow2ceil(vcpus_per_socket) - 1) << 14;
+> > +                    *eax |= (1 << (pkg_offset - 1)) << 14;
+> 
+> Ditto, ((1 << pkg_offset) - 1) << 14
+
+Thanks!
+
+> 
+> For this one, I think pow2ceil(vcpus_per_socket) is better. Because it's
+> intuitive that when host_vcpus_per_cache > vcpus_per_socket, we expose
+> vcpus_per_cache (configured by users) to VM.
+
+I tend to use a uniform calculation that is less confusing and easier to
+maintain. Since this field encodes "Maximum number of addressable IDs",
+OS can't get the exact number of CPUs/vCPUs sharing L3 from here, it can
+only know that L3 is shared at the package level.
+
+Thanks,
+Zhao
 
 
