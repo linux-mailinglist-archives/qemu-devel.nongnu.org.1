@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF8982AD16
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:13:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4BB82ACD7
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:07:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNssj-0001gF-T7; Thu, 11 Jan 2024 06:05:53 -0500
+	id 1rNssk-0001hJ-QC; Thu, 11 Jan 2024 06:05:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssE-0001OC-Ed
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:25 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1rNssH-0001OG-Nx
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:30 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssC-0004To-HV
+ id 1rNssD-0004U9-54
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:22 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40d5336986cso66500435e9.1
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3367601a301so4553504f8f.2
  for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1704971119; x=1705575919; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=J8usOgs71gAybFdal5YqRiowxIC5H4fgmIvlWyQXChc=;
- b=kpvpAiA1OQKhMZ4a3ow+BvfnCrLsBqbAhHLeHAgW4bw8O/3atAUw5C7vktnwW95/Fd
- cIvdz5RGTP3GkZQgaNgsOsUMy6iaBcLHgiGCvQe7P7FAlvXHXrmh94ZKjNEJCiEIKVVv
- QJqGdDlW5xtctFUhe812aHQib0yrU4uB9SJBAOBhcEMqqwx1ceLZ8x05Oj/O9N2HED63
- SVFXrpw8C+f8K5LrlLYAj688b/dGq0OsoD2wAvbY1qEsm1YnahZNidPUfK9ut/B0tv2H
- B7M4HK5X0zu0Q9KTGp+xFTULSkI6aB6xwUruMB3jickXAhf2ItxKsSAx3m/3BOOQNJt9
- 006w==
+ :reply-to; bh=SaqZ9xe22tumjx3dL0fsEpY2dA8696LTi7vPLEZxD+Q=;
+ b=IC/jNGUnDhwXTsFZFTw/3Pxbr/4H1zw2a7xiLQMJX3o2w94PvZqO2ELH5uuknLRUtR
+ b341ay4jND3Qu+43f6GpMPdTVqMIbv8XSz3UWZujUlBFZH3YwZXqvSi1g1y41OmyKhn0
+ IjPJ6FhfLeD0/x675oa0XqSyadO4zwwhm1fldnpEp2fLI0jRl5S6j+d926VwX29hBmW3
+ P4SiLu9OwH4R55t5XRLdfEiI9nW6fv7B0fcU1K1be/PCK2KLcT+F43JqVDSC1A8yQNlQ
+ MLQ695fwyZKDLyKVRA+0DKxzzotICv5SMKXztR3cB66wb/ne2ZHbOSbsk9CPG1BVTsUl
+ g9iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1704971119; x=1705575919;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J8usOgs71gAybFdal5YqRiowxIC5H4fgmIvlWyQXChc=;
- b=pOvMuvV8PSxR8094WPq882gXCFZpze3iqdcMaOTpQwSiBffL6z/gy52Kc3ut7xD21s
- E5MC1LZvLvegYrDVQvHYRJMVQZMc4rWgeMmOvCi+0BAPJYcupLe2G3vcFFmd+q1RsXo6
- 8TrkqdDeTolThrMaoZ8vMXs4GMhPmgzfMCdRf33RdLU9OO+OfCMuMadwwf65f9C28pn5
- 2ubQVrgUKpoXZG6p8QBLh/UG/65br0SgkYjL/BRTQ0dg/MbD0g0Kv/Aqiy/7O0oVSDEE
- tgrWDjtVKv1xfNg7N/iQz+AlPwID2SaD96ldyILNlVq1nmnVd1r2gBV2ioLcsSl545cQ
- qAtw==
-X-Gm-Message-State: AOJu0YzokDdYJBpPNrPb7eGOdgvmm6/7tUW38rGl3/E27643VbgJpKml
- JOsNGNR86mGymzmNvnzZGYIr6RwHgLBXhj2Xi08Z2Vaq61w=
-X-Google-Smtp-Source: AGHT+IEZFMZJ7DLCUYDKgI8vPK7IP05faPlhLAklipsVPZZ6bWtUzhrS01ii9BK/1JOc2hm2e3znAw==
-X-Received: by 2002:a05:600c:314f:b0:40d:94df:dac4 with SMTP id
- h15-20020a05600c314f00b0040d94dfdac4mr311971wmo.153.1704971119209; 
+ bh=SaqZ9xe22tumjx3dL0fsEpY2dA8696LTi7vPLEZxD+Q=;
+ b=KlQ3PfAR6vUKJigR+VY8J/0Z97wsnUytJ6iSaBVr5nwNYPZachGVDeIsNmyvU3QQOP
+ IV9UKd/CrgiCVPArgW612g+9ggaATw+4tlIrCFjP6ZD1QYo0CO7KCJNZnMO97zZDMCli
+ mW0MOYczxealpB1opbzSq7PNzeWeCB0mVVrGaaFcVd7FchrLxgUSi4USx9wH4/mm0xm2
+ ymi7lxv3iuvdQnDTSy7JQnK+b0SrG/yOMf3bhpTfwPZQiyMfxzLC7PNKMCs36zN64w4j
+ CLZfWI01gdbB5rFevR1jlZkmo1XBXKWWZCSdDbKnY9fsPvWSdiKq85w+/zYNQwRCw5H+
+ CCSg==
+X-Gm-Message-State: AOJu0YwOIM9scwEfTsehTh/C60pAeYl/Q0YYkKVYl9jP6MFHrGgsipoM
+ Fr2aFeVlZMYGII8ZkqlasPIvcNKX/FjmWy8zctYZpVttuj4=
+X-Google-Smtp-Source: AGHT+IHOUft2it1rm1avw7SaLDMsfMYUH6+2i24LWP4tIGjzyE+VJoM8CF+6TTF0mZrNuQGohLe3+A==
+X-Received: by 2002:a05:600c:158a:b0:40e:4e06:26b4 with SMTP id
+ r10-20020a05600c158a00b0040e4e0626b4mr211858wmf.109.1704971119737; 
  Thu, 11 Jan 2024 03:05:19 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.18
+ v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.19
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jan 2024 03:05:18 -0800 (PST)
+ Thu, 11 Jan 2024 03:05:19 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/41] target/arm: Handle HCR_EL2 accesses for FEAT_NV2 bits
-Date: Thu, 11 Jan 2024 11:04:52 +0000
-Message-Id: <20240111110505.1563291-29-peter.maydell@linaro.org>
+Subject: [PULL 29/41] target/arm: Implement VNCR_EL2 register
+Date: Thu, 11 Jan 2024 11:04:53 +0000
+Message-Id: <20240111110505.1563291-30-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 References: <20240111110505.1563291-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,47 +90,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FEAT_NV2 defines another new bit in HCR_EL2: NV2. When the
-feature is enabled, allow this bit to be written in HCR_EL2.
+For FEAT_NV2, a new system register VNCR_EL2 holds the base
+address of the memory which nested-guest system register
+accesses are redirected to. Implement this register.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Miguel Luis <miguel.luis@oracle.com>
 ---
- target/arm/cpu-features.h | 5 +++++
- target/arm/helper.c       | 3 +++
- 2 files changed, 8 insertions(+)
+ target/arm/cpu.h    |  3 +++
+ target/arm/helper.c | 26 ++++++++++++++++++++++++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index 3a43c328d9e..7a590c824cf 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -844,6 +844,11 @@ static inline bool isar_feature_aa64_nv(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64mmfr2, ID_AA64MMFR2, NV) != 0;
- }
- 
-+static inline bool isar_feature_aa64_nv2(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64mmfr2, ID_AA64MMFR2, NV) >= 2;
-+}
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index d7a10fb4b61..0e48a1366bd 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -547,6 +547,9 @@ typedef struct CPUArchState {
+         uint64_t gpccr_el3;
+         uint64_t gptbr_el3;
+         uint64_t mfar_el3;
 +
- static inline bool isar_feature_aa64_pmuv3p1(const ARMISARegisters *id)
- {
-     return FIELD_EX64(id->id_aa64dfr0, ID_AA64DFR0, PMUVER) >= 4 &&
++        /* NV2 register */
++        uint64_t vncr_el2;
+     } cp15;
+ 
+     struct {
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 24751e05b24..e3e56539594 100644
+index e3e56539594..53bd6c85990 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -5857,6 +5857,9 @@ static void do_hcr_write(CPUARMState *env, uint64_t value, uint64_t valid_mask)
-         if (cpu_isar_feature(aa64_nv, cpu)) {
-             valid_mask |= HCR_NV | HCR_NV1 | HCR_AT;
-         }
-+        if (cpu_isar_feature(aa64_nv2, cpu)) {
-+            valid_mask |= HCR_NV2;
-+        }
-     }
+@@ -8131,6 +8131,28 @@ static const ARMCPRegInfo fgt_reginfo[] = {
+       .access = PL2_RW, .accessfn = access_fgt,
+       .fieldoffset = offsetof(CPUARMState, cp15.fgt_exec[FGTREG_HFGITR]) },
+ };
++
++static void vncr_write(CPUARMState *env, const ARMCPRegInfo *ri,
++                       uint64_t value)
++{
++    /*
++     * Clear the RES0 bottom 12 bits; this means at runtime we can guarantee
++     * that VNCR_EL2 + offset is 64-bit aligned. We don't need to do anything
++     * about the RESS bits at the top -- we choose the "generate an EL2
++     * translation abort on use" CONSTRAINED UNPREDICTABLE option (i.e. let
++     * the ptw.c code detect the resulting invalid address).
++     */
++    env->cp15.vncr_el2 = value & ~0xfffULL;
++}
++
++static const ARMCPRegInfo nv2_reginfo[] = {
++    { .name = "VNCR_EL2", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 4, .crn = 2, .crm = 2, .opc2 = 0,
++      .access = PL2_RW,
++      .writefn = vncr_write,
++      .fieldoffset = offsetof(CPUARMState, cp15.vncr_el2) },
++};
++
+ #endif /* TARGET_AARCH64 */
  
-     if (cpu_isar_feature(any_evt, cpu)) {
+ static CPAccessResult access_predinv(CPUARMState *env, const ARMCPRegInfo *ri,
+@@ -9614,6 +9636,10 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+             define_arm_cp_regs(cpu, rme_mte_reginfo);
+         }
+     }
++
++    if (cpu_isar_feature(aa64_nv2, cpu)) {
++        define_arm_cp_regs(cpu, nv2_reginfo);
++    }
+ #endif
+ 
+     if (cpu_isar_feature(any_predinv, cpu)) {
 -- 
 2.34.1
 
