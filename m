@@ -2,92 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A2382AB9D
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 11:09:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6073882ABD0
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 11:20:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNrzU-0001QZ-Kc; Thu, 11 Jan 2024 05:08:48 -0500
+	id 1rNs99-0003wh-3x; Thu, 11 Jan 2024 05:18:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNrzB-0001Pv-30
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 05:08:37 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNrz9-0001K3-FZ
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 05:08:28 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40d87df95ddso53181805e9.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 02:08:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704967700; x=1705572500; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hhkXnq8B80M0ydMbTVSOkTWq3ohgOslq77oKCz4Ib2s=;
- b=rZ9tVUIpyyQNn+NRUuSFslGL9K0EJEnqwX03rtIDsodm6u8VO7KKB+aQOi911OCZGJ
- uI+09Y+IayKxV4Cd47Xu86rSRONH7rIRwXWVp1dsYV+bfbHj41mU6ReuQvG4teSB70Nx
- V1nyw006ECgNrNIYFcUwlM5nvoxXl1WKLRJGhJtmCZzve1G4SIrZZi4el99aj6+nbKbE
- 59WCR2d7vvpfST9PR3diytTCOjjFshm7IVV2Yh9XUa5eWBrGxFCJ3dXBosg61hG4sGSm
- 8aKTGgK5sFMhRe5VPOBsvF/YMyfxiobYmvcXe2RjmJCWlmykatsuFMaxA2PPtFB8/49K
- nItQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704967700; x=1705572500;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hhkXnq8B80M0ydMbTVSOkTWq3ohgOslq77oKCz4Ib2s=;
- b=a0kmfYFDNhNoTftp0xcsf6VRN9V4tnsj1fhN/64Yfxzv8M3nFiE82DYAvVQJyZnq2z
- G/PZGmHy6k4ReWclIxuoBlilGgp190Tk5eyT0Gbb2Zpq/zWkZ5Q6nwN/BV42T/3B/a3v
- nJyNH0cjgAPIG1dSYhrrcHEwsJ7IXP8xUglNr9nZ9pXFnfCo4PoO53bDAVU0kT5LV8Gz
- CWoaJVINwC/V/nV5WX43pS1vFw/ZtyHOS8mFGRnbPyuT0ujIawUg+USsDFZ93GFnHAYI
- Mb8Eu8QY30szHnUI6xnTW8tTpyvQbXncwUIiRcWPMQO7xB0PwB8HCh2mJnG9JHbG/FpJ
- akVw==
-X-Gm-Message-State: AOJu0YxztSytyS1XEq1ZXheTtzgTB/XU3RzpWOp/mM3euLxWkdk8vSIC
- CcZWA9Nf+Sj8X+eeGMhPL5Jiw31Ga+vyBw==
-X-Google-Smtp-Source: AGHT+IHEZQQ1nWh1etXsfTJ4jmcHGHfQnXiBL8IdJfiUhrP/YIP0O6bQXWT1aXU1ySP5+q8Bz43Epw==
-X-Received: by 2002:a05:600c:354c:b0:40d:514f:7305 with SMTP id
- i12-20020a05600c354c00b0040d514f7305mr152207wmq.300.1704967700604; 
- Thu, 11 Jan 2024 02:08:20 -0800 (PST)
-Received: from [192.168.207.175] (83.red-88-28-3.dynamicip.rima-tde.net.
- [88.28.3.83]) by smtp.gmail.com with ESMTPSA id
- f9-20020a05600c4e8900b0040e3960f46asm1306211wmq.14.2024.01.11.02.08.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 02:08:20 -0800 (PST)
-Message-ID: <585e091b-d75c-408c-bc19-72728ff45e6f@linaro.org>
-Date: Thu, 11 Jan 2024 11:08:15 +0100
+ (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
+ id 1rNs90-0003wN-Fa
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 05:18:40 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
+ id 1rNs8r-0006W4-PV
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 05:18:34 -0500
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40B9VjlP031632
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 10:18:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=4BHCbuxrZNrUyEN+keTjK+yWiuvQxZasgGe5U6IZeWA=;
+ b=leo/aeKm5N9o24g0z/Nr9i8ITc/F39Wu6lXMIOFcYwH/uCKO7worA6nRC+7UakhHI98d
+ foNmktdQEWI6y45ry/SNhiou4kJXy51C7TGa8FuB9/PWtNTzlARXg38bgL1f18brO2XH
+ Jvl2pEpia46dGWnOZSiebYgbKL7OK52LNEqHCVZ2ib+yZ+KxSD0hv3jR2NEuXAJxL/dH
+ gVZwBYKek64p3HzpqJWjus4isCOTBWfwUEETkJ1534y0sHhoDkyL3ttirm691O9hQwyj
+ z/TSdl/lK6ZGB7esobLxMjL4sTnJmi4s3q7JgIHpQZaaHNptSMoMmK9EaN3+ETdEk9/u IA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjdgh1ffc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 10:18:25 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40BA15Zi008455
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 10:18:24 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjdgh1ff0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Jan 2024 10:18:24 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40B9psW9027254; Thu, 11 Jan 2024 10:18:24 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkw2abn1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Jan 2024 10:18:23 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40BAILjg57934164
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 11 Jan 2024 10:18:21 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 01C6C2004E;
+ Thu, 11 Jan 2024 10:18:21 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BFFD42004B;
+ Thu, 11 Jan 2024 10:18:20 +0000 (GMT)
+Received: from [9.152.224.222] (unknown [9.152.224.222])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 11 Jan 2024 10:18:20 +0000 (GMT)
+Message-ID: <16605225-77ca-4086-9446-329805a1bf90@linux.ibm.com>
+Date: Thu, 11 Jan 2024 11:18:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/14] hw/arm: Prefer arm_feature(AARCH64) over
- object_property_find(aarch64)
+Subject: Re: [PULL 2/7] s390x: do a subsystem reset before the unprotect on
+ reboot
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Michael Mueller <mimu@linux.ibm.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Janosch Frank <frankja@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>
+References: <20230912114112.296428-1-thuth@redhat.com>
+ <20230912114112.296428-3-thuth@redhat.com>
+ <6aec238b-b983-4b24-9bd9-a90f840d060c@redhat.com>
+ <287dbe42-5a10-4667-b3fa-111270242b1d@linux.ibm.com>
+ <e22ebb27-26d0-4e1d-86ab-ab9feb44d645@redhat.com>
 Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Marc Zyngier <maz@kernel.org>,
- Andrew Jones <ajones@ventanamicro.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-arm@nongnu.org,
- Igor Mitsyanko <i.mitsyanko@gmail.com>, Radoslaw Biernacki
- <rad@semihalf.com>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Rob Herring <robh@kernel.org>,
- Alistair Francis <alistair@alistair23.me>
-References: <20240110195329.3995-1-philmd@linaro.org>
- <20240110195329.3995-14-philmd@linaro.org>
- <ff57e1f5-ea78-459e-b51c-48040483bdea@linaro.org>
- <865y009p6b.wl-maz@kernel.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <865y009p6b.wl-maz@kernel.org>
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <e22ebb27-26d0-4e1d-86ab-ab9feb44d645@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: cu5_6SzXMlY9FFhtkJNY7Jqb5cw2SBl8
+X-Proofpoint-GUID: 3qLz3EK6ez-Eaddyxtqdy22iq7jD9MKG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-11_05,2024-01-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0
+ adultscore=0 bulkscore=0 clxscore=1011 priorityscore=1501 suspectscore=0
+ lowpriorityscore=0 mlxscore=0 spamscore=0 mlxlogscore=391 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401110083
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=borntraeger@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,66 +124,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/1/24 10:47, Marc Zyngier wrote:
-> On Thu, 11 Jan 2024 09:39:18 +0000,
-> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> On 10/1/24 20:53, Philippe Mathieu-Daudé wrote:
->>> The "aarch64" property is added to ARMCPU when the
->>> ARM_FEATURE_AARCH64 feature is available. Rather than
->>> checking whether the QOM property is present, directly
->>> check the feature.
->>>
->>> Suggested-by: Markus Armbruster <armbru@redhat.com>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>    hw/arm/virt.c | 2 +-
->>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
->>> index 49ed5309ff..a43e87874c 100644
->>> --- a/hw/arm/virt.c
->>> +++ b/hw/arm/virt.c
->>> @@ -2140,7 +2140,7 @@ static void machvirt_init(MachineState *machine)
->>>            numa_cpu_pre_plug(&possible_cpus->cpus[cs->cpu_index], DEVICE(cpuobj),
->>>                              &error_fatal);
->>>    -        aarch64 &= object_property_get_bool(cpuobj, "aarch64",
->>> NULL);
->>> +        aarch64 &= arm_feature(cpu_env(cs), ARM_FEATURE_AARCH64);
->>
->> So after this patch there are no more use of the ARMCPU "aarch64"
->> property from code. Still it is exposed via the qom-tree. Thus it
->> can be set (see aarch64_cpu_set_aarch64). I could understand one
->> flip this feature to create a custom CPU (as a big-LITTLE setup
->> as Marc mentioned on IRC), but I don't understand what is the
->> expected behavior when this is flipped at runtime. Can that
->> happen in real hardware (how could the guest react to that...)?
+
+
+Am 11.01.24 um 10:43 schrieb Cédric Le Goater:
+[...]
 > 
-> I don't think it makes any sense to do that while a guest is running
-> (and no HW I'm aware of would do this). However, it all depends what
-> you consider "run time". You could imagine creating a skeletal VM with
-> all features, and then apply a bunch of changes before the guest
-> actually runs.
+> 
+> On a side note, I am also seeing :
 
-Thanks, this makes sense and confirms my guess.
+Michael?
 
-> I don't know enough about the qom-tree and dynamic manipulation of
-> these properties though, and I'm likely to be wrong about the expected
-> usage model.
-
-Kevin, Markus, this seems a good example of QOM "config" property that
-is RW *before* Realize and should become RO *after* it.
-
-QDev properties has PropertyInfo::realized_set_allowed set to false by
-default, but here this property is added at the QOM (lower) layer, so
-there is no such check IIUC.
-
-Should "aarch64" become a static QDev property instead (registered via
-device_class_set_props -> qdev_class_add_property)?
-
-This just an analyzed example, unfortunately there are many more...
-
-Thanks,
-
-Phil.
+> 
+> [   73.989688] ------------[ cut here ]------------
+> [   73.989696] unexpected non zero alert.mask 0x20
+> [   73.989748] WARNING: CPU: 9 PID: 4503 at arch/s390/kvm/interrupt.c:3214 kvm_s390_gisa_destroy+0xd4/0xe8 [kvm]
+> [   73.989791] Modules linked in: vfio_pci vfio_pci_core irqbypass vhost_net vhost vhost_iotlb tap tun xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4 nft_compat nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables nfnetlink 8021q garp mrp rfkill sunrpc ext4 mbcache jbd2 vfio_ap zcrypt_cex4 vfio_ccw mdev vfio_iommu_type1 vfio drm fuse i2c_core drm_panel_orientation_quirks xfs libcrc32c dm_service_time mlx5_core sd_mod t10_pi ghash_s390 sg prng des_s390 libdes sha3_512_s390 sha3_256_s390 mlxfw tls scm_block psample eadm_sch qeth_l2 bridge stp llc dasd_eckd_mod zfcp qeth dasd_mod scsi_transport_fc ccwgroup qdio dm_multipath dm_mirror dm_region_hash dm_log dm_mod pkey zcrypt kvm aes_s390
+> [   73.989825] CPU: 9 PID: 4503 Comm: worker Kdump: loaded Not tainted 6.7.0-clg-dirty #52
+> [   73.989827] Hardware name: IBM 3931 LA1 400 (LPAR)
+> [   73.989829] Krnl PSW : 0704c00180000000 000003ff7fcd2198 (kvm_s390_gisa_destroy+0xd8/0xe8 [kvm])
+> [   73.989845]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+> [   73.989847] Krnl GPRS: c0000000fffeffff 0000000700000027 0000000000000023 00000007df4249c8
+> [   73.989849]            000003800649b858 000003800649b850 00000007fcb9db00 0000000000000000
+> [   73.989851]            000000008ebae8c8 0000000083a8c4f0 0000000000b69900 000000008ebac000
+> [   73.989853]            000003ff903aef68 000003800649bd98 000003ff7fcd2194 000003800649b9f8
+> [   73.989859] Krnl Code: 000003ff7fcd2188: c02000024f88    larl    %r2,000003ff7fd1c098
+>                            000003ff7fcd218e: c0e5fffea360    brasl    %r14,000003ff7fca684e
+>                           #000003ff7fcd2194: af000000        mc    0,0
+>                           >000003ff7fcd2198: e310b7680204    lg    %r1,10088(%r11)
+>                            000003ff7fcd219e: a7f4ffae        brc    15,000003ff7fcd20fa
+>                            000003ff7fcd21a2: 0707        bcr    0,%r7
+>                            000003ff7fcd21a4: 0707        bcr    0,%r7
+>                            000003ff7fcd21a6: 0707        bcr    0,%r7
+> [   73.989929] Call Trace:
+> [   73.989931]  [<000003ff7fcd2198>] kvm_s390_gisa_destroy+0xd8/0xe8 [kvm]
+> [   73.989946] ([<000003ff7fcd2194>] kvm_s390_gisa_destroy+0xd4/0xe8 [kvm])
+> [   73.989960]  [<000003ff7fcc1578>] kvm_arch_destroy_vm+0x50/0x118 [kvm]
+> [   73.989974]  [<000003ff7fcb00a2>] kvm_destroy_vm+0x15a/0x260 [kvm]
+> [   73.989985]  [<000003ff7fcb021e>] kvm_vm_release+0x36/0x48 [kvm]
+> [   73.989996]  [<00000007de4f830c>] __fput+0x94/0x2d0
+> [   73.990009]  [<00000007de20d838>] task_work_run+0x88/0xe8
+> [   73.990013]  [<00000007de1e75e0>] do_exit+0x2e0/0x4e0
+> [   73.990016]  [<00000007de1e79c0>] do_group_exit+0x40/0xb8
+> [   73.990017]  [<00000007de1f96e8>] send_sig_info+0x0/0xa8
+> [   73.990021]  [<00000007de194b26>] arch_do_signal_or_restart+0x56/0x318
+> [   73.990025]  [<00000007de28bf12>] exit_to_user_mode_prepare+0x10a/0x1a0
+> [   73.990028]  [<00000007deb607d2>] __do_syscall+0x152/0x1f8
+> [   73.990032]  [<00000007deb70ac8>] system_call+0x70/0x98
+> [   73.990036] Last Breaking-Event-Address:
+> [   73.990037]  [<00000007de1e0c58>] __warn_printk+0x78/0xe8
+> 
+> 
 
