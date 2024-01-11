@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33F182AD0E
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:12:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BFC182ACDE
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:07:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNssa-0001Rz-V2; Thu, 11 Jan 2024 06:05:45 -0500
+	id 1rNssU-0001Ri-PP; Thu, 11 Jan 2024 06:05:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssA-0001Mc-5J
+ id 1rNssB-0001Ms-5V
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:19 -0500
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss8-0004RB-7H
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:17 -0500
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2cd5c55d6b8so44181831fa.3
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:15 -0800 (PST)
+ id 1rNss8-0004RI-Kf
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:18 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40e490c2115so24158575e9.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704971114; x=1705575914; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704971115; x=1705575915; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Ht2SfbwBAKAnjagPGJMRAPfEfW3fn0agSes/TIkhhrw=;
- b=HWfkWD4mfsJUYpz6KUZkuVHWtrWVKB9lzW68dUFhWMsjOvtwmf6UZg4iknN7LRZsNL
- NUtJCFYmq0YZqbYBlTmu11ognZV5JVw+AulQcEZtUQOTOpL1LG72o5k2EyjMrUxUy198
- S1KDfdrHFx42up5Ifh72gSGalye7DBlhqJ+Jx/XJHVUhMisLI3EoJBd95nzvfV4QpUXN
- 3X+4nlJZV3JG+HLkjMKUnHjmyZMbSZBLhN4peZi+JL3CYhx4qMiK2WhGY5PJmnG9hB92
- d99cUKzJoD8jBkSvmUd/l/ngXIcY+TWHLxmdTeaCg8kb2B4JTP4jEGDGjdCLsMxbii3Y
- BMvg==
+ :reply-to; bh=6RsxSjIcUD58WUOvXsMPtdbR5ZpZEnA1hGh8Q+e0BqA=;
+ b=QL+xBxFVlqJr/5OX74AnruaCNI6/RnFHREfzzwQQhhaQVcmmtipG5vjdX16bZnBw8x
+ 8BTFW4PSFcZGBtk+afvRhS6+ktRzjBTLhUOo/zN/f3cvg3rFAZQwZ3YFkeWTos4Oln16
+ t0kg2zTq6yn/+QY3zUBWNicuy0NARpJoknNBay6c2mSiGAFX3STNMt2hRZ50z6rkSqfN
+ I7dliTONOJ5vJppwtx31lSQ2eGh4fpx9mSGC/4g9AMFmtUnsqFGLk9InUObb9b6SlX9g
+ 93qpbPIq7fgjapB+LHVQ4HGGbv3wnmMY7Bcb8V6k27cm91MzALjnDyVMemRWJVQUxRIw
+ nWbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704971114; x=1705575914;
+ d=1e100.net; s=20230601; t=1704971115; x=1705575915;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ht2SfbwBAKAnjagPGJMRAPfEfW3fn0agSes/TIkhhrw=;
- b=ljftqOFM7bFrmnbUFm4pCeDHRhHFTx3hfzzXQLsv42MlEJhbUgc1Nz19a5SyzMjnvX
- bpnKQLO8L6vdu8ReRO2nLF3MYz6XiIIdZCAW+Bw0/I7g25zpjUGnxwA6V/HGYNRMI25r
- Et3A56Ypz5+8tnc7XI7FPrKk/Awz8P29/ulG3d4UFtT9w+RzhP47xrde3oTVl3rmg5pO
- yNr+2HpAwhv5mSHID2LIaA6RNjYJCxZiwg6A8DxmsE5cAi4Qn4ZQ8SKmxEeZZCDvAhOw
- A8fmrh9dcuC01FgeRoDw910wpru/dQygmsJUe1FQWobaJWdR/cA1Plb7mnKY7gwV6SuL
- ynPQ==
-X-Gm-Message-State: AOJu0YzkGuId86u/amd29i9AdGXUcFAs6yTP70Z1eCow7vTv4sA4WiT1
- wFT27u73JeNjzarx/cGDzVP0rpINd8BTlr7ctETYIuqD/c4=
-X-Google-Smtp-Source: AGHT+IHja9/ptcLModQXlPT0+ZYdJ/ZP0AEnzq6buFaH19vyX5RtEavC7/8/OLABGZ+WanvljMkhwA==
-X-Received: by 2002:a05:651c:317:b0:2cc:72e9:520 with SMTP id
- a23-20020a05651c031700b002cc72e90520mr189311ljp.44.1704971114574; 
+ bh=6RsxSjIcUD58WUOvXsMPtdbR5ZpZEnA1hGh8Q+e0BqA=;
+ b=AxWkub4UisVF/PtN5Iy9Hpn4qKUuMGJqB6BB/iQ9rtWRdS0jZwgmqAZcg1yLMAnP7S
+ SPZvp4g0OwY7jF4Y5rqSdO4hPyidtpWh0s5hE4oGzJ/fOupWVvU1HHanUSVKOjs89Wik
+ keidghdHL3sRK4v1+nXB4sHv5tb+LUyPGy1mpccuPVaicd+rRKejH+mTVEZ5OXg+6TQq
+ Hkxw8oMHSY6VdZGItQM+HWFeNR9U/J5zE2e06iIMQ6W07CzmjS/9unxg4Eyd+p0p+0gG
+ XHMRSXNT4hKLV9+se9AQ18AhAATjkbp8B3QgB5TbW2y5Eu9JsN9siTGpqsbmkK2Vqrs0
+ txUQ==
+X-Gm-Message-State: AOJu0YxWN1yEox30tdy0WnfHmXUNIANx6HMB98XIQ9RDudmSHBz1QT6K
+ xuFgeh00HNr06WXwHcl6+zOZdeXgDGU7bT4h4eSe9HF/SW4=
+X-Google-Smtp-Source: AGHT+IG79IACIsPFIwnWABakgWy4Tl67Vi06UXHoKQO/RCkYFjK31aIOTHYh5XLayCb9axiGTbkKxQ==
+X-Received: by 2002:a05:600c:4f12:b0:40d:8850:a988 with SMTP id
+ l18-20020a05600c4f1200b0040d8850a988mr386238wmq.5.1704971114990; 
  Thu, 11 Jan 2024 03:05:14 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,17 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 11 Jan 2024 03:05:14 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 18/41] target/arm: Move FPU/SVE/SME access checks up above
- ARM_CP_SPECIAL_MASK check
-Date: Thu, 11 Jan 2024 11:04:42 +0000
-Message-Id: <20240111110505.1563291-19-peter.maydell@linaro.org>
+Subject: [PULL 19/41] target/arm: Trap sysreg accesses for FEAT_NV
+Date: Thu, 11 Jan 2024 11:04:43 +0000
+Message-Id: <20240111110505.1563291-20-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 References: <20240111110505.1563291-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,64 +90,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In handle_sys() we don't do the check for whether the register is
-marked as needing an FPU/SVE/SME access check until after we've
-handled the special cases covered by ARM_CP_SPECIAL_MASK.  This is
-conceptually the wrong way around, because if for example we happen
-to implement an FPU-access-checked register as ARM_CP_NOP, we should
-do the access check first.
+For FEAT_NV, accesses to system registers and instructions from EL1
+which would normally UNDEF there but which work in EL2 need to
+instead be trapped to EL2. Detect this both for "we know this will
+UNDEF at translate time" and "we found this UNDEFs at runtime", and
+make the affected registers trap to EL2 instead.
 
-Move the access checks up so they are with all the other access
-checks, not sandwiched between the special-case read/write handling
-and the normal-case read/write handling. This doesn't change
-behaviour at the moment, because we happen not to define any
-cpregs with both ARM_CPU_{FPU,SVE,SME} and one of the cases
-dealt with by ARM_CP_SPECIAL_MASK.
+The Arm ARM defines the set of registers that should trap in terms
+of their names; for our implementation this would be both awkward
+and inefficent as a test, so we instead trap based on the opc1
+field of the sysreg. The regularity of the architectural choice
+of encodings for sysregs means that in practice this captures
+exactly the correct set of registers.
 
-Moving this code also means we have the correct place to put the
-FEAT_NV/FEAT_NV2 access handling, which should come after the access
-checks and before we try to do any read/write action.
+Regardless of how we try to define the registers this trapping
+applies to, there's going to be a certain possibility of breakage
+if new architectural features introduce new registers that don't
+follow the current rules (FEAT_MEC is one example already visible
+in the released sysreg XML, though not yet in the Arm ARM). This
+approach seems to me to be straightforward and likely to require
+a minimum of manual overrides.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Miguel Luis <miguel.luis@oracle.com>
 ---
- target/arm/tcg/translate-a64.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ target/arm/cpregs.h            | 34 +++++++++++++++++++++++
+ target/arm/cpu.h               |  1 +
+ target/arm/tcg/translate.h     |  2 ++
+ target/arm/tcg/hflags.c        |  1 +
+ target/arm/tcg/translate-a64.c | 49 +++++++++++++++++++++++++++-------
+ 5 files changed, 77 insertions(+), 10 deletions(-)
 
+diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
+index e748d184cb6..3c5f1b48879 100644
+--- a/target/arm/cpregs.h
++++ b/target/arm/cpregs.h
+@@ -1080,4 +1080,38 @@ void define_cortex_a72_a57_a53_cp_reginfo(ARMCPU *cpu);
+ 
+ CPAccessResult access_tvm_trvm(CPUARMState *, const ARMCPRegInfo *, bool);
+ 
++/**
++ * arm_cpreg_trap_in_nv: Return true if cpreg traps in nested virtualization
++ *
++ * Return true if this cpreg is one which should be trapped to EL2 if
++ * it is executed at EL1 when nested virtualization is enabled via HCR_EL2.NV.
++ */
++static inline bool arm_cpreg_traps_in_nv(const ARMCPRegInfo *ri)
++{
++    /*
++     * The Arm ARM defines the registers to be trapped in terms of
++     * their names (I_TZTZL). However the underlying principle is "if
++     * it would UNDEF at EL1 but work at EL2 then it should trap", and
++     * the way the encoding of sysregs and system instructions is done
++     * means that the right set of registers is exactly those where
++     * the opc1 field is 4 or 5. (You can see this also in the assert
++     * we do that the opc1 field and the permissions mask line up in
++     * define_one_arm_cp_reg_with_opaque().)
++     * Checking the opc1 field is easier for us and avoids the problem
++     * that we do not consistently use the right architectural names
++     * for all sysregs, since we treat the name field as largely for debug.
++     *
++     * However we do this check, it is going to be at least potentially
++     * fragile to future new sysregs, but this seems the least likely
++     * to break.
++     *
++     * In particular, note that the released sysreg XML defines that
++     * the FEAT_MEC sysregs and instructions do not follow this FEAT_NV
++     * trapping rule, so we will need to add an ARM_CP_* flag to indicate
++     * "register does not trap on NV" to handle those if/when we implement
++     * FEAT_MEC.
++     */
++    return ri->opc1 == 4 || ri->opc1 == 5;
++}
++
+ #endif /* TARGET_ARM_CPREGS_H */
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 6dd0f642581..d7a10fb4b61 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -3235,6 +3235,7 @@ FIELD(TBFLAG_A64, SME_TRAP_NONSTREAMING, 28, 1)
+ FIELD(TBFLAG_A64, TRAP_ERET, 29, 1)
+ FIELD(TBFLAG_A64, NAA, 30, 1)
+ FIELD(TBFLAG_A64, ATA0, 31, 1)
++FIELD(TBFLAG_A64, NV, 32, 1)
+ 
+ /*
+  * Helpers for using the above. Note that only the A64 accessors use
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 8c84377003c..63e075bce3a 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -144,6 +144,8 @@ typedef struct DisasContext {
+     bool trap_eret;
+     /* True if FEAT_LSE2 SCTLR_ELx.nAA is set */
+     bool naa;
++    /* True if FEAT_NV HCR_EL2.NV is enabled */
++    bool nv;
+     /*
+      * >= 0, a copy of PSTATE.BTYPE, which will be 0 without v8.5-BTI.
+      *  < 0, set by the current instruction.
+diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
+index 560fb7964ab..f33c0a12741 100644
+--- a/target/arm/tcg/hflags.c
++++ b/target/arm/tcg/hflags.c
+@@ -299,6 +299,7 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
+      */
+     if (el == 1 && (hcr & HCR_NV)) {
+         DP_TBFLAG_A64(flags, TRAP_ERET, 1);
++        DP_TBFLAG_A64(flags, NV, 1);
+     }
+ 
+     if (cpu_isar_feature(aa64_mte, env_archcpu(env))) {
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 0f30e71f9bd..5975fc47930 100644
+index 5975fc47930..f5377dbaf2d 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -2190,6 +2190,14 @@ static void handle_sys(DisasContext *s, bool isread,
+@@ -2132,16 +2132,17 @@ static void handle_sys(DisasContext *s, bool isread,
+                                       crn, crm, op0, op1, op2);
+     const ARMCPRegInfo *ri = get_arm_cp_reginfo(s->cp_regs, key);
+     bool need_exit_tb = false;
++    bool nv_trap_to_el2 = false;
++    bool skip_fp_access_checks = false;
+     TCGv_ptr tcg_ri = NULL;
+     TCGv_i64 tcg_rt;
+-    uint32_t syndrome;
++    uint32_t syndrome = syn_aa64_sysregtrap(op0, op1, op2, crn, crm, rt, isread);
+ 
+     if (crn == 11 || crn == 15) {
+         /*
+          * Check for TIDCP trap, which must take precedence over
+          * the UNDEF for "no such register" etc.
+          */
+-        syndrome = syn_aa64_sysregtrap(op0, op1, op2, crn, crm, rt, isread);
+         switch (s->current_el) {
+         case 0:
+             if (dc_isar_feature(aa64_tidcp1, s)) {
+@@ -2167,15 +2168,35 @@ static void handle_sys(DisasContext *s, bool isread,
+ 
+     /* Check access permissions */
+     if (!cp_access_ok(s->current_el, ri, isread)) {
+-        gen_sysreg_undef(s, isread, op0, op1, op2, crn, crm, rt);
+-        return;
++        /*
++         * FEAT_NV/NV2 handling does not do the usual FP access checks
++         * for registers only accessible at EL2 (though it *does* do them
++         * for registers accessible at EL1).
++         */
++        skip_fp_access_checks = true;
++        if (s->nv && arm_cpreg_traps_in_nv(ri)) {
++            /*
++             * This register / instruction exists and is an EL2 register, so
++             * we must trap to EL2 if accessed in nested virtualization EL1
++             * instead of UNDEFing. We'll do that after the usual access checks.
++             * (This makes a difference only for a couple of registers like
++             * VSTTBR_EL2 where the "UNDEF if NonSecure" should take priority
++             * over the trap-to-EL2. Most trapped-by-FEAT_NV registers have
++             * an accessfn which does nothing when called from EL1, because
++             * the trap-to-EL3 controls which would apply to that register
++             * at EL2 don't take priority over the FEAT_NV trap-to-EL2.)
++             */
++            nv_trap_to_el2 = true;
++        } else {
++            gen_sysreg_undef(s, isread, op0, op1, op2, crn, crm, rt);
++            return;
++        }
+     }
+ 
+     if (ri->accessfn || (ri->fgt && s->fgt_active)) {
+         /* Emit code to perform further access permissions checks at
+          * runtime; this may result in an exception.
+          */
+-        syndrome = syn_aa64_sysregtrap(op0, op1, op2, crn, crm, rt, isread);
+         gen_a64_update_pc(s, 0);
+         tcg_ri = tcg_temp_new_ptr();
+         gen_helper_access_check_cp_reg(tcg_ri, tcg_env,
+@@ -2190,11 +2211,18 @@ static void handle_sys(DisasContext *s, bool isread,
          gen_a64_update_pc(s, 0);
      }
  
-+    if ((ri->type & ARM_CP_FPU) && !fp_access_check_only(s)) {
-+        return;
-+    } else if ((ri->type & ARM_CP_SVE) && !sve_access_check(s)) {
-+        return;
-+    } else if ((ri->type & ARM_CP_SME) && !sme_access_check(s)) {
-+        return;
-+    }
-+
-     /* Handle special cases first */
-     switch (ri->type & ARM_CP_SPECIAL_MASK) {
-     case 0:
-@@ -2268,13 +2276,6 @@ static void handle_sys(DisasContext *s, bool isread,
-     default:
-         g_assert_not_reached();
-     }
 -    if ((ri->type & ARM_CP_FPU) && !fp_access_check_only(s)) {
 -        return;
 -    } else if ((ri->type & ARM_CP_SVE) && !sve_access_check(s)) {
 -        return;
 -    } else if ((ri->type & ARM_CP_SME) && !sme_access_check(s)) {
--        return;
--    }
++    if (!skip_fp_access_checks) {
++        if ((ri->type & ARM_CP_FPU) && !fp_access_check_only(s)) {
++            return;
++        } else if ((ri->type & ARM_CP_SVE) && !sve_access_check(s)) {
++            return;
++        } else if ((ri->type & ARM_CP_SME) && !sme_access_check(s)) {
++            return;
++        }
++    }
++
++    if (nv_trap_to_el2) {
++        gen_exception_insn_el(s, 0, EXCP_UDEF, syndrome, 2);
+         return;
+     }
  
-     if (ri->type & ARM_CP_IO) {
-         /* I/O operations must end the TB here (whether read or write) */
+@@ -13998,6 +14026,7 @@ static void aarch64_tr_init_disas_context(DisasContextBase *dcbase,
+     dc->pstate_za = EX_TBFLAG_A64(tb_flags, PSTATE_ZA);
+     dc->sme_trap_nonstreaming = EX_TBFLAG_A64(tb_flags, SME_TRAP_NONSTREAMING);
+     dc->naa = EX_TBFLAG_A64(tb_flags, NAA);
++    dc->nv = EX_TBFLAG_A64(tb_flags, NV);
+     dc->vec_len = 0;
+     dc->vec_stride = 0;
+     dc->cp_regs = arm_cpu->cp_regs;
 -- 
 2.34.1
 
