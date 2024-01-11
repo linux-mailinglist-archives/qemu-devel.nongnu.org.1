@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17C982AD04
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:11:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A68EF82ACF4
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:09:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNssj-0001fx-IZ; Thu, 11 Jan 2024 06:05:53 -0500
+	id 1rNssi-0001c8-RT; Thu, 11 Jan 2024 06:05:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss6-0001Ku-V1
+ id 1rNss6-0001Kt-UW
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:15 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss4-0004P0-IE
+ id 1rNss5-0004PC-2H
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:14 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3376555b756so3010278f8f.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:11 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3366e78d872so5439888f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704971110; x=1705575910; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704971111; x=1705575911; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=yscuAN2+W6F+E5GdpmQyLDg77dRJm7PXwcNzo7tUEdc=;
- b=PGa+d2ENAu+hfpA/yLS4+K6lpMvx491mlQ0r22T64WeQdY8apOzbrGKDg3nImZpWru
- h24mbNXspVkRflkTLRala0NUGV0N49CDhT/KBUw67tbxolu2iQVRjwU2IHkhOgfawUgy
- iFDH0CPAqY732B5Azvom9/0+DECcvHBI82aSZYbpx8IUkc8Xv2y6HlAg4ysO8Mz24+M2
- wnERQAZVo3nf5qNKKfY2tpa0j9oMNmBSqBwzapjou/G0Ik2xv44XmfW/Xbdm3aCcLlBz
- BbglE7/Qmln5KnnHkbs3jn4E5V171R9AVYvZCIWXpNdzgLl3bXT4M4PRNlBR9JAr3iXb
- ruRg==
+ :reply-to; bh=oeCuiQBz7GI2Tnh0N3wKJtjrrHPQdjyFY69+nM/wilI=;
+ b=xYUDu7ttRpqKdcq3zGrKmP3Uno/mykpbIc3M67Bwig0pquz6wgR/w9VX/XE5s9XGBQ
+ 3YaDoM2Yvuz0U3hygb5g7NVQIkD0FUB9mc5NFesVvwaObrn++mEJCrx/EJCo+6O55GHb
+ VjZAt+JSZuihNHw+EfI8kztMpOhJgDX4dBQysBkVPTkGDFohbmzDmsbZnNy/TDMvBm8b
+ is28vHsuJRVtu75nREjl5gQugHaUKOzwqiiGp2Ve6O5+4qv9jz2DWTHLpzF4q+uJHFux
+ 1+iYHaRz5C9NAU8n3COXcYDQ5iKuKDwWjzrXbJUwGl00y+AuvTBIO9cYbyjU7gFGmLcO
+ l2mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704971110; x=1705575910;
+ d=1e100.net; s=20230601; t=1704971111; x=1705575911;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yscuAN2+W6F+E5GdpmQyLDg77dRJm7PXwcNzo7tUEdc=;
- b=JSm7lbed8mnwABULrgcbLI2VsEwonrnQqhTi8gLzgQhzqfEjcI31iYYuP03PzYOQqj
- dDq15UP0KCQhKbHtwBvMiDUUixXI4kN4PkZ705Uvjic4Uk1MPgV+RKzwhXpxDAjXOjIO
- Dz2Fl8GiSFB4uqd+3U3hCiDjfoT/+sI5VO2KK93D2bGK/gZ8UgcjkwP+vfnMMvQvoWwb
- EDWX4Rr+nmHSN6tE5ibApMfYjbA9peuUOSGf1XZXr3MAoNtW9LTmu/jEZ1Rsdrz7E2bH
- LNvxKCRoKpIYGOMynqP6tQNl3N7qpnBjk4u1p+hgVXnyjSsILiV5LEJCxveItnAKWPUy
- dKhg==
-X-Gm-Message-State: AOJu0YwMGigxt94wHBPkCXLVz26yT5fqmnDWcixl1ew6kJfrMb76atDU
- ThXzntlsTIhB2acba1W4TB/z9cBVstAb8pF97ccLKvxF5mU=
-X-Google-Smtp-Source: AGHT+IEzeVr7AsJQFCTYxbAjWqPQybHomtJI7ETWz/juZox6lFz3CGmo3jIptZo/x+RG7X2DJoVqpQ==
-X-Received: by 2002:adf:a183:0:b0:336:7608:d0f4 with SMTP id
- u3-20020adfa183000000b003367608d0f4mr421626wru.17.1704971110593; 
- Thu, 11 Jan 2024 03:05:10 -0800 (PST)
+ bh=oeCuiQBz7GI2Tnh0N3wKJtjrrHPQdjyFY69+nM/wilI=;
+ b=Adx8WIh7MF+6hvGPPQqTDKp+4S7GbDSX8tn4+FD7sDLwJ63bpWklxPz+gQbQnIs1E7
+ G4widuNj/gjc2Q2KOrBNdnN69QhUX0rXls5aDI81KYw6Nv3lHYwM5nVbfZPAjJU0brW+
+ eEIHTcExfeaZP5J3RrRvfG3GzPfcfOaSnPEF2CaDTytuKKbkmBx+/9z0iv7zkWC1vdwI
+ obDgwlnnqXen7u/fMlzv7KoZjiOgC+B3b7sS41A6/e1m7YwWJFrY2DtRV6vPuHtOf32Z
+ m+TgdwatdY8CpcnVtrt/bHO32DfUbMAZxcG1PlXnW8vQDd3hVH6yUoUxPhU/94OMOqfW
+ qPLA==
+X-Gm-Message-State: AOJu0YzOW+HYPVHwgGVpOJnWMSDAQzdDNBvXY7bJknaH+J2Z2yadY1G6
+ qggM+KKBgiDVeb9WtWXBSXyyO8eg0FzEsTZbbfuMpsJxiD4=
+X-Google-Smtp-Source: AGHT+IHl/SsxfsJrGNLgH/rRuGDPWhDEul4vFYdpFGsHCAr/cyB3MZmyFulbnukQwn5M8/bMjzVX/g==
+X-Received: by 2002:adf:e3c7:0:b0:337:427f:e993 with SMTP id
+ k7-20020adfe3c7000000b00337427fe993mr309982wrm.85.1704971111005; 
+ Thu, 11 Jan 2024 03:05:11 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.10
@@ -58,16 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 11 Jan 2024 03:05:10 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/41] target/arm: Set CTR_EL0.{IDC,DIC} for the 'max' CPU
-Date: Thu, 11 Jan 2024 11:04:32 +0000
-Message-Id: <20240111110505.1563291-9-peter.maydell@linaro.org>
+Subject: [PULL 09/41] hw/intc/arm_gicv3_cpuif: handle LPIs in in the list
+ registers
+Date: Thu, 11 Jan 2024 11:04:33 +0000
+Message-Id: <20240111110505.1563291-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 References: <20240111110505.1563291-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,45 +91,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CTR_EL0 register has some bits which allow the implementation to
-tell the guest that it does not need to do cache maintenance for
-data-to-instruction coherence and instruction-to-data coherence.
-QEMU doesn't emulate caches and so our cache maintenance insns are
-all NOPs.
+The hypervisor can deliver (virtual) LPIs to a guest by setting up a
+list register to have an intid which is an LPI.  The GIC has to treat
+these a little differently to standard interrupt IDs, because LPIs
+have no Active state, and so the guest will only EOI them, it will
+not also deactivate them.  So icv_eoir_write() must do two things:
 
-We already have some models of specific CPUs where we set these bits
-(e.g.  the Neoverse V1), but the 'max' CPU still uses the settings it
-inherits from Cortex-A57.  Set the bits for 'max' as well, so the
-guest doesn't need to do unnecessary work.
+ * if the LPI ID is not in any list register, we drop the
+   priority but do not increment the EOI count
+ * if the LPI ID is in a list register, we immediately deactivate
+   it, regardless of the split-drop-and-deactivate control
 
+This can be seen in the VirtualWriteEOIR0() and VirtualWriteEOIR1()
+pseudocode in the GICv3 architecture specification.
+
+Without this fix, potentially a hypervisor guest might stall because
+LPIs get stuck in a bogus Active+Pending state.
+
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Miguel Luis <miguel.luis@oracle.com>
 ---
- target/arm/tcg/cpu64.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ hw/intc/arm_gicv3_cpuif.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index fcda99e1583..40e7a45166f 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1105,6 +1105,16 @@ void aarch64_max_tcg_initfn(Object *obj)
-     u = FIELD_DP32(u, CLIDR_EL1, LOUU, 0);
-     cpu->clidr = u;
+diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+index 77c2a6dd3b6..6ac90536402 100644
+--- a/hw/intc/arm_gicv3_cpuif.c
++++ b/hw/intc/arm_gicv3_cpuif.c
+@@ -1434,16 +1434,25 @@ static void icv_eoir_write(CPUARMState *env, const ARMCPRegInfo *ri,
+     idx = icv_find_active(cs, irq);
  
-+    /*
-+     * Set CTR_EL0.DIC and IDC to tell the guest it doesnt' need to
-+     * do any cache maintenance for data-to-instruction or
-+     * instruction-to-guest coherence. (Our cache ops are nops.)
-+     */
-+    t = cpu->ctr;
-+    t = FIELD_DP64(t, CTR_EL0, IDC, 1);
-+    t = FIELD_DP64(t, CTR_EL0, DIC, 1);
-+    cpu->ctr = t;
-+
-     t = cpu->isar.id_aa64isar0;
-     t = FIELD_DP64(t, ID_AA64ISAR0, AES, 2);      /* FEAT_PMULL */
-     t = FIELD_DP64(t, ID_AA64ISAR0, SHA1, 1);     /* FEAT_SHA1 */
+     if (idx < 0) {
+-        /* No valid list register corresponding to EOI ID */
+-        icv_increment_eoicount(cs);
++        /*
++         * No valid list register corresponding to EOI ID; if this is a vLPI
++         * not in the list regs then do nothing; otherwise increment EOI count
++         */
++        if (irq < GICV3_LPI_INTID_START) {
++            icv_increment_eoicount(cs);
++        }
+     } else {
+         uint64_t lr = cs->ich_lr_el2[idx];
+         int thisgrp = (lr & ICH_LR_EL2_GROUP) ? GICV3_G1NS : GICV3_G0;
+         int lr_gprio = ich_lr_prio(lr) & icv_gprio_mask(cs, grp);
+ 
+         if (thisgrp == grp && lr_gprio == dropprio) {
+-            if (!icv_eoi_split(env, cs)) {
+-                /* Priority drop and deactivate not split: deactivate irq now */
++            if (!icv_eoi_split(env, cs) || irq >= GICV3_LPI_INTID_START) {
++                /*
++                 * Priority drop and deactivate not split: deactivate irq now.
++                 * LPIs always get their active state cleared immediately
++                 * because no separate deactivate is expected.
++                 */
+                 icv_deactivate_irq(cs, idx);
+             }
+         }
 -- 
 2.34.1
 
