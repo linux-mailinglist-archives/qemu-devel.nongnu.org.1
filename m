@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D324982AD05
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:11:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D9C82ACDA
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:07:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNssY-0001Rn-6F; Thu, 11 Jan 2024 06:05:42 -0500
+	id 1rNsso-0001nE-Pj; Thu, 11 Jan 2024 06:05:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssN-0001PU-9N
+ id 1rNssL-0001PM-78
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:31 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssH-0004Yh-V8
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:30 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-336dcebcdb9so4808302f8f.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:24 -0800 (PST)
+ id 1rNssH-0004Yq-Uv
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:28 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40e54b2e437so22224185e9.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1704971124; x=1705575924; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1O9OPo4rv9t8UJdjCTvrRPzHe9Vt4uLDECv1wcuWN70=;
- b=wMDNaPujpnQPBfJ9xvfuTuuPAA+YWgj1m3fAwfdt3KDEGAsGHvNReHu9tfE0+tLyXn
- NwJIc7UIKJm85qNLAUPEEOK13P0Q35555pbBY97tQiQSJBI6T/GfwntnM1YsR55vAyZF
- RI0ZSRA9p0glZqbcOJdz7LfrOVmGQWlwjqGk2r3ePGdatLQ9FQcj4iHz+pz9fWjQdXiC
- 5NCtMmeIeuAD6TYJVebJ3CO4BH9q7EzVUCmm+9THB1E5sGj6DuQ6RVtevHkhNxSqnkX5
- JrZD78jiKKc9O6pM+18Cw3Wj4Z1pq4O41Cm4H2mPEp8sx2Yo5IgcSPJ9RsNceiNHssaV
- 8Zjw==
+ :reply-to; bh=dPASAMQebICClfujL1GDn0UotimEe/hhOLtey9oE2+o=;
+ b=Q/05WpzGsDdIawxHn9Z30sZQqyGHZ/PLccuxBrgFbl4TBXAuNIHoeMUFpoGPOZjM05
+ 4KGdUwS0AUpzTT/OKxuU/zxtDYliCjnq/iL7xFiVqER12fOzBn2+E7+FY5E3sjGyArEr
+ kVXhvzixdkJIjgllAkAu80Ncce6l+6FKHz+dljbjVEIbChxheNSD+QW4et2gfhCV/LyB
+ kEBiSw/1LEu9HnYDS0/hlqDOA8AmY4X7f5u0gx55kMrl+yysdk1qWqqcP8CoE7g+Am6e
+ 82vdg91YJzlQaq7xxIYWIPj76PILcjID30pF15jz+OxRO9a3GyOipQKNiQ5sFWvS85aA
+ 6zww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1704971124; x=1705575924;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1O9OPo4rv9t8UJdjCTvrRPzHe9Vt4uLDECv1wcuWN70=;
- b=VzdHbEC3/7oVXKPskWP+Olw4MTLG7XYxu3Mo4yIuwrzj+2DjY4w8lXuoWWBTjBVm4t
- PmWnDwuBh7DH72f/KZVBibbIDPy6ED1elCc1yMMC9s4KjNSNMykGUupcDHW8MktbmG5d
- 28V31SOlxReEfgOJvk18JxRUsTrrg8qiua/nXfOuK+/z+dISDKtqtHx9+ZkgeAk//372
- 5nzhRccvkKjHS9nbxIqJxmoXwWaLmIFlCVjhzvjvCwQSex0I3RLbIkVdQrgz1QZuSw1y
- pScbpZhfKJ1QLGXBAkbh9h2t2qiTdo4xHR0MYhHk9Wl/CywDlrByGNV7XZCkRRdS0goj
- EeCQ==
-X-Gm-Message-State: AOJu0Yzo/KJ/jbl3TZ5uDhXklV5nK+OPhXnYnCghoh8TmSkLjTB2nS62
- 0IVz9IWoNP91fscp/sAvCalNrKVEukqLdpvXLQR9LRPVdsQ=
-X-Google-Smtp-Source: AGHT+IH4W7Dw0MasedjXLlQVGTq317Xp5Hq4Gb0B7kyRQA/AmhYZ7ZfHc+SLBRw9CvRZ0zobmVOqMQ==
-X-Received: by 2002:adf:ebc8:0:b0:337:4d36:ae41 with SMTP id
- v8-20020adfebc8000000b003374d36ae41mr265708wrn.35.1704971124034; 
+ bh=dPASAMQebICClfujL1GDn0UotimEe/hhOLtey9oE2+o=;
+ b=k7RdBBZO7WzqVoqD6KVbJDcUe12S0mYSMEYpnxgqCLdw/pj1jkH2mRbUhzWt2BTXsx
+ SeLKKymHxLMZimetvgn0HVtqj1uY1qj1WRFc+XcGakxbcJ+s84gaMrofdVtYNaakn971
+ U2iuY98SXEcGWAywiLZggA2+CJ7sCX6l9zTd/PzcGMIJVekQQSC5ZTdc0Oo3E/fHdopw
+ 9IlxebuxkmO3DoLR6xB1w/AF/2zpOW4yj+fEbgbiqGsNCiJdkJsYkcCLDcnQLmE+B3LN
+ MSdtFfTb3X69ckpUM2G7abAo6R+sW8NzHT+GwuMLU6OCUwH0lyHCtC8uQaoB1GOQskwS
+ KoMg==
+X-Gm-Message-State: AOJu0YzuuPGGPxW4++B5rc+HbsnzBmIsoDLbutoz6aqEtDdHdGuJOnx9
+ gXSOf0aHrj52iH4beGYRV5wgMu1Wjc/fvxjsHT4UpXtSHiM=
+X-Google-Smtp-Source: AGHT+IGMwvcc6BqpGSa5vGtMqKVa0Wze5Pp2NTg4jhuwMcqLBsNLz+/6cei7AYMHxs5mduWsKEbT2w==
+X-Received: by 2002:a05:600c:3c83:b0:40e:4d77:dbf7 with SMTP id
+ bg3-20020a05600c3c8300b0040e4d77dbf7mr298265wmb.163.1704971124385; 
  Thu, 11 Jan 2024 03:05:24 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.23
+ v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.24
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jan 2024 03:05:23 -0800 (PST)
+ Thu, 11 Jan 2024 03:05:24 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 39/41] target/arm: Report HCR_EL2.{NV,NV1,NV2} in cpu dumps
-Date: Thu, 11 Jan 2024 11:05:03 +0000
-Message-Id: <20240111110505.1563291-40-peter.maydell@linaro.org>
+Subject: [PULL 40/41] target/arm: Enhance CPU_LOG_INT to show SPSR on AArch64
+ exception-entry
+Date: Thu, 11 Jan 2024 11:05:04 +0000
+Message-Id: <20240111110505.1563291-41-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 References: <20240111110505.1563291-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,46 +91,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When interpreting CPU dumps where FEAT_NV and FEAT_NV2 are in use,
-it's helpful to include the values of HCR_EL2.{NV,NV1,NV2} in the CPU
-dump format, as a way of distinguishing when we are in EL1 as part of
-executing guest-EL2 and when we are just in normal EL1.
-
-Add the bits to the end of the log line that shows PSTATE and similar
-information:
-
-PSTATE=000003c9 ---- EL2h  BTYPE=0 NV NV2
+We already print various lines of information when we take an
+exception, including the ELR and (if relevant) the FAR. Now
+that FEAT_NV means that we might report something other than
+the old PSTATE to the guest as the SPSR, it's worth logging
+this as well.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Miguel Luis <miguel.luis@oracle.com>
 ---
- target/arm/cpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/arm/helper.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index c15ad52ab3d..7d763786d88 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1059,6 +1059,7 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-     uint32_t psr = pstate_read(env);
-     int i, j;
-     int el = arm_current_el(env);
-+    uint64_t hcr = arm_hcr_el2_eff(env);
-     const char *ns_status;
-     bool sve;
- 
-@@ -1096,6 +1097,10 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-     if (cpu_isar_feature(aa64_bti, cpu)) {
-         qemu_fprintf(f, "  BTYPE=%d", (psr & PSTATE_BTYPE) >> 10);
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 4550ff7ffde..dc8f14f4331 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -11416,6 +11416,7 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
      }
-+    qemu_fprintf(f, "%s%s%s",
-+                 (hcr & HCR_NV) ? " NV" : "",
-+                 (hcr & HCR_NV1) ? " NV1" : "",
-+                 (hcr & HCR_NV2) ? " NV2" : "");
-     if (!(flags & CPU_DUMP_FPU)) {
-         qemu_fprintf(f, "\n");
-         return;
+     env->banked_spsr[aarch64_banked_spsr_index(new_el)] = old_mode;
+ 
++    qemu_log_mask(CPU_LOG_INT, "...with SPSR 0x%x\n", old_mode);
+     qemu_log_mask(CPU_LOG_INT, "...with ELR 0x%" PRIx64 "\n",
+                   env->elr_el[new_el]);
+ 
 -- 
 2.34.1
 
