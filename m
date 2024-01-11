@@ -2,80 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF0882ACFA
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:10:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EC7282AD55
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:26:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNssW-0001Rl-2m; Thu, 11 Jan 2024 06:05:40 -0500
+	id 1rNtBA-0005uH-AN; Thu, 11 Jan 2024 06:24:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssN-0001PW-9b
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:31 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssI-0004Z7-2m
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:30 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-33677fb38a3so4874139f8f.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704971124; x=1705575924; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=AoPQ2VhrOauUZxXZpUbSBMmD7E3ILO63LwCrzpMDSt8=;
- b=ITIOxvywMw7zpBoPRuxxeCHqdygMdY+MSvbAHG9SG0MAE33B9oAFlFApIHmfrctb0j
- Sf19gl7y7SMms0PgTfENZ4YKiQF6L86RJQoYtNYtsfN3hU0SD/VFDTsqVRSrBhQIt0VW
- poRb11IJULhjV35r/prHfvhhsN1N6oL9k/t81NLcm8D9WJxTpP/iT9vUh/PdCC6FthMA
- Vx5jAG5ZvgVhFOBsdvJ7E4KyUyiHO7o+DWoxV9oAX3FN1qbVj/JFNlMlXeTBIi89jdrM
- /wzB/riSYfEIHNxJdajYmFT0IIIRQHpN8WVBawBrB4EgHT/HXeD84B6O8w7gnPgBDN6h
- EY6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704971124; x=1705575924;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AoPQ2VhrOauUZxXZpUbSBMmD7E3ILO63LwCrzpMDSt8=;
- b=r/AhRMNVUBjIKvW74YUWU+atOeIXrLCzexN5iWRyZWic9sedi4YO1sPVxqNQ5nD2DO
- uMdCPyz8tvRM7nrVDYI0fBd00L/WwjP2uSIaOh4ENKy1HfHgyZDQ0afCOROMI8s7+JSm
- cOR9i4Ajepn4WnWHFaARV3SxdHGOLNdV7Gt8fh4z3f5YOAsWWJNlzggodaONhai8f5ae
- DeUgCNhZUbqCOztTr8kYIkVERJv6oBwqC199CslQh3EqREOAqdPIelJLY+UGEy8pSfNa
- 1M4hBhptYkfO2ah0tj8hLu3ljXjnUdAE2mq8qD7NI7p1MRNMixQL3TwrPxqtYzaZjgXb
- up3w==
-X-Gm-Message-State: AOJu0YwD75YaYdPIgDHQxvNkIB+8rD2LTkDI2y1KtYbvOQkoy9a6ByFH
- bY01wMJS9KOU8NfzKb0PJadXv7VbZhY7Wyxayg6dGx8edm8=
-X-Google-Smtp-Source: AGHT+IH7dGrEWBAsrZm8WfGyLEGWPtxAbGI1iVvka8+Hk/oEoryHVsroecxPDirFfD1ZxyvGx53Ckg==
-X-Received: by 2002:adf:ef43:0:b0:336:6797:485c with SMTP id
- c3-20020adfef43000000b003366797485cmr511605wrp.27.1704971124763; 
- Thu, 11 Jan 2024 03:05:24 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.24
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jan 2024 03:05:24 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 41/41] target/arm: Add FEAT_NV2 to max, neoverse-n2,
- neoverse-v1 CPUs
-Date: Thu, 11 Jan 2024 11:05:05 +0000
-Message-Id: <20240111110505.1563291-42-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
-References: <20240111110505.1563291-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rNtB3-0005u8-Tc
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:24:49 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rNtB1-0005Gp-4z
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:24:49 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8CxLOv4z59lRD8EAA--.12655S3;
+ Thu, 11 Jan 2024 19:24:40 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Ax6934z59lWOsPAA--.42068S2; 
+ Thu, 11 Jan 2024 19:24:40 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: 
+Cc: qemu-devel@nongnu.org,
+	peter.maydell@linaro.org
+Subject: [PULL  00/14] loongarch-to-apply queue
+Date: Thu, 11 Jan 2024 19:11:34 +0800
+Message-Id: <20240111111149.899011-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAf8Ax6934z59lWOsPAA--.42068S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,60 +62,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable FEAT_NV2 on the 'max' CPU, and stop filtering it out for
-the Neoverse N2 and Neoverse V1 CPUs.
+The following changes since commit 34eac35f893664eb8545b98142e23d9954722766:
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Miguel Luis <miguel.luis@oracle.com>
----
- docs/system/arm/emulation.rst | 1 +
- target/arm/cpu.c              | 5 -----
- target/arm/tcg/cpu64.c        | 2 +-
- 3 files changed, 2 insertions(+), 6 deletions(-)
+  Merge tag 'pull-riscv-to-apply-20240110' of https://github.com/alistair23/qemu into staging (2024-01-10 11:41:56 +0000)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index d827b42de79..f67aea2d836 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -64,6 +64,7 @@ the following architecture extensions:
- - FEAT_MTE2 (Memory Tagging Extension)
- - FEAT_MTE3 (MTE Asymmetric Fault Handling)
- - FEAT_NV (Nested Virtualization)
-+- FEAT_NV2 (Enhanced nested virtualization support)
- - FEAT_PACIMP (Pointer authentication - IMPLEMENTATION DEFINED algorithm)
- - FEAT_PACQARMA3 (Pointer authentication - QARMA3 algorithm)
- - FEAT_PACQARMA5 (Pointer authentication - QARMA5 algorithm)
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 7d763786d88..826ce842c09 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2243,11 +2243,6 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
-         /* FEAT_MPAM (Memory Partitioning and Monitoring Extension) */
-         cpu->isar.id_aa64pfr0 =
-             FIELD_DP64(cpu->isar.id_aa64pfr0, ID_AA64PFR0, MPAM, 0);
--        /* FEAT_NV2 (Enhanced Nested Virtualization support) */
--        if (FIELD_EX64(cpu->isar.id_aa64mmfr2, ID_AA64MMFR2, NV) > 1) {
--            cpu->isar.id_aa64mmfr2 =
--                FIELD_DP64(cpu->isar.id_aa64mmfr2, ID_AA64MMFR2, NV, 1);
--        }
-     }
- 
-     /* MPU can be configured out of a PMSA CPU either by setting has-mpu
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 93f040e6e96..5fba2c0f040 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1204,7 +1204,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64MMFR2, UAO, 1);      /* FEAT_UAO */
-     t = FIELD_DP64(t, ID_AA64MMFR2, IESB, 1);     /* FEAT_IESB */
-     t = FIELD_DP64(t, ID_AA64MMFR2, VARANGE, 1);  /* FEAT_LVA */
--    t = FIELD_DP64(t, ID_AA64MMFR2, NV, 1);       /* FEAT_NV */
-+    t = FIELD_DP64(t, ID_AA64MMFR2, NV, 2);       /* FEAT_NV2 */
-     t = FIELD_DP64(t, ID_AA64MMFR2, ST, 1);       /* FEAT_TTST */
-     t = FIELD_DP64(t, ID_AA64MMFR2, AT, 1);       /* FEAT_LSE2 */
-     t = FIELD_DP64(t, ID_AA64MMFR2, IDS, 1);      /* FEAT_IDST */
--- 
-2.34.1
+are available in the Git repository at:
+
+  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240111
+
+for you to fetch changes up to 428a6ef4396aa910c86e16c1e4409e3927a3698e:
+
+  hw/intc/loongarch_extioi: Add vmstate post_load support (2024-01-11 19:22:47 +0800)
+
+----------------------------------------------------------------
+pull-loongarch-20240111
+
+----------------------------------------------------------------
+Bibo Mao (4):
+      hw/intc/loongarch_ipi: Use MemTxAttrs interface for ipi ops
+      hw/loongarch/virt: Set iocsr address space per-board rather than percpu
+      hw/intc/loongarch_extioi: Add dynamic cpu number support
+      hw/intc/loongarch_extioi: Add vmstate post_load support
+
+Tianrui Zhao (10):
+      linux-headers: Synchronize linux headers from linux v6.7.0-rc8
+      target/loongarch: Define some kvm_arch interfaces
+      target/loongarch: Supplement vcpu env initial when vcpu reset
+      target/loongarch: Implement kvm get/set registers
+      target/loongarch: Implement kvm_arch_init function
+      target/loongarch: Implement kvm_arch_init_vcpu
+      target/loongarch: Implement kvm_arch_handle_exit
+      target/loongarch: Restrict TCG-specific code
+      target/loongarch: Implement set vcpu intr for kvm
+      target/loongarch: Add loongarch kvm into meson build
+
+ hw/intc/loongarch_extioi.c            | 230 ++++++----
+ hw/intc/loongarch_ipi.c               | 191 +++++----
+ hw/loongarch/virt.c                   |  94 +++--
+ include/hw/intc/loongarch_extioi.h    |  12 +-
+ include/hw/intc/loongarch_ipi.h       |   3 +-
+ include/hw/loongarch/virt.h           |   3 +
+ include/standard-headers/linux/fuse.h |  10 +-
+ meson.build                           |   3 +
+ target/loongarch/cpu.c                |  90 ++--
+ target/loongarch/cpu.h                |   9 +-
+ target/loongarch/internals.h          |   5 +-
+ target/loongarch/kvm/kvm.c            | 768 ++++++++++++++++++++++++++++++++++
+ target/loongarch/kvm/kvm_loongarch.h  |  16 +
+ target/loongarch/kvm/meson.build      |   1 +
+ target/loongarch/meson.build          |   1 +
+ target/loongarch/tcg/iocsr_helper.c   |  16 +-
+ target/loongarch/trace-events         |  15 +
+ target/loongarch/trace.h              |   1 +
+ 18 files changed, 1210 insertions(+), 258 deletions(-)
+ create mode 100644 target/loongarch/kvm/kvm.c
+ create mode 100644 target/loongarch/kvm/kvm_loongarch.h
+ create mode 100644 target/loongarch/kvm/meson.build
+ create mode 100644 target/loongarch/trace-events
+ create mode 100644 target/loongarch/trace.h
 
 
