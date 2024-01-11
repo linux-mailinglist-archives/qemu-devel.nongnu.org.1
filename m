@@ -2,74 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081A982B813
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 00:32:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DA3982B815
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 00:35:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rO4XB-0000W2-BP; Thu, 11 Jan 2024 18:32:25 -0500
+	id 1rO4ZH-0001W6-SS; Thu, 11 Jan 2024 18:34:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rO4X8-0000TI-QU; Thu, 11 Jan 2024 18:32:22 -0500
-Received: from mail-vk1-xa30.google.com ([2607:f8b0:4864:20::a30])
+ id 1rO4Z3-0001Vg-DU; Thu, 11 Jan 2024 18:34:22 -0500
+Received: from mail-vk1-xa31.google.com ([2607:f8b0:4864:20::a31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rO4Wz-0001Pp-Rg; Thu, 11 Jan 2024 18:32:15 -0500
-Received: by mail-vk1-xa30.google.com with SMTP id
- 71dfb90a1353d-4b739b29686so3290420e0c.0; 
- Thu, 11 Jan 2024 15:32:12 -0800 (PST)
+ id 1rO4Yz-0002BH-Bu; Thu, 11 Jan 2024 18:34:21 -0500
+Received: by mail-vk1-xa31.google.com with SMTP id
+ 71dfb90a1353d-4affeacaff9so1057975e0c.3; 
+ Thu, 11 Jan 2024 15:34:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705015931; x=1705620731; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705016056; x=1705620856; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ecoc00QYwaJz8dIkPPEYb205rWMV7qbZJM9fu2YOHGU=;
- b=brf/ll8cMCgEYD08U1Bc+PTQvezyVlSvRQENg0/1Fpue9JAAuH7RGX6tMpr7LaZmTu
- 51h1570irpjv6bTERAo3H2SWrs6Nj3uRLlUHWyHHdGHyAL8uHwr0RCfSRyyVegeVri4c
- rHNpF0Glx0Q532MetutEovV4uH6w19I9QIykk/BYaSxVcwyAM37syNeqIz3VX9W+t4+4
- 0lOpj+7qGzTyLdNVLloxEHF8gNc0I8L4XTPdOeZzW1WpMKcLeNiAGBdmkuyssdTa4Zda
- eB7b4+z9MJSKa+xVIiGOkrtoBXe0GXFX9c2ICJGn1mDQaX56Xz7YrZxz4B5PUklcnzqH
- tyrw==
+ bh=GOL3kpp1H99gp5bOKcH7Q9bmJ8WKCTzopszYwadygmQ=;
+ b=Zi44VddVdyLxhZGFN5BjLUgw0Sryn1AtuV5Z3/wtrJ34P85sfL4NQbc7oWK+jrB1Ji
+ UQCUqwLmbYw6i4H+k7C7+3g/nqHxux5RcHX0vJTqAf4dWawQXiSTcT2MugU/qZ9GnpkP
+ Z8orMNvElfSW7NP/kcLTO0qxs730awpfFkdWyKjoyxfwljLKoAhHyaNUIruPuOgYbJG2
+ gxpUsDxLSrrA8HM1LQbrrNAJU3iaYb4qFkKYTsJW0fTXZhSCKNQXkAEVQBn6/Rt3zPjN
+ C4LkainZ0BDYe9q0pfmZcYqI3SxsAm5oR1lsv3YVCNBBBl1R5WlY8rQeZ0aWSVbURf+3
+ IXig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705015931; x=1705620731;
+ d=1e100.net; s=20230601; t=1705016056; x=1705620856;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ecoc00QYwaJz8dIkPPEYb205rWMV7qbZJM9fu2YOHGU=;
- b=ZGR3+Mg6EhoG0X5WdH5zl1VnVH4gRowPp1B8T5iB/o8yxBp8oxUVkmyMwjKYzWHNGz
- DNkYHnCP76VENAk1U3BRGQVOFmKFtK0C2wsQC9/+Uc5BzY4WL9sBjmtfFZ/u/D69VOWM
- VLOrMwQmvfEpxEQW4PLDtYcAK49XvDEla2SbOggfahHMB2ZtsapCbpbVUtliAL26iC4t
- Ay3d/TsirrIB9CG3jlXShGk8K4H4K5CtgWJrCYHZ5wPSVq5lvUw8Uve7IusZp9JPuE4i
- /ozQBSrNCkhwe+X2xTv1Zijw7eWN+PzHIY7KiS366HdTYPHlp6xf1CAjczY6u2Ao2+8D
- FGEg==
-X-Gm-Message-State: AOJu0YyDSJ+4qIHcFFYS0i5Z+JOIVCFV5sV6nOJV+ag87Xp8H/v0WQ8E
- dlnl613ntWS5bj2OMPxZgbRWLpOmcRx0Rw9Nci4=
-X-Google-Smtp-Source: AGHT+IGZZofHM36OVFmuC+dTfWaaKOCvbzwm84tNB2ktk2Ryx/SWPYEd+RO4qM+742UcyyNJPVH/RDPxw2SQ8ZFNqR8=
-X-Received: by 2002:a1f:e784:0:b0:4b6:e3b6:41ea with SMTP id
- e126-20020a1fe784000000b004b6e3b641eamr681462vkh.4.1705015930734; Thu, 11 Jan
- 2024 15:32:10 -0800 (PST)
+ bh=GOL3kpp1H99gp5bOKcH7Q9bmJ8WKCTzopszYwadygmQ=;
+ b=kfU04waVKqIeEvI/+/Z4zXtBqBfAeynOMPGZCPoZZ9WEo7C4ItimmzuhMuyxe23Bq5
+ Ttb4ZNPADcF7BmZJfJ3//iLH2fVQKoZCIKnnM/fe58UG3oxiYlAif5m9nQ4xNHzLkFp7
+ 2lyCXzBhFswyoxyi2mmq65e4OoVVF2c6I7vdsXVyf9ciI2268rJq47RgZNnSO+cekIDv
+ PO0jrL+1KuyIHWCyp+j+hrCum4uj1nEzXWdslo2OSthE+U8Cv78/N8STcSt2VKaxLDaS
+ UiRZuF/6CSv3VCuiN+2On+NUBP6gEHCwfTe9dDlbonU1Nb1OHfdxaKE4sVB0gMeyTrIN
+ f8bw==
+X-Gm-Message-State: AOJu0YwhjJcJ6NS8ZxMjBG14s6Jnd4Wy8/ibL2xFXI8/sqZ/910i1b+1
+ YJFo6okqWP9tZO7X9kjNSoF+YxFmrYr1zvbQafQ=
+X-Google-Smtp-Source: AGHT+IGR1kCvujjOyrhsiytaezYO74mtg/DtRnJIo8yjAs9CLa6Rm7+1deQXORm5+N8ROyw+Ni1mtNjhME69c8T47DY=
+X-Received: by 2002:a1f:7cca:0:b0:4b7:40fe:3114 with SMTP id
+ x193-20020a1f7cca000000b004b740fe3114mr696335vkc.2.1705016055903; Thu, 11 Jan
+ 2024 15:34:15 -0800 (PST)
 MIME-Version: 1.0
-References: <20240109194438.70934-1-ines.varhol@telecom-paris.fr>
- <20240109194438.70934-3-ines.varhol@telecom-paris.fr>
-In-Reply-To: <20240109194438.70934-3-ines.varhol@telecom-paris.fr>
+References: <20240105230546.265053-1-dbarboza@ventanamicro.com>
+ <20240105230546.265053-11-dbarboza@ventanamicro.com>
+In-Reply-To: <20240105230546.265053-11-dbarboza@ventanamicro.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 12 Jan 2024 09:31:44 +1000
-Message-ID: <CAKmqyKMqM=8SQpbdviMnVBcFdChRUmk5C-SW=dB-RMKP=L+zzA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] hw/arm: Connect STM32L4x5 SYSCFG to STM32L4x5 SoC
-To: =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
- Alistair Francis <alistair@alistair23.me>,
- Samuel Tardieu <samuel.tardieu@telecom-paris.fr>, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Laurent Vivier <lvivier@redhat.com>
+Date: Fri, 12 Jan 2024 09:33:49 +1000
+Message-ID: <CAKmqyKNSNFhtVV_cW=cAMc3VVzm25y0pPeK4Rjc+zFiE+X+Vzw@mail.gmail.com>
+Subject: Re: [PATCH v4 10/17] target/riscv: create finalize_features() for KVM
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, ajones@ventanamicro.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a30;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a31;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa31.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,128 +88,187 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 10, 2024 at 5:47=E2=80=AFAM In=C3=A8s Varhol
-<ines.varhol@telecom-paris.fr> wrote:
+On Sat, Jan 6, 2024 at 10:09=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-> The SYSCFG input GPIOs aren't connected yet. When the STM32L4x5 GPIO
-> device will be implemented, its output GPIOs will be connected to the
-> SYSCFG input GPIOs.
+> To turn cbom_blocksize and cboz_blocksize into class properties we need
+> KVM specific changes.
 >
-> Tested-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> KVM is creating its own version of these options with a customized
+> setter() that prevents users from picking an invalid value during init()
+> time. This comes at the cost of duplicating each option that KVM
+> supports. This will keep happening for each new shared option KVM
+> implements in the future.
+>
+> We can avoid that by using the same property TCG uses and adding
+> specific KVM handling during finalize() time, like TCG already does with
+> riscv_tcg_cpu_finalize_features(). To do that, the common CPU property
+> offers a way of knowing if an option was user set or not, sparing us
+> from doing unneeded syscalls.
+>
+> riscv_kvm_cpu_finalize_features() is then created using the same
+> KVMScratch CPU we already use during init() time, since finalize() time
+> is still too early to use the official KVM CPU for it. cbom_blocksize
+> and cboz_blocksize are then handled during finalize() in the same way
+> they're handled by their KVM specific setter.
+>
+> With this change we can proceed with the blocksize changes in the common
+> code without breaking the KVM driver.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
 > ---
->  hw/arm/Kconfig                 |  1 +
->  hw/arm/stm32l4x5_soc.c         | 21 ++++++++++++++++++++-
->  include/hw/arm/stm32l4x5_soc.h |  2 ++
->  3 files changed, 23 insertions(+), 1 deletion(-)
+>  target/riscv/cpu.c           | 16 +++++++---
+>  target/riscv/cpu.h           |  1 +
+>  target/riscv/kvm/kvm-cpu.c   | 59 ++++++++++++++++++++++++++++++++++++
+>  target/riscv/kvm/kvm_riscv.h |  1 +
+>  4 files changed, 72 insertions(+), 5 deletions(-)
 >
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index 8c8488a70a..bb4693bfbb 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -459,6 +459,7 @@ config STM32L4X5_SOC
->      bool
->      select ARM_V7M
->      select OR_IRQ
-> +    select STM32L4X5_SYSCFG
->      select STM32L4X5_EXTI
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 2bb4828324..cd91966ea7 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -68,6 +68,11 @@ static void cpu_option_add_user_setting(const char *op=
+tname, uint32_t value)
+>                          GUINT_TO_POINTER(value));
+>  }
 >
->  config XLNX_ZYNQMP_ARM
-> diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
-> index fe46b7c6c0..431f982caf 100644
-> --- a/hw/arm/stm32l4x5_soc.c
-> +++ b/hw/arm/stm32l4x5_soc.c
-> @@ -37,6 +37,7 @@
->  #define SRAM2_SIZE (32 * KiB)
+> +bool riscv_cpu_option_set(const char *optname)
+> +{
+> +    return g_hash_table_contains(general_user_opts, optname);
+> +}
+> +
+>  #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
+>      {#_name, _min_ver, CPU_CFG_OFFSET(_prop)}
 >
->  #define EXTI_ADDR 0x40010400
-> +#define SYSCFG_ADDR 0x40010000
->
->  #define NUM_EXTI_IRQ 40
->  /* Match exti line connections with their CPU IRQ number */
-> @@ -80,6 +81,7 @@ static void stm32l4x5_soc_initfn(Object *obj)
->      Stm32l4x5SocState *s =3D STM32L4X5_SOC(obj);
->
->      object_initialize_child(obj, "exti", &s->exti, TYPE_STM32L4X5_EXTI);
-> +    object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32L4X5_SY=
-SCFG);
->
->      s->sysclk =3D qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0)=
-;
->      s->refclk =3D qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0)=
-;
-> @@ -154,6 +156,19 @@ static void stm32l4x5_soc_realize(DeviceState *dev_s=
-oc, Error **errp)
->          return;
+> @@ -1104,17 +1109,18 @@ void riscv_cpu_finalize_features(RISCVCPU *cpu, E=
+rror **errp)
 >      }
+>  #endif
 >
-> +    /* System configuration controller */
-> +    busdev =3D SYS_BUS_DEVICE(&s->syscfg);
-> +    if (!sysbus_realize(busdev, errp)) {
+> -    /*
+> -     * KVM accel does not have a specialized finalize()
+> -     * callback because its extensions are validated
+> -     * in the get()/set() callbacks of each property.
+> -     */
+>      if (tcg_enabled()) {
+>          riscv_tcg_cpu_finalize_features(cpu, &local_err);
+>          if (local_err !=3D NULL) {
+>              error_propagate(errp, local_err);
+>              return;
+>          }
+> +    } else if (kvm_enabled()) {
+> +        riscv_kvm_cpu_finalize_features(cpu, &local_err);
+> +        if (local_err !=3D NULL) {
+> +            error_propagate(errp, local_err);
+> +            return;
+> +        }
+>      }
+>  }
+>
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 3cec85069f..1c19fa84bb 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -510,6 +510,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, =
+int size,
+>                          bool probe, uintptr_t retaddr);
+>  char *riscv_isa_string(RISCVCPU *cpu);
+>  void riscv_cpu_list(void);
+> +bool riscv_cpu_option_set(const char *optname);
+>
+>  #define cpu_list riscv_cpu_list
+>  #define cpu_mmu_index riscv_cpu_mmu_index
+> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+> index 2c5217102c..2713f4b2ba 100644
+> --- a/target/riscv/kvm/kvm-cpu.c
+> +++ b/target/riscv/kvm/kvm-cpu.c
+> @@ -1493,6 +1493,65 @@ static void kvm_cpu_instance_init(CPUState *cs)
+>      }
+>  }
+>
+> +void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+> +{
+> +    CPURISCVState *env =3D &cpu->env;
+> +    KVMScratchCPU kvmcpu;
+> +    struct kvm_one_reg reg;
+> +    uint64_t val;
+> +    int ret;
+> +
+> +    /* short-circuit without spinning the scratch CPU */
+> +    if (!cpu->cfg.ext_zicbom && !cpu->cfg.ext_zicboz) {
 > +        return;
 > +    }
-> +    sysbus_mmio_map(busdev, 0, SYSCFG_ADDR);
-> +    /*
-> +     * TODO: when the GPIO device is implemented, connect it
-> +     * to SYCFG using `qdev_connect_gpio_out`, NUM_GPIOS and
-> +     * GPIO_NUM_PINS.
-> +     */
 > +
-> +    /* EXTI device */
->      busdev =3D SYS_BUS_DEVICE(&s->exti);
->      if (!sysbus_realize(busdev, errp)) {
->          return;
-> @@ -163,6 +178,11 @@ static void stm32l4x5_soc_realize(DeviceState *dev_s=
-oc, Error **errp)
->          sysbus_connect_irq(busdev, i, qdev_get_gpio_in(armv7m, exti_irq[=
-i]));
->      }
->
-> +    for (unsigned i =3D 0; i < 16; i++) {
-> +        qdev_connect_gpio_out(DEVICE(&s->syscfg), i,
-> +                              qdev_get_gpio_in(DEVICE(&s->exti), i));
+> +    if (!kvm_riscv_create_scratch_vcpu(&kvmcpu)) {
+> +        error_setg(errp, "Unable to create scratch KVM cpu");
+> +        return;
 > +    }
 > +
->      /* APB1 BUS */
->      create_unimplemented_device("TIM2",      0x40000000, 0x400);
->      create_unimplemented_device("TIM3",      0x40000400, 0x400);
-> @@ -200,7 +220,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_so=
-c, Error **errp)
->      /* RESERVED:    0x40009800, 0x6800 */
+> +    if (cpu->cfg.ext_zicbom &&
+> +        riscv_cpu_option_set(kvm_cbom_blocksize.name)) {
+> +
+> +        reg.id =3D kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CONFIG,
+> +                                        kvm_cbom_blocksize.kvm_reg_id);
+> +        reg.addr =3D (uint64_t)&val;
+> +        ret =3D ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
+> +        if (ret !=3D 0) {
+> +            error_setg(errp, "Unable to read cbom_blocksize, error %d", =
+errno);
+> +            return;
+> +        }
+> +
+> +        if (cpu->cfg.cbom_blocksize !=3D val) {
+> +            error_setg(errp, "Unable to set cbom_blocksize to a differen=
+t "
+> +                       "value than the host (%lu)", val);
+> +            return;
+> +        }
+> +    }
+> +
+> +    if (cpu->cfg.ext_zicboz &&
+> +        riscv_cpu_option_set(kvm_cboz_blocksize.name)) {
+> +
+> +        reg.id =3D kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CONFIG,
+> +                                        kvm_cboz_blocksize.kvm_reg_id);
+> +        reg.addr =3D (uint64_t)&val;
+> +        ret =3D ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
+> +        if (ret !=3D 0) {
+> +            error_setg(errp, "Unable to read cboz_blocksize, error %d", =
+errno);
+> +            return;
+> +        }
+> +
+> +        if (cpu->cfg.cboz_blocksize !=3D val) {
+> +            error_setg(errp, "Unable to set cboz_blocksize to a differen=
+t "
+> +                       "value than the host (%lu)", val);
+> +            return;
+> +        }
+> +    }
+> +
+> +    kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
+> +}
+> +
+>  static void kvm_cpu_accel_class_init(ObjectClass *oc, void *data)
+>  {
+>      AccelCPUClass *acc =3D ACCEL_CPU_CLASS(oc);
+> diff --git a/target/riscv/kvm/kvm_riscv.h b/target/riscv/kvm/kvm_riscv.h
+> index 8329cfab82..4bd98fddc7 100644
+> --- a/target/riscv/kvm/kvm_riscv.h
+> +++ b/target/riscv/kvm/kvm_riscv.h
+> @@ -27,5 +27,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64=
+_t group_shift,
+>                            uint64_t guest_num);
+>  void riscv_kvm_aplic_request(void *opaque, int irq, int level);
+>  int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
+> +void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
 >
->      /* APB2 BUS */
-> -    create_unimplemented_device("SYSCFG",    0x40010000, 0x30);
->      create_unimplemented_device("VREFBUF",   0x40010030, 0x1D0);
->      create_unimplemented_device("COMP",      0x40010200, 0x200);
->      /* RESERVED:    0x40010800, 0x1400 */
-> diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_so=
-c.h
-> index f7305568dc..baf70410b5 100644
-> --- a/include/hw/arm/stm32l4x5_soc.h
-> +++ b/include/hw/arm/stm32l4x5_soc.h
-> @@ -26,6 +26,7 @@
->
->  #include "exec/memory.h"
->  #include "hw/arm/armv7m.h"
-> +#include "hw/misc/stm32l4x5_syscfg.h"
->  #include "hw/misc/stm32l4x5_exti.h"
->  #include "qom/object.h"
->
-> @@ -41,6 +42,7 @@ struct Stm32l4x5SocState {
->      ARMv7MState armv7m;
->
->      Stm32l4x5ExtiState exti;
-> +    Stm32l4x5SyscfgState syscfg;
->
->      MemoryRegion sram1;
->      MemoryRegion sram2;
+>  #endif
 > --
 > 2.43.0
 >
