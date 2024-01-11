@@ -2,78 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B9082AB13
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 10:34:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B33A382AB1D
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 10:40:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNrRl-0004kl-8i; Thu, 11 Jan 2024 04:33:57 -0500
+	id 1rNrX8-0006yU-2i; Thu, 11 Jan 2024 04:39:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNrRi-0004kL-NT
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 04:33:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNrRf-0001F1-IO
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 04:33:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704965628;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=AcQHZ7lV88685vs3PP8OIvSJtk39y7HViWYg9kFtC+4=;
- b=NTwfpNJ5iOqEANybEJQ//5YMwx8wK/a/PvucvFYoWw7TwVjMeNnLQgCGazFWxIL1u1whZP
- NE54HlohF0LWRixRlbdydfu/zTi33sUlheNWgMrKz03XY1x1rctTk09nDTk+ilJBDIqzmf
- mzyuMC5UIgGvod71jUuRDmN7pmZZBYs=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-126-y9gUHfosPrOgacIx_9YMHw-1; Thu,
- 11 Jan 2024 04:33:45 -0500
-X-MC-Unique: y9gUHfosPrOgacIx_9YMHw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E60D51C04351;
- Thu, 11 Jan 2024 09:33:44 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A76F83C25;
- Thu, 11 Jan 2024 09:33:44 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A0A9021E6682; Thu, 11 Jan 2024 10:33:43 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>,  Peter Maydell
- <peter.maydell@linaro.org>,  Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH 11/19] qapi/schema: fix QAPISchemaArrayType.check's call
- to resolve_type
-In-Reply-To: <CAFn=p-aFOhQ8+96cRasYmnF64g1CH_bdH0LiUAa98rkV9cbZXA@mail.gmail.com>
- (John Snow's message of "Wed, 10 Jan 2024 14:33:05 -0500")
-References: <20231116014350.653792-1-jsnow@redhat.com>
- <20231116014350.653792-12-jsnow@redhat.com>
- <874jhedjv0.fsf@pond.sub.org>
- <CAFn=p-YZAZtX1SKAs2mFpGL7XhFPvsr68ipFqv+E_ZM_wV_Kig@mail.gmail.com>
- <87wmu84o6a.fsf@pond.sub.org>
- <CAFn=p-aFOhQ8+96cRasYmnF64g1CH_bdH0LiUAa98rkV9cbZXA@mail.gmail.com>
-Date: Thu, 11 Jan 2024 10:33:43 +0100
-Message-ID: <87jzog1afc.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNrX5-0006xx-QQ
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 04:39:27 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNrX4-00041b-6J
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 04:39:27 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40e60e1373bso2573185e9.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 01:39:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704965964; x=1705570764; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=VM0HKEU6ibKzztbyzuajNU6Ll6Gt8v2pcXKmTNWCX1k=;
+ b=OcI7crp/UhnLVaz8f0IcSztTSKWwUG2pnK1d6CYtNPL5gN8PBeXnIJ+I2o9wG5qphZ
+ Xz0Ud0pOX+uSn48gwkNIO/0212b6kvWXqT/3EUMM9KBXH6OtmAN2ihGdANUipkIyQ82H
+ GzQGTUTSlSnrspqDrsO3LmWLNRm20Tcg9z8iPcQrT7J7ceeeVG2iH7DMHqzyYZSgpPUB
+ t3vsTpbvr16MB2UGKpeJMI+8BtA/bd49Ghkz1YJ1zdl3GI8YanVxwCZMyhopkggznywm
+ UeGaUIRPTEj4hIWzTAE2fWMy4yznrOlzbVqDFdcCz8MbZbiunvLC0QmVio81I9K0kW97
+ Qn7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704965964; x=1705570764;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VM0HKEU6ibKzztbyzuajNU6Ll6Gt8v2pcXKmTNWCX1k=;
+ b=vRFgkSxpSKxjphvK0KQTxx81UU4QXVcwt01r63pCOsTwmBSk+0F/0qy7xw7QcFF5le
+ 8hi8cnyAITGAeZwhk74g75Q5bDZDPkauwE2IkKmnstPk9uV86lVCLmjid8ez8MRQjACf
+ 9MkadxbqKvU2/bLJEkdxDWJg59I4mRLF8bHLzyGPzJ8jU6H4t7V7MyGR0gVU+XrJ/+Uf
+ LwdKrJkO4nTxx5y2+/+gDTawiZAbq7l1Fnk19X/RWEhoKYyQBSf9g2XWZ4dEDHbR3Qas
+ IfOTyO+yoo74Bucm8DkjjhU+77tOvUd59S1x8FsJq2NGN1cX92cCSAmhiCCBeNaaro9o
+ PZvg==
+X-Gm-Message-State: AOJu0Yy786jjVbfdmNvqYLkxq8jHfJWHIRGg0wLDwSDbLo2VP6i/h2r3
+ UBv2HmzD5DJPHcZvMXZ6kZrY7Dr9YF40VRN/HcGiuAj6ARBoLQ==
+X-Google-Smtp-Source: AGHT+IF2cYqLJHu2UWDuqXDpPX02gIFlgyGX3SyNXha60MpDNU7MZlWY/HBb1vrIX/f7CMfghaFVUw==
+X-Received: by 2002:a05:600c:4693:b0:40e:5b66:f4dc with SMTP id
+ p19-20020a05600c469300b0040e5b66f4dcmr213359wmo.7.1704965964029; 
+ Thu, 11 Jan 2024 01:39:24 -0800 (PST)
+Received: from [192.168.207.175] (83.red-88-28-3.dynamicip.rima-tde.net.
+ [88.28.3.83]) by smtp.gmail.com with ESMTPSA id
+ w18-20020a05600c475200b0040d2d33312csm1229961wmo.2.2024.01.11.01.39.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 11 Jan 2024 01:39:23 -0800 (PST)
+Message-ID: <ff57e1f5-ea78-459e-b51c-48040483bdea@linaro.org>
+Date: Thu, 11 Jan 2024 10:39:18 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 13/14] hw/arm: Prefer arm_feature(AARCH64) over
+ object_property_find(aarch64)
+Content-Language: en-US
+To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Andrew Jones <ajones@ventanamicro.com>
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-arm@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>, Rob Herring <robh@kernel.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>, Marc Zyngier <maz@kernel.org>
+References: <20240110195329.3995-1-philmd@linaro.org>
+ <20240110195329.3995-14-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240110195329.3995-14-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,235 +101,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+On 10/1/24 20:53, Philippe Mathieu-Daudé wrote:
+> The "aarch64" property is added to ARMCPU when the
+> ARM_FEATURE_AARCH64 feature is available. Rather than
+> checking whether the QOM property is present, directly
+> check the feature.
+> 
+> Suggested-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/arm/virt.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 49ed5309ff..a43e87874c 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -2140,7 +2140,7 @@ static void machvirt_init(MachineState *machine)
+>           numa_cpu_pre_plug(&possible_cpus->cpus[cs->cpu_index], DEVICE(cpuobj),
+>                             &error_fatal);
+>   
+> -        aarch64 &= object_property_get_bool(cpuobj, "aarch64", NULL);
+> +        aarch64 &= arm_feature(cpu_env(cs), ARM_FEATURE_AARCH64);
 
-> On Thu, Nov 23, 2023, 8:03 AM Markus Armbruster <armbru@redhat.com> wrote:
->
->> John Snow <jsnow@redhat.com> writes:
->>
->> > On Wed, Nov 22, 2023 at 7:59=E2=80=AFAM Markus Armbruster <armbru@redh=
-at.com> wrote:
->> >>
->> >> John Snow <jsnow@redhat.com> writes:
->> >>
->> >> > There's more conditionals in here than we can reasonably pack into a
->> >> > terse little statement, so break it apart into something more> expl=
-icit.
->> >> >
->> >> > (When would a built-in array ever cause a QAPISemError? I don't kno=
-w,
->> >> > maybe never - but the type system wasn't happy all the same.)
->> >> >
->> >> > Signed-off-by: John Snow <jsnow@redhat.com>
->> >> > ---
->> >> >  scripts/qapi/schema.py | 11 +++++++++--
->> >> >  1 file changed, 9 insertions(+), 2 deletions(-)
->> >> >
->> >> > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
->> >> > index 462acb2bb61..164d86c4064 100644
->> >> > --- a/scripts/qapi/schema.py
->> >> > +++ b/scripts/qapi/schema.py
->> >> > @@ -384,9 +384,16 @@ def need_has_if_optional(self):
->> >> >
->> >> >      def check(self, schema):
->> >> >          super().check(schema)
->> >> > +
->> >> > +        if self.info:
->> >> > +            assert self.info.defn_meta  # guaranteed to be set by>=
- expr.py
->> >> > +            what =3D self.info.defn_meta
->> >> > +        else:
->> >> > +            what =3D 'built-in array'
->> >> > +
->> >> >          self._element_type =3D schema.resolve_type(
->> >> > -            self._element_type_name, self.info,
->> >> > -            self.info and self.info.defn_meta)
->> >> > +            self._element_type_name, self.info, what
->> >> > +        )
->> 0>> >          assert not isinstance(self.element_type, QAPISchemaArrayT=
-ype)
->> >> >
->> >> >      def set_module(self, schema):
->> >>
->> >> What problem are you solving here?
->> >>
->> >
->> > 1. "self.info and self.info.defn_meta" is the wrong type ifn't self.in=
-fo
->>
->> self.info is Optional[QAPISourceInfo].
->>
->> When self.info, then self.info.defn_meta is is Optional[str].
->>
->> Naive me expects self.info and self.info.defn_meta to be Optional[str].
->> Playing with mypy...  it seems to be Union[QAPISourceInfo, None, str].
->> Type inference too weak.
->>
->
-> I think my expectations match yours: "x and y" should return either x or =
-y,
-> so the resulting type would naively be Union[X | Y], which would indeed be
-> Union[QAPISourceInfo | None | str], but:
->
-> If QAPISourceInfo is *false-y*, but not None, it'd be possible for the
-> expression to yield a QAPISourceInfo. mypy does not understand that
-> QAPISourceInfo can never be false-y.
->
-> (That I know of. Maybe there's a trick to annotate it. I like your soluti=
-on
-> below better anyway, just curious about the exact nature of this
-> limitation.)
->
->
->> > 2. self.info.defn_meta is *also* not guaranteed by static types
->>
->> Yes.  We know it's not None ("guaranteed to be set by expr.py"), but the
->> type system doesn't.
->>
->
-> Mmhmm.
->
->
->> > ultimately: we need to assert self.info and self.info.defn_meta both;
->> > but it's possible (?) that we don't have self.info in the case that
->> > we're a built-in array, so I handle that.
->>
->> This bring us back to the question in your commit message: "When would a
->> built-in array ever cause a QAPISemError?"  Short answer: never.
->
-> Right, okay. I just couldn't guarantee it statically. I knew this patch w=
-as
-> a little bananas, sorry for tossing you the stinkbomb.
+So after this patch there are no more use of the ARMCPU "aarch64"
+property from code. Still it is exposed via the qom-tree. Thus it
+can be set (see aarch64_cpu_set_aarch64). I could understand one
+flip this feature to create a custom CPU (as a big-LITTLE setup
+as Marc mentioned on IRC), but I don't understand what is the
+expected behavior when this is flipped at runtime. Can that
+happen in real hardware (how could the guest react to that...)?
 
-No need to be sorry!  Feels like an efficient way to collaborate with
-me.
+Thanks,
 
->> Long answer.  We're dealing with a *specific* QAPISemError here, namely
->> .resolve_type()'s "uses unknown type".  If this happens for a built-in
->> array, it's a programming error.
->>
->> Let's commit such an error to see what happens: stick
->>
->>         self._make_array_type('xxx', None)
->>
->> Dies like this:
->>
->>     Traceback (most recent call last):
->>       File "/work/armbru/qemu/scripts/qapi/main.py", line 94, in main
->>         generate(args.schema,
->>       File "/work/armbru/qemu/scripts/qapi/main.py", line 50, in generate
->>         schema =3D QAPISchema(schema_file)
->>                  ^^^^^^^^^^^^^^^^^^^^^^^
->>       File "/work/armbru/qemu/scripts/qapi/schema.py", line 938, in
->> __init__
->>         self.check()
->>       File "/work/armbru/qemu/scripts/qapi/schema.py", line 1225, in che=
-ck
->>         ent.check(self)
->>       File "/work/armbru/qemu/scripts/qapi/schema.py", line 373, in check
->>         self.element_type =3D schema.resolve_type(
->>                             ^^^^^^^^^^^^^^^^^^^^
->>       File "/work/armbru/qemu/scripts/qapi/schema.py", line 973, in
->> resolve_type
->>         raise QAPISemError(
->>     qapi.error.QAPISemError: <exception str() failed>
->>
->>     During handling of the above exception, another exception occurred:
->>
->>     Traceback (most recent call last):
->>       File "/work/armbru/qemu/scripts/qapi-gen.py", line 19, in <module>
->>         sys.exit(main.main())
->>                  ^^^^^^^^^^^
->>       File "/work/armbru/qemu/scripts/qapi/main.py", line 101, in main
->>         print(err, file=3Dsys.stderr)
->>       File "/work/armbru/qemu/scripts/qapi/error.py", line 41, in __str__
->>         assert self.info is not None
->>                ^^^^^^^^^^^^^^^^^^^^^
->>     AssertionError
->>
->> Same before and after your patch.  The patch's change of what=3DNone to
->> what=3D'built-in array' has no effect.
->>
->> Here's a slightly simpler patch:
->>
->> diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
->> index 46004689f0..feb0023d25 100644
->> --- a/scripts/qapi/schema.py
->> +++ b/scripts/qapi/schema.py
->> @@ -479,7 +479,7 @@ def check(self, schema: QAPISchema) -> None:
->>          super().check(schema)
->>          self._element_type =3D schema.resolve_type(
->>              self._element_type_name, self.info,
->> -            self.info and self.info.defn_meta)
->> +            self.info.defn_meta if self.info else None)
->>
->
-> Yep.
->
->          assert not isinstance(self.element_type, QAPISchemaArrayType)
->>
->>      def set_module(self, schema: QAPISchema) -> None:
->> @@ -1193,7 +1193,7 @@ def resolve_type(
->>          self,
->>          name: str,
->>          info: Optional[QAPISourceInfo],
->> -        what: Union[str, Callable[[Optional[QAPISourceInfo]], str]],
->> +        what: Union[None, str, Callable[[Optional[QAPISourceInfo]], str=
-]],
->>      ) -> QAPISchemaType:
->>          typ =3D self.lookup_type(name)
->>          if not typ:
->>
->> The first hunk works around mypy's type inference weakness.  It rewrites
->>
->>     A and B
->>
->> as
->>
->>     B if A else A
->>
->> and then partially evaluates to
->>
->>     B if A else None
->>
->> exploiting the fact that falsy A can only be None.  It replaces this
->> patch.
->
-> Sounds good to me!
-
-Does it need a comment explaining the somewhat awkward coding?  Probably
-not.
-
->> The second hunk corrects .resolve_type()'s typing to accept what=3DNone.
->> It's meant to be squashed into PATCH 16.
->>
->> What do you think?
->>
->
-> I'm on my mobile again, but at a glance I like it. Except that I'm a litt=
-le
-> reluctant to allow what to be None if this is the *only* caller known to
-> possibly do it, and only in a circumstance that we assert elsewhere that =
-it
-> should never happen.
->
-> Can we do:
->
-> what =3D self.info.defn_meta if self.info else None
-> assert what [is not None]  # Depending on taste
->
-> instead?
->
-> No sem error, no new unit test needed, assertion provides the correct fra=
-me
-> of mind (programmer error), stronger typing on resolve_type.
->
-> (I really love eliminating None when I can as a rule because I like how
-> much more it tells you about the nature of all callers, it's a much
-> stronger decree. Worth pursuing where you can, IMO, but I'm not gonna die
-> on the hill for a patch like this - just sharing my tendencies for
-> discussion.)
-
-Suggest you post the patch, so I can see it more easily in context.
+Phil.
 
 
