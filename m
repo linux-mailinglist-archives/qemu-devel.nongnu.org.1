@@ -2,90 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E01E82A5DD
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 03:18:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F6182A606
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 03:31:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNkcz-0005H2-DJ; Wed, 10 Jan 2024 21:17:05 -0500
+	id 1rNkpX-0006pg-EJ; Wed, 10 Jan 2024 21:30:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNkco-0005Ga-Qh
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 21:16:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNkcf-0003rF-1Y
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 21:16:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704939403;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=a2Va6TJ1Gh8biPnQ2T2yBxWTD+Sbtr1jLFqNkwb1oCI=;
- b=Y6Il/f8HJ6sR6fS6sbsFiay3mpS/9DWD32gKrLrFoHp3uO+qArt2U7bKjdVrazbydm2Ayq
- hN1MjLvfpm9zbiYJq3Ad5JoytlRibKtzqHr+9PnQdXCW5s7t0eYQX7SDUcFe7ZG9XFpTq+
- gYMeWpWuGQbWlOWDHEg5FDCFLNgSprE=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-376-qXRNjD6lO-C4YCJFbrBa_w-1; Wed, 10 Jan 2024 21:16:41 -0500
-X-MC-Unique: qXRNjD6lO-C4YCJFbrBa_w-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-28bea0ff98cso994266a91.0
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 18:16:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704939400; x=1705544200;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=a2Va6TJ1Gh8biPnQ2T2yBxWTD+Sbtr1jLFqNkwb1oCI=;
- b=b88EpnpJJciME9pjaxG9HOvasNYbq2FsoeH4og5eJ+4VNf7fJ7tbLki6VndQmWCmQs
- SAfotTKrxLJR1RX4rYVXGINTIA2LzYCXJGYptQdR/AiYGblMOGrHbuMkuQzJ6afhW5nF
- aEtLXNvP4RmJ87e/90iIgTEX5dhufrEnL46DvDMN/6a8HYiKCaAxV2bvKQ/Ur3uAr6Ig
- t57ERT3u7g7BpcYlzpm/qDBzotlsDZ3d67cmnlhIK63M82LKDK1tfTQ7Nm2j6io45aWq
- lxTWDwJhvXSVkwYVInM2Q6mvWfrbXJNDHYJRlnBDw7Ej822fe6VeY+sMvrH2xftD0W0r
- UsGw==
-X-Gm-Message-State: AOJu0YxnrsHQGP+Suq5KYFLd+7wgi6o1NslS+09xLDotxlKXUW4rUY5M
- M8DdHWQP5jL+hZLq1EAsBzdXgJ7StU5n1x03q4xOGouuVj0T7puQEBGzs2mA2V4AUvnmG/WCCuF
- vpuBwklUyy/m5RcZfgDDuHIk=
-X-Received: by 2002:a17:90b:38cf:b0:28c:ee93:7575 with SMTP id
- nn15-20020a17090b38cf00b0028cee937575mr877538pjb.1.1704939400337; 
- Wed, 10 Jan 2024 18:16:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH71LmopU6qEkYIksfEcwOnthCrbhTzNzxktpdEHrJi9+LMkzoqwXVPjkPfYivT3PAq/gg0LQ==
-X-Received: by 2002:a17:90b:38cf:b0:28c:ee93:7575 with SMTP id
- nn15-20020a17090b38cf00b0028cee937575mr877519pjb.1.1704939399945; 
- Wed, 10 Jan 2024 18:16:39 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- sg9-20020a17090b520900b0028d9fc97c29sm55261pjb.14.2024.01.10.18.16.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jan 2024 18:16:39 -0800 (PST)
-Date: Thu, 11 Jan 2024 10:16:35 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Marc-Andre Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH V1 2/3] migration: notifier error reporting
-Message-ID: <ZZ9PgyDQ8QRG4Rqw@x1n>
-References: <1702491093-383782-1-git-send-email-steven.sistare@oracle.com>
- <1702491093-383782-3-git-send-email-steven.sistare@oracle.com>
- <ZZ5E2ubl9XRdXDmh@x1n>
- <94e1241e-e355-4e96-b86a-e0218a7589c6@oracle.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rNkpU-0006pF-1T
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 21:30:00 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rNkpQ-0002Ng-GG
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 21:29:59 -0500
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8CxLLucUp9lLR0EAA--.4125S3;
+ Thu, 11 Jan 2024 10:29:49 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxK9yaUp9lkw0OAA--.37431S3; 
+ Thu, 11 Jan 2024 10:29:48 +0800 (CST)
+Subject: Re: [PATCH v4 8/9b] target/loongarch: Implement set vcpu intr for kvm
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>,
+ xianglai li <lixianglai@loongson.cn>
+References: <20240105075804.1228596-9-zhaotianrui@loongson.cn>
+ <20240110094152.52138-2-philmd@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <a9ebc41a-64b6-3662-23ff-452bd98052f9@loongson.cn>
+Date: Thu, 11 Jan 2024 10:29:46 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <94e1241e-e355-4e96-b86a-e0218a7589c6@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+In-Reply-To: <20240110094152.52138-2-philmd@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8BxK9yaUp9lkw0OAA--.37431S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3Gw18KrWkGw1fJrWxZw17twc_yoW7WF18pF
+ ZruFn8KrWrJrZ7Jas3Za45Z34DXr4fGw12vayxta4xCr47try0qF1vqrnFgFy5G3y8WFyI
+ qF1fC3Wj9F1UXwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
+ 05UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.07,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,141 +83,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 10, 2024 at 01:08:41PM -0500, Steven Sistare wrote:
-> On 1/10/2024 2:18 AM, Peter Xu wrote:
-> > On Wed, Dec 13, 2023 at 10:11:32AM -0800, Steve Sistare wrote:
-> >> After calling notifiers, check if an error has been reported via
-> >> migrate_set_error, and halt the migration.
-> >>
-> >> None of the notifiers call migrate_set_error at this time, so no
-> >> functional change.
-> >>
-> >> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> >> ---
-> >>  include/migration/misc.h |  2 +-
-> >>  migration/migration.c    | 26 ++++++++++++++++++++++----
-> >>  2 files changed, 23 insertions(+), 5 deletions(-)
-> >>
-> >> diff --git a/include/migration/misc.h b/include/migration/misc.h
-> >> index 901d117..231d7e4 100644
-> >> --- a/include/migration/misc.h
-> >> +++ b/include/migration/misc.h
-> >> @@ -65,7 +65,7 @@ MigMode migrate_mode_of(MigrationState *);
-> >>  void migration_add_notifier(Notifier *notify,
-> >>                              void (*func)(Notifier *notifier, void *data));
-> >>  void migration_remove_notifier(Notifier *notify);
-> >> -void migration_call_notifiers(MigrationState *s);
-> >> +int migration_call_notifiers(MigrationState *s);
-> >>  bool migration_in_setup(MigrationState *);
-> >>  bool migration_has_finished(MigrationState *);
-> >>  bool migration_has_failed(MigrationState *);
-> >> diff --git a/migration/migration.c b/migration/migration.c
-> >> index d5bfe70..29a9a92 100644
-> >> --- a/migration/migration.c
-> >> +++ b/migration/migration.c
-> >> @@ -1280,6 +1280,8 @@ void migrate_set_state(int *state, int old_state, int new_state)
-> >>  
-> >>  static void migrate_fd_cleanup(MigrationState *s)
-> >>  {
-> >> +    bool already_failed;
-> >> +
-> >>      qemu_bh_delete(s->cleanup_bh);
-> >>      s->cleanup_bh = NULL;
-> >>  
-> >> @@ -1327,11 +1329,20 @@ static void migrate_fd_cleanup(MigrationState *s)
-> >>                            MIGRATION_STATUS_CANCELLED);
-> >>      }
-> >>  
-> >> +    already_failed = migration_has_failed(s);
-> >> +    if (migration_call_notifiers(s)) {
-> >> +        if (!already_failed) {
-> >> +            migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
-> >> +            /* Notify again to recover from this late failure. */
-> >> +            migration_call_notifiers(s);
-> >> +        }
-> >> +    }
-> >> +
-> >>      if (s->error) {
-> >>          /* It is used on info migrate.  We can't free it */
-> >>          error_report_err(error_copy(s->error));
-> >>      }
-> >> -    migration_call_notifiers(s);
-> >> +
-> >>      block_cleanup_parameters();
-> >>      yank_unregister_instance(MIGRATION_YANK_INSTANCE);
-> >>  }
-> >> @@ -1450,9 +1461,10 @@ void migration_remove_notifier(Notifier *notify)
-> >>      }
-> >>  }
-> >>  
-> >> -void migration_call_notifiers(MigrationState *s)
-> >> +int migration_call_notifiers(MigrationState *s)
-> >>  {
-> >>      notifier_list_notify(&migration_state_notifiers, s);
-> >> +    return (s->error != NULL);
-> > 
-> > Exporting more migration_*() functions is pretty ugly to me..
-> 
-> I assume you mean migrate_set_error(), which is currently only called from
-> migration/*.c code.
-> 
-> Instead, we could define a new function migrate_set_notifier_error(), defined
-> in the new file migration/notifier.h, so we clearly limit the migration 
-> functions which can be called from notifiers.  (Its implementation just calls
-> migrate_set_error)
+Hi,
 
-Fundementally this allows another .c to change one more field of
-MigrationState (which is ->error) and I still want to avoid it.
-
-I just replied in the other thread, but now with all these in mind I think
-I still prefer not passing in MigrationState* at all.  It's already kind of
-abused due to migrate_get_current(), and IMHO it's healthier to limit its
-usage to minimum to cover the core of migration states for migration/ use
-only.
-
-Shrinking or even stop exporting migrate_get_current() is another more
-challenging task, but now what we can do is stop enlarging the direct use
-of MigrationState*.
-
-> 
-> > Would it be better to pass in "Error** errp" into each notifiers?  That may
-> > need an open coded notifier_list_notify(), breaking the loop if "*errp".
-> > 
-> > And the notifier API currently only support one arg..  maybe we should
-> > implement the notifiers ourselves, ideally passing in "(int state, Error
-> > **errp)" instead of "(MigrationState *s)".
-> > 
-> > Ideally with that MigrationState* shouldn't be visible outside migration/.
-> 
-> I will regret saying this because of the amount of (mechanical) code change involved,
-> but the cleanest solution is:
-
-:)
-
+在 2024/1/10 下午5:41, Philippe Mathieu-Daudé 写道:
+> From: Tianrui Zhao <zhaotianrui@loongson.cn>
 >
-> * Pass errp to: 
->   notifier_with_return_list_notify(NotifierWithReturnList *list, void *data, Error *errp)
-> * Pass errp to the NotifierWithReturn notifier:
->   int (*notify)(NotifierWithReturn *notifier, void *data, Error **errp);
-> * Delete the errp member from struct PostcopyNotifyData and pass errp to the notifier function
->   Ditto for PrecopyNotifyData.
-> * Convert all migration notifiers to NotifierWithReturn
+> Implement loongarch kvm set vcpu interrupt interface,
+> when a irq is set in vcpu, we use the KVM_INTERRUPT
+> ioctl to set intr into kvm.
+>
+> Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
+> Signed-off-by: xianglai li <lixianglai@loongson.cn>
+> Reviewed-by: Song Gao <gaosong@loongson.cn>
+> Message-ID: <20240105075804.1228596-9-zhaotianrui@loongson.cn>
+> [PMD: Split from bigger patch, part 2]
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/loongarch/kvm/kvm_loongarch.h | 16 ++++++++++++++++
+>   target/loongarch/cpu.c               |  9 ++++++++-
+>   target/loongarch/kvm/kvm.c           | 15 +++++++++++++++
+>   target/loongarch/trace-events        |  1 +
+>   4 files changed, 40 insertions(+), 1 deletion(-)
+>   create mode 100644 target/loongarch/kvm/kvm_loongarch.h
+>
+> diff --git a/target/loongarch/kvm/kvm_loongarch.h b/target/loongarch/kvm/kvm_loongarch.h
+> new file mode 100644
+> index 0000000000..d945b6bb82
+> --- /dev/null
+> +++ b/target/loongarch/kvm/kvm_loongarch.h
+> @@ -0,0 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * QEMU LoongArch kvm interface
+> + *
+> + * Copyright (c) 2023 Loongson Technology Corporation Limited
+> + */
+> +
+> +#include "cpu.h"
+> +
+> +#ifndef QEMU_KVM_LOONGARCH_H
+> +#define QEMU_KVM_LOONGARCH_H
+> +
+> +int  kvm_loongarch_set_interrupt(LoongArchCPU *cpu, int irq, int level);
+> +void kvm_arch_reset_vcpu(CPULoongArchState *env);
+> +
+> +#endif
+> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+> index d9f8661cfd..d3a8a2f521 100644
+> --- a/target/loongarch/cpu.c
+> +++ b/target/loongarch/cpu.c
+> @@ -12,6 +12,7 @@
+>   #include "qemu/module.h"
+>   #include "sysemu/qtest.h"
+>   #include "sysemu/tcg.h"
+> +#include "sysemu/kvm.h"
+>   #include "exec/exec-all.h"
+>   #include "cpu.h"
+>   #include "internals.h"
+> @@ -21,6 +22,10 @@
+>   #include "sysemu/reset.h"
+>   #endif
+>   #include "vec.h"
+> +#ifdef CONFIG_KVM
+> +#include "kvm/kvm_loongarch.h"
 
-Would you mind changing MigrationState* into an event just like postcopy?
-We don't need to use migration_has_failed() etc., afaict three events
-should be enough for the existing four users, exactly like what postcopy
-does:
+This broken  tcg 'loongarch64-softmmu' build on X86 host, :-[
 
-  - MIG_EVENT_PRECOPY_SETUP
-  - MIG_EVENT_PRECOPY_DONE
-  - MIG_EVENT_PRECOPY_FAILED
+../target/loongarch/cpu.c: In function ‘loongarch_cpu_set_irq’:
+../target/loongarch/cpu.c:122:9: error: implicit declaration of function 
+‘kvm_loongarch_set_interrupt’ [-Werror=implicit-function-declaration]
+   122 |         kvm_loongarch_set_interrupt(cpu, irq, level);
+       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+../target/loongarch/cpu.c:122:9: error: nested extern declaration of 
+‘kvm_loongarch_set_interrupt’ [-Werror=nested-externs]
+../target/loongarch/cpu.c: In function ‘loongarch_cpu_reset_hold’:
+../target/loongarch/cpu.c:557:9: error: implicit declaration of function 
+‘kvm_arch_reset_vcpu’; did you mean ‘kvm_arch_init_vcpu’? 
+[-Werror=implicit-function-declaration]
+   557 |         kvm_arch_reset_vcpu(env);
+       |         ^~~~~~~~~~~~~~~~~~~
+       |         kvm_arch_init_vcpu
+../target/loongarch/cpu.c:557:9: error: nested extern declaration of 
+‘kvm_arch_reset_vcpu’ [-Werror=nested-externs]
+cc1: all warnings being treated as errors
 
-Merging postcopy will be indeed the cleanest.  I'm okay if you want to
-leave that for later, but if you'd do that together I'd appreciate that.
+I will move it out of  '#ifdef CONFIG_KVM'
 
-Thanks,
-
--- 
-Peter Xu
+Thanks.
+Song Gao
+> +#include <linux/kvm.h>
+> +#endif
+>   #ifdef CONFIG_TCG
+>   #include "exec/cpu_ldst.h"
+>   #include "tcg/tcg.h"
+> @@ -113,7 +118,9 @@ void loongarch_cpu_set_irq(void *opaque, int irq, int level)
+>           return;
+>       }
+>   
+> -    if (tcg_enabled()) {
+> +    if (kvm_enabled()) {
+> +        kvm_loongarch_set_interrupt(cpu, irq, level);
+> +    } else if (tcg_enabled()) {
+>           env->CSR_ESTAT = deposit64(env->CSR_ESTAT, irq, 1, level != 0);
+>           if (FIELD_EX64(env->CSR_ESTAT, CSR_ESTAT, IS)) {
+>               cpu_interrupt(cs, CPU_INTERRUPT_HARD);
+> diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+> index d2dab3fef4..bd33ec2114 100644
+> --- a/target/loongarch/kvm/kvm.c
+> +++ b/target/loongarch/kvm/kvm.c
+> @@ -748,6 +748,21 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
+>       return ret;
+>   }
+>   
+> +int kvm_loongarch_set_interrupt(LoongArchCPU *cpu, int irq, int level)
+> +{
+> +    struct kvm_interrupt intr;
+> +    CPUState *cs = CPU(cpu);
+> +
+> +    if (level) {
+> +        intr.irq = irq;
+> +    } else {
+> +        intr.irq = -irq;
+> +    }
+> +
+> +    trace_kvm_set_intr(irq, level);
+> +    return kvm_vcpu_ioctl(cs, KVM_INTERRUPT, &intr);
+> +}
+> +
+>   void kvm_arch_accel_class_init(ObjectClass *oc)
+>   {
+>   }
+> diff --git a/target/loongarch/trace-events b/target/loongarch/trace-events
+> index 021839880e..dea11edc0f 100644
+> --- a/target/loongarch/trace-events
+> +++ b/target/loongarch/trace-events
+> @@ -12,3 +12,4 @@ kvm_failed_put_counter(const char *msg) "Failed to put counter into KVM: %s"
+>   kvm_failed_get_cpucfg(const char *msg) "Failed to get cpucfg from KVM: %s"
+>   kvm_failed_put_cpucfg(const char *msg) "Failed to put cpucfg into KVM: %s"
+>   kvm_arch_handle_exit(int num) "kvm arch handle exit, the reason number: %d"
+> +kvm_set_intr(int irq, int level) "kvm set interrupt, irq num: %d, level: %d"
 
 
