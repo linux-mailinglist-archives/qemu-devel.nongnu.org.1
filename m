@@ -2,77 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B6582B2DF
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 17:25:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E98D82B2F5
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 17:29:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNxrP-0004Nq-3w; Thu, 11 Jan 2024 11:24:51 -0500
+	id 1rNxvJ-0005Uv-Oq; Thu, 11 Jan 2024 11:28:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNxrM-0004NT-L1
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:24:48 -0500
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNxrK-00018y-Tv
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:24:48 -0500
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-50e766937ddso6432118e87.3
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 08:24:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704990284; x=1705595084; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=iBi25ZUfbpHVLkBsSCP+3iFKheXkRA4Fy++onwN3ifw=;
- b=vzHgg568jXPN7bqv4EarFoXedwStlZc7oNsmv3AU8Ny4MZDdnLS4z2oMLsP9xQGT5I
- TlezR3S/vrik3jJaDFwSJe/jgWnZgy+7bEBPOcRr4r+2g1brWfRFIRIZ2tr6ECg1MOA2
- BxWYIjmpsXFXSa0EskwdGLoO9CNu6F/VXZPfnlWGgQlyrP9/H9sCzh1mq2rcMMlMQQwN
- yrgTIt+CZqeR5nsBYOKQOHN9rZtPc4spaqCZaa81InrmE/TyZDl9TrHw5j2LHbHnScQu
- 2v6qEf/px7H8x+ay4UEKH5dNqZLXWk59l6LgS9mCjBEhlLyyfHX1sjjr1prbt3EDHzWf
- DmnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704990284; x=1705595084;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iBi25ZUfbpHVLkBsSCP+3iFKheXkRA4Fy++onwN3ifw=;
- b=wH3kvp1/k/QQVqkcNd3u/pxH1Dhr0qlGw6TVtgz0MH4kNxIJztV36eYVRa9K5CPa/q
- bZIrrCeii9NKduoGZGnIaqe85yfagMgT1Uyyx2vHR6HUsYZwbyHYbsFUtzj6BuM4be2e
- AQpOaAHDJ9/er9P3FOBYsJc78OU8b3zIoG9jAEjGsemWwS6usY1/vQJ3KXOlSchYqNKQ
- KFWXjJPq8IbdlSRd93GuMmdublPcPWRjKLKN1lNamtybb/GaU3YATbBoT4ADeqlxeerx
- Cd4lBgueizFO4BPwHd97g95VuSQJrlOvF7Ae5OAQCMhysq9xaD8y/kv0ZCeHPvUFHBWa
- EP9A==
-X-Gm-Message-State: AOJu0YwuTv/cpctIrFlob/dzfLJGIE+eRn/R/jeR7+bmjMgWZX+Q8roD
- 3Z1g0KSW4b2zRH7ZgboTAD3qQuTGoLa26kaWx2JKZTFy75hMtA==
-X-Google-Smtp-Source: AGHT+IF2cBR0sXqbLEVTPCbkaE9pofFEnE9BaOzualgdeQ+Ov1MOYKDDKBvdFJxncZdrcWnNTqfY+w==
-X-Received: by 2002:a05:6512:3ca4:b0:50e:3812:c075 with SMTP id
- h36-20020a0565123ca400b0050e3812c075mr862736lfv.117.1704990284664; 
- Thu, 11 Jan 2024 08:24:44 -0800 (PST)
-Received: from m1x-phil.lan ([176.187.202.145])
- by smtp.gmail.com with ESMTPSA id
- l13-20020a1709065a8d00b00a298c766585sm756127ejq.57.2024.01.11.08.24.43
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Jan 2024 08:24:44 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] accel/tcg: Include missing headers to 'tb-jmp-cache.h'
-Date: Thu, 11 Jan 2024 17:24:42 +0100
-Message-ID: <20240111162442.43755-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rNxvF-0005U5-TK
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:28:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rNxvE-00037b-0O
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:28:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704990527;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wqdwlfedjKe1aWq06E6J7iyq8M1rLbfXY3zF5bNERo4=;
+ b=HTh+9nn07GcAxIAYeDgAluezIlI41GOH31V7d+icR/HabZw01BltXaKzFuy7ZnU1ilxvJU
+ wSFHbqv+jO+YRuG16cPebD0zkx1I2frLpuf8BjJuc0wAdb39spEeL8Betgj3500t8+6Lao
+ b6JM3liILx2mJp8rwy1pK7Vg262sNB4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-439-trft5rk-OEep2g9xzGinHw-1; Thu,
+ 11 Jan 2024 11:28:43 -0500
+X-MC-Unique: trft5rk-OEep2g9xzGinHw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 01881283780F;
+ Thu, 11 Jan 2024 16:28:43 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.193.196])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C839351D5;
+ Thu, 11 Jan 2024 16:28:42 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id A5926180079A; Thu, 11 Jan 2024 17:28:41 +0100 (CET)
+Date: Thu, 11 Jan 2024 17:28:41 +0100
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Igor Mammedov <imammedo@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-stable <qemu-stable@nongnu.org>
+Subject: Re: Re: [PULL 0/6] Firmware/edk2 20231213 patches
+Message-ID: <e2hpw77r6t2ge6h233cq75qdadou6koz62sfktcsrlc2gzeqnq@4ejyxysmmulo>
+References: <20231213105026.1944656-1-kraxel@redhat.com>
+ <y2kuootd3k2tqe2245zggbuusg2kaaqrxlvxfwy2wrcbdxg3cn@zgj6tl7gd4lp>
+ <CAFEAcA8H6kVNiSk6CEVun5KWQH-sqWxBKxZ9Rf7haQhZHEKiow@mail.gmail.com>
+ <CAFEAcA-sw2FNgTft0PYL=GW0JQhdRX9Zn0B6muUjC68nmVXHnA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA-sw2FNgTft0PYL=GW0JQhdRX9Zn0B6muUjC68nmVXHnA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,37 +85,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Due to missing headers, when including "tb-jmp-cache.h" we might get:
+On Thu, Jan 11, 2024 at 04:02:38PM +0000, Peter Maydell wrote:
+> On Thu, 11 Jan 2024 at 15:52, Peter Maydell <peter.maydell@linaro.org> wrote:
+> >
+> > On Thu, 11 Jan 2024 at 14:01, Gerd Hoffmann <kraxel@redhat.com> wrote:
+> > >
+> > > Ping.
+> > >
+> > > As expected this missed the 8.2 boat.  Now the devel tree is open again
+> > > and people are back from xmas + new year vacations, can this be picked
+> > > up for master and eventually 8.2-stable?
+> >
+> > I can queue it, sure. Do we need to respin it to add cc: qemu-stable
+> > tags, or can it be applied as-is ?
+> 
+> ...PS did you mean to cc qemu-stable, not the nonexistent edk2-stable
+> on this pullreq email?
 
-  accel/tcg/tb-jmp-cache.h:21:21: error: field ‘rcu’ has incomplete type
-     21 |     struct rcu_head rcu;
-        |                     ^~~
-  accel/tcg/tb-jmp-cache.h:24:9: error: unknown type name ‘vaddr’
-     24 |         vaddr pc;
-        |         ^~~~~
+Yes, Cc'ing qemu-stable was the intention, thanks for fixing it up.
 
-Add the missing "qemu/rcu.h" and "exec/cpu-common.h" headers.
+I'd leave it to the stable maintainer(s).  If they prefer a respin with
+Cc qemu-stable added to all patches I surely can do that.  If being
+notified with this reply is good enough I'm happy too.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- accel/tcg/tb-jmp-cache.h | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/accel/tcg/tb-jmp-cache.h b/accel/tcg/tb-jmp-cache.h
-index bb424c8a05..b13a02e45d 100644
---- a/accel/tcg/tb-jmp-cache.h
-+++ b/accel/tcg/tb-jmp-cache.h
-@@ -9,6 +9,9 @@
- #ifndef ACCEL_TCG_TB_JMP_CACHE_H
- #define ACCEL_TCG_TB_JMP_CACHE_H
- 
-+#include "qemu/rcu.h"
-+#include "exec/cpu-common.h"
-+
- #define TB_JMP_CACHE_BITS 12
- #define TB_JMP_CACHE_SIZE (1 << TB_JMP_CACHE_BITS)
- 
--- 
-2.41.0
+take care,
+  Gerd
 
 
