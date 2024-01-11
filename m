@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC39382AF15
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 14:01:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC53282AF17
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 14:01:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNugA-0003TY-L3; Thu, 11 Jan 2024 08:01:02 -0500
+	id 1rNugD-0003XT-6F; Thu, 11 Jan 2024 08:01:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rNufy-0003GD-9R
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:00:53 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1rNugA-0003Tq-2o
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:01:02 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rNufv-0002ud-NK
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:00:50 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1d50d0c98c3so36895705ad.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 05:00:44 -0800 (PST)
+ id 1rNug6-0002x3-9q
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:01:01 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1d420aaa2abso31943075ad.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 05:00:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704978043; x=1705582843; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1704978054; x=1705582854; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=rFg1dNzVPnTCsOdeKSTg9W97fq3ju3xEU4cGnUvmmQY=;
- b=pX1jYTeIIa99KP9XtBtGyCp+iqD0j12ZESCQ5cVtvv3yvVFe5Oa6QJJxRuiGSWXq46
- Ppj75JNvARsp5d9PcrpLb5C9+E5dgW322B1uw7Q1mEAA4SDzaBLR/NtHFdxlc/Xn46V7
- q92Ecii0qO02eJdis6VpWlffGdf4EmGw94pAjKIZhEwtMIcwzj5tbz0xuQOtf5AhVGZC
- XWURLDaNlyR0s7c1mCT/dmBNLjWLhAQpz5jiUejtQA/AGy67i8imDc/wk2+ltXQVSyvq
- DKSFCD0Eb+iu/+3cERERSxEHtNyS4SDErWzQtZmYaZxq5cYlIc1LdbmptlxDYS+yXNjD
- aX1A==
+ bh=2Y4ZPV7hFgduvDOqna7pksqq2gmS+aWZfjiiB9YjPPs=;
+ b=ExeAFhK6ZnA0JjgUaV+zlJmFRCGVSW7orFYGhXum6yDjK+OF+s3Q+mA5aiPBJefdlX
+ VO27bjR6lQSFZnI4PwwYWZIXjGE8iV4fgCcdcw+F2X45YA+aqVic1veT/UD4IJhGd81g
+ vxrblsfuZPy1WodvmrDIOnt0urTcOj5cG8mMPLHmr+PQ0BDe1nfCpveuTSar7TbC8V+u
+ RexVyfiDtsAxPiSEsyA7o6yqM+nvHDqXQySCMXcNORvX7BuxDsnwWROEbxHKnSeEKSHM
+ mB69gkf7gDPaccN0B/SHx3t5VSInNE6c91hw13t2IlY0CZFQeGc8s3f8iM0Dv3Y3CYim
+ Uk/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704978043; x=1705582843;
+ d=1e100.net; s=20230601; t=1704978054; x=1705582854;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rFg1dNzVPnTCsOdeKSTg9W97fq3ju3xEU4cGnUvmmQY=;
- b=aJdxxrTPoHaUCHsYwlm/eKwjdPVZpsEBB6/LsYCur2/NVIIPrkqV64WDb5uxwxeQD6
- DG3g4y9PNS5XOwislU8Gli/oyHHlLsy8iM7M6Xf/N6kgZlLrueygt6JBgROZkYzS2w3e
- NDEQcP5W2v7iqF+z9CC1KpiFptnKMglqeo50pc4egzWGOd+Bod0WT0Gf6PqAwZLrmtd7
- ZjDqTQcOvqNFcJeMPNisagQt5PpuuUQKB62Jg0DSUiT6HQ45io2SOqz4ev85ccpRAUvm
- ctA/bxNgRIzsLN7iI6Ydf6LbYHrozfrZzNinb2+JOvqE7cL0xxEqgPdy9Pi8C1B2df1P
- EPgw==
-X-Gm-Message-State: AOJu0YwK09PfCmtaNK4lO9TulQzcMvkV18bbY+hhmj61mP5oMebpmz+0
- XwWOGrGYEPEZPctVWjkNGUboltEaeNny8jbQD4z3BuDv9BOlRA==
-X-Google-Smtp-Source: AGHT+IHKq5uz9HJ7tGNRly4fQPUPZks7QHK7eRejUxuKSvk+CAZt0w+2McbJtV6c1U6lMxiSVend0g==
-X-Received: by 2002:a17:902:c40d:b0:1d0:acd4:e711 with SMTP id
- k13-20020a170902c40d00b001d0acd4e711mr1098588plk.15.1704978043272; 
- Thu, 11 Jan 2024 05:00:43 -0800 (PST)
+ bh=2Y4ZPV7hFgduvDOqna7pksqq2gmS+aWZfjiiB9YjPPs=;
+ b=IGo9lMNyg74iHBU4mdlX+/x/qvy4Rj/pWMmjr/0an+9RqWjGWdVrbIT41SrbrrrDds
+ wTqpGBYL5Xk63+Z5kExYk+GWQQtpVrWaCHldRlgDQ3BSkQaXLtmPNWZCkw1T18v7IHPJ
+ cB7dVsY/pozIhfq6KoXQE/wnjPwdrUGwGf7zEAZ9T/XDn65lGTCC8HZ6F+96/CzRkA8W
+ oda0BWg2nA1hL1vGFLD7x9lUu+At7XSlJJ4UeXyCPxgvIHuwyiwrB7KoL+TfZozExcJD
+ 4InoBnwUD+N9nKomifQ8nrp0gLO1SQFgannsCgh7+hR7H6rWeOYn0B07u6DxJaPzpSKD
+ QmzA==
+X-Gm-Message-State: AOJu0YzmPsUI8K/2pM51WB9UCgpUiPCOTc9zrkctVi/wx4B1rgHN5NtB
+ tOwY4rNPaXUxRlZGtILyirxgjpfN/DDB3A==
+X-Google-Smtp-Source: AGHT+IFnPdqOoOwgoHwKjEje9vCwXUzz0fzVImmJUC3efNHl1erJD1D6RgXaCQWhZhpTB77R5/n7Sg==
+X-Received: by 2002:a17:902:780e:b0:1d5:8ce6:73 with SMTP id
+ p14-20020a170902780e00b001d58ce60073mr466579pll.115.1704978053758; 
+ Thu, 11 Jan 2024 05:00:53 -0800 (PST)
 Received: from [192.168.68.110] ([152.234.123.64])
  by smtp.gmail.com with ESMTPSA id
- g11-20020a170902c98b00b001d4c97a2adcsm1115031plc.108.2024.01.11.05.00.38
+ g11-20020a170902c98b00b001d4c97a2adcsm1115031plc.108.2024.01.11.05.00.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 05:00:42 -0800 (PST)
-Message-ID: <cfee5451-89a8-444a-b0a1-ac2035a66922@ventanamicro.com>
-Date: Thu, 11 Jan 2024 10:00:38 -0300
+ Thu, 11 Jan 2024 05:00:53 -0800 (PST)
+Message-ID: <0ec3905b-0364-48fa-8145-b4ae8990507c@ventanamicro.com>
+Date: Thu, 11 Jan 2024 10:00:47 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] hw/core/cpu: Rename cpu_class_init() to include
- 'common'
+Subject: Re: [PATCH 5/5] target/riscv: Rename tcg_cpu_FOO() to include 'riscv'
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -77,20 +76,20 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Eric Farman
  <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>
 References: <20240111120221.35072-1-philmd@linaro.org>
- <20240111120221.35072-3-philmd@linaro.org>
+ <20240111120221.35072-6-philmd@linaro.org>
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240111120221.35072-3-philmd@linaro.org>
+In-Reply-To: <20240111120221.35072-6-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,7 +108,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 1/11/24 09:02, Philippe Mathieu-Daudé wrote:
-> cpu_class_init() is common, so rename it as cpu_common_class_init()
+> The tcg_cpu_FOO() names are riscv specific, so rename
+> them as riscv_tcg_cpu_FOO() (as other names in this file)
 > to ease navigating the code.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
@@ -117,29 +117,80 @@ On 1/11/24 09:02, Philippe Mathieu-Daudé wrote:
 
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
->   hw/core/cpu-common.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   target/riscv/tcg/tcg-cpu.c | 28 ++++++++++++++--------------
+>   1 file changed, 14 insertions(+), 14 deletions(-)
 > 
-> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-> index 3ccfe882e2..67db07741d 100644
-> --- a/hw/core/cpu-common.c
-> +++ b/hw/core/cpu-common.c
-> @@ -273,7 +273,7 @@ static int64_t cpu_common_get_arch_id(CPUState *cpu)
->       return cpu->cpu_index;
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index 14133ff665..994ca1cdf9 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -929,7 +929,7 @@ static bool riscv_cpu_is_vendor(Object *cpu_obj)
+>    *   -> cpu_exec_realizefn()
+>    *      -> tcg_cpu_realize() (via accel_cpu_common_realize())
+>    */
+> -static bool tcg_cpu_realize(CPUState *cs, Error **errp)
+> +static bool riscv_tcg_cpu_realize(CPUState *cs, Error **errp)
+>   {
+>       RISCVCPU *cpu = RISCV_CPU(cs);
+>       Error *local_err = NULL;
+> @@ -1372,7 +1372,7 @@ static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
+>       return object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_MAX) != NULL;
 >   }
 >   
-> -static void cpu_class_init(ObjectClass *klass, void *data)
-> +static void cpu_common_class_init(ObjectClass *klass, void *data)
+> -static void tcg_cpu_instance_init(CPUState *cs)
+> +static void riscv_tcg_cpu_instance_init(CPUState *cs)
 >   {
->       DeviceClass *dc = DEVICE_CLASS(klass);
->       ResettableClass *rc = RESETTABLE_CLASS(klass);
-> @@ -304,7 +304,7 @@ static const TypeInfo cpu_type_info = {
->       .instance_finalize = cpu_common_finalize,
+>       RISCVCPU *cpu = RISCV_CPU(cs);
+>       Object *obj = OBJECT(cpu);
+> @@ -1386,7 +1386,7 @@ static void tcg_cpu_instance_init(CPUState *cs)
+>       }
+>   }
+>   
+> -static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
+> +static void riscv_tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
+>   {
+>       /*
+>        * All cpus use the same set of operations.
+> @@ -1394,30 +1394,30 @@ static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
+>       cc->tcg_ops = &riscv_tcg_ops;
+>   }
+>   
+> -static void tcg_cpu_class_init(CPUClass *cc)
+> +static void riscv_tcg_cpu_class_init(CPUClass *cc)
+>   {
+> -    cc->init_accel_cpu = tcg_cpu_init_ops;
+> +    cc->init_accel_cpu = riscv_tcg_cpu_init_ops;
+>   }
+>   
+> -static void tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
+> +static void riscv_tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
+>   {
+>       AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
+>   
+> -    acc->cpu_class_init = tcg_cpu_class_init;
+> -    acc->cpu_instance_init = tcg_cpu_instance_init;
+> -    acc->cpu_target_realize = tcg_cpu_realize;
+> +    acc->cpu_class_init = riscv_tcg_cpu_class_init;
+> +    acc->cpu_instance_init = riscv_tcg_cpu_instance_init;
+> +    acc->cpu_target_realize = riscv_tcg_cpu_realize;
+>   }
+>   
+> -static const TypeInfo tcg_cpu_accel_type_info = {
+> +static const TypeInfo riscv_tcg_cpu_accel_type_info = {
+>       .name = ACCEL_CPU_NAME("tcg"),
+>   
+>       .parent = TYPE_ACCEL_CPU,
+> -    .class_init = tcg_cpu_accel_class_init,
+> +    .class_init = riscv_tcg_cpu_accel_class_init,
 >       .abstract = true,
->       .class_size = sizeof(CPUClass),
-> -    .class_init = cpu_class_init,
-> +    .class_init = cpu_common_class_init,
 >   };
 >   
->   static void cpu_register_types(void)
+> -static void tcg_cpu_accel_register_types(void)
+> +static void riscv_tcg_cpu_accel_register_types(void)
+>   {
+> -    type_register_static(&tcg_cpu_accel_type_info);
+> +    type_register_static(&riscv_tcg_cpu_accel_type_info);
+>   }
+> -type_init(tcg_cpu_accel_register_types);
+> +type_init(riscv_tcg_cpu_accel_register_types);
 
