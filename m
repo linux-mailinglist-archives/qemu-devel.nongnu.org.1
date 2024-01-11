@@ -2,139 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63CC82A806
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 08:09:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEDD82A807
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 08:09:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNpBJ-0007nY-EW; Thu, 11 Jan 2024 02:08:49 -0500
+	id 1rNpC7-0008SK-UD; Thu, 11 Jan 2024 02:09:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNpBH-0007nK-DY
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:08:47 -0500
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rNpC6-0008SB-FU
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:09:38 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNpBF-000660-EP
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:08:46 -0500
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rNpC4-0006cE-Dw
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:09:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704956923;
+ s=mimecast20190719; t=1704956975;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=rnVEHGxyJRtUiMM7F5Hf6q6XEGztF5YoA9q0bBjTpG0=;
- b=RQv4135022CXSVSVBX4pzspVdNmtAswv415WpyBRwa7u48tDV7aT831TJPuaSx45Mjb7Ga
- E86iwOFxo15Gaes/dU6GsNc9+3HL9wUSjpIcLoKLeFUOZFMkBA6fp8W2XK5ozmke1SQs6M
- HeanpJvQ7Yszq1LHsAvZ3hWI0BHHheE=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=19S4R4DOVv498gkh5yT5SIY8549tdDVSJe6kpxp7huc=;
+ b=Bm+BCuI2ANGycmi4r4MGFthu64VdEVKwEbPP+lHYj3cmfnpZWE648s8ZT4m25v1O/Yd9Bs
+ XEJZfS11ZiWw1hEcprh7drOFSuRtn6XaJGIApNm8WUJjlbwpp4uvdn2NjpEl6aqgjO1RW5
+ HoQfx+GCLEuTbtniEPgDpuh/lbsgNMI=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-660-cLCAh8nfMNWgjaP7RVAApw-1; Thu, 11 Jan 2024 02:08:41 -0500
-X-MC-Unique: cLCAh8nfMNWgjaP7RVAApw-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a280f442420so234001766b.3
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 23:08:41 -0800 (PST)
+ us-mta-690-TO_kkBsVOXGDLBI85zzINg-1; Thu, 11 Jan 2024 02:09:33 -0500
+X-MC-Unique: TO_kkBsVOXGDLBI85zzINg-1
+Received: by mail-oi1-f199.google.com with SMTP id
+ 5614622812f47-3bd24849608so6879499b6e.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 23:09:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704956920; x=1705561720;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rnVEHGxyJRtUiMM7F5Hf6q6XEGztF5YoA9q0bBjTpG0=;
- b=b3ICmbkfwvHow2RmssKNBp5XUb4gcbOY3iKi8/s12nglMFa3zqqQaJzG6EE+pbRZSh
- KHocqxNgZlgR+VH/el7Tq8tBxwjRWtA7kyrbgc2ITDCWuRMq60co3gKj4DjuHwne+rKU
- siqKPi2yusXorG5HC41boPt9F+y73GpVF/TJAySqTDlmU3U4MgZbYDkavvihLd1qVQXM
- 5MqFwG3lvjoxzzXTEDNJkv6dTu5NwyieWayl5ek1uMY5xXIxM6rIV9C9k5hdaQAwjH/F
- o+i1IQkvCYIkOjtiaAzHMI+QtzS/fznj0XW80GraeK0hAWfJs42iuvIPDxeq/9+eZCN4
- oNPQ==
-X-Gm-Message-State: AOJu0YwLVkwXKGF4rVd9QYda/lex2BLSkIoHu5dfbNILxbcRdB562ZEk
- 6FzYvHJwQMonGvDinywvrRBIh+GeFfIj7p8MY9mKDP4qi4/G8HIM/PGBwurwfy8Fo1mz9fvNwH1
- MnQBvk/bA9GGE4AjGBXVjukU=
-X-Received: by 2002:a17:906:b797:b0:a2c:34e8:5526 with SMTP id
- dt23-20020a170906b79700b00a2c34e85526mr336637ejb.120.1704956920718; 
- Wed, 10 Jan 2024 23:08:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHvosmKNXd9YhLZDM5tTYeXh0a7YJztxdDDaFpslsjlmJveAkozd6pUybvN/ShQW9b6QL1zDw==
-X-Received: by 2002:a17:906:b797:b0:a2c:34e8:5526 with SMTP id
- dt23-20020a170906b79700b00a2c34e85526mr336632ejb.120.1704956920452; 
- Wed, 10 Jan 2024 23:08:40 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-176-232.web.vodafone.de.
- [109.43.176.232]) by smtp.gmail.com with ESMTPSA id
- bt16-20020a170906b15000b00a2ada87f6a1sm232139ejb.90.2024.01.10.23.08.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Jan 2024 23:08:40 -0800 (PST)
-Message-ID: <3d30c1b6-1de1-418e-80f6-3d693375142a@redhat.com>
-Date: Thu, 11 Jan 2024 08:08:37 +0100
+ d=1e100.net; s=20230601; t=1704956972; x=1705561772;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=19S4R4DOVv498gkh5yT5SIY8549tdDVSJe6kpxp7huc=;
+ b=nobqG963YsSz0WIgCg51U/GbgmMHAqCYIQaa66SP0UDhcrpVEY0fM/oB+l0Zo3Yks7
+ rN06fkg54P15EqFmNPF/IABqlcM/4au/gWNmTNGwyZRLbQ/WOPdUyjjqmEyidCnTCur9
+ J1QXvqdfJqbCHs7uTULhlVkgVGtRHWVNlm6znMBxUdZPjB6A7RjvvAeSOFQ41qIdCS5i
+ 0juGOfjvN2BDJkCGZ8ydBamrT33nWZJ3obKgePVdSelcOb7vUKau/0CR7rBU2pTRjigy
+ PizziSyGQfPP4BpMSYAEcxTnX6/OF+N2jMI+PjXM4AiTDTAK/Qef6k7mbiMWwco9OWCT
+ BjRg==
+X-Gm-Message-State: AOJu0YyFcOziO1UEQmssKhSUIG7meK/+i4fviKpHPCrTBsWv/08Ngz5h
+ R/SfzFdVza8Cf2cHkGWsCqFx5xnyuD/QzBftsaS19GUM4P8qtx0C4Ba6FO1H/ZfJLdA1H8kxViB
+ Ab4XSwd5Ynuew+Sf4uolxnd4UNcvUx3Ofvm5enBQ=
+X-Received: by 2002:a05:6808:2112:b0:3bd:4838:527d with SMTP id
+ r18-20020a056808211200b003bd4838527dmr975347oiw.46.1704956972337; 
+ Wed, 10 Jan 2024 23:09:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG++0jmgOqwQrvC/lP0i8QlPhgmFBtU7iWcxJ7/xyvpywwYaTqFbXNZRa6laUc1Roe1QVDdUUdmKkxR0Fr4tGg=
+X-Received: by 2002:a05:6808:2112:b0:3bd:4838:527d with SMTP id
+ r18-20020a056808211200b003bd4838527dmr975340oiw.46.1704956972141; Wed, 10 Jan
+ 2024 23:09:32 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] gitlab: Introduce Loongarch64 runner
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Zhiguo Wu <wuzhiguo@loongson.cn>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Beraldo Leal <bleal@redhat.com>,
- WANG Xuerui <git@xen0n.name>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Xianglai Li <lixianglai@loongson.cn>,
- Tianrui Zhao <zhaotianrui@loongson.cn>
-References: <20240102172239.69452-1-philmd@linaro.org>
- <20240102172239.69452-2-philmd@linaro.org>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240102172239.69452-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-6-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-6-git-send-email-si-wei.liu@oracle.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Thu, 11 Jan 2024 15:09:20 +0800
+Message-ID: <CACGkMEtVDF-qDoEeq9VNN1ooRKvJ9VF+MsGZTd=NXdt4_Chnhw@mail.gmail.com>
+Subject: Re: [PATCH 05/40] vdpa: populate desc_group from net_vhost_vdpa_init
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
+ leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
+ jonah.palmer@oracle.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -150,63 +97,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 02/01/2024 18.22, Philippe Mathieu-Daudé wrote:
-> Full build config to run CI tests on a Loongarch64 host.
-> 
-> Forks might enable this by setting LOONGARCH64_RUNNER_AVAILABLE
-> in their CI namespace settings, see:
-> https://www.qemu.org/docs/master/devel/ci.html#maintainer-controlled-job-variables
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Fri, Dec 8, 2023 at 2:50=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
+rote:
+>
+> Add the desc_group field to struct vhost_vdpa, and get it
+> populated when the corresponding vq is initialized at
+> net_vhost_vdpa_init. If the vq does not have descriptor
+> group capability, or it doesn't have a dedicated ASID
+> group to host descriptors other than the data buffers,
+> desc_group will be set to a negative value -1.
+>
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 > ---
->   docs/devel/ci-jobs.rst.inc                    |  6 ++++++
->   .gitlab-ci.d/custom-runners.yml               |  1 +
->   .../openeuler-22.03-loongarch64.yml           | 21 +++++++++++++++++++
->   3 files changed, 28 insertions(+)
->   create mode 100644 .gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml
-> 
-...
-> diff --git a/.gitlab-ci.d/custom-runners.yml b/.gitlab-ci.d/custom-runners.yml
-> index 8e5b9500f4..152ace4492 100644
-> --- a/.gitlab-ci.d/custom-runners.yml
-> +++ b/.gitlab-ci.d/custom-runners.yml
-> @@ -32,3 +32,4 @@ include:
->     - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch64.yml'
->     - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch32.yml'
->     - local: '/.gitlab-ci.d/custom-runners/centos-stream-8-x86_64.yml'
-> +  - local: '/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml'
-> diff --git a/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml b/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml
-> new file mode 100644
-> index 0000000000..86d18f820e
-> --- /dev/null
-> +++ b/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml
-> @@ -0,0 +1,21 @@
-> +openeuler-22.03-loongarch64-all:
-> + extends: .custom_runner_template
-> + needs: []
-> + stage: build
-> + tags:
-> + - oe2203
-> + - loongarch64
-> + rules:
-> + - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-> +   when: manual
-> +   allow_failure: true
-> + - if: "$LOONGARCH64_RUNNER_AVAILABLE"
-> +   when: manual
-> +   allow_failure: true
-> + script:
-> + - mkdir build
-> + - cd build
-> + - ../configure
-> +   || { cat config.log meson-logs/meson-log.txt; exit 1; }
-> + - make --output-sync -j`nproc --ignore=40`
-> + - make --output-sync -j`nproc --ignore=40` check
+>  include/hw/virtio/vhost-vdpa.h |  1 +
+>  net/vhost-vdpa.c               | 15 +++++++++++++--
+>  2 files changed, 14 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdp=
+a.h
+> index 6533ad2..63493ff 100644
+> --- a/include/hw/virtio/vhost-vdpa.h
+> +++ b/include/hw/virtio/vhost-vdpa.h
+> @@ -87,6 +87,7 @@ typedef struct vhost_vdpa {
+>      Error *migration_blocker;
+>      VhostVDPAHostNotifier notifier[VIRTIO_QUEUE_MAX];
+>      IOMMUNotifier n;
+> +    int64_t desc_group;
+>  } VhostVDPA;
+>
+>  int vhost_vdpa_get_iova_range(int fd, struct vhost_vdpa_iova_range *iova=
+_range);
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index cb5705d..1a738b2 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -1855,11 +1855,22 @@ static NetClientState *net_vhost_vdpa_init(NetCli=
+entState *peer,
+>
+>      ret =3D vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index,=
+ nvqs);
+>      if (ret) {
+> -        qemu_del_net_client(nc);
+> -        return NULL;
+> +        goto err;
 
-Does this system really have more than 40 CPU threads? Or is this a 
-copy-n-past from one of the other scripts? In the latter case, I'd suggest 
-to adjust the --ignore=40 to a more reasonable value.
+This part of introducing the "err" label looks more like a cleanup.
 
-  Thomas
+Others look good.
+
+Thanks
+
+>      }
+>
+> +    if (is_datapath) {
+> +        ret =3D vhost_vdpa_probe_desc_group(vdpa_device_fd, features,
+> +                                          0, &desc_group, errp);
+> +        if (unlikely(ret < 0)) {
+> +            goto err;
+> +        }
+> +    }
+> +    s->vhost_vdpa.desc_group =3D desc_group;
+>      return nc;
+> +
+> +err:
+> +    qemu_del_net_client(nc);
+> +    return NULL;
+>  }
+>
+>  static int vhost_vdpa_get_features(int fd, uint64_t *features, Error **e=
+rrp)
+> --
+> 1.8.3.1
+>
 
 
