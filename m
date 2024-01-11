@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1582A82A686
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 04:34:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D7C82A6A8
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 04:52:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNloJ-0002gO-CT; Wed, 10 Jan 2024 22:32:51 -0500
+	id 1rNm6K-0007aP-18; Wed, 10 Jan 2024 22:51:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rNloH-0002gG-Si
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 22:32:49 -0500
+ id 1rNm6H-0007a2-8v
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 22:51:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rNloF-0005sv-Qy
- for qemu-devel@nongnu.org; Wed, 10 Jan 2024 22:32:49 -0500
+ id 1rNm6F-0000QD-PM
+ for qemu-devel@nongnu.org; Wed, 10 Jan 2024 22:51:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704943966;
+ s=mimecast20190719; t=1704945082;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wMxY1+yflmEV4B4lDl46nS63zCWBLJbCY22RoPFVzEs=;
- b=DFifpiC9lco6OCccb8zkPSe9jKOIDkKccHBfLDzPBRW6DT7SkzRpwfbBD+ZqfZ9HpzFQOj
- y87/kSBZnaJZIGOEvm3HLMuKtqYB8DoAZqazXJHBpzKQP+KDg8S3VksIoJrjH0eUrLJag6
- 7cldtmj129G9PiWWQXPC+ily2R0d+Ts=
+ bh=0dHqlWi3iRIcbMuQ+n+oquRbuSL8vxCdRuIe5b54cNw=;
+ b=d/U4203epVC/+scgSOiBVozTLnQiLLP8IS8VR+aLHW1Kd0dd1wF9AvHDh001m4X5Rc+ZDA
+ a+5AA0nkRRpr1MTsJ5Iphjntp79cXGelFKpJxswF98pvL5w66ixoMT2B7Mk2+3Gz1XKnCR
+ yoQ6xP4TVwcFXrx5AJGbNKI9D91bytY=
 Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
  [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-393-fI4Sr1XzNwW4ttjxCO0TgQ-1; Wed, 10 Jan 2024 22:32:44 -0500
-X-MC-Unique: fI4Sr1XzNwW4ttjxCO0TgQ-1
+ us-mta-523-bvZzsvZkOBWoPeDAeMGcKg-1; Wed, 10 Jan 2024 22:51:20 -0500
+X-MC-Unique: bvZzsvZkOBWoPeDAeMGcKg-1
 Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-6d9b0c58e39so4758987b3a.0
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 19:32:44 -0800 (PST)
+ d2e1a72fcca58-6d9fc850ddbso4911918b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 19:51:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704943963; x=1705548763;
+ d=1e100.net; s=20230601; t=1704945079; x=1705549879;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wMxY1+yflmEV4B4lDl46nS63zCWBLJbCY22RoPFVzEs=;
- b=IzIKYLmoKdv20JvrUGskOE1/+wICh17rv6C4CtnuOBetvJe9kxsXeU0tH3rbAPzBI8
- S60Hx9ND90+qSBNO93+uQ4D06KF4HtB1YfrNgbwBku+WNj7qcRWrs0mSKCFT8f+0dwwj
- LoSPQLmRh6jhNSphCEUZJlnUkfI7W/vTaX8Zpdtjqo6XByPdJ8ICxWC9PhsFP9Qs5J8X
- EyWa0Y71IFiFiOgzVwFCweOG5i6UFNPtxmADqXb+YEA2/q8GyTJLu6XcVyK60aNz6yT8
- nS805aiuw326zmE29yzp9nZb0ZhDowmRXyrUksO0Az6xuwWwUbU5jS9TNrZ7Kq1cyx/s
- zSnw==
-X-Gm-Message-State: AOJu0YyZVTYW9vW3l4gJ08d0vEPdicj5I6CRcXJFbw1o1WtIq0mN9Ei9
- aWz8XUtH4YPRkaByvaRg43HkzBbs9yqJJOZ9JELpXwn3ffBdVsxkSOuOWijeUctr2QsF50YQGTc
- FpoU+FYpWif5UfxzSM94GqLmHumYl5patL6C8hME=
-X-Received: by 2002:a05:6a00:1d8f:b0:6d9:b5ce:f17e with SMTP id
- z15-20020a056a001d8f00b006d9b5cef17emr643317pfw.5.1704943963542; 
- Wed, 10 Jan 2024 19:32:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEF9GwSLcAAAHxbYwXXNz9twVL3Nqd8Vc84WaVGac0s2WnuM/3JYfKBb1L8kFf7UiD7Cfb8RkCWl1PO9e40V44=
-X-Received: by 2002:a05:6a00:1d8f:b0:6d9:b5ce:f17e with SMTP id
- z15-20020a056a001d8f00b006d9b5cef17emr643312pfw.5.1704943963307; Wed, 10 Jan
- 2024 19:32:43 -0800 (PST)
+ bh=0dHqlWi3iRIcbMuQ+n+oquRbuSL8vxCdRuIe5b54cNw=;
+ b=Yl5sI6+bfbllWOI5/ePV0bmI1ND+qeoxNZlXHUMjgOmAQzFVFZsMmMI57frWgwPehy
+ CvxSFNxT+N0x0GRGFKjCBH82yDY6pLineFtAqFNM3z0fr2Q8/cnwRKFeaOm8rSviTbv7
+ swXz8MbvDV9fEkZBk517Rgk4N+8AEOhG4z2mkhDlvslMMpt8ypShaeNcuYyg/YieH+Ot
+ z+aI84G7Te1mSkuMLQBKt8yWuvYSXntPVOA3xfqc9bzGg//B7GQqHModtS5RmVhI+B16
+ vhKDooJ+pqsNBC8WIfEWQqHlAbMz8UQZjjPrLyyr/kTu7qRKpYfL43AItIRA5K8/Vcze
+ cHSQ==
+X-Gm-Message-State: AOJu0YwP/Q7f8t9YKl91MVAAJQTSXJVToLbw5PhOSvnLr+MplwcLhS52
+ uEUkeV1P53S18goIl06ll0OfdVMEhaiClUG+8swcSVS8zEvX308RzRrLy7Ao9g0rkvzSQ8ERWLu
+ SPUw+nk56OyqEMicXejxl8rBKo9QaMZk7xpH6cS0=
+X-Received: by 2002:a05:6a20:9781:b0:199:c09d:3717 with SMTP id
+ hx1-20020a056a20978100b00199c09d3717mr477698pzc.125.1704945079314; 
+ Wed, 10 Jan 2024 19:51:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFxBM0bohkDPFd270IE5MNDpcabiN+6VEVnosm8KX+pnIqRdwUgJfE9fYo//cgIkAVleHe2JhIgYX623XSbqiw=
+X-Received: by 2002:a05:6a20:9781:b0:199:c09d:3717 with SMTP id
+ hx1-20020a056a20978100b00199c09d3717mr477684pzc.125.1704945078991; Wed, 10
+ Jan 2024 19:51:18 -0800 (PST)
 MIME-Version: 1.0
 References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-2-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-2-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-3-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-3-git-send-email-si-wei.liu@oracle.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 11 Jan 2024 11:32:32 +0800
-Message-ID: <CACGkMEsn=dibiuav8RKHYEWn6CrXPL2PxSyNqsrtj-k6Z0WhmA@mail.gmail.com>
-Subject: Re: [PATCH 01/40] linux-headers: add vhost_types.h and vhost.h
+Date: Thu, 11 Jan 2024 11:51:07 +0800
+Message-ID: <CACGkMEsoKWLYDcVN57Cpe4sBHwk22JL+1RU7=+nHsJZDu7f0QA@mail.gmail.com>
+Subject: Re: [PATCH 02/40] vdpa: add vhost_vdpa_get_vring_desc_group
 To: Si-Wei Liu <si-wei.liu@oracle.com>
 Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
  leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
@@ -100,61 +100,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Fri, Dec 8, 2023 at 2:50=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
 rote:
 >
+> Internal API to get the descriptor group index for a specific virtqueue
+> through the VHOST_VDPA_GET_VRING_DESC_GROUP ioctl.
+>
 > Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 
-It's better to document which version did this commit sync to.
+Acked-by: Jason Wang <jasowang@redhat.com>
 
 Thanks
 
 > ---
->  include/standard-headers/linux/vhost_types.h | 13 +++++++++++++
->  linux-headers/linux/vhost.h                  |  9 +++++++++
->  2 files changed, 22 insertions(+)
+>  net/vhost-vdpa.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
 >
-> diff --git a/include/standard-headers/linux/vhost_types.h b/include/stand=
-ard-headers/linux/vhost_types.h
-> index 5ad07e1..c39199b 100644
-> --- a/include/standard-headers/linux/vhost_types.h
-> +++ b/include/standard-headers/linux/vhost_types.h
-> @@ -185,5 +185,18 @@ struct vhost_vdpa_iova_range {
->   * DRIVER_OK
->   */
->  #define VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK  0x6
-> +/* Device can be resumed */
-> +#define VHOST_BACKEND_F_RESUME  0x5
-> +/* Device supports the driver enabling virtqueues both before and after
-> + * DRIVER_OK
-> + */
-> +#define VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK  0x6
-> +/* Device may expose the virtqueue's descriptor area, driver area and
-> + * device area to a different group for ASID binding than where its
-> + * buffers may reside. Requires VHOST_BACKEND_F_IOTLB_ASID.
-> + */
-> +#define VHOST_BACKEND_F_DESC_ASID    0x7
-> +/* IOTLB don't flush memory mapping across device reset */
-> +#define VHOST_BACKEND_F_IOTLB_PERSIST  0x8
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 90f4128..887c329 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -471,6 +471,25 @@ static int64_t vhost_vdpa_get_vring_group(int device=
+_fd, unsigned vq_index,
+>      return state.num;
+>  }
 >
->  #endif
-> diff --git a/linux-headers/linux/vhost.h b/linux-headers/linux/vhost.h
-> index f5c48b6..c61c687 100644
-> --- a/linux-headers/linux/vhost.h
-> +++ b/linux-headers/linux/vhost.h
-> @@ -219,4 +219,13 @@
->   */
->  #define VHOST_VDPA_RESUME              _IO(VHOST_VIRTIO, 0x7E)
->
-> +/* Get the dedicated group for the descriptor table of a virtqueue:
-> + * read index, write group in num.
-> + * The virtqueue index is stored in the index field of vhost_vring_state=
-.
-> + * The group id for the descriptor table of this specific virtqueue
-> + * is returned via num field of vhost_vring_state.
-> + */
-> +#define VHOST_VDPA_GET_VRING_DESC_GROUP        _IOWR(VHOST_VIRTIO, 0x7F,=
-       \
-> +                                             struct vhost_vring_state)
+> +static int64_t vhost_vdpa_get_vring_desc_group(int device_fd,
+> +                                               unsigned vq_index,
+> +                                               Error **errp)
+> +{
+> +    struct vhost_vring_state state =3D {
+> +        .index =3D vq_index,
+> +    };
+> +    int r =3D ioctl(device_fd, VHOST_VDPA_GET_VRING_DESC_GROUP, &state);
 > +
->  #endif
+> +    if (unlikely(r < 0)) {
+> +        r =3D -errno;
+> +        error_setg_errno(errp, errno, "Cannot get VQ %u descriptor group=
+",
+> +                         vq_index);
+> +        return r;
+> +    }
+> +
+> +    return state.num;
+> +}
+> +
+>  static int vhost_vdpa_set_address_space_id(struct vhost_vdpa *v,
+>                                             unsigned vq_group,
+>                                             unsigned asid_num)
 > --
 > 1.8.3.1
 >
