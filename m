@@ -2,142 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB02982B475
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 19:02:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07FE382B4D5
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 19:40:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNzMY-0005pP-Ja; Thu, 11 Jan 2024 13:01:06 -0500
+	id 1rNzx1-0002ZT-TT; Thu, 11 Jan 2024 13:38:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNzML-0005oN-Tl
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 13:00:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNzMD-0005dz-0I
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 13:00:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704996044;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=kh8stwKBgYn/rinhc5TuWZQrnBCBdvT1n8mHW2rR+6E=;
- b=EQ1X9a1boX7wE69Kvqh/qBIf8N0aikR6UH/12PeQDW11gv//IxItIK5RX/0OgM/wKROw/P
- q/HLNhEsgI6Wjd2fq2G6xUIo7rSnKBWQm2C4rOr0vDLG2OpBxGiPHyTohTHVepACjRlguq
- LM5OBjSd0SQ0n7lTMDlGWPqkG2/JTXE=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-659-rrmpG_2ZOTubJLeIpTcqNw-1; Thu, 11 Jan 2024 13:00:42 -0500
-X-MC-Unique: rrmpG_2ZOTubJLeIpTcqNw-1
-Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-5c65e666609so4609590a12.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 10:00:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704996041; x=1705600841;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kh8stwKBgYn/rinhc5TuWZQrnBCBdvT1n8mHW2rR+6E=;
- b=tZaTiLQjvDbdDjmleP11n0OBkwkkWvA45yn4x4NTGwHDJdUqBODxZ6jatSsDUrhJy+
- PHTQmF3tDJd+OuBZ3kfXBrFwvSzrGTwQM2k8R6PCerAsoIbEmns4534SZN3PvjysYaw7
- SAEo6HWufyldZm0Zv61jMa59JCTOMZ6Mty8ZBYS7RmJ5KN6EPyA8KjVRFcij5djHlnOO
- yonl///gayX0574myoJAroc+5uSkmPwntYDwc1o06dahejFkC5iN1vRsmtMBW3R8jEQD
- 77RFtp7bHYh1cdNvoyaJ7tCcJME5iEJ6zF8/EfOzY2uCWzVF6h42NBqdhMxdGWH2JHuT
- 8HTg==
-X-Gm-Message-State: AOJu0YwbGcqbUoeR8eF2EWgMiAO6SPw4hxoMK2GSkTfl3819Bjt9Ax0H
- TG5PU8PlfNL/tlMy0oYRmlsTAjfLML346qnvJzj5jCWAYnjKfLmu1cvPGO4TudtjvP28aK7WTBG
- krDHA6AHwGyyKiLiykwou0Ws=
-X-Received: by 2002:a05:6a20:a107:b0:19a:3785:474c with SMTP id
- q7-20020a056a20a10700b0019a3785474cmr269066pzk.47.1704996041548; 
- Thu, 11 Jan 2024 10:00:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHOHi0gIcdPFAANnMQ3UbL/TlFWu3uXL0qEoH0YcSWbg4UzL8gnMHTf0iSR1M2wxh/+Bq+SPw==
-X-Received: by 2002:a05:6a20:a107:b0:19a:3785:474c with SMTP id
- q7-20020a056a20a10700b0019a3785474cmr269038pzk.47.1704996041235; 
- Thu, 11 Jan 2024 10:00:41 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-176-232.web.vodafone.de.
- [109.43.176.232]) by smtp.gmail.com with ESMTPSA id
- du9-20020a056a002b4900b006da2b1e4fabsm1466871pfb.163.2024.01.11.10.00.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 10:00:40 -0800 (PST)
-Message-ID: <d8c66952-8e65-4fd8-8701-7b599e261b4b@redhat.com>
-Date: Thu, 11 Jan 2024 19:00:24 +0100
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rNzww-0002Z7-Ct
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 13:38:42 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rNzws-0006sp-Bs
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 13:38:41 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 50FFF220A4;
+ Thu, 11 Jan 2024 18:38:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1704998316; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YUu8rewE3FmY878ExJG0UOri5bVKsRz8zDfQxQJOziU=;
+ b=Cey6EdHzVX9w674DvPiYyi/Y0COTQTskTS7lXq+fOeD7Y/u+MScslJ86uY2iFwrmo/QOJE
+ yTT1O3oypa8ODGii9wDEexR3fcplpNzgHFpS51YYyZKk4aF6vCypd47Yc0bLlO2KGxRrzq
+ 1jJM0REw0PwoaU9PX8zwGPCfbCqL9p4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1704998316;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YUu8rewE3FmY878ExJG0UOri5bVKsRz8zDfQxQJOziU=;
+ b=wDxf/ZPEiG8DdiVTL/SIaOO6v0l3bzJ5AOogJjjxos6kptn+Iko0XO1R59d+/fw/u3AeLe
+ YxIQOj6vLvmialDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1704998316; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YUu8rewE3FmY878ExJG0UOri5bVKsRz8zDfQxQJOziU=;
+ b=Cey6EdHzVX9w674DvPiYyi/Y0COTQTskTS7lXq+fOeD7Y/u+MScslJ86uY2iFwrmo/QOJE
+ yTT1O3oypa8ODGii9wDEexR3fcplpNzgHFpS51YYyZKk4aF6vCypd47Yc0bLlO2KGxRrzq
+ 1jJM0REw0PwoaU9PX8zwGPCfbCqL9p4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1704998316;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YUu8rewE3FmY878ExJG0UOri5bVKsRz8zDfQxQJOziU=;
+ b=wDxf/ZPEiG8DdiVTL/SIaOO6v0l3bzJ5AOogJjjxos6kptn+Iko0XO1R59d+/fw/u3AeLe
+ YxIQOj6vLvmialDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AB16E132CF;
+ Thu, 11 Jan 2024 18:38:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 5gDWF6s1oGXudwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 11 Jan 2024 18:38:35 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com, Leonardo
+ Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
+Subject: Re: [RFC PATCH v3 00/30] migration: File based migration with
+ multifd and fixed-ram
+In-Reply-To: <ZZ_IElHLW1D-lrec@x1n>
+References: <20231127202612.23012-1-farosas@suse.de> <ZZ_IElHLW1D-lrec@x1n>
+Date: Thu, 11 Jan 2024 15:38:31 -0300
+Message-ID: <87zfxbn2ag.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] hw/s390x: Rename cpu_class_init() to include 'sclp'
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Weiwei Li <liwei1518@gmail.com>, Alistair Francis
- <alistair.francis@wdc.com>, qemu-s390x@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>, David Hildenbrand <david@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-riscv@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
- qemu-trivial@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Eduardo Habkost <eduardo@habkost.net>, Laurent Vivier <laurent@vivier.eu>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Eric Farman
- <farman@linux.ibm.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20240111120221.35072-1-philmd@linaro.org>
- <20240111120221.35072-4-philmd@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240111120221.35072-4-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -11
-X-Spam_score: -1.2
-X-Spam_bar: -
-X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Cey6EdHz;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="wDxf/ZPE"
+X-Spamd-Result: default: False [-3.31 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[6];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 50FFF220A4
+X-Spam-Score: -3.31
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,39 +120,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/01/2024 13.02, Philippe Mathieu-Daudé wrote:
-> cpu_class_init() is specific to s390x SCLP, so rename
-> it as sclp_cpu_class_init() (as other names in this file)
-> to ease navigating the code.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/s390x/sclpcpu.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/s390x/sclpcpu.c b/hw/s390x/sclpcpu.c
-> index f2b1a4b037..fa79891f5a 100644
-> --- a/hw/s390x/sclpcpu.c
-> +++ b/hw/s390x/sclpcpu.c
-> @@ -73,7 +73,7 @@ static int read_event_data(SCLPEvent *event, EventBufferHeader *evt_buf_hdr,
->       return 1;
->   }
->   
-> -static void cpu_class_init(ObjectClass *oc, void *data)
-> +static void sclp_cpu_class_init(ObjectClass *oc, void *data)
->   {
->       SCLPEventClass *k = SCLP_EVENT_CLASS(oc);
->       DeviceClass *dc = DEVICE_CLASS(oc);
-> @@ -94,7 +94,7 @@ static const TypeInfo sclp_cpu_info = {
->       .name          = TYPE_SCLP_CPU_HOTPLUG,
->       .parent        = TYPE_SCLP_EVENT,
->       .instance_size = sizeof(SCLPEvent),
-> -    .class_init    = cpu_class_init,
-> +    .class_init    = sclp_cpu_class_init,
->       .class_size    = sizeof(SCLPEventClass),
->   };
->   
+Peter Xu <peterx@redhat.com> writes:
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+> On Mon, Nov 27, 2023 at 05:25:42PM -0300, Fabiano Rosas wrote:
+>> Hi,
+>> 
+>> In this v3:
+>> 
+>> Added support for the "file:/dev/fdset/" syntax to receive multiple
+>> file descriptors. This allows the management layer to open the
+>> migration file beforehand and pass the file descriptors to QEMU. We
+>> need more than one fd to be able to use O_DIRECT concurrently with
+>> unaligned writes.
+>> 
+>> Dropped the auto-pause capability. That discussion was kind of
+>> stuck. We can revisit optimizations for non-live scenarios once the
+>> series is more mature/merged.
+>> 
+>> Changed the multifd incoming side to use a more generic data structure
+>> instead of MultiFDPages_t. This allows multifd to restore the ram
+>> using larger chunks.
+>> 
+>> The rest are minor changes, I have noted them in the patches
+>> themselves.
+>
+> Fabiano,
+>
+> Could you always keep a section around in the cover letter (and also in the
+> upcoming doc file fixed-ram.rst) on the benefits of this feature?
+>
+> Please bare with me - I can start to ask silly questions.
+>
 
+That's fine. Ask away!
+
+> I thought it was about "keeping the snapshot file small".  But then when I
+> was thinking the use case, iiuc fixed-ram migration should always suggest
+> the user to stop the VM first before migration starts, then if the VM is
+> stopped the ultimate image shouldn't be large either.
+>
+> Or is it about performance only?  Where did I miss?
+
+Performance is the main benefit because fixed-ram enables the use of
+multifd for file migration which would otherwise not be
+parallelizable. To use multifd has been the direction for a while as you
+know, so it makes sense.
+
+A fast file migration is desirable because it could be used for
+snapshots with a stopped vm and also to replace the "exec:cat" hack
+(this last one I found out about recently, Juan mentioned it in this
+thread: https://lore.kernel.org/r/87cyx5ty26.fsf@secure.mitica).
+
+The size aspect is just an interesting property, not necessarily a
+reason. It's about having the file bounded to the RAM size. So a running
+guest would not produce a continuously growing file. This is in contrast
+with previous experiments (libvirt code) in using a proxy to put
+multifd-produced data into a file.
+
+I'll add this^ information in a more organized matter to the docs and
+cover letter. Let me know what else I need to clarify.
+
+Some notes about fixed-ram by itself:
+
+This series also enables fixed-ram without multifd, which would only
+take benefit of the size property. That is not part of our end goal
+which is to have multifd + fixed-ram, but I kept it nonetheless because
+it helps to debug/reason about the fixed-ram format without conflating
+matters with multifd.
+
+Fixed-ram without multifd also allows the file migration to take benefit
+of direct io because the data portion of the file (pages) will be
+written with alignment. This version of the series does not yet support
+it, but I have a simple patch for the next version.
+
+I also had a - perhaps naive - idea that we could merge the io code +
+fixed-ram first, to expedite things and later bring in the multifd and
+directio enhancements, but the review process ended up not being that
+modular.
 
