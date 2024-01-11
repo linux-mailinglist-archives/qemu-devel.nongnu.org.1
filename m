@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E4A82A92F
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:34:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 042F282A97B
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 09:51:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNqVf-0007VQ-2q; Thu, 11 Jan 2024 03:33:55 -0500
+	id 1rNqlo-0004sQ-7L; Thu, 11 Jan 2024 03:50:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rNqVc-0007Us-Q4
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:33:52 -0500
-Received: from mgamail.intel.com ([198.175.65.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rNqVb-00087J-2c
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:33:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1704962032; x=1736498032;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=larED5ocgA7/Xweo3DyaTLQk2Fdwzv9gml6jTTCp4KM=;
- b=SreU4JkdWBi0ipv4XA8rNXvqXK/cb5tn0uOUK0DKn4yfsbCnq0/CPPGN
- XtTXVodYNFGhDSUKrxrCD7VaBYI86MzJwTxFwTXTmN9M3TFsaBDuclNnG
- QWzCqJBEePnhT3iS0Y8Fj7U+zP2oR3pR+vEuszguqyuzj7ELu9eZfEFAc
- oZXLNWHM/g1/Hox70Q3eQjoTELqr8LnwZkFG6Kj/20HZ0jtTE7GbX23/m
- enxXb/jx2GowJluzu2XRj4fyrZRAXwm7QAXlXPBWsq3n9LYaUDE+ifQal
- 7/sA57L3fQouaQiLsJJDAZSFmXHz/VTV5ugZrHU8FP7qRr0HnlpQshh9f Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="12135454"
-X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; d="scan'208";a="12135454"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jan 2024 00:33:46 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="732142769"
-X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; d="scan'208";a="732142769"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orsmga003.jf.intel.com with ESMTP; 11 Jan 2024 00:33:41 -0800
-Date: Thu, 11 Jan 2024 16:46:37 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Robert Hoo <robert.hu@linux.intel.com>,
- Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH v7 03/16] i386/cpu: Consolidate the use of topo_info in
- cpu_x86_cpuid()
-Message-ID: <ZZ+q7d9+ZOwOum2F@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-4-zhao1.liu@linux.intel.com>
- <ddb911d0-6054-43ab-a763-242216b9c8d9@intel.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rNqlj-0004sI-7z
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:50:31 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rNqlf-0004yC-8y
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 03:50:30 -0500
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8Dx_ejMq59lKjAEAA--.4182S3;
+ Thu, 11 Jan 2024 16:50:21 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxC97Jq59lWF4PAA--.40483S3; 
+ Thu, 11 Jan 2024 16:50:19 +0800 (CST)
+Subject: Re: [NOTFORMERGE PATCH 2/2] gitlab: Add Loongarch64 KVM-only build
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org
+Cc: Zhiguo Wu <wuzhiguo@loongson.cn>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Bibo Mao <maobibo@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Beraldo Leal <bleal@redhat.com>, WANG Xuerui <git@xen0n.name>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Xianglai Li <lixianglai@loongson.cn>, Tianrui Zhao <zhaotianrui@loongson.cn>
+References: <20240102172239.69452-1-philmd@linaro.org>
+ <20240102172239.69452-3-philmd@linaro.org>
+ <dbc7f2c6-15c0-4d5a-abf7-8946ff2d03cb@redhat.com>
+ <4cc9ab90-c1bc-03d3-d82e-a763199fa029@loongson.cn>
+ <96bdddb5-e15c-469f-b74b-7e82049888f1@redhat.com>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <3766d853-8dc5-f455-e0ea-dd970c65a6c5@loongson.cn>
+Date: Thu, 11 Jan 2024 16:50:17 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ddb911d0-6054-43ab-a763-242216b9c8d9@intel.com>
-Received-SPF: none client-ip=198.175.65.10;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <96bdddb5-e15c-469f-b74b-7e82049888f1@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8CxC97Jq59lWF4PAA--.40483S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7GFyUKw18CrWkJF43Aw17twc_yoW8Jr4xpF
+ WxAFWjvFWqyF4vganrK34Uury2yr4IqayxWFn3AFy8G34Dtr9a9r40qay8WF9rX395Ww12
+ v3WSg3s5XF98JwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUPab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+ AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+ XVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+ 8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
+ r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_GFv_Wrylx2IqxVAqx4xG67
+ AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+ rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+ v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWx
+ JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUc3kuDU
+ UUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.07,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,78 +91,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Xiaoyao,
+在 2024/1/11 下午4:20, Thomas Huth 写道:
+> On 11/01/2024 08.37, gaosong wrote:
+>> Hi,
+>>
+>> 在 2024/1/11 下午3:10, Thomas Huth 写道:
+>>> On 02/01/2024 18.22, Philippe Mathieu-Daudé wrote:
+>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>> ---
+>>>> Used to test 
+>>>> https://lore.kernel.org/qemu-devel/20231228084051.3235354-1-zhaotianrui@loongson.cn/
+>>>
+>>> So why is it NOTFORMERGE ? Don't we want to test KVM-only builds for 
+>>> loongarch in the long run?
+>>>
+>>>  Thomas
+>>>
+>> I think we can drop this title.
+>>
+>> I tested this job by the latest loongarch kvm patches.  buf I find a 
+>> test-hmp check error.
+> Can you recreate the error manually? i.e. compile with configure 
+> --disable-tcg and then run:
+>
+>  V=2 QTEST_QEMU_BINARY=./qemu-system-loongarch64 tests/qtest/test-hmp
+>
+> That should likely provide you with a hint where it is crashing
+>
+>  Thomas
+Thank you,
 
-On Wed, Jan 10, 2024 at 07:52:38PM +0800, Xiaoyao Li wrote:
-> Date: Wed, 10 Jan 2024 19:52:38 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v7 03/16] i386/cpu: Consolidate the use of topo_info in
->  cpu_x86_cpuid()
-> 
-> On 1/8/2024 4:27 PM, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > In cpu_x86_cpuid(), there are many variables in representing the cpu
-> > topology, e.g., topo_info, cs->nr_cores/cs->nr_threads.
-> 
-> Please use comma instead of slash. cs->nr_cores/cs->nr_threads looks like
-> one variable.
+LoongArch no support these cmds  or some problems .
+-    "gva2gpa 0",
+-    "memsave 0 4096 \"/dev/null\"",
+-    "x /8i 0x100",
+-    "xp /16x 0",
 
-Okay.
+Could we disable these 4 cmds or the test_temp check?
+After we fix the cmds problems, we can enable them.
 
-> 
-> > Since the names of cs->nr_cores/cs->nr_threads does not accurately
-> > represent its meaning, the use of cs->nr_cores/cs->nr_threads is prone
-> > to confusion and mistakes.
-> > 
-> > And the structure X86CPUTopoInfo names its members clearly, thus the
-> > variable "topo_info" should be preferred.
-> > 
-> > In addition, in cpu_x86_cpuid(), to uniformly use the topology variable,
-> > replace env->dies with topo_info.dies_per_pkg as well.
-> > 
-> > Suggested-by: Robert Hoo <robert.hu@linux.intel.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > Tested-by: Babu Moger <babu.moger@amd.com>
-> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> > Changes since v3:
-> >   * Fix typo. (Babu)
-> > 
-> > Changes since v1:
-> >   * Extract cores_per_socket from the code block and use it as a local
-> >     variable for cpu_x86_cpuid(). (Yanan)
-> >   * Remove vcpus_per_socket variable and use cpus_per_pkg directly.
-> >     (Yanan)
-> >   * Replace env->dies with topo_info.dies_per_pkg in cpu_x86_cpuid().
-> > ---
-> >   target/i386/cpu.c | 31 ++++++++++++++++++-------------
-> >   1 file changed, 18 insertions(+), 13 deletions(-)
-> > 
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index c8d2a585723a..6f8fa772ecf8 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -6017,11 +6017,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >       uint32_t limit;
-> >       uint32_t signature[3];
-> >       X86CPUTopoInfo topo_info;
-> > +    uint32_t cores_per_pkg;
-> > +    uint32_t cpus_per_pkg;
-> 
-> I prefer to lps_per_pkg or threads_per_pkg.
-
-Okay, lp is not common in QEMU code, so I would change this to
-threads_per_pkg.
-
-> 
-> Other than it,
-> 
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-
-Thanks!
-
--Zhao
+Thanks.
+Song gao
 
 
