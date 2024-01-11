@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E346882A7E0
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 07:49:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A26D82A7F0
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 08:00:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNosL-0007MH-Qn; Thu, 11 Jan 2024 01:49:13 -0500
+	id 1rNp2T-0001KY-Eo; Thu, 11 Jan 2024 01:59:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNosH-0007Le-0N
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 01:49:10 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNosE-0002al-Vf
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 01:49:08 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-33674f60184so4780930f8f.1
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 22:49:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704955743; x=1705560543; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uj4IshRUpye2musL4IAPVwgkOgzzw9ZtcQXIi3JvXy0=;
- b=M9nh24XEPeLqOz8k2ZnlcYNvcqEmoJ+A/9xma6Hrn/qKuxa4J/A9/KEupLKpjDHF89
- KYUjrPCkF6NmT3tAuWBbZuh9sZ4mHL0/0zVDs1mh+BlJQpk8nKrpkyXwBvsz3h/7ZgK4
- sDyLlnPiAXjeMp/gUtd7eGsqS05NMPDf253Aqm/Y3Jbch7JCWK9SBcWGCijP/+YxfC1o
- T6EBdZWVw/eeSXbfNObw++VcbQWXZZ//cUJuUhxJJZnfIpQgMhiPCz4meQdfhS1X8GX7
- bIYDxNUh7cZjjlbdb8nvFPNAc8SN5NyQ6LXOezTHx6NByPzzbYxNxk3q8Q3JuOPWWGg4
- GQow==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNp2R-0001KA-Az
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 01:59:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rNp2P-0000Tc-9r
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 01:59:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1704956376;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GsMZNI1jl8qd8IbkwK2nAyjuKceR/yl0z5Gg8PfFIAo=;
+ b=McJ4p/ZIJ6NmShlSXAdpfbMXSZ6TGoiaDWGXT4ys3BRsZBFKDzifFc6KXlqN3jJKu374A5
+ lvxLWaQF1I5F0Nan3m8sqhoe4dwvunye464Wy7Mh9h9m2ucsXcOrieLlA+gac2LRkr1uIA
+ iZHjSMVD5MEdfYPcD8F7Z+uRZfkElbE=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-410-uk2B2WR7M8SNBYmHVTr9gQ-1; Thu, 11 Jan 2024 01:59:34 -0500
+X-MC-Unique: uk2B2WR7M8SNBYmHVTr9gQ-1
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-1d53d51c62aso7839685ad.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 22:59:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704955743; x=1705560543;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uj4IshRUpye2musL4IAPVwgkOgzzw9ZtcQXIi3JvXy0=;
- b=nTc0PjjX6+1i9KxFpGb5HBCrnOFz2FMVXsfw8i52eUvCGtnBD6SEVj4qej6RGpmTKQ
- aAPwtOIDykMHVBLAU2GCRIr5U/dhjnYNtVYl1rOlsRZB66XgpEPLOxI2iTDOf3alDBBp
- 8EaR6fb6yDiEnfuozOrNr66p5nZB6aMkVItczdRg8Nx8VIoHwoCcWjOlNLiFWvAtBUc0
- OQQVDUJzDe66hRV+9/9c7CX67xGfeMv4G2y4z6ovdcO1KPsY4p3E/7DkmmiT8Sl0wZD0
- Dsrju/RoNBhzxwLlSYbiokUccf5XPy9JFyAcw4rZmpBhae13N3AYyxC3bBJZatq4wcJw
- 8ueQ==
-X-Gm-Message-State: AOJu0YxCbDqfofBqtVMqzFXtJK0/GeCiLRKOa7Ivgu+5iw9iQkWLcFPH
- Wa4WvlLTOAdfpmJas0HUiFXZYHBi0IcyP0t9RZhWkVCdn6k=
-X-Google-Smtp-Source: AGHT+IGXTRKubmI4kSA+XoMn9tQu3G+62w1bw7J1yOQLQPm6d8ccK6EjlvdVk9cQqxcSSLNpoWZb9A==
-X-Received: by 2002:a5d:540c:0:b0:336:6ad2:b64e with SMTP id
- g12-20020a5d540c000000b003366ad2b64emr319712wrv.48.1704955743355; 
- Wed, 10 Jan 2024 22:49:03 -0800 (PST)
-Received: from [192.168.69.100] (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
- [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
- c15-20020adfef4f000000b00336d24b4847sm356760wrp.114.2024.01.10.22.49.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Jan 2024 22:49:03 -0800 (PST)
-Message-ID: <05d42a43-081d-40b2-a772-2d3b89641601@linaro.org>
-Date: Thu, 11 Jan 2024 07:49:00 +0100
+ d=1e100.net; s=20230601; t=1704956373; x=1705561173;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GsMZNI1jl8qd8IbkwK2nAyjuKceR/yl0z5Gg8PfFIAo=;
+ b=bxt5nc5o/pfAha8d3fPnmhbdZHVYaYuEMTss8H8rLzSnYrTFslZtfIAV8oo9RHu0dg
+ I54uyKmleDt9RdjoDX7gbrhQqJXgM5BxgFIxwDWSUOk4CBDpjl+BJNWxF1s1AOy+X4Ui
+ uDgD6qYXPWn1H+/PyKOSxWY4DUibUGjnie/vyghBMLVdTijC36iCxYpGvd+LxvUt/3Qu
+ FUXLl2O3J1TbOgaKFxtwBp8HtmkKLJR3VT4V3AxDOkS+R1D0MhhpnkUxi4UacezRhl3N
+ iOqDNiSEAOgyjkpK7tHSpg3lC3oLYv+PXml7dNYq1UmyjKiVZ8QwG/oeUPtA9HBn2q3f
+ OLIg==
+X-Gm-Message-State: AOJu0YwehOK6OGZSXWz/iJcnp9ADrc74Kwhg157gLiV+58ReI8qDQAzC
+ ZkksNAPo+v3Qr7vS7tKvjN9XAQ6kmv08hfyqqBQLHK6Dhq5Qcc4c0jI6dS7zwqt7HmLxAAoZuHC
+ VVYDqVnPnLwGEFUGrXMsePEg=
+X-Received: by 2002:a17:902:f54a:b0:1d4:e308:d6fb with SMTP id
+ h10-20020a170902f54a00b001d4e308d6fbmr1391909plf.5.1704956373130; 
+ Wed, 10 Jan 2024 22:59:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEQbsG5ml9XkXlT9pybWISaalnkoiybXNYLt55gn/Y73xLBhXcrv/F1qippX9D2BpodFGZe9w==
+X-Received: by 2002:a17:902:f54a:b0:1d4:e308:d6fb with SMTP id
+ h10-20020a170902f54a00b001d4e308d6fbmr1391891plf.5.1704956372828; 
+ Wed, 10 Jan 2024 22:59:32 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ r19-20020a170902c61300b001d3e9937d92sm434740plr.51.2024.01.10.22.59.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 10 Jan 2024 22:59:32 -0800 (PST)
+Date: Thu, 11 Jan 2024 14:59:26 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>, Nikolay Borisov <nborisov@suse.com>
+Subject: Re: [RFC PATCH v3 02/30] io: Add generic pwritev/preadv interface
+Message-ID: <ZZ-RztCjEPyT44M_@x1n>
+References: <20231127202612.23012-1-farosas@suse.de>
+ <20231127202612.23012-3-farosas@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/core: Handle cpu_model_from_type() returning NULL value
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
- Gavin Shan <gshan@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-References: <20240111064723.6920-1-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240111064723.6920-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231127202612.23012-3-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,30 +98,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/1/24 07:47, Philippe Mathieu-Daudé wrote:
-> Per cpu_model_from_type() docstring (added in commit 445946f4dd):
+On Mon, Nov 27, 2023 at 05:25:44PM -0300, Fabiano Rosas wrote:
+> From: Nikolay Borisov <nborisov@suse.com>
 > 
->    * Returns: CPU model name or NULL if the CPU class doesn't exist
+> Introduce basic pwritev/preadv support in the generic channel layer.
+> Specific implementation will follow for the file channel as this is
+> required in order to support migration streams with fixed location of
+> each ram page.
 > 
-> We must check the return value in order to avoid surprises, i.e.:
-> 
->   $ qemu-system-arm -machine virt -cpu cortex-a9
+> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Doh I missed one space before the '$' character when pasting.
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
->    qemu-system-arm: Invalid CPU model: cortex-a9
->    The valid models are: cortex-a7, cortex-a15, (null), (null), (null), (null), (null), (null), (null), (null), (null), (null), (null), max
-> 
-> Add assertions when the call can not fail (because the CPU type
-> must be registered).
-> 
-> Fixes: 5422d2a8fa ("machine: Print CPU model name instead of CPU type")
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   cpu-target.c          | 1 +
->   hw/core/machine.c     | 5 +++++
->   target/ppc/cpu_init.c | 1 +
->   3 files changed, 7 insertions(+)
+-- 
+Peter Xu
 
 
