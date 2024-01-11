@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF9882AF1A
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 14:03:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D234B82B027
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 15:03:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNui4-0006ZA-M9; Thu, 11 Jan 2024 08:03:00 -0500
+	id 1rNve3-0000SD-0y; Thu, 11 Jan 2024 09:02:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rNuhT-0006R2-Lr
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:02:28 -0500
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rNsTP-00031i-3L
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 05:39:43 -0500
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rNuhM-0003rk-JD
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:02:20 -0500
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a2814fa68eeso441146066b.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 05:02:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rNsTH-0008Cv-AT
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 05:39:41 -0500
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-28be024282bso3563303a91.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 02:39:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704978125; x=1705582925; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=s21DfL9PxigW5GwnOTgSjfb191mhadfCjUx2e4f8UAM=;
- b=b0oR1f747X2EH1Coj8/ltgWu/nxkd+FN93idDuzxabxNMK8IBGv3wiTuOZU9QF8hkR
- GrRfwunF0jIDBrN1Z/1vBr4BWprTIokBFkv3/AgjrFI1n7QfhYDvI+hFk4AlS1yEeBMG
- QMMH2E9Bk7S5Seyq9YPmBnHzie+wxUj6HJebw1J0kfr87JPIKQw2JWVkt9Ts17dX9yE3
- A0mgKYVd60+UeryKzOrjxfDbrSiCB8MPpiBvxbO7W4xqcUiqKoevfkTIkUjDSyE2UoC2
- cpwybhMEkg7p0Tlg0eEk+nTqWaBdJnKqUGfFTAQ4xPW4PKr5Zl+wigo1NOFKe4xcfLwV
- rDcg==
+ d=gmail.com; s=20230601; t=1704969569; x=1705574369; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=P7LpzcStepACsZO+r+ZUl2akrDKwwtTPWdo9yFplklw=;
+ b=Ivyi6ruEmMDbkMNhyeNLD3oFpjY5txVJ1Hci10u16kdr8v0T/GviuEPOQsSmZJueqh
+ DLWhbvC2J7k6oTEAwNP5Lr+LQBJMVRglaN+F+av8j9czTyQUn1tz292BZkWzeotRwYe3
+ DoYFu+dVEJvKVPO9n7fxPhiW9Gkf0Okvb5dkyVbv1RC8uTqnyvkscbg1UbuRx6VHXB4V
+ tpsPgz0t9HPlx/m4zi8+nWoZOJuUnRlIb/G5ooq03OIfZFRhF9e921APFlHUduGQE2tB
+ ZdmFpLTNaHSvHqrCwyBTyqt2GxapFU1h4P+KVgJ+Ox6D6AslOST4wviYjSdc5vfCY4Mq
+ Z+9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704978125; x=1705582925;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=s21DfL9PxigW5GwnOTgSjfb191mhadfCjUx2e4f8UAM=;
- b=oCt1vLXAA0h5ihTK2eXkul+d17T94Y99OgEqSTTCduMzXUwEzs+grXnOJx83GpRJTi
- UKggkaXBslWYTp1U08iaiZI6AJqOCCOgU6Ts7067eNEppMGhuylrKMvYHENckzVxjSjw
- aVYoEHBEvX8f6Y1AklvintrQdxf8TEwbUPyYfbC8HWIbvdOqzCcKVcQRB3NGjyW5MEqZ
- EqiMew34lG1LDc0YyL28OABSLJPCxfMn5m0KPB7wgdvVKFhhs0D48U+6HFyId5rQEznW
- nNM3Jioczy3EJZvUkHiu+zcovMFy5we1Zv9k6CrBER1rfPjgeCbj5xTImqRYKilDGnR7
- lagw==
-X-Gm-Message-State: AOJu0Yz4nP5J2c/gf6Nb0A/06ArPnX2GBDp04WfBx7g1XPqO4/Vyqgeb
- 1U6RExJF32fPDmGA74n7xQnoYQaM/OVEIQ==
-X-Google-Smtp-Source: AGHT+IFak0J8UVY17zPSfjgWzErlEzrDhWsMXOkvd3QyWcMxtnbuWPBDJeld1jwOX1ZJ4tAJ3jtpOw==
-X-Received: by 2002:a17:906:1c0c:b0:a26:98ee:9fc0 with SMTP id
- k12-20020a1709061c0c00b00a2698ee9fc0mr582130ejg.43.1704978125048; 
- Thu, 11 Jan 2024 05:02:05 -0800 (PST)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
- by smtp.gmail.com with ESMTPSA id
- g17-20020a170906395100b00a2c29fe8b2esm547522eje.212.2024.01.11.05.02.04
+ d=1e100.net; s=20230601; t=1704969569; x=1705574369;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=P7LpzcStepACsZO+r+ZUl2akrDKwwtTPWdo9yFplklw=;
+ b=IbFKmBYLZtAMZ7qHlqrd4YWuTgfPA7B2aHbTdbhRm6VVAj2P8GWCxEOa7+xCK/8EMq
+ g0A/7ABIE6aSYdmft7jQNR24A2LhuE3bGh+CQzW1kDCJWqgZ4GJIe/s5+ycQpDyo2sz2
+ wDk8k28NcFrgRPHsRsSleQsNYKo1xhf2t65e1aDkKVHUR86wI/0j+fpdxQgVbQnHvcXw
+ drK9G6RSpMfXlYgAYA5Fo32aCcVIXDIBMuxPILKKEgv703AypoH5fTTDBKEjA2tc3Iky
+ tnIAsRH46duGBOnVI2BFDkv5m0JsNOdip/MdiemA57gCgfgxENBsNwa/SbXb8SfUDSOz
+ iXvQ==
+X-Gm-Message-State: AOJu0YzJlDJOcyAhCX/3e6a301MXK6PDVLlsAHOv8ZDeJCCs9xBgaYZp
+ 4tB/XIT2zqnK15yg47LI0c9iR7YY0zo=
+X-Google-Smtp-Source: AGHT+IHD6pAWG44oDdIWCng7Dbp+96VBlqvzIDIibd6SZgHA4uGwXljUU4ZDmMJce+Y9cQXO6RXhKQ==
+X-Received: by 2002:a17:90a:8a89:b0:28d:4c09:39af with SMTP id
+ x9-20020a17090a8a8900b0028d4c0939afmr782107pjn.70.1704969569007; 
+ Thu, 11 Jan 2024 02:39:29 -0800 (PST)
+Received: from akshara-VivoBook-ASUSLaptop-X409DA-M409DA.iiit.ac.in
+ ([218.185.248.66]) by smtp.gmail.com with ESMTPSA id
+ pb13-20020a17090b3c0d00b0028ddd396d27sm1403507pjb.4.2024.01.11.02.39.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jan 2024 05:02:04 -0800 (PST)
-Date: Thu, 11 Jan 2024 14:02:03 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org, 
- qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com, 
- zhiwei_liu@linux.alibaba.com
-Subject: Re: Re: [PATCH 3/3] target/riscv: Enable 'B' extension on max CPU type
-Message-ID: <20240111-558c99b8f3be4297e9ae4118@orel>
-References: <20240109171848.32237-1-rbradford@rivosinc.com>
- <20240109171848.32237-4-rbradford@rivosinc.com>
- <de442ad9-0479-4a7e-bccf-97fcd081a35e@ventanamicro.com>
+ Thu, 11 Jan 2024 02:39:28 -0800 (PST)
+From: Abhiram Tilak <atp.exp@gmail.com>
+To: qemu-devel@nongnu.org,
+	atp@tutamail.com
+Cc: hreitz@redhat.com,
+	kwolf@redhat.com,
+	Abhiram Tilak <atp.exp@gmail.com>
+Subject: [PATCH v2] qemu-img: Fix Column Width and Improve Formatting in
+ snapshot list
+Date: Thu, 11 Jan 2024 16:09:24 +0530
+Message-Id: <20240111103924.698341-1-atp.exp@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de442ad9-0479-4a7e-bccf-97fcd081a35e@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x636.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=atp.exp@gmail.com; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 11 Jan 2024 09:02:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,43 +91,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 10, 2024 at 03:32:21PM -0300, Daniel Henrique Barboza wrote:
-> 
-> 
-> On 1/9/24 14:07, Rob Bradford wrote:
-> > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> > ---
-> >   target/riscv/tcg/tcg-cpu.c | 3 ++-
-> >   1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> > index f10871d352..9705daec93 100644
-> > --- a/target/riscv/tcg/tcg-cpu.c
-> > +++ b/target/riscv/tcg/tcg-cpu.c
-> > @@ -999,7 +999,8 @@ static void riscv_init_max_cpu_extensions(Object *obj)
-> >       const RISCVCPUMultiExtConfig *prop;
-> >       /* Enable RVG, RVJ and RVV that are disabled by default */
-> > -    riscv_cpu_set_misa(env, env->misa_mxl, env->misa_ext | RVG | RVJ | RVV);
-> > +    riscv_cpu_set_misa(env, env->misa_mxl,
-> > +                       env->misa_ext | RVG | RVJ | RVV | RVB);
-> 
-> I'm aware that we decided a while ago the 'max' CPU could only have non-vendor and
-> non-experimental extensions enabled. RVB is experimental, so in theory we shouldn't
-> enable it.
-> 
-> But RVB is an alias for zba, zbb and zbs, extensions that the 'max' CPU is already
-> enabling. In this case I think it's sensible to enable RVB here since it would just
-> reflect stuff that it's already happening.
+When running the command `qemu-img snapshot -l SNAPSHOT` the output of
+VM_CLOCK (measures the offset between host and VM clock) cannot to
+accommodate values in the order of thousands (4-digit).
 
-It's also setting the B bit in misa, which, until this spec is at least
-frozen, is a reserved bit and reserved bits "must return zero when read".
+This line [1] hints on the problem. Additionally, the column width for
+the VM_CLOCK field was reduced from 15 to 13 spaces in commit b39847a5
+in line [2], resulting in a shortage of space.
 
-I don't want to stand in the way of progress and it seems 99.9% likely
-that the spec will be frozen and ratified, but, if we want to stick to
-our policies (which we should document), then even the 'max' cpu type
-should require x-b be added to the command line if it wants the B bit
-set in misa.
+[1]: https://gitlab.com/qemu-project/qemu/-/blob/master/block/qapi.c?ref_type=heads#L753
+[2]: https://gitlab.com/qemu-project/qemu/-/blob/master/block/qapi.c?ref_type=heads#L763
 
-Thanks,
-drew
+This patch restores the column width to 15 spaces and makes adjustments
+to the affected iotests accordingly. Furthermore, addresses a potential source
+of confusion by removing whitespace in column headers. Example, VM CLOCK
+is modified to VM_CLOCK. Additionally a '--' symbol is introduced when
+ICOUNT returns no output for clarity.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2062
+Fixes: b39847a50553 (migration: introduce icount field for snapshots )
+Signed-off-by: Abhiram Tilak <atp.exp@gmail.com>
+---
+ block/qapi.c                                  | 10 ++--
+ tests/qemu-iotests/267.out                    | 48 +++++++++----------
+ .../tests/qcow2-internal-snapshots.out        | 10 ++--
+ 3 files changed, 35 insertions(+), 33 deletions(-)
+
+diff --git a/block/qapi.c b/block/qapi.c
+index 9e806fa230..500afc20c7 100644
+--- a/block/qapi.c
++++ b/block/qapi.c
+@@ -742,15 +742,15 @@ void bdrv_snapshot_dump(QEMUSnapshotInfo *sn)
+     char *sizing = NULL;
+
+     if (!sn) {
+-        qemu_printf("%-10s%-17s%8s%20s%13s%11s",
+-                    "ID", "TAG", "VM SIZE", "DATE", "VM CLOCK", "ICOUNT");
++        qemu_printf("%-10s%-17s%8s%20s%15s%11s",
++                    "ID", "TAG", "VM_SIZE", "DATE", "VM_CLOCK", "ICOUNT");
+     } else {
+         g_autoptr(GDateTime) date = g_date_time_new_from_unix_local(sn->date_sec);
+         g_autofree char *date_buf = g_date_time_format(date, "%Y-%m-%d %H:%M:%S");
+
+         secs = sn->vm_clock_nsec / 1000000000;
+         snprintf(clock_buf, sizeof(clock_buf),
+-                 "%02d:%02d:%02d.%03d",
++                 "%04d:%02d:%02d.%03d",
+                  (int)(secs / 3600),
+                  (int)((secs / 60) % 60),
+                  (int)(secs % 60),
+@@ -759,8 +759,10 @@ void bdrv_snapshot_dump(QEMUSnapshotInfo *sn)
+         if (sn->icount != -1ULL) {
+             snprintf(icount_buf, sizeof(icount_buf),
+                 "%"PRId64, sn->icount);
++        } else {
++            snprintf(icount_buf, sizeof(icount_buf), "--");
+         }
+-        qemu_printf("%-9s %-16s %8s%20s%13s%11s",
++        qemu_printf("%-9s %-16s %8s%20s%15s%11s",
+                     sn->id_str, sn->name,
+                     sizing,
+                     date_buf,
+diff --git a/tests/qemu-iotests/267.out b/tests/qemu-iotests/267.out
+index 7176e376e1..21339e67ad 100644
+--- a/tests/qemu-iotests/267.out
++++ b/tests/qemu-iotests/267.out
+@@ -33,8 +33,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
+ (qemu) savevm snap0
+ (qemu) info snapshots
+ List of snapshots present on all disks:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+---        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ (qemu) loadvm snap0
+ (qemu) quit
+
+@@ -44,8 +44,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
+ (qemu) savevm snap0
+ (qemu) info snapshots
+ List of snapshots present on all disks:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+---        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ (qemu) loadvm snap0
+ (qemu) quit
+
+@@ -69,8 +69,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
+ (qemu) savevm snap0
+ (qemu) info snapshots
+ List of snapshots present on all disks:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+---        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ (qemu) loadvm snap0
+ (qemu) quit
+
+@@ -94,8 +94,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
+ (qemu) savevm snap0
+ (qemu) info snapshots
+ List of snapshots present on all disks:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+---        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ (qemu) loadvm snap0
+ (qemu) quit
+
+@@ -105,8 +105,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
+ (qemu) savevm snap0
+ (qemu) info snapshots
+ List of snapshots present on all disks:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+---        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ (qemu) loadvm snap0
+ (qemu) quit
+
+@@ -119,8 +119,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
+ (qemu) savevm snap0
+ (qemu) info snapshots
+ List of snapshots present on all disks:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+---        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ (qemu) loadvm snap0
+ (qemu) quit
+
+@@ -134,8 +134,8 @@ QEMU X.Y.Z monitor - type 'help' for more information
+ (qemu) savevm snap0
+ (qemu) info snapshots
+ List of snapshots present on all disks:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+---        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ (qemu) loadvm snap0
+ (qemu) quit
+
+@@ -145,15 +145,15 @@ QEMU X.Y.Z monitor - type 'help' for more information
+ (qemu) savevm snap0
+ (qemu) info snapshots
+ List of snapshots present on all disks:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+---        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ (qemu) loadvm snap0
+ (qemu) quit
+
+ Internal snapshots on overlay:
+ Snapshot list:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+-1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++1         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ Internal snapshots on backing file:
+
+ === -blockdev with NBD server on the backing file ===
+@@ -166,17 +166,17 @@ QEMU X.Y.Z monitor - type 'help' for more information
+ (qemu) savevm snap0
+ (qemu) info snapshots
+ List of snapshots present on all disks:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+---        snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++--        snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ (qemu) loadvm snap0
+ (qemu) quit
+
+ Internal snapshots on overlay:
+ Snapshot list:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+-1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++1         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ Internal snapshots on backing file:
+ Snapshot list:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+-1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++1         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ *** done
+diff --git a/tests/qemu-iotests/tests/qcow2-internal-snapshots.out b/tests/qemu-iotests/tests/qcow2-internal-snapshots.out
+index 438f535e6a..c324131561 100644
+--- a/tests/qemu-iotests/tests/qcow2-internal-snapshots.out
++++ b/tests/qemu-iotests/tests/qcow2-internal-snapshots.out
+@@ -14,8 +14,8 @@ wrote 524288/524288 bytes at offset 0
+ (qemu) quit
+
+ Snapshot list:
+-ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+-1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++ID        TAG               VM_SIZE                DATE       VM_CLOCK     ICOUNT
++1         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ No errors were found on the image.
+
+ === Verify that loading the snapshot reverts to the old content ===
+@@ -48,8 +48,8 @@ read 64512/64512 bytes at offset 66560
+
+ Snapshot list:
+ ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+-1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
+-2         snap1                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++1         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
++2         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ No errors were found on the image.
+
+ === qemu-img snapshot can revert to snapshots ===
+@@ -80,7 +80,7 @@ read 64512/64512 bytes at offset 66560
+
+ Snapshot list:
+ ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+-1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++1         snap0                SIZE yyyy-mm-dd hh:mm:ss 0000:00:00.000         --
+ No errors were found on the image.
+
+ === Error cases ===
+--
+2.40.1
 
