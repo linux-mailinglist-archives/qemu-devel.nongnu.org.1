@@ -2,76 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D8B82B266
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 17:05:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F33FE82B29E
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 17:17:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNxYi-0007CO-TY; Thu, 11 Jan 2024 11:05:32 -0500
+	id 1rNxj0-0006dN-Mj; Thu, 11 Jan 2024 11:16:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNxYY-0007BO-IP
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:05:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berto@igalia.com>) id 1rNxix-0006dC-RT
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:16:07 -0500
+Received: from fanzine.igalia.com ([178.60.130.6] helo=fanzine2.igalia.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rNxYV-0000kX-Ct
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:05:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704989115;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NKVd+DRmVJsVeaohR1mZypDtz2D65qz+Sgea77ugSk0=;
- b=jI+yYgkZ+afQdyl+cWatDlUmQSkCzjJWmZEHPJPcUifcbocPFMrYufKuGN9w2hRRnzrcPd
- B4qNndfdz7tAz/mi8ncEsVrJ9NTXa0clt2/tIRUQI7Jnq1NDa2NvgP9BeX2B/hFhUGACTG
- +83p6yRztSJi4TQt/zvt2BPjSTpmvIY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-385-8IkOwqzxO4qhJq_FoH6BLg-1; Thu,
- 11 Jan 2024 11:05:11 -0500
-X-MC-Unique: 8IkOwqzxO4qhJq_FoH6BLg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C0915380606E;
- Thu, 11 Jan 2024 16:05:10 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9E1FF5012;
- Thu, 11 Jan 2024 16:05:10 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B66AA21E6691; Thu, 11 Jan 2024 17:05:09 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org,  Stephen Brennan <stephen.s.brennan@oracle.com>,
- qemu-trivial@nongnu.org
-Subject: Re: [PATCH v2 1/1] dump: Fix HMP dump-guest-memory -z without -R
-In-Reply-To: <CAJ+F1C+c1VPOE8umoSED2EeKQcttcv=Y=3UQ=gGP6_hOCGL8Sg@mail.gmail.com>
- (=?utf-8?Q?=22Marc-Andr=C3=A9?= Lureau"'s message of "Thu, 11 Jan 2024
- 19:10:03 +0400")
-References: <20231222093827.951039-1-armbru@redhat.com>
- <20231222093827.951039-2-armbru@redhat.com>
- <87cyu8vyj4.fsf@pond.sub.org>
- <CAJ+F1C+c1VPOE8umoSED2EeKQcttcv=Y=3UQ=gGP6_hOCGL8Sg@mail.gmail.com>
-Date: Thu, 11 Jan 2024 17:05:09 +0100
-Message-ID: <87ply7svnu.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <berto@igalia.com>) id 1rNxiv-0005DQ-3R
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 11:16:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Type:MIME-Version:Message-ID:Date:References:
+ In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=HnQTwr8FpFLs70+WZDayxp1ofDClSs99BD6ULbJmUJM=; b=UY6R3b9IWjqHhLUp8TuCogBWKm
+ dqT42CjtMgxYQfit76hp2UKx2BeCFs8IZ2llQXXtQ48bS0ZxF5sVPvZY4mluiNIuDI419gXlwcYum
+ 9nCQ0U0cFNyDQXdYZNw4b1PA/y3OddP4gtTTK+LJjYbcjCvDkYgFEKnZ4eped8tbOGii/wvnIpWMj
+ uezpruIj3PVRKumbxy8FXDVJ3Z8vW3GWf54YubITR7/a/IA3PupRMGQwpsWrHQG1lQUfs0cz/lSyd
+ +bfPaMVQCVH8TOL6bEMm/8Iz2V2UwMQ6hU2pxxbLEwQaPlSJSPQTa0UtYF0rf6HDOcTUrrxmCdQDx
+ cQsI1qeQ==;
+Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
+ by fanzine2.igalia.com with esmtps 
+ (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1rNxiY-005SAe-FL; Thu, 11 Jan 2024 17:15:42 +0100
+Received: from gate.service.igalia.com ([192.168.21.52])
+ by mail.igalia.com with esmtp (Exim)
+ id 1rNxiW-00Fq29-4B; Thu, 11 Jan 2024 17:15:42 +0100
+Received: from berto by gate.service.igalia.com with local (Exim 4.96)
+ (envelope-from <berto@igalia.com>) id 1rNxiV-009lN5-34;
+ Thu, 11 Jan 2024 16:15:39 +0000
+From: Alberto Garcia <berto@igalia.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, =?utf-8?Q?Daniel_P_=2E_Berrang?=
+ =?utf-8?Q?=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, Eric Blake
+ <eblake@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH for-9.0] qapi: Add 'recurse-children' option to qom-list
+In-Reply-To: <878r5mv89b.fsf@pond.sub.org>
+References: <20231124162443.124654-1-berto@igalia.com>
+ <878r5mv89b.fsf@pond.sub.org>
+Date: Thu, 11 Jan 2024 16:15:39 +0000
+Message-ID: <w51le8vq21g.fsf@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=178.60.130.6; envelope-from=berto@igalia.com;
+ helo=fanzine2.igalia.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,23 +76,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> writes:
-
-> Hi Markus
+On Fri 22 Dec 2023 11:31:12 AM +01, Markus Armbruster wrote:
+>> This allows returning a tree of all object properties under a given
+>> path, in a way similar to scripts/qmp/qom-tree.
 >
-> On Thu, Jan 11, 2024 at 4:36=E2=80=AFPM Markus Armbruster <armbru@redhat.=
-com> wrote:
->>
->> Any takers?
->>
->
-> I have it in my "dump" queue, but it's the only patch I got so far (I
-> could have missed others).
->
-> If it can go through my other means, that's fine with me
+> Use case?  We already have that script, and also HMP info qom-tree.
 
-Let's try qemu-trivial (cc'ed).  Thanks!
+The main use case is convenience.
 
->> Markus Armbruster <armbru@redhat.com> writes:
+Management tools need to manually check that the type starts with
+"child<" and recursively make a new QMP call. That's what e.g libvirt
+does:
 
+   https://gitlab.com/libvirt/libvirt/-/blob/v9.10.0/src/qemu/qemu_monitor_json.c?ref_type=tags#L7367
+
+Parsing the output of HMP info qom-tree is not an option in that case.
+
+Berto
 
