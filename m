@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F409882ACE8
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:08:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A357082ACFE
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:10:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNssU-0001Rg-4A; Thu, 11 Jan 2024 06:05:38 -0500
+	id 1rNssC-0001Ma-2U; Thu, 11 Jan 2024 06:05:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss5-0001KF-GL
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:13 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1rNss6-0001Kq-TR
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:15 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss3-0004NU-BN
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:13 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-33674f60184so4942742f8f.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:10 -0800 (PST)
+ id 1rNss4-0004Nk-2C
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:14 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3375a236525so4180580f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704971109; x=1705575909; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704971110; x=1705575910; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=xdmkDsShtK90/D77OytZy2H9fVO4LlCAzfF++RrV4Lw=;
- b=wwPMqyIyy5DtPCMcuazwHP/tCqc0wmR3f34LtZKCB/hcfreFRN6gP5I2jVvRaqUeT7
- Vs2B5YehvGFkhKY6hbr+13eGxoK9Q63+9tKnt5rRhIPzGuIt8+ChaUhnfX0w/iIURj+r
- WtwGGWc++eGIJybG8FrATC/mlMREbYo7OLaPQ9dKGjmkeMMoifu+GPAeYLnV34+mGyI9
- FEbJjiVcO+Vtpf6xiJKQIsihfRwhEPA4WZ91wn9EbCss8+KkdTbrnW04MYRanHwC+wmS
- ROM4PwTRxmEoBmcv/agGl8iXfNKGx1vwB/JjnD72/oHkm8APBBX9qscuyz5WX7GaLDQp
- B2TQ==
+ :reply-to; bh=0GNFtYvCPWXBGX6d6WliU7kR2DeEivpmW78851S/hGQ=;
+ b=LgwdZO7UKoofP5hQV533+Ut4VZGR9YwI25eryAgcyGtIzYFZlZk4D1Zzs14jIAUOjD
+ 7ZgexFrzliwlgnr1Xr69r4rT6G1WbPNqBToIG2r1D6RcSZ/Fu2apUiYrtvrbdu47Lwpg
+ HFLBLy5cK17nfeToSt4DYJDB8NI/hjPMgZrtFXxInpMJChJH1mVxijymeCCecnufvvQX
+ dseH/RX9WLQlBK7Ro2g62xVF2G6FPQuQUvHli59GI0IGNDM9lmKrzXVmtUf+bGkd9Gxa
+ F3/YEtmz6v28LuUPbvQ3IqkjyLxt9MIMDDMToFe0Kq3xmiocKrANtMSopKBMuGhrQlLZ
+ byCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704971109; x=1705575909;
+ d=1e100.net; s=20230601; t=1704971110; x=1705575910;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xdmkDsShtK90/D77OytZy2H9fVO4LlCAzfF++RrV4Lw=;
- b=aYTc9hcjTSCtXOEG8JACokgVZv/I6RyDRT9fJGyvDHjE9Iw/jButQphCRCkY4PVMeS
- 6Sz4zVnyQ8vdscvqk72jTkofyRIUPVcx9CZLqsJ03KqkI3vH77Tb2ko1dKcgU/cPu3dD
- zeC17rS7PQFCR5iHOoOhhFYwixdtDsgRlzvyLmTO/6edG+Vcxe6oaJHs7FisIjSamzER
- EiTY7Q4exDZjLnyR248TUmmeyiI1ST22kXUqfnud9CKhzqs3L5RLUL9QqWGCCCqro6fR
- plIC4QIo5DupbaZ6Grvof06IinomTwzuTNpLphjpOdPWp0u1hXcDPq2KmeJUyJyvY5lR
- wdaA==
-X-Gm-Message-State: AOJu0Yz9+WPZ6Q2PZjnwMsmgKX9t4z6r+M71I8m/jcNTfBGgiOaKAcJM
- R8yyNGx5Zrvlb0aJFVAMPoo/a6HVcE2J686A8ImMrX/fobI=
-X-Google-Smtp-Source: AGHT+IFMZQ7WJj1FPZLsB13YobS1pNGynQBZJyXhH9dELj0hQKxGqNHzkSuV1TwPO6gMWNEtenQ3uA==
-X-Received: by 2002:a5d:4d82:0:b0:337:2ff5:f523 with SMTP id
- b2-20020a5d4d82000000b003372ff5f523mr362559wru.0.1704971109782; 
- Thu, 11 Jan 2024 03:05:09 -0800 (PST)
+ bh=0GNFtYvCPWXBGX6d6WliU7kR2DeEivpmW78851S/hGQ=;
+ b=opKO16yDHEc8kts8hLmSiA1A1bl0eVWYKEPTiXsUSsKCh1I5TukWlkNV64Vqp2H7WJ
+ 84mqOoMbFi8/oQW9a4oQ+d9m+wi9w8E2SgXejY7NdoxwWb5WWRRMyPJqs+Sm9NLYzlbj
+ HC6FT0J332FK2GCN8NBtuNmBH3zQrPYeK0Dkwg0+/aekQ18Fz5zsRZ2wBGjZMzIiwlQV
+ z9qs0EwW2wv/ezRngbG3fGl4OaHxD+UVsmVIy6ovV0zmVcJxvklmNi7wZMQTgz4AzABZ
+ 98LL6Jq/pVVPaZQMPGp2od2ywO7EHnntB5kdW3XQCJX8WUag8pPAJjN7weMz8u7xqT75
+ 3uIQ==
+X-Gm-Message-State: AOJu0YwaiOaWPTAkV4stzJ3V5cv2zZtUa8MOeJsDZ4qprmGbrJhXmr0H
+ TPEHUdgC2cAIFejzO8IWKfa/ARIWYRfUPG9UGg+dVHGcBXk=
+X-Google-Smtp-Source: AGHT+IHesHXzBIncFz28Ysb9BB5AwK7rMTkqunGD04l1O7X1Y7BgjLf9Ftb3jP/XpvEB/3tIXd2Vng==
+X-Received: by 2002:a5d:6a46:0:b0:337:476f:9966 with SMTP id
+ t6-20020a5d6a46000000b00337476f9966mr502493wrw.104.1704971110158; 
+ Thu, 11 Jan 2024 03:05:10 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.09
@@ -58,16 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 11 Jan 2024 03:05:09 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/41] hw/arm/socs: configure priority bits for existing SOCs
-Date: Thu, 11 Jan 2024 11:04:30 +0000
-Message-Id: <20240111110505.1563291-7-peter.maydell@linaro.org>
+Subject: [PULL 07/41] hw/arm: Add missing QOM parent for v7-M SoCs
+Date: Thu, 11 Jan 2024 11:04:31 +0000
+Message-Id: <20240111110505.1563291-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 References: <20240111110505.1563291-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,94 +91,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Samuel Tardieu <sam@rfc1149.net>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Update the number of priority bits for a number of existing
-SoCs according to their technical documentation:
+QDev objects created with qdev_new() need to manually add
+their parent relationship with object_property_add_child().
 
-- STM32F100/F205/F405/L4x5: 4 bits
-- Stellaris (Sandstorm/Fury): 3 bits
-
-Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240106181503.1746200-4-sam@rfc1149.net
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-id: 20240104141159.53883-1-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/stellaris.c     | 2 ++
- hw/arm/stm32f100_soc.c | 1 +
- hw/arm/stm32f205_soc.c | 1 +
- hw/arm/stm32f405_soc.c | 1 +
- hw/arm/stm32l4x5_soc.c | 1 +
- 5 files changed, 6 insertions(+)
+ hw/arm/msf2-som.c          | 1 +
+ hw/arm/netduino2.c         | 1 +
+ hw/arm/netduinoplus2.c     | 1 +
+ hw/arm/olimex-stm32-h405.c | 1 +
+ hw/arm/stm32vldiscovery.c  | 1 +
+ 5 files changed, 5 insertions(+)
 
-diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index 729a8bf5695..d18b1144af5 100644
---- a/hw/arm/stellaris.c
-+++ b/hw/arm/stellaris.c
-@@ -47,6 +47,7 @@
- #define BP_GAMEPAD   0x04
+diff --git a/hw/arm/msf2-som.c b/hw/arm/msf2-som.c
+index eb74b23797c..a269cf044b9 100644
+--- a/hw/arm/msf2-som.c
++++ b/hw/arm/msf2-som.c
+@@ -60,6 +60,7 @@ static void emcraft_sf2_s2s010_init(MachineState *machine)
+     memory_region_add_subregion(sysmem, DDR_BASE_ADDRESS, ddr);
  
- #define NUM_IRQ_LINES 64
-+#define NUM_PRIO_BITS 3
+     dev = qdev_new(TYPE_MSF2_SOC);
++    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
+     qdev_prop_set_string(dev, "part-name", "M2S010");
+     qdev_prop_set_string(dev, "cpu-type", mc->default_cpu_type);
  
- typedef const struct {
-     const char *name;
-@@ -1067,6 +1068,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+diff --git a/hw/arm/netduino2.c b/hw/arm/netduino2.c
+index 501f63a77f9..8b1a9a24379 100644
+--- a/hw/arm/netduino2.c
++++ b/hw/arm/netduino2.c
+@@ -44,6 +44,7 @@ static void netduino2_init(MachineState *machine)
+     clock_set_hz(sysclk, SYSCLK_FRQ);
  
-     nvic = qdev_new(TYPE_ARMV7M);
-     qdev_prop_set_uint32(nvic, "num-irq", NUM_IRQ_LINES);
-+    qdev_prop_set_uint8(nvic, "num-prio-bits", NUM_PRIO_BITS);
-     qdev_prop_set_string(nvic, "cpu-type", ms->cpu_type);
-     qdev_prop_set_bit(nvic, "enable-bitband", true);
-     qdev_connect_clock_in(nvic, "cpuclk",
-diff --git a/hw/arm/stm32f100_soc.c b/hw/arm/stm32f100_soc.c
-index b90d440d7aa..808b783515d 100644
---- a/hw/arm/stm32f100_soc.c
-+++ b/hw/arm/stm32f100_soc.c
-@@ -115,6 +115,7 @@ static void stm32f100_soc_realize(DeviceState *dev_soc, Error **errp)
-     /* Init ARMv7m */
-     armv7m = DEVICE(&s->armv7m);
-     qdev_prop_set_uint32(armv7m, "num-irq", 61);
-+    qdev_prop_set_uint8(armv7m, "num-prio-bits", 4);
-     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m3"));
-     qdev_prop_set_bit(armv7m, "enable-bitband", true);
-     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
-diff --git a/hw/arm/stm32f205_soc.c b/hw/arm/stm32f205_soc.c
-index 1a548646f6e..a451e21f59c 100644
---- a/hw/arm/stm32f205_soc.c
-+++ b/hw/arm/stm32f205_soc.c
-@@ -127,6 +127,7 @@ static void stm32f205_soc_realize(DeviceState *dev_soc, Error **errp)
+     dev = qdev_new(TYPE_STM32F205_SOC);
++    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
+     qdev_connect_clock_in(dev, "sysclk", sysclk);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
  
-     armv7m = DEVICE(&s->armv7m);
-     qdev_prop_set_uint32(armv7m, "num-irq", 96);
-+    qdev_prop_set_uint8(armv7m, "num-prio-bits", 4);
-     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m3"));
-     qdev_prop_set_bit(armv7m, "enable-bitband", true);
-     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
-diff --git a/hw/arm/stm32f405_soc.c b/hw/arm/stm32f405_soc.c
-index a65bbe298d2..2ad5b79a069 100644
---- a/hw/arm/stm32f405_soc.c
-+++ b/hw/arm/stm32f405_soc.c
-@@ -149,6 +149,7 @@ static void stm32f405_soc_realize(DeviceState *dev_soc, Error **errp)
+diff --git a/hw/arm/netduinoplus2.c b/hw/arm/netduinoplus2.c
+index 2e589849478..bccd1003549 100644
+--- a/hw/arm/netduinoplus2.c
++++ b/hw/arm/netduinoplus2.c
+@@ -44,6 +44,7 @@ static void netduinoplus2_init(MachineState *machine)
+     clock_set_hz(sysclk, SYSCLK_FRQ);
  
-     armv7m = DEVICE(&s->armv7m);
-     qdev_prop_set_uint32(armv7m, "num-irq", 96);
-+    qdev_prop_set_uint8(armv7m, "num-prio-bits", 4);
-     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
-     qdev_prop_set_bit(armv7m, "enable-bitband", true);
-     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
-diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
-index 70609a6dac4..159d5315c99 100644
---- a/hw/arm/stm32l4x5_soc.c
-+++ b/hw/arm/stm32l4x5_soc.c
-@@ -102,6 +102,7 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
-     object_initialize_child(OBJECT(dev_soc), "armv7m", &s->armv7m, TYPE_ARMV7M);
-     armv7m = DEVICE(&s->armv7m);
-     qdev_prop_set_uint32(armv7m, "num-irq", 96);
-+    qdev_prop_set_uint32(armv7m, "num-prio-bits", 4);
-     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
-     qdev_prop_set_bit(armv7m, "enable-bitband", true);
-     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
+     dev = qdev_new(TYPE_STM32F405_SOC);
++    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
+     qdev_connect_clock_in(dev, "sysclk", sysclk);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+diff --git a/hw/arm/olimex-stm32-h405.c b/hw/arm/olimex-stm32-h405.c
+index d793de7c97f..4ad7b043be0 100644
+--- a/hw/arm/olimex-stm32-h405.c
++++ b/hw/arm/olimex-stm32-h405.c
+@@ -47,6 +47,7 @@ static void olimex_stm32_h405_init(MachineState *machine)
+     clock_set_hz(sysclk, SYSCLK_FRQ);
+ 
+     dev = qdev_new(TYPE_STM32F405_SOC);
++    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
+     qdev_connect_clock_in(dev, "sysclk", sysclk);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+diff --git a/hw/arm/stm32vldiscovery.c b/hw/arm/stm32vldiscovery.c
+index 190db6118b9..cc419351605 100644
+--- a/hw/arm/stm32vldiscovery.c
++++ b/hw/arm/stm32vldiscovery.c
+@@ -47,6 +47,7 @@ static void stm32vldiscovery_init(MachineState *machine)
+     clock_set_hz(sysclk, SYSCLK_FRQ);
+ 
+     dev = qdev_new(TYPE_STM32F100_SOC);
++    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
+     qdev_connect_clock_in(dev, "sysclk", sysclk);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
 -- 
 2.34.1
 
