@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43BAC82B80E
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 00:30:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 081A982B813
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 00:32:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rO4V2-0006hw-He; Thu, 11 Jan 2024 18:30:12 -0500
+	id 1rO4XB-0000W2-BP; Thu, 11 Jan 2024 18:32:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rO4Ux-0006df-Be; Thu, 11 Jan 2024 18:30:07 -0500
-Received: from mail-vk1-xa2f.google.com ([2607:f8b0:4864:20::a2f])
+ id 1rO4X8-0000TI-QU; Thu, 11 Jan 2024 18:32:22 -0500
+Received: from mail-vk1-xa30.google.com ([2607:f8b0:4864:20::a30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rO4Uu-0000MC-17; Thu, 11 Jan 2024 18:30:06 -0500
-Received: by mail-vk1-xa2f.google.com with SMTP id
- 71dfb90a1353d-4b78b813dd0so1299654e0c.3; 
- Thu, 11 Jan 2024 15:30:02 -0800 (PST)
+ id 1rO4Wz-0001Pp-Rg; Thu, 11 Jan 2024 18:32:15 -0500
+Received: by mail-vk1-xa30.google.com with SMTP id
+ 71dfb90a1353d-4b739b29686so3290420e0c.0; 
+ Thu, 11 Jan 2024 15:32:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705015802; x=1705620602; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705015931; x=1705620731; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yuWQksC0NBplZyXdtbj52ZnQN4WzG9OzDN/8EsrbNCw=;
- b=VgVDbLFWOaVoDWjXT/NMuEtQ0cgP9Ny7ebqV2a1rfHz9dP9y6dVUia2OsqsxZLKk5q
- jT9C4yAvgm6PeiSezec831gUh3hTBXQWawyHaBySqRoUCD4WlrngjQicsJ427pnkOrGb
- Wrm+OPk8GC4FcCFpolbQ3f2N0c7YoHqzK4RkfCzEL3G5iO9x2k/gxCJxmhekjXbOmXEa
- H6MScpzW0H8SvspV389U9cF2KxUsWwVtjKix1VAdobTOpSowpkisJcEXRF0z2dMGaI5v
- WQptBnCLHd/b2Zxxw2hVAMAwOPTIz2vPArTLUmrInoQcEXDhjvy99AdTx5Q7kkfIOE2H
- Z1uQ==
+ bh=ecoc00QYwaJz8dIkPPEYb205rWMV7qbZJM9fu2YOHGU=;
+ b=brf/ll8cMCgEYD08U1Bc+PTQvezyVlSvRQENg0/1Fpue9JAAuH7RGX6tMpr7LaZmTu
+ 51h1570irpjv6bTERAo3H2SWrs6Nj3uRLlUHWyHHdGHyAL8uHwr0RCfSRyyVegeVri4c
+ rHNpF0Glx0Q532MetutEovV4uH6w19I9QIykk/BYaSxVcwyAM37syNeqIz3VX9W+t4+4
+ 0lOpj+7qGzTyLdNVLloxEHF8gNc0I8L4XTPdOeZzW1WpMKcLeNiAGBdmkuyssdTa4Zda
+ eB7b4+z9MJSKa+xVIiGOkrtoBXe0GXFX9c2ICJGn1mDQaX56Xz7YrZxz4B5PUklcnzqH
+ tyrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705015802; x=1705620602;
+ d=1e100.net; s=20230601; t=1705015931; x=1705620731;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yuWQksC0NBplZyXdtbj52ZnQN4WzG9OzDN/8EsrbNCw=;
- b=Dfs92/5FUaIaK7V1KSZVZVrbYy4sO9pnnChon7BSvi2Vc0sA93U89ao6qFf/XHFa0q
- nCbAWnSTWT797NeXOCm9APCeEp4p5BXS6iVSM+6LGQGK7Dadm3MPZw2BICRyXk/TQAiX
- N+np/Yw6wcKJvED32hCm4NkyWha5p607vS/qXmQXVE3D/Zb8J5osJgtuC89OMYU5/rOw
- PbrxhX8bI95d/j2g8YQ3xOONdoGdSaQHkhtUVfLYC8VdmBixeF7bkxWqh5pvppFjm1b1
- u2ihYXYR9+gzrgSYy7pQDscIE8VjIh4cRGYIbntxW1uCj4fZZ/pyWdF4z4i3AjOTuGTH
- HlZw==
-X-Gm-Message-State: AOJu0YxObRdWSqIArkeOjKa2gMRqlH5zZPtP6aOz/WkZg0tSr4/ohMc1
- 4O9RfGfii+LKhc5q/uezT7P/uDznUkCFHzLxsQE=
-X-Google-Smtp-Source: AGHT+IHBIaJoDr5HUUryIltRLrz6y35765sj67UkDGINGlwdFvVBN36DreNbFxmlGOocAe5GdYaz3KBKrjrI1bOBLS4=
-X-Received: by 2002:a05:6122:2917:b0:4b7:8d7c:347d with SMTP id
- fm23-20020a056122291700b004b78d7c347dmr609723vkb.10.1705015801827; Thu, 11
- Jan 2024 15:30:01 -0800 (PST)
+ bh=ecoc00QYwaJz8dIkPPEYb205rWMV7qbZJM9fu2YOHGU=;
+ b=ZGR3+Mg6EhoG0X5WdH5zl1VnVH4gRowPp1B8T5iB/o8yxBp8oxUVkmyMwjKYzWHNGz
+ DNkYHnCP76VENAk1U3BRGQVOFmKFtK0C2wsQC9/+Uc5BzY4WL9sBjmtfFZ/u/D69VOWM
+ VLOrMwQmvfEpxEQW4PLDtYcAK49XvDEla2SbOggfahHMB2ZtsapCbpbVUtliAL26iC4t
+ Ay3d/TsirrIB9CG3jlXShGk8K4H4K5CtgWJrCYHZ5wPSVq5lvUw8Uve7IusZp9JPuE4i
+ /ozQBSrNCkhwe+X2xTv1Zijw7eWN+PzHIY7KiS366HdTYPHlp6xf1CAjczY6u2Ao2+8D
+ FGEg==
+X-Gm-Message-State: AOJu0YyDSJ+4qIHcFFYS0i5Z+JOIVCFV5sV6nOJV+ag87Xp8H/v0WQ8E
+ dlnl613ntWS5bj2OMPxZgbRWLpOmcRx0Rw9Nci4=
+X-Google-Smtp-Source: AGHT+IGZZofHM36OVFmuC+dTfWaaKOCvbzwm84tNB2ktk2Ryx/SWPYEd+RO4qM+742UcyyNJPVH/RDPxw2SQ8ZFNqR8=
+X-Received: by 2002:a1f:e784:0:b0:4b6:e3b6:41ea with SMTP id
+ e126-20020a1fe784000000b004b6e3b641eamr681462vkh.4.1705015930734; Thu, 11 Jan
+ 2024 15:32:10 -0800 (PST)
 MIME-Version: 1.0
-References: <20240103173349.398526-1-alex.bennee@linaro.org>
- <20240103173349.398526-24-alex.bennee@linaro.org>
- <87sf37hlwo.fsf@draig.linaro.org>
-In-Reply-To: <87sf37hlwo.fsf@draig.linaro.org>
+References: <20240109194438.70934-1-ines.varhol@telecom-paris.fr>
+ <20240109194438.70934-3-ines.varhol@telecom-paris.fr>
+In-Reply-To: <20240109194438.70934-3-ines.varhol@telecom-paris.fr>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 12 Jan 2024 09:29:35 +1000
-Message-ID: <CAKmqyKPCy9W-iYscHLjVvU=RfoSLURFgdki0qdzgNSkLKqutyg@mail.gmail.com>
-Subject: Re: [PATCH v2 23/43] target/riscv: Remove misa_mxl validation
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
+Date: Fri, 12 Jan 2024 09:31:44 +1000
+Message-ID: <CAKmqyKMqM=8SQpbdviMnVBcFdChRUmk5C-SW=dB-RMKP=L+zzA@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] hw/arm: Connect STM32L4x5 SYSCFG to STM32L4x5 SoC
+To: =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
+ Alistair Francis <alistair@alistair23.me>,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>, 
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Laurent Vivier <lvivier@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2f;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a30;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa30.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,40 +93,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 9, 2024 at 1:43=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@linaro=
-.org> wrote:
+On Wed, Jan 10, 2024 at 5:47=E2=80=AFAM In=C3=A8s Varhol
+<ines.varhol@telecom-paris.fr> wrote:
 >
-> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+> The SYSCFG input GPIOs aren't connected yet. When the STM32L4x5 GPIO
+> device will be implemented, its output GPIOs will be connected to the
+> SYSCFG input GPIOs.
 >
-> > From: Akihiko Odaki <akihiko.odaki@daynix.com>
-> >
-> > It is initialized with a simple assignment and there is little room for
-> > error. In fact, the validation is even more complex.
-> >
-> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> > Acked-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-> > Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> > Acked-by: Alistair Francis <alistair.francis@wdc.com>
-> > Message-Id: <20231213-riscv-v7-2-a760156a337f@daynix.com>
-> > Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->
-> ping: along with this are the RiscV maintainers happy for me to take:
->
->   [PATCH v2 23/43] target/riscv: Remove misa_mxl validation
->   [PATCH v2 24/43] target/riscv: Move misa_mxl_max to class
->   [PATCH v2 25/43] target/riscv: Validate misa_mxl_max only once
->
-> through my next pull request?
+> Tested-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 
-Yep! Go for it
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
+> ---
+>  hw/arm/Kconfig                 |  1 +
+>  hw/arm/stm32l4x5_soc.c         | 21 ++++++++++++++++++++-
+>  include/hw/arm/stm32l4x5_soc.h |  2 ++
+>  3 files changed, 23 insertions(+), 1 deletion(-)
 >
-> <snip>
+> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+> index 8c8488a70a..bb4693bfbb 100644
+> --- a/hw/arm/Kconfig
+> +++ b/hw/arm/Kconfig
+> @@ -459,6 +459,7 @@ config STM32L4X5_SOC
+>      bool
+>      select ARM_V7M
+>      select OR_IRQ
+> +    select STM32L4X5_SYSCFG
+>      select STM32L4X5_EXTI
 >
+>  config XLNX_ZYNQMP_ARM
+> diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
+> index fe46b7c6c0..431f982caf 100644
+> --- a/hw/arm/stm32l4x5_soc.c
+> +++ b/hw/arm/stm32l4x5_soc.c
+> @@ -37,6 +37,7 @@
+>  #define SRAM2_SIZE (32 * KiB)
+>
+>  #define EXTI_ADDR 0x40010400
+> +#define SYSCFG_ADDR 0x40010000
+>
+>  #define NUM_EXTI_IRQ 40
+>  /* Match exti line connections with their CPU IRQ number */
+> @@ -80,6 +81,7 @@ static void stm32l4x5_soc_initfn(Object *obj)
+>      Stm32l4x5SocState *s =3D STM32L4X5_SOC(obj);
+>
+>      object_initialize_child(obj, "exti", &s->exti, TYPE_STM32L4X5_EXTI);
+> +    object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32L4X5_SY=
+SCFG);
+>
+>      s->sysclk =3D qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0)=
+;
+>      s->refclk =3D qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0)=
+;
+> @@ -154,6 +156,19 @@ static void stm32l4x5_soc_realize(DeviceState *dev_s=
+oc, Error **errp)
+>          return;
+>      }
+>
+> +    /* System configuration controller */
+> +    busdev =3D SYS_BUS_DEVICE(&s->syscfg);
+> +    if (!sysbus_realize(busdev, errp)) {
+> +        return;
+> +    }
+> +    sysbus_mmio_map(busdev, 0, SYSCFG_ADDR);
+> +    /*
+> +     * TODO: when the GPIO device is implemented, connect it
+> +     * to SYCFG using `qdev_connect_gpio_out`, NUM_GPIOS and
+> +     * GPIO_NUM_PINS.
+> +     */
+> +
+> +    /* EXTI device */
+>      busdev =3D SYS_BUS_DEVICE(&s->exti);
+>      if (!sysbus_realize(busdev, errp)) {
+>          return;
+> @@ -163,6 +178,11 @@ static void stm32l4x5_soc_realize(DeviceState *dev_s=
+oc, Error **errp)
+>          sysbus_connect_irq(busdev, i, qdev_get_gpio_in(armv7m, exti_irq[=
+i]));
+>      }
+>
+> +    for (unsigned i =3D 0; i < 16; i++) {
+> +        qdev_connect_gpio_out(DEVICE(&s->syscfg), i,
+> +                              qdev_get_gpio_in(DEVICE(&s->exti), i));
+> +    }
+> +
+>      /* APB1 BUS */
+>      create_unimplemented_device("TIM2",      0x40000000, 0x400);
+>      create_unimplemented_device("TIM3",      0x40000400, 0x400);
+> @@ -200,7 +220,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_so=
+c, Error **errp)
+>      /* RESERVED:    0x40009800, 0x6800 */
+>
+>      /* APB2 BUS */
+> -    create_unimplemented_device("SYSCFG",    0x40010000, 0x30);
+>      create_unimplemented_device("VREFBUF",   0x40010030, 0x1D0);
+>      create_unimplemented_device("COMP",      0x40010200, 0x200);
+>      /* RESERVED:    0x40010800, 0x1400 */
+> diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_so=
+c.h
+> index f7305568dc..baf70410b5 100644
+> --- a/include/hw/arm/stm32l4x5_soc.h
+> +++ b/include/hw/arm/stm32l4x5_soc.h
+> @@ -26,6 +26,7 @@
+>
+>  #include "exec/memory.h"
+>  #include "hw/arm/armv7m.h"
+> +#include "hw/misc/stm32l4x5_syscfg.h"
+>  #include "hw/misc/stm32l4x5_exti.h"
+>  #include "qom/object.h"
+>
+> @@ -41,6 +42,7 @@ struct Stm32l4x5SocState {
+>      ARMv7MState armv7m;
+>
+>      Stm32l4x5ExtiState exti;
+> +    Stm32l4x5SyscfgState syscfg;
+>
+>      MemoryRegion sram1;
+>      MemoryRegion sram2;
 > --
-> Alex Benn=C3=A9e
-> Virtualisation Tech Lead @ Linaro
+> 2.43.0
+>
 >
 
