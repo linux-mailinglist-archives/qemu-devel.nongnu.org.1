@@ -2,85 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2EE282A875
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 08:37:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDECE82A87A
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 08:38:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNpd8-0002vW-4Z; Thu, 11 Jan 2024 02:37:34 -0500
+	id 1rNpdi-0003kb-Q3; Thu, 11 Jan 2024 02:38:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rNpd5-0002rC-3b
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:37:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rNpcp-0006KY-Md
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:37:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704958634;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=A1jUOO6uje0SB47QneTCvW8z742zAfLrE5Mu8xPz3+w=;
- b=itVNCYk3rO6U0qCWIcb6TtBYQYzvIKI1zq2/83LaFwj5lmtwdPiyToISTvAlJ5gsH4CeQf
- CgSB5Y6KsI+1Zji6YyONqLTzMnIbJKFqX6iFYvzcd1ATm5rYtFktedxelSaKsgOhLW1hrL
- pkHuN1WPxT0a8fMlsjb1WsiV52qrYDI=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-421-HSZeB4A-NoS8f2_oGYWLGw-1; Thu, 11 Jan 2024 02:37:13 -0500
-X-MC-Unique: HSZeB4A-NoS8f2_oGYWLGw-1
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-6d9b6701404so4689435b3a.2
- for <qemu-devel@nongnu.org>; Wed, 10 Jan 2024 23:37:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704958632; x=1705563432;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=A1jUOO6uje0SB47QneTCvW8z742zAfLrE5Mu8xPz3+w=;
- b=TcxPkcV83AXKJjmwZFz6Gt6N2YC+OqPlUGGDfTroDiMVlkXlB/qLfhV9tOnCUPjMcc
- cVDuIuCqWz9xBwf2NG8vh/8Y8Ad9pu6C8vd+xFXA00B4hf9ZcB7tmO7PfHUZb+Gqdbu+
- SAieJ4YeVeXev3UoSrq3EIexM9qbIj7Po4ySTL1T8DKZXGU+sc0d93+mLllYOWGDu4wD
- n+abOIdTrX3wKeDSORN8kRC4wTdUU6yF5VGfQpimlwOt8JU1IJKKlD2VszIJNMt1N+oT
- OVMeBMOyesAHJW5dMwxspOa2xCTP9xEuqgy2tP66wqdvddDIQYmB0AgKZkInGJamZlkK
- xkgQ==
-X-Gm-Message-State: AOJu0YwupQLmhe2ROIi3xkuyvV0eEFepzQDa6kiOw+RPiCE4PM1Q5iPx
- BtUdTREAjhOsuzS+r4aHa43nPmPPkNV8+IKqCaZxs80L8eawVT6dDy22t/Fr5ME8RYqQTAFhv0x
- kIF6y9Yvl+jjTR4mbmRyzIsdXRv71N2R/j5SEa2g=
-X-Received: by 2002:a05:6a00:3a28:b0:6d9:9613:cb9e with SMTP id
- fj40-20020a056a003a2800b006d99613cb9emr1041909pfb.29.1704958632369; 
- Wed, 10 Jan 2024 23:37:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEjwpAJsc9OLSqr2PDaFOr4xoCBBXukqOnFsX4SSMENgxfFbVQvTg+qLbilVrEKYxlMfclgXA6YRWOFdcLIyuw=
-X-Received: by 2002:a05:6a00:3a28:b0:6d9:9613:cb9e with SMTP id
- fj40-20020a056a003a2800b006d99613cb9emr1041899pfb.29.1704958632116; Wed, 10
- Jan 2024 23:37:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rNpde-0003dg-4Z
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:38:06 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rNpda-0006bE-CL
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 02:38:05 -0500
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8CxqurUmp9lvCsEAA--.11618S3;
+ Thu, 11 Jan 2024 15:37:56 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Ax693Rmp9lrx8PAA--.39979S3; 
+ Thu, 11 Jan 2024 15:37:55 +0800 (CST)
+Subject: Re: [NOTFORMERGE PATCH 2/2] gitlab: Add Loongarch64 KVM-only build
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org
+Cc: Zhiguo Wu <wuzhiguo@loongson.cn>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Bibo Mao <maobibo@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Beraldo Leal <bleal@redhat.com>, WANG Xuerui <git@xen0n.name>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Xianglai Li <lixianglai@loongson.cn>, Tianrui Zhao <zhaotianrui@loongson.cn>
+References: <20240102172239.69452-1-philmd@linaro.org>
+ <20240102172239.69452-3-philmd@linaro.org>
+ <dbc7f2c6-15c0-4d5a-abf7-8946ff2d03cb@redhat.com>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <4cc9ab90-c1bc-03d3-d82e-a763199fa029@loongson.cn>
+Date: Thu, 11 Jan 2024 15:37:52 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-9-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-9-git-send-email-si-wei.liu@oracle.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 11 Jan 2024 15:37:01 +0800
-Message-ID: <CACGkMEuF2xVX=fdv5Jq1bJmoMq3wUAJA9tgNSk=n6aHg-=gHcw@mail.gmail.com>
-Subject: Re: [PATCH 08/40] vdpa: add back vhost_vdpa_net_first_nc_vdpa
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
- leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
- jonah.palmer@oracle.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <dbc7f2c6-15c0-4d5a-abf7-8946ff2d03cb@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Ax693Rmp9lrx8PAA--.39979S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7ZF4rXrWfJr4fKFy8uF13KFX_yoW8uF4kp3
+ s2kFWSkFWj9r1kKF4fC34rXF1rJw1kK3W7JFnaq3W0vrZFgr9rWr10qr4vgF15Zw48Gr1F
+ vwnYqas8WFnxXrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUU9ab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C2
+ 67AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
+ 8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWU
+ CwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
+ 1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsG
+ vfC2KfnxnUUI43ZEXa7IU8wNVDUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.07,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,16 +88,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 8, 2023 at 2:52=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
-rote:
+Hi,
+
+在 2024/1/11 下午3:10, Thomas Huth 写道:
+> On 02/01/2024 18.22, Philippe Mathieu-Daudé wrote:
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> Used to test 
+>> https://lore.kernel.org/qemu-devel/20231228084051.3235354-1-zhaotianrui@loongson.cn/
 >
-> Previous commits had it removed. Now adding it back because
-> this function will be needed by next patches.
+> So why is it NOTFORMERGE ? Don't we want to test KVM-only builds for 
+> loongarch in the long run?
+>
+>  Thomas
+>
+I think we can drop this title.
 
-Need some description to explain why. Because it should not be needed
-as we have a "parent" structure now, anything that is common could be
-stored there?
+I tested this job by the latest loongarch kvm patches.  buf I find a 
+test-hmp check error.
 
-Thanks
+See:
+https://gitlab.com/gaosong/qemu/-/jobs/5906385234
+
+If you want to log in to this machine, we can create an account for you.
+
+Thanks.
+Song Gao
+>
+>> ---
+>>   .../openeuler-22.03-loongarch64.yml           | 22 +++++++++++++++++++
+>>   1 file changed, 22 insertions(+)
+>>
+>> diff --git 
+>> a/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml 
+>> b/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml
+>> index 86d18f820e..60674b8d0f 100644
+>> --- a/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml
+>> +++ b/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml
+>> @@ -19,3 +19,25 @@ openeuler-22.03-loongarch64-all:
+>>      || { cat config.log meson-logs/meson-log.txt; exit 1; }
+>>    - make --output-sync -j`nproc --ignore=40`
+>>    - make --output-sync -j`nproc --ignore=40` check
+>> +
+>> +openeuler-22.03-loongarch64-kvm:
+>> + extends: .custom_runner_template
+>> + needs: []
+>> + stage: build
+>> + tags:
+>> + - oe2203
+>> + - loongarch64
+>> + rules:
+>> + - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH 
+>> =~ /^staging/'
+>> +   when: manual
+>> +   allow_failure: true
+>> + - if: "$LOONGARCH64_RUNNER_AVAILABLE"
+>> +   when: manual
+>> +   allow_failure: true
+>> + script:
+>> + - mkdir build
+>> + - cd build
+>> + - ../configure --enable-kvm --disable-tcg
+>> +   || { cat config.log meson-logs/meson-log.txt; exit 1; }
+>> + - make --output-sync -j`nproc --ignore=40`
+>> + - make --output-sync -j`nproc --ignore=40` check
 
 
