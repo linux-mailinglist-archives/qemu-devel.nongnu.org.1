@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0533C82AF16
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 14:01:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC39382AF15
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 14:01:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNug9-0003Rf-DC; Thu, 11 Jan 2024 08:01:01 -0500
+	id 1rNugA-0003TY-L3; Thu, 11 Jan 2024 08:01:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rNufy-0003GC-9D
+ id 1rNufy-0003GD-9R
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:00:53 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rNuft-0002u5-Rw
+ id 1rNufv-0002ud-NK
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:00:50 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1d4414ec9c7so26999515ad.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 05:00:33 -0800 (PST)
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1d50d0c98c3so36895705ad.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 05:00:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704978032; x=1705582832; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=ventanamicro.com; s=google; t=1704978043; x=1705582843; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ZhkqY9wbwdboUzlaO1BQoY73+y7tIrtaZflHeIsbim4=;
- b=IQjzNMAYsnZB0XfsSW6nrAz+clRzuxA7kvSLj+vwybMJHCioGYRdTVAo6E2/b7Rlsx
- lmIMVd3wr2db6hObiqMUvTTxpN8MLXWDnrBqZsiQSs5e8rV5+HUayLfwayVAOHcXTG0W
- Cht0BX5ir+KpRow4dftkrxwTqRqOBPU6n2EDHXwfxp5MJCYYilkiWRBIZXCkMsiekI36
- 6pdc6FHl+mywv3LVFjzKdjeh9P7bIJ4vcSir1f2cgCuui6YZoenbDbFZhxKLE08IGsdM
- Vr4vXC9CAODgjI/9JmJIxpIxy+lf2GZZ63ZwuYsoQmNLPznj0dz5GnbGQ8rCcK/0rVPK
- A5LQ==
+ bh=rFg1dNzVPnTCsOdeKSTg9W97fq3ju3xEU4cGnUvmmQY=;
+ b=pX1jYTeIIa99KP9XtBtGyCp+iqD0j12ZESCQ5cVtvv3yvVFe5Oa6QJJxRuiGSWXq46
+ Ppj75JNvARsp5d9PcrpLb5C9+E5dgW322B1uw7Q1mEAA4SDzaBLR/NtHFdxlc/Xn46V7
+ q92Ecii0qO02eJdis6VpWlffGdf4EmGw94pAjKIZhEwtMIcwzj5tbz0xuQOtf5AhVGZC
+ XWURLDaNlyR0s7c1mCT/dmBNLjWLhAQpz5jiUejtQA/AGy67i8imDc/wk2+ltXQVSyvq
+ DKSFCD0Eb+iu/+3cERERSxEHtNyS4SDErWzQtZmYaZxq5cYlIc1LdbmptlxDYS+yXNjD
+ aX1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704978032; x=1705582832;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1704978043; x=1705582843;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZhkqY9wbwdboUzlaO1BQoY73+y7tIrtaZflHeIsbim4=;
- b=Pa1tpRlaGxMI9iLQl2JjV3cOgeVOD6Noa4tPKw2ZbHux2qN1kybZEl2R3WOs/V4hYt
- 5L0uj3GiYim4DlyXObc6oglrYRDY9BGFkjak1PHBOtd063D8v3jphpiVkEE4DKFaMOHq
- Gf6W3bQzg2GMwq3OeSXAxsEHRJ6tJvQ/hVigHYSXvqFHM0eLj3xZsv4OsOiIjZFtRzAM
- MTieYK0wPLTZoCAbd/TZhjfVk3/xSzkci+z1jH5IkoxQ2GKR8TBvIPlIV6UNlxGU8pDF
- 4T6cHUJGXqoAHSdtjnYxX5SuIyFa50Yw26fOlC4ljSaKSQCtnWcE6iGhNn/raCkRgSBY
- TmgA==
-X-Gm-Message-State: AOJu0Yz7LL7t82LBEzU04rGzTBZi8SHSAt7PeXnK1xueWCkbUH5QKroN
- rw2IGNVg0t7NNt68ZOgUhaatiDvumJzsxA==
-X-Google-Smtp-Source: AGHT+IGOayzWtXJlY08AFwGe0Jn0k/fb7tg2CUjzrvml/mlYHdtWkGQGhURYiacKgIP7atvqGyf96Q==
-X-Received: by 2002:a17:902:d2c2:b0:1d3:f1b7:aaf3 with SMTP id
- n2-20020a170902d2c200b001d3f1b7aaf3mr1285418plc.7.1704978032674; 
- Thu, 11 Jan 2024 05:00:32 -0800 (PST)
+ bh=rFg1dNzVPnTCsOdeKSTg9W97fq3ju3xEU4cGnUvmmQY=;
+ b=aJdxxrTPoHaUCHsYwlm/eKwjdPVZpsEBB6/LsYCur2/NVIIPrkqV64WDb5uxwxeQD6
+ DG3g4y9PNS5XOwislU8Gli/oyHHlLsy8iM7M6Xf/N6kgZlLrueygt6JBgROZkYzS2w3e
+ NDEQcP5W2v7iqF+z9CC1KpiFptnKMglqeo50pc4egzWGOd+Bod0WT0Gf6PqAwZLrmtd7
+ ZjDqTQcOvqNFcJeMPNisagQt5PpuuUQKB62Jg0DSUiT6HQ45io2SOqz4ev85ccpRAUvm
+ ctA/bxNgRIzsLN7iI6Ydf6LbYHrozfrZzNinb2+JOvqE7cL0xxEqgPdy9Pi8C1B2df1P
+ EPgw==
+X-Gm-Message-State: AOJu0YwK09PfCmtaNK4lO9TulQzcMvkV18bbY+hhmj61mP5oMebpmz+0
+ XwWOGrGYEPEZPctVWjkNGUboltEaeNny8jbQD4z3BuDv9BOlRA==
+X-Google-Smtp-Source: AGHT+IHKq5uz9HJ7tGNRly4fQPUPZks7QHK7eRejUxuKSvk+CAZt0w+2McbJtV6c1U6lMxiSVend0g==
+X-Received: by 2002:a17:902:c40d:b0:1d0:acd4:e711 with SMTP id
+ k13-20020a170902c40d00b001d0acd4e711mr1098588plk.15.1704978043272; 
+ Thu, 11 Jan 2024 05:00:43 -0800 (PST)
 Received: from [192.168.68.110] ([152.234.123.64])
  by smtp.gmail.com with ESMTPSA id
- g11-20020a170902c98b00b001d4c97a2adcsm1115031plc.108.2024.01.11.05.00.27
+ g11-20020a170902c98b00b001d4c97a2adcsm1115031plc.108.2024.01.11.05.00.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 05:00:32 -0800 (PST)
-Message-ID: <f51eb537-aa16-4c6f-929e-8e4de5b74491@ventanamicro.com>
-Date: Thu, 11 Jan 2024 10:00:24 -0300
+ Thu, 11 Jan 2024 05:00:42 -0800 (PST)
+Message-ID: <cfee5451-89a8-444a-b0a1-ac2035a66922@ventanamicro.com>
+Date: Thu, 11 Jan 2024 10:00:38 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] accel: Rename accel_init_ops_interfaces() to include
- 'system'
+Subject: Re: [PATCH 2/5] hw/core/cpu: Rename cpu_class_init() to include
+ 'common'
+Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -76,21 +77,20 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Eric Farman
  <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>
 References: <20240111120221.35072-1-philmd@linaro.org>
- <20240111120221.35072-2-philmd@linaro.org>
-Content-Language: en-US
+ <20240111120221.35072-3-philmd@linaro.org>
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240111120221.35072-2-philmd@linaro.org>
+In-Reply-To: <20240111120221.35072-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,56 +109,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 1/11/24 09:02, Philippe Mathieu-Daudé wrote:
-> accel_init_ops_interfaces() is system specific, so
-> rename it as accel_system_init_ops_interfaces() to
-> ease navigating the code.
+> cpu_class_init() is common, so rename it as cpu_common_class_init()
+> to ease navigating the code.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
 
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
->   accel/accel-system.h | 2 +-
->   accel/accel-system.c | 2 +-
->   accel/accel-target.c | 2 +-
->   3 files changed, 3 insertions(+), 3 deletions(-)
+>   hw/core/cpu-common.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/accel/accel-system.h b/accel/accel-system.h
-> index d41c62f21b..2d37c73c97 100644
-> --- a/accel/accel-system.h
-> +++ b/accel/accel-system.h
-> @@ -10,6 +10,6 @@
->   #ifndef ACCEL_SYSTEM_H
->   #define ACCEL_SYSTEM_H
->   
-> -void accel_init_ops_interfaces(AccelClass *ac);
-> +void accel_system_init_ops_interfaces(AccelClass *ac);
->   
->   #endif /* ACCEL_SYSTEM_H */
-> diff --git a/accel/accel-system.c b/accel/accel-system.c
-> index fa8f43757c..f6c947dd82 100644
-> --- a/accel/accel-system.c
-> +++ b/accel/accel-system.c
-> @@ -62,7 +62,7 @@ void accel_setup_post(MachineState *ms)
+> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+> index 3ccfe882e2..67db07741d 100644
+> --- a/hw/core/cpu-common.c
+> +++ b/hw/core/cpu-common.c
+> @@ -273,7 +273,7 @@ static int64_t cpu_common_get_arch_id(CPUState *cpu)
+>       return cpu->cpu_index;
 >   }
 >   
->   /* initialize the arch-independent accel operation interfaces */
-> -void accel_init_ops_interfaces(AccelClass *ac)
-> +void accel_system_init_ops_interfaces(AccelClass *ac)
+> -static void cpu_class_init(ObjectClass *klass, void *data)
+> +static void cpu_common_class_init(ObjectClass *klass, void *data)
 >   {
->       const char *ac_name;
->       char *ops_name;
-> diff --git a/accel/accel-target.c b/accel/accel-target.c
-> index 7e3cbde5df..08626c00c2 100644
-> --- a/accel/accel-target.c
-> +++ b/accel/accel-target.c
-> @@ -104,7 +104,7 @@ static void accel_init_cpu_interfaces(AccelClass *ac)
->   void accel_init_interfaces(AccelClass *ac)
->   {
->   #ifndef CONFIG_USER_ONLY
-> -    accel_init_ops_interfaces(ac);
-> +    accel_system_init_ops_interfaces(ac);
->   #endif /* !CONFIG_USER_ONLY */
+>       DeviceClass *dc = DEVICE_CLASS(klass);
+>       ResettableClass *rc = RESETTABLE_CLASS(klass);
+> @@ -304,7 +304,7 @@ static const TypeInfo cpu_type_info = {
+>       .instance_finalize = cpu_common_finalize,
+>       .abstract = true,
+>       .class_size = sizeof(CPUClass),
+> -    .class_init = cpu_class_init,
+> +    .class_init = cpu_common_class_init,
+>   };
 >   
->       accel_init_cpu_interfaces(ac);
+>   static void cpu_register_types(void)
 
