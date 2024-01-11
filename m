@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F0782B029
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 15:03:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B0D82B03E
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 15:04:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNveA-0000X4-5G; Thu, 11 Jan 2024 09:03:02 -0500
+	id 1rNvf0-00014d-K0; Thu, 11 Jan 2024 09:03:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNvdx-0000UG-LA
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:02:50 -0500
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
+ id 1rNvee-0000vz-0Y
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:03:32 -0500
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNvdv-00079U-A8
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:02:49 -0500
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a28b2e1a13fso570121866b.3
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 06:02:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
+ id 1rNveY-0007MG-I5
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:03:29 -0500
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-6dc36e501e1so3594220a34.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 06:03:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704981765; x=1705586565; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9riYXyXkp5khOZhAcYOCAaJh1uKMHqAS/Ilk5ZNPZCU=;
- b=BDTwXqCBFeQ93/zZYhnrG4+DUmre0jidLT6+qlSg1wTrrTVKIRSkTq9PXCCMDSAio5
- z17bZEV2zZs+1ayA56PR0sx2EN4w+kRPJ/Grtnp6P/pCPAA61scQvdVnb8boUv1DyJHP
- vHGdH2yJWNX4ibyyUG0R++mThj2MR1KpyZHenWrdf7Rjw3JyBwCUmq3AMSYiZrfXRF8o
- KYAhXl23+Tw3MzXeOC9WpYhA7rnE0GN91MVymBM9bRa53SUNv/XfL4SpsZzylBE6sK4M
- bId2g0OodbUcEx34ZLx9bHuZpLxfo5z13PBlFbmbulIGXDWlbXvRN0mXnemspW5KCCeb
- i5gw==
+ d=gmail.com; s=20230601; t=1704981802; x=1705586602; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:sender:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vhZEwQP5COzWsQRvNuLuADGMgVWlNhHp5q21hdw8Uiw=;
+ b=UEkuIPAB/oRN+zzEDiFex4Tu768fJ5DTTffXBFybddZlBzHhQDx2ytv9JWmz/hqb8g
+ UoF8YT1dykKatfllGFUnMIqtBLGKme9+zMc/6bO6foM3A/KeAMAWoJ6Ou15aXfhGyv3L
+ J05tSURTHVMRcMbWvsyUVdrrqjXYofwRnxfp2h3pqSUYoXflX2mPl+mX+3W/dhd0sB10
+ VRcfmy1FDicJvw/+9fVFYkNO/7DCmZ0bXv5jfmylGpin0kaXCVLKzzjOq056lwZ1DHhG
+ pMgZhBpTbTzJ1pxjONjFFidbj8G4onKxMxSu16lRw4grs57wO3/yzIJM+l+obzeix+ss
+ NvmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704981765; x=1705586565;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9riYXyXkp5khOZhAcYOCAaJh1uKMHqAS/Ilk5ZNPZCU=;
- b=b/LYATte73qLOsgRQhqhxBcR+Bbp+cBNIdOf9IkOCMmV4fUG9hw4PKlMjO+gXNLxdD
- bmd2UuGyFwGvijLCbxY+n3wtZeCiaDskcx0/S0uzPgW25W0gDX8wAfzxzgHjSX1gwq19
- piuyyTvCFf1W96WNrPuQv3l/LCU5+hPC1AdzX3BhoElqQ0w4YbfuuPDGChU7lnnbpAh6
- bvLxCVjAIEzneCSzIpBt+reuPqB5nEATx14432IOmDYmhcmLQhiMXiFtlc16GVVus97B
- sNg1f7cZUlnba5CeMlHS0lbtE6RtRSa1lN8Ji7kNu1NRQWnqdg7KMgMyv52WnxfQJfxu
- f7SA==
-X-Gm-Message-State: AOJu0Yx79FAF1Rbwp3Cc2bqt9HWwrwz8exm5hl6FAYqVQkQoWjhq4uWL
- vOMFIgMJf7fgQQJB9ZdD4LVv/1il/hwgzd/OBiQXqC24F5jb/w==
-X-Google-Smtp-Source: AGHT+IGkNd3wjUxfleDip5ZfhpVOe3qnLWVuDnwM6NCyLqUXvrI02BWnD84LdjHIyHO6WNeTA9FkJw==
-X-Received: by 2002:a17:906:b2c3:b0:a2a:159a:5ebf with SMTP id
- cf3-20020a170906b2c300b00a2a159a5ebfmr625899ejb.154.1704981765518; 
- Thu, 11 Jan 2024 06:02:45 -0800 (PST)
-Received: from [192.168.69.100] (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
- [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
- x17-20020a170906711100b00a2c5ec21e0esm575137ejj.85.2024.01.11.06.02.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 06:02:44 -0800 (PST)
-Message-ID: <db81fdc0-856d-4ae4-9346-2df5d5ed133c@linaro.org>
-Date: Thu, 11 Jan 2024 15:02:43 +0100
+ d=1e100.net; s=20230601; t=1704981802; x=1705586602;
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:sender:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=vhZEwQP5COzWsQRvNuLuADGMgVWlNhHp5q21hdw8Uiw=;
+ b=hwymTgzF/dR/Uqr7q3KYMSMtT84yrBFB6z/A1lthY5dxErI9cI8fu1tG5FPt3OSC6s
+ OLSgtPnfS9D2TuvmVmznHm1yrS2PRgRWUVOLVBvU3Yk8yk6O0Gb6GRCN1wBfXW4v2TfM
+ 17VLZKPrbADzOmzhCBI3Ukvt0pxX4PY8sLVtnP+2RSelWoMb2LhfND5K0835cOnDJlJI
+ F4AbrpcUZXodqLbPPc3mBNGKebtvatMqYK0eebX3j3a8wyoEJOr26PS+qyNc/rBpS5/I
+ WJehn1EkEaB93Us5DSSztQjUT6AWUyUibG5rZiR/1xzwNF7TcvGKVX4KNwOhKcZybFL7
+ KFUg==
+X-Gm-Message-State: AOJu0YzkNa5B7DdgGspEpCrNT7QyCSQwm8OONAJTF0TTa2drY94ZwW30
+ Diai6wNbPdPQ3twcLZhurw==
+X-Google-Smtp-Source: AGHT+IGU+wubVdNh727bV8aV9PuiZiLr4r+gmgzHhkoaq8H2eSDD3StwgbLXAgcsxbzhAxAmImZVdw==
+X-Received: by 2002:a9d:4d9a:0:b0:6dd:dbbb:22bd with SMTP id
+ u26-20020a9d4d9a000000b006dddbbb22bdmr1475593otk.53.1704981801670; 
+ Thu, 11 Jan 2024 06:03:21 -0800 (PST)
+Received: from serve.minyard.net ([47.184.128.73])
+ by smtp.gmail.com with ESMTPSA id
+ j16-20020a9d7f10000000b006dbac72c8f8sm165960otq.53.2024.01.11.06.03.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Jan 2024 06:03:21 -0800 (PST)
+Received: from mail.minyard.net (unknown
+ [IPv6:2001:470:b8f6:1b:a76f:f1c0:9761:3859])
+ by serve.minyard.net (Postfix) with ESMTPSA id 7E0C51800BC;
+ Thu, 11 Jan 2024 14:03:20 +0000 (UTC)
+Date: Thu, 11 Jan 2024 08:03:19 -0600
+From: Corey Minyard <minyard@acm.org>
+To: Joe Komlodi <komlodi@google.com>
+Cc: qemu-devel@nongnu.org, venture@google.com, cminyard@google.com
+Subject: Re: [PATCH 0/4] hw/i2c: smbus: Reset fixes
+Message-ID: <ZZ/1J4q1TEFmc72P@mail.minyard.net>
+References: <20240110212641.1916202-1-komlodi@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] .gitlab-ci.d/buildtest.yml: Work around htags bug when
- environment is large
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-References: <20240111125543.1573473-1-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240111125543.1573473-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240110212641.1916202-1-komlodi@google.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=tcminyard@gmail.com; helo=mail-ot1-x32e.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,37 +93,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: minyard@acm.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/1/24 13:55, Peter Maydell wrote:
-> Sometimes the CI "pages" job fails with a message like this from
-> htags:
+On Wed, Jan 10, 2024 at 09:26:37PM +0000, Joe Komlodi wrote:
+> Hi all,
 > 
-> $ htags -anT --tree-view=filetree -m qemu_init -t "Welcome to the QEMU sourcecode"
-> htags: Negative exec line limit = -371
+> This series adds some resets for SMBus and for the I2C core. Along with
+> it, we make SMBus slave error printing a little more helpful.
 > 
-> This is due to a bug in hflags where if the environment is too large it
-> falls over:
-> https://lists.gnu.org/archive/html/bug-global/2024-01/msg00000.html
-> 
-> This happens to us because GitLab CI puts the commit message of the
-> commit under test into the CI_COMMIT_MESSAGE and/or CI_COMMIT_TAG_MESSAGE
-> environment variables, so the job will fail if the commit happens to
-> have a verbose commit message.
-> 
-> Work around the htags bug by unsetting these variables while running
-> htags.
-> 
-> Cc: qemu-stable@nongnu.org
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2080
-> ---
-> Cc'ing stable purely because it's probably useful to avoid flaky
-> CI jobs when testing stable branches too.
-> 
->   .gitlab-ci.d/buildtest.yml | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
+> These reset issues were very infrequent, they would maybe occur in 1 out
+> of hundreds of resets in our testing, but the way they happen is pretty
+> straightforward.
+> Basically as long as a reset happens in the middle of a transaction, the
+> state of the old transaction would still partially be there after the
+> reset. Once a new transaction comes in, the partial stale state can
+> cause the new transaction to incorrectly fail.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This seems wrong to me.  In a real system, the reset would be done on
+the smbus master and not necessarily on the mux (though I looked at a
+few of the PCA954x devices and they appear to have reset lines, but
+different systems may drive that reset differently).
 
+It seems to me that the bug is the smbus master device isn't getting
+reset in a system reset.  Just adding the reset logic there would be
+easier and more consistent with the real hardware.
+
+-corey
+
+> 
+> Thanks,
+> Joe
+> 
+> Joe Komlodi (4):
+>   hw/i2c: core: Add reset
+>   hw/i2c/smbus_slave: Add object path on error prints
+>   hw/i2c: smbus_slave: Reset state on reset
+>   hw/i2c: smbus: mux: Reset SMBusDevice state on reset
+> 
+>  hw/i2c/core.c                | 30 +++++++++++++++++++++++++-----
+>  hw/i2c/i2c_mux_pca954x.c     |  5 +++++
+>  hw/i2c/smbus_slave.c         | 20 ++++++++++++++++++--
+>  include/hw/i2c/i2c.h         |  6 +++++-
+>  include/hw/i2c/smbus_slave.h |  1 +
+>  5 files changed, 54 insertions(+), 8 deletions(-)
+> 
+> -- 
+> 2.43.0.472.g3155946c3a-goog
+> 
+> 
 
