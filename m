@@ -2,60 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BADE82AEC6
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:34:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D2F82AECF
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:35:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNuFJ-0003wl-Sb; Thu, 11 Jan 2024 07:33:17 -0500
+	id 1rNuHM-0005y0-Cq; Thu, 11 Jan 2024 07:35:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rNuF8-0003jt-II
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:33:08 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <megari@iki.fi>)
+ id 1rNuGx-0005Ry-2v; Thu, 11 Jan 2024 07:35:00 -0500
+Received: from meesny.iki.fi ([195.140.195.201])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rNuF5-0005dz-1J
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:33:05 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T9kXP2q6fz6D8g6;
- Thu, 11 Jan 2024 20:30:29 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id E9C05140B33;
- Thu, 11 Jan 2024 20:32:51 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 11 Jan
- 2024 12:32:51 +0000
-Date: Thu, 11 Jan 2024 12:32:50 +0000
-To: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-CC: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <fan.ni@samsung.com>, "Michael
- S . Tsirkin" <mst@redhat.com>, <linux-cxl@vger.kernel.org>,
- <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v2 2/4] hw/cxl/device: read from register values in
- mdev_reg_read()
-Message-ID: <20240111123250.00007748@Huawei.com>
-In-Reply-To: <20240109174550.00000f6c@Huawei.com>
-References: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
- <20231222090051.3265307-3-42.hyeyoo@gmail.com>
- <20240109174550.00000f6c@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <megari@iki.fi>)
+ id 1rNuGu-0006KS-DX; Thu, 11 Jan 2024 07:34:58 -0500
+Received: from asuna.localdomain (dqtkhhyj8rfbp6-pnnpzy-3.rev.dnainternet.fi
+ [IPv6:2001:14ba:6c10:6300:fc71:2cd:7d8b:5b28])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested) (Authenticated sender: megari)
+ by meesny.iki.fi (Postfix) with ESMTPSA id 4T9kdD48XCzyWK;
+ Thu, 11 Jan 2024 14:34:40 +0200 (EET)
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org, Ari Sundholm <ari@tuxera.com>
+Subject: [PATCH] block/blklogwrites: Protect mutable driver state with a mutex.
+Date: Thu, 11 Jan 2024 14:34:24 +0200
+Message-ID: <20240111123424.1317763-1-ari@tuxera.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <f1960d8d-352e-4e1b-4d28-7a110e272356@tuxera.com>
+References: <f1960d8d-352e-4e1b-4d28-7a110e272356@tuxera.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=195.140.195.201; envelope-from=megari@iki.fi;
+ helo=meesny.iki.fi
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,110 +54,143 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
+Reply-to:  Ari Sundholm <ari@tuxera.com>
+From:  Ari Sundholm via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 9 Jan 2024 17:45:50 +0000
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+During the review of a fix for a concurrency issue in blklogwrites,
+it was found that the driver needs an additional fix when enabling
+multiqueue, which is a new feature introduced in QEMU 9.0, as the
+driver state may be read and written by multiple threads at the same
+time, which was not the case when the driver was originally written.
 
-> On Fri, 22 Dec 2023 18:00:49 +0900
-> Hyeonggon Yoo <42.hyeyoo@gmail.com> wrote:
-> 
-> > In the current mdev_reg_read() implementation, it consistently returns
-> > that the Media Status is Ready (01b). This was fine until commit
-> > 25a52959f99d ("hw/cxl: Add support for device sanitation") because the
-> > media was presumed to be ready.
-> > 
-> > However, as per the CXL 3.0 spec "8.2.9.8.5.1 Sanitize (Opcode 4400h)",
-> > during sanitation, the Media State should be set to Disabled (11b). The
-> > mentioned commit correctly sets it to Disabled, but mdev_reg_read()
-> > still returns Media Status as Ready.
-> > 
-> > To address this, update mdev_reg_read() to read register values instead
-> > of returning dummy values.
-> > 
-> > Fixes: commit 25a52959f99d ("hw/cxl: Add support for device sanitation")
-> > Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-> > Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>  
-> 
-> I've applied this one to my tree.  (I'll push that out in a day or two after
-> tidying up some other outstanding stuff). 
-> 
-> Sometime in next week or so I'll send out a set bundling together various
-> fixes and cleanup with the intent for getting it applied.
+Fix the multi-threaded scenario by introducing a mutex to protect the
+mutable fields in the driver state, and always having the mutex locked
+by the current thread when accessing them.
 
-I've changed how this works because what this is doing as presented is
-overwriting the mailbox capability register.  mbox_reg_state64 is as the
-name should have made obvious to reviewers such as me, the mailbox registers!
+Additionally, add the const qualifier to a few BDRVBlkLogWritesState
+pointer targets in contexts where the driver state is not written to.
 
-Anyhow, I'll put an alternative fix in place.
+Signed-off-by: Ari Sundholm <ari@tuxera.com>
+---
+ block/blklogwrites.c | 29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
-Jonathan
-
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> > ---
-> >  hw/cxl/cxl-device-utils.c   | 17 +++++++++++------
-> >  include/hw/cxl/cxl_device.h |  4 +++-
-> >  2 files changed, 14 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
-> > index 29de298117..ba3f80e6e7 100644
-> > --- a/hw/cxl/cxl-device-utils.c
-> > +++ b/hw/cxl/cxl-device-utils.c
-> > @@ -229,12 +229,9 @@ static void mailbox_reg_write(void *opaque, hwaddr offset, uint64_t value,
-> >  
-> >  static uint64_t mdev_reg_read(void *opaque, hwaddr offset, unsigned size)
-> >  {
-> > -    uint64_t retval = 0;
-> > -
-> > -    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
-> > -    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MBOX_READY, 1);
-> > +    CXLDeviceState *cxl_dstate = opaque;
-> >  
-> > -    return retval;
-> > +    return cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
-> >  }
-> >  
-> >  static void ro_reg_write(void *opaque, hwaddr offset, uint64_t value,
-> > @@ -371,7 +368,15 @@ static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
-> >      cxl_dstate->mbox_msi_n = msi_n;
-> >  }
-> >  
-> > -static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) { }
-> > +static void memdev_reg_init_common(CXLDeviceState *cxl_dstate)
-> > +{
-> > +    uint64_t memdev_status_reg;
-> > +
-> > +    memdev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
-> > +    memdev_status_reg = FIELD_DP64(memdev_status_reg, CXL_MEM_DEV_STS,
-> > +                                   MBOX_READY, 1);
-> > +    cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] = memdev_status_reg;
-> > +}
-> >  
-> >  void cxl_device_register_init_t3(CXLType3Dev *ct3d)
-> >  {
-> > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> > index b2cb280e16..b318d94b36 100644
-> > --- a/include/hw/cxl/cxl_device.h
-> > +++ b/include/hw/cxl/cxl_device.h
-> > @@ -408,7 +408,9 @@ static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
-> >  {
-> >      uint64_t dev_status_reg;
-> >  
-> > -    dev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, val);
-> > +    dev_status_reg = cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
-> > +    dev_status_reg = FIELD_DP64(dev_status_reg, CXL_MEM_DEV_STS, MEDIA_STATUS,
-> > +                                val);
-> >      cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] = dev_status_reg;
-> >  }
-> >  #define cxl_dev_disable_media(cxlds)                    \  
-> 
-> 
+diff --git a/block/blklogwrites.c b/block/blklogwrites.c
+index ba717dab4d..50f68df2a6 100644
+--- a/block/blklogwrites.c
++++ b/block/blklogwrites.c
+@@ -3,7 +3,7 @@
+  *
+  * Copyright (c) 2017 Tuomas Tynkkynen <tuomas@tuxera.com>
+  * Copyright (c) 2018 Aapo Vienamo <aapo@tuxera.com>
+- * Copyright (c) 2018 Ari Sundholm <ari@tuxera.com>
++ * Copyright (c) 2018-2024 Ari Sundholm <ari@tuxera.com>
+  *
+  * This work is licensed under the terms of the GNU GPL, version 2 or later.
+  * See the COPYING file in the top-level directory.
+@@ -55,9 +55,18 @@ typedef struct {
+     BdrvChild *log_file;
+     uint32_t sectorsize;
+     uint32_t sectorbits;
++    uint64_t update_interval;
++
++    /*
++     * The mutable state of the driver, consisting of the current log sector
++     * and the number of log entries.
++     *
++     * May be read and/or written from multiple threads, and the mutex must be
++     * held when accessing these fields.
++     */
+     uint64_t cur_log_sector;
+     uint64_t nr_entries;
+-    uint64_t update_interval;
++    QemuMutex mutex;
+ } BDRVBlkLogWritesState;
+ 
+ static QemuOptsList runtime_opts = {
+@@ -149,6 +158,7 @@ static int blk_log_writes_open(BlockDriverState *bs, QDict *options, int flags,
+     uint64_t log_sector_size;
+     bool log_append;
+ 
++    qemu_mutex_init(&s->mutex);
+     opts = qemu_opts_create(&runtime_opts, NULL, 0, &error_abort);
+     if (!qemu_opts_absorb_qdict(opts, options, errp)) {
+         ret = -EINVAL;
+@@ -255,6 +265,7 @@ fail_log:
+         bdrv_unref_child(bs, s->log_file);
+         bdrv_graph_wrunlock();
+         s->log_file = NULL;
++        qemu_mutex_destroy(&s->mutex);
+     }
+ fail:
+     qemu_opts_del(opts);
+@@ -269,6 +280,7 @@ static void blk_log_writes_close(BlockDriverState *bs)
+     bdrv_unref_child(bs, s->log_file);
+     s->log_file = NULL;
+     bdrv_graph_wrunlock();
++    qemu_mutex_destroy(&s->mutex);
+ }
+ 
+ static int64_t coroutine_fn GRAPH_RDLOCK
+@@ -295,7 +307,7 @@ static void blk_log_writes_child_perm(BlockDriverState *bs, BdrvChild *c,
+ 
+ static void blk_log_writes_refresh_limits(BlockDriverState *bs, Error **errp)
+ {
+-    BDRVBlkLogWritesState *s = bs->opaque;
++    const BDRVBlkLogWritesState *s = bs->opaque;
+     bs->bl.request_alignment = s->sectorsize;
+ }
+ 
+@@ -338,15 +350,18 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
+      * driver may be modified by other driver operations while waiting for the
+      * I/O to complete.
+      */
++    qemu_mutex_lock(&s->mutex);
+     const uint64_t entry_start_sector = s->cur_log_sector;
+     const uint64_t entry_offset = entry_start_sector << s->sectorbits;
+     const uint64_t qiov_aligned_size = ROUND_UP(lr->qiov->size, s->sectorsize);
+     const uint64_t entry_aligned_size = qiov_aligned_size +
+         ROUND_UP(lr->zero_size, s->sectorsize);
+     const uint64_t entry_nr_sectors = entry_aligned_size >> s->sectorbits;
++    const uint64_t entry_seq = s->nr_entries + 1;
+ 
+-    s->nr_entries++;
++    s->nr_entries = entry_seq;
+     s->cur_log_sector += entry_nr_sectors;
++    qemu_mutex_unlock(&s->mutex);
+ 
+     /*
+      * Write the log entry. Note that if this is a "write zeroes" operation,
+@@ -366,14 +381,16 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
+ 
+     /* Update super block on flush or every update interval */
+     if (lr->log_ret == 0 && ((lr->entry.flags & LOG_FLUSH_FLAG)
+-        || (s->nr_entries % s->update_interval == 0)))
++        || (entry_seq % s->update_interval == 0)))
+     {
++        qemu_mutex_lock(&s->mutex);
+         struct log_write_super super = {
+             .magic      = cpu_to_le64(WRITE_LOG_MAGIC),
+             .version    = cpu_to_le64(WRITE_LOG_VERSION),
+             .nr_entries = cpu_to_le64(s->nr_entries),
+             .sectorsize = cpu_to_le32(s->sectorsize),
+         };
++        qemu_mutex_unlock(&s->mutex);
+         void *zeroes = g_malloc0(s->sectorsize - sizeof(super));
+         QEMUIOVector qiov;
+ 
+@@ -405,7 +422,7 @@ blk_log_writes_co_log(BlockDriverState *bs, uint64_t offset, uint64_t bytes,
+ {
+     QEMUIOVector log_qiov;
+     size_t niov = qiov ? qiov->niov : 0;
+-    BDRVBlkLogWritesState *s = bs->opaque;
++    const BDRVBlkLogWritesState *s = bs->opaque;
+     BlkLogWritesFileReq fr = {
+         .bs         = bs,
+         .offset     = offset,
+-- 
+2.43.0
 
 
