@@ -2,52 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8983982B3A2
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 18:05:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3848D82B39A
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 18:04:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNyQm-0004BB-K2; Thu, 11 Jan 2024 12:01:24 -0500
+	id 1rNyQm-0004A6-04; Thu, 11 Jan 2024 12:01:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyQe-0003zr-P2
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:01:16 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyQd-0003vm-Bv
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:01:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyQd-0003iq-1V
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:01:16 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNyQa-0003hU-6s
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 12:01:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704992473;
+ s=mimecast20190719; t=1704992471;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=d8cb0BzMvSNrKKGB2firgofzOdxv5P92jVnpiy2Q61M=;
- b=EwN6MYmD7U1qkd/rFxZOEHZX/IxKQ5n+vquZrB/RFAeMw6S9jXQ1gKyeiHGHunQ48nEuTT
- 8o/nS8QNFpTZ6RScylAv6NSewixXPKt7xPFepJsdpVyomHLFbWkux4L/vcDO5Fkg8t32H3
- 2kay9zCO7v5GIGDPPPu0mkflPH1UFP4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-261-ynJs8SvJMOKli_TBxHRDYw-1; Thu, 11 Jan 2024 12:01:08 -0500
-X-MC-Unique: ynJs8SvJMOKli_TBxHRDYw-1
+ bh=xCLVifFBlpcunJVbDoZ8VS78jJwDWTASw8loqXXE2KU=;
+ b=VCbqz1NL8MuqQg3hsFz914oVjoEXW/apfbgQ3nffkbwd9ic1ru1XX1bRN0qr80+AwyZkL8
+ N67ZrBlPdP5kEnlvcTRgleb9AZ5ruesDMUTDw/NU1299Xs30bQuifE1Dh3RpFfPZ2bLEoC
+ ZWwALkBG+K+zPCMmKYSKJL2D8Fr2HHw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-195-Aid_luucO1q4bnd0_64Q7A-1; Thu,
+ 11 Jan 2024 12:01:08 -0500
+X-MC-Unique: Aid_luucO1q4bnd0_64Q7A-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AFA2C108BF33;
- Thu, 11 Jan 2024 17:01:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C71AC28AC1EB;
+ Thu, 11 Jan 2024 17:01:07 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.197])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8AC9D51D5;
- Thu, 11 Jan 2024 17:01:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 372EA51D5;
+ Thu, 11 Jan 2024 17:01:06 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Samuel Tardieu <sam@rfc1149.net>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/17] tests/qtest/virtio-ccw: Fix device presence checking
-Date: Thu, 11 Jan 2024 18:00:38 +0100
-Message-ID: <20240111170047.909117-10-thuth@redhat.com>
+Subject: [PULL 10/17] gitlab: fix s390x tag for avocado-system-centos
+Date: Thu, 11 Jan 2024 18:00:39 +0100
+Message-ID: <20240111170047.909117-11-thuth@redhat.com>
 In-Reply-To: <20240111170047.909117-1-thuth@redhat.com>
 References: <20240111170047.909117-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -79,34 +81,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Samuel Tardieu <sam@rfc1149.net>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-An apparent copy-paste error tests for the presence of the
-virtio-rng-ccw device in order to perform tests on the virtio-scsi-ccw
-device.
+The 390x tag should be s390x.
 
-Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
-Message-ID: <20240106130121.1244993-1-sam@rfc1149.net>
-Fixes: 65331bf5d1 ("tests/qtest: Check for virtio-ccw devices before  using them")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Message-ID: <20240107170119.82222-2-npiggin@gmail.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/virtio-ccw-test.c | 2 +-
+ .gitlab-ci.d/buildtest.yml | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/virtio-ccw-test.c b/tests/qtest/virtio-ccw-test.c
-index f4f5858b84..7a5357c212 100644
---- a/tests/qtest/virtio-ccw-test.c
-+++ b/tests/qtest/virtio-ccw-test.c
-@@ -85,7 +85,7 @@ int main(int argc, char **argv)
-     if (qtest_has_device("virtio-rng-ccw")) {
-         qtest_add_func("/virtio/rng/nop", virtio_rng_nop);
-     }
--    if (qtest_has_device("virtio-rng-ccw")) {
-+    if (qtest_has_device("virtio-scsi-ccw")) {
-         qtest_add_func("/virtio/scsi/nop", virtio_scsi_nop);
-         qtest_add_func("/virtio/scsi/hotplug", virtio_scsi_hotplug);
-     }
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 91663946de..cfe737aca2 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -184,7 +184,7 @@ avocado-system-centos:
+   variables:
+     IMAGE: centos8
+     MAKE_CHECK_ARGS: check-avocado
+-    AVOCADO_TAGS: arch:ppc64 arch:or1k arch:390x arch:x86_64 arch:rx
++    AVOCADO_TAGS: arch:ppc64 arch:or1k arch:s390x arch:x86_64 arch:rx
+       arch:sh4 arch:nios2
+ 
+ build-system-opensuse:
 -- 
 2.43.0
 
