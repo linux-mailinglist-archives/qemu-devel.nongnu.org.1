@@ -2,70 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E785E82B023
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 15:02:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F0782B029
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 15:03:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNvce-0007NI-S2; Thu, 11 Jan 2024 09:01:28 -0500
+	id 1rNveA-0000X4-5G; Thu, 11 Jan 2024 09:03:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rNvcb-0007MB-Mn
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:01:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rNvcZ-0006gI-PE
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:01:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704981681;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=zPTOd+26AWjSGzpNiAhcwxCvBEmSs9Fjd1XVUtc13Ts=;
- b=aChqZoYIA54iaYEezMlRdCBzwTuC3zWdsr9anJ4Q6ZGbzmZfxKr64PCygbE8ERRbeL5RIw
- v1yPs3igxu53IUb6ARzuXuPV/7iiYFVrCHI1HAF4QeNyHJvzQspVwJVaQDVK3mxwA3j1dO
- hhrNBZSY4gipQe1ZIrnGq8xPRTAV0jA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-27-w_SM3I-NPJ6KFj3ST8kbRw-1; Thu, 11 Jan 2024 09:01:20 -0500
-X-MC-Unique: w_SM3I-NPJ6KFj3ST8kbRw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 73230185A787;
- Thu, 11 Jan 2024 14:01:18 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.196])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 46D002166B31;
- Thu, 11 Jan 2024 14:01:18 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 4D8D4180079A; Thu, 11 Jan 2024 15:01:17 +0100 (CET)
-Date: Thu, 11 Jan 2024 15:01:17 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, edk2-stable@nongnu.org
-Subject: Re: [PULL 0/6] Firmware/edk2 20231213 patches
-Message-ID: <y2kuootd3k2tqe2245zggbuusg2kaaqrxlvxfwy2wrcbdxg3cn@zgj6tl7gd4lp>
-References: <20231213105026.1944656-1-kraxel@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNvdx-0000UG-LA
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:02:50 -0500
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNvdv-00079U-A8
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 09:02:49 -0500
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a28b2e1a13fso570121866b.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 06:02:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1704981765; x=1705586565; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9riYXyXkp5khOZhAcYOCAaJh1uKMHqAS/Ilk5ZNPZCU=;
+ b=BDTwXqCBFeQ93/zZYhnrG4+DUmre0jidLT6+qlSg1wTrrTVKIRSkTq9PXCCMDSAio5
+ z17bZEV2zZs+1ayA56PR0sx2EN4w+kRPJ/Grtnp6P/pCPAA61scQvdVnb8boUv1DyJHP
+ vHGdH2yJWNX4ibyyUG0R++mThj2MR1KpyZHenWrdf7Rjw3JyBwCUmq3AMSYiZrfXRF8o
+ KYAhXl23+Tw3MzXeOC9WpYhA7rnE0GN91MVymBM9bRa53SUNv/XfL4SpsZzylBE6sK4M
+ bId2g0OodbUcEx34ZLx9bHuZpLxfo5z13PBlFbmbulIGXDWlbXvRN0mXnemspW5KCCeb
+ i5gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1704981765; x=1705586565;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9riYXyXkp5khOZhAcYOCAaJh1uKMHqAS/Ilk5ZNPZCU=;
+ b=b/LYATte73qLOsgRQhqhxBcR+Bbp+cBNIdOf9IkOCMmV4fUG9hw4PKlMjO+gXNLxdD
+ bmd2UuGyFwGvijLCbxY+n3wtZeCiaDskcx0/S0uzPgW25W0gDX8wAfzxzgHjSX1gwq19
+ piuyyTvCFf1W96WNrPuQv3l/LCU5+hPC1AdzX3BhoElqQ0w4YbfuuPDGChU7lnnbpAh6
+ bvLxCVjAIEzneCSzIpBt+reuPqB5nEATx14432IOmDYmhcmLQhiMXiFtlc16GVVus97B
+ sNg1f7cZUlnba5CeMlHS0lbtE6RtRSa1lN8Ji7kNu1NRQWnqdg7KMgMyv52WnxfQJfxu
+ f7SA==
+X-Gm-Message-State: AOJu0Yx79FAF1Rbwp3Cc2bqt9HWwrwz8exm5hl6FAYqVQkQoWjhq4uWL
+ vOMFIgMJf7fgQQJB9ZdD4LVv/1il/hwgzd/OBiQXqC24F5jb/w==
+X-Google-Smtp-Source: AGHT+IGkNd3wjUxfleDip5ZfhpVOe3qnLWVuDnwM6NCyLqUXvrI02BWnD84LdjHIyHO6WNeTA9FkJw==
+X-Received: by 2002:a17:906:b2c3:b0:a2a:159a:5ebf with SMTP id
+ cf3-20020a170906b2c300b00a2a159a5ebfmr625899ejb.154.1704981765518; 
+ Thu, 11 Jan 2024 06:02:45 -0800 (PST)
+Received: from [192.168.69.100] (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
+ [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
+ x17-20020a170906711100b00a2c5ec21e0esm575137ejj.85.2024.01.11.06.02.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 11 Jan 2024 06:02:44 -0800 (PST)
+Message-ID: <db81fdc0-856d-4ae4-9346-2df5d5ed133c@linaro.org>
+Date: Thu, 11 Jan 2024 15:02:43 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231213105026.1944656-1-kraxel@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] .gitlab-ci.d/buildtest.yml: Work around htags bug when
+ environment is large
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+References: <20240111125543.1573473-1-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240111125543.1573473-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,47 +95,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 13, 2023 at 11:50:12AM +0100, Gerd Hoffmann wrote:
-> The following changes since commit 9c74490bff6c8886a922008d0c9ce6cae70dd17e:
+On 11/1/24 13:55, Peter Maydell wrote:
+> Sometimes the CI "pages" job fails with a message like this from
+> htags:
 > 
->   Update version for v8.2.0-rc3 release (2023-12-06 14:34:20 -0500)
+> $ htags -anT --tree-view=filetree -m qemu_init -t "Welcome to the QEMU sourcecode"
+> htags: Negative exec line limit = -371
 > 
-> are available in the Git repository at:
+> This is due to a bug in hflags where if the environment is too large it
+> falls over:
+> https://lists.gnu.org/archive/html/bug-global/2024-01/msg00000.html
 > 
->   https://gitlab.com/kraxel/qemu.git tags/firmware/edk2-20231213-pull-request
+> This happens to us because GitLab CI puts the commit message of the
+> commit under test into the CI_COMMIT_MESSAGE and/or CI_COMMIT_TAG_MESSAGE
+> environment variables, so the job will fail if the commit happens to
+> have a verbose commit message.
 > 
-> for you to fetch changes up to 704f7cad5105246822686f65765ab92045f71a3b:
+> Work around the htags bug by unsetting these variables while running
+> htags.
 > 
->   tests/acpi: disallow tests/data/acpi/virt/SSDT.memhp changes (2023-12-13 11:23:11 +0100)
+> Cc: qemu-stable@nongnu.org
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2080
+> ---
+> Cc'ing stable purely because it's probably useful to avoid flaky
+> CI jobs when testing stable branches too.
 > 
-> ----------------------------------------------------------------
-> edk2: update to git snapshot (maybe for-8.2)
-> 
-> This updates edk2 to git master as of today.  This picks up a patch
-> (merged only yesterday, that's why this last-minute PR) which allows to
-> work around a bug in shim, and enables that workaround in the qemu
-> firmware builds.
-> 
-> This solves a real-world problem on arm hardware, walk over to
-> https://gitlab.com/qemu-project/qemu/-/issues/1990 to see the details.
-> 
-> Merging this firmware update that close to the 8.2 release clearly is
-> not without risks.  If I get a 'no', I'm not going to complain.
-> 
-> That said I'm not aware of any bugs, and landing this in 8.2.0 would
-> make a bunch of folks hanging around in issue 1990 very happy.
-> 
-> Alternative plan would be to merge this after the release, give it some
-> time for testing, and assuming everything goes well schedule a backport
-> for 8.2.1
+>   .gitlab-ci.d/buildtest.yml | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
 
-Ping.
-
-As expected this missed the 8.2 boat.  Now the devel tree is open again
-and people are back from xmas + new year vacations, can this be picked
-up for master and eventually 8.2-stable?
-
-thanks,
-  Gerd
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
