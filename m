@@ -2,107 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6577782AEB6
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:30:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BADE82AEC6
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 13:34:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNuBX-0001hz-8P; Thu, 11 Jan 2024 07:29:23 -0500
+	id 1rNuFJ-0003wl-Sb; Thu, 11 Jan 2024 07:33:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1rNuBJ-0001fy-MR; Thu, 11 Jan 2024 07:29:09 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rNuF8-0003jt-II
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:33:08 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1rNuBG-0004UK-3X; Thu, 11 Jan 2024 07:29:08 -0500
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40BBQ2vN025234; Thu, 11 Jan 2024 12:29:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=OKcrZriGKAxo+iCbxagusfHYXftsmf9ma3py7OBimVk=;
- b=MdgbEikdpN4t+qGnjDd1ok8IvNhPuZb6Zv9dDGnzlbqaGQQVtcG+fgDV+EzM9adbuGu9
- lhHT+uv5Z5MrYnOb4ntLhq0k2xXRfzO3CnxlnQxu+lBJbspccDAqcTKnJuaJtItyLQ93
- x57cyvEjiVuFQ5+kIgNLD3HfiTvkCBXbP76FGcjKdNbuhg72A3jJUWkdf1uQPTYp9Nak
- DMPO4+IwdX52V3qfi/IwrVFl8OxL8+IvzJDWf4S+42I1wF495+cLjquiedOVX7mAoT+m
- bk0funTKfKupbi/Fes506ZS7vhdkGiYZo7wx6is14MkLIuzRPDba4jErUwIwe4bI8xbX Zg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjbc57hjv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jan 2024 12:29:01 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40BCFebY014653;
- Thu, 11 Jan 2024 12:29:01 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjbc57hjg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jan 2024 12:29:01 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40BAPCMS026999; Thu, 11 Jan 2024 12:29:00 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkw2awqf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jan 2024 12:29:00 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40BCSvRJ25887304
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 11 Jan 2024 12:28:57 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 431D42004E;
- Thu, 11 Jan 2024 12:28:57 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 15C952004B;
- Thu, 11 Jan 2024 12:28:57 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.152.224.66])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 11 Jan 2024 12:28:57 +0000 (GMT)
-Date: Thu, 11 Jan 2024 13:28:55 +0100
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>, Janosch
- Frank <frankja@linux.ibm.com>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
- <clegoate@redhat.com>, qemu-devel@nongnu.org, Halil Pasic
- <pasic@linux.ibm.com>
-Subject: Re: [PATCH v2] target/s390x/kvm/pv: Provide some more useful
- information if decryption fails
-Message-ID: <20240111132855.0421878d@p-imbrenda>
-In-Reply-To: <20240110142916.850605-1-thuth@redhat.com>
-References: <20240110142916.850605-1-thuth@redhat.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -t1HPBBRlqqcyxKa34JxKMSZz7MNh3h7
-X-Proofpoint-GUID: S5Sn8OSox0WNleOANY1ao64vD9MSIK_w
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rNuF5-0005dz-1J
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 07:33:05 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T9kXP2q6fz6D8g6;
+ Thu, 11 Jan 2024 20:30:29 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id E9C05140B33;
+ Thu, 11 Jan 2024 20:32:51 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 11 Jan
+ 2024 12:32:51 +0000
+Date: Thu, 11 Jan 2024 12:32:50 +0000
+To: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+CC: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <fan.ni@samsung.com>, "Michael
+ S . Tsirkin" <mst@redhat.com>, <linux-cxl@vger.kernel.org>,
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v2 2/4] hw/cxl/device: read from register values in
+ mdev_reg_read()
+Message-ID: <20240111123250.00007748@Huawei.com>
+In-Reply-To: <20240109174550.00000f6c@Huawei.com>
+References: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
+ <20231222090051.3265307-3-42.hyeyoo@gmail.com>
+ <20240109174550.00000f6c@Huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-11_06,2024-01-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0
- malwarescore=0 spamscore=0 bulkscore=0 mlxlogscore=999 clxscore=1015
- adultscore=0 impostorscore=0 priorityscore=1501 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401110099
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=imbrenda@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,182 +68,110 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 10 Jan 2024 15:29:16 +0100
-Thomas Huth <thuth@redhat.com> wrote:
+On Tue, 9 Jan 2024 17:45:50 +0000
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-> It's a common scenario to copy guest images from one host to another
-> to run the guest on the other machine. This (of course) does not work
-> with "secure exection" guests since they are encrypted with one certain
+> On Fri, 22 Dec 2023 18:00:49 +0900
+> Hyeonggon Yoo <42.hyeyoo@gmail.com> wrote:
+> 
+> > In the current mdev_reg_read() implementation, it consistently returns
+> > that the Media Status is Ready (01b). This was fine until commit
+> > 25a52959f99d ("hw/cxl: Add support for device sanitation") because the
+> > media was presumed to be ready.
+> > 
+> > However, as per the CXL 3.0 spec "8.2.9.8.5.1 Sanitize (Opcode 4400h)",
+> > during sanitation, the Media State should be set to Disabled (11b). The
+> > mentioned commit correctly sets it to Disabled, but mdev_reg_read()
+> > still returns Media Status as Ready.
+> > 
+> > To address this, update mdev_reg_read() to read register values instead
+> > of returning dummy values.
+> > 
+> > Fixes: commit 25a52959f99d ("hw/cxl: Add support for device sanitation")
+> > Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+> > Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>  
+> 
+> I've applied this one to my tree.  (I'll push that out in a day or two after
+> tidying up some other outstanding stuff). 
+> 
+> Sometime in next week or so I'll send out a set bundling together various
+> fixes and cleanup with the intent for getting it applied.
 
-*execution
+I've changed how this works because what this is doing as presented is
+overwriting the mailbox capability register.  mbox_reg_state64 is as the
+name should have made obvious to reviewers such as me, the mailbox registers!
 
-with that fixed:
+Anyhow, I'll put an alternative fix in place.
 
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Jonathan
 
-> host key. However, if you still (accidentally) do it, you only get a
-> very user-unfriendly error message that looks like this:
 > 
->  qemu-system-s390x: KVM PV command 2 (KVM_PV_SET_SEC_PARMS) failed:
->   header rc 108 rrc 5 IOCTL rc: -22
+> Thanks,
 > 
-> Let's provide at least a somewhat nicer hint to the users so that they
-> are able to figure out what might have gone wrong.
+> Jonathan
 > 
-> Buglink: https://issues.redhat.com/browse/RHEL-18212
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  v2: Print the error in s390_machine_protect() instead of doing it
->      in s390_pv_set_sec_parms(), report the text via Error **errp
+> > ---
+> >  hw/cxl/cxl-device-utils.c   | 17 +++++++++++------
+> >  include/hw/cxl/cxl_device.h |  4 +++-
+> >  2 files changed, 14 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
+> > index 29de298117..ba3f80e6e7 100644
+> > --- a/hw/cxl/cxl-device-utils.c
+> > +++ b/hw/cxl/cxl-device-utils.c
+> > @@ -229,12 +229,9 @@ static void mailbox_reg_write(void *opaque, hwaddr offset, uint64_t value,
+> >  
+> >  static uint64_t mdev_reg_read(void *opaque, hwaddr offset, unsigned size)
+> >  {
+> > -    uint64_t retval = 0;
+> > -
+> > -    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
+> > -    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MBOX_READY, 1);
+> > +    CXLDeviceState *cxl_dstate = opaque;
+> >  
+> > -    return retval;
+> > +    return cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
+> >  }
+> >  
+> >  static void ro_reg_write(void *opaque, hwaddr offset, uint64_t value,
+> > @@ -371,7 +368,15 @@ static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
+> >      cxl_dstate->mbox_msi_n = msi_n;
+> >  }
+> >  
+> > -static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) { }
+> > +static void memdev_reg_init_common(CXLDeviceState *cxl_dstate)
+> > +{
+> > +    uint64_t memdev_status_reg;
+> > +
+> > +    memdev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
+> > +    memdev_status_reg = FIELD_DP64(memdev_status_reg, CXL_MEM_DEV_STS,
+> > +                                   MBOX_READY, 1);
+> > +    cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] = memdev_status_reg;
+> > +}
+> >  
+> >  void cxl_device_register_init_t3(CXLType3Dev *ct3d)
+> >  {
+> > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> > index b2cb280e16..b318d94b36 100644
+> > --- a/include/hw/cxl/cxl_device.h
+> > +++ b/include/hw/cxl/cxl_device.h
+> > @@ -408,7 +408,9 @@ static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
+> >  {
+> >      uint64_t dev_status_reg;
+> >  
+> > -    dev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, val);
+> > +    dev_status_reg = cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
+> > +    dev_status_reg = FIELD_DP64(dev_status_reg, CXL_MEM_DEV_STS, MEDIA_STATUS,
+> > +                                val);
+> >      cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] = dev_status_reg;
+> >  }
+> >  #define cxl_dev_disable_media(cxlds)                    \  
 > 
->  hw/s390x/ipl.h             |  2 +-
->  target/s390x/kvm/pv.h      |  2 +-
->  hw/s390x/ipl.c             |  5 ++---
->  hw/s390x/s390-virtio-ccw.c |  5 ++++-
->  target/s390x/kvm/pv.c      | 25 ++++++++++++++++++++-----
->  5 files changed, 28 insertions(+), 11 deletions(-)
 > 
-> diff --git a/hw/s390x/ipl.h b/hw/s390x/ipl.h
-> index 7fc86e7905..57cd125769 100644
-> --- a/hw/s390x/ipl.h
-> +++ b/hw/s390x/ipl.h
-> @@ -107,7 +107,7 @@ typedef union IplParameterBlock IplParameterBlock;
->  
->  int s390_ipl_set_loadparm(uint8_t *loadparm);
->  void s390_ipl_update_diag308(IplParameterBlock *iplb);
-> -int s390_ipl_prepare_pv_header(void);
-> +int s390_ipl_prepare_pv_header(Error **errp);
->  int s390_ipl_pv_unpack(void);
->  void s390_ipl_prepare_cpu(S390CPU *cpu);
->  IplParameterBlock *s390_ipl_get_iplb(void);
-> diff --git a/target/s390x/kvm/pv.h b/target/s390x/kvm/pv.h
-> index 7b935e2246..fca373a826 100644
-> --- a/target/s390x/kvm/pv.h
-> +++ b/target/s390x/kvm/pv.h
-> @@ -42,7 +42,7 @@ int s390_pv_query_info(void);
->  int s390_pv_vm_enable(void);
->  void s390_pv_vm_disable(void);
->  bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms);
-> -int s390_pv_set_sec_parms(uint64_t origin, uint64_t length);
-> +int s390_pv_set_sec_parms(uint64_t origin, uint64_t length, Error **errp);
->  int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak);
->  void s390_pv_prep_reset(void);
->  int s390_pv_verify(void);
-> diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-> index 76110e8f58..e934bf89d1 100644
-> --- a/hw/s390x/ipl.c
-> +++ b/hw/s390x/ipl.c
-> @@ -702,7 +702,7 @@ static void s390_ipl_prepare_qipl(S390CPU *cpu)
->      cpu_physical_memory_unmap(addr, len, 1, len);
->  }
->  
-> -int s390_ipl_prepare_pv_header(void)
-> +int s390_ipl_prepare_pv_header(Error **errp)
->  {
->      IplParameterBlock *ipib = s390_ipl_get_iplb_pv();
->      IPLBlockPV *ipib_pv = &ipib->pv;
-> @@ -711,8 +711,7 @@ int s390_ipl_prepare_pv_header(void)
->  
->      cpu_physical_memory_read(ipib_pv->pv_header_addr, hdr,
->                               ipib_pv->pv_header_len);
-> -    rc = s390_pv_set_sec_parms((uintptr_t)hdr,
-> -                               ipib_pv->pv_header_len);
-> +    rc = s390_pv_set_sec_parms((uintptr_t)hdr, ipib_pv->pv_header_len, errp);
->      g_free(hdr);
->      return rc;
->  }
-> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> index 1169e20b94..eaf61d3640 100644
-> --- a/hw/s390x/s390-virtio-ccw.c
-> +++ b/hw/s390x/s390-virtio-ccw.c
-> @@ -391,7 +391,7 @@ static int s390_machine_protect(S390CcwMachineState *ms)
->      }
->  
->      /* Set SE header and unpack */
-> -    rc = s390_ipl_prepare_pv_header();
-> +    rc = s390_ipl_prepare_pv_header(&local_err);
->      if (rc) {
->          goto out_err;
->      }
-> @@ -410,6 +410,9 @@ static int s390_machine_protect(S390CcwMachineState *ms)
->      return rc;
->  
->  out_err:
-> +    if (local_err) {
-> +        error_report_err(local_err);
-> +    }
->      s390_machine_unprotect(ms);
->      return rc;
->  }
-> diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
-> index 6a69be7e5c..7ca7faec73 100644
-> --- a/target/s390x/kvm/pv.c
-> +++ b/target/s390x/kvm/pv.c
-> @@ -29,7 +29,8 @@ static bool info_valid;
->  static struct kvm_s390_pv_info_vm info_vm;
->  static struct kvm_s390_pv_info_dump info_dump;
->  
-> -static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data)
-> +static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data,
-> +                         int *pvrc)
->  {
->      struct kvm_pv_cmd pv_cmd = {
->          .cmd = cmd,
-> @@ -46,6 +47,9 @@ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data)
->                       "IOCTL rc: %d", cmd, cmdname, pv_cmd.rc, pv_cmd.rrc,
->                       rc);
->      }
-> +    if (pvrc) {
-> +        *pvrc = pv_cmd.rc;
-> +    }
->      return rc;
->  }
->  
-> @@ -53,12 +57,13 @@ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data)
->   * This macro lets us pass the command as a string to the function so
->   * we can print it on an error.
->   */
-> -#define s390_pv_cmd(cmd, data) __s390_pv_cmd(cmd, #cmd, data)
-> +#define s390_pv_cmd(cmd, data) __s390_pv_cmd(cmd, #cmd, data, NULL)
-> +#define s390_pv_cmd_pvrc(cmd, data, pvrc) __s390_pv_cmd(cmd, #cmd, data, pvrc)
->  #define s390_pv_cmd_exit(cmd, data)    \
->  {                                      \
->      int rc;                            \
->                                         \
-> -    rc = __s390_pv_cmd(cmd, #cmd, data);\
-> +    rc = __s390_pv_cmd(cmd, #cmd, data, NULL); \
->      if (rc) {                          \
->          exit(1);                       \
->      }                                  \
-> @@ -142,14 +147,24 @@ bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms)
->      return true;
->  }
->  
-> -int s390_pv_set_sec_parms(uint64_t origin, uint64_t length)
-> +int s390_pv_set_sec_parms(uint64_t origin, uint64_t length, Error **errp)
->  {
-> +    int ret, pvrc;
->      struct kvm_s390_pv_sec_parm args = {
->          .origin = origin,
->          .length = length,
->      };
->  
-> -    return s390_pv_cmd(KVM_PV_SET_SEC_PARMS, &args);
-> +    ret = s390_pv_cmd_pvrc(KVM_PV_SET_SEC_PARMS, &args, &pvrc);
-> +    if (ret) {
-> +        error_setg(errp, "Failed to set secure execution parameters");
-> +        if (pvrc == 0x108) {
-> +            error_append_hint(errp, "Please check whether the image is "
-> +                                    "correctly encrypted for this host\n");
-> +        }
-> +    }
-> +
-> +    return ret;
->  }
->  
->  /*
 
 
