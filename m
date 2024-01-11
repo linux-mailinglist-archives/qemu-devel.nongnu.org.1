@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65F882AD02
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:10:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 769B082ACFD
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:10:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNssU-0001RZ-0C; Thu, 11 Jan 2024 06:05:38 -0500
+	id 1rNssW-0001Rm-4a; Thu, 11 Jan 2024 06:05:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss8-0001LS-1S
+ id 1rNss8-0001LT-3r
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:16 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss5-0004PV-Oe
+ id 1rNss5-0004Pq-Sh
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:15 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40e6275e9beso161175e9.1
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-33674f60184so4942779f8f.1
  for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1704971112; x=1705575912; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=UXRcXu0KHC3KDr0EhA03orQJ3pMJ3fXxZkZHJokxdik=;
- b=dRBZzVMB+9dNxeAO2D3vJC6zdAMOnaI2673gYwFxehWyznFenB8XUBqyCY0nVSTXgZ
- st4L/Ivv6L5wU/M3Q9rN7TcJ9CmvwZYgwPA8rnUg6+XjYx2vwZnIaLgH84+kRaFj6FZP
- MKthQIOtYw+LKcs9lYie0B48tLI82yOAvjHKqRPfOXUO2iOv5EHkBZE5pGSgjSp4SdMe
- 8TyYUjhf7by6pn/oFg1Qc90pmw9LEHIsKpFi23wpFk014NX4pyflWOqYw+N9UdUXswnD
- ghBWp/MAim0W+rBYbYm0hze2cwW9pO/Y0BJswa1/M1ck5uzr9lIB3AshwsZ9zfnnFMHM
- eRog==
+ :reply-to; bh=6ycUm1aTQ8P1D0oHh26lik8xW1H5/8FvjoM1bUhF2Zc=;
+ b=wDgrbvmhbWSIzdiR2fx44GKIzie6iOpWq55sKHgYZPQTxVeFSCRFioRMZ2dPCuufC1
+ H36cKJJAll5pdlRyObvvBCRj1d5lkAnekXJ2XYxs0Z4Ha78RetPf3JyPM50Wt1d29Fjc
+ n1ZPYuAKzPEIYSib5e+AtlTBbWOdfhFNeLswZCTfhWQsJQgUtyodbjW43vMh+QSRVnKy
+ 11ggjtgnnNmagDKvg8WGpyKHYR59IyR7NLPS3yN6fHNNLoCRQ22oMOGCRpRE9/gXf+bO
+ tmZIlYjKolHM1rgz2oj/Uf7m5Zbf6Wirbi1dYOM6IRDIH4ZWtrCQySokM+UNmb42efWU
+ F0fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1704971112; x=1705575912;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UXRcXu0KHC3KDr0EhA03orQJ3pMJ3fXxZkZHJokxdik=;
- b=IRugoXmcsosxJZme8O8nPNF2cyFGu/oxFwBqN4NbOFIl61EOT/SDN3URDZ3TD3pBnB
- m/hpqCetV80+N6Z6n+JAczM5F5Wkm70Q0d04xuA0sA7kXo6dWnH0HydA9hzAzV+q27XD
- itHWQk/8JUyTHw1LMlB4XkmazLrJJEXNv5xA5+Ew/R9dxbYU0gjPlY6PBdCgUxRqTaz0
- /3zNwbE7V5lpzHXVvXk0x8AwP1g11N8NuBpRLwfJI+6KtuABkRv7wmqrZh45umDyesO+
- IOZAwt0ns0zxDdqhYdcuI2n8blajhpChmKhqI79m5pTocTaruywpvJbY1QfOHwHjBjfD
- X4TA==
-X-Gm-Message-State: AOJu0YyK553gzmWNuquLreVvFScWH87+/jQ1GrEeezAUI268tT6wS+8V
- nPfE+M2P3dg2D5vGSK2nsUp6y0PCw+ampLkMLYO7Iql37ng=
-X-Google-Smtp-Source: AGHT+IGhLeZ85eX7BmK7/YcJoQrCUIwxLBYXdFQtyj5TzunLUqfEmcc6Hyvef/A5Z/xoZSHcGTL1DA==
-X-Received: by 2002:a05:600c:4f16:b0:40c:2394:1796 with SMTP id
- l22-20020a05600c4f1600b0040c23941796mr331979wmq.174.1704971112098; 
+ bh=6ycUm1aTQ8P1D0oHh26lik8xW1H5/8FvjoM1bUhF2Zc=;
+ b=hME/ssCH2FYeAzz7eOKj+dwDUtszM0DwES7PpyXMmu4gRi+ZgZIclU8OGJN10GWfIt
+ RnZZTecsFHAOZsGCBn2QF+lXrQzoIEsq2fwSuLuuIZxxArgYA/M6NmY7/o0eNSQ60hg0
+ y53fth876DZz5CpSzUeKNmIJVzej1bnRqijXvdKva73jidmWCIZ7HxXwZiisF+JOP+ya
+ FGTJqtqs87vlIShNl8blTSnVWhCRMArxEGNQLh7qJJ0Rzn75xCcolFrL4H6tvs8hAfmi
+ kgcVhYFpyZYCrZumn3B32tNsVudY/jUkVE5XSTSIiYe8LmJ+xKBW5Cb5vnzzMDyilO/k
+ sF7w==
+X-Gm-Message-State: AOJu0YyHWqAy/gLOFtmPnakYOipSk7ia96lbaDfx6Lpf0xJxW7R3J8Ch
+ 6o4inl6/hmuyqhMIRgj7bnxPl53RPE2H+O9V/7gQNIaCLcc=
+X-Google-Smtp-Source: AGHT+IHYwHP/k/R565XeAOTItZeuq+BXFtiJiwgKDgg/JZddU7Ox/D72WPWiMooohxuW/ZBm5jkorg==
+X-Received: by 2002:adf:e9c2:0:b0:333:39d4:ff80 with SMTP id
+ l2-20020adfe9c2000000b0033339d4ff80mr494842wrn.90.1704971112529; 
  Thu, 11 Jan 2024 03:05:12 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.11
+ v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jan 2024 03:05:11 -0800 (PST)
+ Thu, 11 Jan 2024 03:05:12 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/41] target/arm: Enable trapping of ERET for FEAT_NV
-Date: Thu, 11 Jan 2024 11:04:36 +0000
-Message-Id: <20240111110505.1563291-13-peter.maydell@linaro.org>
+Subject: [PULL 13/41] target/arm: Always honour HCR_EL2.TSC when HCR_EL2.NV is
+ set
+Date: Thu, 11 Jan 2024 11:04:37 +0000
+Message-Id: <20240111110505.1563291-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 References: <20240111110505.1563291-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,121 +91,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When FEAT_NV is turned on via the HCR_EL2.NV bit, ERET instructions
-are trapped, with the same syndrome information as for the existing
-FEAT_FGT fine-grained trap (in the pseudocode this is handled in
-AArch64.CheckForEretTrap()).
+The HCR_EL2.TSC trap for trapping EL1 execution of SMC instructions
+has a behaviour change for FEAT_NV when EL3 is not implemented:
 
-Rename the DisasContext and tbflag bits to reflect that they are
-no longer exclusively for FGT traps, and set the tbflag bit when
-FEAT_NV is enabled as well as when the FGT is enabled.
+ * in older architecture versions TSC was required to have no
+   effect (i.e. the SMC insn UNDEFs)
+ * with FEAT_NV, when HCR_EL2.NV == 1 the trap must apply
+   (i.e. SMC traps to EL2, as it already does in all cases when
+   EL3 is implemented)
+ * in newer architecture versions, the behaviour either without
+   FEAT_NV or with FEAT_NV and HCR_EL2.NV == 0 is relaxed to
+   an IMPDEF choice between UNDEF and trap-to-EL2 (i.e. it is
+   permitted to always honour HCR_EL2.TSC) for AArch64 only
+
+Add the condition to honour the trap bit when HCR_EL2.NV == 1.  We
+leave the HCR_EL2.NV == 0 case with the existing (UNDEF) behaviour,
+as our IMPDEF choice (both because it avoids a behaviour change
+for older CPU models and because we'd have to distinguish AArch32
+from AArch64 if we opted to trap to EL2).
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Miguel Luis <miguel.luis@oracle.com>
 ---
- target/arm/cpu.h               |  2 +-
- target/arm/tcg/translate.h     |  4 ++--
- target/arm/tcg/hflags.c        | 11 ++++++++++-
- target/arm/tcg/translate-a64.c |  6 +++---
- 4 files changed, 16 insertions(+), 7 deletions(-)
+ target/arm/tcg/op_helper.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 8c3ca2e2319..8da6bfda228 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -3232,7 +3232,7 @@ FIELD(TBFLAG_A64, PSTATE_ZA, 23, 1)
- FIELD(TBFLAG_A64, SVL, 24, 4)
- /* Indicates that SME Streaming mode is active, and SMCR_ELx.FA64 is not. */
- FIELD(TBFLAG_A64, SME_TRAP_NONSTREAMING, 28, 1)
--FIELD(TBFLAG_A64, FGT_ERET, 29, 1)
-+FIELD(TBFLAG_A64, TRAP_ERET, 29, 1)
- FIELD(TBFLAG_A64, NAA, 30, 1)
- FIELD(TBFLAG_A64, ATA0, 31, 1)
+diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+index 105ab63ed75..b5ac26061c7 100644
+--- a/target/arm/tcg/op_helper.c
++++ b/target/arm/tcg/op_helper.c
+@@ -985,7 +985,14 @@ void HELPER(pre_smc)(CPUARMState *env, uint32_t syndrome)
+      *
+      *  Conduit SMC, valid call  Trap to EL2         PSCI Call
+      *  Conduit SMC, inval call  Trap to EL2         Undef insn
+-     *  Conduit not SMC          Undef insn          Undef insn
++     *  Conduit not SMC          Undef or trap[1]    Undef insn
++     *
++     * [1] In this case:
++     *  - if HCR_EL2.NV == 1 we must trap to EL2
++     *  - if HCR_EL2.NV == 0 then newer architecture revisions permit
++     *    AArch64 (but not AArch32) to trap to EL2 as an IMPDEF choice
++     *  - otherwise we must UNDEF
++     * We take the IMPDEF choice to always UNDEF if HCR_EL2.NV == 0.
+      */
  
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index 3c3bb3431ad..8c84377003c 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -138,10 +138,10 @@ typedef struct DisasContext {
-     bool mve_no_pred;
-     /* True if fine-grained traps are active */
-     bool fgt_active;
--    /* True if fine-grained trap on ERET is enabled */
--    bool fgt_eret;
-     /* True if fine-grained trap on SVC is enabled */
-     bool fgt_svc;
-+    /* True if a trap on ERET is enabled (FGT or NV) */
-+    bool trap_eret;
-     /* True if FEAT_LSE2 SCTLR_ELx.nAA is set */
-     bool naa;
-     /*
-diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
-index a6ebd7571a3..560fb7964ab 100644
---- a/target/arm/tcg/hflags.c
-+++ b/target/arm/tcg/hflags.c
-@@ -169,6 +169,7 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
-     CPUARMTBFlags flags = {};
-     ARMMMUIdx stage1 = stage_1_mmu_idx(mmu_idx);
-     uint64_t tcr = regime_tcr(env, mmu_idx);
-+    uint64_t hcr = arm_hcr_el2_eff(env);
-     uint64_t sctlr;
-     int tbii, tbid;
+     /* On ARMv8 with EL3 AArch64, SMD applies to both S and NS state.
+@@ -999,9 +1006,12 @@ void HELPER(pre_smc)(CPUARMState *env, uint32_t syndrome)
+                                                      : smd_flag && !secure;
  
-@@ -285,13 +286,21 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
-     if (arm_fgt_active(env, el)) {
-         DP_TBFLAG_ANY(flags, FGT_ACTIVE, 1);
-         if (FIELD_EX64(env->cp15.fgt_exec[FGTREG_HFGITR], HFGITR_EL2, ERET)) {
--            DP_TBFLAG_A64(flags, FGT_ERET, 1);
-+            DP_TBFLAG_A64(flags, TRAP_ERET, 1);
-         }
-         if (fgt_svc(env, el)) {
-             DP_TBFLAG_ANY(flags, FGT_SVC, 1);
-         }
-     }
- 
-+    /*
-+     * ERET can also be trapped for FEAT_NV. arm_hcr_el2_eff() takes care
-+     * of "is EL2 enabled" and the NV bit can only be set if FEAT_NV is present.
-+     */
-+    if (el == 1 && (hcr & HCR_NV)) {
-+        DP_TBFLAG_A64(flags, TRAP_ERET, 1);
-+    }
-+
-     if (cpu_isar_feature(aa64_mte, env_archcpu(env))) {
-         /*
-          * Set MTE_ACTIVE if any access may be Checked, and leave clear
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index f3b5b9124d0..0f30e71f9bd 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1606,7 +1606,7 @@ static bool trans_ERET(DisasContext *s, arg_ERET *a)
-     if (s->current_el == 0) {
-         return false;
-     }
--    if (s->fgt_eret) {
-+    if (s->trap_eret) {
-         gen_exception_insn_el(s, 0, EXCP_UDEF, syn_erettrap(0), 2);
-         return true;
-     }
-@@ -1633,7 +1633,7 @@ static bool trans_ERETA(DisasContext *s, arg_reta *a)
-         return false;
-     }
-     /* The FGT trap takes precedence over an auth trap. */
--    if (s->fgt_eret) {
-+    if (s->trap_eret) {
-         gen_exception_insn_el(s, 0, EXCP_UDEF, syn_erettrap(a->m ? 3 : 2), 2);
-         return true;
-     }
-@@ -13980,7 +13980,7 @@ static void aarch64_tr_init_disas_context(DisasContextBase *dcbase,
-     dc->pstate_il = EX_TBFLAG_ANY(tb_flags, PSTATE__IL);
-     dc->fgt_active = EX_TBFLAG_ANY(tb_flags, FGT_ACTIVE);
-     dc->fgt_svc = EX_TBFLAG_ANY(tb_flags, FGT_SVC);
--    dc->fgt_eret = EX_TBFLAG_A64(tb_flags, FGT_ERET);
-+    dc->trap_eret = EX_TBFLAG_A64(tb_flags, TRAP_ERET);
-     dc->sve_excp_el = EX_TBFLAG_A64(tb_flags, SVEEXC_EL);
-     dc->sme_excp_el = EX_TBFLAG_A64(tb_flags, SMEEXC_EL);
-     dc->vl = (EX_TBFLAG_A64(tb_flags, VL) + 1) * 16;
+     if (!arm_feature(env, ARM_FEATURE_EL3) &&
++        !(arm_hcr_el2_eff(env) & HCR_NV) &&
+         cpu->psci_conduit != QEMU_PSCI_CONDUIT_SMC) {
+-        /* If we have no EL3 then SMC always UNDEFs and can't be
+-         * trapped to EL2. PSCI-via-SMC is a sort of ersatz EL3
++        /*
++         * If we have no EL3 then traditionally SMC always UNDEFs and can't be
++         * trapped to EL2. For nested virtualization, SMC can be trapped to
++         * the outer hypervisor. PSCI-via-SMC is a sort of ersatz EL3
+          * firmware within QEMU, and we want an EL2 guest to be able
+          * to forbid its EL1 from making PSCI calls into QEMU's
+          * "firmware" via HCR.TSC, so for these purposes treat
 -- 
 2.34.1
 
