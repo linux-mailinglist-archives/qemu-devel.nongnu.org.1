@@ -2,140 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3DE482AA72
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 10:05:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8214682AA73
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 10:05:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNqzM-0001zh-LH; Thu, 11 Jan 2024 04:04:36 -0500
+	id 1rNqzl-0002Fu-Ra; Thu, 11 Jan 2024 04:05:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNqzE-0001zN-JO
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 04:04:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rNqzj-00029k-AH; Thu, 11 Jan 2024 04:04:59 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rNqzC-0002tx-JU
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 04:04:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1704963864;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=oIRh+2Uy4gZPKUWUpLuXL558IQcW5YiJHTK1psjwnOk=;
- b=AEFq6nZf3VzHhM8/UD4Mo51wprCt4r8OWkQPHsr2xf6/Xg4UsEPjAj7qVBlYpalX3TVCP3
- k85hvibjhscNtZcV/4uWY3ZR2zRMnfF4vC9ZHpMtTjSkV4WDHARXJOlnJwOU7uBemepllq
- F4FqFrVZPqniJubvETfVooDcbw6/dNE=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-CLrp0O8mM2eQ_dTCXxmHdg-1; Thu, 11 Jan 2024 04:04:23 -0500
-X-MC-Unique: CLrp0O8mM2eQ_dTCXxmHdg-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-680c8d21542so106528846d6.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 01:04:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704963863; x=1705568663;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oIRh+2Uy4gZPKUWUpLuXL558IQcW5YiJHTK1psjwnOk=;
- b=ZZOXBc5p30+eIHv2khLEVhOVZtRGJQz7X8ZSLceCIRfpmfcq5fAhp/af1Dm/RhYIRS
- vHmE2C5CcpbqXDRUUckX8ACBsMhQgCJZtHGnsqBlq9wE/PYTw2A3ahLUKecDl1TuCjyw
- 6MTDowgWu+bE0mQTQaKhNhMmf+xIPCyU23zkEpa8f3vGls0WOEpsY2goqSpdLUkH0va/
- EnCFsHS5NUQjlHk8X4bJULydXRtcJfAAU7cN+UpPbmCP5bfqvDphHQFbCjNE10Lb0IA4
- w6vLE/s7pfIFeUkah+Ug8WAWKHm+LSSD1bSQYZB7JpfiKqEdJzevR18OTIEa4xq9ikKI
- VfrA==
-X-Gm-Message-State: AOJu0Yw2rzMEpxiv0US48f0SrvEOagfuzXApeT4jaWALlf6GUY6D3G4v
- 3MwEiPrYa513GAGilDBqNGhs2lkxSbO4qKzgEBgzsIO8gtEKKTDJYc0pMV8pwoIYFNohKPfK8Bc
- SQ8v+++8goipPqlLUkK4Wqbc=
-X-Received: by 2002:a05:6214:19e6:b0:680:a521:d86 with SMTP id
- q6-20020a05621419e600b00680a5210d86mr568768qvc.47.1704963862978; 
- Thu, 11 Jan 2024 01:04:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGmB4OzJsukKEQ8atyw0znoZk8f7rR1V6ExPphdgIZsDEDVtfnnm8G4p06K4oO/usgQeoKo2Q==
-X-Received: by 2002:a05:6214:19e6:b0:680:a521:d86 with SMTP id
- q6-20020a05621419e600b00680a5210d86mr568754qvc.47.1704963862762; 
- Thu, 11 Jan 2024 01:04:22 -0800 (PST)
-Received: from [10.33.192.181] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- m6-20020a05620a214600b007830ce180basm211239qkm.120.2024.01.11.01.04.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 01:04:22 -0800 (PST)
-Message-ID: <6f17d2f1-6876-4f1c-beb5-c6a4e89340d8@redhat.com>
-Date: Thu, 11 Jan 2024 10:04:19 +0100
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rNqzg-00031J-Ny; Thu, 11 Jan 2024 04:04:59 -0500
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40B8vET0009351; Thu, 11 Jan 2024 09:04:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=kLSk0/iPF7vI+cVkjkisxcQmm3lww7o0m/qWrlSJ/DY=;
+ b=gEmFWOUCw24orCUSWLETGJrdwf2od0NHWpP6LicND318D2XkU52IdGTtcRbdA49JMS80
+ xaoXD0cYHR+dBflGYvRABAZk7CzJfFKMuCV8qQVP1sKpbY4YNpuYkM9N69I4Ef6DQSuP
+ A3g+g9z+qYGVwMBS10jHg3Mhg2ZQADuh+xEV5eAU0+hwcKcif2YiH42pGRZwxxlKb+hT
+ bjI36qYpbzmk/LjpQ2oIPOzUR5r4jTJqqMrHkLqziFXN2Se+xAcvm9cnU2Rc2hWJ0BR/
+ GKRqVqfPzxPhLQWQFoCJ7Df7ASAYKgPBMf7hX8awmQ+IyBCSJvQeqJPdPinD/ZzHonkn BQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjd96r7ne-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Jan 2024 09:04:52 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40B8wMJC017184;
+ Thu, 11 Jan 2024 09:04:52 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjd96r7mu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Jan 2024 09:04:52 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40B8c9oS022960; Thu, 11 Jan 2024 09:04:50 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfj6ntg2s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Jan 2024 09:04:50 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40B94m5n59638038
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 11 Jan 2024 09:04:48 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AAC342004F;
+ Thu, 11 Jan 2024 09:04:48 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6319B2004E;
+ Thu, 11 Jan 2024 09:04:48 +0000 (GMT)
+Received: from [9.171.79.56] (unknown [9.171.79.56])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 11 Jan 2024 09:04:48 +0000 (GMT)
+Message-ID: <38c85f036543ede783bf21de63c90c62101a7fb0.camel@linux.ibm.com>
+Subject: Re: [PATCH 2/2] tests/tcg/s390x: Test LOAD ADDRESS EXTENDED
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+Date: Thu, 11 Jan 2024 10:04:48 +0100
+In-Reply-To: <22d8218a-70ee-4ab6-a284-2fbaeceb7052@redhat.com>
+References: <20240109232319.600102-1-iii@linux.ibm.com>
+ <20240109232319.600102-3-iii@linux.ibm.com>
+ <22d8218a-70ee-4ab6-a284-2fbaeceb7052@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [NOTFORMERGE PATCH 2/2] gitlab: Add Loongarch64 KVM-only build
-Content-Language: en-US
-To: gaosong <gaosong@loongson.cn>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, qemu-devel@nongnu.org
-Cc: Zhiguo Wu <wuzhiguo@loongson.cn>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Bibo Mao <maobibo@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Beraldo Leal <bleal@redhat.com>, WANG Xuerui <git@xen0n.name>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Xianglai Li <lixianglai@loongson.cn>, Tianrui Zhao <zhaotianrui@loongson.cn>
-References: <20240102172239.69452-1-philmd@linaro.org>
- <20240102172239.69452-3-philmd@linaro.org>
- <dbc7f2c6-15c0-4d5a-abf7-8946ff2d03cb@redhat.com>
- <4cc9ab90-c1bc-03d3-d82e-a763199fa029@loongson.cn>
- <96bdddb5-e15c-469f-b74b-7e82049888f1@redhat.com>
- <3766d853-8dc5-f455-e0ea-dd970c65a6c5@loongson.cn>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <3766d853-8dc5-f455-e0ea-dd970c65a6c5@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: nXZ4m8do-8s_9lI48WrZkI63y0sAQ7Mi
+X-Proofpoint-ORIG-GUID: Ym4xc3WkmNV3eft3V5uAVEM54HzJz5im
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-11_04,2024-01-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=792
+ lowpriorityscore=0 adultscore=0 impostorscore=0 mlxscore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 clxscore=1015 malwarescore=0
+ suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2401110072
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.774,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -152,51 +114,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/01/2024 09.50, gaosong wrote:
-> 在 2024/1/11 下午4:20, Thomas Huth 写道:
->> On 11/01/2024 08.37, gaosong wrote:
->>> Hi,
->>>
->>> 在 2024/1/11 下午3:10, Thomas Huth 写道:
->>>> On 02/01/2024 18.22, Philippe Mathieu-Daudé wrote:
->>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>>> ---
->>>>> Used to test 
->>>>> https://lore.kernel.org/qemu-devel/20231228084051.3235354-1-zhaotianrui@loongson.cn/
->>>>
->>>> So why is it NOTFORMERGE ? Don't we want to test KVM-only builds for 
->>>> loongarch in the long run?
->>>>
->>>>  Thomas
->>>>
->>> I think we can drop this title.
->>>
->>> I tested this job by the latest loongarch kvm patches.  buf I find a 
->>> test-hmp check error.
->> Can you recreate the error manually? i.e. compile with configure 
->> --disable-tcg and then run:
->>
->>  V=2 QTEST_QEMU_BINARY=./qemu-system-loongarch64 tests/qtest/test-hmp
->>
->> That should likely provide you with a hint where it is crashing
->>
->>  Thomas
-> Thank you,
-> 
-> LoongArch no support these cmds  or some problems .
-> -    "gva2gpa 0",
-> -    "memsave 0 4096 \"/dev/null\"",
-> -    "x /8i 0x100",
-> -    "xp /16x 0",
-> 
-> Could we disable these 4 cmds or the test_temp check?
-> After we fix the cmds problems, we can enable them.
+On Thu, 2024-01-11 at 09:37 +0100, Thomas Huth wrote:
+> On 10/01/2024 00.22, Ilya Leoshkevich wrote:
+> > Add a small test to prevent regressions. Userspace runs in primary
+> > mode, so LAE should always set the access register to 0.
+> >=20
+> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> > ---
+> > =C2=A0 tests/tcg/s390x/Makefile.target |=C2=A0 1 +
+> > =C2=A0 tests/tcg/s390x/lae.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 | 25 +++++++++++++++++++++++++
+> > =C2=A0 2 files changed, 26 insertions(+)
+> > =C2=A0 create mode 100644 tests/tcg/s390x/lae.c
+> >=20
+> > diff --git a/tests/tcg/s390x/Makefile.target
+> > b/tests/tcg/s390x/Makefile.target
+> > index 0e670f3f8b9..30994dcf9c2 100644
+> > --- a/tests/tcg/s390x/Makefile.target
+> > +++ b/tests/tcg/s390x/Makefile.target
+> > @@ -44,6 +44,7 @@ TESTS+=3Dclgebr
+> > =C2=A0 TESTS+=3Dclc
+> > =C2=A0 TESTS+=3Dlaalg
+> > =C2=A0 TESTS+=3Dadd-logical-with-carry
+> > +TESTS+=3Dlae
+> > =C2=A0=20
+> > =C2=A0 cdsg: CFLAGS+=3D-pthread
+> > =C2=A0 cdsg: LDFLAGS+=3D-pthread
+> > diff --git a/tests/tcg/s390x/lae.c b/tests/tcg/s390x/lae.c
+> > new file mode 100644
+> > index 00000000000..661e95f9978
+> > --- /dev/null
+> > +++ b/tests/tcg/s390x/lae.c
+> > @@ -0,0 +1,25 @@
+> > +/*
+> > + * Test the LOAD ADDRESS EXTENDED instruction.
+> > + *
+> > + * SPDX-License-Identifier: GPL-2.0-or-later
+> > + */
+> > +#include <assert.h>
+> > +#include <stdlib.h>
+> > +
+> > +int main(void)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 unsigned long long ar =3D -1, b2 =3D 100000, r, x2 =
+=3D 500;
+> > +=C2=A0=C2=A0=C2=A0 int tmp;
+> > +
+> > +=C2=A0=C2=A0=C2=A0 asm("ear %[tmp],%[r]\n"
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "lae %[r],42(%[x2],%[b2])\n=
+"
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "ear %[ar],%[r]\n"
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "sar %[r],%[tmp]"
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 : [tmp] "=3D&r" (tmp), [r] =
+"=3D&r" (r), [ar] "+r" (ar)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 : [b2] "r" (b2), [x2] "r" (=
+x2)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 : "memory");
+> > +=C2=A0=C2=A0=C2=A0 assert(ar =3D=3D 0xffffffff00000000ULL);
+> > +=C2=A0=C2=A0=C2=A0 assert(r =3D=3D 100542);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 return EXIT_SUCCESS;
+> > +}
+>=20
+> I'm sorry, but it fails when building with Clang (version 17):
+>=20
+> .../qemu/tests/tcg/s390x/lae.c:14:9: error: invalid operand for
+> instruction
+> =C2=A0=C2=A0=C2=A0 14 |=C2=A0=C2=A0=C2=A0=C2=A0 asm("ear %[tmp],%[r]\n"
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 ^
+> <inline asm>:1:10: note: instantiated into assembly here
+> =C2=A0=C2=A0=C2=A0=C2=A0 1 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 ear %r2,%r1
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^
+> .../qemu/tests/tcg/s390x/lae.c:16:10: error: invalid operand for
+> instruction
+> =C2=A0=C2=A0=C2=A0 16 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "=
+ear %[ar],%[r]\n"
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 ^
+> <inline asm>:3:9: note: instantiated into assembly here
+> =C2=A0=C2=A0=C2=A0=C2=A0 3 | ear %r0,%r1
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 ^
+> .../qemu/tests/tcg/s390x/lae.c:17:10: error: invalid operand for
+> instruction
+> =C2=A0=C2=A0=C2=A0 17 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "=
+sar %[r],%[tmp]"
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 ^
+> <inline asm>:4:5: note: instantiated into assembly here
+> =C2=A0=C2=A0=C2=A0=C2=A0 4 | sar %r1,%r2
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0 ^
+> 3 errors generated.
+>=20
+> Any suggestions how to fix it best?
+>=20
+> =C2=A0 Thomas
+>=20
 
-Even if loongarch does not support one of these commands, it should not 
-crash QEMU. So please fix the crashes first before considering to enable the 
-KVM-only test in the CI.
-
-  Thanks
-   Thomas
-
+clang wants %aN there, and I don't see a way to convert %rN to %aN.
+Seems like I'll have to hardcode the register number. I'll send a v2.
 
