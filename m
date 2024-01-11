@@ -2,75 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49FF82AF39
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 14:10:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4257982AF42
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 14:12:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNuoZ-0003W2-Bq; Thu, 11 Jan 2024 08:09:43 -0500
+	id 1rNuq6-0005Ea-As; Thu, 11 Jan 2024 08:11:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rNuoU-0003TL-F7
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:09:39 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNupx-0005Cd-Hg
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:11:09 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rNuoS-0007Qh-0A
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:09:37 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-55822753823so3083717a12.2
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 05:09:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rNupu-0008Sp-VT
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 08:11:09 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40e5bfa260bso9023075e9.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 05:11:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1704978573; x=1705583373; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=tTMI4mExbmlsx8P1k0FwU4NvniO5QIrQVnB2Pz/gfto=;
- b=GJBRh+dLcKiJqse9iEKNspP++jUpUTmCN3UFLm7QnN4cQC7iLLYTulvAEPXEHnXX7w
- 4exZpddkRxzxibrVxJvOffjxQaj+kp5sooNEgr2Vsa6BfTz1GJsUuEu/vDsNnzSeVnrA
- BZmieefuOU6DwK7qYUer4/ttmMZh/8X9GhxG5OEzAz+dtQGyD38WBmy8F7LwW8AYlzP9
- FRAlP2CuGYqSM0hHSvwSjttDigqHT+Q8LvzLAKE9xF/5ASg8WIL+NlnnPDXYRbUykulv
- cMJqM+FwRHzqQ8N/qa10K4jwvYidRZjlj/W1gPVvQMBzqga+OBiZBC6uClFh4WRuhYsk
- 1BCg==
+ d=linaro.org; s=google; t=1704978665; x=1705583465; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aQ2UNQeUy/S45X0zJXf1Kvq8wAD4xMbyOJLY1J22aQQ=;
+ b=wq9kUQmvlzhdbGBc7dT7N8bBCnOsqPn7woBzZ05qybINAfvUxvsLUJs3JFKU1y9kWu
+ 1PGBl1zVFPShhBBNjbBIqejJj6Vk9ZTOhgdnoLa2NzExSBIT0NQRnPfRim4jvo6mtmjn
+ ahcT3C3l5xMONocoOLHdIOJ6IdGUAX4aKixg+u+nHffs9Z+1/CWuKpvnZ9BShqlu7oBj
+ LuZbRcmz1mszHPLMyRicfRdAIat9ckmHtUg9FlZGW6A+YKRsZYMkFP02p7fTyWo4pZcR
+ 5DIKEsxeJ54hr6owBkyLsvAgAjW1Cokbf9JX+rVuwuBfhB60ohgr1qUak7Bw2O0uUM8o
+ oOPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704978573; x=1705583373;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tTMI4mExbmlsx8P1k0FwU4NvniO5QIrQVnB2Pz/gfto=;
- b=hQKMhhCdR7pLqP7lGYsVfRP0sMKOZ1NtExTp6r/t/ECOJM7UB9ctIzNn9Qcnpb+qrG
- Wr98XfmtN0MptJyM+AZ+hWA9458pkOLWnasT30qm0UKiLol3P2hQOY3WLz+p51OJ2mre
- vhVvQ7aKXJx2zxHJIWD5+mrUl0pAthUQiOdX96Av6npFTnmOVEht+ozGs8AEVsyoKB3z
- mjJQ2yV4XDhjNvjueIKmxiYrMI3TXljmLF2lHLSeebbhG6N1r9prP1Oy+0L5pXMiHvXQ
- UOYWQDo1cM7fQjd+AZstrR9fXSHGyY1auBMOkYFHY3zkXHMzN+aNG3Zx6hQuiA57CXDr
- J6Mg==
-X-Gm-Message-State: AOJu0Yx5v3j1ja6VbqgWhhn00fEZpZeMeu7l3WaRQSjJQTrIjNAok8vq
- ddyHtwXTUT05ZPkTpL36UmAEwizuiX4UUKt/EPneFx69nl0=
-X-Google-Smtp-Source: AGHT+IHlmuNMHeyuRhZU6TVVdhPcWOl15iAuUkTXyfjxQ3rn1mJJsDLtIrrAZ3pJ98VAb0abcrJj/w==
-X-Received: by 2002:aa7:ca41:0:b0:557:7026:6a7b with SMTP id
- j1-20020aa7ca41000000b0055770266a7bmr311099edt.158.1704978573581; 
- Thu, 11 Jan 2024 05:09:33 -0800 (PST)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
- by smtp.gmail.com with ESMTPSA id
- ew3-20020a056402538300b00558a1937dddsm469808edb.63.2024.01.11.05.09.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jan 2024 05:09:32 -0800 (PST)
-Date: Thu, 11 Jan 2024 14:09:31 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Rob Bradford <rbradford@rivosinc.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, atishp@rivosinc.com, 
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
- liwei1518@gmail.com, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
-Subject: Re: [PATCH 2/3] target/riscv: Add step to validate 'B' extension
-Message-ID: <20240111-cbafb19054363e2e33dbd317@orel>
-References: <20240109171848.32237-1-rbradford@rivosinc.com>
- <20240109171848.32237-3-rbradford@rivosinc.com>
+ d=1e100.net; s=20230601; t=1704978665; x=1705583465;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aQ2UNQeUy/S45X0zJXf1Kvq8wAD4xMbyOJLY1J22aQQ=;
+ b=BA6hBYOUi4ggAxCoBqGMw0l9G9XmOONLol2OrVclLXyG8BjuvSyvxobLLYij0xIJFz
+ dG/aBAqxiISVEwNLPMs6SfxgOF7VKiVlFMcIyd8cRkt9kATciprB7ciqq3YFhbFbgVyN
+ 0VGuvZHj+/kPAFKJzkQ+LLhS/2f43rJjuHkLgXNIq7OV0kAdqx2lA4Zt5AuQBZxni491
+ zMXAQ1PPnXa5jyfpPvVFdKV5a2jirND0kO3vDrkhApIrth79kSbFx9yw0fD9nmsdtHPD
+ j07zLlxeIrZIAtHZIVUf3kilSoN6JjN2hru+Ectyj1kAvCansvdbI7Q/iePtptWkxaE1
+ N/pQ==
+X-Gm-Message-State: AOJu0YyCAYT4UIZUE52NMQy7eMuY85a5bVEutermrr86cpHt2TJDcCAO
+ DU3ChrCl4WWbq5T7Mokrgzt75c7S7BjKVw==
+X-Google-Smtp-Source: AGHT+IFNo9sNAFufa3Pe6T1Qh8eZKWn1zSJ9aztwzKqOc1XvqXPyPmNXcEH89S/TiiRWSgu2R3Irag==
+X-Received: by 2002:a05:600c:198a:b0:40e:5feb:3624 with SMTP id
+ t10-20020a05600c198a00b0040e5feb3624mr203631wmq.54.1704978664886; 
+ Thu, 11 Jan 2024 05:11:04 -0800 (PST)
+Received: from [192.168.69.100] (vau06-h02-176-184-43-236.dsl.sta.abo.bbox.fr.
+ [176.184.43.236]) by smtp.gmail.com with ESMTPSA id
+ dr18-20020a5d5f92000000b0033677a4e0d6sm1229216wrb.13.2024.01.11.05.11.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 11 Jan 2024 05:11:04 -0800 (PST)
+Message-ID: <b10e1e42-f765-45d8-affc-784849a51854@linaro.org>
+Date: Thu, 11 Jan 2024 14:11:01 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240109171848.32237-3-rbradford@rivosinc.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x536.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] gitlab: Introduce Loongarch64 runner
+Content-Language: en-US
+To: gaosong <gaosong@loongson.cn>, Thomas Huth <thuth@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Zhiguo Wu <wuzhiguo@loongson.cn>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Bibo Mao <maobibo@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Beraldo Leal <bleal@redhat.com>, WANG Xuerui <git@xen0n.name>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Xianglai Li <lixianglai@loongson.cn>, Tianrui Zhao <zhaotianrui@loongson.cn>
+References: <20240102172239.69452-1-philmd@linaro.org>
+ <20240102172239.69452-2-philmd@linaro.org>
+ <3d30c1b6-1de1-418e-80f6-3d693375142a@redhat.com>
+ <6134cdb3-1884-5d7f-fc2d-4a6a2fa2126a@loongson.cn>
+ <9fcd71ae-8a65-4f60-ab98-5a3e5807070d@redhat.com>
+ <93861775-6cc5-fb52-8926-9c85fe42b932@loongson.cn>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <93861775-6cc5-fb52-8926-9c85fe42b932@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,71 +102,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 09, 2024 at 05:07:36PM +0000, Rob Bradford wrote:
-> If the B extension is enabled warn if the user has disabled any of the
-> required extensions that are part of the 'B' extension. Conversely
-> enable the extensions that make up the 'B' extension if it is enabled.
+On 11/1/24 13:05, gaosong wrote:
+> 在 2024/1/11 下午4:26, Thomas Huth 写道:
+>> On 11/01/2024 08.25, gaosong wrote:
+>>> Hi,
+>>>
+>>> 在 2024/1/11 下午3:08, Thomas Huth 写道:
+>>>> On 02/01/2024 18.22, Philippe Mathieu-Daudé wrote:
+>>>>> Full build config to run CI tests on a Loongarch64 host.
+>>>>>
+>>>>> Forks might enable this by setting LOONGARCH64_RUNNER_AVAILABLE
+>>>>> in their CI namespace settings, see:
+>>>>> https://www.qemu.org/docs/master/devel/ci.html#maintainer-controlled-job-variables
+>>>>>
+>>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>>> ---
+>>>>>   docs/devel/ci-jobs.rst.inc                    |  6 ++++++
+>>>>>   .gitlab-ci.d/custom-runners.yml               |  1 +
+>>>>>   .../openeuler-22.03-loongarch64.yml           | 21 
+>>>>> +++++++++++++++++++
+>>>>>   3 files changed, 28 insertions(+)
+>>>>>   create mode 100644 
+>>>>> .gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml
+>>>>>
+>>>> ...
+>>>>> diff --git a/.gitlab-ci.d/custom-runners.yml 
+>>>>> b/.gitlab-ci.d/custom-runners.yml
+>>>>> index 8e5b9500f4..152ace4492 100644
+>>>>> --- a/.gitlab-ci.d/custom-runners.yml
+>>>>> +++ b/.gitlab-ci.d/custom-runners.yml
+>>>>> @@ -32,3 +32,4 @@ include:
+>>>>>     - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch64.yml'
+>>>>>     - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch32.yml'
+>>>>>     - local: '/.gitlab-ci.d/custom-runners/centos-stream-8-x86_64.yml'
+>>>>> +  - local: 
+>>>>> '/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml'
+>>>>> diff --git 
+>>>>> a/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml 
+>>>>> b/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml
+>>>>> new file mode 100644
+>>>>> index 0000000000..86d18f820e
+>>>>> --- /dev/null
+>>>>> +++ b/.gitlab-ci.d/custom-runners/openeuler-22.03-loongarch64.yml
+>>>>> @@ -0,0 +1,21 @@
+>>>>> +openeuler-22.03-loongarch64-all:
+>>>>> + extends: .custom_runner_template :-)
+>>>>> + needs: []
+>>>>> + stage: build
+>>>>> + tags:
+>>>>> + - oe2203
+>>>>> + - loongarch64
+>>>>> + rules:
+>>>>> + - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && 
+>>>>> $CI_COMMIT_BRANCH =~ /^staging/'
+>>>>> +   when: manual
+>>>>> +   allow_failure: true
+>>>>> + - if: "$LOONGARCH64_RUNNER_AVAILABLE"
+>>>>> +   when: manual
+>>>>> +   allow_failure: true
+>>>>> + script:
+>>>>> + - mkdir build
+>>>>> + - cd build
+>>>>> + - ../configure
+>>>>> +   || { cat config.log meson-logs/meson-log.txt; exit 1; }
+>>>>> + - make --output-sync -j`nproc --ignore=40`
+>>>>> + - make --output-sync -j`nproc --ignore=40` check
+>>>>
+>>>> Does this system really have more than 40 CPU threads? Or is this a 
+>>>> copy-n-past from one of the other scripts? In the latter case, I'd 
+>>>> suggest to adjust the --ignore=40 to a more reasonable value.
+>>>>
+>>>>  Thomas
+>>> No,  only 32.   I think it should be --ignore=32 or 16.
+>>
+>> --ignore=32 then also does not make much sense, that would still be 
+>> the same as simply omitting the -j parameter. I guess --ignore=16 
+>> should be fine.
+>>
+>>> I create a same runner on this machine, and I  find  some check error.
+>>> but I am not sure how to fix it. :-)
+>>>
+>>> See:
+>>>
+>>> https://gitlab.com/gaosong/qemu/-/jobs/5906269934
+>>
+>> Seems to be related to RAM backing... for example, the erst-test is 
+>> failing, which is doing something like:
+>>
+>>     setup_vm_cmd(&state,
+>>         "-object memory-backend-file,"
+>>             "mem-path=acpi-erst.XXXXXX,"
+>>             "size=64K,"
+>>             "share=on,"
+>>             "id=nvram "
+>>         "-device acpi-erst,"
+>>             "memdev=nvram");
+>>
+>> So it seems like -object memory-backend-file" is not correctly working 
+>> in your gitlab runner? Is there some setup missing?
+>>
+>>  Thomas
+>>
+>>
+> This is my runner config.
 > 
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> ---
->  target/riscv/tcg/tcg-cpu.c | 33 +++++++++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
+>      concurrent = 32
+>      check_interval = 0
+>      shutdown_timeout = 0
 > 
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index fda54671d5..f10871d352 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -273,6 +273,35 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
->      }
->  }
->  
-> +static void riscv_cpu_validate_b(RISCVCPU *cpu)
-> +{
-> +    const char *warn_msg = "RVB mandates disabled extension %s";
-> +
-> +    if (!cpu->cfg.ext_zba) {
-> +        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zba))) {
-> +            cpu->cfg.ext_zba = true;
-> +        } else {
-> +            warn_report(warn_msg, "zba");
-> +        }
-> +    }
-> +
-> +    if (!cpu->cfg.ext_zbb) {
-> +        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zbb))) {
-> +            cpu->cfg.ext_zbb = true;
-> +        } else {
-> +            warn_report(warn_msg, "zbb");
-> +        }
-> +    }
-> +
-> +    if (!cpu->cfg.ext_zbs) {
-> +        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zbs))) {
-> +            cpu->cfg.ext_zbs = true;
-> +        } else {
-> +            warn_report(warn_msg, "zbs");
-> +        }
-> +    }
-> +}
-> +
->  /*
->   * Check consistency between chosen extensions while setting
->   * cpu->cfg accordingly.
-> @@ -309,6 +338,10 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->          env->misa_ext_mask |= RVI | RVM | RVA | RVF | RVD;
->      }
->  
-> +    if (riscv_has_ext(env, RVB)) {
-> +        riscv_cpu_validate_b(cpu);
-> +    }
-> +
->      if (riscv_has_ext(env, RVI) && riscv_has_ext(env, RVE)) {
->          error_setg(errp,
->                     "I and E extensions are incompatible");
-> -- 
-> 2.43.0
+>      [session_server]
+>        session_timeout = 1800
 > 
->
+>      ...
+> 
+>      [[runners]]
+>        name = "loongarch64"
+>        request_concurrency = 24
+>        url = "https://gitlab.com"
+>        id = 31426483
+>        token = "glrt-bGugocYrR2yqcu3ma7ka"
+>        token_obtained_at = 2024-01-10T08:31:29Z
+>        token_expires_at = 0001-01-01T00:00:00Z
+>        executor = "shell"
+>        builds_dir = "/data/gitlab-runner/builds"
+>        cache_dir = "/data/gitlab-runner/cache"
+>        [runners.cache]
+>          MaxUploadedArchiveSize = 0
+> 
+> I create a project runner 'loongarch64' for my branch ci-master.
+> Do we need some special configuration?
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+We need to follow this process:
+https://lore.kernel.org/qemu-devel/20240104160805.56856-1-philmd@linaro.org/
 
