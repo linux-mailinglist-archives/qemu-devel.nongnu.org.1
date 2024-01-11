@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AEA82AD0F
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:12:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A65F882AD02
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:10:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNssj-0001dB-51; Thu, 11 Jan 2024 06:05:53 -0500
+	id 1rNssU-0001RZ-0C; Thu, 11 Jan 2024 06:05:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss7-0001LQ-UW
+ id 1rNss8-0001LS-1S
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:16 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss5-0004PL-BX
+ id 1rNss5-0004PV-Oe
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:15 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-336746c7b6dso4417063f8f.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:12 -0800 (PST)
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-40e6275e9beso161175e9.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704971111; x=1705575911; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704971112; x=1705575912; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=MggGO+NPAbBJmsyAFGskbOZEUDcciWvWwdLwaUXekp4=;
- b=k0fUZ55OnwPMRbZdtr9VeijGOF4Ni+eQP/QtBskG2QKY50YQ7IXU3Woa23gaW+IV4A
- cebyHUGIl8oVbgfkoYh0v/9/G8B4q0J/58nfAiOF3Mxv/Teb+f5ojOs3cscoCszJ9pmn
- KmPp4WD48+ar3Ae/xkKCyxJnlqSksFuU/UW5h8ciW1AyAkBxqSlIDDBrRGGlRFDNFsQc
- rjx5PBjq5H41kVZxjWlzaorqP/nABci2n0xaIBR9XhrcQUCGxm9WWINYondTWu+oJSK5
- p6lCLDFCUl4zPWcC5VMYpb1BiAyy2BWsrnetOPrACqzWRFbs6h3S0RvQwyaOsgpp02Qa
- IEkA==
+ :reply-to; bh=UXRcXu0KHC3KDr0EhA03orQJ3pMJ3fXxZkZHJokxdik=;
+ b=dRBZzVMB+9dNxeAO2D3vJC6zdAMOnaI2673gYwFxehWyznFenB8XUBqyCY0nVSTXgZ
+ st4L/Ivv6L5wU/M3Q9rN7TcJ9CmvwZYgwPA8rnUg6+XjYx2vwZnIaLgH84+kRaFj6FZP
+ MKthQIOtYw+LKcs9lYie0B48tLI82yOAvjHKqRPfOXUO2iOv5EHkBZE5pGSgjSp4SdMe
+ 8TyYUjhf7by6pn/oFg1Qc90pmw9LEHIsKpFi23wpFk014NX4pyflWOqYw+N9UdUXswnD
+ ghBWp/MAim0W+rBYbYm0hze2cwW9pO/Y0BJswa1/M1ck5uzr9lIB3AshwsZ9zfnnFMHM
+ eRog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704971111; x=1705575911;
+ d=1e100.net; s=20230601; t=1704971112; x=1705575912;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MggGO+NPAbBJmsyAFGskbOZEUDcciWvWwdLwaUXekp4=;
- b=HG3eRKn3uU+PKAdBNqjTAMZg8HUQKaJo0cK6rKfDFl+s8jv9v+a8K7Ufsa/zCF0xO4
- BPEhlHx6/Zje0NSkWBORTFhJyOxsDjCB4whFHLYAjFv5tGshkLS4YdtoqGRZP8E6mDd0
- Ask2JF9lIbiySv2wyjmK/bj1ksRSWuya+64ziYbXSTyOnRsnICQZNx+Qf/iS2/i6UP2v
- 1C30UCH8ONkenyRuOKjF5kjFErICEPjXgFlFHNZM4STNfraftvdm6+bCXsT8QIoi3roB
- 5WSlxZhTQObg+s8m7EUJl1dpOcgXko2V8kcte+T4iNgsBfeZb9jAxhmwFtPm4V8qFV5v
- v1Sg==
-X-Gm-Message-State: AOJu0Yy7QrcMSdMWA8azRWvCZdvhvBNlEHDmXSgXaxVjYtH8i2vjLgdT
- ONXCoLzeQje5wqIXTZL0+M4ZOD3p6ZQyyIUnwcs749n2H/Y=
-X-Google-Smtp-Source: AGHT+IGGiBc3aZZZA5aurfolZP5L5u2bbef1yv0+fPOJp3vJEMFZHifDUVa9r7947LiLkpiyT25ceg==
-X-Received: by 2002:adf:e989:0:b0:336:d299:ada5 with SMTP id
- h9-20020adfe989000000b00336d299ada5mr482341wrm.112.1704971111723; 
- Thu, 11 Jan 2024 03:05:11 -0800 (PST)
+ bh=UXRcXu0KHC3KDr0EhA03orQJ3pMJ3fXxZkZHJokxdik=;
+ b=IRugoXmcsosxJZme8O8nPNF2cyFGu/oxFwBqN4NbOFIl61EOT/SDN3URDZ3TD3pBnB
+ m/hpqCetV80+N6Z6n+JAczM5F5Wkm70Q0d04xuA0sA7kXo6dWnH0HydA9hzAzV+q27XD
+ itHWQk/8JUyTHw1LMlB4XkmazLrJJEXNv5xA5+Ew/R9dxbYU0gjPlY6PBdCgUxRqTaz0
+ /3zNwbE7V5lpzHXVvXk0x8AwP1g11N8NuBpRLwfJI+6KtuABkRv7wmqrZh45umDyesO+
+ IOZAwt0ns0zxDdqhYdcuI2n8blajhpChmKhqI79m5pTocTaruywpvJbY1QfOHwHjBjfD
+ X4TA==
+X-Gm-Message-State: AOJu0YyK553gzmWNuquLreVvFScWH87+/jQ1GrEeezAUI268tT6wS+8V
+ nPfE+M2P3dg2D5vGSK2nsUp6y0PCw+ampLkMLYO7Iql37ng=
+X-Google-Smtp-Source: AGHT+IGhLeZ85eX7BmK7/YcJoQrCUIwxLBYXdFQtyj5TzunLUqfEmcc6Hyvef/A5Z/xoZSHcGTL1DA==
+X-Received: by 2002:a05:600c:4f16:b0:40c:2394:1796 with SMTP id
+ l22-20020a05600c4f1600b0040c23941796mr331979wmq.174.1704971112098; 
+ Thu, 11 Jan 2024 03:05:12 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.11
@@ -58,16 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 11 Jan 2024 03:05:11 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/41] target/arm: Implement HCR_EL2.AT handling
-Date: Thu, 11 Jan 2024 11:04:35 +0000
-Message-Id: <20240111110505.1563291-12-peter.maydell@linaro.org>
+Subject: [PULL 12/41] target/arm: Enable trapping of ERET for FEAT_NV
+Date: Thu, 11 Jan 2024 11:04:36 +0000
+Message-Id: <20240111110505.1563291-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 References: <20240111110505.1563291-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,78 +90,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The FEAT_NV HCR_EL2.AT bit enables trapping of some address
-translation instructions from EL1 to EL2.  Implement this behaviour.
+When FEAT_NV is turned on via the HCR_EL2.NV bit, ERET instructions
+are trapped, with the same syndrome information as for the existing
+FEAT_FGT fine-grained trap (in the pseudocode this is handled in
+AArch64.CheckForEretTrap()).
+
+Rename the DisasContext and tbflag bits to reflect that they are
+no longer exclusively for FGT traps, and set the tbflag bit when
+FEAT_NV is enabled as well as when the FGT is enabled.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Miguel Luis <miguel.luis@oracle.com>
 ---
- target/arm/helper.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ target/arm/cpu.h               |  2 +-
+ target/arm/tcg/translate.h     |  4 ++--
+ target/arm/tcg/hflags.c        | 11 ++++++++++-
+ target/arm/tcg/translate-a64.c |  6 +++---
+ 4 files changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 4e5fd25199c..dc4b4123e00 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -3703,6 +3703,15 @@ static CPAccessResult at_s1e2_access(CPUARMState *env, const ARMCPRegInfo *ri,
-     return at_e012_access(env, ri, isread);
- }
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 8c3ca2e2319..8da6bfda228 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -3232,7 +3232,7 @@ FIELD(TBFLAG_A64, PSTATE_ZA, 23, 1)
+ FIELD(TBFLAG_A64, SVL, 24, 4)
+ /* Indicates that SME Streaming mode is active, and SMCR_ELx.FA64 is not. */
+ FIELD(TBFLAG_A64, SME_TRAP_NONSTREAMING, 28, 1)
+-FIELD(TBFLAG_A64, FGT_ERET, 29, 1)
++FIELD(TBFLAG_A64, TRAP_ERET, 29, 1)
+ FIELD(TBFLAG_A64, NAA, 30, 1)
+ FIELD(TBFLAG_A64, ATA0, 31, 1)
  
-+static CPAccessResult at_s1e01_access(CPUARMState *env, const ARMCPRegInfo *ri,
-+                                      bool isread)
-+{
-+    if (arm_current_el(env) == 1 && (arm_hcr_el2_eff(env) & HCR_AT)) {
-+        return CP_ACCESS_TRAP_EL2;
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 3c3bb3431ad..8c84377003c 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -138,10 +138,10 @@ typedef struct DisasContext {
+     bool mve_no_pred;
+     /* True if fine-grained traps are active */
+     bool fgt_active;
+-    /* True if fine-grained trap on ERET is enabled */
+-    bool fgt_eret;
+     /* True if fine-grained trap on SVC is enabled */
+     bool fgt_svc;
++    /* True if a trap on ERET is enabled (FGT or NV) */
++    bool trap_eret;
+     /* True if FEAT_LSE2 SCTLR_ELx.nAA is set */
+     bool naa;
+     /*
+diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
+index a6ebd7571a3..560fb7964ab 100644
+--- a/target/arm/tcg/hflags.c
++++ b/target/arm/tcg/hflags.c
+@@ -169,6 +169,7 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
+     CPUARMTBFlags flags = {};
+     ARMMMUIdx stage1 = stage_1_mmu_idx(mmu_idx);
+     uint64_t tcr = regime_tcr(env, mmu_idx);
++    uint64_t hcr = arm_hcr_el2_eff(env);
+     uint64_t sctlr;
+     int tbii, tbid;
+ 
+@@ -285,13 +286,21 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
+     if (arm_fgt_active(env, el)) {
+         DP_TBFLAG_ANY(flags, FGT_ACTIVE, 1);
+         if (FIELD_EX64(env->cp15.fgt_exec[FGTREG_HFGITR], HFGITR_EL2, ERET)) {
+-            DP_TBFLAG_A64(flags, FGT_ERET, 1);
++            DP_TBFLAG_A64(flags, TRAP_ERET, 1);
+         }
+         if (fgt_svc(env, el)) {
+             DP_TBFLAG_ANY(flags, FGT_SVC, 1);
+         }
+     }
+ 
++    /*
++     * ERET can also be trapped for FEAT_NV. arm_hcr_el2_eff() takes care
++     * of "is EL2 enabled" and the NV bit can only be set if FEAT_NV is present.
++     */
++    if (el == 1 && (hcr & HCR_NV)) {
++        DP_TBFLAG_A64(flags, TRAP_ERET, 1);
 +    }
-+    return at_e012_access(env, ri, isread);
-+}
 +
- static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
-                         uint64_t value)
- {
-@@ -5568,22 +5577,22 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
-       .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 8, .opc2 = 0,
-       .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
-       .fgt = FGT_ATS1E1R,
--      .accessfn = at_e012_access, .writefn = ats_write64 },
-+      .accessfn = at_s1e01_access, .writefn = ats_write64 },
-     { .name = "AT_S1E1W", .state = ARM_CP_STATE_AA64,
-       .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 8, .opc2 = 1,
-       .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
-       .fgt = FGT_ATS1E1W,
--      .accessfn = at_e012_access, .writefn = ats_write64 },
-+      .accessfn = at_s1e01_access, .writefn = ats_write64 },
-     { .name = "AT_S1E0R", .state = ARM_CP_STATE_AA64,
-       .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 8, .opc2 = 2,
-       .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
-       .fgt = FGT_ATS1E0R,
--      .accessfn = at_e012_access, .writefn = ats_write64 },
-+      .accessfn = at_s1e01_access, .writefn = ats_write64 },
-     { .name = "AT_S1E0W", .state = ARM_CP_STATE_AA64,
-       .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 8, .opc2 = 3,
-       .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
-       .fgt = FGT_ATS1E0W,
--      .accessfn = at_e012_access, .writefn = ats_write64 },
-+      .accessfn = at_s1e01_access, .writefn = ats_write64 },
-     { .name = "AT_S12E1R", .state = ARM_CP_STATE_AA64,
-       .opc0 = 1, .opc1 = 4, .crn = 7, .crm = 8, .opc2 = 4,
-       .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
-@@ -8168,12 +8177,12 @@ static const ARMCPRegInfo ats1e1_reginfo[] = {
-       .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 9, .opc2 = 0,
-       .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
-       .fgt = FGT_ATS1E1RP,
--      .accessfn = at_e012_access, .writefn = ats_write64 },
-+      .accessfn = at_s1e01_access, .writefn = ats_write64 },
-     { .name = "AT_S1E1WP", .state = ARM_CP_STATE_AA64,
-       .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 9, .opc2 = 1,
-       .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
-       .fgt = FGT_ATS1E1WP,
--      .accessfn = at_e012_access, .writefn = ats_write64 },
-+      .accessfn = at_s1e01_access, .writefn = ats_write64 },
- };
- 
- static const ARMCPRegInfo ats1cp_reginfo[] = {
+     if (cpu_isar_feature(aa64_mte, env_archcpu(env))) {
+         /*
+          * Set MTE_ACTIVE if any access may be Checked, and leave clear
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index f3b5b9124d0..0f30e71f9bd 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -1606,7 +1606,7 @@ static bool trans_ERET(DisasContext *s, arg_ERET *a)
+     if (s->current_el == 0) {
+         return false;
+     }
+-    if (s->fgt_eret) {
++    if (s->trap_eret) {
+         gen_exception_insn_el(s, 0, EXCP_UDEF, syn_erettrap(0), 2);
+         return true;
+     }
+@@ -1633,7 +1633,7 @@ static bool trans_ERETA(DisasContext *s, arg_reta *a)
+         return false;
+     }
+     /* The FGT trap takes precedence over an auth trap. */
+-    if (s->fgt_eret) {
++    if (s->trap_eret) {
+         gen_exception_insn_el(s, 0, EXCP_UDEF, syn_erettrap(a->m ? 3 : 2), 2);
+         return true;
+     }
+@@ -13980,7 +13980,7 @@ static void aarch64_tr_init_disas_context(DisasContextBase *dcbase,
+     dc->pstate_il = EX_TBFLAG_ANY(tb_flags, PSTATE__IL);
+     dc->fgt_active = EX_TBFLAG_ANY(tb_flags, FGT_ACTIVE);
+     dc->fgt_svc = EX_TBFLAG_ANY(tb_flags, FGT_SVC);
+-    dc->fgt_eret = EX_TBFLAG_A64(tb_flags, FGT_ERET);
++    dc->trap_eret = EX_TBFLAG_A64(tb_flags, TRAP_ERET);
+     dc->sve_excp_el = EX_TBFLAG_A64(tb_flags, SVEEXC_EL);
+     dc->sme_excp_el = EX_TBFLAG_A64(tb_flags, SMEEXC_EL);
+     dc->vl = (EX_TBFLAG_A64(tb_flags, VL) + 1) * 16;
 -- 
 2.34.1
 
