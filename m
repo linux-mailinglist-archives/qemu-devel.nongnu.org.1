@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3271B82B20C
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:46:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F21DD82B205
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 16:45:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNxEm-00083t-3b; Thu, 11 Jan 2024 10:44:56 -0500
+	id 1rNxEs-00089S-LQ; Thu, 11 Jan 2024 10:45:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1rNxEk-00083l-Am
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:44:54 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1rNxEp-00086J-Lz
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:44:59 -0500
+Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1rNxEi-0007kM-Ls
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:44:54 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6dac225bf42so2937620b3a.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 07:44:52 -0800 (PST)
+ id 1rNxEo-0007oB-4K
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 10:44:59 -0500
+Received: by mail-oi1-x231.google.com with SMTP id
+ 5614622812f47-3bbc7746812so4944508b6e.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 07:44:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1704987891; x=1705592691; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1704987896; x=1705592696; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iumyWiRV4aypo77YQP2QuWFP+cC5Zxynr/zst/qlwqM=;
- b=musIrtoFkAUF3sDWKcYEbJ7afy3KfKdDI/cjMqNkq+YzhX0dsEmBVHvtT7+/+3r4nQ
- 0OBfmictxUFOE5OCCYNYjB9iPVE1pm3/cCeULz3f8hcobP5NmehNIz6Qa8FfqOjeVSpv
- PWHEA3VY85Y0uqu3yV6nSjTScNQTwNsrRKYgPDA6U2q1NudmrF7YPJEFtroACR8svNK9
- c/N75pEzed+7Z7vvDmI5+I+ngX6fvAYhHXUS2FhoZEatU/Hnkm2pQGxeIkRSPZCvBnvh
- oYB6AXnQKXMg0a4qDb/1hSz9MNsn3P7+ItrU+qnQNdhFcW060UCwfgOeQ8nEQDFoVAbH
- Adcg==
+ bh=xX0pOm2vruiJrlVAX8MbAu8t5DYYdB4AcErZuPkHXbg=;
+ b=dno2KCYqQjPS2h6KFWjVP6RRXAoUdLSDZ/cen2pcNSPXYV+mvjTGGXtWpwnpgAWRgi
+ s80XDGI8Q31rUhQfDkazQqFuh2zD9Q6VAX1GctRVpR4Tqhxy8+vIbJDXseEL9CmOYKoN
+ GUOv+PbaICxpsbCyxA9UUdx/Vj6rdzWX2nLZEtk0qvsSNOkFVNvmGvRk8/VnzfZT+BWs
+ p2xYg783wixRM+wkURs6EZqytIczqtFLP/+DiLc02ZPA4OeGNVyYQp6UnCfeycNz3poM
+ 1Volq/PgUrCP+HX93dtNoNFVLNM0cyuXXtKO0VsVacbteXu5wSwq2GdHO9J3NVxtO3Sq
+ ycBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704987891; x=1705592691;
+ d=1e100.net; s=20230601; t=1704987896; x=1705592696;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iumyWiRV4aypo77YQP2QuWFP+cC5Zxynr/zst/qlwqM=;
- b=IH1TWDJxRPglK1iXAvh03JlQLEtdj2932HpH7TFzxu9j83+eLWoJdw4re0htZTVnSj
- JtK/N3eBaA/5bWmhom74AClZuPh1ILtbKoxIGFc4cA/9K6D9WwCqrJS4IRY84yCMRwWb
- hBElkvWjakHbK6Bz2TMuVs5LPN98vZ3yV2H6NmXA2yAYGRb8Esvj6IEhJOUVBH6iowHI
- AQ+KQWdYCuOkyTMTwG/SLQNnhSfs9gUg+S01RJJya8Awnp7CTCKZKv5INlaCTiq5l2hu
- 1XotNywsAtCLx3yEGOTTIUGLDRLWvtMz31F6dOBPbimw4EAq3HZ5bRHJ3seKWTLmfiP5
- /Q+A==
-X-Gm-Message-State: AOJu0Yzoyxy1qZ0/4FkdjMUzOlndxJkV77iYjhMeHZOEFrdX+hTbfM7s
- fqfSQ7Yh+2GtsPnSDvcUkdB7C3uZSj51P2fK
-X-Google-Smtp-Source: AGHT+IFrg+MRfHbQnRSw8JsZHbNmupiWNdfwQgMwIPtDlyrDazhH0Se4aPjEeqz4Yiix+VnQU/21ZQ==
-X-Received: by 2002:a05:6a00:b1d:b0:6d9:b242:e47 with SMTP id
- f29-20020a056a000b1d00b006d9b2420e47mr1281227pfu.42.1704987890618; 
- Thu, 11 Jan 2024 07:44:50 -0800 (PST)
+ bh=xX0pOm2vruiJrlVAX8MbAu8t5DYYdB4AcErZuPkHXbg=;
+ b=m4KUhtKY/TtD7qdpiG8siT/ciqgXnFdHDLkGsK+AEpLrvwvCedKJt9IVKWwp+JZEzz
+ S+ZGI/T5la8pPYm9wSlWecqksXkUMA6qn0afCANVhK3AMVP5IqONRtzsMW1cI52sctIg
+ UbP99HV4cJOfycmB0V1L12pflUyn7odEebM4gdbpIX1q2wa7Vk27b9xHu+kqzITlHZPc
+ cMDBqVrg8NsrHuPxNSn75a8DkwvZdpqfF/NNGLcpYEEHefD7efULmahGOWOYU7dxxyMT
+ 21+0Vw/GuHJLFoRfJiA1dseaOH2lGhJFr86Z012ITeDh4gA4oX+ZN8izaZ9yqWr2+8FS
+ jorw==
+X-Gm-Message-State: AOJu0YzMl7kGF5sFLDsm+9VrifAmSxesyhKI3wHnVoS9H4+iXZW9D0i9
+ xdzyndnNRbocmDYQxjrJNuOl4iuuaWLTQx8Z
+X-Google-Smtp-Source: AGHT+IFxvEnFt8YHp6Z0BiCB3Cy9V3m2cEiUKXfmLoZq1qIdmx9qGdfv5VDEtVDml3/xCF+SndJtPg==
+X-Received: by 2002:a05:6358:e820:b0:172:dbff:766e with SMTP id
+ gi32-20020a056358e82000b00172dbff766emr8874rwb.53.1704987896376; 
+ Thu, 11 Jan 2024 07:44:56 -0800 (PST)
 Received: from localhost.localdomain ([2001:ee0:50f4:9050:e868:3e48:c113:4a7f])
  by smtp.googlemail.com with ESMTPSA id
- fb9-20020a056a002d8900b006da550512d8sm1317887pfb.126.2024.01.11.07.44.46
+ fb9-20020a056a002d8900b006da550512d8sm1317887pfb.126.2024.01.11.07.44.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jan 2024 07:44:50 -0800 (PST)
+ Thu, 11 Jan 2024 07:44:56 -0800 (PST)
 From: Bui Quang Minh <minhquangbui99@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -71,17 +71,17 @@ Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
  Phil Dennis-Jordan <lists@philjordan.eu>,
  Santosh Shukla <santosh.shukla@amd.com>,
  Bui Quang Minh <minhquangbui99@gmail.com>
-Subject: [PATCH v12 4/7] intel_iommu: allow Extended Interrupt Mode when using
- userspace APIC
-Date: Thu, 11 Jan 2024 22:44:01 +0700
-Message-Id: <20240111154404.5333-5-minhquangbui99@gmail.com>
+Subject: [PATCH v12 5/7] test: bios-tables-test: prepare IVRS change in ACPI
+ table
+Date: Thu, 11 Jan 2024 22:44:02 +0700
+Message-Id: <20240111154404.5333-6-minhquangbui99@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240111154404.5333-1-minhquangbui99@gmail.com>
 References: <20240111154404.5333-1-minhquangbui99@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=minhquangbui99@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
+ envelope-from=minhquangbui99@gmail.com; helo=mail-oi1-x231.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -105,33 +105,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As userspace APIC now supports x2APIC, intel interrupt remapping
-hardware can be set to EIM mode when userspace local APIC is used.
+Following the instructions in bios-tables-test, this lists that IVRS.ivrs
+in ACPI table will be changed to add new IVHD type 0x11.
 
-Suggested-by: Joao Martins <joao.m.martins@oracle.com>
-Acked-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
 ---
- hw/i386/intel_iommu.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 1a07faddb4..cf933189d3 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -4124,11 +4124,7 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
-                                               ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
-     }
-     if (s->intr_eim == ON_OFF_AUTO_ON && !s->buggy_eim) {
--        if (!kvm_irqchip_is_split()) {
--            error_setg(errp, "eim=on requires accel=kvm,kernel-irqchip=split");
--            return false;
--        }
--        if (kvm_enabled() && !kvm_enable_x2apic()) {
-+        if (kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
-             error_setg(errp, "eim=on requires support on the KVM side"
-                              "(X2APIC_API, first shipped in v4.7)");
-             return false;
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..ac420db6b7 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,2 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/q35/IVRS.ivrs",
 -- 
 2.25.1
 
