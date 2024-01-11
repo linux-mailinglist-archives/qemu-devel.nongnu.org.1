@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D40582ACE3
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D324982AD05
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:11:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNssU-0001Rb-6n; Thu, 11 Jan 2024 06:05:38 -0500
+	id 1rNssY-0001Rn-6F; Thu, 11 Jan 2024 06:05:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssL-0001PP-IU
+ id 1rNssN-0001PU-9N
  for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:31 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssH-0004Xm-UR
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:29 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3374eb61cbcso4674300f8f.0
+ id 1rNssH-0004Yh-V8
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:30 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-336dcebcdb9so4808302f8f.1
  for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704971123; x=1705575923; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704971124; x=1705575924; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WQZ9joUzytLik4j8W+c4JeBQFuz0jyAB3AYXVmNfQ3M=;
- b=yIFQmENbNTkWx9E2R+KHebFYaEm+GKWSKrT6/F8Pk6QqtGh/g+Ky1Edk2yw8s778Li
- I5KT9Xaft6O3AeuWzVM+Rcik4k1RYAlniiGpCUZBBFqv6dNweclKb6U/43tq5tOMJvbu
- aR2bnjUtxPUEqSDStwGZ7N/FGqlfLBPl783GAYydf2z0N9FwlWUQwk1DUSr6o88d9Ep2
- p6BH/kWmqLVFkn6i9jbSHoCbrATdV0xYNtS42Rv4UADckzCTPPOsovcjKLMFuDFT1+xU
- yw5dLN5oyPSKbj4qjz5TjPJQi4IwVrmwwXuojzwUVoINYysch2VNelbh79uNxqn7RqZO
- ZLDA==
+ :reply-to; bh=1O9OPo4rv9t8UJdjCTvrRPzHe9Vt4uLDECv1wcuWN70=;
+ b=wMDNaPujpnQPBfJ9xvfuTuuPAA+YWgj1m3fAwfdt3KDEGAsGHvNReHu9tfE0+tLyXn
+ NwJIc7UIKJm85qNLAUPEEOK13P0Q35555pbBY97tQiQSJBI6T/GfwntnM1YsR55vAyZF
+ RI0ZSRA9p0glZqbcOJdz7LfrOVmGQWlwjqGk2r3ePGdatLQ9FQcj4iHz+pz9fWjQdXiC
+ 5NCtMmeIeuAD6TYJVebJ3CO4BH9q7EzVUCmm+9THB1E5sGj6DuQ6RVtevHkhNxSqnkX5
+ JrZD78jiKKc9O6pM+18Cw3Wj4Z1pq4O41Cm4H2mPEp8sx2Yo5IgcSPJ9RsNceiNHssaV
+ 8Zjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704971123; x=1705575923;
+ d=1e100.net; s=20230601; t=1704971124; x=1705575924;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WQZ9joUzytLik4j8W+c4JeBQFuz0jyAB3AYXVmNfQ3M=;
- b=RknYjNfVR/3nPoyFnEezSkb7LMsEUANfsVWLjdezdTqFPOkzDuekP97K1vstPwxGN+
- 8g+uvPBoOkROxdT2HFiER0/ZgJg86XYz9GmcgxJTnG8oRS2KBgmgVarBIoZy+4J0eddq
- IaG5mGbvKGj3/KwaCW+7qe3fwImPQ6HrQqXzoUdoHg/1MjxrQn62KlroHgeSbZbPbshO
- sb66XPRp12q3Yt5vWk1LuIMw/fA+fei3nxyvxZLV5YxT2h82AIBW1MVbxDVZBc5TI2Fj
- p0rizatqSr005CM/zydI9EiFBJrFOhM2H/NHCIpFs2AEhW5NPjs5Kkn9Axa6Eviy8F8b
- mdPg==
-X-Gm-Message-State: AOJu0YwXgay7WywqPWUkkjzON2J7nvn1EVoxKlKsJogYDKlYDrgvNonO
- SvRri8J//7pfHLfFWXYmfxgc4fNkrZWykZKHAMFDs8vbbi0=
-X-Google-Smtp-Source: AGHT+IFUI6h5Hgo4RLVvwOug8Mr6DG68K3Z2IiQH7X28Yr3RZZxpKznqaBgX4JQSZHb28NilUFYm/g==
-X-Received: by 2002:adf:ec48:0:b0:337:61e3:7421 with SMTP id
- w8-20020adfec48000000b0033761e37421mr546032wrn.44.1704971123589; 
- Thu, 11 Jan 2024 03:05:23 -0800 (PST)
+ bh=1O9OPo4rv9t8UJdjCTvrRPzHe9Vt4uLDECv1wcuWN70=;
+ b=VzdHbEC3/7oVXKPskWP+Olw4MTLG7XYxu3Mo4yIuwrzj+2DjY4w8lXuoWWBTjBVm4t
+ PmWnDwuBh7DH72f/KZVBibbIDPy6ED1elCc1yMMC9s4KjNSNMykGUupcDHW8MktbmG5d
+ 28V31SOlxReEfgOJvk18JxRUsTrrg8qiua/nXfOuK+/z+dISDKtqtHx9+ZkgeAk//372
+ 5nzhRccvkKjHS9nbxIqJxmoXwWaLmIFlCVjhzvjvCwQSex0I3RLbIkVdQrgz1QZuSw1y
+ pScbpZhfKJ1QLGXBAkbh9h2t2qiTdo4xHR0MYhHk9Wl/CywDlrByGNV7XZCkRRdS0goj
+ EeCQ==
+X-Gm-Message-State: AOJu0Yzo/KJ/jbl3TZ5uDhXklV5nK+OPhXnYnCghoh8TmSkLjTB2nS62
+ 0IVz9IWoNP91fscp/sAvCalNrKVEukqLdpvXLQR9LRPVdsQ=
+X-Google-Smtp-Source: AGHT+IH4W7Dw0MasedjXLlQVGTq317Xp5Hq4Gb0B7kyRQA/AmhYZ7ZfHc+SLBRw9CvRZ0zobmVOqMQ==
+X-Received: by 2002:adf:ebc8:0:b0:337:4d36:ae41 with SMTP id
+ v8-20020adfebc8000000b003374d36ae41mr265708wrn.35.1704971124034; 
+ Thu, 11 Jan 2024 03:05:24 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.23
@@ -58,17 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 11 Jan 2024 03:05:23 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 38/41] hw/intc/arm_gicv3_cpuif: Mark up VNCR offsets for GIC
- CPU registers
-Date: Thu, 11 Jan 2024 11:05:02 +0000
-Message-Id: <20240111110505.1563291-39-peter.maydell@linaro.org>
+Subject: [PULL 39/41] target/arm: Report HCR_EL2.{NV,NV1,NV2} in cpu dumps
+Date: Thu, 11 Jan 2024 11:05:03 +0000
+Message-Id: <20240111110505.1563291-40-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 References: <20240111110505.1563291-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,109 +90,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mark up the cpreginfo structs for the GIC CPU registers to indicate
-the offsets from VNCR_EL2, as defined in table D8-66 in rule R_CSRPQ
-in the Arm ARM.
+When interpreting CPU dumps where FEAT_NV and FEAT_NV2 are in use,
+it's helpful to include the values of HCR_EL2.{NV,NV1,NV2} in the CPU
+dump format, as a way of distinguishing when we are in EL1 as part of
+executing guest-EL2 and when we are just in normal EL1.
+
+Add the bits to the end of the log line that shows PSTATE and similar
+information:
+
+PSTATE=000003c9 ---- EL2h  BTYPE=0 NV NV2
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Miguel Luis <miguel.luis@oracle.com>
 ---
- hw/intc/arm_gicv3_cpuif.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ target/arm/cpu.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index 6ac90536402..e1a60d8c15b 100644
---- a/hw/intc/arm_gicv3_cpuif.c
-+++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -2684,6 +2684,7 @@ static const ARMCPRegInfo gicv3_cpuif_hcr_reginfo[] = {
-     { .name = "ICH_AP0R0_EL2", .state = ARM_CP_STATE_BOTH,
-       .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 8, .opc2 = 0,
-       .type = ARM_CP_IO | ARM_CP_NO_RAW,
-+      .nv2_redirect_offset = 0x480,
-       .access = PL2_RW,
-       .readfn = ich_ap_read,
-       .writefn = ich_ap_write,
-@@ -2691,6 +2692,7 @@ static const ARMCPRegInfo gicv3_cpuif_hcr_reginfo[] = {
-     { .name = "ICH_AP1R0_EL2", .state = ARM_CP_STATE_BOTH,
-       .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 9, .opc2 = 0,
-       .type = ARM_CP_IO | ARM_CP_NO_RAW,
-+      .nv2_redirect_offset = 0x4a0,
-       .access = PL2_RW,
-       .readfn = ich_ap_read,
-       .writefn = ich_ap_write,
-@@ -2698,6 +2700,7 @@ static const ARMCPRegInfo gicv3_cpuif_hcr_reginfo[] = {
-     { .name = "ICH_HCR_EL2", .state = ARM_CP_STATE_BOTH,
-       .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 11, .opc2 = 0,
-       .type = ARM_CP_IO | ARM_CP_NO_RAW,
-+      .nv2_redirect_offset = 0x4c0,
-       .access = PL2_RW,
-       .readfn = ich_hcr_read,
-       .writefn = ich_hcr_write,
-@@ -2729,6 +2732,7 @@ static const ARMCPRegInfo gicv3_cpuif_hcr_reginfo[] = {
-     { .name = "ICH_VMCR_EL2", .state = ARM_CP_STATE_BOTH,
-       .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 11, .opc2 = 7,
-       .type = ARM_CP_IO | ARM_CP_NO_RAW,
-+      .nv2_redirect_offset = 0x4c8,
-       .access = PL2_RW,
-       .readfn = ich_vmcr_read,
-       .writefn = ich_vmcr_write,
-@@ -2739,6 +2743,7 @@ static const ARMCPRegInfo gicv3_cpuif_ich_apxr1_reginfo[] = {
-     { .name = "ICH_AP0R1_EL2", .state = ARM_CP_STATE_BOTH,
-       .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 8, .opc2 = 1,
-       .type = ARM_CP_IO | ARM_CP_NO_RAW,
-+      .nv2_redirect_offset = 0x488,
-       .access = PL2_RW,
-       .readfn = ich_ap_read,
-       .writefn = ich_ap_write,
-@@ -2746,6 +2751,7 @@ static const ARMCPRegInfo gicv3_cpuif_ich_apxr1_reginfo[] = {
-     { .name = "ICH_AP1R1_EL2", .state = ARM_CP_STATE_BOTH,
-       .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 9, .opc2 = 1,
-       .type = ARM_CP_IO | ARM_CP_NO_RAW,
-+      .nv2_redirect_offset = 0x4a8,
-       .access = PL2_RW,
-       .readfn = ich_ap_read,
-       .writefn = ich_ap_write,
-@@ -2756,6 +2762,7 @@ static const ARMCPRegInfo gicv3_cpuif_ich_apxr23_reginfo[] = {
-     { .name = "ICH_AP0R2_EL2", .state = ARM_CP_STATE_BOTH,
-       .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 8, .opc2 = 2,
-       .type = ARM_CP_IO | ARM_CP_NO_RAW,
-+      .nv2_redirect_offset = 0x490,
-       .access = PL2_RW,
-       .readfn = ich_ap_read,
-       .writefn = ich_ap_write,
-@@ -2763,6 +2770,7 @@ static const ARMCPRegInfo gicv3_cpuif_ich_apxr23_reginfo[] = {
-     { .name = "ICH_AP0R3_EL2", .state = ARM_CP_STATE_BOTH,
-       .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 8, .opc2 = 3,
-       .type = ARM_CP_IO | ARM_CP_NO_RAW,
-+      .nv2_redirect_offset = 0x498,
-       .access = PL2_RW,
-       .readfn = ich_ap_read,
-       .writefn = ich_ap_write,
-@@ -2770,6 +2778,7 @@ static const ARMCPRegInfo gicv3_cpuif_ich_apxr23_reginfo[] = {
-     { .name = "ICH_AP1R2_EL2", .state = ARM_CP_STATE_BOTH,
-       .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 9, .opc2 = 2,
-       .type = ARM_CP_IO | ARM_CP_NO_RAW,
-+      .nv2_redirect_offset = 0x4b0,
-       .access = PL2_RW,
-       .readfn = ich_ap_read,
-       .writefn = ich_ap_write,
-@@ -2777,6 +2786,7 @@ static const ARMCPRegInfo gicv3_cpuif_ich_apxr23_reginfo[] = {
-     { .name = "ICH_AP1R3_EL2", .state = ARM_CP_STATE_BOTH,
-       .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 9, .opc2 = 3,
-       .type = ARM_CP_IO | ARM_CP_NO_RAW,
-+      .nv2_redirect_offset = 0x4b8,
-       .access = PL2_RW,
-       .readfn = ich_ap_read,
-       .writefn = ich_ap_write,
-@@ -2898,6 +2908,7 @@ void gicv3_init_cpuif(GICv3State *s)
-                       .opc0 = 3, .opc1 = 4, .crn = 12,
-                       .crm = 12 + (j >> 3), .opc2 = j & 7,
-                       .type = ARM_CP_IO | ARM_CP_NO_RAW,
-+                      .nv2_redirect_offset = 0x400 + 8 * j,
-                       .access = PL2_RW,
-                       .readfn = ich_lr_read,
-                       .writefn = ich_lr_write,
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index c15ad52ab3d..7d763786d88 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1059,6 +1059,7 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+     uint32_t psr = pstate_read(env);
+     int i, j;
+     int el = arm_current_el(env);
++    uint64_t hcr = arm_hcr_el2_eff(env);
+     const char *ns_status;
+     bool sve;
+ 
+@@ -1096,6 +1097,10 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+     if (cpu_isar_feature(aa64_bti, cpu)) {
+         qemu_fprintf(f, "  BTYPE=%d", (psr & PSTATE_BTYPE) >> 10);
+     }
++    qemu_fprintf(f, "%s%s%s",
++                 (hcr & HCR_NV) ? " NV" : "",
++                 (hcr & HCR_NV1) ? " NV1" : "",
++                 (hcr & HCR_NV2) ? " NV2" : "");
+     if (!(flags & CPU_DUMP_FPU)) {
+         qemu_fprintf(f, "\n");
+         return;
 -- 
 2.34.1
 
