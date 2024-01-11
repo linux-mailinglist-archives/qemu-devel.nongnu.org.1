@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA54182ACD8
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:07:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7175382AD17
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:13:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNssB-0001MA-Kl; Thu, 11 Jan 2024 06:05:19 -0500
+	id 1rNssR-0001RC-RQ; Thu, 11 Jan 2024 06:05:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss5-0001KC-CN
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:13 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1rNss6-0001Kr-Tm
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:15 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNss2-0004NP-Qs
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:13 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40e60e13762so3186585e9.2
+ id 1rNss3-0004NS-Ci
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:14 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-33770772136so2385590f8f.3
  for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1704971109; x=1705575909; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=CaJ0lo5TmAF8BFZ0QGqs81rse4aATjl1O9jO7ww+ztg=;
- b=cRCaNUQntyq4UDLQnlhaDdISitRxAwTafcAcikJzadIrgofqFIt+YcuTo6tOUJf/la
- JqCCuUbuLMeKisjZzxi0dwo/1EMCwImV50yqvh1bnXrqfjCsjECb8ziECiwxMqlLXdfr
- aiLQvNWIv7ucyLAK1hRg8/B2COMcWJoVUvt4d3UPL0vO/304tKnWkd47rT1TbK59pAdS
- 488Y+06F+aag8Juz0bQ/QEKig/OEbyZr1AmTiOcL6lcnSTgPiRPLXBfs1O10jgZY7qRr
- VFtMSyiMd2PUnCyPHlz/M/iX5sL9tdn5IPg/3UuWn6Hd/FyNBokYNqP0+wv1Col7/78Q
- slow==
+ :reply-to; bh=g2GtSaJUPBG1REo0r/4JXTUdrbWAUpzKuEobonnT25Y=;
+ b=qYaM8sqNLWi8H2MFqYYUhDiScUhuE//McLJoxPbjJNCqJphldMUfJZ1CY2ZB4I0FVC
+ c5CR2X+XOxTytwRS3srGOvxKsUsvVfxJFzPXmlskipLW2gstKo57dzX5TfgstLtmvHor
+ O9IkaLzfNSG40shtM94Z0VszUDLoi64G89h+JTz5De4OxZiWJhhnmp19wLpPm6s4gXP/
+ QIa0doB/1M6keWxC1nwo2gB/5KCfk6CslQZZOpCYDHWv5iY0w4ld6jPVohvTZWiiM7/Q
+ Pkq8at9AlAw4CiyiEWn/sSJPKFOpSPNOYtyTLVEyVi4psgMKxqAES2StkPkgbTWWsqBS
+ WKfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1704971109; x=1705575909;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CaJ0lo5TmAF8BFZ0QGqs81rse4aATjl1O9jO7ww+ztg=;
- b=Y5bUMBjo9STw9GEnWsclR1uVimjv7qsmSDJenOX3ldXRzaKf5qp3hbERidhzft7fW6
- nJlHlvODG1+z37irsbUFgHkconHyU6xf52KbuV978dN5dX6CjZ9nxT4bcbYL7Y3cTdRX
- eOPaziVb9Qu+0c+UL0Qx1Eiv7lnYxiSkhpeetdyz5lmyoB43iyWhkQ3j/VJZZbFsBc1S
- zZqRZ3pAxOvi02Lr8fZz8ZTCkl7TDq43UbDIUsFkKSFhaUzYDb/+AVCBiBYp6N8URI4Z
- lRxwdUDM3ElGB3iuAEi93BBuieiFceKd5LH14pcBJ+jJN0tQZq1vlsGb1RB2BEVU8M3r
- 8YjA==
-X-Gm-Message-State: AOJu0YxrUK7aOmvvVgr7EulpTXfhnBUCF5agFAQEahTnIYqZT97KW2sz
- UAJMPiWqYRoHg6mAf58Mpcy39uzx3J70/dmGDHLc4tF6p2g=
-X-Google-Smtp-Source: AGHT+IEWBrVmbE+GqWUDdgIY8khKd3OdTWIQd9GvBvjowGWGokz6WBY0Ig8BzCrXvCl/HIKn+RlSew==
-X-Received: by 2002:a05:600c:2158:b0:40e:526f:a110 with SMTP id
- v24-20020a05600c215800b0040e526fa110mr142562wml.107.1704971108972; 
- Thu, 11 Jan 2024 03:05:08 -0800 (PST)
+ bh=g2GtSaJUPBG1REo0r/4JXTUdrbWAUpzKuEobonnT25Y=;
+ b=AP82yo8t77/NDu34QF7jUEHTy3s0y+cOVugPmdH4ZoEHvjYGMGUEWE8Z80GVCO5ITD
+ tIN5DuB6KzB83Z10afP156wBMyRlKltbyFLWIP9cwG/2UPuzd2vLMKvpV764X4KQ5ypG
+ 60FbWoFduHcrCt5bQyHW4YYfUxifzmlFrOIVQlqQ5lIE95+YiAb66sIKZbJatk8NTXOu
+ jRWSTGX8P22YZw7lBkG8UdY/7Hxng4F9Nn4PlllvGf0NjLLnxoGyYRBDBxKWqR5rXL83
+ 1EMAHkAI6EYo3KY4Rh02qekd8+9OF4ABuhkG2taoB+OGnVzksU154/7PEoKNBRD5mLfC
+ DYcw==
+X-Gm-Message-State: AOJu0Yx6WAM7oNpeYy8AbyQKRbWVHq+sK44v7OrchrYn2PFwjufvv6qq
+ ztnUxas6DQJYnS9xXovXmHXctzlbBFPBvl66I5tRAWrqUx4=
+X-Google-Smtp-Source: AGHT+IGMaCLXrbm5ykW3ggtsPTpGy4r/th2CNp5naCekEa95oE86U/Pif2f1TV4VYMBy+FMWYQqQCQ==
+X-Received: by 2002:a5d:62c8:0:b0:336:62f7:2304 with SMTP id
+ o8-20020a5d62c8000000b0033662f72304mr503943wrv.49.1704971109374; 
+ Thu, 11 Jan 2024 03:05:09 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.08
+ v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.09
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jan 2024 03:05:08 -0800 (PST)
+ Thu, 11 Jan 2024 03:05:09 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/41] hw/intc/armv7m_nvic: add "num-prio-bits" property
-Date: Thu, 11 Jan 2024 11:04:28 +0000
-Message-Id: <20240111110505.1563291-5-peter.maydell@linaro.org>
+Subject: [PULL 05/41] hw/arm/armv7m: alias the NVIC "num-prio-bits" property
+Date: Thu, 11 Jan 2024 11:04:29 +0000
+Message-Id: <20240111110505.1563291-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 References: <20240111110505.1563291-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,67 +93,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Samuel Tardieu <sam@rfc1149.net>
 
-Cortex-M NVIC can have a different number of priority bits.
-Cortex-M0/M0+/M1 devices must use 2 or more bits, while devices based
-on ARMv7m and up must use 3 or more bits.
-
-This adds a "num-prio-bits" property which will get sensible default
-values if unset (2 or 8 depending on the device). Unless a SOC
-specifies the number of bits to use, the previous behavior is
-maintained for backward compatibility.
+A SoC will not have a direct access to the NVIC embedded in its ARM
+core. By aliasing the "num-prio-bits" property similarly to what is
+done for the "num-irq" one, a SoC can easily configure it on its
+armv7m instance.
 
 Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240106181503.1746200-2-sam@rfc1149.net
-Suggested-by: Anton Kochkov <anton.kochkov@proton.me>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1122
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240106181503.1746200-3-sam@rfc1149.net
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/intc/armv7m_nvic.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ include/hw/arm/armv7m.h | 1 +
+ hw/arm/armv7m.c         | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/hw/intc/armv7m_nvic.c b/hw/intc/armv7m_nvic.c
-index 50f9a973a2e..404a445138a 100644
---- a/hw/intc/armv7m_nvic.c
-+++ b/hw/intc/armv7m_nvic.c
-@@ -2572,6 +2572,11 @@ static const VMStateDescription vmstate_nvic = {
- static Property props_nvic[] = {
-     /* Number of external IRQ lines (so excluding the 16 internal exceptions) */
-     DEFINE_PROP_UINT32("num-irq", NVICState, num_irq, 64),
-+    /*
-+     * Number of the maximum priority bits that can be used. 0 means
-+     * to use a reasonable default.
-+     */
-+    DEFINE_PROP_UINT8("num-prio-bits", NVICState, num_prio_bits, 0),
-     DEFINE_PROP_END_OF_LIST()
- };
+diff --git a/include/hw/arm/armv7m.h b/include/hw/arm/armv7m.h
+index e2cebbd15c0..5c057ab2ec9 100644
+--- a/include/hw/arm/armv7m.h
++++ b/include/hw/arm/armv7m.h
+@@ -43,6 +43,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(ARMv7MState, ARMV7M)
+  *   a qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET).
+  * + Property "cpu-type": CPU type to instantiate
+  * + Property "num-irq": number of external IRQ lines
++ * + Property "num-prio-bits": number of priority bits in the NVIC
+  * + Property "memory": MemoryRegion defining the physical address space
+  *   that CPU accesses see. (The NVIC, bitbanding and other CPU-internal
+  *   devices will be automatically layered on top of this view.)
+diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
+index e39b61bc1af..1f218277734 100644
+--- a/hw/arm/armv7m.c
++++ b/hw/arm/armv7m.c
+@@ -256,6 +256,8 @@ static void armv7m_instance_init(Object *obj)
+     object_initialize_child(obj, "nvic", &s->nvic, TYPE_NVIC);
+     object_property_add_alias(obj, "num-irq",
+                               OBJECT(&s->nvic), "num-irq");
++    object_property_add_alias(obj, "num-prio-bits",
++                              OBJECT(&s->nvic), "num-prio-bits");
  
-@@ -2685,7 +2690,23 @@ static void armv7m_nvic_realize(DeviceState *dev, Error **errp)
-     /* include space for internal exception vectors */
-     s->num_irq += NVIC_FIRST_IRQ;
- 
--    s->num_prio_bits = arm_feature(&s->cpu->env, ARM_FEATURE_V7) ? 8 : 2;
-+    if (s->num_prio_bits == 0) {
-+        /*
-+         * If left unspecified, use 2 bits by default on Cortex-M0/M0+/M1
-+         * and 8 bits otherwise.
-+         */
-+        s->num_prio_bits = arm_feature(&s->cpu->env, ARM_FEATURE_V7) ? 8 : 2;
-+    } else {
-+        uint8_t min_prio_bits =
-+            arm_feature(&s->cpu->env, ARM_FEATURE_V7) ? 3 : 2;
-+        if (s->num_prio_bits < min_prio_bits || s->num_prio_bits > 8) {
-+            error_setg(errp,
-+                       "num-prio-bits %d is outside "
-+                       "NVIC acceptable range [%d-8]",
-+                       s->num_prio_bits, min_prio_bits);
-+            return;
-+        }
-+    }
- 
-     /*
-      * This device provides a single memory region which covers the
+     object_initialize_child(obj, "systick-reg-ns", &s->systick[M_REG_NS],
+                             TYPE_SYSTICK);
 -- 
 2.34.1
 
