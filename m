@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4BB82ACD7
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:07:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E8B82AD23
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:14:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNssk-0001hJ-QC; Thu, 11 Jan 2024 06:05:54 -0500
+	id 1rNssZ-0001Rr-NE; Thu, 11 Jan 2024 06:05:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssH-0001OG-Nx
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:30 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1rNssI-0001P3-6t
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:31 -0500
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rNssD-0004U9-54
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:22 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3367601a301so4553504f8f.2
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:20 -0800 (PST)
+ id 1rNssE-0004Ue-6c
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:05:24 -0500
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2cceb5f0918so55495551fa.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 03:05:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1704971119; x=1705575919; darn=nongnu.org;
+ d=linaro.org; s=google; t=1704971120; x=1705575920; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SaqZ9xe22tumjx3dL0fsEpY2dA8696LTi7vPLEZxD+Q=;
- b=IC/jNGUnDhwXTsFZFTw/3Pxbr/4H1zw2a7xiLQMJX3o2w94PvZqO2ELH5uuknLRUtR
- b341ay4jND3Qu+43f6GpMPdTVqMIbv8XSz3UWZujUlBFZH3YwZXqvSi1g1y41OmyKhn0
- IjPJ6FhfLeD0/x675oa0XqSyadO4zwwhm1fldnpEp2fLI0jRl5S6j+d926VwX29hBmW3
- P4SiLu9OwH4R55t5XRLdfEiI9nW6fv7B0fcU1K1be/PCK2KLcT+F43JqVDSC1A8yQNlQ
- MLQ695fwyZKDLyKVRA+0DKxzzotICv5SMKXztR3cB66wb/ne2ZHbOSbsk9CPG1BVTsUl
- g9iw==
+ :reply-to; bh=15rlOByBdh8+iLkfPVBVi/SbZWKpkYx6lLXZPs5/sUg=;
+ b=eC6N9UXjVt1qnvvzfr3z9DcPxagmUb08+KiZbKptTUsFpO0rn4qYluWu+aEmP0Krua
+ A9EURHtU5j9qcHiFxPZttrH7vZAqkxEY84nBVPPiH50uDW9uI9mUZFTkz7LtbX40oqWA
+ 6z04TbFOk5KnNpchLM/h1sqzIXGWGXipVI+Dl5Dc4y1kAoWlWNFKt6c7dWyCiOLqa1DH
+ HiX+xpMLJXhpXfO8DwuX5ZzgTMRbU3/hwISIGoFJ6XTmKRiUyUJpSH1IeVL9WLH7w7wv
+ Dumg9Aqh3sx3Q3w8NwYIrbw21I44NWtVV+Lra0u4vAAAAi8q9wDRO/sVAA3cqHu8aLaT
+ yQiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1704971119; x=1705575919;
+ d=1e100.net; s=20230601; t=1704971120; x=1705575920;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SaqZ9xe22tumjx3dL0fsEpY2dA8696LTi7vPLEZxD+Q=;
- b=KlQ3PfAR6vUKJigR+VY8J/0Z97wsnUytJ6iSaBVr5nwNYPZachGVDeIsNmyvU3QQOP
- IV9UKd/CrgiCVPArgW612g+9ggaATw+4tlIrCFjP6ZD1QYo0CO7KCJNZnMO97zZDMCli
- mW0MOYczxealpB1opbzSq7PNzeWeCB0mVVrGaaFcVd7FchrLxgUSi4USx9wH4/mm0xm2
- ymi7lxv3iuvdQnDTSy7JQnK+b0SrG/yOMf3bhpTfwPZQiyMfxzLC7PNKMCs36zN64w4j
- CLZfWI01gdbB5rFevR1jlZkmo1XBXKWWZCSdDbKnY9fsPvWSdiKq85w+/zYNQwRCw5H+
- CCSg==
-X-Gm-Message-State: AOJu0YwOIM9scwEfTsehTh/C60pAeYl/Q0YYkKVYl9jP6MFHrGgsipoM
- Fr2aFeVlZMYGII8ZkqlasPIvcNKX/FjmWy8zctYZpVttuj4=
-X-Google-Smtp-Source: AGHT+IHOUft2it1rm1avw7SaLDMsfMYUH6+2i24LWP4tIGjzyE+VJoM8CF+6TTF0mZrNuQGohLe3+A==
-X-Received: by 2002:a05:600c:158a:b0:40e:4e06:26b4 with SMTP id
- r10-20020a05600c158a00b0040e4e0626b4mr211858wmf.109.1704971119737; 
- Thu, 11 Jan 2024 03:05:19 -0800 (PST)
+ bh=15rlOByBdh8+iLkfPVBVi/SbZWKpkYx6lLXZPs5/sUg=;
+ b=xR6HmtnQ7OYNIcK6WhSNAX0uXFNZpzXBQZswEcxkN5EETlAQCX2tLvEdS+HGkFCCqc
+ 22V4KNsvq3MlNuuZlZRe79RMp7uOeVHiLG8Sr2elQjhsnxIgGGtg0NZMCTyVx2N6VH4j
+ rJKmtQzbwLHhUB/QP0f8vx61sH84EtzFrvB3BgMveUEYb9UmKZI74pODjNSX5S5Oxq2M
+ FMbtOk2F03BRdp3YbcUTe/hhuLEmtj1A8TwE/VgGapQi0jKKntdamJ6vA+0eH+w2aBs6
+ TUtltbKubEA5kGOYp3BfPFxlPivIldnkNB3b/I8vlyIos0gZM9STTw1D6Gixd3o5KJuh
+ NiYQ==
+X-Gm-Message-State: AOJu0YwGlzeMuPMyO0VzwW+r6mJ2xk5xLJ6cFxyZsT3DjkM0kbKejiv4
+ P2fZbvsHSNHNl3mta/IlUIQq+yRz6TWK73HglXaZPMPcxdU=
+X-Google-Smtp-Source: AGHT+IHv8xiBzmsEhqKOWYGqby7963J7HeIOKru+tz36fWoRyhG8Vqb61JKwRT1n/au29gk7pUTGbA==
+X-Received: by 2002:a2e:9bd9:0:b0:2cc:f41d:8f41 with SMTP id
+ w25-20020a2e9bd9000000b002ccf41d8f41mr183499ljj.39.1704971120265; 
+ Thu, 11 Jan 2024 03:05:20 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  v30-20020adf8b5e000000b0033690139ea5sm951323wra.44.2024.01.11.03.05.19
@@ -58,16 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 11 Jan 2024 03:05:19 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 29/41] target/arm: Implement VNCR_EL2 register
-Date: Thu, 11 Jan 2024 11:04:53 +0000
-Message-Id: <20240111110505.1563291-30-peter.maydell@linaro.org>
+Subject: [PULL 30/41] target/arm: Handle FEAT_NV2 changes to when SPSR_EL1.M
+ reports EL2
+Date: Thu, 11 Jan 2024 11:04:54 +0000
+Message-Id: <20240111110505.1563291-31-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111110505.1563291-1-peter.maydell@linaro.org>
 References: <20240111110505.1563291-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,76 +91,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For FEAT_NV2, a new system register VNCR_EL2 holds the base
-address of the memory which nested-guest system register
-accesses are redirected to. Implement this register.
+With FEAT_NV2, the condition for when SPSR_EL1.M should report that
+an exception was taken from EL2 changes.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Miguel Luis <miguel.luis@oracle.com>
 ---
- target/arm/cpu.h    |  3 +++
- target/arm/helper.c | 26 ++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ target/arm/helper.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index d7a10fb4b61..0e48a1366bd 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -547,6 +547,9 @@ typedef struct CPUArchState {
-         uint64_t gpccr_el3;
-         uint64_t gptbr_el3;
-         uint64_t mfar_el3;
-+
-+        /* NV2 register */
-+        uint64_t vncr_el2;
-     } cp15;
- 
-     struct {
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index e3e56539594..53bd6c85990 100644
+index 53bd6c85990..b9b3aaf4db7 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -8131,6 +8131,28 @@ static const ARMCPRegInfo fgt_reginfo[] = {
-       .access = PL2_RW, .accessfn = access_fgt,
-       .fieldoffset = offsetof(CPUARMState, cp15.fgt_exec[FGTREG_HFGITR]) },
- };
-+
-+static void vncr_write(CPUARMState *env, const ARMCPRegInfo *ri,
-+                       uint64_t value)
-+{
-+    /*
-+     * Clear the RES0 bottom 12 bits; this means at runtime we can guarantee
-+     * that VNCR_EL2 + offset is 64-bit aligned. We don't need to do anything
-+     * about the RESS bits at the top -- we choose the "generate an EL2
-+     * translation abort on use" CONSTRAINED UNPREDICTABLE option (i.e. let
-+     * the ptw.c code detect the resulting invalid address).
-+     */
-+    env->cp15.vncr_el2 = value & ~0xfffULL;
-+}
-+
-+static const ARMCPRegInfo nv2_reginfo[] = {
-+    { .name = "VNCR_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 4, .crn = 2, .crm = 2, .opc2 = 0,
-+      .access = PL2_RW,
-+      .writefn = vncr_write,
-+      .fieldoffset = offsetof(CPUARMState, cp15.vncr_el2) },
-+};
-+
- #endif /* TARGET_AARCH64 */
+@@ -11328,10 +11328,18 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
+         aarch64_save_sp(env, arm_current_el(env));
+         env->elr_el[new_el] = env->pc;
  
- static CPAccessResult access_predinv(CPUARMState *env, const ARMCPRegInfo *ri,
-@@ -9614,6 +9636,10 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-             define_arm_cp_regs(cpu, rme_mte_reginfo);
+-        if (cur_el == 1 && new_el == 1 &&
+-            ((arm_hcr_el2_eff(env) & (HCR_NV | HCR_NV1)) == HCR_NV)) {
+-            /* I_ZJRNN: report EL2 in the SPSR by setting M[3:2] to 0b10 */
+-            old_mode = deposit32(old_mode, 2, 2, 2);
++        if (cur_el == 1 && new_el == 1) {
++            uint64_t hcr = arm_hcr_el2_eff(env);
++            if ((hcr & (HCR_NV | HCR_NV1 | HCR_NV2)) == HCR_NV ||
++                (hcr & (HCR_NV | HCR_NV2)) == (HCR_NV | HCR_NV2)) {
++                /*
++                 * FEAT_NV, FEAT_NV2 may need to report EL2 in the SPSR
++                 * by setting M[3:2] to 0b10.
++                 * If NV2 is disabled, change SPSR when NV,NV1 == 1,0 (I_ZJRNN)
++                 * If NV2 is enabled, change SPSR when NV is 1 (I_DBTLM)
++                 */
++                old_mode = deposit32(old_mode, 2, 2, 2);
++            }
          }
-     }
-+
-+    if (cpu_isar_feature(aa64_nv2, cpu)) {
-+        define_arm_cp_regs(cpu, nv2_reginfo);
-+    }
- #endif
- 
-     if (cpu_isar_feature(any_predinv, cpu)) {
+     } else {
+         old_mode = cpsr_read_for_spsr_elx(env);
 -- 
 2.34.1
 
