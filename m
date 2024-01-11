@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5878682AD63
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:29:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 278DD82AD7B
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jan 2024 12:32:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rNtFS-0007mg-Fa; Thu, 11 Jan 2024 06:29:22 -0500
+	id 1rNtFR-0007nK-2a; Thu, 11 Jan 2024 06:29:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rNtFE-0007jS-8i
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:29:10 -0500
+ id 1rNtFI-0007lR-9c
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:29:13 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rNtFA-0006ql-CY
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:29:07 -0500
+ (envelope-from <gaosong@loongson.cn>) id 1rNtFB-0006qt-Pm
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 06:29:09 -0500
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxTev80J9liz8EAA--.12582S3;
- Thu, 11 Jan 2024 19:29:00 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxzvD+0J9ljT8EAA--.12634S3;
+ Thu, 11 Jan 2024 19:29:02 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bx34f80J9l6+4PAA--.41647S2; 
- Thu, 11 Jan 2024 19:29:00 +0800 (CST)
+ AQAAf8Bx34f80J9l6+4PAA--.41647S3; 
+ Thu, 11 Jan 2024 19:29:02 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: 
-Cc: qemu-devel@nongnu.org,
-	peter.maydell@linaro.org
-Subject: [PULL  00/14] loongarch-to-apply queue
-Date: Thu, 11 Jan 2024 19:15:55 +0800
-Message-Id: <20240111111609.899183-1-gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org,
+ Tianrui Zhao <zhaotianrui@loongson.cn>
+Subject: [PULL 01/14] linux-headers: Synchronize linux headers from linux
+ v6.7.0-rc8
+Date: Thu, 11 Jan 2024 19:15:56 +0800
+Message-Id: <20240111111609.899183-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20240111111609.899183-1-gaosong@loongson.cn>
+References: <20240111111609.899183-1-gaosong@loongson.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bx34f80J9l6+4PAA--.41647S2
+X-CM-TRANSID: AQAAf8Bx34f80J9l6+4PAA--.41647S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -62,63 +64,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 34eac35f893664eb8545b98142e23d9954722766:
+From: Tianrui Zhao <zhaotianrui@loongson.cn>
 
-  Merge tag 'pull-riscv-to-apply-20240110' of https://github.com/alistair23/qemu into staging (2024-01-10 11:41:56 +0000)
+Use the scripts/update-linux-headers.sh to synchronize linux
+headers from linux v6.7.0-rc8. We mainly want to add the
+loongarch linux headers and then add the loongarch kvm support
+based on it.
 
-are available in the Git repository at:
+Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
+Acked-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20240105075804.1228596-2-zhaotianrui@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ include/standard-headers/linux/fuse.h | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240111
-
-for you to fetch changes up to 428a6ef4396aa910c86e16c1e4409e3927a3698e:
-
-  hw/intc/loongarch_extioi: Add vmstate post_load support (2024-01-11 19:22:47 +0800)
-
-----------------------------------------------------------------
-pull-loongarch-20240111
-
-----------------------------------------------------------------
-Bibo Mao (4):
-      hw/intc/loongarch_ipi: Use MemTxAttrs interface for ipi ops
-      hw/loongarch/virt: Set iocsr address space per-board rather than percpu
-      hw/intc/loongarch_extioi: Add dynamic cpu number support
-      hw/intc/loongarch_extioi: Add vmstate post_load support
-
-Tianrui Zhao (10):
-      linux-headers: Synchronize linux headers from linux v6.7.0-rc8
-      target/loongarch: Define some kvm_arch interfaces
-      target/loongarch: Supplement vcpu env initial when vcpu reset
-      target/loongarch: Implement kvm get/set registers
-      target/loongarch: Implement kvm_arch_init function
-      target/loongarch: Implement kvm_arch_init_vcpu
-      target/loongarch: Implement kvm_arch_handle_exit
-      target/loongarch: Restrict TCG-specific code
-      target/loongarch: Implement set vcpu intr for kvm
-      target/loongarch: Add loongarch kvm into meson build
-
- hw/intc/loongarch_extioi.c            | 230 ++++++----
- hw/intc/loongarch_ipi.c               | 191 +++++----
- hw/loongarch/virt.c                   |  94 +++--
- include/hw/intc/loongarch_extioi.h    |  12 +-
- include/hw/intc/loongarch_ipi.h       |   3 +-
- include/hw/loongarch/virt.h           |   3 +
- include/standard-headers/linux/fuse.h |  10 +-
- meson.build                           |   3 +
- target/loongarch/cpu.c                |  90 ++--
- target/loongarch/cpu.h                |   9 +-
- target/loongarch/internals.h          |   5 +-
- target/loongarch/kvm/kvm.c            | 768 ++++++++++++++++++++++++++++++++++
- target/loongarch/kvm/kvm_loongarch.h  |  16 +
- target/loongarch/kvm/meson.build      |   1 +
- target/loongarch/meson.build          |   1 +
- target/loongarch/tcg/iocsr_helper.c   |  16 +-
- target/loongarch/trace-events         |  15 +
- target/loongarch/trace.h              |   1 +
- 18 files changed, 1210 insertions(+), 258 deletions(-)
- create mode 100644 target/loongarch/kvm/kvm.c
- create mode 100644 target/loongarch/kvm/kvm_loongarch.h
- create mode 100644 target/loongarch/kvm/meson.build
- create mode 100644 target/loongarch/trace-events
- create mode 100644 target/loongarch/trace.h
+diff --git a/include/standard-headers/linux/fuse.h b/include/standard-headers/linux/fuse.h
+index 6b9793842c..fc0dcd10ae 100644
+--- a/include/standard-headers/linux/fuse.h
++++ b/include/standard-headers/linux/fuse.h
+@@ -209,7 +209,7 @@
+  *  - add FUSE_HAS_EXPIRE_ONLY
+  *
+  *  7.39
+- *  - add FUSE_DIRECT_IO_RELAX
++ *  - add FUSE_DIRECT_IO_ALLOW_MMAP
+  *  - add FUSE_STATX and related structures
+  */
+ 
+@@ -405,8 +405,7 @@ struct fuse_file_lock {
+  * FUSE_CREATE_SUPP_GROUP: add supplementary group info to create, mkdir,
+  *			symlink and mknod (single group that matches parent)
+  * FUSE_HAS_EXPIRE_ONLY: kernel supports expiry-only entry invalidation
+- * FUSE_DIRECT_IO_RELAX: relax restrictions in FOPEN_DIRECT_IO mode, for now
+- *                       allow shared mmap
++ * FUSE_DIRECT_IO_ALLOW_MMAP: allow shared mmap in FOPEN_DIRECT_IO mode.
+  */
+ #define FUSE_ASYNC_READ		(1 << 0)
+ #define FUSE_POSIX_LOCKS	(1 << 1)
+@@ -445,7 +444,10 @@ struct fuse_file_lock {
+ #define FUSE_HAS_INODE_DAX	(1ULL << 33)
+ #define FUSE_CREATE_SUPP_GROUP	(1ULL << 34)
+ #define FUSE_HAS_EXPIRE_ONLY	(1ULL << 35)
+-#define FUSE_DIRECT_IO_RELAX	(1ULL << 36)
++#define FUSE_DIRECT_IO_ALLOW_MMAP (1ULL << 36)
++
++/* Obsolete alias for FUSE_DIRECT_IO_ALLOW_MMAP */
++#define FUSE_DIRECT_IO_RELAX	FUSE_DIRECT_IO_ALLOW_MMAP
+ 
+ /**
+  * CUSE INIT request/reply flags
+-- 
+2.25.1
 
 
