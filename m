@@ -2,55 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9978982C39C
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 17:35:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9FAD82C3DD
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 17:43:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOKTX-0003Bx-U0; Fri, 12 Jan 2024 11:33:43 -0500
+	id 1rOKbM-0007AO-PE; Fri, 12 Jan 2024 11:41:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
- id 1rOKTQ-00033c-Q4
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:33:36 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
- id 1rOKTN-0002ue-VK
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:33:36 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TBRtJ1QGSz4xF1;
- Sat, 13 Jan 2024 03:33:28 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TBRtB5PmDz4x7q;
- Sat, 13 Jan 2024 03:33:22 +1100 (AEDT)
-Message-ID: <484ebf77-6b62-418c-8319-d69ccaf90c17@kaod.org>
-Date: Fri, 12 Jan 2024 17:33:20 +0100
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rOKbK-00079y-NA
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:41:46 -0500
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rOKbI-0007ZZ-Ij
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:41:46 -0500
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2ccae380df2so72921711fa.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 08:41:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705077701; x=1705682501; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BEFF89OwKim9bxIDXoomIIhBg+ts+L6z4md1sRy870k=;
+ b=t8TXCsl6lw8MzTJ9cKUX+ErTa804IzuWtmeZ3d/y7AhqK49yHB46MA4w4A+U2vCjrX
+ sePW5Dt7LozXhToyNFxoXKhSorQmzuB+0v+t1ypkyxqEKgCGCW9c2U2sUMygsH5YhvlM
+ 6tQVjEvYkOUQBXVm6sLZkrag66fSHMiiWHWoD8c6kTO7hhHwyHWKgOphIM1mNkseOKUM
+ Rr3VFFEsJpD08iGKsmGOjR5UDsbfFgcph1kYXG4oZt1MmlSq938pDCgzstYZiKbsBmIq
+ Ig+lqwilkpqLmNXBT2+E/MOEhNF1+xYriVKlDGJoCGOAjlhRvabWbqosdf7utrKfqJwP
+ vKzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705077701; x=1705682501;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=BEFF89OwKim9bxIDXoomIIhBg+ts+L6z4md1sRy870k=;
+ b=ARaGMUQGZCVo11ZVYxwQRkt670eubajjqTKo9ApnCCbcTDRG8Mo5KAJCzZtPZiCkN8
+ VByZmpKkv1IH8G2H+muZuXv+1ZP6kFIueOSbiwcZcsNfAjQ7j7oDrlfb5kxubSCxZRfD
+ jqpQS/DGRlA32GzIxXGFgYwQmiuleI2cHnbUKsMCIW+VxBclTqpMMJXLyA50GI9xwvMA
+ MVWWluX6cPT1EOczTspbHfGLWdg36QlCH2pXgMrZzH9mwI+DZuVrU9OtFDGYoZwpUrgW
+ 9LMdwqSmTeADBF1PdnOfX3Yyf6Bv3heNA2i0uC9VOqnEXDf5TZiD9eUsS9CoSJpG0u4L
+ 954g==
+X-Gm-Message-State: AOJu0YyIvt6lexIZGzWhaTnuCivLc8rhVUtYkUs2/5gcUS1X++regvHJ
+ JP7fZmO2c0OwEsNHvb4+VZWtwrms/127E6j30JFHNuaNYTffxA==
+X-Google-Smtp-Source: AGHT+IFWMfKEiJsqRmc2ekiDwya6XdYRUPze6mpsYCQFgZmzYlOBo+7MZfKmRu/+/hab5VSHqQsOJsMrZALMhW5mrc0=
+X-Received: by 2002:a2e:8013:0:b0:2cc:ceb2:372a with SMTP id
+ j19-20020a2e8013000000b002ccceb2372amr804945ljg.96.1705077701104; Fri, 12 Jan
+ 2024 08:41:41 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Possible race condition in aspeed ast2600 smp boot on TCG QEMU
-Content-Language: en-US
-To: Stephen Longfield <slongfield@google.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au
-Cc: Joe Komlodi <komlodi@google.com>, Patrick Venture <venture@google.com>,
- Ryan Chen <ryan_chen@aspeedtech.com>, Jamin Lin <jamin_lin@aspeedtech.com>,
- Troy Lee <troy_lee@aspeedtech.com>
-References: <CAK_0=F+RznDdq27z3r3H1d4pj=QTD-9WZP8xH7jOP75QXJhHpw@mail.gmail.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CAK_0=F+RznDdq27z3r3H1d4pj=QTD-9WZP8xH7jOP75QXJhHpw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=qInK=IW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20240102160455.68612-1-philmd@linaro.org>
+ <20240102160455.68612-5-philmd@linaro.org>
+In-Reply-To: <20240102160455.68612-5-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 12 Jan 2024 16:41:30 +0000
+Message-ID: <CAFEAcA-qyLf_ACX-pD2nR8h+EcipqK_=re05wmBJBa93AOeg_Q@mail.gmail.com>
+Subject: Re: [RFC PATCH 4/5] hw/arm/armv7m: Error if trying to set unavailable
+ ARMCPU::vfp property
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ qemu-arm@nongnu.org, Luc Michel <luc.michel@amd.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Frederic Konrad <fkonrad@amd.com>, Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,62 +95,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adding Aspeed Engineers. This reminds me of a discussion a while ago.
+On Tue, 2 Jan 2024 at 16:05, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> Do not ignore impossible configuration requested by the user.
+> For example, when trying to enable VFP on a Cortex-M33 we now get:
+>
+>   qemu-system-arm: 'cortex-m33-arm-cpu' does not support VFP
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/arm/armv7m.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
+> index 3610f6f4a1..12cdad09f9 100644
+> --- a/hw/arm/armv7m.c
+> +++ b/hw/arm/armv7m.c
+> @@ -328,6 +328,9 @@ static void armv7m_realize(DeviceState *dev, Error **=
+errp)
+>          if (!object_property_set_bool(OBJECT(s->cpu), "vfp", s->vfp, err=
+p)) {
+>              return;
+>          }
+> +    } else if (s->vfp =3D=3D OPTIONAL_BOOL_TRUE) {
+> +        error_setg(errp, "'%s' does not support VFP", s->cpu_type);
+> +        return;
+>      }
 
-On 1/11/24 18:38, Stephen Longfield wrote:
-> We’ve noticed inconsistent behavior when running a large number of aspeed ast2600 executions, that seems to be tied to a race condition in the smp boot when executing on TCG-QEMU, and were wondering what a good mediation strategy might be.
-> 
-> The problem first shows up as part of SMP boot. On a run that’s likely to later run into issues, we’ll see something like:
-> 
-> ```
-> [    0.008350] smp: Bringing up secondary CPUs ...
-> [    1.168584] CPU1: failed to come online
-> [    1.187277] smp: Brought up 1 node, 1 CPU
-> ```
-> 
-> Compared to the more likely to succeed:
-> 
-> ```
-> [    0.080313] smp: Bringing up secondary CPUs ...
-> [    0.093166] smp: Brought up 1 node, 2 CPUs
-> [    0.093345] SMP: Total of 2 processors activated (4800.00 BogoMIPS).
-> ```
-> 
-> It’s somewhat reliably reproducible by running the ast2600-evb with an OpenBMC image, using ‘-icount auto’ to slow execution and make the race condition more frequent (it happens without this, just easier to debug if we can reproduce):
-> 
-> 
-> ```
-> ./aarch64-softmmu/qemu-system-aarch64 -machine ast2600-evb -nographic -drive file=~/bmc-bin/image-obmc-ast2600,if=mtd,bus=0,unit=0,snapshot=on -nic user -icount auto
-> ```
-> 
-> Our current hypothesis is that the problem comes up in the platform uboot.  As part of the boot, the secondary core waits for the smp mailbox to get a magic number written by the primary core:
-> 
-> https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/arm/mach-aspeed/ast2600/platform.S#L168 <https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/arm/mach-aspeed/ast2600/platform.S#L168>
-> 
-> However, this memory address is cleared on boot:
-> 
-> https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/arm/mach-aspeed/ast2600/platform.S#L146 <https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/arm/mach-aspeed/ast2600/platform.S#L146>
-> 
-> The race condition occurs if the primary core runs far ahead of the secondary core: if the primary core gets to the point where it signals the secondary core’s mailbox before the secondary core gets past the point where it does the initial reset and starts waiting, the reset will clear the signal, and then the secondary core will never get past the point where it’s looping in `poll_smp_mbox_ready`.
-> 
-> We’ve observed this race happening by dumping all SCU reads and writes, and validated that this is the problem by using a modified `platform.S` that doesn’t clear the =SCU_SMP_READY mailbox on reset, but would rather not have to use a modified version of SMP boot just for QEMU-TCG execution.
+I'm not sure exactly what this series is trying to do, but
+this isn't the right error message, at least at the moment.
+Our Cortex-M33 model does support VFP -- in fact, there's
+currently no way to turn it off, since we only expose the vfp
+property for AArch64 CPUs.
 
-you could use '-trace aspeed_scu*' to collect the MMIO accesses on
-the SCU unit. A TCG plugin also.
+I think we broke this in commit 4315f7c61474 last year,
+accidentally restricting the definition of the "vfp"
+property to ARM_FEATURE_AARCH64 CPUs only.
+(filed https://gitlab.com/qemu-project/qemu/-/issues/2098
+to track that)
 
-> Is there a way to have QEMU insert a barrier synchronization at some point in the bootloader?  I think getting both cores past the =SCU_SMP_READY reset would get rid of this race, but I’m not aware of a way to do that kind of thing in QEMU-TCG.
-> 
-> Thanks for any insights!
+I suppose if we fixed that regression then the error message
+would become correct again, since we'd be back to exposing
+the 'vfp' property only if the CPU did support VFP.
 
-Could we change the default value to registers 0x180 ... 0x18C in
-hw/misc/aspeed_scu.c to make sure the SMP regs are immune to the
-race ?
-
-Thanks,
-
-C.
-
-
-
-
+-- PMM
 
