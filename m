@@ -2,77 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FAD82C3DD
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 17:43:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4B382C3E9
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 17:47:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOKbM-0007AO-PE; Fri, 12 Jan 2024 11:41:48 -0500
+	id 1rOKgT-0001NO-BM; Fri, 12 Jan 2024 11:47:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOKbK-00079y-NA
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:41:46 -0500
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rOKgL-0001HM-6k
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:46:57 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOKbI-0007ZZ-Ij
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:41:46 -0500
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2ccae380df2so72921711fa.1
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 08:41:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rOKgH-0001aZ-Qb
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:46:56 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40e5701cbbaso18104745e9.0
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 08:46:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705077701; x=1705682501; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1705078012; x=1705682812; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BEFF89OwKim9bxIDXoomIIhBg+ts+L6z4md1sRy870k=;
- b=t8TXCsl6lw8MzTJ9cKUX+ErTa804IzuWtmeZ3d/y7AhqK49yHB46MA4w4A+U2vCjrX
- sePW5Dt7LozXhToyNFxoXKhSorQmzuB+0v+t1ypkyxqEKgCGCW9c2U2sUMygsH5YhvlM
- 6tQVjEvYkOUQBXVm6sLZkrag66fSHMiiWHWoD8c6kTO7hhHwyHWKgOphIM1mNkseOKUM
- Rr3VFFEsJpD08iGKsmGOjR5UDsbfFgcph1kYXG4oZt1MmlSq938pDCgzstYZiKbsBmIq
- Ig+lqwilkpqLmNXBT2+E/MOEhNF1+xYriVKlDGJoCGOAjlhRvabWbqosdf7utrKfqJwP
- vKzQ==
+ bh=hGITxN2Vs9jNvuz/cjIb7hgvqAzvNaA/iSybUEu8SrU=;
+ b=mDFLSMVibbWB5kznUP0TdeNimajPPhMHLGseyOeQn7rQ6ARmlyOVioqpRdv7WkMkLD
+ Zs7Gx6eYSJF9oZeW2/mQsEP3vn5WhT04sf6pUhspU1SFlEDrFb0Sk7RtoISH+i2Y0+9O
+ yxUHWT9C7qpQ+7A+w/xQ2vuovsVMraKTT4WhZYC5q6F1yf0BmUjyyJAMvx8aJL/jaHpO
+ 9Cqo94Fthamn3bl5NE5pBNy16DRtw+tFwlx/1t77veaLAycQpbkdzYZYOL6cn87U2Vvj
+ MXSf5o9FTfBG/0arKLVJlLZmWxoTQmW9z0vdYsVYMHXQP+4ahyIenIGTKRM590FThBcK
+ LLpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705077701; x=1705682501;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BEFF89OwKim9bxIDXoomIIhBg+ts+L6z4md1sRy870k=;
- b=ARaGMUQGZCVo11ZVYxwQRkt670eubajjqTKo9ApnCCbcTDRG8Mo5KAJCzZtPZiCkN8
- VByZmpKkv1IH8G2H+muZuXv+1ZP6kFIueOSbiwcZcsNfAjQ7j7oDrlfb5kxubSCxZRfD
- jqpQS/DGRlA32GzIxXGFgYwQmiuleI2cHnbUKsMCIW+VxBclTqpMMJXLyA50GI9xwvMA
- MVWWluX6cPT1EOczTspbHfGLWdg36QlCH2pXgMrZzH9mwI+DZuVrU9OtFDGYoZwpUrgW
- 9LMdwqSmTeADBF1PdnOfX3Yyf6Bv3heNA2i0uC9VOqnEXDf5TZiD9eUsS9CoSJpG0u4L
- 954g==
-X-Gm-Message-State: AOJu0YyIvt6lexIZGzWhaTnuCivLc8rhVUtYkUs2/5gcUS1X++regvHJ
- JP7fZmO2c0OwEsNHvb4+VZWtwrms/127E6j30JFHNuaNYTffxA==
-X-Google-Smtp-Source: AGHT+IFWMfKEiJsqRmc2ekiDwya6XdYRUPze6mpsYCQFgZmzYlOBo+7MZfKmRu/+/hab5VSHqQsOJsMrZALMhW5mrc0=
-X-Received: by 2002:a2e:8013:0:b0:2cc:ceb2:372a with SMTP id
- j19-20020a2e8013000000b002ccceb2372amr804945ljg.96.1705077701104; Fri, 12 Jan
- 2024 08:41:41 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705078012; x=1705682812;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=hGITxN2Vs9jNvuz/cjIb7hgvqAzvNaA/iSybUEu8SrU=;
+ b=dRcgrtZwY2c1yg2weRc2ITMuobRE34PqCqJ39yTS1mYJYPcZc419pfxCUM6aYuMtVV
+ ZoX6ysGb0iHkkBTgYbt0qG1r48ptR5qsJUzoWaAvh2iWCYIH2/lUouk2WocWP+LC/EPq
+ GJB0ueuJXrsGK0+S7WCweJ84xwxquSekGfWZkfw1jZxTSIXQ2Af+f3BJUbXODT/vNu/e
+ rbk2L8VLhxPkD+SpkE5EF94JfG9hOOol1MkGbMKcZutUCUVgCL2/lwigUkTk/ovn4woB
+ w/PkYxm2j/QB5iTi9IXKagq+946wNbyyhDfFwMmRSCL+iEbdBCIWYPyOjk3AIc5voxmE
+ nuzQ==
+X-Gm-Message-State: AOJu0YzSiysBgno+UmEV34LeEpb5HEgaLnSfNTWLc7YdiktcRsAFYBbd
+ NpQc4agtYVusbRdPD0ytaMr3qwjvxECoTA==
+X-Google-Smtp-Source: AGHT+IFwELbfk61GZEWzU7kLkBC5Qu9uzr8sZPwcrTV/vTItwnOvjvYIp2u4iH81EOBpZI6D1/SN6A==
+X-Received: by 2002:a7b:c44a:0:b0:40d:5b0d:cebe with SMTP id
+ l10-20020a7bc44a000000b0040d5b0dcebemr880644wmi.39.1705078011910; 
+ Fri, 12 Jan 2024 08:46:51 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ c11-20020a05600c0a4b00b0040d53588d94sm10357998wmq.46.2024.01.12.08.46.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 12 Jan 2024 08:46:51 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 3147A5F7A9;
+ Fri, 12 Jan 2024 16:46:51 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,
+ qemu-s390x@nongnu.org,  qemu-ppc@nongnu.org,  Richard Henderson
+ <richard.henderson@linaro.org>,  Song Gao <gaosong@loongson.cn>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  David
+ Hildenbrand
+ <david@redhat.com>,  Aurelien Jarno <aurelien@aurel32.net>,  Yoshinori
+ Sato <ysato@users.sourceforge.jp>,  Yanan Wang <wangyanan55@huawei.com>,
+ Bin Meng <bin.meng@windriver.com>,  Laurent Vivier <lvivier@redhat.com>,
+ Michael Rolnik <mrolnik@gmail.com>,  Alexandre Iooss <erdnaxe@crans.org>,
+ David Woodhouse <dwmw2@infradead.org>,  Laurent Vivier
+ <laurent@vivier.eu>,  Paolo Bonzini <pbonzini@redhat.com>,  Brian Cain
+ <bcain@quicinc.com>,  Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Beraldo Leal <bleal@redhat.com>,  Paul Durrant <paul@xen.org>,  Mahmoud
+ Mandour <ma.mandourr@gmail.com>,  Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>,  Cleber Rosa <crosa@redhat.com>,
+ kvm@vger.kernel.org,  Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ qemu-arm@nongnu.org,  Weiwei Li <liwei1518@gmail.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  John Snow
+ <jsnow@redhat.com>,  Daniel
+ Henrique Barboza <dbarboza@ventanamicro.com>,  Nicholas Piggin
+ <npiggin@gmail.com>,  Palmer Dabbelt <palmer@dabbelt.com>,  Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>,  Ilya Leoshkevich
+ <iii@linux.ibm.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,  Eduardo Habkost
+ <eduardo@habkost.net>,  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ qemu-riscv@nongnu.org,  Alistair Francis <alistair.francis@wdc.com>,
+ Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH v2 12/43] qtest: bump boot-serial-test timeout to 3 minutes
+In-Reply-To: <cf617223-0a0b-4d42-84a3-cd323ea4c421@redhat.com> (Thomas Huth's
+ message of "Fri, 12 Jan 2024 16:13:16 +0100")
+References: <20240103173349.398526-1-alex.bennee@linaro.org>
+ <20240103173349.398526-13-alex.bennee@linaro.org>
+ <cf617223-0a0b-4d42-84a3-cd323ea4c421@redhat.com>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Fri, 12 Jan 2024 16:46:51 +0000
+Message-ID: <871qamwlc4.fsf@draig.linaro.org>
 MIME-Version: 1.0
-References: <20240102160455.68612-1-philmd@linaro.org>
- <20240102160455.68612-5-philmd@linaro.org>
-In-Reply-To: <20240102160455.68612-5-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 12 Jan 2024 16:41:30 +0000
-Message-ID: <CAFEAcA-qyLf_ACX-pD2nR8h+EcipqK_=re05wmBJBa93AOeg_Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 4/5] hw/arm/armv7m: Error if trying to set unavailable
- ARMCPU::vfp property
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- qemu-arm@nongnu.org, Luc Michel <luc.michel@amd.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Eduardo Habkost <eduardo@habkost.net>, 
- Frederic Konrad <fkonrad@amd.com>, Markus Armbruster <armbru@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,49 +123,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2 Jan 2024 at 16:05, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> Do not ignore impossible configuration requested by the user.
-> For example, when trying to enable VFP on a Cortex-M33 we now get:
->
->   qemu-system-arm: 'cortex-m33-arm-cpu' does not support VFP
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  hw/arm/armv7m.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
-> index 3610f6f4a1..12cdad09f9 100644
-> --- a/hw/arm/armv7m.c
-> +++ b/hw/arm/armv7m.c
-> @@ -328,6 +328,9 @@ static void armv7m_realize(DeviceState *dev, Error **=
-errp)
->          if (!object_property_set_bool(OBJECT(s->cpu), "vfp", s->vfp, err=
-p)) {
->              return;
->          }
-> +    } else if (s->vfp =3D=3D OPTIONAL_BOOL_TRUE) {
-> +        error_setg(errp, "'%s' does not support VFP", s->cpu_type);
-> +        return;
->      }
+Thomas Huth <thuth@redhat.com> writes:
 
-I'm not sure exactly what this series is trying to do, but
-this isn't the right error message, at least at the moment.
-Our Cortex-M33 model does support VFP -- in fact, there's
-currently no way to turn it off, since we only expose the vfp
-property for AArch64 CPUs.
+> On 03/01/2024 18.33, Alex Benn=C3=A9e wrote:
+>> From: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>> The boot-serial-test takes about 1 + 1/2 minutes in a --enable-debug
+>> build. Bumping to 3 minutes will give more headroom.
+>> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>> Message-ID: <20230717182859.707658-9-berrange@redhat.com>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> Message-Id: <20231215070357.10888-9-thuth@redhat.com>
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> ---
+>>   tests/qtest/meson.build | 1 +
+>>   1 file changed, 1 insertion(+)
+>> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+>> index c7944e8dbe9..dc1e6da5c7b 100644
+>> --- a/tests/qtest/meson.build
+>> +++ b/tests/qtest/meson.build
+>> @@ -6,6 +6,7 @@ slow_qtests =3D {
+>>     'test-hmp' : 240,
+>>     'pxe-test': 600,
+>>     'prom-env-test': 360,
+>> +  'boot-serial-test': 180,
+>>   }
+>>     qtests_generic =3D [
+>
+> 3 minutes was obviously not enough:
+>
+>  https://gitlab.com/qemu-project/qemu/-/jobs/5918818492#L4984
+>
+> And in older runs, we can see that the boot-serial-test might take
+> longer than 180s when run with TCI :
+>
+>  https://gitlab.com/qemu-project/qemu/-/jobs/5890481086#L4772
+>
+> So I think we should bump the timeout to 240s here. Alex, are you
+> going to respin your pull request? If so, could you modify your patch?
+> Otherwise I can also send a new version of this patch here, just let
+> me know.
 
-I think we broke this in commit 4315f7c61474 last year,
-accidentally restricting the definition of the "vfp"
-property to ARM_FEATURE_AARCH64 CPUs only.
-(filed https://gitlab.com/qemu-project/qemu/-/issues/2098
-to track that)
+I'm travelling now so its tricky to respin. If you could send a new
+version that would be great.
 
-I suppose if we fixed that regression then the error message
-would become correct again, since we'd be back to exposing
-the 'vfp' property only if the CPU did support VFP.
 
--- PMM
+>
+>  Thomas
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
