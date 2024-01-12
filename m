@@ -2,88 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9A782BC94
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 10:00:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC70A82BCA3
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 10:04:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rODNA-0001l3-Lb; Fri, 12 Jan 2024 03:58:40 -0500
+	id 1rODSO-00035o-SC; Fri, 12 Jan 2024 04:04:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rODN8-0001ko-9E
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 03:58:38 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rODN6-0000o0-CZ
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 03:58:38 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3368abe1093so4758486f8f.2
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 00:58:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705049914; x=1705654714; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vWrARkPgxlihnQumkt2ZtG5l6qOQ3oA5zVo61fGHlYo=;
- b=nxlQMbAjQVJ5GA3SkNFIhOvL5fh6+1OILFPRxgk2c9YyinWZ6Tcqw5QiIk8SVknG1G
- +zH5Z2JxXxr0yGfM+ew74E+D978ovqHLUybGRim3hNMprhi7NRsMuoKty28/BxUF0ZwO
- lZ/bmnzIYtz76rbBzXCf8jN6V39PEtRYaEfGayyoAP4BJP1Ha7TLq3G+zVxlpydHwW2i
- 0eiNC0Wnr/lrQZlsZpwXGDmAQGn8T6Ug4pStuNkWzWpx0TlYZHYxryAVFiAHWUtbdy0J
- MnX6cvkVMyr0+NWjN4mbm0/qiIam7U5nT03Lvp30T5d/LjmPGpsTKbUzua8H6cvGoUEw
- MBJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705049914; x=1705654714;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vWrARkPgxlihnQumkt2ZtG5l6qOQ3oA5zVo61fGHlYo=;
- b=MmHPOYkKV5Z0zJMe2ebaupXyOlb/T3kVPst+M6KJCpjY22WmnkINWfi0Q9flCF59Zq
- LGrkvkilDoerr0BY69nmqgFk6oJWL6XPRmPTIFr/Rfuvxwn2GrKRH7OtNz6o4AtYWT+a
- EWqsE2pkFFaK9a2MVnKEdzYyU1pwbgruIZQPpV4g3MIp04n0uun+QEpv8QeMWJcdFic7
- JvI2kXhKrC/uwG7FuXSZav158XtcL1tssn3XTRw4D+xBkxDtU/PROlbLJDi2yCxKeOfX
- 8xB9tptFVj+cTIH5MPCVOcLJpv3LTaUClhQ2oZmuEhxovt6Gw+vT4oBnWO5TaJXBGVyj
- +V5Q==
-X-Gm-Message-State: AOJu0Yx6rzjIMyP+pOs1pBSq7PDE77WUdRMTbron0G4tKQwR+QGLGL1n
- FPAlEip9JLtiTIV2Re0g8MndnsuLi4nBNA==
-X-Google-Smtp-Source: AGHT+IENpMVFRVgjjotGwi3Vn4u99B3+lmqyV0G8XpMnHXFD/z1Wo0UBpgVjWPh8zJSGknXNR5zEdQ==
-X-Received: by 2002:adf:eac3:0:b0:336:5e83:c0e7 with SMTP id
- o3-20020adfeac3000000b003365e83c0e7mr498114wrn.116.1705049914050; 
- Fri, 12 Jan 2024 00:58:34 -0800 (PST)
-Received: from [192.168.1.24] ([102.35.208.160])
- by smtp.gmail.com with ESMTPSA id
- g7-20020adfa487000000b00336e69fbc32sm3274845wrb.102.2024.01.12.00.58.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Jan 2024 00:58:33 -0800 (PST)
-Message-ID: <994ee352-3e4b-4ac3-996f-2c190b5685d9@linaro.org>
-Date: Fri, 12 Jan 2024 12:58:27 +0400
+ (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
+ id 1rODSM-00035K-FN; Fri, 12 Jan 2024 04:04:02 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
+ id 1rODSJ-00037v-D6; Fri, 12 Jan 2024 04:04:02 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TBFvY6vwqz4x43;
+ Fri, 12 Jan 2024 20:03:53 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TBFvM6cJDz4wc6;
+ Fri, 12 Jan 2024 20:03:43 +1100 (AEDT)
+Message-ID: <17419ee0-11f4-4082-bd91-212449ab1da8@kaod.org>
+Date: Fri, 12 Jan 2024 10:03:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/12] tests/plugin/inline: migrate to new per_vcpu API
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>
-References: <20240111142326.1743444-1-pierrick.bouvier@linaro.org>
- <20240111142326.1743444-5-pierrick.bouvier@linaro.org>
- <09812aba-9595-410d-9b27-d33353f33b02@linaro.org>
- <b99b7e20-9802-42c9-bd34-2727cd508da5@linaro.org>
- <b495146f-c523-4a97-b703-12b226251af5@linaro.org>
+Subject: Re: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in
+ A7/A15 MPCore priv
 Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <b495146f-c523-4a97-b703-12b226251af5@linaro.org>
+To: Peter Xu <peterx@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
+ Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
+ qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+References: <38cfa9de-874b-41dd-873e-5ad1f5a5805e@kaod.org>
+ <fe4d463f-b646-4b7b-9063-d16ad5dbb128@linaro.org> <87y1d6i47m.fsf@suse.de>
+ <597186d9-af21-46e8-8075-f21d36c01c07@kaod.org> <87plya76cu.fsf@suse.de>
+ <d5c0b9fb-8b09-4f68-b3ab-c8adffd484a9@kaod.org> <87bk9u8dhs.fsf@suse.de>
+ <2fa344b7-ccd2-4e6a-8c32-5ad7e4c960d6@linaro.org> <ZZ4Qrfis4XHWGN0j@x1n>
+ <87cyu9hgit.fsf@pond.sub.org> <ZZ44iQRPrdDpfov7@x1n>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <ZZ44iQRPrdDpfov7@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=qInK=IW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,121 +81,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gMS8xMi8yNCAxMjo0MCwgUmljaGFyZCBIZW5kZXJzb24gd3JvdGU6DQo+IE9uIDEvMTIv
-MjQgMTQ6NTEsIFBpZXJyaWNrIEJvdXZpZXIgd3JvdGU6DQo+PiBPbiAxLzEyLzI0IDAyOjEw
-LCBSaWNoYXJkIEhlbmRlcnNvbiB3cm90ZToNCj4+PiBPbiAxLzEyLzI0IDAxOjIzLCBQaWVy
-cmljayBCb3V2aWVyIHdyb3RlOg0KPj4+PiBTaWduZWQtb2ZmLWJ5OiBQaWVycmljayBCb3V2
-aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+DQo+Pj4+IC0tLQ0KPj4+PiAgwqDC
-oCB0ZXN0cy9wbHVnaW4vaW5saW5lLmMgfCAxNyAtLS0tLS0tLS0tLS0tLS0tLQ0KPj4+PiAg
-wqDCoCAxIGZpbGUgY2hhbmdlZCwgMTcgZGVsZXRpb25zKC0pDQo+Pj4NCj4+PiBXYXMgdGhp
-cyBzdXBwb3NlZCB0byBiZSB0b2dldGhlciB3aXRoIHBhdGNoIDY/DQo+Pj4NCj4+DQo+PiBN
-eSBnb2FsIHdhcyB0byBoYXZlIGEgdmVyc2lvbiB0aGF0IHN0aWxsIHVzZXMgb3JpZ2luYWwg
-QVBJLg0KPj4gSWYgeW91IHByZWZlciB0aGlzIHRvIGJlIHNxdWFzaGVkLCBubyBwcm9ibGVt
-IHRvIGRvIGl0Lg0KPiANCj4gTXkgY29uZnVzaW9uIGlzIHRoYXQgdGhpcyBwYXRjaCBkb2Vz
-IG5vdCAibWlncmF0ZSIgYW55dGhpbmcgLS0gaXQgb25seSByZW1vdmVzIGNvZGUuICBJcw0K
-PiB0aGUganVzdCB0aGF0IHRoZSBkZXNjcmlwdGlvbiBpcyBpbmFjY3VyYXRlPyAgQnV0IGl0
-IGFwcGVhcnMgdGhhdCB0aGUgY29tYmluYXRpb24gb2YgNCs2DQo+IHdvdWxkICJtaWdyYXRl
-IiB0byB0aGUgbmV3IEFQSS4NCj4gDQoNCllvdSdyZSByaWdodCwgdGhlIGNvbW1pdCBtZXNz
-YWdlIGlzIGluY29ycmVjdCwgYXMgaXQgaXMganVzdCByZW1vdmluZyANCnRoZSB1c2Ugb2Yg
-b2xkIEFQSS4gV2VsbCwgSSB0aGluayBoYXZpbmcgdGhpcyBpbiBhIHNwbGl0IGNvbW1pdCBk
-b2VzIG5vdCANCmNyZWF0ZSBhbnkgdmFsdWUgZm9yIHRoaXMgc2VyaWUsIHNvIEknbGwgc2lt
-cGx5IHNxdWFzaCB0aGlzIGluIHByZXZpb3VzIG9uZS4NCg0KPiANCj4gcn4NCj4gDQo+Pg0K
-Pj4+IHJ+DQo+Pj4NCj4+Pj4NCj4+Pj4gZGlmZiAtLWdpdCBhL3Rlc3RzL3BsdWdpbi9pbmxp
-bmUuYyBiL3Rlc3RzL3BsdWdpbi9pbmxpbmUuYw0KPj4+PiBpbmRleCA2MTE0ZWJjYTU0NS4u
-YWU1OWY3YWY3YTcgMTAwNjQ0DQo+Pj4+IC0tLSBhL3Rlc3RzL3BsdWdpbi9pbmxpbmUuYw0K
-Pj4+PiArKysgYi90ZXN0cy9wbHVnaW4vaW5saW5lLmMNCj4+Pj4gQEAgLTE4LDE1ICsxOCwx
-MiBAQA0KPj4+PiAgwqDCoCBzdGF0aWMgdWludDY0X3QgY291bnRfdGI7DQo+Pj4+ICDCoMKg
-IHN0YXRpYyB1aW50NjRfdCBjb3VudF90Yl9wZXJfdmNwdVtNQVhfQ1BVU107DQo+Pj4+ICDC
-oMKgIHN0YXRpYyB1aW50NjRfdCBjb3VudF90Yl9pbmxpbmVfcGVyX3ZjcHVbTUFYX0NQVVNd
-Ow0KPj4+PiAtc3RhdGljIHVpbnQ2NF90IGNvdW50X3RiX2lubGluZV9yYWN5Ow0KPj4+PiAg
-wqDCoCBzdGF0aWMgdWludDY0X3QgY291bnRfaW5zbjsNCj4+Pj4gIMKgwqAgc3RhdGljIHVp
-bnQ2NF90IGNvdW50X2luc25fcGVyX3ZjcHVbTUFYX0NQVVNdOw0KPj4+PiAgwqDCoCBzdGF0
-aWMgdWludDY0X3QgY291bnRfaW5zbl9pbmxpbmVfcGVyX3ZjcHVbTUFYX0NQVVNdOw0KPj4+
-PiAtc3RhdGljIHVpbnQ2NF90IGNvdW50X2luc25faW5saW5lX3JhY3k7DQo+Pj4+ICDCoMKg
-IHN0YXRpYyB1aW50NjRfdCBjb3VudF9tZW07DQo+Pj4+ICDCoMKgIHN0YXRpYyB1aW50NjRf
-dCBjb3VudF9tZW1fcGVyX3ZjcHVbTUFYX0NQVVNdOw0KPj4+PiAgwqDCoCBzdGF0aWMgdWlu
-dDY0X3QgY291bnRfbWVtX2lubGluZV9wZXJfdmNwdVtNQVhfQ1BVU107DQo+Pj4+IC1zdGF0
-aWMgdWludDY0X3QgY291bnRfbWVtX2lubGluZV9yYWN5Ow0KPj4+PiAgwqDCoCBzdGF0aWMg
-R011dGV4IHRiX2xvY2s7DQo+Pj4+ICDCoMKgIHN0YXRpYyBHTXV0ZXggaW5zbl9sb2NrOw0K
-Pj4+PiAgwqDCoCBzdGF0aWMgR011dGV4IG1lbV9sb2NrOw0KPj4+PiBAQCAtNTAsMTEgKzQ3
-LDkgQEAgc3RhdGljIHZvaWQgc3RhdHNfaW5zbih2b2lkKQ0KPj4+PiAgwqDCoMKgwqDCoMKg
-IHByaW50ZigiaW5zbjogJSIgUFJJdTY0ICJcbiIsIGV4cGVjdGVkKTsNCj4+Pj4gIMKgwqDC
-oMKgwqDCoCBwcmludGYoImluc246ICUiIFBSSXU2NCAiIChwZXIgdmNwdSlcbiIsIHBlcl92
-Y3B1KTsNCj4+Pj4gIMKgwqDCoMKgwqDCoCBwcmludGYoImluc246ICUiIFBSSXU2NCAiIChw
-ZXIgdmNwdSBpbmxpbmUpXG4iLCBpbmxfcGVyX3ZjcHUpOw0KPj4+PiAtwqDCoMKgIHByaW50
-ZigiaW5zbjogJSIgUFJJdTY0ICIgKGlubGluZSByYWN5KVxuIiwgY291bnRfaW5zbl9pbmxp
-bmVfcmFjeSk7DQo+Pj4+ICDCoMKgwqDCoMKgwqAgZ19hc3NlcnQoZXhwZWN0ZWQgPiAwKTsN
-Cj4+Pj4gIMKgwqDCoMKgwqDCoCBnX2Fzc2VydChwZXJfdmNwdSA9PSBleHBlY3RlZCk7DQo+
-Pj4+ICDCoMKgwqDCoMKgwqAgZ19hc3NlcnQoaW5sX3Blcl92Y3B1ID09IGV4cGVjdGVkKTsN
-Cj4+Pj4gLcKgwqDCoCBnX2Fzc2VydChjb3VudF9pbnNuX2lubGluZV9yYWN5IDw9IGV4cGVj
-dGVkKTsNCj4+Pj4gIMKgwqAgfQ0KPj4+PiAgwqDCoCBzdGF0aWMgdm9pZCBzdGF0c190Yih2
-b2lkKQ0KPj4+PiBAQCAtNjUsMTEgKzYwLDkgQEAgc3RhdGljIHZvaWQgc3RhdHNfdGIodm9p
-ZCkNCj4+Pj4gIMKgwqDCoMKgwqDCoCBwcmludGYoInRiOiAlIiBQUkl1NjQgIlxuIiwgZXhw
-ZWN0ZWQpOw0KPj4+PiAgwqDCoMKgwqDCoMKgIHByaW50ZigidGI6ICUiIFBSSXU2NCAiIChw
-ZXIgdmNwdSlcbiIsIHBlcl92Y3B1KTsNCj4+Pj4gIMKgwqDCoMKgwqDCoCBwcmludGYoInRi
-OiAlIiBQUkl1NjQgIiAocGVyIHZjcHUgaW5saW5lKVxuIiwgaW5sX3Blcl92Y3B1KTsNCj4+
-Pj4gLcKgwqDCoCBwcmludGYoInRiOiAlIiBQUkl1NjQgIiAoaW5saW5lIHJhY3kpXG4iLCBj
-b3VudF90Yl9pbmxpbmVfcmFjeSk7DQo+Pj4+ICDCoMKgwqDCoMKgwqAgZ19hc3NlcnQoZXhw
-ZWN0ZWQgPiAwKTsNCj4+Pj4gIMKgwqDCoMKgwqDCoCBnX2Fzc2VydChwZXJfdmNwdSA9PSBl
-eHBlY3RlZCk7DQo+Pj4+ICDCoMKgwqDCoMKgwqAgZ19hc3NlcnQoaW5sX3Blcl92Y3B1ID09
-IGV4cGVjdGVkKTsNCj4+Pj4gLcKgwqDCoCBnX2Fzc2VydChjb3VudF90Yl9pbmxpbmVfcmFj
-eSA8PSBleHBlY3RlZCk7DQo+Pj4+ICDCoMKgIH0NCj4+Pj4gIMKgwqAgc3RhdGljIHZvaWQg
-c3RhdHNfbWVtKHZvaWQpDQo+Pj4+IEBAIC04MCwxMSArNzMsOSBAQCBzdGF0aWMgdm9pZCBz
-dGF0c19tZW0odm9pZCkNCj4+Pj4gIMKgwqDCoMKgwqDCoCBwcmludGYoIm1lbTogJSIgUFJJ
-dTY0ICJcbiIsIGV4cGVjdGVkKTsNCj4+Pj4gIMKgwqDCoMKgwqDCoCBwcmludGYoIm1lbTog
-JSIgUFJJdTY0ICIgKHBlciB2Y3B1KVxuIiwgcGVyX3ZjcHUpOw0KPj4+PiAgwqDCoMKgwqDC
-oMKgIHByaW50ZigibWVtOiAlIiBQUkl1NjQgIiAocGVyIHZjcHUgaW5saW5lKVxuIiwgaW5s
-X3Blcl92Y3B1KTsNCj4+Pj4gLcKgwqDCoCBwcmludGYoIm1lbTogJSIgUFJJdTY0ICIgKGlu
-bGluZSByYWN5KVxuIiwgY291bnRfbWVtX2lubGluZV9yYWN5KTsNCj4+Pj4gIMKgwqDCoMKg
-wqDCoCBnX2Fzc2VydChleHBlY3RlZCA+IDApOw0KPj4+PiAgwqDCoMKgwqDCoMKgIGdfYXNz
-ZXJ0KHBlcl92Y3B1ID09IGV4cGVjdGVkKTsNCj4+Pj4gIMKgwqDCoMKgwqDCoCBnX2Fzc2Vy
-dChpbmxfcGVyX3ZjcHUgPT0gZXhwZWN0ZWQpOw0KPj4+PiAtwqDCoMKgIGdfYXNzZXJ0KGNv
-dW50X21lbV9pbmxpbmVfcmFjeSA8PSBleHBlY3RlZCk7DQo+Pj4+ICDCoMKgIH0NCj4+Pj4g
-IMKgwqAgc3RhdGljIHZvaWQgcGx1Z2luX2V4aXQocWVtdV9wbHVnaW5faWRfdCBpZCwgdm9p
-ZCAqdWRhdGEpDQo+Pj4+IEBAIC0xNDIsOCArMTMzLDYgQEAgc3RhdGljIHZvaWQgdmNwdV90
-Yl90cmFucyhxZW11X3BsdWdpbl9pZF90IGlkLCBzdHJ1Y3QNCj4+Pj4gcWVtdV9wbHVnaW5f
-dGIgKnRiKQ0KPj4+PiAgwqDCoCB7DQo+Pj4+ICDCoMKgwqDCoMKgwqAgcWVtdV9wbHVnaW5f
-cmVnaXN0ZXJfdmNwdV90Yl9leGVjX2NiKHRiLCB2Y3B1X3RiX2V4ZWMsDQo+Pj4+ICDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBRRU1VX1BMVUdJTl9DQl9OT19SRUdTLCAw
-KTsNCj4+Pj4gLcKgwqDCoCBxZW11X3BsdWdpbl9yZWdpc3Rlcl92Y3B1X3RiX2V4ZWNfaW5s
-aW5lKHRiLCBRRU1VX1BMVUdJTl9JTkxJTkVfQUREX1U2NCwNCj4+Pj4gLcKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgJmNvdW50X3RiX2lubGluZV9yYWN5LCAxKTsNCj4+
-Pj4gIMKgwqDCoMKgwqDCoCBxZW11X3BsdWdpbl9yZWdpc3Rlcl92Y3B1X3RiX2V4ZWNfaW5s
-aW5lX3Blcl92Y3B1KA0KPj4+PiAgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdGIsIFFFTVVfUExV
-R0lOX0lOTElORV9BRERfVTY0LA0KPj4+PiAgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY291bnRf
-dGJfaW5saW5lX3Blcl92Y3B1LCBzaXplb2YodWludDY0X3QpLCAxKTsNCj4+Pj4gQEAgLTE1
-MiwxOCArMTQxLDEyIEBAIHN0YXRpYyB2b2lkIHZjcHVfdGJfdHJhbnMocWVtdV9wbHVnaW5f
-aWRfdCBpZCwgc3RydWN0DQo+Pj4+IHFlbXVfcGx1Z2luX3RiICp0YikNCj4+Pj4gIMKgwqDC
-oMKgwqDCoMKgwqDCoMKgIHN0cnVjdCBxZW11X3BsdWdpbl9pbnNuICppbnNuID0gcWVtdV9w
-bHVnaW5fdGJfZ2V0X2luc24odGIsIGlkeCk7DQo+Pj4+ICDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCBxZW11X3BsdWdpbl9yZWdpc3Rlcl92Y3B1X2luc25fZXhlY19jYihpbnNuLCB2Y3B1X2lu
-c25fZXhlYywNCj4+Pj4gIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgIFFFTVVfUExVR0lOX0NCX05PX1JFR1MsIDApOw0KPj4+PiAtwqDCoMKgwqDCoMKg
-wqAgcWVtdV9wbHVnaW5fcmVnaXN0ZXJfdmNwdV9pbnNuX2V4ZWNfaW5saW5lKA0KPj4+PiAt
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpbnNuLCBRRU1VX1BMVUdJTl9JTkxJTkVfQUREX1U2
-NCwNCj4+Pj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgJmNvdW50X2luc25faW5saW5lX3Jh
-Y3ksIDEpOw0KPj4+PiAgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcWVtdV9wbHVnaW5fcmVnaXN0
-ZXJfdmNwdV9pbnNuX2V4ZWNfaW5saW5lX3Blcl92Y3B1KA0KPj4+PiAgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCBpbnNuLCBRRU1VX1BMVUdJTl9JTkxJTkVfQUREX1U2NCwNCj4+
-Pj4gIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY291bnRfaW5zbl9pbmxpbmVfcGVy
-X3ZjcHUsIHNpemVvZih1aW50NjRfdCksIDEpOw0KPj4+PiAgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgcWVtdV9wbHVnaW5fcmVnaXN0ZXJfdmNwdV9tZW1fY2IoaW5zbiwgJnZjcHVfbWVtX2Fj
-Y2VzcywNCj4+Pj4gIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIFFFTVVfUExV
-R0lOX0NCX05PX1JFR1MsDQo+Pj4+ICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCBRRU1VX1BMVUdJTl9NRU1fUlcsIDApOw0KPj4+PiAtwqDCoMKgwqDCoMKgwqAgcWVtdV9w
-bHVnaW5fcmVnaXN0ZXJfdmNwdV9tZW1faW5saW5lKGluc24sIFFFTVVfUExVR0lOX01FTV9S
-VywNCj4+Pj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgUUVNVV9QTFVH
-SU5fSU5MSU5FX0FERF9VNjQsDQo+Pj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgICZjb3VudF9tZW1faW5saW5lX3JhY3ksIDEpOw0KPj4+PiAgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgcWVtdV9wbHVnaW5fcmVnaXN0ZXJfdmNwdV9tZW1faW5saW5lX3Blcl92Y3B1
-KA0KPj4+PiAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpbnNuLCBRRU1VX1BMVUdJ
-Tl9NRU1fUlcsDQo+Pj4+ICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIFFFTVVfUExV
-R0lOX0lOTElORV9BRERfVTY0LA0KPj4+DQo+IA0K
+On 1/10/24 07:26, Peter Xu wrote:
+> On Wed, Jan 10, 2024 at 07:03:06AM +0100, Markus Armbruster wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>>
+>>> On Tue, Jan 09, 2024 at 10:22:31PM +0100, Philippe Mathieu-Daudé wrote:
+>>>> Hi Fabiano,
+>>>>
+>>>> On 9/1/24 21:21, Fabiano Rosas wrote:
+>>>>> Cédric Le Goater <clg@kaod.org> writes:
+>>>>>
+>>>>>> On 1/9/24 18:40, Fabiano Rosas wrote:
+>>>>>>> Cédric Le Goater <clg@kaod.org> writes:
+>>>>>>>
+>>>>>>>> On 1/3/24 20:53, Fabiano Rosas wrote:
+>>>>>>>>> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+>>>>>>>>>
+>>>>>>>>>> +Peter/Fabiano
+>>>>>>>>>>
+>>>>>>>>>> On 2/1/24 17:41, Cédric Le Goater wrote:
+>>>>>>>>>>> On 1/2/24 17:15, Philippe Mathieu-Daudé wrote:
+>>>>>>>>>>>> Hi Cédric,
+>>>>>>>>>>>>
+>>>>>>>>>>>> On 2/1/24 15:55, Cédric Le Goater wrote:
+>>>>>>>>>>>>> On 12/12/23 17:29, Philippe Mathieu-Daudé wrote:
+>>>>>>>>>>>>>> Hi,
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> When a MPCore cluster is used, the Cortex-A cores belong the the
+>>>>>>>>>>>>>> cluster container, not to the board/soc layer. This series move
+>>>>>>>>>>>>>> the creation of vCPUs to the MPCore private container.
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> Doing so we consolidate the QOM model, moving common code in a
+>>>>>>>>>>>>>> central place (abstract MPCore parent).
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Changing the QOM hierarchy has an impact on the state of the machine
+>>>>>>>>>>>>> and some fixups are then required to maintain migration compatibility.
+>>>>>>>>>>>>> This can become a real headache for KVM machines like virt for which
+>>>>>>>>>>>>> migration compatibility is a feature, less for emulated ones.
+>>>>>>>>>>>>
+>>>>>>>>>>>> All changes are either moving properties (which are not migrated)
+>>>>>>>>>>>> or moving non-migrated QOM members (i.e. pointers of ARMCPU, which
+>>>>>>>>>>>> is still migrated elsewhere). So I don't see any obvious migration
+>>>>>>>>>>>> problem, but I might be missing something, so I Cc'ed Juan :>
+>>>>>>>>>
+>>>>>>>>> FWIW, I didn't spot anything problematic either.
+>>>>>>>>>
+>>>>>>>>> I've ran this through my migration compatibility series [1] and it
+>>>>>>>>> doesn't regress aarch64 migration from/to 8.2. The tests use '-M
+>>>>>>>>> virt -cpu max', so the cortex-a7 and cortex-a15 are not covered. I don't
+>>>>>>>>> think we even support migration of anything non-KVM on arm.
+>>>>>>>>
+>>>>>>>> it happens we do.
+>>>>>>>>
+>>>>>>>
+>>>>>>> Oh, sorry, I didn't mean TCG here. Probably meant to say something like
+>>>>>>> non-KVM-capable cpus, as in 32-bit. Nevermind.
+>>>>>>
+>>>>>> Theoretically, we should be able to migrate to a TCG guest. Well, this
+>>>>>> worked in the past for PPC. When I was doing more KVM related changes,
+>>>>>> this was very useful for dev. Also, some machines are partially emulated.
+>>>>>> Anyhow I agree this is not a strong requirement and we often break it.
+>>>>>> Let's focus on KVM only.
+>>>>>>
+>>>>>>>>> 1- https://gitlab.com/farosas/qemu/-/jobs/5853599533
+>>>>>>>>
+>>>>>>>> yes it depends on the QOM hierarchy and virt seems immune to the changes.
+>>>>>>>> Good.
+>>>>>>>>
+>>>>>>>> However, changing the QOM topology clearly breaks migration compat,
+>>>>>>>
+>>>>>>> Well, "clearly" is relative =) You've mentioned pseries and aspeed
+>>>>>>> already, do you have a pointer to one of those cases were we broke
+>>>>>>> migration
+>>>>>>
+>>>>>> Regarding pseries, migration compat broke because of 5bc8d26de20c
+>>>>>> ("spapr: allocate the ICPState object from under sPAPRCPUCore") which
+>>>>>> is similar to the changes proposed by this series, it impacts the QOM
+>>>>>> hierarchy. Here is the workaround/fix from Greg : 46f7afa37096
+>>>>>> ("spapr: fix migration of ICPState objects from/to older QEMU") which
+>>>>>> is quite an headache and this turned out to raise another problem some
+>>>>>> months ago ... :/ That's why I sent [1] to prepare removal of old
+>>>>>> machines and workarounds becoming a burden.
+>>>>>
+>>>>> This feels like something that could be handled by the vmstate code
+>>>>> somehow. The state is there, just under a different path.
+>>>>
+>>>> What, the QOM path is used in migration? ...
+>>>
+>>> Hopefully not..
+>>>
+>>>>
+>>>> See recent discussions on "QOM path stability":
+>>>> https://lore.kernel.org/qemu-devel/ZZfYvlmcxBCiaeWE@redhat.com/
+>>>> https://lore.kernel.org/qemu-devel/87jzojbxt7.fsf@pond.sub.org/
+>>>> https://lore.kernel.org/qemu-devel/87v883by34.fsf@pond.sub.org/
+>>>
+>>> If I read it right, the commit 46f7afa37096 example is pretty special that
+>>> the QOM path more or less decided more than the hierachy itself but changes
+>>> the existances of objects.
+>>
+>> Let's see whether I got this...
+>>
+>> We removed some useless objects, moved the useful ones to another home.
+>> The move changed their QOM path.
+>>
+>> The problem was the removal of useless objects, because this also
+>> removed their vmstate.
+>>
+>> The fix was adding the vmstate back as a dummy.
+>>
+>> The QOM patch changes are *not* part of the problem.
+>>
+>> Correct?
+> 
+> [I'd leave this to Cedric]
+> 
+>>
+>>>>> No one wants
+>>>>> to be policing QOM hierarchy changes in every single series that shows
+>>>>> up on the list.
+>>>>>
+>>>>> Anyway, thanks for the pointers. I'll study that code a bit more, maybe
+>>>>> I can come up with some way to handle these cases.
+>>>>>
+>>>>> Hopefully between the analyze-migration test and the compat tests we'll
+>>>>> catch the next bug of this kind before it gets merged.
+>>>
+>>> Things like that might be able to be detected via vmstate-static-checker.py.
+>>> But I'm not 100% sure, also its coverage is limited.
+>>>
+>>> For example, I don't think it can detect changes to objects that will only
+>>> be created dynamically, e.g., I think sometimes we create objects after
+>>> some guest behaviors (consider guest enables the device, then QEMU
+>>> emulation creates some objects on demand of device setup?),
+>>
+>> Feels nuts to me.
+>>
+>> In real hardware, software enabling a device that is disabled by default
+>> doesn't create the device.  The device is always there, it just happens
+>> to be inactive unless enabled.  We should model the device just like
+>> that.
+> 
+> It doesn't need to be the device itself to be dynamically created, but some
+> other sub-objects that do not require to exist until the device is enabled,
+> or some specific function of that device is enabled.  It is logically doable.
+> 
+> Is the example Cedric provided looks like some case like this?  I am not
+> sure, that's also why I'm not sure the static checker would work here.  But
+> logically it seems possible, e.g. with migration VMSD needed() facilities.
+> Consider a device has a sub-function that requires a sub-object.  It may
+> not need to migrate that object if that sub-feature is not even enabled.
+> If that object is very large, it might be wise to do so if possible to not
+> send chunks of junk during the VM downtime.
+> 
+> But then after a 2nd thought I do agree it's probably not sensible, because
+> even if the src may know whether the sub-object will be needed, there's
+> probably no good way for the dest QEMU to know.  It can only know in
+> something like a post_load() hook, but logically that can happen only after
+> a full load of that device state, so might already be too late.
+
+If features can be dynamically enabled by the OS, after negotiation
+with the platform, the source should prepare for all possible
+scenarios and migrate all models supported for a given configuration.
+The OS could choose to enable a feature on the target which was not
+enabled on the source before migration.
+
+Thanks,
+
+C.
+
 
