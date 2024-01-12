@@ -2,77 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8E382B834
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 00:46:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F29482B865
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 01:03:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rO4ix-0004g1-Q4; Thu, 11 Jan 2024 18:44:35 -0500
+	id 1rO4zk-00008M-03; Thu, 11 Jan 2024 19:01:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rO4iv-0004f2-AZ; Thu, 11 Jan 2024 18:44:33 -0500
-Received: from mail-vk1-xa2d.google.com ([2607:f8b0:4864:20::a2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rO4it-0007dg-D3; Thu, 11 Jan 2024 18:44:32 -0500
-Received: by mail-vk1-xa2d.google.com with SMTP id
- 71dfb90a1353d-4b72377deb0so1798808e0c.2; 
- Thu, 11 Jan 2024 15:44:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705016669; x=1705621469; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YdIvnkQTNFZK0ei42TuwlFF3C1DlFfOuO/NfFOKC6jw=;
- b=Mw3U4Q62BbEW43f1pmFg2enO9TjPE8LzuL17gLgGddHZ0+vwRuBLkZ2/8EtNDP02JH
- t7O8gODOa7vvEEZTDm2n6hN2XAXYJjTAA9pkwSB4limo+WOisGRfHlRwSXGyzXEjtQFf
- D6RCK6ghsrGUvTc3nxBy03kBPUJiC6q8ymglC3IQjVxv4Rvw54/+xNDPcTh2yRpgwDkb
- 9ubuB6fDyL7VGpkCLvROjUIh/+YxEdL3E2B/ozOJ9PL+LrxyeTpFgtzRXfFkb9F8BVZP
- /AJhAYjTn/ewwTQRMMKbF70uw09cXDTufdcFM668h/q+5+thH+830VqsFiUltr2TKSup
- AEnw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rO4zg-00007x-VO
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 19:01:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rO4zf-0001HH-Cs
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 19:01:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705017709;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=yJdUL+Lg/0PamaK20weKlpIyGoRHMYEtQiXpU91PDpQ=;
+ b=J2bAulHd5uN8CsMEbY49qRKdWXloX8C+gCVDVJhrC/7pBwFw3ST/8o3i1V/LUVSWfMBsL4
+ X6SqfCm51Chpq7dmTmlVEJyyifkZ6yM8UC6wLNnOHgA9OKLgo1JTPMpaB1vfa3HXUumG3f
+ 8K/xVv0UcOx2JBTXHoGSuVA/BOnytUo=
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
+ [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-610-rZDQ_rGDOjOIubYkLwqD4Q-1; Thu, 11 Jan 2024 19:01:48 -0500
+X-MC-Unique: rZDQ_rGDOjOIubYkLwqD4Q-1
+Received: by mail-oo1-f70.google.com with SMTP id
+ 006d021491bc7-594cafcc66aso1268474eaf.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 16:01:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705016669; x=1705621469;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YdIvnkQTNFZK0ei42TuwlFF3C1DlFfOuO/NfFOKC6jw=;
- b=hh/R30jLUuIkEolbvOYio2dongtGFgHZyqgftQetFHckxV0EUd51R3SVH4uE6Erq0J
- VlCKYRfzH6KFdXgsCQaDB4aeFL5Q9H2cYgRgTZJJ0aYll5gNAUpBUKwyKsQmCl0/7aYo
- IVbk0M4pBWMiE2eoxdHAXfcm+P+39jw8WTTlHtaRJ8qrsdn9ossKhF9rsGey6MMHjes2
- UKyUP1lB96FDAzRMKon7mTr8KWijinNiDPPppwWd64gKy/Ntw2sOufGJNmOaW592W5oh
- Rhx6fTWCLhVtKtzoQVaS4sp9ishhLGg/OOmdFxfchCh3AH+k70hmcCzSiOY9u0Zzo1+E
- mgBQ==
-X-Gm-Message-State: AOJu0YyPyRbAjLUvE5sJd48631e58qGxoCSJS6/zohyXmCwFQETGC0ZY
- oFVzSavQsFtyD356kx0asaHWxbhh4LHRAYjx4Eg=
-X-Google-Smtp-Source: AGHT+IFXGt4x4Skj58Si50DyHAhYZACxKEj5uQs1aKyShKQ37OfmT1E4CdWf/psn85MvhoxkXT0lZMj06N3yrrIY6zU=
-X-Received: by 2002:a05:6122:1b88:b0:4b8:ce85:1e97 with SMTP id
- es8-20020a0561221b8800b004b8ce851e97mr568159vkb.20.1705016669694; Thu, 11 Jan
- 2024 15:44:29 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705017708; x=1705622508;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yJdUL+Lg/0PamaK20weKlpIyGoRHMYEtQiXpU91PDpQ=;
+ b=ssAqVARyQoy5H+GFQQy/KGCAyTjAcMovLsgoDMeixkUHPJYnco6ISunudld/fEGufj
+ 6J7Vtaa0H1Fqw0n8wYcQnjaTbvQdxEFEFmhTEx2NpIyBAt4DSJiDatJx8TZa92obA7j2
+ MOjcOpU5cufGvB3s9o2rg0rgeaXyoV9mqc4ATdPmVUJyI/DbrHUXQWV74reFmUAuZOCj
+ bNIUt7VXx+FI/5Eg4dhGwO6I9hCX8xOGospsZauzekOaf6M+I+7z3Zk/bZ5InpZWjY8l
+ BDNzTEjyNPv4pFzb9XEcmtVtH64ts6r87yjm/VQD9TLnQR9n3LW3UEphPRPYStsgsBVn
+ mGZQ==
+X-Gm-Message-State: AOJu0Yw2Lx0JGLZOpXgjJ+mP+6yzbg+gFVIgvBGjGo4/0te4j+8Jh8KM
+ JR8sXws2e1aLiHtKXsjJHYglqaujYXRhPYTfjlQBCq3mwjXJcYswsUQjiICvALr1ejAX/YYjcyH
+ rSwjIAz+3igIHssgiyh4Nd6I=
+X-Received: by 2002:a05:6358:887:b0:175:8b59:955c with SMTP id
+ m7-20020a056358088700b001758b59955cmr146544rwj.2.1705017707775; 
+ Thu, 11 Jan 2024 16:01:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHJ0a+YmsyXJALg5OrmAwD5vbQUBMFlht8sN9cwhAi6WmI3iuVQT25J9FMOCirB18slHVqySA==
+X-Received: by 2002:a05:6358:887:b0:175:8b59:955c with SMTP id
+ m7-20020a056358088700b001758b59955cmr146522rwj.2.1705017707464; 
+ Thu, 11 Jan 2024 16:01:47 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ e5-20020a62ee05000000b006dac8b83f29sm1786410pfi.122.2024.01.11.16.01.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Jan 2024 16:01:45 -0800 (PST)
+Date: Fri, 12 Jan 2024 08:01:36 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [RFC PATCH v3 04/30] io: fsync before closing a file channel
+Message-ID: <ZaCBYLQd6CT9G9jF@x1n>
+References: <20231127202612.23012-1-farosas@suse.de>
+ <20231127202612.23012-5-farosas@suse.de> <ZZ-qbom2UqEX0uS7@x1n>
+ <87wmsfn1xx.fsf@suse.de>
 MIME-Version: 1.0
-References: <20240105230546.265053-1-dbarboza@ventanamicro.com>
- <20240105230546.265053-13-dbarboza@ventanamicro.com>
-In-Reply-To: <20240105230546.265053-13-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 12 Jan 2024 09:44:03 +1000
-Message-ID: <CAKmqyKNTOdZ84QY1iTT9_O4M22Undvw+H1r8RGMNs5AyN92tyA@mail.gmail.com>
-Subject: Re: [PATCH v4 12/17] target/riscv: move 'cbop_blocksize' to
- riscv_cpu_properties[]
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, ajones@ventanamicro.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2d;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87wmsfn1xx.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,93 +99,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Jan 6, 2024 at 9:09=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> Do the same we did with 'cbom_blocksize' in the previous patch.
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+On Thu, Jan 11, 2024 at 03:46:02PM -0300, Fabiano Rosas wrote:
+> > (1) Does this apply to all io channel users, or only migration?
+> 
+> All file channel users.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+I meant the whole idea of flushing on close, on whether there will be
+iochannel users that will prefer not do so?  It's a matter of where to put
+this best.
 
-Alistair
+-- 
+Peter Xu
 
-> ---
->  target/riscv/cpu.c | 38 +++++++++++++++++++++++++++++++++++++-
->  1 file changed, 37 insertions(+), 1 deletion(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index b77d26231c..e3cbe9b1b6 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1317,6 +1317,7 @@ static void riscv_cpu_init(Object *obj)
->      cpu->cfg.vlen =3D 128;
->      cpu->cfg.elen =3D 64;
->      cpu->cfg.cbom_blocksize =3D 64;
-> +    cpu->cfg.cbop_blocksize =3D 64;
->      cpu->env.vext_ver =3D VEXT_VERSION_1_00_0;
->  }
->
-> @@ -1902,8 +1903,42 @@ static const PropertyInfo prop_cbom_blksize =3D {
->      .set =3D prop_cbom_blksize_set,
->  };
->
-> +static void prop_cbop_blksize_set(Object *obj, Visitor *v, const char *n=
-ame,
-> +                                  void *opaque, Error **errp)
-> +{
-> +    RISCVCPU *cpu =3D RISCV_CPU(obj);
-> +    uint16_t value;
-> +
-> +    if (!visit_type_uint16(v, name, &value, errp)) {
-> +        return;
-> +    }
-> +
-> +    if (value !=3D cpu->cfg.cbop_blocksize && riscv_cpu_is_vendor(obj)) =
-{
-> +        cpu_set_prop_err(cpu, name, errp);
-> +        error_append_hint(errp, "Current '%s' val: %u\n",
-> +                          name, cpu->cfg.cbop_blocksize);
-> +        return;
-> +    }
-> +
-> +    cpu_option_add_user_setting(name, value);
-> +    cpu->cfg.cbop_blocksize =3D value;
-> +}
-> +
-> +static void prop_cbop_blksize_get(Object *obj, Visitor *v, const char *n=
-ame,
-> +                         void *opaque, Error **errp)
-> +{
-> +    uint16_t value =3D RISCV_CPU(obj)->cfg.cbop_blocksize;
-> +
-> +    visit_type_uint16(v, name, &value, errp);
-> +}
-> +
-> +static const PropertyInfo prop_cbop_blksize =3D {
-> +    .name =3D "cbop_blocksize",
-> +    .get =3D prop_cbop_blksize_get,
-> +    .set =3D prop_cbop_blksize_set,
-> +};
-> +
->  Property riscv_cpu_options[] =3D {
-> -    DEFINE_PROP_UINT16("cbop_blocksize", RISCVCPU, cfg.cbop_blocksize, 6=
-4),
->      DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU, cfg.cboz_blocksize, 6=
-4),
->
->      DEFINE_PROP_END_OF_LIST(),
-> @@ -1992,6 +2027,7 @@ static Property riscv_cpu_properties[] =3D {
->      {.name =3D "elen", .info =3D &prop_elen},
->
->      {.name =3D "cbom_blocksize", .info =3D &prop_cbom_blksize},
-> +    {.name =3D "cbop_blocksize", .info =3D &prop_cbop_blksize},
->
->  #ifndef CONFIG_USER_ONLY
->      DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVE=
-C),
-> --
-> 2.43.0
->
->
 
