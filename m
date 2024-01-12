@@ -2,55 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28B782C246
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 15:55:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E349E82C266
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 16:02:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOIvF-0002Mr-N1; Fri, 12 Jan 2024 09:54:13 -0500
+	id 1rOJ1o-0005i7-U4; Fri, 12 Jan 2024 10:01:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
- id 1rOIuy-0002Hl-BV; Fri, 12 Jan 2024 09:53:56 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
- id 1rOIuu-0006q2-Ij; Fri, 12 Jan 2024 09:53:54 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TBPgH2DMpz4x5l;
- Sat, 13 Jan 2024 01:53:47 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TBPgC31nWz4x2P;
- Sat, 13 Jan 2024 01:53:43 +1100 (AEDT)
-Message-ID: <c85c8ce7-38cf-410a-b226-5810793295a6@kaod.org>
-Date: Fri, 12 Jan 2024 15:53:41 +0100
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rOJ1l-0005gP-0O
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:00:57 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rOJ1g-0000Xi-NZ
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:00:56 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1d4a2526a7eso40138445ad.3
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 06:58:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1705071528; x=1705676328;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=3wjwIUFfJ9w4KzO3QS1MAtt/nxSJ9nef+JNC/yNrjuU=;
+ b=jfVmiapCjBnqQzF0eqJPyxQktowqwpHu11Bjqm1+stWr8DYZqIkj2np2q4BvyxzsBM
+ hXNnZA4tUNlcyw+hM2nHZgaekUZuhVwbEL5aL3uJBAsXYcx2ntbF4BfPjJp1vmjymz1B
+ 4Evd4g2KIOyeezBh1kzbKJfYMirHUIiTB6+5Z+JrNlcO4fgQf946dormVemRX/7VgbzK
+ Vo8YKIuq2u2sJwxv3TZOTzM/+uh66NLawDp46dpXr6V1W5n4dJLaTuTAS5rdjPW0lwqv
+ TfDKPeCSIH8mohfm7s0XM+qdxBq2lW7ok1X/XJUjq+p8Mdag96dw1okOk9zvvImx4x/Y
+ BE2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705071528; x=1705676328;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3wjwIUFfJ9w4KzO3QS1MAtt/nxSJ9nef+JNC/yNrjuU=;
+ b=byMlVbT2C8TXjxknf4cNrkya6qRrGifB7pSlKa8CkQC7jUyjeK/4Yv+W3XtwEMOSU6
+ Izbgm4lpsWOopILasyn2WgfiDABjhZnJJiH4e2ode5G4+AOAE0jRyupXuOTdLIFcVx9w
+ PsTqw1CrFal2lihJ3oCq4HtPDYDysRf5rgTCIlCzfaECeR1WFkqwZitxXirXknNE/igs
+ sGrkKapq+eKS7+QRNSgjhpFntaqPhDLXcgb6pgHxWp9KF+jR1OkwbNcupDiZ+Z65ME3V
+ 2jSo5Zm/rwRaO63PPElanvOq5CUhyTcoE5cdOD2/jZM5/ugORw1bxXQY855poQLnnviW
+ sn6A==
+X-Gm-Message-State: AOJu0YyEmuteYkriJERdz01P4VhTdJWIbthivRukuUFyFEvZ4hEaqBvB
+ AkDBTjqZg97hn7zc1zaC9OLkVL4NvgZg6CTdIEKSOFoRYyjI1A==
+X-Google-Smtp-Source: AGHT+IHpcVzdmCYnDiiSQW9V9Lc9qdMTu6OyoYlTwTWUSAPR5lMQQ15cyT7AeTBZjQBfoqDWXJUo/GO5ZfjfwZCeyrI=
+X-Received: by 2002:a17:90a:5786:b0:28c:f2f5:a966 with SMTP id
+ g6-20020a17090a578600b0028cf2f5a966mr1245921pji.10.1705071526307; Fri, 12 Jan
+ 2024 06:58:46 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 1/9] hw/fsi: Introduce IBM's Local bus and scratchpad
-Content-Language: en-US
-To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
-References: <20240110231537.1654478-1-ninad@linux.ibm.com>
- <20240110231537.1654478-2-ninad@linux.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240110231537.1654478-2-ninad@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=qInK=IW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+References: <cover.1704382761.git.yong.huang@smartx.com>
+ <6f0de9a1c82f64c4055908573d82a1c86c4d99e8.1704382761.git.yong.huang@smartx.com>
+ <87h6jiodgx.fsf@pond.sub.org>
+In-Reply-To: <87h6jiodgx.fsf@pond.sub.org>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Fri, 12 Jan 2024 22:58:28 +0800
+Message-ID: <CAK9dgmZnwNTc4EiPAseb2qB3zWaAPvfMR5uBXE_JsUvzr7uoTA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] hmp: Drop unknown feature and status bits
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Eric Blake <eblake@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000a4865b060ec0e6ca"
+Received-SPF: none client-ip=2607:f8b0:4864:20::633;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,337 +89,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/11/24 00:15, Ninad Palsule wrote:
-> This is a part of patchset where IBM's Flexible Service Interface is
-> introduced.
-> 
-> The LBUS is modelled to maintain mapped memory for the devices. The
-> memory is mapped after CFAM config, peek table and FSI slave registers.
-> 
-> The scratchpad provides a set of non-functional registers. The firmware
-> is free to use them, hardware does not support any special management
-> support. The scratchpad registers can be read or written from LBUS
-> slave. The scratch pad is managed under FSI CFAM state.
+--000000000000a4865b060ec0e6ca
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This scratchpad mode should be in its own patch and thanks for the
-extending the number of registers
+On Fri, Jan 12, 2024 at 10:04=E2=80=AFPM Markus Armbruster <armbru@redhat.c=
+om>
+wrote:
 
-> [ clg: - removed lbus_add_device() bc unused
->         - removed lbus_create_device() bc used only once
->         - removed "address" property
->         - updated meson.build to build fsi dir
->         - included an empty hw/fsi/trace-events ]
-
-this list of modifications should be before my S-o-b.
-
-> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
-> ---
-> v9:
->    - Changed LBUS memory region to 1MB.
-> ---
->   meson.build           |   1 +
->   hw/fsi/trace.h        |   1 +
->   include/hw/fsi/lbus.h |  52 ++++++++++++++++++
->   hw/fsi/lbus.c         | 121 ++++++++++++++++++++++++++++++++++++++++++
->   hw/Kconfig            |   1 +
->   hw/fsi/Kconfig        |   2 +
->   hw/fsi/meson.build    |   1 +
->   hw/fsi/trace-events   |   2 +
->   hw/meson.build        |   1 +
->   9 files changed, 182 insertions(+)
->   create mode 100644 hw/fsi/trace.h
->   create mode 100644 include/hw/fsi/lbus.h
->   create mode 100644 hw/fsi/lbus.c
->   create mode 100644 hw/fsi/Kconfig
->   create mode 100644 hw/fsi/meson.build
->   create mode 100644 hw/fsi/trace-events
-> 
-> diff --git a/meson.build b/meson.build
-> index 371edafae6..498d08b866 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -3273,6 +3273,7 @@ if have_system
->       'hw/char',
->       'hw/display',
->       'hw/dma',
-> +    'hw/fsi',
->       'hw/hyperv',
->       'hw/i2c',
->       'hw/i386',
-> diff --git a/hw/fsi/trace.h b/hw/fsi/trace.h
-> new file mode 100644
-> index 0000000000..ee67c7fb04
-> --- /dev/null
-> +++ b/hw/fsi/trace.h
-> @@ -0,0 +1 @@
-> +#include "trace/trace-hw_fsi.h"
-> diff --git a/include/hw/fsi/lbus.h b/include/hw/fsi/lbus.h
-> new file mode 100644
-> index 0000000000..8bacdded7f
-> --- /dev/null
-> +++ b/include/hw/fsi/lbus.h
-> @@ -0,0 +1,52 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * Copyright (C) 2024 IBM Corp.
-> + *
-> + * IBM Local bus and connected device structures.
-> + */
-> +#ifndef FSI_LBUS_H
-> +#define FSI_LBUS_H
-> +
-> +#include "hw/qdev-core.h"
-> +#include "qemu/units.h"
-> +#include "exec/memory.h"
-> +
-> +#define TYPE_FSI_LBUS_DEVICE "fsi.lbus.device"
-> +OBJECT_DECLARE_TYPE(FSILBusDevice, FSILBusDeviceClass, FSI_LBUS_DEVICE)
-> +
-> +#define FSI_LBUS_MEM_REGION_SIZE  (1 * MiB)
-> +#define FSI_LBUSDEV_IOMEM_START   0xc00 /* 3K used by CFAM config etc */
-
-These define are not very useful. Please remove (see comments in
-lbus.c)
-
-> +
-> +typedef struct FSILBusDevice {
-> +    DeviceState parent;
-> +
-> +    MemoryRegion iomem;
-> +} FSILBusDevice;
-> +
-> +typedef struct FSILBusDeviceClass {
-> +    DeviceClass parent;
-> +
-> +    uint32_t config;
-> +} FSILBusDeviceClass;
-
-This class is unused now.
-
-> +
-> +#define TYPE_FSI_LBUS "fsi.lbus"
-> +OBJECT_DECLARE_SIMPLE_TYPE(FSILBus, FSI_LBUS)
-> +
-> +typedef struct FSILBus {
-> +    BusState bus;
-> +
-> +    MemoryRegion mr;
-> +} FSILBus;
-> +
-> +#define TYPE_FSI_SCRATCHPAD "fsi.scratchpad"
-> +#define SCRATCHPAD(obj) OBJECT_CHECK(FSIScratchPad, (obj), TYPE_FSI_SCRATCHPAD)
-> +
-> +#define FSI_SCRATCHPAD_NR_REGS 4
-> +
-> +typedef struct FSIScratchPad {
-> +        FSILBusDevice parent;
-> +
-> +        uint32_t reg[FSI_SCRATCHPAD_NR_REGS];
-> +} FSIScratchPad;
-> +
-> +#endif /* FSI_LBUS_H */
-> diff --git a/hw/fsi/lbus.c b/hw/fsi/lbus.c
-> new file mode 100644
-> index 0000000000..34c450cc68
-> --- /dev/null
-> +++ b/hw/fsi/lbus.c
-> @@ -0,0 +1,121 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * Copyright (C) 2024 IBM Corp.
-> + *
-> + * IBM Local bus where FSI slaves are connected
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qapi/error.h"
-> +#include "hw/fsi/lbus.h"
-> +
-> +#include "hw/qdev-properties.h"
-> +
-> +#include "trace.h"
-> +
-> +static void lbus_init(Object *o)
-
-I would prefix the lbus routine and struct with fsi_lbus to be
-consistent with the types and macro.
-
-> +{
-> +    FSILBus *lbus = FSI_LBUS(o);
-> +
-> +    memory_region_init(&lbus->mr, OBJECT(lbus), TYPE_FSI_LBUS,
-> +                       FSI_LBUS_MEM_REGION_SIZE - FSI_LBUSDEV_IOMEM_START);
-
-This is enough :
-
-     memory_region_init(&lbus->mr, OBJECT(lbus), TYPE_FSI_LBUS, 1 * MiB);
-
-> +}
-> +
-> +static const TypeInfo lbus_info = {
-> +    .name = TYPE_FSI_LBUS,
-> +    .parent = TYPE_BUS,
-> +    .instance_init = lbus_init,
-> +    .instance_size = sizeof(FSILBus),
-> +};
-> +
-> +static void lbus_device_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +
-> +    dc->bus_type = TYPE_FSI_LBUS;
-> +}
-> +
-> +static const TypeInfo lbus_device_type_info = {
-> +    .name = TYPE_FSI_LBUS_DEVICE,
-> +    .parent = TYPE_DEVICE,
-> +    .instance_size = sizeof(FSILBusDevice),
-> +    .abstract = true,
-> +    .class_init = lbus_device_class_init,
-> +    .class_size = sizeof(FSILBusDeviceClass),
-> +};
-> +
-> +static uint64_t fsi_scratchpad_read(void *opaque, hwaddr addr, unsigned size)
-> +{
-> +    FSIScratchPad *s = SCRATCHPAD(opaque);
-> +
-> +    trace_fsi_scratchpad_read(addr, size);
-> +
-> +    if (addr & ~(FSI_SCRATCHPAD_NR_REGS - 1)) {
-> +        return 0;
-> +    }
-> +
-> +    return s->reg[addr];
-> +}
-> +
-> +static void fsi_scratchpad_write(void *opaque, hwaddr addr, uint64_t data,
-> +                                 unsigned size)
-> +{
-> +    FSIScratchPad *s = SCRATCHPAD(opaque);
-> +
-> +    trace_fsi_scratchpad_write(addr, size, data);
-> +
-> +    if (addr & ~(FSI_SCRATCHPAD_NR_REGS - 1)) {
-
-There is a type confusion. addr is an offset in a memory region and
-FSI_SCRATCHPAD_NR_REGS is an index an array.
-
-
-> +        return;
-> +    }
-> +
-> +    s->reg[addr] = data;
-
-same here.
-
-> +}
-> +
-> +static const struct MemoryRegionOps scratchpad_ops = {
-> +    .read = fsi_scratchpad_read,
-> +    .write = fsi_scratchpad_write,
-> +    .endianness = DEVICE_BIG_ENDIAN,
-> +};
-> +
-> +static void fsi_scratchpad_realize(DeviceState *dev, Error **errp)
-> +{
-> +    FSILBusDevice *ldev = FSI_LBUS_DEVICE(dev);
-> +
-> +    memory_region_init_io(&ldev->iomem, OBJECT(ldev), &scratchpad_ops,
-> +                          ldev, TYPE_FSI_SCRATCHPAD, 0x400);
-> +}
-> +
-> +static void fsi_scratchpad_reset(DeviceState *dev)
-> +{
-> +    FSIScratchPad *s = SCRATCHPAD(dev);
-> +    int i;
-> +
-> +    for (i = 0; i < FSI_SCRATCHPAD_NR_REGS; i++) {
-> +        s->reg[i] = 0;
-
-memset(s->regs, 0, sizeof(s->regs));
-
+> Hyman Huang <yong.huang@smartx.com> writes:
+>
+> > The QMP command "x-query-virtio-status" outputs the full
+> > feature and status bit information, so there is no need
+> > to maintain it in the HMP output; drop it.
+> >
+> > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+>
+> I'm not sure hiding unknown bits from HMP users is a good idea.  Sure,
+> you can use QMP to find them, but why would you when HMP gives no clue
+> that its output is incomplete?
+>
+> I'd simply keep them, i.e. drop this patch.
+>
+>
+Ok, I'm not insisting on that.
 
 Thanks,
+Yong
 
-C.
+--=20
+Best regards
 
+--000000000000a4865b060ec0e6ca
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
+ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Jan 12, 20=
+24 at 10:04=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@redha=
+t.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail=
+_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left=
+-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">Hyman Hua=
+ng &lt;<a href=3D"mailto:yong.huang@smartx.com" target=3D"_blank">yong.huan=
+g@smartx.com</a>&gt; writes:<br>
+<br>
+&gt; The QMP command &quot;x-query-virtio-status&quot; outputs the full<br>
+&gt; feature and status bit information, so there is no need<br>
+&gt; to maintain it in the HMP output; drop it.<br>
+&gt;<br>
+&gt; Signed-off-by: Hyman Huang &lt;<a href=3D"mailto:yong.huang@smartx.com=
+" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
+<br>
+I&#39;m not sure hiding unknown bits from HMP users is a good idea.=C2=A0 S=
+ure,<br>
+you can use QMP to find them, but why would you when HMP gives no clue<br>
+that its output is incomplete?<br>
+<br>
+I&#39;d simply keep them, i.e. drop this patch.<br>
+<br>
+</blockquote></div><div><br></div><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif">Ok, I&#39;m not insisting on=
+ that.</div><br clear=3D"all"><div><div class=3D"gmail_default" style=3D"fo=
+nt-family:&quot;comic sans ms&quot;,sans-serif">Thanks,=C2=A0</div><div cla=
+ss=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-se=
+rif">Yong</div><br></div><span class=3D"gmail_signature_prefix">-- </span><=
+br><div dir=3D"ltr" class=3D"gmail_signature"><div dir=3D"ltr"><font face=
+=3D"comic sans ms, sans-serif">Best regards</font></div></div></div>
 
-> +    }
-> +}
-> +
-> +static void fsi_scratchpad_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +
-> +    dc->realize = fsi_scratchpad_realize;
-> +    dc->reset = fsi_scratchpad_reset;
-> +}
-> +
-> +static const TypeInfo fsi_scratchpad_info = {
-> +    .name = TYPE_FSI_SCRATCHPAD,
-> +    .parent = TYPE_FSI_LBUS_DEVICE,
-> +    .instance_size = sizeof(FSIScratchPad),
-> +    .class_init = fsi_scratchpad_class_init,
-> +    .class_size = sizeof(FSILBusDeviceClass),
-> +};
-> +
-> +static void lbus_register_types(void)
-> +{
-> +    type_register_static(&lbus_info);
-> +    type_register_static(&lbus_device_type_info);
-> +    type_register_static(&fsi_scratchpad_info);
-> +}
-> +
-> +type_init(lbus_register_types);
-> diff --git a/hw/Kconfig b/hw/Kconfig
-> index 9ca7b38c31..2c00936c28 100644
-> --- a/hw/Kconfig
-> +++ b/hw/Kconfig
-> @@ -9,6 +9,7 @@ source core/Kconfig
->   source cxl/Kconfig
->   source display/Kconfig
->   source dma/Kconfig
-> +source fsi/Kconfig
->   source gpio/Kconfig
->   source hyperv/Kconfig
->   source i2c/Kconfig
-> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
-> new file mode 100644
-> index 0000000000..9c34a418d7
-> --- /dev/null
-> +++ b/hw/fsi/Kconfig
-> @@ -0,0 +1,2 @@
-> +config FSI
-> +    bool
-> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
-> new file mode 100644
-> index 0000000000..93ba19dd04
-> --- /dev/null
-> +++ b/hw/fsi/meson.build
-> @@ -0,0 +1 @@
-> +system_ss.add(when: 'CONFIG_FSI', if_true: files('lbus.c'))
-> diff --git a/hw/fsi/trace-events b/hw/fsi/trace-events
-> new file mode 100644
-> index 0000000000..c5753e2791
-> --- /dev/null
-> +++ b/hw/fsi/trace-events
-> @@ -0,0 +1,2 @@
-> +fsi_scratchpad_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
-> +fsi_scratchpad_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
-> diff --git a/hw/meson.build b/hw/meson.build
-> index f01fac4617..463d702683 100644
-> --- a/hw/meson.build
-> +++ b/hw/meson.build
-> @@ -44,6 +44,7 @@ subdir('virtio')
->   subdir('watchdog')
->   subdir('xen')
->   subdir('xenpv')
-> +subdir('fsi')
->   
->   subdir('alpha')
->   subdir('arm')
-
+--000000000000a4865b060ec0e6ca--
 
