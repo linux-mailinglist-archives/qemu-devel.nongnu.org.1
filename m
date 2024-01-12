@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD0B82BAAC
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 06:10:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9A682BAAF
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 06:13:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rO9nD-0002at-4U; Fri, 12 Jan 2024 00:09:19 -0500
+	id 1rO9q6-0003R9-Vk; Fri, 12 Jan 2024 00:12:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rO9nB-0002aj-Dc
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 00:09:17 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rO9q5-0003Ql-Ah
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 00:12:17 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rO9n9-00066t-EY
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 00:09:17 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rO9q3-0008Fe-QX
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 00:12:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705036153;
+ s=mimecast20190719; t=1705036335;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=y/5b7z4Y2j9rR2SbW3Dac+udHhxw/BOKOHrkRRjI+tY=;
- b=Bttfj7OkdWt9dJ0Xcrda5DxhPVel3YjR+Lz9EcMVT9FXR5UozX+/ITGvXAb8sh9PHyGf1R
- RxlBNvh7aZsRiYKbfyTXjiJ0re7srP5V5nDJNNPSgROcfhGSy0oqA1DyhxpRr2yE2c1HDf
- MNlmw6UH8UfK6oMrHvbhyprCAeRjSgA=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=edgr9fm1oLMgZey8Ul7s/e25c1AHIceM1qV0RVJbFMs=;
+ b=I4Fy+2yL6ncQq0mxBWKJmgCFZkunqFVN1/zbGzoIvs4bSxSZYVI4AZd6NT5KNqj7z3Fkif
+ MWKdwXom6Gz4gQG0hmrOXS4ubxc8vas1L4V1RWKby+PGVc4Vs5i7EdrlX4QsvwYBaDYRK7
+ LqpSbz/FxXfRIpsbL3R7klhbSvlr/pA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-280-px5cgRmJMfSMKGX5cBfvYg-1; Fri, 12 Jan 2024 00:09:10 -0500
-X-MC-Unique: px5cgRmJMfSMKGX5cBfvYg-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5582c0179b5so1953615a12.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 21:09:10 -0800 (PST)
+ us-mta-28-gA1xicAdMDqNvzlkV30G2Q-1; Fri, 12 Jan 2024 00:12:11 -0500
+X-MC-Unique: gA1xicAdMDqNvzlkV30G2Q-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-40d8586c709so54661765e9.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 21:12:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705036149; x=1705640949;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=y/5b7z4Y2j9rR2SbW3Dac+udHhxw/BOKOHrkRRjI+tY=;
- b=nUCVz2jP9Ep+AoYhCZkH2XdtF1DFbMFQqNY1ekXgj9bLIWFkP/l1Jvt6eBWFG5f+9G
- v/B+3C4hGdfzHISnbC8U9/dpV+Lsfi0J/90YJ11Q/n8h5V5T29ZcIrPX9YhoEWl2Zw87
- kOVkC7o+xNlfRR487C8fOY5+/7yMJgbEkiMHG0x5buIP9zYVjwKXYS5cg5OTLdM1H1Tu
- YljwWgXmuTkpHHxFXGKFBdQzTSSJAmfCHzwfPsvzIMTFw0iSveWvoa8NbHga+XFTAbmf
- 1aOomYMtEPn6A6wRmObaCivuulpxPl+kfMtHuAZbVkiepiggOLcSgWpoc0Jdxe2O8Ess
- IggQ==
-X-Gm-Message-State: AOJu0Yyo3WmJdUXqQYSBh9FNe9pknP1Uf87ej0GEQ2k720HHBSikd9h5
- NIg7Kg0P64Yj9Uo415rKGGfRF1JdFZhCTAur8IN+hJQmHdYWVHNmWNCh9FBtGZSyj52qDIQ/3ui
- VoLlhhuFAinAwovbIlQxZBwc=
-X-Received: by 2002:aa7:d50e:0:b0:554:5ed8:3072 with SMTP id
- y14-20020aa7d50e000000b005545ed83072mr316047edq.55.1705036149146; 
- Thu, 11 Jan 2024 21:09:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IENN8JKPeibGkvOtandKK2i45t6JHXdvMc2iM6w82FO+NzOOEd7jkks2cgSAB72rUceSu70qQ==
-X-Received: by 2002:aa7:d50e:0:b0:554:5ed8:3072 with SMTP id
- y14-20020aa7d50e000000b005545ed83072mr316038edq.55.1705036148813; 
- Thu, 11 Jan 2024 21:09:08 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705036330; x=1705641130;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=edgr9fm1oLMgZey8Ul7s/e25c1AHIceM1qV0RVJbFMs=;
+ b=fsGCuGklMXmzXrJ1uPJ0H5yEjck5hpxLcjOROit+yXJWex+OXYyl7YvGNMfaQccEZb
+ J4RVdP2EU6NYfO/Ec/N0c+XeJZVBAy4Q5Wy/+CTbTapw/h4+HWnNy11Hi6UkrKAgGtDc
+ 5A+wdpOfsRMO92dS4hTdPlo70A3uF0yGj1Me4h0YAMIZy9iKwcON5hrE+smGETrnXlnV
+ iYK753IL0e8f8oslCa02qkBiF+Em1c5+utrnGGnJSNoCGjlXDG8g14e3ftFAYgipItAf
+ RRLIn12005HZw5zjOf60Ao5XkJgPMFJGsz0kdArFtmJvPu0C/ZYRIgN4zPyx6asuMwD5
+ uoRA==
+X-Gm-Message-State: AOJu0Yz5S1Nr2Xpb7XprqNt1hiuhSLi8GbH6SpjxFtKPyAguQvmEwCw/
+ MbCa20nX2sl6wXQGXW2zrVMvzkzJF416uJ31maVQz30T6o3XyFu1Quo8E4I0tnwPLozlxo5kkYO
+ /W9ME0B4jXcJ3oUqRcKmahqE=
+X-Received: by 2002:a1c:7c0f:0:b0:40e:5200:c52d with SMTP id
+ x15-20020a1c7c0f000000b0040e5200c52dmr367884wmc.155.1705036329968; 
+ Thu, 11 Jan 2024 21:12:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFphFhxh8fpQ3x8kcJULELTeHB6l01vtSBR8gIABdqXqnOFU5/vAYe1u8KcFtQjyfbPkKiGig==
+X-Received: by 2002:a1c:7c0f:0:b0:40e:5200:c52d with SMTP id
+ x15-20020a1c7c0f000000b0040e5200c52dmr367883wmc.155.1705036329713; 
+ Thu, 11 Jan 2024 21:12:09 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-176-232.web.vodafone.de.
  [109.43.176.232]) by smtp.gmail.com with ESMTPSA id
- q11-20020aa7d44b000000b00555fd008741sm1356200edr.95.2024.01.11.21.09.07
+ lb14-20020a170906adce00b00a2c869c2fe8sm944303ejb.161.2024.01.11.21.12.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 21:09:08 -0800 (PST)
-Message-ID: <9496438f-a12b-4eca-8b2d-c8c6bbc52e69@redhat.com>
-Date: Fri, 12 Jan 2024 06:09:06 +0100
+ Thu, 11 Jan 2024 21:12:09 -0800 (PST)
+Message-ID: <27a311a8-f6db-48ea-8bbd-a09eb3c2e07e@redhat.com>
+Date: Fri, 12 Jan 2024 06:12:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/9] hw/hppa/machine: Disable default devices with
- --nodefaults option
-To: Helge Deller <deller@gmx.de>,
- Richard Henderson <richard.henderson@linaro.org>, deller@kernel.org,
- qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, Bruno Haible <bruno@clisp.org>,
- "Nelson H . F . Beebe" <beebe@math.utah.edu>
-References: <20240107132237.50553-1-deller@kernel.org>
- <20240107132237.50553-3-deller@kernel.org>
- <3cc1664c-9f5c-4d2f-b8f3-f8880c110e10@linaro.org>
- <1fde7d36-420a-4df5-821e-bcd4819ac6b7@gmx.de>
- <5c6768a6-a487-4a82-a4e1-374dff074610@linaro.org>
- <9942e915-3eef-4e3f-bd2c-7719082e7eee@gmx.de>
+Subject: Re: [PATCH 1/2] target/ppc/cpu-models: Rename power5+ and power7+ for
+ new QOM naming rules
 Content-Language: en-US
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
+Cc: devel@lists.libvirt.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>
+References: <20240111164652.908182-1-thuth@redhat.com>
+ <20240111164652.908182-2-thuth@redhat.com>
+ <70fae07d-f6c1-4143-b632-a988ae53ccb0@linux.ibm.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -123,7 +121,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <9942e915-3eef-4e3f-bd2c-7719082e7eee@gmx.de>
+In-Reply-To: <70fae07d-f6c1-4143-b632-a988ae53ccb0@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -151,114 +149,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/01/2024 23.28, Helge Deller wrote:
-> On 1/9/24 17:01, Richard Henderson wrote:
->> On 1/9/24 22:16, Helge Deller wrote:
->>> On 1/9/24 10:57, Richard Henderson wrote:
->>>> On 1/8/24 00:22, deller@kernel.org wrote:
->>>>> From: Helge Deller <deller@gmx.de>
->>>>>
->>>>> Add support for the qemu --nodefaults option, which will disable the
->>>>> following default devices:
->>>>> - lsi53c895a SCSI controller,
->>>>> - artist graphics card,
->>>>> - LASI 82596 NIC,
->>>>> - tulip PCI NIC,
->>>>> - second serial PCI card,
->>>>> - USB OHCI controller.
->>>>>
->>>>> Adding this option is very useful to allow manual testing and
->>>>> debugging of the other possible devices on the command line.
->>>>>
->>>>> Signed-off-by: Helge Deller <deller@gmx.de>
->>>>> ---
->>>>>   hw/hppa/machine.c | 15 +++++++++------
->>>>>   1 file changed, 9 insertions(+), 6 deletions(-)
->>>>>
->>>>> diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
->>>>> index b11907617e..8017002a2a 100644
->>>>> --- a/hw/hppa/machine.c
->>>>> +++ b/hw/hppa/machine.c
->>>>> @@ -346,11 +346,14 @@ static void 
->>>>> machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
->>>>>       SysBusDevice *s;
->>>>>       /* SCSI disk setup. */
->>>>> -    dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
->>>>> -    lsi53c8xx_handle_legacy_cmdline(dev);
->>>>> +    if (defaults_enabled()) {
->>>>> +        dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
->>>>> +        lsi53c8xx_handle_legacy_cmdline(dev);
->>>>> +    }
->>>>>       /* Graphics setup. */
->>>>> -    if (machine->enable_graphics && vga_interface_type != VGA_NONE) {
->>>>> +    if (defaults_enabled() && machine->enable_graphics &&
->>>>> +        vga_interface_type != VGA_NONE) {
->>>>>           vga_interface_created = true;
->>>>>           dev = qdev_new("artist");
->>>>>           s = SYS_BUS_DEVICE(dev);
->>>>> @@ -360,7 +363,7 @@ static void 
->>>>> machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
->>>>>       }
->>>>>       /* Network setup. */
->>>>> -    if (enable_lasi_lan()) {
->>>>> +    if (defaults_enabled() && enable_lasi_lan()) {
->>>>>           lasi_82596_init(addr_space, translate(NULL, LASI_LAN_HPA),
->>>>>                           qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA));
->>>>>       }
->>>>> @@ -385,7 +388,7 @@ static void 
->>>>> machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
->>>>>       pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_ID], 0x1227); /* 
->>>>> Powerbar */
->>>>>       /* create a second serial PCI card when running Astro */
->>>>> -    if (!lasi_dev) {
->>>>> +    if (defaults_enabled() && !lasi_dev) {
->>>>>           pci_dev = pci_new(-1, "pci-serial-4x");
->>>>>           qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(1));
->>>>>           qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(2));
->>>>> @@ -395,7 +398,7 @@ static void 
->>>>> machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
->>>>>       }
->>>>>       /* create USB OHCI controller for USB keyboard & mouse on Astro 
->>>>> machines */
->>>>> -    if (!lasi_dev && machine->enable_graphics) {
->>>>> +    if (defaults_enabled() && !lasi_dev && machine->enable_graphics) {
->>>>>           pci_create_simple(pci_bus, -1, "pci-ohci");
->>>>>           usb_create_simple(usb_bus_find(-1), "usb-kbd");
->>>>>           usb_create_simple(usb_bus_find(-1), "usb-mouse");
->>>>
->>>> This almost doubles the uses of default_enabled in the entire tree.
->>>> I wonder if some of them are redundant or should be using a different
->>>> test.
->>>
->>> Any proposal?
->>> Maybe introduce a local variable hppa_bare_metal = !defaults_enabled();
->>> and use that instead?
+On 12/01/2024 05.57, Harsh Prateek Bora wrote:
+> 
+> 
+> On 1/11/24 22:16, Thomas Huth wrote:
+>> The character "+" is now forbidden in QOM device names (see commit
+>> b447378e1217 - "Limit type names to alphanumerical and some few special
+>> characters"). For the "power5+" and "power7+" CPU names, there is
+>> currently a hack in type_name_is_valid() to still allow them for
+>> compatibility reasons. However, there is a much nicer solution for this:
+>> Simply use aliases! This way we can still support the old names without
+>> the need for the ugly hack in type_name_is_valid().
 >>
->> No, not like that.
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   hw/ppc/spapr_cpu_core.c |  4 ++--
+>>   qom/object.c            |  4 ----
+>>   target/ppc/cpu-models.c | 10 ++++++----
+>>   3 files changed, 8 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
+>> index 5aa1ed474a..214b7a03d8 100644
+>> --- a/hw/ppc/spapr_cpu_core.c
+>> +++ b/hw/ppc/spapr_cpu_core.c
+>> @@ -389,9 +389,9 @@ static const TypeInfo spapr_cpu_core_type_infos[] = {
+>>       DEFINE_SPAPR_CPU_CORE_TYPE("970_v2.2"),
+>>       DEFINE_SPAPR_CPU_CORE_TYPE("970mp_v1.0"),
+>>       DEFINE_SPAPR_CPU_CORE_TYPE("970mp_v1.1"),
+>> -    DEFINE_SPAPR_CPU_CORE_TYPE("power5+_v2.1"),
+>> +    DEFINE_SPAPR_CPU_CORE_TYPE("power5plus_v2.1"),
+>>       DEFINE_SPAPR_CPU_CORE_TYPE("power7_v2.3"),
+>> -    DEFINE_SPAPR_CPU_CORE_TYPE("power7+_v2.1"),
+>> +    DEFINE_SPAPR_CPU_CORE_TYPE("power7plus_v2.1"),
 > 
-> Ok.
-> 
->> In casual review I am surprised that !defaults_enabled() does not
->> already imply !enable_graphics, unless the command-line goes on to
->> explicitly add a graphics device.
->> Am I missing something?
-> 
-> Will check that tommorow. If it does I'll remove that additional check.
-> 
-> But what other do you suggest in general how I should address your
-> concerns here?
+> Will using Power5x, Power7x be a better naming than using 'plus' suffix ?
 
-IIRC enable_graphics is not influenced by --nodefaults, but it should be 
-possible to simply check vga_interface_type only - that should get set to 
-VGA_NONE when the user started QEMU with --nodefaults.
+The "x" looks like a placeholder to me, so it could be confused with 
+power50, power51, power52, etc. ...?
+But actually, I was thinking about using "power5p" and "power7p" first, so 
+if the whole "plus" looks too long for you, would "p" be an option instead?
 
-For networking, other boards normally check nd_table[0]. And for serial, you 
-can check whether serial_hd(0) returns a non-NULL value.
+> Otherwise,
+> Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-For checking whether you have to create SCSI devices by default, you can 
-check drive_get_max_bus(IF_SCSI), I think.
+Thanks!
 
-  HTH,
-   Thomas
+  Thomas
 
 
