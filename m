@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE3A82C768
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:46:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 337DF82C76A
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:50:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOQHP-0000ho-Js; Fri, 12 Jan 2024 17:45:35 -0500
+	id 1rOQL9-0001gT-RV; Fri, 12 Jan 2024 17:49:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOQHO-0000hY-Az
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:45:34 -0500
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOQHM-0004Oe-FY
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:45:33 -0500
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-28b400f08a4so5786143a91.1
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 14:45:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705099531; x=1705704331; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mjVocek/4APUMKGU1W7X2sTD3d4YNF0ORuHlQlujXO8=;
- b=PhfSLP1MVXekqRE44yKkfx+DZo3W+CjQ4sA8m6Jhy5k1RBUgkvGoNe+3mJ6SvzKJ0d
- MnyoGcRE1j1WTA+wn48FimSBg5+4MjiRblRLKxhBFMUxrDRozxzCtjAtlnQ08URVLecX
- w4vyGMGgdl9xO0NhamxL018bqv7MNZSMRA3S/YNNgNwa/2bpUyDpRgSLQH0Gn5NlrpT/
- wgYDPEIxbptwsDCfG6UyAbMEACTYmwgShhnniauz1G/i22XdfiD9USkgNCjaY1Ltsl2E
- PnLzywC+bZKmdv2ZZCTOkmGdlRg0Evh3JAL/cfuT2kRsyShFRSTIMOEqfRZ4OvWVmdUk
- W/4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705099531; x=1705704331;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mjVocek/4APUMKGU1W7X2sTD3d4YNF0ORuHlQlujXO8=;
- b=unbM3DvmeKkGO73wp5QfglSVKhV3Yyp81b2b87+XlmqBjV4twiHRsyG+6soOFLNgSC
- LZ73HP2clyThGPGl2iw0C7nT7hD4rAPvSkWVk2Et4E8hmM37DBEm/ct3Weg427UxCvFi
- 0kAt/gce30XUqREj61d654RTazFEQQuVuhqb+3QtFOviWnmXkN0TqfWKBSoURqFgF+xZ
- tS6+3Qxv85JNscEkXE92IfRxwLUL8g9O0nukSNPlULjaEO5A7F9pFOuVrzAPAptd0EAM
- O3OTM5YLr479ye8ClEnwZMEg821IrmdND3Wyk62JPSLQZi/XZ81Jd4O4W0VoxkMAoTsz
- 3VdQ==
-X-Gm-Message-State: AOJu0YzH3JSdJm0ti7LQ4/PKkOIopizapJEF6FSxUAvsVZ4M21rfGhlP
- L2j5n8ArhRpJwxCPYXmS1cGgqLZe1XJ7KeuJtUyXcZtCdSTlVQ==
-X-Google-Smtp-Source: AGHT+IFrehgOLMbed9uig3OTeGSjlPqjuMsCoQseTfnmiFR6sK8ZphVohd1A1KsFSDysEGZHH8pxGg==
-X-Received: by 2002:a17:90b:1d06:b0:28c:acc4:ff98 with SMTP id
- on6-20020a17090b1d0600b0028cacc4ff98mr1876483pjb.40.1705099531050; 
- Fri, 12 Jan 2024 14:45:31 -0800 (PST)
-Received: from ?IPV6:2001:8004:2728:2ad6:e985:c1c8:a4fc:508?
- ([2001:8004:2728:2ad6:e985:c1c8:a4fc:508])
- by smtp.gmail.com with ESMTPSA id
- nd15-20020a17090b4ccf00b0028e2827c8d1sm67927pjb.35.2024.01.12.14.45.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Jan 2024 14:45:30 -0800 (PST)
-Message-ID: <fd99b822-16e5-44be-b314-ed986291e877@linaro.org>
-Date: Sat, 13 Jan 2024 09:45:22 +1100
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1rOQL7-0001gB-Lm
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:49:25 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1rOQL5-0006TQ-A5
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:49:25 -0500
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40CKo55g020392; Fri, 12 Jan 2024 22:49:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=corp-2023-11-20;
+ bh=lfRfFQqd/aIwdOCbmhnMVWHpKX6K35EXCvE4j4LNs5A=;
+ b=YPkkYi/0K6QroPdKJc855CUQSZcO5fNRMnOn/nI5TWoMRG5FqDSlvIw+FzwECmdPLx6+
+ /XnBaR1ZLLbSSo9dFe78rBWrP7zBZfpmYfadbSTAkCV8Lt/uZlpT6Q596DD+a3mbwmgX
+ fz3S4374DTlg5fbNReGTguqT2R9O5BxF72msOjIkaaNGW1G/xFXgSwK4s76X7QWybAEU
+ eg01hyMuHEVoq1/4thmH+Mk88WRkk11X798yptT6/XmiSoD4JViezaafCQYMKX9eKTUe
+ hQ3pG4esLiPp8yWGOnwUlwt2xQIUCOfhEaWDV0uGmtyuzA4E+BVAd1Zke/mLQsvPDc6b cQ== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vk7gg8sr4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 12 Jan 2024 22:49:19 +0000
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 40CLRcGO008835; Fri, 12 Jan 2024 22:49:19 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3vfuuqay6e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 12 Jan 2024 22:49:19 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40CMnIrq004223;
+ Fri, 12 Jan 2024 22:49:18 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
+ ESMTP id 3vfuuqay5t-1; Fri, 12 Jan 2024 22:49:18 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V4 0/5] string list functions
+Date: Fri, 12 Jan 2024 14:49:13 -0800
+Message-Id: <1705099758-211963-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/13] target/riscv/insn_trans/trans_rvv.c.inc: use
- 'vlenb' in MAXSZ()
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- max.chou@sifive.com
-References: <20240112213812.173521-1-dbarboza@ventanamicro.com>
- <20240112213812.173521-11-dbarboza@ventanamicro.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240112213812.173521-11-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-12_12,2024-01-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=882
+ phishscore=0 mlxscore=0
+ spamscore=0 adultscore=0 malwarescore=0 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401120178
+X-Proofpoint-GUID: 7yd9TmYFeCVIX7LjwWY_GngacgcmNTVe
+X-Proofpoint-ORIG-GUID: 7yd9TmYFeCVIX7LjwWY_GngacgcmNTVe
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,29 +99,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/13/24 08:38, Daniel Henrique Barboza wrote:
-> MAXSZ() returns the value in bytes. Now that we have access to vlenb
-> we don't need to compensate with a '-3' in the scale to use 'vlen'.
-> 
-> MAXSZ() now works as follows:
-> 
-> LMUL  lmul=scale  MAXSZ (vlenb >> -scale)
->    1       0       vlenb
->    2       1       vlenb << 1
->    4       2       vlenb << 2
->    8       3       vlenb << 3
+Add some handy string list functions for general use, and use them in
+live migration functions.  These will also be needed for cpr exec mode.
 
-Um, what?
+Changes in V4:
+  * added exec migration patch
 
->   static inline uint32_t MAXSZ(DisasContext *s)
->   {
-> -    int scale = s->lmul - 3;
-> -    return s->cfg_ptr->vlen >> -scale;
-> +    return s->cfg_ptr->vlenb >> -s->lmul;
+Steve Sistare (5):
+  util: strList_from_string
+  qapi: QAPI_LIST_LENGTH
+  util: strv_from_strList
+  util: strList unit tests
+  migration: simplify exec migration functions
 
-There's no left-shift here, either before or after.
-Bug?
+ include/monitor/hmp.h     |  1 -
+ include/qapi/util.h       | 13 ++++++++
+ include/qemu/strList.h    | 30 ++++++++++++++++++
+ migration/exec.c          | 58 +++++-----------------------------
+ monitor/hmp-cmds.c        | 19 -----------
+ net/net-hmp-cmds.c        |  3 +-
+ stats/stats-hmp-cmds.c    |  3 +-
+ tests/unit/meson.build    |  1 +
+ tests/unit/test-strList.c | 80 +++++++++++++++++++++++++++++++++++++++++++++++
+ util/meson.build          |  1 +
+ util/strList.c            | 38 ++++++++++++++++++++++
+ 11 files changed, 175 insertions(+), 72 deletions(-)
+ create mode 100644 include/qemu/strList.h
+ create mode 100644 tests/unit/test-strList.c
+ create mode 100644 util/strList.c
 
+-- 
+1.8.3.1
 
-r~
 
