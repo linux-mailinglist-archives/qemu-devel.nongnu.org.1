@@ -2,78 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E429F82C6E6
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 22:55:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C43B782C6F9
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:05:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOPU2-0001CV-Pp; Fri, 12 Jan 2024 16:54:37 -0500
+	id 1rOPdB-0002xi-Ej; Fri, 12 Jan 2024 17:04:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOPTe-0001AJ-Tb
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 16:54:11 -0500
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1rOPd8-0002xU-Hz
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:03:58 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOPTd-00072q-3Z
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 16:54:10 -0500
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6d9cb95ddd1so3304626b3a.1
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 13:54:08 -0800 (PST)
+ id 1rOPd6-0006Ky-4p
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:03:58 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6d9bd63ec7fso4550634b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 14:03:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705096447; x=1705701247; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=N2zEPU8k8AZ7BpX2EVGgq+440JjAeufV3MLBUjA9Aqc=;
- b=WFwM/BtwRIp5uyQGatnR3/wYyAt0YNmBN/7hVcyDsrG6X2MstG9Vbtg+KoUcxyOgEj
- RgZorFujlMxkbyP2FEFyWt7THoiYWoN3WJVCS7zJZtyHzMFUGP+ne70EnIU0tzV8lMGt
- gDj/d8nP3k0qp0mw743++m5ara40uToxoTLPvuBrbrtosaHf9/ROztlUM8FqZoOjY2GD
- bXh3Jlz5km1W/26fvXju8D0S+8aF1GhCrU7bLk3/cjwclXlfw4Yg2ujEmgkwsx2fJ18S
- VuVBJhb+VJpKwboJGRZGfXOEmFq7uZviaMvFl9Ic5oRyZvkfvbJgWGRFiC9AZIgOcRYI
- IX3Q==
+ d=linaro.org; s=google; t=1705097034; x=1705701834; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=u4LRimjddHn6FLcDA0l6nIscB51EJIDCBTIf6bI3kl4=;
+ b=cgPguSl68uMLCyQ4sukOQKC9cTilFDXpUzSyPkhAnRCCULQ76/2DOQ9J01HgqDGkl8
+ Cf0MgOpS2I19dsB4k1qcOs+VrZBxbBiKPSj5k3GeNgdzlR0ngvVAP3CAZ5nwHQVyfqng
+ nS9qZk3TMDdRmg/bThDSKLIbZwrhlNK1ZIhAVtkrTtoo2CdaGUWzJ5NYWHX7QCd6vjlO
+ h8g9t3NidFdUDGlFWoVBv1RBJrBTynfhEllZjHMpc5BUmAXm+DDGE9EZ1Cfh2Ixlcn2p
+ U3ffLKZYYMEscNAC6Xag7qroxXkb/GaHrFH+7yEc2z8cZYYJaoAO/4Luv1pUv7uWn6Ds
+ +lHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705096447; x=1705701247;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=N2zEPU8k8AZ7BpX2EVGgq+440JjAeufV3MLBUjA9Aqc=;
- b=VCBJ1jNrV9TGXuGZlKkCKfA3boTT/CxCZ5Lv4WGwfIvj0DKnlq9kDkYhgeJDHS0cLo
- 5GH34yVQYkulN/gUVkvayQYOn4KXow+CByzhkFlmQxlB3u4iIFxqBpwJMFN5Cp8/IoQM
- 4qAwpBPRYWl8cKVUf2aVE6iYqc5m4lWdLLBQnCGfkXEOkbr5Ok659UtRZplrAENhrLl4
- y5mYoULSRm160oW5AjW1swyy0uop2UVq7+akDlZHXPeI1cV6bDcjAO3jWhQXuOUyzhHe
- sJNtZDcX8txZIgymBud1ZLMEi777yWfdsCalWLW6kUXpJHdOlJcXnOeIiufv12pNDX0Q
- I2lA==
-X-Gm-Message-State: AOJu0Yywe0cJj17ECDyiFcKOHxM3L3XqgsMd9OC4PF4HjEx0eIm9CwFO
- BGTLuXYP/ajhInMtRhEWBFITNJRIMT3EKw==
-X-Google-Smtp-Source: AGHT+IHMaVHH2Yngj+/4RYhnherACjOYOtb9i6UhMIRwl+OfGmufdu8LyS2BNrd3nC67toGmBsX20Q==
-X-Received: by 2002:a17:903:22c3:b0:1d5:4b18:49aa with SMTP id
- y3-20020a17090322c300b001d54b1849aamr1786878plg.91.1705096447295; 
- Fri, 12 Jan 2024 13:54:07 -0800 (PST)
-Received: from ?IPV6:2001:8004:2728:2ad6:e985:c1c8:a4fc:508?
- ([2001:8004:2728:2ad6:e985:c1c8:a4fc:508])
+ d=1e100.net; s=20230601; t=1705097034; x=1705701834;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=u4LRimjddHn6FLcDA0l6nIscB51EJIDCBTIf6bI3kl4=;
+ b=V0yNThT80upLeu28L1g8jS4946poIlCTGgu51XCJnZ4LMj8+O0YahfJQKVsHChjKqW
+ 3awdT/1s7fAHKjL0fypRlYZxwyBrj7NSvSqDaPg6iRXkF7OwRBcs9pJntoCLv1wyfLAC
+ DWz2CW6wqNgzNCaTbwwL9CFJQiY1mpeR4oRdsIB3fmxlepg1MXVtdbEvWzojgTKEmgLH
+ w4g9wpWWUp5RHzXXXfuNPJ3KtrAzXZ8LWv9P7Zh0gAo6kyjbuRRA7eH9wq6mL1lZNttO
+ HOsGvzYZjEsVxTtSrmRCSHL+ZoW/sOnVWx7Is1aiDtjJSsQ3/4ZyMvTQD1ONpjnqSXRH
+ W1Rg==
+X-Gm-Message-State: AOJu0YwuYBEFXjenw5g8AYX9JERFQKgzfZPCD+zumY/hh6oQAzKjoQbh
+ E+dhC4lJY1IQKmrU7+rkk0jnA2jq8bVR60QoLmTkwwEdnnSNMQ==
+X-Google-Smtp-Source: AGHT+IGgwy7uEA26iFbiNC6ypOyzBBG2+zG01V8LftRNjHZKM3G3LidXsdreqIS64G3ZcCGePoaFjg==
+X-Received: by 2002:a05:6a20:816:b0:19a:46b8:fd1e with SMTP id
+ z22-20020a056a20081600b0019a46b8fd1emr1210287pza.43.1705097034408; 
+ Fri, 12 Jan 2024 14:03:54 -0800 (PST)
+Received: from stoup.net ([2001:8004:2728:2ad6:e985:c1c8:a4fc:508])
  by smtp.gmail.com with ESMTPSA id
- jv3-20020a170903058300b001bb750189desm3621844plb.255.2024.01.12.13.54.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Jan 2024 13:54:06 -0800 (PST)
-Message-ID: <551dac95-3346-41eb-aa8c-d22b19f8c4fd@linaro.org>
-Date: Sat, 13 Jan 2024 08:54:01 +1100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/9] target/hppa: Fix PDC address translation on PA2.0
- with PSW.W=0
-Content-Language: en-US
-To: deller@kernel.org, qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>, Bruno Haible <bruno@clisp.org>
-References: <20240112102927.35406-1-deller@kernel.org>
- <20240112102927.35406-5-deller@kernel.org>
+ st8-20020a17090b1fc800b0028cec396567sm6941857pjb.44.2024.01.12.14.03.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 12 Jan 2024 14:03:54 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240112102927.35406-5-deller@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+To: qemu-devel@nongnu.org
+Cc: Vineet Gupta <vineetg@rivosinc.com>
+Subject: [PATCH] linux-user/riscv: Fix sizeof_reg typo in vdso unwind info
+Date: Sat, 13 Jan 2024 09:03:48 +1100
+Message-Id: <20240112220348.49021-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,50 +88,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/12/24 21:29, deller@kernel.org wrote:
-> From: Helge Deller <deller@gmx.de>
-> 
-> Fix the address translation for PDC space on PA2.0 if PSW.W=0.
-> Basically, for any address in the 32-bit PDC range from 0xf0000000 to
-> 0xf1000000 keep the lower 32-bits and just set the upper 32-bits to
-> 0xfffffff0.
-> 
-> This mapping fixes the emulated power button in PDC space for 32- and
-> 64-bit machines and is how the physical C3700 machine seems to map
-> PDC.
-> 
-> Figures H-10 and H-11 in the parisc2.0 spec [1] show that the 32-bit
-> region will be mapped somewhere into a higher and bigger 64-bit PDC
-> space.  The start and end of this 64-bit space is defined by the
-> physical address bits. But the figures don't specifiy where exactly the
-> mapping will start inside that region. Tests on a real HP C3700
-> regarding the address of the power button indicate, that the lower
-> 32-bits will stay the same though.
-> [1] https://parisc.wiki.kernel.org/images-parisc/7/73/Parisc2.0.pdf
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Tested-by: Bruno Haible <bruno@clisp.org>
-> ---
->   target/hppa/mem_helper.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-> index 08abd1a9f9..011b192406 100644
-> --- a/target/hppa/mem_helper.c
-> +++ b/target/hppa/mem_helper.c
-> @@ -56,7 +56,7 @@ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
->           addr = (int32_t)addr;
->       } else {
->           /* PDC address space */
-> -        addr &= MAKE_64BIT_MASK(0, 24);
-> +        addr = (uint32_t)addr;
->           addr |= -1ull << (TARGET_PHYS_ADDR_SPACE_BITS - 4);
->       }
->       return addr;
+Reported-by: Vineet Gupta <vineetg@rivosinc.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ linux-user/riscv/vdso-32.so | Bin 2900 -> 2900 bytes
+ linux-user/riscv/vdso-64.so | Bin 3856 -> 3856 bytes
+ linux-user/riscv/vdso.S     |   2 +-
+ 3 files changed, 1 insertion(+), 1 deletion(-)
 
-Please adjust the code comment that immediately precedes this, not just within the commit 
-message.
+diff --git a/linux-user/riscv/vdso-32.so b/linux-user/riscv/vdso-32.so
+index 1ad1e5cbbbb8b1fe36b0fe4bcb6c06fab8219ecd..5829c1dc90f1c1aafde69f5b9f5bc9afb85251f7 100755
+GIT binary patch
+delta 112
+zcmV-$0FVFF7StB71OXHyD|k<wiZ(XN!ME<$oE!73r-+KP7y<qQJ!67mgJFbVg<pnV
+zhh2zViCc<Vi&>0VjaQCVk5!OVkyDaVlTnmVl~0yVmra;VnM;~Vn@OBVokyNVpGC7%
+S1ndF^OjB%HZ#A<;2M+}Mt1p-U
 
+delta 112
+zcmV-$0FVFF7StB71OXI7ek-E|Z8Fh9(G%V1AYqwmRqNri7y<qQJz|1jgI<JOg<6JK
+zhgOJGiBgJCi%yJ8jY^J4k4BJ0kwTI{lRlI@l{%I<mo}I*nKGI%n=YIzohqIvpC+?Y
+S1ndF^P;+@qVQaHR2M+{CwJgd2
 
-r~
+diff --git a/linux-user/riscv/vdso-64.so b/linux-user/riscv/vdso-64.so
+index 83992bebe6d0182f24edfffc531015fd2f4e1cfb..de18e35537a493ba35307e93a2d33faaf489c0b3 100755
+GIT binary patch
+delta 118
+zcmV-+0Ez#Q9*`cepaB$miap5s7G5`$2#eqLH6<vG8d2V}v;pe_KY{^*fB}PkgnWg1
+zhIof|h;)f^ig1f=jBJf+j%bf&kYtf!l3<fwlw6fsmROfom{gfknoyfgoJ^fco=BfY
+YlidYEvmgdT0|snTdTn?%vuO#Z1^ZDlW&i*H
+
+delta 117
+zcmV-*0E+*R9*`cepaB$}OC4Olbn*vwtO;!U^UJ?5jVB4Sv;pe_K7av&e1mv|bcJw+
+zY=>xwWQkykT#HzYRE<!MOpi#AM3F#}Jd-$-G?g%xESD&lB$*(Z9Ge)N6rB*B44(*-
+X-UULl9|lAN23SxxMKVLPX$hwVbapOM
+
+diff --git a/linux-user/riscv/vdso.S b/linux-user/riscv/vdso.S
+index a86d8fc488..4b4e34aeea 100644
+--- a/linux-user/riscv/vdso.S
++++ b/linux-user/riscv/vdso.S
+@@ -101,7 +101,7 @@ endf __vdso_flush_icache
+ 	.cfi_startproc simple
+ 	.cfi_signal_frame
+ 
+-#define sizeof_reg	(__riscv_xlen / 4)
++#define sizeof_reg	(__riscv_xlen / 8)
+ #define sizeof_freg	8
+ #define B_GR	(offsetof_uc_mcontext - sizeof_rt_sigframe)
+ #define B_FR	(offsetof_uc_mcontext - sizeof_rt_sigframe + offsetof_freg0)
+-- 
+2.34.1
+
 
