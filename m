@@ -2,30 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3933F82BE9C
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C6EE82BE9D
 	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 11:28:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOEkO-0006Ss-LQ; Fri, 12 Jan 2024 05:26:44 -0500
+	id 1rOEkP-0006T7-9t; Fri, 12 Jan 2024 05:26:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
- id 1rOEkM-0006SA-SX; Fri, 12 Jan 2024 05:26:42 -0500
+ id 1rOEkM-0006S9-S8; Fri, 12 Jan 2024 05:26:42 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
- id 1rOEkK-0004e6-9K; Fri, 12 Jan 2024 05:26:42 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TBHl136t8z4x5k;
- Fri, 12 Jan 2024 21:26:37 +1100 (AEDT)
+ id 1rOEkJ-0004aF-VT; Fri, 12 Jan 2024 05:26:42 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TBHkx3pVFz4xF1;
+ Fri, 12 Jan 2024 21:26:33 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TBHkt6Cbrz4x7q;
- Fri, 12 Jan 2024 21:26:30 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TBHkk4JQMz4wcc;
+ Fri, 12 Jan 2024 21:26:21 +1100 (AEDT)
 Message-ID: <1d58a31b-3a8b-4a56-b9bc-dded024ac7dc@kaod.org>
 Date: Fri, 12 Jan 2024 11:26:25 +0100
 MIME-Version: 1.0
