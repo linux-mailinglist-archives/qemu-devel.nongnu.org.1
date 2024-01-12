@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1130B82BEA3
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 11:30:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D5A82BE9F
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 11:29:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOEnC-0007vf-VY; Fri, 12 Jan 2024 05:29:38 -0500
+	id 1rOEnF-0007wd-Or; Fri, 12 Jan 2024 05:29:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOEnA-0007v5-IH
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 05:29:36 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOEnC-0007vt-Uv
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 05:29:38 -0500
+Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOEn8-0006B5-Pv
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 05:29:36 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOEnB-0006Eb-3V
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 05:29:38 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 7B80161CB5;
+ by sin.source.kernel.org (Postfix) with ESMTP id 32DB2CE23A9;
+ Fri, 12 Jan 2024 10:29:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FCCC433F1;
  Fri, 12 Jan 2024 10:29:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3E1C43390;
- Fri, 12 Jan 2024 10:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1705055372;
- bh=day6KyXxhUli/IuqjOYXEYLGEYoeP1JU/ugYQ5fILLM=;
+ s=k20201202; t=1705055373;
+ bh=eLWXWvIyT7eAbe9rN0poNQyUGNmJFaidvwWyu2pacVA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ev7RNgDxHnfJB9MKVwx0DNcfbd6wH8DmiU8PONyNKF6zvQd0A03irmRr6Xdw9ZcBu
- CwqfKfmUNWkXU6ZjNTiE73ElFCBvzojF5RFEaydIXImlii18KAEdz02h/Khz4pscKi
- awuiOLRNUMMzE0YC6H3ctl8O2j7f4j4aZsFqJ78UBWCWw21owxb56DdcSAftp9gkqD
- tcC8mXJFe3KBC7PFh8uyX3DGPww0JCQ8mLud3ywVnEGVFxJga1hu+O23U5Iio3nVKb
- TrHv2c4XJU59lHhUq6UvP1wKJ2s76RwwltEkUYXyB5wGHQeLYSP+yZIY0316VoRCjr
- 4p7GNXd3ojUcQ==
+ b=q/EcO1wfub7eY+KNQYDFmg8NAg+eryLAArYy5nj4tmW/e+Jid+24cVgWnyby8yykw
+ /SjU33YBdJyQHtW/ixRjInAkjKbjHR81pj1EZeuTdfkHZMIMexXLJx1N3FRnjnwSRu
+ Fg78ytUdvr4tlyZMzhe8QVCgEnx9CK/6F6mFwWYDXCH0Ayb8r9StGlCTQSQNl5mS69
+ aSbT8j1lCVB6Cn6nxJ6x+hh8A7tWvA6twS9yb9YAqFyAkQh87im3Hjjp+D06w/49Zj
+ tD8nhV7MLT0ERSMmRJV3+kRW9k90a7ksttaDnMSEDQzpLJD7LwNqDUKMTxrqMx01Lr
+ TBiwUJ+G1KR1g==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>, "Nelson H . F . Beebe" <beebe@math.utah.edu>,
- Bruno Haible <bruno@clisp.org>
-Subject: [PATCH v3 1/9] hw/hppa/machine: Allow up to 3840 MB total memory
-Date: Fri, 12 Jan 2024 11:29:19 +0100
-Message-ID: <20240112102927.35406-2-deller@kernel.org>
+ Helge Deller <deller@gmx.de>
+Subject: [PATCH v3 2/9] hw/hppa/machine: Disable default devices with
+ --nodefaults option
+Date: Fri, 12 Jan 2024 11:29:20 +0100
+Message-ID: <20240112102927.35406-3-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240112102927.35406-1-deller@kernel.org>
 References: <20240112102927.35406-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
+Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
+ helo=sin.source.kernel.org
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,62 +70,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The physical hardware allows DIMMs of 4 MB size and above, allowing up
-to 3840 MB of memory, but is restricted by setup code to 3 GB.
-Increase the limit to allow up to the maximum amount of memory.
+Recognize the qemu --nodefaults option, which will disable the
+following default devices on hppa:
+- lsi53c895a SCSI controller,
+- artist graphics card,
+- LASI 82596 NIC,
+- tulip PCI NIC,
+- second serial PCI card,
+- USB OHCI controller.
 
-Btw. the memory area from 0xf000.0000 to 0xffff.ffff is reserved by
-the architecture for firmware and I/O memory and can not be used for
-standard memory.
-
-An upcoming 64-bit SeaBIOS-hppa firmware will allow more than 3.75GB
-on 64-bit HPPA64. In this case the ram_max for the pa20 case will change.
+Adding this option is very useful to allow manual testing and
+debugging of the other possible devices on the command line.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Noticed-by: Nelson H. F. Beebe <beebe@math.utah.edu>
-Fixes: b7746b1194c8 ("hw/hppa/machine: Restrict the total memory size to 3GB")
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Bruno Haible <bruno@clisp.org>
 ---
- hw/hppa/machine.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ hw/hppa/machine.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index c8da7c18d5..b11907617e 100644
+index b11907617e..54ca2fd91a 100644
 --- a/hw/hppa/machine.c
 +++ b/hw/hppa/machine.c
-@@ -276,6 +276,7 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
-     unsigned int smp_cpus = machine->smp.cpus;
-     TranslateFn *translate;
-     MemoryRegion *cpu_region;
-+    uint64_t ram_max;
+@@ -346,8 +346,10 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+     SysBusDevice *s;
  
-     /* Create CPUs.  */
-     for (unsigned int i = 0; i < smp_cpus; i++) {
-@@ -288,8 +289,10 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
-      */
-     if (hppa_is_pa20(&cpu[0]->env)) {
-         translate = translate_pa20;
-+        ram_max = 0xf0000000;      /* 3.75 GB (limited by 32-bit firmware) */
-     } else {
-         translate = translate_pa10;
-+        ram_max = 0xf0000000;      /* 3.75 GB (32-bit CPU) */
+     /* SCSI disk setup. */
+-    dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
+-    lsi53c8xx_handle_legacy_cmdline(dev);
++    if (drive_get_max_bus(IF_SCSI) >= 0) {
++        dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
++        lsi53c8xx_handle_legacy_cmdline(dev);
++    }
+ 
+     /* Graphics setup. */
+     if (machine->enable_graphics && vga_interface_type != VGA_NONE) {
+@@ -360,7 +362,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
      }
  
-     for (unsigned int i = 0; i < smp_cpus; i++) {
-@@ -311,9 +314,9 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
-                                 cpu_region);
- 
-     /* Main memory region. */
--    if (machine->ram_size > 3 * GiB) {
--        error_report("RAM size is currently restricted to 3GB");
--        exit(EXIT_FAILURE);
-+    if (machine->ram_size > ram_max) {
-+        info_report("Max RAM size limited to %" PRIu64 " MB", ram_max / MiB);
-+        machine->ram_size = ram_max;
+     /* Network setup. */
+-    if (enable_lasi_lan()) {
++    if (nd_table[0].used && enable_lasi_lan()) {
+         lasi_82596_init(addr_space, translate(NULL, LASI_LAN_HPA),
+                         qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA));
      }
-     memory_region_add_subregion_overlap(addr_space, 0, machine->ram, -1);
+@@ -385,7 +387,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+     pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_ID], 0x1227); /* Powerbar */
  
+     /* create a second serial PCI card when running Astro */
+-    if (!lasi_dev) {
++    if (serial_hd(1) && !lasi_dev) {
+         pci_dev = pci_new(-1, "pci-serial-4x");
+         qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(1));
+         qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(2));
 -- 
 2.43.0
 
