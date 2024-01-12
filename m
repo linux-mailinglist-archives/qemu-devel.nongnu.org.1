@@ -2,66 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E1C82C0B0
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:18:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A45C82C0E3
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:29:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOHOe-0004fp-EZ; Fri, 12 Jan 2024 08:16:28 -0500
+	id 1rOHZr-0006fZ-Sg; Fri, 12 Jan 2024 08:28:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOHO8-000489-Dc
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:15:58 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOHO6-0008Qm-CL
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:15:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=cPFSvw0wPN9INdytdMaa3N76yZW184wgmgBIri0iNeg=; b=fg2rpQnwN+JJ1TKdoZEvviTY9T
- lFhUnLyLxunOXKLPWZOxzckRqeEYWuVEEAJ86cSfEIzprpX+t6N83kf3JM62CaOrF6/8bnEHobs4W
- 8Ffvy4dp9SfU6YLTUsNEzoU07/voVRH0SigdlcUcR/B4KjuWhOl9NUcz9qG7Q9YxfyhZxLteF96bw
- OAGWBftordJBs4z4LBn2vbYbmvEfavIWYXy9tN4MLbYLkVDVwSj9AgcVaxFesPAFawHCY8WAAOPwn
- OH2W616dHolu9jijkOHneM7P1V4sCwBOe+fwJmhKpn/3qc4dW/J+lj7kRoTz/efey/5T7mWo53YBw
- g5DJZDxIDm6bUtCcjA4fQtFqWFy1XNhcGI/8PpKVRg+2h8td1oyCracVBPMuSHBpGpiufMj/GmO5U
- a/iUEhgDlmE3E7obm4U63JdkNtGM/WWuTn1pBKgFAhyK62LE6Fv6KuNwBltv5ncEfgPj622qZxYL6
- 4JzeDfMrQKi6DE30zFHYN9F8Ww4OFuii4474YG7lT7hJQmyJgADft2zwoEHOqSHMtCWM3EarQFO5p
- zINCgC5AX2rNmlvqymXXCjh7z+pq1ISfudPs+Rv4VQi4iE6zkTiNXAwIG7rdYI8ssbEI1cTnhmLwf
- FfzvgXVWZdpa8kzAr67YZ02Qje3s1pVqU/6VnPWzk=;
-Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
- (helo=cheesecake.fritz.box)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOHNR-0009Gy-S7; Fri, 12 Jan 2024 13:15:17 +0000
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org, deller@gmx.de,
- linux@roeck-us.net, qemu-devel@nongnu.org
-Date: Fri, 12 Jan 2024 13:15:29 +0000
-Message-Id: <20240112131529.515642-5-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240112131529.515642-1-mark.cave-ayland@ilande.co.uk>
-References: <20240112131529.515642-1-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rOHZo-0006fK-MA
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:28:01 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rOHZf-0005cp-D4
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:27:56 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3377d45c178so1888245f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 05:27:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705066069; x=1705670869; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=plNAQkB65EP9bzG0TWAbIuw7wWaAcyGlXG0SevoRbhI=;
+ b=Bhc0wYEEw3uH1IwBes/qLExcAE42tozQa2qVkngiemXeF3arqbJqsVqtCYTSnLRfqR
+ CVGUG95FgiBjMq1iGVhkPebenfZfFeHIdALIYik+o64neaSFjihBK03geO3Rx78MZMa2
+ Qf2DslreXQI7kG2xR98v5NSDyonCns1xK5MYyqPo1DDhuDR+EhwQ/RvUdYB3lxgcnzMT
+ TUDMhZ+CZ1BgLqg10mmQOjR4vavPJj3izf04ugg8nMcdEaMmEnNN6iydrkQkRxrDjibd
+ XV72Og2wZ+ZWaDncseOOE92+h1OglcLlIhAP74rXB85ZM3lXm2zSQ4AI+D5SWeA8bRAO
+ SKiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705066069; x=1705670869;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=plNAQkB65EP9bzG0TWAbIuw7wWaAcyGlXG0SevoRbhI=;
+ b=Uh7m/brPXqo9jUv72uEGcTte34+nQPT+yJrWSQUHn/EXwxe0Er7mBicZC10f0fM1vI
+ A2J8xod9P1BJAv+lIoHtSmCd43uhE7rF1wwX9dRROyl2R2pqaTL2kl+dokPdbLht/oTu
+ ZneTMCmOEQeARa3VnRdCeLfj7/Bq2iLr5BaXN/XjXSAQaly7Fx0fUH41zhJ8Wp0UjXNS
+ 0NHsrh51RY0E3KCyiiOMHerTCwrBDUNaHbpRlZ8aQRTg2WIfmWr97U77gplFfSOKZnKk
+ mj5ptZzmQalFx4kEsQoGTZTqOZpzMnN9h6um7ZwxXBo7x0f/zl44W8ezg2axlHzOMCGK
+ 1jrw==
+X-Gm-Message-State: AOJu0YyT/+iGCJa9SbPoYJ57E0iAOtCxr1CueXPM3Aqt6KvtMYj6at7I
+ xCal/fFF/AFgo86Vv5eTHuUw8u7XSDF4YQ==
+X-Google-Smtp-Source: AGHT+IFbivMXNt8PpYsaBQ8YrcD3WRaFoiRDJelJyuhj75PUD5gLQq0a3yxxfcd/3WNpjk0r+V32yg==
+X-Received: by 2002:adf:f104:0:b0:336:69ee:1950 with SMTP id
+ r4-20020adff104000000b0033669ee1950mr685361wro.120.1705066069194; 
+ Fri, 12 Jan 2024 05:27:49 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ q2-20020a056000136200b003373fe3d345sm3884243wrz.65.2024.01.12.05.27.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 12 Jan 2024 05:27:48 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 6D2A15F760;
+ Fri, 12 Jan 2024 13:27:48 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,  Pavel
+ Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,  Pavel Dovgalyuk
+ <pavel.dovgaluk@ispras.ru>,  Paolo Bonzini <pbonzini@redhat.com>,  Cleber
+ Rosa <crosa@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,  Beraldo Leal
+ <bleal@redhat.com>
+Subject: Re: [PULL 13/13] tests/avocado: remove skips from replay_kernel
+In-Reply-To: <bef35657-d490-4db5-ad52-daba13c8234e@redhat.com> (Thomas Huth's
+ message of "Thu, 11 Jan 2024 18:19:20 +0100")
+References: <20240108151352.2199097-1-alex.bennee@linaro.org>
+ <20240108151352.2199097-14-alex.bennee@linaro.org>
+ <bef35657-d490-4db5-ad52-daba13c8234e@redhat.com>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Fri, 12 Jan 2024 13:27:48 +0000
+Message-ID: <87bk9qel63.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 4/4] esp-pci.c: set DMA_STAT_BCMBLT when BLAST command issued
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,32 +103,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Even though the BLAST command isn't fully implemented in QEMU, the DMA_STAT_BCMBLT
-bit should be set after the command has been issued to indicate that the command
-has completed.
+Thomas Huth <thuth@redhat.com> writes:
 
-This fixes an issue with the DC390 DOS driver which issues the BLAST command as
-part of its normal error recovery routine at startup, and otherwise sits in a
-tight loop waiting for DMA_STAT_BCMBLT to be set before continuing.
+> On 08/01/2024 16.13, Alex Benn=C3=A9e wrote:
+>> With the latest fixes for #2010 and #2013 these tests look pretty
+>> stable now. Of course the only way to be really sure is to run it in
+>> the CI infrastructure and see what breaks.
+>> Acked-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> Message-Id: <20231211091346.14616-14-alex.bennee@linaro.org>
+>
+> The replay tests seem still to be very flaky, I'm now getting:
+>
+>  https://gitlab.com/thuth/qemu/-/jobs/5910241580#L227
+>  https://gitlab.com/thuth/qemu/-/jobs/5910241593#L396
+>
+> I'd suggest to revert this patch to disable them in the CI again.
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
----
- hw/scsi/esp-pci.c | 1 +
- 1 file changed, 1 insertion(+)
+I did but on reconsideration I'm only partially reverting for the x86_64
+bits as everything else looks stable (unless you have more examples).
 
-diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
-index 875a49199d..42d9d2e483 100644
---- a/hw/scsi/esp-pci.c
-+++ b/hw/scsi/esp-pci.c
-@@ -124,6 +124,7 @@ static void esp_pci_handle_blast(PCIESPState *pci, uint32_t val)
- {
-     trace_esp_pci_dma_blast(val);
-     qemu_log_mask(LOG_UNIMP, "am53c974: cmd BLAST not implemented\n");
-+    pci->dma_regs[DMA_STAT] |= DMA_STAT_BCMBLT;
- }
- 
- static void esp_pci_handle_abort(PCIESPState *pci, uint32_t val)
--- 
-2.39.2
+I've raised a new bug to cover it:
 
+    https://gitlab.com/qemu-project/qemu/-/issues/2094
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
