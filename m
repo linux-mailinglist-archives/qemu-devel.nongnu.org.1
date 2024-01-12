@@ -2,97 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04AF82B953
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 03:09:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4798A82B9E8
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 04:18:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rO6xj-0007Dm-O6; Thu, 11 Jan 2024 21:07:59 -0500
+	id 1rO830-0005w7-02; Thu, 11 Jan 2024 22:17:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1rO6xg-0007D0-Pk
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 21:07:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1rO6xe-00018V-O0
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 21:07:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705025273;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qsIJVtqBJLvrhJ9BS9yfiy8PppKDOmHMb5VtOge3S20=;
- b=TVUAjYwHBQzxINpeV+pTQhUcVKf+ySzCuh8v6IguIxridZQm6rq4YK/vHbbfOCSnI7m+JK
- HvSbQFmGQxMoE+JWU8NxroeybkJSfxT9XuYwqTfwIMKR8V5thwXTmt101EZ2n/j7wXYp+0
- 9JQb5xRCGhsHeiVuHomJO3e/VpBocEA=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-Rp2fQg15OJCRI66tP3-Keg-1; Thu, 11 Jan 2024 21:07:51 -0500
-X-MC-Unique: Rp2fQg15OJCRI66tP3-Keg-1
-Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-6da0d1d6674so6468239b3a.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 18:07:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rO82s-0005vk-DA; Thu, 11 Jan 2024 22:17:22 -0500
+Received: from mail-vs1-xe2e.google.com ([2607:f8b0:4864:20::e2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rO82o-0000z2-MG; Thu, 11 Jan 2024 22:17:21 -0500
+Received: by mail-vs1-xe2e.google.com with SMTP id
+ ada2fe7eead31-46781bd40f8so1607305137.1; 
+ Thu, 11 Jan 2024 19:17:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1705029436; x=1705634236; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=u/pwe2wWPAexi0csxHrxYNK4JSAgjVk8tHOplY1MLRc=;
+ b=VlSBTrMSURfG+M8vSGjN3FrReChVJC9nt16BJ8AZEC2Mi3WN6YwxvM0wAcR2G77r5V
+ 3MetymdLmDFWPM6QpvWHyx4UPoQO9FpYFhYHsVRP2XBte1LytEeSLMEd7N5v4+SK5iTA
+ oEBrZ60yMUwAnBfnTDa4qsJOE02UM+H1buPjWbYE5sTSGONxfgWpxSPSDNQRnyRTjigL
+ qZOpBlXqlgzWmiLTP4U77/m7IB4JxSJAnE8FMJiRe977VeF5LSdoWriZPYSassYZ5xdo
+ r+MRr1ie+xbVjbLszEi7WPdm/uMEV2rpr/pcS/K15UkoWkpp7Zd77h9VkJWmea368M8o
+ TGPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705025271; x=1705630071;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qsIJVtqBJLvrhJ9BS9yfiy8PppKDOmHMb5VtOge3S20=;
- b=sBsDzL9icsT7S9BFmj2A4RTeh8DszhHwbgPcFyZ2yha7d1QcNldMxKyifRtN6IGXtf
- wpCqnj0ENVOUCMe++yyN6olpOAfte41N7NNjMomL/sYuTwjlfrgKgQ/0+YP02UJ4ndWe
- ZrBBYl5XMTRX7M9VpR4jIZshSTAo1y/WMy0O0wPZBSVmUgZRlwTePo6GLhe6kpU5WeT8
- 6pDrwHB9R7JGNo+MKzAch6zX83Td3Zy/QP+0BkCLleBZrRW7Tdj8lubmEnjBqzr9S3AF
- 2gwqZflOfHrTZ6FzZKdCR/0im214/OakJue9+J0uaQUXnhX5dZndkE2Q+bUIPv+bpy+9
- krgQ==
-X-Gm-Message-State: AOJu0YwkoHEmfudQdR9GTrmjZ1W5Uzerx7N4sWDHQH4WN6Jl1iiTpAvF
- pMkT/WBm4w2re7COZkAS71x9wKt1+UGwbqap2HJq2sUWA3Vds/rKKFFC9sVJ9tsdzs51X0DOwYM
- Zi20dFSylWxk+ihqJB8xtSXE=
-X-Received: by 2002:a05:6a00:2295:b0:6d9:b5ce:f17e with SMTP id
- f21-20020a056a00229500b006d9b5cef17emr326328pfe.5.1705025270939; 
- Thu, 11 Jan 2024 18:07:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFogdPCJFCZzkW3fJugF7mHstjv4XggXypSml1HueXxqMYO6ChogOypKLXTy3Ni1Y1h+nH+xg==
-X-Received: by 2002:a05:6a00:2295:b0:6d9:b5ce:f17e with SMTP id
- f21-20020a056a00229500b006d9b5cef17emr326311pfe.5.1705025270589; 
- Thu, 11 Jan 2024 18:07:50 -0800 (PST)
-Received: from [10.72.112.34] ([43.228.180.230])
- by smtp.gmail.com with ESMTPSA id
- t127-20020a628185000000b006db05eb1301sm2010034pfd.21.2024.01.11.18.07.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 18:07:50 -0800 (PST)
-Message-ID: <acaa64af-4deb-475f-984f-631f60c4f798@redhat.com>
-Date: Fri, 12 Jan 2024 12:07:42 +1000
+ d=1e100.net; s=20230601; t=1705029436; x=1705634236;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=u/pwe2wWPAexi0csxHrxYNK4JSAgjVk8tHOplY1MLRc=;
+ b=aYw+sud7r2wNkbeIo++IH87CQYb8CL2doKczco4WjpFkT5UXZ3DFNfHcw9C98ahiQS
+ CFTS6YoV59sPDUCntf0KbgOOeK7CjhWauqayt89dzweL3oVy0xVqZ5xCVxmymhsRWX16
+ yO6ihZXtA20Eb5syuhsCHK2FEsS/Nd7/UwFxhu6LQe4zLN3f6Cc+oKXhRR+QCkKhJQw+
+ y0j0fslw8l9eOuH75V34ToAnd5zZVXIrlaLgvRU8A9HHBX23k46YIUJtbHZqYWyBB4Pl
+ g/P3+LVkHxJhoKnogZVB7UyfE/ychge2Upw8ZoQLkh1sZ011nQ1uWc+wFRP909KM+F3z
+ AE/Q==
+X-Gm-Message-State: AOJu0YzpBY2pQY0+lBuugIGzd3E+QMryS12DSaTCrdx90l0MFfPd/9fP
+ 90p7SxxKF2HO2XjVCPuF2SrUAUHkxYT0z1LbCoo=
+X-Google-Smtp-Source: AGHT+IG6rILyGVmqUN5Z89ZnByKLegoPM5g5r3lQ/iOsdhI8RS35wO4PY6Fajuf16PxfI0qIzCcuks7LJoLx6/CnH2s=
+X-Received: by 2002:a05:6102:3584:b0:468:9fb:6c06 with SMTP id
+ h4-20020a056102358400b0046809fb6c06mr1156038vsu.25.1705029435861; Thu, 11 Jan
+ 2024 19:17:15 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/core: Handle cpu_model_from_type() returning NULL value
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20240111064723.6920-1-philmd@linaro.org>
- <cdfc3049-8b9b-4a24-9e0e-8db396acc6c1@redhat.com>
- <4f73c8d8-ea98-47b0-9296-bd9ccb76908d@linaro.org>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <4f73c8d8-ea98-47b0-9296-bd9ccb76908d@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+References: <20240105230546.265053-1-dbarboza@ventanamicro.com>
+In-Reply-To: <20240105230546.265053-1-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 12 Jan 2024 13:16:49 +1000
+Message-ID: <CAKmqyKNv8BZPAbiKaio9KOUjUVL+o7faroRAsnv8EgnD0snivA@mail.gmail.com>
+Subject: Re: [PATCH v4 00/17] target/riscv: deprecate riscv_cpu_options[]
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, ajones@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2e;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,126 +87,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Phil,
+On Sat, Jan 6, 2024 at 9:07=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> Hi,
+>
+> This new version contains changes due to a rebase with current
+> riscv-to-apply.next, after "[PATCH v13 00/26] riscv: RVA22 profiles
+> support" was queued.
+>
+> Most notable change is a new patch (12) that was added to handle
+> 'cbop_blocksize' - zicbop was added by the profile work that just got
+> queued and was missing from v3.
+>
+> A wrong 'cbom_blocksize' reference in patch 10 was also fixed.
+>
+> Patches based on Alistair's riscv-to-apply.next.
+>
+> Patches missing acks: 10, 12, 15, 16, 17
+>
+> Changes from v3:
+> - patch 10:
+>   - changed wrong cbom_blocksize ref to cboz_blocksize
+> - patch 12 (new):
+>   - move cbop_blocksize to riscv_cpu_properties[]
+> - v3 link: https://lore.kernel.org/qemu-riscv/20240103174013.147279-1-dba=
+rboza@ventanamicro.com/
+>
+>
+> Daniel Henrique Barboza (17):
+>   target/riscv/cpu_cfg.h: remove unused fields
+>   target/riscv: make riscv_cpu_is_vendor() public
+>   target/riscv: move 'pmu-mask' and 'pmu-num' to riscv_cpu_properties[]
+>   target/riscv: move 'mmu' to riscv_cpu_properties[]
+>   target/riscv: move 'pmp' to riscv_cpu_properties[]
+>   target/riscv: rework 'priv_spec'
+>   target/riscv: rework 'vext_spec'
+>   target/riscv: move 'vlen' to riscv_cpu_properties[]
+>   target/riscv: move 'elen' to riscv_cpu_properties[]
 
-On 1/11/24 18:21, Philippe Mathieu-Daudé wrote:
-> On 11/1/24 08:30, Gavin Shan wrote:
->> On 1/11/24 16:47, Philippe Mathieu-Daudé wrote:
->>> Per cpu_model_from_type() docstring (added in commit 445946f4dd):
->>>
->>>    * Returns: CPU model name or NULL if the CPU class doesn't exist
->>>
->>> We must check the return value in order to avoid surprises, i.e.:
->>>
->>>   $ qemu-system-arm -machine virt -cpu cortex-a9
->>>    qemu-system-arm: Invalid CPU model: cortex-a9
->>>    The valid models are: cortex-a7, cortex-a15, (null), (null), (null), (null), (null), (null), (null), (null), (null), (null), (null), max
->>>
->>> Add assertions when the call can not fail (because the CPU type
->>> must be registered).
->>>
->>> Fixes: 5422d2a8fa ("machine: Print CPU model name instead of CPU type")
->>> Reported-by: Peter Maydell <peter.maydell@linaro.org>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   cpu-target.c          | 1 +
->>>   hw/core/machine.c     | 5 +++++
->>>   target/ppc/cpu_init.c | 1 +
->>>   3 files changed, 7 insertions(+)
->>>
->>> diff --git a/cpu-target.c b/cpu-target.c
->>> index 5eecd7ea2d..b0f6deb13b 100644
->>> --- a/cpu-target.c
->>> +++ b/cpu-target.c
->>> @@ -291,6 +291,7 @@ static void cpu_list_entry(gpointer data, gpointer user_data)
->>>       const char *typename = object_class_get_name(OBJECT_CLASS(data));
->>>       g_autofree char *model = cpu_model_from_type(typename);
->>> +    assert(model);
->>>       if (cc->deprecation_note) {
->>>           qemu_printf("  %s (deprecated)\n", model);
->>>       } else {
->>> diff --git a/hw/core/machine.c b/hw/core/machine.c
->>> index fc239101f9..730ec10328 100644
->>> --- a/hw/core/machine.c
->>> +++ b/hw/core/machine.c
->>> @@ -1422,16 +1422,21 @@ static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
->>>           /* The user specified CPU type isn't valid */
->>>           if (!mc->valid_cpu_types[i]) {
->>>               g_autofree char *requested = cpu_model_from_type(machine->cpu_type);
->>> +            assert(requested);
->>>               error_setg(errp, "Invalid CPU model: %s", requested);
->>>               if (!mc->valid_cpu_types[1]) {
->>>                   g_autofree char *model = cpu_model_from_type(
->>> mc->valid_cpu_types[0]);
->>> +                assert(model);
->>>                   error_append_hint(errp, "The only valid type is: %s\n", model);
->>>               } else {
->>>                   error_append_hint(errp, "The valid models are: ");
->>>                   for (i = 0; mc->valid_cpu_types[i]; i++) {
->>>                       g_autofree char *model = cpu_model_from_type(
->>> mc->valid_cpu_types[i]);
->>> +                    if (!model) {
->>> +                        continue;
->>> +                    }
->>
->> Shall we assert(model) for this case, to be consistent with other cases? :)
-> 
-> No, this is the "(null)" cases displayed in the example.
-> 
-> IOW, mc->valid_cpu_types[] contains a CPU type which isn't registered,
-> so we just skip it.
-> 
+I've applied the first few patches to the RISC-V tree, the others
+don't apply. Do you mind rebasing them and sending them again?
 
-I thought this should be fixed by correcting mc->valid_cpu_types[] in
-hw/arm/virt.c. It means the consistent mc->valid_cpu_types[] needs to
-be  provided by the specific board. Otherwise, the logic is incorrect from
-the code level at least. For example, "cortex-a9" isn't available to
-qemu-system-arm but it has been wrongly declared as supported in hw/arm/virt.c
+Alistair
 
-I've posted one patch against it:
-
-https://lists.nongnu.org/archive/html/qemu-arm/2024-01/msg00531.html
-
-
->>
->>>                       error_append_hint(errp, "%s%s",
->>>                                         model,
->>>                                         mc->valid_cpu_types[i + 1] ? ", " : "");
->>
->> Otherwise, the separator here need to be adjusted because it's uncertain that
->> mc->valid_cpu_types[i+1] ... mc->valid_cpu_types[END] are valid.
-> 
-> Here we know mc->valid_cpu_types[i] is *not* NULL, but
-> mc->valid_cpu_types[i + 1] might be (signaling the end
-> of the array).
-> 
-> This seems correct to me, but I might be missing something.
-> 
-
-When the class for mc->valid_cpu_types[i + 1] isn't registered, we will
-skip the entry. it's possible that the class of mc->valid_cpu_types[i + 2]
-isn't registered either. mc->valid_cpu_types[i + 3] to mc->valid_cpu_types[END - 1]
-have the similar situations.
-
-In order to correct the separator, we need to invalidate the return value
-from cpu_model_from_type(mc->valid_cpu_types[i + 1]) ... cpu_model_from_type(mc->valid_cpu_types[END - 1]).
-Too much complex for that and it's another reason why I suggested assert(model) as above
-
->>
->>> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
->>> index 344196a8ce..58f0c1e30e 100644
->>> --- a/target/ppc/cpu_init.c
->>> +++ b/target/ppc/cpu_init.c
->>> @@ -7037,6 +7037,7 @@ static void ppc_cpu_list_entry(gpointer data, gpointer user_data)
->>>       }
->>>       name = cpu_model_from_type(typename);
->>> +    assert(name);
->>>       qemu_printf("PowerPC %-16s PVR %08x\n", name, pcc->pvr);
->>>       for (i = 0; ppc_cpu_aliases[i].alias != NULL; i++) {
->>>           PowerPCCPUAlias *alias = &ppc_cpu_aliases[i];
->>
-
-Thanks,
-Gavin
-
+>   target/riscv: create finalize_features() for KVM
+>   target/riscv: move 'cbom_blocksize' to riscv_cpu_properties[]
+>   target/riscv: move 'cbop_blocksize' to riscv_cpu_properties[]
+>   target/riscv: move 'cboz_blocksize' to riscv_cpu_properties[]
+>   target/riscv: remove riscv_cpu_options[]
+>   target/riscv/cpu.c: move 'mvendorid' to riscv_cpu_properties[]
+>   target/riscv/cpu.c: move 'mimpid' to riscv_cpu_properties[]
+>   target/riscv/cpu.c: move 'marchid' to riscv_cpu_properties[]
+>
+>  target/riscv/cpu.c           | 755 ++++++++++++++++++++++++++++-------
+>  target/riscv/cpu.h           |   8 +-
+>  target/riscv/cpu_cfg.h       |   4 -
+>  target/riscv/kvm/kvm-cpu.c   |  94 +++--
+>  target/riscv/kvm/kvm_riscv.h |   1 +
+>  target/riscv/tcg/tcg-cpu.c   |  63 ---
+>  6 files changed, 676 insertions(+), 249 deletions(-)
+>
+> --
+> 2.43.0
+>
+>
 
