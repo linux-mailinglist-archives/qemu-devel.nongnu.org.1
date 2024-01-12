@@ -2,103 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3F282BA27
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 04:51:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 477C282BA29
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 04:52:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rO8Y6-0006wo-8o; Thu, 11 Jan 2024 22:49:38 -0500
+	id 1rO8Zv-0007rx-Rc; Thu, 11 Jan 2024 22:51:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rO8Y4-0006wZ-Qk
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 22:49:36 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1rO8Zu-0007re-97
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 22:51:30 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rO8Xz-0002QX-Ed
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 22:49:35 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3368ac0f74dso4098738f8f.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 19:49:22 -0800 (PST)
+ id 1rO8Zs-0003qL-HC
+ for qemu-devel@nongnu.org; Thu, 11 Jan 2024 22:51:30 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40e62979feeso10579915e9.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 19:51:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705031361; x=1705636161; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1705031487; x=1705636287; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=bnLMr6T9vQtB9zohSG+Ww3f+r9f9DHbIMkNIc6agMA4=;
- b=oI8KaQtS5ogDX6VCZRF+Qkq622Ui+FB5Z1oiHqnC5lws6AKMks5SL6RvvNSCGNBMLd
- lAAulvxz1vLehvCAL+UdxNXkR0sSO8MKnzUFe6Tmbd2OSAwyfmG0puViNX6lF16hqvty
- t/HDR1+VmFrt6ErFi4n2c+VLmtbUNshVdXvZAlMK+BzWLBoDPG5hvAI0AshaEQsvR3UE
- lHuP0LgakuEA/1IFW8Ralr0mhviajWrhWjoAnTarOq/Iu26ssyG72BP3pMx+oDw5/AE+
- p4jNg96a2duKlOhQshJagUGu0sEEsDFdEljwjKy4+pbWFLBJ3DTWVY/VyCdDAB8wfQXI
- zhUQ==
+ bh=ECfs4y5PfJWiaMVoXw3Bztg1jrKO3VWWvDt5NMwJyJQ=;
+ b=K5zvHqR8Pv0LxVw8Jk6h0udZaKAk8nt74gpcCwEAfhk0GmtWVQSPuNQwGQe3KMQ7wV
+ iu39oMbFSPbpmdfU8zeCbJHe1l+nlmhgziOwd/7Wymh3xCzxNhMHlAHl/dpCSTx5RDj5
+ xk+gMGHl6RP6XTCtrYCZJuZwsnnUIK9DB4xk8YbY/Q+cV8Up1H+76aYdWwdb+mjkCoZr
+ +UaIu25NusNznTee+i75OY4yHSvUo1VdpFXVaxJqkyfeF6yVhaPRBLDhpPJQZbguPA14
+ AcfEkFap4oyYm/HyN7saHy5OzhVZJIvC4HEUWrZUPVo43nZe5YKy1dwczJuETJq6vbeX
+ ZiMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705031361; x=1705636161;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1705031487; x=1705636287;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bnLMr6T9vQtB9zohSG+Ww3f+r9f9DHbIMkNIc6agMA4=;
- b=JpfkkjNkss+uF5qSKpcGrmWsupHWs2lmLKVwxZ/1JFynRKvzNpSEtcFgQc2NUdOUel
- 9fJtkwJX7UjVw3jyzzgqL3GW+oQPZWVk0YJHAQTmKlVxlJu+czV0x48XEi4V49L/Uk+u
- 5l1jWThGXDpgRlH8s8Ev1Nq4G46+QTQp83vRPW1+/rjvkcMUNlXrXA59cb1ieGZ2+1Un
- zl/kmYWVGRflT2JCRN5ttVYvE6w03SW+xzLp6Vxen9YoIoA/x2cqG0fCS7IElulRxZQ8
- Ot0dUxOJxDQgCT991pkTGJ5CztdfnTibxr1sVJUCwSEqwteytUsrLBbnUpjh85lRpZ99
- 8PFw==
-X-Gm-Message-State: AOJu0YwLAFHTO6LyBvrbM2LX2hHWOo8AlZylbu7OraRvrui4w9wISUrv
- GiKoGU5/eI/MWku5t6n568XaNelmjB+ofg==
-X-Google-Smtp-Source: AGHT+IG7fJ9mDTJtOI7JOT6xSEnpJbMoYs7biiehaATm8v2v0+sP2Y2WEfCENGSAUaHP/owM3Y/0rg==
-X-Received: by 2002:a05:6000:1211:b0:337:4a09:b7df with SMTP id
- e17-20020a056000121100b003374a09b7dfmr342633wrx.35.1705031361001; 
- Thu, 11 Jan 2024 19:49:21 -0800 (PST)
+ bh=ECfs4y5PfJWiaMVoXw3Bztg1jrKO3VWWvDt5NMwJyJQ=;
+ b=SwSfSPrkeISYnWSIs+1acP+Esgsr8RhVJBwk93JhzEeQjbhoGUSXR4VSoqA+EiAHe1
+ onBbl2o/lv3LX2YAZV/friHuObwiP5wAHrTdx6IeoYdngL69CGKOBjEtKjYSRrYd6pES
+ ud/7kP59y4GVFJMIz+93C8NBusVmEbv/nYGDulZ/JZRpXUv/GPB925A7k0TUvwDbBM40
+ keCULl2WfzEjT+gFnwPsex/lLTZg82jVxHOhwF4D4hog8dxliimb/vZ18UiYqOEcbdoB
+ abfcYzOw4iScQ3yxR+OzMlocgPlhf0nfKtJaloU0SpzqbdQtphApx6VWRdrpm1XJVxXA
+ 2Jyg==
+X-Gm-Message-State: AOJu0YwfcnBCUKXxsiszPdXMa050RyREq8EkTUNpP6EmA/x76bmZ19eY
+ oQO9mzeTvH3Rt3OrTyubIu8iQKuO6IWmPw==
+X-Google-Smtp-Source: AGHT+IGEtiW7+kbLjU1Lci6wFN3XvuFpLigVFmSudY1WngpoIQY+1KL7H+fiHm1nXvGHdOm6+OhVJQ==
+X-Received: by 2002:a05:600c:3ca3:b0:40e:4daf:b748 with SMTP id
+ bg35-20020a05600c3ca300b0040e4dafb748mr413721wmb.115.1705031486995; 
+ Thu, 11 Jan 2024 19:51:26 -0800 (PST)
 Received: from [192.168.1.24] ([102.35.208.160])
  by smtp.gmail.com with ESMTPSA id
- bk14-20020a0560001d8e00b003375c072fbcsm143193wrb.100.2024.01.11.19.49.10
+ g14-20020a05600c310e00b0040e398f8cafsm4085876wmo.31.2024.01.11.19.51.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jan 2024 19:49:20 -0800 (PST)
-Message-ID: <1a8ddba6-cbe5-4db4-b1bc-71f96bd498e2@linaro.org>
-Date: Fri, 12 Jan 2024 07:49:07 +0400
+ Thu, 11 Jan 2024 19:51:26 -0800 (PST)
+Message-ID: <b99b7e20-9802-42c9-bd34-2727cd508da5@linaro.org>
+Date: Fri, 12 Jan 2024 07:51:22 +0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 38/43] plugins: add an API to read registers
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
- Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Brian Cain <bcain@quicinc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Cleber Rosa <crosa@redhat.com>,
- kvm@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, John Snow <jsnow@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-riscv@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-References: <20240103173349.398526-1-alex.bennee@linaro.org>
- <20240103173349.398526-39-alex.bennee@linaro.org>
+Subject: Re: [PATCH 04/12] tests/plugin/inline: migrate to new per_vcpu API
 Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>
+References: <20240111142326.1743444-1-pierrick.bouvier@linaro.org>
+ <20240111142326.1743444-5-pierrick.bouvier@linaro.org>
+ <09812aba-9595-410d-9b27-d33353f33b02@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240103173349.398526-39-alex.bennee@linaro.org>
+In-Reply-To: <09812aba-9595-410d-9b27-d33353f33b02@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x42b.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,174 +97,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gMS8zLzI0IDIxOjMzLCBBbGV4IEJlbm7DqWUgd3JvdGU6DQo+IFdlIGNhbiBvbmx5IHJl
-cXVlc3QgYSBsaXN0IG9mIHJlZ2lzdGVycyBvbmNlIHRoZSB2Q1BVIGhhcyBiZWVuDQo+IGlu
-aXRpYWxpc2VkIHNvIHRoZSB1c2VyIG5lZWRzIHRvIHVzZSBlaXRoZXIgY2FsbCB0aGUgZ2V0
-IGZ1bmN0aW9uIG9uDQo+IHZDUFUgaW5pdGlhbGlzYXRpb24gb3IgZHVyaW5nIHRoZSB0cmFu
-c2xhdGlvbiBwaGFzZS4NCj4gDQo+IFdlIGRvbid0IGV4cG9zZSB0aGUgcmVnIG51bWJlciB0
-byB0aGUgcGx1Z2luIGluc3RlYWQgaGlkaW5nIGl0IGJlaGluZA0KPiBhbiBvcGFxdWUgaGFu
-ZGxlLiBUaGlzIGFsbG93cyBmb3IgYSBiaXQgb2YgZnV0dXJlIHByb29maW5nIHNob3VsZCB0
-aGUNCj4gaW50ZXJuYWxzIG5lZWQgdG8gYmUgY2hhbmdlZCB3aGlsZSBhbHNvIGJlaW5nIGhh
-c2hlZCBhZ2FpbnN0IHRoZQ0KPiBDUFVDbGFzcyBzbyB3ZSBjYW4gaGFuZGxlIGRpZmZlcmVu
-dCByZWdpc3RlciBzZXRzIHBlci12Q1BVIGluDQo+IGhldHJvZ2Vub3VzIHNpdHVhdGlvbnMu
-DQo+IA0KPiBIYXZpbmcgYW4gaW50ZXJuYWwgc3RhdGUgd2l0aGluIHRoZSBwbHVnaW5zIGFs
-c28gYWxsb3dzIHVzIHRvIGV4cGFuZA0KPiB0aGUgaW50ZXJmYWNlIGluIGZ1dHVyZSAoZm9y
-IGV4YW1wbGUgcHJvdmlkaW5nIGNhbGxiYWNrcyBvbiByZWdpc3Rlcg0KPiBjaGFuZ2UgaWYg
-dGhlIHRyYW5zbGF0b3IgY2FuIHRyYWNrIGNoYW5nZXMpLg0KPiANCj4gUmVzb2x2ZXM6IGh0
-dHBzOi8vZ2l0bGFiLmNvbS9xZW11LXByb2plY3QvcWVtdS8tL2lzc3Vlcy8xNzA2DQo+IENj
-OiBBa2loaWtvIE9kYWtpIDxha2loaWtvLm9kYWtpQGRheW5peC5jb20+DQo+IEJhc2VkLW9u
-OiA8MjAyMzEwMjUwOTMxMjguMzMxMTYtMTgtYWtpaGlrby5vZGFraUBkYXluaXguY29tPg0K
-PiBTaWduZWQtb2ZmLWJ5OiBBbGV4IEJlbm7DqWUgPGFsZXguYmVubmVlQGxpbmFyby5vcmc+
-DQo+IA0KPiAtLS0NCj4gdjMNCj4gICAgLSBhbHNvIGdfaW50ZXJuX3N0cmluZyB0aGUgcmVn
-aXN0ZXIgbmFtZQ0KPiAgICAtIG1ha2UgZ2V0X3JlZ2lzdGVycyBkb2N1bWVudGF0aW9uIGEg
-Yml0IGxlc3MgdmVyYm9zZQ0KPiB2Mg0KPiAgICAtIHVzZSBuZXcgZ2V0IHdob2xlIGxpc3Qg
-YXBpLCBhbmQgZXhwb3NlIHVwd2FyZHMNCj4gDQo+IHZBSkI6DQo+IA0KPiBUaGUgbWFpbiBk
-aWZmZXJlbmNlIHRvIEFraWtpbydzIHZlcnNpb24gaXMgaGlkaW5nIHRoZSBnZGIgcmVnaXN0
-ZXINCj4gZGV0YWlsIGZyb20gdGhlIHBsdWdpbiBmb3IgdGhlIHJlYXNvbnMgZGVzY3JpYmVk
-IGFib3ZlLg0KPiAtLS0NCj4gICBpbmNsdWRlL3FlbXUvcWVtdS1wbHVnaW4uaCAgIHwgIDUx
-ICsrKysrKysrKysrKysrKysrLQ0KPiAgIHBsdWdpbnMvYXBpLmMgICAgICAgICAgICAgICAg
-fCAxMDIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gICBwbHVnaW5z
-L3FlbXUtcGx1Z2lucy5zeW1ib2xzIHwgICAyICsNCj4gICAzIGZpbGVzIGNoYW5nZWQsIDE1
-MyBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2lu
-Y2x1ZGUvcWVtdS9xZW11LXBsdWdpbi5oIGIvaW5jbHVkZS9xZW11L3FlbXUtcGx1Z2luLmgN
-Cj4gaW5kZXggNGRhYWI2ZWZkMjkuLjk1MzgwODk1ZjgxIDEwMDY0NA0KPiAtLS0gYS9pbmNs
-dWRlL3FlbXUvcWVtdS1wbHVnaW4uaA0KPiArKysgYi9pbmNsdWRlL3FlbXUvcWVtdS1wbHVn
-aW4uaA0KPiBAQCAtMTEsNiArMTEsNyBAQA0KPiAgICNpZm5kZWYgUUVNVV9RRU1VX1BMVUdJ
-Tl9IDQo+ICAgI2RlZmluZSBRRU1VX1FFTVVfUExVR0lOX0gNCj4gICANCj4gKyNpbmNsdWRl
-IDxnbGliLmg+DQo+ICAgI2luY2x1ZGUgPGludHR5cGVzLmg+DQo+ICAgI2luY2x1ZGUgPHN0
-ZGJvb2wuaD4NCj4gICAjaW5jbHVkZSA8c3RkZGVmLmg+DQo+IEBAIC0yMjcsOCArMjI4LDgg
-QEAgc3RydWN0IHFlbXVfcGx1Z2luX2luc247DQo+ICAgICogQFFFTVVfUExVR0lOX0NCX1Jf
-UkVHUzogY2FsbGJhY2sgcmVhZHMgdGhlIENQVSdzIHJlZ3MNCj4gICAgKiBAUUVNVV9QTFVH
-SU5fQ0JfUldfUkVHUzogY2FsbGJhY2sgcmVhZHMgYW5kIHdyaXRlcyB0aGUgQ1BVJ3MgcmVn
-cw0KPiAgICAqDQo+IC0gKiBOb3RlOiBjdXJyZW50bHkgdW51c2VkLCBwbHVnaW5zIGNhbm5v
-dCByZWFkIG9yIGNoYW5nZSBzeXN0ZW0NCj4gLSAqIHJlZ2lzdGVyIHN0YXRlLg0KPiArICog
-Tm90ZTogY3VycmVudGx5IFFFTVVfUExVR0lOX0NCX1JXX1JFR1MgaXMgdW51c2VkLCBwbHVn
-aW5zIGNhbm5vdCBjaGFuZ2UNCj4gKyAqIHN5c3RlbSByZWdpc3RlciBzdGF0ZS4NCj4gICAg
-Ki8NCj4gICBlbnVtIHFlbXVfcGx1Z2luX2NiX2ZsYWdzIHsNCj4gICAgICAgUUVNVV9QTFVH
-SU5fQ0JfTk9fUkVHUywNCj4gQEAgLTcwOCw0ICs3MDksNTAgQEAgdWludDY0X3QgcWVtdV9w
-bHVnaW5fZW5kX2NvZGUodm9pZCk7DQo+ICAgUUVNVV9QTFVHSU5fQVBJDQo+ICAgdWludDY0
-X3QgcWVtdV9wbHVnaW5fZW50cnlfY29kZSh2b2lkKTsNCj4gICANCj4gKy8qKiBzdHJ1Y3Qg
-cWVtdV9wbHVnaW5fcmVnaXN0ZXIgLSBPcGFxdWUgaGFuZGxlIGZvciByZWdpc3RlciBhY2Nl
-c3MgKi8NCj4gK3N0cnVjdCBxZW11X3BsdWdpbl9yZWdpc3RlcjsNCj4gKw0KPiArLyoqDQo+
-ICsgKiB0eXBlZGVmIHFlbXVfcGx1Z2luX3JlZ19kZXNjcmlwdG9yIC0gcmVnaXN0ZXIgZGVz
-Y3JpcHRpb25zDQo+ICsgKg0KPiArICogQGhhbmRsZTogb3BhcXVlIGhhbmRsZSBmb3IgcmV0
-cmlldmluZyB2YWx1ZSB3aXRoIHFlbXVfcGx1Z2luX3JlYWRfcmVnaXN0ZXINCj4gKyAqIEBu
-YW1lOiByZWdpc3RlciBuYW1lDQo+ICsgKiBAZmVhdHVyZTogb3B0aW9uYWwgZmVhdHVyZSBk
-ZXNjcmlwdG9yLCBjYW4gYmUgTlVMTA0KPiArICovDQo+ICt0eXBlZGVmIHN0cnVjdCB7DQo+
-ICsgICAgc3RydWN0IHFlbXVfcGx1Z2luX3JlZ2lzdGVyICpoYW5kbGU7DQo+ICsgICAgY29u
-c3QgY2hhciAqbmFtZTsNCj4gKyAgICBjb25zdCBjaGFyICpmZWF0dXJlOw0KPiArfSBxZW11
-X3BsdWdpbl9yZWdfZGVzY3JpcHRvcjsNCj4gKw0KPiArLyoqDQo+ICsgKiBxZW11X3BsdWdp
-bl9nZXRfcmVnaXN0ZXJzKCkgLSByZXR1cm4gcmVnaXN0ZXIgbGlzdCBmb3IgdkNQVQ0KPiAr
-ICogQHZjcHVfaW5kZXg6IHZjcHUgdG8gcXVlcnkNCj4gKyAqDQo+ICsgKiBSZXR1cm5zIGEg
-R0FycmF5IG9mIHFlbXVfcGx1Z2luX3JlZ19kZXNjcmlwdG9yIG9yIE5VTEwuIENhbGxlcg0K
-PiArICogZnJlZXMgdGhlIGFycmF5IChidXQgbm90IHRoZSBjb25zdCBzdHJpbmdzKS4NCj4g
-KyAqDQo+ICsgKiBTaG91bGQgYmUgdXNlZCBmcm9tIGEgcWVtdV9wbHVnaW5fcmVnaXN0ZXJf
-dmNwdV9pbml0X2NiKCkgY2FsbGJhY2sNCj4gKyAqIGFmdGVyIHRoZSB2Q1BVIGlzIGluaXRp
-YWxpc2VkLg0KPiArICovDQo+ICtHQXJyYXkgKiBxZW11X3BsdWdpbl9nZXRfcmVnaXN0ZXJz
-KHVuc2lnbmVkIGludCB2Y3B1X2luZGV4KTsNCj4gKw0KPiArLyoqDQo+ICsgKiBxZW11X3Bs
-dWdpbl9yZWFkX3JlZ2lzdGVyKCkgLSByZWFkIHJlZ2lzdGVyDQo+ICsgKg0KPiArICogQHZj
-cHU6IHZjcHUgaW5kZXgNCj4gKyAqIEBoYW5kbGU6IGEgQHFlbXVfcGx1Z2luX3JlZ19oYW5k
-bGUgaGFuZGxlDQo+ICsgKiBAYnVmOiBBIEdCeXRlQXJyYXkgZm9yIHRoZSBkYXRhIG93bmVk
-IGJ5IHRoZSBwbHVnaW4NCj4gKyAqDQo+ICsgKiBUaGlzIGZ1bmN0aW9uIGlzIG9ubHkgYXZh
-aWxhYmxlIGluIGEgY29udGV4dCB0aGF0IHJlZ2lzdGVyIHJlYWQgYWNjZXNzIGlzDQo+ICsg
-KiBleHBsaWNpdGx5IHJlcXVlc3RlZC4NCj4gKyAqDQo+ICsgKiBSZXR1cm5zIHRoZSBzaXpl
-IG9mIHRoZSByZWFkIHJlZ2lzdGVyLiBUaGUgY29udGVudCBvZiBAYnVmIGlzIGluIHRhcmdl
-dCBieXRlDQo+ICsgKiBvcmRlci4gT24gZmFpbHVyZSByZXR1cm5zIC0xDQo+ICsgKi8NCj4g
-K2ludCBxZW11X3BsdWdpbl9yZWFkX3JlZ2lzdGVyKHVuc2lnbmVkIGludCB2Y3B1LA0KPiAr
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3RydWN0IHFlbXVfcGx1Z2luX3JlZ2lz
-dGVyICpoYW5kbGUsDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBHQnl0ZUFy
-cmF5ICpidWYpOw0KPiArDQo+ICsNCj4gICAjZW5kaWYgLyogUUVNVV9RRU1VX1BMVUdJTl9I
-ICovDQo+IGRpZmYgLS1naXQgYS9wbHVnaW5zL2FwaS5jIGIvcGx1Z2lucy9hcGkuYw0KPiBp
-bmRleCBhYzM5Y2RlYTBiMy4uZjg5MDUzMjVjNDMgMTAwNjQ0DQo+IC0tLSBhL3BsdWdpbnMv
-YXBpLmMNCj4gKysrIGIvcGx1Z2lucy9hcGkuYw0KPiBAQCAtOCw2ICs4LDcgQEANCj4gICAg
-Kg0KPiAgICAqICBxZW11X3BsdWdpbl90Yg0KPiAgICAqICBxZW11X3BsdWdpbl9pbnNuDQo+
-ICsgKiAgcWVtdV9wbHVnaW5fcmVnaXN0ZXINCj4gICAgKg0KPiAgICAqIFdoaWNoIGNhbiB0
-aGVuIGJlIHBhc3NlZCBiYWNrIGludG8gdGhlIEFQSSB0byBkbyBhZGRpdGlvbmFsIHRoaW5n
-cy4NCj4gICAgKiBBcyBzdWNoIGFsbCB0aGUgcHVibGljIGZ1bmN0aW9ucyBpbiBoZXJlIGFy
-ZSBleHBvcnRlZCBpbg0KPiBAQCAtMzUsMTAgKzM2LDEyIEBADQo+ICAgICovDQo+ICAgDQo+
-ICAgI2luY2x1ZGUgInFlbXUvb3NkZXAuaCINCj4gKyNpbmNsdWRlICJxZW11L21haW4tbG9v
-cC5oIg0KPiAgICNpbmNsdWRlICJxZW11L3BsdWdpbi5oIg0KPiAgICNpbmNsdWRlICJxZW11
-L2xvZy5oIg0KPiAgICNpbmNsdWRlICJ0Y2cvdGNnLmgiDQo+ICAgI2luY2x1ZGUgImV4ZWMv
-ZXhlYy1hbGwuaCINCj4gKyNpbmNsdWRlICJleGVjL2dkYnN0dWIuaCINCj4gICAjaW5jbHVk
-ZSAiZXhlYy9yYW1fYWRkci5oIg0KPiAgICNpbmNsdWRlICJkaXNhcy9kaXNhcy5oIg0KPiAg
-ICNpbmNsdWRlICJwbHVnaW4uaCINCj4gQEAgLTQzNSwzICs0MzgsMTAyIEBAIHVpbnQ2NF90
-IHFlbXVfcGx1Z2luX2VudHJ5X2NvZGUodm9pZCkNCj4gICAjZW5kaWYNCj4gICAgICAgcmV0
-dXJuIGVudHJ5Ow0KPiAgIH0NCj4gKw0KPiArLyoNCj4gKyAqIFJlZ2lzdGVyIGhhbmRsZXMN
-Cj4gKyAqDQo+ICsgKiBUaGUgcGx1Z2luIGluZnJhc3RydWN0dXJlIGtlZXBzIGhvbGQgb2Yg
-dGhlc2UgaW50ZXJuYWwgZGF0YQ0KPiArICogc3RydWN0dXJlcyB3aGljaCBhcmUgcHJlc2Vu
-dGVkIHRvIHBsdWdpbnMgYXMgb3BhcXVlIGhhbmRsZXMuIFRoZXkNCj4gKyAqIGFyZSBnbG9i
-YWwgdG8gdGhlIHN5c3RlbSBhbmQgdGhlcmVmb3IgYWRkaXRpb25zIHRvIHRoZSBoYXNoIHRh
-YmxlDQo+ICsgKiBtdXN0IGJlIHByb3RlY3RlZCBieSB0aGUgQHJlZ19oYW5kbGVfbG9jay4N
-Cj4gKyAqDQo+ICsgKiBJbiBvcmRlciB0byBmdXR1cmUgcHJvb2YgZm9yIHVwLWNvbWluZyBo
-ZXRlcm9nZW5lb3VzIHdvcmsgd2Ugd2FudA0KPiArICogZGlmZmVyZW50IGVudHJpZXMgZm9y
-IGVhY2ggQ1BVIHR5cGUgd2hpbGUgc2hhcmluZyB0aGVtIGluIHRoZQ0KPiArICogY29tbW9u
-IGNhc2Ugb2YgbXVsdGlwbGUgY29yZXMgb2YgdGhlIHNhbWUgdHlwZS4NCj4gKyAqLw0KPiAr
-DQo+ICtzdGF0aWMgUWVtdU11dGV4IHJlZ19oYW5kbGVfbG9jazsNCj4gKw0KPiArc3RydWN0
-IHFlbXVfcGx1Z2luX3JlZ2lzdGVyIHsNCj4gKyAgICBjb25zdCBjaGFyICpuYW1lOw0KPiAr
-ICAgIGludCBnZGJfcmVnX251bTsNCj4gK307DQo+ICsNCj4gK3N0YXRpYyBHSGFzaFRhYmxl
-ICpyZWdfaGFuZGxlczsgLyogaGFzaCB0YWJsZSBvZiBQbHVnaW5SZWcgKi8NCj4gKw0KPiAr
-LyogR2VuZXJhdGUgYSBzdGFibGUga2V5IC0gd291bGQgeHhoYXNoIGJlIG92ZXJraWxsPyAq
-Lw0KPiArc3RhdGljIGdwb2ludGVyIGNwdV9wbHVzX3JlZ190b19rZXkoQ1BVU3RhdGUgKmNz
-LCBpbnQgZ2RiX3JlZ251bSkNCj4gK3sNCj4gKyAgICB1aW50cHRyX3Qga2V5ID0gKHVpbnRw
-dHJfdCkgY3MtPmNjOw0KPiArICAgIGtleSBePSBnZGJfcmVnbnVtOw0KPiArICAgIHJldHVy
-biBHVUlOVF9UT19QT0lOVEVSKGtleSk7DQo+ICt9DQo+ICsNCj4gKy8qDQo+ICsgKiBDcmVh
-dGUgcmVnaXN0ZXIgaGFuZGxlcy4NCj4gKyAqDQo+ICsgKiBXZSBuZWVkIHRvIGNyZWF0ZSBh
-IGhhbmRsZSBmb3IgZWFjaCByZWdpc3RlciBzbyB0aGUgcGx1Z2luDQo+ICsgKiBpbmZyYXN0
-cnVjdHVyZSBjYW4gY2FsbCBnZGJzdHViIHRvIHJlYWQgYSByZWdpc3Rlci4gV2UgYWxzbw0K
-PiArICogY29uc3RydWN0IGEgcmVzdWx0IGFycmF5IHdpdGggdGhvc2UgaGFuZGxlcyBhbmQg
-c29tZSBhbmNpbGxhcnkgZGF0YQ0KPiArICogdGhlIHBsdWdpbiBtaWdodCBmaW5kIHVzZWZ1
-bC4NCj4gKyAqLw0KPiArDQo+ICtzdGF0aWMgR0FycmF5ICogY3JlYXRlX3JlZ2lzdGVyX2hh
-bmRsZXMoQ1BVU3RhdGUgKmNzLCBHQXJyYXkgKmdkYnN0dWJfcmVncykgew0KPiArICAgIEdB
-cnJheSAqZmluZF9kYXRhID0gZ19hcnJheV9uZXcodHJ1ZSwgdHJ1ZSwgc2l6ZW9mKHFlbXVf
-cGx1Z2luX3JlZ19kZXNjcmlwdG9yKSk7DQo+ICsNCj4gKyAgICBXSVRIX1FFTVVfTE9DS19H
-VUFSRCgmcmVnX2hhbmRsZV9sb2NrKSB7DQo+ICsNCj4gKyAgICAgICAgaWYgKCFyZWdfaGFu
-ZGxlcykgew0KPiArICAgICAgICAgICAgcmVnX2hhbmRsZXMgPSBnX2hhc2hfdGFibGVfbmV3
-KGdfZGlyZWN0X2hhc2gsIGdfZGlyZWN0X2VxdWFsKTsNCj4gKyAgICAgICAgfQ0KPiArDQo+
-ICsgICAgICAgIGZvciAoaW50IGk9MDsgaSA8IGdkYnN0dWJfcmVncy0+bGVuOyBpKyspIHsN
-Cj4gKyAgICAgICAgICAgIEdEQlJlZ0Rlc2MgKmdyZCA9ICZnX2FycmF5X2luZGV4KGdkYnN0
-dWJfcmVncywgR0RCUmVnRGVzYywgaSk7DQo+ICsgICAgICAgICAgICBncG9pbnRlciBrZXkg
-PSBjcHVfcGx1c19yZWdfdG9fa2V5KGNzLCBncmQtPmdkYl9yZWcpOw0KPiArICAgICAgICAg
-ICAgc3RydWN0IHFlbXVfcGx1Z2luX3JlZ2lzdGVyICp2YWwgPSBnX2hhc2hfdGFibGVfbG9v
-a3VwKHJlZ19oYW5kbGVzLCBrZXkpOw0KPiArDQo+ICsgICAgICAgICAgICAvKiBEb2Vzbid0
-IGV4aXN0LCBjcmVhdGUgb25lICovDQo+ICsgICAgICAgICAgICBpZiAoIXZhbCkgew0KPiAr
-ICAgICAgICAgICAgICAgIHZhbCA9IGdfbmV3MChzdHJ1Y3QgcWVtdV9wbHVnaW5fcmVnaXN0
-ZXIsIDEpOw0KPiArICAgICAgICAgICAgICAgIHZhbC0+Z2RiX3JlZ19udW0gPSBncmQtPmdk
-Yl9yZWc7DQo+ICsgICAgICAgICAgICAgICAgdmFsLT5uYW1lID0gZ19pbnRlcm5fc3RyaW5n
-KGdyZC0+bmFtZSk7DQo+ICsNCj4gKyAgICAgICAgICAgICAgICBnX2hhc2hfdGFibGVfaW5z
-ZXJ0KHJlZ19oYW5kbGVzLCBrZXksIHZhbCk7DQo+ICsgICAgICAgICAgICB9DQo+ICsNCj4g
-KyAgICAgICAgICAgIC8qIENyZWF0ZSBhIHJlY29yZCBmb3IgdGhlIHBsdWdpbiAqLw0KPiAr
-ICAgICAgICAgICAgcWVtdV9wbHVnaW5fcmVnX2Rlc2NyaXB0b3IgZGVzYyA9IHsNCj4gKyAg
-ICAgICAgICAgICAgICAuaGFuZGxlID0gdmFsLA0KPiArICAgICAgICAgICAgICAgIC5uYW1l
-ID0gdmFsLT5uYW1lLA0KPiArICAgICAgICAgICAgICAgIC5mZWF0dXJlID0gZ19pbnRlcm5f
-c3RyaW5nKGdyZC0+ZmVhdHVyZV9uYW1lKQ0KPiArICAgICAgICAgICAgfTsNCj4gKyAgICAg
-ICAgICAgIGdfYXJyYXlfYXBwZW5kX3ZhbChmaW5kX2RhdGEsIGRlc2MpOw0KPiArICAgICAg
-ICB9DQo+ICsgICAgfQ0KPiArDQo+ICsgICAgcmV0dXJuIGZpbmRfZGF0YTsNCj4gK30NCj4g
-Kw0KPiArR0FycmF5ICogcWVtdV9wbHVnaW5fZ2V0X3JlZ2lzdGVycyh1bnNpZ25lZCBpbnQg
-dmNwdSkNCj4gK3sNCj4gKyAgICBDUFVTdGF0ZSAqY3MgPSBxZW11X2dldF9jcHUodmNwdSk7
-DQo+ICsgICAgaWYgKGNzKSB7DQo+ICsgICAgICAgIGdfYXV0b3B0cihHQXJyYXkpIHJlZ3Mg
-PSBnZGJfZ2V0X3JlZ2lzdGVyX2xpc3QoY3MpOw0KPiArICAgICAgICByZXR1cm4gcmVncy0+
-bGVuID8gY3JlYXRlX3JlZ2lzdGVyX2hhbmRsZXMoY3MsIHJlZ3MpIDogTlVMTDsNCj4gKyAg
-ICB9IGVsc2Ugew0KPiArICAgICAgICByZXR1cm4gTlVMTDsNCj4gKyAgICB9DQo+ICt9DQo+
-ICsNCj4gK2ludCBxZW11X3BsdWdpbl9yZWFkX3JlZ2lzdGVyKHVuc2lnbmVkIGludCB2Y3B1
-LCBzdHJ1Y3QgcWVtdV9wbHVnaW5fcmVnaXN0ZXIgKnJlZywgR0J5dGVBcnJheSAqYnVmKQ0K
-PiArew0KPiArICAgIENQVVN0YXRlICpjcyA9IHFlbXVfZ2V0X2NwdSh2Y3B1KTsNCj4gKyAg
-ICAvKiBhc3NlcnQgd2l0aCBkZWJ1Z2dpbmcgb24/ICovDQo+ICsgICAgcmV0dXJuIGdkYl9y
-ZWFkX3JlZ2lzdGVyKGNzLCBidWYsIHJlZy0+Z2RiX3JlZ19udW0pOw0KPiArfQ0KPiArDQo+
-ICtzdGF0aWMgdm9pZCBfX2F0dHJpYnV0ZV9fKChfX2NvbnN0cnVjdG9yX18pKSBxZW11X2Fw
-aV9pbml0KHZvaWQpDQo+ICt7DQo+ICsgICAgcWVtdV9tdXRleF9pbml0KCZyZWdfaGFuZGxl
-X2xvY2spOw0KPiArDQo+ICt9DQo+IGRpZmYgLS1naXQgYS9wbHVnaW5zL3FlbXUtcGx1Z2lu
-cy5zeW1ib2xzIGIvcGx1Z2lucy9xZW11LXBsdWdpbnMuc3ltYm9scw0KPiBpbmRleCA3MWY2
-YzkwNTQ5ZC4uNjk2MzU4NWMxZWEgMTAwNjQ0DQo+IC0tLSBhL3BsdWdpbnMvcWVtdS1wbHVn
-aW5zLnN5bWJvbHMNCj4gKysrIGIvcGx1Z2lucy9xZW11LXBsdWdpbnMuc3ltYm9scw0KPiBA
-QCAtMyw2ICszLDcgQEANCj4gICAgIHFlbXVfcGx1Z2luX2VuZF9jb2RlOw0KPiAgICAgcWVt
-dV9wbHVnaW5fZW50cnlfY29kZTsNCj4gICAgIHFlbXVfcGx1Z2luX2dldF9od2FkZHI7DQo+
-ICsgIHFlbXVfcGx1Z2luX2dldF9yZWdpc3RlcnM7DQo+ICAgICBxZW11X3BsdWdpbl9od2Fk
-ZHJfZGV2aWNlX25hbWU7DQo+ICAgICBxZW11X3BsdWdpbl9od2FkZHJfaXNfaW87DQo+ICAg
-ICBxZW11X3BsdWdpbl9od2FkZHJfcGh5c19hZGRyOw0KPiBAQCAtMjAsNiArMjEsNyBAQA0K
-PiAgICAgcWVtdV9wbHVnaW5fbl92Y3B1czsNCj4gICAgIHFlbXVfcGx1Z2luX291dHM7DQo+
-ICAgICBxZW11X3BsdWdpbl9wYXRoX3RvX2JpbmFyeTsNCj4gKyAgcWVtdV9wbHVnaW5fcmVh
-ZF9yZWdpc3RlcjsNCj4gICAgIHFlbXVfcGx1Z2luX3JlZ2lzdGVyX2F0ZXhpdF9jYjsNCj4g
-ICAgIHFlbXVfcGx1Z2luX3JlZ2lzdGVyX2ZsdXNoX2NiOw0KPiAgICAgcWVtdV9wbHVnaW5f
-cmVnaXN0ZXJfdmNwdV9leGl0X2NiOw0KDQpSZXZpZXdlZC1ieTogUGllcnJpY2sgQm91dmll
-ciA8cGllcnJpY2suYm91dmllckBsaW5hcm8ub3JnPg0K
+On 1/12/24 02:10, Richard Henderson wrote:
+> On 1/12/24 01:23, Pierrick Bouvier wrote:
+>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> ---
+>>    tests/plugin/inline.c | 17 -----------------
+>>    1 file changed, 17 deletions(-)
+> 
+> Was this supposed to be together with patch 6?
+> 
+
+My goal was to have a version that still uses original API.
+If you prefer this to be squashed, no problem to do it.
+
+> r~
+> 
+>>
+>> diff --git a/tests/plugin/inline.c b/tests/plugin/inline.c
+>> index 6114ebca545..ae59f7af7a7 100644
+>> --- a/tests/plugin/inline.c
+>> +++ b/tests/plugin/inline.c
+>> @@ -18,15 +18,12 @@
+>>    static uint64_t count_tb;
+>>    static uint64_t count_tb_per_vcpu[MAX_CPUS];
+>>    static uint64_t count_tb_inline_per_vcpu[MAX_CPUS];
+>> -static uint64_t count_tb_inline_racy;
+>>    static uint64_t count_insn;
+>>    static uint64_t count_insn_per_vcpu[MAX_CPUS];
+>>    static uint64_t count_insn_inline_per_vcpu[MAX_CPUS];
+>> -static uint64_t count_insn_inline_racy;
+>>    static uint64_t count_mem;
+>>    static uint64_t count_mem_per_vcpu[MAX_CPUS];
+>>    static uint64_t count_mem_inline_per_vcpu[MAX_CPUS];
+>> -static uint64_t count_mem_inline_racy;
+>>    static GMutex tb_lock;
+>>    static GMutex insn_lock;
+>>    static GMutex mem_lock;
+>> @@ -50,11 +47,9 @@ static void stats_insn(void)
+>>        printf("insn: %" PRIu64 "\n", expected);
+>>        printf("insn: %" PRIu64 " (per vcpu)\n", per_vcpu);
+>>        printf("insn: %" PRIu64 " (per vcpu inline)\n", inl_per_vcpu);
+>> -    printf("insn: %" PRIu64 " (inline racy)\n", count_insn_inline_racy);
+>>        g_assert(expected > 0);
+>>        g_assert(per_vcpu == expected);
+>>        g_assert(inl_per_vcpu == expected);
+>> -    g_assert(count_insn_inline_racy <= expected);
+>>    }
+>>    
+>>    static void stats_tb(void)
+>> @@ -65,11 +60,9 @@ static void stats_tb(void)
+>>        printf("tb: %" PRIu64 "\n", expected);
+>>        printf("tb: %" PRIu64 " (per vcpu)\n", per_vcpu);
+>>        printf("tb: %" PRIu64 " (per vcpu inline)\n", inl_per_vcpu);
+>> -    printf("tb: %" PRIu64 " (inline racy)\n", count_tb_inline_racy);
+>>        g_assert(expected > 0);
+>>        g_assert(per_vcpu == expected);
+>>        g_assert(inl_per_vcpu == expected);
+>> -    g_assert(count_tb_inline_racy <= expected);
+>>    }
+>>    
+>>    static void stats_mem(void)
+>> @@ -80,11 +73,9 @@ static void stats_mem(void)
+>>        printf("mem: %" PRIu64 "\n", expected);
+>>        printf("mem: %" PRIu64 " (per vcpu)\n", per_vcpu);
+>>        printf("mem: %" PRIu64 " (per vcpu inline)\n", inl_per_vcpu);
+>> -    printf("mem: %" PRIu64 " (inline racy)\n", count_mem_inline_racy);
+>>        g_assert(expected > 0);
+>>        g_assert(per_vcpu == expected);
+>>        g_assert(inl_per_vcpu == expected);
+>> -    g_assert(count_mem_inline_racy <= expected);
+>>    }
+>>    
+>>    static void plugin_exit(qemu_plugin_id_t id, void *udata)
+>> @@ -142,8 +133,6 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+>>    {
+>>        qemu_plugin_register_vcpu_tb_exec_cb(tb, vcpu_tb_exec,
+>>                                             QEMU_PLUGIN_CB_NO_REGS, 0);
+>> -    qemu_plugin_register_vcpu_tb_exec_inline(tb, QEMU_PLUGIN_INLINE_ADD_U64,
+>> -                                             &count_tb_inline_racy, 1);
+>>        qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu(
+>>            tb, QEMU_PLUGIN_INLINE_ADD_U64,
+>>            count_tb_inline_per_vcpu, sizeof(uint64_t), 1);
+>> @@ -152,18 +141,12 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+>>            struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, idx);
+>>            qemu_plugin_register_vcpu_insn_exec_cb(insn, vcpu_insn_exec,
+>>                                                   QEMU_PLUGIN_CB_NO_REGS, 0);
+>> -        qemu_plugin_register_vcpu_insn_exec_inline(
+>> -            insn, QEMU_PLUGIN_INLINE_ADD_U64,
+>> -            &count_insn_inline_racy, 1);
+>>            qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
+>>                insn, QEMU_PLUGIN_INLINE_ADD_U64,
+>>                count_insn_inline_per_vcpu, sizeof(uint64_t), 1);
+>>            qemu_plugin_register_vcpu_mem_cb(insn, &vcpu_mem_access,
+>>                                             QEMU_PLUGIN_CB_NO_REGS,
+>>                                             QEMU_PLUGIN_MEM_RW, 0);
+>> -        qemu_plugin_register_vcpu_mem_inline(insn, QEMU_PLUGIN_MEM_RW,
+>> -                                             QEMU_PLUGIN_INLINE_ADD_U64,
+>> -                                             &count_mem_inline_racy, 1);
+>>            qemu_plugin_register_vcpu_mem_inline_per_vcpu(
+>>                insn, QEMU_PLUGIN_MEM_RW,
+>>                QEMU_PLUGIN_INLINE_ADD_U64,
+> 
 
