@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4277882C06E
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:05:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0FD82C070
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:05:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOHBX-0006nb-2t; Fri, 12 Jan 2024 08:02:55 -0500
+	id 1rOHDp-00064h-NR; Fri, 12 Jan 2024 08:05:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOHBN-00061K-IN
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:02:45 -0500
+ id 1rOHDC-0004ZG-UA
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:04:46 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOHBL-00027H-LI
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:02:45 -0500
+ id 1rOHD5-0003A4-Ei
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:04:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=YaFxIth4U9eE5pdikW1aXAmuWvCgiaPW5YzRJYFSYPk=; b=lMTeBHTkXtEMoe12dq9XcAEwZ9
- 1W2yHNuecGRWusMXEJAdiyR1FPYEuMbOZmkumxetO51+fZZxt6i8ISWGuOwBR7prq62QPJ/6T3FuC
- CyRbVn4yGaI6FwsebYnrk8b/Z6MF90qO+9qdTX6LysHYNImMVE8CkxWzRblUroT5rY8d6dMvRaVai
- HFe0DziJmZKbMAxgJhoRYTDWR1xcuXyE1eeyid6UZ80efeb6SCU61SVNCKwiyqY4lovUlnDSAAJO5
- EFj4kxyd2XrxgCyxPkuvtFZdtSG3esgIsY0yKszcCfAYFXII48bq2Pu8JmCK+fOJ4AWSfkO+/4E+u
- +LiiodoHcqKKjOQaRQSVcwuQ6Bt/OCQmc6BuTg4fyMkkRj0toQevwAuP3DOgIYGYaL5V+mrI1d+T7
- Ikn69BK4i+5bIF+m+X0kgmejhWdtwb1v2VDn8wuKG08BirXPU28Sp9eOsUAOQevH4YHu660fWzNt4
- gm1jeRx5PQS+bffA4Yp8XVJCYg6zWoH0jrP8terWRaeZqZPeT01GgJFlRB9I47pY/hWrZC+E0psqJ
- /+9dea7bMwd+j1N9WQepBbFwhoUcg+S3Ie6zFHB/BxIgfMaM/YFUUpIES0pXrLQriba4FXpfie2mt
- 9qQvtUvUJmsVx8Fw7w0nVOjlGN6mNcEs3UCasj2R4=;
+ bh=e5P4kUId6IlggOfevBgblAkFTfABYMw7RWbRatrL8t8=; b=pnGBRTjPYv5HRnmiBSOqZy3eB8
+ px2deWlPssO5TG9YqQQ2TwcYELmNEgHrjbHF+9Z3RxdfM8OnGKKsAgr+adwOaw3TNqAvM6xZs7L6f
+ 9Dys+i4uJWDjU6KVjPlQO0kqBLt7SRijGkf8qoCfeMzaToxGcBlLbxUmxhGOx5TUXMaCBcrai/gf7
+ u6qMy66+o3CyVgtzGnZCeyaw5nZQLuCvfJKWkFJ5k5zvVVcVNzsxmvQXsQyW3VNVivG3lUr2PK4K0
+ D1nghVycAWT8tPFh/wunkI1KYEr3hbLKhF159LJG89Fu4sFhqkZfLiFP7xMFHNr3pyvyQ1NsYlw9Q
+ GVOPM55oPGLRpLl/xqikFYgyokjt2w8B8LnexCZNRo7AKvCGnoxd9Vl1CjhApy5MY4Ny/NUevlHBo
+ DxaMY6A8EhnNpvaq8u+d6Jr+TlYF549BIvuQaJk5FOoqDK8staowD/hhHH40kMBcZDccHVAX56q93
+ JVFLiZilS3b5z2BZYsmTePZUPuleHXUEzt4Kxk6P0QtpxxgHhVs67j4jryNsteK5eDYLIoOywEz90
+ pjyE9onb+VYZmiw1kfp7m7WKTzXvbwKKVeiBm+OQpxH5EMcmd5FVBLrKEkIt6ky8/SXQkvZPjffm9
+ ee7PWVO7LzUKj1dljpShBwswOsRfWezy5sK5e4LRU=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH60-0008jM-6e; Fri, 12 Jan 2024 12:57:14 +0000
+ id 1rOH62-0008jM-La; Fri, 12 Jan 2024 12:57:14 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org,
  laurent@vivier.eu, thuth@redhat.com, qemu-devel@nongnu.org
-Date: Fri, 12 Jan 2024 12:53:51 +0000
-Message-Id: <20240112125420.514425-60-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 12 Jan 2024 12:53:52 +0000
+Message-Id: <20240112125420.514425-61-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
 References: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 59/88] esp.c: separate logic based upon ESP command in
- esp_transfer_data()
+Subject: [PATCH 60/88] esp.c: use deferred interrupts for both DATA IN and
+ DATA OUT phases
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,56 +78,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The handling of the INTR_FC and INTR_BS bits is different depending upon the
-last command executed by the ESP. Note that currently INTR_FC is managed
-elsewhere, but that will change soon.
+This brings DATA OUT transfers in line with DATA IN transfers by ensuring that
+the guest visible function complete interrupt is only set once the SCSI layer
+has returned.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 32 ++++++++++++++++++++++++++------
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ hw/scsi/esp.c | 35 ++++++++++++++++++-----------------
+ 1 file changed, 18 insertions(+), 17 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 75538f5859..b6cf1b43db 100644
+index b6cf1b43db..d71465718c 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -862,13 +862,33 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
+@@ -248,10 +248,8 @@ static int esp_select(ESPState *s)
+ 
+     /*
+      * Note that we deliberately don't raise the IRQ here: this will be done
+-     * either in do_command_phase() for DATA OUT transfers or by the deferred
+-     * IRQ mechanism in esp_transfer_data() for DATA IN transfers
++     * either in esp_transfer_data() or esp_command_complete()
+      */
+-    s->rregs[ESP_RINTR] |= INTR_FC;
+     s->rregs[ESP_RSEQ] = SEQ_CD;
+     return 0;
+ }
+@@ -321,20 +319,17 @@ static void do_command_phase(ESPState *s)
+     datalen = scsi_req_enqueue(s->current_req);
+     s->ti_size = datalen;
+     fifo8_reset(&s->cmdfifo);
++    s->data_ready = false;
+     if (datalen != 0) {
+         s->ti_cmd = 0;
++        /*
++         * Switch to DATA phase but wait until initial data xfer is
++         * complete before raising the command completion interrupt
++         */
+         if (datalen > 0) {
+-            /*
+-             * Switch to DATA IN phase but wait until initial data xfer is
+-             * complete before raising the command completion interrupt
+-             */
+-            s->data_ready = false;
+             esp_set_phase(s, STAT_DI);
+         } else {
+             esp_set_phase(s, STAT_DO);
+-            s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
+-            esp_raise_irq(s);
+-            esp_lower_drq(s);
+         }
+         scsi_req_continue(s->current_req);
+         return;
+@@ -832,9 +827,9 @@ void esp_command_complete(SCSIRequest *req, size_t resid)
+     case CMD_SELATN:
+         /*
+          * No data phase for sequencer command so raise deferred bus service
+-         * interrupt
++         * and function complete interrupt
+          */
+-        s->rregs[ESP_RINTR] |= INTR_BS;
++        s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
+         break;
+     }
+ 
+@@ -854,14 +849,13 @@ void esp_command_complete(SCSIRequest *req, size_t resid)
+ void esp_transfer_data(SCSIRequest *req, uint32_t len)
+ {
+     ESPState *s = req->hba_private;
+-    int to_device = (esp_get_phase(s) == STAT_DO);
+     uint32_t dmalen = esp_get_tc(s);
+ 
+     trace_esp_transfer_data(dmalen, s->ti_size);
+     s->async_len = len;
      s->async_buf = scsi_req_get_buf(req);
  
-     if (!to_device && !s->data_ready) {
--        /*
--         * Initial incoming data xfer is complete so raise command
--         * completion interrupt
--         */
+-    if (!to_device && !s->data_ready) {
++    if (!s->data_ready) {
          s->data_ready = true;
--        s->rregs[ESP_RINTR] |= INTR_BS;
--        esp_raise_irq(s);
-+
-+        switch (s->rregs[ESP_CMD]) {
-+        case CMD_SEL | CMD_DMA:
-+        case CMD_SEL:
-+        case CMD_SELATN | CMD_DMA:
-+        case CMD_SELATN:
-+        case CMD_SELATNS | CMD_DMA:
-+        case CMD_SELATNS:
+ 
+         switch (s->rregs[ESP_CMD]) {
+@@ -869,6 +863,13 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
+         case CMD_SEL:
+         case CMD_SELATN | CMD_DMA:
+         case CMD_SELATN:
 +            /*
-+             * Initial incoming data xfer is complete so raise command
-+             * completion interrupt
++             * Initial incoming data xfer is complete for sequencer command
++             * so raise deferred bus service and function complete interrupt
 +             */
-+             s->rregs[ESP_RINTR] |= INTR_BS;
-+             esp_raise_irq(s);
++             s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
 +             break;
 +
-+        case CMD_TI | CMD_DMA:
-+        case CMD_TI:
-+            /*
-+             * Bus service interrupt raised because of initial change to
-+             * DATA phase
-+             */
-+            s->rregs[ESP_RINTR] |= INTR_BS;
-+            esp_raise_irq(s);
-+            break;
-+        }
+         case CMD_SELATNS | CMD_DMA:
+         case CMD_SELATNS:
+             /*
+@@ -876,7 +877,6 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
+              * completion interrupt
+              */
+              s->rregs[ESP_RINTR] |= INTR_BS;
+-             esp_raise_irq(s);
+              break;
+ 
+         case CMD_TI | CMD_DMA:
+@@ -886,9 +886,10 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
+              * DATA phase
+              */
+             s->rregs[ESP_RINTR] |= INTR_BS;
+-            esp_raise_irq(s);
+             break;
+         }
++
++        esp_raise_irq(s);
      }
  
      /*
