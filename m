@@ -2,86 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289B082C1D1
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 15:29:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9F282C1DB
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 15:31:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOIW6-0004hV-Ot; Fri, 12 Jan 2024 09:28:14 -0500
+	id 1rOIYe-0006Ch-6g; Fri, 12 Jan 2024 09:30:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rOIVz-0004gG-8L
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 09:28:08 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rOIVv-0001up-1E
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 09:28:04 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40e68ca8ec8so3052635e9.2
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 06:28:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705069680; x=1705674480; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=l4/sArlAahq1MKWC9A5IV1cOthXjX+fytmnZdwTU7qo=;
- b=H2L9DyL0wJfU/I/eadt9rY6K2/h2se8ilZYFcQ8CjjJdModBd0JOuFmYCqaKzZ3DQi
- OdOWjKSmb7FrE1rQb9MpwOgdEM+kxKijMFScHIqwIUgwBjJodPnCek/E3CRzTUln+pKH
- ch8otJG0pgUOE42niBlc0o5epZtfSBDhAsK3YL3p1REZx0ay8t4VapRj25fzWh7iPNej
- 31cxm1ADLi2jkl4I/mAUsT1F9mpyugd1q6KAIWR8KzHjd8TkFpJoZ967H5ffLE08QWBa
- uGmCAAprWzkdA2Lf/OfHMkRxR7sKitxaln+pvhkIv54La04yGXTUMgyktSUjffzrjk23
- plwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705069680; x=1705674480;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l4/sArlAahq1MKWC9A5IV1cOthXjX+fytmnZdwTU7qo=;
- b=exTm3yafzn12CWGxYeaMebNLZ7pnqVPGrzvHJh5F5GKgj2WkIhJcvDXZhCsoSbb/v9
- B9kSmZM9kxMc2cqa2pd14vJ/4mGHN87OUxOmwyA7FUD6OIupU0r5kFshUanfSKqNqg00
- zsUmnPWqlf7DgKPkgfIRFfjASP9SBBIW9i1FisFk2htE9BQ9w8SrCOn1okhDhnMCO4sP
- rcvZjSxoP8prKstsbcrqwNL1uhk5zfVDPg90DwlGJ/mx0nb2V36ot+aX97IOGvnUZ+rB
- lwyWp1GtrXoSCN49tq7ALea8jihULTF1i8JeGA6LevMiET7rEIB+wxFhZYKgYbApU/+r
- tbgA==
-X-Gm-Message-State: AOJu0YzzJr05r+5b+S8eZK1EOisniafB6poeoQHZsI7XDn6o/2oCYWmB
- ibNBcJpcKz7nTgntHVFkxFWZ/qd8uMcgtg==
-X-Google-Smtp-Source: AGHT+IFaN283KEZ8dBg6Gax8kdVc/w/bYZ4BF17Xat5gh7ZtDpndMmKoczwSzRiUDN8C9rnwJ1N4KA==
-X-Received: by 2002:a05:600c:4f06:b0:40d:9057:68bd with SMTP id
- l6-20020a05600c4f0600b0040d905768bdmr773283wmq.111.1705069679997; 
- Fri, 12 Jan 2024 06:27:59 -0800 (PST)
-Received: from [192.168.1.24] ([102.35.208.160])
- by smtp.gmail.com with ESMTPSA id
- m22-20020a05600c4f5600b0040d5b849f38sm9992083wmq.0.2024.01.12.06.27.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Jan 2024 06:27:59 -0800 (PST)
-Message-ID: <e10e21ea-0bf9-4565-9552-e03928610161@linaro.org>
-Date: Fri, 12 Jan 2024 18:27:55 +0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rOIYS-0006Ba-9c; Fri, 12 Jan 2024 09:30:43 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rOIYQ-0003JG-1S; Fri, 12 Jan 2024 09:30:39 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 2B17A42E9C;
+ Fri, 12 Jan 2024 17:30:54 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 469306178F;
+ Fri, 12 Jan 2024 17:30:36 +0300 (MSK)
+Message-ID: <c83461c7-4231-4455-950b-8c9c5bce76d1@tls.msk.ru>
+Date: Fri, 12 Jan 2024 17:30:36 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] plugins: implement inline operation with cpu_index
- offset
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>
-References: <20240111142326.1743444-1-pierrick.bouvier@linaro.org>
- <20240111142326.1743444-2-pierrick.bouvier@linaro.org>
- <76fa391a-9f3c-4308-a84c-2b84ddadbb88@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [PULL 0/6] Firmware/edk2 20231213 patches
 Content-Language: en-US
-In-Reply-To: <76fa391a-9f3c-4308-a84c-2b84ddadbb88@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-stable <qemu-stable@nongnu.org>
+References: <20231213105026.1944656-1-kraxel@redhat.com>
+ <y2kuootd3k2tqe2245zggbuusg2kaaqrxlvxfwy2wrcbdxg3cn@zgj6tl7gd4lp>
+ <CAFEAcA8H6kVNiSk6CEVun5KWQH-sqWxBKxZ9Rf7haQhZHEKiow@mail.gmail.com>
+ <CAFEAcA-sw2FNgTft0PYL=GW0JQhdRX9Zn0B6muUjC68nmVXHnA@mail.gmail.com>
+ <e2hpw77r6t2ge6h233cq75qdadou6koz62sfktcsrlc2gzeqnq@4ejyxysmmulo>
+ <720c9dd0-f6e3-42c3-979a-290501706a80@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <720c9dd0-f6e3-42c3-979a-290501706a80@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,30 +90,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/12/24 02:04, Richard Henderson wrote:
-> On 1/12/24 01:23, Pierrick Bouvier wrote:
->> Instead of working on a fixed memory location, allow to index it based
->> on cpu_index and a given offset (ptr + cpu_index * offset).
->> Current semantic is not modified as we use a 0 offset, thus inline
->> operation still targets always the same memory location.
->>
->> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->> ---
->>    accel/tcg/plugin-gen.c | 60 +++++++++++++++++++++++++++++++++++-------
->>    include/qemu/plugin.h  |  1 +
->>    plugins/api.c          |  7 ++---
->>    plugins/core.c         | 11 +++++---
->>    plugins/plugin.h       |  5 ++--
->>    5 files changed, 65 insertions(+), 19 deletions(-)
-> 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> 
-> For the to-do list: add mul -> shl strength reduction in fold_mul().
->
+12.01.2024 17:27, Michael Tokarev:
+> There's no requirement to have Cc: qemu-stable tags on the patches.
+> This tagging is only to easily find changes which are supposed to be
+> picked up for stable, nothing more, so it's completely optional.
 
-Would you like me to add a todo somewhere about it? Or is it a reminder 
-for follow-up work?
+An additional note: without this Cc by Peter, I would've never noticed
+this patchset.
 
-> 
-> r~
+/mjt
 
