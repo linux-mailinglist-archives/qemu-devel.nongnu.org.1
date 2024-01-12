@@ -2,84 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D2D82C133
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:56:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE0C82C13B
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:59:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOI18-0007ug-3x; Fri, 12 Jan 2024 08:56:14 -0500
+	id 1rOI3b-0001UJ-Qf; Fri, 12 Jan 2024 08:58:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rOI15-0007n0-Gn
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:56:11 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1rOI3a-0001SY-3B
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:58:46 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rOI13-0002Vd-Nr
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:56:11 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40e60e137aaso17016675e9.0
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 05:56:09 -0800 (PST)
+ id 1rOI3X-0003vn-Mv
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:58:45 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40e6977d936so324785e9.0
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 05:58:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705067768; x=1705672568; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AOB8JnVE3SX6iRInWd6TCVKBhgs5LElYDobunt8K5us=;
- b=U6UhZZQFVWlPzrntxD9Uv9qGUJsOQA0g6f52Y6CaNyaiNW/Rdkm6TVHQ2r+cQ9RYxG
- 74pSAhnholL78NVkIHBGj7Z2iQ6CIJn0Wy8JyQKZ9YnHBpjSt2uF0n/2OkjLZkfWg/cG
- R+JYODWmI/lG9FAjyq+OudX8TbWGmfSwoPhfFalixi33T81KV46WdjGLGhlsHnXqvcsF
- 1WjOTqaTPeB4rfA4a3BAsirK6xnYuuqScJtmtpNf4XSIVoUFEx4/HXoGUNAitknkr6V9
- GcR6WyETQxLLkTsdf/+ckT3cAQn84MPaWZfxqvdWQczWPxpzTyxZ0QKYBkvqGMbydYMa
- o1/g==
+ d=linaro.org; s=google; t=1705067921; x=1705672721; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9Zuc+Lj0f2rU6ef765YNz5uR5mxcw0c3Fpks+jclxOk=;
+ b=OA5PqcfLZrKZAknN0y+AyZVwo1EgetKswCVX4JfJjOBn5MbOaWxqpuJfAM0kYyEndD
+ LHHbV3ElG/LgULrYxFktDaLnDpMjF0WV6Ilv4tw6QqAq8PQr/O2MbsQu6N/YN0EeB1C1
+ qb4V1GAfX2LxzGR/zQiWcc265m7TMixnBf5zmgfdXSpEeorJ/X/HRv0Ew3L3MDIuFkq2
+ 6f3xNSjKux2z56t+I+xdNxScwRptN95ugzFtaq0ym3Pmbn16Ys2bdkVQmThvlNHh1EX2
+ fm4S0B10IABp1EPq93D078uKtXVQd/7cAbR/Y0ozTlf1uVNb9LSNkj3kt+IvUUdlmeoq
+ 4fXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705067768; x=1705672568;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=AOB8JnVE3SX6iRInWd6TCVKBhgs5LElYDobunt8K5us=;
- b=erzWHN+fOVZyY8XivItDnWF5C5cjTkc2Y6elAA9eBq95hnmhj1sph4IWbgWmiV0sae
- Tzjj2vt721yNBVuAI9vCi3/80Fjbo5Et8HMu0uk7hyukLbsPdOdZ6ga31GRwA7jaOZUX
- w1w7Az7JCeRxJocDpUVsjAo8uoHSbf4Pzd91QgC2lyjW9uH77f1N5ESVRaO4ZKBC/ly3
- Mp3j5fGCnp1CIfOhH4G3Zz9Sj/DWUd/SX7OAwMY7UqtmHWQ5f4URsg1c30k7w6QFTlGd
- Iu2IH/9bmtSUa+APgmjBCPVZUOcgi7fJ3J0iW1lUu2Xm2QxgQs13uB6/On12YtuY5fxy
- pOQg==
-X-Gm-Message-State: AOJu0YzWvkt4LKVjkdOBKeO88n/C2aGyNsOQCJdN/QFaFGqOLUygcqlp
- S/OxnLf6osEw6AlilcbQZxb4yEfwAk9Ulg==
-X-Google-Smtp-Source: AGHT+IEa5aOGGd6elo7lF7xI4ybVKMItLa9QTtJ7HJRr3ckjMycVA8LjLnWzE+WcGqMlocCBDGvr7A==
-X-Received: by 2002:a05:600c:45ca:b0:40e:45be:3d92 with SMTP id
- s10-20020a05600c45ca00b0040e45be3d92mr877069wmo.106.1705067768203; 
- Fri, 12 Jan 2024 05:56:08 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705067921; x=1705672721;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9Zuc+Lj0f2rU6ef765YNz5uR5mxcw0c3Fpks+jclxOk=;
+ b=KBkngoVSfkbbaM9iUwJXo9S3A1qMgQuJRwqJrTb9vTWgPEHWe2oVIQxHdsvpsYRKZy
+ tgTkI0LUzRGIVJycrP4+FieXQ6daFYT4+KgsQ07vLdT5qi9AGlzzbKFL1EiS5EIgjlDl
+ bxxCGOC5ziOUM7Y+ZdK0pH6C7JSsOJpqB2sLKbbtElKuJ2baKcJJxbMntuvTFr1tml9z
+ zjvSKED3w9ysAnNUmu979QG5gUug/YUc3WRAWlFuj2DZ626+Xz0aUhBewMRHNYnfyOii
+ fB8XkkjELXHreGCY+1uxyhjO0aPynpvWKECCgY5womEdwd5GiDYxs8LQqciYghtnhh5A
+ dZGw==
+X-Gm-Message-State: AOJu0Yy+NkeZUmJNVT5ylLItEAW/l33+fdy9ojpInCJpd1j2PH2ckitC
+ +LbmVvNsoBzVTGXjurY8AqGpVOQNtFAi99mhdoqS7nS4Voo=
+X-Google-Smtp-Source: AGHT+IFkhpifuD9ps6wE48XfGcrMtppch4k/3fHJTk5N0PbR1j+3rHz7g9bd+/NcgobxQCnbdVOF6w==
+X-Received: by 2002:a05:600c:214e:b0:40d:8780:2aff with SMTP id
+ v14-20020a05600c214e00b0040d87802affmr660274wml.131.1705067921006; 
+ Fri, 12 Jan 2024 05:58:41 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- p10-20020a05600c358a00b0040e559e0ba7sm9611323wmq.26.2024.01.12.05.56.07
+ o8-20020a05600c510800b0040e624995f1sm4639223wms.8.2024.01.12.05.58.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jan 2024 05:56:07 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7116D5F760;
- Fri, 12 Jan 2024 13:56:07 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org,  Palmer Dabbelt <palmer@dabbelt.com>,  Alistair
- Francis <alistair.francis@wdc.com>,  Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>,  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: Re: [PATCH v2 23/43] target/riscv: Remove misa_mxl validation
-In-Reply-To: <CAKmqyKPCy9W-iYscHLjVvU=RfoSLURFgdki0qdzgNSkLKqutyg@mail.gmail.com>
- (Alistair Francis's message of "Fri, 12 Jan 2024 09:29:35 +1000")
-References: <20240103173349.398526-1-alex.bennee@linaro.org>
- <20240103173349.398526-24-alex.bennee@linaro.org>
- <87sf37hlwo.fsf@draig.linaro.org>
- <CAKmqyKPCy9W-iYscHLjVvU=RfoSLURFgdki0qdzgNSkLKqutyg@mail.gmail.com>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Fri, 12 Jan 2024 13:56:07 +0000
-Message-ID: <875xzyejuw.fsf@draig.linaro.org>
+ Fri, 12 Jan 2024 05:58:40 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 5F9A75F760;
+ Fri, 12 Jan 2024 13:58:40 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL v2 00/22] testing and misc updates
+Date: Fri, 12 Jan 2024 13:58:40 +0000
+Message-Id: <20240112135840.3828701-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,54 +91,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alistair Francis <alistair23@gmail.com> writes:
+The following changes since commit 3fab43d2f638b98765b0f8ef033ec93e3ea6b809:
 
-> On Tue, Jan 9, 2024 at 1:43=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@lina=
-ro.org> wrote:
->>
->> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
->>
->> > From: Akihiko Odaki <akihiko.odaki@daynix.com>
->> >
->> > It is initialized with a simple assignment and there is little room for
->> > error. In fact, the validation is even more complex.
->> >
->> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> > Acked-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
->> > Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> > Acked-by: Alistair Francis <alistair.francis@wdc.com>
->> > Message-Id: <20231213-riscv-v7-2-a760156a337f@daynix.com>
->> > Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->>
->> ping: along with this are the RiscV maintainers happy for me to take:
->>
->>   [PATCH v2 23/43] target/riscv: Remove misa_mxl validation
->>   [PATCH v2 24/43] target/riscv: Move misa_mxl_max to class
->>   [PATCH v2 25/43] target/riscv: Validate misa_mxl_max only once
->>
->> through my next pull request?
->
-> Yep! Go for it
+  Merge tag 'firmware/edk2-20231213-pull-request' of https://gitlab.com/kraxel/qemu into staging (2024-01-11 15:19:42 +0000)
 
-Sadly some of the recent changes that went through have created a merge
-conflict.
+are available in the Git repository at:
 
-Akihiko,
+  https://gitlab.com/stsquad/qemu.git tags/pull-testing-updates-120124-2
 
-Any chance you could re-spin just the MISA_MXL patches?
+for you to fetch changes up to 139db3cc5967e995e039c9cc2228c627cef7c1cf:
 
->
-> Alistair
->
->>
->> <snip>
->>
->> --
->> Alex Benn=C3=A9e
->> Virtualisation Tech Lead @ Linaro
->>
+  tests/avocado: partially revert unmasking of replay_linux tests (2024-01-12 13:23:48 +0000)
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+----------------------------------------------------------------
+testing and misc updates
+
+  - add LE microblaze test to avocado
+  - use modern snapshot=on to avoid trashing disk image
+  - use plain bool for fe_is_open
+  - various updates to qtest timeouts
+  - enable meson test timeouts
+  - tweak the readthedocs environment
+  - partially revert un-flaking x86_64
+
+----------------------------------------------------------------
+Alex Bennée (5):
+      tests/avocado: use snapshot=on in kvm_xen_guest
+      gitlab: include microblazeel in testing
+      chardev: use bool for fe_is_open
+      readthodocs: fully specify a build environment
+      tests/avocado: partially revert unmasking of replay_linux tests
+
+Daniel P. Berrangé (12):
+      qtest: bump min meson timeout to 60 seconds
+      qtest: bump migration-test timeout to 8 minutes
+      qtest: bump qom-test timeout to 15 minutes
+      qtest: bump npcm7xx_pwm-test timeout to 5 minutes
+      qtest: bump test-hmp timeout to 4 minutes
+      qtest: bump pxe-test timeout to 10 minutes
+      qtest: bump prom-env-test timeout to 6 minutes
+      qtest: bump boot-serial-test timeout to 3 minutes
+      qtest: bump qos-test timeout to 2 minutes
+      qtest: bump aspeed_smc-test timeout to 6 minutes
+      qtest: bump bios-table-test timeout to 9 minutes
+      mtest2make: stop disabling meson test timeouts
+
+Thomas Huth (5):
+      tests/avocado: Add a test for a little-endian microblaze machine
+      tests/qtest: Bump the device-introspect-test timeout to 12 minutes
+      tests/unit: Bump test-aio-multithread test timeout to 2 minutes
+      tests/unit: Bump test-crypto-block test timeout to 5 minutes
+      tests/fp: Bump fp-test-mulAdd test timeout to 3 minutes
+
+ docs/requirements.txt               |  2 ++
+ include/chardev/char-fe.h           | 19 ++++++++++++-------
+ chardev/char-fe.c                   | 16 ++++++++--------
+ chardev/char.c                      |  2 +-
+ .gitlab-ci.d/buildtest.yml          |  4 ++--
+ .readthedocs.yml                    | 19 ++++++++++++-------
+ scripts/mtest2make.py               |  3 ++-
+ tests/avocado/kvm_xen_guest.py      |  2 +-
+ tests/avocado/machine_microblaze.py | 26 ++++++++++++++++++++++++++
+ tests/avocado/replay_kernel.py      |  3 +++
+ tests/fp/meson.build                |  2 +-
+ tests/qtest/meson.build             | 25 +++++++++++++------------
+ tests/unit/meson.build              |  2 ++
+ 13 files changed, 85 insertions(+), 40 deletions(-)
+ create mode 100644 docs/requirements.txt
+
+-- 
+2.39.2
+
 
