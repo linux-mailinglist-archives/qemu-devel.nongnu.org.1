@@ -2,66 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9211D82C081
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:06:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 453C982C0A6
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:15:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOHDm-0005a6-OV; Fri, 12 Jan 2024 08:05:14 -0500
+	id 1rOHKF-0005KS-FZ; Fri, 12 Jan 2024 08:11:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOHDN-0004ek-RH
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:04:57 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOHDI-0003AW-R0
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:04:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=smlVZmV9rs78GsLFFCye6cQ56AeVA+Z6TX5m3wCBznI=; b=gD9pWl1DA0Tg8GR5qxvqAL0QF5
- d6MggctbhvMeI6mmCs04lVEr8OIWSNn7gRc8Yx4GMPMyMQDJGUNGBY61Q4zSQQlZe1V0A8nHAnymr
- lyrWDovjH0VJuBVImsF8Bld1bmTNgACCV2gnTtdQaQBV4ulJSovVq123QlOwlUtG7E2UIwIe+WJ2a
- Sja1wDHO8+8vyHk3o5fgMfF7ygo3QBawXFVweKh5VU/8XA3md7TWJ04F0Ouu9QRjHfOwRRxwPfst/
- x5ndvMlFx/2Fd7xwpJOjy7ggzg5nGCiJQp0WXZK4qopyq+SLVmzeotyc6d+OTI1JWItrvOb2nNJfB
- 0ycb7HpWgJtnCm2tMZ2OViyiw2zH8/N2PPASyFttyV6tRz48G+lhQA81NlKh9ci5i/4MJUGMRkis/
- U7/zaZojlU1DbxmrZCu2bx4XepAjtxbnSTRItq4KdlB1CWjRh7WLDHxojcYLWmbbe0OcC7gDHljX0
- A799Vz69Boaz76CU2NB/RfjgXM4ui5kGExNQCsg4oUUq1/Cae7NrO7H0hzDXCE909jDH3ovqX6VMm
- yHu7g3uzEleA2c+76iy8XEZqaBBq1gQgMiH0O9yRhUPNHX50y8rdPxIu2DFKd6xNvSdEb8NGljXIE
- QCbmJ4y5oZPMMUNReNgdSjbA0YXrICGyd2Mv9HHVg=;
-Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
- (helo=cheesecake.fritz.box)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH7Q-0008jM-PF; Fri, 12 Jan 2024 12:58:40 +0000
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org,
- laurent@vivier.eu, thuth@redhat.com, qemu-devel@nongnu.org
-Date: Fri, 12 Jan 2024 12:54:20 +0000
-Message-Id: <20240112125420.514425-89-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
-References: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rOHK8-0005Hq-9t
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:11:48 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rOHK6-0006JM-3E
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:11:48 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3368abe1093so4927236f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 05:11:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705065103; x=1705669903; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qvomdc0NwBwCxQ/2gZuOKk1li0juoJJtoSCvd8aovNQ=;
+ b=hpSW8dhoDsM0HM2lZnmmPZQYOXNhK7XLOHhPVqEACK71Q9vpO6vrOaz97EgOTrlclU
+ pgz8H+FeTHl3+SMd2YBYNbBG4cliWRwAEWM8bNSvwSiQ4FufLgHHGqpnzcfvAJ8DiCpZ
+ aumo1jQP4e1DqWvA5tqS+FWBih8u5zsy8ObUMtZi9dGNqNWAnBPRNh3AbJXEyvovWOi7
+ 8cL7vRy+WicEd0Z6GjS0Zh3qdjawVsTsw6NiL3+frSJHLVHimsTbcsTMyjNT23C/PjKn
+ 8TmcowXwzeualK/dNUUgD/XTsalEYOnaxLeGsOI+k6uCtq7vKNqpvpo75X09ePsGa1zv
+ zUsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705065103; x=1705669903;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=qvomdc0NwBwCxQ/2gZuOKk1li0juoJJtoSCvd8aovNQ=;
+ b=FUaFCcKuP05lw3PZH1I7mjpuz5Xsu1Fa4M0FxyOh6ZWOqoZAA34N0XBATnyFWQ5aMT
+ Xrt9U5LCL1ZNsKTAJOgssysmkrlZEEDwEYOe0eLmbcx4QrrOLJuRCF134KBa6Q4PmrEJ
+ KYg/qHO3nZwgFnSyR7mVlOFU+sc6xhXXw9FxbERCBxsH6W8diZFStEJPiJAN0GaV/U1c
+ gX3LGZYKtRO457CnknLlDCFj92lF6q8nUoqPDCtxOI/yGSKzswWa4Iu+unMYjHHdiZoK
+ mnXkF4sF0yMg/URpWHH3SskjE8wQqxm8G+fvtbr9y7vjT4yNEFljjoBer41t2QH4hCDy
+ sTjA==
+X-Gm-Message-State: AOJu0Yw8HJrWxB3FC5HCSB6cSHS78r/p/ja7j/V6vS9VNoY0Hf6N73b9
+ H+LXF0n5xIe/OuljhcHkJcn8crRZ241nZg==
+X-Google-Smtp-Source: AGHT+IE+50uH+FH5A/XMmxy5ikq3qsCRlsxFXy6b7jHaLJOv19Ex3ujCqvdMWoAHLYnHHB9QQ+AEeg==
+X-Received: by 2002:a05:6000:1103:b0:337:99f5:b53a with SMTP id
+ z3-20020a056000110300b0033799f5b53amr47723wrw.54.1705065103155; 
+ Fri, 12 Jan 2024 05:11:43 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ z15-20020a056000110f00b00336751cd4ebsm3888203wrw.72.2024.01.12.05.11.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 12 Jan 2024 05:11:42 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 8B45D5F760;
+ Fri, 12 Jan 2024 13:11:42 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>,  Cleber Rosa <crosa@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Wainer dos
+ Santos Moschetta <wainersm@redhat.com>,  Beraldo Leal <bleal@redhat.com>
+Subject: Re: [PULL 22/22] Revert "tests/avocado: remove skips from
+ replay_kernel"
+In-Reply-To: <CAFEAcA8p6S-6bYXO9w2eBP=UTy0vYbBOrgaoscOE=xv3K0z-PA@mail.gmail.com>
+ (Peter Maydell's message of "Fri, 12 Jan 2024 11:13:11 +0000")
+References: <20240112110435.3801068-1-alex.bennee@linaro.org>
+ <20240112110435.3801068-23-alex.bennee@linaro.org>
+ <CAFEAcA8p6S-6bYXO9w2eBP=UTy0vYbBOrgaoscOE=xv3K0z-PA@mail.gmail.com>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Fri, 12 Jan 2024 13:11:42 +0000
+Message-ID: <87h6jielwx.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 88/88] esp.c: add my copyright to the file
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,27 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series has involved rewriting and/or updating a considerable part of the ESP
-emulation so update the copyright in esp.c to reflect this.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
----
- hw/scsi/esp.c | 1 +
- 1 file changed, 1 insertion(+)
+> On Fri, 12 Jan 2024 at 11:11, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
+rote:
+>>
+>> This reverts commit c2ef5ee89d76f0ab77c4dd6a1c9eeed4d35d20ed.
+>>
+>> While the fixes for #2010 and #2013 have improved things locally it
+>> seems GitLab still continues to be flaky.
+>>
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>>
+>> diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kerne=
+l.py
+>> index 6fdcbd6ac3d..1eaa36444cb 100644
+>> --- a/tests/avocado/replay_kernel.py
+>> +++ b/tests/avocado/replay_kernel.py
+>> @@ -98,10 +98,13 @@ def test_i386_pc(self):
+>>
+>>          self.run_rr(kernel_path, kernel_command_line, console_pattern, =
+shift=3D5)
+>>
+>> +    # See https://gitlab.com/qemu-project/qemu/-/issues/2010
+>> +    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test sometimes get=
+s stuck')
+>>      def test_x86_64_pc(self):
+>>          """
+>>          :avocado: tags=3Darch:x86_64
+>>          :avocado: tags=3Dmachine:pc
+>> +        :avocado: tags=3Dflaky
+>>          """
+>>          kernel_url =3D ('https://archives.fedoraproject.org/pub/archive=
+/fedora'
+>>                        '/linux/releases/29/Everything/x86_64/os/images/p=
+xeboot'
+>> @@ -132,6 +135,8 @@ def test_mips_malta(self):
+>>
+>>          self.run_rr(kernel_path, kernel_command_line, console_pattern, =
+shift=3D5)
+>>
+>> +    # See https://gitlab.com/qemu-project/qemu/-/issues/2013
+>> +    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable o=
+n GitLab')
+>>      def test_mips64el_malta(self):
+>>          """
+>>          This test requires the ar tool to extract "data.tar.gz" from
+>
+> These gitlab issues are both currently closed -- if we think the
+> problem is still present and are re-introducing the skip lines,
+> we should re-open the issues, I think.
 
-diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index b8762d5ee0..590ff99744 100644
---- a/hw/scsi/esp.c
-+++ b/hw/scsi/esp.c
-@@ -3,6 +3,7 @@
-  *
-  * Copyright (c) 2005-2006 Fabrice Bellard
-  * Copyright (c) 2012 Herve Poussineau
-+ * Copyright (c) 2023 Mark Cave-Ayland
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy
-  * of this software and associated documentation files (the "Software"), to deal
--- 
-2.39.2
+Hmm - I certainly fixed some bugs under those two. I think I'll re-spin
+with a new bug raised.
 
+>
+>
+> thanks
+> -- PMM
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
