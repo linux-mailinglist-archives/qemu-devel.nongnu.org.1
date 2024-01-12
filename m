@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F270582C051
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:01:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F141782C052
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:01:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOH3r-0007fO-3D; Fri, 12 Jan 2024 07:54:59 -0500
+	id 1rOH3u-0007gD-6h; Fri, 12 Jan 2024 07:55:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH3m-0007eS-Ub
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:54:54 -0500
+ id 1rOH3q-0007fV-Lg
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:54:58 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH3k-0006Rs-SU
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:54:54 -0500
+ id 1rOH3p-0006U8-6W
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:54:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=2Z7t6nFfDDvi+pCFGJVq7Tjpp5/DfqHou+6ng4VXJgs=; b=q5Vc8FrxbzrL6PDqZvsDYBcc1y
- kaxPjSBk4NwaKgqWL8/CYnZNxBdi3AyOlqniklVm+BvzYPSfOvWY4y4Z2TlxextOCl8z2owwZycaO
- tkauEdMR/85y7gny7G1bayDpGgL0Qp3qtx0bQSJpJgP6Rl6AiKtM54xGSdT9zEtuhVMPRjwJ7sl9V
- Qvh7oYDTc9WdhSVZqEkeXutVZ+2F7c3txAYod/2QglliEjraepMh1JZr+nW527AsZ1thwGd46WdRo
- VGdNQRE522Bo8nfXiPc6TQLh+Kkt0T0gObRWPfiZFFaaw8BB9jeh6srqS82roZMaW9KAtVrhCglBh
- qqgGRsARCWhXdpLJvU/F/2ajx1fJ7kUlKurHeDht4TRGYNKfs2bRCIOGI9Cqk1us9e4QEGzB2+QI7
- oL/TqBCMI9i0AQALrWkda5E8suBVJbTB34gktk+kPL/5rY349lFcNtw/WTvY7Opu70QxEagrQMYnM
- ZjeMDicECq1dQI343OJCL7nKXXaeJ+MDcXq1iXTpcjeiGUb8kDmpClcmfVUs0OrcqSfnXK0e44qab
- rc8XE7GXNNpMiykj/qUxEdH2JEU27NMJRgYt6mXEKSYHXuTnKj9k2iUE2k25TKO0YXAR2AuOerLes
- 7PLCPxjLD4oVTVnXT3Kj1FFyLYHiM6xJy23l5TSFY=;
+ bh=bOun1zsF8nfOtU07eyhiinZkCZ4tXaO6uzVOI4lszwk=; b=1Nd+JOCPOX2pf1nv45tYLjiI43
+ l2vnwwnt3+uPvZe/CQK+wvIOKr7GOtafcyHE+Goo9DRY+k0ASrcqwd2rEmBGG/+Exs+9mxCQAJZfJ
+ Egwe4gXxhmTQsPh0ip/49k0Ksn2LJvewuqqH0oxJmfFPYIQ4nPF6m48QQdAImnAjFt1nJcupQ4MlR
+ PMIH5PJ8G+VahV9Atf+kChO1VGcfbEY4XTEoHy3VGQpYy7oV/YY0++HOolC6P+XM25o0VNAdIfQze
+ iFsP9X7amFiP1iS2kUFHMsqcN+Hizh5VGMx/myf0APFgpHFKvThcDA21q23itiVT3QBqZVcZOHLGW
+ xlYY93LLbLyl1HtYsUKHx/Ni6QKxPy1UcvEjfbYkMpcaG6QntV6KBjBtImd0jFGdvqSfu4ry61Y5i
+ HDagprjEhFhTCfAQFiSIl7K6fRiENMFpeKrf86kyGiWOiGOs3xVBgt0zwUoueoYw3H4Ps6n8qSsNN
+ iwG8uBDytehP1+U6rtaIMeY77CwiDykYb+eeWT+xzU2DgnICxt8MKod3raaCrriVBOFSk2qdMlsKe
+ UtlZ2sJzX4JeRX1Sf5ROxrJQWpJeWRVDkFvY3dOtRFYskMMtHLz/9dHWebdyVgOogOI+VYYsRmNU2
+ FKPKjQksefKnwfzcZoyuYaHMrMJWGBacmer0989J8=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH39-0008jM-Ow; Fri, 12 Jan 2024 12:54:15 +0000
+ id 1rOH3A-0008jM-5l; Fri, 12 Jan 2024 12:54:20 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org,
  laurent@vivier.eu, thuth@redhat.com, qemu-devel@nongnu.org
-Date: Fri, 12 Jan 2024 12:52:57 +0000
-Message-Id: <20240112125420.514425-6-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 12 Jan 2024 12:52:58 +0000
+Message-Id: <20240112125420.514425-7-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
 References: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 05/88] esp: move esp_select() to ESP selection commands from
- get_cmd()
+Subject: [PATCH 06/88] esp: update esp_set_tc() to set STAT_TC flag
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,98 +77,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the DREQ value depends upon the result of the selection process, add a
-workaround to each esp_select() to manually assert DREQ durring the MESSAGE OUT
-and COMMAND phases.
+This flag is set once the transfer counter counts down to zero.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ hw/scsi/esp.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 89fce05e58..8c1c6bfc1c 100644
+index 8c1c6bfc1c..c7b79a2949 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -263,10 +263,6 @@ static uint32_t get_cmd(ESPState *s, uint32_t maxlen)
-             dmalen = MIN(fifo8_num_free(&s->cmdfifo), dmalen);
-             fifo8_push_all(&s->cmdfifo, buf, dmalen);
-         } else {
--            if (esp_select(s) < 0) {
--                return -1;
--            }
--            esp_raise_drq(s);
-             return 0;
-         }
-     } else {
-@@ -280,9 +276,6 @@ static uint32_t get_cmd(ESPState *s, uint32_t maxlen)
-     }
-     trace_esp_get_cmd(dmalen, target);
+@@ -161,9 +161,15 @@ static uint32_t esp_get_tc(ESPState *s)
  
--    if (esp_select(s) < 0) {
--        return -1;
--    }
-     return dmalen;
+ static void esp_set_tc(ESPState *s, uint32_t dmalen)
+ {
++    uint32_t old_tc = esp_get_tc(s);
++
+     s->rregs[ESP_TCLO] = dmalen;
+     s->rregs[ESP_TCMID] = dmalen >> 8;
+     s->rregs[ESP_TCHI] = dmalen >> 16;
++
++    if (old_tc && dmalen == 0) {
++        s->rregs[ESP_RSTAT] |= STAT_TC;
++    }
  }
  
-@@ -380,12 +373,18 @@ static void handle_satn(ESPState *s)
-         return;
-     }
-     esp_set_pdma_cb(s, SATN_PDMA_CB);
-+    if (esp_select(s) < 0) {
-+        return;
-+    }
-     cmdlen = get_cmd(s, ESP_CMDFIFO_SZ);
-     if (cmdlen > 0) {
-         s->cmdfifo_cdb_offset = 1;
-         s->do_cmd = 0;
-         do_cmd(s);
-     } else if (cmdlen == 0) {
-+        if (s->dma) {
-+            esp_raise_drq(s);
-+        }
-         s->do_cmd = 1;
-         /* Target present, but no cmd yet - switch to command phase */
-         s->rregs[ESP_RSEQ] = SEQ_CD;
-@@ -411,12 +410,18 @@ static void handle_s_without_atn(ESPState *s)
-         return;
-     }
-     esp_set_pdma_cb(s, S_WITHOUT_SATN_PDMA_CB);
-+    if (esp_select(s) < 0) {
-+        return;
-+    }
-     cmdlen = get_cmd(s, ESP_CMDFIFO_SZ);
-     if (cmdlen > 0) {
-         s->cmdfifo_cdb_offset = 0;
-         s->do_cmd = 0;
-         do_cmd(s);
-     } else if (cmdlen == 0) {
-+        if (s->dma) {
-+            esp_raise_drq(s);
-+        }
-         s->do_cmd = 1;
-         /* Target present, but no cmd yet - switch to command phase */
-         s->rregs[ESP_RSEQ] = SEQ_CD;
-@@ -446,6 +451,9 @@ static void handle_satn_stop(ESPState *s)
-         return;
-     }
-     esp_set_pdma_cb(s, SATN_STOP_PDMA_CB);
-+    if (esp_select(s) < 0) {
-+        return;
-+    }
-     cmdlen = get_cmd(s, 1);
-     if (cmdlen > 0) {
-         trace_esp_handle_satn_stop(fifo8_num_used(&s->cmdfifo));
-@@ -456,6 +464,9 @@ static void handle_satn_stop(ESPState *s)
-         s->rregs[ESP_RSEQ] = SEQ_MO;
-         esp_raise_irq(s);
-     } else if (cmdlen == 0) {
-+        if (s->dma) {
-+            esp_raise_drq(s);
-+        }
-         s->do_cmd = 1;
-         /* Target present, switch to message out phase */
-         s->rregs[ESP_RSEQ] = SEQ_MO;
+ static uint32_t esp_get_stc(ESPState *s)
 -- 
 2.39.2
 
