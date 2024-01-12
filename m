@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 358A182C0B7
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4B482C0A1
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:14:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOHDr-0006O8-26; Fri, 12 Jan 2024 08:05:19 -0500
+	id 1rOHBh-0000K1-Uq; Fri, 12 Jan 2024 08:03:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOHDm-0005yP-Ds
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:05:14 -0500
+ id 1rOHBe-0008PE-7T
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:03:02 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOHDk-0003a6-Bj
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:05:14 -0500
+ id 1rOHBa-0002J3-VX
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:03:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=IL7dkV0KEoDsJkhEOTP7/jzlgKLuLvovOal0c7WQ+LQ=; b=TDlCV48hixLjSrS4Y4bnBHGUpW
- Lz6BQbhXYNntHoAcYxgFlwGJqXcG28B+xkr/miZB05leMIMj0TZyj62moGyNQ6QdMrPguEU56BmmH
- lR7KWfKmltM3jmCUfcan/cj6uUDZMHh+12EzSJ5N2xlXSzzU2MowIf5GgEmiQ0a7M1JW0MYqzDpcF
- YiKciJt6PJIkHMNGe3q3vfd3yTEKbcUBYXR0n716irfaXN4aAB5ByK3B9gc/iJYw1wdzYetv+Fh6T
- G5OaMcmruxyomPVWTZpfZBcUF9TqPFMaDgxk5mB1gop7NRL8k+RjPn6OiBXKiww8+RnBw0X6hneEd
- mOO6lYBBuFyFnNtk2ET1z9uABDN121ywyJC3ZYqfTJstFV5zyoV+T5pSaBfMTAD7S9WzUFIqO443w
- JihRQ1jGhcgaKTzAZn14uGTNuw+ettAXHnqvrgnWsh/Zyvestsmslhvpe+UGVx2kV3hIB66b2cPE6
- YvS/NfsbGp2L2KjAOFnR7/44bFNdkNyw575/P8Y4jVNDKA/F/Xww1FR/6F+U6zzLm1/LnM/QGv00T
- ekl/8qSn2vVINBMovrdUXjvkjoB6v65QsMTy9rszg+iSJaWezt2WDk17HgtWCt9+jNhA+zyJOx36E
- EHBTN0rnLxGKofyu3/i+i/WZc3yKPiwuphbb07Hgk=;
+ bh=dqtNfmH/y5LEFl4e5Sf22fl1pgdCOZPPeZCqeQS8/KE=; b=mF2aN2mlhh7zDSZ0ZXm9uez0xf
+ 39+xpj5cZ4hwZzy6sVRezvlDOtn/9deDqS6E0tNMXJN+LV4cWqdmDjH87qC6+gz68yfXqCCjtsWzF
+ e2jUzrulaGSW63wCxTDo0HTrG1+qM+XyEhNGG7B7VFirVBOEm2Qj+btFhgWPhzmF9B4XjHT7gCbwp
+ Olpx22uVF0TQSXBDgMoHVhWYKWohBMWUF6gcR+HEPqlZDc1vSpPUvALG232faCH/K6bv+ROeNT8jp
+ pTpl0c1B8bJ4omt/KOnRfj72GkD2dB1RXrhu5gr5ysWgROtvHatiVruAkMYv4v7hOs6j94uigKlJS
+ ZOakryoiiW1Sd1yrmAMJz7ZsTpz+sJ8oL7J7ACzKuS1GrYoVaTTx158y9WTevmGHu/lFl59fQSffi
+ 3uJ9hz7NvD7tKhisUuiZz7zH3oBXpFDtwc67I6A1QeZYt73tjA4mnmugNZpRcaydfcnKNiI1NHCjz
+ VEPsydGcRW3cQQP4bEQK7bFJAN25C7OZoyXa+zm31IEjIFuo8xONN2oT2bfLvKfVxLdo0i8vt9Ssj
+ 3r7plBvRnvoQr7dSrxokrWe4cPlg6c/IeIh9Tin/557B4l1R63UWe3QDQ5UG85+3OBziD7oYEnxIJ
+ oyPV3HaI9bqCYDrTRDRDMpEB1H0p8vubhuFJUqJq4=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH7D-0008jM-5x; Fri, 12 Jan 2024 12:58:31 +0000
+ id 1rOH7H-0008jM-Eu; Fri, 12 Jan 2024 12:58:35 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org,
  laurent@vivier.eu, thuth@redhat.com, qemu-devel@nongnu.org
-Date: Fri, 12 Jan 2024 12:54:15 +0000
-Message-Id: <20240112125420.514425-84-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 12 Jan 2024 12:54:16 +0000
+Message-Id: <20240112125420.514425-85-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
 References: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 83/88] esp.c: replace n variable with len in esp_do_nodma()
+Subject: [PATCH 84/88] esp.c: implement DMA Transfer Pad command for DATA
+ phases
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,112 +78,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This brings esp_do_nodma() in line with esp_do_dma().
+The Transfer Pad command is used to either drop incoming FIFO data during the
+DATA IN phase or generate a series of zero bytes in the FIFO during the DATA
+OUT phase.
+
+Implement the DMA Transfer Pad command for the DATA phases which is used by
+the NeXTCube firmware in the DATA IN phase to ignore part of the incoming SCSI
+data as it is copied into memory.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ hw/scsi/esp.c | 97 ++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 69 insertions(+), 28 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 879e311bc4..73379a3c65 100644
+index 73379a3c65..5583b3eb56 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -675,16 +675,16 @@ static void esp_do_nodma(ESPState *s)
+@@ -387,6 +387,15 @@ static void handle_satn_stop(ESPState *s)
+     }
+ }
+ 
++static void handle_pad(ESPState *s)
++{
++    if (s->dma) {
++        esp_do_dma(s);
++    } else {
++        esp_do_nodma(s);
++    }
++}
++
+ static void write_response(ESPState *s)
  {
-     uint8_t buf[ESP_FIFO_SZ];
-     uint32_t cmdlen;
--    int n;
-+    int len;
+     trace_esp_write_response(s->status);
+@@ -518,20 +527,38 @@ static void esp_do_dma(ESPState *s)
+             len = s->async_len;
+         }
  
-     switch (esp_get_phase(s)) {
-     case STAT_MO:
-         switch (s->rregs[ESP_CMD]) {
-         case CMD_SELATN:
-             /* Copy FIFO into cmdfifo */
--            n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
--            n = MIN(fifo8_num_free(&s->cmdfifo), n);
--            fifo8_push_all(&s->cmdfifo, buf, n);
-+            len = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
-+            len = MIN(fifo8_num_free(&s->cmdfifo), len);
-+            fifo8_push_all(&s->cmdfifo, buf, len);
+-        if (s->dma_memory_read) {
+-            s->dma_memory_read(s->dma_opaque, s->async_buf, len);
+-            esp_set_tc(s, esp_get_tc(s) - len);
+-        } else {
+-            /* Copy FIFO data to device */
+-            len = MIN(s->async_len, ESP_FIFO_SZ);
+-            len = MIN(len, fifo8_num_used(&s->fifo));
+-            len = esp_fifo_pop_buf(&s->fifo, s->async_buf, len);
+-            esp_raise_drq(s);
+-        }
++        switch (s->rregs[ESP_CMD]) {
++        case CMD_TI | CMD_DMA:
++            if (s->dma_memory_read) {
++                s->dma_memory_read(s->dma_opaque, s->async_buf, len);
++                esp_set_tc(s, esp_get_tc(s) - len);
++            } else {
++                /* Copy FIFO data to device */
++                len = MIN(s->async_len, ESP_FIFO_SZ);
++                len = MIN(len, fifo8_num_used(&s->fifo));
++                len = esp_fifo_pop_buf(&s->fifo, s->async_buf, len);
++                esp_raise_drq(s);
++            }
  
-             if (fifo8_num_used(&s->cmdfifo) >= 1) {
-                 /* First byte received, switch to command phase */
-@@ -701,9 +701,9 @@ static void esp_do_nodma(ESPState *s)
+-        s->async_buf += len;
+-        s->async_len -= len;
+-        s->ti_size += len;
++            s->async_buf += len;
++            s->async_len -= len;
++            s->ti_size += len;
++            break;
++
++        case CMD_PAD | CMD_DMA:
++            /* Copy TC zero bytes into the incoming stream */
++            if (!s->dma_memory_read) {
++                len = MIN(s->async_len, ESP_FIFO_SZ);
++                len = MIN(len, fifo8_num_free(&s->fifo));
++            }
++
++            memset(s->async_buf, 0, len);
++
++            s->async_buf += len;
++            s->async_len -= len;
++            s->ti_size += len;
++            break;
++        }
  
-         case CMD_SELATNS:
-             /* Copy one byte from FIFO into cmdfifo */
--            n = esp_fifo_pop_buf(&s->fifo, buf, 1);
--            n = MIN(fifo8_num_free(&s->cmdfifo), n);
--            fifo8_push_all(&s->cmdfifo, buf, n);
-+            len = esp_fifo_pop_buf(&s->fifo, buf, 1);
-+            len = MIN(fifo8_num_free(&s->cmdfifo), len);
-+            fifo8_push_all(&s->cmdfifo, buf, len);
+         if (s->async_len == 0 && fifo8_num_used(&s->fifo) < 2) {
+             /* Defer until the scsi layer has completed */
+@@ -554,19 +581,35 @@ static void esp_do_dma(ESPState *s)
+             len = s->async_len;
+         }
  
-             if (fifo8_num_used(&s->cmdfifo) >= 1) {
-                 /* First byte received, stop in message out phase */
-@@ -718,9 +718,9 @@ static void esp_do_nodma(ESPState *s)
+-        if (s->dma_memory_write) {
+-            s->dma_memory_write(s->dma_opaque, s->async_buf, len);
+-        } else {
+-            /* Copy device data to FIFO */
+-            len = MIN(len, fifo8_num_free(&s->fifo));
+-            fifo8_push_all(&s->fifo, s->async_buf, len);
+-            esp_raise_drq(s);
+-        }
++        switch (s->rregs[ESP_CMD]) {
++        case CMD_TI | CMD_DMA:
++            if (s->dma_memory_write) {
++                s->dma_memory_write(s->dma_opaque, s->async_buf, len);
++            } else {
++                /* Copy device data to FIFO */
++                len = MIN(len, fifo8_num_free(&s->fifo));
++                fifo8_push_all(&s->fifo, s->async_buf, len);
++                esp_raise_drq(s);
++            }
++
++            s->async_buf += len;
++            s->async_len -= len;
++            s->ti_size -= len;
++            esp_set_tc(s, esp_get_tc(s) - len);
++            break;
++
++        case CMD_PAD | CMD_DMA:
++            /* Drop TC bytes from the incoming stream */
++            if (!s->dma_memory_write) {
++                len = MIN(len, fifo8_num_free(&s->fifo));
++            }
  
-         case CMD_TI:
-             /* Copy FIFO into cmdfifo */
--            n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
--            n = MIN(fifo8_num_free(&s->cmdfifo), n);
--            fifo8_push_all(&s->cmdfifo, buf, n);
-+            len = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
-+            len = MIN(fifo8_num_free(&s->cmdfifo), len);
-+            fifo8_push_all(&s->cmdfifo, buf, len);
+-        s->async_buf += len;
+-        s->async_len -= len;
+-        s->ti_size -= len;
+-        esp_set_tc(s, esp_get_tc(s) - len);
++            s->async_buf += len;
++            s->async_len -= len;
++            s->ti_size -= len;
++            esp_set_tc(s, esp_get_tc(s) - len);
++            break;
++        }
  
-             /* ATN remains asserted until FIFO empty */
-             s->cmdfifo_cdb_offset = fifo8_num_used(&s->cmdfifo);
-@@ -736,9 +736,9 @@ static void esp_do_nodma(ESPState *s)
-         switch (s->rregs[ESP_CMD]) {
-         case CMD_TI:
-             /* Copy FIFO into cmdfifo */
--            n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
--            n = MIN(fifo8_num_free(&s->cmdfifo), n);
--            fifo8_push_all(&s->cmdfifo, buf, n);
-+            len = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
-+            len = MIN(fifo8_num_free(&s->cmdfifo), len);
-+            fifo8_push_all(&s->cmdfifo, buf, len);
- 
-             cmdlen = fifo8_num_used(&s->cmdfifo);
-             trace_esp_handle_ti_cmd(cmdlen);
-@@ -754,7 +754,7 @@ static void esp_do_nodma(ESPState *s)
-                  * service interrupt to indicate transfer complete. Otherwise
-                  * defer until the next FIFO write.
-                  */
--                if (n) {
-+                if (len) {
-                     /* Raise interrupt to indicate transfer complete */
-                     s->rregs[ESP_RINTR] |= INTR_BS;
-                     esp_raise_irq(s);
-@@ -765,9 +765,9 @@ static void esp_do_nodma(ESPState *s)
-         case CMD_SEL | CMD_DMA:
-         case CMD_SELATN | CMD_DMA:
-             /* Copy FIFO into cmdfifo */
--            n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
--            n = MIN(fifo8_num_free(&s->cmdfifo), n);
--            fifo8_push_all(&s->cmdfifo, buf, n);
-+            len = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
-+            len = MIN(fifo8_num_free(&s->cmdfifo), len);
-+            fifo8_push_all(&s->cmdfifo, buf, len);
- 
-             /* Handle when DMA transfer is terminated by non-DMA FIFO write */
-             if (esp_cdb_length(s) && esp_cdb_length(s) ==
-@@ -780,9 +780,9 @@ static void esp_do_nodma(ESPState *s)
-         case CMD_SEL:
-         case CMD_SELATN:
-             /* FIFO already contain entire CDB: copy to cmdfifo and execute */
--            n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
--            n = MIN(fifo8_num_free(&s->cmdfifo), n);
--            fifo8_push_all(&s->cmdfifo, buf, n);
-+            len = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
-+            len = MIN(fifo8_num_free(&s->cmdfifo), len);
-+            fifo8_push_all(&s->cmdfifo, buf, len);
- 
-             do_cmd(s);
-             break;
+         if (s->async_len == 0 && s->ti_size == 0 && esp_get_tc(s)) {
+             /* If the guest underflows TC then terminate SCSI request */
+@@ -1087,9 +1130,7 @@ static void esp_run_cmd(ESPState *s)
+         break;
+     case CMD_PAD:
+         trace_esp_mem_writeb_cmd_pad(cmd);
+-        s->rregs[ESP_RSTAT] = STAT_TC;
+-        s->rregs[ESP_RINTR] |= INTR_FC;
+-        s->rregs[ESP_RSEQ] = 0;
++        handle_pad(s);
+         break;
+     case CMD_SATN:
+         trace_esp_mem_writeb_cmd_satn(cmd);
 -- 
 2.39.2
 
