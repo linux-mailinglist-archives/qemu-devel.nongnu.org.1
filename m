@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F5B82C078
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9EA82C06C
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:05:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOHA5-0002fr-QO; Fri, 12 Jan 2024 08:01:27 -0500
+	id 1rOHC7-0002A7-56; Fri, 12 Jan 2024 08:03:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH9H-0001vv-Cq
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:00:43 -0500
+ id 1rOHBx-0001eH-3o
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:03:22 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH9D-0001Fp-NB
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:00:34 -0500
+ id 1rOHBs-0002OS-Sj
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:03:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=RX8suPy1gNm2SICly4WBODoxn3FIMb8MK+d3UzOnUYI=; b=PuytSSWIJfG1SyRLGuUJdbLE0y
- 1/9kQopKpqngcDyHX8lwjmWpLoPnX4pA4I2fhDvt5dceLe4JC5MSUeXB/z0GmcnnIFvsd3TCXeJTd
- KVykgBiZ6YkWjmJvzhmoCowhZ07wSrfc204jin4f3CTpGWbCfR/6Xr0mDH81b/bN+hocUl57AZwxo
- wWEn4kSIpya6Z3khJAjzcQaYSr7U2BCopm7TK77jqocwn89Qk1BXfnRMF3MOPRS9s93XS/MOs+P37
- jzby190mgMG4Wa84gsqSIHZ+E9EPZbpjdS6LYtlDc47wfE3o1yEcVTNwEXcuwWi3Kn3v0xmFir69F
- eBJeHwcrR+H6UJeXckXIxNTqlDU2bEBFc4f64LzX2X8KzQ9/aKlLWP7AFlN+VsAD6gjn0QcD7bV+S
- N1NO4hrMXINZqwciOzlzf909lpJcEJqqSmF/+4gSzfjDt9ES4hVz/ruANSybFd5CPJj+lAJrWe9c6
- VQ9p1W+9u41pLBvraD3TUJ/VFsg0TgjAqLGpKWxcULvnJwWiXcA7z2zcbWdIxYUAGFYwWULnuxuWS
- 9YfJ3QgYAgF08C1bLH0XWsoPpaOVxSm8ty/U5lPpTF995M1fJabep35fK2N9YhaEBUpru3pa2N0U3
- RTI5r1N4NOgp8myEgXg1/g0DkfCud6c4A0cV42+h8=;
+ bh=ZO5PmPAUOowGailjrSg7vG1qJlLEPqgqkC2eSQUBz3s=; b=RseBXJjRprC6QN1XmYXUsU4m6M
+ D0xqswkjCxkEIkK554mnMqDyhSTR2jOpfz9OHSTP7aRXOmoBRdIuUiwsJhtrM/rj+Y4KRwsdX5lU1
+ x9gmeMCI+1njY4g5iVdZ4vPLwWdTL7eeKnMvsnkHOqDtCEq6ymW1kppY9fZEMmj8j+aKdTmr8Lx8n
+ QxqmDTqZLd7PodwtTdDaW2gDSWaWuL+hsve2qSzwlFggxFaymmYMU2936UrolLefsIhw2OSkQgsDT
+ aIyfLhr62EneyFw/UISvXd9D15PV9tqzFWQy6wmDLN1F28QQ7DWf1gfqbLgbXmMwm1+gR/4kqETed
+ irrIUW0ZeK1GPMk+uzDQEmiKDHprcCCW9mTbZINt+WD44Agp+v477jEGde5doetiyGOe0rIgbPoHQ
+ +BrSHhyfGosNGKONkNzMYdTUzWjaD8C+mYXR4DVsrC0ZWH1BFOjftKLRe8tbM1KHGOxRt4l9RqLr8
+ wPplaVVIPPnJRmuVz9QxnRpqMxFXFCWyXCd/GwAdy9s3NoTB/arRXrDK3/Sg9WFXBVo/CSfSrljp3
+ KNo0Z+oumWGiT9ZMKyLfRQGeCyCPO0Knu4TOSECs+vsxauvINNyi64ez7mr/z8qMDkiDkVXeAWB/U
+ +x5/J6pg2aRCE+JvkaSoxQifJtNeiAHpORNimsHdA=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH5r-0008jM-9R; Fri, 12 Jan 2024 12:57:07 +0000
+ id 1rOH5v-0008jM-Pu; Fri, 12 Jan 2024 12:57:11 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org,
  laurent@vivier.eu, thuth@redhat.com, qemu-devel@nongnu.org
-Date: Fri, 12 Jan 2024 12:53:49 +0000
-Message-Id: <20240112125420.514425-58-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 12 Jan 2024 12:53:50 +0000
+Message-Id: <20240112125420.514425-59-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
 References: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 57/88] esp.c: rename data_in_ready to to data_ready
+Subject: [PATCH 58/88] esp.c: separate logic based upon ESP command in
+ esp_command_complete()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,65 +78,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This field is currently used to handle deferred interrupts for the DATA IN phase
-but the code will soon be updated to do the same for the DATA OUT phase.
+The handling of the INTR_FC and INTR_BS bits is different depending upon the
+last command executed by the ESP. Note that currently INTR_FC is managed
+elsewhere, but that will change soon.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c         | 8 ++++----
- include/hw/scsi/esp.h | 2 +-
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ hw/scsi/esp.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 5061c9d5a1..73c723afcc 100644
+index 73c723afcc..75538f5859 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -328,7 +328,7 @@ static void do_command_phase(ESPState *s)
-              * Switch to DATA IN phase but wait until initial data xfer is
-              * complete before raising the command completion interrupt
-              */
--            s->data_in_ready = false;
-+            s->data_ready = false;
-             esp_set_phase(s, STAT_DI);
-         } else {
-             esp_set_phase(s, STAT_DO);
-@@ -859,12 +859,12 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
-     s->async_len = len;
-     s->async_buf = scsi_req_get_buf(req);
- 
--    if (!to_device && !s->data_in_ready) {
-+    if (!to_device && !s->data_ready) {
+@@ -823,25 +823,27 @@ void esp_command_complete(SCSIRequest *req, size_t resid)
+      * Switch to status phase. For non-DMA transfers from the target the last
+      * byte is still in the FIFO
+      */
+-    esp_set_phase(s, STAT_ST);
+-    if (s->ti_size == 0) {
+-        /*
+-         * Transfer complete: force TC to zero just in case a TI command was
+-         * requested for more data than the command returns (Solaris 8 does
+-         * this)
+-         */
+-        esp_set_tc(s, 0);
+-        esp_dma_ti_check(s);
+-    } else {
++    s->ti_size = 0;
++
++    switch (s->rregs[ESP_CMD]) {
++    case CMD_SEL | CMD_DMA:
++    case CMD_SEL:
++    case CMD_SELATN | CMD_DMA:
++    case CMD_SELATN:
          /*
-          * Initial incoming data xfer is complete so raise command
-          * completion interrupt
+-         * Transfer truncated: raise INTR_BS to indicate early change of
+-         * phase
++         * No data phase for sequencer command so raise deferred bus service
++         * interrupt
           */
--        s->data_in_ready = true;
-+        s->data_ready = true;
          s->rregs[ESP_RINTR] |= INTR_BS;
-         esp_raise_irq(s);
+-        esp_raise_irq(s);
+-        s->ti_size = 0;
++        break;
      }
-@@ -1241,7 +1241,7 @@ const VMStateDescription vmstate_esp = {
-         VMSTATE_UINT32_TEST(mig_cmdlen, ESPState, esp_is_before_version_5),
-         VMSTATE_UINT32(do_cmd, ESPState),
-         VMSTATE_UINT32_TEST(mig_dma_left, ESPState, esp_is_before_version_5),
--        VMSTATE_BOOL_TEST(data_in_ready, ESPState, esp_is_version_5),
-+        VMSTATE_BOOL_TEST(data_ready, ESPState, esp_is_version_5),
-         VMSTATE_UINT8_TEST(cmdfifo_cdb_offset, ESPState, esp_is_version_5),
-         VMSTATE_FIFO8_TEST(fifo, ESPState, esp_is_version_5),
-         VMSTATE_FIFO8_TEST(cmdfifo, ESPState, esp_is_version_5),
-diff --git a/include/hw/scsi/esp.h b/include/hw/scsi/esp.h
-index 6f942864a6..1036606943 100644
---- a/include/hw/scsi/esp.h
-+++ b/include/hw/scsi/esp.h
-@@ -40,7 +40,7 @@ struct ESPState {
-     uint8_t lun;
-     uint32_t do_cmd;
  
--    bool data_in_ready;
-+    bool data_ready;
-     uint8_t ti_cmd;
-     int dma_enabled;
- 
++    /* Raise bus service interrupt to indicate change to STATUS phase */
++    esp_set_phase(s, STAT_ST);
++    s->rregs[ESP_RINTR] |= INTR_BS;
++    esp_raise_irq(s);
++    esp_lower_drq(s);
++
+     if (s->current_req) {
+         scsi_req_unref(s->current_req);
+         s->current_req = NULL;
 -- 
 2.39.2
 
