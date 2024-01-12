@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD50782C08C
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:09:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E6F982C07F
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:06:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOH5j-0003mW-UG; Fri, 12 Jan 2024 07:56:55 -0500
+	id 1rOH62-00051L-VU; Fri, 12 Jan 2024 07:57:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH5g-0003WO-VJ
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:56:52 -0500
+ id 1rOH5x-0004oX-D0
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:57:10 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH5e-0007UP-QB
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:56:52 -0500
+ id 1rOH5p-0007oB-HA
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:57:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=NzEKvboNhYJQisWsPCRE6C2WgN0Zmo1yRngmU4ZE8u0=; b=oFeUKSFSFkxaJZGOSNnA8LBsip
- kXM0OyptPzN4RLx28N61h+7pc+BlVnybWXoYqcarUPCcq5wd2XOTWjZZBkwHOrmydUK8L27hMPTiU
- fVyWknUUk1lfVHaSxL6haZYaIsP9OJT/AnjdawVdrGx3Ykxft1tVPQ8GaNVPGxVX+occRo8lec6WF
- ueThLLcM/f19PzKymjEgppSRDpui9QaemwHeMs22uMc5nYIb/qdiDnRQm+ZyXdR4dilUrmkhP+sAp
- PdTP0lgQmk4IWhfw0TEbU6BrQoaQU0zLdjEOIRp8cY2GKAnwW4q9+N5ARrHHCJscNEusLvoUQktP2
- PGwj5+wYgBhbnXMoUJI2PYGMfSv+kddNyxg8pVlz7/8gecA6Zi6EoCETPaPWXcTW2cWZNYuOaimSP
- NsOKAI7Z9LSaVzDBR86Orppf/+8pqivjZUd9hRFUXbiKAtYG5qCJg8bodAh0VMjF1ndVEaEiHCa05
- oKUsDI8ywboicPYT6NKHi6QOqyEV7cbP8he6nCIDC6mvxB8B3Tq1/xAgTHEkHeEymhfG/tNKzmDwa
- DoiTgAMNsgpfhCpvsukw11j6sVuZKplYcvgUvWWSeXggDWjcVJTXqxHu+7uTHuDT5R1xKGU2etW7w
- mTh2apcxeCb8o7tPWgsvv0xQo0U2ueImJM//luBZQ=;
+ bh=4I3vrCruvicw8FrV1AtQV3HKf1cbfLoGPnBOCRBxK8I=; b=Qkszo023LJyvLeUUdX4mTfqLD7
+ R6xojjx9zNEKsv2XqJ4Ck/qbRmBHIIWu8SqOJrXGHb0kLVtSIVKRW4xt/cAqm0j4CkALllcd8z3Zv
+ pGBgdR9NI4ERJ2BAdoHNDlPpAM80kfz83rO7odSGRyQGglGGVIBTX4VmVUGzDY5sgYnWjDQgZW5D8
+ L062B0mTXEwN+RcBegOoquueaex2c5vfmgIulTYp7+oh/SoFu9TBJ6Z3gprXvMGWj51dO67iAeAi1
+ tntqfOGggCuK6Y1QFUYlWQ7XILZbvp+cd5P+ByG9HXx/xkUfvhndnGEtjfuD5qcEuRc3R+0ua0eR+
+ GJHl7V5FH9qdhMrzQk4kY59pKxNkvXO5VJ9oWm9oUMRBTDXDEMezk8KfuzyzuiGR4V8xI6vKIiso+
+ yb/LZLYSmkbfvwGEvD3N2yZFvMJGjCLmMNpulkYmxS3HAwZqjMa+nMLQm6bHz7XZg0K9SiwdnL8e1
+ qsxBjCLuNE+3w+946S9zeD8P35q9k7atRfyQGQIkfmdwfAi6ySapkgIteJB6xVsRb/HmDGzP4ljnG
+ P6dI5GKL1aWT/1mwWJNQ1ziffKTWqfdD5ILo0YWpSAwS3CM6d+99GIME3o/i1HkmTStFAG0Xbgvht
+ WvG4a09tjta6r9WeYkHXAoCAQtsTjqdqHq8utomQQ=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH4d-0008jM-U7; Fri, 12 Jan 2024 12:55:52 +0000
+ id 1rOH54-0008jM-V9; Fri, 12 Jan 2024 12:56:15 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org,
  laurent@vivier.eu, thuth@redhat.com, qemu-devel@nongnu.org
-Date: Fri, 12 Jan 2024 12:53:23 +0000
-Message-Id: <20240112125420.514425-32-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 12 Jan 2024 12:53:31 +0000
+Message-Id: <20240112125420.514425-40-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
 References: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 31/88] esp.c: rename esp_dma_done() to esp_dma_ti_check()
+Subject: [PATCH 39/88] esp.c: convert do_dma_pdma_db() to switch statement
+ based upon SCSI phase
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,100 +78,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is because a single DMA request can be transferred using multiple TI
-commands, and so a TC equal to zero may not represent the completion of
-the SCSI DMA command.
+Currently only the DATA IN and DATA OUT phases are supported.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ hw/scsi/esp.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 4d58a49c73..14c6d05253 100644
+index 67d1d39db2..f6d05b0de7 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -543,7 +543,7 @@ static void write_response(ESPState *s)
-     esp_raise_irq(s);
- }
+@@ -542,7 +542,6 @@ static void esp_dma_ti_check(ESPState *s)
  
--static void esp_dma_done(ESPState *s)
-+static void esp_dma_ti_check(ESPState *s)
+ static void do_dma_pdma_cb(ESPState *s)
  {
-     if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
-         s->rregs[ESP_RINTR] |= INTR_BS;
-@@ -613,7 +613,7 @@ static void do_dma_pdma_cb(ESPState *s)
-             return;
+-    int to_device = (esp_get_phase(s) == STAT_DO);
+     uint8_t buf[ESP_CMDFIFO_SZ];
+     int len;
+     uint32_t n;
+@@ -582,11 +581,11 @@ static void do_dma_pdma_cb(ESPState *s)
+         return;
+     }
+ 
+-    if (!s->current_req) {
+-        return;
+-    }
+-
+-    if (to_device) {
++    switch (esp_get_phase(s)) {
++    case STAT_DO:
++        if (!s->current_req) {
++            return;
++        }
+         /* Copy FIFO data to device */
+         len = MIN(s->async_len, ESP_FIFO_SZ);
+         len = MIN(len, fifo8_num_used(&s->fifo));
+@@ -602,7 +601,12 @@ static void do_dma_pdma_cb(ESPState *s)
          }
  
--        esp_dma_done(s);
-+        esp_dma_ti_check(s);
-     } else {
-         if (s->async_len == 0 && fifo8_num_used(&s->fifo) < 2) {
-             /* Defer until the scsi layer has completed */
-@@ -622,7 +622,7 @@ static void do_dma_pdma_cb(ESPState *s)
-             return;
-         }
- 
--        esp_dma_done(s);
-+        esp_dma_ti_check(s);
- 
+         esp_dma_ti_check(s);
+-    } else {
++        break;
++
++    case STAT_DI:
++        if (!s->current_req) {
++            return;
++        }
          /* Copy device data to FIFO */
          len = MIN(s->async_len, esp_get_tc(s));
-@@ -708,7 +708,7 @@ static void esp_do_dma(ESPState *s)
-                 return;
-             }
- 
--            esp_dma_done(s);
-+            esp_dma_ti_check(s);
-         } else {
-             esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
-             esp_raise_drq(s);
-@@ -719,7 +719,7 @@ static void esp_do_dma(ESPState *s)
-                 return;
-             }
- 
--            esp_dma_done(s);
-+            esp_dma_ti_check(s);
+         len = MIN(len, fifo8_num_free(&s->fifo));
+@@ -620,6 +624,7 @@ static void do_dma_pdma_cb(ESPState *s)
          }
-     } else {
-         if (s->dma_memory_write) {
-@@ -736,7 +736,7 @@ static void esp_do_dma(ESPState *s)
-                 return;
-             }
  
--            esp_dma_done(s);
-+            esp_dma_ti_check(s);
-         } else {
-             /* Copy device data to FIFO */
-             len = MIN(len, fifo8_num_free(&s->fifo));
-@@ -754,7 +754,7 @@ static void esp_do_dma(ESPState *s)
-                 return;
-             }
- 
--            esp_dma_done(s);
-+            esp_dma_ti_check(s);
-         }
+         esp_dma_ti_check(s);
++        break;
      }
  }
-@@ -890,7 +890,7 @@ void esp_command_complete(SCSIRequest *req, size_t resid)
-          * this)
-          */
-         esp_set_tc(s, 0);
--        esp_dma_done(s);
-+        esp_dma_ti_check(s);
-     } else {
-         /*
-          * Transfer truncated: raise INTR_BS to indicate early change of
-@@ -939,7 +939,7 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
  
-     if (s->ti_cmd == (CMD_TI | CMD_DMA)) {
-         /* When the SCSI layer returns more data, raise deferred INTR_BS */
--        esp_dma_done(s);
-+        esp_dma_ti_check(s);
- 
-         esp_do_dma(s);
-     } else if (s->ti_cmd == CMD_TI) {
 -- 
 2.39.2
 
