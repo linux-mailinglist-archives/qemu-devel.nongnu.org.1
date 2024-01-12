@@ -2,79 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9F282C1DB
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 15:31:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 463B282C207
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 15:44:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOIYe-0006Ch-6g; Fri, 12 Jan 2024 09:30:52 -0500
+	id 1rOIjy-00047e-3f; Fri, 12 Jan 2024 09:42:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rOIYS-0006Ba-9c; Fri, 12 Jan 2024 09:30:43 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
+ id 1rOIjv-00047H-Em; Fri, 12 Jan 2024 09:42:31 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rOIYQ-0003JG-1S; Fri, 12 Jan 2024 09:30:39 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2B17A42E9C;
- Fri, 12 Jan 2024 17:30:54 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 469306178F;
- Fri, 12 Jan 2024 17:30:36 +0300 (MSK)
-Message-ID: <c83461c7-4231-4455-950b-8c9c5bce76d1@tls.msk.ru>
-Date: Fri, 12 Jan 2024 17:30:36 +0300
+ (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
+ id 1rOIjs-0001Ht-89; Fri, 12 Jan 2024 09:42:31 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TBPQ62BXrz4x5l;
+ Sat, 13 Jan 2024 01:42:22 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TBPQ26V5Hz4x22;
+ Sat, 13 Jan 2024 01:42:18 +1100 (AEDT)
+Message-ID: <a7e043b3-ce5c-45eb-ae29-8f406735c3fa@kaod.org>
+Date: Fri, 12 Jan 2024 15:42:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/6] Firmware/edk2 20231213 patches
+Subject: Re: [PATCH v10 0/9] Introduce model for IBM's FSI
 Content-Language: en-US
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-stable <qemu-stable@nongnu.org>
-References: <20231213105026.1944656-1-kraxel@redhat.com>
- <y2kuootd3k2tqe2245zggbuusg2kaaqrxlvxfwy2wrcbdxg3cn@zgj6tl7gd4lp>
- <CAFEAcA8H6kVNiSk6CEVun5KWQH-sqWxBKxZ9Rf7haQhZHEKiow@mail.gmail.com>
- <CAFEAcA-sw2FNgTft0PYL=GW0JQhdRX9Zn0B6muUjC68nmVXHnA@mail.gmail.com>
- <e2hpw77r6t2ge6h233cq75qdadou6koz62sfktcsrlc2gzeqnq@4ejyxysmmulo>
- <720c9dd0-f6e3-42c3-979a-290501706a80@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <720c9dd0-f6e3-42c3-979a-290501706a80@tls.msk.ru>
+To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org
+References: <20240110231537.1654478-1-ninad@linux.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240110231537.1654478-1-ninad@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=qInK=IW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,13 +64,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-12.01.2024 17:27, Michael Tokarev:
-> There's no requirement to have Cc: qemu-stable tags on the patches.
-> This tagging is only to easily find changes which are supposed to be
-> picked up for stable, nothing more, so it's completely optional.
+Hello Ninad,
 
-An additional note: without this Cc by Peter, I would've never noticed
-this patchset.
+This is looking much better. I have a couple more comments.
+Please wait a little before sending a respin ! :) and please
+run make check and script/checkpatch.pl.
 
-/mjt
+
+On 1/11/24 00:15, Ninad Palsule wrote:
+> Hello,
+> 
+> Please review the patch-set version 10.
+> I have incorporated review comments from Cedric.
+> v10:
+>    - Moved aspeed-apb2opb to hw/misc directory
+
+So, it looked better before ... can you please move it back to
+the fsi dir ? Sorry about that.
+
+
+Thanks,
+
+C.
+
+
+
+>    - Moved scratchpad to lbus files.
+>    - Moved fsi-slave to fsi files.
+>    - Merged opb changes in the aspeed-apb2opb files
+>    - Reduced number of config option to 2
+
+
+> 
+> Ninad Palsule (9):
+>    hw/fsi: Introduce IBM's Local bus and scratchpad
+>    hw/fsi: Introduce IBM's FSI Bus and FSI slave
+>    hw/fsi: Introduce IBM's cfam
+>    hw/fsi: Introduce IBM's FSI master
+>    hw/fsi: Aspeed APB2OPB interface, Onchip perif bus
+>    hw/arm: Hook up FSI module in AST2600
+>    hw/fsi: Added qtest
+>    hw/fsi: Added FSI documentation
+>    hw/fsi: Update MAINTAINER list
+> 
+>   MAINTAINERS                      |   8 +
+>   docs/specs/fsi.rst               | 138 +++++++++++++
+>   docs/specs/index.rst             |   1 +
+>   meson.build                      |   1 +
+>   hw/fsi/trace.h                   |   1 +
+>   include/hw/arm/aspeed_soc.h      |   4 +
+>   include/hw/fsi/cfam.h            |  34 ++++
+>   include/hw/fsi/fsi-master.h      |  32 +++
+>   include/hw/fsi/fsi.h             |  38 ++++
+>   include/hw/fsi/lbus.h            |  52 +++++
+>   include/hw/misc/aspeed-apb2opb.h |  50 +++++
+>   hw/arm/aspeed_ast2600.c          |  19 ++
+>   hw/fsi/cfam.c                    | 182 +++++++++++++++++
+>   hw/fsi/fsi-master.c              | 173 ++++++++++++++++
+>   hw/fsi/fsi.c                     | 111 ++++++++++
+>   hw/fsi/lbus.c                    | 121 +++++++++++
+>   hw/misc/aspeed-apb2opb.c         | 338 +++++++++++++++++++++++++++++++
+>   tests/qtest/aspeed-fsi-test.c    | 205 +++++++++++++++++++
+>   hw/Kconfig                       |   1 +
+>   hw/arm/Kconfig                   |   1 +
+>   hw/fsi/Kconfig                   |   2 +
+>   hw/fsi/meson.build               |   1 +
+>   hw/fsi/trace-events              |  11 +
+>   hw/meson.build                   |   1 +
+>   hw/misc/Kconfig                  |   5 +
+>   hw/misc/meson.build              |   1 +
+>   hw/misc/trace-events             |   4 +
+>   tests/qtest/meson.build          |   1 +
+>   28 files changed, 1536 insertions(+)
+>   create mode 100644 docs/specs/fsi.rst
+>   create mode 100644 hw/fsi/trace.h
+>   create mode 100644 include/hw/fsi/cfam.h
+>   create mode 100644 include/hw/fsi/fsi-master.h
+>   create mode 100644 include/hw/fsi/fsi.h
+>   create mode 100644 include/hw/fsi/lbus.h
+>   create mode 100644 include/hw/misc/aspeed-apb2opb.h
+>   create mode 100644 hw/fsi/cfam.c
+>   create mode 100644 hw/fsi/fsi-master.c
+>   create mode 100644 hw/fsi/fsi.c
+>   create mode 100644 hw/fsi/lbus.c
+>   create mode 100644 hw/misc/aspeed-apb2opb.c
+>   create mode 100644 tests/qtest/aspeed-fsi-test.c
+>   create mode 100644 hw/fsi/Kconfig
+>   create mode 100644 hw/fsi/meson.build
+>   create mode 100644 hw/fsi/trace-events
+> 
+
 
