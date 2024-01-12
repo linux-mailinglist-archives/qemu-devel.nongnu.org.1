@@ -2,105 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CAC882C2FE
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 16:45:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 532E182C305
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 16:47:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOJiO-0005BX-8z; Fri, 12 Jan 2024 10:45:00 -0500
+	id 1rOJk6-0006Vv-6X; Fri, 12 Jan 2024 10:46:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rOJiM-0005BF-7o
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:44:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rOJk2-0006QX-1s; Fri, 12 Jan 2024 10:46:42 -0500
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rOJiK-0005xY-0K
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:44:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705074294;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hfrdnEtpGn94s5HzyRrjF4o/Q8dg/DO4WQ288cW8ZFY=;
- b=IIS0v6rxG8BF4yx+wUvflCmoTmm5PfIVql+BgJmIggbd5XUgZwfuzm3ekEFsAX5X66zopR
- E3jhfiBC9K2WI43eVIAeGoF6VEg25xMGup3qsgPrFyeKhIbjsdBar/KgZydHWj78THxjmd
- /0M5K4KNMkWoHESJqV6UqUrbDBYiDtU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-315-qHMIU1caNEeRbQSiFqv-Ag-1; Fri,
- 12 Jan 2024 10:44:52 -0500
-X-MC-Unique: qHMIU1caNEeRbQSiFqv-Ag-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 05F6E3C29A67;
- Fri, 12 Jan 2024 15:44:48 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.182])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 246D2492BC6;
- Fri, 12 Jan 2024 15:44:40 +0000 (UTC)
-Date: Fri, 12 Jan 2024 15:44:37 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
- Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Paolo Bonzini <pbonzini@redhat.com>, Brian Cain <bcain@quicinc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Cleber Rosa <crosa@redhat.com>, kvm@vger.kernel.org,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- qemu-arm@nongnu.org, Weiwei Li <liwei1518@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- qemu-riscv@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: [PATCH v2 12/43] qtest: bump boot-serial-test timeout to 3 minutes
-Message-ID: <ZaFeZXP-3sYdnZbS@redhat.com>
-References: <20240103173349.398526-1-alex.bennee@linaro.org>
- <20240103173349.398526-13-alex.bennee@linaro.org>
- <cf617223-0a0b-4d42-84a3-cd323ea4c421@redhat.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rOJjw-0006gx-C8; Fri, 12 Jan 2024 10:46:41 -0500
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:7d8d:0:640:c31b:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 3761D61E84;
+ Fri, 12 Jan 2024 18:46:27 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8831::1:32] (unknown
+ [2a02:6b8:b081:8831::1:32])
+ by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id PkmCWDRIcGk0-OoyHVBve; Fri, 12 Jan 2024 18:46:26 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1705074386;
+ bh=Q4+apmeDYkFarr+Gbdbp6VfyJdlnMSFtg3z4tnw4nR0=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=s3mvMbIf61X3/HSaSbdFFhY3Mah28tAiu06GmSQSN/pH1AZffr6sAqxDaoEohJIC/
+ SysHhQYRKDs17w/Byy99eGLUhnICa5I7TVGz929v6P+RrtvOONsp9HV6DhTMrL8exZ
+ 0AyQPONyMn4LfntN+yK09/Dz9sMJsges92e2a6jA=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <b24ae5f5-b07e-4bf2-8e30-32253fe4a90c@yandex-team.ru>
+Date: Fri, 12 Jan 2024 18:46:25 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cf617223-0a0b-4d42-84a3-cd323ea4c421@redhat.com>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.09,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] qapi: blockdev-backup: add discard-source parameter
+Content-Language: en-US
+To: Fiona Ebner <f.ebner@proxmox.com>, qemu-block@nongnu.org
+Cc: kwolf@redhat.com, wencongyang2@huawei.com, xiechanglong.d@gmail.com,
+ qemu-devel@nongnu.org, armbru@redhat.com, jsnow@redhat.com,
+ hreitz@redhat.com, eblake@redhat.com
+References: <20220331195701.220690-1-vsementsov@openvz.org>
+ <20220331195701.220690-3-vsementsov@openvz.org>
+ <2e09f178-5c18-4bcd-90e5-097060cfe358@proxmox.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <2e09f178-5c18-4bcd-90e5-097060cfe358@proxmox.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,59 +73,111 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 12, 2024 at 04:13:16PM +0100, Thomas Huth wrote:
-> On 03/01/2024 18.33, Alex Bennée wrote:
-> > From: Daniel P. Berrangé <berrange@redhat.com>
-> > 
-> > The boot-serial-test takes about 1 + 1/2 minutes in a --enable-debug
-> > build. Bumping to 3 minutes will give more headroom.
-> > 
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > Reviewed-by: Thomas Huth <thuth@redhat.com>
-> > Message-ID: <20230717182859.707658-9-berrange@redhat.com>
-> > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> > Message-Id: <20231215070357.10888-9-thuth@redhat.com>
-> > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> > ---
-> >   tests/qtest/meson.build | 1 +
-> >   1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> > index c7944e8dbe9..dc1e6da5c7b 100644
-> > --- a/tests/qtest/meson.build
-> > +++ b/tests/qtest/meson.build
-> > @@ -6,6 +6,7 @@ slow_qtests = {
-> >     'test-hmp' : 240,
-> >     'pxe-test': 600,
-> >     'prom-env-test': 360,
-> > +  'boot-serial-test': 180,
-> >   }
-> >   qtests_generic = [
-> 
-> 3 minutes was obviously not enough:
-> 
->  https://gitlab.com/qemu-project/qemu/-/jobs/5918818492#L4984
-> 
-> And in older runs, we can see that the boot-serial-test might take longer
-> than 180s when run with TCI :
-> 
->  https://gitlab.com/qemu-project/qemu/-/jobs/5890481086#L4772
-> 
-> So I think we should bump the timeout to 240s here. Alex, are you going to
-> respin your pull request? If so, could you modify your patch? Otherwise I
-> can also send a new version of this patch here, just let me know.
+Hi Fiona!
 
-Agreed, 240s seems a good next attempt
+That was the only version, because it was based on "[PATCH v5 00/45] Transactional block-graph modifying API", as written in commit message.
 
-With regards,
-Daniel
+And "[PATCH v5 00/45] Transactional block-graph modifying API" was not merged, instead I decided to send it part-by-part, some were already merged. Now the current "in-flight" part is "[PATCH v8 0/7] blockdev-replace".
+
+So, probably something from that old big series is still needed for "backup: discard-source parameter" to work. Or, may be everything is prepared now.
+
+I'll look at it closely next week and try to make a v2. Thanks for testing and debugging!
+
+On 11.01.24 18:19, Fiona Ebner wrote:
+> Hi Vladimir,
+> 
+> hope I didn't miss a newer version of this series. I'm currently
+> evaluating fleecing backup for Proxmox downstream, so I pulled in this
+> series and wanted to let you know about two issues I encountered while
+> testing. We are still based on 8.1, but if I'm not mistaken, they are
+> still relevant:
+> 
+> Am 31.03.22 um 21:57 schrieb Vladimir Sementsov-Ogievskiy:
+>> @@ -575,6 +577,10 @@ static coroutine_fn int block_copy_task_entry(AioTask *task)
+>>       co_put_to_shres(s->mem, t->req.bytes);
+>>       block_copy_task_end(t, ret);
+>>   
+>> +    if (s->discard_source && ret == 0) {
+>> +        bdrv_co_pdiscard(s->source, t->req.offset, t->req.bytes);
+>> +    }
+>> +
+>>       return ret;
+>>   }
+>>   
+> 
+> If the image size is not aligned to the cluster size, passing
+> t->req.bytes when calling bdrv_co_pdiscard() can lead to an assertion
+> failure at the end of the image:
+> 
+>> kvm: ../block/io.c:1982: bdrv_co_write_req_prepare: Assertion `offset + bytes <= bs->total_sectors * BDRV_SECTOR_SIZE || child->perm & BLK_PERM_RESIZE' failed.
+> 
+> block_copy_do_copy() does have a line to clamp down:
+> 
+>> int64_t nbytes = MIN(offset + bytes, s->len) - offset;
+> 
+> If I do the same before calling bdrv_co_pdiscard(), the failure goes away.
+> 
+> 
+> For the second one, the following code saw some changes since the series
+> was sent:
+> 
+>> diff --git a/block/copy-before-write.c b/block/copy-before-write.c
+>> index 79cf12380e..3e77313a9a 100644
+>> --- a/block/copy-before-write.c
+>> +++ b/block/copy-before-write.c
+>> @@ -319,7 +319,7 @@ static void cbw_child_perm(BlockDriverState *bs, BdrvChild *c,
+>>           bdrv_default_perms(bs, c, role, reopen_queue,
+>>                              perm, shared, nperm, nshared);
+>>   
+>> -        *nperm = *nperm | BLK_PERM_CONSISTENT_READ;
+>> +        *nperm = *nperm | BLK_PERM_CONSISTENT_READ | BLK_PERM_WRITE;
+>>           *nshared &= ~(BLK_PERM_WRITE | BLK_PERM_RESIZE);
+>>       }
+>>   }
+> 
+> It's now:
+> 
+>>          bdrv_default_perms(bs, c, role, reopen_queue,
+>>                             perm, shared, nperm, nshared);
+>>
+>>          if (!QLIST_EMPTY(&bs->parents)) {
+>>              if (perm & BLK_PERM_WRITE) {
+>>                  *nperm = *nperm | BLK_PERM_CONSISTENT_READ;
+>>              }
+>>              *nshared &= ~(BLK_PERM_WRITE | BLK_PERM_RESIZE);
+>>          }
+> 
+> So I wasn't sure how to adapt the patch:
+> 
+> - If setting BLK_PERM_WRITE unconditionally, it seems to break usual
+> drive-backup (with no fleecing set up):
+> 
+>> permissions 'write' are both required by node '#block691' (uses node '#block151' as 'file' child) and unshared by block device 'drive-scsi0' (uses node '#block151' as 'root' child).
+> 
+> - If I only do it within the if block, it doesn't work when I try to set
+> up fleecing, because bs->parents is empty for me, i.e. when passing the
+> snapshot-access node to backup_job_create() while the usual cbw for
+> backup is appended. I should note I'm doing it manually in a custom QMP
+> command, not in a transaction (which requires the not-yet-merged
+> blockdev-replace AFAIU).
+> 
+> Not sure if I'm doing something wrong, but maybe what you wrote in the
+> commit message is necessary after all?
+> 
+>> Alternative is to pass
+>> an option to bdrv_cbw_append(), add some internal open-option for
+>> copy-before-write filter to require WRITE permission only for backup
+>> with discard-source=true. But I'm not sure it worth the complexity.
+> 
+> Best Regards,
+> Fiona
+> 
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Best regards,
+Vladimir
 
 
