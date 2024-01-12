@@ -2,69 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D57D82BE09
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 11:02:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F8F82BE48
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 11:15:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOEMO-0004PF-S5; Fri, 12 Jan 2024 05:01:56 -0500
+	id 1rOEYF-0003dT-KI; Fri, 12 Jan 2024 05:14:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rOELm-00048y-4c
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 05:01:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1rOEYC-0003dB-Rs; Fri, 12 Jan 2024 05:14:08 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rOELk-0005hI-0w
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 05:01:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705053675;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xVy7qsKJPjI2/wKvXRpiG+jBXe0T6eGOpYnuJmahC8g=;
- b=AG2hyFO5DSFGJVQDqGW+SApuDUI3zsRhhcaa1MkRDHK6v/SVjIY3+WxF3qzbphVJRFwG83
- gM4OYD8D6Z/UF7xaVuRJRvXo5r58sdw546UNzYjneQ8PG1iX4uIP7qYnZh8riGag9tj/aj
- WuSJF0cj0x1VhsRTY1Jiyp28jKyNPRc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-C_05SQ0gOliezulKB9qyOA-1; Fri, 12 Jan 2024 05:01:12 -0500
-X-MC-Unique: C_05SQ0gOliezulKB9qyOA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DF84E8A4401;
- Fri, 12 Jan 2024 10:01:11 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.194.216])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 681DDC08ED4;
- Fri, 12 Jan 2024 10:01:10 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>
-Subject: [PATCH 5/5] qemu-options: Remove the deprecated -singlestep option
-Date: Fri, 12 Jan 2024 11:00:59 +0100
-Message-ID: <20240112100059.965041-6-thuth@redhat.com>
-In-Reply-To: <20240112100059.965041-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1rOEYA-00052h-H2; Fri, 12 Jan 2024 05:14:08 -0500
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40C8694i005204; Fri, 12 Jan 2024 10:14:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=+c3T22GlRUI1xs3dDX8O95LySohPlAZgmykRkIVe26A=;
+ b=jlwltrmE7VOqdg+cjlsLO+0rujxF8he1GtRflIh34T/uB/AsdUOWRz3vIkm5efMNTSGp
+ Vrtk8NxwI4NXCPNd+NWSAym5i5L9tAfwORuMxnmXa8jiobmxoTufLkpZI/uKxWugYQdM
+ I2JMqTJpyzvPI6Ejk6cEgwSA+S6zPpGXPdLTSmNqg1FcvXLAzYvRNdlq/Los6FhnJQ/5
+ E/WvHaz/ycpP7sYxIuRKGp1KHW+syV8mN8CiVpyMcG8MI4CgAeDSEVif6tD0vUenioLC
+ U1GBe6ljK4T6Q30Fv8JcKQTX1m8I2JlGMC0r5y7bSbezlYE7AnvewAy5sQ+2N5OBawl2 Bw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjwf2yh7y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 12 Jan 2024 10:14:03 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40C9aT7V008163;
+ Fri, 12 Jan 2024 10:14:03 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjwf2yh7h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 12 Jan 2024 10:14:03 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40C9TJCp022781; Fri, 12 Jan 2024 10:14:01 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfhk01grq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 12 Jan 2024 10:14:01 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40CADxRd8323716
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 12 Jan 2024 10:13:59 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9B6842004D;
+ Fri, 12 Jan 2024 10:13:59 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7199C2004B;
+ Fri, 12 Jan 2024 10:13:59 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.152.224.66])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 12 Jan 2024 10:13:59 +0000 (GMT)
+Date: Fri, 12 Jan 2024 11:13:58 +0100
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, Markus
+ Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org, "Daniel P .
+ =?UTF-8?B?QmVycmFuZ8Op?=" <berrange@redhat.com>
+Subject: Re: [PATCH 3/5] qemu-options: Remove the deprecated -async-teardown
+ option
+Message-ID: <20240112111358.5a42cc3a@p-imbrenda>
+In-Reply-To: <20240112100059.965041-4-thuth@redhat.com>
 References: <20240112100059.965041-1-thuth@redhat.com>
+ <20240112100059.965041-4-thuth@redhat.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9HxNfqCVOEpvILSCBIiHv3HAYggjxqbT
+X-Proofpoint-GUID: m7hGVo5BdLXMgom-pyazbOYA3Q0txxM-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-12_03,2024-01-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ malwarescore=0 bulkscore=0 clxscore=1011 mlxlogscore=999 spamscore=0
+ suspectscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401120078
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=imbrenda@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,115 +116,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's been marked as deprecated since QEMU 8.1, so it should be fine
-to remove this now.
+On Fri, 12 Jan 2024 11:00:57 +0100
+Thomas Huth <thuth@redhat.com> wrote:
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- docs/about/deprecated.rst       |  6 ------
- docs/about/removed-features.rst |  7 +++++++
- system/vl.c                     | 18 +-----------------
- qemu-options.hx                 |  8 --------
- 4 files changed, 8 insertions(+), 31 deletions(-)
+> It's been marked as deprecated since QEMU 8.1 (and was only available
+> since QEMU 8.0 anyway), so it should be fine to remove this now.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index b50cfe596b..81a5149f1e 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -63,12 +63,6 @@ as short-form boolean values, and passed to plugins as ``arg_name=on``.
- However, short-form booleans are deprecated and full explicit ``arg_name=on``
- form is preferred.
- 
--``-singlestep`` (since 8.1)
--'''''''''''''''''''''''''''
--
--The ``-singlestep`` option has been turned into an accelerator property,
--and given a name that better reflects what it actually does.
--Use ``-accel tcg,one-insn-per-tb=on`` instead.
- 
- User-mode emulator command line arguments
- -----------------------------------------
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index a8546f4787..d5c60ff47f 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -482,6 +482,13 @@ Use ``-run-with async-teardown=on`` instead.
- 
- Use ``-run-with chroot=dir`` instead.
- 
-+``-singlestep`` (removed in 9.0)
-+''''''''''''''''''''''''''''''''
-+
-+The ``-singlestep`` option has been turned into an accelerator property,
-+and given a name that better reflects what it actually does.
-+Use ``-accel tcg,one-insn-per-tb=on`` instead.
-+
- 
- QEMU Machine Protocol (QMP) commands
- ------------------------------------
-diff --git a/system/vl.c b/system/vl.c
-index c125fb9079..809f867bcc 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -181,7 +181,6 @@ static const char *log_file;
- static bool list_data_dirs;
- static const char *qtest_chrdev;
- static const char *qtest_log;
--static bool opt_one_insn_per_tb;
- 
- static int has_defaults = 1;
- static int default_audio = 1;
-@@ -2308,19 +2307,7 @@ static int do_configure_accelerator(void *opaque, QemuOpts *opts, Error **errp)
-     qemu_opt_foreach(opts, accelerator_set_property,
-                      accel,
-                      &error_fatal);
--    /*
--     * If legacy -singlestep option is set, honour it for TCG and
--     * silently ignore for any other accelerator (which is how this
--     * option has always behaved).
--     */
--    if (opt_one_insn_per_tb) {
--        /*
--         * This will always succeed for TCG, and we want to ignore
--         * the error from trying to set a nonexistent property
--         * on any other accelerator.
--         */
--        object_property_set_bool(OBJECT(accel), "one-insn-per-tb", true, NULL);
--    }
-+
-     ret = accel_init_machine(accel, current_machine);
-     if (ret < 0) {
-         if (!qtest_with_kvm || ret != -ENOENT) {
-@@ -3057,9 +3044,6 @@ void qemu_init(int argc, char **argv)
-             case QEMU_OPTION_bios:
-                 qdict_put_str(machine_opts_dict, "firmware", optarg);
-                 break;
--            case QEMU_OPTION_singlestep:
--                opt_one_insn_per_tb = true;
--                break;
-             case QEMU_OPTION_S:
-                 autostart = 0;
-                 break;
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 9be6beb5a0..033fa873e4 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -4357,14 +4357,6 @@ SRST
-     from a script.
- ERST
- 
--DEF("singlestep", 0, QEMU_OPTION_singlestep, \
--    "-singlestep     deprecated synonym for -accel tcg,one-insn-per-tb=on\n", QEMU_ARCH_ALL)
--SRST
--``-singlestep``
--    This is a deprecated synonym for the TCG accelerator property
--    ``one-insn-per-tb``.
--ERST
--
- DEF("preconfig", 0, QEMU_OPTION_preconfig, \
-     "--preconfig     pause QEMU before machine is initialized (experimental)\n",
-     QEMU_ARCH_ALL)
--- 
-2.43.0
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+
+> ---
+>  docs/about/deprecated.rst       |  5 -----
+>  docs/about/removed-features.rst |  5 +++++
+>  system/vl.c                     |  6 ------
+>  qemu-options.hx                 | 10 ----------
+>  4 files changed, 5 insertions(+), 21 deletions(-)
+> 
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index dff4c76f1b..80eacd40ba 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -63,11 +63,6 @@ as short-form boolean values, and passed to plugins as ``arg_name=on``.
+>  However, short-form booleans are deprecated and full explicit ``arg_name=on``
+>  form is preferred.
+>  
+> -``-async-teardown`` (since 8.1)
+> -'''''''''''''''''''''''''''''''
+> -
+> -Use ``-run-with async-teardown=on`` instead.
+> -
+>  ``-chroot`` (since 8.1)
+>  '''''''''''''''''''''''
+>  
+> diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+> index ae728b6130..43f64a26ba 100644
+> --- a/docs/about/removed-features.rst
+> +++ b/docs/about/removed-features.rst
+> @@ -472,6 +472,11 @@ Use ``-machine hpet=off`` instead.
+>  The ``-no-acpi`` setting has been turned into a machine property.
+>  Use ``-machine acpi=off`` instead.
+>  
+> +``-async-teardown`` (removed in 9.0)
+> +''''''''''''''''''''''''''''''''''''
+> +
+> +Use ``-run-with async-teardown=on`` instead.
+> +
+>  
+>  QEMU Machine Protocol (QMP) commands
+>  ------------------------------------
+> diff --git a/system/vl.c b/system/vl.c
+> index 7e258889f3..924356f864 100644
+> --- a/system/vl.c
+> +++ b/system/vl.c
+> @@ -3600,12 +3600,6 @@ void qemu_init(int argc, char **argv)
+>              case QEMU_OPTION_daemonize:
+>                  os_set_daemonize(true);
+>                  break;
+> -#if defined(CONFIG_LINUX)
+> -            /* deprecated */
+> -            case QEMU_OPTION_asyncteardown:
+> -                init_async_teardown();
+> -                break;
+> -#endif
+>              case QEMU_OPTION_run_with: {
+>                  const char *str;
+>                  opts = qemu_opts_parse_noisily(qemu_find_opts("run-with"),
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index dafecf47d6..10c952ba3f 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -4975,16 +4975,6 @@ HXCOMM Internal use
+>  DEF("qtest", HAS_ARG, QEMU_OPTION_qtest, "", QEMU_ARCH_ALL)
+>  DEF("qtest-log", HAS_ARG, QEMU_OPTION_qtest_log, "", QEMU_ARCH_ALL)
+>  
+> -#ifdef __linux__
+> -DEF("async-teardown", 0, QEMU_OPTION_asyncteardown,
+> -    "-async-teardown enable asynchronous teardown\n",
+> -    QEMU_ARCH_ALL)
+> -SRST
+> -``-async-teardown``
+> -    This option is deprecated and should no longer be used. The new option
+> -    ``-run-with async-teardown=on`` is a replacement.
+> -ERST
+> -#endif
+>  #ifdef CONFIG_POSIX
+>  DEF("run-with", HAS_ARG, QEMU_OPTION_run_with,
+>      "-run-with [async-teardown=on|off][,chroot=dir]\n"
 
 
