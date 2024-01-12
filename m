@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7FD582BB1F
+	by mail.lfdr.de (Postfix) with ESMTPS id D096882BB20
 	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 07:02:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOAbM-0004g3-IC; Fri, 12 Jan 2024 01:01:08 -0500
+	id 1rOAbN-0004h3-Sl; Fri, 12 Jan 2024 01:01:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
- id 1rOAbD-0004fK-L6
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 01:00:59 -0500
+ id 1rOAbH-0004gG-7R
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 01:01:03 -0500
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
- id 1rOAb9-0001Y8-SW
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 01:00:58 -0500
+ id 1rOAbF-0001cG-8i
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 01:01:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705039256; x=1736575256;
+ t=1705039262; x=1736575262;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=TjGvkLnFdATYJZjMoetdlVNdiuJsV6qD9qhxqSL1S54=;
- b=ny5Vd1AmflA0+JzFI84CNHJx8zWx3/17opcSFqmH85s1KMznagzPh+rb
- BER5uXOIsODtPCFXVKmZ3bjXNm7wXbcKuyAwvWkIlmiQgHirIDJFoYdmJ
- Xz/LMt6IGw9F/MBHNJwlJeavwCB6VaMaRS6IHvoXx6IMrP61T7P1rMjCj
- GA6BkeizHBhGXh7nr4PaArnghuu9EtK8NxoKEabFO9CkVLz/hKLpZU1c9
- VTxyR9fEZ+YA21aYML2LIoXm2ZnLjEGpceAjXC/HjD1By6Q6GbLznFz3Y
- mXD4ipnH+TRZcdLXCjtIlaHBMdGfAyuwWEJ4+Y2X6741ppKSOlxBr5Pm6 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="5815754"
+ bh=T7zTI2fBo/8VZG27Zg+D+2Lu+dRzE4jKGwoDwuPXqZs=;
+ b=SEFzJVJ80jvmTm9hjBOFfJ7dyrxCoGtusM1ylaIbOKaxMQOu+b9p5mag
+ UTYuNs4dXvtGqD1Inavd6C/8Pfmgo4kOp2T0u1EctjgbJU7jpHQHTU2dM
+ 0fWVS/p3sIMynEgKTQqEKeX2Hmf6WwKuDIJj2YfvI5F9v2z89raBZc1Ts
+ BSWNT551JubOKK20RF0GivxWMkQvQ1a6QkGtdl6P7NDFkaW66M1NTJCqL
+ OJGLq+Qz72elfY5gR1hSMHhVxL0UI7CODyar8IYTCMQ7IqdWKSDRozvjI
+ TKeDDszx0DXYJtjW9zvaMCMQjQN+TwhtUXFuRoqG+xm+t9d2G30nkwptm w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="5815758"
 X-IronPort-AV: E=Sophos;i="6.04,188,1695711600"; 
-   d="scan'208";a="5815754"
+   d="scan'208";a="5815758"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jan 2024 22:00:51 -0800
+ 11 Jan 2024 22:00:53 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="873274718"
-X-IronPort-AV: E=Sophos;i="6.04,188,1695711600"; d="scan'208";a="873274718"
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="873274771"
+X-IronPort-AV: E=Sophos;i="6.04,188,1695711600"; d="scan'208";a="873274771"
 Received: from binbinwu-mobl.ccr.corp.intel.com (HELO
  binbinwu-mobl.sh.intel.com) ([10.238.2.99])
  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jan 2024 22:00:48 -0800
+ 11 Jan 2024 22:00:50 -0800
 From: Binbin Wu <binbin.wu@linux.intel.com>
 To: qemu-devel@nongnu.org,
 	kvm@vger.kernel.org
 Cc: pbonzini@redhat.com, xiaoyao.li@intel.com, chao.gao@intel.com,
  robert.hu@linux.intel.com, binbin.wu@linux.intel.com
-Subject: [PATCH v4 1/2] target/i386: add support for LAM in CPUID enumeration
-Date: Fri, 12 Jan 2024 14:00:41 +0800
-Message-Id: <20240112060042.19925-2-binbin.wu@linux.intel.com>
+Subject: [PATCH v4 2/2] target/i386: add control bits support for LAM
+Date: Fri, 12 Jan 2024 14:00:42 +0800
+Message-Id: <20240112060042.19925-3-binbin.wu@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240112060042.19925-1-binbin.wu@linux.intel.com>
 References: <20240112060042.19925-1-binbin.wu@linux.intel.com>
@@ -79,58 +79,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Robert Hoo <robert.hu@linux.intel.com>
+LAM uses CR3[61] and CR3[62] to configure/enable LAM on user pointers.
+LAM uses CR4[28] to configure/enable LAM on supervisor pointers.
 
-Linear Address Masking (LAM) is a new Intel CPU feature, which allows
-software to use of the untranslated address bits for metadata.
+For CR3 LAM bits, no additional handling needed:
+- TCG
+  LAM is not supported for TCG of target-i386.  helper_write_crN() and
+  helper_vmrun() check max physical address bits before calling
+  cpu_x86_update_cr3(), no change needed, i.e. CR3 LAM bits are not allowed
+  to be set in TCG.
+- gdbstub
+  x86_cpu_gdb_write_register() will call cpu_x86_update_cr3() to update cr3.
+  Allow gdb to set the LAM bit(s) to CR3, if vcpu doesn't support LAM,
+  KVM_SET_SREGS will fail as other reserved bits.
 
-The bit definition:
-CPUID.(EAX=7,ECX=1):EAX[26]
+For CR4 LAM bit, its reservation depends on vcpu supporting LAM feature or
+not.
+- TCG
+  LAM is not supported for TCG of target-i386.  helper_write_crN() and
+  helper_vmrun() check CR4 reserved bit before calling cpu_x86_update_cr4(),
+  i.e. CR4 LAM bit is not allowed to be set in TCG.
+- gdbstub
+  x86_cpu_gdb_write_register() will call cpu_x86_update_cr4() to update cr4.
+  Mask out LAM bit on CR4 if vcpu doesn't support LAM.
+- x86_cpu_reset_hold() doesn't need special handling.
 
-Add CPUID definition for LAM.
-
-Note LAM feature is not supported for TCG of target-i386, LAM CPIUD bit
-will not be added to TCG_7_1_EAX_FEATURES.
-
-More info can be found in Intel ISE Chapter "LINEAR ADDRESS MASKING(LAM)"
-https://cdrdv2.intel.com/v1/dl/getContent/671368
-
-Signed-off-by: Robert Hoo <robert.hu@linux.intel.com>
-Co-developed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
 Tested-by: Xuelian Guo <xuelian.guo@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/cpu.c | 2 +-
- target/i386/cpu.h | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ target/i386/cpu.h    | 7 ++++++-
+ target/i386/helper.c | 4 ++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 2524881ce2..fc862dfeb1 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -967,7 +967,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             "fsrc", NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
-             NULL, "amx-fp16", NULL, "avx-ifma",
--            NULL, NULL, NULL, NULL,
-+            NULL, NULL, "lam", NULL,
-             NULL, NULL, NULL, NULL,
-         },
-         .cpuid = {
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 7f0786e8b9..18ea755644 100644
+index 18ea755644..598a3fa140 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -925,6 +925,8 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
- #define CPUID_7_1_EAX_AMX_FP16          (1U << 21)
- /* Support for VPMADD52[H,L]UQ */
- #define CPUID_7_1_EAX_AVX_IFMA          (1U << 23)
-+/* Linear Address Masking */
-+#define CPUID_7_1_EAX_LAM               (1U << 26)
+@@ -261,6 +261,7 @@ typedef enum X86Seg {
+ #define CR4_SMAP_MASK   (1U << 21)
+ #define CR4_PKE_MASK   (1U << 22)
+ #define CR4_PKS_MASK   (1U << 24)
++#define CR4_LAM_SUP_MASK (1U << 28)
  
- /* Support for VPDPB[SU,UU,SS]D[,S] */
- #define CPUID_7_1_EDX_AVX_VNNI_INT8     (1U << 4)
+ #define CR4_RESERVED_MASK \
+ (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
+@@ -269,7 +270,8 @@ typedef enum X86Seg {
+                 | CR4_OSFXSR_MASK | CR4_OSXMMEXCPT_MASK | CR4_UMIP_MASK \
+                 | CR4_LA57_MASK \
+                 | CR4_FSGSBASE_MASK | CR4_PCIDE_MASK | CR4_OSXSAVE_MASK \
+-                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK))
++                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK \
++                | CR4_LAM_SUP_MASK))
+ 
+ #define DR6_BD          (1 << 13)
+ #define DR6_BS          (1 << 14)
+@@ -2522,6 +2524,9 @@ static inline uint64_t cr4_reserved_bits(CPUX86State *env)
+     if (!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS)) {
+         reserved_bits |= CR4_PKS_MASK;
+     }
++    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
++        reserved_bits |= CR4_LAM_SUP_MASK;
++    }
+     return reserved_bits;
+ }
+ 
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 2070dd0dda..1da7a7d315 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -219,6 +219,10 @@ void cpu_x86_update_cr4(CPUX86State *env, uint32_t new_cr4)
+         new_cr4 &= ~CR4_PKS_MASK;
+     }
+ 
++    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
++        new_cr4 &= ~CR4_LAM_SUP_MASK;
++    }
++
+     env->cr[4] = new_cr4;
+     env->hflags = hflags;
+ 
 -- 
 2.25.1
 
