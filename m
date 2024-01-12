@@ -2,82 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA9382BA5B
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 05:23:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75FEB82BA88
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 05:59:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rO93W-0006Ha-Am; Thu, 11 Jan 2024 23:22:06 -0500
+	id 1rO9bw-0006Rs-NL; Thu, 11 Jan 2024 23:57:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1rO93U-0006HB-C1
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 23:22:04 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1rO93S-0004os-SP
- for qemu-devel@nongnu.org; Thu, 11 Jan 2024 23:22:04 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1d3ed1ca402so55408025ad.2
- for <qemu-devel@nongnu.org>; Thu, 11 Jan 2024 20:22:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705033321; x=1705638121; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6hE4eJitCTZpl51/ZHF6oGfhVBhaOGAVbSFzwGAmZo4=;
- b=aahZNSuYgLCRduR0NTUJLMylLK4VgjHACzBzMVBpvUSAzGa+lF2Q57isu00OXRBg/z
- bnhvNttATN/TpVarXQ7zutmVptKHHUa04blshPjXG+eLDy/tg8diaxItWjEmVn5fYG1d
- kjr3HOjpyeqqvoC7mHVvfKAdqevrzr1TLh6hkFb116RRQQuBEi4Iu1eC0GSboP7HJq4b
- IKnwsN+iiErQx2NXB3ViaJUfxcNz486pY17czdGgDTisfiqo1tru4CwTJwsLo+bmJ1Mv
- bec0tg+G81riV8qjsFgVB2I7jXL0nHRNthIB/UTQsQIn6muGkvo41Lf/XXhQ8TF6YV4J
- FWww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705033321; x=1705638121;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6hE4eJitCTZpl51/ZHF6oGfhVBhaOGAVbSFzwGAmZo4=;
- b=kcoKolHEAKTEDQKoERrkIWJhf/M0YIaxjnOmKV2UZ0wiK43ll2vQ54Gw/20dbSF7Ri
- B9rndxaLOXY/icLUHsgu9pMcXEHTa22YiR61ZcqACJqLdiqVqzXK0JjdBoI+t5MXWJJW
- srLjkgPpWxXn+E+rdJZHXwCkc9IxfEaBEi9lGUDij/CGxjqm3LShFBD+vBUoI1ohhVd9
- 32WaBF+/MLAMZf8Zqy0pTcQ3vQl4boqhw54+E5FDg79/CCo+VP9KjSr3fM+ZvfT2qg/+
- G8Rs/3R4D6jp2ZHQNP49qIkPaopXcANnshF+hgRin3lu09DKgeyXPGArTJ6YYMKMaFKU
- hjIA==
-X-Gm-Message-State: AOJu0YyyDqVSFQobSI12O5crqoXjVA0UU5aABMDYuhaIyqb/TA/qfv2o
- zElmJkj9NEnFlBjPLWZcaRzewUHV5eM=
-X-Google-Smtp-Source: AGHT+IH9WamLNFg8R5B7oY/TbLj2h4ygN3g8IiYg24Q44YqdCaJdYV9+hFdfQCqpIlHyyVoybYx/bg==
-X-Received: by 2002:a17:903:40cb:b0:1d4:7863:7586 with SMTP id
- t11-20020a17090340cb00b001d478637586mr470271pld.78.1705033321303; 
- Thu, 11 Jan 2024 20:22:01 -0800 (PST)
-Received: from octofox.hsd1.ca.comcast.net
- (c-73-63-239-93.hsd1.ca.comcast.net. [73.63.239.93])
- by smtp.gmail.com with ESMTPSA id
- o17-20020a170902d4d100b001d4c98c7439sm2018576plg.276.2024.01.11.20.22.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jan 2024 20:22:00 -0800 (PST)
-From: Max Filippov <jcmvbkbc@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH 4/4] tests/tcg/xtensa: fix SR test for configs with MPU
-Date: Thu, 11 Jan 2024 20:21:28 -0800
-Message-Id: <20240112042128.3569220-5-jcmvbkbc@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240112042128.3569220-1-jcmvbkbc@gmail.com>
-References: <20240112042128.3569220-1-jcmvbkbc@gmail.com>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1rO9bt-0006R1-Cu; Thu, 11 Jan 2024 23:57:37 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1rO9bq-0008Fw-VI; Thu, 11 Jan 2024 23:57:37 -0500
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40C4cVsE011035; Fri, 12 Jan 2024 04:57:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=3odoyL3jliDsBAVWShZwixrk/Um6WDQEdhLzbPSMr+Q=;
+ b=GvcoAQ+2pVDrjkJ3g7GclR/cpgzUUGazl6BWDJcxtbv23MtYQCQs+ofq5TUw6nswS/YB
+ Z/ce1OQTWvXb/HJaX2+bOAIqEnXoW6RjtYriVepe3eEhD3vcIsmu6LDKOb0roUj5bFtx
+ 9/BsboHdQCCheRvsu5VcSHnRhdsU59cEs8Ed5PJTtRpsZesBnADyaCWNG3gRwjsKdoiG
+ fciIO1Xqqp/RDyuEYWF5wYdNCh+Ml7DpbS2GoI3OO4IlghKlJiYNGuimRVP6OCEp8xMV
+ CWUqLj0Ji4P9JqVErTJ4Yip9SATHybe6YNaiCgjnP9sH4qd47MVGBLxBSXgin0k/NiSL Ww== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjmwhd3wx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 12 Jan 2024 04:57:16 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40C4dUCE013526;
+ Fri, 12 Jan 2024 04:57:15 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjmwhd3wn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 12 Jan 2024 04:57:15 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40C1dUYF028035; Fri, 12 Jan 2024 04:57:14 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vgwft4062-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 12 Jan 2024 04:57:14 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40C4vDra12452390
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 12 Jan 2024 04:57:14 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C6AAA58055;
+ Fri, 12 Jan 2024 04:57:13 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7FA3258059;
+ Fri, 12 Jan 2024 04:57:09 +0000 (GMT)
+Received: from [9.179.24.49] (unknown [9.179.24.49])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 12 Jan 2024 04:57:09 +0000 (GMT)
+Message-ID: <70fae07d-f6c1-4143-b632-a988ae53ccb0@linux.ibm.com>
+Date: Fri, 12 Jan 2024 10:27:07 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=jcmvbkbc@gmail.com; helo=mail-pl1-x631.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] target/ppc/cpu-models: Rename power5+ and power7+ for
+ new QOM naming rules
+To: Thomas Huth <thuth@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ qemu-devel@nongnu.org
+Cc: devel@lists.libvirt.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>
+References: <20240111164652.908182-1-thuth@redhat.com>
+ <20240111164652.908182-2-thuth@redhat.com>
+Content-Language: en-US
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20240111164652.908182-2-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: nNMYbNTWmL-otTRpCw4N_vDFc_btZFGw
+X-Proofpoint-ORIG-GUID: gEgZ6yMV9xRiHP3l_Nvo1TZm1gNlyf6d
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-12_01,2024-01-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ lowpriorityscore=0 suspectscore=0 impostorscore=0 spamscore=0
+ mlxlogscore=999 clxscore=1011 adultscore=0 mlxscore=0 bulkscore=0
+ phishscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2401120034
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,69 +119,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- atomctl is available not only in the presence of s32c1i, but also with
-  the exclusive access option
-- cacheadrdis SR has the same number as cacheattr, mpuenb SR has the
-  same number as rasid and mpucfg SR has the same number as dtlbcfg,
-  add MPU case to the tests of these SR numbers
 
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
----
- tests/tcg/xtensa/test_sr.S | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/tests/tcg/xtensa/test_sr.S b/tests/tcg/xtensa/test_sr.S
-index 34441c7afff7..661ef6c66ed1 100644
---- a/tests/tcg/xtensa/test_sr.S
-+++ b/tests/tcg/xtensa/test_sr.S
-@@ -62,7 +62,7 @@ test_sr_mask /*acchi*/17, 0, 0
- test_sr_mask /*acclo*/16, 0, 0
- #endif
- 
--#if XCHAL_HAVE_S32C1I && XCHAL_HW_VERSION >= 230000
-+#if XCHAL_HAVE_S32C1I && XCHAL_HW_VERSION >= 230000 || XCHAL_HAVE_EXCLUSIVE
- test_sr atomctl, 1
- #else
- test_sr_mask /*atomctl*/99, 0, 0
-@@ -74,7 +74,11 @@ test_sr br, 1
- test_sr_mask /*br*/4, 0, 0
- #endif
- 
-+#if XCHAL_HAVE_MPU
-+test_sr cacheadrdis, 1
-+#else
- test_sr_mask /*cacheattr*/98, 0, 0
-+#endif
- 
- #if XCHAL_HAVE_CCOUNT
- test_sr ccompare0, 1
-@@ -106,6 +110,8 @@ test_sr depc, 1
- 
- #if XCHAL_HAVE_PTP_MMU
- test_sr dtlbcfg, 1
-+#elif XCHAL_HAVE_MPU
-+test_sr_mask /*mpucfg*/92, 0, 3
- #else
- test_sr_mask /*dtlbcfg*/92, 0, 0
- #endif
-@@ -205,9 +211,15 @@ test_sr ps, 1
- 
- #if XCHAL_HAVE_PTP_MMU
- test_sr ptevaddr, 1
--test_sr rasid, 1
- #else
- test_sr_mask /*ptevaddr*/83, 0, 0
-+#endif
-+
-+#if XCHAL_HAVE_PTP_MMU
-+test_sr rasid, 1
-+#elif XCHAL_HAVE_MPU
-+test_sr mpuenb, 1
-+#else
- test_sr_mask /*rasid*/90, 0, 0
- #endif
- 
--- 
-2.39.2
+On 1/11/24 22:16, Thomas Huth wrote:
+> The character "+" is now forbidden in QOM device names (see commit
+> b447378e1217 - "Limit type names to alphanumerical and some few special
+> characters"). For the "power5+" and "power7+" CPU names, there is
+> currently a hack in type_name_is_valid() to still allow them for
+> compatibility reasons. However, there is a much nicer solution for this:
+> Simply use aliases! This way we can still support the old names without
+> the need for the ugly hack in type_name_is_valid().
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   hw/ppc/spapr_cpu_core.c |  4 ++--
+>   qom/object.c            |  4 ----
+>   target/ppc/cpu-models.c | 10 ++++++----
+>   3 files changed, 8 insertions(+), 10 deletions(-)
+> 
+> diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
+> index 5aa1ed474a..214b7a03d8 100644
+> --- a/hw/ppc/spapr_cpu_core.c
+> +++ b/hw/ppc/spapr_cpu_core.c
+> @@ -389,9 +389,9 @@ static const TypeInfo spapr_cpu_core_type_infos[] = {
+>       DEFINE_SPAPR_CPU_CORE_TYPE("970_v2.2"),
+>       DEFINE_SPAPR_CPU_CORE_TYPE("970mp_v1.0"),
+>       DEFINE_SPAPR_CPU_CORE_TYPE("970mp_v1.1"),
+> -    DEFINE_SPAPR_CPU_CORE_TYPE("power5+_v2.1"),
+> +    DEFINE_SPAPR_CPU_CORE_TYPE("power5plus_v2.1"),
+>       DEFINE_SPAPR_CPU_CORE_TYPE("power7_v2.3"),
+> -    DEFINE_SPAPR_CPU_CORE_TYPE("power7+_v2.1"),
+> +    DEFINE_SPAPR_CPU_CORE_TYPE("power7plus_v2.1"),
 
+Will using Power5x, Power7x be a better naming than using 'plus' suffix ?
+
+Otherwise,
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
+>       DEFINE_SPAPR_CPU_CORE_TYPE("power8_v2.0"),
+>       DEFINE_SPAPR_CPU_CORE_TYPE("power8e_v2.1"),
+>       DEFINE_SPAPR_CPU_CORE_TYPE("power8nvl_v1.0"),
+> diff --git a/qom/object.c b/qom/object.c
+> index 654e1afaf2..2c4c64d2b6 100644
+> --- a/qom/object.c
+> +++ b/qom/object.c
+> @@ -160,10 +160,6 @@ static bool type_name_is_valid(const char *name)
+>   
+>       /* Allow some legacy names with '+' in it for compatibility reasons */
+>       if (name[plen] == '+') {
+> -        if (plen == 6 && g_str_has_prefix(name, "power")) {
+> -            /* Allow "power5+" and "power7+" CPU names*/
+> -            return true;
+> -        }
+>           if (plen >= 17 && g_str_has_prefix(name, "Sun-UltraSparc-I")) {
+>               /* Allow "Sun-UltraSparc-IV+" and "Sun-UltraSparc-IIIi+" */
+>               return true;
+> diff --git a/target/ppc/cpu-models.c b/target/ppc/cpu-models.c
+> index 7dbb47de64..6d854bb023 100644
+> --- a/target/ppc/cpu-models.c
+> +++ b/target/ppc/cpu-models.c
+> @@ -716,11 +716,11 @@
+>                   "PowerPC 970MP v1.0")
+>       POWERPC_DEF("970mp_v1.1",    CPU_POWERPC_970MP_v11,              970,
+>                   "PowerPC 970MP v1.1")
+> -    POWERPC_DEF("power5+_v2.1",  CPU_POWERPC_POWER5P_v21,            POWER5P,
+> +    POWERPC_DEF("power5plus_v2.1", CPU_POWERPC_POWER5P_v21,          POWER5P,
+>                   "POWER5+ v2.1")
+>       POWERPC_DEF("power7_v2.3",   CPU_POWERPC_POWER7_v23,             POWER7,
+>                   "POWER7 v2.3")
+> -    POWERPC_DEF("power7+_v2.1",  CPU_POWERPC_POWER7P_v21,            POWER7,
+> +    POWERPC_DEF("power7plus_v2.1", CPU_POWERPC_POWER7P_v21,          POWER7,
+>                   "POWER7+ v2.1")
+>       POWERPC_DEF("power8e_v2.1",  CPU_POWERPC_POWER8E_v21,            POWER8,
+>                   "POWER8E v2.1")
+> @@ -902,10 +902,12 @@ PowerPCCPUAlias ppc_cpu_aliases[] = {
+>       { "970", "970_v2.2" },
+>       { "970fx", "970fx_v3.1" },
+>       { "970mp", "970mp_v1.1" },
+> -    { "power5+", "power5+_v2.1" },
+> +    { "power5+", "power5plus_v2.1" },
+> +    { "power5+_v2.1", "power5plus_v2.1" },
+>       { "power5gs", "power5+_v2.1" },
+>       { "power7", "power7_v2.3" },
+> -    { "power7+", "power7+_v2.1" },
+> +    { "power7+", "power7plus_v2.1" },
+> +    { "power7+_v2.1", "power7plus_v2.1" },
+>       { "power8e", "power8e_v2.1" },
+>       { "power8", "power8_v2.0" },
+>       { "power8nvl", "power8nvl_v1.0" },
 
