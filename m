@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CFA382C745
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:32:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C532E82C752
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:32:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOQ2a-0005rU-D6; Fri, 12 Jan 2024 17:30:17 -0500
+	id 1rOQ2d-0005zj-NG; Fri, 12 Jan 2024 17:30:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rOQ2H-0005n5-PM
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:29:57 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rOQ2J-0005ne-QN
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:30:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rOQ2G-00061K-Av
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:29:57 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rOQ2G-00061f-S6
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:29:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705098595;
+ s=mimecast20190719; t=1705098596;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iLrLTUxYwmlh9gHDsxNLoBUB9u/tn1T9SVTXL6mvKTg=;
- b=Im06z8r0t/KS6uudeYDyxfo2LJeYtpFcQhHmoM51hXr+BIkKjW4Yz0B5sKTx/VsmVldURm
- 0G2bCzzwRbOCUeR/IPtI4JdSCOQoJIPZ2yZsgkF8RD9WAkefQkAbs1BrqsmIOm5c+mN7C6
- u39cUSx1tvKC3Ov/5KHOyL9mhmOFz28=
+ bh=yGbeqJt+IjOhixs9t34JuQh6972Tb3OXqm1LUJWw/jU=;
+ b=KhVfN/FqCiQhm7E8kp3WVwp3ggNswB9EbgxFrTGQAXFTnwANM21giFhgJB79EbAMvZ9mt7
+ 5X15DJclG71okKmiYb99Elz7rEq3mgWJWm62FRwnKzQ4cbDhhfessD3XfwmV0xsgFvNt1G
+ DwFQR5S8OERXF+6k9DVb4A/zuUYp58U=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-505-oYYVWf7sOGOOyjdGbbTeFg-1; Fri, 12 Jan 2024 17:29:52 -0500
-X-MC-Unique: oYYVWf7sOGOOyjdGbbTeFg-1
+ us-mta-3-vmHhvgcTON6kUBp20EqA9w-1; Fri, 12 Jan 2024 17:29:52 -0500
+X-MC-Unique: vmHhvgcTON6kUBp20EqA9w-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E534B85A589;
- Fri, 12 Jan 2024 22:29:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43E2382DFE1;
+ Fri, 12 Jan 2024 22:29:52 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.17.171])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A0C2AC25AC8;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F2EFAC25AC8;
  Fri, 12 Jan 2024 22:29:51 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 15/19] qapi/schema: assert inner type of QAPISchemaVariants
- in check_clash()
-Date: Fri, 12 Jan 2024 17:29:41 -0500
-Message-ID: <20240112222945.3033854-16-jsnow@redhat.com>
+Subject: [PATCH v2 16/19] qapi/parser: demote QAPIExpression to Dict[str, Any]
+Date: Fri, 12 Jan 2024 17:29:42 -0500
+Message-ID: <20240112222945.3033854-17-jsnow@redhat.com>
 In-Reply-To: <20240112222945.3033854-1-jsnow@redhat.com>
 References: <20240112222945.3033854-1-jsnow@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
@@ -80,38 +80,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QAPISchemaVariant's "variants" field is typed as
-List[QAPISchemaVariant], where the typing for QAPISchemaVariant allows
-its type field to be any QAPISchemaType.
+Dict[str, object] is a stricter type, but with the way that code is
+currently arranged, it is infeasible to enforce this strictness.
 
-However, QAPISchemaVariant expects that all of its variants contain the
-narrower QAPISchemaObjectType. This relationship is enforced at runtime
-in QAPISchemaVariants.check(). This relationship is not embedded in the
-type system though, so QAPISchemaVariants.check_clash() needs to
-re-assert this property in order to call
-QAPISchemaVariant.type.check_clash().
+In particular, although expr.py's entire raison d'être is normalization
+and type-checking of QAPI Expressions, that type information is not
+"remembered" in any meaningful way by mypy because each individual
+expression is not downcast to a specific expression type that holds all
+the details of each expression's unique form.
+
+As a result, all of the code in schema.py that deals with actually
+creating type-safe specialized structures has no guarantee (myopically)
+that the data it is being passed is correct.
+
+There are two ways to solve this:
+
+(1) Re-assert that the incoming data is in the shape we expect it to be, or
+(2) Disable type checking for this data.
+
+(1) is appealing to my sense of strictness, but I gotta concede that it
+is asinine to re-check the shape of a QAPIExpression in schema.py when
+expr.py has just completed that work at length. The duplication of code
+and the nightmare thought of needing to update both locations if and
+when we change the shape of these structures makes me extremely
+reluctant to go down this route.
+
+(2) allows us the chance to miss updating types in the case that types
+are updated in expr.py, but it *is* an awful lot simpler and,
+importantly, gets us closer to type checking schema.py *at
+all*. Something is better than nothing, I'd argue.
+
+So, do the simpler dumber thing and worry about future strictness
+improvements later.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/schema.py | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ scripts/qapi/parser.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index 6afafdb8b0d..f2271dc7cbd 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -725,7 +725,10 @@ def check(self, schema, seen):
-     def check_clash(self, info, seen):
-         for v in self.variants:
-             # Reset seen map for each variant, since qapi names from one
--            # branch do not affect another branch
-+            # branch do not affect another branch.
-+            #
-+            # v.type's typing is enforced in check() above.
-+            assert isinstance(v.type, QAPISchemaObjectType)
-             v.type.check_clash(info, dict(seen))
+diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+index bf31018aef0..b7f08cf36f2 100644
+--- a/scripts/qapi/parser.py
++++ b/scripts/qapi/parser.py
+@@ -19,6 +19,7 @@
+ import re
+ from typing import (
+     TYPE_CHECKING,
++    Any,
+     Dict,
+     List,
+     Mapping,
+@@ -43,7 +44,7 @@
+ _ExprValue = Union[List[object], Dict[str, object], str, bool]
  
  
+-class QAPIExpression(Dict[str, object]):
++class QAPIExpression(Dict[str, Any]):
+     # pylint: disable=too-few-public-methods
+     def __init__(self,
+                  data: Mapping[str, object],
 -- 
 2.43.0
 
