@@ -2,88 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A6782C737
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5A582C738
 	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:24:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOPve-0003Y1-6V; Fri, 12 Jan 2024 17:23:06 -0500
+	id 1rOPvu-0003b9-RK; Fri, 12 Jan 2024 17:23:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOPvS-0003Xd-G5
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:22:56 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOPvQ-0002Xr-Tr
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:22:54 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6d9af1f12d5so6047722b3a.3
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 14:22:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705098171; x=1705702971; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hrGhe1NUhsYtDqHujMOz+i96xExYDsCq8Ku+cdUJMuA=;
- b=pD3WM49EugSZhXG1HYke2ppZm2SJU3qk2icWcQg13LCUB5PaltL7iAMU/Kp9DhgPNb
- ts+lP0JGduJtEthByaQShzlo1omFixeWzFXvqH658OHz5oLGVbj4N3o2vUy64DAXBf3y
- Jn7NxFUbwEm1iqgbuDacBvtlRXBCIkkTZIAPkzxWE9uF9ucstTVpY2A8Rsb5iTNaOr1f
- UV6mjW+euGidRksSYTRjgDFQ72hHsgl4SQ8eRYwUb2OMTneBPEk5be0wuDObbs8SuzZi
- BBXqhRkyHrW4TwHAksLIG9vwsiHI+5VnRMovDk2UAw8ZK+yt2KvS4x3X3GqEVcLx5cYN
- Z99Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705098171; x=1705702971;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hrGhe1NUhsYtDqHujMOz+i96xExYDsCq8Ku+cdUJMuA=;
- b=ZWkRCjj0ucf4w7h0CTtZWuvp8+FtEb5dEWtUdaxPAS25AVJ3gbjRNEEvvZbulAg3Cn
- tE0C6sBV5HZb0QAdOYGq2lhexOXRDJz+6PgAR6+UWr58N57O7R8y+IpMiW3aeg4/XWCW
- NQpKTkweduv6PuR5ofx/humzE+jGjP8y3eqby0K0EFO1Z/ysWtJgyF7EQNatN0TSkZJT
- HVoWTWO3c3F2XxbR2MKJu+T3N8WnQowhwGwUqpU55hnS190eYaE5m2QrS/kELgBfm/Hx
- 5/H6r/eIS3jhbD1T8THBSPHvF9IBk4b+bAecLXEOxl0283JwZtPX6Be1UymjHk+hlN3T
- yJug==
-X-Gm-Message-State: AOJu0YzjwkPAxoL1mRG/ZT2FYJR3u8BlFEC9Huqdf2je5Wcg8SJ+jYqH
- xbQ8q4NqHXJH9MTlouPkRs9N3Oz2Qgd3Qw==
-X-Google-Smtp-Source: AGHT+IELG+YI8qPe97ebP95T302LmDxqUMlRYH5yDLE0oIyUX5NO9DGdJRpTJLUxg9b9dz/+ctwwGA==
-X-Received: by 2002:a05:6a20:7598:b0:19a:4846:5245 with SMTP id
- n24-20020a056a20759800b0019a48465245mr1472107pze.67.1705098171502; 
- Fri, 12 Jan 2024 14:22:51 -0800 (PST)
-Received: from ?IPV6:2001:8004:2728:2ad6:e985:c1c8:a4fc:508?
- ([2001:8004:2728:2ad6:e985:c1c8:a4fc:508])
- by smtp.gmail.com with ESMTPSA id
- p19-20020aa78613000000b006d93ca7f8f3sm3642335pfn.150.2024.01.12.14.22.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Jan 2024 14:22:51 -0800 (PST)
-Message-ID: <a9f0ae34-5b9d-4cdb-acb7-1f1e1ef13636@linaro.org>
-Date: Sat, 13 Jan 2024 09:22:43 +1100
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOPvs-0003aw-UC
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:23:20 -0500
+Received: from sin.source.kernel.org ([145.40.73.55])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOPvp-0002jv-UM
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:23:20 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sin.source.kernel.org (Postfix) with ESMTP id 2FF27CE2465;
+ Fri, 12 Jan 2024 22:23:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E39CC433F1;
+ Fri, 12 Jan 2024 22:23:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1705098192;
+ bh=NQfcFRjIUZJky5RoF9i4pzEm2bqPld5IeOEGPAv7l0g=;
+ h=Date:From:To:Subject:References:In-Reply-To:From;
+ b=coQJyIKxlz0g11FMD3cmJG7gRyaQWTT63hi+3gjRcZ0pyMa9ghKFgmUuKD4Y2zDdO
+ H5tpkvIm/6RcMm4z7jn8v9dlcFSJwcuJa7Yc6TCFuJbm8PpegI9DtFSQ2bv5fg4dQD
+ mn/nonZiiLV7cNlg7Ck/9J6bDKdAA2Snvb4zh2kb2OhAmoM713ywGkty5UJTe5yhp5
+ EMgXXF/OfJ/stW3UUS+nMUEDh9Ngp4TDuRAI72F2f88TEux7NQvkgDESY3OX5XX2OF
+ pFFRm1eUthIwEotNXsMpYEWg52QnR5RxIhRO8OtNCnQV0nbLWM0nIm3vra5gkm2qor
+ zJQ3KraM9P9EA==
+Date: Fri, 12 Jan 2024 23:23:08 +0100
+From: Helge Deller <deller@kernel.org>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 4/9] target/hppa: Fix PDC address translation on PA2.0
+ with PSW.W=0
+Message-ID: <ZaG7zLKP3gFV4-H3@p100>
+References: <20240112102927.35406-1-deller@kernel.org>
+ <20240112102927.35406-5-deller@kernel.org>
+ <551dac95-3346-41eb-aa8c-d22b19f8c4fd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] plugins: implement inline operation with cpu_index
- offset
-Content-Language: en-US
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>
-References: <20240111142326.1743444-1-pierrick.bouvier@linaro.org>
- <20240111142326.1743444-2-pierrick.bouvier@linaro.org>
- <76fa391a-9f3c-4308-a84c-2b84ddadbb88@linaro.org>
- <e10e21ea-0bf9-4565-9552-e03928610161@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <e10e21ea-0bf9-4565-9552-e03928610161@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <551dac95-3346-41eb-aa8c-d22b19f8c4fd@linaro.org>
+Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
+ helo=sin.source.kernel.org
+X-Spam_score_int: -64
+X-Spam_score: -6.5
+X-Spam_bar: ------
+X-Spam_report: (-6.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.09,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,33 +69,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/13/24 01:27, Pierrick Bouvier wrote:
-> On 1/12/24 02:04, Richard Henderson wrote:
->> On 1/12/24 01:23, Pierrick Bouvier wrote:
->>> Instead of working on a fixed memory location, allow to index it based
->>> on cpu_index and a given offset (ptr + cpu_index * offset).
->>> Current semantic is not modified as we use a 0 offset, thus inline
->>> operation still targets always the same memory location.
->>>
->>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>> ---
->>>    accel/tcg/plugin-gen.c | 60 +++++++++++++++++++++++++++++++++++-------
->>>    include/qemu/plugin.h  |  1 +
->>>    plugins/api.c          |  7 ++---
->>>    plugins/core.c         | 11 +++++---
->>>    plugins/plugin.h       |  5 ++--
->>>    5 files changed, 65 insertions(+), 19 deletions(-)
->>
->> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->>
->> For the to-do list: add mul -> shl strength reduction in fold_mul().
->>
-> 
-> Would you like me to add a todo somewhere about it? Or is it a reminder for follow-up work?
+> Please adjust the code comment that immediately precedes this, not just
+> within the commit message.
 
-It's a reminder to myself for follow-up-work.
+Like this: ?
 
+Fix the address translation for PDC space on PA2.0 if PSW.W=0.
+Basically, for any address in the 32-bit PDC range from 0xf0000000 to
+0xf1000000 keep the lower 32-bits and just set the upper 32-bits to
+0xfffffff0.
 
-r~
+This mapping fixes the emulated power button in PDC space for 32- and
+64-bit machines and is how the physical C3700 machine seems to map
+PDC.
 
+Figures H-10 and H-11 in the parisc2.0 spec [1] show that the 32-bit
+region will be mapped somewhere into a higher and bigger 64-bit PDC
+space.  The start and end of this 64-bit space is defined by the
+physical address bits. But the figures don't specifiy where exactly the
+mapping will start inside that region. Tests on a real HP C3700
+regarding the address of the power button indicate, that the lower
+32-bits will stay the same though.
+[1] https://parisc.wiki.kernel.org/images-parisc/7/73/Parisc2.0.pdf
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Tested-by: Bruno Haible <bruno@clisp.org>
+
+diff --git a/roms/seabios-hppa b/roms/seabios-hppa
+index 4c6ecda618..e4eac85880 160000
+--- a/roms/seabios-hppa
++++ b/roms/seabios-hppa
+@@ -1 +1 @@
+-Subproject commit 4c6ecda618f2066707f50c53f31419244fd7f77a
++Subproject commit e4eac85880e8677f96d8b9e94de9f2eec9c0751f
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index 08abd1a9f9..4c28c58ee9 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -55,8 +55,14 @@ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
+         /* I/O address space */
+         addr = (int32_t)addr;
+     } else {
+-        /* PDC address space */
+-        addr &= MAKE_64BIT_MASK(0, 24);
++        /*
++         * PDC address space:
++         * Figures H-10 and H-11 of the parisc2.0 spec do not specify
++         * where to map into the 64-bit PDC address space.
++         * We map with an offset which equals the 32-bit address, which
++         * is what can be seen on physical machines too.
++         */
++        addr = (uint32_t)addr;
+         addr |= -1ull << (TARGET_PHYS_ADDR_SPACE_BITS - 4);
+     }
+     return addr;
 
