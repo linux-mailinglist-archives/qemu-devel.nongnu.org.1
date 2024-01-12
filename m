@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6726F82C73F
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:30:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD0982C747
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:32:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOQ2F-0005lz-K5; Fri, 12 Jan 2024 17:29:55 -0500
+	id 1rOQ2H-0005mf-V7; Fri, 12 Jan 2024 17:29:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rOQ2D-0005kz-Fr
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:29:53 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rOQ2E-0005lD-7X
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:29:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rOQ2B-0005yS-8f
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:29:52 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rOQ2B-0005yg-LY
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:29:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705098589;
+ s=mimecast20190719; t=1705098590;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/dHQ7XJXwDIAcflBasKavUDgBW50A1sN9T89lDXgvIc=;
- b=Uq4oL8PNgD4FTW3JMtR4Oxa+z+ZTbNLV7Mf4Lqdk5EAC72HBQCjXIrFXoPsZec7fMAiDTs
- e8J/0vj4pIU412juZROQeLS0ZMLEx6F1XvXpFIk+aUpzwtyaQQXDkt3JDzagKnC0sa3TK2
- OBTOuTtx8/Kln+pU0A2csWDgkpNaC/8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-640-9CUJvhtIPMy8xVqSXQW5HA-1; Fri,
- 12 Jan 2024 17:29:47 -0500
-X-MC-Unique: 9CUJvhtIPMy8xVqSXQW5HA-1
+ bh=TForb3G2pwThg2w6I1YG5YLU8XGR3ORPEGz9iQqBlZI=;
+ b=OtSa3xjeMtBj4GR1D8VMCv2G4F46N8u9O6BWPDQlkDw5Dl4b1VC0pgKRzBeGzwkDovAZ3I
+ qD7+wrp9FDHl+OubjwjBQYEUyjcWPgRQSKHrJ06o6FcL5SisuyqnV2XPWQ5AJo6gi4vobG
+ hs1PI6QjZLReGSvVF9l5GTzy+s2NtqU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-92-AMav_Qk-PbmHKH4hLX1bYg-1; Fri, 12 Jan 2024 17:29:47 -0500
+X-MC-Unique: AMav_Qk-PbmHKH4hLX1bYg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CED3D3C100BE;
- Fri, 12 Jan 2024 22:29:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C8BE811E86;
+ Fri, 12 Jan 2024 22:29:47 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.17.171])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8A5EBC25AC9;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DD948C25AC9;
  Fri, 12 Jan 2024 22:29:46 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 01/19] qapi: sort pylint suppressions
-Date: Fri, 12 Jan 2024 17:29:27 -0500
-Message-ID: <20240112222945.3033854-2-jsnow@redhat.com>
+Subject: [PATCH v2 02/19] qapi/schema: add pylint suppressions
+Date: Fri, 12 Jan 2024 17:29:28 -0500
+Message-ID: <20240112222945.3033854-3-jsnow@redhat.com>
 In-Reply-To: <20240112222945.3033854-1-jsnow@redhat.com>
 References: <20240112222945.3033854-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -79,33 +79,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Suggested-by: Markus Armbruster <armbru@redhat.com>
+With this patch, pylint is happy with the file, so enable it in the
+configuration.
+
 Signed-off-by: John Snow <jsnow@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 ---
- scripts/qapi/pylintrc | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ scripts/qapi/pylintrc  | 5 -----
+ scripts/qapi/schema.py | 5 +++++
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/scripts/qapi/pylintrc b/scripts/qapi/pylintrc
-index 90546df5345..78b63af4df6 100644
+index 78b63af4df6..ecf1d56356b 100644
 --- a/scripts/qapi/pylintrc
 +++ b/scripts/qapi/pylintrc
-@@ -16,14 +16,14 @@ ignore-patterns=schema.py,
- # --enable=similarities". If you want to run only the classes checker, but have
- # no Warning level messages displayed, use "--disable=all --enable=classes
- # --disable=W".
--disable=fixme,
-+disable=consider-using-f-string,
-         missing-docstring,
-         too-many-arguments,
-         too-many-branches,
--        too-many-statements,
-         too-many-instance-attributes,
--        consider-using-f-string,
-+        too-many-statements,
-         useless-option-value,
-+        fixme,
+@@ -1,10 +1,5 @@
+ [MASTER]
  
- [REPORTS]
+-# Add files or directories matching the regex patterns to the ignore list.
+-# The regex matches against base names, not paths.
+-ignore-patterns=schema.py,
+-
+-
+ [MESSAGES CONTROL]
+ 
+ # Disable the message, report, category or checker with the given id(s). You
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index 6a836950a9a..b7830672e57 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -12,6 +12,8 @@
+ # This work is licensed under the terms of the GNU GPL, version 2.
+ # See the COPYING file in the top-level directory.
+ 
++# pylint: disable=too-many-lines
++
+ # TODO catching name collisions in generated code would be nice
+ 
+ from collections import OrderedDict
+@@ -83,6 +85,7 @@ def c_name(self):
+         return c_name(self.name)
+ 
+     def check(self, schema):
++        # pylint: disable=unused-argument
+         assert not self._checked
+         seen = {}
+         for f in self.features:
+@@ -117,6 +120,7 @@ def is_implicit(self):
+         return not self.info
+ 
+     def visit(self, visitor):
++        # pylint: disable=unused-argument
+         assert self._checked
+ 
+     def describe(self):
+@@ -135,6 +139,7 @@ def visit_module(self, name):
+         pass
+ 
+     def visit_needed(self, entity):
++        # pylint: disable=unused-argument
+         # Default to visiting everything
+         return True
  
 -- 
 2.43.0
