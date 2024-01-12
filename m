@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C79182BEFB
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 12:10:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C5782BF15
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 12:13:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOFQl-0007Sm-Rh; Fri, 12 Jan 2024 06:10:31 -0500
+	id 1rOFTd-0003JO-2p; Fri, 12 Jan 2024 06:13:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rOFQg-0007Od-DX
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 06:10:27 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rOFTb-0003JB-30
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 06:13:27 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rOFQa-0003QO-Mh
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 06:10:23 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-33674f60184so5934332f8f.1
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 03:10:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rOFTZ-0004wN-Db
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 06:13:26 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-558c781d311so656655a12.0
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 03:13:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705057815; x=1705662615; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1705058003; x=1705662803; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dq5oqNsNmMR7A1CfAzhNbrNcpN1yewprCED11pWmUvs=;
- b=ZmGPfMAP5Hz54B3CYpHONq5Mk1bcsfhKsQSa+q/VWXQV2trqwzHofMUJlP6LbA6vDN
- s51W3/t30lL8O3M6Ox5+4wwsCVwPCeZizzU5JFZtWfB5AueGY/xR5mUYP4GxwLz+OkDs
- 9mqh2l25qmTN7rzzCOzkQJRaEqhe4pL5JxW3CM7W93Bno1fa5VLk/64stkokCfp/r2Ow
- E6sTuVKiIRMSzm4UdJ9DDDclnCNyyQ/mgab0E1YbPpikZMBgoHG7Gufd9pTjiA4IdlkC
- y3x0VO4ycooiWTMryz0SaLegcZjD8xm/fvxnKZqBpcF+WFJkYA01wpHC4WPe7khcQREe
- IHnQ==
+ bh=031CNBoypdWESU8yfvqe4miHmAa3XoHv/87g96e00SI=;
+ b=M/jkRuSJRDbBLmYDmaGl8/9x+riPsHoVDb3WmSQbEj7V19PwQ3nmkLO/vxeFvDPJSW
+ bM2iO8PeXa6LMb1MM/gx4mr5W/W0vA78foSbg9yxTdNoP6Zxx6Wk3VrWSm9OfXGu0dBF
+ U0GcLKqxlSNNo/1CiKIRF5k1ResdHP15sdPGkESyV6gyT+6x85yPN05cuO7CoDKR2eBY
+ ssxh0gHu82Gevub8v0DSakU/EP6vIveuXDPdQPaZzTrgHCnomw7wgE/yuTampSfgKAMR
+ rJsB+OqxMgNoJ2cln99FO5HTsiPfOqiMv+1FHS1sO5/aXq21YQGUmEHz5baY0700UwIk
+ HgZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705057815; x=1705662615;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1705058003; x=1705662803;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dq5oqNsNmMR7A1CfAzhNbrNcpN1yewprCED11pWmUvs=;
- b=iwm592B2HmOCC9Z9jX62sl2hri+jQ02IDDhx8toNrswtOKQ+sQVw2zu/E6EE0ZUO5M
- t7FgEhk93TTk4wHE5BhBCOV2u9iu6T6HyzCVzCSSHOFSESH+GdtOAkOeBxfRYrm51ma9
- nvAezMaXk5RMWFhneaZTZ+2ct9tYEB4Dp5OX0NnxHTzUVPeNGjNQ+cAg9HBw1Z1VDh0d
- BWrl3VzMc3Iq99KHE1WixqUn3V4J/+U1iG+q6IGLZWdTAwvILLpzl1e6R0MAXd9cnVdv
- l62vyFyJW1h2d73WQYJNyMa8XlvH/id4tt3Z1w05QjRXBLYrgqJKYHd/YuVe60c5PcmC
- Mbgw==
-X-Gm-Message-State: AOJu0YwHnI+9eNGWEE/5c8rOdBroOyOIKBE/2PYlXGjPtZbfD38NYR8l
- 5BLzL0GJhXaE1uv13m7bYkygOazFpdsgQw==
-X-Google-Smtp-Source: AGHT+IGeAaSJUzFIZk7fNa0iuXqXzmSfLU81sb4d9C8NkLvLuBTk/SJKK+YW3Y1zfsIaXUhfArGwcQ==
-X-Received: by 2002:a05:6000:14d:b0:337:4c30:b0b with SMTP id
- r13-20020a056000014d00b003374c300b0bmr571489wrx.77.1705057814960; 
- Fri, 12 Jan 2024 03:10:14 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- b6-20020adfee86000000b00337478efa4fsm3546702wro.60.2024.01.12.03.10.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jan 2024 03:10:13 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0285D5F9CE;
- Fri, 12 Jan 2024 11:04:37 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ bh=031CNBoypdWESU8yfvqe4miHmAa3XoHv/87g96e00SI=;
+ b=tarxNPLy7aI+1tRiNk3AU97yXLkFF88ZUlGokxSXmH7YOcJLljSV1z6d9aqfKMZNgJ
+ aVvaYO5eTmNvUAB/gnOiUrHPEb6mO9zOMzHSRHmPzAy6K6u3FeF38/6dVCLxSXj9DWQ5
+ 9OHd4Sq6d173ESL+SEpqVKKRb8r82PnlF/KQrD2dR6zqX/k+6QCxm/4gEVDrwShoMOTV
+ SHnKT+k8IH79qtbqw74enm0r6s5dim9FRHahNcSYIYXvVFD/kv1674S1gu1xS3ADAwLB
+ ShRT69PjkmYkx3xIVxEGF9P7hCSCWSLh0u2DmAZzQx+2NuS1d7EOdln5pOwZ9xuT66k4
+ ui2A==
+X-Gm-Message-State: AOJu0Ywy31pz7/m3mOcxnKGsX4VLHbnuFx2OmgVNpAm258LiH4B50YRJ
+ 9Lyy+a0CvjZobE+CAqvcV8HnqkMa/gfh1JSez76BHP5VGxnmdw==
+X-Google-Smtp-Source: AGHT+IFqm76crucw1xH8IZk+67QRcHbqjqNH4EmiQOES1ilRrJ+AXagnACuI6AhgBQmINhWcnivkuglhVLlEzyUinpg=
+X-Received: by 2002:aa7:c584:0:b0:558:d85b:b445 with SMTP id
+ g4-20020aa7c584000000b00558d85bb445mr290268edq.77.1705058003237; Fri, 12 Jan
+ 2024 03:13:23 -0800 (PST)
+MIME-Version: 1.0
+References: <20240112110435.3801068-1-alex.bennee@linaro.org>
+ <20240112110435.3801068-23-alex.bennee@linaro.org>
+In-Reply-To: <20240112110435.3801068-23-alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 12 Jan 2024 11:13:11 +0000
+Message-ID: <CAFEAcA8p6S-6bYXO9w2eBP=UTy0vYbBOrgaoscOE=xv3K0z-PA@mail.gmail.com>
+Subject: Re: [PULL 22/22] Revert "tests/avocado: remove skips from
+ replay_kernel"
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 22/22] Revert "tests/avocado: remove skips from replay_kernel"
-Date: Fri, 12 Jan 2024 11:04:35 +0000
-Message-Id: <20240112110435.3801068-23-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240112110435.3801068-1-alex.bennee@linaro.org>
-References: <20240112110435.3801068-1-alex.bennee@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,79 +92,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit c2ef5ee89d76f0ab77c4dd6a1c9eeed4d35d20ed.
+On Fri, 12 Jan 2024 at 11:11, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+> This reverts commit c2ef5ee89d76f0ab77c4dd6a1c9eeed4d35d20ed.
+>
+> While the fixes for #2010 and #2013 have improved things locally it
+> seems GitLab still continues to be flaky.
+>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>
+> diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel=
+.py
+> index 6fdcbd6ac3d..1eaa36444cb 100644
+> --- a/tests/avocado/replay_kernel.py
+> +++ b/tests/avocado/replay_kernel.py
+> @@ -98,10 +98,13 @@ def test_i386_pc(self):
+>
+>          self.run_rr(kernel_path, kernel_command_line, console_pattern, s=
+hift=3D5)
+>
+> +    # See https://gitlab.com/qemu-project/qemu/-/issues/2010
+> +    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test sometimes gets=
+ stuck')
+>      def test_x86_64_pc(self):
+>          """
+>          :avocado: tags=3Darch:x86_64
+>          :avocado: tags=3Dmachine:pc
+> +        :avocado: tags=3Dflaky
+>          """
+>          kernel_url =3D ('https://archives.fedoraproject.org/pub/archive/=
+fedora'
+>                        '/linux/releases/29/Everything/x86_64/os/images/px=
+eboot'
+> @@ -132,6 +135,8 @@ def test_mips_malta(self):
+>
+>          self.run_rr(kernel_path, kernel_command_line, console_pattern, s=
+hift=3D5)
+>
+> +    # See https://gitlab.com/qemu-project/qemu/-/issues/2013
+> +    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on=
+ GitLab')
+>      def test_mips64el_malta(self):
+>          """
+>          This test requires the ar tool to extract "data.tar.gz" from
 
-While the fixes for #2010 and #2013 have improved things locally it
-seems GitLab still continues to be flaky.
+These gitlab issues are both currently closed -- if we think the
+problem is still present and are re-introducing the skip lines,
+we should re-open the issues, I think.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
-index 6fdcbd6ac3d..1eaa36444cb 100644
---- a/tests/avocado/replay_kernel.py
-+++ b/tests/avocado/replay_kernel.py
-@@ -98,10 +98,13 @@ def test_i386_pc(self):
- 
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
- 
-+    # See https://gitlab.com/qemu-project/qemu/-/issues/2010
-+    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test sometimes gets stuck')
-     def test_x86_64_pc(self):
-         """
-         :avocado: tags=arch:x86_64
-         :avocado: tags=machine:pc
-+        :avocado: tags=flaky
-         """
-         kernel_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
-                       '/linux/releases/29/Everything/x86_64/os/images/pxeboot'
-@@ -132,6 +135,8 @@ def test_mips_malta(self):
- 
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
- 
-+    # See https://gitlab.com/qemu-project/qemu/-/issues/2013
-+    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
-     def test_mips64el_malta(self):
-         """
-         This test requires the ar tool to extract "data.tar.gz" from
-@@ -147,6 +152,7 @@ def test_mips64el_malta(self):
- 
-         :avocado: tags=arch:mips64el
-         :avocado: tags=machine:malta
-+        :avocado: tags=flaky
-         """
-         deb_url = ('http://snapshot.debian.org/archive/debian/'
-                    '20130217T032700Z/pool/main/l/linux-2.6/'
-@@ -194,10 +200,13 @@ def test_arm_virt(self):
- 
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=1)
- 
-+    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
-+
-     def test_arm_cubieboard_initrd(self):
-         """
-         :avocado: tags=arch:arm
-         :avocado: tags=machine:cubieboard
-+        :avocado: tags=flaky
-         """
-         deb_url = ('https://apt.armbian.com/pool/main/l/'
-                    'linux-5.10.16-sunxi/linux-image-current-sunxi_21.02.2_armhf.deb')
-@@ -345,6 +354,7 @@ def test_m68k_mcf5208evb(self):
-         file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
-         self.do_test_advcal_2018(file_path, 'sanity-clause.elf')
- 
-+    @skip("Test currently broken") # Console stuck as of 5.2-rc1
-     def test_microblaze_s3adsp1800(self):
-         """
-         :avocado: tags=arch:microblaze
-@@ -379,6 +389,7 @@ def test_or1k_sim(self):
-         file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
-         self.do_test_advcal_2018(file_path, 'vmlinux')
- 
-+    @skip("nios2 emulation is buggy under record/replay")
-     def test_nios2_10m50(self):
-         """
-         :avocado: tags=arch:nios2
--- 
-2.39.2
-
+thanks
+-- PMM
 
