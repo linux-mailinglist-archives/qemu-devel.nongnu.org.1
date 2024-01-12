@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F170882C701
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:09:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A6782C737
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:24:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOPi7-0005jV-Pe; Fri, 12 Jan 2024 17:09:07 -0500
+	id 1rOPve-0003Y1-6V; Fri, 12 Jan 2024 17:23:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOPi6-0005jI-4q
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:09:06 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1rOPvS-0003Xd-G5
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:22:56 -0500
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOPi1-00021p-7F
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:09:03 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6d9c2db82b0so4051671b3a.1
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 14:08:58 -0800 (PST)
+ id 1rOPvQ-0002Xr-Tr
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:22:54 -0500
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6d9af1f12d5so6047722b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 14:22:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705097337; x=1705702137; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705098171; x=1705702971; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=drMaOxPFaFOqlHbnOCnwDSHSRJVJiurVSKIJ+Wm/9uM=;
- b=OwqnpRugRbrVN31R6oB07NR7BQc+iko83FjOopyx7Rv3uuCYKu0UVGpWSi+yvRjmuV
- UrgRroASZrqkyXPaS+a1wqW6dg57F1Lwvwaraq2IFzTb2/OMbeKNz5wMrhTNPzDPQFPV
- Tz3MDn2saZNX18/7PEDtPymPrUgphwdBCe7/i5wGbiKPwV7X/KR/IvJrJd4piD7F1Hnz
- WI4t7HBaxRBX6iTASUkyrMTBdS1wiECIgeDFwb3yicjxH4NegqUwEy16UZ6lZ0HnAWoV
- ZxCEp5pOZeB+hm6nTBp4JXwSEnpz9ImjsGa3vjUvpjEYiHP8gBPcxNomWkHtQzbe/L4E
- ysJA==
+ bh=hrGhe1NUhsYtDqHujMOz+i96xExYDsCq8Ku+cdUJMuA=;
+ b=pD3WM49EugSZhXG1HYke2ppZm2SJU3qk2icWcQg13LCUB5PaltL7iAMU/Kp9DhgPNb
+ ts+lP0JGduJtEthByaQShzlo1omFixeWzFXvqH658OHz5oLGVbj4N3o2vUy64DAXBf3y
+ Jn7NxFUbwEm1iqgbuDacBvtlRXBCIkkTZIAPkzxWE9uF9ucstTVpY2A8Rsb5iTNaOr1f
+ UV6mjW+euGidRksSYTRjgDFQ72hHsgl4SQ8eRYwUb2OMTneBPEk5be0wuDObbs8SuzZi
+ BBXqhRkyHrW4TwHAksLIG9vwsiHI+5VnRMovDk2UAw8ZK+yt2KvS4x3X3GqEVcLx5cYN
+ Z99Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705097337; x=1705702137;
+ d=1e100.net; s=20230601; t=1705098171; x=1705702971;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=drMaOxPFaFOqlHbnOCnwDSHSRJVJiurVSKIJ+Wm/9uM=;
- b=cwgUxk7qZbMKpo5BKE1kHlB5i5ZI4Lgy50voC1YpFNGvvdbc10cQIzqSCEoy/9KEpC
- 5rgrj7DLyFr/Fqrx/U9JWuH/dlqp7Az9RiGcCX0yjFs/d+pLQeGsX+JZi8Rkkq+XdPzq
- s0vg0ad9PDnIwwEHSccch/+Cho/fYvKMT+t10i8vMWWtCtQd5lduP0GTDCyUz8KaWlTR
- ijZr1ogRd9SuHuflg+7KkjMcbRagovIcS9dCHFbM+bNx32S96MhW+gwASfQhk6rvayxR
- 3yDpBxTQZrcYL/edI7aWaXslSygX2nVAT8G+Iq0Z23jHrFhHPQOSDqojqyj8UTE3ocg/
- /RwA==
-X-Gm-Message-State: AOJu0Yzl5AP4jlGDruiwRCeyJrW+paRf7rnulP6BKxpJgQKPsG7r1ds7
- 1d9+JzkRTNXEEIo44KWTTX3GDyUOtklFIQ==
-X-Google-Smtp-Source: AGHT+IE4yJkQZLm6GFDsPsQy5WTGIpAnXHIraC1lKkKYk2Ur4un/tx4KdGQrjqsJRyf1P1d2G+l56A==
-X-Received: by 2002:a05:6a21:788f:b0:19a:32cb:2d50 with SMTP id
- bf15-20020a056a21788f00b0019a32cb2d50mr1360480pzc.35.1705097337201; 
- Fri, 12 Jan 2024 14:08:57 -0800 (PST)
+ bh=hrGhe1NUhsYtDqHujMOz+i96xExYDsCq8Ku+cdUJMuA=;
+ b=ZWkRCjj0ucf4w7h0CTtZWuvp8+FtEb5dEWtUdaxPAS25AVJ3gbjRNEEvvZbulAg3Cn
+ tE0C6sBV5HZb0QAdOYGq2lhexOXRDJz+6PgAR6+UWr58N57O7R8y+IpMiW3aeg4/XWCW
+ NQpKTkweduv6PuR5ofx/humzE+jGjP8y3eqby0K0EFO1Z/ysWtJgyF7EQNatN0TSkZJT
+ HVoWTWO3c3F2XxbR2MKJu+T3N8WnQowhwGwUqpU55hnS190eYaE5m2QrS/kELgBfm/Hx
+ 5/H6r/eIS3jhbD1T8THBSPHvF9IBk4b+bAecLXEOxl0283JwZtPX6Be1UymjHk+hlN3T
+ yJug==
+X-Gm-Message-State: AOJu0YzjwkPAxoL1mRG/ZT2FYJR3u8BlFEC9Huqdf2je5Wcg8SJ+jYqH
+ xbQ8q4NqHXJH9MTlouPkRs9N3Oz2Qgd3Qw==
+X-Google-Smtp-Source: AGHT+IELG+YI8qPe97ebP95T302LmDxqUMlRYH5yDLE0oIyUX5NO9DGdJRpTJLUxg9b9dz/+ctwwGA==
+X-Received: by 2002:a05:6a20:7598:b0:19a:4846:5245 with SMTP id
+ n24-20020a056a20759800b0019a48465245mr1472107pze.67.1705098171502; 
+ Fri, 12 Jan 2024 14:22:51 -0800 (PST)
 Received: from ?IPV6:2001:8004:2728:2ad6:e985:c1c8:a4fc:508?
  ([2001:8004:2728:2ad6:e985:c1c8:a4fc:508])
  by smtp.gmail.com with ESMTPSA id
- u13-20020a170902a60d00b001d4b73f60e4sm3641032plq.149.2024.01.12.14.08.55
+ p19-20020aa78613000000b006d93ca7f8f3sm3642335pfn.150.2024.01.12.14.22.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Jan 2024 14:08:56 -0800 (PST)
-Message-ID: <530e81af-c8d4-4aeb-95c0-ae754da56e72@linaro.org>
-Date: Sat, 13 Jan 2024 09:08:53 +1100
+ Fri, 12 Jan 2024 14:22:51 -0800 (PST)
+Message-ID: <a9f0ae34-5b9d-4cdb-acb7-1f1e1ef13636@linaro.org>
+Date: Sat, 13 Jan 2024 09:22:43 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 9/9] target/hppa: Fix IOR and ISR on error in probe
+Subject: Re: [PATCH 01/12] plugins: implement inline operation with cpu_index
+ offset
 Content-Language: en-US
-To: deller@kernel.org, qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>
-References: <20240112102927.35406-1-deller@kernel.org>
- <20240112102927.35406-10-deller@kernel.org>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>
+References: <20240111142326.1743444-1-pierrick.bouvier@linaro.org>
+ <20240111142326.1743444-2-pierrick.bouvier@linaro.org>
+ <76fa391a-9f3c-4308-a84c-2b84ddadbb88@linaro.org>
+ <e10e21ea-0bf9-4565-9552-e03928610161@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240112102927.35406-10-deller@kernel.org>
+In-Reply-To: <e10e21ea-0bf9-4565-9552-e03928610161@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,17 +100,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/12/24 21:29, deller@kernel.org wrote:
-> From: Helge Deller<deller@gmx.de>
+On 1/13/24 01:27, Pierrick Bouvier wrote:
+> On 1/12/24 02:04, Richard Henderson wrote:
+>> On 1/12/24 01:23, Pierrick Bouvier wrote:
+>>> Instead of working on a fixed memory location, allow to index it based
+>>> on cpu_index and a given offset (ptr + cpu_index * offset).
+>>> Current semantic is not modified as we use a 0 offset, thus inline
+>>> operation still targets always the same memory location.
+>>>
+>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>> ---
+>>>    accel/tcg/plugin-gen.c | 60 +++++++++++++++++++++++++++++++++++-------
+>>>    include/qemu/plugin.h  |  1 +
+>>>    plugins/api.c          |  7 ++---
+>>>    plugins/core.c         | 11 +++++---
+>>>    plugins/plugin.h       |  5 ++--
+>>>    5 files changed, 65 insertions(+), 19 deletions(-)
+>>
+>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>>
+>> For the to-do list: add mul -> shl strength reduction in fold_mul().
+>>
 > 
-> Put correct values (depending on CPU arch) into IOR and ISR on fault.
-> 
-> Signed-off-by: Helge Deller<deller@gmx.de>
-> ---
->   target/hppa/op_helper.c | 6 +-----
->   1 file changed, 1 insertion(+), 5 deletions(-)
+> Would you like me to add a todo somewhere about it? Or is it a reminder for follow-up work?
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+It's a reminder to myself for follow-up-work.
+
 
 r~
+
 
