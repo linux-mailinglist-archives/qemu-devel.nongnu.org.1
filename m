@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D096882BB20
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 07:02:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADEE682BB51
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 07:37:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOAbN-0004h3-Sl; Fri, 12 Jan 2024 01:01:09 -0500
+	id 1rOB8p-0004GS-Bl; Fri, 12 Jan 2024 01:35:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
- id 1rOAbH-0004gG-7R
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 01:01:03 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rOB8i-0004G9-UZ
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 01:35:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
- id 1rOAbF-0001cG-8i
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 01:01:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705039262; x=1736575262;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=T7zTI2fBo/8VZG27Zg+D+2Lu+dRzE4jKGwoDwuPXqZs=;
- b=SEFzJVJ80jvmTm9hjBOFfJ7dyrxCoGtusM1ylaIbOKaxMQOu+b9p5mag
- UTYuNs4dXvtGqD1Inavd6C/8Pfmgo4kOp2T0u1EctjgbJU7jpHQHTU2dM
- 0fWVS/p3sIMynEgKTQqEKeX2Hmf6WwKuDIJj2YfvI5F9v2z89raBZc1Ts
- BSWNT551JubOKK20RF0GivxWMkQvQ1a6QkGtdl6P7NDFkaW66M1NTJCqL
- OJGLq+Qz72elfY5gR1hSMHhVxL0UI7CODyar8IYTCMQ7IqdWKSDRozvjI
- TKeDDszx0DXYJtjW9zvaMCMQjQN+TwhtUXFuRoqG+xm+t9d2G30nkwptm w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="5815758"
-X-IronPort-AV: E=Sophos;i="6.04,188,1695711600"; 
-   d="scan'208";a="5815758"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jan 2024 22:00:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="873274771"
-X-IronPort-AV: E=Sophos;i="6.04,188,1695711600"; d="scan'208";a="873274771"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO
- binbinwu-mobl.sh.intel.com) ([10.238.2.99])
- by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jan 2024 22:00:50 -0800
-From: Binbin Wu <binbin.wu@linux.intel.com>
-To: qemu-devel@nongnu.org,
-	kvm@vger.kernel.org
-Cc: pbonzini@redhat.com, xiaoyao.li@intel.com, chao.gao@intel.com,
- robert.hu@linux.intel.com, binbin.wu@linux.intel.com
-Subject: [PATCH v4 2/2] target/i386: add control bits support for LAM
-Date: Fri, 12 Jan 2024 14:00:42 +0800
-Message-Id: <20240112060042.19925-3-binbin.wu@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240112060042.19925-1-binbin.wu@linux.intel.com>
-References: <20240112060042.19925-1-binbin.wu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rOB8g-0001ou-Pk
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 01:35:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705041331;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PMIpQZcnc580wUtLQFBJGZjJZz07Tpq6WDHyl5LT5P0=;
+ b=AVK7vXdKTazUBfCaZHyY5gQyQ4BLDLN8qdc347Y6ajfRvQg/4oi+qaOb3uin2xuF5tnrR4
+ JCNw7Z2R6fgXxdIaqP0LoMSVKqxCLZZmIP8QX52otkT1OzJteGnviRfZu/7+tQrMGeq3Oo
+ uObEiyv+apYkNbtHUmyP8Qf43Cjn+g4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-625-uz40I5wjMP6E49k-2aezqg-1; Fri, 12 Jan 2024 01:35:28 -0500
+X-MC-Unique: uz40I5wjMP6E49k-2aezqg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AAA04833B42;
+ Fri, 12 Jan 2024 06:35:28 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.71])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8A6EBC1D368;
+ Fri, 12 Jan 2024 06:35:28 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 7FEC521E6740; Fri, 12 Jan 2024 07:35:27 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-trivial@nongnu.org
+Subject: Re: [PATCH] util/uri: Remove is_hex() function
+In-Reply-To: <20240112051740.926658-1-thuth@redhat.com> (Thomas Huth's message
+ of "Fri, 12 Jan 2024 06:17:40 +0100")
+References: <20240112051740.926658-1-thuth@redhat.com>
+Date: Fri, 12 Jan 2024 07:35:27 +0100
+Message-ID: <87h6jjqcsw.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=198.175.65.11;
- envelope-from=binbin.wu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
 X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.467,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,86 +81,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LAM uses CR3[61] and CR3[62] to configure/enable LAM on user pointers.
-LAM uses CR4[28] to configure/enable LAM on supervisor pointers.
+Thomas Huth <thuth@redhat.com> writes:
 
-For CR3 LAM bits, no additional handling needed:
-- TCG
-  LAM is not supported for TCG of target-i386.  helper_write_crN() and
-  helper_vmrun() check max physical address bits before calling
-  cpu_x86_update_cr3(), no change needed, i.e. CR3 LAM bits are not allowed
-  to be set in TCG.
-- gdbstub
-  x86_cpu_gdb_write_register() will call cpu_x86_update_cr3() to update cr3.
-  Allow gdb to set the LAM bit(s) to CR3, if vcpu doesn't support LAM,
-  KVM_SET_SREGS will fail as other reserved bits.
+> We can simply use the g_ascii_isxdigit() from the glib instead.
+>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  util/uri.c | 11 +----------
+>  1 file changed, 1 insertion(+), 10 deletions(-)
+>
+> diff --git a/util/uri.c b/util/uri.c
+> index dcb3305236..7411c5ba14 100644
+> --- a/util/uri.c
+> +++ b/util/uri.c
+> @@ -1561,15 +1561,6 @@ done_cd:
+>      return 0;
+>  }
+>  
+> -static int is_hex(char c)
+> -{
+> -    if (((c >= '0') && (c <= '9')) || ((c >= 'a') && (c <= 'f')) ||
+> -        ((c >= 'A') && (c <= 'F'))) {
+> -        return 1;
+> -    }
+> -    return 0;
+> -}
+> -
+>  /**
+>   * uri_string_unescape:
+>   * @str:  the string to unescape
+> @@ -1607,7 +1598,7 @@ char *uri_string_unescape(const char *str, int len, char *target)
+>      in = str;
+>      out = ret;
+>      while (len > 0) {
+> -        if ((len > 2) && (*in == '%') && (is_hex(in[1])) && (is_hex(in[2]))) {
+> +        if (len > 2 && *in == '%' && g_ascii_isxdigit(in[1]) && g_ascii_isxdigit(in[2])) {
+>              in++;
+>              if ((*in >= '0') && (*in <= '9')) {
+>                  *out = (*in - '0');
 
-For CR4 LAM bit, its reservation depends on vcpu supporting LAM feature or
-not.
-- TCG
-  LAM is not supported for TCG of target-i386.  helper_write_crN() and
-  helper_vmrun() check CR4 reserved bit before calling cpu_x86_update_cr4(),
-  i.e. CR4 LAM bit is not allowed to be set in TCG.
-- gdbstub
-  x86_cpu_gdb_write_register() will call cpu_x86_update_cr4() to update cr4.
-  Mask out LAM bit on CR4 if vcpu doesn't support LAM.
-- x86_cpu_reset_hold() doesn't need special handling.
+Suggest to replace *in by in[0] while there, for symmetry.
 
-Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
-Tested-by: Xuelian Guo <xuelian.guo@intel.com>
----
- target/i386/cpu.h    | 7 ++++++-
- target/i386/helper.c | 4 ++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+Long line, easy to break:
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 18ea755644..598a3fa140 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -261,6 +261,7 @@ typedef enum X86Seg {
- #define CR4_SMAP_MASK   (1U << 21)
- #define CR4_PKE_MASK   (1U << 22)
- #define CR4_PKS_MASK   (1U << 24)
-+#define CR4_LAM_SUP_MASK (1U << 28)
- 
- #define CR4_RESERVED_MASK \
- (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
-@@ -269,7 +270,8 @@ typedef enum X86Seg {
-                 | CR4_OSFXSR_MASK | CR4_OSXMMEXCPT_MASK | CR4_UMIP_MASK \
-                 | CR4_LA57_MASK \
-                 | CR4_FSGSBASE_MASK | CR4_PCIDE_MASK | CR4_OSXSAVE_MASK \
--                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK))
-+                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK \
-+                | CR4_LAM_SUP_MASK))
- 
- #define DR6_BD          (1 << 13)
- #define DR6_BS          (1 << 14)
-@@ -2522,6 +2524,9 @@ static inline uint64_t cr4_reserved_bits(CPUX86State *env)
-     if (!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS)) {
-         reserved_bits |= CR4_PKS_MASK;
-     }
-+    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
-+        reserved_bits |= CR4_LAM_SUP_MASK;
-+    }
-     return reserved_bits;
- }
- 
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index 2070dd0dda..1da7a7d315 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -219,6 +219,10 @@ void cpu_x86_update_cr4(CPUX86State *env, uint32_t new_cr4)
-         new_cr4 &= ~CR4_PKS_MASK;
-     }
- 
-+    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
-+        new_cr4 &= ~CR4_LAM_SUP_MASK;
-+    }
-+
-     env->cr[4] = new_cr4;
-     env->hflags = hflags;
- 
--- 
-2.25.1
+           if (len > 2 && in[0] == '%'
+               && g_ascii_isxdigit(in[1])
+               && g_ascii_isxdigit(in[2])) {
 
 
