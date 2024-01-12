@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886BD82C387
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 17:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4483C82C388
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 17:23:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOKId-0006ck-4D; Fri, 12 Jan 2024 11:22:27 -0500
+	id 1rOKJg-0008B0-5J; Fri, 12 Jan 2024 11:23:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOKIa-0006bx-Am
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:22:24 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ id 1rOKJc-0008A2-QU
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:23:30 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOKIY-0006sy-7H
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:22:24 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-556c3f0d6c5so7892679a12.2
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 08:22:21 -0800 (PST)
+ id 1rOKJZ-0007F3-OF
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:23:27 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-557ad92cabbso6268205a12.0
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 08:23:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705076540; x=1705681340; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705076604; x=1705681404; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=hMH9mr0HA/UjxaD57Pv6Lim3NsM+wGThyBC7vlN5KAM=;
- b=hoLpLTpZp8tlHo0/gIxlURYvaCLGlav9YfBCHVj8WpyH7aDkOaKE8ZzpM62d0feIA7
- r9XmDX7koLkIbjs6EJEZOHSGObHvjkOY0hQo+zcDyL0UtXFXayQQXXtvF8SrdwrZIEhK
- TJv3u/fvzkb4AyJRwmA7eTdgDvGtcHRRsPSBe6cUlWWjhzlpWZ/prudsNajSa7lnQ+mj
- VlLVeTkKppxZGG3toIQpNJffwngk5AeODRHMOcmDlaa9mTGFnQ7AUtR+pW4bWby3EqPD
- ChBDuj7gOP1dZlg00Ac2rR+BZueTJDtwx+tdIiIliTKzkyocDQOJjlaKFN9Ab8dDIhWg
- nGJA==
+ bh=1ed7GOJ8BqjMbAoMnrvYO0PosUKOVrE4CFq/nFSNvpo=;
+ b=quU6A1AFyvKWtu6GhEUWaYfYepu0wOxf3xFmzp9UkstSwDX3gqBuSGrvaZCDud8AVm
+ XQ6o9aR1Y+uqRz56ATQJWCbzEJvO4/3SCxgxkFOZUMbhnEfixbeMb6FJkemN3VU9HDQ8
+ Rsa2fFjcA/wqLaAqGuY/kkwmjDfGe5pZrlcwI+itImK1h8Nk8gpGeIF5rsphFRgtzcoy
+ FOF4qiYGdnxEBGwBxk3rqVp6RAkiCnFf0v/E4HdH0yPPq0ALro2JsYig/tnpH8Zexxpv
+ WADzVeF+eeXCjWBH9ACrtWqIzWpCSMoF0vIE45iYY8PodoYZtWuZgpUucLzjN8JiU8yZ
+ HRiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705076540; x=1705681340;
+ d=1e100.net; s=20230601; t=1705076604; x=1705681404;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=hMH9mr0HA/UjxaD57Pv6Lim3NsM+wGThyBC7vlN5KAM=;
- b=tasLrLCIeCvXG3OdBaG5CbTqr9Zxf8QQWAUtGp8g+JE31tY/ap+TQe/L0eYnkBQpsV
- 2Z5H6R7OHg8U8CBVeTFIk5etRm3kkrwd/cAOm+RRsumP/KLCakdNowyez11EGIfWSI/m
- 4TseVQv5uy2sGB/Xdv0WDpSgU1O5TVeU0jtkfsKHT/B3NLVrBYmAhV5Uk8WDXmBcsKKj
- Z/pRUMWZL1t/9ykk+9DuuAGYLWOG1JqpCEiU0RoIjCQ6QO7AzTqjq025S33LMoesCYLG
- lfsJaNJEKwnUfojRN8SA9t5b/v8JoQsuxrwBpdIcX5Nw1oCfILvmPAE0cUpdsyVI3W6y
- IRTA==
-X-Gm-Message-State: AOJu0YxGJLIw1SrfAwuicLabIl8v3btPqBeaP5D2V0x/NVN09LgLjT+C
- jn+AAU6eEv9hsbpxgne4yAWSSy5Tv0Zq4qaK54LSRZt587cUXblFffYpPE4Y
-X-Google-Smtp-Source: AGHT+IEXC7Avr0nLdpsgr+VqdNCOJN/nYig1615A3J0iS7x8c5UTeUdyD6Pvuvf09reRi3Vlm6sqw6/oxYX00tSfZCY=
-X-Received: by 2002:aa7:cf06:0:b0:556:d09e:fb63 with SMTP id
- a6-20020aa7cf06000000b00556d09efb63mr559412edy.48.1705076540206; Fri, 12 Jan
- 2024 08:22:20 -0800 (PST)
+ bh=1ed7GOJ8BqjMbAoMnrvYO0PosUKOVrE4CFq/nFSNvpo=;
+ b=jBGCqQmq48IhKHRkxPWSiFjT80u9Z1P0T8j5U/p3WgxvPuqOg87VVa5ogsrN6hkv8m
+ tR5uRQXXnF+jJNIpY85aHzi2aqLfdwOxxycC4n2ibUl8xBSybS5tgpPLH3yJ8SkqWXTw
+ kSO/G0zeXa7IV+rA19WYHMzS9EG25yy2FN7yYEYzFc2nZ1/xujoOIL71LA/8DwMHgTRE
+ wU1dNYQZWTuGVg6CRWiKEbDjHkvw1i+j0QwD4WPAOL6wOFy6sVV1THgY1C9mtRpRTss4
+ 4sE1YlEc36JoOKtYATcxOUHPe6LYcPQejtU9+vvXf3OH3sXZPp2FIGCqbW+Sb1p5Ro1U
+ y/+A==
+X-Gm-Message-State: AOJu0YzW5AJ2o7X3xD/nrp0EIeusgrzOlZ/3htM3ct4IYaWyShNQiY71
+ NR5wkFheQKViO3YfZv/UDs9W7DE0CF2y/liQQhyxI5P4bWZiKXucSYiLlHgr
+X-Google-Smtp-Source: AGHT+IEPIc3wzYdVw/ZKh3laGgIb+KV7npWqBJIOxOWrRc6g/KgSesO2j4BOxEttVc5wyppmafPc3vk+Kv3G8+KUrGw=
+X-Received: by 2002:aa7:c64c:0:b0:557:6f45:ae21 with SMTP id
+ z12-20020aa7c64c000000b005576f45ae21mr426910edr.148.1705076604112; Fri, 12
+ Jan 2024 08:23:24 -0800 (PST)
 MIME-Version: 1.0
-References: <20231103182750.855577-1-peter.maydell@linaro.org>
- <CAFEAcA-QXorAggMFLEknvkrrBtCZSEWpcW_Fx_GTrxD0RfqUFg@mail.gmail.com>
-In-Reply-To: <CAFEAcA-QXorAggMFLEknvkrrBtCZSEWpcW_Fx_GTrxD0RfqUFg@mail.gmail.com>
+References: <20231212162313.1742462-1-peter.maydell@linaro.org>
+In-Reply-To: <20231212162313.1742462-1-peter.maydell@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 12 Jan 2024 16:22:09 +0000
-Message-ID: <CAFEAcA8qrDHLVhq44Fh9PVORrRddyU10LiLtjDJasF5O8sNoqg@mail.gmail.com>
-Subject: Re: [PATCH] hw/arm/musicpal: Convert to qemu_add_kbd_event_handler()
-To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: Jan Kiszka <jan.kiszka@web.de>
+Date: Fri, 12 Jan 2024 16:23:13 +0000
+Message-ID: <CAFEAcA9x1fX43oNhB-yO+PeExdn15GsQZ7FyNc8gkCBrWo4Ngw@mail.gmail.com>
+Subject: Re: [PATCH for-9.0] docs/devel/docs: Document .hx file syntax
+To: qemu-devel@nongnu.org
+Cc: David Woodhouse <dwmw@amazon.co.uk>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,244 +84,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping^2 for code review?
+On Tue, 12 Dec 2023 at 16:23, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> We don't currently document the syntax of .hx files anywhere
+> except in a few comments at the top of individual .hx files.
+> We don't even have somewhere in the developer docs where we
+> could do this.
+>
+> Add a new files docs/devel/docs.rst which can be a place to
+> document how our docs build process works. For the moment,
+> put in only a brief introductory paragraph and the documentation
+> of the .hx files. We could later add to this file by for
+> example describing how the QAPI-schema-to-docs process works,
+> or anything else that developers might need to know about
+> how to add documentation.
+>
+> Make the .hx files refer to this doc file, and clean
+> up their header comments to be more accurate for the
+> usage in each file and less cut-n-pasted.
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+> My motivation here is that we're about to add support for
+> extending the SRST directive to specify a label so we
+> can hyperlink to a documentation fragment; this gives us
+> somewhere we can document the syntax for that.
+> ---
+
+I'll take this via the target-arm tree.
 
 thanks
 -- PMM
-
-On Fri, 15 Dec 2023 at 14:07, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> Ping for code review, since we're approaching the end of the
-> 8.2 freeze ?
->
-> thanks
-> -- PMM
->
-> On Fri, 3 Nov 2023 at 18:27, Peter Maydell <peter.maydell@linaro.org> wrote:
-> >
-> > Convert the musicpal key input device to use
-> > qemu_add_kbd_event_handler().  This lets us simplify it because we no
-> > longer need to track whether we're in the middle of a PS/2 multibyte
-> > key sequence.
-> >
-> > In the conversion we move the keyboard handler registration from init
-> > to realize, because devices shouldn't disturb the state of the
-> > simulation by doing things like registering input handlers until
-> > they're realized, so that device objects can be introspected
-> > safely.
-> >
-> > The behaviour where key-repeat is permitted for the arrow-keys only
-> > is intentional (added in commit 7c6ce4baedfcd0c), so we retain it,
-> > and add a comment to that effect.
-> >
-> > This is a migration compatibility break for musicpal.
-> >
-> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> > ---
-> >  hw/arm/musicpal.c | 131 +++++++++++++++++++++-------------------------
-> >  1 file changed, 61 insertions(+), 70 deletions(-)
-> >
-> > diff --git a/hw/arm/musicpal.c b/hw/arm/musicpal.c
-> > index 9703bfb97fb..e8c1250ab04 100644
-> > --- a/hw/arm/musicpal.c
-> > +++ b/hw/arm/musicpal.c
-> > @@ -1043,20 +1043,6 @@ static const TypeInfo musicpal_gpio_info = {
-> >  };
-> >
-> >  /* Keyboard codes & masks */
-> > -#define KEY_RELEASED            0x80
-> > -#define KEY_CODE                0x7f
-> > -
-> > -#define KEYCODE_TAB             0x0f
-> > -#define KEYCODE_ENTER           0x1c
-> > -#define KEYCODE_F               0x21
-> > -#define KEYCODE_M               0x32
-> > -
-> > -#define KEYCODE_EXTENDED        0xe0
-> > -#define KEYCODE_UP              0x48
-> > -#define KEYCODE_DOWN            0x50
-> > -#define KEYCODE_LEFT            0x4b
-> > -#define KEYCODE_RIGHT           0x4d
-> > -
-> >  #define MP_KEY_WHEEL_VOL       (1 << 0)
-> >  #define MP_KEY_WHEEL_VOL_INV   (1 << 1)
-> >  #define MP_KEY_WHEEL_NAV       (1 << 2)
-> > @@ -1074,67 +1060,66 @@ struct musicpal_key_state {
-> >      SysBusDevice parent_obj;
-> >      /*< public >*/
-> >
-> > -    uint32_t kbd_extended;
-> >      uint32_t pressed_keys;
-> >      qemu_irq out[8];
-> >  };
-> >
-> > -static void musicpal_key_event(void *opaque, int keycode)
-> > +static void musicpal_key_event(DeviceState *dev, QemuConsole *src,
-> > +                               InputEvent *evt)
-> >  {
-> > -    musicpal_key_state *s = opaque;
-> > +    musicpal_key_state *s = MUSICPAL_KEY(dev);
-> > +    InputKeyEvent *key = evt->u.key.data;
-> > +    int qcode = qemu_input_key_value_to_qcode(key->key);
-> >      uint32_t event = 0;
-> >      int i;
-> >
-> > -    if (keycode == KEYCODE_EXTENDED) {
-> > -        s->kbd_extended = 1;
-> > -        return;
-> > +    switch (qcode) {
-> > +    case Q_KEY_CODE_UP:
-> > +        event = MP_KEY_WHEEL_NAV | MP_KEY_WHEEL_NAV_INV;
-> > +        break;
-> > +
-> > +    case Q_KEY_CODE_DOWN:
-> > +        event = MP_KEY_WHEEL_NAV;
-> > +        break;
-> > +
-> > +    case Q_KEY_CODE_LEFT:
-> > +        event = MP_KEY_WHEEL_VOL | MP_KEY_WHEEL_VOL_INV;
-> > +        break;
-> > +
-> > +    case Q_KEY_CODE_RIGHT:
-> > +        event = MP_KEY_WHEEL_VOL;
-> > +        break;
-> > +
-> > +    case Q_KEY_CODE_F:
-> > +        event = MP_KEY_BTN_FAVORITS;
-> > +        break;
-> > +
-> > +    case Q_KEY_CODE_TAB:
-> > +        event = MP_KEY_BTN_VOLUME;
-> > +        break;
-> > +
-> > +    case Q_KEY_CODE_RET:
-> > +        event = MP_KEY_BTN_NAVIGATION;
-> > +        break;
-> > +
-> > +    case Q_KEY_CODE_M:
-> > +        event = MP_KEY_BTN_MENU;
-> > +        break;
-> >      }
-> >
-> > -    if (s->kbd_extended) {
-> > -        switch (keycode & KEY_CODE) {
-> > -        case KEYCODE_UP:
-> > -            event = MP_KEY_WHEEL_NAV | MP_KEY_WHEEL_NAV_INV;
-> > -            break;
-> > -
-> > -        case KEYCODE_DOWN:
-> > -            event = MP_KEY_WHEEL_NAV;
-> > -            break;
-> > -
-> > -        case KEYCODE_LEFT:
-> > -            event = MP_KEY_WHEEL_VOL | MP_KEY_WHEEL_VOL_INV;
-> > -            break;
-> > -
-> > -        case KEYCODE_RIGHT:
-> > -            event = MP_KEY_WHEEL_VOL;
-> > -            break;
-> > -        }
-> > -    } else {
-> > -        switch (keycode & KEY_CODE) {
-> > -        case KEYCODE_F:
-> > -            event = MP_KEY_BTN_FAVORITS;
-> > -            break;
-> > -
-> > -        case KEYCODE_TAB:
-> > -            event = MP_KEY_BTN_VOLUME;
-> > -            break;
-> > -
-> > -        case KEYCODE_ENTER:
-> > -            event = MP_KEY_BTN_NAVIGATION;
-> > -            break;
-> > -
-> > -        case KEYCODE_M:
-> > -            event = MP_KEY_BTN_MENU;
-> > -            break;
-> > -        }
-> > -        /* Do not repeat already pressed buttons */
-> > -        if (!(keycode & KEY_RELEASED) && (s->pressed_keys & event)) {
-> > +    /*
-> > +     * We allow repeated wheel-events when the arrow keys are held down,
-> > +     * but do not repeat already-pressed buttons for the other key inputs.
-> > +     */
-> > +    if (!(event & (MP_KEY_WHEEL_NAV | MP_KEY_WHEEL_VOL))) {
-> > +        if (key->down && (s->pressed_keys & event)) {
-> >              event = 0;
-> >          }
-> >      }
-> >
-> >      if (event) {
-> >          /* Raise GPIO pin first if repeating a key */
-> > -        if (!(keycode & KEY_RELEASED) && (s->pressed_keys & event)) {
-> > +        if (key->down && (s->pressed_keys & event)) {
-> >              for (i = 0; i <= 7; i++) {
-> >                  if (event & (1 << i)) {
-> >                      qemu_set_irq(s->out[i], 1);
-> > @@ -1143,17 +1128,15 @@ static void musicpal_key_event(void *opaque, int keycode)
-> >          }
-> >          for (i = 0; i <= 7; i++) {
-> >              if (event & (1 << i)) {
-> > -                qemu_set_irq(s->out[i], !!(keycode & KEY_RELEASED));
-> > +                qemu_set_irq(s->out[i], !key->down);
-> >              }
-> >          }
-> > -        if (keycode & KEY_RELEASED) {
-> > -            s->pressed_keys &= ~event;
-> > -        } else {
-> > +        if (key->down) {
-> >              s->pressed_keys |= event;
-> > +        } else {
-> > +            s->pressed_keys &= ~event;
-> >          }
-> >      }
-> > -
-> > -    s->kbd_extended = 0;
-> >  }
-> >
-> >  static void musicpal_key_init(Object *obj)
-> > @@ -1162,20 +1145,27 @@ static void musicpal_key_init(Object *obj)
-> >      DeviceState *dev = DEVICE(sbd);
-> >      musicpal_key_state *s = MUSICPAL_KEY(dev);
-> >
-> > -    s->kbd_extended = 0;
-> >      s->pressed_keys = 0;
-> >
-> >      qdev_init_gpio_out(dev, s->out, ARRAY_SIZE(s->out));
-> > +}
-> >
-> > -    qemu_add_kbd_event_handler(musicpal_key_event, s);
-> > +static const QemuInputHandler musicpal_key_handler = {
-> > +    .name = "musicpal_key",
-> > +    .mask = INPUT_EVENT_MASK_KEY,
-> > +    .event = musicpal_key_event,
-> > +};
-> > +
-> > +static void musicpal_key_realize(DeviceState *dev, Error **errp)
-> > +{
-> > +    qemu_input_handler_register(dev, &musicpal_key_handler);
-> >  }
-> >
-> >  static const VMStateDescription musicpal_key_vmsd = {
-> >      .name = "musicpal_key",
-> > -    .version_id = 1,
-> > -    .minimum_version_id = 1,
-> > +    .version_id = 2,
-> > +    .minimum_version_id = 2,
-> >      .fields = (VMStateField[]) {
-> > -        VMSTATE_UINT32(kbd_extended, musicpal_key_state),
-> >          VMSTATE_UINT32(pressed_keys, musicpal_key_state),
-> >          VMSTATE_END_OF_LIST()
-> >      }
-> > @@ -1186,6 +1176,7 @@ static void musicpal_key_class_init(ObjectClass *klass, void *data)
-> >      DeviceClass *dc = DEVICE_CLASS(klass);
-> >
-> >      dc->vmsd = &musicpal_key_vmsd;
-> > +    dc->realize = musicpal_key_realize;
-> >  }
-> >
-> >  static const TypeInfo musicpal_key_info = {
-> > --
-> > 2.34.1
-> >
 
