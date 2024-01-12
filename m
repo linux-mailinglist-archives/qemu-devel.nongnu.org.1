@@ -2,74 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DEC82C430
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 18:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC2682C43C
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 18:07:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOKwv-0003Wd-KX; Fri, 12 Jan 2024 12:04:05 -0500
+	id 1rOKzc-0005IR-T4; Fri, 12 Jan 2024 12:06:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOKws-0003Vf-Qi
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 12:04:02 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOKwq-00039M-8t
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 12:04:02 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-555f581aed9so7796235a12.3
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 09:03:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705079037; x=1705683837; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=pDqe/f5RnS26pRMEG8/pUrsnHizFnUylzEWIMObqyLU=;
- b=J+QxICk+nASoFIk73jC7otZzSVTPR5hlNESdmreiotedAVcDmKuMRaJsyayyr/T/bq
- EgHq0hqGXw5M3uxZ6hzrXvgH4cpUPk2qLJZzWzLdxWdoLzVJ10+aJ3CzgbfaRTkpqgIO
- nuwKNHV/TsOt85B36GMRN2Wx+A2/YpILZIJBQL4pwgIqIpjDjlqrWZX5FBm2b3THYEyl
- 2HVUkmZXMxrlhceOVN9tzUiijWXZAXCP2csrS2LSyyw3xpR9xzlmTxrVlbueMLSI16u/
- dFrGNC8yyzOiNARQejRzFX7j4ZyHVS0bVpDrEEnGuyfEI1F+sytMSvDTy7UbovOFM65A
- IU1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705079037; x=1705683837;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pDqe/f5RnS26pRMEG8/pUrsnHizFnUylzEWIMObqyLU=;
- b=TOJlp4XLMuGo12txOXyHsENxk89kjMPtg60vfFh0DXCDtPV3nVv9/tKrvM8H4ynBUT
- nmXscq7yaqXU3h4/Be/bOCqqjDu87yp4ykjAXBiT+SWliQVDNYCivUb79XXugTxfIafd
- tHrSYGCzuFWj/SpzThCQKEDj26lQL3KFQLdTuDJDQIKPiaEj9PJoMktmmh2CvOPMJrSh
- dKWwglxT2ySb2kv0FSHpi+TxReBjq2Sb5igdOOZ6NFK92idjnhyN5HmK3EtwTD7xqMuh
- Ia3exJ5RK2RIR4kUPl8kw9W8xj/A8CJ5y3g22lAbGtSbVVErpSsXhkh82wcHn+Q7yDuO
- Ma9A==
-X-Gm-Message-State: AOJu0Yy9+gdVZBN/jG4GgAZ+mGq1t9v62GxOsOBq7rVxkLCfFDFTd+jn
- Hg0oL8DioVrMBB0CcbvtU5UQDAHUEVhEY52rJy5Y027fkAY5EA==
-X-Google-Smtp-Source: AGHT+IEtNEkBoI7eaba8bWCp/k+YgSGjrJGOoMn1R/fUaIvQ5gPFwlph1JJ5aYDsyNHsnrjdxyf/aqgXIpYnyuYQT48=
-X-Received: by 2002:a05:6402:1205:b0:557:1ba9:4abf with SMTP id
- c5-20020a056402120500b005571ba94abfmr897858edw.23.1705079037611; Fri, 12 Jan
- 2024 09:03:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rOKza-0005I9-HC; Fri, 12 Jan 2024 12:06:50 -0500
+Received: from zproxy2.enst.fr ([137.194.2.221])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rOKzX-000503-6g; Fri, 12 Jan 2024 12:06:49 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy2.enst.fr (Postfix) with ESMTP id 23D908068A;
+ Fri, 12 Jan 2024 18:06:42 +0100 (CET)
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id hv8Iltz2pEga; Fri, 12 Jan 2024 18:06:41 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy2.enst.fr (Postfix) with ESMTP id 26877806A7;
+ Fri, 12 Jan 2024 18:06:41 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy2.enst.fr 26877806A7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1705079201;
+ bh=nN4AxN4bZ4OGgQmrqiZVBP3Aptm+OlATveS92Sj9fmc=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=sxLDPFnNmQs8iyQBWD4IqJP50HIUy2I5ATry898uILT38m3NShBqXohIu71otwjsx
+ plGvq0f2k5u39f856yxHLlJqODtM4HkaLSanmlkebdDhHPJfyYXYLwdsuGjC26XPtS
+ ikvCgHjnj9wZScBPZjvhsAiA3OMKgY4EsxKKBadc=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id fFkiPx4NyS4X; Fri, 12 Jan 2024 18:06:41 +0100 (CET)
+Received: from inesv-Inspiron-3501.enst.fr (unknown
+ [IPv6:2a04:8ec0:0:240:fa97:9da:79c1:e167])
+ by zproxy2.enst.fr (Postfix) with ESMTPSA id B22CE8066D;
+ Fri, 12 Jan 2024 18:06:40 +0100 (CET)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Cc: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [RFC 0/3] Add device STM32L4x5 GPIO
+Date: Fri, 12 Jan 2024 18:05:37 +0100
+Message-ID: <20240112170635.303226-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20240109124333.224240-1-shlomop@pliops.com>
-In-Reply-To: <20240109124333.224240-1-shlomop@pliops.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 12 Jan 2024 17:03:46 +0000
-Message-ID: <CAFEAcA9WYrhuokJ_ox5CH0Et+WxiB_dwfHtsTZCb9cCfAveL9w@mail.gmail.com>
-Subject: Re: [PATCH V2] Handle wrap around in limit calculation
-To: Shlomo Pongratz <shlomopongratz@gmail.com>
-Cc: qemu-devel@nongnu.org, andrew.sminov@gmail.com, peter.maydell@linaro.com, 
- shlomop@pliops.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=137.194.2.221;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy2.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,79 +81,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 9 Jan 2024 at 12:45, Shlomo Pongratz <shlomopongratz@gmail.com> wrote:
+This patch adds a new device STM32L4x5 GPIO device and is part
+of a series implementing the STM32L4x5 with a few peripherals.
 
-Hi; thanks for this patch.
+This is RFC as the tests need to be corrected and completed.
 
-> Hanlde wrap around caused by the fact that perior to version 460A
+The way the short-circuits are handled in the code currently :
+(0) The model is simplified (it detects pins driven internally and
+externally, not actual short-circuits)
+(1) It reacts by ignoring external driving and writes
+a `qemu_log_mask` about it
+(2) The model is tested by using a fake register
+`GPIO_DISCONNECTED_PINS` which is quite practical.
+However the tests could disconnect pins and check if a pin is
+disconnected in other ways (like setting all pins in push-pull
+output to disconnect them), should I unmap this attribute?
 
-Is this "460A" version number a version of the hardware
-we're modelling ?
+Some context and more details for (0)
 
-> the limit was 32bit quantity.
-> See Linux kernel code in:
-> drivers/pci/controllers/dwc/pcie-designware.c
+This code uses a simplified model. Instead of checking for
+short-circuits each time the driving (internal and external) changes,
+some configurations aren't allowed :
+- push-pull with external driving
+- open-drain with pin set high
 
-"/controller/"
+Concretely, the pins configured as output can't be set externally
+when in push-pull mode, or set high when in open-drain mode.
+Conversely, when input/output mode or push-pull/open-drain mode
+is changed, the problematic pins driven externally are "disconnected"
+and the external value isn't considered anymore.
 
-> function: __dw_pcie_prog_outbound_atu
+I saw sifive_gpio.c uses a similar model :
+```
+/* Pin both driven externally and internally */
+if (output_en && in_mask) {
+    qemu_log_mask(LOG_GUEST_ERROR, "GPIO pin %zu short circuited\n", i);
+}
+```
 
-There don't seem to be any comments in this kernel function
-that say anything about wrap-around:
+But nrf51_gpio.c actually checks for short-circuits :
+```
+if (connected_out && connected_in && out !=3D in) {
+    /* Pin both driven externally and internally */
+    qemu_log_mask(LOG_GUEST_ERROR,
+                    "GPIO pin %zu short circuited\n", i);
+}
+```
 
-https://elixir.bootlin.com/linux/latest/source/drivers/pci/controller/dwc/pcie-designware.c#L468
+Based-on: 20240109194438.70934-1-ines.varhol@telecom-paris.fr
+([PATCH v4 0/3] Add device STM32L4x5 SYSCFG)
 
-so I'm not sure what you're trying to explain by referring to it.
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 
-> Now in a 64bit system the range can be above 4G but as long as
-> the limit itself is less then 4G the overflow is avoided
->
-> Signed-off-by: Shlomo Pongratz <shlomop@pliops.com>
->
-> ----
->
-> Changes since v1:
->  * Seperate subject and description
-> ---
->  hw/pci-host/designware.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-> index dd9e389c07..7ce4a6b64d 100644
-> --- a/hw/pci-host/designware.c
-> +++ b/hw/pci-host/designware.c
-> @@ -269,11 +269,24 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
->  {
->      const uint64_t target = viewport->target;
->      const uint64_t base   = viewport->base;
-> -    const uint64_t size   = (uint64_t)viewport->limit - base + 1;
->      const bool enabled    = viewport->cr[1] & DESIGNWARE_PCIE_ATU_ENABLE;
-> +    uint64_t tbase, tlimit, size;
->
->      MemoryRegion *current, *other;
->
-> +    /*
-> +     * Hanlde wrap around caused by the fact that perior to version 460A
-> +     * the limit was 32bit quantity.
-> +     * See Linux kernel code in:
-> +     * drivers/pci/controllers/dwc/pcie-designware.c
-> +     * function: __dw_pcie_prog_outbound_atu
-> +     * Now in a 64bit system the range can be above 4G but as long as
-> +     * the limit itself is less then 4G the overflow is avoided
-> +     */
-> +    tbase = base & 0xffffffff;
-> +    tlimit = 0x100000000 + (uint64_t)viewport->limit;
-> +    size = ((tlimit - tbase) & 0xffffffff) + 1;
-> +
+In=C3=A8s Varhol (3):
+  hw/gpio: Implement STM32L4x5 GPIO
+  hw/arm: Connect STM32L4x5 GPIO to STM32L4x5 SoC
+  tests/qtest: Add STM32L4x5 GPIO QTest testcase
 
-I find this patch a bit confusing, partly because the comment
-seems to be written from the perspective of what the kernel
-driver is doing, not from the perspective of the hardware
-behaviour.
+ docs/system/arm/b-l475e-iot01a.rst |   2 +-
+ hw/arm/Kconfig                     |   3 +-
+ hw/arm/stm32l4x5_soc.c             |  62 +++-
+ hw/gpio/Kconfig                    |   3 +
+ hw/gpio/meson.build                |   1 +
+ hw/gpio/stm32l4x5_gpio.c           | 520 +++++++++++++++++++++++++++++
+ hw/gpio/trace-events               |   6 +
+ include/hw/arm/stm32l4x5_soc.h     |   9 +
+ include/hw/gpio/stm32l4x5_gpio.h   |  79 +++++
+ tests/qtest/meson.build            |   3 +-
+ tests/qtest/stm32l4x5_gpio-test.c  | 319 ++++++++++++++++++
+ 11 files changed, 991 insertions(+), 16 deletions(-)
+ create mode 100644 hw/gpio/stm32l4x5_gpio.c
+ create mode 100644 include/hw/gpio/stm32l4x5_gpio.h
+ create mode 100644 tests/qtest/stm32l4x5_gpio-test.c
 
-What is the behaviour of the actual hardware here, both before
-and after 460A ? Which version are we trying to model?
+--=20
+2.43.0
 
-thanks
--- PMM
 
