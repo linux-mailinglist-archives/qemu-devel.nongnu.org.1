@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3912882C08A
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:08:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1EB82C08E
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:11:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOHBD-0004Rf-QG; Fri, 12 Jan 2024 08:02:36 -0500
+	id 1rOHBI-00054G-SJ; Fri, 12 Jan 2024 08:02:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOHAc-0003uF-66
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:01:59 -0500
+ id 1rOHAv-0004Bt-0Z
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:02:18 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOHAa-0001xz-J0
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:01:57 -0500
+ id 1rOHAr-000231-EL
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:02:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=AwCFNghRr2ccUEvp2DS9gkDztp6Uyv4u07aWmdBAAtQ=; b=m+91OkakIUxF8odvm73jfQWI9y
- Ja5q1neTgeqSWsD97I0zgcMMBfYirrC+XOInbmiqjhRESgH89V+GJWt602LPvOkepMVdM1RZg73Cj
- +y94Nf+6ZO7Nylp8lz+tQaJA6KwaIaPaKEZe5735/mCqqHqm0cJ4uMc+VINLArdstmenp2h31CieR
- Ns5ZBSuSIEd48mC1Fzqdx3R2tZ3GGw8wKQMJFBuXSSHsrKdUrk3upDfLSbXqMiWXDlO7PlzaQ4J3A
- RnmrwzH9ieOKl1IB1O//HMl67zCpWPsvIqtz/MwDAdDsBUCMfUwFGWYwUDRLRmkwroRKeMPt/niNs
- qxCsAtRAJlbhQEWPX/WDIb7gujX4T/rxUsQWvesZkLWKJhw40+rMmCxF+nCIyArFhBxCsRqFSCs5t
- rOPaAMGSjPbTLo9ubhXiMaFP9xYkpwCxflFc/vwwHt7jDLYHIwodBBqEbguNbWKfPDdRP5hNumMmX
- YZDZizVb7hCA+RwlgO7Y34PuJhU4VdNwVttN+VJejGJkECymf6lsIqcaWoIdOJ/pqJY8uXWMfo8+q
- 1lce6sGli4WQ495C+5YebZvj9nzaZCZbG1S/eBRMhKJ/QK22cVVyg/gqr+1qPhuupEZejoV2GaBjF
- NPhATMxe4EiYeIEfU7UVGgzBWFbNuV5QD8NMeD8fE=;
+ bh=l3dad72Fn6EHurpGqR/Kh29ypmbUbOCNnJyUEvUbgSg=; b=lJU+afwkZ3MTfR7ViHtLEjMek2
+ y82zl5j2MGVzugWXlpElwvsbKolt5rQiKtrT611kFnn2rWR/J1gf3x7/8PiYfEegqF7xLRXu2uPUx
+ QLjXW7gRsFsT0/mA9LENe0J7ARppq6HstLutJH1kHkHUfSdoRM4SOakp37ro90JqJPR6KIETz7ZPP
+ uxmiUfvXje4Gtgk6SdZSBpx8lRZShknW8cXdWRiULVGKZ21RPc+YgwOi1NGxwN/deb6JbEkbBShGr
+ HQK+uX5SoxtfDG+QsmqP/AvuHakYyeZvE3vaAtiOsOYgBItWhcX+DF96mGnk/kkmALCBeGWAPxfSq
+ BsREmx7fsEjW5LibPdZ4jA+lTMgchQeFId9i8OtyFnZ8zYzU7plRXUEmJqJSLHL54gQCerFgifc5c
+ 2it3P99CSiaNsJbQcSfUffqOyiZLjfHjMLD+3TMAMEdfv/OpmLvJqbRxcOzGlpIrQwTvMqhtwUyYT
+ QlHO76QzIhDzTyqdrMVBxgwXS6+CMu8MG520m4WbQ+Dx9B7CK5UBB/4Nwd7oN+HYIqImP+QNzPF5r
+ 8Ut4MD/ar4oXOisbiBpPjxo2hF7Af/tsJIuAlmPKacY3H6vhUnYl16aSQyy2VVAGRqlKTSGnb6cmk
+ v/WELbAo8Dbd3wjDK/OeISmkD+xC7SjOP+aK19MDs=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH6V-0008jM-4I; Fri, 12 Jan 2024 12:57:47 +0000
+ id 1rOH6Z-0008jM-Dp; Fri, 12 Jan 2024 12:57:51 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org,
  laurent@vivier.eu, thuth@redhat.com, qemu-devel@nongnu.org
-Date: Fri, 12 Jan 2024 12:54:02 +0000
-Message-Id: <20240112125420.514425-71-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 12 Jan 2024 12:54:03 +0000
+Message-Id: <20240112125420.514425-72-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
 References: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 70/88] esp.c: ensure that STAT_INT is cleared when reading
- ESP_RINTR
+Subject: [PATCH 71/88] esp.c: don't clear the SCSI phase when reading ESP_RINTR
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,11 +77,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both esp_raise_irq() and esp_lower_irq() check the STAT_INT bit in ESP_RSTAT
-to ensure that the IRQ is raised or lowered if its state changes. When reading
-ESP_RINTR, esp_lower_irq() was being called *after* ESP_RSTAT had been
-cleared meaning that STAT_INT was already clear, and so if STAT_INT was
-asserted beforehand then the esp_lower_irq() would have no effect.
+According to the documentation ESP_RSTAT is cleared (except the STAT_TC bit)
+when ESP_RINTR is read. This should not include the SCSI bus phase bits which
+are currently live from the SCSI bus, otherwise the current SCSI phase is lost
+when clearing an end-of-transfer interrupt.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
@@ -90,25 +88,18 @@ Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 6c62417985..604fb9235d 100644
+index 604fb9235d..8ea100ee9c 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -1127,6 +1127,7 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
-          */
+@@ -1128,7 +1128,7 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
          val = s->rregs[ESP_RINTR];
          s->rregs[ESP_RINTR] = 0;
-+        esp_lower_irq(s);
-         s->rregs[ESP_RSTAT] &= ~STAT_TC;
+         esp_lower_irq(s);
+-        s->rregs[ESP_RSTAT] &= ~STAT_TC;
++        s->rregs[ESP_RSTAT] &= STAT_TC | 7;
          /*
           * According to the datasheet ESP_RSEQ should be cleared, but as the
-@@ -1137,7 +1138,6 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
-          *
-          * s->rregs[ESP_RSEQ] = SEQ_0;
-          */
--        esp_lower_irq(s);
-         break;
-     case ESP_TCHI:
-         /* Return the unique id if the value has never been written */
+          * emulation currently defers information transfers to the next TI
 -- 
 2.39.2
 
