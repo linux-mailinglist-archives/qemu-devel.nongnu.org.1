@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1978A82C06F
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:05:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B63F482C074
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:05:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOH68-0005Ak-E4; Fri, 12 Jan 2024 07:57:20 -0500
+	id 1rOH68-0005BY-Mf; Fri, 12 Jan 2024 07:57:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH5z-0004t2-Hf
+ id 1rOH5z-0004rt-Bp
  for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:57:12 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH5s-0007sT-NH
+ id 1rOH5t-0007tc-Ie
  for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:57:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
@@ -24,26 +24,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=62bCXuS7Ab7j+3JsZ13NQqjjmERHQQn64Giv3KrN3Ik=; b=ls6c6+Hnbebv0AMVKIadIFswG7
- kbOO7h6qp3rqa7mtAWuedn10jzM6lgr95fTMAj/X7Ft5fUcws1FUA02wfPEQXj53dFCLB7CJ94nvz
- MvneAT7F1gUVQG1eKkzhIfmeFMEIBsCxajWGCRVjxlWcg4vrnxiWD4TphzPOK/Dpdh6ifzPD4W0Np
- xfe/ktQvfJ7ncDyzxk+3f8cINbpwK0huDYZRMJKcCEgORTsh5Pl0VNfbCVXs6LwOYXW3wXZ1gYgHw
- 7E8yv8TU1tk9tnCFLaZI6Qcn3kE5Pqv4QtJyN4GSvE5XRcN2FEMYXpPfKZB236BEial0el08eftDD
- cbanaiOiSNDwJV1i9g9JaSEVFInhB+2r/Y9Mdj2MnOro1jnuhvODL16gpwoF8X2tcjZeu5sl6PQ1j
- irl7e5BeLbHaFOoRtiEPd0rGJIRyyY5QkjfRC2TSP4BGWdqJQA/Z0nWTo2n5ONbLC9iT7a6+22BbO
- 9wujuk1B+Y8Wqwl1FFjzytiGJ0XYcyJ2Jo22d/7EdW1DPzqXb9PhyJTexwBwna8LdAXj6WWNCb3LR
- TcQWSTuBPP2zAQ1vivoN1UTQA085S4GJ6nVfeE3cKMJL5fmf/UEdVlMPSoi54JsQUqjnowOF7OoXV
- 1ko08nGRUld08+o/beWVMP6ZUz1dEjKAKQ1a0ng+c=;
+ bh=6HWAoI4FhyTXVqyr5pu3vcbWtES6sLbkmpCqYzLTP4M=; b=Upvd9lrjnsIcAWlPUhkGbu6MsT
+ PXwqoWkoqoC8mQcP2nne1juVNtzHQU7d2eXfumRGdblwunryQMvqZ/aNro8pWoGQBqCiO+8mQBIRz
+ 3kTpnjjg8TdsGQ95V0uvDWAgsxCeLyVrA//ls5SzuQW3T4MxVD8MgrygkfNqAVC/2YWn5sBMcm99g
+ 3ReGl/uOjFhkokhluuB1yEjQYDvGmrMG3T0zHFQnNHRpDvDYuwL1q8HWGKIsQaRlc+xUqTym8JWJh
+ 5keTCnNXDpe8b4lg+K6at3FIj/NXfGgDygsFOCqbZ5RIdNR3SyaufyAc1+KeuzT6p5CO+aP7iJVdQ
+ 0n+2m5bmp89UaME6ImR2CciOtMl2HHVmFJnKJFa+JxzcGJsuN6Iooad8LAe4LxhTDlMuKVMglfW3D
+ 0znfNLkIMAKM23Hy+NWWrx2qvcduA+H/r/f/lTTMXbHETcf3WtvYpOnFyPT0vHpO/I9qBUkkj8vck
+ 5dFGPRzhHEMYt6B2Rn+TTrW5NN0DrBB72ZrVzE271mieZU2QN1tOetokH9CyovT9m6RFMU7eOMH3x
+ g+qI/fzx/kn3Iwi0EdfIxVuIZ/FBvxvr/WasZYQRH3Rq13nz+Pee9SJbsC6PJTtG7lwxJzAYi/p78
+ 6mDSwAavFnzCT4ZU03EptL2Xls0fYIB9KHgDj5ms8=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH55-0008jM-C1; Fri, 12 Jan 2024 12:56:15 +0000
+ id 1rOH55-0008jM-PE; Fri, 12 Jan 2024 12:56:19 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org,
  laurent@vivier.eu, thuth@redhat.com, qemu-devel@nongnu.org
-Date: Fri, 12 Jan 2024 12:53:32 +0000
-Message-Id: <20240112125420.514425-41-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 12 Jan 2024 12:53:33 +0000
+Message-Id: <20240112125420.514425-42-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
 References: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 40/88] esp.c: convert esp_do_nodma() to switch statement based
- upon SCSI phase
+Subject: [PATCH 41/88] esp.c: convert esp_do_dma() do_cmd path to check for
+ SCSI phase instead
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,99 +78,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently only the DATA IN and DATA OUT phases are supported.
+Currently do_cmd is used to determine whether MESSAGE OUT and COMMAND phase data
+is being accumulated in cmdfifo. Update esp_do_dma() to check directly for these
+two SCSI phases instead.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 54 +++++++++++++++++++++++++++++++++------------------
- 1 file changed, 35 insertions(+), 19 deletions(-)
+ hw/scsi/esp.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index f6d05b0de7..c1b44e5f18 100644
+index c1b44e5f18..22739d3875 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -786,7 +786,6 @@ static void esp_do_dma(ESPState *s)
+@@ -635,11 +635,10 @@ static void esp_do_dma(ESPState *s)
+     int n;
  
- static void esp_do_nodma(ESPState *s)
- {
--    int to_device = (esp_get_phase(s) == STAT_DO);
-     uint8_t buf[ESP_FIFO_SZ];
-     uint32_t cmdlen;
-     int len, n;
-@@ -823,38 +822,55 @@ static void esp_do_nodma(ESPState *s)
-         return;
-     }
- 
--    if (!s->current_req) {
--        return;
--    }
--
--    if (s->async_len == 0) {
--        /* Defer until data is available.  */
--        return;
--    }
--
--    if (to_device) {
+     len = esp_get_tc(s);
+-    if (s->do_cmd) {
+-        /*
+-         * handle_ti_cmd() case: esp_do_dma() is called only from
+-         * handle_ti_cmd() with do_cmd != NULL (see the assert())
+-         */
++
 +    switch (esp_get_phase(s)) {
-+    case STAT_DO:
-+        if (!s->current_req) {
-+            return;
-+        }
-+        if (s->async_len == 0) {
-+            /* Defer until data is available.  */
-+            return;
-+        }
-         len = MIN(s->async_len, ESP_FIFO_SZ);
-         len = MIN(len, fifo8_num_used(&s->fifo));
-         esp_fifo_pop_buf(&s->fifo, s->async_buf, len);
-         s->async_buf += len;
-         s->async_len -= len;
-         s->ti_size += len;
--    } else {
-+
-+        if (s->async_len == 0) {
-+            scsi_req_continue(s->current_req);
-+            return;
-+        }
-+
-+        s->rregs[ESP_RINTR] |= INTR_BS;
-+        esp_raise_irq(s);
-+        break;
-+
-+    case STAT_DI:
-+        if (!s->current_req) {
-+            return;
-+        }
-+        if (s->async_len == 0) {
-+            /* Defer until data is available.  */
-+            return;
-+        }
-         if (fifo8_is_empty(&s->fifo)) {
-             fifo8_push(&s->fifo, s->async_buf[0]);
-             s->async_buf++;
-             s->async_len--;
-             s->ti_size--;
++    case STAT_MO:
++    case STAT_CD:
+         cmdlen = fifo8_num_used(&s->cmdfifo);
+         trace_esp_do_dma(cmdlen, len);
+         if (s->dma_memory_read) {
+@@ -683,10 +682,8 @@ static void esp_do_dma(ESPState *s)
+             s->rregs[ESP_RINTR] |= INTR_BS;
+             esp_raise_irq(s);
          }
--    }
- 
--    if (s->async_len == 0) {
--        scsi_req_continue(s->current_req);
 -        return;
 -    }
-+        if (s->async_len == 0) {
-+            scsi_req_continue(s->current_req);
-+            return;
-+        }
- 
--    s->rregs[ESP_RINTR] |= INTR_BS;
--    esp_raise_irq(s);
-+        s->rregs[ESP_RINTR] |= INTR_BS;
-+        esp_raise_irq(s);
 +        break;
-+    }
- }
  
- static void esp_pdma_cb(ESPState *s)
+-    switch (esp_get_phase(s)) {
+     case STAT_DO:
+         if (!s->current_req) {
+             return;
 -- 
 2.39.2
 
