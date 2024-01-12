@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ECA582BEF8
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 12:10:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76BC082BEFC
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 12:10:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOFQh-0007OM-RQ; Fri, 12 Jan 2024 06:10:27 -0500
+	id 1rOFQm-0007T7-Sy; Fri, 12 Jan 2024 06:10:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rOFQd-0007O4-L6
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 06:10:23 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1rOFQg-0007Oe-EJ
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 06:10:27 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rOFQY-0003QN-J4
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 06:10:22 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3368d1c7b23so5448968f8f.0
+ id 1rOFQa-0003QQ-O6
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 06:10:23 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3377d45c178so1782139f8f.2
  for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 03:10:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1705057815; x=1705662615; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ar4Q0KzDhN6C3ss8iuvWuXCh03LQWU5jnYFmm1I8O8A=;
- b=GbxEYjWkkBT6gZ9pBh+bdi0V6vWEAKXblMqjCbLHf5QUXWYA5jRW3hzULpBLSCvq/x
- d41QVLUqvK53tn4giHwfq6FPgSoJNdziFjPQqXiqrUcLKCgqxlHrm1D8HdulbmYW0z04
- lweoLWuajyhOb64haxATjZWbeDAOXph0SkWdG0osiWvU/ekjVCqIUUNwnYwG86Afjd18
- aXsQ2vOrw8Lbo6eBosMHSiEg/2mFNLYuwn7hIBkzyrZjNpLcLxeJ973PyxHtDYa7hO/R
- 2qesX7PHDoQjs4S7Xz/cIZJVUnieqsFhNW8XiX734cipjs814awHg3Q0Swm9l4lt4r5Q
- t2fQ==
+ bh=gvmqPE1NXM6Q4yWF3pBPWwKopVOUR2hSD3g1l0pkcNk=;
+ b=pkpU2f66paUMpiLyiWHn2/LGE5SxndcLf+fahfDpw2GrfgsbfrYgSZT80SWbMCeITc
+ fkC5Qg+1mwxXPBwjblm2d30LTkdntuZ+Ich/SCDfFARgFGVwplQskUKCi19dK3kopLmg
+ C+XDDGOFwmM1OGnXu8Q1UWydGwHrQxjA9O9UQPfeo7EYD+SoUOidNYGGXL67Xq15vx9p
+ OaCXSWK+Xwej0ZW+g1GLSdX18G1HLOV+RXQXZjTIw4nPolqyAQeojPBtuwqipZ92Cxe9
+ ov9RrLidnw/+6nx0DrNgYc5fZ0U3HP9v7f9AJSTXccnxRepWv4I664wvF6HxEE6Hy8BN
+ IEkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1705057815; x=1705662615;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ar4Q0KzDhN6C3ss8iuvWuXCh03LQWU5jnYFmm1I8O8A=;
- b=GYMHYzXW469Pr2HSe6coB0wjcyb3uiWmeB+b3pnGKVQ/nAVt5quKUJ5caXb9pa2goy
- srCWlhDR6vNo1WGjPAyqbRLIN/hfPHYfZI5PjzO826vOam1Hr0THF13h953wFx/fDULu
- rZ8gAW7yyK0gcr++aDwficom7MGNBunejFiDZF7wk6bGGVYw+N2WTuTsDHMx4zxjiqpB
- eUmapcLcnVi4chwznhbunFJVScR4F7BQLqUvG5Sx3G5kI54bHyaiHdDt/Mw65AL8FLH6
- axWj+vroCOifUnIoQfC6e/t+mnsFEm90jIPBWjC6rAC3l/SrtDV8iYR7mCkdCCsEmrWz
- 7xQw==
-X-Gm-Message-State: AOJu0Yz3jxuABwbqRnkLQnBzaeoLaXiviFdKCQly05xQsW+6o2ucz0qx
- mcZ40gOLrUulDtmqdpvnKsc7PlQka/a+7A==
-X-Google-Smtp-Source: AGHT+IGoSY57Ob22gZBDQY/S7NtLYC1F1S0FAM/sbl1UULgbYoyjwi9wsIjSZGeKiW78T/H0L+dqdA==
-X-Received: by 2002:a05:6000:1862:b0:333:492b:e5e1 with SMTP id
- d2-20020a056000186200b00333492be5e1mr848333wri.22.1705057814784; 
- Fri, 12 Jan 2024 03:10:14 -0800 (PST)
+ bh=gvmqPE1NXM6Q4yWF3pBPWwKopVOUR2hSD3g1l0pkcNk=;
+ b=hCxo1S+5K0yeBAd2xU3iKp8zgHJi1H4V+nY2GJ0oJgihP06H/EWAz7XzEEji7ffQIP
+ 8D6m0aKMcvp2tkuvNQZzZVtjYoG2DEmoy4OURp+vFzz2ohcUvy09xe3LPBzEnaGf6HGQ
+ WD99GTDlN4kKXzWWB40ena8/8is32x8QrvvQ76ZmCyxRpeT08NDYDsjLl483AioeHAeT
+ YwO/8xZsOsmcCJKKplBP2/mc0CI6/TnPmLe51lrpnjI9C//FmIHkPAKZZaLImBVbLSpX
+ SuwZ2cAxH3iQfdHhm36qb8wi1wmChmDIhcJXuhEteLJr24sxdxcnIa/gP//ao10JBtog
+ l9EA==
+X-Gm-Message-State: AOJu0YwJD4obIBVsjbJc3Ndro24Zo1YMpTeb1HNUNq/w2BgdFHAztmYD
+ +zasVa8YfR7clCiza3dor+mz2bJJRJLdS2riWEO/CfHwV9U=
+X-Google-Smtp-Source: AGHT+IHfW9cY2BI3EkVnkqbiLyw7DvIFWx38jDrkzR670xR+yvBELCbH24Hfv64C+JiDlznhnD5Ahg==
+X-Received: by 2002:adf:fa8e:0:b0:337:5d86:96f1 with SMTP id
+ h14-20020adffa8e000000b003375d8696f1mr708690wrr.96.1705057815225; 
+ Fri, 12 Jan 2024 03:10:15 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- d15-20020adf9c8f000000b00336c43b366fsm3621466wre.12.2024.01.12.03.10.12
+ dr18-20020a5d5f92000000b0033677a4e0d6sm3622173wrb.13.2024.01.12.03.10.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jan 2024 03:10:13 -0800 (PST)
+ Fri, 12 Jan 2024 03:10:14 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8AB8E5F95A;
+ by draig.lan (Postfix) with ESMTP id A1BF05F95C;
  Fri, 12 Jan 2024 11:04:36 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 17/22] tests/unit: Bump test-aio-multithread test timeout to 2
+Subject: [PULL 18/22] tests/unit: Bump test-crypto-block test timeout to 5
  minutes
-Date: Fri, 12 Jan 2024 11:04:30 +0000
-Message-Id: <20240112110435.3801068-18-alex.bennee@linaro.org>
+Date: Fri, 12 Jan 2024 11:04:31 +0000
+Message-Id: <20240112110435.3801068-19-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240112110435.3801068-1-alex.bennee@linaro.org>
 References: <20240112110435.3801068-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,23 +99,23 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Thomas Huth <thuth@redhat.com>
 
 When running the tests in slow mode on a very loaded system and with
---enable-debug, the test-aio-multithread can take longer than 1 minute.
-Bump the timeout to two minutes to make sure that it also passes in
+--enable-debug, the test-crypto-block can take longer than 4 minutes.
+Bump the timeout to 5 minutes to make sure that it also passes in
 such situations.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231215070357.10888-14-thuth@redhat.com>
+Message-Id: <20231215070357.10888-15-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
 diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index 69f9c050504..937e1ebd356 100644
+index 937e1ebd356..06595321223 100644
 --- a/tests/unit/meson.build
 +++ b/tests/unit/meson.build
-@@ -172,6 +172,7 @@ test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
- test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
+@@ -173,6 +173,7 @@ test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
  
  slow_tests = {
-+  'test-aio-multithread' : 120,
+   'test-aio-multithread' : 120,
++  'test-crypto-block' : 300,
    'test-crypto-tlscredsx509': 45,
    'test-crypto-tlssession': 45
  }
