@@ -2,78 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BED82C110
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:47:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D7182C12D
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:55:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOHry-0001M5-Oa; Fri, 12 Jan 2024 08:46:46 -0500
+	id 1rOHyo-0005jq-0l; Fri, 12 Jan 2024 08:53:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOHrx-0001Lp-Gt
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:46:45 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOHrv-0006BY-OK
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:46:45 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3376555b756so3730820f8f.0
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 05:46:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705067201; x=1705672001; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=J94tv17PtRv1hNA8+TxHl9ooGYVoxDm6RnNrgCEkkwM=;
- b=qXIp0LeYwg5UaB8N6WqZl+wQT5uUDnhqCPVYtxx3nxIICRG8QxZQ6vsy1dHUWsPbkV
- IbFB0Xl2/DpK/NKvlTlliVW3d+AHPK/QJXdkcGRfHgSS5CWPNC1zoVJ2ohiWRHiD93Uh
- L0nIvgcqIONF/o/6Gt9gMiIyTs/nOdqByqh6kkMeQwbevdX35z5DE89uii3SL30LcMta
- uJVNBSC33MdwGyCyfCiU5I/+OIZ3rJk7WB66zslZvuFEMnlMoWe45BBlN62RPIEIX92k
- YwoduYJ3VT5kAdRVEaC9iSFaKS3H4HC5lDl7t2P+wYu1rx8CC+4jv8cidrh2oNi3S2oZ
- yolQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705067201; x=1705672001;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=J94tv17PtRv1hNA8+TxHl9ooGYVoxDm6RnNrgCEkkwM=;
- b=lrfDbhBtVeVVC5rsN4fptdmypaNLOCC7MskYqi1ug4fwAlZtZjBJKqbN9uNxuw8L1z
- wcjTu1R5dtGBj3yHoX/CAw/2wijpr/GzwbpcxOCTLmYzgW5ACujcQkkFvO2b7gMuncIa
- DZ8GKU8Bew3jCIbVX0n4WtxrQEWf0IVYyfz5EgA8bgbxBFriDhQLh9oEJ8WBP5zvsuct
- Iw/ycl0IP3cfF5MldKnhqotbkaKXfZenSNNisovXggvt/d9paO668KfN8LKytJkwOMDX
- UAnigNR1Nljz2WyikoWFmzXFWBsv90tpDHJScaAs3BIlcU2X0FWwvXrynCZW0G8z6NlV
- VXGg==
-X-Gm-Message-State: AOJu0Yw/R1zJrGhE0fqH6kWd1gzhallld9iO61b/RmckM0i8+mL/hO6u
- BCd+0j/Adkf//pC2rP78BgtaO/wcfmZRNE3/3eb+A9Wwyy8=
-X-Google-Smtp-Source: AGHT+IESgUZlv0Bpdng1pRGBEa/aSbwNM4/K6fTvDTHC+wHJ8cwFpO1vWHdwC0/GSgNULpNyFA9wbw==
-X-Received: by 2002:adf:8909:0:b0:336:58e8:d444 with SMTP id
- s9-20020adf8909000000b0033658e8d444mr1266713wrs.30.1705067201465; 
- Fri, 12 Jan 2024 05:46:41 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- h16-20020adffd50000000b003372befd19bsm3948357wrs.104.2024.01.12.05.46.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jan 2024 05:46:41 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org,
- =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>
-Subject: [PATCH] hw/pci-host/raven.c: Mark raven_io_ops as implementing
- unaligned accesses
-Date: Fri, 12 Jan 2024 13:46:40 +0000
-Message-Id: <20240112134640.1775041-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1rOHyW-0005eo-5Z
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:53:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1rOHyQ-00014u-9x
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:53:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705067603;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YLQeK9JPN153qq4oML3PXAtaSLTSsAR4OAWzDWUTomw=;
+ b=JrZRcb0oqCz3DvEkOhgdVuqfkC/jnHF7xKswBse51fkH6fBZw7Vyq/l6Qnlr3uT5SgdTYK
+ TSb5V1//2g3JRcSmKgVsgSadG/Kqe38l3o7DmtkpqM5GAcwqXhIZqvpgMh9aARdeMZgBFq
+ wiqO9WhhWRYnkzXCOvTZf9dfxoNTZzM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-496-lfRjC8NOO5ai_dbpu73Hxw-1; Fri,
+ 12 Jan 2024 08:53:19 -0500
+X-MC-Unique: lfRjC8NOO5ai_dbpu73Hxw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 36B0D29ABA00;
+ Fri, 12 Jan 2024 13:53:19 +0000 (UTC)
+Received: from localhost (unknown [10.22.8.17])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F0820492BC6;
+ Fri, 12 Jan 2024 13:53:18 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, philmd@linaro.org,
+ richard.henderson@linaro.org, shan.gavin@gmail.com
+Subject: Re: [PATCH] hw/arm/virt: Consolidate valid CPU types
+In-Reply-To: <20240111051054.83304-1-gshan@redhat.com>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Michael O'Neill, Amy Ross"
+References: <20240111051054.83304-1-gshan@redhat.com>
+User-Agent: Notmuch/0.37 (https://notmuchmail.org)
+Date: Fri, 12 Jan 2024 14:53:11 +0100
+Message-ID: <875xzyodyw.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.09,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,48 +83,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The raven_io_ops MemoryRegionOps is the only one in the source tree
-which sets .valid.unaligned to indicate that it should support
-unaligned accesses and which does not also set .impl.unaligned to
-indicate that its read and write functions can do the unaligned
-handling themselves.  This is a problem, because at the moment the
-core memory system does not implement the support for handling
-unaligned accesses by doing a series of aligned accesses and
-combining them (system/memory.c:access_with_adjusted_size() has a
-TODO comment noting this).
+On Thu, Jan 11 2024, Gavin Shan <gshan@redhat.com> wrote:
 
-Fortunately raven_io_read() and raven_io_write() will correctly deal
-with the case of being passed an unaligned address, so we can fix the
-missing unaligned access support by setting .impl.unaligned in the
-MemoryRegionOps struct.
+> It's found that some of the CPU type names in the array of valid
+> CPU types are invalid because their corresponding classes aren't
+> registered, as reported by Peter Maydell.
+>
+> [gshan@gshan build]$ ./qemu-system-arm -machine virt -cpu cortex-a9
+> qemu-system-arm: Invalid CPU model: cortex-a9
+> The valid models are: cortex-a7, cortex-a15, (null), (null), (null),
+> (null), (null), (null), (null), (null), (null), (null), (null), max
+>
+> Fix it by consolidating the array of valid CPU types. After it's
+> applied, we have the following output when TCG is enabled.
+>
+> [gshan@gshan build]$ ./qemu-system-arm -machine virt -cpu cortex-a9
+> qemu-system-arm: Invalid CPU model: cortex-a9
+> The valid models are: cortex-a7, cortex-a15, max
+>
+> [gshan@gshan build]$ ./qemu-system-aarch64 -machine virt -cpu cortex-a9
+> qemu-system-aarch64: Invalid CPU model: cortex-a9
+> The valid models are: cortex-a7, cortex-a15, cortex-a35, cortex-a55,
+> cortex-a72, cortex-a76, cortex-a710, a64fx, neoverse-n1, neoverse-v1,
+> neoverse-n2, cortex-a53, cortex-a57, max
 
-Fixes: 9a1839164c9c8f06 ("raven: Implement non-contiguous I/O region")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-Spotted by code inspection: I was looking for devices whose behaviour
-might be changed by a patch I'm reviewing that adds that missing
-support for unaligned accesses in the core memory system. But even
-if we do implement it there, it's more efficient for the raven MR
-to correctly mark it as handling unaligned accesses itself.
+Alternatively, we could skip any NULL returns from cpu_model_from_type()
+in is_cpu_type_supported(), but I guess leaving out not-provided cpu
+types in the first place is cleaner.
 
-Tested with 'make check' and 'make check-avocado' only.
----
- hw/pci-host/raven.c | 1 +
- 1 file changed, 1 insertion(+)
+>
+> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> Fixes: fa8c617791 ("hw/arm/virt: Check CPU type in machine_run_board_init()")
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
+> ---
+>  hw/arm/virt.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-index c7a0a2878ab..a7dfddd69ea 100644
---- a/hw/pci-host/raven.c
-+++ b/hw/pci-host/raven.c
-@@ -200,6 +200,7 @@ static const MemoryRegionOps raven_io_ops = {
-     .write = raven_io_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-     .impl.max_access_size = 4,
-+    .impl.unaligned = true,
-     .valid.unaligned = true,
- };
- 
--- 
-2.34.1
+Reviewed-by: Cornelia Huck <cohuck@redhat.com>
 
 
