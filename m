@@ -2,90 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EDC82C40D
+	by mail.lfdr.de (Postfix) with ESMTPS id E190E82C40C
 	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 17:55:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOKnP-0005Qj-5E; Fri, 12 Jan 2024 11:54:15 -0500
+	id 1rOKnm-0005X3-7n; Fri, 12 Jan 2024 11:54:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1rOKnN-0005Q6-J8
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:54:13 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rOKnj-0005WF-5w
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:54:35 -0500
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1rOKnL-0005kR-Ec
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:54:13 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-336c5b5c163so4031137f8f.1
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 08:54:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rOKnh-0005uN-9x
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:54:34 -0500
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2cd46e7ae8fso75456141fa.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 08:54:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1705078449; x=1705683249;
- darn=nongnu.org; 
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Wa5lcaVnSMCaKjFP8eBbZ/pS/ZZdaoRW9vHVCkmxAkM=;
- b=0cMd2BBkSGdEuNd+DdPgbP3LWjQoHns/4mRUvYGLAgrqNjq/65t6VTuqIdd8HgW+9B
- JnnMbYM03lvbcGwgpw9xd0Opk+F2L42t+mruwGMGjULPnYg8pRekSmGgnp5z4Yu9eoWO
- 7AI23ofFvaXscHppjsMFJqO+6kg8zf/uOUacxHnEODB2FnWy2ltKVLSRKeglS3cYj5QE
- a6HeSrTIy/fTukoU+GgewHTEz4GyXk1ZiFoFyu8GPW/o41J9so3TmhduG6LjIUHcD200
- RNNCUU262DvcVhlYq4ZdBNttji1QZHNSL6WHSUmut4FKX/tzHSdmoNmW/3ElAXkcxV+D
- JxZA==
+ d=linaro.org; s=google; t=1705078471; x=1705683271; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=M8JjTOfCzqVpwPkPDjZGfbXYAPHDqCLAmmtt4HbnXnc=;
+ b=zDPjDlzwaF8DnQFLuopEK296LnArycQhe4G8meJcEXAnrJHvKCRMhUAGCciQ9DHH/p
+ 7s0RCGAhd+YgVglssmBlCyRWWJU8LsVg2jJ2eMGaTiuCIbfkK9mbi1YAKNqSceiJ+nFm
+ q55k0K1PQKlZMepq85HcBn0uC3SGFWvAIOeEWntQjfxcvCu+yoIHKLyi+xodb+ulBmaJ
+ OVaAWl47JSJVSNayQDnstpJUALPvU1J2pN5/sJZHeou/jKpE6PYtuhbkChyTKN6iSoVO
+ 6xPnXH5Qv9hw39uA6FUVRnoEZE12VPVe0pQkV1MOQOFglIYVn3qOmxbt7POFturk6VEh
+ E3nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705078449; x=1705683249;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Wa5lcaVnSMCaKjFP8eBbZ/pS/ZZdaoRW9vHVCkmxAkM=;
- b=BbJlvwQXlrvh/jXpe7Txb8w8P83NWSy55pdm1iPZFpOX2Zj7ZT91yMdDiHRHQABt8L
- OBepNZ3dJiRgch5O9aOhICQJid1oC/fG2d4VwiyfH1akn/6TFtZ+fWGsUm6M/nnGww+f
- Hw6Rfik2kNAR2oc2p+iA7oqcV/8kJz8ppX6cGD2C44NLDsJ9AE57CWKoAfue+D0z15+P
- bwgYYk1uztp8WanbiwWz/9zTkqVeMBiGBX974Q+hZ+KrfFfSEPwGPijrf0y199jzbDcR
- cMd0iJkfA2X8JrOmZI+6BydCjDqiXojBUiXsE/Q6U4MirHRYS6aDPZE0xQu2UKU9XUbb
- D3nA==
-X-Gm-Message-State: AOJu0Yw9ZRX2zw1GaDJSkLf3oSRTfeFn6tSW3MgL9YLRIcj+Yh7ngGnT
- x+mp7bJiyeleoSM3AfryOv1ZJQDImOF5fA==
-X-Google-Smtp-Source: AGHT+IEKK3jDFutqLa/46AnP5Pk+3WHjHLbaZ0oNySs93zRtUKWXScrwek4WOCfYEVz/CxTRBeD8Hw==
-X-Received: by 2002:a05:6000:1186:b0:337:4758:43fc with SMTP id
- g6-20020a056000118600b00337475843fcmr894052wrx.60.1705078449176; 
- Fri, 12 Jan 2024 08:54:09 -0800 (PST)
-Received: from [192.168.1.9] (214.11.169.217.in-addr.arpa. [217.169.11.214])
- by smtp.gmail.com with ESMTPSA id
- z5-20020a5d4c85000000b003367ff4aadasm4362376wrs.31.2024.01.12.08.54.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jan 2024 08:54:08 -0800 (PST)
-Message-ID: <7461190fbece351f916eccd258bf62b86227927d.camel@rivosinc.com>
-Subject: Re: Re: Re: [PATCH 1/3] target/riscv: Add infrastructure for 'B'
- MISA extension
-From: Rob Bradford <rbradford@rivosinc.com>
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, atishp@rivosinc.com, 
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com,  ved@rivosinc.com
-Date: Fri, 12 Jan 2024 16:54:08 +0000
-In-Reply-To: <20240112-d9e3cc215a7a68c5189908bf@orel>
-References: <20240109171848.32237-1-rbradford@rivosinc.com>
- <20240109171848.32237-2-rbradford@rivosinc.com>
- <20240111-585fe1291fcaa1e0432674e3@orel>
- <20240111-df7a6acf3109b630469591a1@orel>
- <3dbd3fa1cbad80948175f98dcc0c76b886e2376e.camel@rivosinc.com>
- <20240112-d9e3cc215a7a68c5189908bf@orel>
+ d=1e100.net; s=20230601; t=1705078471; x=1705683271;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=M8JjTOfCzqVpwPkPDjZGfbXYAPHDqCLAmmtt4HbnXnc=;
+ b=NFuDgo1CNnqf117mDZRZ9jS0oLx2EHDC8/UFjA+adppPn3nO2/Skkmq3N/CjgNdbpT
+ qbehrgzUlZMYgaIej2qCVFIbI3sEjJ43aPgSKOV5ObzTcLHmwb+FDOO9s9uEwlODMxsS
+ MSqGoosEezT57k0KfZcDo4LgZrLpwCszTaQHZOMhP72TJr+rcibrfHy+rtjOrnEUHvYo
+ fL8AHPMWtRkUKeW/ybUzk7XI5XV358ZBtL23OJaVKSIEF5bwV7lj3fLuZlSXmnYSB3Hc
+ Ps6SDS3tw4xzZ2oW+R4HhzB26CmCR0cJOYBHxmxal74AXyyUjkkxJldmwZUVmHP8FvWa
+ hVGQ==
+X-Gm-Message-State: AOJu0YwIW4TcN96UaKOlWVuS9b+IlZVohOcIsn/Q1H3AITkhTs2wl641
+ 3kHDspAmXaStX9sjVJCv//KwFg0cO1vDqPDZvU25nSIPbncwbw==
+X-Google-Smtp-Source: AGHT+IEtHSpotYXYy19kQqJRFcrplCgOHpTBM7SMsRTJ419dILhRvUQrMmS22FNG3/w9KVypaLNZgsCSPUPq5i6fGoA=
+X-Received: by 2002:a2e:5cc6:0:b0:2cd:a70d:fee0 with SMTP id
+ q189-20020a2e5cc6000000b002cda70dfee0mr7326ljb.45.1705078470869; Fri, 12 Jan
+ 2024 08:54:30 -0800 (PST)
+MIME-Version: 1.0
+References: <20240108125342.48298-1-philmd@linaro.org>
+ <20240108125342.48298-3-philmd@linaro.org>
+ <39ff1c41-c7ea-4cdc-ab18-b299b91cafb8@linaro.org>
+In-Reply-To: <39ff1c41-c7ea-4cdc-ab18-b299b91cafb8@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 12 Jan 2024 16:54:20 +0000
+Message-ID: <CAFEAcA8ZMHwKeEmwakt9BHt5Z_0DihYXtfTP-sOSBnt2dv6hWg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] hw/pflash: implement update buffer for block writes
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, 
+ Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.module_f38+17164+63eeee4a) 
-MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=rbradford@rivosinc.com; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,107 +90,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2024-01-12 at 17:08 +0100, Andrew Jones wrote:
-> On Thu, Jan 11, 2024 at 03:17:25PM +0000, Rob Bradford wrote:
-> > + Ved
-> >=20
-> > On Thu, 2024-01-11 at 14:14 +0100, Andrew Jones wrote:
-> > > On Thu, Jan 11, 2024 at 02:07:34PM +0100, Andrew Jones wrote:
-> > > > On Tue, Jan 09, 2024 at 05:07:35PM +0000, Rob Bradford wrote:
-> > > > > Add the infrastructure for the 'B' extension which is the
-> > > > > union
-> > > > > of the
-> > > > > Zba, Zbb and Zbs instructions.
-> > > > >=20
-> > > > > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> > > > > ---
-> > > > > =C2=A0target/riscv/cpu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 | 5 +++--
-> > > > > =C2=A0target/riscv/cpu.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 | 1 +
-> > > > > =C2=A0target/riscv/tcg/tcg-cpu.c | 1 +
-> > > > > =C2=A03 files changed, 5 insertions(+), 2 deletions(-)
-> > > > >=20
-> > > > > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> > > > > index b07a76ef6b..22f8e527ff 100644
-> > > > > --- a/target/riscv/cpu.c
-> > > > > +++ b/target/riscv/cpu.c
-> > > > > @@ -38,9 +38,9 @@
-> > > > > =C2=A0#include "tcg/tcg.h"
-> > > > > =C2=A0
-> > > > > =C2=A0/* RISC-V CPU definitions */
-> > > > > -static const char riscv_single_letter_exts[] =3D
-> > > > > "IEMAFDQCPVH";
-> > > > > +static const char riscv_single_letter_exts[] =3D
-> > > > > "IEMAFDQCBPVH";
-> > > >=20
-> > > > Is there a corresponding proposed change to table 29.1 of the
-> > > > nonpriv spec
-> > > > which states B comes after C and before P? If so, can you
-> > > > provide a
-> > > > link
-> > > > to it? Otherwise, how do we know that?
-> > >=20
-> > > Oh, I see. The unpriv spec B chapter comes after the C chapter
-> > > (and
-> > > before
-> > > J, P, ...). I still wonder if we'll have a 29.1 table update with
-> > > the
-> > > ratification of this extension though.
-> > >=20
-> > >=20
-> >=20
-> > I agree it's a bit confusing - but the order is established by the
-> > table in the unprivileged spec and the table explanation also makes
-> > this clear.
-> >=20
-> > """
-> > Table 27.1: Standard ISA extension names. The table also defines
-> > the
-> > canonical order in which
-> > extension names must appear in the name string, with top-to-bottom
-> > in
-> > table indicating first-to-last
-> > in the name string, e.g., RV32IMACV is legal, whereas RV32IMAVC is
-> > not.
-> > """
->=20
-> Yes, this is the table I was referring to when I referenced "table
-> 29.1 of
-> the nonpriv spec". Since there's a chance I was looking at too old a
-> spec
-> I've now gone straight to the source,
->=20
-> https://github.com/riscv/riscv-isa-manual/blob/main/src/naming.adoc
->=20
-> but I still don't see B there. Do you see B in the table you're
-> looking
-> at?
->=20
-> >=20
-> > The proposed B specification does not make any remarks about the
-> > ordering in the ISA definition string. [1] I would worry there
-> > would be
-> > a lot of software churn if this ordering were to be changed.
->=20
-> The ordering shouldn't change, but I can't see where it's documented
-> (beyond the B chapter coming after the C chapter).
+On Mon, 8 Jan 2024 at 13:06, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> Hi Gerd,
+>
+> On 8/1/24 13:53, Philippe Mathieu-Daud=C3=A9 wrote:
+> > From: Gerd Hoffmann <kraxel@redhat.com>
+> >
+> > Add an update buffer where all block updates are staged.
+> > Flush or discard updates properly, so we should never see
+> > half-completed block writes in pflash storage.
+> >
+> > Drop a bunch of FIXME comments ;)
+> >
+> > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> > Message-ID: <20240105135855.268064-3-kraxel@redhat.com>
+> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> > ---
+> >   hw/block/pflash_cfi01.c | 106 ++++++++++++++++++++++++++++++---------=
+-
+> >   1 file changed, 80 insertions(+), 26 deletions(-)
+> >
+> > diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
+> > index ce63ba43b6..0120462648 100644
+> > --- a/hw/block/pflash_cfi01.c
+> > +++ b/hw/block/pflash_cfi01.c
+> > @@ -80,16 +80,39 @@ struct PFlashCFI01 {
+> >       uint16_t ident3;
+> >       uint8_t cfi_table[0x52];
+> >       uint64_t counter;
+> > -    unsigned int writeblock_size;
+> > +    uint32_t writeblock_size;
+> >       MemoryRegion mem;
+> >       char *name;
+> >       void *storage;
+> >       VMChangeStateEntry *vmstate;
+> >       bool old_multiple_chip_handling;
+> > +
+> > +    /* block update buffer */
+> > +    unsigned char *blk_bytes;
+>
+> I'd rather use a 'void *' type here, but then we need to
+> use a (uinptr_t) cast in pflash_data_write().
+>
+> > +    uint32_t blk_offset;
+> >   };
+> >
+> >   static int pflash_post_load(void *opaque, int version_id);
+> >
+> > +static bool pflash_blk_write_state_needed(void *opaque)
+> > +{
+> > +    PFlashCFI01 *pfl =3D opaque;
+> > +
+> > +    return (pfl->blk_offset !=3D -1);
+> > +}
+> > +
+> > +static const VMStateDescription vmstate_pflash_blk_write =3D {
+> > +    .name =3D "pflash_cfi01_blk_write",
+> > +    .version_id =3D 1,
+> > +    .minimum_version_id =3D 1,
+> > +    .needed =3D pflash_blk_write_state_needed,
+> > +    .fields =3D (const VMStateField[]) {
+> > +        VMSTATE_VBUFFER_UINT32(blk_bytes, PFlashCFI01, 0, NULL, writeb=
+lock_size),
+>
+> I don't get the difference with VMSTATE_VBUFFER_ALLOC_UINT32() which
+> sets VMS_ALLOC. In this case pflash_cfi01_realize() does the alloc so
+> we don't need VMS_ALLOC?
 
-I'm using table 27.1 in the published PDF which is the PDF in this
-release:=20
-https://github.com/riscv/riscv-isa-manual/releases/tag/Ratified-IMAFDQC
-It looks like it was removed in this commit (which is a set of
-backports):
+Yes, that's the idea. A VMS_ALLOC vmstate type means "this
+block of memory is dynamically sized at runtime, so when the
+migration code is doing inbound migration it needs to
+allocate a buffer of the right size first (based on some
+state struct field we've already migrated) and then put the
+incoming data into it". VMS_VBUFFER means "the size of the buffer
+isn't a compile-time constant, so we need to fish it out of
+some other state struct field". So:
 
-https://github.com/riscv/riscv-isa-manual/commit/6ecd735338241583d53396b706=
-5eab7c9ace68aa
+ VMSTATE_VBUFFER_UINT32: we need to migrate (a pointer to) an array
+ of uint32_t; the size of that is in some other struct field,
+ but it's a runtime constant and we can assume the memory has
+ already been allocated
 
-Cheers,
+ VMSTATE_VBUFFER_ALLOC_UINT32: we need to migrate an array
+ of uint32_t of variable size dependent on the inbound migration
+ data, and so the migration code must allocate it
 
-Rob
->=20
-> Thanks,
-> drew
-
-
+thanks
+-- PMM
 
