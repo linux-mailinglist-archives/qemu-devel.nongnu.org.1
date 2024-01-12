@@ -2,92 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB98082C6D5
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 22:40:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E429F82C6E6
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 22:55:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOPEw-0004C4-Mp; Fri, 12 Jan 2024 16:38:58 -0500
+	id 1rOPU2-0001CV-Pp; Fri, 12 Jan 2024 16:54:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1rOPEk-00040c-5W
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 16:38:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1rOPEg-0001gL-0k
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 16:38:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705095518;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ShPJwf4O2RVGKo2HkK7H2wYjysaGHZN9xk6jxLkHa+Q=;
- b=Y1BeYW5Qjc1fndZn6W4dFkh1GrwPe7zaZkmnWUw5rz4mrxEppsf4D2LWPDKaCH9pqfL+nJ
- +1UhbcMd4boJ5lU1sOq2C7TAGjTEOCTai809vitalBY8J6ZzVd0eISFv6s48giAsJ6b10+
- 4izdoZ42PSt5b82OlNfJQ/Ws9KwhxRM=
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
- [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-512-CBDG2UvnP7eXA_iojFftDg-1; Fri, 12 Jan 2024 16:38:35 -0500
-X-MC-Unique: CBDG2UvnP7eXA_iojFftDg-1
-Received: by mail-il1-f199.google.com with SMTP id
- e9e14a558f8ab-3608dc76b97so66877225ab.2
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 13:38:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rOPTe-0001AJ-Tb
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 16:54:11 -0500
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rOPTd-00072q-3Z
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 16:54:10 -0500
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6d9cb95ddd1so3304626b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 13:54:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705096447; x=1705701247; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=N2zEPU8k8AZ7BpX2EVGgq+440JjAeufV3MLBUjA9Aqc=;
+ b=WFwM/BtwRIp5uyQGatnR3/wYyAt0YNmBN/7hVcyDsrG6X2MstG9Vbtg+KoUcxyOgEj
+ RgZorFujlMxkbyP2FEFyWt7THoiYWoN3WJVCS7zJZtyHzMFUGP+ne70EnIU0tzV8lMGt
+ gDj/d8nP3k0qp0mw743++m5ara40uToxoTLPvuBrbrtosaHf9/ROztlUM8FqZoOjY2GD
+ bXh3Jlz5km1W/26fvXju8D0S+8aF1GhCrU7bLk3/cjwclXlfw4Yg2ujEmgkwsx2fJ18S
+ VuVBJhb+VJpKwboJGRZGfXOEmFq7uZviaMvFl9Ic5oRyZvkfvbJgWGRFiC9AZIgOcRYI
+ IX3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705095512; x=1705700312;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ShPJwf4O2RVGKo2HkK7H2wYjysaGHZN9xk6jxLkHa+Q=;
- b=FEaijVwQdImYW1t40a36M3IFkMQFXrkd5ENcTV9d5v+55+vWstjd15ZYs4S+ETqHtS
- Jb6AQ2OTZyDhBup4+HsGtzPbivbOrFCn63vOFKW78yyp64ZnyidFKQa+eJjbVfIP/cdS
- enQxQd3MtG3nvZZoA+H8OLdOsUBDp9WF/LasQ/kHMuTR9rjz+43jUzbwJuD8MOjdoyiR
- osMtlUakunMYZVQQyE5OCy5kJxRceiP1L3HSd4R1uW5MX9CEvlWuDCBidF1nobZ6FvRZ
- ezCwJvYHtke7PMF+Kg4Za/kjl3232FIJmVlcRSbW8fY1yq4EZQuUvChDHoPKvF+Bro2B
- VTow==
-X-Gm-Message-State: AOJu0YwrvdmlVUCAWeFzpNaxcxrsj7VCb6mqT0kbaxH+LdXQSbaM00GG
- XMplb/q+PjflNMVltPtaZvajMdGMPrDdQ6CBu1LkbT2ayvloULHtTwqsX3Vd41ahSrPkXCBNlow
- gkFeJ9EG8vaMpP2Rem1bOcVg=
-X-Received: by 2002:a05:6e02:10c8:b0:360:4f83:313f with SMTP id
- s8-20020a056e0210c800b003604f83313fmr1611776ilj.103.1705095512795; 
- Fri, 12 Jan 2024 13:38:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEFmd/D9C8yf5SCvryXzRNxMECu4mS4h4pJ2GkKnzG9bmnBUNaKLEDYLTSZft3QFEk7LKdfJQ==
-X-Received: by 2002:a05:6e02:10c8:b0:360:4f83:313f with SMTP id
- s8-20020a056e0210c800b003604f83313fmr1611761ilj.103.1705095512546; 
- Fri, 12 Jan 2024 13:38:32 -0800 (PST)
-Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
- bk8-20020a056e02328800b0035fda20a688sm1187129ilb.60.2024.01.12.13.38.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jan 2024 13:38:31 -0800 (PST)
-Date: Fri, 12 Jan 2024 14:38:30 -0700
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Fabiano Rosas
- <farosas@suse.de>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang
- <jasowang@redhat.com>, Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann
- <kraxel@redhat.com>, Marc-Andre Lureau <marcandre.lureau@redhat.com>, David
- Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH V2 00/11] allow cpr-reboot for vfio
-Message-ID: <20240112143830.377d9f0f.alex.williamson@redhat.com>
-In-Reply-To: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
-References: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20230601; t=1705096447; x=1705701247;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=N2zEPU8k8AZ7BpX2EVGgq+440JjAeufV3MLBUjA9Aqc=;
+ b=VCBJ1jNrV9TGXuGZlKkCKfA3boTT/CxCZ5Lv4WGwfIvj0DKnlq9kDkYhgeJDHS0cLo
+ 5GH34yVQYkulN/gUVkvayQYOn4KXow+CByzhkFlmQxlB3u4iIFxqBpwJMFN5Cp8/IoQM
+ 4qAwpBPRYWl8cKVUf2aVE6iYqc5m4lWdLLBQnCGfkXEOkbr5Ok659UtRZplrAENhrLl4
+ y5mYoULSRm160oW5AjW1swyy0uop2UVq7+akDlZHXPeI1cV6bDcjAO3jWhQXuOUyzhHe
+ sJNtZDcX8txZIgymBud1ZLMEi777yWfdsCalWLW6kUXpJHdOlJcXnOeIiufv12pNDX0Q
+ I2lA==
+X-Gm-Message-State: AOJu0Yywe0cJj17ECDyiFcKOHxM3L3XqgsMd9OC4PF4HjEx0eIm9CwFO
+ BGTLuXYP/ajhInMtRhEWBFITNJRIMT3EKw==
+X-Google-Smtp-Source: AGHT+IHMaVHH2Yngj+/4RYhnherACjOYOtb9i6UhMIRwl+OfGmufdu8LyS2BNrd3nC67toGmBsX20Q==
+X-Received: by 2002:a17:903:22c3:b0:1d5:4b18:49aa with SMTP id
+ y3-20020a17090322c300b001d54b1849aamr1786878plg.91.1705096447295; 
+ Fri, 12 Jan 2024 13:54:07 -0800 (PST)
+Received: from ?IPV6:2001:8004:2728:2ad6:e985:c1c8:a4fc:508?
+ ([2001:8004:2728:2ad6:e985:c1c8:a4fc:508])
+ by smtp.gmail.com with ESMTPSA id
+ jv3-20020a170903058300b001bb750189desm3621844plb.255.2024.01.12.13.54.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 12 Jan 2024 13:54:06 -0800 (PST)
+Message-ID: <551dac95-3346-41eb-aa8c-d22b19f8c4fd@linaro.org>
+Date: Sat, 13 Jan 2024 08:54:01 +1100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/9] target/hppa: Fix PDC address translation on PA2.0
+ with PSW.W=0
+Content-Language: en-US
+To: deller@kernel.org, qemu-devel@nongnu.org
+Cc: Helge Deller <deller@gmx.de>, Bruno Haible <bruno@clisp.org>
+References: <20240112102927.35406-1-deller@kernel.org>
+ <20240112102927.35406-5-deller@kernel.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240112102927.35406-5-deller@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.09,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,60 +96,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 12 Jan 2024 07:04:59 -0800
-Steve Sistare <steven.sistare@oracle.com> wrote:
-
-> Allow cpr-reboot for vfio if the guest is in the suspended runstate.  The
-> guest drivers' suspend methods flush outstanding requests and re-initialize
-> the devices, and thus there is no device state to save and restore.  The
-> user is responsible for suspending the guest before initiating cpr, such as
-> by issuing guest-suspend-ram to the qemu guest agent.
+On 1/12/24 21:29, deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
 > 
-> Most of the patches in this series enhance migration notifiers so they can
-> return an error status and message.  The last two patches register a notifier
-> for vfio that returns an error if the guest is not suspended.
-
-Hi Steve,
-
-This appears to only support legacy container mode and not cdev/iommufd
-mode.  Shouldn't this support both?  Thanks,
-
-Alex
-
-> Steve Sistare (11):
->   notify: pass error to notifier with return
->   migration: remove error from notifier data
->   migration: convert to NotifierWithReturn
->   migration: remove migration_in_postcopy parameter
->   migration: MigrationEvent for notifiers
->   migration: MigrationNotifyFunc
->   migration: per-mode notifiers
->   migration: refactor migrate_fd_connect failures
->   migration: notifier error checking
->   vfio: register container for cpr
->   vfio: allow cpr-reboot migration if suspended
+> Fix the address translation for PDC space on PA2.0 if PSW.W=0.
+> Basically, for any address in the 32-bit PDC range from 0xf0000000 to
+> 0xf1000000 keep the lower 32-bits and just set the upper 32-bits to
+> 0xfffffff0.
 > 
->  hw/net/virtio-net.c            |  14 ++---
->  hw/vfio/common.c               |   2 +-
->  hw/vfio/container.c            |  11 +++-
->  hw/vfio/cpr.c                  |  39 ++++++++++++++
->  hw/vfio/meson.build            |   1 +
->  hw/vfio/migration.c            |  13 +++--
->  hw/virtio/vhost-user.c         |  10 ++--
->  hw/virtio/virtio-balloon.c     |   3 +-
->  include/hw/vfio/vfio-common.h  |   6 ++-
->  include/hw/virtio/virtio-net.h |   2 +-
->  include/migration/misc.h       |  21 +++++---
->  include/qemu/notify.h          |   7 ++-
->  migration/migration.c          | 117 +++++++++++++++++++++++++++--------------
->  migration/postcopy-ram.c       |   3 +-
->  migration/postcopy-ram.h       |   1 -
->  migration/ram.c                |  12 ++---
->  net/vhost-vdpa.c               |  15 +++---
->  ui/spice-core.c                |  19 +++----
->  util/notify.c                  |   5 +-
->  19 files changed, 206 insertions(+), 95 deletions(-)
->  create mode 100644 hw/vfio/cpr.c
+> This mapping fixes the emulated power button in PDC space for 32- and
+> 64-bit machines and is how the physical C3700 machine seems to map
+> PDC.
 > 
+> Figures H-10 and H-11 in the parisc2.0 spec [1] show that the 32-bit
+> region will be mapped somewhere into a higher and bigger 64-bit PDC
+> space.  The start and end of this 64-bit space is defined by the
+> physical address bits. But the figures don't specifiy where exactly the
+> mapping will start inside that region. Tests on a real HP C3700
+> regarding the address of the power button indicate, that the lower
+> 32-bits will stay the same though.
+> [1] https://parisc.wiki.kernel.org/images-parisc/7/73/Parisc2.0.pdf
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Tested-by: Bruno Haible <bruno@clisp.org>
+> ---
+>   target/hppa/mem_helper.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+> index 08abd1a9f9..011b192406 100644
+> --- a/target/hppa/mem_helper.c
+> +++ b/target/hppa/mem_helper.c
+> @@ -56,7 +56,7 @@ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
+>           addr = (int32_t)addr;
+>       } else {
+>           /* PDC address space */
+> -        addr &= MAKE_64BIT_MASK(0, 24);
+> +        addr = (uint32_t)addr;
+>           addr |= -1ull << (TARGET_PHYS_ADDR_SPACE_BITS - 4);
+>       }
+>       return addr;
 
+Please adjust the code comment that immediately precedes this, not just within the commit 
+message.
+
+
+r~
 
