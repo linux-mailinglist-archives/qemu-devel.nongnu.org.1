@@ -2,73 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4483C82C388
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 17:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9978982C39C
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 17:35:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOKJg-0008B0-5J; Fri, 12 Jan 2024 11:23:32 -0500
+	id 1rOKTX-0003Bx-U0; Fri, 12 Jan 2024 11:33:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOKJc-0008A2-QU
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:23:30 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOKJZ-0007F3-OF
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:23:27 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-557ad92cabbso6268205a12.0
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 08:23:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705076604; x=1705681404; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=1ed7GOJ8BqjMbAoMnrvYO0PosUKOVrE4CFq/nFSNvpo=;
- b=quU6A1AFyvKWtu6GhEUWaYfYepu0wOxf3xFmzp9UkstSwDX3gqBuSGrvaZCDud8AVm
- XQ6o9aR1Y+uqRz56ATQJWCbzEJvO4/3SCxgxkFOZUMbhnEfixbeMb6FJkemN3VU9HDQ8
- Rsa2fFjcA/wqLaAqGuY/kkwmjDfGe5pZrlcwI+itImK1h8Nk8gpGeIF5rsphFRgtzcoy
- FOF4qiYGdnxEBGwBxk3rqVp6RAkiCnFf0v/E4HdH0yPPq0ALro2JsYig/tnpH8Zexxpv
- WADzVeF+eeXCjWBH9ACrtWqIzWpCSMoF0vIE45iYY8PodoYZtWuZgpUucLzjN8JiU8yZ
- HRiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705076604; x=1705681404;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1ed7GOJ8BqjMbAoMnrvYO0PosUKOVrE4CFq/nFSNvpo=;
- b=jBGCqQmq48IhKHRkxPWSiFjT80u9Z1P0T8j5U/p3WgxvPuqOg87VVa5ogsrN6hkv8m
- tR5uRQXXnF+jJNIpY85aHzi2aqLfdwOxxycC4n2ibUl8xBSybS5tgpPLH3yJ8SkqWXTw
- kSO/G0zeXa7IV+rA19WYHMzS9EG25yy2FN7yYEYzFc2nZ1/xujoOIL71LA/8DwMHgTRE
- wU1dNYQZWTuGVg6CRWiKEbDjHkvw1i+j0QwD4WPAOL6wOFy6sVV1THgY1C9mtRpRTss4
- 4sE1YlEc36JoOKtYATcxOUHPe6LYcPQejtU9+vvXf3OH3sXZPp2FIGCqbW+Sb1p5Ro1U
- y/+A==
-X-Gm-Message-State: AOJu0YzW5AJ2o7X3xD/nrp0EIeusgrzOlZ/3htM3ct4IYaWyShNQiY71
- NR5wkFheQKViO3YfZv/UDs9W7DE0CF2y/liQQhyxI5P4bWZiKXucSYiLlHgr
-X-Google-Smtp-Source: AGHT+IEPIc3wzYdVw/ZKh3laGgIb+KV7npWqBJIOxOWrRc6g/KgSesO2j4BOxEttVc5wyppmafPc3vk+Kv3G8+KUrGw=
-X-Received: by 2002:aa7:c64c:0:b0:557:6f45:ae21 with SMTP id
- z12-20020aa7c64c000000b005576f45ae21mr426910edr.148.1705076604112; Fri, 12
- Jan 2024 08:23:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
+ id 1rOKTQ-00033c-Q4
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:33:36 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
+ id 1rOKTN-0002ue-VK
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:33:36 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TBRtJ1QGSz4xF1;
+ Sat, 13 Jan 2024 03:33:28 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TBRtB5PmDz4x7q;
+ Sat, 13 Jan 2024 03:33:22 +1100 (AEDT)
+Message-ID: <484ebf77-6b62-418c-8319-d69ccaf90c17@kaod.org>
+Date: Fri, 12 Jan 2024 17:33:20 +0100
 MIME-Version: 1.0
-References: <20231212162313.1742462-1-peter.maydell@linaro.org>
-In-Reply-To: <20231212162313.1742462-1-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 12 Jan 2024 16:23:13 +0000
-Message-ID: <CAFEAcA9x1fX43oNhB-yO+PeExdn15GsQZ7FyNc8gkCBrWo4Ngw@mail.gmail.com>
-Subject: Re: [PATCH for-9.0] docs/devel/docs: Document .hx file syntax
-To: qemu-devel@nongnu.org
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: Possible race condition in aspeed ast2600 smp boot on TCG QEMU
+Content-Language: en-US
+To: Stephen Longfield <slongfield@google.com>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au
+Cc: Joe Komlodi <komlodi@google.com>, Patrick Venture <venture@google.com>,
+ Ryan Chen <ryan_chen@aspeedtech.com>, Jamin Lin <jamin_lin@aspeedtech.com>,
+ Troy Lee <troy_lee@aspeedtech.com>
+References: <CAK_0=F+RznDdq27z3r3H1d4pj=QTD-9WZP8xH7jOP75QXJhHpw@mail.gmail.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CAK_0=F+RznDdq27z3r3H1d4pj=QTD-9WZP8xH7jOP75QXJhHpw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=qInK=IW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,35 +66,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 12 Dec 2023 at 16:23, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> We don't currently document the syntax of .hx files anywhere
-> except in a few comments at the top of individual .hx files.
-> We don't even have somewhere in the developer docs where we
-> could do this.
->
-> Add a new files docs/devel/docs.rst which can be a place to
-> document how our docs build process works. For the moment,
-> put in only a brief introductory paragraph and the documentation
-> of the .hx files. We could later add to this file by for
-> example describing how the QAPI-schema-to-docs process works,
-> or anything else that developers might need to know about
-> how to add documentation.
->
-> Make the .hx files refer to this doc file, and clean
-> up their header comments to be more accurate for the
-> usage in each file and less cut-n-pasted.
->
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> My motivation here is that we're about to add support for
-> extending the SRST directive to specify a label so we
-> can hyperlink to a documentation fragment; this gives us
-> somewhere we can document the syntax for that.
-> ---
+Adding Aspeed Engineers. This reminds me of a discussion a while ago.
 
-I'll take this via the target-arm tree.
+On 1/11/24 18:38, Stephen Longfield wrote:
+> We’ve noticed inconsistent behavior when running a large number of aspeed ast2600 executions, that seems to be tied to a race condition in the smp boot when executing on TCG-QEMU, and were wondering what a good mediation strategy might be.
+> 
+> The problem first shows up as part of SMP boot. On a run that’s likely to later run into issues, we’ll see something like:
+> 
+> ```
+> [    0.008350] smp: Bringing up secondary CPUs ...
+> [    1.168584] CPU1: failed to come online
+> [    1.187277] smp: Brought up 1 node, 1 CPU
+> ```
+> 
+> Compared to the more likely to succeed:
+> 
+> ```
+> [    0.080313] smp: Bringing up secondary CPUs ...
+> [    0.093166] smp: Brought up 1 node, 2 CPUs
+> [    0.093345] SMP: Total of 2 processors activated (4800.00 BogoMIPS).
+> ```
+> 
+> It’s somewhat reliably reproducible by running the ast2600-evb with an OpenBMC image, using ‘-icount auto’ to slow execution and make the race condition more frequent (it happens without this, just easier to debug if we can reproduce):
+> 
+> 
+> ```
+> ./aarch64-softmmu/qemu-system-aarch64 -machine ast2600-evb -nographic -drive file=~/bmc-bin/image-obmc-ast2600,if=mtd,bus=0,unit=0,snapshot=on -nic user -icount auto
+> ```
+> 
+> Our current hypothesis is that the problem comes up in the platform uboot.  As part of the boot, the secondary core waits for the smp mailbox to get a magic number written by the primary core:
+> 
+> https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/arm/mach-aspeed/ast2600/platform.S#L168 <https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/arm/mach-aspeed/ast2600/platform.S#L168>
+> 
+> However, this memory address is cleared on boot:
+> 
+> https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/arm/mach-aspeed/ast2600/platform.S#L146 <https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2019.04/arch/arm/mach-aspeed/ast2600/platform.S#L146>
+> 
+> The race condition occurs if the primary core runs far ahead of the secondary core: if the primary core gets to the point where it signals the secondary core’s mailbox before the secondary core gets past the point where it does the initial reset and starts waiting, the reset will clear the signal, and then the secondary core will never get past the point where it’s looping in `poll_smp_mbox_ready`.
+> 
+> We’ve observed this race happening by dumping all SCU reads and writes, and validated that this is the problem by using a modified `platform.S` that doesn’t clear the =SCU_SMP_READY mailbox on reset, but would rather not have to use a modified version of SMP boot just for QEMU-TCG execution.
 
-thanks
--- PMM
+you could use '-trace aspeed_scu*' to collect the MMIO accesses on
+the SCU unit. A TCG plugin also.
+
+> Is there a way to have QEMU insert a barrier synchronization at some point in the bootloader?  I think getting both cores past the =SCU_SMP_READY reset would get rid of this race, but I’m not aware of a way to do that kind of thing in QEMU-TCG.
+> 
+> Thanks for any insights!
+
+Could we change the default value to registers 0x180 ... 0x18C in
+hw/misc/aspeed_scu.c to make sure the SMP regs are immune to the
+race ?
+
+Thanks,
+
+C.
+
+
+
+
 
