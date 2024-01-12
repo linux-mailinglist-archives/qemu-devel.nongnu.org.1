@@ -2,72 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E190E82C40C
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 17:55:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DEC82C430
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 18:05:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOKnm-0005X3-7n; Fri, 12 Jan 2024 11:54:38 -0500
+	id 1rOKwv-0003Wd-KX; Fri, 12 Jan 2024 12:04:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOKnj-0005WF-5w
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:54:35 -0500
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ id 1rOKws-0003Vf-Qi
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 12:04:02 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOKnh-0005uN-9x
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:54:34 -0500
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2cd46e7ae8fso75456141fa.1
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 08:54:32 -0800 (PST)
+ id 1rOKwq-00039M-8t
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 12:04:02 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-555f581aed9so7796235a12.3
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 09:03:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705078471; x=1705683271; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=M8JjTOfCzqVpwPkPDjZGfbXYAPHDqCLAmmtt4HbnXnc=;
- b=zDPjDlzwaF8DnQFLuopEK296LnArycQhe4G8meJcEXAnrJHvKCRMhUAGCciQ9DHH/p
- 7s0RCGAhd+YgVglssmBlCyRWWJU8LsVg2jJ2eMGaTiuCIbfkK9mbi1YAKNqSceiJ+nFm
- q55k0K1PQKlZMepq85HcBn0uC3SGFWvAIOeEWntQjfxcvCu+yoIHKLyi+xodb+ulBmaJ
- OVaAWl47JSJVSNayQDnstpJUALPvU1J2pN5/sJZHeou/jKpE6PYtuhbkChyTKN6iSoVO
- 6xPnXH5Qv9hw39uA6FUVRnoEZE12VPVe0pQkV1MOQOFglIYVn3qOmxbt7POFturk6VEh
- E3nQ==
+ d=linaro.org; s=google; t=1705079037; x=1705683837; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=pDqe/f5RnS26pRMEG8/pUrsnHizFnUylzEWIMObqyLU=;
+ b=J+QxICk+nASoFIk73jC7otZzSVTPR5hlNESdmreiotedAVcDmKuMRaJsyayyr/T/bq
+ EgHq0hqGXw5M3uxZ6hzrXvgH4cpUPk2qLJZzWzLdxWdoLzVJ10+aJ3CzgbfaRTkpqgIO
+ nuwKNHV/TsOt85B36GMRN2Wx+A2/YpILZIJBQL4pwgIqIpjDjlqrWZX5FBm2b3THYEyl
+ 2HVUkmZXMxrlhceOVN9tzUiijWXZAXCP2csrS2LSyyw3xpR9xzlmTxrVlbueMLSI16u/
+ dFrGNC8yyzOiNARQejRzFX7j4ZyHVS0bVpDrEEnGuyfEI1F+sytMSvDTy7UbovOFM65A
+ IU1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705078471; x=1705683271;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=M8JjTOfCzqVpwPkPDjZGfbXYAPHDqCLAmmtt4HbnXnc=;
- b=NFuDgo1CNnqf117mDZRZ9jS0oLx2EHDC8/UFjA+adppPn3nO2/Skkmq3N/CjgNdbpT
- qbehrgzUlZMYgaIej2qCVFIbI3sEjJ43aPgSKOV5ObzTcLHmwb+FDOO9s9uEwlODMxsS
- MSqGoosEezT57k0KfZcDo4LgZrLpwCszTaQHZOMhP72TJr+rcibrfHy+rtjOrnEUHvYo
- fL8AHPMWtRkUKeW/ybUzk7XI5XV358ZBtL23OJaVKSIEF5bwV7lj3fLuZlSXmnYSB3Hc
- Ps6SDS3tw4xzZ2oW+R4HhzB26CmCR0cJOYBHxmxal74AXyyUjkkxJldmwZUVmHP8FvWa
- hVGQ==
-X-Gm-Message-State: AOJu0YwIW4TcN96UaKOlWVuS9b+IlZVohOcIsn/Q1H3AITkhTs2wl641
- 3kHDspAmXaStX9sjVJCv//KwFg0cO1vDqPDZvU25nSIPbncwbw==
-X-Google-Smtp-Source: AGHT+IEtHSpotYXYy19kQqJRFcrplCgOHpTBM7SMsRTJ419dILhRvUQrMmS22FNG3/w9KVypaLNZgsCSPUPq5i6fGoA=
-X-Received: by 2002:a2e:5cc6:0:b0:2cd:a70d:fee0 with SMTP id
- q189-20020a2e5cc6000000b002cda70dfee0mr7326ljb.45.1705078470869; Fri, 12 Jan
- 2024 08:54:30 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705079037; x=1705683837;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pDqe/f5RnS26pRMEG8/pUrsnHizFnUylzEWIMObqyLU=;
+ b=TOJlp4XLMuGo12txOXyHsENxk89kjMPtg60vfFh0DXCDtPV3nVv9/tKrvM8H4ynBUT
+ nmXscq7yaqXU3h4/Be/bOCqqjDu87yp4ykjAXBiT+SWliQVDNYCivUb79XXugTxfIafd
+ tHrSYGCzuFWj/SpzThCQKEDj26lQL3KFQLdTuDJDQIKPiaEj9PJoMktmmh2CvOPMJrSh
+ dKWwglxT2ySb2kv0FSHpi+TxReBjq2Sb5igdOOZ6NFK92idjnhyN5HmK3EtwTD7xqMuh
+ Ia3exJ5RK2RIR4kUPl8kw9W8xj/A8CJ5y3g22lAbGtSbVVErpSsXhkh82wcHn+Q7yDuO
+ Ma9A==
+X-Gm-Message-State: AOJu0Yy9+gdVZBN/jG4GgAZ+mGq1t9v62GxOsOBq7rVxkLCfFDFTd+jn
+ Hg0oL8DioVrMBB0CcbvtU5UQDAHUEVhEY52rJy5Y027fkAY5EA==
+X-Google-Smtp-Source: AGHT+IEtNEkBoI7eaba8bWCp/k+YgSGjrJGOoMn1R/fUaIvQ5gPFwlph1JJ5aYDsyNHsnrjdxyf/aqgXIpYnyuYQT48=
+X-Received: by 2002:a05:6402:1205:b0:557:1ba9:4abf with SMTP id
+ c5-20020a056402120500b005571ba94abfmr897858edw.23.1705079037611; Fri, 12 Jan
+ 2024 09:03:57 -0800 (PST)
 MIME-Version: 1.0
-References: <20240108125342.48298-1-philmd@linaro.org>
- <20240108125342.48298-3-philmd@linaro.org>
- <39ff1c41-c7ea-4cdc-ab18-b299b91cafb8@linaro.org>
-In-Reply-To: <39ff1c41-c7ea-4cdc-ab18-b299b91cafb8@linaro.org>
+References: <20240109124333.224240-1-shlomop@pliops.com>
+In-Reply-To: <20240109124333.224240-1-shlomop@pliops.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 12 Jan 2024 16:54:20 +0000
-Message-ID: <CAFEAcA8ZMHwKeEmwakt9BHt5Z_0DihYXtfTP-sOSBnt2dv6hWg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] hw/pflash: implement update buffer for block writes
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, 
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>
+Date: Fri, 12 Jan 2024 17:03:46 +0000
+Message-ID: <CAFEAcA9WYrhuokJ_ox5CH0Et+WxiB_dwfHtsTZCb9cCfAveL9w@mail.gmail.com>
+Subject: Re: [PATCH V2] Handle wrap around in limit calculation
+To: Shlomo Pongratz <shlomopongratz@gmail.com>
+Cc: qemu-devel@nongnu.org, andrew.sminov@gmail.com, peter.maydell@linaro.com, 
+ shlomop@pliops.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,92 +85,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 8 Jan 2024 at 13:06, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> Hi Gerd,
->
-> On 8/1/24 13:53, Philippe Mathieu-Daud=C3=A9 wrote:
-> > From: Gerd Hoffmann <kraxel@redhat.com>
-> >
-> > Add an update buffer where all block updates are staged.
-> > Flush or discard updates properly, so we should never see
-> > half-completed block writes in pflash storage.
-> >
-> > Drop a bunch of FIXME comments ;)
-> >
-> > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> > Message-ID: <20240105135855.268064-3-kraxel@redhat.com>
-> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> > ---
-> >   hw/block/pflash_cfi01.c | 106 ++++++++++++++++++++++++++++++---------=
--
-> >   1 file changed, 80 insertions(+), 26 deletions(-)
-> >
-> > diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
-> > index ce63ba43b6..0120462648 100644
-> > --- a/hw/block/pflash_cfi01.c
-> > +++ b/hw/block/pflash_cfi01.c
-> > @@ -80,16 +80,39 @@ struct PFlashCFI01 {
-> >       uint16_t ident3;
-> >       uint8_t cfi_table[0x52];
-> >       uint64_t counter;
-> > -    unsigned int writeblock_size;
-> > +    uint32_t writeblock_size;
-> >       MemoryRegion mem;
-> >       char *name;
-> >       void *storage;
-> >       VMChangeStateEntry *vmstate;
-> >       bool old_multiple_chip_handling;
-> > +
-> > +    /* block update buffer */
-> > +    unsigned char *blk_bytes;
->
-> I'd rather use a 'void *' type here, but then we need to
-> use a (uinptr_t) cast in pflash_data_write().
->
-> > +    uint32_t blk_offset;
-> >   };
-> >
-> >   static int pflash_post_load(void *opaque, int version_id);
-> >
-> > +static bool pflash_blk_write_state_needed(void *opaque)
-> > +{
-> > +    PFlashCFI01 *pfl =3D opaque;
-> > +
-> > +    return (pfl->blk_offset !=3D -1);
-> > +}
-> > +
-> > +static const VMStateDescription vmstate_pflash_blk_write =3D {
-> > +    .name =3D "pflash_cfi01_blk_write",
-> > +    .version_id =3D 1,
-> > +    .minimum_version_id =3D 1,
-> > +    .needed =3D pflash_blk_write_state_needed,
-> > +    .fields =3D (const VMStateField[]) {
-> > +        VMSTATE_VBUFFER_UINT32(blk_bytes, PFlashCFI01, 0, NULL, writeb=
-lock_size),
->
-> I don't get the difference with VMSTATE_VBUFFER_ALLOC_UINT32() which
-> sets VMS_ALLOC. In this case pflash_cfi01_realize() does the alloc so
-> we don't need VMS_ALLOC?
+On Tue, 9 Jan 2024 at 12:45, Shlomo Pongratz <shlomopongratz@gmail.com> wrote:
 
-Yes, that's the idea. A VMS_ALLOC vmstate type means "this
-block of memory is dynamically sized at runtime, so when the
-migration code is doing inbound migration it needs to
-allocate a buffer of the right size first (based on some
-state struct field we've already migrated) and then put the
-incoming data into it". VMS_VBUFFER means "the size of the buffer
-isn't a compile-time constant, so we need to fish it out of
-some other state struct field". So:
+Hi; thanks for this patch.
 
- VMSTATE_VBUFFER_UINT32: we need to migrate (a pointer to) an array
- of uint32_t; the size of that is in some other struct field,
- but it's a runtime constant and we can assume the memory has
- already been allocated
+> Hanlde wrap around caused by the fact that perior to version 460A
 
- VMSTATE_VBUFFER_ALLOC_UINT32: we need to migrate an array
- of uint32_t of variable size dependent on the inbound migration
- data, and so the migration code must allocate it
+Is this "460A" version number a version of the hardware
+we're modelling ?
+
+> the limit was 32bit quantity.
+> See Linux kernel code in:
+> drivers/pci/controllers/dwc/pcie-designware.c
+
+"/controller/"
+
+> function: __dw_pcie_prog_outbound_atu
+
+There don't seem to be any comments in this kernel function
+that say anything about wrap-around:
+
+https://elixir.bootlin.com/linux/latest/source/drivers/pci/controller/dwc/pcie-designware.c#L468
+
+so I'm not sure what you're trying to explain by referring to it.
+
+> Now in a 64bit system the range can be above 4G but as long as
+> the limit itself is less then 4G the overflow is avoided
+>
+> Signed-off-by: Shlomo Pongratz <shlomop@pliops.com>
+>
+> ----
+>
+> Changes since v1:
+>  * Seperate subject and description
+> ---
+>  hw/pci-host/designware.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
+> index dd9e389c07..7ce4a6b64d 100644
+> --- a/hw/pci-host/designware.c
+> +++ b/hw/pci-host/designware.c
+> @@ -269,11 +269,24 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
+>  {
+>      const uint64_t target = viewport->target;
+>      const uint64_t base   = viewport->base;
+> -    const uint64_t size   = (uint64_t)viewport->limit - base + 1;
+>      const bool enabled    = viewport->cr[1] & DESIGNWARE_PCIE_ATU_ENABLE;
+> +    uint64_t tbase, tlimit, size;
+>
+>      MemoryRegion *current, *other;
+>
+> +    /*
+> +     * Hanlde wrap around caused by the fact that perior to version 460A
+> +     * the limit was 32bit quantity.
+> +     * See Linux kernel code in:
+> +     * drivers/pci/controllers/dwc/pcie-designware.c
+> +     * function: __dw_pcie_prog_outbound_atu
+> +     * Now in a 64bit system the range can be above 4G but as long as
+> +     * the limit itself is less then 4G the overflow is avoided
+> +     */
+> +    tbase = base & 0xffffffff;
+> +    tlimit = 0x100000000 + (uint64_t)viewport->limit;
+> +    size = ((tlimit - tbase) & 0xffffffff) + 1;
+> +
+
+I find this patch a bit confusing, partly because the comment
+seems to be written from the perspective of what the kernel
+driver is doing, not from the perspective of the hardware
+behaviour.
+
+What is the behaviour of the actual hardware here, both before
+and after 460A ? Which version are we trying to model?
 
 thanks
 -- PMM
