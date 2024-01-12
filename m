@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B22782C068
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:05:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C459D82C079
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:05:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOH40-0007i5-Ro; Fri, 12 Jan 2024 07:55:08 -0500
+	id 1rOH4D-0007jr-Fs; Fri, 12 Jan 2024 07:55:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH3z-0007hr-Fk
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:55:07 -0500
+ id 1rOH4B-0007jj-M7
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:55:19 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH3x-0006iU-FM
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:55:07 -0500
+ id 1rOH4A-0006on-7m
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:55:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=27fRoZHGPFVk58crHINcAUyDNW4V4OJIC2VY021bTNk=; b=adokEO1nzjAQ0x3B9aHjllU2CG
- 7RWuaOxe6T9QpN5poGJhmXf0VcesLflZwMIPawndac+EfiIdX3liCUPmcfy01LJVvyXA6QF9zFHsN
- aJz42zzTMPCtgP2JYbvfjbsEByTKo0nLPWkS33XNPDV30UoZO1u3GcqkbJlkmssscLzLMhjNTZIDn
- jn1GbTrPOMUrsTglUwqivqaHUl43hYzTU8It4rPRxDBvuuFUQCRF9JDz1g3U56vK/wt6JoPHacs5L
- 3trOoY0ySgEhC2cuCnw4L+PgW3RunsVMJRetKVfH0ZgjuBeXoc3H4eiX7ldP/+W4MiECYJ0Ttl3t5
- DSqU8ktIhPtEv+owhzherS46z9ZtvisoG20V0qGa31R9Ckpu97Xer4nc+OQIHHkr+3w1gQ4hvfBNc
- GovP5oX8Y8/C+yWW+lUpsR15wg3iHp/wGutuby7zmd6Ac0b5+3EIseaTbeiahKQpWWk0lEYS5Ac8F
- m2ptvrQFXHdUl8uENWzoEHhGfaUAwi7dch82uK+lzgustUbe2WRLPkH+tUrB9VrvBrM1hsx9rLlS2
- unSgeRYQp3O6LFDVy6c096ZTybE48FKcTq2MmMgYb+6nU9NNzSeQfdVYCPmKBbGVpK7LdOH0+XaX6
- rhmD6nTj0yQtHNXpFaSEfmsX0hG2PedhQOz2OccsI=;
+ bh=myDJe4/tV7pbo92BZXghNd4hfgAdbUryo4MWAxqSheI=; b=wcLdOo0W/pLj2PAkvcCGV3RAMf
+ NwKw76/7NLgRcvkWCOflNQjbyfuMeww8zRx0oTglVHXzFIIosIfy2QtWu73UNLtVqoGX1adSplx5H
+ E55QbAXLTvqv0ONnciBtKvG0zyQZpsnfEZvYQmQDy2+Dz3m4lf9zLklDN+ceOaHNlV2RCi+EbyRYX
+ Tv2TQWYjWNdzSpXFixZN/LMF3TbVO1rcIaHrQoeU+KXDdLT9AsnM/SHwvSWThwsDV3dxjfGZB0MSl
+ /VpQRqF8VbK9+oK3cuUSn/3LNaCJs6LofZNQPrbT9b1EdWclsBv+sQorTOmLwdieQwpXnHfCnMQ88
+ CHuB6ciAuMR2H1tjGJJA9HkDCYDcx+EEAA/W9IAPrLwcE71LHtm+U4YmlqEvcXv1jEDtBj583NjLZ
+ hsigf75DU3tTJnNUbbdIZub2NfR8a7yRcmDYbhc7IcTEBUGUKUCDnHr0M9kP5gHi1plQk48egM+pC
+ qT6DXVv2Y5Zq0a49uKGj97iRuezB56/6t7UKk7XtgjvKy+z/jcyYqEhvEAzqqHl69iEDgvA2OcdYI
+ kfbj0IQHe27AaU3FxEgxbfUbSXL3yPXCIHDUHfWWoUxnS1j1Tt9T2sGAfR5FQzVxKFcZfopfcWWtS
+ +hOwTU6R/qYzjHdLTkpvn1Lm+pkJThafsRMgGXoy4=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH3I-0008jM-P8; Fri, 12 Jan 2024 12:54:28 +0000
+ id 1rOH3V-0008jM-PL; Fri, 12 Jan 2024 12:54:41 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org,
  laurent@vivier.eu, thuth@redhat.com, qemu-devel@nongnu.org
-Date: Fri, 12 Jan 2024 12:53:00 +0000
-Message-Id: <20240112125420.514425-9-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 12 Jan 2024 12:53:03 +0000
+Message-Id: <20240112125420.514425-12-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
 References: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 08/88] esp: move command execution logic to new esp_run_cmd()
- function
+Subject: [PATCH 11/88] esp.c: remove unused case from esp_pdma_read()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,209 +77,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This helps to simplify esp_reg_write() and potentially allows for a 2-level
-deep FIFO to be implemented in future.
+The do_cmd variable is only set for the MESSAGE OUT and COMMAND phases i.e.
+those which involve transfers from the host to the SCSI bus, and so the unused
+case can be removed.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 177 ++++++++++++++++++++++++++------------------------
- 1 file changed, 92 insertions(+), 85 deletions(-)
+ hw/scsi/esp.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index e717b2e216..fecfef7c89 100644
+index 9893840255..6191c17f10 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -980,6 +980,97 @@ static void parent_esp_reset(ESPState *s, int irq, int level)
-     }
+@@ -187,12 +187,7 @@ static uint8_t esp_pdma_read(ESPState *s)
+ {
+     uint8_t val;
+ 
+-    if (s->do_cmd) {
+-        val = esp_fifo_pop(&s->cmdfifo);
+-    } else {
+-        val = esp_fifo_pop(&s->fifo);
+-    }
+-
++    val = esp_fifo_pop(&s->fifo);
+     return val;
  }
  
-+static void esp_run_cmd(ESPState *s)
-+{
-+    uint8_t cmd = s->rregs[ESP_CMD];
-+
-+    if (cmd & CMD_DMA) {
-+        s->dma = 1;
-+        /* Reload DMA counter.  */
-+        if (esp_get_stc(s) == 0) {
-+            esp_set_tc(s, 0x10000);
-+        } else {
-+            esp_set_tc(s, esp_get_stc(s));
-+        }
-+    } else {
-+        s->dma = 0;
-+    }
-+    switch (cmd & CMD_CMD) {
-+    case CMD_NOP:
-+        trace_esp_mem_writeb_cmd_nop(cmd);
-+        break;
-+    case CMD_FLUSH:
-+        trace_esp_mem_writeb_cmd_flush(cmd);
-+        fifo8_reset(&s->fifo);
-+        break;
-+    case CMD_RESET:
-+        trace_esp_mem_writeb_cmd_reset(cmd);
-+        esp_soft_reset(s);
-+        break;
-+    case CMD_BUSRESET:
-+        trace_esp_mem_writeb_cmd_bus_reset(cmd);
-+        esp_bus_reset(s);
-+        if (!(s->wregs[ESP_CFG1] & CFG1_RESREPT)) {
-+            s->rregs[ESP_RINTR] |= INTR_RST;
-+            esp_raise_irq(s);
-+        }
-+        break;
-+    case CMD_TI:
-+        trace_esp_mem_writeb_cmd_ti(cmd);
-+        handle_ti(s);
-+        break;
-+    case CMD_ICCS:
-+        trace_esp_mem_writeb_cmd_iccs(cmd);
-+        write_response(s);
-+        s->rregs[ESP_RINTR] |= INTR_FC;
-+        s->rregs[ESP_RSTAT] |= STAT_MI;
-+        break;
-+    case CMD_MSGACC:
-+        trace_esp_mem_writeb_cmd_msgacc(cmd);
-+        s->rregs[ESP_RINTR] |= INTR_DC;
-+        s->rregs[ESP_RSEQ] = 0;
-+        s->rregs[ESP_RFLAGS] = 0;
-+        esp_raise_irq(s);
-+        break;
-+    case CMD_PAD:
-+        trace_esp_mem_writeb_cmd_pad(cmd);
-+        s->rregs[ESP_RSTAT] = STAT_TC;
-+        s->rregs[ESP_RINTR] |= INTR_FC;
-+        s->rregs[ESP_RSEQ] = 0;
-+        break;
-+    case CMD_SATN:
-+        trace_esp_mem_writeb_cmd_satn(cmd);
-+        break;
-+    case CMD_RSTATN:
-+        trace_esp_mem_writeb_cmd_rstatn(cmd);
-+        break;
-+    case CMD_SEL:
-+        trace_esp_mem_writeb_cmd_sel(cmd);
-+        handle_s_without_atn(s);
-+        break;
-+    case CMD_SELATN:
-+        trace_esp_mem_writeb_cmd_selatn(cmd);
-+        handle_satn(s);
-+        break;
-+    case CMD_SELATNS:
-+        trace_esp_mem_writeb_cmd_selatns(cmd);
-+        handle_satn_stop(s);
-+        break;
-+    case CMD_ENSEL:
-+        trace_esp_mem_writeb_cmd_ensel(cmd);
-+        s->rregs[ESP_RINTR] = 0;
-+        break;
-+    case CMD_DISSEL:
-+        trace_esp_mem_writeb_cmd_dissel(cmd);
-+        s->rregs[ESP_RINTR] = 0;
-+        esp_raise_irq(s);
-+        break;
-+    default:
-+        trace_esp_error_unhandled_command(cmd);
-+        break;
-+    }
-+}
-+
- uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
- {
-     uint32_t val;
-@@ -1076,91 +1167,7 @@ void esp_reg_write(ESPState *s, uint32_t saddr, uint64_t val)
-         break;
-     case ESP_CMD:
-         s->rregs[saddr] = val;
--        if (val & CMD_DMA) {
--            s->dma = 1;
--            /* Reload DMA counter.  */
--            if (esp_get_stc(s) == 0) {
--                esp_set_tc(s, 0x10000);
--            } else {
--                esp_set_tc(s, esp_get_stc(s));
--            }
--        } else {
--            s->dma = 0;
--        }
--        switch (val & CMD_CMD) {
--        case CMD_NOP:
--            trace_esp_mem_writeb_cmd_nop(val);
--            break;
--        case CMD_FLUSH:
--            trace_esp_mem_writeb_cmd_flush(val);
--            fifo8_reset(&s->fifo);
--            break;
--        case CMD_RESET:
--            trace_esp_mem_writeb_cmd_reset(val);
--            esp_soft_reset(s);
--            break;
--        case CMD_BUSRESET:
--            trace_esp_mem_writeb_cmd_bus_reset(val);
--            esp_bus_reset(s);
--            if (!(s->wregs[ESP_CFG1] & CFG1_RESREPT)) {
--                s->rregs[ESP_RINTR] |= INTR_RST;
--                esp_raise_irq(s);
--            }
--            break;
--        case CMD_TI:
--            trace_esp_mem_writeb_cmd_ti(val);
--            handle_ti(s);
--            break;
--        case CMD_ICCS:
--            trace_esp_mem_writeb_cmd_iccs(val);
--            write_response(s);
--            s->rregs[ESP_RINTR] |= INTR_FC;
--            s->rregs[ESP_RSTAT] |= STAT_MI;
--            break;
--        case CMD_MSGACC:
--            trace_esp_mem_writeb_cmd_msgacc(val);
--            s->rregs[ESP_RINTR] |= INTR_DC;
--            s->rregs[ESP_RSEQ] = 0;
--            s->rregs[ESP_RFLAGS] = 0;
--            esp_raise_irq(s);
--            break;
--        case CMD_PAD:
--            trace_esp_mem_writeb_cmd_pad(val);
--            s->rregs[ESP_RSTAT] = STAT_TC;
--            s->rregs[ESP_RINTR] |= INTR_FC;
--            s->rregs[ESP_RSEQ] = 0;
--            break;
--        case CMD_SATN:
--            trace_esp_mem_writeb_cmd_satn(val);
--            break;
--        case CMD_RSTATN:
--            trace_esp_mem_writeb_cmd_rstatn(val);
--            break;
--        case CMD_SEL:
--            trace_esp_mem_writeb_cmd_sel(val);
--            handle_s_without_atn(s);
--            break;
--        case CMD_SELATN:
--            trace_esp_mem_writeb_cmd_selatn(val);
--            handle_satn(s);
--            break;
--        case CMD_SELATNS:
--            trace_esp_mem_writeb_cmd_selatns(val);
--            handle_satn_stop(s);
--            break;
--        case CMD_ENSEL:
--            trace_esp_mem_writeb_cmd_ensel(val);
--            s->rregs[ESP_RINTR] = 0;
--            break;
--        case CMD_DISSEL:
--            trace_esp_mem_writeb_cmd_dissel(val);
--            s->rregs[ESP_RINTR] = 0;
--            esp_raise_irq(s);
--            break;
--        default:
--            trace_esp_error_unhandled_command(val);
--            break;
--        }
-+        esp_run_cmd(s);
-         break;
-     case ESP_WBUSID ... ESP_WSYNO:
-         break;
 -- 
 2.39.2
 
