@@ -2,86 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD65A82C762
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 001BA82C763
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:44:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOQEh-0007mm-BR; Fri, 12 Jan 2024 17:42:47 -0500
+	id 1rOQGM-0008VH-3c; Fri, 12 Jan 2024 17:44:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOQEe-0007ly-Om
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:42:44 -0500
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOQEc-0002jD-Cn
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:42:44 -0500
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-28be024282bso4971886a91.3
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 14:42:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705099352; x=1705704152; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ulDjogcD9U8vNT9lSPrtouvUTbSQHpW66LV5AUgRqdc=;
- b=ouoO91fqGxpMnfav0A2bjmo4A3Ru58eVF3jO9wD9IYYcij7sy83lYnk99z3iiAmCyU
- 8McI6AGAm1DD1cK+AGII7BSO5Oalc06amqKB9G1/ihtsJeSVWtU+BaUpDTFZf/FDsQWq
- Kc6ZwPmR6vO1mLHMqq90PBRcn4cK5HWh4novbrnxXkOxLwZDoiiL8xh94D53MTOxiGiq
- xCrzRLeqiAxbijVfA5IkpYj/+YNK8ODugAzE2qW1tO1GPj/t4ix5JkiKv+FrxMRKXATX
- Nqfmy/6xXkdBFHBFsSsFDj7pQb3KZq0d16Vi2DkWjyxsvIW31WRvr9IhIsE8+OeMcZvJ
- cl8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705099352; x=1705704152;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ulDjogcD9U8vNT9lSPrtouvUTbSQHpW66LV5AUgRqdc=;
- b=GsAkswYb9kpFuOaV86x/ZIXao1Nwd6qF9CPz/+TZD0Ov/6StzJZkWvWxZvBA8p+F4T
- Jm7WsrQn7Y2InrGZXP6peprB+a3KC068+ZEtxtzpCjPL+CqLe0wAIvlaJzEFIoUZdmk7
- BidAUwl2GZJnCKE54PrveYoVnRS4nIR7VrGSXtrHsscSANlW7pciaolUH4a7tZ+ls0Vn
- XPfISQkPO1mSzITNL7XuTNJx+oLmdZq9UB6OLiqLlGMsBBv1Cgp1FZB2I3LWvj1dtduT
- hIS387nKu4zHbkO9dDe/1q+oy4929RXQ7FDjm0Tl0sKdIPXSnqljG84ssOCOP76JFMCK
- 4gvw==
-X-Gm-Message-State: AOJu0YxJWpV86kd2shdNn5bhFC7k0ojOZTsK2jmP47zmBs/NDW32rZlK
- pJLJxkjMWIamFwSon21leqDoonmvc01AqQ==
-X-Google-Smtp-Source: AGHT+IFq2Avk7MCuzOvqijKduI1P26+ha4ylpqVBPK4esAPBjXjxMOquFFR4T1McpEzo3PQyk1xQYA==
-X-Received: by 2002:a17:902:fc4e:b0:1d4:3dfd:7e30 with SMTP id
- me14-20020a170902fc4e00b001d43dfd7e30mr1672785plb.122.1705099352225; 
- Fri, 12 Jan 2024 14:42:32 -0800 (PST)
-Received: from ?IPV6:2001:8004:2728:2ad6:e985:c1c8:a4fc:508?
- ([2001:8004:2728:2ad6:e985:c1c8:a4fc:508])
- by smtp.gmail.com with ESMTPSA id
- jj7-20020a170903048700b001d472670a30sm3695512plb.162.2024.01.12.14.42.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Jan 2024 14:42:31 -0800 (PST)
-Message-ID: <d0cc2c90-e401-460c-8883-7125c0506df7@linaro.org>
-Date: Sat, 13 Jan 2024 09:42:26 +1100
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOQGH-0008Uw-MO
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:44:25 -0500
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOQGF-0003fX-Hq
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:44:25 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 14BB961E88;
+ Fri, 12 Jan 2024 22:44:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D52C433F1;
+ Fri, 12 Jan 2024 22:44:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1705099461;
+ bh=6lQRnjOWgZC3UkE0YNlulkB0sgFWSybE1icJT+rZBg4=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=R+SbOLhdtS1BmUTmMrDBqkEGSOPD6Qy88BEVx8GU+uQRhHibw7K2piWqn4IG5VMZm
+ pK0bOF9pJPrMGshhU2+vNiCvZ79YmkmOpLXY0zNonhNLv6HcmJSfJGvjjMLQ8BgfLt
+ 8TJc+qtHd0078NOlhdpZx8JfC/L11gBObOB7Uvi3sopDNWQsuM27X+LGvrEog4jE7l
+ ypWSxAwXwl4tZtFhdP4g4tLwWc0/bOeapfhDxdVPG1vVf5FTqFTqOvPvt7aFNWrwxR
+ o+V9k4aE9Pz5/hdjX1wh9ongOA1cmfsodfWTjf2OyLmM5HUxjwl0KyOZcyDm7BChwY
+ S8CT0gpQTzq7g==
+Date: Fri, 12 Jan 2024 23:44:17 +0100
+From: Helge Deller <deller@kernel.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH v3 5/9] hw/hppa: Move software power button address back
+ into PDC
+Message-ID: <ZaHAwUC1V3WJpk5T@p100>
+References: <20240112102927.35406-1-deller@kernel.org>
+ <20240112102927.35406-6-deller@kernel.org>
+ <477fa733-0957-4026-ac06-57d76d4b0388@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/13] target/riscv/cpu.h: use 'vlenb' in vext_get_vlmax()
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- max.chou@sifive.com
-References: <20240112213812.173521-1-dbarboza@ventanamicro.com>
- <20240112213812.173521-10-dbarboza@ventanamicro.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240112213812.173521-10-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <477fa733-0957-4026-ac06-57d76d4b0388@linaro.org>
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -64
+X-Spam_score: -6.5
+X-Spam_bar: ------
+X-Spam_report: (-6.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.09,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,30 +69,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/13/24 08:38, Daniel Henrique Barboza wrote:
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->   target/riscv/cpu.h | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 11df226a00..628ef67d5f 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -692,7 +692,8 @@ static inline uint32_t vext_get_vlmax(RISCVCPU *cpu, target_ulong vtype)
->   {
->       uint8_t sew = FIELD_EX64(vtype, VTYPE, VSEW);
->       int8_t lmul = sextract32(FIELD_EX64(vtype, VTYPE, VLMUL), 0, 3);
-> -    return cpu->cfg.vlen >> (sew + 3 - lmul);
-> +    /* vlen = vlenb << 3 */
-> +    return (cpu->cfg.vlenb << 3) >> (sew + 3 - lmul);
->   }
+> I think it would be better to pass this as a parameter to create_fw_cfg, or
+> to drop the translated FW_CFG_IO_BASE parameter and merely pass in translate
+> itself.
 
-Better to simplify the arithmetic:
-
--    return cpu->cfg.vlen >> (sew + 3 - lmul);
-+    return cpu->cfg.vlenb >> (sew - lmul);
+Like this?
 
 
-r~
+The various operating systems (e.g. Linux, NetBSD) have issues
+mapping the power button when it's stored in page zero.
+NetBSD even crashes, because it fails to map that page and then
+accesses unmapped memory.
+
+Since we now have a consistent memory mapping of PDC in 32-bit
+and 64-bit address space (the lower 32-bits of the address are in
+sync) the power button can be moved back to PDC space.
+
+This patch fixes the power button on Linux, NetBSD and HP-UX.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Tested-by: Bruno Haible <bruno@clisp.org>
+
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index 54ca2fd91a..da85050f60 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -36,8 +36,8 @@
+ 
+ #define MIN_SEABIOS_HPPA_VERSION 12 /* require at least this fw version */
+ 
+-/* Power button address at &PAGE0->pad[4] */
+-#define HPA_POWER_BUTTON (0x40 + 4 * sizeof(uint32_t))
++#define HPA_POWER_BUTTON        (FIRMWARE_END - 0x10)
++static hwaddr soft_power_reg;
+ 
+ #define enable_lasi_lan()       0
+ 
+@@ -45,7 +45,6 @@ static DeviceState *lasi_dev;
+ 
+ static void hppa_powerdown_req(Notifier *n, void *opaque)
+ {
+-    hwaddr soft_power_reg = HPA_POWER_BUTTON;
+     uint32_t val;
+ 
+     val = ldl_be_phys(&address_space_memory, soft_power_reg);
+@@ -191,7 +190,7 @@ static void fw_cfg_boot_set(void *opaque, const char *boot_device,
+ }
+ 
+ static FWCfgState *create_fw_cfg(MachineState *ms, PCIBus *pci_bus,
+-                                 hwaddr addr)
++                                 hwaddr addr, hwaddr pwr_button_addr)
+ {
+     FWCfgState *fw_cfg;
+     uint64_t val;
+@@ -221,7 +220,7 @@ static FWCfgState *create_fw_cfg(MachineState *ms, PCIBus *pci_bus,
+     fw_cfg_add_file(fw_cfg, "/etc/hppa/machine",
+                     g_memdup(mc->name, len), len);
+ 
+-    val = cpu_to_le64(HPA_POWER_BUTTON);
++    val = cpu_to_le64(pwr_button_addr);
+     fw_cfg_add_file(fw_cfg, "/etc/hppa/power-button-addr",
+                     g_memdup(&val, sizeof(val)), sizeof(val));
+ 
+@@ -295,6 +294,8 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
+         ram_max = 0xf0000000;      /* 3.75 GB (32-bit CPU) */
+     }
+ 
++    soft_power_reg = translate(NULL, HPA_POWER_BUTTON);
++
+     for (unsigned int i = 0; i < smp_cpus; i++) {
+         g_autofree char *name = g_strdup_printf("cpu%u-io-eir", i);
+ 
+@@ -407,7 +408,8 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+     qemu_register_powerdown_notifier(&hppa_system_powerdown_notifier);
+ 
+     /* fw_cfg configuration interface */
+-    create_fw_cfg(machine, pci_bus, translate(NULL, FW_CFG_IO_BASE));
++    create_fw_cfg(machine, pci_bus, translate(NULL, FW_CFG_IO_BASE),
++        translate(NULL, HPA_POWER_BUTTON));
+ 
+     /* Load firmware.  Given that this is not "real" firmware,
+        but one explicitly written for the emulation, we might as
 
