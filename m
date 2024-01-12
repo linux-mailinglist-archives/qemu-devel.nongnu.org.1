@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7FD82BC72
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 09:43:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F10B182BC76
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 09:45:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOD7u-0007RR-Cl; Fri, 12 Jan 2024 03:42:54 -0500
+	id 1rOD9J-0008MJ-7j; Fri, 12 Jan 2024 03:44:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOD7t-0007RJ-7v
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 03:42:53 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rOD9H-0008M6-BF
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 03:44:19 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOD7r-000144-P0
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 03:42:52 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d480c6342dso48246835ad.2
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 00:42:51 -0800 (PST)
+ id 1rOD99-0001hZ-NH
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 03:44:15 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1d3ed1ca402so56829165ad.2
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 00:44:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705048970; x=1705653770; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705049048; x=1705653848; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=uxh0IfdfNP7LuqI4KjZND4CNlTTnCO3IvSf5YMNtZF4=;
- b=QfhRUz8G4QYQf8k00TMoqQwnK2MzV+7zwg/+zy2EOUEKsc2hU10lhZ67+OovSodgDs
- NuDGcVhgrpG/nZK+p1G8xDsxVEACXuAxOA86kHQpK9pVcEeHl5EPbim8VE7OogWSGnB/
- 5dK9THLpmGaXVl0ytG1RkC4q9PJ8cA832egxAPGwXoitHbSR3SF1rPxO92ujyPvyJzLE
- O3ca2Mszhb9gVXqVIS2LKSnOz9B5FHlX//gtM59RLvI3GcWJiAr7pWzjZlYKGcVLBd0P
- G6rZX36jjSevkfCttsFK0MigfJ4YjXZb3TmMbvhpgiZgoKZRa+U25acMBywvlB7+34BD
- eaQQ==
+ bh=Bqj1vLfC+4eBLGSKDWM91k4/gUjyUe75vfG3xNLI2wk=;
+ b=U9hktF2q1j0+4PrLG0jIMWqhiibd8OlARjF+geNALWsF0H+Jl0RXYsv9rSSHLttyBc
+ doRNIVy4GLiTLLrc31jqFSLJ0zaxjnOUqTcvBIy1wpQrNXM1f5Vqexedxfekr+8ox3Ku
+ MNLupTAX6QL9HpXvlfPUJj1jhOEsf+311QK1p4m1Cb3nwFMqbTeGD74dBMR02G91dny4
+ cEGlhlD94Dc2kyU4yIgk07srdL5Le8+6vqTiD2FaoshPUkArNb2Q29/PhFfhjGKtFkbt
+ zvtzGtNGV+KTJUfF2LpxiLN8vS7folDWWhf/uNOVVbo+5VMZqJJ2NFIr7MXPh3hhDq9k
+ gfmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705048970; x=1705653770;
+ d=1e100.net; s=20230601; t=1705049048; x=1705653848;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uxh0IfdfNP7LuqI4KjZND4CNlTTnCO3IvSf5YMNtZF4=;
- b=MaeXjEbiZX/thoeLDVlL99y2JW4LQ7cfUJgLq6/WYAh678fHSgW+9TUrlKR4u0FfrN
- BConlm9cxyLNc3M66plbx5dbXNHOo84oxI+/8Ptdp0oFa5edNpBrEhcc03s+L0jPZC64
- hfqqqC7LBPq/YBNdr4dusBz+t0P5HuT0yiF4uMDuPZGDXeAAX8B9P1UZDmabVYQSKzwm
- izegU0HMey4AiyJh5gqZYYp5lcr5xi/32RXc2ZScObNP89r/+7uZ/FpEK9d13FN+erNl
- Frh8vpWkmikQv2IjbTPG2YuTwixIYBbmXrraGI1k4iHFmF1DCl5Kg+wPyU/wLe7N9NF3
- jCIQ==
-X-Gm-Message-State: AOJu0YwVgvyszMYjo1HqC1sLrNORSjSfrIDGcr9m/SrkVbbjdPpcDQYB
- 7wKUBfHDT4jmF2RwY3rDrYqm5tEzx4awrg==
-X-Google-Smtp-Source: AGHT+IG4/LcuUlzK4rD6lXep3DzbugGL0b+sbsBU1UwJFy2vOqLYQI8ruoJCkI0dj2uIwplemwdmRQ==
-X-Received: by 2002:a17:902:7b88:b0:1d4:4c8c:b138 with SMTP id
- w8-20020a1709027b8800b001d44c8cb138mr592223pll.59.1705048970570; 
- Fri, 12 Jan 2024 00:42:50 -0800 (PST)
+ bh=Bqj1vLfC+4eBLGSKDWM91k4/gUjyUe75vfG3xNLI2wk=;
+ b=tG0f9aJmyV6Ot+SEYYVFdDSMlgx/FQqoI3Z4QrFeR3SA+ZvHPINevGacoeL8vt2wzr
+ 1dDtdUPwGDJ904sKC7j1BJqEFWkoIXXnLW3lfpWvRillE/BDfj3sLUlsWmq4lqhdoss+
+ AXNzhxkbkz033lNl6bcHgaWb2Rp3BN4Q8OxMi+1MqiDypLuZD8keE/mZmBsALnbsgIz8
+ WweoHcJQ7lRs4yDIajCT3dHH4MYAEr5dcHKPG7nGoGa4PHLvyZvMxM9akGpdbQ+B8UPp
+ 4BfLhQhOk5gavPPvgfdzYeWYIKz6fxWIy4DzpMl7xte7QxPxYmbQGM0QvOHz7tZsN3k9
+ HRgw==
+X-Gm-Message-State: AOJu0YxxIkNV3htxa8hQdkYq7PzdZv+K6IfmePfekYA3poDBEu8KX4MZ
+ j/GIV8FVkCgq7rEx6N85Ap/FWrvD7ZUASg==
+X-Google-Smtp-Source: AGHT+IF/GUYNr8Jnuvg0OWqxYQtTJfClVcHmdqfIHYKvBK0OMjUP3qUx45LD/qMSrQBlp9fEnXESOg==
+X-Received: by 2002:a17:902:e751:b0:1d5:8ce6:e4b1 with SMTP id
+ p17-20020a170902e75100b001d58ce6e4b1mr733515plf.43.1705049048737; 
+ Fri, 12 Jan 2024 00:44:08 -0800 (PST)
 Received: from ?IPV6:2001:8004:2728:2ad6:6327:94c1:b7f6:cf28?
  ([2001:8004:2728:2ad6:6327:94c1:b7f6:cf28])
  by smtp.gmail.com with ESMTPSA id
- b13-20020a170902d50d00b001d35223d0besm2588160plg.251.2024.01.12.00.42.47
+ b13-20020a170902d50d00b001d35223d0besm2588160plg.251.2024.01.12.00.44.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Jan 2024 00:42:50 -0800 (PST)
-Message-ID: <8a381e87-6b91-417a-9c2d-1f2c5547131e@linaro.org>
-Date: Fri, 12 Jan 2024 19:42:44 +1100
+ Fri, 12 Jan 2024 00:44:08 -0800 (PST)
+Message-ID: <4cb4c362-fa1b-45f1-b628-1a1161916776@linaro.org>
+Date: Fri, 12 Jan 2024 19:44:04 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/12] contrib/plugins/hotblocks: migrate to new per_vcpu
- API
+Subject: Re: [PATCH 10/12] contrib/plugins/howvec: migrate to new per_vcpu API
 Content-Language: en-US
 To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Paolo Bonzini
  <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>
 References: <20240111142326.1743444-1-pierrick.bouvier@linaro.org>
- <20240111142326.1743444-10-pierrick.bouvier@linaro.org>
+ <20240111142326.1743444-11-pierrick.bouvier@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240111142326.1743444-10-pierrick.bouvier@linaro.org>
+In-Reply-To: <20240111142326.1743444-11-pierrick.bouvier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,10 +98,20 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 1/12/24 01:23, Pierrick Bouvier wrote:
-> Signed-off-by: Pierrick Bouvier<pierrick.bouvier@linaro.org>
-> ---
->   contrib/plugins/hotblocks.c | 25 +++++++++++++++++++------
->   1 file changed, 19 insertions(+), 6 deletions(-)
+> @@ -180,11 +190,11 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+>           class = &class_table[i];
+>           switch (class->what) {
+>           case COUNT_CLASS:
+> -            if (class->count || verbose) {
+> +            if (count(class->count) || verbose) {
+>                   g_string_append_printf(report,
+>                                          "Class: %-24s\t(%" PRId64 " hits)\n",
+>                                          class->class,
+> -                                       class->count);
+> +                                       count(class->count));
+>               }
+
+Compute count once.  Otherwise,
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
