@@ -2,63 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3616E82BF49
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 12:35:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 264A582BF73
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 12:48:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOFnj-0007k5-0Z; Fri, 12 Jan 2024 06:34:15 -0500
+	id 1rOFzx-0002Uv-Fn; Fri, 12 Jan 2024 06:46:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
- id 1rOFnb-0007jn-Qq; Fri, 12 Jan 2024 06:34:07 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <abelova@astralinux.ru>)
+ id 1rOFzb-0002TC-Gg
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 06:46:34 -0500
+Received: from mail.astralinux.ru ([217.74.38.119])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=qInK=IW=kaod.org=clg@ozlabs.org>)
- id 1rOFnZ-0006Oa-4R; Fri, 12 Jan 2024 06:34:07 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TBKDk2rZDz4wy9;
- Fri, 12 Jan 2024 22:33:58 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TBKDf1mMVz4wcc;
- Fri, 12 Jan 2024 22:33:53 +1100 (AEDT)
-Message-ID: <45fb3790-df2a-49f5-860e-46d4f9b0150c@kaod.org>
-Date: Fri, 12 Jan 2024 12:33:49 +0100
+ (Exim 4.90_1) (envelope-from <abelova@astralinux.ru>)
+ id 1rOFzU-0004KT-W2
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 06:46:28 -0500
+Received: from localhost (localhost.localdomain [127.0.0.1])
+ by mail.astralinux.ru (Postfix) with ESMTP id F178F1869532;
+ Fri, 12 Jan 2024 14:46:08 +0300 (MSK)
+Received: from mail.astralinux.ru ([127.0.0.1])
+ by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new,
+ port 10032)
+ with ESMTP id CdbKAxwHYBS7; Fri, 12 Jan 2024 14:46:08 +0300 (MSK)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+ by mail.astralinux.ru (Postfix) with ESMTP id A0A901869531;
+ Fri, 12 Jan 2024 14:46:08 +0300 (MSK)
+X-Virus-Scanned: amavisd-new at astralinux.ru
+Received: from mail.astralinux.ru ([127.0.0.1])
+ by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new,
+ port 10026)
+ with ESMTP id QSdq7Nq6ESlU; Fri, 12 Jan 2024 14:46:08 +0300 (MSK)
+Received: from rbta-msk-lt-106062.astralinux.ru (wifi.cs.msu.ru [188.44.42.48])
+ by mail.astralinux.ru (Postfix) with ESMTPSA id 1640B1869530;
+ Fri, 12 Jan 2024 14:46:07 +0300 (MSK)
+From: Anastasia Belova <abelova@astralinux.ru>
+To: qemu-devel@nongnu.org
+Cc: Anastasia Belova <abelova@astralinux.ru>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, sdl.qemu@linuxtesting.org
+Subject: [PATCH v2] load_elf: fix iterators' types for elf file processing
+Date: Fri, 12 Jan 2024 14:45:27 +0300
+Message-Id: <20240112114527.7911-1-abelova@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <CAFEAcA9DU7aZjzWc+fnMw14JupM6ff1=ChxaX3+kfGt3LBrP5Q@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] target/ppc/cpu-models: Rename power5+ and power7+ for
- new QOM naming rules
-To: Thomas Huth <thuth@redhat.com>, Harsh Prateek Bora
- <harshpb@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- qemu-devel@nongnu.org
-Cc: devel@lists.libvirt.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
- David Gibson <david@gibson.dropbear.id.au>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
- Markus Armbruster <armbru@redhat.com>
-References: <20240111164652.908182-1-thuth@redhat.com>
- <20240111164652.908182-2-thuth@redhat.com>
- <70fae07d-f6c1-4143-b632-a988ae53ccb0@linux.ibm.com>
- <27a311a8-f6db-48ea-8bbd-a09eb3c2e07e@redhat.com>
- <54b6ba59-8edc-4b9c-bd3f-88399127f60e@linux.ibm.com>
- <12a5e758-f144-40c2-bcb3-14855b81b7a4@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <12a5e758-f144-40c2-bcb3-14855b81b7a4@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=qInK=IW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=217.74.38.119; envelope-from=abelova@astralinux.ru;
+ helo=mail.astralinux.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,60 +71,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/12/24 11:55, Thomas Huth wrote:
-> On 12/01/2024 06.21, Harsh Prateek Bora wrote:
->>
->>
->> On 1/12/24 10:42, Thomas Huth wrote:
->>> On 12/01/2024 05.57, Harsh Prateek Bora wrote:
->>>>
->>>>
->>>> On 1/11/24 22:16, Thomas Huth wrote:
->>>>> The character "+" is now forbidden in QOM device names (see commit
->>>>> b447378e1217 - "Limit type names to alphanumerical and some few special
->>>>> characters"). For the "power5+" and "power7+" CPU names, there is
->>>>> currently a hack in type_name_is_valid() to still allow them for
->>>>> compatibility reasons. However, there is a much nicer solution for this:
->>>>> Simply use aliases! This way we can still support the old names without
->>>>> the need for the ugly hack in type_name_is_valid().
->>>>>
->>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>>>> ---
->>>>>   hw/ppc/spapr_cpu_core.c |  4 ++--
->>>>>   qom/object.c            |  4 ----
->>>>>   target/ppc/cpu-models.c | 10 ++++++----
->>>>>   3 files changed, 8 insertions(+), 10 deletions(-)
->>>>>
->>>>> diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
->>>>> index 5aa1ed474a..214b7a03d8 100644
->>>>> --- a/hw/ppc/spapr_cpu_core.c
->>>>> +++ b/hw/ppc/spapr_cpu_core.c
->>>>> @@ -389,9 +389,9 @@ static const TypeInfo spapr_cpu_core_type_infos[] = {
->>>>>       DEFINE_SPAPR_CPU_CORE_TYPE("970_v2.2"),
->>>>>       DEFINE_SPAPR_CPU_CORE_TYPE("970mp_v1.0"),
->>>>>       DEFINE_SPAPR_CPU_CORE_TYPE("970mp_v1.1"),
->>>>> -    DEFINE_SPAPR_CPU_CORE_TYPE("power5+_v2.1"),
->>>>> +    DEFINE_SPAPR_CPU_CORE_TYPE("power5plus_v2.1"),
->>>>>       DEFINE_SPAPR_CPU_CORE_TYPE("power7_v2.3"),
->>>>> -    DEFINE_SPAPR_CPU_CORE_TYPE("power7+_v2.1"),
->>>>> +    DEFINE_SPAPR_CPU_CORE_TYPE("power7plus_v2.1"),
->>>>
->>>> Will using Power5x, Power7x be a better naming than using 'plus' suffix ?
->>>
->>> The "x" looks like a placeholder to me, so it could be confused with power50, power51, power52, etc. ...?
->>> But actually, I was thinking about using "power5p" and "power7p" first, so if the whole "plus" looks too long for you, would "p" be an option instead?
->>
->> Hmm .. I would certainly vote for 'p' over 'plus'.
-> 
-> Ok, I don't mind either way ... does anybody else have any preferences?
+i and size should be the same type as ehdr.e_phnum (Elf32_Half or
+Elf64_Half) to avoid overflows. So the bigger one is chosen.
 
-p is fine.
+j should be the same type as file_size for the same reasons.
 
+This commit fixes a minor bug, maybe even a typo.
 
-Thanks,
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-C.
+Fixes: 7ef295ea5b ("loader: Add data swap option to load-elf")
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+---
+ include/hw/elf_ops.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-
+diff --git a/include/hw/elf_ops.h b/include/hw/elf_ops.h
+index 0a5c258fe6..6e807708f3 100644
+--- a/include/hw/elf_ops.h
++++ b/include/hw/elf_ops.h
+@@ -325,7 +325,7 @@ static ssize_t glue(load_elf, SZ)(const char *name, i=
+nt fd,
+ {
+     struct elfhdr ehdr;
+     struct elf_phdr *phdr =3D NULL, *ph;
+-    int size, i;
++    Elf64_Half size, i;
+     ssize_t total_size;
+     elf_word mem_size, file_size, data_offset;
+     uint64_t addr, low =3D (uint64_t)-1, high =3D 0;
+@@ -464,7 +464,7 @@ static ssize_t glue(load_elf, SZ)(const char *name, i=
+nt fd,
+                  * the ROM overlap check in loader.c, so we don't try to
+                  * explicitly detect those here.
+                  */
+-                int j;
++                Elf64_Half j;
+                 elf_word zero_start =3D ph->p_paddr + file_size;
+                 elf_word zero_end =3D ph->p_paddr + mem_size;
+=20
+@@ -500,7 +500,7 @@ static ssize_t glue(load_elf, SZ)(const char *name, i=
+nt fd,
+             }
+=20
+             if (data_swab) {
+-                int j;
++                elf_word j;
+                 for (j =3D 0; j < file_size; j +=3D (1 << data_swab)) {
+                     uint8_t *dp =3D data + j;
+                     switch (data_swab) {
+--=20
+2.30.2
 
 
