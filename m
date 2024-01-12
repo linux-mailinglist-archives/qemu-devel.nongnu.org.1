@@ -2,65 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A30482C3EA
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 17:48:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EDC82C40D
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 17:55:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOKh5-0001eb-Ud; Fri, 12 Jan 2024 11:47:46 -0500
+	id 1rOKnP-0005Qj-5E; Fri, 12 Jan 2024 11:54:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rOKgq-0001av-Ou
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:47:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rOKgm-0001vt-Fd
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:47:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705078042;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=K4dbY1sFlvEu0y40V/FK/PeF8bvIXS7fYIXnuzmJRdo=;
- b=SQjZXL+nNM5/l4oMuQR8oG5eF+1/Ul/kBQfAkaHpOfK2odMU/R5pRAdORUwsRl+JgDwBcd
- xl4fGr4TyVPAzliEXPJr8K75FDmTXrgNwAVAlCCDSoEL/6yzqQX1xwlZhdwsaxLX+hLvg3
- TxlpMb3a/omdKYwHQ4rpIMschb+rozE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-sE29lBphOBuPBKh0uCN6lQ-1; Fri, 12 Jan 2024 11:47:20 -0500
-X-MC-Unique: sE29lBphOBuPBKh0uCN6lQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3A097185A784;
- Fri, 12 Jan 2024 16:47:20 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.194.216])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 188763C25;
- Fri, 12 Jan 2024 16:47:18 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH] qtest: Bump npcm7xx_watchdog_timer-test timeout to 2 minutes
-Date: Fri, 12 Jan 2024 17:47:17 +0100
-Message-ID: <20240112164717.1063954-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1rOKnN-0005Q6-J8
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:54:13 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1rOKnL-0005kR-Ec
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 11:54:13 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-336c5b5c163so4031137f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 08:54:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1705078449; x=1705683249;
+ darn=nongnu.org; 
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Wa5lcaVnSMCaKjFP8eBbZ/pS/ZZdaoRW9vHVCkmxAkM=;
+ b=0cMd2BBkSGdEuNd+DdPgbP3LWjQoHns/4mRUvYGLAgrqNjq/65t6VTuqIdd8HgW+9B
+ JnnMbYM03lvbcGwgpw9xd0Opk+F2L42t+mruwGMGjULPnYg8pRekSmGgnp5z4Yu9eoWO
+ 7AI23ofFvaXscHppjsMFJqO+6kg8zf/uOUacxHnEODB2FnWy2ltKVLSRKeglS3cYj5QE
+ a6HeSrTIy/fTukoU+GgewHTEz4GyXk1ZiFoFyu8GPW/o41J9so3TmhduG6LjIUHcD200
+ RNNCUU262DvcVhlYq4ZdBNttji1QZHNSL6WHSUmut4FKX/tzHSdmoNmW/3ElAXkcxV+D
+ JxZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705078449; x=1705683249;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Wa5lcaVnSMCaKjFP8eBbZ/pS/ZZdaoRW9vHVCkmxAkM=;
+ b=BbJlvwQXlrvh/jXpe7Txb8w8P83NWSy55pdm1iPZFpOX2Zj7ZT91yMdDiHRHQABt8L
+ OBepNZ3dJiRgch5O9aOhICQJid1oC/fG2d4VwiyfH1akn/6TFtZ+fWGsUm6M/nnGww+f
+ Hw6Rfik2kNAR2oc2p+iA7oqcV/8kJz8ppX6cGD2C44NLDsJ9AE57CWKoAfue+D0z15+P
+ bwgYYk1uztp8WanbiwWz/9zTkqVeMBiGBX974Q+hZ+KrfFfSEPwGPijrf0y199jzbDcR
+ cMd0iJkfA2X8JrOmZI+6BydCjDqiXojBUiXsE/Q6U4MirHRYS6aDPZE0xQu2UKU9XUbb
+ D3nA==
+X-Gm-Message-State: AOJu0Yw9ZRX2zw1GaDJSkLf3oSRTfeFn6tSW3MgL9YLRIcj+Yh7ngGnT
+ x+mp7bJiyeleoSM3AfryOv1ZJQDImOF5fA==
+X-Google-Smtp-Source: AGHT+IEKK3jDFutqLa/46AnP5Pk+3WHjHLbaZ0oNySs93zRtUKWXScrwek4WOCfYEVz/CxTRBeD8Hw==
+X-Received: by 2002:a05:6000:1186:b0:337:4758:43fc with SMTP id
+ g6-20020a056000118600b00337475843fcmr894052wrx.60.1705078449176; 
+ Fri, 12 Jan 2024 08:54:09 -0800 (PST)
+Received: from [192.168.1.9] (214.11.169.217.in-addr.arpa. [217.169.11.214])
+ by smtp.gmail.com with ESMTPSA id
+ z5-20020a5d4c85000000b003367ff4aadasm4362376wrs.31.2024.01.12.08.54.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 12 Jan 2024 08:54:08 -0800 (PST)
+Message-ID: <7461190fbece351f916eccd258bf62b86227927d.camel@rivosinc.com>
+Subject: Re: Re: Re: [PATCH 1/3] target/riscv: Add infrastructure for 'B'
+ MISA extension
+From: Rob Bradford <rbradford@rivosinc.com>
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, atishp@rivosinc.com, 
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com,  ved@rivosinc.com
+Date: Fri, 12 Jan 2024 16:54:08 +0000
+In-Reply-To: <20240112-d9e3cc215a7a68c5189908bf@orel>
+References: <20240109171848.32237-1-rbradford@rivosinc.com>
+ <20240109171848.32237-2-rbradford@rivosinc.com>
+ <20240111-585fe1291fcaa1e0432674e3@orel>
+ <20240111-df7a6acf3109b630469591a1@orel>
+ <3dbd3fa1cbad80948175f98dcc0c76b886e2376e.camel@rivosinc.com>
+ <20240112-d9e3cc215a7a68c5189908bf@orel>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.module_f38+17164+63eeee4a) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.09,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,33 +101,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The npcm7xx_watchdog_timer-test can take more than 60 seconds
-when running in the gitlab-CI, see for example:
+On Fri, 2024-01-12 at 17:08 +0100, Andrew Jones wrote:
+> On Thu, Jan 11, 2024 at 03:17:25PM +0000, Rob Bradford wrote:
+> > + Ved
+> >=20
+> > On Thu, 2024-01-11 at 14:14 +0100, Andrew Jones wrote:
+> > > On Thu, Jan 11, 2024 at 02:07:34PM +0100, Andrew Jones wrote:
+> > > > On Tue, Jan 09, 2024 at 05:07:35PM +0000, Rob Bradford wrote:
+> > > > > Add the infrastructure for the 'B' extension which is the
+> > > > > union
+> > > > > of the
+> > > > > Zba, Zbb and Zbs instructions.
+> > > > >=20
+> > > > > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> > > > > ---
+> > > > > =C2=A0target/riscv/cpu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 | 5 +++--
+> > > > > =C2=A0target/riscv/cpu.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 | 1 +
+> > > > > =C2=A0target/riscv/tcg/tcg-cpu.c | 1 +
+> > > > > =C2=A03 files changed, 5 insertions(+), 2 deletions(-)
+> > > > >=20
+> > > > > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> > > > > index b07a76ef6b..22f8e527ff 100644
+> > > > > --- a/target/riscv/cpu.c
+> > > > > +++ b/target/riscv/cpu.c
+> > > > > @@ -38,9 +38,9 @@
+> > > > > =C2=A0#include "tcg/tcg.h"
+> > > > > =C2=A0
+> > > > > =C2=A0/* RISC-V CPU definitions */
+> > > > > -static const char riscv_single_letter_exts[] =3D
+> > > > > "IEMAFDQCPVH";
+> > > > > +static const char riscv_single_letter_exts[] =3D
+> > > > > "IEMAFDQCBPVH";
+> > > >=20
+> > > > Is there a corresponding proposed change to table 29.1 of the
+> > > > nonpriv spec
+> > > > which states B comes after C and before P? If so, can you
+> > > > provide a
+> > > > link
+> > > > to it? Otherwise, how do we know that?
+> > >=20
+> > > Oh, I see. The unpriv spec B chapter comes after the C chapter
+> > > (and
+> > > before
+> > > J, P, ...). I still wonder if we'll have a 29.1 table update with
+> > > the
+> > > ratification of this extension though.
+> > >=20
+> > >=20
+> >=20
+> > I agree it's a bit confusing - but the order is established by the
+> > table in the unprivileged spec and the table explanation also makes
+> > this clear.
+> >=20
+> > """
+> > Table 27.1: Standard ISA extension names. The table also defines
+> > the
+> > canonical order in which
+> > extension names must appear in the name string, with top-to-bottom
+> > in
+> > table indicating first-to-last
+> > in the name string, e.g., RV32IMACV is legal, whereas RV32IMAVC is
+> > not.
+> > """
+>=20
+> Yes, this is the table I was referring to when I referenced "table
+> 29.1 of
+> the nonpriv spec". Since there's a chance I was looking at too old a
+> spec
+> I've now gone straight to the source,
+>=20
+> https://github.com/riscv/riscv-isa-manual/blob/main/src/naming.adoc
+>=20
+> but I still don't see B there. Do you see B in the table you're
+> looking
+> at?
+>=20
+> >=20
+> > The proposed B specification does not make any remarks about the
+> > ordering in the ISA definition string. [1] I would worry there
+> > would be
+> > a lot of software churn if this ordering were to be changed.
+>=20
+> The ordering shouldn't change, but I can't see where it's documented
+> (beyond the B chapter coming after the C chapter).
 
- https://gitlab.com/qemu-project/qemu/-/jobs/5890481174#L4756
+I'm using table 27.1 in the published PDF which is the PDF in this
+release:=20
+https://github.com/riscv/riscv-isa-manual/releases/tag/Ratified-IMAFDQC
+It looks like it was removed in this commit (which is a set of
+backports):
 
-Bumping to 2 minutes will give more headroom.
+https://github.com/riscv/riscv-isa-manual/commit/6ecd735338241583d53396b706=
+5eab7c9ace68aa
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- Based-on: <20231215070357.10888-1-thuth@redhat.com>
+Cheers,
 
- tests/qtest/meson.build | 1 +
- 1 file changed, 1 insertion(+)
+Rob
+>=20
+> Thanks,
+> drew
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index fd40136fa9..b0bc5af09e 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -4,6 +4,7 @@ slow_qtests = {
-   'device-introspect-test' : 720,
-   'migration-test' : 480,
-   'npcm7xx_pwm-test': 300,
-+  'npcm7xx_watchdog_timer-test': 120,
-   'qom-test' : 900,
-   'test-hmp' : 240,
-   'pxe-test': 600,
--- 
-2.43.0
 
 
