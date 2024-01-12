@@ -2,80 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B410E82C2F7
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 16:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CAC882C2FE
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 16:45:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOJfK-00032d-CK; Fri, 12 Jan 2024 10:41:50 -0500
+	id 1rOJiO-0005BX-8z; Fri, 12 Jan 2024 10:45:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rOJfI-00032J-SD
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:41:48 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rOJfG-0004i7-Q9
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:41:48 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40e66315d93so7039535e9.2
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 07:41:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705074105; x=1705678905; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FkAdFARUeW02sluvd0pjbbd0wVVMZqgh09x/jMwH0uE=;
- b=LIDBlqzEkFrLFWXA1Gie6prjY0ejW8n8M0YSGuFV1a6mT9L5q3bv3jnCiK2sxWwPaK
- PTZPdWaPrMeJ0fJy286jG9DhWzWwdNNka0nJqGa+GvlM66WosHHl1TPkpvoU7tfrF6Di
- +otaizSNcFgMPLWSmysjflc9mXVkwDnsENZeptMrfPhTMEIM1OCZO6qV5uyBdhmdOgvO
- DS78em0ra9qI9N6Hz5RK0zCJDL5TwoUxWKtscuNuQT3um1nXhaUBS+C42v0fGj/LVIPe
- gJMx0pBvLV6M/ofdBa/O61K6omDmyC/0fvi7tpuySxiS+1HlnlJWDdb/sECwaA8ZAVp9
- sB2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705074105; x=1705678905;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FkAdFARUeW02sluvd0pjbbd0wVVMZqgh09x/jMwH0uE=;
- b=H4f5vszWCmdlYs709DlcdkNf+q42valC47uOZ9x81jeTU5cNhRN8bFSWCDY+je1/MD
- Z+2IkHxutWbI77CiowJ/RIK5t0l3vPZt1JzByvFyn2e7MGuK5eVLBbFeP3l7CTCGS6KC
- jzG4iRVHlhUcfkNqbeH3PSG3XF4J5NK+Fu4wYaQHgbvLYVBJKTZkRNNbCRKiJ45a9AbA
- kX3Y2IhCl07p6fUyblTiXBmS84w1Zim/a4hFsygSg/zHplw5/3iUODgE2zDELBL4iEAw
- 2ZqT/jl+NObTWz7pNLaZS2WnlUssugakfV7iH2VecxmmMU7AelXpu9S3pzSLom70dBkG
- NmzA==
-X-Gm-Message-State: AOJu0Yxpokj7pK/Wjh8AbNNb97XawHl2YrmSyjqY09wCTXe9BO7WLihP
- NgSYL4f79JPmnh9F5MLm2rSpMaawwnrS65kyvfQ/DS2FUhY=
-X-Google-Smtp-Source: AGHT+IFyrEWZiIFVI/FRoWyeiKx7WehsBzuKskobNw7wOiSJQ+odd/CJzyXOq0jzR9FDOZrHOKyPTg==
-X-Received: by 2002:a05:600c:1c0a:b0:40d:5ca1:80bc with SMTP id
- j10-20020a05600c1c0a00b0040d5ca180bcmr877119wms.107.1705074105172; 
- Fri, 12 Jan 2024 07:41:45 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.202.145])
- by smtp.gmail.com with ESMTPSA id
- p16-20020a05600c469000b0040e39cbf2a4sm10220924wmo.42.2024.01.12.07.41.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Jan 2024 07:41:44 -0800 (PST)
-Message-ID: <ed2de2fd-7c94-4bfc-973d-7f7cba90d05b@linaro.org>
-Date: Fri, 12 Jan 2024 16:41:43 +0100
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rOJiM-0005BF-7o
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:44:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rOJiK-0005xY-0K
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:44:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705074294;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hfrdnEtpGn94s5HzyRrjF4o/Q8dg/DO4WQ288cW8ZFY=;
+ b=IIS0v6rxG8BF4yx+wUvflCmoTmm5PfIVql+BgJmIggbd5XUgZwfuzm3ekEFsAX5X66zopR
+ E3jhfiBC9K2WI43eVIAeGoF6VEg25xMGup3qsgPrFyeKhIbjsdBar/KgZydHWj78THxjmd
+ /0M5K4KNMkWoHESJqV6UqUrbDBYiDtU=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-315-qHMIU1caNEeRbQSiFqv-Ag-1; Fri,
+ 12 Jan 2024 10:44:52 -0500
+X-MC-Unique: qHMIU1caNEeRbQSiFqv-Ag-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 05F6E3C29A67;
+ Fri, 12 Jan 2024 15:44:48 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.182])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 246D2492BC6;
+ Fri, 12 Jan 2024 15:44:40 +0000 (UTC)
+Date: Fri, 12 Jan 2024 15:44:37 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bin.meng@windriver.com>,
+ Laurent Vivier <lvivier@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, David Woodhouse <dwmw2@infradead.org>,
+ Laurent Vivier <laurent@vivier.eu>,
+ Paolo Bonzini <pbonzini@redhat.com>, Brian Cain <bcain@quicinc.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Beraldo Leal <bleal@redhat.com>, Paul Durrant <paul@xen.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Cleber Rosa <crosa@redhat.com>, kvm@vger.kernel.org,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ qemu-arm@nongnu.org, Weiwei Li <liwei1518@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ qemu-riscv@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [PATCH v2 12/43] qtest: bump boot-serial-test timeout to 3 minutes
+Message-ID: <ZaFeZXP-3sYdnZbS@redhat.com>
+References: <20240103173349.398526-1-alex.bennee@linaro.org>
+ <20240103173349.398526-13-alex.bennee@linaro.org>
+ <cf617223-0a0b-4d42-84a3-cd323ea4c421@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Update Raphael Norwitz email
-Content-Language: en-US
-To: Raphael Norwitz <raphael.norwitz@nutanix.com>, qemu-devel@nongnu.org,
- mst@redhat.com
-Cc: raphael.s.norwitz@gmail.com, QEMU Trivial <qemu-trivial@nongnu.org>
-References: <20240111192846.111699-1-raphael.norwitz@nutanix.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240111192846.111699-1-raphael.norwitz@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+In-Reply-To: <cf617223-0a0b-4d42-84a3-cd323ea4c421@redhat.com>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.09,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,18 +113,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/1/24 20:28, Raphael Norwitz wrote:
-> I will be leaving Nutanix so updating my email in MAINTAINERS to my
-> personal email for now.
+On Fri, Jan 12, 2024 at 04:13:16PM +0100, Thomas Huth wrote:
+> On 03/01/2024 18.33, Alex Bennée wrote:
+> > From: Daniel P. Berrangé <berrange@redhat.com>
+> > 
+> > The boot-serial-test takes about 1 + 1/2 minutes in a --enable-debug
+> > build. Bumping to 3 minutes will give more headroom.
+> > 
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > Reviewed-by: Thomas Huth <thuth@redhat.com>
+> > Message-ID: <20230717182859.707658-9-berrange@redhat.com>
+> > Signed-off-by: Thomas Huth <thuth@redhat.com>
+> > Message-Id: <20231215070357.10888-9-thuth@redhat.com>
+> > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> > ---
+> >   tests/qtest/meson.build | 1 +
+> >   1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+> > index c7944e8dbe9..dc1e6da5c7b 100644
+> > --- a/tests/qtest/meson.build
+> > +++ b/tests/qtest/meson.build
+> > @@ -6,6 +6,7 @@ slow_qtests = {
+> >     'test-hmp' : 240,
+> >     'pxe-test': 600,
+> >     'prom-env-test': 360,
+> > +  'boot-serial-test': 180,
+> >   }
+> >   qtests_generic = [
 > 
-> Signed-off-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
-> ---
->   MAINTAINERS | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> 3 minutes was obviously not enough:
+> 
+>  https://gitlab.com/qemu-project/qemu/-/jobs/5918818492#L4984
+> 
+> And in older runs, we can see that the boot-serial-test might take longer
+> than 180s when run with TCI :
+> 
+>  https://gitlab.com/qemu-project/qemu/-/jobs/5890481086#L4772
+> 
+> So I think we should bump the timeout to 240s here. Alex, are you going to
+> respin your pull request? If so, could you modify your patch? Otherwise I
+> can also send a new version of this patch here, just let me know.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Agreed, 240s seems a good next attempt
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
