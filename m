@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB09E82C034
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 13:57:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2DE082C035
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 13:58:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOH4f-0008Mr-Nh; Fri, 12 Jan 2024 07:55:49 -0500
+	id 1rOH4m-0000Qo-Hc; Fri, 12 Jan 2024 07:55:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH4b-0008Hp-BM
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:55:45 -0500
+ id 1rOH4g-0000CA-V1
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:55:51 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH4Y-0006uY-1F
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:55:43 -0500
+ id 1rOH4e-0006xn-PK
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:55:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=9JhZDwPgEkO/WfNmBUOI4/IOi6gjgdQRkbpOAIlnVlI=; b=RWPARnpfPzekDcZ7zYON3YkH1T
- Af66ZkNzlMhjP/rthyvz0GlmI1IdC7yzQ4APED/6zzdb9HRXdErunpbf/c8m5qI+aG6KnGXLI8T/m
- W7mzBX0r1kS7cqAs3mle6ASCk9DDQjCvYpFR4UaO1ETR5Pf8adD/+hcevt61IXb4fg9WkgNxFOlqw
- 3QcWV3Q2FHpOlHKZZsWMi09Q62HUHKJn6hxba3vdKfQwqgflKSU3IxvN7KBXEsqQyAtoI74Nmndsn
- qjJ3wHezIa0Dftb3+jYwlTFVaaoEFVlKNHJC5GE4D5pZeJEAFR4dnQLBIyPQnQLXLk1LaWJSmYCNo
- uBGy0uyBWVlRwzMytziu30MVB2y9Ytx3URgU0/okUAMzQrfKPxJ6UGM3JidWsmXKXY3KTXwM2mNuP
- zvIqDyUpF06m+l2Aa4H7go8lMHQeyVbuw7P6xZwjmTmzdVQxudlhpD2m53KLha84uOBmBeZ1Ayqdh
- gUNnDuWoIcyZX1Lkha6SLSI8TunC3zGzB7pTWYqjgWjifiWW3tP55U7KavH73JRd00irwu8roe9Yg
- qn1t+cBUPtLgTCukD5ohpLN9qqqcCXj7zt9kDhbIOods/N2Tq7XdktLq0plemsiELkC9ASDBQ1Fq6
- 3UgffT330stU+WlhXzutV8tceHDiOaKwuggOzdnVE=;
+ bh=e6mCLf/9017hCj5XWuJdYBBrxktVwOh7syFJi7T1WOs=; b=l8P9EYisGv3pw3jDivQESBQ6LJ
+ jSfwYWCQhM8ZtrjzfXKaGpCEPXoCL4Q5yoJ2tjWUk7r1UA/Du2mENco+TdWzCbrmnxc5/HJkv1c0U
+ C2U0L6ZF43IgLg7M948vXWhxRVGElVGXkfNcSO51156MW0iu3T7p4BywTVrBCCdNOUifjI6Eeq7UO
+ yXCdZdoT0I5LAPuU09b4LUYCmtbxQarKr5m6sNE3P2KzGY/iwf/EnO8bFETiqS5ZEwJkLuIs4isLV
+ 6/cHoykpa1RGxTXIG8KqKptnjXO4SNkuDVq3K303T+IPVMI6FvNvLIUhX8f2NPYxozv+rChfY1Tqx
+ ZzxtcLC0+Nn/vTYNUqApDbJkujflN0obWtt9f46SnAJvOx4I/9i1ySIsgH6Y+DrF9iHGYbksli2qh
+ Wp3iRj9dxkqznOBwSPQ7oMGzwGLJPHTbVWe7WY7PZLXObDbQbn8Mip5gjPFKKpWrF32h9Vmi7BLQ2
+ yEsncCrKODovMRRyvgzVOGfRffxA0e5wCxKrimu9dw2WjN4UlbkhWmLUwt2TdLXqmxuskfFcQgLdu
+ Cv+2jkvS8Garl9GL6g9Bhj38GT5oqAg9BtJt68rMyePD4kGVtVvbWa7Rhi4jxkDwOntXZ4K6XVI+J
+ reo9WsnXkN88N107m/zIDjBNtG0TRFKx4uBl1tbrc=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH3m-0008jM-Vp; Fri, 12 Jan 2024 12:54:55 +0000
+ id 1rOH3r-0008jM-Px; Fri, 12 Jan 2024 12:55:03 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org,
  laurent@vivier.eu, thuth@redhat.com, qemu-devel@nongnu.org
-Date: Fri, 12 Jan 2024 12:53:07 +0000
-Message-Id: <20240112125420.514425-16-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 12 Jan 2024 12:53:09 +0000
+Message-Id: <20240112125420.514425-18-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
 References: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 15/88] esp.c: remove another set of manual STAT_TC updates
+Subject: [PATCH 17/88] esp.c: don't reset the TC and ESP_RSEQ state when
+ executing a SCSI command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,94 +78,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Following on from the recent changes to when the TC is updated, it is now
-possible to remove another set of manual STAT_TC updates so that its state
-is now managed within esp_set_tc().
+There is no need to manually reset these values as the ESP emulation now
+correctly handles them within its existing logic.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ hw/scsi/esp.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 3fc7417d7c..6fd5c8767a 100644
+index f41b2421f9..a4a1f41a40 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -513,7 +513,6 @@ static void handle_satn_stop(ESPState *s)
- static void write_response_pdma_cb(ESPState *s)
- {
-     esp_set_phase(s, STAT_ST);
--    s->rregs[ESP_RSTAT] |= STAT_TC;
-     s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
-     s->rregs[ESP_RSEQ] = SEQ_CD;
-     esp_raise_irq(s);
-@@ -532,7 +531,6 @@ static void write_response(ESPState *s)
-         if (s->dma_memory_write) {
-             s->dma_memory_write(s->dma_opaque, buf, 2);
-             esp_set_phase(s, STAT_ST);
--            s->rregs[ESP_RSTAT] |= STAT_TC;
-             s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
-             s->rregs[ESP_RSEQ] = SEQ_CD;
-         } else {
-@@ -550,10 +548,8 @@ static void write_response(ESPState *s)
- 
- static void esp_dma_done(ESPState *s)
- {
--    s->rregs[ESP_RSTAT] |= STAT_TC;
-     s->rregs[ESP_RINTR] |= INTR_BS;
-     s->rregs[ESP_RFLAGS] = 0;
--    esp_set_tc(s, 0);
-     esp_raise_irq(s);
- }
- 
-@@ -592,7 +588,6 @@ static void do_dma_pdma_cb(ESPState *s)
-              */
-             s->cmdfifo_cdb_offset = fifo8_num_used(&s->cmdfifo);
-             esp_set_phase(s, STAT_CD);
--            s->rregs[ESP_RSTAT] |= STAT_TC;
-             s->rregs[ESP_RSEQ] = SEQ_CD;
-             s->rregs[ESP_RINTR] |= INTR_BS;
-             esp_raise_irq(s);
-@@ -699,7 +694,6 @@ static void esp_do_dma(ESPState *s)
-              */
-             s->cmdfifo_cdb_offset = fifo8_num_used(&s->cmdfifo);
-             esp_set_phase(s, STAT_CD);
--            s->rregs[ESP_RSTAT] |= STAT_TC;
-             s->rregs[ESP_RSEQ] = SEQ_CD;
-             s->rregs[ESP_RINTR] |= INTR_BS;
-             esp_raise_irq(s);
-@@ -829,7 +823,6 @@ static void esp_do_nodma(ESPState *s)
-              */
-             s->cmdfifo_cdb_offset = fifo8_num_used(&s->cmdfifo);
-             esp_set_phase(s, STAT_CD);
--            s->rregs[ESP_RSTAT] |= STAT_TC;
-             s->rregs[ESP_RSEQ] = SEQ_CD;
-             s->rregs[ESP_RINTR] |= INTR_BS;
-             esp_raise_irq(s);
-@@ -952,7 +945,6 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
-          * completion interrupt
-          */
-         s->data_in_ready = true;
--        s->rregs[ESP_RSTAT] |= STAT_TC;
-         s->rregs[ESP_RINTR] |= INTR_BS;
-         esp_raise_irq(s);
-     }
-@@ -997,7 +989,6 @@ static void handle_ti(ESPState *s)
-     if (s->dma) {
-         dmalen = esp_get_tc(s);
-         trace_esp_handle_ti(dmalen);
--        s->rregs[ESP_RSTAT] &= ~STAT_TC;
-         esp_do_dma(s);
-     } else {
-         trace_esp_handle_ti(s->ti_size);
-@@ -1152,7 +1143,6 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
-                      * of the FIFO so switch to status phase
-                      */
-                     esp_set_phase(s, STAT_ST);
--                    s->rregs[ESP_RSTAT] |= STAT_TC;
-                 }
-             }
-             s->rregs[ESP_FIFO] = esp_fifo_pop(&s->fifo);
+@@ -319,10 +319,7 @@ static void do_command_phase(ESPState *s)
+     s->ti_size = datalen;
+     fifo8_reset(&s->cmdfifo);
+     if (datalen != 0) {
+-        s->rregs[ESP_RSTAT] = STAT_TC;
+-        s->rregs[ESP_RSEQ] = SEQ_CD;
+         s->ti_cmd = 0;
+-        esp_set_tc(s, 0);
+         if (datalen > 0) {
+             /*
+              * Switch to DATA IN phase but wait until initial data xfer is
 -- 
 2.39.2
 
