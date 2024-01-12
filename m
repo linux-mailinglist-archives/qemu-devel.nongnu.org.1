@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F141782C052
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:01:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA2C582C04D
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:00:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOH3u-0007gD-6h; Fri, 12 Jan 2024 07:55:02 -0500
+	id 1rOH3w-0007hZ-8r; Fri, 12 Jan 2024 07:55:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH3q-0007fV-Lg
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:54:58 -0500
+ id 1rOH3u-0007gy-Go
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:55:02 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH3p-0006U8-6W
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:54:58 -0500
+ id 1rOH3s-0006Vv-7o
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:55:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=bOun1zsF8nfOtU07eyhiinZkCZ4tXaO6uzVOI4lszwk=; b=1Nd+JOCPOX2pf1nv45tYLjiI43
- l2vnwwnt3+uPvZe/CQK+wvIOKr7GOtafcyHE+Goo9DRY+k0ASrcqwd2rEmBGG/+Exs+9mxCQAJZfJ
- Egwe4gXxhmTQsPh0ip/49k0Ksn2LJvewuqqH0oxJmfFPYIQ4nPF6m48QQdAImnAjFt1nJcupQ4MlR
- PMIH5PJ8G+VahV9Atf+kChO1VGcfbEY4XTEoHy3VGQpYy7oV/YY0++HOolC6P+XM25o0VNAdIfQze
- iFsP9X7amFiP1iS2kUFHMsqcN+Hizh5VGMx/myf0APFgpHFKvThcDA21q23itiVT3QBqZVcZOHLGW
- xlYY93LLbLyl1HtYsUKHx/Ni6QKxPy1UcvEjfbYkMpcaG6QntV6KBjBtImd0jFGdvqSfu4ry61Y5i
- HDagprjEhFhTCfAQFiSIl7K6fRiENMFpeKrf86kyGiWOiGOs3xVBgt0zwUoueoYw3H4Ps6n8qSsNN
- iwG8uBDytehP1+U6rtaIMeY77CwiDykYb+eeWT+xzU2DgnICxt8MKod3raaCrriVBOFSk2qdMlsKe
- UtlZ2sJzX4JeRX1Sf5ROxrJQWpJeWRVDkFvY3dOtRFYskMMtHLz/9dHWebdyVgOogOI+VYYsRmNU2
- FKPKjQksefKnwfzcZoyuYaHMrMJWGBacmer0989J8=;
+ bh=RVoheZPunkRsW7VL3P4H+EBYLDchD0JJLbv2AiQ5eLw=; b=GC6qrqwOjbewwjktQ8qKPxrUko
+ 4NVqnEfdfSUZ4y8c+VOwmuqrgUyrGS2OqY+Vy25TrNX+hu0jCn8eQQxq6Mrwx9g7ovWd5sSozgjeE
+ AJYN7piLNV5TAp3NW5rZaw8lVUOVtrQhANI1SKevLg3wT+FpJA9S8OwGU1q1tqS4Ab7yZziO6A+aC
+ GQhja3ORjM/sEDnqRuGv/22DvLRw0QnG4h6/y+l8XtfiJpYk7HsWqTZPmt0DbB/4oTP2xn7AIV1Wa
+ o4CePpQZa9hxZayR6G7LAOGJdtiOYjBhdrkdKz00lBQe0r3aDj8jRxvMjhI/Ra71uuS8zBWGgmh3f
+ 09rWNOnv0hrH0E7byDjT40m4LcByb/xqaWD95wGQiCaKoPmR/HUkxacQK3jja51HV6cZ/RsC1Ic8J
+ KSc06nk+XF1xyZMXv70XqFfm8L0Vg3OKgpWjv6IKogfyCdULNUgiY4XK9c9QmyEVtXQhr0RUGo7BJ
+ asCTJNQHjn9wvutNJtzGJqn9pSKNzTS3BvXN5DweJqTJI7VoTHGLyNXFsDHk4LM090MRy8U6SR521
+ gSuR2pcl6Ol4K/RBTkvUhA7gaY/FJa7QIbMTyHqLgePMbvmnDO1hn2bILSMW3VVtiWxUd2Z20nsJ7
+ qKembai2HbgwsuvLxCn3KwYS43DFzHFrsA1Rau6mM=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rOH3A-0008jM-5l; Fri, 12 Jan 2024 12:54:20 +0000
+ id 1rOH3E-0008jM-Fb; Fri, 12 Jan 2024 12:54:24 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org,
  laurent@vivier.eu, thuth@redhat.com, qemu-devel@nongnu.org
-Date: Fri, 12 Jan 2024 12:52:58 +0000
-Message-Id: <20240112125420.514425-7-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 12 Jan 2024 12:52:59 +0000
+Message-Id: <20240112125420.514425-8-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
 References: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 06/88] esp: update esp_set_tc() to set STAT_TC flag
+Subject: [PATCH 07/88] esp: start removal of manual STAT_TC setting when
+ transfer counter reaches zero
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,33 +78,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This flag is set once the transfer counter counts down to zero.
+This should be exclusively managed by esp_set_tc() rather than being manually
+set in multiple places. Start by removing the occurrences exclusive to PDMA
+and command completion which are those that can be currently removed without
+affecting any test images.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/scsi/esp.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 8c1c6bfc1c..c7b79a2949 100644
+index c7b79a2949..e717b2e216 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -161,9 +161,15 @@ static uint32_t esp_get_tc(ESPState *s)
+@@ -611,11 +611,6 @@ static void do_dma_pdma_cb(ESPState *s)
+             s->async_len -= len;
+             s->ti_size -= len;
+             esp_set_tc(s, esp_get_tc(s) - len);
+-
+-            if (esp_get_tc(s) == 0) {
+-                /* Indicate transfer to FIFO is complete */
+-                 s->rregs[ESP_RSTAT] |= STAT_TC;
+-            }
+             return;
+         }
  
- static void esp_set_tc(ESPState *s, uint32_t dmalen)
- {
-+    uint32_t old_tc = esp_get_tc(s);
-+
-     s->rregs[ESP_TCLO] = dmalen;
-     s->rregs[ESP_TCMID] = dmalen >> 8;
-     s->rregs[ESP_TCHI] = dmalen >> 16;
-+
-+    if (old_tc && dmalen == 0) {
-+        s->rregs[ESP_RSTAT] |= STAT_TC;
-+    }
- }
- 
- static uint32_t esp_get_stc(ESPState *s)
+@@ -720,9 +715,6 @@ static void esp_do_dma(ESPState *s)
+             esp_set_tc(s, esp_get_tc(s) - len);
+             esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
+             esp_raise_drq(s);
+-
+-            /* Indicate transfer to FIFO is complete */
+-            s->rregs[ESP_RSTAT] |= STAT_TC;
+             return;
+         }
+     }
+@@ -870,7 +862,8 @@ void esp_command_complete(SCSIRequest *req, size_t resid)
+      * transfers from the target the last byte is still in the FIFO
+      */
+     if (s->ti_size == 0) {
+-        s->rregs[ESP_RSTAT] = STAT_TC | STAT_ST;
++        s->rregs[ESP_RSTAT] &= ~7;
++        s->rregs[ESP_RSTAT] |= STAT_ST;
+         esp_dma_done(s);
+         esp_lower_drq(s);
+     }
 -- 
 2.39.2
 
