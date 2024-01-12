@@ -2,92 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41FD682BD5B
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 10:37:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C5782BD7B
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 10:45:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rODxN-0002AF-6x; Fri, 12 Jan 2024 04:36:05 -0500
+	id 1rOE5T-0004dN-CX; Fri, 12 Jan 2024 04:44:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rODxG-000294-Qj
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 04:36:00 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rODxE-0001ko-UA
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 04:35:58 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40e66315d93so3776385e9.2
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 01:35:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705052154; x=1705656954; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sZK+JIbFmFtYUzCn2Jf4pD7nH3HRngffi7UsN/G7qnc=;
- b=mmXHNggbEtM6We7SQKq+NifNhm+XocYWRYvJTgJ9ZIiIViq/0ataMNmE28r3VyXp9D
- wjJSm2ikp1ICl9mGuQUvZxd7z6+rmQgzpx51RoK/XCtY+PV82Y0TBHIWMIAJSvuOotu1
- WGM0eJT7LlOuGMslB0rCpqks3iVQOwpfU0c2gQ4VkJrpWzAMdvsTGpYAG7cCOVm/znHk
- taDGl8PHfC6qhZHbyBZlUiV3j6JSaLLwsWHM94oZH3bAb4SPypjvyEk0WeD5BQ/R2RBH
- eILFZR/onlvKY0WMyt3lDu2gsNHCCm6YUVQ5Td1OU+CxKtbrc8gpk4a9UrNsm/R/P2YM
- 3c1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705052154; x=1705656954;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=sZK+JIbFmFtYUzCn2Jf4pD7nH3HRngffi7UsN/G7qnc=;
- b=GNETVjsisNt20rY8tUS25dsGSexaXE9HlBz3sSHMw76hss2rOn+hAb6WHfE4q17/dq
- BWI1GgrPWk8irgrA5+TsE1mY7R8lPR/6tZBxEbPlz10jnhmSumxTLyG0GBLwHfEpTdYj
- yvmKcfMNn5U/pb2rI2nrRhJvTyLGRbe1ExlwtfVic/kdYDZu5Qx4DKK9jCBemenFzenN
- +D3yr/5aAGgbF9jjklB4FUkNTWNpiW33CK8Q/FulHCBbhofXL2f0INBx8cG77BT3nB6u
- rpby4Rm/NykdzufW1oH7INyiX018zs4hW5aJLAFuJlXUaighpkVpkVNQ+SoFOZV0gHSd
- D+7w==
-X-Gm-Message-State: AOJu0Yw8u75kRT35EVgiqtO85ESQ9vJOzpPMyCBz/gmzZB2zytrY/1Df
- X4YpzDc8EflDCTuxdTzyRpGJsZN2BLFKwA==
-X-Google-Smtp-Source: AGHT+IH9G37N48JcWjavoYtDleK9Y7DtvFuUVI9/zc2Vs6PuQxF5DptaL6TovbPkUTDN9VN6t77Fww==
-X-Received: by 2002:a05:600c:3147:b0:40e:49b2:2c9e with SMTP id
- h7-20020a05600c314700b0040e49b22c9emr635331wmo.34.1705052153766; 
- Fri, 12 Jan 2024 01:35:53 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- je6-20020a05600c1f8600b0040d8d11bf63sm5088276wmb.41.2024.01.12.01.35.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jan 2024 01:35:53 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0C88B5F7A4;
- Fri, 12 Jan 2024 09:35:53 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,  Pavel
- Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,  Pavel Dovgalyuk
- <pavel.dovgaluk@ispras.ru>,  Paolo Bonzini <pbonzini@redhat.com>,  Cleber
- Rosa <crosa@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,  Beraldo Leal
- <bleal@redhat.com>
-Subject: Re: [PULL 13/13] tests/avocado: remove skips from replay_kernel
-In-Reply-To: <bef35657-d490-4db5-ad52-daba13c8234e@redhat.com> (Thomas Huth's
- message of "Thu, 11 Jan 2024 18:19:20 +0100")
-References: <20240108151352.2199097-1-alex.bennee@linaro.org>
- <20240108151352.2199097-14-alex.bennee@linaro.org>
- <bef35657-d490-4db5-ad52-daba13c8234e@redhat.com>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Fri, 12 Jan 2024 09:35:53 +0000
-Message-ID: <871qamgah2.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1rOE5I-0004cY-Qg; Fri, 12 Jan 2024 04:44:18 -0500
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1rOE5E-0005cd-A6; Fri, 12 Jan 2024 04:44:15 -0500
+Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
+ by Atcsqr.andestech.com with ESMTP id 40C9hiJQ060858;
+ Fri, 12 Jan 2024 17:43:44 +0800 (+08)
+ (envelope-from ethan84@andestech.com)
+Received: from ethan84-VirtualBox.andestech.com (10.0.12.51) by
+ ATCPCS16.andestech.com (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; 
+ Fri, 12 Jan 2024 17:43:42 +0800
+To: <qemu-devel@nongnu.org>
+CC: <pbonzini@redhat.com>, <palmer@dabbelt.com>, <alistair.francis@wdc.com>,
+ <bin.meng@windriver.com>, <liwei1518@gmail.com>,
+ <dbarboza@ventanamicro.com>, <zhiwei_liu@linux.alibaba.com>,
+ <qemu-riscv@nongnu.org>, Ethan Chen <ethan84@andestech.com>
+Subject: [PATCH v5 0/3] Support RISC-V IOPMP
+Date: Fri, 12 Jan 2024 17:43:32 +0800
+Message-ID: <20240112094335.922010-1-ethan84@andestech.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.0.12.51]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 40C9hiJQ060858
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,34 +60,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Ethan Chen <ethan84@andestech.com>
+From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+This series implements IOPMP specification v1.0.0-draft4 rapid-k model and add
+IOPMP device to RISC-V virt machine.
 
-> On 08/01/2024 16.13, Alex Benn=C3=A9e wrote:
->> With the latest fixes for #2010 and #2013 these tests look pretty
->> stable now. Of course the only way to be really sure is to run it in
->> the CI infrastructure and see what breaks.
->> Acked-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> Message-Id: <20231211091346.14616-14-alex.bennee@linaro.org>
->
-> The replay tests seem still to be very flaky, I'm now getting:
->
->  https://gitlab.com/thuth/qemu/-/jobs/5910241580#L227
->  https://gitlab.com/thuth/qemu/-/jobs/5910241593#L396
->
-> I'd suggest to revert this patch to disable them in the CI again.
+Patch 1 add config STREAM make other device can reuse /hw/core/stream.c, IOPMP
+implementation will use it. Patch 2 implement IOPMP deivce. Patch 3 add IOPMP
+device to RISC-V virt machine.
 
-Ok I'll move it back to flaky. I thought I'd eliminated the problem as I
-can do 100 runs without failure locally. Sadly there doesn't seem to be
-anything obvious in the logs as to whats going on.
+The IOPMP specification url:
+https://github.com/riscv-non-isa/iopmp-spec/blob/main/riscv_iopmp_specification.pdf
 
->
->  Thomas
+Changes for v5:
+  - Rebase
+  - IOPMP: Support tracing (Alistair Francis)
+		       Use macros from registerfields.h for register (Alistair Francis)
+           Support PCI device
+           Drop IOPMP device create helper function (Alistair Francis)
+  - Remove ATCDMAC300 (Alistair Francis)
+  - VIRT: Make PCIe bridge connect to IOPMP
+          Modify document for IOPMP options
+          Add IOPMP fdt
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Thanks,
+Ethan Chen
+
+Ethan Chen (3):
+  hw/core: Add config stream
+  Add RISC-V IOPMP support
+  hw/riscv/virt: Add IOPMP support
+
+ docs/system/riscv/virt.rst                    |   12 +
+ hw/Kconfig                                    |    1 +
+ hw/core/Kconfig                               |    3 +
+ hw/core/meson.build                           |    2 +-
+ hw/misc/Kconfig                               |    4 +
+ hw/misc/meson.build                           |    1 +
+ hw/misc/riscv_iopmp.c                         | 1130 +++++++++++++++++
+ hw/misc/trace-events                          |    4 +
+ hw/riscv/Kconfig                              |    1 +
+ hw/riscv/virt.c                               |  110 +-
+ include/hw/misc/riscv_iopmp.h                 |  187 +++
+ .../hw/misc/riscv_iopmp_transaction_info.h    |   28 +
+ include/hw/riscv/virt.h                       |    8 +-
+ 13 files changed, 1488 insertions(+), 3 deletions(-)
+ create mode 100644 hw/misc/riscv_iopmp.c
+ create mode 100644 include/hw/misc/riscv_iopmp.h
+ create mode 100644 include/hw/misc/riscv_iopmp_transaction_info.h
+
+-- 
+2.34.1
+
 
