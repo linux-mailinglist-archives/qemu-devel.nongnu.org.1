@@ -2,86 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38FDA82C772
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 23:52:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B9882C7D5
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 00:06:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOQNf-0004iy-9j; Fri, 12 Jan 2024 17:52:03 -0500
+	id 1rOQaD-00087a-9T; Fri, 12 Jan 2024 18:05:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOQNd-0004iO-5H
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:52:01 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <palmer@dabbelt.com>)
+ id 1rOQa9-00087Q-Kp
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 18:04:57 -0500
+Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rOQNb-0007xE-4j
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 17:52:00 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1d51ba18e1bso59161525ad.0
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 14:51:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <palmer@dabbelt.com>)
+ id 1rOQa5-0004vP-7O
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 18:04:57 -0500
+Received: by mail-oa1-x2f.google.com with SMTP id
+ 586e51a60fabf-203fb334415so4501557fac.2
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 15:04:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705099917; x=1705704717; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=n0eRD2gbAFK8+D4qYKrFFO5oLv8pyWiOLJDRDhM9lXU=;
- b=RLUTfA5h39C7ce+9oBCqiUAd03/NfX09lRlDBf5a2Sf3XCVA798jxhZzmNDlmCXg0H
- krOmqBvHJxCh5RDGMsxwnGzKxE22QoflgXljeTIZT04MCMsolAEmF0VRc9ugoRGBmy7w
- tlCCJdtalCeE3SwMW61kifyW7ADtAG9zf1TpN0S4hEF57NGtktkp3hlu+R/7lXby3S8S
- B8RNRk1oofHgjNo67DqN39ieTFwWqqbsLIMybjZUaNNH1PoSbZHYeYq16xDJ+iXQ3LW7
- cCE/K5zmFf8U/G8gA8vRNV4jNW6Zp3joMi+o0n3yld7P29VRMy+jqPp6T7B5fQPmOpWd
- D3JA==
+ d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1705100690; x=1705705490;
+ darn=nongnu.org; 
+ h=message-id:to:from:cc:in-reply-to:subject:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=JtrWsXHcqdtCTKgVjDVeBeWKAPgeE2LLtsQmuJfDMIg=;
+ b=aw4jz++5SFarO/c0zmZYpgTvWPzWBkng1Y1jrmYkrbFhkvLU/05l4aN7RqYW0zVaGH
+ bOKN8toh2MRkFklOKm5gF1FngoXFYqc955PRwIYGRR7k+bzr3kiyDdB2DMFOf7wqA5GA
+ oOKSkiDN/vpYcSECp8OVeO0tsExRjxweN2VXly8Ld/Nn6nm+Uvls64e6hJnv7/tQFiJ7
+ 4lh9C+YCpbaHpI7WNzVpopb+O/YOdCshgqhWaNCrEeeMgMc8ay82Mnjc/UL/6Q61BzsG
+ jabpOxVlnJcYjRjchDLOIJHGdJoMvOLIw19jXBjN/UmP5/zEubSaq8xCyH5bcMNCt1lO
+ 5MgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705099917; x=1705704717;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=n0eRD2gbAFK8+D4qYKrFFO5oLv8pyWiOLJDRDhM9lXU=;
- b=ntcl2ko63r3UbbTtRbRHYLhsxMk35moMRz2FNpbJ5L+QnO+rw14zdohnFkdTIovih6
- M3XLVqL+ZZ/pGVbSwU+OFcbwN4hzsvJ5EYIQHmhypvWd1pKyblCQETAwZv8gh9KHsHA/
- EReSEptkfAChrmjGdl//DHdFaoa6VDxL+LvXgPK7QzQYEDqbwQtaqNMuoDW+7GUZCLvu
- WSiv5VCHhxam+dGjdueMeSG83oauchmwXXxmSFfpgbkuUEo7wwL6Grxnz68oNoUQz2p0
- v0a4Rw/smI7cRBczc11yGZ0gebYjyavPp0Gkf0U/eah0H4lm1dKHu+k3yYus0dp1X3TO
- 4I+w==
-X-Gm-Message-State: AOJu0Yz6vARfvIC/HVkVF6BsZmkSPnBSlq+KSclB40eTES0Qt3vjCZS3
- n70I2S+7e6jheVy+aKaGk6XA7eU6eScWUQ==
-X-Google-Smtp-Source: AGHT+IHuoZPySER0Cu6e6UuBV8h9dlII6GE8IxbbGGEPkadrUPMyuoDo2v0W30skiTUDxlXEme5Ibw==
-X-Received: by 2002:a17:902:c792:b0:1d4:cb7e:14ee with SMTP id
- w18-20020a170902c79200b001d4cb7e14eemr1420196pla.84.1705099917717; 
- Fri, 12 Jan 2024 14:51:57 -0800 (PST)
-Received: from ?IPV6:2001:8004:2728:2ad6:e985:c1c8:a4fc:508?
- ([2001:8004:2728:2ad6:e985:c1c8:a4fc:508])
- by smtp.gmail.com with ESMTPSA id
- l2-20020a170902e2c200b001d09c539c96sm3680953plc.229.2024.01.12.14.51.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Jan 2024 14:51:57 -0800 (PST)
-Message-ID: <32238550-8008-4771-9a1d-755be8c19384@linaro.org>
-Date: Sat, 13 Jan 2024 09:51:50 +1100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/13] trans_rvv.c.inc: remove vlmax arg from
- vec_element_loadx()
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- max.chou@sifive.com
-References: <20240112213812.173521-1-dbarboza@ventanamicro.com>
- <20240112213812.173521-12-dbarboza@ventanamicro.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240112213812.173521-12-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ d=1e100.net; s=20230601; t=1705100690; x=1705705490;
+ h=message-id:to:from:cc:in-reply-to:subject:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JtrWsXHcqdtCTKgVjDVeBeWKAPgeE2LLtsQmuJfDMIg=;
+ b=uJr6ZDZP9GXbirr1k3wqD9HfNNHzbCAMpcuI5VSWphdu8LC+S5PJV9tzoVprihBcXr
+ p1qRjsT5iS2ZGr0Qr1E1yKSyh2+1WyRgrQonenj5lvy8Icrnk/fNzgeEgLOeKvfSm/H4
+ 1f4/64F05k2iURsJBOo9ja6wa4DiW66QW5Zqiuy00tZGHn2oZ2bipPbWwuYB8nI6gohq
+ /xVhzCmT7d9cln+bp8R1XwL+z98AYzA/5sCUf6ie/U2Y5JCivytL+EC3u3ozk0cwdcvq
+ 66FbD9gFB2PulVYdRvm/SDTL+MEbu08A9WUhdtbIqxNkoBoyvBAqfwhQG6QOFD6rKjQL
+ A8Cw==
+X-Gm-Message-State: AOJu0Yxa/wXi+soj5IwR6qbRvbSX5swFkdDWOCQhwbp/aEiGir7obPQu
+ uZohHhhWrQWn9bEp8n8z0w7LFuUxxFp3Sg==
+X-Google-Smtp-Source: AGHT+IEAbvKRDDSPcMfcbb9hEwtrVOmXmhXA/mhOQHV/K5NtvdwJAF7BxuLaFZwdY2MWz035n7NOfQ==
+X-Received: by 2002:a05:6870:158a:b0:206:9742:eeb7 with SMTP id
+ j10-20020a056870158a00b002069742eeb7mr2516534oab.65.1705100690398; 
+ Fri, 12 Jan 2024 15:04:50 -0800 (PST)
+Received: from localhost ([192.184.165.199]) by smtp.gmail.com with ESMTPSA id
+ du9-20020a056a002b4900b006da2b1e4fabsm3662054pfb.163.2024.01.12.15.04.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 12 Jan 2024 15:04:49 -0800 (PST)
+Date: Fri, 12 Jan 2024 15:04:49 -0800 (PST)
+X-Google-Original-Date: Fri, 12 Jan 2024 15:04:45 PST (-0800)
+Subject: Re: [PULL 15/21] linux-user/riscv: Add vdso
+In-Reply-To: <119848b9-0cd7-4d33-bc43-385c86069388@linaro.org>
+CC: Vineet Gupta <vineetg@rivosinc.com>, qemu-devel@nongnu.org,
+ Alistair Francis <Alistair.Francis@wdc.com>, philmd@linaro.org,
+ ewlu@rivosinc.com, gnu-toolchain@rivosinc.com
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <mhng-d9fc5259-0fd0-4852-b66a-0c1ede5fda49@palmer-ri-x1c9>
+Received-SPF: pass client-ip=2001:4860:4864:20::2f;
+ envelope-from=palmer@dabbelt.com; helo=mail-oa1-x2f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, PP_MIME_FAKE_ASCII_TEXT=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,42 +88,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/13/24 08:38, Daniel Henrique Barboza wrote:
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->   target/riscv/insn_trans/trans_rvv.c.inc | 26 +++++++++++++++++--------
->   1 file changed, 18 insertions(+), 8 deletions(-)
-> 
-> diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-> index 804cfd6c7f..3782d0fa2f 100644
-> --- a/target/riscv/insn_trans/trans_rvv.c.inc
-> +++ b/target/riscv/insn_trans/trans_rvv.c.inc
-> @@ -3265,21 +3265,28 @@ static void endian_adjust(TCGv_i32 ofs, int sew)
->   #endif
->   }
->   
-> -/* Load idx >= VLMAX ? 0 : vreg[idx] */
-> +/*
-> + * Load idx >= VLMAX ? 0 : vreg[idx]
-> + *
-> + * This function assumes ctx->vl_eq_vlmax = true.
-> + */
->   static void vec_element_loadx(DisasContext *s, TCGv_i64 dest,
-> -                              int vreg, TCGv idx, int vlmax)
-> +                              int vreg, TCGv idx)
+On Fri, 12 Jan 2024 13:35:39 PST (-0800), Richard Henderson wrote:
+> On 1/12/24 08:49, Vineet Gupta wrote:
+>> Hi Richard, Alistair
+>> 
+>> On 10/30/23 14:17, Richard Henderson wrote:
+>>> diff --git a/linux-user/riscv/Makefile.vdso b/linux-user/riscv/Makefile.vdso
+>>> new file mode 100644
+>>> index 0000000000..2c257dbfda
+>>> --- /dev/null
+>>> +++ b/linux-user/riscv/Makefile.vdso
+>>> @@ -0,0 +1,15 @@
+>>> +include $(BUILD_DIR)/tests/tcg/riscv64-linux-user/config-target.mak
+>>> +
+>>> +SUBDIR = $(SRC_PATH)/linux-user/riscv
+>>> +VPATH += $(SUBDIR)
+>>> +
+>>> +all: $(SUBDIR)/vdso-32.so $(SUBDIR)/vdso-64.so
+>>> +
+>>> +LDFLAGS = -nostdlib -shared -fpic -Wl,-h,linux-vdso.so.1 -Wl,--build-id=sha1 \
+>>> +	  -Wl,--hash-style=both -Wl,-T,$(SUBDIR)/vdso.ld
+>>> +
+>>> +$(SUBDIR)/vdso-32.so: vdso.S vdso.ld vdso-asmoffset.h
+>>> +	$(CC) -o $@ $(LDFLAGS) -mabi=ilp32d -march=rv32g $<
+>>> +
+>>> +$(SUBDIR)/vdso-64.so: vdso.S vdso.ld vdso-asmoffset.h
+>>> +	$(CC) -o $@ $(LDFLAGS) -mabi=lp64d -march=rv64g $<
+>> 
+>> So by default qemu ships the vdso binary. How can one rebuild it ?
+>> 
+>>  From skimming the build files it seems following ought to do it
+>>      make update-linux-vdso
+>> 
+>> with a prior configure cmd like below with PATH pointing to the cross
+>> compiler.
+>> ../configure  --target-list=riscv64-linux-user
+>> --cross-cc-riscv64=riscv64-unknown-linux-gnu-gcc
+>
+> Yes, that should do it.
+>
+>> But it doesn't, I'm sure we are missing something basis here.
+>
+> Do you get an error message?
+> Did $(BUILD_DIR)/tests/tcg/riscv64-linux-user/config-target.mak get created properly?
+>
+>> For starters we saw something that seems like a thinko in
+>> 
+>> diff --git a/linux-user/riscv/vdso.S b/linux-user/riscv/vdso.S
+>> -#define sizeof_reg     (__riscv_xlen / 4)
+>> +#define sizeof_reg     (__riscv_xlen / 8)
+>
+> Oops.
+>
+>> As as aside, we also see that rt_sigreturn in kernel vdso elides the
+>> explicit the call frame information. Again we naively don't know if that
+>> is required in qemu.
+>> 
+>>      .text
+>> ENTRY(__vdso_rt_sigreturn)
+>>      .cfi_startproc
+>>      .cfi_signal_frame
+>>      li a7, __NR_rt_sigreturn
+>>      ecall
+>>      .cfi_endproc
+>> ENDPROC(__vdso_rt_sigreturn)
+>
+> Perhaps it's not required, no.  But I'd consider the lack of info from the kernel to be a 
+> bug.  Lack of it means places like gcc have to have special cases.
 
-I think removing the cpu configuration constant is a mistake.
-Compile-time constants are always better than computation...
+Ya, I agree.  We've tried to avoid too many RISC-V-specific hacks for 
+this, but it's bitten me a few times in embedded codebases and it's 
+always a headache.
 
-> +#ifdef TARGET_RISCV64
-> +    tcg_gen_mov_i64(t_vlmax, cpu_vl);
-> +#else
-> +    tcg_gen_extu_tl_i64(t_vlmax, cpu_vl);
-> +#endif
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
 
-That said, no ifdef required -- the second statement should always work.
+Thanks!
 
+Looks like we've got essentially the same thing in Linux already, so I 
+think we're safe over there.
 
-
-r~
+>
+>
+>
+> r~
+>
+> -- 
+> You received this message because you are subscribed to the Google Groups "gnu-toolchain" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to gnu-toolchain+unsubscribe@rivosinc.com.
+> To view this discussion on the web visit https://groups.google.com/a/rivosinc.com/d/msgid/gnu-toolchain/119848b9-0cd7-4d33-bc43-385c86069388%40linaro.org.
+> For more options, visit https://groups.google.com/a/rivosinc.com/d/optout.
 
