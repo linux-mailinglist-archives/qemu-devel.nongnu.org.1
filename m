@@ -2,68 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F7182C106
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:44:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39BED82C110
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 14:47:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOHoH-0003yq-02; Fri, 12 Jan 2024 08:42:57 -0500
+	id 1rOHry-0001M5-Oa; Fri, 12 Jan 2024 08:46:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOHoB-0003rQ-0F
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:42:51 -0500
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ id 1rOHrx-0001Lp-Gt
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:46:45 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOHo8-0004Kz-Qf
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:42:50 -0500
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2cd33336b32so85446601fa.0
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 05:42:48 -0800 (PST)
+ id 1rOHrv-0006BY-OK
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 08:46:45 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3376555b756so3730820f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 05:46:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705066967; x=1705671767; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=oE1ouddzc3nwH3KFektTNt490zmSSt0gUfDdS/eoORc=;
- b=bTBTnBIKM2hymu6NzrTg7fGWgitldKzk6CLorn8cDGP9bT6NddYHZJ4u+w2SPcW3+t
- +Ma11jT/+pdv7fm8w1sPZt2yJ0N8AiwqHOh3XJTRRPOgzYq4D3qxAhiedSsHVf0+3ob/
- uBEYasYCCGgRU+MQ/FgJnVd2ExlcccHDVKzkIRM/lNkOL17mA2yVaBiYnY+f78Smtr0r
- 8AcCPsfSbHJGKyH4A/B2U4UoRdoPxNMnAnJ7AFQ8Y8cx4CveXO16jVKhTrOxT+BJc3SY
- iccigboGyQNtUssZuewnegtBjCWiH4dJk2Ooz/2LHFwg+maEvuKweP90RtjG7DE5UDG5
- Wyow==
+ d=linaro.org; s=google; t=1705067201; x=1705672001; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=J94tv17PtRv1hNA8+TxHl9ooGYVoxDm6RnNrgCEkkwM=;
+ b=qXIp0LeYwg5UaB8N6WqZl+wQT5uUDnhqCPVYtxx3nxIICRG8QxZQ6vsy1dHUWsPbkV
+ IbFB0Xl2/DpK/NKvlTlliVW3d+AHPK/QJXdkcGRfHgSS5CWPNC1zoVJ2ohiWRHiD93Uh
+ L0nIvgcqIONF/o/6Gt9gMiIyTs/nOdqByqh6kkMeQwbevdX35z5DE89uii3SL30LcMta
+ uJVNBSC33MdwGyCyfCiU5I/+OIZ3rJk7WB66zslZvuFEMnlMoWe45BBlN62RPIEIX92k
+ YwoduYJ3VT5kAdRVEaC9iSFaKS3H4HC5lDl7t2P+wYu1rx8CC+4jv8cidrh2oNi3S2oZ
+ yolQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705066967; x=1705671767;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1705067201; x=1705672001;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=oE1ouddzc3nwH3KFektTNt490zmSSt0gUfDdS/eoORc=;
- b=JtUiKqFlycLOZkpLZ3hbAMnQYam14bhlwU/qKG5c+7CAU+OQ3zdwLe6Zs1iKqZSo5c
- +nw6g460+T0W0eiFBsepGOUR2AKnq9SoWQMKPjIiPBtXPiiCLiMeqPJnQ7+eM4E8wWFi
- PPjHDp848lEUlPe2zyXQsukAgBdgf6i3hGaQehi0psUZaoBQ4pV6foE74W7Y1wmoq1zN
- +JYl3g57DcuQsUoUQ2sA7NCGpdd2t4p6wN/dq2K4dRDGKlg7BdJHERxCTmAewUuFmVh0
- KPWkeKMLHXI+SHL8MmLkLZRi35Kz4FRW0vlNEU/wKRYR+KcNbrXqIq35vqkInPr+5sZg
- 2gNA==
-X-Gm-Message-State: AOJu0Yzb5VdvtYAD4iFTzXe+QRj9u2EHp6d89NfS4Kh8Sc2jSE7FWJGR
- 0gkb1PjlVig7bITFnyCyNMsaexWPplMpboh8iZtBVsIOIT5thfVA94IhPns5
-X-Google-Smtp-Source: AGHT+IHA/P6PhyodSjg2feqSJQgQJ6UcezHrJH4eKYz8q2Jhy/pQGfSVCnE7URhpgqms8D0mQnpTixx5cwE935tFj9w=
-X-Received: by 2002:a2e:9bd0:0:b0:2cd:635e:cd57 with SMTP id
- w16-20020a2e9bd0000000b002cd635ecd57mr782817ljj.47.1705066966907; Fri, 12 Jan
- 2024 05:42:46 -0800 (PST)
-MIME-Version: 1.0
+ bh=J94tv17PtRv1hNA8+TxHl9ooGYVoxDm6RnNrgCEkkwM=;
+ b=lrfDbhBtVeVVC5rsN4fptdmypaNLOCC7MskYqi1ug4fwAlZtZjBJKqbN9uNxuw8L1z
+ wcjTu1R5dtGBj3yHoX/CAw/2wijpr/GzwbpcxOCTLmYzgW5ACujcQkkFvO2b7gMuncIa
+ DZ8GKU8Bew3jCIbVX0n4WtxrQEWf0IVYyfz5EgA8bgbxBFriDhQLh9oEJ8WBP5zvsuct
+ Iw/ycl0IP3cfF5MldKnhqotbkaKXfZenSNNisovXggvt/d9paO668KfN8LKytJkwOMDX
+ UAnigNR1Nljz2WyikoWFmzXFWBsv90tpDHJScaAs3BIlcU2X0FWwvXrynCZW0G8z6NlV
+ VXGg==
+X-Gm-Message-State: AOJu0Yw/R1zJrGhE0fqH6kWd1gzhallld9iO61b/RmckM0i8+mL/hO6u
+ BCd+0j/Adkf//pC2rP78BgtaO/wcfmZRNE3/3eb+A9Wwyy8=
+X-Google-Smtp-Source: AGHT+IESgUZlv0Bpdng1pRGBEa/aSbwNM4/K6fTvDTHC+wHJ8cwFpO1vWHdwC0/GSgNULpNyFA9wbw==
+X-Received: by 2002:adf:8909:0:b0:336:58e8:d444 with SMTP id
+ s9-20020adf8909000000b0033658e8d444mr1266713wrs.30.1705067201465; 
+ Fri, 12 Jan 2024 05:46:41 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ h16-20020adffd50000000b003372befd19bsm3948357wrs.104.2024.01.12.05.46.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 12 Jan 2024 05:46:41 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 12 Jan 2024 13:42:35 +0000
-Message-ID: <CAFEAcA-WQa5rJK3e2Z8tgcm0ZN8dDnFnF0v=hTPdJpapN4vsNQ@mail.gmail.com>
-Subject: test-x86-cpuid-compat qtest produces warnings on TCG
-To: QEMU Developers <qemu-devel@nongnu.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x233.google.com
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org,
+ =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>
+Subject: [PATCH] hw/pci-host/raven.c: Mark raven_io_ops as implementing
+ unaligned accesses
+Date: Fri, 12 Jan 2024 13:46:40 +0000
+Message-Id: <20240112134640.1775041-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,43 +90,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When running under TCG, the 'test-x86-cpuid-compat' qtest produces
-warnings. You can see these for instance in the x64-freebsd-13-build
-CI job; here's an example:
- https://gitlab.com/qemu-project/qemu/-/jobs/5918818568
+The raven_io_ops MemoryRegionOps is the only one in the source tree
+which sets .valid.unaligned to indicate that it should support
+unaligned accesses and which does not also set .impl.unaligned to
+indicate that its read and write functions can do the unaligned
+handling themselves.  This is a problem, because at the moment the
+core memory system does not implement the support for handling
+unaligned accesses by doing a series of aligned accesses and
+combining them (system/memory.c:access_with_adjusted_size() has a
+TODO comment noting this).
 
-24/837 qemu:qtest+qtest-x86_64 / qtest-x86_64/test-x86-cpuid-compat
-          OK               7.32s   45 subtests passed
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80  =E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95
-stderr:
-qemu-system-x86_64: warning: TCG doesn't support requested feature:
-CPUID.07H:EBX.intel-pt [bit 25]
-qemu-system-x86_64: warning: TCG doesn't support requested feature:
-CPUID.07H:EBX.intel-pt [bit 25]
-qemu-system-x86_64: warning: TCG doesn't support requested feature:
-CPUID.07H:EBX.intel-pt [bit 25]
-qemu-system-x86_64: warning: TCG doesn't support requested feature:
-CPUID.07H:EBX.intel-pt [bit 25]
+Fortunately raven_io_read() and raven_io_write() will correctly deal
+with the case of being passed an unaligned address, so we can fix the
+missing unaligned access support by setting .impl.unaligned in the
+MemoryRegionOps struct.
 
+Fixes: 9a1839164c9c8f06 ("raven: Implement non-contiguous I/O region")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+Spotted by code inspection: I was looking for devices whose behaviour
+might be changed by a patch I'm reviewing that adds that missing
+support for unaligned accesses in the core memory system. But even
+if we do implement it there, it's more efficient for the raven MR
+to correctly mark it as handling unaligned accesses itself.
 
-Can somebody look at these and work out whether:
- (a) this is a real problem we need to fix
- (b) this is a problem in the test case and it shouldn't be trying to
-     test a feature we don't implement
- (c) we should suppress this warning
-?
+Tested with 'make check' and 'make check-avocado' only.
+---
+ hw/pci-host/raven.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-(filed as https://gitlab.com/qemu-project/qemu/-/issues/2096 )
+diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
+index c7a0a2878ab..a7dfddd69ea 100644
+--- a/hw/pci-host/raven.c
++++ b/hw/pci-host/raven.c
+@@ -200,6 +200,7 @@ static const MemoryRegionOps raven_io_ops = {
+     .write = raven_io_write,
+     .endianness = DEVICE_LITTLE_ENDIAN,
+     .impl.max_access_size = 4,
++    .impl.unaligned = true,
+     .valid.unaligned = true,
+ };
+ 
+-- 
+2.34.1
 
-thanks
--- PMM
 
