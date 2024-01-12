@@ -2,69 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC77A82BFF3
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 13:48:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3489682BFF4
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 13:48:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOGw7-00026K-Qt; Fri, 12 Jan 2024 07:46:59 -0500
+	id 1rOGxE-0002XZ-E0; Fri, 12 Jan 2024 07:48:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOGvy-000215-97
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:46:51 -0500
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ id 1rOGxB-0002UE-2L
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:48:05 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOGvw-0001n0-6J
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:46:49 -0500
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2cd8bd6ce1bso18279861fa.1
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 04:46:45 -0800 (PST)
+ id 1rOGx8-0002QB-7c
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 07:48:04 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5574feb7958so7506829a12.3
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 04:48:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705063603; x=1705668403; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705063679; x=1705668479; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=f5e6YIUFh1L0RCDhKUoemowif1MjyflSqmQcGKvPcTs=;
- b=iWhIFgiRwtf1XxJbz1SFw0q7YYwC1dvxGTbzobUVX9qDyDaWrU8Dk9q8mH+N5mqxKL
- KQMyqCP1kv9pethvOQCQx9eJgjDMANYYXxDTMn/+hSWbSg0MzrxXm6m2y/v4tA5ZYujl
- HHvkJKnnRGZbysUYitjxjKxl0Y80M43TJ97nDUFE/OKtF5pSLAFD3sClPuK/0n5cze2O
- wtI1m60PtqQKD1sCgRzNgmxv5/b4czwomb2LbFnfaBvJFCsX+sK2Z0xT8DJIGS+lyuQJ
- EpmddAjDtXVqF+OWp37PUpMk20Mbx5OrGvgFdwQl48A4Lt3i6QmmaoaKwn6P4V9nlXcE
- T95Q==
+ bh=s0qjXo2lu52sIxdIsndME8SnUbloRjPO0qhAbgQ3Mvg=;
+ b=Njm32GKIC2Kz4DqsMKdBCelRev197GPRaZUT8MHFwzlR5oAjJkAjw6RfGocZUK+RCM
+ i9irWZo1DcTx5vCamt9p2yxCT57UUa3OStywRNWPMeYnPO3XMF+q2rAtkk37SLObbEW7
+ WO458Ouoo0Dla1OiMkTc8eiBR3NOUSZf9I2xGu5TwwWf5GjsYjU7O+Z4bXzv7tvO1U1C
+ f3CsRmUJOKwP+EaJTXYtv48GZ5BU+YVOAgevNrX8FIB+QT8eBfXJj/jhVFCJXEcAJe0D
+ Wk6rRF9dtC7guANJc8a7K7rPDfVgP4CBMX4nqKODL6VSUMxea5bChHL2WF83MZlzljbv
+ utGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705063603; x=1705668403;
+ d=1e100.net; s=20230601; t=1705063679; x=1705668479;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=f5e6YIUFh1L0RCDhKUoemowif1MjyflSqmQcGKvPcTs=;
- b=qNtSdinereqyibTBicx96dtkwcOPggGUZRYO63w4jAH2cMTeaDCDy6rm9B0Z+BeAvo
- B4hynoQCm8JF+U31kjyfD3Y43IUbXha805YkzU0ASqkKuXDOVaBCC/c9J2ps2/mbZ5/T
- 02dwovfzHFZssrnVW0Ve1C6Y7WR5pZfW3cb8bDzR8hCHmcnH/DRZYiCoe6nwHhoVso6R
- BjoLm7BBpWMN5GhIEZG9QHcySTzSTVX3ptAjLVX2nvpheqxLcBMhfomsPVmuJRQI3tdp
- rfNGW3p4rVNMgB0GbzzbyGqQswQI/lMI0x8+FmHBg+8AGKYnj9IkkIbyarWp4TmSz2uS
- HrmQ==
-X-Gm-Message-State: AOJu0Ywgd9Uv8VnR66sL32XioYKhkETEF/Pcsxnj+PAzT93Xn64WpXUo
- iJCmjp5cLaHAzIrKjpCjb1VU+05OTRFzIQGGcGC2TAhfOGEN5w==
-X-Google-Smtp-Source: AGHT+IGm7R1Inxby3qbFZXsCSJNNRxVyPyrPn0bJ39CVgl+5Uzpi2GbKXaVn+bnlGTgAPWkHgIRy8K36STG033b2fqw=
-X-Received: by 2002:ac2:4823:0:b0:50e:37f9:37aa with SMTP id
- 3-20020ac24823000000b0050e37f937aamr425883lft.50.1705063603074; Fri, 12 Jan
- 2024 04:46:43 -0800 (PST)
+ bh=s0qjXo2lu52sIxdIsndME8SnUbloRjPO0qhAbgQ3Mvg=;
+ b=X1TrqWsL9GVWii4mWprW2hu7Wj7Hi2G+61oyieXkXHRJMCxJFMcaCMkQQPpr4LK/6l
+ nRro2EAKYAEf9T6JJGqu9pptT3A21t0FuCZodD+Ie8J10H6AX5IB1YSzH2tlQzQn+lzF
+ UcwkbihSve9E31AsRt39C8Jc/FFPIvZJm6CfqbEwK6uMq5i5tP8gYt4xFNsZtWpu1zH/
+ rWfcFq01fAHUZ20VOBM9WG49TNAqnUQwXVIR5/a6UcrEcPbpso+lo6SH+rAAygikTA0u
+ 4clD9UVeeXsRyByXDdzdC6oaumtgOVpcO0TdqvTLhIwSP5CuwMBaizm7aU6tkM6iwIZ0
+ v3JQ==
+X-Gm-Message-State: AOJu0YxMtr+sk13n54IVzgFqINDnPW9vssfmW1M8Dj1a8mXUNyzgyeFX
+ ZudZQ6Q47tnrWzUHO+fDDH4yAec+a34tQbbwD/0lY0bjidfkuA==
+X-Google-Smtp-Source: AGHT+IGj0guQvroWmRCefFY+I9Etrr5YwKqXCRQY+bGajrqx8Azq6NtTvAXtFxdzVutTBe9juZzK8BltEoqKWV/KSk4=
+X-Received: by 2002:a05:6402:f8b:b0:557:40ff:b3bb with SMTP id
+ eh11-20020a0564020f8b00b0055740ffb3bbmr600609edb.38.1705063679288; Fri, 12
+ Jan 2024 04:47:59 -0800 (PST)
 MIME-Version: 1.0
-References: <CAFEAcA9DU7aZjzWc+fnMw14JupM6ff1=ChxaX3+kfGt3LBrP5Q@mail.gmail.com>
- <20240112114527.7911-1-abelova@astralinux.ru>
-In-Reply-To: <20240112114527.7911-1-abelova@astralinux.ru>
+References: <20231213105026.1944656-1-kraxel@redhat.com>
+ <y2kuootd3k2tqe2245zggbuusg2kaaqrxlvxfwy2wrcbdxg3cn@zgj6tl7gd4lp>
+ <CAFEAcA8H6kVNiSk6CEVun5KWQH-sqWxBKxZ9Rf7haQhZHEKiow@mail.gmail.com>
+ <CAFEAcA-sw2FNgTft0PYL=GW0JQhdRX9Zn0B6muUjC68nmVXHnA@mail.gmail.com>
+ <e2hpw77r6t2ge6h233cq75qdadou6koz62sfktcsrlc2gzeqnq@4ejyxysmmulo>
+In-Reply-To: <e2hpw77r6t2ge6h233cq75qdadou6koz62sfktcsrlc2gzeqnq@4ejyxysmmulo>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 12 Jan 2024 12:46:32 +0000
-Message-ID: <CAFEAcA8jpCr-GnkUZipN8bCFTZHSb+FjDS7nOtZrs2jkdZ0cyA@mail.gmail.com>
-Subject: Re: [PATCH v2] load_elf: fix iterators' types for elf file processing
-To: Anastasia Belova <abelova@astralinux.ru>
-Cc: qemu-devel@nongnu.org,
+Date: Fri, 12 Jan 2024 12:47:48 +0000
+Message-ID: <CAFEAcA_f0Q7LkSQ2+sxgBcRQNSTenykq1R28QMuGyW22PtxW2Q@mail.gmail.com>
+Subject: Re: Re: [PULL 0/6] Firmware/edk2 20231213 patches
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org, Igor Mammedov <imammedo@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- sdl.qemu@linuxtesting.org
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-stable <qemu-stable@nongnu.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,93 +91,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 12 Jan 2024 at 11:46, Anastasia Belova <abelova@astralinux.ru> wrote:
+On Thu, 11 Jan 2024 at 16:28, Gerd Hoffmann <kraxel@redhat.com> wrote:
 >
-> i and size should be the same type as ehdr.e_phnum (Elf32_Half or
-> Elf64_Half) to avoid overflows. So the bigger one is chosen.
+> On Thu, Jan 11, 2024 at 04:02:38PM +0000, Peter Maydell wrote:
+> > On Thu, 11 Jan 2024 at 15:52, Peter Maydell <peter.maydell@linaro.org> wrote:
+> > >
+> > > On Thu, 11 Jan 2024 at 14:01, Gerd Hoffmann <kraxel@redhat.com> wrote:
+> > > >
+> > > > Ping.
+> > > >
+> > > > As expected this missed the 8.2 boat.  Now the devel tree is open again
+> > > > and people are back from xmas + new year vacations, can this be picked
+> > > > up for master and eventually 8.2-stable?
+> > >
+> > > I can queue it, sure. Do we need to respin it to add cc: qemu-stable
+> > > tags, or can it be applied as-is ?
+> >
+> > ...PS did you mean to cc qemu-stable, not the nonexistent edk2-stable
+> > on this pullreq email?
 >
-> j should be the same type as file_size for the same reasons.
+> Yes, Cc'ing qemu-stable was the intention, thanks for fixing it up.
 >
-> This commit fixes a minor bug, maybe even a typo.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
-> Fixes: 7ef295ea5b ("loader: Add data swap option to load-elf")
-> Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-> ---
->  include/hw/elf_ops.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/include/hw/elf_ops.h b/include/hw/elf_ops.h
-> index 0a5c258fe6..6e807708f3 100644
-> --- a/include/hw/elf_ops.h
-> +++ b/include/hw/elf_ops.h
-> @@ -325,7 +325,7 @@ static ssize_t glue(load_elf, SZ)(const char *name, int fd,
->  {
->      struct elfhdr ehdr;
->      struct elf_phdr *phdr = NULL, *ph;
-> -    int size, i;
-> +    Elf64_Half size, i;
+> I'd leave it to the stable maintainer(s).  If they prefer a respin with
+> Cc qemu-stable added to all patches I surely can do that.  If being
+> notified with this reply is good enough I'm happy too.
 
-Elf64_Half is a 16 bit type -- this doesn't seem right.
+Well, it all made it through the CI fine, and I think MJT is
+fairly flexible about stable- notifications, so I'm going to
+push this merge to git.
 
-In particular we use 'size' to store "ehdr.e_phnum * sizeof(phdr[0])"
-so even if we know e_phnum fits in a 16 bit type the
-multiplication is not guaranteed to; so this change actually
-introduces a bug. The type we need for what we're doing needs
-to be big enough to store the result of that multiplication,
-so anything bigger than 16 bits will be fine, including 'int'
-(since we know the RHS is a small number). We could change
-this to 'size_t' or 'ssize_t', I suppose, but it doesn't
-really seem necessary.
 
-(Side note: whatever your static analyser is could presumbaly be
-doing better about identifying overflows here -- it ought to be
-able to figure out that "unsigned 16 bit value * constant 64"
-is not going to overflow a signed 32 bit type.)
+Applied, thanks.
 
-i is only used as the iterator through the program headers,
-so it wouldn't be wrong to make it a 16 bit type, but there's
-really no need to constrain it -- an 'int' is fine.
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
 
-Also, these functions have macro magic so we create both the
-32-bit and 64-bit elf versions from one bit of source, so it
-is not in general right for them to have a type in them that
-is specific to one or the other, as Elf64_Half is.
-
->      ssize_t total_size;
->      elf_word mem_size, file_size, data_offset;
->      uint64_t addr, low = (uint64_t)-1, high = 0;
-> @@ -464,7 +464,7 @@ static ssize_t glue(load_elf, SZ)(const char *name, int fd,
->                   * the ROM overlap check in loader.c, so we don't try to
->                   * explicitly detect those here.
->                   */
-> -                int j;
-> +                Elf64_Half j;
-
-This case is like 'i' above -- it's not a bug to use a 16 bit
-type for the iterator variable, but it isn't necessary,
-and we shouldn't use an Elf64* type.
-
->                  elf_word zero_start = ph->p_paddr + file_size;
->                  elf_word zero_end = ph->p_paddr + mem_size;
->
-> @@ -500,7 +500,7 @@ static ssize_t glue(load_elf, SZ)(const char *name, int fd,
->              }
->
->              if (data_swab) {
-> -                int j;
-> +                elf_word j;
->                  for (j = 0; j < file_size; j += (1 << data_swab)) {
->                      uint8_t *dp = data + j;
->                      switch (data_swab) {
-
-This change is OK and necessary. It fixes a minor bug:
-if we are loading an ELF file that contains a segment
-whose data in the ELF file is larger than 2GB and we need
-to byteswap that data, we would previously get this wrong.
-(We should mention this in the commit message.)
-
-thanks
 -- PMM
 
