@@ -2,92 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C670B82C309
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 16:48:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E05E82C30E
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 16:49:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOJlW-0007tc-OM; Fri, 12 Jan 2024 10:48:14 -0500
+	id 1rOJlm-000860-Ph; Fri, 12 Jan 2024 10:48:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rOJlJ-0007oo-TV
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:48:02 -0500
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rOJlk-00085i-2l
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:48:28 -0500
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rOJlD-00071Z-14
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:48:01 -0500
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-a28b0207c1dso529445366b.3
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 07:47:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rOJli-0007Cj-AV
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:48:27 -0500
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-50eabbc3dccso7487408e87.2
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 07:48:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705074465; x=1705679265; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FdgqvXX8UJ2qxsZ0TsBE2PbbJ01x0G5eEDgaM+18vfo=;
- b=hQfpJ0cvlT7c0L6VxRdMFtBFF/mZJ1enqARp/5Y640ssGeHYCQJno1ljcbuj4jsZKW
- Owt3GN++5Sv2imc+dfP7M047nbE4uZciRpZMdFWCGSdlCQzuTLaX19eiWFINbRE40JS4
- 4Ew7beJkslMyv+rIc3KRbGIvlFN41hnidi/cqrxUbJpIo6xDyuYkiSA3RAT0+jdcLXP3
- KPAQYUgZ6+lzKALE8hlgjKsLqQk+vAQ9GXHdXXkoelEXCXzmmqtXKMAZxqw8gbqPxcDH
- Bh5x8aiN3f0Tu+o2LetMtO74miawZtg2wMz5/eHYc1uRkSgltKD7+/gqqQaZPqqbAjUE
- NI/w==
+ d=linaro.org; s=google; t=1705074504; x=1705679304; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nWfUZBrpFBYLJCz0l644xS3QFaDYEE69oys2BOsjpkk=;
+ b=go4+xzbpSil3/v7ncm2JjzyenTh0mxvxylNWp98vvWbpUujVdFaz+Y+IvoUl6WFwM6
+ bjG9tmsbuUQdgAPtYFl9CPM6eG4K2+5HbxiHf47z2mWGh4fKaG/C98Npf4S5a38RKSqi
+ YnHTcrOX822VhLAkZvQk6c7kQEQN1IeotkO+iNs6IsmlHSGKKwIpppCIUwJM6NWnuVQ/
+ ToFBujmsyZEbtgzhVJFMDloXJS+Dm+qlOajwji3C0sP+yt4Jvm/YOeoMVwGrOe01WFfN
+ +VOf0YsNHFai+fONfC72zgSoizTgmwR/voYMzldgX3uJ9gCXIw/y9ur9viDFn5orD0ku
+ yNVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705074465; x=1705679265;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FdgqvXX8UJ2qxsZ0TsBE2PbbJ01x0G5eEDgaM+18vfo=;
- b=QY3TMnf6lbHpF9lP3F0otQQowvcK2PFVwoOndVv0/4hSeG9KrTJWz7ZxUKkHdCwgUe
- wk9DqT37ioVS8ioXfhdYiWf3E7Xp4lgjj3O1NOapmE/056P9/mQHt4joelEK2m0OeAIU
- LWBV/ZcqBBo/BhClPVTeYi0ssPQ0b9PNxhRZeZIu9swCRCs3vBlvSjFSSG6kcc0TLRB3
- 74ssAiBYYc0RgGUzpBuGVq8XXd7QR1VhCvXYe7MgKIf6t7QmFYJ8Z1xrR0RpC2iSW2tQ
- JPsm5SG0UrBnfxIVLkiGPx8iXty8GgLPMaMpM/O/bcxWgaBWXTcLPLhsvZCwVSAV4cq+
- pcBQ==
-X-Gm-Message-State: AOJu0YwAdj0yAChaix8NE8jx4iGjuTVStbD20M3pLF71mma8mM8jUQDv
- xq0G73gxi/sbGDKgi45rU4JqJWqDRN54gA==
-X-Google-Smtp-Source: AGHT+IE4TfeIP/s8oXLntc7qq/ssuOTmrVIAX9ZJkyksz5U2xZ7RL5Kei1FT26mMtk+PV01S5P5Ksw==
-X-Received: by 2002:a17:906:274a:b0:a2c:6bea:58a8 with SMTP id
- a10-20020a170906274a00b00a2c6bea58a8mr917134ejd.37.1705074464900; 
- Fri, 12 Jan 2024 07:47:44 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.202.145])
- by smtp.gmail.com with ESMTPSA id
- re20-20020a170906d8d400b00a2aed87bb44sm1898158ejb.110.2024.01.12.07.47.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Jan 2024 07:47:44 -0800 (PST)
-Message-ID: <3ed35db5-0272-4ca2-b34b-461dcf817607@linaro.org>
-Date: Fri, 12 Jan 2024 16:47:41 +0100
+ d=1e100.net; s=20230601; t=1705074504; x=1705679304;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nWfUZBrpFBYLJCz0l644xS3QFaDYEE69oys2BOsjpkk=;
+ b=jbLgk+dMyYF8u79UnC+nqPC+4cPr1Kv+UK2TWU9aQ3c5xg2kB9s0YAktI+RjdipATQ
+ uVe/Cjx+vBP+6Ps5dyU/Vk/KlAwKQKHnFn5UtF/bijaAdSjLVWDu2WDS9TgaGUvoSsLn
+ pYCHcEIrVhE/Ss5GfPueTKKoeVT3OoDeX56mHPu4sLsKDIjB5Rm9CwDQcYqoGqtymBS8
+ Gw45GgGD8cTu44Z143NYKZj6B+tWMBk2D1EmWNHuBAB9vSt3Vpo+JZpZHs3QqdMItMg6
+ KnOF8D4lNC4+WkHeSm4rW3OmniVPlPhNCvBqQrrtq1zRoEzLDiFWjnyqy2RFVoMLl9dj
+ GRww==
+X-Gm-Message-State: AOJu0YyY/Thjefv+OJn3TG+aAZXQDHI7Q4R43kt243By1ftmy98JaPj5
+ jmSNufSfUCe153LJXMoB6S6IvFupnR6u41Z8urNyI/DyUw0uPA==
+X-Google-Smtp-Source: AGHT+IGE86OX4KgQzLWq+VSCBwIu5IxUbwAz8Xb3YUbcTrxGZWNPSC3x6NtxZDKLqfGLpauhiqAFOM3AK6bg3tnsYLI=
+X-Received: by 2002:a05:6512:1596:b0:50e:8eae:3c4d with SMTP id
+ bp22-20020a056512159600b0050e8eae3c4dmr396126lfb.254.1705074504368; Fri, 12
+ Jan 2024 07:48:24 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] target/ppc/cpu-models: Rename power5+ and power7+ for
- new QOM naming rules
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Thomas Huth <thuth@redhat.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: devel@lists.libvirt.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
- David Gibson <david@gibson.dropbear.id.au>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
- Markus Armbruster <armbru@redhat.com>
-References: <20240111164652.908182-1-thuth@redhat.com>
- <20240111164652.908182-2-thuth@redhat.com>
- <70fae07d-f6c1-4143-b632-a988ae53ccb0@linux.ibm.com>
- <27a311a8-f6db-48ea-8bbd-a09eb3c2e07e@redhat.com>
- <54b6ba59-8edc-4b9c-bd3f-88399127f60e@linux.ibm.com>
- <12a5e758-f144-40c2-bcb3-14855b81b7a4@redhat.com>
- <45fb3790-df2a-49f5-860e-46d4f9b0150c@kaod.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <45fb3790-df2a-49f5-860e-46d4f9b0150c@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+References: <20231211071204.30156-1-tomoyuki.hirose@igel.co.jp>
+ <20231211071204.30156-2-tomoyuki.hirose@igel.co.jp>
+In-Reply-To: <20231211071204.30156-2-tomoyuki.hirose@igel.co.jp>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 12 Jan 2024 15:48:13 +0000
+Message-ID: <CAFEAcA9Sp0fVBkAyKFwVwt6F+Bzt4X6UfqhyqFkn25Z14TjZSw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] system/memory.c: support unaligned access
+To: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,23 +89,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/1/24 12:33, Cédric Le Goater wrote:
-> On 1/12/24 11:55, Thomas Huth wrote:
->> On 12/01/2024 06.21, Harsh Prateek Bora wrote:
+On Mon, 11 Dec 2023 at 07:14, Tomoyuki HIROSE
+<tomoyuki.hirose@igel.co.jp> wrote:
+>
+> The previous code ignored 'impl.unaligned' and handled unaligned accesses
+> as is. But this implementation cannot emulate specific registers of some
+> devices that allow unaligned access such as xHCI Host Controller Capabili=
+ty
+> Registers.
+> This commit checks 'impl.unaligned' and if it is false, QEMU emulates
+> unaligned access with multiple aligned access.
+>
+> Signed-off-by: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
 
+Sorry this has taken me so long to get to reviewing.
 
->>> Hmm .. I would certainly vote for 'p' over 'plus'.
->>
->> Ok, I don't mind either way ... does anybody else have any preferences?
-> 
-> p is fine.
+So, first of all, I think this is definitely a cleaner looking
+patch than the other one that C=C3=A9dric posted a link to: if we
+can have access_with_adjusted_size() cope with the unaligned
+case that seems nicer than having different functions for the
+aligned and the unaligned cases.
 
-We also use 'p' for '+' / 'plus' on ARM Raspberry Pi:
+My review comments below are basically about fiddly corner case
+details.
 
-$ qemu-system-aarch64 -M help | grep -F raspi
-raspi0               Raspberry Pi Zero (revision 1.2)
-raspi1ap             Raspberry Pi A+ (revision 1.1)
-raspi2b              Raspberry Pi 2B (revision 1.1)
-raspi3ap             Raspberry Pi 3A+ (revision 1.0)
-raspi3b              Raspberry Pi 3B (revision 1.2)
+> ---
+>  system/memory.c | 22 ++++++++++++++++------
+>  1 file changed, 16 insertions(+), 6 deletions(-)
+>
+> diff --git a/system/memory.c b/system/memory.c
+> index 798b6c0a17..b0caa90fef 100644
+> --- a/system/memory.c
+> +++ b/system/memory.c
+> @@ -539,6 +539,9 @@ static MemTxResult access_with_adjusted_size(hwaddr a=
+ddr,
+>      unsigned i;
+>      MemTxResult r =3D MEMTX_OK;
+>      bool reentrancy_guard_applied =3D false;
+> +    hwaddr aligned_addr;
+> +    unsigned corrected_size =3D size;
+> +    signed align_diff =3D 0;
+>
+>      if (!access_size_min) {
+>          access_size_min =3D 1;
+> @@ -560,18 +563,25 @@ static MemTxResult access_with_adjusted_size(hwaddr=
+ addr,
+>          reentrancy_guard_applied =3D true;
+>      }
+>
+> -    /* FIXME: support unaligned access? */
+>      access_size =3D MAX(MIN(size, access_size_max), access_size_min);
+>      access_mask =3D MAKE_64BIT_MASK(0, access_size * 8);
+> +    if (!mr->ops->impl.unaligned) {
+> +        aligned_addr =3D addr & ~(access_size - 1);
+> +        align_diff =3D addr - aligned_addr;
+> +        corrected_size =3D size < access_size ? access_size :
+> +                            size + (align_diff > 0 ? access_size : 0);
+
+I don't think this calculation of corrected_size is right for
+the case when size < access_size. Consider:
+ * size =3D 2, access_size =3D 4, addr =3D 3, little-endian:
+memory contents from 0 are bytes AA BB CC DD EE FF ...
+
+We calculate corrected_size of 4, and we will then do a
+single 4-byte read of 0xDDCCBBAA. But we need to do two
+4-byte reads, because the final result we want to return
+is 0xEEDD.
+
+I think also that we don't really get the optimal behaviour
+here because we select access_size assuming the aligned case,
+rather than selecting it specifically for the combination
+of input size and align_diff in the unaligned case.
+Consider: access_size_min =3D 2, access_size_max =3D 8, size =3D 4,
+addr =3D 2. We'll compute access_size to be 4, and then do
+the unaligned access with two 4-byte reads. But we could
+better have done it with two 2-byte reads. This matters
+especially for the write case, because two 2-byte writes
+allows us to avoid the problem of "what do we write for
+the parts of the 4-byte writes that we don't have data
+from the caller for". (See below for more on that.)
+
+> +        addr =3D aligned_addr;
+> +    }
+>      if (memory_region_big_endian(mr)) {
+> -        for (i =3D 0; i < size; i +=3D access_size) {
+> +        for (i =3D 0; i < corrected_size; i +=3D access_size) {
+>              r |=3D access_fn(mr, addr + i, value, access_size,
+> -                        (size - access_size - i) * 8, access_mask, attrs=
+);
+> +                        (size - access_size - i + align_diff) * 8,
+> +                        access_mask, attrs);
+>          }
+>      } else {
+> -        for (i =3D 0; i < size; i +=3D access_size) {
+> -            r |=3D access_fn(mr, addr + i, value, access_size, i * 8,
+> -                        access_mask, attrs);
+> +        for (i =3D 0; i < corrected_size; i +=3D access_size) {
+> +            r |=3D access_fn(mr, addr + i, value, access_size,
+> +                        ((signed)i - align_diff) * 8, access_mask, attrs=
+);
+>          }
+
+So, with these loops, for unaligned accesses we now load an
+extra chunk and adjust the shifts so we get the right parts
+of the chunks we read. However I think we also need to be
+careful with the access mask for the final access (or the
+first access in the big-endian case).
+
+Consider:
+ * access_size =3D 2, size =3D 4, align_diff =3D 1, little endian,
+   addr =3D 1 initially (so aligned down to 0), read:
+and the memory being bytes AA BB CC DD EE FF ... starting at 0.
+We'll load:
+ * from addr 0, 0xBBAA, which we shift right by 1 for 0xBB
+ * from addr 2, 0xDDCC, shift left 1, for 0xDDCC00
+ * from addr 4, 0xFFEE, shift left 3, for 0xFFEE000000
+and then we OR those together for
+  0xFFEEDDCCBB
+so we will have written into *value an extra 0xFF byte that
+we should not have done. That last access from addr 4 should
+have an access_mask that says we only want part of it.
+
+For writes, things are worse, because we'll do a 2 byte
+write that writes whatever garbage might have been in the
+high part of *value. If the device permits an access of
+smaller size (in this case byte) we can do the end part at
+that size (or even do the whole write at that size if it's
+simpler). If the device doesn't permit that smaller size
+write it's not clear to me what the behaviour should be.
+(I was going to suggest maybe we should just rule that as
+not permitted until we run into it, but then your patch 2
+puts the xhci-usb device into this category, although
+harmlessly because it happens to implement writes as ignored.)
+
+thanks
+-- PMM
 
