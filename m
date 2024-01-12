@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D44982C678
+	by mail.lfdr.de (Postfix) with ESMTPS id 6448882C679
 	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 21:54:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOOW8-0005IN-5F; Fri, 12 Jan 2024 15:52:40 -0500
+	id 1rOOWF-0005Is-3n; Fri, 12 Jan 2024 15:52:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1rOOW0-0005I5-S0
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 15:52:35 -0500
-Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1rOOWA-0005Ik-8b
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 15:52:42 -0500
+Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1rOOVt-0007Jk-Ez
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 15:52:29 -0500
-Received: by mail-yw1-x112e.google.com with SMTP id
- 00721157ae682-5e54d40cca2so57718197b3.3
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 12:52:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1rOOW8-0007Kf-Lq
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 15:52:42 -0500
+Received: by mail-yb1-xb2c.google.com with SMTP id
+ 3f1490d57ef6-dbe78430946so6146036276.0
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 12:52:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705092742; x=1705697542; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705092759; x=1705697559; darn=nongnu.org;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
- :reply-to; bh=4rmnGOERD90F4xyclAGtOl08/73Ma8yJ7ar/vBwuJhk=;
- b=mnF7DGWX1JYajzJOW5V96mRfhkE3gY7RBOEMv74cjxkr7rE6CCjK0s3y6gQhcE3Xhz
- xbhRtLhOXcLqpo79po7nwC7Zr56+ofWxvriZf+Mjbflyf3VxW5zXG95bOTnJmZBu1Xmd
- j9tD8nZMii9jMtdPKksoVsD9cnSNpMmxCsNQ19ukMFLmOvBFI4jFO7hsjqS3z55vc78Z
- uI07aVKCu57cNebz8PaWuySpJAvsg/bDx7UwCj/cC7dkUMtwrjYQz+Sc1Aa1EGJeZlLQ
- VHnkD1SbF97dKiSxBhoqz4p36/tz4IARAto4jPfISknLwjb5uq8nGEUtpeFTKmTPBx2H
- /1yg==
+ :reply-to; bh=luIW2RT4CRd8asoVBoSr9vaj0NpvkwoWvvq2cAYhAWg=;
+ b=e9FWKAjIhmCI+mXhX/Z94Dj2ZLs5GvdcJAw8MHkhCvEOAydBPLvlCC2ZU8A8/14qWO
+ n9ONTPXjcV7b33wjXlqYqcy5dRgTnJW09rnZefI8NbPSLOnhXf9Yq0XqL6In9k2u9GwW
+ bkMw5+krT3g6vSJ5mSN639mIWWmd8UIPR99v1Q1WfZW0tQt4LdSzcat7Q39rfVWyWO6N
+ PpXJcZcPOUTyCD+rqqUHlRMXkdIIJt4i61c3FjWrSB2IKrw+O4Zr9f1ldnjX8PXKEvqb
+ CclQvRqjBPufKEzuliBfJG6tg2kR7flKMEF1Q4+3WWsRC4SWoFn1Q+eKvQM3GuriTchC
+ ia0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705092742; x=1705697542;
+ d=1e100.net; s=20230601; t=1705092759; x=1705697559;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4rmnGOERD90F4xyclAGtOl08/73Ma8yJ7ar/vBwuJhk=;
- b=Bgccqp/uQk9ovysAD4RuaC58KRkA9H7LG/sV/u1ozuryK/FfuuVp0+knwT/j19UHf0
- lVXbs3vBlWdh542E4lwNuRtshq1slK5KYqHBJsUGPsghiS/PDAk3a0kNaggNOdQK+7Zi
- 1EuMgHme3OoCqjEHljv6yNn3T9Cbhe9ntWbyqc8ZTeJEpsT/Csjw7OQuJUC+HB3Jgjfh
- IgBcoeYoKE/Pwp2QjVtdIfXt4hpWqSg5x8srTn3w3hS97ErIOgcoNmKtsQ8zTaMjGr7x
- iVFgSOb7zBGlYt9jkRm3dIeOk6uG0XQTTLIfQfY/C6MbKvUEIxu83D6GIJ3LSjku8mab
- w7Vg==
-X-Gm-Message-State: AOJu0YxW48WnjnwXnSlax0OtBJxsbTVy0p49N61INBCTEtWK9x8pvjSs
- O9VxMeWDh72MW0BOPm1qWqc=
-X-Google-Smtp-Source: AGHT+IHw/OcCCJF1VC2L07DIxsdekWnsc611UQsMfoilILbHW++j4PuRd7kT6hAcxtXo02T4x5Ngig==
-X-Received: by 2002:a81:6c09:0:b0:5e8:e422:fa9b with SMTP id
- h9-20020a816c09000000b005e8e422fa9bmr1652280ywc.88.1705092741593; 
- Fri, 12 Jan 2024 12:52:21 -0800 (PST)
+ bh=luIW2RT4CRd8asoVBoSr9vaj0NpvkwoWvvq2cAYhAWg=;
+ b=J3RvD7LZbwYuBdi+1YHb40+77ykk5yphTXimIU14ewzW9cKQM1ekCYrgkiyJFU6lNG
+ qLj2n/GX5Z7boafLujEkEvr3t4MwFt8TbfVW6ElL3zE6KyO+WGa9kOp/mcBLbLhJwJal
+ ZiFCQGnpg3ss/ugb7z0E+EBMjYvgPtbMbTaVmKJmDL7UAzQctffYgEKSceLnDBMtcTbP
+ 5Se9kvTaBZdWF0FCZQgKMuRPG+OPP1ESUnH/aEzWjPJVd8QP35ghrOPfb8XmW6qO1+pw
+ oiOeY/rdZEi+cfnwBGGL2tP7HX0nepCtKxWrkaWIELU1dOZOt2ZD4MccDiCXB4BOcAFm
+ PBNA==
+X-Gm-Message-State: AOJu0YxSN6TstBE2fN6R17pbfdI7GBjsVAkIINCvNuQxVEzsWIj0CIYm
+ 1NTyIYtPZxdtK/Pz+Q7mB6M=
+X-Google-Smtp-Source: AGHT+IHkXFx39W+ChPSfP1R8Zs0K3J+mtiKpIXcod9hiwxJvW6jYuwlUjKPYw03guu2ehCTIoO4oDA==
+X-Received: by 2002:a05:6902:2211:b0:dbe:a328:3ef9 with SMTP id
+ dm17-20020a056902221100b00dbea3283ef9mr1313048ybb.78.1705092759437; 
+ Fri, 12 Jan 2024 12:52:39 -0800 (PST)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
  by smtp.gmail.com with ESMTPSA id
- x69-20020a0dd548000000b005f742b20f08sm1662407ywd.0.2024.01.12.12.52.20
+ b6-20020a252e46000000b00dbd97f482c6sm1458852ybn.39.2024.01.12.12.52.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jan 2024 12:52:20 -0800 (PST)
-Date: Fri, 12 Jan 2024 12:52:18 -0800
+ Fri, 12 Jan 2024 12:52:39 -0800 (PST)
+Date: Fri, 12 Jan 2024 12:52:37 -0800
 From: Guenter Roeck <linux@roeck-us.net>
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Cc: pbonzini@redhat.com, fam@euphon.net, hpoussin@reactos.org,
  deller@gmx.de, qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/4] esp-pci.c: use correct address register for PCI DMA
- transfers
-Message-ID: <814cefe2-5793-452f-8618-8d43511732d5@roeck-us.net>
+Subject: Re: [PATCH 2/4] esp-pci.c: generate PCI interrupt from separate ESP
+ and PCI sources
+Message-ID: <f96907b5-63da-4d84-bd62-291dd404ac4f@roeck-us.net>
 References: <20240112131529.515642-1-mark.cave-ayland@ilande.co.uk>
- <20240112131529.515642-2-mark.cave-ayland@ilande.co.uk>
+ <20240112131529.515642-3-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240112131529.515642-2-mark.cave-ayland@ilande.co.uk>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
- envelope-from=groeck7@gmail.com; helo=mail-yw1-x112e.google.com
+In-Reply-To: <20240112131529.515642-3-mark.cave-ayland@ilande.co.uk>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
+ envelope-from=groeck7@gmail.com; helo=mail-yb1-xb2c.google.com
 X-Spam_score_int: -12
 X-Spam_score: -1.3
 X-Spam_bar: -
@@ -93,20 +93,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 12, 2024 at 01:15:26PM +0000, Mark Cave-Ayland wrote:
-> The current code in esp_pci_dma_memory_rw() sets the DMA address to the value
-> of the DMA_SPA (Starting Physical Address) register which is incorrect: this
-> means that for each callback from the SCSI layer the DMA address is set back
-> to the starting address.
+On Fri, Jan 12, 2024 at 01:15:27PM +0000, Mark Cave-Ayland wrote:
+> The am53c974/dc390 PCI interrupt has two separate sources: the first is from the
+> internal ESP device, and the second is from the PCI DMA transfer logic.
 > 
-> In the case where only a single SCSI callback occurs (currently for transfer
-> lengths < 128kB) this works fine, however for larger transfers the DMA address
-> wraps back to the initial starting address, corrupting the buffer holding the
-> data transferred to the guest.
-> 
-> Fix esp_pci_dma_memory_rw() to use the DMA_WAC (Working Address Counter) for
-> the DMA address which is correctly incremented across multiple SCSI layer
-> transfers.
+> Update the ESP interrupt handler so that it sets DMA_STAT_SCSIINT rather than
+> driving the PCI IRQ directly, and introduce a new esp_pci_update_irq() function
+> to generate the correct PCI IRQ level. In particular this fixes spurious interrupts
+> being generated by setting DMA_STAT_DONE at the end of a transfer if DMA_CMD_INTE_D
+> isn't set in the DMA_CMD register.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
@@ -114,22 +109,87 @@ Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 Tested-by: Guenter Roeck <linux@roeck-us.net>
 
 > ---
->  hw/scsi/esp-pci.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  hw/scsi/esp-pci.c | 32 +++++++++++++++++++++++++++-----
+>  1 file changed, 27 insertions(+), 5 deletions(-)
 > 
 > diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
-> index 93b3429e0f..7117725371 100644
+> index 7117725371..15dc3c004d 100644
 > --- a/hw/scsi/esp-pci.c
 > +++ b/hw/scsi/esp-pci.c
-> @@ -275,7 +275,7 @@ static void esp_pci_dma_memory_rw(PCIESPState *pci, uint8_t *buf, int len,
->          qemu_log_mask(LOG_UNIMP, "am53c974: MDL transfer not implemented\n");
+> @@ -77,6 +77,29 @@ struct PCIESPState {
+>      ESPState esp;
+>  };
+>  
+> +static void esp_pci_update_irq(PCIESPState *pci)
+> +{
+> +    int scsi_level = !!(pci->dma_regs[DMA_STAT] & DMA_STAT_SCSIINT);
+> +    int dma_level = (pci->dma_regs[DMA_CMD] & DMA_CMD_INTE_D) ?
+> +                    !!(pci->dma_regs[DMA_STAT] & DMA_STAT_DONE) : 0;
+> +    int level = scsi_level || dma_level;
+> +
+> +    pci_set_irq(PCI_DEVICE(pci), level);
+> +}
+> +
+> +static void esp_irq_handler(void *opaque, int irq_num, int level)
+> +{
+> +    PCIESPState *pci = PCI_ESP(opaque);
+> +
+> +    if (level) {
+> +        pci->dma_regs[DMA_STAT] |= DMA_STAT_SCSIINT;
+> +    } else {
+> +        pci->dma_regs[DMA_STAT] &= ~DMA_STAT_SCSIINT;
+> +    }
+> +
+> +    esp_pci_update_irq(pci);
+> +}
+> +
+>  static void esp_pci_handle_idle(PCIESPState *pci, uint32_t val)
+>  {
+>      ESPState *s = &pci->esp;
+> @@ -151,6 +174,7 @@ static void esp_pci_dma_write(PCIESPState *pci, uint32_t saddr, uint32_t val)
+>              /* clear some bits on write */
+>              uint32_t mask = DMA_STAT_ERROR | DMA_STAT_ABORT | DMA_STAT_DONE;
+>              pci->dma_regs[DMA_STAT] &= ~(val & mask);
+> +            esp_pci_update_irq(pci);
+>          }
+>          break;
+>      default:
+> @@ -161,17 +185,14 @@ static void esp_pci_dma_write(PCIESPState *pci, uint32_t saddr, uint32_t val)
+>  
+>  static uint32_t esp_pci_dma_read(PCIESPState *pci, uint32_t saddr)
+>  {
+> -    ESPState *s = &pci->esp;
+>      uint32_t val;
+>  
+>      val = pci->dma_regs[saddr];
+>      if (saddr == DMA_STAT) {
+> -        if (s->rregs[ESP_RSTAT] & STAT_INT) {
+> -            val |= DMA_STAT_SCSIINT;
+> -        }
+>          if (!(pci->sbac & SBAC_STATUS)) {
+>              pci->dma_regs[DMA_STAT] &= ~(DMA_STAT_ERROR | DMA_STAT_ABORT |
+>                                           DMA_STAT_DONE);
+> +            esp_pci_update_irq(pci);
+>          }
 >      }
 >  
-> -    addr = pci->dma_regs[DMA_SPA];
-> +    addr = pci->dma_regs[DMA_WAC];
->      if (pci->dma_regs[DMA_WBC] < len) {
->          len = pci->dma_regs[DMA_WBC];
->      }
+> @@ -350,6 +371,7 @@ static void esp_pci_command_complete(SCSIRequest *req, size_t resid)
+>      esp_command_complete(req, resid);
+>      pci->dma_regs[DMA_WBC] = 0;
+>      pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
+> +    esp_pci_update_irq(pci);
+>  }
+>  
+>  static const struct SCSIBusInfo esp_pci_scsi_info = {
+> @@ -386,7 +408,7 @@ static void esp_pci_scsi_realize(PCIDevice *dev, Error **errp)
+>                            "esp-io", 0x80);
+>  
+>      pci_register_bar(dev, 0, PCI_BASE_ADDRESS_SPACE_IO, &pci->io);
+> -    s->irq = pci_allocate_irq(dev);
+> +    s->irq = qemu_allocate_irq(esp_irq_handler, pci, 0);
+>  
+>      scsi_bus_init(&s->bus, sizeof(s->bus), d, &esp_pci_scsi_info);
+>  }
 > -- 
 > 2.39.2
 > 
