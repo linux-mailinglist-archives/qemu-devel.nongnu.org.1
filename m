@@ -2,84 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F49882C49B
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 18:21:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9658382C4B7
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 18:29:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOLCZ-0005hc-C3; Fri, 12 Jan 2024 12:20:15 -0500
+	id 1rOLKP-0000So-2R; Fri, 12 Jan 2024 12:28:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rOLCX-0005ge-93
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 12:20:13 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rOLKG-0000Pz-1B
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 12:28:12 -0500
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rOLCV-0005B5-I0
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 12:20:13 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40e69b3149fso2542825e9.3
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 09:20:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rOLKC-0001ic-E6
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 12:28:11 -0500
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2cd0f4f306fso79841601fa.0
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 09:28:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705080008; x=1705684808; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HtsDhMYKOKsjd91F/+T1+Lyev80i16Rq3EWcOFNBNTQ=;
- b=I1nicZg043L1eK64Lj/Nl9detqQ7JyW9MepEz5fShBOaMr59eok1qpi7FVbfzz3Xn7
- hRME2doWk2l2zwKip8ny3FPKYTUYEX1rLDxojyqdR5/HC97n8rUOx/HC6P0IWzIB4j0Y
- oodFY6qUmZZPAgLEju7vQ2VuIRjmCn6tY06vgw+8kU4YVM9jTBa6LeYSTO2zQ4zjTWAA
- r+rC5lMmcrtj/0VYGG8bKbF7OnkPRLzfULBd3NtKOBSyBZrpfIbzfovqlRDwQ8FZaseB
- ckxgA4C1vgwdqaDXqLBtifkxwFcp/9TUns1LIHB1JaH6BRDMSBiwSN3/V/vFXpLnUJ6R
- 1pNw==
+ d=linaro.org; s=google; t=1705080480; x=1705685280; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Z2o2nEwN2RdA6W0Lq9pAN+W3yOAdWWMaeeMlvZgKwyY=;
+ b=V06fZ91jyBu8fCBQo1JssPU6u+1Jp8Tm/b0zK19JDblrVlEVeU6M7NU/61a/2zqeDJ
+ WTVdoO5hDhEwzu4qzJY4IU7IHHbWrBmiFL8qYOQCix0p/qv6K92yqUu4SSuJ0V1DZPFb
+ 38WFWRTKgasemtpUqxX+ZGIelCVxO8HNJgSjOBgIT/53N1YOjcUNKzsCXCYDtu72S4cM
+ WUavgFwg+vDM9kLmkonbrkEyTQxznRQpdmcWo1AgTSfJxfvVN+ZvKFzhYkw7Ji0SVnp8
+ 04zviJIDCDY+hwB4oVucW+PxIzURxzPkC2CGcLuDhCqkqrGZGmyv+Yqcpm9fIlG3gxio
+ yf5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705080008; x=1705684808;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=HtsDhMYKOKsjd91F/+T1+Lyev80i16Rq3EWcOFNBNTQ=;
- b=N/XwqviLGwo+RG1BdnhKebTi7mln5z4bQR3y/JRyBiXa4An+JhGHnZfrl18XxQcp0e
- AJ7rq/trIjkh70lfq/0CBpNrMHYvjG7NA/AXYpPBRjxoVTMQgtr0e2O1fMiz6QZ8ED8s
- AR9TVs7s3RrxW/feeHln/FctGeXvjW2QntjxgNQux+/jk8PD0jDR6Yaboe4xGUSxF+HP
- bNQF1owebD2CopOnxknoYf2DkkwiLrnQpnjBcsbIsIlrgkr+nAjKiRuECVNED2l5CE0V
- K2Eg+JyqLHRz/d5YrH9cNy0GROHLro876hA0Y78upUDbQ8IuK27IncqVlPTR31tjQ6cu
- DbPw==
-X-Gm-Message-State: AOJu0YzF28TVjyEmUPGMC3TN4h1iZeFv3cysasx2obApp70Np5PtwJd5
- eFssJF8/4MgICM79klEji0cS/5Gc80+3Ng==
-X-Google-Smtp-Source: AGHT+IHWO+SI1kHVsXsALJ0XuUzbOhGXMcrQibGnVLuflujWOVfD5M4kKKfeWoL08In/Klye6LfcNw==
-X-Received: by 2002:a05:600c:4d95:b0:40e:5577:17e with SMTP id
- v21-20020a05600c4d9500b0040e5577017emr1091309wmp.57.1705080008607; 
- Fri, 12 Jan 2024 09:20:08 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- g14-20020a05600c310e00b0040e398f8cafsm6423311wmo.31.2024.01.12.09.20.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jan 2024 09:20:08 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id EA1D45F7A9;
- Fri, 12 Jan 2024 17:20:07 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org,
- Mahmoud Mandour <ma.mandourr@gmail.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>
-Subject: Re: [PATCH 03/12] tests/plugin: add test plugin for inline operations
-In-Reply-To: <ae4227fc-58b5-4a6b-97d5-8fae34eb7514@linaro.org> (Pierrick
- Bouvier's message of "Thu, 11 Jan 2024 21:20:45 +0400")
-References: <20240111142326.1743444-1-pierrick.bouvier@linaro.org>
- <20240111142326.1743444-4-pierrick.bouvier@linaro.org>
- <49bfa786-e549-43d4-ac03-9337b9342d16@linaro.org>
- <ae4227fc-58b5-4a6b-97d5-8fae34eb7514@linaro.org>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Fri, 12 Jan 2024 17:20:07 +0000
-Message-ID: <87v87yv588.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1705080480; x=1705685280;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Z2o2nEwN2RdA6W0Lq9pAN+W3yOAdWWMaeeMlvZgKwyY=;
+ b=amO+eg6DA84RH3rw3GzeUiNtFkKLoHKRQe+9DrLp6Cj/odx+26kaCTgirE7nULpB4K
+ C0YP3oXcs5LfrIRQppH4otEb8Hfx70WnXw5RUkAt+oDSCML+T4m7gXoagWUS01kL6w/U
+ KErDoXCGUiFakyWhDSxMfgTrwikOoV1AaLxvGPNkLCu+Yq2YSroAPHVmx9i6oosa8F8y
+ 14QyWaDPschjshm9223dmnJfmSNHK7BqCTugcu2SMvZ66EgVOKw7s/ygHCZDEzY2xsXf
+ RcPi/av/yhu1+WCtWPovXvRlyAj2nrLPyueVTKCOkty/rxQ5CUkx6GCbp4kJqiduxWmX
+ ZNqg==
+X-Gm-Message-State: AOJu0Yw2reYGyAFunw3jHm8KmDSyLvTZBbkcZ7zsTCkepcXQwfVjbTZz
+ uGkgjAkmYBoW9TMXwT7iFqXGMQZ9GPftfja6W91GoSPx7JYkRw==
+X-Google-Smtp-Source: AGHT+IF6ZGVtvotph3Nd2UiHGVzMDAfDmnPmZiF7AUUcafArtD4Iv52R/D61EwAQ4TeQyUEauV+H0m2oitc8vfwj4ZY=
+X-Received: by 2002:a2e:7819:0:b0:2cc:e379:88bb with SMTP id
+ t25-20020a2e7819000000b002cce37988bbmr909280ljc.19.1705080480479; Fri, 12 Jan
+ 2024 09:28:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+References: <20240111170047.909117-1-thuth@redhat.com>
+In-Reply-To: <20240111170047.909117-1-thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 12 Jan 2024 17:27:49 +0000
+Message-ID: <CAFEAcA--QXyv4SfNYnVFn-_NmHY+wXCYnsTN5T9_WLQF63o32Q@mail.gmail.com>
+Subject: Re: [PULL 00/17] Misc patches (qtests, s390x, m68k, gitlab-ci)
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,54 +84,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+On Thu, 11 Jan 2024 at 17:00, Thomas Huth <thuth@redhat.com> wrote:
+>
+>  Hi Peter!
+>
+> The following changes since commit 34eac35f893664eb8545b98142e23d9954722766:
+>
+>   Merge tag 'pull-riscv-to-apply-20240110' of https://github.com/alistair23/qemu into staging (2024-01-10 11:41:56 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/thuth/qemu.git tags/pull-request-2024-01-11
+>
+> for you to fetch changes up to 52a21689cd829c1cc931b59b5ee5bdb10dd578c1:
+>
+>   .gitlab-ci.d/buildtest.yml: Work around htags bug when environment is large (2024-01-11 17:49:21 +0100)
+>
+> ----------------------------------------------------------------
+> * Fix non-deterministic failures of the 'netdev-socket' qtest
+> * Fix device presence checking in the virtio-ccw qtest
+> * Support codespell checking in checkpatch.pl
+> * Fix emulation of LAE s390x instruction
+> * Work around htags bug when environment is large
+> * Some other small clean-ups here and there
+>
 
-> On 1/11/24 19:57, Philippe Mathieu-Daud=C3=A9 wrote:
->> Hi Pierrick,
->> On 11/1/24 15:23, Pierrick Bouvier wrote:
->>> For now, it simply performs instruction, bb and mem count, and ensure
->>> that inline vs callback versions have the same result. Later, we'll
->>> extend it when new inline operations are added.
->>>
->>> Use existing plugins to test everything works is a bit cumbersome, as
->>> different events are treated in different plugins. Thus, this new one.
->>>
->>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>> ---
->>>    tests/plugin/inline.c    | 183 +++++++++++++++++++++++++++++++++++++=
-++
->>>    tests/plugin/meson.build |   2 +-
->>>    2 files changed, 184 insertions(+), 1 deletion(-)
->>>    create mode 100644 tests/plugin/inline.c
->>=20
->>> +#define MAX_CPUS 8
->> Where does this value come from?
->>=20
->
-> The plugin tests/plugin/insn.c had this constant, so I picked it up
-> from here.
->
->> Should the pluggin API provide a helper to ask TCG how many
->> vCPUs are created?
->
-> In user mode, we can't know how many simultaneous threads (and thus
-> vcpu) will be triggered by advance. I'm not sure if additional cpus
-> can be added in system mode.
->
-> One problem though, is that when you register an inline op with a
-> dynamic array, when you resize it (when detecting a new vcpu), you
-> can't change it afterwards. So, you need a storage statically sized
-> somewhere.
->
-> Your question is good, and maybe we should define a MAX constant that
-> plugins should rely on, instead of a random amount.
 
-For user-mode it can be infinite. The existing plugins do this by
-ensuring vcpu_index % max_vcpu. Perhaps we just ensure that for the
-scoreboard as well? Of course that does introduce a trap for those using
-user-mode...
+Applied, thanks.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
+
+-- PMM
 
