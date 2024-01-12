@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 530EF82C292
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 16:11:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD0382C283
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jan 2024 16:07:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOJB6-0002qr-W8; Fri, 12 Jan 2024 10:10:37 -0500
+	id 1rOJ6d-00017V-3f; Fri, 12 Jan 2024 10:05:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rOJAv-0002f7-J5
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:10:26 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1rOJ63-0000yW-TC
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:05:25 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rOJAm-0006dD-Lf
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:10:19 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ id 1rOJ61-0003Zp-31
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 10:05:23 -0500
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40CEXrYV024855; Fri, 12 Jan 2024 15:10:13 GMT
+ 40CEbRYa031080; Fri, 12 Jan 2024 15:05:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id; s=corp-2023-11-20;
- bh=Lk+on/K22LrNPJ/blBMASNbIsn1D6LneOFg6OuH7yho=;
- b=RgyHfRAi4TzwPDlKBUGzAoqoY84Jn063KOLwJZOSmWSHFv9aRByemwZY2tyKSip7Miwx
- oodShSQY0W7eoOn6zUtI0qmkyK4tAJ3FvgWzARuBCphEzyeVciJVAxp8wyU4grybYKpi
- leZs4DZmgoRkHEmO8wuA2dRSKd5j5RFCt1Uw0CRQvIujT6Oj8l2BLN+j8dOppmcG7Vym
- IXx/yEYTpK5wsQDL7y/I1JgsdpnximJftHNVUbSoE3WyypBOABnLlLirjYTM7KmWtIMX
- 3kQKYGPAvKRkSLDVqml5oBEtTgrWX/Opr0hE/jUqujuaRKLbRhAqBb6qE99MyQ4TSIUU 3w== 
+ subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
+ bh=gZAqrYkSuXVMzy4cV2swHm325HsmyPfscKfrpGF9c68=;
+ b=dJbB3LfkgMcV/x2ygKEum78M8P31b/vmr5m1ek6Ox+hIc5ii3y8BIr1byFjXyJuEau2D
+ HhjcZ+0y9KG0AmPoQOwjtnhUjcEjXRqgJ/KdISkWxujVsEbrBxnx+na4lK74+tofGp7i
+ jykSt8cj6OLzIOPGiRhRMYG/pvdy6YNbtEVHlBVbu4RwPgxaMi0LfKbz0GMRlnSIh2EL
+ RIx+K/rI1h/SUp2waIB6iGZEVOd6zYm92exIHUMfe9b6NajY2LAFjH+eRLDuuEV7o+9i
+ Vu2SQuTdMtBtGzkfTnZSV+YZKGDdAwYtB0V4HLU8XRZl60ufEREHmaF5bSAK58rWcq2X VA== 
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vk68306r2-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vk7bmg30d-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 12 Jan 2024 15:10:13 +0000
+ Fri, 12 Jan 2024 15:05:13 +0000
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 40CEob2r013671; Fri, 12 Jan 2024 15:05:12 GMT
+ with ESMTP id 40CEVudK013735; Fri, 12 Jan 2024 15:05:12 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3vfurgd8ks-1
+ 3vfurgd8m5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 12 Jan 2024 15:05:11 +0000
+ Fri, 12 Jan 2024 15:05:12 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40CF5Bo6017833;
- Fri, 12 Jan 2024 15:05:11 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40CF5Bo8017833;
+ Fri, 12 Jan 2024 15:05:12 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 3vfurgd8k6-1; Fri, 12 Jan 2024 15:05:11 +0000
+ ESMTP id 3vfurgd8k6-2; Fri, 12 Jan 2024 15:05:12 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -60,30 +60,31 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Marc-Andre Lureau <marcandre.lureau@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 00/11] allow cpr-reboot for vfio
-Date: Fri, 12 Jan 2024 07:04:59 -0800
-Message-Id: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 01/11] notify: pass error to notifier with return
+Date: Fri, 12 Jan 2024 07:05:00 -0800
+Message-Id: <1705071910-174321-2-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
+References: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-12_06,2024-01-12_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  adultscore=0 bulkscore=0
- mlxlogscore=806 suspectscore=0 phishscore=0 malwarescore=0 spamscore=0
+ mlxlogscore=999 suspectscore=0 phishscore=0 malwarescore=0 spamscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2401120117
-X-Proofpoint-GUID: tldYC3_OxhNC27tc7nVIk6y_cTanSgu_
-X-Proofpoint-ORIG-GUID: tldYC3_OxhNC27tc7nVIk6y_cTanSgu_
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-GUID: SEFMbEj4zljYtw0dyg443xt2h7OXy8xG
+X-Proofpoint-ORIG-GUID: SEFMbEj4zljYtw0dyg443xt2h7OXy8xG
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,51 +100,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow cpr-reboot for vfio if the guest is in the suspended runstate.  The
-guest drivers' suspend methods flush outstanding requests and re-initialize
-the devices, and thus there is no device state to save and restore.  The
-user is responsible for suspending the guest before initiating cpr, such as
-by issuing guest-suspend-ram to the qemu guest agent.
+Pass an error object as the third parameter to "notifier with return"
+notifiers, so clients no longer need to bundle an error object in the
+opaque data.  The new parameter is used in a later patch.
 
-Most of the patches in this series enhance migration notifiers so they can
-return an error status and message.  The last two patches register a notifier
-for vfio that returns an error if the guest is not suspended.
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+---
+ hw/virtio/vhost-user.c     | 2 +-
+ hw/virtio/virtio-balloon.c | 3 ++-
+ include/qemu/notify.h      | 7 +++++--
+ migration/postcopy-ram.c   | 2 +-
+ migration/ram.c            | 2 +-
+ util/notify.c              | 5 +++--
+ 6 files changed, 13 insertions(+), 8 deletions(-)
 
-Steve Sistare (11):
-  notify: pass error to notifier with return
-  migration: remove error from notifier data
-  migration: convert to NotifierWithReturn
-  migration: remove migration_in_postcopy parameter
-  migration: MigrationEvent for notifiers
-  migration: MigrationNotifyFunc
-  migration: per-mode notifiers
-  migration: refactor migrate_fd_connect failures
-  migration: notifier error checking
-  vfio: register container for cpr
-  vfio: allow cpr-reboot migration if suspended
-
- hw/net/virtio-net.c            |  14 ++---
- hw/vfio/common.c               |   2 +-
- hw/vfio/container.c            |  11 +++-
- hw/vfio/cpr.c                  |  39 ++++++++++++++
- hw/vfio/meson.build            |   1 +
- hw/vfio/migration.c            |  13 +++--
- hw/virtio/vhost-user.c         |  10 ++--
- hw/virtio/virtio-balloon.c     |   3 +-
- include/hw/vfio/vfio-common.h  |   6 ++-
- include/hw/virtio/virtio-net.h |   2 +-
- include/migration/misc.h       |  21 +++++---
- include/qemu/notify.h          |   7 ++-
- migration/migration.c          | 117 +++++++++++++++++++++++++++--------------
- migration/postcopy-ram.c       |   3 +-
- migration/postcopy-ram.h       |   1 -
- migration/ram.c                |  12 ++---
- net/vhost-vdpa.c               |  15 +++---
- ui/spice-core.c                |  19 +++----
- util/notify.c                  |   5 +-
- 19 files changed, 206 insertions(+), 95 deletions(-)
- create mode 100644 hw/vfio/cpr.c
-
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index f214df8..f502345 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -2084,7 +2084,7 @@ static int vhost_user_postcopy_end(struct vhost_dev *dev, Error **errp)
+ }
+ 
+ static int vhost_user_postcopy_notifier(NotifierWithReturn *notifier,
+-                                        void *opaque)
++                                        void *opaque, Error **errp)
+ {
+     struct PostcopyNotifyData *pnd = opaque;
+     struct vhost_user *u = container_of(notifier, struct vhost_user,
+diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
+index 486fe3d..89f853f 100644
+--- a/hw/virtio/virtio-balloon.c
++++ b/hw/virtio/virtio-balloon.c
+@@ -633,7 +633,8 @@ static void virtio_balloon_free_page_done(VirtIOBalloon *s)
+ }
+ 
+ static int
+-virtio_balloon_free_page_hint_notify(NotifierWithReturn *n, void *data)
++virtio_balloon_free_page_hint_notify(NotifierWithReturn *n, void *data,
++                                     Error **errp)
+ {
+     VirtIOBalloon *dev = container_of(n, VirtIOBalloon, free_page_hint_notify);
+     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+diff --git a/include/qemu/notify.h b/include/qemu/notify.h
+index bcfa70f..9a85631 100644
+--- a/include/qemu/notify.h
++++ b/include/qemu/notify.h
+@@ -45,12 +45,15 @@ bool notifier_list_empty(NotifierList *list);
+ /* Same as Notifier but allows .notify() to return errors */
+ typedef struct NotifierWithReturn NotifierWithReturn;
+ 
++typedef int (*NotifierWithReturnFunc)(NotifierWithReturn *notifier, void *data,
++                                      Error **errp);
++
+ struct NotifierWithReturn {
+     /**
+      * Return 0 on success (next notifier will be invoked), otherwise
+      * notifier_with_return_list_notify() will stop and return the value.
+      */
+-    int (*notify)(NotifierWithReturn *notifier, void *data);
++    NotifierWithReturnFunc notify;
+     QLIST_ENTRY(NotifierWithReturn) node;
+ };
+ 
+@@ -69,6 +72,6 @@ void notifier_with_return_list_add(NotifierWithReturnList *list,
+ void notifier_with_return_remove(NotifierWithReturn *notifier);
+ 
+ int notifier_with_return_list_notify(NotifierWithReturnList *list,
+-                                     void *data);
++                                     void *data, Error **errp);
+ 
+ #endif
+diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
+index 5408e02..4438ac7 100644
+--- a/migration/postcopy-ram.c
++++ b/migration/postcopy-ram.c
+@@ -80,7 +80,7 @@ int postcopy_notify(enum PostcopyNotifyReason reason, Error **errp)
+     pnd.errp = errp;
+ 
+     return notifier_with_return_list_notify(&postcopy_notifier_list,
+-                                            &pnd);
++                                            &pnd, errp);
+ }
+ 
+ /*
+diff --git a/migration/ram.c b/migration/ram.c
+index 890f31c..3fceba4 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -428,7 +428,7 @@ int precopy_notify(PrecopyNotifyReason reason, Error **errp)
+     pnd.reason = reason;
+     pnd.errp = errp;
+ 
+-    return notifier_with_return_list_notify(&precopy_notifier_list, &pnd);
++    return notifier_with_return_list_notify(&precopy_notifier_list, &pnd, errp);
+ }
+ 
+ uint64_t ram_bytes_remaining(void)
+diff --git a/util/notify.c b/util/notify.c
+index 76bab21..c6e158f 100644
+--- a/util/notify.c
++++ b/util/notify.c
+@@ -61,13 +61,14 @@ void notifier_with_return_remove(NotifierWithReturn *notifier)
+     QLIST_REMOVE(notifier, node);
+ }
+ 
+-int notifier_with_return_list_notify(NotifierWithReturnList *list, void *data)
++int notifier_with_return_list_notify(NotifierWithReturnList *list, void *data,
++                                     Error **errp)
+ {
+     NotifierWithReturn *notifier, *next;
+     int ret = 0;
+ 
+     QLIST_FOREACH_SAFE(notifier, &list->notifiers, node, next) {
+-        ret = notifier->notify(notifier, data);
++        ret = notifier->notify(notifier, data, errp);
+         if (ret != 0) {
+             break;
+         }
 -- 
 1.8.3.1
 
