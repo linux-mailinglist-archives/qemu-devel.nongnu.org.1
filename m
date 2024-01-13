@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A9482CA21
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 06:59:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A01182CA14
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 06:58:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOX1j-0007R7-5s; Sat, 13 Jan 2024 00:57:51 -0500
+	id 1rOX1j-0007RG-L4; Sat, 13 Jan 2024 00:57:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOX1g-0007Qd-UU
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:57:48 -0500
-Received: from sin.source.kernel.org ([145.40.73.55])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOX1h-0007Ql-QV
+ for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:57:49 -0500
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOX1f-00084p-6F
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:57:48 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOX1g-00085c-4J
+ for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:57:49 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id F0DFACE1DBF;
+ by sin.source.kernel.org (Postfix) with ESMTP id 5D215CE23C7;
+ Sat, 13 Jan 2024 05:57:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38BBC433F1;
  Sat, 13 Jan 2024 05:57:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42421C433C7;
- Sat, 13 Jan 2024 05:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1705125463;
- bh=yzm3CMifRY3radrXwAH5GaBfEDdVB95MfErfKwEwvpM=;
+ s=k20201202; t=1705125464;
+ bh=sM2ZWgk6JWatVLRPpAnEmobohCrep0P3Z/YMyGxKwtU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=fTpaQoKDj6pnxL8+gdeV22tGc/ROuaimsWvYqKWh/F/eq9WJEwwdpJ1KYWbyieeAB
- mCQLUcrr/cR1hC7pSDPxHH9LnSXGG/YIWm9WSZhxa/79qYLW8zGu8q+kQ5wTnrc+nR
- 0Qp0T0lOLvxzlrPpHmnFe0437CYawFAltJ8IUWKRPFrDVjMIgYwc0WL5cRgCwsbNbL
- LaHONkQcLpfkhRBojop3TMxxn+BHlexKy5gM7DDOw7Dn0QYRIXDIb8vN1aPDeYkviz
- 9FWGzYpfMbyIQ+4ziPiabYaDoED6eY3wZ8Xk8pA3H1Jke6AFvxAtrdIYnwKJfE/amk
- Y+jwMaC5ySNyw==
+ b=iAn6o6LwipUiNz2YwBneIi7anfobVuqeM7ykxzCr6gTiTnNRZ6j+2NV3lTm2j9gsg
+ dASxfW8YnLlmr9veIQ5g5B6AEpiJSTSmKJQ+6aqUpOpqmsN7aVDb2miPBSnrmWQWXW
+ GIRU5pe6PNAi6odyYqPuIt8jd6CQszy3g+enTVSO+73s1O4dlMVW+EqDTpelkkc5Tf
+ h7aC1Im7vS2UPOiBa7BA87CRUASJ7II9oa/Hda4i+slahiyeB9Mmwp2M6zMNWk2mg/
+ EPBoIHjT7NSyc6agud5BeOvGhbjgh58Di7ZY1IcjhOwHSu+7xI1i3gaDNHbcLPWHTj
+ Jaz2LTZY3Dr3A==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 07/10] target/hppa: Export function hppa_set_ior_and_isr()
-Date: Sat, 13 Jan 2024 06:57:25 +0100
-Message-ID: <20240113055729.4480-8-deller@kernel.org>
+Subject: [PULL 08/10] target/hppa: Fix IOR and ISR on unaligned access trap
+Date: Sat, 13 Jan 2024 06:57:26 +0100
+Message-ID: <20240113055729.4480-9-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240113055729.4480-1-deller@kernel.org>
 References: <20240113055729.4480-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
- helo=sin.source.kernel.org
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=deller@kernel.org; helo=sin.source.kernel.org
 X-Spam_score_int: -64
 X-Spam_score: -6.5
 X-Spam_bar: ------
@@ -69,76 +69,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Move functionality to set IOR and ISR on fault into own
-function. This will be used by follow-up patches.
+Put correct values (depending on CPU arch) into IOR and ISR on fault.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h        |  1 +
- target/hppa/mem_helper.c | 23 ++++++++++++-----------
- 2 files changed, 13 insertions(+), 11 deletions(-)
+ target/hppa/cpu.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 8be45c69c9..9556e95fab 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -385,6 +385,7 @@ void hppa_cpu_dump_state(CPUState *cs, FILE *f, int);
- #ifndef CONFIG_USER_ONLY
- void hppa_ptlbe(CPUHPPAState *env);
- hwaddr hppa_cpu_get_phys_page_debug(CPUState *cs, vaddr addr);
-+void hppa_set_ior_and_isr(CPUHPPAState *env, vaddr addr, bool mmu_disabled);
- bool hppa_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                        MMUAccessType access_type, int mmu_idx,
-                        bool probe, uintptr_t retaddr);
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 1387f4a64b..4fcc612754 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -305,14 +305,8 @@ hwaddr hppa_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
-     return excp == EXCP_DTLB_MISS ? -1 : phys;
- }
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index 04de1689d7..fda32d7f59 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -110,11 +110,7 @@ void hppa_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
+     CPUHPPAState *env = &cpu->env;
  
--G_NORETURN static void
--raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
--                         vaddr addr, bool mmu_disabled)
-+void hppa_set_ior_and_isr(CPUHPPAState *env, vaddr addr, bool mmu_disabled)
- {
--    CPUState *cs = env_cpu(env);
--
--    cs->exception_index = excp;
--
-     if (env->psw & PSW_Q) {
-         /*
-          * For pa1.x, the offset and space never overlap, and so we
-@@ -339,16 +333,23 @@ raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
-                  */
-                 uint64_t b;
+     cs->exception_index = EXCP_UNALIGN;
+-    if (env->psw & PSW_Q) {
+-        /* ??? Needs tweaking for hppa64.  */
+-        env->cr[CR_IOR] = addr;
+-        env->cr[CR_ISR] = addr >> 32;
+-    }
++    hppa_set_ior_and_isr(env, addr, MMU_IDX_MMU_DISABLED(mmu_idx));
  
--                cpu_restore_state(cs, retaddr);
--
-                 b = env->unwind_breg ? env->gr[env->unwind_breg] : 0;
-                 b >>= (env->psw & PSW_W ? 62 : 30);
-                 env->cr[CR_IOR] |= b << 62;
--
--                cpu_loop_exit(cs);
-             }
-         }
-     }
-+}
-+
-+G_NORETURN static void
-+raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
-+                         vaddr addr, bool mmu_disabled)
-+{
-+    CPUState *cs = env_cpu(env);
-+
-+    cs->exception_index = excp;
-+    hppa_set_ior_and_isr(env, addr, mmu_disabled);
-+
      cpu_loop_exit_restore(cs, retaddr);
  }
- 
 -- 
 2.43.0
 
