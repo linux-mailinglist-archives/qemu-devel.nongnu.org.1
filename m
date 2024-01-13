@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DF3882CBDA
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 11:31:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B4682CBDB
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 11:31:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rObHC-0004uM-E1; Sat, 13 Jan 2024 05:30:06 -0500
+	id 1rObHD-0004uk-9v; Sat, 13 Jan 2024 05:30:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <arnaud.minier@telecom-paris.fr>)
- id 1rObGd-0004oU-PX; Sat, 13 Jan 2024 05:29:32 -0500
-Received: from zproxy1.enst.fr ([137.194.2.220])
+ id 1rObGi-0004qx-6o; Sat, 13 Jan 2024 05:29:37 -0500
+Received: from zproxy1.enst.fr ([2001:660:330f:2::dc])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <arnaud.minier@telecom-paris.fr>)
- id 1rObGb-0004SP-0p; Sat, 13 Jan 2024 05:29:31 -0500
+ id 1rObGe-0004UX-Ag; Sat, 13 Jan 2024 05:29:34 -0500
 Received: from localhost (localhost [IPv6:::1])
- by zproxy1.enst.fr (Postfix) with ESMTP id BBAE9C078F;
- Sat, 13 Jan 2024 11:29:23 +0100 (CET)
+ by zproxy1.enst.fr (Postfix) with ESMTP id 099E8C071F;
+ Sat, 13 Jan 2024 11:29:24 +0100 (CET)
 Received: from zproxy1.enst.fr ([IPv6:::1])
  by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id k13lLQoIyM5Y; Sat, 13 Jan 2024 11:29:23 +0100 (CET)
+ id KmO8QdPpyo7X; Sat, 13 Jan 2024 11:29:23 +0100 (CET)
 Received: from localhost (localhost [IPv6:::1])
- by zproxy1.enst.fr (Postfix) with ESMTP id 4B07BC07A5;
+ by zproxy1.enst.fr (Postfix) with ESMTP id 7BCDCC061A;
  Sat, 13 Jan 2024 11:29:23 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr 4B07BC07A5
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr 7BCDCC061A
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
  s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1705141763;
- bh=1tz0czNF2n8hyttE+zic+p5UxdQaBdUgktrpXzBfUCw=;
+ bh=nYlucyPJjNn3tjn3l3KDjRd1roMbb90uTvgczkrDX/E=;
  h=From:To:Date:Message-Id:MIME-Version;
- b=w4YZjK8lwZzqgYDUoSqToLvEK6epjO4dKnKRDydSxDgey9El0fhPhg0/YTw7VdJ5A
- ij5fAJyl2l8V32kvAwj38em0EyJs7JwsHLBMI2NFflglyZIvGQrblY42t+QGDSjei0
- tzn/dY5RwGrr6XA6IDz+HtroW9uVPI8AABpiCXws=
+ b=GbvHGZtInopgkpxTGQQcKsC7UAjbCfTf6eHoU7ZHVFiJvmwWYKV4a5pwNm+X4TQOm
+ YFICsZzv/tkFd5bk4oqLIPWCeoVoZcGjRBk2M3jimyc0UOgQrUKKsx1w/gkh4yDbLN
+ 155FI2nNn4zkwVZwWQR4dREE1tsaH1hzL0YpLR3Q=
 X-Virus-Scanned: amavis at enst.fr
 Received: from zproxy1.enst.fr ([IPv6:::1])
  by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id ZmGdUwpUzNXG; Sat, 13 Jan 2024 11:29:23 +0100 (CET)
+ id a6nrp4H3ItXM; Sat, 13 Jan 2024 11:29:23 +0100 (CET)
 Received: from AM-Inspiron-3585.numericable.fr (38.162.10.109.rev.sfr.net
  [109.10.162.38])
- by zproxy1.enst.fr (Postfix) with ESMTPSA id EF7AEC07A4;
- Sat, 13 Jan 2024 11:29:22 +0100 (CET)
+ by zproxy1.enst.fr (Postfix) with ESMTPSA id 37645C070E;
+ Sat, 13 Jan 2024 11:29:23 +0100 (CET)
 From: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 To: qemu-devel@nongnu.org
 Cc: Alistair Francis <alistair@alistair23.me>,
@@ -49,16 +49,16 @@ Cc: Alistair Francis <alistair@alistair23.me>,
  Arnaud Minier <arnaud.minier@telecom-paris.fr>,
  =?UTF-8?q?Philipe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 6/7] STM32L4x5: Use the RCC Sysclk
-Date: Sat, 13 Jan 2024 11:29:12 +0100
-Message-Id: <20240113102913.18278-7-arnaud.minier@telecom-paris.fr>
+Subject: [PATCH 7/7] Add tests for the STM32L4x5_RCC
+Date: Sat, 13 Jan 2024 11:29:13 +0100
+Message-Id: <20240113102913.18278-8-arnaud.minier@telecom-paris.fr>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240113102913.18278-1-arnaud.minier@telecom-paris.fr>
 References: <20240113102913.18278-1-arnaud.minier@telecom-paris.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=137.194.2.220;
+Received-SPF: pass client-ip=2001:660:330f:2::dc;
  envelope-from=arnaud.minier@telecom-paris.fr; helo=zproxy1.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,128 +84,250 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 ---
- hw/arm/b-l475e-iot01a.c        | 10 +---------
- hw/arm/stm32l4x5_soc.c         | 33 ++++-----------------------------
- include/hw/arm/stm32l4x5_soc.h |  3 ---
- 3 files changed, 5 insertions(+), 41 deletions(-)
+ tests/qtest/meson.build          |   3 +-
+ tests/qtest/stm32l4x5_rcc-test.c | 211 +++++++++++++++++++++++++++++++
+ 2 files changed, 213 insertions(+), 1 deletion(-)
+ create mode 100644 tests/qtest/stm32l4x5_rcc-test.c
 
-diff --git a/hw/arm/b-l475e-iot01a.c b/hw/arm/b-l475e-iot01a.c
-index 6ecde2db15..d862aa43fc 100644
---- a/hw/arm/b-l475e-iot01a.c
-+++ b/hw/arm/b-l475e-iot01a.c
-@@ -26,27 +26,19 @@
- #include "qapi/error.h"
- #include "hw/boards.h"
- #include "hw/qdev-properties.h"
--#include "hw/qdev-clock.h"
- #include "qemu/error-report.h"
- #include "hw/arm/stm32l4x5_soc.h"
- #include "hw/arm/boot.h"
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index a926af92f6..b0d9a8c2de 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -197,7 +197,8 @@ qtests_aspeed =3D \
 =20
--/* Main SYSCLK frequency in Hz (80MHz) */
--#define MAIN_SYSCLK_FREQ_HZ 80000000ULL
-+/* B-L475E-IOT01A implementation is derived from netduinoplus2 */
+ qtests_stm32l4x5 =3D \
+   ['stm32l4x5_exti-test',
+-   'stm32l4x5_syscfg-test']
++   'stm32l4x5_syscfg-test',
++   'stm32l4x5_rcc-test']
 =20
- static void b_l475e_iot01a_init(MachineState *machine)
- {
-     const Stm32l4x5SocClass *sc;
-     DeviceState *dev;
--    Clock *sysclk;
--
--    /* This clock doesn't need migration because it is fixed-frequency *=
-/
--    sysclk =3D clock_new(OBJECT(machine), "SYSCLK");
--    clock_set_hz(sysclk, MAIN_SYSCLK_FREQ_HZ);
-=20
-     dev =3D qdev_new(TYPE_STM32L4X5XG_SOC);
-     object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
--    qdev_connect_clock_in(dev, "sysclk", sysclk);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-=20
-     sc =3D STM32L4X5_SOC_GET_CLASS(dev);
-diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
-index 2538165af6..bcdad69e92 100644
---- a/hw/arm/stm32l4x5_soc.c
-+++ b/hw/arm/stm32l4x5_soc.c
-@@ -84,9 +84,6 @@ static void stm32l4x5_soc_initfn(Object *obj)
-=20
-     object_initialize_child(obj, "exti", &s->exti, TYPE_STM32L4X5_EXTI);
-     object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32L4X5_SY=
-SCFG);
--
--    s->sysclk =3D qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0)=
-;
--    s->refclk =3D qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0)=
-;
-     object_initialize_child(obj, "rcc", &s->rcc, TYPE_STM32L4X5_RCC);
- }
-=20
-@@ -99,30 +96,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc=
-, Error **errp)
-     DeviceState *armv7m;
-     SysBusDevice *busdev;
-=20
--    /*
--     * We use s->refclk internally and only define it with qdev_init_clo=
-ck_in()
--     * so it is correctly parented and not leaked on an init/deinit; it =
-is not
--     * intended as an externally exposed clock.
--     */
--    if (clock_has_source(s->refclk)) {
--        error_setg(errp, "refclk clock must not be wired up by the board=
- code");
--        return;
--    }
--
--    if (!clock_has_source(s->sysclk)) {
--        error_setg(errp, "sysclk clock must be wired up by the board cod=
-e");
--        return;
--    }
--
--    /*
--     * TODO: ideally we should model the SoC RCC and its ability to
--     * change the sysclk frequency and define different sysclk sources.
--     */
--
--    /* The refclk always runs at frequency HCLK / 8 */
--    clock_set_mul_div(s->refclk, 8, 1);
--    clock_set_source(s->refclk, s->sysclk);
--
-     if (!memory_region_init_rom(&s->flash, OBJECT(dev_soc), "flash",
-                                 sc->flash_size, errp)) {
-         return;
-@@ -151,8 +124,10 @@ static void stm32l4x5_soc_realize(DeviceState *dev_s=
-oc, Error **errp)
-     qdev_prop_set_uint32(armv7m, "num-irq", 96);
-     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m=
-4"));
-     qdev_prop_set_bit(armv7m, "enable-bitband", true);
--    qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
--    qdev_connect_clock_in(armv7m, "refclk", s->refclk);
-+    qdev_connect_clock_in(armv7m, "cpuclk",
-+        qdev_get_clock_out(DEVICE(&(s->rcc)), "cortex-fclk-out"));
-+    qdev_connect_clock_in(armv7m, "refclk",
-+        qdev_get_clock_out(DEVICE(&(s->rcc)), "cortex-refclk-out"));
-     object_property_set_link(OBJECT(&s->armv7m), "memory",
-                              OBJECT(system_memory), &error_abort);
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->armv7m), errp)) {
-diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_so=
-c.h
-index e480fcc976..1f71298b45 100644
---- a/include/hw/arm/stm32l4x5_soc.h
-+++ b/include/hw/arm/stm32l4x5_soc.h
-@@ -50,9 +50,6 @@ struct Stm32l4x5SocState {
-     MemoryRegion sram2;
-     MemoryRegion flash;
-     MemoryRegion flash_alias;
--
--    Clock *sysclk;
--    Clock *refclk;
- };
-=20
- struct Stm32l4x5SocClass {
+ qtests_arm =3D \
+   (config_all_devices.has_key('CONFIG_MPS2') ? ['sse-timer-test'] : []) =
++ \
+diff --git a/tests/qtest/stm32l4x5_rcc-test.c b/tests/qtest/stm32l4x5_rcc=
+-test.c
+new file mode 100644
+index 0000000000..eaa2f4b02f
+--- /dev/null
++++ b/tests/qtest/stm32l4x5_rcc-test.c
+@@ -0,0 +1,211 @@
++/*
++ * QTest testcase for STM32L4x5_RCC
++ *
++ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or la=
+ter.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "hw/registerfields.h"
++#include "libqtest-single.h"
++#include "hw/misc/stm32l4x5_rcc_internals.h"
++
++#define RCC_BASE_ADDR 0x40021000
++#define NVIC_ISER 0xE000E100
++#define NVIC_ISPR 0xE000E200
++#define NVIC_ICPR 0xE000E280
++#define RCC_IRQ 5
++
++static void enable_nvic_irq(unsigned int n)
++{
++    writel(NVIC_ISER, 1 << n);
++}
++
++static void unpend_nvic_irq(unsigned int n)
++{
++    writel(NVIC_ICPR, 1 << n);
++}
++
++static bool check_nvic_pending(unsigned int n)
++{
++    return readl(NVIC_ISPR) & (1 << n);
++}
++
++static bool qts_wait_for_flag(QTestState *qts, uint32_t event_addr,
++                              uint32_t flag, uint32_t value)
++{
++    time_t now, start =3D time(NULL);
++
++    while (true) {
++        if ((qtest_readl(qts, event_addr) & flag) =3D=3D value) {
++            return true;
++        }
++
++        /* Wait at most 5 seconds */
++        now =3D time(NULL);
++        if (now - start > 5) {
++            break;
++        }
++        g_usleep(1000);
++    }
++
++    return false;
++}
++
++static bool rcc_wait_for_flag(uint32_t event_addr, uint32_t flag,
++                              uint32_t value)
++{
++    return qts_wait_for_flag(global_qtest, RCC_BASE_ADDR + event_addr, f=
+lag, value);
++}
++
++static void rcc_writel(unsigned int offset, uint32_t value)
++{
++    writel(RCC_BASE_ADDR + offset, value);
++}
++
++static uint32_t rcc_readl(unsigned int offset)
++{
++    return readl(RCC_BASE_ADDR + offset);
++}
++
++static void test_init_msi(void)
++{
++    /* MSIRANGE can be set only when MSI is OFF or READY */
++    rcc_writel(A_CR, R_CR_MSION_MASK);
++    /* Wait until MSI is stable */
++    g_assert_true(rcc_wait_for_flag(A_CR, R_CR_MSIRDY_MASK, R_CR_MSIRDY_=
+MASK));
++    /* TODO find a way to test MSI value */
++}
++
++static void test_set_msi_as_sysclk(void)
++{
++    /* Clocking from MSI, in case MSI was not the default source */
++    rcc_writel(A_CFGR, 0);
++    /* Wait until MSI is selected and stable */
++    g_assert_true(rcc_wait_for_flag(A_CFGR, R_CFGR_SWS_MASK, 0));
++}
++
++static void test_init_pll(void)
++{
++    uint32_t value;
++
++    /*
++     * Update PLL and set MSI as the source clock.
++     * PLLM =3D 1 --> 000
++     * PLLN =3D 40 --> 40
++     * PPLLR =3D 2 --> 00
++     * PLLDIV =3D unused, PLLP =3D unused (SAI3), PLLQ =3D unused (48M1)
++     * SRC =3D MSI --> 01
++     */
++    rcc_writel(A_PLLCFGR, R_PLLCFGR_PLLREN_MASK |
++            (40 << R_PLLCFGR_PLLN_SHIFT) |
++            (0b01 << R_PLLCFGR_PLLSRC_SHIFT));
++
++    /* PLL activation */
++    value =3D rcc_readl(A_CR);
++    rcc_writel(A_CR, value | R_CR_PLLON_MASK);
++
++    /* Waiting for PLL lock. */
++    g_assert_true(rcc_wait_for_flag(A_CR, R_CR_PLLRDY_MASK, R_CR_PLLRDY_=
+MASK));
++
++    /* Switches on the PLL clock source */
++    value =3D rcc_readl(A_CFGR);
++    rcc_writel(A_CFGR, (value & ~R_CFGR_SW_MASK) |
++        (0b11 << R_CFGR_SW_SHIFT));
++
++    /* Wait until SYSCLK is stable. */
++    g_assert_true(rcc_wait_for_flag(A_CFGR, R_CFGR_SWS_MASK,
++        (0b11 << R_CFGR_SWS_SHIFT)));
++}
++
++static void test_activate_lse(void)
++{
++    /* LSE activation, no LSE Bypass */
++    rcc_writel(A_BDCR, R_BDCR_LSEDRV_MASK | R_BDCR_LSEON_MASK);
++    g_assert_true(rcc_wait_for_flag(A_BDCR, R_BDCR_LSERDY_MASK, R_BDCR_L=
+SERDY_MASK));
++}
++
++static void test_irq(void)
++{
++    enable_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_LSIRDYIE_MASK);
++    rcc_writel(A_CSR, R_CSR_LSION_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_LSIRDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_LSERDYIE_MASK);
++    rcc_writel(A_BDCR, R_BDCR_LSEON_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_LSERDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_MSIRDYIE_MASK);
++    rcc_writel(A_CR, R_CR_MSION_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_MSIRDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_HSIRDYIE_MASK);
++    rcc_writel(A_CR, R_CR_HSION_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_HSIRDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_HSERDYIE_MASK);
++    rcc_writel(A_CR, R_CR_HSEON_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_HSERDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_PLLRDYIE_MASK);
++    rcc_writel(A_CR, R_CR_PLLON_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_PLLRDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_PLLSAI1RDYIE_MASK);
++    rcc_writel(A_CR, R_CR_PLLSAI1ON_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_PLLSAI1RDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_PLLSAI2RDYIE_MASK);
++    rcc_writel(A_CR, R_CR_PLLSAI2ON_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_PLLSAI2RDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++}
++
++int main(int argc, char **argv)
++{
++    int ret;
++
++    g_test_init(&argc, &argv, NULL);
++    g_test_set_nonfatal_assertions();
++    /*
++     * These test separately that we can enable the plls, change the sys=
+clk,
++     * and enable different devices.
++     * They are dependent on one another.
++     * The procedure is taken from a program by Samuel Tardieu.
++     */
++    qtest_add_func("stm32l4x5/rcc/init_msi", test_init_msi);
++    qtest_add_func("stm32l4x5/rcc/set_msi_as_sysclk",
++        test_set_msi_as_sysclk);
++    qtest_add_func("stm32l4x5/rcc/activate_lse", test_activate_lse);
++    qtest_add_func("stm32l4x5/rcc/init_pll", test_init_pll);
++
++    qtest_add_func("stm32l4x5/rcc/irq", test_irq);
++
++    qtest_start("-machine b-l475e-iot01a");
++    ret =3D g_test_run();
++    qtest_end();
++
++    return ret;
++}
 --=20
 2.34.1
 
