@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A01182CA14
+	by mail.lfdr.de (Postfix) with ESMTPS id 11EF082CA13
 	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 06:58:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOX1j-0007RG-L4; Sat, 13 Jan 2024 00:57:51 -0500
+	id 1rOX1k-0007RO-5g; Sat, 13 Jan 2024 00:57:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOX1h-0007Ql-QV
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:57:49 -0500
-Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOX1i-0007R8-TK
+ for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:57:50 -0500
+Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOX1g-00085c-4J
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:57:49 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOX1h-00086D-AP
+ for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:57:50 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id 5D215CE23C7;
- Sat, 13 Jan 2024 05:57:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38BBC433F1;
- Sat, 13 Jan 2024 05:57:43 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTP id C7887CE259A;
+ Sat, 13 Jan 2024 05:57:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109F0C433C7;
+ Sat, 13 Jan 2024 05:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1705125464;
- bh=sM2ZWgk6JWatVLRPpAnEmobohCrep0P3Z/YMyGxKwtU=;
+ s=k20201202; t=1705125466;
+ bh=HMscmGeaFXpMMw/G897fJ5R4jD8hIiSvdjBj8a9jRtE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=iAn6o6LwipUiNz2YwBneIi7anfobVuqeM7ykxzCr6gTiTnNRZ6j+2NV3lTm2j9gsg
- dASxfW8YnLlmr9veIQ5g5B6AEpiJSTSmKJQ+6aqUpOpqmsN7aVDb2miPBSnrmWQWXW
- GIRU5pe6PNAi6odyYqPuIt8jd6CQszy3g+enTVSO+73s1O4dlMVW+EqDTpelkkc5Tf
- h7aC1Im7vS2UPOiBa7BA87CRUASJ7II9oa/Hda4i+slahiyeB9Mmwp2M6zMNWk2mg/
- EPBoIHjT7NSyc6agud5BeOvGhbjgh58Di7ZY1IcjhOwHSu+7xI1i3gaDNHbcLPWHTj
- Jaz2LTZY3Dr3A==
+ b=Uwjiqwg09U/PqwY7smY4eO93K3GyciKXFTHut7sBWTTGTPj0W0o7sFVFX4Kr81Mfm
+ ZKRTWQ/+qg9i7RpgvshhBZSobRNsu9hwQCTvWVkBuUdwDA0ZtJvlEeu1HU5QnHO1wz
+ V63nY/xKHF3FLOAZgAJ9oZgbuWfEX8AROPf81pgeaDEFzk/Lx64g/hJgcxYuZuZ3CH
+ UrYcav/ddIilunr4AQJ0I57mWiHnAnXXyhKKfotWl1vRlJxNrctFBycNXLdu1dM319
+ qxS46aaAo9+htfYg5WXyMlZiK1KzP9/fxbhu+JjKmNKW27jlFOn5ot3TTfOE4M7ml4
+ h8vSzCTYzzp+g==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 08/10] target/hppa: Fix IOR and ISR on unaligned access trap
-Date: Sat, 13 Jan 2024 06:57:26 +0100
-Message-ID: <20240113055729.4480-9-deller@kernel.org>
+Subject: [PULL 09/10] target/hppa: Fix IOR and ISR on error in probe
+Date: Sat, 13 Jan 2024 06:57:27 +0100
+Message-ID: <20240113055729.4480-10-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240113055729.4480-1-deller@kernel.org>
 References: <20240113055729.4480-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
- envelope-from=deller@kernel.org; helo=sin.source.kernel.org
+Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
+ helo=sin.source.kernel.org
 X-Spam_score_int: -64
 X-Spam_score: -6.5
 X-Spam_bar: ------
@@ -74,26 +74,26 @@ Put correct values (depending on CPU arch) into IOR and ISR on fault.
 Signed-off-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.c | 6 +-----
+ target/hppa/op_helper.c | 6 +-----
  1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 04de1689d7..fda32d7f59 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -110,11 +110,7 @@ void hppa_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
-     CPUHPPAState *env = &cpu->env;
- 
-     cs->exception_index = EXCP_UNALIGN;
--    if (env->psw & PSW_Q) {
--        /* ??? Needs tweaking for hppa64.  */
--        env->cr[CR_IOR] = addr;
--        env->cr[CR_ISR] = addr >> 32;
--    }
-+    hppa_set_ior_and_isr(env, addr, MMU_IDX_MMU_DISABLED(mmu_idx));
- 
-     cpu_loop_exit_restore(cs, retaddr);
- }
+diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
+index 7f607c3afd..ce15469465 100644
+--- a/target/hppa/op_helper.c
++++ b/target/hppa/op_helper.c
+@@ -351,11 +351,7 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
+     excp = hppa_get_physical_address(env, addr, mmu_idx, 0, &phys,
+                                      &prot, NULL);
+     if (excp >= 0) {
+-        if (env->psw & PSW_Q) {
+-            /* ??? Needs tweaking for hppa64.  */
+-            env->cr[CR_IOR] = addr;
+-            env->cr[CR_ISR] = addr >> 32;
+-        }
++        hppa_set_ior_and_isr(env, addr, MMU_IDX_MMU_DISABLED(mmu_idx));
+         if (excp == EXCP_DTLB_MISS) {
+             excp = EXCP_NA_DTLB_MISS;
+         }
 -- 
 2.43.0
 
