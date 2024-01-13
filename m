@@ -2,93 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978CD82CDE2
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 18:17:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C21B82CE46
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 20:18:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOhcQ-0006Gv-D9; Sat, 13 Jan 2024 12:16:26 -0500
+	id 1rOjVH-00069m-Md; Sat, 13 Jan 2024 14:17:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rOhcJ-0006GU-Lc
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 12:16:19 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1rOjV6-00068c-EX; Sat, 13 Jan 2024 14:17:02 -0500
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rOhcG-0000YP-Cu
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 12:16:17 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40e6bf323e8so6267575e9.2
- for <qemu-devel@nongnu.org>; Sat, 13 Jan 2024 09:16:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1rOjV4-000866-5h; Sat, 13 Jan 2024 14:17:00 -0500
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-28b82dc11e6so4612487a91.1; 
+ Sat, 13 Jan 2024 11:16:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705166169; x=1705770969; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=D83np26d29so0xKhh8+B47qA4sP5mVp3UG9FG1xy/NA=;
- b=bfPztIRnJlfp0xniZjDyfEAL6UW0CcG2Lr1j5PfEZXdDkO3BH+Y9ZmbG7+LeW2Idxx
- og32P8TitkKKqB2Pq5dmxVi2W0tOqDisoCIF3U2617+3ubOBKu7OEcMJz1SnIlBQXwvT
- S3D6XnaXccJL43zGsC3bYL1taYF34VlgEzXh4snBPg4U/w9Efv8m4kERazSYczrKcBj8
- 89dVUVwIGA1Ln3NQkPW6SCPt8AbY7F8qGNGrlpI/0qL9uNeWaoDU+NjkPaNOexONmBfu
- NMjcA3jmcmbqqPEjHHQRSOe5DFSONiM5WcrBuCT3cuWZb13ZYuDDHf+XDGK5K5WrKuW/
- Jkyg==
+ d=gmail.com; s=20230601; t=1705173415; x=1705778215; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ryj8hm3I3R2bbBqJYa8XZwa9eu9X+i4k5Iz/3RYnXRU=;
+ b=O87wtp5tpxZrg/b1OOhJEx6CciTQrrsEAZvo4DHXPYk4bAGmFAlGb+bd/gU0wRHqyb
+ dCnJTI+iDvYCdyf998pVQj33fYQaFnPvbTwyPH8eaiVxALD54qAW/NIF3yi0TmVR2Ovp
+ TJeBKJGVmZNpWjyDaZGMVtauQZXCgehhcMmAOk1Hs4yadqlCpPep4LbnZ3wBONIV+vYE
+ /bqulUQ+tT23mJhRxnsMv+9xSRv/S1Qgh2ETh22sEgB2+yNvquJYmCQnRf0+OUS0TxPs
+ 13AqEbg3tBJyUQsTL8mkDSoMK64+IMCvSJ0JN0ZfiN0SYGmIHRCxm4QBi1Dk5huz/S7N
+ JVxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705166169; x=1705770969;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=D83np26d29so0xKhh8+B47qA4sP5mVp3UG9FG1xy/NA=;
- b=REaMC9AMBk6mP5JZmFilq4L7NhiVeBcO01odYhrMP9LSWvOynA+zWRS8Abj47gYyB9
- j51b2Fw4yxtVkBF7+4r6W3FFGrn92lr/ZJAT4PnVvM7woAbL88mkc5pnCI2Ks9Muu2zG
- Wa0wbklXnXq6NpLHTJxKUV4yt7adpL5V7kuIuCYNogHEbuhW+HnKPfxLcMBQm6+irmy2
- +GngN8243PxcU03S+09bKpT6360er0MftPrdxJU8OlEAINSw2QdyMfwYXI2WdLhAoy0/
- f8mfAxZGvf4FTT8sjVtFlqCk+Ta2sUJoSOYIZTxVKfmRPOzTnGQbEgNC+MUPBAeK15Xn
- YtIg==
-X-Gm-Message-State: AOJu0Yya29e2YNH2OU8xRe0Xq6zT3Y4O30NmDbUBvehB6mER6BNKF/NV
- gpwYT72xMFkvrmCv/vG3a46TVsEz0+90uw==
-X-Google-Smtp-Source: AGHT+IHyUmGCpBBxhi4Im+x5tKWqKyMiMR6T3UMQq5vYi1WcN+hjwpls+o1BUG/UN0A0XUhh65XU/g==
-X-Received: by 2002:a05:600c:1e16:b0:40e:6fb5:d6bd with SMTP id
- ay22-20020a05600c1e1600b0040e6fb5d6bdmr298438wmb.120.1705166168671; 
- Sat, 13 Jan 2024 09:16:08 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- j7-20020a05600c190700b0040e52cac976sm13712340wmq.29.2024.01.13.09.16.08
+ d=1e100.net; s=20230601; t=1705173415; x=1705778215;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ryj8hm3I3R2bbBqJYa8XZwa9eu9X+i4k5Iz/3RYnXRU=;
+ b=pvIsBpy2axfoFzyU1P5Lnu4/FW3Lb9iBfM9G5WaL9G70RzEmScDkyZJP+aSO48QWIB
+ Xhea6AKPkLYF7dHDGM7VWiaNvGF2KqYFioo716OmQIR81UP9SuXM+aqZIi4w7jeRS6zl
+ wKSzWZusP55tA6RLl1nvy71kS9xnsV7PnsTYiPphqUN7I8aISWkdHFxod9bxrnB0VhdU
+ u13DBhbrDNG8MmWeazLsWnijBUNptxbzEyhYwlZEG7UQCMVyPmOPfR2aDCR/chTouLlv
+ wswD10T8/Xxvd9ZZd9MjfWBDsMjZS1ENTJoLHA5KDzYUWHKZhenuQJPyiHSocmf91J+V
+ 0YnA==
+X-Gm-Message-State: AOJu0YyV2Qom841nIUf3zGNf0aJBtA3PpKSNkAOLTOv/xbitCgBhaxsd
+ ToPz59FrSIYFxFM2SNzlqJY=
+X-Google-Smtp-Source: AGHT+IGhdCLBt9//+9vM4LM21B3DnpT4D8YM+wmCoaty5lYJO1DUOUXBUHl6w4HqEdx2TeCsfwsX1Q==
+X-Received: by 2002:a05:6a21:183:b0:199:c29a:190b with SMTP id
+ le3-20020a056a21018300b00199c29a190bmr1941834pzb.108.1705173414736; 
+ Sat, 13 Jan 2024 11:16:54 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ q3-20020a170902edc300b001c71ec1866fsm5125097plk.258.2024.01.13.11.16.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 13 Jan 2024 09:16:08 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CEE935F8A2;
- Sat, 13 Jan 2024 17:16:07 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org,
- Mahmoud Mandour <ma.mandourr@gmail.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>
-Subject: Re: [PATCH 03/12] tests/plugin: add test plugin for inline operations
-In-Reply-To: <58065fbd-84f9-4a21-beba-6eb2a18c3d0c@linaro.org> (Pierrick
- Bouvier's message of "Sat, 13 Jan 2024 09:16:27 +0400")
-References: <20240111142326.1743444-1-pierrick.bouvier@linaro.org>
- <20240111142326.1743444-4-pierrick.bouvier@linaro.org>
- <49bfa786-e549-43d4-ac03-9337b9342d16@linaro.org>
- <ae4227fc-58b5-4a6b-97d5-8fae34eb7514@linaro.org>
- <87v87yv588.fsf@draig.linaro.org>
- <58065fbd-84f9-4a21-beba-6eb2a18c3d0c@linaro.org>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Sat, 13 Jan 2024 17:16:07 +0000
-Message-ID: <87ply5upbc.fsf@draig.linaro.org>
+ Sat, 13 Jan 2024 11:16:54 -0800 (PST)
+From: Guenter Roeck <linux@roeck-us.net>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 0/3] hw/arm: Add support for USB, SATA,
+ and watchdog to Allwinner R40
+Date: Sat, 13 Jan 2024 11:16:48 -0800
+Message-Id: <20240113191651.1313226-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=groeck7@gmail.com; helo=mail-pj1-x102f.google.com
+X-Spam_score_int: -12
+X-Spam_score: -1.3
+X-Spam_bar: -
+X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FORGED_FROMDOMAIN=0.248, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,82 +92,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+Add support for
 
-> On 1/12/24 21:20, Alex Benn=C3=A9e wrote:
->> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
->>=20
->>> On 1/11/24 19:57, Philippe Mathieu-Daud=C3=A9 wrote:
->>>> Hi Pierrick,
->>>> On 11/1/24 15:23, Pierrick Bouvier wrote:
->>>>> For now, it simply performs instruction, bb and mem count, and ensure
->>>>> that inline vs callback versions have the same result. Later, we'll
->>>>> extend it when new inline operations are added.
->>>>>
->>>>> Use existing plugins to test everything works is a bit cumbersome, as
->>>>> different events are treated in different plugins. Thus, this new one.
->>>>>
-<snip>
->>>>> +#define MAX_CPUS 8
->>>> Where does this value come from?
->>>>
->>>
->>> The plugin tests/plugin/insn.c had this constant, so I picked it up
->>> from here.
->>>
->>>> Should the pluggin API provide a helper to ask TCG how many
->>>> vCPUs are created?
->>>
->>> In user mode, we can't know how many simultaneous threads (and thus
->>> vcpu) will be triggered by advance. I'm not sure if additional cpus
->>> can be added in system mode.
->>>
->>> One problem though, is that when you register an inline op with a
->>> dynamic array, when you resize it (when detecting a new vcpu), you
->>> can't change it afterwards. So, you need a storage statically sized
->>> somewhere.
->>>
->>> Your question is good, and maybe we should define a MAX constant that
->>> plugins should rely on, instead of a random amount.
->> For user-mode it can be infinite. The existing plugins do this by
->> ensuring vcpu_index % max_vcpu. Perhaps we just ensure that for the
->> scoreboard as well? Of course that does introduce a trap for those using
->> user-mode...
->>=20
->
-> The problem with vcpu-index % max_vcpu is that it reintroduces race
-> condition, though it's probably less frequent than on a single
-> variable. IMHO, yes it solves memory error, but does not solve the
-> initial problem itself.
->
-> The simplest solution would be to have a size "big enough" for most
-> cases, and abort when it's reached.
+- USB 2.0 EHCI/OHCI
+- SATA/AHCI
+- Watchdog
 
-Well that is simple enough for system emulation as max_vcpus is a bounded
-number.
+to Allwinner R40. The hardware is quite similar to Allwinner A10 and H3,
+so the code is derived from the implementations for those SOCs.
 
-> Another solution, much more complicated, but correct, would be to move
-> memory management of plugin scoreboard to plugin runtime, and add a
-> level of indirection to access it.
+Tested with bpim2u emulation by instantiating EHCI and OHCI keyboards,
+by booting from USB, by booting from ATA/SATA drive, and by manually
+testing watchdog operation.
 
-That certainly gives us the most control and safety. We can then ensure
-we'll never to writing past the bounds of the buffer. The plugin would
-have to use an access function to get the pointer to read at the time it
-cared and of course inline checks should be pretty simple.
+----------------------------------------------------------------
+Guenter Roeck (3):
+      hw/arm: Add EHCI/OHCI controllers to Allwinner R40 and Bananapi board
+      hw/arm: Add AHCI/SATA controller to Allwinner R40 and Bananapi board
+      hw/arm: Add watchdog timer to Allwinner H40 and Bananapi board
 
-> Every time a new vcpu is added, we
-> can grow dynamically. This way, the array can grow, and ultimately,
-> plugin can poke its content/size. I'm not sure this complexity is what
-> we want though.
-
-It doesn't seem too bad. We have a start/end_exclusive is *-user do_fork
-where we could update pointers. If we are smart about growing the size
-of the arrays we could avoid too much re-translation.
-
-Do we want a limit of one scoreboard per thread? Can we store structures
-in there?
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+ docs/system/arm/bananapi_m2u.rst |  5 ++-
+ hw/arm/Kconfig                   |  4 ++
+ hw/arm/allwinner-r40.c           | 90 ++++++++++++++++++++++++++++++++++++++--
+ include/hw/arm/allwinner-r40.h   | 15 +++++++
+ 4 files changed, 109 insertions(+), 5 deletions(-)
 
