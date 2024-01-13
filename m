@@ -2,89 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B39382C8E9
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 02:52:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A824582C8BE
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 02:29:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOTAa-0004rJ-Kh; Fri, 12 Jan 2024 20:50:45 -0500
+	id 1rOSow-00068t-PO; Fri, 12 Jan 2024 20:28:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ved@rivosinc.com>) id 1rORtM-0000aR-VP
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 19:28:53 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <masscry@gmail.com>) id 1rOSos-00068d-JZ
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 20:28:19 -0500
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ved@rivosinc.com>) id 1rORtK-0007uc-CQ
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 19:28:52 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1d3ef33e68dso49744595ad.1
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 16:28:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <masscry@gmail.com>) id 1rOSop-0007Ta-Sr
+ for qemu-devel@nongnu.org; Fri, 12 Jan 2024 20:28:18 -0500
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-50e7b51b0ceso6864822e87.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 17:28:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1705105728; x=1705710528;
- darn=nongnu.org; 
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=gsm5BgPC3U8+ci61AhiTIOfIfHAz9Z+LUC5yPUBYy64=;
- b=N3svVKm2lCquU1V8aqZh9lFkCSKW7kWIEdrw1GMO5+n5hErCN3uorF98VzKvr7Oxvj
- Jj3kc1/DlX1ihQ4Me83YwKHY7Ram8Lz2fP5kjNrmTvVZUn+PTiJty+qjHQ1YBu0ANgRN
- C0P2tfXF+6tenDYcu0dmI6PUSgN6XIduz8WqCYXJGxjOaQavXZF6Ip/xWUWU/rMOiO/0
- syQLt4BAWW+5mFSzrs43GOX4meOsMSm/d89G0U1/Ay9G39TUbEu6P7drVgjfDmWbYcmY
- R5hBhD2h3ACa6ivR+AklyYVjskHo8FPtvDutf+Ov1Q3rZzteo5Yj+XEA38NZsLNQv5tk
- d+ZQ==
+ d=gmail.com; s=20230601; t=1705109292; x=1705714092; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ePH5ad58Xt51TRUlT5QGzX+VzpOKc/4qm1BDXngGjvU=;
+ b=SigkVb/o4tIizjnrTSD/NsTqe4QiKR3hp/GlMtICwfM3fJlV5Argx2gFjF9lHu72Wr
+ GCOO8k2qIqYgCc3skh75WgxVme4EEVflVhHMp4U1esF/6H8tj6L0VZ0LIQV+W0OqFgXh
+ +ooUzgxGStpybbErwTYvYx2PLkakVWe2BZmpw98pLqiV1ndDKjGpefq8SdXxX7Lx9YMt
+ Bc02W40R22q4VtkaRwGCVQpy1vb7gsUp1UQzN772BSiHHWRmvtXNpin/ZqsIJyiv51Z2
+ x9v2YKXxh0Dwdg3HW9B5F/IJVVvMKyef2TcMWQJym2x39pXrsnumWIExBRGiCVaQKPAf
+ MEEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705105728; x=1705710528;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gsm5BgPC3U8+ci61AhiTIOfIfHAz9Z+LUC5yPUBYy64=;
- b=htNq1exLtU4OJPXDO3ng55YDwTtY8U4mib+CYejemi0XjSOoUFEMUXuUnbrQp+/Q2d
- lLAewkaY3q7PximHsTGQejQlpBNoah01SN5cxCdOlcr6ObaiFAbZGJLniHFZyLNxLwYi
- 74Tf2zISxlcQImSis+IpgKyO877WmzcTeVBzUJQc0uxJH6RVjyzAcPxOUT3r2E6pGb+6
- hnjnS4Gq4ozt9WswypK3nVz/z/mTcGLyaC1rqbmnaWJgwaxQeLQnVIwf9ch26KFR9Upn
- GWZpe5Iv4ZYldG1dzuYkqzhkhKQWF1TN3IhDVbePQqlMPxDvdQ+jEbkMXUE0K18grZqp
- wMOA==
-X-Gm-Message-State: AOJu0YyRwfifPJUGnuw9OrnwbDCOB/DCgcpZCbP1EGQzD8pTlZZgaCxp
- Z7TKE9Ph6OT4K8qEfl8xua4ZPELHS9HkBA==
-X-Google-Smtp-Source: AGHT+IHEZ/JKocSP/JgiVDfECSziL6wGFKozxONVH2rZIbtbNS6rSer91mSpTk7dqE3D9RwNIuS0Qw==
-X-Received: by 2002:a17:902:bc4c:b0:1d5:73d0:eb7d with SMTP id
- t12-20020a170902bc4c00b001d573d0eb7dmr2497346plz.18.1705105728288; 
- Fri, 12 Jan 2024 16:28:48 -0800 (PST)
-Received: from ved-XPS-8940 ([12.0.166.162]) by smtp.gmail.com with ESMTPSA id
- sm9-20020a17090b2e4900b0028bad9b220fsm4842111pjb.37.2024.01.12.16.28.47
+ d=1e100.net; s=20230601; t=1705109292; x=1705714092;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ePH5ad58Xt51TRUlT5QGzX+VzpOKc/4qm1BDXngGjvU=;
+ b=lIGYR0uh36qeFSJqVYyR6TvphmTWU495ZMC1iA72cfvqNqmtcKePrs/DqymoELYDFO
+ QXgP7kwc9AAxKRMEKxpo4s/rg9VYhivS36fd5rdll05k01xthwA5gRylSY+/vdfz9obb
+ X6ttMvYT592gQis0Jdo2ylbimYe9t/6ulmhFKpgRx4KEeU+r5K4VZStT79O2JBYp/Nvg
+ 9KODyLgRazSccgAyiSUqXZF9U/HFLx9F8JO4wDBmd7sw10v+cZ7rB4sK8NhzpS+opGQ9
+ HEz2IMtGamaVhfPczvkzeeINmV724eRFaLy7A+DbLTySyzTCpg0owiqdTVXZB/G/GPW7
+ KcPA==
+X-Gm-Message-State: AOJu0YwT4JhHT0jrQv07KbM3DJRsHVkzZhPQwL1eFfJew1UtIBrpUUb8
+ 9CIlG6tfccxQzLBNb+izsyG5lKIgMGuYLjlehng=
+X-Google-Smtp-Source: AGHT+IEcmGUGriyu68r5JQHuodEDQzTjT+LC045B19j8QbttgBK9kXrxWTHxLlQhW5GdS12Tv7RRIw==
+X-Received: by 2002:a05:6512:10cb:b0:50e:bc4f:19d3 with SMTP id
+ k11-20020a05651210cb00b0050ebc4f19d3mr1608432lfg.25.1705109291672; 
+ Fri, 12 Jan 2024 17:28:11 -0800 (PST)
+Received: from pc7.local (95-24-165-64.broadband.corbina.ru. [95.24.165.64])
+ by smtp.gmail.com with ESMTPSA id
+ d2-20020ac24c82000000b0050eab0f6a59sm669871lfl.84.2024.01.12.17.28.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jan 2024 16:28:47 -0800 (PST)
-Date: Fri, 12 Jan 2024 18:28:45 -0600
-From: Ved Shanbhogue <ved@rivosinc.com>
-To: Rob Bradford <rbradford@rivosinc.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com
-Subject: Re: Re: Re: [PATCH 1/3] target/riscv: Add infrastructure for 'B'
- MISA extension
-Message-ID: <ZaHZPZauuZh4SwVj@ved-XPS-8940>
-References: <20240109171848.32237-1-rbradford@rivosinc.com>
- <20240109171848.32237-2-rbradford@rivosinc.com>
- <20240111-585fe1291fcaa1e0432674e3@orel>
- <20240111-df7a6acf3109b630469591a1@orel>
- <3dbd3fa1cbad80948175f98dcc0c76b886e2376e.camel@rivosinc.com>
- <20240112-d9e3cc215a7a68c5189908bf@orel>
- <7461190fbece351f916eccd258bf62b86227927d.camel@rivosinc.com>
+ Fri, 12 Jan 2024 17:28:11 -0800 (PST)
+From: Temir Zharaspayev <masscry@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Xie Yongji <xieyongji@bytedance.com>, Temir Zharaspayev <masscry@gmail.com>
+Subject: [PATCH 0/2] Fix pointer arithmetic in indirect read for libvhost-user
+ and libvduse
+Date: Sat, 13 Jan 2024 04:27:39 +0300
+Message-Id: <20240113012741.54664-1-masscry@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <7461190fbece351f916eccd258bf62b86227927d.camel@rivosinc.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=ved@rivosinc.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=masscry@gmail.com; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 12 Jan 2024 20:50:28 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,17 +88,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rob Bradford wrote:
->I'm using table 27.1 in the published PDF which is the PDF in this
->release:
->https://github.com/riscv/riscv-isa-manual/releases/tag/Ratified-IMAFDQC
->It looks like it was removed in this commit (which is a set of
->backports):
->
+Hello! I have found a problem with virtqueue_read_indirect_desc function, which
+was advancing pointer to struct as it was a byte pointer, so every element
+comming after first chunk would be copied somewhere out of buffer.
 
-We would retain the previously documented canonical order with B
-between C and P and that table updated on ratification.
+As I understand this is cold path, but nevertheless worth fixing.
 
-regards
-ved
+Also, exacly same problem in vduse_queue_read_indirect_desc function, because
+as I understand it is a copy of virtqueue_read_indirect_desc with vduse
+backend.
+
+I was not sure if element of scattered buffer may end in the middle of
+vring_desc struct data, so instead of writing
+desc += read_len/sizeof(struct vring_desc)
+have implemented fix with proper byte pointer arithmetic.
+
+Sincerely,
+Temir.
+
+Temir Zharaspayev (2):
+  libvhost-user: Fix pointer arithmetic in indirect read
+  libvduse: Fix pointer arithmetic in indirect read
+
+ subprojects/libvduse/libvduse.c           | 11 ++++++-----
+ subprojects/libvhost-user/libvhost-user.c | 11 ++++++-----
+ 2 files changed, 12 insertions(+), 10 deletions(-)
+
+-- 
+2.34.1
+
 
