@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0147882CCB0
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 13:29:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA6D82CCAD
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 13:29:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOd7h-0000z7-Oa; Sat, 13 Jan 2024 07:28:25 -0500
+	id 1rOd7k-00012Y-55; Sat, 13 Jan 2024 07:28:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOd7M-0000yg-Ck
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 07:28:05 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1rOd7R-0000z2-U5
+ for qemu-devel@nongnu.org; Sat, 13 Jan 2024 07:28:11 -0500
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOd7K-0007ne-Eb
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 07:28:03 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40e7065b7bdso550905e9.3
- for <qemu-devel@nongnu.org>; Sat, 13 Jan 2024 04:28:01 -0800 (PST)
+ id 1rOd7P-0007oF-LW
+ for qemu-devel@nongnu.org; Sat, 13 Jan 2024 07:28:09 -0500
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2cdb50d8982so27731fa.2
+ for <qemu-devel@nongnu.org>; Sat, 13 Jan 2024 04:28:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705148880; x=1705753680; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705148886; x=1705753686; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vjpf4U6Ficv9bUwVJnIdKdbrQ8+edT4V7CyfmwDK7x4=;
- b=Yay4k8ni9keuse0HTt7fbUonhZ/LnD59hz7mVh1D8MXZ0PSyr5iRtM+lvsgX9B6F8Y
- fgZwunVhHAM1ue+FwuyY6PwhCvlAOIuUag9aLuyHgUPAECmlveXtBQ1+2/WQhNDLAPuV
- PhsK4KQOf0Sz2KwSME7zxCsFHmmjJme/jN+sNnU0KsPpkmReybFvrKOipxbUzLW/5lbI
- Geaw8DakC4JlyfvvCZY+SuJxVDEASChzxXSr1V104kHX3r5tZFMG6774EQcCqGnhiRjn
- itiR6NinGW09CC7QxemOICqFAzxF4sn/CRdlqJj7Vx4BR46QNdj4DLpvBgJbr6NNhOeP
- sOoQ==
+ bh=3JrSPlo67QqaghArN/ohSzkKAPbmcNxd8ZmhQFLdIZw=;
+ b=QsIKlNwCPmj+cabXd3vEgJzinhj01FUALyiKPwTv2igNgsZNoe5EHhomhGzBPI0icA
+ y/pOgkCWN2Osta5M0a9gvdFgHBtEvqvkDlDRiew275sGkmkh/DiorCQwrZGw4bMSQjoZ
+ VHmztBv4tmZqoY+T8bIa16kGWgtQ5MQA/+CE2KgMXx3H8Wbc9kPRRekDy8jySFogQOQ2
+ cwy9dKCBYQsoB1SeDWD3zGBstcQtnmV2SkyrOdotcv3M6sMBjT6I82C0V5XFs9XeBMBd
+ PmXwRIGPvdMJ144jQPtse4XtifX7BDFU/yrwcRo4m4zLdWVV9Flpg78IEtE50iP+L/Wu
+ iKTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705148880; x=1705753680;
+ d=1e100.net; s=20230601; t=1705148886; x=1705753686;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=vjpf4U6Ficv9bUwVJnIdKdbrQ8+edT4V7CyfmwDK7x4=;
- b=XCUzTcp+nq3f6YlegJm6BYkmGsj/4cj0WXuAjuWU3ieDh3xNVOyNr4qizPzLRlzWmN
- Ona3kxSXNmYq7bNdYlbmtlkpMY2asqdCSPw/OGwteapvoqYA52Wd9z3igAqzW82lCYMe
- dS72FinWgxxd/7tezD0ksGjcVuRmJl9gLkfjFcn+boSeXwYGlW9hVrLgL6wqJ8DkFikE
- csYvIVd3ZG68gussxFuP1ZbiW/ZaVvyLzEEofh8rk23w725iPyIGsV5VcG3GOWQIIYmb
- aQDV4tsBTgCWWs5eI5z07+y8S5Fro7sA1vK6q7wNSBzcuaHLS1dzub8TN1hVmdNf3NCj
- WUtA==
-X-Gm-Message-State: AOJu0Ywok5dihUDQwq4zNWzpEPXdPVoi5qfGQK7quYXiSRuSMymHGdaQ
- erVCAUboSyge/SHKN/+wsqE4yV+kmdClNQjVnTZjKTUsPJ4jJA==
-X-Google-Smtp-Source: AGHT+IENpFIgtQmRhHDrOLZOBnUNbJGrjzYAfqMafRkPIW6yVCOr9PjaZfz5iJNAADYb5/AXfIsUR1GAK7GJC51pkgc=
-X-Received: by 2002:a05:600c:5387:b0:40e:5186:7ed1 with SMTP id
- hg7-20020a05600c538700b0040e51867ed1mr1067787wmb.25.1705148880639; Sat, 13
- Jan 2024 04:28:00 -0800 (PST)
+ bh=3JrSPlo67QqaghArN/ohSzkKAPbmcNxd8ZmhQFLdIZw=;
+ b=NhQJKqDG4E6kEW+kw7p7NZp8365l8BaT0gW6tAWXpariP8lcpreyfvP1m52C0aebGR
+ 2g2MbZXFxiwYVonM2heO98WsDvc2xkuOyStSlUJ79/iDIuI+7Fh8RXk0R7mmHVLdnbs1
+ zH5+H5DK7Q5hEtmvqzrK+R/ct817tIOCsL/BpEy5IDJM8WEECoB3C/ZniHjuRhmR8nG7
+ m4i2MS09wiFrPdJTe8lbamF4uwPsctfC/+yMUgrH3C/SvlBfCw6nfmRZOTAAcSh3Mq79
+ epi52n3rX2058x0L9L4pxz+p+0+Gs0bByW/M9o0v2QGDyNKJa9SR/mznnyLhrWU0V1Cr
+ 7Ltw==
+X-Gm-Message-State: AOJu0Yx6nVtmA5DybbVVxjYbjDkF0mF3yjGQsXFMVyDPhCWPMMBPLelE
+ eZblhSTQgkqV8SXF85QpHcORSCTUZw9ovXN+9/Gzunj5JYS1XA==
+X-Google-Smtp-Source: AGHT+IGLKj9ANAZFOspb37EkhR9Au1apdWtGqq6IK7DEN7Igw2nbK540j4lESN7nLYqgNTzeRixe1ORLG7CP8ZKXQik=
+X-Received: by 2002:a2e:9d03:0:b0:2cc:c7fb:ce0d with SMTP id
+ t3-20020a2e9d03000000b002ccc7fbce0dmr1364897lji.93.1705148885899; Sat, 13 Jan
+ 2024 04:28:05 -0800 (PST)
 MIME-Version: 1.0
 References: <20240110234232.4116804-1-nabihestefan@google.com>
- <20240110234232.4116804-9-nabihestefan@google.com>
-In-Reply-To: <20240110234232.4116804-9-nabihestefan@google.com>
+ <20240110234232.4116804-4-nabihestefan@google.com>
+In-Reply-To: <20240110234232.4116804-4-nabihestefan@google.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 13 Jan 2024 12:27:27 +0000
-Message-ID: <CAFEAcA-iP01=MCOMntqHm-VdZGwO+w7Ba36s7qvZJsHTWWkCKA@mail.gmail.com>
-Subject: Re: [PATCH v12 08/10] hw/net: GMAC Rx Implementation
+Date: Sat, 13 Jan 2024 12:27:33 +0000
+Message-ID: <CAFEAcA9RAYK+GMQP5b18+Yfx5QXViZYmLW301+XrPfT4m++-7A@mail.gmail.com>
+Subject: Re: [PATCH v12 03/10] hw/misc: Add qtest for NPCM7xx PCI Mailbox
 To: Nabih Estefan <nabihestefan@google.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
  wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com, 
  kwliu@nuvoton.com, tomer.maimon@nuvoton.com, Hila.Miranda-Kuzi@nuvoton.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,76 +89,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Wed, 10 Jan 2024 at 23:42, Nabih Estefan <nabihestefan@google.com> wrote:
 >
-> From: Nabih Estefan Diaz <nabihestefan@google.com>
+> From: Hao Wu <wuhaotsh@google.com>
 >
-> - Implementation of Receive function for packets
-> - Implementation for reading and writing from and to descriptors in
->   memory for Rx
+> This patches adds a qtest for NPCM7XX PCI Mailbox module.
+> It sends read and write requests to the module, and verifies that
+> the module contains the correct data after the requests.
 >
-> When RX starts, we need to flush the queued packets so that they
-> can be received by the GMAC device. Without this it won't work
-> with TAP NIC device.
->
-> When RX descriptor list is full, it returns a DMA_STATUS for software
-> to handle it. But there's no way to indicate the software has
-> handled all RX descriptors and the whole pipeline stalls.
->
-> We do something similar to NPCM7XX EMC to handle this case.
->
-> 1. Return packet size when RX descriptor is full, effectively
-> dropping these packets in such a case.
-> 2. When software clears RX descriptor full bit, continue receiving
-> further packets by flushing QEMU packet queue.
->
-> Added relevant trace-events
->
+> Change-Id: I2e1dbaecf8be9ec7eab55cb54f7fdeb0715b8275
+> Signed-off-by: Hao Wu <wuhaotsh@google.com>
+> Signed-off-by: Nabih Estefan <nabihestefan@google.com>
+> Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
 
 
-> +static int gmac_read_tx_desc(dma_addr_t addr, struct NPCMGMACTxDesc *desc)
+> +/*
+> + * Create a local TCP socket with any port, then save off the port we got.
+> + */
+> +static in_port_t open_socket(void)
+
+This needs to be 'int', to avoid a compilation failure under
+Windows, which doesn't define the in_port_t type.
+
 > +{
-> +    if (dma_memory_read(&address_space_memory, addr, desc,
-> +                        sizeof(*desc), MEMTXATTRS_UNSPECIFIED)) {
-> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Failed to read descriptor @ 0x%"
-> +                      HWADDR_PRIx "\n", __func__, addr);
-> +        return -1;
-> +    }
-> +    desc->tdes0 = le32_to_cpu(desc->tdes0);
-> +    desc->tdes1 = le32_to_cpu(desc->tdes1);
-> +    desc->tdes2 = le32_to_cpu(desc->tdes2);
-> +    desc->tdes3 = le32_to_cpu(desc->tdes3);
-> +    return 0;
-> +}
+> +    struct sockaddr_in myaddr;
+> +    socklen_t addrlen;
 > +
-> +static int gmac_write_tx_desc(dma_addr_t addr, struct NPCMGMACTxDesc *desc)
-> +{
-> +    struct NPCMGMACTxDesc le_desc;
-> +    le_desc.tdes0 = cpu_to_le32(desc->tdes0);
-> +    le_desc.tdes1 = cpu_to_le32(desc->tdes1);
-> +    le_desc.tdes2 = cpu_to_le32(desc->tdes2);
-> +    le_desc.tdes3 = cpu_to_le32(desc->tdes3);
-> +    if (dma_memory_write(&address_space_memory, addr, &le_desc,
-> +                        sizeof(le_desc), MEMTXATTRS_UNSPECIFIED)) {
-> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Failed to write descriptor @ 0x%"
-> +                      HWADDR_PRIx "\n", __func__, addr);
-> +        return -1;
-> +    }
-> +    return 0;
+> +    myaddr.sin_family = AF_INET;
+> +    myaddr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+> +    myaddr.sin_port = 0;
+> +    sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+> +    g_assert(sock != -1);
+> +    g_assert(bind(sock, (struct sockaddr *) &myaddr, sizeof(myaddr)) != -1);
+> +    addrlen = sizeof(myaddr);
+> +    g_assert(getsockname(sock, (struct sockaddr *) &myaddr , &addrlen) != -1);
+> +    g_assert(listen(sock, 1) != -1);
+> +    return ntohs(myaddr.sin_port);
 > +}
 
-The series doesn't compile at this point, because:
-../../hw/net/npcm_gmac.c:238:12: error: unused function
-'gmac_read_tx_desc' [-Werror,-Wunused-function]
-static int gmac_read_tx_desc(dma_addr_t addr, struct NPCMGMACTxDesc *desc)
-           ^
-../../hw/net/npcm_gmac.c:253:12: error: unused function
-'gmac_write_tx_desc' [-Werror,-Wunused-function]
-static int gmac_write_tx_desc(dma_addr_t addr, struct NPCMGMACTxDesc *desc)
-           ^
-
-(this might be a clang-only warning).
-
-The fix is to move these two function definitions into
-the following patch, where we add the code that uses them.
-
+thanks
 -- PMM
 
