@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE73182CA12
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 06:58:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C460182CA17
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 06:59:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOX1d-0007Pb-0K; Sat, 13 Jan 2024 00:57:45 -0500
+	id 1rOX1b-0007PS-FD; Sat, 13 Jan 2024 00:57:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOX1Z-0007OG-5I
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOX1Z-0007OZ-EU
  for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:57:41 -0500
-Received: from ams.source.kernel.org ([2604:1380:4601:e00::1])
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOX1X-00081W-Fa
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:57:40 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rOX1X-00081x-PA
+ for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:57:41 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by ams.source.kernel.org (Postfix) with ESMTP id A41E3B81E96;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 0305960A27;
+ Sat, 13 Jan 2024 05:57:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799DDC43394;
  Sat, 13 Jan 2024 05:57:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE19C43390;
- Sat, 13 Jan 2024 05:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1705125457;
- bh=U3j/ToWx+85xBmo08X6T2XIlE9iXxB17T37IKGebClU=;
+ s=k20201202; t=1705125458;
+ bh=mOLktRonaKZH8C27AtbCAzb//NlMZREdq+fLru7r8/M=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=QS6YRqAQDSUDQKx8pyQ1PJIHr11SPm7pG0yboYHW2FLj+zfFG7I16lGrsghRsdnB5
- 7XE16zgYdhyYUl2Cz2c24ShiWi0R89w5k5k2A+VBOiHVaRQdlwYUXaOyWLk9fG5TcL
- 6dlErxqfZ34l6yh2z9+zQ9v99wN6m5tdQIQCLMW6lpzoFvpHx1IR2Po032oQUBieEd
- 2Ayce7KSbiR91JvFESGPUUNTkuUHjejs8vG9Stm//Bs+MFqMnCcvF/u6pcUKixA3Ud
- To1qppc00oIaSG4lV4NX+TTt9dbPkor+yvieRjtKbNQn+lq+PcS0rW/4lR8cWatDAf
- aF65xSQ/FbW1Q==
+ b=HWrXRklsDD0Vy4yy7aAPnGvLsTkacQ0V/VHzfWmPY+0psZMcPuV0YDzRsIVtANvUU
+ k9SWXxKRZCNzWPsA5yP4oX7p0Y0CE6JxyJ3quP3kvQNslRrgN7YgqpukLU3NhvsNwu
+ WRZitCH6UohTasW7Ra+09GXUbcQ7bmOwsCgcGqy5ckYbpVIgiA13SJhnAhkqvYKZXh
+ 2oG3RcCbv8xsZODmN2dMNsvSlhGcgNIqcPLz1+czkAMeLZNGNamdpfrtk04GkFfQLG
+ EVKcbKf/8DCNtLpPtmhJZdFcpvzoX9g8JwXqBxIVFRZULXyBhokwtk/SqDEj2Dp/K4
+ yw9ocMhVCEBwQ==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
  Richard Henderson <richard.henderson@linaro.org>,
  Bruno Haible <bruno@clisp.org>
-Subject: [PULL 03/10] hw/pci-host/astro: Add missing astro & elroy registers
- for NetBSD
-Date: Sat, 13 Jan 2024 06:57:21 +0100
-Message-ID: <20240113055729.4480-4-deller@kernel.org>
+Subject: [PULL 04/10] target/hppa: Fix PDC address translation on PA2.0 with
+ PSW.W=0
+Date: Sat, 13 Jan 2024 06:57:22 +0100
+Message-ID: <20240113055729.4480-5-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240113055729.4480-1-deller@kernel.org>
 References: <20240113055729.4480-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4601:e00::1;
- envelope-from=deller@kernel.org; helo=ams.source.kernel.org
-X-Spam_score_int: -64
-X-Spam_score: -6.5
-X-Spam_bar: ------
-X-Spam_report: (-6.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.09,
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -91
+X-Spam_score: -9.2
+X-Spam_bar: ---------
+X-Spam_report: (-9.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.09,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,98 +71,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-NetBSD accesses some astro and elroy registers which aren't accessed
-by Linux yet. Add emulation for those registers to allow NetBSD to
-boot further.
-Please note that this patch is not sufficient to completely boot up
-NetBSD on the 64-bit C3700 machine yet.
+Fix the address translation for PDC space on PA2.0 if PSW.W=0.
+Basically, for any address in the 32-bit PDC range from 0xf0000000 to
+0xf1000000 keep the lower 32-bits and just set the upper 32-bits to
+0xfffffff0.
+
+This mapping fixes the emulated power button in PDC space for 32- and
+64-bit machines and is how the physical C3700 machine seems to map
+PDC.
+
+Figures H-10 and H-11 in the parisc2.0 spec [1] show that the 32-bit
+region will be mapped somewhere into a higher and bigger 64-bit PDC
+space.  The start and end of this 64-bit space is defined by the
+physical address bits. But the figures don't specifiy where exactly the
+mapping will start inside that region. Tests on a real HP C3700
+regarding the address of the power button indicate, that the lower
+32-bits will stay the same though.
+[1] https://parisc.wiki.kernel.org/images-parisc/7/73/Parisc2.0.pdf
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Tested-by: Bruno Haible <bruno@clisp.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/pci-host/astro.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ roms/seabios-hppa        |  2 +-
+ target/hppa/mem_helper.c | 10 ++++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
-index 7d68ccee7e..cb2c8a828d 100644
---- a/hw/pci-host/astro.c
-+++ b/hw/pci-host/astro.c
-@@ -166,6 +166,8 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
-     trace_elroy_write(addr, size, val);
- 
-     switch ((addr >> 3) << 3) {
-+    case 0x000: /* PCI_ID & PCI_COMMAND_STATUS_REG */
-+        break;
-     case 0x080:
-         put_val_in_int64(&s->arb_mask, addr, size, val);
-         break;
-@@ -175,6 +177,9 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
-     case 0x200 ... 0x250 - 1:   /* LMMIO, GMMIO, WLMMIO, WGMMIO, ... */
-         put_val_in_arrary(s->mmio_base, 0x200, addr, size, val);
-         break;
-+    case 0x300: /* ibase */
-+    case 0x308: /* imask */
-+        break;
-     case 0x0680:
-         put_val_in_int64(&s->error_config, addr, size, val);
-         break;
-@@ -538,6 +543,9 @@ static MemTxResult astro_chip_read_with_attrs(void *opaque, hwaddr addr,
-     case 0x0030:        /* HP-UX 10.20 and 11.11 reads it. No idea. */
-         val = -1;
-         break;
-+    case 0x0078:        /* NetBSD reads 0x78 ? */
-+        val = -1;
-+        break;
-     case 0x0300 ... 0x03d8:     /* LMMIO_DIRECT0_BASE... */
-         index = (addr - 0x300) / 8;
-         val = s->ioc_ranges[index];
-@@ -624,31 +632,43 @@ static MemTxResult astro_chip_write_with_attrs(void *opaque, hwaddr addr,
-     case 0x10220:
-     case 0x10230:        /* HP-UX 11.11 reads it. No idea. */
-         break;
--    case 0x22108:        /* IOC STATUS_CONTROL */
--        put_val_in_int64(&s->ioc_status_ctrl, addr, size, val);
--        break;
-     case 0x20200 ... 0x20240 - 1: /* IOC Rope0_Control ... */
-         put_val_in_arrary(s->ioc_rope_control, 0x20200, addr, size, val);
-         break;
-     case 0x20040:        /* IOC Rope config */
-+    case 0x22040:
-         put_val_in_int64(&s->ioc_rope_config, addr, size, val);
-         break;
-     case 0x20300:
-+    case 0x22300:
-         put_val_in_int64(&s->tlb_ibase, addr, size, val);
-         break;
-     case 0x20308:
-+    case 0x22308:
-         put_val_in_int64(&s->tlb_imask, addr, size, val);
-         break;
-     case 0x20310:
-+    case 0x22310:
-         put_val_in_int64(&s->tlb_pcom, addr, size, val);
-         /* TODO: flush iommu */
-         break;
-     case 0x20318:
-+    case 0x22318:
-         put_val_in_int64(&s->tlb_tcnfg, addr, size, val);
-         break;
-     case 0x20320:
-+    case 0x22320:
-         put_val_in_int64(&s->tlb_pdir_base, addr, size, val);
-         break;
-+    case 0x22000:       /* func_id */
-+        break;
-+    case 0x22008:       /* func_class */
-+        break;
-+    case 0x22050:       /* rope_debug */
-+        break;
-+    case 0x22108:        /* IOC STATUS_CONTROL */
-+        put_val_in_int64(&s->ioc_status_ctrl, addr, size, val);
-+        break;
-     /*
-      * empty placeholders for non-existent elroys, e.g.
-      * func_class, pci config & data
+diff --git a/roms/seabios-hppa b/roms/seabios-hppa
+index 4c6ecda618..e4eac85880 160000
+--- a/roms/seabios-hppa
++++ b/roms/seabios-hppa
+@@ -1 +1 @@
+-Subproject commit 4c6ecda618f2066707f50c53f31419244fd7f77a
++Subproject commit e4eac85880e8677f96d8b9e94de9f2eec9c0751f
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index 08abd1a9f9..4c28c58ee9 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -55,8 +55,14 @@ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
+         /* I/O address space */
+         addr = (int32_t)addr;
+     } else {
+-        /* PDC address space */
+-        addr &= MAKE_64BIT_MASK(0, 24);
++        /*
++         * PDC address space:
++         * Figures H-10 and H-11 of the parisc2.0 spec do not specify
++         * where to map into the 64-bit PDC address space.
++         * We map with an offset which equals the 32-bit address, which
++         * is what can be seen on physical machines too.
++         */
++        addr = (uint32_t)addr;
+         addr |= -1ull << (TARGET_PHYS_ADDR_SPACE_BITS - 4);
+     }
+     return addr;
 -- 
 2.43.0
 
