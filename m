@@ -2,77 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9843482C8BD
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 02:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D5182C96D
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 06:18:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOSpB-0006A7-HS; Fri, 12 Jan 2024 20:28:37 -0500
+	id 1rOWNt-0000y4-Pb; Sat, 13 Jan 2024 00:16:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <masscry@gmail.com>) id 1rOSp6-00069a-1t
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 20:28:32 -0500
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rOWNo-0000xf-GD
+ for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:16:37 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <masscry@gmail.com>) id 1rOSp4-0007bG-Dl
- for qemu-devel@nongnu.org; Fri, 12 Jan 2024 20:28:31 -0500
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-50e7e55c0f6so8574277e87.0
- for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 17:28:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rOWNm-0003M4-MP
+ for qemu-devel@nongnu.org; Sat, 13 Jan 2024 00:16:36 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40e69b31366so6395445e9.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Jan 2024 21:16:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705109308; x=1705714108; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OwDL3ncThkJ8lqlwFLwDxgUkxyiHEPohNrjP4DVlXY8=;
- b=bhU1ejoPq/MkXGLpV0965mH1HFMEnfUmDJVWYDcE1W0lcgGu0DgtIvXW+Ld+HM5jye
- FHgfLNyxKInI4h1Rf/9denUDtqQ6isEgl45USr/ijt42KK95gLmz1hBKuygzYmfIAita
- ujaBYaKCth5PCwWFWM5O5Yzzx6KDkZKCGx5Citu3+iDgkLnomfbdMblvBMY4fmIG29vg
- oRViJBGi4qxHYHdMG6KAAq+KulrskkIpJKiRgV2VH0Do7z+xX/JRPbFGEFknfo2n3VHn
- D1//u5C6lygcPI1EAWXACreevIM6fTlgxxIoHJznwiQvTS9KdF3TLRk0B3GHHN4abHUz
- /0Fg==
+ d=linaro.org; s=google; t=1705122992; x=1705727792; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=u7GMkNroX+RkFHF0ziDX7ki84Q4nz/gkakKKxLHbXdc=;
+ b=ws/MFxctmq64F1T/s+p90MSaDRQVFASiN/DNG1dpQjLCWHXjHuneI2VMlVodE0ZhGJ
+ reTVdR/r16uxPx9Z4Guft7Ch1ZKiI0zbSADW8r7mMuf1j33mMwdtvb9m1SxJSIMsjMRL
+ G+ixmth1LyBpMe5seaNa9MQiv504lPNHvbeDCHxVdgQBqjdWJXLubzI73FFaK4mvDkiK
+ HfDAtF6pk/1Yx0wPbMfTFvJFabIhGSCqtzcTycuRkubJPaWc33fODgc3CRqrCVs/4FxH
+ W3nJku4OpxjUcK4ueS3XKjLCpyYZlk+fWaReOQwD0JyPFpPvJkcRoCV35+nB6mbiL5VN
+ hUOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705109308; x=1705714108;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OwDL3ncThkJ8lqlwFLwDxgUkxyiHEPohNrjP4DVlXY8=;
- b=W2XD5fF26SFsHrWz4bwVYSqFt8f572m0RJmd+LH/xV8yqr7A2S0qLsXlMALretw2rQ
- BDxjvAMQ0RhqbWVM9heZBcSeH+xhat0fwztvY3WCy0YStXFDtN5pq4VwK8X16Ap8Sm7l
- 14xgHKjA5hHB3Xl1MrSRbB+kS9Ivo/BZ+yEXUDdkVjXcw26xNgDTQ3qDvr8e6Gxj5ABA
- v2BgLhOxWm/hFsL7RKn1vPhS80so4x315iJK5TkDLa0LzWLfyMERamfG7eNdKARUoV0p
- bC+oEyHiT7hTrxInQGlBo0fjE2y3XwRjWXYXdrX/9svLQy1TmOPIrfBxFGOeO960YxPt
- tN5Q==
-X-Gm-Message-State: AOJu0YwqZ8yijl3RGozFIYG57O3teBwq2/1LCpUcoP7udiQkKpkIyR2w
- nrlOyUtfhzVLid3P9GHKVAEwl5wp0FMxzfIzYGw=
-X-Google-Smtp-Source: AGHT+IFoJArofEi2TKw2mXCujhJY2t1XINC//jMpkFAQIOUeMmAYOdp76qvrLUzupaQLILyH6QM8RA==
-X-Received: by 2002:ac2:5a01:0:b0:50e:7736:a96c with SMTP id
- q1-20020ac25a01000000b0050e7736a96cmr442441lfn.172.1705109308374; 
- Fri, 12 Jan 2024 17:28:28 -0800 (PST)
-Received: from pc7.local (95-24-165-64.broadband.corbina.ru. [95.24.165.64])
+ d=1e100.net; s=20230601; t=1705122992; x=1705727792;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=u7GMkNroX+RkFHF0ziDX7ki84Q4nz/gkakKKxLHbXdc=;
+ b=NqzdMalP82mzQ2OxrrlTNy8t34vJDcpHeGuuRXeACQNMWrgf9l1PPFAUB8lEoQp0YJ
+ 58qxhZrS90JskFxwnm8y5tLh1kG/bwKeMWqEov34WKnxm/2xqYcKHbFY54onc37y508z
+ 03JEBKNAqHgnEq4gRniVf47+GOUkxuWv8lWnzahmoGAfhgP8sqojtwV1QmC++j826Hv7
+ g8ecwFxUxx7kqwtAgwD54Vewe+kQ5psA4mlp7GpuUR57hkg1/sPBlwef22Tvu8f97I1z
+ y8WSS0wP0GXXsPZcewUEwS6FbnHOB210sOnnpdVokO172drv3I5HCwjxZatFlywc3uHC
+ nuYA==
+X-Gm-Message-State: AOJu0YxqENUVZtAB7wYbtoMpCSwX4Y0yCdw75CZMd0VadXgIRkLQIMlw
+ 3EGs0kg6BEplqduONinzXJCTHKEIdJYGDg==
+X-Google-Smtp-Source: AGHT+IHaUtTL8xa+2qz0tV5FkNu9h10oYygGjH8t0dOmWTzd8UXjMpwKFV5QiTCnqzeJbGYrCRNp3Q==
+X-Received: by 2002:a05:600c:4e48:b0:40d:39cb:6af6 with SMTP id
+ e8-20020a05600c4e4800b0040d39cb6af6mr1374708wmq.28.1705122991819; 
+ Fri, 12 Jan 2024 21:16:31 -0800 (PST)
+Received: from [192.168.1.24] ([102.35.208.160])
  by smtp.gmail.com with ESMTPSA id
- d2-20020ac24c82000000b0050eab0f6a59sm669871lfl.84.2024.01.12.17.28.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jan 2024 17:28:28 -0800 (PST)
-From: Temir Zharaspayev <masscry@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Xie Yongji <xieyongji@bytedance.com>, Temir Zharaspayev <masscry@gmail.com>
-Subject: [PATCH 2/2] libvduse: Fix pointer arithmetic in indirect read
-Date: Sat, 13 Jan 2024 04:27:41 +0300
-Message-Id: <20240113012741.54664-3-masscry@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240113012741.54664-1-masscry@gmail.com>
-References: <20240113012741.54664-1-masscry@gmail.com>
+ r12-20020a5d4e4c000000b003375083ff8esm5655290wrt.32.2024.01.12.21.16.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 12 Jan 2024 21:16:31 -0800 (PST)
+Message-ID: <58065fbd-84f9-4a21-beba-6eb2a18c3d0c@linaro.org>
+Date: Sat, 13 Jan 2024 09:16:27 +0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=masscry@gmail.com; helo=mail-lf1-x135.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/12] tests/plugin: add test plugin for inline operations
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>
+References: <20240111142326.1743444-1-pierrick.bouvier@linaro.org>
+ <20240111142326.1743444-4-pierrick.bouvier@linaro.org>
+ <49bfa786-e549-43d4-ac03-9337b9342d16@linaro.org>
+ <ae4227fc-58b5-4a6b-97d5-8fae34eb7514@linaro.org>
+ <87v87yv588.fsf@draig.linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <87v87yv588.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,53 +100,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When zero-copy usage of indirect descriptors buffer table isn't
-possible, library gather scattered memory chunks in a local copy.
-This commit fixes the issue with pointer arithmetic for the local copy
-buffer.
-
-Signed-off-by: Temir Zharaspayev <masscry@gmail.com>
----
- subprojects/libvduse/libvduse.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/subprojects/libvduse/libvduse.c b/subprojects/libvduse/libvduse.c
-index 21ffbb5b8d..0b445fbc76 100644
---- a/subprojects/libvduse/libvduse.c
-+++ b/subprojects/libvduse/libvduse.c
-@@ -465,7 +465,7 @@ static int
- vduse_queue_read_indirect_desc(VduseDev *dev, struct vring_desc *desc,
-                                uint64_t addr, size_t len)
- {
--    struct vring_desc *ori_desc;
-+    uint8_t *src_cursor, *dst_cursor;
-     uint64_t read_len;
- 
-     if (len > (VIRTQUEUE_MAX_SIZE * sizeof(struct vring_desc))) {
-@@ -476,17 +476,18 @@ vduse_queue_read_indirect_desc(VduseDev *dev, struct vring_desc *desc,
-         return -1;
-     }
- 
-+    dst_cursor = (uint8_t *) desc;
-     while (len) {
-         read_len = len;
--        ori_desc = iova_to_va(dev, &read_len, addr);
--        if (!ori_desc) {
-+        src_cursor = iova_to_va(dev, &read_len, addr);
-+        if (!src_cursor) {
-             return -1;
-         }
- 
--        memcpy(desc, ori_desc, read_len);
-+        memcpy(dst_cursor, src_cursor, read_len);
-         len -= read_len;
-         addr += read_len;
--        desc += read_len;
-+        dst_cursor += read_len;
-     }
- 
-     return 0;
--- 
-2.34.1
-
+T24gMS8xMi8yNCAyMToyMCwgQWxleCBCZW5uw6llIHdyb3RlOg0KPiBQaWVycmljayBCb3V2
+aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+IHdyaXRlczoNCj4gDQo+PiBPbiAx
+LzExLzI0IDE5OjU3LCBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqSB3cm90ZToNCj4+PiBIaSBQ
+aWVycmljaywNCj4+PiBPbiAxMS8xLzI0IDE1OjIzLCBQaWVycmljayBCb3V2aWVyIHdyb3Rl
+Og0KPj4+PiBGb3Igbm93LCBpdCBzaW1wbHkgcGVyZm9ybXMgaW5zdHJ1Y3Rpb24sIGJiIGFu
+ZCBtZW0gY291bnQsIGFuZCBlbnN1cmUNCj4+Pj4gdGhhdCBpbmxpbmUgdnMgY2FsbGJhY2sg
+dmVyc2lvbnMgaGF2ZSB0aGUgc2FtZSByZXN1bHQuIExhdGVyLCB3ZSdsbA0KPj4+PiBleHRl
+bmQgaXQgd2hlbiBuZXcgaW5saW5lIG9wZXJhdGlvbnMgYXJlIGFkZGVkLg0KPj4+Pg0KPj4+
+PiBVc2UgZXhpc3RpbmcgcGx1Z2lucyB0byB0ZXN0IGV2ZXJ5dGhpbmcgd29ya3MgaXMgYSBi
+aXQgY3VtYmVyc29tZSwgYXMNCj4+Pj4gZGlmZmVyZW50IGV2ZW50cyBhcmUgdHJlYXRlZCBp
+biBkaWZmZXJlbnQgcGx1Z2lucy4gVGh1cywgdGhpcyBuZXcgb25lLg0KPj4+Pg0KPj4+PiBT
+aWduZWQtb2ZmLWJ5OiBQaWVycmljayBCb3V2aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFy
+by5vcmc+DQo+Pj4+IC0tLQ0KPj4+PiAgICAgdGVzdHMvcGx1Z2luL2lubGluZS5jICAgIHwg
+MTgzICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPj4+PiAgICAg
+dGVzdHMvcGx1Z2luL21lc29uLmJ1aWxkIHwgICAyICstDQo+Pj4+ICAgICAyIGZpbGVzIGNo
+YW5nZWQsIDE4NCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+Pj4+ICAgICBjcmVh
+dGUgbW9kZSAxMDA2NDQgdGVzdHMvcGx1Z2luL2lubGluZS5jDQo+Pj4NCj4+Pj4gKyNkZWZp
+bmUgTUFYX0NQVVMgOA0KPj4+IFdoZXJlIGRvZXMgdGhpcyB2YWx1ZSBjb21lIGZyb20/DQo+
+Pj4NCj4+DQo+PiBUaGUgcGx1Z2luIHRlc3RzL3BsdWdpbi9pbnNuLmMgaGFkIHRoaXMgY29u
+c3RhbnQsIHNvIEkgcGlja2VkIGl0IHVwDQo+PiBmcm9tIGhlcmUuDQo+Pg0KPj4+IFNob3Vs
+ZCB0aGUgcGx1Z2dpbiBBUEkgcHJvdmlkZSBhIGhlbHBlciB0byBhc2sgVENHIGhvdyBtYW55
+DQo+Pj4gdkNQVXMgYXJlIGNyZWF0ZWQ/DQo+Pg0KPj4gSW4gdXNlciBtb2RlLCB3ZSBjYW4n
+dCBrbm93IGhvdyBtYW55IHNpbXVsdGFuZW91cyB0aHJlYWRzIChhbmQgdGh1cw0KPj4gdmNw
+dSkgd2lsbCBiZSB0cmlnZ2VyZWQgYnkgYWR2YW5jZS4gSSdtIG5vdCBzdXJlIGlmIGFkZGl0
+aW9uYWwgY3B1cw0KPj4gY2FuIGJlIGFkZGVkIGluIHN5c3RlbSBtb2RlLg0KPj4NCj4+IE9u
+ZSBwcm9ibGVtIHRob3VnaCwgaXMgdGhhdCB3aGVuIHlvdSByZWdpc3RlciBhbiBpbmxpbmUg
+b3Agd2l0aCBhDQo+PiBkeW5hbWljIGFycmF5LCB3aGVuIHlvdSByZXNpemUgaXQgKHdoZW4g
+ZGV0ZWN0aW5nIGEgbmV3IHZjcHUpLCB5b3UNCj4+IGNhbid0IGNoYW5nZSBpdCBhZnRlcndh
+cmRzLiBTbywgeW91IG5lZWQgYSBzdG9yYWdlIHN0YXRpY2FsbHkgc2l6ZWQNCj4+IHNvbWV3
+aGVyZS4NCj4+DQo+PiBZb3VyIHF1ZXN0aW9uIGlzIGdvb2QsIGFuZCBtYXliZSB3ZSBzaG91
+bGQgZGVmaW5lIGEgTUFYIGNvbnN0YW50IHRoYXQNCj4+IHBsdWdpbnMgc2hvdWxkIHJlbHkg
+b24sIGluc3RlYWQgb2YgYSByYW5kb20gYW1vdW50Lg0KPiANCj4gRm9yIHVzZXItbW9kZSBp
+dCBjYW4gYmUgaW5maW5pdGUuIFRoZSBleGlzdGluZyBwbHVnaW5zIGRvIHRoaXMgYnkNCj4g
+ZW5zdXJpbmcgdmNwdV9pbmRleCAlIG1heF92Y3B1LiBQZXJoYXBzIHdlIGp1c3QgZW5zdXJl
+IHRoYXQgZm9yIHRoZQ0KPiBzY29yZWJvYXJkIGFzIHdlbGw/IE9mIGNvdXJzZSB0aGF0IGRv
+ZXMgaW50cm9kdWNlIGEgdHJhcCBmb3IgdGhvc2UgdXNpbmcNCj4gdXNlci1tb2RlLi4uDQo+
+IA0KDQpUaGUgcHJvYmxlbSB3aXRoIHZjcHUtaW5kZXggJSBtYXhfdmNwdSBpcyB0aGF0IGl0
+IHJlaW50cm9kdWNlcyByYWNlIA0KY29uZGl0aW9uLCB0aG91Z2ggaXQncyBwcm9iYWJseSBs
+ZXNzIGZyZXF1ZW50IHRoYW4gb24gYSBzaW5nbGUgdmFyaWFibGUuIA0KSU1ITywgeWVzIGl0
+IHNvbHZlcyBtZW1vcnkgZXJyb3IsIGJ1dCBkb2VzIG5vdCBzb2x2ZSB0aGUgaW5pdGlhbCBw
+cm9ibGVtIA0KaXRzZWxmLg0KDQpUaGUgc2ltcGxlc3Qgc29sdXRpb24gd291bGQgYmUgdG8g
+aGF2ZSBhIHNpemUgImJpZyBlbm91Z2giIGZvciBtb3N0IA0KY2FzZXMsIGFuZCBhYm9ydCB3
+aGVuIGl0J3MgcmVhY2hlZC4NCg0KQW5vdGhlciBzb2x1dGlvbiwgbXVjaCBtb3JlIGNvbXBs
+aWNhdGVkLCBidXQgY29ycmVjdCwgd291bGQgYmUgdG8gbW92ZSANCm1lbW9yeSBtYW5hZ2Vt
+ZW50IG9mIHBsdWdpbiBzY29yZWJvYXJkIHRvIHBsdWdpbiBydW50aW1lLCBhbmQgYWRkIGEg
+DQpsZXZlbCBvZiBpbmRpcmVjdGlvbiB0byBhY2Nlc3MgaXQuIEV2ZXJ5IHRpbWUgYSBuZXcg
+dmNwdSBpcyBhZGRlZCwgd2UgDQpjYW4gZ3JvdyBkeW5hbWljYWxseS4gVGhpcyB3YXksIHRo
+ZSBhcnJheSBjYW4gZ3JvdywgYW5kIHVsdGltYXRlbHksIA0KcGx1Z2luIGNhbiBwb2tlIGl0
+cyBjb250ZW50L3NpemUuIEknbSBub3Qgc3VyZSB0aGlzIGNvbXBsZXhpdHkgaXMgd2hhdCAN
+CndlIHdhbnQgdGhvdWdoLg0K
 
