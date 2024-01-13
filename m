@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851C682CCCD
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 14:27:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3998D82CCCE
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 14:27:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOe2Y-0000WJ-1e; Sat, 13 Jan 2024 08:27:10 -0500
+	id 1rOe2u-0000t6-Te; Sat, 13 Jan 2024 08:27:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOe2S-0000To-Fb
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 08:27:04 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1rOe2p-0000mO-Sy
+ for qemu-devel@nongnu.org; Sat, 13 Jan 2024 08:27:28 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rOe2Q-0003Fr-LZ
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 08:27:04 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-556c3f0d6c5so8814789a12.2
- for <qemu-devel@nongnu.org>; Sat, 13 Jan 2024 05:27:02 -0800 (PST)
+ id 1rOe2n-0003HY-Pr
+ for qemu-devel@nongnu.org; Sat, 13 Jan 2024 08:27:27 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5534dcfdd61so12944256a12.0
+ for <qemu-devel@nongnu.org>; Sat, 13 Jan 2024 05:27:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705152421; x=1705757221; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705152444; x=1705757244; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=n4E7p7rqv9QrDzAcefKqxjwbAZOy/bKLL4kgV3ObHpU=;
- b=c+b9oQnuIkL+1tmoe5yEM+0MsgiczLyx5ETw/DQWgFbbV2oWxPVU/Vizo6GZkLwtwZ
- uzh4tR4QPhrdMnW978NPu3NJ189QUcnYcdD3Z16u43RZ5D66BPdtvSag9B+CpRoCW+qK
- F+WiR/sDJIrXNLIxIQmcqNNFxz2YMMVT5jZy24WxifwK3nk/1g8isAxZy/Iz++u9Wy0C
- tNucDHEQMmBYdWs4wCxrTi9c0xOkEJl0rEOJqIU17mAVL7EQJdzijz3qTC0PRQbrndXg
- oAB4X8nbQAI9ABT68K4GnJJCPgp8PS2HFuWNoE9TmASwdnbkZtXAxMdcpveq3Rsg0/1O
- w5Sw==
+ bh=VhOpWHYsUYOjsfTNAJI1YLA+pSFeaSMgSNSIrzcL3OE=;
+ b=wEKCfkMDpkfoNvo1KBEL+VRd5YEJiCED/fIRZwFpxCgg8ylLzb4iC1iH0CYHXtdVQu
+ b3CLugdoZfq0TTl/FMSw/shH63sHZxLuuqQ9L2gnxePNKTzQjU127aw/9a1Rz+1iHCj9
+ fg2OWrU7G35CT0hYW9ZM+sHb0USvo41dBStIOmEgpQ9JLBrJgUyf7TB2iPCk7vKycywl
+ q+5encRT2A1e5QPlAGUsqv3kNsLPOIPU05w0PZjyveEUXh2CDRG8Y753lTqTkg224KsO
+ FWES+Kfd6l+eazMDbVOiDWXkixzakw/SeQ2HDi+p4QOkSHVZ2hAdy/VowrfAmwKS//op
+ QKGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705152421; x=1705757221;
+ d=1e100.net; s=20230601; t=1705152444; x=1705757244;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=n4E7p7rqv9QrDzAcefKqxjwbAZOy/bKLL4kgV3ObHpU=;
- b=hjVFaE0va63vAhD+hoU5ug3EyAyyTpEGSqvoaGnATgjJXeZFo1h67s1jlZdV3c9kuq
- 31CnQnUDQx8lscjAdpV3kpQAJlAU1NnSgZ+69ZqTiAkSAtxsRnV1/JB4Dc5msd5kh523
- F75KHNKFV/SkP8jakbu4ZXvSJBSVeBO2tELCtk/4SFbI8prJbM1faw6FmZvSWpw0iPO2
- F4sx1hrPJID+cTADtTyKzVzh+a5i1sjV42XXYQgKt/pZuiWzGCWASNjji2dh+2Q9YcRC
- /fkDOgB97kijqlq5UyCnutE1JgnkmQchtIbJMKxgEGj4n6Awn/OmFnWh+S99HFnXVWFn
- UHIw==
-X-Gm-Message-State: AOJu0YzfA1yr1mcfToMqBYbM5cJCB7AL/PPRsA4yIrH3yYcifa2ukpRw
- msttdNmovc86X2P4GxLwkr0B+IhH5POmGyV0dIF/+BaG8UCRSQ==
-X-Google-Smtp-Source: AGHT+IF+dwRLiBap4Rsg/EOY6GTV+ITvrrulsmMMbDvR6Z13PiDA7mujtX9IeWPxKcLs8dtTXYvRQLH/dp2aOkqy/Do=
-X-Received: by 2002:aa7:d483:0:b0:558:57f5:6474 with SMTP id
- b3-20020aa7d483000000b0055857f56474mr1077058edr.23.1705152421029; Sat, 13 Jan
- 2024 05:27:01 -0800 (PST)
+ bh=VhOpWHYsUYOjsfTNAJI1YLA+pSFeaSMgSNSIrzcL3OE=;
+ b=ve7Z/G9u9qpLLg4PBVU1lputVusQigFOTqDsmn5uImxIto/snS87jBZyHF/jtJByzb
+ 0ZIgZv1n21OTi2PJXSgnERC2Z2JHKXC9J0dDVsKltpxsCP+gjtzspas64gCZAJ3qoER6
+ mQeas1ah//+TB9yuDkA/CqnxyjnoT8GJ5Kyaj1bWtt9ov3hrsWecDKRTs3LZjpRU/new
+ 3/i61QpvbAomMOLD5/cFHfTEL9U66Ter1+ipG0+bdbu4EzsCOmUlPL1gIETucPq9TYXs
+ 0iTvdWe4pi+5JWecN+DZAiyukKPM3Ti2EaG1HCQjCJat+8RPCkuYJGf9t4pLJP5Eoskt
+ qv5w==
+X-Gm-Message-State: AOJu0YxEPHZDgi+BOnIQUMdfdoOxK2FyUbeudTS5lVbqqOszMKIkLxPi
+ Hn3XdmU+gAXjjwVz4cWOpR8J90oQXxZ+ju611S8dWtg43qG90w==
+X-Google-Smtp-Source: AGHT+IETav6rswDniDEM2jM13XalATxvLUlGh0idwcM0mH/cyRR3+57/HdLEZuqzCJncL6Jc79vE4BVUvW2HRBdz5+4=
+X-Received: by 2002:a50:8a8a:0:b0:557:25a1:27ff with SMTP id
+ j10-20020a508a8a000000b0055725a127ffmr3000588edj.38.1705152444271; Sat, 13
+ Jan 2024 05:27:24 -0800 (PST)
 MIME-Version: 1.0
 References: <20240110195329.3995-1-philmd@linaro.org>
- <20240110195329.3995-3-philmd@linaro.org>
-In-Reply-To: <20240110195329.3995-3-philmd@linaro.org>
+ <20240110195329.3995-4-philmd@linaro.org>
+In-Reply-To: <20240110195329.3995-4-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 13 Jan 2024 13:26:28 +0000
-Message-ID: <CAFEAcA8x7iCgG5ESxGCmJW3w5UvacsFTQYPTQ=oiFjUe3Wn1_g@mail.gmail.com>
-Subject: Re: [PATCH v3 02/14] hw/arm/armv7m: Ensure requested CPU type
- implements ARM_FEATURE_M
+Date: Sat, 13 Jan 2024 13:26:51 +0000
+Message-ID: <CAFEAcA9K1sH3ZObCtQzOe2AYiNKbrMLRoEbTB-f=N1NsCAnW-Q@mail.gmail.com>
+Subject: Re: [PATCH v3 03/14] hw/arm/armv7m: Move code setting
+ 'start-powered-off' property around
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
  qemu-arm@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
@@ -72,15 +72,15 @@ Cc: qemu-devel@nongnu.org, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
  Alistair Francis <alistair@alistair23.me>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,15 +99,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Wed, 10 Jan 2024 at 19:53, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
 g> wrote:
 >
-> ARMV7M container can only accept M-profile CPU types.
-> Check requested type is valid once to allow further simplifications.
+> Reorganize a bit by first setting properties which are not
+> dependent of CPU features (and can not fail).
 >
-> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  hw/arm/armv7m.c | 4 ++++
->  1 file changed, 4 insertions(+)
-
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
