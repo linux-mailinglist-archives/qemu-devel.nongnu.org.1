@@ -2,79 +2,122 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B9182CEE6
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jan 2024 23:18:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB7C82CFF0
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 08:38:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOmJj-0004mS-Ce; Sat, 13 Jan 2024 17:17:28 -0500
+	id 1rOv3X-0004cr-MO; Sun, 14 Jan 2024 02:37:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1rOmJY-0004mC-0U
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 17:17:16 -0500
-Received: from mail-qk1-x729.google.com ([2607:f8b0:4864:20::729])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1rOmJW-0007hM-70
- for qemu-devel@nongnu.org; Sat, 13 Jan 2024 17:17:15 -0500
-Received: by mail-qk1-x729.google.com with SMTP id
- af79cd13be357-783293278adso433711185a.3
- for <qemu-devel@nongnu.org>; Sat, 13 Jan 2024 14:17:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705184233; x=1705789033; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PoQlO4MKUIvweMwdVro8g0ITgnHI1IyT1pBZzi+Gnv4=;
- b=ZaWRWafJQaNQJKrVariroEq7eyHy2Rpz88r7HKlsBRPTlKTD43nMHh/mWv8tPMJ7p7
- Ar0Y7qEHlWHOX16UB6LTWldjnizuEIarMwDWn5X869wGez6Q/ZMT3duhfFi+NN9mx/rv
- QGceaCqmSVwdtn16wKuQ9KPTSkolrTwgp/6ASEWzWrSoJoyrFGs4kyta2C6Iknw9RTyL
- r4a9ldrW4rc/Uk67ktLDtBG3Dj0o7AdZ0E1l15KIHB5mhPmUd6dTddfUTXd6n+gBPWXh
- wqzrHqMoFpsS8+VY9qjZgu/HvTqnPP2hhVlxNSPQW1F9o/OlnXRRBM3ZmH5plcNe7qAJ
- WgTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705184233; x=1705789033;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PoQlO4MKUIvweMwdVro8g0ITgnHI1IyT1pBZzi+Gnv4=;
- b=OYWjGeobfHEuUn+ppju7kMYHk5m0hfqAutRz+IEngx4T+vS8Cz+OFwQRvZQeG33iNV
- 3kPc5+OT/f7vHOoJ58I6ZckXKqTF94monpHeWxiaHiWMnnn7dvF3zjnhPivAnDN1niEk
- kN6mo4nSUZxw3LLjVFHzBnWM89SlJT8p/lGWh8LmOr3i5Hjm9LQuMfA5iN70sbCokD2L
- CwUZp/E/JHJoLJUgjaVK4w6+KcQ6/XwVY2ShwjsvDLp25oj2wnWmBvb6LKcuawu2U+Vy
- c84MuzcASWjKtm80BNKF+W2cBzMaSEAOSplahTz1vbbj2iXDtJXNxJ8eMbf70HOZ/uED
- 3ABg==
-X-Gm-Message-State: AOJu0YzomllR5ZcAmPcAaayBheAsUdO9JXDmCpdcR1ytsXSE+GmHBuKX
- lCo6i7ceRp+PvIdizIvSPqmrN5idUScnp6SvzjM=
-X-Google-Smtp-Source: AGHT+IHsK+p/V02eOSPdiecI6IrJhpKWVGzdV/UL9ZxwDqGmqwc2mYi/Sm/DUXLr0kD5qxnanSxnaoLLUWV4GrYzHxY=
-X-Received: by 2002:a05:620a:1245:b0:783:2c23:271e with SMTP id
- a5-20020a05620a124500b007832c23271emr3929034qkl.138.1705184232667; Sat, 13
- Jan 2024 14:17:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rOv3O-0004bz-8A
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 02:37:10 -0500
+Received: from mout.gmx.net ([212.227.17.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rOv3M-0006xC-H3
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 02:37:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+ t=1705217819; x=1705822619; i=deller@gmx.de;
+ bh=bsLo9s7uSPg+Km5iduTAITax52BI/gz+d1vW7OoW8wc=;
+ h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+ b=khkIl1p0nERIFQHgkCQXCs2fOzrluUTMcDDE1M/UjpVGbf0XNqAYNRWHSLSO7Z0j
+ TmvBLYuN4U5T36CV/IFmhYklAun5eyydAK3hgNstZbmEGenBRMxd6Wtk+0B07TgH5
+ CtM17WlnBu4JeSIz3F0Y16CMpkCLk8B3YeGS9uqvfrGE3tQptVK7Rx7cr4atd1Nar
+ Gk4s3UnyM/NJxZSnEQOb5JCFPNVjBW9qXSCKSx3wTVCMKRDlZvIHVvdfxlhYTthCi
+ o3YH+wWhqtdQB2IyI3Pdp9jWEfwKTk1WYOb6erNuDh9uA7rAYt5+JTkiTWPfz7aeO
+ 8i0pslltbdEVSY6MTQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([94.134.155.205]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M7b2T-1rWLZ809KX-0081kw; Sun, 14
+ Jan 2024 08:36:59 +0100
+Message-ID: <13c8b1e8-0c76-47e1-a4b4-3e8f4abab0fe@gmx.de>
+Date: Sun, 14 Jan 2024 08:36:57 +0100
 MIME-Version: 1.0
-References: <20240111145905.19797-1-Jonathan.Cameron@huawei.com>
-In-Reply-To: <20240111145905.19797-1-Jonathan.Cameron@huawei.com>
-From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Date: Sat, 13 Jan 2024 17:16:59 -0500
-Message-ID: <CAB=+i9SMSYHX_YTOOreJNikHiNmDxdPAuyBYPh_=1c97gjN55g@mail.gmail.com>
-Subject: Re: [PATCH v2 qemu] hw/cxl/device: read from register values in
- mdev_reg_read()
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-cxl@vger.kernel.org, qemu-devel@nongnu.org, 
- Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <fan.ni@samsung.com>,
- linuxarm@huawei.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/88] esp: don't clear cmdfifo when esp_select() fails in
+ get_cmd()
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, pbonzini@redhat.com,
+ fam@euphon.net, hpoussin@reactos.org, laurent@vivier.eu, thuth@redhat.com,
+ qemu-devel@nongnu.org
+References: <20240112125420.514425-1-mark.cave-ayland@ilande.co.uk>
+ <20240112125420.514425-2-mark.cave-ayland@ilande.co.uk>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20240112125420.514425-2-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::729;
- envelope-from=42.hyeyoo@gmail.com; helo=mail-qk1-x729.google.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Provags-ID: V03:K1:hWlPLaYcoLID+HjNpoR7qP1QPHb9rahk1h3vodO0PrO2bcb4Te8
+ xj+qlPgX6wczi2B8+PfOKt9O9iAJe0bOEUYmgpW37Vy2PrmZj0lmBKKkhs8VE0k9uRA2q91
+ TSrhc23KFOl4+hC09xh10dVBEY171fO+UCju6Abh1M4BMX/UQ8Gy8QdaXzH1yI4s4FI+79H
+ C5hIy+7nIC+QKg0/ttoeQ==
+UI-OutboundReport: notjunk:1;M01:P0:Zbh1IlB/g2Y=;tps/sbx4GpfNtSBODwRUakqo/c9
+ NIfCCZA/A/X1qHVToGrC2WSM9NfxZscOnOyXnJ5impJo9VdElzeN4w+GxLH+UVxksJ/kXW/Bc
+ Aw+Jq/pqMfx0aAwYOuybqJwG31lyQjnuK/co2wYhGBui5xWCFGe/HgSLOD32bJSOrS6zsD1RO
+ sRz5+QpkL859x2ZROgd+rqEun2BCrpJn8gpHZWoGSmNpxSrDv4WVh97vG1OYY8Hm73ArcWVBd
+ c5c12s2vNKVr6OK/u5cvep72YL8P9k5c5fiT/eT+18XVijseNrInPGqS9W8AR6YzW5XeP/Bzf
+ CMvIv5+KpEHZc27FvBedEJgzc0VYq/Puzy5yghXFjx34BRFeXqItnY6KEfEWYVGDwL206ZiBN
+ rP2hhEOqb+YtohIlwyKlEEllh/DJMktPokWzO4yhjpv7ZtbEPSwBVNA2DLGBGohdF2FHvk+g4
+ Xiol+OcTpQRflwCbTgjW1E9NQ8bXdf+CsC7UXpPJQtXCaTU4bcgs64Id/NmJPhutWvv5cLPJ9
+ 2jVlgyQKJLrQhTslIKfOVIylB91VIquTOZRt+5aEKKnJRMmd6ZYkOuxaV6ew0KnYgm3be8pQf
+ sPJNgV5Nmhk+ErCYhurQuFsjWLEO0BRw3Njg6z8/VwWVnfACXJ3y8ptm2dhY3sjaCl6Bkb9rR
+ 0IJ6gssNB5uJXft+VKyLSYUXXNQAGcbdruLad71UWk5xlNuAHl6ElVKWGWBcUmj/3b79vuUFb
+ UxT7Q4ZPiLC/zCq1Ua+F76FFGlKBE1qiZf515h7U30+jgjR9CGhx/LFZAf2IdyD3dT7tZHwQZ
+ +MHrquv4FzNnK2DjxjeLSMU57ELQ+FRI394dUkWCBadu6pZA0bjyfSjFoWhXj96AfvLZn63sl
+ TogfUpfTV3cQf2fXgDxAvf/UxxGaoLjj1+5VlEYd4o+hCvNhgvmdAboQiCtEXMF/WpnNVNH1d
+ 2hL0gQwukV+EArMK9x4K5rSinsk=
+Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,125 +133,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 11, 2024 at 9:59=E2=80=AFAM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
+On 1/12/24 13:52, Mark Cave-Ayland wrote:
+> The FIFO contents should not be affected if the target selection fails.
 >
-> From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
->
-> In the current mdev_reg_read() implementation, it consistently returns
-> that the Media Status is Ready (01b). This was fine until commit
-> 25a52959f99d ("hw/cxl: Add support for device sanitation") because the
-> media was presumed to be ready.
->
-> However, as per the CXL 3.0 spec "8.2.9.8.5.1 Sanitize (Opcode 4400h)",
-> during sanitation, the Media State should be set to Disabled (11b). The
-> mentioned commit correctly sets it to Disabled, but mdev_reg_read()
-> still returns Media Status as Ready.
->
-> To address this, update mdev_reg_read() to read register values instead
-> of returning dummy values.
->
-> Note __toggle_media() was overwriting the mailbox capability
-> register, but nothing was reading that after this so that bug had no
-> obvious effect unless the driver was reloaded.
->
-> Fixes: commit 25a52959f99d ("hw/cxl: Add support for device sanitation")
-> Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-> Link: https://lore.kernel.org/r/20231222090051.3265307-3-42.hyeyoo@gmail.=
-com
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> --
->
-> Hyeonggon - I've kept your sign-off. Let me know if this is ok.
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-Yeah, it's fine!
+I built and tested this series together with your "esp-pci: fixes for
+Linux and MS-DOS" on top of git head and they fixed all outstanding issues=
+.
 
-I either missed that it overwrites the mailbox capability register,
-thank you so much for noticing. the new version looks fine to me.
+So, you may add
+Tested-by: Helge Deller <deller@gmx.de>
+to both.
 
-> Dropped RBs etc as this has changed quite a bit.
->
-> I plan to send out a group of fixes including this soon, but given
-> I've been pointing out the original fix didn't work thought I'd send
-> this one out for early review!
->
-> ---
->  include/hw/cxl/cxl_device.h |  9 +++++++--
->  hw/cxl/cxl-device-utils.c   | 17 +++++++++++------
->  2 files changed, 18 insertions(+), 8 deletions(-)
->
-> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> index befb5f884b..31d2afcd3d 100644
-> --- a/include/hw/cxl/cxl_device.h
-> +++ b/include/hw/cxl/cxl_device.h
-> @@ -202,6 +202,9 @@ typedef struct cxl_device_state {
->          };
->      };
->
-> +    /* Stash the memory device status value */
-> +    uint64_t memdev_status;
-> +
->      struct {
->          bool set;
->          uint64_t last_set;
-> @@ -353,8 +356,10 @@ static inline void __toggle_media(CXLDeviceState *cx=
-l_dstate, int val)
->  {
->      uint64_t dev_status_reg;
->
-> -    dev_status_reg =3D FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, val)=
-;
-> -    cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] =3D dev_status_reg;
-> +    dev_status_reg =3D cxl_dstate->memdev_status;
-> +    dev_status_reg =3D FIELD_DP64(dev_status_reg, CXL_MEM_DEV_STS, MEDIA=
-_STATUS,
-> +                                val);
-> +    cxl_dstate->memdev_status =3D dev_status_reg;
->  }
->  #define cxl_dev_disable_media(cxlds)                    \
->          do { __toggle_media((cxlds), 0x3); } while (0)
-> diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
-> index 61a3c4dc2e..40b619ffd9 100644
-> --- a/hw/cxl/cxl-device-utils.c
-> +++ b/hw/cxl/cxl-device-utils.c
-> @@ -229,12 +229,9 @@ static void mailbox_reg_write(void *opaque, hwaddr o=
-ffset, uint64_t value,
->
->  static uint64_t mdev_reg_read(void *opaque, hwaddr offset, unsigned size=
-)
->  {
-> -    uint64_t retval =3D 0;
-> -
-> -    retval =3D FIELD_DP64(retval, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
-> -    retval =3D FIELD_DP64(retval, CXL_MEM_DEV_STS, MBOX_READY, 1);
-> +    CXLDeviceState *cxl_dstate =3D opaque;
->
-> -    return retval;
-> +    return cxl_dstate->memdev_status;
->  }
->
->  static void ro_reg_write(void *opaque, hwaddr offset, uint64_t value,
-> @@ -371,7 +368,15 @@ static void mailbox_reg_init_common(CXLDeviceState *=
-cxl_dstate)
->      cxl_dstate->mbox_msi_n =3D msi_n;
->  }
->
-> -static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) { }
-> +static void memdev_reg_init_common(CXLDeviceState *cxl_dstate)
-> +{
-> +    uint64_t memdev_status_reg;
-> +
-> +    memdev_status_reg =3D FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, 1=
-);
-> +    memdev_status_reg =3D FIELD_DP64(memdev_status_reg, CXL_MEM_DEV_STS,
-> +                                   MBOX_READY, 1);
-> +    cxl_dstate->memdev_status =3D memdev_status_reg;
-> +}
->
->  void cxl_device_register_init_t3(CXLType3Dev *ct3d)
->  {
-> --
-> 2.39.2
->
+Thanks!
+Helge
 
