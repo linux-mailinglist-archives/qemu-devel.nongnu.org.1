@@ -2,77 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E29F82D09D
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 13:44:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B5B82D0A3
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 13:53:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOzpc-0007e6-8a; Sun, 14 Jan 2024 07:43:18 -0500
+	id 1rOzz9-0005kV-Ch; Sun, 14 Jan 2024 07:53:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rOzoc-0007EP-Ug
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 07:42:17 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rOzoY-0003EZ-LB
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 07:42:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705236131; x=1736772131;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=OZWDrXewF8MtC/kb9j01WL/a8ou0hazpkHKjaBK9OCA=;
- b=h3ph0C1rJ/KT+RHd+PbyQWcrV7aJA32oWR/Vg9Qo9QvXirRW/KZRTd14
- a/0A2YqPu49UYlbcsc3Z7785Hwu5B+/fM5fx2eUlSJ7FD0saCLF0JXDnM
- cikKFUbIn0gVtXCH2cfoXRO+C6+7bdA8+hRZXO5F72IM9mNnOhpF6XssX
- WF5W5yWydp6B509fKyGGwTeCmC7my2nuMwdUM0hCdnf8d+M+PFHoYwGER
- 1H+AuaJFUPsQuC9vVodob/SWu9EbaAqWgOvLAIoksRs18FNH9xKN2h5w+
- GPz6VA9I2bGrvExGWIHhaKU6F7bNicj6myVxHVhUOUj7lZkqIzIhYcF3T A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10952"; a="12940713"
-X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; d="scan'208";a="12940713"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 04:42:07 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10952"; a="786835381"
-X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; d="scan'208";a="786835381"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
- ([10.93.22.149])
- by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 04:42:03 -0800
-Message-ID: <1b2dd718-5968-4036-8b80-fd456058dce6@intel.com>
-Date: Sun, 14 Jan 2024 20:42:00 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 09/16] i386: Support module_id in X86CPUTopoIDs
-Content-Language: en-US
-To: Zhao Liu <zhao1.liu@linux.intel.com>,
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rOzz6-0005jy-JU; Sun, 14 Jan 2024 07:53:04 -0500
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rOzz4-0008Fh-Go; Sun, 14 Jan 2024 07:53:04 -0500
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a28b1095064so876693666b.2; 
+ Sun, 14 Jan 2024 04:53:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1705236779; x=1705841579; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Yk8tga08CrdY4DjvsNUPiKdZHs9Hwkb5uBqEnFn+viM=;
+ b=l3LDwnlkh1nC2lkzp82wYRkkwjnIE18GxJ4ztDOORDo8CLJWh0nDkCBFuj+OB3Qyhq
+ Jvl77L7I6y9SIw8PqLNgb8PKmE2VVRnG5gECdKX3GDHEMBOaYTVUcJyoEo6S20E+AvtS
+ ZUcNp5fpNKxYmxy7JnRw8YY3mW8XcdET9AmkK040pXSF0i4VcC0CbZhECmDg2vJ8gVtC
+ n7kOyuY4+bAT83V2YsY9P085Vq/CCM5uMW7Rvo+ImjV1dqPr0MpahexcKQ3HTZyyvoXC
+ +JuwrOsObsxGvPAIka2b3m5rXn0oxQiAKYJGTKLSjtG/RYeE/3/CQdsDJXL46VyiUEpS
+ 4guQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705236779; x=1705841579;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Yk8tga08CrdY4DjvsNUPiKdZHs9Hwkb5uBqEnFn+viM=;
+ b=L8N7H6GfnUqOlPORWr4EqyIj9VjhxKDOSCLTpWxOMkSo3Ra7Prcj2qcQYdz8Y1BBEe
+ O0WGUqyEP57YlOg2YX1QN5WdQYeil4P5WcIpmVfH7V9aeuuftnrzVNU5TxKNqWNO4aa6
+ rEjNbb296SciL8LS8oymuZqmkqBqfG0obhA9zkfGpooz8zTjjfDVx1iaS/qRGin6NTZY
+ X4jSYr8mMW7CKmIAolmLfhHRj1KaNu8aF4AO6ET7lYZcDpfqNeqf8kNTo0PsAMWPdmFv
+ 1IWbIUPcnwLF2b+8Bxqz8F4/pn5yHKxAGX3IqTeFc4NNYQWRgTGbAqVS4iwCpoRHl9Rw
+ vmGg==
+X-Gm-Message-State: AOJu0Yy60NFwYoloYPGJZIDN2A8/lvZWa2A4SfrfjB9Dv3Wdiu23yNwa
+ WxaGioWdIGuUoQbZP+Kvni27PDZRLXo=
+X-Google-Smtp-Source: AGHT+IGyWOfxo+c9x9eLu39QZPKfsDLQKmrlSKPnKGFiKTyK9qj4bsMdcUwJYUxBvNRsWtNdY/LdUw==
+X-Received: by 2002:a17:906:361a:b0:a2d:9c0e:ead5 with SMTP id
+ q26-20020a170906361a00b00a2d9c0eead5mr141408ejb.117.1705236778883; 
+ Sun, 14 Jan 2024 04:52:58 -0800 (PST)
+Received: from [127.0.0.1] (dynamic-077-183-249-018.77.183.pool.telefonica.de.
+ [77.183.249.18]) by smtp.gmail.com with ESMTPSA id
+ w19-20020a17090652d300b00a2b091e93aesm4026460ejn.115.2024.01.14.04.52.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 14 Jan 2024 04:52:58 -0800 (PST)
+Date: Sun, 14 Jan 2024 12:52:53 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+CC: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
+ Sergio Lopez <slp@redhat.com>,
+ =?ISO-8859-1?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>,
+ =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Fabiano Rosas <farosas@suse.de>,
+ =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Hanna Reitz <hreitz@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ John Snow <jsnow@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
+ Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Leonardo Bras <leobras@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-10-zhao1.liu@linux.intel.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20240108082727.420817-10-zhao1.liu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Kevin Wolf <kwolf@redhat.com>, David Hildenbrand <david@redhat.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v5_00/11=5D_hw/isa/vt82c686=3A_Implemen?=
+ =?US-ASCII?Q?t_relocation_and_toggling_of_SuperI/O_functions?=
+In-Reply-To: <20240114123911.4877-1-shentey@gmail.com>
+References: <20240114123911.4877-1-shentey@gmail.com>
+Message-ID: <05B650FF-EA74-471D-B427-A0AC037423DF@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,153 +109,226 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/8/2024 4:27 PM, Zhao Liu wrote:
-> From: Zhuocheng Ding <zhuocheng.ding@intel.com>
-> 
-> Add module_id member in X86CPUTopoIDs.
-> 
-> module_id can be parsed from APIC ID, so also update APIC ID parsing
-> rule to support module level. With this support, the conversions with
-> module level between X86CPUTopoIDs, X86CPUTopoInfo and APIC ID are
-> completed.
-> 
-> module_id can be also generated from cpu topology, and before i386
-> supports "clusters" in smp, the default "clusters per die" is only 1,
-> thus the module_id generated in this way is 0, so that it will not
-> conflict with the module_id generated by APIC ID.
-> 
-> Signed-off-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
-> Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> Tested-by: Babu Moger <babu.moger@amd.com>
-> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
-> Changes since v1:
->   * Merge the patch "i386: Update APIC ID parsing rule to support module
->     level" into this one. (Yanan)
->   * Move the apicid_module_width() and apicid_module_offset() support
->     into the previous modules_per_die related patch. (Yanan)
-> ---
->   hw/i386/x86.c              | 28 +++++++++++++++++++++-------
->   include/hw/i386/topology.h | 17 +++++++++++++----
->   2 files changed, 34 insertions(+), 11 deletions(-)
-> 
-> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> index 85b847ac7914..5269aae3a5c2 100644
-> --- a/hw/i386/x86.c
-> +++ b/hw/i386/x86.c
-> @@ -315,11 +315,11 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
->   
->       /*
->        * If APIC ID is not set,
-> -     * set it based on socket/die/core/thread properties.
-> +     * set it based on socket/die/cluster/core/thread properties.
->        */
->       if (cpu->apic_id == UNASSIGNED_APIC_ID) {
-> -        int max_socket = (ms->smp.max_cpus - 1) /
-> -                                smp_threads / smp_cores / ms->smp.dies;
-> +        int max_socket = (ms->smp.max_cpus - 1) / smp_threads / smp_cores /
-> +                                ms->smp.clusters / ms->smp.dies;
->   
->           /*
->            * die-id was optional in QEMU 4.0 and older, so keep it optional
-> @@ -366,17 +366,27 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
->           topo_ids.die_id = cpu->die_id;
->           topo_ids.core_id = cpu->core_id;
->           topo_ids.smt_id = cpu->thread_id;
-> +
-> +        /*
-> +         * TODO: This is the temporary initialization for topo_ids.module_id to
-> +         * avoid "maybe-uninitialized" compilation errors. Will remove when
-> +         * X86CPU supports cluster_id.
-> +         */
-> +        topo_ids.module_id = 0;
-> 
 
-if you put patch 10 before this patch, then we don't need this trick.
 
->           cpu->apic_id = x86_apicid_from_topo_ids(&topo_info, &topo_ids);
->       }
->   
->       cpu_slot = x86_find_cpu_slot(MACHINE(x86ms), cpu->apic_id, &idx);
->       if (!cpu_slot) {
->           x86_topo_ids_from_apicid(cpu->apic_id, &topo_info, &topo_ids);
-> +
->           error_setg(errp,
-> -            "Invalid CPU [socket: %u, die: %u, core: %u, thread: %u] with"
-> -            " APIC ID %" PRIu32 ", valid index range 0:%d",
-> -            topo_ids.pkg_id, topo_ids.die_id, topo_ids.core_id, topo_ids.smt_id,
-> -            cpu->apic_id, ms->possible_cpus->len - 1);
-> +            "Invalid CPU [socket: %u, die: %u, module: %u, core: %u, thread: %u]"
-> +            " with APIC ID %" PRIu32 ", valid index range 0:%d",
-> +            topo_ids.pkg_id, topo_ids.die_id, topo_ids.module_id,
-> +            topo_ids.core_id, topo_ids.smt_id, cpu->apic_id,
-> +            ms->possible_cpus->len - 1);
->           return;
->       }
->   
-> @@ -502,6 +512,10 @@ const CPUArchIdList *x86_possible_cpu_arch_ids(MachineState *ms)
->               ms->possible_cpus->cpus[i].props.has_die_id = true;
->               ms->possible_cpus->cpus[i].props.die_id = topo_ids.die_id;
->           }
-> +        if (ms->smp.clusters > 1) {
-> +            ms->possible_cpus->cpus[i].props.has_cluster_id = true;
-> +            ms->possible_cpus->cpus[i].props.cluster_id = topo_ids.module_id;
-> +        }
->           ms->possible_cpus->cpus[i].props.has_core_id = true;
->           ms->possible_cpus->cpus[i].props.core_id = topo_ids.core_id;
->           ms->possible_cpus->cpus[i].props.has_thread_id = true;
-> diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
-> index 517e51768c13..ed1f3d6c1d5e 100644
-> --- a/include/hw/i386/topology.h
-> +++ b/include/hw/i386/topology.h
-> @@ -50,6 +50,7 @@ typedef uint32_t apic_id_t;
->   typedef struct X86CPUTopoIDs {
->       unsigned pkg_id;
->       unsigned die_id;
-> +    unsigned module_id;
->       unsigned core_id;
->       unsigned smt_id;
->   } X86CPUTopoIDs;
-> @@ -127,6 +128,7 @@ static inline apic_id_t x86_apicid_from_topo_ids(X86CPUTopoInfo *topo_info,
->   {
->       return (topo_ids->pkg_id  << apicid_pkg_offset(topo_info)) |
->              (topo_ids->die_id  << apicid_die_offset(topo_info)) |
-> +           (topo_ids->module_id << apicid_module_offset(topo_info)) |
->              (topo_ids->core_id << apicid_core_offset(topo_info)) |
->              topo_ids->smt_id;
->   }
-> @@ -140,12 +142,16 @@ static inline void x86_topo_ids_from_idx(X86CPUTopoInfo *topo_info,
->                                            X86CPUTopoIDs *topo_ids)
->   {
->       unsigned nr_dies = topo_info->dies_per_pkg;
-> -    unsigned nr_cores = topo_info->cores_per_module *
-> -                        topo_info->modules_per_die;
-> +    unsigned nr_modules = topo_info->modules_per_die;
-> +    unsigned nr_cores = topo_info->cores_per_module;
->       unsigned nr_threads = topo_info->threads_per_core;
->   
-> -    topo_ids->pkg_id = cpu_index / (nr_dies * nr_cores * nr_threads);
-> -    topo_ids->die_id = cpu_index / (nr_cores * nr_threads) % nr_dies;
-> +    topo_ids->pkg_id = cpu_index / (nr_dies * nr_modules *
-> +                       nr_cores * nr_threads);
-> +    topo_ids->die_id = cpu_index / (nr_modules * nr_cores *
-> +                       nr_threads) % nr_dies;
-> +    topo_ids->module_id = cpu_index / (nr_cores * nr_threads) %
-> +                          nr_modules;
->       topo_ids->core_id = cpu_index / nr_threads % nr_cores;
->       topo_ids->smt_id = cpu_index % nr_threads;
->   }
-> @@ -163,6 +169,9 @@ static inline void x86_topo_ids_from_apicid(apic_id_t apicid,
->       topo_ids->core_id =
->               (apicid >> apicid_core_offset(topo_info)) &
->               ~(0xFFFFFFFFUL << apicid_core_width(topo_info));
-> +    topo_ids->module_id =
-> +            (apicid >> apicid_module_offset(topo_info)) &
-> +            ~(0xFFFFFFFFUL << apicid_module_width(topo_info));
->       topo_ids->die_id =
->               (apicid >> apicid_die_offset(topo_info)) &
->               ~(0xFFFFFFFFUL << apicid_die_width(topo_info));
+Am 14=2E Januar 2024 12:39:00 UTC schrieb Bernhard Beschow <shentey@gmail=
+=2Ecom>:
+>This series implements relocation of the SuperI/O functions of the VIA so=
+uth
+>
+>bridges which resolves some FIXME's=2E It is part of my via-apollo-pro-13=
+3t
+>
+>branch [1] which is an extension of bringing the VIA south bridges to the=
+ PC
+>
+>machine [2]=2E This branch is able to run some real-world X86 BIOSes in t=
+he hope
+>
+>that it allows us to form a better understanding of the real vt82c686b de=
+vices=2E
+>
+>Implementing relocation and toggling of the SuperI/O functions is one ste=
+p to
+>
+>make these BIOSes run without error messages, so here we go=2E
+>
+>
+>
+>The series is structured as follows: Patches 1-3 prepare the TYPE_ISA_FDC=
+,
+>
+>TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL to relocate and toggle (enable/disa=
+ble)
+>
+>themselves without breaking encapsulation of their respective device stat=
+es=2E
+>
+>This is achieved by moving the MemoryRegions and PortioLists from the dev=
+ice
+>
+>states into the encapsulating ISA devices since they will be relocated an=
+d
+>
+>toggled=2E
+>
+>
+>
+>Inspired by the memory API patches 4-6 add two convenience functions to t=
+he
+>
+>portio_list API to toggle and relocate portio lists=2E Patch 5 is a prepa=
+ration
+>
+>for that which removes some redundancies which otherwise had to be dealt =
+with
+>
+>during relocation=2E
+>
+>
+>
+>Patches 7-9 implement toggling and relocation for types TYPE_ISA_FDC,
+>
+>TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL=2E Patch 10 prepares the pegasos2 m=
+achine
+>
+>which would end up with all SuperI/O functions disabled if no -bios argum=
+ent is
+>
+>given=2E Patch 11 finally implements the main feature which now relies on=
 
+>
+>firmware to configure the SuperI/O functions accordingly (except for pega=
+sos2)=2E
+>
+>
+>
+>v5:
+>
+>* Use cpu_physical_memory_write() in pegasos2 (Zoltan)
+>
+>* Use an int as for loop variable (Zoltan)
+>
+>
+>
+>v4:
+>
+>* Drop incomplete SuperI/O vmstate handling (Zoltan)
+>
+>
+>
+>v3:
+>
+>* Rework various commit messages (Zoltan)
+>
+>* Drop patch "hw/char/serial: Free struct SerialState from MemoryRegion"
+=
+>
+>  (Zoltan)
+>
+>* Generalize wording in migration=2Erst to include portio_list API (Zolta=
+n)
+>
+>
+>
+>v2:
+>
+>* Improve commit messages (Zoltan)
+>
+>* Split pegasos2 from vt82c686 patch (Zoltan)
+>
+>* Avoid poking into device internals (Zoltan)
+>
+>
+>
+>Testing done:
+>
+>* `make check`
+>
+>* `make check-avocado`
+>
+>* Run MorphOS on pegasos2 with and without pegasos2=2Erom
+>
+>* Run Linux on amigaone
+>
+>* Run real-world BIOSes on via-apollo-pro-133t branch
+>
+>* Start rescue-yl on fuloong2e
+>
+>
+>
+>[1] https://github=2Ecom/shentok/qemu/tree/via-apollo-pro-133t
+>
+>[2] https://github=2Ecom/shentok/qemu/tree/pc-via
+>
+>
+>
+>Bernhard Beschow (11):
+>
+>  hw/block/fdc-isa: Move portio_list from FDCtrl to FDCtrlISABus
+>
+>  hw/block/fdc-sysbus: Move iomem from FDCtrl to FDCtrlSysBus
+>
+>  hw/char/parallel: Move portio_list from ParallelState to
+>
+>    ISAParallelState
+>
+
+
+>  exec/ioport: Resolve redundant =2Ebase attribute in struct
+>
+>    MemoryRegionPortio
+>
+>  exec/ioport: Add portio_list_set_address()
+>
+>  exec/ioport: Add portio_list_set_enabled()
+>
+>  hw/block/fdc-isa: Implement relocation and enabling/disabling for
+>
+>    TYPE_ISA_FDC
+>
+>  hw/char/serial-isa: Implement relocation and enabling/disabling for
+>
+>    TYPE_ISA_SERIAL
+>
+>  hw/char/parallel-isa: Implement relocation and enabling/disabling for
+>
+>    TYPE_ISA_PARALLEL
+>
+
+Ping for the above six patches=2E These are critical for this series and h=
+aven't had comments from maintainers for five iterations, so pardon for the=
+ annoyance=2E
+
+Best regards,
+Bernhard
+
+>  hw/ppc/pegasos2: Let pegasos2 machine configure SuperI/O functions
+>
+>  hw/isa/vt82c686: Implement relocation and toggling of SuperI/O
+>
+>    functions
+>
+>
+>
+> docs/devel/migration=2Erst       |  6 ++--
+>
+> hw/block/fdc-internal=2Eh        |  4 ---
+>
+> include/exec/ioport=2Eh          |  4 ++-
+>
+> include/hw/block/fdc=2Eh         |  3 ++
+>
+> include/hw/char/parallel-isa=2Eh |  5 +++
+>
+> include/hw/char/parallel=2Eh     |  2 --
+>
+> include/hw/char/serial=2Eh       |  2 ++
+>
+> hw/block/fdc-isa=2Ec             | 18 +++++++++-
+>
+> hw/block/fdc-sysbus=2Ec          |  6 ++--
+>
+> hw/char/parallel-isa=2Ec         | 14 ++++++++
+>
+> hw/char/parallel=2Ec             |  2 +-
+>
+> hw/char/serial-isa=2Ec           | 14 ++++++++
+>
+> hw/isa/vt82c686=2Ec              | 65 ++++++++++++++++++++++++++++------=
+
+>
+> hw/ppc/pegasos2=2Ec              | 12 +++++++
+>
+> system/ioport=2Ec                | 41 +++++++++++++++++----
+>
+> 15 files changed, 168 insertions(+), 30 deletions(-)
+>
+>
+>
+>-- >
+>2=2E43=2E0
+>
+>
+>
 
