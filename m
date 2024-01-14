@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50FF082D09F
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 13:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A92CC82D09E
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 13:44:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOzm4-0003F1-SI; Sun, 14 Jan 2024 07:39:37 -0500
+	id 1rOzm4-0003Ez-Eg; Sun, 14 Jan 2024 07:39:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rOzm1-0003Dg-7h; Sun, 14 Jan 2024 07:39:34 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1rOzm2-0003Dp-LH; Sun, 14 Jan 2024 07:39:34 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rOzlz-0001aT-FW; Sun, 14 Jan 2024 07:39:32 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40e5f746ac4so40782325e9.1; 
- Sun, 14 Jan 2024 04:39:30 -0800 (PST)
+ id 1rOzm1-0001c0-30; Sun, 14 Jan 2024 07:39:34 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-a2821884a09so661176966b.2; 
+ Sun, 14 Jan 2024 04:39:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705235968; x=1705840768; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705235970; x=1705840770; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5+9ZapGs110KfVKNFzaiA44RoY0VoVZdYmH4JCjTMrQ=;
- b=RlHvsf3NTfmfJjoRODzMsxzZYC/84sjcNW/vtHgGoX3w0Kkt0gm9fJidkYH+zlWn5f
- WdhfZdcVc7A/22eWIlYaxtAfsd9MjXWCX7+A1ApPbn/3LAISiaHeqh3TwUzsn/yiuIM8
- M49NhvfHSA3YkUNfOn9fH8yOuKSDqPQ8DrONub5nu5CSivIHLz6T4Kd/eVPPaKnYxkLn
- fgU2tUAtwEPs1K6d+v+xfMJYgo/GMOqQ4uv7zmlzAe2XqIn2EpcHsW0GC4J6y9iAENJ+
- V0GrDTfk3KcrsHXQgkfP/VzRb0OA0wZnalaYQUA/v0HyucM0sbOHgtqmqkl8TnF+Cov8
- LkLw==
+ bh=cBLwkrwr8Jj7XdQH7raQa9Nj1TEuOiCXih1DV9ONnp0=;
+ b=LcVVTIPdvsWkbmWzE3fw4M4DLx83zOYWUKWI264Do+ahvd9BUA21P19S2Cdb9JOL/h
+ rBoZGjDlg3Ljw4FqTv3NL8Z9yA5+xXH37q8xv6HKgEu1fJtBQdWHFRBVKtwmlN8IzJ38
+ M8OI0necIwv7/Xofy9XwvfzyVJQsboGfLS15B9iqhka08XdF05v6rxnLYkI75U9B9w2T
+ 7X456ODOGRjK4SseBYDGkt7QDX6wUfnJeB63awv8opVpVkGRFfCMnTwGOnQfzihZqfon
+ bdynABoTEPN4KDCDX0ZrypOpxcmqaNDJZfcmFTKgeHfvyj0ou7rvmLtjnf49insUrB1m
+ Lj0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705235968; x=1705840768;
+ d=1e100.net; s=20230601; t=1705235970; x=1705840770;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5+9ZapGs110KfVKNFzaiA44RoY0VoVZdYmH4JCjTMrQ=;
- b=R3WwPKisBoTtmZomZdV3vy1yPWyFwY9K1EN7U9rNvl6OyFHQiGZm4n2Lj61Y3yqTxS
- 6LkZ8CZ2bdM2WHExJEkEs+DGv2YSpTSvrlFfaEB976VYJz6rXRMMVZ2kC+N6AJEfIj+I
- 9OjGVkvaaK9PIquMLs1jZeYk4PO3C6g26XjQsuduLq+Kn9QA3mCAEEYe+vjjYKUEMvc1
- ZjCDqoyGzbSHQVjDyTq9BvScWgKsglnBWpDF7jlT0yw9z09rU9NZ53kK2vr1OyAZEy7G
- hrCbrcW20khm/Y73YAOhePu4fJkZLExjLiaGdWZ4dCsuRiNCBWQdAcRxDaQiO15eix+4
- kC1Q==
-X-Gm-Message-State: AOJu0Yw6Fhqjm1Fd8t87vx6LqgCQEM0JdF8ylAI3MmPRNKclzpaW6lxp
- MeQhzFpRqXzVJpMsoA3vLf1c3G2j8WE=
-X-Google-Smtp-Source: AGHT+IErOcbIpe83fjdXOFuOXp0Js87h3sYLJTW60HMicr/amRmSEj71Sp14D+50+9xVHz89+kXTYg==
-X-Received: by 2002:a7b:cb04:0:b0:40e:50c1:4e79 with SMTP id
- u4-20020a7bcb04000000b0040e50c14e79mr2280188wmj.45.1705235967569; 
- Sun, 14 Jan 2024 04:39:27 -0800 (PST)
+ bh=cBLwkrwr8Jj7XdQH7raQa9Nj1TEuOiCXih1DV9ONnp0=;
+ b=FDF3Vzi5Giop8iaxiEhPt9hfA3XFnBIcA64pswf98OK5m+tthnqlMhJ6ZCdvw83Md3
+ nLGxRG0+2BlXBj2sb4uDqvF2HWY70GTZx6NmVwgAs1swtYUiJ+zxvukt/Yx0wdDwSHuS
+ LqdvkpOA/1+RHu2zghbrayLePE/VcU2HJoM31BwEU7NHL5Cc28NMFrc328rUzs+4dQE3
+ m25rUq4IulOWWr0hVkndcBYwm/wz6/ssBGnMtCBQ00sYNGlliM1+j+dVhUWS7bRuUxex
+ D1xek3Fr6oI0sI/I+Zbgl/A7ljgWR1WZwaqkCS6xVWsAyDLcfwxQj7QdiiSUr1WVR2gU
+ uXtg==
+X-Gm-Message-State: AOJu0Yy0kasWLQDWzlO5UfNHO3LAwQhCXBa8VBEqrVLagE1hnheGWYjA
+ LBrhx0mRNanMbBKNsat/cNdlU8lXyI8=
+X-Google-Smtp-Source: AGHT+IHYk9nCkTF+HhCXDlLk1qqNAtlMtHVac3SFDz5o/jdJpjcMzan3+2q6qfrfV0CB9dYFBKwohQ==
+X-Received: by 2002:a17:906:591:b0:a28:b6b6:af90 with SMTP id
+ 17-20020a170906059100b00a28b6b6af90mr2132368ejn.71.1705235970083; 
+ Sun, 14 Jan 2024 04:39:30 -0800 (PST)
 Received: from archlinux.. (dynamic-077-183-249-018.77.183.pool.telefonica.de.
  [77.183.249.18]) by smtp.gmail.com with ESMTPSA id
- s2-20020a170906354200b00a293c6cc184sm4023734eja.24.2024.01.14.04.39.24
+ s2-20020a170906354200b00a293c6cc184sm4023734eja.24.2024.01.14.04.39.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Jan 2024 04:39:26 -0800 (PST)
+ Sun, 14 Jan 2024 04:39:28 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
@@ -76,17 +76,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
  Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  Kevin Wolf <kwolf@redhat.com>, David Hildenbrand <david@redhat.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v5 02/11] hw/block/fdc-sysbus: Move iomem from FDCtrl to
- FDCtrlSysBus
-Date: Sun, 14 Jan 2024 13:39:02 +0100
-Message-ID: <20240114123911.4877-3-shentey@gmail.com>
+Subject: [PATCH v5 03/11] hw/char/parallel: Move portio_list from
+ ParallelState to ISAParallelState
+Date: Sun, 14 Jan 2024 13:39:03 +0100
+Message-ID: <20240114123911.4877-4-shentey@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240114123911.4877-1-shentey@gmail.com>
 References: <20240114123911.4877-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,70 +109,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FDCtrl::iomem isn't used inside FDCtrl context but only inside FDCtrlSysBus
-context, so move it there.
+ParallelState::portio_list isn't used inside ParallelState context but only
+inside ISAParallelState context, so move it there.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- hw/block/fdc-internal.h | 2 --
- hw/block/fdc-sysbus.c   | 6 ++++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ include/hw/char/parallel-isa.h | 2 ++
+ include/hw/char/parallel.h     | 2 --
+ hw/char/parallel.c             | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/block/fdc-internal.h b/hw/block/fdc-internal.h
-index fef2bfbbf5..e219623dc7 100644
---- a/hw/block/fdc-internal.h
-+++ b/hw/block/fdc-internal.h
-@@ -25,7 +25,6 @@
- #ifndef HW_BLOCK_FDC_INTERNAL_H
- #define HW_BLOCK_FDC_INTERNAL_H
+diff --git a/include/hw/char/parallel-isa.h b/include/hw/char/parallel-isa.h
+index d24ccecf05..3b783bd08d 100644
+--- a/include/hw/char/parallel-isa.h
++++ b/include/hw/char/parallel-isa.h
+@@ -12,6 +12,7 @@
  
--#include "exec/memory.h"
- #include "hw/block/block.h"
- #include "hw/block/fdc.h"
- #include "qapi/qapi-types-block.h"
-@@ -91,7 +90,6 @@ typedef struct FDrive {
- } FDrive;
+ #include "parallel.h"
  
- struct FDCtrl {
--    MemoryRegion iomem;
-     qemu_irq irq;
-     /* Controller state */
-     QEMUTimer *result_timer;
-diff --git a/hw/block/fdc-sysbus.c b/hw/block/fdc-sysbus.c
-index 266bc4d145..035bc08975 100644
---- a/hw/block/fdc-sysbus.c
-+++ b/hw/block/fdc-sysbus.c
-@@ -26,6 +26,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
++#include "exec/ioport.h"
+ #include "hw/isa/isa.h"
  #include "qom/object.h"
-+#include "exec/memory.h"
- #include "hw/sysbus.h"
- #include "hw/block/fdc.h"
- #include "migration/vmstate.h"
-@@ -52,6 +53,7 @@ struct FDCtrlSysBus {
-     /*< public >*/
  
-     struct FDCtrl state;
-+    MemoryRegion iomem;
+@@ -25,6 +26,7 @@ struct ISAParallelState {
+     uint32_t iobase;
+     uint32_t isairq;
+     ParallelState state;
++    PortioList portio_list;
  };
  
- static uint64_t fdctrl_read_mem(void *opaque, hwaddr reg, unsigned ize)
-@@ -146,11 +148,11 @@ static void sysbus_fdc_common_instance_init(Object *obj)
+ #endif /* HW_PARALLEL_ISA_H */
+diff --git a/include/hw/char/parallel.h b/include/hw/char/parallel.h
+index 7b5a309a03..cfb97cc7cc 100644
+--- a/include/hw/char/parallel.h
++++ b/include/hw/char/parallel.h
+@@ -1,7 +1,6 @@
+ #ifndef HW_PARALLEL_H
+ #define HW_PARALLEL_H
  
-     qdev_set_legacy_instance_id(dev, 0 /* io */, 2); /* FIXME */
+-#include "exec/ioport.h"
+ #include "exec/memory.h"
+ #include "hw/isa/isa.h"
+ #include "hw/irq.h"
+@@ -22,7 +21,6 @@ typedef struct ParallelState {
+     uint32_t last_read_offset; /* For debugging */
+     /* Memory-mapped interface */
+     int it_shift;
+-    PortioList portio_list;
+ } ParallelState;
  
--    memory_region_init_io(&fdctrl->iomem, obj,
-+    memory_region_init_io(&sys->iomem, obj,
-                           sbdc->use_strict_io ? &fdctrl_mem_strict_ops
-                                               : &fdctrl_mem_ops,
-                           fdctrl, "fdc", 0x08);
--    sysbus_init_mmio(sbd, &fdctrl->iomem);
-+    sysbus_init_mmio(sbd, &sys->iomem);
+ void parallel_hds_isa_init(ISABus *bus, int n);
+diff --git a/hw/char/parallel.c b/hw/char/parallel.c
+index bd488cd7f9..c394635ada 100644
+--- a/hw/char/parallel.c
++++ b/hw/char/parallel.c
+@@ -532,7 +532,7 @@ static void parallel_isa_realizefn(DeviceState *dev, Error **errp)
+         s->status = dummy;
+     }
  
-     sysbus_init_irq(sbd, &fdctrl->irq);
-     qdev_init_gpio_in(dev, fdctrl_handle_tc, 1);
+-    isa_register_portio_list(isadev, &s->portio_list, base,
++    isa_register_portio_list(isadev, &isa->portio_list, base,
+                              (s->hw_driver
+                               ? &isa_parallel_portio_hw_list[0]
+                               : &isa_parallel_portio_sw_list[0]),
 -- 
 2.43.0
 
