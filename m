@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D820182D0C9
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 14:50:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2B982D0CA
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 14:52:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rP0rn-0002Jc-D2; Sun, 14 Jan 2024 08:49:35 -0500
+	id 1rP0u2-0002zd-O3; Sun, 14 Jan 2024 08:51:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rP0rk-0002JU-9z
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 08:49:32 -0500
-Received: from mgamail.intel.com ([134.134.136.31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rP0rh-00021z-AA
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 08:49:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705240169; x=1736776169;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=uIx1gUIYFOQN9X1RLR5u1VtpZgAqe4EmOdonkGpGPVg=;
- b=ebQ6u0b1LO0nJKNRxGCFFQkPJrWVPrezFXM5/TiXafAHHnmOErmzqner
- b/nA/7iP6SoHfU0CEB1Js0d4ZrUPSRfrH/7QgOUaUsphWz0mjW7IFo03E
- r/ZhBQaUcYStBcns0Vh3MlzzV+xpvwmBCaA2jkyVteCiMd/kEpJIiBlB2
- MPnN8VPo7ZRgNdxfj6G/MW60+o0gvke/V8MvEUcRl+ow4xYTwQqpEP4nh
- o22WB5uNs1JLvD2xGphZcwpnajjwqX40R69BYgUrKLBujz8cvmfEMkOwT
- jnQQnVrEWUBLkfAICAKKx9L12PwNIuTDqKolyaKYZAag2esU0fp3SfjGH Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10952"; a="463745941"
-X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; d="scan'208";a="463745941"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 05:49:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10952"; a="733061219"
-X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; d="scan'208";a="733061219"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
- ([10.93.22.149])
- by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 05:49:21 -0800
-Message-ID: <46663f59-2a28-4f22-8fb9-9c447b903e4a@intel.com>
-Date: Sun, 14 Jan 2024 21:49:18 +0800
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rP0tx-0002zH-HB; Sun, 14 Jan 2024 08:51:49 -0500
+Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rP0tu-0003VW-GU; Sun, 14 Jan 2024 08:51:49 -0500
+Received: by mail-qt1-x832.google.com with SMTP id
+ d75a77b69052e-4298e866cd6so48721021cf.0; 
+ Sun, 14 Jan 2024 05:51:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1705240301; x=1705845101; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+uXcncOfwnttSbHXQux5GnPqloDOlGt2n/TBvgyw6NM=;
+ b=Tt4GK4xnWgqRDxypx4XvojsD08USjqE2Hzbg9+TFdY+qYz8UEE2aVjWgA1JxVtoXlf
+ 8ZHv0J+zEEIqjd3Fd2ZhT9vw7OC8w2BVvEvPi64LGsIk6KwCcYB9pXEGm9mNq1FIodcK
+ VAfXOS1lX5h+78p3K1ow8TwbWChP500za2NUnC467v4jK3j7pDc4cQl2F4wcxnHCNgoA
+ b7tPPugdWTrTYzQ7ruf7oWe45E5RS1D5s1vRjpDpUnMB3w50eqebfij1MTC6h+QMqaQi
+ AAWpCu9LL5WXeOgQoNYKxmC45SDYA5iQKNjjyrMqAfqiPKCxXyZRq4KOf3ACE+Pg9CZn
+ eOdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705240301; x=1705845101;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+uXcncOfwnttSbHXQux5GnPqloDOlGt2n/TBvgyw6NM=;
+ b=qm8ByENNNRByV38H2esT2d2dtQIKD+y23gbRhwY6hdijSI3VrAYkYy91KT25Ve008W
+ RUeWG8K5DIDI3sS8LiRZbVGqm9TDgYFAt3YubsIiOm+vsAYnkz/EimL4yENK2vIvrign
+ 8ogrnGdkhL0O9OHUioVQUiSwpwz5pgv5jgd3aMkZIkIB/7I0jVa2SV7TyzSGLplP7nP1
+ Ee2Zfkb8kfhrR+s8Xb1eP3BBJymIK7MDI5wYzJOK3WzmGluiaS3ymugtZnUauItm8XZP
+ pPWM1WSXQdO5r2GY3kFSHLpO3y59e0HECBkLg9MGrb4lOjo11TZ5cvUkNI3bh3vstwg2
+ Nxow==
+X-Gm-Message-State: AOJu0YznaOZbYjFwoQijCqwc6gtrajJ7qdo3kILalxwp17UXobsehqX1
+ zAl0z2JFzdBBhRNJNrAfM2GOxrksXPu3rwQKx2c=
+X-Google-Smtp-Source: AGHT+IHvuN92BtcjRxjK6P/ZFVC55DOc9+AChZ6q670F/LsUein2xGT1LRFfMtP6VXCRgghoeA7UvNQzIBtGMcup3zE=
+X-Received: by 2002:a05:622a:1b8d:b0:429:af93:4e7f with SMTP id
+ bp13-20020a05622a1b8d00b00429af934e7fmr6193357qtb.64.1705240300986; Sun, 14
+ Jan 2024 05:51:40 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
-Content-Language: en-US
-To: Zhao Liu <zhao1.liu@linux.intel.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-11-zhao1.liu@linux.intel.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20240108082727.420817-11-zhao1.liu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=134.134.136.31; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240112135527.57212-1-f.ebner@proxmox.com>
+In-Reply-To: <20240112135527.57212-1-f.ebner@proxmox.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Sun, 14 Jan 2024 17:51:29 +0400
+Message-ID: <CAJ+F1C+JXE9hSQ_oDNZvhpYDqPeeKayopB3x2L2YyJTxM8t+Yg@mail.gmail.com>
+Subject: Re: [PATCH] ui/clipboard: avoid crash upon request when clipboard
+ peer is not initialized
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com, 
+ berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x832.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,147 +86,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/8/2024 4:27 PM, Zhao Liu wrote:
-> From: Zhuocheng Ding <zhuocheng.ding@intel.com>
-> 
-> Introduce cluster-id other than module-id to be consistent with
-> CpuInstanceProperties.cluster-id, and this avoids the confusion
-> of parameter names when hotplugging.
+Hi
 
-I don't think reusing 'cluster' from arm for x86's 'module' is a good 
-idea. It introduces confusion around the code.
-
-s390 just added 'drawer' and 'book' in cpu topology[1]. I think we can 
-also add a module level for x86 instead of reusing cluster.
-
-(This is also what I want to reply to the cover letter.)
-
-[1] 
-https://lore.kernel.org/qemu-devel/20231016183925.2384704-1-nsg@linux.ibm.com/
-
-> Following the legacy smp check rules, also add the cluster_id validity
-> into x86_cpu_pre_plug().
-> 
-> Signed-off-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
-> Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> Tested-by: Babu Moger <babu.moger@amd.com>
-> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+On Fri, Jan 12, 2024 at 5:57=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
+rote:
+>
+> With VNC, it can be that a client sends a VNC_MSG_CLIENT_CUT_TEXT
+> message before sending a VNC_MSG_CLIENT_SET_ENCODINGS message with
+> VNC_ENCODING_CLIPBOARD_EXT for configuring the clipboard extension.
+>
+> This means that qemu_clipboard_request() can be reached (via
+> vnc_client_cut_text_ext()) before vnc_server_cut_text_caps() was
+> called and had the chance to initialize the clipboard peer. In that
+> case, info->owner->request is NULL instead of a function and so
+> attempting to call it in qemu_clipboard_request() results in a
+> segfault.
+>
+> In particular, this can happen when using the KRDC (22.12.3) VNC
+> client on Wayland.
+>
+> It is not enough to check in ui/vnc.c's protocol_client_msg() if the
+> VNC_FEATURE_CLIPBOARD_EXT feature is enabled before handling an
+> extended clipboard message with vnc_client_cut_text_ext(), because of
+> the following scenario with two clients (say noVNC and KRDC):
+>
+> The noVNC client sets the extension VNC_FEATURE_CLIPBOARD_EXT and
+> initializes its cbpeer.
+>
+> The KRDC client does not, but triggers a vnc_client_cut_text() (note
+> it's not the _ext variant)). There, a new clipboard info with it as
+> the 'owner' is created and via qemu_clipboard_set_data() is called,
+> which in turn calls qemu_clipboard_update() with that info.
+>
+> In qemu_clipboard_update(), the notifier for the noVNC client will be
+> called, i.e. vnc_clipboard_notify() and also set vs->cbinfo for the
+> noVNC client. The 'owner' in that clipboard info is the clipboard peer
+> for the KRDC client, which did not initialize the 'request' function.
+> That sounds correct to me, it is the owner of that clipboard info.
+>
+> Then when noVNC sends a VNC_MSG_CLIENT_CUT_TEXT message (it did set
+> the feature correctly, so the check added by your patch passes), that
+> clipboard info is passed to qemu_clipboard_request() and the original
+> segfault still happens.
+>
+> Fixes: CVE-2023-6683
+> Reported-by: Markus Frank <m.frank@proxmox.com>
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> Tested-by: Markus Frank <m.frank@proxmox.com>
 > ---
-> Changes since v6:
->   * Update the comment when check cluster-id. Since there's no
->     v8.2, the cluster-id support should at least start from v9.0.
-> 
-> Changes since v5:
->   * Update the comment when check cluster-id. Since current QEMU is
->     v8.2, the cluster-id support should at least start from v8.3.
-> 
-> Changes since v3:
->   * Use the imperative in the commit message. (Babu)
-> ---
->   hw/i386/x86.c     | 33 +++++++++++++++++++++++++--------
->   target/i386/cpu.c |  2 ++
->   target/i386/cpu.h |  1 +
->   3 files changed, 28 insertions(+), 8 deletions(-)
-> 
-> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> index 5269aae3a5c2..1c1d368614ee 100644
-> --- a/hw/i386/x86.c
-> +++ b/hw/i386/x86.c
-> @@ -329,6 +329,14 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
->               cpu->die_id = 0;
->           }
->   
-> +        /*
-> +         * cluster-id was optional in QEMU 9.0 and older, so keep it optional
-> +         * if there's only one cluster per die.
-> +         */
-> +        if (cpu->cluster_id < 0 && ms->smp.clusters == 1) {
-> +            cpu->cluster_id = 0;
-> +        }
-> +
->           if (cpu->socket_id < 0) {
->               error_setg(errp, "CPU socket-id is not set");
->               return;
-> @@ -345,6 +353,14 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
->                          cpu->die_id, ms->smp.dies - 1);
->               return;
->           }
-> +        if (cpu->cluster_id < 0) {
-> +            error_setg(errp, "CPU cluster-id is not set");
-> +            return;
-> +        } else if (cpu->cluster_id > ms->smp.clusters - 1) {
-> +            error_setg(errp, "Invalid CPU cluster-id: %u must be in range 0:%u",
-> +                       cpu->cluster_id, ms->smp.clusters - 1);
-> +            return;
-> +        }
->           if (cpu->core_id < 0) {
->               error_setg(errp, "CPU core-id is not set");
->               return;
-> @@ -364,16 +380,9 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
->   
->           topo_ids.pkg_id = cpu->socket_id;
->           topo_ids.die_id = cpu->die_id;
-> +        topo_ids.module_id = cpu->cluster_id;
->           topo_ids.core_id = cpu->core_id;
->           topo_ids.smt_id = cpu->thread_id;
-> -
-> -        /*
-> -         * TODO: This is the temporary initialization for topo_ids.module_id to
-> -         * avoid "maybe-uninitialized" compilation errors. Will remove when
-> -         * X86CPU supports cluster_id.
-> -         */
-> -        topo_ids.module_id = 0;
-> -
->           cpu->apic_id = x86_apicid_from_topo_ids(&topo_info, &topo_ids);
->       }
->   
-> @@ -418,6 +427,14 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
->       }
->       cpu->die_id = topo_ids.die_id;
->   
-> +    if (cpu->cluster_id != -1 && cpu->cluster_id != topo_ids.module_id) {
-> +        error_setg(errp, "property cluster-id: %u doesn't match set apic-id:"
-> +            " 0x%x (cluster-id: %u)", cpu->cluster_id, cpu->apic_id,
-> +            topo_ids.module_id);
-> +        return;
-> +    }
-> +    cpu->cluster_id = topo_ids.module_id;
-> +
->       if (cpu->core_id != -1 && cpu->core_id != topo_ids.core_id) {
->           error_setg(errp, "property core-id: %u doesn't match set apic-id:"
->               " 0x%x (core-id: %u)", cpu->core_id, cpu->apic_id,
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index a2d39d2198b6..498a4be62b40 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -7909,12 +7909,14 @@ static Property x86_cpu_properties[] = {
->       DEFINE_PROP_UINT32("apic-id", X86CPU, apic_id, 0),
->       DEFINE_PROP_INT32("thread-id", X86CPU, thread_id, 0),
->       DEFINE_PROP_INT32("core-id", X86CPU, core_id, 0),
-> +    DEFINE_PROP_INT32("cluster-id", X86CPU, cluster_id, 0),
->       DEFINE_PROP_INT32("die-id", X86CPU, die_id, 0),
->       DEFINE_PROP_INT32("socket-id", X86CPU, socket_id, 0),
->   #else
->       DEFINE_PROP_UINT32("apic-id", X86CPU, apic_id, UNASSIGNED_APIC_ID),
->       DEFINE_PROP_INT32("thread-id", X86CPU, thread_id, -1),
->       DEFINE_PROP_INT32("core-id", X86CPU, core_id, -1),
-> +    DEFINE_PROP_INT32("cluster-id", X86CPU, cluster_id, -1),
->       DEFINE_PROP_INT32("die-id", X86CPU, die_id, -1),
->       DEFINE_PROP_INT32("socket-id", X86CPU, socket_id, -1),
->   #endif
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 97b290e10576..009950b87203 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -2057,6 +2057,7 @@ struct ArchCPU {
->       int32_t node_id; /* NUMA node this CPU belongs to */
->       int32_t socket_id;
->       int32_t die_id;
-> +    int32_t cluster_id;
->       int32_t core_id;
->       int32_t thread_id;
->   
+>
+> This is just a minimal fix. Happy to add some warning/error to not
+> hide the issue with the missing initialization completely and/or go
+> for a different approach with a check somewhere in the VNC code.
+>
+>  ui/clipboard.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/ui/clipboard.c b/ui/clipboard.c
+> index 3d14bffaf8..c13b54d2e9 100644
+> --- a/ui/clipboard.c
+> +++ b/ui/clipboard.c
+> @@ -129,7 +129,8 @@ void qemu_clipboard_request(QemuClipboardInfo *info,
+>      if (info->types[type].data ||
+>          info->types[type].requested ||
+>          !info->types[type].available ||
+> -        !info->owner)
+> +        !info->owner ||
+> +        !info->owner->request)
+>          return;
 
+While that fixes the crash, I think we should handle the situation
+earlier. A clipboard peer shouldn't be allowed to hold the clipboard
+if it doesn't have the data available or a "request" callback set.
+
+Iow, we should have an assert(info->owner->request !=3D NULL) here instead.
+
+>      info->types[type].requested =3D true;
+> --
+> 2.39.2
+>
+>
+>
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
