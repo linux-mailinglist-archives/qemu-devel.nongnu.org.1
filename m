@@ -2,77 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3776782D0FF
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 15:44:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC9682D1DA
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 19:29:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rP1hh-000883-Ma; Sun, 14 Jan 2024 09:43:13 -0500
+	id 1rP5D2-0000fa-D5; Sun, 14 Jan 2024 13:27:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rP1hX-00086E-52
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 09:43:04 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rP1hN-00036w-Mf
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 09:43:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705243374; x=1736779374;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=gKAH/bj/4KLPDvKzUW3tzCCJvLFNjJ2nNWsjeglu8so=;
- b=Tfvo+FRxg4w74Ki51Ej/9YBLEjZlZhyvkCD0RMGcaQzAR7ACMnp7rHg+
- 9wnJbshDOjJADqXf4yryM7UtHHIcISJFXmB/FYh2bLT3vrs9vql2jd8up
- Dlx+D327nRmSNLADsaCjP3SE03UsyDnjxsY569Wlk9PXJdjEK0TVh+7cp
- AIvP0AAe7kY/uDvz1Lql7agWyDdbB8mnauGV6ZDbAtQCeN7eLjwN9Gh6Y
- 9yHAKJgwH8WJb4q208x2aBz5rMLgpzXeFVFpU8WV6+4KZFoWzx2pvD3K0
- rGntvlchSXfifn2RPN9sCp7JykcqM0ZEZdTuIku5DwWOod1ZwS4U8rw40 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="18069598"
-X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; d="scan'208";a="18069598"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 06:42:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="926882205"
-X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; d="scan'208";a="926882205"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
- ([10.93.22.149])
- by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 06:42:44 -0800
-Message-ID: <599ddf2d-dc2e-4684-b2c2-ba6dfd886f32@intel.com>
-Date: Sun, 14 Jan 2024 22:42:41 +0800
+ (Exim 4.90_1) (envelope-from <amonakov@ispras.ru>)
+ id 1rP5Ci-0000en-S3
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 13:27:29 -0500
+Received: from mail.ispras.ru ([83.149.199.84])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <amonakov@ispras.ru>)
+ id 1rP5Cg-0004xy-IX
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 13:27:28 -0500
+Received: from [10.10.3.121] (unknown [10.10.3.121])
+ by mail.ispras.ru (Postfix) with ESMTPS id CC91C40F1DE3;
+ Sun, 14 Jan 2024 18:27:00 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru CC91C40F1DE3
+Date: Sun, 14 Jan 2024 21:27:00 +0300 (MSK)
+From: Alexander Monakov <amonakov@ispras.ru>
+To: =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>
+cc: qemu-devel@nongnu.org, Mikhail Romanov <mmromanov@ispras.ru>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2] Optimize buffer_is_zero
+In-Reply-To: <ZZ1XQtNctZiHwFlh@redhat.com>
+Message-ID: <74b96ca0-c751-eced-d8f7-f306d997207b@ispras.ru>
+References: <20231027143704.7060-1-mmromanov@ispras.ru>
+ <e0ae3a3e-f02c-0031-a85f-5645c7480f8f@ispras.ru>
+ <ZZ1XQtNctZiHwFlh@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 15/16] i386: Use offsets get NumSharingCache for
- CPUID[0x8000001D].EAX[bits 25:14]
-Content-Language: en-US
-To: Zhao Liu <zhao1.liu@linux.intel.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-16-zhao1.liu@linux.intel.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20240108082727.420817-16-zhao1.liu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
-X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed; boundary="8323328-808616816-1705256820=:31487"
+Received-SPF: pass client-ip=83.149.199.84; envelope-from=amonakov@ispras.ru;
+ helo=mail.ispras.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,85 +58,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/8/2024 4:27 PM, Zhao Liu wrote:
-> From: Zhao Liu <zhao1.liu@intel.com>
-> 
-> The commit 8f4202fb1080 ("i386: Populate AMD Processor Cache Information
-> for cpuid 0x8000001D") adds the cache topology for AMD CPU by encoding
-> the number of sharing threads directly.
-> 
->  From AMD's APM, NumSharingCache (CPUID[0x8000001D].EAX[bits 25:14])
-> means [1]:
-> 
-> The number of logical processors sharing this cache is the value of
-> this field incremented by 1. To determine which logical processors are
-> sharing a cache, determine a Share Id for each processor as follows:
-> 
-> ShareId = LocalApicId >> log2(NumSharingCache+1)
-> 
-> Logical processors with the same ShareId then share a cache. If
-> NumSharingCache+1 is not a power of two, round it up to the next power
-> of two.
-> 
->  From the description above, the calculation of this field should be same
-> as CPUID[4].EAX[bits 25:14] for Intel CPUs. So also use the offsets of
-> APIC ID to calculate this field.
-> 
-> [1]: APM, vol.3, appendix.E.4.15 Function 8000_001Dh--Cache Topology
->       Information
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-this patch can be dropped because we have next patch.
+--8323328-808616816-1705256820=:31487
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> Reviewed-by: Babu Moger <babu.moger@amd.com>
-> Tested-by: Babu Moger <babu.moger@amd.com>
-> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
-> Changes since v3:
->   * Rewrite the subject. (Babu)
->   * Delete the original "comment/help" expression, as this behavior is
->     confirmed for AMD CPUs. (Babu)
->   * Rename "num_apic_ids" (v3) to "num_sharing_cache" to match spec
->     definition. (Babu)
-> 
-> Changes since v1:
->   * Rename "l3_threads" to "num_apic_ids" in
->     encode_cache_cpuid8000001d(). (Yanan)
->   * Add the description of the original commit and add Cc.
-> ---
->   target/i386/cpu.c | 10 ++++------
->   1 file changed, 4 insertions(+), 6 deletions(-)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index b23e8190dc68..8a4d72f6f760 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -483,7 +483,7 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
->                                          uint32_t *eax, uint32_t *ebx,
->                                          uint32_t *ecx, uint32_t *edx)
->   {
-> -    uint32_t l3_threads;
-> +    uint32_t num_sharing_cache;
->       assert(cache->size == cache->line_size * cache->associativity *
->                             cache->partitions * cache->sets);
->   
-> @@ -492,13 +492,11 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
->   
->       /* L3 is shared among multiple cores */
->       if (cache->level == 3) {
-> -        l3_threads = topo_info->modules_per_die *
-> -                     topo_info->cores_per_module *
-> -                     topo_info->threads_per_core;
-> -        *eax |= (l3_threads - 1) << 14;
-> +        num_sharing_cache = 1 << apicid_die_offset(topo_info);
->       } else {
-> -        *eax |= ((topo_info->threads_per_core - 1) << 14);
-> +        num_sharing_cache = 1 << apicid_core_offset(topo_info);
->       }
-> +    *eax |= (num_sharing_cache - 1) << 14;
->   
->       assert(cache->line_size > 0);
->       assert(cache->partitions > 0);
 
+On Tue, 9 Jan 2024, Daniel P. Berrangé wrote:
+
+> On Thu, Nov 09, 2023 at 03:52:38PM +0300, Alexander Monakov wrote:
+> > I'd like to ping this patch on behalf of Mikhail.
+> > 
+> >   https://patchew.org/QEMU/20231027143704.7060-1-mmromanov@ispras.ru/
+> > 
+> > If this needs to be split up a bit to ease review, please let us know.
+> 
+> Sorry, my asm knowledge isn't strong enough for me to review this.
+> Reading the commit message though, how it describes 8 separate changes
+> does make me believe this should be done as a series of 8 patches.
+
+(I'm not sure where the number 8 comes from, the enumeration in the commit
+message goes up to eleven)
+
+> It would make it easier to review and/or spot any accidental
+> regressions, etc .
+
+Paolo and Richard, can you please confirm if you'll be more likely to engage
+with this optimization when it's resent in a broken-up form?
+
+Thanks.
+Alexander
+--8323328-808616816-1705256820=:31487--
 
