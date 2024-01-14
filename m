@@ -2,87 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43C982D063
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 11:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7837682D079
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 13:10:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rOy9t-000280-Sh; Sun, 14 Jan 2024 05:56:05 -0500
+	id 1rOzIs-0004qr-AQ; Sun, 14 Jan 2024 07:09:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rOy9k-000258-Uw
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 05:55:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rOzIp-0004pT-U4
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 07:09:23 -0500
+Received: from mgamail.intel.com ([192.55.52.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rOy9j-0000cT-1R
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 05:55:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705229752;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2+FB+5mA6t4HHPIGcmglHN7HmI8JDyc2s+KzWWFl6Sw=;
- b=NHQlO4Pi/baCMwxdgLy4u6kNLh/r29u3rHwXFCcSs5voxqG4K7sgotuly05dw/zh+EmHsV
- 92NlqTqPdlAz/xulXXRWmryI4ISHMa++6zhO5BrKpWbFmZs+ogg9fSLloY6Nv9yWD7JkLx
- tHdyzUBab7KagOYZrxqEGHhY7pjjhAU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-yAe1i99EN5O0hjfaeItdJQ-1; Sun, 14 Jan 2024 05:55:50 -0500
-X-MC-Unique: yAe1i99EN5O0hjfaeItdJQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-33689c90957so4810520f8f.2
- for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 02:55:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705229749; x=1705834549;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2+FB+5mA6t4HHPIGcmglHN7HmI8JDyc2s+KzWWFl6Sw=;
- b=D+X/cpiLbVe7zwG1kwkfycrN0/QYOfPMWPm1AedmqTdpIs1i6JF7nm+h2hh+FeOqmw
- 1WAMDl3/1YIf2uZJc0r1SyNgTwkQLCZpy82ZBAvSD8UgVhGnDexfYneRPFW2eMKD/gWX
- ZYdDOiCkpExWvIKSzOYHHf2bnqsD9gkyaHuFo5U2qkNWjJUu3P2zO/khGIFSIN09nCrF
- +ZVwchjB9nf0WHS4q5ciSokEQerlS4ghR6X00z6XL5sA9sxzOsZHDH4KqUBKyTbhfDpV
- hkStYKDkL0fa88T2VZsuBxblC07YZ70fVL26EO2Q/a99VEMHQZ5njbq0anYd6fj9JGIv
- RGrA==
-X-Gm-Message-State: AOJu0YzX4IRylLj772BC7bfZlJpeIvxaWo2QFzf4av61Xdos2zD4IgE6
- nfl0rqAh5geTi8VyfH3kJRo1zJluX/M2iB/d9AgQVRbm+OUU+EQn64Q/OeG+xDTbwYSDt98Uu/o
- Sk5StKU0BxEKAE8sNyKampvI=
-X-Received: by 2002:a05:600c:4c94:b0:40e:4131:7acc with SMTP id
- g20-20020a05600c4c9400b0040e41317accmr2086820wmp.79.1705229749384; 
- Sun, 14 Jan 2024 02:55:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGa8hQ7ttmYkSXBWcEqz6SlMSKcZARiK4wxhswPGARxsKHDY4dkbjA9K59hE6gTPa/nAhU1Eg==
-X-Received: by 2002:a05:600c:4c94:b0:40e:4131:7acc with SMTP id
- g20-20020a05600c4c9400b0040e41317accmr2086816wmp.79.1705229749025; 
- Sun, 14 Jan 2024 02:55:49 -0800 (PST)
-Received: from redhat.com ([2.52.131.87]) by smtp.gmail.com with ESMTPSA id
- t18-20020a05600c199200b0040e5951f199sm11932339wmq.34.2024.01.14.02.55.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Jan 2024 02:55:47 -0800 (PST)
-Date: Sun, 14 Jan 2024 05:55:44 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH v2 0/3] Fix PIC interrupt handling of x86 CPUs if APIC is
- globally disabled
-Message-ID: <20240114055534-mutt-send-email-mst@kernel.org>
-References: <20240106132546.21248-1-shentey@gmail.com>
- <2744F3E2-D8F5-42F1-8520-7FE8C202C341@gmail.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rOzIn-0008AG-JO
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 07:09:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705234161; x=1736770161;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=0hibwSD1PQ4vDgip1K/Sx6DPnqV9+de/ew2mFMg5AVY=;
+ b=MWFEBgJInmKKGpKKpy7wDZKHsSkjTh1cbeEiC+0dvFYGKUjMl2RB5Ifp
+ MEEfXmSNbNrKdunHRAHKTWh6q2aHwY2TQzdh+ytzNFB1ICsKt9Zg4bKDQ
+ uCHaoeT0kfhavutUfQ377k0ogueDFOG38it0D2EYS0W150UauLDLehkMI
+ z7h/sfICKuVaedzGp3CtJ2+bJtkJEWyaKATbHFY4cvUnt0FoAtTTY+blW
+ Uptdsa4Z53vofFnQ5EH7jfQsGn/aaQ3nj7nT0aQRVmL1HyT9ZH2YMGETc
+ 8kL0BcHJw8exzjVJWjlWtcN1pEa+0pFHvr/eHD0CQDszLiI22uc4Rdka6 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10952"; a="399133647"
+X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; d="scan'208";a="399133647"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2024 04:09:17 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10952"; a="926860982"
+X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; d="scan'208";a="926860982"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
+ ([10.93.22.149])
+ by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2024 04:09:15 -0800
+Message-ID: <cf6d5c3a-384b-41c9-aa5f-04b2dd0e8c6d@intel.com>
+Date: Sun, 14 Jan 2024 20:09:13 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2744F3E2-D8F5-42F1-8520-7FE8C202C341@gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] target/i386: add control bits support for LAM
+Content-Language: en-US
+To: Binbin Wu <binbin.wu@linux.intel.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, chao.gao@intel.com, robert.hu@linux.intel.com
+References: <20240112060042.19925-1-binbin.wu@linux.intel.com>
+ <20240112060042.19925-3-binbin.wu@linux.intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20240112060042.19925-3-binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.55.52.115; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,92 +82,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jan 14, 2024 at 10:52:28AM +0000, Bernhard Beschow wrote:
+On 1/12/2024 2:00 PM, Binbin Wu wrote:
+> LAM uses CR3[61] and CR3[62] to configure/enable LAM on user pointers.
+> LAM uses CR4[28] to configure/enable LAM on supervisor pointers.
 > 
+> For CR3 LAM bits, no additional handling needed:
+> - TCG
+>    LAM is not supported for TCG of target-i386.  helper_write_crN() and
+>    helper_vmrun() check max physical address bits before calling
+>    cpu_x86_update_cr3(), no change needed, i.e. CR3 LAM bits are not allowed
+>    to be set in TCG.
+> - gdbstub
+>    x86_cpu_gdb_write_register() will call cpu_x86_update_cr3() to update cr3.
+>    Allow gdb to set the LAM bit(s) to CR3, if vcpu doesn't support LAM,
+>    KVM_SET_SREGS will fail as other reserved bits.
 > 
-> Am 6. Januar 2024 13:25:43 UTC schrieb Bernhard Beschow <shentey@gmail.com>:
-> >This series is part of my work emulating the VIA Apollo Pro 133T chipset in QEMU
-> >
-> >[1] and testing it by running real-world BIOSes on it. The first two patches fix
-> >
-> >an issue regarding PIC interrupt handling, the third one just fixes a typo in a
-> >
-> >comment.
-> >
-> >
-> >
-> >During testing, I've found that the boot process gets stuck for some BIOSes that
-> >
-> >disable the LAPIC globally (by disabling the enable bit in the base address
-> >
-> >register). QEMU seems to emulate PIC interrupt handling only if a CPU doesn't
-> >
-> >have a LAPIC, and always emulates LAPIC interrupt handling if one is present.
-> >
-> >According to the Intel documentation, a CPU should resort to PIC interrupt
-> >
-> >handling if its LAPIC is globally didabled. This series fixes this corner case
-> >
-> >which makes the boot process succeed. More details can be found in the commit
-> >
-> >message.
-> >
-> >
-> >
-> >Testing done:
-> >
-> >* `make check`
-> >
-> >* `make check-avocado`
-> >
-> >
-> >
-> >v2:
-> >
-> >* Pick up R-b tag
-> >
-> >* Split and rework interrupt handling patch to consider i486 SMP systems. This
-> >
-> >    required dropping Alex' R-b tag.
-> >
+> For CR4 LAM bit, its reservation depends on vcpu supporting LAM feature or
+> not.
+> - TCG
+>    LAM is not supported for TCG of target-i386.  helper_write_crN() and
+>    helper_vmrun() check CR4 reserved bit before calling cpu_x86_update_cr4(),
+>    i.e. CR4 LAM bit is not allowed to be set in TCG.
+> - gdbstub
+>    x86_cpu_gdb_write_register() will call cpu_x86_update_cr4() to update cr4.
+>    Mask out LAM bit on CR4 if vcpu doesn't support LAM.
+> - x86_cpu_reset_hold() doesn't need special handling.
 > 
-> Ping
+> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Tagged now. Thanks!
-
-> >
-> >
-> >[1] https://github.com/shentok/qemu/tree/via-apollo-pro-133t
-> >
-> >
-> >
-> >Bernhard Beschow (3):
-> >
-> >  hw/i386/x86: Reverse if statement
-> >
-> >  hw/i386/x86: Fix PIC interrupt handling if APIC is globally disabled
-> >
-> >  target/i386/cpu: Fix typo in comment
-> >
-> >
-> >
-> > include/hw/i386/apic.h |  1 +
-> >
-> > hw/i386/x86.c          |  8 ++++----
-> >
-> > hw/intc/apic_common.c  | 13 +++++++++++++
-> >
-> > target/i386/cpu.c      |  2 +-
-> >
-> > 4 files changed, 19 insertions(+), 5 deletions(-)
-> >
-> >
-> >
-> >-- >
-> >2.43.0
-> >
-> >
-> >
+> ---
+>   target/i386/cpu.h    | 7 ++++++-
+>   target/i386/helper.c | 4 ++++
+>   2 files changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index 18ea755644..598a3fa140 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -261,6 +261,7 @@ typedef enum X86Seg {
+>   #define CR4_SMAP_MASK   (1U << 21)
+>   #define CR4_PKE_MASK   (1U << 22)
+>   #define CR4_PKS_MASK   (1U << 24)
+> +#define CR4_LAM_SUP_MASK (1U << 28)
+>   
+>   #define CR4_RESERVED_MASK \
+>   (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
+> @@ -269,7 +270,8 @@ typedef enum X86Seg {
+>                   | CR4_OSFXSR_MASK | CR4_OSXMMEXCPT_MASK | CR4_UMIP_MASK \
+>                   | CR4_LA57_MASK \
+>                   | CR4_FSGSBASE_MASK | CR4_PCIDE_MASK | CR4_OSXSAVE_MASK \
+> -                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK))
+> +                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK \
+> +                | CR4_LAM_SUP_MASK))
+>   
+>   #define DR6_BD          (1 << 13)
+>   #define DR6_BS          (1 << 14)
+> @@ -2522,6 +2524,9 @@ static inline uint64_t cr4_reserved_bits(CPUX86State *env)
+>       if (!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS)) {
+>           reserved_bits |= CR4_PKS_MASK;
+>       }
+> +    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
+> +        reserved_bits |= CR4_LAM_SUP_MASK;
+> +    }
+>       return reserved_bits;
+>   }
+>   
+> diff --git a/target/i386/helper.c b/target/i386/helper.c
+> index 2070dd0dda..1da7a7d315 100644
+> --- a/target/i386/helper.c
+> +++ b/target/i386/helper.c
+> @@ -219,6 +219,10 @@ void cpu_x86_update_cr4(CPUX86State *env, uint32_t new_cr4)
+>           new_cr4 &= ~CR4_PKS_MASK;
+>       }
+>   
+> +    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
+> +        new_cr4 &= ~CR4_LAM_SUP_MASK;
+> +    }
+> +
+>       env->cr[4] = new_cr4;
+>       env->hflags = hflags;
+>   
 
 
