@@ -2,105 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD17982D0B5
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 14:04:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D820182D0C9
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 14:50:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rP09J-0000Rv-16; Sun, 14 Jan 2024 08:03:37 -0500
+	id 1rP0rn-0002Jc-D2; Sun, 14 Jan 2024 08:49:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rP09C-0000OZ-5H
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 08:03:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rP0rk-0002JU-9z
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 08:49:32 -0500
+Received: from mgamail.intel.com ([134.134.136.31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rP095-0006YU-0D
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 08:03:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705237397;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=t6k73rthAbd+hxKBTmzR2hkHyay6E7DrikFsQmfkVvY=;
- b=OLvVeNlZn0HBE3ZeaxjL6Vdh85hVsuVu3CXapElI7/5nug3xYussGtrMQ+RfGE0D6ZK0zD
- /dNYzmokACWR+0//c+UzRLrMwIktiSC0YA2499MnkXXx9KVXPz334aElQARwcmJYHhys0L
- j+9m7wfw2C+mtJvCwBAe9qLoSlC48K8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-SseQe5yKM82XGJT7zOhkAA-1; Sun, 14 Jan 2024 08:03:14 -0500
-X-MC-Unique: SseQe5yKM82XGJT7zOhkAA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-40e74771019so3050735e9.3
- for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 05:03:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705237393; x=1705842193;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=t6k73rthAbd+hxKBTmzR2hkHyay6E7DrikFsQmfkVvY=;
- b=FmShzKLRN8a/r/0MEqh3kC9AZorYq5rtpzMeZ2E4891wCgsoNo8IIncvQszc+tKvNd
- vFTfA2LGnyWfn+wl+1neGlH/w5jfHXAIfzK4Cfi912uG4WITQ3sSI+BB+4AxhtY+pg4a
- tet1ribspHCGeDalqxOGMqsPUK1qKINjNDJ0RfAD2pQ2Ju1V9s1D1kOQ/bfBDzIe01TU
- k/sDK2gZ7YnSdtgomgrNlfZ/6Jz+oYa9RIQoHjJvrReDv/FiAqzCvmmDVv+Sz1wcybMb
- CjCKlkpLzsUK3bjQnVcWrnQr0i1dQ6VJU//MTmk2em6hLcDsFNsrap/xZLV+kY8EFjal
- hUWQ==
-X-Gm-Message-State: AOJu0YzLpa8M6Zi78aq2CuySSW2rdvFHgzbxQFdnzzCc6bBRvRqDdxaJ
- Pg9n8SmM+k42LSzzKBMN6xZZIs7RQj9KrFkJWN1PNLW//gi9zTNO1mfldsRKb6aln0pm/SQFvtt
- qgEr55va3qs6wRpTO4sUXYgs=
-X-Received: by 2002:a7b:cc8c:0:b0:40e:6299:577d with SMTP id
- p12-20020a7bcc8c000000b0040e6299577dmr1213945wma.86.1705237393318; 
- Sun, 14 Jan 2024 05:03:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGoGJ0fNhnuqxeLunLWX6t9ty5WS/DGuifMmAppk0o9TnZOBhjfMSU6Y0H2r1h27jEaBEUbMQ==
-X-Received: by 2002:a7b:cc8c:0:b0:40e:6299:577d with SMTP id
- p12-20020a7bcc8c000000b0040e6299577dmr1213926wma.86.1705237392866; 
- Sun, 14 Jan 2024 05:03:12 -0800 (PST)
-Received: from redhat.com ([2.52.131.87]) by smtp.gmail.com with ESMTPSA id
- l22-20020a05600c4f1600b0040d6b91efd9sm16302206wmq.44.2024.01.14.05.03.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Jan 2024 05:03:12 -0800 (PST)
-Date: Sun, 14 Jan 2024 08:03:07 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- qemu-block@nongnu.org, Sergio Lopez <slp@redhat.com>,
- =?iso-8859-1?Q?Fr=E9d=E9ric?= Barrat <fbarrat@linux.ibm.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- qemu-ppc@nongnu.org, Artyom Tarasenko <atar4qemu@gmail.com>,
- Fabiano Rosas <farosas@suse.de>,
- =?iso-8859-1?Q?Herv=E9?= Poussineau <hpoussin@reactos.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, John Snow <jsnow@redhat.com>,
- Thomas Huth <huth@tuxfamily.org>, Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Leonardo Bras <leobras@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Kevin Wolf <kwolf@redhat.com>, David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v5 00/11] hw/isa/vt82c686: Implement relocation and
- toggling of SuperI/O functions
-Message-ID: <20240114080249-mutt-send-email-mst@kernel.org>
-References: <20240114123911.4877-1-shentey@gmail.com>
- <05B650FF-EA74-471D-B427-A0AC037423DF@gmail.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rP0rh-00021z-AA
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 08:49:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705240169; x=1736776169;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=uIx1gUIYFOQN9X1RLR5u1VtpZgAqe4EmOdonkGpGPVg=;
+ b=ebQ6u0b1LO0nJKNRxGCFFQkPJrWVPrezFXM5/TiXafAHHnmOErmzqner
+ b/nA/7iP6SoHfU0CEB1Js0d4ZrUPSRfrH/7QgOUaUsphWz0mjW7IFo03E
+ r/ZhBQaUcYStBcns0Vh3MlzzV+xpvwmBCaA2jkyVteCiMd/kEpJIiBlB2
+ MPnN8VPo7ZRgNdxfj6G/MW60+o0gvke/V8MvEUcRl+ow4xYTwQqpEP4nh
+ o22WB5uNs1JLvD2xGphZcwpnajjwqX40R69BYgUrKLBujz8cvmfEMkOwT
+ jnQQnVrEWUBLkfAICAKKx9L12PwNIuTDqKolyaKYZAag2esU0fp3SfjGH Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10952"; a="463745941"
+X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; d="scan'208";a="463745941"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2024 05:49:25 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10952"; a="733061219"
+X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; d="scan'208";a="733061219"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
+ ([10.93.22.149])
+ by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2024 05:49:21 -0800
+Message-ID: <46663f59-2a28-4f22-8fb9-9c447b903e4a@intel.com>
+Date: Sun, 14 Jan 2024 21:49:18 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <05B650FF-EA74-471D-B427-A0AC037423DF@gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-11-zhao1.liu@linux.intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20240108082727.420817-11-zhao1.liu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=134.134.136.31; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,208 +89,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jan 14, 2024 at 12:52:53PM +0000, Bernhard Beschow wrote:
+On 1/8/2024 4:27 PM, Zhao Liu wrote:
+> From: Zhuocheng Ding <zhuocheng.ding@intel.com>
 > 
-> 
-> Am 14. Januar 2024 12:39:00 UTC schrieb Bernhard Beschow <shentey@gmail.com>:
-> >This series implements relocation of the SuperI/O functions of the VIA south
-> >
-> >bridges which resolves some FIXME's. It is part of my via-apollo-pro-133t
-> >
-> >branch [1] which is an extension of bringing the VIA south bridges to the PC
-> >
-> >machine [2]. This branch is able to run some real-world X86 BIOSes in the hope
-> >
-> >that it allows us to form a better understanding of the real vt82c686b devices.
-> >
-> >Implementing relocation and toggling of the SuperI/O functions is one step to
-> >
-> >make these BIOSes run without error messages, so here we go.
-> >
-> >
-> >
-> >The series is structured as follows: Patches 1-3 prepare the TYPE_ISA_FDC,
-> >
-> >TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL to relocate and toggle (enable/disable)
-> >
-> >themselves without breaking encapsulation of their respective device states.
-> >
-> >This is achieved by moving the MemoryRegions and PortioLists from the device
-> >
-> >states into the encapsulating ISA devices since they will be relocated and
-> >
-> >toggled.
-> >
-> >
-> >
-> >Inspired by the memory API patches 4-6 add two convenience functions to the
-> >
-> >portio_list API to toggle and relocate portio lists. Patch 5 is a preparation
-> >
-> >for that which removes some redundancies which otherwise had to be dealt with
-> >
-> >during relocation.
-> >
-> >
-> >
-> >Patches 7-9 implement toggling and relocation for types TYPE_ISA_FDC,
-> >
-> >TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL. Patch 10 prepares the pegasos2 machine
-> >
-> >which would end up with all SuperI/O functions disabled if no -bios argument is
-> >
-> >given. Patch 11 finally implements the main feature which now relies on
-> >
-> >firmware to configure the SuperI/O functions accordingly (except for pegasos2).
-> >
-> >
-> >
-> >v5:
-> >
-> >* Use cpu_physical_memory_write() in pegasos2 (Zoltan)
-> >
-> >* Use an int as for loop variable (Zoltan)
-> >
-> >
-> >
-> >v4:
-> >
-> >* Drop incomplete SuperI/O vmstate handling (Zoltan)
-> >
-> >
-> >
-> >v3:
-> >
-> >* Rework various commit messages (Zoltan)
-> >
-> >* Drop patch "hw/char/serial: Free struct SerialState from MemoryRegion"
-> >
-> >  (Zoltan)
-> >
-> >* Generalize wording in migration.rst to include portio_list API (Zoltan)
-> >
-> >
-> >
-> >v2:
-> >
-> >* Improve commit messages (Zoltan)
-> >
-> >* Split pegasos2 from vt82c686 patch (Zoltan)
-> >
-> >* Avoid poking into device internals (Zoltan)
-> >
-> >
-> >
-> >Testing done:
-> >
-> >* `make check`
-> >
-> >* `make check-avocado`
-> >
-> >* Run MorphOS on pegasos2 with and without pegasos2.rom
-> >
-> >* Run Linux on amigaone
-> >
-> >* Run real-world BIOSes on via-apollo-pro-133t branch
-> >
-> >* Start rescue-yl on fuloong2e
-> >
-> >
-> >
-> >[1] https://github.com/shentok/qemu/tree/via-apollo-pro-133t
-> >
-> >[2] https://github.com/shentok/qemu/tree/pc-via
-> >
-> >
-> >
-> >Bernhard Beschow (11):
-> >
-> >  hw/block/fdc-isa: Move portio_list from FDCtrl to FDCtrlISABus
-> >
-> >  hw/block/fdc-sysbus: Move iomem from FDCtrl to FDCtrlSysBus
-> >
-> >  hw/char/parallel: Move portio_list from ParallelState to
-> >
-> >    ISAParallelState
-> >
-> 
-> 
-> >  exec/ioport: Resolve redundant .base attribute in struct
-> >
-> >    MemoryRegionPortio
-> >
-> >  exec/ioport: Add portio_list_set_address()
-> >
-> >  exec/ioport: Add portio_list_set_enabled()
-> >
-> >  hw/block/fdc-isa: Implement relocation and enabling/disabling for
-> >
-> >    TYPE_ISA_FDC
-> >
-> >  hw/char/serial-isa: Implement relocation and enabling/disabling for
-> >
-> >    TYPE_ISA_SERIAL
-> >
-> >  hw/char/parallel-isa: Implement relocation and enabling/disabling for
-> >
-> >    TYPE_ISA_PARALLEL
-> >
-> 
-> Ping for the above six patches. These are critical for this series and haven't had comments from maintainers for five iterations, so pardon for the annoyance.
+> Introduce cluster-id other than module-id to be consistent with
+> CpuInstanceProperties.cluster-id, and this avoids the confusion
+> of parameter names when hotplugging.
 
-Was hoping for more reviews. Oh well.
-Tagged.
+I don't think reusing 'cluster' from arm for x86's 'module' is a good 
+idea. It introduces confusion around the code.
 
+s390 just added 'drawer' and 'book' in cpu topology[1]. I think we can 
+also add a module level for x86 instead of reusing cluster.
 
-> Best regards,
-> Bernhard
+(This is also what I want to reply to the cover letter.)
+
+[1] 
+https://lore.kernel.org/qemu-devel/20231016183925.2384704-1-nsg@linux.ibm.com/
+
+> Following the legacy smp check rules, also add the cluster_id validity
+> into x86_cpu_pre_plug().
 > 
-> >  hw/ppc/pegasos2: Let pegasos2 machine configure SuperI/O functions
-> >
-> >  hw/isa/vt82c686: Implement relocation and toggling of SuperI/O
-> >
-> >    functions
-> >
-> >
-> >
-> > docs/devel/migration.rst       |  6 ++--
-> >
-> > hw/block/fdc-internal.h        |  4 ---
-> >
-> > include/exec/ioport.h          |  4 ++-
-> >
-> > include/hw/block/fdc.h         |  3 ++
-> >
-> > include/hw/char/parallel-isa.h |  5 +++
-> >
-> > include/hw/char/parallel.h     |  2 --
-> >
-> > include/hw/char/serial.h       |  2 ++
-> >
-> > hw/block/fdc-isa.c             | 18 +++++++++-
-> >
-> > hw/block/fdc-sysbus.c          |  6 ++--
-> >
-> > hw/char/parallel-isa.c         | 14 ++++++++
-> >
-> > hw/char/parallel.c             |  2 +-
-> >
-> > hw/char/serial-isa.c           | 14 ++++++++
-> >
-> > hw/isa/vt82c686.c              | 65 ++++++++++++++++++++++++++++------
-> >
-> > hw/ppc/pegasos2.c              | 12 +++++++
-> >
-> > system/ioport.c                | 41 +++++++++++++++++----
-> >
-> > 15 files changed, 168 insertions(+), 30 deletions(-)
-> >
-> >
-> >
-> >-- >
-> >2.43.0
-> >
-> >
-> >
+> Signed-off-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
+> Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Tested-by: Babu Moger <babu.moger@amd.com>
+> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
+> Changes since v6:
+>   * Update the comment when check cluster-id. Since there's no
+>     v8.2, the cluster-id support should at least start from v9.0.
+> 
+> Changes since v5:
+>   * Update the comment when check cluster-id. Since current QEMU is
+>     v8.2, the cluster-id support should at least start from v8.3.
+> 
+> Changes since v3:
+>   * Use the imperative in the commit message. (Babu)
+> ---
+>   hw/i386/x86.c     | 33 +++++++++++++++++++++++++--------
+>   target/i386/cpu.c |  2 ++
+>   target/i386/cpu.h |  1 +
+>   3 files changed, 28 insertions(+), 8 deletions(-)
+> 
+> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+> index 5269aae3a5c2..1c1d368614ee 100644
+> --- a/hw/i386/x86.c
+> +++ b/hw/i386/x86.c
+> @@ -329,6 +329,14 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+>               cpu->die_id = 0;
+>           }
+>   
+> +        /*
+> +         * cluster-id was optional in QEMU 9.0 and older, so keep it optional
+> +         * if there's only one cluster per die.
+> +         */
+> +        if (cpu->cluster_id < 0 && ms->smp.clusters == 1) {
+> +            cpu->cluster_id = 0;
+> +        }
+> +
+>           if (cpu->socket_id < 0) {
+>               error_setg(errp, "CPU socket-id is not set");
+>               return;
+> @@ -345,6 +353,14 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+>                          cpu->die_id, ms->smp.dies - 1);
+>               return;
+>           }
+> +        if (cpu->cluster_id < 0) {
+> +            error_setg(errp, "CPU cluster-id is not set");
+> +            return;
+> +        } else if (cpu->cluster_id > ms->smp.clusters - 1) {
+> +            error_setg(errp, "Invalid CPU cluster-id: %u must be in range 0:%u",
+> +                       cpu->cluster_id, ms->smp.clusters - 1);
+> +            return;
+> +        }
+>           if (cpu->core_id < 0) {
+>               error_setg(errp, "CPU core-id is not set");
+>               return;
+> @@ -364,16 +380,9 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+>   
+>           topo_ids.pkg_id = cpu->socket_id;
+>           topo_ids.die_id = cpu->die_id;
+> +        topo_ids.module_id = cpu->cluster_id;
+>           topo_ids.core_id = cpu->core_id;
+>           topo_ids.smt_id = cpu->thread_id;
+> -
+> -        /*
+> -         * TODO: This is the temporary initialization for topo_ids.module_id to
+> -         * avoid "maybe-uninitialized" compilation errors. Will remove when
+> -         * X86CPU supports cluster_id.
+> -         */
+> -        topo_ids.module_id = 0;
+> -
+>           cpu->apic_id = x86_apicid_from_topo_ids(&topo_info, &topo_ids);
+>       }
+>   
+> @@ -418,6 +427,14 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+>       }
+>       cpu->die_id = topo_ids.die_id;
+>   
+> +    if (cpu->cluster_id != -1 && cpu->cluster_id != topo_ids.module_id) {
+> +        error_setg(errp, "property cluster-id: %u doesn't match set apic-id:"
+> +            " 0x%x (cluster-id: %u)", cpu->cluster_id, cpu->apic_id,
+> +            topo_ids.module_id);
+> +        return;
+> +    }
+> +    cpu->cluster_id = topo_ids.module_id;
+> +
+>       if (cpu->core_id != -1 && cpu->core_id != topo_ids.core_id) {
+>           error_setg(errp, "property core-id: %u doesn't match set apic-id:"
+>               " 0x%x (core-id: %u)", cpu->core_id, cpu->apic_id,
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index a2d39d2198b6..498a4be62b40 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -7909,12 +7909,14 @@ static Property x86_cpu_properties[] = {
+>       DEFINE_PROP_UINT32("apic-id", X86CPU, apic_id, 0),
+>       DEFINE_PROP_INT32("thread-id", X86CPU, thread_id, 0),
+>       DEFINE_PROP_INT32("core-id", X86CPU, core_id, 0),
+> +    DEFINE_PROP_INT32("cluster-id", X86CPU, cluster_id, 0),
+>       DEFINE_PROP_INT32("die-id", X86CPU, die_id, 0),
+>       DEFINE_PROP_INT32("socket-id", X86CPU, socket_id, 0),
+>   #else
+>       DEFINE_PROP_UINT32("apic-id", X86CPU, apic_id, UNASSIGNED_APIC_ID),
+>       DEFINE_PROP_INT32("thread-id", X86CPU, thread_id, -1),
+>       DEFINE_PROP_INT32("core-id", X86CPU, core_id, -1),
+> +    DEFINE_PROP_INT32("cluster-id", X86CPU, cluster_id, -1),
+>       DEFINE_PROP_INT32("die-id", X86CPU, die_id, -1),
+>       DEFINE_PROP_INT32("socket-id", X86CPU, socket_id, -1),
+>   #endif
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index 97b290e10576..009950b87203 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -2057,6 +2057,7 @@ struct ArchCPU {
+>       int32_t node_id; /* NUMA node this CPU belongs to */
+>       int32_t socket_id;
+>       int32_t die_id;
+> +    int32_t cluster_id;
+>       int32_t core_id;
+>       int32_t thread_id;
+>   
 
 
