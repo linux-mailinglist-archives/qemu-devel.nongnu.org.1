@@ -2,68 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2B982D0CA
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 14:52:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 681B182D0CD
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jan 2024 15:05:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rP0u2-0002zd-O3; Sun, 14 Jan 2024 08:51:54 -0500
+	id 1rP15s-0005h6-68; Sun, 14 Jan 2024 09:04:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rP0tx-0002zH-HB; Sun, 14 Jan 2024 08:51:49 -0500
-Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rP15q-0005gl-Me; Sun, 14 Jan 2024 09:04:06 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rP0tu-0003VW-GU; Sun, 14 Jan 2024 08:51:49 -0500
-Received: by mail-qt1-x832.google.com with SMTP id
- d75a77b69052e-4298e866cd6so48721021cf.0; 
- Sun, 14 Jan 2024 05:51:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rP15o-000071-Ns; Sun, 14 Jan 2024 09:04:06 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40e69b3149fso19566705e9.3; 
+ Sun, 14 Jan 2024 06:04:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705240301; x=1705845101; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1705241042; x=1705845842; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+uXcncOfwnttSbHXQux5GnPqloDOlGt2n/TBvgyw6NM=;
- b=Tt4GK4xnWgqRDxypx4XvojsD08USjqE2Hzbg9+TFdY+qYz8UEE2aVjWgA1JxVtoXlf
- 8ZHv0J+zEEIqjd3Fd2ZhT9vw7OC8w2BVvEvPi64LGsIk6KwCcYB9pXEGm9mNq1FIodcK
- VAfXOS1lX5h+78p3K1ow8TwbWChP500za2NUnC467v4jK3j7pDc4cQl2F4wcxnHCNgoA
- b7tPPugdWTrTYzQ7ruf7oWe45E5RS1D5s1vRjpDpUnMB3w50eqebfij1MTC6h+QMqaQi
- AAWpCu9LL5WXeOgQoNYKxmC45SDYA5iQKNjjyrMqAfqiPKCxXyZRq4KOf3ACE+Pg9CZn
- eOdw==
+ bh=zxyDUvgW2cnQpesRlCerihs4F24qs62/ck7n1s7wDmA=;
+ b=VHWd0cLvVYF2cYVBNeqfekLpWcHQuy/cLEF7zEavKzpksX9TRGqDhSeUYku1XY/1pb
+ 2Tfb5SMaypAxjIM78NP4vu1CxjhQztzt/CsCfUP9Eh8FtgVuyA65IboECnxqTrDcyfxw
+ AEJIJQ5XqUs9OOUlreqSXrL7783qa6s0BHOXZ5EqGJiJ2Qo7WyCXjOpGSFi23USIJuv+
+ 9+p1ezM/ODmkbOG0EG8dN2FiOh7G3yD7B9P/MPsVFM9v7b+8eAqAF/ZE+TUWFELhA0IM
+ ZML3F5cKGjFWb85saxqyaiEBPO1Nurg5CJc/QcNJO8vUIQGLpRoQ+2h6LBlr4jqLJ60v
+ H+6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705240301; x=1705845101;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1705241042; x=1705845842;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+uXcncOfwnttSbHXQux5GnPqloDOlGt2n/TBvgyw6NM=;
- b=qm8ByENNNRByV38H2esT2d2dtQIKD+y23gbRhwY6hdijSI3VrAYkYy91KT25Ve008W
- RUeWG8K5DIDI3sS8LiRZbVGqm9TDgYFAt3YubsIiOm+vsAYnkz/EimL4yENK2vIvrign
- 8ogrnGdkhL0O9OHUioVQUiSwpwz5pgv5jgd3aMkZIkIB/7I0jVa2SV7TyzSGLplP7nP1
- Ee2Zfkb8kfhrR+s8Xb1eP3BBJymIK7MDI5wYzJOK3WzmGluiaS3ymugtZnUauItm8XZP
- pPWM1WSXQdO5r2GY3kFSHLpO3y59e0HECBkLg9MGrb4lOjo11TZ5cvUkNI3bh3vstwg2
- Nxow==
-X-Gm-Message-State: AOJu0YznaOZbYjFwoQijCqwc6gtrajJ7qdo3kILalxwp17UXobsehqX1
- zAl0z2JFzdBBhRNJNrAfM2GOxrksXPu3rwQKx2c=
-X-Google-Smtp-Source: AGHT+IHvuN92BtcjRxjK6P/ZFVC55DOc9+AChZ6q670F/LsUein2xGT1LRFfMtP6VXCRgghoeA7UvNQzIBtGMcup3zE=
-X-Received: by 2002:a05:622a:1b8d:b0:429:af93:4e7f with SMTP id
- bp13-20020a05622a1b8d00b00429af934e7fmr6193357qtb.64.1705240300986; Sun, 14
- Jan 2024 05:51:40 -0800 (PST)
+ bh=zxyDUvgW2cnQpesRlCerihs4F24qs62/ck7n1s7wDmA=;
+ b=inmQWFmF4wX9UTSzdMo/xHyS9DAnZBPihePl4x8b/JxxKXvasZV3nJ8357vU8iZ4j0
+ 4kb3DTuPZXQHq76vMP4pLem48fLafZymUmszPwjY8LUAjgQ3cAf1mioJ6rOuRu/5/ngh
+ y2Ct/1Hm5GKw2120HZG9vGHzc3RziwrLhljIQpDztznVEney+bhGUCskgozOxOt9d7+I
+ sBGBSXT4zw2EaQlvmarlFlRLSNraKZcglQQ9q4EEnh1OWqHtyvhXUNcZoiPsKNca5r7q
+ CQbBjFf7a8cpztg+dyGDw4bYu87Tz8QZbFnmgTtjjWPLaH3Fs7mZ6HW5HR1tNPwV9x3g
+ 2Dtw==
+X-Gm-Message-State: AOJu0YzKIoS2y95UgyOuMF8dGwShvO610mCRR8hEugS2Y58Db0JZub6B
+ /nnIYYGtS8mBQ/WjQRhThLE=
+X-Google-Smtp-Source: AGHT+IH8V7/x72MMdGl/ByTKoAZG4QiQXkG1QYXatthWwwKLMXZXg6eFOUzTclLax+AUKLvc1rTOKw==
+X-Received: by 2002:a7b:c853:0:b0:40e:7556:45a7 with SMTP id
+ c19-20020a7bc853000000b0040e755645a7mr442382wml.136.1705241042083; 
+ Sun, 14 Jan 2024 06:04:02 -0800 (PST)
+Received: from [127.0.0.1] (dynamic-077-183-249-018.77.183.pool.telefonica.de.
+ [77.183.249.18]) by smtp.gmail.com with ESMTPSA id
+ p10-20020a1709060dca00b00a26d20a48dasm4102196eji.125.2024.01.14.06.04.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 14 Jan 2024 06:04:01 -0800 (PST)
+Date: Sun, 14 Jan 2024 14:03:56 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: qemu-devel@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ qemu-block@nongnu.org, Sergio Lopez <slp@redhat.com>,
+ =?ISO-8859-1?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>,
+ =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Fabiano Rosas <farosas@suse.de>,
+ =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Hanna Reitz <hreitz@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ John Snow <jsnow@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
+ Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Leonardo Bras <leobras@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Kevin Wolf <kwolf@redhat.com>, David Hildenbrand <david@redhat.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v5_00/11=5D_hw/isa/vt82c686=3A_Implemen?=
+ =?US-ASCII?Q?t_relocation_and_toggling_of_SuperI/O_functions?=
+In-Reply-To: <20240114080249-mutt-send-email-mst@kernel.org>
+References: <20240114123911.4877-1-shentey@gmail.com>
+ <05B650FF-EA74-471D-B427-A0AC037423DF@gmail.com>
+ <20240114080249-mutt-send-email-mst@kernel.org>
+Message-ID: <3A2BB5C4-1C6E-4490-810E-4462291D6C95@gmail.com>
 MIME-Version: 1.0
-References: <20240112135527.57212-1-f.ebner@proxmox.com>
-In-Reply-To: <20240112135527.57212-1-f.ebner@proxmox.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Sun, 14 Jan 2024 17:51:29 +0400
-Message-ID: <CAJ+F1C+JXE9hSQ_oDNZvhpYDqPeeKayopB3x2L2YyJTxM8t+Yg@mail.gmail.com>
-Subject: Re: [PATCH] ui/clipboard: avoid crash upon request when clipboard
- peer is not initialized
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com, 
- berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x832.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,89 +110,240 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
-On Fri, Jan 12, 2024 at 5:57=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
-rote:
->
-> With VNC, it can be that a client sends a VNC_MSG_CLIENT_CUT_TEXT
-> message before sending a VNC_MSG_CLIENT_SET_ENCODINGS message with
-> VNC_ENCODING_CLIPBOARD_EXT for configuring the clipboard extension.
->
-> This means that qemu_clipboard_request() can be reached (via
-> vnc_client_cut_text_ext()) before vnc_server_cut_text_caps() was
-> called and had the chance to initialize the clipboard peer. In that
-> case, info->owner->request is NULL instead of a function and so
-> attempting to call it in qemu_clipboard_request() results in a
-> segfault.
->
-> In particular, this can happen when using the KRDC (22.12.3) VNC
-> client on Wayland.
->
-> It is not enough to check in ui/vnc.c's protocol_client_msg() if the
-> VNC_FEATURE_CLIPBOARD_EXT feature is enabled before handling an
-> extended clipboard message with vnc_client_cut_text_ext(), because of
-> the following scenario with two clients (say noVNC and KRDC):
->
-> The noVNC client sets the extension VNC_FEATURE_CLIPBOARD_EXT and
-> initializes its cbpeer.
->
-> The KRDC client does not, but triggers a vnc_client_cut_text() (note
-> it's not the _ext variant)). There, a new clipboard info with it as
-> the 'owner' is created and via qemu_clipboard_set_data() is called,
-> which in turn calls qemu_clipboard_update() with that info.
->
-> In qemu_clipboard_update(), the notifier for the noVNC client will be
-> called, i.e. vnc_clipboard_notify() and also set vs->cbinfo for the
-> noVNC client. The 'owner' in that clipboard info is the clipboard peer
-> for the KRDC client, which did not initialize the 'request' function.
-> That sounds correct to me, it is the owner of that clipboard info.
->
-> Then when noVNC sends a VNC_MSG_CLIENT_CUT_TEXT message (it did set
-> the feature correctly, so the check added by your patch passes), that
-> clipboard info is passed to qemu_clipboard_request() and the original
-> segfault still happens.
->
-> Fixes: CVE-2023-6683
-> Reported-by: Markus Frank <m.frank@proxmox.com>
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> Tested-by: Markus Frank <m.frank@proxmox.com>
-> ---
->
-> This is just a minimal fix. Happy to add some warning/error to not
-> hide the issue with the missing initialization completely and/or go
-> for a different approach with a check somewhere in the VNC code.
->
->  ui/clipboard.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/ui/clipboard.c b/ui/clipboard.c
-> index 3d14bffaf8..c13b54d2e9 100644
-> --- a/ui/clipboard.c
-> +++ b/ui/clipboard.c
-> @@ -129,7 +129,8 @@ void qemu_clipboard_request(QemuClipboardInfo *info,
->      if (info->types[type].data ||
->          info->types[type].requested ||
->          !info->types[type].available ||
-> -        !info->owner)
-> +        !info->owner ||
-> +        !info->owner->request)
->          return;
-
-While that fixes the crash, I think we should handle the situation
-earlier. A clipboard peer shouldn't be allowed to hold the clipboard
-if it doesn't have the data available or a "request" callback set.
-
-Iow, we should have an assert(info->owner->request !=3D NULL) here instead.
-
->      info->types[type].requested =3D true;
-> --
-> 2.39.2
->
->
->
 
 
---=20
-Marc-Andr=C3=A9 Lureau
+Am 14=2E Januar 2024 13:03:07 UTC schrieb "Michael S=2E Tsirkin" <mst@redh=
+at=2Ecom>:
+>On Sun, Jan 14, 2024 at 12:52:53PM +0000, Bernhard Beschow wrote:
+>>=20
+>>=20
+>> Am 14=2E Januar 2024 12:39:00 UTC schrieb Bernhard Beschow <shentey@gma=
+il=2Ecom>:
+>> >This series implements relocation of the SuperI/O functions of the VIA=
+ south
+>> >
+>> >bridges which resolves some FIXME's=2E It is part of my via-apollo-pro=
+-133t
+>> >
+>> >branch [1] which is an extension of bringing the VIA south bridges to =
+the PC
+>> >
+>> >machine [2]=2E This branch is able to run some real-world X86 BIOSes i=
+n the hope
+>> >
+>> >that it allows us to form a better understanding of the real vt82c686b=
+ devices=2E
+>> >
+>> >Implementing relocation and toggling of the SuperI/O functions is one =
+step to
+>> >
+>> >make these BIOSes run without error messages, so here we go=2E
+>> >
+>> >
+>> >
+>> >The series is structured as follows: Patches 1-3 prepare the TYPE_ISA_=
+FDC,
+>> >
+>> >TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL to relocate and toggle (enable/d=
+isable)
+>> >
+>> >themselves without breaking encapsulation of their respective device s=
+tates=2E
+>> >
+>> >This is achieved by moving the MemoryRegions and PortioLists from the =
+device
+>> >
+>> >states into the encapsulating ISA devices since they will be relocated=
+ and
+>> >
+>> >toggled=2E
+>> >
+>> >
+>> >
+>> >Inspired by the memory API patches 4-6 add two convenience functions t=
+o the
+>> >
+>> >portio_list API to toggle and relocate portio lists=2E Patch 5 is a pr=
+eparation
+>> >
+>> >for that which removes some redundancies which otherwise had to be dea=
+lt with
+>> >
+>> >during relocation=2E
+>> >
+>> >
+>> >
+>> >Patches 7-9 implement toggling and relocation for types TYPE_ISA_FDC,
+>> >
+>> >TYPE_ISA_PARALLEL and TYPE_ISA_SERIAL=2E Patch 10 prepares the pegasos=
+2 machine
+>> >
+>> >which would end up with all SuperI/O functions disabled if no -bios ar=
+gument is
+>> >
+>> >given=2E Patch 11 finally implements the main feature which now relies=
+ on
+>> >
+>> >firmware to configure the SuperI/O functions accordingly (except for p=
+egasos2)=2E
+>> >
+>> >
+>> >
+>> >v5:
+>> >
+>> >* Use cpu_physical_memory_write() in pegasos2 (Zoltan)
+>> >
+>> >* Use an int as for loop variable (Zoltan)
+>> >
+>> >
+>> >
+>> >v4:
+>> >
+>> >* Drop incomplete SuperI/O vmstate handling (Zoltan)
+>> >
+>> >
+>> >
+>> >v3:
+>> >
+>> >* Rework various commit messages (Zoltan)
+>> >
+>> >* Drop patch "hw/char/serial: Free struct SerialState from MemoryRegio=
+n"
+>> >
+>> >  (Zoltan)
+>> >
+>> >* Generalize wording in migration=2Erst to include portio_list API (Zo=
+ltan)
+>> >
+>> >
+>> >
+>> >v2:
+>> >
+>> >* Improve commit messages (Zoltan)
+>> >
+>> >* Split pegasos2 from vt82c686 patch (Zoltan)
+>> >
+>> >* Avoid poking into device internals (Zoltan)
+>> >
+>> >
+>> >
+>> >Testing done:
+>> >
+>> >* `make check`
+>> >
+>> >* `make check-avocado`
+>> >
+>> >* Run MorphOS on pegasos2 with and without pegasos2=2Erom
+>> >
+>> >* Run Linux on amigaone
+>> >
+>> >* Run real-world BIOSes on via-apollo-pro-133t branch
+>> >
+>> >* Start rescue-yl on fuloong2e
+>> >
+>> >
+>> >
+>> >[1] https://github=2Ecom/shentok/qemu/tree/via-apollo-pro-133t
+>> >
+>> >[2] https://github=2Ecom/shentok/qemu/tree/pc-via
+>> >
+>> >
+>> >
+>> >Bernhard Beschow (11):
+>> >
+>> >  hw/block/fdc-isa: Move portio_list from FDCtrl to FDCtrlISABus
+>> >
+>> >  hw/block/fdc-sysbus: Move iomem from FDCtrl to FDCtrlSysBus
+>> >
+>> >  hw/char/parallel: Move portio_list from ParallelState to
+>> >
+>> >    ISAParallelState
+>> >
+>>=20
+>>=20
+>> >  exec/ioport: Resolve redundant =2Ebase attribute in struct
+>> >
+>> >    MemoryRegionPortio
+>> >
+>> >  exec/ioport: Add portio_list_set_address()
+>> >
+>> >  exec/ioport: Add portio_list_set_enabled()
+>> >
+>> >  hw/block/fdc-isa: Implement relocation and enabling/disabling for
+>> >
+>> >    TYPE_ISA_FDC
+>> >
+>> >  hw/char/serial-isa: Implement relocation and enabling/disabling for
+>> >
+>> >    TYPE_ISA_SERIAL
+>> >
+>> >  hw/char/parallel-isa: Implement relocation and enabling/disabling fo=
+r
+>> >
+>> >    TYPE_ISA_PARALLEL
+>> >
+>>=20
+>> Ping for the above six patches=2E These are critical for this series an=
+d haven't had comments from maintainers for five iterations, so pardon for =
+the annoyance=2E
+>
+>Was hoping for more reviews=2E Oh well=2E
+>Tagged=2E
+
+You made my day=2E Thanks!
+
+>
+>
+>> Best regards,
+>> Bernhard
+>>=20
+>> >  hw/ppc/pegasos2: Let pegasos2 machine configure SuperI/O functions
+>> >
+>> >  hw/isa/vt82c686: Implement relocation and toggling of SuperI/O
+>> >
+>> >    functions
+>> >
+>> >
+>> >
+>> > docs/devel/migration=2Erst       |  6 ++--
+>> >
+>> > hw/block/fdc-internal=2Eh        |  4 ---
+>> >
+>> > include/exec/ioport=2Eh          |  4 ++-
+>> >
+>> > include/hw/block/fdc=2Eh         |  3 ++
+>> >
+>> > include/hw/char/parallel-isa=2Eh |  5 +++
+>> >
+>> > include/hw/char/parallel=2Eh     |  2 --
+>> >
+>> > include/hw/char/serial=2Eh       |  2 ++
+>> >
+>> > hw/block/fdc-isa=2Ec             | 18 +++++++++-
+>> >
+>> > hw/block/fdc-sysbus=2Ec          |  6 ++--
+>> >
+>> > hw/char/parallel-isa=2Ec         | 14 ++++++++
+>> >
+>> > hw/char/parallel=2Ec             |  2 +-
+>> >
+>> > hw/char/serial-isa=2Ec           | 14 ++++++++
+>> >
+>> > hw/isa/vt82c686=2Ec              | 65 ++++++++++++++++++++++++++++---=
+---
+>> >
+>> > hw/ppc/pegasos2=2Ec              | 12 +++++++
+>> >
+>> > system/ioport=2Ec                | 41 +++++++++++++++++----
+>> >
+>> > 15 files changed, 168 insertions(+), 30 deletions(-)
+>> >
+>> >
+>> >
+>> >-- >
+>> >2=2E43=2E0
+>> >
+>> >
+>> >
+>
 
