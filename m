@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E880582DDA9
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 17:34:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA8F82DD87
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 17:24:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPPu9-0000k8-Dl; Mon, 15 Jan 2024 11:33:41 -0500
+	id 1rPPkB-00055b-Jv; Mon, 15 Jan 2024 11:23:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rPPto-0000i4-Q2
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:33:22 -0500
-Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rPPtj-0006JL-RR
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:33:18 -0500
-Received: by mail-oo1-xc2b.google.com with SMTP id
- 006d021491bc7-598a5448ef5so3074942eaf.0
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 08:33:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705336391; x=1705941191; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=m507gAY0sa8GNq+MTSrkFdnXvyJZdKLbIGZHWnLl+GU=;
- b=FbFtcEOeeu/IVuc72DHD9lJDlnbaZgnl9nyTwCLVOq8n7foO6RfFtLYFvqBNt7h057
- XBPQ9A08Wt8zi10tbLn/DRWdFyDvv8DgHzKRu+v4IzWgS+j7iYDsgHY+Gkq0iLYwwUUm
- oqawJFO0GC4M8T6dXiCjDfJGGTTfZTTIlEsrvUN+7SBrhCMyaCaoH+KOwidlK0B1puE/
- FEO/Bk2vZoxSleE5kWcaa/mcc5heq78Whq4s/lxHTM49Rgj75TvV9nvrl9onCu+zZdCv
- mCjXdS0rw1EhgUCazvnPGqTzvBBM4wvLbpmTZjL/Xi4B2bnGlOgDsdfNTLaqqceQunwo
- J2Fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705336391; x=1705941191;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=m507gAY0sa8GNq+MTSrkFdnXvyJZdKLbIGZHWnLl+GU=;
- b=jBcvvKxqG4Cobre84VzMQEli7heVv4wOZT4Oe43EFERNRngprKmz8sa6AQ6UOGFvFi
- pW9MUuO3/9B82hQVk+s0woaYMAmOfcLp3Nk4Z8qrGJEzFoBkua5qozEmoWmmfiTatDlR
- ZZVRMX+GK1eqJhY723Y7qc5AQm5DpnCjErjJquy8pU7CSRW20aThp62UfXusxCkt69BG
- F5XoR0SBRN0grKtvFjUgAYRLWIIxQFwYC8/FIBXDIVtn9v4De8Tg0tDGSyJ2wTY8Rf3Y
- NWszn+LD8w3iE48532CsIL05uFrJyyZEPn4KUbZVApHeUKZ7A3Ns/gQcV9OkHsmz2ber
- j43w==
-X-Gm-Message-State: AOJu0YxLu9A7p6Bsj0awOjBXKaujuSa8xCcYnAG3QBqRtkgYtrNdD1KU
- 3DX22C6hxUu6YYbZo8ow7dJ1o3lTF662kRIhQq9YtZV+rco=
-X-Google-Smtp-Source: AGHT+IF+y2lxeNbMNzsCPDpufaxEgmQZrcaYQtzGC301LkvfrCRNR8fmuVe0LUIujrhgFhgddydf7zgYHKXUpvsxwII=
-X-Received: by 2002:a05:6820:220b:b0:598:a76d:e3b0 with SMTP id
- cj11-20020a056820220b00b00598a76de3b0mr2893196oob.19.1705336391001; Mon, 15
- Jan 2024 08:33:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rPPk8-00055S-Rv
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:23:21 -0500
+Received: from mgamail.intel.com ([192.55.52.93])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rPPk6-0004Yg-P6
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:23:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705335798; x=1736871798;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=zZ3g+F6pc4nv9gCIaeiSfyGciz2EtD2SlmeU1n+Poxc=;
+ b=E+JWs+QAExfgH4VUGkGwMsFbYueYqxI0eDgO0pnYLqwyUFEEciK6MsUm
+ HJ/AH6ZzIilHt4zaHffQGTLrk4UMYTM6OY4Y9xL7AUN8LcN50rvtXE2K2
+ 2YSf5a1XcqgCBBPXQ2/cRWbw1vSe2v+dlUoHgRlnmdKWjuPPJc32h8vJi
+ DB0SnSqldJtdNE0P2sHkXT2bVUa3vu6qNX94yh5YKfAezQgGJyhUTAiXJ
+ hTJ+Vhv1KbMjCcmzP/IUMsVs0f2j+loc+JqYxNxq+LwJ97m1RBreoyVKB
+ M5IE9ErBDE2jwMLspYumHmbNJorjNT5f0yCqSZljIEL4i2TAEZOU7yhZH A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="396805717"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="396805717"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jan 2024 08:23:15 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="907094132"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="907094132"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga004.jf.intel.com with ESMTP; 15 Jan 2024 08:23:13 -0800
+Date: Tue, 16 Jan 2024 00:36:11 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, qemu-devel@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH 02/11] hw/core: Cleanup unused included headers in
+ cpu-common.c
+Message-ID: <ZaVe++YmoG4Pmy18@intel.com>
+References: <20240115094852.3597165-1-zhao1.liu@linux.intel.com>
+ <20240115094852.3597165-3-zhao1.liu@linux.intel.com>
+ <CAFEAcA91+EV7_iHvp2Kd8zgXAx2zg3odepQgg=vPpPLv8ETRKw@mail.gmail.com>
+ <ZaVFDhNiptuyzhjX@intel.com>
+ <06d4179f-76b8-42f0-b147-f4bc2d1f06bd@linaro.org>
 MIME-Version: 1.0
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Mon, 15 Jan 2024 11:32:59 -0500
-Message-ID: <CAJSP0QX9TQ-=PD7apOamXvGW29VwJPfVNN2X5BsFLFoP2g6USg@mail.gmail.com>
-Subject: Call for GSoC/Outreachy internship project ideas
-To: qemu-devel <qemu-devel@nongnu.org>, kvm <kvm@vger.kernel.org>
-Cc: Alberto Faria <afaria@redhat.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- German Maglione <gmaglione@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- "Richard W.M. Jones" <rjones@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Warner Losh <imp@bsdimp.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, Song Gao <gaosong@loongson.cn>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Bernhard Beschow <shentey@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Sean Christopherson <seanjc@google.com>,
- Marc Zyngier <maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <06d4179f-76b8-42f0-b147-f4bc2d1f06bd@linaro.org>
+Received-SPF: none client-ip=192.55.52.93;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.531,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,64 +86,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Dear QEMU and KVM communities,
-QEMU will apply for the Google Summer of Code and Outreachy internship
-programs again this year. Regular contributors can submit project
-ideas that they'd like to mentor by replying to this email before
-January 30th.
+On Mon, Jan 15, 2024 at 05:07:52PM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Mon, 15 Jan 2024 17:07:52 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: Re: [PATCH 02/11] hw/core: Cleanup unused included headers in
+>  cpu-common.c
+> 
+> On 15/1/24 15:45, Zhao Liu wrote:
+> > Hi Peter,
+> > 
+> > On Mon, Jan 15, 2024 at 10:41:48AM +0000, Peter Maydell wrote:
+> > > Date: Mon, 15 Jan 2024 10:41:48 +0000
+> > > From: Peter Maydell <peter.maydell@linaro.org>
+> > > Subject: Re: [PATCH 02/11] hw/core: Cleanup unused included headers in
+> > >   cpu-common.c
+> > > 
+> > > On Mon, 15 Jan 2024 at 09:37, Zhao Liu <zhao1.liu@linux.intel.com> wrote:
+> > > > 
+> > > > From: Zhao Liu <zhao1.liu@intel.com>
+> > > > 
+> > > > Remove unused headers in cpu-common.c:
+> > > > * qemu/notify.h
+> > > > * qemu/log.h
+> > > > * qemu/main-loop.h
+> > > > * exec/cpu-common.h
+> > > > * qemu/error-report.h
+> > > > * qemu/qemu-print.h
+> > > > 
+> > > > Though hw/core/cpu.h has been included by sysemu/hw_accel.h, to keep
+> > > > the dependency clear, still directly include hw/core/cpu.h in this file.
+> > > > 
+> > > > Tested by "./configure" and then "make".
+> > > > 
+> > > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > > > ---
+> > > >   hw/core/cpu-common.c | 7 +------
+> > > >   1 file changed, 1 insertion(+), 6 deletions(-)
+> > > 
+> > > Something seems to be wrong with your analysis of what
+> > > includes it is OK to drop. For instance, this file uses
+> > > the function qemu_log(), which is why it includes
+> > > qemu/log.h.
+> > > 
+> > 
+> > I'm not sure about this, since qemu/log.h has been included by exec/log.h,
+> > so could we just include exec/log.h and omit qemu/log.h in this file?
+> 
+> We try to avoid implicit header inclusions, because if "exec/log.h" is
+> reworked and "qemu/log.h" removed, then files using declarations
+> implicitly declared start to fail building, and we need to clean
+> unrelated files.
 
-Internship programs
----------------------------
-GSoC (https://summerofcode.withgoogle.com/) and Outreachy
-(https://www.outreachy.org/) offer paid open source remote work
-internships to eligible people wishing to participate in open source
-development. QEMU has been part of these internship programs for many
-years. Our mentors have enjoyed helping talented interns make their
-first open source contributions and some former interns continue to
-participate today.
+Thanks! I see. Let me rework this series.
 
-Who can mentor
-----------------------
-Regular contributors to QEMU and KVM can participate as mentors.
-Mentorship involves about 5 hours of time commitment per week to
-communicate with the intern, review their patches, etc. Time is also
-required during the intern selection phase to communicate with
-applicants. Being a mentor is an opportunity to help someone get
-started in open source development, will give you experience with
-managing a project in a low-stakes environment, and a chance to
-explore interesting technical ideas that you may not have time to
-develop yourself.
+Regards,
+Zhao
 
-How to propose your idea
-----------------------------------
-Reply to this email with the following project idea template filled in:
-
-=== TITLE ===
-
-'''Summary:''' Short description of the project
-
-Detailed description of the project that explains the general idea,
-including a list of high-level tasks that will be completed by the
-project, and provides enough background for someone unfamiliar with
-the codebase to do research. Typically 2 or 3 paragraphs.
-
-'''Links:'''
-* Wiki links to relevant material
-* External links to mailing lists or web sites
-
-'''Details:'''
-* Skill level: beginner or intermediate or advanced
-* Language: C/Python/Rust/etc
-
-More information
-----------------------
-You can find out about the process we follow here:
-Video: https://www.youtube.com/watch?v=xNVCX7YMUL8
-Slides (PDF): https://vmsplice.net/~stefan/stefanha-kvm-forum-2016.pdf
-
-The QEMU wiki page for GSoC 2024 is now available:
-https://wiki.qemu.org/Google_Summer_of_Code_2024
-
-Thanks,
-Stefan
 
