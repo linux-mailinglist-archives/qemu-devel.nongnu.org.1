@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EE282DC0C
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 16:06:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A54E282DC6B
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 16:35:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPOWs-0006zn-Pp; Mon, 15 Jan 2024 10:05:34 -0500
+	id 1rPOyW-0007hw-JN; Mon, 15 Jan 2024 10:34:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPOWc-0006zK-3b
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 10:05:19 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ id 1rPOyT-0007hk-9A
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 10:34:05 -0500
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPOWW-0000Z0-66
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 10:05:15 -0500
+ id 1rPOyQ-00053o-VU
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 10:34:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705331113; x=1736867113;
+ t=1705332843; x=1736868843;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=69wjef3zFT5Ckvpkc5jU1SfwMpFVCzUmeTaQ+mJd1ok=;
- b=OlozrjLMiiIZbB89cjvJhETDBnqnfcN3yaXae42UaSqH9d/UR/T2D2QZ
- rrbkWG1OrV0xb2TqtDl0QufyTc4gX16/9djFj99clYc4oF4x9X9K/wVAJ
- aHH3jIaz0wsxCeNErn4yPP4pranhOLJCDRLqv5BrymY2XkYIeCaQyTSbg
- ItkokfH0ICvUKYRaTG98/f/dvcz1j6+2OWYUMTa05g3pjI8aDcnsMYJ1H
- WrpMs+M8Cg/L8kkKt4i6Ck2YCWu8f0GzdqAk8Wa0zPg2Pb7oqn5eRLU9e
- ehWAGAb9EX0aKmN32afXMQFCHjZz0ULK7caIfaDB0GCKP3gWePkTDXXTG g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="18236044"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="18236044"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 07:05:10 -0800
+ bh=BvYElqNF/TZDG81UsNsX+qTj9zX0O6BlJNOmxzy7iN8=;
+ b=PJhso6O0s/KDl6a3wn8ykmBJmaSR46l9Wf85Qp+MKZHs5azjxP9r6t5Q
+ wQdcD4gDWqsZnzzQHtae2igtbh+yvitB4HjXAXPKZcYiNz2WSZDaMQoRH
+ TRSZRM+9XHEK6y/Ye/kSWAQ3Bmb1YSAOCBeR38UXxvpb5igl1l6fMGo/P
+ IvpsELZFXgG6eKtSPYQ3gg/7hEQ2NF+FJm7EU69NjupUeg8JNsm68A6V2
+ c1FGiA/Ntlxv7/Lcbt6gPzRwAaLgdfvI7/0Tw/6fc/Q6rwgheqiHEiaca
+ rLyQzVu08vCEt2Qai2B4QP5xJwgdKvgA/LvPJap2QPqeug+cpcHoqTfb2 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="7010169"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; 
+   d="scan'208";a="7010169"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jan 2024 07:33:59 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="783831210"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="783831210"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="25823786"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orsmga002.jf.intel.com with ESMTP; 15 Jan 2024 07:05:05 -0800
-Date: Mon, 15 Jan 2024 23:18:03 +0800
+ by fmviesa001.fm.intel.com with ESMTP; 15 Jan 2024 07:33:55 -0800
+Date: Mon, 15 Jan 2024 23:46:53 +0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
+Cc: Yuan Yao <yuan.yao@linux.intel.com>, Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -53,18 +53,23 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Zhuocheng Ding <zhuocheng.ding@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
- Yongwei Ma <yongwei.ma@intel.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
-Message-ID: <ZaVMq3v6yPoFARsF@intel.com>
-References: <ZaTJyea4KMMk6x/m@intel.com>
- <1c58dd98-d4f6-4226-9a17-8b89c3ed632e@intel.com>
+ Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
+Message-ID: <ZaVTbY6m0/qUyeKK@intel.com>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-9-zhao1.liu@linux.intel.com>
+ <20240115032524.44q5ygb25ieut44c@yy-desk-7060>
+ <ZaSv51/5Eokkv5Rr@intel.com>
+ <336a4816-966d-42b0-b34b-47be3e41446d@intel.com>
+ <ZaTM5njcfIgfsjqt@intel.com>
+ <78168ef8-2354-483a-aa3b-9e184de65a72@intel.com>
+ <ZaTSM8IAzQ1onX05@intel.com>
+ <00873298-06b5-4286-9c92-54376ed2d09d@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1c58dd98-d4f6-4226-9a17-8b89c3ed632e@intel.com>
-Received-SPF: none client-ip=198.175.65.9;
+In-Reply-To: <00873298-06b5-4286-9c92-54376ed2d09d@intel.com>
+Received-SPF: none client-ip=192.198.163.10;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -34
 X-Spam_score: -3.5
@@ -89,199 +94,96 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hi Xiaoyao,
 
-On Mon, Jan 15, 2024 at 03:45:58PM +0800, Xiaoyao Li wrote:
-> Date: Mon, 15 Jan 2024 15:45:58 +0800
+On Mon, Jan 15, 2024 at 03:16:43PM +0800, Xiaoyao Li wrote:
+> Date: Mon, 15 Jan 2024 15:16:43 +0800
 > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
+> Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
 > 
-> On 1/15/2024 1:59 PM, Zhao Liu wrote:
-> > (Also cc "machine core" maintainers.)
-> > 
-> > Hi Xiaoyao,
-> > 
-> > On Mon, Jan 15, 2024 at 12:18:17PM +0800, Xiaoyao Li wrote:
-> > > Date: Mon, 15 Jan 2024 12:18:17 +0800
+> On 1/15/2024 2:35 PM, Zhao Liu wrote:
+> > On Mon, Jan 15, 2024 at 02:11:17PM +0800, Xiaoyao Li wrote:
+> > > Date: Mon, 15 Jan 2024 14:11:17 +0800
 > > > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
+> > > Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
 > > > 
-> > > On 1/15/2024 11:27 AM, Zhao Liu wrote:
-> > > > On Sun, Jan 14, 2024 at 09:49:18PM +0800, Xiaoyao Li wrote:
-> > > > > Date: Sun, 14 Jan 2024 21:49:18 +0800
+> > > On 1/15/2024 2:12 PM, Zhao Liu wrote:
+> > > > Hi Xiaoyao,
+> > > > 
+> > > > On Mon, Jan 15, 2024 at 12:34:12PM +0800, Xiaoyao Li wrote:
+> > > > > Date: Mon, 15 Jan 2024 12:34:12 +0800
 > > > > > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > > > Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
+> > > > > Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
 > > > > > 
-> > > > > On 1/8/2024 4:27 PM, Zhao Liu wrote:
-> > > > > > From: Zhuocheng Ding <zhuocheng.ding@intel.com>
-> > > > > > 
-> > > > > > Introduce cluster-id other than module-id to be consistent with
-> > > > > > CpuInstanceProperties.cluster-id, and this avoids the confusion
-> > > > > > of parameter names when hotplugging.
+> > > > > > Yes, I think it's time to move to default 0x1f.
 > > > > > 
-> > > > > I don't think reusing 'cluster' from arm for x86's 'module' is a good idea.
-> > > > > It introduces confusion around the code.
+> > > > > we don't need to do so until it's necessary.
 > > > > 
-> > > > There is a precedent: generic "socket" v.s. i386 "package".
+> > > > Recent and future machines all support 0x1f, and at least SDM has
+> > > > emphasized the preferred use of 0x1f.
 > > > 
-> > > It's not the same thing. "socket" vs "package" is just software people and
-> > > hardware people chose different name. It's just different naming issue.
+> > > The preference is the guideline for software e.g., OS. QEMU doesn't need to
+> > > emulate cpuid leaf 0x1f to guest if there is only smt and core level.
 > > 
-> > No, it's a similar issue. Same physical device, different name only.
-> > 
-> > Furthermore, the topology was introduced for resource layout and silicon
-> > fabrication, and similar design ideas and fabrication processes are fairly
-> > consistent across common current arches. Therefore, it is possible to
-> > abstract similar topological hierarchies for different arches.
-> > 
-> > > 
-> > > however, here it's reusing name issue while 'cluster' has been defined for
-> > > x86. It does introduce confusion.
-> > 
-> > There's nothing fundamentally different between the x86 module and the
-> > generic cluster, is there? This is the reason that I don't agree with
-> > introducing "modules" in -smp.
+> > Please, QEMU is emulating hardware not writing software.
 > 
-> generic cluster just means the cluster of processors, i.e, a group of
-> cpus/lps. It is just a middle level between die and core.
+> what I want to conveyed was that, SDM is teaching software how to probe the
+> cpu topology, not suggesting VMM how to advertise cpu topology to guest.
+> 
 
-Not sure if you mean the "cluster" device for TCG GDB? "cluster" device
-is different with "cluster" option in -smp.
-
-When Yanan introduced the "cluster" option in -smp, he mentioned that it
-is for sharing L2 and L3 tags, which roughly corresponds to our module.
+This reflects the hardware's behavioral tendency. Additionally, due to SDM
+related suggestion about 0x1f preference, lots of new software may rely on
+0x1f, making 0x1f as the default enabling leaf helps to enhance Guest
+compatibility.
 
 > 
-> It can be the module level in intel, or tile level. Further, if per die lp
-> number increases in the future, there might be more middle levels in intel
-> between die and core. Then at that time, how to decide what level should
-> cluster be mapped to?
+> > Is there any
+> > reason why we shouldn't emulate new and generic hardware behaviors and
+> > stick with the old ones?
+> 
+> I didn't say we shouldn't, but we don't need to do it if it's unnecessary.
 
-Currently, there're 3 levels defined in SDM which are between die and
-core: diegrp, tile and module. In our products, L2 is just sharing on the
-module, so the intel's module and the general cluster are the best match.
+Probably never going to deprecate 0x0b, and 0x1f is in fact replacing 0x0b,
+kind of like a timing issue, when should 0x1f be enabled by default?
 
-There are no commercially available machines for the other levels yet,
-so there's no way to ensure exactly what the future holds, but we should
-try to avoid fragmentation of the topology hierarchy and try to maintain
-the uniform and common topology hierarchies for QEMU.
-
-Unless a new level for -smp is introduced in the future when an unsolvable
-problem is raised.
+Maybe for some new CPU models or -host, we can start making it as default.
+This eliminates the difference in the CPU topology enumeration interface
+between Host and Guest. What do you think?
 
 > 
-> > > 
-> > > > The direct definition of cluster is the level that is above the "core"
-> > > > and shares the hardware resources including L2. In this sense, arm's
-> > > > cluster is the same as x86's module.
-> > > 
-> > > then, what about intel implements tile level in the future? why ARM's
-> > > 'cluster' is mapped to 'module', but not 'tile' ?
-> > 
-> > This depends on the actual need.
-> > 
-> > Module (for x86) and cluster (in general) are similar, and tile (for x86)
-> > is used for L3 in practice, so I use module rather than tile to map
-> > generic cluster.
-> >
-> > And, it should be noted that x86 module is mapped to the generic cluster,
-> > not to ARM's. It's just that currently only ARM is using the clusters
-> > option in -smp.
-> > 
-> > I believe QEMU provides the abstract and unified topology hierarchies in
-> > -smp, not the arch-specific hierarchies.
-> > 
-> > > 
-> > > reusing 'cluster' for 'module' is just a bad idea.
-> > > 
-> > > > Though different arches have different naming styles, but QEMU's generic
-> > > > code still need the uniform topology hierarchy.
-> > > 
-> > > generic code can provide as many topology levels as it can. each ARCH can
-> > > choose to use the ones it supports.
-> > > 
-> > > e.g.,
-> > > 
-> > > in qapi/machine.json, it says,
-> > > 
-> > > # The ordering from highest/coarsest to lowest/finest is:
-> > > # @drawers, @books, @sockets, @dies, @clusters, @cores, @threads.
-> > 
-> > This ordering is well-defined...
-> > 
-> > > #
-> > > # Different architectures support different subsets of topology
-> > > # containers.
-> > > #
-> > > # For example, s390x does not have clusters and dies, and the socket
-> > > # is the parent container of cores.
-> > > 
-> > > we can update it to
-> > > 
-> > > # The ordering from highest/coarsest to lowest/finest is:
-> > > # @drawers, @books, @sockets, @dies, @clusters, @module, @cores,
-> > > # @threads.
-> > 
-> > ...but here it's impossible to figure out why cluster is above module,
-> > and even I can't come up with the difference between cluster and module.
-> > 
-> > > #
-> > > # Different architectures support different subsets of topology
-> > > # containers.
-> > > #
-> > > # For example, s390x does not have clusters and dies, and the socket
-> > > # is the parent container of cores.
-> > > #
-> > > # For example, x86 does not have drawers and books, and does not support
-> > > # cluster.
-> > > 
-> > > even if cluster of x86 is supported someday in the future, we can remove the
-> > > ordering requirement from above description.
-> > 
-> > x86's cluster is above the package.
-> > 
-> > To reserve this name for x86, we can't have the well-defined topology
-> > ordering.
-> > 
-> > But topology ordering is necessary in generic code, and many
-> > calculations depend on the topology ordering.
-> 
-> could you point me to the code?
+> if cpuid 0x1f is advertised to guest by default, it will also introduce the
+> inconsistence. Old product doesn't have cpuid 0x1f, but using QEMU to
+> emualte an old product, it has.
 
-Yes, e.g., there're 2 helpers: machine_topo_get_cores_per_socket() and
-machine_topo_get_threads_per_socket().
+Yes, this is the similar case as 0x0b. Old machine doens't has 0x0b. And
+QEMU uses cpuid-0xb option to resolve compatibility issue.
 
 > 
-> > > 
-> > > > > 
-> > > > > s390 just added 'drawer' and 'book' in cpu topology[1]. I think we can also
-> > > > > add a module level for x86 instead of reusing cluster.
-> > > > > 
-> > > > > (This is also what I want to reply to the cover letter.)
-> > > > > 
-> > > > > [1] https://lore.kernel.org/qemu-devel/20231016183925.2384704-1-nsg@linux.ibm.com/
-> > > > 
-> > > > These two new levels have the clear topological hierarchy relationship
-> > > > and don't duplicate existing ones.
-> > > > 
-> > > > "book" or "drawer" may correspond to intel's "cluster".
-> > > > 
-> > > > Maybe, in the future, we could support for arch-specific alias topologies
-> > > > in -smp.
-> > > 
-> > > I don't think we need alias, reusing 'cluster' for 'module' doesn't gain any
-> > > benefit except avoid adding a new field in SMPconfiguration. All the other
-> > > cluster code is ARM specific and x86 cannot share.
-> > 
-> > The point is that there is no difference between intel module and general
-> > cluster...Considering only the naming issue, even AMD has the "complex" to
-> > correspond to the Intel's "module".
+> sure we can have code to fix it, that only expose 0x1f to new enough cpu
+> model. But it just make thing complicated.
 > 
-> does complex of AMD really match with intel module? L3 cache is shared in
-> one complex, while L2 cache is shared in one module for now.
+> > > because in this case, they are exactly the same in leaf 0xb and 0x1f. we don't
+> > > need to bother advertising the duplicate data.
+> > 
+> > You can't "define" the same 0x0b and 0x1f as duplicates. SDM doesn't
+> > have such the definition.
+> 
+> for QEMU, they are duplicate data that need to be maintained and need to be
+> passed to KVM by KVM_SET_CPUID. For guest, it's also unnecessary, because it
+> doesn't provide any additional information with cpuid leaf 1f.
 
-If then it could correspond to intel's tile, which is after all a level
-below die.
+I understand your concerns. The benefit is to follow the behavior of the
+new hardware and spec recommendations, on new machines people are going
+to be more accustomed to using 0x1f to get topology, and VMs on new
+machines that don't have 0x1f will tend to get confused.
+
+I could start by having a look at if we could synchronize Host in -host
+to enable 0x1f. If there isn't too much block, -host is an acceptable
+starting point, after all, there are no additional compatibility issues
+for this case. ;-)
 
 Thanks,
 Zhao
 
+> 
+> SDM keeps cpuid 0xb is for backwards compatibility.
+> 
 
