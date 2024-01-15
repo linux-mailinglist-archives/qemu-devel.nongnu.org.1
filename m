@@ -2,71 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BE782D435
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 07:32:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C24BB82D42D
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 07:24:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPGVz-0000QD-RX; Mon, 15 Jan 2024 01:32:07 -0500
+	id 1rPGN0-0006PC-1D; Mon, 15 Jan 2024 01:22:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rPGVx-0000PZ-4A; Mon, 15 Jan 2024 01:32:05 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rPGMt-0006Nl-Mg
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:22:43 -0500
+Received: from mgamail.intel.com ([192.55.52.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rPGVv-0005hD-BJ; Mon, 15 Jan 2024 01:32:04 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EABBD43568;
- Mon, 15 Jan 2024 09:32:16 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E76C6630C3;
- Mon, 15 Jan 2024 09:31:51 +0300 (MSK)
-Message-ID: <3f7ac900-d367-4fca-a8bc-2e118557b479@tls.msk.ru>
-Date: Mon, 15 Jan 2024 09:31:51 +0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rPGMr-0003qK-6X
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:22:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705299761; x=1736835761;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=GQIsLNn6hJVJTPHXRkaEq4wnPTcPIuPsr+uAqE0okVs=;
+ b=Cgn/TO+Ppi8gVdBeQRRQdKwPpAi3c77KuKmAK+zRxvbHUvTdT0FtQ8gm
+ gXC8M0xYb84mOtXc1WvSohYOALmddJkL1X8D+sfY5EtnNEsoAhQTqz/yE
+ xTNxypJrO/liTrGuwDaXTYmx2ZVRlwIO2chKaEMK7rumWl3BqUYG/f5gQ
+ Z9KZPkyiC/KSNfT+Sdo164s/6daUiZUVkKU52123P38LCu0Ibu4KKaW8h
+ N8QLkV/Ot4d3afq14ihT90EZB6HCg1f0mVrfAsDFig49TP/l8dIvzy23k
+ +P7oDdBZSS0hUYCUvdYOabOGRC4hOEd/CRB0Nuw8co2VaiRZ3wtZEx+Pl A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="399220956"
+X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="399220956"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2024 22:22:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="733215325"
+X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="733215325"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga003.jf.intel.com with ESMTP; 14 Jan 2024 22:22:33 -0800
+Date: Mon, 15 Jan 2024 14:35:31 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Yuan Yao <yuan.yao@linux.intel.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
+Message-ID: <ZaTSM8IAzQ1onX05@intel.com>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-9-zhao1.liu@linux.intel.com>
+ <20240115032524.44q5ygb25ieut44c@yy-desk-7060>
+ <ZaSv51/5Eokkv5Rr@intel.com>
+ <336a4816-966d-42b0-b34b-47be3e41446d@intel.com>
+ <ZaTM5njcfIgfsjqt@intel.com>
+ <78168ef8-2354-483a-aa3b-9e184de65a72@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/i386: Eip error in x86_64-softmmu
-Content-Language: en-US
-To: guoguangyao <guoguangyao18@mails.ucas.ac.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, pbonzini@redhat.com, eduardo@habkost.net,
- qemu-stable <qemu-stable@nongnu.org>
-References: <20240115020804.30272-1-guoguangyao18@mails.ucas.ac.cn>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240115020804.30272-1-guoguangyao18@mails.ucas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <78168ef8-2354-483a-aa3b-9e184de65a72@intel.com>
+Received-SPF: none client-ip=192.55.52.115;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,17 +91,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-15.01.2024 05:08, guoguangyao :
-> When closing PCREL, qemu-system-x86_64 run into error.
-> Eip modification here leads to the result. Using s->pc
-> in func gen_update_eip_next() solves the problem.
+On Mon, Jan 15, 2024 at 02:11:17PM +0800, Xiaoyao Li wrote:
+> Date: Mon, 15 Jan 2024 14:11:17 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
 > 
-> Fixes: b5e0d5d22fbf("target/i386: Fix 32-bit wrapping of pc/eip computation")
+> On 1/15/2024 2:12 PM, Zhao Liu wrote:
+> > Hi Xiaoyao,
+> > 
+> > On Mon, Jan 15, 2024 at 12:34:12PM +0800, Xiaoyao Li wrote:
+> > > Date: Mon, 15 Jan 2024 12:34:12 +0800
+> > > From: Xiaoyao Li <xiaoyao.li@intel.com>
+> > > Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
+> > > 
+> > > > Yes, I think it's time to move to default 0x1f.
+> > > 
+> > > we don't need to do so until it's necessary.
+> > 
+> > Recent and future machines all support 0x1f, and at least SDM has
+> > emphasized the preferred use of 0x1f.
 > 
-> Signed-off-by: guoguangyao <guoguangyao18@mails.ucas.ac.cn>
+> The preference is the guideline for software e.g., OS. QEMU doesn't need to
+> emulate cpuid leaf 0x1f to guest if there is only smt and core level.
 
-It looks like a -stable material. Marked as "to-apply", please let me know
-if I shouldn't.
+Please, QEMU is emulating hardware not writing software. Is there any
+reason why we shouldn't emulate new and generic hardware behaviors and
+stick with the old ones?
 
-/mjt
+> because in this case, they are exactly the same in leaf 0xb and 0x1f. we don't
+> need to bother advertising the duplicate data.
+
+You can't "define" the same 0x0b and 0x1f as duplicates. SDM doesn't
+have such the definition.
+
+Regards,
+Zhao
+
 
