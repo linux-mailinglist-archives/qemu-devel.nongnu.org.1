@@ -2,63 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9DE82D557
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 09:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A12B82D56F
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 09:59:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPIgw-0008VQ-R1; Mon, 15 Jan 2024 03:51:34 -0500
+	id 1rPInK-00015C-0a; Mon, 15 Jan 2024 03:58:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1rPIgu-0008VD-25
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 03:51:32 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1rPIgr-0007fb-EY
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 03:51:31 -0500
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8CxrusJ8qRlPEoAAA--.1026S3;
- Mon, 15 Jan 2024 16:51:22 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Cx_c4J8qRlLNkBAA--.9657S2; 
- Mon, 15 Jan 2024 16:51:21 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH] target/loongarch: Set cpuid CSR register only once with kvm
- mode
-Date: Mon, 15 Jan 2024 16:51:21 +0800
-Message-Id: <20240115085121.180524-1-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPIn9-00014x-Rt
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 03:58:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPIn8-00007H-8P
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 03:57:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705309076;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ywIeENNpKNdaP9GZqLZCz0Z3wCtWTldDGU2SkNnLbBY=;
+ b=X0o7tVjBLC4ylCWtgIt9Y7WqcqBqHXp3IxHp/jw0tTq/PvTqdJHE926wfs5FRgLMJM8B4m
+ ov9twn0VunewXufkmBWU3spQjgup8SMLds7fhr31p/LguTj6Lm4fFtPgtvnjGuh54WjGKc
+ 7LBSJqar8RsWKO56ka73UJPJcM0eISM=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-564-QYccbDUwOiiMuptjjPEQjw-1; Mon, 15 Jan 2024 03:57:55 -0500
+X-MC-Unique: QYccbDUwOiiMuptjjPEQjw-1
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-1d5a4416df4so8570485ad.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 00:57:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705309074; x=1705913874;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ywIeENNpKNdaP9GZqLZCz0Z3wCtWTldDGU2SkNnLbBY=;
+ b=X+aH5gNxQJBEbfbKWeGJ4hT2PfuQ9dNMcnnk8qFQPDWZqHz2aMh0oztDyxCsAEsQSm
+ FbR2XNogFGfJu59MxG1EBtP379GlsU9yVLfA4QVXDIXeWhAFVBkjXpYu9pi2u1mUgh4L
+ j5EoOY/LIJ6+k/mz+Qi6yPO0B7+y+A2gQrgcSTiwYXtRvcLaav0Y/srMvY3iUXkLVoRh
+ 1V/Aw/SM1CJemKdRHVSckqLK6lHGHV7psVyTtSwayAGOlpGYTcs8/zVw4ZxlTMRowuLH
+ Jrumiuzr3CytUY6NYjoZvcZt/A66yYpkiKLeRnxooEJEDdST/Nw3XDaqaqUih2NMdA0s
+ oEFw==
+X-Gm-Message-State: AOJu0YxF69FqrQmp9u+S1vvJEfc4KIMnul/JWJDtfL0XPI85GKHMURUs
+ 3bDY0zeHHR47jezy7nqwcQ8yDYXADkNojPWOgTSGXXU/Z76c7+5uGdWosJRoyhNagj8BJF7Kp8Z
+ XjKoyYoWPQVFajpN7iOhWFbM=
+X-Received: by 2002:a17:902:ee05:b0:1d0:8f0d:b6e0 with SMTP id
+ z5-20020a170902ee0500b001d08f0db6e0mr10449106plb.1.1705309074011; 
+ Mon, 15 Jan 2024 00:57:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGbM4aRjN+XmNxAA/ye0YOqQz5bhxAnfyUGIim3onFaFQCfjypFDFfaIU2fCEv9UXTbSsTyiQ==
+X-Received: by 2002:a17:902:ee05:b0:1d0:8f0d:b6e0 with SMTP id
+ z5-20020a170902ee0500b001d08f0db6e0mr10449100plb.1.1705309073756; 
+ Mon, 15 Jan 2024 00:57:53 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ iy12-20020a170903130c00b001d536a910fasm7193487plb.77.2024.01.15.00.57.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Jan 2024 00:57:53 -0800 (PST)
+Date: Mon, 15 Jan 2024 16:57:42 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [RFC PATCH v3 04/30] io: fsync before closing a file channel
+Message-ID: <ZaTzhhOqESTH42Jd@x1n>
+References: <20231127202612.23012-1-farosas@suse.de>
+ <20231127202612.23012-5-farosas@suse.de> <ZZ-qbom2UqEX0uS7@x1n>
+ <87wmsfn1xx.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Cx_c4J8qRlLNkBAA--.9657S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Zw1fXw4kZrWUAFWkKr1Dtwc_yoW8WF15pr
- 9rCFZ8tF1rGaykAa4qv3sY9r15J3yIg397uFy2k34Ivrs0qrZ8XF48t3srtFy5K395Ar4F
- vF4xAw15ua1xJwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
- Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
- 6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF0x
- vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
- 42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
- kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UE-erUUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87wmsfn1xx.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,54 +99,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CSR cpuid register is used for routing irq to different vcpus, its
-value is kept unchanged since poweron. So it is not necessary to
-set CSR cpuid register after system resets, and it is only set at
-vm creation stage.
+On Thu, Jan 11, 2024 at 03:46:02PM -0300, Fabiano Rosas wrote:
+> > (2) Why metadata doesn't matter (v.s. fsync(), when CONFIG_FDATASYNC=y)?
+> 
+> Syncing the inode information is not critical, it's mostly timestamp
+> information (man inode). And fdatasync makes sure to sync any metadata
+> that would be relevant for the retrieval of the data.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- target/loongarch/kvm/kvm.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+I forgot to reply to this one in the previous reply..
 
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index 84bcdf5f86..2230f029d0 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -250,7 +250,7 @@ static int kvm_loongarch_get_csr(CPUState *cs)
-     return ret;
- }
- 
--static int kvm_loongarch_put_csr(CPUState *cs)
-+static int kvm_loongarch_put_csr(CPUState *cs, int level)
- {
-     int ret = 0;
-     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-@@ -322,8 +322,11 @@ static int kvm_loongarch_put_csr(CPUState *cs)
-     ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_RVACFG),
-                            &env->CSR_RVACFG);
- 
--    ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_CPUID),
-+    /* CPUID is constant after poweron, it should be set only once */
-+    if (level >= KVM_PUT_FULL_STATE) {
-+        ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_CPUID),
-                            &env->CSR_CPUID);
-+    }
- 
-     ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_PRCFG1),
-                            &env->CSR_PRCFG1);
-@@ -598,7 +601,7 @@ int kvm_arch_put_registers(CPUState *cs, int level)
-         return ret;
-     }
- 
--    ret = kvm_loongarch_put_csr(cs);
-+    ret = kvm_loongarch_put_csr(cs, level);
-     if (ret) {
-         return ret;
-     }
+Timestamps look all fine to be old.  What about file size?  That's also in
+"man inode" as metadata, but I'm not sure whether data will be fully valid
+if e.g. size enlarged but not flushed along with the page caches.
 
-base-commit: 977542ded7e6b28d2bc077bcda24568c716e393c
 -- 
-2.39.3
+Peter Xu
 
 
