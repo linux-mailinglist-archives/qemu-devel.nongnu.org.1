@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D1F182DC26
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 16:14:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F0582DC34
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 16:18:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPOeu-0001tL-O6; Mon, 15 Jan 2024 10:13:52 -0500
+	id 1rPOiX-0003L0-Lj; Mon, 15 Jan 2024 10:17:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPOeo-0001sL-Fi
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 10:13:46 -0500
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1rPOiQ-0003K8-1k
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 10:17:30 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPOem-0001d4-9a
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 10:13:45 -0500
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-50ea98440a7so9238336e87.1
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 07:13:43 -0800 (PST)
+ id 1rPOiN-0002T7-U7
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 10:17:29 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5592d1bc4fbso1397971a12.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 07:17:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705331622; x=1705936422; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705331846; x=1705936646; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=k/boiXL+zL3S34IXYq0iuvfMSVp+pYWubNO4fqSWEe0=;
- b=nijbG4N/JSi/vTfIqBwje9+ved7mSk1vkpFL3jNFGvT8azXyluB2akINaZyWBQPhAy
- nq8HclwMb+b1AbYIiSUuksYTNtE3BiARpkXH4xaDrND8sRDmsdiQfKAnFLCLjWy29Giv
- 4Oe0zZzEhz5QSVzoK+LGN1r7lmhTlk7sykszX4KAbBZJlc06VZs7+aAyTbo4MQnVKN7c
- UvWg9Y/XacnHJQwdvW8aQuBNsjQWdPoyBPOnvbD5HyBnppzZNbxuEFfRv64GFYTKi8qT
- ujM0pex65d2ABAgSAcvC4+KxgoAlfKC4AT+gFG+MhV/PZmxheyqRTtju8dFgqyOG1CSc
- vJCA==
+ bh=AUrxafxKLR5/wvtuGfFq/JdvphF/czh2i03dDEKIHnk=;
+ b=eDGh7IgTaXJYr1+2oSyGdLNhqVU2/QdxCw8LlHrCmfdHijr/LJnSUoYMS0MWJ9Q/rv
+ +wTWr6m/UONOcKb2pwM6eHTD9HlkEWXIH8ROFuH9yRAd2KAxHjvoHSPtrvjHzVZtKKT8
+ 77FCwHchOc2oxQ2xvtPbmn8pWXwt8p3C293t5oRfvgRxfy9qBK7hKXksfXZxPL/pct/j
+ pZdYBaQUSUyQ+mygUr7bquuciOxFZz3EDP5lC9UL9ZxPQsVyzbnLc9XHRv2aTr2gF9oR
+ FS3oA7inwHDaFVjqhndQQ6v4AGMXyFmGfnJ49J5U0B9frlgVuru5O8h2jR/pNd2prWgd
+ UBXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705331622; x=1705936422;
+ d=1e100.net; s=20230601; t=1705331846; x=1705936646;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=k/boiXL+zL3S34IXYq0iuvfMSVp+pYWubNO4fqSWEe0=;
- b=RhYSY1eCW/PtVj3JHcZeP701n4FPi5cLsUOD9YtAqwxUnH7yCwpd+Wc1nFVEY/V2p4
- cPEpYGXSrGZ6Xjuoh68obOCZhH8IU7JrNZ/hRW97n0NehCF3V9tZnuZmVNfwZRuksNHb
- 2/25b4PRXJVr++Ofm+Lf0jcKJhPJkACXzudRth3TvPoEu4cZfcMljW8BPhJ3xdOcW+xi
- +83Z2/NIYkzPdfvcBm8Jihh70KQLsZzIXkGujpSp9TcTBWALB4fonD7rOt7bZKCosDgV
- 8MvlchzTVoNmRwgsxiw2wzYomKIfmYohKfTroyUGDp25k9JwJYX/Fiz6kniRMrz6N+jg
- fz+w==
-X-Gm-Message-State: AOJu0Yy1EifNwjE5zNSu3GQFZC0gJF5e+Ut85Y1q4zAJ7k6P1qWyzcjI
- /IgRoLM/R7I8P/kz9XBc1dTyFkfpSJNdNm2XpBYh5Uv/FDPN4A==
-X-Google-Smtp-Source: AGHT+IHAApHqeMcWEwCZpQ5Bp5JZD6jY1Ehiz7meJ2IcTjYRQRk2Frpq2CxDBoutpc5YCPh+PQ9kSb8Ks5TY/qAlSQA=
-X-Received: by 2002:ac2:5d47:0:b0:50e:8e94:bcfe with SMTP id
- w7-20020ac25d47000000b0050e8e94bcfemr1588156lfd.64.1705331622244; Mon, 15 Jan
- 2024 07:13:42 -0800 (PST)
+ bh=AUrxafxKLR5/wvtuGfFq/JdvphF/czh2i03dDEKIHnk=;
+ b=mXtbkILLqs2BElveZhJJ7zThKsOj4aDTmP+DweiYUaMBgXwVqO+HIlC0PUKN4/murK
+ a59t4uRk72k2n7hC3LQQBx2dUmtCGUHbOSnSFccd1CqrlGZpCMRxtfXrvS/eA47b1Jw0
+ V29lmkUDXXHG3DzG0XokMt17HRQvsjnPQ3JqIxAvYEl5pEBqRWCaq4mKvYjD29GvuBGk
+ kaKV0RKIGD4Sl8fJj81nnHX/mHvjL/9gSeb9ocr4qjyhK3nBCz0I1ZS/cA/0pUv+QlZu
+ MO+y2Ml4wNp4cfyjBhWZaFHmkiY4Zq5P9YaPDY3TjsBAWj39RJ3lp9C8V/aKAmNUavn3
+ WgBA==
+X-Gm-Message-State: AOJu0YznaU2YY+S+VHHhhRq2czlAwxA8oNhqFVR8Ws3PrH56+ERkR9wH
+ 9MiXo/OFanfN3ls+W1pAQmYqESjxNo1tpSXH9tHhBCwaF/DEWA==
+X-Google-Smtp-Source: AGHT+IGWhF3RFaiKzMTA5c7hMhvWxU67SMu0havr0Z4ICHJeTHy28xUfD3X+dLzwrzBt1dhgT8lfDDZaROmo13/DuOk=
+X-Received: by 2002:a05:6402:f8b:b0:557:40ff:b3bb with SMTP id
+ eh11-20020a0564020f8b00b0055740ffb3bbmr2699890edb.38.1705331846441; Mon, 15
+ Jan 2024 07:17:26 -0800 (PST)
 MIME-Version: 1.0
 References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
- <20231208023145.1385775-33-sergey.kambalin@auriga.com>
-In-Reply-To: <20231208023145.1385775-33-sergey.kambalin@auriga.com>
+ <CAFEAcA_9yO8kY=fnT8+vn2AFtjyoJN25B4o2tcegaOxS41qhmg@mail.gmail.com>
+In-Reply-To: <CAFEAcA_9yO8kY=fnT8+vn2AFtjyoJN25B4o2tcegaOxS41qhmg@mail.gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 15 Jan 2024 15:13:31 +0000
-Message-ID: <CAFEAcA-PoHE0wOm_sL1dkvrzk43F2woJe-ynh2KEoYd0=jp9DA@mail.gmail.com>
-Subject: Re: [PATCH v4 32/45] Enable BCM2838 GENET controller
+Date: Mon, 15 Jan 2024 15:17:15 +0000
+Message-ID: <CAFEAcA-fc_E7s9aV7VxgMdYAUzsbXo7XosuSK2hLPt2W+QD+-w@mail.gmail.com>
+Subject: Re: [PATCH v4 00/45] Raspberry Pi 4B machine
 To: Sergey Kambalin <serg.oker@gmail.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Sergey Kambalin <sergey.kambalin@auriga.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,17 +86,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Dec 2023 at 02:35, Sergey Kambalin <serg.oker@gmail.com> wrote:
+On Tue, 19 Dec 2023 at 16:11, Peter Maydell <peter.maydell@linaro.org> wrote:
 >
-> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
-> ---
->  hw/arm/bcm2838_peripherals.c         | 16 ++++++++++++++++
->  hw/arm/raspi4b.c                     | 17 -----------------
->  include/hw/arm/bcm2838_peripherals.h |  2 ++
->  3 files changed, 18 insertions(+), 17 deletions(-)
+> On Fri, 8 Dec 2023 at 02:32, Sergey Kambalin <serg.oker@gmail.com> wrote:
+> >
+> > Introducing Raspberry Pi 4B model.
+> > It contains new BCM2838 SoC, PCIE subsystem,
+> > RNG200, Thermal sensor and Genet network controller.
+> >
+> > It can work with recent linux kernels 6.x.x.
+> > Two avocado tests was added to check that.
+> >
+> > Unit tests has been made as read/write operations
+> > via mailbox properties.
+> >
+> > Genet integration test is under development.
+> >
+> > Every single commit
+> > 1) builds without errors
+> > 2) passes regression tests
+> > 3) passes style check*
+> > *the only exception is bcm2838-mbox-property-test.c file
+> > containing heavy macros usage which cause a lot of
+> > false-positives of checkpatch.pl.
+> >
+> > I did my best to keep the commits less than 200 changes,
+> > but had to make some of them a bit more in order to
+> > keep their integrity.
+> >
+> > This is v2 patchset with the most of v1 remarks fixed.
+> > I named it as 'v4' because of mistakes while attempts to send previous patchsets
+> > Please ignore all other v1...v3 patchsets except the very first one.
 >
+> Thanks for the rework and resending these patches. As
+> you've probably seen, I've reviewed patches 1-10, but
+> I won't have time to do more than that before I break
+> for the holiday season now; I will get back to the
+> rest of the series in January.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+I'm now done with my review of this v4. I haven't left
+comments on every patch, but I have read through the others
+(including the ethernet controller ones) and I didn't see
+anything obviously wrong beyond what we've already
+discussed in this thread. I'll do a more full review
+for v5.
 
 thanks
 -- PMM
