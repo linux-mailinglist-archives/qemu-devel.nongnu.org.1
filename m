@@ -2,79 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C24BB82D42D
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 07:24:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA42882D442
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 07:39:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPGN0-0006PC-1D; Mon, 15 Jan 2024 01:22:50 -0500
+	id 1rPGco-00052w-4z; Mon, 15 Jan 2024 01:39:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPGMt-0006Nl-Mg
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:22:43 -0500
-Received: from mgamail.intel.com ([192.55.52.115])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPGcY-00052X-Hy
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:38:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPGMr-0003qK-6X
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:22:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705299761; x=1736835761;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=GQIsLNn6hJVJTPHXRkaEq4wnPTcPIuPsr+uAqE0okVs=;
- b=Cgn/TO+Ppi8gVdBeQRRQdKwPpAi3c77KuKmAK+zRxvbHUvTdT0FtQ8gm
- gXC8M0xYb84mOtXc1WvSohYOALmddJkL1X8D+sfY5EtnNEsoAhQTqz/yE
- xTNxypJrO/liTrGuwDaXTYmx2ZVRlwIO2chKaEMK7rumWl3BqUYG/f5gQ
- Z9KZPkyiC/KSNfT+Sdo164s/6daUiZUVkKU52123P38LCu0Ibu4KKaW8h
- N8QLkV/Ot4d3afq14ihT90EZB6HCg1f0mVrfAsDFig49TP/l8dIvzy23k
- +P7oDdBZSS0hUYCUvdYOabOGRC4hOEd/CRB0Nuw8co2VaiRZ3wtZEx+Pl A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="399220956"
-X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="399220956"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 22:22:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="733215325"
-X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="733215325"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orsmga003.jf.intel.com with ESMTP; 14 Jan 2024 22:22:33 -0800
-Date: Mon, 15 Jan 2024 14:35:31 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Yuan Yao <yuan.yao@linux.intel.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
- Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
-Message-ID: <ZaTSM8IAzQ1onX05@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-9-zhao1.liu@linux.intel.com>
- <20240115032524.44q5ygb25ieut44c@yy-desk-7060>
- <ZaSv51/5Eokkv5Rr@intel.com>
- <336a4816-966d-42b0-b34b-47be3e41446d@intel.com>
- <ZaTM5njcfIgfsjqt@intel.com>
- <78168ef8-2354-483a-aa3b-9e184de65a72@intel.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPGcW-000795-KB
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:38:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705300731;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=DvphZJejZVvTx+TKfeLRExLD4cnHQTMrz8aUr89abQA=;
+ b=E5JrJMkCMo01abJMr6tTj6ArqNfSwWf/JzC35EJnWl4AY204TlPLD+X93TgS+FxRvRL/BB
+ TKyrJsoZGHi5zLp6679OJSu4095cw8cU5dPNz4sVJ2F+Wbfp8HpubkoQ4985T77UG1JMNj
+ FyW/V3mSFCoIlQ9RVp557acY7QKVMXc=
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
+ [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-21-7IV8LC3TNw2HYQu2jb-1aA-1; Mon, 15 Jan 2024 01:38:49 -0500
+X-MC-Unique: 7IV8LC3TNw2HYQu2jb-1aA-1
+Received: by mail-pf1-f199.google.com with SMTP id
+ d2e1a72fcca58-6da4d130a82so2212661b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 22:38:49 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705300728; x=1705905528;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DvphZJejZVvTx+TKfeLRExLD4cnHQTMrz8aUr89abQA=;
+ b=Q2NYC0xdJCCPkRr416rHRDJ7iPU97tb2ySIbi56WDFT0JSteFUJ5yr8+iWBMsUA1DX
+ G5aewWX2B9/KO3yiZgu53WkEEZm729xixNBRCjbsWSjjxlywSu9unLWjvp/oY6h0oD6I
+ nvS3T13tWIX7aBpvPVTRhdml8MyejuwPPWZlbgpaS9ZP2mktXAarvGPnm2IULMsSbsT3
+ 165I8WOuKgfm/shkKsG6Igk4F/WUCdiKUbyttEb9g6pWyRlBPjvego/5tF8Vup+cQQeF
+ I0B+L0YcC9i+Ku54Rcx2Dm2sEsjy39NhK8GICJWQ1Z1ZkcZAuJc7po5/lXMl0LRf6QY1
+ ZPMA==
+X-Gm-Message-State: AOJu0YwSbQX8FqD1LS7kn2GEZNhdLmRpeDG00vQKvorcZaNCS43RMlKJ
+ JJDIEyzBfJ7tiY4H5tZf2l9O6rV7it+rXqsqeh9/V8zLFKnY2RsF0c2rS8v6InbSCWmIG+uchc3
+ aWN5ed9R9BgwnpChTvj6sDwc=
+X-Received: by 2002:a05:6a00:939d:b0:6da:83a2:1d9a with SMTP id
+ ka29-20020a056a00939d00b006da83a21d9amr11608046pfb.1.1705300728300; 
+ Sun, 14 Jan 2024 22:38:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHONRBbfH+CNHMqoT1I2J1BnSGTyScrVtKDOJUQ/C33agVNLMcB5lXhur6JtKGz+yCWP5Zm+g==
+X-Received: by 2002:a05:6a00:939d:b0:6da:83a2:1d9a with SMTP id
+ ka29-20020a056a00939d00b006da83a21d9amr11608033pfb.1.1705300728041; 
+ Sun, 14 Jan 2024 22:38:48 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ fj15-20020a056a003a0f00b006ce9c8c4001sm6891386pfb.47.2024.01.14.22.38.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 14 Jan 2024 22:38:47 -0800 (PST)
+Date: Mon, 15 Jan 2024 14:38:36 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Marc-Andre Lureau <marcandre.lureau@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH V2 01/11] notify: pass error to notifier with return
+Message-ID: <ZaTS7CQ-rENrQX5J@x1n>
+References: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
+ <1705071910-174321-2-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <78168ef8-2354-483a-aa3b-9e184de65a72@intel.com>
-Received-SPF: none client-ip=192.55.52.115;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+In-Reply-To: <1705071910-174321-2-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,40 +101,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 15, 2024 at 02:11:17PM +0800, Xiaoyao Li wrote:
-> Date: Mon, 15 Jan 2024 14:11:17 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
+On Fri, Jan 12, 2024 at 07:05:00AM -0800, Steve Sistare wrote:
+> Pass an error object as the third parameter to "notifier with return"
+> notifiers, so clients no longer need to bundle an error object in the
+> opaque data.  The new parameter is used in a later patch.
 > 
-> On 1/15/2024 2:12 PM, Zhao Liu wrote:
-> > Hi Xiaoyao,
-> > 
-> > On Mon, Jan 15, 2024 at 12:34:12PM +0800, Xiaoyao Li wrote:
-> > > Date: Mon, 15 Jan 2024 12:34:12 +0800
-> > > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
-> > > 
-> > > > Yes, I think it's time to move to default 0x1f.
-> > > 
-> > > we don't need to do so until it's necessary.
-> > 
-> > Recent and future machines all support 0x1f, and at least SDM has
-> > emphasized the preferred use of 0x1f.
-> 
-> The preference is the guideline for software e.g., OS. QEMU doesn't need to
-> emulate cpuid leaf 0x1f to guest if there is only smt and core level.
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
-Please, QEMU is emulating hardware not writing software. Is there any
-reason why we shouldn't emulate new and generic hardware behaviors and
-stick with the old ones?
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-> because in this case, they are exactly the same in leaf 0xb and 0x1f. we don't
-> need to bother advertising the duplicate data.
-
-You can't "define" the same 0x0b and 0x1f as duplicates. SDM doesn't
-have such the definition.
-
-Regards,
-Zhao
+-- 
+Peter Xu
 
 
