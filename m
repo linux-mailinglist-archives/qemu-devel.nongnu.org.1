@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C544B82D35E
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:35:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54EF082D35F
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:36:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPDkB-0000rJ-5X; Sun, 14 Jan 2024 22:34:36 -0500
+	id 1rPDlE-0001fL-D0; Sun, 14 Jan 2024 22:35:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPDk7-0000qc-7h
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:34:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rPDlB-0001fA-UJ
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:35:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPDk4-0006kM-ON
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:34:29 -0500
+ id 1rPDlA-00078g-Fl
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:35:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705289668;
+ s=mimecast20190719; t=1705289735;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iUrXopHsU/G9irdTd3gEEOSS6KMgDcSP0Lx6xufz8Vg=;
- b=AcJfbnp+n0dIG9+0Jf6vwL3LJBUShHAV/GMawjtUgI+woJBWMJb1p9EhqynYGCIW9CPTBK
- 2cdBAOTwAUmrgt4MCCmvUzwmg43ndseCBho4BhpQJ8x34S8DCOIDOTC6+hGzvlVvK0jSIh
- y1Qbme4hw9+h7mmX1UFJE3lmZKvnEFQ=
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
- [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ICi8dkAm4wHBq3OGLaqwXhp6L3mOuNxERkpvi9kPcN0=;
+ b=Gp8gmf+yHBBzkgDDQ96+YObPtVdftFaY86uj9gRBwUjmOCKbaogTl8dczj7XpkX1LiF/Da
+ LAZnkTpmy2qPN1IwaJPdRABU39Op9zXDTWj4HGbZJfkVTJicU+O0/+xFrvNRjkBYalSQQi
+ s9LlC5HOOpyMLhZwtY82YXK1Rq/nZE0=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-328-uGxvyTrjMEGW0yofyHbu0Q-1; Sun, 14 Jan 2024 22:34:26 -0500
-X-MC-Unique: uGxvyTrjMEGW0yofyHbu0Q-1
-Received: by mail-ot1-f70.google.com with SMTP id
- 46e09a7af769-6dde19a22b0so6877796a34.3
- for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 19:34:26 -0800 (PST)
+ us-mta-653-6Qs7p5VPN_KbuSNltH87JA-1; Sun, 14 Jan 2024 22:35:33 -0500
+X-MC-Unique: 6Qs7p5VPN_KbuSNltH87JA-1
+Received: by mail-oi1-f199.google.com with SMTP id
+ 5614622812f47-3bb87fc010fso10565348b6e.0
+ for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 19:35:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705289666; x=1705894466;
+ d=1e100.net; s=20230601; t=1705289733; x=1705894533;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iUrXopHsU/G9irdTd3gEEOSS6KMgDcSP0Lx6xufz8Vg=;
- b=F3hLDb+7ZS0reqiX7c2Uz20Q4lAMAuPHcGoiQgaObWoCy+R1WSFKJHXyvjPyYB6I6z
- EdOb0rzXpFg8KkAs9Qwx7GuzLomEpi69h3qUJnoGiHL6VxcYK2vU1CACl7eP4QnCWgKo
- NZ7k9vzPk+fu6cUBtoWfPAO//jbr2APh6Xzs/9yU9xy9NUNjP/AbrKruweKXnWJgnYwi
- oOJwF1oeiF+wpkk5NPLDAU4aARt3fe+aZAbLh4CAvZ5t+mcParOFxJ/VICjCEHc64PWq
- c4FvjGOHAUQxX0WzoZ8/MkydhjdxZrZIS/6ucG9rk4+7N8Y17ubv0cNq4xnxx8Np/L9t
- qhrA==
-X-Gm-Message-State: AOJu0Yx/bmOK6i4o6leWiX/MbeEa1R2W3OOAd7e8/em0aoF0675P1jL1
- MMnt1kNI5tGza7rJOvJP5tDOP9RI8e9ooGGYlPLNEoDEVe4gXqHmMT3pijVlfcqDq4KUTdZuTd2
- yAhwg+2Sqwn7Sor2pNsJWigYaacmEfEciZwP274g=
-X-Received: by 2002:a05:6830:e15:b0:6df:b685:84b9 with SMTP id
- do21-20020a0568300e1500b006dfb68584b9mr5190922otb.32.1705289665997; 
- Sun, 14 Jan 2024 19:34:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEW0Cpr9WmXdd+wlvp4klAqX/9xoieiMS+dPt9gpGt6Obub5yZnGtDgVjXL5mWlF9J+WI45UHfG7m0pw/rzbCM=
-X-Received: by 2002:a05:6830:e15:b0:6df:b685:84b9 with SMTP id
- do21-20020a0568300e1500b006dfb68584b9mr5190908otb.32.1705289665760; Sun, 14
- Jan 2024 19:34:25 -0800 (PST)
+ bh=ICi8dkAm4wHBq3OGLaqwXhp6L3mOuNxERkpvi9kPcN0=;
+ b=tD5Fq7F3MoeVOkn8rV04AoBtqRnVSQh3rxuS4tCiI7EafUjonZVTGd05pfZJ8BcQhI
+ ll3yL6aozor/QP7ndk2C/3yj0AjRiBxwn2nNYuFuaCjAf6d593cLAddTZvK5a3KaudcL
+ qej103V/9GXlg8CmMZJVt9sruuW62G5OCe7JqXgpxQmMoWgLrUgy+f4/nMBG87NvqAyg
+ QRa7w/DIU74NIUjWvLcH38lcALuc5oEfuqeupMdf4ufpKMbdiRJMlscIarSWjGofTNNG
+ G7rDWLAHw9a+YHb3ajzggmRF1qZ2gepKzkcx6FAHlxkGXsa28d2MQDiyL4EJFsPn9pA2
+ 7q5Q==
+X-Gm-Message-State: AOJu0YzKt4P+SmMKwTjlfOJgfuqdmYM91gONF/99IY7A1/GAuaEJTUwj
+ Bh+OHTa2MfbJKPe83XKsCfuXJ+vUs4R0fE4Vv5gg6/VZsWzNBCwEO6EuOZu17ZWqdNU2Stl+P5Q
+ faIUyvCr3v3fBfj7V7KAlgGV38pnH3+lriUlJGlE=
+X-Received: by 2002:a05:6808:4091:b0:3bd:3b3b:15fe with SMTP id
+ db17-20020a056808409100b003bd3b3b15femr4998793oib.119.1705289732843; 
+ Sun, 14 Jan 2024 19:35:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGijsWjd+PfyMpAc496wj5l8xc9a7ifOY/NqBOufgm5sP95CeUa7c62951csjLGy0dFkLPJuCdqQuRxD7lquqo=
+X-Received: by 2002:a05:6808:4091:b0:3bd:3b3b:15fe with SMTP id
+ db17-20020a056808409100b003bd3b3b15femr4998786oib.119.1705289732701; Sun, 14
+ Jan 2024 19:35:32 -0800 (PST)
 MIME-Version: 1.0
 References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-32-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-32-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-33-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-33-git-send-email-si-wei.liu@oracle.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 15 Jan 2024 11:34:14 +0800
-Message-ID: <CACGkMEtoVKtSiFKkiN6nk88MoBEsr=oxMYXyPRhJeFrNGZCnLA@mail.gmail.com>
-Subject: Re: [PATCH 31/40] vdpa: batch map and unmap around cvq svq start/stop
+Date: Mon, 15 Jan 2024 11:35:21 +0800
+Message-ID: <CACGkMEsbPj-gzwL=Pw8skPc+8NGESHggFaUmMp2GxuV-a0tfsg@mail.gmail.com>
+Subject: Re: [PATCH 32/40] vdpa: factor out vhost_vdpa_net_get_nc_vdpa
 To: Si-Wei Liu <si-wei.liu@oracle.com>
 Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
  leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
  jonah.palmer@oracle.com, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,8 +100,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Fri, Dec 8, 2023 at 2:51=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
 rote:
 >
-> Coalesce map or unmap operations to exact one DMA
-> batch to reduce potential impact on performance.
+> Introduce new API. No functional change on existing API.
 >
 > Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 
