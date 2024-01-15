@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E8F82D81A
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 12:08:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 407E282D821
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 12:10:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPKoj-0006qq-MV; Mon, 15 Jan 2024 06:07:45 -0500
+	id 1rPKqi-0007ii-OU; Mon, 15 Jan 2024 06:09:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPKoh-0006q8-3d
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:07:43 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPKqg-0007iH-2k
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:09:46 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPKof-0005QJ-Hy
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:07:42 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-555144cd330so10564951a12.2
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 03:07:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPKqe-0006Fj-C8
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:09:45 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-559737bac29so36472a12.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 03:09:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705316860; x=1705921660; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705316982; x=1705921782; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=u6cH5JI99j+XuD/mPFxR7acGMdS3HNpIdGevZYpWF68=;
- b=IMTgzKNFcof6E5z59ZC14JZW6Jrr4b8u8tkQQaHXY+KBNs8NE0a24hr7fFgLkTUOtT
- OMOsMccutYR32U5cK44/VWagiA1m5OM10C9ZbMn7NXZONRHKJnVN4pBHWV6ndAAxyX2z
- EANadr9LLDO6d/Y7rIOcA0c7WpqjUuG9dhN6jQbvelngguIJ2ANVIqs3zj8vwOaAFHoP
- xTgXfVJwp1jdox9RnksSK+LEVKaXrZ0ITkSXkJqZkixnRbCwcwEYVYJzwubrMDnmupl+
- RcH8hcq9tfkoWmr/agNSQXJG3N3FvKOaoAj06jMhgn8ZpuFv1bdFS5j6lu6PgcmvgG8P
- BzhA==
+ bh=xqod7xxMWcZdpg2R+S3wQU2fQ9+Cx5wKb7Yfr85NHpc=;
+ b=zkzfddZIU0Ilk4P1EchX0Tu1GWkfMTa1Em+cxhRgCk/E+34onh6nvt03kTZTdDwAvQ
+ raRaWga+3yXwnt3qYglic0yFaHssxQaTHK6MQ77epVQENFKXovNz10q9hSjrBGma48te
+ 8JhgY/6gOvmJf4IU633CZqEwKRwFcliPkcGbEIg9vSSVJai2blb2DLfr0qeCh7SMIU3O
+ mxPlYCYQ5GK92c1cINRqRoaEjP2bqL+i8segO0KI4Z72dlF/sKIJ2cTUdOvZv4tJL9xQ
+ CM4id2FgMb1xBvoY2nFpgt8ZyiwvrOzfpehYyx54r/PS28kx7prWhWXd+qlcH561xxE6
+ tFmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705316860; x=1705921660;
+ d=1e100.net; s=20230601; t=1705316982; x=1705921782;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=u6cH5JI99j+XuD/mPFxR7acGMdS3HNpIdGevZYpWF68=;
- b=qUcDcnbP78hafAcGsmD7nC8tD5lKPv7Vujk1uoI/e2vg1hCqtBS8LZY2m95Jvmj+N4
- uGSSR/JgPMVsBUu/tXDCpEIPMvv+hH21LnC9tJTOeLZ6v2IWBkUgxrNEYkX8VWPuVzFO
- ka5Fr6hTOTVfNwEbMKPNVGTsQbtZLZlC3lUt0uCv+rzuLsuL5z8WSuONqKxugOCN5AJ8
- DUjjxhG/DPyHooiPVz1KnzZQ1LuNMBULGLhM0hetGcr7yjbz0s/Kxgt4M41ZdLlNZt38
- oCTLolTVqKTPVQ1bBvKk9jqxapE0GwKydXLFoonWh44QuyShetN/8jLiy8ORfoNWs9rL
- oqXQ==
-X-Gm-Message-State: AOJu0Yzk0NYOIDIs64De0qM4UC9w6yJXSthjgvA6mD5/G+Xc/FeobEIc
- 21w5eZr5+fTvrSCz7cT+ruYQ7kMko+aiZA==
-X-Google-Smtp-Source: AGHT+IEU46PdPs8RAhMAuPBLZqkitvk/GweXBIUmkYnZdNiah7fcPY02FFOldhBMlYxUwGje5ALCzQ==
-X-Received: by 2002:a17:907:c71b:b0:a2b:9580:c45d with SMTP id
- ty27-20020a170907c71b00b00a2b9580c45dmr3326110ejc.140.1705316860238; 
- Mon, 15 Jan 2024 03:07:40 -0800 (PST)
+ bh=xqod7xxMWcZdpg2R+S3wQU2fQ9+Cx5wKb7Yfr85NHpc=;
+ b=X/fB3yuf5K9N5dvdLqjSBzFl+mF4ns+TgbKjsUt1XOj0pA2AH9Vf4OOcaL96UIQVQB
+ a+g5RbN8W62VE8xXGmAyjUs/gJiQHsWedgaz6Kif5H6ig0KBdxEbC6xkqLoZiFHbpEDa
+ W6rAbIKEerWnIVV5mUQgjeVTfSOpQAyeZVjc7N3WfVMB8GpkaQ9KUjz1l7IXLQD6uZke
+ dAwWDG1kukcdAIu7SQVT3NOK8xzaWxCme90jKB/HX4zwYluHjXR51mZ46ORWF5XUAsjt
+ RDneQXfRGP6URYRhif66gfK/EF9GVdlzPRbVCKVnEShq/AYfcaFGDCpzZigutlxYZ90s
+ toCw==
+X-Gm-Message-State: AOJu0YydTz+FhipMs+AywEuDKd7jQ0EtYO/vHo20OoP5Rp/zhItXeI7E
+ SBqeLNd6WiuABahHjZaY6iFs1QpemhjXPQ==
+X-Google-Smtp-Source: AGHT+IF5uqY6YanTaXQzFSMWJ+RyW8D1dw4zeQRN6A3WJ8mnBD7apf6V2q6fVvh/9Ukd+8R6PVNzgw==
+X-Received: by 2002:a05:6402:1ca7:b0:557:7f96:1d12 with SMTP id
+ cz7-20020a0564021ca700b005577f961d12mr2241616edb.44.1705316982725; 
+ Mon, 15 Jan 2024 03:09:42 -0800 (PST)
 Received: from [192.168.1.102] ([176.187.209.30])
  by smtp.gmail.com with ESMTPSA id
- vs7-20020a170907a58700b00a2caa85c0c1sm4253888ejc.30.2024.01.15.03.07.38
+ x14-20020a056402414e00b00557535489adsm5378573eda.37.2024.01.15.03.09.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 Jan 2024 03:07:39 -0800 (PST)
-Message-ID: <0a9a1ae9-677d-445e-8171-6b3dccb8b25d@linaro.org>
-Date: Mon, 15 Jan 2024 12:07:38 +0100
+ Mon, 15 Jan 2024 03:09:42 -0800 (PST)
+Message-ID: <c48dc7a4-c59d-43e7-8d14-62a20a4cc785@linaro.org>
+Date: Mon, 15 Jan 2024 12:09:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/qtest/npcm7xx_watchdog_timer: Only test the corner
- cases by default
+Subject: Re: [PATCH 01/11] MAINTAINERS: Update hw/core/cpu.c entry
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>
-Cc: qemu-arm@nongnu.org
-References: <20240115070223.30178-1-thuth@redhat.com>
+To: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>
+Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+References: <20240115094852.3597165-1-zhao1.liu@linux.intel.com>
+ <20240115094852.3597165-2-zhao1.liu@linux.intel.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240115070223.30178-1-thuth@redhat.com>
+In-Reply-To: <20240115094852.3597165-2-zhao1.liu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,21 +95,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/1/24 08:02, Thomas Huth wrote:
-> The test_prescaler() part in the npcm7xx_watchdog_timer test is quite
-> repetive, testing all possible combinations of the WTCLK and WTIS
-> bitfields. Since each test spins up a new instance of QEMU, this is
-> rather an expensive test, especially on loaded host systems.
-> For the normal quick test mode, it should be sufficient to test the
-> corner settings of these fields (i.e. 0 and 3), so we can speed up
-> this test in the default mode quite a bit.
+On 15/1/24 10:48, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> The hw/core/cpu.c was split as hw/core/cpu-common.c and
+> hw/core/cpu-sysemu.c in the commit df4fd7d5c8a3 ("cpu: Split as
+> cpu-common / cpu-sysemu").
+> 
+> Update the related entry.
+> 
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > ---
->   tests/qtest/npcm7xx_watchdog_timer-test.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+>   MAINTAINERS | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 
-Good idea.
+Oops, thanks!
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
