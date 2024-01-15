@@ -2,80 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DBA682D8AD
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 13:03:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B239482D8ED
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 13:35:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPLeP-0007ja-24; Mon, 15 Jan 2024 07:01:09 -0500
+	id 1rPLji-0002mH-FF; Mon, 15 Jan 2024 07:06:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rPLdw-0007il-WE; Mon, 15 Jan 2024 07:00:41 -0500
-Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rPLdt-0003zq-Ng; Mon, 15 Jan 2024 07:00:39 -0500
-Received: by mail-qt1-x82e.google.com with SMTP id
- d75a77b69052e-429d2e6c0dbso19467451cf.2; 
- Mon, 15 Jan 2024 04:00:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705320036; x=1705924836; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=picFB31Ddzq/PWXrb7NL15UnWgPxesdY3a23UJn7tTI=;
- b=Q9Drv1axfILv4byEGYFfzD6gLVJGKW2LkTCat47CHkdjugA8mqUIoQNuetnmJ5bg/t
- t9SIbnArhKXhPZsDp15oy423w5LEqlrddNwVFJBjWz38/ZQoO7C4BhIGkcN6+OmqH5yz
- CNkItjYuS7FLjF0AFUtKHdQ/qG+myBDklDeT/T5+So+fNfpMcU4nze5CeieLykL1kscb
- +t3i8yxqiy9K+KTOwvZ09xOHVZiqOKQugBUgpfegH10WZYre3ZANbLwV/3VSe5lWypSt
- wD4mdcgbyozsm2ypZqu0t7asNp8tkr/VUM/nu8jbJKbL5TzhWhyiwJx8DGUqYZy1tm9C
- M8sg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPLjg-0002kP-Vi
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 07:06:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPLjf-0005MU-0s
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 07:06:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705320393;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=LKi6h+Iip+kJimtoHvqxskHIukadBIsvnErrV6nvXH4=;
+ b=E1Kw0PUMCFLZvzzzMIC9clmA2MrB6dQpARrCKRspL5VSGBsl3IWP2XolYkrgnUlmIG9xgn
+ NYfy/mXJkd6Hr9z9jwlmMveLk1eG2nTH1fzedjXPgZVrmRUIKTsh7ybFUmMLbdcQ9nyF1e
+ vVFRPPNflwYxNcvubp0Z60rVDiKirPM=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-624-KI4BJISWMG6G8KRE_Sgm9g-1; Mon, 15 Jan 2024 07:06:32 -0500
+X-MC-Unique: KI4BJISWMG6G8KRE_Sgm9g-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-28cb02a6027so1488852a91.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 04:06:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705320036; x=1705924836;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=picFB31Ddzq/PWXrb7NL15UnWgPxesdY3a23UJn7tTI=;
- b=P+iUtuY0znmEGBKfFYkHVhftv3WIVoqhIWl/DI7X0wmpinMYdghAvhswduyqvBUlmF
- xpsX7YCwTkwLHSIx/dnAJYDUNW+bkKvBDUbxfU61+EwW6BINviilvsbgLmCCGPaUObPS
- RCoYKPIVtqq/yzakHWST6fgJOo/GvgKBt3arUySAyruaJuCwHWA2ZAD5/rX0rtYi9Wit
- dtTki2phYko1+g4vdvgyIAs03inEghRZxU4hTWgAyB2cG7BCDYIWyRv+kaA6Hz+S/ZYv
- kfR34ydLIgsxlWRb9x33NX6uEnOV9YRmmKv+TrCV7h3vFeaN8ExFxb+DaJ0gM2Bfx93n
- t4AQ==
-X-Gm-Message-State: AOJu0YyFBH4dClohkTeeHYQTWSWnHz6otHSv1Uiu15rHV4dgh1/DibAR
- 5vMlwCic9F/zM1ggOGZZKeOXRz78S8w6J2zDMg4=
-X-Google-Smtp-Source: AGHT+IFoKh4f1XuFW6BifJZehhtJIQIsbsGvaxQykNIser19Uut4uKWeaIJyQWRXO0Sq8SMPD/dCBcJ7eXGq6krVBlc=
-X-Received: by 2002:ac8:5dcc:0:b0:429:f102:5512 with SMTP id
- e12-20020ac85dcc000000b00429f1025512mr1436980qtx.58.1705320035820; Mon, 15
- Jan 2024 04:00:35 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705320391; x=1705925191;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LKi6h+Iip+kJimtoHvqxskHIukadBIsvnErrV6nvXH4=;
+ b=D8YhyfxCKQ4sgQhSL/DX7n5gRK6+oS/G874+2roIKDc8fYBjOHp0yAf8ueqC0DfmJg
+ pBX9/NbsRHo904hgXBFXncdNygUyzFRdyHlM65TL63gtJAPb0x3mkT2oWbUlLYUiEo4H
+ H3ipQu2P+0y+jVGo2nEgjQP9vB+bwiypB642ik881lD4x9elKFKZPjgUTNp0761xMTLR
+ MwKObwa8Jfq1NLTHFBZE3GcjKiNaCVK3IJ6CnEAaCjhxi8z8kfgtKv0hTluz98xwTbdD
+ y4g7Txpn1KJ4+xuiUcI+NnvkNyNGiHGH8OT3t6Qqya51KxM29h45fKAlqg0zris3tyzz
+ 3Jkw==
+X-Gm-Message-State: AOJu0YyF3N3CuTaFn5iO6zGolm8+zFm+pjTiERHEZEMlARPBrQguoBJY
+ JzjmgcohxZ+cBqIysvJYQZcfgaLNXeHOSSDCmma6v0mfeqqsxuzLkxfMqQViiqszcPd9tmtbYLS
+ Bo+phOAuFIfVFU/jlPxJ24as=
+X-Received: by 2002:a05:6a20:2e1f:b0:196:16b0:c554 with SMTP id
+ be31-20020a056a202e1f00b0019616b0c554mr8231513pzb.5.1705320391217; 
+ Mon, 15 Jan 2024 04:06:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFbNcIqOr5/LmWCyZe5+dq4q7fYdHxt6I3KaZHij4Mk/+sTEFBCW/wmxcLpIqotsxd6WWQn5g==
+X-Received: by 2002:a05:6a20:2e1f:b0:196:16b0:c554 with SMTP id
+ be31-20020a056a202e1f00b0019616b0c554mr8231499pzb.5.1705320390934; 
+ Mon, 15 Jan 2024 04:06:30 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ h18-20020a17090adb9200b0028c89298d36sm6989246pjv.27.2024.01.15.04.06.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Jan 2024 04:06:30 -0800 (PST)
+Date: Mon, 15 Jan 2024 20:06:18 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [RFC PATCH v3 12/30] migration/multifd: Allow QIOTask error
+ reporting without an object
+Message-ID: <ZaUful1Vtn0d7--8@x1n>
+References: <20231127202612.23012-1-farosas@suse.de>
+ <20231127202612.23012-13-farosas@suse.de>
 MIME-Version: 1.0
-References: <20240112135527.57212-1-f.ebner@proxmox.com>
- <CAJ+F1C+JXE9hSQ_oDNZvhpYDqPeeKayopB3x2L2YyJTxM8t+Yg@mail.gmail.com>
- <2150aa28-3eba-4e95-a301-d87377ba40a4@proxmox.com>
- <CAJ+F1CKQkXUiuQH+mNC7p00wWrznsgWJD4xjR-AzjJGPnsF8gw@mail.gmail.com>
- <ccd23263-f19f-401e-b476-a7eb1fd22571@proxmox.com>
- <CAJ+F1CJHKsRrxUcUijAVV2bv0EOtbz0BAmH1OEnmciwo7ACXLQ@mail.gmail.com>
- <0c2d35cb-cacf-4a81-9b6a-f07fdea9fc07@proxmox.com>
-In-Reply-To: <0c2d35cb-cacf-4a81-9b6a-f07fdea9fc07@proxmox.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 15 Jan 2024 16:00:23 +0400
-Message-ID: <CAJ+F1CJ4F6Kv9Vx_4H+GJ0ME0Q0X4GTm2n6L1JGg-SWFgi18SA@mail.gmail.com>
-Subject: Re: [PATCH] ui/clipboard: avoid crash upon request when clipboard
- peer is not initialized
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com, 
- berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82e;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231127202612.23012-13-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,103 +99,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On Mon, Nov 27, 2023 at 05:25:54PM -0300, Fabiano Rosas wrote:
+> The only way for the channel backend to report an error to the multifd
+> core during creation is by setting the QIOTask error. We must allow
+> the channel backend to set the error even if the QIOChannel has failed
+> to be created, which means the QIOTask source object would be NULL.
+> 
+> At multifd_new_send_channel_async() move the QOM casting of the
+> channel until after we have checked for the QIOTask error.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+> context: When doing multifd + file, it's possible that we fail to open
+> the file. I'll use the empty QIOTask to report the error back to
+> multifd.
 
-On Mon, Jan 15, 2024 at 3:48=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
-rote:
->
-> Am 15.01.24 um 12:33 schrieb Marc-Andr=C3=A9 Lureau:
-> > Hi
-> >
-> > On Mon, Jan 15, 2024 at 3:26=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.co=
-m> wrote:
-> >>
-> >> Am 15.01.24 um 12:15 schrieb Marc-Andr=C3=A9 Lureau:
-> >>> Hi
-> >>>
-> >>> On Mon, Jan 15, 2024 at 2:45=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.=
-com> wrote:
-> >>>>
-> >>>> Am 14.01.24 um 14:51 schrieb Marc-Andr=C3=A9 Lureau:
-> >>>>>>
-> >>>>>> diff --git a/ui/clipboard.c b/ui/clipboard.c
-> >>>>>> index 3d14bffaf8..c13b54d2e9 100644
-> >>>>>> --- a/ui/clipboard.c
-> >>>>>> +++ b/ui/clipboard.c
-> >>>>>> @@ -129,7 +129,8 @@ void qemu_clipboard_request(QemuClipboardInfo =
-*info,
-> >>>>>>      if (info->types[type].data ||
-> >>>>>>          info->types[type].requested ||
-> >>>>>>          !info->types[type].available ||
-> >>>>>> -        !info->owner)
-> >>>>>> +        !info->owner ||
-> >>>>>> +        !info->owner->request)
-> >>>>>>          return;
-> >>>>>
-> >>>>> While that fixes the crash, I think we should handle the situation
-> >>>>> earlier. A clipboard peer shouldn't be allowed to hold the clipboar=
-d
-> >>>>> if it doesn't have the data available or a "request" callback set.
-> >>>>>
-> >>>>
-> >>>> Where should initialization of the cbpeer happen so that we are
-> >>>> guaranteed to do it also for clients that do not set the
-> >>>> VNC_FEATURE_CLIPBOARD_EXT feature? Can the vnc_clipboard_request
-> >>>> function be re-used for clients without that feature or will it be
-> >>>> necessary to add some kind of "dummy" request callback for those cli=
-ents?
-> >>>
-> >>> qemu_clipboard_update() shouldn't accept info as current clipboard if
-> >>> the owner doesn't have the data available or a "request" callback set=
-.
-> >>> This should also be assert() somehow and handled earlier.
-> >>>
-> >>
-> >> The request callback is only initialized in vnc_server_cut_text_caps()
-> >> when the VNC_FEATURE_CLIPBOARD_EXT is enabled. AFAIU, it's perfectly
-> >> fine for clients to use the clipboard with non-extended messages and
-> >> qemu_clipboard_update() should (and currently does) accept those.
-> >>
-> >>> In vnc_client_cut_text_ext() we could detect that situation, but with
-> >>> Daniel's "[PATCH] ui: reject extended clipboard message if not
-> >>> activated", this shouldn't happen anymore iiuc.
-> >>>
-> >>
-> >> Daniel's patch doesn't change the behavior for non-extended messages.
-> >> The problem can still happen with two VNC clients. This is the scenari=
-o
-> >> described in the lower half of my commit message (and why Daniel
-> >> mentions in his patch that it's not sufficient to fix the CVE).
-> >>
-> >> In short: client A does not set the VNC_FEATURE_CLIPBOARD_EXT feature
-> >> and then uses a non-extended VNC_MSG_CLIENT_CUT_TEXT message. This lea=
-ds
-> >> to vnc_client_cut_text() being called and setting the clipboard info
-> >> referencing that client. But here, no request callback is initialized,
-> >> that only happens in vnc_server_cut_text_caps() when the
-> >> VNC_FEATURE_CLIPBOARD_EXT is enabled.
-> >>
-> >> When client B does set the VNC_FEATURE_CLIPBOARD_EXT feature and does
-> >> send an extended VNC_MSG_CLIENT_CUT_TEXT message, the request callback
-> >> will be attempted but it isn't set.
-> >>
-> >
-> > The trouble is when qemu_clipboard_update() is called without data &
-> > without a request callback set. We shouldn't allow that as we have no
-> > means to get the clipboard data then.
-> >
->
-> In the above scenario, I'm pretty sure there is data when
-> qemu_clipboard_update() is called. Just no request callback. If we'd
-> reject this, won't that break clients that do not set the
-> VNC_FEATURE_CLIPBOARD_EXT feature and only use non-extended
-> VNC_MSG_CLIENT_CUT_TEXT messages?
+The "context" can be slightly reworded and put into the commit message too.
 
-If "data" is already set, then qemu_clipboard_request() returns.
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Inverting the condition I suggested above: it's allowed to be the
-clipboard owner if either "data" is set, or a request callback is set.
+-- 
+Peter Xu
 
---=20
-Marc-Andr=C3=A9 Lureau
 
