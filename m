@@ -2,90 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C23082D4A9
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 08:38:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B330982D4AE
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 08:47:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPHXq-0001ep-8B; Mon, 15 Jan 2024 02:38:07 -0500
+	id 1rPHfi-0003MI-4q; Mon, 15 Jan 2024 02:46:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPHXm-0001eI-Cs
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 02:38:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rPHfe-0003Lj-A8
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 02:46:10 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPHXj-0001rO-S5
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 02:38:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705304279;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hqciTJ2WbH8toeiKsdYUlr/rGMQ8JOqZJTar50sLVq8=;
- b=HgjG5ie4hL1p02u1IAkyKfYEYstnibnDlRoX7vIpMEvKpUVk9EnrNBxHiXotEhibI7Ry8P
- 1K4ZrjtsDCkCeS6exzAHlcjw9HmbClO88P8GIcNWIuWJ2DaRsJ3o2n/91xFwLHE1wHbAfw
- nFLQ47hCXrozjXwTtcUnv8QZggVQgb8=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-dlylwOd1NLOUWq1XVbRtaA-1; Mon, 15 Jan 2024 02:37:57 -0500
-X-MC-Unique: dlylwOd1NLOUWq1XVbRtaA-1
-Received: by mail-oi1-f199.google.com with SMTP id
- 5614622812f47-3bd54b3593aso920217b6e.0
- for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 23:37:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705304277; x=1705909077;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hqciTJ2WbH8toeiKsdYUlr/rGMQ8JOqZJTar50sLVq8=;
- b=TU0pc0VdS7sANd+UppjJFs0/M4v+Vo5kaoeYlwvbyR2YoBf8u4q5Pzh2fv9MyjorWk
- BrPhy6TUBecFvGwVKxfC9Idzq2ffkD4CHAm4BCt9tnDy5Z81HqD6N2QsM1/XRTzG2qPg
- NETG9jaC5ucS1OaseF6sgBra12KB9y1SZ25fvQc7zGmzmJk/C54deP+IcYtf0HQsUwk6
- 8a+oQVv7RjC1VdmWLl3lu7zJQcMV8zFpoG0IEz7YJ19UfJuCLt+klEVEWUN7tRW2VEPE
- ajBkPUi3N7GuGxckqsbe8Lr41EDMJG/bSkT8cgaA7c/k7aZXAHD8OgsFUBTXugYZ5Ojh
- aang==
-X-Gm-Message-State: AOJu0YwpdxrIRAmcCjoGwDZ4nEhDRFNhBKYWAQfonlAlgHDNcldS63tw
- Ap2kng58bD3h/d46jWQvOi7AEGGztqTSBTU3siVwE2/1vB+AnTmNd4MbSy7CXBfAX0BzzJjk1WG
- de8lp5TWHebeWVnzrF7PJamE=
-X-Received: by 2002:a05:6808:2129:b0:3bd:54a3:1e51 with SMTP id
- r41-20020a056808212900b003bd54a31e51mr10427855oiw.4.1705304276816; 
- Sun, 14 Jan 2024 23:37:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFvU7AZdxL+yD3ysC8BHcJ48cqN5ri/HRYaXyf9w9ry0555sCYLSxE45oYmeXyk3a4XVkDCVg==
-X-Received: by 2002:a05:6808:2129:b0:3bd:54a3:1e51 with SMTP id
- r41-20020a056808212900b003bd54a31e51mr10427834oiw.4.1705304276471; 
- Sun, 14 Jan 2024 23:37:56 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- ka23-20020a056a00939700b006db0c82959asm7037267pfb.43.2024.01.14.23.37.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Jan 2024 23:37:56 -0800 (PST)
-Date: Mon, 15 Jan 2024 15:37:45 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Marc-Andre Lureau <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH V2 08/11] migration: refactor migrate_fd_connect failures
-Message-ID: <ZaTgyfYvyH-BW4Ev@x1n>
-References: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
- <1705071910-174321-9-git-send-email-steven.sistare@oracle.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rPHfb-00037Z-H4
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 02:46:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705304767; x=1736840767;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=cfqdCzbtVY9XRGsTCtQd+fNbnLboq+Fy2Vp1va0VLNc=;
+ b=ConBuSKMPldmEmpmJPClfms2kx2VO8i5XMA7Y5kwY531bwxlxd4pfR1F
+ JFcQmLabe2OIFpgKijMaXcVVCooGOPQB344lmwGV4fxMZLYpP20nM0OkG
+ Si7pwLewAfO3fWp98uZYysO9uF/bAV8W/jZC/HqQ1UZSGOZnu9wCDRTAB
+ J+IdT0bVPLJ+QoFJmzB8dspScDD8YUTItYrL2hd+vOzLzOm7mM6FlifyN
+ iEIswda/Yt9pPdJ1gjvd6bVNC2JBy9CABwRhmnvI2HMg0EcWQaVbijrwd
+ uO9Q3/2hsaFn/LVSEgvfP95g56Q7a5ypv0R3YRzrwlCBlx5ZQcmNy+5me w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="13034044"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="13034044"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2024 23:46:05 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="853915935"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="853915935"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
+ ([10.93.22.149])
+ by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2024 23:46:00 -0800
+Message-ID: <1c58dd98-d4f6-4226-9a17-8b89c3ed632e@intel.com>
+Date: Mon, 15 Jan 2024 15:45:58 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1705071910-174321-9-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>
+References: <ZaTJyea4KMMk6x/m@intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ZaTJyea4KMMk6x/m@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
+X-Spam_bar: --
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,88 +89,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 12, 2024 at 07:05:07AM -0800, Steve Sistare wrote:
-> Move common code for the error path in migrate_fd_connect to a shared
-> fail label.  No functional change.
+On 1/15/2024 1:59 PM, Zhao Liu wrote:
+> (Also cc "machine core" maintainers.)
 > 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-
-Reviewed-by: Peter Xu <peterx@redhat.com>
-
-One nitpick below:
-
-> ---
->  migration/migration.c | 22 +++++++++++-----------
->  1 file changed, 11 insertions(+), 11 deletions(-)
+> Hi Xiaoyao,
 > 
-> diff --git a/migration/migration.c b/migration/migration.c
-> index e9914aa..c828ba7 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -3549,6 +3549,7 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
->      Error *local_err = NULL;
->      uint64_t rate_limit;
->      bool resume = s->state == MIGRATION_STATUS_POSTCOPY_PAUSED;
-> +    int expect_state = s->state;
-
-IMHO we can drop this.
-
->  
->      /*
->       * If there's a previous error, free it and prepare for another one.
-> @@ -3603,11 +3604,7 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
->      if (migrate_postcopy_ram() || migrate_return_path()) {
->          if (open_return_path_on_source(s)) {
->              error_setg(&local_err, "Unable to open return-path for postcopy");
-> -            migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
-> -            migrate_set_error(s, local_err);
-> -            error_report_err(local_err);
-> -            migrate_fd_cleanup(s);
-> -            return;
-> +            goto fail;
->          }
->      }
->  
-> @@ -3629,12 +3626,8 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
->      }
->  
->      if (multifd_save_setup(&local_err) != 0) {
-> -        migrate_set_error(s, local_err);
-> -        error_report_err(local_err);
-> -        migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
-> -                          MIGRATION_STATUS_FAILED);
-> -        migrate_fd_cleanup(s);
-> -        return;
-> +        expect_state = MIGRATION_STATUS_SETUP;
-
-Then drop this.
-
-> +        goto fail;
->      }
->  
->      if (migrate_background_snapshot()) {
-> @@ -3645,6 +3638,13 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
->                  migration_thread, s, QEMU_THREAD_JOINABLE);
->      }
->      s->migration_thread_running = true;
-> +    return;
-> +
-> +fail:
-> +    migrate_set_error(s, local_err);
-> +    migrate_set_state(&s->state, expect_state, MIGRATION_STATUS_FAILED);
-
-Then constantly use s->state.
-
-> +    error_report_err(local_err);
-> +    migrate_fd_cleanup(s);
->  }
->  
->  static void migration_class_init(ObjectClass *klass, void *data)
-> -- 
-> 1.8.3.1
+> On Mon, Jan 15, 2024 at 12:18:17PM +0800, Xiaoyao Li wrote:
+>> Date: Mon, 15 Jan 2024 12:18:17 +0800
+>> From: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
+>>
+>> On 1/15/2024 11:27 AM, Zhao Liu wrote:
+>>> On Sun, Jan 14, 2024 at 09:49:18PM +0800, Xiaoyao Li wrote:
+>>>> Date: Sun, 14 Jan 2024 21:49:18 +0800
+>>>> From: Xiaoyao Li <xiaoyao.li@intel.com>
+>>>> Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
+>>>>
+>>>> On 1/8/2024 4:27 PM, Zhao Liu wrote:
+>>>>> From: Zhuocheng Ding <zhuocheng.ding@intel.com>
+>>>>>
+>>>>> Introduce cluster-id other than module-id to be consistent with
+>>>>> CpuInstanceProperties.cluster-id, and this avoids the confusion
+>>>>> of parameter names when hotplugging.
+>>>>
+>>>> I don't think reusing 'cluster' from arm for x86's 'module' is a good idea.
+>>>> It introduces confusion around the code.
+>>>
+>>> There is a precedent: generic "socket" v.s. i386 "package".
+>>
+>> It's not the same thing. "socket" vs "package" is just software people and
+>> hardware people chose different name. It's just different naming issue.
 > 
+> No, it's a similar issue. Same physical device, different name only.
+> 
+> Furthermore, the topology was introduced for resource layout and silicon
+> fabrication, and similar design ideas and fabrication processes are fairly
+> consistent across common current arches. Therefore, it is possible to
+> abstract similar topological hierarchies for different arches.
+> 
+>>
+>> however, here it's reusing name issue while 'cluster' has been defined for
+>> x86. It does introduce confusion.
+> 
+> There's nothing fundamentally different between the x86 module and the
+> generic cluster, is there? This is the reason that I don't agree with
+> introducing "modules" in -smp.
 
--- 
-Peter Xu
+generic cluster just means the cluster of processors, i.e, a group of 
+cpus/lps. It is just a middle level between die and core.
+
+It can be the module level in intel, or tile level. Further, if per die 
+lp number increases in the future, there might be more middle levels in 
+intel between die and core. Then at that time, how to decide what level 
+should cluster be mapped to?
+
+>>
+>>> The direct definition of cluster is the level that is above the "core"
+>>> and shares the hardware resources including L2. In this sense, arm's
+>>> cluster is the same as x86's module.
+>>
+>> then, what about intel implements tile level in the future? why ARM's
+>> 'cluster' is mapped to 'module', but not 'tile' ?
+> 
+> This depends on the actual need.
+> 
+> Module (for x86) and cluster (in general) are similar, and tile (for x86)
+> is used for L3 in practice, so I use module rather than tile to map
+> generic cluster.
+ >
+> And, it should be noted that x86 module is mapped to the generic cluster,
+> not to ARM's. It's just that currently only ARM is using the clusters
+> option in -smp.
+> 
+> I believe QEMU provides the abstract and unified topology hierarchies in
+> -smp, not the arch-specific hierarchies.
+> 
+>>
+>> reusing 'cluster' for 'module' is just a bad idea.
+>>
+>>> Though different arches have different naming styles, but QEMU's generic
+>>> code still need the uniform topology hierarchy.
+>>
+>> generic code can provide as many topology levels as it can. each ARCH can
+>> choose to use the ones it supports.
+>>
+>> e.g.,
+>>
+>> in qapi/machine.json, it says,
+>>
+>> # The ordering from highest/coarsest to lowest/finest is:
+>> # @drawers, @books, @sockets, @dies, @clusters, @cores, @threads.
+> 
+> This ordering is well-defined...
+> 
+>> #
+>> # Different architectures support different subsets of topology
+>> # containers.
+>> #
+>> # For example, s390x does not have clusters and dies, and the socket
+>> # is the parent container of cores.
+>>
+>> we can update it to
+>>
+>> # The ordering from highest/coarsest to lowest/finest is:
+>> # @drawers, @books, @sockets, @dies, @clusters, @module, @cores,
+>> # @threads.
+> 
+> ...but here it's impossible to figure out why cluster is above module,
+> and even I can't come up with the difference between cluster and module.
+> 
+>> #
+>> # Different architectures support different subsets of topology
+>> # containers.
+>> #
+>> # For example, s390x does not have clusters and dies, and the socket
+>> # is the parent container of cores.
+>> #
+>> # For example, x86 does not have drawers and books, and does not support
+>> # cluster.
+>>
+>> even if cluster of x86 is supported someday in the future, we can remove the
+>> ordering requirement from above description.
+> 
+> x86's cluster is above the package.
+> 
+> To reserve this name for x86, we can't have the well-defined topology
+> ordering.
+> 
+> But topology ordering is necessary in generic code, and many
+> calculations depend on the topology ordering.
+
+could you point me to the code?
+
+>>
+>>>>
+>>>> s390 just added 'drawer' and 'book' in cpu topology[1]. I think we can also
+>>>> add a module level for x86 instead of reusing cluster.
+>>>>
+>>>> (This is also what I want to reply to the cover letter.)
+>>>>
+>>>> [1] https://lore.kernel.org/qemu-devel/20231016183925.2384704-1-nsg@linux.ibm.com/
+>>>
+>>> These two new levels have the clear topological hierarchy relationship
+>>> and don't duplicate existing ones.
+>>>
+>>> "book" or "drawer" may correspond to intel's "cluster".
+>>>
+>>> Maybe, in the future, we could support for arch-specific alias topologies
+>>> in -smp.
+>>
+>> I don't think we need alias, reusing 'cluster' for 'module' doesn't gain any
+>> benefit except avoid adding a new field in SMPconfiguration. All the other
+>> cluster code is ARM specific and x86 cannot share.
+> 
+> The point is that there is no difference between intel module and general
+> cluster...Considering only the naming issue, even AMD has the "complex" to
+> correspond to the Intel's "module".
+
+does complex of AMD really match with intel module? L3 cache is shared 
+in one complex, while L2 cache is shared in one module for now.
+
+>>
+>> I don't think it's a problem to add 'module' to SMPconfiguration.
+> 
+> Adding an option is simple, but however, it is not conducive to the
+> topology maintenance of QEMU, reusing the existing generic structure
+> should be the first consideration except when the new level is
+> fundamentally different.
+> 
+> Thanks,
+> Zhao
+> 
 
 
