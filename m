@@ -2,86 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33D782D345
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:20:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9F082D350
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:26:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPDVa-0003d8-9M; Sun, 14 Jan 2024 22:19:30 -0500
+	id 1rPDbV-0005bD-M7; Sun, 14 Jan 2024 22:25:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPDVY-0003cQ-B5
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:19:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <yuan.yao@linux.intel.com>)
+ id 1rPDbT-0005au-FY
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:25:35 -0500
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPDVW-00047s-OO
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:19:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705288765;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=O7QNSByQk4QgQg+iy6bDvmqe5VDM7M8ubtUW5N0o/bA=;
- b=Wpu71UUD+T//zuD2gYENhTfsLfLXtWqHS14FEiZXjXgd9WHYJ2tK6RKUJdRLd9/xgbVPab
- 86sQ6EOXHhwtQQ85ULNb21SQnfjfDziOBb1EJQbDYEoeAUScNM5SzGo4Ayw1ICRt4ckjak
- Vcyh4XQ85wy448wSQeVX6ZTAteK1Ibs=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-zze412xsP_enBerLu3UBrQ-1; Sun, 14 Jan 2024 22:19:24 -0500
-X-MC-Unique: zze412xsP_enBerLu3UBrQ-1
-Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-6da380cc0d6so10440619b3a.1
- for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 19:19:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705288763; x=1705893563;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=O7QNSByQk4QgQg+iy6bDvmqe5VDM7M8ubtUW5N0o/bA=;
- b=L30wpOZLbRssN8LBt1XXm0jL3c513LfybAzGKu5ZqAzwuFqaIhk7lL/inB1wzeW8w/
- 3xPR2n6DuQBzNXOna01zRDAhnYM3l7mcAgmtdJXVsnE6p3wzcwvhQC3dYGTrppbtVV4z
- ePjhx7GnxVDugSnA/M3Vb4vJtfhm/Ah6deI83Dof97QnhAU+UcFkWsrE7nkj0LnrBLxF
- r9sPuQOsDB5WiblY0B6E5f+fWC3SZBTharCqR4dRO173TGhDjyxHMje0CzsQbJOHdRfM
- eX2ZJTXjx6wTjLPnTNT3BUjda27VxSD0TVC/VlB8/dufE9jyoIqzTV343fEDP6upP7+8
- Rg0g==
-X-Gm-Message-State: AOJu0YxDsDXmval7UTlxgcPaazlbhzeM3MTONjwX5Iam1Aq+teNFeVlg
- b3W+hxLU7qKtfd/tKAa37n0/WTIzP+QP3r4vfu9bWq5IIFVG3n7SRt3HanO62VNZT48ZOps3Iqz
- lRcriosuCfTjsc4YQ/nZkmC/RpzLTmzTR9O3+7+4=
-X-Received: by 2002:a62:6283:0:b0:6ce:751b:81d9 with SMTP id
- w125-20020a626283000000b006ce751b81d9mr5098025pfb.9.1705288763152; 
- Sun, 14 Jan 2024 19:19:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGUlvsIQhNDl/YjSGivSF9ghJrv0Gd4x1wxTExTWF++CWR6G6NKn52gf6K3PJ/w1wGB9BWOf1tzFuz63d3YWmU=
-X-Received: by 2002:a62:6283:0:b0:6ce:751b:81d9 with SMTP id
- w125-20020a626283000000b006ce751b81d9mr5098014pfb.9.1705288762886; Sun, 14
- Jan 2024 19:19:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <yuan.yao@linux.intel.com>)
+ id 1rPDbR-0005Kg-AQ
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:25:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705289134; x=1736825134;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=DKxDl1ECvVivKU1OaKxlJGfRcdw0SpmIJUkRbrBx430=;
+ b=C7EUYyBQ7AjyBQIApr1WRu66ATkqnU7sSzNQLKxxVZs+gjG32niYhUrw
+ 3r1jhjqu46oM+Vb5VYSHqfOOuysBbYDzvwupSlbd3Cmh5YvMyCqbptQ3P
+ ulhPmou74Nmeiwr7xygXmtjVpIJO9sDGhdVnMQ40bIMLmf6TdwRIR57Xa
+ I8xqDCVrEiDRrSX1so38WhvtnxBspyvMroVTDDLwPtQjBZz58A98kGATS
+ iIEOR9NfdCLQs+tcIRxCtranaiCG5DQ35ho2HiFZINV1zjRQq7RKJXrFD
+ JGN5bZKqwUuYWxoDlGzCdgJw9GFPZTrjijtZnmNHfgGr1khn9/DWjBpHv g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="6281610"
+X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; 
+   d="scan'208";a="6281610"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2024 19:25:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="783678728"
+X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="783678728"
+Received: from yy-desk-7060.sh.intel.com (HELO localhost) ([10.239.159.76])
+ by orsmga002.jf.intel.com with ESMTP; 14 Jan 2024 19:25:25 -0800
+Date: Mon, 15 Jan 2024 11:25:24 +0800
+From: Yuan Yao <yuan.yao@linux.intel.com>
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
+Message-ID: <20240115032524.44q5ygb25ieut44c@yy-desk-7060>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-9-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
-References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-29-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-29-git-send-email-si-wei.liu@oracle.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 15 Jan 2024 11:19:11 +0800
-Message-ID: <CACGkMEvgCvNe=bY8kgJP0KCT+uq=MmwDaivc8i12CxZo9FosgA@mail.gmail.com>
-Subject: Re: [PATCH 28/40] vdpa: support iotlb_batch_asid
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
- leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
- jonah.palmer@oracle.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240108082727.420817-9-zhao1.liu@linux.intel.com>
+User-Agent: NeoMutt/20171215
+Received-SPF: none client-ip=192.198.163.9;
+ envelope-from=yuan.yao@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
 X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,114 +86,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 8, 2023 at 2:51=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
-rote:
+On Mon, Jan 08, 2024 at 04:27:19PM +0800, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
 >
-> Then it's possible to specify ASID when calling the DMA
-> batching API. If the ASID to work on doesn't align with
-> the ASID for ongoing transaction, the API will fail the
-> request and return negative, and the transaction will
-> remain intact as if no failed request ever had occured.
+> Linux kernel (from v6.4, with commit edc0a2b595765 ("x86/topology: Fix
+> erroneous smp_num_siblings on Intel Hybrid platforms") is able to
+> handle platforms with Module level enumerated via CPUID.1F.
 >
-> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+> Expose the module level in CPUID[0x1F] if the machine has more than 1
+> modules.
+>
+> (Tested CPU topology in CPUID[0x1F] leaf with various die/cluster
+> configurations in "-smp".)
+>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Tested-by: Babu Moger <babu.moger@amd.com>
+> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
 > ---
->  hw/virtio/vhost-vdpa.c         | 25 +++++++++++++++++++------
->  include/hw/virtio/vhost-vdpa.h |  1 +
->  net/vhost-vdpa.c               |  1 +
->  3 files changed, 21 insertions(+), 6 deletions(-)
+> Changes since v3:
+>  * New patch to expose module level in 0x1F.
+>  * Add Tested-by tag from Yongwei.
+> ---
+>  target/i386/cpu.c     | 12 +++++++++++-
+>  target/i386/cpu.h     |  2 ++
+>  target/i386/kvm/kvm.c |  2 +-
+>  3 files changed, 14 insertions(+), 2 deletions(-)
 >
-> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> index d3f5721..b7896a8 100644
-> --- a/hw/virtio/vhost-vdpa.c
-> +++ b/hw/virtio/vhost-vdpa.c
-> @@ -189,15 +189,25 @@ static bool vhost_vdpa_map_batch_begin(VhostVDPASha=
-red *s, uint32_t asid)
->
->  static int vhost_vdpa_dma_batch_begin_once(VhostVDPAShared *s, uint32_t =
-asid)
->  {
-> -    if (!(s->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH)) ||
-> -        s->iotlb_batch_begin_sent) {
-> +    if (!(s->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH))) {
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 294ca6b8947a..a2d39d2198b6 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -277,6 +277,8 @@ static uint32_t num_cpus_by_topo_level(X86CPUTopoInfo *topo_info,
+>          return 1;
+>      case CPU_TOPO_LEVEL_CORE:
+>          return topo_info->threads_per_core;
+> +    case CPU_TOPO_LEVEL_MODULE:
+> +        return topo_info->threads_per_core * topo_info->cores_per_module;
+>      case CPU_TOPO_LEVEL_DIE:
+>          return topo_info->threads_per_core * topo_info->cores_per_module *
+>                 topo_info->modules_per_die;
+> @@ -297,6 +299,8 @@ static uint32_t apicid_offset_by_topo_level(X86CPUTopoInfo *topo_info,
 >          return 0;
+>      case CPU_TOPO_LEVEL_CORE:
+>          return apicid_core_offset(topo_info);
+> +    case CPU_TOPO_LEVEL_MODULE:
+> +        return apicid_module_offset(topo_info);
+>      case CPU_TOPO_LEVEL_DIE:
+>          return apicid_die_offset(topo_info);
+>      case CPU_TOPO_LEVEL_PACKAGE:
+> @@ -316,6 +320,8 @@ static uint32_t cpuid1f_topo_type(enum CPUTopoLevel topo_level)
+>          return CPUID_1F_ECX_TOPO_LEVEL_SMT;
+>      case CPU_TOPO_LEVEL_CORE:
+>          return CPUID_1F_ECX_TOPO_LEVEL_CORE;
+> +    case CPU_TOPO_LEVEL_MODULE:
+> +        return CPUID_1F_ECX_TOPO_LEVEL_MODULE;
+>      case CPU_TOPO_LEVEL_DIE:
+>          return CPUID_1F_ECX_TOPO_LEVEL_DIE;
+>      default:
+> @@ -347,6 +353,10 @@ static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
+>          if (env->nr_dies > 1) {
+>              set_bit(CPU_TOPO_LEVEL_DIE, topo_bitmap);
+>          }
+> +
+> +        if (env->nr_modules > 1) {
+> +            set_bit(CPU_TOPO_LEVEL_MODULE, topo_bitmap);
+> +        }
 >      }
 >
-> -    if (vhost_vdpa_map_batch_begin(s, asid)) {
-> -        s->iotlb_batch_begin_sent =3D true;
-> +    if (s->iotlb_batch_begin_sent && s->iotlb_batch_asid !=3D asid) {
-> +        return -1;
-> +    }
-> +
-> +    if (s->iotlb_batch_begin_sent) {
-> +        return 0;
->      }
->
-> +    if (!vhost_vdpa_map_batch_begin(s, asid)) {
-> +        return 0;
-> +    }
-> +
-> +    s->iotlb_batch_begin_sent =3D true;
-> +    s->iotlb_batch_asid =3D asid;
-> +
->      return 0;
->  }
->
-> @@ -237,10 +247,13 @@ static int vhost_vdpa_dma_batch_end_once(VhostVDPAS=
-hared *s, uint32_t asid)
->          return 0;
->      }
->
-> -    if (vhost_vdpa_dma_batch_end(s, asid)) {
-> -        s->iotlb_batch_begin_sent =3D false;
-> +    if (!vhost_vdpa_dma_batch_end(s, asid)) {
-> +        return 0;
->      }
->
-> +    s->iotlb_batch_begin_sent =3D false;
-> +    s->iotlb_batch_asid =3D -1;
-> +
->      return 0;
->  }
->
-> diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdp=
-a.h
-> index 0fe0f60..219316f 100644
-> --- a/include/hw/virtio/vhost-vdpa.h
-> +++ b/include/hw/virtio/vhost-vdpa.h
-> @@ -61,6 +61,7 @@ typedef struct vhost_vdpa_shared {
->      bool map_thread_enabled;
->
->      bool iotlb_batch_begin_sent;
-> +    uint32_t iotlb_batch_asid;
->
->      /*
->       * The memory listener has been registered, so DMA maps have been se=
-nt to
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index e9b96ed..bc72345 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -1933,6 +1933,7 @@ static NetClientState *net_vhost_vdpa_init(NetClien=
-tState *peer,
->          s->vhost_vdpa.shared->device_fd =3D vdpa_device_fd;
->          s->vhost_vdpa.shared->iova_range =3D iova_range;
->          s->vhost_vdpa.shared->shadow_data =3D svq;
-> +        s->vhost_vdpa.shared->iotlb_batch_asid =3D -1;
+>      *ecx = count & 0xff;
+> @@ -6394,7 +6404,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>          break;
+>      case 0x1F:
+>          /* V2 Extended Topology Enumeration Leaf */
+> -        if (topo_info.dies_per_pkg < 2) {
+> +        if (topo_info.modules_per_die < 2 && topo_info.dies_per_pkg < 2) {
 
-This seems a trick, uAPI defines asid as:
+A question:
+Is the original checking necessary ?
+The 0x1f exists even on cpu w/o modules/dies topology on bare metal, I tried
+on EMR:
 
-        __u32 asid;
+// leaf 0
+0x00000000 0x00: eax=0x00000020 ebx=0x756e6547 ecx=0x6c65746e edx=0x49656e69
 
-So technically -1U is a legal value.
+// leaf 0x1f
+0x0000001f 0x00: eax=0x00000001 ebx=0x00000002 ecx=0x00000100 edx=0x00000004
+0x0000001f 0x01: eax=0x00000007 ebx=0x00000080 ecx=0x00000201 edx=0x00000004
+0x0000001f 0x02: eax=0x00000000 ebx=0x00000000 ecx=0x00000002 edx=0x00000004
 
-Thanks
+// leaf 0xb
+0x0000000b 0x00: eax=0x00000001 ebx=0x00000002 ecx=0x00000100 edx=0x00000004
+0x0000000b 0x01: eax=0x00000007 ebx=0x00000080 ecx=0x00000201 edx=0x00000004
+0x0000000b 0x02: eax=0x00000000 ebx=0x00000000 ecx=0x00000002 edx=0x00000004
 
->          s->vhost_vdpa.shared->refcnt++;
->      } else if (!is_datapath) {
->          s->cvq_cmd_out_buffer =3D mmap(NULL, vhost_vdpa_net_cvq_cmd_page=
-_len(),
+So here leads to different cpu behavior from bare metal, even in case
+of "-cpu host".
+
+In SDM Vol2, cpudid instruction section:
+
+" CPUID leaf 1FH is a preferred superset to leaf 0BH. Intel
+recommends using leaf 1FH when available rather than leaf
+0BH and ensuring that any leaf 0BH algorithms are updated to
+support leaf 1FH. "
+
+My understanding: if 0x1f is existed (leaf 0.eax >= 0x1f)
+then it should have same values in lp/core level as 0xb.
+
+>              *eax = *ebx = *ecx = *edx = 0;
+>              break;
+>          }
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index eecd30bde92b..97b290e10576 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -1018,6 +1018,7 @@ enum CPUTopoLevel {
+>      CPU_TOPO_LEVEL_INVALID,
+>      CPU_TOPO_LEVEL_SMT,
+>      CPU_TOPO_LEVEL_CORE,
+> +    CPU_TOPO_LEVEL_MODULE,
+>      CPU_TOPO_LEVEL_DIE,
+>      CPU_TOPO_LEVEL_PACKAGE,
+>      CPU_TOPO_LEVEL_MAX,
+> @@ -1032,6 +1033,7 @@ enum CPUTopoLevel {
+>  #define CPUID_1F_ECX_TOPO_LEVEL_INVALID  CPUID_B_ECX_TOPO_LEVEL_INVALID
+>  #define CPUID_1F_ECX_TOPO_LEVEL_SMT      CPUID_B_ECX_TOPO_LEVEL_SMT
+>  #define CPUID_1F_ECX_TOPO_LEVEL_CORE     CPUID_B_ECX_TOPO_LEVEL_CORE
+> +#define CPUID_1F_ECX_TOPO_LEVEL_MODULE   3
+>  #define CPUID_1F_ECX_TOPO_LEVEL_DIE      5
+>
+>  /* MSR Feature Bits */
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 4ce80555b45c..e5ddb214cb36 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -1913,7 +1913,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
+>              break;
+>          }
+>          case 0x1f:
+> -            if (env->nr_dies < 2) {
+> +            if (env->nr_modules < 2 && env->nr_dies < 2) {
+>                  break;
+>              }
+>              /* fallthrough */
 > --
-> 1.8.3.1
+> 2.34.1
 >
-
+>
 
