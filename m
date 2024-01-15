@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B3582DD28
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 17:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6482C82DD8F
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 17:26:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPPbu-0003VY-JT; Mon, 15 Jan 2024 11:14:50 -0500
+	id 1rPPmJ-0005n9-Sx; Mon, 15 Jan 2024 11:25:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPPbr-0003V8-Br
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:14:47 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1rPPmH-0005m3-0f
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:25:33 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPPbp-0003U9-Fs
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:14:47 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-55969c01168so1019891a12.1
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 08:14:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1rPPmF-00050w-61
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:25:32 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40e775695c6so9767385e9.3
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 08:25:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705335283; x=1705940083; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=NqdtWvtAFs9102sLZunU0LxpsEXynT3pgJ1dkuZkHXU=;
- b=fnlVDuXOJHcerDrEqR2GUX4QMysa9ZGO9E7nGpIMJs19eWZ/YJwXjjAW6F0UVKPjP8
- 7yy4ViQoUkpPF0EzgA3tktompJ91ontmMLVyEW6BvUzF/byw6B6cfg3o2lGAu5hslg3m
- 4bMaW9LSUbzfGUGUyO4W/653CC5JWmsBSo9cmFTOwkLB23vlGQTvobBrmF5g5CYn7kLl
- 2JuTeHpDkGGwXLhrNu/qbmv9OOcPCynsdwQE0K7CsB2aE+BPqS9f7sXbbL5GzuEw0c3g
- oulEJ0wdAt56NYVqU7jIj8HVChACm1zSYuVNiF1UrVhLyE8jyVo8wazk7V1qATszWSU4
- F3eg==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1705335928; x=1705940728;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9D00xa+XSCxC87F1u0Bt2vd0mnLwvfxAGy7bIuFsaVk=;
+ b=yQcnb0x7dmd/K8b+dnx22MzyONkDClqb9cX3dST0XoNjU7FOJHFy5TT3TfymiynwaU
+ 63L6ZII1Ji0TezOrKd3U7fkSW7ud15KohcvyjeRylGduNbYRSavwGnbbNo+PAA4K/Jdf
+ 7b1IcdyKqbNxCLwtQF5SwuRMqYFujtH2OnND0jfejw6j4PgG8ZTgxhJ3Z/RdGYP0/Mt6
+ 8qQYl5vS9XubDLpLR4zVzGy4xWfO/kUpKIzF8dHkB9PoHRPb25J2HJLDRj7q8VfveJp0
+ OIUfqVf7/1dp1+js75/6EWza5J5cDSU5v9VWdHCZwfbeqXBrXQ8RSAehMbpPTgjgyOx8
+ 8Ckg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705335283; x=1705940083;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1705335928; x=1705940728;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=NqdtWvtAFs9102sLZunU0LxpsEXynT3pgJ1dkuZkHXU=;
- b=TK7y6BlgHRB0aSihKygnmz0wFAfCKNw2M0S/N+vfTeBK1qJ8ggoEzOexe5XRfb9T6j
- sGHOYsD//FF82KKSP3oan62ns1RNYA8wRp1FVA1QrLYr9gVIoiWHdkT+wkqv1WoAKHnd
- BjSzP0XP/aXA99CbeDI/xZT0OQSc7zPo4a2uSN7KgV9BeS9gtvLx+E+ylDRJlKVNPuRr
- EFFsMBfQ//pBorHq/BdKZHCFsU6PY4maRqyHbUQQG99qWNYaXLEQ3pQvPsdUgl2lDn9S
- rkdRk66MAWHQehqzzKqqzBNRIS7Tg2XgWoBtDp4dIZgR/MohdMXMGKsyGZeWx9JO1Uke
- D/jg==
-X-Gm-Message-State: AOJu0YwKb0mobeCs+xSBEmsCUlzQQ517XGVdkLMJklNCVksxMpsk0DKZ
- +oS+B4hWqhixK3yEX3eB7LUmgBK+YXUt+iehfCkN+KvGhlFKSw==
-X-Google-Smtp-Source: AGHT+IFEfn8A+hZbFHnRDMBiJnPAASeKxb1BzXuPr7pHGyZnvv4FlHfTomEB/h3TcENf0z6PfZUN+bAiVUzlV8GqAms=
-X-Received: by 2002:aa7:c793:0:b0:557:7037:1a41 with SMTP id
- n19-20020aa7c793000000b0055770371a41mr5488644eds.25.1705335282759; Mon, 15
- Jan 2024 08:14:42 -0800 (PST)
+ bh=9D00xa+XSCxC87F1u0Bt2vd0mnLwvfxAGy7bIuFsaVk=;
+ b=WvEOqudFo44Ivwl0SoKZ9mhjOvFxBlvl1uqyDyP4tJZlnNzt6+Sl9rcqC/ENDVmJ0o
+ qAIPMHMZG8PITOdcAkAHylH5gwqS/CYqbsWbwnjDjuTA2bJcTtTJLNExtpb9lPQ9zLYK
+ hE+wJjaLVcxTXgcySVwY+NHCMTJ9gU5xD8JegMmsp1m0TDNsR+yBh8R9aIH9k5Yy6jHG
+ BAq/+3lO7lc5nXxjW0mQS/EnrvfINRBbkKaua9ypSJEqB9H9vEBD/cKURL9h5ZasOYZd
+ WHD6gj1tKsdx6A62EuEZwq4eDR4ekS8i7p56R8JVwDuCHw/4vwfdswP14pgXaR1kwLSA
+ h7fA==
+X-Gm-Message-State: AOJu0Yz/3sMgDiQUA75QxAsiO5u5rWPTIL689ZarH2Vx+PirI/qySxvB
+ cC7orcAHhR2faMYmwnkJso47SplCs59JPqDOibWCw9s8sc6PgQ==
+X-Google-Smtp-Source: AGHT+IGXA0z+9mf2JktUwdNKNF2ls6r9p9A+RCWbyaqAO90hhFaE8jU/mscLyeZA3n024YbtUwQUxw==
+X-Received: by 2002:a7b:c453:0:b0:40e:42b4:23b6 with SMTP id
+ l19-20020a7bc453000000b0040e42b423b6mr3758905wmi.55.1705335928187; 
+ Mon, 15 Jan 2024 08:25:28 -0800 (PST)
+Received: from rockhopper.ba.rivosinc.com (214.11.169.217.in-addr.arpa.
+ [217.169.11.214]) by smtp.gmail.com with ESMTPSA id
+ n16-20020a05600c4f9000b0040d62f97e3csm20274444wmq.10.2024.01.15.08.25.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Jan 2024 08:25:27 -0800 (PST)
+From: Rob Bradford <rbradford@rivosinc.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ Rob Bradford <rbradford@rivosinc.com>
+Subject: [PATCH 0/2] target/riscv: Add support for Zaamo & Zalrsc
+Date: Mon, 15 Jan 2024 16:25:23 +0000
+Message-ID: <20240115162525.63535-1-rbradford@rivosinc.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <CAA3Sv1LQ8yDUNLCB5WqLVZjsHffrU0uSbL_YYJW_m+Db2PhEeQ@mail.gmail.com>
-In-Reply-To: <CAA3Sv1LQ8yDUNLCB5WqLVZjsHffrU0uSbL_YYJW_m+Db2PhEeQ@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 15 Jan 2024 16:14:30 +0000
-Message-ID: <CAFEAcA_5ip7q0Wp=jJkV7sJg=w=e08JCRqPmQuOObNe8AMZLDA@mail.gmail.com>
-Subject: Re: [PATCH] Fixed '-serial none' usage breaks following '-serial ...'
- usage
-To: Bohdan Kostiv <bogdan.kostiv@gmail.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange" <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,87 +91,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(I've cc'd a few people who might have opinions on possible
-command-line compatibility breakage.)
+Introduce support for the proposed new (fast-track) Zaamo and Zalrsc
+extensions [1] which represent the AMO and LR/SC subsets of the A
+extension.  
 
-On Wed, 10 Jan 2024 at 14:38, Bohdan Kostiv <bogdan.kostiv@gmail.com> wrote:
->
-> Hello,
->
-> I have faced an issue in using serial ports when I need to skip a couple of ports in the CLI.
->
-> For example the ARM machine netduinoplus2 supports up to 7 UARTS.
-> Following case works (the first UART is used to send data in the firmware):
-> qemu-system-arm -machine netduinoplus2 -nographic -serial mon:stdio -kernel path-to-fw/firmware.elf
-> But this one doesn't  (the third UART is used to send data in the firmware):
-> qemu-system-arm -machine netduinoplus2 -nographic -serial none -serial none -serial mon:stdio -kernel path-to-fw/firmware.elf
+The motivation for the subsets being available separately is that
+certain classes of CPUs may choose to only implement a subset for
+architectural convenience.
 
-Putting the patch inline for more convenient discussion:
+Since this extension is not frozen these are advertised by "x-zaamo" and
+"x-zalrsc" options. Beyond adding the extension infrastructure the only
+changes required are to allow the atomic instructions under either A or
+the appropriate subset extension.  To ensure compatibility enabling the
+A instruction does not enable these two extensions - future hardware may
+choose to advertise support for A and both these extensions for maximum
+software support.
 
-> Subject: [PATCH] Fixed '-serial none' usage breaks following '-serial ...' usage
->
-> Signed-off-by: Bohdan Kostiv <bohdan.kostiv@tii.ae>
-> ---
->  system/vl.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/system/vl.c b/system/vl.c
-> index 2bcd9efb9a..b8744475cd 100644
-> --- a/system/vl.c
-> +++ b/system/vl.c
-> @@ -1442,8 +1442,11 @@ static int serial_parse(const char *devname)
->      int index = num_serial_hds;
->      char label[32];
->
-> -    if (strcmp(devname, "none") == 0)
-> +    if (strcmp(devname, "none") == 0) {
-> +        num_serial_hds++;
->          return 0;
-> +    }
-> +
->      snprintf(label, sizeof(label), "serial%d", index);
->      serial_hds = g_renew(Chardev *, serial_hds, index + 1);
->
-> --
-> 2.39.3 (Apple Git-145)
+This patch is based off riscv-to-apply.next due to conflicts with
+existing patches.
 
-I agree that it's the right thing to do -- '-serial none
--serial foo' ought to set serial_hds(0) as 'none' and
-serial_hds(1) as 'foo'.
+Cheers,
 
-My only concern here is that this is a very very
-longstanding bug -- as far as I can see it was
-introduced in commit 998bbd74b9d81 in 2009. So I am
-a little worried that maybe some existing command lines
-accidentally rely on the current behaviour.
+Rob
 
-I think the current behaviour is:
+[1] - https://github.com/riscv/riscv-zaamo-zalrsc
 
- * "-serial none -serial something" is the same as
-   "-serial something"
- * "-serial none" on its own disables the default serial
-   device (the docs say it will "disable all serial ports"
-   but I don't think that is correct...)
-which amounts to "the only effectively useful use of
-'-serial none' is to disable the default serial device"
+Rob Bradford (2):
+  target/riscv: Add Zaamo and Zalrsc extensions
+  target/riscv: Check 'A' and split extensions for atomic instructions
 
-and if we apply this patch:
- * "-serial none -serial something" has the sensible behaviour
-   of "first serial port not connected/present, second serial
-   port exists" (which of those you get depends on the machine
-   model)
- * "-serial none" on its own has no behaviour change
+ target/riscv/cpu.c                      |  5 +++
+ target/riscv/cpu_cfg.h                  |  2 +
+ target/riscv/insn_trans/trans_rva.c.inc | 56 +++++++++++++++----------
+ 3 files changed, 41 insertions(+), 22 deletions(-)
 
-So I think the only affected users would be anybody who
-accidentally had an extra "-serial none" in their command
-line that was previously being overridden by a later
-"-serial" option. That doesn't seem very likely to me,
-so I think I'd be in favour of making this change and
-having something in the release notes about it.
+-- 
+2.43.0
 
-Does anybody on the CC list have a different opinion /
-think I've mis-analysed what the current code is doing ?
-
-thanks
--- PMM
 
