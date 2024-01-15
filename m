@@ -2,90 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A70682D893
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 12:52:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DBA682D8AD
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 13:03:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPLV7-00057Y-44; Mon, 15 Jan 2024 06:51:33 -0500
+	id 1rPLeP-0007ja-24; Mon, 15 Jan 2024 07:01:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rPLV5-00057J-WE
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:51:32 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rPLdw-0007il-WE; Mon, 15 Jan 2024 07:00:41 -0500
+Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rPLV4-0002iQ-BU
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:51:31 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-336755f1688so7628820f8f.0
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 03:51:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rPLdt-0003zq-Ng; Mon, 15 Jan 2024 07:00:39 -0500
+Received: by mail-qt1-x82e.google.com with SMTP id
+ d75a77b69052e-429d2e6c0dbso19467451cf.2; 
+ Mon, 15 Jan 2024 04:00:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705319488; x=1705924288; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1705320036; x=1705924836; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9l19L6rbX05ONRegK7vqFjOSqqycukFWTq6UAM6eNyI=;
- b=du+VdGR5c6jbnaWy1/BBj924g9Tz8YQkt/5/lr8khXn8V4AFrJanh+6o0vjpcXSp+A
- zOF0YSa6tJcCbxZAVuKPnEX0VUfnv96NpPefYh2V4G4qea44ZnXkN786P7WuU9GmGOoD
- HAccITU+p6ZbTi6f9YWw7UbmruXWInvY8Ku8oV36YPOlRm2iu9vBLZIGI6U1dr24+59+
- VWPD2Dz/bcikncoQxBpNYaj69eImeTvHyVWS4+PYi8Ve9+640qRLcTQQAraleo9jy9N2
- AEqo+lPthz236ldgN6exUx25fVzp2v4Z5msNZDQAEzwcDlWwfxeF8WOI2Hw/3TUc8Of+
- GvXA==
+ bh=picFB31Ddzq/PWXrb7NL15UnWgPxesdY3a23UJn7tTI=;
+ b=Q9Drv1axfILv4byEGYFfzD6gLVJGKW2LkTCat47CHkdjugA8mqUIoQNuetnmJ5bg/t
+ t9SIbnArhKXhPZsDp15oy423w5LEqlrddNwVFJBjWz38/ZQoO7C4BhIGkcN6+OmqH5yz
+ CNkItjYuS7FLjF0AFUtKHdQ/qG+myBDklDeT/T5+So+fNfpMcU4nze5CeieLykL1kscb
+ +t3i8yxqiy9K+KTOwvZ09xOHVZiqOKQugBUgpfegH10WZYre3ZANbLwV/3VSe5lWypSt
+ wD4mdcgbyozsm2ypZqu0t7asNp8tkr/VUM/nu8jbJKbL5TzhWhyiwJx8DGUqYZy1tm9C
+ M8sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705319488; x=1705924288;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=9l19L6rbX05ONRegK7vqFjOSqqycukFWTq6UAM6eNyI=;
- b=QoEx8wF9pj2H3PG7xPGlwd8f35NVJ9AOi6BAcIFlRPTTM+ROhELt4Si3zLFGcZf+DV
- rnkEzYBNW7dXd9rveBsBkoLH9JYCHD+IRyItttz6vjY+ssGrZRjgu2gLMBuYF+OKc6aS
- o/8k3FNxyJPoyrn/Iibe/TVaBQ1eWuwFG7ef0MYxvW+X8YQDj11DTimLEXLSMHROz2eM
- CNkyASuWYOhAwFQo+IgsTNWv1ypurIan97+EjYSybMex8CrR6Gk1W+2daJ4C8R7TvIJg
- f65lf2c7fBtZdiFQVvrZ6QE1IDUEpv24D8D9IYRLKP/8biaF1HqWc7IYECViI+W0rf3v
- 12KA==
-X-Gm-Message-State: AOJu0YzPzK6j971kHt8EaQJ5G3EUakq8aS8bj0+uj7Lt1BqCjB6rD4vZ
- daR7ZvrcR9Tfa2x8UXF/XkHrBX1ctaY2CA==
-X-Google-Smtp-Source: AGHT+IH3GpcUGafFfT+70R3lWyRyo45Gv5/bjAAhsnh/tJGw8bX+nySaHK9E3jA5toNz5o2Q4P6Ssg==
-X-Received: by 2002:a05:600c:3b2a:b0:40e:621b:639b with SMTP id
- m42-20020a05600c3b2a00b0040e621b639bmr2872190wms.116.1705319488061; 
- Mon, 15 Jan 2024 03:51:28 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- p19-20020adf9d93000000b003362d0eefd3sm11633639wre.20.2024.01.15.03.51.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jan 2024 03:51:27 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 61A965F78A;
- Mon, 15 Jan 2024 11:51:27 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org,  Palmer Dabbelt <palmer@dabbelt.com>,  Alistair
- Francis <alistair.francis@wdc.com>,  Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>,  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org,  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: Re: [PATCH v2 23/43] target/riscv: Remove misa_mxl validation
-In-Reply-To: <875xzyejuw.fsf@draig.linaro.org> ("Alex =?utf-8?Q?Benn=C3=A9?=
- =?utf-8?Q?e=22's?= message of "Fri, 12 Jan 2024 13:56:07 +0000")
-References: <20240103173349.398526-1-alex.bennee@linaro.org>
- <20240103173349.398526-24-alex.bennee@linaro.org>
- <87sf37hlwo.fsf@draig.linaro.org>
- <CAKmqyKPCy9W-iYscHLjVvU=RfoSLURFgdki0qdzgNSkLKqutyg@mail.gmail.com>
- <875xzyejuw.fsf@draig.linaro.org>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Mon, 15 Jan 2024 11:51:27 +0000
-Message-ID: <87a5p6ke68.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1705320036; x=1705924836;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=picFB31Ddzq/PWXrb7NL15UnWgPxesdY3a23UJn7tTI=;
+ b=P+iUtuY0znmEGBKfFYkHVhftv3WIVoqhIWl/DI7X0wmpinMYdghAvhswduyqvBUlmF
+ xpsX7YCwTkwLHSIx/dnAJYDUNW+bkKvBDUbxfU61+EwW6BINviilvsbgLmCCGPaUObPS
+ RCoYKPIVtqq/yzakHWST6fgJOo/GvgKBt3arUySAyruaJuCwHWA2ZAD5/rX0rtYi9Wit
+ dtTki2phYko1+g4vdvgyIAs03inEghRZxU4hTWgAyB2cG7BCDYIWyRv+kaA6Hz+S/ZYv
+ kfR34ydLIgsxlWRb9x33NX6uEnOV9YRmmKv+TrCV7h3vFeaN8ExFxb+DaJ0gM2Bfx93n
+ t4AQ==
+X-Gm-Message-State: AOJu0YyFBH4dClohkTeeHYQTWSWnHz6otHSv1Uiu15rHV4dgh1/DibAR
+ 5vMlwCic9F/zM1ggOGZZKeOXRz78S8w6J2zDMg4=
+X-Google-Smtp-Source: AGHT+IFoKh4f1XuFW6BifJZehhtJIQIsbsGvaxQykNIser19Uut4uKWeaIJyQWRXO0Sq8SMPD/dCBcJ7eXGq6krVBlc=
+X-Received: by 2002:ac8:5dcc:0:b0:429:f102:5512 with SMTP id
+ e12-20020ac85dcc000000b00429f1025512mr1436980qtx.58.1705320035820; Mon, 15
+ Jan 2024 04:00:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240112135527.57212-1-f.ebner@proxmox.com>
+ <CAJ+F1C+JXE9hSQ_oDNZvhpYDqPeeKayopB3x2L2YyJTxM8t+Yg@mail.gmail.com>
+ <2150aa28-3eba-4e95-a301-d87377ba40a4@proxmox.com>
+ <CAJ+F1CKQkXUiuQH+mNC7p00wWrznsgWJD4xjR-AzjJGPnsF8gw@mail.gmail.com>
+ <ccd23263-f19f-401e-b476-a7eb1fd22571@proxmox.com>
+ <CAJ+F1CJHKsRrxUcUijAVV2bv0EOtbz0BAmH1OEnmciwo7ACXLQ@mail.gmail.com>
+ <0c2d35cb-cacf-4a81-9b6a-f07fdea9fc07@proxmox.com>
+In-Reply-To: <0c2d35cb-cacf-4a81-9b6a-f07fdea9fc07@proxmox.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 15 Jan 2024 16:00:23 +0400
+Message-ID: <CAJ+F1CJ4F6Kv9Vx_4H+GJ0ME0Q0X4GTm2n6L1JGg-SWFgi18SA@mail.gmail.com>
+Subject: Re: [PATCH] ui/clipboard: avoid crash upon request when clipboard
+ peer is not initialized
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com, 
+ berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82e;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,48 +92,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+Hi
 
-> Alistair Francis <alistair23@gmail.com> writes:
+On Mon, Jan 15, 2024 at 3:48=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
+rote:
 >
->> On Tue, Jan 9, 2024 at 1:43=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@lin=
-aro.org> wrote:
->>>
->>> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
->>>
->>> > From: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> >
->>> > It is initialized with a simple assignment and there is little room f=
-or
->>> > error. In fact, the validation is even more complex.
->>> >
->>> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> > Acked-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
->>> > Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->>> > Acked-by: Alistair Francis <alistair.francis@wdc.com>
->>> > Message-Id: <20231213-riscv-v7-2-a760156a337f@daynix.com>
->>> > Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->>>
->>> ping: along with this are the RiscV maintainers happy for me to take:
->>>
->>>   [PATCH v2 23/43] target/riscv: Remove misa_mxl validation
->>>   [PATCH v2 24/43] target/riscv: Move misa_mxl_max to class
->>>   [PATCH v2 25/43] target/riscv: Validate misa_mxl_max only once
->>>
->>> through my next pull request?
->>
->> Yep! Go for it
+> Am 15.01.24 um 12:33 schrieb Marc-Andr=C3=A9 Lureau:
+> > Hi
+> >
+> > On Mon, Jan 15, 2024 at 3:26=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.co=
+m> wrote:
+> >>
+> >> Am 15.01.24 um 12:15 schrieb Marc-Andr=C3=A9 Lureau:
+> >>> Hi
+> >>>
+> >>> On Mon, Jan 15, 2024 at 2:45=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.=
+com> wrote:
+> >>>>
+> >>>> Am 14.01.24 um 14:51 schrieb Marc-Andr=C3=A9 Lureau:
+> >>>>>>
+> >>>>>> diff --git a/ui/clipboard.c b/ui/clipboard.c
+> >>>>>> index 3d14bffaf8..c13b54d2e9 100644
+> >>>>>> --- a/ui/clipboard.c
+> >>>>>> +++ b/ui/clipboard.c
+> >>>>>> @@ -129,7 +129,8 @@ void qemu_clipboard_request(QemuClipboardInfo =
+*info,
+> >>>>>>      if (info->types[type].data ||
+> >>>>>>          info->types[type].requested ||
+> >>>>>>          !info->types[type].available ||
+> >>>>>> -        !info->owner)
+> >>>>>> +        !info->owner ||
+> >>>>>> +        !info->owner->request)
+> >>>>>>          return;
+> >>>>>
+> >>>>> While that fixes the crash, I think we should handle the situation
+> >>>>> earlier. A clipboard peer shouldn't be allowed to hold the clipboar=
+d
+> >>>>> if it doesn't have the data available or a "request" callback set.
+> >>>>>
+> >>>>
+> >>>> Where should initialization of the cbpeer happen so that we are
+> >>>> guaranteed to do it also for clients that do not set the
+> >>>> VNC_FEATURE_CLIPBOARD_EXT feature? Can the vnc_clipboard_request
+> >>>> function be re-used for clients without that feature or will it be
+> >>>> necessary to add some kind of "dummy" request callback for those cli=
+ents?
+> >>>
+> >>> qemu_clipboard_update() shouldn't accept info as current clipboard if
+> >>> the owner doesn't have the data available or a "request" callback set=
+.
+> >>> This should also be assert() somehow and handled earlier.
+> >>>
+> >>
+> >> The request callback is only initialized in vnc_server_cut_text_caps()
+> >> when the VNC_FEATURE_CLIPBOARD_EXT is enabled. AFAIU, it's perfectly
+> >> fine for clients to use the clipboard with non-extended messages and
+> >> qemu_clipboard_update() should (and currently does) accept those.
+> >>
+> >>> In vnc_client_cut_text_ext() we could detect that situation, but with
+> >>> Daniel's "[PATCH] ui: reject extended clipboard message if not
+> >>> activated", this shouldn't happen anymore iiuc.
+> >>>
+> >>
+> >> Daniel's patch doesn't change the behavior for non-extended messages.
+> >> The problem can still happen with two VNC clients. This is the scenari=
+o
+> >> described in the lower half of my commit message (and why Daniel
+> >> mentions in his patch that it's not sufficient to fix the CVE).
+> >>
+> >> In short: client A does not set the VNC_FEATURE_CLIPBOARD_EXT feature
+> >> and then uses a non-extended VNC_MSG_CLIENT_CUT_TEXT message. This lea=
+ds
+> >> to vnc_client_cut_text() being called and setting the clipboard info
+> >> referencing that client. But here, no request callback is initialized,
+> >> that only happens in vnc_server_cut_text_caps() when the
+> >> VNC_FEATURE_CLIPBOARD_EXT is enabled.
+> >>
+> >> When client B does set the VNC_FEATURE_CLIPBOARD_EXT feature and does
+> >> send an extended VNC_MSG_CLIENT_CUT_TEXT message, the request callback
+> >> will be attempted but it isn't set.
+> >>
+> >
+> > The trouble is when qemu_clipboard_update() is called without data &
+> > without a request callback set. We shouldn't allow that as we have no
+> > means to get the clipboard data then.
+> >
 >
-> Sadly some of the recent changes that went through have created a merge
-> conflict.
->
-> Akihiko,
->
-> Any chance you could re-spin just the MISA_MXL patches?
+> In the above scenario, I'm pretty sure there is data when
+> qemu_clipboard_update() is called. Just no request callback. If we'd
+> reject this, won't that break clients that do not set the
+> VNC_FEATURE_CLIPBOARD_EXT feature and only use non-extended
+> VNC_MSG_CLIENT_CUT_TEXT messages?
 
-Never mind, I think I got it figured out.
+If "data" is already set, then qemu_clipboard_request() returns.
+
+Inverting the condition I suggested above: it's allowed to be the
+clipboard owner if either "data" is set, or a request callback is set.
 
 --=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Marc-Andr=C3=A9 Lureau
 
