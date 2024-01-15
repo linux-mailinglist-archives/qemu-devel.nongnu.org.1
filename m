@@ -2,76 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5355082D2F1
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 02:30:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE51982D30E
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 03:10:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPBmR-0006L0-NZ; Sun, 14 Jan 2024 20:28:47 -0500
+	id 1rPCPC-0003Vg-Q1; Sun, 14 Jan 2024 21:08:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rPBmH-0006KV-3W; Sun, 14 Jan 2024 20:28:39 -0500
-Received: from mail-vk1-xa2b.google.com ([2607:f8b0:4864:20::a2b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rPBmF-0004qJ-CN; Sun, 14 Jan 2024 20:28:36 -0500
-Received: by mail-vk1-xa2b.google.com with SMTP id
- 71dfb90a1353d-4b78b813dd0so1507045e0c.3; 
- Sun, 14 Jan 2024 17:28:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705282113; x=1705886913; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BMyaPqMU+yTQ4jRoDn6GnzzvcQyzXwK5LRTL/BNPcTw=;
- b=ZpTtK74K0eDXo8S6+YNRQtf3lbInyZGVGd5pdh06imHCNGxIFV9l5zXKRxb79uHLmV
- tj+dj0DPWVYp4Sj+9xpLYLmD/tTTwbODb5ZErbAGooj0/FiuW3COxRvn9JQSIIuaR4mM
- 4QdXtWIiYEUw50LbLbs7fPclJ9n9pCaiN0LqSt6r4X+rrhayNSWyupslnqpIRZDyQ053
- HPH8/7gOfYZLlkWZwvgRNY1rGlfVkWDrK8dnCf2XyXyL10E/V4KpiiEEoeGJDH4UP942
- 96C6rZPLXiJ7NoD3Yr3vicyhGJxMt2Z8B5md8AMSPlC6RBbgZ2aCS0v4FlkJxAH3jWHZ
- Tayw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705282113; x=1705886913;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BMyaPqMU+yTQ4jRoDn6GnzzvcQyzXwK5LRTL/BNPcTw=;
- b=jV7NO6crcU9s5Fzes7SaqOg+U0OJL46W83vbsw8F+xTwy5XSzkXaNm9UhrYBnP9YND
- RQTbx1Adg9bgP0UkI+s15PV51FHdCnmsJ5UrRTQYwDUmhdxsaybHYkYmMclTzFsyGEfi
- Me6MZxe4GXTUDt7mFZh8LqLj6OPQ9dQLYoYCaK1uUZDGfOq1qVTbc3/tf0qMHAkRGjwH
- OoxG84aXXGa0qxF7/fVtR0iT9qBcPVWOcfGQZNM+dePFRPOWZunHMQAvOIupuE9ci9LF
- 0R2vliUIaBrSPXvCjvuquqLNjxdWsKvOrO/WeV1RKeFbN9RK+0ZCdHwtpkjPdxL53E1J
- AixA==
-X-Gm-Message-State: AOJu0YyFq3w1kklodREGtE+4WUR9IarghCOphlUSnJwQ8q4z05yw3FXx
- ymME0+zUXpkJbnUI2nvUbA+zt5BosguGLpMvwT4=
-X-Google-Smtp-Source: AGHT+IFGkuCxgIz9VqgFi/4KgMjdNVG5FdQMgvHRrincAJ+XBJgWEuQYtUaeOq1VFK/LsBHO5E2bbopHU2s/AgCJM74=
-X-Received: by 2002:a05:6122:4493:b0:4b7:2940:8fa2 with SMTP id
- cz19-20020a056122449300b004b729408fa2mr2032622vkb.12.1705282113190; Sun, 14
- Jan 2024 17:28:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <guoguangyao18@mails.ucas.ac.cn>)
+ id 1rPCP9-0003VP-3M
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 21:08:47 -0500
+Received: from smtp81.cstnet.cn ([159.226.251.81] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <guoguangyao18@mails.ucas.ac.cn>)
+ id 1rPCP6-0001ZD-5h
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 21:08:46 -0500
+Received: from nano.loongson.cn (unknown [123.125.11.126])
+ by APP-03 (Coremail) with SMTP id rQCowABnbrqSk6Rl5OBrBg--.43262S2;
+ Mon, 15 Jan 2024 10:08:30 +0800 (CST)
+From: guoguangyao <guoguangyao18@mails.ucas.ac.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, pbonzini@redhat.com, eduardo@habkost.net,
+ guoguangyao <guoguangyao18@mails.ucas.ac.cn>
+Subject: [PATCH] target/i386: Eip error in x86_64-softmmu
+Date: Mon, 15 Jan 2024 10:08:04 +0800
+Message-Id: <20240115020804.30272-1-guoguangyao18@mails.ucas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240112140201.127083-1-dbarboza@ventanamicro.com>
-In-Reply-To: <20240112140201.127083-1-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 15 Jan 2024 11:28:06 +1000
-Message-ID: <CAKmqyKOoOfiZ2NOs=NsbXCskXT83KaBWH6T2y4yWLmmuEEXkzQ@mail.gmail.com>
-Subject: Re: [PATCH v5 0/8] target/riscv: deprecate riscv_cpu_options[]
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2b;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2b.google.com
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: rQCowABnbrqSk6Rl5OBrBg--.43262S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrZw4UKw13ZF4DZr1ftF1DKFg_yoWkWFb_AF
+ 4fJrs7Wr40vr1jvF10kr15Xr10ya1ftr1vyrsrKay8GF1j9r4DJa1kW3yxZrs7CF4fXr9x
+ AwnxuF1a9r1a9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUIcSsGvfJTRUUUb4kFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+ 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+ A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+ Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+ 1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+ Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8JV
+ WxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+ 0VAGYxC7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
+ AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCI
+ c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
+ AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_
+ Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfU0_-PUU
+ UUU
+X-Originating-IP: [123.125.11.126]
+X-CM-SenderInfo: 5jxrw35dqj5trrryqzpdlo2hpxfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.81;
+ envelope-from=guoguangyao18@mails.ucas.ac.cn; helo=cstnet.cn
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,50 +72,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Jan 13, 2024 at 12:05=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> Hi,
->
-> This version is a resend of patches 10 to 17 from v4, reviewed-by and
-> tested-by tags added, rebased with Alistair's riscv-to-apply.next.
-> Patches 01 to 09 of v4 are already queued.
->
-> All patches acked.
->
-> Changes from v4:
-> - patches 1 to 9: already queued
-> - patches 10 to 17: reviewed-by and tested-by tags added (tested-by
->   not added in KVM specific patches)
-> - v4 link: https://lore.kernel.org/qemu-riscv/20240105230546.265053-1-dba=
-rboza@ventanamicro.com/
->
-> Daniel Henrique Barboza (8):
->   target/riscv: create finalize_features() for KVM
->   target/riscv: move 'cbom_blocksize' to riscv_cpu_properties[]
->   target/riscv: move 'cbop_blocksize' to riscv_cpu_properties[]
->   target/riscv: move 'cboz_blocksize' to riscv_cpu_properties[]
->   target/riscv: remove riscv_cpu_options[]
->   target/riscv/cpu.c: move 'mvendorid' to riscv_cpu_properties[]
->   target/riscv/cpu.c: move 'mimpid' to riscv_cpu_properties[]
->   target/riscv/cpu.c: move 'marchid' to riscv_cpu_properties[]
+When closing PCREL, qemu-system-x86_64 run into error.
+Eip modification here leads to the result. Using s->pc
+in func gen_update_eip_next() solves the problem.
 
-Thanks!
+Fixes: b5e0d5d22fbf("target/i386: Fix 32-bit wrapping of pc/eip computation")
 
-Applied to riscv-to-apply.next
+Signed-off-by: guoguangyao <guoguangyao18@mails.ucas.ac.cn>
 
-Alistair
+	modified:   target/i386/tcg/translate.c
+---
+ target/i386/tcg/translate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->
->  target/riscv/cpu.c           | 377 +++++++++++++++++++++++------------
->  target/riscv/cpu.h           |   2 +-
->  target/riscv/kvm/kvm-cpu.c   | 100 ++++++----
->  target/riscv/kvm/kvm_riscv.h |   1 +
->  target/riscv/tcg/tcg-cpu.c   |   4 -
->  5 files changed, 311 insertions(+), 173 deletions(-)
->
-> --
-> 2.43.0
->
->
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index e1eb82a5c6..6f57d5a8a5 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -567,9 +567,9 @@ static void gen_update_eip_next(DisasContext *s)
+     if (tb_cflags(s->base.tb) & CF_PCREL) {
+         tcg_gen_addi_tl(cpu_eip, cpu_eip, s->pc - s->pc_save);
+     } else if (CODE64(s)) {
+-        tcg_gen_movi_tl(cpu_eip, s->base.pc_next);
++        tcg_gen_movi_tl(cpu_eip, s->pc);
+     } else {
+-        tcg_gen_movi_tl(cpu_eip, (uint32_t)(s->base.pc_next - s->cs_base));
++        tcg_gen_movi_tl(cpu_eip, (uint32_t)(s->pc - s->cs_base));
+     }
+     s->pc_save = s->pc;
+ }
+-- 
+2.34.1
+
 
