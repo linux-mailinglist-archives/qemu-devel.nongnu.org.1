@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D9EE82E290
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 23:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1D282E28C
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 23:26:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPVP8-0000cQ-Vn; Mon, 15 Jan 2024 17:26:03 -0500
+	id 1rPVPB-0000dC-3G; Mon, 15 Jan 2024 17:26:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rPVP6-0000bD-Nz
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 17:26:00 -0500
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1rPVP9-0000cg-N5
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 17:26:03 -0500
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rPVP5-00065q-3c
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 17:26:00 -0500
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6d9af1f12d5so8001545b3a.3
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 14:25:58 -0800 (PST)
+ id 1rPVP8-00066T-82
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 17:26:03 -0500
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3bd6581bca0so1707031b6e.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 14:26:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1705357557; x=1705962357; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1705357560; x=1705962360; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=c/bYy377eBAB8ujfxwt+DVHep63OPHeK0P6n1e/iX68=;
- b=Vav3GmjRgkXJwSaWLudvPqAKXJjdFE/fIOl/nJyKNFwEnDycuOnmlgA/SbOJtu/Xsm
- UzIfJiL4YX0cbF1VSPIT07QoAzZHtaPKMpTjGF3KPr59rW2VPiBLywCgUIsIY6piAfFh
- ZsIhmNQBU7y/aNAc+r0Q7CncEy5en8Y/gC99icdczitJN7r7bmJtMSVMzxdlhoQKB5HI
- /Much42Um4A3aiC7vPWmDVzQgDdHqCZ4uSF4+csPfQpNe5abtDd/7j9v9Wl1gZwm8Y/F
- +QhQBdSqozPGwag9gF0ItV/RzH88qSVHgTgrCoooS+XwxLtS4XBImnVEAkQ1mMyKuE0a
- NXeA==
+ bh=rX044LrlQrH26fjBGEvI/gb8sPqL+hsQy6kx82uHSvw=;
+ b=LbDLmuzer0p7jGUQvzlO6GIcFjMuZxwydItO0Ecw1iiIWK8fge4RNSegf0Kcl+DDfe
+ W+ZPWuy+r3tjUmSTP0GQjs/fXA8umyxnmxNumXf1QUn45LmMWKISSSSkNUq+OXxpR80p
+ UycX/1wiDoIgOKjaxVDW+shcjqvUDISFn7fm8hlIF4t5+6G5X+kn78yMs1tXLdzg4Yvn
+ 1zNaIK6LRZYBEwIPB5eZDNg3a5pGleNXHaHkmkrDiGqvLgwUZ9v9noS3kfshiRQ8RzfB
+ 6bdjI/oSIpL8mn4tnhZcn4CPUoqP9FrDIcI7ImYBIO/JwRM02ns9gwKaVEhWTCVJrPRZ
+ F2BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705357557; x=1705962357;
+ d=1e100.net; s=20230601; t=1705357560; x=1705962360;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=c/bYy377eBAB8ujfxwt+DVHep63OPHeK0P6n1e/iX68=;
- b=X0QnDjhDWysbV+A6GpXgevObdmkMDXwE4GlrSqP8H3td50XJcBIwCDEiR/PdOFLI7g
- uWbx/T1B0LXdnf4Dn8xXoVrG+x+nRxbGAek38RpwTHNKx+MLfbKstP8EUE16qtZr5gQQ
- AGCEaeiotKTER4ZsOW3gEOd8maZpUFCKkenoLRSfKkG8doduATjX8k6KOQFnemdsP865
- hwcCR2dfFuy8/bs10zdtyq/Yr23Hs4TmGfH7BQD2BNNDyBhkmFSvyiTOYZDD5Aw9r3/J
- BXHwleVctsC/TeWrQG6gA0bAJ/p1em3baNC6aN/2xsi3pf7uQDVYLO73ynZMJFyUWfiK
- fm8A==
-X-Gm-Message-State: AOJu0YyKPR8JgrGASgyo8UtOcQLSXudlVlsSiGjifyKt9ddGcvqEXA3T
- SvFK0zINxwpMr8UFHJt17Mmd2VW2Y8rW7NiB+0CBfYNfvz3I7g==
-X-Google-Smtp-Source: AGHT+IHWwmlI0tVD1ma1PegEUkdASS4ig7dU46xONvvsVTHZGy4SJo3N6Os3aT26BjiJ+aBw+8qOwg==
-X-Received: by 2002:a05:6a21:9207:b0:19a:fb32:2009 with SMTP id
- tl7-20020a056a21920700b0019afb322009mr3069499pzb.89.1705357557515; 
- Mon, 15 Jan 2024 14:25:57 -0800 (PST)
+ bh=rX044LrlQrH26fjBGEvI/gb8sPqL+hsQy6kx82uHSvw=;
+ b=l6/zRyKnH3QRJDT0HR1ApcV3Nn+n0gV8Mfm4Ifp8WrxUIyfh9OXmVz1+jac8usDzYT
+ Rbn8zXd6HeUrSYt4dYLDSMj4MwqBAGAH00lHbn77JZLFuvzD4QA/Lkdk5Gw9p8snhcBx
+ C4166PJdrFLQJ2aORaNM2l1zLhmjupJTfx8aW2C+8nt4i1nHMPgN2Or6IAr7vCMmRbnJ
+ levm/BvLvp15Ake6V3+ho3kqWhLqOOjYzb8iYAjOwC/uwVmB/7KiOC4gu+OBs+oplnUo
+ eFTocAg78AX4vgH/giNiSmXjMK2BDQO+MNfxx/ub0Zhq8Vic9HATH3WhmyOzJGPfWcPx
+ 811Q==
+X-Gm-Message-State: AOJu0YxEcbaiaUBhau6bwN+6TmzcxSCEPRreTBjfsFchQ10ZMd+mozQE
+ P8uk5t+tEWW/0d4hYKqNr5yZt0KLESEwK8eecT/sWNjwOzJfDA==
+X-Google-Smtp-Source: AGHT+IELmtx4XXKQw7Vi5ZbQuHagT5cBG9u+Fcyidou4860BGqW6Un/rJhQPDwaTv+LmMufy7kTPTQ==
+X-Received: by 2002:a05:6808:179f:b0:3bd:3e96:a8ab with SMTP id
+ bg31-20020a056808179f00b003bd3e96a8abmr6803852oib.53.1705357560749; 
+ Mon, 15 Jan 2024 14:26:00 -0800 (PST)
 Received: from grind.. ([152.234.123.64]) by smtp.gmail.com with ESMTPSA id
- ks19-20020a056a004b9300b006d977f70cd5sm8125940pfb.23.2024.01.15.14.25.54
+ ks19-20020a056a004b9300b006d977f70cd5sm8125940pfb.23.2024.01.15.14.25.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jan 2024 14:25:57 -0800 (PST)
+ Mon, 15 Jan 2024 14:26:00 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  richard.henderson@linaro.org, max.chou@sifive.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 07/12] target/riscv/vector_helper.c: use 'vlenb'
-Date: Mon, 15 Jan 2024 19:25:23 -0300
-Message-ID: <20240115222528.257342-8-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 08/12] target/riscv/vector_helper.c: use vlenb in
+ HELPER(vsetvl)
+Date: Mon, 15 Jan 2024 19:25:24 -0300
+Message-ID: <20240115222528.257342-9-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240115222528.257342-1-dbarboza@ventanamicro.com>
 References: <20240115222528.257342-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x233.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,98 +94,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use 'cpu->cfg.vlenb' instead of 'cpu->cfg.vlen >> 3'.
+Use the new 'vlenb' CPU config to validate fractional LMUL. The original
+comparison is done with 'vlen' and 'sew', both in bits. Adjust the shift
+to use vlenb.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/vector_helper.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ target/riscv/vector_helper.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index c1c3a4d1ea..cb944229b0 100644
+index cb944229b0..9e3ae4b5d3 100644
 --- a/target/riscv/vector_helper.c
 +++ b/target/riscv/vector_helper.c
-@@ -558,7 +558,7 @@ vext_ldst_whole(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
- {
-     uint32_t i, k, off, pos;
-     uint32_t nf = vext_nf(desc);
--    uint32_t vlenb = riscv_cpu_cfg(env)->vlen >> 3;
-+    uint32_t vlenb = riscv_cpu_cfg(env)->vlenb;
-     uint32_t max_elems = vlenb >> log2_esz;
+@@ -45,9 +45,13 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
+                                             xlen - 1 - R_VTYPE_RESERVED_SHIFT);
  
-     k = env->vstart / max_elems;
-@@ -929,7 +929,7 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1, void *vs2,   \
- {                                                             \
-     uint32_t vl = env->vl;                                    \
-     uint32_t vm = vext_vm(desc);                              \
--    uint32_t total_elems = riscv_cpu_cfg(env)->vlen;          \
-+    uint32_t total_elems = riscv_cpu_cfg(env)->vlenb << 3;    \
-     uint32_t vta_all_1s = vext_vta_all_1s(desc);              \
-     uint32_t i;                                               \
-                                                               \
-@@ -967,7 +967,7 @@ void HELPER(NAME)(void *vd, void *v0, target_ulong s1,          \
- {                                                               \
-     uint32_t vl = env->vl;                                      \
-     uint32_t vm = vext_vm(desc);                                \
--    uint32_t total_elems = riscv_cpu_cfg(env)->vlen;            \
-+    uint32_t total_elems = riscv_cpu_cfg(env)->vlenb << 3;      \
-     uint32_t vta_all_1s = vext_vta_all_1s(desc);                \
-     uint32_t i;                                                 \
-                                                                 \
-@@ -1171,7 +1171,7 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1, void *vs2,   \
- {                                                             \
-     uint32_t vm = vext_vm(desc);                              \
-     uint32_t vl = env->vl;                                    \
--    uint32_t total_elems = riscv_cpu_cfg(env)->vlen;          \
-+    uint32_t total_elems = riscv_cpu_cfg(env)->vlenb << 3;    \
-     uint32_t vta_all_1s = vext_vta_all_1s(desc);              \
-     uint32_t vma = vext_vma(desc);                            \
-     uint32_t i;                                               \
-@@ -1236,7 +1236,7 @@ void HELPER(NAME)(void *vd, void *v0, target_ulong s1, void *vs2,   \
- {                                                                   \
-     uint32_t vm = vext_vm(desc);                                    \
-     uint32_t vl = env->vl;                                          \
--    uint32_t total_elems = riscv_cpu_cfg(env)->vlen;                \
-+    uint32_t total_elems = riscv_cpu_cfg(env)->vlenb << 3;          \
-     uint32_t vta_all_1s = vext_vta_all_1s(desc);                    \
-     uint32_t vma = vext_vma(desc);                                  \
-     uint32_t i;                                                     \
-@@ -3971,7 +3971,7 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1, void *vs2,   \
- {                                                             \
-     uint32_t vm = vext_vm(desc);                              \
-     uint32_t vl = env->vl;                                    \
--    uint32_t total_elems = riscv_cpu_cfg(env)->vlen;          \
-+    uint32_t total_elems = riscv_cpu_cfg(env)->vlenb << 3;    \
-     uint32_t vta_all_1s = vext_vta_all_1s(desc);              \
-     uint32_t vma = vext_vma(desc);                            \
-     uint32_t i;                                               \
-@@ -4011,7 +4011,7 @@ void HELPER(NAME)(void *vd, void *v0, uint64_t s1, void *vs2,       \
- {                                                                   \
-     uint32_t vm = vext_vm(desc);                                    \
-     uint32_t vl = env->vl;                                          \
--    uint32_t total_elems = riscv_cpu_cfg(env)->vlen;                \
-+    uint32_t total_elems = riscv_cpu_cfg(env)->vlenb << 3;          \
-     uint32_t vta_all_1s = vext_vta_all_1s(desc);                    \
-     uint32_t vma = vext_vma(desc);                                  \
-     uint32_t i;                                                     \
-@@ -4528,7 +4528,7 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1,          \
-                   uint32_t desc)                          \
- {                                                         \
-     uint32_t vl = env->vl;                                \
--    uint32_t total_elems = riscv_cpu_cfg(env)->vlen;      \
-+    uint32_t total_elems = riscv_cpu_cfg(env)->vlenb << 3;\
-     uint32_t vta_all_1s = vext_vta_all_1s(desc);          \
-     uint32_t i;                                           \
-     int a, b;                                             \
-@@ -4615,7 +4615,7 @@ static void vmsetm(void *vd, void *v0, void *vs2, CPURISCVState *env,
- {
-     uint32_t vm = vext_vm(desc);
-     uint32_t vl = env->vl;
--    uint32_t total_elems = riscv_cpu_cfg(env)->vlen;
-+    uint32_t total_elems = riscv_cpu_cfg(env)->vlenb << 3;
-     uint32_t vta_all_1s = vext_vta_all_1s(desc);
-     uint32_t vma = vext_vma(desc);
-     int i;
+     if (lmul & 4) {
+-        /* Fractional LMUL - check LMUL * VLEN >= SEW */
++        /*
++         * Fractional LMUL: check VLEN * LMUL >= SEW,
++         * or VLEN * (8 - lmul) >= SEW. Using VLENB we
++         * need 3 less shifts rights.
++         */
+         if (lmul == 4 ||
+-            cpu->cfg.vlen >> (8 - lmul) < sew) {
++            cpu->cfg.vlenb >> (8 - 3 - lmul) < sew) {
+             vill = true;
+         }
+     }
 -- 
 2.43.0
 
