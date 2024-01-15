@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3118982E03A
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 19:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 975B382E075
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 20:10:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPS09-0005bA-Ne; Mon, 15 Jan 2024 13:48:01 -0500
+	id 1rPSKY-0000oL-IQ; Mon, 15 Jan 2024 14:09:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rPS05-0005b0-2v
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 13:47:57 -0500
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1rPSKW-0000oC-5t
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 14:09:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rPS03-0002Fc-Eo
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 13:47:56 -0500
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1rPSKU-0005bT-Fg
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 14:09:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705344473;
+ s=mimecast20190719; t=1705345741;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=x92BVtARW4xF5AKJYczxYLETSVMseXN6hfCjxMOJfDg=;
- b=T5Lvt8ZfMfOaLzNFVw/f9L4fc6AyqvmHycBhMJei+z8PijQzWQepJUct5Fb5zaUWp6ixKy
- lLnWph6poWZtzhkysDaBy3SILEVxK3Ak1tm7nMt790c/Ko5CnkJ5f1OTFdlgYZjYfgCgLZ
- IPRtIdy2SHHW0hKSQG18LQq0j/fHfNI=
+ bh=9+gzVl6GKKBag+n9vDJ3Ju2VlWaCs+TVcc8LGmuCkMY=;
+ b=N1VVNMl+UTFRvwh4QGr5fPdVAiIvMbu+x1fMvIpavJj+NGAFN/7zRVFbZrM5QtTBObqO3q
+ VmPsOZGcLctlY7ZEYV2KjcKX9E3c6S3HgPXGgPEnCaG8mVFMEUivI1E9ducKE+aHTeNF2W
+ tZPm0KPTlE6WgOPlnOwA0Xp6eNMHKpg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-306-q_zl2-NWNTW3PQ0WnBv7sw-1; Mon, 15 Jan 2024 13:47:46 -0500
-X-MC-Unique: q_zl2-NWNTW3PQ0WnBv7sw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ us-mta-621-wQgSzJ8MM0G3sUQQF0iHog-1; Mon, 15 Jan 2024 14:07:43 -0500
+X-MC-Unique: wQgSzJ8MM0G3sUQQF0iHog-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4DE3882DFE2;
- Mon, 15 Jan 2024 18:47:46 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.194])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D24645B7B;
- Mon, 15 Jan 2024 18:47:45 +0000 (UTC)
-Date: Mon, 15 Jan 2024 13:47:39 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Lingfeng Yang <lfy@google.com>
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-devel@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: Re: [PATCH] coroutine-ucontext: Save fake stack for pooled coroutine
-Message-ID: <20240115184739.GB1143584@fedora>
-References: <20240112-asan-v1-1-e330f0d0032c@daynix.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E7173811E9C;
+ Mon, 15 Jan 2024 19:07:42 +0000 (UTC)
+Received: from [10.39.193.170] (unknown [10.39.193.170])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 26EE8492BC6;
+ Mon, 15 Jan 2024 19:07:42 +0000 (UTC)
+Message-ID: <385fc0d8-2c07-0645-09d5-4f790d5b7dfd@redhat.com>
+Date: Mon, 15 Jan 2024 20:07:41 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="THfJBBUn0xFa7HUe"
-Content-Disposition: inline
-In-Reply-To: <20240112-asan-v1-1-e330f0d0032c@daynix.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+Subject: Re: [PATCH 3/3] tests/acpi: Update virt/SSDT.memhp
+Content-Language: en-US
+To: Bin Meng <bmeng.cn@gmail.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>
+Cc: Bin Meng <bin.meng@windriver.com>, qemu-devel@nongnu.org
+References: <20240115043431.3900922-1-bin.meng@windriver.com>
+ <20240115043431.3900922-4-bin.meng@windriver.com>
+ <87le8qkepv.fsf@draig.linaro.org>
+ <CAEUhbmUoyNi=3uSwiFPGdb25_a-0zwQavbni4T+8jMJJFJH01g@mail.gmail.com>
+From: Laszlo Ersek <lersek@redhat.com>
+In-Reply-To: <CAEUhbmUoyNi=3uSwiFPGdb25_a-0zwQavbni4T+8jMJJFJH01g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -82,100 +83,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 1/15/24 15:46, Bin Meng wrote:
+> On Mon, Jan 15, 2024 at 7:40 PM Alex Bennée <alex.bennee@linaro.org> wrote:
+>>
+>> Bin Meng <bin.meng@windriver.com> writes:
+>>
+>>> The Arm dtb changes caused an address change:
+>>>
+>>>  DefinitionBlock ("", "SSDT", 1, "BOCHS ", "NVDIMM", 0x00000001)
+>>>  {
+>>>      [ ... ]
+>>> -    Name (MEMA, 0x43C80000)
+>>> +    Name (MEMA, 0x43D80000)
+>>>  }
+>>
+>> I'm confused by why this changes. Isn't this declaring the size of a
+>> NVDIMM region of the memory map? Why does a DTB change affect an ACPI
+>> based boot?
+>>
+> 
+> I have no idea too. I suspect that's because the AllocateAlignedPages
+> call to allocate a 1 MiB aligned address in the BiosTableTest.c is
+> affected by the shrinked DTB now.
+> 
+> + Laszlo who might know the root cause.
 
---THfJBBUn0xFa7HUe
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Just speculating:
 
-On Fri, Jan 12, 2024 at 07:36:19PM +0900, Akihiko Odaki wrote:
-> Coroutine may be pooled even after COROUTINE_TERMINATE if
-> CONFIG_COROUTINE_POOL is enabled and fake stack should be saved in
-> such a case to keep AddressSanitizerUseAfterReturn working. Even worse,
-> I'm seeing stack corruption without fake stack being saved.
->=20
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  util/coroutine-ucontext.c | 21 +++++++++++++++++++--
->  1 file changed, 19 insertions(+), 2 deletions(-)
+from "docs/specs/acpi_nvdimm.rst":
 
-Adding Marc-Andr=E9 Lureau and Lingfeng Yang, who authored the code in
-question.
+Memory:
+   QEMU uses BIOS Linker/loader feature to ask BIOS to allocate a memory
+   page and dynamically patch its address into an int32 object named "MEMA"
+   in ACPI.
 
-Stefan
+Therefore any QEMU-side change that affects memory allocations in the guest may affect the ACPI contents (captured later).
 
->=20
-> diff --git a/util/coroutine-ucontext.c b/util/coroutine-ucontext.c
-> index 7b304c79d942..e62ced5d6779 100644
-> --- a/util/coroutine-ucontext.c
-> +++ b/util/coroutine-ucontext.c
-> @@ -124,8 +124,9 @@ void start_switch_fiber_asan(CoroutineAction action, =
-void **fake_stack_save,
->  {
->  #ifdef CONFIG_ASAN
->      __sanitizer_start_switch_fiber(
-> -            action =3D=3D COROUTINE_TERMINATE ? NULL : fake_stack_save,
-> -            bottom, size);
-> +        !IS_ENABLED(CONFIG_COROUTINE_POOL) && action =3D=3D COROUTINE_TE=
-RMINATE ?
-> +            NULL : fake_stack_save,
-> +        bottom, size);
->  #endif
->  }
-> =20
-> @@ -269,10 +270,26 @@ static inline void valgrind_stack_deregister(Corout=
-ineUContext *co)
->  #endif
->  #endif
-> =20
-> +#if defined(CONFIG_ASAN) && defined(CONFIG_COROUTINE_POOL)
-> +static void coroutine_fn terminate(void *opaque)
-> +{
-> +    CoroutineUContext *to =3D DO_UPCAST(CoroutineUContext, base, opaque);
-> +
-> +    __sanitizer_start_switch_fiber(NULL, to->stack, to->stack_size);
-> +    siglongjmp(to->env, COROUTINE_ENTER);
-> +}
-> +#endif
-> +
->  void qemu_coroutine_delete(Coroutine *co_)
->  {
->      CoroutineUContext *co =3D DO_UPCAST(CoroutineUContext, base, co_);
-> =20
-> +#if defined(CONFIG_ASAN) && defined(CONFIG_COROUTINE_POOL)
-> +    co_->entry_arg =3D qemu_coroutine_self();
-> +    co_->entry =3D terminate;
-> +    qemu_coroutine_switch(co_->entry_arg, co_, COROUTINE_ENTER);
-> +#endif
-> +
->  #ifdef CONFIG_VALGRIND_H
->      valgrind_stack_deregister(co);
->  #endif
->=20
-> ---
-> base-commit: f614acb7450282a119d85d759f27eae190476058
-> change-id: 20240112-asan-eb695c769f40
->=20
-> Best regards,
-> --=20
-> Akihiko Odaki <akihiko.odaki@daynix.com>
->=20
+I don't know what the DTB change at hand was, but if (for example) the DTB has grown significantly, that could lead to this. The guest firmware stashes a dynamically allocated copy of the DTB, early on in the PEI phase. Some growth there may change the initial memory map of the DXE phase, which could affect the ACPI linker/loader's allocation operations.
 
---THfJBBUn0xFa7HUe
-Content-Type: application/pgp-signature; name="signature.asc"
+If you can attach the DTB before-after, and the *verbose* firmware log before-after, we might find out finer details.
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmWlfcsACgkQnKSrs4Gr
-c8i1ZggAmrp9uFYrfat3oDCGLsnUdf/eIZ/SjUB9vWxmTv2WtxexjZQrB+nPL8Qt
-q7voU9q+puTMEqqRGSi6NBG/Xwh+0rOXex8oTk2tVvVH9yJqKNly5BE3ZFdhgmvj
-Ltf5yMyGqyg6gqMGZVJS9PoQBzU0K8+xryUsvI9NXQeGSLuUUaxd09GAWDLcmVyC
-MMkGlSmrrAGmaMxtWF3sbrZnlNM7jbzk4yYCF93nK50bsXmzIAVXM77RFSSP1Kvt
-vXoFvFGk7OwjtHZmNQKSdVG/bAO90u5dUAku/05PWiJo9+tEA9L6371Q3VsaHyzw
-Xd969V6E1Z/kFrfqmwoNY2GqgxHPZw==
-=+d3h
------END PGP SIGNATURE-----
-
---THfJBBUn0xFa7HUe--
+Laszlo
 
 
