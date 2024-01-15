@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D859C82D7C0
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:49:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D3E482D7D5
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:52:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPKWE-0000zz-JD; Mon, 15 Jan 2024 05:48:38 -0500
+	id 1rPKZh-000237-3H; Mon, 15 Jan 2024 05:52:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rPKWC-0000zo-6K
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:48:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rPKZf-00022j-6P
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:52:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rPKWA-0004hv-JY
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:48:35 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rPKZd-000607-N4
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:52:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705315713;
+ s=mimecast20190719; t=1705315928;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=N+r1FoRmXYQr65X11BrgkhzeFmRTXfgpxw3iPkTFn0g=;
- b=WjjRpz5n27ZIqj+qUsIYDmem2HCHsKansmDQNk4x6TxBtja1tdOUydfl6TMbNcQAY3senS
- MqOpw3wJPDfsG68bCIYMbZvV5+oRifyBXmVYnHsucfNyWr2NWBFPb/z81yg2+ugTzHl414
- eDwFPlwlfE1lx8B757gJoubrN6glUFo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=IdKGR41x6yHhHlRgHmTbwtPCgHH5GBz3fb/r/2Prq5A=;
+ b=JiwYb9+r4heSXqkoaBi3PnxYcOzggjO3b264tDEpRB6DCsnqrtQ6X8dSGsqI9o/P07I7VW
+ vtS1VJdwZiodjXhJ7q9QGouKWM2fv/aGqwMeuTQpo5tycQA8SKLdZr3Sv4cPk7FKM7pEYS
+ UKIlzoI4RFkcyYkdh65uZvGBV/E5t4s=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-537-U0BKtBqdNY6lygX2JKyIpA-1; Mon, 15 Jan 2024 05:48:30 -0500
-X-MC-Unique: U0BKtBqdNY6lygX2JKyIpA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3368c707b03so5088176f8f.3
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 02:48:30 -0800 (PST)
+ us-mta-152-JtxwEuyGMBCcn-_CiCkdGg-1; Mon, 15 Jan 2024 05:52:01 -0500
+X-MC-Unique: JtxwEuyGMBCcn-_CiCkdGg-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-40e53200380so46311205e9.3
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 02:52:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705315709; x=1705920509;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :references:cc:to:content-language:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=N+r1FoRmXYQr65X11BrgkhzeFmRTXfgpxw3iPkTFn0g=;
- b=f/gJI08kscOib9YyS+kY5zZdhjb2wpKToJ1pEf9u6FuMJZr5JaAJYUDTvYL2TtABF9
- 2WZJ/pGcJifEnopgIfvERPjvBc5aT5WaEXzFSPIkIr36qxdhOyYD7MQ9ddiF5p31JleH
- JAIRlz4Rtlwwie8koM1RitoRkUn0ldnnuhEqeqJQGiMsb3FzBCJdgiRayTJoUGsejCaL
- 8i1sNXww4NNV4SS5d0gVCBiIegr2pTrP88pIUFKRZ4mWcLWKkzz6CjmKyodpjXmCPL8N
- GL3IXR1w9rs9Q4wqzysYsnwjcbyeF1/6RxPmstEMnCXRtIaDKWKoK+DYFvFf9UfaxRbG
- FI3Q==
-X-Gm-Message-State: AOJu0YweDvRIEy++QW7vOYkxp3hRbLYX3K46tQk4j6s4uY6xxpZfBFrU
- bq9ceNsVF3Vmpojz+geZJgJIdvFRnYOxPiGMsDD2obTAY9Sc7z7b4fRMzLlGF/TFnZQAn+orVRg
- Xl7PitqoG7yidloeLMo0LCwU=
-X-Received: by 2002:a5d:5451:0:b0:337:a974:2bd7 with SMTP id
- w17-20020a5d5451000000b00337a9742bd7mr479787wrv.6.1705315709478; 
- Mon, 15 Jan 2024 02:48:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGIBSZqiNC3LqOnpIoDBBG4uUOQTn0KUMp9htwQY7uNdZ5eNJ8eDCfxIBpzT5efvEUJXZhaaA==
-X-Received: by 2002:a5d:5451:0:b0:337:a974:2bd7 with SMTP id
- w17-20020a5d5451000000b00337a9742bd7mr479783wrv.6.1705315709136; 
- Mon, 15 Jan 2024 02:48:29 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705315920; x=1705920720;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :references:cc:to:from:content-language:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=IdKGR41x6yHhHlRgHmTbwtPCgHH5GBz3fb/r/2Prq5A=;
+ b=lMIB5Qs2sWQPLR9DaKCKRQ7IGIpkyd67Lf6ZsjzgutQIZmomYUcFPjXNPa+DAbtZLl
+ UQCtXjlvLO2QdvGuvgWHbl3wHIWTlpieyx8mSXMa8IsGPf0phfpF5rCXE/c95/8rukHU
+ w7xo+KDuRh1YmaWC7Qja51pDumXlLYo44h5yDuJowyyeR81RjPAbJmx5k6PtOpqOi6EP
+ IKyISfsFdielsYHC9NULtk8JYyp7jFa6QU93uSM256UkaZfeAeU0e765AhwBh2+X6otI
+ fj09j4W0vdLDqZ8rMobSZAk5CUF/v5o5d6R8VNANoZtdm+/vSNyf1E7RlCPVkTx26SMR
+ 0j2w==
+X-Gm-Message-State: AOJu0YxFPuojPv4OyI+Tjdd1w5V019Tic+BeXUTkdUnKuyuCfosWh5Om
+ x1kRFtjjggOSu2KrGlj+xNe2vdj6ou7GNSgjigLmgtSznPmAdL4IrJKX0mTqFQBycAagJ03y9HQ
+ VyxNw5N7qoEDbJWQ4j5mHLyE=
+X-Received: by 2002:a7b:c7c7:0:b0:40e:351d:9b45 with SMTP id
+ z7-20020a7bc7c7000000b0040e351d9b45mr2828107wmk.80.1705315920790; 
+ Mon, 15 Jan 2024 02:52:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEnW5SoNMZpuXe1rdo4EOIkkRDzQcKtpFsLzsl28l1AIGN7lc6SKOSAWKeFxy19TKE6maOOsA==
+X-Received: by 2002:a7b:c7c7:0:b0:40e:351d:9b45 with SMTP id
+ z7-20020a7bc7c7000000b0040e351d9b45mr2828095wmk.80.1705315920421; 
+ Mon, 15 Jan 2024 02:52:00 -0800 (PST)
 Received: from ?IPV6:2003:cb:c71e:fb00:b32e:3358:38cf:3cbc?
  (p200300cbc71efb00b32e335838cf3cbc.dip0.t-ipconnect.de.
  [2003:cb:c71e:fb00:b32e:3358:38cf:3cbc])
  by smtp.gmail.com with ESMTPSA id
- x1-20020adfcc01000000b00336be33649csm11573291wrh.9.2024.01.15.02.48.28
+ d16-20020adf9c90000000b003366c058509sm11525438wre.23.2024.01.15.02.51.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 Jan 2024 02:48:28 -0800 (PST)
-Message-ID: <6e0d1b8f-b33f-4172-85d5-a588a0349b5c@redhat.com>
-Date: Mon, 15 Jan 2024 11:48:27 +0100
+ Mon, 15 Jan 2024 02:52:00 -0800 (PST)
+Message-ID: <40d069b7-d55f-4acf-abfa-2a8817f25258@redhat.com>
+Date: Mon, 15 Jan 2024 11:51:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH V2 00/11] allow cpr-reboot for vfio
 Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
 To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
@@ -77,7 +78,7 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Marc-Andre Lureau <marcandre.lureau@redhat.com>
 References: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
-From: David Hildenbrand <david@redhat.com>
+ <6e0d1b8f-b33f-4172-85d5-a588a0349b5c@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -123,17 +124,17 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
+In-Reply-To: <6e0d1b8f-b33f-4172-85d5-a588a0349b5c@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -48
 X-Spam_score: -4.9
 X-Spam_bar: ----
 X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -151,20 +152,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12.01.24 16:04, Steve Sistare wrote:
-> Allow cpr-reboot for vfio if the guest is in the suspended runstate.  The
-> guest drivers' suspend methods flush outstanding requests and re-initialize
-> the devices, and thus there is no device state to save and restore.  The
-> user is responsible for suspending the guest before initiating cpr, such as
-> by issuing guest-suspend-ram to the qemu guest agent.
+On 15.01.24 11:48, David Hildenbrand wrote:
+> On 12.01.24 16:04, Steve Sistare wrote:
+>> Allow cpr-reboot for vfio if the guest is in the suspended runstate.  The
+>> guest drivers' suspend methods flush outstanding requests and re-initialize
+>> the devices, and thus there is no device state to save and restore.  The
+>> user is responsible for suspending the guest before initiating cpr, such as
+>> by issuing guest-suspend-ram to the qemu guest agent.
+> 
+> Can you briefly explain what cpr-reboot is, or do you have a pointer to
+> some more details?
+> 
+> What is is good for, why would you use it, how does it work?
+> 
+> I *suspect* that you want to live-migrate a VM with vfio devices
+> attached, whereby you don't want to migrate device state.
+> 
 
-Can you briefly explain what cpr-reboot is, or do you have a pointer to 
-some more details?
+Ah, found it:
 
-What is is good for, why would you use it, how does it work?
++# @cpr-reboot: The migrate command saves state to a file, allowing one to
++#              quit qemu, reboot to an updated kernel, and restart an updated
++#              version of qemu.  The caller must specify a migration URI
++#              that writes to and reads from a file.  Unlike normal mode,
++#              the use of certain local storage options does not block the
++#              migration, but the caller must not modify guest block devices
++#              between the quit and restart.  To avoid saving guest RAM to the
++#              file, the memory backend must be shared, and the @x-ignore-shared
++#              migration capability must be set.  Guest RAM must be non-volatile
++#              across reboot, such as by backing it with a dax device, but this
++#              is not enforced.  The restarted qemu arguments must match those
++#              used to initially start qemu, plus the -incoming option.
++#              (since 8.2)
 
-I *suspect* that you want to live-migrate a VM with vfio devices 
-attached, whereby you don't want to migrate device state.
+I'll note that the use of "reboot" is extremely confusing in this context.
+You *might* want to reboot the hypervisor, but that's actually completely
+independent from the QEMU implementation.
 
 -- 
 Cheers,
