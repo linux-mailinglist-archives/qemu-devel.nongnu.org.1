@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68ED182DBF1
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 15:56:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCD082DB87
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 15:43:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPOMy-0003KS-HT; Mon, 15 Jan 2024 09:55:20 -0500
+	id 1rPOB0-0005Ff-DE; Mon, 15 Jan 2024 09:42:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPOMw-0003J1-43
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:55:18 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPOMu-00078x-Ak
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:55:17 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5542a7f1f3cso10675315a12.2
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 06:55:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705330515; x=1705935315; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=H90HepXVuN50YA2VsD9tKOdxJr+tq6sKCejavwIReAg=;
- b=GrjW7B4hgc9VolOeCeQduApzj+0KPFXqylzAgbmEZW0rPFZevIqaxLGrOuI+5yoDxe
- 0NR51IdkpnetGi7uSErWnJiHeEVUIGm0XdT3dXoBM1BJ8rjQjVwLqoHzPPIGP25WfdpM
- /Bain8t6hi6J4qmmWnUz+mt3Kd/jJjq2/P9ObUzD+Kig2MRZyJuNhjtBdqTbKbpXjsIJ
- uxn59UhQD1sejsa5u4nlxvo04VxWUxAeDScu2epdQg9TID15nTcc/zHFS49smqbD9gJ6
- 7zPml9pzfBMQQMCmBhyxojxm20W4gI/QIQrY5OGKXC+T5VlpfQAQ9r/xTdw7tjQPNwLH
- ZeeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705330515; x=1705935315;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=H90HepXVuN50YA2VsD9tKOdxJr+tq6sKCejavwIReAg=;
- b=srk4saVVp83/SOSyQaizZC7AQrvgktdFkxoDZ3WFY2mQ68hcxeavrch95lzcoPffcN
- PRVbJrCQ+ex0JSKVRlbKWcf+BhPBHzlvZEByUXqnn6OGc+saJUlQIPJWYjDCiVVRnvcI
- /0eKxbThnvKA+eIjxWGXvZbKLubGmqkeOtGp9Bd7Wwp/93CvbVjv2T8pTh2GduFl0JH5
- qM13l3/xsehfZ0cTRrumc6fXokutDublsZ9dZT0jmU1y8vUkJ9zSHxCdS9gr5S6FqpCu
- XelbjijuSOStqMSjLaruJySbMp63I2tcLAT3QFppTdXeKngHdG2/TdUggaZ5Gfy2+KvE
- 3avw==
-X-Gm-Message-State: AOJu0YyIUqtWgpEo75u+6MRVb/5vYqp1bgOlhc4B+FcvXxnWYDppcG6h
- tTGOp00ZpZTHbVL1t6Jzk2x3IFTF7mwSQOXyFBdvnyeHAv4bmw==
-X-Google-Smtp-Source: AGHT+IG2ZP67limgWQVJDmxhbDJhcZtQKC8gOilkcWRpRNI4Y+5HV+LBhzOjIGhE5LYWaY0EO7aWWIkMNTeWU4KzK4g=
-X-Received: by 2002:a05:6402:1c9a:b0:559:2d1b:9be9 with SMTP id
- cy26-20020a0564021c9a00b005592d1b9be9mr1008719edb.50.1705330514939; Mon, 15
- Jan 2024 06:55:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rPOAt-0005Ex-1k
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:42:51 -0500
+Received: from mgamail.intel.com ([198.175.65.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rPOAr-00056N-3P
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:42:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705329769; x=1736865769;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=KeytAfpjTvYio2gds7krRqPVXqHJi+pnUY06Djw7X0c=;
+ b=Cxujro1nGhMv/MNXM24DSGdAQtpTk974jzOn4JTfwtnLq69ieMZkltyr
+ 4cJQ6r4Ai8m1n6b/KoDySahPhdnDJ0/YgQSdLnU4tz1vwWloRuwzluvM9
+ 8+IMX1SstWR+RGFYscK3dL3hAOFN4BJ0GuPD5hhJztEljMs2kBicexT6G
+ TvosGq3xnbDEYd8DQIz2PZzarnFstwlz0zyKVc3Z7nvNi1qT+0ZqY3Y6S
+ qD41N68RCLnreWggO4lKzC+d6d7+eklyBnNPMfnjk48ZLlie3kf1SDC/z
+ Zscb/JBN5L22Icy5M6KQecgp0kqo4JR4GOpZvmj76atVUDaLMPUR41FgS w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="12984192"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="12984192"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jan 2024 06:42:47 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="1030663434"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="1030663434"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmsmga006.fm.intel.com with ESMTP; 15 Jan 2024 06:42:43 -0800
+Date: Mon, 15 Jan 2024 22:55:41 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v7 14/16] i386: Use CPUCacheInfo.share_level to encode
+ CPUID[4]
+Message-ID: <ZaVHbUo2rJgV3jtA@intel.com>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-15-zhao1.liu@linux.intel.com>
+ <a0cd67f2-94f2-4c4b-9212-6b7344163660@intel.com>
+ <ZaSpQuQxU5UrbIf4@intel.com>
+ <5a004819-b9bf-4a2e-b8b3-ed238a66245a@intel.com>
+ <ZaTPvmU/6gXHNDRo@intel.com>
+ <4094e712-65b9-4b47-9c3f-67970ff8a86c@intel.com>
 MIME-Version: 1.0
-References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
- <20231208023145.1385775-37-sergey.kambalin@auriga.com>
-In-Reply-To: <20231208023145.1385775-37-sergey.kambalin@auriga.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 15 Jan 2024 14:55:04 +0000
-Message-ID: <CAFEAcA85ix4CoTs5VxhXm+KARdkeQtSq7SncyGwGOKp1zLCFkA@mail.gmail.com>
-Subject: Re: [PATCH v4 36/45] Add mailbox test constants
-To: Sergey Kambalin <serg.oker@gmail.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Sergey Kambalin <sergey.kambalin@auriga.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4094e712-65b9-4b47-9c3f-67970ff8a86c@intel.com>
+Received-SPF: none client-ip=198.175.65.10;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.531,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,95 +91,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Dec 2023 at 02:36, Sergey Kambalin <serg.oker@gmail.com> wrote:
->
-> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
-> ---
->  tests/qtest/bcm2838-mailbox.h | 139 ++++++++++++++++++++++++++++++++++
->  1 file changed, 139 insertions(+)
->
-> diff --git a/tests/qtest/bcm2838-mailbox.h b/tests/qtest/bcm2838-mailbox.h
-> index 1d02ca9c2c..8acc4bd2ff 100644
-> --- a/tests/qtest/bcm2838-mailbox.h
-> +++ b/tests/qtest/bcm2838-mailbox.h
-> @@ -7,6 +7,145 @@
->   * See the COPYING file in the top-level directory.
->   */
->
-> +#define MBOX0_BASE 0xFE00B880
-> +#define MBOX1_BASE 0xFE00B8A0
-> +
-> +#define MBOX_REG_READ   0x00
-> +#define MBOX_REG_WRITE  0x00
-> +#define MBOX_REG_PEEK   0x10
-> +#define MBOX_REG_SENDER 0x14
-> +#define MBOX_REG_STATUS 0x18
-> +#define MBOX_REG_CONFIG 0x1C
-> +
-> +#define MBOX_READ_EMPTY 0x40000000
-> +
-> +#define MBOX_CHANNEL_ID_PROPERTY 8
-> +
-> +#define MBOX_PROCESS_REQUEST      0x00000000
-> +#define MBOX_SUCCESS              0x80000000
-> +#define MBOX_ERROR_PARSING_BUFFER 0x80000001
-> +
-> +#define TAG_END                    0x00000000
-> +#define TAG_GET_FIRMWARE_REVISION  0x00000001
-> +#define TAG_GET_FIRMWARE_VARIANT   0x00000002
-> +#define TAG_GET_BOARD_REVISION     0x00010002
-> +#define TAG_GET_ARM_MEMORY         0x00010005
-> +#define TAG_GET_VC_MEMORY          0x00010006
-> +#define TAG_SET_DEVICE_POWER_STATE 0x00028001
-> +#define TAG_GET_CLOCK_STATE        0x00030001
-> +#define TAG_GET_CLOCK_RATE         0x00030002
-> +#define TAG_GET_MAX_CLOCK_RATE     0x00030004
-> +#define TAG_GET_MIN_CLOCK_RATE     0x00030007
-> +#define TAG_GET_CLOCKS             0x00010007
-> +#define TAG_GET_TEMPERATURE        0x00030006
-> +#define TAG_GET_MAX_TEMPERATURE    0x0003000a
-> +#define TAG_ALLOCATE_BUFFER        0x00040001
-> +#define TAG_RELEASE_FRAMEBUFFER    0x00048001
-> +#define TAG_BLANK_FRAMEBUFFER      0x00040002
-> +#define TAG_GET_FB_PHYS_WIDTH      0x00040003
-> +#define TAG_TEST_FB_PHYS_WIDTH     0x00044003
-> +#define TAG_SET_FB_PHYS_WIDTH      0x00048003
-> +#define TAG_GET_FB_VIRT_WIDTH      0x00040004
-> +#define TAG_TEST_FB_VIRT_WIDTH     0x00044004
-> +#define TAG_SET_FB_VIRT_WIDTH      0x00048004
-> +#define TAG_GET_FB_DEPTH           0x00040005
-> +#define TAG_TEST_FB_DEPTH          0x00044005
-> +#define TAG_SET_FB_DEPTH           0x00048005
-> +#define TAG_GET_PIXEL_ORDER        0x00040006
-> +#define TAG_TEST_PIXEL_ORDER       0x00044006
-> +#define TAG_SET_PIXEL_ORDER        0x00048006
-> +#define TAG_GET_FB_ALPHA_MODE      0x00040007
-> +#define TAG_TEST_FB_ALPHA_MODE     0x00044007
-> +#define TAG_SET_FB_ALPHA_MODE      0x00048007
-> +#define TAG_GET_PITCH              0x00040008
-> +#define TAG_SET_PITCH              0x00048008
-> +#define TAG_GET_VIRTUAL_OFFSET     0x00040009
-> +#define TAG_TEST_VIRTUAL_OFFSET    0x00044009
-> +#define TAG_SET_VIRTUAL_OFFSET     0x00048009
-> +#define TAG_GET_OVERSCAN           0x0004000a
-> +#define TAG_TEST_OVERSCAN          0x0004400a
-> +#define TAG_SET_OVERSCAN           0x0004800a
-> +#define TAG_SET_PALETTE            0x0004800b
-> +#define TAG_GET_COMMANDLINE        0x00050001
-> +#define TAG_GET_DMA_CHANNELS       0x00060001
-> +#define TAG_GET_THROTTLED          0x00030046
-> +#define TAG_GET_NUM_DISPLAYS       0x00040013
-> +#define TAG_GET_DISPLAY_SETTINGS   0x00040014
-> +#define TAG_GET_GPIO_CONFIG        0x00030043
-> +#define TAG_SET_GPIO_CONFIG        0x00038043
-> +#define TAG_GET_GPIO_STATE         0x00030041
-> +#define TAG_SET_GPIO_STATE         0x00038041
-> +#define TAG_INITIALIZE_VCHIQ       0x00048010
+Hi Xiaoyao,
 
-We already have definitions for the tags in
-include/hw/arm/raspberrypi-fw-defs.h so we can
-use those instead of defining them over again.
+On Mon, Jan 15, 2024 at 03:00:25PM +0800, Xiaoyao Li wrote:
+> Date: Mon, 15 Jan 2024 15:00:25 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH v7 14/16] i386: Use CPUCacheInfo.share_level to encode
+>  CPUID[4]
+> 
+> On 1/15/2024 2:25 PM, Zhao Liu wrote:
+> > Hi Xiaoyao,
+> > 
+> > On Mon, Jan 15, 2024 at 12:25:19PM +0800, Xiaoyao Li wrote:
+> > > Date: Mon, 15 Jan 2024 12:25:19 +0800
+> > > From: Xiaoyao Li <xiaoyao.li@intel.com>
+> > > Subject: Re: [PATCH v7 14/16] i386: Use CPUCacheInfo.share_level to encode
+> > >   CPUID[4]
+> > > 
+> > > On 1/15/2024 11:40 AM, Zhao Liu wrote:
+> > > > > > +{
+> > > > > > +    uint32_t num_ids = 0;
+> > > > > > +
+> > > > > > +    switch (share_level) {
+> > > > > > +    case CPU_TOPO_LEVEL_CORE:
+> > > > > > +        num_ids = 1 << apicid_core_offset(topo_info);
+> > > > > > +        break;
+> > > > > > +    case CPU_TOPO_LEVEL_DIE:
+> > > > > > +        num_ids = 1 << apicid_die_offset(topo_info);
+> > > > > > +        break;
+> > > > > > +    case CPU_TOPO_LEVEL_PACKAGE:
+> > > > > > +        num_ids = 1 << apicid_pkg_offset(topo_info);
+> > > > > > +        break;
+> > > > > > +    default:
+> > > > > > +        /*
+> > > > > > +         * Currently there is no use case for SMT and MODULE, so use
+> > > > > > +         * assert directly to facilitate debugging.
+> > > > > > +         */
+> > > > > > +        g_assert_not_reached();
+> > > > > > +    }
+> > > > > > +
+> > > > > > +    return num_ids - 1;
+> > > > > suggest to just return num_ids, and let the caller to do the -1 work.
+> > > > Emm, SDM calls the whole "num_ids - 1" (CPUID.0x4.EAX[bits 14-25]) as
+> > > > "maximum number of addressable IDs for logical processors sharing this
+> > > > cache"...
+> > > > 
+> > > > So if this helper just names "num_ids" as max_lp_ids_share_the_cache,
+> > > > I'm not sure there would be ambiguity here?
+> > > 
+> > > I don't think it will.
+> > > 
+> > > if this function is going to used anywhere else, people will need to keep in
+> > > mind to do +1 stuff to get the actual number.
+> > > 
+> > > leaving the -1 trick to where CPUID value gets encoded. let's make this
+> > > function generic.
+> > 
+> > This helper is the complete pattern to get addressable IDs, this is to
+> > say, the "- 1" is also the part of this calculation.
+> > 
+> > Its own meaning is self-consistent and generic enough to meet the common
+> > definitions of AMD and Intel.
+> 
+> OK. I stop bikeshedding on it.
+>
 
-thanks
--- PMM
+Thanks for your review ;-).
+
+Regards,
+Zhao
+
 
