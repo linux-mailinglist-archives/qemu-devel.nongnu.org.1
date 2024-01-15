@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8536682D68F
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:00:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B227E82D69F
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:01:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPJkU-0000ga-BQ; Mon, 15 Jan 2024 04:59:18 -0500
+	id 1rPJmU-0002DS-GD; Mon, 15 Jan 2024 05:01:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vadim.shakirov@syntacore.com>)
- id 1rPJkR-0000f4-Ai; Mon, 15 Jan 2024 04:59:15 -0500
-Received: from mta-04.yadro.com ([89.207.88.248])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vadim.shakirov@syntacore.com>)
- id 1rPJkP-0004Nm-Aq; Mon, 15 Jan 2024 04:59:15 -0500
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com D8C85C0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1705312746;
- bh=tPqhwywKLKJAjjFGnjKgtHBBCqMw+5GQeemY9Ywj7wY=;
- h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
- b=ISYSHBGGMVClzN6akxixbaJvHQFcJr1cf6ZV9nGcZ8ChMsRPcA3tSbZJ94fiaodky
- MIVbiVTV3/HYLm9X4WprMaT5nL4vXQ6HIplR8c57cFyfgq/4xNykbGdbM/CP1J3UxH
- 70f7M0kg8z4DdPxmHCqkYbfE2fKnG3gwt/zmnZgfxNcZe8NpkNDvZa/01Uv0Bk+Jma
- t/dueURuimIQppG72HR284ipMM58VoBeuilGHwEk4rqdHVYb4nbM5FvMNNBHuhykx9
- kdCmDOWeYC8lB6KvIUTh7GRFTpiLnkMSZlN9kxrMpefxv56y6GVAwhiHyN4PLoRXl0
- sLQjQWlPDioWQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1705312746;
- bh=tPqhwywKLKJAjjFGnjKgtHBBCqMw+5GQeemY9Ywj7wY=;
- h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
- b=IXYHd71EEUJ03juvI3PHP7f6G2oFx6X2Dg2ojN+yVD5klxM+UJ1n9EvHaVZhRBV9K
- NRnNtNEg57WSTw4wzI5RA/bc9O7yfOZLPNaBlgPFlUyxf9uQqr19odGs4i7wR4jGm0
- AvWP44FZL3fAc8xJoE8Y4cXNHtUA4EVbEPxzzrrthCioS1M3tk85J2FEe17NHLAgYi
- tg9fSsIC5aDCANgOuiWM017I+Qgdl6YaE4FulMzfugMN9r0iaun0V+w2iYZe1J25U9
- kx0IDNnUMqoO8A7KBTqfJYyTdrEcp/sI+OpuKS1UMbNQz1N7vMKAY5t1rMfb14/mcA
- Sl0sXXXW8U0UA==
-From: Vadim Shakirov <vadim.shakirov@syntacore.com>
-To: Alistair Francis <alistair23@gmail.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Palmer Dabbelt
- <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Bin Meng
- <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, "Daniel Henrique
- Barboza" <dbarboza@ventanamicro.com>, Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>, "qemu-riscv@nongnu.org"
- <qemu-riscv@nongnu.org>
-Subject: Re: [PATCH 0/2] Added the ability to delegate LCOFI to VS
-Thread-Topic: [PATCH 0/2] Added the ability to delegate LCOFI to VS
-Thread-Index: AQHaNAIPlLGQXkOoCUiH/Cnyw2C4GLDI6R6AgBHhSJ0=
-Date: Mon, 15 Jan 2024 09:59:05 +0000
-Message-ID: <c99500455a9548059294f2d3cd4804eb@syntacore.com>
-References: <20231221113628.41038-1-vadim.shakirov@syntacore.com>,
- <CAKmqyKPqfsVFD2N3YDOW=WYLHRwiOYmZp8op18ds6Hw4AHXY=A@mail.gmail.com>
-In-Reply-To: <CAKmqyKPqfsVFD2N3YDOW=WYLHRwiOYmZp8op18ds6Hw4AHXY=A@mail.gmail.com>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: multipart/alternative;
- boundary="_000_c99500455a9548059294f2d3cd4804ebsyntacorecom_"
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rPJmI-00028S-Vl
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:01:11 -0500
+Received: from mail-qt1-x82a.google.com ([2607:f8b0:4864:20::82a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rPJmH-00056o-GN
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:01:10 -0500
+Received: by mail-qt1-x82a.google.com with SMTP id
+ d75a77b69052e-429bd0f2768so32200321cf.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 02:01:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1705312868; x=1705917668; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/OZJt1KVM50++f+mWb35ofs7kNhKqZ+G3toafWJnbEk=;
+ b=A2yJ7COBWrGTsAXTjbDino72IMCUGrX7aMsiaEyAmeDh5HzZGvdPZZqn4wI8f/UkJt
+ UT0QLRManP6f39qSHmtj+s7knwVuI3QUS+cNLuvcWveEBmLy3vKqYSmwTs9vn2/GTd6i
+ dDjljqxEpdFgoqar/aK94bpjxYgHVuJndZHvPIBziLEI3oXO0GhE3YHH6tdabH/ifQnf
+ ZmirGBaaRxVs/puwJBR3eNrqAQkVIp/X+8AyZW8scO79zK3ZXdJ8nAqoebVBzvBmL4nI
+ XzZG0LYiAkzXa8aTLXAmLR24CdzgbSJkM0tFf4vKFUYll8robqGTr4XLZfkWaXqtCoiB
+ O+oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705312868; x=1705917668;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/OZJt1KVM50++f+mWb35ofs7kNhKqZ+G3toafWJnbEk=;
+ b=cPSFOWdl9luA+v8+4NRpDgLkPDt9W0rr0qGQnESbW+JX0mQPcPvoqr0j7datWpfguY
+ UEdCPTtLzX17yeKT6/plot/1sXA9rZ/owviV4JpdyM1nirX1MOH5EwxAfc7scozFXqxO
+ 34u8STzT9LDTAnuGIav1AFXuUMpA5v4/aIHKwsZK9Vxq4skPx52QPxSL7wkqSooupvxc
+ cb6J8CJgMftjT0d3RxWUbYceiHiP2Pj51v5pGcIvbMXcrBGkWCS0wrqciBxLlpUT9cZn
+ 7J0LSxzOwy9u2i94Y0vtc843lfZWDOQCh0OEeksokmB+H8vNMCS+8TXpkYBUWaPIl8d6
+ to/A==
+X-Gm-Message-State: AOJu0YzCrZLWHqXf5Bd/gSquswifUdld8A5Ajj4DTd+zg0IbXvCH1DKw
+ 8CyH1CJq+rIPI7PArlrsVMcnPey56WOs6jaEWj4=
+X-Google-Smtp-Source: AGHT+IFGgwJAct4YTr1Jlprnm6jamoEK5TF+PVj2/VxoqhOR57JebWR+EqukAt3NfhM76mMLEtpHXBD86XXZxW6eYTc=
+X-Received: by 2002:ac8:5f11:0:b0:429:c4cb:23c9 with SMTP id
+ x17-20020ac85f11000000b00429c4cb23c9mr8475909qta.39.1705312868143; Mon, 15
+ Jan 2024 02:01:08 -0800 (PST)
 MIME-Version: 1.0
-Received-SPF: permerror client-ip=89.207.88.248;
- envelope-from=vadim.shakirov@syntacore.com; helo=mta-04.yadro.com
+References: <20240115095119.654271-1-berrange@redhat.com>
+In-Reply-To: <20240115095119.654271-1-berrange@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 15 Jan 2024 14:00:55 +0400
+Message-ID: <CAJ+F1CJkSX3LFxbMDC2PpCCzCy78u6fuKapGwvudGe-m1mrpDQ@mail.gmail.com>
+Subject: Re: [PATCH] ui: reject extended clipboard message if not activated
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>, 
+ Markus Frank <m.frank@proxmox.com>, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82a;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,95 +87,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---_000_c99500455a9548059294f2d3cd4804ebsyntacorecom_
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+On Mon, Jan 15, 2024 at 1:52=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com> wrote:
+>
+> The extended clipboard message protocol requires that the client
+> activate the extension by requesting a psuedo encoding. If this
+> is not done, then any extended clipboard messages from the client
+> should be considered invalid and the client dropped.
+>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 
-VGhpcyBmdW5jdGlvbmFsaXR5IHR1cm5zIG91dCB0byBoYXZlIGFscmVhZHkgYmVlbiBhZGRlZCBi
-eSBjb21taXQgNDAzMzZkNWIxZDRjNmI4YjhiMzhjNzdmZGEyNTQ0NTdkNDRmZTkwYg0KDQpWYWRp
-bQ0KDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0K0J7RgjogQWxpc3RhaXIgRnJh
-bmNpcyA8YWxpc3RhaXIyM0BnbWFpbC5jb20+DQrQntGC0L/RgNCw0LLQu9C10L3QvjogNCDRj9C9
-0LLQsNGA0Y8gMjAyNCDQsy4gNjo1NDoyNw0K0JrQvtC80YM6IFZhZGltIFNoYWtpcm92DQrQmtC+
-0L/QuNGPOiBxZW11LWRldmVsQG5vbmdudS5vcmc7IFBhbG1lciBEYWJiZWx0OyBBbGlzdGFpciBG
-cmFuY2lzOyBCaW4gTWVuZzsgV2Vpd2VpIExpOyBEYW5pZWwgSGVucmlxdWUgQmFyYm96YTsgTGl1
-IFpoaXdlaTsgcWVtdS1yaXNjdkBub25nbnUub3JnDQrQotC10LzQsDogUmU6IFtQQVRDSCAwLzJd
-IEFkZGVkIHRoZSBhYmlsaXR5IHRvIGRlbGVnYXRlIExDT0ZJIHRvIFZTDQoNCsKr0JLQvdC40LzQ
-sNC90LjQtSEg0JTQsNC90L3QvtC1INC/0LjRgdGM0LzQviDQvtGCINCy0L3QtdGI0L3QtdCz0L4g
-0LDQtNGA0LXRgdCw0YLQsCHCuw0KDQpPbiBGcmksIERlYyAyMiwgMjAyMyBhdCAxOjA44oCvQU0g
-VmFkaW0gU2hha2lyb3YNCjx2YWRpbS5zaGFraXJvdkBzeW50YWNvcmUuY29tPiB3cm90ZToNCj4N
-Cj4gVGhpcyBzZXJpZXMgb2YgcGF0Y2hlcyBhZGRzIExDT0ZJIGRlbGVnYXRpb24gZnJvbSBIUy1t
-b2RlIHRvIFZTLW1vZGUuDQo+DQo+IFRoaXMgcG9zc2liaWxpdHkgbXVzdCBiZSBpbXBsZW1lbnRl
-ZCwgYXMgaW4gdGhlIEFJQSBzcGVjIGluIHNlY3Rpb24gNi4zLjINCj4gaXQgaXMgaW5kaWNhdGVk
-IGluIHRhYmxlIDYuMSB0aGF0IGluIHRoZSBjYXNlIHdoZW4gdGhlIGhpZGVsZWcgYml0IGlzIHNl
-dCwNCj4gdGhlIGNvcnJlc3BvbmRpbmcgdnNpcCBiaXQgaXMgYW4gYWxpYXMgdG8gdGhlIGNvcnJl
-c3BvbmRpbmcgc2lwIGJpdCwgYWxzbw0KPiBmb3IgZW5hYmxlIHJlZ2lzdGVycy4NCj4NCj4gVmFk
-aW0gU2hha2lyb3YgKDIpOg0KPiAgIHRhcmdldC9yaXNjdi9jc3I6IFJlbmFtZSBncm91cHMgb2Yg
-aW50ZXJydXB0cw0KPiAgIHRhcmdldC9yaXNjdi9jc3I6IEFkZGVkIHRoZSBhYmlsaXR5IHRvIGRl
-bGVnYXRlIExDT0ZJIHRvIFZTDQoNClRoYW5rcyBmb3IgdGhlIHBhdGNoLg0KDQpEbyB5b3UgbWlu
-ZCByZWJhc2luZyB0aGlzIG9uDQpodHRwczovL2dpdGh1Yi5jb20vYWxpc3RhaXIyMy9xZW11L3Ry
-ZWUvcmlzY3YtdG8tYXBwbHkubmV4dCBhbmQNCnNlbmRpbmcgYSBuZXcgdmVyc2lvbj8NCg0KQWxp
-c3RhaXINCg0KPg0KPiAgdGFyZ2V0L3Jpc2N2L2Nzci5jIHwgNTAgKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDMzIGluc2Vy
-dGlvbnMoKyksIDE3IGRlbGV0aW9ucygtKQ0KPg0KPiAtLQ0KPiAyLjM0LjENCj4NCj4NCg==
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
---_000_c99500455a9548059294f2d3cd4804ebsyntacorecom_
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: base64
+> ---
+>
+> The need for fix was identified as part of investigation for
+> CVE-2023-6683. This does NOT, however, fix that CVE as it only
+> addresses one of the problem codepaths that can trigger that
+> CVE.
+>
+>  ui/vnc.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/ui/vnc.c b/ui/vnc.c
+> index 4f23a0fa79..3b2c71e653 100644
+> --- a/ui/vnc.c
+> +++ b/ui/vnc.c
+> @@ -2445,6 +2445,11 @@ static int protocol_client_msg(VncState *vs, uint8=
+_t *data, size_t len)
+>          }
+>
+>          if (read_s32(data, 4) < 0) {
+> +            if (!vnc_has_feature(vs, VNC_FEATURE_CLIPBOARD_EXT)) {
+> +                error_report("vnc: extended clipboard message while disa=
+bled");
+> +                vnc_client_error(vs);
+> +                break;
+> +            }
+>              if (dlen < 4) {
+>                  error_report("vnc: malformed payload (header less than 4=
+ bytes)"
+>                               " in extended clipboard pseudo-encoding.");
+> --
+> 2.43.0
+>
+>
 
-PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVudD0i
-dGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjxtZXRhIG5hbWU9IkdlbmVyYXRvciIgY29udGVu
-dD0iTWljcm9zb2Z0IEV4Y2hhbmdlIFNlcnZlciI+DQo8IS0tIGNvbnZlcnRlZCBmcm9tIHRleHQg
-LS0+PHN0eWxlPjwhLS0gLkVtYWlsUXVvdGUgeyBtYXJnaW4tbGVmdDogMXB0OyBwYWRkaW5nLWxl
-ZnQ6IDRwdDsgYm9yZGVyLWxlZnQ6ICM4MDAwMDAgMnB4IHNvbGlkOyB9IC0tPjwvc3R5bGU+DQo8
-L2hlYWQ+DQo8Ym9keT4NCjxtZXRhIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD1VVEYtOCI+
-DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiIHN0eWxlPSIiPg0KPCEtLQ0KcA0KCXttYXJnaW4tdG9w
-OjA7DQoJbWFyZ2luLWJvdHRvbTowfQ0KLS0+DQo8L3N0eWxlPg0KPGRpdiBkaXI9Imx0ciI+DQo8
-ZGl2IGlkPSJ4X2RpdnRhZ2RlZmF1bHR3cmFwcGVyIiBkaXI9Imx0ciIgc3R5bGU9ImZvbnQtc2l6
-ZToxMnB0OyBjb2xvcjojMDAwMDAwOyBmb250LWZhbWlseTpDYWxpYnJpLEhlbHZldGljYSxzYW5z
-LXNlcmlmIj4NCjxkaXY+PHNwYW4gY2xhc3M9InhfSHd0WmUiIGxhbmc9ImVuIj48c3BhbiBjbGFz
-cz0ieF9qQ0FoeiB4X0NoTWswYiI+PHNwYW4gY2xhc3M9InhfcnlOcXZiIj5UaGlzIGZ1bmN0aW9u
-YWxpdHkgdHVybnMgb3V0IHRvIGhhdmUgYWxyZWFkeSBiZWVuIGFkZGVkIGJ5IGNvbW1pdCA0MDMz
-NmQ1YjFkNGM2YjhiOGIzOGM3N2ZkYTI1NDQ1N2Q0NGZlOTBiPC9zcGFuPjwvc3Bhbj48YnI+DQo8
-L3NwYW4+PC9kaXY+DQo8ZGl2PjxzcGFuIGNsYXNzPSJ4X0h3dFplIiBsYW5nPSJlbiI+PGJyPg0K
-PC9zcGFuPjwvZGl2Pg0KPGRpdj48c3BhbiBjbGFzcz0ieF9Id3RaZSIgbGFuZz0iZW4iPlZhZGlt
-PGJyPg0KPC9zcGFuPjwvZGl2Pg0KPGJyPg0KPC9kaXY+DQo8aHIgdGFiaW5kZXg9Ii0xIiBzdHls
-ZT0iZGlzcGxheTppbmxpbmUtYmxvY2s7IHdpZHRoOjk4JSI+DQo8ZGl2IGlkPSJ4X2RpdlJwbHlG
-d2RNc2ciIGRpcj0ibHRyIj48Zm9udCBmYWNlPSJDYWxpYnJpLCBzYW5zLXNlcmlmIiBjb2xvcj0i
-IzAwMDAwMCIgc3R5bGU9ImZvbnQtc2l6ZToxMXB0Ij48Yj7QntGCOjwvYj4gQWxpc3RhaXIgRnJh
-bmNpcyAmbHQ7YWxpc3RhaXIyM0BnbWFpbC5jb20mZ3Q7PGJyPg0KPGI+0J7RgtC/0YDQsNCy0LvQ
-tdC90L46PC9iPiA0INGP0L3QstCw0YDRjyAyMDI0INCzLiA2OjU0OjI3PGJyPg0KPGI+0JrQvtC8
-0YM6PC9iPiBWYWRpbSBTaGFraXJvdjxicj4NCjxiPtCa0L7Qv9C40Y86PC9iPiBxZW11LWRldmVs
-QG5vbmdudS5vcmc7IFBhbG1lciBEYWJiZWx0OyBBbGlzdGFpciBGcmFuY2lzOyBCaW4gTWVuZzsg
-V2Vpd2VpIExpOyBEYW5pZWwgSGVucmlxdWUgQmFyYm96YTsgTGl1IFpoaXdlaTsgcWVtdS1yaXNj
-dkBub25nbnUub3JnPGJyPg0KPGI+0KLQtdC80LA6PC9iPiBSZTogW1BBVENIIDAvMl0gQWRkZWQg
-dGhlIGFiaWxpdHkgdG8gZGVsZWdhdGUgTENPRkkgdG8gVlM8L2ZvbnQ+DQo8ZGl2PiZuYnNwOzwv
-ZGl2Pg0KPC9kaXY+DQo8L2Rpdj4NCjxmb250IHNpemU9IjIiPjxzcGFuIHN0eWxlPSJmb250LXNp
-emU6MTBwdDsiPg0KPGRpdiBjbGFzcz0iUGxhaW5UZXh0Ij7Cq9CS0L3QuNC80LDQvdC40LUhINCU
-0LDQvdC90L7QtSDQv9C40YHRjNC80L4g0L7RgiDQstC90LXRiNC90LXQs9C+INCw0LTRgNC10YHQ
-sNGC0LAhwrs8YnI+DQo8YnI+DQpPbiBGcmksIERlYyAyMiwgMjAyMyBhdCAxOjA44oCvQU0gVmFk
-aW0gU2hha2lyb3Y8YnI+DQombHQ7dmFkaW0uc2hha2lyb3ZAc3ludGFjb3JlLmNvbSZndDsgd3Jv
-dGU6PGJyPg0KJmd0Ozxicj4NCiZndDsgVGhpcyBzZXJpZXMgb2YgcGF0Y2hlcyBhZGRzIExDT0ZJ
-IGRlbGVnYXRpb24gZnJvbSBIUy1tb2RlIHRvIFZTLW1vZGUuPGJyPg0KJmd0Ozxicj4NCiZndDsg
-VGhpcyBwb3NzaWJpbGl0eSBtdXN0IGJlIGltcGxlbWVudGVkLCBhcyBpbiB0aGUgQUlBIHNwZWMg
-aW4gc2VjdGlvbiA2LjMuMjxicj4NCiZndDsgaXQgaXMgaW5kaWNhdGVkIGluIHRhYmxlIDYuMSB0
-aGF0IGluIHRoZSBjYXNlIHdoZW4gdGhlIGhpZGVsZWcgYml0IGlzIHNldCw8YnI+DQomZ3Q7IHRo
-ZSBjb3JyZXNwb25kaW5nIHZzaXAgYml0IGlzIGFuIGFsaWFzIHRvIHRoZSBjb3JyZXNwb25kaW5n
-IHNpcCBiaXQsIGFsc288YnI+DQomZ3Q7IGZvciBlbmFibGUgcmVnaXN0ZXJzLjxicj4NCiZndDs8
-YnI+DQomZ3Q7IFZhZGltIFNoYWtpcm92ICgyKTo8YnI+DQomZ3Q7Jm5ic3A7Jm5ic3A7IHRhcmdl
-dC9yaXNjdi9jc3I6IFJlbmFtZSBncm91cHMgb2YgaW50ZXJydXB0czxicj4NCiZndDsmbmJzcDsm
-bmJzcDsgdGFyZ2V0L3Jpc2N2L2NzcjogQWRkZWQgdGhlIGFiaWxpdHkgdG8gZGVsZWdhdGUgTENP
-RkkgdG8gVlM8YnI+DQo8YnI+DQpUaGFua3MgZm9yIHRoZSBwYXRjaC48YnI+DQo8YnI+DQpEbyB5
-b3UgbWluZCByZWJhc2luZyB0aGlzIG9uPGJyPg0KPGEgaHJlZj0iaHR0cHM6Ly9naXRodWIuY29t
-L2FsaXN0YWlyMjMvcWVtdS90cmVlL3Jpc2N2LXRvLWFwcGx5Lm5leHQiPmh0dHBzOi8vZ2l0aHVi
-LmNvbS9hbGlzdGFpcjIzL3FlbXUvdHJlZS9yaXNjdi10by1hcHBseS5uZXh0PC9hPiBhbmQ8YnI+
-DQpzZW5kaW5nIGEgbmV3IHZlcnNpb24/PGJyPg0KPGJyPg0KQWxpc3RhaXI8YnI+DQo8YnI+DQom
-Z3Q7PGJyPg0KJmd0OyZuYnNwOyB0YXJnZXQvcmlzY3YvY3NyLmMgfCA1MCAmIzQzOyYjNDM7JiM0
-MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7
-JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYj
-NDM7JiM0MzsmIzQzOyYjNDM7JiM0MzstLS0tLS0tLS0tLS0tLS0tPGJyPg0KJmd0OyZuYnNwOyAx
-IGZpbGUgY2hhbmdlZCwgMzMgaW5zZXJ0aW9ucygmIzQzOyksIDE3IGRlbGV0aW9ucygtKTxicj4N
-CiZndDs8YnI+DQomZ3Q7IC0tPGJyPg0KJmd0OyAyLjM0LjE8YnI+DQomZ3Q7PGJyPg0KJmd0Ozxi
-cj4NCjwvZGl2Pg0KPC9zcGFuPjwvZm9udD4NCjwvYm9keT4NCjwvaHRtbD4NCg==
 
---_000_c99500455a9548059294f2d3cd4804ebsyntacorecom_--
+--=20
+Marc-Andr=C3=A9 Lureau
 
