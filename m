@@ -2,84 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4968582D717
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:19:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 060F482D71F
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:21:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPK44-0003KY-T1; Mon, 15 Jan 2024 05:19:32 -0500
+	id 1rPK5B-00042n-1Q; Mon, 15 Jan 2024 05:20:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPK41-0003K4-3X
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:19:29 -0500
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPK3y-0007dj-W7
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:19:28 -0500
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-50e766937ddso9566459e87.3
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 02:19:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705313964; x=1705918764; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0zzkHkmxcYPMtMYAkRidXJDVQc0pwPW0Gw3GwSETRqg=;
- b=r8dG7gvoX5sQNPSGkCxoTzR/x2Vdpl14N/rEJo/K3qbh6dJBZnvmAvmWf22HimTu7H
- 9RJ6hOhLkIjt5+fnFD0DKT17rbaOvkRnZaGLcyV2Odkp63yOsFNP8mLvXGjOK90eySUx
- WcBk+IsbZFSejiVwUCRvSEg+QJlhmdWKrvPWCSHWRzj406LQFd6cq/KXDAE6rSnV8P4r
- 2vRfh8oc4BolgcksNnYeNflqX48p3V/2Ppk5lojBMkR5CD3r2znn6gCYtTR/6rhSspiH
- 8GoxhHoXHp4evKnfxJGEkUk0jxKkV0Hs/Lc0oyWRIhzzguTOZfGBh+3FanqAqy1xpkeQ
- WxFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705313964; x=1705918764;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0zzkHkmxcYPMtMYAkRidXJDVQc0pwPW0Gw3GwSETRqg=;
- b=rf9V93Wb3jFHGkvEJjMkRDvvganLaRA2CGhcmbHu4ob2CNckKsBEg5QluD9yqyYvtS
- 5lmmJzVH9bIprb76EU1AaW8I64KzyYL+f0V0wLZMNZ0pM0ec2cy7bm6aXtA1pCU8qYe8
- rDdame1mjWtHtBhgi4EAZVHKtOxcE50WBuNb9GdOI8jt1gu7jmk3DxZI/f1WFL77GrNq
- MLPQ0KpNhuyMeV3pI+qIpqT8IRHY/a5pwtoxbRvqGGNjZiOXms7s0M1lIEZexM46oH5r
- jmVh17tJlKXu/q13exiD8jHKm9s3UZvoeL914KubyUCuivKxIpUKPNqlsk37p8PCJH54
- hyrg==
-X-Gm-Message-State: AOJu0Yytp95sEa3L6jWMuhp1NSLBajNrUunvFE6Y7lSBMpDfVC/9bxbB
- wZRwhaihzvU/2orR8D1xUo20GdqpUN9EDx9CNu1hw3mPCxgd9g==
-X-Google-Smtp-Source: AGHT+IGv6dxuem/FcveAyyDySUT/jmaq2cocamWgC8ENuJ9WCfwWOqE+Ps0IpgrLrl4n4bsRUTEcehV42S9TxJyujSs=
-X-Received: by 2002:a19:5f18:0:b0:50e:db6c:dd0a with SMTP id
- t24-20020a195f18000000b0050edb6cdd0amr2027928lfb.86.1705313964030; Mon, 15
- Jan 2024 02:19:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rPK58-00040u-Pf
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:20:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rPK56-0007wq-JW
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:20:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705314034;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zq/UuPwCmQn4FfqQ3pHZPmcrfQZxT8oILOJoUD78/gg=;
+ b=XSLtZdlzzT5/FE7t64yYYaY+ZYc/LQEO+Ixmmv4Pk9WeWIen944xIRE7ZryBMCfLQoHQZ9
+ tYc3q1jk5zhVcwI6B7oA9uPp5ZReXt5x4D1Ku9BLFHmaKxiRPV99yo/f7PUo02UwA4jDTU
+ flQOu9T98P+4gZuPO5iWGVykKa2PjpM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-615-mpVlEucaMJGfXJ52bnpqjA-1; Mon, 15 Jan 2024 05:20:31 -0500
+X-MC-Unique: mpVlEucaMJGfXJ52bnpqjA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A57B1185A782;
+ Mon, 15 Jan 2024 10:20:30 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.193.174])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7BC9A10802;
+ Mon, 15 Jan 2024 10:20:30 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 51D9D1800605; Mon, 15 Jan 2024 11:20:29 +0100 (CET)
+Date: Mon, 15 Jan 2024 11:20:29 +0100
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Igor Mammedov <imammedo@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-stable <qemu-stable@nongnu.org>
+Subject: Re: Re: Re: [PULL 0/6] Firmware/edk2 20231213 patches
+Message-ID: <7u5v67zlt5aapyinxbc4dgdiivtx4cr5mttdck6jzfknfb2ni2@lscetlkzwvjy>
+References: <20231213105026.1944656-1-kraxel@redhat.com>
+ <y2kuootd3k2tqe2245zggbuusg2kaaqrxlvxfwy2wrcbdxg3cn@zgj6tl7gd4lp>
+ <CAFEAcA8H6kVNiSk6CEVun5KWQH-sqWxBKxZ9Rf7haQhZHEKiow@mail.gmail.com>
+ <CAFEAcA-sw2FNgTft0PYL=GW0JQhdRX9Zn0B6muUjC68nmVXHnA@mail.gmail.com>
+ <e2hpw77r6t2ge6h233cq75qdadou6koz62sfktcsrlc2gzeqnq@4ejyxysmmulo>
+ <CAFEAcA_f0Q7LkSQ2+sxgBcRQNSTenykq1R28QMuGyW22PtxW2Q@mail.gmail.com>
+ <CAFEAcA_-fF7fWGm_QUJa86LHJvtBk4jKvTw=OvM+EOxQzuYvWA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20240104162942.211458-1-berrange@redhat.com>
- <CAJSP0QXUGgZdFaDKWUSjVNwHJXe+xz3Fq6WneP_=XS8htE9JYQ@mail.gmail.com>
- <CACGkMEtf0TeTSXg1PLrJQ31ehptuzgzyTmLxER2KDXp4GZa1kg@mail.gmail.com>
-In-Reply-To: <CACGkMEtf0TeTSXg1PLrJQ31ehptuzgzyTmLxER2KDXp4GZa1kg@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 15 Jan 2024 10:19:12 +0000
-Message-ID: <CAFEAcA_SWTzOygqGB=ozfGZ=WnZ6fG0Tnmz79Mc=PTUFOa+U+w@mail.gmail.com>
-Subject: Re: [PATCH 0/6] net: fix non-deterministic failures of the
- 'netdev-socket' qtest
-To: Jason Wang <jasowang@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@gmail.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Thomas Huth <thuth@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA_-fF7fWGm_QUJa86LHJvtBk4jKvTw=OvM+EOxQzuYvWA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,64 +88,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 15 Jan 2024 at 02:37, Jason Wang <jasowang@redhat.com> wrote:
->
-> On Fri, Jan 5, 2024 at 12:45=E2=80=AFAM Stefan Hajnoczi <stefanha@gmail.c=
-om> wrote:
-> >
-> > On Thu, 4 Jan 2024 at 11:30, Daniel P. Berrang=C3=A9 <berrange@redhat.c=
-om> wrote:
-> > >
-> > > We've previously bumped up the timeouts in the netdev-socket qtest
-> > > to supposedly fix non-deterministic failures, however, the failures
-> > > are still hitting CI.
-> > >
-> > > A simple 'listen()' and 'connect()' pairing across 2 QEMU processes
-> > > should be very quick to execute, even under high system load, so it
-> > > was never likely that the test was failing due to timeouts being
-> > > reached.
-> > >
-> > > The actual root cause was a race condition in the test design. It
-> > > was spawning a QEMU with a 'server' netdev, and then spawning one
-> > > with the 'client' netdev. There was insufficient synchronization,
-> > > however, so it was possible for the 2nd QEMU process to attempt
-> > > to 'connect()' before the 'listen()' call was made by the 1st QEMU.
-> > >
-> > > In the test scenarios that did not use the 'reconnect' flag, this
-> > > would result in the client QEMU never getting into the expected
-> > > state. The test code would thus loop on 'info network' until
-> > > hitting the maximum wait time.
-> > >
-> > > This series reverts the increased timeouts, and fixes synchronization
-> > > in the test scenarios. It also improves reporting of errors in the
-> > > socket netdev backend so that 'info network' reports what actually
-> > > went wrong rather than a useless generic 'connection error' string.
-> > > This will help us diagnose any future CI problems, should they occurr=
-.
-> > >
-> > > Daniel P. Berrang=C3=A9 (6):
-> > >   Revert "netdev: set timeout depending on loadavg"
-> > >   Revert "osdep: add getloadavg"
-> > >   Revert "tests/qtest/netdev-socket: Raise connection timeout to 120
-> > >     seconds"
-> > >   net: add explicit info about connecting/listening state
-> > >   net: handle QIOTask completion to report useful error message
-> > >   qtest: ensure netdev-socket tests have non-overlapping names
-> > >
-> > >  include/qemu/osdep.h        | 10 ---------
-> > >  meson.build                 |  1 -
-> > >  net/stream.c                | 18 +++++++++++-----
-> > >  tests/qtest/netdev-socket.c | 42 +++++++----------------------------=
---
-> > >  4 files changed, 21 insertions(+), 50 deletions(-)
-> >
-> > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> >
->
-> Queued.
+  Hi,
 
-These are already upstream, via thuth's testing queue.
+> PS: when are we likely to be able to update to a proper released
+> EDK2 ? Running with a git snapshot isn't ideal, so if we can
+> move to an EDK2 release version within this QEMU cycle that would
+> be nice.
 
-thanks
--- PMM
+Next release should be tagged by end of February, so if the qemu 9.0
+schedule is simliar to the 8.0 schedule this is before soft freeze
+and an update should be no problem.
+
+take care,
+  Gerd
+
 
