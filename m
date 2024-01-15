@@ -2,73 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2DAF82D482
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 08:23:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E01DD82D496
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 08:32:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPHIr-0005hD-Ak; Mon, 15 Jan 2024 02:22:37 -0500
+	id 1rPHRD-0007Xm-Ad; Mon, 15 Jan 2024 02:31:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rehn@rivosinc.com>) id 1rPHIo-0005gr-Tk
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 02:22:35 -0500
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rehn@rivosinc.com>) id 1rPHIm-0007IQ-WE
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 02:22:34 -0500
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-28e0786edb3so2135346a91.2
- for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 23:22:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1705303351; x=1705908151;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LjZSbqFEowWXu6XFc2f+ocrIJQeAT7IyN3HafnOniFc=;
- b=0UigZlX1OrIv7eBpJqqcCBhiZVCetbYaZuq/x1FE4Ixux4o65/RQL4POtT55Z8G5wm
- 2XtG33dxzNZ+42l86QZXylhLSOcI/vJAfMtzIjCRdZlvJuxMu4vFXTZ4Gn4khXpK6lgl
- ufVc/VVV2Xy+4Lds7wLLiR9iOSrw8g0UgRRp2dlf2sSPqwo/q6AXN0MBND6NmYiLDIeS
- cWah2eVcidRzDwmvTFFf82WoCR9IM6fELUQgmwQH4wN0gY8HobTCrfPlJ+vy23Qu5FBs
- yLC8OmVae4cGWQQ0vlLHB7XP+/UAV+TDzM2tZmZYgKE6xfs9XA8fJaW//rUjtTxRlvMd
- V/Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705303351; x=1705908151;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LjZSbqFEowWXu6XFc2f+ocrIJQeAT7IyN3HafnOniFc=;
- b=JCyflAWUfz3q4Prp1r/cm+P1YfvRdxYuBv/xvNhsmLe0usqGUoeduMX9h/iPgCzDWE
- OUH4JGS3O905PtxlPnbwmzqDqtzYstsizJEKsp5GlAe6GanQNUQqBE90+XVMUBoXLSv9
- 6UBwSC/Fj0nkq4NBhF0p7Yp4Z4rUKtdeYaFe5L7gsr3JWv4TPk+EHGH5b3+f22o5Q8ec
- NAg3bq5o5+V3DitVvFSnbOXngEIzpbao8UIOuJUSiDJktYGd5vFsida0D7Nl4AbKIId3
- P/LvSqcfmPLeLVeYub3CzoEwjlbTPMGo3rawlHeQHiadMjrhJeiMUSyfY0VAdGiR02gp
- nsfQ==
-X-Gm-Message-State: AOJu0YynUPqHClFBjDHIzUd6A+Xy377y3GN3/xvUtXkLTrFPYC9u/bxL
- Qp7TgXT80XgoMu7cvUgpIUZ7ra3UbuQE102Dy5gF0kyMPSQV+A==
-X-Google-Smtp-Source: AGHT+IF7/tiZz9uW1UIcgSo7CeFyRtQuG+a7A5TRd81/9maRUwduvNsdDNtsRmowTzWLjDpe/r0mYGb8DzOw8taT/ec=
-X-Received: by 2002:a17:90a:6506:b0:28e:f6f:615b with SMTP id
- i6-20020a17090a650600b0028e0f6f615bmr2296899pjj.83.1705303350799; Sun, 14 Jan
- 2024 23:22:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1rPHR9-0007W4-Uq
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 02:31:12 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1rPHR7-0000eo-Ct
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 02:31:11 -0500
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8Bxnus336Rl8UUAAA--.1015S3;
+ Mon, 15 Jan 2024 15:31:03 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Bx8OQ136RlWrwBAA--.9143S2; 
+ Mon, 15 Jan 2024 15:31:01 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Subject: [PATCH] configure: Add linux header compile support for LoongArch
+Date: Mon, 15 Jan 2024 15:31:01 +0800
+Message-Id: <20240115073101.174113-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-References: <33f27425878fb529b9e39ef22c303f6e0d90525f.camel@rivosinc.com>
- <mhng-5bf9ebaf-017e-4d04-b287-ac40a32859b7@palmer-ri-x1c9>
-In-Reply-To: <mhng-5bf9ebaf-017e-4d04-b287-ac40a32859b7@palmer-ri-x1c9>
-From: Robbin Ehn <rehn@rivosinc.com>
-Date: Mon, 15 Jan 2024 08:22:19 +0100
-Message-ID: <CAEEvPLC7u09ODf6uhU-=hcGFp3_hLpfvkvMcHo-dG+nS65h-=w@mail.gmail.com>
-Subject: Re: [PATCH] linux-user: Fixed cpu restore with pc 0 on SIGBUS
-To: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=rehn@rivosinc.com; helo=mail-pj1-x1036.google.com
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Bx8OQ136RlWrwBAA--.9143S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj9xXoWrtr13Cr4kJF1fuF48CF4DGFX_yoW3XFgE9F
+ yxAw1kG34UJryjk3Z2vayrGw18WFWfArn8ZFnFvrWxGry7Grsagay8Was3ZF48K34xCrsx
+ WrW0qr95ur17XosvyTuYvTs0mTUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvT
+ s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+ cSsGvfJTRUUUb7AYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+ vaj40_Wr0E3s1l1IIY67AEw4v_JrI_Jryl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+ w2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+ W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
+ 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x
+ 0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+ 7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcV
+ C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF
+ 04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
+ CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8czVUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,116 +74,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Palmer,
+When compiling qemu with system KVM mode for LoongArch, header files in
+directory linux-headers/asm-loongarch should be used firstly. Otherwise it
+fails to find kvm.h on system with old glibc, since latest kernel header
+files are not installed.
 
-On Fri, Jan 12, 2024 at 10:03=E2=80=AFPM Palmer Dabbelt <palmer@rivosinc.co=
-m> wrote:
->
-> On Fri, 12 Jan 2024 12:57:22 PST (-0800), rehn@rivosinc.com wrote:
-> > Commit f4e1168198 (linux-user: Split out host_sig{segv,bus}_handler)
-> > introduced a bug, when returning from host_sigbus_handler the PC is
->
-> So we should probably have a
->
-> Fixes: f4e1168198 ("linux-user: Split out host_sig{segv,bus}_handler")
+This patch adds linux_arch definition for LoongArch system so that header
+files in directory linux-headers/asm-loongarch can be included.
 
-You are correct.
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+---
+ configure | 1 +
+ 1 file changed, 1 insertion(+)
 
->
-> > never set. Thus cpu_loop_exit_restore is called with a zero PC and
-> > we immediate get a SIGSEGV.
-> >
-> > Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
-> > ---
-> >  linux-user/signal.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/linux-user/signal.c b/linux-user/signal.c
-> > index b35d1e512f..c9527adfa3 100644
-> > --- a/linux-user/signal.c
-> > +++ b/linux-user/signal.c
-> > @@ -925,7 +925,7 @@ static void host_sigsegv_handler(CPUState *cpu, sig=
-info_t *info,
-> >      cpu_loop_exit_sigsegv(cpu, guest_addr, access_type, maperr, pc);
-> >  }
-> >
-> > -static void host_sigbus_handler(CPUState *cpu, siginfo_t *info,
-> > +static uintptr_t host_sigbus_handler(CPUState *cpu, siginfo_t *info,
-> >                                  host_sigcontext *uc)
-> >  {
-> >      uintptr_t pc =3D host_signal_pc(uc);
-> > @@ -947,6 +947,7 @@ static void host_sigbus_handler(CPUState *cpu, sigi=
-nfo_t *info,
-> >          sigprocmask(SIG_SETMASK, host_signal_mask(uc), NULL);
-> >          cpu_loop_exit_sigbus(cpu, guest_addr, access_type, pc);
-> >      }
-> > +    return pc;
-> >  }
-> >
-> >  static void host_signal_handler(int host_sig, siginfo_t *info, void *p=
-uc)
-> > @@ -974,7 +975,7 @@ static void host_signal_handler(int host_sig, sigin=
-fo_t *info, void *puc)
-> >              host_sigsegv_handler(cpu, info, uc);
->
-> Do we have the same problem for SEGV?  They both used to set
+diff --git a/configure b/configure
+index 21ab9a64e9..3d8e24ae01 100755
+--- a/configure
++++ b/configure
+@@ -445,6 +445,7 @@ case "$cpu" in
+   loongarch*)
+     cpu=loongarch64
+     host_arch=loongarch64
++    linux_arch=loongarch
+     ;;
+ 
+   mips64*)
+-- 
+2.39.3
 
-Yea, it's not easy to follow the different paths... this code needs
-another refactor, I was tempted but refrained myself.
-So in the switch state if we have SEGV (and si_code>0) we always long
-jump or return.
-Only SIGBUS sets sync_sig to true, and thus calls
-cpu_loop_exit_restore, hence needs a PC.
-But the comment makes you think it's for multiple signals.
-
->
->     pc =3D host_signal_pc(uc);
->
-> but with this it's only SIGBUS.  Maybe the same for the others, so just
-> something like
->
->     diff --git a/linux-user/signal.c b/linux-user/signal.c
->     index b35d1e512f..55840bdf31 100644
->     --- a/linux-user/signal.c
->     +++ b/linux-user/signal.c
->     @@ -968,6 +968,8 @@ static void host_signal_handler(int host_sig, sig=
-info_t *info, void *puc)
->           * SIGFPE, SIGTRAP are always host bugs.
->           */
->          if (info->si_code > 0) {
->     +        pc =3D host_signal_pc(uc);
->     +
->              switch (host_sig) {
->              case SIGSEGV:
->                  /* Only returns on handle_sigsegv_accerr_write success. =
-*/
->
-
-Only those (SIGBUS) setting sync_sig need a PC.
-
-> as it just does the PC chasing for everyone?
->
-
-The sneaky return below.
-Let me know if you still think setting the PC before the switch
-statement is better.
-
-> >              return;
-> >          case SIGBUS:
-> > -            host_sigbus_handler(cpu, info, uc);
-> > +            pc =3D host_sigbus_handler(cpu, info, uc);
-> >              sync_sig =3D true;
-> >              break;
-> >          case SIGILL:
-> > --
-> > 2.40.1
->
-> Either way,
->
-> Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
-
-Thanks!
-
->
-> Thanks!
 
