@@ -2,74 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8205782DC19
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 16:08:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E1E82DC24
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 16:11:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPOYs-0007pb-6V; Mon, 15 Jan 2024 10:07:38 -0500
+	id 1rPObS-0000S9-BE; Mon, 15 Jan 2024 10:10:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPOYo-0007na-35
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 10:07:35 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPOYk-0000na-Hg
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 10:07:33 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5596fa1e2ebso443547a12.2
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 07:07:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705331248; x=1705936048; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=wl9pu1rNawDQg9EF8HQ59l55zNZKk/tf1CmvyTOKoN4=;
- b=Ayaco7fM5jUBVVVXnA+Qk30EVHiESPdy9OumzGQFDr7SWo+sDQgj93Vf0XaOz9Ff7e
- C3npE1KaWB8EBOnWonjax/lTKMmpHct8xT5ymY+URen5JWcojdIteI+AOmrtgAPXPxwo
- S5BdAG4AkUvzPm9lzzLaEIXhfmp4qQ/0Tg9UwAHa63pFyN0IMzWCCziGoC0Sd4Rwhj9i
- gNHBIGQrxQQZ5wwYF9wJVSDh08Ypo7O5VNyBZcMRq1q2RH/I6fnxKpr4tcwm3es91nOU
- MWBNz//SFf4rTJZt43XmzKa7245t0Vq0dWx6tikray2T2I2GpePd0Gy8UwzOKQ+WBDE0
- 7Cmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705331248; x=1705936048;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wl9pu1rNawDQg9EF8HQ59l55zNZKk/tf1CmvyTOKoN4=;
- b=Qzs65zInlaqm1KflpKr3cAC7syS1SWlAZvO0v8RSQifhmccdwG1X796DvLI+F2cAlh
- tTv8RBHHhFiXHRFG5D4wBZogHTEB2Z1bd+fRBURiVavbgsif3Iy86h0ZVpB/WrhxqsmC
- WpZNyshuQZVZZ2E/Gk8OlMK0dKksAv7IXdPRMvbp/ky6ZDsrJ3EpB0Ql2aUqyPWe2GQO
- 22QhHyDJZpEuAzCGvszH4SDLeOxE6RxhX7GsL9pD0A5MPaIHGVEYmnF8ys5Kth32IKjw
- 2BgsHKGtN5RdC3muy4a6ktnVaNP2GSVnboryZEuAHI8tRxsWLFbiB8d/tISxTYKH9CHa
- L9TA==
-X-Gm-Message-State: AOJu0YwFfsBydnAeCyt2Rg33bMooGlK7qMhWs5y8eJI2JbUFqHdBmNzC
- GmUeyQ+pIYut1qSui0V0vRfaLunEGtCSSKrVzgZ+C4Gup78icg==
-X-Google-Smtp-Source: AGHT+IEz/S3a635I52vESqQU5bBUSAAGwtl5SJP9O+HWgEfJCSUoLTFN7/63qcpKQa9p2CmQ1P8Kr65Kre0U3BPAUbM=
-X-Received: by 2002:aa7:c88c:0:b0:558:8a94:49c with SMTP id
- p12-20020aa7c88c000000b005588a94049cmr2683793eds.34.1705331248284; Mon, 15
- Jan 2024 07:07:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rPObP-0000Q0-I1
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 10:10:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rPObM-0001C1-L8
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 10:10:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705331412;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=frhMpujqE4lpPMxULLnlwh1JIvVDJaoKt4Ja1k+YScw=;
+ b=deXdjEFyrZWPhnXeSSWPgfizaX0WZY583Kt0Zdpc67ddUqihpTVmpZ/8O4nDJ0VO0WWgyE
+ mCW1qYRCOoIr4XSzgT/+OtmRX0+QDxhd0Eg4c88iYk0aSMe44sXb7qU6KvqQdu85283nMD
+ 5IlL4WYkM6C0URlaqTMCgs4x9Z1zOWc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-ddCSFtdvNsiIo6fTtYrbfQ-1; Mon,
+ 15 Jan 2024 10:10:08 -0500
+X-MC-Unique: ddCSFtdvNsiIo6fTtYrbfQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E6B4381079B;
+ Mon, 15 Jan 2024 15:10:08 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.141])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 276A3112D167;
+ Mon, 15 Jan 2024 15:10:07 +0000 (UTC)
+Date: Mon, 15 Jan 2024 16:10:06 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-block@nongnu.org, aliang@redhat.com, stefanha@redhat.com,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] string-output-visitor: Fix (pseudo) struct handling
+Message-ID: <ZaVKzg9PxyqvXh5A@redhat.com>
+References: <20240109181717.42493-1-kwolf@redhat.com>
+ <87mstcxfdx.fsf@pond.sub.org>
 MIME-Version: 1.0
-References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
- <20231208023145.1385775-44-sergey.kambalin@auriga.com>
-In-Reply-To: <20231208023145.1385775-44-sergey.kambalin@auriga.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 15 Jan 2024 15:07:16 +0000
-Message-ID: <CAFEAcA98HqPHe_0zV7B4MfWZAaa9kOT=u6uX_yFsTQcnBZcwQA@mail.gmail.com>
-Subject: Re: [PATCH v4 43/45] Add missed BCM2835 properties
-To: Sergey Kambalin <serg.oker@gmail.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Sergey Kambalin <sergey.kambalin@auriga.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87mstcxfdx.fsf@pond.sub.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.531,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,136 +79,221 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Dec 2023 at 02:36, Sergey Kambalin <serg.oker@gmail.com> wrote:
->
-> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
-> ---
->  hw/misc/bcm2835_property.c           | 47 ++++++++++++++++++++++++++++
->  include/hw/arm/raspberrypi-fw-defs.h | 12 ++++++-
->  2 files changed, 58 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/misc/bcm2835_property.c b/hw/misc/bcm2835_property.c
-> index ff55a4e2cd..dfeb793b3e 100644
-> --- a/hw/misc/bcm2835_property.c
-> +++ b/hw/misc/bcm2835_property.c
-> @@ -19,6 +19,9 @@
->  #include "trace.h"
->  #include "hw/arm/raspi_platform.h"
->
-> +#define RPI_EXP_GPIO_BASE       128
+Am 11.01.2024 um 12:45 hat Markus Armbruster geschrieben:
+> Kevin Wolf <kwolf@redhat.com> writes:
+> 
+> > Commit ff32bb53 tried to get minimal struct support into the string
+> > output visitor by just making it return "<omitted>". Unfortunately, it
+> > forgot that the caller will still make more visitor calls for the
+> > content of the struct.
+> >
+> > If the struct is contained in a list, such as IOThreadVirtQueueMapping,
+> > in the better case its fields show up as separate list entries. In the
+> > worse case, it contains another list, and the string output visitor
+> > doesn't support nested lists and asserts that this doesn't happen.
+> 
+> What it actually asserts, or rather tries to assert is this constraint
+> from visit_end_list()'s contract:
+> 
+>  * @list must match what was passed to the paired visit_start_list().
+> 
+> Since it's not prepared for nested lists, it actually asserts "match
+> what was passed the last visit_start_list() for this visitor", which is
+> correct only as long as there is no nesting.
+> 
+> I'm not sure whether this is relevant enough to justify tweaking your
+> commit message.
 
-This define doesn't seem to be used in this patch.
+Ah, yes, I see the assertion in end_list() that you mean. That one looks
+like it would indeed fail if we didn't already crash on the nested
+start_list():
 
-> +#define VCHI_BUSADDR_SIZE       sizeof(uint32_t)
-> +
->  /* https://github.com/raspberrypi/firmware/wiki/Mailbox-property-interface */
->
->  static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
-> @@ -138,6 +141,13 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
->              resplen = 8;
->              break;
->
-> +        case RPI_FWREQ_GET_CLOCKS:
-> +            /* TODO: add more clock IDs if needed */
-> +            stl_le_phys(&s->dma_as, value + 12, 0);
-> +            stl_le_phys(&s->dma_as, value + 16, RPI_FIRMWARE_ARM_CLK_ID);
-> +            resplen = 8;
-> +            break;
-> +
->          case RPI_FWREQ_SET_CLOCK_RATE:
->          case RPI_FWREQ_SET_MAX_CLOCK_RATE:
->          case RPI_FWREQ_SET_MIN_CLOCK_RATE:
-> @@ -276,6 +286,7 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
->              stl_le_phys(&s->dma_as, value + 12, 0);
->              resplen = 4;
->              break;
-> +
->          case RPI_FWREQ_FRAMEBUFFER_GET_NUM_DISPLAYS:
->              stl_le_phys(&s->dma_as, value + 12, 1);
->              resplen = 4;
-> @@ -301,6 +312,42 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
->                                      resplen);
->              break;
->
-> +        case RPI_FWREQ_GET_THROTTLED:
-> +            stl_le_phys(&s->dma_as, value + 12, 0);
-> +            resplen = 4;
-> +            break;
-> +
-> +        case RPI_FWREQ_FRAMEBUFFER_SET_PITCH:
-> +            qemu_log_mask(LOG_UNIMP, "RPI_FWREQ_FRAMEBUFFER_SET_PITCH "
-> +                              "is not implemented\n");
-> +            break;
-> +
-> +        case RPI_FWREQ_GET_GPIO_CONFIG:
-> +            qemu_log_mask(LOG_UNIMP, "RPI_FWREQ_GET_GPIO_CONFIG "
-> +                          "is not implemented\n");
-> +            break;
-> +
-> +        case RPI_FWREQ_SET_GPIO_CONFIG:
-> +            qemu_log_mask(LOG_UNIMP, "RPI_FWREQ_SET_GPIO_CONFIG "
-> +                          "is not implemented\n");
-> +            break;
-> +
-> +        case RPI_FWREQ_GET_GPIO_STATE:
-> +            qemu_log_mask(LOG_UNIMP, "RPI_FWREQ_GET_GPIO_STATE "
-> +                          "is not implemented\n");
-> +            break;
-> +
-> +        case RPI_FWREQ_SET_GPIO_STATE:
-> +            qemu_log_mask(LOG_UNIMP, "RPI_FWREQ_SET_GPIO_STATE "
-> +                          "is not implemented\n");
-> +            break;
+    /* we can't traverse a list in a list */
+    assert(sov->list_mode == LM_NONE);
 
-These don't do anything that isn't already covered by the
-"default" case. The only reason to have a case specifically
-for an unimplemented property is for where we need to at least
-get the response length correct to avoid the guest falling over.
-You'll note that all the other LOG_UNIMP cases in this switch
-set resplen.
+> > doesn't support nested lists and asserts that this doesn't happen. So as
+> > soon as the optional "vqs" field in IOThreadVirtQueueMapping is
+> > specified, we get a crash.
+> >
+> > This can be reproduced with the following command line:
+> >
+> >   echo "info qtree" | ./qemu-system-x86_64 \
+> >     -object iothread,id=t0 \
+> >     -blockdev null-co,node-name=disk \
+> >     -device '{"driver": "virtio-blk-pci", "drive": "disk",
+> >               "iothread-vq-mapping": [{"iothread": "t0", "vqs": [0]}]}' \
+> >     -monitor stdio
+> 
+> Appreciate the easy reproducer.
+> 
+> > Fix the problem by counting the nesting level of structs and ignoring
+> > any visitor calls for values (apart from start/end_struct) while we're
+> > not on the top level.
+> >
+> > Fixes: ff32bb53476539d352653f4ed56372dced73a388
+> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2069
+> > Reported-by: Aihua Liang <aliang@redhat.com>
+> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> > ---
+> >  qapi/string-output-visitor.c | 46 ++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 46 insertions(+)
+> >
+> > diff --git a/qapi/string-output-visitor.c b/qapi/string-output-visitor.c
+> > index f0c1dea89e..5115536b15 100644
+> > --- a/qapi/string-output-visitor.c
+> > +++ b/qapi/string-output-visitor.c
+> > @@ -65,6 +65,7 @@ struct StringOutputVisitor
+> >      } range_start, range_end;
+> >      GList *ranges;
+> >      void *list; /* Only needed for sanity checking the caller */
+> > +    unsigned int struct_nesting;
+> >  };
+> >  
+> >  static StringOutputVisitor *to_sov(Visitor *v)
+> > @@ -144,6 +145,10 @@ static bool print_type_int64(Visitor *v, const char *name, int64_t *obj,
+> >      StringOutputVisitor *sov = to_sov(v);
+> >      GList *l;
+> >  
+> > +    if (sov->struct_nesting) {
+> > +        return true;
+> > +    }
+> > +
+> >      switch (sov->list_mode) {
+> >      case LM_NONE:
+> >          string_output_append(sov, *obj);
+> > @@ -231,6 +236,10 @@ static bool print_type_size(Visitor *v, const char *name, uint64_t *obj,
+> >      uint64_t val;
+> >      char *out, *psize;
+> >  
+> > +    if (sov->struct_nesting) {
+> > +        return true;
+> > +    }
+> > +
+> >      if (!sov->human) {
+> >          out = g_strdup_printf("%"PRIu64, *obj);
+> >          string_output_set(sov, out);
+> > @@ -250,6 +259,11 @@ static bool print_type_bool(Visitor *v, const char *name, bool *obj,
+> >                              Error **errp)
+> >  {
+> >      StringOutputVisitor *sov = to_sov(v);
+> > +
+> > +    if (sov->struct_nesting) {
+> > +        return true;
+> > +    }
+> > +
+> >      string_output_set(sov, g_strdup(*obj ? "true" : "false"));
+> >      return true;
+> >  }
+> > @@ -260,6 +274,10 @@ static bool print_type_str(Visitor *v, const char *name, char **obj,
+> >      StringOutputVisitor *sov = to_sov(v);
+> >      char *out;
+> >  
+> > +    if (sov->struct_nesting) {
+> > +        return true;
+> > +    }
+> > +
+> >      if (sov->human) {
+> >          out = *obj ? g_strdup_printf("\"%s\"", *obj) : g_strdup("<null>");
+> >      } else {
+> > @@ -273,6 +291,11 @@ static bool print_type_number(Visitor *v, const char *name, double *obj,
+> >                                Error **errp)
+> >  {
+> >      StringOutputVisitor *sov = to_sov(v);
+> > +
+> > +    if (sov->struct_nesting) {
+> > +        return true;
+> > +    }
+> > +
+> >      string_output_set(sov, g_strdup_printf("%.17g", *obj));
+> >      return true;
+> >  }
+> > @@ -283,6 +306,10 @@ static bool print_type_null(Visitor *v, const char *name, QNull **obj,
+> >      StringOutputVisitor *sov = to_sov(v);
+> >      char *out;
+> >  
+> > +    if (sov->struct_nesting) {
+> > +        return true;
+> > +    }
+> > +
+> >      if (sov->human) {
+> >          out = g_strdup("<null>");
+> >      } else {
+> > @@ -295,6 +322,9 @@ static bool print_type_null(Visitor *v, const char *name, QNull **obj,
+> >  static bool start_struct(Visitor *v, const char *name, void **obj,
+> >                           size_t size, Error **errp)
+> >  {
+> > +    StringOutputVisitor *sov = to_sov(v);
+> > +
+> > +    sov->struct_nesting++;
+> >      return true;
+> >  }
+> >  
+> > @@ -302,6 +332,10 @@ static void end_struct(Visitor *v, void **obj)
+> >  {
+> >      StringOutputVisitor *sov = to_sov(v);
+> >  
+> > +    if (--sov->struct_nesting) {
+> > +        return;
+> > +    }
+> > +
+> >      /* TODO actually print struct fields */
+> >      string_output_set(sov, g_strdup("<omitted>"));
+> >  }
+> > @@ -312,6 +346,10 @@ start_list(Visitor *v, const char *name, GenericList **list, size_t size,
+> >  {
+> >      StringOutputVisitor *sov = to_sov(v);
+> >  
+> > +    if (sov->struct_nesting) {
+> > +        return true;
+> > +    }
+> > +
+> >      /* we can't traverse a list in a list */
+> >      assert(sov->list_mode == LM_NONE);
+> >      /* We don't support visits without a list */
+> > @@ -329,6 +367,10 @@ static GenericList *next_list(Visitor *v, GenericList *tail, size_t size)
+> >      StringOutputVisitor *sov = to_sov(v);
+> >      GenericList *ret = tail->next;
+> >  
+> > +    if (sov->struct_nesting) {
+> > +        return ret;
+> > +    }
+> > +
+> >      if (ret && !ret->next) {
+> >          sov->list_mode = LM_END;
+> >      }
+> > @@ -339,6 +381,10 @@ static void end_list(Visitor *v, void **obj)
+> >  {
+> >      StringOutputVisitor *sov = to_sov(v);
+> >  
+> > +    if (sov->struct_nesting) {
+> > +        return;
+> > +    }
+> > +
+> >      assert(sov->list == obj);
+> >      assert(sov->list_mode == LM_STARTED ||
+> >             sov->list_mode == LM_END ||
+> 
+> @struct_nesting is what its name suggests: the *struct* nesting level.
+> 
+> The patch's idea is to turn all methods into no-ops inside a struct.  To
+> make that work, start_struct() and end_struct() aren't actually no-ops;
+> they track the nesting level.
+> 
+> What about nested lists that are not inside any struct?
 
-> +
-> +        case RPI_FWREQ_VCHIQ_INIT:
-> +            stl_le_phys(&s->dma_as,
-> +                        value + offsetof(rpi_firmware_prop_request_t, payload),
-> +                        0);
-> +            resplen = VCHI_BUSADDR_SIZE;
-> +            break;
->          default:
->              qemu_log_mask(LOG_UNIMP,
->                            "bcm2835_property: unhandled tag 0x%08x\n", tag);
-> diff --git a/include/hw/arm/raspberrypi-fw-defs.h b/include/hw/arm/raspberrypi-fw-defs.h
-> index 4551fe7450..ded7a22f02 100644
-> --- a/include/hw/arm/raspberrypi-fw-defs.h
-> +++ b/include/hw/arm/raspberrypi-fw-defs.h
-> @@ -101,7 +101,6 @@ enum rpi_firmware_property_tag {
->      RPI_FWREQ_FRAMEBUFFER_GET_DISPLAY_ID =             0x00040016,
->      RPI_FWREQ_FRAMEBUFFER_SET_DISPLAY_NUM =            0x00048013,
->      RPI_FWREQ_FRAMEBUFFER_GET_NUM_DISPLAYS =           0x00040013,
-> -    RPI_FWREQ_FRAMEBUFFER_GET_DISPLAY_SETTINGS =       0x00040014,
+They remain forbidden, we don't currently have a use case for them.
 
-Why do we delete this ?
+Nesting inside of structs is easy to "support" because we don't actually
+print any of the values inside of them anyway. If you wanted to support
+list nesting where the value is actually meant to be printed, you'd
+first need to define what the output should look like and then implement
+that. I consider that a separate problem from what this patch fixes.
 
->      RPI_FWREQ_FRAMEBUFFER_TEST_PHYSICAL_WIDTH_HEIGHT = 0x00044003,
->      RPI_FWREQ_FRAMEBUFFER_TEST_VIRTUAL_WIDTH_HEIGHT =  0x00044004,
->      RPI_FWREQ_FRAMEBUFFER_TEST_DEPTH =                 0x00044005,
-> @@ -160,4 +159,15 @@ enum rpi_firmware_clk_id {
->      RPI_FIRMWARE_NUM_CLK_ID,
->  };
->
-> +struct rpi_firmware_property_tag_header {
-> +    uint32_t tag;
-> +    uint32_t buf_size;
-> +    uint32_t req_resp_size;
-> +};
-> +
-> +typedef struct rpi_firmware_prop_request {
-> +    struct rpi_firmware_property_tag_header hdr;
-> +    uint8_t payload[0];
-> +} rpi_firmware_prop_request_t;
-> +
->  #endif /* INCLUDE_HW_MISC_RASPBERRYPI_FW_DEFS_H_ */
+> Ceterum censeo: the struct visitors need to go.  But I'm *not* asking
+> you to do that now.
 
-thanks
--- PMM
+I assume you mean string visitors.
+
+Kevin
+
 
