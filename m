@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 145E382D796
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:42:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0EC082D79A
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:42:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPKOf-00035v-Jq; Mon, 15 Jan 2024 05:40:49 -0500
+	id 1rPKOq-0003L7-FJ; Mon, 15 Jan 2024 05:41:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rPKOe-000347-Cy
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:40:48 -0500
+ id 1rPKOk-0003I9-14
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:40:54 -0500
 Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rPKOc-0003GV-Cq
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:40:48 -0500
+ id 1rPKOi-0003GV-7t
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:40:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705315246; x=1736851246;
+ t=1705315252; x=1736851252;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rzv4rACBfIq9ROOfL34OgDBmAl9ewK2Tn0IPg/RHhrA=;
- b=HRa/+nS+4B7spO4WKxgQRoB5+h314UpYpShBG0AcuEF47ekYYAbR8P3t
- vcOeeRSTqFRqCV94avFjnPYf7ZAgtFfx5FSdCHovA5En9Umb+TGEEePH0
- OSanmgFNzmKnUuEowdOYPS7oGl/97G57Q0et8/peR/pnKmkVL7xkifwxQ
- gJ4Kc/Bw2yaumYjE6xSpYsbn6RjAohWF6YxHhra8HuKkWCkP0rhvZ1Aog
- wujhTaop3XKDwaUj7PcQrP6dSU50yITo16ZWy+bPQBJM7FcEq2YY3kk51
- WqbBVAJldkCNG4ik/9n8Z5RL7uBNzs6koowsDjIGmZUKZraGFrL0qwJTO A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="13067850"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="13067850"
+ bh=bRmsL7JKNEi6D3ICQa69K5/fS0ztI+ui4r90d6Oeejc=;
+ b=NTe6SoirvMtEU8DLGUOv6FeHAGTkMPLc/EbAO+cWDj21TNR/ySRn58aJ
+ IsZ4TBzlGSfELA2e90zfAxjB/N0WOrtWhbVLkJ1REuw/IUb/SGX9sL4hI
+ 6lW/8TqESyNZ8dNJrdUlTNZx/jaKWYILKeS1J0NPqQcutPG+QtRrJwAhz
+ B8BBHBY1t2eBjZ/GvGbFIxWNPjQb9FvMOG+INr9LYgEYkQ0qXwcOgQ5Xg
+ Hza8oo1B2rSwPnMXpQnzqccOrSpoAxfK+rtyVROvRR4BzY9mIvvZ0FuOm
+ hyQV4FmpNbG0cB5hlaGNVDVGv0NPeqkW3vK3Fd+5KebPdlD/EdZrhoPjD g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="13067868"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="13067868"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 02:40:46 -0800
+ 15 Jan 2024 02:40:51 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="874065425"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="874065425"
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="874065442"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="874065442"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 02:40:40 -0800
+ 15 Jan 2024 02:40:45 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
+ Yi Sun <yi.y.sun@linux.intel.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH rfcv1 15/23] intel_iommu: process PASID-based Device-TLB
- invalidation
-Date: Mon, 15 Jan 2024 18:37:27 +0800
-Message-Id: <20240115103735.132209-16-zhenzhong.duan@intel.com>
+Subject: [PATCH rfcv1 16/23] intel_iommu: rename slpte in iotlb_entry to pte
+Date: Mon, 15 Jan 2024 18:37:28 +0800
+Message-Id: <20240115103735.132209-17-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240115103735.132209-1-zhenzhong.duan@intel.com>
 References: <20240115103735.132209-1-zhenzhong.duan@intel.com>
@@ -87,79 +87,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Yi Liu <yi.l.liu@intel.com>
 
-This adds an empty handling for PASID-based Device-TLB invalidation.
-For now it is enough as it is not necessary to propagate it to host
-for passthrough device.
-
-The reason for an empty device tlb invalidation handling is that
-iommufd's intel vt-d cache invalidation uapi indicates all caches
-related to the mapping. So no need to send device tlb. spec says
-an iotlb invalidation should be issued before issuing device tlb
-invalidation. This means host should have received a cache invalidation
-due to guest iotlb invalidation. Hence no need to send another cache
-invalidation due to device tlb invalidation.
-
-Chapter 6.5.2.5:
-"Since translation requests-without-PASID from a device may be serviced by
-hardware from the IOTLB, software must always request IOTLB invalidation
-(iotlb_inv_dsc) before requesting corresponding Device-TLB (dev_tlb_inv_dsc)
-invalidation."
+Because we support both FST and SST translation, rename slpte in iotlb_entry
+to pte to make it generic.
 
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/i386/intel_iommu_internal.h |  1 +
- hw/i386/intel_iommu.c          | 18 ++++++++++++++++++
- 2 files changed, 19 insertions(+)
+ include/hw/i386/intel_iommu.h |  2 +-
+ hw/i386/intel_iommu.c         | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
-index ed0d5cd99b..dcf1410fcf 100644
---- a/hw/i386/intel_iommu_internal.h
-+++ b/hw/i386/intel_iommu_internal.h
-@@ -380,6 +380,7 @@ typedef union VTDInvDesc VTDInvDesc;
- #define VTD_INV_DESC_WAIT               0x5 /* Invalidation Wait Descriptor */
- #define VTD_INV_DESC_PIOTLB             0x6 /* PASID-IOTLB Invalidate Desc */
- #define VTD_INV_DESC_PC                 0x7 /* PASID-cache Invalidate Desc */
-+#define VTD_INV_DESC_DEV_PIOTLB         0x8 /* PASID-based-DIOTLB inv_desc*/
- #define VTD_INV_DESC_NONE               0   /* Not an Invalidate Descriptor */
- 
- /* Masks for Invalidation Wait Descriptor*/
+diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+index 72702e10a2..dedaab5ac9 100644
+--- a/include/hw/i386/intel_iommu.h
++++ b/include/hw/i386/intel_iommu.h
+@@ -210,7 +210,7 @@ struct VTDIOTLBEntry {
+     uint64_t gfn;
+     uint16_t domain_id;
+     uint32_t pasid;
+-    uint64_t slpte;
++    uint64_t pte;
+     uint64_t mask;
+     uint8_t access_flags;
+ };
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 2912fc6b88..5e7d445d98 100644
+index 5e7d445d98..7c24f8f677 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -3950,6 +3950,17 @@ static bool vtd_process_inv_iec_desc(IntelIOMMUState *s,
-     return true;
- }
+@@ -384,7 +384,7 @@ static void vtd_update_iotlb(IntelIOMMUState *s, uint16_t source_id,
  
-+static bool vtd_process_device_piotlb_desc(IntelIOMMUState *s,
-+                                           VTDInvDesc *inv_desc)
-+{
-+    /*
-+     * no need to handle it for passthru device, for emulated
-+     * devices with device tlb, it may be required, but for now,
-+     * return is enough
-+     */
-+    return true;
-+}
-+
- static bool vtd_process_device_iotlb_desc(IntelIOMMUState *s,
-                                           VTDInvDesc *inv_desc)
- {
-@@ -4066,6 +4077,13 @@ static bool vtd_process_inv_desc(IntelIOMMUState *s)
-         }
-         break;
- 
-+    case VTD_INV_DESC_DEV_PIOTLB:
-+        trace_vtd_inv_desc("device-piotlb", inv_desc.hi, inv_desc.lo);
-+        if (!vtd_process_device_piotlb_desc(s, &inv_desc)) {
-+            return false;
-+        }
-+        break;
-+
-     case VTD_INV_DESC_DEVICE:
-         trace_vtd_inv_desc("device", inv_desc.hi, inv_desc.lo);
-         if (!vtd_process_device_iotlb_desc(s, &inv_desc)) {
+     entry->gfn = gfn;
+     entry->domain_id = domain_id;
+-    entry->slpte = slpte;
++    entry->pte = slpte;
+     entry->access_flags = access_flags;
+     entry->mask = vtd_slpt_level_page_mask(level);
+     entry->pasid = pasid;
+@@ -1949,9 +1949,9 @@ static bool vtd_do_iommu_translate(VTDAddressSpace *vtd_as, PCIBus *bus,
+     if (!rid2pasid) {
+         iotlb_entry = vtd_lookup_iotlb(s, source_id, pasid, addr);
+         if (iotlb_entry) {
+-            trace_vtd_iotlb_page_hit(source_id, addr, iotlb_entry->slpte,
++            trace_vtd_iotlb_page_hit(source_id, addr, iotlb_entry->pte,
+                                      iotlb_entry->domain_id);
+-            slpte = iotlb_entry->slpte;
++            slpte = iotlb_entry->pte;
+             access_flags = iotlb_entry->access_flags;
+             page_mask = iotlb_entry->mask;
+             goto out;
+@@ -2027,9 +2027,9 @@ static bool vtd_do_iommu_translate(VTDAddressSpace *vtd_as, PCIBus *bus,
+     if (rid2pasid) {
+         iotlb_entry = vtd_lookup_iotlb(s, source_id, pasid, addr);
+         if (iotlb_entry) {
+-            trace_vtd_iotlb_page_hit(source_id, addr, iotlb_entry->slpte,
++            trace_vtd_iotlb_page_hit(source_id, addr, iotlb_entry->pte,
+                                      iotlb_entry->domain_id);
+-            slpte = iotlb_entry->slpte;
++            slpte = iotlb_entry->pte;
+             access_flags = iotlb_entry->access_flags;
+             page_mask = iotlb_entry->mask;
+             goto out;
 -- 
 2.34.1
 
