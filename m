@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A1D282E28C
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EB8482E28D
 	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 23:26:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPVPB-0000dC-3G; Mon, 15 Jan 2024 17:26:05 -0500
+	id 1rPVPF-0000j7-3A; Mon, 15 Jan 2024 17:26:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rPVP9-0000cg-N5
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 17:26:03 -0500
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ id 1rPVPD-0000h1-OZ
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 17:26:07 -0500
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rPVP8-00066T-82
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 17:26:03 -0500
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3bd6581bca0so1707031b6e.0
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 14:26:01 -0800 (PST)
+ id 1rPVPB-000676-NJ
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 17:26:07 -0500
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-3bd7c15a745so927979b6e.2
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 14:26:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1705357560; x=1705962360; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1705357564; x=1705962364; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rX044LrlQrH26fjBGEvI/gb8sPqL+hsQy6kx82uHSvw=;
- b=LbDLmuzer0p7jGUQvzlO6GIcFjMuZxwydItO0Ecw1iiIWK8fge4RNSegf0Kcl+DDfe
- W+ZPWuy+r3tjUmSTP0GQjs/fXA8umyxnmxNumXf1QUn45LmMWKISSSSkNUq+OXxpR80p
- UycX/1wiDoIgOKjaxVDW+shcjqvUDISFn7fm8hlIF4t5+6G5X+kn78yMs1tXLdzg4Yvn
- 1zNaIK6LRZYBEwIPB5eZDNg3a5pGleNXHaHkmkrDiGqvLgwUZ9v9noS3kfshiRQ8RzfB
- 6bdjI/oSIpL8mn4tnhZcn4CPUoqP9FrDIcI7ImYBIO/JwRM02ns9gwKaVEhWTCVJrPRZ
- F2BA==
+ bh=MWHeHV4OEo1q9eMddE57J21tzGp1rowPk1kJmzHf7hA=;
+ b=MY6hUzKy9+VxM7KrQuRWWCCJXH+8lMlNj3mE2lydrqikejPL0vtTKLEU5ufCpSIEvp
+ nUMfsmlPzHiTuS7Y/Q/YEmJByg5NoECgt8R6qekuQAWNePOuJ9x3SyAsZhECnCe+TurY
+ vBsxhcpwhs5nD3V6jx2GDnNefN9WwJihs0KLM4vRtVvZNaPGl4hrEmcX1ialSYCx4MYL
+ 6ZpqrztIpF+rNVsbo6WbO9S+tIT4+uPhI5YcNJXoNB/FPzo0f+xwoG6WXK2uZ07TjVGk
+ iUQDstPc8IfvksLX+1Pn+5Nwt2Vw6rqleBqumtLYYzr/beSS96MbQP1E9J1hUL5ggXiL
+ vYMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705357560; x=1705962360;
+ d=1e100.net; s=20230601; t=1705357564; x=1705962364;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rX044LrlQrH26fjBGEvI/gb8sPqL+hsQy6kx82uHSvw=;
- b=l6/zRyKnH3QRJDT0HR1ApcV3Nn+n0gV8Mfm4Ifp8WrxUIyfh9OXmVz1+jac8usDzYT
- Rbn8zXd6HeUrSYt4dYLDSMj4MwqBAGAH00lHbn77JZLFuvzD4QA/Lkdk5Gw9p8snhcBx
- C4166PJdrFLQJ2aORaNM2l1zLhmjupJTfx8aW2C+8nt4i1nHMPgN2Or6IAr7vCMmRbnJ
- levm/BvLvp15Ake6V3+ho3kqWhLqOOjYzb8iYAjOwC/uwVmB/7KiOC4gu+OBs+oplnUo
- eFTocAg78AX4vgH/giNiSmXjMK2BDQO+MNfxx/ub0Zhq8Vic9HATH3WhmyOzJGPfWcPx
- 811Q==
-X-Gm-Message-State: AOJu0YxEcbaiaUBhau6bwN+6TmzcxSCEPRreTBjfsFchQ10ZMd+mozQE
- P8uk5t+tEWW/0d4hYKqNr5yZt0KLESEwK8eecT/sWNjwOzJfDA==
-X-Google-Smtp-Source: AGHT+IELmtx4XXKQw7Vi5ZbQuHagT5cBG9u+Fcyidou4860BGqW6Un/rJhQPDwaTv+LmMufy7kTPTQ==
-X-Received: by 2002:a05:6808:179f:b0:3bd:3e96:a8ab with SMTP id
- bg31-20020a056808179f00b003bd3e96a8abmr6803852oib.53.1705357560749; 
- Mon, 15 Jan 2024 14:26:00 -0800 (PST)
+ bh=MWHeHV4OEo1q9eMddE57J21tzGp1rowPk1kJmzHf7hA=;
+ b=dfEu9+gEtj3Dsr+EJ2VHLLxJX5XoAEXsNvxY2XvjbIwWEucNjRx9eCuaIw9a6pYP5Q
+ N73lk/djfTL6toE3vi5315AYSYp53rbUyHqIW22MifpvwTDBFbxurx29gLZUKTJFY2FF
+ xE7L+btrMxWaM67Hm7pfcNwBjFs/FwOJ3dq348rqQmbup8Op4eySsmaw5q07SAMRPphV
+ bDrIeXPGv3MANVtSzAKp0UPQ1AAC+OPocbW08FTQCYB3UHYStHlzbbGnR+BevUYo8RGw
+ tOdxONUth0m+52izHS93vXI/7Y56PEjPmS97v4TDKoflghbTVZJM+K5MxR4UDgtguaA6
+ krAQ==
+X-Gm-Message-State: AOJu0YwuFvXZVnat93xdwnf8MZ+WeFS6tTwLFa7tEDUQsBqOnPVB+Bo2
+ fD/T8bLJIHBH7AiZUoyloruu1fKj/aqqmgHlrhlE0ATbghe9Cg==
+X-Google-Smtp-Source: AGHT+IEGdJgc9ja1YZyF5ojj0Trd8JIRYj/XLhDl5SjeUXNIS6UWh2Vg/2yB2dLImkdaBg+dLr5l3w==
+X-Received: by 2002:a05:6808:1a09:b0:3bd:5fb3:7f5c with SMTP id
+ bk9-20020a0568081a0900b003bd5fb37f5cmr7882913oib.89.1705357563938; 
+ Mon, 15 Jan 2024 14:26:03 -0800 (PST)
 Received: from grind.. ([152.234.123.64]) by smtp.gmail.com with ESMTPSA id
- ks19-20020a056a004b9300b006d977f70cd5sm8125940pfb.23.2024.01.15.14.25.57
+ ks19-20020a056a004b9300b006d977f70cd5sm8125940pfb.23.2024.01.15.14.26.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jan 2024 14:26:00 -0800 (PST)
+ Mon, 15 Jan 2024 14:26:03 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  richard.henderson@linaro.org, max.chou@sifive.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 08/12] target/riscv/vector_helper.c: use vlenb in
- HELPER(vsetvl)
-Date: Mon, 15 Jan 2024 19:25:24 -0300
-Message-ID: <20240115222528.257342-9-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 09/12] target/riscv/cpu.h: use 'vlenb' in vext_get_vlmax()
+Date: Mon, 15 Jan 2024 19:25:25 -0300
+Message-ID: <20240115222528.257342-10-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240115222528.257342-1-dbarboza@ventanamicro.com>
 References: <20240115222528.257342-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x233.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,35 +93,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the new 'vlenb' CPU config to validate fractional LMUL. The original
-comparison is done with 'vlen' and 'sew', both in bits. Adjust the shift
-to use vlenb.
-
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/vector_helper.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ target/riscv/cpu.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index cb944229b0..9e3ae4b5d3 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -45,9 +45,13 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
-                                             xlen - 1 - R_VTYPE_RESERVED_SHIFT);
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 11df226a00..7304e478c2 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -692,7 +692,11 @@ static inline uint32_t vext_get_vlmax(RISCVCPU *cpu, target_ulong vtype)
+ {
+     uint8_t sew = FIELD_EX64(vtype, VTYPE, VSEW);
+     int8_t lmul = sextract32(FIELD_EX64(vtype, VTYPE, VLMUL), 0, 3);
+-    return cpu->cfg.vlen >> (sew + 3 - lmul);
++    /*
++     * vlmax = vlen >> (sew + 3 - lmul). With vlenb,
++     * 3 less shifts: vlenb >> (sew + 3 - 3 - lmul)
++     */
++    return cpu->cfg.vlenb >> (sew - lmul);
+ }
  
-     if (lmul & 4) {
--        /* Fractional LMUL - check LMUL * VLEN >= SEW */
-+        /*
-+         * Fractional LMUL: check VLEN * LMUL >= SEW,
-+         * or VLEN * (8 - lmul) >= SEW. Using VLENB we
-+         * need 3 less shifts rights.
-+         */
-         if (lmul == 4 ||
--            cpu->cfg.vlen >> (8 - lmul) < sew) {
-+            cpu->cfg.vlenb >> (8 - 3 - lmul) < sew) {
-             vill = true;
-         }
-     }
+ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
 -- 
 2.43.0
 
