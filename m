@@ -2,87 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6ECC82D894
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A70682D893
 	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 12:52:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPLV2-000579-3z; Mon, 15 Jan 2024 06:51:28 -0500
+	id 1rPLV7-00057Y-44; Mon, 15 Jan 2024 06:51:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPLUz-00056T-Ar
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:51:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPLUx-0002hq-8R
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:51:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705319481;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=jxUN6ATX3NUY3SInjREFCNjG6WHEIDrOtqUsIVazFOw=;
- b=QQ3+ND+4Aujbeo1YX5/xcnUODDlRz4nsPkC5GvwZFBSGTYkmL79+K1Kl06Bd/V0XKdPKDL
- sfn8rTWUMoGbQdNaMpY2k1+877WrZpYLpesl1udioZAdKvq7JLvKoI2xWtPIF6fp5Pecow
- TIyV1JUuDsbO8Z8S6nhJAS+VwhfXv+g=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-626-QHC_2LWFNaaywDQuCwaJHQ-1; Mon, 15 Jan 2024 06:51:19 -0500
-X-MC-Unique: QHC_2LWFNaaywDQuCwaJHQ-1
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-28db680c0f7so1315821a91.0
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 03:51:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705319478; x=1705924278;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rPLV5-00057J-WE
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:51:32 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rPLV4-0002iQ-BU
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:51:31 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-336755f1688so7628820f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 03:51:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705319488; x=1705924288; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jxUN6ATX3NUY3SInjREFCNjG6WHEIDrOtqUsIVazFOw=;
- b=EBeQaBUx0nlqrmlypM77upUWOnzmmTUCAsNQvY14IrP44RUciujCFl9yG0YZ/1lUGj
- niYeDqXPT11Lm9isAcSuLlpLU7xaQkw5Lt3ZX+lDASd3Q0IB2D9dEhWYcjA+nA4Xhszk
- CmShXSwH4sZtYvytfHKLHJsG8efKBQEx3ckwm7MAZkZTZrABLNRSLP5piTsVvpJU6ZLC
- 8Tc0joJ+WbZ3VwL0zVBENB0qCpk7nIobs26Hj+tLnuqjFzI2FxOhrEtZSVyZ7wwEn5EJ
- nLuTboPG/b88DSy4zAtxZmuP78iA5/N/cKj4cVWjg3j4fcwB+pAV6k5efpfYCj66J1TT
- QN0w==
-X-Gm-Message-State: AOJu0Yw9tWNwYL6smSntokhQjEi+f1FJo35hn30BDg4GC/mlxxwrhhmt
- mjLokdKxur/OAPZ+b5cINJOWl03iyCsXMl2re22gCuKEvqJEmFgj4Oj8R+ReG0gWrjSkZuBNrjn
- S7Jhw4cC211fKw3yRG9L1Bag=
-X-Received: by 2002:aa7:9dc6:0:b0:6d9:383b:d91a with SMTP id
- g6-20020aa79dc6000000b006d9383bd91amr12744585pfq.1.1705319478338; 
- Mon, 15 Jan 2024 03:51:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHuDbUiY5K3W0joYTeSv2T2fOZKcRscbILQtS+t+iihXhBo7PBIhwvGdm2HTRp3FK0TVH97oA==
-X-Received: by 2002:aa7:9dc6:0:b0:6d9:383b:d91a with SMTP id
- g6-20020aa79dc6000000b006d9383bd91amr12744569pfq.1.1705319477932; 
- Mon, 15 Jan 2024 03:51:17 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- c1-20020a630d01000000b005cd64ff9a42sm7748072pgl.64.2024.01.15.03.51.14
+ bh=9l19L6rbX05ONRegK7vqFjOSqqycukFWTq6UAM6eNyI=;
+ b=du+VdGR5c6jbnaWy1/BBj924g9Tz8YQkt/5/lr8khXn8V4AFrJanh+6o0vjpcXSp+A
+ zOF0YSa6tJcCbxZAVuKPnEX0VUfnv96NpPefYh2V4G4qea44ZnXkN786P7WuU9GmGOoD
+ HAccITU+p6ZbTi6f9YWw7UbmruXWInvY8Ku8oV36YPOlRm2iu9vBLZIGI6U1dr24+59+
+ VWPD2Dz/bcikncoQxBpNYaj69eImeTvHyVWS4+PYi8Ve9+640qRLcTQQAraleo9jy9N2
+ AEqo+lPthz236ldgN6exUx25fVzp2v4Z5msNZDQAEzwcDlWwfxeF8WOI2Hw/3TUc8Of+
+ GvXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705319488; x=1705924288;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=9l19L6rbX05ONRegK7vqFjOSqqycukFWTq6UAM6eNyI=;
+ b=QoEx8wF9pj2H3PG7xPGlwd8f35NVJ9AOi6BAcIFlRPTTM+ROhELt4Si3zLFGcZf+DV
+ rnkEzYBNW7dXd9rveBsBkoLH9JYCHD+IRyItttz6vjY+ssGrZRjgu2gLMBuYF+OKc6aS
+ o/8k3FNxyJPoyrn/Iibe/TVaBQ1eWuwFG7ef0MYxvW+X8YQDj11DTimLEXLSMHROz2eM
+ CNkyASuWYOhAwFQo+IgsTNWv1ypurIan97+EjYSybMex8CrR6Gk1W+2daJ4C8R7TvIJg
+ f65lf2c7fBtZdiFQVvrZ6QE1IDUEpv24D8D9IYRLKP/8biaF1HqWc7IYECViI+W0rf3v
+ 12KA==
+X-Gm-Message-State: AOJu0YzPzK6j971kHt8EaQJ5G3EUakq8aS8bj0+uj7Lt1BqCjB6rD4vZ
+ daR7ZvrcR9Tfa2x8UXF/XkHrBX1ctaY2CA==
+X-Google-Smtp-Source: AGHT+IH3GpcUGafFfT+70R3lWyRyo45Gv5/bjAAhsnh/tJGw8bX+nySaHK9E3jA5toNz5o2Q4P6Ssg==
+X-Received: by 2002:a05:600c:3b2a:b0:40e:621b:639b with SMTP id
+ m42-20020a05600c3b2a00b0040e621b639bmr2872190wms.116.1705319488061; 
+ Mon, 15 Jan 2024 03:51:28 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ p19-20020adf9d93000000b003362d0eefd3sm11633639wre.20.2024.01.15.03.51.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jan 2024 03:51:17 -0800 (PST)
-Date: Mon, 15 Jan 2024 19:51:07 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Claudio Fontana <cfontana@suse.de>
-Subject: Re: [RFC PATCH v3 11/30] migration/multifd: Allow multifd without
- packets
-Message-ID: <ZaUcKy41AsAdqT0G@x1n>
-References: <20231127202612.23012-1-farosas@suse.de>
- <20231127202612.23012-12-farosas@suse.de>
+ Mon, 15 Jan 2024 03:51:27 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 61A965F78A;
+ Mon, 15 Jan 2024 11:51:27 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org,  Palmer Dabbelt <palmer@dabbelt.com>,  Alistair
+ Francis <alistair.francis@wdc.com>,  Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>,  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org,  Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: Re: [PATCH v2 23/43] target/riscv: Remove misa_mxl validation
+In-Reply-To: <875xzyejuw.fsf@draig.linaro.org> ("Alex =?utf-8?Q?Benn=C3=A9?=
+ =?utf-8?Q?e=22's?= message of "Fri, 12 Jan 2024 13:56:07 +0000")
+References: <20240103173349.398526-1-alex.bennee@linaro.org>
+ <20240103173349.398526-24-alex.bennee@linaro.org>
+ <87sf37hlwo.fsf@draig.linaro.org>
+ <CAKmqyKPCy9W-iYscHLjVvU=RfoSLURFgdki0qdzgNSkLKqutyg@mail.gmail.com>
+ <875xzyejuw.fsf@draig.linaro.org>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Mon, 15 Jan 2024 11:51:27 +0000
+Message-ID: <87a5p6ke68.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231127202612.23012-12-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,345 +103,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 27, 2023 at 05:25:53PM -0300, Fabiano Rosas wrote:
-> For the upcoming support to the new 'fixed-ram' migration stream
-> format, we cannot use multifd packets because each write into the
-> ramblock section in the migration file is expected to contain only the
-> guest pages. They are written at their respective offsets relative to
-> the ramblock section header.
-> 
-> There is no space for the packet information and the expected gains
-> from the new approach come partly from being able to write the pages
-> sequentially without extraneous data in between.
-> 
-> The new format also doesn't need the packets and all necessary
-> information can be taken from the standard migration headers with some
-> (future) changes to multifd code.
-> 
-> Use the presence of the fixed-ram capability to decide whether to send
-> packets. For now this has no effect as fixed-ram cannot yet be enabled
-> with multifd.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
-> - moved more of the packet code under use_packets
-> ---
->  migration/multifd.c | 138 +++++++++++++++++++++++++++-----------------
->  migration/options.c |   5 ++
->  migration/options.h |   1 +
->  3 files changed, 91 insertions(+), 53 deletions(-)
-> 
-> diff --git a/migration/multifd.c b/migration/multifd.c
-> index ec58c58082..9625640d61 100644
-> --- a/migration/multifd.c
-> +++ b/migration/multifd.c
-> @@ -654,18 +654,22 @@ static void *multifd_send_thread(void *opaque)
->      Error *local_err = NULL;
->      int ret = 0;
->      bool use_zero_copy_send = migrate_zero_copy_send();
-> +    bool use_packets = migrate_multifd_packets();
->  
->      thread = migration_threads_add(p->name, qemu_get_thread_id());
->  
->      trace_multifd_send_thread_start(p->id);
->      rcu_register_thread();
->  
-> -    if (multifd_send_initial_packet(p, &local_err) < 0) {
-> -        ret = -1;
-> -        goto out;
-> +    if (use_packets) {
-> +        if (multifd_send_initial_packet(p, &local_err) < 0) {
-> +            ret = -1;
-> +            goto out;
-> +        }
-> +
-> +        /* initial packet */
-> +        p->num_packets = 1;
->      }
-> -    /* initial packet */
-> -    p->num_packets = 1;
->  
->      while (true) {
->          qemu_sem_post(&multifd_send_state->channels_ready);
-> @@ -677,11 +681,10 @@ static void *multifd_send_thread(void *opaque)
->          qemu_mutex_lock(&p->mutex);
->  
->          if (p->pending_job) {
-> -            uint64_t packet_num = p->packet_num;
->              uint32_t flags;
->              p->normal_num = 0;
->  
-> -            if (use_zero_copy_send) {
-> +            if (!use_packets || use_zero_copy_send) {
->                  p->iovs_num = 0;
->              } else {
->                  p->iovs_num = 1;
-> @@ -699,16 +702,20 @@ static void *multifd_send_thread(void *opaque)
->                      break;
->                  }
->              }
-> -            multifd_send_fill_packet(p);
-> +
-> +            if (use_packets) {
-> +                multifd_send_fill_packet(p);
-> +                p->num_packets++;
-> +            }
-> +
->              flags = p->flags;
->              p->flags = 0;
-> -            p->num_packets++;
->              p->total_normal_pages += p->normal_num;
->              p->pages->num = 0;
->              p->pages->block = NULL;
->              qemu_mutex_unlock(&p->mutex);
->  
-> -            trace_multifd_send(p->id, packet_num, p->normal_num, flags,
-> +            trace_multifd_send(p->id, p->packet_num, p->normal_num, flags,
->                                 p->next_packet_size);
->  
->              if (use_zero_copy_send) {
-> @@ -718,7 +725,7 @@ static void *multifd_send_thread(void *opaque)
->                  if (ret != 0) {
->                      break;
->                  }
-> -            } else {
-> +            } else if (use_packets) {
->                  /* Send header using the same writev call */
->                  p->iov[0].iov_len = p->packet_len;
->                  p->iov[0].iov_base = p->packet;
-> @@ -904,6 +911,7 @@ int multifd_save_setup(Error **errp)
->  {
->      int thread_count;
->      uint32_t page_count = MULTIFD_PACKET_SIZE / qemu_target_page_size();
-> +    bool use_packets = migrate_multifd_packets();
->      uint8_t i;
->  
->      if (!migrate_multifd()) {
-> @@ -928,14 +936,20 @@ int multifd_save_setup(Error **errp)
->          p->pending_job = 0;
->          p->id = i;
->          p->pages = multifd_pages_init(page_count);
-> -        p->packet_len = sizeof(MultiFDPacket_t)
-> -                      + sizeof(uint64_t) * page_count;
-> -        p->packet = g_malloc0(p->packet_len);
-> -        p->packet->magic = cpu_to_be32(MULTIFD_MAGIC);
-> -        p->packet->version = cpu_to_be32(MULTIFD_VERSION);
-> +
-> +        if (use_packets) {
-> +            p->packet_len = sizeof(MultiFDPacket_t)
-> +                          + sizeof(uint64_t) * page_count;
-> +            p->packet = g_malloc0(p->packet_len);
-> +            p->packet->magic = cpu_to_be32(MULTIFD_MAGIC);
-> +            p->packet->version = cpu_to_be32(MULTIFD_VERSION);
-> +
-> +            /* We need one extra place for the packet header */
-> +            p->iov = g_new0(struct iovec, page_count + 1);
-> +        } else {
-> +            p->iov = g_new0(struct iovec, page_count);
-> +        }
->          p->name = g_strdup_printf("multifdsend_%d", i);
-> -        /* We need one extra place for the packet header */
-> -        p->iov = g_new0(struct iovec, page_count + 1);
->          p->normal = g_new0(ram_addr_t, page_count);
->          p->page_size = qemu_target_page_size();
->          p->page_count = page_count;
-> @@ -1067,7 +1081,7 @@ void multifd_recv_sync_main(void)
->  {
->      int i;
->  
-> -    if (!migrate_multifd()) {
-> +    if (!migrate_multifd() || !migrate_multifd_packets()) {
->          return;
->      }
->      for (i = 0; i < migrate_multifd_channels(); i++) {
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
-This noops the recv sync when use_packets=1, makes sense.
+> Alistair Francis <alistair23@gmail.com> writes:
+>
+>> On Tue, Jan 9, 2024 at 1:43=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@lin=
+aro.org> wrote:
+>>>
+>>> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+>>>
+>>> > From: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> >
+>>> > It is initialized with a simple assignment and there is little room f=
+or
+>>> > error. In fact, the validation is even more complex.
+>>> >
+>>> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> > Acked-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+>>> > Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>>> > Acked-by: Alistair Francis <alistair.francis@wdc.com>
+>>> > Message-Id: <20231213-riscv-v7-2-a760156a337f@daynix.com>
+>>> > Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>>>
+>>> ping: along with this are the RiscV maintainers happy for me to take:
+>>>
+>>>   [PATCH v2 23/43] target/riscv: Remove misa_mxl validation
+>>>   [PATCH v2 24/43] target/riscv: Move misa_mxl_max to class
+>>>   [PATCH v2 25/43] target/riscv: Validate misa_mxl_max only once
+>>>
+>>> through my next pull request?
+>>
+>> Yep! Go for it
+>
+> Sadly some of the recent changes that went through have created a merge
+> conflict.
+>
+> Akihiko,
+>
+> Any chance you could re-spin just the MISA_MXL patches?
 
-How about multifd_send_sync_main()?  Should we do the same?
+Never mind, I think I got it figured out.
 
-> @@ -1094,38 +1108,44 @@ static void *multifd_recv_thread(void *opaque)
->  {
->      MultiFDRecvParams *p = opaque;
->      Error *local_err = NULL;
-> +    bool use_packets = migrate_multifd_packets();
->      int ret;
->  
->      trace_multifd_recv_thread_start(p->id);
->      rcu_register_thread();
->  
->      while (true) {
-> -        uint32_t flags;
-> +        uint32_t flags = 0;
-> +        p->normal_num = 0;
->  
->          if (p->quit) {
->              break;
->          }
->  
-> -        ret = qio_channel_read_all_eof(p->c, (void *)p->packet,
-> -                                       p->packet_len, &local_err);
-> -        if (ret == 0 || ret == -1) {   /* 0: EOF  -1: Error */
-> -            break;
-> -        }
-> +        if (use_packets) {
-> +            ret = qio_channel_read_all_eof(p->c, (void *)p->packet,
-> +                                           p->packet_len, &local_err);
-> +            if (ret == 0 || ret == -1) {   /* 0: EOF  -1: Error */
-> +                break;
-> +            }
-> +
-> +            qemu_mutex_lock(&p->mutex);
-> +            ret = multifd_recv_unfill_packet(p, &local_err);
-> +            if (ret) {
-> +                qemu_mutex_unlock(&p->mutex);
-> +                break;
-> +            }
-> +            p->num_packets++;
-> +
-> +            flags = p->flags;
-> +            /* recv methods don't know how to handle the SYNC flag */
-> +            p->flags &= ~MULTIFD_FLAG_SYNC;
-> +            trace_multifd_recv(p->id, p->packet_num, p->normal_num, flags,
-> +                               p->next_packet_size);
->  
-> -        qemu_mutex_lock(&p->mutex);
-> -        ret = multifd_recv_unfill_packet(p, &local_err);
-> -        if (ret) {
-> -            qemu_mutex_unlock(&p->mutex);
-> -            break;
-> +            p->total_normal_pages += p->normal_num;
->          }
->  
-> -        flags = p->flags;
-> -        /* recv methods don't know how to handle the SYNC flag */
-> -        p->flags &= ~MULTIFD_FLAG_SYNC;
-> -        trace_multifd_recv(p->id, p->packet_num, p->normal_num, flags,
-> -                           p->next_packet_size);
-> -        p->num_packets++;
-> -        p->total_normal_pages += p->normal_num;
->          qemu_mutex_unlock(&p->mutex);
->  
->          if (p->normal_num) {
-> @@ -1135,7 +1155,7 @@ static void *multifd_recv_thread(void *opaque)
->              }
->          }
->  
-> -        if (flags & MULTIFD_FLAG_SYNC) {
-> +        if (use_packets && (flags & MULTIFD_FLAG_SYNC)) {
->              qemu_sem_post(&multifd_recv_state->sem_sync);
->              qemu_sem_wait(&p->sem_sync);
->          }
-> @@ -1159,6 +1179,7 @@ int multifd_load_setup(Error **errp)
->  {
->      int thread_count;
->      uint32_t page_count = MULTIFD_PACKET_SIZE / qemu_target_page_size();
-> +    bool use_packets = migrate_multifd_packets();
->      uint8_t i;
->  
->      /*
-> @@ -1183,9 +1204,12 @@ int multifd_load_setup(Error **errp)
->          qemu_sem_init(&p->sem_sync, 0);
->          p->quit = false;
->          p->id = i;
-> -        p->packet_len = sizeof(MultiFDPacket_t)
-> -                      + sizeof(uint64_t) * page_count;
-> -        p->packet = g_malloc0(p->packet_len);
-> +
-> +        if (use_packets) {
-> +            p->packet_len = sizeof(MultiFDPacket_t)
-> +                + sizeof(uint64_t) * page_count;
-> +            p->packet = g_malloc0(p->packet_len);
-> +        }
->          p->name = g_strdup_printf("multifdrecv_%d", i);
->          p->iov = g_new0(struct iovec, page_count);
->          p->normal = g_new0(ram_addr_t, page_count);
-> @@ -1231,18 +1255,27 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
->  {
->      MultiFDRecvParams *p;
->      Error *local_err = NULL;
-> -    int id;
-> +    bool use_packets = migrate_multifd_packets();
-> +    int id, num_packets = 0;
->  
-> -    id = multifd_recv_initial_packet(ioc, &local_err);
-> -    if (id < 0) {
-> -        multifd_recv_terminate_threads(local_err);
-> -        error_propagate_prepend(errp, local_err,
-> -                                "failed to receive packet"
-> -                                " via multifd channel %d: ",
-> -                                qatomic_read(&multifd_recv_state->count));
-> -        return;
-> +    if (use_packets) {
-> +        id = multifd_recv_initial_packet(ioc, &local_err);
-> +        if (id < 0) {
-> +            multifd_recv_terminate_threads(local_err);
-> +            error_propagate_prepend(errp, local_err,
-> +                                    "failed to receive packet"
-> +                                    " via multifd channel %d: ",
-> +                                    qatomic_read(&multifd_recv_state->count));
-> +            return;
-> +        }
-> +        trace_multifd_recv_new_channel(id);
-> +
-> +        /* initial packet */
-> +        num_packets = 1;
-> +    } else {
-> +        /* next patch gives this a meaningful value */
-> +        id = 0;
->      }
-> -    trace_multifd_recv_new_channel(id);
->  
->      p = &multifd_recv_state->params[id];
->      if (p->c != NULL) {
-> @@ -1253,9 +1286,8 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
->          return;
->      }
->      p->c = ioc;
-> +    p->num_packets = num_packets;
->      object_ref(OBJECT(ioc));
-> -    /* initial packet */
-> -    p->num_packets = 1;
->  
->      p->running = true;
->      qemu_thread_create(&p->thread, p->name, multifd_recv_thread, p,
-> diff --git a/migration/options.c b/migration/options.c
-> index 775428a8a5..10730b13ba 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -385,6 +385,11 @@ bool migrate_multifd_flush_after_each_section(void)
->      return s->multifd_flush_after_each_section;
->  }
->  
-> +bool migrate_multifd_packets(void)
-
-Maybe multifd_use_packets()?  Dropping the migrate_ prefix as this is not a
-global API but multifd-only.  Then if multifd_packets() reads too weird and
-unclear, "add" makes it clear.
-
-> +{
-> +    return !migrate_fixed_ram();
-> +}
-> +
->  bool migrate_postcopy(void)
->  {
->      return migrate_postcopy_ram() || migrate_dirty_bitmaps();
-> diff --git a/migration/options.h b/migration/options.h
-> index 8680a10b79..8a19d6939c 100644
-> --- a/migration/options.h
-> +++ b/migration/options.h
-> @@ -56,6 +56,7 @@ bool migrate_zero_copy_send(void);
->   */
->  
->  bool migrate_multifd_flush_after_each_section(void);
-> +bool migrate_multifd_packets(void);
->  bool migrate_postcopy(void);
->  bool migrate_rdma(void);
->  bool migrate_tls(void);
-> -- 
-> 2.35.3
-> 
-
--- 
-Peter Xu
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
