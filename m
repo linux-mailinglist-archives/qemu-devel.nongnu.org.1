@@ -2,80 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7CE82DA07
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 14:24:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D029082DA7D
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 14:47:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPMvY-0001en-EV; Mon, 15 Jan 2024 08:22:56 -0500
+	id 1rPNHk-00006n-0k; Mon, 15 Jan 2024 08:45:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPMvW-0001eJ-0r
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 08:22:54 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rPNHd-000060-Nf
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 08:45:46 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPMvU-00047n-GQ
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 08:22:53 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a29058bb2ceso932567266b.0
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 05:22:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705324970; x=1705929770; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UknHYhSRyGy4RvyFMtWD7/d30rc1VGzl1cFZqKy6om4=;
- b=wbx/NfJUsWW7EEsm8F4tybf7H2Z2MTaFO/jo72EVlqXL04ZwBSCeLaYl83Ph598xEl
- 4La+8zn6pM6msF82KgVOeCZLCpbUYtHUfh2r79cmHr9yXFhC0SHmnom7aX+S5rlzHptP
- 2yEpXMelDAb4xLqdm4v3Uak4p0F0zctkDSUkvvWxSN9XiR7SMaHv192wI2hGBVgm+dOJ
- ddNNRYQgkoBUYWV51GwrXszNRwkFYk54VwsQaMOKwmi1nT3ayc4tI8sFpifZIifH2je9
- 7r1H6tF0sVM6LCVlu6hw4KWppIYsH0FQzueSXgaER8tJqPh0b08RXafnsJRI804ScdA7
- 7fSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705324970; x=1705929770;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UknHYhSRyGy4RvyFMtWD7/d30rc1VGzl1cFZqKy6om4=;
- b=HNnLQsvdmdiGlJLWo/SNVSjQesFZqP5VNcxjVApY7Z+NQ2LfqDsIGor5M9BwhLNXYs
- zXmO0puIYEVdGyom3SHoJT0Cb4i6qowY4RBTM8f0CqqIWOFIZ17C/NXyh63eVOiRnMep
- z+WWGXrsrW02M/LMXrIbpBDHG4Q10XHv89WRbyAJ2qV0F89jRzVUkbn9TvSYIbvMoogC
- DWr7+D9epvr4kuZDYcwa3DhiP5qYOK7hiphVxSduQsJjIqKhwfVtyL2340TCksM4CJN8
- swG7S00+oggh1liGxXVgDXZ2A8xOS+0NloqU22zwh2YhwIo1gjfZ392FTP8isWE3JhPH
- qltA==
-X-Gm-Message-State: AOJu0YzJrKvMLZdkmNwmtgN6oxNdE2sJ2x4YFMgsr0qUsKlQEr5o0KfZ
- b/nW7TDuNpYucAA1X6z2153Qxyn5dU/0qQ==
-X-Google-Smtp-Source: AGHT+IHLaFWW16AvI8Qxtzk8AuXg9HA0IyClRsWWW5o5ySXhDzorM8C+UNlIddYYAr9UgtvmYSKdSA==
-X-Received: by 2002:a17:906:ae83:b0:a2c:5ed3:626f with SMTP id
- md3-20020a170906ae8300b00a2c5ed3626fmr1788715ejb.161.1705324970645; 
- Mon, 15 Jan 2024 05:22:50 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.209.30])
- by smtp.gmail.com with ESMTPSA id
- lb10-20020a170906adca00b00a2930696259sm5304871ejb.71.2024.01.15.05.22.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 Jan 2024 05:22:50 -0800 (PST)
-Message-ID: <7825f8a0-c896-45a9-86c3-9a30e89ecd06@linaro.org>
-Date: Mon, 15 Jan 2024 14:22:48 +0100
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rPNHa-00036m-T9
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 08:45:45 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id B3C3A1F88D;
+ Mon, 15 Jan 2024 13:45:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1705326336; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XhJeNN6enozzDVeBASE8Lp4auFsLMKZLCuf55BfWatU=;
+ b=1L6kE3XzQ3AAiO45jZtu8lQ29M+o3pBd+25N7fnO1eW6S3qSjL52o+qTY029yiuVTM2ib/
+ NU53pD/GLcZzshcVHlh5E6v7VM9yRQAYDHvhtmMNfV83vUzEOonUTvt0k39zO93OW8uI4r
+ zOv8u8dcoPafH5WukmN8Jpxy+x5//RM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1705326336;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XhJeNN6enozzDVeBASE8Lp4auFsLMKZLCuf55BfWatU=;
+ b=meQRfbUaSzBQSOIyLtRRBz84cLLRxHDDWxobxtCrL8vL+P9WXzm3f++Wr0yt6CMmzpaeTa
+ qlgDZG8EWsDx1bCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1705326336; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XhJeNN6enozzDVeBASE8Lp4auFsLMKZLCuf55BfWatU=;
+ b=1L6kE3XzQ3AAiO45jZtu8lQ29M+o3pBd+25N7fnO1eW6S3qSjL52o+qTY029yiuVTM2ib/
+ NU53pD/GLcZzshcVHlh5E6v7VM9yRQAYDHvhtmMNfV83vUzEOonUTvt0k39zO93OW8uI4r
+ zOv8u8dcoPafH5WukmN8Jpxy+x5//RM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1705326336;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XhJeNN6enozzDVeBASE8Lp4auFsLMKZLCuf55BfWatU=;
+ b=meQRfbUaSzBQSOIyLtRRBz84cLLRxHDDWxobxtCrL8vL+P9WXzm3f++Wr0yt6CMmzpaeTa
+ qlgDZG8EWsDx1bCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3D74D136F5;
+ Mon, 15 Jan 2024 13:45:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 6R99AQA3pWUGZgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 15 Jan 2024 13:45:36 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Thomas Huth
+ <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 4/4] [NOT FOR MERGE] tests/qtest/migration: Adapt
+ tests to use older QEMUs
+In-Reply-To: <ZaSwzM95tm24Uqyu@x1n>
+References: <20240105180449.11562-1-farosas@suse.de>
+ <20240105180449.11562-5-farosas@suse.de> <ZZuvDREDrQ07HsGs@x1n>
+ <877ckj3kfp.fsf@suse.de> <ZZzC1n0GotQZukqJ@x1n> <87zfxe7eev.fsf@suse.de>
+ <ZZ4YOw6Cy5EYo_f4@x1n> <87zfxd6yid.fsf@suse.de> <ZZ9T2XSy3zaOEu_W@x1n>
+ <874jfknf8m.fsf@suse.de> <ZaSwzM95tm24Uqyu@x1n>
+Date: Mon, 15 Jan 2024 10:45:33 -0300
+Message-ID: <87bk9m677m.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] configure: Add linux header compile support for LoongArch
-Content-Language: en-US
-To: Bibo Mao <maobibo@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-References: <20240115073101.174113-1-maobibo@loongson.cn>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240115073101.174113-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1L6kE3Xz;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=meQRfbUa
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ RCPT_COUNT_SEVEN(0.00)[7];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -4.51
+X-Rspamd-Queue-Id: B3C3A1F88D
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,24 +128,177 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/1/24 08:31, Bibo Mao wrote:
-> When compiling qemu with system KVM mode for LoongArch, header files in
-> directory linux-headers/asm-loongarch should be used firstly. Otherwise it
-> fails to find kvm.h on system with old glibc, since latest kernel header
-> files are not installed.
-> 
-> This patch adds linux_arch definition for LoongArch system so that header
-> files in directory linux-headers/asm-loongarch can be included.
-> 
+Peter Xu <peterx@redhat.com> writes:
 
-Fixes: 714b03c125 ("target/loongarch: Add loongarch kvm into meson build")
+> On Thu, Jan 11, 2024 at 10:58:49AM -0300, Fabiano Rosas wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>> 
+>> > On Wed, Jan 10, 2024 at 11:42:18AM -0300, Fabiano Rosas wrote:
+>> >> Peter Xu <peterx@redhat.com> writes:
+>> >> 
+>> >> > On Tue, Jan 09, 2024 at 11:46:32AM -0300, Fabiano Rosas wrote:
+>> >> >> Hm, it would be better to avoid the extra maintenance task at the start
+>> >> >> of every release, no? It also blocks us from doing n-2 even
+>> >> >> experimentally.
+>> >> >
+>> >> > See my other reply, on whether we can use "n-1" for migration-test.  If
+>> >> > that can work for us, then IIUC we can avoid either "since:" or any
+>> >> > relevant flag, neither do we need to unmask tests after each releases.  All
+>> >> > old tests should always "just work" with a new qemu binary.
+>> >> 
+>> >> Hmm.. There are some assumptions here:
+>> >> 
+>> >> 1) New code will always be compatible with old tests. E.g. some
+>> >>    patchseries changed code and changed a test to match the new
+>> >>    code. Then we'd need a flag like 'since' anyway to mark that the new
+>> >>    QEMU cannot be used with the old test.
+>> >> 
+>> >>    (if new QEMU is not compatible with old tests without any good
+>> >>    reason, then that's just a regression I think)
+>> >
+>> > Exactly what you are saying here.  We can't make new QEMU not working on
+>> > old tests.
+>> 
+>> Ok, so we need to forbid breaking changes to tests from now on. I'll try
+>> to add some words in the docs about this.
+>> 
+>> >
+>> > One way to simplify the understanding is, we can imagine the old tests as
+>> > "some user currently using the old QEMU, and who would like to migrate to
+>> > the master QEMU binary".  Such user only uses exactly the same cmdline we
+>> > used for testing migration-test in exactly that n-1 qemu release binary.
+>> >
+>> > If we fail that old test, it means we can already fail such an user.
+>> > That's destined a regression to me, no?  Or, do you have a solid example?
+>> 
+>> For instance, we used to not issue the SETUP event on incoming. If a
+>> test (or user app) expected to see the ACTIVE or FAILED states, then
+>> would it be a regression to now start issuing the SETUP event at the
+>> proper place?
+>
+> Valid example.  And it's a tricky example in that it actually breaks the
+> ABI even though slightly, however events are just normally more flexible in
+> this case, so we didn't care.
+>
+> I think it means we didn't care any program expecting no SETUP before
+> ACTIVE, or such user already crashes.
+>
+> Our migration-test is compatible with such change, right?
+>
+> I think the trick here is we shouldn't make migration-test to ever contain
+> any "assumption" of the internals of QEMU.  It should only behave strictly
+> as what an user can use QEMU, and that should always be guaranteed to work
+> on newer qemu binaries.  Then breaking old migration-test will be the same
+> as breaking an user, and it'll naturally fit in this model too of using n-1
+> version of migration-test.
+>
+>> 
+>> Anyway, it's pointless to give examples because we either allow old
+>> tests to be changed or we don't. If we don't then that's solved. If we
+>> do, we'll always have space for the situation I mentioned in 1) above.
+>
+> IMHO we should allow any changes to old tests, IMHO.  It won't apply to n-1
+> test anyway, not until the next release.  It may depend on how you define
+> "changed" in this case.
+>
 
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   configure | 1 +
->   1 file changed, 1 insertion(+)
+I mean introducing a piece of code in QEMU which requires a change in a
+test. That shouldn't be allowed. Because the n-1 tests will still have
+the old behavior which could potentially clash with what the new QEMU is
+doing.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> 
+>> > The only thing I can think of is, when we want to e.g. obsolete a QEMU
+>> > cmdline that is used in migration-test.  But then that cmdline needs to be
+>> > declared obsolete first for a few releases (let's say, 4), and before that
+>> > deadline we should already rewrite migration-test to not use it, and as
+>> > long as we do it in 3 releases I suppose nothing will be affected.
+>> >
+>> >> 
+>> >> 2) There would not be issues when fixing bugs/refactoring
+>> >>    tests. E.g. old tests had a bug that is now fixed, but since we're
+>> >>    not using the new tests, the bug is always there until next
+>> >>    release. This could block the entire test suite, specially with
+>> >>    concurrency bugs which can start triggering due to changes in timing.
+>> >
+>> > Yes this might be a problem.  Note that the old tests we're using will be
+>> > exactly the same test we released previous QEMU.  I am "assuming" that the
+>> > test case is as stable as the released QEMU, since we kept running it for
+>> > all pulls in CI runs.  If we see anything flaky, we should mark it
+>> > especially right before the release, then the released tests will be
+>> > considerably stable.
+>> 
+>> It's not just the test case. The whole test infrastructure could change
+>> entirely. But let's maybe cross that bridge when we get to it.
+>> 
+>> >
+>> > The worst case is we still keep a knob in the CI file, and we can turn off
+>> > n-1 -> n tests for the CI for some release if there's some unfortunate
+>> > accident. But I hope in reality that can be avoided.
+>> >
+>> >> 
+>> >> 3) New code that can only be reached via new tests cannot cause
+>> >>    regressions. E.g. new code is added but is kept under a machine
+>> >>    property or migration capability. That code will only show the
+>> >>    regression after the new test enables that cap/property. At that
+>> >>    point it's too late because it was already released.
+>> >
+>> > I can't say I fully get the point here.  New code, if with a new cap with
+>> > it, should run exactly like the old code if the cap is not turned on.  I
+>> > suppose that's the case for when we only run n-1 version of migration-test.
+>> > IMHO it's the same issue as 1) above, that we just should not break it, and
+>> > if we do, that's exactly what we want to capture and fix in master, not n-1
+>> > branch.
+>> >
+>> > But as I said, perhaps I didn't really get the issue you wanted to describe..
+>> 
+>> if (cap_foo()) {
+>>    <do something bad>
+>> }
+>> 
+>> This^ only executes once we have a test that enables cap_foo. If the
+>> "something bad" is something that breaks compatibility, then we'll miss
+>> it when using n-1 migration-test.
+>
+> IMHO the n-1 tests are not for this.  The new FOO cap can only be enabled
+> in n+ versions anyway, so something like above should be covered by the
+> normal migration test that anyone would like to propose the new FOO cap.
 
+You're being too generous in thinking new code will always restrict
+itself to implementing new functionality and never have a bug that
+affects a completly different part of the code. There could be an
+innocent refactoring along with cap FOO that breaks the migration only
+when FOO is enabled.
 
+But fine. We can't predict every scenario. Let's get this series out the
+door.
+
+Thanks for the comments so far. I'll spin another version.
+
+> The n-1 test we're discussing is extra tests on top of that.  So:
+>
+>   - Same binary test: we (of course) keep running migration-test for
+>     master, covers FOO
+>
+>   - Cross binary testA: we (hopefully since 9.0?) runs n-1 migration-test
+>     for previous release
+>
+> Then after n boosts, the new FOO test (that will enable FOO) will become
+> part of n-1 tests.
+>
+>> 
+>> Now that I think about it, should we parameterize the CI so we can
+>> actually switch between old migration-tests and new migration-tests? So
+>> we make the default what you suggest, but still have the ability to
+>> trigger a job every once in a while that uses the new tests.
+>
+> Certainly. Such a knob will never hurt, I assume.  It's just that I'd
+> expect new migration-test could constantly fail the cross-binary test as
+> long as we introduce new features.  Maybe it's a matter of whether we would
+> like migration-test itself to understand the "version" idea.
+>
+> What I was saying above is trying to reduce our burden to teach
+> migration-test to understand any version concept.  So migration-test always
+> applies only to the master branch (and newer; due to migration's strict
+> ABI), no need to detect any cap as long as master supports it.
 
