@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E56782D33B
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:08:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D33D782D345
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:20:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPDK3-0006xb-T9; Sun, 14 Jan 2024 22:07:35 -0500
+	id 1rPDVa-0003d8-9M; Sun, 14 Jan 2024 22:19:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPDK2-0006xM-9w
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:07:34 -0500
+ id 1rPDVY-0003cQ-B5
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:19:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPDK0-000222-Lk
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:07:34 -0500
+ id 1rPDVW-00047s-OO
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:19:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705288051;
+ s=mimecast20190719; t=1705288765;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=x5Z+tOleCfUMgH0v2zTuWruz7MV5zs4QALe4Kwh+u18=;
- b=dKTPbW/O+q3Q085MbM1w4Z+UcvMs1Y0p+ueplR9H4yS/nC3esM2PxIqDKdMAUsDHwxBKyl
- HUrRgRpoeCFjc0bf4HtyI3xGmPGBrDI4c71AOoiBQUP+rRaVyVabkhvmu2CcLtdskXK2ee
- 8MPiOQhDHaGPjjQqQsLpH7BFlU3AakI=
+ bh=O7QNSByQk4QgQg+iy6bDvmqe5VDM7M8ubtUW5N0o/bA=;
+ b=Wpu71UUD+T//zuD2gYENhTfsLfLXtWqHS14FEiZXjXgd9WHYJ2tK6RKUJdRLd9/xgbVPab
+ 86sQ6EOXHhwtQQ85ULNb21SQnfjfDziOBb1EJQbDYEoeAUScNM5SzGo4Ayw1ICRt4ckjak
+ Vcyh4XQ85wy448wSQeVX6ZTAteK1Ibs=
 Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
  [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-312-NUBtgGLwMtmRv3_HnWeWaA-1; Sun, 14 Jan 2024 22:07:29 -0500
-X-MC-Unique: NUBtgGLwMtmRv3_HnWeWaA-1
+ us-mta-460-zze412xsP_enBerLu3UBrQ-1; Sun, 14 Jan 2024 22:19:24 -0500
+X-MC-Unique: zze412xsP_enBerLu3UBrQ-1
 Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-6d9b8ff5643so4439610b3a.1
- for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 19:07:29 -0800 (PST)
+ d2e1a72fcca58-6da380cc0d6so10440619b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 19:19:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705288048; x=1705892848;
+ d=1e100.net; s=20230601; t=1705288763; x=1705893563;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x5Z+tOleCfUMgH0v2zTuWruz7MV5zs4QALe4Kwh+u18=;
- b=WnAbQXRgfae9fvPozQ0rSTBqAfOwjOdg7iXAgdLm6ccPiqChy9+OZquVaLibELg6Ue
- UCyo//lvQirz5vkOCsR2nWsOJMCWC5rXgISY1J1FmsxCahgKsQl/VhQSDGlPeAMDEW0U
- h6TmpCplEX/3v0dXHyTRMbTnbUf0myPwhvXxgSleLzq3mzdpX3TAt21RWP3dJVz9b2N4
- HQLIBm7mMmAxPvdDt3by911xU5JgTk4Sj2JSbbBOcCBeXaNvK6c0YuUKfIPiIRkxkhff
- hZiir485BzsM3VjrmtDpVykLRW1C85rzeRfRfgRvfpslyz38T/KwyKwTeA3aULBtt4Xw
- MO7w==
-X-Gm-Message-State: AOJu0YxoCRIDRcDy/xaCdH6DCF27wfvpf1/9TjTx5zqmd2th7W27n8p6
- jXvd4IHIkUS9eqt5ViwT93KSLMixCJ0V1RJQDmU9+bkdywxzAD3TPVyYsOXqEmVrhSOEh8cugDc
- PwlrbVyQ5jk8bl52vaxX4lJhn8KXxLaSAw4FQL+Y=
-X-Received: by 2002:a05:6a00:939f:b0:6da:d8c8:f2ad with SMTP id
- ka31-20020a056a00939f00b006dad8c8f2admr2584887pfb.43.1705288048215; 
- Sun, 14 Jan 2024 19:07:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHgGLKpHu3MSZf+gKvdfS2Z2wfjMSqf23/TmbF01tUw+w4v0c4Je74/mFC26ykxZsZ9meCiURsSzH2MzZ1ru5s=
-X-Received: by 2002:a05:6a00:939f:b0:6da:d8c8:f2ad with SMTP id
- ka31-20020a056a00939f00b006dad8c8f2admr2584881pfb.43.1705288047975; Sun, 14
- Jan 2024 19:07:27 -0800 (PST)
+ bh=O7QNSByQk4QgQg+iy6bDvmqe5VDM7M8ubtUW5N0o/bA=;
+ b=L30wpOZLbRssN8LBt1XXm0jL3c513LfybAzGKu5ZqAzwuFqaIhk7lL/inB1wzeW8w/
+ 3xPR2n6DuQBzNXOna01zRDAhnYM3l7mcAgmtdJXVsnE6p3wzcwvhQC3dYGTrppbtVV4z
+ ePjhx7GnxVDugSnA/M3Vb4vJtfhm/Ah6deI83Dof97QnhAU+UcFkWsrE7nkj0LnrBLxF
+ r9sPuQOsDB5WiblY0B6E5f+fWC3SZBTharCqR4dRO173TGhDjyxHMje0CzsQbJOHdRfM
+ eX2ZJTXjx6wTjLPnTNT3BUjda27VxSD0TVC/VlB8/dufE9jyoIqzTV343fEDP6upP7+8
+ Rg0g==
+X-Gm-Message-State: AOJu0YxDsDXmval7UTlxgcPaazlbhzeM3MTONjwX5Iam1Aq+teNFeVlg
+ b3W+hxLU7qKtfd/tKAa37n0/WTIzP+QP3r4vfu9bWq5IIFVG3n7SRt3HanO62VNZT48ZOps3Iqz
+ lRcriosuCfTjsc4YQ/nZkmC/RpzLTmzTR9O3+7+4=
+X-Received: by 2002:a62:6283:0:b0:6ce:751b:81d9 with SMTP id
+ w125-20020a626283000000b006ce751b81d9mr5098025pfb.9.1705288763152; 
+ Sun, 14 Jan 2024 19:19:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGUlvsIQhNDl/YjSGivSF9ghJrv0Gd4x1wxTExTWF++CWR6G6NKn52gf6K3PJ/w1wGB9BWOf1tzFuz63d3YWmU=
+X-Received: by 2002:a62:6283:0:b0:6ce:751b:81d9 with SMTP id
+ w125-20020a626283000000b006ce751b81d9mr5098014pfb.9.1705288762886; Sun, 14
+ Jan 2024 19:19:22 -0800 (PST)
 MIME-Version: 1.0
 References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-26-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-26-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-29-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-29-git-send-email-si-wei.liu@oracle.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 15 Jan 2024 11:07:16 +0800
-Message-ID: <CACGkMEvH92AFeNxGc7XPyXNF+L3WmQ9n9Pdd3JDkeEEog2b9Kw@mail.gmail.com>
-Subject: Re: [PATCH 25/40] vdpa: add asid to dma_batch_once API
+Date: Mon, 15 Jan 2024 11:19:11 +0800
+Message-ID: <CACGkMEvgCvNe=bY8kgJP0KCT+uq=MmwDaivc8i12CxZo9FosgA@mail.gmail.com>
+Subject: Re: [PATCH 28/40] vdpa: support iotlb_batch_asid
 To: Si-Wei Liu <si-wei.liu@oracle.com>
 Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
  leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
@@ -100,69 +100,111 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Fri, Dec 8, 2023 at 2:51=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
 rote:
 >
-> So that DMA batching API can operate on other ASID than 0.
+> Then it's possible to specify ASID when calling the DMA
+> batching API. If the ASID to work on doesn't align with
+> the ASID for ongoing transaction, the API will fail the
+> request and return negative, and the transaction will
+> remain intact as if no failed request ever had occured.
 >
 > Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 > ---
->  hw/virtio/trace-events |  4 ++--
->  hw/virtio/vhost-vdpa.c | 14 ++++++++------
->  2 files changed, 10 insertions(+), 8 deletions(-)
+>  hw/virtio/vhost-vdpa.c         | 25 +++++++++++++++++++------
+>  include/hw/virtio/vhost-vdpa.h |  1 +
+>  net/vhost-vdpa.c               |  1 +
+>  3 files changed, 21 insertions(+), 6 deletions(-)
 >
-> diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
-> index 3411a07..196f32f 100644
-> --- a/hw/virtio/trace-events
-> +++ b/hw/virtio/trace-events
-> @@ -32,8 +32,8 @@ vhost_user_create_notifier(int idx, void *n) "idx:%d n:=
-%p"
->  # vhost-vdpa.c
->  vhost_vdpa_dma_map(void *vdpa, int fd, uint32_t msg_type, uint32_t asid,=
- uint64_t iova, uint64_t size, uint64_t uaddr, uint8_t perm, uint8_t type) =
-"vdpa_shared:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64=
-" size: 0x%"PRIx64" uaddr: 0x%"PRIx64" perm: 0x%"PRIx8" type: %"PRIu8
->  vhost_vdpa_dma_unmap(void *vdpa, int fd, uint32_t msg_type, uint32_t asi=
-d, uint64_t iova, uint64_t size, uint8_t type) "vdpa_shared:%p fd: %d msg_t=
-ype: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" type: %"=
-PRIu8
-> -vhost_vdpa_map_batch_begin(void *v, int fd, uint32_t msg_type, uint8_t t=
-ype)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
-> -vhost_vdpa_dma_batch_end(void *v, int fd, uint32_t msg_type, uint8_t typ=
-e)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
-> +vhost_vdpa_map_batch_begin(void *v, int fd, uint32_t msg_type, uint8_t t=
-ype, uint32_t asid)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRI=
-u8" asid: %"PRIu32
-> +vhost_vdpa_dma_batch_end(void *v, int fd, uint32_t msg_type, uint8_t typ=
-e, uint32_t asid)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8=
-" asid: %"PRIu32
->  vhost_vdpa_listener_region_add_unaligned(void *v, const char *name, uint=
-64_t offset_as, uint64_t offset_page) "vdpa_shared: %p region %s offset_wit=
-hin_address_space %"PRIu64" offset_within_region %"PRIu64
->  vhost_vdpa_listener_region_add(void *vdpa, uint64_t iova, uint64_t llend=
-, void *vaddr, bool readonly) "vdpa: %p iova 0x%"PRIx64" llend 0x%"PRIx64" =
-vaddr: %p read-only: %d"
->  vhost_vdpa_listener_region_del_unaligned(void *v, const char *name, uint=
-64_t offset_as, uint64_t offset_page) "vdpa_shared: %p region %s offset_wit=
-hin_address_space %"PRIu64" offset_within_region %"PRIu64
 > diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> index 999a97a..2db2832 100644
+> index d3f5721..b7896a8 100644
 > --- a/hw/virtio/vhost-vdpa.c
 > +++ b/hw/virtio/vhost-vdpa.c
-> @@ -161,11 +161,12 @@ int vhost_vdpa_dma_unmap(VhostVDPAShared *s, uint32=
-_t asid, hwaddr iova,
->      return ret;
+> @@ -189,15 +189,25 @@ static bool vhost_vdpa_map_batch_begin(VhostVDPASha=
+red *s, uint32_t asid)
+>
+>  static int vhost_vdpa_dma_batch_begin_once(VhostVDPAShared *s, uint32_t =
+asid)
+>  {
+> -    if (!(s->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH)) ||
+> -        s->iotlb_batch_begin_sent) {
+> +    if (!(s->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH))) {
+>          return 0;
+>      }
+>
+> -    if (vhost_vdpa_map_batch_begin(s, asid)) {
+> -        s->iotlb_batch_begin_sent =3D true;
+> +    if (s->iotlb_batch_begin_sent && s->iotlb_batch_asid !=3D asid) {
+> +        return -1;
+> +    }
+> +
+> +    if (s->iotlb_batch_begin_sent) {
+> +        return 0;
+>      }
+>
+> +    if (!vhost_vdpa_map_batch_begin(s, asid)) {
+> +        return 0;
+> +    }
+> +
+> +    s->iotlb_batch_begin_sent =3D true;
+> +    s->iotlb_batch_asid =3D asid;
+> +
+>      return 0;
 >  }
 >
-> -static bool vhost_vdpa_map_batch_begin(VhostVDPAShared *s)
-> +static bool vhost_vdpa_map_batch_begin(VhostVDPAShared *s, uint32_t asid=
-)
->  {
->      int fd =3D s->device_fd;
->      struct vhost_msg_v2 msg =3D {
->          .type =3D VHOST_IOTLB_MSG_V2,
-> +        .asid =3D asid,
+> @@ -237,10 +247,13 @@ static int vhost_vdpa_dma_batch_end_once(VhostVDPAS=
+hared *s, uint32_t asid)
+>          return 0;
+>      }
+>
+> -    if (vhost_vdpa_dma_batch_end(s, asid)) {
+> -        s->iotlb_batch_begin_sent =3D false;
+> +    if (!vhost_vdpa_dma_batch_end(s, asid)) {
+> +        return 0;
+>      }
+>
+> +    s->iotlb_batch_begin_sent =3D false;
+> +    s->iotlb_batch_asid =3D -1;
+> +
+>      return 0;
+>  }
+>
+> diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdp=
+a.h
+> index 0fe0f60..219316f 100644
+> --- a/include/hw/virtio/vhost-vdpa.h
+> +++ b/include/hw/virtio/vhost-vdpa.h
+> @@ -61,6 +61,7 @@ typedef struct vhost_vdpa_shared {
+>      bool map_thread_enabled;
+>
+>      bool iotlb_batch_begin_sent;
+> +    uint32_t iotlb_batch_asid;
+>
+>      /*
+>       * The memory listener has been registered, so DMA maps have been se=
+nt to
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index e9b96ed..bc72345 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -1933,6 +1933,7 @@ static NetClientState *net_vhost_vdpa_init(NetClien=
+tState *peer,
+>          s->vhost_vdpa.shared->device_fd =3D vdpa_device_fd;
+>          s->vhost_vdpa.shared->iova_range =3D iova_range;
+>          s->vhost_vdpa.shared->shadow_data =3D svq;
+> +        s->vhost_vdpa.shared->iotlb_batch_asid =3D -1;
 
-I wonder if we need a check if vhost doesn't support ASID but asid is not z=
-ero?
+This seems a trick, uAPI defines asid as:
+
+        __u32 asid;
+
+So technically -1U is a legal value.
 
 Thanks
+
+>          s->vhost_vdpa.shared->refcnt++;
+>      } else if (!is_datapath) {
+>          s->cvq_cmd_out_buffer =3D mmap(NULL, vhost_vdpa_net_cvq_cmd_page=
+_len(),
+> --
+> 1.8.3.1
+>
 
 
