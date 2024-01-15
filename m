@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3011682D330
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 03:53:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 332A382D331
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 03:54:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPD5J-000206-EF; Sun, 14 Jan 2024 21:52:21 -0500
+	id 1rPD7O-0003SP-Bt; Sun, 14 Jan 2024 21:54:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPD5G-0001zf-Va
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 21:52:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPD5F-00086w-73
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 21:52:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705287136;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=QzAe6cZFSU1ZpMPBJ95UsYKXc2cUukA0JFyF99mevrk=;
- b=R9U3moPDN+mY2dZRXYwZ/MiwY1U0iYsx9RrZ8iA4Tq0OkltODZdB0OgHPWzBWQAdXoTxuJ
- yK6xIsp/25D+pVArjniwXBoQ4s71c0Hw6p2JQ3zYph9cBKeQZ+ySF5hcT+Q6YWYop5RAw4
- 8i1VNDey6CbzEuBzNZ0+huwZ4l6rbs4=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-448-T0MteWNuPISuutxk-NFTOQ-1; Sun, 14 Jan 2024 21:52:14 -0500
-X-MC-Unique: T0MteWNuPISuutxk-NFTOQ-1
-Received: by mail-ot1-f69.google.com with SMTP id
- 46e09a7af769-6ddeebf1e23so6991083a34.0
- for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 18:52:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rPD7M-0003Rv-8f
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 21:54:28 -0500
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rPD7K-0008SU-N3
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 21:54:28 -0500
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6db79e11596so375324b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 18:54:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705287264; x=1705892064; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EkIXnQmEbalEjV5GUYvrKXwdFaFaD8HotsqcYxuvs48=;
+ b=eaItcvFPVM+zgbenHBTmG09CEfP1BShIm4gmw307xjErR7dlfyiq8xQBTwcdE+xf4x
+ U0/8nGr5JeKcSpFlHkFHD1F68H+GH/CpKbbmAFt1FmhFiALDpLMfgpIu8HdcNB8OtYWD
+ ytY07I8VKHLTK7surv2vmRUMYTPvSy+kD/l3UVfDeZAbwl+1IiMQ/TtRU3J3ZIG69ZZE
+ eccYPvdxIpYFsnOG/bgE/SpBgz55nKao6eHe7Ak2Z/TrGTJkWTSedhb+a9wdn7LryaRH
+ s0/3qyWjb8QQg6VnV7YAOPIIDGqYT1zXIUReFBf9ony6L5mqbM4sFCkAXhP3F/jxf20K
+ jiSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705287134; x=1705891934;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QzAe6cZFSU1ZpMPBJ95UsYKXc2cUukA0JFyF99mevrk=;
- b=m54RTRgDDeQcRVB+n4IqK+Ea9TZqPNjeZ/8Y+5GBVJxkBbdWOJ3i5+dc9NXPRcfu+R
- zbY3bwNRo2IEbbN98uZPk94nmAsFtg/Fzbn9FUmq9odBg72v0kTr2lRL0SdER2/Emv1R
- lGOfNasPwYAu6kFxOraXRHDjs/ERiDqN5d+s7hmunK97+v0T9bgGcUeVZfQU6FwGWmjY
- AXwnfML4GI3oiwAWMdCHqOFkd/Wkw+SU49qZ/d6GZmHBo9sjFSorA4OzUeUM9DTPCqeo
- EtBjIvlfFadqubU5eXCT3uV5jnH5Q2J53EIqq187in3BP2mcAXNRZ1kcJW2mMOOCZyX3
- DT2Q==
-X-Gm-Message-State: AOJu0Yy/LBRMU+7fJy0mUbb3bFmkO/vMylU62b02uQmdKJSldDwtskyj
- RssQytc6jgI5XSsedXb5/9x7UcSfzkPIJT3TwyTtBXJ31ichncJfQAc9Il5P0AbwZL9B6u9s1ig
- 6D4Ym19vcIznUD/eX3zomYdv/4H61rtlsVaNJrl8=
-X-Received: by 2002:a05:6830:4b:b0:6dd:e93e:595c with SMTP id
- d11-20020a056830004b00b006dde93e595cmr5665171otp.75.1705287134160; 
- Sun, 14 Jan 2024 18:52:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFNGolWOyispK+2n73y5SA21w0Dso8zmSSt81M9ZzY3U+MTpAWTrXOEYdVXePo25rtLhQtI1e2vp1OW7snHmxo=
-X-Received: by 2002:a05:6830:4b:b0:6dd:e93e:595c with SMTP id
- d11-20020a056830004b00b006dde93e595cmr5665166otp.75.1705287133976; Sun, 14
- Jan 2024 18:52:13 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705287264; x=1705892064;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EkIXnQmEbalEjV5GUYvrKXwdFaFaD8HotsqcYxuvs48=;
+ b=I0orQtJ5Se0E7ob6KjJkoISB/NksbA+8oF07yz5Cfw4NBN/VyCdGuEedgdD3yxAqeF
+ 8pHD20VT2ZdHDffwj0epUVuu6nXVNrAwuI/3Ry/5vEkI6Oog1mrMrzhMVFcP6b194pJJ
+ qHYL3diO46k+k1xwjEaZ2cxscnqGq2shhoHC1juo2s80diRqwKmDswVH1CcIHbvE8HVp
+ 0wsCIaxGUOQ+WTh0xycYiHkMD6mGsskBNOgW78JxtbxME1i1ZoZn5IOfNg6mNCk+iosr
+ 8Yre3gWfVFlbeuvVeT0Yal99LdR2Papa3L3Nib0hXvT+MzL0Z7XEhJ1Hrl+h+aC5EtET
+ mT6Q==
+X-Gm-Message-State: AOJu0Yx+SlmJZ6uG/79GOTs3WtKbaHyHohm+8aLj2iYFLen11mIef6vF
+ YrziwgT0KMp8pj/O5QLQrE4phgjZODDZkA==
+X-Google-Smtp-Source: AGHT+IG9Fg+xuTSTDbGCu6VNqqdwjxgr1t/NFSzuNGfp4HvJM7RgQ1gWDts/s4n84jkZ1+5Jr80UHw==
+X-Received: by 2002:a05:6a00:1384:b0:6d9:af1f:dd44 with SMTP id
+ t4-20020a056a00138400b006d9af1fdd44mr6437964pfg.9.1705287263895; 
+ Sun, 14 Jan 2024 18:54:23 -0800 (PST)
+Received: from [192.168.1.57] ([1.145.66.112])
+ by smtp.gmail.com with ESMTPSA id
+ fc18-20020a056a002e1200b006db13a02921sm6570401pfb.183.2024.01.14.18.54.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 14 Jan 2024 18:54:23 -0800 (PST)
+Message-ID: <244768ca-35d6-40c9-8a1b-f5d2eed39aee@linaro.org>
+Date: Mon, 15 Jan 2024 13:52:03 +1100
 MIME-Version: 1.0
-References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-22-git-send-email-si-wei.liu@oracle.com>
- <CACGkMEtn3L7YJwo7Zn6U-6dmgrt98B814S6mDYSUw75+87naeg@mail.gmail.com>
-In-Reply-To: <CACGkMEtn3L7YJwo7Zn6U-6dmgrt98B814S6mDYSUw75+87naeg@mail.gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 15 Jan 2024 10:52:03 +0800
-Message-ID: <CACGkMEuKy6s7obZtF4a9ni9w2kiugWaGXQEmEqtGACAKGNrFgQ@mail.gmail.com>
-Subject: Re: [PATCH 21/40] vdpa: vhost_vdpa_dma_batch_end_once rename
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
- leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
- jonah.palmer@oracle.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/i386: Eip error in x86_64-softmmu
+Content-Language: en-US
+To: guoguangyao <guoguangyao18@mails.ucas.ac.cn>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, eduardo@habkost.net
+References: <20240115020804.30272-1-guoguangyao18@mails.ucas.ac.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240115020804.30272-1-guoguangyao18@mails.ucas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,70 +93,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 15, 2024 at 10:40=E2=80=AFAM Jason Wang <jasowang@redhat.com> w=
-rote:
->
-> On Fri, Dec 8, 2023 at 2:51=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com>=
- wrote:
-> >
-> > No functional changes. Rename only.
-> >
-> > Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-> > ---
-> >  hw/virtio/vhost-vdpa.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> > index 47c764b..013bfa2 100644
-> > --- a/hw/virtio/vhost-vdpa.c
-> > +++ b/hw/virtio/vhost-vdpa.c
-> > @@ -191,7 +191,7 @@ static void vhost_vdpa_iotlb_batch_begin_once(Vhost=
-VDPAShared *s)
-> >      s->iotlb_batch_begin_sent =3D true;
-> >  }
-> >
-> > -static void vhost_vdpa_dma_end_batch(VhostVDPAShared *s)
-> > +static void vhost_vdpa_dma_batch_end_once(VhostVDPAShared *s)
-> >  {
-> >      struct vhost_msg_v2 msg =3D {};
-> >      int fd =3D s->device_fd;
-> > @@ -229,7 +229,7 @@ static void vhost_vdpa_listener_commit(MemoryListen=
-er *listener)
-> >  {
-> >      VhostVDPAShared *s =3D container_of(listener, VhostVDPAShared, lis=
-tener);
-> >
-> > -    vhost_vdpa_dma_end_batch(s);
-> > +    vhost_vdpa_dma_batch_end_once(s);
-> >  }
-> >
-> >  static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntr=
-y *iotlb)
-> > @@ -1367,7 +1367,7 @@ static void *vhost_vdpa_load_map(void *opaque)
-> >              vhost_vdpa_iotlb_batch_begin_once(shared);
-> >              break;
-> >          case VHOST_IOTLB_BATCH_END:
-> > -            vhost_vdpa_dma_end_batch(shared);
-> > +            vhost_vdpa_dma_batch_end_once(shared);
->
-> It's better to explain why having a "_once" suffix is better here.
+On 1/15/24 13:08, guoguangyao wrote:
+> When closing PCREL, qemu-system-x86_64 run into error.
+> Eip modification here leads to the result. Using s->pc
+> in func gen_update_eip_next() solves the problem.
+> 
+> Fixes: b5e0d5d22fbf("target/i386: Fix 32-bit wrapping of pc/eip computation")
+> 
+> Signed-off-by: guoguangyao <guoguangyao18@mails.ucas.ac.cn>
+> 
+> 	modified:   target/i386/tcg/translate.c
+> ---
+>   target/i386/tcg/translate.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-Ok, if it's for symmetry for host_vdpa_iotlb_batch_begin_once(), I
-think it makes sense.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-But it's better to document this in the change log.
 
-Thanks
+r~
 
->
-> Thanks
->
-> >              break;
-> >          default:
-> >              error_report("Invalid IOTLB msg type %d", msg->iotlb.type)=
-;
-> > --
-> > 1.8.3.1
-> >
+> 
+> diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+> index e1eb82a5c6..6f57d5a8a5 100644
+> --- a/target/i386/tcg/translate.c
+> +++ b/target/i386/tcg/translate.c
+> @@ -567,9 +567,9 @@ static void gen_update_eip_next(DisasContext *s)
+>       if (tb_cflags(s->base.tb) & CF_PCREL) {
+>           tcg_gen_addi_tl(cpu_eip, cpu_eip, s->pc - s->pc_save);
+>       } else if (CODE64(s)) {
+> -        tcg_gen_movi_tl(cpu_eip, s->base.pc_next);
+> +        tcg_gen_movi_tl(cpu_eip, s->pc);
+>       } else {
+> -        tcg_gen_movi_tl(cpu_eip, (uint32_t)(s->base.pc_next - s->cs_base));
+> +        tcg_gen_movi_tl(cpu_eip, (uint32_t)(s->pc - s->cs_base));
+>       }
+>       s->pc_save = s->pc;
+>   }
 
 
