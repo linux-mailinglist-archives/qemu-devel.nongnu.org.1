@@ -2,75 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34ECB82D36F
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:40:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1205282D384
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:53:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPDpH-00041k-O5; Sun, 14 Jan 2024 22:39:51 -0500
+	id 1rPE2h-00007g-P8; Sun, 14 Jan 2024 22:53:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPDpF-0003xz-KL
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:39:49 -0500
-Received: from mgamail.intel.com ([134.134.136.100])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rPE2f-00006m-25
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:53:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPDpD-0007fw-ML
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:39:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705289987; x=1736825987;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=6g1CYHWdbZvGH8CrxRqJNFkQ90+0kq+qox0Ow1zDj4Y=;
- b=Vz91FXv4doJy4Qyr5Gj820IK9QqzYKs8LqUnsNQuQ7uB4MxwqAL+qLst
- oqol+LFKlzOzuC26o4vnforP0ZHQZtMsnXsbol/LzRmdWxxsY9bGmWqn2
- uLaASpnAzrtCSRZU1hFpN+QQ9gKnXd03g8l4wq2uONYYlrtSujd9a+Z2Q
- 3PsxU1ocqQ6jfLCWkaBYBOK78GQ6ugHCrVZZ8NhyhEWIQj1t162ek1eE5
- PLvt/4aaff5xz8APWeDkPB/PR7G5v9gjD2nXDpfQ+ZUr8F/0LEzxBiDaH
- RFw5txiG6yb8rlJJ41anoRQ+EMpkcwXtGENCqM8Do6c43V8MlZJI54RUu g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="465907921"
-X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="465907921"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 19:39:45 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="786962111"
-X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="786962111"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmsmga007.fm.intel.com with ESMTP; 14 Jan 2024 19:39:41 -0800
-Date: Mon, 15 Jan 2024 11:52:39 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
- Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH v7 09/16] i386: Support module_id in X86CPUTopoIDs
-Message-ID: <ZaSsB02WExMtivW8@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-10-zhao1.liu@linux.intel.com>
- <1b2dd718-5968-4036-8b80-fd456058dce6@intel.com>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rPE2d-0001Qd-GK
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:53:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705290818;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=o1ucEgltnbZgxlLtFPsvB8N/XTdBW9IT9kFKJmVZH0E=;
+ b=cUIdfIohqQmD3gu2frpO0eij0OC2rkIEmux5AgW1A5PYGTiEFxlBSZAZ67v17v2Lldl6Z2
+ +/OgGlkPpKo4nBsgxGL0qjQ8c/b+tBhDzRoLOXHJLzFPuWq4O6MmRGt3XumRqV1Rl+e1IW
+ Im+CasXZhnfx1sEfTIoFvnBRkkypMQY=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-567-JfU_EyWgPfWYRpUKj_u7IQ-1; Sun, 14 Jan 2024 22:53:37 -0500
+X-MC-Unique: JfU_EyWgPfWYRpUKj_u7IQ-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-5ce8a3381a1so6754358a12.3
+ for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 19:53:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705290816; x=1705895616;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=o1ucEgltnbZgxlLtFPsvB8N/XTdBW9IT9kFKJmVZH0E=;
+ b=iygtEbSjLO96DksMUQ0jCLpH7tYxHP/GdYNyjUnl/9BenWGQv+v4QkslOSLaIwOBWO
+ Up4flaMmOrWodWSOEB60bETUqzTBozW7ANb6eYGu5Qm69xmV3vGByGk5JBf9z7T2pHkD
+ kc5Rz1O0aIPaMHQXnf2dNnF2YCUIPgl/m1Fb8uYgU5BnpSm4DaHuXE2ibLZpLC4N3m5X
+ KzE9GE+idvlh8RaOIKZTorA7BkfPQIKY2cKx64sjvCQr5wSJpUvA7NU0x/p2toSeZD/G
+ hKj2ACoyLXuiMucWTwSXio0ym+2Q1wXZC5vH5n1ZaDJkg3K+Aob4W3Zlf9ZpCXSdQb8q
+ JHPQ==
+X-Gm-Message-State: AOJu0YzwjV3xXY8vJQtWgHg7bKBxUmuBFLh9aPjTJJqBMzWA65sAFgcI
+ NBHjSasLiOewtOXZTWCgugpt9Neew8v8x3gS8UXrJAUp+4banPolR/yTnzRYJQg88bsj3sn+5oq
+ jndACUOG7quPKXuOY0EWItWWEfBTQiCStvAM+EzQ=
+X-Received: by 2002:a05:6a20:9c8b:b0:19a:e527:594 with SMTP id
+ mj11-20020a056a209c8b00b0019ae5270594mr2385699pzb.106.1705290816150; 
+ Sun, 14 Jan 2024 19:53:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGurYHkyMJH7LBxProOKI9JJQ3lg06GDfcvzQ0qcJAfaEF0CGvLMuGf1+qnv5Bs7WpO1TSXUeV/y5gMtWdI7Ck=
+X-Received: by 2002:a05:6a20:9c8b:b0:19a:e527:594 with SMTP id
+ mj11-20020a056a209c8b00b0019ae5270594mr2385688pzb.106.1705290815923; Sun, 14
+ Jan 2024 19:53:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1b2dd718-5968-4036-8b80-fd456058dce6@intel.com>
-Received-SPF: none client-ip=134.134.136.100;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-38-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-38-git-send-email-si-wei.liu@oracle.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 15 Jan 2024 11:53:24 +0800
+Message-ID: <CACGkMEunbqOuPpBu9JQK9a+6-6a96iChPgJXT3Dn=7dRaWj95A@mail.gmail.com>
+Subject: Re: [PATCH 37/40] vdpa: add vhost_vdpa_set_dev_vring_base trace for
+ svq mode
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
+ leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
+ jonah.palmer@oracle.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,162 +98,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Xiaoyao,
+On Fri, Dec 8, 2023 at 2:51=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
+rote:
+>
+> For better debuggability and observability.
+>
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 
-On Sun, Jan 14, 2024 at 08:42:00PM +0800, Xiaoyao Li wrote:
-> Date: Sun, 14 Jan 2024 20:42:00 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v7 09/16] i386: Support module_id in X86CPUTopoIDs
-> 
-> On 1/8/2024 4:27 PM, Zhao Liu wrote:
-> > From: Zhuocheng Ding <zhuocheng.ding@intel.com>
-> > 
-> > Add module_id member in X86CPUTopoIDs.
-> > 
-> > module_id can be parsed from APIC ID, so also update APIC ID parsing
-> > rule to support module level. With this support, the conversions with
-> > module level between X86CPUTopoIDs, X86CPUTopoInfo and APIC ID are
-> > completed.
-> > 
-> > module_id can be also generated from cpu topology, and before i386
-> > supports "clusters" in smp, the default "clusters per die" is only 1,
-> > thus the module_id generated in this way is 0, so that it will not
-> > conflict with the module_id generated by APIC ID.
-> > 
-> > Signed-off-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
-> > Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > Tested-by: Babu Moger <babu.moger@amd.com>
-> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> > Changes since v1:
-> >   * Merge the patch "i386: Update APIC ID parsing rule to support module
-> >     level" into this one. (Yanan)
-> >   * Move the apicid_module_width() and apicid_module_offset() support
-> >     into the previous modules_per_die related patch. (Yanan)
-> > ---
-> >   hw/i386/x86.c              | 28 +++++++++++++++++++++-------
-> >   include/hw/i386/topology.h | 17 +++++++++++++----
-> >   2 files changed, 34 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> > index 85b847ac7914..5269aae3a5c2 100644
-> > --- a/hw/i386/x86.c
-> > +++ b/hw/i386/x86.c
-> > @@ -315,11 +315,11 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
-> >       /*
-> >        * If APIC ID is not set,
-> > -     * set it based on socket/die/core/thread properties.
-> > +     * set it based on socket/die/cluster/core/thread properties.
-> >        */
-> >       if (cpu->apic_id == UNASSIGNED_APIC_ID) {
-> > -        int max_socket = (ms->smp.max_cpus - 1) /
-> > -                                smp_threads / smp_cores / ms->smp.dies;
-> > +        int max_socket = (ms->smp.max_cpus - 1) / smp_threads / smp_cores /
-> > +                                ms->smp.clusters / ms->smp.dies;
-> >           /*
-> >            * die-id was optional in QEMU 4.0 and older, so keep it optional
-> > @@ -366,17 +366,27 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
-> >           topo_ids.die_id = cpu->die_id;
-> >           topo_ids.core_id = cpu->core_id;
-> >           topo_ids.smt_id = cpu->thread_id;
-> > +
-> > +        /*
-> > +         * TODO: This is the temporary initialization for topo_ids.module_id to
-> > +         * avoid "maybe-uninitialized" compilation errors. Will remove when
-> > +         * X86CPU supports cluster_id.
-> > +         */
-> > +        topo_ids.module_id = 0;
-> > 
-> 
-> if you put patch 10 before this patch, then we don't need this trick.
+Acked-by: Jason Wang <jasowang@redhat.com>
 
-Then, we need another trick to resolve "cpu->cluster_id = topo_ids.module_id;" 
-in patch 10. ;-)
+Thanks
 
-Thanks,
-Zhao
-
-> 
-> >           cpu->apic_id = x86_apicid_from_topo_ids(&topo_info, &topo_ids);
-> >       }
-> >       cpu_slot = x86_find_cpu_slot(MACHINE(x86ms), cpu->apic_id, &idx);
-> >       if (!cpu_slot) {
-> >           x86_topo_ids_from_apicid(cpu->apic_id, &topo_info, &topo_ids);
-> > +
-> >           error_setg(errp,
-> > -            "Invalid CPU [socket: %u, die: %u, core: %u, thread: %u] with"
-> > -            " APIC ID %" PRIu32 ", valid index range 0:%d",
-> > -            topo_ids.pkg_id, topo_ids.die_id, topo_ids.core_id, topo_ids.smt_id,
-> > -            cpu->apic_id, ms->possible_cpus->len - 1);
-> > +            "Invalid CPU [socket: %u, die: %u, module: %u, core: %u, thread: %u]"
-> > +            " with APIC ID %" PRIu32 ", valid index range 0:%d",
-> > +            topo_ids.pkg_id, topo_ids.die_id, topo_ids.module_id,
-> > +            topo_ids.core_id, topo_ids.smt_id, cpu->apic_id,
-> > +            ms->possible_cpus->len - 1);
-> >           return;
-> >       }
-> > @@ -502,6 +512,10 @@ const CPUArchIdList *x86_possible_cpu_arch_ids(MachineState *ms)
-> >               ms->possible_cpus->cpus[i].props.has_die_id = true;
-> >               ms->possible_cpus->cpus[i].props.die_id = topo_ids.die_id;
-> >           }
-> > +        if (ms->smp.clusters > 1) {
-> > +            ms->possible_cpus->cpus[i].props.has_cluster_id = true;
-> > +            ms->possible_cpus->cpus[i].props.cluster_id = topo_ids.module_id;
-> > +        }
-> >           ms->possible_cpus->cpus[i].props.has_core_id = true;
-> >           ms->possible_cpus->cpus[i].props.core_id = topo_ids.core_id;
-> >           ms->possible_cpus->cpus[i].props.has_thread_id = true;
-> > diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
-> > index 517e51768c13..ed1f3d6c1d5e 100644
-> > --- a/include/hw/i386/topology.h
-> > +++ b/include/hw/i386/topology.h
-> > @@ -50,6 +50,7 @@ typedef uint32_t apic_id_t;
-> >   typedef struct X86CPUTopoIDs {
-> >       unsigned pkg_id;
-> >       unsigned die_id;
-> > +    unsigned module_id;
-> >       unsigned core_id;
-> >       unsigned smt_id;
-> >   } X86CPUTopoIDs;
-> > @@ -127,6 +128,7 @@ static inline apic_id_t x86_apicid_from_topo_ids(X86CPUTopoInfo *topo_info,
-> >   {
-> >       return (topo_ids->pkg_id  << apicid_pkg_offset(topo_info)) |
-> >              (topo_ids->die_id  << apicid_die_offset(topo_info)) |
-> > +           (topo_ids->module_id << apicid_module_offset(topo_info)) |
-> >              (topo_ids->core_id << apicid_core_offset(topo_info)) |
-> >              topo_ids->smt_id;
-> >   }
-> > @@ -140,12 +142,16 @@ static inline void x86_topo_ids_from_idx(X86CPUTopoInfo *topo_info,
-> >                                            X86CPUTopoIDs *topo_ids)
-> >   {
-> >       unsigned nr_dies = topo_info->dies_per_pkg;
-> > -    unsigned nr_cores = topo_info->cores_per_module *
-> > -                        topo_info->modules_per_die;
-> > +    unsigned nr_modules = topo_info->modules_per_die;
-> > +    unsigned nr_cores = topo_info->cores_per_module;
-> >       unsigned nr_threads = topo_info->threads_per_core;
-> > -    topo_ids->pkg_id = cpu_index / (nr_dies * nr_cores * nr_threads);
-> > -    topo_ids->die_id = cpu_index / (nr_cores * nr_threads) % nr_dies;
-> > +    topo_ids->pkg_id = cpu_index / (nr_dies * nr_modules *
-> > +                       nr_cores * nr_threads);
-> > +    topo_ids->die_id = cpu_index / (nr_modules * nr_cores *
-> > +                       nr_threads) % nr_dies;
-> > +    topo_ids->module_id = cpu_index / (nr_cores * nr_threads) %
-> > +                          nr_modules;
-> >       topo_ids->core_id = cpu_index / nr_threads % nr_cores;
-> >       topo_ids->smt_id = cpu_index % nr_threads;
-> >   }
-> > @@ -163,6 +169,9 @@ static inline void x86_topo_ids_from_apicid(apic_id_t apicid,
-> >       topo_ids->core_id =
-> >               (apicid >> apicid_core_offset(topo_info)) &
-> >               ~(0xFFFFFFFFUL << apicid_core_width(topo_info));
-> > +    topo_ids->module_id =
-> > +            (apicid >> apicid_module_offset(topo_info)) &
-> > +            ~(0xFFFFFFFFUL << apicid_module_width(topo_info));
-> >       topo_ids->die_id =
-> >               (apicid >> apicid_die_offset(topo_info)) &
-> >               ~(0xFFFFFFFFUL << apicid_die_width(topo_info));
-> 
 
