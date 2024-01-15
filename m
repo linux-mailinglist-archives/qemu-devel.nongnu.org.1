@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B62982E26B
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 23:04:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D6382E27B
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 23:15:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPV44-00026v-2i; Mon, 15 Jan 2024 17:04:16 -0500
+	id 1rPVEL-0004nT-BH; Mon, 15 Jan 2024 17:14:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rPV41-000262-3f
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 17:04:13 -0500
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1rPVEG-0004mz-FJ
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 17:14:49 -0500
+Received: from mail-io1-xd2a.google.com ([2607:f8b0:4864:20::d2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rPV3z-0001UY-Mn
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 17:04:12 -0500
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6dac225bf42so4726971b3a.0
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 14:04:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1rPVEE-0003XT-Ux
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 17:14:48 -0500
+Received: by mail-io1-xd2a.google.com with SMTP id
+ ca18e2360f4ac-7bf36d35af4so79039939f.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 14:14:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705356250; x=1705961050; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Te8RZ88rkhFOCOIfdHq0HpubOJdKUPJeN+D7j7kOq+g=;
- b=Julj/Fhsa8DBqiUSipDmEbaij+dw0sWu05QEFIQ6NoQje2Aa0AGg0DpqGkypuJCEv/
- 79/5KR5NLc4yn5c9mNb/kiL+jwucIRBQU66SmYIoB+jkDpvyl9HePTOqjPsH80Vtb+To
- WZAPKry4PCq7XRbrlucy8Za36Jzzsolko2zwpvNEqefMOhj8UGM3YaDLoB6EPra7hvKw
- IPFK4h6tij+1nE2mt/SjabWq1weuToD6gAJgnzm0ulYxxnT6I1gouX4orM55Gh79oLx4
- tDydPmr3ikGFBlhK4oHZud2I/uw2TXDfc9elXmriLiq9UjFJYtsqvaD9HSq73opuC5Gr
- Qbeg==
+ d=gmail.com; s=20230601; t=1705356885; x=1705961685; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=//CUTt+PfO8qp1j0mYbjeTsDoBV55fCccYfBnBFALhI=;
+ b=GltzsiNYhGzap1tintpY9oiVRHy6vCZ/Y9EQzodV1SQZfg1yQh9pbqE5KrfLvjxl4/
+ NDYR4EMXVlZy7Rpo1J20Mv/yu2Lai8awmy/2YanBu1RoYLXqup149MSVw4qtECDOFZow
+ mqYjqAcNdt5YMnGcFkvc5C7Gh82B8qG31x4RdMoNdFzNc7t0eG7qBuhKUSMFvnyK+65z
+ peFLNz0wsGxCaxXwSpDqf6j3CJnGm900t/9/J2csxpCYK4gHBoCZoqi1G1oMEhF7D/v5
+ ODs65+NbcynCBsmCtIssKsXwJGatwFCPCOC/RdfEIdo4ikmu7irQYhoeWNStfZWhxqvT
+ y/Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705356250; x=1705961050;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Te8RZ88rkhFOCOIfdHq0HpubOJdKUPJeN+D7j7kOq+g=;
- b=otoYcnxE/OqmP/BMxi9GfWXTVz3pckpFHaNxKECro6nln8ZNaIymCANEPkGB7Rk5oP
- rZOqsUOchveDNd4QtuT6DQHEQD3jTshg+Bt4kwNUt+vzeo7/FNfDHyRXNJFhQ/9DR2OZ
- jGySTVrUqEQy4T37fd+cNBLznpIOysZ5bVDWH/1KNGEAGUi0wNJl1ywdE5TftcvuiGAr
- jj+U9op1d2ogq/+8YXjqRZn5v+ZAH9cUnYUCQ5nqjepmCYkMpr2uVdx8a2bU1dRKbByq
- bs9/5qCSCVR8mRfcUOw06VY5tgdO9TXic90U9Od66EyJtBkYY2CPrMw4lPqn3Kr8ec7s
- QHsw==
-X-Gm-Message-State: AOJu0YzK8kW88N8dboNBeeL1lmPp1Mmah5uP+TKB0QY97qZsbAZ3keO5
- WubtyKStwOTSEGGyEC3hrwlxfO80v1TdNw==
-X-Google-Smtp-Source: AGHT+IFy5U08SD3ELkVmpW4WXn3YmmOdlNjxVT73iUqmcb1iVU6Bm9EqK1AMhCyknZPAxg5hcrcDcQ==
-X-Received: by 2002:a05:6a20:dd85:b0:19a:75b5:5a1c with SMTP id
- kw5-20020a056a20dd8500b0019a75b55a1cmr2636572pzb.48.1705356250278; 
- Mon, 15 Jan 2024 14:04:10 -0800 (PST)
-Received: from ?IPV6:2001:8004:2738:1dd9:85fe:4dd3:358e:ec4?
- ([2001:8004:2738:1dd9:85fe:4dd3:358e:ec4])
+ d=1e100.net; s=20230601; t=1705356885; x=1705961685;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=//CUTt+PfO8qp1j0mYbjeTsDoBV55fCccYfBnBFALhI=;
+ b=ZY9ZMjCNLOPkgbEp6FimryVpnKm0l7IiD8V+3OieGCnynKxcspNE7e0Ke1Raux9dCV
+ 3twp4WEQTT+eW1Q4ka5tX7Kne9kQl9r/LG3lg8bbF08EtPxjqxR8zHzOjMZBLF0ecloB
+ OY8krDzaVIJVcZ2QxQNa8mnl5gsKRf0UnOct4vUsaeHD4brJ2u2onopI9vzJnCBKV3zu
+ +/htNBUQKXkbuWqbspguCOHSe15o6pFrEuuROn6daBsdmh3hMlfO6TQon/SbejEXb7z8
+ Gjd749OpBAl/igziQmUUjTd7xjgHTaoZ+kbDMNsdnLIwsP4WhTj8/di68AzdvV1+lI3q
+ eeZg==
+X-Gm-Message-State: AOJu0YyH8g6kiLThAFmN35AcMkrF4W/wLbdx9EPpXsrh1e8faWyyQKNd
+ 8j2RQMPQTRCodMr7a3MFz96TtepzYW1jtg==
+X-Google-Smtp-Source: AGHT+IGMGWhPYj4+uUfuYs4Gdw70Gh1yHOm/mZ+CPhuS8nsD+zSnkDb6CV6wMaay5GmoQ2az/K1CjA==
+X-Received: by 2002:a6b:7f4a:0:b0:7bf:544c:b5ce with SMTP id
+ m10-20020a6b7f4a000000b007bf544cb5cemr576015ioq.31.1705356884944; 
+ Mon, 15 Jan 2024 14:14:44 -0800 (PST)
+Received: from taylor-ubuntu.hsd1.co.comcast.net
+ (c-73-169-12-54.hsd1.co.comcast.net. [73.169.12.54])
  by smtp.gmail.com with ESMTPSA id
- pm7-20020a17090b3c4700b0028e653bcd81sm1321344pjb.52.2024.01.15.14.04.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 Jan 2024 14:04:09 -0800 (PST)
-Message-ID: <c1323e2d-fa2d-4cb2-88f6-6cf80077ab70@linaro.org>
-Date: Tue, 16 Jan 2024 09:04:02 +1100
+ gm25-20020a0566382b9900b0046df77733acsm2579705jab.102.2024.01.15.14.14.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Jan 2024 14:14:44 -0800 (PST)
+From: Taylor Simpson <ltaylorsimpson@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: bcain@quicinc.com, quic_mathbern@quicinc.com, sidneym@quicinc.com,
+ quic_mliebel@quicinc.com, richard.henderson@linaro.org, philmd@linaro.org,
+ ale@rev.ng, anjo@rev.ng, ltaylorsimpson@gmail.com
+Subject: [PATCH v2 0/3] Hexagon (target/hexagon) Use QEMU decodetree
+Date: Mon, 15 Jan 2024 15:14:40 -0700
+Message-Id: <20240115221443.365287-1-ltaylorsimpson@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] linux-user: Fixed cpu restore with pc 0 on SIGBUS
-Content-Language: en-US
-To: Robbin Ehn <rehn@rivosinc.com>, qemu-devel@nongnu.org
-Cc: palmer@rivosinc.com
-References: <33f27425878fb529b9e39ef22c303f6e0d90525f.camel@rivosinc.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <33f27425878fb529b9e39ef22c303f6e0d90525f.camel@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2a;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-io1-xd2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,19 +92,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/13/24 07:57, Robbin Ehn wrote:
-> Commit f4e1168198 (linux-user: Split out host_sig{segv,bus}_handler)
-> introduced a bug, when returning from host_sigbus_handler the PC is
-> never set. Thus cpu_loop_exit_restore is called with a zero PC and
-> we immediate get a SIGSEGV.
-> 
-> Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
-> ---
->   linux-user/signal.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+Replace the old Hexagon dectree.py with QEMU decodetree
 
-Queued, thanks.
+**** Changes in v2 ****
+Suggested Python improvements from Brian Cain <bcain@quicinc.com>
 
 
-r~
+Taylor Simpson (3):
+  Hexagon (target/hexagon) Use QEMU decodetree (32-bit instructions)
+  Hexagon (target/hexagon) Use QEMU decodetree (16-bit instructions)
+  Hexagon (target/hexagon) Remove old dectree.py
+
+ target/hexagon/decode.h             |   5 +-
+ target/hexagon/opcodes.h            |   2 -
+ target/hexagon/decode.c             | 435 +++++++---------------------
+ target/hexagon/gen_dectree_import.c |  49 ----
+ target/hexagon/opcodes.c            |  29 --
+ target/hexagon/translate.c          |   4 +-
+ target/hexagon/README               |  14 +-
+ target/hexagon/dectree.py           | 403 --------------------------
+ target/hexagon/gen_decodetree.py    | 198 +++++++++++++
+ target/hexagon/gen_trans_funcs.py   | 124 ++++++++
+ target/hexagon/meson.build          | 147 +++++++++-
+ 11 files changed, 586 insertions(+), 824 deletions(-)
+ delete mode 100755 target/hexagon/dectree.py
+ create mode 100755 target/hexagon/gen_decodetree.py
+ create mode 100755 target/hexagon/gen_trans_funcs.py
+
+-- 
+2.34.1
+
 
