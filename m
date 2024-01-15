@@ -2,78 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C4E82D3A8
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 05:35:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1EC82D3AB
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 05:35:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPEg6-0001w2-Ng; Sun, 14 Jan 2024 23:34:26 -0500
+	id 1rPEgj-0002HR-G5; Sun, 14 Jan 2024 23:35:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rPEg4-0001vo-Lv
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 23:34:24 -0500
-Received: from mgamail.intel.com ([198.175.65.10])
+ (Exim 4.90_1)
+ (envelope-from <prvs=1744ec9a4b=bin.meng@windriver.com>)
+ id 1rPEgh-0002Fo-BM; Sun, 14 Jan 2024 23:35:03 -0500
+Received: from mx0a-0064b401.pphosted.com ([205.220.166.238])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rPEg1-0002n7-P7
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 23:34:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705293262; x=1736829262;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=0NImclDo8Qt6SacTmtN8Nm8/6vfT6w9ISUVCKwYzDBc=;
- b=ImDWCD4Wwuolbq97J9bBzbHPbIjhXZly8HD+O1Ex3vwfQXobh3m4Y1XX
- /b543T2JUPG20BJZ8CrVpSuWbXZCPR1TTRrPJCtnVoUQfn33qXU51yfZc
- Bv3TKG86x/egyKod4vRUhP3E771Vvl9a9Ylgy0SlNIhFJor45XUcKezd/
- TMPrAupyvOSgmHTQdElA6L2rGaDo28i4yygW1WeoBbffvvlf3IWB17Jxt
- C4HMVmQm9BoDbyXURVep8dDCQhbKai/wvLkpdLRWIBfVHhKzJNz2rlYZD
- UihMeNJ4xv3qCdqwT1iyK0m9zdvr0T/cBr+LRo0r0Nkc38uzBEzZOwJCi Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="12892317"
-X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="12892317"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 20:34:19 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="1114824344"
-X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="1114824344"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
- ([10.93.22.149])
- by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 20:34:14 -0800
-Message-ID: <336a4816-966d-42b0-b34b-47be3e41446d@intel.com>
-Date: Mon, 15 Jan 2024 12:34:12 +0800
+ (Exim 4.90_1)
+ (envelope-from <prvs=1744ec9a4b=bin.meng@windriver.com>)
+ id 1rPEge-00031n-75; Sun, 14 Jan 2024 23:35:03 -0500
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+ by mx0a-0064b401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
+ 40F4K2Ir008296; Sun, 14 Jan 2024 20:34:51 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+ h=from:to:cc:subject:date:message-id:content-transfer-encoding
+ :content-type:mime-version; s=PPS06212021; bh=1fAkXzHn+gsHhJ0EFb
+ t32rQ8ukkXwKphrgbBeRvrSoI=; b=rfh35mCY43zQXfoRyX3h3jDTvcoFpnS5Wl
+ 6cVM8opSz5ftg2WZbB27XWjBrHmMgOWrCg+W2y0TTFtUHT9PXEghVVcLnlygS0KK
+ SlxKeoCY4seTyPOvyP/9p3R6MHWfdcimwl3Fvs+ThvT3SdrkF65u2cLkei1t6jt0
+ 6h/BJiuBgXlOJb+CjYTSFQY2XIUDlPamZVvHU8gqmVEVGdwV3UnCP8PsSaeub72f
+ phjF1iBV55hZmpYgi74sq304rkAD3vVJosT4m4XECZauAR/a/ATsb+/OTcAwg7t3
+ zHAOGlQVOIkNFajyRBfRrieaV0wZ9zX33dAWGxNqV+H/CqZrnJdQ==
+Received: from nam10-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10lp2100.outbound.protection.outlook.com [104.47.55.100])
+ by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3vktwkh7jw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 14 Jan 2024 20:34:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mQpE7IfmkRc1nvfAuM7kawQuqwMb7ilQ6nAB0NtLdb6p/ct1VcJWaUiKo/BjfcAvIOo1rIt14hf8pnfODFIkU1DDBYcnAmebHdhuo5gDRxNY2Xo2xiRm809/qjFVjdiStLO5jhZW+EFyHjKi3P7uZRQmp+D9sqLeJ8wPbUNVihKwsgjgJ2Yoq/ut6lcuocB3aerrXLHZogSlRqQv2Q9krLYv4xHEjcbjQGItoLC9Ovg4hdJdRcTivTiAEJjy++DO5rdxA6+3wAETgawjo3YVQfc8Uy+SkGxpFnhPmvRWafHukwKd3zV7TLzMHQa01Q3xdNvrUbHMSiAXB6pxyPAg+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1fAkXzHn+gsHhJ0EFbt32rQ8ukkXwKphrgbBeRvrSoI=;
+ b=cv8kgrzv8os5OqfRoeNecht2+QhtxpZUSc5pYYoX7Qs+N63ea2w/AWUUWusftHRrbHxWTK5Fu0vqIchVHfIUqLsEpXRtAC8ARlt6s0ERNZ+RVzs9u4Uu9Q7okILzFOYF89CIX4e4oTKiOUHnWBZIW1Ongz5syQCLIIXF/wX6sd+qxgQ6iGmcgCJnbIWoNUU9PeTuoNqDCZ9ngottSWKSV3lpToNTuSmUEdr6/69RRj2jOqwRCx73u1qwKDtsWbb0KChs1/1D5RoM3/4W7SkJNM+SEPnwXcNDn2wQdojMJFPP4RNMb9bxCIDVV3uI/bqzjWQB2ytJcDi/3M/Vu/JXhw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from DM4PR11MB5358.namprd11.prod.outlook.com (2603:10b6:5:395::7) by
+ CY8PR11MB6891.namprd11.prod.outlook.com (2603:10b6:930:5c::15) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7181.19; Mon, 15 Jan 2024 04:34:48 +0000
+Received: from DM4PR11MB5358.namprd11.prod.outlook.com
+ ([fe80::4a3a:f09e:3c5d:318c]) by DM4PR11MB5358.namprd11.prod.outlook.com
+ ([fe80::4a3a:f09e:3c5d:318c%6]) with mapi id 15.20.7181.026; Mon, 15 Jan 2024
+ 04:34:48 +0000
+From: Bin Meng <bin.meng@windriver.com>
+To: qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org
+Subject: [PATCH 0/3] hw/arm: Pack the QEMU generated device tree
+Date: Mon, 15 Jan 2024 12:34:27 +0800
+Message-Id: <20240115043431.3900922-1-bin.meng@windriver.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TY2PR04CA0009.apcprd04.prod.outlook.com
+ (2603:1096:404:f6::21) To DM4PR11MB5358.namprd11.prod.outlook.com
+ (2603:10b6:5:395::7)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
-Content-Language: en-US
-To: Zhao Liu <zhao1.liu@linux.intel.com>, Yuan Yao <yuan.yao@linux.intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-9-zhao1.liu@linux.intel.com>
- <20240115032524.44q5ygb25ieut44c@yy-desk-7060> <ZaSv51/5Eokkv5Rr@intel.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <ZaSv51/5Eokkv5Rr@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB5358:EE_|CY8PR11MB6891:EE_
+X-MS-Office365-Filtering-Correlation-Id: ec256b4e-3fcf-4f36-805a-08dc15834e6a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 8KwS+CskA5qG1Nxry7QaHZVf9qofAM2qc5fz3uqNVw5R/b3RYlh0Ley4ZT6t3T/Azq5Bmzld9yT1jsXruYd6WqPQGrlDE01tOO1rGRIGCS/ULjIuAv4cb0iRWOU1O/cTHfLNldGRSSAxsT2u4p8trBGPRwvxSeYtvpSNTtPdroqy0MgOkj5SLtWk46NH/ukGJGSd7JPb1QUV+Rx8gvsg6sJeP7jx1+Kg8WyFepyWi6PxzJCs2GD8zUZkhrEi9nrj3jh5hrwTWJWaTx3KELJPibMC7aPd7/SnW9xCefshmrGC1Njr9LiiSM9+sDYhxpC0dCcLOlV4RJkfLcbpIQ520fV0VI1n797+KOxg2NgiP/g7dx6tLKKY+TvvzVfRHG5gaU6OjsBuQEEmLmFBvYIBwWNTpyLxbABnJgP5PgyJeu1iphGfK6dAYa51PExPRhpVYwojfrMc8HaAsT8JJYSLbL3chqZdio8Vt/Z+tcHWqFyimmKy4UDlNVb+l696rUVrRyeQJeHWiGLBbsai4GZ4PH6K5ylzQ5IgzDFOb570e75zXM1uTrVTjJnHz24TqClgpa6AGAyNPfn3Qdjkjk+zzYZwWdImsr0vjOL0Uv4NxAdRMcdq2JEwbp4oB4TCBP3E
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB5358.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376002)(366004)(39840400004)(396003)(136003)(346002)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(66476007)(66946007)(66556008)(6916009)(44832011)(36756003)(8936002)(8676002)(316002)(54906003)(38100700002)(6512007)(4326008)(6486002)(38350700005)(2906002)(4744005)(5660300002)(83380400001)(41300700001)(86362001)(478600001)(26005)(2616005)(1076003)(52116002)(6506007)(6666004);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+316PQlFpm3Q8NZnHH7Cicc7DqqHhmQsXfPZ6q08SLm8+/KYn8qlEEBc5vVB?=
+ =?us-ascii?Q?jLYzxfe/Y5x7Ja2+DTFTcMeysCVT3df/PYid7dpXs7I3D++Cb0LH1bXSxIZO?=
+ =?us-ascii?Q?AEp4oID+os0XWHZYFW1uRsBmgOkEz2D+nFFP+UYKGNEOE/qLKd5ZWdU2Xr5D?=
+ =?us-ascii?Q?X2Hl/Psh1vRBR88FWGxvQYi60tjKQxU/4hH/K4DkrNCcNdXQJCjjcdnDDKeR?=
+ =?us-ascii?Q?kDk1L/Ia+FMIq7/0OqWwo+CUjZW7UtbrQNxkA0hgfVNq3JVVjjsVbP5ba7sU?=
+ =?us-ascii?Q?8p7C1RyyKB0qF6dKnfDl6PFqyvwnoMu/rtaCQT58OByCVyPMto/+4flYvNNa?=
+ =?us-ascii?Q?1nBHSsetn6zOe9/BzI/oRKTIvFrF3xV0CwqobBV0X4/jeZ3kSuBfFGDNBH7G?=
+ =?us-ascii?Q?Fd2tdGS/vzdiHqDNfLP2ASC+0wavpesn9rhBhtEh/31JrC+UFOEMMllJYvRt?=
+ =?us-ascii?Q?AJ5vpj76+Q7Pz7dy48V9cuZeEXEh5dlQYakVVo89ohVGEsQE/YnejRXPiqP4?=
+ =?us-ascii?Q?TEolkx/5Mx9ZjEWYoeMMCOdtsJZ8ArdWZBWSXvW1MsqaVZwJfV9uyHy1CoiN?=
+ =?us-ascii?Q?I1O78yBIOtPAI5Mt1LGekuUWPB2Z53qcCqpKuEsdQOQPGoRxXFynWMTBKHK/?=
+ =?us-ascii?Q?MjClKQCHVEIsqIXevEHVksZ/PUgDkjCMf7+afL7cBxoqFaJOJH0LpqsWty65?=
+ =?us-ascii?Q?zP62eOpv2MhlGnz+M1Rj9xGlQuAQHX0i/SRntWuGtrm7iPaNYwqyy++0ERM6?=
+ =?us-ascii?Q?jcAMw/3PMIuts+FYnZ7G/koqhgbuYaRbIRnoObLtx0A5uAPbLjcvHWCrs3Pz?=
+ =?us-ascii?Q?mi6sDz14VImFdwye4oGPPNxL2/SxgLChHTCflI/MWXJGWVCvDmy9B0U2Uvoa?=
+ =?us-ascii?Q?lOGXY956J9daREF7dJmJZUMxQP/8rdD4AqYo9ML2pa1CwF37LAZnEmEhw5uq?=
+ =?us-ascii?Q?x4fm6IIGAoHl5IGAS+a4oDw6MbbDFQlJSrHw/nlIZMl2QODvQkn7jNXf2cLQ?=
+ =?us-ascii?Q?l1j07IEcq97fYTokqcMyyxzJuy976Kv/LUAq0Mb+i5zGKOHzFiAEuHW1g1os?=
+ =?us-ascii?Q?bzCIPvkW5Kynu97sWK9dru1KTe7W9vROIzjvMlbWtSmdlNNLz1BKPS0RMi6S?=
+ =?us-ascii?Q?jixDWKVuXKcKDVcoVhCKXqjv5H44Zam2ATJly+TLVsH4dnnvEkRxluKm8zJL?=
+ =?us-ascii?Q?WQRsiQsOvcFiE0rn31ANNglbXbv11zTLRCsI6GXyoWHutdcc57E1PhNQ2EE4?=
+ =?us-ascii?Q?lbDw/CxUOeDuoXThALcnwhRSDo6pQF0Yjf5CS5fYDpfqf30Knze1waUdWfTs?=
+ =?us-ascii?Q?gIgME+fc/NuJmHXrs5mposJvc7G/+GPjHuKsAQ78BNyJRlK5sUg0z9L8eBAK?=
+ =?us-ascii?Q?K8RU8PNGqeAwu3Auu1bb3PLRfX4HYfFk+yC/PkBMMsCLfVxgBWYDTTF6oY3B?=
+ =?us-ascii?Q?a1J2z+mH7yUaTb4DiU9lRb2FgwVAG2t0oKcM5cP+FfOvOREvoMinWXmEvP9j?=
+ =?us-ascii?Q?XM0uPYiy8mdAZopL3RDgH/0iwYPTzNTQwuwjb8Do8fWDcmgcsFJXPp72Vexn?=
+ =?us-ascii?Q?dssDz1ZhJp4XpW0lIHT80efdpLVbDzbQkjuHcuQU?=
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec256b4e-3fcf-4f36-805a-08dc15834e6a
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5358.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2024 04:34:48.2956 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lim0frKhjH8ClZB47czFIC6lR/oPCld3oq6CIaK7mjzlDQ/0tfea77/8uGZIeWMcVjMYWhNvBC1NIamo0kb/gw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6891
+X-Proofpoint-ORIG-GUID: ojncPyuhs5m00o1OzUAbc-FGidKKLo59
+X-Proofpoint-GUID: ojncPyuhs5m00o1OzUAbc-FGidKKLo59
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-16_25,2023-11-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0
+ mlxlogscore=414 suspectscore=0 phishscore=0 lowpriorityscore=0 spamscore=0
+ clxscore=1011 malwarescore=0 priorityscore=1501 impostorscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
+ definitions=main-2401150033
+Received-SPF: pass client-ip=205.220.166.238;
+ envelope-from=prvs=1744ec9a4b=bin.meng@windriver.com;
+ helo=mx0a-0064b401.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,197 +157,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/15/2024 12:09 PM, Zhao Liu wrote:
-> Hi Yuan,
-> 
-> On Mon, Jan 15, 2024 at 11:25:24AM +0800, Yuan Yao wrote:
->> Date: Mon, 15 Jan 2024 11:25:24 +0800
->> From: Yuan Yao <yuan.yao@linux.intel.com>
->> Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
->>
->> On Mon, Jan 08, 2024 at 04:27:19PM +0800, Zhao Liu wrote:
->>> From: Zhao Liu <zhao1.liu@intel.com>
->>>
->>> Linux kernel (from v6.4, with commit edc0a2b595765 ("x86/topology: Fix
->>> erroneous smp_num_siblings on Intel Hybrid platforms") is able to
->>> handle platforms with Module level enumerated via CPUID.1F.
->>>
->>> Expose the module level in CPUID[0x1F] if the machine has more than 1
->>> modules.
->>>
->>> (Tested CPU topology in CPUID[0x1F] leaf with various die/cluster
->>> configurations in "-smp".)
->>>
->>> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
->>> Tested-by: Babu Moger <babu.moger@amd.com>
->>> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
->>> Acked-by: Michael S. Tsirkin <mst@redhat.com>
->>> ---
->>> Changes since v3:
->>>   * New patch to expose module level in 0x1F.
->>>   * Add Tested-by tag from Yongwei.
->>> ---
->>>   target/i386/cpu.c     | 12 +++++++++++-
->>>   target/i386/cpu.h     |  2 ++
->>>   target/i386/kvm/kvm.c |  2 +-
->>>   3 files changed, 14 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
->>> index 294ca6b8947a..a2d39d2198b6 100644
->>> --- a/target/i386/cpu.c
->>> +++ b/target/i386/cpu.c
->>> @@ -277,6 +277,8 @@ static uint32_t num_cpus_by_topo_level(X86CPUTopoInfo *topo_info,
->>>           return 1;
->>>       case CPU_TOPO_LEVEL_CORE:
->>>           return topo_info->threads_per_core;
->>> +    case CPU_TOPO_LEVEL_MODULE:
->>> +        return topo_info->threads_per_core * topo_info->cores_per_module;
->>>       case CPU_TOPO_LEVEL_DIE:
->>>           return topo_info->threads_per_core * topo_info->cores_per_module *
->>>                  topo_info->modules_per_die;
->>> @@ -297,6 +299,8 @@ static uint32_t apicid_offset_by_topo_level(X86CPUTopoInfo *topo_info,
->>>           return 0;
->>>       case CPU_TOPO_LEVEL_CORE:
->>>           return apicid_core_offset(topo_info);
->>> +    case CPU_TOPO_LEVEL_MODULE:
->>> +        return apicid_module_offset(topo_info);
->>>       case CPU_TOPO_LEVEL_DIE:
->>>           return apicid_die_offset(topo_info);
->>>       case CPU_TOPO_LEVEL_PACKAGE:
->>> @@ -316,6 +320,8 @@ static uint32_t cpuid1f_topo_type(enum CPUTopoLevel topo_level)
->>>           return CPUID_1F_ECX_TOPO_LEVEL_SMT;
->>>       case CPU_TOPO_LEVEL_CORE:
->>>           return CPUID_1F_ECX_TOPO_LEVEL_CORE;
->>> +    case CPU_TOPO_LEVEL_MODULE:
->>> +        return CPUID_1F_ECX_TOPO_LEVEL_MODULE;
->>>       case CPU_TOPO_LEVEL_DIE:
->>>           return CPUID_1F_ECX_TOPO_LEVEL_DIE;
->>>       default:
->>> @@ -347,6 +353,10 @@ static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
->>>           if (env->nr_dies > 1) {
->>>               set_bit(CPU_TOPO_LEVEL_DIE, topo_bitmap);
->>>           }
->>> +
->>> +        if (env->nr_modules > 1) {
->>> +            set_bit(CPU_TOPO_LEVEL_MODULE, topo_bitmap);
->>> +        }
->>>       }
->>>
->>>       *ecx = count & 0xff;
->>> @@ -6394,7 +6404,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->>>           break;
->>>       case 0x1F:
->>>           /* V2 Extended Topology Enumeration Leaf */
->>> -        if (topo_info.dies_per_pkg < 2) {
->>> +        if (topo_info.modules_per_die < 2 && topo_info.dies_per_pkg < 2) {
->>
->> A question:
->> Is the original checking necessary ?
->> The 0x1f exists even on cpu w/o modules/dies topology on bare metal, I tried
->> on EMR:
->>
->> // leaf 0
->> 0x00000000 0x00: eax=0x00000020 ebx=0x756e6547 ecx=0x6c65746e edx=0x49656e69
->>
->> // leaf 0x1f
->> 0x0000001f 0x00: eax=0x00000001 ebx=0x00000002 ecx=0x00000100 edx=0x00000004
->> 0x0000001f 0x01: eax=0x00000007 ebx=0x00000080 ecx=0x00000201 edx=0x00000004
->> 0x0000001f 0x02: eax=0x00000000 ebx=0x00000000 ecx=0x00000002 edx=0x00000004
->>
->> // leaf 0xb
->> 0x0000000b 0x00: eax=0x00000001 ebx=0x00000002 ecx=0x00000100 edx=0x00000004
->> 0x0000000b 0x01: eax=0x00000007 ebx=0x00000080 ecx=0x00000201 edx=0x00000004
->> 0x0000000b 0x02: eax=0x00000000 ebx=0x00000000 ecx=0x00000002 edx=0x00000004
-> 
-> The 0x1f is introduced for CascadeLake-AP with die level. And yes the
-> newer mahcines all have this leaf.
-> 
->>
->> So here leads to different cpu behavior from bare metal, even in case
->> of "-cpu host".
->>
->> In SDM Vol2, cpudid instruction section:
->>
->> " CPUID leaf 1FH is a preferred superset to leaf 0BH. Intel
->> recommends using leaf 1FH when available rather than leaf
->> 0BH and ensuring that any leaf 0BH algorithms are updated to
->> support leaf 1FH. "
->>
->> My understanding: if 0x1f is existed (leaf 0.eax >= 0x1f)
->> then it should have same values in lp/core level as 0xb.
 
-No. leaf 0x1f reports the same values in lp/core leve as leaf 0xb only 
-when the machine supports these two levels. If the machine supports more 
-levels, they will be different.
-
-e.g., the data on one Alder lake:
-
-0x0000000b 0x00: eax=0x00000001 ebx=0x00000001 ecx=0x00000100 edx=0x00000006
-    0x0000000b 0x01: eax=0x00000007 ebx=0x00000004 ecx=0x00000201 
-edx=0x00000006
-    0x0000000b 0x02: eax=0x00000000 ebx=0x00000000 ecx=0x00000002 
-edx=0x00000006
-
-0x0000001f 0x00: eax=0x00000001 ebx=0x00000001 ecx=0x00000100 edx=0x00000006
-    0x0000001f 0x01: eax=0x00000003 ebx=0x00000004 ecx=0x00000201 
-edx=0x00000006
-    0x0000001f 0x02: eax=0x00000007 ebx=0x00000004 ecx=0x00000302 
-edx=0x00000006
-    0x0000001f 0x03: eax=0x00000000 ebx=0x00000000 ecx=0x00000003 
-edx=0x00000006
+By default, QEMU generates a 1 MiB sized device tree. This appears
+to be unnecessary, as the actual size is much smaller than what the
+DTB header claims. Let's pack it to save some room.
 
 
-> Yes, I think it's time to move to default 0x1f.
+Bin Meng (3):
+  hw/arm: Refactor struct arm_boot_info::get_dtb()
+  hw/arm: Pack the QEMU generated device tree
+  tests/acpi: Update virt/SSDT.memhp
 
-we don't need to do so until it's necessary.
+ include/hw/arm/boot.h           |   8 ++++----
+ hw/arm/boot.c                   |  14 +++++++++++++-
+ hw/arm/sbsa-ref.c               |   3 +--
+ hw/arm/virt.c                   |   4 +---
+ hw/arm/xlnx-versal-virt.c       |   4 +---
+ tests/data/acpi/virt/SSDT.memhp | Bin 1817 -> 1817 bytes
+ 6 files changed, 20 insertions(+), 13 deletions(-)
 
-> The compatibility issue can be solved by a cpuid-0x1f option similar to
-> cpuid-0xb. I'll cook a patch after this patch series.
-> 
-> Thanks,
-> Zhao
-> 
->>
->>>               *eax = *ebx = *ecx = *edx = 0;
->>>               break;
->>>           }
->>> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
->>> index eecd30bde92b..97b290e10576 100644
->>> --- a/target/i386/cpu.h
->>> +++ b/target/i386/cpu.h
->>> @@ -1018,6 +1018,7 @@ enum CPUTopoLevel {
->>>       CPU_TOPO_LEVEL_INVALID,
->>>       CPU_TOPO_LEVEL_SMT,
->>>       CPU_TOPO_LEVEL_CORE,
->>> +    CPU_TOPO_LEVEL_MODULE,
->>>       CPU_TOPO_LEVEL_DIE,
->>>       CPU_TOPO_LEVEL_PACKAGE,
->>>       CPU_TOPO_LEVEL_MAX,
->>> @@ -1032,6 +1033,7 @@ enum CPUTopoLevel {
->>>   #define CPUID_1F_ECX_TOPO_LEVEL_INVALID  CPUID_B_ECX_TOPO_LEVEL_INVALID
->>>   #define CPUID_1F_ECX_TOPO_LEVEL_SMT      CPUID_B_ECX_TOPO_LEVEL_SMT
->>>   #define CPUID_1F_ECX_TOPO_LEVEL_CORE     CPUID_B_ECX_TOPO_LEVEL_CORE
->>> +#define CPUID_1F_ECX_TOPO_LEVEL_MODULE   3
->>>   #define CPUID_1F_ECX_TOPO_LEVEL_DIE      5
->>>
->>>   /* MSR Feature Bits */
->>> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
->>> index 4ce80555b45c..e5ddb214cb36 100644
->>> --- a/target/i386/kvm/kvm.c
->>> +++ b/target/i386/kvm/kvm.c
->>> @@ -1913,7 +1913,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
->>>               break;
->>>           }
->>>           case 0x1f:
->>> -            if (env->nr_dies < 2) {
->>> +            if (env->nr_modules < 2 && env->nr_dies < 2) {
->>>                   break;
->>>               }
->>>               /* fallthrough */
->>> --
->>> 2.34.1
->>>
->>>
-> 
+-- 
+2.34.1
 
 
