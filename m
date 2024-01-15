@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8FF82D624
+	by mail.lfdr.de (Postfix) with ESMTPS id 228A282D625
 	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 10:37:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPJOK-0002xz-Ig; Mon, 15 Jan 2024 04:36:24 -0500
+	id 1rPJOM-00030G-T5; Mon, 15 Jan 2024 04:36:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPJOI-0002xq-Ht
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:36:22 -0500
+ id 1rPJOK-0002yd-Nb
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:36:24 -0500
 Received: from mgamail.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPJOG-00083y-UC
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:36:22 -0500
+ id 1rPJOJ-00083y-7Y
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:36:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705311380; x=1736847380;
+ t=1705311383; x=1736847383;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=bEuuzhlR+r/Qy0aq8IIdnaQz63UEvVOGDNMZ/dCZ9KE=;
- b=LqVcmKMIyMjSzNHatrUKdWXgwO+bYAkjDfLKKeGsSSpnxryTADVWCkV9
- 4OYVQGSUUzGgqI4qQz3u5XzbH/nLm3cJ4/+TBD/xTrpP1lYJ6WCfvyNDH
- voHZZ0i3VqHF5MmOaHmqJE9FhJEoEs668K1pxqhdOllzhySBLFcle1lF0
- B9LGtql9bAQY/pLx50ZTE8BfHGgQ6bjTnUafkeJJKYoJk2asuuW5lIHWa
- JhRv6aoBWZCIUQpl0Wi4J7MuopcLs5YkIvEdkapm6YehEd59SleEq7FRc
- CHTLtnbuxKrQmIJtpAdkMZLlIGRa3bjQ6ROgTf1vm/i02tQOIBAmfCWFv A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="398439814"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="398439814"
+ bh=Ae3UEVtEQon0zcDRm0hrrOZyUSj7p14La3m7kAvib84=;
+ b=fRKfdd2e2fWshXxtMzQIrog21OrVqiGGkwfKb5pK2CzgOPUpjMGJyaoF
+ nFc2luRkEXTLLRxdsYv2UittKYVkcAOSdikzYu8mtdcTsKhEplAsT0yyi
+ kdzAJVdJ3bSuuzmU06lTEUVhGy0WsMDv8Eba1JqfKwUtD5GrRwqjmxY2B
+ H5eZ+0PCy5ASagLDYIXRVJJXLoB7uko94npnCsnutnMPzXvSxdW1768OY
+ MBPCrxeiNjDouRvh2EEago2+f6C810lXEEFUbQJCO9RQxW6VlN+ENdzrN
+ yGhs0jAPQQ122J/YQd+chm999HMjffd738aHzxycLOSK0z6swSezJkhkS Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="398439827"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="398439827"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 01:36:20 -0800
+ 15 Jan 2024 01:36:22 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="1030594175"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="1030594175"
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="1030594178"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="1030594178"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmsmga006.fm.intel.com with ESMTP; 15 Jan 2024 01:36:18 -0800
+ by fmsmga006.fm.intel.com with ESMTP; 15 Jan 2024 01:36:20 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -47,9 +47,9 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  Yanan Wang <wangyanan55@huawei.com>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 09/11] hw/core: Reorder included headers in null-machine.c
-Date: Mon, 15 Jan 2024 17:48:50 +0800
-Message-Id: <20240115094852.3597165-10-zhao1.liu@linux.intel.com>
+Subject: [PATCH 10/11] hw/core: Cleanup unused included headers in numa.c
+Date: Mon, 15 Jan 2024 17:48:51 +0800
+Message-Id: <20240115094852.3597165-11-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240115094852.3597165-1-zhao1.liu@linux.intel.com>
 References: <20240115094852.3597165-1-zhao1.liu@linux.intel.com>
@@ -81,31 +81,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Reorder the header files (except qemu/osdep.h) in alphabetical order.
+Remove unused header in numa.c:
+* sysemu/hostmem.h
+* exec/cpu-common.h
+* exec/ramlist.h
+* qemu/bitmap.h
+* hw/core/cpu.h
+* hw/mem/pc-dimm.h
+* migration/vmstate.h
+
+Though sysemu/numa.h has been included by sysemu/hostmem.h which is
+included by hw/boards.h, to keep the dependency clear, still directly
+include sysemu/numa.h in this file.
 
 Tested by "./configure" and then "make".
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/core/null-machine.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/core/numa.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/hw/core/null-machine.c b/hw/core/null-machine.c
-index a0c7acc19cc3..3d411de3396a 100644
---- a/hw/core/null-machine.c
-+++ b/hw/core/null-machine.c
-@@ -13,9 +13,9 @@
+diff --git a/hw/core/numa.c b/hw/core/numa.c
+index f08956ddb0ff..ab3f2858ac51 100644
+--- a/hw/core/numa.c
++++ b/hw/core/numa.c
+@@ -23,20 +23,14 @@
+  */
  
  #include "qemu/osdep.h"
- 
--#include "qemu/error-report.h"
--#include "hw/boards.h"
- #include "exec/address-spaces.h"
-+#include "hw/boards.h"
-+#include "qemu/error-report.h"
- 
- static void machine_none_init(MachineState *mch)
- {
++
+ #include "qemu/units.h"
+-#include "sysemu/hostmem.h"
+ #include "sysemu/numa.h"
+-#include "exec/cpu-common.h"
+-#include "exec/ramlist.h"
+-#include "qemu/bitmap.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "qapi/opts-visitor.h"
+ #include "qapi/qapi-visit-machine.h"
+ #include "sysemu/qtest.h"
+-#include "hw/core/cpu.h"
+-#include "hw/mem/pc-dimm.h"
+-#include "migration/vmstate.h"
+ #include "hw/boards.h"
+ #include "hw/mem/memory-device.h"
+ #include "qemu/option.h"
 -- 
 2.34.1
 
