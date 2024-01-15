@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6482C82DD8F
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 17:26:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F219282DD8C
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 17:25:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPPmJ-0005n9-Sx; Mon, 15 Jan 2024 11:25:36 -0500
+	id 1rPPmM-0005nK-01; Mon, 15 Jan 2024 11:25:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1rPPmH-0005m3-0f
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:25:33 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1rPPmI-0005mJ-7M
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:25:34 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1rPPmF-00050w-61
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:25:32 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40e775695c6so9767385e9.3
+ id 1rPPmF-000513-6g
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:25:33 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40e7a9c527dso8673125e9.1
  for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 08:25:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1705335928; x=1705940728;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1705335929; x=1705940729;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9D00xa+XSCxC87F1u0Bt2vd0mnLwvfxAGy7bIuFsaVk=;
- b=yQcnb0x7dmd/K8b+dnx22MzyONkDClqb9cX3dST0XoNjU7FOJHFy5TT3TfymiynwaU
- 63L6ZII1Ji0TezOrKd3U7fkSW7ud15KohcvyjeRylGduNbYRSavwGnbbNo+PAA4K/Jdf
- 7b1IcdyKqbNxCLwtQF5SwuRMqYFujtH2OnND0jfejw6j4PgG8ZTgxhJ3Z/RdGYP0/Mt6
- 8qQYl5vS9XubDLpLR4zVzGy4xWfO/kUpKIzF8dHkB9PoHRPb25J2HJLDRj7q8VfveJp0
- OIUfqVf7/1dp1+js75/6EWza5J5cDSU5v9VWdHCZwfbeqXBrXQ8RSAehMbpPTgjgyOx8
- 8Ckg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QiPxYFkInWxtf4MkjHWSRFqjjhgLITYki68L5zfyr6Q=;
+ b=XC8CKU5KVSr2UTsTOYGtDbcZoKpf2TzpZKOxj+TJ5vPI1b94Ym1fcad7iIJkFpRgAs
+ fgubsglWmsK2chcFPkrSt2OUotSGLZfl9W+EG2RFIO8y2DDvVvZaix87E05/wj35801I
+ gmHCdJCIcakObibENELYxvWg7nx+5Ab0Lwl4rJx3sps1GMKIDjTH90gS3miZrx7y58gR
+ 72jp5WYSme/gERS2yFeKZpv3hid4+X758l595y1YmpCc7EN1M1WKSYA3YAgkabOeUmJO
+ Kfj7jWwN/xvVLV4FurLl2a35lJc4n82E3zSBNZw1mJmu5jJs+0CUMbp6Pa9DI/V2jtdC
+ o/XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705335928; x=1705940728;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9D00xa+XSCxC87F1u0Bt2vd0mnLwvfxAGy7bIuFsaVk=;
- b=WvEOqudFo44Ivwl0SoKZ9mhjOvFxBlvl1uqyDyP4tJZlnNzt6+Sl9rcqC/ENDVmJ0o
- qAIPMHMZG8PITOdcAkAHylH5gwqS/CYqbsWbwnjDjuTA2bJcTtTJLNExtpb9lPQ9zLYK
- hE+wJjaLVcxTXgcySVwY+NHCMTJ9gU5xD8JegMmsp1m0TDNsR+yBh8R9aIH9k5Yy6jHG
- BAq/+3lO7lc5nXxjW0mQS/EnrvfINRBbkKaua9ypSJEqB9H9vEBD/cKURL9h5ZasOYZd
- WHD6gj1tKsdx6A62EuEZwq4eDR4ekS8i7p56R8JVwDuCHw/4vwfdswP14pgXaR1kwLSA
- h7fA==
-X-Gm-Message-State: AOJu0Yz/3sMgDiQUA75QxAsiO5u5rWPTIL689ZarH2Vx+PirI/qySxvB
- cC7orcAHhR2faMYmwnkJso47SplCs59JPqDOibWCw9s8sc6PgQ==
-X-Google-Smtp-Source: AGHT+IGXA0z+9mf2JktUwdNKNF2ls6r9p9A+RCWbyaqAO90hhFaE8jU/mscLyeZA3n024YbtUwQUxw==
-X-Received: by 2002:a7b:c453:0:b0:40e:42b4:23b6 with SMTP id
- l19-20020a7bc453000000b0040e42b423b6mr3758905wmi.55.1705335928187; 
+ d=1e100.net; s=20230601; t=1705335929; x=1705940729;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=QiPxYFkInWxtf4MkjHWSRFqjjhgLITYki68L5zfyr6Q=;
+ b=JWXn0C9REKoZUljmzPcAJ3jSt4DpJePAOevWDSfUu+6y4/AY9LrzVJAZ8t0Z+cb+iX
+ ZuY+9HkabHJSJicRH66Euy/bBw1ADDvE84Df9LXK8ljnw1Cc6HDzrG0YjjKRL1nGwlwP
+ i4QE80TwVYuGgySho7LfLY0SMIGyEbWotcBGZ6UO6ScH9EsSIc91PwCxdDHdJxazkad9
+ ejSzuzSNVe0LG1foOK0GtVe4iS7d/3JbfQW5ud/aF8gc8NUWg/4G8KTGtaiwnajTPJ2f
+ Y5xpPj8S+1eqPoJNVnjjkFL3vmnXy9F0N34y8mcF6D0t6TrnRsP9IKtEGpnFSYA0Ec4E
+ 6OAA==
+X-Gm-Message-State: AOJu0Yz34aG8lYmYtMKJLGU5FZk84LHBdTxYLP8W+4Obe2wGNV6nZR/Z
+ qbUMKEm5lUTnWf8/tHvsdVCUvzy3fFqJ4cmpJYwihpWyT9R7qA==
+X-Google-Smtp-Source: AGHT+IH4s4zTh1jpv4kWnAfDdd6b7c978O/MNUhzfbvKiec4xUw33RwqrI22cCz2nQCSUdlcvmc/DQ==
+X-Received: by 2002:a05:600c:4708:b0:40e:3a6f:9b3e with SMTP id
+ v8-20020a05600c470800b0040e3a6f9b3emr1674534wmo.6.1705335928740; 
  Mon, 15 Jan 2024 08:25:28 -0800 (PST)
 Received: from rockhopper.ba.rivosinc.com (214.11.169.217.in-addr.arpa.
  [217.169.11.214]) by smtp.gmail.com with ESMTPSA id
- n16-20020a05600c4f9000b0040d62f97e3csm20274444wmq.10.2024.01.15.08.25.27
+ n16-20020a05600c4f9000b0040d62f97e3csm20274444wmq.10.2024.01.15.08.25.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jan 2024 08:25:27 -0800 (PST)
+ Mon, 15 Jan 2024 08:25:28 -0800 (PST)
 From: Rob Bradford <rbradford@rivosinc.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
  alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  Rob Bradford <rbradford@rivosinc.com>
-Subject: [PATCH 0/2] target/riscv: Add support for Zaamo & Zalrsc
-Date: Mon, 15 Jan 2024 16:25:23 +0000
-Message-ID: <20240115162525.63535-1-rbradford@rivosinc.com>
+Subject: [PATCH 1/2] target/riscv: Add Zaamo and Zalrsc extensions
+Date: Mon, 15 Jan 2024 16:25:24 +0000
+Message-ID: <20240115162525.63535-2-rbradford@rivosinc.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240115162525.63535-1-rbradford@rivosinc.com>
+References: <20240115162525.63535-1-rbradford@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,40 +94,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce support for the proposed new (fast-track) Zaamo and Zalrsc
-extensions [1] which represent the AMO and LR/SC subsets of the A
-extension.  
+These extensions represent the atomic operations from A (Zaamo) and the
+Load-Reserved/Store-Conditional operations from A (Zalrsc)
 
-The motivation for the subsets being available separately is that
-certain classes of CPUs may choose to only implement a subset for
-architectural convenience.
+Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+---
+ target/riscv/cpu.c     | 5 +++++
+ target/riscv/cpu_cfg.h | 2 ++
+ 2 files changed, 7 insertions(+)
 
-Since this extension is not frozen these are advertised by "x-zaamo" and
-"x-zalrsc" options. Beyond adding the extension infrastructure the only
-changes required are to allow the atomic instructions under either A or
-the appropriate subset extension.  To ensure compatibility enabling the
-A instruction does not enable these two extensions - future hardware may
-choose to advertise support for A and both these extensions for maximum
-software support.
-
-This patch is based off riscv-to-apply.next due to conflicts with
-existing patches.
-
-Cheers,
-
-Rob
-
-[1] - https://github.com/riscv/riscv-zaamo-zalrsc
-
-Rob Bradford (2):
-  target/riscv: Add Zaamo and Zalrsc extensions
-  target/riscv: Check 'A' and split extensions for atomic instructions
-
- target/riscv/cpu.c                      |  5 +++
- target/riscv/cpu_cfg.h                  |  2 +
- target/riscv/insn_trans/trans_rva.c.inc | 56 +++++++++++++++----------
- 3 files changed, 41 insertions(+), 22 deletions(-)
-
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 8d3ec74a1c..604baf53c8 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -103,7 +103,9 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
+     ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_zihpm),
+     ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
++    ISA_EXT_DATA_ENTRY(zaamo, PRIV_VERSION_1_12_0, ext_zaamo),
+     ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
++    ISA_EXT_DATA_ENTRY(zalrsc, PRIV_VERSION_1_12_0, ext_zalrsc),
+     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+     ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
+     ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_0, ext_zfbfmin),
+@@ -1491,6 +1493,9 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
+     MULTI_EXT_CFG_BOOL("x-smaia", ext_smaia, false),
+     MULTI_EXT_CFG_BOOL("x-ssaia", ext_ssaia, false),
+ 
++    MULTI_EXT_CFG_BOOL("x-zaamo", ext_zaamo, false),
++    MULTI_EXT_CFG_BOOL("x-zalrsc", ext_zalrsc, false),
++
+     MULTI_EXT_CFG_BOOL("x-zvfh", ext_zvfh, false),
+     MULTI_EXT_CFG_BOOL("x-zvfhmin", ext_zvfhmin, false),
+ 
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index fea14c275f..cc4c30244c 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -78,7 +78,9 @@ struct RISCVCPUConfig {
+     bool ext_svnapot;
+     bool ext_svpbmt;
+     bool ext_zdinx;
++    bool ext_zaamo;
+     bool ext_zacas;
++    bool ext_zalrsc;
+     bool ext_zawrs;
+     bool ext_zfa;
+     bool ext_zfbfmin;
 -- 
 2.43.0
 
