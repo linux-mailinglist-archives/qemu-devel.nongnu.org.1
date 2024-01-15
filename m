@@ -2,81 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9A382D57F
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 10:04:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE51F82D580
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 10:04:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPIt8-0003rc-Kp; Mon, 15 Jan 2024 04:04:10 -0500
+	id 1rPItW-0004kf-A3; Mon, 15 Jan 2024 04:04:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuan.yao@linux.intel.com>)
- id 1rPIt1-0003ku-F1
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:04:04 -0500
-Received: from mgamail.intel.com ([192.55.52.43])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuan.yao@linux.intel.com>)
- id 1rPIsy-0001cH-SU
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:04:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705309440; x=1736845440;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=HyJu5yarjkyKHlLX2cZ2bsFPyxagMaNvDegqFE9ermc=;
- b=UyyV/gyV8+CCXAOZU7oTGw/p/igBcoQGcanBEjqHuUJPIkEt6rCYvzVP
- Gb5W9GyszYMWTSuqcMGn3RQTilnNp2rbbbWInkAmyx6Hs2fDxrux+PWXR
- ZerpbRWn/OW71OksAkNJm/R1lhfNSD26iZpBhV6ln30rqTBnNkbA9msSj
- OtvOWvhwzNwrO2mK15wbBgA5+dQFF/90L1zzrjSowC7FLr71tWex62429
- cfZPVfB9TKSdpO3vdRM7QmNuVjNdmxA1R7tnqF8p6Xylk10o56100Cs4D
- pSTgyHAi24W3gXHKRfZ+Wfv+S0WIJltQaRwILEhOob/XgA9u5li9T6gUl w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="485730004"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="485730004"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 01:03:58 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="927062702"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="927062702"
-Received: from yy-desk-7060.sh.intel.com (HELO localhost) ([10.239.159.76])
- by fmsmga001.fm.intel.com with ESMTP; 15 Jan 2024 01:03:54 -0800
-Date: Mon, 15 Jan 2024 17:03:53 +0800
-From: Yuan Yao <yuan.yao@linux.intel.com>
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
- Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
-Message-ID: <20240115090353.cgcjwwwuwvcxiuvd@yy-desk-7060>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-9-zhao1.liu@linux.intel.com>
- <20240115032524.44q5ygb25ieut44c@yy-desk-7060>
- <ZaSv51/5Eokkv5Rr@intel.com>
- <336a4816-966d-42b0-b34b-47be3e41446d@intel.com>
- <20240115052022.xbv6exhm4af7kai7@yy-desk-7060>
- <ZaTOpCFZRu6/py/J@intel.com>
- <20240115065730.ezwpd3sjoycc57rm@yy-desk-7060>
- <ZaTcxVGHhQtLC/Ki@intel.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rPItT-0004fR-5a
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:04:31 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rPItR-0001e8-6Y
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:04:30 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40e5afc18f5so43694485e9.3
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 01:04:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705309467; x=1705914267; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4mCRq87oUZtRcqi8srS+YeJ1cxVCExFqlfMsoW0qviM=;
+ b=UxcDagBksoAN3noGpw+Nud3ubDvu/xiDVighO0YYwT9OjtgHWo8vj96ZMMP+9x/XDs
+ TB2gktU6I0UFDJTBi2yRnrmMpFhxbmxsoWGMRrDyhnk7KK9AygpB5CwiMjh0tLpisZR0
+ EbUdx507A5/ColbMGFikCmoLbVVWL8ucbQcqD+oUwz5C9bU058mwMpjUu05WQLOO+GfN
+ O87LJEHpZSFGGnwIZMlUTBMqMeu6MGWs+NSaMhuSSlbXnCia2CzUD8sOIh+j0ADCL4Cy
+ YRnt/gcyfZA+/ZaGzGwZcM1fjiVVFxDwwuyb4mjk6n2Y8lZ0IiJccwVEba3XVhzziwk8
+ mjoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705309467; x=1705914267;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=4mCRq87oUZtRcqi8srS+YeJ1cxVCExFqlfMsoW0qviM=;
+ b=rX9IvUw29wEM1bN8U0G8O1fA5nNbkjpAEaGsdmEw9qYKT4s4fEMR7JK/s5O2DEm+5g
+ RVQCQBiZ+eClpPI3LLmzFzM6w26NRPEBQDi4FsaKIl0jrZZtr9TU8XA6OgZD5ypj1hWd
+ H2Z0LUeojmcahzm0lRM+H5I3Y0p02Cp+bsxAv6GRFOHNYym+iejOi8z4GpAxRLc+qtTD
+ tV3dgaLgRwyCbsWIW6fa+DbmCn7GQuV6R9vz+6IgIQ+NxA4zYgWhz4u4W61udRvRz7WU
+ LFqQJf8bYY6fvcrJoBu9FTXz3cHeKS+pRosTztyBqzwxvKf/ZB/6JV455hG1j6trRtQw
+ hgBw==
+X-Gm-Message-State: AOJu0YzPRqKY1454GA4XCB934a9A95duvebBZA99CDwnot7a88ugwkYT
+ Bh1WPld60yg6BpeZ7ouQw6sIr7x6fz3S3w==
+X-Google-Smtp-Source: AGHT+IGwjjP4jWVBPEy1iqa2XOhMaKVjiKyibKvcsrvHqMR0bY1Zn2bNILfX+en6dCLrDD8WAb3GPQ==
+X-Received: by 2002:a05:600c:3541:b0:40e:530a:7cf2 with SMTP id
+ i1-20020a05600c354100b0040e530a7cf2mr2714974wmq.6.1705309466645; 
+ Mon, 15 Jan 2024 01:04:26 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ n10-20020a5d4c4a000000b003366e974cacsm11288976wrt.73.2024.01.15.01.04.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Jan 2024 01:04:26 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id D0BA05F756;
+ Mon, 15 Jan 2024 09:04:25 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>
+Subject: Re: [PATCH 03/12] tests/plugin: add test plugin for inline operations
+In-Reply-To: <1b976012-7670-4086-88bb-c5097c8fbe0b@linaro.org> (Pierrick
+ Bouvier's message of "Mon, 15 Jan 2024 11:06:01 +0400")
+References: <20240111142326.1743444-1-pierrick.bouvier@linaro.org>
+ <20240111142326.1743444-4-pierrick.bouvier@linaro.org>
+ <49bfa786-e549-43d4-ac03-9337b9342d16@linaro.org>
+ <ae4227fc-58b5-4a6b-97d5-8fae34eb7514@linaro.org>
+ <87v87yv588.fsf@draig.linaro.org>
+ <58065fbd-84f9-4a21-beba-6eb2a18c3d0c@linaro.org>
+ <87ply5upbc.fsf@draig.linaro.org>
+ <1b976012-7670-4086-88bb-c5097c8fbe0b@linaro.org>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Mon, 15 Jan 2024 09:04:25 +0000
+Message-ID: <87wmsbj7c6.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZaTcxVGHhQtLC/Ki@intel.com>
-User-Agent: NeoMutt/20171215
-Received-SPF: none client-ip=192.55.52.43;
- envelope-from=yuan.yao@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,38 +106,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 15, 2024 at 03:20:37PM +0800, Zhao Liu wrote:
-> On Mon, Jan 15, 2024 at 02:57:30PM +0800, Yuan Yao wrote:
-> > Date: Mon, 15 Jan 2024 14:57:30 +0800
-> > From: Yuan Yao <yuan.yao@linux.intel.com>
-> > Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
-> >
-> > On Mon, Jan 15, 2024 at 02:20:20PM +0800, Zhao Liu wrote:
-> > > On Mon, Jan 15, 2024 at 01:20:22PM +0800, Yuan Yao wrote:
-> > > > Date: Mon, 15 Jan 2024 13:20:22 +0800
-> > > > From: Yuan Yao <yuan.yao@linux.intel.com>
-> > > > Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
-> > > >
-> > > > Ah, so my understanding is incorrect on this.
-> > > >
-> > > > I tried on one raptor lake i5-i335U, which also hybrid soc but doesn't have
-> > > > module level, in this case 0x1f and 0xb have same values in core/lp level.
-> > >
-> > > Some socs have modules/dies but they don't expose them in 0x1f.
-> >
-> > Here they don't expose because from hardware level they can't or possible
-> > software level configuration (i.e. disable some cores in bios) ?
-> >
->
-> This leaf is decided at hardware level. Whether or not which levels are exposed
-> sometimes depends if there is the topology-related feature, but there is no clear
-> rule (just as in the ADL family neither ADL-S/P exposes modules, while ADL-N
-> exposes modules).
+Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
 
-I see, thanks for your information!
+> On 1/13/24 21:16, Alex Benn=C3=A9e wrote:
+>> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+>>=20
+>>> On 1/12/24 21:20, Alex Benn=C3=A9e wrote:
+>>>> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+>>>>
+>>>>> On 1/11/24 19:57, Philippe Mathieu-Daud=C3=A9 wrote:
+>>>>>> Hi Pierrick,
+>>>>>> On 11/1/24 15:23, Pierrick Bouvier wrote:
+>>>>>>> For now, it simply performs instruction, bb and mem count, and ensu=
+re
+>>>>>>> that inline vs callback versions have the same result. Later, we'll
+>>>>>>> extend it when new inline operations are added.
+>>>>>>>
+>>>>>>> Use existing plugins to test everything works is a bit cumbersome, =
+as
+>>>>>>> different events are treated in different plugins. Thus, this new o=
+ne.
+>>>>>>>
+>> <snip>
+>>>>>>> +#define MAX_CPUS 8
+>>>>>> Where does this value come from?
+>>>>>>
+>>>>>
+>>>>> The plugin tests/plugin/insn.c had this constant, so I picked it up
+>>>>> from here.
+>>>>>
+>>>>>> Should the pluggin API provide a helper to ask TCG how many
+>>>>>> vCPUs are created?
+>>>>>
+>>>>> In user mode, we can't know how many simultaneous threads (and thus
+>>>>> vcpu) will be triggered by advance. I'm not sure if additional cpus
+>>>>> can be added in system mode.
+>>>>>
+>>>>> One problem though, is that when you register an inline op with a
+>>>>> dynamic array, when you resize it (when detecting a new vcpu), you
+>>>>> can't change it afterwards. So, you need a storage statically sized
+>>>>> somewhere.
+>>>>>
+>>>>> Your question is good, and maybe we should define a MAX constant that
+>>>>> plugins should rely on, instead of a random amount.
+>>>> For user-mode it can be infinite. The existing plugins do this by
+>>>> ensuring vcpu_index % max_vcpu. Perhaps we just ensure that for the
+>>>> scoreboard as well? Of course that does introduce a trap for those usi=
+ng
+>>>> user-mode...
+>>>>
+>>>
+>>> The problem with vcpu-index % max_vcpu is that it reintroduces race
+>>> condition, though it's probably less frequent than on a single
+>>> variable. IMHO, yes it solves memory error, but does not solve the
+>>> initial problem itself.
+>>>
+>>> The simplest solution would be to have a size "big enough" for most
+>>> cases, and abort when it's reached.
+>> Well that is simple enough for system emulation as max_vcpus is a
+>> bounded
+>> number.
+>>=20
+>>> Another solution, much more complicated, but correct, would be to move
+>>> memory management of plugin scoreboard to plugin runtime, and add a
+>>> level of indirection to access it.
+>> That certainly gives us the most control and safety. We can then
+>> ensure
+>> we'll never to writing past the bounds of the buffer. The plugin would
+>> have to use an access function to get the pointer to read at the time it
+>> cared and of course inline checks should be pretty simple.
+>>=20
+>>> Every time a new vcpu is added, we
+>>> can grow dynamically. This way, the array can grow, and ultimately,
+>>> plugin can poke its content/size. I'm not sure this complexity is what
+>>> we want though.
+>> It doesn't seem too bad. We have a start/end_exclusive is *-user
+>> do_fork
+>> where we could update pointers. If we are smart about growing the size
+>> of the arrays we could avoid too much re-translation.
+>>
+>
+> I was concerned about a potential race when the scoreboard updates
+> this pointer, and other cpus are executing tb (using it). But this
+> concern is not valid, since start_exclusive ensures all other cpus are
+> stopped.
+>
+> vcpu_init_hook function in plugins/core.c seems a good location to add
+> this logic. We would check if an update is needed, then
+> start_exclusive(), update the scoreboard and exit exclusive section.
 
+It might already be in the exclusive section. We should try and re-use
+an existing exclusive region rather than adding a new one. It's
+expensive so best avoided if we can.
+
+> Do you think it's worth to try to inline scoreboard pointer (and flush
+> all tb when updated), instead of simply adding an indirection to it?
+> With this, we could avoid any need to re-translate anything.
+
+Depends on the cost/complexity of the indirection I guess.
+Re-translation isn't super expensive if we say double the size of the
+score board each time we need to.
+
+>> Do we want a limit of one scoreboard per thread? Can we store structures
+>> in there?
+>>=20
 >
-> Regards,
-> Zhao
->
+> From the current plugins use case, it seems that several scoreboards
+> are needed.
+> Allowing structure storage seems a bit more tricky to me, because
+> since memory may be reallocated, users won't be allowed to point
+> directly to it. I would be in favor to avoid this (comments are
+> welcome).
+
+The init function can take a sizeof(entry) field and the inline op can
+have an offset field (which for the simple 0 case can be folded away by
+TCG).
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
