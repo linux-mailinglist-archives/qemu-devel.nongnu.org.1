@@ -2,84 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9AC82D85E
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 12:33:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 162B782D865
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 12:35:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPLCt-000670-0g; Mon, 15 Jan 2024 06:32:43 -0500
+	id 1rPLEV-0007dp-8R; Mon, 15 Jan 2024 06:34:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rPLCq-00062K-Dv
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:32:40 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rPLES-0007d5-Uf; Mon, 15 Jan 2024 06:34:20 -0500
+Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rPLCo-0007lM-N0
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:32:40 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40e60e135a7so34188735e9.0
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 03:32:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rPLEP-0007sz-Fm; Mon, 15 Jan 2024 06:34:20 -0500
+Received: by mail-ot1-x333.google.com with SMTP id
+ 46e09a7af769-6dec4b7b680so2661132a34.3; 
+ Mon, 15 Jan 2024 03:34:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705318356; x=1705923156; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1705318450; x=1705923250; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0o3O04pYwMl6J1t3gh9OBxi35KzLBuzIdEtQ6XnqUII=;
- b=vKfIRgIVQnhRFP1s0C9Kei7/URMIdHFPsnypyZRRgAD7Pf1oDlFVV8rvW5LtrlgFbz
- RktKJrpI7ZR/d6KorUgbOLb6oUr/WUQmT+FgF0pYpUv98Bb8mXE+fCNnqJTjtoKS/EYj
- AuUmzD/0x+qwq8ReWey7k8EpWKoD/WAF93HOS6V+/MSoPoVnzh3Jg19ylxtnHyKW6BIS
- w9wDvFRyinsiHomu0i/elyJ5SJ1J7xwQKOqtObmAkDcYKnSlDKP7Wv3VNttC4Mu865g2
- H7MhJyuFSwFNFgtSC9MQf/oJkygfulutM7Absev9Knog5BIlsgsZFmwL5OQvTrV+9wnk
- cT+A==
+ bh=2KpZjt0o+ezfg/+TXrvF5fto7FJQeosPNBjh1Bb4888=;
+ b=e0z6zU2kseo7I/4sXYSmbej8f/y23Hg0m1YHTnZKWplVktHSnHIMGf80Hl0cLbCv4J
+ /lV8IdzCK8KFB+L3PhI87VBThQIdeo/8OOPXKlzgIsbtZN2eoc5/vrkbAHlE5XdkN8qt
+ hJ3ihdMaSG/Sac22f0hXjM+lpHKidXv+AlbEWEw41540rKrJzvuOMbtD9tbg3Kh9chDE
+ VUhoQ7GkdVt2C1UFOGB5w9WgMoP0zcDW82oJRnKR6G1V0saZrSg89x1LEuMuvQYpx/gn
+ U5XI94VWjaM/AQFpPD/8VtG7HVd9jTo2+V7vFtXER02RwBlQh3oFq8Jck1t6OxXtAsTm
+ QEug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705318356; x=1705923156;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=0o3O04pYwMl6J1t3gh9OBxi35KzLBuzIdEtQ6XnqUII=;
- b=k4OCOWygYXbk08g9FjXcd5ywWX34257+UIWA2JEBMYvHBkeXgOCNTVMG2IjzCFmunE
- 1fnHZ6vZWDftjH//ouzh1iHJHm4Y1V5J5GIUs2L9k4W5d+C7D7e1yi1FPZSazV4X0Pyv
- BO6x+HU9Tq6+LAc0D7OJtkrf/hsXvIzSOdPDf4FLsMx7pi9wGJLqWPFUrMOLHlqbapmG
- SwSjRVEJC+wCnoK74SIhPT39vUzc/jwLc0+kJTL7fAYJzO8Wu7gxdvUSyuTSS64xwpt7
- vcEkkjGJjuXzfqyQqXUeKVlwBJ62PCiG6DPSfV9CPHWmY+VJ9NyqW07r3o4zn9eyosIi
- pwYQ==
-X-Gm-Message-State: AOJu0YwNEIQvRDqx//ElcneAknU4TQYiRTk5Nw294IHRBE3uoFDYXutX
- R+bKuSHamVfT5MgsmVlt0Zp53MzOv7uiurXGOI9XHHWA6+Q=
-X-Google-Smtp-Source: AGHT+IEtszHuYuPTt7KtJjREpPRUz9VLLqvD2QB4lb+8UeQt9qT5yrs+rWNWg2EqTD/cHXxOAqSQqA==
-X-Received: by 2002:a05:600c:3ba1:b0:40e:50f8:9abf with SMTP id
- n33-20020a05600c3ba100b0040e50f89abfmr2627365wms.92.1705318356353; 
- Mon, 15 Jan 2024 03:32:36 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- r19-20020a05600c459300b0040e42391a12sm15483372wmo.13.2024.01.15.03.32.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jan 2024 03:32:36 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A906E5F756;
- Mon, 15 Jan 2024 11:32:35 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,  Tyrone Ting <kfting@nuvoton.com>,  Hao Wu
- <wuhaotsh@google.com>,  qemu-arm@nongnu.org
-Subject: Re: [PATCH] tests/qtest/npcm7xx_watchdog_timer: Only test the
- corner cases by default
-In-Reply-To: <20240115070223.30178-1-thuth@redhat.com> (Thomas Huth's message
- of "Mon, 15 Jan 2024 08:02:23 +0100")
-References: <20240115070223.30178-1-thuth@redhat.com>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Mon, 15 Jan 2024 11:32:35 +0000
-Message-ID: <87r0iikf1o.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1705318450; x=1705923250;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=2KpZjt0o+ezfg/+TXrvF5fto7FJQeosPNBjh1Bb4888=;
+ b=KXhRljkNh3ZaplIkYPQ+4BoBlT/KikPHei3NZ+FoQYvo2au9vTUW//x+YJYSUKetDm
+ HtvFHmy9XRzkemBTS65GxZCkKfehP2rTvV4WKWITCj7A7xJyIdzv56vbmOY4QfVI2plA
+ yb3f0zgWahTwJuFRybXugucn+VSTchKOgIYCxdrYroJCOfW6NbIJK+BKO0J8Q5OC0Bwf
+ m0bBh/CyU1Al+Qz6dY4RLLYFBWQNztVSdJ4DMJkBPbSsfrs0XCCy6EdQTSR6BLH1P7O0
+ bZPX4jY3WFU5odPUwJmRmnRVSumA9ee2nFfmRvd/EMUxSfONwrRCY0rVURwcb+tfFMu3
+ goKQ==
+X-Gm-Message-State: AOJu0Yxzlfd+4IYFN1e4UZeDmn+x4r7OSqYvKQ1LoYWMl9pRJubCrivo
+ Gt5LYYD1JQV98KCSoRGB6CckjJ858v0yUKZ/9CI=
+X-Google-Smtp-Source: AGHT+IHLR0B48A9Cq2zhs1W+mCTymffzUPfk85VA9/AYPnmAjfv50yeC/dCfQxFnrNcgkRAlCBpdnJu1+gXKOAKQTGk=
+X-Received: by 2002:a9d:6319:0:b0:6dd:d611:da9c with SMTP id
+ q25-20020a9d6319000000b006ddd611da9cmr5481185otk.30.1705318449940; Mon, 15
+ Jan 2024 03:34:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240112135527.57212-1-f.ebner@proxmox.com>
+ <CAJ+F1C+JXE9hSQ_oDNZvhpYDqPeeKayopB3x2L2YyJTxM8t+Yg@mail.gmail.com>
+ <2150aa28-3eba-4e95-a301-d87377ba40a4@proxmox.com>
+ <CAJ+F1CKQkXUiuQH+mNC7p00wWrznsgWJD4xjR-AzjJGPnsF8gw@mail.gmail.com>
+ <ccd23263-f19f-401e-b476-a7eb1fd22571@proxmox.com>
+In-Reply-To: <ccd23263-f19f-401e-b476-a7eb1fd22571@proxmox.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 15 Jan 2024 15:33:58 +0400
+Message-ID: <CAJ+F1CJHKsRrxUcUijAVV2bv0EOtbz0BAmH1OEnmciwo7ACXLQ@mail.gmail.com>
+Subject: Re: [PATCH] ui/clipboard: avoid crash upon request when clipboard
+ peer is not initialized
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com, 
+ berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-ot1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,51 +90,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+Hi
 
-> The test_prescaler() part in the npcm7xx_watchdog_timer test is quite
-> repetive, testing all possible combinations of the WTCLK and WTIS
-> bitfields. Since each test spins up a new instance of QEMU, this is
-> rather an expensive test, especially on loaded host systems.
-
-I'm not against the change but I do not my home machine runs these tests
-in:
-
-  1/1 qemu:qtest+qtest-arm / qtest-arm/npcm7xx_timer-test        OK        =
-      0.18s   180 subtests passed
-
-so I do wonder how the system load can cause such a dramatic increase
-for a comparatively simple test.
-
-> For the normal quick test mode, it should be sufficient to test the
-> corner settings of these fields (i.e. 0 and 3), so we can speed up
-> this test in the default mode quite a bit.
+On Mon, Jan 15, 2024 at 3:26=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
+rote:
 >
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  tests/qtest/npcm7xx_watchdog_timer-test.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> Am 15.01.24 um 12:15 schrieb Marc-Andr=C3=A9 Lureau:
+> > Hi
+> >
+> > On Mon, Jan 15, 2024 at 2:45=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.co=
+m> wrote:
+> >>
+> >> Am 14.01.24 um 14:51 schrieb Marc-Andr=C3=A9 Lureau:
+> >>>>
+> >>>> diff --git a/ui/clipboard.c b/ui/clipboard.c
+> >>>> index 3d14bffaf8..c13b54d2e9 100644
+> >>>> --- a/ui/clipboard.c
+> >>>> +++ b/ui/clipboard.c
+> >>>> @@ -129,7 +129,8 @@ void qemu_clipboard_request(QemuClipboardInfo *i=
+nfo,
+> >>>>      if (info->types[type].data ||
+> >>>>          info->types[type].requested ||
+> >>>>          !info->types[type].available ||
+> >>>> -        !info->owner)
+> >>>> +        !info->owner ||
+> >>>> +        !info->owner->request)
+> >>>>          return;
+> >>>
+> >>> While that fixes the crash, I think we should handle the situation
+> >>> earlier. A clipboard peer shouldn't be allowed to hold the clipboard
+> >>> if it doesn't have the data available or a "request" callback set.
+> >>>
+> >>
+> >> Where should initialization of the cbpeer happen so that we are
+> >> guaranteed to do it also for clients that do not set the
+> >> VNC_FEATURE_CLIPBOARD_EXT feature? Can the vnc_clipboard_request
+> >> function be re-used for clients without that feature or will it be
+> >> necessary to add some kind of "dummy" request callback for those clien=
+ts?
+> >
+> > qemu_clipboard_update() shouldn't accept info as current clipboard if
+> > the owner doesn't have the data available or a "request" callback set.
+> > This should also be assert() somehow and handled earlier.
+> >
 >
-> diff --git a/tests/qtest/npcm7xx_watchdog_timer-test.c b/tests/qtest/npcm=
-7xx_watchdog_timer-test.c
-> index 4773a673b2..981b853c99 100644
-> --- a/tests/qtest/npcm7xx_watchdog_timer-test.c
-> +++ b/tests/qtest/npcm7xx_watchdog_timer-test.c
-> @@ -172,9 +172,10 @@ static void test_reset_action(gconstpointer watchdog)
->  static void test_prescaler(gconstpointer watchdog)
->  {
->      const Watchdog *wd =3D watchdog;
-> +    int inc =3D g_test_quick() ? 3 : 1;
->=20=20
-> -    for (int wtclk =3D 0; wtclk < 4; ++wtclk) {
-> -        for (int wtis =3D 0; wtis < 4; ++wtis) {
-> +    for (int wtclk =3D 0; wtclk < 4; wtclk +=3D inc) {
-> +        for (int wtis =3D 0; wtis < 4; wtis +=3D inc) {
->              QTestState *qts =3D qtest_init("-machine quanta-gsj");
->=20=20
->              qtest_irq_intercept_in(qts, "/machine/soc/a9mpcore/gic");
+> The request callback is only initialized in vnc_server_cut_text_caps()
+> when the VNC_FEATURE_CLIPBOARD_EXT is enabled. AFAIU, it's perfectly
+> fine for clients to use the clipboard with non-extended messages and
+> qemu_clipboard_update() should (and currently does) accept those.
+>
+> > In vnc_client_cut_text_ext() we could detect that situation, but with
+> > Daniel's "[PATCH] ui: reject extended clipboard message if not
+> > activated", this shouldn't happen anymore iiuc.
+> >
+>
+> Daniel's patch doesn't change the behavior for non-extended messages.
+> The problem can still happen with two VNC clients. This is the scenario
+> described in the lower half of my commit message (and why Daniel
+> mentions in his patch that it's not sufficient to fix the CVE).
+>
+> In short: client A does not set the VNC_FEATURE_CLIPBOARD_EXT feature
+> and then uses a non-extended VNC_MSG_CLIENT_CUT_TEXT message. This leads
+> to vnc_client_cut_text() being called and setting the clipboard info
+> referencing that client. But here, no request callback is initialized,
+> that only happens in vnc_server_cut_text_caps() when the
+> VNC_FEATURE_CLIPBOARD_EXT is enabled.
+>
+> When client B does set the VNC_FEATURE_CLIPBOARD_EXT feature and does
+> send an extended VNC_MSG_CLIENT_CUT_TEXT message, the request callback
+> will be attempted but it isn't set.
+>
+
+The trouble is when qemu_clipboard_update() is called without data &
+without a request callback set. We shouldn't allow that as we have no
+means to get the clipboard data then.
 
 --=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Marc-Andr=C3=A9 Lureau
 
