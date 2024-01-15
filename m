@@ -2,76 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C0482DE09
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 17:57:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB17482DE20
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 18:03:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPQGJ-0006He-SZ; Mon, 15 Jan 2024 11:56:35 -0500
+	id 1rPQK6-00007R-0q; Mon, 15 Jan 2024 12:00:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPQGG-0006Gu-DO
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:56:32 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rPQK3-00006H-ES
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 12:00:27 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPQGE-0001XU-9A
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:56:31 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3373a30af67so8059608f8f.0
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 08:56:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rPQK0-0002Ja-QS
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 12:00:27 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-553ba2f0c8fso9942617a12.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 09:00:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705337788; x=1705942588; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1705338023; x=1705942823; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=s4+bIenrzPyATM30XW9R1b9vb5/8yjsfQP7BFBOigBY=;
- b=eqUfngTtTQrrPqXxCH4HLFzlPwoB8tbKrJDJCBbBlmvW/5G3Ps8Tbc3AWT2i5IR7JZ
- kYsKQoXCXzhTXfmRGiVdwxS7mlnMjCZgCjGfj5Z3w9wsIk3Ghq7E9DGCUkN1aS86JET2
- iZscy+PsiAM8tiaWWZIwbdl/XpVYqBEBojmT5wzpuUh8Q8v6uuq8CsOZQUcnnsGAgr9X
- ysCZwiBdSh4OWnMyqgItMyPck/Zpo46i37DWCRiJJg+EIRduNjm3HheoA3J/QC0RMq9W
- 8CjTVaxphVAGhQeln24t7IT8BL5WkmpX1QZMnsdLAg5rmFPRLx5cSv78/NAPKDGRDWJx
- tGsA==
+ bh=AGwlGAhd0mA1JYn1BCHmVsL+RAIJ122TLrnq5kJ+q1k=;
+ b=fQoYGGp8JgKlAA4rDxWXPLpgaVe74NhAbN52k8lLi3M29Evf98Ttnq1UWQfiQm29Yf
+ f+nzEWPvAnH9JMlC4nybemjKsDsc1AF9Pujg6ZSzxl/DznYj5PfyUotH994NyRC+Hw0Z
+ 7pfTDjeDXaFCx6g+wOTyeCcmK/+ZieQe2P9GBujBontmN3hURqPbAbqLny2sQ02lhdlP
+ YplKXuW4zCXTyY/awTZcMpaTJ7JwUuNxb5WRoKaehB7qcvyedFtPjRElNKQSwPdYsDul
+ A2OLzZ+8vAWHWElCphKu2xXtzccL7Kyr46w+Vr0se1GXhfTaj71aVItoI6V5JAZT5+Em
+ YUKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705337788; x=1705942588;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1705338023; x=1705942823;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s4+bIenrzPyATM30XW9R1b9vb5/8yjsfQP7BFBOigBY=;
- b=CsSo89CHar4k0Dr9uDuZmJZDN5sqDCowJ+ssXKX3905+HmYIF+odLxvzldxxOtrVNG
- /qX7ntpziK1XJU2GRtN9ukB3kmb+5lu3yti0R6B610cetVVf9iDidfWnnR/00sRQBi35
- JCR/b1H5mDQhbPvGq+P+FRls7iktVtnLKBGplN51W2Kc8wF0dJdNdqHOBnSI195B9ULh
- TXw8E5fXHepaJVT/+jhPFvIxQL165nzediZ8NGsGrDJ2m+HNDFXNCa/qM78/RTb58V33
- 8oBjFBgziMCgw0D8/NijeoTveCpaRpg36Oo/iojat8mHmw48jOp2RZzT7xlrxzRcH6CO
- uEUQ==
-X-Gm-Message-State: AOJu0YxOUjGfQErzbZd6J9jC3XDwbMSVkNbSrv04Wx2iYv1Vgg1J8ciF
- ufhgat4Nh1EP80apbhiZaCnX8hpmgi5JSqQxHIdEtQVXLfU=
-X-Google-Smtp-Source: AGHT+IEg5GTAHzzRxcAFeYVFA3CDThIOSsQQw0BPs8Zkh8cQvmOXApmAQ31nNobicUsCdoxUlumGBQ==
-X-Received: by 2002:a5d:548e:0:b0:336:c52b:e282 with SMTP id
- h14-20020a5d548e000000b00336c52be282mr2353872wrv.203.1705337788418; 
- Mon, 15 Jan 2024 08:56:28 -0800 (PST)
-Received: from m1x-phil.lan ([176.187.209.30])
- by smtp.gmail.com with ESMTPSA id
- e19-20020a5d5953000000b0033609b71825sm12312192wri.35.2024.01.15.08.56.27
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 15 Jan 2024 08:56:28 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Beniamino Galvani <b.galvani@gmail.com>, qemu-arm@nongnu.org,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] hw/arm/nseries: Unconditionally map the TUSB6010 USB Host
- controller
-Date: Mon, 15 Jan 2024 17:56:15 +0100
-Message-ID: <20240115165615.78323-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240115165615.78323-1-philmd@linaro.org>
-References: <20240115165615.78323-1-philmd@linaro.org>
+ bh=AGwlGAhd0mA1JYn1BCHmVsL+RAIJ122TLrnq5kJ+q1k=;
+ b=uroYxSk1xQAaMLZSp5unq8e+Sx5q7iRmB8ycgTSHcgOyHGGI3/fjyvYVw9JHlQb6C5
+ nBZ+/FMadFNE6QjAsPWOrzVzQ0FqJkKXwKFMmdTcUKj1mg3AB3tZe3FFE+PQ15844Xcl
+ iviqaBUsfyzM5UFIYbqshWQWjL6+hoxgfp2L91PLY+XAxwgCXFAAMKGtZyfaWGIKoFJH
+ DIGIckWrgZjUqMO0xEcN6wzRiKyRsZAVixNmjAcziZuTy9WIyfJJsvp29AKTM3JFkbKZ
+ obbceDIfEt+5IfDD0CZ9atzX1OhA02s3gDeu7hbcLxScsxcq3464KWdZWFbZ82v+oOGg
+ 2gww==
+X-Gm-Message-State: AOJu0YyU3pc6d6wgY6IXsbNeM0u+NaBTm0bybNWRz2GhZ1/RDryYjk5i
+ G1hPF20W1Q0Wu8iKkfX7GX5Sg7zM8LmSD56Dmfi3+Zi3/9RaZQ==
+X-Google-Smtp-Source: AGHT+IGILdWKV/4M/cd2dt0iAswse1r5WoMnGsA+E7uxY4K7UsCVrz1MTLzBeTNNpbJcKCBeIQ9vOOYH12QBdGVcwGc=
+X-Received: by 2002:a05:6402:553:b0:558:7f0f:aa79 with SMTP id
+ i19-20020a056402055300b005587f0faa79mr1590008edx.66.1705338023153; Mon, 15
+ Jan 2024 09:00:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+References: <20240115165615.78323-1-philmd@linaro.org>
+In-Reply-To: <20240115165615.78323-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 15 Jan 2024 17:00:12 +0000
+Message-ID: <CAFEAcA9vo4BMys0EbqYq0a_eTQahbJnAb=N_fHzWCcGqeoK=yQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] hw/arm: Unconditionally map MMIO-based USB host
+ controllers
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Beniamino Galvani <b.galvani@gmail.com>,
+ qemu-arm@nongnu.org, Strahinja Jankovic <strahinja.p.jankovic@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,30 +88,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The TUSB6010 USB controller is solderer on the N800 and N810
-tablets, thus is always present.
+On Mon, 15 Jan 2024 at 16:56, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> When a chipset contain a USB controller, we can not simply
+> remove it. We could disable it, but that requires more changes
+> this series isn't aiming for. For more context:
+> https://lore.kernel.org/qemu-devel/56fde49f-7dc6-4f8e-9bbf-0336a20a9ebf@r=
+oeck-us.net/
+>
+> Philippe Mathieu-Daud=C3=A9 (2):
+>   hw/arm/allwinner-a10: Unconditionally map the USB Host controllers
+>   hw/arm/nseries: Unconditionally map the TUSB6010 USB Host controller
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/arm/nseries.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Yes, I think this makes sense. It is technically a migration
+compat break for the affected machines if the user was
+passing the '-usb none' option, but I think we're OK with
+that; worth mentioning in the commit messages I guess.
 
-diff --git a/hw/arm/nseries.c b/hw/arm/nseries.c
-index 35aff46b4b..35deb74f65 100644
---- a/hw/arm/nseries.c
-+++ b/hw/arm/nseries.c
-@@ -1353,9 +1353,7 @@ static void n8x0_init(MachineState *machine,
-     n8x0_spi_setup(s);
-     n8x0_dss_setup(s);
-     n8x0_cbus_setup(s);
--    if (machine_usb(machine)) {
--        n8x0_usb_setup(s);
--    }
-+    n8x0_usb_setup(s);
- 
-     if (machine->kernel_filename) {
-         /* Or at the linux loader.  */
--- 
-2.41.0
-
+-- PMM
 
