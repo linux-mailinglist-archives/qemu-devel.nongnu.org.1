@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B94F82D8F3
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 13:39:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C220D82DAE2
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 15:03:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPMEI-00050v-Gx; Mon, 15 Jan 2024 07:38:14 -0500
+	id 1rPNXs-0007kW-Kq; Mon, 15 Jan 2024 09:02:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPMEG-00050R-7W
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 07:38:12 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <daniel@0x0f.com>) id 1rPK1X-0007iA-Pr
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:16:55 -0500
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPMEE-0003Kv-3b
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 07:38:11 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-55817a12ad8so6416556a12.2
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 04:38:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <daniel@0x0f.com>) id 1rPK1U-0007RO-QY
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:16:55 -0500
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-28c0d8dd88bso5646010a91.2
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 02:16:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705322288; x=1705927088; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=4sN+doTRwrHfIkeiDu7vHDmBaAiyxzHeegCf/TanPj8=;
- b=XIA43YtwrtvlRhWOisNvNKDOCWdo2ZNzP8gDZtthBgSV3ajML+HNHWsIr9LU/P1x3L
- FkAnOsnNAg7VigyCJRPOCFlme/vWwP2r9etw/v3gHRlks+FerWNeNfOhiXTE8lqtohE5
- i9N/j04rZ+KMTLJsjXFg6zNRjCpQL6Way1Wk/YOadRh6zShLipHtTcYMRXniWNuP88Jx
- ZMo0wwpfP5blVJCjeJQrufC/edJ+YNrOr+eopGAObGqNINusRvoRx/rfUDDrHhigVi2A
- SF9bGtsiavLdBZ5PY6BvFU3kkCVgG6Nb/5Cd4T5uiZOSdxkp5AnaoUmCDFqn5PN82yh1
- uu9A==
+ d=0x0f.com; s=google; t=1705313810; x=1705918610; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=KSWRvjdunXVculkFnNEyuJu0w7WiR/OJ/9EgypgZ8rs=;
+ b=uGReKK/iVUZePUbKJniaZ+Xen4F1csMbVsQ9iKSoAtR5h0y9suSi4wwn3OrPZraKWA
+ +y3SANUjjV9gGgyiWnXsXdK2n98QYDHFQolFc7kzyrexxdymv0a0/WTiH4S+QseKSdQN
+ vk2LrdM7TbsOfJ9dgWX53sLZR2xTDEkuVFeHQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705322288; x=1705927088;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1705313810; x=1705918610;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=4sN+doTRwrHfIkeiDu7vHDmBaAiyxzHeegCf/TanPj8=;
- b=g8TN8szfcoeRAdEuvoBvlG5aBANs4ny1+DOfJ2pxhgY2e+M/Tfpn5qeK+W8C8l/oci
- gtp5DB/v4JVR6ak3OVFZsn1S2Bs1wK+3Ul1TwnZ/Dgvse+LecyyGYD0lOebq7dmG4wln
- nkFRg1sgxX7smEyhEcdaKHCm7ft5aDwZ1t46jhfkPjl6P/4eVOpR0YLWPk30KpY9LEMg
- c/3FgeoLBKaz/uQSBNckdujhbU6yM+FKSc2r+IyCTrhLsZHNYu1sf60fcdw9SDEaM7Zd
- 899HUb7D0+pV5jBGDGjyj9mn+SmdxrcFmQzn4C4R9t3VIle+Q7SWJ6I7hM7eM9UvYc6b
- Opow==
-X-Gm-Message-State: AOJu0YyMxYKvsdjFW0YNzwgb1Hj/Xnit5dcMmw6D4yakTobRjmgh26v3
- TbWC5TtM8jyQcLIiPERfw8RJkX2wJB+c2bsg3QGTg1fdB9MKxg==
-X-Google-Smtp-Source: AGHT+IEVooMZDZSvsy9aHhLYorExln8zvNUS9FgKSopjJ+UcxQeUdLgP9/eApv0jlKNjjSATRfEAncJ6kygszOC5EMo=
-X-Received: by 2002:aa7:cd62:0:b0:557:9018:9980 with SMTP id
- ca2-20020aa7cd62000000b0055790189980mr2598737edb.52.1705322287874; Mon, 15
- Jan 2024 04:38:07 -0800 (PST)
+ bh=KSWRvjdunXVculkFnNEyuJu0w7WiR/OJ/9EgypgZ8rs=;
+ b=B6zgYZYRGSM8c7LCuOOfV78Iz50bZpv1/dqd8R/xuGd2LrOAfym3UrjVoIRKbsLxKI
+ xYxpPuJGTUqxPXoK39TjruH5ePJ3qgYP+O7DEyW8MTO2q7onz+fluT3m9zJvyVCBdhMd
+ FjclMNI2DDAeuQPeWxa1ay5+iYWFbH2fK9qgbzCdXfJWtUaghcVOwuUgbV2Yqf4MZ1Ek
+ 2GLF3BJTnLQ/KX209Su4eeXDaPi4BOAoxxqkt59Pip35a8Er6pF+N5DjI8zh+xzxMdn3
+ LJrvdMfsGJl/Kdo+/d/u+6Q80ntm4gSP161hPj3e/gF/QfL5v6cP7m6rgeABdv8xVRhO
+ Aafw==
+X-Gm-Message-State: AOJu0YwlBo+WjTqfNq5TgIWJkzS7iJ24pJDs5/vg14ujPMd6XvhTAohK
+ +3JpCNMYBOXGo3w7E1OuDvz2fy2l2F3rZPLBO/1xOhbSkgU=
+X-Google-Smtp-Source: AGHT+IEEBbjTH/wtfi7IyIHNj0IQ7No+TBrRvcMO66Se6BBejPxiiTKNKsa2SgNJh15pg5OVFWllpA==
+X-Received: by 2002:a17:90a:8047:b0:28c:3b34:f343 with SMTP id
+ e7-20020a17090a804700b0028c3b34f343mr2339638pjw.55.1705313809794; 
+ Mon, 15 Jan 2024 02:16:49 -0800 (PST)
+Received: from shiro.work.home.arpa ([2400:4162:2428:2ffe:81d7:ea6b:d9c6:ef79])
+ by smtp.googlemail.com with ESMTPSA id
+ se3-20020a17090b518300b00274b035246esm7767855pjb.1.2024.01.15.02.16.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Jan 2024 02:16:48 -0800 (PST)
+From: Daniel Palmer <daniel@0x0f.com>
+To: laurent@vivier.eu
+Cc: qemu-devel@nongnu.org,
+	Daniel Palmer <daniel@0x0f.com>
+Subject: [PATCH] target/m68k: Fix exception frame format for 68010
+Date: Mon, 15 Jan 2024 19:16:42 +0900
+Message-ID: <20240115101643.2165387-1-daniel@0x0f.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
- <20231208023145.1385775-13-sergey.kambalin@auriga.com>
-In-Reply-To: <20231208023145.1385775-13-sergey.kambalin@auriga.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 15 Jan 2024 12:37:57 +0000
-Message-ID: <CAFEAcA9SjMYg72nHeYeCfbHgWzFAiRqmc63zmcGTDNu6f=5Z5A@mail.gmail.com>
-Subject: Re: [PATCH v4 12/45] Temporarily disable unimplemented rpi4b devices
-To: Sergey Kambalin <serg.oker@gmail.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Sergey Kambalin <sergey.kambalin@auriga.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=daniel@0x0f.com; helo=mail-pj1-x1032.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01, URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 15 Jan 2024 09:02:29 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,148 +85,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Dec 2023 at 02:33, Sergey Kambalin <serg.oker@gmail.com> wrote:
->
-> This commit adds RPi4B device tree modifications:
-> - disable pcie, rng200, thermal sensor and genet devices
->   (they're going to be re-enabled in the following commits)
-> - create additional memory region in device tree
->   if RAM amount exceeds VC base address.
->
-> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
-> ---
->  hw/arm/raspi.c                  |  5 +--
->  hw/arm/raspi4b.c                | 60 +++++++++++++++++++++++++++++++++
->  include/hw/arm/raspi_platform.h |  4 +++
->  3 files changed, 65 insertions(+), 4 deletions(-)
->
-> diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
-> index da1e9e7c13..895c305122 100644
-> --- a/hw/arm/raspi.c
-> +++ b/hw/arm/raspi.c
-> @@ -37,9 +37,6 @@ OBJECT_DECLARE_SIMPLE_TYPE(RaspiMachineState, RASPI_MACHINE)
->  #define FIRMWARE_ADDR_3 0x80000 /* Pi 3 loads kernel.img here by default */
->  #define SPINTABLE_ADDR  0xd8 /* Pi 3 bootloader spintable */
->
-> -/* Registered machine type (matches RPi Foundation bootloader and U-Boot) */
-> -#define MACH_TYPE_BCM2708   3138
-> -
->  struct RaspiMachineState {
->      /*< private >*/
->      RaspiBaseMachineState parent_obj;
-> @@ -75,7 +72,7 @@ static const struct {
->      [PROCESSOR_ID_BCM2838] = {TYPE_BCM2838, BCM283X_NCPUS},
->  };
->
-> -static uint64_t board_ram_size(uint32_t board_rev)
-> +uint64_t board_ram_size(uint32_t board_rev)
->  {
->      assert(FIELD_EX32(board_rev, REV_CODE, STYLE)); /* Only new style */
->      return 256 * MiB << FIELD_EX32(board_rev, REV_CODE, MEMORY_SIZE);
-> diff --git a/hw/arm/raspi4b.c b/hw/arm/raspi4b.c
-> index 2d33861c57..10376b62dc 100644
-> --- a/hw/arm/raspi4b.c
-> +++ b/hw/arm/raspi4b.c
-> @@ -21,6 +21,7 @@
->  #include "hw/arm/boot.h"
->  #include "qom/object.h"
->  #include "hw/arm/bcm2838.h"
-> +#include <libfdt.h>
->
->  #define TYPE_RASPI4B_MACHINE MACHINE_TYPE_NAME("raspi4b-2g")
->  OBJECT_DECLARE_SIMPLE_TYPE(Raspi4bMachineState, RASPI4B_MACHINE)
-> @@ -32,6 +33,64 @@ struct Raspi4bMachineState {
->      BCM2838State soc;
->  };
->
-> +/* Add second memory region if board RAM amount exceeds VC base address
-> + * (see https://datasheets.raspberrypi.com/bcm2711/bcm2711-peripherals.pdf
-> + * 1.2 Address Map)
-> + */
+From the 68010 a word with the frame format and exception vector
+are placed on the stack before the PC and SR.
 
-Our coding style says that for multiline comments the initial
-"/*" should be on a line of its own.
+M68K_FEATURE_QUAD_MULDIV is currently checked to workout if to do
+this or not for the configured CPU but that flag isn't set for
+68010 so currently the exception stack when 68010 is configured
+is incorrect.
 
-> +static int raspi_add_memory_node(void *fdt, hwaddr mem_base, hwaddr mem_len)
-> +{
-> +    int ret;
-> +    uint32_t acells, scells;
-> +    char *nodename = g_strdup_printf("/memory@%" PRIx64, mem_base);
-> +
-> +    acells = qemu_fdt_getprop_cell(fdt, "/", "#address-cells",
-> +                                   NULL, &error_fatal);
-> +    scells = qemu_fdt_getprop_cell(fdt, "/", "#size-cells",
-> +                                   NULL, &error_fatal);
-> +    if (acells == 0 || scells == 0) {
-> +        fprintf(stderr, "dtb file invalid (#address-cells or #size-cells 0)\n");
-> +        ret = -1;
-> +    } else {
-> +        qemu_fdt_add_subnode(fdt, nodename);
-> +        qemu_fdt_setprop_string(fdt, nodename, "device_type", "memory");
-> +        ret = qemu_fdt_setprop_sized_cells(fdt, nodename, "reg",
-> +                                           acells, mem_base,
-> +                                           scells, mem_len);
-> +    }
-> +
-> +    g_free(nodename);
-> +    return ret;
-> +}
-> +
-> +static void raspi4_modify_dtb(const struct arm_boot_info *info, void *fdt)
-> +{
-> +
-> +    /* Temporarily disable following devices until they are implemented*/
+It seems like checking M68K_FEATURE_MOVEFROMSR_PRIV would do but
+adding a new flag that shows exactly what is going on here is
+maybe clearer.
 
-Missing space before "*/"
+Add a new flag for the behaviour, M68K_FEATURE_EXCEPTION_FORMAT_VEC,
+and set it for 68010 and above, and then use it to control if the
+format and vector word are pushed/pop during exception entry/exit.
 
-> +    const char *to_be_removed_from_dt_as_wa[] = {
-> +        "brcm,bcm2711-pcie",
-> +        "brcm,bcm2711-rng200",
-> +        "brcm,bcm2711-thermal",
-> +        "brcm,bcm2711-genet-v5",
-> +    };
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+---
+ target/m68k/cpu.c       | 4 +++-
+ target/m68k/cpu.h       | 2 ++
+ target/m68k/op_helper.c | 4 ++--
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-What does the "_as_wa" part of this variable name mean ?
-Since it's local to this function we don't need to use a
-super long variable name to keep it distinct; I think
-something like "nodes_to_remove" would be fine.
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 1421e77c2c07..20718944b4c8 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -137,7 +137,8 @@ static void m68000_cpu_initfn(Object *obj)
+ }
+ 
+ /*
+- * Adds BKPT, MOVE-from-SR *now priv instr, and MOVEC, MOVES, RTD
++ * Adds BKPT, MOVE-from-SR *now priv instr, and MOVEC, MOVES, RTD,
++ *      format+vector in exception frame.
+  */
+ static void m68010_cpu_initfn(Object *obj)
+ {
+@@ -150,6 +151,7 @@ static void m68010_cpu_initfn(Object *obj)
+     m68k_set_feature(env, M68K_FEATURE_BKPT);
+     m68k_set_feature(env, M68K_FEATURE_MOVEC);
+     m68k_set_feature(env, M68K_FEATURE_MOVEFROMSR_PRIV);
++    m68k_set_feature(env, M68K_FEATURE_EXCEPTION_FORMAT_VEC);
+ }
+ 
+ /*
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index d13427b0fe61..0fc591e618f6 100644
+--- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -549,6 +549,8 @@ enum m68k_features {
+     M68K_FEATURE_TRAPCC,
+     /* MOVE from SR privileged (from 68010) */
+     M68K_FEATURE_MOVEFROMSR_PRIV,
++    /* Exception frame with format+vector (from 68010) */
++    M68K_FEATURE_EXCEPTION_FORMAT_VEC,
+ };
+ 
+ static inline bool m68k_feature(CPUM68KState *env, int feature)
+diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
+index 1ce850bbc594..b09771672dec 100644
+--- a/target/m68k/op_helper.c
++++ b/target/m68k/op_helper.c
+@@ -52,7 +52,7 @@ throwaway:
+     sp += 2;
+     env->pc = cpu_ldl_mmuidx_ra(env, sp, MMU_KERNEL_IDX, 0);
+     sp += 4;
+-    if (m68k_feature(env, M68K_FEATURE_QUAD_MULDIV)) {
++    if (m68k_feature(env, M68K_FEATURE_EXCEPTION_FORMAT_VEC)) {
+         /*  all except 68000 */
+         fmt = cpu_lduw_mmuidx_ra(env, sp, MMU_KERNEL_IDX, 0);
+         sp += 2;
+@@ -256,7 +256,7 @@ static inline void do_stack_frame(CPUM68KState *env, uint32_t *sp,
+                                   uint16_t format, uint16_t sr,
+                                   uint32_t addr, uint32_t retaddr)
+ {
+-    if (m68k_feature(env, M68K_FEATURE_QUAD_MULDIV)) {
++    if (m68k_feature(env, M68K_FEATURE_EXCEPTION_FORMAT_VEC)) {
+         /*  all except 68000 */
+         CPUState *cs = env_cpu(env);
+         switch (format) {
+-- 
+2.43.0
 
-> +
-> +    for (int i = 0; i < ARRAY_SIZE(to_be_removed_from_dt_as_wa); i++) {
-> +        const char *dev_str = to_be_removed_from_dt_as_wa[i];
-> +
-> +        int offset = fdt_node_offset_by_compatible(fdt, -1, dev_str);
-> +        if (offset >= 0) {
-> +            if (!fdt_nop_node(fdt, offset)) {
-> +                warn_report("bcm2711 dtc: %s has been disabled!", dev_str);
-> +            }
-> +        }
-> +    }
-> +
-> +    uint64_t ram_size = board_ram_size(info->board_id);
-
-Variable declarations should always be at the start of a
-code block, not in the middle.
-
-> +
-> +    if (info->ram_size > UPPER_RAM_BASE) {
-> +        raspi_add_memory_node(fdt, UPPER_RAM_BASE, ram_size - UPPER_RAM_BASE);
-> +    }
-> +}
-> +
->  static void raspi4b_machine_init(MachineState *machine)
->  {
->      Raspi4bMachineState *s = RASPI4B_MACHINE(machine);
-> @@ -39,6 +98,7 @@ static void raspi4b_machine_init(MachineState *machine)
->      RaspiBaseMachineClass *mc = RASPI_BASE_MACHINE_GET_CLASS(machine);
->      BCM2838State *soc = &s->soc;
->
-> +    s_base->binfo.modify_dtb = raspi4_modify_dtb;
->      s_base->binfo.board_id = mc->board_rev;
-
-Otherwise
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-
-thanks
--- PMM
 
