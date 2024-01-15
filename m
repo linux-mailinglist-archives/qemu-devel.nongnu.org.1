@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DAA282D8E7
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 13:33:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE11F82D803
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 12:04:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPM4F-0000fo-LZ; Mon, 15 Jan 2024 07:27:51 -0500
+	id 1rPKja-0003ZH-Qn; Mon, 15 Jan 2024 06:02:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1rPM4A-0000fL-Mg; Mon, 15 Jan 2024 07:27:46 -0500
-Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPKjZ-0003Yl-1N
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:02:25 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1rPM48-0001Yy-SE; Mon, 15 Jan 2024 07:27:46 -0500
-Received: by mail-oi1-x22a.google.com with SMTP id
- 5614622812f47-3bb9d54575cso6186544b6e.2; 
- Mon, 15 Jan 2024 04:27:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPKjX-0002d7-3Y
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 06:02:24 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a298accc440so1052112866b.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 03:02:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705321663; x=1705926463; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705316541; x=1705921341; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ErQr9PlCsLWI8TxuouZWuEGVdB9M1Kny0aBK/rujuI4=;
- b=LwfEYyuWts0MbdGKuSTV2eFumjcy76KgGNeAUm6AkxSLCPzXqFOaU9XohxnBY6uRno
- i7BubHsF+i5Wb6B36+rWGxh7kpUe3sOcUU9c87kB+nM75FyC477J4Ts3dNc/xG9g9zr5
- 4XJnpfm8xHxQIhtRmrcvvGdS4fbWuhnY7nezi6DTxttSq0hTP5AYJwJ2IP1mOKGVjYwQ
- hzZWs3bn4jDFxJd5+dYVF55cXavZygPAwidwMlkq7PKEkkMxMMhXmrsBE66+gpl/rozY
- rGyehO+qZ5YpPTqLTnwxcQ8aBF6PKhph0AXK6K0Lv45NBlv4+sL0aR1/PZ11s8CQCT1t
- XSlQ==
+ bh=dPexkEbzURvwVYCONouG/Kmx12DM35q2hLQURuQCNPw=;
+ b=J/DijTaoBwlUxYvz4FzuaSsG0BdVw/gJepS9DMZbq9M9DOntO0+ukPGZKkQM1TW/DD
+ PqN7Le0qzQCjtsQTWJ8K/KVO4wLv6bq2cP2Xc0Q45Aos4AypTszOA+Fb+vp6RfROJPy1
+ 8NLw0SE+CoKcKfqQcn7xtdWCgJt6gD0oxwzL7WvhsJxzV0fr8tgtpqMkIpos5emeY7RV
+ pm4b5K2gVIGDUTqsUvnwvf77CQID5+EaotkJwVBADhw76csgHiWgZYNKCe5VBIIngGJb
+ lUmw9BTiuJXGkn0zg2Y1g9dfUvrINkAMUq6DfOHYkNZ8pMHMh37KgKUKVrnTJhQZLPr3
+ SxUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705321663; x=1705926463;
+ d=1e100.net; s=20230601; t=1705316541; x=1705921341;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ErQr9PlCsLWI8TxuouZWuEGVdB9M1Kny0aBK/rujuI4=;
- b=JHHPGPqYh1bUDZGQcpx6RtmzZwgxS9yfN1vVIkFYK0ZQEkGef1qKM/60cCXO5tf63Q
- TAtcQbBM9vYBf6Rj0RTt4f8xfWmPB4OAv7WS0u7l8ieD5wEJQ3wRmEMvj7OT9178wCKx
- OpKS9MaNQn5yqrgoHqNdJCW1IH8zW3tmAL3xVUShfoJiGV9AFQj84tV3XEnJMQDf2PcH
- 9nocJDti7GezOxsr4aW9lCkRZVqBt2KYEpwTMqzqQNFBJvdGmI/TkYn4eq3CAJi5bDhV
- pl3NKljkM5Fv/naLaaXJHCU9e5znwyQFOvdhGzrxy9f5vGp26N2+XxJ+oN7R78CWEjGe
- yjXQ==
-X-Gm-Message-State: AOJu0Yw9s92W8K/s567XGuNNWuiy6Npm604P2N+hN8C9NXgkPvI3GY97
- mjKIO9e0O4DE9F75Z/N0nu8=
-X-Google-Smtp-Source: AGHT+IE2yeScTE9WTR39fjqKpV76psQBdSXipREZYcbdLdJNfpyZX3OEjG92jYoRDsBCn2AbF6S2xQ==
-X-Received: by 2002:a05:6358:6151:b0:175:c391:cc7e with SMTP id
- 17-20020a056358615100b00175c391cc7emr3479144rwt.17.1705321662655; 
- Mon, 15 Jan 2024 04:27:42 -0800 (PST)
-Received: from [192.168.68.110] ([152.234.123.64])
+ bh=dPexkEbzURvwVYCONouG/Kmx12DM35q2hLQURuQCNPw=;
+ b=ZpcPtLuMX4mOGDQz7eriK7uai/7xeY+mc5oBBVsPka++tRkcJyYirxHuzAFzoJpOhd
+ y/i+SIZuMkUz/k0eyXyB8dFNhvNZKroFoaUCx+VwPyyXFWMwOL0Yv9ZL1JZ+jPv0CW6W
+ fCIuVqG/S+7qxaq10Wu07uTPcAQqbfCQ5nzlVGa/Ug0xHzBjTiq4FGymVQopvv+FTV4n
+ GX0ltzHdBEt/4rC97XDDEr8TEB39JRDgxZUGLGYEDwiLyaIjrLzT2rDz8z3NvkgaKlHA
+ BZ3wNDHHvJAV7zZl99fj+zh3zQaapOb80orSl1nIRrJ9LVyauruSNfXzlknXxux41g+s
+ pygQ==
+X-Gm-Message-State: AOJu0YxP76OchL2TLQQr9M2Gbta1C6JyzUJPZl1Br1zw69aWjar1M3NU
+ tkDANYDz6+VzULIITqn4YAMYdtOOLAAbQA==
+X-Google-Smtp-Source: AGHT+IE3Wh4SnLMhasSt3TQ/LdqQa/gWIER/KqZain9W0w9ScJEWA5kwhesxYIgPyN5lHDp3+nBMLg==
+X-Received: by 2002:a17:906:682:b0:a28:ec67:185f with SMTP id
+ u2-20020a170906068200b00a28ec67185fmr2653122ejb.60.1705316541434; 
+ Mon, 15 Jan 2024 03:02:21 -0800 (PST)
+Received: from [192.168.1.102] ([176.187.209.30])
  by smtp.gmail.com with ESMTPSA id
- b6-20020aa78106000000b006db11bab9d9sm7468511pfi.202.2024.01.15.04.27.40
+ qc21-20020a170906d8b500b00a26ac5e3683sm5143656ejb.100.2024.01.15.03.02.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 Jan 2024 04:27:42 -0800 (PST)
-Message-ID: <8e0b44e6-2e13-9abd-7d38-a488ff71448d@gmail.com>
-Date: Mon, 10 Jul 2023 06:32:17 -0300
+ Mon, 15 Jan 2024 03:02:20 -0800 (PST)
+Message-ID: <56f692d8-41b1-4126-96b9-80d274624984@linaro.org>
+Date: Mon, 15 Jan 2024 12:02:17 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2] ppc/pnv: Add QME region for P10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] hw/arm: Add EHCI/OHCI controllers to Allwinner R40
+ and Bananapi board
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, Joel Stanley <joel@jms.id.au>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-References: <20230707071213.9924-1-joel@jms.id.au>
- <CTWE73ZF1T37.IQUBV31TU3LF@wheely>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <CTWE73ZF1T37.IQUBV31TU3LF@wheely>
+To: Guenter Roeck <linux@roeck-us.net>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, Alexander Graf <agraf@csgraf.de>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Thomas Huth
+ <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+References: <20240113191651.1313226-1-linux@roeck-us.net>
+ <20240113191651.1313226-2-linux@roeck-us.net>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240113191651.1313226-2-linux@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
- envelope-from=danielhb413@gmail.com; helo=mail-oi1-x22a.google.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-2.884,
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,57 +101,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
 
-
-On 7/7/23 22:16, Nicholas Piggin wrote:
-> On Fri Jul 7, 2023 at 5:12 PM AEST, Joel Stanley wrote:
->> The Quad Management Engine (QME) manages power related settings for its
->> quad. The xscom region is separate from the quad xscoms, therefore a new
->> region is added. The xscoms in a QME select a given core by selecting
->> the forth nibble.
->>
->> Implement dummy reads for the stop state history (SSH) and special
->> wakeup (SPWU) registers. This quietens some sxcom errors when skiboot
->> boots on p10.
->>
->> Power9 does not have a QME.
->>
->> Signed-off-by: Joel Stanley <joel@jms.id.au>
+On 13/1/24 20:16, Guenter Roeck wrote:
+> Allwinner R40 supports two USB host ports shared between a USB 2.0 EHCI
+> host controller and a USB 1.1 OHCI host controller. Add support for both
+> of them.
 > 
-> Nice, already merged but looks good to me. Just one thing...
-> 
->> diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
->> index a4c9d95dc5d3..9bc64635471e 100644
->> --- a/include/hw/ppc/pnv_xscom.h
->> +++ b/include/hw/ppc/pnv_xscom.h
->> @@ -127,6 +127,17 @@ struct PnvXScomInterfaceClass {
->>   #define PNV10_XSCOM_EC(proc)                    \
->>       ((0x2 << 16) | ((1 << (3 - (proc))) << 12))
->>   
->> +#define PNV10_XSCOM_QME(chiplet) \
->> +        (PNV10_XSCOM_EQ(chiplet) | (0xE << 16))
->> +
->> +/*
->> + * Make the region larger by 0x1000 (instead of starting at an offset) so the
->> + * modelled addresses start from 0
->> + */
->> +#define PNV10_XSCOM_QME_BASE(core)     \
->> +    ((uint64_t) PNV10_XSCOM_QME(PNV10_XSCOM_EQ_CHIPLET(core)))
->> +#define PNV10_XSCOM_QME_SIZE        (0x8000 + 0x1000)
-> 
-> I couldn't work out this comment.
+> If machine USB support is not enabled, create unimplemented devices
+> for the USB memory ranges to avoid crashes when booting Linux.
 
-FWIW if a comment is inaccurate/wrong it is fine to patch it during the code
-freeze if needed.
+I never really understood the reason for machine_usb() and had on my
+TODO to do some archeology research to figure it out since quite some
+time. Having to map an UnimpDevice due to CLI options seems like an
+anti-pattern when the device is indeed implemented in the repository.
+
+IIUC MachineState was introduced by a big rework during 2014-2015,
+and ::usb became a property.
+
+Reading git-history and mailing list threads, apparently it was not
+easy for the mac99 machine (read whole thread):
+https://lore.kernel.org/qemu-devel/1420550957-22337-2-git-send-email-marcel@redhat.com/
+A bit later commit c6e765035b ("powerpc: fix -machine usb=no for
+newworld and pseries machines") introduced the ::usb_disabled property
+to deal with CLI -nodefaults with these 2 specific machines.
+
+(-nodefaults is yet another CLI option I never really understood but
+take it as legacy heritage with biggest maintenance headaches).
 
 
-Thanks,
+The R40 is a SoC photolithographied on silicon as a single piece
+with a set of in-silicon peripherals, we can not remove peripherals
+from this HW. We can not remove its USB controller.
 
-Daniel
+What we can do is play at the external devices connected on buses
+exposed by the SoC.
+
+I can understand it is convenient for CLI users to start a machine
+with a console and a keyboard, so if a machine provides a USB bus,
+then it is created with a USB to UART converter and a USB keyboard.
+
+So I'd interpret '-machine usb=off' as "if this machine has a USB
+controller providing a USB bus which is not exposed outside of the
+machine", but certainly not as "any mmio-mapped USB controller is
+removed from chipsets".
 
 
-> 
-> Thanks,
-> Nick
-> 
+To the extend I can understand floppy/cdrom/sdcard drives can be
+inserted into available controllers used as buses, but I don't
+really understand how to do that with serial/parallel.
+
+
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+>   docs/system/arm/bananapi_m2u.rst |  2 +-
+>   hw/arm/Kconfig                   |  2 +
+>   hw/arm/allwinner-r40.c           | 70 +++++++++++++++++++++++++++++++-
+>   include/hw/arm/allwinner-r40.h   |  9 ++++
+>   4 files changed, 80 insertions(+), 3 deletions(-)
+
+
+> @@ -407,6 +427,37 @@ static void allwinner_r40_realize(DeviceState *dev, Error **errp)
+>       sysbus_realize(SYS_BUS_DEVICE(&s->ccu), &error_fatal);
+>       sysbus_mmio_map(SYS_BUS_DEVICE(&s->ccu), 0, s->memmap[AW_R40_DEV_CCU]);
+>   
+> +    /* USB */
+> +    if (machine_usb(current_machine)) {
+> +        int i;
+> +
+> +        for (i = 0; i < AW_R40_NUM_USB; i++) {
+> +            g_autofree char *bus = g_strdup_printf("usb-bus.%d", i);
+> +
+> +            object_property_set_bool(OBJECT(&s->ehci[i]), "companion-enable",
+> +                                     true, &error_fatal);
+> +            sysbus_realize(SYS_BUS_DEVICE(&s->ehci[i]), &error_fatal);
+> +            sysbus_mmio_map(SYS_BUS_DEVICE(&s->ehci[i]), 0,
+> +                            allwinner_r40_memmap[i ? AW_R40_DEV_EHCI2
+> +                                                   : AW_R40_DEV_EHCI1]);
+> +            sysbus_connect_irq(SYS_BUS_DEVICE(&s->ehci[i]), 0,
+> +                               qdev_get_gpio_in(DEVICE(&s->gic),
+> +                                                i ? AW_R40_GIC_SPI_EHCI2
+> +                                                  : AW_R40_GIC_SPI_EHCI1));
+> +
+> +            object_property_set_str(OBJECT(&s->ohci[i]), "masterbus", bus,
+> +                                    &error_fatal);
+> +            sysbus_realize(SYS_BUS_DEVICE(&s->ohci[i]), &error_fatal);
+> +            sysbus_mmio_map(SYS_BUS_DEVICE(&s->ohci[i]), 0,
+> +                            allwinner_r40_memmap[i ? AW_R40_DEV_OHCI2
+> +                                                   : AW_R40_DEV_OHCI1]);
+> +            sysbus_connect_irq(SYS_BUS_DEVICE(&s->ohci[i]), 0,
+> +                               qdev_get_gpio_in(DEVICE(&s->gic),
+> +                                                i ? AW_R40_GIC_SPI_OHCI2
+> +                                                  : AW_R40_GIC_SPI_OHCI1));
+> +        }
+> +    }
+> +
+>       /* SD/MMC */
+>       for (int i = 0; i < AW_R40_NUM_MMCS; i++) {
+>           qemu_irq irq = qdev_get_gpio_in(DEVICE(&s->gic),
+> @@ -498,6 +549,21 @@ static void allwinner_r40_realize(DeviceState *dev, Error **errp)
+>                                       r40_unimplemented[i].base,
+>                                       r40_unimplemented[i].size);
+>       }
+> +    if (!machine_usb(current_machine)) {
+> +        /* unimplemented if USB is not enabled */
+> +        create_unimplemented_device("usb-ehci1",
+> +                                    allwinner_r40_memmap[AW_R40_DEV_EHCI1],
+> +                                    0x800);
+> +        create_unimplemented_device("usb-ehci2",
+> +                                    allwinner_r40_memmap[AW_R40_DEV_EHCI2],
+> +                                    0x800);
+> +        create_unimplemented_device("usb-ohci1",
+> +                                    allwinner_r40_memmap[AW_R40_DEV_OHCI1],
+> +                                    0x800);
+> +        create_unimplemented_device("usb-ohci2",
+> +                                    allwinner_r40_memmap[AW_R40_DEV_OHCI2],
+> +                                    0x800);
+> +    }
+>   }
+
+
 
