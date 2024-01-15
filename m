@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96CF282DB53
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 15:33:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2575482DB9E
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 15:46:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPO18-0001KV-Sh; Mon, 15 Jan 2024 09:32:46 -0500
+	id 1rPOE8-0007TC-MA; Mon, 15 Jan 2024 09:46:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPO15-0001KC-Mg
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:32:43 -0500
-Received: from mgamail.intel.com ([134.134.136.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPO13-000376-3h
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:32:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705329161; x=1736865161;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=bYYqI2aXAZfKbPcN0scSeyxn2KopnOFSXBx9vsW92Do=;
- b=N6Dj7tLiz2hDjTBegP/s0FtA7xiPdLDUdSnN6unWkMPb4p9aONFfxwik
- h+pprpT4LmCYN4qZe2VYAEar80mpkhDTiUrduWIPL/A4c+KuK/JIIGYsr
- qTsVUPD9+L/YmEIrRUfIlSEyjXcldcj9PkUW7zi028w4OauzdfHlk4XSc
- Nen7tKSkg6ioBRb9hxukk2iNAH43hb0nNcwi/Isnwm6uX/Y93vkAKcMrj
- KnYprCNqAdrzb+m1Ki9JDnAJp103+Pw2b50cjoMXlCbTROHKKLKnhMWtc
- eA2pGq9JQAUaSZ8xaJWCx22hosTxpUbFOHR4euAXpUFXrq8AJw9BZMH0w w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="390079349"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="390079349"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 06:32:38 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="787092658"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="787092658"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmsmga007.fm.intel.com with ESMTP; 15 Jan 2024 06:32:36 -0800
-Date: Mon, 15 Jan 2024 22:45:34 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, qemu-devel@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 02/11] hw/core: Cleanup unused included headers in
- cpu-common.c
-Message-ID: <ZaVFDhNiptuyzhjX@intel.com>
-References: <20240115094852.3597165-1-zhao1.liu@linux.intel.com>
- <20240115094852.3597165-3-zhao1.liu@linux.intel.com>
- <CAFEAcA91+EV7_iHvp2Kd8zgXAx2zg3odepQgg=vPpPLv8ETRKw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <bmeng.cn@gmail.com>)
+ id 1rPOE6-0007Rm-HK
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:46:10 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <bmeng.cn@gmail.com>)
+ id 1rPOE3-0005cD-Tl
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:46:09 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-559737bac29so306367a12.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 06:46:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1705329966; x=1705934766; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=t/4ySOoTk4TppXZjwZbNwuRPAqBVyqkp14luXtIwRzA=;
+ b=NHREOUmLFGdn08py5AtOnvmAWxjH/txZyOH0n2BMbqZ7iL6TiuOvuWteM7FrklE9Bl
+ 48in28rqOOA02DMgZdo0kvl98nGmDkQd86qXNGzEU5fPNIiTKbrwfb65h2x91VTQKw5g
+ gALU1ACjj1QjPwha22ibZHf0puKE+UjIbSE+H+LXDNdAHRGSMjGoN8svrdltHqPtFeW2
+ M7PcpF0/oLvXkAiXqSG1ML2NNFf9smb9gabDjYQUY0Xhn8qxYz0Ba7Eia9HnlR5mkMXt
+ W//1hQp6WXoG4a/dXMmMczMHpWFnh8kdXB9/3LG+YEXB6kdZdgOrUZ4t3hriqnEFT8uK
+ Lvjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705329966; x=1705934766;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=t/4ySOoTk4TppXZjwZbNwuRPAqBVyqkp14luXtIwRzA=;
+ b=uZ63ioH6ZNS2W/BzIltyiPfIJVbMN0kRzXXktyAIEnRwiNDI+QHfeM6YmRb4qdLMjs
+ JGBUdiZOoRL0CBLGP8JCfmht+5VAkxBGHzrTfObeHw9dO+y3BiZpIj982NXlROBl0xzS
+ OHQhh/vJqYPNyF6qBqZKmsIx1y3Hqympxh+1ScSvUEHsAkutI0OeTYFJ8qWzdpSITgVy
+ LwrLzAO/mO9yH4ES3viItI3o1/Bj7TKddWao81LgQIBqwxF/GU3JaC0BxGqKUlL6kKnR
+ Wq+fBNC9B2FOqyY1W1NLcjfczZ68A6UHiLE5/13oo8Lbjs071nQJnHXlnJVsc0r751SF
+ 99QQ==
+X-Gm-Message-State: AOJu0YwfslJn9uCHAOq8Rh6tklsv4HLggYXOORR2w1S3+shw/z+eBVJ1
+ Lc4ObXOzJaqrMWMQIZ3VykTRxZcli3GruP1wv4c=
+X-Google-Smtp-Source: AGHT+IHzHQA6gp+7gFhnfWLKkMoHCFmAzDUdS/M5a/u48VV9ALOuyKdLcA5bmqyAquWhQFm3w7jclc4KHPCz3X+yoYk=
+X-Received: by 2002:aa7:c993:0:b0:557:7764:b6ae with SMTP id
+ c19-20020aa7c993000000b005577764b6aemr2740254edt.11.1705329965974; Mon, 15
+ Jan 2024 06:46:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA91+EV7_iHvp2Kd8zgXAx2zg3odepQgg=vPpPLv8ETRKw@mail.gmail.com>
-Received-SPF: none client-ip=134.134.136.20;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.531,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240115043431.3900922-1-bin.meng@windriver.com>
+ <20240115043431.3900922-4-bin.meng@windriver.com>
+ <87le8qkepv.fsf@draig.linaro.org>
+In-Reply-To: <87le8qkepv.fsf@draig.linaro.org>
+From: Bin Meng <bmeng.cn@gmail.com>
+Date: Mon, 15 Jan 2024 22:46:11 +0800
+Message-ID: <CAEUhbmUoyNi=3uSwiFPGdb25_a-0zwQavbni4T+8jMJJFJH01g@mail.gmail.com>
+Subject: Re: [PATCH 3/3] tests/acpi: Update virt/SSDT.memhp
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Laszlo Ersek <lersek@redhat.com>
+Cc: Bin Meng <bin.meng@windriver.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=bmeng.cn@gmail.com; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,49 +89,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
-
-On Mon, Jan 15, 2024 at 10:41:48AM +0000, Peter Maydell wrote:
-> Date: Mon, 15 Jan 2024 10:41:48 +0000
-> From: Peter Maydell <peter.maydell@linaro.org>
-> Subject: Re: [PATCH 02/11] hw/core: Cleanup unused included headers in
->  cpu-common.c
-> 
-> On Mon, 15 Jan 2024 at 09:37, Zhao Liu <zhao1.liu@linux.intel.com> wrote:
+On Mon, Jan 15, 2024 at 7:40=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linar=
+o.org> wrote:
+>
+> Bin Meng <bin.meng@windriver.com> writes:
+>
+> > The Arm dtb changes caused an address change:
 > >
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> >
-> > Remove unused headers in cpu-common.c:
-> > * qemu/notify.h
-> > * qemu/log.h
-> > * qemu/main-loop.h
-> > * exec/cpu-common.h
-> > * qemu/error-report.h
-> > * qemu/qemu-print.h
-> >
-> > Though hw/core/cpu.h has been included by sysemu/hw_accel.h, to keep
-> > the dependency clear, still directly include hw/core/cpu.h in this file.
-> >
-> > Tested by "./configure" and then "make".
-> >
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> >  hw/core/cpu-common.c | 7 +------
-> >  1 file changed, 1 insertion(+), 6 deletions(-)
-> 
-> Something seems to be wrong with your analysis of what
-> includes it is OK to drop. For instance, this file uses
-> the function qemu_log(), which is why it includes
-> qemu/log.h.
+> >  DefinitionBlock ("", "SSDT", 1, "BOCHS ", "NVDIMM", 0x00000001)
+> >  {
+> >      [ ... ]
+> > -    Name (MEMA, 0x43C80000)
+> > +    Name (MEMA, 0x43D80000)
+> >  }
+>
+> I'm confused by why this changes. Isn't this declaring the size of a
+> NVDIMM region of the memory map? Why does a DTB change affect an ACPI
+> based boot?
 >
 
-I'm not sure about this, since qemu/log.h has been included by exec/log.h,
-so could we just include exec/log.h and omit qemu/log.h in this file?
+I have no idea too. I suspect that's because the AllocateAlignedPages
+call to allocate a 1 MiB aligned address in the BiosTableTest.c is
+affected by the shrinked DTB now.
 
-It seems enough for the compilation to omit qemu/log.h and only include
-exec/log.h.
++ Laszlo who might know the root cause.
 
 Regards,
-Zhao
-
+Bin
 
