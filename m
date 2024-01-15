@@ -2,78 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5717182D32F
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 03:52:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2509882D338
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:03:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPD4p-0001wl-O3; Sun, 14 Jan 2024 21:51:51 -0500
+	id 1rPDFO-0004lg-5Q; Sun, 14 Jan 2024 22:02:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPD4l-0001wX-Mi
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 21:51:47 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rPDFK-0004lP-KJ
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:02:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPD4i-00085A-Os
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 21:51:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705287105; x=1736823105;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=6KPKQAgbFXVSMg9dnA78N6o6Brh6TM9vT/SyPEY/1QY=;
- b=FY3y6KH1TB27PmFlf4gWFrggSk4zO/z2a3qUvRQ5Q8xd9I4sEaYlKZEJ
- nJSOtO0ABKTcwVltaBwTD19TKMsWhcap7cRRG2/7tmtwhapeJNBShemw4
- 93A9+YtH4cKo0W9lB6SRK2tl33myapOlmGXmxyvHqMJZeCDblQIuovPs9
- mznOpqfwHf6FpxUQIEwP0fgc12010PZ0HXISqIAYXGbnjQeywcweCb4Kj
- rj9VHMcvbVINScXeYjo5JvjHuM+4gEM+E1wBax5rBEwuNA2oaHPpyUoXZ
- X4AHaBeeYavTcjLPh4FL02aqkHDq969GWPAMtSK2CkodQsNuLw6cdwPBf w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="18124837"
-X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="18124837"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 18:51:40 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="817679805"
-X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="817679805"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orsmga001.jf.intel.com with ESMTP; 14 Jan 2024 18:51:36 -0800
-Date: Mon, 15 Jan 2024 11:04:33 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Robert Hoo <robert.hu@linux.intel.com>,
- Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH v7 02/16] i386/cpu: Use APIC ID offset to encode cache
- topo in CPUID[4]
-Message-ID: <ZaSgwWPm31MHzGyU@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-3-zhao1.liu@linux.intel.com>
- <f5202ebd-6bc8-44b1-b22b-f3a033e0f283@intel.com>
- <ZZ+qGfykupOEFPA2@intel.com>
- <a2ee40c0-a198-41cd-86af-7ef52e6d591f@intel.com>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rPDFI-0001LC-VJ
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:02:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705287759;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0r51jo1SpXibwL7z9sJc2tovQK61waqHTcSXEFWquy4=;
+ b=jA3Zf6rUw5OoAg/gtBZ8OYqczHr/C25kF6NhOfE9nh2b3pycwl58K+PdZAUqXhf79fFa1W
+ 5/TDYDN8L52J9Jo/TCPdcYuaJi7XaTemFiuNg9EoccSVUN5r2ZMns3lFrBol4fi2PQ0e2U
+ IHR3ZlFvwgpw0X2vdOEQFdVGn9iqig4=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-608-GGkIrjd0PS-BPGsAhr2nEQ-1; Sun, 14 Jan 2024 22:02:37 -0500
+X-MC-Unique: GGkIrjd0PS-BPGsAhr2nEQ-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-5c17cff57f9so3686779a12.0
+ for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 19:02:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705287756; x=1705892556;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0r51jo1SpXibwL7z9sJc2tovQK61waqHTcSXEFWquy4=;
+ b=pKmxqLctaYUDfuI/iuqHCc2hmpufsNTIZaJ50W315OUm0GgnVtpO4PcstqLHPphmim
+ gvmMBCDnqW2pK3VE0Ag23auMHyvdEKQLAHufo0bgOypGZHALXsTiJEjyIveMrBzoxW2i
+ /yFXdGPqGRnCD1gbt8TvI3YXPU9sGLXm8HomTV3V9jtLE94P1hOsM3/JlLysMOIfy37S
+ jCJ/xsuUp3js/oFtwgzoFBVkTn72CI9b9UZMh4cCoCjEMSuq72m6G/kkUicdoxMgDLKa
+ pFaF9nvvz8E04dSmVVKHeCHdrnU633Jy/YF/FViYfPLnAYssLbYGaEvbK47Czq8IMcAa
+ opfw==
+X-Gm-Message-State: AOJu0YzRisJj8xoajDLDYBTejWA1e0IjNt2GPq56fws0RQ9U0ENhyqmZ
+ nPzXwxo/nSb604XQplFU0A7rNYygsjyXHo2NBSeKwQ0TurdBGKZj630swMDk3zo3DadhOyozC5w
+ a4so8gBwdSlKdr/hEgFDx4soiBFLq6n2G1xXVoz4=
+X-Received: by 2002:a05:6a20:9387:b0:19a:3f14:5a2e with SMTP id
+ x7-20020a056a20938700b0019a3f145a2emr2181107pzh.85.1705287756586; 
+ Sun, 14 Jan 2024 19:02:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHp6ntM2lPbbZQ5+gzH0+YyHLqDH9PuHXhhGH1QD65EMa/1RN0gNiGMFlBrd0DpblD6QnUB/ZWDyNGI34E8itU=
+X-Received: by 2002:a05:6a20:9387:b0:19a:3f14:5a2e with SMTP id
+ x7-20020a056a20938700b0019a3f145a2emr2181093pzh.85.1705287755807; Sun, 14 Jan
+ 2024 19:02:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a2ee40c0-a198-41cd-86af-7ef52e6d591f@intel.com>
-Received-SPF: none client-ip=198.175.65.9;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
+References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-23-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-23-git-send-email-si-wei.liu@oracle.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 15 Jan 2024 11:02:24 +0800
+Message-ID: <CACGkMEs1gw2_tRSU-+h=W-xXRiYkrjiuP3KBi8dtfRsANaJ16Q@mail.gmail.com>
+Subject: Re: [PATCH 22/40] vdpa: factor out vhost_vdpa_map_batch_begin
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
+ leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
+ jonah.palmer@oracle.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
 X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,249 +97,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Xiaoyao,
+On Fri, Dec 8, 2023 at 2:51=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
+rote:
+>
+> Refactoring only. No functional change.
+>
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 
-On Sun, Jan 14, 2024 at 10:11:59PM +0800, Xiaoyao Li wrote:
-> Date: Sun, 14 Jan 2024 22:11:59 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v7 02/16] i386/cpu: Use APIC ID offset to encode cache
->  topo in CPUID[4]
-> 
-> On 1/11/2024 4:43 PM, Zhao Liu wrote:
-> > Hi Xiaoyao,
-> > 
-> > On Wed, Jan 10, 2024 at 05:31:28PM +0800, Xiaoyao Li wrote:
-> > > Date: Wed, 10 Jan 2024 17:31:28 +0800
-> > > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > Subject: Re: [PATCH v7 02/16] i386/cpu: Use APIC ID offset to encode cache
-> > >   topo in CPUID[4]
-> > > 
-> > > On 1/8/2024 4:27 PM, Zhao Liu wrote:
-> > > > From: Zhao Liu <zhao1.liu@intel.com>
-> > > > 
-> > > > Refer to the fixes of cache_info_passthrough ([1], [2]) and SDM, the
-> > > > CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26] should use the
-> > > > nearest power-of-2 integer.
-> > > > 
-> > > > The nearest power-of-2 integer can be calculated by pow2ceil() or by
-> > > > using APIC ID offset (like L3 topology using 1 << die_offset [3]).
-> > > > 
-> > > > But in fact, CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26]
-> > > > are associated with APIC ID. For example, in linux kernel, the field
-> > > > "num_threads_sharing" (Bits 25 - 14) is parsed with APIC ID.
-> > > 
-> > > And for
-> > > > another example, on Alder Lake P, the CPUID.04H:EAX[bits 31:26] is not
-> > > > matched with actual core numbers and it's calculated by:
-> > > > "(1 << (pkg_offset - core_offset)) - 1".
-> > > 
-> > > could you elaborate it more? what is the value of actual core numbers on
-> > > Alder lake P? and what is the pkg_offset and core_offset?
-> > 
-> > For example, the following's the CPUID dump of an ADL-S machine:
-> > 
-> > CPUID.04H:
-> > 
-> > 0x00000004 0x00: eax=0xfc004121 ebx=0x01c0003f ecx=0x0000003f edx=0x00000000
-> > 0x00000004 0x01: eax=0xfc004122 ebx=0x01c0003f ecx=0x0000007f edx=0x00000000
-> > 0x00000004 0x02: eax=0xfc01c143 ebx=0x03c0003f ecx=0x000007ff edx=0x00000000
-> > 0x00000004 0x03: eax=0xfc1fc163 ebx=0x0240003f ecx=0x00009fff edx=0x00000004
-> > 0x00000004 0x04: eax=0x00000000 ebx=0x00000000 ecx=0x00000000 edx=0x00000000
-> > 
-> > 
-> > CPUID.1FH:
-> > 
-> > 0x0000001f 0x00: eax=0x00000001 ebx=0x00000001 ecx=0x00000100 edx=0x0000004c
-> > 0x0000001f 0x01: eax=0x00000007 ebx=0x00000014 ecx=0x00000201 edx=0x0000004c
-> > 0x0000001f 0x02: eax=0x00000000 ebx=0x00000000 ecx=0x00000002 edx=0x0000004c
-> > 
-> > The CPUID.04H:EAX[bits 31:26] is 63.
-> >  From CPUID.1FH.00H:EAX[bits 04:00], the core_offset is 1, and from
-> > CPUID.1FH.01H:EAX[bits 04:00], the pkg_offset is 7.
-> > 
-> > Thus we can verify that the above equation as:
-> > 
-> > 1 << (0x7 - 0x1) - 1 = 63.
-> > 
-> > "Maximum number of addressable IDs" refers to the maximum number of IDs
-> > that can be enumerated in the APIC ID's topology layout, which does not
-> > necessarily correspond to the actual number of topology domains.
-> > 
-> > > 
-> > > > Therefore the offset of APIC ID should be preferred to calculate nearest
-> > > > power-of-2 integer for CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits
-> > > > 31:26]:
-> > > > 1. d/i cache is shared in a core, 1 << core_offset should be used
-> > > >      instand of "cs->nr_threads" in encode_cache_cpuid4() for
-> > > 
-> > > /s/instand/instead
-> > 
-> > Thanks!
-> > 
-> > > 
-> > > >      CPUID.04H.00H:EAX[bits 25:14] and CPUID.04H.01H:EAX[bits 25:14].
-> > > > 2. L2 cache is supposed to be shared in a core as for now, thereby
-> > > >      1 << core_offset should also be used instand of "cs->nr_threads" in
-> > > 
-> > > ditto
-> > 
-> > Okay.
-> > 
-> > > 
-> > > >      encode_cache_cpuid4() for CPUID.04H.02H:EAX[bits 25:14].
-> > > > 3. Similarly, the value for CPUID.04H:EAX[bits 31:26] should also be
-> > > >      calculated with the bit width between the Package and SMT levels in
-> > > >      the APIC ID (1 << (pkg_offset - core_offset) - 1).
-> > > > 
-> > > > In addition, use APIC ID offset to replace "pow2ceil()" for
-> > > > cache_info_passthrough case.
-> > > > 
-> > > > [1]: efb3934adf9e ("x86: cpu: make sure number of addressable IDs for processor cores meets the spec")
-> > > > [2]: d7caf13b5fcf ("x86: cpu: fixup number of addressable IDs for logical processors sharing cache")
-> > > > [3]: d65af288a84d ("i386: Update new x86_apicid parsing rules with die_offset support")
-> > > > 
-> > > > Fixes: 7e3482f82480 ("i386: Helpers to encode cache information consistently")
-> > > > Suggested-by: Robert Hoo <robert.hu@linux.intel.com>
-> > > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > > > Tested-by: Babu Moger <babu.moger@amd.com>
-> > > > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> > > > Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> > > > ---
-> > > > Changes since v3:
-> > > >    * Fix compile warnings. (Babu)
-> > > >    * Fix spelling typo.
-> > > > 
-> > > > Changes since v1:
-> > > >    * Use APIC ID offset to replace "pow2ceil()" for cache_info_passthrough
-> > > >      case. (Yanan)
-> > > >    * Split the L1 cache fix into a separate patch.
-> > > >    * Rename the title of this patch (the original is "i386/cpu: Fix number
-> > > >      of addressable IDs in CPUID.04H").
-> > > > ---
-> > > >    target/i386/cpu.c | 30 +++++++++++++++++++++++-------
-> > > >    1 file changed, 23 insertions(+), 7 deletions(-)
-> > > > 
-> > > > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > > > index 5a3678a789cf..c8d2a585723a 100644
-> > > > --- a/target/i386/cpu.c
-> > > > +++ b/target/i386/cpu.c
-> > > > @@ -6014,7 +6014,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> > > >    {
-> > > >        X86CPU *cpu = env_archcpu(env);
-> > > >        CPUState *cs = env_cpu(env);
-> > > > -    uint32_t die_offset;
-> > > >        uint32_t limit;
-> > > >        uint32_t signature[3];
-> > > >        X86CPUTopoInfo topo_info;
-> > > > @@ -6098,39 +6097,56 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> > > >                    int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
-> > > >                    int vcpus_per_socket = cs->nr_cores * cs->nr_threads;
-> > > >                    if (cs->nr_cores > 1) {
-> > > > +                    int addressable_cores_offset =
-> > > > +                                                apicid_pkg_offset(&topo_info) -
-> > > > +                                                apicid_core_offset(&topo_info);
-> > > > +
-> > > >                        *eax &= ~0xFC000000;
-> > > > -                    *eax |= (pow2ceil(cs->nr_cores) - 1) << 26;
-> > > > +                    *eax |= (1 << (addressable_cores_offset - 1)) << 26;
-> > > 
-> > > it should be ((1 << addressable_cores_offset) - 1) << 26
-> > 
-> > Good catch! The helper wrapped in a subsequent patch masks the error here.
-> > 
-> > > 
-> > > I think naming it addressable_cores_width is better than
-> > > addressable_cores_offset. It's not offset because offset means the bit
-> > > position from bit 0.
-> > 
-> > I agree, "width" is better.
-> > 
-> > > 
-> > > And we can get the width by another algorithm:
-> > > 
-> > > int addressable_cores_width = apicid_core_width(&topo_info) +
-> > > apicid_die_width(&topo_info);
-> > > *eax |= ((1 << addressable_cores_width) - 1)) << 26;
-> > 
-> > This algorithm lacks flexibility because there will be more topology
-> > levels between package and core, such as the cluster being introduced...
-> > 
-> > Using "addressable_cores_width" is clear enough.
-> > 
-> > > 		
-> > > >                    }
-> > > >                    if (host_vcpus_per_cache > vcpus_per_socket) {
-> > > > +                    int pkg_offset = apicid_pkg_offset(&topo_info);
-> > > > +
-> > > >                        *eax &= ~0x3FFC000;
-> > > > -                    *eax |= (pow2ceil(vcpus_per_socket) - 1) << 14;
-> > > > +                    *eax |= (1 << (pkg_offset - 1)) << 14;
-> > > 
-> > > Ditto, ((1 << pkg_offset) - 1) << 14
-> > 
-> > Thanks!
-> > 
-> > > 
-> > > For this one, I think pow2ceil(vcpus_per_socket) is better. Because it's
-> > > intuitive that when host_vcpus_per_cache > vcpus_per_socket, we expose
-> > > vcpus_per_cache (configured by users) to VM.
-> > 
-> > I tend to use a uniform calculation that is less confusing and easier to
-> > maintain.
-> 
-> less confusing?
-> 
-> the original code is
-> 
-> 	if (host_vcpus_per_cache > vcpus_per_socket) {
-> 		*eax |= (pow2ceil(vcpus_per_socket) - 1) << 14;
-> 	}
-> 
-> and this patch is going to change it to
-> 
-> 	if (host_vcpus_per_cache > vcpus_per_socket) {
-> 		int pkg_offset = apicid_pkg_offset(&topo_info);
-> 		*eax |= (1 << pkg_offset - 1)) << 14;
-> 	}
-> 
-> Apparently, the former is clearer that everyone knows what is wants to do is
-> "when guest's total vcpus_per_socket is even smaller than host's
-> vcpu_per_cache, using guest's configuration". While the latter is more
-> confusing.
+Acked-by: Jason Wang <jasowang@redhat.com>
 
-IMO, the only differences are the variable naming and the way the
-details are encoded, what is actually trying to be expressed is the
-same - both set the cache topology at the package level.
+Thanks
 
-There is no reason to use two encoding ways for the same field, and
-it'll be a code maintenance disaster.
-
-I can add comment here to allay your concern.
-
-> 
-> > Since this field encodes "Maximum number of addressable IDs",
-> > OS can't get the exact number of CPUs/vCPUs sharing L3 from here, it can
-> > only know that L3 is shared at the package level.
-> 
-> It doesn't matter with L3. What the code want to fulfill is that,
-
-Yes, I misremembered here.
-
-> 
-> host_vcpus_per_cache is the actual number of LPs that share this level of
-> cache. While vcpus_per_socket is the maximum numbere of LPs that can share a
-> cache (at any level) in guest. When guest's maximum number is even smaller
-> than host's, use guest's value.
-> 
-
-From the Guest's view, the cache is shared at package level. In hardware,
-this one field only reflects the topology level and does not accurately
-reflect the number of sharing CPUs.
-
-So, we just need to make it clear that in this case the Guest cache
-topology level is package.
-
-Thanks,
-Zhao
+> ---
+>  hw/virtio/trace-events |  2 +-
+>  hw/virtio/vhost-vdpa.c | 25 ++++++++++++++++---------
+>  2 files changed, 17 insertions(+), 10 deletions(-)
+>
+> diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+> index 9725d44..b0239b8 100644
+> --- a/hw/virtio/trace-events
+> +++ b/hw/virtio/trace-events
+> @@ -32,7 +32,7 @@ vhost_user_create_notifier(int idx, void *n) "idx:%d n:=
+%p"
+>  # vhost-vdpa.c
+>  vhost_vdpa_dma_map(void *vdpa, int fd, uint32_t msg_type, uint32_t asid,=
+ uint64_t iova, uint64_t size, uint64_t uaddr, uint8_t perm, uint8_t type) =
+"vdpa_shared:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64=
+" size: 0x%"PRIx64" uaddr: 0x%"PRIx64" perm: 0x%"PRIx8" type: %"PRIu8
+>  vhost_vdpa_dma_unmap(void *vdpa, int fd, uint32_t msg_type, uint32_t asi=
+d, uint64_t iova, uint64_t size, uint8_t type) "vdpa_shared:%p fd: %d msg_t=
+ype: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" type: %"=
+PRIu8
+> -vhost_vdpa_listener_begin_batch(void *v, int fd, uint32_t msg_type, uint=
+8_t type)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
+> +vhost_vdpa_map_batch_begin(void *v, int fd, uint32_t msg_type, uint8_t t=
+ype)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
+>  vhost_vdpa_listener_commit(void *v, int fd, uint32_t msg_type, uint8_t t=
+ype)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
+>  vhost_vdpa_listener_region_add_unaligned(void *v, const char *name, uint=
+64_t offset_as, uint64_t offset_page) "vdpa_shared: %p region %s offset_wit=
+hin_address_space %"PRIu64" offset_within_region %"PRIu64
+>  vhost_vdpa_listener_region_add(void *vdpa, uint64_t iova, uint64_t llend=
+, void *vaddr, bool readonly) "vdpa: %p iova 0x%"PRIx64" llend 0x%"PRIx64" =
+vaddr: %p read-only: %d"
+> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> index 013bfa2..7a1b7f4 100644
+> --- a/hw/virtio/vhost-vdpa.c
+> +++ b/hw/virtio/vhost-vdpa.c
+> @@ -161,7 +161,7 @@ int vhost_vdpa_dma_unmap(VhostVDPAShared *s, uint32_t=
+ asid, hwaddr iova,
+>      return ret;
+>  }
+>
+> -static void vhost_vdpa_iotlb_batch_begin_once(VhostVDPAShared *s)
+> +static bool vhost_vdpa_map_batch_begin(VhostVDPAShared *s)
+>  {
+>      int fd =3D s->device_fd;
+>      struct vhost_msg_v2 msg =3D {
+> @@ -169,26 +169,33 @@ static void vhost_vdpa_iotlb_batch_begin_once(Vhost=
+VDPAShared *s)
+>          .iotlb.type =3D VHOST_IOTLB_BATCH_BEGIN,
+>      };
+>
+> -    if (!(s->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH)) ||
+> -        s->iotlb_batch_begin_sent) {
+> -        return;
+> -    }
+> -
+>      if (s->map_thread_enabled && !qemu_thread_is_self(&s->map_thread)) {
+>          struct vhost_msg_v2 *new_msg =3D g_new(struct vhost_msg_v2, 1);
+>
+>          *new_msg =3D msg;
+>          g_async_queue_push(s->map_queue, new_msg);
+>
+> -        return;
+> +        return false;
+>      }
+>
+> -    trace_vhost_vdpa_listener_begin_batch(s, fd, msg.type, msg.iotlb.typ=
+e);
+> +    trace_vhost_vdpa_map_batch_begin(s, fd, msg.type, msg.iotlb.type);
+>      if (write(fd, &msg, sizeof(msg)) !=3D sizeof(msg)) {
+>          error_report("failed to write, fd=3D%d, errno=3D%d (%s)",
+>                       fd, errno, strerror(errno));
+>      }
+> -    s->iotlb_batch_begin_sent =3D true;
+> +    return true;
+> +}
+> +
+> +static void vhost_vdpa_iotlb_batch_begin_once(VhostVDPAShared *s)
+> +{
+> +    if (!(s->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH)) ||
+> +        s->iotlb_batch_begin_sent) {
+> +        return;
+> +    }
+> +
+> +    if (vhost_vdpa_map_batch_begin(s)) {
+> +        s->iotlb_batch_begin_sent =3D true;
+> +    }
+>  }
+>
+>  static void vhost_vdpa_dma_batch_end_once(VhostVDPAShared *s)
+> --
+> 1.8.3.1
+>
 
 
