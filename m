@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA22B82D628
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 10:38:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8FF82D624
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 10:37:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPJOK-0002y1-L6; Mon, 15 Jan 2024 04:36:24 -0500
+	id 1rPJOK-0002xz-Ig; Mon, 15 Jan 2024 04:36:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPJOG-0002x4-T8
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:36:20 -0500
+ id 1rPJOI-0002xq-Ht
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:36:22 -0500
 Received: from mgamail.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPJOF-00084H-8j
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:36:20 -0500
+ id 1rPJOG-00083y-UC
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:36:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705311379; x=1736847379;
+ t=1705311380; x=1736847380;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BoeRZGN7eQPcgZF2+XzoPfgKu1ZXa9REGBB4Q0wXOGQ=;
- b=d5P5sxHeEtHWF/jyr4S8ohn/vefJFwJmoggyhAjPgUY67EZLfoqbA5+P
- pHjX4vcRAjp6JuPCPFXPF31ARoLP/ETNRtENXsLVzcUepH/wx0FXZxtYt
- fiXVYYVaWEEh8wcXZmssqYMViIosNE887YktiD79NlqRhE1vQIkz4D7AO
- czdTvhN6Inc5ANJdNbLz6qvOfSRFYaK2z7dVP+OUzdvaNHMi4mY/u1wGI
- I4qSsd71g2Vw/qsHmTU1UPH9QIOB6ag5pRgOjX8ZiWWTxgWTpKrzROUzj
- 0s1xwTwt6zh5ZRSmlLOpXX+AcbU4GnIOm9IQ/rTpyFfQHxIl+SCZIkmq7 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="398439799"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="398439799"
+ bh=bEuuzhlR+r/Qy0aq8IIdnaQz63UEvVOGDNMZ/dCZ9KE=;
+ b=LqVcmKMIyMjSzNHatrUKdWXgwO+bYAkjDfLKKeGsSSpnxryTADVWCkV9
+ 4OYVQGSUUzGgqI4qQz3u5XzbH/nLm3cJ4/+TBD/xTrpP1lYJ6WCfvyNDH
+ voHZZ0i3VqHF5MmOaHmqJE9FhJEoEs668K1pxqhdOllzhySBLFcle1lF0
+ B9LGtql9bAQY/pLx50ZTE8BfHGgQ6bjTnUafkeJJKYoJk2asuuW5lIHWa
+ JhRv6aoBWZCIUQpl0Wi4J7MuopcLs5YkIvEdkapm6YehEd59SleEq7FRc
+ CHTLtnbuxKrQmIJtpAdkMZLlIGRa3bjQ6ROgTf1vm/i02tQOIBAmfCWFv A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="398439814"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="398439814"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 01:36:18 -0800
+ 15 Jan 2024 01:36:20 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="1030594172"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="1030594172"
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="1030594175"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="1030594175"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmsmga006.fm.intel.com with ESMTP; 15 Jan 2024 01:36:16 -0800
+ by fmsmga006.fm.intel.com with ESMTP; 15 Jan 2024 01:36:18 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -47,10 +47,9 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  Yanan Wang <wangyanan55@huawei.com>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 08/11] hw/core: Cleanup unnecessary included header in
- null-machine.c
-Date: Mon, 15 Jan 2024 17:48:49 +0800
-Message-Id: <20240115094852.3597165-9-zhao1.liu@linux.intel.com>
+Subject: [PATCH 09/11] hw/core: Reorder included headers in null-machine.c
+Date: Mon, 15 Jan 2024 17:48:50 +0800
+Message-Id: <20240115094852.3597165-10-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240115094852.3597165-1-zhao1.liu@linux.intel.com>
 References: <20240115094852.3597165-1-zhao1.liu@linux.intel.com>
@@ -82,27 +81,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Remove the unnecessary header (hw/core/cpu.h) since the hw/boards.h
-has already included that header.
+Reorder the header files (except qemu/osdep.h) in alphabetical order.
+
+Tested by "./configure" and then "make".
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/core/null-machine.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/core/null-machine.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/core/null-machine.c b/hw/core/null-machine.c
-index f586a4bef543..a0c7acc19cc3 100644
+index a0c7acc19cc3..3d411de3396a 100644
 --- a/hw/core/null-machine.c
 +++ b/hw/core/null-machine.c
-@@ -12,10 +12,10 @@
-  */
+@@ -13,9 +13,9 @@
  
  #include "qemu/osdep.h"
-+
- #include "qemu/error-report.h"
- #include "hw/boards.h"
+ 
+-#include "qemu/error-report.h"
+-#include "hw/boards.h"
  #include "exec/address-spaces.h"
--#include "hw/core/cpu.h"
++#include "hw/boards.h"
++#include "qemu/error-report.h"
  
  static void machine_none_init(MachineState *mch)
  {
