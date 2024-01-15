@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885A682D789
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:40:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC1582D788
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:40:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPKNj-0000ek-DE; Mon, 15 Jan 2024 05:39:51 -0500
+	id 1rPKNn-0000fJ-4m; Mon, 15 Jan 2024 05:39:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rPKNg-0000ea-R3
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:39:49 -0500
+ id 1rPKNk-0000f3-GT
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:39:52 -0500
 Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rPKNf-0002kC-5H
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:39:48 -0500
+ id 1rPKNi-0002kC-TF
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:39:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705315187; x=1736851187;
+ t=1705315191; x=1736851191;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=CpVZAHI8xoxlAfinekUHSCH11i1K//4shVWNcQ5H+gA=;
- b=gQ+fxVkuYrBFVOir3iLQ7cBZQ49yoiSwuh3pniLbfLgNVuAj7XpgFgDc
- H8kN9xaC1dQcGWIXC+X8Z08PR6MlxErVKUAC3tvX0gOOfLLGYTnofems0
- Xr6RsP7bUXxusU9iISwMcoOPdjM9UnhXpcxVDrcw6gb/lozS+9HfZMVWy
- Cg8UJk7xnqpLJY5iSLrPhCAdGl/Xxf7OFYTry4wr/dol2t/PpFuJhlmkR
- bCX6uOlYfXZbqyDHpgK5zDzVFcOdP6UPWS3SekW6swfsJ6JRc5mU59nyF
- qbPOgk/la8c9lhLhKHQT53IJAETN6vo7DzPimBESzuexEmwxz++cjYnFL w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="13067468"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="13067468"
+ bh=E8nl8QWoRgG2/jDdglZ/k5bjSREUF3iMIVNY6f/l+ik=;
+ b=UQyAZKFDVzDGywyBYQpDJrtKilM7erv3C9ubWXj8vB4cXX0icvq/OmWz
+ gNOI8MvqNFyNVnO0q9jX/EdRc05F5jJvcp+NLBZrjCtYLtI3wtGEaTXlZ
+ tJKx2m9VJVStpqabRbBT2h5S/tiWz/WC1NNJSkXYHECCr9+kYVh4wVpVI
+ RAiZ5vbG5MS6iJCPkkbVykksEJiherna8c/OYcaQq0BGQVRl4gole62a3
+ CjqTKXCp0GcSVNkach3VaogDyWCJ2Et/dT2j2RshZoMn+lPThcITWKTfg
+ F3mx7PfEtBhcew3u6IvTu/MGID70tS9JfPirTt1Da68xjgOzmVWjYuftm Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="13067484"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="13067484"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 02:39:45 -0800
+ 15 Jan 2024 02:39:49 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="874065318"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="874065318"
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="874065322"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="874065322"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 02:39:41 -0800
+ 15 Jan 2024 02:39:45 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -48,10 +48,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH rfcv1 03/23] backends/iommufd_device: introduce IOMMUFDDevice
- targeted interface
-Date: Mon, 15 Jan 2024 18:37:15 +0800
-Message-Id: <20240115103735.132209-4-zhenzhong.duan@intel.com>
+Subject: [PATCH rfcv1 04/23] vfio: implement IOMMUFDDevice interface callbacks
+Date: Mon, 15 Jan 2024 18:37:16 +0800
+Message-Id: <20240115103735.132209-5-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240115103735.132209-1-zhenzhong.duan@intel.com>
 References: <20240115103735.132209-1-zhenzhong.duan@intel.com>
@@ -81,105 +80,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With IOMMUFDDevice passed to vIOMMU, we can query hw IOMMU information
-and allocate hwpt for a device, but still need an extensible interface
-for vIOMMU usage.
-
-This introduces an IOMMUFDDevice targeted interface for vIOMMU.
-Currently this interface includes two callbacks attach_hwpt/detach_hwpt
-for vIOMMU to attach to or detach from hwpt on host side.
+Implement IOMMUFDDevice interface callbacks attach_hwpt/detach_hwpt
+for vIOMMU usage. vIOMMU utilizes them to attach to or detach from
+hwpt on host side.
 
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/sysemu/iommufd_device.h | 11 ++++++++++-
- backends/iommufd_device.c       | 16 +++++++++++++++-
- hw/vfio/iommufd.c               |  3 ++-
- 3 files changed, 27 insertions(+), 3 deletions(-)
+ hw/vfio/iommufd.c | 36 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
-diff --git a/include/sysemu/iommufd_device.h b/include/sysemu/iommufd_device.h
-index 795630324b..799c1345fd 100644
---- a/include/sysemu/iommufd_device.h
-+++ b/include/sysemu/iommufd_device.h
-@@ -17,15 +17,24 @@
- 
- typedef struct IOMMUFDDevice IOMMUFDDevice;
- 
-+typedef struct IOMMUFDDeviceOps {
-+    int (*attach_hwpt)(IOMMUFDDevice *idev, uint32_t hwpt_id);
-+    int (*detach_hwpt)(IOMMUFDDevice *idev);
-+} IOMMUFDDeviceOps;
-+
- /* This is an abstraction of host IOMMUFD device */
- struct IOMMUFDDevice {
-     IOMMUFDBackend *iommufd;
-     uint32_t dev_id;
-+    IOMMUFDDeviceOps *ops;
- };
- 
-+int iommufd_device_attach_hwpt(IOMMUFDDevice *idev, uint32_t hwpt_id);
-+int iommufd_device_detach_hwpt(IOMMUFDDevice *idev);
- int iommufd_device_get_info(IOMMUFDDevice *idev,
-                             enum iommu_hw_info_type *type,
-                             uint32_t len, void *data);
- void iommufd_device_init(void *_idev, size_t instance_size,
--                         IOMMUFDBackend *iommufd, uint32_t dev_id);
-+                         IOMMUFDBackend *iommufd, uint32_t dev_id,
-+                         IOMMUFDDeviceOps *ops);
- #endif
-diff --git a/backends/iommufd_device.c b/backends/iommufd_device.c
-index f6e7ca1dbf..26f69252d2 100644
---- a/backends/iommufd_device.c
-+++ b/backends/iommufd_device.c
-@@ -14,6 +14,18 @@
- #include "qemu/error-report.h"
- #include "sysemu/iommufd_device.h"
- 
-+int iommufd_device_attach_hwpt(IOMMUFDDevice *idev, uint32_t hwpt_id)
-+{
-+    g_assert(idev->ops->attach_hwpt);
-+    return idev->ops->attach_hwpt(idev, hwpt_id);
-+}
-+
-+int iommufd_device_detach_hwpt(IOMMUFDDevice *idev)
-+{
-+    g_assert(idev->ops->detach_hwpt);
-+    return idev->ops->detach_hwpt(idev);
-+}
-+
- int iommufd_device_get_info(IOMMUFDDevice *idev,
-                             enum iommu_hw_info_type *type,
-                             uint32_t len, void *data)
-@@ -39,7 +51,8 @@ int iommufd_device_get_info(IOMMUFDDevice *idev,
- }
- 
- void iommufd_device_init(void *_idev, size_t instance_size,
--                         IOMMUFDBackend *iommufd, uint32_t dev_id)
-+                         IOMMUFDBackend *iommufd, uint32_t dev_id,
-+                         IOMMUFDDeviceOps *ops)
- {
-     IOMMUFDDevice *idev = (IOMMUFDDevice *)_idev;
- 
-@@ -47,4 +60,5 @@ void iommufd_device_init(void *_idev, size_t instance_size,
- 
-     idev->iommufd = iommufd;
-     idev->dev_id = dev_id;
-+    idev->ops = ops;
- }
 diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index cbd035f148..1b174b71ee 100644
+index 1b174b71ee..c8c669c59a 100644
 --- a/hw/vfio/iommufd.c
 +++ b/hw/vfio/iommufd.c
-@@ -429,7 +429,8 @@ found_container:
-     QLIST_INSERT_HEAD(&bcontainer->device_list, vbasedev, container_next);
+@@ -26,6 +26,8 @@
+ #include "qemu/chardev_open.h"
+ #include "pci.h"
+ 
++static IOMMUFDDeviceOps vfio_iommufd_device_ops;
++
+ static int iommufd_cdev_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+                             ram_addr_t size, void *vaddr, bool readonly)
+ {
+@@ -430,7 +432,7 @@ found_container:
      QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
  
--    iommufd_device_init(idev, sizeof(*idev), container->be, vbasedev->devid);
-+    iommufd_device_init(idev, sizeof(*idev), container->be, vbasedev->devid,
-+                        NULL);
+     iommufd_device_init(idev, sizeof(*idev), container->be, vbasedev->devid,
+-                        NULL);
++                        &vfio_iommufd_device_ops);
      trace_iommufd_cdev_device_info(vbasedev->name, devfd, vbasedev->num_irqs,
                                     vbasedev->num_regions, vbasedev->flags);
      return 0;
+@@ -642,3 +644,35 @@ static const TypeInfo types[] = {
+ };
+ 
+ DEFINE_TYPES(types)
++
++static int vfio_iommufd_device_attach_hwpt(IOMMUFDDevice *idev,
++                                           uint32_t hwpt_id)
++{
++    VFIODevice *vbasedev = container_of(idev, VFIODevice, idev);
++    Error *err = NULL;
++    int ret;
++
++    ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt_id, &err);
++    if (err) {
++        error_report_err(err);
++    }
++    return ret;
++}
++
++static int vfio_iommufd_device_detach_hwpt(IOMMUFDDevice *idev)
++{
++    VFIODevice *vbasedev = container_of(idev, VFIODevice, idev);
++    Error *err = NULL;
++    int ret;
++
++    ret = iommufd_cdev_detach_ioas_hwpt(vbasedev, &err);
++    if (err) {
++        error_report_err(err);
++    }
++    return ret;
++}
++
++static IOMMUFDDeviceOps vfio_iommufd_device_ops = {
++    .attach_hwpt = vfio_iommufd_device_attach_hwpt,
++    .detach_hwpt = vfio_iommufd_device_detach_hwpt,
++};
 -- 
 2.34.1
 
