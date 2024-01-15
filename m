@@ -2,78 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B5382D415
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 07:08:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A74B682D42C
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 07:24:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPG8C-0002tP-FI; Mon, 15 Jan 2024 01:07:32 -0500
+	id 1rPGNJ-0006VJ-QF; Mon, 15 Jan 2024 01:23:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPG8A-0002tH-H3
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:07:30 -0500
-Received: from mgamail.intel.com ([192.55.52.43])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPGNH-0006Uw-Au
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:23:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPG88-0000oY-KT
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:07:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705298848; x=1736834848;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=yO6y4061mOMOBuAjTQimWEv3SWvQ0lvROuG9u3xeD1w=;
- b=AWrYrYZSdzUedVwIX+NZ0JLC1RJFzDYcRDe+QccPAFQnSAx11GzqnB0+
- RiFzeK5uV7V26/3d4fYPtneqWSF68LSr+BQQb9p9s/wksicgvung27KF1
- mt+KqqOngbHYPdRuhK2hRzqtTwik36/ubzKHs54RZg8gdy0DX8/wj6TPh
- IWR0D02+1Ce0CK3c47HZRhiZnAeEjPCDI/BXSorClQQ1/0NaXe4dt/HcH
- XNajrrJkcHBXT1MY1euUqZQgP/LUQjkn5gqVYiWzkN4pymXUzoRTewDCq
- p27X2uyWrbEix7z7iisesc+gh0JOF9nRWCY8fLPweuAOUc03QnUa4SeEA w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="485701525"
-X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="485701525"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 22:07:26 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="853898393"
-X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="853898393"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmsmga004.fm.intel.com with ESMTP; 14 Jan 2024 22:07:22 -0800
-Date: Mon, 15 Jan 2024 14:20:20 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Yuan Yao <yuan.yao@linux.intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
- Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
-Message-ID: <ZaTOpCFZRu6/py/J@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-9-zhao1.liu@linux.intel.com>
- <20240115032524.44q5ygb25ieut44c@yy-desk-7060>
- <ZaSv51/5Eokkv5Rr@intel.com>
- <336a4816-966d-42b0-b34b-47be3e41446d@intel.com>
- <20240115052022.xbv6exhm4af7kai7@yy-desk-7060>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPGND-0003rh-LC
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:23:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705299782;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8cuzzcdSvrHVVvCJx95AluDtEmnBrGuvEK5ITgtOE5M=;
+ b=Cv09Vn7pI36lftiE7p9hth1SxB3pN1UExvNb5t7lf3G6HrBdw7juWp3kInvwcFrOH0M19k
+ qaOAIB+z70bKI4tZjkKkyKyicyzGKdyqNJu4z4CSTpcKhGObWU4mgE1MaroCA5/lUGTdW8
+ 7hqZc07YzTg8WA4InuBwKGuY2e/JyWg=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-277-tQoic_nZP_i3UtCkLoL20A-1; Mon, 15 Jan 2024 01:23:00 -0500
+X-MC-Unique: tQoic_nZP_i3UtCkLoL20A-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-28e4fdfb1d1so218862a91.0
+ for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 22:23:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705299779; x=1705904579;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8cuzzcdSvrHVVvCJx95AluDtEmnBrGuvEK5ITgtOE5M=;
+ b=p1qlCkQy5at4huZ3xcYfgLCTASxPdhynp/nt3QhK5DDgURxX80YrxHl01y3VN5OYN0
+ xaEOUit1CqR66PyLOUEI6elhT10e0y4uivwahdMBa4YEzvQbetnNkEoCIY8wpP3GFwxr
+ Hn/LW53YJP0QRHmMmiH8RB6163gs5P4lCre3mkRKvp3TiOTN+pyjRdSgcEqrKGYwr3Iq
+ iUAhdoDsI0UTz2KirOWW2WXvXaRc0KyGRBLPJN7ddWZvTTsFr2fI/ulMiolHnXhHOUGm
+ Z2cQllNHVETQcbRWCmhnkXZ2m/YX3zWrJiKCpwEBc86D8JtyQUclW7mOIwZNCTLM/DQQ
+ IxxA==
+X-Gm-Message-State: AOJu0YzOON7Tc1SOI3rc6ZKOjWJo237Lex04d3/iC+y1e5mPUGj/JJh/
+ dciXaRQFVr2k3qgvVRSQxzwxdPHESK9awcTnS+kRSoKnlDYEeywK3zbECJVK2KIn40fOVbaFEec
+ /KeA581Vtzw13Qw4Wmyp8tF4=
+X-Received: by 2002:a17:902:d50e:b0:1d4:e2bc:891c with SMTP id
+ b14-20020a170902d50e00b001d4e2bc891cmr10149852plg.5.1705299779292; 
+ Sun, 14 Jan 2024 22:22:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFgjZ+Y0lX4mHKv8JcvLbPqgz1uKmuq1qpBhjA+Yd2PWinfoXkroMpF1nP3CLkOeu6jlfxuaA==
+X-Received: by 2002:a17:902:d50e:b0:1d4:e2bc:891c with SMTP id
+ b14-20020a170902d50e00b001d4e2bc891cmr10149846plg.5.1705299778958; 
+ Sun, 14 Jan 2024 22:22:58 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ u20-20020a170903309400b001d4a6ce115dsm5369135plc.142.2024.01.14.22.22.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 14 Jan 2024 22:22:58 -0800 (PST)
+Date: Mon, 15 Jan 2024 14:22:47 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
+Subject: Re: [RFC PATCH v3 00/30] migration: File based migration with
+ multifd and fixed-ram
+Message-ID: <ZaTPNwFcfrM-JUlg@x1n>
+References: <20231127202612.23012-1-farosas@suse.de> <ZZ_IElHLW1D-lrec@x1n>
+ <87zfxbn2ag.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240115052022.xbv6exhm4af7kai7@yy-desk-7060>
-Received-SPF: none client-ip=192.55.52.43;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+In-Reply-To: <87zfxbn2ag.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,23 +98,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 15, 2024 at 01:20:22PM +0800, Yuan Yao wrote:
-> Date: Mon, 15 Jan 2024 13:20:22 +0800
-> From: Yuan Yao <yuan.yao@linux.intel.com>
-> Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
+On Thu, Jan 11, 2024 at 03:38:31PM -0300, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
 > 
-> Ah, so my understanding is incorrect on this.
+> > On Mon, Nov 27, 2023 at 05:25:42PM -0300, Fabiano Rosas wrote:
+> >> Hi,
+> >> 
+> >> In this v3:
+> >> 
+> >> Added support for the "file:/dev/fdset/" syntax to receive multiple
+> >> file descriptors. This allows the management layer to open the
+> >> migration file beforehand and pass the file descriptors to QEMU. We
+> >> need more than one fd to be able to use O_DIRECT concurrently with
+> >> unaligned writes.
+> >> 
+> >> Dropped the auto-pause capability. That discussion was kind of
+> >> stuck. We can revisit optimizations for non-live scenarios once the
+> >> series is more mature/merged.
+> >> 
+> >> Changed the multifd incoming side to use a more generic data structure
+> >> instead of MultiFDPages_t. This allows multifd to restore the ram
+> >> using larger chunks.
+> >> 
+> >> The rest are minor changes, I have noted them in the patches
+> >> themselves.
+> >
+> > Fabiano,
+> >
+> > Could you always keep a section around in the cover letter (and also in the
+> > upcoming doc file fixed-ram.rst) on the benefits of this feature?
+> >
+> > Please bare with me - I can start to ask silly questions.
+> >
 > 
-> I tried on one raptor lake i5-i335U, which also hybrid soc but doesn't have
-> module level, in this case 0x1f and 0xb have same values in core/lp level.
+> That's fine. Ask away!
+> 
+> > I thought it was about "keeping the snapshot file small".  But then when I
+> > was thinking the use case, iiuc fixed-ram migration should always suggest
+> > the user to stop the VM first before migration starts, then if the VM is
+> > stopped the ultimate image shouldn't be large either.
+> >
+> > Or is it about performance only?  Where did I miss?
+> 
+> Performance is the main benefit because fixed-ram enables the use of
+> multifd for file migration which would otherwise not be
+> parallelizable. To use multifd has been the direction for a while as you
+> know, so it makes sense.
+> 
+> A fast file migration is desirable because it could be used for
+> snapshots with a stopped vm and also to replace the "exec:cat" hack
+> (this last one I found out about recently, Juan mentioned it in this
+> thread: https://lore.kernel.org/r/87cyx5ty26.fsf@secure.mitica).
 
-Some socs have modules/dies but they don't expose them in 0x1f.
+I digged again the history, and started to remember the "live" migration
+case for fixed-ram. IIUC that is what Dan mentioned in below email
+regarding to the "virDomainSnapshotXXX" use case:
 
-If the soc only expose thread/core levels in 0x1f, then its 0x1f is same
-as 0x0b. Otherwise, it will have more subleaves and different
-values.
+https://lore.kernel.org/all/ZD7MRGQ+4QsDBtKR@redhat.com/
 
-Thanks,
-Zhao
+So IIUC "stopped VM" is not always the use case?
+
+If you agree with this, we need to document these two use cases clearly in
+the doc update:
+
+  - "Migrate a VM to file, then destroy the VM"
+
+    It should be suggested to stop the VM first before triggering such
+    migration in this use case in the documents.
+
+  - "Take a live snapshot of the VM"
+
+    It'll be ideal if there is a portable interface to synchronously track
+    dirtying of guest pages, but we don't...
+
+    So fixed-ram seems to be the solution for such a portable solution for
+    taking live snapshot across-platforms as long as async dirty tracking
+    is still supported on that OS (aka KVM_GET_DIRTY_LOG).  If async
+    tracking is not supported, snapshot cannot be done live on the OS then,
+    and one needs to use "snapshot-save".
+
+    For this one, IMHO it would be good to mention (from QEMU perspective)
+    the existance of background-snapshot even though libvirt didn't support
+    it for some reason.  Currently background-snapshot lacks multi-thread
+    feature (nor O_DIRECT), though, so it may be less performant than
+    fixed-ram.  However if with all features there I believe that's even
+    more performant.  Please consider mention to a degree of detail on
+    this.
+
+> 
+> The size aspect is just an interesting property, not necessarily a
+> reason.
+
+See above on the 2nd "live" use case of fixed-ram. I think in that case,
+size is still a matter, then, because that one cannot stop the VM vcpus.
+
+> It's about having the file bounded to the RAM size. So a running
+> guest would not produce a continuously growing file. This is in contrast
+> with previous experiments (libvirt code) in using a proxy to put
+> multifd-produced data into a file.
+> 
+> I'll add this^ information in a more organized matter to the docs and
+> cover letter. Let me know what else I need to clarify.
+
+Thanks.
+
+> 
+> Some notes about fixed-ram by itself:
+> 
+> This series also enables fixed-ram without multifd, which would only
+> take benefit of the size property. That is not part of our end goal
+> which is to have multifd + fixed-ram, but I kept it nonetheless because
+> it helps to debug/reason about the fixed-ram format without conflating
+> matters with multifd.
+
+Yes, makes sense.
+
+> 
+> Fixed-ram without multifd also allows the file migration to take benefit
+> of direct io because the data portion of the file (pages) will be
+> written with alignment. This version of the series does not yet support
+> it, but I have a simple patch for the next version.
+> 
+> I also had a - perhaps naive - idea that we could merge the io code +
+> fixed-ram first, to expedite things and later bring in the multifd and
+> directio enhancements, but the review process ended up not being that
+> modular.
+
+What's the review process issue you're talking about?
+
+If you can split the series that'll help merging for sure to me.  IIRC
+there's complexity on passing the o-direct fds around, and not sure whether
+that chunk can be put at the last, similarly to split the multifd bits.
+
+One thing I just noticed is fixed-ram seems to be always preferred for
+"file:" migrations.  Then can we already imply fixed-ram for "file" URIs?
+
+I'm even thinking whether we can make it the default and drop the fixed-ram
+capability: fixed-ram won't work besides file, and file won't make sense if
+not using offsets / fixed-ram.  There's at least one problem, where we have
+released 8.2 with "file:", so it means it could break users already using
+"file:" there.  I'm wondering whether that'll be worthwhile considering if
+we can drop the (seems redundant..) capability.  What do you think?
+
+-- 
+Peter Xu
 
 
