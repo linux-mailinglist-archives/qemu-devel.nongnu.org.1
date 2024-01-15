@@ -2,77 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A458882D363
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:36:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B5682D380
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:50:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPDlj-0002D4-MT; Sun, 14 Jan 2024 22:36:11 -0500
+	id 1rPDzO-0006dg-ID; Sun, 14 Jan 2024 22:50:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPDlh-0002C7-1n
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:36:09 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rPDzM-0006dB-Cr
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:50:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPDlc-0007GR-E9
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:36:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705289764; x=1736825764;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=TaFI8xu9ha7Qu9WsffH9ZV0yEhE8bI5Htv2gCGJD1D8=;
- b=ILoAm5WkSr6RkleUaNco7mIHjYi0sHDmZodwPqhLMr/kuSRPfVf+GUdm
- v8/2ouq6h+Ww6GPvzE81GLncQ0I6TSVd4AFpcYGKjpcChuRabvYmui7v6
- Tz6hIwU+b+/UUb4IKthFteStQkEXeGAP8orRW11QrS3d5MqIE/pduF0v8
- ZM59gHtlSX7tMH5KxBhmov0IoYN0pqPiKqHJ95YzTRe80FdDr6kg+vd54
- 1zg3xw/mK6g+uWjmp72zqLrhDT/eoJKSc1FQ/Wf3ugjivwjuiGSiobNhR
- WBEIvn4TvpFRVLWobyICFBjKBdDOVSstc+cThnLG5CA8+rA1fZGmAdD7E g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="6247488"
-X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; 
-   d="scan'208";a="6247488"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2024 19:36:02 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="1114810777"
-X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="1114810777"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmsmga005.fm.intel.com with ESMTP; 14 Jan 2024 19:35:58 -0800
-Date: Mon, 15 Jan 2024 11:48:56 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
- Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH v7 15/16] i386: Use offsets get NumSharingCache for
- CPUID[0x8000001D].EAX[bits 25:14]
-Message-ID: <ZaSrKB3y9TEJZG5T@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-16-zhao1.liu@linux.intel.com>
- <599ddf2d-dc2e-4684-b2c2-ba6dfd886f32@intel.com>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rPDzK-00011K-Tu
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:50:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705290614;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KiM49KSsDPd6UoIT5KEsuBEsSbGj0oDH0N1Xk8XlxBw=;
+ b=B5J5OWIhqXn/KVBil5o8DKLRSewFClaqP8NIEDylyq7OooA0GDIhpIP09fluuezDnI2HPj
+ cHDIqfcLYc8a2+2AzJZioFWwiBYKrpiTelli/9Z0eANfuBAhzZUisAfVjAU4XN5f8Li29q
+ 0tauidI6qZLL6hbJalLkZYoONKvHznc=
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
+ [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-279-fFpDTWfeMLOB8LqJtTrj3A-1; Sun, 14 Jan 2024 22:50:12 -0500
+X-MC-Unique: fFpDTWfeMLOB8LqJtTrj3A-1
+Received: by mail-oo1-f69.google.com with SMTP id
+ 006d021491bc7-5953e534a96so9681109eaf.0
+ for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 19:50:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705290612; x=1705895412;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=KiM49KSsDPd6UoIT5KEsuBEsSbGj0oDH0N1Xk8XlxBw=;
+ b=dOV2qkzI7OnxslUwhFCzettUK5QfRx1nIEw9cSLTeVbHr1UMRqjN9rd75D9y0nOQrE
+ lLQG/TCzZYkCnq5kUIHJA4MIwNfD78w/uf6I6kOPEZ2NwTiHVB+hqNjIO5GENCDrhdXS
+ cZ+LtZYcEN89HGvAdGK8Q4sXil/Vghg6jkgHLAAQTemz1vIYhVDypozvl3KiXvgZMTl5
+ gX+npmso3Lkdz2dEC3NF8igSKbLz7UeqTT/I0+aFvWY+EU6FXjB5mdJo+Q2BHbcZq272
+ FETcYZ5FTrx0SH1vKPjgapimegk9BQvQnBJO87DR7s9t4A8ANBgxAGFY6VgWQCFOcMtM
+ czMg==
+X-Gm-Message-State: AOJu0Yy8n2ClZu/IoW3AckEQNdW35vbhwZBgEz0fYjheYpnDQ1MEqrCD
+ ej1LCgeU2+xYD9nNfeo8GvdZGxScP3tkQbxRttpBZoc2C9qAC92ezmyRPECi3ip5QI0hf2mBbVQ
+ 26y7t4NlVROk6MO+b/wbkZ08P1Sy8telnEJ2E8Ew=
+X-Received: by 2002:a05:6358:60ca:b0:173:8b3:71c2 with SMTP id
+ i10-20020a05635860ca00b0017308b371c2mr7328949rwi.45.1705290612100; 
+ Sun, 14 Jan 2024 19:50:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHxc22JEd5J490uNm/FkrQKKAD9S0kplXteedzwOY7l3ZoDUaqvdRbB0zLHtZCYZFq8VGbzfQ92GkYlkl5pNnY=
+X-Received: by 2002:a05:6358:60ca:b0:173:8b3:71c2 with SMTP id
+ i10-20020a05635860ca00b0017308b371c2mr7328938rwi.45.1705290611833; Sun, 14
+ Jan 2024 19:50:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <599ddf2d-dc2e-4684-b2c2-ba6dfd886f32@intel.com>
-Received-SPF: none client-ip=198.175.65.11;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
+References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-36-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-36-git-send-email-si-wei.liu@oracle.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 15 Jan 2024 11:50:00 +0800
+Message-ID: <CACGkMEvhiWiH5JMBySkm9Gwc+gB=kReaOrFE+XRrHZj=_aqu2w@mail.gmail.com>
+Subject: Re: [PATCH 35/40] vdpa: add vhost_vdpa_set_address_space_id trace
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
+ leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
+ jonah.palmer@oracle.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
 X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,99 +97,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Xiaoyao,
+On Fri, Dec 8, 2023 at 2:51=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
+rote:
+>
+> For better debuggability and observability.
+>
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+> ---
+>  net/trace-events | 3 +++
+>  net/vhost-vdpa.c | 3 +++
+>  2 files changed, 6 insertions(+)
+>
+> diff --git a/net/trace-events b/net/trace-events
+> index 823a071..aab666a 100644
+> --- a/net/trace-events
+> +++ b/net/trace-events
+> @@ -23,3 +23,6 @@ colo_compare_tcp_info(const char *pkt, uint32_t seq, ui=
+nt32_t ack, int hdlen, in
+>  # filter-rewriter.c
+>  colo_filter_rewriter_pkt_info(const char *func, const char *src, const c=
+har *dst, uint32_t seq, uint32_t ack, uint32_t flag) "%s: src/dst: %s/%s p:=
+ seq/ack=3D%u/%u  flags=3D0x%x"
+>  colo_filter_rewriter_conn_offset(uint32_t offset) ": offset=3D%u"
+> +
+> +# vhost-vdpa.c
+> +vhost_vdpa_set_address_space_id(void *v, unsigned vq_group, unsigned asi=
+d_num) "vhost_vdpa: %p vq_group: %u asid: %u"
 
-On Sun, Jan 14, 2024 at 10:42:41PM +0800, Xiaoyao Li wrote:
-> Date: Sun, 14 Jan 2024 22:42:41 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v7 15/16] i386: Use offsets get NumSharingCache for
->  CPUID[0x8000001D].EAX[bits 25:14]
-> 
-> On 1/8/2024 4:27 PM, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > The commit 8f4202fb1080 ("i386: Populate AMD Processor Cache Information
-> > for cpuid 0x8000001D") adds the cache topology for AMD CPU by encoding
-> > the number of sharing threads directly.
-> > 
-> >  From AMD's APM, NumSharingCache (CPUID[0x8000001D].EAX[bits 25:14])
-> > means [1]:
-> > 
-> > The number of logical processors sharing this cache is the value of
-> > this field incremented by 1. To determine which logical processors are
-> > sharing a cache, determine a Share Id for each processor as follows:
-> > 
-> > ShareId = LocalApicId >> log2(NumSharingCache+1)
-> > 
-> > Logical processors with the same ShareId then share a cache. If
-> > NumSharingCache+1 is not a power of two, round it up to the next power
-> > of two.
-> > 
-> >  From the description above, the calculation of this field should be same
-> > as CPUID[4].EAX[bits 25:14] for Intel CPUs. So also use the offsets of
-> > APIC ID to calculate this field.
-> > 
-> > [1]: APM, vol.3, appendix.E.4.15 Function 8000_001Dh--Cache Topology
-> >       Information
-> 
-> this patch can be dropped because we have next patch.
+So pointer is not user friendly, how about using the name of the netclient?
 
-This patch is mainly used to explicitly emphasize the change in encoding
-way and compliance with AMD spec... I didn't tested on AMD machine, so
-the more granular patch would make it easier for the community to review
-and test.
+Thanks
 
-Thanks,
-Zhao
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 41714d1..84876b0 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -30,6 +30,7 @@
+>  #include "migration/misc.h"
+>  #include "hw/virtio/vhost.h"
+>  #include "hw/virtio/vhost-vdpa.h"
+> +#include "trace.h"
+>
+>  /* Todo:need to add the multiqueue support here */
+>  typedef struct VhostVDPAState {
+> @@ -365,6 +366,8 @@ static int vhost_vdpa_set_address_space_id(struct vho=
+st_vdpa *v,
+>      };
+>      int r;
+>
+> +    trace_vhost_vdpa_set_address_space_id(v, vq_group, asid_num);
+> +
+>      r =3D ioctl(v->shared->device_fd, VHOST_VDPA_SET_GROUP_ASID, &asid);
+>      if (unlikely(r < 0)) {
+>          error_report("Can't set vq group %u asid %u, errno=3D%d (%s)",
+> --
+> 1.8.3.1
+>
 
-> 
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > Reviewed-by: Babu Moger <babu.moger@amd.com>
-> > Tested-by: Babu Moger <babu.moger@amd.com>
-> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> > Changes since v3:
-> >   * Rewrite the subject. (Babu)
-> >   * Delete the original "comment/help" expression, as this behavior is
-> >     confirmed for AMD CPUs. (Babu)
-> >   * Rename "num_apic_ids" (v3) to "num_sharing_cache" to match spec
-> >     definition. (Babu)
-> > 
-> > Changes since v1:
-> >   * Rename "l3_threads" to "num_apic_ids" in
-> >     encode_cache_cpuid8000001d(). (Yanan)
-> >   * Add the description of the original commit and add Cc.
-> > ---
-> >   target/i386/cpu.c | 10 ++++------
-> >   1 file changed, 4 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index b23e8190dc68..8a4d72f6f760 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -483,7 +483,7 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
-> >                                          uint32_t *eax, uint32_t *ebx,
-> >                                          uint32_t *ecx, uint32_t *edx)
-> >   {
-> > -    uint32_t l3_threads;
-> > +    uint32_t num_sharing_cache;
-> >       assert(cache->size == cache->line_size * cache->associativity *
-> >                             cache->partitions * cache->sets);
-> > @@ -492,13 +492,11 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
-> >       /* L3 is shared among multiple cores */
-> >       if (cache->level == 3) {
-> > -        l3_threads = topo_info->modules_per_die *
-> > -                     topo_info->cores_per_module *
-> > -                     topo_info->threads_per_core;
-> > -        *eax |= (l3_threads - 1) << 14;
-> > +        num_sharing_cache = 1 << apicid_die_offset(topo_info);
-> >       } else {
-> > -        *eax |= ((topo_info->threads_per_core - 1) << 14);
-> > +        num_sharing_cache = 1 << apicid_core_offset(topo_info);
-> >       }
-> > +    *eax |= (num_sharing_cache - 1) << 14;
-> >       assert(cache->line_size > 0);
-> >       assert(cache->partitions > 0);
-> 
 
