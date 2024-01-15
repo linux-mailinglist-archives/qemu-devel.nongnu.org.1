@@ -2,80 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CCD082DB87
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 15:43:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E10782DBF8
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 15:58:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPOB0-0005Ff-DE; Mon, 15 Jan 2024 09:42:58 -0500
+	id 1rPOQ9-0004Dl-1M; Mon, 15 Jan 2024 09:58:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPOAt-0005Ex-1k
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:42:51 -0500
-Received: from mgamail.intel.com ([198.175.65.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPOAr-00056N-3P
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:42:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705329769; x=1736865769;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=KeytAfpjTvYio2gds7krRqPVXqHJi+pnUY06Djw7X0c=;
- b=Cxujro1nGhMv/MNXM24DSGdAQtpTk974jzOn4JTfwtnLq69ieMZkltyr
- 4cJQ6r4Ai8m1n6b/KoDySahPhdnDJ0/YgQSdLnU4tz1vwWloRuwzluvM9
- 8+IMX1SstWR+RGFYscK3dL3hAOFN4BJ0GuPD5hhJztEljMs2kBicexT6G
- TvosGq3xnbDEYd8DQIz2PZzarnFstwlz0zyKVc3Z7nvNi1qT+0ZqY3Y6S
- qD41N68RCLnreWggO4lKzC+d6d7+eklyBnNPMfnjk48ZLlie3kf1SDC/z
- Zscb/JBN5L22Icy5M6KQecgp0kqo4JR4GOpZvmj76atVUDaLMPUR41FgS w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="12984192"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="12984192"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 06:42:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="1030663434"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="1030663434"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmsmga006.fm.intel.com with ESMTP; 15 Jan 2024 06:42:43 -0800
-Date: Mon, 15 Jan 2024 22:55:41 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
- Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH v7 14/16] i386: Use CPUCacheInfo.share_level to encode
- CPUID[4]
-Message-ID: <ZaVHbUo2rJgV3jtA@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-15-zhao1.liu@linux.intel.com>
- <a0cd67f2-94f2-4c4b-9212-6b7344163660@intel.com>
- <ZaSpQuQxU5UrbIf4@intel.com>
- <5a004819-b9bf-4a2e-b8b3-ed238a66245a@intel.com>
- <ZaTPvmU/6gXHNDRo@intel.com>
- <4094e712-65b9-4b47-9c3f-67970ff8a86c@intel.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rPOQ6-0004DN-7r
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:58:34 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rPOQ4-0007Rw-QP
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:58:33 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-559533e2503so972667a12.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 06:58:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705330711; x=1705935511; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=hROscwwMm0aNciaHc/wxiXeZ+5kQK+edq78Gjj+wHtU=;
+ b=fdQrU04Te6gQjBtw9ODtryhdTjHTFdisIExRw/fp0dH8hJhzIRHOcS16OEEEkAlqwd
+ 7ZXSKzviZV0j7LjGyhkGe0Bi3TBDdZ2P9R1t7sEkRX1o/6VPCXz8DepsylmjNvRsDvfg
+ PK33sY5BVZHHtxdDiDCvWJxB6gl6GbO6zacc6zRncsUh/rCPSaR5kzovoaCN8F3wwWV9
+ GRUx6E4zHao2h1CcGeki8d0Vydmybw+Cdscfdn+nR0J2i/v0lokUs94DgLgZ1WF9/E2R
+ JYMb1RZRymbGPFK3MDbKD0BFd9ensQhgVonNgRHSCGqHrbiwSxhWMdgMYGMHo4fEaOOR
+ hsnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705330711; x=1705935511;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hROscwwMm0aNciaHc/wxiXeZ+5kQK+edq78Gjj+wHtU=;
+ b=L53OLRGUoDsSAMACMZMpDjNZw1q3GlonarK/NYRFtZyOZHCKaFLRzvgB1Ch+8KfxI2
+ OFIS8J4GXRMKQ+pZX1EqRaVfjhfbSfsvcWCJgAjrA0H0z5rMBQyWxqM+VXjeBfM0s4RT
+ AGKze+NmucLWgpSGir6WXrprSu//wHWa7L9mZhRLTezfNX63/ioNu5KH3EQ3DHC4oshI
+ FDUJS5RfpELQNkBAHpOqjx+mqzhidN6Qor+TwpKW5a/cC/JYk/xhL8NdxAKVzMF6mZN2
+ Z/9eMMNimBQ6mOqAjwTxt2j14hYAzvof6deBfZuQUIJYS+RoTYHSlTulloaP8stI4c8P
+ gTmA==
+X-Gm-Message-State: AOJu0YzBFTAC2f9Qk/xzCDINNP0FjZdzje4D9FMLJi9iUw6GNvuq+ivX
+ 44hiI4yd2magOkamuSw8d8w50ZL4wzR/kAv8E3F7I+Yy0mvoNg==
+X-Google-Smtp-Source: AGHT+IGnG/GlQDxgpSjUHlTEI002x/jXIXWAJop36sRPkLS4IxNoKMNXJaOlExZyMyyk6JXtBFZx+9MD2y3Ye65k+QI=
+X-Received: by 2002:a05:6402:33cb:b0:551:14f0:f7ae with SMTP id
+ a11-20020a05640233cb00b0055114f0f7aemr2650559edc.25.1705330710914; Mon, 15
+ Jan 2024 06:58:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4094e712-65b9-4b47-9c3f-67970ff8a86c@intel.com>
-Received-SPF: none client-ip=198.175.65.10;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.531,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
+ <20231208023145.1385775-38-sergey.kambalin@auriga.com>
+In-Reply-To: <20231208023145.1385775-38-sergey.kambalin@auriga.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 15 Jan 2024 14:58:19 +0000
+Message-ID: <CAFEAcA_UqjoP2e8q+0QenKdzRPd93Sn1hg4H+a_senvJ4r+y5A@mail.gmail.com>
+Subject: Re: [PATCH v4 37/45] Add mailbox tests tags. Part 1
+To: Sergey Kambalin <serg.oker@gmail.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Sergey Kambalin <sergey.kambalin@auriga.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,74 +86,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Xiaoyao,
-
-On Mon, Jan 15, 2024 at 03:00:25PM +0800, Xiaoyao Li wrote:
-> Date: Mon, 15 Jan 2024 15:00:25 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v7 14/16] i386: Use CPUCacheInfo.share_level to encode
->  CPUID[4]
-> 
-> On 1/15/2024 2:25 PM, Zhao Liu wrote:
-> > Hi Xiaoyao,
-> > 
-> > On Mon, Jan 15, 2024 at 12:25:19PM +0800, Xiaoyao Li wrote:
-> > > Date: Mon, 15 Jan 2024 12:25:19 +0800
-> > > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > Subject: Re: [PATCH v7 14/16] i386: Use CPUCacheInfo.share_level to encode
-> > >   CPUID[4]
-> > > 
-> > > On 1/15/2024 11:40 AM, Zhao Liu wrote:
-> > > > > > +{
-> > > > > > +    uint32_t num_ids = 0;
-> > > > > > +
-> > > > > > +    switch (share_level) {
-> > > > > > +    case CPU_TOPO_LEVEL_CORE:
-> > > > > > +        num_ids = 1 << apicid_core_offset(topo_info);
-> > > > > > +        break;
-> > > > > > +    case CPU_TOPO_LEVEL_DIE:
-> > > > > > +        num_ids = 1 << apicid_die_offset(topo_info);
-> > > > > > +        break;
-> > > > > > +    case CPU_TOPO_LEVEL_PACKAGE:
-> > > > > > +        num_ids = 1 << apicid_pkg_offset(topo_info);
-> > > > > > +        break;
-> > > > > > +    default:
-> > > > > > +        /*
-> > > > > > +         * Currently there is no use case for SMT and MODULE, so use
-> > > > > > +         * assert directly to facilitate debugging.
-> > > > > > +         */
-> > > > > > +        g_assert_not_reached();
-> > > > > > +    }
-> > > > > > +
-> > > > > > +    return num_ids - 1;
-> > > > > suggest to just return num_ids, and let the caller to do the -1 work.
-> > > > Emm, SDM calls the whole "num_ids - 1" (CPUID.0x4.EAX[bits 14-25]) as
-> > > > "maximum number of addressable IDs for logical processors sharing this
-> > > > cache"...
-> > > > 
-> > > > So if this helper just names "num_ids" as max_lp_ids_share_the_cache,
-> > > > I'm not sure there would be ambiguity here?
-> > > 
-> > > I don't think it will.
-> > > 
-> > > if this function is going to used anywhere else, people will need to keep in
-> > > mind to do +1 stuff to get the actual number.
-> > > 
-> > > leaving the -1 trick to where CPUID value gets encoded. let's make this
-> > > function generic.
-> > 
-> > This helper is the complete pattern to get addressable IDs, this is to
-> > say, the "- 1" is also the part of this calculation.
-> > 
-> > Its own meaning is self-consistent and generic enough to meet the common
-> > definitions of AMD and Intel.
-> 
-> OK. I stop bikeshedding on it.
+On Fri, 8 Dec 2023 at 02:38, Sergey Kambalin <serg.oker@gmail.com> wrote:
 >
+> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
+> ---
+>  tests/qtest/bcm2838-mailbox.h | 195 +++++++++++++++++++++++++++++++++-
+>  1 file changed, 190 insertions(+), 5 deletions(-)
+>
+> diff --git a/tests/qtest/bcm2838-mailbox.h b/tests/qtest/bcm2838-mailbox.h
+> index 8acc4bd2ff..04472fe23d 100644
+> --- a/tests/qtest/bcm2838-mailbox.h
+> +++ b/tests/qtest/bcm2838-mailbox.h
+> @@ -147,13 +147,21 @@
+>  /* Used to test stubs that don't perform actual work */
+>  #define DUMMY_VALUE 0x12345678
+>
+> -REG32(MBOX_WRITE_REG, 0)
+> +REG32(MBOX_WRITE_REG,          0)
+>  FIELD(MBOX_WRITE_REG, CHANNEL, 0, 4)
+> -FIELD(MBOX_WRITE_REG, DATA, 4, 28)
+> +FIELD(MBOX_WRITE_REG, DATA,    4, 28)
 
-Thanks for your review ;-).
+I don't strongly care whether you like to line up the
+macro argument fields or not, but please pick something
+and stick to it, rather than doing it one way to start
+and then making whitespace changes in a later patch.
 
-Regards,
-Zhao
+> -REG32(MBOX_SIZE_STAT, 0)
+> -FIELD(MBOX_WRITE_REG, SIZE, 0, 30)
+> -FIELD(MBOX_WRITE_REG, SUCCESS, 30, 1)
+> +REG32(MBOX_SIZE_STAT,          0)
+> +FIELD(MBOX_SIZE_STAT, SIZE,    0, 30)
+> +FIELD(MBOX_SIZE_STAT, SUCCESS, 30, 1)
+> +
+> +REG32(SET_DEVICE_POWER_STATE_CMD,        0)
+> +FIELD(SET_DEVICE_POWER_STATE_CMD, EN,    0, 1)
+> +FIELD(SET_DEVICE_POWER_STATE_CMD, WAIT,  1, 1)
+> +
+> +REG32(GET_CLOCK_STATE_CMD,        0)
+> +FIELD(GET_CLOCK_STATE_CMD, EN,    0, 1)
+> +FIELD(GET_CLOCK_STATE_CMD, NPRES, 1, 1)
+>
+>  typedef struct {
 
+thanks
+-- PMM
 
