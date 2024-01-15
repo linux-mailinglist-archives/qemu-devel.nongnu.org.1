@@ -2,55 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC1582D788
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:40:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C62C882D78E
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:41:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPKNn-0000fJ-4m; Mon, 15 Jan 2024 05:39:55 -0500
+	id 1rPKNq-0000fr-Oq; Mon, 15 Jan 2024 05:39:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rPKNk-0000f3-GT
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:39:52 -0500
+ id 1rPKNo-0000fa-Qf
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:39:56 -0500
 Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rPKNi-0002kC-TF
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:39:52 -0500
+ id 1rPKNn-0002kC-0X
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:39:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705315191; x=1736851191;
+ t=1705315195; x=1736851195;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=E8nl8QWoRgG2/jDdglZ/k5bjSREUF3iMIVNY6f/l+ik=;
- b=UQyAZKFDVzDGywyBYQpDJrtKilM7erv3C9ubWXj8vB4cXX0icvq/OmWz
- gNOI8MvqNFyNVnO0q9jX/EdRc05F5jJvcp+NLBZrjCtYLtI3wtGEaTXlZ
- tJKx2m9VJVStpqabRbBT2h5S/tiWz/WC1NNJSkXYHECCr9+kYVh4wVpVI
- RAiZ5vbG5MS6iJCPkkbVykksEJiherna8c/OYcaQq0BGQVRl4gole62a3
- CjqTKXCp0GcSVNkach3VaogDyWCJ2Et/dT2j2RshZoMn+lPThcITWKTfg
- F3mx7PfEtBhcew3u6IvTu/MGID70tS9JfPirTt1Da68xjgOzmVWjYuftm Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="13067484"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="13067484"
+ bh=N+1Pxq2BwWvz7LayJOjjK6kBAGkNx5MDYj8e747Ynvo=;
+ b=fCrS0bLl7vmXYXE1cS8tHpRa2VTctV0v0rERi2LxzgQ/V5OMXw5OrxXq
+ NFhq/B60tF83zQ0SJD92CMbsTsKGNva9DP1XnPcihZCZ9vsOiXcLq2ls7
+ 8MRGyIRHmpOPjjnMxq1d2WhmnK5IAFAMU1e1AACjrnU0uCInovyeUrE0Y
+ Za/fc3yCXd4gcyMfL8zeKoITHWkzxbXb26khqbBtmqhlMgv6gcjGVjMJD
+ 3o+GmAF3PdUpPROwOLZfuzyIJQq953M2rgaXeT3I+T26wfBr4crPIJcS0
+ BZbzAA73UIghOtCYFdg2Ztd9XC11A4R9mjM5Ex8Yjlv9udOpbBkxfSaE+ A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="13067513"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="13067513"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 02:39:49 -0800
+ 15 Jan 2024 02:39:54 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="874065322"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="874065322"
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="874065330"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="874065330"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 02:39:45 -0800
+ 15 Jan 2024 02:39:49 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH rfcv1 04/23] vfio: implement IOMMUFDDevice interface callbacks
-Date: Mon, 15 Jan 2024 18:37:16 +0800
-Message-Id: <20240115103735.132209-5-zhenzhong.duan@intel.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH rfcv1 05/23] intel_iommu: add a placeholder variable for
+ scalable modern mode
+Date: Mon, 15 Jan 2024 18:37:17 +0800
+Message-Id: <20240115103735.132209-6-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240115103735.132209-1-zhenzhong.duan@intel.com>
 References: <20240115103735.132209-1-zhenzhong.duan@intel.com>
@@ -80,74 +85,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement IOMMUFDDevice interface callbacks attach_hwpt/detach_hwpt
-for vIOMMU usage. vIOMMU utilizes them to attach to or detach from
-hwpt on host side.
+Add an new element scalable_mode in IntelIOMMUState to mark scalable
+modern mode, this element will be exposed as an intel_iommu property
+finally.
+
+For now, it's only a placehholder and used for cap/ecap initialization,
+parameter compatibility check, etc.
+
+No need to zero this element separately as IntelIOMMUState is zeroed
+when creation.
 
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/iommufd.c | 36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ hw/i386/intel_iommu_internal.h |  3 +++
+ include/hw/i386/intel_iommu.h  |  1 +
+ hw/i386/intel_iommu.c          | 13 +++++++++++--
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 1b174b71ee..c8c669c59a 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -26,6 +26,8 @@
- #include "qemu/chardev_open.h"
- #include "pci.h"
+diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
+index f8cf99bddf..ee4a784a35 100644
+--- a/hw/i386/intel_iommu_internal.h
++++ b/hw/i386/intel_iommu_internal.h
+@@ -192,9 +192,11 @@
+ #define VTD_ECAP_SC                 (1ULL << 7)
+ #define VTD_ECAP_MHMV               (15ULL << 20)
+ #define VTD_ECAP_SRS                (1ULL << 31)
++#define VTD_ECAP_EAFS               (1ULL << 34)
+ #define VTD_ECAP_PASID              (1ULL << 40)
+ #define VTD_ECAP_SMTS               (1ULL << 43)
+ #define VTD_ECAP_SLTS               (1ULL << 46)
++#define VTD_ECAP_FLTS               (1ULL << 47)
  
-+static IOMMUFDDeviceOps vfio_iommufd_device_ops;
-+
- static int iommufd_cdev_map(const VFIOContainerBase *bcontainer, hwaddr iova,
-                             ram_addr_t size, void *vaddr, bool readonly)
- {
-@@ -430,7 +432,7 @@ found_container:
-     QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
+ /* CAP_REG */
+ /* (offset >> 4) << 24 */
+@@ -211,6 +213,7 @@
+ #define VTD_CAP_SLLPS               ((1ULL << 34) | (1ULL << 35))
+ #define VTD_CAP_DRAIN_WRITE         (1ULL << 54)
+ #define VTD_CAP_DRAIN_READ          (1ULL << 55)
++#define VTD_CAP_FL1GP               (1ULL << 56)
+ #define VTD_CAP_DRAIN               (VTD_CAP_DRAIN_READ | VTD_CAP_DRAIN_WRITE)
+ #define VTD_CAP_CM                  (1ULL << 7)
+ #define VTD_PASID_ID_SHIFT          20
+diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+index b8abbcce12..006cec116b 100644
+--- a/include/hw/i386/intel_iommu.h
++++ b/include/hw/i386/intel_iommu.h
+@@ -270,6 +270,7 @@ struct IntelIOMMUState {
  
-     iommufd_device_init(idev, sizeof(*idev), container->be, vbasedev->devid,
--                        NULL);
-+                        &vfio_iommufd_device_ops);
-     trace_iommufd_cdev_device_info(vbasedev->name, devfd, vbasedev->num_irqs,
-                                    vbasedev->num_regions, vbasedev->flags);
-     return 0;
-@@ -642,3 +644,35 @@ static const TypeInfo types[] = {
- };
+     bool caching_mode;              /* RO - is cap CM enabled? */
+     bool scalable_mode;             /* RO - is Scalable Mode supported? */
++    bool scalable_modern;           /* RO - is modern SM supported? */
+     bool snoop_control;             /* RO - is SNP filed supported? */
  
- DEFINE_TYPES(types)
-+
-+static int vfio_iommufd_device_attach_hwpt(IOMMUFDDevice *idev,
-+                                           uint32_t hwpt_id)
-+{
-+    VFIODevice *vbasedev = container_of(idev, VFIODevice, idev);
-+    Error *err = NULL;
-+    int ret;
-+
-+    ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt_id, &err);
-+    if (err) {
-+        error_report_err(err);
+     dma_addr_t root;                /* Current root table pointer */
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index be03fcbf52..1d007c33a8 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -4095,8 +4095,11 @@ static void vtd_cap_init(IntelIOMMUState *s)
+     }
+ 
+     /* TODO: read cap/ecap from host to decide which cap to be exposed. */
+-    if (s->scalable_mode) {
++    if (s->scalable_mode && !s->scalable_modern) {
+         s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_SRS | VTD_ECAP_SLTS;
++    } else if (s->scalable_mode && s->scalable_modern) {
++        s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_SRS | VTD_ECAP_EAFS | VTD_ECAP_FLTS;
++        s->cap |= VTD_CAP_FL1GP;
+     }
+ 
+     if (s->snoop_control) {
+@@ -4271,12 +4274,18 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
+ 
+     /* Currently only address widths supported are 39 and 48 bits */
+     if ((s->aw_bits != VTD_HOST_AW_39BIT) &&
+-        (s->aw_bits != VTD_HOST_AW_48BIT)) {
++        (s->aw_bits != VTD_HOST_AW_48BIT) &&
++        !s->scalable_modern) {
+         error_setg(errp, "Supported values for aw-bits are: %d, %d",
+                    VTD_HOST_AW_39BIT, VTD_HOST_AW_48BIT);
+         return false;
+     }
+ 
++    if ((s->aw_bits != VTD_HOST_AW_48BIT) && s->scalable_modern) {
++        error_setg(errp, "Supported values for aw-bits are: %d",
++                   VTD_HOST_AW_48BIT);
++        return false;
 +    }
-+    return ret;
-+}
-+
-+static int vfio_iommufd_device_detach_hwpt(IOMMUFDDevice *idev)
-+{
-+    VFIODevice *vbasedev = container_of(idev, VFIODevice, idev);
-+    Error *err = NULL;
-+    int ret;
-+
-+    ret = iommufd_cdev_detach_ioas_hwpt(vbasedev, &err);
-+    if (err) {
-+        error_report_err(err);
-+    }
-+    return ret;
-+}
-+
-+static IOMMUFDDeviceOps vfio_iommufd_device_ops = {
-+    .attach_hwpt = vfio_iommufd_device_attach_hwpt,
-+    .detach_hwpt = vfio_iommufd_device_detach_hwpt,
-+};
+     if (s->scalable_mode && !s->dma_drain) {
+         error_setg(errp, "Need to set dma_drain for scalable mode");
+         return false;
 -- 
 2.34.1
 
