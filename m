@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104E882D392
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:59:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C59882D38D
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:56:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPE7y-0002D5-1z; Sun, 14 Jan 2024 22:59:10 -0500
+	id 1rPE5I-0000sJ-4R; Sun, 14 Jan 2024 22:56:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPE7v-0002Cp-OB
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:59:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rPE5G-0000s6-Je
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:56:22 -0500
+Received: from mgamail.intel.com ([192.55.52.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPE7u-0002AC-9q
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:59:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705291145;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vOb09NC4gDli9chuq2ie+qIcFJSYYMKxctbLhQ4CKhg=;
- b=id6uBa2ZLiHYULfqWb6aUAJAW9PaPrHUxPVbgfW/7IbDQIAxFm8az6HZaRR+na/3gk4GY/
- A9U8mCVRNhbHsAb9t01wMufpPasDA+izifpl/ES/tLpAYVuyKYpweaTA8/4UT/MDIc/GN0
- MgexxK6+XITduInsrCJli9yvlenqS2I=
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
- [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-608-E0QQMqcWMtyUAyU53sSCOw-1; Sun, 14 Jan 2024 22:59:03 -0500
-X-MC-Unique: E0QQMqcWMtyUAyU53sSCOw-1
-Received: by mail-oi1-f200.google.com with SMTP id
- 5614622812f47-3bbac3d23f8so8847535b6e.0
- for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 19:59:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705291143; x=1705895943;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vOb09NC4gDli9chuq2ie+qIcFJSYYMKxctbLhQ4CKhg=;
- b=sILOi412GctN2CwYHszYQROPc468HfHyy/v2EPJvJ1bWWB/mbdsosrazk0g2oorY2a
- PAxx52tnMeWcQTbcikLtsi+VqFFfcnoF4DFvLfty05VR1RL8gn44gTaT3ugTYMBwtqKf
- 4/PmDvJaGorjXdonL9HpXkJh99TVs7/DfSnDTk2qxGZB1d36y1LKhTcbzYU9jd6eOkOk
- DVL3evzF3viIN0QfGyDr4vDZBkFdvD5YnRLON0J2IxLBk5x2+LCdSYNnKEWTuWG96nOQ
- Ztw/lXxoNZql5/6yxKlGsN+TkzeM35YfKg1+8D0Oh3AZhIrUtHf1FtalX9pvMdZdTGCa
- tnNA==
-X-Gm-Message-State: AOJu0Yx7WHvmToyVZfSO699MVORZ2lVTgSwL7ZLZx45v5uoo4kS9LVcV
- jAAVSTaJqwJXV6dhvP4UGChKvLUPNus/K1O8G7xoP7+iHtsjK+DAwn8OvvlTEqQZwd8bP4m8NUc
- sgmPauIk3E7zGY8GjRUEXpmEfwFs4A3TvJQ42rKk=
-X-Received: by 2002:a05:6808:1302:b0:3bd:54d2:9195 with SMTP id
- y2-20020a056808130200b003bd54d29195mr7066693oiv.43.1705291143094; 
- Sun, 14 Jan 2024 19:59:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGt+MInFbmZ9i2I5ADReAppaInZvFlp2IHQBb/6nEERWlBGLI/pUPxkJSw0YhL6kHeBNri06w8yP4JK3POASjA=
-X-Received: by 2002:a05:6808:1302:b0:3bd:54d2:9195 with SMTP id
- y2-20020a056808130200b003bd54d29195mr7066683oiv.43.1705291142914; Sun, 14 Jan
- 2024 19:59:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rPE5E-0001oN-Cn
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:56:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705290980; x=1736826980;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=fhI8gWTRWvTHU+KgssyXh8Rw5PUtN3ruKJjhYq8iTmQ=;
+ b=JmIO3X3juEiledj9QzdER4gPdMIwWiJy0EjROmjDZLzTBVegIkIBDz9W
+ ua9r+2PDDv7IvmAvI6rlr+eBafeKtkVohGVdIRWqgXgjHzeUEnS1P+omX
+ d1ArXibVVTgHbypF0BquyxlzhZunnPjG1k63VQf9qu2DsQHWtNAHFeNFN
+ B1n5Owfn+Jfwi8mRYsmUI4mM7LTScHV0IYUSJ4qvyijVgT21dDLUd0V9i
+ Q7SQle+2Or1YRrhrAfyeIG3h+ajs77ZVqyH+onGdv5EzkmGgmlzdbceHX
+ mnz2Y4vLgmxzwknAm3/QhjBaxBN9h58lwetBsxu8YhXVyCNOjhhCKvET4 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="399206932"
+X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="399206932"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2024 19:56:17 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="783684006"
+X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="783684006"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga002.jf.intel.com with ESMTP; 14 Jan 2024 19:56:13 -0800
+Date: Mon, 15 Jan 2024 12:09:11 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Yuan Yao <yuan.yao@linux.intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
+Message-ID: <ZaSv51/5Eokkv5Rr@intel.com>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-9-zhao1.liu@linux.intel.com>
+ <20240115032524.44q5ygb25ieut44c@yy-desk-7060>
 MIME-Version: 1.0
-References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-41-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-41-git-send-email-si-wei.liu@oracle.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 15 Jan 2024 11:58:52 +0800
-Message-ID: <CACGkMEtuEtT-oMwwKSRqyeGwgKKxxaBRqRjr4_Tt8easgKK7xQ@mail.gmail.com>
-Subject: Re: [PATCH 40/40] vdpa: add trace event for vhost_vdpa_net_load_mq
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
- leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
- jonah.palmer@oracle.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240115032524.44q5ygb25ieut44c@yy-desk-7060>
+Received-SPF: none client-ip=192.55.52.115;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,52 +87,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 8, 2023 at 2:51=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
-rote:
->
-> For better debuggability and observability.
->
-> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-> ---
->  net/trace-events | 1 +
->  net/vhost-vdpa.c | 2 ++
->  2 files changed, 3 insertions(+)
->
-> diff --git a/net/trace-events b/net/trace-events
-> index be087e6..c128cc4 100644
-> --- a/net/trace-events
-> +++ b/net/trace-events
-> @@ -30,3 +30,4 @@ vhost_vdpa_net_data_eval_flush(void *s, int qindex, int=
- svq_switch, bool svq_flu
->  vhost_vdpa_net_cvq_eval_flush(void *s, int qindex, int svq_switch, bool =
-svq_flush) "vhost_vdpa: %p qp: %d svq_switch: %d flush_map: %d"
->  vhost_vdpa_net_load_cmd(void *s, uint8_t class, uint8_t cmd, int data_nu=
-m, int data_size) "vdpa state: %p class: %u cmd: %u sg_num: %d size: %d"
->  vhost_vdpa_net_load_cmd_retval(void *s, uint8_t class, uint8_t cmd, int =
-r) "vdpa state: %p class: %u cmd: %u retval: %d"
-> +vhost_vdpa_net_load_mq(void *s, int ncurqps) "vdpa state: %p current_qpa=
-irs: %d"
+Hi Yuan,
 
-Similarly, I think nc->name looks better than the plain pointer here?
+On Mon, Jan 15, 2024 at 11:25:24AM +0800, Yuan Yao wrote:
+> Date: Mon, 15 Jan 2024 11:25:24 +0800
+> From: Yuan Yao <yuan.yao@linux.intel.com>
+> Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
+> 
+> On Mon, Jan 08, 2024 at 04:27:19PM +0800, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> >
+> > Linux kernel (from v6.4, with commit edc0a2b595765 ("x86/topology: Fix
+> > erroneous smp_num_siblings on Intel Hybrid platforms") is able to
+> > handle platforms with Module level enumerated via CPUID.1F.
+> >
+> > Expose the module level in CPUID[0x1F] if the machine has more than 1
+> > modules.
+> >
+> > (Tested CPU topology in CPUID[0x1F] leaf with various die/cluster
+> > configurations in "-smp".)
+> >
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > Tested-by: Babu Moger <babu.moger@amd.com>
+> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> > ---
+> > Changes since v3:
+> >  * New patch to expose module level in 0x1F.
+> >  * Add Tested-by tag from Yongwei.
+> > ---
+> >  target/i386/cpu.c     | 12 +++++++++++-
+> >  target/i386/cpu.h     |  2 ++
+> >  target/i386/kvm/kvm.c |  2 +-
+> >  3 files changed, 14 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> > index 294ca6b8947a..a2d39d2198b6 100644
+> > --- a/target/i386/cpu.c
+> > +++ b/target/i386/cpu.c
+> > @@ -277,6 +277,8 @@ static uint32_t num_cpus_by_topo_level(X86CPUTopoInfo *topo_info,
+> >          return 1;
+> >      case CPU_TOPO_LEVEL_CORE:
+> >          return topo_info->threads_per_core;
+> > +    case CPU_TOPO_LEVEL_MODULE:
+> > +        return topo_info->threads_per_core * topo_info->cores_per_module;
+> >      case CPU_TOPO_LEVEL_DIE:
+> >          return topo_info->threads_per_core * topo_info->cores_per_module *
+> >                 topo_info->modules_per_die;
+> > @@ -297,6 +299,8 @@ static uint32_t apicid_offset_by_topo_level(X86CPUTopoInfo *topo_info,
+> >          return 0;
+> >      case CPU_TOPO_LEVEL_CORE:
+> >          return apicid_core_offset(topo_info);
+> > +    case CPU_TOPO_LEVEL_MODULE:
+> > +        return apicid_module_offset(topo_info);
+> >      case CPU_TOPO_LEVEL_DIE:
+> >          return apicid_die_offset(topo_info);
+> >      case CPU_TOPO_LEVEL_PACKAGE:
+> > @@ -316,6 +320,8 @@ static uint32_t cpuid1f_topo_type(enum CPUTopoLevel topo_level)
+> >          return CPUID_1F_ECX_TOPO_LEVEL_SMT;
+> >      case CPU_TOPO_LEVEL_CORE:
+> >          return CPUID_1F_ECX_TOPO_LEVEL_CORE;
+> > +    case CPU_TOPO_LEVEL_MODULE:
+> > +        return CPUID_1F_ECX_TOPO_LEVEL_MODULE;
+> >      case CPU_TOPO_LEVEL_DIE:
+> >          return CPUID_1F_ECX_TOPO_LEVEL_DIE;
+> >      default:
+> > @@ -347,6 +353,10 @@ static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
+> >          if (env->nr_dies > 1) {
+> >              set_bit(CPU_TOPO_LEVEL_DIE, topo_bitmap);
+> >          }
+> > +
+> > +        if (env->nr_modules > 1) {
+> > +            set_bit(CPU_TOPO_LEVEL_MODULE, topo_bitmap);
+> > +        }
+> >      }
+> >
+> >      *ecx = count & 0xff;
+> > @@ -6394,7 +6404,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+> >          break;
+> >      case 0x1F:
+> >          /* V2 Extended Topology Enumeration Leaf */
+> > -        if (topo_info.dies_per_pkg < 2) {
+> > +        if (topo_info.modules_per_die < 2 && topo_info.dies_per_pkg < 2) {
+> 
+> A question:
+> Is the original checking necessary ?
+> The 0x1f exists even on cpu w/o modules/dies topology on bare metal, I tried
+> on EMR:
+> 
+> // leaf 0
+> 0x00000000 0x00: eax=0x00000020 ebx=0x756e6547 ecx=0x6c65746e edx=0x49656e69
+> 
+> // leaf 0x1f
+> 0x0000001f 0x00: eax=0x00000001 ebx=0x00000002 ecx=0x00000100 edx=0x00000004
+> 0x0000001f 0x01: eax=0x00000007 ebx=0x00000080 ecx=0x00000201 edx=0x00000004
+> 0x0000001f 0x02: eax=0x00000000 ebx=0x00000000 ecx=0x00000002 edx=0x00000004
+> 
+> // leaf 0xb
+> 0x0000000b 0x00: eax=0x00000001 ebx=0x00000002 ecx=0x00000100 edx=0x00000004
+> 0x0000000b 0x01: eax=0x00000007 ebx=0x00000080 ecx=0x00000201 edx=0x00000004
+> 0x0000000b 0x02: eax=0x00000000 ebx=0x00000000 ecx=0x00000002 edx=0x00000004
 
-Thanks
+The 0x1f is introduced for CascadeLake-AP with die level. And yes the
+newer mahcines all have this leaf.
 
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 61da8b4..17b8d01 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -1109,6 +1109,8 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s=
-,
->          return 0;
->      }
->
-> +    trace_vhost_vdpa_net_load_mq(s, n->curr_queue_pairs);
-> +
->      mq.virtqueue_pairs =3D cpu_to_le16(n->curr_queue_pairs);
->      const struct iovec data =3D {
->          .iov_base =3D &mq,
-> --
-> 1.8.3.1
->
+> 
+> So here leads to different cpu behavior from bare metal, even in case
+> of "-cpu host".
+> 
+> In SDM Vol2, cpudid instruction section:
+> 
+> " CPUID leaf 1FH is a preferred superset to leaf 0BH. Intel
+> recommends using leaf 1FH when available rather than leaf
+> 0BH and ensuring that any leaf 0BH algorithms are updated to
+> support leaf 1FH. "
+> 
+> My understanding: if 0x1f is existed (leaf 0.eax >= 0x1f)
+> then it should have same values in lp/core level as 0xb.
 
+Yes, I think it's time to move to default 0x1f.
+
+The compatibility issue can be solved by a cpuid-0x1f option similar to
+cpuid-0xb. I'll cook a patch after this patch series.
+
+Thanks,
+Zhao
+
+> 
+> >              *eax = *ebx = *ecx = *edx = 0;
+> >              break;
+> >          }
+> > diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> > index eecd30bde92b..97b290e10576 100644
+> > --- a/target/i386/cpu.h
+> > +++ b/target/i386/cpu.h
+> > @@ -1018,6 +1018,7 @@ enum CPUTopoLevel {
+> >      CPU_TOPO_LEVEL_INVALID,
+> >      CPU_TOPO_LEVEL_SMT,
+> >      CPU_TOPO_LEVEL_CORE,
+> > +    CPU_TOPO_LEVEL_MODULE,
+> >      CPU_TOPO_LEVEL_DIE,
+> >      CPU_TOPO_LEVEL_PACKAGE,
+> >      CPU_TOPO_LEVEL_MAX,
+> > @@ -1032,6 +1033,7 @@ enum CPUTopoLevel {
+> >  #define CPUID_1F_ECX_TOPO_LEVEL_INVALID  CPUID_B_ECX_TOPO_LEVEL_INVALID
+> >  #define CPUID_1F_ECX_TOPO_LEVEL_SMT      CPUID_B_ECX_TOPO_LEVEL_SMT
+> >  #define CPUID_1F_ECX_TOPO_LEVEL_CORE     CPUID_B_ECX_TOPO_LEVEL_CORE
+> > +#define CPUID_1F_ECX_TOPO_LEVEL_MODULE   3
+> >  #define CPUID_1F_ECX_TOPO_LEVEL_DIE      5
+> >
+> >  /* MSR Feature Bits */
+> > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> > index 4ce80555b45c..e5ddb214cb36 100644
+> > --- a/target/i386/kvm/kvm.c
+> > +++ b/target/i386/kvm/kvm.c
+> > @@ -1913,7 +1913,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
+> >              break;
+> >          }
+> >          case 0x1f:
+> > -            if (env->nr_dies < 2) {
+> > +            if (env->nr_modules < 2 && env->nr_dies < 2) {
+> >                  break;
+> >              }
+> >              /* fallthrough */
+> > --
+> > 2.34.1
+> >
+> >
 
