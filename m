@@ -2,84 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56A682DD90
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 17:26:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B19B782DD9F
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 17:30:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPPmO-0005oJ-Ll; Mon, 15 Jan 2024 11:25:40 -0500
+	id 1rPPqs-00085a-Js; Mon, 15 Jan 2024 11:30:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1rPPmK-0005nd-8K
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:25:36 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPPqm-00084q-C1
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:30:12 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1rPPmG-00051A-C4
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:25:35 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40e69b31366so27192235e9.1
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 08:25:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPPqj-0005s9-Qf
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 11:30:11 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a2c179aa5c4so550082066b.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 08:30:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1705335930; x=1705940730;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pe4WTlbA+w/w320h1lZbso82Ro9E7uK8lDq42mAnp/Y=;
- b=GpvEgoWTio8AfX/RsdJi/cw0aj2DCuF08elkASguSzGxRoYYaCY7E/3X58ZOAGXOf2
- 1Zkz88lITGbg07cTHS6kZ2ifNzqU1y4d5PKHnsbsK6NdzB5dmCBC5gzeRFPvAEfmBRZ8
- kwgwE4uuLt4jeDrmuIbwrElPr0fzrXiOvW9330PcoPL4TZUs54agAVMWlViWO6vogrsc
- zeFGu43UtflyMWstcE+/WEyWsKr9WviEnGxe7zYZ70v17WW2j4yA4gTS9ADZJwGgMrMf
- Op5evIA5ANLYwwGP8N86AdAe+ld00WvnAHnejI3X5Gy4WQvmv70BoBt8/hDgIRPASCpb
- XoHQ==
+ d=linaro.org; s=google; t=1705336207; x=1705941007; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GcQnhLosvyie/RI0W8e4uz5170hW5hrYZug7xttdnHM=;
+ b=dWowo+3JFr7j/pHUMTMhKEDvoDfT5otbfwZETE/PgY3EIFcXRmV+gveLihzOg09+U5
+ dcQhmY36js/rirUBk6rwtI7sd9PSlWLNLaDhtGlxDfRSC4kqRTmAR1pCaHTaV/M/InhG
+ thrbqLHUNz+Ysyyi8LuTUFb1bvx2ATPuISyAvonAawxkZNwCRLq+/qCSjfbHfDJ2HmP7
+ yYRH9TLthGGScGFQg/lwkWAqh38U4Mv2JBmduBXMZRsZRMUU68xkH23AamwZPOlBh9V3
+ DkIanlOHRWHNvgN42uc5YJMSFYVYZE/dIQxBs20bNGtGc06hNWb6jbiUVsQJphJBK8hd
+ /nPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705335930; x=1705940730;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pe4WTlbA+w/w320h1lZbso82Ro9E7uK8lDq42mAnp/Y=;
- b=GsRNsqwwdggkyigwCQ+HTxW8T2WESZrQ4c1mmpZ63feggpWDxVQMWGYXEe52DMDrio
- A1nc6q5n7z7FNLMHRFjy4nKxwVTeuTnBBOq7eYRFjEshtrDUO6rB1FSTzkyqjg+ZusXB
- QQchkBOxWJ20p6sHep5hlzyAtkRYRJmiSax15Y9+OWS0hwAwX0CZ9qnfZprBAo67RcgR
- SVIxVfiLuN9yBEcZjj64RVTv1GHxw0uah/8q+48qhkiNxCk4G5NlOwMrLwXOar4Nf7NF
- glfqB3kt3GJEnWqna3zfSmjpOqUom8oejtM83CDvrbpSceVAI1detNb/+Ea5WOalsDPW
- hNrA==
-X-Gm-Message-State: AOJu0Yx4QaUpQJbvJ0XaY4VGAGlsuAir7xe+YHmUjBlPxfWPPmGHkz7x
- 57wh1pK24Hf2HyRXzgJNTBqCA4vF8LDYvU5VuzFsTsQXERjZCw==
-X-Google-Smtp-Source: AGHT+IGfhqkfikoMHHt/tuDPrNFi7LLDmZUMGDkTnuUmyuuR5iucRo2Pr9OzkJ3ezgeAo4AkhFkfMw==
-X-Received: by 2002:a7b:c455:0:b0:40e:4af9:6a19 with SMTP id
- l21-20020a7bc455000000b0040e4af96a19mr2859702wmi.155.1705335930274; 
- Mon, 15 Jan 2024 08:25:30 -0800 (PST)
-Received: from rockhopper.ba.rivosinc.com (214.11.169.217.in-addr.arpa.
- [217.169.11.214]) by smtp.gmail.com with ESMTPSA id
- n16-20020a05600c4f9000b0040d62f97e3csm20274444wmq.10.2024.01.15.08.25.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jan 2024 08:25:29 -0800 (PST)
-From: Rob Bradford <rbradford@rivosinc.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- Rob Bradford <rbradford@rivosinc.com>
-Subject: [PATCH 2/2] target/riscv: Check 'A' and split extensions for atomic
- instructions
-Date: Mon, 15 Jan 2024 16:25:25 +0000
-Message-ID: <20240115162525.63535-3-rbradford@rivosinc.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240115162525.63535-1-rbradford@rivosinc.com>
-References: <20240115162525.63535-1-rbradford@rivosinc.com>
+ d=1e100.net; s=20230601; t=1705336207; x=1705941007;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GcQnhLosvyie/RI0W8e4uz5170hW5hrYZug7xttdnHM=;
+ b=w5edB8vU4ITSPuL1hABDxJjBErB2BEpRz6Iz1ooTOGVHTnH1kKnAaQIWy5m3o+hC7j
+ Exrnz6C7xCOCCLoWGNRoZ+dMGqzaGQxRXnQ5gMiYTe7SpCpdEmwXJQtJ58FLwyX9fnIa
+ PQIcEWDWDwS7rfonVk29NHG/ocxa+Lk5AZHlSAen1WpOg4rdOFOqDbSN36bBlmzDPsK+
+ gLqYPY88r7dgv0LmbJqGkc5fzQRne+m5M8bIpvoCikdolqufZNp2smk5GzzSgnp2gxs0
+ L/l298ggzkxr+MK/d/7T7zqGJEfctgebCVU5LS3Z2pIAhHvTDIyvYpyb1jJhbXAjVR75
+ nN+w==
+X-Gm-Message-State: AOJu0Yx5BsqYNJBjDpT+1+ejND4mfg+Xgz0fkG0HEpXt+/vTF0pXx+9K
+ cOJ/lrVs8zOQfZw/6g1CPEjImmO2lAx0XA==
+X-Google-Smtp-Source: AGHT+IEWrV9reMWMtB5jih4E9qm6ayUOJk8Wjw2768CMT1/ZFdOrcSqH+EZohZMfFcFtx5cPlb64QQ==
+X-Received: by 2002:a17:906:5299:b0:a2b:1df5:47c3 with SMTP id
+ c25-20020a170906529900b00a2b1df547c3mr3064326ejm.87.1705336207503; 
+ Mon, 15 Jan 2024 08:30:07 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.209.30])
+ by smtp.gmail.com with ESMTPSA id
+ e4-20020a170906c00400b00a298adde5a1sm5425980ejz.189.2024.01.15.08.30.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 15 Jan 2024 08:30:07 -0800 (PST)
+Message-ID: <bcfd42d5-1c48-4126-913a-a5251c3cc9c7@linaro.org>
+Date: Mon, 15 Jan 2024 17:30:04 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] hw/arm: Add EHCI/OHCI controllers to Allwinner R40
+ and Bananapi board
+Content-Language: en-US
+To: Guenter Roeck <linux@roeck-us.net>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, Alexander Graf <agraf@csgraf.de>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Thomas Huth
+ <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Bernhard Beschow <shentey@gmail.com>, qemu-ppc <qemu-ppc@nongnu.org>
+References: <20240113191651.1313226-1-linux@roeck-us.net>
+ <20240113191651.1313226-2-linux@roeck-us.net>
+ <56f692d8-41b1-4126-96b9-80d274624984@linaro.org>
+ <56fde49f-7dc6-4f8e-9bbf-0336a20a9ebf@roeck-us.net>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <56fde49f-7dc6-4f8e-9bbf-0336a20a9ebf@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,208 +104,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Following the pattern for 'M' and Zmmul check if either the 'A'
-extension is enabled or the appropriate split extension for the
-instruction.
+On 15/1/24 17:12, Guenter Roeck wrote:
+> On 1/15/24 03:02, Philippe Mathieu-Daudé wrote:
+>> Hi,
+>>
+>> On 13/1/24 20:16, Guenter Roeck wrote:
+>>> Allwinner R40 supports two USB host ports shared between a USB 2.0 EHCI
+>>> host controller and a USB 1.1 OHCI host controller. Add support for both
+>>> of them.
+>>>
+>>> If machine USB support is not enabled, create unimplemented devices
+>>> for the USB memory ranges to avoid crashes when booting Linux.
+>>
+>> I never really understood the reason for machine_usb() and had on my
+>> TODO to do some archeology research to figure it out since quite some
+>> time. Having to map an UnimpDevice due to CLI options seems like an
+>> anti-pattern when the device is indeed implemented in the repository.
+>>
+> 
+> Me not either. I copied the code from aw_a10_init(), trying to use the
+> same pattern. I am perfectly fine with making it unconditional, but then
+> I would argue that it should be unconditional for Allwinner A10 as well
+> (not that I really care much, just for consistency).
 
-Also remove the assumption that only checking for 64-bit systems is
-required for the double word variants.
+Certainly, but I'd rather have a global pattern cleanup, not just
+Allwinner based machines. Looking at the repository:
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
----
- target/riscv/insn_trans/trans_rva.c.inc | 56 +++++++++++++++----------
- 1 file changed, 34 insertions(+), 22 deletions(-)
+$ git grep -w machine_usb hw/
+hw/arm/allwinner-a10.c:82:    if (machine_usb(current_machine)) {
+hw/arm/allwinner-a10.c:168:    if (machine_usb(current_machine)) {
+hw/arm/nseries.c:1356:    if (machine_usb(machine)) {
+hw/arm/realview.c:288:        if (machine_usb(machine)) {
+hw/arm/realview.c-289-            pci_create_simple(pci_bus, -1, 
+"pci-ohci");
+hw/arm/versatilepb.c:276:    if (machine_usb(machine)) {
+hw/arm/versatilepb.c-277-        pci_create_simple(pci_bus, -1, "pci-ohci");
+hw/core/machine.c:1175:bool machine_usb(MachineState *machine)
+hw/i386/acpi-microvm.c:88:    if (machine_usb(MACHINE(mms))) {
+hw/i386/acpi-microvm.c-89-        xhci_sysbus_build_aml(scope, 
+MICROVM_XHCI_BASE, MICROVM_XHCI_IRQ);
+hw/i386/microvm.c:218:    if (x86_machine_is_acpi_enabled(x86ms) && 
+machine_usb(MACHINE(mms))) {
+hw/i386/microvm.c-225-        sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 
+MICROVM_XHCI_BASE);
+hw/i386/pc_piix.c:267: 
+machine_usb(machine), &error_abort);
+hw/i386/pc_q35.c:321:    if (machine_usb(machine)) {
+hw/i386/pc_q35.c-323-        ehci_create_ich9_with_companions(host_bus, 
+0x1d);
+hw/ppc/mac_oldworld.c:300:    if (machine_usb(machine)) {
+hw/ppc/mac_oldworld.c-301-        pci_create_simple(pci_bus, -1, 
+"pci-ohci");
 
-diff --git a/target/riscv/insn_trans/trans_rva.c.inc b/target/riscv/insn_trans/trans_rva.c.inc
-index f0368de3e4..267930e5bc 100644
---- a/target/riscv/insn_trans/trans_rva.c.inc
-+++ b/target/riscv/insn_trans/trans_rva.c.inc
-@@ -18,6 +18,18 @@
-  * this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
- 
-+#define REQUIRE_A_OR_ZAAMO(ctx) do {                      \
-+    if (!ctx->cfg_ptr->ext_zaamo && !has_ext(ctx, RVA)) { \
-+        return false;                                     \
-+    }                                                     \
-+} while (0)
-+
-+#define REQUIRE_A_OR_ZALRSC(ctx) do {                      \
-+    if (!ctx->cfg_ptr->ext_zalrsc && !has_ext(ctx, RVA)) { \
-+        return false;                                     \
-+    }                                                     \
-+} while (0)
-+
- static bool gen_lr(DisasContext *ctx, arg_atomic *a, MemOp mop)
- {
-     TCGv src1;
-@@ -96,143 +108,143 @@ static bool gen_amo(DisasContext *ctx, arg_atomic *a,
- 
- static bool trans_lr_w(DisasContext *ctx, arg_lr_w *a)
- {
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZALRSC(ctx);
-     return gen_lr(ctx, a, (MO_ALIGN | MO_TESL));
- }
- 
- static bool trans_sc_w(DisasContext *ctx, arg_sc_w *a)
- {
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZALRSC(ctx);
-     return gen_sc(ctx, a, (MO_ALIGN | MO_TESL));
- }
- 
- static bool trans_amoswap_w(DisasContext *ctx, arg_amoswap_w *a)
- {
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_xchg_tl, (MO_ALIGN | MO_TESL));
- }
- 
- static bool trans_amoadd_w(DisasContext *ctx, arg_amoadd_w *a)
- {
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_add_tl, (MO_ALIGN | MO_TESL));
- }
- 
- static bool trans_amoxor_w(DisasContext *ctx, arg_amoxor_w *a)
- {
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_xor_tl, (MO_ALIGN | MO_TESL));
- }
- 
- static bool trans_amoand_w(DisasContext *ctx, arg_amoand_w *a)
- {
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_and_tl, (MO_ALIGN | MO_TESL));
- }
- 
- static bool trans_amoor_w(DisasContext *ctx, arg_amoor_w *a)
- {
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_or_tl, (MO_ALIGN | MO_TESL));
- }
- 
- static bool trans_amomin_w(DisasContext *ctx, arg_amomin_w *a)
- {
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smin_tl, (MO_ALIGN | MO_TESL));
- }
- 
- static bool trans_amomax_w(DisasContext *ctx, arg_amomax_w *a)
- {
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smax_tl, (MO_ALIGN | MO_TESL));
- }
- 
- static bool trans_amominu_w(DisasContext *ctx, arg_amominu_w *a)
- {
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umin_tl, (MO_ALIGN | MO_TESL));
- }
- 
- static bool trans_amomaxu_w(DisasContext *ctx, arg_amomaxu_w *a)
- {
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umax_tl, (MO_ALIGN | MO_TESL));
- }
- 
- static bool trans_lr_d(DisasContext *ctx, arg_lr_d *a)
- {
-     REQUIRE_64BIT(ctx);
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZALRSC(ctx);
-     return gen_lr(ctx, a, MO_ALIGN | MO_TEUQ);
- }
- 
- static bool trans_sc_d(DisasContext *ctx, arg_sc_d *a)
- {
-     REQUIRE_64BIT(ctx);
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZALRSC(ctx);
-     return gen_sc(ctx, a, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amoswap_d(DisasContext *ctx, arg_amoswap_d *a)
- {
-     REQUIRE_64BIT(ctx);
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_xchg_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amoadd_d(DisasContext *ctx, arg_amoadd_d *a)
- {
-     REQUIRE_64BIT(ctx);
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_add_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amoxor_d(DisasContext *ctx, arg_amoxor_d *a)
- {
-     REQUIRE_64BIT(ctx);
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_xor_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amoand_d(DisasContext *ctx, arg_amoand_d *a)
- {
-     REQUIRE_64BIT(ctx);
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_and_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amoor_d(DisasContext *ctx, arg_amoor_d *a)
- {
-     REQUIRE_64BIT(ctx);
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_or_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amomin_d(DisasContext *ctx, arg_amomin_d *a)
- {
-     REQUIRE_64BIT(ctx);
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smin_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amomax_d(DisasContext *ctx, arg_amomax_d *a)
- {
-     REQUIRE_64BIT(ctx);
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smax_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amominu_d(DisasContext *ctx, arg_amominu_d *a)
- {
-     REQUIRE_64BIT(ctx);
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umin_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amomaxu_d(DisasContext *ctx, arg_amomaxu_d *a)
- {
-     REQUIRE_64BIT(ctx);
--    REQUIRE_EXT(ctx, RVA);
-+    REQUIRE_A_OR_ZAAMO(ctx);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umax_tl, (MO_ALIGN | MO_TEUQ));
- }
--- 
-2.43.0
+I'd classify that as "USB controller over MMIO / over some bus (PCI)".
 
+The "plug a PCI-to-USB card by default" seems a valid use case (except
+for Q35 which is a Frankenstein case, ICH9 chipset is like ARM SoC,
+USB bus is always there).
+
+IMHO all the MMIO uses should be corrected.
+
+> The "-usb" option says "enable on-board USB host controller (if not
+> enabled by default)". Unfortunately, that doesn't tell me much,
+> and most specifically it doesn't tell me how to enable it by default.
+> One option I can think of would be to enable it on the machine level,
+> i.e., from bananapi_m2u.c, but then, again, I don't see if/how
+> that is done for other boards. Any suggestions ?
+> 
+> Of course, I could discuss this with the person who implemented this
+> code for A10, but it turns out that was me, for no good reason than
+> that I tried to follow the pattern I had seen elsewhere without really
+> understanding what I was doing.
+> 
+> So should I drop the conditional from H40 and send a separate patch
+> to drop it from the A10 code as well, following your line of argument ?
+> Or drop it and leave A10 alone ?
+
+Well your patch isn't invalid, so:
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+I'm just worried we are taking a bad path here and would rather avoid
+it if possible...
+
+Regards,
+
+Phil.
 
