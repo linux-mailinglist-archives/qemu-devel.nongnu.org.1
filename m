@@ -2,46 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6FB82D7AC
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:45:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D859C82D7C0
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 11:49:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPKTJ-0008B4-1E; Mon, 15 Jan 2024 05:45:37 -0500
+	id 1rPKWE-0000zz-JD; Mon, 15 Jan 2024 05:48:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1rPKT5-00081c-Na; Mon, 15 Jan 2024 05:45:27 -0500
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rPKWC-0000zo-6K
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:48:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1rPKT2-00046Q-7W; Mon, 15 Jan 2024 05:45:23 -0500
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 82F4C441ED;
- Mon, 15 Jan 2024 11:45:07 +0100 (CET)
-Message-ID: <2150aa28-3eba-4e95-a301-d87377ba40a4@proxmox.com>
-Date: Mon, 15 Jan 2024 11:44:58 +0100
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rPKWA-0004hv-JY
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 05:48:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705315713;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=N+r1FoRmXYQr65X11BrgkhzeFmRTXfgpxw3iPkTFn0g=;
+ b=WjjRpz5n27ZIqj+qUsIYDmem2HCHsKansmDQNk4x6TxBtja1tdOUydfl6TMbNcQAY3senS
+ MqOpw3wJPDfsG68bCIYMbZvV5+oRifyBXmVYnHsucfNyWr2NWBFPb/z81yg2+ugTzHl414
+ eDwFPlwlfE1lx8B757gJoubrN6glUFo=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-537-U0BKtBqdNY6lygX2JKyIpA-1; Mon, 15 Jan 2024 05:48:30 -0500
+X-MC-Unique: U0BKtBqdNY6lygX2JKyIpA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3368c707b03so5088176f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 02:48:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705315709; x=1705920509;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=N+r1FoRmXYQr65X11BrgkhzeFmRTXfgpxw3iPkTFn0g=;
+ b=f/gJI08kscOib9YyS+kY5zZdhjb2wpKToJ1pEf9u6FuMJZr5JaAJYUDTvYL2TtABF9
+ 2WZJ/pGcJifEnopgIfvERPjvBc5aT5WaEXzFSPIkIr36qxdhOyYD7MQ9ddiF5p31JleH
+ JAIRlz4Rtlwwie8koM1RitoRkUn0ldnnuhEqeqJQGiMsb3FzBCJdgiRayTJoUGsejCaL
+ 8i1sNXww4NNV4SS5d0gVCBiIegr2pTrP88pIUFKRZ4mWcLWKkzz6CjmKyodpjXmCPL8N
+ GL3IXR1w9rs9Q4wqzysYsnwjcbyeF1/6RxPmstEMnCXRtIaDKWKoK+DYFvFf9UfaxRbG
+ FI3Q==
+X-Gm-Message-State: AOJu0YweDvRIEy++QW7vOYkxp3hRbLYX3K46tQk4j6s4uY6xxpZfBFrU
+ bq9ceNsVF3Vmpojz+geZJgJIdvFRnYOxPiGMsDD2obTAY9Sc7z7b4fRMzLlGF/TFnZQAn+orVRg
+ Xl7PitqoG7yidloeLMo0LCwU=
+X-Received: by 2002:a5d:5451:0:b0:337:a974:2bd7 with SMTP id
+ w17-20020a5d5451000000b00337a9742bd7mr479787wrv.6.1705315709478; 
+ Mon, 15 Jan 2024 02:48:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGIBSZqiNC3LqOnpIoDBBG4uUOQTn0KUMp9htwQY7uNdZ5eNJ8eDCfxIBpzT5efvEUJXZhaaA==
+X-Received: by 2002:a5d:5451:0:b0:337:a974:2bd7 with SMTP id
+ w17-20020a5d5451000000b00337a9742bd7mr479783wrv.6.1705315709136; 
+ Mon, 15 Jan 2024 02:48:29 -0800 (PST)
+Received: from ?IPV6:2003:cb:c71e:fb00:b32e:3358:38cf:3cbc?
+ (p200300cbc71efb00b32e335838cf3cbc.dip0.t-ipconnect.de.
+ [2003:cb:c71e:fb00:b32e:3358:38cf:3cbc])
+ by smtp.gmail.com with ESMTPSA id
+ x1-20020adfcc01000000b00336be33649csm11573291wrh.9.2024.01.15.02.48.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 15 Jan 2024 02:48:28 -0800 (PST)
+Message-ID: <6e0d1b8f-b33f-4172-85d5-a588a0349b5c@redhat.com>
+Date: Mon, 15 Jan 2024 11:48:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ui/clipboard: avoid crash upon request when clipboard
- peer is not initialized
-To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com,
- berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
-References: <20240112135527.57212-1-f.ebner@proxmox.com>
- <CAJ+F1C+JXE9hSQ_oDNZvhpYDqPeeKayopB3x2L2YyJTxM8t+Yg@mail.gmail.com>
+Subject: Re: [PATCH V2 00/11] allow cpr-reboot for vfio
 Content-Language: en-US
-From: Fiona Ebner <f.ebner@proxmox.com>
-In-Reply-To: <CAJ+F1C+JXE9hSQ_oDNZvhpYDqPeeKayopB3x2L2YyJTxM8t+Yg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Marc-Andre Lureau <marcandre.lureau@redhat.com>
+References: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -57,39 +151,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 14.01.24 um 14:51 schrieb Marc-André Lureau:
->>
->> diff --git a/ui/clipboard.c b/ui/clipboard.c
->> index 3d14bffaf8..c13b54d2e9 100644
->> --- a/ui/clipboard.c
->> +++ b/ui/clipboard.c
->> @@ -129,7 +129,8 @@ void qemu_clipboard_request(QemuClipboardInfo *info,
->>      if (info->types[type].data ||
->>          info->types[type].requested ||
->>          !info->types[type].available ||
->> -        !info->owner)
->> +        !info->owner ||
->> +        !info->owner->request)
->>          return;
-> 
-> While that fixes the crash, I think we should handle the situation
-> earlier. A clipboard peer shouldn't be allowed to hold the clipboard
-> if it doesn't have the data available or a "request" callback set.
-> 
+On 12.01.24 16:04, Steve Sistare wrote:
+> Allow cpr-reboot for vfio if the guest is in the suspended runstate.  The
+> guest drivers' suspend methods flush outstanding requests and re-initialize
+> the devices, and thus there is no device state to save and restore.  The
+> user is responsible for suspending the guest before initiating cpr, such as
+> by issuing guest-suspend-ram to the qemu guest agent.
 
-Where should initialization of the cbpeer happen so that we are
-guaranteed to do it also for clients that do not set the
-VNC_FEATURE_CLIPBOARD_EXT feature? Can the vnc_clipboard_request
-function be re-used for clients without that feature or will it be
-necessary to add some kind of "dummy" request callback for those clients?
+Can you briefly explain what cpr-reboot is, or do you have a pointer to 
+some more details?
 
-> Iow, we should have an assert(info->owner->request != NULL) here instead.
->
-Your choice of course, but it would be a crash again should the issue
-ever re-appear. Would error message (so the issue gets noticed) + return
-be an option too?
+What is is good for, why would you use it, how does it work?
 
-Best Regards,
-Fiona
+I *suspect* that you want to live-migrate a VM with vfio devices 
+attached, whereby you don't want to migrate device state.
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
