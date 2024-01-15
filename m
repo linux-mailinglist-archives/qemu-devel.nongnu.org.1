@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B6582E1C8
+	by mail.lfdr.de (Postfix) with ESMTPS id D56D682E1CA
 	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 21:24:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPTUk-0002o3-OS; Mon, 15 Jan 2024 15:23:43 -0500
+	id 1rPTUg-0002jp-E3; Mon, 15 Jan 2024 15:23:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rPTUT-0002ga-3u; Mon, 15 Jan 2024 15:23:25 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1rPTUR-0002gJ-Q1; Mon, 15 Jan 2024 15:23:24 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rPTUP-0000b2-Rf; Mon, 15 Jan 2024 15:23:24 -0500
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ id 1rPTUP-0000ay-LU; Mon, 15 Jan 2024 15:23:23 -0500
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40FIvZ1m011434; Mon, 15 Jan 2024 20:23:16 GMT
+ 40FJQOMg003422; Mon, 15 Jan 2024 20:23:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=gbPImPBRGxJliuo02hWoisZawB8F20EbNzt0bGccovU=;
- b=V8AW12SrQpj1IDasYhH9k4L78uaFFD+Qag/7GQgsCYXGJU7ebsvRXUK3QUXIB8A4ZYfa
- t8IVdNHpr9rdEV05R8eT+l1qUsFUnOkuj4ZkDa/xszdkH8mK9Ovy1UpfPkJldNbFpX6N
- m3XUCEk/9XXoaEuS8iAB7qYiRW/gJo7e7kDgVrcE6nYsZodQsNIl/EHxPC23Vckxeliv
- pJ2nWknBdiVgGI8qDpyx1yEe47QZz8U+RW3TFTbVR3s8cH331UqjX3Mq/mGCF2lSlREk
- dHDWbW8HqvDp5RdkW1Ru8xY3mWzQIMa5BXspAA/ugAymhs1OZI5d4aBFWVDPtvQisRBI Cw== 
+ bh=MNJbKLRgVm6p0ufGIlf3XdiOukS2mJluK/nZRqsgIQs=;
+ b=nh6B/UPt2MZ3SvNvJVDQHMUqDeqePgFdMVJfkHe4zky/0leaByuOodZ8K2iPnI+aZ8N3
+ k/d5Lpuna1mjyPdad4EZGrV2JeI4Fc2MsIiqJqiv3Sm8rqClCw01TfUBQLEDux3Q8tri
+ hK0BFQGJL4xvxiMjn9Mx7KismgO0QAK31CXNiX4Wi+sDQUGQUIwxYqaenuu1o1rUM63c
+ R5kOPXk38ago1DKvakL092ixuZJGAtOvscLoHHoaEaX61Q/3n71fdyKuvHZyBD2Uzgi0
+ DZQwhfQK3nNmajEHNxo777RXbAvWx2iIN6MIcL6p+y8zV+3+E7pfKtz38jaCjj1PsfFE +Q== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnaec9jqh-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vmtse6g2f-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 15 Jan 2024 20:23:16 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40FKKYqA027091;
- Mon, 15 Jan 2024 20:23:15 GMT
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40FKHkMi003001;
+ Mon, 15 Jan 2024 20:23:16 GMT
 Received: from ppma21.wdc07v.mail.ibm.com
  (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnaec9jpx-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vmtse6g20-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jan 2024 20:23:15 +0000
+ Mon, 15 Jan 2024 20:23:16 +0000
 Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
  by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40FHhMsN018660; Mon, 15 Jan 2024 20:23:14 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm5unadcp-1
+ 40FHxnRb018417; Mon, 15 Jan 2024 20:23:15 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm5unadcs-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jan 2024 20:23:14 +0000
+ Mon, 15 Jan 2024 20:23:15 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40FKNC0u45613632
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40FKNDA217957584
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Jan 2024 20:23:12 GMT
+ Mon, 15 Jan 2024 20:23:13 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 834BE20049;
- Mon, 15 Jan 2024 20:23:12 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5F86220049;
+ Mon, 15 Jan 2024 20:23:13 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0B60320040;
+ by IMSVA (Postfix) with ESMTP id E84A620040;
  Mon, 15 Jan 2024 20:23:12 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.75.248])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 15 Jan 2024 20:23:11 +0000 (GMT)
+ Mon, 15 Jan 2024 20:23:12 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, Ido Plat <Ido.Plat@ibm.com>
-Subject: [PATCH 1/2] target/s390x: Emulate CVDG
-Date: Mon, 15 Jan 2024 21:21:03 +0100
-Message-ID: <20240115202308.1930675-2-iii@linux.ibm.com>
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 2/2] tests/tcg/s390x: Test CONVERT TO DECIMAL
+Date: Mon, 15 Jan 2024 21:21:04 +0100
+Message-ID: <20240115202308.1930675-3-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240115202308.1930675-1-iii@linux.ibm.com>
 References: <20240115202308.1930675-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: JyVfUUdY08l8Ve2Ui2aY6VYtQhkPkrfu
-X-Proofpoint-ORIG-GUID: a05D1ZVs9GI2SJR0drdivbFjrVA0Wbed
+X-Proofpoint-ORIG-GUID: NbjtiJsooWpQwx8XeZ0X_CRPp34CsAxN
+X-Proofpoint-GUID: fOLdGv5AS7kFbFIBSozyWZTVJoy0Lucv
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-15_13,2024-01-15_03,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015
- bulkscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 mlxscore=0
- lowpriorityscore=0 phishscore=0 adultscore=0 mlxlogscore=676
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ priorityscore=1501
+ malwarescore=0 bulkscore=0 adultscore=0 impostorscore=0 mlxscore=0
+ phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=818 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2401150150
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -113,93 +113,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CVDG is the same as CVD, except that it converts 64 bits into 128,
-rather than 32 into 64. Use larger data types in the CVD helper and
-reuse it.
+Check the CVD's and CVDG's corner cases.
 
-Reported-by: Ido Plat <Ido.Plat@ibm.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- target/s390x/helper.h            |  1 +
- target/s390x/tcg/insn-data.h.inc |  1 +
- target/s390x/tcg/int_helper.c    | 11 ++++++++---
- target/s390x/tcg/translate.c     |  8 ++++++++
- 4 files changed, 18 insertions(+), 3 deletions(-)
+ tests/tcg/s390x/Makefile.target |  1 +
+ tests/tcg/s390x/cvd.c           | 42 +++++++++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
+ create mode 100644 tests/tcg/s390x/cvd.c
 
-diff --git a/target/s390x/helper.h b/target/s390x/helper.h
-index 05102578fc9..332a9a9c632 100644
---- a/target/s390x/helper.h
-+++ b/target/s390x/helper.h
-@@ -89,6 +89,7 @@ DEF_HELPER_FLAGS_2(sqeb, TCG_CALL_NO_WG, i64, env, i64)
- DEF_HELPER_FLAGS_2(sqdb, TCG_CALL_NO_WG, i64, env, i64)
- DEF_HELPER_FLAGS_2(sqxb, TCG_CALL_NO_WG, i128, env, i128)
- DEF_HELPER_FLAGS_1(cvd, TCG_CALL_NO_RWG_SE, i64, s32)
-+DEF_HELPER_FLAGS_1(cvdg, TCG_CALL_NO_RWG_SE, i128, s64)
- DEF_HELPER_FLAGS_4(pack, TCG_CALL_NO_WG, void, env, i32, i64, i64)
- DEF_HELPER_FLAGS_4(pka, TCG_CALL_NO_WG, void, env, i64, i64, i32)
- DEF_HELPER_FLAGS_4(pku, TCG_CALL_NO_WG, void, env, i64, i64, i32)
-diff --git a/target/s390x/tcg/insn-data.h.inc b/target/s390x/tcg/insn-data.h.inc
-index 2f07f39d9cb..388dcb8dbbc 100644
---- a/target/s390x/tcg/insn-data.h.inc
-+++ b/target/s390x/tcg/insn-data.h.inc
-@@ -296,6 +296,7 @@
- /* CONVERT TO DECIMAL */
-     C(0x4e00, CVD,     RX_a,  Z,   r1_o, a2, 0, 0, cvd, 0)
-     C(0xe326, CVDY,    RXY_a, LD,  r1_o, a2, 0, 0, cvd, 0)
-+    C(0xe32e, CVDG,    RXY_a, Z,   r1_o, a2, 0, 0, cvdg, 0)
- /* CONVERT TO FIXED */
-     F(0xb398, CFEBR,   RRF_e, Z,   0, e2, new, r1_32, cfeb, 0, IF_BFP)
-     F(0xb399, CFDBR,   RRF_e, Z,   0, f2, new, r1_32, cfdb, 0, IF_BFP)
-diff --git a/target/s390x/tcg/int_helper.c b/target/s390x/tcg/int_helper.c
-index eb8e6dd1b57..defb8fc7681 100644
---- a/target/s390x/tcg/int_helper.c
-+++ b/target/s390x/tcg/int_helper.c
-@@ -99,10 +99,15 @@ Int128 HELPER(divu64)(CPUS390XState *env, uint64_t ah, uint64_t al, uint64_t b)
- }
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index 30994dcf9c2..04e4bddd83d 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -45,6 +45,7 @@ TESTS+=clc
+ TESTS+=laalg
+ TESTS+=add-logical-with-carry
+ TESTS+=lae
++TESTS+=cvd
  
- uint64_t HELPER(cvd)(int32_t reg)
+ cdsg: CFLAGS+=-pthread
+ cdsg: LDFLAGS+=-pthread
+diff --git a/tests/tcg/s390x/cvd.c b/tests/tcg/s390x/cvd.c
+new file mode 100644
+index 00000000000..4d12282c6aa
+--- /dev/null
++++ b/tests/tcg/s390x/cvd.c
+@@ -0,0 +1,42 @@
++/*
++ * Test the CONVERT TO DECIMAL instruction.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <stdint.h>
++
++static uint64_t cvd(int32_t x)
 +{
-+    return helper_cvdg(reg);
++    uint64_t ret;
++
++    asm("cvd %[x],%[ret]" : [ret] "=R" (ret) : [x] "r" (x));
++
++    return ret;
 +}
 +
-+Int128 HELPER(cvdg)(int64_t reg)
- {
-     /* positive 0 */
--    uint64_t dec = 0x0c;
--    int64_t bin = reg;
-+    Int128 dec = 0x0c;
-+    Int128 bin = reg;
-     int shift;
- 
-     if (bin < 0) {
-@@ -110,7 +115,7 @@ uint64_t HELPER(cvd)(int32_t reg)
-         dec = 0x0d;
-     }
- 
--    for (shift = 4; (shift < 64) && bin; shift += 4) {
-+    for (shift = 4; (shift < 128) && bin; shift += 4) {
-         dec |= (bin % 10) << shift;
-         bin /= 10;
-     }
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 8df00b7df9f..2d417337695 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -2233,6 +2233,14 @@ static DisasJumpType op_cvd(DisasContext *s, DisasOps *o)
-     return DISAS_NEXT;
- }
- 
-+static DisasJumpType op_cvdg(DisasContext *s, DisasOps *o)
++static __uint128_t cvdg(int64_t x)
 +{
-+    TCGv_i128 t = tcg_temp_new_i128();
-+    gen_helper_cvdg(t, o->in1);
-+    tcg_gen_qemu_st_i128(t, o->in2, get_mem_index(s), MO_TE | MO_128);
-+    return DISAS_NEXT;
++    __uint128_t ret;
++
++    asm("cvdg %[x],%[ret]" : [ret] "=T" (ret) : [x] "r" (x));
++
++    return ret;
 +}
 +
- static DisasJumpType op_ct(DisasContext *s, DisasOps *o)
- {
-     int m3 = get_field(s, m3);
++int main(void)
++{
++    __uint128_t m = (((__uint128_t)0x9223372036854775) << 16) | 0x8070;
++
++    assert(cvd(0) == 0xc);
++    assert(cvd(1) == 0x1c);
++    assert(cvd(-1) == 0x1d);
++    assert(cvd(0x7fffffff) == 0x2147483647c);
++    assert(cvd(-0x7fffffff) == 0x2147483647d);
++
++    assert(cvdg(0) == 0xc);
++    assert(cvdg(1) == 0x1c);
++    assert(cvdg(-1) == 0x1d);
++    assert(cvdg(0x7fffffffffffffff) == (m | 0xc));
++    assert(cvdg(-0x7fffffffffffffff) == (m | 0xd));
++}
 -- 
 2.43.0
 
