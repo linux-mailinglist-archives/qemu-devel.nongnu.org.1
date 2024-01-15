@@ -2,89 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F1782D57B
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 10:03:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D17782D57D
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 10:04:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPIrX-0002fa-Gy; Mon, 15 Jan 2024 04:02:31 -0500
+	id 1rPIsf-0003NN-5F; Mon, 15 Jan 2024 04:03:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPIrV-0002d0-C3
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:02:29 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rPIsV-0003KO-TW
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:03:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPIrK-0001AB-6w
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:02:29 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rPIsS-0001Yt-63
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 04:03:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705309336;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1705309407;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=p8JCjJqkTyBv3knU4BB6FG91YnlWnYj08TjG3nHk9u8=;
- b=OkTussfX0vOWugzMNUK95LAm3+qYPlimGiSBi42Rd58VDJpae58fh1GuyrSvnDxMOpVSMS
- VAx639tDPUENA0/0CZJngpkQ6uusO27QSl+U4QIxPiwBjGKcA8WV7cuC9zLzaqXa4KX6K9
- zjsirxUnxFy51/AhyrxF2xYtjBUM2Jc=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4koAEleevpUGFVp/2Jv6lDpz+nh8S/6yFRtb9MGYyRA=;
+ b=VaUwHFNsb7raY8/vUfVMnFjp+8sfvCHVvSlCY9AD3zCwlpXwyXD+DWkmCBSeFnPJLbgyFD
+ NdGcJVyjl1XcEpZb5OdvBM7fpGrYGXCaWfCJ0d12Cmtk0wWiho7TwK4pV35eNpN4RsPQFw
+ MJQeBJIZbZZti8aglzO0aOfIbVtNce0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-497-siT3J_MoMoG5FcpELcMdIQ-1; Mon, 15 Jan 2024 04:02:14 -0500
-X-MC-Unique: siT3J_MoMoG5FcpELcMdIQ-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-28df9917b59so371244a91.1
- for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 01:02:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705309333; x=1705914133;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=p8JCjJqkTyBv3knU4BB6FG91YnlWnYj08TjG3nHk9u8=;
- b=WCjWEpTCW4OqtFdNTb3Dc63SQCQmQoas4ZRfzxo3tAuTVm6/0BJ7CBOYXaJrNPk7r5
- sF6ceiTvquG3GKfcqO3K/ztZdiy9aTfbvjMNY5UPoVgtYvjKwbNVm7vEus9WzBhM18S4
- 90kgGxjGwB4PflBr6nLTZQKUqTrUwXekPi3bKz557B8Y7R2lEcu4cnBgf5oGc+H8lps1
- 5gkwzhnkMur32q/Oudju9i+EpcDLslPBZWHzZh/20Co6mtH6YcJs7YPTCv2G54P7YA8C
- 7BZdcw92MrqjJdgAYCkvw2xItQlCQyCTWAwMi4dZnMojxfhCfr2QkuYTLq+IpWt3vdeh
- cFbQ==
-X-Gm-Message-State: AOJu0YxJxwAwo00DoFHbeDE87+ben/TBbTJfw3mF8PUqjU4CoY5q81Hs
- qYSsTV7b0C/GnfLCfzVw48v2oa088qSeiMe9wixvNhCTDH/594L40p+zVkEa7qBLCOjTVNYvsh0
- YWKG1gZLJH+LsSre9+are30E=
-X-Received: by 2002:a17:90a:734c:b0:28e:1e79:c5c2 with SMTP id
- j12-20020a17090a734c00b0028e1e79c5c2mr7020366pjs.1.1705309333493; 
- Mon, 15 Jan 2024 01:02:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG7XLtd89cSEsX6GyOKY4tU03VuqurEJfUVKQazWxocYgf5kxJYxyh//Q4vKKAm1fexYvsLnw==
-X-Received: by 2002:a17:90a:734c:b0:28e:1e79:c5c2 with SMTP id
- j12-20020a17090a734c00b0028e1e79c5c2mr7020346pjs.1.1705309333213; 
- Mon, 15 Jan 2024 01:02:13 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- w9-20020a170902a70900b001d49f61cb64sm7089939plq.262.2024.01.15.01.02.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jan 2024 01:02:12 -0800 (PST)
-Date: Mon, 15 Jan 2024 17:01:59 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Claudio Fontana <cfontana@suse.de>
-Subject: Re: [RFC PATCH v3 07/30] migration: Add fixed-ram URI compatibility
- check
-Message-ID: <ZaT0h7wnXDc-5K4-@x1n>
+ us-mta-185-rxfS8cm8MfGA0fIwtdad2w-1; Mon, 15 Jan 2024 04:03:23 -0500
+X-MC-Unique: rxfS8cm8MfGA0fIwtdad2w-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8741585A58F;
+ Mon, 15 Jan 2024 09:03:23 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.53])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 849E73C25;
+ Mon, 15 Jan 2024 09:03:22 +0000 (UTC)
+Date: Mon, 15 Jan 2024 09:03:20 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ armbru@redhat.com, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
+Subject: Re: [RFC PATCH v3 04/30] io: fsync before closing a file channel
+Message-ID: <ZaT02OxpzC973cNm@redhat.com>
 References: <20231127202612.23012-1-farosas@suse.de>
- <20231127202612.23012-8-farosas@suse.de>
+ <20231127202612.23012-5-farosas@suse.de> <ZZ-qbom2UqEX0uS7@x1n>
+ <87wmsfn1xx.fsf@suse.de> <ZaTzhhOqESTH42Jd@x1n>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231127202612.23012-8-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <ZaTzhhOqESTH42Jd@x1n>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,61 +84,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 27, 2023 at 05:25:49PM -0300, Fabiano Rosas wrote:
-> The fixed-ram migration format needs a channel that supports seeking
-> to be able to write each page to an arbitrary offset in the migration
-> stream.
+On Mon, Jan 15, 2024 at 04:57:42PM +0800, Peter Xu wrote:
+> On Thu, Jan 11, 2024 at 03:46:02PM -0300, Fabiano Rosas wrote:
+> > > (2) Why metadata doesn't matter (v.s. fsync(), when CONFIG_FDATASYNC=y)?
+> > 
+> > Syncing the inode information is not critical, it's mostly timestamp
+> > information (man inode). And fdatasync makes sure to sync any metadata
+> > that would be relevant for the retrieval of the data.
 > 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
-> - avoided overwriting errp in compatibility check
-> ---
->  migration/migration.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+> I forgot to reply to this one in the previous reply..
 > 
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 28a34c9068..897ed1db67 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -135,10 +135,26 @@ static bool transport_supports_multi_channels(SocketAddress *saddr)
->             saddr->type == SOCKET_ADDRESS_TYPE_VSOCK;
->  }
->  
-> +static bool migration_needs_seekable_channel(void)
-> +{
-> +    return migrate_fixed_ram();
-> +}
-> +
-> +static bool transport_supports_seeking(MigrationAddress *addr)
-> +{
-> +    return addr->transport == MIGRATION_ADDRESS_TYPE_FILE;
-> +}
+> Timestamps look all fine to be old.  What about file size?  That's also in
+> "man inode" as metadata, but I'm not sure whether data will be fully valid
+> if e.g. size enlarged but not flushed along with the page caches.
 
-What about TYPE_FD?  Is it going to be supported later?
+If the size wasn't updated, then syncing of the data would be pointless.
+The man page confirms that size is synced:
 
-> +
->  static bool
->  migration_channels_and_transport_compatible(MigrationAddress *addr,
->                                              Error **errp)
->  {
-> +    if (migration_needs_seekable_channel() &&
-> +        !transport_supports_seeking(addr)) {
-> +        error_setg(errp, "Migration requires seekable transport (e.g. file)");
-> +        return false;
-> +    }
-> +
->      if (migration_needs_multiple_sockets() &&
->          (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) &&
->          !transport_supports_multi_channels(&addr->u.socket)) {
-> -- 
-> 2.35.3
-> 
+[quote]
+       fdatasync() is similar to fsync(), but does not flush modified metadata
+       unless  that metadata is needed in order to allow a subsequent data re‐
+       trieval to be correctly handled.  For example, changes to  st_atime  or
+       st_mtime  (respectively, time of last access and time of last modifica‐
+       tion; see inode(7)) do not require flushing because they are not neces‐
+       sary for a subsequent data read to be handled correctly.  On the  other
+       hand, a change to the file size (st_size, as made by say ftruncate(2)),
+       would require a metadata flush.
+[/quote]
 
+With regards,
+Daniel
 -- 
-Peter Xu
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
