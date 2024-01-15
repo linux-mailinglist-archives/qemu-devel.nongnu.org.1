@@ -2,79 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6429082D323
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 03:38:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D60682D325
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 03:39:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPCqN-0007FX-5e; Sun, 14 Jan 2024 21:36:55 -0500
+	id 1rPCrs-00083i-Jt; Sun, 14 Jan 2024 21:38:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPCqI-0007FH-Rk
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 21:36:51 -0500
+ id 1rPCrq-000836-33
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 21:38:26 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPCqG-0005zo-EH
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 21:36:50 -0500
+ id 1rPCro-000673-Ls
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 21:38:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705286207;
+ s=mimecast20190719; t=1705286304;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=g4iJ8LTfQcUX8VfFLj4pynypzaHxIg6hs4fofelZ0OM=;
- b=L8Va7WTIViJD3Nj8mBVGPnah0cFv0IA0TnC1iJvOn49Wu1ZOvJ6FnLyCwm6qPqE7+B5ie8
- Baxwy6FiXDAYxu34mox9/vmakkC2eRhANlEc503R6eWvMWTf/+CAHpVL26jTtsHS+1wMOY
- RKHnTvngT1+DYtbTOgXXr1OfzhpxOXM=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HXvC9BwQZli8S0INfrt3gp3E/Ldald2M6vJ4C1KxN0Y=;
+ b=KpdunnFoZiYWbNOmc6oZBgJtlZ+wB0DQjx6v8NSYOp+JUgMJTboMMdKqLPWgkvqLsCpSue
+ gxRVubgaw3E4EsGzKJBlIwzoBgiAoYAsP0zL5WQFkID65gUJ5rCE2PussbkJijTjNfDAUL
+ Zwdt0uAyvfg6Z9zZyeb7XlIyqJ08434=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-Gfr7daY5Nk2bO8InEEs7FA-1; Sun, 14 Jan 2024 21:36:40 -0500
-X-MC-Unique: Gfr7daY5Nk2bO8InEEs7FA-1
-Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-6d99506e2e7so10313000b3a.2
- for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 18:36:40 -0800 (PST)
+ us-mta-410-OG7hycAzPRi9mhYNKEgMhA-1; Sun, 14 Jan 2024 21:38:22 -0500
+X-MC-Unique: OG7hycAzPRi9mhYNKEgMhA-1
+Received: by mail-oi1-f200.google.com with SMTP id
+ 5614622812f47-3bd62751c67so2886957b6e.1
+ for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 18:38:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705286200; x=1705891000;
+ d=1e100.net; s=20230601; t=1705286302; x=1705891102;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g4iJ8LTfQcUX8VfFLj4pynypzaHxIg6hs4fofelZ0OM=;
- b=K/1e+LY8jT9kXdSPhbDOWIuogzj+R9rhoS/aLP8wuSDvnqWq8kw2ZowaeZjvYfycyq
- 0wpi0KmBxOGfjOjUEsyLFe29n+7SV8KZgJF4sjjA0ZKulxxinLP1FFz31mz9ccqAbR8C
- xSuE06T7a66zy2FuFBDo+GIfNq76hj9D7axLuJFZm0pWKTXeHGFuZa5TC3TAa3UgGrJU
- BRJ9FovWpr6GOW9Vid8BqwdhSoTs1zsxFUNwjV54esGWfNvwNcyh1Hr9UcK/39Gn+XTw
- moz+jLCcaTNIvkgo3zJ3RoelPZMAVgkR+zQnxg271Oi6uCjp91dcQuhNaAetjlHGIfEb
- xhwQ==
-X-Gm-Message-State: AOJu0YyqbqNKKmtFXu9FR6h9gYEnMYYp2j+aj3THLq0AiPcWsAt4h33Q
- mnhT/3PvXvzzsZ6YtP3TgQ+7UnbsYVZPEK+Yv+wOHYrhLTziKwAoeJp83wtJu+PmkKbl0pZbYzP
- 7QIrb/6U+NC2LW2pqIETRudObB3C9u2Mc3LqhvCk=
-X-Received: by 2002:a05:6a20:e687:b0:19a:ef31:e8a9 with SMTP id
- mz7-20020a056a20e68700b0019aef31e8a9mr1282405pzb.74.1705286199849; 
- Sun, 14 Jan 2024 18:36:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHM9cLxC0J9skxr45Om+VoGdVQFBfNRODEzpyHPU3BQ6mCxi7rBvcEGyK54phGWcUOoqoHsElVB/8EYxns8woA=
-X-Received: by 2002:a05:6a20:e687:b0:19a:ef31:e8a9 with SMTP id
- mz7-20020a056a20e68700b0019aef31e8a9mr1282400pzb.74.1705286199592; Sun, 14
- Jan 2024 18:36:39 -0800 (PST)
+ bh=HXvC9BwQZli8S0INfrt3gp3E/Ldald2M6vJ4C1KxN0Y=;
+ b=fdxfA9hZXiGl3aY4hnyI8mz29sD/uf7EVjVVGccpo+N46raeVc6tb8EskdIXJs2DVH
+ OtQ1teRzxWNpq0Rt6Yxdv4t5OQZnLz3LmAtkdafzQbOofTkYnQIDCALGeGdH6hNtFy5j
+ ElV/lQGrVUvQPp5UwZqJpclOK4vN0pYCBapgGSu3i3BSX+qXGVQT5/73bg2cTh7tYQiw
+ C0wun3F7WiNWA91Fscgdwj/7eqKob1JD2y6mHcveeIf3oZMzrYqXcByHhqDiopEif5/d
+ nwXp/y6bity9tmHcexFDSAt9uNoVerJw/Kej7rNARQiY1s2+vmxN6LnB6lr5htmQOuuG
+ ykqQ==
+X-Gm-Message-State: AOJu0Yz6uEiuzjK4+4TFWnkUJTWTqiEdClC3KVoFOgdGztzAvcsy3FSJ
+ yVEpJu4A1TJjIEf8mdIggiQfqydtr0UlU+YlppNrIwz+/qwHpH8fLTai+t1VPB5HtdFTUzAkx6V
+ mr7C61OVufRoJpXWhSKnUoR893GOZbdWzUC3LH08=
+X-Received: by 2002:a05:6808:38c4:b0:3bd:685e:680f with SMTP id
+ el4-20020a05680838c400b003bd685e680fmr5431575oib.0.1705286302061; 
+ Sun, 14 Jan 2024 18:38:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFqZOScVnrT1Zgn5qTxhYsWpIJTYcwqoeoXohdu9s8KK89lT7kKRLaQRQuPp0YFpG2MAgsyEro0Lo/DacaQeXE=
+X-Received: by 2002:a05:6808:38c4:b0:3bd:685e:680f with SMTP id
+ el4-20020a05680838c400b003bd685e680fmr5431567oib.0.1705286301850; Sun, 14 Jan
+ 2024 18:38:21 -0800 (PST)
 MIME-Version: 1.0
-References: <20240104162942.211458-1-berrange@redhat.com>
- <CAJSP0QXUGgZdFaDKWUSjVNwHJXe+xz3Fq6WneP_=XS8htE9JYQ@mail.gmail.com>
-In-Reply-To: <CAJSP0QXUGgZdFaDKWUSjVNwHJXe+xz3Fq6WneP_=XS8htE9JYQ@mail.gmail.com>
+References: <20240102032901.3234-1-jasowang@redhat.com>
+In-Reply-To: <20240102032901.3234-1-jasowang@redhat.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 15 Jan 2024 10:36:28 +0800
-Message-ID: <CACGkMEtf0TeTSXg1PLrJQ31ehptuzgzyTmLxER2KDXp4GZa1kg@mail.gmail.com>
-Subject: Re: [PATCH 0/6] net: fix non-deterministic failures of the
- 'netdev-socket' qtest
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Thomas Huth <thuth@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 15 Jan 2024 10:38:10 +0800
+Message-ID: <CACGkMEva2WJvsgLYUNTk5ZSy0PfntHWHUKUbk0K=Xj+WKOjpuw@mail.gmail.com>
+Subject: Re: [PATCH] virtio-net: correctly copy vnet header when flushing TX
+To: mst@redhat.com, jasowang@redhat.com, qemu-devel@nongnu.org
+Cc: Xiao Lei <leixiao.nop@zju.edu.cn>,
+ Yuri Benditovich <yuri.benditovich@daynix.com>, 
+ qemu-stable@nongnu.org, Mauro Matteo Cascella <mcascell@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
@@ -102,55 +96,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 5, 2024 at 12:45=E2=80=AFAM Stefan Hajnoczi <stefanha@gmail.com=
-> wrote:
+On Tue, Jan 2, 2024 at 11:29=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
+ote:
 >
-> On Thu, 4 Jan 2024 at 11:30, Daniel P. Berrang=C3=A9 <berrange@redhat.com=
-> wrote:
-> >
-> > We've previously bumped up the timeouts in the netdev-socket qtest
-> > to supposedly fix non-deterministic failures, however, the failures
-> > are still hitting CI.
-> >
-> > A simple 'listen()' and 'connect()' pairing across 2 QEMU processes
-> > should be very quick to execute, even under high system load, so it
-> > was never likely that the test was failing due to timeouts being
-> > reached.
-> >
-> > The actual root cause was a race condition in the test design. It
-> > was spawning a QEMU with a 'server' netdev, and then spawning one
-> > with the 'client' netdev. There was insufficient synchronization,
-> > however, so it was possible for the 2nd QEMU process to attempt
-> > to 'connect()' before the 'listen()' call was made by the 1st QEMU.
-> >
-> > In the test scenarios that did not use the 'reconnect' flag, this
-> > would result in the client QEMU never getting into the expected
-> > state. The test code would thus loop on 'info network' until
-> > hitting the maximum wait time.
-> >
-> > This series reverts the increased timeouts, and fixes synchronization
-> > in the test scenarios. It also improves reporting of errors in the
-> > socket netdev backend so that 'info network' reports what actually
-> > went wrong rather than a useless generic 'connection error' string.
-> > This will help us diagnose any future CI problems, should they occurr.
-> >
-> > Daniel P. Berrang=C3=A9 (6):
-> >   Revert "netdev: set timeout depending on loadavg"
-> >   Revert "osdep: add getloadavg"
-> >   Revert "tests/qtest/netdev-socket: Raise connection timeout to 120
-> >     seconds"
-> >   net: add explicit info about connecting/listening state
-> >   net: handle QIOTask completion to report useful error message
-> >   qtest: ensure netdev-socket tests have non-overlapping names
-> >
-> >  include/qemu/osdep.h        | 10 ---------
-> >  meson.build                 |  1 -
-> >  net/stream.c                | 18 +++++++++++-----
-> >  tests/qtest/netdev-socket.c | 42 +++++++------------------------------
-> >  4 files changed, 21 insertions(+), 50 deletions(-)
+> When HASH_REPORT is negotiated, the guest_hdr_len might be larger than
+> the size of the mergeable rx buffer header. Using
+> virtio_net_hdr_mrg_rxbuf during the header swap might lead a stack
+> overflow in this case. Fixing this by using virtio_net_hdr_v1_hash
+> instead.
 >
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
->
+> Reported-by: Xiao Lei <leixiao.nop@zju.edu.cn>
+> Cc: Yuri Benditovich <yuri.benditovich@daynix.com>
+> Cc: qemu-stable@nongnu.org
+> Cc: Mauro Matteo Cascella <mcascell@redhat.com>
+> Fixes: CVE-2023-6693
+> Fixes: e22f0603fb2f ("virtio-net: reference implementation of hash report=
+")
+> Signed-off-by: Jason Wang <jasowang@redhat.com>
 
 Queued.
 
