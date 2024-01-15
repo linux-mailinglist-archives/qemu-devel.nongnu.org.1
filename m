@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A03FE82D37B
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:49:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A458882D363
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 04:36:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPDy1-0005zY-DH; Sun, 14 Jan 2024 22:48:53 -0500
+	id 1rPDlj-0002D4-MT; Sun, 14 Jan 2024 22:36:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPDxz-0005z8-IW
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:48:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rPDlh-0002C7-1n
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:36:09 -0500
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rPDxy-0000dT-2B
- for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:48:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705290529;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=un/QPyKFj6nxAT369C51fWYPwwGBK+EwrPpmzpyp1TA=;
- b=XwtX5WV408GxqxocUqyS1EaRQY+n4Yy4jiJ1920lYrbzq1a/3xTG7wyWqFhYP/f/O0wLr5
- 2yLSQkQhw68v+nmLnm8W4LDrL4QTnxBrySYNmMtrmR7D4kpbzQCC1ZyupaplYkz5AVirbc
- 4AX8uSAM2TcBcs8TZuujs4Mji/DKoUw=
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
- [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-28-onwVM9PEOm2hU_8Qh2wceA-1; Sun, 14 Jan 2024 22:48:47 -0500
-X-MC-Unique: onwVM9PEOm2hU_8Qh2wceA-1
-Received: by mail-ot1-f70.google.com with SMTP id
- 46e09a7af769-6ddec7b52e7so6096023a34.1
- for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 19:48:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705290527; x=1705895327;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=un/QPyKFj6nxAT369C51fWYPwwGBK+EwrPpmzpyp1TA=;
- b=DGKMr7CTvNHpej0w6Nr2dc87Ah08I3hLOz0nopu2ij+RFXTcH9hVB8n8KkjI6oEGQI
- HTkAT4ag9GoWAnp6djxUiS2wXez2GU+TF37JXApjQDKCLQleyEPwfbrAc+rmCDzi+GS9
- 8e6GZnvsle7TaaBH9dXDdgqji/j1c30qu0vzElU1g+sFLGhLyo2FtvHWE2BY2JgiHSBy
- pfPqaPlk1t+wHCdHnikpiYMfQUPnuMCyrdNqiYpTpeWvQHr+VD5J3c1AdVbbiucCvsmH
- dogbl7sUCQrgv6qevGunF6cGnIGHGVUBapIE3l7mpaaCp/NTnPgjUqYKpoYhOjcgr1aK
- sinw==
-X-Gm-Message-State: AOJu0YzQdL9yrId8K9C3TUQFtUzJ5n0y2+Q0ZqwSJTbhfEe5Ceun14VX
- mOFXMFQkOp0ZfG+piKKYEaHdD9Dm+2izcdY1RrJ3UxHVB61tP6eMqHNorAhJNtg6d/Pwv6iQSXh
- xeyMz82IXhaKZqtd61TrxtPoccN0vvmnaXg6jqMM=
-X-Received: by 2002:a9d:5609:0:b0:6dd:ebd1:4618 with SMTP id
- e9-20020a9d5609000000b006ddebd14618mr4209384oti.73.1705290527276; 
- Sun, 14 Jan 2024 19:48:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHv127lcPmL+bAD65EK7s82AjifdtlOWLINRaMz3KiHjn685BuIOsDM1TptIwvkjf6Wewx3jAOtCRnHWyw0s1g=
-X-Received: by 2002:a9d:5609:0:b0:6dd:ebd1:4618 with SMTP id
- e9-20020a9d5609000000b006ddebd14618mr4209377oti.73.1705290527098; Sun, 14 Jan
- 2024 19:48:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rPDlc-0007GR-E9
+ for qemu-devel@nongnu.org; Sun, 14 Jan 2024 22:36:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705289764; x=1736825764;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=TaFI8xu9ha7Qu9WsffH9ZV0yEhE8bI5Htv2gCGJD1D8=;
+ b=ILoAm5WkSr6RkleUaNco7mIHjYi0sHDmZodwPqhLMr/kuSRPfVf+GUdm
+ v8/2ouq6h+Ww6GPvzE81GLncQ0I6TSVd4AFpcYGKjpcChuRabvYmui7v6
+ Tz6hIwU+b+/UUb4IKthFteStQkEXeGAP8orRW11QrS3d5MqIE/pduF0v8
+ ZM59gHtlSX7tMH5KxBhmov0IoYN0pqPiKqHJ95YzTRe80FdDr6kg+vd54
+ 1zg3xw/mK6g+uWjmp72zqLrhDT/eoJKSc1FQ/Wf3ugjivwjuiGSiobNhR
+ WBEIvn4TvpFRVLWobyICFBjKBdDOVSstc+cThnLG5CA8+rA1fZGmAdD7E g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="6247488"
+X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; 
+   d="scan'208";a="6247488"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2024 19:36:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="1114810777"
+X-IronPort-AV: E=Sophos;i="6.04,195,1695711600"; d="scan'208";a="1114810777"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmsmga005.fm.intel.com with ESMTP; 14 Jan 2024 19:35:58 -0800
+Date: Mon, 15 Jan 2024 11:48:56 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v7 15/16] i386: Use offsets get NumSharingCache for
+ CPUID[0x8000001D].EAX[bits 25:14]
+Message-ID: <ZaSrKB3y9TEJZG5T@intel.com>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-16-zhao1.liu@linux.intel.com>
+ <599ddf2d-dc2e-4684-b2c2-ba6dfd886f32@intel.com>
 MIME-Version: 1.0
-References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-35-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-35-git-send-email-si-wei.liu@oracle.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 15 Jan 2024 11:48:36 +0800
-Message-ID: <CACGkMEuQaqU33McmowfmEMG59Qs0Jx_AUEk=HBBx6_10u_96qQ@mail.gmail.com>
-Subject: Re: [PATCH 34/40] vdpa: fix network breakage after cancelling
- migration
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: eperezma@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
- leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
- jonah.palmer@oracle.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <599ddf2d-dc2e-4684-b2c2-ba6dfd886f32@intel.com>
+Received-SPF: none client-ip=198.175.65.11;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,30 +88,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 8, 2023 at 2:51=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> w=
-rote:
->
-> Fix an issue where cancellation of ongoing migration ends up
-> with no network connectivity.
->
-> When canceling migration, SVQ will be switched back to the
-> passthrough mode, but the right call fd is not programed to
-> the device and the svq's own call fd is still used. At the
-> point of this transitioning period, the shadow_vqs_enabled
-> hadn't been set back to false yet, causing the installation
-> of call fd inadvertently bypassed.
->
-> Fixes: a8ac88585da1 ("vhost: Add Shadow VirtQueue call forwarding capabil=
-ities")
-> Cc: Eugenio P=C3=A9rez <eperezma@redhat.com>
+Hi Xiaoyao,
 
-Let's cc stable and post this as an independent patch.
+On Sun, Jan 14, 2024 at 10:42:41PM +0800, Xiaoyao Li wrote:
+> Date: Sun, 14 Jan 2024 22:42:41 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH v7 15/16] i386: Use offsets get NumSharingCache for
+>  CPUID[0x8000001D].EAX[bits 25:14]
+> 
+> On 1/8/2024 4:27 PM, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > The commit 8f4202fb1080 ("i386: Populate AMD Processor Cache Information
+> > for cpuid 0x8000001D") adds the cache topology for AMD CPU by encoding
+> > the number of sharing threads directly.
+> > 
+> >  From AMD's APM, NumSharingCache (CPUID[0x8000001D].EAX[bits 25:14])
+> > means [1]:
+> > 
+> > The number of logical processors sharing this cache is the value of
+> > this field incremented by 1. To determine which logical processors are
+> > sharing a cache, determine a Share Id for each processor as follows:
+> > 
+> > ShareId = LocalApicId >> log2(NumSharingCache+1)
+> > 
+> > Logical processors with the same ShareId then share a cache. If
+> > NumSharingCache+1 is not a power of two, round it up to the next power
+> > of two.
+> > 
+> >  From the description above, the calculation of this field should be same
+> > as CPUID[4].EAX[bits 25:14] for Intel CPUs. So also use the offsets of
+> > APIC ID to calculate this field.
+> > 
+> > [1]: APM, vol.3, appendix.E.4.15 Function 8000_001Dh--Cache Topology
+> >       Information
+> 
+> this patch can be dropped because we have next patch.
 
->
-> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+This patch is mainly used to explicitly emphasize the change in encoding
+way and compliance with AMD spec... I didn't tested on AMD machine, so
+the more granular patch would make it easier for the community to review
+and test.
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+Thanks,
+Zhao
 
-Thanks
-
+> 
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > Reviewed-by: Babu Moger <babu.moger@amd.com>
+> > Tested-by: Babu Moger <babu.moger@amd.com>
+> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> > ---
+> > Changes since v3:
+> >   * Rewrite the subject. (Babu)
+> >   * Delete the original "comment/help" expression, as this behavior is
+> >     confirmed for AMD CPUs. (Babu)
+> >   * Rename "num_apic_ids" (v3) to "num_sharing_cache" to match spec
+> >     definition. (Babu)
+> > 
+> > Changes since v1:
+> >   * Rename "l3_threads" to "num_apic_ids" in
+> >     encode_cache_cpuid8000001d(). (Yanan)
+> >   * Add the description of the original commit and add Cc.
+> > ---
+> >   target/i386/cpu.c | 10 ++++------
+> >   1 file changed, 4 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> > index b23e8190dc68..8a4d72f6f760 100644
+> > --- a/target/i386/cpu.c
+> > +++ b/target/i386/cpu.c
+> > @@ -483,7 +483,7 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
+> >                                          uint32_t *eax, uint32_t *ebx,
+> >                                          uint32_t *ecx, uint32_t *edx)
+> >   {
+> > -    uint32_t l3_threads;
+> > +    uint32_t num_sharing_cache;
+> >       assert(cache->size == cache->line_size * cache->associativity *
+> >                             cache->partitions * cache->sets);
+> > @@ -492,13 +492,11 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
+> >       /* L3 is shared among multiple cores */
+> >       if (cache->level == 3) {
+> > -        l3_threads = topo_info->modules_per_die *
+> > -                     topo_info->cores_per_module *
+> > -                     topo_info->threads_per_core;
+> > -        *eax |= (l3_threads - 1) << 14;
+> > +        num_sharing_cache = 1 << apicid_die_offset(topo_info);
+> >       } else {
+> > -        *eax |= ((topo_info->threads_per_core - 1) << 14);
+> > +        num_sharing_cache = 1 << apicid_core_offset(topo_info);
+> >       }
+> > +    *eax |= (num_sharing_cache - 1) << 14;
+> >       assert(cache->line_size > 0);
+> >       assert(cache->partitions > 0);
+> 
 
