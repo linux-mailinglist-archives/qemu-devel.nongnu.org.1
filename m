@@ -2,89 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114FC82D44A
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 07:48:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C403A82D456
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 07:58:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPGm3-0000Yp-Ms; Mon, 15 Jan 2024 01:48:43 -0500
+	id 1rPGuo-0002Xu-1D; Mon, 15 Jan 2024 01:57:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPGm1-0000Yg-MI
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:48:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <yuan.yao@linux.intel.com>)
+ id 1rPGuj-0002XX-Do
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:57:42 -0500
+Received: from mgamail.intel.com ([134.134.136.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPGlz-0000hQ-ML
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:48:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705301319;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2mgUON4oOE++q9Sa58Xl5OdQKDGJhktmZE9K1jCUJx4=;
- b=gfe/EXdqSgSM90MHoZ+FdpFcnhTqMIK7+r1ZRX4g1i5Ln30UIvKZv6qG9WuFQmysLEjT/6
- ia0YMH9XAN/6PMCbFke3MMDzgjGD47j8egLPJMv23thQwrMIGrHrbs/0fQS00sQhpdCKQ5
- SwmV9ReKtdXb/vfyzpYJPO0UYNPjrB0=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-vYbBFSYBOPe77EdPAVFw2Q-1; Mon, 15 Jan 2024 01:48:36 -0500
-X-MC-Unique: vYbBFSYBOPe77EdPAVFw2Q-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-28df183249bso1050267a91.0
- for <qemu-devel@nongnu.org>; Sun, 14 Jan 2024 22:48:36 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705301316; x=1705906116;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2mgUON4oOE++q9Sa58Xl5OdQKDGJhktmZE9K1jCUJx4=;
- b=LoeL0fxgCiIt+S+thq807UxgEX1nwQBtfdR89rFrRE7Sa/4xuswSIwGPC1+wPTnKkK
- MY6jKvf6OY4Go2qWvPW6sJgUXB34D4xG1dQhypDmCM+hWF9wFxZqWv6vD4ATnwxrsDQx
- bNN5G2M/pBcBPiRI4K6jFP8Pnunx0BZz4MmvZm5tqD8K+JhHo13Bsi9r2yGMoSkJsX1c
- +GBkcZOd+KrUVjLC/83NaNsOjwJEg7PlcdPlLhApmubehgZM2VXLvStejUoBHvrMvHzW
- USbL9SDFozrVTNVBP326P2fWdw+lgBazexat1b3jBY8m7WPBbNXnE/JbXPY4c9BFDTzD
- OXYg==
-X-Gm-Message-State: AOJu0YyBn9vtZEM7RA8Qb13gpB+RYMfczhqcXn6rN9YhqDivkXFH6Plx
- PijTkO9eXfQ/fdoQDshhpUKsfxBBfDIGLdiegPyDJzdc3y8lAVaInL6sclrCSXp+osFDhH4sZA/
- l9Zw9doiJMOzeBrJXt5lqfPY=
-X-Received: by 2002:a17:90b:1e47:b0:28e:4761:cfff with SMTP id
- pi7-20020a17090b1e4700b0028e4761cfffmr2406160pjb.0.1705301315975; 
- Sun, 14 Jan 2024 22:48:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG3+ajELU5PvpkvErXnWRCZ4OCrAviSdJOUHphecW48/cEvT7yHlndIyPNEYvHwsLszEQFmIQ==
-X-Received: by 2002:a17:90b:1e47:b0:28e:4761:cfff with SMTP id
- pi7-20020a17090b1e4700b0028e4761cfffmr2406151pjb.0.1705301315708; 
- Sun, 14 Jan 2024 22:48:35 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- sc4-20020a17090b510400b0028b89520c7asm8922680pjb.9.2024.01.14.22.48.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Jan 2024 22:48:35 -0800 (PST)
-Date: Mon, 15 Jan 2024 14:48:24 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Marc-Andre Lureau <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH V2 04/11] migration: remove migration_in_postcopy parameter
-Message-ID: <ZaTVOF7aPV-n7gKY@x1n>
-References: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
- <1705071910-174321-5-git-send-email-steven.sistare@oracle.com>
+ (Exim 4.90_1) (envelope-from <yuan.yao@linux.intel.com>)
+ id 1rPGug-0002Hp-Kv
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 01:57:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705301858; x=1736837858;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=HAuI63RtZNCW9bPDKoL24fAx009ASwCIuxW3e8g+f54=;
+ b=OlL1Riq+tU/1ETMpJ8AzQQfEQ3qkHmrAF8qSHK1KgzqGA4HoGzNJMA2T
+ Steh30nD4Si9HDnEQ5SkfrVHMuba07d2sx4ZvHHOd6iyHPMkRp89Idbnz
+ ggmIv1v4EALLHOOwoP9wKlK9NHPHolZg0r9IApa9JDJaIP8uPLVvd9Rog
+ i2O1mWMdgUI98bkhTZQQuZ+BFLWwujziBlmxcLUCvIODqaW4izrVQz+FM
+ 8ejEi0oYLOs/ZaeYZ04dfTbh5gSbrei57+fRW4inPieJwh6OHSyMilWyk
+ C2Dn4FqZK+C+2odJYbBirpbQrWgAV+Jh3Ng/uNL77h+o8UUe0q7Wwvge9 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="465929466"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="465929466"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jan 2024 22:57:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="817725685"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; d="scan'208";a="817725685"
+Received: from yy-desk-7060.sh.intel.com (HELO localhost) ([10.239.159.76])
+ by orsmga001.jf.intel.com with ESMTP; 14 Jan 2024 22:57:31 -0800
+Date: Mon, 15 Jan 2024 14:57:30 +0800
+From: Yuan Yao <yuan.yao@linux.intel.com>
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
+Message-ID: <20240115065730.ezwpd3sjoycc57rm@yy-desk-7060>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-9-zhao1.liu@linux.intel.com>
+ <20240115032524.44q5ygb25ieut44c@yy-desk-7060>
+ <ZaSv51/5Eokkv5Rr@intel.com>
+ <336a4816-966d-42b0-b34b-47be3e41446d@intel.com>
+ <20240115052022.xbv6exhm4af7kai7@yy-desk-7060>
+ <ZaTOpCFZRu6/py/J@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1705071910-174321-5-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+In-Reply-To: <ZaTOpCFZRu6/py/J@intel.com>
+User-Agent: NeoMutt/20171215
+Received-SPF: none client-ip=134.134.136.100;
+ envelope-from=yuan.yao@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.758,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,29 +91,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 12, 2024 at 07:05:03AM -0800, Steve Sistare wrote:
->  bool migration_in_incoming_postcopy(void)
-> diff --git a/ui/spice-core.c b/ui/spice-core.c
-> index b3cd229..e43a93f 100644
-> --- a/ui/spice-core.c
-> +++ b/ui/spice-core.c
-> @@ -580,7 +580,7 @@ static int migration_state_notifier(NotifierWithReturn *notifier,
->      if (migration_in_setup(s)) {
->          spice_server_migrate_start(spice_server);
->      } else if (migration_has_finished(s) ||
-> -               migration_in_postcopy_after_devices(s)) {
-> +               migration_in_postcopy_after_devices()) {
+On Mon, Jan 15, 2024 at 02:20:20PM +0800, Zhao Liu wrote:
+> On Mon, Jan 15, 2024 at 01:20:22PM +0800, Yuan Yao wrote:
+> > Date: Mon, 15 Jan 2024 13:20:22 +0800
+> > From: Yuan Yao <yuan.yao@linux.intel.com>
+> > Subject: Re: [PATCH v7 08/16] i386: Expose module level in CPUID[0x1F]
+> >
+> > Ah, so my understanding is incorrect on this.
+> >
+> > I tried on one raptor lake i5-i335U, which also hybrid soc but doesn't have
+> > module level, in this case 0x1f and 0xb have same values in core/lp level.
+>
+> Some socs have modules/dies but they don't expose them in 0x1f.
 
-This can be a reply also to your other email: my previous suggestion of
-using PRECOPY_DONE should apply here, where we can convert this chunk into:
+Here they don't expose because from hardware level they can't or possible
+software level configuration (i.e. disable some cores in bios) ?
 
-  } else if (event == MIG_EVENT_PRECOPY_DONE) {...}
-
-Because PRECOPY_DONE should also cover the notification from
-postcopy_start(), then we can drop migration_in_postcopy_after_devices()
-completely, I think.
-
--- 
-Peter Xu
-
+>
+> If the soc only expose thread/core levels in 0x1f, then its 0x1f is same
+> as 0x0b. Otherwise, it will have more subleaves and different
+> values.
+>
+> Thanks,
+> Zhao
+>
 
