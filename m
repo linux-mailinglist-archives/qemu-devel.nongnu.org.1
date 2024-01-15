@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEABE82DACD
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 15:00:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44CD982DAE5
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jan 2024 15:04:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPNUz-0006cL-4s; Mon, 15 Jan 2024 08:59:33 -0500
+	id 1rPNZ7-0008W9-18; Mon, 15 Jan 2024 09:03:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPNUx-0006c1-3B
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 08:59:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPNYa-0008TY-6N
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:03:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPNUv-0005Qm-Gj
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 08:59:30 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPNYY-0006H3-Av
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 09:03:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705327168;
+ s=mimecast20190719; t=1705327393;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=h2q8SO4YjfZRp0dhijAi2PgUa2FnH9dJ9NoZirzfTBI=;
- b=Wbc8FxyiGjDDqt+2KNQHswR9qln0PyJtiWEhRSejfnWqvIbiV0F+NmQyMcofOEp1+kPVLn
- pZ5ltqKDsWdhIAfj8oLrx8sW6PwfDxdSz5O3GVheVQMU5Qw6rpBEjYDF6C+209KFAjU/s5
- FWpSF8aXwi9e6/k6NL0TgPKsKUNiVJw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-144-Jg-o0xjQNUSu3ddrZaeWUw-1; Mon,
- 15 Jan 2024 08:59:27 -0500
-X-MC-Unique: Jg-o0xjQNUSu3ddrZaeWUw-1
+ bh=7uRj0mQfawnVP/uniUNEXiViZWVuRF5N842H97Fvj44=;
+ b=BgZ4Mu2n9jBCU9YLUSsLX8MU6RmPusCmrbUmQiJ6Skr6tXP2unq7eJ8dFjzw6qRqiCzh8k
+ BycwgdIOEzqTNNUwG/UTMRdnh4E/lPwC9b5JMAJK+0Gv1fxpAZsIqvoxKpsa6EJozd4yDQ
+ umbgjNKVF2yanTIWZzaiEuUhCvQjPm0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-4YVTAxtBNNKGxWexMgaEHw-1; Mon, 15 Jan 2024 09:03:11 -0500
+X-MC-Unique: 4YVTAxtBNNKGxWexMgaEHw-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C92313C13A87;
- Mon, 15 Jan 2024 13:59:26 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 29A29885620;
+ Mon, 15 Jan 2024 14:03:11 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.128])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A8F921C060B2;
- Mon, 15 Jan 2024 13:59:26 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 083D01C060B3;
+ Mon, 15 Jan 2024 14:03:11 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id BC7D521E680D; Mon, 15 Jan 2024 14:59:25 +0100 (CET)
+ id 09EDE21E680D; Mon, 15 Jan 2024 15:03:10 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: John Snow <jsnow@redhat.com>
 Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Peter
- Maydell <peter.maydell@linaro.org>,  Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v2 05/19] qapi/schema: declare type for
- QAPISchemaArrayType.element_type
-In-Reply-To: <20240112222945.3033854-6-jsnow@redhat.com> (John Snow's message
- of "Fri, 12 Jan 2024 17:29:31 -0500")
+ Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH v2 06/19] qapi/schema: make c_type() and json_type()
+ abstract methods
+In-Reply-To: <20240112222945.3033854-7-jsnow@redhat.com> (John Snow's message
+ of "Fri, 12 Jan 2024 17:29:32 -0500")
 References: <20240112222945.3033854-1-jsnow@redhat.com>
- <20240112222945.3033854-6-jsnow@redhat.com>
-Date: Mon, 15 Jan 2024 14:59:25 +0100
-Message-ID: <87fryybsua.fsf@pond.sub.org>
+ <20240112222945.3033854-7-jsnow@redhat.com>
+Date: Mon, 15 Jan 2024 15:03:10 +0100
+Message-ID: <87bk9mbso1.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.531,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,34 +85,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 John Snow <jsnow@redhat.com> writes:
 
-> This field should always be present and defined after check() is
-> called. Declare the property but allow its initialization to be delayed
-> until check() so that it can be typed without the use of `Optional`.
+> These methods should always return a str, it's only the default abstract
+> implementation that doesn't. They can be marked "abstract", which
+> requires subclasses to override the method with the proper return type.
 >
-> This helps simplify typing by avoiding the need to interrogate the value
-> for None at multiple callsites; the overwhelming majority of uses assume
-> a fully-initialized object.
-
-If you like my version of the previous patch's commit message, we could
-reuse it here.
-
 > Signed-off-by: John Snow <jsnow@redhat.com>
 > ---
->  scripts/qapi/schema.py | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  scripts/qapi/schema.py | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 >
 > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-> index 48a51dcd188..e45d9545eda 100644
+> index e45d9545eda..8e25dd35562 100644
 > --- a/scripts/qapi/schema.py
 > +++ b/scripts/qapi/schema.py
-> @@ -389,7 +389,7 @@ def __init__(self, name, info, element_type):
->          super().__init__(name, info, None)
->          assert isinstance(element_type, str)
->          self._element_type_name = element_type
-> -        self.element_type = None
-> +        self.element_type: QAPISchemaType
+> @@ -16,6 +16,7 @@
 >  
->      def need_has_if_optional(self):
->          # When FOO is an array, we still need has_FOO to distinguish
+>  # TODO catching name collisions in generated code would be nice
+>  
+> +from abc import ABC, abstractmethod
+>  from collections import OrderedDict
+>  import os
+>  import re
+> @@ -253,10 +254,11 @@ def visit(self, visitor):
+>          visitor.visit_include(self._sub_module.name, self.info)
+>  
+>  
+> -class QAPISchemaType(QAPISchemaDefinition):
+> +class QAPISchemaType(QAPISchemaDefinition, ABC):
+>      # Return the C type for common use.
+>      # For the types we commonly box, this is a pointer type.
+> -    def c_type(self):
+> +    @abstractmethod
+> +    def c_type(self) -> str:
+
+You additionally add the type hint.  Suggest to either mention it in the
+commit message, or add it only together with the other type hints in
+PATCH 17.
+
+>          pass
+>  
+>      # Return the C type to be used in a parameter list.
+> @@ -267,7 +269,8 @@ def c_param_type(self):
+>      def c_unboxed_type(self):
+>          return self.c_type()
+>  
+> -    def json_type(self):
+> +    @abstractmethod
+> +    def json_type(self) -> str:
+
+Likewise.
+
+>          pass
+>  
+>      def alternate_qtype(self):
 
 
