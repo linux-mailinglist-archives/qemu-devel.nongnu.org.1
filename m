@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C852482F12A
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 16:15:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F11D482F127
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 16:14:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPl7G-0006co-TZ; Tue, 16 Jan 2024 10:12:38 -0500
+	id 1rPl7G-0006cd-Bf; Tue, 16 Jan 2024 10:12:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPl7D-0006bZ-TM
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 10:12:35 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1rPl7E-0006ba-13
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 10:12:36 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPl79-0005pK-Pr
+ id 1rPl7A-0005pT-Cr
  for qemu-devel@nongnu.org; Tue, 16 Jan 2024 10:12:35 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40e87d07c07so42245e9.1
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 07:12:31 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40e69b3149fso43422825e9.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 07:12:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705417950; x=1706022750; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705417951; x=1706022751; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SScbRSdHLdETXW89TnfIltt7SofqN6SCYQfgIoU2I1c=;
- b=fkFL6fgYGoqdpj1M3XCbWMUOj/dewlaH7TMK8xUh8We8BX3JJKb28NpLdAVh0zeodf
- jfHu4fHBSGE/OUPzxN4QALS1RHLGk2PYy5qsnTBuj5vA1c395JzYG5lq3dVSx5fvVb47
- 5qDQa5Lh37jyOCPlZozadpRf2UnSGCWRPLpcLwQq8LtyZys40EtiaAtgmEhbuhUzD0du
- DJsYKxEHxqU0duHmg/aHaPRP2+IZvhqecaNPUm3z7EXvBplq+chb4Zu1ey6XYqcty8l3
- CGTWZdg4to5B1iQGV3UxgZf5zKFgxGEtWvgZWoJaxgTNAQ43DsFd5e997JuW8251R6qu
- FxWA==
+ :reply-to; bh=dC6OZe1+HIS56y3mIpb8eva6rU71DiVV1enzLIhFmJY=;
+ b=geBPqfUtso20jeVIOw6JvXIutekuhMlhBYApqTPxGVv1HS9So0vLhWtz7bDFXKURFI
+ UFWH+s1l9a8EpN1nGmGm/+PsgC52vL7FVAFPXpkxn09dBmImaEuELupKhIi+/VvKiHnG
+ cMQOW78HanUkwtFU8H9CrdPQH9mbGskm0fjm8LdTolADUEjS29bVwAipiVq/iinS6gMc
+ d0oBF4XVrX5tZfCZgkdHwTjT+zT5+W7OHT1b3Ad5Hp8BSktJEYeaneOa3n+tuc1xd3zU
+ H8ZxAewi3/gWCtRqiHb0d/V8qLmtU5nzOWwB5+TOfXo7C3Wes4yxk+vzOt4OMS1+MGTt
+ hRzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705417950; x=1706022750;
+ d=1e100.net; s=20230601; t=1705417951; x=1706022751;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SScbRSdHLdETXW89TnfIltt7SofqN6SCYQfgIoU2I1c=;
- b=hqS4y5U3DLmmeHDpjSbYZDkeoHOm7Fnxxjm7zwlg5TRi9hdrWnVHvsxucKZW3T1C3j
- m4FJnjhX19aaeVJwM3cuB1ircDHtvc2Su4Kz2p2C7M0BkZvp9PhXYNnn6RutBHP2C/wF
- W9k4MvLYFBrNyMxVBTfOeCpeiY79Sp4FSX2xypWVSTJw+RHADbuKNmKti5zJT6V+6qV8
- 7XODIgtDWwAKkdjxlM+MDTh5T2qLwGbDPeucWN/IzM9NrLaLDzh0ntjg352uanQfBSzG
- DF3yEE7wRysIDhxie283tttworKi7887tdp24ZBkebHut4FXMJBuGLTe7P0C/BtSelgc
- wJXA==
-X-Gm-Message-State: AOJu0Yyqo52NE4tBqAoONHP0usJD6jl03XiCSp5VibDqzT6BJpm2rqgP
- nGSQjxQIjUNmfQ87e6NdCAZDHcBZD4Q5QDA9X1+KM10s5+k=
-X-Google-Smtp-Source: AGHT+IFaDhAAh5ifHE4nFN9hpXUEZBg5fk3dU9x0fVGqYmGZghTkmZW4Fyfo7AZzPrt+SdiLys0JjA==
-X-Received: by 2002:a05:600c:154c:b0:40e:6279:9690 with SMTP id
- f12-20020a05600c154c00b0040e62799690mr4092640wmg.119.1705417950539; 
+ bh=dC6OZe1+HIS56y3mIpb8eva6rU71DiVV1enzLIhFmJY=;
+ b=mGfBvjZDgKy1QBFMYUrHDLoRc0s3PDYrGE4IHbznkLUbjc4ytZUP4jhL9s7IcVqBLy
+ ajt2Myfeuvg9Plt/INee8FIvSuCETPPzn0rMB8VO8vSxoz49i4Vc7yBWp5mi99Bd9vBL
+ 3bkO3mND8qiB1VqqxgNZMmxYSKAHSiTpjDA3OuMTb0yt3F/AwzUx9R6sxSai/c3/i0wJ
+ I8x0as7wc3RYUUe4C1nIkz3SFCsb6XuTQdNc3lCcksyKlWYxEGDsF+dlGVD8SUiNmx+i
+ s0ilgBGrYHOy1efkvZPYdf8A4XSi/M0ZKiSSQbIraaykLcH3LCHbjzBWkqxzOHqM8cbr
+ Utzg==
+X-Gm-Message-State: AOJu0Ywn7tOgJGfP/fnQXdwrYRpwPsuUKJQ5AP3ZwUEoq6e2oYqBUHQz
+ GF55WPZfWsIfI9I7AEY2artzHN1/xDmxRtflNMcwqwfKjWM=
+X-Google-Smtp-Source: AGHT+IHJAVrmycJjHS3ECk9Ym8mYGWtk/zCRJw0cCK4EIpO8bMzMfMGxDS30etcmuhEcRZAU4pmeKQ==
+X-Received: by 2002:a05:600c:2e05:b0:40e:6ea4:bf57 with SMTP id
+ o5-20020a05600c2e0500b0040e6ea4bf57mr2926687wmf.126.1705417950925; 
  Tue, 16 Jan 2024 07:12:30 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,24 +58,25 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 16 Jan 2024 07:12:30 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/21] docs/system/arm/virt.rst: Improve 'highmem' option docs
-Date: Tue, 16 Jan 2024 15:12:10 +0000
-Message-Id: <20240116151228.2430754-4-peter.maydell@linaro.org>
+Subject: [PULL 04/21] hw/misc: Implement STM32L4x5 EXTI
+Date: Tue, 16 Jan 2024 15:12:11 +0000
+Message-Id: <20240116151228.2430754-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240116151228.2430754-1-peter.maydell@linaro.org>
 References: <20240116151228.2430754-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,37 +92,448 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Improve the 'highmem' option docs to note that by default we assume
-that a 32-bit kernel on an LPAE-capable CPU has LPAE enabled, and
-what the consequences are.
+From: Inès Varhol <ines.varhol@telecom-paris.fr>
 
+Although very similar to the STM32F4xx EXTI, STM32L4x5 EXTI generates
+more than 32 event/interrupt requests and thus uses more registers
+than STM32F4xx EXTI which generates 23 event/interrupt requests.
+
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240109160658.311932-2-ines.varhol@telecom-paris.fr
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Message-id: 20240109170834.1387457-1-peter.maydell@linaro.org
 ---
- docs/system/arm/virt.rst | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ docs/system/arm/b-l475e-iot01a.rst |   5 +-
+ include/hw/misc/stm32l4x5_exti.h   |  51 +++++
+ hw/misc/stm32l4x5_exti.c           | 290 +++++++++++++++++++++++++++++
+ hw/misc/Kconfig                    |   3 +
+ hw/misc/meson.build                |   1 +
+ hw/misc/trace-events               |   5 +
+ 6 files changed, 352 insertions(+), 3 deletions(-)
+ create mode 100644 include/hw/misc/stm32l4x5_exti.h
+ create mode 100644 hw/misc/stm32l4x5_exti.c
 
-diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-index 7c4c80180c6..c245c52b7ac 100644
---- a/docs/system/arm/virt.rst
-+++ b/docs/system/arm/virt.rst
-@@ -96,7 +96,13 @@ mte
- highmem
-   Set ``on``/``off`` to enable/disable placing devices and RAM in physical
-   address space above 32 bits. The default is ``on`` for machine types
--  later than ``virt-2.12``.
-+  later than ``virt-2.12`` when the CPU supports an address space
-+  bigger than 32 bits (i.e. 64-bit CPUs, and 32-bit CPUs with the
-+  Large Physical Address Extension (LPAE) feature). If you want to
-+  boot a 32-bit kernel which does not have ``CONFIG_LPAE`` enabled on
-+  a CPU type which implements LPAE, you will need to manually set
-+  this to ``off``; otherwise some devices, such as the PCI controller,
-+  will not be accessible.
+diff --git a/docs/system/arm/b-l475e-iot01a.rst b/docs/system/arm/b-l475e-iot01a.rst
+index 2b128e6b847..72f256ace75 100644
+--- a/docs/system/arm/b-l475e-iot01a.rst
++++ b/docs/system/arm/b-l475e-iot01a.rst
+@@ -12,17 +12,16 @@ USART, I2C, SPI, CAN and USB OTG, as well as a variety of sensors.
+ Supported devices
+ """""""""""""""""
  
- compact-highmem
-   Set ``on``/``off`` to enable/disable the compact layout for high memory regions.
+-Currently, B-L475E-IOT01A machine's implementation is minimal,
+-it only supports the following device:
++Currently B-L475E-IOT01A machine's only supports the following devices:
+ 
+ - Cortex-M4F based STM32L4x5 SoC
++- STM32L4x5 EXTI (Extended interrupts and events controller)
+ 
+ Missing devices
+ """""""""""""""
+ 
+ The B-L475E-IOT01A does *not* support the following devices:
+ 
+-- Extended interrupts and events controller (EXTI)
+ - Reset and clock control (RCC)
+ - Serial ports (UART)
+ - System configuration controller (SYSCFG)
+diff --git a/include/hw/misc/stm32l4x5_exti.h b/include/hw/misc/stm32l4x5_exti.h
+new file mode 100644
+index 00000000000..be961d2f01f
+--- /dev/null
++++ b/include/hw/misc/stm32l4x5_exti.h
+@@ -0,0 +1,51 @@
++/*
++ * STM32L4x5 EXTI (Extended interrupts and events controller)
++ *
++ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2023 Inès Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ *
++ * This work is based on the stm32f4xx_exti by Alistair Francis.
++ * Original code is licensed under the MIT License:
++ *
++ * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
++ */
++
++/*
++ * The reference used is the STMicroElectronics RM0351 Reference manual
++ * for STM32L4x5 and STM32L4x6 advanced Arm ® -based 32-bit MCUs.
++ * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/documentation.html
++ */
++
++#ifndef HW_STM32L4X5_EXTI_H
++#define HW_STM32L4X5_EXTI_H
++
++#include "hw/sysbus.h"
++#include "qom/object.h"
++
++#define TYPE_STM32L4X5_EXTI "stm32l4x5-exti"
++OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5ExtiState, STM32L4X5_EXTI)
++
++#define EXTI_NUM_INTERRUPT_OUT_LINES 40
++#define EXTI_NUM_REGISTER 2
++
++struct Stm32l4x5ExtiState {
++    SysBusDevice parent_obj;
++
++    MemoryRegion mmio;
++
++    uint32_t imr[EXTI_NUM_REGISTER];
++    uint32_t emr[EXTI_NUM_REGISTER];
++    uint32_t rtsr[EXTI_NUM_REGISTER];
++    uint32_t ftsr[EXTI_NUM_REGISTER];
++    uint32_t swier[EXTI_NUM_REGISTER];
++    uint32_t pr[EXTI_NUM_REGISTER];
++
++    qemu_irq irq[EXTI_NUM_INTERRUPT_OUT_LINES];
++};
++
++#endif
+diff --git a/hw/misc/stm32l4x5_exti.c b/hw/misc/stm32l4x5_exti.c
+new file mode 100644
+index 00000000000..9fd859160d4
+--- /dev/null
++++ b/hw/misc/stm32l4x5_exti.c
+@@ -0,0 +1,290 @@
++/*
++ * STM32L4x5 EXTI (Extended interrupts and events controller)
++ *
++ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2023 Samuel Tardieu <samuel.tardieu@telecom-paris.fr>
++ * Copyright (c) 2023 Inès Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ *
++ * This work is based on the stm32f4xx_exti by Alistair Francis.
++ * Original code is licensed under the MIT License:
++ *
++ * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
++ */
++
++/*
++ * The reference used is the STMicroElectronics RM0351 Reference manual
++ * for STM32L4x5 and STM32L4x6 advanced Arm ® -based 32-bit MCUs.
++ * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/documentation.html
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "trace.h"
++#include "hw/irq.h"
++#include "migration/vmstate.h"
++#include "hw/misc/stm32l4x5_exti.h"
++
++#define EXTI_IMR1   0x00
++#define EXTI_EMR1   0x04
++#define EXTI_RTSR1  0x08
++#define EXTI_FTSR1  0x0C
++#define EXTI_SWIER1 0x10
++#define EXTI_PR1    0x14
++#define EXTI_IMR2   0x20
++#define EXTI_EMR2   0x24
++#define EXTI_RTSR2  0x28
++#define EXTI_FTSR2  0x2C
++#define EXTI_SWIER2 0x30
++#define EXTI_PR2    0x34
++
++#define EXTI_NUM_GPIO_EVENT_IN_LINES 16
++#define EXTI_MAX_IRQ_PER_BANK 32
++#define EXTI_IRQS_BANK0  32
++#define EXTI_IRQS_BANK1  8
++
++static const unsigned irqs_per_bank[EXTI_NUM_REGISTER] = {
++    EXTI_IRQS_BANK0,
++    EXTI_IRQS_BANK1,
++};
++
++static const uint32_t exti_romask[EXTI_NUM_REGISTER] = {
++    0xff820000, /* 0b11111111_10000010_00000000_00000000 */
++    0x00000087, /* 0b00000000_00000000_00000000_10000111 */
++};
++
++static unsigned regbank_index_by_irq(unsigned irq)
++{
++     return irq >= EXTI_MAX_IRQ_PER_BANK ? 1 : 0;
++}
++
++static unsigned regbank_index_by_addr(hwaddr addr)
++{
++     return addr >= EXTI_IMR2 ? 1 : 0;
++}
++
++static unsigned valid_mask(unsigned bank)
++{
++     return MAKE_64BIT_MASK(0, irqs_per_bank[bank]);
++}
++
++static unsigned configurable_mask(unsigned bank)
++{
++     return valid_mask(bank) & ~exti_romask[bank];
++}
++
++static void stm32l4x5_exti_reset_hold(Object *obj)
++{
++    Stm32l4x5ExtiState *s = STM32L4X5_EXTI(obj);
++
++    for (unsigned bank = 0; bank < EXTI_NUM_REGISTER; bank++) {
++        s->imr[bank] = exti_romask[bank];
++        s->emr[bank] = 0x00000000;
++        s->rtsr[bank] = 0x00000000;
++        s->ftsr[bank] = 0x00000000;
++        s->swier[bank] = 0x00000000;
++        s->pr[bank] = 0x00000000;
++    }
++}
++
++static void stm32l4x5_exti_set_irq(void *opaque, int irq, int level)
++{
++    Stm32l4x5ExtiState *s = opaque;
++    const unsigned bank = regbank_index_by_irq(irq);
++    const int oirq = irq;
++
++    trace_stm32l4x5_exti_set_irq(irq, level);
++
++    /* Shift the value to enable access in x2 registers. */
++    irq %= EXTI_MAX_IRQ_PER_BANK;
++
++    /* If the interrupt is masked, pr won't be raised */
++    if (!extract32(s->imr[bank], irq, 1)) {
++        return;
++    }
++
++    if (((1 << irq) & s->rtsr[bank]) && level) {
++        /* Rising Edge */
++        s->pr[bank] |= 1 << irq;
++        qemu_irq_pulse(s->irq[oirq]);
++    } else if (((1 << irq) & s->ftsr[bank]) && !level) {
++        /* Falling Edge */
++        s->pr[bank] |= 1 << irq;
++        qemu_irq_pulse(s->irq[oirq]);
++    }
++    /*
++     * In the following situations :
++     * - falling edge but rising trigger selected
++     * - rising edge but falling trigger selected
++     * - no trigger selected
++     * No action is required
++     */
++}
++
++static uint64_t stm32l4x5_exti_read(void *opaque, hwaddr addr,
++                                    unsigned int size)
++{
++    Stm32l4x5ExtiState *s = opaque;
++    uint32_t r = 0;
++    const unsigned bank = regbank_index_by_addr(addr);
++
++    switch (addr) {
++    case EXTI_IMR1:
++    case EXTI_IMR2:
++        r = s->imr[bank];
++        break;
++    case EXTI_EMR1:
++    case EXTI_EMR2:
++        r = s->emr[bank];
++        break;
++    case EXTI_RTSR1:
++    case EXTI_RTSR2:
++        r = s->rtsr[bank];
++        break;
++    case EXTI_FTSR1:
++    case EXTI_FTSR2:
++        r = s->ftsr[bank];
++        break;
++    case EXTI_SWIER1:
++    case EXTI_SWIER2:
++        r = s->swier[bank];
++        break;
++    case EXTI_PR1:
++    case EXTI_PR2:
++        r = s->pr[bank];
++        break;
++
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "STM32L4X5_exti_read: Bad offset 0x%" HWADDR_PRIx "\n",
++                      addr);
++        break;
++    }
++
++    trace_stm32l4x5_exti_read(addr, r);
++
++    return r;
++}
++
++static void stm32l4x5_exti_write(void *opaque, hwaddr addr,
++                                 uint64_t val64, unsigned int size)
++{
++    Stm32l4x5ExtiState *s = opaque;
++    const unsigned bank = regbank_index_by_addr(addr);
++
++    trace_stm32l4x5_exti_write(addr, val64);
++
++    switch (addr) {
++    case EXTI_IMR1:
++    case EXTI_IMR2:
++        s->imr[bank] = val64 & valid_mask(bank);
++        return;
++    case EXTI_EMR1:
++    case EXTI_EMR2:
++        s->emr[bank] = val64 & valid_mask(bank);
++        return;
++    case EXTI_RTSR1:
++    case EXTI_RTSR2:
++        s->rtsr[bank] = val64 & configurable_mask(bank);
++        return;
++    case EXTI_FTSR1:
++    case EXTI_FTSR2:
++        s->ftsr[bank] = val64 & configurable_mask(bank);
++        return;
++    case EXTI_SWIER1:
++    case EXTI_SWIER2: {
++        const uint32_t set = val64 & configurable_mask(bank);
++        const uint32_t pend = set & ~s->swier[bank] & s->imr[bank] &
++                              ~s->pr[bank];
++        s->swier[bank] = set;
++        s->pr[bank] |= pend;
++        for (unsigned i = 0; i < irqs_per_bank[bank]; i++) {
++            if (extract32(pend, i, 1)) {
++                qemu_irq_pulse(s->irq[i + 32 * bank]);
++            }
++        }
++        return;
++    }
++    case EXTI_PR1:
++    case EXTI_PR2: {
++        const uint32_t cleared = s->pr[bank] & val64 & configurable_mask(bank);
++        /* This bit is cleared by writing a 1 to it */
++        s->pr[bank] &= ~cleared;
++        /* Software triggered interrupts are cleared as well */
++        s->swier[bank] &= ~cleared;
++        return;
++    }
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "STM32L4X5_exti_write: Bad offset 0x%" HWADDR_PRIx "\n",
++                      addr);
++    }
++}
++
++static const MemoryRegionOps stm32l4x5_exti_ops = {
++    .read = stm32l4x5_exti_read,
++    .write = stm32l4x5_exti_write,
++    .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl.min_access_size = 4,
++    .impl.max_access_size = 4,
++    .impl.unaligned = false,
++    .valid.min_access_size = 4,
++    .valid.max_access_size = 4,
++    .valid.unaligned = false,
++};
++
++static void stm32l4x5_exti_init(Object *obj)
++{
++    Stm32l4x5ExtiState *s = STM32L4X5_EXTI(obj);
++
++    for (size_t i = 0; i < EXTI_NUM_INTERRUPT_OUT_LINES; i++) {
++        sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq[i]);
++    }
++
++    memory_region_init_io(&s->mmio, obj, &stm32l4x5_exti_ops, s,
++                          TYPE_STM32L4X5_EXTI, 0x400);
++    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
++
++    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_exti_set_irq,
++                      EXTI_NUM_GPIO_EVENT_IN_LINES);
++}
++
++static const VMStateDescription vmstate_stm32l4x5_exti = {
++    .name = TYPE_STM32L4X5_EXTI,
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT32_ARRAY(imr, Stm32l4x5ExtiState, EXTI_NUM_REGISTER),
++        VMSTATE_UINT32_ARRAY(emr, Stm32l4x5ExtiState, EXTI_NUM_REGISTER),
++        VMSTATE_UINT32_ARRAY(rtsr, Stm32l4x5ExtiState, EXTI_NUM_REGISTER),
++        VMSTATE_UINT32_ARRAY(ftsr, Stm32l4x5ExtiState, EXTI_NUM_REGISTER),
++        VMSTATE_UINT32_ARRAY(swier, Stm32l4x5ExtiState, EXTI_NUM_REGISTER),
++        VMSTATE_UINT32_ARRAY(pr, Stm32l4x5ExtiState, EXTI_NUM_REGISTER),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++static void stm32l4x5_exti_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
++
++    dc->vmsd = &vmstate_stm32l4x5_exti;
++    rc->phases.hold = stm32l4x5_exti_reset_hold;
++}
++
++static const TypeInfo stm32l4x5_exti_types[] = {
++    {
++        .name          = TYPE_STM32L4X5_EXTI,
++        .parent        = TYPE_SYS_BUS_DEVICE,
++        .instance_size = sizeof(Stm32l4x5ExtiState),
++        .instance_init = stm32l4x5_exti_init,
++        .class_init    = stm32l4x5_exti_class_init,
++    }
++};
++
++DEFINE_TYPES(stm32l4x5_exti_types)
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index cc8a8c1418f..3efe3dc2cc7 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -87,6 +87,9 @@ config STM32F4XX_SYSCFG
+ config STM32F4XX_EXTI
+     bool
+ 
++config STM32L4X5_EXTI
++    bool
++
+ config MIPS_ITU
+     bool
+ 
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index 36c20d5637f..16db6e228d7 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -110,6 +110,7 @@ system_ss.add(when: 'CONFIG_XLNX_VERSAL_TRNG', if_true: files(
+ system_ss.add(when: 'CONFIG_STM32F2XX_SYSCFG', if_true: files('stm32f2xx_syscfg.c'))
+ system_ss.add(when: 'CONFIG_STM32F4XX_SYSCFG', if_true: files('stm32f4xx_syscfg.c'))
+ system_ss.add(when: 'CONFIG_STM32F4XX_EXTI', if_true: files('stm32f4xx_exti.c'))
++system_ss.add(when: 'CONFIG_STM32L4X5_EXTI', if_true: files('stm32l4x5_exti.c'))
+ system_ss.add(when: 'CONFIG_MPS2_FPGAIO', if_true: files('mps2-fpgaio.c'))
+ system_ss.add(when: 'CONFIG_MPS2_SCC', if_true: files('mps2-scc.c'))
+ 
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+index 85725506bff..fccd3204bf5 100644
+--- a/hw/misc/trace-events
++++ b/hw/misc/trace-events
+@@ -163,6 +163,11 @@ stm32f4xx_exti_set_irq(int irq, int level) "Set EXTI: %d to %d"
+ stm32f4xx_exti_read(uint64_t addr) "reg read: addr: 0x%" PRIx64 " "
+ stm32f4xx_exti_write(uint64_t addr, uint64_t data) "reg write: addr: 0x%" PRIx64 " val: 0x%" PRIx64 ""
+ 
++# stm32l4x5_exti.c
++stm32l4x5_exti_set_irq(int irq, int level) "Set EXTI: %d to %d"
++stm32l4x5_exti_read(uint64_t addr, uint64_t data) "reg read: addr: 0x%" PRIx64 " val: 0x%" PRIx64 ""
++stm32l4x5_exti_write(uint64_t addr, uint64_t data) "reg write: addr: 0x%" PRIx64 " val: 0x%" PRIx64 ""
++
+ # tz-mpc.c
+ tz_mpc_reg_read(uint32_t offset, uint64_t data, unsigned size) "TZ MPC regs read: offset 0x%x data 0x%" PRIx64 " size %u"
+ tz_mpc_reg_write(uint32_t offset, uint64_t data, unsigned size) "TZ MPC regs write: offset 0x%x data 0x%" PRIx64 " size %u"
 -- 
 2.34.1
 
