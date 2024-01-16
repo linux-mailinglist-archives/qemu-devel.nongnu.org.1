@@ -2,81 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8427E82F209
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 17:00:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8709682F223
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 17:09:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPlqU-00076Q-QV; Tue, 16 Jan 2024 10:59:22 -0500
+	id 1rPlzQ-0003Sq-E0; Tue, 16 Jan 2024 11:08:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rPlqR-00075T-Io; Tue, 16 Jan 2024 10:59:19 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rPlqP-0005go-3Z; Tue, 16 Jan 2024 10:59:19 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TDtsm5pwvz67NNV;
- Tue, 16 Jan 2024 23:56:28 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id A1F26140A36;
- Tue, 16 Jan 2024 23:59:13 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 16 Jan
- 2024 15:59:12 +0000
-Date: Tue, 16 Jan 2024 15:59:11 +0000
-To: Salil Mehta <salil.mehta@huawei.com>
-CC: Gavin Shan <gshan@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "imammedo@redhat.com" <imammedo@redhat.com>, "andrew.jones@linux.dev"
- <andrew.jones@linux.dev>, "david@redhat.com" <david@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>, "eric.auger@redhat.com"
- <eric.auger@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "ardb@kernel.org" <ardb@kernel.org>, "oliver.upton@linux.dev"
- <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "rafael@kernel.org" <rafael@kernel.org>,
- "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>, "linux@armlinux.org.uk"
- <linux@armlinux.org.uk>, "darren@os.amperecomputing.com"
- <darren@os.amperecomputing.com>, "ilkka@os.amperecomputing.com"
- <ilkka@os.amperecomputing.com>, "vishnu@os.amperecomputing.com"
- <vishnu@os.amperecomputing.com>, "karl.heubaum@oracle.com"
- <karl.heubaum@oracle.com>, "miguel.luis@oracle.com" <miguel.luis@oracle.com>, 
- "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>, zhukeqian
- <zhukeqian1@huawei.com>, "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
- "wangyanan (Y)" <wangyanan55@huawei.com>, "jiakernel2@gmail.com"
- <jiakernel2@gmail.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "lixianglai@loongson.cn" <lixianglai@loongson.cn>
-Subject: Re: [PATCH RFC V2 04/37] arm/virt,target/arm: Machine init time
- change common to vCPU {cold|hot}-plug
-Message-ID: <20240116155911.00004fe1@Huawei.com>
-In-Reply-To: <de871e3d7b8f440b93b20c734fe5b7a8@huawei.com>
-References: <20230926100436.28284-1-salil.mehta@huawei.com>
- <20230926100436.28284-5-salil.mehta@huawei.com>
- <1c5fa24c-6bf3-750f-4f22-087e4a9311af@redhat.com>
- <de871e3d7b8f440b93b20c734fe5b7a8@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPlzO-0003S7-IX
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:08:34 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPlzM-0007WK-PI
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:08:34 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a2cad931c50so458741766b.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 08:08:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705421311; x=1706026111; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yaUlQTJX/I3+KN8As6ccKE2k0B+o5pcCS3YyW3Qr5xQ=;
+ b=RNu9LG2LbOgU8s8FJxhFlrafoUMMb3heCrm5p+ni5Zi95SEA8BQ6VNUwZvjcskWERn
+ J3Y8fk+2dgL1hxN2OFqMc8/58qxXfBXVgq25FfAoCRqlm4eSWmz85Nl9eRXTxh+9p3X9
+ 72xXoFIab+LJiZcK6ic0HiqvNKwrFrsb+Lm2QFkzkDa/ExMzZA4huA8AHWjzvjaM4et7
+ SeEQEc/cnQNiDctf0ccUuYP04SmnHbEgFFhqL7Bx7oytcvj1Z2YvckipJhozf6ycIc2E
+ 7fGEAUmunmWrlQGRIF59KTXpSKnHYNrml72WyFIMWSfCQOO1j10wjZpzhaUgTchWcEha
+ KWHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705421311; x=1706026111;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yaUlQTJX/I3+KN8As6ccKE2k0B+o5pcCS3YyW3Qr5xQ=;
+ b=EnUenykTJ4G7EMk21ScKY6Kqa9PXfYeh5pQJXmMbZSOiGCdOuPEqlb0JTqYE23gszp
+ vhsO+6L7xy89MyzjvChgOCVURpjEGYoRNM61iE/w9SkTJNYsQlWxNA4zSaw+mtOYg4LC
+ RPb+89XTZxNT/jb+LQugewDp6J/J6zbGphuQ4c6PKENMii5ARvglzoLWEnwDWcvIyRY8
+ 90AplvhFuOLLORYhglldxFT5dVa55ouIEM8HVeaOsRkQvIIFeWg/wVymlEGOR08UMqja
+ kK+XOix1RFJvl2Ovht5hEngP3gVpdSkoHil/fQ2bPuKcxjlGnlrta2wovQf5ODUUTyyX
+ ALLA==
+X-Gm-Message-State: AOJu0YzEZrC8ysS5q0XnFgyfjNAUjd8dd+KM4ceXLy6tDb6J/Dur+5H3
+ ChagzrKejtpAlomIpGbRjGdpsQDha/VbEw==
+X-Google-Smtp-Source: AGHT+IHpCIJZarbIVd62n7m9Ige8fGJAg4RhGccFwTtb3oFMc7VULsz+vFQvFQ1uSTuAcemgBMIq7g==
+X-Received: by 2002:a17:907:7252:b0:a28:fa54:ff4a with SMTP id
+ ds18-20020a170907725200b00a28fa54ff4amr5198170ejc.22.1705421311035; 
+ Tue, 16 Jan 2024 08:08:31 -0800 (PST)
+Received: from [192.168.1.102] ([176.176.156.199])
+ by smtp.gmail.com with ESMTPSA id
+ ga8-20020a170906b84800b00a2dda4e81adsm2431201ejb.42.2024.01.16.08.08.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Jan 2024 08:08:30 -0800 (PST)
+Message-ID: <4b7fe91d-9e96-4de4-af6f-c9be81c43ab1@linaro.org>
+Date: Tue, 16 Jan 2024 17:08:28 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] hw/pflash: implement update buffer for block writes
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas
+ <farosas@suse.de>, Peter Xu <peterx@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>
+References: <20240108125342.48298-1-philmd@linaro.org>
+ <20240108125342.48298-3-philmd@linaro.org>
+ <39ff1c41-c7ea-4cdc-ab18-b299b91cafb8@linaro.org>
+ <CAFEAcA8ZMHwKeEmwakt9BHt5Z_0DihYXtfTP-sOSBnt2dv6hWg@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA8ZMHwKeEmwakt9BHt5Z_0DihYXtfTP-sOSBnt2dv6hWg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,102 +94,101 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2 Oct 2023 17:12:43 +0100
-Salil Mehta <salil.mehta@huawei.com> wrote:
+On 12/1/24 17:54, Peter Maydell wrote:
+> On Mon, 8 Jan 2024 at 13:06, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> Hi Gerd,
+>>
+>> On 8/1/24 13:53, Philippe Mathieu-Daudé wrote:
+>>> From: Gerd Hoffmann <kraxel@redhat.com>
+>>>
+>>> Add an update buffer where all block updates are staged.
+>>> Flush or discard updates properly, so we should never see
+>>> half-completed block writes in pflash storage.
+>>>
+>>> Drop a bunch of FIXME comments ;)
+>>>
+>>> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+>>> Message-ID: <20240105135855.268064-3-kraxel@redhat.com>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>    hw/block/pflash_cfi01.c | 106 ++++++++++++++++++++++++++++++----------
+>>>    1 file changed, 80 insertions(+), 26 deletions(-)
 
-> Hi Gavin,
-> 
-> > From: Gavin Shan <gshan@redhat.com>
-> > Sent: Wednesday, September 27, 2023 7:29 AM
-> > To: Salil Mehta <salil.mehta@huawei.com>; qemu-devel@nongnu.org; qemu-
-> > arm@nongnu.org
-> > Cc: maz@kernel.org; jean-philippe@linaro.org; Jonathan Cameron
-> > <jonathan.cameron@huawei.com>; lpieralisi@kernel.org;
-> > peter.maydell@linaro.org; richard.henderson@linaro.org;
-> > imammedo@redhat.com; andrew.jones@linux.dev; david@redhat.com;
-> > philmd@linaro.org; eric.auger@redhat.com; will@kernel.org; ardb@kernel.org;
-> > oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
-> > rafael@kernel.org; borntraeger@linux.ibm.com; alex.bennee@linaro.org;
-> > linux@armlinux.org.uk; darren@os.amperecomputing.com;
-> > ilkka@os.amperecomputing.com; vishnu@os.amperecomputing.com;
-> > karl.heubaum@oracle.com; miguel.luis@oracle.com; salil.mehta@opnsrc.net;
-> > zhukeqian <zhukeqian1@huawei.com>; wangxiongfeng (C)
-> > <wangxiongfeng2@huawei.com>; wangyanan (Y) <wangyanan55@huawei.com>;
-> > jiakernel2@gmail.com; maobibo@loongson.cn; lixianglai@loongson.cn
-> > Subject: Re: [PATCH RFC V2 04/37] arm/virt,target/arm: Machine init time
-> > change common to vCPU {cold|hot}-plug
-> > 
-> > Hi Salil,
-> > 
-> > On 9/26/23 20:04, Salil Mehta wrote:  
-> > > Refactor and introduce the common logic required during the  
-> > initialization of  
-> > > both cold and hot plugged vCPUs. Also initialize the *disabled* state of the
-> > > vCPUs which shall be used further during init phases of various other components
-> > > like GIC, PMU, ACPI etc as part of the virt machine initialization.
-> > >
-> > > KVM vCPUs corresponding to unplugged/yet-to-be-plugged QOM CPUs are kept in
-> > > powered-off state in the KVM Host and do not run the guest code. Plugged vCPUs
-> > > are also kept in powered-off state but vCPU threads exist and is kept sleeping.
-> > >
-> > > TBD:
-> > > For the cold booted vCPUs, this change also exists in the arm_load_kernel()
-> > > in boot.c but for the hotplugged CPUs this change should still remain part of
-> > > the pre-plug phase. We are duplicating the powering-off of the cold booted CPUs.
-> > > Shall we remove the duplicate change from boot.c?
-> > >
-> > > Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
-> > > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> > > Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-> > > Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
-> > > Reported-by: Gavin Shan <gavin.shan@redhat.com>
-> > > [GS: pointed the assertion due to wrong range check]
-> > > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> > > ---
-> > >   hw/arm/virt.c      | 149 ++++++++++++++++++++++++++++++++++++++++-----
-> > >   target/arm/cpu.c   |   7 +++
-> > >   target/arm/cpu64.c |  14 +++++
-> > >   3 files changed, 156 insertions(+), 14 deletions(-)
-> > >
-> > > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> > > index 0eb6bf5a18..3668ad27ec 100644
-> > > --- a/hw/arm/virt.c
-> > > +++ b/hw/arm/virt.c
-> > > @@ -221,6 +221,7 @@ static const char *valid_cpus[] = {
-> > >       ARM_CPU_TYPE_NAME("max"),
-> > >   };
-> > >
-> > > +static CPUArchId *virt_find_cpu_slot(MachineState *ms, int vcpuid);
-> > >   static int virt_get_socket_id(const MachineState *ms, int cpu_index);
-> > >   static int virt_get_cluster_id(const MachineState *ms, int cpu_index);
-> > >   static int virt_get_core_id(const MachineState *ms, int cpu_index);
-> > > @@ -2154,6 +2155,14 @@ static void machvirt_init(MachineState *machine)
-> > >           exit(1);
-> > >       }
-> > >
-> > > +    finalize_gic_version(vms);
-> > > +    if (tcg_enabled() || hvf_enabled() || qtest_enabled() ||
-> > > +        (vms->gic_version < VIRT_GIC_VERSION_3)) {
-> > > +        machine->smp.max_cpus = smp_cpus;
-> > > +        mc->has_hotpluggable_cpus = false;
-> > > +        warn_report("cpu hotplug feature has been disabled");
-> > > +    }
-> > > +  
-> > 
-> > Comments needed here to explain why @mc->has_hotpluggable_cpus is set to false.
-> > I guess it's something related to TODO list, mentioned in the cover letter.  
-> 
-> 
-> I can put a comment explaining the checks as to why feature has been disabled.
-> BTW, isn't code self-explanatory here?
 
-Would be good to gate that warn_report() on whether any attempt to enable
-CPU hotplug has been made if (max_cpus > smp for example).
-Right now it's noise on a lot of pre existing configurations.
+>>> +static const VMStateDescription vmstate_pflash_blk_write = {
+>>> +    .name = "pflash_cfi01_blk_write",
+>>> +    .version_id = 1,
+>>> +    .minimum_version_id = 1,
+>>> +    .needed = pflash_blk_write_state_needed,
+>>> +    .fields = (const VMStateField[]) {
+>>> +        VMSTATE_VBUFFER_UINT32(blk_bytes, PFlashCFI01, 0, NULL, writeblock_size),
+>>
+>> I don't get the difference with VMSTATE_VBUFFER_ALLOC_UINT32() which
+>> sets VMS_ALLOC. In this case pflash_cfi01_realize() does the alloc so
+>> we don't need VMS_ALLOC?
+> 
+> Yes, that's the idea. A VMS_ALLOC vmstate type means "this
+> block of memory is dynamically sized at runtime, so when the
+> migration code is doing inbound migration it needs to
+> allocate a buffer of the right size first (based on some
+> state struct field we've already migrated) and then put the
+> incoming data into it". VMS_VBUFFER means "the size of the buffer
+> isn't a compile-time constant, so we need to fish it out of
+> some other state struct field". So:
+> 
+>   VMSTATE_VBUFFER_UINT32: we need to migrate (a pointer to) an array
+>   of uint32_t; the size of that is in some other struct field,
+>   but it's a runtime constant and we can assume the memory has
+>   already been allocated
+> 
+>   VMSTATE_VBUFFER_ALLOC_UINT32: we need to migrate an array
+>   of uint32_t of variable size dependent on the inbound migration
+>   data, and so the migration code must allocate it
+
+Thanks Peter!
+
+Do you mind if we commit your explanation as is? As:
+
+-- >8 --
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index 294d2d8486..5c6f6c5c32 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -573,4 +573,6 @@ extern const VMStateInfo vmstate_info_qlist;
+
+-/* a variable length array (i.e. _type *_field) but we know the
+- * length
++/**
++ * VMSTATE_STRUCT_VARRAY_POINTER_KNOWN:
++ *
++ * A variable length array (i.e. _type *_field) but we know the length.
+   */
+@@ -678,2 +680,10 @@ extern const VMStateInfo vmstate_info_qlist;
+
++/**
++ * VMSTATE_VBUFFER_UINT32:
++ *
++ * We need to migrate (a pointer to) an array of uint32_t; the size of
++ * that is in some other struct field, but it's a runtime constant and
++ * we can assume the memory has already been allocated.
++*/
++
+  #define VMSTATE_VBUFFER_UINT32(_field, _state, _version, _test, 
+_field_size) { \
+@@ -688,2 +698,9 @@ extern const VMStateInfo vmstate_info_qlist;
+
++/**
++ * VMSTATE_VBUFFER_ALLOC_UINT32:
++ *
++ * We need to migrate an array of uint32_t of variable size dependent
++ * on the inbound migration data, and so the migration code must
++ * allocate it.
++*/
+  #define VMSTATE_VBUFFER_ALLOC_UINT32(_field, _state, _version,       \
+---
 
 
