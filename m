@@ -2,52 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536BF82EEBF
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 13:13:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8238282EECF
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 13:18:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPiIB-00030h-C3; Tue, 16 Jan 2024 07:11:43 -0500
+	id 1rPiNg-0004uI-Oy; Tue, 16 Jan 2024 07:17:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1rPiI8-00030R-T9; Tue, 16 Jan 2024 07:11:40 -0500
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPiNR-0004qM-5z
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 07:17:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1rPiI6-0005Fp-IA; Tue, 16 Jan 2024 07:11:40 -0500
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id ECE3149142;
- Tue, 16 Jan 2024 13:11:25 +0100 (CET)
-Message-ID: <960d7ef2-9e73-4987-98ca-529118325909@proxmox.com>
-Date: Tue, 16 Jan 2024 13:11:21 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPiNP-0006YG-In
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 07:17:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705407426;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ro/Wb2zeHbFYaR0uD4qxJQ0hW1BF0xtXcokgy2+FB7Y=;
+ b=PSQHgruFlGtW2ExXtbYnx619iXEV7qAhPbRC04IWkPRWiVOWSZPx7wwJi2MWdnYImDVf6e
+ 41tRCDYAP9D7vG/M5QDPmZhoICot68EzGdMbtI4U9eWQGs5BPWyiB2DrQnjdhN8lcCKmQm
+ 9tQXmnYLZtaN84LbE8qnJzP1vwaqv8I=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-118-cxJOdC17Mm6G7ZKAtGarew-1; Tue,
+ 16 Jan 2024 07:17:03 -0500
+X-MC-Unique: cxJOdC17Mm6G7ZKAtGarew-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D35BC299E741;
+ Tue, 16 Jan 2024 12:17:02 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.128])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A618E492BC6;
+ Tue, 16 Jan 2024 12:17:02 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 73F7A21E66F1; Tue, 16 Jan 2024 13:17:00 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Peter
+ Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH v2 11/19] qapi/schema: fix QAPISchemaArrayType.check's
+ call to resolve_type
+In-Reply-To: <20240112222945.3033854-12-jsnow@redhat.com> (John Snow's message
+ of "Fri, 12 Jan 2024 17:29:37 -0500")
+References: <20240112222945.3033854-1-jsnow@redhat.com>
+ <20240112222945.3033854-12-jsnow@redhat.com>
+Date: Tue, 16 Jan 2024 13:17:00 +0100
+Message-ID: <87le8ptqv7.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ui/clipboard: avoid crash upon request when clipboard
- peer is not initialized
-To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com,
- berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
-References: <20240112135527.57212-1-f.ebner@proxmox.com>
- <CAJ+F1C+JXE9hSQ_oDNZvhpYDqPeeKayopB3x2L2YyJTxM8t+Yg@mail.gmail.com>
- <2150aa28-3eba-4e95-a301-d87377ba40a4@proxmox.com>
- <CAJ+F1CKQkXUiuQH+mNC7p00wWrznsgWJD4xjR-AzjJGPnsF8gw@mail.gmail.com>
- <ccd23263-f19f-401e-b476-a7eb1fd22571@proxmox.com>
- <CAJ+F1CJHKsRrxUcUijAVV2bv0EOtbz0BAmH1OEnmciwo7ACXLQ@mail.gmail.com>
- <0c2d35cb-cacf-4a81-9b6a-f07fdea9fc07@proxmox.com>
- <CAJ+F1CJ4F6Kv9Vx_4H+GJ0ME0Q0X4GTm2n6L1JGg-SWFgi18SA@mail.gmail.com>
-Content-Language: en-US
-From: Fiona Ebner <f.ebner@proxmox.com>
-In-Reply-To: <CAJ+F1CJ4F6Kv9Vx_4H+GJ0ME0Q0X4GTm2n6L1JGg-SWFgi18SA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,42 +83,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 15.01.24 um 13:00 schrieb Marc-André Lureau:
->>>>
->>>
->>> The trouble is when qemu_clipboard_update() is called without data &
->>> without a request callback set. We shouldn't allow that as we have no
->>> means to get the clipboard data then.
->>>
->>
->> In the above scenario, I'm pretty sure there is data when
->> qemu_clipboard_update() is called. Just no request callback. If we'd
->> reject this, won't that break clients that do not set the
->> VNC_FEATURE_CLIPBOARD_EXT feature and only use non-extended
->> VNC_MSG_CLIENT_CUT_TEXT messages?
-> 
-> If "data" is already set, then qemu_clipboard_request() returns.
-> 
-> Inverting the condition I suggested above: it's allowed to be the
-> clipboard owner if either "data" is set, or a request callback is set.
-> 
+John Snow <jsnow@redhat.com> writes:
 
-Oh, sorry. Yes, it seems the problematic case is where data is not set.
-But isn't that legitimate when clearing the clipboard? Or is a
-VNC_MSG_CLIENT_CUT_TEXT message not valid when len is 0 and should be
-rejected? In my testing KRDC does send such a message when the clipboard
-is cleared:
+> Adjust the expression at the callsite to eliminate weak type
+> introspection that believes this value can resolve to QAPISourceInfo; it
+> cannot.
 
-> #1  0x0000558f1e6a0dac in vnc_client_cut_text (vs=0x558f207754d0, len=0, 
->     text=0x558f2046e008 "\003 \002\377\005") at ../ui/vnc-clipboard.c:313
-> #2  0x0000558f1e68e067 in protocol_client_msg (vs=0x558f207754d0, 
->     data=0x558f2046e000 "\006", len=8) at ../ui/vnc.c:2454
+What do you mean by "weak type introspection"?  mypy being underpowered?
 
-Your suggestion would disallow this for clients that do not set the
-VNC_FEATURE_CLIPBOARD_EXT feature (and only use non-extended
-VNC_MSG_CLIENT_CUT_TEXT messages).
-
-Best Regards,
-Fiona
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> ---
+>  scripts/qapi/schema.py | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+> index 35638c7708a..43af756ed47 100644
+> --- a/scripts/qapi/schema.py
+> +++ b/scripts/qapi/schema.py
+> @@ -403,7 +403,7 @@ def check(self, schema):
+>          super().check(schema)
+>          self.element_type = schema.resolve_type(
+>              self._element_type_name, self.info,
+> -            self.info and self.info.defn_meta)
+> +            self.info.defn_meta if self.info else None)
+>          assert not isinstance(self.element_type, QAPISchemaArrayType)
+>  
+>      def set_module(self, schema):
 
 
