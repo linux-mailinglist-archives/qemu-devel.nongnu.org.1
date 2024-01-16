@@ -2,87 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8ADD82EAD7
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 09:25:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C5782EB0A
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 09:44:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPeje-0002sS-G4; Tue, 16 Jan 2024 03:23:50 -0500
+	id 1rPf28-0006Xs-LF; Tue, 16 Jan 2024 03:42:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPejc-0002rx-2H
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 03:23:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPeja-0003uQ-9s
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 03:23:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705393425;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bHMQWhoV1jizHJXKzAtCOuTjIKTUEvDESSYy6fAQRjM=;
- b=IybCShJQKBkyQA7vn5+7VvybmDWMPE1R/O/3vnsN6AAP3wt/nhUw0tqEV/eI/ZKk1Qqzys
- 73i6yUSbx1utbvJVnqE7KdiN4fUnYf+Qq4iW66tcthlACXhxYD2dNpcRaxF9dlm6QvIQQP
- /4XujO5CC7u0naEFcLfF3wlI925RJTg=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-K5B2D90fNjupNTVBVOcNfw-1; Tue, 16 Jan 2024 03:23:43 -0500
-X-MC-Unique: K5B2D90fNjupNTVBVOcNfw-1
-Received: by mail-pf1-f199.google.com with SMTP id
- d2e1a72fcca58-6d724647a7fso1635834b3a.0
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 00:23:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705393422; x=1705998222;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rPf26-0006Xd-Vy
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 03:42:55 -0500
+Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rPf25-00074N-6p
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 03:42:54 -0500
+Received: by mail-qt1-x831.google.com with SMTP id
+ d75a77b69052e-429be9fe952so34972031cf.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 00:42:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1705394572; x=1705999372; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bHMQWhoV1jizHJXKzAtCOuTjIKTUEvDESSYy6fAQRjM=;
- b=uWu9Gotlsm8lEotTqgJnrOMDwCbs0QVGaDkuuTYuO+mt3zZFG2Gfq/aUQ6Co0geNP7
- 5DO5sNDKSFSgYe4LwCeRDwHUqXthyDgnaMCIZXtnmaadl3gu7udpDLGilkj73gAzqXqj
- eT/RaY99/LHWCApjciK/xV82ATqIYdbWtavyJATuHbLckrvsSPI4y8t5mk74LT98rRHx
- wR6ADzO9RKltb1lbRD3VzR/fbwf1ArXwWACykCsHw881OdEEPLU5A3uUSWFS82O47nYL
- dRRQUieVcSgZalsiJ1Ggej+pIcqscfaF3k0jbFV2BMqrYD31rUI7Ds4Es2cmSgw2RhXe
- 05Rw==
-X-Gm-Message-State: AOJu0YwixSwCHxcM5Yw/wJZKcQa5XbLho1G+piLo0a2VFxcn7TMYwZ54
- qQFZ9us+2XvWQsQ4XNWZuXSzTlJKZOOu8ABHUGxcbu60SyZg9jCfPJ7UWxsFNTEsncd9tpD8jGY
- MrY/r+I4py5ocyB8isRstwkw=
-X-Received: by 2002:a05:6a20:24a8:b0:19a:56ef:b88a with SMTP id
- m40-20020a056a2024a800b0019a56efb88amr13103697pzd.3.1705393422258; 
- Tue, 16 Jan 2024 00:23:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFLbDvjUC5UmDFL3dYupr4idvpYekiiSrLt6WS00p6Qg2lbTDCbWKGcChkW9844yOyQfTxb9A==
-X-Received: by 2002:a05:6a20:24a8:b0:19a:56ef:b88a with SMTP id
- m40-20020a056a2024a800b0019a56efb88amr13103685pzd.3.1705393421933; 
- Tue, 16 Jan 2024 00:23:41 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- kq14-20020a170903284e00b001d3ec25614bsm8829022plb.24.2024.01.16.00.23.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jan 2024 00:23:41 -0800 (PST)
-Date: Tue, 16 Jan 2024 16:23:34 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Claudio Fontana <cfontana@suse.de>
-Subject: Re: [RFC PATCH v3 19/30] migration/ram: Ignore multifd flush when
- doing fixed-ram migration
-Message-ID: <ZaY9Bl4GOD9BbumD@x1n>
-References: <20231127202612.23012-1-farosas@suse.de>
- <20231127202612.23012-20-farosas@suse.de>
+ bh=sss/oRyzsTliiRU44c9pJUowXFl1yc5Z+cEfIHqlIRA=;
+ b=bXQk0nQ82vI/DUB5Ox1JWwI1+jvzUnsKA9XqKCfm1XMupWRXh5EYdzYpsZKYMAEzDj
+ W9dUCQiCq4Pq9+4XmB3/ncwbtd3Qq5ep0vXd4Ws9PrsGUmCWpkqFjNAh479PyszDlQRo
+ FXjIned4Py90GMJsoxhBTSyAaITgX3pJZdXvVimcKvojxwv9Ued67uV9Z93AZmp6/dQT
+ kgdFBETzEnyhOtO3Sha6nrqhadzv7qgY+LBW0Qqt/Gz8URMtw5W2EUNr0VL+yD9y6oxD
+ i4KgSoBZwrxlqy/dHJCjAUcQZvKhy/zYVBaweYWa+QRCtA0aIkCGdUwMKxpxLfzwR773
+ Cz8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705394572; x=1705999372;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=sss/oRyzsTliiRU44c9pJUowXFl1yc5Z+cEfIHqlIRA=;
+ b=URti9qZNKZTlg/ljHujZH3bRoT57vOI3qwLlmBOkA44eaXxeHc9Q7fPAHx7Ja4CGq7
+ kWcSBP9f0T7fQI6OEmAW5rfAMn/ohbgw8ZuIEmdEVYsm/AcUCGNXqQMZWAHmuupeV6kg
+ aU475ToCiVa48Uu2TsYPII2IEIltzxp17HNnCuZa3k6gwmHXldMdE/saSGErnylamAAR
+ CTOr3ocfQhsZqpsKfJWMVHHZ0Q5yDa8Q6FTHnI8GqrmylNxxN4ZTckx+9OudHsT3lKVJ
+ WEmsaQrUysRgFYrMWshXfkxYYD4vLptUJQQI+LAdjIP7BId2Ymmgxm4tpqgs9HPj+2y6
+ BzrA==
+X-Gm-Message-State: AOJu0YzrC8BGunVaOlbsE3PamBB64X4qH6RjLq3EHYUuoAr210V7EVmi
+ yPIg6n8I+9zeotcIdFj1kBWz0XLlTm67dxACW2A=
+X-Google-Smtp-Source: AGHT+IH9B5Zb4tgWtqUTr5yUS461n6IRCXJ6Km2q89Nnm4yuO64bv0JSiCwcgxxsfYg8U21YWt+ZxeNxa9W2NwZrYJI=
+X-Received: by 2002:ac8:5747:0:b0:42a:103:ab59 with SMTP id
+ 7-20020ac85747000000b0042a0103ab59mr1334163qtx.47.1705394571695; Tue, 16 Jan
+ 2024 00:42:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231127202612.23012-20-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20240112-asan-v1-1-e330f0d0032c@daynix.com>
+ <20240115184739.GB1143584@fedora>
+In-Reply-To: <20240115184739.GB1143584@fedora>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 16 Jan 2024 12:42:40 +0400
+Message-ID: <CAJ+F1C+E+xXKe7eC6+KbDBZ7HHkdmuQ9sZPjk=meZLVk4Ekxbw@mail.gmail.com>
+Subject: Re: [PATCH] coroutine-ucontext: Save fake stack for pooled coroutine
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Lingfeng Yang <lfy@google.com>, Kevin Wolf <kwolf@redhat.com>,
+ qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.531,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,106 +88,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 27, 2023 at 05:26:01PM -0300, Fabiano Rosas wrote:
-> Some functionalities of multifd are incompatible with the 'fixed-ram'
-> migration format.
-> 
-> The MULTIFD_FLUSH flag in particular is not used because in fixed-ram
-> there is no sinchronicity between migration source and destination so
-> there is not need for a sync packet. In fact, fixed-ram disables
-> packets in multifd as a whole.
-> 
-> However, we still need to sync the migration thread with the multifd
-> channels at key moments:
-> 
-> - between iterations, to avoid a slow channel being overrun by a fast
-> channel in the subsequent iteration;
-> 
-> - at ram_save_complete, to make sure all data has been transferred
->   before finishing migration;
+Hi
 
-[1]
+On Mon, Jan 15, 2024 at 10:49=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.c=
+om> wrote:
+>
+> On Fri, Jan 12, 2024 at 07:36:19PM +0900, Akihiko Odaki wrote:
+> > Coroutine may be pooled even after COROUTINE_TERMINATE if
+> > CONFIG_COROUTINE_POOL is enabled and fake stack should be saved in
+> > such a case to keep AddressSanitizerUseAfterReturn working. Even worse,
+> > I'm seeing stack corruption without fake stack being saved.
+> >
+> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-> 
-> Make sure RAM_SAVE_FLAG_MULTIFD_FLUSH is only emitted for fixed-ram at
-> those key moments.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  migration/ram.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/migration/ram.c b/migration/ram.c
-> index 08604222f2..ad6abd1761 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -1363,7 +1363,7 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
->          pss->page = 0;
->          pss->block = QLIST_NEXT_RCU(pss->block, next);
->          if (!pss->block) {
-> -            if (migrate_multifd() &&
-> +            if (migrate_multifd() && !migrate_fixed_ram() &&
->                  !migrate_multifd_flush_after_each_section()) {
->                  QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
->                  int ret = multifd_send_sync_main(f);
-> @@ -3112,7 +3112,8 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
->          return ret;
->      }
->  
-> -    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
-> +    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()
-> +        && !migrate_fixed_ram()) {
->          qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
->      }
->  
-> @@ -3242,8 +3243,11 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
->  out:
->      if (ret >= 0
->          && migration_is_setup_or_active(migrate_get_current()->state)) {
-> -        if (migrate_multifd() && migrate_multifd_flush_after_each_section()) {
-> -            ret = multifd_send_sync_main(rs->pss[RAM_CHANNEL_PRECOPY].pss_channel);
-> +        if (migrate_multifd() &&
-> +            (migrate_multifd_flush_after_each_section() ||
-> +             migrate_fixed_ram())) {
-> +            ret = multifd_send_sync_main(
-> +                rs->pss[RAM_CHANNEL_PRECOPY].pss_channel);
+Thanks Akihiko, this is solving a crash when enabling ASAN!
 
-Why you want this one?  ram_save_iterate() can be called tens for each
-second iiuc.
+> > ---
+> >  util/coroutine-ucontext.c | 21 +++++++++++++++++++--
+> >  1 file changed, 19 insertions(+), 2 deletions(-)
+>
+> Adding Marc-Andr=C3=A9 Lureau and Lingfeng Yang, who authored the code in
+> question.
 
-There's one more?  ram_save_complete():
+Side note:
+I am surprised that commit 0aebab04b9  "configure: add --enable-tsan
+flag + fiber annotations" changed code like this:
+ {
+ #ifdef CONFIG_ASAN
+-    __sanitizer_start_switch_fiber(fake_stack_save, bottom, size);
++    __sanitizer_start_switch_fiber(
++            action =3D=3D COROUTINE_TERMINATE ? NULL : fake_stack_save,
++            bottom, size);
++#endif
++#ifdef CONFIG_TSAN
++    void *curr_fiber =3D
++        __tsan_get_current_fiber();
++    __tsan_acquire(curr_fiber);
++
++    *fake_stack_save =3D curr_fiber;
++    __tsan_switch_to_fiber(new_fiber, 0);  /* 0=3Dsynchronize */
+ #endif
 
-    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
-        qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
-    }
+*fake_stack_save =3D curr_fiber:
+Is TSAN compatible with ASAN ? I guess not.
 
-IIUC that's the one you referred to at [1] above, not sure why you modified
-the code in ram_save_iterate() instead.
+It would probably help to have more explicit comments & errors if such
+a case happens.
 
->              if (ret < 0) {
->                  return ret;
->              }
-> -- 
-> 2.35.3
-> 
+>
+> Stefan
+>
+> >
+> > diff --git a/util/coroutine-ucontext.c b/util/coroutine-ucontext.c
+> > index 7b304c79d942..e62ced5d6779 100644
+> > --- a/util/coroutine-ucontext.c
+> > +++ b/util/coroutine-ucontext.c
+> > @@ -124,8 +124,9 @@ void start_switch_fiber_asan(CoroutineAction action=
+, void **fake_stack_save,
+> >  {
+> >  #ifdef CONFIG_ASAN
+> >      __sanitizer_start_switch_fiber(
+> > -            action =3D=3D COROUTINE_TERMINATE ? NULL : fake_stack_save=
+,
+> > -            bottom, size);
+> > +        !IS_ENABLED(CONFIG_COROUTINE_POOL) && action =3D=3D COROUTINE_=
+TERMINATE ?
+> > +            NULL : fake_stack_save,
+> > +        bottom, size);
 
-Since the file migration added its whole new code in
-multifd_send_sync_main(), now I'm hesitating whether we should just provide
-multifd_file_sync_threads(), put file sync there, and call explicitly,
-like:
 
-  if (migrate_multifd()) {
-    if (migrate_is_file()) {
-       multifd_file_sync_threads();
-    } else if (migrate_multifd_flush_after_each_section()) {
-       multifd_send_sync_main();
-    }
-  }
+Ok, changing back the commit from Lingfeng when coroutine pools are enabled=
+.
 
-It'll be much clearer that file goes into its own path and we don't need to
-worry on fat eyes of those if clauses.  diff should be similar.
+> >  #endif
+> >  }
+> >
+> > @@ -269,10 +270,26 @@ static inline void valgrind_stack_deregister(Coro=
+utineUContext *co)
+> >  #endif
+> >  #endif
+> >
+> > +#if defined(CONFIG_ASAN) && defined(CONFIG_COROUTINE_POOL)
+> > +static void coroutine_fn terminate(void *opaque)
+> > +{
+> > +    CoroutineUContext *to =3D DO_UPCAST(CoroutineUContext, base, opaqu=
+e);
+> > +
+> > +    __sanitizer_start_switch_fiber(NULL, to->stack, to->stack_size);
+> > +    siglongjmp(to->env, COROUTINE_ENTER);
+> > +}
 
--- 
-Peter Xu
+looking at https://github.com/llvm/llvm-project/blob/main/compiler-rt/test/=
+asan/TestCases/Linux/swapcontext_annotation.cpp,
+that seems correct to me to destroy the fake_stack.
 
+However, not switching back with qemu_coroutine_switch() may create
+issues: set_current() (and tsan) not being called appropriately.
+
+Should we introduce another action like COROUTINE_DELETE?
+
+> > +#endif
+> > +
+> >  void qemu_coroutine_delete(Coroutine *co_)
+> >  {
+> >      CoroutineUContext *co =3D DO_UPCAST(CoroutineUContext, base, co_);
+> >
+> > +#if defined(CONFIG_ASAN) && defined(CONFIG_COROUTINE_POOL)
+> > +    co_->entry_arg =3D qemu_coroutine_self();
+> > +    co_->entry =3D terminate;
+> > +    qemu_coroutine_switch(co_->entry_arg, co_, COROUTINE_ENTER);
+> > +#endif
+> > +
+> >  #ifdef CONFIG_VALGRIND_H
+> >      valgrind_stack_deregister(co);
+> >  #endif
+> >
+> > ---
+> > base-commit: f614acb7450282a119d85d759f27eae190476058
+> > change-id: 20240112-asan-eb695c769f40
+> >
+> > Best regards,
+> > --
+> > Akihiko Odaki <akihiko.odaki@daynix.com>
+> >
+
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
