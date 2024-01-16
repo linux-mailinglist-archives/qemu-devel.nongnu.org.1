@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A578882E82E
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 04:22:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8769682E829
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 04:22:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPa0B-0005jU-1Q; Mon, 15 Jan 2024 22:20:35 -0500
+	id 1rPa0B-0005k9-SR; Mon, 15 Jan 2024 22:20:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPZzu-0005gc-3e
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 22:20:19 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPZzy-0005gp-1K
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 22:20:26 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPZzr-0002wD-Oz
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 22:20:17 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPZzv-0002xe-3F
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 22:20:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705375214;
+ s=mimecast20190719; t=1705375218;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HjQ6snptA/Cj63ykL6FQgiF2eJUpi9jSvmxY6jFdXDU=;
- b=RY+DVvaEwFJkJjHE+olBKhpJG/h9iMAT5cM1SAbkCT6TY32Nb6/uZqumEj9TvMrqMS/T+Q
- E/LXyk787wU7q940viVTTGIJ+qfU8PxE7gJ6gdN2H6ZS5v7LuXzDFyGqmqY89Rl6FwHqAs
- RP9hEXksV8Uezia3xJl1PuI0nsPmRns=
+ bh=uPgp0tmgiDc/OMvGTjwfLVUX42d/xPWCsacOI2JAgcQ=;
+ b=PCUeM29ub6s64g8piVcn35CQWY3xOBSTaTmQzTtM2pqKgZc1lrDTIOIynr5kGL8dJNy9YP
+ MyoAtE/p86n3dkruxh74DKmOOgLuCFhiO0TZBKu5Og5VWeW4BsOylcHSh5Z0+jfWkLUFXH
+ EtXwYg9l1cOJXF2xwBnlYcSWr/QD3FM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-650-SUIyRfjBOJ2gf4CJGlXJlw-1; Mon, 15 Jan 2024 22:20:11 -0500
-X-MC-Unique: SUIyRfjBOJ2gf4CJGlXJlw-1
+ us-mta-356-XWED1zs0MfmvLDoh3bip2g-1; Mon, 15 Jan 2024 22:20:14 -0500
+X-MC-Unique: XWED1zs0MfmvLDoh3bip2g-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5E4C0185A781;
- Tue, 16 Jan 2024 03:20:11 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6FCEC800076;
+ Tue, 16 Jan 2024 03:20:14 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.92])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0347D3C25;
- Tue, 16 Jan 2024 03:20:08 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2A8D93C25;
+ Tue, 16 Jan 2024 03:20:11 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: peterx@redhat.com,
 	Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 06/20] tests/qtest/migration: Print migration incoming errors
-Date: Tue, 16 Jan 2024 11:19:33 +0800
-Message-ID: <20240116031947.69017-7-peterx@redhat.com>
+Subject: [PULL 07/20] tests/qtest/migration: Add a wrapper to print test names
+Date: Tue, 16 Jan 2024 11:19:34 +0800
+Message-ID: <20240116031947.69017-8-peterx@redhat.com>
 In-Reply-To: <20240116031947.69017-1-peterx@redhat.com>
 References: <20240116031947.69017-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -81,34 +81,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-We're currently just asserting when incoming migration fails. Let's
-print the error message from QMP as well.
+Our usage of gtest results in us losing the very basic functionality
+of "knowing which test failed". The issue is that gtest only prints
+test names ("paths" in gtest parlance) once the test has finished, but
+we use asserts in the tests and crash gtest itself before it can print
+anything. We also use a final abort when the result of g_test_run is
+not 0.
+
+Depending on how the test failed/broke we can see the function that
+trigged the abort, which may be representative of the test, but it
+could also just be some generic function.
+
+We have been relying on the primitive method of looking at the name of
+the previous successful test and then looking at the code to figure
+out which test should have come next.
+
+Add a wrapper to the test registration that does the job of printing
+the test name before running.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/20240104142144.9680-6-farosas@suse.de
+Link: https://lore.kernel.org/r/20240104142144.9680-7-farosas@suse.de
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- tests/qtest/migration-helpers.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/qtest/migration-helpers.h |  1 +
+ tests/qtest/migration-helpers.c | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
+diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+index b478549096..3bf7ded1b9 100644
+--- a/tests/qtest/migration-helpers.h
++++ b/tests/qtest/migration-helpers.h
+@@ -52,4 +52,5 @@ char *find_common_machine_version(const char *mtype, const char *var1,
+                                   const char *var2);
+ char *resolve_machine_version(const char *alias, const char *var1,
+                               const char *var2);
++void migration_test_add(const char *path, void (*fn)(void));
+ #endif /* MIGRATION_HELPERS_H */
 diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
-index 37e8e812c5..19384e3fa6 100644
+index 19384e3fa6..e451dbdbed 100644
 --- a/tests/qtest/migration-helpers.c
 +++ b/tests/qtest/migration-helpers.c
-@@ -111,6 +111,12 @@ void migrate_incoming_qmp(QTestState *to, const char *uri, const char *fmt, ...)
+@@ -291,3 +291,35 @@ char *resolve_machine_version(const char *alias, const char *var1,
  
-     rsp = qtest_qmp(to, "{ 'execute': 'migrate-incoming', 'arguments': %p}",
-                     args);
+     return find_common_machine_version(machine_name, var1, var2);
+ }
 +
-+    if (!qdict_haskey(rsp, "return")) {
-+        g_autoptr(GString) s = qobject_to_json_pretty(QOBJECT(rsp), true);
-+        g_test_message("%s", s->str);
-+    }
++typedef struct {
++    char *name;
++    void (*func)(void);
++} MigrationTest;
 +
-     g_assert(qdict_haskey(rsp, "return"));
-     qobject_unref(rsp);
- 
++static void migration_test_destroy(gpointer data)
++{
++    MigrationTest *test = (MigrationTest *)data;
++
++    g_free(test->name);
++    g_free(test);
++}
++
++static void migration_test_wrapper(const void *data)
++{
++    MigrationTest *test = (MigrationTest *)data;
++
++    g_test_message("Running /%s%s", qtest_get_arch(), test->name);
++    test->func();
++}
++
++void migration_test_add(const char *path, void (*fn)(void))
++{
++    MigrationTest *test = g_new0(MigrationTest, 1);
++
++    test->func = fn;
++    test->name = g_strdup(path);
++
++    qtest_add_data_func_full(path, test, migration_test_wrapper,
++                             migration_test_destroy);
++}
 -- 
 2.43.0
 
