@@ -2,72 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F2282F0ED
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 16:00:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5645382F0EE
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 16:00:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPktn-0001Yo-58; Tue, 16 Jan 2024 09:58:43 -0500
+	id 1rPkue-0001uH-36; Tue, 16 Jan 2024 09:59:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPktk-0001YT-Ed
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 09:58:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPkti-0003Iy-NJ
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 09:58:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705417117;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7aNawyRyO3XeLSjLsok4wkEmJ+fdlX7bAmFmOZ/2MgM=;
- b=g08ew0zokD/EoR8t8htgcW2YK4+o5gQthSXhBEN58D6rnbSD3OnpGEIWnFQX8BxLvhxspi
- kZr8+G4x2SHotC9pmlq5deMn2VhgSly4cFvrl9hLzr2wceCNXwd9gCvH4aF3zOoXfkNX1a
- rmYibY6HMsQ3dI9JC+G3bLfOd3DFypc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-61-nLcGkCViPOaf-6iqzUKgYA-1; Tue, 16 Jan 2024 09:58:35 -0500
-X-MC-Unique: nLcGkCViPOaf-6iqzUKgYA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C923D807F5A;
- Tue, 16 Jan 2024 14:58:34 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.128])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 862A5C0157A;
- Tue, 16 Jan 2024 14:58:34 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6961D21E66C8; Tue, 16 Jan 2024 15:58:29 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Peter
- Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v2 13/19] qapi/schema: split "checked" field into
- "checking" and "checked"
-In-Reply-To: <20240112222945.3033854-14-jsnow@redhat.com> (John Snow's message
- of "Fri, 12 Jan 2024 17:29:39 -0500")
-References: <20240112222945.3033854-1-jsnow@redhat.com>
- <20240112222945.3033854-14-jsnow@redhat.com>
-Date: Tue, 16 Jan 2024 15:58:29 +0100
-Message-ID: <87o7dlqq96.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rPkub-0001tk-Q2
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 09:59:33 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rPkuY-0003M9-CG
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 09:59:33 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5592d1bc4fbso2652705a12.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 06:59:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705417167; x=1706021967; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=YrJ+VmxwgbKzw3XkqeIfss4FMWzAgprqMmIV3Uk7Gi0=;
+ b=RfMLt3ksHbojJEIlbqBcNmrnu/xOWOTai3skG+Q9BJh3C8bU3Mwez14iYZdcMW7ZvZ
+ gYv7VOKc+CybZmw282bQkV/cP+PYFLT4KL9+nhfMfE1qSlE5KgZzqS8syu23aTj0ECE+
+ VzNQUqIOpeIiWb9LXqecGIprAxUL+qAx417ylLJr8bSCWxk9Mq9I1mM2rlxjnDg+BNgI
+ KOu48jz6C9sA8O/IMk6bgkQeQTx1jqydJtVdvFvG1xAKrnh84XbesTcwlG4r+BvmA+dV
+ dYDEc3eV7QY1e3DUtrBvYx42DRnSxbrQ3lqN2mf+s+85Fkr4/OMsbaWsJSqhNbv/Wp0G
+ t/Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705417167; x=1706021967;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=YrJ+VmxwgbKzw3XkqeIfss4FMWzAgprqMmIV3Uk7Gi0=;
+ b=RPBWtKBQCqU7S6jp3skEF2eEccEaOZl7EGewK++QsVNFqDXYO9BTkF78STI++NQR/x
+ jR+KLsJFTu9YTw4FXY6xLCKjKwCKRxXWxg5TrstSp8iufTjgpYoB0EEkooCyCu5Iwmln
+ roaURRZ1sbQV8l2jXjWTLAR09C6hKgUWJGZWXyHq+mSXXyrOA4aMNJUFP2mWnx8OHI8X
+ 2lEc6H/ZzC9gqflaWKKdTjRBH9WHYsYYZd5hO2RusHep7TwT4pTCOGFN5lGIYG+Ol9qE
+ Fu7koYm4S0jDjjgB5LyCcpw08b6b89HSiWaGdmk4Ti0tCRZ4pffOOqVVAOvTD4e1ykHp
+ ICBw==
+X-Gm-Message-State: AOJu0YzSFc/7jjGPwtbGEC7OEnSZm5xMed8Llb4+bQyNUmKWxOKsskHZ
+ IdPIwSq6jwbrH4zs6hIuXa3/DsrhzZt0agUa5IL6xw/kUYAe7Q==
+X-Google-Smtp-Source: AGHT+IGchrFNwkpMqLNTwcopLnsonP3/w/OkWQ9Clo/9uepTu/0PwaIRm+Lybzv2D/y1b+sTbpUVbnGcFlbyC+bYsBs=
+X-Received: by 2002:a05:6402:31eb:b0:559:bdd3:80df with SMTP id
+ dy11-20020a05640231eb00b00559bdd380dfmr278031edb.45.1705417167403; Tue, 16
+ Jan 2024 06:59:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20231218113305.2511480-1-peter.maydell@linaro.org>
+ <20231218113305.2511480-28-peter.maydell@linaro.org>
+ <20240116130940.00002523@Huawei.com>
+ <CAFEAcA-94-TeFw4AmTsuQaJROADaet8aWDEBXbt9H_gc1Fs6pg@mail.gmail.com>
+ <20240116145051.000004f7@Huawei.com>
+In-Reply-To: <20240116145051.000004f7@Huawei.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 16 Jan 2024 14:59:15 +0000
+Message-ID: <CAFEAcA8=CK00w_Yk-X=+6cm2X5BWSiTw7_y6uQN8qyFHF4-iFg@mail.gmail.com>
+Subject: Re: [PATCH 27/35] target/arm: Report VNCR_EL2 based faults correctly
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,122 +88,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
-
-> differentiate between "actively in the process of checking" and
-> "checking has completed". This allows us to clean up the types of some
-> internal fields such as QAPISchemaObjectType's members field which
-> currently uses "None" as a test for determining if check has been run
-> already or not.
+On Tue, 16 Jan 2024 at 14:50, Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
 >
-> This simplifies the typing from a cumbersome Optional[List[T]] to merely
-> a List[T], which is more pythonic: it is safe to iterate over an empty
-> list with "for x in []" whereas with an Optional[List[T]] you have to
-> rely on the more cumbersome "if L: for x in L: ..."
-
-Does this cumbersome form exist?
-
-> Note that it is valid to have an empty members list, see the internal
-> q_empty object as an example.
-
-Yes.
-
-.members becomes valid only in .check().  Before the patch, .__init__()
-initializes it to None, and .check() sets it to the real value.  We use
-assert .members is not None to catch invalid use.  We can also hope
-invalid use without an assert would crash.  for m in .members would.
-
-We've seen this pattern before: PATCH 4+5.  There, we change .__init__()
-to declare the attribute without initializing it.  Use before it becomes
-valid now certainly crashes, which is an improvement.  Why can't we do
-the same here?
-
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->  scripts/qapi/schema.py | 24 +++++++++++++++---------
->  1 file changed, 15 insertions(+), 9 deletions(-)
+> On Tue, 16 Jan 2024 13:20:33 +0000
+> Peter Maydell <peter.maydell@linaro.org> wrote:
+> > Bisecting to this patch is a bit weird because at this point
+> > in the series emulation of FEAT_NV2 should be disabled and
+> > the code being added should never be used. You could put
+> > an assert(0) into the code in translate-a64.c before the
+> > call to syn_data_abort_vncr() and in arm_deliver_fault()
+> > assert(!is_vncr) to confirm that we're not somehow getting
+> > into this code for some non-FEAT_NV2 situation, I guess.
 >
-> diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-> index eefa58a798b..0d9a70ab4cb 100644
-> --- a/scripts/qapi/schema.py
-> +++ b/scripts/qapi/schema.py
-> @@ -20,7 +20,7 @@
->  from collections import OrderedDict
->  import os
->  import re
-> -from typing import List, Optional
-> +from typing import List, Optional, cast
->  
->  from .common import (
->      POINTER_SUFFIX,
-> @@ -457,22 +457,24 @@ def __init__(self, name, info, doc, ifcond, features,
->          self.base = None
->          self.local_members = local_members
->          self.variants = variants
-> -        self.members = None
-> +        self.members: List[QAPISchemaObjectTypeMember] = []
-> +        self._checking = False
->  
->      def check(self, schema):
->          # This calls another type T's .check() exactly when the C
->          # struct emitted by gen_object() contains that T's C struct
->          # (pointers don't count).
-> -        if self.members is not None:
-> -            # A previous .check() completed: nothing to do
-> -            return
-> -        if self._checked:
-> +        if self._checking:
->              # Recursed: C struct contains itself
->              raise QAPISemError(self.info,
->                                 "object %s contains itself" % self.name)
-> +        if self._checked:
-> +            # A previous .check() completed: nothing to do
-> +            return
->  
-> +        self._checking = True
->          super().check(schema)
-> -        assert self._checked and self.members is None
-> +        assert self._checked and not self.members
->  
->          seen = OrderedDict()
->          if self._base_name:
-> @@ -489,13 +491,17 @@ def check(self, schema):
->          for m in self.local_members:
->              m.check(schema)
->              m.check_clash(self.info, seen)
-> -        members = seen.values()
-> +
-> +        # check_clash is abstract, but local_members is asserted to be
-> +        # List[QAPISchemaObjectTypeMember]. Cast to the narrower type.
-> +        members = cast(List[QAPISchemaObjectTypeMember], list(seen.values()))
->  
->          if self.variants:
->              self.variants.check(schema, seen)
->              self.variants.check_clash(self.info, seen)
->  
-> -        self.members = members  # mark completed
-> +        self.members = members
-> +        self._checking = False  # mark completed
->  
->      # Check that the members of this type do not cause duplicate JSON members,
->      # and update seen to track the members seen so far. Report any errors
+> Not that, but surprisingly is_vncr == true.
+> in arm_deliver_fault()
+>
+> Frigging that to be false gets me up and running. I'll see
+> if I can figure out why it is set.
 
-I think you missed these:
+I don't know if this is the cause, but looking again at the
+line that sets is_vncr I see at least one obvious bug:
 
-       def is_empty(self):
-           assert self.members is not None
-           return not self.members and not self.variants
+    bool is_vncr = (mmu_idx != MMU_INST_FETCH) &&
+        (env->exception.syndrome & ARM_EL_VNCR);
 
-       def has_conditional_members(self):
-           assert self.members is not None
-           return any(m.ifcond.is_present() for m in self.members)
+is testing the wrong variable -- the first part
+of the condition should be "access_type != MMU_INST_FETCH".
 
-The assertions no longer work.  I figure you want to assert .checked
-instead.
+If you fix that does the failure go away ?
 
-Consider splitting the patch: first add .checking, and replace use of
-.members by use of .checking where possible.  Then change .members.  The
-split may or may not be easier to describe and digest.  Use your
-judgement.
+Yay for C and its very sloppy typing :-/
 
+-- PMM
 
