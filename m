@@ -2,93 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B34682EBF0
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 10:45:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B1F82EC11
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 10:47:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPfzp-0008TF-9U; Tue, 16 Jan 2024 04:44:37 -0500
+	id 1rPg25-00023p-E5; Tue, 16 Jan 2024 04:46:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rPfzm-0008T3-0d
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 04:44:34 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rPfzk-00035u-AE
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 04:44:33 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40G81wof007450; Tue, 16 Jan 2024 09:44:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=oj/gpNPd5eHDZ/XSLkNUkxw/MEUtCzSfoyCEj5Ng0T4=;
- b=HvCinMN17A/E3XDdkT4zhf2iuVv+RSqpBJYIFgl7ANjTXUdKmbAKRn/Y7grzUJmvVT05
- UyRf2EEjriYDUS3/2X7CeVU4w0QkeHoh3ogLa0jBF4wEaIJ9cw81BCMEyOSEKdCUsGme
- DfgCy1gnUhQZeC/z6UdL5bFkKWOShPwokXg3LIF5xUXHal0fxhdPyEozaCGjBOnauKGC
- 1vmZS5w9r9P++oG6H+Bmfkv4Xw+vxyzQcotQHdoxDjGmmRyBN0xUbowUqar7GLNP4SsN
- W5Ruip5vG9xYDDj1tGsblnPGSwtYfpadOiXYmxeTDnYkojZ21KXZbJhXczGXY60h5kMj +w== 
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnnexu50k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Jan 2024 09:44:24 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40G7bcBY018620; Tue, 16 Jan 2024 09:44:23 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm5undrtp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Jan 2024 09:44:23 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40G9iLMt000626
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 Jan 2024 09:44:21 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8A39A20043;
- Tue, 16 Jan 2024 09:44:21 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 33E0320040;
- Tue, 16 Jan 2024 09:44:21 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.4.64])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 16 Jan 2024 09:44:21 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Riku Voipio <riku.voipio@iki.fi>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 2/2] tests/tcg: Add the syscall catchpoint gdbstub test
-Date: Tue, 16 Jan 2024 10:41:54 +0100
-Message-ID: <20240116094411.216665-3-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240116094411.216665-1-iii@linux.ibm.com>
-References: <20240116094411.216665-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPg1s-00020g-Tf
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 04:46:44 -0500
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPg1p-0003aW-Ep
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 04:46:44 -0500
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-50e6ee8e911so11427393e87.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 01:46:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705398399; x=1706003199; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aaCxHgpTz0zNjg821GaqEfG0bWMsLcZrke1pFcKjoqI=;
+ b=If5xxEzFk8Hc1WwPaWF2I+oGMuTIgDsh5YGBItcbMBPvsxS3Xq5/+7GwwYVxrlGaJN
+ 0dPjZCL1Vc1ztETJ7mvcuZmfEsaT+XoBRGG1tiis38EmSsrRPCv/8Uq9kqvUyGI74emz
+ r6+0JCdAkz6NbX9vijOo93NFu7Re6liFYlvTyEEJHijGzPX8eKCfqWSRAp7Fk+pF6IcQ
+ i61WtwiNme39ztGz4v5pLVQNIOi18C8FWgZFJ0rbFr0gOeZ1vQm55TIVpMH+7OCh+vqi
+ eJzaXyfERZui3RtB4U81Pzw6MXlHT7ZCYDcllOLLgmuJwU/YiJmvuPsqAdYsazX3+wdI
+ 6vCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705398399; x=1706003199;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aaCxHgpTz0zNjg821GaqEfG0bWMsLcZrke1pFcKjoqI=;
+ b=kDbe35VWtUXeAG8InZuekGfTqoMz1AHQNnEd/m8RlPR1/2v0x/ZEJA4FqR2mke81B8
+ VUpHrZmngxIe7/FwZzVlKk66tEjNwnm9H9pbc7IP1usvxNOEAYjB9gKIbLt65Nu0Pa33
+ WpHDQsaSheMUv1rWVDCB8D3HKJTpPanAYN+zMXRRO+OVUbsSO4HK6RuB0s+UsOJtCSSu
+ bhmc+hkcylwFKPC8GaRP+iMoBJxbvH9rqK30+NeWTVxBniX6m2+supk73XtpRdRi303l
+ ngTJg3EP90dgW7xqmpwNcTticNkYmkzHDinpCsgYH8Rx3CX1+4aiZRZu78xtSI8cKEx5
+ 1KLg==
+X-Gm-Message-State: AOJu0Yw0bekYkjlFNGFw7j+RRUxerY4mi2Aq45cV3L4V7Jh0+JMB8yxn
+ 6Fi57QkxwRQ4q8HJu14DGI7I5dQPxbLy3g==
+X-Google-Smtp-Source: AGHT+IGMhpjc3wCc/MAUE/XSKyFq0nioO/yeMemjSQKd/CDLXtWdHp784sOdcXll3Bm6JINqAle8Jw==
+X-Received: by 2002:a05:6512:224c:b0:50e:b2cf:4e20 with SMTP id
+ i12-20020a056512224c00b0050eb2cf4e20mr3562031lfu.24.1705398399260; 
+ Tue, 16 Jan 2024 01:46:39 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.209.30])
+ by smtp.gmail.com with ESMTPSA id
+ f19-20020a056402005300b00554af5ec62asm6555145edu.8.2024.01.16.01.46.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Jan 2024 01:46:38 -0800 (PST)
+Message-ID: <7ac1ae78-dca4-4fda-a5e9-32b3a332f80e@linaro.org>
+Date: Tue, 16 Jan 2024 10:46:36 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] qemu-options: Remove the deprecated -singlestep option
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ qemu-trivial@nongnu.org, Claudio Imbrenda <imbrenda@linux.ibm.com>
+References: <20240112100059.965041-1-thuth@redhat.com>
+ <20240112100059.965041-6-thuth@redhat.com>
+ <7f24e391-e3ba-462c-ba30-2ea7ddb62795@linaro.org>
+ <fdbe4b2d-b63a-4fcd-9747-08d713e17d22@redhat.com>
+ <CAFEAcA-9EnvXKcrECsAKCMHPobLch4mKU0Yvb2+ZKALcFSiqaQ@mail.gmail.com>
+ <ZaV0QxdfQJDnICdF@redhat.com> <87y1cp94j9.fsf@pond.sub.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <87y1cp94j9.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 6IO5gJ0ddOCDGZ05_xuC9HfKhd7MsaZL
-X-Proofpoint-GUID: 6IO5gJ0ddOCDGZ05_xuC9HfKhd7MsaZL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-16_04,2024-01-15_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 mlxscore=0 clxscore=1015 mlxlogscore=972 spamscore=0
- suspectscore=0 phishscore=0 adultscore=0 bulkscore=0 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401160077
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,160 +100,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check that adding/removing syscall catchpoints works.
+On 16/1/24 07:27, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+>> On Mon, Jan 15, 2024 at 05:39:19PM +0000, Peter Maydell wrote:
+>>> On Mon, 15 Jan 2024 at 13:54, Thomas Huth <thuth@redhat.com> wrote:
+>>>>
+>>>> On 12/01/2024 16.39, Philippe Mathieu-Daudé wrote:
+>>>>> Hi Thomas
+>>>>>
+>>>>> +Laurent & Peter
+>>>>>
+>>>>> On 12/1/24 11:00, Thomas Huth wrote:
+>>>>>> It's been marked as deprecated since QEMU 8.1, so it should be fine
+>>>>>> to remove this now.
+>>>>>>
+>>>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>>
+>>>>> StatusInfo::singlestep was deprecated at the same time,
+>>>>> can we remove it?
+>>>>>
+>>>>> IOW could we complete your patch with this?
+>>>
+>>>>> diff --git a/qapi/run-state.json b/qapi/run-state.json
+>>>>> index ca05502e0a..08bc99cb85 100644
+>>>>> --- a/qapi/run-state.json
+>>>>> +++ b/qapi/run-state.json
+>>>>> @@ -106,25 +106,15 @@
+>>>>>   #
+>>>>>   # @running: true if all VCPUs are runnable, false if not runnable
+>>>>>   #
+>>>>> -# @singlestep: true if using TCG with one guest instruction per
+>>>>> -#     translation block
+>>>>> -#
+>>>>>   # @status: the virtual machine @RunState
+>>>>>   #
+>>>>>   # Features:
+>>>>>   #
+>>>>> -# @deprecated: Member 'singlestep' is deprecated (with no
+>>>>> -#     replacement).
+>>>>> -#
+>>>>>   # Since: 0.14
+>>>>>   #
+>>>>> -# Notes: @singlestep is enabled on the command line with '-accel
+>>>>> -#     tcg,one-insn-per-tb=on', or with the HMP 'one-insn-per-tb'
+>>>>> -#     command.
+>>>>>   ##
+>>>>>   { 'struct': 'StatusInfo',
+>>>>>     'data': {'running': 'bool',
+>>>>> -           'singlestep': { 'type': 'bool', 'features': [ 'deprecated' ]},
+>>>>>              'status': 'RunState'} }
+>>>>
+>>>> Uh, oh, that's a bigger change already ... can we safely remove the field
+>>>> here without upsetting 3rd party apps that rely on this interface?
+>>>
+>>> That was the whole point of marking it 'deprecated' in the JSON,
+>>> I thought? We don't think anybody's using it, we've given fair
+>>> warning, isn't the next step "remove it"? Markus, you're the
+>>> expert on QAPI deprecations...
+>>
+>> Yes, it is fine to delete it without thinking further about possible usage,
+>> unless someone steps forward quickly with new information that wasn't known
+>> when the deprecation was added....
+> 
+> Concur.
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/multiarch/Makefile.target           | 10 +++-
- tests/tcg/multiarch/catch-syscalls.c          | 51 ++++++++++++++++++
- tests/tcg/multiarch/gdbstub/catch-syscalls.py | 52 +++++++++++++++++++
- 3 files changed, 112 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/multiarch/catch-syscalls.c
- create mode 100644 tests/tcg/multiarch/gdbstub/catch-syscalls.py
+Thanks all for the feedback.
 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 315a2e13588..e10951a8016 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -108,13 +108,21 @@ run-gdbstub-prot-none: prot-none
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/prot-none.py, \
- 	accessing PROT_NONE memory)
- 
-+run-gdbstub-catch-syscalls: catch-syscalls
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/catch-syscalls.py, \
-+	hitting a syscall catchpoint)
-+
- else
- run-gdbstub-%:
- 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
- endif
- EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
- 	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint \
--	      run-gdbstub-registers run-gdbstub-prot-none
-+	      run-gdbstub-registers run-gdbstub-prot-none \
-+	      run-gdbstub-catch-syscalls
- 
- # ARM Compatible Semi Hosting Tests
- #
-diff --git a/tests/tcg/multiarch/catch-syscalls.c b/tests/tcg/multiarch/catch-syscalls.c
-new file mode 100644
-index 00000000000..d1ff1936a7a
---- /dev/null
-+++ b/tests/tcg/multiarch/catch-syscalls.c
-@@ -0,0 +1,51 @@
-+/*
-+ * Test GDB syscall catchpoints.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#define _GNU_SOURCE
-+#include <stdlib.h>
-+#include <unistd.h>
-+
-+const char *catch_syscalls_state = "start";
-+
-+void end_of_main(void)
-+{
-+}
-+
-+int main(void)
-+{
-+    int ret = EXIT_FAILURE;
-+    char c0 = 'A', c1;
-+    int fd[2];
-+
-+    catch_syscalls_state = "pipe2";
-+    if (pipe2(fd, 0)) {
-+        goto out;
-+    }
-+
-+    catch_syscalls_state = "write";
-+    if (write(fd[1], &c0, sizeof(c0)) != sizeof(c0)) {
-+        goto out_close;
-+    }
-+
-+    catch_syscalls_state = "read";
-+    if (read(fd[0], &c1, sizeof(c1)) != sizeof(c1)) {
-+        goto out_close;
-+    }
-+
-+    catch_syscalls_state = "check";
-+    if (c0 == c1) {
-+        ret = EXIT_SUCCESS;
-+    }
-+
-+out_close:
-+    catch_syscalls_state = "close";
-+    close(fd[0]);
-+    close(fd[1]);
-+
-+out:
-+    catch_syscalls_state = "end";
-+    end_of_main();
-+    return ret;
-+}
-diff --git a/tests/tcg/multiarch/gdbstub/catch-syscalls.py b/tests/tcg/multiarch/gdbstub/catch-syscalls.py
-new file mode 100644
-index 00000000000..8bab12537fc
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/catch-syscalls.py
-@@ -0,0 +1,52 @@
-+"""Test GDB syscall catchpoints.
-+
-+SPDX-License-Identifier: GPL-2.0-or-later
-+"""
-+from test_gdbstub import main, report
-+
-+
-+def check_state(expected):
-+    """Check the catch_syscalls_state value"""
-+    actual = gdb.parse_and_eval("catch_syscalls_state").string()
-+    report(actual == expected, "{} == {}".format(actual, expected))
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    gdb.Breakpoint("main")
-+    gdb.execute("continue")
-+
-+    # Check that GDB stops for pipe2/read calls/returns, but not for write.
-+    gdb.execute("delete")
-+    try:
-+        gdb.execute("catch syscall pipe2 read")
-+    except gdb.error as exc:
-+        exc_str = str(exc)
-+        if "not supported on this architecture" in exc_str:
-+            print("SKIP: {}".format(exc_str))
-+            return
-+    for _ in range(2):
-+        gdb.execute("continue")
-+        check_state("pipe2")
-+    for _ in range(2):
-+        gdb.execute("continue")
-+        check_state("read")
-+
-+    # Check that deletion works.
-+    gdb.execute("delete")
-+    gdb.Breakpoint("end_of_main")
-+    gdb.execute("continue")
-+    check_state("end")
-+
-+    # Check that catch-all works (libc should at least call exit).
-+    gdb.execute("delete")
-+    gdb.execute("catch syscall")
-+    gdb.execute("continue")
-+    gdb.execute("delete")
-+    gdb.execute("continue")
-+
-+    exitcode = int(gdb.parse_and_eval("$_exitcode"))
-+    report(exitcode == 0, "{} == 0".format(exitcode))
-+
-+
-+main(run_test)
--- 
-2.43.0
+Thomas, are you OK to post a v2 with the changes I suggested
+or do you want me to do it?
+
+> Supporting data:
+> 
+> commit 34c18203d472c5bf969ebd87dc06c7c3a957efc4
+> Author: Peter Maydell <peter.maydell@linaro.org>
+> Date:   Mon Apr 17 17:40:41 2023 +0100
+> 
+>      qmp: Deprecate 'singlestep' member of StatusInfo
+>      
+>      The 'singlestep' member of StatusInfo has never done what the QMP
+>      documentation claims it does.  What it actually reports is whether
+>      TCG is working in "one guest instruction per translation block" mode.
+>      
+>      We no longer need this field for the HMP 'info status' command, as
+>      we've moved that information to 'info jit'.  It seems unlikely that
+>      anybody is monitoring the state of this obscure TCG setting via QMP,
+>      especially since QMP provides no means for changing the setting.  So
+>      simply deprecate the field, without providing any replacement.
+>      
+>      Until we do eventually delete the member, correct the misstatements
+>      in the QAPI documentation about it.
+>      
+>      If we do find that there are users for this, then the most likely way
+>      we would provide replacement access to the information would be to
+>      put the accelerator QOM object at a well-known path such as
+>      /machine/accel, which could then be used with the existing qom-set
+>      and qom-get commands.
+>      
+>      Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>      Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>      Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>      Reviewed-by: Markus Armbruster <armbru@redhat.com>
+>      Message-id: 20230417164041.684562-11-peter.maydell@linaro.org
+> 
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 6f5e689aa4..d5eda0f566 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -199,6 +199,20 @@ accepted incorrect commands will return an error. Users should make sure that
+>   all arguments passed to ``device_add`` are consistent with the documented
+>   property types.
+>   
+> +``StatusInfo`` member ``singlestep`` (since 8.1)
+> +''''''''''''''''''''''''''''''''''''''''''''''''
+> +
+> +The ``singlestep`` member of the ``StatusInfo`` returned from the
+> +``query-status`` command is deprecated. This member has a confusing
+> +name and it never did what the documentation claimed or what its name
+> +suggests. We do not believe that anybody is actually using the
+> +information provided in this member.
+> +
+> +The information it reports is whether the TCG JIT is in "one
+> +instruction per translated block" mode (which can be set on the
+> +command line or via the HMP, but not via QMP). The information remains
+> +available via the HMP 'info jit' command.
+> +
+> [...]
+> 
 
 
