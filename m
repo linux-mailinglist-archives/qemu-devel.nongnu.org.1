@@ -2,54 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A93282E825
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 04:21:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5258682E836
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 04:22:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPZzh-0005f6-0O; Mon, 15 Jan 2024 22:20:05 -0500
+	id 1rPZzj-0005fb-ON; Mon, 15 Jan 2024 22:20:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPZzf-0005ey-Ke
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 22:20:03 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPZzg-0005fA-Uk
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 22:20:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPZzd-0002kz-RA
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 22:20:03 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPZzf-0002lS-7A
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 22:20:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705375201;
+ s=mimecast20190719; t=1705375202;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QlKHHaiILIxucG6Imi52ZHb3N/57FdWmDTOKqL1DEPo=;
- b=Popktlznl5haTKEtH48gTn80iF8vylq7O0PXPVoa4Qut8/qmpAhtb2HwnzCkeRBLoQAKKb
- kvxgIjbhrcYkK5/emRs52jKkoKJ9bTrYCNfjF5hxdRnL7I5lskn/QzAH7NCx8RtrGMXTnQ
- Y8WvcBZR0uYG61Vea3r7Z7nL+wA4adg=
+ bh=AAZOWz1VDAEpIhk2J3/myKMXglpqBFV6L3QJoHCSdrk=;
+ b=Kv9O1YPFzn7AkZ17YvgntJBxjvQ6kqYW52Lq8jkpwIFunjULQCLRLEB3jCVlxI/+G+sttt
+ 2+aW4BGpXgT/1Vsc4BslrbHdppYiqDubmDfrzTd4IXt2ZXy06fuCa2vjCSfPQ9P4ASVklD
+ +74D/wYEEIGlNz0I7sreoFm+b2otoI4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-MwkvHsMHP6S82Bs-8Fm2fg-1; Mon, 15 Jan 2024 22:19:56 -0500
-X-MC-Unique: MwkvHsMHP6S82Bs-8Fm2fg-1
+ us-mta-572-fC1v7L7oMyyedHkMLoWj3w-1; Mon, 15 Jan 2024 22:19:59 -0500
+X-MC-Unique: fC1v7L7oMyyedHkMLoWj3w-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1F1D685A588;
- Tue, 16 Jan 2024 03:19:56 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 31370102587D;
+ Tue, 16 Jan 2024 03:19:59 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.92])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E49123C25;
- Tue, 16 Jan 2024 03:19:52 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CC6213C25;
+ Tue, 16 Jan 2024 03:19:56 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
-Cc: peterx@redhat.com, Fabiano Rosas <farosas@suse.de>,
- Het Gala <het.gala@nutanix.com>, Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 01/20] migration: Simplify initial conditionals in migration
- for better readability
-Date: Tue, 16 Jan 2024 11:19:28 +0800
-Message-ID: <20240116031947.69017-2-peterx@redhat.com>
+Cc: peterx@redhat.com,
+	Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 02/20] migration/multifd: Remove MultiFDPages_t::packet_num
+Date: Tue, 16 Jan 2024 11:19:29 +0800
+Message-ID: <20240116031947.69017-3-peterx@redhat.com>
 In-Reply-To: <20240116031947.69017-1-peterx@redhat.com>
 References: <20240116031947.69017-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -80,100 +79,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Het Gala <het.gala@nutanix.com>
+From: Fabiano Rosas <farosas@suse.de>
 
-The inital conditional statements in qmp migration functions is harder
-to understand than necessary. It is better to get all errors out of
-the way in the beginning itself to have better readability and error
-handling.
+This was introduced by commit 34c55a94b1 ("migration: Create multipage
+support") and never used.
 
-Signed-off-by: Het Gala <het.gala@nutanix.com>
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20231205080039.197615-1-het.gala@nutanix.com
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Link: https://lore.kernel.org/r/20240104142144.9680-2-farosas@suse.de
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 36 ++++++++++++++++--------------------
- 1 file changed, 16 insertions(+), 20 deletions(-)
+ migration/multifd.h | 2 --
+ migration/multifd.c | 1 -
+ 2 files changed, 3 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 98c5c3e140..2365a3a13c 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -523,28 +523,26 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
-     /*
-      * Having preliminary checks for uri and channel
-      */
--    if (uri && has_channels) {
--        error_setg(errp, "'uri' and 'channels' arguments are mutually "
--                   "exclusive; exactly one of the two should be present in "
--                   "'migrate-incoming' qmp command ");
-+    if (!uri == !channels) {
-+        error_setg(errp, "need either 'uri' or 'channels' argument");
-         return;
--    } else if (channels) {
-+    }
-+
-+    if (channels) {
-         /* To verify that Migrate channel list has only item */
-         if (channels->next) {
-             error_setg(errp, "Channel list has more than one entries");
-             return;
-         }
-         addr = channels->value->addr;
--    } else if (uri) {
-+    }
-+
-+    if (uri) {
-         /* caller uses the old URI syntax */
-         if (!migrate_uri_parse(uri, &channel, errp)) {
-             return;
-         }
-         addr = channel->addr;
--    } else {
--        error_setg(errp, "neither 'uri' or 'channels' argument are "
--                   "specified in 'migrate-incoming' qmp command ");
--        return;
-     }
- 
-     /* transport mechanism not suitable for migration? */
-@@ -1924,28 +1922,26 @@ void qmp_migrate(const char *uri, bool has_channels,
-     /*
-      * Having preliminary checks for uri and channel
-      */
--    if (uri && has_channels) {
--        error_setg(errp, "'uri' and 'channels' arguments are mutually "
--                   "exclusive; exactly one of the two should be present in "
--                   "'migrate' qmp command ");
-+    if (!uri == !channels) {
-+        error_setg(errp, "need either 'uri' or 'channels' argument");
-         return;
--    } else if (channels) {
-+    }
-+
-+    if (channels) {
-         /* To verify that Migrate channel list has only item */
-         if (channels->next) {
-             error_setg(errp, "Channel list has more than one entries");
-             return;
-         }
-         addr = channels->value->addr;
--    } else if (uri) {
-+    }
-+
-+    if (uri) {
-         /* caller uses the old URI syntax */
-         if (!migrate_uri_parse(uri, &channel, errp)) {
-             return;
-         }
-         addr = channel->addr;
--    } else {
--        error_setg(errp, "neither 'uri' or 'channels' argument are "
--                   "specified in 'migrate' qmp command ");
--        return;
-     }
- 
-     /* transport mechanism not suitable for migration? */
+diff --git a/migration/multifd.h b/migration/multifd.h
+index a835643b48..b0ff610c37 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -58,8 +58,6 @@ typedef struct {
+     uint32_t num;
+     /* number of allocated pages */
+     uint32_t allocated;
+-    /* global number of generated multifd packets */
+-    uint64_t packet_num;
+     /* offset of each page */
+     ram_addr_t *offset;
+     RAMBlock *block;
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 9f353aecfa..3e650f5da0 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -250,7 +250,6 @@ static void multifd_pages_clear(MultiFDPages_t *pages)
+ {
+     pages->num = 0;
+     pages->allocated = 0;
+-    pages->packet_num = 0;
+     pages->block = NULL;
+     g_free(pages->offset);
+     pages->offset = NULL;
 -- 
 2.43.0
 
