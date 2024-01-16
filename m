@@ -2,87 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2978E82F25B
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 17:26:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5FB82F273
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 17:35:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPmG7-0001ZH-CU; Tue, 16 Jan 2024 11:25:51 -0500
+	id 1rPmNy-0004Pu-CI; Tue, 16 Jan 2024 11:33:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPmG6-0001Z0-3K
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:25:50 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rPmNw-0004PN-BT
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:33:56 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPmG4-0002WD-BY
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:25:49 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40e857ce803so7426055e9.0
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 08:25:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rPmNt-0004Dv-6e
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:33:54 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-555e07761acso12145860a12.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 08:33:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705422346; x=1706027146; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Sb8ewZWwHpfNyDhnqAuVoxp7WG7jOe/slKL1LcWRMgA=;
- b=zxOMuijY92OndJTcB0wQzIasE1uKoa1x0oPJL+iaJL/cpBlKUhUViJHuVTG+iNXsTD
- 6kUWMXvkljq9Ecbq9Yo8Xwxhl555jMkS6L0B8YnvA+JiRU6mHGdmFmMbUh95XD49ENUz
- OvrAR0p02aTjlmnPO2qPVlVhE7tqgm4rcAnmhK7HpGbVjFq5CVXIIjFcRbE+TZBWL7cO
- a6DejvWHXR3Tg0lszNVDu1v3Sw0X7mWAvxIcd7+ndWebXKH+xbpCu/mIX+hRz6qfZee4
- o27dudSpBckmq13oIHtX4IfKsFML+d8q5B2bg4peJZpxL7/Dz8ZV3nNKdueRiKd7bOFq
- C8Hg==
+ d=linaro.org; s=google; t=1705422831; x=1706027631; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=YA9WTa1PJHtrlzq0sc7rhJAhXDQbdvD1g9oBexAguQI=;
+ b=cehtpb32L4X2Z8C/eG777xMZfbYS7vLYlcXOQVp6kJInfRm4MftNghq8lP0Jj5fPQs
+ YXUAyou/n7vsJ+qJZbf4b4EbJ1oFmvtpNmz2o4FoIpKC/tQKxAj52uA/PuSf1pbf4AkE
+ EHJFH/Gb0eQEkhWZLtaJbtDk23+GgLelJ1OTNtJknYsB0PTQnncf3Ytb6jEJ+vBebvn8
+ rg6Z70xD8II6LTMqZ3rqlpXk3W5RPw77W16iidITwbIRbOISr8Jrlhw0C469Ohdlgndt
+ WsrJLRYdQAdY3eMVtcC+amMP3/XBzkSUcxeMWRc2E2HrlWOxWqsG5YN8Z6k3rLNa9v1a
+ aqBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705422346; x=1706027146;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Sb8ewZWwHpfNyDhnqAuVoxp7WG7jOe/slKL1LcWRMgA=;
- b=LxlFG1Kg9xgJZMAJJJXuFzTfQ37pmIwpa9VFYB/M/x4E/51emwYK/hsZvTLRf2sUAA
- XnkP7gX012eMgI+vHoCwh5G4AeDIrLJ9X/2URF8tOgcjLq7t4tF31gGQxnlyh6PEmDAG
- +WmbUJy0Q0Ma7FmCTp7ZezFLgDdTCgD2oMzUWPzkgdH+cqkjVZ1nESzibHA1mhLQugci
- Peeq910WIAcFp8THYZKT95d4uYv9/7W7Iz2dPVXRBtmON8JMUFmdoaI30zA5zHKemyVy
- 0VvvFKfWBaXSKBahHSdhar2HXZddeTvWZQ7r/GiJRCWvBbiWaPT9U8uKJ03Nrp/LVjGv
- E5EQ==
-X-Gm-Message-State: AOJu0YwrUX+Tp+PKEUO6ZAqH1S2hojjozpYr9jlwgazobSxrBYrMVYio
- YKD2VtMTZPJV0FXBSItsMQbtkFF7hJ7u5A==
-X-Google-Smtp-Source: AGHT+IEd9iSQRr5FpCis06jN1hSBln9tMu7sGM83eRoAmH6A1XUDsRO3hLrvkGmIeRagMBTD2XPoSw==
-X-Received: by 2002:a05:600c:5398:b0:40e:62b1:58a5 with SMTP id
- hg24-20020a05600c539800b0040e62b158a5mr3902845wmb.15.1705422346579; 
- Tue, 16 Jan 2024 08:25:46 -0800 (PST)
-Received: from [192.168.1.102] ([176.176.156.199])
- by smtp.gmail.com with ESMTPSA id
- q14-20020a1709060f8e00b00a2a61b9c166sm6639819ejj.33.2024.01.16.08.25.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Jan 2024 08:25:46 -0800 (PST)
-Message-ID: <501c1bfe-fb26-42ab-a925-9888755c72ad@linaro.org>
-Date: Tue, 16 Jan 2024 17:25:43 +0100
+ d=1e100.net; s=20230601; t=1705422831; x=1706027631;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=YA9WTa1PJHtrlzq0sc7rhJAhXDQbdvD1g9oBexAguQI=;
+ b=iV5mwjPFYB9mcnEV8AJiFhfIYqP2olZGbI+K1/1QwanfCDmNVcAU9UQXBQdigwmM88
+ Sejjg0VNtdeCtWKlf6nPoGt2HaIwBlX50KLHXbfjQtSp3vdl4tCuMEw+G+97ksr9qQDR
+ FcnREwqnHJ8GvoQpcv0m7T4ENzvvYMrbMo+keTDS7rhnQVt/OZkUsgd59KswpkKrmCsS
+ Bxg1DOALqvVnAezLtNehgzgAwgxyqQUrVn2/P+EXoPCaqyfZcRx6hOPaCIm4ldpKZtAW
+ PfWNS1tXg6rn0fUF6sajEI/t3Y6I+nOIS2BXcY6dh+nAn+jAYgGKre9VVfVyiWmsj477
+ LYPQ==
+X-Gm-Message-State: AOJu0YzUxbMCTmnfefzahTWkmZyttnE7QuVpv8nN3IRaiooYekcMRLZs
+ xmynCIobuJEVS2WY2XmH6UtYCHHpcTuG17Rv9H2Aa4RIXN06SA==
+X-Google-Smtp-Source: AGHT+IElVItkh+33QouJXs8TZLL78ulNkW/4pjRNQcPGbajpZoazMvIEnM2SVubEjtXA2m5oSmxay7piWdq5t9fHCuQ=
+X-Received: by 2002:a05:6402:c81:b0:559:49e6:551 with SMTP id
+ cm1-20020a0564020c8100b0055949e60551mr1171186edb.24.1705422831287; Tue, 16
+ Jan 2024 08:33:51 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/33] hw/cpu/arm: Handle 'has_el2/3' properties once in
- MPCore parent
-Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
- qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-References: <20231212162935.42910-1-philmd@linaro.org>
- <20231212162935.42910-15-philmd@linaro.org> <87y1cudyp2.fsf@suse.de>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <87y1cudyp2.fsf@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+References: <20240113055729.4480-1-deller@kernel.org>
+In-Reply-To: <20240113055729.4480-1-deller@kernel.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 16 Jan 2024 16:33:39 +0000
+Message-ID: <CAFEAcA9KD5OYp9gposXHDszB8ZGVDc-M=Yx4q6Uxzrr=+YnTfg@mail.gmail.com>
+Subject: Re: [PULL 00/10] Hppa fixes 8.2 patches
+To: deller@kernel.org
+Cc: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,106 +85,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/1/24 22:33, Fabiano Rosas wrote:
-> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
-> 
->> Move the 'has_el2' and 'has_el3' properties to the abstract
->> QOM parent.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   include/hw/cpu/cortex_mpcore.h |  5 +++++
->>   hw/arm/exynos4210.c            | 10 ++++++++--
->>   hw/arm/vexpress.c              |  6 ++++++
->>   hw/arm/xilinx_zynq.c           |  6 ++++++
->>   hw/cpu/a15mpcore.c             | 18 ++++++------------
->>   hw/cpu/a9mpcore.c              |  5 +----
->>   hw/cpu/cortex_mpcore.c         |  3 +++
->>   7 files changed, 35 insertions(+), 18 deletions(-)
->>
->> diff --git a/include/hw/cpu/cortex_mpcore.h b/include/hw/cpu/cortex_mpcore.h
->> index 0e7cca9e93..387552468c 100644
->> --- a/include/hw/cpu/cortex_mpcore.h
->> +++ b/include/hw/cpu/cortex_mpcore.h
->> @@ -30,6 +30,8 @@
->>    * QEMU interface:
->>    *  + QOM property "num-cores" which set the number of cores present in
->>    *    the cluster.
->> + *  + QOM properties "cpu-has-el3", "cpu-has-el2" which set whether the CPUs
->> + *    have the exception level features present.
->>    */
->>   #define TYPE_CORTEX_MPCORE_PRIV "cortex_mpcore_priv"
->>   OBJECT_DECLARE_TYPE(CortexMPPrivState, CortexMPPrivClass, CORTEX_MPCORE_PRIV)
->> @@ -53,6 +55,9 @@ struct CortexMPPrivState {
->>   
->>       /* Properties */
->>       uint32_t num_cores;
->> +
->> +    bool cpu_has_el3;
->> +    bool cpu_has_el2;
->>   };
+On Sat, 13 Jan 2024 at 05:59, <deller@kernel.org> wrote:
+>
+> From: Helge Deller <deller@gmx.de>
+>
+> The following changes since commit 7425b6277f12e82952cede1f531bfc689bf77fb1:
+>
+>   Merge tag 'tracing-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-12-27 05:15:32 -0500)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/hdeller/qemu-hppa.git tags/hppa-fixes-8.2-pull-request
+>
+> for you to fetch changes up to 4bda8224fa89ab28958644c5f1a4117886fe8418:
+>
+>   target/hppa: Update SeaBIOS-hppa to version 15 (2024-01-13 06:49:18 +0100)
+>
+> ----------------------------------------------------------------
+> target/hppa qemu v8.2 regression fixes
+>
+> There were some regressions introduced with Qemu v8.2 on the hppa/hppa64
+> target, e.g.:
+>
+> - 32-bit HP-UX crashes on B160L (32-bit) machine
+> - NetBSD boot failure due to power button in page zero
+> - NetBSD FPU detection failure
+> - OpenBSD 7.4 boot failure
+>
+> This patch series fixes those known regressions and additionally:
+>
+> - allows usage of the max. 3840MB of memory (instead of 3GB),
+> - adds support for the qemu --nodefaults option (to debug other devices)
+>
+> This patch set will not fix those known (non-regression) bugs:
+> - HP-UX and NetBSD still fail to boot on the new 64-bit C3700 machine
+> - Linux kernel will still fail to boot on C3700 as long as kernel modules are used.
+>
+> Changes v2->v3:
+> - Added comment about Figures H-10 and H-11 in the parisc2.0 spec
+>   in patch which calculate PDC address translation if PSW.W=0
+> - Introduce and use hppa_set_ior_and_isr()
+> - Use drive_get_max_bus(IF_SCSI), nd_table[] and serial_hd() to check
+>   if default devices should be created
+> - Added Tested-by and Reviewed-by tags
+>
+> Changes v1->v2:
+> - fix OpenBSD boot with SeaBIOS v15 instead of v14
+> - commit message enhancements suggested by BALATON Zoltan
+> - use uint64_t for ram_max in patch #1
+>
 
 
->> diff --git a/hw/cpu/a9mpcore.c b/hw/cpu/a9mpcore.c
->> index 9c138f4442..54949314f8 100644
->> --- a/hw/cpu/a9mpcore.c
->> +++ b/hw/cpu/a9mpcore.c
->> @@ -51,7 +51,6 @@ static void a9mp_priv_realize(DeviceState *dev, Error **errp)
->>       SysBusDevice *scubusdev, *gicbusdev, *gtimerbusdev, *mptimerbusdev,
->>                    *wdtbusdev;
->>       Error *local_err = NULL;
->> -    bool has_el3;
->>       CPUState *cpu0;
->>       Object *cpuobj;
->>   
->> @@ -86,9 +85,7 @@ static void a9mp_priv_realize(DeviceState *dev, Error **errp)
->>       /* Make the GIC's TZ support match the CPUs. We assume that
->>        * either all the CPUs have TZ, or none do.
->>        */
->> -    has_el3 = object_property_find(cpuobj, "has_el3") &&
->> -        object_property_get_bool(cpuobj, "has_el3", &error_abort);
->> -    qdev_prop_set_bit(gicdev, "has-security-extensions", has_el3);
->> +    qdev_prop_set_bit(gicdev, "has-security-extensions", c->cpu_has_el3);
->>   
->>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->gic), errp)) {
->>           return;
->> diff --git a/hw/cpu/cortex_mpcore.c b/hw/cpu/cortex_mpcore.c
->> index d7ea633e4e..549b81f708 100644
->> --- a/hw/cpu/cortex_mpcore.c
->> +++ b/hw/cpu/cortex_mpcore.c
->> @@ -27,6 +27,9 @@ static Property cortex_mpcore_priv_properties[] = {
->>       DEFINE_PROP_UINT32("num-cores", CortexMPPrivState, num_cores, 1),
->>       DEFINE_PROP_UINT32("num-cpu", CortexMPPrivState, num_cores, 1), /* alias */
->>   
->> +    DEFINE_PROP_BOOL("cpu-has-el3", CortexMPPrivState, cpu_has_el3, true),
->> +    DEFINE_PROP_BOOL("cpu-has-el2", CortexMPPrivState, cpu_has_el2, false),
-> 
-> Are we missing setting cpu_has_el2 somewhere else? This^ results in fewer
-> cpregs being registered and is what breaks migration.
-> 
-> You can test with:
-> 
-> $ (echo "migrate file:migfile"; echo "quit") | ./qemu-system-arm -M ast2600-evb -monitor stdio
-> $ ./scripts/analyze-migration.py -f migfile | grep array_len
-> 
-> Before series:
-> $ ./scripts/analyze-migration.py -f migfile | grep array_len
->          "cpreg_vmstate_array_len": "0x0000010a",
->          "cpreg_vmstate_array_len": "0x0000010a",
-> 
-> After series:
-> $ ./scripts/analyze-migration.py -f migfile | grep array_len
->          "cpreg_vmstate_array_len": "0x000000df",
->          "cpreg_vmstate_array_len": "0x000000df",
 
-Thank you Fabiano for helping debugging. Indeed there is a problem
-with properties, so this patch is bogus.
+Applied, thanks.
 
-The good news is the QOM reparenting happened 2 commits earlier,
-so this discarded the doubts on qom-path change possibly affecting
-migration :)
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
 
-Regards,
-
-Phil.
+-- PMM
 
