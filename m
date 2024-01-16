@@ -2,75 +2,176 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E16982EFA9
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 14:22:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7AEC82EFB2
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 14:28:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPjNQ-0000oW-B9; Tue, 16 Jan 2024 08:21:12 -0500
+	id 1rPjTM-0002NE-Fv; Tue, 16 Jan 2024 08:27:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPjN5-0000o6-7f
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:20:51 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPjN1-0002V7-4B
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:20:50 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5592d1bc4fbso2513160a12.0
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 05:20:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705411245; x=1706016045; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=tkwoDVlLqRXVUSTuDgmc6wD0FLwW/mNGEfVVUweFZtI=;
- b=FedO34IENOC7TzPRlodF8oy79+E2eCVi35IK4JQdSOoQDBpgVcJcEzmvp4lIY19vz0
- oFoIMx8+tl0XIZVxJ7S4FgeFl71gJpXXykp01fdwyczXApuxoXfmtrSw5k1NznKp8uMU
- 75EUdaA1JQrJGwZ+F+ODr7oWb7r/4XQz6zVsOYfIbCUn5J/ww/6dUqIxF+mY+930LYyE
- ehgvsofUf7TZQhmS1pGaF49SYqY3Uswspm7S36+ueG2ibS4yuUKHAxUbLv91HWUNX96d
- hUp7EC59LigQHz9ssdE5X+0KualjgmT1OdcGiB5hLOxtwYbIKbchsWnMTtbJ8G05qrHV
- ExoA==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rPjTK-0002M3-BM
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:27:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rPjTI-0003qf-E0
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:27:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705411635;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=micPVCS03YcsiQYgBq8kGJGsDZ34dwZb843rKaoq/8w=;
+ b=VdI/u5CU5t7gMwV6uOCMvq809E+sn/qIH1bLFmCAZ1nPWnOdLpcShcGArHFLOuSVuRJ7Kb
+ tOwTs/D4JVaDYyln3gCNh3UG1ShyKPRVa/9BAHYFOMw+lxNtBdtibVY5D0G5UG8yBPdt/C
+ 2x9wMWvq6Lg9vaLGW6stanGyvrFhcAk=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-284-hQLWaVsfOlmghMR0xkT_Qw-1; Tue, 16 Jan 2024 08:27:14 -0500
+X-MC-Unique: hQLWaVsfOlmghMR0xkT_Qw-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-429ad534cd8so95114041cf.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 05:27:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705411245; x=1706016045;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=tkwoDVlLqRXVUSTuDgmc6wD0FLwW/mNGEfVVUweFZtI=;
- b=osjKlNJpZW2d3M0dVIJTYV+psCjnkL12WYLKZse+aP07U8HPJOCu/N32EHc98dadMF
- Ie+yks2gQnluTtd5WXmzsipoY6eoXy+3+PDpWVHtMOC18vl7yPQA0nNjMC7I8KNXKT1s
- U//+H8xPZb/W5b9IVbeoIoZSbU+HsiXKICzGIO5JmZhV5G87kWYluMLiIPTcMa2+Fcxi
- l9C6ZK+zpoZBa9NUoDrZyPhiwkzEGQplZkQQyJRbZwKirfkkEoJ28Ebbq0k+f26IxVwO
- DVEgJU9Wtq1DEAEw9f63iqGlFIP4ATdF7zdZr0DWOYQk9yXpB9R2lNnyP+HQ+XBXeXEn
- x05w==
-X-Gm-Message-State: AOJu0YzkhB/FogMbUIOJ+8wdOmrpx6ZCSkd6e5W2ixdve72BBODm2taa
- l7yRSJ5Z1JrE5CqPQj83wJQ8Bvn/5bNO7SyTvtFIKMk/jmzVSw==
-X-Google-Smtp-Source: AGHT+IFf3PNzy6neZAfvNrUGcq0nwrIla5pa7a8rkXckZ5SDW7zrCsRHL9gyE6d//gv29fhbNcZ6vLTaznFdM8vQP0g=
-X-Received: by 2002:a50:fa94:0:b0:54c:60f0:7511 with SMTP id
- w20-20020a50fa94000000b0054c60f07511mr3263070edr.35.1705411244810; Tue, 16
- Jan 2024 05:20:44 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705411633; x=1706016433;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=micPVCS03YcsiQYgBq8kGJGsDZ34dwZb843rKaoq/8w=;
+ b=RDQ2fyHQeZ1dlrs+DHTAxPBsREB1S1pEUafI6bZlRYXpqoMH85nxLkWnjCxPyxMyiQ
+ HACHN3rZtv5UX+nWAO5U6cHrs1OFATZ43eoUoXGJTTYWMqnw3pKT8kSj4NZT2WNKuyJM
+ BjXT1zs1ykX1IbSS54CmCLHE47IILn/jctiatgla4wyuvQKmkwpwn5MboCfW9eI/dU6b
+ 9GOYlFBqkjUUMlEg9ZKNII4a/HePBBc3eim8XPhdI/0sZT6USELUH3JFFbTTvFxWmXLn
+ cN8rIreI0/0RWOzXXFXPEqf7QlMTdGXDbaizTYX+z1qOBp4UnbkTrljdFhfatCw1wnUp
+ xJxQ==
+X-Gm-Message-State: AOJu0YzVqu2jIc9oqVJ4rJdL3BxeYcGHQQsxyBKSg3rrYrQpn+om81w2
+ 0Qhjczu96esV0mlH7hjBnk7BsdDIyTk+/HrE8aZND9GM9gpt3tLQiQoIKJMalN5G5P6V3O2ICTf
+ 4XbKKxCer42lYgLu+6EFGzc0=
+X-Received: by 2002:a05:622a:3cf:b0:429:c715:1b1 with SMTP id
+ k15-20020a05622a03cf00b00429c71501b1mr10244556qtx.111.1705411633659; 
+ Tue, 16 Jan 2024 05:27:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFfOVvI9b5J3pQbLjk/6HTmGtAD6L1/IYtPkUNMmrxkvcLJrPzDAEsx5im3gi3cIE1dHjJZFg==
+X-Received: by 2002:a05:622a:3cf:b0:429:c715:1b1 with SMTP id
+ k15-20020a05622a03cf00b00429c71501b1mr10244506qtx.111.1705411633351; 
+ Tue, 16 Jan 2024 05:27:13 -0800 (PST)
+Received: from [192.168.0.9] (ip-109-43-179-227.web.vodafone.de.
+ [109.43.179.227]) by smtp.gmail.com with ESMTPSA id
+ fg25-20020a05622a581900b00429be14d3bbsm4848111qtb.13.2024.01.16.05.27.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Jan 2024 05:27:12 -0800 (PST)
+Message-ID: <8d1b083e-1bc7-4ee3-87da-9f1129784b3d@redhat.com>
+Date: Tue, 16 Jan 2024 14:26:57 +0100
 MIME-Version: 1.0
-References: <20231218113305.2511480-1-peter.maydell@linaro.org>
- <20231218113305.2511480-28-peter.maydell@linaro.org>
- <20240116130940.00002523@Huawei.com>
-In-Reply-To: <20240116130940.00002523@Huawei.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 16 Jan 2024 13:20:33 +0000
-Message-ID: <CAFEAcA-94-TeFw4AmTsuQaJROADaet8aWDEBXbt9H_gc1Fs6pg@mail.gmail.com>
-Subject: Re: [PATCH 27/35] target/arm: Report VNCR_EL2 based faults correctly
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 40/46] hw/s390x/s390-virtio-ccw: use
+ qemu_create_nic_device()
+Content-Language: en-US
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Rob Herring <robh@kernel.org>, Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+ Jan Kiszka <jan.kiszka@web.de>, Tyrone Ting <kfting@nuvoton.com>,
+ Hao Wu <wuhaotsh@google.com>, Radoslaw Biernacki <rad@semihalf.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Helge Deller <deller@gmx.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Song Gao
+ <gaosong@loongson.cn>, Thomas Huth <huth@tuxfamily.org>,
+ Laurent Vivier <laurent@vivier.eu>, Huacai Chen <chenhuacai@kernel.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, Jason Wang <jasowang@redhat.com>,
+ Jia Liu <proljc@gmail.com>, Stafford Horne <shorne@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Bin Meng
+ <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Magnus Damm <magnus.damm@gmail.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+ xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
+References: <20240108204909.564514-1-dwmw2@infradead.org>
+ <20240108204909.564514-41-dwmw2@infradead.org>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240108204909.564514-41-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,81 +187,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 16 Jan 2024 at 13:09, Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Mon, 18 Dec 2023 11:32:57 +0000
-> Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> > If FEAT_NV2 redirects a system register access to a memory offset
-> > from VNCR_EL2, that access might fault.  In this case we need to
-> > report the correct syndrome information:
-> >  * Data Abort, from same-EL
-> >  * no ISS information
-> >  * the VNCR bit (bit 13) is set
-> >
-> > and the exception must be taken to EL2.
-> >
-> > Save an appropriate syndrome template when generating code; we can
-> > then use that to:
-> >  * select the right target EL
-> >  * reconstitute a correct final syndrome for the data abort
-> >  * report the right syndrome if we take a FEAT_RME granule protection
-> >    fault on the VNCR-based write
-> >
-> > Note that because VNCR is bit 13, we must start keeping bit 13 in
-> > template syndromes, by adjusting ARM_INSN_START_WORD2_SHIFT.
-> >
-> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->
-> Hi Peter,
->
-> I'm getting an unhelpful crash on calling init in a guest
-> running on top of an a76 emulated host with virtualization turned on.
->
-> Run /sbin/init as init process
-> Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000007
-> CPU: 1 PID: 1 Comm: init Not tainted 6.7.0+ #1119
-> Hardware name: linux,dummy-virt (DT)
-> Call trace:
->  dump_backtrace+0xa0/0x128
->  show_stack+0x20/0x38
->  dump_stack_lvl+0x48/0x60
->  dump_stack+0x18/0x28
->  panic+0x380/0x3c0
->  do_exit+0x89c/0x9a0
->  do_group_exit+0x3c/0xa0
->  get_signal+0x968/0x970
->  do_notify_resume+0x21c/0x1460
->  el0_ia+0xa0/0xb0
->  el0t_64_sync_handler+0xd0/0x130
->  el0t_64_sync+0x190/0x198
-> SMP: stopping secondary CPUs
-> Kernel Offset: 0x2a8c93a00000 from 0xffff800080000000
-> PHYS_OFFSET: 0xffff82f980000000
-> CPU features: 0x0,00000001,7002014a,2101720b
-> Memory Limit: none
-> ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000007 ]---
->
-> Upstream kernel as of yesterday.  Nothing particular 'exciting' in the
-> configurations. Not attempting to use Nested virt.
-> -M virt,gic-version=3,virtualization=true
-> -cpu cortex-a76 (happens with max as well but switched to a76 for testing
-> to reduce possible sources of problems).
->
-> Doesn't happen if single cpu in the guest, or if using gic v2 in both.
->
-> Bisection points at this patch - so far no idea why but I've only
-> just started digging into this.
+On 08/01/2024 21.27, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/s390x/s390-virtio-ccw.c | 11 ++---------
+>   1 file changed, 2 insertions(+), 9 deletions(-)
+> 
+> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+> index 1169e20b94..202c378131 100644
+> --- a/hw/s390x/s390-virtio-ccw.c
+> +++ b/hw/s390x/s390-virtio-ccw.c
+> @@ -221,16 +221,9 @@ static void s390_init_ipl_dev(const char *kernel_filename,
+>   
+>   static void s390_create_virtio_net(BusState *bus, const char *name)
+>   {
+> -    int i;
+> -
+> -    for (i = 0; i < nb_nics; i++) {
+> -        NICInfo *nd = &nd_table[i];
+> -        DeviceState *dev;
+> -
+> -        qemu_check_nic_model(nd, "virtio");
+> +    DeviceState *dev;
+>   
+> -        dev = qdev_new(name);
+> -        qdev_set_nic_properties(dev, nd);
+> +    while ((dev = qemu_create_nic_device(name, true, "virtio"))) {
+>           qdev_realize_and_unref(dev, bus, &error_fatal);
+>       }
+>   }
 
-Bisecting to this patch is a bit weird because at this point
-in the series emulation of FEAT_NV2 should be disabled and
-the code being added should never be used. You could put
-an assert(0) into the code in translate-a64.c before the
-call to syn_data_abort_vncr() and in arm_deliver_fault()
-assert(!is_vncr) to confirm that we're not somehow getting
-into this code for some non-FEAT_NV2 situation, I guess.
+Acked-by: Thomas Huth <thuth@redhat.com>
 
-thanks
--- PMM
 
