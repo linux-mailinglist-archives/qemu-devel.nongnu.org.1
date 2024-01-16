@@ -2,135 +2,127 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9571182F08B
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 15:32:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BC182F062
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 15:16:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPkSw-0007XN-4x; Tue, 16 Jan 2024 09:30:58 -0500
+	id 1rPkED-0007O7-AS; Tue, 16 Jan 2024 09:15:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1rPkSr-0007Ww-GB; Tue, 16 Jan 2024 09:30:53 -0500
-Received: from mail-vi1eur04on0713.outbound.protection.outlook.com
- ([2a01:111:f400:fe0e::713]
- helo=EUR04-VI1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <peng.fan@oss.nxp.com>)
+ id 1rPjjj-0002VI-FD
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:44:15 -0500
+Received: from mail-he1eur04on2050.outbound.protection.outlook.com
+ ([40.107.7.50] helo=EUR04-HE1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1rPkSp-0000vr-TN; Tue, 16 Jan 2024 09:30:53 -0500
+ (Exim 4.90_1) (envelope-from <peng.fan@oss.nxp.com>)
+ id 1rPjjh-0007rQ-LZ
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:44:15 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=X0qopdwLGfTWnKa50ygauuZTHmNtFoizg+gZQAxsggadaQQ1i1mV53Y1cTyA2dnwGJ/VrbodCqQEjw3CaNpAKH2wkvEvyGxeoMeVVsfmiPh8k4iwL8fRMRPVIWGFX+dXKxl3+YB4QZEDfB6mWGI3qjMt4sDyvgj7Y+PApPszKQLQtzSIWAIw2wrApEDYFXOpxrVHA0vRlBv9ZWgMI4EGfi5r0b92W2f6XfUOovb5ZVjhP895A3DovW2HKP6MmBGqGBvnUE+QRk9WlpnY47hxoGjobD6Og7k4LNrWfood6A0tT/yZBDP1M4Ai8szybXsdRqIfOzveNrx6Jb1j5+09Ig==
+ b=m46DZNX6uuNfw3kfH6RUhOccnw+wub7vWobPBDfePxFT1ii5gKPmWD6cS+iDK+CWTWMzu6VMBK9e8BqD+MZzoFKCXw3CgcBoqo1lJOf/N61AayMmUPSQyeGpWkJQRqujwhiRIHGptHXL3SeCo+MSvv7fpQgCy5vLKGvfvdxMRFbDSY7TIESKH29gWjdR+av51PunzMilOqhqVEEITO7A8onZQWWbXLq2tzNlH6JjAObOXSTDpAEI+rLWl0/oruv8Md1Fn5QjTBdPMg+BOrBlcsxecN+lUX5oqTH8LPV2jjZM84McxkRgr8DSycc2/IMQ42VW+nw8xLFjsK0FWBaDiw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rlyt6cyijRHCeQptUbcdNGe3ChdsEgHR5z5F4zaTBso=;
- b=ctp76crMgjIVAE3X9UPvKsH1/KGV6uQW6TSkkgfpEezcKMRW4ru3Uqkms1kiXqmdcFRVNTbY9Zy8QiOotDb1JjPdVq8x151qEfmeGjXTRU//YJO3t+7ZcE25UItbE/1yQu78JmgV0ivNhGOeafFxuGQZVx0pQB8BYxOnIWtqBtQvUZW0/0KGlTKnVVqYU0fAtVnxroqRWUjvDI9mKcpNz5M8mwxQpvbYllxSqbc7UA0FD4M8XOLa0aT3JbzMhJR0uSfBHBbGzWa9m9Lp5g46/oZYnuRtqBNfxY2FJZQH1ciaaLp6zMlpzTcz8oYL27TeyrocV7D1viqkswwKqBo+Lw==
+ bh=2U3E52DW1E9L3OhbwVGkXyBGddYCJr05awnT7+GVbJI=;
+ b=Hqr9VMzieG7k/8ErrHHdFXicspAcPaZoRbMn3xOLMix6kmGsw5wfAYP+i4sHoS7/xBu5NTp7SbZyEi/CyrO7z1+uh2k3x0Ps8hckjlDtK4WjpkHNIvDdRdo4IRK50kC6o+5Degorx0TKgSNosH5nrKu0ap2uYxdo97bGyQgxPu99Z+MfRaI01c2jN1ffuW6jnIBReSd7GrJl5aJaYccWh5jKt/NUg8bUidJZOaa6GPOeZTFGrkgCvz5PKOEtGN8EHqM5eZDwmrl4cXDf+yZsGHsiKw7Y8V+infay5xJ+8xWh8VtXBulMopGl1iCX+nDwNwwMs8lKV2jFFHaCM2Ja5w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com; 
+ s=selector2-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rlyt6cyijRHCeQptUbcdNGe3ChdsEgHR5z5F4zaTBso=;
- b=XiLrFxUprAcqlseHZiltBiCljZmQDGztlF7Kq9cMNreg0CBDXvmpwjw8X5egErtC+iWvWHQo0fXuKpGKwL1SJPPnegq+IHTtrQwaQhnavgfhHfmWjdwXadEmLCHyvEf03CiEAlszRQSw+xPsV+1KvjcXYPJQCZXJN3ATHPCc8Tc8ZmMtq4uKWL8jIpDeXCGongSIZzpopIf0wWGA7+mfBiNEA0WIPHWlm/V8uluAgvgra4UoLDRLdrQL50v6S2m5ZAiUuoIqyQq0H+bC16+reDgxGTZ2sKBF9go5tDBfvZPvi23plDsWDs2CZEVX0wdWhWaL3ABXfDCxY3IS1Zs7Fw==
+ bh=2U3E52DW1E9L3OhbwVGkXyBGddYCJr05awnT7+GVbJI=;
+ b=M+OwdT3ltHWziOOjbww5uwjUX8/CGPsPNRYLMwshPiB9B3FjL03fescWZfzzWWIuE67ID6Ig1FGV5Rn62xDfF+gG4MueO7ft2REAOwR7+374GxxqEJJPpVMc4RvShnC3M1qxNI56D9J+WH13DHG/zL5I4PZ7IlU39ap8FkB7T80=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
- by DB3PR08MB8916.eurprd08.prod.outlook.com (2603:10a6:10:428::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.28; Tue, 16 Jan
- 2024 14:30:47 +0000
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::305c:3923:7c79:ddfa]) by PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::305c:3923:7c79:ddfa%4]) with mapi id 15.20.7181.029; Tue, 16 Jan 2024
- 14:30:47 +0000
-Message-ID: <442411f5-ea2b-421f-8bb6-cfd5311649ad@virtuozzo.com>
-Date: Tue, 16 Jan 2024 15:30:45 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/21] parallels: Add a note about used bitmap in
- parallels_check_duplicate()
-Content-Language: en-US
-To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, vsementsov@yandex-team.ru,
- kwolf@redhat.com, hreitz@redhat.com
-References: <20231228101232.372142-1-alexander.ivanov@virtuozzo.com>
- <20231228101232.372142-10-alexander.ivanov@virtuozzo.com>
-From: "Denis V. Lunev" <den@virtuozzo.com>
-In-Reply-To: <20231228101232.372142-10-alexander.ivanov@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR3P281CA0089.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:1f::18) To PAXPR08MB6956.eurprd08.prod.outlook.com
- (2603:10a6:102:1db::9)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by VI1PR04MB7165.eurprd04.prod.outlook.com (2603:10a6:800:125::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.23; Tue, 16 Jan
+ 2024 13:39:05 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::c499:8cef:9bb1:ced6]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::c499:8cef:9bb1:ced6%3]) with mapi id 15.20.7181.022; Tue, 16 Jan 2024
+ 13:39:05 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+To: sstabellini@kernel.org, anthony.perard@citrix.com, paul@xen.org,
+ vikram.garhwal@amd.com, viresh.kumar@linaro.org
+Cc: xen-devel@lists.xenproject.org, qemu-devel@nongnu.org,
+ Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH] xen: Drop out of coroutine context
+ xen_invalidate_map_cache_entry
+Date: Tue, 16 Jan 2024 22:36:22 +0800
+Message-Id: <20240116143622.6641-1-peng.fan@oss.nxp.com>
+X-Mailer: git-send-email 2.35.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2P153CA0017.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:140::10) To DU0PR04MB9417.eurprd04.prod.outlook.com
+ (2603:10a6:10:358::11)
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|DB3PR08MB8916:EE_
-X-MS-Office365-Filtering-Correlation-Id: e426ca37-b747-4f01-6cb0-08dc169fbabb
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9417:EE_|VI1PR04MB7165:EE_
+X-MS-Office365-Filtering-Correlation-Id: ab96e1b3-9e2a-4afb-fa7e-08dc169881f4
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 9VrsywAlJWeWtyeqtMW2193bm11PQWvSBepMkOi3TRu4tNZM96h6V96l2GkaEmnHwCfYzMpJOXk9eVtQwuJ36jpma8Mg2WWY5wHQgHJG66OxOR+afIoad9lWpDIsV4uXhp+FcsqSSuM8g3A3IqMUWT4Jc/WP+itiFZDJeEvUUJ4K6TE/YBGAwZu72In7Hczx730YjrCATkNjNUzjxBmk38R64KXDASLhGKpy9j5Oy886xg2Tp/PoEeZWkC4yLDW5AeriN+EIDN2VfYIjSgtzcot6NkFAfyBUzLwvc8fFqtoOFxMpwQcncliS6foyL7I+46XhbD6QtsLZZqQQ8AhXwpLxA1OO1QJvo1wiXfJr5IQZzjJ8lqBtD0I/TUsOSMZK8KRST9ZvAykm3pZImIs8kd4cc8UJp/6IlDnkgoWT0vezBCXWndb1Rs+mzyz5JosW/tQH9QN2GAkswQzWUelBhyoU4r9h2erOJHUMFltD8o4Ha/U2OG7j5l4nklGRVpAsHw/OV6PYVYmEBL4tdYg8z56UqVKM38oGeGpU3yxzIGKq69qsIXBoW7xQ/wy+zyMNDq4y4kZ/FLi3OgVOMJL//aQfu3KLIuf0ZkJ74NmkoLUOMX16QWXq04X3KCzxDsBWvdPPXAp1YGbU6Pt6EWqVeQ==
+X-Microsoft-Antispam-Message-Info: ITbcP3AkQVCnDyJwonkpEyUr6qh/O+ZJA5WYa+WC2NhGg4K6heknvGj/RZhtF6tg1nx8vqSSG548a+hKKrbS+77stmLcPiAEJ1QURx+3TEsI6hHrs9kNF73zOYdgN7OfSu3MxeJYDAdXfRnHCrC/8kyr3P55DJqbdeVpp2Y8dsmULC0wEerJCQEQjht5F3+6iBJ6RXRgnewXQKqS6ebcSZFhWnztG40hCzGT2UaMXRTm+/amdSOciYGTQ5SqeOw5grLoBeBsNhljgh1x0kpOY/oa8BvvDc7JHSLIiCOzXv542vDNfeyoZBATAam/kjpOqfnGTSDqjvzJeQ0i15CWO1oM1bs86VSEEbZxntDbSRvYnPwhvNtKsM/veInoV7pUtZNplvznOzrGuvcj98tOnGzRKgQIEnG9423auUtpMe5B40YDUFaBt1/RwUldOzn6tPn3SzHgTQcsD+yj3GQpbNkat2tt5pKsrdWTGCtx2SDB7ghKfEsGxuF4ni9wgFZIY6vyAU+cI9h6586fif23R+KHBYu3WElFB0wtXLRl7U0DfnUg5q290aeGdjRXPO1pe9zVN6Wz8IKtmGHvjEcjqHezluy2xpOp3g8xM4lMPNxQSQXXh7wizkPFDyKaMIY0
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(39840400004)(396003)(366004)(346002)(376002)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(5660300002)(8936002)(8676002)(2906002)(4326008)(31686004)(66476007)(66946007)(66556008)(316002)(6512007)(53546011)(6506007)(478600001)(83380400001)(2616005)(26005)(41300700001)(38100700002)(31696002)(86362001)(6486002)(36756003)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
+ IPV:NLI; SFV:NSPM; H:DU0PR04MB9417.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(39860400002)(366004)(136003)(396003)(376002)(230922051799003)(64100799003)(1800799012)(451199024)(186009)(26005)(52116002)(1076003)(38100700002)(38350700005)(86362001)(2616005)(2906002)(83380400001)(6512007)(478600001)(6506007)(6666004)(8936002)(8676002)(316002)(4326008)(41300700001)(66476007)(6486002)(5660300002)(66556008)(66946007);
+ DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N2xsK0hOd1loMDJVV0NqWW56czc2YXdVekxIeExEME9FckNEVHcxWVhsS2dM?=
- =?utf-8?B?eXNlWDVHY3BzOW1MQWNheXhmSFVPdE4vbDgvc25QOGh6bFdydy81OXB6VDV5?=
- =?utf-8?B?d1JUMkhPVzNvTnZOdEhzclZxZ0o0d2NMSENWbEpNQ0dOZjJVdEp2Q3RnYlUr?=
- =?utf-8?B?QmxmNzdwYlA2NlJjN3c3MnZNN0NhT1JOdm1xQmVCa0RuUUltVVdwVFVKMmJF?=
- =?utf-8?B?b1dGdElTcUtGZkl2RSsxRzRDekMyVzFPR0YvQWFpK3h3a0pJZ2tERGNyaXBD?=
- =?utf-8?B?VWJacWxjWDRQdzhUUlYvMnFVb3BDK1NqWmoxOUdKU2cyT1Vtb0RoUFlPRUU5?=
- =?utf-8?B?SUkzWlVNYXk3Nk4yZE5SNStmY0ZuWFpyUG42ZWtKcGthNGxYNTJOOHVudlZy?=
- =?utf-8?B?N0lYYVp4YVoreUdRTEZjVjJIeFVUTm95bkFQb3IvOXN1Z0pqcjFUaDVrNnFl?=
- =?utf-8?B?SEFKOENuUkZyd2QrR0VuRlZMczMxZFV2MVJwcUFLYVNua2J1UUpOemlvT0VO?=
- =?utf-8?B?K3VSdWZZNGovVTdPdXhFa2VLbnhlQnhRQkk0ckE5QlF0cW1vL0tkY1ZLY0Fl?=
- =?utf-8?B?am83Tm5nR25uSnNoRFFZNmt6amllYnRWazdWUFNHSmt1S3dMQVFFcWZ1SGRZ?=
- =?utf-8?B?b0pHWFN0QitFV1VjZys0cGh5R3VpSklHNVAzVVR4a1FRWm00bUlQdEorVERI?=
- =?utf-8?B?RVZRUkZwSjQza3p3b0hoL2hWd24xaThJUXVBR3VnbEtQejJ3R09NK1hlVVFI?=
- =?utf-8?B?emdFd0RZek9mbmpHdWc2SjJxYkZoaVl1a3g2bFRJRXVqS0xjZk1sbUQ4cHYx?=
- =?utf-8?B?TGgvcThaM2VSY3ZoQisvTEpSOFAzM3VPQzZWbnk0aUtybElyMk9IOVJrR1o1?=
- =?utf-8?B?eDJJYXRqRnpVWWQvOVBVTDZHK1cwRzk1ZjJycG1QZFppUnVvdDU4cjRMRzZL?=
- =?utf-8?B?T2RDclNSLytRb2t3eGVST0FlVG5EZnR3MmZmK2hsNVBxYTlkK3pXMEtZZTdD?=
- =?utf-8?B?RFA0VTgyNkx5T0l4dUs3am9kUnE2RURVUUpOREJuVWpNbmFSU1MvVEptL2pF?=
- =?utf-8?B?OThsR0ZZVjcvU0NGdFFTWDYwQ28yTGdhZnppSUZPYm1XczFUdUtya3RDcGFj?=
- =?utf-8?B?eEF5VmErL05jOWFkV04xNlRDK1c5WU1QQ2JSYm9VY3R2K2FRa1lEOStMeW82?=
- =?utf-8?B?UzVMVmluRUVHWXlqYzhjRWtTREhxWnRCZldvei93bU9EaFAyY2xEcEl2cmVi?=
- =?utf-8?B?aFZxY1JNcWFzQWtoVVhnZlVIRmR0UjZJSUNqL2p5ZWNDcFAwVUZnOVRiRWFO?=
- =?utf-8?B?RGJWWWNyN0hQUjdDQlRrMzZrTy9EaFdUdC9GU2dic1h6U0N3aWttNGJUOU93?=
- =?utf-8?B?Z2lYL1NJQlVOb21QbWFmNnU0SDhJYm9lam1WTmxGSDBYQ2pVQnlHTWgwNHFk?=
- =?utf-8?B?TExtdDhLYURtb29wMGtQVEtkYlhFWk03bkZjelk3dmFNVWFoQlBPZ0FqZnA3?=
- =?utf-8?B?VWtxdVpBa25HcWZXaVk2ayswVW9YaUM0L0pUREhCTm11V1NsUGdkN2xPQUI1?=
- =?utf-8?B?YXRTSnBza0dnbE9Sbkw5ZlY2RmdqK2xPMWw0b3NtQ0RBOWJUb25Yb0FpVTFp?=
- =?utf-8?B?VnUrZ09VN0prVGFCS2MyY29ST0x2SzR3OEEzUUJZUmlhRG9BVC9ROHorNnhH?=
- =?utf-8?B?MDF2NzU1K3ZLTEJqQkl5NW92T0pGaFJNbG0vYVRpNzZHcHpjZVNqeHdlU0c2?=
- =?utf-8?B?RWhTSWd4T2RDSFhGVHVNMkVGQWIrYzVKdEdwNklucDlPOTdsa0VMZWJFUnds?=
- =?utf-8?B?dVBxaFJreTFTSTRmRjVTZnV6TzAwenJMK1BiK0k3L1VSd05jMWMza29Td1g5?=
- =?utf-8?B?THlmRGVmODNCdmhXRnBSQ1FDcmVQTS9hbDdnZjE3QTVzd0h1Z0huaGlhOXUv?=
- =?utf-8?B?R1F2OWZ6M3N6WGVhTVB4STF3c0wwTzdRQ1dBdHZTdjdnYVhDUUI5TUhYbjZV?=
- =?utf-8?B?L0FyNEZQSGFpYk9hdGg5YVZEdWtsOHV3SGxTMkZkVERCdmQ5ZzVYM0RkajBr?=
- =?utf-8?B?dEpKNEU2dTJBcGtadXhrb25WS0dXaEJFbTQ3TEsxVlc4bWgrdGdSUk8xd2dY?=
- =?utf-8?Q?exn0k6hur5/l9OCjuSem888ul?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e426ca37-b747-4f01-6cb0-08dc169fbabb
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?GxCOyVvI4qwCwfGZz2QjLk7s2cCvqezCcy8FPqhH5MqinoB2WaBo25L4bLH1?=
+ =?us-ascii?Q?sPcfT/Tfh3DUUJXpdq0RX37RUriOiwZx9oGT6JYXyg5czbaawoII/H6y4viO?=
+ =?us-ascii?Q?Hx2CgpmsjuLF6GdmeFHLPsjMVpy/Hth7a0al9lmYA01VwGPOOwky4rluUhgC?=
+ =?us-ascii?Q?NGP8Cv0unrXQ1aHsftT9o/BgLgGlU1p5xT0LvnXNtHwZbhBBlqEqahhIiH1x?=
+ =?us-ascii?Q?P+ingplUZKG6bkYLt0n7tQb234LHOR2BeMgdqf6mSnDUq/cD3jhPPoatVd0y?=
+ =?us-ascii?Q?/EdZ9Sf13R5Jhvlxa+kimRqr7+OvgZqaNSwaYKRGEuJW9JSD7Qncvxl33yId?=
+ =?us-ascii?Q?BzW8jCW+gZLqrE/3J6/U2jx5h2RW2AHWkX2bFM5AsswUYBgWKwJh+/sLTJIC?=
+ =?us-ascii?Q?jzkAzV7qTYLWVyUSS1ObWnEdPnwnqEUJjjxVS4cOH6bml1jpScjQ8RE4J9Jj?=
+ =?us-ascii?Q?7dX0yPB1mZiiYzb17GqcPDC3gGpcSBMjJxMv/jCmqPEUFJPTDKtGB43TQ+SX?=
+ =?us-ascii?Q?ndHKGIFpPQCbxFeK5L4TycQtDP/JPg9GJhnmEyyWRjgdhR3A1oRk+ng4uB+s?=
+ =?us-ascii?Q?D5036r4g6JA3BLEjj0nWowRk2lpDqVdVgh41Ed73HGRSiLXppx0T0yuF8m0A?=
+ =?us-ascii?Q?U72FNJtNc5WeGdm7tnGmhIVUgqF8+v/Bb1LcqIGsRrjV18LEodVDjDYP062z?=
+ =?us-ascii?Q?sh8mZSe9zJoDD7nbwwFQYKcGMvmN4ecE1dJUTTdPLm9YLXlK3GuM8VRwY3dY?=
+ =?us-ascii?Q?/OyHgJb0yLnvZ1bEiFlMP3h/iF8QRsuViL948floCdMRKe+L8fGX1gQoAy7N?=
+ =?us-ascii?Q?9P2yXP+W60d0rP6TYOx8HEkcIBRJQ+TE+BfF8kHurQ/DjD2rVLMYeyHbIWDG?=
+ =?us-ascii?Q?C1PraVW0lCd9t2kYwkzokFxNUFtZjtjDXT7bz0tm+tzDCuBk5MKCUMFOBvhh?=
+ =?us-ascii?Q?2kbCoCxk9M6dHpb1l5aPl5vysWowmtpBbUnBbkcr7HseNnv0iNzLfikQVgDV?=
+ =?us-ascii?Q?EUzxV4Kut9o3diyILOfZk2BMCxDrzSWwlULdoxjz6pn3TlcU+SQfVXaZAyTR?=
+ =?us-ascii?Q?o4MEWjk9PwC/gj0Et646rpjfiWvyaEssdrZIQWOdMTjPn9n7Ckk7aytF9/QJ?=
+ =?us-ascii?Q?+yvZT1Rz+m5KZkOB/B8J1cNkz1CmD98L9U9ze1xJ2ewwOgptEmHSnH9j0+Zp?=
+ =?us-ascii?Q?4z3yQlj6+kk6YyMwo9CBlu7FTq6Ud+3Pm/AB4X1Z3xBOSk3d6w0uVeChYRdb?=
+ =?us-ascii?Q?xah+p1A0rCp7XhUBvgV5+WKNc77u4pVFRYcR+bbaaZQQKitcNLXlfeqXggoc?=
+ =?us-ascii?Q?9vgbjHrS7LUUbm/pzCm3ytSr55GgmVVprmbWU2DFTxOiQBzmotl0aKqbBz8R?=
+ =?us-ascii?Q?pb9BA7Hpml0hsyBA9NsghaAF0xQ9VY56Gq/M6rVx4vBPRIKoMwFu59ssGNS+?=
+ =?us-ascii?Q?sngE+sj6rFgOSRxtjH8D6RCA+Z2E3Wvdv+7j4FxkoXVrE1hcEKn/jDm0hqfB?=
+ =?us-ascii?Q?BlGP1TYqBJq8mOu/Xo969dM4jxsQhSHOhokrDQASaqJXoWpHutNjPpT2c4Ux?=
+ =?us-ascii?Q?q0cQfint5NWhlb3hgq27DrjKnvLmj+lYNQcEn3Yr?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ab96e1b3-9e2a-4afb-fa7e-08dc169881f4
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2024 14:30:46.9445 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2024 13:39:05.3808 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7A8iVrZLMnRttLJpLP9gwy0sqDHid2gw+Cr3wXz8XKTJz4V79ctZvO8nWVu8+8+g1g47oN2PdODfCDM6Mo2DQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR08MB8916
-Received-SPF: pass client-ip=2a01:111:f400:fe0e::713;
- envelope-from=den@virtuozzo.com;
- helo=EUR04-VI1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-MS-Exchange-CrossTenant-UserPrincipalName: sZTaoXNRwsYtgOX/r3mpqE5cPXCkItBJJVC2H+qedwgKQiezY43BUs+WcRLkJi5ZbPmVt6DCBB0lcT5jcDBbIw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7165
+Received-SPF: pass client-ip=40.107.7.50; envelope-from=peng.fan@oss.nxp.com;
+ helo=EUR04-HE1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 16 Jan 2024 09:15:43 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -145,31 +137,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/28/23 11:12, Alexander Ivanov wrote:
-> In parallels_check_duplicate() We use a bitmap for duplication detection.
-> This bitmap is not related to used_bmap field in BDRVParallelsState. Add
-> a comment about it to avoid confusion.
->
-> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-> ---
->   block/parallels.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/block/parallels.c b/block/parallels.c
-> index 04c114f696..0ae06ec0b1 100644
-> --- a/block/parallels.c
-> +++ b/block/parallels.c
-> @@ -837,7 +837,10 @@ parallels_check_duplicate(BlockDriverState *bs, BdrvCheckResult *res,
->       bool fixed = false;
->   
->       /*
-> -     * Create a bitmap of used clusters.
-> +     * Create a bitmap of used clusters. Please note that this bitmap is not
-> +     * related to used_bmap field in BDRVParallelsState and is created only for
-> +     * local usage.
-> +     *
->        * If a bit is set, there is a BAT entry pointing to this cluster.
->        * Loop through the BAT entries, check bits relevant to an entry offset.
->        * If bit is set, this entry is duplicated. Otherwise set the bit.
-Reviewed-by: Denis V. Lunev <den@openvz.org>
+From: Peng Fan <peng.fan@nxp.com>
+
+xen_invalidate_map_cache_entry is not expected to run in a
+coroutine. Without this, there is crash:
+
+    signo=signo@entry=6, no_tid=no_tid@entry=0) at pthread_kill.c:44
+    threadid=<optimized out>) at pthread_kill.c:78
+    at /usr/src/debug/glibc/2.38+git-r0/sysdeps/posix/raise.c:26
+    fmt=0xffff9e1ca8a8 "%s%s%s:%u: %s%sAssertion `%s' failed.\n%n",
+    assertion=assertion@entry=0xaaaae0d25740 "!qemu_in_coroutine()",
+    file=file@entry=0xaaaae0d301a8 "../qemu-xen-dir-remote/block/graph-lock.c", line=line@entry=260,
+    function=function@entry=0xaaaae0e522c0 <__PRETTY_FUNCTION__.3> "bdrv_graph_rdlock_main_loop") at assert.c:92
+    assertion=assertion@entry=0xaaaae0d25740 "!qemu_in_coroutine()",
+    file=file@entry=0xaaaae0d301a8 "../qemu-xen-dir-remote/block/graph-lock.c", line=line@entry=260,
+    function=function@entry=0xaaaae0e522c0 <__PRETTY_FUNCTION__.3> "bdrv_graph_rdlock_main_loop") at assert.c:101
+    at ../qemu-xen-dir-remote/block/graph-lock.c:260
+    at /home/Freenix/work/sw-stash/xen/upstream/tools/qemu-xen-dir-remote/include/block/graph-lock.h:259
+    host=host@entry=0xffff742c8000, size=size@entry=2097152)
+    at ../qemu-xen-dir-remote/block/io.c:3362
+    host=0xffff742c8000, size=2097152)
+    at ../qemu-xen-dir-remote/block/block-backend.c:2859
+    host=<optimized out>, size=<optimized out>, max_size=<optimized out>)
+    at ../qemu-xen-dir-remote/block/block-ram-registrar.c:33
+    size=2097152, max_size=2097152)
+    at ../qemu-xen-dir-remote/hw/core/numa.c:883
+    buffer=buffer@entry=0xffff743c5000 "")
+    at ../qemu-xen-dir-remote/hw/xen/xen-mapcache.c:475
+    buffer=buffer@entry=0xffff743c5000 "")
+    at ../qemu-xen-dir-remote/hw/xen/xen-mapcache.c:487
+    as=as@entry=0xaaaae1ca3ae8 <address_space_memory>, buffer=0xffff743c5000,
+    len=<optimized out>, is_write=is_write@entry=true,
+    access_len=access_len@entry=32768)
+    at ../qemu-xen-dir-remote/system/physmem.c:3199
+    dir=DMA_DIRECTION_FROM_DEVICE, len=<optimized out>,
+    buffer=<optimized out>, as=0xaaaae1ca3ae8 <address_space_memory>)
+    at /home/Freenix/work/sw-stash/xen/upstream/tools/qemu-xen-dir-remote/include/sysemu/dma.h:236
+    elem=elem@entry=0xaaaaf620aa30, len=len@entry=32769)
+    at ../qemu-xen-dir-remote/hw/virtio/virtio.c:758
+    elem=elem@entry=0xaaaaf620aa30, len=len@entry=32769, idx=idx@entry=0)
+    at ../qemu-xen-dir-remote/hw/virtio/virtio.c:919
+    elem=elem@entry=0xaaaaf620aa30, len=32769)
+    at ../qemu-xen-dir-remote/hw/virtio/virtio.c:994
+    req=req@entry=0xaaaaf620aa30, status=status@entry=0 '\000')
+    at ../qemu-xen-dir-remote/hw/block/virtio-blk.c:67
+    ret=0) at ../qemu-xen-dir-remote/hw/block/virtio-blk.c:136
+    at ../qemu-xen-dir-remote/block/block-backend.c:1559
+--Type <RET> for more, q to quit, c to continue without paging--
+    at ../qemu-xen-dir-remote/block/block-backend.c:1614
+    i1=<optimized out>) at ../qemu-xen-dir-remote/util/coroutine-ucontext.c:177
+    at ../sysdeps/unix/sysv/linux/aarch64/setcontext.S:123
+
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+ hw/xen/xen-mapcache.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
+index f7d974677d..4e1bb665ee 100644
+--- a/hw/xen/xen-mapcache.c
++++ b/hw/xen/xen-mapcache.c
+@@ -481,11 +481,38 @@ static void xen_invalidate_map_cache_entry_unlocked(uint8_t *buffer)
+     g_free(entry);
+ }
+ 
+-void xen_invalidate_map_cache_entry(uint8_t *buffer)
++typedef struct XenMapCacheData {
++    Coroutine *co;
++    uint8_t *buffer;
++    int ret;
++} XenMapCacheData;
++
++static void xen_invalidate_map_cache_entry_bh(void *opaque)
+ {
++    XenMapCacheData *data = opaque;
++
+     mapcache_lock();
+-    xen_invalidate_map_cache_entry_unlocked(buffer);
++    xen_invalidate_map_cache_entry_unlocked(data->buffer);
+     mapcache_unlock();
++
++    aio_co_wake(data->co);
++}
++
++void coroutine_mixed_fn xen_invalidate_map_cache_entry(uint8_t *buffer)
++{
++    if (qemu_in_coroutine()) {
++        XenMapCacheData data = {
++            .co = qemu_coroutine_self(),
++            .buffer = buffer,
++        };
++        aio_bh_schedule_oneshot(qemu_get_current_aio_context(),
++                                xen_invalidate_map_cache_entry_bh, &data);
++        qemu_coroutine_yield();
++    } else {
++        mapcache_lock();
++        xen_invalidate_map_cache_entry_unlocked(buffer);
++        mapcache_unlock();
++    }
+ }
+ 
+ void xen_invalidate_map_cache(void)
+-- 
+2.35.3
+
 
