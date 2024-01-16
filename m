@@ -2,54 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD00482EA7D
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 08:59:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AAE782EA7E
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 08:59:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPeKe-0002kR-Ht; Tue, 16 Jan 2024 02:58:00 -0500
+	id 1rPeKf-0002kp-JY; Tue, 16 Jan 2024 02:58:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rPeKZ-0002jw-SY
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:57:55 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rPeKb-0002kA-Gj
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:57:57 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rPeKY-00083A-BU
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:57:55 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rPeKa-00084F-1s
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:57:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705391873;
+ s=mimecast20190719; t=1705391875;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Qxc1Z31L4g7jBm5lqK4iTAhCoVK0ENHit3yxqqr0drE=;
- b=YGg64+UmO07eyJ42BOPLFsAE6VEGuvj9+OmuE2gtO745cFKzZBrjlmr1Rl243XHnbm7X3Q
- 3qO0/ZYilgo37G0Ha0pGtpMdZPNbUNMXxjm18DoQISfQrisovGFs2qFcq6VvXEdkG35N68
- 6/AIs+nn/+aMFmaytgrRvYJiqE/Veis=
+ bh=CiZ5aeBqPeEt/6oA7OW7+AA8UU18obZBCrF4z7ZuLiM=;
+ b=NBaRARPQeZNbThNx1770Sx7eDIrCugZkX7gnNn6LD6ShdK7g/Kuar0t2udYNBIvSlluvYS
+ 7e/sGIl4wgGizmbQRfPcZoQEq3Y8dZLClYGvd2ds5UgP03HjOo9nfJcHjTozakC1cCbVz0
+ H+0xjPF2AeL4RI43CCEMOAJhHPj7Ofs=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-167-wGh66j5WO2CamKqkWN-zWg-1; Tue,
- 16 Jan 2024 02:57:49 -0500
-X-MC-Unique: wGh66j5WO2CamKqkWN-zWg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-I5eTH9duPqKwqyU9y2BNTA-1; Tue,
+ 16 Jan 2024 02:57:51 -0500
+X-MC-Unique: I5eTH9duPqKwqyU9y2BNTA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 005093C0ED69;
- Tue, 16 Jan 2024 07:57:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C3BFC3814E9F;
+ Tue, 16 Jan 2024 07:57:50 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.78])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EC0553C25;
- Tue, 16 Jan 2024 07:57:47 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 80AC63C25;
+ Tue, 16 Jan 2024 07:57:49 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 2/5] tests/qtest/npcm7xx_watchdog_timer: Only test the corner
- cases by default
-Date: Tue, 16 Jan 2024 08:57:41 +0100
-Message-ID: <20240116075744.219169-3-thuth@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 3/5] qtest: Bump npcm7xx_watchdog_timer-test timeout to 2
+ minutes
+Date: Tue, 16 Jan 2024 08:57:42 +0100
+Message-ID: <20240116075744.219169-4-thuth@redhat.com>
 In-Reply-To: <20240116075744.219169-1-thuth@redhat.com>
 References: <20240116075744.219169-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -81,39 +80,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The test_prescaler() part in the npcm7xx_watchdog_timer test is quite
-repetitive, testing all possible combinations of the WTCLK and WTIS
-bitfields. Since each test spins up a new instance of QEMU, this is
-rather an expensive test, especially on loaded host systems.
-For the normal quick test mode, it should be sufficient to test the
-corner settings of these fields (i.e. 0 and 3), so we can speed up
-this test in the default mode quite a bit.
+The npcm7xx_watchdog_timer-test can take more than 60 seconds in
+SPEED=slow mode on a loaded host system.
 
-Message-ID: <20240115070223.30178-1-thuth@redhat.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Bumping to 2 minutes will give more headroom.
+
+Message-ID: <20240112164717.1063954-1-thuth@redhat.com>
+Reviewed-by: "Daniel P. Berrangé" <berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/npcm7xx_watchdog_timer-test.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tests/qtest/meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/qtest/npcm7xx_watchdog_timer-test.c b/tests/qtest/npcm7xx_watchdog_timer-test.c
-index 4773a673b2..981b853c99 100644
---- a/tests/qtest/npcm7xx_watchdog_timer-test.c
-+++ b/tests/qtest/npcm7xx_watchdog_timer-test.c
-@@ -172,9 +172,10 @@ static void test_reset_action(gconstpointer watchdog)
- static void test_prescaler(gconstpointer watchdog)
- {
-     const Watchdog *wd = watchdog;
-+    int inc = g_test_quick() ? 3 : 1;
- 
--    for (int wtclk = 0; wtclk < 4; ++wtclk) {
--        for (int wtis = 0; wtis < 4; ++wtis) {
-+    for (int wtclk = 0; wtclk < 4; wtclk += inc) {
-+        for (int wtis = 0; wtis < 4; wtis += inc) {
-             QTestState *qts = qtest_init("-machine quanta-gsj");
- 
-             qtest_irq_intercept_in(qts, "/machine/soc/a9mpcore/gic");
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 78c298ce97..4293f3b133 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -4,6 +4,7 @@ slow_qtests = {
+   'device-introspect-test' : 720,
+   'migration-test' : 480,
+   'npcm7xx_pwm-test': 300,
++  'npcm7xx_watchdog_timer-test': 120,
+   'qom-test' : 900,
+   'test-hmp' : 240,
+   'pxe-test': 600,
 -- 
 2.43.0
 
