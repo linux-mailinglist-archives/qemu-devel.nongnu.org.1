@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A12C982F12E
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 16:15:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE27F82F11D
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 16:13:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPl7N-0006ha-55; Tue, 16 Jan 2024 10:12:45 -0500
+	id 1rPl7Q-0006lG-Op; Tue, 16 Jan 2024 10:12:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPl7K-0006g1-7d
+ id 1rPl7K-0006gR-QP
  for qemu-devel@nongnu.org; Tue, 16 Jan 2024 10:12:42 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPl7G-0005rv-TS
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 10:12:41 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40e86a9fbd9so3524555e9.1
+ id 1rPl7H-0005s7-AH
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 10:12:42 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-337bcaef29eso458172f8f.0
  for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 07:12:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705417957; x=1706022757; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705417958; x=1706022758; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=klstX9rwm3US7BwgKsjrY2dDzwCKawA+SeWa7QsXZAk=;
- b=cahlQxQFxC1k6+elzFEia58H+e91jBEjWwhwwq/qScCK3LOTGnxWFjDKLSwj1U+0Wk
- /+23TFo0MN0/fb14WO+TP+LvIcMrgHjt50qCuEQRTZaOA7yvkW/XjvtCGHWWJzia3a8u
- JRb9WJJaj7SDrGq6xa1fF+rL1NwwyxMDk0tz+Ufu7q+r2MkaJ7QnrPO8Z0/QzycFwXo8
- JdQbnjDFcqcE7qriQc0RmVovswcHoJksMybN6Iw9LGkXKMmKzynCf3bsMIoUwb22lLr9
- 3ex+LGvM6sYVrLZ/Pnz7uJPiJfKP1ixtJYSS+0+kg4taxDzQXAUq1IA3Hfg/4AFnLZ9j
- ApKw==
+ :reply-to; bh=imXpClTBvGaeRVjAbq6Mzb0EDwuvuLXSMLzsw/Tl9kw=;
+ b=wDiT0omG4gFDmMebYCmyilSH2yZ+6c6LmFpcltBk+oN/aYNDIdZ+qeKbkiQo3aGtw9
+ 8TUWi/BZqX7x2AFXKA1OjxovJLbAsmioFcI/YrcRV3ezCiBK3JEAXD6f+Pcz2UMQvi0V
+ FcmVsAWsaPT0GV2tKtzgwexQX9rrkpwyea3NTR5pYyDdHzZrkzOS6Ysh1aTCon+Wh0or
+ 9eNfFjcIsboKOItG5vNVDCEIY6ioZO5sSjoJhSxxQf/xAropFJN/PbClERV+zG3tBkqp
+ 1LApfrFUBCrb+eJWCqxeXyW2lmWjjkPwJ8Y/9yrV/DuvSVzBxrUiqI9dqu8yaBxqYqKM
+ BraA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705417957; x=1706022757;
+ d=1e100.net; s=20230601; t=1705417958; x=1706022758;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=klstX9rwm3US7BwgKsjrY2dDzwCKawA+SeWa7QsXZAk=;
- b=UFNziL7IU83L3DACgTHQg/8PKlxyyZX4SUlQgTVPvDWMIwbT/hqnaByAbUJC0LGSqM
- VKdmgRPs1b1q1SlC8t0OKYhgMM6Wfsp3GWVog8BmbW2z/w9Z+9WmJRazLKQ7fIpXqsOq
- GgaXCosl4W3HYsYqcH4THlszvFVt1tFW327zL281WyjmPAxwLeWsrByz6dTP1duUQNsr
- aVaSp+99r6eeA0Vj8FmuLcC45yUiDNJHHbt/0IVwcJbfhZ/i1rwrjJt1lRUkmbA1lfH3
- mmOo4QEte9dDldTzssHqQBK+82ALKVW170vTy2zcvOdOwBpJ/LVxevDg6BB0w0owGdVD
- uzdQ==
-X-Gm-Message-State: AOJu0YyqvJemIvhBDv5NiUeR8Mdrc1ZTjkB0CWnQLj5HJxer6ixPPKex
- bSz7OoBqt7ZaFhQFZqJSlnQ/aE2bmTfk/A48JwW1Hri/XqI=
-X-Google-Smtp-Source: AGHT+IGr2ITE6pvGXWMPd7CNQT7qliqNHGLWBmdSCNlMxG81Qx5ZpunjyY0VRrzh5lVuKobSBIKoNQ==
-X-Received: by 2002:a05:600c:1396:b0:40e:3d82:2394 with SMTP id
- u22-20020a05600c139600b0040e3d822394mr3513432wmf.19.1705417957388; 
+ bh=imXpClTBvGaeRVjAbq6Mzb0EDwuvuLXSMLzsw/Tl9kw=;
+ b=ZwUMhvspXwo+/suRnzAzbS4k7p1mH0WTXfNL77fn+rKkYECsVvxNpEGQH6MZjpiE41
+ P69iZivfc4+BV7cKy5qGOF43UXkz1cnKMIi5DvYfYBpI+iEzo1fkurCU7ary72vvWpT2
+ TWIchpuY9sLQ0F342rmHVUU6LIsLNiFrfJwmcUgHwbR+RVE3630oK1hEeVX8tE2ZsDJz
+ xamanz0qsCIg62sA1C4IHprke3HounKXpRVlk3X/YoLma8OHPEW2H6LgrVwtdRgFmoOC
+ ZnCMCa1ccFu4457e8VAuleWglDJDs5OvK/R8a66aJP3MqZUGk53wFj/LdNWxwG0/WsAF
+ XGBQ==
+X-Gm-Message-State: AOJu0Yznu3CYMKVVAL5gkVWtv1lMjSA9Le5Q6JIght+BEw0/vwkRf1FU
+ IlQarVolmVg7CeEL2X6jemA7TVU7tzq8Kjt6/ucj/pPitv0=
+X-Google-Smtp-Source: AGHT+IH15tv1+Skl2XmMtj0Y5xmvHlLoHKFTWFeZ4Wd7bI0uh5ds0MTtNYoowItZISN/z7dNyXFLCw==
+X-Received: by 2002:adf:e489:0:b0:336:d8c3:a65c with SMTP id
+ i9-20020adfe489000000b00336d8c3a65cmr4026189wrm.36.1705417957778; 
  Tue, 16 Jan 2024 07:12:37 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,17 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 16 Jan 2024 07:12:37 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/21] hw/timer: fix systick trace message
-Date: Tue, 16 Jan 2024 15:12:26 +0000
-Message-Id: <20240116151228.2430754-20-peter.maydell@linaro.org>
+Subject: [PULL 20/21] hw/arm/virt: Consolidate valid CPU types
+Date: Tue, 16 Jan 2024 15:12:27 +0000
+Message-Id: <20240116151228.2430754-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240116151228.2430754-1-peter.maydell@linaro.org>
 References: <20240116151228.2430754-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,31 +90,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Samuel Tardieu <sam@rfc1149.net>
+From: Gavin Shan <gshan@redhat.com>
 
-Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-Message-id: 20240109184508.3189599-1-sam@rfc1149.net
-Fixes: ff68dacbc786 ("armv7m: Split systick out from NVIC")
+It's found that some of the CPU type names in the array of valid
+CPU types are invalid because their corresponding classes aren't
+registered, as reported by Peter Maydell.
+
+[gshan@gshan build]$ ./qemu-system-arm -machine virt -cpu cortex-a9
+qemu-system-arm: Invalid CPU model: cortex-a9
+The valid models are: cortex-a7, cortex-a15, (null), (null), (null),
+(null), (null), (null), (null), (null), (null), (null), (null), max
+
+Fix it by consolidating the array of valid CPU types. After it's
+applied, we have the following output when TCG is enabled.
+
+[gshan@gshan build]$ ./qemu-system-arm -machine virt -cpu cortex-a9
+qemu-system-arm: Invalid CPU model: cortex-a9
+The valid models are: cortex-a7, cortex-a15, max
+
+[gshan@gshan build]$ ./qemu-system-aarch64 -machine virt -cpu cortex-a9
+qemu-system-aarch64: Invalid CPU model: cortex-a9
+The valid models are: cortex-a7, cortex-a15, cortex-a35, cortex-a55,
+cortex-a72, cortex-a76, cortex-a710, a64fx, neoverse-n1, neoverse-v1,
+neoverse-n2, cortex-a53, cortex-a57, max
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2084
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+Message-id: 20240111051054.83304-1-gshan@redhat.com
+Fixes: fa8c617791 ("hw/arm/virt: Check CPU type in machine_run_board_init()")
+Signed-off-by: Gavin Shan <gshan@redhat.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/timer/trace-events | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/arm/virt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/hw/timer/trace-events b/hw/timer/trace-events
-index 3eccef83858..8145e18e3da 100644
---- a/hw/timer/trace-events
-+++ b/hw/timer/trace-events
-@@ -35,7 +35,7 @@ aspeed_timer_read(uint64_t offset, unsigned size, uint64_t value) "From 0x%" PRI
- 
- # armv7m_systick.c
- systick_reload(void) "systick reload"
--systick_timer_tick(void) "systick reload"
-+systick_timer_tick(void) "systick tick"
- systick_read(uint64_t addr, uint32_t value, unsigned size) "systick read addr 0x%" PRIx64 " data 0x%" PRIx32 " size %u"
- systick_write(uint64_t addr, uint32_t value, unsigned size) "systick write addr 0x%" PRIx64 " data 0x%" PRIx32 " size %u"
- 
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 2793121cb41..5cbc69dff83 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2905,6 +2905,7 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+ #ifdef CONFIG_TCG
+         ARM_CPU_TYPE_NAME("cortex-a7"),
+         ARM_CPU_TYPE_NAME("cortex-a15"),
++#ifdef TARGET_AARCH64
+         ARM_CPU_TYPE_NAME("cortex-a35"),
+         ARM_CPU_TYPE_NAME("cortex-a55"),
+         ARM_CPU_TYPE_NAME("cortex-a72"),
+@@ -2914,12 +2915,15 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+         ARM_CPU_TYPE_NAME("neoverse-n1"),
+         ARM_CPU_TYPE_NAME("neoverse-v1"),
+         ARM_CPU_TYPE_NAME("neoverse-n2"),
+-#endif
++#endif /* TARGET_AARCH64 */
++#endif /* CONFIG_TCG */
++#ifdef TARGET_AARCH64
+         ARM_CPU_TYPE_NAME("cortex-a53"),
+         ARM_CPU_TYPE_NAME("cortex-a57"),
+ #if defined(CONFIG_KVM) || defined(CONFIG_HVF)
+         ARM_CPU_TYPE_NAME("host"),
+-#endif
++#endif /* CONFIG_KVM || CONFIG_HVF */
++#endif /* TARGET_AARCH64 */
+         ARM_CPU_TYPE_NAME("max"),
+         NULL
+     };
 -- 
 2.34.1
 
