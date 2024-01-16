@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0963782F447
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 19:30:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B40DA82F4CD
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 20:02:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPoBS-0001Kn-7g; Tue, 16 Jan 2024 13:29:10 -0500
+	id 1rPogA-000182-Jx; Tue, 16 Jan 2024 14:00:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rPoBQ-0001KJ-HN
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 13:29:08 -0500
+ id 1rPog9-00017S-6h
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 14:00:53 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rPoBN-0007Jm-PK
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 13:29:08 -0500
+ id 1rPog7-00040o-Iv
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 14:00:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705429745;
+ s=mimecast20190719; t=1705431650;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wtVaNj9yM+ZQPfYZrNpMFmaAXCev1wDs/radnSCPDQ8=;
- b=MNyxL9vXF9Gnlfx8WV+SeVf1jnN1ibBtNHzvYEf3KOFOtN+zmsZgvWABci7Z3jYrVkV/Pi
- A58AI3umKt8yCBGxmRobRlVF/DMzJqNllnAaqPPh1gqMTcOaf2kN4P/meDOJXPs7W/T5el
- Q0gOa4s9dmBytsC7PhP7Db5VBaQChpQ=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-57-L-rACjusPDeTT2mfh2KIgQ-1; Tue,
- 16 Jan 2024 13:29:01 -0500
-X-MC-Unique: L-rACjusPDeTT2mfh2KIgQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Lgj2yltXZEmpenyL/iS8qS8MIWL4cYe3VI09faQvDrU=;
+ b=SB/oODaKG2hgWyknSrLpCDKtyM92u1NH5BRW2pYSjVptddUHe+W3SUlTJoPeMrC7GG9c2S
+ nBmWYoi0uKM9aM8CNBvCLxWMJbjPlWR4Sc2TPv0iOydXk2RFUn48UCHeFmeQZEO+KcrjXA
+ PHggS/36oOQ+wbB3kif7SvvfolW4N9A=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-193-DL74sdnoNZWDidYrEvL27g-1; Tue, 16 Jan 2024 14:00:46 -0500
+X-MC-Unique: DL74sdnoNZWDidYrEvL27g-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2CDBD38130B5;
- Tue, 16 Jan 2024 18:29:01 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1F218185A786;
+ Tue, 16 Jan 2024 19:00:45 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.103])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8A85A492BC6;
- Tue, 16 Jan 2024 18:29:00 +0000 (UTC)
-Date: Tue, 16 Jan 2024 13:28:58 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2B3F9C15A0C;
+ Tue, 16 Jan 2024 19:00:43 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, aliang@redhat.com, armbru@redhat.com,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] string-output-visitor: Fix (pseudo) struct handling
-Message-ID: <20240116182858.GA945942@fedora>
-References: <20240109181717.42493-1-kwolf@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ <qemu-block@nongnu.org>, Fiona Ebner <f.ebner@proxmox.com>,
+ Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH 0/3] monitor: only run coroutine commands in qemu_aio_context
+Date: Tue, 16 Jan 2024 14:00:39 -0500
+Message-ID: <20240116190042.1363717-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="tGZuV6WhliwM9J/h"
-Content-Disposition: inline
-In-Reply-To: <20240109181717.42493-1-kwolf@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
@@ -81,213 +80,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Several bugs have been reported related to how QMP commands are rescheduled in
+qemu_aio_context:
+- https://gitlab.com/qemu-project/qemu/-/issues/1933
+- https://issues.redhat.com/browse/RHEL-17369
+- https://bugzilla.redhat.com/show_bug.cgi?id=2215192
+- https://bugzilla.redhat.com/show_bug.cgi?id=2214985
 
---tGZuV6WhliwM9J/h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The first instance of the bug interacted with drain_call_rcu() temporarily
+dropping the BQL and resulted in vCPU threads entering device emulation code
+simultaneously (something that should never happen). I set out to make
+drain_call_rcu() safe to use in this environment, but Paolo and Kevin discussed
+the possibility of avoiding rescheduling the monitor_qmp_dispatcher_co()
+coroutine for non-coroutine commands. This would prevent monitor commands from
+running during vCPU thread aio_poll() entirely and addresses the root cause.
 
-On Tue, Jan 09, 2024 at 07:17:17PM +0100, Kevin Wolf wrote:
-> Commit ff32bb53 tried to get minimal struct support into the string
-> output visitor by just making it return "<omitted>". Unfortunately, it
-> forgot that the caller will still make more visitor calls for the
-> content of the struct.
->=20
-> If the struct is contained in a list, such as IOThreadVirtQueueMapping,
-> in the better case its fields show up as separate list entries. In the
-> worse case, it contains another list, and the string output visitor
-> doesn't support nested lists and asserts that this doesn't happen. So as
-> soon as the optional "vqs" field in IOThreadVirtQueueMapping is
-> specified, we get a crash.
->=20
-> This can be reproduced with the following command line:
->=20
->   echo "info qtree" | ./qemu-system-x86_64 \
->     -object iothread,id=3Dt0 \
->     -blockdev null-co,node-name=3Ddisk \
->     -device '{"driver": "virtio-blk-pci", "drive": "disk",
->               "iothread-vq-mapping": [{"iothread": "t0", "vqs": [0]}]}' \
->     -monitor stdio
->=20
-> Fix the problem by counting the nesting level of structs and ignoring
-> any visitor calls for values (apart from start/end_struct) while we're
-> not on the top level.
->=20
-> Fixes: ff32bb53476539d352653f4ed56372dced73a388
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2069
-> Reported-by: Aihua Liang <aliang@redhat.com>
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->  qapi/string-output-visitor.c | 46 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
+This patch series implements this idea. qemu-iotests is sensitive to the exact
+order in which QMP events and responses are emitted. Running QMP handlers in
+the iohandler AioContext causes some QMP events to be ordered differently than
+before. It is therefore necessary to adjust the reference output in many test
+cases. The actual QMP code change is small and everything else is just to make
+qemu-iotests happy.
 
-Thanks for getting to this before I could:
+If you have bugs related to the same issue, please retest them with these
+patches. Thanks!
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Stefan Hajnoczi (3):
+  iotests: add filter_qmp_generated_node_ids()
+  iotests: port 141 to Python for reliable QMP testing
+  monitor: only run coroutine commands in qemu_aio_context
 
-> diff --git a/qapi/string-output-visitor.c b/qapi/string-output-visitor.c
-> index f0c1dea89e..5115536b15 100644
-> --- a/qapi/string-output-visitor.c
-> +++ b/qapi/string-output-visitor.c
-> @@ -65,6 +65,7 @@ struct StringOutputVisitor
->      } range_start, range_end;
->      GList *ranges;
->      void *list; /* Only needed for sanity checking the caller */
-> +    unsigned int struct_nesting;
->  };
-> =20
->  static StringOutputVisitor *to_sov(Visitor *v)
-> @@ -144,6 +145,10 @@ static bool print_type_int64(Visitor *v, const char =
-*name, int64_t *obj,
->      StringOutputVisitor *sov =3D to_sov(v);
->      GList *l;
-> =20
-> +    if (sov->struct_nesting) {
-> +        return true;
-> +    }
-> +
->      switch (sov->list_mode) {
->      case LM_NONE:
->          string_output_append(sov, *obj);
-> @@ -231,6 +236,10 @@ static bool print_type_size(Visitor *v, const char *=
-name, uint64_t *obj,
->      uint64_t val;
->      char *out, *psize;
-> =20
-> +    if (sov->struct_nesting) {
-> +        return true;
-> +    }
-> +
->      if (!sov->human) {
->          out =3D g_strdup_printf("%"PRIu64, *obj);
->          string_output_set(sov, out);
-> @@ -250,6 +259,11 @@ static bool print_type_bool(Visitor *v, const char *=
-name, bool *obj,
->                              Error **errp)
->  {
->      StringOutputVisitor *sov =3D to_sov(v);
-> +
-> +    if (sov->struct_nesting) {
-> +        return true;
-> +    }
-> +
->      string_output_set(sov, g_strdup(*obj ? "true" : "false"));
->      return true;
->  }
-> @@ -260,6 +274,10 @@ static bool print_type_str(Visitor *v, const char *n=
-ame, char **obj,
->      StringOutputVisitor *sov =3D to_sov(v);
->      char *out;
-> =20
-> +    if (sov->struct_nesting) {
-> +        return true;
-> +    }
-> +
->      if (sov->human) {
->          out =3D *obj ? g_strdup_printf("\"%s\"", *obj) : g_strdup("<null=
->");
->      } else {
-> @@ -273,6 +291,11 @@ static bool print_type_number(Visitor *v, const char=
- *name, double *obj,
->                                Error **errp)
->  {
->      StringOutputVisitor *sov =3D to_sov(v);
-> +
-> +    if (sov->struct_nesting) {
-> +        return true;
-> +    }
-> +
->      string_output_set(sov, g_strdup_printf("%.17g", *obj));
->      return true;
->  }
-> @@ -283,6 +306,10 @@ static bool print_type_null(Visitor *v, const char *=
-name, QNull **obj,
->      StringOutputVisitor *sov =3D to_sov(v);
->      char *out;
-> =20
-> +    if (sov->struct_nesting) {
-> +        return true;
-> +    }
-> +
->      if (sov->human) {
->          out =3D g_strdup("<null>");
->      } else {
-> @@ -295,6 +322,9 @@ static bool print_type_null(Visitor *v, const char *n=
-ame, QNull **obj,
->  static bool start_struct(Visitor *v, const char *name, void **obj,
->                           size_t size, Error **errp)
->  {
-> +    StringOutputVisitor *sov =3D to_sov(v);
-> +
-> +    sov->struct_nesting++;
->      return true;
->  }
-> =20
-> @@ -302,6 +332,10 @@ static void end_struct(Visitor *v, void **obj)
->  {
->      StringOutputVisitor *sov =3D to_sov(v);
-> =20
-> +    if (--sov->struct_nesting) {
-> +        return;
-> +    }
-> +
->      /* TODO actually print struct fields */
->      string_output_set(sov, g_strdup("<omitted>"));
->  }
-> @@ -312,6 +346,10 @@ start_list(Visitor *v, const char *name, GenericList=
- **list, size_t size,
->  {
->      StringOutputVisitor *sov =3D to_sov(v);
-> =20
-> +    if (sov->struct_nesting) {
-> +        return true;
-> +    }
-> +
->      /* we can't traverse a list in a list */
->      assert(sov->list_mode =3D=3D LM_NONE);
->      /* We don't support visits without a list */
-> @@ -329,6 +367,10 @@ static GenericList *next_list(Visitor *v, GenericLis=
-t *tail, size_t size)
->      StringOutputVisitor *sov =3D to_sov(v);
->      GenericList *ret =3D tail->next;
-> =20
-> +    if (sov->struct_nesting) {
-> +        return ret;
-> +    }
-> +
->      if (ret && !ret->next) {
->          sov->list_mode =3D LM_END;
->      }
-> @@ -339,6 +381,10 @@ static void end_list(Visitor *v, void **obj)
->  {
->      StringOutputVisitor *sov =3D to_sov(v);
-> =20
-> +    if (sov->struct_nesting) {
-> +        return;
-> +    }
-> +
->      assert(sov->list =3D=3D obj);
->      assert(sov->list_mode =3D=3D LM_STARTED ||
->             sov->list_mode =3D=3D LM_END ||
-> --=20
-> 2.43.0
->=20
+ monitor/qmp.c                                 |  17 -
+ qapi/qmp-dispatch.c                           |  24 +-
+ tests/qemu-iotests/060.out                    |   4 +-
+ tests/qemu-iotests/071.out                    |   4 +-
+ tests/qemu-iotests/081.out                    |  16 +-
+ tests/qemu-iotests/087.out                    |  12 +-
+ tests/qemu-iotests/108.out                    |   2 +-
+ tests/qemu-iotests/109                        |   4 +-
+ tests/qemu-iotests/109.out                    |  78 ++---
+ tests/qemu-iotests/117.out                    |   2 +-
+ tests/qemu-iotests/120.out                    |   2 +-
+ tests/qemu-iotests/127.out                    |   2 +-
+ tests/qemu-iotests/140.out                    |   2 +-
+ tests/qemu-iotests/141                        | 297 +++++++-----------
+ tests/qemu-iotests/141.out                    | 190 +++--------
+ tests/qemu-iotests/143.out                    |   2 +-
+ tests/qemu-iotests/156.out                    |   2 +-
+ tests/qemu-iotests/176.out                    |  16 +-
+ tests/qemu-iotests/182.out                    |   2 +-
+ tests/qemu-iotests/183.out                    |   4 +-
+ tests/qemu-iotests/184.out                    |  32 +-
+ tests/qemu-iotests/185                        |   6 +-
+ tests/qemu-iotests/185.out                    |  45 ++-
+ tests/qemu-iotests/191.out                    |  16 +-
+ tests/qemu-iotests/195.out                    |  16 +-
+ tests/qemu-iotests/223.out                    |  16 +-
+ tests/qemu-iotests/227.out                    |  32 +-
+ tests/qemu-iotests/247.out                    |   2 +-
+ tests/qemu-iotests/273.out                    |   8 +-
+ tests/qemu-iotests/308                        |   4 +-
+ tests/qemu-iotests/308.out                    |   4 +-
+ tests/qemu-iotests/iotests.py                 |   7 +
+ tests/qemu-iotests/tests/file-io-error        |   5 +-
+ tests/qemu-iotests/tests/iothreads-resize.out |   2 +-
+ tests/qemu-iotests/tests/qsd-jobs.out         |   4 +-
+ 35 files changed, 375 insertions(+), 506 deletions(-)
 
---tGZuV6WhliwM9J/h
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmWmyuoACgkQnKSrs4Gr
-c8i2hwf/SHj2plbFxqoZktWhifh6Wvz3W9jcL4bqV+IaeqT7vIORTrfo6QG2SNku
-r8/NpbJW2XEAWEF4X3F0zedBwVD0ciCfs/e/unvNzUfBsB868pjEgRFPwzq98e/3
-k+ryTAt39p8O0aPYqpfOBuYXf/+bn1Fftm0aqYQ+P1Ld1X8gg2SgS60I8CCte3bG
-WfI097joKdW1QEYH/MiqMgK9Cniyo27KD3hgiMolzlMj+6DO8ERTz0x1SAT+HMx3
-u+PxmP8Yr24LIA3o8By7fJoe+74WitkCCuvZKeuhem4HUmBOMUL1/DSskRMTO8Ht
-VMXAouE9GCTjPjYHlfGhK+TAqel9zg==
-=D5nX
------END PGP SIGNATURE-----
-
---tGZuV6WhliwM9J/h--
+-- 
+2.43.0
 
 
