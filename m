@@ -2,73 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1FA82E9F5
+	by mail.lfdr.de (Postfix) with ESMTPS id 85CDE82E9F6
 	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 08:24:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPdmp-0003l4-Uh; Tue, 16 Jan 2024 02:23:03 -0500
+	id 1rPdn5-0003qi-SD; Tue, 16 Jan 2024 02:23:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPdmo-0003kk-S8
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:23:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPdn1-0003qX-PY
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:23:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPdmk-0002M1-FD
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:23:02 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPdmz-0002NV-E7
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:23:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705389776;
+ s=mimecast20190719; t=1705389792;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1gBRWRuwAKT5Tl5+dKtEeaijJEkCKRYaQbsukSxerko=;
- b=JxJIH0Muz9AV1+18XB/YlNxbPFUaXEskIJHVRbwcm6FviORtqmjM+3+ogqSLbMQByi+dsh
- h0fofs5CG7mfIxPSn/CUQ3oU34WJ9aYdtzPIXw9cmrerDZGtc4MV0WsHf3b7K1T7R14jin
- Uk57vbGNeIsdt6vjY5GXWtwzT8qxNro=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7RxN/vm1WzBvo7vrGqFknmLy0ZfOeHa9LKmfi8puRVI=;
+ b=YlvraPmvkSZ+wgkNoUDE6y6JBM1Fl8an52GLIBIitXPFubl2+asny2LN8dcb6Rlsef22Ru
+ XIRAwby55AiJBCO3NK9YiqMwQLIyhQIE+5DIijfg4B4Milu3HE5OHVCgYgBJ6YhtyuqMD0
+ saHmU0TgO7YgMQ3LPlngcawfamf4rmk=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-ar_RBhjyNlmKswVXNV5h3A-1; Tue, 16 Jan 2024 02:22:45 -0500
-X-MC-Unique: ar_RBhjyNlmKswVXNV5h3A-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 439E7185A783;
- Tue, 16 Jan 2024 07:22:45 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.128])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DA1082166B31;
- Tue, 16 Jan 2024 07:22:44 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id BE13721E66CF; Tue, 16 Jan 2024 08:22:43 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Peter
- Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v2 03/19] qapi: create QAPISchemaDefinition
-In-Reply-To: <CAFn=p-bgv185=LMrHzWrMYL1_TyOATnoX+K1x0_nf_=U=42x+w@mail.gmail.com>
- (John Snow's message of "Mon, 15 Jan 2024 16:23:10 -0500")
-References: <20240112222945.3033854-1-jsnow@redhat.com>
- <20240112222945.3033854-4-jsnow@redhat.com>
- <87edeid9e3.fsf@pond.sub.org>
- <CAFn=p-bgv185=LMrHzWrMYL1_TyOATnoX+K1x0_nf_=U=42x+w@mail.gmail.com>
-Date: Tue, 16 Jan 2024 08:22:43 +0100
-Message-ID: <87mst591z0.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ us-mta-374-uA69zwZ8MXiblMxQiuQwFg-1; Tue, 16 Jan 2024 02:23:11 -0500
+X-MC-Unique: uA69zwZ8MXiblMxQiuQwFg-1
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-5ca4e0122f6so195845a12.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 23:23:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705389790; x=1705994590;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7RxN/vm1WzBvo7vrGqFknmLy0ZfOeHa9LKmfi8puRVI=;
+ b=hfldB/rJv561R5W6V+AXJsSvXNfhfkWY6dTGfpzttZcgaTtK1Go3Xsfmp5qJeW+AdX
+ 0VZKUn+Mm7VOxLysGKEqq9kcHnjYriE1XLD25QM5V5rEgzKx/nQRDt1DM2B2zEe22fCJ
+ GtXqlSsYzwEqTSkW+n6DSwjidpSIjimn89eIiTdtWuHI2Qu6/r0KQMd4+NyqONyuZiFD
+ 1HvHrh9XCUhGjDBOQ5KCEkWuZ6RH5UXbJRdVI8veNVytuiR8h2S5ZZOchGYC5O/p3YNM
+ QX0YeDwyKU+0taE/MSy6N6TamvMPvq8wsLI3Y/kjn1+vqnH2w8qQEzmDUybZ96XuS5Zc
+ hzLA==
+X-Gm-Message-State: AOJu0YxGeNOFP9yilpI1VUeKDr68XddVxCHO1Lz51Iudktl/mCrLgPvV
+ UL85+9QvcX8VKgftw2p1Q6m1mA8HVz35QDTL3HCKO5fwbLr41EEaveGSs+z1oXNx9KV2+rcCedn
+ Dflr2PpWXmNl0H8KxEHyCJd0=
+X-Received: by 2002:a05:6a21:6da2:b0:19a:49c8:b9e6 with SMTP id
+ wl34-20020a056a216da200b0019a49c8b9e6mr14402800pzb.0.1705389790138; 
+ Mon, 15 Jan 2024 23:23:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHlymuImsOAOpac/CqG1JOEqbwoXAsPJa4e8kImzJFGvMRqcKjXmJmYUjKWAfwPtE7ay00i5w==
+X-Received: by 2002:a05:6a21:6da2:b0:19a:49c8:b9e6 with SMTP id
+ wl34-20020a056a216da200b0019a49c8b9e6mr14402790pzb.0.1705389789894; 
+ Mon, 15 Jan 2024 23:23:09 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ v11-20020aa7850b000000b006da1d9f4adcsm8636703pfn.127.2024.01.15.23.23.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Jan 2024 23:23:09 -0800 (PST)
+Date: Tue, 16 Jan 2024 15:23:02 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [RFC PATCH v3 17/30] migration/multifd: Decouple recv method
+ from pages
+Message-ID: <ZaYu1qrthidQ-Pxv@x1n>
+References: <20231127202612.23012-1-farosas@suse.de>
+ <20231127202612.23012-18-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Disposition: inline
+In-Reply-To: <20231127202612.23012-18-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.531,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,425 +99,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+On Mon, Nov 27, 2023 at 05:25:59PM -0300, Fabiano Rosas wrote:
+> Next patch will abstract the type of data being received by the
+> channels, so do some cleanup now to remove references to pages and
+> dependency on 'normal_num'.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-> On Mon, Jan 15, 2024 at 8:16=E2=80=AFAM Markus Armbruster <armbru@redhat.=
-com> wrote:
->>
->> John Snow <jsnow@redhat.com> writes:
->>
->> > Include entities don't have names, but we generally expect "entities" =
-to
->> > have names. Reclassify all entities with names as *definitions*, leavi=
-ng
->> > the nameless include entities as QAPISchemaEntity instances.
->> >
->> > This is primarily to help simplify typing around expectations of what
->> > callers expect for properties of an "entity".
->> >
->> > Suggested-by: Markus Armbruster <armbru@redhat.com>
->> > Signed-off-by: John Snow <jsnow@redhat.com>
->> > ---
->> >  scripts/qapi/schema.py | 117 ++++++++++++++++++++++++-----------------
->> >  1 file changed, 70 insertions(+), 47 deletions(-)
->> >
->> > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
->> > index b7830672e57..e39ed972a80 100644
->> > --- a/scripts/qapi/schema.py
->> > +++ b/scripts/qapi/schema.py
->> > @@ -55,14 +55,14 @@ def is_present(self):
->> >
->> >
->> >  class QAPISchemaEntity:
->> > -    meta: Optional[str] =3D None
->> > +    """
->> > +    QAPISchemaEntity represents all schema entities.
->> >
->> > -    def __init__(self, name: str, info, doc, ifcond=3DNone, features=
-=3DNone):
->> > -        assert name is None or isinstance(name, str)
->> > -        for f in features or []:
->> > -            assert isinstance(f, QAPISchemaFeature)
->> > -            f.set_defined_in(name)
->> > -        self.name =3D name
->> > +    Notably, this includes both named and un-named entities, such as
->> > +    include directives. Entities with names are represented by the
->> > +    more specific sub-class `QAPISchemaDefinition` instead.
->> > +    """
->>
->> Hmm.  What about:
->>
->>        """
->>        A schema entity.
->>
->>        This is either a directive, such as include, or a definition.
->>        The latter use sub-class `QAPISchemaDefinition`.
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Or is it "uses"?  Not a native speaker...
-
->>        """
->>
->
-> Sure. Key point was just the cookie crumb to the sub-class.
->
->> > +    def __init__(self, info):
->> >          self._module =3D None
->> >          # For explicitly defined entities, info points to the (explic=
-it)
->> >          # definition.  For builtins (and their arrays), info is None.
->> > @@ -70,14 +70,50 @@ def __init__(self, name: str, info, doc, ifcond=3D=
-None, features=3DNone):
->> >          # triggered the implicit definition (there may be more than o=
-ne
->> >          # such place).
->> >          self.info =3D info
->> > +        self._checked =3D False
->> > +
->> > +    def __repr__(self):
->> > +        return "<%s at 0x%x>" % (type(self).__name__, id(self))
->> > +
->> > +    def check(self, schema):
->> > +        # pylint: disable=3Dunused-argument
->> > +        self._checked =3D True
->> > +
->> > +    def connect_doc(self, doc=3DNone):
->> > +        pass
->> > +
->> > +    def check_doc(self):
->> > +        pass
->> > +
->> > +    def _set_module(self, schema, info):
->> > +        assert self._checked
->> > +        fname =3D info.fname if info else QAPISchemaModule.BUILTIN_MO=
-DULE_NAME
->> > +        self._module =3D schema.module_by_fname(fname)
->> > +        self._module.add_entity(self)
->> > +
->> > +    def set_module(self, schema):
->> > +        self._set_module(schema, self.info)
->> > +
->> > +    def visit(self, visitor):
->> > +        # pylint: disable=3Dunused-argument
->> > +        assert self._checked
->> > +
->> > +
->> > +class QAPISchemaDefinition(QAPISchemaEntity):
->> > +    meta: Optional[str] =3D None
->> > +
->> > +    def __init__(self, name: str, info, doc, ifcond=3DNone, features=
-=3DNone):
->> > +        assert isinstance(name, str)
->> > +        super().__init__(info)
->> > +        for f in features or []:
->> > +            assert isinstance(f, QAPISchemaFeature)
->> > +            f.set_defined_in(name)
->> > +        self.name =3D name
->> >          self.doc =3D doc
->> >          self._ifcond =3D ifcond or QAPISchemaIfCond()
->> >          self.features =3D features or []
->> > -        self._checked =3D False
->> >
->> >      def __repr__(self):
->> > -        if self.name is None:
->> > -            return "<%s at 0x%x>" % (type(self).__name__, id(self))
->> >          return "<%s:%s at 0x%x>" % (type(self).__name__, self.name,
->> >                                      id(self))
->> >
->> > @@ -102,15 +138,6 @@ def check_doc(self):
->>        def check(self, schema):
->>            # pylint: disable=3Dunused-argument
->>            assert not self._checked
->>            seen =3D {}
->>            for f in self.features:
->>                f.check_clash(self.info, seen)
->>            self._checked =3D True
->>
->>        def connect_doc(self, doc=3DNone):
->>            doc =3D doc or self.doc
->>            if doc:
->>                for f in self.features:
->>                    doc.connect_feature(f)
->>
->>        def check_doc(self):
->> >          if self.doc:
->> >              self.doc.check()
->>
->> No super().FOO()?
->
-> Ah, just an oversight. It worked out because the super method doesn't
-> do anything anyway. check() and connect_doc() should also use the
-> super call, probably.
-
-Yes, please; it's a good habit.
-
->> >
->> > -    def _set_module(self, schema, info):
->> > -        assert self._checked
->> > -        fname =3D info.fname if info else QAPISchemaModule.BUILTIN_MO=
-DULE_NAME
->> > -        self._module =3D schema.module_by_fname(fname)
->> > -        self._module.add_entity(self)
->> > -
->> > -    def set_module(self, schema):
->> > -        self._set_module(schema, self.info)
->> > -
->> >      @property
->> >      def ifcond(self):
->> >          assert self._checked
->> > @@ -119,10 +146,6 @@ def ifcond(self):
->> >      def is_implicit(self):
->> >          return not self.info
->> >
->> > -    def visit(self, visitor):
->> > -        # pylint: disable=3Dunused-argument
->> > -        assert self._checked
->> > -
->> >      def describe(self):
->> >          assert self.meta
->> >          return "%s '%s'" % (self.meta, self.name)
->> > @@ -222,7 +245,7 @@ def visit(self, visitor):
->> >
->> >  class QAPISchemaInclude(QAPISchemaEntity):
->> >      def __init__(self, sub_module, info):
->> > -        super().__init__(None, info, None)
->> > +        super().__init__(info)
->> >          self._sub_module =3D sub_module
->> >
->> >      def visit(self, visitor):
->> > @@ -230,7 +253,7 @@ def visit(self, visitor):
->> >          visitor.visit_include(self._sub_module.name, self.info)
->> >
->> >
->> > -class QAPISchemaType(QAPISchemaEntity):
->> > +class QAPISchemaType(QAPISchemaDefinition):
->> >      # Return the C type for common use.
->> >      # For the types we commonly box, this is a pointer type.
->> >      def c_type(self):
->> > @@ -801,7 +824,7 @@ def __init__(self, name, info, typ, ifcond=3DNone):
->> >          super().__init__(name, info, typ, False, ifcond)
->> >
->> >
->> > -class QAPISchemaCommand(QAPISchemaEntity):
->> > +class QAPISchemaCommand(QAPISchemaDefinition):
->> >      meta =3D 'command'
->> >
->> >      def __init__(self, name, info, doc, ifcond, features,
->> > @@ -872,7 +895,7 @@ def visit(self, visitor):
->> >              self.coroutine)
->> >
->> >
->> > -class QAPISchemaEvent(QAPISchemaEntity):
->> > +class QAPISchemaEvent(QAPISchemaDefinition):
->> >      meta =3D 'event'
->> >
->> >      def __init__(self, name, info, doc, ifcond, features, arg_type, b=
-oxed):
->> > @@ -943,11 +966,12 @@ def __init__(self, fname):
->> >          self.check()
->> >
->> >      def _def_entity(self, ent):
->> > +        self._entity_list.append(ent)
->> > +
->> > +    def _def_definition(self, ent):
->>
->> Name the argument @defn instead of @ent?
->
-> OK. (Was aiming for less diffstat, but yes.)
-
-Yes, the churn from the rename is annoying.  More annoying than the now
-odd name?  Not sure.
-
->> >          # Only the predefined types are allowed to not have info
->> >          assert ent.info or self._predefining
->> > -        self._entity_list.append(ent)
->> > -        if ent.name is None:
->> > -            return
->> > +        self._def_entity(ent)
->> >          # TODO reject names that differ only in '_' vs. '.'  vs. '-',
->> >          # because they're liable to clash in generated C.
->> >          other_ent =3D self._entity_dict.get(ent.name)
->> > @@ -1001,7 +1025,7 @@ def _def_include(self, expr: QAPIExpression):
->> >              QAPISchemaInclude(self._make_module(include), expr.info))
->> >
->> >      def _def_builtin_type(self, name, json_type, c_type):
->> > -        self._def_entity(QAPISchemaBuiltinType(name, json_type, c_typ=
-e))
->> > +        self._def_definition(QAPISchemaBuiltinType(name, json_type, c=
-_type))
->> >          # Instantiating only the arrays that are actually used would
->> >          # be nice, but we can't as long as their generated code
->> >          # (qapi-builtin-types.[ch]) may be shared by some other
->> > @@ -1027,15 +1051,15 @@ def _def_predefineds(self):
->> >              self._def_builtin_type(*t)
->> >          self.the_empty_object_type =3D QAPISchemaObjectType(
->> >              'q_empty', None, None, None, None, None, [], None)
->> > -        self._def_entity(self.the_empty_object_type)
->> > +        self._def_definition(self.the_empty_object_type)
->> >
->> >          qtypes =3D ['none', 'qnull', 'qnum', 'qstring', 'qdict', 'qli=
-st',
->> >                    'qbool']
->> >          qtype_values =3D self._make_enum_members(
->> >              [{'name': n} for n in qtypes], None)
->> >
->> > -        self._def_entity(QAPISchemaEnumType('QType', None, None, None=
-, None,
->> > -                                            qtype_values, 'QTYPE'))
->> > +        self._def_definition(QAPISchemaEnumType('QType', None, None, =
-None,
->> > +                                                None, qtype_values, '=
-QTYPE'))
->>
->> The long identifiers squeeze the (also long) argument list against the
->> right margin.  What about:
->>
->>            self._def_definition(QAPISchemaEnumType(
->>                'QType', None, None, None, None, qtype_values, 'QTYPE'))
->
-> This is fine to my eyes.
->
->>
->> or
->>
->>            self._def_definition(
->>                QAPISchemaEnumType('QType', None, None, None, None,
->>                                   qtype_values, 'QTYPE'))
->>
->> We already use the former style elsewhere, visible below.
->>
->> You add one in the latter style in the second to last hunk.
->>
->> Pick one style and stick ot it?
->
-> Yeah. I might try to run the black formatter in the end and just stick
-> to that, if you don't mind a bit of churn in exchange for having it be
-> a bit more mindless. It would be a big hassle to run it at the
-> beginning of the series now, though... but I'll fix this instance for
-> now.
-
-I gave black a quick try a few months ago: the churn is massive.
-Not sure it's worth it.
-
->> >      def _make_features(self, features, info):
->> >          if features is None:
->> > @@ -1057,7 +1081,7 @@ def _make_enum_members(self, values, info):
->> >      def _make_array_type(self, element_type, info):
->> >          name =3D element_type + 'List'    # reserved by check_defn_na=
-me_str()
->> >          if not self.lookup_type(name):
->> > -            self._def_entity(QAPISchemaArrayType(name, info, element_=
-type))
->> > +            self._def_definition(QAPISchemaArrayType(name, info, elem=
-ent_type))
->>
->>                self._def_definition(QAPISchemaArrayType(
->>                    name, info, element_type))
->>
->> or
->>
->>                self._def_definition(
->>                    QAPISchemaArrayType(name, info, element_type))
->>
->
-> OK. (79 columns too long for ya?)
-
-I generally aim for 70, accept 75 without thought, and longer when the
-alternative looks worse.  Deeply indented lines get a bit of extra
-leeway.
-
->> >          return name
->> >
->> >      def _make_implicit_object_type(self, name, info, ifcond, role, me=
-mbers):
->> > @@ -1072,7 +1096,7 @@ def _make_implicit_object_type(self, name, info,=
- ifcond, role, members):
->> >              # later.
->> >              pass
->> >          else:
->> > -            self._def_entity(QAPISchemaObjectType(
->> > +            self._def_definition(QAPISchemaObjectType(
->> >                  name, info, None, ifcond, None, None, members, None))
->> >          return name
->> >
->> > @@ -1083,7 +1107,7 @@ def _def_enum_type(self, expr: QAPIExpression):
->> >          ifcond =3D QAPISchemaIfCond(expr.get('if'))
->> >          info =3D expr.info
->> >          features =3D self._make_features(expr.get('features'), info)
->> > -        self._def_entity(QAPISchemaEnumType(
->> > +        self._def_definition(QAPISchemaEnumType(
->> >              name, info, expr.doc, ifcond, features,
->> >              self._make_enum_members(data, info), prefix))
->> >
->> > @@ -1111,7 +1135,7 @@ def _def_struct_type(self, expr: QAPIExpression):
->> >          info =3D expr.info
->> >          ifcond =3D QAPISchemaIfCond(expr.get('if'))
->> >          features =3D self._make_features(expr.get('features'), info)
->> > -        self._def_entity(QAPISchemaObjectType(
->> > +        self._def_definition(QAPISchemaObjectType(
->> >              name, info, expr.doc, ifcond, features, base,
->> >              self._make_members(data, info),
->> >              None))
->> > @@ -1141,7 +1165,7 @@ def _def_union_type(self, expr: QAPIExpression):
->> >                                 info)
->> >              for (key, value) in data.items()]
->> >          members: List[QAPISchemaObjectTypeMember] =3D []
->> > -        self._def_entity(
->> > +        self._def_definition(
->> >              QAPISchemaObjectType(name, info, expr.doc, ifcond, featur=
-es,
->> >                                   base, members,
->> >                                   QAPISchemaVariants(
->> > @@ -1160,7 +1184,7 @@ def _def_alternate_type(self, expr: QAPIExpressi=
-on):
->> >                                 info)
->> >              for (key, value) in data.items()]
->> >          tag_member =3D QAPISchemaObjectTypeMember('type', info, 'QTyp=
-e', False)
->> > -        self._def_entity(
->> > +        self._def_definition(
->> >              QAPISchemaAlternateType(
->> >                  name, info, expr.doc, ifcond, features,
->> >                  QAPISchemaVariants(None, info, tag_member, variants)))
->> > @@ -1185,11 +1209,10 @@ def _def_command(self, expr: QAPIExpression):
->> >          if isinstance(rets, list):
->> >              assert len(rets) =3D=3D 1
->> >              rets =3D self._make_array_type(rets[0], info)
->> > -        self._def_entity(QAPISchemaCommand(name, info, expr.doc, ifco=
-nd,
->> > -                                           features, data, rets,
->> > -                                           gen, success_response,
->> > -                                           boxed, allow_oob, allow_pr=
-econfig,
->> > -                                           coroutine))
->> > +        self._def_definition(
->> > +            QAPISchemaCommand(name, info, expr.doc, ifcond, features,=
- data,
->> > +                              rets, gen, success_response, boxed, all=
-ow_oob,
->> > +                              allow_preconfig, coroutine))
->> >
->> >      def _def_event(self, expr: QAPIExpression):
->> >          name =3D expr['event']
->> > @@ -1202,8 +1225,8 @@ def _def_event(self, expr: QAPIExpression):
->> >              data =3D self._make_implicit_object_type(
->> >                  name, info, ifcond,
->> >                  'arg', self._make_members(data, info))
->> > -        self._def_entity(QAPISchemaEvent(name, info, expr.doc, ifcond,
->> > -                                         features, data, boxed))
->> > +        self._def_definition(QAPISchemaEvent(name, info, expr.doc, if=
-cond,
->> > +                                             features, data, boxed))
->> >
->> >      def _def_exprs(self, exprs):
->> >          for expr in exprs:
->>
->> Slightly more code, but with slightly fewer conditionals.  Feels a bit
->> cleaner.
->>
->
-> Probably a few more asserts and things that can come out, too. It's
-> nicer for static types at the expense of more OO boilerplate.
-
-Let's do it.
+-- 
+Peter Xu
 
 
