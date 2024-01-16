@@ -2,63 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D779082ED6A
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 12:10:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5934A82ED8D
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 12:18:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPhKF-0003v2-AM; Tue, 16 Jan 2024 06:09:47 -0500
+	id 1rPhRI-0005n5-Uk; Tue, 16 Jan 2024 06:17:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPhKD-0003tb-IA
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 06:09:45 -0500
+ (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rPhR4-0005kO-E7
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 06:16:51 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPhK9-0002JX-6k
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 06:09:45 -0500
+ (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rPhR2-0003oU-W3
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 06:16:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705403379;
+ s=mimecast20190719; t=1705403807;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=1+2eEVMjcbnVY+WResrPUA93mbwnyhJHe09kzTkKi6g=;
- b=AW8g/B1IGqpex9GIz/DQd8Uwi3wYVhee8sleM86WiZNkUt3+sPjpc+vCn+Lmx6rxKSi6xx
- V9/D0zgSldTxBzibAq07tugvGgwvWL6InQ5gZ8/oHvDCj9+lSiw/ssWLq3YyjlsIpN16xA
- MjNBUH3qBqIuwQc5l5fdAh1Ts/o+jLE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eQ4Aw0F8n+7nGDJJCLttHsk0AEm/WReUjQNjza28HGI=;
+ b=H6Ol+EeB+loVsl9yzO22CCM6FRu8dCjCwwXAHz752nsVHVHL1zLLqmjjYkGvo7T7Dd/vBW
+ kOyaYkbYqS9bPTBpC4DK1aZKHVzJXpEzFVj91ezgzgh2ArUzqROieENjcqcF7C0VJP8d2w
+ 5gJpEEudJgYpgYmUcqpORu5OpHaE+Ws=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-ZsMYprfqOc-zcnZhhnudMQ-1; Tue, 16 Jan 2024 06:09:36 -0500
-X-MC-Unique: ZsMYprfqOc-zcnZhhnudMQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1AD9486EB22;
- Tue, 16 Jan 2024 11:09:36 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.128])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B920028AC;
- Tue, 16 Jan 2024 11:09:35 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8688621E680D; Tue, 16 Jan 2024 12:09:33 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Peter
- Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v2 09/19] qapi/schema: allow resolve_type to be used for
- built-in types
-In-Reply-To: <20240112222945.3033854-10-jsnow@redhat.com> (John Snow's message
- of "Fri, 12 Jan 2024 17:29:35 -0500")
-References: <20240112222945.3033854-1-jsnow@redhat.com>
- <20240112222945.3033854-10-jsnow@redhat.com>
-Date: Tue, 16 Jan 2024 12:09:33 +0100
-Message-ID: <87cyu15yc2.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ us-mta-543-L-eswz1lMQKE2U1OrbC6UQ-1; Tue, 16 Jan 2024 06:16:46 -0500
+X-MC-Unique: L-eswz1lMQKE2U1OrbC6UQ-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-6805f615543so207430246d6.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 03:16:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705403805; x=1706008605;
+ h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eQ4Aw0F8n+7nGDJJCLttHsk0AEm/WReUjQNjza28HGI=;
+ b=H5JFSmB5/iIYdpTow36D+54pFb+SR9JtzFCzgJ+vj1+c3VhjFp8wU4zK/yq+9bzunF
+ +aNF/vqm/xioQmf29mMq5J3hDSU8ys9NETOZwzU/kn8MP94kZJrxS6sR929zgKbZ9fzI
+ lSsNM0WoJE8Sb8kP3CYAhphEOWwCGXevZHLR1hmER4FCcH6sbn1L514ioQVWMs/qPblb
+ NrZcA2iTxjNev0mAmSlsD+HhUnKaKvSTy4ZgHP1UZJJ52DP3gA3UaMp13tZb3Lvx5lNL
+ IuKb4QoAEz5qNYyHWGyZLO6T5QjE9XwEaij9Cm4FbdO02ojgdGICJ7GXA9SD4BShGpKI
+ 4qFQ==
+X-Gm-Message-State: AOJu0YyO2lvdjeZ4skgfZBZzb5bEhS7qGldE9hUOeG2lH6bekmn4qLIZ
+ Lr2a2azjDzjMNy5bcLgHMg2kmNFw+rR6xPSKt1VVqVU94yYqgmE2NCL12TFw4eMC+kkZips3rkR
+ RHPZLDtI1BziD4qgtgGWqqyo=
+X-Received: by 2002:a05:6214:21e9:b0:681:6862:3459 with SMTP id
+ p9-20020a05621421e900b0068168623459mr2099934qvj.18.1705403805781; 
+ Tue, 16 Jan 2024 03:16:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG8OXKzyBZTWkNXWAYtWrDryghGQPoTC4KFz+tDWTxqKY8HAS6G+RJui9fPchlbPdgP9INXQQ==
+X-Received: by 2002:a05:6214:21e9:b0:681:6862:3459 with SMTP id
+ p9-20020a05621421e900b0068168623459mr2099922qvj.18.1705403805550; 
+ Tue, 16 Jan 2024 03:16:45 -0800 (PST)
+Received: from rh (p200300c93f0273004f0fe90936098834.dip0.t-ipconnect.de.
+ [2003:c9:3f02:7300:4f0f:e909:3609:8834])
+ by smtp.gmail.com with ESMTPSA id
+ p12-20020a0ce18c000000b00680c50735c6sm4089053qvl.88.2024.01.16.03.16.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Jan 2024 03:16:45 -0800 (PST)
+Date: Tue, 16 Jan 2024 12:16:42 +0100 (CET)
+From: Sebastian Ott <sebott@redhat.com>
+To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
+cc: qemu-devel@nongnu.org, peterx@redhat.com, 
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH 2/2] virtio-gpu: fix scanout migration post-load
+In-Reply-To: <20240115154830.498304-3-marcandre.lureau@redhat.com>
+Message-ID: <a67b8127-6445-a29b-ffc4-6c5409e93bbd@redhat.com>
+References: <20240115154830.498304-1-marcandre.lureau@redhat.com>
+ <20240115154830.498304-3-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sebott@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -83,148 +97,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+On Mon, 15 Jan 2024, marcandre.lureau@redhat.com wrote:
+> +            scanout->ds = qemu_create_displaysurface_pixman(res->image);
+> +            if (!scanout->ds) {
+> +                return -EINVAL;
+> +            }
 
-> allow resolve_type to be used for both built-in and user-specified
-> type definitions. In the event that the type cannot be resolved, assert
-> that 'info' and 'what' were both provided in order to create a usable
-> QAPISemError.
->
-> In practice, 'info' will only be None for built-in definitions, which
-> *should not fail* type lookup.
->
-> As a convenience, allow the 'what' and 'info' parameters to be elided
-> entirely so that it can be used as a can-not-fail version of
-> lookup_type.
-
-The convenience remains unused until the next patch.  It should be added
-there.
-
-> Note: there are only three callsites to resolve_type at present where
-> "info" is perceived to be possibly None:
->
->     1) QAPISchemaArrayType.check()
->     2) QAPISchemaObjectTypeMember.check()
->     3) QAPISchemaEvent.check()
->
->     Of those three, only the first actually ever passes None;
-
-Yes.  More below.
-
->                                                               the other two
->     are limited by their base class initializers which accept info=None, but
-
-They do?
-
->     neither actually use it in practice.
->
-> Signed-off-by: John Snow <jsnow@redhat.com>
-
-Hmm.
-
-We look up types by name in two ways:
-
-1. Failure is a semantic error
-
-   Use .resolve_type(), passing real @info and @what.
-
-   Users:
-
-   * QAPISchemaArrayType.check() resolving the element type
-
-     Fine print: when the array type is built-in, we pass None @info and
-     @what.  The built-in array type's element type must exist for
-     .resolve_type() to work.  This commit changes .resolve_type() to
-     assert it does.
-
-   * QAPISchemaObjectType.check() resolving the base type
-
-   * QAPISchemaObjectTypeMember.check() resolving the member type
-
-   * QAPISchemaCommand.check() resolving argument type (if named) and
-     return type (which is always named).
-
-   * QAPISchemaEvent.check() resolving argument type (if named).
-
-   Note all users are in .check() methods.  That's where type named get
-   resolved.
-
-2. Handle failure
-
-   Use .lookup_type(), which returns None when the named type doesn't
-   exist.
-
-   Users:
-
-   * QAPISchemaVariants.check(), to look up the base type containing the
-     tag member for error reporting purposes.  Failure would be a
-     programming error.
-
-   * .resolve_type(), which handles failure as semantic error
-
-   * ._make_array_type(), which uses it as "type exists already"
-      predicate.
-
-   * QAPISchemaGenIntrospectVisitor._use_type(), to look up certain
-     built-in types.  Failure would be a programming error.
-
-The next commit switches the uses where failure would be a programming
-error from .lookup_type() to .resolve_type() without @info and @what, so
-failure trips its assertion.  I don't like it, because it overloads
-.resolve_type() to serve two rather different use cases:
-
-1. Failure is a semantic error; pass @info and @what
-
-2. Failure is a programming error; don't pass @info and what
-
-The odd one out is of course QAPISchemaArrayType.check(), which wants to
-use 1. for the user's types and 2. for built-in types.  Let's ignore it
-for a second.
-
-I prefer to do 2. like typ = .lookup_type(); assert typ.  We can factor
-this out into its own helper if that helps (pardon the pun).
-
-Back to QAPISchemaArrayType.check().  Its need to resolve built-in
-element types, which have no info, necessitates .resolve_type() taking
-Optional[QAPISourceInfo].  This might bother you.  It doesn't bother me,
-unless it leads to mypy complications I can't see.
-
-We can simply leave it as is.  Adding the assertion to .resolve_type()
-is fine.
-
-Ot we complicate QAPISchemaArrayType.check() to simplify
-.resolve_type()'s typing, roughly like this:
-
-            if self.info:
-                self.element_type = schema.resolve_type(
-                    self._element_type_name,
-                    self.info, self.info.defn_meta)
-            else:               # built-in type
-                self.element_type = schema.lookup_type(
-                    self._element_type_name)
-                assert self.element_type
-
-Not sure it's worth the trouble.  Thoughts?
-
-> ---
->  scripts/qapi/schema.py | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-> index 66a78f28fd4..a77b51d1b96 100644
-> --- a/scripts/qapi/schema.py
-> +++ b/scripts/qapi/schema.py
-> @@ -1001,9 +1001,10 @@ def lookup_type(self, name):
->          assert typ is None or isinstance(typ, QAPISchemaType)
->          return typ
->  
-> -    def resolve_type(self, name, info, what):
-> +    def resolve_type(self, name, info=None, what=None):
->          typ = self.lookup_type(name)
->          if not typ:
-> +            assert info and what  # built-in types must not fail lookup
->              if callable(what):
->                  what = what(info)
->              raise QAPISemError(
+"qemu_create_displaysurface_pixman() never returns NULL." ;-)
 
 
