@@ -2,160 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A3582E459
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 01:15:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2FE82E54E
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 01:37:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPX5m-00037u-TH; Mon, 15 Jan 2024 19:14:10 -0500
+	id 1rPXRG-0005fX-Fa; Mon, 15 Jan 2024 19:36:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eiichi.tsukata@nutanix.com>)
- id 1rPX5k-00037m-OM
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 19:14:08 -0500
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rPXR7-0005c9-I4; Mon, 15 Jan 2024 19:36:14 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eiichi.tsukata@nutanix.com>)
- id 1rPX5i-0003XT-Mb
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 19:14:08 -0500
-Received: from pps.filterd (m0127838.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 40FNV9vN021967; Mon, 15 Jan 2024 16:14:01 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- from:to:cc:subject:date:message-id:references:in-reply-to
- :content-type:content-id:content-transfer-encoding:mime-version;
- s=proofpoint20171006; bh=0RSBexo9WU7Ml4LufFMaOVTxUt/pW7jxK2LP3v
- Vfhok=; b=ULBb8hGMtBniNnqBOCoqB6OLCUOkjr6YiuFE2Kocw0T5MQqyJgy+wo
- mRI6lzFrSWqY5XbXhoi07/iqVGybSbinZbUGngGtzfI2xv1TUEL/mF4KE1v36dGi
- 0et0/NZpTkD5tU7XPJIBkf+UkYOly/j0QiEEE2l7mu2GQHO6KhDGnzjr6Hx0uGug
- Qsnwcet84jW0lhj8N9huU+t3C2kORrS733E4FzOfWoJHWZMvBpMpYf42Vo+iKb1h
- Q6lyd/TeWAzqldXdvtqWD9E71OaBFmntTKWMaP9X6pN6a+n/4y9FemyVCnSFqLjU
- p20npI/ZKbgVBfkKEBoYZTAwKshRw62A==
-Received: from nam10-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam10lp2100.outbound.protection.outlook.com [104.47.55.100])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3vktxyushj-1
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rPXQw-00084v-B4; Mon, 15 Jan 2024 19:36:12 -0500
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40FLv3oE025638; Tue, 16 Jan 2024 00:35:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=XPC4Rag2AhMVOS5iSAhiDecyP9fSPQwOj6xDaOF+UVY=;
+ b=julnYcpbl7r5TB22BpC8dz3HicMXUwt0TJfZ7YV1UbWvA0+SGBdtyAWWSzXMeB1s8fFe
+ w15L3tCxcQtEtHc721W0VIfKsI4e1rKwCdLULN6WNb9S9OMOIgwpHD937LAiR/vC3ydA
+ lx0ztOAIqmIKaMXr09ixoku5aPf0+kmQCsMT2fKykx7jAzOgTgdUfiBvjXJjapdMBbv5
+ RmImCiVGg60uecu9uFbjq67bOPGtSaEEG1dSRawNgIb6uuNPkBA2ZGuBzdWQ6FP8llQq
+ LDojDHb6fD2h0pmTn2zn87dtS7BQGaePD/0+eTk760e8ScTcnB67C5PI4ZC/BSbRoLKw Sg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnc91bnjn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jan 2024 16:14:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LCHn22CCSr22ljZ8i5LDwKvz5JDOFgWjzwivQkTFAVS00MVuaTMm1ja4qddUe7kqtt/dSuCc/81N9q/5Qz7v5VfxRt5+L4iG/yZKHKBqeljK+CuVQ8reGXtru4iT+y6NTgCwOHnSrJEB6RF4Ufis0qOW9jg/7D+Sc3I85BcWBfuOFK8LEuSBmVyH8OcZ/z2IeC9ngd0k0Z0KDT2CeqsYGT+C7GzYpHQvDNXEpF0CbVk+9nsEQabNKI1bp/Yv/7atgKoCeLLZZCETJDaL3GDMYmWiuQMNB52YXkykNP/GLFi0l7ql6D9GKIAx9nBIYQxudlJrvYKVjl04T/CkVaX8CQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0RSBexo9WU7Ml4LufFMaOVTxUt/pW7jxK2LP3vVfhok=;
- b=J+cyIq5iRCPneUOOcoN9+Q4yXTi6ALixO2dPSGZtNtR1avCRflThn/0IMPcAag3zb3OMQ2PtsRAd3XYtSQtNhbTxnzfcZZYrWo5p4J5ilBp9t0RlIupI5O32NiH5b7qyWiJwtwvBoC5mpbnNwyo+AL6bDBCL7WqBELFDNma6cgArdoEKXzecPEIBleuPyz/S54BIfpDhLzd7ncn/GSKG/qlIVnuPgVOPtOK4fOLuZsTUVXO5/+RvoV5L0qoVbbdGKt8mjIMm3b4RYtvtgZlSvp3UX5gWLUxjJPymPoq8Lqtfq/kyMbmXsi9RU0AF/WLZGI2+pKFstpzN9fu17qpGeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0RSBexo9WU7Ml4LufFMaOVTxUt/pW7jxK2LP3vVfhok=;
- b=Zfh2TBE6xWZ3PlBhVGYogNysplS1khX8DRpornYwlNsoroDCU395rUaoUDnW5cino327i/2A2qsmb/MleV2Z2csQPiwcvBnHWqCkKVplAro7cLeGHXBrt4/uLe9ZoSxZIlxl+wULhz1Rns60jjC4T1d5YLYLH7LYiutpzA7+1eFmp0cHR57ppdSMe8mMv83Wk5lKPEy+Xxs4JvJNznvyAYungwfgEAWWZ4W+i53JV9faqrOxlzp1D+EZeiM/vpgMm1tqNgO2z8iqcC15+u9NR2H5rBA4YksldlEoLf4x03mbVQKvZhaqwhesI+OfeUcTX3Ox7UmYBWtR4pSJda0ALA==
-Received: from CH0PR02MB8041.namprd02.prod.outlook.com (2603:10b6:610:106::10)
- by SJ0PR02MB7709.namprd02.prod.outlook.com (2603:10b6:a03:325::23)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.28; Tue, 16 Jan
- 2024 00:13:58 +0000
-Received: from CH0PR02MB8041.namprd02.prod.outlook.com
- ([fe80::76b9:134e:604f:7d37]) by CH0PR02MB8041.namprd02.prod.outlook.com
- ([fe80::76b9:134e:604f:7d37%4]) with mapi id 15.20.7181.015; Tue, 16 Jan 2024
- 00:13:58 +0000
-From: Eiichi Tsukata <eiichi.tsukata@nutanix.com>
-To: Vitaly Kuznetsov <vkuznets@redhat.com>
-CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, Maxim Levitsky
- <mlevitsk@redhat.com>, =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?=
- <philmd@linaro.org>, "mtosatti@redhat.com" <mtosatti@redhat.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-Subject: Re: [PATCH] target/i386/kvm: call kvm_put_vcpu_events() before
- kvm_put_nested_state()
-Thread-Topic: [PATCH] target/i386/kvm: call kvm_put_vcpu_events() before
- kvm_put_nested_state()
-Thread-Index: AQHaB89aXI5Xqc3T6k+NVdRuk3VgqLBbkLwAgAAA7YCAADJMAIAI/UwAgADHy4CACiilgIBsYG4A
-Date: Tue, 16 Jan 2024 00:13:58 +0000
-Message-ID: <585D19C7-80BD-4599-ABBD-A0FE25F0ACB9@nutanix.com>
-References: <20231026054201.87845-1-eiichi.tsukata@nutanix.com>
- <D761458A-9296-492B-85B9-F196C7D11CDA@nutanix.com>
- <78ddc3c3-6cfa-b48c-5d73-903adec6ac4a@linaro.org> <87wmv93gv5.fsf@redhat.com>
- <D3D6327A-CFF0-43F2-BA39-B48EE2A53041@nutanix.com>
- <87edh9h8nk.fsf@redhat.com>
- <7A7A55C5-6151-453A-852C-96CD10098EE6@nutanix.com>
-In-Reply-To: <7A7A55C5-6151-453A-852C-96CD10098EE6@nutanix.com>
-Accept-Language: ja-JP, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Apple Mail (2.3774.300.61.1.2)
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR02MB8041:EE_|SJ0PR02MB7709:EE_
-x-ms-office365-filtering-correlation-id: 9ec8d5bc-0a68-423a-8d1b-08dc162808c9
-x-proofpoint-crosstenant: true
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: /7NR0IMMtAhbxUMwMUcFVI0WNV6u72KEedTxwiC90+rzAlTDUE7nD5MD8Da3fjUiKbHadNOpsRkfw3gVogySrEtQ4ezkXki10OvmgKXclp/Hoo+dxNu/1PeIr5Uh4Bvagf4HXgLDqgxjaEaamNTrgo1k0yM6lfz0nBPK/Yqwm54x62+IZVshKQ94QofNAYpagVjKCjJJBWR63Px3v2lLo4OKwz/GZ8uIeKlUFkIyxbgfGt2bRJtz3fv44VcmIBvaf11Do2aNxSybm83bbBGWJfxDYYLsmGvK2y1wh674WoAhcfWVDzmxx9yMxEg5MMGPPQp0SiCPNWRZ8hAlgHhK66DDnCza1QYieFG54CAdVdU7nTeKKVlhJRMXc8jFNZRusR8rokL10nSvY3hM0IkHICIXrs5ivSFL8QeAJ1/hRlCHi6A+DJCCg5ZRyTOHNFiiorFaNFEUGz7xPZWlx+dAaHbvFnKARyZHRNxhvTTSe8KIN6jzhaZAMKCWv9jYlHZXP2rG5LTEyQrE0B3leQrSLSGDaQz8Wvf+oaIehwGyo1qLRuifwljrv8xUPESqAooya0mTQOdKrwkmmVagPRvhW1wdbB5kUO5NvK1MWbt29bW8moIVngNP+4i2vWV0iGs3iqfXhOy7IYeqaCAThVOy7g==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR02MB8041.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(39860400002)(396003)(366004)(376002)(346002)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(5660300002)(6506007)(6512007)(2906002)(76116006)(54906003)(66446008)(66556008)(66946007)(64756008)(53546011)(122000001)(8676002)(8936002)(4326008)(316002)(6916009)(38100700002)(44832011)(71200400001)(91956017)(6486002)(478600001)(66476007)(38070700009)(33656002)(41300700001)(26005)(2616005)(36756003)(86362001)(45980500001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?OcnnYb2dVmY32+46hF2i/YshqVcMArjWWGDnVTfO4aUG4MD76WIN714ojr?=
- =?iso-8859-1?Q?TFWiSS8a8djfwutYmvhVLETo5W4Lq4cordwRcvr87fcxXxe+TPHzNKAdv9?=
- =?iso-8859-1?Q?6wNFtwvA/j+eS6k5ku0SP1unX7eqEl9RHLmRXB9I88ibnP0dNm7cnrJSYr?=
- =?iso-8859-1?Q?tiDviAvqCd5FagSkPdCafijz8IeNYENepdvKMKYKBih3adk21ysNnd8bBY?=
- =?iso-8859-1?Q?wJ60qygOEKH6oNfNVCnrFJZ9pXPNl879bY/X18W1itp0L17y2rCH4qGJT2?=
- =?iso-8859-1?Q?dREXZwWzm/TcwZYmCumWQPVbDWSjCP7DVww5+cnLR5eJh57wC0iPsMZ5Km?=
- =?iso-8859-1?Q?K83x2j0W5yiaqUbWUwLqcHeHIGn0ibrBmXxhzfNQun9H2+P1UmKc7PkP4P?=
- =?iso-8859-1?Q?TJxj/R/xRBcGD0U7e/nwAYWvrtbfA/pzmeShcEsLWAAsoL51E+hZNsgKud?=
- =?iso-8859-1?Q?7V9DI7CrK8d5QpnnYZRrFsEEz5kOJU/nKSziTmGqSPD5JZ2xaoAAhCgeJv?=
- =?iso-8859-1?Q?MfWAT6SPL+4krHrV/4tJ1U02ww/CAANNzu72LHUIUTSV7uKUCsX79VXTLe?=
- =?iso-8859-1?Q?SQFTWY0j/9EpDVEKzOz1fTqvCDbCRp1AZB+hXdVg2b7nc0BhvzC0dj1Yl8?=
- =?iso-8859-1?Q?IpieKkjg5zFVKh1zvL889886uPUbiVpeY+zsv+IhXKscYT9eNJKYM/02eV?=
- =?iso-8859-1?Q?/kzaNiwHgtjDwTjLlJju5kl9Wi5le8JOcsgttFdbEbd0DAgAl69fioGGY7?=
- =?iso-8859-1?Q?afw7wo1rIcKMwpTLlntwKhv23Ye3eEaR1CsvezVVk3Jg7dXbAlhYIIHewR?=
- =?iso-8859-1?Q?5XdiGhFMsK3wwm0PQi6pkY3FPJ/ydOlXl/Oqs3l3nA+shh8LqvdQEdW4J/?=
- =?iso-8859-1?Q?PY7PVhtRaTJ46V1ceu6o4TlEXLl5O/Ue/dzv+SfyioUPCqeHuRCdN0OW1H?=
- =?iso-8859-1?Q?2VcYkvjFbs7p1Yl5Xq/RnOBrSVM3xIRLZ0JB+XGlnu0buk+W7YTlfM1TOi?=
- =?iso-8859-1?Q?8owBrLWsAtrfXvqhep/pqVs7QwbEYvhN9IYp9ZTH3zB/B13p1SyCfF/uU8?=
- =?iso-8859-1?Q?92CiJFs57kDPvsjOHIB6sCn+KfdghFZ0OiXIdIg3layMbkT9NLS2iQXUkp?=
- =?iso-8859-1?Q?zz0C0KT9gG+uYAU/ThNSfMV9+YtNU9nFA6UbqDdPvLd5XBog/EfB1ExuIh?=
- =?iso-8859-1?Q?V6x+DOyTBDdXVJeHUWbIdl72lTopvU+fAy9cB9+Wyf4FrnfgjorgTElsIl?=
- =?iso-8859-1?Q?aFb1QM5UvKBk+cVUlNHX5BIJezyNhRIB2pg9ajtnAs3/1If02J5DL9rjhW?=
- =?iso-8859-1?Q?xK+UfpiaFhTWp2R0UJcPF93Y2V31Xix9Suf8V/PMRssdsgEBg1czH9lRcN?=
- =?iso-8859-1?Q?xDEwJCzCcoBQwrjsRkGcHsWawXUw6uQqQ0/WgdkERyermmKRWR/d7oxYQ5?=
- =?iso-8859-1?Q?MfaHTCXG44yuouIWL3CdtBt5sK0OFy2jJqF1s943oD04vcOcBuOlVCf9UI?=
- =?iso-8859-1?Q?On57bCospMtkOj7DOgV/SxMPc69h39Fk28dgVpfjFaNoesklHjwCp4rapb?=
- =?iso-8859-1?Q?g3zRbEPeT/ob0mzr76oWOCblg5yjjHp+Vn2xG6ry3pIqePK2jcXvmCp1vX?=
- =?iso-8859-1?Q?3xbprRA+rmmAHhvwR0b3ctH9uIy9xwLoJ7CNTDcjnRO6SrNjbftzZbTA?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <CFF27EA819A8944BA6EF59B50B016352@namprd02.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+ Tue, 16 Jan 2024 00:35:58 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40G0ILex015228;
+ Tue, 16 Jan 2024 00:35:58 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnc91bnjc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 Jan 2024 00:35:57 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40FMo1Fj023656; Tue, 16 Jan 2024 00:35:57 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vm7j1jycc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 Jan 2024 00:35:57 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40G0ZtJH61538604
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 16 Jan 2024 00:35:55 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6251720043;
+ Tue, 16 Jan 2024 00:35:55 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B240720040;
+ Tue, 16 Jan 2024 00:35:54 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.4.64])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 16 Jan 2024 00:35:54 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v3 0/3] linux-user: Allow gdbstub to ignore page protection
+Date: Tue, 16 Jan 2024 01:31:39 +0100
+Message-ID: <20240116003551.75168-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: N_TZQ5TEmaIHvQIM4tkVaoQSt-9SD-Os
+X-Proofpoint-ORIG-GUID: IIcC90s8qAAxhOfj0NjHjjeaCnsLc9I0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR02MB8041.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ec8d5bc-0a68-423a-8d1b-08dc162808c9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jan 2024 00:13:58.1112 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 3VuhVkZSOfLAhvtnYwQBTmd7A7Lv+zHNs+wMkzqjkzr75BtAYLqDCDq79IT4zgC+Agn89tLessiPYK3T6RC/Edf4g+ejn+EA4+e9d8G58Hw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB7709
-X-Proofpoint-ORIG-GUID: NIqFcWtmVKIlpRR99C8-zG9qppxfytF9
-X-Proofpoint-GUID: NIqFcWtmVKIlpRR99C8-zG9qppxfytF9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-28_27,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68;
- envelope-from=eiichi.tsukata@nutanix.com; helo=mx0a-002c1b01.pphosted.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.531,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ definitions=2024-01-15_17,2024-01-15_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 adultscore=0
+ mlxscore=0 mlxlogscore=800 impostorscore=0 phishscore=0 malwarescore=0
+ clxscore=1015 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401160002
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -172,45 +114,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping.
+v2: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg01592.html
+v2 -> v3: Add Richard's R-b on [1/3].
+          Fix printing the architecture name and the number of failures
+          in test_gdbstub.py.
+          Patches that need review: [2/3] and [3/3].
 
-> On Nov 8, 2023, at 10:12, Eiichi Tsukata <eiichi.tsukata@nutanix.com> wro=
-te:
->=20
-> Hi all, appreciate any comments or feedbacks on the patch.
->=20
-> Thanks,
-> Eiichi
->=20
->> On Nov 1, 2023, at 23:04, Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
->>=20
->> Eiichi Tsukata <eiichi.tsukata@nutanix.com> writes:
->>=20
->>> FYI: The EINVAL in vmx_set_nested_state() is caused by the following co=
-ndition:
->>> * vcpu->arch.hflags =3D=3D 0
->>> * kvm_state->hdr.vmx.smm.flags =3D=3D KVM_STATE_NESTED_SMM_VMXON
->>=20
->> This is a weird state indeed,
->>=20
->> 'vcpu->arch.hflags =3D=3D 0' means we're not in SMM and not in guest mod=
-e
->> but kvm_state->hdr.vmx.smm.flags =3D=3D KVM_STATE_NESTED_SMM_VMXON is a
->> reflection of vmx->nested.smm.vmxon (see
->> vmx_get_nested_state()). vmx->nested.smm.vmxon gets set (conditioally)
->> in vmx_enter_smm() and gets cleared in vmx_leave_smm() which means the
->> vCPU must be in SMM to have it set.
->>=20
->> In case the vCPU is in SMM upon migration, HF_SMM_MASK must be set from
->> kvm_vcpu_ioctl_x86_set_vcpu_events() -> kvm_smm_changed() but QEMU's
->> kvm_put_vcpu_events() calls kvm_put_nested_state() _before_
->> kvm_put_vcpu_events(). This can explain "vcpu->arch.hflags =3D=3D 0".
->>=20
->> Paolo, Max, any idea how this is supposed to work?
->>=20
->> --=20
->> Vitaly
->>=20
->=20
+v1: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg01314.html
+v1 -> v2: Use /proc/self/mem as a fallback. Handle TB invalidation
+          (Richard).
+          Test cross-page accesses.
+
+RFC: https://lists.gnu.org/archive/html/qemu-devel/2023-12/msg02044.html
+RFC -> v1: Use /proc/self/mem and accept that this will not work
+           without /proc.
+           Factor out a couple functions for gdbstub testing.
+           Add a test.
+
+Hi,
+
+I've noticed that gdbstub behaves differently from gdbserver in that it
+doesn't allow reading non-readable pages. This series improves the
+situation by using the same mechanism as gdbserver: /proc/self/mem.
+
+Best regards,
+Ilya
+
+Ilya Leoshkevich (3):
+  linux-user: Allow gdbstub to ignore page protection
+  tests/tcg: Factor out gdbstub test functions
+  tests/tcg: Add the PROT_NONE gdbstub test
+
+ cpu-target.c                                  | 76 +++++++++++++++----
+ tests/guest-debug/run-test.py                 |  7 +-
+ tests/guest-debug/test_gdbstub.py             | 58 ++++++++++++++
+ tests/tcg/aarch64/gdbstub/test-sve-ioctl.py   | 34 +--------
+ tests/tcg/aarch64/gdbstub/test-sve.py         | 33 +-------
+ tests/tcg/multiarch/Makefile.target           |  9 ++-
+ tests/tcg/multiarch/gdbstub/interrupt.py      | 47 ++----------
+ tests/tcg/multiarch/gdbstub/memory.py         | 41 +---------
+ tests/tcg/multiarch/gdbstub/prot-none.py      | 22 ++++++
+ tests/tcg/multiarch/gdbstub/registers.py      | 41 ++--------
+ tests/tcg/multiarch/gdbstub/sha1.py           | 40 ++--------
+ .../multiarch/gdbstub/test-proc-mappings.py   | 39 +---------
+ .../multiarch/gdbstub/test-qxfer-auxv-read.py | 37 +--------
+ .../gdbstub/test-thread-breakpoint.py         | 37 +--------
+ tests/tcg/multiarch/prot-none.c               | 40 ++++++++++
+ tests/tcg/s390x/gdbstub/test-signals-s390x.py | 42 +---------
+ tests/tcg/s390x/gdbstub/test-svc.py           | 39 +---------
+ 17 files changed, 229 insertions(+), 413 deletions(-)
+ create mode 100644 tests/guest-debug/test_gdbstub.py
+ create mode 100644 tests/tcg/multiarch/gdbstub/prot-none.py
+ create mode 100644 tests/tcg/multiarch/prot-none.c
+
+-- 
+2.43.0
 
 
