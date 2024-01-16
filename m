@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F23A82F289
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 17:42:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3157D82F28D
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 17:45:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPmWK-0000Ae-1r; Tue, 16 Jan 2024 11:42:36 -0500
+	id 1rPmXk-0001f9-Ug; Tue, 16 Jan 2024 11:44:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rPmW4-0008V3-Tz
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:42:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rPmW1-0005gq-2y
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:42:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705423332;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=DAO0gCB6l8jlk8++XPiJaILDLy7aS+Uormld+N4JZek=;
- b=DGZWlEmmeDYFF91lgiZ0uP7QS7n3TdfavMkQeVcmbOehON/C+li6A2dW8XobTBO2aLgx1m
- Yzo9dDRbXNsOiA9jxgdSIY584hjbq8lHBJfikmZgN3VN6k2yJKyuWXY1g60uBQm//dOZMx
- ZINjbbGa28gFx5xPV9JpdnBEwjJp4rs=
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
- [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-608-S_nsAw-JNjmCOmgDjvY3hQ-1; Tue, 16 Jan 2024 11:42:11 -0500
-X-MC-Unique: S_nsAw-JNjmCOmgDjvY3hQ-1
-Received: by mail-oo1-f70.google.com with SMTP id
- 006d021491bc7-598dfff253bso2358147eaf.2
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 08:42:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rPmXi-0001Zn-In
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:44:02 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rPmXg-0005vE-NG
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:44:02 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-55790581457so11627875a12.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 08:44:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705423439; x=1706028239; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bEWHIsOs0K0h8LuxnFBVrPkY6pIftjFFe53K4qEN0iw=;
+ b=UMF+FPoEH1Fkau6fUegJWt+fCtEJ9iuIS9tmUwLyGqFdENTWp6cUlqbOrRLsbG/W4r
+ 0BdegcNB/vLgYbDDqNqUUzTbkOVFedo3VzPmXZSWzD6yMd4qOXaOQ4tosNVt1nvz8yHo
+ 3KPoixxUsANglJhmBgNP2tijTzRuQ7mDqgJV9ARSvcV3MXr5IWDLMdt1rzKej1DGDhLs
+ PS5GC+vMnOtYNxADj64zmVNPC08YGfuVJeyftfliTalningapboHr8dwRek4w3b/pB9l
+ fEqi2VDJeoPb58i8n97LqKObDGEP5T/ob9ynUac+EmmIfGsIrJNQRWNuAadAM2U824oK
+ M4nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705423330; x=1706028130;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=DAO0gCB6l8jlk8++XPiJaILDLy7aS+Uormld+N4JZek=;
- b=g0P2E0YJmPwm3fGyR4bdBJajKaS7vYxtJI30gc619Ma0qV4/ijedvxG4A+YmpAlHB9
- OcFr3wNRmgGuT5PPr2u9KBpkOC1bgs1WL9nPDDUXXo+JXl+nR08XWBSEi+MpB4+ftBAJ
- 4I3MRJBnwjSYo+fDriuh3vQ+cn+jhDAVyzK+D6QJoVZNPKvT3bf2S2xwTkEK/+DT7bpb
- 7ghgKNujzBYjA/I5/fbzOd5R1FSRRh26DDVsoSYV/N5+rchnTyiaPvTJfyt2hhx3jt4i
- hp0NjCRRibWRVB4HWKYwiVGIBSKhn/JYWat5vLQqvC6+CvoCoQkxzVTRjT3YlO1pkwOj
- nwtw==
-X-Gm-Message-State: AOJu0Yw/pY/ZwoQGh/0i5jT4X0uYKgUpSzgAlbvPEmU7oRVZg1CPIAXR
- 65/Fi2fOr5rRQXPGw9+IUTLKCWIMaEqVWxt0kr71IPqIOCy0sBc2Mxfulm0EOdq731j/MyDVSIH
- JFl0qqR3/76oiMSSF8dVv8nk=
-X-Received: by 2002:a05:6359:410d:b0:175:9b44:6a37 with SMTP id
- kh13-20020a056359410d00b001759b446a37mr5474882rwc.1.1705423329941; 
- Tue, 16 Jan 2024 08:42:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGNrQNXpXiaGHWpHJKNFg376+P0PZWhOIpc+khCvvmfKzvMM4zKj4NjlcrtVuaT2PcoSekeLQ==
-X-Received: by 2002:a05:6359:410d:b0:175:9b44:6a37 with SMTP id
- kh13-20020a056359410d00b001759b446a37mr5474865rwc.1.1705423329601; 
- Tue, 16 Jan 2024 08:42:09 -0800 (PST)
-Received: from fc37-ani.redhat.com ([203.163.245.66])
- by smtp.googlemail.com with ESMTPSA id
- k15-20020aa7998f000000b006dadc43f3f6sm9461333pfh.55.2024.01.16.08.42.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jan 2024 08:42:09 -0800 (PST)
-From: Ani Sinha <anisinha@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Cc: peter.maydell@linaro.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH] acpi/tests/avocado/bits: wait for 200 seconds for SHUTDOWN
- event from bits VM
-Date: Tue, 16 Jan 2024 22:11:53 +0530
-Message-Id: <20240116164153.3358822-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.39.2
+ d=1e100.net; s=20230601; t=1705423439; x=1706028239;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bEWHIsOs0K0h8LuxnFBVrPkY6pIftjFFe53K4qEN0iw=;
+ b=s3SDWrqKew/vsmavqwj1416corZmUVOY+7Rrwiv63jw3ZrbFaPQFcb3ivhgQIJSTDn
+ lempoDYmhkhMHRQeNX0vh3aF2RKKMo7JzjCq2rmNKbwezehj+EmborMcd3Q/Y5yIQfXX
+ UTlIj3ovvtv9VpgTQSAzj43LblD4TNXOMmkcekPJKI5JfIQtmaLyfKiCPn2ktnoN8H+u
+ THj+8fyy2QgbiJq0cwAjOUmbwDoXquzDrZpkyQtBuKzSHYzfC+mCAZn5AeJ0uN1dAubP
+ Tzigi5aYThD9s43S7hLpyra0WaI3USsLUV3eRsZNEa5qFNeY8Ycygzpj0c1da6hwUth1
+ aIUw==
+X-Gm-Message-State: AOJu0YyfLYz+doIU9nt0x93cvfh/biz32/VgeEags4PhwkmaRqvgx2tb
+ EWWAxn/Zc5ITKjn67zgjemxB4WBoq8EsmSs/t7AeWcNzZ4t/7g==
+X-Google-Smtp-Source: AGHT+IGFGl2T4WvnJZo/NVA65E62ccTpzGnsuE654Uns4u39ylX8RacuPRkheZC66bJjd/FjPNegpkNTAxWI2X2eLzM=
+X-Received: by 2002:a05:6402:17cf:b0:559:c8e6:9d71 with SMTP id
+ s15-20020a05640217cf00b00559c8e69d71mr61950edy.27.1705423438827; Tue, 16 Jan
+ 2024 08:43:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240110195329.3995-1-philmd@linaro.org>
+ <CAFEAcA9c58iVvgW4wnNT1H3tzsdYbxyU-kT7bJP=A3E+B-t7PA@mail.gmail.com>
+ <7a73231a-d7ae-4abe-9bca-e8e295a5f70d@linaro.org>
+In-Reply-To: <7a73231a-d7ae-4abe-9bca-e8e295a5f70d@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 16 Jan 2024 16:43:47 +0000
+Message-ID: <CAFEAcA-wV-1njkAhjV1kjp1NW8RVjZLNjJMThrcuhjakNT3TTg@mail.gmail.com>
+Subject: Re: [PATCH v3 00/14] hw/arm: Prefer arm_feature() over
+ object_property_find()
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
+ qemu-arm@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
+ Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Radoslaw Biernacki <rad@semihalf.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Leif Lindholm <quic_llindhol@quicinc.com>, Rob Herring <robh@kernel.org>, 
+ Markus Armbruster <armbru@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,52 +97,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By default, the timeout to receive any specified event from the QEMU VM is 60
-seconds set by the python avocado test framework. Please see event_wait() and
-events_wait() in python/qemu/machine/machine.py. If the matching event is not
-triggered within that interval, an asyncio.TimeoutError is generated. Since the
-default timeout for the bits avocado test is 200 secs, we need to make
-event_wait() timeout the same value as well so that an early timeout is not
-triggered by the avocado framework.
+On Tue, 16 Jan 2024 at 16:20, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> On 13/1/24 14:36, Peter Maydell wrote:
+> > On Wed, 10 Jan 2024 at 19:53, Philippe Mathieu-Daud=C3=A9 <philmd@linar=
+o.org> wrote:
+> >>
+> >> Since v2 [2]:
+> >> - Dropped "Simplify checking A64_MTE bit in FEATURE_ID register"
+> >> - Correct object_property_get_bool() uses
+> >> - Update ARM_FEATURE_AARCH64 && aa64_mte
+> >>
+> >> Since RFC [1]:
+> >> - Split one patch per feature
+> >> - Addressed Peter's review comments
+> >>
+> >> [1] https://lore.kernel.org/qemu-devel/20231214171447.44025-1-philmd@l=
+inaro.org/
+> >> [2] https://lore.kernel.org/qemu-devel/20240109180930.90793-1-philmd@l=
+inaro.org/
+> >>
+> >> Based-on: <20231123143813.42632-1-philmd@linaro.org>
+> >>    "hw: Simplify accesses to CPUState::'start-powered-off' property"
+> >>
+> >> Philippe Mathieu-Daud=C3=A9 (14):
+> >>    hw/arm/armv7m: Introduce cpudev variable in armv7m_realize()
+> >>    hw/arm/armv7m: Ensure requested CPU type implements ARM_FEATURE_M
+> >>    hw/arm/armv7m: Move code setting 'start-powered-off' property aroun=
+d
+> >>    hw/arm/armv7m: Always set 'init-nsvtor' property for Cortex-M CPUs
+>
+>
+> > The first part of this is fine and reasonable cleanup, but I
+> > continue to disagree about the later parts. What we want to do is
+> > "if this property is present, then set it", and that's what we do.
+> > Conversion to "if <some condition we know that the CPU is using to
+> > decide whether to define the property> then set it" is duplicating
+> > the condition logic in two places and opening the door for bugs
+> > where we change the condition in one place and not in the other.
+> > Where the <some condition> is a simple "feature X is set" it doesn't
+> > look too bad, but where it gets more complex it makes it IMHO more
+> > obvious that this is a bad idea, for example with:
+> >
+> > -        if (object_property_find(cpuobj, "reset-cbar")) {
+> > +        if (arm_feature(&cpu->env, ARM_FEATURE_CBAR) ||
+> > +            arm_feature(&cpu->env, ARM_FEATURE_CBAR_RO)) {
+>
+> For that we could add helpers such
+>
+>    static inline bool arm_feature_cbar(CPUState *cpu) {
+>      return arm_feature(&cpu->env, ARM_FEATURE_CBAR) ||
+>             arm_feature(&cpu->env, ARM_FEATURE_CBAR_RO);
+>    }
+>
+> and use it in the target/ code where we register the property
+> and in the hw/ code where we set it.
 
-CC: peter.maydell@linaro.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2077
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- tests/avocado/acpi-bits.py | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Well, we could, but why? The question we're trying to
+answer is "can we set this property?" and the simplest
+and most logical way to test that is "does the object
+have the property?". I really don't understand why we
+would want to change the code at all.
 
-diff --git a/tests/avocado/acpi-bits.py b/tests/avocado/acpi-bits.py
-index 68b9e98d4e..870cd2e36c 100644
---- a/tests/avocado/acpi-bits.py
-+++ b/tests/avocado/acpi-bits.py
-@@ -53,7 +53,7 @@
- 
- deps = ["xorriso", "mformat"] # dependent tools needed in the test setup/box.
- supported_platforms = ['x86_64'] # supported test platforms.
--
-+BITS_TIMEOUT = 200
- 
- def which(tool):
-     """ looks up the full path for @tool, returns None if not found
-@@ -133,7 +133,7 @@ class AcpiBitsTest(QemuBaseTest): #pylint: disable=too-many-instance-attributes
- 
-     """
-     # in slower systems the test can take as long as 3 minutes to complete.
--    timeout = 200
-+    timeout = BITS_TIMEOUT
- 
-     def __init__(self, *args, **kwargs):
-         super().__init__(*args, **kwargs)
-@@ -401,6 +401,6 @@ def test_acpi_smbios_bits(self):
-         # biosbits has been configured to run all the specified test suites
-         # in batch mode and then automatically initiate a vm shutdown.
-         # Rely on avocado's unit test timeout.
--        self._vm.event_wait('SHUTDOWN')
-+        self._vm.event_wait('SHUTDOWN', timeout=BITS_TIMEOUT)
-         self._vm.wait(timeout=None)
-         self.parse_log()
--- 
-2.39.2
+> Do you mind taking the cleanup patches (1-4) meanwhile?
 
+Yes, I can take patches 1-4.
+
+thanks
+-- PMM
 
