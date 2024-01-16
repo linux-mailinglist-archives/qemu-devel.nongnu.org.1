@@ -2,96 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B20082EFC8
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 14:34:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BDA982EFCF
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 14:38:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPjZA-0004q5-Ng; Tue, 16 Jan 2024 08:33:20 -0500
+	id 1rPjcx-00075W-SK; Tue, 16 Jan 2024 08:37:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=FuRj=I2=kaod.org=clg@ozlabs.org>)
- id 1rPjYy-0004mN-46; Tue, 16 Jan 2024 08:33:11 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPjcs-00074o-RV
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:37:13 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=FuRj=I2=kaod.org=clg@ozlabs.org>)
- id 1rPjYu-00055N-Gd; Tue, 16 Jan 2024 08:33:06 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TDqh606Szz4xMC;
- Wed, 17 Jan 2024 00:32:54 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPjcr-0006Dl-2i
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:37:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705412224;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=e3xiDVbhl1k2GzH8T7LJUpl/lB3dEh5bqgNO25RDKFc=;
+ b=eMBD50C8/TbV4X7a8Scm56vh6O/lzRWRf4DpV8g6XvLUIsvlQnMpccbHKS044m8tK8BKce
+ mv26ozYlJqIZLWEiYkOeOoJUl8jOrLKAL9KcAsonflLXEn6oD6h1hhm1HbaHbJJp0yQa6K
+ k5ioZkSfYJUafT+W5g4xOXEQPP6lGsI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-444-K2ynPZq2OTeK1TZ8L-Bp5g-1; Tue, 16 Jan 2024 08:37:02 -0500
+X-MC-Unique: K2ynPZq2OTeK1TZ8L-Bp5g-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TDqgg0ccfz4x3G;
- Wed, 17 Jan 2024 00:32:30 +1100 (AEDT)
-Message-ID: <60730ed3-9225-4b78-a44e-99b8016a2f08@kaod.org>
-Date: Tue, 16 Jan 2024 14:32:23 +0100
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 08133185A781;
+ Tue, 16 Jan 2024 13:37:02 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.128])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D6E021121312;
+ Tue, 16 Jan 2024 13:37:01 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D68A821E66CF; Tue, 16 Jan 2024 14:37:00 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Peter
+ Maydell <peter.maydell@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v2 12/19] qapi/schema: assert info is present when
+ necessary
+In-Reply-To: <20240112222945.3033854-13-jsnow@redhat.com> (John Snow's message
+ of "Fri, 12 Jan 2024 17:29:38 -0500")
+References: <20240112222945.3033854-1-jsnow@redhat.com>
+ <20240112222945.3033854-13-jsnow@redhat.com>
+Date: Tue, 16 Jan 2024 14:37:00 +0100
+Message-ID: <87h6jdtn5v.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 22/46] hw/arm/aspeed: use qemu_configure_nic_device()
-Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Niek Linnenbank <nieklinnenbank@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Rob Herring <robh@kernel.org>, Subbaraya Sundeep <sundeep.lkml@gmail.com>,
- Jan Kiszka <jan.kiszka@web.de>, Tyrone Ting <kfting@nuvoton.com>,
- Hao Wu <wuhaotsh@google.com>, Radoslaw Biernacki <rad@semihalf.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, Helge Deller <deller@gmx.de>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Song Gao
- <gaosong@loongson.cn>, Thomas Huth <huth@tuxfamily.org>,
- Laurent Vivier <laurent@vivier.eu>, Huacai Chen <chenhuacai@kernel.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Jason Wang <jasowang@redhat.com>,
- Jia Liu <proljc@gmail.com>, Stafford Horne <shorne@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Bin Meng
- <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
-References: <20240108204909.564514-1-dwmw2@infradead.org>
- <20240108204909.564514-23-dwmw2@infradead.org>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240108204909.564514-23-dwmw2@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=FuRj=I2=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,47 +86,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/8/24 21:26, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+John Snow <jsnow@redhat.com> writes:
+
+> QAPISchemaInfo instances are sometimes defined as an Optional
+> field/argument because built-in definitions don't *have* a source
+> definition. As a consequence, there are a few places where we need to
+> assert that it's present because the root entity definition can only
+> enforce that it is "Optional".
+
+Well, we need to assert to help mypy over the hump.  But that's later in
+this series.  Just like "enforce that is is 'Optional'".  My point is:
+the commit message is less than clear unless the reader already knows
+where we're going.
+
+Here's my try:
+
+  QAPISchemaInfo arguments can often be None because build-in
+  definitions don't have such information.  The type hint can only be
+  Optional[QAPISchemaInfo] then.  But then mypy gets upset about all the
+  places where we exploit that it can't actually be None there.  Add
+  assertions that will help mypy over the hump, to enable adding the
+  type hints.
+
+>
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->   hw/arm/aspeed.c | 9 ++++-----
->   1 file changed, 4 insertions(+), 5 deletions(-)
-> 
-> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-> index cc59176563..bed5e4f40b 100644
-> --- a/hw/arm/aspeed.c
-> +++ b/hw/arm/aspeed.c
-> @@ -356,7 +356,6 @@ static void aspeed_machine_init(MachineState *machine)
->       AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(machine);
->       AspeedSoCClass *sc;
->       int i;
-> -    NICInfo *nd = &nd_table[0];
->   
->       bmc->soc = ASPEED_SOC(object_new(amc->soc_name));
->       object_property_add_child(OBJECT(machine), "soc", OBJECT(bmc->soc));
-> @@ -371,10 +370,10 @@ static void aspeed_machine_init(MachineState *machine)
->                                &error_fatal);
->   
->       for (i = 0; i < sc->macs_num; i++) {
-> -        if ((amc->macs_mask & (1 << i)) && nd->used) {
-> -            qemu_check_nic_model(nd, TYPE_FTGMAC100);
-> -            qdev_set_nic_properties(DEVICE(&bmc->soc->ftgmac100[i]), nd);
-> -            nd++;
-> +        if ((amc->macs_mask & (1 << i)) &&
-> +            !qemu_configure_nic_device(DEVICE(&bmc->soc->ftgmac100[i]),
-> +                                       true, NULL)) {
-> +            break; /* No configs left; stop asking */
->           }
->       }
->   
-
-Acked-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
+>  scripts/qapi/schema.py | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+> index 43af756ed47..eefa58a798b 100644
+> --- a/scripts/qapi/schema.py
+> +++ b/scripts/qapi/schema.py
+> @@ -758,6 +758,7 @@ def describe(self, info):
+>              else:
+>                  assert False
+>=20=20
+> +        assert info is not None
+>          if defined_in !=3D info.defn_name:
+>              return "%s '%s' of %s '%s'" % (role, self.name, meta, define=
+d_in)
+>          return "%s '%s'" % (role, self.name)
+> @@ -848,6 +849,7 @@ def __init__(self, name, info, doc, ifcond, features,
+>          self.coroutine =3D coroutine
+>=20=20
+>      def check(self, schema):
+> +        assert self.info is not None
+>          super().check(schema)
+>          if self._arg_type_name:
+>              arg_type =3D schema.resolve_type(
 
 
