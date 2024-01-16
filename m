@@ -2,72 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8238282EECF
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 13:18:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4622C82EF38
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 13:55:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPiNg-0004uI-Oy; Tue, 16 Jan 2024 07:17:24 -0500
+	id 1rPix3-0004QI-Ra; Tue, 16 Jan 2024 07:53:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPiNR-0004qM-5z
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 07:17:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPiNP-0006YG-In
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 07:17:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705407426;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ro/Wb2zeHbFYaR0uD4qxJQ0hW1BF0xtXcokgy2+FB7Y=;
- b=PSQHgruFlGtW2ExXtbYnx619iXEV7qAhPbRC04IWkPRWiVOWSZPx7wwJi2MWdnYImDVf6e
- 41tRCDYAP9D7vG/M5QDPmZhoICot68EzGdMbtI4U9eWQGs5BPWyiB2DrQnjdhN8lcCKmQm
- 9tQXmnYLZtaN84LbE8qnJzP1vwaqv8I=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-118-cxJOdC17Mm6G7ZKAtGarew-1; Tue,
- 16 Jan 2024 07:17:03 -0500
-X-MC-Unique: cxJOdC17Mm6G7ZKAtGarew-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D35BC299E741;
- Tue, 16 Jan 2024 12:17:02 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.128])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A618E492BC6;
- Tue, 16 Jan 2024 12:17:02 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 73F7A21E66F1; Tue, 16 Jan 2024 13:17:00 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Peter
- Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v2 11/19] qapi/schema: fix QAPISchemaArrayType.check's
- call to resolve_type
-In-Reply-To: <20240112222945.3033854-12-jsnow@redhat.com> (John Snow's message
- of "Fri, 12 Jan 2024 17:29:37 -0500")
-References: <20240112222945.3033854-1-jsnow@redhat.com>
- <20240112222945.3033854-12-jsnow@redhat.com>
-Date: Tue, 16 Jan 2024 13:17:00 +0100
-Message-ID: <87le8ptqv7.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1rPix1-0004Pb-EI
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 07:53:55 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1rPiwz-0004qJ-Kn
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 07:53:55 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40e857ce803so4851675e9.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 04:53:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705409631; x=1706014431; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=9aqK08wufU5uXoPLSqlNaOYiNFaqBwBPzJjyRb7+Gqs=;
+ b=fYk0kVo1FY5beIVc523S55dC/hL8IsUg7seks/l5bjyidab1sKuj8Y22xl/DOu0XqG
+ XfJQYYDVP6dUqP+bfGg0Ayc2HncU7zalYIKdclgyHcYGcJ03V89ApI6qKTJbSKAuM8a7
+ OzqHnGsSLwi0a8Z6MmTtx115ZL3L85a23OfxfhBslMfqI4evhXRW3YR0koKRy274pTv5
+ gvTvifBxe4J8HEX5ZTsQpyKHIXe1gEqr67M8DD3tGnnyIWcV9VHijcOx6ghlqKoX4YMm
+ xIoJ1EkOL16FCsS2fmzo19vx5dcvXuRGRuO2k1Z4wnaYq1mnlKV+y8DeIktMAkX2v3fC
+ g9bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705409631; x=1706014431;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9aqK08wufU5uXoPLSqlNaOYiNFaqBwBPzJjyRb7+Gqs=;
+ b=QYwrsZ0OYrNrG8Jsk76jBeJbBrUp/3vpyshjuZPgikung4LCaAvvKOYJB5685vsxL1
+ COmf4Fw7LVfQIBLdaYuZOfNjfPSiTZ7qJi763siA7WnX0whxweGFz0Dei36fjeaALu+4
+ euWT0zx6hrp/W5Da4ZXA9p1r4kQLVKZFoizweI8L9KbZzAHitv8RvwHHWV0VBNL7kKcc
+ smi4i/oqR1+CRrNDWG55QyCKh5FtKaDMLePD/1tUmTnJEF8qxON5UessUXyyk+Z/KZnZ
+ n5+zVAv9rwvcC/2OXQDWQ0zxtywHxVJkVgNEPjngwXMiLWKwLxJZ6bnoiq8wEJQZoWYB
+ 3g8Q==
+X-Gm-Message-State: AOJu0YzsEWWcNInK65Jahf/HeaDQcQLFKKoh0qhs7l61XEE42xPUBJ/S
+ E5cDesvyeO+FjPUVF4y/tL3mx5KRLeg7UQ==
+X-Google-Smtp-Source: AGHT+IFs7RHM8bN9ESugov3Qa030SKGE6FmOl9EJqBKW85Jv50PZ9aV1nAWmfQVkTcyDuFddI88uOw==
+X-Received: by 2002:a7b:c8cc:0:b0:40e:5327:91b4 with SMTP id
+ f12-20020a7bc8cc000000b0040e532791b4mr3418376wml.222.1705409631093; 
+ Tue, 16 Jan 2024 04:53:51 -0800 (PST)
+Received: from myrica ([2.221.137.100]) by smtp.gmail.com with ESMTPSA id
+ v13-20020a05600c444d00b0040e526bd5fdsm1264683wmn.1.2024.01.16.04.53.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Jan 2024 04:53:50 -0800 (PST)
+Date: Tue, 16 Jan 2024 12:53:59 +0000
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ peter.maydell@linaro.org, mst@redhat.com, clg@redhat.com,
+ alex.williamson@redhat.com
+Subject: Re: [PATCH] virtio-iommu: Use qemu_real_host_page_mask as default
+ page_size_mask
+Message-ID: <20240116125359.GA710190@myrica>
+References: <20231221134505.100916-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231221134505.100916-1-eric.auger@redhat.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,31 +92,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+On Thu, Dec 21, 2023 at 08:45:05AM -0500, Eric Auger wrote:
+> We used to set default page_size_mask to qemu_target_page_mask() but
+> with VFIO assignment it makes more sense to use the actual host page mask
+> instead.
+> 
+> So from now on qemu_real_host_page_mask() will be used as a default.
+> To be able to migrate older code, we increase the vmstat version_id
+> to 3 and if an older incoming v2 stream is detected we set the previous
+> default value.
+> 
+> The new default is well adapted to configs where host and guest have
+> the same page size. This allows to fix hotplugging VFIO devices on a
+> 64kB guest and a 64kB host. This test case has been failing before
+> and even crashing qemu with hw_error("vfio: DMA mapping failed,
+> unable to continue") in VFIO common). Indeed the hot-attached VFIO
+> device would call memory_region_iommu_set_page_size_mask with 64kB
+> mask whereas after the granule was frozen to 4kB on machine init done.
 
-> Adjust the expression at the callsite to eliminate weak type
-> introspection that believes this value can resolve to QAPISourceInfo; it
-> cannot.
+I guess TARGET_PAGE_MASK is always 4kB on arm64 CPUs, since it's the
+smallest supported and the guest configures its page size at runtime.
+Even if QEMU's software IOMMU can deal with any page size, VFIO can't so
+passing the host page size seems more accurate than forcing a value of
+4kB.
 
-What do you mean by "weak type introspection"?  mypy being underpowered?
+> Now this works. However the new default will prevent 4kB guest on
+> 64kB host because the granule will be set to 64kB which would be
+> larger than the guest page size. In that situation, the virtio-iommu
+> driver fails the viommu_domain_finalise() with
+> "granule 0x10000 larger than system page zie 0x1000".
 
-> Signed-off-by: John Snow <jsnow@redhat.com>
+"size"
+(it could matter if someone searches for this message later)
+
+> 
+> The current limitation of global granule in the virtio-iommu
+> should be removed and turned into per domain granule. But
+> until we get this upgraded, this new default is probably
+> better because I don't think anyone is currently interested in
+> running a 4kB page size guest with virtio-iommu on a 64kB host.
+> However supporting 64kB guest on 64kB host with virtio-iommu and
+> VFIO looks a more important feature.
+> 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+
+So to summarize the configurations that work for hotplug (tested with QEMU
+system emulation with SMMU + QEMU VMM with virtio-iommu):
+
+ Host | Guest | virtio-net | IGB passthrough
+  4k  | 4k    | Y          | Y
+  64k | 64k   | Y          | N -> Y (fixed by this patch)
+  64k | 4k    | Y -> N     | N
+  4k  | 64k   | Y          | Y
+
+The change is a reasonable trade-off in my opinion. It fixes the more common
+64k on 64k case, and for 4k on 64k, the error is now contained to the
+guest and made clear ("granule 0x10000 larger than system page size
+0x1000") instead of crashing the VMM. A guest OS now discovers that the
+host needs DMA buffers aligned on 64k and could actually support this case
+(but Linux won't because it can't control the origin of all DMA buffers).
+Later, support for page tables will enable 4k on 64k for all devices.
+
+Tested-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+
 > ---
->  scripts/qapi/schema.py | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-> index 35638c7708a..43af756ed47 100644
-> --- a/scripts/qapi/schema.py
-> +++ b/scripts/qapi/schema.py
-> @@ -403,7 +403,7 @@ def check(self, schema):
->          super().check(schema)
->          self.element_type = schema.resolve_type(
->              self._element_type_name, self.info,
-> -            self.info and self.info.defn_meta)
-> +            self.info.defn_meta if self.info else None)
->          assert not isinstance(self.element_type, QAPISchemaArrayType)
+>  hw/virtio/virtio-iommu.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+> index 9d463efc52..b77e3644ea 100644
+> --- a/hw/virtio/virtio-iommu.c
+> +++ b/hw/virtio/virtio-iommu.c
+> @@ -1313,7 +1313,7 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
+>       * in vfio realize
+>       */
+>      s->config.bypass = s->boot_bypass;
+> -    s->config.page_size_mask = qemu_target_page_mask();
+> +    s->config.page_size_mask = qemu_real_host_page_mask();
+>      s->config.input_range.end = UINT64_MAX;
+>      s->config.domain_range.end = UINT32_MAX;
+>      s->config.probe_size = VIOMMU_PROBE_SIZE;
+> @@ -1491,13 +1491,16 @@ static int iommu_post_load(void *opaque, int version_id)
+>       * still correct.
+>       */
+>      virtio_iommu_switch_address_space_all(s);
+> +    if (version_id <= 2) {
+> +        s->config.page_size_mask = qemu_target_page_mask();
+> +    }
+>      return 0;
+>  }
 >  
->      def set_module(self, schema):
-
+>  static const VMStateDescription vmstate_virtio_iommu_device = {
+>      .name = "virtio-iommu-device",
+>      .minimum_version_id = 2,
+> -    .version_id = 2,
+> +    .version_id = 3,
+>      .post_load = iommu_post_load,
+>      .fields = (VMStateField[]) {
+>          VMSTATE_GTREE_DIRECT_KEY_V(domains, VirtIOIOMMU, 2,
+> -- 
+> 2.27.0
+> 
 
