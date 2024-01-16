@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A4FB82F2B5
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 17:57:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C350B82F322
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 18:25:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPmjT-00062s-NA; Tue, 16 Jan 2024 11:56:11 -0500
+	id 1rPnB6-0007Bm-7D; Tue, 16 Jan 2024 12:24:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPmjR-00062X-Mq
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:56:09 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPmjQ-0008AH-8b
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:56:09 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40e86c86a6fso3892375e9.2
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 08:56:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705424166; x=1706028966; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=g5+MoEdJcCdHmkaazghwpTww92NWQ0eEpf8jlJ56rWs=;
- b=TcJhCRCnLLFa3ABKuPxkWBLbYVql0nrLOrLbhLuvpLF8GF2nOL2XRlZvNoHEIoTW1y
- U+KGuY0auprbUrh/4entfIjTqcFXX7Hxv6WLgoh0R3HPr/qR8Z0MPMBNYLYxosbKdT7N
- uiq9a1GUZYm9VYSFUFv8vKGQEkhG+YW6/BKRkpzZcGY0lJyUxUulgkKdu0KFIkput2XY
- 8Ato5s4rl5Gisi1rX9eMsy/DLneyU+fUSVtedz+kcA7GpQoupsG6d6HzpYAkdI2Qd0+K
- Rd/xploKWLH+C6WTBuk+DBIhXl7BXocm+ZYogQv7ss8mJa7yoI/6rg3yOJxJv2QzTGyT
- Ik3w==
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1rPnB4-0007Bd-Jy
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 12:24:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1rPnB2-0004vZ-S5
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 12:24:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705425879;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UFTOAtk6nVTZd/lNKdd46mgMTN9oS8Ln9bSuX/IZg+Y=;
+ b=JfkTLOtAnSBGRk92nz5cofglZlIhkSuof1TuCABEf0oTyKIdOXctB9HscQ7F0I4sFubM5/
+ i8+4U6r48azouK+GytFkxeckMMVDmAWFGT0PqmjLAMqMGXj5oy+Wk7YMjhbfdle/gtUDLU
+ 5uAuAjPU7c101XSee7qeX/p0u4ve8TI=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-5xk4iurPPSug-mX_4tDVvg-1; Tue, 16 Jan 2024 12:24:37 -0500
+X-MC-Unique: 5xk4iurPPSug-mX_4tDVvg-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2cccd597158so89987241fa.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 09:24:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705424166; x=1706028966;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1705425876; x=1706030676;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=g5+MoEdJcCdHmkaazghwpTww92NWQ0eEpf8jlJ56rWs=;
- b=toG4DWxt/HFqkVglATL0hQaDQYJTHVHxxxJ8qgRQZawjSO2iQS0eGLJqfpMOlObxW0
- E7bMtFqUomVb41dVG2mZlpfJMPP8fOVD1jF7uE5IPDWbp476iynCb+xapABEVKQUpQR4
- Xeh9+WJGeG8TtRvzY05c8+PgCGtLkCXS1E8LCjENlcVaGOsRbX9iZW7yhkyHqv9D7+jo
- q2j+iBD3wwi5dNFILY/9UHCBxXL0kxya3xFuRU3MYOwshcwml8K0g8ILoLHuCc2n+S5a
- xahVuDx93RBfakOAHM33xglkLSRur9DOjhiWA7yBWRm8G3REX2+WId/B/B34zbymEHzD
- WNEw==
-X-Gm-Message-State: AOJu0YyceSgW7t6t9Yppe+2RW2IGTWFde7SIR0FQFJkcuZITmwYfxs98
- 7BmreDTULtiiZfu0DAUnRHLMhMag4Ot3tg==
-X-Google-Smtp-Source: AGHT+IF8pCupoelRpCG622kyiJoRLpZUnP+NESinF3SuvbjHQYcnCneyg5+I1SRkuykCrmyuWfercA==
-X-Received: by 2002:a05:600c:2ed2:b0:40e:491e:e387 with SMTP id
- q18-20020a05600c2ed200b0040e491ee387mr2101176wmn.355.1705424166462; 
- Tue, 16 Jan 2024 08:56:06 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- bg23-20020a05600c3c9700b0040d91fa270fsm19968636wmb.36.2024.01.16.08.56.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jan 2024 08:56:06 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH] target/arm: Fix VNCR fault detection logic
-Date: Tue, 16 Jan 2024 16:56:05 +0000
-Message-Id: <20240116165605.2523055-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ bh=UFTOAtk6nVTZd/lNKdd46mgMTN9oS8Ln9bSuX/IZg+Y=;
+ b=amaL3FskiT20Q6jQrXW0sROU80gXphTL24i7c6MzGlh8+IjL5qvKjK1RavQ/BKeK1n
+ xD82X+2Tn1YAX5twFWfMJBcue1HuOQyHXipkGDslzInSikoQ01l+Bzl8OsdO+ER1zp+a
+ r7Z07hwSI/XTLR9v46E8pv2Zs47JEOZbO27ZOrCa1wwCFk44fIrU7szc9CWmdemjn/Cm
+ wR5wJ92kpWw9+KaLJ8GxcedSgfVZDSDRyLzp5xj3TTnbbGnxvy6A0oLS+CzVYXpGrcgE
+ BN/f4KUZqtmO2ZrUAOs9We8oQiKn7v5Z9/KIn4WYZCL+1c3o0bBdOPBHm8D9csZDtBv6
+ vEsA==
+X-Gm-Message-State: AOJu0YxRYBYZSW42VREcS5ZVGTxZWkrltgMESHEVI62PqfWmeyhkgMwj
+ FrqU6OPGIKYef/qTZP27JZM2d2IZUzDuFjvGxbu7LOPJcboOIRHKlaGOuUCJeD/puwufIQTNxKq
+ RP0sPtFn6M+INoKOFMUzV8b4BI3OhKkr/uBmd4mOL7md+Aw7LEw==
+X-Received: by 2002:a2e:9e83:0:b0:2cd:8a63:ac95 with SMTP id
+ f3-20020a2e9e83000000b002cd8a63ac95mr3531545ljk.73.1705425875919; 
+ Tue, 16 Jan 2024 09:24:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHTmjQEX4J+j2EOyz3+aqSM42v0i6BDhGhRN7nOrQCQWAGaFHNDlAo0JPjdZip320jOmyngtZW/RoeDdr668ek=
+X-Received: by 2002:a2e:9e83:0:b0:2cd:8a63:ac95 with SMTP id
+ f3-20020a2e9e83000000b002cd8a63ac95mr3531535ljk.73.1705425875493; Tue, 16 Jan
+ 2024 09:24:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+References: <20231227071540.4035803-1-peng.ji@smartx.com>
+ <5492018d-8b72-4aea-b33c-bb9f4f6b4f48@linaro.org>
+ <CACbqNXcjB7p=xpYPPY01dJ2W97h608SGCr4-_xDtQovBOodACw@mail.gmail.com>
+In-Reply-To: <CACbqNXcjB7p=xpYPPY01dJ2W97h608SGCr4-_xDtQovBOodACw@mail.gmail.com>
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+Date: Tue, 16 Jan 2024 19:24:24 +0200
+Message-ID: <CAPMcbCqYqRwCjuSXeUE+PCPfssAtZ2bjnTWq1iDzEug=Lvpvqg@mail.gmail.com>
+Subject: Re: [PATCH] qga-win: Fix guest-get-fsinfo multi-disks collection
+To: Peng Ji <peng.ji@smartx.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Michael Roth <michael.roth@amd.com>, 
+ Yan Vugenfirer <yvugenfi@redhat.com>
+Content-Type: multipart/alternative; boundary="0000000000007ff2d3060f136795"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,39 +95,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In arm_deliver_fault() we check for whether the fault is caused
-by a data abort due to an access to a FEAT_NV2 sysreg in the
-memory pointed to by the VNCR. Unfortunately part of the
-condition checks the wrong argument to the function, meaning
-that it would spuriously trigger, resulting in some instruction
-aborts being taken to the wrong EL and reported incorrectly.
+--0000000000007ff2d3060f136795
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use the right variable in the condition.
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 
-Fixes: 674e5345275d425 ("target/arm: Report VNCR_EL2 based faults correctly")
-Reported-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-In less lax languages the compiler might have pointed out that
-the type of the LHS and the RHS in the comparison didn't match :-)
----
- target/arm/tcg/tlb_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, Jan 10, 2024 at 9:42=E2=80=AFAM Peng Ji <peng.ji@smartx.com> wrote:
 
-diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
-index dd5de74ffb7..5477c7fb7dc 100644
---- a/target/arm/tcg/tlb_helper.c
-+++ b/target/arm/tcg/tlb_helper.c
-@@ -184,7 +184,7 @@ void arm_deliver_fault(ARMCPU *cpu, vaddr addr,
-      * (and indeed syndrome does not have the EC field in it,
-      * because we masked that out in disas_set_insn_syndrome())
-      */
--    bool is_vncr = (mmu_idx != MMU_INST_FETCH) &&
-+    bool is_vncr = (access_type != MMU_INST_FETCH) &&
-         (env->exception.syndrome & ARM_EL_VNCR);
- 
-     if (is_vncr) {
--- 
-2.34.1
+> ping !
+> please review this patch : https://patchew.org/QEMU/20231227071540.403580=
+3-1-peng.ji@smartx.com/
+>
+> thanks
+>
+>
+>
+> On Fri, Jan 5, 2024 at 9:47=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philm=
+d@linaro.org>
+> wrote:
+>
+>> On 27/12/23 08:15, peng.ji@smartx.com wrote:
+>> > From: Peng Ji <peng.ji@smartx.com>
+>> >
+>> > When a volume has more than one disk, all disks cannot be
+>> > returned correctly because there is not enough malloced memory
+>> > for disk extents, so before executing DeviceIoControl for the
+>> > second time, get the correct size of the required memory space
+>> > to store all disk extents.
+>> >
+>> > Signed-off-by: Peng Ji <peng.ji@smartx.com>
+>>
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2075
+>>
+>> > ---
+>> >   qga/commands-win32.c | 2 ++
+>> >   1 file changed, 2 insertions(+)
+>> >
+>> > diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+>> > index 697c65507c..a1015757d8 100644
+>> > --- a/qga/commands-win32.c
+>> > +++ b/qga/commands-win32.c
+>> > @@ -935,6 +935,8 @@ static GuestDiskAddressList
+>> *build_guest_disk_info(char *guid, Error **errp)
+>> >           DWORD last_err =3D GetLastError();
+>> >           if (last_err =3D=3D ERROR_MORE_DATA) {
+>> >               /* Try once more with big enough buffer */
+>> > +            size =3D sizeof(VOLUME_DISK_EXTENTS) +
+>> > +               (sizeof(DISK_EXTENT) * (extents->NumberOfDiskExtents -
+>> 1));
+>> >               g_free(extents);
+>> >               extents =3D g_malloc0(size);
+>> >               if (!DeviceIoControl(
+>>
+>>
+
+--0000000000007ff2d3060f136795
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkos=
+tiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;</div><br><di=
+v class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jan 1=
+0, 2024 at 9:42=E2=80=AFAM Peng Ji &lt;<a href=3D"mailto:peng.ji@smartx.com=
+">peng.ji@smartx.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
+te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
+);padding-left:1ex"><div dir=3D"ltr"><pre id=3D"m_593194527299737631gmail-b=
+" style=3D"font-size:13px;background-image:initial;background-position:init=
+ial;background-size:initial;background-repeat:initial;background-origin:ini=
+tial;background-clip:initial;color:rgb(0,0,51)">ping !
+please review this patch : <a href=3D"https://patchew.org/QEMU/202312270715=
+40.4035803-1-peng.ji@smartx.com/" target=3D"_blank">https://patchew.org/QEM=
+U/20231227071540.4035803-1-peng.ji@smartx.com/</a></pre><pre id=3D"m_593194=
+527299737631gmail-b" style=3D"font-size:13px;background-image:initial;backg=
+round-position:initial;background-size:initial;background-repeat:initial;ba=
+ckground-origin:initial;background-clip:initial;color:rgb(0,0,51)">thanks<b=
+r></pre></div><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote"><di=
+v dir=3D"ltr" class=3D"gmail_attr">On Fri, Jan 5, 2024 at 9:47=E2=80=AFPM P=
+hilippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org" target=
+=3D"_blank">philmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"=
+gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(20=
+4,204,204);padding-left:1ex">On 27/12/23 08:15, <a href=3D"mailto:peng.ji@s=
+martx.com" target=3D"_blank">peng.ji@smartx.com</a> wrote:<br>
+&gt; From: Peng Ji &lt;<a href=3D"mailto:peng.ji@smartx.com" target=3D"_bla=
+nk">peng.ji@smartx.com</a>&gt;<br>
+&gt; <br>
+&gt; When a volume has more than one disk, all disks cannot be<br>
+&gt; returned correctly because there is not enough malloced memory<br>
+&gt; for disk extents, so before executing DeviceIoControl for the<br>
+&gt; second time, get the correct size of the required memory space<br>
+&gt; to store all disk extents.<br>
+&gt; <br>
+&gt; Signed-off-by: Peng Ji &lt;<a href=3D"mailto:peng.ji@smartx.com" targe=
+t=3D"_blank">peng.ji@smartx.com</a>&gt;<br>
+<br>
+Resolves: <a href=3D"https://gitlab.com/qemu-project/qemu/-/issues/2075" re=
+l=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-project/qemu/-/i=
+ssues/2075</a><br>
+<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0qga/commands-win32.c | 2 ++<br>
+&gt;=C2=A0 =C2=A01 file changed, 2 insertions(+)<br>
+&gt; <br>
+&gt; diff --git a/qga/commands-win32.c b/qga/commands-win32.c<br>
+&gt; index 697c65507c..a1015757d8 100644<br>
+&gt; --- a/qga/commands-win32.c<br>
+&gt; +++ b/qga/commands-win32.c<br>
+&gt; @@ -935,6 +935,8 @@ static GuestDiskAddressList *build_guest_disk_info=
+(char *guid, Error **errp)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0DWORD last_err =3D GetLastErro=
+r();<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (last_err =3D=3D ERROR_MORE=
+_DATA) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Try once more=
+ with big enough buffer */<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 size =3D sizeof(VOLUME_DISK=
+_EXTENTS) +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0(sizeof(DISK_E=
+XTENT) * (extents-&gt;NumberOfDiskExtents - 1));<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0g_free(extents);=
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0extents =3D g_ma=
+lloc0(size);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!DeviceIoCon=
+trol(<br>
+<br>
+</blockquote></div>
+</blockquote></div>
+
+--0000000000007ff2d3060f136795--
 
 
