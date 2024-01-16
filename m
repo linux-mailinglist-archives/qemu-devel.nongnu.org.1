@@ -2,73 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031FF82ED09
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 11:50:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A822482ECFC
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 11:49:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPgzj-0002PU-I7; Tue, 16 Jan 2024 05:48:35 -0500
+	id 1rPgzX-0002HT-LZ; Tue, 16 Jan 2024 05:48:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rPgzQ-0002HR-4b
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 05:48:17 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1rPgzO-0002H3-MP
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 05:48:14 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rPgzN-0007Ao-O5
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 05:48:15 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40e60e137aaso49312475e9.0
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 02:48:13 -0800 (PST)
+ id 1rPgzM-00077w-Ot
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 05:48:14 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40e69b31365so31348785e9.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 02:48:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705402092; x=1706006892; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VcUss7o1hqN+n+0AAkWV5ZRYdfS//MAFhmJ+MtkOJ0g=;
- b=DxPw9Ly5U7ziutsRQJYNWsd0hLTi/r//McDmEyH7cIVQ5I4hdP5fGW8Yr3jEUwOBBO
- m96hhmrfhRBzGCAcd6MqwLdlWE+f70fDfX7SYO9LfeZUFQFAwGvB4anMz+8NLVk04FQ+
- bXrYk0JCCtr/ubyq9eTiOqs8QLvcR2NN4m+cDmj5uIJ0zOiv+NuobgEJ5VjOVt8PuUzv
- 6jsykpqpxRuv6STJ6R5V0abzZm/+JfHoZuQKgWDz8u5k9IVvE2FwLi2ANDrj9pIBIWYQ
- dNNXG4Nc8lCjFTYIDzKo///RyWPidWjSe/ksc7i8+0vdPR4CvqtsuuSe+UNDthVkaMhR
- ZdMg==
+ d=linaro.org; s=google; t=1705402090; x=1706006890; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=G/4qvFydeTk/PTjvN3m6e5JXTCJ82jFvWrg8a2aPdvk=;
+ b=gYduNJ+GoH2ojxtkIaed/zMNDw+oTBJvokN7UVyr50B2Y5xri7vfDlnnVBvdJR9JeT
+ XSuo5+kP1Roo/4fEEVFivgD2LysniRXuSlBEVKunMTish+6PHSQ2LXlQh/RaA1SSMiym
+ deV+KTxfMALQ0HRBbakhoYsm/bW/WmY8FLU1ZyN/GAJoFNrnXj8IFk5BYPhauguVX3m2
+ ypkHVkDHpZVFnJqKuXD36Hre+TA8PDjbrOO563zqKa2GkMdEYDRrLVRfdSJfdVbv34X0
+ aDKiJuGlrRCl7jdWWNWyWEU5ec5ZHYG2dp9eZkFg7I8paUumi3c+11aihbAdP9tLob8f
+ J8xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705402092; x=1706006892;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VcUss7o1hqN+n+0AAkWV5ZRYdfS//MAFhmJ+MtkOJ0g=;
- b=mCsMovRZXoGDYdSUzz5cZLIG+LxG4fjsbscLq5aGNKt6iiASXR0xmRI9guNb8ke6AN
- 6yyjgkDhwTIcQfUYzCyBjNF4N2afc72dSo+Pp1+eqXpU5zZJAlufSRGFGMSlDW5TB4FX
- WhfyAhPxTbc8cX1+p18UW5POTpXQLdEGFHMawjjQzQStwmdIjQKkHIZc31Nv4bPV7DV2
- oEEC6XS2ag/Ouv52qeA4w3QK9EJXIf1nF7hnPPrKZouDWQrAZ/bIzJktvSrTfgbJaiM4
- LfpTVrGekU32pFXonK1JGBXfNmPqtNn/joAv/fUYkRiDV9SyJp3bQMt5OuWQnqv5Zk/6
- qcDg==
-X-Gm-Message-State: AOJu0YwYmwyz6GNCLYZTG0Qkt8SlD9mJ/hOJ/SmQlZSdqb/S/F+DbEED
- QLEbMnez43Cu53UtanmTcxI94tNTBDMUoyAWAm17fVs701E=
-X-Google-Smtp-Source: AGHT+IHEr1J9DI04cxE9yMCTVDyfDMcHcjP3eCVvDZZPL2U25DlzKJStR7mL+9m+l8aqejUqBqloeg==
-X-Received: by 2002:a05:600c:220f:b0:40e:7546:243a with SMTP id
- z15-20020a05600c220f00b0040e7546243amr1705042wml.188.1705402092241; 
- Tue, 16 Jan 2024 02:48:12 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- g14-20020a05600c310e00b0040e398f8cafsm18882465wmo.31.2024.01.16.02.48.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ d=1e100.net; s=20230601; t=1705402090; x=1706006890;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=G/4qvFydeTk/PTjvN3m6e5JXTCJ82jFvWrg8a2aPdvk=;
+ b=b1ivg/maDbF8KmP/BM7Ttaz33ZZD9EmmAjSjQOLznC5KVif9qM6RNdy9ENGyFBkeJ2
+ hqNlmuB2HO0QVF2K52e2xhLsMxIhutbxDdHI+GD69MwxeFq42D/IX073bpjFKkUpl3WR
+ IsskbiuqCFzvIwWu1uvunJ/HQO9V4vhbteetYNu6YRtDfiDSJjPiTJf/ika0e/mT8J7Y
+ SI43+fQ3yJWRQIGTRnVFq0DRTsngOqAePmciMXCjOqy9zWM5eUz6enrvk6mL+MKCrBrF
+ gXbEOgl5zaMh0JXRzjXeX3y9M03IlV7aPWVXek2bMWMFsMCPDIhlWelkhR9Jl14SPLl+
+ MfvA==
+X-Gm-Message-State: AOJu0YwHFfZwYafhUzL/tojgdQUrqLiX1Sr13nBAJQteW09HlWQswc2+
+ KSOjoZn4ME6gRUIGU8JHHOL/CD1mb5ETGTln6whyS3QI/C8=
+X-Google-Smtp-Source: AGHT+IGgoVM2Jm4CS4tdVvTCAZqRqOTfS5A8Ri47em4OimL0M3LMpgdOqr9ziPq9MJ2sCk2yxA3H2w==
+X-Received: by 2002:a05:600c:138f:b0:40e:44b5:511e with SMTP id
+ u15-20020a05600c138f00b0040e44b5511emr3513410wmf.99.1705402090436; 
  Tue, 16 Jan 2024 02:48:10 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ ay12-20020a05600c1e0c00b0040d802a7619sm23143545wmb.38.2024.01.16.02.48.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Jan 2024 02:48:09 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 47EEB5F7B5;
+ by draig.lan (Postfix) with ESMTP id 5BB9C5F8CE;
  Tue, 16 Jan 2024 10:48:09 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 00/22] gdb cleanups and tcg plugin register access
-Date: Tue, 16 Jan 2024 10:47:47 +0000
-Message-Id: <20240116104809.250076-1-alex.bennee@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
+Subject: [PULL 01/22] hw/riscv: Use misa_mxl instead of misa_mxl_max
+Date: Tue, 16 Jan 2024 10:47:48 +0000
+Message-Id: <20240116104809.250076-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240116104809.250076-1-alex.bennee@linaro.org>
+References: <20240116104809.250076-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,110 +101,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 977542ded7e6b28d2bc077bcda24568c716e393c:
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-  Merge tag 'pull-testing-updates-120124-2' of https://gitlab.com/stsquad/qemu into staging (2024-01-12 14:02:53 +0000)
+The effective MXL value matters when booting.
 
-are available in the Git repository at:
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20240103173349.398526-23-alex.bennee@linaro.org>
+Message-Id: <20231213-riscv-v7-1-a760156a337f@daynix.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-  https://gitlab.com/stsquad/qemu.git tags/pull-registers-for-plugins-160124-2
-
-for you to fetch changes up to 87bed6910aa0d0942244b5eedee60b4f8b162c05:
-
-  docs/devel: document some plugin assumptions (2024-01-16 10:34:20 +0000)
-
-----------------------------------------------------------------
-read-only register access for plugins:
-
-  - move misa_mxl to CPU class for riscv
-  - use GDBFeature for arm XML
-  - use GDBFeature for ppc XML
-  - use GDBFeature for riscv XML
-  - unify gdb code to use GDBFeature
-  - move dynamic XML generation to core GDB code
-  - provide introspection APIs for rest of QEMU
-  - expose a plugin API to access registers
-  - fix memory re-use in execlog
-  - extend execlog to track registers
-  - optimise instrumentation based on disassembly
-  - tweak API docs and expand on assumptions
-
-----------------------------------------------------------------
-Akihiko Odaki (15):
-      hw/riscv: Use misa_mxl instead of misa_mxl_max
-      target/riscv: Remove misa_mxl validation
-      target/riscv: Move misa_mxl_max to class
-      target/riscv: Validate misa_mxl_max only once
-      target/arm: Use GDBFeature for dynamic XML
-      target/ppc: Use GDBFeature for dynamic XML
-      target/riscv: Use GDBFeature for dynamic XML
-      gdbstub: Use GDBFeature for gdb_register_coprocessor
-      gdbstub: Use GDBFeature for GDBRegisterState
-      gdbstub: Change gdb_get_reg_cb and gdb_set_reg_cb
-      gdbstub: Simplify XML lookup
-      gdbstub: Infer number of core registers from XML
-      hw/core/cpu: Remove gdb_get_dynamic_xml member
-      gdbstub: Add members to identify registers to GDBFeature
-      plugins: Use different helpers when reading registers
-
-Alex Bennée (7):
-      gdbstub: expose api to find registers
-      plugins: add an API to read registers
-      contrib/plugins: fix imatch
-      contrib/plugins: extend execlog to track register changes
-      contrib/plugins: optimise the register value tracking
-      docs/devel: lift example and plugin API sections up
-      docs/devel: document some plugin assumptions
-
- docs/devel/tcg-plugins.rst   |  72 +++++++++-
- accel/tcg/plugin-helpers.h   |   3 +-
- include/exec/gdbstub.h       |  62 ++++++++-
- include/hw/core/cpu.h        |   7 +-
- include/qemu/plugin.h        |   1 +
- include/qemu/qemu-plugin.h   |  51 ++++++-
- target/arm/cpu.h             |  27 ++--
- target/arm/internals.h       |  14 +-
- target/hexagon/internal.h    |   4 +-
- target/microblaze/cpu.h      |   4 +-
- target/ppc/cpu-qom.h         |   1 +
- target/ppc/cpu.h             |   5 +-
- target/riscv/cpu.h           |   9 +-
- target/s390x/cpu.h           |   2 -
- accel/tcg/plugin-gen.c       |  43 +++++-
- contrib/plugins/execlog.c    | 324 ++++++++++++++++++++++++++++++++++++-------
- gdbstub/gdbstub.c            | 198 +++++++++++++++++---------
- hw/core/cpu-common.c         |   5 +-
- hw/riscv/boot.c              |   2 +-
- plugins/api.c                | 123 +++++++++++++++-
- target/arm/cpu.c             |   2 -
- target/arm/cpu64.c           |   1 -
- target/arm/gdbstub.c         | 230 +++++++++++++++---------------
- target/arm/gdbstub64.c       | 122 ++++++++--------
- target/avr/cpu.c             |   1 -
- target/hexagon/cpu.c         |   4 +-
- target/hexagon/gdbstub.c     |  10 +-
- target/i386/cpu.c            |   2 -
- target/loongarch/cpu.c       |   2 -
- target/loongarch/gdbstub.c   |  13 +-
- target/m68k/cpu.c            |   1 -
- target/m68k/helper.c         |  26 +++-
- target/microblaze/cpu.c      |   6 +-
- target/microblaze/gdbstub.c  |   9 +-
- target/ppc/cpu_init.c        |   7 -
- target/ppc/gdbstub.c         | 114 +++++++--------
- target/riscv/cpu.c           | 193 +++++++++++++-------------
- target/riscv/gdbstub.c       | 151 +++++++++++---------
- target/riscv/kvm/kvm-cpu.c   |  10 +-
- target/riscv/machine.c       |   7 +-
- target/riscv/tcg/tcg-cpu.c   |  44 +-----
- target/riscv/translate.c     |   3 +-
- target/rx/cpu.c              |   1 -
- target/s390x/cpu.c           |   1 -
- target/s390x/gdbstub.c       | 105 ++++++++------
- plugins/qemu-plugins.symbols |   2 +
- scripts/feature_to_c.py      |  14 +-
- 47 files changed, 1343 insertions(+), 695 deletions(-)
-
+diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
+index 0ffca05189f..bc67c0bd189 100644
+--- a/hw/riscv/boot.c
++++ b/hw/riscv/boot.c
+@@ -36,7 +36,7 @@
+ 
+ bool riscv_is_32bit(RISCVHartArrayState *harts)
+ {
+-    return harts->harts[0].env.misa_mxl_max == MXL_RV32;
++    return harts->harts[0].env.misa_mxl == MXL_RV32;
+ }
+ 
+ /*
 -- 
 2.39.2
 
