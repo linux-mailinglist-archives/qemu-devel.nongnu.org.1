@@ -2,66 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E580F82E9AD
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 07:49:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6104C82E9BF
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 08:00:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPdFF-0003gc-0C; Tue, 16 Jan 2024 01:48:21 -0500
+	id 1rPdPg-0005EM-U7; Tue, 16 Jan 2024 01:59:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPdFA-0003gC-HC
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 01:48:16 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPdPc-0005EB-IM
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 01:59:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rPdF8-0005ca-FW
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 01:48:16 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPdPa-000766-Kb
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 01:59:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705387693;
+ s=mimecast20190719; t=1705388341;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IPtJMuIPBfQ7u42tzPFCHIGpt1F59UnweyOUbEFXedI=;
- b=a8P+8mN1lU1a+GPWGg0tUPzaOLjOHqvSemsAK//0TvjbA3xAd/pF6jQjXHj8lx7u35Ts5s
- Hj1MmTPPWVff99mtZcOspgu0DoJLbFbUb9CultX2bWWdQChnCKf3mNXeuqquQhE5JCnYVt
- pURTdGt3BUEbJ8Ocf8Oplaxb9gybwGg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-iu4DNxgjMFuwi-DZxbJF4A-1; Tue,
- 16 Jan 2024 01:48:11 -0500
-X-MC-Unique: iu4DNxgjMFuwi-DZxbJF4A-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AEDE538041C1;
- Tue, 16 Jan 2024 06:48:10 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.128])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8C17A28AC;
- Tue, 16 Jan 2024 06:48:10 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 888F121E680D; Tue, 16 Jan 2024 07:48:09 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Peter
- Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v2 01/19] qapi: sort pylint suppressions
-In-Reply-To: <CAFn=p-YAm6WR-zzDjR_xcNo8evQN57JVf6sd1qDOMNV5rhWxfQ@mail.gmail.com>
- (John Snow's message of "Mon, 15 Jan 2024 14:58:47 -0500")
-References: <20240112222945.3033854-1-jsnow@redhat.com>
- <20240112222945.3033854-2-jsnow@redhat.com>
- <8734uyeqng.fsf@pond.sub.org>
- <CAFn=p-YAm6WR-zzDjR_xcNo8evQN57JVf6sd1qDOMNV5rhWxfQ@mail.gmail.com>
-Date: Tue, 16 Jan 2024 07:48:09 +0100
-Message-ID: <87r0ih93km.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ bh=pniEmMA6k0xobLPU9RjPvydP0Kh1IVSHAr/M2DqdWZA=;
+ b=eoN0vB18uS58FO8eWOP5NLpHF5OXHS75Lf4A2IVGY7XV7bfyTCq2xXVNs5OlcXoNdOy2E0
+ 58ODdcKk9Yc7FBtW2Eak/4p8G0NrtEB4LKYtU3jb/N8VTxcJO5iFzqn81qJoqaQIatFndA
+ XEhgHBhZSpAqANY6TIKRqmW8FiHufU8=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-422-sQTeHsP9NrysZS3offQZBg-1; Tue, 16 Jan 2024 01:59:00 -0500
+X-MC-Unique: sQTeHsP9NrysZS3offQZBg-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-6d9b3a964a1so2430538b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Jan 2024 22:58:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705388339; x=1705993139;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pniEmMA6k0xobLPU9RjPvydP0Kh1IVSHAr/M2DqdWZA=;
+ b=sIiIO5Au3INaQZZi94qgYfbFGtTuwRWl91DUysKaesQgbp6J326XJTBHoV4r1OnMEy
+ U3MIVbzKK/vFZLyHYZEL8IiMfgDvpq3md6Og0USgSkvqNLF8fKIO9Pmx7VcirCH9Hj7u
+ tAny+03t5sumfphFG7aMKxmy3p0gR4LUYrDmD6/MBRNSeq146A46Ts/o+fElKzI26ELi
+ vj8fDj8dpp2lQZGC2ZfhxXMA4kfy8geC2XZY+1KU/kBbq3ChRRCD23arsNSeLEW9q/Ig
+ kBHolnKC2BGOu26CpKvWD2XfEBaF2R7ZS7le1+Qi5LEa15XAVvmLPtwh1aHUkSi9qPpH
+ ZhWw==
+X-Gm-Message-State: AOJu0YwrD3NorkVtiC2rTwJ3B/fljKZrkPBea88NaaZ341mO4uHBlqqW
+ Li/cFOUvKknjchjFJ8ephoF07TmM4Lj7lxX1vycP4HHlLfExavTumdHPwvqIRVZKiqc/kaMd6SN
+ 72rg0Bgvkmls7YRnvnx34WGM=
+X-Received: by 2002:a05:6a20:2e1f:b0:196:16b0:c554 with SMTP id
+ be31-20020a056a202e1f00b0019616b0c554mr10099455pzb.5.1705388338977; 
+ Mon, 15 Jan 2024 22:58:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGzT74j83YZGqtK/hLLGXJEbtPbGXLLCmR+oRMGlC/0zUuhSvur1bn2IdieL4Vb3TRID1oVNA==
+X-Received: by 2002:a05:6a20:2e1f:b0:196:16b0:c554 with SMTP id
+ be31-20020a056a202e1f00b0019616b0c554mr10099445pzb.5.1705388338622; 
+ Mon, 15 Jan 2024 22:58:58 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ cz13-20020a17090ad44d00b0028c8a2a9c73sm11082192pjb.25.2024.01.15.22.58.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Jan 2024 22:58:58 -0800 (PST)
+Date: Tue, 16 Jan 2024 14:58:50 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [RFC PATCH v3 15/30] io: Add a pwritev/preadv version that takes
+ a discontiguous iovec
+Message-ID: <ZaYpKorhxEi3CEmv@x1n>
+References: <20231127202612.23012-1-farosas@suse.de>
+ <20231127202612.23012-16-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Disposition: inline
+In-Reply-To: <20231127202612.23012-16-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -86,52 +99,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+On Mon, Nov 27, 2023 at 05:25:57PM -0300, Fabiano Rosas wrote:
+> For the upcoming support to fixed-ram migration with multifd, we need
+> to be able to accept an iovec array with non-contiguous data.
+> 
+> Add a pwritev and preadv version that splits the array into contiguous
+> segments before writing. With that we can have the ram code continue
+> to add pages in any order and the multifd code continue to send large
+> arrays for reading and writing.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+> - split the API that was merged into a single function
+> - use uintptr_t for compatibility with 32-bit
+> ---
+>  include/io/channel.h | 26 ++++++++++++++++
+>  io/channel.c         | 70 ++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 96 insertions(+)
+> 
+> diff --git a/include/io/channel.h b/include/io/channel.h
+> index 7986c49c71..25383db5aa 100644
+> --- a/include/io/channel.h
+> +++ b/include/io/channel.h
+> @@ -559,6 +559,19 @@ int qio_channel_close(QIOChannel *ioc,
+>  ssize_t qio_channel_pwritev(QIOChannel *ioc, const struct iovec *iov,
+>                              size_t niov, off_t offset, Error **errp);
+>  
+> +/**
+> + * qio_channel_pwritev_all:
+> + * @ioc: the channel object
+> + * @iov: the array of memory regions to write data from
+> + * @niov: the length of the @iov array
+> + * @offset: the iovec offset in the file where to write the data
+> + * @errp: pointer to a NULL-initialized error object
+> + *
+> + * Returns: 0 if all bytes were written, or -1 on error
+> + */
+> +int qio_channel_pwritev_all(QIOChannel *ioc, const struct iovec *iov,
+> +                            size_t niov, off_t offset, Error **errp);
+> +
+>  /**
+>   * qio_channel_pwrite
+>   * @ioc: the channel object
+> @@ -595,6 +608,19 @@ ssize_t qio_channel_pwrite(QIOChannel *ioc, char *buf, size_t buflen,
+>  ssize_t qio_channel_preadv(QIOChannel *ioc, const struct iovec *iov,
+>                             size_t niov, off_t offset, Error **errp);
+>  
+> +/**
+> + * qio_channel_preadv_all:
+> + * @ioc: the channel object
+> + * @iov: the array of memory regions to read data to
+> + * @niov: the length of the @iov array
+> + * @offset: the iovec offset in the file from where to read the data
+> + * @errp: pointer to a NULL-initialized error object
+> + *
+> + * Returns: 0 if all bytes were read, or -1 on error
+> + */
+> +int qio_channel_preadv_all(QIOChannel *ioc, const struct iovec *iov,
+> +                           size_t niov, off_t offset, Error **errp);
+> +
+>  /**
+>   * qio_channel_pread
+>   * @ioc: the channel object
+> diff --git a/io/channel.c b/io/channel.c
+> index a1f12f8e90..2f1745d052 100644
+> --- a/io/channel.c
+> +++ b/io/channel.c
+> @@ -472,6 +472,69 @@ ssize_t qio_channel_pwritev(QIOChannel *ioc, const struct iovec *iov,
+>      return klass->io_pwritev(ioc, iov, niov, offset, errp);
+>  }
+>  
+> +static int qio_channel_preadv_pwritev_contiguous(QIOChannel *ioc,
+> +                                                 const struct iovec *iov,
+> +                                                 size_t niov, off_t offset,
+> +                                                 bool is_write, Error **errp)
+> +{
+> +    ssize_t ret = -1;
+> +    int i, slice_idx, slice_num;
+> +    uintptr_t base, next, file_offset;
+> +    size_t len;
+> +
+> +    slice_idx = 0;
+> +    slice_num = 1;
+> +
+> +    /*
+> +     * If the iov array doesn't have contiguous elements, we need to
+> +     * split it in slices because we only have one (file) 'offset' for
+> +     * the whole iov. Do this here so callers don't need to break the
+> +     * iov array themselves.
+> +     */
+> +    for (i = 0; i < niov; i++, slice_num++) {
+> +        base = (uintptr_t) iov[i].iov_base;
+> +
+> +        if (i != niov - 1) {
+> +            len = iov[i].iov_len;
+> +            next = (uintptr_t) iov[i + 1].iov_base;
+> +
+> +            if (base + len == next) {
+> +                continue;
+> +            }
+> +        }
+> +
+> +        /*
+> +         * Use the offset of the first element of the segment that
+> +         * we're sending.
+> +         */
+> +        file_offset = offset + (uintptr_t) iov[slice_idx].iov_base;
+> +
+> +        if (is_write) {
+> +            ret = qio_channel_pwritev(ioc, &iov[slice_idx], slice_num,
+> +                                      file_offset, errp);
+> +        } else {
+> +            ret = qio_channel_preadv(ioc, &iov[slice_idx], slice_num,
+> +                                     file_offset, errp);
+> +        }
+> +
+> +        if (ret < 0) {
+> +            break;
+> +        }
+> +
+> +        slice_idx += slice_num;
+> +        slice_num = 0;
+> +    }
+> +
+> +    return (ret < 0) ? -1 : 0;
+> +}
+> +
+> +int qio_channel_pwritev_all(QIOChannel *ioc, const struct iovec *iov,
+> +                            size_t niov, off_t offset, Error **errp)
+> +{
+> +    return qio_channel_preadv_pwritev_contiguous(ioc, iov, niov,
+> +                                                 offset, true, errp);
+> +}
 
-> On Mon, Jan 15, 2024 at 7:18=E2=80=AFAM Markus Armbruster <armbru@redhat.=
-com> wrote:
->>
->> John Snow <jsnow@redhat.com> writes:
->>
->> > Suggested-by: Markus Armbruster <armbru@redhat.com>
->> > Signed-off-by: John Snow <jsnow@redhat.com>
->> > ---
->> >  scripts/qapi/pylintrc | 6 +++---
->> >  1 file changed, 3 insertions(+), 3 deletions(-)
->> >
->> > diff --git a/scripts/qapi/pylintrc b/scripts/qapi/pylintrc
->> > index 90546df5345..78b63af4df6 100644
->> > --- a/scripts/qapi/pylintrc
->> > +++ b/scripts/qapi/pylintrc
->> > @@ -16,14 +16,14 @@ ignore-patterns=3Dschema.py,
->> >  # --enable=3Dsimilarities". If you want to run only the classes check=
-er, but have
->> >  # no Warning level messages displayed, use "--disable=3Dall --enable=
-=3Dclasses
->> >  # --disable=3DW".
->> > -disable=3Dfixme,
->> > +disable=3Dconsider-using-f-string,
->> >          missing-docstring,
->> >          too-many-arguments,
->> >          too-many-branches,
->> > -        too-many-statements,
->> >          too-many-instance-attributes,
->> > -        consider-using-f-string,
->> > +        too-many-statements,
->> >          useless-option-value,
->> > +        fixme,
->> >
->> >  [REPORTS]
->>
->> Any particular reason for putting fixme last?
->>
->
-> Uhh. You know, I have no idea? I swore I just used emacs to sort the
-> lines, but ... lol? You'd think I'd notice that this wasn't in
-> alphabetical order, but...
->
-> *cough* sorry
+I'm not sure how Dan thinks about this, but I don't think this is pretty..
 
-No worries, happens to the best of us :)
+With this implementation, iochannels' preadv/pwritev is completely not
+compatible with most OSes now, afaiu.
+
+The definition of offset in preadv/pwritev of current iochannel is hard to
+understand.. if I read it right it'll later be set to:
+      
+                /*
+                 * If we subtract the host page now, we don't need to
+                 * pass it into qio_channel_pwritev_all() below.
+                 */
+                write_base = p->pages->block->pages_offset -
+                    (uintptr_t)p->pages->block->host;
+
+Which I cannot easily tell what it is.. besides being an unsigned int.
+
+IIUC it's also based on the assumption that the host address of each iov
+entry is linear to its offset in the file, but it may not be true for
+future iochannel users of such interface called as pwritev/preadv.  So
+error prone.
+
+Would it be possible we keep using the offset array (p->pages->offset[x])?
+We have it already anyway, right?  Wouldn't that be clearer?
+
+It doesn't need to be called pwritev/preadv, but taking two arrays: the
+host address array and another offset array on that file.  It can still do
+the range merge, do another sanity check on the offsets to make sure the
+offsets are also continuous (and should be true in our case).
+
+> +
+>  ssize_t qio_channel_pwrite(QIOChannel *ioc, char *buf, size_t buflen,
+>                             off_t offset, Error **errp)
+>  {
+> @@ -501,6 +564,13 @@ ssize_t qio_channel_preadv(QIOChannel *ioc, const struct iovec *iov,
+>      return klass->io_preadv(ioc, iov, niov, offset, errp);
+>  }
+>  
+> +int qio_channel_preadv_all(QIOChannel *ioc, const struct iovec *iov,
+> +                           size_t niov, off_t offset, Error **errp)
+> +{
+> +    return qio_channel_preadv_pwritev_contiguous(ioc, iov, niov,
+> +                                                 offset, false, errp);
+> +}
+> +
+>  ssize_t qio_channel_pread(QIOChannel *ioc, char *buf, size_t buflen,
+>                            off_t offset, Error **errp)
+>  {
+> -- 
+> 2.35.3
+> 
+
+-- 
+Peter Xu
 
 
