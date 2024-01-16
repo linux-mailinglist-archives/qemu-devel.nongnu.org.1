@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462D682EA1E
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 08:35:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAAF982EA19
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 08:34:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPdxi-0000Bt-V2; Tue, 16 Jan 2024 02:34:18 -0500
+	id 1rPdxi-0000BW-9R; Tue, 16 Jan 2024 02:34:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPdxX-0008W6-Br
+ id 1rPdxX-0008W8-Ob
  for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:34:08 -0500
 Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPdxV-000469-M8
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:34:06 -0500
+ id 1rPdxV-00046M-Qa
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:34:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705390445; x=1736926445;
+ t=1705390446; x=1736926446;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=XH3LsbqPJSIGrPOUvQjfkrvf/Mabxk9CR1ifojleA4I=;
- b=JGg5KsF35uYi1a1UiYbXcu+pF2VxdJwzpvy5BINoGtM7WXt8ir0rlTJM
- UBvMx1NqEBZwCbFU23oPZhx1XPCHj68gAQPDVtgB+aKBLxNrY9nXC4p/7
- Bi3LiaMvkB2YwAj4A/ZnV77gJFL/uuge3h3vNLOTlhGDhOkDbBMihNMfn
- PwBVbAdUsayHhDBKSSdw7WidRtWoflfZb7OZIsuLBcXlOPUr6WrTP7KG3
- WMUjwFVVLvSp97JDFjOFmLYq81/F7k++1J7LWrzygh10woL7Du2WRZB6P
- 58HSSrpmHOzaTFZ5pQhgHQiH30CDZfOWL7TsYoC78ehzYipToUIqvgFv/ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="6875747"
+ bh=wxfO0GB3fE2GrfXAUzO3sCYlHkKdzluI5pqFxXcLrMI=;
+ b=h6BJznZT51uNw8flcxLa8m90BsOKNRgVjYindGA+Es5pSLYyN/nv8Vqh
+ GJ5n4+8+Xq4HEDLZa+wyqRFDHsncqf1x8mjE/YoU1QseQelBqebuT/gDI
+ IpVx9bja2YAc5dfxpFHRKgEJmgymfEPwRzsRzv13dK8IHYAC+gdza72Kv
+ lFbEsEWh1+zt5xZVOTBTSL3vytT/e6TSE3gXgB9q9XEsJMyHEbs2fIfdA
+ 7uuTh9lCbjXFhQKyZi32PP7YvN1O4B70nD4lzw45lHpGrcqYmeDlYjdHu
+ rIyneRoIABxtbwTdKd8ZidwRcXx6UvsSZOc55V/+Un9pQg5ziZAfSqfmE g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="6875764"
 X-IronPort-AV: E=Sophos;i="6.04,198,1695711600"; 
-   d="scan'208";a="6875747"
+   d="scan'208";a="6875764"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 23:34:02 -0800
+ 15 Jan 2024 23:34:04 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="854266412"
-X-IronPort-AV: E=Sophos;i="6.04,198,1695711600"; d="scan'208";a="854266412"
+X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="854266416"
+X-IronPort-AV: E=Sophos;i="6.04,198,1695711600"; d="scan'208";a="854266416"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmsmga004.fm.intel.com with ESMTP; 15 Jan 2024 23:34:00 -0800
+ by fmsmga004.fm.intel.com with ESMTP; 15 Jan 2024 23:34:02 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -49,9 +49,10 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 4/9] hw/core: Reorder included headers in cpu-sysemu.c
-Date: Tue, 16 Jan 2024 15:46:42 +0800
-Message-Id: <20240116074647.3644821-5-zhao1.liu@linux.intel.com>
+Subject: [PATCH v2 5/9] hw/core: Cleanup unused included header in
+ machine-qmp-cmds.c
+Date: Tue, 16 Jan 2024 15:46:43 +0800
+Message-Id: <20240116074647.3644821-6-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240116074647.3644821-1-zhao1.liu@linux.intel.com>
 References: <20240116074647.3644821-1-zhao1.liu@linux.intel.com>
@@ -82,31 +83,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Reorder the header files (except qemu/osdep.h) in alphabetical order.
+Remove unused header (qemu/main-loop.h) in machine-qmp-cmds.c.
 
 Tested by "./configure" and then "make".
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/core/cpu-sysemu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/core/machine-qmp-cmds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/core/cpu-sysemu.c b/hw/core/cpu-sysemu.c
-index d0d6a910f97c..c2cb05830076 100644
---- a/hw/core/cpu-sysemu.c
-+++ b/hw/core/cpu-sysemu.c
-@@ -19,9 +19,10 @@
+diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+index 3860a50c3b7b..ba629379dd92 100644
+--- a/hw/core/machine-qmp-cmds.c
++++ b/hw/core/machine-qmp-cmds.c
+@@ -8,6 +8,7 @@
   */
  
  #include "qemu/osdep.h"
--#include "qapi/error.h"
 +
- #include "hw/core/cpu.h"
- #include "hw/core/sysemu-cpu-ops.h"
-+#include "qapi/error.h"
- 
- bool cpu_paging_enabled(const CPUState *cpu)
- {
+ #include "hw/acpi/vmgenid.h"
+ #include "hw/boards.h"
+ #include "hw/intc/intc.h"
+@@ -19,7 +20,6 @@
+ #include "qapi/qmp/qobject.h"
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/type-helpers.h"
+-#include "qemu/main-loop.h"
+ #include "qemu/uuid.h"
+ #include "qom/qom-qobject.h"
+ #include "sysemu/hostmem.h"
 -- 
 2.34.1
 
