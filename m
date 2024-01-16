@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A04182F386
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 18:53:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BA382F392
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 18:58:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPncL-0006mZ-Gc; Tue, 16 Jan 2024 12:52:53 -0500
+	id 1rPngT-0000cl-85; Tue, 16 Jan 2024 12:57:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <slongfield@google.com>)
- id 1rPncJ-0006mO-FL
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 12:52:51 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <slongfield@google.com>)
- id 1rPncH-0001JW-91
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 12:52:51 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40d5097150fso975e9.1
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 09:52:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1705427567; x=1706032367; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ktcs4Aio13SN8/PZ8WVCBOCr1gZEir42O80aH/Je8go=;
- b=NTC87PBTtc8AKHjzsSMcOYLPNwLSOZsqAkNHcF6DmYPltW+2lLLkce1WcwZBPeOfAv
- IsVjW/s/3XyfT5zUW47RujIt32d27EEU8dTwIfqJ0TB1oCe2YEL9i8wvndfYLHGgSPQ0
- tY+X0KILpncUzePmZ35pxtaZZHqHmcc1iLnNGinWR68s8iSwyk49tZfpwDE1502iE/jv
- WrqHs4Wsdi040Bv3QASzRa/QhB9wJRgtLm12QzyudkN3IBgUWdOoZ7154GWs3qDuQ1/C
- tynmDsBPy8jESrveAU6lAOTpMmHQ+VsiQ4GONBPAO7kw6+uWNG47NoMwPDTLFbjZ4OgB
- TXuQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rPngP-0000cJ-HW
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 12:57:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rPngN-00021o-UC
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 12:57:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705427822;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=R5cmppWZbX3pYYv1w15oz1qU+ZqDkj4pnWhawg9wCOE=;
+ b=U/oT0P9vtKdg21HsVebf5HzlGXbg85ZTMBH4TEHbA6bo4AlaS1GqV3Z8Hh+mI7bhKzMWWi
+ 85nXzEFspYiJq1Y7/vwkdFTTW2rHrO3ViDGF2duZU9PvTjNj1mtc1adVh7a95+rtzCxtto
+ BLTczbX8zXi+/7KFSXs42N0UHowZVgU=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-294-8DH5dN2bOTeIQdzBgLV-mg-1; Tue, 16 Jan 2024 12:56:26 -0500
+X-MC-Unique: 8DH5dN2bOTeIQdzBgLV-mg-1
+Received: by mail-ua1-f70.google.com with SMTP id
+ a1e0cc1a2514c-7cee760058bso1050262241.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 09:56:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705427567; x=1706032367;
+ d=1e100.net; s=20230601; t=1705427778; x=1706032578;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ktcs4Aio13SN8/PZ8WVCBOCr1gZEir42O80aH/Je8go=;
- b=Oc2/sdKsUNbTWeLPFT7wQnorpw8HRZ/PQQIeq1SxIbuovxVz2e85KVC4T0bJDiLiJ/
- aNlALX1T5syIS2F7pO+WGgxYE+MYDXLhHLxPZ5K3XWNKoIeED1JkuaQExcXQwCVFCHPA
- QUDculOj3Lc/4rGKCe7t98NLT+73QDv19GbtD+TjWYxGkVweFRdNcgea9jgnkDW/7Xy8
- V/NAZEtnlfNGgYHbE4udeGaywIwbxP1UA3n183Wsw9gwkxIiqBlYakIo9KLGkVHt1GTD
- WykaVrjREnPQPcQGretTDmoAi1Jf80mAmsxf7s+87GFULXAkfw9fy4KpKDCpMmgDFkvW
- Yf2Q==
-X-Gm-Message-State: AOJu0Yx5A1PQwOqon3FMbEBH1sx0DywOWbRwz8imiWGTLSsRz27gKelB
- OcWlDB70+p2yNpAlIdUJYr97AhL+IbXQVnNLxRETgkKYWUwO
-X-Google-Smtp-Source: AGHT+IFWIn/zWjxnmulPSDghRNGfYigBHRD7WR88nwM2f1xDW8n5Yk0UlHrWntQlKDJcDC50gMwfhAKKQKmQXEsjMBY=
-X-Received: by 2002:a05:600c:5110:b0:40e:6206:a492 with SMTP id
- o16-20020a05600c511000b0040e6206a492mr23476wms.7.1705427566644; Tue, 16 Jan
- 2024 09:52:46 -0800 (PST)
+ bh=R5cmppWZbX3pYYv1w15oz1qU+ZqDkj4pnWhawg9wCOE=;
+ b=OFeC4sg/CO0RYGjA1f/tHYHVRjdqSC7PJSR4oLHRr5bsfobeJ3A0f0tVOclcKhmGkq
+ 0OrORBMxGW6dVklOIwCUFUkS3K43Gs/BDmNiKXUygSWe0j6SEIjZIchNcBekieWFG9FT
+ BKmnlZo2hdU32RTnfP3Ir56Jx404XkI/po1/eggZQwmDWhQ9kP5p+H5XxsjaMAYq+5Np
+ Cnijfzzasx7qB5//d/Nt8NqxUvOn6RdycS5kIFluGV9D4dXv8+UfgpAh0YMrFNd61Oej
+ KwiAfSilTABoePS0nSfWj9iDYEP8vUz4Rqjtxs4C2sqREnqLeR3+RLP7gkv5avlLQw6K
+ 4pVw==
+X-Gm-Message-State: AOJu0YyvsoKhhhyn3sWQdJUsn9Kv18i/QQnJc+hxXvU+tB4SZmw1u05d
+ gMcbfqE7ia61SXmtoIBlPAlM2HcnrPmBrXZpERAc3O3ZR5B7jmRg/DQDIF9kzEpGjMAiB2B3f8c
+ 3EOyH5B7g/14XXuBKl9p5QEKYyhBwLxfRWb5cXUc=
+X-Received: by 2002:a05:6122:1b05:b0:4b7:209d:4b2e with SMTP id
+ er5-20020a0561221b0500b004b7209d4b2emr4170096vkb.22.1705427777926; 
+ Tue, 16 Jan 2024 09:56:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGeGnrmLEXJ5xH4RKaNcrL7XM5W4EB+qiNzOzWg+v2/1qS3E/NMpV2KVjTIeXYAzW+bAfveK/aBw3EsKnYnYUU=
+X-Received: by 2002:a05:6122:1b05:b0:4b7:209d:4b2e with SMTP id
+ er5-20020a0561221b0500b004b7209d4b2emr4170084vkb.22.1705427777671; Tue, 16
+ Jan 2024 09:56:17 -0800 (PST)
 MIME-Version: 1.0
-References: <CAK_0=F+RznDdq27z3r3H1d4pj=QTD-9WZP8xH7jOP75QXJhHpw@mail.gmail.com>
- <484ebf77-6b62-418c-8319-d69ccaf90c17@kaod.org>
- <TYUPR06MB6100E421E040739C5A9B67FB8A6C2@TYUPR06MB6100.apcprd06.prod.outlook.com>
-In-Reply-To: <TYUPR06MB6100E421E040739C5A9B67FB8A6C2@TYUPR06MB6100.apcprd06.prod.outlook.com>
-From: Stephen Longfield <slongfield@google.com>
-Date: Tue, 16 Jan 2024 09:52:31 -0800
-Message-ID: <CAK_0=FKha19EKUUd7p7tS61yj-p4TMABg1sHZHEp4-FYCPt5hQ@mail.gmail.com>
-Subject: Re: Possible race condition in aspeed ast2600 smp boot on TCG QEMU
-To: Troy Lee <troy_lee@aspeedtech.com>
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, 
- "andrew@codeconstruct.com.au" <andrew@codeconstruct.com.au>,
- "joel@jms.id.au" <joel@jms.id.au>, 
- Joe Komlodi <komlodi@google.com>, Patrick Venture <venture@google.com>, 
- Ryan Chen <ryan_chen@aspeedtech.com>, Jamin Lin <jamin_lin@aspeedtech.com>
+References: <8cceee40e32dab3e1913e50c221475ea@trimaso.com.mx>
+ <CAJSP0QX-5ZxxiNejwEUoPE6Gnn=2=tfOb4MpAJNz5j6FYoNGzQ@mail.gmail.com>
+In-Reply-To: <CAJSP0QX-5ZxxiNejwEUoPE6Gnn=2=tfOb4MpAJNz5j6FYoNGzQ@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 16 Jan 2024 18:56:06 +0100
+Message-ID: <CABgObfbr3kF44ACA0didBCiBgQ87wgJS_H2fAPwyf==CAD3d2g@mail.gmail.com>
+Subject: Re: Qemu setting "-cpu host" seems broken with Windows vms
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: xtec@trimaso.com.mx, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=slongfield@google.com; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,159 +95,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 15, 2024 at 12:36=E2=80=AFAM Troy Lee <troy_lee@aspeedtech.com>=
- wrote:
->
-> Hi Stephen and Cedric,
->
-> This issue haven't been found in real platform but sometime happens in
-> emulator, e.g. Simic.
+On Fri, Dec 29, 2023 at 2:10=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail.com=
+> wrote:
+> > First, performance: since some years ago, since prior to qemu 6.2 until
+> > latest 8.2, win10 and win11 vms always worked slower than expected. Thi=
+s
+> > could be noticed by comparing booting/starting times between vm and a
+> > bare metal installation, but I particularly measured it when installing
+> > windows cumulative updates through windows update. On vm, from
+> > downloading to finishing rebooting it always took 1.5 circa 1.5 hours,
+> > while just 40 minutes on bare metal.
 
-Do you have a workaround that you use in other simulators that we
-could also try using in QEMU?
+One possibility is that you have Hyper-V enabled with -cpu host but
+not with other CPU models. That's because "-cpu host" enables nested
+virtualization.
 
-> > Adding Aspeed Engineers. This reminds me of a discussion a while ago.
-> >
-> > On 1/11/24 18:38, Stephen Longfield wrote:
-> > > We=E2=80=99ve noticed inconsistent behavior when running a large numb=
-er of aspeed
-> > ast2600 executions, that seems to be tied to a race condition in the sm=
-p boot
-> > when executing on TCG-QEMU, and were wondering what a good mediation
-> > strategy might be.
-> > >
-> > > The problem first shows up as part of SMP boot. On a run that=E2=80=
-=99s likely to
-> > later run into issues, we=E2=80=99ll see something like:
-> > >
-> > > ```
-> > > [    0.008350] smp: Bringing up secondary CPUs ...
-> > > [    1.168584] CPU1: failed to come online [    1.187277] smp: Brough=
-t
-> > > up 1 node, 1 CPU ```
-> > >
-> > > Compared to the more likely to succeed:
-> > >
-> > > ```
-> > > [    0.080313] smp: Bringing up secondary CPUs ...
-> > > [    0.093166] smp: Brought up 1 node, 2 CPUs [    0.093345] SMP:
-> > > Total of 2 processors activated (4800.00 BogoMIPS).
-> > > ```
-> > >
-> > > It=E2=80=99s somewhat reliably reproducible by running the ast2600-ev=
-b with an
-> > OpenBMC image, using =E2=80=98-icount auto=E2=80=99 to slow execution a=
-nd make the race
-> > condition more frequent (it happens without this, just easier to debug =
-if we
-> > can reproduce):
-> > >
-> > >
-> > > ```
-> > > ./aarch64-softmmu/qemu-system-aarch64 -machine ast2600-evb -
-> > nographic
-> > > -drive
-> > > file=3D~/bmc-bin/image-obmc-ast2600,if=3Dmtd,bus=3D0,unit=3D0,snapsho=
-t=3Don -nic
-> > > user -icount auto ```
->
-> Have you try to run qemu with "-smp 2"?
+Try "-cpu host,-vmx" and it should be clear if that's the case.
 
-`-smp 2` lowers the probability, but does not get rid of the race.
+Based on the pastie that you prepared, that's the main difference
+between -cpu host and -cpu Broadwell-noTSX-IBRS. Nothing else (see
+list below) should have any substantial performance impact; even less
+so should they make things worse.
 
-> > >
-> > > Our current hypothesis is that the problem comes up in the platform
-> > uboot.  As part of the boot, the secondary core waits for the smp mailb=
-ox to
-> > get a magic number written by the primary core:
-> > >
-> > > https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-
-> > v2019.04/a
-> > > rch/arm/mach-aspeed/ast2600/platform.S#L168
-> > > <https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-
-> > v2019.04/
-> > > arch/arm/mach-aspeed/ast2600/platform.S#L168>
-> > >
-> > > However, this memory address is cleared on boot:
-> > >
-> > > https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-
-> > v2019.04/a
-> > > rch/arm/mach-aspeed/ast2600/platform.S#L146
-> > > <https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-
-> > v2019.04/
-> > > arch/arm/mach-aspeed/ast2600/platform.S#L146>
-> > >
-> > > The race condition occurs if the primary core runs far ahead of the s=
-econdary
-> > core: if the primary core gets to the point where it signals the second=
-ary core=E2=80=99s
-> > mailbox before the secondary core gets past the point where it does the=
- initial
-> > reset and starts waiting, the reset will clear the signal, and then the=
- secondary
-> > core will never get past the point where it=E2=80=99s looping in
-> > `poll_smp_mbox_ready`.
-> > >
-> > > We=E2=80=99ve observed this race happening by dumping all SCU reads a=
-nd writes,
-> > and validated that this is the problem by using a modified `platform.S`=
- that
-> > doesn=E2=80=99t clear the =3DSCU_SMP_READY mailbox on reset, but would =
-rather not
-> > have to use a modified version of SMP boot just for QEMU-TCG execution.
->
-> To prevent the race condition described, SCU188 zeroization is conducted
-> as early as possible by both CPU#0 and CPU#1. After that, there are at
-> least 100 instructions for CPU#0 to execute before it get the chance to
-> set SCU188 to 0xbabecafe. For real, parallel HW, it is unusual that CPU#1
-> will be slower than CPU#0 by 100 instruction cycles.
->
+Paolo
 
-This doesn't really prevent the race, it just lowers the probability
-of it causing problems.
+               "avx512-vp2intersect": true,
+               "avx512-vpopcntdq": true,
+               "avx512bitalg": true,
+               "avx512bw": true,
+               "avx512cd": true,
+               "avx512dq": true,
+               "avx512f": true,
+               "avx512ifma": true,
+               "avx512vbmi": true,
+               "avx512vbmi2": true,
+               "avx512vl": true,
+               "avx512vnni": true,
+               "full-width-write": true,
+               "gfni": true,
+               "vaes": true,
+               "vpclmulqdq": true,
 
-If in hardware, the cores begin execution at the same time, then in
-normal execution of Platform.S, the SCU188 zeroing will happen before
-the scu_unlock macro runs. If I understand the SCU lock correctly:
-that would mean that the store-zero to SCU188 normally has no effect
-(since the registers are read only at that time), and only really
-participates in this race. Since you mentioned seeing this same race
-in other simulation environments, have you considered removing that
-write?
+               "clflushopt": true,
+               "clwb": true,
 
-> >
-> > you could use '-trace aspeed_scu*' to collect the MMIO accesses on the =
-SCU
-> > unit. A TCG plugin also.
-> >
-> > > Is there a way to have QEMU insert a barrier synchronization at some =
-point
-> > in the bootloader?  I think getting both cores past the =3DSCU_SMP_READ=
-Y reset
-> > would get rid of this race, but I=E2=80=99m not aware of a way to do th=
-at kind of thing
-> > in QEMU-TCG.
-> > >
-> > > Thanks for any insights!
-> >
-> > Could we change the default value to registers 0x180 ... 0x18C in
-> > hw/misc/aspeed_scu.c to make sure the SMP regs are immune to the race ?
+               "fsrm": true,
 
-I don't believe that changing the default values would help. The race
-occurs when the secondary core clears data that the primary core
-writes--this would still happen even if the default value is what it
-eventually would get written to.
+               "host-cache-info": false,
+               "host-phys-bits": true,
 
-We did find a workaround, sent to this list on Thursday (2024-01-11):
-setting the magic value of the register at the uboot console (`mw.l
-0x1e6e2188 0xbabecafe`). Since that executes after platform.S, but
-before Linux boot, it's able to unwedge the secondary core and avoid
-later issues.
+               "amd-ssbd": true,
+               "amd-stibp": true,
+               "arch-capabilities": true,
+               "ibpb": true,
+               "ibrs": true,
+               "ibrs-all": true,
+               "ssbd": true,
+               "stibp": true,
 
-> > Thanks,
-> >
-> > C.
->
-> Thanks,
-> Troy Lee
+               "kvm-pv-ipi": true,
+               "kvm-pv-sched-yield": true,
+               "kvm-pv-tlb-flush": true,
+               "kvm-pv-unhalt": true,
+
+               "lmce": true,
+               "md-clear": true,
+               "mds-no": true,
+               "movdir64b": true,
+               "movdiri": true,
+               "pdcm": true,
+               "pdpe1gb": true,
+
+               "pdcm": false,
+               "pdpe1gb": false,
+               "pku": true,
+               "pmu": true,
+               "pschange-mc-no": true,
+               "rdctl-no": true,
+               "rdpid": true,
+               "sha-ni": true,
+               "ss": true,
+               "tsc-adjust": true,
+               "umip": true,
+               "vmx": true,
+               "xgetbv1": true,
+               "xsavec": true,
+               "xsaves": true,
+
+(skipped everything vmx-related, since they don't matter with vmx
+itself being false)
+
 
