@@ -2,81 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA23E82EC9F
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 11:14:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF26482ECE1
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 11:44:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPgSF-0002Mo-MN; Tue, 16 Jan 2024 05:13:59 -0500
+	id 1rPguJ-00018B-39; Tue, 16 Jan 2024 05:42:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rPgS3-0002F3-6w
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 05:13:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1rPguE-00017l-M6
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 05:42:54 -0500
+Received: from out1-smtp.messagingengine.com ([66.111.4.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rPgS1-0001Cp-Eb
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 05:13:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705400024;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MpWi+L4ZWJ/XMmIb+M3pEmfV0lcr7dmh1AMV2PVn04Y=;
- b=KmvRT1zRCI4i3eNUtJ/uk3x1TlNXNicmfUdQSSPeuwBTfvCSAbWSCzROjkuZAacaQnAMcE
- xFutVq/G61rZDZiYETQuLoCJkbcX/ysGN8G2bVCVMchNFqCvUGkaU8onLaFpsk+qUOJIRU
- rQ3bcuFfFTWedigwvHsXdepOQjbeWV8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-aEXiGwCYNVWPjNQvwo8UIw-1; Tue, 16 Jan 2024 05:13:39 -0500
-X-MC-Unique: aEXiGwCYNVWPjNQvwo8UIw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CEE64895685;
- Tue, 16 Jan 2024 10:13:38 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.155])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 832BD2166B31;
- Tue, 16 Jan 2024 10:13:38 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 19D9D1800987; Tue, 16 Jan 2024 11:13:37 +0100 (CET)
-Date: Tue, 16 Jan 2024 11:13:37 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- Beniamino Galvani <b.galvani@gmail.com>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>, 
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, Alexander Graf <agraf@csgraf.de>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Thomas Huth <thuth@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: Re: Re: [PATCH 1/3] hw/arm: Add EHCI/OHCI controllers to Allwinner
- R40 and Bananapi board
-Message-ID: <ccs4nfcdm7e5iek2enycw4echbyny2okstx4pg2es7pggjlgld@5vftyjpgfot2>
-References: <20240113191651.1313226-1-linux@roeck-us.net>
- <20240113191651.1313226-2-linux@roeck-us.net>
- <56f692d8-41b1-4126-96b9-80d274624984@linaro.org>
- <56fde49f-7dc6-4f8e-9bbf-0336a20a9ebf@roeck-us.net>
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1rPguC-00063b-DA
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 05:42:53 -0500
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.nyi.internal (Postfix) with ESMTP id 7B7CA5C00BD;
+ Tue, 16 Jan 2024 05:42:48 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute4.internal (MEProxy); Tue, 16 Jan 2024 05:42:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
+ :cc:content-type:content-type:date:date:from:from:in-reply-to
+ :in-reply-to:message-id:mime-version:references:reply-to:subject
+ :subject:to:to; s=fm2; t=1705401768; x=1705488168; bh=0D8nRRiQpf
+ Ii2SW9oYND5WkWMVZoNXmDA5r+T/LntJs=; b=QtmNZfLkuqDxV5ZUJ3w9uKwh1Z
+ c/SfF1bMXu87GRchobD0wJEHNYl+e/b//lFXr70qVc8e8UJoqzKph3MjfPgbHV6T
+ pMaboiAjVLKX6ho5GPOZ7HDAng+bbIwGfx83tencR2vR+FFkZaef89UIVjqdoslI
+ W5UCoyisa3Zo+mc28pkRfIgHgPt1fkl+bdJ0kCIkW5bIkl2i4X5QUQngFm1Tj85+
+ 5+edywVp+GeZwsf0SBMdgV2nstS9J6/mNxExKOJziGj0exDoQxYTiZp93/zssM3l
+ JepW/oTCzUR5EK9c9kg/C45es/rLDzqQxM7KOa05/ypTbk/8BNVluJlSX5bA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm3; t=1705401768; x=1705488168; bh=0D8nRRiQpfIi2SW9oYND5WkWMVZo
+ NXmDA5r+T/LntJs=; b=j1p396IVuSdTbs8fiKW6xq9WbFFTykJZQ7mZoPijK808
+ tG9cuocj/aERGN6sXVQF2J23sXBlDmxHeecnKfXo795/OfTU0g2KhmZa5i07u4N4
+ bjJ4xfQw4vBdDwq+swxG4+wm4+7uD9UdPfroAvkptviJJ+t7BIzgKpom9Lzgc1Mn
+ PoadeGLU/v6MLYe71O6f2xR4i0mD0PidiMaKocRLORxV+C1ujyD/V7EMOV9i7+69
+ eHXABwU/n4oBkExCS2WoUQdtKPgbGflp+tfMKIlI+r5Vjy1aeFZ730WdVA54Ni0R
+ rbJjPuOS+2bzpCPhFd7CZgC2Yh46p+v4tRoQjtomkA==
+X-ME-Sender: <xms:qF2mZTeTykYFu-RW0m4a3NAsx-aKnm52OAXcfLluNynNNz-NYFSywQ>
+ <xme:qF2mZZM0LtVV0IVrKTrr31IRO-VFuliwXyFY0f3Zx-dufGyFlCM0GVsFfXyecGOXq
+ 38EJt9HGGzHs0BHrA>
+X-ME-Received: <xmr:qF2mZcjMzDDMIM7FeqyGjaKJopuSrScI7OVDWL9v7Rvx5G38hlWaJYVSyKXIlVBbQsVbjhw2_p9OY6hAipFzPwP20SaN>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdejfedgudekucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhephffvvefujghffffkgggtsehgtderredttddtnecuhfhrohhmpeetlhihshhs
+ rgcutfhoshhsuceohhhisegrlhihshhsrgdrihhsqeenucggtffrrghtthgvrhhnpeeiud
+ ffueeilefgtefgtddttdekkeehkefgheekudefveetgeefiefftedvteeuveenucevlhhu
+ shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehhihesrghlhihssh
+ grrdhish
+X-ME-Proxy: <xmx:qF2mZU9NckQJ6UdDEET6cFeCGBZ31-8R5FSsBS-LxbHGiT57aypDHw>
+ <xmx:qF2mZfuoN9mFsL5H6FycT-4BDql7oN4HuuLiVH9SZttf27SlRSkdbA>
+ <xmx:qF2mZTERz3BPilU5lZdE8ye4r3iPrbnEEAEt_ljT_XFIVmDOElwxXg>
+ <xmx:qF2mZdJfgQo7DLDjEvJQtCu9YYTKBgAPGN4Fr0hUGT8xlOzpwLbiXg>
+Feedback-ID: i12284293:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 16 Jan 2024 05:42:47 -0500 (EST)
+Received: by mbp.qyliss.net (Postfix, from userid 1000)
+ id 4AAEFBCF5; Tue, 16 Jan 2024 11:42:45 +0100 (CET)
+From: Alyssa Ross <hi@alyssa.is>
+To: Gurchetan Singh <gurchetansingh@chromium.org>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com,
+ akihiko.odaki@gmail.com, ray.huang@amd.com, alex.bennee@linaro.org,
+ shentey@gmail.com, ernunes@redhat.com, manos.pitsidianakis@linaro.org,
+ mark.cave-ayland@ilande.co.uk, thuth@redhat.com
+Subject: Re: [PATCH v15 0/9] rutabaga_gfx + gfxstream
+In-Reply-To: <20231003204500.518-1-gurchetansingh@chromium.org>
+References: <20231003204500.518-1-gurchetansingh@chromium.org>
+Date: Tue, 16 Jan 2024 11:42:25 +0100
+Message-ID: <87wms9d0fi.fsf@alyssa.is>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <56fde49f-7dc6-4f8e-9bbf-0336a20a9ebf@roeck-us.net>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.531,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: multipart/signed; boundary="=-=-=";
+ micalg=pgp-sha256; protocol="application/pgp-signature"
+Received-SPF: pass client-ip=66.111.4.25; envelope-from=hi@alyssa.is;
+ helo=out1-smtp.messagingengine.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,51 +103,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 15, 2024 at 08:12:29AM -0800, Guenter Roeck wrote:
-> On 1/15/24 03:02, Philippe Mathieu-Daudé wrote:
-> > On 13/1/24 20:16, Guenter Roeck wrote:
-> > > If machine USB support is not enabled, create unimplemented devices
-> > > for the USB memory ranges to avoid crashes when booting Linux.
-> > 
-> > I never really understood the reason for machine_usb() and had on my
-> > TODO to do some archeology research to figure it out since quite some
-> > time. Having to map an UnimpDevice due to CLI options seems like an
-> > anti-pattern when the device is indeed implemented in the repository.
-> 
-> Me not either. I copied the code from aw_a10_init(), trying to use the
-> same pattern. I am perfectly fine with making it unconditional, but then
-> I would argue that it should be unconditional for Allwinner A10 as well
-> (not that I really care much, just for consistency).
-> 
-> The "-usb" option says "enable on-board USB host controller (if not
-> enabled by default)". Unfortunately, that doesn't tell me much,
-> and most specifically it doesn't tell me how to enable it by default.
-> One option I can think of would be to enable it on the machine level,
-> i.e., from bananapi_m2u.c, but then, again, I don't see if/how
-> that is done for other boards. Any suggestions ?
+--=-=-=
+Content-Type: text/plain
 
-The -usb switch is there as long as I remember (which goes back to qemu
-0.1x days).  I suspect it was introduced in the early usb emulation
-days, where usb emulation was more fragile and turning it on by default
-didn't look like a good plan.
+Hi Gurchetan,
 
-usb emulation in modern qemu should be stable enough that enabling it by
-default should not be much of a problem.  ohci/uhci/ehci emulation is
-somewhat expensive due to polling being wired into the hardware design,
-but as long as there are no usb devices connected this should not be
-much of a concern either as the guest drivers usually put the usb host
-adapter to sleep in that case (which saves power on physical hardware
-and stops the polling timer in qemu).
+Gurchetan Singh <gurchetansingh@chromium.org> writes:
 
-So, turning on usb support by default makes sense to me when emulating
-boards, where guests expect the usb controllers being present at
-specific MMIO addresses, so mapping UnimpDevice is not needed.
+> - As mentioned in v14:
+>     * AEMU: d6e6b99 "Delete VpxFrameParser.cpp"
+>     * gfxstream: 2131f78d Merge "gfxstream: add egl & gles deps.."
+>
+> are the proposed v.0.1.2 release points.  If those commits are sufficient
+> for packaging AEMU + gfxstream, let me know and I'll have official release
+> tags made.  If additional changes are required for packaging, let me know
+> as well.
 
-In case guests detect hardware via generated device tree / generated
-ACPI tables / pci bus scan (i.e. arm virt + microvm + pc + q35) it IMHO
-makes sense to keep current behavior.
+Were these releases ever made?
 
-take care,
-  Gerd
+The gfxstream ref mentioned here isn't compatible with
+v0.1.2-rutabaga-release, because it no longer provides logging_base.pc,
+and this email is the last mention I can find of these releases.
 
+In Nixpkgs, I've gone for packaging gfxstream and aemu with your initial
+proposed release points, which works fine, but it would be great to have
+this clearer upstream.
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEH9wgcxqlHM/ARR3h+dvtSFmyccAFAmWmXZIACgkQ+dvtSFmy
+ccCsuQ/8Ce/2Wq5K3W1SLtT3UviQat2chF8kX8nSwnfgAK1XRHPH3T/aACwkDW+X
+mg0gBpXq37aZp+Up6JRNrkmINaeaipS6l320P78UtlmzT1KBaN0WfxwVMi4y1juB
+I+nMN4xoEf93SUFkBjnU4flMydslDKXWaHkRxbGGTUMmFHwro4addeDbEBUVAerC
+/jCxn2yfqQZBeensSZQLxQ65OEBJJZSQOLbwDB2MmaSBN1tTdXmZ6KsxVp4ahxOi
+LfMoZSoIIfynY+mYMJcrILeHbwVHF3JyZxrWpf9gZjPBNi3bn4qu+B9eF89E0WNL
+Yhur99MmKgJIEtn34nhsEqm74y1HVgU4Zg4uSrNFC8BspCQzQYOmIOU37Z+UXwA/
+8iwjbwLKWyxgQBMmV26dDzoqmPylgFmEle5zicQFTxnuS6llcW3gIUJy+Cr2OhwG
+nPAQSX8vys5ZcxtZyNII8z0ImkkneQgDwR3dFVjBJHffVX5+Ltjos4qatTmYAWTF
+sNn/d0aZSyFptXdQdSUXZ2BCajtktkZ59obEGw6+UsN+Yz4dH2MuL6U5IUMwIgMx
+hJMG0tPmGhx7Dd8MVxBCQysNlX8zdNdE1lxI3vsYXrNiPVVH6XnHtzR5HK5dDSdB
+wAml0RAwNSUHjgZk6Qi9fgabPo7eQ360ruHjeY5HZ0dtQgYEpXI=
+=8jvQ
+-----END PGP SIGNATURE-----
+--=-=-=--
 
