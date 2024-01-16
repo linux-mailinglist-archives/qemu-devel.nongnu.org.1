@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3723682EA20
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 08:35:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA3782EA22
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 08:35:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPdxn-0000Ng-4c; Tue, 16 Jan 2024 02:34:23 -0500
+	id 1rPdxh-0000AX-OY; Tue, 16 Jan 2024 02:34:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPdxa-00005x-Rx
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:34:11 -0500
+ id 1rPdxc-000087-7e
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:34:12 -0500
 Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rPdxX-00046E-HB
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:34:08 -0500
+ id 1rPdxa-00047T-Lv
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 02:34:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705390447; x=1736926447;
+ t=1705390450; x=1736926450;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hHzSlIHBs1Sa8almQ7WO1KqK41saKKNuT3QqQ7B7XnE=;
- b=h4M7G7I90djDB9UXlvzk8C4vay3u3E86l4d4faEXUaZsQMDeYZMUOj8/
- jP9bKKnLCVIPXBWD4YG5BRUt9aKWfEGjQYCIARlQvpKHl9jvV0jf/j0nm
- 3quG/SLvjycfVvMcRLUO4A76z+YVDJYYOPtGpteFQfQJZqc40WezeaQbf
- 4FpihMs7k7kPw+6RA6qJcUynhp5tm6X+Zzt0h/UQEL60ItvmTvQLwvCxr
- ZKmmOvbBphF7zI52ApJLaEqgKYPM/IVE1I6Z+kPB0m4akcBwpZvFzW4dv
- OnXEOHraPxhXDntjjl1o5QMGktXzc1arRR0RPIqlehjgL+pi3khSosfH5 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="6875773"
+ bh=bpBgb3khr3lYTEkkzdIACK8q3xLr9Y6ldMvmmHp0GF8=;
+ b=dryM8/ii8UIauLyRArnskoUwlIMVEvN8VytwxXrT/kiW7w8ZG8KcGnOG
+ jUGR8RSAhpPtWL5EOWB/cvHAV8E94nZ33z/kP49yoLUgQc3ZUGgL2chAg
+ FQDoAJzJSFOjazXq0mHBq708bmf+PGViUzg4D4rZe/XOIyTeJ0PsgcdKn
+ Hv+5MscwiLhTR9BqGoDt6pxPIi3NQUC+Ygk7Ot0HSTLTjfil7HGRVOko4
+ V5RZUmZ+Mc865zNCI/7LI72v336rmJMkraicOy11wC5HHXTlSvp/uVWut
+ 433EjfkXxYDxfrbr4RNkHA3CktXVyx9UIQJHAAKENsyW4hk6AkPWuAjPK Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="6875782"
 X-IronPort-AV: E=Sophos;i="6.04,198,1695711600"; 
-   d="scan'208";a="6875773"
+   d="scan'208";a="6875782"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2024 23:34:06 -0800
+ 15 Jan 2024 23:34:09 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="854266421"
-X-IronPort-AV: E=Sophos;i="6.04,198,1695711600"; d="scan'208";a="854266421"
+X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="854266428"
+X-IronPort-AV: E=Sophos;i="6.04,198,1695711600"; d="scan'208";a="854266428"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmsmga004.fm.intel.com with ESMTP; 15 Jan 2024 23:34:04 -0800
+ by fmsmga004.fm.intel.com with ESMTP; 15 Jan 2024 23:34:06 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -49,9 +49,9 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 6/9] hw/core: Reorder included header in machine.c
-Date: Tue, 16 Jan 2024 15:46:44 +0800
-Message-Id: <20240116074647.3644821-7-zhao1.liu@linux.intel.com>
+Subject: [PATCH v2 7/9] hw/core: Reorder included headers in null-machine.c
+Date: Tue, 16 Jan 2024 15:46:45 +0800
+Message-Id: <20240116074647.3644821-8-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240116074647.3644821-1-zhao1.liu@linux.intel.com>
 References: <20240116074647.3644821-1-zhao1.liu@linux.intel.com>
@@ -88,51 +88,27 @@ Tested by "./configure" and then "make".
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/core/machine.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ hw/core/null-machine.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index fb5afdcae4cc..00f2f24ee79e 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -11,26 +11,27 @@
+diff --git a/hw/core/null-machine.c b/hw/core/null-machine.c
+index f586a4bef543..ef7e95a09ad0 100644
+--- a/hw/core/null-machine.c
++++ b/hw/core/null-machine.c
+@@ -12,10 +12,11 @@
   */
  
  #include "qemu/osdep.h"
--#include "qemu/accel.h"
--#include "sysemu/replay.h"
+-#include "qemu/error-report.h"
+-#include "hw/boards.h"
 +
-+#include "audio/audio.h"
-+#include "exec/confidential-guest-support.h"
- #include "hw/boards.h"
- #include "hw/loader.h"
-+#include "hw/mem/nvdimm.h"
-+#include "hw/pci/pci_bridge.h"
-+#include "hw/virtio/virtio-net.h"
-+#include "hw/virtio/virtio-pci.h"
-+#include "migration/global_state.h"
- #include "qapi/error.h"
- #include "qapi/qapi-visit-machine.h"
-+#include "qemu/accel.h"
- #include "qom/object_interfaces.h"
- #include "sysemu/cpus.h"
-+#include "sysemu/qtest.h"
- #include "sysemu/sysemu.h"
-+#include "sysemu/replay.h"
- #include "sysemu/reset.h"
- #include "sysemu/runstate.h"
- #include "sysemu/xen.h"
--#include "sysemu/qtest.h"
--#include "hw/pci/pci_bridge.h"
--#include "hw/mem/nvdimm.h"
--#include "migration/global_state.h"
--#include "exec/confidential-guest-support.h"
--#include "hw/virtio/virtio-pci.h"
--#include "hw/virtio/virtio-net.h"
--#include "audio/audio.h"
+ #include "exec/address-spaces.h"
++#include "hw/boards.h"
+ #include "hw/core/cpu.h"
++#include "qemu/error-report.h"
  
- GlobalProperty hw_compat_8_2[] = {};
- const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
+ static void machine_none_init(MachineState *mch)
+ {
 -- 
 2.34.1
 
