@@ -2,66 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B75F82F272
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 17:35:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FD482F281
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 17:38:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPmOB-0004SC-5p; Tue, 16 Jan 2024 11:34:11 -0500
+	id 1rPmSG-0006lS-FI; Tue, 16 Jan 2024 11:38:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPmO8-0004Ri-W5
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:34:09 -0500
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rPmSE-0006kJ-7X
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:38:22 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPmO7-0004Fc-7C
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:34:08 -0500
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-50e7c6f0487so11627260e87.3
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 08:34:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rPmSC-0004yb-Om
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:38:22 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1d542701796so53892605ad.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 08:38:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705422845; x=1706027645; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=r6Ai0z3wdHjUVQrr8kOh9qrkmDCfEK898oSdJUNYiMw=;
- b=anFcE0aD3wXObKc3r0dGa1oELpRj6g9KPlpFcyWN39CIFqUFoZtvAPzXtI2KwI89IN
- 3X2RDb+v8AdXtDhmq6zO9v9L7hZDZs6685qp5ku5TZ3AxtgqkDUEaz6jy5d8PeN+QxHa
- 00hi8Zeytsq6wpZZMBl5L1kDfItGESrKu8ZqeVl6ESr0UNbH8LvZwZb0x/H3EKcDIbc6
- mgdIpMWgDtmb0wxnpqosP7CkZfkiYXQQbJNynikoYlgTlsoejuR0KQPrvLNXnxxH6i+v
- J1cYlzmBgWCSOeW8fTkKUgdbVigwbtdZbF4ne5M5Vk7frZIi3wwoU/yqYVaYD9RvNT/S
- zdbA==
+ d=linaro.org; s=google; t=1705423099; x=1706027899; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=okimEG51+XiEmoQDSIqagcta5CU/94AI9Gm/k7SR8mE=;
+ b=NNze2poRm6PPzMZ8O8QVuAGMVhXfBCl8MRmrfSYa4J+obDQQ+HyE95Ht3XrhRJYZ9l
+ P19ufK9Z1R+fMCsno2I7f0NO1CfWODLwbyEF1M0L2DavaP7K2Sq9rZI5g8jCERlblFCC
+ 3aXMDj/J/i8LMlKe/4gsUMyCtLt5XGzwvl3caMJDsJFR1IrgBy5lqeDXyq28Uc8CfkTV
+ wDjPft50VZSgyGtBgPGQAp8+8Tvul9M3UHzr3WumhG2Dag8ZzAbP5+pV8dIFDhd1F+Mg
+ 9XJhvTlhohiUrdBEUnJv4VUHsBlAErIEJQOR1PsiPxkbnWLUTqln8L9bLv+mB3ORaPIh
+ PMEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705422845; x=1706027645;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=r6Ai0z3wdHjUVQrr8kOh9qrkmDCfEK898oSdJUNYiMw=;
- b=wYghT+5qKQfXfOrIKV0v1bXn/dtXlcUr75/v/RZ8vpg/lcZWRhl6iATvamtQKUsZDq
- +DnxI7pJGO0VOgS3ue+7poPdQHajSsAD6yFEWAjNiwJ4XYY1QA3+jSqxYK2VbmGVu+Bc
- VPm3yHqTLkRdDzX7T1F8n5v1kDvUWBhgxJJganroRpfq3hi+1DTKGmcR1elTqADQetdy
- ZIppusWHUHdcHreF4SCAJaczWIxuZ6vjk4yt1RjcWWnmVSv7X/K38gHl4OsIclgefBT3
- G4GcplYYyvunLOZ6ldE8m47TzN/1HUmcYJaxseoCi6PNrkdtGMz2yZLGmuGS+6gEeWVs
- sztA==
-X-Gm-Message-State: AOJu0YzFbT/YXDGlwBXghDFulBTHj6psReSdI9uG/xVTv04eYlRMYYhh
- XZuTGcKqv7qDN4d3qj+umW3dGpncAX8o0chXCvPDlUzgLd/2Bw==
-X-Google-Smtp-Source: AGHT+IHRqEuoCOJm3zEmHM8mOBTikIee+nOdN9aZkpeLy8HSmpNHtjh3cMVzEYxh3ybUaJdDtl6llUQIVZiXsLHo33s=
-X-Received: by 2002:a19:4f4b:0:b0:50e:5448:3313 with SMTP id
- a11-20020a194f4b000000b0050e54483313mr2193255lfk.9.1705422845449; Tue, 16 Jan
- 2024 08:34:05 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705423099; x=1706027899;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=okimEG51+XiEmoQDSIqagcta5CU/94AI9Gm/k7SR8mE=;
+ b=Q4ExAf56s0uDF8E3rRvmTRbuCmLPWUE+qSdWYNSHiGiHuiy9MD8lFo8/9vfsCAa/qK
+ yUhs9HyxqBN4ZN1mWkGYY+jxACFddhEZ54pi0+RT/nbbu2X7+jVea9JLcXTunVZBB3kJ
+ S5FibKABCjHHTXvAdzcfZfOJbLWthXTfQX0/b8A0/C7ydhokqOQtY6OqkROOUUwqDmKk
+ ytI8KtFwuUjng+uEAT54ZelYkZsmWV20XGG/YJuFNDboIV3PPonr4fG2xaohAmQPZVMc
+ uHUhLz1fQTgYp68kGlfWeoM1Gku1NoMEs6ziBSxs3uUj6cdVMuKxDoKSujPL2PQHlaIl
+ o+sQ==
+X-Gm-Message-State: AOJu0YzO+OTLQjm3gCcNKHdOOQC1jJOh7yYLR0pVwr+I7khrB0mep0Gn
+ Fk+AzaFrLeiKvaRTsVeI8CmgMAP1U2KCaQ==
+X-Google-Smtp-Source: AGHT+IHWwfsi2XmF0fCkvyAtIU0+SPvR0TtEFM1yqKsemy8guP6AAvwJ1HH9abdq+XmSN58LQFCYnQ==
+X-Received: by 2002:a17:902:e841:b0:1d4:3ef:2810 with SMTP id
+ t1-20020a170902e84100b001d403ef2810mr4789698plg.107.1705423099018; 
+ Tue, 16 Jan 2024 08:38:19 -0800 (PST)
+Received: from ?IPV6:2001:8004:2738:1dd9:d367:1372:f10d:5a30?
+ ([2001:8004:2738:1dd9:d367:1372:f10d:5a30])
+ by smtp.gmail.com with ESMTPSA id
+ y4-20020a170902e18400b001d5e9bcc8b2sm1336580pla.308.2024.01.16.08.38.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Jan 2024 08:38:18 -0800 (PST)
+Message-ID: <8ecba163-cd69-4adf-96aa-95f46a0d07e9@linaro.org>
+Date: Wed, 17 Jan 2024 03:38:13 +1100
 MIME-Version: 1.0
-References: <20240116031947.69017-1-peterx@redhat.com>
-In-Reply-To: <20240116031947.69017-1-peterx@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 16 Jan 2024 16:33:54 +0000
-Message-ID: <CAFEAcA8Mf1uyW7k8akYc-wkVFgQAFyJK0sFeStJ=L9pP415NqQ@mail.gmail.com>
-Subject: Re: [PULL 00/20] Migration 20240116 patches
-To: peterx@redhat.com
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/elf_ops: Ignore loadable segments with zero size
+To: Bin Meng <bmeng@tinylab.org>, qemu-devel@nongnu.org,
+ Thomas Huth <thuth@redhat.com>
+References: <20240116155049.390301-1-bmeng@tinylab.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240116155049.390301-1-bmeng@tinylab.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,37 +94,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 16 Jan 2024 at 03:19, <peterx@redhat.com> wrote:
->
-> From: Peter Xu <peterx@redhat.com>
->
-> The following changes since commit 977542ded7e6b28d2bc077bcda24568c716e393c:
->
->   Merge tag 'pull-testing-updates-120124-2' of https://gitlab.com/stsquad/qemu into staging (2024-01-12 14:02:53 +0000)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/peterx/qemu.git tags/migration-20240116-pull-request
->
-> for you to fetch changes up to 44ce1b5d2fc77343f6a318cb3de613336a240048:
->
->   migration/rdma: define htonll/ntohll only if not predefined (2024-01-16 11:16:10 +0800)
->
-> ----------------------------------------------------------------
-> Migration pull request 2nd batch for 9.0
->
-> - Het's cleanup on migration qmp command paths
-> - Fabiano's migration cleanups and test improvements
-> - Fabiano's patch to re-enable multifd-cancel test
-> - Peter's migration doc reorganizations
-> - Nick Briggs's fix for Solaries build on rdma
->
+On 1/17/24 02:50, Bin Meng wrote:
+> Some ELF files really do have segments of zero size, e.g.:
+> 
+> Program Headers:
+>    Type           Offset             VirtAddr           PhysAddr
+>                   FileSiz            MemSiz              Flags  Align
+>    RISCV_ATTRIBUT 0x00000000000025b8 0x0000000000000000 0x0000000000000000
+>                   0x000000000000003e 0x0000000000000000  R      0x1
+>    LOAD           0x0000000000001000 0x0000000080200000 0x0000000080200000
+>                   0x00000000000001d1 0x00000000000001d1  R E    0x1000
+>    LOAD           0x00000000000011d1 0x00000000802001d1 0x00000000802001d1
+>                   0x0000000000000e37 0x0000000000000e37  RW     0x1000
+>    LOAD           0x0000000000000120 0x0000000000000000 0x0000000000000000
+>                   0x0000000000000000 0x0000000000000000         0x1000
+> 
+> The current logic does not check for this condition, resulting in
+> the incorrect assignment of 'lowaddr' as zero.
+> 
+> There is already a piece of codes inside the segment traversal loop
+> that checks for zero-sized loadable segments for not creating empty
+> ROM blobs. Let's move this check to the beginning of the loop to
+> cover both scenarios.
+> 
+> Signed-off-by: Bin Meng <bmeng@tinylab.org>
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+But please report this as a bug to whatever tool produced such nonsense.
 
 
-Applied, thanks.
-
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
-
--- PMM
+r~
 
