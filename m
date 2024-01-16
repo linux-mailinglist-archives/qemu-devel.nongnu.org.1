@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0764882E833
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 04:22:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B22982E834
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 04:22:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPa1S-0007gc-4h; Mon, 15 Jan 2024 22:21:54 -0500
+	id 1rPa1R-0007Ur-Am; Mon, 15 Jan 2024 22:21:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPa0i-0006HG-Q0
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 22:21:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rPa10-0006vo-MI
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 22:21:29 -0500
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPa0g-00037X-NP
- for qemu-devel@nongnu.org; Mon, 15 Jan 2024 22:21:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705375266;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=gicgabJmF07S0wCWqnYSu+RO4ouf2Ed+JzSkPhuW3+g=;
- b=AwBr2+XgLAlMmzM7CnOgv+1jD6mIfATWUeKiJMQDf08ycrMky+ogdQ2x72dn9irzxJaYh8
- 7Pf/l7j4BcepNNd85pYMekOWw9vWrDhhRrkTPYcrGIo8nvW77MZ6X0jUu3aogj5WoDhxrZ
- 7zzKneOO2e459GkKToYB/E+FoPjm+t0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-j2tHyg1VNJCg_xFO9vc-Zg-1; Mon,
- 15 Jan 2024 22:21:03 -0500
-X-MC-Unique: j2tHyg1VNJCg_xFO9vc-Zg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F3C663C025C4;
- Tue, 16 Jan 2024 03:21:02 +0000 (UTC)
-Received: from x1n.redhat.com (unknown [10.72.116.92])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 345463C25;
- Tue, 16 Jan 2024 03:20:59 +0000 (UTC)
-From: peterx@redhat.com
-To: qemu-devel@nongnu.org,
-	Peter Maydell <peter.maydell@linaro.org>
-Cc: peterx@redhat.com, Fabiano Rosas <farosas@suse.de>,
- Nick Briggs <nicholas.h.briggs@gmail.com>
-Subject: [PULL 20/20] migration/rdma: define htonll/ntohll only if not
- predefined
-Date: Tue, 16 Jan 2024 11:19:47 +0800
-Message-ID: <20240116031947.69017-21-peterx@redhat.com>
-In-Reply-To: <20240116031947.69017-1-peterx@redhat.com>
-References: <20240116031947.69017-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rPa0y-000389-5O
+ for qemu-devel@nongnu.org; Mon, 15 Jan 2024 22:21:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705375285; x=1736911285;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=MW53idG+3TTYApeFlu5HtVyQRe0o927gi2mSCp8zJdc=;
+ b=KqAObs6hBR0Xu/Jblf1huuZAwFddhiWSCL8rxqLMzQd8+lLdop08owlq
+ UgxF2kg8qoAKPipY9IoRZgUIv5RA75X4hGsf2ot8srcTMy98reo5d4z7Q
+ cJ6u2s1QRWHYKvTmdYzBV5EY4875+IddZl23R+++KXCz4/tNcFSnxI+9w
+ vARW211MzI7VvplVZlmyJHX0ZzA2PqKFuKYZMchm1zdlrfxfRNCTJ8W52
+ CJcHZtGWrm03GW22CxNl/cH75kjEAeECXuSVQMtqxY0ip2eDujZT/Pq7o
+ inF8VYlSOtpuSeGg2gtCwwOnjIO4E/veMmyzPDeFy2viPCX6A27AntbKm g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="7110288"
+X-IronPort-AV: E=Sophos;i="6.04,197,1695711600"; 
+   d="scan'208";a="7110288"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jan 2024 19:21:19 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="874290884"
+X-IronPort-AV: E=Sophos;i="6.04,197,1695711600"; d="scan'208";a="874290884"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by FMSMGA003.fm.intel.com with ESMTP; 15 Jan 2024 19:21:17 -0800
+Date: Tue, 16 Jan 2024 11:34:15 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH 01/29] include: move include/qapi/qmp/ to include/qobject/
+Message-ID: <ZaX5NyaieWIXkWaR@intel.com>
+References: <20240108182405.1135436-1-berrange@redhat.com>
+ <20240108182405.1135436-2-berrange@redhat.com>
+ <ZZxDDmv1YsqlMMCT@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <ZZxDDmv1YsqlMMCT@redhat.com>
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.531,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,48 +81,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nick Briggs <nicholas.h.briggs@gmail.com>
+On Mon, Jan 08, 2024 at 06:46:38PM +0000, Daniel P. Berrangé wrote:
+> Date: Mon, 8 Jan 2024 18:46:38 +0000
+> From: "Daniel P. Berrangé" <berrange@redhat.com>
+> Subject: Re: [PATCH 01/29] include: move include/qapi/qmp/ to
+>  include/qobject/
+> 
+> On Mon, Jan 08, 2024 at 06:23:37PM +0000, Daniel P. Berrangé wrote:
+> > The general expectation is that header files should follow the same
+> > file/path naming scheme as the corresponding source file. There are
+> > various historical exceptions to this practice in QEMU, with one of
+> > the most notable being the include/qapi/qmp/ directory. Most of the
+> > headers there correspond to source files in qobject/.
+> > 
+> > This patch corrects that inconsistency by creating include/qobject/.
+> > The only outlier is include/qapi/qmp/dispatch.h which gets renamed
+> > to include/qapi/qmp-registry.h.
+> > 
+> > To allow the code to continue to build, symlinks are temporarily
+> > added in $QEMU/qapi/qmp/ to point to the new location. They will
+> > be removed in a later commit.
+> > 
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> >  MAINTAINERS                                     | 5 +----
+> >  include/qapi/{qmp/dispatch.h => qmp-registry.h} | 0
+> >  include/{qapi/qmp => qobject}/json-parser.h     | 0
+> >  include/{qapi/qmp => qobject}/json-writer.h     | 0
+> >  include/{qapi/qmp => qobject}/qbool.h           | 0
+> >  include/{qapi/qmp => qobject}/qdict.h           | 0
+> >  include/{qapi/qmp => qobject}/qerror.h          | 0
+> 
+> Of course just after sending this I decided that moving qerror.h
+> to qobject/ is probably not optimal. It only contains a set of
+> (deprecated) error message strings. Perhaps it could just move
+> from qapi/qmp/qerror.h to just qapi/qerror.h ? Other suggestions ?
 
-Solaris has #defines for htonll and ntohll which cause syntax errors
-when compiling code that attempts to (re)define these functions..
+From the naming style ("q" + module name) and the content comments
+(descripted as a module), qerror.h (as an error module starting with
+q) seems to be more neatly put together with other qmodules such as
+qbool.h, qdirct.h, qlist.h, etc.
 
-Signed-off-by: Nick Briggs <nicholas.h.briggs@gmail.com>
-Link: https://lore.kernel.org/r/65a04a7d.497ab3.3e7bef1f@gateway.sonic.net
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/rdma.c | 4 ++++
- 1 file changed, 4 insertions(+)
+There is already an error.h under the include/qapi, which is supposed
+to be the developer's first choice, and it seems a bit confusing to
+have qerror.h in the same directory as error.h (even though it states
+that qerror.h will be deprecated)?
 
-diff --git a/migration/rdma.c b/migration/rdma.c
-index 94c0f871f0..a355dcea89 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -238,6 +238,7 @@ static const char *control_desc(unsigned int rdma_control)
-     return strs[rdma_control];
- }
- 
-+#if !defined(htonll)
- static uint64_t htonll(uint64_t v)
- {
-     union { uint32_t lv[2]; uint64_t llv; } u;
-@@ -245,13 +246,16 @@ static uint64_t htonll(uint64_t v)
-     u.lv[1] = htonl(v & 0xFFFFFFFFULL);
-     return u.llv;
- }
-+#endif
- 
-+#if !defined(ntohll)
- static uint64_t ntohll(uint64_t v)
- {
-     union { uint32_t lv[2]; uint64_t llv; } u;
-     u.llv = v;
-     return ((uint64_t)ntohl(u.lv[0]) << 32) | (uint64_t) ntohl(u.lv[1]);
- }
-+#endif
- 
- static void dest_block_to_network(RDMADestBlock *db)
- {
--- 
-2.43.0
+Regards,
+Zhao
 
+> 
+> >  include/{qapi/qmp => qobject}/qjson.h           | 0
+> >  include/{qapi/qmp => qobject}/qlist.h           | 0
+> >  include/{qapi/qmp => qobject}/qlit.h            | 0
+> >  include/{qapi/qmp => qobject}/qnull.h           | 0
+> >  include/{qapi/qmp => qobject}/qnum.h            | 0
+> >  include/{qapi/qmp => qobject}/qobject.h         | 0
+> >  include/{qapi/qmp => qobject}/qstring.h         | 0
+> 
+> With regards,
+> Daniel
+> -- 
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> 
+> 
 
