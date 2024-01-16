@@ -2,83 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E7282F256
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 17:21:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2978E82F25B
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 17:26:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPmBA-0007xT-Tn; Tue, 16 Jan 2024 11:20:45 -0500
+	id 1rPmG7-0001ZH-CU; Tue, 16 Jan 2024 11:25:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPmAo-0007v5-4w
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:20:22 -0500
-Received: from mail-il1-x12c.google.com ([2607:f8b0:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPmG6-0001Z0-3K
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:25:50 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPmAm-0001Tx-78
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:20:21 -0500
-Received: by mail-il1-x12c.google.com with SMTP id
- e9e14a558f8ab-3606dd96868so54117775ab.2
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 08:20:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rPmG4-0002WD-BY
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 11:25:49 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40e857ce803so7426055e9.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 08:25:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705422018; x=1706026818; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705422346; x=1706027146; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=yMx2L1+o6Lxao8lN2+Iy4S7RzUqY4Zi08OgW0aT2u7o=;
- b=zQQElSSC44sn70nZo9jswMuMz17YZ2RXiekV7AjMjLVviMlGRXghQ/KtZyltWtxgee
- 9rVH3ECi1qFLcP0d3MZFl7uTqzQmALQYmXCUzh2AO4p1Oo9/R+TOjudrpwqCUtjrkJbq
- 5WAgTfKtp2bOFnVuLWV9KV26bHd6AJ0iKrLv9sfmO082SlFJgZPj7MFAIiQtxfZ2YIxK
- P8HUY4DgUYwTzgv4ht3JUD0YoGk1DAtDD+gyqEE93THl2nIvRRr2ckAZ43xZihhm5KbV
- lshr9g8k1aNc2gL0HY8UdfizYPJioaa80YEwgfpfexLJA0TdE8gbSUlsXQ+DieCh5fJI
- V/Wg==
+ bh=Sb8ewZWwHpfNyDhnqAuVoxp7WG7jOe/slKL1LcWRMgA=;
+ b=zxOMuijY92OndJTcB0wQzIasE1uKoa1x0oPJL+iaJL/cpBlKUhUViJHuVTG+iNXsTD
+ 6kUWMXvkljq9Ecbq9Yo8Xwxhl555jMkS6L0B8YnvA+JiRU6mHGdmFmMbUh95XD49ENUz
+ OvrAR0p02aTjlmnPO2qPVlVhE7tqgm4rcAnmhK7HpGbVjFq5CVXIIjFcRbE+TZBWL7cO
+ a6DejvWHXR3Tg0lszNVDu1v3Sw0X7mWAvxIcd7+ndWebXKH+xbpCu/mIX+hRz6qfZee4
+ o27dudSpBckmq13oIHtX4IfKsFML+d8q5B2bg4peJZpxL7/Dz8ZV3nNKdueRiKd7bOFq
+ C8Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705422018; x=1706026818;
+ d=1e100.net; s=20230601; t=1705422346; x=1706027146;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yMx2L1+o6Lxao8lN2+Iy4S7RzUqY4Zi08OgW0aT2u7o=;
- b=sYBYHK8zv3Atxr5gNB3hkrMt7dKxVfAuX9rWoD9oaoYajDZMrW3hcHbR+RuJ5ChICB
- aEhlQz7bsJoutTVBLD93mqOkfGg4Yr0VJoCntx7dlyearLmVogENw/8t22XD5A+R/rli
- PiyVFRR+zIvj9ze6lWwgE/6f8JHoulidIRucXelKFeCEqkJoHjEuv5irkbi6EQdx0CQV
- d++s1US+fXpwoLLe6MdiDRb/UZUa0hpuv24uqj+6zeon0owf8T70oSBJmhqw90LAsyeJ
- oUWcCqyfbJc+4bRPWC0NEDkIjjldwqoPpbLr3hiHxd8lNTCKiCuuIxwp8fKaif3e2iIF
- 7Ccg==
-X-Gm-Message-State: AOJu0YzddViAD76lLM/nsR9/l50SfHbBPUnpJxkW94psBX4aDHbbx39h
- xI59mATw5v+dzqmTVlpIrZ/wrx+u0qfUeS20qzZUoNyC4yo=
-X-Google-Smtp-Source: AGHT+IEQ5OV5BIC2q15KsebeioDvRsWyXEhHD2P4ji6M5ruw5D6eMht9npmzQDIi+yPPSXRTNWXcAQ==
-X-Received: by 2002:a05:6e02:510:b0:361:923b:d79e with SMTP id
- d16-20020a056e02051000b00361923bd79emr510337ils.85.1705422018354; 
- Tue, 16 Jan 2024 08:20:18 -0800 (PST)
+ bh=Sb8ewZWwHpfNyDhnqAuVoxp7WG7jOe/slKL1LcWRMgA=;
+ b=LxlFG1Kg9xgJZMAJJJXuFzTfQ37pmIwpa9VFYB/M/x4E/51emwYK/hsZvTLRf2sUAA
+ XnkP7gX012eMgI+vHoCwh5G4AeDIrLJ9X/2URF8tOgcjLq7t4tF31gGQxnlyh6PEmDAG
+ +WmbUJy0Q0Ma7FmCTp7ZezFLgDdTCgD2oMzUWPzkgdH+cqkjVZ1nESzibHA1mhLQugci
+ Peeq910WIAcFp8THYZKT95d4uYv9/7W7Iz2dPVXRBtmON8JMUFmdoaI30zA5zHKemyVy
+ 0VvvFKfWBaXSKBahHSdhar2HXZddeTvWZQ7r/GiJRCWvBbiWaPT9U8uKJ03Nrp/LVjGv
+ E5EQ==
+X-Gm-Message-State: AOJu0YwrUX+Tp+PKEUO6ZAqH1S2hojjozpYr9jlwgazobSxrBYrMVYio
+ YKD2VtMTZPJV0FXBSItsMQbtkFF7hJ7u5A==
+X-Google-Smtp-Source: AGHT+IEd9iSQRr5FpCis06jN1hSBln9tMu7sGM83eRoAmH6A1XUDsRO3hLrvkGmIeRagMBTD2XPoSw==
+X-Received: by 2002:a05:600c:5398:b0:40e:62b1:58a5 with SMTP id
+ hg24-20020a05600c539800b0040e62b158a5mr3902845wmb.15.1705422346579; 
+ Tue, 16 Jan 2024 08:25:46 -0800 (PST)
 Received: from [192.168.1.102] ([176.176.156.199])
  by smtp.gmail.com with ESMTPSA id
- y1-20020a056e02128100b0035fea0268bcsm3607268ilq.28.2024.01.16.08.20.15
+ q14-20020a1709060f8e00b00a2a61b9c166sm6639819ejj.33.2024.01.16.08.25.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Jan 2024 08:20:18 -0800 (PST)
-Message-ID: <7a73231a-d7ae-4abe-9bca-e8e295a5f70d@linaro.org>
-Date: Tue, 16 Jan 2024 17:20:13 +0100
+ Tue, 16 Jan 2024 08:25:46 -0800 (PST)
+Message-ID: <501c1bfe-fb26-42ab-a925-9888755c72ad@linaro.org>
+Date: Tue, 16 Jan 2024 17:25:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/14] hw/arm: Prefer arm_feature() over
- object_property_find()
+Subject: Re: [PATCH 14/33] hw/cpu/arm: Handle 'has_el2/3' properties once in
+ MPCore parent
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Marcin Juszkiewicz
- <marcin.juszkiewicz@linaro.org>, qemu-arm@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Igor Mitsyanko <i.mitsyanko@gmail.com>,
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
+ Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Rob Herring <robh@kernel.org>,
- Markus Armbruster <armbru@redhat.com>,
- Alistair Francis <alistair@alistair23.me>
-References: <20240110195329.3995-1-philmd@linaro.org>
- <CAFEAcA9c58iVvgW4wnNT1H3tzsdYbxyU-kT7bJP=A3E+B-t7PA@mail.gmail.com>
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Rob Herring <robh@kernel.org>,
+ qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+References: <20231212162935.42910-1-philmd@linaro.org>
+ <20231212162935.42910-15-philmd@linaro.org> <87y1cudyp2.fsf@suse.de>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA9c58iVvgW4wnNT1H3tzsdYbxyU-kT7bJP=A3E+B-t7PA@mail.gmail.com>
+In-Reply-To: <87y1cudyp2.fsf@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12c;
- envelope-from=philmd@linaro.org; helo=mail-il1-x12c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,62 +105,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/1/24 14:36, Peter Maydell wrote:
-> On Wed, 10 Jan 2024 at 19:53, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Since v2 [2]:
->> - Dropped "Simplify checking A64_MTE bit in FEATURE_ID register"
->> - Correct object_property_get_bool() uses
->> - Update ARM_FEATURE_AARCH64 && aa64_mte
->>
->> Since RFC [1]:
->> - Split one patch per feature
->> - Addressed Peter's review comments
->>
->> [1] https://lore.kernel.org/qemu-devel/20231214171447.44025-1-philmd@linaro.org/
->> [2] https://lore.kernel.org/qemu-devel/20240109180930.90793-1-philmd@linaro.org/
->>
->> Based-on: <20231123143813.42632-1-philmd@linaro.org>
->>    "hw: Simplify accesses to CPUState::'start-powered-off' property"
->>
->> Philippe Mathieu-Daudé (14):
->>    hw/arm/armv7m: Introduce cpudev variable in armv7m_realize()
->>    hw/arm/armv7m: Ensure requested CPU type implements ARM_FEATURE_M
->>    hw/arm/armv7m: Move code setting 'start-powered-off' property around
->>    hw/arm/armv7m: Always set 'init-nsvtor' property for Cortex-M CPUs
-
-
-> The first part of this is fine and reasonable cleanup, but I
-> continue to disagree about the later parts. What we want to do is
-> "if this property is present, then set it", and that's what we do.
-> Conversion to "if <some condition we know that the CPU is using to
-> decide whether to define the property> then set it" is duplicating
-> the condition logic in two places and opening the door for bugs
-> where we change the condition in one place and not in the other.
-> Where the <some condition> is a simple "feature X is set" it doesn't
-> look too bad, but where it gets more complex it makes it IMHO more
-> obvious that this is a bad idea, for example with:
+On 12/1/24 22:33, Fabiano Rosas wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
 > 
-> -        if (object_property_find(cpuobj, "reset-cbar")) {
-> +        if (arm_feature(&cpu->env, ARM_FEATURE_CBAR) ||
-> +            arm_feature(&cpu->env, ARM_FEATURE_CBAR_RO)) {
+>> Move the 'has_el2' and 'has_el3' properties to the abstract
+>> QOM parent.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   include/hw/cpu/cortex_mpcore.h |  5 +++++
+>>   hw/arm/exynos4210.c            | 10 ++++++++--
+>>   hw/arm/vexpress.c              |  6 ++++++
+>>   hw/arm/xilinx_zynq.c           |  6 ++++++
+>>   hw/cpu/a15mpcore.c             | 18 ++++++------------
+>>   hw/cpu/a9mpcore.c              |  5 +----
+>>   hw/cpu/cortex_mpcore.c         |  3 +++
+>>   7 files changed, 35 insertions(+), 18 deletions(-)
+>>
+>> diff --git a/include/hw/cpu/cortex_mpcore.h b/include/hw/cpu/cortex_mpcore.h
+>> index 0e7cca9e93..387552468c 100644
+>> --- a/include/hw/cpu/cortex_mpcore.h
+>> +++ b/include/hw/cpu/cortex_mpcore.h
+>> @@ -30,6 +30,8 @@
+>>    * QEMU interface:
+>>    *  + QOM property "num-cores" which set the number of cores present in
+>>    *    the cluster.
+>> + *  + QOM properties "cpu-has-el3", "cpu-has-el2" which set whether the CPUs
+>> + *    have the exception level features present.
+>>    */
+>>   #define TYPE_CORTEX_MPCORE_PRIV "cortex_mpcore_priv"
+>>   OBJECT_DECLARE_TYPE(CortexMPPrivState, CortexMPPrivClass, CORTEX_MPCORE_PRIV)
+>> @@ -53,6 +55,9 @@ struct CortexMPPrivState {
+>>   
+>>       /* Properties */
+>>       uint32_t num_cores;
+>> +
+>> +    bool cpu_has_el3;
+>> +    bool cpu_has_el2;
+>>   };
 
-For that we could add helpers such
 
-   static inline bool arm_feature_cbar(CPUState *cpu) {
-     return arm_feature(&cpu->env, ARM_FEATURE_CBAR) ||
-            arm_feature(&cpu->env, ARM_FEATURE_CBAR_RO);
-   }
+>> diff --git a/hw/cpu/a9mpcore.c b/hw/cpu/a9mpcore.c
+>> index 9c138f4442..54949314f8 100644
+>> --- a/hw/cpu/a9mpcore.c
+>> +++ b/hw/cpu/a9mpcore.c
+>> @@ -51,7 +51,6 @@ static void a9mp_priv_realize(DeviceState *dev, Error **errp)
+>>       SysBusDevice *scubusdev, *gicbusdev, *gtimerbusdev, *mptimerbusdev,
+>>                    *wdtbusdev;
+>>       Error *local_err = NULL;
+>> -    bool has_el3;
+>>       CPUState *cpu0;
+>>       Object *cpuobj;
+>>   
+>> @@ -86,9 +85,7 @@ static void a9mp_priv_realize(DeviceState *dev, Error **errp)
+>>       /* Make the GIC's TZ support match the CPUs. We assume that
+>>        * either all the CPUs have TZ, or none do.
+>>        */
+>> -    has_el3 = object_property_find(cpuobj, "has_el3") &&
+>> -        object_property_get_bool(cpuobj, "has_el3", &error_abort);
+>> -    qdev_prop_set_bit(gicdev, "has-security-extensions", has_el3);
+>> +    qdev_prop_set_bit(gicdev, "has-security-extensions", c->cpu_has_el3);
+>>   
+>>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->gic), errp)) {
+>>           return;
+>> diff --git a/hw/cpu/cortex_mpcore.c b/hw/cpu/cortex_mpcore.c
+>> index d7ea633e4e..549b81f708 100644
+>> --- a/hw/cpu/cortex_mpcore.c
+>> +++ b/hw/cpu/cortex_mpcore.c
+>> @@ -27,6 +27,9 @@ static Property cortex_mpcore_priv_properties[] = {
+>>       DEFINE_PROP_UINT32("num-cores", CortexMPPrivState, num_cores, 1),
+>>       DEFINE_PROP_UINT32("num-cpu", CortexMPPrivState, num_cores, 1), /* alias */
+>>   
+>> +    DEFINE_PROP_BOOL("cpu-has-el3", CortexMPPrivState, cpu_has_el3, true),
+>> +    DEFINE_PROP_BOOL("cpu-has-el2", CortexMPPrivState, cpu_has_el2, false),
+> 
+> Are we missing setting cpu_has_el2 somewhere else? This^ results in fewer
+> cpregs being registered and is what breaks migration.
+> 
+> You can test with:
+> 
+> $ (echo "migrate file:migfile"; echo "quit") | ./qemu-system-arm -M ast2600-evb -monitor stdio
+> $ ./scripts/analyze-migration.py -f migfile | grep array_len
+> 
+> Before series:
+> $ ./scripts/analyze-migration.py -f migfile | grep array_len
+>          "cpreg_vmstate_array_len": "0x0000010a",
+>          "cpreg_vmstate_array_len": "0x0000010a",
+> 
+> After series:
+> $ ./scripts/analyze-migration.py -f migfile | grep array_len
+>          "cpreg_vmstate_array_len": "0x000000df",
+>          "cpreg_vmstate_array_len": "0x000000df",
 
-and use it in the target/ code where we register the property
-and in the hw/ code where we set it.
+Thank you Fabiano for helping debugging. Indeed there is a problem
+with properties, so this patch is bogus.
 
+The good news is the QOM reparenting happened 2 commits earlier,
+so this discarded the doubts on qom-path change possibly affecting
+migration :)
 
-Anyway I'll wait to see how Kevin's effort is going before
-insisting with this series.
-Do you mind taking the cleanup patches (1-4) meanwhile?
-
-Thanks,
+Regards,
 
 Phil.
 
