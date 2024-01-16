@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632EB82EF59
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 14:03:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC33782EF5E
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 14:04:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPj5l-0007Jj-CI; Tue, 16 Jan 2024 08:02:57 -0500
+	id 1rPj5l-0007K4-Vc; Tue, 16 Jan 2024 08:02:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1rPj5e-0007IM-Mh
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:02:53 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1rPj5f-0007IV-Q1
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:02:54 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1rPj5c-0006gN-J6
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:02:50 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40e86c86a6fso1715645e9.2
+ id 1rPj5d-0006ge-9Y
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:02:51 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40e76109cdeso22366325e9.0
  for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 05:02:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1705410166; x=1706014966; darn=nongnu.org;
+ d=adacore.com; s=google; t=1705410167; x=1706014967; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rxD20uCid/0tv8hV8SWyOcdb3LbgP765Gn4srtgv1/4=;
- b=PzPCjb0c7FAvJuynsWBfUgWFTC2NceD0yPT7b2ZHXB/jSKC1CMO3oGKXJhdqSPOvwe
- 4uEH5xIgMjCp7LScQ6/m2msJgDNjGKREVD9eZPjmgOqUKfEOJ3bRZPVcAzItIqctlyKU
- nm6kssPyZokr8kKhfYm88H4k7vfSCLlRyj8giqGxq6p1Lb50btRgzZENSt9UhfszzEKr
- TQuW3k1GQtlg2wId88JnLSUIAsjMGdcMIc9CX7x6Nbse30F5HG1V+/slUPwdDK4HODCT
- DlIq9RSAohaXFO04GCzvOz00ICqKSoWlUnzEcNcy97edwqUDJACSS+C1p9VuGdZ0Fcqv
- K8KA==
+ bh=uKW/EH5R/IdiWfxo4lBBEsNkOoH1NjRDpWTKl/kBcoc=;
+ b=k6xNufv7zNaDQNQos7UvbPT8/7OjxzUfdIPlC2Qocnqsn1+PjmqDLMltSZTc/5fatu
+ BNXA4y5ryxqRYCXTpWSW///ZeuQrC1a1HChoqIu6xdpzipCzRYdWC5zYYSUQOMNTVF5T
+ M2PaUYgBYdhkkELwBoDd39n0mGRhzIodti7q3jFXY1O0m8AxowDihYR2kF0OTXC4lJMx
+ GRQR+h8gmXtB6qek2cZAHHBg/rF25xeYniThD3wf3+ZQ5RCSjJNxImzDL4+BPuxhCVAA
+ KwsWAUhEGavjB7G6Ox2ke6yGyNcRYq8D1AqCfOsSQCxjitKkghr0uc14gfXux2BpWirP
+ FPCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705410166; x=1706014966;
+ d=1e100.net; s=20230601; t=1705410167; x=1706014967;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rxD20uCid/0tv8hV8SWyOcdb3LbgP765Gn4srtgv1/4=;
- b=VzVTiHk6PRZFjSeS8DT9bUC5kKFScQXC2ncD2mzcxTuxCM6rvaeCPo4GnitxkoNyWB
- VDF+xNAQdkZhqcwufPiF3LpVV+8xuod+S/SEUR4pbz+CLjmsMu0IfVfealV4nP97vMKm
- G6eH4UEFex5ZYS7a8B5WRmg9m/QIJE99fsk5AszaSGsqcTmhAbrv87VAd9oLMUVvZXKV
- Me6O+8FxXaTnAtzAdJbEnDD3g66zmWIzqYrzIhVbGcyV9KoLloKVvaMy9WYx5gVU3bJh
- 4j6dPKYPjR2a2ho4KpSybDHKu5/ygRryghS33Wl8mJ3qNnk0P+G2ewF1bl0vD8HN4nzB
- 7Bhg==
-X-Gm-Message-State: AOJu0YwASfJgw+UV09u39k02Ba5dRDxZ+uyfkJRgeTRjv6xGHKwuWIB7
- VQVjZVKSCvYqVwZH+vIxtDVFhv4RBXo2hgu/465NtoHpBA==
-X-Google-Smtp-Source: AGHT+IHNy/DX4m3fAOh/NoutrnNLcIIqHOnPeMWfQ7DuJgyl14hru0duakzPzV/4XePZMgXil+JOBw==
-X-Received: by 2002:a05:600c:310e:b0:40e:50f8:9ae3 with SMTP id
- g14-20020a05600c310e00b0040e50f89ae3mr2147102wmo.68.1705410166434; 
- Tue, 16 Jan 2024 05:02:46 -0800 (PST)
+ bh=uKW/EH5R/IdiWfxo4lBBEsNkOoH1NjRDpWTKl/kBcoc=;
+ b=dRZFJc0+oBnrYU5NfVxqc52dLP6qD96E7F+ReLYCIlvGTrta9WwYEE/qpfkMSBGO0T
+ yy/+Bo7hc5IhDPKsOxQwiJ6scy0oaJ5uTJ/cCaAHF+8O8E3EVg/5aVFWTTYODcTmmP/p
+ mo8rhr8gacuEqPAr1AKvz0xGRXHGrBvFXIrKPiliFtv5ujGYJ2Vw2Kd4P2eVZSM05HXV
+ GU8ALYbo8rMafOuB4tk8xqa53ydJT/FmD30NKIuhpSCVR02ljbfnebpWiAyp5C1Nc3jB
+ EwB+bvR9qfCAIXJD8MflNSGcRpxzzgUWJquOroIRHXrkog7Anj4F7wW5a1ntSIYovJM0
+ l8vA==
+X-Gm-Message-State: AOJu0YzAYlicFXk3kr0Xi/V71hgBkzRt4AwxZMj7Z5x0wk9laBGlfVKP
+ LGMIRipcq6uqg/flzg1gBm+bCeswYZNNoGH97ICk3puueg==
+X-Google-Smtp-Source: AGHT+IF52UqJcA7ULV1Nz0yPkmqu33iUQ/KzXIYB2DIhFHvgb8xIXbTptA4ppz4vwRBoVoyLRlkWNA==
+X-Received: by 2002:a05:600c:280b:b0:40e:44c2:92be with SMTP id
+ m11-20020a05600c280b00b0040e44c292bemr4065008wmb.143.1705410167579; 
+ Tue, 16 Jan 2024 05:02:47 -0800 (PST)
 Received: from chigot-Dell.telnowedge.local
  (lmontsouris-659-1-24-67.w81-250.abo.wanadoo.fr. [81.250.175.67])
  by smtp.gmail.com with ESMTPSA id
- d16-20020a05600c34d000b0040e83867d62sm2495316wmq.34.2024.01.16.05.02.45
+ d16-20020a05600c34d000b0040e83867d62sm2495316wmq.34.2024.01.16.05.02.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jan 2024 05:02:45 -0800 (PST)
+ Tue, 16 Jan 2024 05:02:46 -0800 (PST)
 From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
  Frederic Konrad <konrad.frederic@yahoo.fr>
-Subject: [PATCH v2 6/8] leon3: implement multiprocessor
-Date: Tue, 16 Jan 2024 14:02:11 +0100
-Message-Id: <20240116130213.172358-7-chigot@adacore.com>
+Subject: [PATCH v2 7/8] leon3: check cpu_id in the tiny bootloader
+Date: Tue, 16 Jan 2024 14:02:12 +0100
+Message-Id: <20240116130213.172358-8-chigot@adacore.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240116130213.172358-1-chigot@adacore.com>
 References: <20240116130213.172358-1-chigot@adacore.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=chigot@adacore.com; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=chigot@adacore.com; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,195 +94,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows to register more than one CPU on the leon3_generic machine.
+Now that SMP is possible, the asr17 must be checked in the little boot code
+or the secondary CPU will reinitialize the Timer and the Uart.
 
 Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
 Signed-off-by: Clément Chigot <chigot@adacore.com>
 ---
- hw/sparc/leon3.c | 106 +++++++++++++++++++++++++++++++++--------------
- 1 file changed, 74 insertions(+), 32 deletions(-)
+ hw/sparc/leon3.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
 diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
-index 7866f0a049..eacd85ee4f 100644
+index eacd85ee4f..87a8044a3e 100644
 --- a/hw/sparc/leon3.c
 +++ b/hw/sparc/leon3.c
-@@ -54,6 +54,8 @@
- #define LEON3_PROM_OFFSET    (0x00000000)
- #define LEON3_RAM_OFFSET     (0x40000000)
- 
-+#define MAX_CPUS  4
-+
- #define LEON3_UART_OFFSET  (0x80000100)
- #define LEON3_UART_IRQ     (3)
- 
-@@ -67,9 +69,12 @@
- #define LEON3_AHB_PNP_OFFSET (0xFFFFF000)
- 
- typedef struct ResetData {
--    SPARCCPU *cpu;
--    uint32_t  entry;            /* save kernel entry in case of reset */
--    target_ulong sp;            /* initial stack pointer */
-+    struct CPUResetData {
-+        int id;
-+        SPARCCPU *cpu;
-+        target_ulong sp;  /* initial stack pointer */
-+    } info[MAX_CPUS];
-+    uint32_t entry;             /* save kernel entry in case of reset */
- } ResetData;
- 
- static uint32_t *gen_store_u32(uint32_t *code, hwaddr addr, uint32_t val)
-@@ -125,18 +130,19 @@ static void write_bootloader(CPUSPARCState *env, uint8_t *base,
-     stl_p(p++, 0x01000000); /* nop */
- }
- 
--static void main_cpu_reset(void *opaque)
-+static void leon3_cpu_reset(void *opaque)
- {
--    ResetData *s   = (ResetData *)opaque;
--    CPUState *cpu = CPU(s->cpu);
--    CPUSPARCState  *env = &s->cpu->env;
-+    struct CPUResetData *info = (struct CPUResetData *) opaque;
-+    int id = info->id;
-+    ResetData *s = (ResetData *)DO_UPCAST(ResetData, info[id], info);
-+    CPUState *cpu = CPU(s->info[id].cpu);
-+    CPUSPARCState *env = cpu_env(cpu);
- 
-     cpu_reset(cpu);
--
--    cpu->halted = 0;
--    env->pc     = s->entry;
--    env->npc    = s->entry + 4;
--    env->regbase[6] = s->sp;
-+    cpu->halted = cpu->cpu_index != 0;
-+    env->pc = s->entry;
-+    env->npc = s->entry + 4;
-+    env->regbase[6] = s->info[id].sp;
- }
- 
- static void leon3_cache_control_int(CPUSPARCState *env)
-@@ -170,8 +176,8 @@ static void leon3_cache_control_int(CPUSPARCState *env)
- 
- static void leon3_irq_ack(CPUSPARCState *env, int intno)
- {
--    /* No SMP support yet, only CPU #0 available so far.  */
--    grlib_irqmp_ack(env->irq_manager, 0, intno);
-+    CPUState *cpu = CPU(env_cpu(env));
-+    grlib_irqmp_ack(env->irq_manager, cpu->cpu_index, intno);
- }
+@@ -100,13 +100,27 @@ static uint32_t *gen_store_u32(uint32_t *code, hwaddr addr, uint32_t val)
  
  /*
-@@ -213,6 +219,20 @@ static void leon3_set_pil_in(void *opaque, int n, int level)
-     }
- }
- 
-+static void leon3_start_cpu_async_work(CPUState *cpu, run_on_cpu_data data)
-+{
-+    cpu->halted = 0;
-+}
-+
-+static void leon3_start_cpu(void *opaque, int n, int level)
-+{
-+    CPUState *cs = CPU(opaque);
-+
-+    if (level) {
-+        async_run_on_cpu(cs, leon3_start_cpu_async_work, RUN_ON_CPU_NULL);
-+    }
-+}
-+
- static void leon3_irq_manager(CPUSPARCState *env, int intno)
+  * When loading a kernel in RAM the machine is expected to be in a different
+- * state (eg: initialized by the bootloader). This little code reproduces
+- * this behavior.
++ * state (eg: initialized by the bootloader).  This little code reproduces
++ * this behavior.  Also this code can be executed by the secondary cpus as
++ * well since it looks at the %asr17 register before doing any
++ * initialization, it allows to use the same reset address for all the
++ * cpus.
+  */
+ static void write_bootloader(CPUSPARCState *env, uint8_t *base,
+                              hwaddr kernel_addr)
  {
-     leon3_irq_ack(env, intno);
-@@ -238,17 +258,21 @@ static void leon3_generic_hw_init(MachineState *machine)
-     AHBPnp *ahb_pnp;
-     APBPnp *apb_pnp;
- 
--    /* Init CPU */
--    cpu = SPARC_CPU(cpu_create(machine->cpu_type));
--    env = &cpu->env;
-+    reset_info = g_malloc0(sizeof(ResetData));
- 
--    cpu_sparc_set_id(env, 0);
-+    for (i = 0; i < machine->smp.cpus; i++) {
-+        /* Init CPU */
-+        cpu = SPARC_CPU(cpu_create(machine->cpu_type));
-+        env = &cpu->env;
- 
--    /* Reset data */
--    reset_info        = g_new0(ResetData, 1);
--    reset_info->cpu   = cpu;
--    reset_info->sp    = LEON3_RAM_OFFSET + ram_size;
--    qemu_register_reset(main_cpu_reset, reset_info);
-+        cpu_sparc_set_id(env, i);
+     uint32_t *p = (uint32_t *) base;
++    uint32_t *sec_cpu_branch_p = NULL;
 +
-+        /* Reset data */
-+        reset_info->info[i].id = i;
-+        reset_info->info[i].cpu = cpu;
-+        reset_info->info[i].sp = LEON3_RAM_OFFSET + ram_size;
-+        qemu_register_reset(leon3_cpu_reset, &reset_info->info[i]);
-+    }
- 
-     ahb_pnp = GRLIB_AHB_PNP(qdev_new(TYPE_GRLIB_AHB_PNP));
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(ahb_pnp), &error_fatal);
-@@ -266,14 +290,28 @@ static void leon3_generic_hw_init(MachineState *machine)
- 
-     /* Allocate IRQ manager */
-     irqmpdev = qdev_new(TYPE_GRLIB_IRQMP);
-+    object_property_set_int(OBJECT(irqmpdev), "ncpus", machine->smp.cpus,
-+                            &error_fatal);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(irqmpdev), &error_fatal);
--    qdev_init_gpio_in_named_with_opaque(DEVICE(cpu), leon3_set_pil_in,
--                                        env, "pil", 1);
--    qdev_connect_gpio_out_named(irqmpdev, "grlib-irq", 0,
--                                qdev_get_gpio_in_named(DEVICE(cpu), "pil", 0));
++    /* If we are running on a secondary CPU, jump directly to the kernel.  */
 +
-+    for (i = 0; i < machine->smp.cpus; i++) {
-+        cpu = reset_info->info[i].cpu;
-+        env = &cpu->env;
-+        qdev_init_gpio_in_named_with_opaque(DEVICE(cpu), leon3_start_cpu,
-+                                            cpu, "start_cpu", 1);
-+        qdev_connect_gpio_out_named(irqmpdev, "grlib-start-cpu", i,
-+                                    qdev_get_gpio_in_named(DEVICE(cpu),
-+                                                           "start_cpu", 0));
-+        qdev_init_gpio_in_named_with_opaque(DEVICE(cpu), leon3_set_pil_in,
-+                                            env, "pil", 1);
-+        qdev_connect_gpio_out_named(irqmpdev, "grlib-irq", i,
-+                                    qdev_get_gpio_in_named(DEVICE(cpu),
-+                                                           "pil", 0));
-+        env->irq_manager = irqmpdev;
-+        env->qemu_irq_ack = leon3_irq_manager;
-+    }
++    stl_p(p++, 0x85444000); /* rd %asr17, %g2      */
++    stl_p(p++, 0x8530a01c); /* srl  %g2, 0x1c, %g2 */
++    stl_p(p++, 0x80908000); /* tst  %g2            */
++    /* Fill that later.  */
++    sec_cpu_branch_p = p;
++    stl_p(p++, 0x0BADC0DE); /* bne xxx             */
++    stl_p(p++, 0x01000000); /* nop */
+ 
+     /* Initialize the UARTs                                        */
+     /* *UART_CONTROL = UART_RECEIVE_ENABLE | UART_TRANSMIT_ENABLE; */
+@@ -120,6 +134,10 @@ static void write_bootloader(CPUSPARCState *env, uint8_t *base,
+     /* *GPTIMER0_CONFIG = GPTIMER_ENABLE | GPTIMER_RESTART;        */
+     p = gen_store_u32(p, 0x80000318, 3);
+ 
++    /* Now, the relative branch above can be computed.  */
++    stl_p(sec_cpu_branch_p, 0x12800000
++          + (p - sec_cpu_branch_p));
 +
-     sysbus_mmio_map(SYS_BUS_DEVICE(irqmpdev), 0, LEON3_IRQMP_OFFSET);
--    env->irq_manager = irqmpdev;
--    env->qemu_irq_ack = leon3_irq_manager;
-     grlib_apb_pnp_add_entry(apb_pnp, LEON3_IRQMP_OFFSET, 0xFFF,
-                             GRLIB_VENDOR_GAISLER, GRLIB_IRQMP_DEV,
-                             2, 0, GRLIB_APBIO_AREA);
-@@ -347,10 +385,13 @@ static void leon3_generic_hw_init(MachineState *machine)
-             uint8_t *bootloader_entry;
- 
-             bootloader_entry = memory_region_get_ram_ptr(prom);
--            write_bootloader(env, bootloader_entry, entry);
--            env->pc = LEON3_PROM_OFFSET;
--            env->npc = LEON3_PROM_OFFSET + 4;
-+            write_bootloader(&reset_info->info[0].cpu->env, bootloader_entry,
-+                             entry);
-             reset_info->entry = LEON3_PROM_OFFSET;
-+            for (i = 0; i < machine->smp.cpus; i++) {
-+                reset_info->info[i].cpu->env.pc = LEON3_PROM_OFFSET;
-+                reset_info->info[i].cpu->env.npc = LEON3_PROM_OFFSET + 4;
-+            }
-         }
-     }
- 
-@@ -389,6 +430,7 @@ static void leon3_generic_machine_init(MachineClass *mc)
-     mc->init = leon3_generic_hw_init;
-     mc->default_cpu_type = SPARC_CPU_TYPE_NAME("LEON3");
-     mc->default_ram_id = "leon3.ram";
-+    mc->max_cpus = MAX_CPUS;
- }
- 
- DEFINE_MACHINE("leon3_generic", leon3_generic_machine_init)
+     /* JUMP to the entry point                                     */
+     stl_p(p++, 0x82100000); /* mov %g0, %g1 */
+     stl_p(p++, 0x03000000 + extract32(kernel_addr, 10, 22));
 -- 
 2.25.1
 
