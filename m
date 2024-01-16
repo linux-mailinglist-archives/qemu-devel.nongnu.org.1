@@ -2,92 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF26482ECE1
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 11:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 031FF82ED09
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 11:50:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPguJ-00018B-39; Tue, 16 Jan 2024 05:42:59 -0500
+	id 1rPgzj-0002PU-I7; Tue, 16 Jan 2024 05:48:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1rPguE-00017l-M6
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 05:42:54 -0500
-Received: from out1-smtp.messagingengine.com ([66.111.4.25])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1rPguC-00063b-DA
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 05:42:53 -0500
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.nyi.internal (Postfix) with ESMTP id 7B7CA5C00BD;
- Tue, 16 Jan 2024 05:42:48 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute4.internal (MEProxy); Tue, 16 Jan 2024 05:42:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
- :cc:content-type:content-type:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to:subject
- :subject:to:to; s=fm2; t=1705401768; x=1705488168; bh=0D8nRRiQpf
- Ii2SW9oYND5WkWMVZoNXmDA5r+T/LntJs=; b=QtmNZfLkuqDxV5ZUJ3w9uKwh1Z
- c/SfF1bMXu87GRchobD0wJEHNYl+e/b//lFXr70qVc8e8UJoqzKph3MjfPgbHV6T
- pMaboiAjVLKX6ho5GPOZ7HDAng+bbIwGfx83tencR2vR+FFkZaef89UIVjqdoslI
- W5UCoyisa3Zo+mc28pkRfIgHgPt1fkl+bdJ0kCIkW5bIkl2i4X5QUQngFm1Tj85+
- 5+edywVp+GeZwsf0SBMdgV2nstS9J6/mNxExKOJziGj0exDoQxYTiZp93/zssM3l
- JepW/oTCzUR5EK9c9kg/C45es/rLDzqQxM7KOa05/ypTbk/8BNVluJlSX5bA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; t=1705401768; x=1705488168; bh=0D8nRRiQpfIi2SW9oYND5WkWMVZo
- NXmDA5r+T/LntJs=; b=j1p396IVuSdTbs8fiKW6xq9WbFFTykJZQ7mZoPijK808
- tG9cuocj/aERGN6sXVQF2J23sXBlDmxHeecnKfXo795/OfTU0g2KhmZa5i07u4N4
- bjJ4xfQw4vBdDwq+swxG4+wm4+7uD9UdPfroAvkptviJJ+t7BIzgKpom9Lzgc1Mn
- PoadeGLU/v6MLYe71O6f2xR4i0mD0PidiMaKocRLORxV+C1ujyD/V7EMOV9i7+69
- eHXABwU/n4oBkExCS2WoUQdtKPgbGflp+tfMKIlI+r5Vjy1aeFZ730WdVA54Ni0R
- rbJjPuOS+2bzpCPhFd7CZgC2Yh46p+v4tRoQjtomkA==
-X-ME-Sender: <xms:qF2mZTeTykYFu-RW0m4a3NAsx-aKnm52OAXcfLluNynNNz-NYFSywQ>
- <xme:qF2mZZM0LtVV0IVrKTrr31IRO-VFuliwXyFY0f3Zx-dufGyFlCM0GVsFfXyecGOXq
- 38EJt9HGGzHs0BHrA>
-X-ME-Received: <xmr:qF2mZcjMzDDMIM7FeqyGjaKJopuSrScI7OVDWL9v7Rvx5G38hlWaJYVSyKXIlVBbQsVbjhw2_p9OY6hAipFzPwP20SaN>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdejfedgudekucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffvvefujghffffkgggtsehgtderredttddtnecuhfhrohhmpeetlhihshhs
- rgcutfhoshhsuceohhhisegrlhihshhsrgdrihhsqeenucggtffrrghtthgvrhhnpeeiud
- ffueeilefgtefgtddttdekkeehkefgheekudefveetgeefiefftedvteeuveenucevlhhu
- shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehhihesrghlhihssh
- grrdhish
-X-ME-Proxy: <xmx:qF2mZU9NckQJ6UdDEET6cFeCGBZ31-8R5FSsBS-LxbHGiT57aypDHw>
- <xmx:qF2mZfuoN9mFsL5H6FycT-4BDql7oN4HuuLiVH9SZttf27SlRSkdbA>
- <xmx:qF2mZTERz3BPilU5lZdE8ye4r3iPrbnEEAEt_ljT_XFIVmDOElwxXg>
- <xmx:qF2mZdJfgQo7DLDjEvJQtCu9YYTKBgAPGN4Fr0hUGT8xlOzpwLbiXg>
-Feedback-ID: i12284293:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 16 Jan 2024 05:42:47 -0500 (EST)
-Received: by mbp.qyliss.net (Postfix, from userid 1000)
- id 4AAEFBCF5; Tue, 16 Jan 2024 11:42:45 +0100 (CET)
-From: Alyssa Ross <hi@alyssa.is>
-To: Gurchetan Singh <gurchetansingh@chromium.org>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com,
- akihiko.odaki@gmail.com, ray.huang@amd.com, alex.bennee@linaro.org,
- shentey@gmail.com, ernunes@redhat.com, manos.pitsidianakis@linaro.org,
- mark.cave-ayland@ilande.co.uk, thuth@redhat.com
-Subject: Re: [PATCH v15 0/9] rutabaga_gfx + gfxstream
-In-Reply-To: <20231003204500.518-1-gurchetansingh@chromium.org>
-References: <20231003204500.518-1-gurchetansingh@chromium.org>
-Date: Tue, 16 Jan 2024 11:42:25 +0100
-Message-ID: <87wms9d0fi.fsf@alyssa.is>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rPgzQ-0002HR-4b
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 05:48:17 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rPgzN-0007Ao-O5
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 05:48:15 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40e60e137aaso49312475e9.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 02:48:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705402092; x=1706006892; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VcUss7o1hqN+n+0AAkWV5ZRYdfS//MAFhmJ+MtkOJ0g=;
+ b=DxPw9Ly5U7ziutsRQJYNWsd0hLTi/r//McDmEyH7cIVQ5I4hdP5fGW8Yr3jEUwOBBO
+ m96hhmrfhRBzGCAcd6MqwLdlWE+f70fDfX7SYO9LfeZUFQFAwGvB4anMz+8NLVk04FQ+
+ bXrYk0JCCtr/ubyq9eTiOqs8QLvcR2NN4m+cDmj5uIJ0zOiv+NuobgEJ5VjOVt8PuUzv
+ 6jsykpqpxRuv6STJ6R5V0abzZm/+JfHoZuQKgWDz8u5k9IVvE2FwLi2ANDrj9pIBIWYQ
+ dNNXG4Nc8lCjFTYIDzKo///RyWPidWjSe/ksc7i8+0vdPR4CvqtsuuSe+UNDthVkaMhR
+ ZdMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705402092; x=1706006892;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VcUss7o1hqN+n+0AAkWV5ZRYdfS//MAFhmJ+MtkOJ0g=;
+ b=mCsMovRZXoGDYdSUzz5cZLIG+LxG4fjsbscLq5aGNKt6iiASXR0xmRI9guNb8ke6AN
+ 6yyjgkDhwTIcQfUYzCyBjNF4N2afc72dSo+Pp1+eqXpU5zZJAlufSRGFGMSlDW5TB4FX
+ WhfyAhPxTbc8cX1+p18UW5POTpXQLdEGFHMawjjQzQStwmdIjQKkHIZc31Nv4bPV7DV2
+ oEEC6XS2ag/Ouv52qeA4w3QK9EJXIf1nF7hnPPrKZouDWQrAZ/bIzJktvSrTfgbJaiM4
+ LfpTVrGekU32pFXonK1JGBXfNmPqtNn/joAv/fUYkRiDV9SyJp3bQMt5OuWQnqv5Zk/6
+ qcDg==
+X-Gm-Message-State: AOJu0YwYmwyz6GNCLYZTG0Qkt8SlD9mJ/hOJ/SmQlZSdqb/S/F+DbEED
+ QLEbMnez43Cu53UtanmTcxI94tNTBDMUoyAWAm17fVs701E=
+X-Google-Smtp-Source: AGHT+IHEr1J9DI04cxE9yMCTVDyfDMcHcjP3eCVvDZZPL2U25DlzKJStR7mL+9m+l8aqejUqBqloeg==
+X-Received: by 2002:a05:600c:220f:b0:40e:7546:243a with SMTP id
+ z15-20020a05600c220f00b0040e7546243amr1705042wml.188.1705402092241; 
+ Tue, 16 Jan 2024 02:48:12 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ g14-20020a05600c310e00b0040e398f8cafsm18882465wmo.31.2024.01.16.02.48.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Jan 2024 02:48:10 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 47EEB5F7B5;
+ Tue, 16 Jan 2024 10:48:09 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 00/22] gdb cleanups and tcg plugin register access
+Date: Tue, 16 Jan 2024 10:47:47 +0000
+Message-Id: <20240116104809.250076-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
- micalg=pgp-sha256; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=66.111.4.25; envelope-from=hi@alyssa.is;
- helo=out1-smtp.messagingengine.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,50 +91,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-=-=
-Content-Type: text/plain
+The following changes since commit 977542ded7e6b28d2bc077bcda24568c716e393c:
 
-Hi Gurchetan,
+  Merge tag 'pull-testing-updates-120124-2' of https://gitlab.com/stsquad/qemu into staging (2024-01-12 14:02:53 +0000)
 
-Gurchetan Singh <gurchetansingh@chromium.org> writes:
+are available in the Git repository at:
 
-> - As mentioned in v14:
->     * AEMU: d6e6b99 "Delete VpxFrameParser.cpp"
->     * gfxstream: 2131f78d Merge "gfxstream: add egl & gles deps.."
->
-> are the proposed v.0.1.2 release points.  If those commits are sufficient
-> for packaging AEMU + gfxstream, let me know and I'll have official release
-> tags made.  If additional changes are required for packaging, let me know
-> as well.
+  https://gitlab.com/stsquad/qemu.git tags/pull-registers-for-plugins-160124-2
 
-Were these releases ever made?
+for you to fetch changes up to 87bed6910aa0d0942244b5eedee60b4f8b162c05:
 
-The gfxstream ref mentioned here isn't compatible with
-v0.1.2-rutabaga-release, because it no longer provides logging_base.pc,
-and this email is the last mention I can find of these releases.
+  docs/devel: document some plugin assumptions (2024-01-16 10:34:20 +0000)
 
-In Nixpkgs, I've gone for packaging gfxstream and aemu with your initial
-proposed release points, which works fine, but it would be great to have
-this clearer upstream.
+----------------------------------------------------------------
+read-only register access for plugins:
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
+  - move misa_mxl to CPU class for riscv
+  - use GDBFeature for arm XML
+  - use GDBFeature for ppc XML
+  - use GDBFeature for riscv XML
+  - unify gdb code to use GDBFeature
+  - move dynamic XML generation to core GDB code
+  - provide introspection APIs for rest of QEMU
+  - expose a plugin API to access registers
+  - fix memory re-use in execlog
+  - extend execlog to track registers
+  - optimise instrumentation based on disassembly
+  - tweak API docs and expand on assumptions
 
------BEGIN PGP SIGNATURE-----
+----------------------------------------------------------------
+Akihiko Odaki (15):
+      hw/riscv: Use misa_mxl instead of misa_mxl_max
+      target/riscv: Remove misa_mxl validation
+      target/riscv: Move misa_mxl_max to class
+      target/riscv: Validate misa_mxl_max only once
+      target/arm: Use GDBFeature for dynamic XML
+      target/ppc: Use GDBFeature for dynamic XML
+      target/riscv: Use GDBFeature for dynamic XML
+      gdbstub: Use GDBFeature for gdb_register_coprocessor
+      gdbstub: Use GDBFeature for GDBRegisterState
+      gdbstub: Change gdb_get_reg_cb and gdb_set_reg_cb
+      gdbstub: Simplify XML lookup
+      gdbstub: Infer number of core registers from XML
+      hw/core/cpu: Remove gdb_get_dynamic_xml member
+      gdbstub: Add members to identify registers to GDBFeature
+      plugins: Use different helpers when reading registers
 
-iQIzBAEBCAAdFiEEH9wgcxqlHM/ARR3h+dvtSFmyccAFAmWmXZIACgkQ+dvtSFmy
-ccCsuQ/8Ce/2Wq5K3W1SLtT3UviQat2chF8kX8nSwnfgAK1XRHPH3T/aACwkDW+X
-mg0gBpXq37aZp+Up6JRNrkmINaeaipS6l320P78UtlmzT1KBaN0WfxwVMi4y1juB
-I+nMN4xoEf93SUFkBjnU4flMydslDKXWaHkRxbGGTUMmFHwro4addeDbEBUVAerC
-/jCxn2yfqQZBeensSZQLxQ65OEBJJZSQOLbwDB2MmaSBN1tTdXmZ6KsxVp4ahxOi
-LfMoZSoIIfynY+mYMJcrILeHbwVHF3JyZxrWpf9gZjPBNi3bn4qu+B9eF89E0WNL
-Yhur99MmKgJIEtn34nhsEqm74y1HVgU4Zg4uSrNFC8BspCQzQYOmIOU37Z+UXwA/
-8iwjbwLKWyxgQBMmV26dDzoqmPylgFmEle5zicQFTxnuS6llcW3gIUJy+Cr2OhwG
-nPAQSX8vys5ZcxtZyNII8z0ImkkneQgDwR3dFVjBJHffVX5+Ltjos4qatTmYAWTF
-sNn/d0aZSyFptXdQdSUXZ2BCajtktkZ59obEGw6+UsN+Yz4dH2MuL6U5IUMwIgMx
-hJMG0tPmGhx7Dd8MVxBCQysNlX8zdNdE1lxI3vsYXrNiPVVH6XnHtzR5HK5dDSdB
-wAml0RAwNSUHjgZk6Qi9fgabPo7eQ360ruHjeY5HZ0dtQgYEpXI=
-=8jvQ
------END PGP SIGNATURE-----
---=-=-=--
+Alex Bennée (7):
+      gdbstub: expose api to find registers
+      plugins: add an API to read registers
+      contrib/plugins: fix imatch
+      contrib/plugins: extend execlog to track register changes
+      contrib/plugins: optimise the register value tracking
+      docs/devel: lift example and plugin API sections up
+      docs/devel: document some plugin assumptions
+
+ docs/devel/tcg-plugins.rst   |  72 +++++++++-
+ accel/tcg/plugin-helpers.h   |   3 +-
+ include/exec/gdbstub.h       |  62 ++++++++-
+ include/hw/core/cpu.h        |   7 +-
+ include/qemu/plugin.h        |   1 +
+ include/qemu/qemu-plugin.h   |  51 ++++++-
+ target/arm/cpu.h             |  27 ++--
+ target/arm/internals.h       |  14 +-
+ target/hexagon/internal.h    |   4 +-
+ target/microblaze/cpu.h      |   4 +-
+ target/ppc/cpu-qom.h         |   1 +
+ target/ppc/cpu.h             |   5 +-
+ target/riscv/cpu.h           |   9 +-
+ target/s390x/cpu.h           |   2 -
+ accel/tcg/plugin-gen.c       |  43 +++++-
+ contrib/plugins/execlog.c    | 324 ++++++++++++++++++++++++++++++++++++-------
+ gdbstub/gdbstub.c            | 198 +++++++++++++++++---------
+ hw/core/cpu-common.c         |   5 +-
+ hw/riscv/boot.c              |   2 +-
+ plugins/api.c                | 123 +++++++++++++++-
+ target/arm/cpu.c             |   2 -
+ target/arm/cpu64.c           |   1 -
+ target/arm/gdbstub.c         | 230 +++++++++++++++---------------
+ target/arm/gdbstub64.c       | 122 ++++++++--------
+ target/avr/cpu.c             |   1 -
+ target/hexagon/cpu.c         |   4 +-
+ target/hexagon/gdbstub.c     |  10 +-
+ target/i386/cpu.c            |   2 -
+ target/loongarch/cpu.c       |   2 -
+ target/loongarch/gdbstub.c   |  13 +-
+ target/m68k/cpu.c            |   1 -
+ target/m68k/helper.c         |  26 +++-
+ target/microblaze/cpu.c      |   6 +-
+ target/microblaze/gdbstub.c  |   9 +-
+ target/ppc/cpu_init.c        |   7 -
+ target/ppc/gdbstub.c         | 114 +++++++--------
+ target/riscv/cpu.c           | 193 +++++++++++++-------------
+ target/riscv/gdbstub.c       | 151 +++++++++++---------
+ target/riscv/kvm/kvm-cpu.c   |  10 +-
+ target/riscv/machine.c       |   7 +-
+ target/riscv/tcg/tcg-cpu.c   |  44 +-----
+ target/riscv/translate.c     |   3 +-
+ target/rx/cpu.c              |   1 -
+ target/s390x/cpu.c           |   1 -
+ target/s390x/gdbstub.c       | 105 ++++++++------
+ plugins/qemu-plugins.symbols |   2 +
+ scripts/feature_to_c.py      |  14 +-
+ 47 files changed, 1343 insertions(+), 695 deletions(-)
+
+-- 
+2.39.2
+
 
