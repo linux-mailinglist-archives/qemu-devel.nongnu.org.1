@@ -2,79 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59B382F132
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 16:15:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D10F282F183
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 16:30:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPl7Q-0006kZ-9c; Tue, 16 Jan 2024 10:12:48 -0500
+	id 1rPlNZ-0008Hq-NP; Tue, 16 Jan 2024 10:29:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPl7K-0006gQ-Nw
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 10:12:42 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rPl7H-0005sI-Fe
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 10:12:42 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40e6f652eb8so31588215e9.1
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 07:12:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705417958; x=1706022758; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NvpufcK0hHOLVmcnnY2pYEiueg1e1Oqxnoqne95QDFw=;
- b=ge4DKUyq6P0gl1yiZPc7S2bhR2L3+y3R8jfu/Bgb9tCXF1e0t3lLsAjmcIGrCVRdHl
- 6sIIpngUM4C4a+S7v8arfM4pyoQ27wK4J9CBI52ETxDK/aQJgLCYhnUgFs5hFhlNNr2h
- rF+KSgvNqkctAvI0/xCRXVtX/gazPwl+QWS4m6vao3OdHhl8M+H7AAUWDsIF3T4qzugf
- L9WEE7URR8Q8xkhrK1wuRS/UHAz+dUGiW7tetJ1nuJt1e4vb/7CD7SrYeF3AU+nRaAWw
- HWgoKIyIOzfIuO9dEcgxTFgNVY2zpAhqJzWFjv3FSXYDhC1fiMrtGl511u2KvopZlHWq
- ksog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705417958; x=1706022758;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NvpufcK0hHOLVmcnnY2pYEiueg1e1Oqxnoqne95QDFw=;
- b=uo1vuYGWNAffAp+m2mC1WrrcThxq1iM4aCW5/FcnmmZ/un7knkwmfneYxE8TPS2C6d
- 07Q30zWkn1GPSsQ50jf7N80OfGYElAZPXf4Yrsgl8wIATkQg9tXAbGMaLHYRXPT8uy1C
- 076EFkVORY4xchaXnaIWh0MQTghcUBHeoCtljNfCMavlPjKWWAN6vW/t1i+wEyDTrynh
- 1xGeS4IrhLItj3xB20QtcGI+k+LjXkqq/kQafk+roOSYCJFJXGYUATB15rsYgR/XFf/g
- Os0NppHnXPSIvG2XImlwpl+zblWCUQevQkQZT24ee9DeoszT0ECz4FOw1eqnsnB5B5wb
- N+5w==
-X-Gm-Message-State: AOJu0Yzsik02qMTJG/OE7n2wjQdcNqTOpG8Vpit8N7Oz/S16OIGLHZpZ
- tDoccRxAmUhchlCQgVOBkauhhTJr+tFwXF1mX+NEI5RkqIc=
-X-Google-Smtp-Source: AGHT+IHYnwinNGny/aXvQvq4ONwfv2QLd42arRMlJOknk/HQycYAveBYBXlTdCpUREzzs1bnPvX1Cw==
-X-Received: by 2002:a1c:7c02:0:b0:40e:6f2c:8840 with SMTP id
- x2-20020a1c7c02000000b0040e6f2c8840mr2594056wmc.203.1705417958206; 
- Tue, 16 Jan 2024 07:12:38 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- m14-20020adff38e000000b003379b549a00sm10091357wro.10.2024.01.16.07.12.37
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jan 2024 07:12:38 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 21/21] load_elf: fix iterator's type for elf file processing
-Date: Tue, 16 Jan 2024 15:12:28 +0000
-Message-Id: <20240116151228.2430754-22-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240116151228.2430754-1-peter.maydell@linaro.org>
-References: <20240116151228.2430754-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rPlNX-0008H6-7s; Tue, 16 Jan 2024 10:29:27 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rPlNV-0000Ws-6t; Tue, 16 Jan 2024 10:29:26 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TDtCJ1Rblz686Vq;
+ Tue, 16 Jan 2024 23:26:36 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id 241411400CF;
+ Tue, 16 Jan 2024 23:29:21 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 16 Jan
+ 2024 15:29:20 +0000
+Date: Tue, 16 Jan 2024 15:29:19 +0000
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 27/35] target/arm: Report VNCR_EL2 based faults correctly
+Message-ID: <20240116152919.00001571@Huawei.com>
+In-Reply-To: <CAFEAcA8=CK00w_Yk-X=+6cm2X5BWSiTw7_y6uQN8qyFHF4-iFg@mail.gmail.com>
+References: <20231218113305.2511480-1-peter.maydell@linaro.org>
+ <20231218113305.2511480-28-peter.maydell@linaro.org>
+ <20240116130940.00002523@Huawei.com>
+ <CAFEAcA-94-TeFw4AmTsuQaJROADaet8aWDEBXbt9H_gc1Fs6pg@mail.gmail.com>
+ <20240116145051.000004f7@Huawei.com>
+ <CAFEAcA8=CK00w_Yk-X=+6cm2X5BWSiTw7_y6uQN8qyFHF4-iFg@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,44 +66,56 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anastasia Belova <abelova@astralinux.ru>
+On Tue, 16 Jan 2024 14:59:15 +0000
+Peter Maydell <peter.maydell@linaro.org> wrote:
 
-j is used while loading an ELF file to byteswap segments'
-data. If data is larger than 2GB an overflow may happen.
-So j should be elf_word.
+> On Tue, 16 Jan 2024 at 14:50, Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Tue, 16 Jan 2024 13:20:33 +0000
+> > Peter Maydell <peter.maydell@linaro.org> wrote:  
+> > > Bisecting to this patch is a bit weird because at this point
+> > > in the series emulation of FEAT_NV2 should be disabled and
+> > > the code being added should never be used. You could put
+> > > an assert(0) into the code in translate-a64.c before the
+> > > call to syn_data_abort_vncr() and in arm_deliver_fault()
+> > > assert(!is_vncr) to confirm that we're not somehow getting
+> > > into this code for some non-FEAT_NV2 situation, I guess.  
+> >
+> > Not that, but surprisingly is_vncr == true.
+> > in arm_deliver_fault()
+> >
+> > Frigging that to be false gets me up and running. I'll see
+> > if I can figure out why it is set.  
+> 
+> I don't know if this is the cause, but looking again at the
+> line that sets is_vncr I see at least one obvious bug:
+> 
+>     bool is_vncr = (mmu_idx != MMU_INST_FETCH) &&
+>         (env->exception.syndrome & ARM_EL_VNCR);
+> 
+> is testing the wrong variable -- the first part
+> of the condition should be "access_type != MMU_INST_FETCH".
+> 
+> If you fix that does the failure go away ?
+Ah - indeed that fixes it.
 
-This commit fixes a minor bug: it's unlikely anybody is trying to
-load ELF files with 2GB+ segments for wrong-endianness targets,
-but if they did, it wouldn't work correctly.
+I guess that makes sense. Presumably the bit is used for
+something else for instruction fetches.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Thanks for your quick help!
 
-Cc: qemu-stable@nongnu.org
-Fixes: 7ef295ea5b ("loader: Add data swap option to load-elf")
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- include/hw/elf_ops.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Jonathan
 
-diff --git a/include/hw/elf_ops.h b/include/hw/elf_ops.h
-index 0a5c258fe68..9c35d1b9da6 100644
---- a/include/hw/elf_ops.h
-+++ b/include/hw/elf_ops.h
-@@ -500,7 +500,7 @@ static ssize_t glue(load_elf, SZ)(const char *name, int fd,
-             }
- 
-             if (data_swab) {
--                int j;
-+                elf_word j;
-                 for (j = 0; j < file_size; j += (1 << data_swab)) {
-                     uint8_t *dp = data + j;
-                     switch (data_swab) {
--- 
-2.34.1
+
+> 
+> Yay for C and its very sloppy typing :-/
+> 
+> -- PMM
 
 
