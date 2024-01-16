@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC33782EF5E
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 14:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8346F82EF5A
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 14:03:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPj5l-0007K4-Vc; Tue, 16 Jan 2024 08:02:58 -0500
+	id 1rPj5k-0007Jf-Iq; Tue, 16 Jan 2024 08:02:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1rPj5f-0007IV-Q1
+ id 1rPj5f-0007IW-UE
  for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:02:54 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1rPj5d-0006ge-9Y
+ id 1rPj5e-0006gs-BM
  for qemu-devel@nongnu.org; Tue, 16 Jan 2024 08:02:51 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40e76109cdeso22366325e9.0
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 05:02:48 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40e60e137aaso50477175e9.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 05:02:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1705410167; x=1706014967; darn=nongnu.org;
+ d=adacore.com; s=google; t=1705410168; x=1706014968; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uKW/EH5R/IdiWfxo4lBBEsNkOoH1NjRDpWTKl/kBcoc=;
- b=k6xNufv7zNaDQNQos7UvbPT8/7OjxzUfdIPlC2Qocnqsn1+PjmqDLMltSZTc/5fatu
- BNXA4y5ryxqRYCXTpWSW///ZeuQrC1a1HChoqIu6xdpzipCzRYdWC5zYYSUQOMNTVF5T
- M2PaUYgBYdhkkELwBoDd39n0mGRhzIodti7q3jFXY1O0m8AxowDihYR2kF0OTXC4lJMx
- GRQR+h8gmXtB6qek2cZAHHBg/rF25xeYniThD3wf3+ZQ5RCSjJNxImzDL4+BPuxhCVAA
- KwsWAUhEGavjB7G6Ox2ke6yGyNcRYq8D1AqCfOsSQCxjitKkghr0uc14gfXux2BpWirP
- FPCg==
+ bh=l4bYg0bXuaXxvx4i4Ropz7CkhLERrz2bkP+NdBxyTx4=;
+ b=LYdjH13Y+Vcof4VKOfXtFiHJ1kl+di5ei8wGJHmZJuC8FHaJ8WEfVm/rMBkQuDlqYI
+ JGkvexmEd7QX9oWlTN1XLBzrQAmIy9F97+a9Z5cOl49iTOsbGCH4KDhbTPdhMA6Nbvrg
+ thRmbR/Is+F85iDest76LA29SwhNQejQYO2piuvgXnAezSJlEHFWSv8zEdB367o2fC+z
+ d6Qxi2ywrdEiouARiQsrOgA0h3cq2Y4c/ZtFRL1hZqjYg2juZaFB6fwHSlWfg4EeeiUE
+ u8sIhKbKYTcWcizzHlDvbhNc86uGErpwyCGpUA5NkFMq3FqVTyVJqz2K0AnK6NX3pg3h
+ 1xkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705410167; x=1706014967;
+ d=1e100.net; s=20230601; t=1705410168; x=1706014968;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uKW/EH5R/IdiWfxo4lBBEsNkOoH1NjRDpWTKl/kBcoc=;
- b=dRZFJc0+oBnrYU5NfVxqc52dLP6qD96E7F+ReLYCIlvGTrta9WwYEE/qpfkMSBGO0T
- yy/+Bo7hc5IhDPKsOxQwiJ6scy0oaJ5uTJ/cCaAHF+8O8E3EVg/5aVFWTTYODcTmmP/p
- mo8rhr8gacuEqPAr1AKvz0xGRXHGrBvFXIrKPiliFtv5ujGYJ2Vw2Kd4P2eVZSM05HXV
- GU8ALYbo8rMafOuB4tk8xqa53ydJT/FmD30NKIuhpSCVR02ljbfnebpWiAyp5C1Nc3jB
- EwB+bvR9qfCAIXJD8MflNSGcRpxzzgUWJquOroIRHXrkog7Anj4F7wW5a1ntSIYovJM0
- l8vA==
-X-Gm-Message-State: AOJu0YzAYlicFXk3kr0Xi/V71hgBkzRt4AwxZMj7Z5x0wk9laBGlfVKP
- LGMIRipcq6uqg/flzg1gBm+bCeswYZNNoGH97ICk3puueg==
-X-Google-Smtp-Source: AGHT+IF52UqJcA7ULV1Nz0yPkmqu33iUQ/KzXIYB2DIhFHvgb8xIXbTptA4ppz4vwRBoVoyLRlkWNA==
-X-Received: by 2002:a05:600c:280b:b0:40e:44c2:92be with SMTP id
- m11-20020a05600c280b00b0040e44c292bemr4065008wmb.143.1705410167579; 
- Tue, 16 Jan 2024 05:02:47 -0800 (PST)
+ bh=l4bYg0bXuaXxvx4i4Ropz7CkhLERrz2bkP+NdBxyTx4=;
+ b=FYqBY1l8DSTOCw8RgY0ECRmkdtjZAdsHwi1L/N2ahnw7pDi3A0cwQPK1UteV65LBn5
+ Kft9HW1Ko4SWTnWIEQittcdq5DVMKJEp18hrGZ9ziucpN81UPa+k5Qtx8i9OJYipRfjC
+ Hxms5tVMKZq4Ql3LtzfpF5ccp8l1YrmSLSUoGX9b1jjr/hJecfDqEDeXf60ddHSb/PYq
+ nVOVc4tA/DZta1Ud8GiVG9w7MhpplQPDJuSrN9U8xaKtDtMIThY72Yg8kAbEDCUlM165
+ ijwjqjr7mzfUNlkTTdVMgTuU250XsUwrEj0KG+afEP8puifv7DSsL9rleyJU7rAy5Qih
+ cnTg==
+X-Gm-Message-State: AOJu0YyXuLcivEOX0rsmPAEiaTe9500WXKJM9vd9urrveWaH5enUthW1
+ bTbMYgbzwsJirhk9QEJz1VBNsjIMTRKLFO8ci6OUhI4cBg==
+X-Google-Smtp-Source: AGHT+IEOsLXla9/rlTV1zoaRBTP38OMd0nOsoTfnQn/eYGZBwfZlyJIvXTsrkU4Tb2Hw4seQ3aq76g==
+X-Received: by 2002:a05:600c:45ca:b0:40e:44af:8b1e with SMTP id
+ s10-20020a05600c45ca00b0040e44af8b1emr3968855wmo.160.1705410168515; 
+ Tue, 16 Jan 2024 05:02:48 -0800 (PST)
 Received: from chigot-Dell.telnowedge.local
  (lmontsouris-659-1-24-67.w81-250.abo.wanadoo.fr. [81.250.175.67])
  by smtp.gmail.com with ESMTPSA id
- d16-20020a05600c34d000b0040e83867d62sm2495316wmq.34.2024.01.16.05.02.46
+ d16-20020a05600c34d000b0040e83867d62sm2495316wmq.34.2024.01.16.05.02.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jan 2024 05:02:46 -0800 (PST)
+ Tue, 16 Jan 2024 05:02:47 -0800 (PST)
 From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
- Frederic Konrad <konrad.frederic@yahoo.fr>
-Subject: [PATCH v2 7/8] leon3: check cpu_id in the tiny bootloader
-Date: Tue, 16 Jan 2024 14:02:12 +0100
-Message-Id: <20240116130213.172358-8-chigot@adacore.com>
+ Fabien Chouteau <chouteau@adacore.com>
+Subject: [PATCH v2 8/8] MAINTAINERS: replace Fabien by myself as Leon3
+ maintainer
+Date: Tue, 16 Jan 2024 14:02:13 +0100
+Message-Id: <20240116130213.172358-9-chigot@adacore.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240116130213.172358-1-chigot@adacore.com>
 References: <20240116130213.172358-1-chigot@adacore.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=chigot@adacore.com; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=chigot@adacore.com; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,60 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that SMP is possible, the asr17 must be checked in the little boot code
-or the secondary CPU will reinitialize the Timer and the Uart.
-
-Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
+CC: Fabien Chouteau <chouteau@adacore.com>
 Signed-off-by: Clément Chigot <chigot@adacore.com>
+Reviewed-by: Fabien Chouteau <chouteau@adacore.com>
 ---
- hw/sparc/leon3.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
-index eacd85ee4f..87a8044a3e 100644
---- a/hw/sparc/leon3.c
-+++ b/hw/sparc/leon3.c
-@@ -100,13 +100,27 @@ static uint32_t *gen_store_u32(uint32_t *code, hwaddr addr, uint32_t val)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b406fb20c0..b4e78e7748 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1708,7 +1708,7 @@ F: hw/rtc/sun4v-rtc.c
+ F: include/hw/rtc/sun4v-rtc.h
  
- /*
-  * When loading a kernel in RAM the machine is expected to be in a different
-- * state (eg: initialized by the bootloader). This little code reproduces
-- * this behavior.
-+ * state (eg: initialized by the bootloader).  This little code reproduces
-+ * this behavior.  Also this code can be executed by the secondary cpus as
-+ * well since it looks at the %asr17 register before doing any
-+ * initialization, it allows to use the same reset address for all the
-+ * cpus.
-  */
- static void write_bootloader(CPUSPARCState *env, uint8_t *base,
-                              hwaddr kernel_addr)
- {
-     uint32_t *p = (uint32_t *) base;
-+    uint32_t *sec_cpu_branch_p = NULL;
-+
-+    /* If we are running on a secondary CPU, jump directly to the kernel.  */
-+
-+    stl_p(p++, 0x85444000); /* rd %asr17, %g2      */
-+    stl_p(p++, 0x8530a01c); /* srl  %g2, 0x1c, %g2 */
-+    stl_p(p++, 0x80908000); /* tst  %g2            */
-+    /* Fill that later.  */
-+    sec_cpu_branch_p = p;
-+    stl_p(p++, 0x0BADC0DE); /* bne xxx             */
-+    stl_p(p++, 0x01000000); /* nop */
- 
-     /* Initialize the UARTs                                        */
-     /* *UART_CONTROL = UART_RECEIVE_ENABLE | UART_TRANSMIT_ENABLE; */
-@@ -120,6 +134,10 @@ static void write_bootloader(CPUSPARCState *env, uint8_t *base,
-     /* *GPTIMER0_CONFIG = GPTIMER_ENABLE | GPTIMER_RESTART;        */
-     p = gen_store_u32(p, 0x80000318, 3);
- 
-+    /* Now, the relative branch above can be computed.  */
-+    stl_p(sec_cpu_branch_p, 0x12800000
-+          + (p - sec_cpu_branch_p));
-+
-     /* JUMP to the entry point                                     */
-     stl_p(p++, 0x82100000); /* mov %g0, %g1 */
-     stl_p(p++, 0x03000000 + extract32(kernel_addr, 10, 22));
+ Leon3
+-M: Fabien Chouteau <chouteau@adacore.com>
++M: Clément Chigot <chigot@adacore.com>
+ M: Frederic Konrad <konrad.frederic@yahoo.fr>
+ S: Maintained
+ F: hw/sparc/leon3.c
 -- 
 2.25.1
 
