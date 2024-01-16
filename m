@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3157582F385
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 18:53:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A04182F386
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jan 2024 18:53:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPnbw-0006kQ-UP; Tue, 16 Jan 2024 12:52:28 -0500
+	id 1rPncL-0006mZ-Gc; Tue, 16 Jan 2024 12:52:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rPnbu-0006j3-6K
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 12:52:26 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <slongfield@google.com>)
+ id 1rPncJ-0006mO-FL
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 12:52:51 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rPnbs-0001GU-3p
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 12:52:25 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6d9af1f52bcso5028589b3a.3
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 09:52:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <slongfield@google.com>)
+ id 1rPncH-0001JW-91
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 12:52:51 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40d5097150fso975e9.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 09:52:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1705427542; x=1706032342; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cYosPHB0+rSJtznR2kU5n7sSK9qEt3bUoapyBRW/cCg=;
- b=B68g3+QbPmnr2KouAUAFuJmEqjPoJ6s4TgRJln4D6HuI01BO3s/AwIDPsVRkHFeyP4
- owRaJ9BRUzDEC7D9tpgsliVknWMdjakXsQFzsyzvbwCyKxiWKba3NLnYB4fNfLAdnTRB
- TXdAFmLTNU6zX84zGPgFzXP66OiAx4dx9FK6ErcRDfhfnQL+VhZkR3fDyFd8FEAih0p9
- R33MM6dIOig145tvrI0qqIoXjsBNpbVe9URIcrk5iea2+XC58ztzNtCw8Rq30V1MNDmL
- QwgURwVwkvVMV8WkAJJXQ7kC4q/iJ2WRmxklM/1PG8/E8FG74vYtJhmlTcAV59RwAVPV
- 9DNw==
+ d=google.com; s=20230601; t=1705427567; x=1706032367; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ktcs4Aio13SN8/PZ8WVCBOCr1gZEir42O80aH/Je8go=;
+ b=NTC87PBTtc8AKHjzsSMcOYLPNwLSOZsqAkNHcF6DmYPltW+2lLLkce1WcwZBPeOfAv
+ IsVjW/s/3XyfT5zUW47RujIt32d27EEU8dTwIfqJ0TB1oCe2YEL9i8wvndfYLHGgSPQ0
+ tY+X0KILpncUzePmZ35pxtaZZHqHmcc1iLnNGinWR68s8iSwyk49tZfpwDE1502iE/jv
+ WrqHs4Wsdi040Bv3QASzRa/QhB9wJRgtLm12QzyudkN3IBgUWdOoZ7154GWs3qDuQ1/C
+ tynmDsBPy8jESrveAU6lAOTpMmHQ+VsiQ4GONBPAO7kw6+uWNG47NoMwPDTLFbjZ4OgB
+ TXuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705427542; x=1706032342;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cYosPHB0+rSJtznR2kU5n7sSK9qEt3bUoapyBRW/cCg=;
- b=MXcJ4zRi2jKWnHFM37LedupojJMJ3L4+LWbIx4d3b4OqDHILtSRxvXrjf6bpbEYu+7
- 27V69aJaysC/U8dp+GGgAsFo27gjH0WGmWqdGT4FKQ/ThSGNnEB3BwzZXaX33kzq4WOM
- Opbj4Got32bc+/EnWJNj+hzlPq4mf4bvtXdRHs/R8TMGbDyXwrvAyO8ulQhyehFmFrpj
- V7V6f3dffn9LDgnCUsYQom9XbmG0AnLgP9NPDuRECDEnR9LyfjwULE0OUr8OWX958goN
- 0AW5NY7YWlEb2GSk70e4hosswwJDg5YTq5iuCIGHO4dZ1ABWzzcxE+lKCOTVB8OZlPW/
- SE7A==
-X-Gm-Message-State: AOJu0YyKeN4UC1nFjTAhaa8Nb6VD2MrNsSO6USe/5T6ZkQmP0e6AmA6q
- 0QhmBxtYyo5skOVDJ5xiNeESI4alZiNTMw==
-X-Google-Smtp-Source: AGHT+IE++LmHsZYa37MwzV2rwTtOc3cZqYrzTsO9r/GtCD2LsAvdS5qORul5baEBNd9HhOhZ2Q114g==
-X-Received: by 2002:a05:6a00:2e05:b0:6da:16ec:8afb with SMTP id
- fc5-20020a056a002e0500b006da16ec8afbmr4781852pfb.69.1705427540830; 
- Tue, 16 Jan 2024 09:52:20 -0800 (PST)
-Received: from [192.168.68.110] ([152.234.123.64])
- by smtp.gmail.com with ESMTPSA id
- t62-20020a625f41000000b006d9a94a03a8sm10013809pfb.77.2024.01.16.09.52.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Jan 2024 09:52:19 -0800 (PST)
-Message-ID: <2d0dd940-69d6-4812-b807-d268306b2105@ventanamicro.com>
-Date: Tue, 16 Jan 2024 14:52:14 -0300
+ d=1e100.net; s=20230601; t=1705427567; x=1706032367;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Ktcs4Aio13SN8/PZ8WVCBOCr1gZEir42O80aH/Je8go=;
+ b=Oc2/sdKsUNbTWeLPFT7wQnorpw8HRZ/PQQIeq1SxIbuovxVz2e85KVC4T0bJDiLiJ/
+ aNlALX1T5syIS2F7pO+WGgxYE+MYDXLhHLxPZ5K3XWNKoIeED1JkuaQExcXQwCVFCHPA
+ QUDculOj3Lc/4rGKCe7t98NLT+73QDv19GbtD+TjWYxGkVweFRdNcgea9jgnkDW/7Xy8
+ V/NAZEtnlfNGgYHbE4udeGaywIwbxP1UA3n183Wsw9gwkxIiqBlYakIo9KLGkVHt1GTD
+ WykaVrjREnPQPcQGretTDmoAi1Jf80mAmsxf7s+87GFULXAkfw9fy4KpKDCpMmgDFkvW
+ Yf2Q==
+X-Gm-Message-State: AOJu0Yx5A1PQwOqon3FMbEBH1sx0DywOWbRwz8imiWGTLSsRz27gKelB
+ OcWlDB70+p2yNpAlIdUJYr97AhL+IbXQVnNLxRETgkKYWUwO
+X-Google-Smtp-Source: AGHT+IFWIn/zWjxnmulPSDghRNGfYigBHRD7WR88nwM2f1xDW8n5Yk0UlHrWntQlKDJcDC50gMwfhAKKQKmQXEsjMBY=
+X-Received: by 2002:a05:600c:5110:b0:40e:6206:a492 with SMTP id
+ o16-20020a05600c511000b0040e6206a492mr23476wms.7.1705427566644; Tue, 16 Jan
+ 2024 09:52:46 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/12] target/riscv/cpu.h: use 'vlenb' in
- vext_get_vlmax()
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- max.chou@sifive.com
-References: <20240115222528.257342-1-dbarboza@ventanamicro.com>
- <20240115222528.257342-10-dbarboza@ventanamicro.com>
- <86f114b3-10a4-4857-b470-5f61730ed382@linaro.org>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <86f114b3-10a4-4857-b470-5f61730ed382@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <CAK_0=F+RznDdq27z3r3H1d4pj=QTD-9WZP8xH7jOP75QXJhHpw@mail.gmail.com>
+ <484ebf77-6b62-418c-8319-d69ccaf90c17@kaod.org>
+ <TYUPR06MB6100E421E040739C5A9B67FB8A6C2@TYUPR06MB6100.apcprd06.prod.outlook.com>
+In-Reply-To: <TYUPR06MB6100E421E040739C5A9B67FB8A6C2@TYUPR06MB6100.apcprd06.prod.outlook.com>
+From: Stephen Longfield <slongfield@google.com>
+Date: Tue, 16 Jan 2024 09:52:31 -0800
+Message-ID: <CAK_0=FKha19EKUUd7p7tS61yj-p4TMABg1sHZHEp4-FYCPt5hQ@mail.gmail.com>
+Subject: Re: Possible race condition in aspeed ast2600 smp boot on TCG QEMU
+To: Troy Lee <troy_lee@aspeedtech.com>
+Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, 
+ "andrew@codeconstruct.com.au" <andrew@codeconstruct.com.au>,
+ "joel@jms.id.au" <joel@jms.id.au>, 
+ Joe Komlodi <komlodi@google.com>, Patrick Venture <venture@google.com>, 
+ Ryan Chen <ryan_chen@aspeedtech.com>, Jamin Lin <jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=slongfield@google.com; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,57 +95,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Jan 15, 2024 at 12:36=E2=80=AFAM Troy Lee <troy_lee@aspeedtech.com>=
+ wrote:
+>
+> Hi Stephen and Cedric,
+>
+> This issue haven't been found in real platform but sometime happens in
+> emulator, e.g. Simic.
 
+Do you have a workaround that you use in other simulators that we
+could also try using in QEMU?
 
-On 1/15/24 20:14, Richard Henderson wrote:
-> On 1/16/24 09:25, Daniel Henrique Barboza wrote:
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/cpu.h | 6 +++++-
->>   1 file changed, 5 insertions(+), 1 deletion(-)
->>
->> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
->> index 11df226a00..7304e478c2 100644
->> --- a/target/riscv/cpu.h
->> +++ b/target/riscv/cpu.h
->> @@ -692,7 +692,11 @@ static inline uint32_t vext_get_vlmax(RISCVCPU *cpu, target_ulong vtype)
->>   {
->>       uint8_t sew = FIELD_EX64(vtype, VTYPE, VSEW);
->>       int8_t lmul = sextract32(FIELD_EX64(vtype, VTYPE, VLMUL), 0, 3);
->> -    return cpu->cfg.vlen >> (sew + 3 - lmul);
->> +    /*
->> +     * vlmax = vlen >> (sew + 3 - lmul). With vlenb,
->> +     * 3 less shifts: vlenb >> (sew + 3 - 3 - lmul)
->> +     */
->> +    return cpu->cfg.vlenb >> (sew - lmul);
->>   }
-> 
-> I take it back -- this doesn't work without the + 3:
-> 
->    sew = 0
->    lmul = 3
-> 
->     vlenb >> (0 - 3)
->   = vlenb >> -3
-> 
-> Need
-> 
->    vlen = vlenb << 3
->    vlmax = vlen >> (0 + 3 - 3)
->          = vlen >> 0
->          = vlen
+> > Adding Aspeed Engineers. This reminds me of a discussion a while ago.
+> >
+> > On 1/11/24 18:38, Stephen Longfield wrote:
+> > > We=E2=80=99ve noticed inconsistent behavior when running a large numb=
+er of aspeed
+> > ast2600 executions, that seems to be tied to a race condition in the sm=
+p boot
+> > when executing on TCG-QEMU, and were wondering what a good mediation
+> > strategy might be.
+> > >
+> > > The problem first shows up as part of SMP boot. On a run that=E2=80=
+=99s likely to
+> > later run into issues, we=E2=80=99ll see something like:
+> > >
+> > > ```
+> > > [    0.008350] smp: Bringing up secondary CPUs ...
+> > > [    1.168584] CPU1: failed to come online [    1.187277] smp: Brough=
+t
+> > > up 1 node, 1 CPU ```
+> > >
+> > > Compared to the more likely to succeed:
+> > >
+> > > ```
+> > > [    0.080313] smp: Bringing up secondary CPUs ...
+> > > [    0.093166] smp: Brought up 1 node, 2 CPUs [    0.093345] SMP:
+> > > Total of 2 processors activated (4800.00 BogoMIPS).
+> > > ```
+> > >
+> > > It=E2=80=99s somewhat reliably reproducible by running the ast2600-ev=
+b with an
+> > OpenBMC image, using =E2=80=98-icount auto=E2=80=99 to slow execution a=
+nd make the race
+> > condition more frequent (it happens without this, just easier to debug =
+if we
+> > can reproduce):
+> > >
+> > >
+> > > ```
+> > > ./aarch64-softmmu/qemu-system-aarch64 -machine ast2600-evb -
+> > nographic
+> > > -drive
+> > > file=3D~/bmc-bin/image-obmc-ast2600,if=3Dmtd,bus=3D0,unit=3D0,snapsho=
+t=3Don -nic
+> > > user -icount auto ```
+>
+> Have you try to run qemu with "-smp 2"?
 
-I got tricked by the 'sew' variable name there. This formula is using vsew.
+`-smp 2` lowers the probability, but does not get rid of the race.
 
-I'll fix and re-send. Thanks,
+> > >
+> > > Our current hypothesis is that the problem comes up in the platform
+> > uboot.  As part of the boot, the secondary core waits for the smp mailb=
+ox to
+> > get a magic number written by the primary core:
+> > >
+> > > https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-
+> > v2019.04/a
+> > > rch/arm/mach-aspeed/ast2600/platform.S#L168
+> > > <https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-
+> > v2019.04/
+> > > arch/arm/mach-aspeed/ast2600/platform.S#L168>
+> > >
+> > > However, this memory address is cleared on boot:
+> > >
+> > > https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-
+> > v2019.04/a
+> > > rch/arm/mach-aspeed/ast2600/platform.S#L146
+> > > <https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-
+> > v2019.04/
+> > > arch/arm/mach-aspeed/ast2600/platform.S#L146>
+> > >
+> > > The race condition occurs if the primary core runs far ahead of the s=
+econdary
+> > core: if the primary core gets to the point where it signals the second=
+ary core=E2=80=99s
+> > mailbox before the secondary core gets past the point where it does the=
+ initial
+> > reset and starts waiting, the reset will clear the signal, and then the=
+ secondary
+> > core will never get past the point where it=E2=80=99s looping in
+> > `poll_smp_mbox_ready`.
+> > >
+> > > We=E2=80=99ve observed this race happening by dumping all SCU reads a=
+nd writes,
+> > and validated that this is the problem by using a modified `platform.S`=
+ that
+> > doesn=E2=80=99t clear the =3DSCU_SMP_READY mailbox on reset, but would =
+rather not
+> > have to use a modified version of SMP boot just for QEMU-TCG execution.
+>
+> To prevent the race condition described, SCU188 zeroization is conducted
+> as early as possible by both CPU#0 and CPU#1. After that, there are at
+> least 100 instructions for CPU#0 to execute before it get the chance to
+> set SCU188 to 0xbabecafe. For real, parallel HW, it is unusual that CPU#1
+> will be slower than CPU#0 by 100 instruction cycles.
+>
 
+This doesn't really prevent the race, it just lowers the probability
+of it causing problems.
 
-Daniel
+If in hardware, the cores begin execution at the same time, then in
+normal execution of Platform.S, the SCU188 zeroing will happen before
+the scu_unlock macro runs. If I understand the SCU lock correctly:
+that would mean that the store-zero to SCU188 normally has no effect
+(since the registers are read only at that time), and only really
+participates in this race. Since you mentioned seeing this same race
+in other simulation environments, have you considered removing that
+write?
 
+> >
+> > you could use '-trace aspeed_scu*' to collect the MMIO accesses on the =
+SCU
+> > unit. A TCG plugin also.
+> >
+> > > Is there a way to have QEMU insert a barrier synchronization at some =
+point
+> > in the bootloader?  I think getting both cores past the =3DSCU_SMP_READ=
+Y reset
+> > would get rid of this race, but I=E2=80=99m not aware of a way to do th=
+at kind of thing
+> > in QEMU-TCG.
+> > >
+> > > Thanks for any insights!
+> >
+> > Could we change the default value to registers 0x180 ... 0x18C in
+> > hw/misc/aspeed_scu.c to make sure the SMP regs are immune to the race ?
 
-> 
-> 
-> r~
-> 
-> 
+I don't believe that changing the default values would help. The race
+occurs when the secondary core clears data that the primary core
+writes--this would still happen even if the default value is what it
+eventually would get written to.
+
+We did find a workaround, sent to this list on Thursday (2024-01-11):
+setting the magic value of the register at the uboot console (`mw.l
+0x1e6e2188 0xbabecafe`). Since that executes after platform.S, but
+before Linux boot, it's able to unwedge the secondary core and avoid
+later issues.
+
+> > Thanks,
+> >
+> > C.
+>
+> Thanks,
+> Troy Lee
 
