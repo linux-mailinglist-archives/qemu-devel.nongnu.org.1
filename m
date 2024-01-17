@@ -2,79 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08588304CA
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:55:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA158304CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:57:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ4UK-0001fM-SB; Wed, 17 Jan 2024 06:53:45 -0500
+	id 1rQ4Wv-0002zd-Fv; Wed, 17 Jan 2024 06:56:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQ4UH-0001et-Vl; Wed, 17 Jan 2024 06:53:41 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rQ4Wr-0002zL-Eh; Wed, 17 Jan 2024 06:56:21 -0500
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQ4UG-0000Sd-2H; Wed, 17 Jan 2024 06:53:41 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EAFDB441C5;
- Wed, 17 Jan 2024 14:54:03 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D750C64F15;
- Wed, 17 Jan 2024 14:53:35 +0300 (MSK)
-Message-ID: <feb272b1-4729-4acf-8feb-5aed993a5a06@tls.msk.ru>
-Date: Wed, 17 Jan 2024 14:53:35 +0300
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rQ4Wo-0000rJ-Ur; Wed, 17 Jan 2024 06:56:21 -0500
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 4DE2C457C3;
+ Wed, 17 Jan 2024 12:56:16 +0100 (CET)
+Message-ID: <a34df4a7-1948-4e65-bec1-c86c1ce54280@proxmox.com>
+Date: Wed, 17 Jan 2024 12:56:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: chacha20-s390 broken in 8.2.0 in TCG on s390x
+Subject: Re: [PATCH v2] ui/clipboard: ensure data is available or request
+ callback is set upon update
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>
-Cc: qemu-s390x <qemu-s390x@nongnu.org>, David Hildenbrand <david@redhat.com>
-References: <d5e8f88b-1d19-4e00-8dc2-b20e0cd34931@tls.msk.ru>
- <dfc5987a-4210-4579-b9a3-1cc12fe1b909@linaro.org>
- <cc4ad254-b177-4a09-96f7-448c638ae67e@tls.msk.ru>
- <f07dfa5c-9f3c-4e22-9514-81c130b6a9ab@linaro.org>
- <764215cd-6f62-4746-b1f5-6174a158f95d@linaro.org>
- <e1f48ff4-d640-4500-9f2b-6b9db0d8ffe3@linaro.org>
- <5c3098cc-3a2f-4272-b06a-6d12d645d628@linaro.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <5c3098cc-3a2f-4272-b06a-6d12d645d628@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com,
+ berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
+References: <20240117110109.287430-1-f.ebner@proxmox.com>
+ <CAMxuvayHZiXp=VRm=e=HT8u91p3MTut1KXyWOaooEUv7=wZwFg@mail.gmail.com>
+ <4d6f1a47-3311-4a44-b47c-19035d6cfee0@proxmox.com>
+ <CAJ+F1CJ4gF=kx1xedYsnU9MYqTS24xobYrf4ObOAgDnSFGFrnA@mail.gmail.com>
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <CAJ+F1CJ4gF=kx1xedYsnU9MYqTS24xobYrf4ObOAgDnSFGFrnA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,50 +59,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-04.01.2024 01:51, Richard Henderson :
-> On 1/4/24 01:37, Philippe Mathieu-Daudé wrote:
->> Finally changing the constraints on op_rotli_vec seems to fix it:
+Am 17.01.24 um 12:33 schrieb Marc-André Lureau:
+> Hi
+> 
+> On Wed, Jan 17, 2024 at 3:30 PM Fiona Ebner <f.ebner@proxmox.com> wrote:
 >>
->> ---
->> diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
->> index fbee43d3b0..b3456fe857 100644
->> --- a/tcg/s390x/tcg-target.c.inc
->> +++ b/tcg/s390x/tcg-target.c.inc
->> @@ -3264,13 +3264,13 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
->>       case INDEX_op_ld_vec:
->>       case INDEX_op_dupm_vec:
->> +    case INDEX_op_rotli_vec:
->>           return C_O1_I1(v, r);
->>       case INDEX_op_dup_vec:
->>           return C_O1_I1(v, vr);
->>       case INDEX_op_abs_vec:
->>       case INDEX_op_neg_vec:
->>       case INDEX_op_not_vec:
->> -    case INDEX_op_rotli_vec:
->>       case INDEX_op_sari_vec:
->>       case INDEX_op_shli_vec:
->>       case INDEX_op_shri_vec:
->>       case INDEX_op_s390_vuph_vec:
->>       case INDEX_op_s390_vupl_vec:
->>           return C_O1_I1(v, v);
+>> Am 17.01.24 um 12:11 schrieb Marc-André Lureau:
+>>> Hi
+>>>
+>>> On Wed, Jan 17, 2024 at 3:01 PM Fiona Ebner <f.ebner@proxmox.com> wrote:
+>>>>
+>>>> +    for (type = 0; type < QEMU_CLIPBOARD_TYPE__COUNT && !missing_data; type++) {
+>>>> +        if (!info->types[type].data) {
+>>>> +            missing_data = true;
+>>>> +        }
+>>>> +    }
+>>>> +    /*
+>>>> +     * If data is missing, the clipboard owner's 'request' callback needs to be
+>>>> +     * set. Otherwise, there is no way to get the clipboard data and
+>>>> +     * qemu_clipboard_request() cannot be called.
+>>>> +     */
+>>>> +    if (missing_data && info->owner && !info->owner->request) {
+>>>> +        return;
+>>>> +    }
+>>>
+>>> It needs to check whether the type is "available". If not data is
+>>> provided, owner should be set as well, it should assert() that.
+>>>
+>>> That should do the job:
+>>>
+>>> for (type = 0; type < QEMU_CLIPBOARD_TYPE__COUNT; type++) {
+>>>     /*
+>>>      * If data is missing, the clipboard owner's 'request' callback needs to
+>>>      * be set. Otherwise, there is no way to get the clipboard data and
+>>>      * qemu_clipboard_request() cannot be called.
+>>>      */
+>>>     if (info->types[type].available && !info->types[type].data) {
+>>>         assert(info->owner && info->owner->request);
+>>>     }
+>>> }
+>>>
+>>
+>> Okay, thanks! But we can't assert, because that doesn't resolve the CVE
+>> as it would still crash. The VNC client might not have the
+>> VNC_FEATURE_CLIPBOARD_EXT feature, and the request callback is currently
+>> only set in that case. But we can return instead of assert to just avoid
+>> clipboard update. I'll send a v3.
 > 
-> Definitely not correct, since VERLL requires a vector input to be rotated.
+> If it doesn't have VNC_FEATURE_CLIPBOARD_EXT, it shouldn't update the
+> clipboard without data. (ClientCutText/ServerCutText always have data,
+> even if 0-length)
 > 
->> But I'm outside of my comfort zone so not really sure what I'm doing...
->> (I was inspired by the "the instruction verll only allows immediates up
->> to 32 bits." comment from
->> https://www.mail-archive.com/gcc-patches@gcc.gnu.org/msg317099.html)
-> 
-> That message is confused.  The immediate in VERLL is 12 bits (with only 6 bits ever used for MO_64).  Dunno where "32 bits" comes from.
 
-So, what do we have here in the end?
-Should we fix this on qemu side?
+But a buggy client should not be able to crash QEMU. With a
+VNC_MSG_CLIENT_CUT_TEXT message, when read_s32(data, 4) == 0,
+vnc_client_cut_text() is called with zero length. Is that supposed to
+happen? The branch for an extended message is only taken when
+read_s32(data, 4) < 0 and Daniel's patch fixes that branch.
 
-This thread stopped quite some time ago, with problematic
-instruction found but no solution..
+I noticed in qemu_clipboard_set_data():
 
-Thanks,
+> info->types[type].data = g_memdup(data, size);
 
-/mjt
+the g_memdup call will return NULL when size == 0 even if data is
+non-NULL. Is that the actual problem in the above scenario?
+
+Best Regards,
+Fiona
 
 
