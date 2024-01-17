@@ -2,90 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E46B830992
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 16:18:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BC5830993
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 16:18:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ7fc-00055T-5N; Wed, 17 Jan 2024 10:17:36 -0500
+	id 1rQ7fk-0005G2-MB; Wed, 17 Jan 2024 10:17:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ7fW-0004zD-Iq
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:17:30 -0500
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ7fU-0006Wq-Em
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:17:30 -0500
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2ccb4adbffbso125845551fa.0
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 07:17:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705504646; x=1706109446; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Hq9SvzA1v0FIrwLAytgxBPM3JH/nfntP0j6WEA8Bu0Q=;
- b=qeOSulgOgoLTbTcAz83Qbrzsm3I00SwjFE8WBl4WidRooRgJXf3euWjoFwzNiI4NIx
- h/+TQA3h0yl/UoWRvX5tmqt5rRG0CUYV/KbkkGx245Jn3y3dsf3WrjGSRl8fsHJIYY97
- NyVOomEDRKgHQxPKC9PUvohulHAHzNj0FNjJv6GjV8NVrBm3wlDGHCRjXQvBseYquLWu
- IzuenAoRCWx3ay1rDFuorbBpAH+od1wCkW3Jpm2etDD9jsK59bSzLPAG2DlUke34Xz/O
- v+5nbp+4bK7HKsbckyAozDf5gazl/4f4zSYHypXmZ0ArN7sZ+z8RNauC45ykuuDe1g3M
- KMnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705504646; x=1706109446;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Hq9SvzA1v0FIrwLAytgxBPM3JH/nfntP0j6WEA8Bu0Q=;
- b=VIpAFmDfa8QivcLFLxKw3qaTcEgLI1wb57LX2Jmp8ewCt/J9lftScFKd9C2AySnds4
- 8yVeL3bPkUyrTCrNkAl0xj2ltcEw+rqk0XNUlo/qE/vaQQLvPMlzvmYO+wkPIQRAthol
- l3Hm1nqMOvtet2g2veIg0hSwmOaaKxxvy+olmwklAHsT2Xcu7m62AZkdQIi3qMuXYeuk
- 1nkjOBU6jASj+wtu9TycWonOcdUwAOWNz2IGQO3ZfQdxC4Sbb8b4Mg3cNCcfnwG4DFtr
- EtjmavcaAgXNwT0zMC03Oj7RckrzMAwSxQtRnYJcy4T0g6m1SyeLmhEqP0tA+aUYgerH
- 5jYA==
-X-Gm-Message-State: AOJu0YwJIQsSK/UAvd4ds5ViXYPYrfBNAOmg6r7SC0h/yNl9O+U670Cz
- eNr8mTVduq34gfYkVMiwdSwUqjfCTulbOA==
-X-Google-Smtp-Source: AGHT+IGzeS4kxdJIaHkcKAKOi2nigsSkn/F6SuSaQMq9COznZZY0tw8FEeJCT0sLRDVE0k/iOLLrYQ==
-X-Received: by 2002:a2e:9545:0:b0:2cd:8ee6:b558 with SMTP id
- t5-20020a2e9545000000b002cd8ee6b558mr4324619ljh.94.1705504646243; 
- Wed, 17 Jan 2024 07:17:26 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.212.26])
- by smtp.gmail.com with ESMTPSA id
- ef5-20020a05640228c500b00557d839727esm8230579edb.7.2024.01.17.07.17.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 07:17:25 -0800 (PST)
-Message-ID: <a61fe722-299a-4743-87e6-2904d96ee863@linaro.org>
-Date: Wed, 17 Jan 2024 16:17:24 +0100
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1rQ7fi-0005CX-BW; Wed, 17 Jan 2024 10:17:42 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1rQ7fg-0006f1-76; Wed, 17 Jan 2024 10:17:42 -0500
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40HENF0f012420; Wed, 17 Jan 2024 15:17:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=YcbVM0sW23Nuw37XWyQJEqvu2n4u51Vw0eC+kgGN6yo=;
+ b=W9ywDGEmFF9KHwexVd9+0HpP/yZwT+HPDjsWkb38tSgh8TPqeTSRQXDOubRyg/Cz008C
+ Awd0BYmxqM+GWH9FH2r/yQKpDDU//amJ8UlBxiL8NpcbOm2ko73uqUzFQY2EEO12LYWF
+ 4+wOXekEaiYUck4ZbBPYo3Fv6tnJv/ByBpARMLnDWLiwv0S5/+RRSyaj+lUuVAKd1MC4
+ 6DWQU/1xZc47bVORH0Fpb4PyqSWldIH0pfd4n6Vyb3bj32kMoFQzlF0iUVRWfz1Lwcmr
+ twSox0fx3ulvebaCj3zxrTLS1nrWONI9xJ7WdIsjJk2oRQwNs1ShNokMdGBnGsnaFGw4 Yw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vpgkthuhs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 17 Jan 2024 15:17:38 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40HF14uN007756;
+ Wed, 17 Jan 2024 15:17:37 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vpgkthuhc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 17 Jan 2024 15:17:37 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40HELpb7010969; Wed, 17 Jan 2024 15:17:37 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm57yp8rc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 17 Jan 2024 15:17:37 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40HFHaEU23462622
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 17 Jan 2024 15:17:36 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0A92F58056;
+ Wed, 17 Jan 2024 15:17:36 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3774C5803F;
+ Wed, 17 Jan 2024 15:17:35 +0000 (GMT)
+Received: from [9.61.163.245] (unknown [9.61.163.245])
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 17 Jan 2024 15:17:35 +0000 (GMT)
+Message-ID: <1c8ff2bf-ec92-4c54-8fa6-6432acdfc644@linux.ibm.com>
+Date: Wed, 17 Jan 2024 10:17:34 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] qemu-options: Remove the deprecated -singlestep option
+Subject: Re: [PATCH 2/3] s390x/pci: refresh fh before disabling aif
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
- qemu-trivial@nongnu.org, Claudio Imbrenda <imbrenda@linux.ibm.com>
-References: <20240112100059.965041-1-thuth@redhat.com>
- <20240112100059.965041-6-thuth@redhat.com>
- <7f24e391-e3ba-462c-ba30-2ea7ddb62795@linaro.org>
- <fdbe4b2d-b63a-4fcd-9747-08d713e17d22@redhat.com>
- <CAFEAcA-9EnvXKcrECsAKCMHPobLch4mKU0Yvb2+ZKALcFSiqaQ@mail.gmail.com>
- <ZaV0QxdfQJDnICdF@redhat.com> <87y1cp94j9.fsf@pond.sub.org>
- <7ac1ae78-dca4-4fda-a5e9-32b3a332f80e@linaro.org>
- <690cc02f-381f-46ed-a352-c148b1b02af8@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <690cc02f-381f-46ed-a352-c148b1b02af8@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-s390x@nongnu.org
+Cc: farman@linux.ibm.com, thuth@redhat.com, frankja@linux.ibm.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ qemu-devel@nongnu.org
+References: <20240116223157.73752-1-mjrosato@linux.ibm.com>
+ <20240116223157.73752-3-mjrosato@linux.ibm.com>
+ <2c8ce63b-f8b1-4b98-97e5-4416d4d622cf@redhat.com>
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <2c8ce63b-f8b1-4b98-97e5-4416d4d622cf@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0FjJEnoHjJ4fGA1MrECFy6fz-WGJY5JT
+X-Proofpoint-ORIG-GUID: HR_-cLCIKY6jd_yprqgGegNtzsjFKuOr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-17_08,2024-01-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ suspectscore=0 mlxlogscore=999 impostorscore=0 bulkscore=0 spamscore=0
+ mlxscore=0 clxscore=1015 phishscore=0 malwarescore=0 lowpriorityscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401170110
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=mjrosato@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,17 +117,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/1/24 10:52, Thomas Huth wrote:
-> On 16/01/2024 10.46, Philippe Mathieu-Daudé wrote:
-
->> Thomas, are you OK to post a v2 with the changes I suggested
->> or do you want me to do it?
+On 1/17/24 5:40 AM, Cédric Le Goater wrote:
+> On 1/16/24 23:31, Matthew Rosato wrote:
+>> Typically we refresh the host fh during CLP enable, however it's possible
+>> that the device goes through multiple reset events before the guest
+>> performs another CLP enable.  Let's handle this for now by refreshing the
+>> host handle from vfio before disabling aif.
+>>
+>> Fixes: 03451953c7 ("s390x/pci: reset ISM passthrough devices on shutdown and system reset")
+>> Reported-by: Cédric Le Goater <clg@redhat.com>
+>> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+>> ---
+>>   hw/s390x/s390-pci-kvm.c | 11 ++++++++++-
+>>   1 file changed, 10 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/s390x/s390-pci-kvm.c b/hw/s390x/s390-pci-kvm.c
+>> index f7e10cfa72..9eef4fc3ec 100644
+>> --- a/hw/s390x/s390-pci-kvm.c
+>> +++ b/hw/s390x/s390-pci-kvm.c
+>> @@ -18,6 +18,7 @@
+>>   #include "hw/s390x/s390-pci-bus.h"
+>>   #include "hw/s390x/s390-pci-kvm.h"
+>>   #include "hw/s390x/s390-pci-inst.h"
+>> +#include "hw/s390x/s390-pci-vfio.h"
+>>   #include "cpu_models.h"
+>>     bool s390_pci_kvm_interp_allowed(void)
+>> @@ -64,9 +65,17 @@ int s390_pci_kvm_aif_disable(S390PCIBusDevice *pbdev)
+>>           return -EINVAL;
+>>       }
+>>   +    /*
+>> +     * The device may have already been reset but we still want to relinquish
+>> +     * the guest ISC, so always be sure to use an up-to-date host fh.
+>> +     */
+>> +    if (!s390_pci_get_host_fh(pbdev, &args.fh)) {
+>> +        return -EPERM;
+>> +    }
 > 
-> Since your changes were bigger than mine, I think it's just fair if you 
-> take credit for the patch. So yes, please go ahead and assemble it as a 
-> v2! Thanks!
+> The callers of s390_pci_kvm_aif_disable() all test the original host
+> function with :
+> 
+>    if (pbdev->interp && (pbdev->fh & FH_MASK_ENABLE))
+> 
+> This change possibly fetches a new one. Shouldn't we move the test
+> also in s390_pci_kvm_aif_disable() ?
+> 
+> 
 
-Sent only respin of this patch based on first 4 (untouched):
-https://lore.kernel.org/qemu-devel/20240117151430.29235-1-philmd@linaro.org/
-(neglected to name it v2)
+Those codepaths are actually testing the enablement bit of the guest-visible function handle, not the host function handle.  Basically asking "was the guest using this device".  These handles (host and guest) are sync'd during guest CLP enable (necessary for interpretation to work) but will become disjoint once we reset the device until the next guest CLP ENABLE.  They can also become disjoint once the guest does a CLP DISABLE.
+What this change is doing is basically making sure we disable AIF on the hostdev, but does NOT replace pbdev->fh.  The guest-visible function handle will get sync'd again when the guest does a new CLP ENABLE after reset.
+
 
