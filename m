@@ -2,87 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBFC7830A11
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 16:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEECF830A13
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 16:54:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ8Dk-0004Cx-2C; Wed, 17 Jan 2024 10:52:52 -0500
+	id 1rQ8Eu-0005AR-Ut; Wed, 17 Jan 2024 10:54:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rQ8Dh-0004CY-RK
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:52:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rQ8Er-000513-BM
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:54:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rQ8Df-0005ne-KU
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:52:49 -0500
+ id 1rQ8Eo-0005uV-89
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:54:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705506766;
+ s=mimecast20190719; t=1705506837;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
  bh=HJFY3PJquz/0Xc0cG6TXdlkZyJldA+TnIjzzCjv69fw=;
- b=VW8HOAz/NR5TxZLGo6IgqG71eCjrgbRlKdAmX4b6CLaacFcKfUCy7azfkQHr0vSzHp0aju
- GW4XMYs5rP2s8n0oPeI2uk8X8xJJR0XnGy6z2MlOD8fv35sr7W8nDUewnPCgNseUTFjS4p
- 8Tt9Q2ctdQeJMyoRCreDEuoDo2MzsHY=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ b=dapWBULNOvfLF3A/oDT+p/leGM7jZ7YkL9j2XBIhJJZfVYrVWOoVAdrZWBvNju8KyTYz6l
+ 5e9iyhRT8ncvIprUgvFyjWVddx99xbm1HKQ7ZqBuLAUsPK5Hs08gjlnt5cNFCB9bnroTO1
+ lBFvfbZE1SIAzYIvG7xJCG7bmDW1QlA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-608-0BGBo-iHOhelWh84uiGPNw-1; Wed, 17 Jan 2024 10:52:43 -0500
-X-MC-Unique: 0BGBo-iHOhelWh84uiGPNw-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a2e6fb4c24eso93347066b.2
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 07:52:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705506761; x=1706111561;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HJFY3PJquz/0Xc0cG6TXdlkZyJldA+TnIjzzCjv69fw=;
- b=tEIxZ9wcmkzkRByEyzs6wrdceplX9Q8MT/0dKU2s170HrtCn2AqIA+mkfhL+/YW/Gb
- HK2K54xqK9/t/bfrNFoIm9nHhiChmfCsQN1JCicE4i7HIthrD57H9/NCwJNPdhW7lopX
- MQov5TxDh5YTkke6eqDVO0HDbZUKY/6AhkZ6UK3XJe2Lpz9aJ/LgRsK0x1xSIL8JbvKL
- ZY6E46fnhmWKzrUrOIXmIFXbQMh6jgHRQUwoOqQd0EOfBQtfIPoIugxIhUMhfH//zixq
- MIvOhumSuX2Ie2d1PR7REw4oGV7Sq13HJHI0cI0Ku5BjyWzAF7UyXXJsdub5Har2EOFA
- fRjA==
-X-Gm-Message-State: AOJu0Yx6Pj8htxM2snI7kOSPhwYuRvPb2e+Jpm/zrmWkdV6iHjvLsG/d
- BfakjJZ8J58E4CRbqrfjH+y7fbcoGsgNvoudVGzI1d2g9BBi+34bdapBGopD5OlOYBgKGvANNpl
- Fcjc9wI8UPYB+sCa93fCX9HS7OcPsX0OWYGljlNAgn1yUwO5AUg6h0UI8wYNZKYFE8ADiCKgRm/
- SZPVCVyB4=
-X-Received: by 2002:a17:906:348b:b0:a2c:ad93:2e79 with SMTP id
- g11-20020a170906348b00b00a2cad932e79mr4161084ejb.15.1705506761032; 
- Wed, 17 Jan 2024 07:52:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFs5+DR5B8fya8fOqxsWKQoHLwVJ82nv4A166ca3G/06b+5ovemqQ/hNTz9ECTpN7ZBm1P82A==
-X-Received: by 2002:a17:906:348b:b0:a2c:ad93:2e79 with SMTP id
- g11-20020a170906348b00b00a2cad932e79mr4161073ejb.15.1705506760652; 
- Wed, 17 Jan 2024 07:52:40 -0800 (PST)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
- by smtp.gmail.com with ESMTPSA id
- h16-20020a170906399000b00a28a66028bcsm7936381eje.91.2024.01.17.07.51.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jan 2024 07:52:01 -0800 (PST)
+ us-mta-99-hbVWrKqwNwukXLNbYpdLPw-1; Wed, 17 Jan 2024 10:53:53 -0500
+X-MC-Unique: hbVWrKqwNwukXLNbYpdLPw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 05CAC85A589;
+ Wed, 17 Jan 2024 15:53:53 +0000 (UTC)
+Received: from avogadro.lan (unknown [10.39.192.205])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BAE8E1BDB1;
+ Wed, 17 Jan 2024 15:53:50 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Richard Henderson <richard.henderson@linaro.org>
 Subject: [PATCH] target/i386: pcrel: store low bits of physical address in
  data[0]
-Date: Wed, 17 Jan 2024 16:51:43 +0100
-Message-ID: <20240117155143.172890-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.0
+Date: Wed, 17 Jan 2024 16:53:49 +0100
+Message-ID: <20240117155349.173131-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
 X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
