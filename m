@@ -2,86 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADA7830CD6
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 19:41:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9A9830D73
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 20:49:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQAqC-0003tI-PP; Wed, 17 Jan 2024 13:40:44 -0500
+	id 1rQBtR-0004Jh-PU; Wed, 17 Jan 2024 14:48:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rQApz-0003so-FJ
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 13:40:31 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rQApr-0000tO-4m
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 13:40:24 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3376d424a79so9154357f8f.1
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 10:40:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705516821; x=1706121621; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JZeppGXx5nUys2HS8j9EEaf2EFUTGWiF4DpHucRhs4Y=;
- b=PP/yGnAawWg2dIsmF7KuQIV7nMwW+77RMKztmY8kVFVEopD1cw1AOishj8Yg7FxFGl
- rXwMJfZIxAD6+oka2WZwTsRweQvjG04jcjJGyHjaanTZ0qNYZMuf96E5En45iiZHay3E
- KN1920NfY3rjtJkYUjoqIzzpCg/M0+YI+SCWw42HkwReOkLo3bUTL+OHU0ng8qquCaZ1
- SCWxRUEmNcu9KQxbpX1wZqGzi1b7LjSEjrGafc3NA2DxlMoEsZZJUud0Ol0NIoK523pG
- rBrgsB/bZnoie/0I1hccWHocTyUSzmWlQhGRTEQ2O9l7tcILyJOq5/7U9Ca5ZWUdo/0s
- 3I0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705516821; x=1706121621;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=JZeppGXx5nUys2HS8j9EEaf2EFUTGWiF4DpHucRhs4Y=;
- b=e9YLnUGwvXe9oMLV8Q3PaLax5GzNc7auqha1e+dJrjyIl/ZkGl1KFbLypC068mkHSs
- ZffKy5Q/jR58/xlPSYF+E3RH41m3M6H858gnbaTY2TbEu8AsDS3a+PW+km+CK7junPt2
- 9CgP+ac9Bu8t5gpRWBHgGlmYGYXtjJxSlKYKMEOlzy2/eLsfOzmfxzv0SCx7f81CC0H2
- phi6CCY1x54PKbXLuStKKocIKeNYqPX0A1PYoTaxP5M/1Q5tyTMMpS5Hmr5wy5NCPCUd
- Rr02wAWCA6kb23NS4wQ7n42bkLzG6MRgmlktil3iD3IUMoW73+EZXqKNxIyrUeWWcmqe
- ZUXQ==
-X-Gm-Message-State: AOJu0Yz6v8Uwf/M4PJGP1+Pu8iWVa3xhdjFJvHxl5TF/8AR+Yphgnk99
- IzguARyAaT1s4hi5PVR6D2Ym+EQSpMqftQ==
-X-Google-Smtp-Source: AGHT+IHbfEwBGP/fILw6BipyLQZF/PY3rST3ESHo1fBtHDU0qc/TRoxp6YGxhdlmKJe+PNdFNxszAQ==
-X-Received: by 2002:a5d:6211:0:b0:336:7885:e387 with SMTP id
- y17-20020a5d6211000000b003367885e387mr4631536wru.57.1705516821603; 
- Wed, 17 Jan 2024 10:40:21 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- d16-20020adff2d0000000b0033668b27f8fsm2255431wrp.4.2024.01.17.10.40.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jan 2024 10:40:21 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E348D5F8D8;
- Wed, 17 Jan 2024 18:40:20 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Manolo de Medici <manolodemedici@gmail.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,  qemu-devel@nongnu.org,
- bug-hurd@gnu.org, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 3/4] Allow tests to be disabled
-In-Reply-To: <CAHP40m=pB6aOdoUL36vC=_ku2ynNj6j6n0PC4DkwCgSd5D2OPQ@mail.gmail.com>
- (Manolo de Medici's message of "Wed, 17 Jan 2024 19:14:02 +0100")
-References: <CAHP40mkDymmXdvFUAEpiBTbVuaRUHVfW8UTdyuSDhoG4Ro+yzA@mail.gmail.com>
- <CAFEAcA_oEMqmc-coCSYpZw8vN+NSLYRQBowaDAR0i8vevoM3zQ@mail.gmail.com>
- <CAHP40m=pB6aOdoUL36vC=_ku2ynNj6j6n0PC4DkwCgSd5D2OPQ@mail.gmail.com>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Wed, 17 Jan 2024 18:40:20 +0000
-Message-ID: <87ttnbhkh7.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rQBtK-0004JK-15
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 14:48:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rQBtI-0005cT-1p
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 14:48:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705520878;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
+ references:references; bh=5D1670npY2V+R2n6CwrAED/nVrNrXgHnf+CzyLmDy6Q=;
+ b=F/sc1TZoorFkGXdbm6jYYDPvg/0P6CYkVRFcFhNhkVkid7Q2URCplF9NU4xGOsxGLVG5jp
+ p/CmlKKN5tQJeklEwT4+7hUk+IaeY5Ao0xRgIMhni9qMps0OGP+03aEAPLklMBPebKFqq6
+ 5fBtnOcV11hXNNOXm02TNSRIqp0naq4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-155-s8rDjFKYMDmPIGiju0xAyw-1; Wed, 17 Jan 2024 14:47:55 -0500
+X-MC-Unique: s8rDjFKYMDmPIGiju0xAyw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5CDEC85A588;
+ Wed, 17 Jan 2024 19:47:55 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.128])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1D6192166B35;
+ Wed, 17 Jan 2024 19:47:55 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id ABE8621E6806; Wed, 17 Jan 2024 20:47:49 +0100 (CET)
+Resent-To: imbrenda@linux.ibm.com, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org
+Resent-From: Markus Armbruster <armbru@redhat.com>
+Resent-Date: Wed, 17 Jan 2024 20:47:49 +0100
+Resent-Message-ID: <87plxzg2sa.fsf@pond.sub.org>
+From: Markus Armbruster <armbru@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Markus
+ Armbruster <armbru@redhat.com>,  qemu-trivial@nongnu.org,  Daniel P .
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Claudio Imbrenda
+ <imbrenda@linux.ibm.com>
+Subject: Re: [PATCH 1/5] qemu-options: Remove the deprecated -no-hpet option
+In-Reply-To: <20240112100059.965041-2-thuth@redhat.com> (Thomas Huth's message
+ of "Fri, 12 Jan 2024 11:00:55 +0100")
+References: <20240112100059.965041-1-thuth@redhat.com>
+ <20240112100059.965041-2-thuth@redhat.com>
+Date: Wed, 17 Jan 2024 13:37:42 +0100
+Message-ID: <87frywjfu1.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+Lines: 8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,74 +90,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Manolo de Medici <manolodemedici@gmail.com> writes:
+Thomas Huth <thuth@redhat.com> writes:
 
-> I agree with you, I mentioned that this was the "minimal effort"
-> patchset to get qemu compilable.
+> It's been marked as deprecated since QEMU 8.0, so it should be fine
+> to remove this now.
 >
-> On Wed, Jan 17, 2024 at 6:35=E2=80=AFPM Peter Maydell <peter.maydell@lina=
-ro.org> wrote:
-> [...]
->> should be guarded by a suitable check that means we don't
->> try to build it on hosts that don't have the host-specific
->> functions/whatever that it needs.
->
-> This is the best solution for this problem, any pointers on how to
-> best do this?
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
-Look in tests/qtest/meson.build for lines like:
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
-  config_all_devices.has_key('CONFIG_TPM_TIS_ISA') ? ['tpm-tis-test'] : [])
-
-It seems we have a bunch of logic for qtests_i386 and qtests_aarch64
-which isn't applied to the qtests list. Commenting those out I still get
-the full list:
-
- meson test --list | grep tpm
- qemu:qtest+qtest-aarch64 / qtest-aarch64/tpm-tis-device-test
- qemu:qtest+qtest-aarch64 / qtest-aarch64/tpm-tis-device-swtpm-test
- qemu:qtest+qtest-aarch64 / qtest-aarch64/tpm-tis-i2c-test
- qemu:qtest+qtest-arm / qtest-arm/tpm-tis-i2c-test
- qemu:qtest+qtest-i386 / qtest-i386/tpm-crb-test
- qemu:qtest+qtest-i386 / qtest-i386/tpm-crb-swtpm-test
- qemu:qtest+qtest-i386 / qtest-i386/tpm-tis-test
- qemu:qtest+qtest-i386 / qtest-i386/tpm-tis-swtpm-test
- qemu:qtest+qtest-x86_64 / qtest-x86_64/tpm-crb-test
- qemu:qtest+qtest-x86_64 / qtest-x86_64/tpm-crb-swtpm-test
- qemu:qtest+qtest-x86_64 / qtest-x86_64/tpm-tis-test
- qemu:qtest+qtest-x86_64 / qtest-x86_64/tpm-tis-swtpm-test
-
-But I guess there are there to ensure the dependencies are correct so
-I'm sure that's not the right fix.
-
-Paolo,
-
-Where is that meant to be done?
-
->
-> Thanks
->
-> On Wed, Jan 17, 2024 at 6:35=E2=80=AFPM Peter Maydell <peter.maydell@lina=
-ro.org> wrote:
->>
->> On Wed, 17 Jan 2024 at 12:59, Manolo de Medici <manolodemedici@gmail.com=
-> wrote:
->> >
->> > tests/qtest/tpm-* compilation is not disabled by disable-tpm,
->> > for this reason compilation fails on systems that doesn't
->> > support the linux/bsd TPM api. Fix this by allowing tests
->> > to be disabled.
->>
->> This isn't the right way to fix this. Either the tpm test
->> code has portability issues that can be fixed, or else it
->> should be guarded by a suitable check that means we don't
->> try to build it on hosts that don't have the host-specific
->> functions/whatever that it needs.
->>
->> thanks
->> -- PMM
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
