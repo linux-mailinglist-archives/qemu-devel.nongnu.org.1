@@ -2,79 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C73D830123
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 09:18:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DACC9830127
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 09:19:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ17h-0003BS-AD; Wed, 17 Jan 2024 03:18:09 -0500
+	id 1rQ18O-0003d6-Ph; Wed, 17 Jan 2024 03:18:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ17d-000390-SY
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:18:05 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ18G-0003ar-V9
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:18:45 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ17b-0005R9-Iz
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:18:05 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-337be1326e3so1179289f8f.2
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 00:18:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ18D-0005UW-Ig
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:18:44 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40e8ca16511so617395e9.2
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 00:18:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705479481; x=1706084281; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1705479520; x=1706084320; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Ke/xmLkvgzFtvRetxiUKK43zAqZzLNaKwqpGbNxA4QA=;
- b=uw+4ThM5RrQmdfcaK5BHpKkO6GSv/oMb8uljcn6HAiCywZY9e8f9ZNHSjhwMlQOQ76
- 61oq+axxaVQ7etaWsukZvNNObBlFkxK0PPvWxStrozVnpsQRJ/aWYHo90YPn7Vm4Ub6I
- v/KZgeBtg1BMBt++Xjv4zXfXFP2A9/oxqSeoVdLt9VurBI3ifcVpQJiq/CEbDH6LdU/h
- m2P1/1HVmz7EeRLKYQkNqoHSL/gPeVOewIq2bx2PR57PAT2HJh98LOiDz/iHzF2XP3A5
- t5w9d0vSb+BbEgVAwueklcu4BYoUR9V/Af+h19n9mQL73ILmhWPyzzrIg9909RhatO4q
- SwwQ==
+ bh=lEqi/RHj4sq69B79PKZvqrWq3QqVccKHRwjCNfNa65c=;
+ b=cEOC1nLvAhJRKz5uWzTOLJWISBy5Nh+39KW9hZu6zDATLX/I2br3iA054auyXvOrvt
+ VcZeGDLvNRtgm8g8fGyatOTR98qA3Z7HzG+KDROpHd9aiju2SnkNabbMuSb5XFE+R6S4
+ yWwL0gBBfoizHOJdyFGayPhsfvziW/KFwUl3xoUpKceQBlVsSLgIW/J4oyLa8jqINuq6
+ VyU6AbBdymrMCZx0zvT8Nr8L250D+t9Az2D0g4sObbNnbZDPnwnTQkxnK5aubpjfhyx4
+ xxlJDClgyN7ug10hNVqUQxWf0oNcWy3+UpTo+/ibkhjGJU4Yid/hwpUW/zjdoJv3JmcZ
+ 0wlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705479481; x=1706084281;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20230601; t=1705479520; x=1706084320;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ke/xmLkvgzFtvRetxiUKK43zAqZzLNaKwqpGbNxA4QA=;
- b=a/bcOrQTuukWgJF+udTLuqjw5Pc+fKkTS8/QRmOFMaeA89bdINT1CExm9wnNzLLnuc
- 4QlMXy11EFpEknzCU87qHr9WDiAy2ZRivHnPHUfBnSkCGa31wdDfh7uaq0RCWmZSv5ok
- p2H7Q9piHebnYChq4BHvTQRPcE8yoqBIsbGYYQUWKQYFSgSZFJRs2xSkiNrhyslhOHLs
- xDyaMn1matL0hseT0JnHPADe2sUeaYKmoS/+hjQVMJ83yNUuLHfy3eiiGd+8vZ5y6hMU
- vBDD3jAHP1q1iHMcSaLe6UincLK8CfBnP8Bk30OXFnUiMW8o3uYlNGTRhZlgymw3ttL0
- AWjw==
-X-Gm-Message-State: AOJu0YxRGTo6nByv9jepUdlyDwRJGuBlKZMrf+8uf+zlrV3PQGaSIIHw
- kmb2K3is1xXFINslngjBHO37rHsfAbaoyQ==
-X-Google-Smtp-Source: AGHT+IEMjG5MiETyo1GsJ1SyL2iI63HionHWNF3iAy1LiXysN4sjqysCKylm9RYCEwprtszKFjqikg==
-X-Received: by 2002:a05:600c:3b92:b0:40e:49e8:4068 with SMTP id
- n18-20020a05600c3b9200b0040e49e84068mr4767452wms.93.1705479481562; 
- Wed, 17 Jan 2024 00:18:01 -0800 (PST)
+ bh=lEqi/RHj4sq69B79PKZvqrWq3QqVccKHRwjCNfNa65c=;
+ b=M85dN5kYotPfFhlvP/iIJOv+4mJEyTOOHgmyxei0uyKoyTfsUGyWYGzxCGuBRbnTHp
+ dqvNTxfaCHYUIEin1lTmtEjVT62R8j99tsaZHSFaKMs96bgOMIVnpSFiO8rmzplDa55q
+ iJCzpOpkOX/y3+7e9Fq6kN8dBLLw8akF9CZ4OPpuH+bOQJjpMBVk5ZHayMelv5qlYENk
+ +JNR+aJoapjQponYGAdqFNO9dUifayXyE3RPv7rVxWO2Z0J34uuacAQui5N8LaitjgrC
+ 4iW360T+s5EuHeIoSUwhcZlwlPZlXMsiXnY9obWiVw6s88sZpOxU8Tcz8/pfCbErjCUj
+ 1zHw==
+X-Gm-Message-State: AOJu0YxDRCQmALlHkasLUUB4jvIkTcAscWPwmF48AXhAmHcqf/hkUC8A
+ JRhrMK7iC9vwpKty1RrFoibFfhPC+8DKAg==
+X-Google-Smtp-Source: AGHT+IGo4cNCTlz6ARVTtNQwuGY8oEGVsH643qjynmF8jxShghyo6bhOtir45ppGo8/pc1zYnYUtRA==
+X-Received: by 2002:a05:600c:458b:b0:40e:6397:f42c with SMTP id
+ r11-20020a05600c458b00b0040e6397f42cmr5491187wmo.7.1705479519927; 
+ Wed, 17 Jan 2024 00:18:39 -0800 (PST)
 Received: from [192.168.69.100] ([176.176.156.199])
  by smtp.gmail.com with ESMTPSA id
- n13-20020a5d51cd000000b0033673ddd81csm1033645wrv.112.2024.01.17.00.17.59
+ n13-20020a5d51cd000000b0033673ddd81csm1033645wrv.112.2024.01.17.00.18.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 00:18:01 -0800 (PST)
-Message-ID: <0a1d43ac-8249-494c-b34a-6728c9785b01@linaro.org>
-Date: Wed, 17 Jan 2024 09:17:59 +0100
+ Wed, 17 Jan 2024 00:18:39 -0800 (PST)
+Message-ID: <ef36646f-fed5-4b46-8542-44100b9d58bb@linaro.org>
+Date: Wed, 17 Jan 2024 09:18:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/docker: Add sqlite3 module to openSUSE Leap
- container
+Subject: Re: [PATCH] hw/elf_ops: Ignore loadable segments with zero size
 Content-Language: en-US
+To: Bin Meng <bmeng@tinylab.org>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+References: <20240116155049.390301-1-bmeng@tinylab.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Claudio Fontana <cfontana@suse.de>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Jan Richter <jarichte@redhat.com>
-References: <20240116230924.23053-1-farosas@suse.de>
- <0f9bb6b0-6292-4926-ad9d-8bc21087c873@linaro.org>
-In-Reply-To: <0f9bb6b0-6292-4926-ad9d-8bc21087c873@linaro.org>
+In-Reply-To: <20240116155049.390301-1-bmeng@tinylab.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,56 +92,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/1/24 08:09, Philippe Mathieu-Daudé wrote:
-> Hi Fabiano,
+On 16/1/24 16:50, Bin Meng wrote:
+> Some ELF files really do have segments of zero size, e.g.:
 > 
-> On 17/1/24 00:09, Fabiano Rosas wrote:
->> Avocado needs sqlite3:
->>
->>    Failed to load plugin from module "avocado.plugins.journal":
->>    ImportError("Module 'sqlite3' is not installed.
->>    Use: sudo zypper install python311 to install it")
->>
->> Include the appropriate package in the dockerfile.
->>
->>  From 'zypper info python311':
->>    "This package supplies rich command line features provided by
->>    readline, and sqlite3 support for the interpreter core, thus forming
->>    a so called "extended" runtime."
->>
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->>   tests/docker/dockerfiles/opensuse-leap.docker | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/tests/docker/dockerfiles/opensuse-leap.docker 
->> b/tests/docker/dockerfiles/opensuse-leap.docker
->> index dc0e36ce48..cf753383a4 100644
->> --- a/tests/docker/dockerfiles/opensuse-leap.docker
->> +++ b/tests/docker/dockerfiles/opensuse-leap.docker
->> @@ -90,6 +90,7 @@ RUN zypper update -y && \
->>              pcre-devel-static \
->>              pipewire-devel \
->>              pkgconfig \
->> +           python311 \
->>              python311-base \
->>              python311-pip \
->>              python311-setuptools \
+> Program Headers:
+>    Type           Offset             VirtAddr           PhysAddr
+>                   FileSiz            MemSiz              Flags  Align
+>    RISCV_ATTRIBUT 0x00000000000025b8 0x0000000000000000 0x0000000000000000
+>                   0x000000000000003e 0x0000000000000000  R      0x1
+>    LOAD           0x0000000000001000 0x0000000080200000 0x0000000080200000
+>                   0x00000000000001d1 0x00000000000001d1  R E    0x1000
+>    LOAD           0x00000000000011d1 0x00000000802001d1 0x00000000802001d1
+>                   0x0000000000000e37 0x0000000000000e37  RW     0x1000
+>    LOAD           0x0000000000000120 0x0000000000000000 0x0000000000000000
+>                   0x0000000000000000 0x0000000000000000         0x1000
 > 
-> See in this file header:
+> The current logic does not check for this condition, resulting in
+> the incorrect assignment of 'lowaddr' as zero.
 > 
->    # THIS FILE WAS AUTO-GENERATED
->    #
->    #  $ lcitool dockerfile --layers all opensuse-leap-15 qemu
->    #
->    # https://gitlab.com/libvirt/libvirt-ci
+> There is already a piece of codes inside the segment traversal loop
+> that checks for zero-sized loadable segments for not creating empty
+> ROM blobs. Let's move this check to the beginning of the loop to
+> cover both scenarios.
 > 
-> libvirt-ci maintains dependencies required to build QEMU,
-> in this case since it is a 'testing QEMU' dependency, you
-> might add it in the generate_dockerfile("opensuse-leap")
-> call in tests/lcitool/refresh (otherwise raise an issue
-> in libvirt-ci about it).
+> Signed-off-by: Bin Meng <bmeng@tinylab.org>
+> ---
+> 
+>   include/hw/elf_ops.h | 75 +++++++++++++++++++++++---------------------
+>   1 file changed, 39 insertions(+), 36 deletions(-)
 
-This is incorrect, correct fix in this thread:
-https://lore.kernel.org/qemu-devel/CABJz62OD0ZZSY16sDNRiTuPEBygy9Y6rUgRrwoA6N_yg8cgGAQ@mail.gmail.com/
+Thanks, patch queued.
 
