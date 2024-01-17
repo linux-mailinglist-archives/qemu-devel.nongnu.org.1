@@ -2,87 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DFB3830778
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:03:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 457BA83078C
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:05:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ6Vw-0004QO-79; Wed, 17 Jan 2024 09:03:32 -0500
+	id 1rQ6Xi-0005cS-10; Wed, 17 Jan 2024 09:05:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ6Vu-0004Or-K0
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:03:30 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ6Vs-0001A4-4R
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:03:30 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a2cad931c50so574438566b.1
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 06:03:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705500206; x=1706105006; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7Hb8HSZTIlaKM3OWz/hK0LGxM+o9h67iPpCzS074NIg=;
- b=UCR8FZ5+qK3u8vKQXk8lmS82fT0hlLSeddZANgqS4hzNePqIjYtXYnY6uLmvVVJPvo
- H3cVGby2HbpYMI2CyFicfacF0KObTqqCgiZTzzK/IUnnTCyiMIl/0Wu5SRBI2hlJrPjU
- MyBz99gxpkMYK3/esB6TpNhNlJ7AYcDy4ivNtPXYWvqT4RfL5G6qcMfqH+rTHUxQQ1LP
- N+xR17QG6UgZ0d/B97uen1ZW3dBTu9hK3mL50PmJ5vphrsmYpc60/C7cYFJARcYmyJm4
- 55gVI2p3ov56ySruHl2Py3nVn7WtWDLxEHdiWm/qVS5Q29Xd86iS24BDE9aK0FlZ5dHa
- R1kA==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQ6Xe-0005bw-Og
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:05:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQ6Xc-0001Wj-Kj
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:05:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705500314;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=NJ7s9c4TQaQ14HlMlkLsT1wjF9lDxhcMmTVmbrmWFYM=;
+ b=ZoTY22QeO5bJsGFF8uf1r4otbC1fi4xHP39qH3LpqJBBhZyfUwOL/2ymszb7WRevH78vy3
+ R6n9cnILfCgEl8WdGLdQ4mxVlP4jLMzKVE4wUoKMVYO9DpPP4RhiN2xRM0pjJgI3+4nU1m
+ dTh5D6D6uMRVVJ6BAY7OEyLixUGXIAc=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-689-Y8g5nBZrNT-rYBXTd073DA-1; Wed, 17 Jan 2024 09:05:12 -0500
+X-MC-Unique: Y8g5nBZrNT-rYBXTd073DA-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7831f409539so1531651385a.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 06:05:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705500206; x=1706105006;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1705500311; x=1706105111;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7Hb8HSZTIlaKM3OWz/hK0LGxM+o9h67iPpCzS074NIg=;
- b=Abppa5AFbWxAL7eguzl7eSx0hl2gRodHEnnsnCQibeR66CaSRFh7tkDaSnuYI6d46J
- FIT3nOwAY1RSlWSXuAP5Ex1OmlmwUQZ3O8U1hAlqmApVzRyBvUZMSgoJ8ybxwSOgZ3Oj
- RgMSBSlGdHqnPjbyp359Dqznbq9+msevM8XxjENPm7mp3pgjlO95+vVLpB3IftUnykAo
- o6cOwxi4lnvD9u/iF12kwyqMPXzQOU0Ic+zr9KCZAqkIkMpXhEMTiVlz0Yf9zgO9JXIK
- sGgjQZU996mr3bXpBJfn279wlfHrYTwNK44AhoM8EUnNkIzG7AHQL+/Q17THedFmN7XN
- CbrQ==
-X-Gm-Message-State: AOJu0Yxg19taj6/+cTF+E54zwl+8GAuC+2SbTc8vLzDhF7drZ4oeJFlv
- SMW9B1FbVNYz0AdSBYMNWCZ6g0lUFprk6w==
-X-Google-Smtp-Source: AGHT+IEg5Z7hC2UF30gCmvbAMcmXS4eimeCwagFXkmr04ZeqtdKrCWB70oEwkJQetfkAtFYxMhqNjw==
-X-Received: by 2002:a17:907:3ad1:b0:a2a:9e31:7ea5 with SMTP id
- fi17-20020a1709073ad100b00a2a9e317ea5mr3053320ejc.132.1705500206113; 
- Wed, 17 Jan 2024 06:03:26 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.212.26])
- by smtp.gmail.com with ESMTPSA id
- k6-20020a170906128600b00a2b0b0fc80esm7772901ejb.193.2024.01.17.06.03.24
+ bh=NJ7s9c4TQaQ14HlMlkLsT1wjF9lDxhcMmTVmbrmWFYM=;
+ b=T+PkKe7Rz5WYzevCh2EO25q8Ju5UdRFsvfhKtcLnC7ULNRSO8hF/dzEuivKeGVGJRA
+ Ae/A0WhnTExvAywFh5BiVMNRzd0gtJdEa+JUuOWA9opnqTQyUfm+tdcwo/FH3CQV6Uch
+ Te2tgOmPNh2Kb8eAbyCW6VBN/UoGdY21h5ZicVMLvcR+7lw9NIu+ruRYGG+jWsxcnEg9
+ k63VkR4cw/DPzdWygoVOiSlHw0p5davgvrJbZQsAKBeeMqEYNJtJXPRMmuCP3L1bmABV
+ DxgoZ5DgLxWjWYF7MgIGUjYdKryodANVkDjcwn44ZpLi/ZJe+xPyNElBoV/WsWyoDW3w
+ xlRQ==
+X-Gm-Message-State: AOJu0Yyrnud6uM5QLLxRpaeZuxHeKa29lOZD8vSWU31gcsKHut0jlgP0
+ o6UJfnQO0U6XVZp96J8YUlmmWuODnWBRC1JAhKKQ7zxvDVYhV7+U2Omwp0L+PQzdGtHGwIOoKCv
+ S9uZiGEDIdZMwrVixpt2bg1g=
+X-Received: by 2002:a05:620a:bce:b0:781:c01:385f with SMTP id
+ s14-20020a05620a0bce00b007810c01385fmr12332218qki.53.1705500311632; 
+ Wed, 17 Jan 2024 06:05:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEzc0CCoX0GM7SrIXL2Lp1Z3Qbg8Kq6Iqc9ReD65n02oBAOAawJAn6WXbvyriPfn6Nb5490oA==
+X-Received: by 2002:a05:620a:bce:b0:781:c01:385f with SMTP id
+ s14-20020a05620a0bce00b007810c01385fmr12332198qki.53.1705500311422; 
+ Wed, 17 Jan 2024 06:05:11 -0800 (PST)
+Received: from [192.168.0.9] (ip-109-43-179-227.web.vodafone.de.
+ [109.43.179.227]) by smtp.gmail.com with ESMTPSA id
+ a1-20020a05620a124100b007831fbfc8d0sm4473446qkl.133.2024.01.17.06.05.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 06:03:25 -0800 (PST)
-Message-ID: <8ae6c891-522d-435a-be63-2e5a5c9d6394@linaro.org>
-Date: Wed, 17 Jan 2024 15:03:23 +0100
+ Wed, 17 Jan 2024 06:05:11 -0800 (PST)
+Message-ID: <e7d4b93a-d5d4-44f3-8317-eaa81c3b8653@redhat.com>
+Date: Wed, 17 Jan 2024 15:05:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] tests/vm/netbsd: Remove missing py311-expat package
+Subject: Re: [PATCH 0/2] ppc: Rename power5+ and power7+ for the new QOM
+ naming rules
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Beraldo Leal <bleal@redhat.com>, Warner Losh <imp@bsdimp.com>,
- Ryo ONODERA <ryoon@netbsd.org>, Kyle Evans <kevans@freebsd.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Reinoud Zandijk <reinoud@netbsd.org>, Gerd Hoffmann <kraxel@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
-References: <20240117112407.22462-1-philmd@linaro.org>
- <5ae6d41e-e291-4fa1-94a1-6ec22cd809be@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <5ae6d41e-e291-4fa1-94a1-6ec22cd809be@redhat.com>
+To: Peter Krempa <pkrempa@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ devel@lists.libvirt.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>
+References: <20240111164652.908182-1-thuth@redhat.com>
+ <ZaE1NOjbFeWyxIeQ@angien.pipo.sk>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <ZaE1NOjbFeWyxIeQ@angien.pipo.sk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,66 +149,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/1/24 13:10, Thomas Huth wrote:
-> On 17/01/2024 12.24, Philippe Mathieu-Daudé wrote:
->> Per commits a9dbde71da ("mkvenv: add better error message for
->> broken or missing ensurepip") and 1dee66c693 ("tests/vm: add
->> py310-expat to NetBSD"), we need py-expat to use ensurepip.
+On 12/01/2024 13.48, Peter Krempa wrote:
+> On Thu, Jan 11, 2024 at 17:46:50 +0100, Thomas Huth wrote:
+>> We can get rid of the "power5+" / "power7+" hack in qom/object.c
+>> by using CPU aliases for those names instead (first patch).
 >>
->> However the py311-expat package isn't available anymore:
+>> I think in the long run, we should get rid of the names with a "+"
+>> in it completely, so the second patch suggests to deprecate those,
+>> but I'd also be fine if we keep the aliases around, so in that case
+>> please ignore the second patch.
 >>
->>    ### Installing packages ...
->>    processing remote summary 
->> (http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/amd64/9.3/All)...
->>    database for 
->> http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/amd64/9.3/All is 
->> up-to-date
->>    py311-expat is not available in the repository
->>    ...
->>    calculating dependencies.../py311-expat is not available in the 
->> repository
->>    pkg_install error log can be found in 
->> /var/db/pkgin/pkg_install-err.log
->>
->> Dropping it from the default packages list allows creating the
->> NetBSD VM and build / test QEMU, without error from ensurepip.
->>
->> This reverts commit 1dee66c693 ("tests/vm: add py310-expat to NetBSD").
->>
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2109
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->> RFC because ensurepip seems important due to cited commits
->>      but I'm not sure where it is used, and this fixes my CI build.
+>> Thomas Huth (2):
+>>    target/ppc/cpu-models: Rename power5+ and power7+ for new QOM naming
+>>      rules
+>>    docs/about: Deprecate the old "power5+" and "power7+" CPU names
 > 
-> Thanks for tackling it, I also ran into this problem already and just 
-> did not have enough spare time yet to investigate.
-> 
-> I searched a little bit, and found this text here:
-> https://mail-index.netbsd.org/netbsd-announce/2024/01/01/msg000360.html
-> 
-> "
-> - Several packages have been folded into base packages.  While the
->     result is simpler, those updating may need to force-remove the
->     secondary packages, depending on the update method.  When doing
->     make replace, one has to pkg_delete -f the secondary packages.
->     pkgin handles at least the python packages correctly, removing the
->     split package when updating python.  Specific packages and the
->     former packages now included:
-> 
->       * cairo: cairo-gobject
->       * python: py-cElementTree py-curses py-cursespanel py-expat
->         py-readline py-sqlite3
-> "
+> libvirt seems to be explicitly referencing power7+ in the code, so I
+> guess we'll need code to translate the + versions to the spellt-out
+> version to preserve compatibility.
 
-Thanks for digging, I'll update the description.
+If it's too cumbersome, we could also keep the alias enabled in QEMU, i.e. 
+drop the second patch...?
 
-> So it seems like the py-expat package has simply been merged into a base 
-> package now. Thus I think your patch is fine. It also fixes the problem 
-> for me, so:
-> 
-> Tested-by: Thomas Huth <thuth@redhat.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> 
+  Thomas
 
 
