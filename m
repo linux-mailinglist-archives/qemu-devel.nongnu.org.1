@@ -2,72 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80A083051A
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 13:21:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3226C83065E
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 13:59:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ4uL-00048n-7Z; Wed, 17 Jan 2024 07:20:37 -0500
+	id 1rQ5UT-0001kG-Nz; Wed, 17 Jan 2024 07:57:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rQ4uI-000487-Sl; Wed, 17 Jan 2024 07:20:34 -0500
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ (Exim 4.90_1) (envelope-from <manolodemedici@gmail.com>)
+ id 1rQ50i-0006gL-O0
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 07:27:12 -0500
+Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rQ4uH-0006Wf-1V; Wed, 17 Jan 2024 07:20:34 -0500
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-3bd72353d9fso3027665b6e.3; 
- Wed, 17 Jan 2024 04:20:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <manolodemedici@gmail.com>)
+ id 1rQ50h-0007vz-A9
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 07:27:12 -0500
+Received: by mail-il1-x135.google.com with SMTP id
+ e9e14a558f8ab-3606dda206aso57158085ab.3
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 04:27:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705494031; x=1706098831; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LnCQRHqYtczqK/F2G+qYC5kHOTkKavRx/3BEybeiSMU=;
- b=eCOW2fQwQPSHaTOl+URYdC/I+QUnAaDaUSXq0oxAlqMInutmY416j9ZiXD8NupJktg
- TGWJPo01dVq5CINj5JWp8O+NkHirvYu5kYCsGr27IbMtenPxMS0fpackamIo9oPqoY4+
- qCil3j95o+nUEdcsoWP0oLTpVXvPPIw2abdW5nDsyGdNnPAQr0Cy7x0tH2chjztXZqhe
- c5yalAVVigsgR97LlXPrQgilLfc5p5jyaP5boLFRjckX9xunluS6XyuhhXk/czjkOT20
- Lqnpbo/bT5AqXAXITj0QLZI5dekXWa0QWuys8hDbbkfc7N2WPIgGTDAzdyyjrFccMUDM
- Q/gg==
+ d=gmail.com; s=20230601; t=1705494429; x=1706099229; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=CB/uKWAy2009oZqKN+62zORTKmV/MAzqXizHFj7KY5w=;
+ b=BfjIahahbMTVE9hDNpCBe3VSFXtPWRGj0TvMO31KjysPyjZcvIsJa8mSb1lhSjcJGm
+ xJuXbNepBO+biXwG5+nrooYdXPTpUj7lzB/A+4fx6tspeXUmitBwnzefW7eXIN8tfEIE
+ b3H9kpaqKBb2+9YYO3ulLlk+EsNFRdL3mJ/YP/a9LUoYCQbv5OUm5F3sosGMffpX1mYM
+ lyzBo4+iEQFh/LlM7BgWkDOZzDyV7w+lmQKs+h56tPdqYjnmiCPM22lKvBI2L4x2L0BQ
+ egUjsXABB9YGs07MaLVkbYjvs7IhVxSxlzz/wI9SS/UB4++CUurINFYTRwGSN0KeQyS1
+ hIVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705494031; x=1706098831;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LnCQRHqYtczqK/F2G+qYC5kHOTkKavRx/3BEybeiSMU=;
- b=YvQEonrF0QTmVOINqx4o9nl9/3m9+vY+bFDM4yvCPqLeJFBdR+QF1fcWrHNX/Ouwus
- Ktgw1YyiXG30w0FUqWZiImKxPiKPIz2g/tieXbcqqGp6uZP+IDkCT4Eg7VbN7uPFwJYI
- Lz3enwXF35Q3xCpzmHP51yfSD47h9uUaXgydlz+/mlYrRlxo9WuvHAiaFDmPfNEOVvNq
- RcmFk3eQ+JP0w9nB74zGYI5bfkp0A3EStOpMK3f9/RlCJiirs9qyUJ0Ta0NcD3fjYu03
- mORtfEI5zdP6dNof/8GsZK3Qzf02xRMdzwQY8wJ1iIjD1VMbh1nEJf+T/5SzsztCgxLs
- /biQ==
-X-Gm-Message-State: AOJu0Yz4h4JIWb9+nC+Lk14DJqzrkuugjdbapuPwBxpQila0ra4UK8A8
- YNMMk7IVy47Srpry+X7Fg7auC3V3e6P2gRxEWag=
-X-Google-Smtp-Source: AGHT+IEKF2AcyQvcv4//0QUbXhlpOPXakhseQ3Ok1zF4ivDJFsHLqIX5yCU0VmEPPFkDRukdETebE2F2nrJ+7IwSJQs=
-X-Received: by 2002:aca:1e06:0:b0:3bb:d501:f531 with SMTP id
- m6-20020aca1e06000000b003bbd501f531mr8927502oic.96.1705494031405; Wed, 17 Jan
- 2024 04:20:31 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705494429; x=1706099229;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CB/uKWAy2009oZqKN+62zORTKmV/MAzqXizHFj7KY5w=;
+ b=tbnlZidp18J+T/AoiIEQVhfAwMMcmo2Vv5QGx9HnJ90AZPfIsIOeYqCamhdx5a7ccr
+ +ezgowofH6pWe/xoTunW7u+fAXBV4IQ1hPdmcWuJ+oFVk17C5DLBgWIR8z7/2AD7UU0V
+ fsnqjnKC93yeHCvisy6/b6EEpfKMWNvwlrii7kMwFRayGQYm8Mz5VKnAKkdISi9hx3Tj
+ M8eW6GEzYqi46MwDr55C2EzYNS7roqtd7gns2FrLe9IOSkdM9Rl5wUgYxIBPyRiraeXs
+ UYJWzLEtrAV79rV0/udW/+LhWxOp1tDeOOps2mMCQ1RJ8XHcnvA0jAUHaSHbz8aPG6lm
+ n7QA==
+X-Gm-Message-State: AOJu0YzrFxXr98fq5S3pB9vm4Hd2Vk2jMo1jiUv4WFwcdyVK9GN6UsIZ
+ 10srWtgT8V3jqQDojX85y+gdDGJKrjgBkEn2k1mKugeEzls=
+X-Google-Smtp-Source: AGHT+IHkEPVNCJHyIRGEoQqrGHXlnF2IO9uj4B7yQTww6xrwOe37TlTHPrSYI1indXe5eH+T/oqdJYrx6dz+cmcImno=
+X-Received: by 2002:a05:6e02:509:b0:360:2db:b47c with SMTP id
+ d9-20020a056e02050900b0036002dbb47cmr10185224ils.19.1705494429638; Wed, 17
+ Jan 2024 04:27:09 -0800 (PST)
 MIME-Version: 1.0
-References: <20240117110109.287430-1-f.ebner@proxmox.com>
- <CAMxuvayHZiXp=VRm=e=HT8u91p3MTut1KXyWOaooEUv7=wZwFg@mail.gmail.com>
- <4d6f1a47-3311-4a44-b47c-19035d6cfee0@proxmox.com>
- <CAJ+F1CJ4gF=kx1xedYsnU9MYqTS24xobYrf4ObOAgDnSFGFrnA@mail.gmail.com>
- <a34df4a7-1948-4e65-bec1-c86c1ce54280@proxmox.com>
-In-Reply-To: <a34df4a7-1948-4e65-bec1-c86c1ce54280@proxmox.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 17 Jan 2024 16:20:19 +0400
-Message-ID: <CAJ+F1CJ5ru_9EoenYLsEAc3jO5rvTbdvu15ocWy7nUT0AwOD+Q@mail.gmail.com>
-Subject: Re: [PATCH v2] ui/clipboard: ensure data is available or request
- callback is set upon update
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com, 
- berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
+From: Manolo de Medici <manolodemedici@gmail.com>
+Date: Wed, 17 Jan 2024 13:27:05 +0100
+Message-ID: <CAHP40mmqdyrMyzaPTHMCx2nzeNGg6G=HY_qUyniddpE+g8RNzQ@mail.gmail.com>
+Subject: [PATCH 0/4] Port qemu to GNU/Hurd
+To: qemu-devel@nongnu.org
+Cc: bug-hurd@gnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-oi1-x232.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::135;
+ envelope-from=manolodemedici@gmail.com; helo=mail-il1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -76,6 +67,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 17 Jan 2024 07:57:54 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,108 +82,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Recently, a testsuite for gnumach, the GNU/Hurd microkernel, was developed
+that uses qemu. Currently qemu cannot be compiled for the GNU/Hurd, as such,
+this testsuite is available only for GNU/Linux users. As such, porting qemu to
+GNU/Hurd became an urgent requirement.
 
-On Wed, Jan 17, 2024 at 3:56=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
-rote:
->
-> Am 17.01.24 um 12:33 schrieb Marc-Andr=C3=A9 Lureau:
-> > Hi
-> >
-> > On Wed, Jan 17, 2024 at 3:30=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.co=
-m> wrote:
-> >>
-> >> Am 17.01.24 um 12:11 schrieb Marc-Andr=C3=A9 Lureau:
-> >>> Hi
-> >>>
-> >>> On Wed, Jan 17, 2024 at 3:01=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.=
-com> wrote:
-> >>>>
-> >>>> +    for (type =3D 0; type < QEMU_CLIPBOARD_TYPE__COUNT && !missing_=
-data; type++) {
-> >>>> +        if (!info->types[type].data) {
-> >>>> +            missing_data =3D true;
-> >>>> +        }
-> >>>> +    }
-> >>>> +    /*
-> >>>> +     * If data is missing, the clipboard owner's 'request' callback=
- needs to be
-> >>>> +     * set. Otherwise, there is no way to get the clipboard data an=
-d
-> >>>> +     * qemu_clipboard_request() cannot be called.
-> >>>> +     */
-> >>>> +    if (missing_data && info->owner && !info->owner->request) {
-> >>>> +        return;
-> >>>> +    }
-> >>>
-> >>> It needs to check whether the type is "available". If not data is
-> >>> provided, owner should be set as well, it should assert() that.
-> >>>
-> >>> That should do the job:
-> >>>
-> >>> for (type =3D 0; type < QEMU_CLIPBOARD_TYPE__COUNT; type++) {
-> >>>     /*
-> >>>      * If data is missing, the clipboard owner's 'request' callback n=
-eeds to
-> >>>      * be set. Otherwise, there is no way to get the clipboard data a=
-nd
-> >>>      * qemu_clipboard_request() cannot be called.
-> >>>      */
-> >>>     if (info->types[type].available && !info->types[type].data) {
-> >>>         assert(info->owner && info->owner->request);
-> >>>     }
-> >>> }
-> >>>
-> >>
-> >> Okay, thanks! But we can't assert, because that doesn't resolve the CV=
-E
-> >> as it would still crash. The VNC client might not have the
-> >> VNC_FEATURE_CLIPBOARD_EXT feature, and the request callback is current=
-ly
-> >> only set in that case. But we can return instead of assert to just avo=
-id
-> >> clipboard update. I'll send a v3.
-> >
-> > If it doesn't have VNC_FEATURE_CLIPBOARD_EXT, it shouldn't update the
-> > clipboard without data. (ClientCutText/ServerCutText always have data,
-> > even if 0-length)
-> >
->
-> But a buggy client should not be able to crash QEMU. With a
-> VNC_MSG_CLIENT_CUT_TEXT message, when read_s32(data, 4) =3D=3D 0,
-> vnc_client_cut_text() is called with zero length. Is that supposed to
+This patcheset represents the minimal effort to make qemu compilable and
+running in GNU/Hurd. With this patchset applied, qemu can be compiled with
+the '--disable-tpm' and the '--disable-tests' configure options.
 
-Indeed. That case should be handled at the VNC server code level.. A
-0-length text should set clipboard to "", not NULL.
+Please review, thanks,
 
-With Ext, there is an explicit description of data ending with \0:
-According to https://github.com/rfbproto/rfbproto/blob/master/rfbproto.rst#=
-user-content-7727extended-clipboard-pseudo-encoding
-"The text must be followed by a terminating null even though the
-length is also explicitly given."
+Manolo de Medici (4):
+  Allow tests to be disabled
+  Add the GNU/Hurd as a target host
+  Include new arbitrary limits if not already defined
+  Avoid multiple definitions of copy_file_range
 
-But we should still handle 0-length data cases.
+ block/file-posix.c   | 2 +-
+ configure            | 9 +++++++++
+ include/qemu/osdep.h | 8 ++++++++
+ 3 files changed, 18 insertions(+), 1 deletion(-)
 
-> happen? The branch for an extended message is only taken when
-> read_s32(data, 4) < 0 and Daniel's patch fixes that branch.
->
-> I noticed in qemu_clipboard_set_data():
->
-> > info->types[type].data =3D g_memdup(data, size);
->
-> the g_memdup call will return NULL when size =3D=3D 0 even if data is
-> non-NULL. Is that the actual problem in the above scenario?
-
-Hmm, qemu_clipboard_set_data() shouldn't allow data =3D=3D NULL, or size =
-=3D=3D 0.
-
-When data is requested, the "peer" will call
-qemu_clipboard_set_data(). But I can't see a good way for the peer to
-return with no data, it should probably update the clipboard info with
-available=3Dfalse.
-
-What do you think?
-
---=20
-Marc-Andr=C3=A9 Lureau
+--
+2.43.0
 
