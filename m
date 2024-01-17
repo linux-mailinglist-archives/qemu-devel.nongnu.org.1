@@ -2,81 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA98830133
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 09:23:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A356D830134
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 09:23:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ1C1-0008Di-MP; Wed, 17 Jan 2024 03:22:37 -0500
+	id 1rQ1CO-0000fr-67; Wed, 17 Jan 2024 03:23:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ1Bz-00086x-Op
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:22:35 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ1By-0006DH-9b
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:22:35 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40e490c2115so54491675e9.0
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 00:22:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705479753; x=1706084553; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5negX8TjAiTtZEJaJr1kCgnB3D++H/1aGD3/FkzTS7A=;
- b=fB7IXmULO0j6yggZwC8h86FaxVOtJhmm2fMm4qhDiZ6OEzd1AMZyDL5VUxtj4NnQ+Y
- m+8Vy7DsGCGCAsqKaY4MqbuzLzi72G4TVP+18DDTsZC8BkMHKwIzEl9asK9DkOCPk7H5
- R4oSCz6LKdrPBEbU6sRpIPvENz049i9XFwGsdh0IBNQ2kEPlesqdAusjDZ/HZstjOF1a
- ojn3jq1TEoCRB/Hh9E+TobMvLN8Ra9fms+dz1vIka2uW1ipf7Kl26IGp5BlTVrA6b9t6
- bE7efUq0OE/FBtg83lIkQQoavpaE8qZ/qalNXys44no4n9SKl6vcUZwWbVOKnZiTY+7p
- odsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705479753; x=1706084553;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5negX8TjAiTtZEJaJr1kCgnB3D++H/1aGD3/FkzTS7A=;
- b=cO6meceYZMI0actPR1WvPzBz2DHNXeAsg+1+lv/ia48qNKkpbgWGCD1LPR0/C+LGoI
- tHYPNkCwJ9T4AFnUfZfvlcJjF47sUgF5NyFZiPPLRcJLiFJRDxSLRoORtzei0NxHZ1zX
- 71tRWVBO53C6fbWXxYDPI+O8V2bw38f+Kvg04Ajbi7RpAbH8kITlHb/XJ/ipr/xyNADl
- ikYnpFwCnjDD6Jl8MYMK8kJVMLn7byoe70Ial8kx90TZVXzaOIcfMnTiqoNTi91EUs7w
- hT0CY5ioS9AJCTxtJPMrmoGdh3QIvoRHZaPrNCp5FWFO/Il3JGmDvbHZIdbDa8fibzoE
- mVVg==
-X-Gm-Message-State: AOJu0YyN0wDn47K5fdmOH4kOTPg7OJxUo+3gVys7qEpUgoioDq+16oXN
- YlcJGzJhQINtW1hqCc7ix2B6l7SkWBJhispHrBFYy/uTQQM=
-X-Google-Smtp-Source: AGHT+IFOMXLHtJMMi7iKMn0FFPe39BiQ7U+hDWOGDF0JfSN2Oz0UUwsdGpIoNh14A/KEXKovqXfjUQ==
-X-Received: by 2002:a05:600c:474d:b0:40e:47f4:a3f6 with SMTP id
- w13-20020a05600c474d00b0040e47f4a3f6mr232049wmo.152.1705479752862; 
- Wed, 17 Jan 2024 00:22:32 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.156.199])
- by smtp.gmail.com with ESMTPSA id
- n13-20020a5d51cd000000b0033673ddd81csm1033645wrv.112.2024.01.17.00.22.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 00:22:32 -0800 (PST)
-Message-ID: <371060e3-c15d-402e-860c-606193444872@linaro.org>
-Date: Wed, 17 Jan 2024 09:22:31 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rQ1CM-0000fZ-K7
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:22:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rQ1CL-0006ED-5K
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:22:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705479776;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=4aSEx0fvNwllNY6iFgw2sCLA+IXOhxEvm1hxlo78E0Q=;
+ b=WSnSXmp+fqe9iDWKFMqn3wYm6KK6pSxEsZujeSBsrJOA0qhtXKHZsOnrs7M3LXSwmGGsC0
+ pBdD6oRUTrovwxHZfBDRS4lOfqIttC8dXPaODhk5nLBTkTrKXTXR2wXGdoAIeDXIDbbuvn
+ E+lHAKpOew89zKrvs//DczmItzVvLBs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-326-fxsnE0LfPxeulzVkTw06GQ-1; Wed,
+ 17 Jan 2024 03:22:53 -0500
+X-MC-Unique: fxsnE0LfPxeulzVkTw06GQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C64842837800;
+ Wed, 17 Jan 2024 08:22:52 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.128])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A3FFE1C066AB;
+ Wed, 17 Jan 2024 08:22:52 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D596321E680D; Wed, 17 Jan 2024 09:22:49 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Peter
+ Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH v2 14/19] qapi/schema: fix typing for
+ QAPISchemaVariants.tag_member
+In-Reply-To: <20240112222945.3033854-15-jsnow@redhat.com> (John Snow's message
+ of "Fri, 12 Jan 2024 17:29:40 -0500")
+References: <20240112222945.3033854-1-jsnow@redhat.com>
+ <20240112222945.3033854-15-jsnow@redhat.com>
+Date: Wed, 17 Jan 2024 09:22:49 +0100
+Message-ID: <87h6jcnzc6.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] target/alpha: Only build sys_helper.c on system
- emulation
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-References: <20231207105426.49339-1-philmd@linaro.org>
- <9814eab3-f50b-4240-acb5-3e0f06154ac4@linaro.org>
-In-Reply-To: <9814eab3-f50b-4240-acb5-3e0f06154ac4@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,23 +83,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/12/23 12:17, Philippe Mathieu-Daudé wrote:
-> On 7/12/23 11:54, Philippe Mathieu-Daudé wrote:
->> Extract helper_load_pcc() to clk_helper.c so we can
->> restrict sys_helper.c to system emulation.
->>
->> Philippe Mathieu-Daudé (2):
->>    target/alpha: Extract clk_helper.c from sys_helper.c
->>    target/alpha: Only build sys_helper.c on system emulation
->>
->>   target/alpha/clk_helper.c | 32 ++++++++++++++++++++++++++++++++
->>   target/alpha/sys_helper.c | 18 ------------------
->>   target/alpha/meson.build  |  7 +++++--
->>   3 files changed, 37 insertions(+), 20 deletions(-)
->>   create mode 100644 target/alpha/clk_helper.c
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+John Snow <jsnow@redhat.com> writes:
 
-Eh I meant "series queued" :)
+> There are two related changes here:
+>
+> (1) We need to perform type narrowing for resolving the type of
+>     tag_member during check(), and
+>
+> (2) tag_member is a delayed initialization field, but we can hide it
+>     behind a property that raises an Exception if it's called too
+>     early. This simplifies the typing in quite a few places and avoids
+>     needing to assert that the "tag_member is not None" at a dozen
+>     callsites, which can be confusing and suggest the wrong thing to a
+>     drive-by contributor.
+>
+> Signed-off-by: John Snow <jsnow@redhat.com>
+
+I explored another solution, and posted it in reply to v2.  If we decide
+not to like it better, I guess we'll go with this one.
 
 
