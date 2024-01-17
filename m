@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7FB28307AD
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:13:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8DC88307B5
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:14:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ6f3-0004od-66; Wed, 17 Jan 2024 09:12:57 -0500
+	id 1rQ6f6-00052Y-Sm; Wed, 17 Jan 2024 09:13:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQ6f1-0004kb-0C; Wed, 17 Jan 2024 09:12:55 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1rQ6f5-0004yh-7n; Wed, 17 Jan 2024 09:12:59 -0500
+Received: from mail-io1-xd2a.google.com ([2607:f8b0:4864:20::d2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQ6ex-0002na-RT; Wed, 17 Jan 2024 09:12:54 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6dac8955af0so6355766b3a.0; 
- Wed, 17 Jan 2024 06:12:51 -0800 (PST)
+ id 1rQ6f3-0002o5-DA; Wed, 17 Jan 2024 09:12:58 -0500
+Received: by mail-io1-xd2a.google.com with SMTP id
+ ca18e2360f4ac-7bc32b04d16so414752339f.0; 
+ Wed, 17 Jan 2024 06:12:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705500770; x=1706105570; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705500775; x=1706105575; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=24tQcxqPqeU/relh2eghfjT90bWoGXR7lUeha6JIv0o=;
- b=NK9OOPPVkk7t0ognlxR7Wio0yOxHCDTXxVw4dnmzNRdxB2/2HaAIXhXATwOOqI6fwQ
- 48H/rQSaSYCTgCciOij+7ko11jNid0VerUqsJJJ06iMfkcGNIh50IxAFWy1cBE0TpsvR
- wd0dtsDiVqv05yBkWBZYqIQld0MMDpTnXMdpUzrxlZIzkB3FhI9HOGrKR+cMo/rmfH0e
- kIE9KWZhNqrlrrGLqCcmB30t3A+jKKHUCJJnl6CHXjDuYbqVKsWR9iRjMv9/SdQ2YHei
- luW8zfbwi3h6LUBM7yrvBI6aheOFh7whzSOemB6mCGkW9lUAqppXUsFblFnvoooaFx0Q
- VaCA==
+ bh=GXhcWhDx2TddmKjfU3X1E7OWdRVTkV38ZDTIkwpRXgc=;
+ b=jDhDuZbn/fMWH9BWJsLSPmS2zq1GI48EasGvbh3vgU9CbaL+TaCBuvhZL+EHe2o2jG
+ PzOWK5H+bYtJsL4rcOetfJY7XZJ83Qx0CuhgTbQPX5VoBmkFx8p0VMIor4cNQ1Zeau9Y
+ 0tw1ae3Re4gr6LiTNKcP88FZWr5PQsA4lEFi0da+zeobonIFmHVs5512kyrrU2sJqIn3
+ R16NwMM2O2flAHcKRm2k8TJC60YRGuNIwhgtTgMgzOjCqg1Ya/ySIrvxd762s5BuaijB
+ wbUeEmqK69LvoGUQ52ckOg9GCsbuuq4ovnVoQkqffp+GbaXxhNF10YbGI+Wa1jwyCMaA
+ AKdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705500770; x=1706105570;
+ d=1e100.net; s=20230601; t=1705500775; x=1706105575;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=24tQcxqPqeU/relh2eghfjT90bWoGXR7lUeha6JIv0o=;
- b=ojivvfybj1t8hjzy9rOqCPiPcvHVSsxV6/fXbFPWdSDmAtYs6lBJDqiRGm2lPATosh
- UcMNIKjar6l6EKjrZ12T+zJQfmha9M2abwZxkb1fJvNFXVe0UHDIMsMid8KYyH8vMGyW
- 05DLQgxsG2gRotZaZAAMCri0V+KVg5s9GQXamwLZPVPq0Y9EWsF/ogr/elbzk8TRTKf7
- nNQkP+k+aTS0ngoUs5QyoX/idBTjiOu90wYB6AG4JEwvZVGfFF49J2cZEIHyyyPbqtmG
- 9NUJtVmFiIoZ57lbrHN2xSPvFclu2+dVhe32G7w8DEX+vf99OoSkG126x3eskAm4JRAM
- Fq2A==
-X-Gm-Message-State: AOJu0Yz8SXyOCql71iORZA604LNsqoAnUMcVppAO95jjct/Y11SJ5szb
- 4i0kKNzoYMtzQscCh/SMsDBygqUn9SY=
-X-Google-Smtp-Source: AGHT+IHkx5dYI2jcp4eJk4GKngvt63wyWQixHNQduzSYm3H//fA+0SC1/5MYmsagVIf6ch4OeNiF5w==
-X-Received: by 2002:a05:6a20:ce4d:b0:19a:e502:1624 with SMTP id
- id13-20020a056a20ce4d00b0019ae5021624mr2999987pzb.10.1705500769627; 
- Wed, 17 Jan 2024 06:12:49 -0800 (PST)
+ bh=GXhcWhDx2TddmKjfU3X1E7OWdRVTkV38ZDTIkwpRXgc=;
+ b=Jrd5rJkoU1+Fht0oGpV8ee+liRZTnx/PeM/X4s29cGGL489BdbOw+mM+lIUaD4MYte
+ iHJ4JJe+qJ6RswQR/qmCYRQ1J90XnaBd8y0/LGcCSlH234GKmA2RrPqsdBR1HfXnmFIG
+ Y8L6yMKJsw3aLF8LJ2EDqrNwugmXnNleZZMJTD8xJwUUJ7EeRM2T2YHYCp97/Kq2FIF3
+ zTp2ysfIp/gR2v5xkEvgelF8QWL5JTuNUd4XIatzJTCixkh8iBwPfMMIE/zSkiNfiAil
+ ELoRl753anI/fmRSCYiV+Qc/fFQgGWay0850RED59CAM8+RBE89Dci0y8uDzm45i8H9K
+ RLbQ==
+X-Gm-Message-State: AOJu0Ywmw52wOKxnK2BEcYA64JC4RUxdaRlmJ+1sm4JGPDJ8al97hWEi
+ cjTXaC2RXMrpoBokC36Ne3ARg4v/Zpg=
+X-Google-Smtp-Source: AGHT+IFZr21bKuXTCL5szrVAA1cYsGn+XBuQ6aRdswCrf8o37pBKKUXJuz0hrPcwoc1eUjHTJDindg==
+X-Received: by 2002:a5e:8619:0:b0:7bc:1bf9:fd83 with SMTP id
+ z25-20020a5e8619000000b007bc1bf9fd83mr9693275ioj.3.1705500774908; 
+ Wed, 17 Jan 2024 06:12:54 -0800 (PST)
 Received: from wheely.local0.net (124-171-76-150.tpgi.com.au. [124.171.76.150])
  by smtp.gmail.com with ESMTPSA id
- i136-20020a636d8e000000b005cebb10e28fsm11812428pgc.69.2024.01.17.06.12.44
+ i136-20020a636d8e000000b005cebb10e28fsm11812428pgc.69.2024.01.17.06.12.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jan 2024 06:12:49 -0800 (PST)
+ Wed, 17 Jan 2024 06:12:54 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -66,17 +66,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  qemu-ppc@nongnu.org
-Subject: [PATCH v2 2/8] tests/avocado: Mark x86-64 boot_linux.py TCG tests as
- long runtime
-Date: Thu, 18 Jan 2024 00:12:17 +1000
-Message-ID: <20240117141224.90462-3-npiggin@gmail.com>
+Subject: [PATCH v2 3/8] tests/avocado: Enable replay_linux.py on ppc64 pseries
+Date: Thu, 18 Jan 2024 00:12:18 +1000
+Message-ID: <20240117141224.90462-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240117141224.90462-1-npiggin@gmail.com>
 References: <20240117141224.90462-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2a;
+ envelope-from=npiggin@gmail.com; helo=mail-io1-xd2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,95 +98,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Re-testing gitlab CI shows the ppc64 and s390x boot_linux tests take
-100-150 seconds each. The x86-64 TCG tests take a similar ~100s each,
-and are the longest-running avocado tests in gitlab.
-From avocado-system-centos:
+Add a ppc64 pseries test. This tends to hang in the replay phase near
+the end of the trace due to a missing event, so it is marked flaky.
 
-  boot_linux.py:BootLinuxX8664.test_pc_i440fx_tcg:  PASS (112.34 s)
-  boot_linux.py:BootLinuxX8664.test_pc_q35_tcg:  PASS (97.05 s)
-  boot_linux.py:BootLinuxPPC64.test_pseries_tcg:  PASS (148.86 s)
-  boot_linux.py:BootLinuxS390X.test_s390_ccw_virtio_tcg:  PASS (149.83 s)
-
-So mark the x86-64 tests as SPEED=slow as well.
+spapr-vscsi IO is extremely slow when running in record-replay modes,
+particularly when driven by SLOF. This causes tests to time-out even
+after an hour, so this uses guestfish to extract the kernel and initrd
+and boot them directly.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-The other way we could go is enabling them all since ppc64 and s390s are
-now much faster than when they were originally disabled; or to only
-enable q35, giving at least one boot_linux.py test.
-
-[https://gitlab.com/npiggin/qemu/-/jobs/5842257510 for results]
 ---
- tests/avocado/boot_linux.py | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ tests/avocado/replay_linux.py | 76 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 75 insertions(+), 1 deletion(-)
 
-diff --git a/tests/avocado/boot_linux.py b/tests/avocado/boot_linux.py
-index de4c8805f7..7c9cf6ae15 100644
---- a/tests/avocado/boot_linux.py
-+++ b/tests/avocado/boot_linux.py
-@@ -14,6 +14,9 @@
+diff --git a/tests/avocado/replay_linux.py b/tests/avocado/replay_linux.py
+index f3a43dc98c..1408d13eeb 100644
+--- a/tests/avocado/replay_linux.py
++++ b/tests/avocado/replay_linux.py
+@@ -11,8 +11,9 @@
+ import os
+ import logging
+ import time
++import subprocess
  
- from avocado import skipUnless
- 
-+# We don't run TCG tests in CI, as booting the current Fedora OS in TCG tests
-+# is very heavyweight (~100s per test). There are lighter weight distros which
-+# we use in the machine_aarch64_virt.py, tux_baseline.py, etc.
- 
- class BootLinuxX8664(LinuxTest):
-     """
-@@ -21,6 +24,7 @@ class BootLinuxX8664(LinuxTest):
-     """
-     timeout = 480
- 
-+    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
-     def test_pc_i440fx_tcg(self):
-         """
-         :avocado: tags=machine:pc
-@@ -39,6 +43,7 @@ def test_pc_i440fx_kvm(self):
-         self.vm.add_args("-accel", "kvm")
-         self.launch_and_wait(set_up_ssh_connection=False)
- 
-+    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
-     def test_pc_q35_tcg(self):
-         """
-         :avocado: tags=machine:q35
-@@ -58,9 +63,6 @@ def test_pc_q35_kvm(self):
-         self.launch_and_wait(set_up_ssh_connection=False)
- 
- 
--# For Aarch64 we only boot KVM tests in CI as booting the current
--# Fedora OS in TCG tests is very heavyweight. There are lighter weight
--# distros which we use in the machine_aarch64_virt.py tests.
- class BootLinuxAarch64(LinuxTest):
-     """
-     :avocado: tags=arch:aarch64
-@@ -84,14 +86,11 @@ def test_virt_kvm(self):
-         self.launch_and_wait(set_up_ssh_connection=False)
- 
- 
--# See the tux_baseline.py tests for almost the same coverage in a lot
--# less time.
- class BootLinuxPPC64(LinuxTest):
-     """
-     :avocado: tags=arch:ppc64
-     """
--
--    timeout = 360
-+    timeout = 480
- 
-     @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
-     def test_pseries_tcg(self):
-@@ -108,8 +107,7 @@ class BootLinuxS390X(LinuxTest):
-     """
-     :avocado: tags=arch:s390x
-     """
--
--    timeout = 240
-+    timeout = 480
- 
-     @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
-     def test_s390_ccw_virtio_tcg(self):
+-from avocado import skipUnless
++from avocado import skipIf, skipUnless
+ from avocado_qemu import BUILD_DIR
+ from avocado.utils import cloudinit
+ from avocado.utils import network
+@@ -194,3 +195,76 @@ def test_virt_gicv3(self):
+         self.run_rr(shift=3,
+                     args=(*self.get_common_args(),
+                           "-machine", "virt,gic-version=3"))
++
++# ppc64 pseries test.
++#
++# This machine tends to fail replay and hang very close to the end of the
++# trace, with missing events, which is still an open issue.
++#
++# spapr-scsi IO driven by SLOF/grub is extremely slow in record/replay mode,
++# so jump through some hoops to boot the kernel directly. With this, the test
++# runs in about 5 minutes (modulo hang), which suggests other machines may
++# have similar issues and could benefit from bypassing bootloaders.
++#
++ppc_deps = ["guestfish"] # dependent tools needed in the test setup/box.
++
++def which(tool):
++    """ looks up the full path for @tool, returns None if not found
++        or if @tool does not have executable permissions.
++    """
++    paths=os.getenv('PATH')
++    for p in paths.split(os.path.pathsep):
++        p = os.path.join(p, tool)
++        if os.path.exists(p) and os.access(p, os.X_OK):
++            return p
++    return None
++
++def ppc_missing_deps():
++    """ returns True if any of the test dependent tools are absent.
++    """
++    for dep in ppc_deps:
++        if which(dep) is None:
++            return True
++    return False
++
++@skipIf(ppc_missing_deps(), 'dependencies (%s) not installed' % ','.join(ppc_deps))
++@skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'known failure in trace replay')
++class ReplayLinuxPPC64(ReplayLinux):
++    """
++    :avocado: tags=arch:ppc64
++    :avocado: tags=accel:tcg
++    """
++
++    hdd = 'scsi-hd'
++    cd = 'scsi-cd'
++    bus = None
++
++    def setUp(self):
++        super().setUp()
++
++        # kernel, initramfs, and kernel cmdline are all taken by hand from
++        # the Fedora image.
++        self.kernel="vmlinuz-5.3.7-301.fc31.ppc64le"
++        self.initramfs="initramfs-5.3.7-301.fc31.ppc64le.img"
++        cmd = "guestfish --ro -a %s run "
++              ": mount /dev/sda2 / "
++              ": copy-out /boot/%s %s "
++              ": copy-out /boot/%s %s "
++              % (self.boot_path, self.kernel, self.workdir,
++                 self.initramfs, self.workdir)
++        subprocess.run(cmd.split())
++
++    def test_pseries(self):
++        """
++        :avocado: tags=machine:pseries
++        """
++        kernel=os.path.normpath(os.path.join(self.workdir, self.kernel))
++        initramfs=os.path.normpath(os.path.join(self.workdir, self.initramfs))
++        cmdline="root=UUID=8a409ee6-3cb3-4b06-a266-39e2dae3e5fa ro "
++                "no_timer_check net.ifnames=0 console=tty1 "
++                "console=ttyS0,115200n8"
++        self.run_rr(shift=1, args=("-device", "spapr-vscsi",
++                                   "-machine", "x-vof=on",
++                                   "-kernel", kernel,
++                                   "-initrd", initramfs,
++                                   "-append", cmdline))
 -- 
 2.42.0
 
