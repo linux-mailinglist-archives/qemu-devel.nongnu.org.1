@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4E68307B4
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:14:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A96A48307B6
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:14:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ6fS-00062P-S8; Wed, 17 Jan 2024 09:13:22 -0500
+	id 1rQ6fX-0006Do-HO; Wed, 17 Jan 2024 09:13:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQ6fQ-0005zj-Lx; Wed, 17 Jan 2024 09:13:20 -0500
-Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
+ id 1rQ6fV-0006Bh-Ph; Wed, 17 Jan 2024 09:13:25 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQ6fO-0002pr-5t; Wed, 17 Jan 2024 09:13:20 -0500
-Received: by mail-ot1-x333.google.com with SMTP id
- 46e09a7af769-6e0af93fdaaso3158663a34.3; 
- Wed, 17 Jan 2024 06:13:17 -0800 (PST)
+ id 1rQ6fT-0002qR-J8; Wed, 17 Jan 2024 09:13:25 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6d9b37f4804so7195398b3a.1; 
+ Wed, 17 Jan 2024 06:13:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705500796; x=1706105596; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705500801; x=1706105601; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xiHHuj4kwhZGtwrNQLZcjOwLh7+4izxlGNDa/VHvDps=;
- b=Nv0GKHDYhY7+VDX/8tuXDdcc4CUCoGaomBwGnJOd5NhbpVf5cjIDt8CSjOweifPIKH
- waE21w5yYSfVtWpMSwRRxRnMmcDFY3D/Fcy3X2fW8+bG3Riln1c8aY5dv4ggdRFi3Jc/
- 9VK9V+S7DKhDFbEv4wc8vP1VruXFDPhd3Gw2/GNCR+qQTwyq/9P+yva3zFkj7T5Ju2Qu
- f5BXErENZ7ukJXdjsJZSuORzju4l1MmFd0dq7SZ1RGdEsPJg6ap4YSTh3P3wjnqc66tV
- odfreWneK5KHEww8dUVj9hJtN7MFG/OG4Dje4mjujP9ofS8vr5i+s2lLnsggoPIBBiCt
- PXeg==
+ bh=+bA1RQL7GXjMfCEm7O5Bzn0f4i4pqBYPwrxSXO5B/V4=;
+ b=GTBDNqgczCUC+YMSdhMY5edjLzkiTlsZb2HQBnc7IoYJP47LWt+0gkLNz5N++7i1tM
+ Gqk7r7UYHTN6JIM1wVUI05NhWGXX4t3A/aTFgLhsBSV9+E52VsgnoK5AU3cEPD1BL3wS
+ zA5APJlchdfTqMD5bjb9KMzDP1tllTyz44m8lSFZUaJMKa5OaJXSfGpYXiJkgQPzG2nl
+ KT1NgGy8W3u+dskakf1CATcEYS2CmYf2opbhG900l6N0CSQWTMr/OPhv2I4sOxvRztBc
+ E72HERJdI2VRwQg+jBflwUlWVhlY95LXVx011YRtu/Qt26iffa2ZlnRFhYQ/Emu5P/gv
+ /NiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705500796; x=1706105596;
+ d=1e100.net; s=20230601; t=1705500801; x=1706105601;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xiHHuj4kwhZGtwrNQLZcjOwLh7+4izxlGNDa/VHvDps=;
- b=Q83msGDKOBaRMVxpAUYHEQ6xmghvQQF1FoMfI6gfDua7BpAxcuaCqOeqHI1gUI4aAF
- VzVcQZwhDfKgb92BLpC8TTm54z0WCFrW2RDdTMz3L9xtmhS/gsKRXN3zsRZWj39aDx99
- TYa2q95p0reLzuavySA1V7nB8zPaQkpifJ/xXuJawWcV4NoVyAqnCcLQczysBiswPAXk
- dRs2VyiKhUt5rBaikDn4h+am1CQFx3LB790P/dorJmNuDYcijsllFWsBfM6yHSBKa6rm
- DN+bq56qTt0brVcV8yoPNeH9ACKflLYtuDTSktSQD7+4BZwav6TKCLrGm3+v5UFK2ppE
- ynJw==
-X-Gm-Message-State: AOJu0YyirSjeZ0pcR/3ww+EmOi9q3+J1z0Wgdq2Zj1uExoWy2RLz4EPt
- WFQx8OGsy2tQ6KviBQaX4lDpykXPyyg=
-X-Google-Smtp-Source: AGHT+IEE/8piKxp7XdazCM8iXlNqAm9OAW+cWQfj3PdX8oqgIuDJh3mg3NxZ8qvMbTafyQ0vf68k9w==
-X-Received: by 2002:a05:6358:70d:b0:176:18ee:4e8b with SMTP id
- e13-20020a056358070d00b0017618ee4e8bmr219758rwj.8.1705500795904; 
- Wed, 17 Jan 2024 06:13:15 -0800 (PST)
+ bh=+bA1RQL7GXjMfCEm7O5Bzn0f4i4pqBYPwrxSXO5B/V4=;
+ b=uvZI2m52cml0HH7GKe93ZKs7WHQDRsAlwUEYJSLm1WOD1o7eMiPqBaWwrAW/HpkzHz
+ q/fOpqpKtEStTFBlQyBFqdIIh3q0n75zfsnb5PZmE9ICk7IES4yJaDrSM+ZDa7YH5wet
+ tFITQeYpWZPh6P4NTFvF5fF/jaCQ42oL7/y3mB8NyxzsItS5serlHC45lANPGggxH52X
+ czbpkda0BAlUEWwbJW8sLyrJloovQX88eb9ZK5rN7OUU+xawBnbu6XIgF7lyRvuMNZsL
+ N8I9ypT7oaBHlxAlZDDZLYlZdk0RNr+d48Ub69CQLWAkyYBcG8SGXHjpHoauHv0dcy43
+ Z4OQ==
+X-Gm-Message-State: AOJu0YxWEBIegB/uSZioMSgXJ9SMgbAofltg653k21HQlHPxS3yU0nhc
+ GETmPDYwPPGY+BeMV9rxLs184idA3vPVyKNUiABmLeXLuZ1tdXY0W/qJ6Ds5
+X-Google-Smtp-Source: AGHT+IGvGWr9MIkzg4KmaEkaJbJtrMTAqh8Ry/FsbBg28VDkMaZhTYPixuepc7ZavtGuZrgJqkzBcg==
+X-Received: by 2002:a05:6a21:3987:b0:19b:46c7:c986 with SMTP id
+ ad7-20020a056a21398700b0019b46c7c986mr1435630pzc.16.1705500801301; 
+ Wed, 17 Jan 2024 06:13:21 -0800 (PST)
 Received: from wheely.local0.net (124-171-76-150.tpgi.com.au. [124.171.76.150])
  by smtp.gmail.com with ESMTPSA id
- i136-20020a636d8e000000b005cebb10e28fsm11812428pgc.69.2024.01.17.06.13.11
+ i136-20020a636d8e000000b005cebb10e28fsm11812428pgc.69.2024.01.17.06.13.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jan 2024 06:13:15 -0800 (PST)
+ Wed, 17 Jan 2024 06:13:21 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,18 +65,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- qemu-ppc@nongnu.org
-Subject: [PATCH v2 7/8] tests/avocado: ppc add hypervisor tests
-Date: Thu, 18 Jan 2024 00:12:22 +1000
-Message-ID: <20240117141224.90462-8-npiggin@gmail.com>
+ qemu-ppc@nongnu.org, Warner Losh <imp@bsdimp.com>
+Subject: [PATCH v2 8/8] tests/avocado: Add FreeBSD distro boot tests for ppc
+Date: Thu, 18 Jan 2024 00:12:23 +1000
+Message-ID: <20240117141224.90462-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240117141224.90462-1-npiggin@gmail.com>
 References: <20240117141224.90462-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
- envelope-from=npiggin@gmail.com; helo=mail-ot1-x333.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,198 +98,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The powernv and pseries machines both provide hypervisor facilities
-that are supported by KVM. This is a large and complicated set of
-features that don't get much system-level testing in ppc tests.
+FreeBSD project provides qcow2 images that work well for testing QEMU.
+Add pseries tests for HPT and Radix, KVM and TCG, and powernv9 tests.
 
-Add a new test case for these which runs QEMU KVM inside the target.
-This downloads an Alpine VM image, boots it and downloads and installs
-the qemu package, then boots a virtual machine under it, re-using the
-original Alpine VM image.
+This uses short-term snapshot build artifacts, because FreeBSD has not
+set up long-term builds for ppc64 yet.
 
+Other architectures could be added so this does not get a ppc_ prefix
+but is instead named similarly to boot_linux.
+
+Reviewed-by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- MAINTAINERS                   |   1 +
- tests/avocado/ppc_hv_tests.py | 203 ++++++++++++++++++++++++++++++++++
- 2 files changed, 204 insertions(+)
- create mode 100644 tests/avocado/ppc_hv_tests.py
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b406fb20c0..bf41ac61c8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1523,6 +1523,7 @@ F: tests/qtest/libqos/*spapr*
- F: tests/qtest/rtas*
- F: tests/qtest/libqos/rtas*
- F: tests/avocado/ppc_pseries.py
-+F: tests/avocado/ppc_hv_tests.py
- 
- PowerNV (Non-Virtualized)
- M: Cédric Le Goater <clg@kaod.org>
-diff --git a/tests/avocado/ppc_hv_tests.py b/tests/avocado/ppc_hv_tests.py
+Unfortunately the latest stable (14.0) x86-64 VM image does not seem to
+output to console by default and I've not been able to find a reliable
+way to edit the filesystem to change the boot loader options, or use
+console input in the test case to change it on the fly.
+
+Thanks,
+Nick
+
+---
+ tests/avocado/boot_freebsd.py | 174 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 174 insertions(+)
+ create mode 100644 tests/avocado/boot_freebsd.py
+
+diff --git a/tests/avocado/boot_freebsd.py b/tests/avocado/boot_freebsd.py
 new file mode 100644
-index 0000000000..2f80d0d176
+index 0000000000..c01cd06cca
 --- /dev/null
-+++ b/tests/avocado/ppc_hv_tests.py
-@@ -0,0 +1,203 @@
-+# Tests that specifically try to exercise hypervisor features of the
-+# target machines. powernv supports the Power hypervisor ISA, and
-+# pseries supports the nested-HV hypervisor spec.
++++ b/tests/avocado/boot_freebsd.py
+@@ -0,0 +1,174 @@
++# Functional tests that boot FreeBSD in various configurations
 +#
 +# Copyright (c) 2023 IBM Corporation
 +#
 +# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
++# later. See the COPYING file in the top-level directory.
 +
-+from avocado import skipIf, skipUnless
-+from avocado.utils import archive
-+from avocado_qemu import QemuSystemTest
-+from avocado_qemu import wait_for_console_pattern, exec_command
 +import os
-+import time
 +import subprocess
 +
-+deps = ["xorriso"] # dependent tools needed in the test setup/box.
++from avocado import skipUnless
++from avocado_qemu import QemuSystemTest
++from avocado_qemu import wait_for_console_pattern
++from avocado_qemu import exec_command
++from avocado.utils import archive
++from avocado.utils import process
++from avocado.utils.path import find_command
 +
-+def which(tool):
-+    """ looks up the full path for @tool, returns None if not found
-+        or if @tool does not have executable permissions.
-+    """
-+    paths=os.getenv('PATH')
-+    for p in paths.split(os.path.pathsep):
-+        p = os.path.join(p, tool)
-+        if os.path.exists(p) and os.access(p, os.X_OK):
-+            return p
-+    return None
-+
-+def missing_deps():
-+    """ returns True if any of the test dependent tools are absent.
-+    """
-+    for dep in deps:
-+        if which(dep) is None:
-+            return True
-+    return False
-+
-+# Alpine is a light weight distro that supports QEMU. These tests boot
-+# that on the machine then run a QEMU guest inside it in KVM mode,
-+# that runs the same Alpine distro image.
-+# QEMU packages are downloaded and installed on each test. That's not a
-+# large download, but it may be more polite to create qcow2 image with
-+# QEMU already installed and use that.
 +@skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
 +@skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
-+@skipIf(missing_deps(), 'dependencies (%s) not installed' % ','.join(deps))
-+class HypervisorTest(QemuSystemTest):
++class BootFreeBSDPPC64(QemuSystemTest):
++    """
++    :avocado: tags=arch:ppc64
++    """
 +
-+    timeout = 1000
-+    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 console=hvc0 '
-+    panic_message = 'Kernel panic - not syncing'
-+    good_message = 'VFS: Cannot open root device'
-+
-+    def extract_from_iso(self, iso, path):
-+        """
-+        Extracts a file from an iso file into the test workdir
-+
-+        :param iso: path to the iso file
-+        :param path: path within the iso file of the file to be extracted
-+        :returns: path of the extracted file
-+        """
-+        filename = os.path.basename(path)
-+
-+        cwd = os.getcwd()
-+        os.chdir(self.workdir)
-+
-+        with open(filename, "w") as outfile:
-+            cmd = "xorriso -osirrox on -indev %s -cpx %s %s" % (iso, path, filename)
-+            subprocess.run(cmd.split(),
-+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-+
-+        os.chdir(cwd)
-+
-+        # Return complete path to extracted file.  Because callers to
-+        # extract_from_iso() specify 'path' with a leading slash, it is
-+        # necessary to use os.path.relpath() as otherwise os.path.join()
-+        # interprets it as an absolute path and drops the self.workdir part.
-+        return os.path.normpath(os.path.join(self.workdir, filename))
++    timeout = 360
 +
 +    def setUp(self):
 +        super().setUp()
 +
-+        iso_url = ('https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/ppc64le/alpine-standard-3.18.4-ppc64le.iso')
++        # We need zstd for all the tests
++        # See https://github.com/avocado-framework/avocado/issues/5609
++        zstd = find_command('zstd', False)
++        if zstd is False:
++            self.cancel('Could not find "zstd", which is required to '
++                        'decompress rootfs')
++        tar = find_command('tar', False)
++        if tar is False:
++            self.cancel('Could not find "tar", which is required to '
++                        'decompress rootfs')
 +
-+        # Alpine use sha256 so I recalculated this myself
-+        iso_sha256 = 'c26b8d3e17c2f3f0fed02b4b1296589c2390e6d5548610099af75300edd7b3ff'
-+        iso_path = self.fetch_asset(iso_url, asset_hash=iso_sha256,
-+                                    algorithm = "sha256")
++        drive_url = ('https://artifact.ci.freebsd.org/snapshot/15.0-CURRENT/8a735ffdf04936c6785ac4fa31486639262dd416/powerpc/powerpc64le/disk.qcow2.zst')
++        drive_hash = '95d863dbbc4b60f4899d1ef21d6489fca05bf03d'
++        drive_path_zstd = self.fetch_asset(drive_url, asset_hash=drive_hash)
++        self.drive_path = os.path.join(self.workdir, 'disk.qcow2')
 +
-+        self.iso_path = iso_path
-+        self.vmlinuz = self.extract_from_iso(iso_path, '/boot/vmlinuz-lts')
-+        self.initramfs = self.extract_from_iso(iso_path, '/boot/initramfs-lts')
++        cmd = f"{zstd} -d {drive_path_zstd} -o {self.drive_path}"
++        process.run(cmd)
 +
-+    def do_start_alpine(self):
++        kernel_url = ('https://artifact.ci.freebsd.org/snapshot/15.0-CURRENT/8a735ffdf04936c6785ac4fa31486639262dd416/powerpc/powerpc64le/kernel.txz')
++        kernel_hash = '31d14c2dc658858830a7acab5128a5b91ea548cf'
++        kernel_path_txz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
++        self.kernel_path = os.path.join(self.workdir, 'kernel')
++
++        with open(self.kernel_path, "w") as outfile:
++            cmd = f"{tar} OJxf {kernel_path_txz} ./boot/kernel/kernel"
++            subprocess.run(cmd.split(), stdout=outfile)
++
++    def set_pseries_devices(self):
++        self.vm.add_args('-drive', f"file={self.drive_path},format=qcow2,if=virtio")
++        self.vm.add_args('-net', 'nic,model=virtio')
++
++    def set_powernv_devices(self):
++        self.vm.add_args('-device', 'nvme,bus=pcie.2,addr=0x0,serial=1234,drive=drive0',
++                         '-device', 'e1000e,netdev=net0,mac=C0:FF:EE:00:00:02,bus=pcie.0,addr=0x0',
++                         '-netdev', 'user,id=net0,hostfwd=::20022-:22,hostname=freebsd')
++        self.vm.add_args("-drive", f"file={self.drive_path},format=qcow2,if=none,id=drive0")
++        self.vm.add_args("-kernel", self.kernel_path)
++
++    def run_pseries_test(self, force_HPT=False):
++        if force_HPT:
++            self.vm.add_args('-m', '4g')
++        else:
++            self.vm.add_args('-m', '1g')
++        self.vm.add_args('-smp', '4')
++        self.set_pseries_devices()
 +        self.vm.set_console()
-+        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
-+        self.vm.add_args("-kernel", self.vmlinuz)
-+        self.vm.add_args("-initrd", self.initramfs)
-+        self.vm.add_args("-smp", "4", "-m", "2g")
-+        self.vm.add_args("-drive", f"file={self.iso_path},format=raw,if=none,id=drive0")
-+
 +        self.vm.launch()
-+        wait_for_console_pattern(self, 'Welcome to Alpine Linux 3.18')
-+        exec_command(self, 'root')
-+        wait_for_console_pattern(self, 'localhost login:')
-+        wait_for_console_pattern(self, 'You may change this message by editing /etc/motd.')
-+        exec_command(self, 'setup-alpine -qe')
-+        wait_for_console_pattern(self, 'localhost:~#')
 +
-+    def do_stop_alpine(self):
++        wait_for_console_pattern(self, 'Hit [Enter] to boot immediately, or any other key for command prompt.')
++        if force_HPT:
++            exec_command(self, 'x')
++            wait_for_console_pattern(self, 'OK')
++            exec_command(self, 'set radix_mmu=0')
++            exec_command(self, 'boot')
++            wait_for_console_pattern(self, 'cas: selected hash MMU', 'panic:')
++        else:
++            exec_command(self, '')
++            wait_for_console_pattern(self, 'cas: selected radix MMU', 'panic:')
++
++        wait_for_console_pattern(self, 'FreeBSD 15.0-CURRENT', 'panic:')
++        wait_for_console_pattern(self, 'FreeBSD/SMP: Multiprocessor System Detected: 4 CPUs', 'panic:')
++        wait_for_console_pattern(self, 'FreeBSD/powerpc (Amnesiac) (ttyu0)', 'panic:')
++        exec_command(self, 'root')
++        wait_for_console_pattern(self, 'resizewin: timeout reading from terminal')
 +        exec_command(self, 'poweroff')
-+        wait_for_console_pattern(self, 'alpine:~#')
++        wait_for_console_pattern(self, 'Uptime:', 'panic:')
 +        self.vm.wait()
 +
-+    def do_setup_kvm(self):
-+        exec_command(self, 'echo http://dl-cdn.alpinelinux.org/alpine/v3.18/main > /etc/apk/repositories')
-+        wait_for_console_pattern(self, 'alpine:~#')
-+        exec_command(self, 'echo http://dl-cdn.alpinelinux.org/alpine/v3.18/community >> /etc/apk/repositories')
-+        wait_for_console_pattern(self, 'alpine:~#')
-+        exec_command(self, 'apk update')
-+        wait_for_console_pattern(self, 'alpine:~#')
-+        exec_command(self, 'apk add qemu-system-ppc64')
-+        wait_for_console_pattern(self, 'alpine:~#')
-+        exec_command(self, 'modprobe kvm-hv')
-+        wait_for_console_pattern(self, 'alpine:~#')
++    # powernv does not have a bootloader so must load the kernel directly
++    # and work around manual specification of the root device. Also can't
++    # specify options like radix_mmu the same way (todo: work out how it
++    # is done, and add HPT test).
++    def run_powernv_test(self, force_HPT=False):
++        self.vm.add_args('-m', '8g')
++        self.vm.add_args('-smp', '4')
++        self.set_powernv_devices()
++        self.vm.set_console()
++        self.vm.launch()
 +
-+    # This uses the host's block device as the source file for guest block
-+    # device for install media. This is a bit hacky but allows reuse of the
-+    # iso without having a passthrough filesystem configured.
-+    def do_test_kvm(self, hpt=False):
-+        if hpt:
-+            append = 'disable_radix'
-+        else:
-+            append = ''
-+        exec_command(self, 'qemu-system-ppc64 -nographic -smp 2 -m 1g '
-+                           '-machine pseries,x-vof=on,accel=kvm '
-+                           '-machine cap-cfpc=broken,cap-sbbc=broken,'
-+                                    'cap-ibs=broken,cap-ccf-assist=off '
-+                           '-drive file=/dev/nvme0n1,format=raw,readonly=on '
-+                           '-initrd /media/nvme0n1/boot/initramfs-lts '
-+                           '-kernel /media/nvme0n1/boot/vmlinuz-lts '
-+                           '-append \'usbcore.nousb ' + append + '\'')
-+        # Alpine 3.18 kernel seems to crash in XHCI USB driver.
-+        wait_for_console_pattern(self, 'Welcome to Alpine Linux 3.18')
++        wait_for_console_pattern(self, 'FreeBSD 15.0-CURRENT', 'panic:')
++        wait_for_console_pattern(self, 'FreeBSD/SMP: Multiprocessor System Detected: 4 CPUs', 'panic:')
++        wait_for_console_pattern(self, '<empty line>    Abort manual input')
++        exec_command(self, 'ufs:diskid/DISK-1234s3')
++
++        wait_for_console_pattern(self, 'FreeBSD/powerpc (Amnesiac) (ttyu0)', 'panic:')
 +        exec_command(self, 'root')
-+        wait_for_console_pattern(self, 'localhost login:')
-+        wait_for_console_pattern(self, 'You may change this message by editing /etc/motd.')
-+        exec_command(self, 'poweroff >& /dev/null')
-+        wait_for_console_pattern(self, 'localhost:~#')
-+        wait_for_console_pattern(self, 'reboot: Power down')
-+        time.sleep(1)
-+        exec_command(self, '') # console has strange issue after qemu exit
-+        exec_command(self, 'reset')
-+        exec_command(self, 'echo VM finished')
-+        wait_for_console_pattern(self, 'VM finished')
++        wait_for_console_pattern(self, 'resizewin: timeout reading from terminal')
++        exec_command(self, 'poweroff')
++        wait_for_console_pattern(self, 'Uptime:', 'panic:')
++        wait_for_console_pattern(self, 'OPAL: Shutdown request', 'panic:')
++        self.vm.wait()
 +
-+    def test_hv_pseries(self):
++    def test_pseries_tcg(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:pseries
++        :avocado: tags=accel:tcg
++        """
++        self.require_accelerator("tcg")
++        self.vm.add_args("-cpu", "power10")
++        self.vm.add_args("-accel", "tcg,thread=multi")
++        self.run_pseries_test()
++
++    def test_pseries_hpt_tcg(self):
 +        """
 +        :avocado: tags=arch:ppc64
 +        :avocado: tags=machine:pseries
@@ -298,14 +271,9 @@ index 0000000000..2f80d0d176
 +        """
 +        self.require_accelerator("tcg")
 +        self.vm.add_args("-accel", "tcg,thread=multi")
-+        self.vm.add_args('-device', 'nvme,serial=1234,drive=drive0')
-+        self.vm.add_args("-machine", "x-vof=on,cap-nested-hv=on")
-+        self.do_start_alpine()
-+        self.do_setup_kvm()
-+        self.do_test_kvm()
-+        self.do_stop_alpine()
++        self.run_pseries_test(force_HPT=True)
 +
-+    def test_hv_pseries_kvm(self):
++    def test_pseries_kvm(self):
 +        """
 +        :avocado: tags=arch:ppc64
 +        :avocado: tags=machine:pseries
@@ -313,29 +281,28 @@ index 0000000000..2f80d0d176
 +        """
 +        self.require_accelerator("kvm")
 +        self.vm.add_args("-accel", "kvm")
-+        self.vm.add_args('-device', 'nvme,serial=1234,drive=drive0')
-+        self.vm.add_args("-machine", "x-vof=on,cap-nested-hv=on")
-+        self.do_start_alpine()
-+        self.do_setup_kvm()
-+        self.do_test_kvm()
-+        self.do_stop_alpine()
++        self.run_pseries_test()
 +
-+    def test_hv_powernv(self):
++    def test_pseries_hpt_kvm(self):
 +        """
 +        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:powernv
++        :avocado: tags=machine:pseries
++        :avocado: tags=accel:kvm
++        """
++        self.require_accelerator("kvm")
++        self.vm.add_args("-accel", "kvm")
++        self.run_pseries_test(force_HPT=True)
++
++    # powernv9 works, powernv10 fails
++    def test_powernv(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:powernv9
 +        :avocado: tags=accel:tcg
 +        """
 +        self.require_accelerator("tcg")
 +        self.vm.add_args("-accel", "tcg,thread=multi")
-+        self.vm.add_args('-device', 'nvme,bus=pcie.2,addr=0x0,serial=1234,drive=drive0',
-+                         '-device', 'e1000e,netdev=net0,mac=C0:FF:EE:00:00:02,bus=pcie.0,addr=0x0',
-+                         '-netdev', 'user,id=net0,hostfwd=::20022-:22,hostname=alpine')
-+        self.do_start_alpine()
-+        self.do_setup_kvm()
-+        self.do_test_kvm()
-+        self.do_test_kvm(True)
-+        self.do_stop_alpine()
++        self.run_powernv_test()
 -- 
 2.42.0
 
