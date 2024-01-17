@@ -2,81 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B301C830BC3
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 18:13:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B902830BED
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 18:32:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ9T4-0004RQ-Ec; Wed, 17 Jan 2024 12:12:46 -0500
+	id 1rQ9kc-0000cm-QY; Wed, 17 Jan 2024 12:30:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rQ9Sw-0004Qc-9X
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 12:12:38 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rQ9kV-0000bi-2F
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 12:30:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rQ9St-0000F4-DY
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 12:12:38 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rQ9kT-0003v7-1f
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 12:30:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705511554;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1705512643;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=T3ffV10rrhLmL/8JoeOex3hv0Ylv1LhWOGU8AwQxRdk=;
- b=OIvD/Tk91XpjW+7EmRLxqWR+q2NIe3wbRrAhiIRc/PC1PsL/STle7c45Ra3LhWO7/qVXlI
- byWaJ4whOJw92M/cuaepGTgyFiZBzMMl4R0/qIsYT6eC+7u/59T95dwZtb2J98PxMZd5f8
- CNEMLpfdBgPi88D14rSGE83XFpyatD0=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OiSExfCZS7k4bdyVeXzuorPtEejO7pZQWi9ONfXzZTM=;
+ b=R523g5MHdHvQbyKmIaIa3WdqiDA2OEAgU5nauj/ACMCjnzkfkOZ7YbZSWK8YmqHZa3F3nw
+ ME8Z6eeMuk1St29+6q3eEJr6WTY0uovmx7np+AKm441A1EvvNQ9Su9YG3BvQUUO+WRXM58
+ WWOSTzszxDpd4Po1UCIx/4s/SC2nJ18=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-TKKae4w5NK6UGubSFqjIJg-1; Wed, 17 Jan 2024 12:12:32 -0500
-X-MC-Unique: TKKae4w5NK6UGubSFqjIJg-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2ccbb39dcddso76876591fa.1
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 09:12:31 -0800 (PST)
+ us-mta-38-CGesMhJYMFmrCfcWsFP7iQ-1; Wed, 17 Jan 2024 12:30:42 -0500
+X-MC-Unique: CGesMhJYMFmrCfcWsFP7iQ-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-78346521232so879752985a.3
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 09:30:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705511551; x=1706116351;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1705512642; x=1706117442;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=T3ffV10rrhLmL/8JoeOex3hv0Ylv1LhWOGU8AwQxRdk=;
- b=M/wCRPkOl2qFAQQdOi6ksUUt5Arc5LHlB84O5AWZ4SJLRGq+GxIC1GIezK+08c3EcE
- RBvNSf9P4MBvye04xZsmnnRU/vZKNO4LQDLtcqsTtu12/6nIbcnE+Y9K/+lkMGQDr2Ps
- RCqbaE6IbWcNVCyQok/XzK6h/pXwBfKc8Ws2ZK/lFCEuh170xV5Hq8BQxUxc7JpX7qe0
- 9gQLFWiREbPbkWSYKrqIHjq3L41f0pZOempdqKs4CHfgI/bhF/+OV6UL3YJ6n0TCo4iC
- M3W5jyOqVWi2srt+tEw3FNwKojc1v7Jf3g0DaIOjcBdBqcZbVkfqrfPz0zdg525PDO1X
- RYMA==
-X-Gm-Message-State: AOJu0YwZIqjAMRJShTF87Uf+zppx72+TALNBFRkojsAxEp3ijwvmv/ek
- yDeGG68ZuExn4HS8xnhYhnduLa5Z5cDpAskkUWqyYaZmR+2tLpRorBpJx4eHXzRm/a6PUas6QgB
- Yz/FkolResLVz0mE5l9a+bM7DSEo2NxyIhky0Nds=
-X-Received: by 2002:ac2:5d47:0:b0:50e:8e94:bcfe with SMTP id
- w7-20020ac25d47000000b0050e8e94bcfemr2730143lfd.64.1705511550804; 
- Wed, 17 Jan 2024 09:12:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGcRfhN7Xd8ZxmKcSK9kwukz0hNwBEu3g/8ItyVJ+N2RxUGq716H5hfpkJu9JqztWiz30EyfNRGbdf3Xc1qyhU=
-X-Received: by 2002:ac2:5d47:0:b0:50e:8e94:bcfe with SMTP id
- w7-20020ac25d47000000b0050e8e94bcfemr2730140lfd.64.1705511550477; Wed, 17 Jan
- 2024 09:12:30 -0800 (PST)
+ bh=OiSExfCZS7k4bdyVeXzuorPtEejO7pZQWi9ONfXzZTM=;
+ b=ug81KMGF8UERaI7sR1nZLYivZ0eINPoYmfnl7gp+hGiTj75f2evgLwPf0YUuUPB2Fn
+ VAAUFolbzzubU+tPbRNOKWiZjdSpLQf87FhRqagCnTBRwsH+Gi7Yl4lzWcErxZjN/5nk
+ 0sn/hcHirp8Ni2Opozk2n1uwsI1sJ6Qznjuz6/isxLgSokFWly4L+1WTNuTx/xzbDQ/l
+ A6UEmalZxQsQaeUXBQ6nd40LQmylek7FkOkKZMeSv6AFEwdeAqUDt5+Tu4tuCFOMyFxs
+ QVTiDBSIyK9TcY/Q4G5nA0f98vy1G7FJgkeFSfeQ1eHWfxLidpZul0iNcH02GPH0GuUC
+ Hshw==
+X-Gm-Message-State: AOJu0YyHxtecoqjkk187Z+9Tz67zCdGH/GWM39BRIhD464T1tdPdzQ5/
+ hW84/2bK9yXip6yXBcfopnu6HJL9GySnwcr3EbXRM/biYLbvD6TMMLpOPzt7WUjghPMLhVSACxp
+ IGbVV8tPGOxGqQVX7nXlED4E=
+X-Received: by 2002:a05:622a:1a9d:b0:429:d954:b342 with SMTP id
+ s29-20020a05622a1a9d00b00429d954b342mr8980853qtc.73.1705512642034; 
+ Wed, 17 Jan 2024 09:30:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGuxlunUmtKSAUyhFKFTPyU96qBHcaHUPoWo6XHMGo7AYTl9C7F+l6LOj4sTknzvKsQjlzIAg==
+X-Received: by 2002:a05:622a:1a9d:b0:429:d954:b342 with SMTP id
+ s29-20020a05622a1a9d00b00429d954b342mr8980840qtc.73.1705512641745; 
+ Wed, 17 Jan 2024 09:30:41 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ki26-20020a05622a771a00b0042a0d39442bsm927660qtb.17.2024.01.17.09.30.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Jan 2024 09:30:40 -0800 (PST)
+Message-ID: <d6585044-d743-47eb-ba66-7dc24673df30@redhat.com>
+Date: Wed, 17 Jan 2024 18:30:36 +0100
 MIME-Version: 1.0
-References: <65a04a86.49eda6.3044c037@gateway.sonic.net>
-In-Reply-To: <65a04a86.49eda6.3044c037@gateway.sonic.net>
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Wed, 17 Jan 2024 19:12:19 +0200
-Message-ID: <CAPMcbCoow9=b-A33Y9c8=vT3uQPC0fTBik3n-B+o4XfkkCwbvQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] qga: Solaris has net/if_arp.h and netinet/if_ether.h
- but not ETHER_ADDR_LEN
-To: Nick Briggs <nicholas.h.briggs@gmail.com>
-Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>
-Content-Type: multipart/alternative; boundary="0000000000002076ff060f275ab0"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rfcv1 4/6] vfio: initialize IOMMUFDDevice and pass to
+ vIOMMU
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>
+References: <20240115101313.131139-1-zhenzhong.duan@intel.com>
+ <20240115101313.131139-5-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240115101313.131139-5-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
 X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,96 +106,156 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000002076ff060f275ab0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi Zhenzhong,
 
-Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-
-On Thu, Jan 11, 2024 at 10:18=E2=80=AFPM Nick Briggs <nicholas.h.briggs@gma=
-il.com>
-wrote:
-
-> Solaris has net/if_arp.h and netinet/if_ether.h rather than net/ethernet.=
-h,
-> but does not define ETHER_ADDR_LEN, instead providing ETHERADDRL.
+On 1/15/24 11:13, Zhenzhong Duan wrote:
+> Initialize IOMMUFDDevice in vfio and pass to vIOMMU, so that vIOMMU
+> could get hw IOMMU information.
 >
-> Signed-off-by: Nick Briggs <nicholas.h.briggs@gmail.com>
+> In VFIO legacy backend mode, we still pass a NULL IOMMUFDDevice to vIOMMU,
+> in case vIOMMU needs some processing for VFIO legacy backend mode.
+>
+> Originally-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->  qga/commands-posix.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  include/hw/vfio/vfio-common.h |  2 ++
+>  hw/vfio/iommufd.c             |  2 ++
+>  hw/vfio/pci.c                 | 24 +++++++++++++++++++-----
+>  3 files changed, 23 insertions(+), 5 deletions(-)
 >
-> diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-> index 6169bbf7a0..26008db497 100644
-> --- a/qga/commands-posix.c
-> +++ b/qga/commands-posix.c
-> @@ -45,9 +45,12 @@
->  #include <arpa/inet.h>
->  #include <sys/socket.h>
->  #include <net/if.h>
-> -#if defined(__NetBSD__) || defined(__OpenBSD__)
-> +#if defined(__NetBSD__) || defined(__OpenBSD__) || defined(CONFIG_SOLARI=
-S)
->  #include <net/if_arp.h>
->  #include <netinet/if_ether.h>
-> +#if !defined(ETHER_ADDR_LEN) && defined(ETHERADDRL)
-> +#define ETHER_ADDR_LEN ETHERADDRL
-> +#endif
->  #else
->  #include <net/ethernet.h>
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 9b7ef7d02b..fde0d0ca60 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -31,6 +31,7 @@
 >  #endif
-> --
-> 2.31.1
->
->
+>  #include "sysemu/sysemu.h"
+>  #include "hw/vfio/vfio-container-base.h"
+> +#include "sysemu/iommufd_device.h"
+>  
+>  #define VFIO_MSG_PREFIX "vfio %s: "
+>  
+> @@ -126,6 +127,7 @@ typedef struct VFIODevice {
+>      bool dirty_tracking;
+>      int devid;
+>      IOMMUFDBackend *iommufd;
+> +    IOMMUFDDevice idev;
+This looks duplicate of existing fields:
+idev.dev_id is same as above devid. by the way let's try to use the same
+devid everywhere.
+idev.iommufd is same as above iommufd if != NULL.
+So we should at least rationalize.
+>  } VFIODevice;
+>  
+>  struct VFIODeviceOps {
+> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+> index 9bfddc1360..cbd035f148 100644
+> --- a/hw/vfio/iommufd.c
+> +++ b/hw/vfio/iommufd.c
+> @@ -309,6 +309,7 @@ static int iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+>      VFIOContainerBase *bcontainer;
+>      VFIOIOMMUFDContainer *container;
+>      VFIOAddressSpace *space;
+> +    IOMMUFDDevice *idev = &vbasedev->idev;
+>      struct vfio_device_info dev_info = { .argsz = sizeof(dev_info) };
+>      int ret, devfd;
+>      uint32_t ioas_id;
+> @@ -428,6 +429,7 @@ found_container:
+>      QLIST_INSERT_HEAD(&bcontainer->device_list, vbasedev, container_next);
+>      QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
+>  
+> +    iommufd_device_init(idev, sizeof(*idev), container->be, vbasedev->devid);
+>      trace_iommufd_cdev_device_info(vbasedev->name, devfd, vbasedev->num_irqs,
+>                                     vbasedev->num_regions, vbasedev->flags);
+>      return 0;
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index d7fe06715c..2c3a5d267b 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -3107,11 +3107,21 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>  
+>      vfio_bars_register(vdev);
+>  
+> -    ret = vfio_add_capabilities(vdev, errp);
+> +    if (vbasedev->iommufd) {
+> +        ret = pci_device_set_iommu_device(pdev, &vbasedev->idev, errp);
+> +    } else {
+> +        ret = pci_device_set_iommu_device(pdev, 0, errp);
+> +    }
+>      if (ret) {
+> +        error_prepend(errp, "Failed to set iommu_device: ");
+at the moment it is rather an IOMMUFD device.
+>          goto out_teardown;
+>      }
+>  
+> +    ret = vfio_add_capabilities(vdev, errp);
+> +    if (ret) {
+> +        goto out_unset_idev;
+> +    }
+> +
+>      if (vdev->vga) {
+>          vfio_vga_quirk_setup(vdev);
+>      }
+> @@ -3128,7 +3138,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>              error_setg(errp,
+>                         "cannot support IGD OpRegion feature on hotplugged "
+>                         "device");
+> -            goto out_teardown;
+> +            goto out_unset_idev;
+>          }
+>  
+>          ret = vfio_get_dev_region_info(vbasedev,
+> @@ -3137,13 +3147,13 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>          if (ret) {
+>              error_setg_errno(errp, -ret,
+>                               "does not support requested IGD OpRegion feature");
+> -            goto out_teardown;
+> +            goto out_unset_idev;
+>          }
+>  
+>          ret = vfio_pci_igd_opregion_init(vdev, opregion, errp);
+>          g_free(opregion);
+>          if (ret) {
+> -            goto out_teardown;
+> +            goto out_unset_idev;
+>          }
+>      }
+>  
+> @@ -3229,6 +3239,8 @@ out_deregister:
+>      if (vdev->intx.mmap_timer) {
+>          timer_free(vdev->intx.mmap_timer);
+>      }
+> +out_unset_idev:
+> +    pci_device_unset_iommu_device(pdev);
+>  out_teardown:
+>      vfio_teardown_msi(vdev);
+>      vfio_bars_exit(vdev);
+> @@ -3257,6 +3269,7 @@ static void vfio_instance_finalize(Object *obj)
+>  static void vfio_exitfn(PCIDevice *pdev)
+>  {
+>      VFIOPCIDevice *vdev = VFIO_PCI(pdev);
+> +    VFIODevice *vbasedev = &vdev->vbasedev;
+>  
+>      vfio_unregister_req_notifier(vdev);
+>      vfio_unregister_err_notifier(vdev);
+> @@ -3271,7 +3284,8 @@ static void vfio_exitfn(PCIDevice *pdev)
+>      vfio_teardown_msi(vdev);
+>      vfio_pci_disable_rp_atomics(vdev);
+>      vfio_bars_exit(vdev);
+> -    vfio_migration_exit(&vdev->vbasedev);
+> +    vfio_migration_exit(vbasedev);
+> +    pci_device_unset_iommu_device(pdev);
+>  }
+>  
+>  static void vfio_pci_reset(DeviceState *dev)
+Thanks
 
---0000000000002076ff060f275ab0
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkos=
-tiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;</div><br><di=
-v class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jan 1=
-1, 2024 at 10:18=E2=80=AFPM Nick Briggs &lt;<a href=3D"mailto:nicholas.h.br=
-iggs@gmail.com">nicholas.h.briggs@gmail.com</a>&gt; wrote:<br></div><blockq=
-uote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1p=
-x solid rgb(204,204,204);padding-left:1ex">Solaris has net/if_arp.h and net=
-inet/if_ether.h rather than net/ethernet.h,<br>
-but does not define ETHER_ADDR_LEN, instead providing ETHERADDRL.<br>
-<br>
-Signed-off-by: Nick Briggs &lt;<a href=3D"mailto:nicholas.h.briggs@gmail.co=
-m" target=3D"_blank">nicholas.h.briggs@gmail.com</a>&gt;<br>
----<br>
-=C2=A0qga/commands-posix.c | 5 ++++-<br>
-=C2=A01 file changed, 4 insertions(+), 1 deletion(-)<br>
-<br>
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c<br>
-index 6169bbf7a0..26008db497 100644<br>
---- a/qga/commands-posix.c<br>
-+++ b/qga/commands-posix.c<br>
-@@ -45,9 +45,12 @@<br>
-=C2=A0#include &lt;arpa/inet.h&gt;<br>
-=C2=A0#include &lt;sys/socket.h&gt;<br>
-=C2=A0#include &lt;net/if.h&gt;<br>
--#if defined(__NetBSD__) || defined(__OpenBSD__)<br>
-+#if defined(__NetBSD__) || defined(__OpenBSD__) || defined(CONFIG_SOLARIS)=
-<br>
-=C2=A0#include &lt;net/if_arp.h&gt;<br>
-=C2=A0#include &lt;netinet/if_ether.h&gt;<br>
-+#if !defined(ETHER_ADDR_LEN) &amp;&amp; defined(ETHERADDRL)<br>
-+#define ETHER_ADDR_LEN ETHERADDRL<br>
-+#endif<br>
-=C2=A0#else<br>
-=C2=A0#include &lt;net/ethernet.h&gt;<br>
-=C2=A0#endif<br>
--- <br>
-2.31.1<br>
-<br>
-</blockquote></div>
-
---0000000000002076ff060f275ab0--
+Eric
 
 
