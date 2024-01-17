@@ -2,68 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4386A830CD2
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 19:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ADA7830CD6
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 19:41:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQAoK-0002qC-ET; Wed, 17 Jan 2024 13:38:48 -0500
+	id 1rQAqC-0003tI-PP; Wed, 17 Jan 2024 13:40:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>)
- id 1rQAoH-0002pb-Vp; Wed, 17 Jan 2024 13:38:46 -0500
-Received: from mx.treblig.org ([2a00:1098:5b::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>)
- id 1rQAoF-0000LW-Fw; Wed, 17 Jan 2024 13:38:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=In-Reply-To:Content-Transfer-Encoding:Content-Type:
- MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=+GwkXegJg/2FZ09lDUPPwEuFTapfYQO7T4kairmDjco=; b=RT1XGaamWTPKs/7yi+NJbMeMkH
- 7INVkPLyl2W8fWt0r2oBrIZ9D7Ak5cm/6zVpExEeeq9UOd2Xnn7LPECJov6/74d/e9ZLsc9D7cD3J
- /H2U5AwZRfV+TUgXmNOR0yAK0om7lfR5mSzgBlIe1x2xCeg88RkmHj3b4L0tq2JQ5EwUkOmljChGX
- Cpkx/MXRhcE6lxVQa8+mtQqpdH5+gjmtZG9g7KGpBMA4jU86kfcxKQEbHmNkpbBFuwymEvyJxpm+7
- zY/fGko9LcnOr66rqRw2HdT/AW9p/g6hQv1qvobhR7WngOzvoZcsbd+G5BQU5/f2+ULlh5tx+dpNA
- J2tjEHpQ==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
- (envelope-from <dg@treblig.org>) id 1rQAoA-0028Ox-01;
- Wed, 17 Jan 2024 18:38:38 +0000
-Date: Wed, 17 Jan 2024 18:38:37 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Warner Losh <imp@bsdimp.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Kyle Evans <kevans@freebsd.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
- devel@lists.libvirt.org, Laurent Vivier <laurent@vivier.eu>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH 2/3] hmp: Remove deprecated 'singlestep' command
-Message-ID: <ZagerX_8kO6GRBMi@gallifrey>
-References: <20240117151430.29235-1-philmd@linaro.org>
- <20240117151430.29235-3-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rQApz-0003so-FJ
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 13:40:31 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rQApr-0000tO-4m
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 13:40:24 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3376d424a79so9154357f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 10:40:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705516821; x=1706121621; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JZeppGXx5nUys2HS8j9EEaf2EFUTGWiF4DpHucRhs4Y=;
+ b=PP/yGnAawWg2dIsmF7KuQIV7nMwW+77RMKztmY8kVFVEopD1cw1AOishj8Yg7FxFGl
+ rXwMJfZIxAD6+oka2WZwTsRweQvjG04jcjJGyHjaanTZ0qNYZMuf96E5En45iiZHay3E
+ KN1920NfY3rjtJkYUjoqIzzpCg/M0+YI+SCWw42HkwReOkLo3bUTL+OHU0ng8qquCaZ1
+ SCWxRUEmNcu9KQxbpX1wZqGzi1b7LjSEjrGafc3NA2DxlMoEsZZJUud0Ol0NIoK523pG
+ rBrgsB/bZnoie/0I1hccWHocTyUSzmWlQhGRTEQ2O9l7tcILyJOq5/7U9Ca5ZWUdo/0s
+ 3I0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705516821; x=1706121621;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=JZeppGXx5nUys2HS8j9EEaf2EFUTGWiF4DpHucRhs4Y=;
+ b=e9YLnUGwvXe9oMLV8Q3PaLax5GzNc7auqha1e+dJrjyIl/ZkGl1KFbLypC068mkHSs
+ ZffKy5Q/jR58/xlPSYF+E3RH41m3M6H858gnbaTY2TbEu8AsDS3a+PW+km+CK7junPt2
+ 9CgP+ac9Bu8t5gpRWBHgGlmYGYXtjJxSlKYKMEOlzy2/eLsfOzmfxzv0SCx7f81CC0H2
+ phi6CCY1x54PKbXLuStKKocIKeNYqPX0A1PYoTaxP5M/1Q5tyTMMpS5Hmr5wy5NCPCUd
+ Rr02wAWCA6kb23NS4wQ7n42bkLzG6MRgmlktil3iD3IUMoW73+EZXqKNxIyrUeWWcmqe
+ ZUXQ==
+X-Gm-Message-State: AOJu0Yz6v8Uwf/M4PJGP1+Pu8iWVa3xhdjFJvHxl5TF/8AR+Yphgnk99
+ IzguARyAaT1s4hi5PVR6D2Ym+EQSpMqftQ==
+X-Google-Smtp-Source: AGHT+IHbfEwBGP/fILw6BipyLQZF/PY3rST3ESHo1fBtHDU0qc/TRoxp6YGxhdlmKJe+PNdFNxszAQ==
+X-Received: by 2002:a5d:6211:0:b0:336:7885:e387 with SMTP id
+ y17-20020a5d6211000000b003367885e387mr4631536wru.57.1705516821603; 
+ Wed, 17 Jan 2024 10:40:21 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ d16-20020adff2d0000000b0033668b27f8fsm2255431wrp.4.2024.01.17.10.40.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Jan 2024 10:40:21 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id E348D5F8D8;
+ Wed, 17 Jan 2024 18:40:20 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Manolo de Medici <manolodemedici@gmail.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,  qemu-devel@nongnu.org,
+ bug-hurd@gnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 3/4] Allow tests to be disabled
+In-Reply-To: <CAHP40m=pB6aOdoUL36vC=_ku2ynNj6j6n0PC4DkwCgSd5D2OPQ@mail.gmail.com>
+ (Manolo de Medici's message of "Wed, 17 Jan 2024 19:14:02 +0100")
+References: <CAHP40mkDymmXdvFUAEpiBTbVuaRUHVfW8UTdyuSDhoG4Ro+yzA@mail.gmail.com>
+ <CAFEAcA_oEMqmc-coCSYpZw8vN+NSLYRQBowaDAR0i8vevoM3zQ@mail.gmail.com>
+ <CAHP40m=pB6aOdoUL36vC=_ku2ynNj6j6n0PC4DkwCgSd5D2OPQ@mail.gmail.com>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Wed, 17 Jan 2024 18:40:20 +0000
+Message-ID: <87ttnbhkh7.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240117151430.29235-3-philmd@linaro.org>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-17-amd64 (x86_64)
-X-Uptime: 18:38:15 up 14 days, 21:27, 1 user, load average: 0.10, 0.03, 0.01
-User-Agent: Mutt/2.2.12 (2023-09-09)
-Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,101 +98,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Philippe Mathieu-Daudé (philmd@linaro.org) wrote:
-> This command has been deprecated before the 8.1 release,
-> in commit e9ccfdd91d ("hmp: Add 'one-insn-per-tb' command
-> equivalent to 'singlestep'"). Time to drop it.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Manolo de Medici <manolodemedici@gmail.com> writes:
 
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+> I agree with you, I mentioned that this was the "minimal effort"
+> patchset to get qemu compilable.
+>
+> On Wed, Jan 17, 2024 at 6:35=E2=80=AFPM Peter Maydell <peter.maydell@lina=
+ro.org> wrote:
+> [...]
+>> should be guarded by a suitable check that means we don't
+>> try to build it on hosts that don't have the host-specific
+>> functions/whatever that it needs.
+>
+> This is the best solution for this problem, any pointers on how to
+> best do this?
 
-> ---
->  docs/about/deprecated.rst       |  9 ---------
->  docs/about/removed-features.rst |  6 ++++++
->  tests/qtest/test-hmp.c          |  1 -
->  hmp-commands.hx                 | 13 -------------
->  4 files changed, 6 insertions(+), 23 deletions(-)
-> 
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 25527da423..316a26a82c 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -167,15 +167,6 @@ points was removed in 7.0. However QMP still exposed the vcpu
->  parameter. This argument has now been deprecated and the remaining
->  remaining trace points that used it are selected just by name.
->  
-> -Human Monitor Protocol (HMP) commands
-> --------------------------------------
-> -
-> -``singlestep`` (since 8.1)
-> -''''''''''''''''''''''''''
-> -
-> -The ``singlestep`` command has been replaced by the ``one-insn-per-tb``
-> -command, which has the same behaviour but a less misleading name.
-> -
->  Host Architectures
->  ------------------
->  
-> diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-> index a8546f4787..855d788259 100644
-> --- a/docs/about/removed-features.rst
-> +++ b/docs/about/removed-features.rst
-> @@ -635,6 +635,12 @@ Use ``migrate-set-parameters`` instead.
->  
->  This command didn't produce any output already. Removed with no replacement.
->  
-> +``singlestep`` (removed in 9.0)
-> +'''''''''''''''''''''''''''''''
-> +
-> +The ``singlestep`` command has been replaced by the ``one-insn-per-tb``
-> +command, which has the same behaviour but a less misleading name.
-> +
->  Guest Emulator ISAs
->  -------------------
->  
-> diff --git a/tests/qtest/test-hmp.c b/tests/qtest/test-hmp.c
-> index fc9125f8bb..1b2e07522f 100644
-> --- a/tests/qtest/test-hmp.c
-> +++ b/tests/qtest/test-hmp.c
-> @@ -64,7 +64,6 @@ static const char *hmp_cmds[] = {
->      "qom-get /machine initrd",
->      "screendump /dev/null",
->      "sendkey x",
-> -    "singlestep on",
->      "wavcapture /dev/null",
->      "stopcapture 0",
->      "sum 0 512",
-> diff --git a/hmp-commands.hx b/hmp-commands.hx
-> index 765349ed14..fc5f5c57ad 100644
-> --- a/hmp-commands.hx
-> +++ b/hmp-commands.hx
-> @@ -398,19 +398,6 @@ SRST
->    If called with option off, the emulation returns to normal mode.
->  ERST
->  
-> -    {
-> -        .name       = "singlestep",
-> -        .args_type  = "option:s?",
-> -        .params     = "[on|off]",
-> -        .help       = "deprecated synonym for one-insn-per-tb",
-> -        .cmd        = hmp_one_insn_per_tb,
-> -    },
-> -
-> -SRST
-> -``singlestep [off]``
-> -  This is a deprecated synonym for the one-insn-per-tb command.
-> -ERST
-> -
->      {
->          .name       = "stop|s",
->          .args_type  = "",
-> -- 
-> 2.41.0
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+Look in tests/qtest/meson.build for lines like:
+
+  config_all_devices.has_key('CONFIG_TPM_TIS_ISA') ? ['tpm-tis-test'] : [])
+
+It seems we have a bunch of logic for qtests_i386 and qtests_aarch64
+which isn't applied to the qtests list. Commenting those out I still get
+the full list:
+
+ meson test --list | grep tpm
+ qemu:qtest+qtest-aarch64 / qtest-aarch64/tpm-tis-device-test
+ qemu:qtest+qtest-aarch64 / qtest-aarch64/tpm-tis-device-swtpm-test
+ qemu:qtest+qtest-aarch64 / qtest-aarch64/tpm-tis-i2c-test
+ qemu:qtest+qtest-arm / qtest-arm/tpm-tis-i2c-test
+ qemu:qtest+qtest-i386 / qtest-i386/tpm-crb-test
+ qemu:qtest+qtest-i386 / qtest-i386/tpm-crb-swtpm-test
+ qemu:qtest+qtest-i386 / qtest-i386/tpm-tis-test
+ qemu:qtest+qtest-i386 / qtest-i386/tpm-tis-swtpm-test
+ qemu:qtest+qtest-x86_64 / qtest-x86_64/tpm-crb-test
+ qemu:qtest+qtest-x86_64 / qtest-x86_64/tpm-crb-swtpm-test
+ qemu:qtest+qtest-x86_64 / qtest-x86_64/tpm-tis-test
+ qemu:qtest+qtest-x86_64 / qtest-x86_64/tpm-tis-swtpm-test
+
+But I guess there are there to ensure the dependencies are correct so
+I'm sure that's not the right fix.
+
+Paolo,
+
+Where is that meant to be done?
+
+>
+> Thanks
+>
+> On Wed, Jan 17, 2024 at 6:35=E2=80=AFPM Peter Maydell <peter.maydell@lina=
+ro.org> wrote:
+>>
+>> On Wed, 17 Jan 2024 at 12:59, Manolo de Medici <manolodemedici@gmail.com=
+> wrote:
+>> >
+>> > tests/qtest/tpm-* compilation is not disabled by disable-tpm,
+>> > for this reason compilation fails on systems that doesn't
+>> > support the linux/bsd TPM api. Fix this by allowing tests
+>> > to be disabled.
+>>
+>> This isn't the right way to fix this. Either the tpm test
+>> code has portability issues that can be fixed, or else it
+>> should be guarded by a suitable check that means we don't
+>> try to build it on hosts that don't have the host-specific
+>> functions/whatever that it needs.
+>>
+>> thanks
+>> -- PMM
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
