@@ -2,96 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DB58307AB
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:12:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC65A8307AF
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:13:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ6dj-0001kL-HU; Wed, 17 Jan 2024 09:11:35 -0500
+	id 1rQ6et-0004dS-Uu; Wed, 17 Jan 2024 09:12:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rQ6dh-0001kC-27
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:11:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rQ6df-0002bT-A9
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:11:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705500690;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Qn/ZGVAtzUnrLQUxV9GNxPhgI9PQn68TNMcAVKvWah8=;
- b=bXnlQ6/osEAWAd0Lp51lsTBBSxvE5JHHl8hnlHMmIhUiqdzYAzPPABKwf79PEYLHJB0dZ6
- /j9mUb1H0tStDNPBBLwNHmeJjRU0+DoNB6j/iq5R6LMK3PbbxYzNO3mr5RvRp0rLB7bpkX
- ojGXKxqzFI4ZmB4K4wB1krSC9oc0S3k=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-332-5p7HN3H6M7KZ9rY-CvL0Zg-1; Wed, 17 Jan 2024 09:11:29 -0500
-X-MC-Unique: 5p7HN3H6M7KZ9rY-CvL0Zg-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-7816bea8d28so1984736285a.0
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 06:11:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rQ6ep-0004YA-8C; Wed, 17 Jan 2024 09:12:43 -0500
+Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rQ6en-0002kr-9y; Wed, 17 Jan 2024 09:12:42 -0500
+Received: by mail-oo1-xc33.google.com with SMTP id
+ 006d021491bc7-598ee012192so1522836eaf.1; 
+ Wed, 17 Jan 2024 06:12:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1705500759; x=1706105559; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HpxjPSm9VAceL5ZTrekEjcGVpIcoW4HcwTmmc44yAcE=;
+ b=SF83zdqpzrgXa+DezvuUqoxDbmeuPLqCFPPG+9paADVhuMbezp/NO49UnM7s7/CYJ+
+ ZHCVQhVJuN328SsrpP26JgLCbTK6XJKKgWSfRbMvSDGRwvhP8XfEYZmyUkqmsN2ixkCH
+ QLxUNZvwKpLAbJhFNs9NG/ZeqbdJRg4/mGYahOs5idlg6e742dgRBnFglS0ESsSqMWJn
+ bf3nOWHJrXOhY+MuBYe1Of5xRs6XPNr0cqyyjUk1HUypc9J8PQdBuyghc2a0dLOH/VTY
+ tA9OezDNOKKaOS9R/k1OalUW2vJBSM10t0kkhfx9hxuwo7vdyKmfp4BSbizgtHhLDGRA
+ 3ifg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705500689; x=1706105489;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1705500759; x=1706105559;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Qn/ZGVAtzUnrLQUxV9GNxPhgI9PQn68TNMcAVKvWah8=;
- b=PQwEi1+CrDUG4sZyJnRVm/z5DmClMnwb7Bd8KzfwwH6AtIjleZ7OCLq9TXQ9OnY/iW
- lApcV4ym3jsZbqnCGxsNXMVxGYMbZWGPx78Zrn3GOHQME4HwmN0RZn4SEEbmwIKCj7J9
- j30HeAuK+9w4bQVSqtakd+XSZFZve8SB/re2FwOMV5iWETINS+9nP0nM1b0F3J3z28G8
- kCkn4alrQwlekoz3tHq221Ic3haskQ5p4IsA07OSdzNuizhltgvKZVanQe33eUn9jGb2
- cUI6LJ6PGBNnLLgFL0PshB7U4eKG+Ew5mdxhwrdSjGbY3ypT9D/oF4q4eBF7ZnPU0qKS
- vLBg==
-X-Gm-Message-State: AOJu0YyWh1JfXrJPf85QIbdDBH60DP8K9Q3mE/evivFZM5uJvKfOUyoh
- x5QoNIjtGIOhTcacpqx1wUO4vELPDEfmRTY6tLezZS2fqlA7G6L5fnw2LUdBYwj5/v9llh/hU/q
- ffuybHc+SUMRGcBhG4IX8yGUQsdGWz3QC0ZWhjJZumBRjRFLqprSl
-X-Received: by 2002:a05:620a:361e:b0:783:82b:5d5 with SMTP id
- da30-20020a05620a361e00b00783082b05d5mr970216qkb.77.1705500688507; 
- Wed, 17 Jan 2024 06:11:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGFshlBxSzTGE3PX3FdVrWakLHD4/hPNfF+SI97Uh3AshkoVWzP/fwMru4GIL/rlqV3FzfxcA==
-X-Received: by 2002:a05:620a:361e:b0:783:82b:5d5 with SMTP id
- da30-20020a05620a361e00b00783082b05d5mr970210qkb.77.1705500688258; 
- Wed, 17 Jan 2024 06:11:28 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ bh=HpxjPSm9VAceL5ZTrekEjcGVpIcoW4HcwTmmc44yAcE=;
+ b=PFIy/ftdeaOlvJFx/sUSfdoEYvjx7uuu3COnV4LrScWbZBXkqFjT3CS0bIN6fo9K6E
+ 0kpCYK3PEGvg+aWViY9xXLrw+DdUkJakLXeiNSmpjtnYfzMV6EUTXdgtgtbljy3wcZcp
+ tS71RANR2Dr/5AP/az4VuOuFblHNbpmyu0SFCD/neER7hs4YK9LNnypy4UdmnSC9/cio
+ QDFr4PJTk1oWQJp29zMRbr31abgr67qZ1UkZ4b4lZB5YAMkMaijHP5zqwm/0MoWT1dCt
+ uqGhPmFd/gEm3LLM/hH9nhSCmhxm9Q1eMqQErehCtjLSjJC7YJQwqzpuyIjQ2E74EDYi
+ kShQ==
+X-Gm-Message-State: AOJu0YxinSGd9IZuoOV/Y53lkhM4xQGEYcRij0kBMukwQUoDTKagl4vB
+ /gXUEBT+9iqTXzVGtzRHmSVIPjC5eRQ=
+X-Google-Smtp-Source: AGHT+IEC2VxcjHmezcQXnfliXMeVTgwDIfSURd0NiWHk+8TTmVb2biNplHIQqtdw9YtkW72Ptihw7w==
+X-Received: by 2002:a05:6359:2e1a:b0:175:6b96:95d1 with SMTP id
+ ro26-20020a0563592e1a00b001756b9695d1mr5408723rwb.47.1705500758906; 
+ Wed, 17 Jan 2024 06:12:38 -0800 (PST)
+Received: from wheely.local0.net (124-171-76-150.tpgi.com.au. [124.171.76.150])
  by smtp.gmail.com with ESMTPSA id
- t13-20020a05620a004d00b00783749b0d2fsm372059qkt.94.2024.01.17.06.11.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 06:11:27 -0800 (PST)
-Message-ID: <866c6343-054c-40c7-b331-b41497f5610b@redhat.com>
-Date: Wed, 17 Jan 2024 15:11:23 +0100
+ i136-20020a636d8e000000b005cebb10e28fsm11812428pgc.69.2024.01.17.06.12.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Jan 2024 06:12:38 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ qemu-ppc@nongnu.org
+Subject: [PATCH v2 0/8] tests/avocado: ppc additions and other fixes
+Date: Thu, 18 Jan 2024 00:12:15 +1000
+Message-ID: <20240117141224.90462-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rfcv1 1/6] backends/iommufd_device: introduce IOMMUFDDevice
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>
-References: <20240115101313.131139-1-zhenzhong.duan@intel.com>
- <20240115101313.131139-2-zhenzhong.duan@intel.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20240115101313.131139-2-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
+ envelope-from=npiggin@gmail.com; helo=mail-oo1-xc33.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,172 +93,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhenzhong,
+Thanks for the feedback and comments on these before. I would like to
+put these in the ppc tree soon (modulo the x86 patch 2). Happy for more
+feedback but could make them as incremental changes too.
 
-On 1/15/24 11:13, Zhenzhong Duan wrote:
-> IOMMUFDDevice represents a device in iommufd and can be used as
-> a communication interface between devices (i.e., VFIO, VDPA) and
-> vIOMMU.
->
-> Currently it includes iommufd handler and device id information
-iommufd handle
-> which could be used by vIOMMU to get hw IOMMU information.
->
-> In future nested translation support, vIOMMU is going to have
-> more iommufd related operations like allocate hwpt for a device,
-> attach/detach hwpt, etc. So IOMMUFDDevice will be further expanded.
->
-> IOMMUFDDevice is willingly not a QOM object because we don't want
-> it to be visible from the user interface.
->
-> Introduce a helper iommufd_device_init to initialize IOMMUFDDevice.
+Changes since v1:
+- Patch 1 (s390x fix) merged.
+- Use existing SPEED=slow convention instead of new
+  AVOCADO_ALLOW_LONG_RUNTIME (Thomas)
+- Add slightly more guideline help text for SPEED=slow (Cedric)
+- Fix hypervisor test to use KVM instead of forcing TCG always (Cedric)
+- Fix hypervisor test avocado syntax issue (Cedric)
+- Add powernv9 FreeBSD boot test, which is a bit tricky since powernv
+  does not have a boot loader and not sure how to pass boot options to
+  FreeBSD kernel directly.
 
-+  iommufd_device_get_info helper
->
-> Originally-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->  MAINTAINERS                     |  4 +--
->  include/sysemu/iommufd_device.h | 31 ++++++++++++++++++++
->  backends/iommufd_device.c       | 50 +++++++++++++++++++++++++++++++++
->  backends/meson.build            |  2 +-
->  4 files changed, 84 insertions(+), 3 deletions(-)
->  create mode 100644 include/sysemu/iommufd_device.h
->  create mode 100644 backends/iommufd_device.c
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 00ec1f7eca..606dfeb2b1 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2171,8 +2171,8 @@ M: Yi Liu <yi.l.liu@intel.com>
->  M: Eric Auger <eric.auger@redhat.com>
->  M: Zhenzhong Duan <zhenzhong.duan@intel.com>
->  S: Supported
-> -F: backends/iommufd.c
-> -F: include/sysemu/iommufd.h
-> +F: backends/iommufd*.c
-> +F: include/sysemu/iommufd*.h
->  F: include/qemu/chardev_open.h
->  F: util/chardev_open.c
->  F: docs/devel/vfio-iommufd.rst
-> diff --git a/include/sysemu/iommufd_device.h b/include/sysemu/iommufd_device.h
-> new file mode 100644
-> index 0000000000..795630324b
-> --- /dev/null
-> +++ b/include/sysemu/iommufd_device.h
-> @@ -0,0 +1,31 @@
-> +/*
-> + * IOMMUFD Device
-> + *
-> + * Copyright (C) 2024 Intel Corporation.
-> + *
-> + * Authors: Yi Liu <yi.l.liu@intel.com>
-> + *          Zhenzhong Duan <zhenzhong.duan@intel.com>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#ifndef SYSEMU_IOMMUFD_DEVICE_H
-> +#define SYSEMU_IOMMUFD_DEVICE_H
-> +
-> +#include <linux/iommufd.h>
-> +#include "sysemu/iommufd.h"
-> +
-> +typedef struct IOMMUFDDevice IOMMUFDDevice;
-> +
-> +/* This is an abstraction of host IOMMUFD device */
-> +struct IOMMUFDDevice {
-> +    IOMMUFDBackend *iommufd;
-> +    uint32_t dev_id;
-> +};
-> +
-> +int iommufd_device_get_info(IOMMUFDDevice *idev,
-> +                            enum iommu_hw_info_type *type,
-> +                            uint32_t len, void *data);
-> +void iommufd_device_init(void *_idev, size_t instance_size,
-> +                         IOMMUFDBackend *iommufd, uint32_t dev_id);
-> +#endif
-> diff --git a/backends/iommufd_device.c b/backends/iommufd_device.c
-> new file mode 100644
-> index 0000000000..f6e7ca1dbf
-> --- /dev/null
-> +++ b/backends/iommufd_device.c
-> @@ -0,0 +1,50 @@
-> +/*
-> + * QEMU abstract of Host IOMMU
-it is the abstraction of the IOMMU or of any assigned device?
-> + *
-> + * Copyright (C) 2024 Intel Corporation.
-> + *
-> + * Authors: Yi Liu <yi.l.liu@intel.com>
-> + *          Zhenzhong Duan <zhenzhong.duan@intel.com>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include <sys/ioctl.h>
-> +#include "qemu/osdep.h"
-> +#include "qemu/error-report.h"
-> +#include "sysemu/iommufd_device.h"
-> +
-> +int (IOMMUFDDevice *idev,
-> +                            enum iommu_hw_info_type *type,
-> +                            uint32_t len, void *data)
-> +{
-> +    struct iommu_hw_info info = {
-> +        .size = sizeof(info),
-> +        .flags = 0,
-> +        .dev_id = idev->dev_id,
-> +        .data_len = len,
-> +        .__reserved = 0,
-> +        .data_uptr = (uintptr_t)data,
-> +    };
-> +    int ret;
-> +
-> +    ret = ioctl(idev->iommufd->fd, IOMMU_GET_HW_INFO, &info);
-> +    if (ret) {
-> +        error_report("Failed to get info %m");
-you may prefer using errp instead of hard traces.
-> +    } else {
-> +        *type = info.out_data_type;
-> +    }
-> +
-> +    return ret;
-> +}
-> +
-> +void iommufd_device_init(void *_idev, size_t instance_size,
-nit: why the "_"
-> +                         IOMMUFDBackend *iommufd, uint32_t dev_id)
-> +{
-> +    IOMMUFDDevice *idev = (IOMMUFDDevice *)_idev;
-> +
-> +    g_assert(sizeof(IOMMUFDDevice) <= instance_size);
-at this stage of the reading it is not clear why you input the
-instance_size. worth to be clarified/documented.
-> +
-> +    idev->iommufd = iommufd;
-> +    idev->dev_id = dev_id;
-> +}
-> diff --git a/backends/meson.build b/backends/meson.build
-> index 8b2b111497..c437cdb363 100644
-> --- a/backends/meson.build
-> +++ b/backends/meson.build
-> @@ -24,7 +24,7 @@ if have_vhost_user
->    system_ss.add(when: 'CONFIG_VIRTIO', if_true: files('vhost-user.c'))
->  endif
->  system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost.c'))
-> -system_ss.add(when: 'CONFIG_IOMMUFD', if_true: files('iommufd.c'))
-> +system_ss.add(when: 'CONFIG_IOMMUFD', if_true: files('iommufd.c', 'iommufd_device.c'))
->  if have_vhost_user_crypto
->    system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost-user.c'))
->  endif
-Thanks
+Haven't done the BE FreeBSD test yet that Cedric suggested, will save
+that for later.
 
-Eric
+Thanks,
+Nick
+
+Nicholas Piggin (8):
+  tests/avocado: mark boot_linux.py long runtime instead of flaky
+  tests/avocado: Mark x86-64 boot_linux.py TCG tests as long runtime
+  tests/avocado: Enable replay_linux.py on ppc64 pseries
+  tests/avocado: ppc add powernv10 boot_linux_console test
+  tests/avocado: Add ppc pseries and powernv hash MMU tests
+  tests/avocado: Add pseries KVM boot_linux test
+  tests/avocado: ppc add hypervisor tests
+  tests/avocado: Add FreeBSD distro boot tests for ppc
+
+ MAINTAINERS                         |   1 +
+ docs/devel/testing.rst              |  11 ++
+ tests/avocado/boot_freebsd.py       | 174 ++++++++++++++++++++++++
+ tests/avocado/boot_linux.py         |  32 +++--
+ tests/avocado/boot_linux_console.py |   8 ++
+ tests/avocado/ppc_hv_tests.py       | 203 ++++++++++++++++++++++++++++
+ tests/avocado/ppc_powernv.py        |  23 +++-
+ tests/avocado/ppc_pseries.py        |  20 ++-
+ tests/avocado/replay_linux.py       |  76 ++++++++++-
+ 9 files changed, 525 insertions(+), 23 deletions(-)
+ create mode 100644 tests/avocado/boot_freebsd.py
+ create mode 100644 tests/avocado/ppc_hv_tests.py
+
+-- 
+2.42.0
 
 
