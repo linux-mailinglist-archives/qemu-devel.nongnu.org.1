@@ -2,107 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2832C830E64
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 22:13:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6A5830E6C
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 22:14:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQDC0-00010Q-Q3; Wed, 17 Jan 2024 16:11:24 -0500
+	id 1rQDEa-0002Lg-MN; Wed, 17 Jan 2024 16:14:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1rQDBy-000106-T9; Wed, 17 Jan 2024 16:11:22 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rQDEX-0002K6-K8; Wed, 17 Jan 2024 16:14:01 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1rQDBw-0005EN-D9; Wed, 17 Jan 2024 16:11:22 -0500
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40HKa0SX016162; Wed, 17 Jan 2024 21:11:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=XysA1hHT6U7LDmNGM44fhqUFcI5nP2iMheS+oMDp3ZM=;
- b=O9LvLcVc5dUR0Hkh+VPcHwavnBq7lW5CxK1Z8uLTm+m+u/TYPb6nyvj4nbzAYvrCAa/S
- dK84Ld0SPc0DdbXKOev4+Yz0f/Ld6BAUHYbr/yVM0nGovL+UAwDl9DdHmD3Wc/oe4bCI
- YHePQ8U5rJfA0+dLtC/r4sOGk6FgMvNJqJ0dy2OONCiDw77rggGsQG+vfURc758q1DuT
- OufNIpzeEuC1O3Lyf+FNlQeUqRTfLJ8AEyleRGC8OogSQkhfRA1xop9sDlVUvFDqnghU
- R4R9qWe1qjuGFr/oWtIxglBaEzQoEWuoCAMZh399/+CAkUAvFKj9LBybz2pIEcIHm/mf 9Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vpmmr2s8m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Jan 2024 21:11:17 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40HLBHBU015047;
- Wed, 17 Jan 2024 21:11:17 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vpmmr2s8e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Jan 2024 21:11:17 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40HJlgLt005820; Wed, 17 Jan 2024 21:11:16 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm6bkqhpb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Jan 2024 21:11:16 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40HLBFvB66126316
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 Jan 2024 21:11:15 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 33B6958053;
- Wed, 17 Jan 2024 21:11:15 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E490558043;
- Wed, 17 Jan 2024 21:11:13 +0000 (GMT)
-Received: from [9.61.163.245] (unknown [9.61.163.245])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 17 Jan 2024 21:11:13 +0000 (GMT)
-Message-ID: <04379048-1ff0-482b-8fc7-74cc13bb5a21@linux.ibm.com>
-Date: Wed, 17 Jan 2024 16:11:13 -0500
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rQDEV-0005t5-Fn; Wed, 17 Jan 2024 16:14:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=q+28BYL1i5DpROBlZhwL+KUeS5I+nDWCo50k+dnYzE0=; b=JbuKnm6gTucZrTaENXvXDDtPzy
+ f05aoZNWb0Iw880M9K+WIyAAZMyQxhNslCwPOJTO23lTECxyDylIpY2wcB8Fah8729WZafjtwtKYU
+ K3h/Q4ZCORUlL3yp7NThFH0QnWZG0FPClV9+6rYb/hEdl2DkGSD5czby7NpWbG3SQWI4pYmcYjHdr
+ bcpZvxg+QXHLHEKKf9i2tVka5DPJ+ruTIbiS+B55tYZTU0q7BRDLILaiuWAceO4QVXfafpATTZEMo
+ Ok988ZJo3MFGWQEOFAlX03LFU1T6kcJ77WqWP+OoYerfavsrNA12d0StTHVBdEehKT43EU1G/wmm/
+ 9nxjisKqDTQJpaFeQrfKkASycsfYgRiczuUkk6ceCJaDIWrsoStI9bWI02BZAhoXxgKrLdhPromOr
+ dj2svooDhz21+qR2uUPlUt1cNrgXX2bfgjch8g3ScYjOoxxomNspVAgmApzQPsoLORH3Kci5Fx+bJ
+ FShONkfhPASrLOvocT2FWheD1H/R6K/GKetv1FsPWNPq53fdINU8kHABspUKTeNPWK9qpIK0C4SSD
+ M9CeRgnSGHROWk/MkhVJpAKN6oktChPxfWCATmugm5K3azhFfHe3EjtswPQ75WBHfmrFDWmgopGiH
+ zSTK3HHzBxscWLkSCULTABf9z8fl0EymKA3ZrX3gw=;
+Received: from [2a00:23c4:8bb1:9800:cb4d:caec:ef2b:5d6e]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rQDDr-0000KB-5A; Wed, 17 Jan 2024 21:13:23 +0000
+Message-ID: <ec729430-816e-4235-9737-9df00d90d40e@ilande.co.uk>
+Date: Wed, 17 Jan 2024 21:13:45 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] s390x/pci: drive ISM reset from subsystem reset
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+References: <20240117155143.172890-1-pbonzini@redhat.com>
 Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, thuth@redhat.com, frankja@linux.ibm.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>
-References: <20240116223157.73752-1-mjrosato@linux.ibm.com>
- <20240116223157.73752-4-mjrosato@linux.ibm.com>
- <66735e9f-a4fb-474f-abec-6c83d36f921e@redhat.com>
- <0131acaf-6daf-46b3-9368-e491766e2825@linux.ibm.com>
-In-Reply-To: <0131acaf-6daf-46b3-9368-e491766e2825@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: GVeG9D_GTw1JOOn4j25x2q-5E3tYleeR
-X-Proofpoint-ORIG-GUID: zgkRUB5uqKdbXcVhatxKHjzGxb9m3rra
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-17_12,2024-01-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=999
- mlxscore=0 lowpriorityscore=0 malwarescore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 spamscore=0 adultscore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401170150
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=mjrosato@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <20240117155143.172890-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb1:9800:cb4d:caec:ef2b:5d6e
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH] target/i386: pcrel: store low bits of physical address in
+ data[0]
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,96 +101,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/17/24 10:19 AM, Matthew Rosato wrote:
-> On 1/17/24 6:01 AM, Cédric Le Goater wrote:
->> Adding Alex,
->>
->> On 1/16/24 23:31, Matthew Rosato wrote:
->>> ISM devices are sensitive to manipulation of the IOMMU, so the ISM device
->>> needs to be reset before the vfio-pci device is reset (triggering a full
->>> UNMAP).  In order to ensure this occurs, trigger ISM device resets from
->>> subsystem_reset before triggering the PCI bus reset (which will also
->>> trigger vfio-pci reset).  This only needs to be done for ISM devices
->>> which were enabled for use by the guest.
->>> Further, ensure that AIF is disabled as part of the reset event.
->>>
->>> Fixes: ef1535901a ("s390x: do a subsystem reset before the unprotect on reboot")
->>> Fixes: 03451953c7 ("s390x/pci: reset ISM passthrough devices on shutdown and system reset")
->>> Reported-by: Cédric Le Goater <clg@redhat.com>
->>> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
->>> ---
->>>   hw/s390x/s390-pci-bus.c         | 26 +++++++++++++++++---------
->>>   hw/s390x/s390-virtio-ccw.c      |  2 ++
->>>   include/hw/s390x/s390-pci-bus.h |  1 +
->>>   3 files changed, 20 insertions(+), 9 deletions(-)
->>>
->>> diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
->>> index 347580ebac..3e57d5faca 100644
->>> --- a/hw/s390x/s390-pci-bus.c
->>> +++ b/hw/s390x/s390-pci-bus.c
->>> @@ -151,20 +151,12 @@ static void s390_pci_shutdown_notifier(Notifier *n, void *opaque)
->>>       pci_device_reset(pbdev->pdev);
->>>   }
->>>   -static void s390_pci_reset_cb(void *opaque)
->>> -{
->>> -    S390PCIBusDevice *pbdev = opaque;
->>> -
->>> -    pci_device_reset(pbdev->pdev);
->>> -}
->>> -
->>>   static void s390_pci_perform_unplug(S390PCIBusDevice *pbdev)
->>>   {
->>>       HotplugHandler *hotplug_ctrl;
->>>         if (pbdev->pft == ZPCI_PFT_ISM) {
->>>           notifier_remove(&pbdev->shutdown_notifier);
->>> -        qemu_unregister_reset(s390_pci_reset_cb, pbdev);
->>>       }
->>>         /* Unplug the PCI device */
->>> @@ -1132,7 +1124,6 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
->>>               if (pbdev->pft == ZPCI_PFT_ISM) {
->>>                   pbdev->shutdown_notifier.notify = s390_pci_shutdown_notifier;
->>>                   qemu_register_shutdown_notifier(&pbdev->shutdown_notifier);
->>> -                qemu_register_reset(s390_pci_reset_cb, pbdev);
->>>               }
->>>           } else {
->>>               pbdev->fh |= FH_SHM_EMUL;
->>> @@ -1279,6 +1270,23 @@ static void s390_pci_enumerate_bridge(PCIBus *bus, PCIDevice *pdev,
->>>       pci_default_write_config(pdev, PCI_SUBORDINATE_BUS, s->bus_no, 1);
->>>   }
->>>   +void s390_pci_ism_reset(void)
->>> +{
->>> +    S390pciState *s = s390_get_phb();
->>> +
->>> +    S390PCIBusDevice *pbdev, *next;
->>> +
->>> +    /* Trigger reset event for each passthrough ISM device currently in-use */
->>> +    QTAILQ_FOREACH_SAFE(pbdev, &s->zpci_devs, link, next) {
->>> +        if (pbdev->interp && pbdev->pft == ZPCI_PFT_ISM &&
->>> +            pbdev->fh & FH_MASK_ENABLE) {
->>> +            s390_pci_kvm_aif_disable(pbdev);
->>> +
->>> +            pci_device_reset(pbdev->pdev);
->>> +        }
->>> +    }
->>> +}
->>
->>
->> Could we instead define a VFIOPCIDevice::resetfn handler for these
->> ISM devices (1014:04ed) ? This would be cleaner if possible.
->>
->> If so, as a prerequisite, we would need to introduce in a little VFIO
->> helper to define custom reset handlers.
->>
->> Thanks,
->>
->> C.
->>
-> 
-> Oh interesting, I had not noticed that.  This may well work -- resetfn is currently setup via vfio_setup_resetfn_quirk but it would probably be easier to have a helper that takes the vdev and a function pointer so that we can provide a platform-specific reset handler (rather than having hw/vfio/pci-quirks.c worry about CONFIG_S390 etc).  I'll have to play around with this.
->  
-> 
+On 17/01/2024 15:51, Paolo Bonzini wrote:
 
-Hmm, it was a good idea but I don't think this will work.  I tried to hack something together today but I'm definitely seeing paths where the vfio_listener_region_del happens before the call to vfio_pci_reset (which would ultimately trigger the new custom resetfn).
+> For PC-relative translation blocks, env->eip changes during the
+> execution of a translation block, Therefore, QEMU must be able to
+> recover an instruction's PC just from the TranslationBlock struct and
+> the instruction data with.  Because a TB will not span two pages, QEMU
+> stores all the low bits of EIP in the instruction data and replaces them
+> in x86_restore_state_to_opc.  Bits 12 and higher (which may vary between
+> executions of a PCREL TB, since these only use the physical address in
+> the hash key) are kept unmodified from env->eip.  The assumption is that
+> these bits of EIP, unlike bits 0-11, will not change as the translation
+> block executes.
+> 
+> Unfortunately, this is incorrect when the CS base is not aligned to a page.
+> Then the linear address of the instructions (i.e. the one with the
+> CS base addred) indeed will never span two pages, but bits 12+ of EIP
 
-Perhaps we should stick with the call from subsystem_reset -- it will ensure that the ISM cleanup happens after guest CPUs are stopped but before vfio does its cleanup.
+added
+
+> can actually change.  For example, if CS base is 0x80262200 and EIP =
+> 0x6FF4, the first instruction in the translation block will be at linear
+> address 0x802691F4.  Even a very small TB will cross to EIP = 0x7xxx,
+> while the linear addresses will remain comfortably within a single page.
+> 
+> The fix is simply to use the low bits of the linear address for data[0],
+> since those don't change.  Then x86_restore_state_to_opc uses tb->cs_base
+> to compute a temporary linear address (referring to some unknown
+> instruction in the TB, but with the correct values of bits 12 and higher);
+> the low bits are replaced with data[0], and EIP is obtained by subtracting
+> again the CS base.
+> 
+> Huge thanks to Mark Cave-Ayland for the image and initial debugging,
+> and to Gitlab user @kjliew for help with bisecting another occurrence
+> of (hopefully!) the same bug.
+> 
+> It should be relatively easy to write a testcase that performs MMIO on
+> an EIP with different bits 12+ than the first instruction of the translation
+> block; any help is welcome.
+> 
+> Fixes: e3a79e0e878 ("target/i386: Enable TARGET_TB_PCREL", 2022-10-11)
+> Cc: qemu-stable@nongnu.org
+> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Cc: Richard Henderson <richard.henderson@linaro.org>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1964
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2012
+
+And also:
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1759
+
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   target/i386/tcg/tcg-cpu.c   | 20 ++++++++++++++++----
+>   target/i386/tcg/translate.c |  1 -
+>   2 files changed, 16 insertions(+), 5 deletions(-)
+> 
+> diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
+> index 6e881e9e276..fa956d35ecd 100644
+> --- a/target/i386/tcg/tcg-cpu.c
+> +++ b/target/i386/tcg/tcg-cpu.c
+> @@ -68,14 +68,26 @@ static void x86_restore_state_to_opc(CPUState *cs,
+>       X86CPU *cpu = X86_CPU(cs);
+>       CPUX86State *env = &cpu->env;
+>       int cc_op = data[1];
+> +    uint64_t new_pc;
+>   
+>       if (tb_cflags(tb) & CF_PCREL) {
+> -        env->eip = (env->eip & TARGET_PAGE_MASK) | data[0];
+> -    } else if (tb->flags & HF_CS64_MASK) {
+> -        env->eip = data[0];
+> +        /*
+> +         * To ensure that bits 0..11 do not change across the translation block,
+> +         * PC-relative TBs use linear addresses, i.e. addresses that have the CS
+> +         * base added, for data[0].  Add the CS base back before replacing the
+> +         * low bits, and subtract it below just like for non-PC-relative TBs.
+> +         */
+> +        uint64_t pc = env->eip + tb->cs_base;
+> +        new_pc = (pc & TARGET_PAGE_MASK) | data[0];
+>       } else {
+> -        env->eip = (uint32_t)(data[0] - tb->cs_base);
+> +        new_pc = data[0];
+>       }
+> +    if (tb->flags & HF_CS64_MASK) {
+> +        env->eip = new_pc;
+> +    } else {
+> +        env->eip = (uint32_t)(new_pc - tb->cs_base);
+> +    }
+> +
+>       if (cc_op != CC_OP_DYNAMIC) {
+>           env->cc_op = cc_op;
+>       }
+> diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+> index cadf13bce43..e193c74472b 100644
+> --- a/target/i386/tcg/translate.c
+> +++ b/target/i386/tcg/translate.c
+> @@ -6996,7 +6996,6 @@ static void i386_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
+>   
+>       dc->prev_insn_end = tcg_last_op();
+>       if (tb_cflags(dcbase->tb) & CF_PCREL) {
+> -        pc_arg -= dc->cs_base;
+>           pc_arg &= ~TARGET_PAGE_MASK;
+>       }
+>       tcg_gen_insn_start(pc_arg, dc->cc_op);
+
+Many thanks for coming up with the fix for this :) My test case now works fine, so:
+
+Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+
+ATB,
+
+Mark.
+
 
