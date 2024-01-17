@@ -2,68 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D158E830EBF
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 22:47:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44533830F1E
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 23:18:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQDjx-0003Xr-5j; Wed, 17 Jan 2024 16:46:29 -0500
+	id 1rQEE5-0005NX-Ok; Wed, 17 Jan 2024 17:17:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rQDju-0003XA-Fy; Wed, 17 Jan 2024 16:46:26 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rQDjr-0003Yr-VD; Wed, 17 Jan 2024 16:46:26 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TFfXH5MNVz6K5Xl;
- Thu, 18 Jan 2024 05:43:59 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id D3934140519;
- Thu, 18 Jan 2024 05:46:12 +0800 (CST)
-Received: from localhost (10.48.153.213) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 17 Jan
- 2024 21:46:11 +0000
-Date: Wed, 17 Jan 2024 21:46:08 +0000
-To: Salil Mehta via <qemu-devel@nongnu.org>
-CC: Salil Mehta <salil.mehta@huawei.com>, <qemu-arm@nongnu.org>,
- <maz@kernel.org>, <jean-philippe@linaro.org>, <lpieralisi@kernel.org>,
- <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
- <imammedo@redhat.com>, <andrew.jones@linux.dev>, <david@redhat.com>,
- <philmd@linaro.org>, <eric.auger@redhat.com>, <will@kernel.org>,
- <ardb@kernel.org>, <oliver.upton@linux.dev>, <pbonzini@redhat.com>,
- <mst@redhat.com>, <gshan@redhat.com>, <rafael@kernel.org>,
- <borntraeger@linux.ibm.com>, <alex.bennee@linaro.org>,
- <linux@armlinux.org.uk>, <darren@os.amperecomputing.com>,
- <ilkka@os.amperecomputing.com>, <vishnu@os.amperecomputing.com>,
- <karl.heubaum@oracle.com>, <miguel.luis@oracle.com>,
- <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
- <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
- <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>
-Subject: Re: [PATCH RFC V2 19/37] hw/acpi: ACPI/AML Changes to reflect the
- correct _STA.{PRES, ENA} Bits to Guest
-Message-ID: <20240117214608.00007d1b@Huawei.com>
-In-Reply-To: <20230926100436.28284-20-salil.mehta@huawei.com>
-References: <20230926100436.28284-1-salil.mehta@huawei.com>
- <20230926100436.28284-20-salil.mehta@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rQEE2-0005NG-8v
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 17:17:34 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rQEE0-0002CP-Ia
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 17:17:34 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40e8d3b29f2so8286485e9.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 14:17:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705529850; x=1706134650; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=r+WO0gC0vfz7XBaosdE7QxnmqtWzh72mEiJGdHtFSMQ=;
+ b=J88FSgfrUXHE01BCgd7y9KVyfHSpy1GhJSKWeK8+gHd/mvpfbEHTCbQ8AdRr7+DU6F
+ TfDYODe5HZSsC8MHFawu7Ai9dsZOpxalj/5il3k3TuEdyFqY0ZALuHKMZKLLNV9iZFtP
+ Aa2OZXY6ulTKTVCMaHzvByuST4CGblDQY2Qo8QZUJ2OGQ+Nv1b5OsW69K55HtoGPWaT3
+ HVMxKWCV3KFhEPDKTvNaT7Vxzb7kW6SykQEnpg8O33no4tVoHJuI8ezKTEgYxfaxBOiP
+ jqWS4DCnzcQSsm+0ZI07dRzbfbW3ktUOD+DsLiN14mzmAA/v4tEBQGp78Ugkg2A7giPa
+ v11A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705529850; x=1706134650;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=r+WO0gC0vfz7XBaosdE7QxnmqtWzh72mEiJGdHtFSMQ=;
+ b=K9Z9zjRhmk6TYLLv2B7TtMI2ZqUKyKAxo/k2jGRSUbxlBqY+kyxmfdwMatON/OI+dH
+ LU5iDtRE78EKJykBDEUgCWvvd/YJZJ+MRonhNZxRhz4Z/HeHBc16UfbT5yDzCK3aN8rY
+ IdThzyU4NS0GkFmd+IJOvnqXQ5hYA2fAGoL4fMtqwZuENJy+I6PAYWj+jR5i/bd3RGlw
+ QHC7DZ3ZnbYV/hm8XjxP+I7WkK4fm/5RWiJRNbu/0LbeqhYktizjM0TcerSDSDK0165J
+ pqTGsZi+nSfVv87xBRrRmzfIdzveWoq5ACzUfaZviSMYo6y313BazXtRaX79Jsj/rAR9
+ UGWw==
+X-Gm-Message-State: AOJu0Yx8aAyOEB587BgNecy5ajUmzKoIayPl6q/S6JEm6C9kBCcYU+qZ
+ mmPKe0hfURfISGC7kerhAbpIkcsrygg9VA==
+X-Google-Smtp-Source: AGHT+IF2PZbboTVitPjcBhp24GOfqOFd0V6MMc+pkqUUDMAZIOOZiuNdkP8l45LhuXXLl2+jyUuGmg==
+X-Received: by 2002:a1c:7c03:0:b0:40d:3af5:ea09 with SMTP id
+ x3-20020a1c7c03000000b0040d3af5ea09mr3619073wmc.228.1705529849921; 
+ Wed, 17 Jan 2024 14:17:29 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ r7-20020a05600c35c700b0040d1bd0e716sm23887923wmq.9.2024.01.17.14.17.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Jan 2024 14:17:29 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 1A75E5F760;
+ Wed, 17 Jan 2024 22:17:29 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Claudio Fontana
+ <cfontana@suse.de>,  Cleber Rosa <crosa@redhat.com>,  Daniel P .
+ =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Andrea Bolognani <abologna@redhat.com>,  Wainer dos Santos Moschetta
+ <wainersm@redhat.com>,  Beraldo Leal <bleal@redhat.com>
+Subject: Re: [PATCH v2] tests/docker: Add sqlite3 module to openSUSE Leap
+ container
+In-Reply-To: <20240117164227.32143-1-farosas@suse.de> (Fabiano Rosas's message
+ of "Wed, 17 Jan 2024 13:42:27 -0300")
+References: <20240117164227.32143-1-farosas@suse.de>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Wed, 17 Jan 2024 22:17:29 +0000
+Message-ID: <87le8nhafa.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.48.153.213]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,169 +99,79 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 26 Sep 2023 11:04:18 +0100
-Salil Mehta via <qemu-devel@nongnu.org> wrote:
+Fabiano Rosas <farosas@suse.de> writes:
 
-> ACPI AML changes to properly reflect the _STA.PRES and _STA.ENA Bits to the
-> guest during initialzation, when CPUs are hotplugged and after CPUs are
-> hot-unplugged.
-> 
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> Avocado needs sqlite3:
+>
+>   Failed to load plugin from module "avocado.plugins.journal":
+>   ImportError("Module 'sqlite3' is not installed.
+>   Use: sudo zypper install python311 to install it")
 
-Hi Salil,
+Queued to testing/next, thanks.
 
-Just brought up a qemu on qemu test setup again to poke
-the kernel series and hopefully resolve a few questions there.
-Ran into a trivial problem in which the kernel was trying and
-failing to attach an ACPI handler before these were hotplugged.
-Came down to the kernel code now treating functional in _STA as
-meaning can be enumerated and effectively
-ignoring all the other bits.
-
-Requires a change to the value presented by default...
-See below.  Fix may well be completely wrong even though it works ;)
-
-Thanks,
-
-Jonathan
-
+>
+> From 'zypper info python311':
+>   "This package supplies rich command line features provided by
+>   readline, and sqlite3 support for the interpreter core, thus forming
+>   a so called "extended" runtime."
+>
+> Include the appropriate package in the lcitool mappings which will
+> guarantee the dockerfile gets properly updated when lcitool is
+> run. Also include the updated dockerfile.
+>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->  hw/acpi/cpu.c                  | 49 +++++++++++++++++++++++++++++++---
->  hw/acpi/generic_event_device.c | 11 ++++++++
->  include/hw/acpi/cpu.h          |  2 ++
->  3 files changed, 58 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-> index 232720992d..e1299696d3 100644
-> --- a/hw/acpi/cpu.c
-> +++ b/hw/acpi/cpu.c
-> @@ -63,10 +63,11 @@ static uint64_t cpu_hotplug_rd(void *opaque, hwaddr addr, unsigned size)
->      cdev = &cpu_st->devs[cpu_st->selector];
->      switch (addr) {
->      case ACPI_CPU_FLAGS_OFFSET_RW: /* pack and return is_* fields */
-> -        val |= cdev->cpu ? 1 : 0;
-> +        val |= cdev->is_enabled ? 1 : 0;
->          val |= cdev->is_inserting ? 2 : 0;
->          val |= cdev->is_removing  ? 4 : 0;
->          val |= cdev->fw_remove  ? 16 : 0;
-> +        val |= cdev->is_present ? 32 : 0;
->          trace_cpuhp_acpi_read_flags(cpu_st->selector, val);
->          break;
->      case ACPI_CPU_CMD_DATA_OFFSET_RW:
-> @@ -228,7 +229,21 @@ void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
->          struct CPUState *cpu = CPU(id_list->cpus[i].cpu);
->          if (qemu_present_cpu(cpu)) {
->              state->devs[i].cpu = cpu;
-> +            state->devs[i].is_present = true;
-> +        } else {
-> +            if (qemu_persistent_cpu(cpu)) {
-> +                state->devs[i].is_present = true;
-> +            } else {
-> +                state->devs[i].is_present = false;
-> +            }
->          }
+>  tests/docker/dockerfiles/opensuse-leap.docker | 1 +
+>  tests/lcitool/mappings.yml                    | 4 ++++
+>  tests/lcitool/projects/qemu.yml               | 1 +
+>  3 files changed, 6 insertions(+)
+>
+> diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker=
+/dockerfiles/opensuse-leap.docker
+> index dc0e36ce48..cf753383a4 100644
+> --- a/tests/docker/dockerfiles/opensuse-leap.docker
+> +++ b/tests/docker/dockerfiles/opensuse-leap.docker
+> @@ -90,6 +90,7 @@ RUN zypper update -y && \
+>             pcre-devel-static \
+>             pipewire-devel \
+>             pkgconfig \
+> +           python311 \
+>             python311-base \
+>             python311-pip \
+>             python311-setuptools \
+> diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
+> index 0b908882f1..407c03301b 100644
+> --- a/tests/lcitool/mappings.yml
+> +++ b/tests/lcitool/mappings.yml
+> @@ -59,6 +59,10 @@ mappings:
+>      CentOSStream8:
+>      OpenSUSELeap15:
+>=20=20
+> +  python3-sqlite3:
+> +    CentOSStream8: python38
+> +    OpenSUSELeap15: python311
 > +
-> +        if (qemu_enabled_cpu(cpu)) {
-> +            state->devs[i].is_enabled = true;
-> +        } else {
-> +            state->devs[i].is_enabled = false;
-> +        }
-> +
->          state->devs[i].arch_id = id_list->cpus[i].arch_id;
->      }
->      memory_region_init_io(&state->ctrl_reg, owner, &cpu_hotplug_ops, state,
-> @@ -261,6 +276,8 @@ void acpi_cpu_plug_cb(HotplugHandler *hotplug_dev,
->      }
->  
->      cdev->cpu = CPU(dev);
-> +    cdev->is_present = true;
-> +    cdev->is_enabled = true;
->      if (dev->hotplugged) {
->          cdev->is_inserting = true;
->          acpi_send_event(DEVICE(hotplug_dev), ACPI_CPU_HOTPLUG_STATUS);
-> @@ -292,6 +309,11 @@ void acpi_cpu_unplug_cb(CPUHotplugState *cpu_st,
->          return;
->      }
->  
-> +    cdev->is_enabled = false;
-> +    if (!qemu_persistent_cpu(CPU(dev))) {
-> +        cdev->is_present = false;
-> +    }
-> +
->      cdev->cpu = NULL;
->  }
->  
-> @@ -302,6 +324,8 @@ static const VMStateDescription vmstate_cpuhp_sts = {
->      .fields      = (VMStateField[]) {
->          VMSTATE_BOOL(is_inserting, AcpiCpuStatus),
->          VMSTATE_BOOL(is_removing, AcpiCpuStatus),
-> +        VMSTATE_BOOL(is_present, AcpiCpuStatus),
-> +        VMSTATE_BOOL(is_enabled, AcpiCpuStatus),
->          VMSTATE_UINT32(ost_event, AcpiCpuStatus),
->          VMSTATE_UINT32(ost_status, AcpiCpuStatus),
->          VMSTATE_END_OF_LIST()
-> @@ -339,6 +363,7 @@ const VMStateDescription vmstate_cpu_hotplug = {
->  #define CPU_REMOVE_EVENT  "CRMV"
->  #define CPU_EJECT_EVENT   "CEJ0"
->  #define CPU_FW_EJECT_EVENT "CEJF"
-> +#define CPU_PRESENT       "CPRS"
->  
->  void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
->                      hwaddr base_addr,
-> @@ -399,7 +424,9 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
->          aml_append(field, aml_named_field(CPU_EJECT_EVENT, 1));
->          /* tell firmware to do device eject, write only */
->          aml_append(field, aml_named_field(CPU_FW_EJECT_EVENT, 1));
-> -        aml_append(field, aml_reserved_field(3));
-> +        /* 1 if present, read only */
-> +        aml_append(field, aml_named_field(CPU_PRESENT, 1));
-> +        aml_append(field, aml_reserved_field(2));
->          aml_append(field, aml_named_field(CPU_COMMAND, 8));
->          aml_append(cpu_ctrl_dev, field);
->  
-> @@ -429,6 +456,7 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
->          Aml *ctrl_lock = aml_name("%s.%s", cphp_res_path, CPU_LOCK);
->          Aml *cpu_selector = aml_name("%s.%s", cphp_res_path, CPU_SELECTOR);
->          Aml *is_enabled = aml_name("%s.%s", cphp_res_path, CPU_ENABLED);
-> +        Aml *is_present = aml_name("%s.%s", cphp_res_path, CPU_PRESENT);
->          Aml *cpu_cmd = aml_name("%s.%s", cphp_res_path, CPU_COMMAND);
->          Aml *cpu_data = aml_name("%s.%s", cphp_res_path, CPU_DATA);
->          Aml *ins_evt = aml_name("%s.%s", cphp_res_path, CPU_INSERT_EVENT);
-> @@ -457,13 +485,26 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
->          {
->              Aml *idx = aml_arg(0);
->              Aml *sta = aml_local(0);
-> +            Aml *ifctx2;
-> +            Aml *else_ctx;
->  
->              aml_append(method, aml_acquire(ctrl_lock, 0xFFFF));
->              aml_append(method, aml_store(idx, cpu_selector));
->              aml_append(method, aml_store(zero, sta));
-> -            ifctx = aml_if(aml_equal(is_enabled, one));
-> +            ifctx = aml_if(aml_equal(is_present, one));
->              {
-> -                aml_append(ifctx, aml_store(aml_int(0xF), sta));
-> +                ifctx2 = aml_if(aml_equal(is_enabled, one));
-> +                {
-> +                    /* cpu is present and enabled */
-> +                    aml_append(ifctx2, aml_store(aml_int(0xF), sta));
-> +                }
-> +                aml_append(ifctx, ifctx2);
-> +                else_ctx = aml_else();
-> +                {
-> +                    /* cpu is present but disabled */
-> +                    aml_append(else_ctx, aml_store(aml_int(0xD), sta));
-For the current kernel patches, functional should not be set. So this should
-be something like 0x5.
+>    python3-tomli:
+>      # test using tomllib
+>      apk:
+> diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qem=
+u.yml
+> index 82092c9f17..149b15de57 100644
+> --- a/tests/lcitool/projects/qemu.yml
+> +++ b/tests/lcitool/projects/qemu.yml
+> @@ -97,6 +97,7 @@ packages:
+>   - python3-pip
+>   - python3-sphinx
+>   - python3-sphinx-rtd-theme
+> + - python3-sqlite3
+>   - python3-tomli
+>   - python3-venv
+>   - rpm2cpio
 
-> +                }
-> +                aml_append(ifctx, else_ctx);
->              }
->              aml_append(method, ifctx);
->              aml_append(method, aml_release(ctrl_lock));
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
