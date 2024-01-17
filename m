@@ -2,76 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDE7830C3A
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 18:48:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3E6830C55
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 18:57:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQA0q-0000ej-95; Wed, 17 Jan 2024 12:47:43 -0500
+	id 1rQA9H-0004cE-Ux; Wed, 17 Jan 2024 12:56:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rQA0d-0000Vq-HX
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 12:47:27 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rQA0b-0007BR-T5
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 12:47:27 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-337c2f263a2so772210f8f.3
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 09:47:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705513644; x=1706118444; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=0Oszgx3DAhg49vsPPgEMx2z1mD5O31glKxvrp+dGWog=;
- b=iSbwyFV8xE4PdR4qFkC0iLVtQLROg3+eoUe9HN5F4x6PXER5MC71dCMJsMOJNvbr8N
- /ptD3FApfGTryq8pmzlLXshEoAcjkAb2SKY67SD41KyjAsTYox8hZfh4SCQeEzlaX60i
- 1/hPw4ZcbjvR2SS3ZmVFq+F8/k9R4u8LN1+T5gwHSn3lZjPvZRT7bcITI8MvW+BvsbAq
- jNE2WQlH+kGsGV0h++B5YYtMa0F9u21LJjquS60xpBFGBS8xTXzyI9H0z8EzI4FmJ3tI
- WsWLtj9Aj2yPicShnBHTWDWt64vQORBYSkdSL8HcdQgKm8VhtA2FPlzncQ0z+2nJbDeC
- jPoA==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rQA9C-0004bt-OC
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 12:56:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rQA9A-0000ny-M9
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 12:56:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705514175;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tFAqm6y/gDHJdi3pmk+8oe1BNX4icF7gXrGRNsrcyrY=;
+ b=hhwZGKk9UmmbJ/Wo3Mbv9G3p/u0YH8NLnAezrlGuhPj74N+SkAZ6BIZ5BiDNqpYOT0oeRu
+ W+Z77tPy1WG91Kmdi7ieM2y2e5onPPLRQ+PYEz81QRwfsWo08Lp45D9738hKM+sKvz/vOI
+ IYwLinMpv37nxec/po/1xMwJdSuWPp4=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-249-28aaLvRsPDq17g7Reejc4g-1; Wed, 17 Jan 2024 12:56:11 -0500
+X-MC-Unique: 28aaLvRsPDq17g7Reejc4g-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7831aaa797aso1956088885a.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 09:56:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705513644; x=1706118444;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1705514171; x=1706118971;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=0Oszgx3DAhg49vsPPgEMx2z1mD5O31glKxvrp+dGWog=;
- b=TNoZQNdRNHNVhZi72m4YmydW/MdCaujhqI7n1MOK6RLeMmUBYKmh8wk+KkrgeyLeCr
- ssrNydN8+BidY/5cbq4i8HGxXf8aLglFYr0eKpqH3RnniUBl1nN7rO7WLZvqVWN/R+GJ
- 610pTGYTKWhFJbvnGqEh5BMuNyfFFqHdWCfctrJWK+BlbuknX+ob8Wf8wQGM5iTFGlw2
- vqcvvLlP422QZqraN2u5V0jLoi4U/O+D9I599bw8qFtCPmaW7rtNy3KKv3lzFHaMy77g
- uv95O/dSPFbKZBLNKNJ8gB3OT1kFAeyoAZdADlM3hkoAtytyG/UIlUE/qx/NOXiaMYqw
- cYuA==
-X-Gm-Message-State: AOJu0YxIxug+QOTtVHdjz8qg8cU5S53UTBh5FW577N+UuV9VozMEFw7Q
- aGh+vVQWH5siwOlvWXsCnmcUyAn7O/yvNNyrFooZHRYtna52gQ==
-X-Google-Smtp-Source: AGHT+IFaFfjVZzTovYL9XgP2tA/wxA4Gp7t4ZLlOR7slhq7A06Ib4AOs4ZChW0xk1eBdDszkhCR6q94kuNrSOB6YPjo=
-X-Received: by 2002:adf:e10a:0:b0:337:7c78:a4d5 with SMTP id
- t10-20020adfe10a000000b003377c78a4d5mr5381856wrz.73.1705513644274; Wed, 17
- Jan 2024 09:47:24 -0800 (PST)
+ bh=tFAqm6y/gDHJdi3pmk+8oe1BNX4icF7gXrGRNsrcyrY=;
+ b=T/98wHZwRZNbpVlNzfka+o0nl0yWMEVoiEiv2CFvPgGoKZFOt9k3By32zKNNSDek0n
+ vBIoVazHk5gaBuHvXBFa8iB/1aQvili9BtgjA8GeSYAhaXDZ3cqDIKyghWVw9BelneLP
+ 6fnrQIiR7eC03aVbrmVydgqMWp7e1NXhgGW08vIG4TbLt9o+tQylL8jUf5vWVxRhd9G4
+ aK1E1hdqgiswmFE3cUmXmgjm7lUWYW1EV06cM1njtsQZEv1kZug0YbrisqrIoveJvuJX
+ j9KbQmEksz/w3VQd3kxaEnjPWI00lT0ncCmiDL7v6CPhMcD3fpJv9+R3N/b5ZQPWTi8l
+ ocjQ==
+X-Gm-Message-State: AOJu0YyTF2ijXi1nmFSxe6TM7DhROnPSBdp7Y1f9fUuBe8B6MfqntCf+
+ BacUcsAjGi8rip0CGeFd5yntfVXlAuSGQ1MWjnrXD8h+wmq+VE0mnz+EQdHpDCnaApZ4d61LF9W
+ BxmZFtNYGXOSRC3PROgG3xn4=
+X-Received: by 2002:a05:620a:2805:b0:783:ad2:9031 with SMTP id
+ f5-20020a05620a280500b007830ad29031mr1911791qkp.61.1705514171203; 
+ Wed, 17 Jan 2024 09:56:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGStqwfXDClQyhHMbVmkfTGQ//TtNXqNqARSv6D47HWTwJawx0gIz9lqpcewfvdCeqF0QkQSg==
+X-Received: by 2002:a05:620a:2805:b0:783:ad2:9031 with SMTP id
+ f5-20020a05620a280500b007830ad29031mr1911773qkp.61.1705514170890; 
+ Wed, 17 Jan 2024 09:56:10 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ z18-20020a05620a08d200b007834386eeaesm4618692qkz.33.2024.01.17.09.56.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Jan 2024 09:56:10 -0800 (PST)
+Message-ID: <cf7ee2c4-6dcd-40f1-8d39-2efdc15c00d9@redhat.com>
+Date: Wed, 17 Jan 2024 18:56:05 +0100
 MIME-Version: 1.0
-References: <20240117091559.144730-1-peterx@redhat.com>
- <20240117091559.144730-3-peterx@redhat.com>
-In-Reply-To: <20240117091559.144730-3-peterx@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 17 Jan 2024 17:46:52 +0000
-Message-ID: <CAFEAcA-n3pu6YEaohm_7Wj8yO+oxYB2b6u+T1Jq6Pmi70wU4bg@mail.gmail.com>
-Subject: Re: [PATCH 2/4] reset: Allow multiple stages of system resets
-To: peterx@redhat.com
-Cc: qemu-devel@nongnu.org, Eric Auger <eric.auger@redhat.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- Alex Williamson <alex.williamson@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rfcv1 6/6] intel_iommu: add a framework to check and sync
+ host IOMMU cap/ecap
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun
+ <yi.y.sun@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <20240115101313.131139-1-zhenzhong.duan@intel.com>
+ <20240115101313.131139-7-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240115101313.131139-7-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,54 +110,228 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 17 Jan 2024 at 09:16, <peterx@redhat.com> wrote:
+Hi Zhenzhong,
+
+On 1/15/24 11:13, Zhenzhong Duan wrote:
+> From: Yi Liu <yi.l.liu@intel.com>
 >
-> From: Peter Xu <peterx@redhat.com>
+> Add a framework to check and synchronize host IOMMU cap/ecap with
+> vIOMMU cap/ecap.
 >
-> QEMU resets do not have a way to order reset hooks.  Add one coarse grained
-> reset stage so that some devices can be reset later than some others.
+> Currently only stage-2 translation is supported which is backed by
+> shadow page table on host side. So we don't need exact matching of
+> each bit of cap/ecap between vIOMMU and host. However, we can still
+> utilize this framework to ensure compatibility of host and vIOMMU's
+> address width at least, i.e., vIOMMU's aw_bits <= host aw_bits,
+> which is missed before.
 >
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+> When stage-1 translation is supported in future, a.k.a. scalable
+> modern mode, we need to ensure compatibility of each bits. Some
+> bits are user controllable, they should be checked with host side
+> to ensure compatibility. Other bits are not, they should be synced
+> into vIOMMU cap/ecap for compatibility.
+>
+> The sequence will be:
+>
+> vtd_cap_init() initializes iommu->cap/ecap. ---- vtd_cap_init()
+> iommu->host_cap/ecap is initialized as iommu->cap/ecap.  ---- vtd_init()
+> iommu->host_cap/ecap is checked and updated some bits with host cap/ecap. ---- vtd_sync_hw_info()
+> iommu->cap/ecap is finalized as iommu->host_cap/ecap.  ---- vtd_machine_done_hook()
+>
+> iommu->host_cap/ecap is a temporary storage to hold intermediate value
+> when synthesize host cap/ecap and vIOMMU's initial configured cap/ecap.
+>
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->  include/sysemu/reset.h |  5 ++++
->  hw/core/reset.c        | 60 +++++++++++++++++++++++++++++++-----------
->  2 files changed, 49 insertions(+), 16 deletions(-)
+>  include/hw/i386/intel_iommu.h |  4 ++
+>  hw/i386/intel_iommu.c         | 78 +++++++++++++++++++++++++++++++----
+>  2 files changed, 75 insertions(+), 7 deletions(-)
 >
-> diff --git a/include/sysemu/reset.h b/include/sysemu/reset.h
-> index 609e4d50c2..0de697ce9f 100644
-> --- a/include/sysemu/reset.h
-> +++ b/include/sysemu/reset.h
-> @@ -5,9 +5,14 @@
->
->  typedef void QEMUResetHandler(void *opaque);
->
-> +#define  QEMU_RESET_STAGES_N  2
+> diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+> index c65fdde56f..b8abbcce12 100644
+> --- a/include/hw/i386/intel_iommu.h
+> +++ b/include/hw/i386/intel_iommu.h
+> @@ -292,6 +292,9 @@ struct IntelIOMMUState {
+>      uint64_t cap;                   /* The value of capability reg */
+>      uint64_t ecap;                  /* The value of extended capability reg */
+>  
+> +    uint64_t host_cap;              /* The value of host capability reg */
+> +    uint64_t host_ecap;             /* The value of host ext-capability reg */
 > +
+>      uint32_t context_cache_gen;     /* Should be in [1,MAX] */
+>      GHashTable *iotlb;              /* IOTLB */
+>  
+> @@ -314,6 +317,7 @@ struct IntelIOMMUState {
+>      bool dma_translation;           /* Whether DMA translation supported */
+>      bool pasid;                     /* Whether to support PASID */
+>  
+> +    bool cap_finalized;             /* Whether VTD capability finalized */
+>      /*
+>       * Protects IOMMU states in general.  Currently it protects the
+>       * per-IOMMU IOTLB cache, and context entry cache in VTDAddressSpace.
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index 4c1d058ebd..be03fcbf52 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -3819,6 +3819,47 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
+>      return vtd_dev_as;
+>  }
+>  
+> +static bool vtd_sync_hw_info(IntelIOMMUState *s, struct iommu_hw_info_vtd *vtd,
+> +                             Error **errp)
+> +{
+> +    uint64_t addr_width;
+> +
+> +    addr_width = (vtd->cap_reg >> 16) & 0x3fULL;
+> +    if (s->aw_bits > addr_width) {
+> +        error_setg(errp, "User aw-bits: %u > host address width: %lu",
+> +                   s->aw_bits, addr_width);
+> +        return false;
+> +    }
+> +
+> +    /* TODO: check and sync host cap/ecap into vIOMMU cap/ecap */
+> +
+> +    return true;
+> +}
+> +
+> +/*
+> + * virtual VT-d which wants nested needs to check the host IOMMU
+> + * nesting cap info behind the assigned devices. Thus that vIOMMU
+> + * could bind guest page table to host.
+> + */
+> +static bool vtd_check_idev(IntelIOMMUState *s, IOMMUFDDevice *idev,
+> +                           Error **errp)
+> +{
+> +    struct iommu_hw_info_vtd vtd;
+> +    enum iommu_hw_info_type type = IOMMU_HW_INFO_TYPE_INTEL_VTD;
+> +
+> +    if (iommufd_device_get_info(idev, &type, sizeof(vtd), &vtd)) {
+> +        error_setg(errp, "Failed to get IOMMU capability!!!");
+> +        return false;
+> +    }
+> +
+> +    if (type != IOMMU_HW_INFO_TYPE_INTEL_VTD) {
+> +        error_setg(errp, "IOMMU hardware is not compatible!!!");
+> +        return false;
+> +    }
+> +
+> +    return vtd_sync_hw_info(s, &vtd, errp);
+> +}
+> +
+>  static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int32_t devfn,
+>                                      IOMMUFDDevice *idev, Error **errp)
+>  {
+> @@ -3837,6 +3878,10 @@ static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int32_t devfn,
+>          return 0;
+>      }
+>  
+> +    if (!vtd_check_idev(s, idev, errp)) {In
+In
+[RFC 0/7] VIRTIO-IOMMU/VFIO: Fix host iommu geometry handling for
+hotplugged devices
+https://lore.kernel.org/all/20240117080414.316890-1-eric.auger@redhat.com/
 
-Our reset handling APIs are already pretty complicated, and
-raw qemu_register_reset() is kind of a legacy API that I would
-prefer that we try to move away from, not add extra complexity to.
+I also attempt to pass host iommu info to the virtio-iommu but with
+legacy BE. In my case I want to pass the reserved memory regions which
+also model the aw.
+So this is a pretty similar use case.
 
-Our device reset design already has a multiple-phase system
-(see docs/devel/reset.rst), part of the point of which is to
-try to give us a way to deal with reset-ordering problems.
-I feel like the right way to handle the issue you're trying to
-address is to ensure that the thing that needs to happen last is
-done in the 'exit' phase rather than the 'hold' phase (which is
-where legacy reset methods get called).
+Why don't we pass the pointer to an opaque iommu_hw_info instead,
+through the PCIIOMMUOps?
 
-There are some annoying wrinkles here, notably that legacy
-qemu_register_reset() doesn't support 3-phase reset and so
-the phasing only happens for devices reset via the device/bus
-tree hierarchy. But I think the way to go is to try to move
-forward with that design (i.e. expand 3-phase reset to
-qemu_register_reset() and/or move things using qemu_register_reset()
-to device reset where that makes sense), not to ignore it and
-put a completely different reset-ordering API in a different place.
 
-thanks
--- PMM
+
+> +        return -1;
+> +    }
+> +
+>      vtd_iommu_lock(s);
+>  
+>      vtd_idev = g_hash_table_lookup(s->vtd_iommufd_dev, &key);
+> @@ -4071,10 +4116,11 @@ static void vtd_init(IntelIOMMUState *s)
+>  {
+>      X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
+>  
+> -    memset(s->csr, 0, DMAR_REG_SIZE);
+> -    memset(s->wmask, 0, DMAR_REG_SIZE);
+> -    memset(s->w1cmask, 0, DMAR_REG_SIZE);
+> -    memset(s->womask, 0, DMAR_REG_SIZE);
+> +    /* CAP/ECAP are initialized in machine create done stage */
+> +    memset(s->csr + DMAR_GCMD_REG, 0, DMAR_REG_SIZE - DMAR_GCMD_REG);
+> +    memset(s->wmask + DMAR_GCMD_REG, 0, DMAR_REG_SIZE - DMAR_GCMD_REG);
+> +    memset(s->w1cmask + DMAR_GCMD_REG, 0, DMAR_REG_SIZE - DMAR_GCMD_REG);
+> +    memset(s->womask + DMAR_GCMD_REG, 0, DMAR_REG_SIZE - DMAR_GCMD_REG);
+This change is not documented in the commit msg.
+Sorry I don't get why this is needed?
+>  
+>      s->root = 0;
+>      s->root_scalable = false;
+> @@ -4110,13 +4156,16 @@ static void vtd_init(IntelIOMMUState *s)
+>          vtd_spte_rsvd_large[3] &= ~VTD_SPTE_SNP;
+>      }
+>  
+> -    vtd_cap_init(s);
+> +    if (!s->cap_finalized) {
+> +        vtd_cap_init(s);
+> +        s->host_cap = s->cap;
+> +        s->host_ecap = s->ecap;
+> +    }
+> +
+>      vtd_reset_caches(s);
+>  
+>      /* Define registers with default values and bit semantics */
+>      vtd_define_long(s, DMAR_VER_REG, 0x10UL, 0, 0);
+> -    vtd_define_quad(s, DMAR_CAP_REG, s->cap, 0, 0);
+> -    vtd_define_quad(s, DMAR_ECAP_REG, s->ecap, 0, 0);
+>      vtd_define_long(s, DMAR_GCMD_REG, 0, 0xff800000UL, 0);
+>      vtd_define_long_wo(s, DMAR_GCMD_REG, 0xff800000UL);
+>      vtd_define_long(s, DMAR_GSTS_REG, 0, 0, 0);
+> @@ -4241,6 +4290,12 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
+>      return true;
+>  }
+>  
+> +static void vtd_setup_capability_reg(IntelIOMMUState *s)
+> +{
+> +    vtd_define_quad(s, DMAR_CAP_REG, s->cap, 0, 0);
+> +    vtd_define_quad(s, DMAR_ECAP_REG, s->ecap, 0, 0);
+> +}
+> +
+>  static int vtd_machine_done_notify_one(Object *child, void *unused)
+>  {
+>      IntelIOMMUState *iommu = INTEL_IOMMU_DEVICE(x86_iommu_get_default());
+> @@ -4259,6 +4314,14 @@ static int vtd_machine_done_notify_one(Object *child, void *unused)
+>  
+>  static void vtd_machine_done_hook(Notifier *notifier, void *unused)
+>  {
+> +    IntelIOMMUState *iommu = INTEL_IOMMU_DEVICE(x86_iommu_get_default());
+> +
+> +    iommu->cap = iommu->host_cap;
+> +    iommu->ecap = iommu->host_ecap;
+> +    iommu->cap_finalized = true;
+I don't think you can change the defaults like this without taking care
+of compats (migration).
+
+Thanks
+
+Eric
+> +
+> +    vtd_setup_capability_reg(iommu);
+> +
+>      object_child_foreach_recursive(object_get_root(),
+>                                     vtd_machine_done_notify_one, NULL);
+>  }
+> @@ -4292,6 +4355,7 @@ static void vtd_realize(DeviceState *dev, Error **errp)
+>  
+>      QLIST_INIT(&s->vtd_as_with_notifiers);
+>      qemu_mutex_init(&s->iommu_lock);
+> +    s->cap_finalized = false;
+>      memory_region_init_io(&s->csrmem, OBJECT(s), &vtd_mem_ops, s,
+>                            "intel_iommu", DMAR_REG_SIZE);
+>      memory_region_add_subregion(get_system_memory(),
+
 
