@@ -2,84 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CD383012E
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 09:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F205830132
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 09:22:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ1AH-0006lG-1t; Wed, 17 Jan 2024 03:20:49 -0500
+	id 1rQ1BY-0007ja-I2; Wed, 17 Jan 2024 03:22:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ1AF-0006kN-7l
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:20:47 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ1BW-0007iW-NR
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:22:06 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ1AC-0005wF-Qq
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:20:46 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40e7065b7bdso36404735e9.3
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 00:20:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ1BS-000633-6j
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:22:06 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40e76626170so30945965e9.2
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 00:21:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705479643; x=1706084443; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705479714; x=1706084514; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=7LrgQPHbpCYKbZaSLtjO3LRr9bvKD/BTYKzEJd/knyI=;
- b=SGwI4lHXkyF3W1oz1PQ0GvIJ3RLma25LdKFLj79RNR2y05g79Xqs+xo5P6JWcApCyu
- OXB0NnK2DBFtZWaNhbWjtYwKCIYVSXbX0ggkl1ZC5HuEw5PKMw1N61i179L1OM8dhphT
- iRkmNN7xaSBAJhR0Z3tBuFKgv3AllDNr8s2hTPmmBC5yC/F2yO7BPHsk3lIVoLUZT2On
- kWpPuFQexTUugVLMVfl3daJLaxh8I26fP8BSFPV5XXard/5EzJU/zWp2dqN91jqxOzrF
- Ilih229zH2g7+h4LsGX145KtAMF/UW/yat+WNgYD4LcyM/lcdHRgg/Tk3axyz2D6J/eB
- hHzg==
+ bh=EmEum774Ua+C6UqJ8Bit+z7AWBLq2AIE2JojPLeEIcc=;
+ b=fJ9/HQ6tD+ff37q1bFRwvsvPtA6vrhgUxNkTntjk3PA7kJFr+Drj0G0K8MDcZIcV1i
+ yBqI6K3/yRSCglUrhk2l9WMJeYkOmtUjg79aqNuVujlackP6Zx79VpB538YyVjxS38vx
+ wYa1kLxX6zKlGGfsuL9vv5THOWskIfz7jMS0zhImDRJFhBxxLR0FgZ2TKHQbwOZGmHB8
+ y+HQr33qiR0YkFUbFWRd3r46lKHt+nZYnWNEqPhteTiWXevwLi3bar29kSrH6Oy4BheR
+ iPcH0IttYMEnbHiSU0fgLJy/YkqvtAhxkXUIr/5GKu+UsjFMEhFix0dmWr092ovUAyxM
+ dKrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705479643; x=1706084443;
+ d=1e100.net; s=20230601; t=1705479714; x=1706084514;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7LrgQPHbpCYKbZaSLtjO3LRr9bvKD/BTYKzEJd/knyI=;
- b=S3Kgb6L3XXqxfvm6MeaVCU357qBnqADQMGXXU9y45tFwTX5ZwG4+6zBVVqWUQDTzWl
- Mbts9GVihkzer8FyBMk9WoJhPAkWmFWH2Eue0NQ162AFb4G4OMgSJC0WMUOwYG8yHIkm
- Y8FpCCtO3yeu3fl1EA35MDlptWmv36gSEEVtMq42KnhB8G64F4zTaMpu8mXSQn0u5kRY
- CwXeuDGSpE+G+zaZsbBHkIH131nHB9Z5ikNtJemQfTNYVk70Dz9WzF8Z03W3j+QMFZmF
- wa9pkQS7+kjQW+tpgh+LxJmOOMCVDxPDigVdrBOZAUlhkV4U+lTxkL4ic6omMZ5RiKao
- OVpg==
-X-Gm-Message-State: AOJu0YzsGkhm4SmMyY0zivSZwg0lGGRRcdGZKUT06pNENaDdob5ms5AV
- Uo4u9jYbHtUk8fG/Z6wnnZBKeHt6y34EiMAio0DYF7y6Gok=
-X-Google-Smtp-Source: AGHT+IFsxJReS9qJRaCXsrjrI09WOc7aRCJQCul//PxGhmJaIvgVVutBr+hPnwPCnP7wLqPn/vZQzw==
-X-Received: by 2002:a05:600c:1709:b0:40e:3b99:6379 with SMTP id
- c9-20020a05600c170900b0040e3b996379mr3372810wmn.259.1705479643014; 
- Wed, 17 Jan 2024 00:20:43 -0800 (PST)
+ bh=EmEum774Ua+C6UqJ8Bit+z7AWBLq2AIE2JojPLeEIcc=;
+ b=CNKTEi0VdtgonyE0Mr+drXlp/OHtmSKskeAtmqsaGvfqbgyWF87rmOXKdSVTmn+3Xr
+ ZNl7FLswP0sRuseKaPCGys8AodOgtbUfMg1dxhsZPli9H8ZkGb6uapPZ6XhSgUcdyzYN
+ Sr4PMZnl89SQErwFjAHK4dey+7hwQH/mHp7syGx62VpKmI4Py2f0nRVxLc55w0FRTodP
+ SsDeBgSUW+fKfbo5pVvCjDUbXS9PFPFuBrOM9nAANneFFciL7dlcLTLXotJ3dZg253wB
+ GgDgmAE43wv0lhrbYvCKqXXa6itJInovFMflbDcFfI7ybxkxzzjdAuTHjvMIP/xs4S8K
+ RDSQ==
+X-Gm-Message-State: AOJu0YyGEQdkDKqkiK9DuOJn5vTfAxwTusYgFwJBewjq4Y6LIyMHpWdm
+ EdQ0snlPM2vvM5vpfVzOwFejVfb1NdUKXa+rl1MtE4XAmDc=
+X-Google-Smtp-Source: AGHT+IFPSzPw/kVDyDOP6/WZh25egAVZLnU9Vg1fshvSVNh6J/N0VRAS03THAvLk+MvCySab91HdwQ==
+X-Received: by 2002:a05:600c:3551:b0:40e:4806:f42a with SMTP id
+ i17-20020a05600c355100b0040e4806f42amr4707119wmq.15.1705479713781; 
+ Wed, 17 Jan 2024 00:21:53 -0800 (PST)
 Received: from [192.168.69.100] ([176.176.156.199])
  by smtp.gmail.com with ESMTPSA id
- n13-20020a5d51cd000000b0033673ddd81csm1033645wrv.112.2024.01.17.00.20.40
+ n13-20020a5d51cd000000b0033673ddd81csm1033645wrv.112.2024.01.17.00.21.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 00:20:42 -0800 (PST)
-Message-ID: <ab450fd4-5a7b-4a19-bf60-4c9f079f5357@linaro.org>
-Date: Wed, 17 Jan 2024 09:20:40 +0100
+ Wed, 17 Jan 2024 00:21:53 -0800 (PST)
+Message-ID: <a6146842-4202-4cca-a193-901bee53f1d3@linaro.org>
+Date: Wed, 17 Jan 2024 09:21:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] misc: Trivial code rename cleanup
+Subject: Re: [PATCH v3 0/6] sysemu/replay: Restrict icount to TCG system
+ emulation
 Content-Language: en-US
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Weiwei Li <liwei1518@gmail.com>, Alistair Francis
- <alistair.francis@wdc.com>, qemu-s390x@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>, David Hildenbrand <david@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-riscv@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
- qemu-trivial@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Eduardo Habkost <eduardo@habkost.net>, Laurent Vivier <laurent@vivier.eu>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Eric Farman
- <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20240111120221.35072-1-philmd@linaro.org>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Fam Zheng <fam@euphon.net>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20231208113529.74067-1-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240111120221.35072-1-philmd@linaro.org>
+In-Reply-To: <20231208113529.74067-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,16 +96,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/1/24 13:02, Philippe Mathieu-Daudé wrote:
-> Rename some code names to ease navigating / grepping
-> the code.
+On 8/12/23 12:35, Philippe Mathieu-Daudé wrote:
 
-> Philippe Mathieu-Daudé (5):
->    accel: Rename accel_init_ops_interfaces() to include 'system'
->    hw/core/cpu: Rename cpu_class_init() to include 'common'
->    hw/s390x: Rename cpu_class_init() to include 'sclp'
->    target/i386: Rename tcg_cpu_FOO() to include 'x86'
->    target/riscv: Rename tcg_cpu_FOO() to include 'riscv'
+> Philippe Mathieu-Daudé (6):
+>    sysemu/cpu-timers: Have icount_configure() return a boolean
+>    system/vl: Evaluate icount after accelerator options are parsed
+>    sysemu/cpu-timers: Introduce ICountMode enumerator
+>    target/arm: Ensure icount is enabled when emulating INST_RETIRED
+>    util/async: Only call icount_notify_exit() if icount is enabled
+>    sysemu/replay: Restrict icount to system emulation
 
 Thanks, series queued.
 
