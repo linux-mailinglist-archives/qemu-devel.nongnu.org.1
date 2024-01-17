@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A0F830146
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 09:27:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE66830148
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 09:29:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ1GP-0001nM-IY; Wed, 17 Jan 2024 03:27:10 -0500
+	id 1rQ1Hp-0002bo-LD; Wed, 17 Jan 2024 03:28:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ1GL-0001ll-HX
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:27:05 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ1GG-00071F-4s
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:27:05 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-559de6145c3so233037a12.1
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 00:26:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705480017; x=1706084817; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=R8DaUk1LbsrblLWQY9X26OhW+zcR95ROQzt2lwFvWkM=;
- b=ialoCEohYo3RkujDHHMYxSBRMnkEN51kH1oBYsysXEUuxlY8mpiSRVry4RSLE1BT7A
- qGGcMISCyxLMckTcNkefLORXcSYuMVuUeSmxPAODAiXPWiswTz1RflIDSnsui3dGov0j
- hAb9TPmYquTgSntIjNtl7ZSza/4PQROhXYnV2zzB3cO3yqrmg/rEnUiz6MEuoUAVBSU7
- IIaJY4m7RP2pFnTKzarFhT4zNTlZy4sdExHowRevCNHg8CmvENTrMkwttKKC7MOBoJxf
- WA1KK9EfChLTSNXv2Vga43mv4Qp3BP5cm9ZOO9LjpZIqLVoLgpirgvZYOfQ+0SJkPVBP
- nejg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705480017; x=1706084817;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R8DaUk1LbsrblLWQY9X26OhW+zcR95ROQzt2lwFvWkM=;
- b=ptDuTxSLppLxhH5gGtV3yh8Yq53LqIbViBkqrXZ3JsGCJKPozpxhauzBVKmEJPwezQ
- 1TQvvIfo/GLT9rhMFYR6XJ0c/ntF2Ox5On3qsthTkBGgj3zUAhKA7FATxkz86z4zv5x6
- LKT+2u0zSwzt4aNb8DFcZWA1Omh7wCy/iAjwjYwE5qakCvmV0/DbykkXlpV0F0mwZSWd
- APE9sI9GBAKzLFjegt7JwfidJNc8byH5eQS+HdmV263xyIX9FM924aCtKGYwxWoJgt2S
- j/hsDUYCxyJA6KZqiY1iCXuqAsDROBCqJeU3TcHbSlxCJXkw3KSxBX6dVkqMdKQOsGQU
- ZjDw==
-X-Gm-Message-State: AOJu0YxtuHtgRqYwtKOY4vNrapSwMxN9UCwcMCvptCzTlTocgTCmxtWg
- se+iKufzIAPWJ/FmrxWxnsvt2OyYs4Ggkw==
-X-Google-Smtp-Source: AGHT+IG+i4G99yteLtKdOqDqcvYr1Rsdy3mvAvvOSNObdbhQOOv8oDhQm4K9+MSUOE3FCaX9KNcwfg==
-X-Received: by 2002:a17:907:d510:b0:a2e:df35:dcac with SMTP id
- wb16-20020a170907d51000b00a2edf35dcacmr252150ejc.114.1705480017050; 
- Wed, 17 Jan 2024 00:26:57 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.156.199])
- by smtp.gmail.com with ESMTPSA id
- tj7-20020a170907c24700b00a2ea1bffed7sm1074173ejc.97.2024.01.17.00.26.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 00:26:56 -0800 (PST)
-Message-ID: <f0a0eee0-48c7-4019-b767-9de31f663b1e@linaro.org>
-Date: Wed, 17 Jan 2024 09:26:55 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rQ1Hm-0002b6-N9; Wed, 17 Jan 2024 03:28:34 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rQ1Hk-0007DM-Uu; Wed, 17 Jan 2024 03:28:34 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 482C444052;
+ Wed, 17 Jan 2024 11:28:48 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8340C64CFD;
+ Wed, 17 Jan 2024 11:28:20 +0300 (MSK)
+Message-ID: <e1ecbea4-9a5b-4a06-aa2a-48b332746bb6@tls.msk.ru>
+Date: Wed, 17 Jan 2024 11:28:20 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/timer/hpet: Convert DPRINTF to trace events
+Subject: Re: [PATCH v2 1/1] dump: Fix HMP dump-guest-memory -z without -R
 Content-Language: en-US
-To: Daniel Hoffman <dhoff749@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20231118231129.2840388-1-dhoff749@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231118231129.2840388-1-dhoff749@gmail.com>
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: Stephen Brennan <stephen.s.brennan@oracle.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ QEMU Trivial <qemu-trivial@nongnu.org>
+References: <20231222093827.951039-1-armbru@redhat.com>
+ <20231222093827.951039-2-armbru@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20231222093827.951039-2-armbru@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,60 +85,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Daniel,
-
-On 19/11/23 00:11, Daniel Hoffman wrote:
-> This conversion is pretty straight-forward. Standardized some formatting
-> so the +0 and +4 offset cases can recycle the same message.
+22.12.2023 12:38, Markus Armbruster :
+> -z without -R has no effect: the dump format remains @elf.  Fix the
+> logic error so it becomes @kdump-zlib.
 > 
-> Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
-> ---
->   hw/timer/hpet.c       | 55 +++++++++++++++++--------------------------
->   hw/timer/trace-events | 16 +++++++++++++
->   2 files changed, 38 insertions(+), 33 deletions(-)
+> Fixes: e6549197f7ed (dump: Add command interface for kdump-raw formats)
+> Fixes: CID 1523841
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Reviewed-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+Applied to trivial-patches tree, thanks!
 
-> @@ -643,24 +636,20 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
->               break;
->           case HPET_COUNTER:
->               if (hpet_enabled(s)) {
-> -                DPRINTF("qemu: Writing counter while HPET enabled!\n");
-> +                trace_hpet_ram_write_counter_write_while_enabled();
-
-Better would be to call qemu_log_mask(LOG_GUEST_ERROR) here IMO.
-
->               }
->               s->hpet_counter =
->                   (s->hpet_counter & 0xffffffff00000000ULL) | value;
-> -            DPRINTF("qemu: HPET counter written. ctr = 0x%" PRIx64 " -> "
-> -                    "%" PRIx64 "\n", value, s->hpet_counter);
-> +            trace_hpet_ram_write_counter_written(0, value, s->hpet_counter);
->               break;
->           case HPET_COUNTER + 4:
-> -            if (hpet_enabled(s)) {
-> -                DPRINTF("qemu: Writing counter while HPET enabled!\n");
-> -            }
-> +            trace_hpet_ram_write_counter_write_while_enabled();
-
-Ditto.
-
-Can be done on top in another patch, so meanwhile:
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-And patch queued, thanks!
-
->               s->hpet_counter =
->                   (s->hpet_counter & 0xffffffffULL) | (((uint64_t)value) << 32);
-> -            DPRINTF("qemu: HPET counter + 4 written. ctr = 0x%" PRIx64 " -> "
-> -                    "%" PRIx64 "\n", value, s->hpet_counter);
-> +            trace_hpet_ram_write_counter_written(4, value, s->hpet_counter);
->               break;
->           default:
-> -            DPRINTF("qemu: invalid hpet_ram_writel\n");
-> +            trace_hpet_ram_write_invalid();
->               break;
->           }
->       }
-
+/mjt
 
