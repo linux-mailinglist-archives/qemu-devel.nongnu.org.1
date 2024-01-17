@@ -2,76 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD67830455
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:14:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 812E983047D
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:25:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ3rk-0006mU-3L; Wed, 17 Jan 2024 06:13:52 -0500
+	id 1rQ41o-0000qT-ER; Wed, 17 Jan 2024 06:24:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rQ3rh-0006iZ-Np
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 06:13:49 -0500
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ41m-0000qK-HJ
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 06:24:14 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rQ3rg-0001oF-2S
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 06:13:49 -0500
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-6ddec7e5747so5218397a34.3
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 03:13:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ41k-0003RW-OZ
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 06:24:14 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40e779f0273so29072915e9.2
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 03:24:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705490026; x=1706094826; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6yuMog4OytUC0qTa0p0+h+nzTX8Z7/u+q0emkCrejNc=;
- b=lL60ob/AQYMZNqQPbYeYOTZJY6Zkc7GmwTv6KYB4irfnpI79eW5rQIxVwrMyEnS8gn
- o/WkuoOFjeoRGgPdQBzONUCt8aO0JYi6m7zYoGE0wwBIoFXlm2CzkQKx7HKme7fiZJVV
- 3KGVPJfxePfehYRRy1/CdFbSE1wb6D92wjXFJ+wkgt6IsVXJZBDFRG+ei/CT/siBfzKA
- UKpCK3kSocpB3V5CjRJrbbthcW6a8zaPdRqY7Q0xaFTp5gO+DAvq2YbUEW8NYIyMRrUE
- r8+hycwxYKziJX7Fbwy9o0z647OLwZSMNhGkEVNJxqhFALx9yrTQ6Tm9xAZ+wdvmgBe3
- UwPA==
+ d=linaro.org; s=google; t=1705490651; x=1706095451; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jxRLDvW91oBZEZLuMAZ7D7Kb5HHh/4xKrHR4jsaC06k=;
+ b=tmejDPaTnU7Q7FYwc7ak7AkDrY4CGMF1H4D79sWiEl7S3GywONWVBGBAmnXaWVDHFU
+ h+dduZcul6MNBEVYWtYF04T+UwZlGE0N0a9SwqIIz1Xh2kc4jccoMm2R55FUJQFtDESB
+ A8MFf7bDFOUzijtpGkDNkZv5whOKds1C9TmZWuUjDHxPsp7xaUW6Yfiy7lN4KhkNjwCw
+ ka9Cn0f7hryApDKvLGLipHrR32Z+zBB6rpUges+I0WQjAzadZ86feiZivNx21O/tAVLQ
+ NUI+Ze+uLjMz32usLTgHcy2mBL0x5t1eeW7RauyMtFuCDhwz89qJVXBpIweYyWm2CABg
+ ml/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705490026; x=1706094826;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6yuMog4OytUC0qTa0p0+h+nzTX8Z7/u+q0emkCrejNc=;
- b=kHIET9yW5gXc9Z6R/CTVqzVqd+7kS19+xkUTkIO3EeQVhUczRxyFS2k2ACI4XF4ApN
- fz6uPOYPy7Q6yWyNiiTMAs+wU8lH4y+OlyW9KLrg6XX4WPGk7RcTQD8SzcZkxshdUrTr
- Xit6Yyq5jqSWCFtCZhSWeEAZlSpQ5TjzkWiKR5oPF/S2SaUbYjLyT8Ij7ch7Ne5fNPV4
- l2LGl0RIld5XPuwcJxqa4J449bd+AowkZFHjx//6qgJQqCiLyw7QtroT/DaEV9Pn+EHL
- ksPXwKuezaH1GKK9YBCJ3h5ACfyZClePhufDnstRIqclqQcxkzTtmklcAKlbIlM1Trhz
- DvNg==
-X-Gm-Message-State: AOJu0YyisJtULvBGpHBAzL9uuby671mdWB77q6q3azw+00MNw7pEWJ6P
- iIutOiH6G02WVByo62o/mHCCYm0G38KV7h59W4w=
-X-Google-Smtp-Source: AGHT+IFjOztxds6OROXZbEq0AnDgHpcpBZaY3JEjTeMSAiINYmM3YSkf3VzL/B5S0Xe4eQCkmLncmsv/xeTNBocEHH0=
-X-Received: by 2002:a9d:6219:0:b0:6dd:c275:afc4 with SMTP id
- g25-20020a9d6219000000b006ddc275afc4mr9568601otj.51.1705490025814; Wed, 17
- Jan 2024 03:13:45 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705490651; x=1706095451;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jxRLDvW91oBZEZLuMAZ7D7Kb5HHh/4xKrHR4jsaC06k=;
+ b=XASBAtOCnqs0O+6y2iwvlgYBnrJWvshxA1/yF4LNi/DosgIi0nPuF8K1xc3KFznPxz
+ fOZljRUbRuSTst9XJq1EpR2CE+xgt1PcBHiJBKjIo1VmzgAX3qIiMqDP7PcM1/jQZRWV
+ 5fgDrPLG5nsu6B/C9U0Ks4B1i+ZrcDuJtLGCVIvCrdhnzPyeBPqbpEC43bflFmMSSe1B
+ GPCUf8TnwS4ltMtaoZq1/KPWrE7tYIDdpL0Qph1oBrPDXOiUnfDiyJsAWd0xj0stPWj/
+ 2kHSYVpkqLQ276U67OpJZYKoyJoWGvAW1E7uXuXwcmIl1JvDk0QHXXPW1ByGW2KmyBTe
+ Lo1A==
+X-Gm-Message-State: AOJu0Yw6NWuK0+WdUwV6GRqlyJaRb88wD7+p+Ed++pmmTswUH0kwkRBG
+ hLOcEXKmT1j/VGFh56mWnXThbWjX0wlqbA==
+X-Google-Smtp-Source: AGHT+IFyi49LJQGLwdKzdcEEeXZ/UfUtG16Prpm05DBd8IPc/mcZhaVcLwBLVitty7p4iqFdpnZasQ==
+X-Received: by 2002:a05:600c:524c:b0:40e:4aed:ad27 with SMTP id
+ fc12-20020a05600c524c00b0040e4aedad27mr4538216wmb.144.1705490650664; 
+ Wed, 17 Jan 2024 03:24:10 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.156.199])
+ by smtp.gmail.com with ESMTPSA id
+ v4-20020a05600c470400b0040e45799541sm25957599wmo.15.2024.01.17.03.24.09
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 17 Jan 2024 03:24:10 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: John Snow <jsnow@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Warner Losh <imp@bsdimp.com>, Ryo ONODERA <ryoon@netbsd.org>,
+ Kyle Evans <kevans@freebsd.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Reinoud Zandijk <reinoud@netbsd.org>, Gerd Hoffmann <kraxel@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+Subject: [RFC PATCH] tests/vm/netbsd: Remove missing py311-expat package
+Date: Wed, 17 Jan 2024 12:24:07 +0100
+Message-ID: <20240117112407.22462-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20240115154830.498304-1-marcandre.lureau@redhat.com>
- <20240115154830.498304-3-marcandre.lureau@redhat.com>
- <a67b8127-6445-a29b-ffc4-6c5409e93bbd@redhat.com>
-In-Reply-To: <a67b8127-6445-a29b-ffc4-6c5409e93bbd@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 17 Jan 2024 15:13:34 +0400
-Message-ID: <CAJ+F1CKx9orvOMXV-e4S2gZCsFvoOOdv4s2Vu5V7ONnBeJkD0w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] virtio-gpu: fix scanout migration post-load
-To: Sebastian Ott <sebott@redhat.com>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, 
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-ot1-x332.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,26 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Per commits a9dbde71da ("mkvenv: add better error message for
+broken or missing ensurepip") and 1dee66c693 ("tests/vm: add
+py310-expat to NetBSD"), we need py-expat to use ensurepip.
 
-On Tue, Jan 16, 2024 at 3:17=E2=80=AFPM Sebastian Ott <sebott@redhat.com> w=
-rote:
->
-> On Mon, 15 Jan 2024, marcandre.lureau@redhat.com wrote:
-> > +            scanout->ds =3D qemu_create_displaysurface_pixman(res->ima=
-ge);
-> > +            if (!scanout->ds) {
-> > +                return -EINVAL;
-> > +            }
->
-> "qemu_create_displaysurface_pixman() never returns NULL." ;-)
+However the py311-expat package isn't available anymore:
 
-Right, I'll update the first patch.
+  ### Installing packages ...
+  processing remote summary (http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/amd64/9.3/All)...
+  database for http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/amd64/9.3/All is up-to-date
+  py311-expat is not available in the repository
+  ...
+  calculating dependencies.../py311-expat is not available in the repository
+  pkg_install error log can be found in /var/db/pkgin/pkg_install-err.log
 
-Other comments about this patch?
+Dropping it from the default packages list allows creating the
+NetBSD VM and build / test QEMU, without error from ensurepip.
 
-thanks
+This reverts commit 1dee66c693 ("tests/vm: add py310-expat to NetBSD").
 
---=20
-Marc-Andr=C3=A9 Lureau
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2109
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+RFC because ensurepip seems important due to cited commits
+    but I'm not sure where it is used, and this fixes my CI build.
+---
+ tests/vm/netbsd | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tests/vm/netbsd b/tests/vm/netbsd
+index 649fcad353..a3f6dd6b3c 100755
+--- a/tests/vm/netbsd
++++ b/tests/vm/netbsd
+@@ -31,7 +31,6 @@ class NetBSDVM(basevm.BaseVM):
+         "pkgconf",
+         "xz",
+         "python311",
+-        "py311-expat",
+         "ninja-build",
+ 
+         # gnu tools
+-- 
+2.41.0
+
 
