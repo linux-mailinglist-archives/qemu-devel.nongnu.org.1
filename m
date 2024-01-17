@@ -2,93 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269068303F5
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 11:54:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4517F83040F
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:00:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ3Z7-0008Uz-T8; Wed, 17 Jan 2024 05:54:37 -0500
+	id 1rQ3e9-00019Q-4i; Wed, 17 Jan 2024 05:59:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rQ3Z5-0008U5-PE
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 05:54:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rQ3e6-00018t-Bc; Wed, 17 Jan 2024 05:59:46 -0500
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rQ3Z4-0006lF-6A
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 05:54:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705488873;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kBYFFVoZT/RglGeN0V4s3xbUjx9sGAtHaAaooCwUDlc=;
- b=NtA7AaVnVe9hSrurvAW9mEm9iECz6eYdi1m5BIHIrSM489F9PG7AsfQKArWJuAk4qte1x0
- tAGyeQrWW7kiicUEFCirNo5NAPbAoU0CoWy3iK9q14q88q2pXN7H2lfWfJOVDPzOX0qVHw
- Fia5lD5N+sc2W2uZpPBDwkueqn5hEIs=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-323-KUScWwf_PXezY8clhA3_zg-1; Wed, 17 Jan 2024 05:54:32 -0500
-X-MC-Unique: KUScWwf_PXezY8clhA3_zg-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-429fe127372so43475231cf.0
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 02:54:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705488870; x=1706093670;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kBYFFVoZT/RglGeN0V4s3xbUjx9sGAtHaAaooCwUDlc=;
- b=T6UJ+zFkvQu3vPPFVm2dqwBzbD65p2VvWuz4o+1dq4/v7TdCr237DMo2oVbENE595R
- fOPuWwp4jKKL8LtNsZYk9nLJuN764O9nGsoY3G0UXhQfKlcVcOoPhw3pUh42qHTfQtyM
- 0zibD+V5SHd2046BQm5glhi1PmN0zRMnq2fPe4m2JtoReXvYtnP9BMLPg9QnbUCbX/kz
- shfhLgLH7BNT5mXftz6yAVG13Q+BtG02qQFU/BlVlaOsrhpadmtFGxltBoeviAVu/2P9
- XxomN1LvAoPfZ5Q5W5p7/rq/852NyAYhjYUNmo+u7YlRcKWscnqDl4VW7kI3D3H5CcyA
- 3W2Q==
-X-Gm-Message-State: AOJu0YwAkHnRIYRnaL7scFwBq7S19NhBFtEoIoq6JwzkSjWs+vusZA7+
- PsJUMMYN7zSsAwEtZC8y1mW55gF9IMEvLawzqQcJBh7ERiCuS6rJ1No0MLZjjCRoP3phW8d3Olh
- c4b+dw/SPOF45vyTaBnrHme8=
-X-Received: by 2002:ac8:5dc8:0:b0:429:ffae:e342 with SMTP id
- e8-20020ac85dc8000000b00429ffaee342mr3080074qtx.23.1705488870643; 
- Wed, 17 Jan 2024 02:54:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE8puD+4v1ql3E9EOeaxpd5nvsmC94DbfY53fL2FG4y11xFk6XL9x6RkTLPrl97h6UYwbRLVg==
-X-Received: by 2002:ac8:5dc8:0:b0:429:ffae:e342 with SMTP id
- e8-20020ac85dc8000000b00429ffaee342mr3080055qtx.23.1705488870375; 
- Wed, 17 Jan 2024 02:54:30 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- da3-20020a05620a360300b007833dbbc07asm4401782qkb.0.2024.01.17.02.54.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 02:54:30 -0800 (PST)
-Message-ID: <8a205b58-7efb-4d68-8f37-f7ac906d646a@redhat.com>
-Date: Wed, 17 Jan 2024 11:54:27 +0100
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rQ3e4-0007MF-6f; Wed, 17 Jan 2024 05:59:46 -0500
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 48CD649163;
+ Wed, 17 Jan 2024 11:59:41 +0100 (CET)
+Message-ID: <1066014c-7cea-4797-b862-60cc3b663c22@proxmox.com>
+Date: Wed, 17 Jan 2024 11:59:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] s390x/pci: avoid double enable/disable of aif
+Subject: Re: [PATCH] ui/clipboard: avoid crash upon request when clipboard
+ peer is not initialized
 Content-Language: en-US
-To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, thuth@redhat.com, frankja@linux.ibm.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- qemu-devel@nongnu.org
-References: <20240116223157.73752-1-mjrosato@linux.ibm.com>
- <20240116223157.73752-2-mjrosato@linux.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20240116223157.73752-2-mjrosato@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com,
+ berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
+References: <20240112135527.57212-1-f.ebner@proxmox.com>
+ <CAJ+F1C+JXE9hSQ_oDNZvhpYDqPeeKayopB3x2L2YyJTxM8t+Yg@mail.gmail.com>
+ <2150aa28-3eba-4e95-a301-d87377ba40a4@proxmox.com>
+ <CAJ+F1CKQkXUiuQH+mNC7p00wWrznsgWJD4xjR-AzjJGPnsF8gw@mail.gmail.com>
+ <ccd23263-f19f-401e-b476-a7eb1fd22571@proxmox.com>
+ <CAJ+F1CJHKsRrxUcUijAVV2bv0EOtbz0BAmH1OEnmciwo7ACXLQ@mail.gmail.com>
+ <0c2d35cb-cacf-4a81-9b6a-f07fdea9fc07@proxmox.com>
+ <CAJ+F1CJ4F6Kv9Vx_4H+GJ0ME0Q0X4GTm2n6L1JGg-SWFgi18SA@mail.gmail.com>
+ <960d7ef2-9e73-4987-98ca-529118325909@proxmox.com>
+In-Reply-To: <960d7ef2-9e73-4987-98ca-529118325909@proxmox.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,88 +64,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/16/24 23:31, Matthew Rosato wrote:
-> Use a flag to keep track of whether AIF is currently enabled.  This can be
-> used to avoid enabling/disabling AIF multiple times as well as to determine
-> whether or not it should be disabled during reset processing.
-
-Why don't we disable AIF always at reset ? Doesn't KVM handle multiple calls
-to KVM_S390_ZPCIOP_DEREG_AEN cleanly ? Just asking, I am no expert there.
-
-Thanks,
-
-C.
-
-
-> Fixes: d0bc7091c2 ("s390x/pci: enable adapter event notification for interpreted devices")
-> Reported-by: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
-> ---
->   hw/s390x/s390-pci-kvm.c         | 25 +++++++++++++++++++++++--
->   include/hw/s390x/s390-pci-bus.h |  1 +
->   2 files changed, 24 insertions(+), 2 deletions(-)
+Am 16.01.24 um 13:11 schrieb Fiona Ebner:
+> Am 15.01.24 um 13:00 schrieb Marc-André Lureau:
+>>>>>
+>>>>
+>>>> The trouble is when qemu_clipboard_update() is called without data &
+>>>> without a request callback set. We shouldn't allow that as we have no
+>>>> means to get the clipboard data then.
+>>>>
+>>>
+>>> In the above scenario, I'm pretty sure there is data when
+>>> qemu_clipboard_update() is called. Just no request callback. If we'd
+>>> reject this, won't that break clients that do not set the
+>>> VNC_FEATURE_CLIPBOARD_EXT feature and only use non-extended
+>>> VNC_MSG_CLIENT_CUT_TEXT messages?
+>>
+>> If "data" is already set, then qemu_clipboard_request() returns.
+>>
+>> Inverting the condition I suggested above: it's allowed to be the
+>> clipboard owner if either "data" is set, or a request callback is set.
+>>
 > 
-> diff --git a/hw/s390x/s390-pci-kvm.c b/hw/s390x/s390-pci-kvm.c
-> index ff41e4106d..f7e10cfa72 100644
-> --- a/hw/s390x/s390-pci-kvm.c
-> +++ b/hw/s390x/s390-pci-kvm.c
-> @@ -27,6 +27,7 @@ bool s390_pci_kvm_interp_allowed(void)
->   
->   int s390_pci_kvm_aif_enable(S390PCIBusDevice *pbdev, ZpciFib *fib, bool assist)
->   {
-> +    int rc;
->       struct kvm_s390_zpci_op args = {
->           .fh = pbdev->fh,
->           .op = KVM_S390_ZPCIOP_REG_AEN,
-> @@ -38,15 +39,35 @@ int s390_pci_kvm_aif_enable(S390PCIBusDevice *pbdev, ZpciFib *fib, bool assist)
->           .u.reg_aen.flags = (assist) ? 0 : KVM_S390_ZPCIOP_REGAEN_HOST
->       };
->   
-> -    return kvm_vm_ioctl(kvm_state, KVM_S390_ZPCI_OP, &args);
-> +    if (pbdev->aif) {
-> +        return -EINVAL;
-> +    }
-> +
-> +    rc = kvm_vm_ioctl(kvm_state, KVM_S390_ZPCI_OP, &args);
-> +    if (rc == 0) {
-> +        pbdev->aif = true;
-> +    }
-> +
-> +    return rc;
->   }
->   
->   int s390_pci_kvm_aif_disable(S390PCIBusDevice *pbdev)
->   {
-> +    int rc;
-> +
->       struct kvm_s390_zpci_op args = {
->           .fh = pbdev->fh,
->           .op = KVM_S390_ZPCIOP_DEREG_AEN
->       };
->   
-> -    return kvm_vm_ioctl(kvm_state, KVM_S390_ZPCI_OP, &args);
-> +    if (!pbdev->aif) {
-> +        return -EINVAL;
-> +    }
-> +
-> +    rc = kvm_vm_ioctl(kvm_state, KVM_S390_ZPCI_OP, &args);
-> +    if (rc == 0) {
-> +        pbev->aif = false;
-> +    }
-> +
-> +    return rc;
->   }
-> diff --git a/include/hw/s390x/s390-pci-bus.h b/include/hw/s390x/s390-pci-bus.h
-> index b1bdbeaeb5..435e788867 100644
-> --- a/include/hw/s390x/s390-pci-bus.h
-> +++ b/include/hw/s390x/s390-pci-bus.h
-> @@ -361,6 +361,7 @@ struct S390PCIBusDevice {
->       bool unplug_requested;
->       bool interp;
->       bool forwarding_assist;
-> +    bool aif;
->       QTAILQ_ENTRY(S390PCIBusDevice) link;
->   };
->   
+> Oh, sorry. Yes, it seems the problematic case is where data is not set.
+> But isn't that legitimate when clearing the clipboard? Or is a
+> VNC_MSG_CLIENT_CUT_TEXT message not valid when len is 0 and should be
+> rejected? In my testing KRDC does send such a message when the clipboard
+> is cleared:
+> 
+>> #1  0x0000558f1e6a0dac in vnc_client_cut_text (vs=0x558f207754d0, len=0, 
+>>     text=0x558f2046e008 "\003 \002\377\005") at ../ui/vnc-clipboard.c:313
+>> #2  0x0000558f1e68e067 in protocol_client_msg (vs=0x558f207754d0, 
+>>     data=0x558f2046e000 "\006", len=8) at ../ui/vnc.c:2454
+> 
+> Your suggestion would disallow this for clients that do not set the
+> VNC_FEATURE_CLIPBOARD_EXT feature (and only use non-extended
+> VNC_MSG_CLIENT_CUT_TEXT messages).
+> 
+
+I noticed that there is yet another code path leading to
+qemu_clipboard_request() and dereferencing the NULL owner->request even
+if only non-extended VNC_MSG_CLIENT_CUT_TEXT messages are used:
+
+> Thread 1 "qemu-system-x86" hit Breakpoint 1, vnc_client_cut_text (
+>     vs=0x5555593e6c00, len=0, 
+>     text=0x5555575ea608 "404078,bus=ahci0.0,drive=drive-sata0,id=sata0,bootindex=100\377\001") at ../ui/vnc-clipboard.c:310
+> (gdb) c
+> Continuing.
+
+And later:
+
+> qemu_clipboard_request (info=0x555557e576e0, type=QEMU_CLIPBOARD_TYPE_TEXT) at ../ui/clipboard.c:129
+> 129	    if (info->types[type].data ||
+> (gdb) p *info->owner
+> $65 = {name = 0x0, notifier = {notify = 0x0, node = {le_next = 0x0, le_prev = 0x0}}, request = 0x0}
+> (gdb) bt
+> #0  qemu_clipboard_request (info=0x555557e576e0, type=QEMU_CLIPBOARD_TYPE_TEXT) at ../ui/clipboard.c:129
+> #1  0x00005555558952ce in vdagent_chr_recv_chunk (vd=0x555556f67800) at ../ui/vdagent.c:769
+> #2  vdagent_chr_write (chr=<optimized out>, buf=0x7fff4ab263e4 "", len=0) at ../ui/vdagent.c:840
+> #3  0x0000555555d98830 in qemu_chr_write_buffer (s=s@entry=0x555556f67800, buf=buf@entry=0x7fff4ab263c0 "\001", len=36, 
+>     offset=offset@entry=0x7fffffffd030, write_all=false) at ../chardev/char.c:122
+> #4  0x0000555555d98c3c in qemu_chr_write (s=0x555556f67800, buf=buf@entry=0x7fff4ab263c0 "\001", len=len@entry=36, 
+>     write_all=<optimized out>, write_all@entry=false) at ../chardev/char.c:186
+> #5  0x0000555555d9109f in qemu_chr_fe_write (be=be@entry=0x555556e59040, buf=buf@entry=0x7fff4ab263c0 "\001", len=len@entry=36)
+>     at ../chardev/char-fe.c:42
+> #6  0x0000555555900045 in flush_buf (port=0x555556e58f40, buf=0x7fff4ab263c0 "\001", len=36) at ../hw/char/virtio-console.c:63
+> #7  0x0000555555bea4f3 in do_flush_queued_data (port=0x555556e58f40, vq=0x555559272558, vdev=0x55555926a4d0)
+>     at ../hw/char/virtio-serial-bus.c:188
+> #8  0x0000555555c201ff in virtio_queue_notify_vq (vq=0x555559272558) at ../hw/virtio/virtio.c:2268
+> #9  0x0000555555e36dd5 in aio_dispatch_handler (ctx=ctx@entry=0x555556e51b10, node=0x7ffed812b9f0) at ../util/aio-posix.c:372
+> #10 0x0000555555e37662 in aio_dispatch_handlers (ctx=0x555556e51b10) at ../util/aio-posix.c:414
+> #11 aio_dispatch (ctx=0x555556e51b10) at ../util/aio-posix.c:424
+> #12 0x0000555555e4d44e in aio_ctx_dispatch (source=<optimized out>, callback=<optimized out>, user_data=<optimized out>)
+>     at ../util/async.c:358
+> #13 0x00007ffff753e7a9 in g_main_context_dispatch () from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+> #14 0x0000555555e4ecb8 in glib_pollfds_poll () at ../util/main-loop.c:287
+> #15 os_host_main_loop_wait (timeout=58675786) at ../util/main-loop.c:310
+> #16 main_loop_wait (nonblocking=nonblocking@entry=0) at ../util/main-loop.c:589
+> #17 0x0000555555aa5f63 in qemu_main_loop () at ../system/runstate.c:791
+> #18 0x0000555555cadc16 in qemu_default_main () at ../system/main.c:37
+> #19 0x00007ffff60801ca in __libc_start_call_main (main=main@entry=0x5555558819d0 <main>, argc=argc@entry=102, 
+>     argv=argv@entry=0x7fffffffd458) at ../sysdeps/nptl/libc_start_call_main.h:58
+> #20 0x00007ffff6080285 in __libc_start_main_impl (main=0x5555558819d0 <main>, argc=102, argv=0x7fffffffd458, init=<optimized out>, 
+>     fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffd448) at ../csu/libc-start.c:360
+> #21 0x0000555555883581 in _start ()
+
+So such non-extended VNC_MSG_CLIENT_CUT_TEXT messages with len=0 are
+already problematic. Is clearing the clipboard supposed to be done
+differently?
+
+Your suggestion would prevent this scenario too. I'll send a patch with
+that shortly.
+
+Best Regards,
+Fiona
 
 
