@@ -2,53 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773AA8300E4
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 08:59:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D168300E5
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 08:59:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ0pC-00073a-6X; Wed, 17 Jan 2024 02:59:02 -0500
+	id 1rQ0pE-00074p-Q7; Wed, 17 Jan 2024 02:59:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQ0pA-00073C-GR
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 02:59:00 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQ0pC-000743-Uq
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 02:59:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQ0p9-00026k-5d
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 02:59:00 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQ0pB-000275-Fn
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 02:59:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705478338;
+ s=mimecast20190719; t=1705478340;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ElUnzjGPgq3BHBDubyNo/zxmdICghQBlmOzVSV8M86A=;
- b=bI1Z5qgSVbLzaILj5n1GuAUeB5OAKKwq3W2IwLvFU2cq4HZXl13KmZMe9FpDYZsGsCUcAb
- oIg0JJag6CWh9C+sGzCWNui/+aJusvcIe+it6y0RlofESKCdJbH7QBheaps4/ekkMhFzTy
- MZq3uG7t1FrtyP4QZ5iVw+D+wxD8JJ8=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SkLCeIrbMoZQbvJLLKjgqsorGDJr9Xlgo9gWw+cIrD8=;
+ b=ejiOnWWkHULCcOUE3MyfVzkCsE4qPIColqHp/atO3jx/YIw0qA8YFCQMu7wbKoUDX5CEVi
+ Icmz7fHB1t2MyVuYI3DeV65phvpH6SC8Ed7Mr3bibN8cviIFsctha3P/XMKsHg6hlwC+Su
+ 7HbqdvkBLlRHNQoMt/0ovyLSl6KbEao=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-29-CKhD2OCSNwK-C31CkMGK3A-1; Wed, 17 Jan 2024 02:58:54 -0500
-X-MC-Unique: CKhD2OCSNwK-C31CkMGK3A-1
+ us-mta-649-b9B7bS71MPmDo0IDxwdltA-1; Wed, 17 Jan 2024 02:58:58 -0500
+X-MC-Unique: b9B7bS71MPmDo0IDxwdltA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 19D9C1005055;
- Wed, 17 Jan 2024 07:58:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3198283FC23;
+ Wed, 17 Jan 2024 07:58:58 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.92])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7B146C15968;
- Wed, 17 Jan 2024 07:58:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DDB9FC15A0C;
+ Wed, 17 Jan 2024 07:58:54 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Prasad Pandit <ppandit@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>, Bandan Das <bdas@redhat.com>,
  Julia Suvorova <jusual@redhat.com>
-Subject: [PATCH 0/3] migration: some small cleanups
-Date: Wed, 17 Jan 2024 15:58:45 +0800
-Message-ID: <20240117075848.139045-1-peterx@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 1/3] migration: Make threshold_size an uint64_t
+Date: Wed, 17 Jan 2024 15:58:46 +0800
+Message-ID: <20240117075848.139045-2-peterx@redhat.com>
+In-Reply-To: <20240117075848.139045-1-peterx@redhat.com>
+References: <20240117075848.139045-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
@@ -79,19 +81,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-I found three tiny little patches lying around probably for a long time,
-sending it out before deleting the branch.  Review welcomed, thanks.
+It's always used to compare against another uint64_t.  Make it always clear
+that it's never a negative.
 
-Peter Xu (3):
-  migration: Make threshold_size an uint64_t
-  migration: Drop unnecessary check in ram's pending_exact()
-  analyze-migration.py: Remove trick on parsing ramblocks
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/migration.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- migration/migration.h        |  2 +-
- migration/ram.c              |  9 ++++-----
- scripts/analyze-migration.py | 11 +++--------
- 3 files changed, 8 insertions(+), 14 deletions(-)
-
+diff --git a/migration/migration.h b/migration/migration.h
+index 17972dac34..a589ae8650 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -296,7 +296,7 @@ struct MigrationState {
+      * this threshold; it's calculated from the requested downtime and
+      * measured bandwidth, or avail-switchover-bandwidth if specified.
+      */
+-    int64_t threshold_size;
++    uint64_t threshold_size;
+ 
+     /* params from 'migrate-set-parameters' */
+     MigrationParameters parameters;
 -- 
 2.43.0
 
