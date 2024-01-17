@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B3C83065D
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A51883065C
 	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 13:59:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ5US-0001jf-K3; Wed, 17 Jan 2024 07:57:56 -0500
+	id 1rQ5UU-0001kM-08; Wed, 17 Jan 2024 07:57:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manolodemedici@gmail.com>)
- id 1rQ54g-0007GB-Jr
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 07:31:18 -0500
-Received: from mail-io1-xd35.google.com ([2607:f8b0:4864:20::d35])
+ id 1rQ55b-0007PN-Dw
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 07:32:15 -0500
+Received: from mail-il1-x133.google.com ([2607:f8b0:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manolodemedici@gmail.com>)
- id 1rQ54e-00009E-NN
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 07:31:17 -0500
-Received: by mail-io1-xd35.google.com with SMTP id
- ca18e2360f4ac-7bef44df5c6so193922039f.0
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 04:31:16 -0800 (PST)
+ id 1rQ55Z-0000IP-6c
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 07:32:15 -0500
+Received: by mail-il1-x133.google.com with SMTP id
+ e9e14a558f8ab-36074b286d6so56019515ab.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 04:32:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705494675; x=1706099475; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705494732; x=1706099532; darn=nongnu.org;
  h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
  :date:message-id:reply-to;
- bh=yiqFhkQmfBD4mJONsjk8Qfil7m9Q+Gx5+05v5IpbGtU=;
- b=Tg1qr7k3KKV39Mp4m66F6yUdPDsURUvvDQ4pYt8QtL8CGhWxFcFo7LohgVzA2xu4Z5
- 7gE6eF7vaGX05tcSoJBhYkYYDcxMTpZrTZ4o7zis7gVQtskrKJ3gBCyzkkcYO0uOgM7+
- MT1z9BInnEyvts9TQfk/hDla7pydKS3ucVsOtWlBa2/L69WoDY4aDkJsG5FxlcYiSAyx
- iKdpylVHLprnsaq4S86LE1QvHzbjylngbGLEMiHsJo2o0+hHXw6NxTe89KwGvvhFnj9k
- YTZZyqsGQ5BFQ0y3q9TcwtDsPhDshj0tuINe5lw5pYPZpNHbN/Yt1W/AgI0FDmevxEWj
- Cf+w==
+ bh=iHctnXJD8eFH8bk150pRtluXVjTj6U6yPwTHKmsAi5g=;
+ b=OUIAVshEbp70dNgyaV1aPpN1z+pF2H7dMS7bEKJN8WwPIIliY8ePfiGuLq0hADLwwv
+ HKf6jKC5j1zBYHSYVsld2sDkHqfhCU8TXg4RQa9LvxbblZyzs/yEabjght2l8wMtfjSm
+ 4tFwPPl7S9E1GWfuHmfp1MeG/kaE3iWtpeWdn/Ebd0lWGZEsGhEmyeOME3hSwvNU8GOr
+ CefUFR8V0GGJ/au009rxqdmKvrEsXqoP9IlawA0ysT5L5MPV+2QVzvnDmVZGSWfXtppN
+ eI4irZ8/GEdpZHqebIHXok3enp6RbonXHqM3o+l5a4w3camgcEJHABjKiH8fO+7tsosc
+ m0OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705494675; x=1706099475;
+ d=1e100.net; s=20230601; t=1705494732; x=1706099532;
  h=to:subject:message-id:date:from:mime-version:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=yiqFhkQmfBD4mJONsjk8Qfil7m9Q+Gx5+05v5IpbGtU=;
- b=TtSNuqAJnJQn0mRYAj6yxPSAXwyefT4Jz1EoGc8HAnE4y+/fAuufWSZbB+nbkSDjlR
- 7V26ygny97nsPP9hgvMbEgHO6kzz3VJ5fHy1DJKj50lhJjT+qs0BpmGSZKvGhT0b47GR
- jtikmtQwS1+j9O0lsYz6+S0rsM0JMJukkIJBAX58SZgS3SeYxyfNnjLXpY849k5QYkqh
- do1TYdGg4luSVuyECbawbtXxPMF1T98m9QSlKuhPKyazm+pHcHEDRYST9H2hRsuOsrzq
- zDpLaBtauLj1aL0a1ANiaUghhm03VMRXsQ1y8W2F7U+1XJjRWnGeN21qqj+NTfDqvKZ0
- Dltg==
-X-Gm-Message-State: AOJu0YxBW5qG2+b78jMvZhhHiCkl8CdCxlP88KTe/KBdgNohtm8gsrom
- Q+RGwTXTySd1ils0sNRGuWpRPs+mvmPuv8dEJ/NDV6zRZRk=
-X-Google-Smtp-Source: AGHT+IF0tAsL7lNOPqe8+OxUfdbBfTfARQ4phzj+EzP7xB8JFCfHiQm/RDp1XC4kjd/4Z27JmqA3dP3IkBBkWPUdADg=
-X-Received: by 2002:a05:6e02:110f:b0:361:93d2:69a4 with SMTP id
- u15-20020a056e02110f00b0036193d269a4mr416346ilk.11.1705494675417; Wed, 17 Jan
- 2024 04:31:15 -0800 (PST)
+ bh=iHctnXJD8eFH8bk150pRtluXVjTj6U6yPwTHKmsAi5g=;
+ b=jBP2lPvkvYnvmqJh0R/vbySVUTeZk+Xww6/+MmXtcI9e6ngj26Kh2Zo8aqPMbsciFs
+ wdYQioFLm3WKSV+FhLItB1Fk4GoldeSfrpGVlEb3ZEREmejlVm6kSgVVhm24u0ekXIKH
+ e142jDNWH/2Nt4Q+ufShW5sUpxsfPnmGVO9A5qsnxe9YHIEvcojugGZv3Iot4zqTb+ME
+ y+RbPOuhjK4HDv7Y3T8LVbAOb9+6e1YjMZU0n08nIZlXYgqzVvexy5VL344i3mNHE9K+
+ +bQVw0xnSGlz+RRm0S0od8qVvT6DH4orfDPBlgEYLQFvEdKq+9SgokH66psIEdnMzSOp
+ Wx2A==
+X-Gm-Message-State: AOJu0YxR/5NRTAH84ZkG9v24Ql4cLhyLewpNeb48hzDg3NjOJFbUu1rP
+ ZC1aolSQgGOSZrHfZLmgvkg2sN/GZ/kqhg821vDjbsYRVZg=
+X-Google-Smtp-Source: AGHT+IF0gjvckquQ/0TYNn5kjSdNpDmvtNW3IBWLgvfIqCYccE5z6/XaXdh4vQJoFdls84s8a+CC4uO9q9eNJ4SHDA4=
+X-Received: by 2002:a92:de07:0:b0:361:96cd:98ee with SMTP id
+ x7-20020a92de07000000b0036196cd98eemr613717ilm.14.1705494731893; Wed, 17 Jan
+ 2024 04:32:11 -0800 (PST)
 MIME-Version: 1.0
 From: Manolo de Medici <manolodemedici@gmail.com>
-Date: Wed, 17 Jan 2024 13:31:11 +0100
-Message-ID: <CAHP40mkL6EzLgRvYZ2gp=dmF_5gxD-9cJBTODAb8UtjurZuBKg@mail.gmail.com>
-Subject: [PATCH 2/4] Avoid multiple definitions of copy_file_range
+Date: Wed, 17 Jan 2024 13:32:07 +0100
+Message-ID: <CAHP40mkDymmXdvFUAEpiBTbVuaRUHVfW8UTdyuSDhoG4Ro+yzA@mail.gmail.com>
+Subject: [PATCH 3/4] Allow tests to be disabled
 To: qemu-devel@nongnu.org, bug-hurd@gnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d35;
- envelope-from=manolodemedici@gmail.com; helo=mail-io1-xd35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::133;
+ envelope-from=manolodemedici@gmail.com; helo=mail-il1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Wed, 17 Jan 2024 07:57:54 -0500
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,40 +81,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's already defined as a stub on the GNU Hurd.
+tests/qtest/tpm-* compilation is not disabled by disable-tpm,
+for this reason compilation fails on systems that doesn't
+support the linux/bsd TPM api. Fix this by allowing tests
+to be disabled.
 
 Signed-off-by: Manolo de Medici <manolo.demedici@gmail.com>
-
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 35684f7e21..05426abb7d 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -1999,7 +1999,7 @@ static int handle_aiocb_write_zeroes_unmap(void *opaque)
-     return handle_aiocb_write_zeroes(aiocb);
- }
-
--#ifndef HAVE_COPY_FILE_RANGE
-+#if !defined(HAVE_COPY_FILE_RANGE) && !defined(__GNU__)
- static off_t copy_file_range(int in_fd, off_t *in_off, int out_fd,
-                              off_t *out_off, size_t len, unsigned int flags)
- {
 ---
- block/file-posix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ configure | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 35684f7e21..05426abb7d 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -1999,7 +1999,7 @@ static int handle_aiocb_write_zeroes_unmap(void *opaque)
-     return handle_aiocb_write_zeroes(aiocb);
- }
+diff --git a/configure b/configure
+index 21ab9a64e9..c36ce1f7e2 100755
+--- a/configure
++++ b/configure
+@@ -254,6 +254,7 @@ skip_meson=no
+ use_containers="yes"
+ gdb_bin=$(command -v "gdb-multiarch" || command -v "gdb")
+ gdb_arches=""
++tests="auto"
 
--#ifndef HAVE_COPY_FILE_RANGE
-+#if !defined(HAVE_COPY_FILE_RANGE) && !defined(__GNU__)
- static off_t copy_file_range(int in_fd, off_t *in_off, int out_fd,
-                              off_t *out_off, size_t len, unsigned int flags)
- {
+ # Don't accept a target_list environment variable.
+ unset target_list
+@@ -741,6 +742,10 @@ for opt do
+   ;;
+   --disable-cfi) cfi=false
+   ;;
++  --disable-tests) tests="disabled"
++  ;;
++  --enable-tests) tests="enabled"
++  ;;
+   --disable-download) download="disabled"; git_submodules_action=validate;
+   ;;
+   --enable-download) download="enabled"; git_submodules_action=update;
+@@ -887,6 +892,7 @@ cat << EOF
+   linux-user      all linux usermode emulation targets
+   bsd-user        all BSD usermode emulation targets
+   pie             Position Independent Executables
++  tests           build tests
+
+ NOTE: The object files are built at the place where configure is launched
+ EOF
+@@ -1792,6 +1798,7 @@ if test "$skip_meson" = no; then
+   # QEMU options
+   test "$cfi" != false && meson_option_add "-Dcfi=$cfi" "-Db_lto=$cfi"
+   test "$docs" != auto && meson_option_add "-Ddocs=$docs"
++  test "$tests" != auto && meson_option_add "-Dtests=$tests"
+   test -n "${LIB_FUZZING_ENGINE+xxx}" && meson_option_add
+"-Dfuzzing_engine=$LIB_FUZZING_ENGINE"
+   test "$plugins" = yes && meson_option_add "-Dplugins=true"
+   test "$tcg" != enabled && meson_option_add "-Dtcg=$tcg"
 --
 2.43.0
 
