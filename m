@@ -2,78 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9AF3830085
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 08:30:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7DD830086
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 08:30:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ0Mj-0007vr-Jw; Wed, 17 Jan 2024 02:29:37 -0500
+	id 1rQ0NR-0008F6-8F; Wed, 17 Jan 2024 02:30:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rQ0Mh-0007va-J4
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 02:29:35 -0500
-Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rQ0N8-0008A2-Oy
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 02:30:03 -0500
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rQ0Mf-00067g-I9
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 02:29:35 -0500
-Received: by mail-qt1-x829.google.com with SMTP id
- d75a77b69052e-42a0fa5d202so1949481cf.2
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 23:29:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rQ0N6-00068L-6I
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 02:30:02 -0500
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-53fbf2c42bfso7643019a12.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 23:29:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705476572; x=1706081372; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bdd8Jwi6Hv2mLPGzvgSH5lI919mxdqkjHNsqB7gue9c=;
- b=GtY0miuVOgAQFFbyggmKMWD2L40UCD1StV+6QijCxDaZOiOdiBDWXeG0hxVdRq4Iok
- bG24eYUIHRmvmwZ3V1kSCnw01kRl62kBebqoiHh5NnjcupBxiwK48Y8JwWVTnJ3u0j70
- 9qIPWRXCG4J1lLTJXTog2iFQ5hKKD2Q0qmG8G7OTAlS7nQgUpPTv7KPtCxX/O61cwz64
- pDq3oJZnZeNqT2H0PLUJziakgH7tKSmwYI2r5IPlqW4YseZVNc1Wu1YwObWZTF3I6s17
- MdLpPTKWojyjPOdzZBLcSgLNZmEFHW3lz3TwsokaT+ThJoc7rEx/dgr9GdAXrMPaI+/y
- EFOg==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1705476599; x=1706081399;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0qGlZHZxQIATNU7Sk4X3qYO4Gfi0nxDrj7suaX3rzdE=;
+ b=he3R7jOHtLd/6Olj/CyAbiNOqOM4SAsWsyg/kk5L+aAapbDDjli4Y6AqYYqsDwz2Xc
+ VYFLWOxZ+HxjfUsvNho6pwQ0INJ0ZdJgeo4n2mup556+Hz2N8qMj47b2aP7HogMPMuIy
+ teDsj5Qjh5YYrCNUYutHn7dHFvjqsaFeOH6X5KJmdW00TK6rSdwQCeKRQpINyZTBic0S
+ 7fFXtmQND5YDeIm3RE2hzNH9zDv08Z2NNpSO3F45G/sj/DmQ1tpywI0CVcAuvTeuxx0A
+ GeBIx4wOX9BDa65M5og2uCOAQ6rfn6gUqXoUNO4fDO/I6g/fXddPIA5Bj/Fg0vW6FBbz
+ 3vqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705476572; x=1706081372;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bdd8Jwi6Hv2mLPGzvgSH5lI919mxdqkjHNsqB7gue9c=;
- b=vv3vTnvDU3T5nmjBMxN2WICIY+LWu9nN46ocA7ekA35hANbT4HMcqf3fYZkQ5QuERh
- mWK/aAZhL3IiZWlhm0gDYho0htgCCEdMEJ3LbW5vGxTl5dYoaidS8H1JG+07Wgkzw6ja
- 2gw6xy/ZBNPjhDM39sErHYAaSgcuUv8bDnqft0rve+Gpv7ltGFTZknxZYHGIs5N3IHE6
- YwGeQP40qN+g2yS/4hK4vKZZID5sqdO15FMytwUwKcX7Il15s2nY75uHsSGpkZvPcmuy
- P92KMFhzvk/OrIEl8bky3dCyLsMLaMbQ0XYBLwu933CHUm5dAuza6l05i4SKDz9us9eN
- QQZQ==
-X-Gm-Message-State: AOJu0YyWBqr/O5DzqrOXjJJAOq/T5tpG6vYuvYqUK3DCRMId2Gso83oK
- f8pH7zIoNAvSimWWoPPMIuzkODZQxRHZDJqy0Oo=
-X-Google-Smtp-Source: AGHT+IGtwzduZdQ4Fl16MKHzShEu4V09f5yWy/sNCWafBgI+3XeKUrUh9HhdcH+va29oRZlGpLChiqrvehcVY8XDhO0=
-X-Received: by 2002:a05:622a:389:b0:429:e336:b2d8 with SMTP id
- j9-20020a05622a038900b00429e336b2d8mr6489108qtx.71.1705476572426; Tue, 16 Jan
- 2024 23:29:32 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705476599; x=1706081399;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0qGlZHZxQIATNU7Sk4X3qYO4Gfi0nxDrj7suaX3rzdE=;
+ b=T42Zlu5AWSieqIYprgCjuuCIseauIP6h9BhWoRjc4nODxFJyxmyI+78JpT+XTFZWhu
+ TqOaUx/2SQ1nxg6j0J7H95zVQAWlTG6xxKF2uwpjw1eVXDTc0B5IuDfgrAAfvV44od6Q
+ Bitm/EO4OkHlATl9i+9W/5ThIxH0Khq6zW2+V/7AvwPF723+AA8QqIHSN5BdK/FYt3kx
+ fNlySQikaTBTLfJypLpFRrwnmfHRFEs8QZu8HfdKf1Muzt1Kxeqjq5HDZQfTYtCp4ZFL
+ cGAumZx9VBzMn0OgYJmZbnV7c0xruvvU4IXs0NXdffXWk9DlVDk/pdDpRJeaigoWM/ug
+ dq/Q==
+X-Gm-Message-State: AOJu0Yyp045JAyo8H1dC38rzeeKhvcrcr49OHEnMDaeHTVKB4CJL5HSe
+ +Q9Q54tydceRGK6Na74izZ2+iZ5mT1PIJQ==
+X-Google-Smtp-Source: AGHT+IGYfqIxrJVhmdvRTUZs9nS4380rwTjOydxDj8zc7YkEf+sNU7Dy1VYObIJfojoe9D8Kqt/aAw==
+X-Received: by 2002:a05:6a20:e68a:b0:19a:eaff:bf73 with SMTP id
+ mz10-20020a056a20e68a00b0019aeaffbf73mr5125188pzb.45.1705476598939; 
+ Tue, 16 Jan 2024 23:29:58 -0800 (PST)
+Received: from [157.82.200.138] ([157.82.200.138])
+ by smtp.gmail.com with ESMTPSA id
+ f4-20020a170902684400b001d4f119de21sm10626473pln.112.2024.01.16.23.29.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Jan 2024 23:29:58 -0800 (PST)
+Message-ID: <19b4a49a-6bb9-4158-935a-f40f1de6f392@daynix.com>
+Date: Wed, 17 Jan 2024 16:29:55 +0900
 MIME-Version: 1.0
-References: <20240117-asan-v2-1-26f9e1ea6e72@daynix.com>
- <CAJ+F1CK54eMkcUOm6Usomsrf=wp3dZQy33wn=47Emp3JTMKc-A@mail.gmail.com>
-In-Reply-To: <CAJ+F1CK54eMkcUOm6Usomsrf=wp3dZQy33wn=47Emp3JTMKc-A@mail.gmail.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 17 Jan 2024 11:29:21 +0400
-Message-ID: <CAJ+F1CLHiGUsFmXKoFZaTTUJZYN0rj73+QMM5MnXTc3ai9mJhg@mail.gmail.com>
-Subject: Re: [PATCH v2] coroutine-ucontext: Save fake stack for pooled
- coroutine
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
- Lingfeng Yang <lfy@google.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::829;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x829.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] coroutine-ucontext: Save fake stack for pooled coroutine
+Content-Language: en-US
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Lingfeng Yang <lfy@google.com>, Kevin Wolf <kwolf@redhat.com>,
+ qemu-devel@nongnu.org
+References: <20240112-asan-v1-1-e330f0d0032c@daynix.com>
+ <20240115184739.GB1143584@fedora>
+ <CAJ+F1C+E+xXKe7eC6+KbDBZ7HHkdmuQ9sZPjk=meZLVk4Ekxbw@mail.gmail.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CAJ+F1C+E+xXKe7eC6+KbDBZ7HHkdmuQ9sZPjk=meZLVk4Ekxbw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::533;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x533.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,134 +97,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
-On Wed, Jan 17, 2024 at 11:26=E2=80=AFAM Marc-Andr=C3=A9 Lureau
-<marcandre.lureau@gmail.com> wrote:
->
+On 2024/01/16 17:42, Marc-André Lureau wrote:
 > Hi
->
-> On Wed, Jan 17, 2024 at 11:06=E2=80=AFAM Akihiko Odaki <akihiko.odaki@day=
-nix.com> wrote:
-> >
-> > Coroutine may be pooled even after COROUTINE_TERMINATE if
-> > CONFIG_COROUTINE_POOL is enabled and fake stack should be saved in
-> > such a case to keep AddressSanitizerUseAfterReturn working. Even worse,
-> > I'm seeing stack corruption without fake stack being saved.
-> >
-> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> > ---
-> > Changes in v2:
-> > - Added missing set_current() (Marc-Andr=C3=A9 Lureau)
-> > - Added G_STATIC_ASSERT(!IS_ENABLED(CONFIG_TSAN)) (Marc-Andr=C3=A9 Lure=
-au)
-> > - Renamed terminate() to terminate_asan() for clarity and consistency.
-> > - Changed terminate_asan() to call start_switch_fiber_asan() for
-> >   consistency.
-> > - Link to v1: https://lore.kernel.org/r/20240112-asan-v1-1-e330f0d0032c=
-@daynix.com
-> > ---
-> >  util/coroutine-ucontext.c | 35 ++++++++++++++++++++++++++---------
-> >  1 file changed, 26 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/util/coroutine-ucontext.c b/util/coroutine-ucontext.c
-> > index 7b304c79d942..8ef603d081ea 100644
-> > --- a/util/coroutine-ucontext.c
-> > +++ b/util/coroutine-ucontext.c
-> > @@ -119,13 +119,11 @@ void finish_switch_fiber(void *fake_stack_save)
-> >
-> >  /* always_inline is required to avoid TSan runtime fatal errors. */
-> >  static inline __attribute__((always_inline))
-> > -void start_switch_fiber_asan(CoroutineAction action, void **fake_stack=
-_save,
-> > +void start_switch_fiber_asan(void **fake_stack_save,
-> >                               const void *bottom, size_t size)
-> >  {
-> >  #ifdef CONFIG_ASAN
-> > -    __sanitizer_start_switch_fiber(
-> > -            action =3D=3D COROUTINE_TERMINATE ? NULL : fake_stack_save=
-,
-> > -            bottom, size);
-> > +    __sanitizer_start_switch_fiber(fake_stack_save, bottom, size);
-> >  #endif
-> >  }
-> >
-> > @@ -165,7 +163,7 @@ static void coroutine_trampoline(int i0, int i1)
-> >      if (!sigsetjmp(self->env, 0)) {
-> >          CoroutineUContext *leaderp =3D get_ptr_leader();
-> >
-> > -        start_switch_fiber_asan(COROUTINE_YIELD, &fake_stack_save,
-> > +        start_switch_fiber_asan(&fake_stack_save,
-> >                                  leaderp->stack, leaderp->stack_size);
-> >          start_switch_fiber_tsan(&fake_stack_save, self, true); /* true=
-=3Dcaller */
-> >          siglongjmp(*(sigjmp_buf *)co->entry_arg, 1);
-> > @@ -226,8 +224,7 @@ Coroutine *qemu_coroutine_new(void)
-> >
-> >      /* swapcontext() in, siglongjmp() back out */
-> >      if (!sigsetjmp(old_env, 0)) {
-> > -        start_switch_fiber_asan(COROUTINE_YIELD, &fake_stack_save, co-=
->stack,
-> > -                                co->stack_size);
-> > +        start_switch_fiber_asan(&fake_stack_save, co->stack, co->stack=
-_size);
-> >          start_switch_fiber_tsan(&fake_stack_save,
-> >                                  co, false); /* false=3Dnot caller */
-> >
-> > @@ -269,10 +266,28 @@ static inline void valgrind_stack_deregister(Coro=
-utineUContext *co)
-> >  #endif
-> >  #endif
-> >
-> > +#if defined(CONFIG_ASAN) && defined(CONFIG_COROUTINE_POOL)
-> > +static void coroutine_fn terminate_asan(void *opaque)
-> > +{
-> > +    CoroutineUContext *to =3D DO_UPCAST(CoroutineUContext, base, opaqu=
-e);
-> > +
-> > +    set_current(opaque);
-> > +    start_switch_fiber_asan(NULL, to->stack, to->stack_size);
-> > +    G_STATIC_ASSERT(!IS_ENABLED(CONFIG_TSAN));
-> > +    siglongjmp(to->env, COROUTINE_ENTER);
-> > +}
-> > +#endif
-> > +
-> >  void qemu_coroutine_delete(Coroutine *co_)
-> >  {
-> >      CoroutineUContext *co =3D DO_UPCAST(CoroutineUContext, base, co_);
-> >
-> > +#if defined(CONFIG_ASAN) && defined(CONFIG_COROUTINE_POOL)
-> > +    co_->entry_arg =3D qemu_coroutine_self();
-> > +    co_->entry =3D terminate_asan;
-> > +    qemu_coroutine_switch(co_->entry_arg, co_, COROUTINE_ENTER);
-> > +#endif
-> > +
-> >  #ifdef CONFIG_VALGRIND_H
-> >      valgrind_stack_deregister(co);
-> >  #endif
-> > @@ -305,8 +320,10 @@ qemu_coroutine_switch(Coroutine *from_, Coroutine =
-*to_,
-> >
-> >      ret =3D sigsetjmp(from->env, 0);
-> >      if (ret =3D=3D 0) {
-> > -        start_switch_fiber_asan(action, &fake_stack_save, to->stack,
-> > -                                to->stack_size);
-> > +        start_switch_fiber_asan(IS_ENABLED(CONFIG_COROUTINE_POOL) ||
-> > +                                action !=3D COROUTINE_TERMINATE ?
-> > +                                    &fake_stack_save : NULL,
-> > +                                to->stack, to->stack_size);
->
-> given that the coroutine is reentered on delete to clear the fake
-> stack, can we just pass &fake_stack_save here?
->
+> 
+> On Mon, Jan 15, 2024 at 10:49 PM Stefan Hajnoczi <stefanha@redhat.com> wrote:
+>>
+>> On Fri, Jan 12, 2024 at 07:36:19PM +0900, Akihiko Odaki wrote:
+>>> Coroutine may be pooled even after COROUTINE_TERMINATE if
+>>> CONFIG_COROUTINE_POOL is enabled and fake stack should be saved in
+>>> such a case to keep AddressSanitizerUseAfterReturn working. Even worse,
+>>> I'm seeing stack corruption without fake stack being saved.
+>>>
+>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> 
+> Thanks Akihiko, this is solving a crash when enabling ASAN!
+> 
+>>> ---
+>>>   util/coroutine-ucontext.c | 21 +++++++++++++++++++--
+>>>   1 file changed, 19 insertions(+), 2 deletions(-)
+>>
+>> Adding Marc-André Lureau and Lingfeng Yang, who authored the code in
+>> question.
+> 
+> Side note:
+> I am surprised that commit 0aebab04b9  "configure: add --enable-tsan
+> flag + fiber annotations" changed code like this:
+>   {
+>   #ifdef CONFIG_ASAN
+> -    __sanitizer_start_switch_fiber(fake_stack_save, bottom, size);
+> +    __sanitizer_start_switch_fiber(
+> +            action == COROUTINE_TERMINATE ? NULL : fake_stack_save,
+> +            bottom, size);
+> +#endif
+> +#ifdef CONFIG_TSAN
+> +    void *curr_fiber =
+> +        __tsan_get_current_fiber();
+> +    __tsan_acquire(curr_fiber);
+> +
+> +    *fake_stack_save = curr_fiber;
+> +    __tsan_switch_to_fiber(new_fiber, 0);  /* 0=synchronize */
+>   #endif
+> 
+> *fake_stack_save = curr_fiber:
+> Is TSAN compatible with ASAN ? I guess not.
 
-Ah, terminate_asan() is only called when the pool is enabled.
+meson.build has the following:
+if get_option('tsan')
+   if get_option('sanitizers')
+     error('TSAN is not supported with other sanitizers')
+   endif
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> 
+> It would probably help to have more explicit comments & errors if such
+> a case happens.
 
+Added G_STATIC_ASSERT(!IS_ENABLED(CONFIG_TSAN)) in v2.
 
+> 
+>>
+>> Stefan
+>>
+>>>
+>>> diff --git a/util/coroutine-ucontext.c b/util/coroutine-ucontext.c
+>>> index 7b304c79d942..e62ced5d6779 100644
+>>> --- a/util/coroutine-ucontext.c
+>>> +++ b/util/coroutine-ucontext.c
+>>> @@ -124,8 +124,9 @@ void start_switch_fiber_asan(CoroutineAction action, void **fake_stack_save,
+>>>   {
+>>>   #ifdef CONFIG_ASAN
+>>>       __sanitizer_start_switch_fiber(
+>>> -            action == COROUTINE_TERMINATE ? NULL : fake_stack_save,
+>>> -            bottom, size);
+>>> +        !IS_ENABLED(CONFIG_COROUTINE_POOL) && action == COROUTINE_TERMINATE ?
+>>> +            NULL : fake_stack_save,
+>>> +        bottom, size);
+> 
+> 
+> Ok, changing back the commit from Lingfeng when coroutine pools are enabled.
+> 
+>>>   #endif
+>>>   }
+>>>
+>>> @@ -269,10 +270,26 @@ static inline void valgrind_stack_deregister(CoroutineUContext *co)
+>>>   #endif
+>>>   #endif
+>>>
+>>> +#if defined(CONFIG_ASAN) && defined(CONFIG_COROUTINE_POOL)
+>>> +static void coroutine_fn terminate(void *opaque)
+>>> +{
+>>> +    CoroutineUContext *to = DO_UPCAST(CoroutineUContext, base, opaque);
+>>> +
+>>> +    __sanitizer_start_switch_fiber(NULL, to->stack, to->stack_size);
+>>> +    siglongjmp(to->env, COROUTINE_ENTER);
+>>> +}
+> 
+> looking at https://github.com/llvm/llvm-project/blob/main/compiler-rt/test/asan/TestCases/Linux/swapcontext_annotation.cpp,
+> that seems correct to me to destroy the fake_stack.
+> 
+> However, not switching back with qemu_coroutine_switch() may create
+> issues: set_current() (and tsan) not being called appropriately.
 
+Thanks for catching this. Added missing set_current() call and 
+G_STATIC_ASSERT(!IS_ENABLED(CONFIG_TSAN)) in v2 as I described earlier.
 
---=20
-Marc-Andr=C3=A9 Lureau
+> 
+> Should we introduce another action like COROUTINE_DELETE?
+
+I don't think so. CoroutineAction is part of the common interface for 
+coroutine backends. The need to switch back to the destroyed coroutine 
+is a peculiarity unique to ucontext and better to be contained in 
+coroutine-ucontext.c.
+
+Alternatively we can add a bool parameter to qemu_coroutine_switch() to 
+tell to destroy the fake stack, but probably it's not that worth to 
+share qemu_coroutine_switch() code; while coroutine-ucontext.c already 
+have a few places that call start_switch_fiber_asan() or siglongjmp() 
+and they are somewhat similar, they are still too diverged to unify.
 
