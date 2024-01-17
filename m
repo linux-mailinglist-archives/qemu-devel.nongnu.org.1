@@ -2,95 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B53830396
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 11:30:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEAA83039B
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 11:30:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ3Ae-0007lN-UT; Wed, 17 Jan 2024 05:29:20 -0500
+	id 1rQ3B3-0007qF-Jf; Wed, 17 Jan 2024 05:29:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rQ3Ab-0007k6-Cv
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 05:29:17 -0500
+ id 1rQ3Az-0007pr-3Y
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 05:29:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rQ3AZ-0002RZ-5s
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 05:29:17 -0500
+ id 1rQ3Av-0002UI-CU
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 05:29:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705487354;
+ s=mimecast20190719; t=1705487373;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ronjSXsDMZEFM2S3ZGqOkMKA1GmE7cL7E4Aq9ZEyCkk=;
- b=WJJquBl1h0KmKISGvET5hsDX9K7nJ6ni/oyQKa8JC0EDUNJXxUAL+gOkvlAaBQjo/9ONdp
- 9kvudjEQRCME/b9EM5N/bs/mxzYWrgS1euCEavhITTHggCMe7t8LXtPCSLOjqW5g/l0p4W
- r1XF9eOnyDYkD+TW5+u64N2Z7uw3EFo=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Vr7WRsJKn+CTXPutgwQkMxyBgdN2wVbIebAXVEaNRCI=;
+ b=YKeTBM/he2x+d4dbGyDQsLTFJuyKtUsqzMsvwoBaUE7CX96IJLwNs66OKYSOK6JgZ0GjMn
+ n4CkliJH3r+B5OFoZuDuUh4d/r9lHtNCcZSRFcv1M2idWcyTe15hUZn8PUUsIFYGxDuEhp
+ X4u6CZbsKR+p8jtdp3nwhKDNFiHtnTw=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-436-JBORJS_4OAy_Yk7yF01kIg-1; Wed, 17 Jan 2024 05:29:12 -0500
-X-MC-Unique: JBORJS_4OAy_Yk7yF01kIg-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-68183d81339so2556776d6.1
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 02:29:12 -0800 (PST)
+ us-mta-194-w5w08OxlPRS_uJyFegdrtw-1; Wed, 17 Jan 2024 05:29:26 -0500
+X-MC-Unique: w5w08OxlPRS_uJyFegdrtw-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-68170805158so30807846d6.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 02:29:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705487352; x=1706092152;
+ d=1e100.net; s=20230601; t=1705487365; x=1706092165;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ronjSXsDMZEFM2S3ZGqOkMKA1GmE7cL7E4Aq9ZEyCkk=;
- b=uso6UH1BKuPox301GWkGv3NYi0+F9XKb1Vu0R/0t9G940uO0je8V6rCdCN/Q9fvXpM
- uo+UsG+tNtzY9+PcUEsVPB5vKMWW/9xHg9+MOlQKr6yBvEq+0IOjzZOwrXsOW70J8DF7
- 7y9P9mTF2Zw28cBTTZ930CPlgih7WmcvVeY7RzJCG6A41WsjBMZ26DpHN5fm5FuTfmyU
- TXnVCTj/CLSJKiwIpQ0Pafcz1IFAKLpo5+BXIfEN9hHCfE7/ylAVt14zfkupYkIl5vuk
- Yojel+Mqb5bwL6inlEsJUMFRcrUtxO1fTxaNuWJ/aj9VDVwALIk6JMob40Sw3hleNvbs
- Fbrg==
-X-Gm-Message-State: AOJu0Yz4ogPxYqsE2zlGP8lPiCDz/yQHSseRi7Gj1B5PcDywZ2PpVuoj
- cGi9mg8EUjJQSzKrUM+mR8AWBQSakUZbnyMi7g9sQO6mZKy9s/oq1O7GGlOVP/J50N3IAdwHqOI
- /R9Rd4UPwV7unPhydt452m2FeSaUqWUDytv0Y5w9zaIE+z71IJuJu
-X-Received: by 2002:ad4:5b84:0:b0:681:6877:f815 with SMTP id
- 4-20020ad45b84000000b006816877f815mr682395qvp.57.1705487352288; 
- Wed, 17 Jan 2024 02:29:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGd09PuVvfrBhMz8QqoCZYccFDY2878aRl0xGsyRFM5U2OoiOASJWYpEi3UJYKfXeGAm/NXgA==
-X-Received: by 2002:ad4:5b84:0:b0:681:6877:f815 with SMTP id
- 4-20020ad45b84000000b006816877f815mr682385qvp.57.1705487352087; 
- Wed, 17 Jan 2024 02:29:12 -0800 (PST)
+ bh=Vr7WRsJKn+CTXPutgwQkMxyBgdN2wVbIebAXVEaNRCI=;
+ b=FVQV/VqkUuBm96rb/vJH/D2gU5bmvnmiRDtpg+rO+GRVWBdQXDYHLflnA7m//IS94R
+ SpRQGAIFPm7XE0r+IKTUW56H4cMsLTX4iLiCEHI/Dy+20SUUd02fqXGGSIE+RAAHlhDr
+ T5y3Tkvnd+zEO+x1WLNBNWnNTjlrVi0LBqvQdWXIgpvowyrZSQV+CjM47mSUX5IJoAxa
+ xHQMJZIJUSI6xgLPQ8HBep4couN+rKH5Fo2im6WbUK5oJ0hz/eAPi25eQBeJxYgRQRFT
+ Geo0Ld7Lm3kC6bI0vUi/3CTM4nLDLYMXvEqtdCK6l6yqVcP4q9b1qA5TU12bK/D5Y9yy
+ u0VA==
+X-Gm-Message-State: AOJu0YyD4vMP+/BQKd1wef/+q+IwTMeClVRiIZteavGvquJ6plyVztWd
+ nXDIdWdqQQWi+aeo7CuJ1hmL/GvPWVMWAvnjMZm0YHwv0x5GhWsdNU5dOo5w2Oh3XhD7UmBijAH
+ 6Vq+gA0a96Wb4IoWQlBrPIlfCLCm/q+o=
+X-Received: by 2002:a05:6214:4001:b0:67e:ee3f:8128 with SMTP id
+ kd1-20020a056214400100b0067eee3f8128mr651699qvb.37.1705487365039; 
+ Wed, 17 Jan 2024 02:29:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFDMTF+6A7qGKz9M2Ak/yrvZBadhAK9q5EFxNgH0SjCMEoZjAiOJ7a4qg9A1IaatnXqVdV/SA==
+X-Received: by 2002:a05:6214:4001:b0:67e:ee3f:8128 with SMTP id
+ kd1-20020a056214400100b0067eee3f8128mr651693qvb.37.1705487364833; 
+ Wed, 17 Jan 2024 02:29:24 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
  ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- u14-20020a0cec8e000000b0068173c2ff1fsm1056819qvo.78.2024.01.17.02.29.08
+ u14-20020a0cec8e000000b0068173c2ff1fsm1056819qvo.78.2024.01.17.02.29.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 02:29:09 -0800 (PST)
-Message-ID: <2cad020f-73b4-48ac-87ab-6ed965fe4cf5@redhat.com>
-Date: Wed, 17 Jan 2024 11:29:08 +0100
+ Wed, 17 Jan 2024 02:29:24 -0800 (PST)
+Message-ID: <cbc47c6f-c752-48a1-a620-d95e20746162@redhat.com>
+Date: Wed, 17 Jan 2024 11:29:22 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] intel_iommu: Reset vIOMMU after all the rest of
- devices
+Subject: Re: [PATCH 3/4] intel_iommu: Tear down address spaces before IOMMU
+ reset
 Content-Language: en-US
 To: peterx@redhat.com, qemu-devel@nongnu.org
 Cc: "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
  Alex Williamson <alex.williamson@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>
 References: <20240117091559.144730-1-peterx@redhat.com>
+ <20240117091559.144730-4-peterx@redhat.com>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20240117091559.144730-1-peterx@redhat.com>
+In-Reply-To: <20240117091559.144730-4-peterx@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,45 +114,37 @@ Hi Peter,
 On 1/17/24 10:15, peterx@redhat.com wrote:
 > From: Peter Xu <peterx@redhat.com>
 >
-> There're issue reported that when syetem_reset the VM with an intel iommu
-system_reset
-> device and MT2892 PF(mlx5_core driver), the host kernel throws DMAR error.
->
->   https://issues.redhat.com/browse/RHEL-7188
->
-> Alex quickly spot a possible issue on ordering of device resets.
->
-> It's verified by our QE team then that it is indeed the root cause of the
-> problem.  Consider when vIOMMU is reset before a VFIO device in a system
-> reset: the device can be doing DMAs even if the vIOMMU is gone; in this
-> specific context it means the shadow mapping can already be completely
-> destroyed.  Host will see these DMAs as malicious and report.
-That's curious we did not get this earlier?
->
-> To fix it, we'll need to make sure all devices under the vIOMMU device
-> hierachy will be reset before the vIOMMU itself.  There's plenty of trick
-> inside, one can get those by reading the last patch.
-Not sure what you meant here ;-)
->
-> I didn't check other vIOMMUs, but this series should fix the issue for VT-d
-> as of now.  The solution can be slightly ugly, but a beautiful one can be
-> very non-trivial.
->
-> Review comments welcomed, thanks.
+> No bug report for this, but logically tearing down of existing address
+> space should happen before reset of IOMMU state / registers, because the
+> current address spaces may still rely on those information.
+do you mean that vtd_address_space_refresh_all() implementation my rely
+on data reset by vtd_init()?
+
+By the way the comment before the function is a bit confusing because it
+says that we should not reset as when reset but isn't it was it done here?
+
 Thanks
 
 Eric
 >
-> Peter Xu (4):
->   reset: qemu_register_reset_one()
->   reset: Allow multiple stages of system resets
->   intel_iommu: Tear down address spaces before IOMMU reset
->   intel_iommu: Reset vIOMMU at the last stage of system reset
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  hw/i386/intel_iommu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
->  include/sysemu/reset.h |  5 ++++
->  hw/core/reset.c        | 67 ++++++++++++++++++++++++++++++------------
->  hw/i386/intel_iommu.c  | 56 +++++++++++++++++++++++++++++++++--
->  3 files changed, 107 insertions(+), 21 deletions(-)
->
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index 1a07faddb4..8b467cbbd2 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -4090,8 +4090,8 @@ static void vtd_reset(DeviceState *dev)
+>  {
+>      IntelIOMMUState *s = INTEL_IOMMU_DEVICE(dev);
+>  
+> -    vtd_init(s);
+>      vtd_address_space_refresh_all(s);
+> +    vtd_init(s);
+>  }
+>  
+>  static AddressSpace *vtd_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
 
 
