@@ -2,85 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B756E830B70
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 17:49:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E84F9830B9D
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 18:01:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ95l-0007ts-MY; Wed, 17 Jan 2024 11:48:41 -0500
+	id 1rQ9GE-0004Jl-DH; Wed, 17 Jan 2024 11:59:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rQ95j-0007sk-J3
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:48:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rQ95h-0002YJ-M0
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:48:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705510114;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MEJxPoL1rBUcNmHCjC8b6uEbkkQZKtfQv7MmC3gECek=;
- b=b2nTO4YWu/GCb1Gs9oR19sluyutulJRvn6LoFjawAqNu5JP1AZqF1bcqRl4V5hUIQ3v1bI
- pTaB4igOnlS+fK2292ZRufHQL9kLjrB5TIMNesK/owYrxUA0loY08Wyy9zFV3Bl4z3EIrU
- myzbjUJUnVgXkDD7ISLshbkvTHKCks0=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113--NKXwm6VNQ29MjiKnnEjLA-1; Wed, 17 Jan 2024 11:48:32 -0500
-X-MC-Unique: -NKXwm6VNQ29MjiKnnEjLA-1
-Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-5c659339436so3959846a12.2
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 08:48:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rQ9GB-0004Eq-Kg
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:59:27 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rQ9G9-0005Xi-Dz
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:59:27 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6da4a923b1bso6015887b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 08:59:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1705510764; x=1706115564; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AfGbZNXZF2L17UTNsZoCl7lmljeE4/g6Bo4wgNOWovo=;
+ b=nW8Dm8lR5iV58xdCCgf76XraLGYVCWqQqCfqSeAvOct2t/Mp4F+lg40xi7FIJLy5TK
+ s0FT3WT4YHvOxEH+36EwGQDfuthizFywNhnlVSt0H7pp5apWjFlwCoqTDUhhAa6LK+Aj
+ mt7qFDHbLsIsbejQTHItkKPN9Y74cwGr5XATPy8FajrSq93Cox3GA1W3XrVtC4OCe356
+ Rti/xoIz5rXN6q283N9TcmtTMwhk5vQHynVXWHzCxrHRObOJ0cxV9pVYhX+NyJQcgTjM
+ jcA48xW+SoXqaUQnrPEoU1om6RXNOMFlx00mZzGThxxuRRoxMI8Nk6FWw4J1AiCIqXo7
+ FKvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705510112; x=1706114912;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MEJxPoL1rBUcNmHCjC8b6uEbkkQZKtfQv7MmC3gECek=;
- b=gu4C53RNc+TNpGqmE9gBADRYudgXJtOdS4xXZ5v3FBZr1zNCh95+4KSPFJv3A3KTV7
- 7+xPlJdU4v2jqjOvPzrvjpTOdCVY6efHoihXRky/j1xqTD38EUtOGyB4nRAerGUaw/Df
- ZajBmVuI/vqeiLWeclozZt3zh13vw3F1lN4EhH0EhbnzrcjLhVp+GFrWp9NbpsiBHFo3
- 3srIxuc0/RlbYU3HlepcierKXGJgQ0NsPv24jIenj/F4gputFU2Vb0EEaJxYOc5QS6Ci
- 35KcAqmJYppFH4U+eDgB9YB6mo/Rwgt+dey76k3MfLXJF8+Lz/2DRnt+/UeGlLH3X7qw
- e6cw==
-X-Gm-Message-State: AOJu0YwFKNL56vxKwOmEF0inmCdjidS6BDbjx8LkCQqvaKtdoY0BoFrf
- pmCKshSDlAm77vzlgeTnYS2cwfAodKQZXUhX9PMLjEX8XOF5hKKgF2O63Ss/mqzUExVoxh1cNwS
- bMgwwTwnPkOsUyZHuL0qMYrE5m8CjpMtO6v2PZSA=
-X-Received: by 2002:a17:90b:2302:b0:28f:ef6c:784d with SMTP id
- mt2-20020a17090b230200b0028fef6c784dmr1359369pjb.71.1705510111868; 
- Wed, 17 Jan 2024 08:48:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGIhe9Q8/3naa6QKWgWWaE3QniFqsj0bZFrHT6E+M9ASXOKoPURvPa1Xcjv9J25h3awK0m2tLUmoUYAEuCF66A=
-X-Received: by 2002:a17:90b:2302:b0:28f:ef6c:784d with SMTP id
- mt2-20020a17090b230200b0028fef6c784dmr1359360pjb.71.1705510111591; Wed, 17
- Jan 2024 08:48:31 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705510764; x=1706115564;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AfGbZNXZF2L17UTNsZoCl7lmljeE4/g6Bo4wgNOWovo=;
+ b=I4r2HJhEAKodR28u3qGAvCWvjubZVrxGfKYP4Va2VOtPelbKxPUWAB7N9pxUoNdU+l
+ fVZy2vGZXpdW8PB4t5+tPgMqOY+Ai3msSSoLVGNdkRUMP3xOrGAIBS8Ja+9BdKpdbjsZ
+ oiQaQ/2lH1cO6wZDtoQbK+rg84xsJZjUc/UcZNUHzO4fohynUo9b0CBxuWquQ8/NPzGX
+ b1NZw5MuvOlGDSgQoVJCy8prbKfleFXR+B2/G4DnPGLms8Vtx6+X0SVyFD/x5f2J1Ayi
+ HKs/+Oo0KTSLKxpkJsHlnTKfLm3kseLMJTqh5ZqPaEkZ8pzbfeDZh4dEFGCkl8HHbgO3
+ Pbaw==
+X-Gm-Message-State: AOJu0Yx829szqcfm/+DITD8V/wx9VJLZcVkDG1XSj2+OCdlfqlh7Vml8
+ TO0ZEeZjPAl18gOCcLDN48sR8MBdqO9GVQ==
+X-Google-Smtp-Source: AGHT+IHZw9HzWK72XXVMrCC7iTewBNb4GzGnHXJk18zI9IoFiobMfjj9styR5bZNmoa3PhQlczGvNg==
+X-Received: by 2002:a05:6a20:6f0e:b0:19b:5c69:d2dd with SMTP id
+ gt14-20020a056a206f0e00b0019b5c69d2ddmr1295541pzb.70.1705510764075; 
+ Wed, 17 Jan 2024 08:59:24 -0800 (PST)
+Received: from [192.168.68.110] ([152.234.127.133])
+ by smtp.gmail.com with ESMTPSA id
+ kq17-20020a056a004b1100b006d9330a934dsm1665841pfb.64.2024.01.17.08.59.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Jan 2024 08:59:23 -0800 (PST)
+Message-ID: <6f3a2208-e3dc-43fd-9783-0fad9f76c470@ventanamicro.com>
+Date: Wed, 17 Jan 2024 13:59:19 -0300
 MIME-Version: 1.0
-References: <20240112222945.3033854-1-jsnow@redhat.com>
- <20240112222945.3033854-12-jsnow@redhat.com>
- <87le8ptqv7.fsf@pond.sub.org>
-In-Reply-To: <87le8ptqv7.fsf@pond.sub.org>
-From: John Snow <jsnow@redhat.com>
-Date: Wed, 17 Jan 2024 11:48:20 -0500
-Message-ID: <CAFn=p-YuZhn5tBBvkTeDvFH+Sgt0knnpjcJb003FX1FUsBnrXw@mail.gmail.com>
-Subject: Re: [PATCH v2 11/19] qapi/schema: fix QAPISchemaArrayType.check's
- call to resolve_type
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>, 
- Peter Maydell <peter.maydell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] Export debug triggers as an extension
+To: Rob Bradford <rbradford@rivosinc.com>,
+ Alistair Francis <alistair23@gmail.com>
+Cc: Himanshu Chauhan <hchauhan@ventanamicro.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, Alvin Chang <alvinga@andestech.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Andrew Jones <ajones@ventanamicro.com>
+References: <20240110040203.1920924-1-hchauhan@ventanamicro.com>
+ <e2763db2-fade-482d-b433-1bfce6acf7d3@ventanamicro.com>
+ <CAKmqyKOA6OtixYoMJ_qtXj_u0t6rMdHawg0VEvq3-=mK4q6_XQ@mail.gmail.com>
+ <3c091744cd4bafeb7c1d177455fa9789822e7209.camel@rivosinc.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <3c091744cd4bafeb7c1d177455fa9789822e7209.camel@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,39 +100,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 16, 2024 at 7:17=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
-m> wrote:
->
-> John Snow <jsnow@redhat.com> writes:
->
-> > Adjust the expression at the callsite to eliminate weak type
-> > introspection that believes this value can resolve to QAPISourceInfo; i=
-t
-> > cannot.
->
-> What do you mean by "weak type introspection"?  mypy being underpowered?
 
-Yeah, s'what I meant.
 
->
-> > Signed-off-by: John Snow <jsnow@redhat.com>
-> > ---
-> >  scripts/qapi/schema.py | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-> > index 35638c7708a..43af756ed47 100644
-> > --- a/scripts/qapi/schema.py
-> > +++ b/scripts/qapi/schema.py
-> > @@ -403,7 +403,7 @@ def check(self, schema):
-> >          super().check(schema)
-> >          self.element_type =3D schema.resolve_type(
-> >              self._element_type_name, self.info,
-> > -            self.info and self.info.defn_meta)
-> > +            self.info.defn_meta if self.info else None)
-> >          assert not isinstance(self.element_type, QAPISchemaArrayType)
-> >
-> >      def set_module(self, schema):
->
+On 1/12/24 10:34, Rob Bradford wrote:
+> On Fri, 2024-01-12 at 13:52 +1000, Alistair Francis wrote:
+>> On Thu, Jan 11, 2024 at 5:20 AM Daniel Henrique Barboza
+>> <dbarboza@ventanamicro.com> wrote:
+>>>
+>>> Himanshu,
+>>>
+>>> We spoke offline but let's make everyone aware:
+>>>
+>>> - 'sdtrig' should be marked with 'x-' and be an experimental
+>>> extension since
+>>> the spec isn't yet frozen;
+>>>
+>>> - Alvin sent a patch to the ML adding the 'mcontext' CSR for
+>>> 'sdtrig' some time
+>>> ago:
+>>>
+>>> "[PATCH v2] target/riscv: Implement optional CSR mcontext of debug
+>>> Sdtrig extension"
+>>>
+>>> It would be good to put his patch on top of this series to ease the
+>>> review for everyone.
+>>> The changes done in patch 2 would also be applicable to the
+>>> mcontext CSR;
+>>>
+>>>
+>>> - last but probably the most important: the existing 'debug' flag
+>>> seems to be acting as
+>>> the actual 'sdtrig' extension due to how the flag is gating trigger
+>>> code, e.g.:
+>>>
+>>>     if (cpu->cfg.debug) {
+>>>           riscv_trigger_realize(&cpu->env);
+>>>       }
+>>>
+>>> and
+>>>
+>>>       if (cpu->cfg.debug) {
+>>>           riscv_trigger_reset_hold(env);
+>>>       }
+>>>
+>>>
+>>> If that's really the case, all the checks with cpu->cfg.debug will
+>>> need to also include
+>>> cpu->cfg.ext_sdtrig (one or the other). And now we'll have to make
+>>> an option: do we leave
+>>> the debug triggers (i.e. the 'debug' flag) as always enabled?
+>>
+>>  From memory the "debug" property is for the original debug spec:
+>> https://github.com/riscv/riscv-debug-spec/releases/tag/task_group_vote
+>>
+>> That was ratified and is an official extension. AFAIK this is what is
+>> in physical hardware as well.
+>>
+>> The actual PDF says draft though, I'm not sure what's going on there.
+>>
+>> The debug spec doesn't have a Z* name, so it's just "debug", at least
+>> AFAIK.
+>>
+>> "sdtrig" seems to be a new backwards-incompatible extension doing
+>> basically the same thing. What a mess
+>>
+>>>
+>>> If it's up to me I would make 'debug' as default 'false' and
+>>> deprecate it. Users will need
+>>
+>> I don't think that's the right approach. It's a ratified extension
+>> that we are supporting and is in hardware. I think we are stuck
+>> supporting it
+>>
+>>
+> 
+> I've done a bit of digging and I agree things are quite messy. Here are
+> my discoveries:
+> 
+> The debug option and the code for triggers was added in these commits:
+> 
+> c9711bd778 target/riscv: cpu: Enable native debug feature
+> 38b4e781a4 target/riscv: machine: Add debug state description
+> b6092544fc target/riscv: csr: Hook debug CSR read/write
+> 1acdb3b013 target/riscv: cpu: Add a config option for native debug
+> 95799e36c1 target/riscv: Add initial support for the Sdtrig extension
+> 
+> In March 2022 - since the commit refers to the Sdtrig extension name
+> and from the date this was an implementation not of the ratified 0.13
+> debug spec (which did not have Sdtrig as a separate extension) but
+> rather a version of the in development 1.0 debug spec.
+> 
+> It's not trivial to tell if it's closer to the ratified 0.13 version or
+> the (hopefully soon to be frozen) 1.0 version.
+> 
+> As the only part of the debug specification to be implemented is the
+> triggers then effectively the debug option is x-sdtrig.
+> 
+> I don't think there is any way for code running on the machine to
+> identify what version of the debug is implemented - the appropriate
+> register is only available for external debug. Once 1.0 is frozen then
+> the presence of Sdtrig isa string would indicate 1.0 trigger support is
+> available.
+> 
+> According to JIRA - https://jira.riscv.org/browse/RVS-981 the debug
+> specification should freeze this month.
+> 
+> How about considering this as a solution:
+> 
+> - Add a new x-sdtrig option that defaults to false
+> - Deprecate debug option - but retain it with default on
+> - Add warning if triggers are used and x-sdtrig is not enabled
+> - Update the trigger implementation to match frozen spec
 
+If x-sdtrig is 'false' and 'debug' is on, and then we warn if debug=true and x-sdtrig
+is false, we'll warn every time using the defaults.
+
+Given what you said here:
+
+> 
+> There is potentially a chance that some use cases will be broken but I
+> don't think triggers are being widely use - the SBI support only just
+> got merged:
+> https://github.com/riscv-software-src/opensbi/commit/97f234f15c9657c6ec69fa6ed745be8107bf6a> 
+
+I believe we can deprecate 'debug' and simply ignore its existence. Do everything else with
+x-sdtrig. So if an user sets any 'debug' value we'll:
+
+- warn that the flag is deprecated
+- set x-sdtrig to whatever value the user set to 'debug'
+
+'debug' will become just an alternate way to set x-sdtrig. The logic should just check for
+x-sdtrig.
+
+
+Thanks,
+
+
+Daniel
+   
+
+> Hope this is helpful,
+> 
+> Rob
+> 
 
