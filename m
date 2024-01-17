@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E44A8307AE
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:13:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FB28307AD
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:13:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ6ev-0004h6-NX; Wed, 17 Jan 2024 09:12:49 -0500
+	id 1rQ6f3-0004od-66; Wed, 17 Jan 2024 09:12:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQ6et-0004fm-Qp; Wed, 17 Jan 2024 09:12:47 -0500
-Received: from mail-il1-x131.google.com ([2607:f8b0:4864:20::131])
+ id 1rQ6f1-0004kb-0C; Wed, 17 Jan 2024 09:12:55 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQ6es-0002lj-41; Wed, 17 Jan 2024 09:12:47 -0500
-Received: by mail-il1-x131.google.com with SMTP id
- e9e14a558f8ab-3606dda206aso57612395ab.3; 
- Wed, 17 Jan 2024 06:12:45 -0800 (PST)
+ id 1rQ6ex-0002na-RT; Wed, 17 Jan 2024 09:12:54 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6dac8955af0so6355766b3a.0; 
+ Wed, 17 Jan 2024 06:12:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705500764; x=1706105564; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705500770; x=1706105570; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZtUlfVC/CoXaXLT7OI7+r07dsTnTE47z6bChDQn+KEY=;
- b=PIy4AylvYzOlNRC+CB0Jt7q4zp2XwfoQ0t/ks8WQ6oN/6BIpCao83J+jEFGAT2NT3F
- 9/qhgmIM6PLx0yUKF/U3VGkSKZNpEqJciEK+HH+smkjhxNUUQZkG3wr/GJjrO9+jhV0x
- QxFvwYn8VIDeiE3RyZ8a+E6rUloMkjl+4kL8SUZOp9jjF2IA/M8cDVL6pkJHj8ThINR/
- FUME4VXmJ9RpFbK49L8bCtqt89qgBjwHkp6+BhB0FVeqV8dsPldpQyo0HExtwz+U2hhZ
- AUl+ympthsY+xwoPgmLnX0GnfoTDBz4VnL31kwcbAkgfwaWTJbahLCXtGX1IwNylXVk+
- 2v/w==
+ bh=24tQcxqPqeU/relh2eghfjT90bWoGXR7lUeha6JIv0o=;
+ b=NK9OOPPVkk7t0ognlxR7Wio0yOxHCDTXxVw4dnmzNRdxB2/2HaAIXhXATwOOqI6fwQ
+ 48H/rQSaSYCTgCciOij+7ko11jNid0VerUqsJJJ06iMfkcGNIh50IxAFWy1cBE0TpsvR
+ wd0dtsDiVqv05yBkWBZYqIQld0MMDpTnXMdpUzrxlZIzkB3FhI9HOGrKR+cMo/rmfH0e
+ kIE9KWZhNqrlrrGLqCcmB30t3A+jKKHUCJJnl6CHXjDuYbqVKsWR9iRjMv9/SdQ2YHei
+ luW8zfbwi3h6LUBM7yrvBI6aheOFh7whzSOemB6mCGkW9lUAqppXUsFblFnvoooaFx0Q
+ VaCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705500764; x=1706105564;
+ d=1e100.net; s=20230601; t=1705500770; x=1706105570;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZtUlfVC/CoXaXLT7OI7+r07dsTnTE47z6bChDQn+KEY=;
- b=gBZj7qpsIJICPwZVurMEB7Xh7c36STlBpmXMXqREIBA/QcWC034bjeutXmcw6UzU4I
- FJPrqkWxi7Jy0unZfbLp4Sf3nVIbULr0fEdFhhdsgeQVcBJeWuocgD9g/IVW9qcTdZat
- gQu5UUrtcyX+japroEFvUOc29lJ5E4xkPpaMBoPLemshu6Qq4wF5iQQOi7NciaQS0Xor
- Nrk7+k+R4bXk+9ft9Vgyjp1aSNEGXX0Has+gBblC7e3uOzjW6cGnwRSQttrxb9h/Z/R+
- KozAAYJvnBB3XgPIWgEIgn8659K/iWNKMW4DxExUGhz4HT9Xf4s/l7o608XbPlyBfVE0
- jL+A==
-X-Gm-Message-State: AOJu0YzM3U4j4T88l43Kh61dD2fOip1mnYWklSLmfX/H1NXRqiQN5QGH
- ZseYE65zNLdUDku1sKrLQEpW8fiBDs4=
-X-Google-Smtp-Source: AGHT+IHHBpGNESDzp2UNWd1vJ/+Wg0p0UkOfoJ6XcN/QAX79xGtTCdZ4PZQGGHA3PY3gKZUZbduWKg==
-X-Received: by 2002:a92:c561:0:b0:35f:f02f:8fe4 with SMTP id
- b1-20020a92c561000000b0035ff02f8fe4mr12470425ilj.43.1705500764208; 
- Wed, 17 Jan 2024 06:12:44 -0800 (PST)
+ bh=24tQcxqPqeU/relh2eghfjT90bWoGXR7lUeha6JIv0o=;
+ b=ojivvfybj1t8hjzy9rOqCPiPcvHVSsxV6/fXbFPWdSDmAtYs6lBJDqiRGm2lPATosh
+ UcMNIKjar6l6EKjrZ12T+zJQfmha9M2abwZxkb1fJvNFXVe0UHDIMsMid8KYyH8vMGyW
+ 05DLQgxsG2gRotZaZAAMCri0V+KVg5s9GQXamwLZPVPq0Y9EWsF/ogr/elbzk8TRTKf7
+ nNQkP+k+aTS0ngoUs5QyoX/idBTjiOu90wYB6AG4JEwvZVGfFF49J2cZEIHyyyPbqtmG
+ 9NUJtVmFiIoZ57lbrHN2xSPvFclu2+dVhe32G7w8DEX+vf99OoSkG126x3eskAm4JRAM
+ Fq2A==
+X-Gm-Message-State: AOJu0Yz8SXyOCql71iORZA604LNsqoAnUMcVppAO95jjct/Y11SJ5szb
+ 4i0kKNzoYMtzQscCh/SMsDBygqUn9SY=
+X-Google-Smtp-Source: AGHT+IHkx5dYI2jcp4eJk4GKngvt63wyWQixHNQduzSYm3H//fA+0SC1/5MYmsagVIf6ch4OeNiF5w==
+X-Received: by 2002:a05:6a20:ce4d:b0:19a:e502:1624 with SMTP id
+ id13-20020a056a20ce4d00b0019ae5021624mr2999987pzb.10.1705500769627; 
+ Wed, 17 Jan 2024 06:12:49 -0800 (PST)
 Received: from wheely.local0.net (124-171-76-150.tpgi.com.au. [124.171.76.150])
  by smtp.gmail.com with ESMTPSA id
- i136-20020a636d8e000000b005cebb10e28fsm11812428pgc.69.2024.01.17.06.12.39
+ i136-20020a636d8e000000b005cebb10e28fsm11812428pgc.69.2024.01.17.06.12.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jan 2024 06:12:43 -0800 (PST)
+ Wed, 17 Jan 2024 06:12:49 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -66,18 +66,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  qemu-ppc@nongnu.org
-Subject: [PATCH v2 1/8] tests/avocado: mark boot_linux.py long runtime instead
- of flaky
-Date: Thu, 18 Jan 2024 00:12:16 +1000
-Message-ID: <20240117141224.90462-2-npiggin@gmail.com>
+Subject: [PATCH v2 2/8] tests/avocado: Mark x86-64 boot_linux.py TCG tests as
+ long runtime
+Date: Thu, 18 Jan 2024 00:12:17 +1000
+Message-ID: <20240117141224.90462-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240117141224.90462-1-npiggin@gmail.com>
 References: <20240117141224.90462-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::131;
- envelope-from=npiggin@gmail.com; helo=mail-il1-x131.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,81 +99,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ppc64 and s390x tests were first marked skipIf GITLAB_CI by commit
-c0c8687ef0f ("tests/avocado: disable BootLinuxPPC64 test in CI"), and
-commit 0f26d94ec9e ("tests/acceptance: skip s390x_ccw_vrtio_tcg on
-GitLab") due to being very heavy-weight for gitlab CI.
+Re-testing gitlab CI shows the ppc64 and s390x boot_linux tests take
+100-150 seconds each. The x86-64 TCG tests take a similar ~100s each,
+and are the longest-running avocado tests in gitlab.
+From avocado-system-centos:
 
-Commit 9b45cc99318 ("docs/devel: rationalise unstable gitlab tests under
-FLAKY_TESTS") changed this to being flaky but it isn't really, it just
-had a long runtime.
+  boot_linux.py:BootLinuxX8664.test_pc_i440fx_tcg:  PASS (112.34 s)
+  boot_linux.py:BootLinuxX8664.test_pc_q35_tcg:  PASS (97.05 s)
+  boot_linux.py:BootLinuxPPC64.test_pseries_tcg:  PASS (148.86 s)
+  boot_linux.py:BootLinuxS390X.test_s390_ccw_virtio_tcg:  PASS (149.83 s)
 
-So take the SPEED=slow variable from qtests and introduce it to avocado,
-and make these tests require it.
+So mark the x86-64 tests as SPEED=slow as well.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- docs/devel/testing.rst      | 11 +++++++++++
- tests/avocado/boot_linux.py |  8 ++------
- 2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
-index bd132306c1..5cdc23b90f 100644
---- a/docs/devel/testing.rst
-+++ b/docs/devel/testing.rst
-@@ -1346,6 +1346,17 @@ the environment.
- The definition of *large* is a bit arbitrary here, but it usually means an
- asset which occupies at least 1GB of size on disk when uncompressed.
- 
-+SPEED
-+^^^^^
-+Tests which have a long runtime will not be run unless ``SPEED=slow`` is
-+exported on the environment.
-+
-+The definition of *long* is a bit arbitrary here, and it depends on the
-+usefulness of the test too. A unique test is worth spending more time on,
-+small variations on existing tests perhaps less so. As a rough guide,
-+a test or set of similar tests which take more than 100 seconds to
-+complete.
-+
- AVOCADO_ALLOW_UNTRUSTED_CODE
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- There are tests which will boot a kernel image or firmware that can be
+The other way we could go is enabling them all since ppc64 and s390s are
+now much faster than when they were originally disabled; or to only
+enable q35, giving at least one boot_linux.py test.
+
+[https://gitlab.com/npiggin/qemu/-/jobs/5842257510 for results]
+---
+ tests/avocado/boot_linux.py | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
+
 diff --git a/tests/avocado/boot_linux.py b/tests/avocado/boot_linux.py
-index 7c4769904e..de4c8805f7 100644
+index de4c8805f7..7c9cf6ae15 100644
 --- a/tests/avocado/boot_linux.py
 +++ b/tests/avocado/boot_linux.py
-@@ -93,13 +93,11 @@ class BootLinuxPPC64(LinuxTest):
+@@ -14,6 +14,9 @@
  
-     timeout = 360
+ from avocado import skipUnless
  
--    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
--
++# We don't run TCG tests in CI, as booting the current Fedora OS in TCG tests
++# is very heavyweight (~100s per test). There are lighter weight distros which
++# we use in the machine_aarch64_virt.py, tux_baseline.py, etc.
+ 
+ class BootLinuxX8664(LinuxTest):
+     """
+@@ -21,6 +24,7 @@ class BootLinuxX8664(LinuxTest):
+     """
+     timeout = 480
+ 
 +    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
+     def test_pc_i440fx_tcg(self):
+         """
+         :avocado: tags=machine:pc
+@@ -39,6 +43,7 @@ def test_pc_i440fx_kvm(self):
+         self.vm.add_args("-accel", "kvm")
+         self.launch_and_wait(set_up_ssh_connection=False)
+ 
++    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
+     def test_pc_q35_tcg(self):
+         """
+         :avocado: tags=machine:q35
+@@ -58,9 +63,6 @@ def test_pc_q35_kvm(self):
+         self.launch_and_wait(set_up_ssh_connection=False)
+ 
+ 
+-# For Aarch64 we only boot KVM tests in CI as booting the current
+-# Fedora OS in TCG tests is very heavyweight. There are lighter weight
+-# distros which we use in the machine_aarch64_virt.py tests.
+ class BootLinuxAarch64(LinuxTest):
+     """
+     :avocado: tags=arch:aarch64
+@@ -84,14 +86,11 @@ def test_virt_kvm(self):
+         self.launch_and_wait(set_up_ssh_connection=False)
+ 
+ 
+-# See the tux_baseline.py tests for almost the same coverage in a lot
+-# less time.
+ class BootLinuxPPC64(LinuxTest):
+     """
+     :avocado: tags=arch:ppc64
+     """
+-
+-    timeout = 360
++    timeout = 480
+ 
+     @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
      def test_pseries_tcg(self):
-         """
-         :avocado: tags=machine:pseries
-         :avocado: tags=accel:tcg
--        :avocado: tags=flaky
-         """
-         self.require_accelerator("tcg")
-         self.vm.add_args("-accel", "tcg")
-@@ -113,13 +111,11 @@ class BootLinuxS390X(LinuxTest):
- 
-     timeout = 240
- 
--    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
+@@ -108,8 +107,7 @@ class BootLinuxS390X(LinuxTest):
+     """
+     :avocado: tags=arch:s390x
+     """
 -
-+    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
+-    timeout = 240
++    timeout = 480
+ 
+     @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
      def test_s390_ccw_virtio_tcg(self):
-         """
-         :avocado: tags=machine:s390-ccw-virtio
-         :avocado: tags=accel:tcg
--        :avocado: tags=flaky
-         """
-         self.require_accelerator("tcg")
-         self.vm.add_args("-accel", "tcg")
 -- 
 2.42.0
 
