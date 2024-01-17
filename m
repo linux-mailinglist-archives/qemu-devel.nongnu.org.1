@@ -2,92 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C934B830414
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:02:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3145183042B
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:06:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ3gX-0002bG-Al; Wed, 17 Jan 2024 06:02:17 -0500
+	id 1rQ3jr-0003uV-CJ; Wed, 17 Jan 2024 06:05:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rQ3gV-0002ar-Jd
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 06:02:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rQ3gT-0008OV-8D
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 06:02:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705489321;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=a43VCGzEZLsAOXrSgqbKHHU5IKciDQXp51n6UHcVEUM=;
- b=jUKw3DxXfloGLF0A8nZU08fYWZ2WXq52PwMVDwgyz3vap7lgHQWOWOvIGFAUS59Zt19htz
- o1ae2qnumik/PFQZd7sFiA3Ak7IoZGYaxRw4kZ6BYIVqXH436fdFAtzD/3S2l3/DXrEazj
- hLTq7aDGnJrg/9sAkPLM9GhaUujluDw=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-487-c_cfBJCHPVSuJftZjHd2Eg-1; Wed, 17 Jan 2024 06:01:59 -0500
-X-MC-Unique: c_cfBJCHPVSuJftZjHd2Eg-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7832a94b051so1071349185a.2
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 03:01:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rQ3ji-0003u6-By; Wed, 17 Jan 2024 06:05:34 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rQ3jg-0000aC-6j; Wed, 17 Jan 2024 06:05:34 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5534dcfdd61so19228975a12.0; 
+ Wed, 17 Jan 2024 03:05:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1705489529; x=1706094329; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=aTMbsHsrO4MrYT6vSy6ZhZxs09701ZYspzOhmvylig0=;
+ b=ZjiRG/Ah53Q1q7UrPwgDojfmyI7RSZk32x1uLKjARNBORdhCI/H5GVVjwN6YhEZ1LN
+ /WiCY99+gqxs5OMF+DaIvat9a7jgQb0iltbWXPhvv9ShKObfjV+uob9K/xwwNYX4pS83
+ Iiu2abqiUzVYayiIpJECgFGg99mimUQJYdeKaIqNX6BflwHuxBS8N2dSfbUy8K/+4oWg
+ taE+6egB7xHCdtTDEWxraH2oX72uQo7aVG4Jg3trF8LTsk8vj3vb+VZ1UlIzjfL4LcJ1
+ toqLdLq7nFpaznSN7iseAS3tueyPy+6lPpVCFrDEM41/4fFZwf2kSEeaspX3j019AnG+
+ qw4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705489319; x=1706094119;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a43VCGzEZLsAOXrSgqbKHHU5IKciDQXp51n6UHcVEUM=;
- b=H/1qUtfD8ECkBfBAurhHndhBhiEWxUXbHQw0Em3lL/CfquaHOvsiI6yNbl5KE1irC5
- 4ekO+7O9/ESjKahic+5F4/r5bCNQedlPXbe3CHhHfPbxvHvxGtupRh+GgpO0ykubXjPe
- bDt1sZaxlaGSooeihc3oY+kNzrSKizkgXD5VgJP0oVVpjZmOjb+nRThtlxBXeiWD9YJV
- 90cLApVvT5NxzSRCTapgQqFeCbokm1l3+6/Jn8LRdeTBzmpDy4/6CcpZzfFDybyAjp/Y
- S5ZbQMrn6Ayr6qktM6AY0tvDWrNKXKzLGIITaYR2mM5fbFA14FNnNt876u/s2+n99QeY
- ly/Q==
-X-Gm-Message-State: AOJu0YxgqWEPSPgjhkk0FXOnHvf73ntl3a18PSSr8GmVJrlpKVO8W01C
- N5ofQC3uLeqk2GiuLLgi7J1SeTrXPaLOONTOifqh/9GPt21MXffrM0SVMSIkD4q5os2ALyzTTWO
- qXhFl88APlqdQWFijeFnXeSU=
-X-Received: by 2002:ae9:c20d:0:b0:783:7618:4c4c with SMTP id
- j13-20020ae9c20d000000b0078376184c4cmr277447qkg.139.1705489319074; 
- Wed, 17 Jan 2024 03:01:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF7bv5iIA/GJvjPM5W5Owr6FesmB7iCqpRzE5rvHYiJn4soAGlWNf+M7noHfvaxUVochMUT/Q==
-X-Received: by 2002:ae9:c20d:0:b0:783:7618:4c4c with SMTP id
- j13-20020ae9c20d000000b0078376184c4cmr277432qkg.139.1705489318817; 
- Wed, 17 Jan 2024 03:01:58 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- d1-20020a37c401000000b00783189b0aeasm4423920qki.46.2024.01.17.03.01.57
+ d=1e100.net; s=20230601; t=1705489529; x=1706094329;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=aTMbsHsrO4MrYT6vSy6ZhZxs09701ZYspzOhmvylig0=;
+ b=w1eSaYZMWj9QuAyJaIqBiTpFiMDgGFnoTQwYKSxxJfCKbevKgMAG03iL8cGbfSYpjS
+ ILPKvDThidmhmmFwi0vYoIP9Neo1KDmYPE5dB3vO6KnhmRRwnGirFYfl9lr3ve4aDgDo
+ SfDP+sx64rXlZmnfDkcgQiqgb5hbNikaLEQAnQjBTm+DCENThFSv2iHZYVRCAAhyZ/I7
+ yE3E6BB7jI+lh4hncrvp7sQiMrrJX+rCImW8bbcirZVLE1jUtmhwSkH7uaZjCZxq7QlR
+ lfei46HVTiOhLZJLCDBy4/g5MXkbpATQuRIFoJ+lKJknc7i6BGPQGrclncpDAKd97uRF
+ JFHQ==
+X-Gm-Message-State: AOJu0YzXi3iIzJUpikKTgaHlijatUCOnq3+XfldCpOdqx26xKP0K9y+J
+ CAAaPJSxRFK4/XivhxzWkn0DduW1Fk8=
+X-Google-Smtp-Source: AGHT+IEHrRia/UkLpmAPBMrhUYru/zQGXDVqbNUklo1gn0/+IewEJZv+RVs7CLT6DxNrY9RJk/jYvQ==
+X-Received: by 2002:a05:6402:2052:b0:558:b89d:8e39 with SMTP id
+ bc18-20020a056402205200b00558b89d8e39mr720307edb.37.1705489528778; 
+ Wed, 17 Jan 2024 03:05:28 -0800 (PST)
+Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
+ v21-20020a50a455000000b005527c02c1d6sm8254309edb.50.2024.01.17.03.05.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 03:01:58 -0800 (PST)
-Message-ID: <66735e9f-a4fb-474f-abec-6c83d36f921e@redhat.com>
-Date: Wed, 17 Jan 2024 12:01:56 +0100
+ Wed, 17 Jan 2024 03:05:27 -0800 (PST)
+Date: Wed, 17 Jan 2024 11:05:20 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ Guenter Roeck <linux@roeck-us.net>
+CC: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Beniamino Galvani <b.galvani@gmail.com>, 
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>, qemu-arm@nongnu.org,
+ Alexander Graf <agraf@csgraf.de>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: =?US-ASCII?Q?Re=3A_Re=3A_=5BPATCH_1/3=5D_hw/arm=3A_Add_EHCI/OHCI_co?=
+ =?US-ASCII?Q?ntrollers_to_Allwinner_R40_and_Bananapi_board?=
+In-Reply-To: <ccs4nfcdm7e5iek2enycw4echbyny2okstx4pg2es7pggjlgld@5vftyjpgfot2>
+References: <20240113191651.1313226-1-linux@roeck-us.net>
+ <20240113191651.1313226-2-linux@roeck-us.net>
+ <56f692d8-41b1-4126-96b9-80d274624984@linaro.org>
+ <56fde49f-7dc6-4f8e-9bbf-0336a20a9ebf@roeck-us.net>
+ <ccs4nfcdm7e5iek2enycw4echbyny2okstx4pg2es7pggjlgld@5vftyjpgfot2>
+Message-ID: <51F3A473-7A20-4C0C-BDF1-98D839E56A0F@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] s390x/pci: drive ISM reset from subsystem reset
-Content-Language: en-US
-To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, thuth@redhat.com, frankja@linux.ibm.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>
-References: <20240116223157.73752-1-mjrosato@linux.ibm.com>
- <20240116223157.73752-4-mjrosato@linux.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20240116223157.73752-4-mjrosato@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,122 +102,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adding Alex,
-
-On 1/16/24 23:31, Matthew Rosato wrote:
-> ISM devices are sensitive to manipulation of the IOMMU, so the ISM device
-> needs to be reset before the vfio-pci device is reset (triggering a full
-> UNMAP).  In order to ensure this occurs, trigger ISM device resets from
-> subsystem_reset before triggering the PCI bus reset (which will also
-> trigger vfio-pci reset).  This only needs to be done for ISM devices
-> which were enabled for use by the guest.
-> Further, ensure that AIF is disabled as part of the reset event.
-> 
-> Fixes: ef1535901a ("s390x: do a subsystem reset before the unprotect on reboot")
-> Fixes: 03451953c7 ("s390x/pci: reset ISM passthrough devices on shutdown and system reset")
-> Reported-by: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
-> ---
->   hw/s390x/s390-pci-bus.c         | 26 +++++++++++++++++---------
->   hw/s390x/s390-virtio-ccw.c      |  2 ++
->   include/hw/s390x/s390-pci-bus.h |  1 +
->   3 files changed, 20 insertions(+), 9 deletions(-)
-> 
-> diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-> index 347580ebac..3e57d5faca 100644
-> --- a/hw/s390x/s390-pci-bus.c
-> +++ b/hw/s390x/s390-pci-bus.c
-> @@ -151,20 +151,12 @@ static void s390_pci_shutdown_notifier(Notifier *n, void *opaque)
->       pci_device_reset(pbdev->pdev);
->   }
->   
-> -static void s390_pci_reset_cb(void *opaque)
-> -{
-> -    S390PCIBusDevice *pbdev = opaque;
-> -
-> -    pci_device_reset(pbdev->pdev);
-> -}
-> -
->   static void s390_pci_perform_unplug(S390PCIBusDevice *pbdev)
->   {
->       HotplugHandler *hotplug_ctrl;
->   
->       if (pbdev->pft == ZPCI_PFT_ISM) {
->           notifier_remove(&pbdev->shutdown_notifier);
-> -        qemu_unregister_reset(s390_pci_reset_cb, pbdev);
->       }
->   
->       /* Unplug the PCI device */
-> @@ -1132,7 +1124,6 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
->               if (pbdev->pft == ZPCI_PFT_ISM) {
->                   pbdev->shutdown_notifier.notify = s390_pci_shutdown_notifier;
->                   qemu_register_shutdown_notifier(&pbdev->shutdown_notifier);
-> -                qemu_register_reset(s390_pci_reset_cb, pbdev);
->               }
->           } else {
->               pbdev->fh |= FH_SHM_EMUL;
-> @@ -1279,6 +1270,23 @@ static void s390_pci_enumerate_bridge(PCIBus *bus, PCIDevice *pdev,
->       pci_default_write_config(pdev, PCI_SUBORDINATE_BUS, s->bus_no, 1);
->   }
->   
-> +void s390_pci_ism_reset(void)
-> +{
-> +    S390pciState *s = s390_get_phb();
-> +
-> +    S390PCIBusDevice *pbdev, *next;
-> +
-> +    /* Trigger reset event for each passthrough ISM device currently in-use */
-> +    QTAILQ_FOREACH_SAFE(pbdev, &s->zpci_devs, link, next) {
-> +        if (pbdev->interp && pbdev->pft == ZPCI_PFT_ISM &&
-> +            pbdev->fh & FH_MASK_ENABLE) {
-> +            s390_pci_kvm_aif_disable(pbdev);
-> +
-> +            pci_device_reset(pbdev->pdev);
-> +        }
-> +    }
-> +}
 
 
-Could we instead define a VFIOPCIDevice::resetfn handler for these
-ISM devices (1014:04ed) ? This would be cleaner if possible.
+Am 16=2E Januar 2024 10:13:37 UTC schrieb Gerd Hoffmann <kraxel@redhat=2Ec=
+om>:
+>On Mon, Jan 15, 2024 at 08:12:29AM -0800, Guenter Roeck wrote:
+>> On 1/15/24 03:02, Philippe Mathieu-Daud=C3=A9 wrote:
+>> > On 13/1/24 20:16, Guenter Roeck wrote:
+>> > > If machine USB support is not enabled, create unimplemented devices
+>> > > for the USB memory ranges to avoid crashes when booting Linux=2E
+>> >=20
+>> > I never really understood the reason for machine_usb() and had on my
+>> > TODO to do some archeology research to figure it out since quite some
+>> > time=2E Having to map an UnimpDevice due to CLI options seems like an
+>> > anti-pattern when the device is indeed implemented in the repository=
+=2E
+>>=20
+>> Me not either=2E I copied the code from aw_a10_init(), trying to use th=
+e
+>> same pattern=2E I am perfectly fine with making it unconditional, but t=
+hen
+>> I would argue that it should be unconditional for Allwinner A10 as well
+>> (not that I really care much, just for consistency)=2E
+>>=20
+>> The "-usb" option says "enable on-board USB host controller (if not
+>> enabled by default)"=2E Unfortunately, that doesn't tell me much,
+>> and most specifically it doesn't tell me how to enable it by default=2E
+>> One option I can think of would be to enable it on the machine level,
+>> i=2Ee=2E, from bananapi_m2u=2Ec, but then, again, I don't see if/how
+>> that is done for other boards=2E Any suggestions ?
+>
+>The -usb switch is there as long as I remember (which goes back to qemu
+>0=2E1x days)=2E  I suspect it was introduced in the early usb emulation
+>days, where usb emulation was more fragile and turning it on by default
+>didn't look like a good plan=2E
+>
+>usb emulation in modern qemu should be stable enough that enabling it by
+>default should not be much of a problem=2E  ohci/uhci/ehci emulation is
+>somewhat expensive due to polling being wired into the hardware design,
+>but as long as there are no usb devices connected this should not be
+>much of a concern either as the guest drivers usually put the usb host
+>adapter to sleep in that case (which saves power on physical hardware
+>and stops the polling timer in qemu)=2E
+>
+>So, turning on usb support by default makes sense to me when emulating
+>boards, where guests expect the usb controllers being present at
+>specific MMIO addresses, so mapping UnimpDevice is not needed=2E
 
-If so, as a prerequisite, we would need to introduce in a little VFIO
-helper to define custom reset handlers.
+Good idea, this might make upstreaming my VIA-south-bridges-in-the-pc-mach=
+ine work simpler=2E
 
-Thanks,
+>
+>In case guests detect hardware via generated device tree / generated
+>ACPI tables / pci bus scan (i=2Ee=2E arm virt + microvm + pc + q35) it IM=
+HO
+>makes sense to keep current behavior=2E
 
-C.
+I remember similar discussions with Phil during PIIX consolidation where t=
+he motivation was to make the code simpler by removing options=2E That is, =
+if a piece of silicon contains multiple functions, the QEMU model should al=
+ways instantiate all (available) functions rather than providing options fo=
+r cherry-picking=2E
 
+Especially in highly integrated devices (such as south bridges) there migh=
+t be interconnections between functions that are hard to handle when some a=
+re optional=2E For example, the ACPI function in the VIA south bridges dete=
+ct activity from all other functions=2E In both PIIX and VIA, the USB funct=
+ion can be (de)activated by software from the ISA function (not implemented=
+ yet)=2E
 
+The latter would allow the current behavior of the pc machine(s) to be imp=
+lemented while avoiding the cherry picking problem: The BIOS could switch t=
+he USB function on or off depending on fw_cfg (please correct me if I'm wro=
+ng)=2E I think this would't even need compat machinery=2E Of course, suppor=
+t would need to be added in SeaBIOS and -- I guess -- Tianocore=2E I'd like=
+ to look into that but, as usual, no guarantees when this will arrive=2E
 
+Best regards,
+Bernhard
 
-> +
->   static void s390_pcihost_reset(DeviceState *dev)
->   {
->       S390pciState *s = S390_PCI_HOST_BRIDGE(dev);
-> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> index 1169e20b94..4de04f7e9f 100644
-> --- a/hw/s390x/s390-virtio-ccw.c
-> +++ b/hw/s390x/s390-virtio-ccw.c
-> @@ -118,6 +118,8 @@ static void subsystem_reset(void)
->       DeviceState *dev;
->       int i;
->   
-> +    s390_pci_ism_reset();
-> +
->       for (i = 0; i < ARRAY_SIZE(reset_dev_types); i++) {
->           dev = DEVICE(object_resolve_path_type("", reset_dev_types[i], NULL));
->           if (dev) {
-> diff --git a/include/hw/s390x/s390-pci-bus.h b/include/hw/s390x/s390-pci-bus.h
-> index 435e788867..2c43ea123f 100644
-> --- a/include/hw/s390x/s390-pci-bus.h
-> +++ b/include/hw/s390x/s390-pci-bus.h
-> @@ -401,5 +401,6 @@ S390PCIBusDevice *s390_pci_find_dev_by_target(S390pciState *s,
->                                                 const char *target);
->   S390PCIBusDevice *s390_pci_find_next_avail_dev(S390pciState *s,
->                                                  S390PCIBusDevice *pbdev);
-> +void s390_pci_ism_reset(void);
->   
->   #endif
-
+>
+>take care,
+>  Gerd
+>
+>
 
