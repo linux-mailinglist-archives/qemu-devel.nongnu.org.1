@@ -2,70 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE21A830ABA
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 17:14:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD1C830B11
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 17:31:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ8Xg-0002oT-D1; Wed, 17 Jan 2024 11:13:28 -0500
+	id 1rQ8nM-0006tG-SJ; Wed, 17 Jan 2024 11:29:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQ8Xe-0002mf-2P
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:13:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rQ8nK-0006sI-Jf
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:29:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQ8Xc-0001Ju-Pf
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:13:25 -0500
+ (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rQ8nJ-000531-4v
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:29:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705508004;
+ s=mimecast20190719; t=1705508976;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=iHamPQ65HDyrSljte1Xx1td3eL0KovyaYhgNg9YB8Ik=;
- b=QEjoK6E7BNnVVsSncg48adIV6CuCPWFmufnNDElcp73n+5Mq7xR4gYysB/x0hkz68Rt/iW
- XOY8OOAs+o0pP44GRzvTOV/PZfs2nvTXZjb/gkIraWxekzwsaeglab0zt2Zfb4i4qZbCQV
- uiJ0xsVftj0sVnn3jjQl3An3h9Oxl8M=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rkyNsJCwFGqJTPhySJfa88JUu1UflHNy/NLPsLpoA3A=;
+ b=fgtnriViNFuWkCG3HHVJSTIW01CLBC/M67DdCtQErOzmW7wgjndYFmaNXpUQW6QeGvwwzR
+ AsjKlGAr/q9UOQgswfNW7owrv+eeFC1oyvBPhBdzQdVf511GgTv2HrpfY2jgu9ZvVn9kx3
+ AvYuygkUmTgXof2jk7e6EWUt7xJzCsM=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-MByo9WEfMSO7AY6CmjAMdg-1; Wed, 17 Jan 2024 11:13:20 -0500
-X-MC-Unique: MByo9WEfMSO7AY6CmjAMdg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 79217800076;
- Wed, 17 Jan 2024 16:13:20 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.192.200])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 56E35492BC6;
- Wed, 17 Jan 2024 16:13:19 +0000 (UTC)
-Date: Wed, 17 Jan 2024 17:13:18 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Michael Roth <michael.roth@amd.com>, qemu-block@nongnu.org,
- Fiona Ebner <f.ebner@proxmox.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH 1/3] iotests: add filter_qmp_generated_node_ids()
-Message-ID: <Zaf8npvl1ideUgtF@redhat.com>
-References: <20240116190042.1363717-1-stefanha@redhat.com>
- <20240116190042.1363717-2-stefanha@redhat.com>
+ us-mta-330-GxsfgPZPPXK_D8JZy-5JYQ-1; Wed, 17 Jan 2024 11:29:34 -0500
+X-MC-Unique: GxsfgPZPPXK_D8JZy-5JYQ-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-42987be5d14so149308431cf.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 08:29:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705508974; x=1706113774;
+ h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rkyNsJCwFGqJTPhySJfa88JUu1UflHNy/NLPsLpoA3A=;
+ b=ElHSDz4SOrN95YH+Ztqe2RT4la1GXrCl8oC1JCwr8kTSoUV5piDyR7irTHZABG2PzY
+ R+NTg0T4M1jNHws8XxE6jbqLV3LgmTjEa5HRGPMt5BdGHAZbredtS16C3BkEx/lZSRQI
+ lR02E7EttSRqjcy4PxitLpU7m8JVDtm7YsMeeQ1uo8k4WoxTRgBG7MM+vHBq+1JBqPNl
+ kmIgqgYqL/P0kew2Q3irD3yW9ujaO7gKZqvtZTNB0o08iBa4bSLBqYC2Cr1tPJaLNcFz
+ NhzfoAjKzys4y/wyu0qbWKtkjS4pqfdyxINFxH1Tr1pwxnGDqk0eFQlXroGxSOk6QedY
+ Db+w==
+X-Gm-Message-State: AOJu0YxxXCePPYqDmuZhd0PeUo1CSpPvCKnLR+kA+CN0dYVsXXYkBomW
+ gxl9WXz9LlzZTYLNpciNuU+H3amES06tLJcl9DKuPkFUQNv3a30LBzHL0TTYO1M8h7BcWo58pqO
+ 1JezYfvCrXkQ+KrrOFNYkVzQ=
+X-Received: by 2002:a05:622a:291:b0:42a:ccf:9f85 with SMTP id
+ z17-20020a05622a029100b0042a0ccf9f85mr2081553qtw.130.1705508974482; 
+ Wed, 17 Jan 2024 08:29:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFmlmbNMod+UjUJxjrvx7sc+Nzs2mXpWaJhW4PSvRl+e+9dFXoXA9RoTWAn/W/svgXJQBX8CQ==
+X-Received: by 2002:a05:622a:291:b0:42a:ccf:9f85 with SMTP id
+ z17-20020a05622a029100b0042a0ccf9f85mr2081544qtw.130.1705508974279; 
+ Wed, 17 Jan 2024 08:29:34 -0800 (PST)
+Received: from rh (p200300c93f0273004f0fe90936098834.dip0.t-ipconnect.de.
+ [2003:c9:3f02:7300:4f0f:e909:3609:8834])
+ by smtp.gmail.com with ESMTPSA id
+ eq23-20020a05622a5e1700b0042992b06012sm5998976qtb.2.2024.01.17.08.29.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Jan 2024 08:29:34 -0800 (PST)
+Date: Wed, 17 Jan 2024 17:29:30 +0100 (CET)
+From: Sebastian Ott <sebott@redhat.com>
+To: Eric Auger <eauger@redhat.com>
+cc: Shaoqin Huang <shahuang@redhat.com>, qemu-arm@nongnu.org, 
+ Gavin Shan <gshan@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
+ kvm@vger.kernel.org
+Subject: Re: [PATCH v5] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
+In-Reply-To: <852ee2a3-b69f-4480-a6f4-f2b274f5e01c@redhat.com>
+Message-ID: <36a1efb3-2538-c339-d627-843e7d2b6541@redhat.com>
+References: <20240115080144.44944-1-shahuang@redhat.com>
+ <852ee2a3-b69f-4480-a6f4-f2b274f5e01c@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240116190042.1363717-2-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sebott@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,15 +99,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 16.01.2024 um 20:00 hat Stefan Hajnoczi geschrieben:
-> Add a filter function for QMP responses that contain QEMU's
-> automatically generated node ids. The ids change between runs and must
-> be masked in the reference output.
-> 
-> The next commit will use this new function.
-> 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+On Wed, 17 Jan 2024, Eric Auger wrote:
+> On 1/15/24 09:01, Shaoqin Huang wrote:
+>> +    /*
+>> +     * The filter only needs to be initialized through one vcpu ioctl and it
+>> +     * will affect all other vcpu in the vm.
+>> +     */
+>> +    if (pmu_filter_init) {
+> I think I commented on that on the v4. Maybe I missed your reply. You
+> sure you don't need to call it for each vcpu?
 
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+From (kernel) commit d7eec2360e3 ("KVM: arm64: Add PMU event filtering
+infrastructure"):
+   Note that although the ioctl is per-vcpu, the map of allowed events is
+   global to the VM (it can be setup from any vcpu until the vcpu PMU is
+   initialized).
+
+Sebastian
 
 
