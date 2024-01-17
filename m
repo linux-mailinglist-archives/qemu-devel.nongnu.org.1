@@ -2,93 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996678309F9
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 16:46:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBFC7830A11
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 16:53:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ86M-0001ev-NE; Wed, 17 Jan 2024 10:45:14 -0500
+	id 1rQ8Dk-0004Cx-2C; Wed, 17 Jan 2024 10:52:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rQ86J-0001ef-6v
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:45:11 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rQ8Dh-0004CY-RK
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:52:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rQ86H-00042R-4c
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:45:10 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rQ8Df-0005ne-KU
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:52:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705506307;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=SHNvBAfIhmSz+dWZk79EbMxpakGwaYh03jXcsiG5qpU=;
- b=XnOLSlpFHIp/AjDTUCtZAm94rRLbQY18rSKeMKtm+yVRtYYTmWSXTBy+bkm22vTnzcPJRd
- 5q5/8UMqwF+o/v+etRy2NdNam0E5JoUUxDJ1WEPdIHXwJf9pV25O3c+mjsPBCqfkUW0cmZ
- S/KZFRf5RXRnK65gZ5kjfZOibbn0amY=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1705506766;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=HJFY3PJquz/0Xc0cG6TXdlkZyJldA+TnIjzzCjv69fw=;
+ b=VW8HOAz/NR5TxZLGo6IgqG71eCjrgbRlKdAmX4b6CLaacFcKfUCy7azfkQHr0vSzHp0aju
+ GW4XMYs5rP2s8n0oPeI2uk8X8xJJR0XnGy6z2MlOD8fv35sr7W8nDUewnPCgNseUTFjS4p
+ 8Tt9Q2ctdQeJMyoRCreDEuoDo2MzsHY=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-274-UqQoHGK3O2CWgRoGs7v0ig-1; Wed, 17 Jan 2024 10:45:05 -0500
-X-MC-Unique: UqQoHGK3O2CWgRoGs7v0ig-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-4297db4eba1so120611831cf.2
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 07:45:05 -0800 (PST)
+ us-mta-608-0BGBo-iHOhelWh84uiGPNw-1; Wed, 17 Jan 2024 10:52:43 -0500
+X-MC-Unique: 0BGBo-iHOhelWh84uiGPNw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a2e6fb4c24eso93347066b.2
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 07:52:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705506305; x=1706111105;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1705506761; x=1706111561;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=SHNvBAfIhmSz+dWZk79EbMxpakGwaYh03jXcsiG5qpU=;
- b=fMPCqnYaROV/8o9jV8t5FgSgeL4T2gLdkKplcEwadZ4Wl0UTvaRrUXnA8YcpKn3K3r
- feOM3vZPSxqWe/WzQwJXpMziBAeFtrtOzPeIIX+JPvXabPvsbLh3/D/wNxzPpWMyo+XF
- DI2Meh2yZ5IfGL6n3m2DIeAaKPdUTnS6bDXcqBc5gs1suRwKWDjdLqhu1ydc7xLc2OuO
- 579KzNAjCTjfK8Zg8XR6U7jsdEhgeEORBwvtn/K5cyhpD7ZSQ9swBCqJjlhBPyX42l/l
- wKCY6YjQmC6CGjcDryFXYzTOaEeQWBxMEGYXf9B1fEiPKFFkQPvbqrf0QqyrCA4u2E5C
- pIQw==
-X-Gm-Message-State: AOJu0Yx8FNNfiTB/m0xdujrPbWPjmef12z1rTYsK9iZULU2Ogw1ZVsGK
- CbET8BDYdH2EeI3Z7Hut7nFPnec7Od56/hjqrGif3TtebOOp5X2O29ZGXTGwzPhVRQ2GO+lD0D+
- c/ZcZifQtShbjin8NUV1+DHU=
-X-Received: by 2002:ac8:7e83:0:b0:42a:77a:b95e with SMTP id
- w3-20020ac87e83000000b0042a077ab95emr2915095qtj.99.1705506305325; 
- Wed, 17 Jan 2024 07:45:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEabsLkHPBUx2yj8005rcs8TUcbamkkhup4nwLLQacRyqb3gvBrEd1tB9/Vj7BerfxQBL+0QA==
-X-Received: by 2002:ac8:7e83:0:b0:42a:77a:b95e with SMTP id
- w3-20020ac87e83000000b0042a077ab95emr2915085qtj.99.1705506304997; 
- Wed, 17 Jan 2024 07:45:04 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ bh=HJFY3PJquz/0Xc0cG6TXdlkZyJldA+TnIjzzCjv69fw=;
+ b=tEIxZ9wcmkzkRByEyzs6wrdceplX9Q8MT/0dKU2s170HrtCn2AqIA+mkfhL+/YW/Gb
+ HK2K54xqK9/t/bfrNFoIm9nHhiChmfCsQN1JCicE4i7HIthrD57H9/NCwJNPdhW7lopX
+ MQov5TxDh5YTkke6eqDVO0HDbZUKY/6AhkZ6UK3XJe2Lpz9aJ/LgRsK0x1xSIL8JbvKL
+ ZY6E46fnhmWKzrUrOIXmIFXbQMh6jgHRQUwoOqQd0EOfBQtfIPoIugxIhUMhfH//zixq
+ MIvOhumSuX2Ie2d1PR7REw4oGV7Sq13HJHI0cI0Ku5BjyWzAF7UyXXJsdub5Har2EOFA
+ fRjA==
+X-Gm-Message-State: AOJu0Yx6Pj8htxM2snI7kOSPhwYuRvPb2e+Jpm/zrmWkdV6iHjvLsG/d
+ BfakjJZ8J58E4CRbqrfjH+y7fbcoGsgNvoudVGzI1d2g9BBi+34bdapBGopD5OlOYBgKGvANNpl
+ Fcjc9wI8UPYB+sCa93fCX9HS7OcPsX0OWYGljlNAgn1yUwO5AUg6h0UI8wYNZKYFE8ADiCKgRm/
+ SZPVCVyB4=
+X-Received: by 2002:a17:906:348b:b0:a2c:ad93:2e79 with SMTP id
+ g11-20020a170906348b00b00a2cad932e79mr4161084ejb.15.1705506761032; 
+ Wed, 17 Jan 2024 07:52:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFs5+DR5B8fya8fOqxsWKQoHLwVJ82nv4A166ca3G/06b+5ovemqQ/hNTz9ECTpN7ZBm1P82A==
+X-Received: by 2002:a17:906:348b:b0:a2c:ad93:2e79 with SMTP id
+ g11-20020a170906348b00b00a2cad932e79mr4161073ejb.15.1705506760652; 
+ Wed, 17 Jan 2024 07:52:40 -0800 (PST)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- eh18-20020a05622a579200b00425b3fd33f2sm5887965qtb.90.2024.01.17.07.45.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 07:45:03 -0800 (PST)
-Message-ID: <4db1ddc3-efef-47ff-bc34-4cb3eb3fc5e9@redhat.com>
-Date: Wed, 17 Jan 2024 16:44:59 +0100
+ h16-20020a170906399000b00a28a66028bcsm7936381eje.91.2024.01.17.07.51.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Jan 2024 07:52:01 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH] target/i386: pcrel: store low bits of physical address in
+ data[0]
+Date: Wed, 17 Jan 2024 16:51:43 +0100
+Message-ID: <20240117155143.172890-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rfcv1 3/6] intel_iommu: add set/unset_iommu_device callback
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun
- <yi.y.sun@linux.intel.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20240115101313.131139-1-zhenzhong.duan@intel.com>
- <20240115101313.131139-4-zhenzhong.duan@intel.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20240115101313.131139-4-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
@@ -96,7 +84,7 @@ X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,178 +97,103 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhenzhong,
+For PC-relative translation blocks, env->eip changes during the
+execution of a translation block, Therefore, QEMU must be able to
+recover an instruction's PC just from the TranslationBlock struct and
+the instruction data with.  Because a TB will not span two pages, QEMU
+stores all the low bits of EIP in the instruction data and replaces them
+in x86_restore_state_to_opc.  Bits 12 and higher (which may vary between
+executions of a PCREL TB, since these only use the physical address in
+the hash key) are kept unmodified from env->eip.  The assumption is that
+these bits of EIP, unlike bits 0-11, will not change as the translation
+block executes.
 
-On 1/15/24 11:13, Zhenzhong Duan wrote:
-> From: Yi Liu <yi.l.liu@intel.com>
->
-> This adds set/unset_iommu_device() implementation in Intel vIOMMU.
-> In set call, IOMMUFDDevice is recorded in hash table indexed by
-> PCI BDF.
->
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->  include/hw/i386/intel_iommu.h | 10 +++++
->  hw/i386/intel_iommu.c         | 79 +++++++++++++++++++++++++++++++++++
->  2 files changed, 89 insertions(+)
->
-> diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-> index 7fa0a695c8..c65fdde56f 100644
-> --- a/include/hw/i386/intel_iommu.h
-> +++ b/include/hw/i386/intel_iommu.h
-> @@ -62,6 +62,7 @@ typedef union VTD_IR_TableEntry VTD_IR_TableEntry;
->  typedef union VTD_IR_MSIAddress VTD_IR_MSIAddress;
->  typedef struct VTDPASIDDirEntry VTDPASIDDirEntry;
->  typedef struct VTDPASIDEntry VTDPASIDEntry;
-> +typedef struct VTDIOMMUFDDevice VTDIOMMUFDDevice;
->  
->  /* Context-Entry */
->  struct VTDContextEntry {
-> @@ -148,6 +149,13 @@ struct VTDAddressSpace {
->      IOVATree *iova_tree;
->  };
->  
-> +struct VTDIOMMUFDDevice {
-> +    PCIBus *bus;
-> +    uint8_t devfn;
-> +    IOMMUFDDevice *idev;
-> +    IntelIOMMUState *iommu_state;
-> +};
-> +
-Just wondering whether we shouldn't reuse the VTDAddressSpace to store
-the idev, if any. How have you made your choice. What will it become
-when PASID gets added?
->  struct VTDIOTLBEntry {
->      uint64_t gfn;
->      uint16_t domain_id;
-> @@ -292,6 +300,8 @@ struct IntelIOMMUState {
->      /* list of registered notifiers */
->      QLIST_HEAD(, VTDAddressSpace) vtd_as_with_notifiers;
->  
-> +    GHashTable *vtd_iommufd_dev;             /* VTDIOMMUFDDevice */
-> +
->      /* interrupt remapping */
->      bool intr_enabled;              /* Whether guest enabled IR */
->      dma_addr_t intr_root;           /* Interrupt remapping table pointer */
-> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> index ed5677c0ae..95faf697eb 100644
-> --- a/hw/i386/intel_iommu.c
-> +++ b/hw/i386/intel_iommu.c
-> @@ -237,6 +237,13 @@ static gboolean vtd_as_equal(gconstpointer v1, gconstpointer v2)
->             (key1->pasid == key2->pasid);
->  }
->  
-> +static gboolean vtd_as_idev_equal(gconstpointer v1, gconstpointer v2)
-> +{
-> +    const struct vtd_as_key *key1 = v1;
-> +    const struct vtd_as_key *key2 = v2;
-> +
-> +    return (key1->bus == key2->bus) && (key1->devfn == key2->devfn);
-> +}
->  /*
->   * Note that we use pointer to PCIBus as the key, so hashing/shifting
->   * based on the pointer value is intended. Note that we deal with
-> @@ -3812,6 +3819,74 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
->      return vtd_dev_as;
->  }
->  
-> +static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int32_t devfn,
-> +                                    IOMMUFDDevice *idev, Error **errp)
-> +{
-> +    IntelIOMMUState *s = opaque;
-> +    VTDIOMMUFDDevice *vtd_idev;
-> +    struct vtd_as_key key = {
-> +        .bus = bus,
-> +        .devfn = devfn,
-> +    };
-> +    struct vtd_as_key *new_key;
-> +
-> +    assert(0 <= devfn && devfn < PCI_DEVFN_MAX);
-> +
-> +    /* None IOMMUFD case */
-> +    if (!idev) {
-> +        return 0;
-> +    }
-> +
-> +    vtd_iommu_lock(s);
-> +
-> +    vtd_idev = g_hash_table_lookup(s->vtd_iommufd_dev, &key);
-> +
-> +    if (vtd_idev) {
-> +        error_setg(errp, "IOMMUFD device already exist");
-> +        return -1;
-> +    }
-> +
-> +    new_key = g_malloc(sizeof(*new_key));
-> +    new_key->bus = bus;
-> +    new_key->devfn = devfn;
-> +
-> +    vtd_idev = g_malloc0(sizeof(VTDIOMMUFDDevice));
-> +    vtd_idev->bus = bus;
-> +    vtd_idev->devfn = (uint8_t)devfn;
-> +    vtd_idev->iommu_state = s;
-> +    vtd_idev->idev = idev;
-> +
-> +    g_hash_table_insert(s->vtd_iommufd_dev, new_key, vtd_idev);
-> +
-> +    vtd_iommu_unlock(s);
-> +
-> +    return 0;
-> +}
-> +
-> +static void vtd_dev_unset_iommu_device(PCIBus *bus, void *opaque, int32_t devfn)
-> +{
-> +    IntelIOMMUState *s = opaque;
-> +    VTDIOMMUFDDevice *vtd_idev;
-> +    struct vtd_as_key key = {
-> +        .bus = bus,
-> +        .devfn = devfn,
-> +    };
-> +
-> +    assert(0 <= devfn && devfn < PCI_DEVFN_MAX);
-> +
-> +    vtd_iommu_lock(s);
-> +
-> +    vtd_idev = g_hash_table_lookup(s->vtd_iommufd_dev, &key);
-> +    if (!vtd_idev) {
-> +        vtd_iommu_unlock(s);
-> +        return;
-> +    }
-> +
-> +    g_hash_table_remove(s->vtd_iommufd_dev, &key);
-> +
-> +    vtd_iommu_unlock(s);
-> +}
-> +
->  /* Unmap the whole range in the notifier's scope. */
->  static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
->  {
-> @@ -4107,6 +4182,8 @@ static AddressSpace *vtd_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
->  
->  static PCIIOMMUOps vtd_iommu_ops = {
->      .get_address_space = vtd_host_dma_iommu,
-> +    .set_iommu_device = vtd_dev_set_iommu_device,
-> +    .unset_iommu_device = vtd_dev_unset_iommu_device,
->  };
->  
->  static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
-> @@ -4230,6 +4307,8 @@ static void vtd_realize(DeviceState *dev, Error **errp)
->                                       g_free, g_free);
->      s->vtd_address_spaces = g_hash_table_new_full(vtd_as_hash, vtd_as_equal,
->                                        g_free, g_free);
-> +    s->vtd_iommufd_dev = g_hash_table_new_full(vtd_as_hash, vtd_as_idev_equal,
-> +                                               g_free, g_free);
->      vtd_init(s);
->      pci_setup_iommu(bus, &vtd_iommu_ops, dev);
->      /* Pseudo address space under root PCI bus. */
-Thanks
+Unfortunately, this is incorrect when the CS base is not aligned to a page.
+Then the linear address of the instructions (i.e. the one with the
+CS base addred) indeed will never span two pages, but bits 12+ of EIP
+can actually change.  For example, if CS base is 0x80262200 and EIP =
+0x6FF4, the first instruction in the translation block will be at linear
+address 0x802691F4.  Even a very small TB will cross to EIP = 0x7xxx,
+while the linear addresses will remain comfortably within a single page.
 
-Eric
+The fix is simply to use the low bits of the linear address for data[0],
+since those don't change.  Then x86_restore_state_to_opc uses tb->cs_base
+to compute a temporary linear address (referring to some unknown
+instruction in the TB, but with the correct values of bits 12 and higher);
+the low bits are replaced with data[0], and EIP is obtained by subtracting
+again the CS base.
+
+Huge thanks to Mark Cave-Ayland for the image and initial debugging,
+and to Gitlab user @kjliew for help with bisecting another occurrence
+of (hopefully!) the same bug.
+
+It should be relatively easy to write a testcase that performs MMIO on
+an EIP with different bits 12+ than the first instruction of the translation
+block; any help is welcome.
+
+Fixes: e3a79e0e878 ("target/i386: Enable TARGET_TB_PCREL", 2022-10-11)
+Cc: qemu-stable@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1964
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2012
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/tcg/tcg-cpu.c   | 20 ++++++++++++++++----
+ target/i386/tcg/translate.c |  1 -
+ 2 files changed, 16 insertions(+), 5 deletions(-)
+
+diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
+index 6e881e9e276..fa956d35ecd 100644
+--- a/target/i386/tcg/tcg-cpu.c
++++ b/target/i386/tcg/tcg-cpu.c
+@@ -68,14 +68,26 @@ static void x86_restore_state_to_opc(CPUState *cs,
+     X86CPU *cpu = X86_CPU(cs);
+     CPUX86State *env = &cpu->env;
+     int cc_op = data[1];
++    uint64_t new_pc;
+ 
+     if (tb_cflags(tb) & CF_PCREL) {
+-        env->eip = (env->eip & TARGET_PAGE_MASK) | data[0];
+-    } else if (tb->flags & HF_CS64_MASK) {
+-        env->eip = data[0];
++        /*
++         * To ensure that bits 0..11 do not change across the translation block,
++         * PC-relative TBs use linear addresses, i.e. addresses that have the CS
++         * base added, for data[0].  Add the CS base back before replacing the
++         * low bits, and subtract it below just like for non-PC-relative TBs.
++         */
++        uint64_t pc = env->eip + tb->cs_base;
++        new_pc = (pc & TARGET_PAGE_MASK) | data[0];
+     } else {
+-        env->eip = (uint32_t)(data[0] - tb->cs_base);
++        new_pc = data[0];
+     }
++    if (tb->flags & HF_CS64_MASK) {
++        env->eip = new_pc;
++    } else {
++        env->eip = (uint32_t)(new_pc - tb->cs_base);
++    }
++
+     if (cc_op != CC_OP_DYNAMIC) {
+         env->cc_op = cc_op;
+     }
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index cadf13bce43..e193c74472b 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -6996,7 +6996,6 @@ static void i386_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
+ 
+     dc->prev_insn_end = tcg_last_op();
+     if (tb_cflags(dcbase->tb) & CF_PCREL) {
+-        pc_arg -= dc->cs_base;
+         pc_arg &= ~TARGET_PAGE_MASK;
+     }
+     tcg_gen_insn_start(pc_arg, dc->cc_op);
+-- 
+2.43.0
 
 
