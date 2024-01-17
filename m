@@ -2,103 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCAD282FEB0
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 03:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9511182FED3
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 03:31:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPvFR-0007X6-Ic; Tue, 16 Jan 2024 21:01:45 -0500
+	id 1rPvga-000409-UV; Tue, 16 Jan 2024 21:29:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1rPvFO-0007Wt-Nu; Tue, 16 Jan 2024 21:01:43 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPvgY-0003yT-1w
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 21:29:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1rPvFN-0004db-6h; Tue, 16 Jan 2024 21:01:42 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40H03m47017025; Wed, 17 Jan 2024 02:01:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=bHn1aWEwWbsVO388SUJL860c42gikuUfsg/DZn0q3Qc=;
- b=XXVk+uRMwRnsn5JPMky++veaa+LPYLy7kStDQYhUTllrnnOSa953HGGAAD6O0FAUEEIC
- bljKyx7E9b556TJZT3IXqzd01QRCu9PaLUo+Oemg5BTkg90IlsRqKBP+O6Jmef84d58J
- mMMiIUNbH+yXdMuTgRdehfs1HrcbfGofOoNZMG9lDRCOsNaCZhZYvljdTNUmQBaVVDvU
- U8vl95uvC4VOcy7NmaUA1Lo2r4NFD6UmGw6eihqE9aoFyhzHfEMWsYFTI1vOJMh7aHQO
- rHxI3a87GOEdeaCro6MWmgiN+KMldeawQMtEy/MQh3DEzVCX0IVxY4lnoBnLUXn2ENks yQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vp3us2sun-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Jan 2024 02:01:31 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40H1kqaf001591;
- Wed, 17 Jan 2024 02:01:31 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vp3us2stu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Jan 2024 02:01:31 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40H1J3j1023511; Wed, 17 Jan 2024 02:01:30 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm6bkjbch-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Jan 2024 02:01:30 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40H21TT049676778
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 Jan 2024 02:01:29 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 393E85803F;
- Wed, 17 Jan 2024 02:01:29 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C95C158054;
- Wed, 17 Jan 2024 02:01:27 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.107.253]) by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 17 Jan 2024 02:01:27 +0000 (GMT)
-Message-ID: <4782f4432c524234f599b18a50017855ed8b7a49.camel@linux.ibm.com>
-Subject: Re: [PATCH 2/3] s390x/pci: refresh fh before disabling aif
-From: Eric Farman <farman@linux.ibm.com>
-To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: thuth@redhat.com, clg@redhat.com, frankja@linux.ibm.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- qemu-devel@nongnu.org
-Date: Tue, 16 Jan 2024 21:01:27 -0500
-In-Reply-To: <20240116223157.73752-3-mjrosato@linux.ibm.com>
-References: <20240116223157.73752-1-mjrosato@linux.ibm.com>
- <20240116223157.73752-3-mjrosato@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rPvgW-0000Xe-A6
+ for qemu-devel@nongnu.org; Tue, 16 Jan 2024 21:29:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705458583;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=bZA7Og1ukVCTLBAVrdv/nRxMRRAD6YaeC16AeZ/jLYQ=;
+ b=SeuFpwv+CAvKWz0i6eiHpdfOB/aKziQ3liPhdjizyVx2Ys9PDsA7kY0YhzHedbE4/++g9j
+ KVjYhsG3j4H8FB/3IiGBgZl+XnxbwBWQmTv6zc4Ye2+1RuOlBV7dm0danbWD9gBdWF3rrn
+ xm/GCGCtBlGppbTPRHgYFm1qjavfrZA=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-692-SSkslTgUMuOw4vJ0-tl-4Q-1; Tue, 16 Jan 2024 21:29:40 -0500
+X-MC-Unique: SSkslTgUMuOw4vJ0-tl-4Q-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-28cb02a6027so1839294a91.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 18:29:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705458579; x=1706063379;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bZA7Og1ukVCTLBAVrdv/nRxMRRAD6YaeC16AeZ/jLYQ=;
+ b=b9yv0zDiGmMiltapqweDgJ0poFAXCT/JnbLhgG9AxXwe3PymZM3IDEqPsOls5/9YeY
+ ztvwHzu6D6l4gucCWR+5h2noBFFnNem821LMmSgA+JpvsiXveAfeVTGDL4+eOBfY145w
+ /641bEHjzSdmLi1ZZ8Fhnp3Wmh1uDSWHJPYU2L3lSQ+9CqR0GyimbPRC/vM8d3U2EBt6
+ 7p53NYVutaJGY7Ro3cfnfsR+wpV6viZ73lA2YMBSdZD3t+VmSPai6W5c3eFbeU5fPZxy
+ uLg8RboV6xeC+TseTBbxTFJJurBvXsVoumWbmklrmiVOPRj9Zyh8p+aVoR/2qnVg/LXV
+ /6sQ==
+X-Gm-Message-State: AOJu0YxfUScqQmzdEtl8akUTOQN8qXZmqAxbLhIoSVzptaitNZ9lyxbJ
+ 0Nwpj7vlf2mUo5o5+JrkeCeyE1Z7aK5DYUZc4jc+wi05SF1W2c7QlRsZA+nnV7xNslb7f8c+Iol
+ ZRFq7L/2Iso9DxNJ+EbaCIus=
+X-Received: by 2002:a05:6a20:43a3:b0:19b:20e7:d6b2 with SMTP id
+ i35-20020a056a2043a300b0019b20e7d6b2mr6259512pzl.3.1705458579661; 
+ Tue, 16 Jan 2024 18:29:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGxxIFea0khiDZ2bmSgOGJWCgwmaU8gGFQHVQJJhRa6A32EovEdLz7uv4+KkE8jYZ+Qy0Vjzw==
+X-Received: by 2002:a05:6a20:43a3:b0:19b:20e7:d6b2 with SMTP id
+ i35-20020a056a2043a300b0019b20e7d6b2mr6259502pzl.3.1705458579344; 
+ Tue, 16 Jan 2024 18:29:39 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ px8-20020a17090b270800b0028dc4b598b7sm14380872pjb.55.2024.01.16.18.29.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Jan 2024 18:29:38 -0800 (PST)
+Date: Wed, 17 Jan 2024 10:29:31 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Marc-Andre Lureau <marcandre.lureau@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH V2 03/11] migration: convert to NotifierWithReturn
+Message-ID: <Zac7i3GscXHjO-Qa@x1n>
+References: <1705071910-174321-1-git-send-email-steven.sistare@oracle.com>
+ <1705071910-174321-4-git-send-email-steven.sistare@oracle.com>
+ <ZaTURPKv4_tZtIBH@x1n>
+ <d12792a3-1d34-4819-9f95-5cbddbacf1a0@oracle.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AN3hGoO9kbw5p_xpt-9eVkQqjV60kvNJ
-X-Proofpoint-ORIG-GUID: NmLQCm05Ey84oXV6A4pAuYtu7kLXy2Q8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-16_14,2024-01-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- adultscore=0 bulkscore=0 priorityscore=1501 phishscore=0 suspectscore=0
- impostorscore=0 spamscore=0 mlxlogscore=767 lowpriorityscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401170011
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <d12792a3-1d34-4819-9f95-5cbddbacf1a0@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,22 +103,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2024-01-16 at 17:31 -0500, Matthew Rosato wrote:
-> Typically we refresh the host fh during CLP enable, however it's
-> possible
-> that the device goes through multiple reset events before the guest
-> performs another CLP enable.=C2=A0 Let's handle this for now by refreshin=
-g
-> the
-> host handle from vfio before disabling aif.
->=20
-> Fixes: 03451953c7 ("s390x/pci: reset ISM passthrough devices on
-> shutdown and system reset")
-> Reported-by: C=C3=A9dric Le Goater <clg@redhat.com>
-> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
-> ---
-> =C2=A0hw/s390x/s390-pci-kvm.c | 11 ++++++++++-
-> =C2=A01 file changed, 10 insertions(+), 1 deletion(-)
+On Tue, Jan 16, 2024 at 03:35:53PM -0500, Steven Sistare wrote:
+> On 1/15/2024 1:44 AM, Peter Xu wrote:
+> > On Fri, Jan 12, 2024 at 07:05:02AM -0800, Steve Sistare wrote:
+> >> Change all migration notifiers to type NotifierWithReturn, so notifiers
+> >> can return an error status in a future patch.  For now, pass NULL for the
+> >> notifier error parameter, and do not check the return value.
+> >>
+> >> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> >> ---
+> >>  hw/net/virtio-net.c            |  4 +++-
+> >>  hw/vfio/migration.c            |  4 +++-
+> >>  include/hw/vfio/vfio-common.h  |  2 +-
+> >>  include/hw/virtio/virtio-net.h |  2 +-
+> >>  include/migration/misc.h       |  6 +++---
+> >>  migration/migration.c          | 16 ++++++++--------
+> >>  net/vhost-vdpa.c               |  6 ++++--
+> >>  ui/spice-core.c                |  8 +++++---
+> >>  8 files changed, 28 insertions(+), 20 deletions(-)
+> >>
+> >> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+> >> index 7a2846f..9570353 100644
+> >> --- a/hw/net/virtio-net.c
+> >> +++ b/hw/net/virtio-net.c
+> >> @@ -3529,11 +3529,13 @@ static void virtio_net_handle_migration_primary(VirtIONet *n, MigrationState *s)
+> >>      }
+> >>  }
+> >>  
+> >> -static void virtio_net_migration_state_notifier(Notifier *notifier, void *data)
+> >> +static int virtio_net_migration_state_notifier(NotifierWithReturn *notifier,
+> >> +                                               void *data, Error **errp)
+> >>  {
+> >>      MigrationState *s = data;
+> >>      VirtIONet *n = container_of(notifier, VirtIONet, migration_state);
+> >>      virtio_net_handle_migration_primary(n, s);
+> >> +    return 0;
+> >>  }
+> > 
+> > I should have mentioned this earlier.. we have a trend recently to modify
+> > retval to boolean when Error** existed, e.g.:
+> > 
+> > https://lore.kernel.org/all/20231017202633.296756-5-peterx@redhat.com/
+> > 
+> > Let's start using boolean too here?  Previous patches may need touch-ups
+> > too for this.
+> > 
+> > Other than that it all looks good here.  Thanks,
+> 
+> Boolean makes sense when there is only one way to recover from failure.
+> However, when the notifier may fail in different ways, and recovery differs
+> for each, then the function should return an int errno.  NotifierWithReturn
+> could have future uses that need multiple return values and multiple recovery 
+> paths above the notifier_with_return_list_notify level, so IMO the function 
+> should continue to return int for generality.
 
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Ah ok.  Please then add a comment either in the commit message or code for
+that.  Thanks.
+
+-- 
+Peter Xu
+
 
