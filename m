@@ -2,60 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9FE6830A70
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 17:08:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B93C1830A9B
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 17:11:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ8Sa-0006m5-6v; Wed, 17 Jan 2024 11:08:13 -0500
+	id 1rQ8W0-00028C-Rv; Wed, 17 Jan 2024 11:11:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rQ8SO-0006UG-4U; Wed, 17 Jan 2024 11:08:00 -0500
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rQ8Vz-000282-9U
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:11:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rQ8SI-0000Go-S4; Wed, 17 Jan 2024 11:07:59 -0500
-Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:62a3:0:640:1524:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 8FD8C622AB;
- Wed, 17 Jan 2024 19:07:51 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b43a::1:2b])
- by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id c7sSt20Ih8c0-hTGHKQFL; Wed, 17 Jan 2024 19:07:50 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1705507670;
- bh=liPz+eyj6yyjB8pLBgydYqfPcqmYRyAOSKFDJlxHpYk=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=LaLyur0uLBckw262QUg000flqp/aFECAYzxFqQMTtsATTYsK15Apij2jqJtx4+zSm
- cHggAqWHRw4sLepXX5fxvNyI0mJOe0eovYfkYqI47RlneAW16QFy1HUDl9IvWwBbrl
- c5VGJed5Lcrms3cKkeXql/f+u3+nci1+lX4SUC8Y=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
- xiechanglong.d@gmail.com, wencongyang2@huawei.com, hreitz@redhat.com,
- kwolf@redhat.com, vsementsov@yandex-team.ru, jsnow@redhat.com,
- f.ebner@proxmox.com
-Subject: [PATCH v2 4/4] iotests: add backup-discard-source
-Date: Wed, 17 Jan 2024 19:07:37 +0300
-Message-Id: <20240117160737.1057513-5-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240117160737.1057513-1-vsementsov@yandex-team.ru>
-References: <20240117160737.1057513-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rQ8Vx-0000uL-Ns
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:11:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705507901;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Mg7AXnr0/YE59e4FnnWf9+zmM5NVtONlRbg+IDil1Sc=;
+ b=Zf8YD1nh0/Tvkc0TP7i5JviLLXKaClfUBqMSJtQwiDLesJU12cygHBRL7Od8n3K/M0tydl
+ YC2rdgeX4ljRCXhtBU5kH5E7bUJA6Kwk9EDYISEK0vUzoGKIUZjxnxu67RVKuU4O5Fg3yj
+ nXf+Ol/pDfAg9P0OTU+64sTesDX3L2o=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-691-ZBUunaw5PISTx9-lqScuTA-1; Wed, 17 Jan 2024 11:11:38 -0500
+X-MC-Unique: ZBUunaw5PISTx9-lqScuTA-1
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-1d4a645af79so128449985ad.3
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 08:11:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705507897; x=1706112697;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Mg7AXnr0/YE59e4FnnWf9+zmM5NVtONlRbg+IDil1Sc=;
+ b=polY6z3punkZz4TzispWl4r34VNgjckJyCDmTXhPKDuVNCmrqvEGgSDb9hzNLEdzg8
+ KBcZAqoMpQgSC3Bm7YrUX8agDLeom6z9+aNedV0/M+Zldr79mXBLTsMbo9H8nPbE/1Ap
+ nw61sWnS/JZRt88kb41hlAgQvvXXBo76Ax6YFgTld5hdGCfj5hUP0sUt8Bq6v3hGQIMr
+ vM3FREDweCGw8kFaToLyU9iwEubIU1cyh87nXWUkzJZUNjjU9UYABYFWxn+vkmyLeWzn
+ 0dMhT30X38UBLDy7p9Dfs0giB2ENJPQ6PnJZo0uQ8UVlnnlmjmKbevNdMl9Je6cuLETu
+ d3LQ==
+X-Gm-Message-State: AOJu0Yxu4HYQBiWsmFpAExfb55zLFk/+3jQGTqKcvWRrzTBiDtdYbKVv
+ kutF3wJpNb4woD0cJRI8iAMzt6Berzovs4cqkSiLd7UniRFDxvuP5+fNB/0+IhGMeSDRX7y/bua
+ jvGbZRRgHNWbJ3un++IHfhUIxMkqa6GZD53Kk2hk=
+X-Received: by 2002:a17:902:a585:b0:1d4:3e87:d446 with SMTP id
+ az5-20020a170902a58500b001d43e87d446mr9164869plb.127.1705507897407; 
+ Wed, 17 Jan 2024 08:11:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGEP02YGelCEG9llprYoyLdjC0xdzCULQZgTdwjeTPLLRnWMTb5nqPK31Fi491FtREBVbhZuYbj8BPCd6JWY3A=
+X-Received: by 2002:a17:902:a585:b0:1d4:3e87:d446 with SMTP id
+ az5-20020a170902a58500b001d43e87d446mr9164855plb.127.1705507897093; Wed, 17
+ Jan 2024 08:11:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20240112222945.3033854-1-jsnow@redhat.com>
+ <20240112222945.3033854-7-jsnow@redhat.com>
+ <87bk9mbso1.fsf@pond.sub.org>
+In-Reply-To: <87bk9mbso1.fsf@pond.sub.org>
+From: John Snow <jsnow@redhat.com>
+Date: Wed, 17 Jan 2024 11:11:26 -0500
+Message-ID: <CAFn=p-aws3+SvHEtcX47RpO5qK8L_dmq51RChKkSsxaLPYYawQ@mail.gmail.com>
+Subject: Re: [PATCH v2 06/19] qapi/schema: make c_type() and json_type()
+ abstract methods
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>, 
+ Peter Maydell <peter.maydell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,185 +96,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add test for a new backup option: discard-source.
+On Mon, Jan 15, 2024 at 9:03=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
+m> wrote:
+>
+> John Snow <jsnow@redhat.com> writes:
+>
+> > These methods should always return a str, it's only the default abstrac=
+t
+> > implementation that doesn't. They can be marked "abstract", which
+> > requires subclasses to override the method with the proper return type.
+> >
+> > Signed-off-by: John Snow <jsnow@redhat.com>
+> > ---
+> >  scripts/qapi/schema.py | 9 ++++++---
+> >  1 file changed, 6 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+> > index e45d9545eda..8e25dd35562 100644
+> > --- a/scripts/qapi/schema.py
+> > +++ b/scripts/qapi/schema.py
+> > @@ -16,6 +16,7 @@
+> >
+> >  # TODO catching name collisions in generated code would be nice
+> >
+> > +from abc import ABC, abstractmethod
+> >  from collections import OrderedDict
+> >  import os
+> >  import re
+> > @@ -253,10 +254,11 @@ def visit(self, visitor):
+> >          visitor.visit_include(self._sub_module.name, self.info)
+> >
+> >
+> > -class QAPISchemaType(QAPISchemaDefinition):
+> > +class QAPISchemaType(QAPISchemaDefinition, ABC):
+> >      # Return the C type for common use.
+> >      # For the types we commonly box, this is a pointer type.
+> > -    def c_type(self):
+> > +    @abstractmethod
+> > +    def c_type(self) -> str:
+>
+> You additionally add the type hint.  Suggest to either mention it in the
+> commit message, or add it only together with the other type hints in
+> PATCH 17.
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- .../qemu-iotests/tests/backup-discard-source  | 151 ++++++++++++++++++
- .../tests/backup-discard-source.out           |   5 +
- 2 files changed, 156 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/backup-discard-source
- create mode 100644 tests/qemu-iotests/tests/backup-discard-source.out
+Okie-dokey. (moved type hints to the big patch)
 
-diff --git a/tests/qemu-iotests/tests/backup-discard-source b/tests/qemu-iotests/tests/backup-discard-source
-new file mode 100755
-index 0000000000..8a88b0f6c4
---- /dev/null
-+++ b/tests/qemu-iotests/tests/backup-discard-source
-@@ -0,0 +1,151 @@
-+#!/usr/bin/env python3
-+#
-+# Test removing persistent bitmap from backing
-+#
-+# Copyright (c) 2022 Virtuozzo International GmbH.
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+
-+import os
-+
-+import iotests
-+from iotests import qemu_img_create, qemu_img_map, qemu_io
-+
-+
-+temp_img = os.path.join(iotests.test_dir, 'temp')
-+source_img = os.path.join(iotests.test_dir, 'source')
-+target_img = os.path.join(iotests.test_dir, 'target')
-+size = '1M'
-+
-+
-+def get_actual_size(vm, node_name):
-+    nodes = vm.cmd('query-named-block-nodes', flat=True)
-+    node = next(n for n in nodes if n['node-name'] == node_name)
-+    return node['image']['actual-size']
-+
-+
-+class TestBackup(iotests.QMPTestCase):
-+    def setUp(self):
-+        qemu_img_create('-f', iotests.imgfmt, source_img, size)
-+        qemu_img_create('-f', iotests.imgfmt, temp_img, size)
-+        qemu_img_create('-f', iotests.imgfmt, target_img, size)
-+        qemu_io('-c', 'write 0 1M', source_img)
-+
-+        self.vm = iotests.VM()
-+        self.vm.launch()
-+
-+        self.vm.cmd('blockdev-add', {
-+            'node-name': 'cbw',
-+            'driver': 'copy-before-write',
-+            'file': {
-+                'driver': iotests.imgfmt,
-+                'file': {
-+                    'driver': 'file',
-+                    'filename': source_img,
-+                }
-+            },
-+            'target': {
-+                'driver': iotests.imgfmt,
-+                'discard': 'unmap',
-+                'node-name': 'temp',
-+                'file': {
-+                    'driver': 'file',
-+                    'filename': temp_img
-+                }
-+            }
-+        })
-+
-+        self.vm.cmd('blockdev-add', {
-+            'node-name': 'access',
-+            'discard': 'unmap',
-+            'driver': 'snapshot-access',
-+            'file': 'cbw'
-+        })
-+
-+        self.vm.cmd('blockdev-add', {
-+            'driver': iotests.imgfmt,
-+            'node-name': 'target',
-+            'file': {
-+                'driver': 'file',
-+                'filename': target_img
-+            }
-+        })
-+
-+        self.assertLess(get_actual_size(self.vm, 'temp'), 512 * 1024)
-+
-+    def tearDown(self):
-+        # That should fail, because region is discarded
-+        self.vm.hmp_qemu_io('access', 'read 0 1M')
-+
-+        self.vm.shutdown()
-+
-+        self.assertTrue('read failed: Permission denied' in self.vm.get_log())
-+
-+        # Final check that temp image is empty
-+        mapping = qemu_img_map(temp_img)
-+        self.assertEqual(len(mapping), 1)
-+        self.assertEqual(mapping[0]['start'], 0)
-+        self.assertEqual(mapping[0]['length'], 1024 * 1024)
-+        self.assertEqual(mapping[0]['data'], False)
-+
-+        os.remove(temp_img)
-+        os.remove(source_img)
-+        os.remove(target_img)
-+
-+    def do_backup(self):
-+        self.vm.cmd('blockdev-backup', device='access',
-+                    sync='full', target='target',
-+                    job_id='backup0',
-+                    discard_source=True)
-+
-+        self.vm.event_wait(name='BLOCK_JOB_COMPLETED')
-+
-+    def test_discard_written(self):
-+        """
-+        1. Guest writes
-+        2. copy-before-write operation, data is stored to temp
-+        3. start backup(discard_source=True), check that data is
-+           removed from temp
-+        """
-+        # Trigger copy-before-write operation
-+        result = self.vm.hmp_qemu_io('cbw', 'write 0 1M')
-+        self.assert_qmp(result, 'return', '')
-+
-+        # Check that data is written to temporary image
-+        self.assertGreater(get_actual_size(self.vm, 'temp'), 1024 * 1024)
-+
-+        self.do_backup()
-+
-+    def test_discard_cbw(self):
-+        """
-+        1. do backup(discard_source=True), which should inform
-+           copy-before-write that data is not needed anymore
-+        2. Guest writes
-+        3. Check that copy-before-write operation is not done
-+        """
-+        self.do_backup()
-+
-+        # Try trigger copy-before-write operation
-+        result = self.vm.hmp_qemu_io('cbw', 'write 0 1M')
-+        self.assert_qmp(result, 'return', '')
-+
-+        # Check that data is not written to temporary image, as region
-+        # is discarded from copy-before-write process
-+        self.assertLess(get_actual_size(self.vm, 'temp'), 512 * 1024)
-+
-+
-+if __name__ == '__main__':
-+    iotests.main(supported_fmts=['qcow2'],
-+                 supported_protocols=['file'])
-diff --git a/tests/qemu-iotests/tests/backup-discard-source.out b/tests/qemu-iotests/tests/backup-discard-source.out
-new file mode 100644
-index 0000000000..fbc63e62f8
---- /dev/null
-+++ b/tests/qemu-iotests/tests/backup-discard-source.out
-@@ -0,0 +1,5 @@
-+..
-+----------------------------------------------------------------------
-+Ran 2 tests
-+
-+OK
--- 
-2.34.1
+>
+> >          pass
+> >
+> >      # Return the C type to be used in a parameter list.
+> > @@ -267,7 +269,8 @@ def c_param_type(self):
+> >      def c_unboxed_type(self):
+> >          return self.c_type()
+> >
+> > -    def json_type(self):
+> > +    @abstractmethod
+> > +    def json_type(self) -> str:
+>
+> Likewise.
+>
+> >          pass
+> >
+> >      def alternate_qtype(self):
+>
 
 
