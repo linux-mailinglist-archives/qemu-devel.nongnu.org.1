@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A2A830BF3
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 18:32:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6693830BFC
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 18:34:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ9ly-0001Tg-Pv; Wed, 17 Jan 2024 12:32:18 -0500
+	id 1rQ9n7-0002CV-Id; Wed, 17 Jan 2024 12:33:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rQ9lv-0001TI-US
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 12:32:15 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1rQ9n5-0002CB-5D
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 12:33:27 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rQ9lu-0004CB-Bd
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 12:32:15 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-559f92bf7b6so46465a12.0
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 09:32:13 -0800 (PST)
+ id 1rQ9n1-0004NF-U5
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 12:33:26 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-337c4f0f9daso598116f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 09:33:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705512732; x=1706117532; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705512802; x=1706117602; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=UI3Yt09naz9k/K/ZCcVs/A0x4BRir28vu+0LQFu+n+E=;
- b=wgQ47s1LdjSLDpKNECjrDgGk265yK8KNSQZjPX5PqqzFekYLc84Iq7sSzHxBRxudTT
- 4Aai4xN0ylq8k/DFQqBnmsjKNbE41nadm5zmGn2j4EMw4SQ4qf1kUz3c25TOaOJDZqA5
- x8Rlq0Ucrigbx5q9KCPY5FIDG0cNYRLzQBnxdNIwRICltgCr+ZkHjgzueySy4kPdqYpS
- PKzwyrGM0ned+n1U5eM5vREkFnYGqWGU3ArJLllvQqEcOfIH5HyjK+77WwsOPJn9N5tC
- c+Ls+gP+yYR1EfjlJLzkux+DSiS9OZW7LN4jDouxnIT2d9WEtVfJCOwJs2eEcEwbdgbR
- w3xA==
+ bh=7GpVjZPiwPlEl94ohrBHcTjcmC+o1JOMSH9Kk5nWDyQ=;
+ b=gS0+CzQgeDMKKReNrKeWVVhvVdixkhS/FlUWpnELEguKy8HQUWem+C9A4duO0ZfAE8
+ Rqg55ekWUAkFVl3HncA3ksmOXAnSxY87MYvvHhdEKlOJ1DBLGkZjlchXMwauuBRvcnX5
+ uLxyuVOBDaesZ81S52foLeUpUgXJQwg16RjclO5FbSVl7A7Aws1QgWLmrMV6b10RrMUK
+ M3hgC8FL+EZVILEoioXl8ZFf/wVGAC/cbSEb0IkFvISRTm5fahZtSeA7Hxus/0YwjzJh
+ Yx7kSq84tXdPXPJsKu666+ulxhURWtNSqwgCD71Re4WWtiGq4Hj2QmOhV6kr0psoSmx1
+ dMYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705512732; x=1706117532;
+ d=1e100.net; s=20230601; t=1705512802; x=1706117602;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=UI3Yt09naz9k/K/ZCcVs/A0x4BRir28vu+0LQFu+n+E=;
- b=Pz/hLrtwkAkOVeDMhv33mdKQ1oUIhrCA3yx68zsl/xqybyYVUVduzsZs9UqZCU78Jt
- B9ig7DZle/oZS9I9y3n2oiDipq4I680KvbIbNmEm9qZSv5pn3PqIoSDhsTe0kIqgRUJs
- spDcD9DzN5nxIi795ZLeKzN0uHDzhL8yCwA4QERbiIlUjcQRle7JP20h7EeFutdi0/s2
- vniARPdhWKEJ9qPgRW/IkJJP7nYMEkDWNMWe6kwcsh+PVewGaH6QH21a5mfvkivjnVgz
- iSSpNp1uDmoUL+mQMpc7EBcRGH2DGwkAVOvKRYDkicd0HSVmHXnB2rn+ekbBBTWVGKLX
- Ef+Q==
-X-Gm-Message-State: AOJu0Yx0QzxMinWXHsdBMGS9NzV/oebt8yjesofiL+i1LjpyX8aBIwx0
- FNEnQe1/sV+VuvXjFQdDowcjAeZhstQCTy3+3q7t+iYPm9gavQ==
-X-Google-Smtp-Source: AGHT+IF18PgCNceRusUmaaMlInvJN93N8WPTk0PcPvI8tvhHeOdfIFyb+rQnF9UWlOyKhPd5uJcSfmrirqqEZyBdX/8=
-X-Received: by 2002:a05:6402:1bcb:b0:559:f1ed:f164 with SMTP id
- ch11-20020a0564021bcb00b00559f1edf164mr462053edb.27.1705512732000; Wed, 17
- Jan 2024 09:32:12 -0800 (PST)
+ bh=7GpVjZPiwPlEl94ohrBHcTjcmC+o1JOMSH9Kk5nWDyQ=;
+ b=F9urIIh2Gp7xTEiSrjEMfXPKWSMgNUoJM2tvzhXh9EuzlBGV2AfoIXtf2YuWTpBI98
+ tivhWYsuD+ZMTbxv34wV80v1jnJt6m1TCP9p/y4zIYA7pZCyFQT+wQ9pWehyA/ePm10K
+ 3XOOKQg35Qew+pdvprvkYr69I5inY4OHTZ7S7bb3UIzt1YrfajTRbZg2Wo+4toLqeBPB
+ uapOmm1RhO9JOIYJytiRfZTnXmQ02Sv+B+2AJ8p6eowIAZ1YUkcAf1hOVNYyGKV5xG0V
+ T8+tPJWWbTOZcqmOtTo9ntRIw7XXZUJ0wTHC9whop9qCdyWVZf0WaBb76QJN8vPoAlD9
+ 0vgw==
+X-Gm-Message-State: AOJu0YxEn2POYyIQVoPDChLgH+iRFgcXdpqlIwRQ3/D15KXyAUkMm5MD
+ OQ31Khsrt2R2IxuvB2tMp/mMdIVYASDCQLR9drEbMVKUWCZ3aQ==
+X-Google-Smtp-Source: AGHT+IHiO3XurvEkjDyI+SFyfsyfxpSrYtWM9jCC1T2uTZvn5RrcjKtQ4NXbNlZcf3LiH7JYzqKc7gC7RU2ooQyox9c=
+X-Received: by 2002:a5d:59af:0:b0:337:c4d0:a732 with SMTP id
+ p15-20020a5d59af000000b00337c4d0a732mr675399wrr.3.1705512802423; Wed, 17 Jan
+ 2024 09:33:22 -0800 (PST)
 MIME-Version: 1.0
-References: <20240109092015.4136865-1-kai.kang@windriver.com>
-In-Reply-To: <20240109092015.4136865-1-kai.kang@windriver.com>
+References: <8b81d02.69e7.18d164d6764.Coremail.m_o_bz@163.com>
+In-Reply-To: <8b81d02.69e7.18d164d6764.Coremail.m_o_bz@163.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 17 Jan 2024 17:31:39 +0000
-Message-ID: <CAFEAcA9LBXMxOzJwmXYEVj+q0hTzMQZrpZHOOKFYWZDKXFyHig@mail.gmail.com>
-Subject: Re: [PATCH] qdev: not add devices to bus in reverse order
-To: Kai Kang <kai.kang@windriver.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- "Daniel P. Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
+Date: Wed, 17 Jan 2024 17:32:49 +0000
+Message-ID: <CAFEAcA-XfEqMi9BO8X1xKrSs7H7kFJoNFe8H7f9xdz5X12U+Hw@mail.gmail.com>
+Subject: Re: double free or corruption (out) in iscsi virtual machine
+To: M_O_Bz <m_o_bz@163.com>
+Cc: qemu-block@nongnu.org, deepa.srinivasan@oracle.com, qemu-devel@nongnu.org, 
+ ronniesahlberg@gmail.com, pbonzini@redhat.com, pl@kamp.de
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,52 +85,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(cc'd the people listed for this file in MAINTAINERS)
+On Wed, 17 Jan 2024 at 07:24, M_O_Bz <m_o_bz@163.com> wrote:
+>
+> Basic Info:
+> 1. Issue: I got a " double free or corruption (out)", head for attachment debug.log for details, the debug.log print the backtrace of one virtual machine
+> 2. Reproduce: currently I cann't destribe how to reproduce this bug, because it's in my productive enviroment which include some special stuffs
+> 3. qemu version:  I'm using is qemu-6.0.1
 
-On Tue, 9 Jan 2024 at 13:53, Kai Kang <kai.kang@windriver.com> wrote:
->
-> When this section of source codes were added via commit:
->
-> * 02e2da45c4 Add common BusState
->
-> it added devices to bus with LIST_INSERT_HEAD() which operated on the
-> single direction list. It didn't have something like LIST_INSERT_TAIL()
-> at that time and kept that way when turned to QTAILQ.
->
-> Then it causes the fist device in qemu command line inserted at the end
-> of the bus child link list. And when realize them, the first device will
-> be the last one to be realized.
->
-> Replace QTAILQ_INSERT_HEAD_RCU() with QTAILQ_INSERT_TAIL_RCU() to make
-> sure that devices are added to bus with the sequence in the command
-> line.
-
-What are the problems being caused by the the list items being added
-in reverse order? Your commit message doesn't say what specific
-bug or problem it's trying to fix.
-
-In general this kind of patch is something I'm very cautious about,
-because it seems very likely that various bits of the code where
-order does matter will currently be expecting (and working around)
-the reverse-order behaviour, because that's what has been done by
-bus_add_child() for the last 20-plus years. (As one concrete example,
-see the big comment at the top of create_virtio_devices() in
-hw/arm/virt.c. There are probably others where we didn't comment
-on the ordering but just assume it.)
-
-> diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-> index 43d863b0c5..5e2ff43715 100644
-> --- a/hw/core/qdev.c
-> +++ b/hw/core/qdev.c
-> @@ -89,7 +89,7 @@ static void bus_add_child(BusState *bus, DeviceState *child)
->      kid->child = child;
->      object_ref(OBJECT(kid->child));
->
-> -    QTAILQ_INSERT_HEAD_RCU(&bus->children, kid, sibling);
-> +    QTAILQ_INSERT_TAIL_RCU(&bus->children, kid, sibling);
->
->      /* This transfers ownership of kid->child to the property.  */
->      snprintf(name, sizeof(name), "child[%d]", kid->index);
+This QEMU version is now over two years old. Can you reproduce
+the problem with the current head-of-git ?
 
 thanks
 -- PMM
