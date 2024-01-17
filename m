@@ -2,53 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0618309A4
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 16:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A30E8309A7
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 16:23:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ7kS-0000rR-Is; Wed, 17 Jan 2024 10:22:36 -0500
+	id 1rQ7ks-00010j-7b; Wed, 17 Jan 2024 10:23:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <samuel.thibault@gnu.org>)
- id 1rQ7kP-0000qZ-KO; Wed, 17 Jan 2024 10:22:33 -0500
-Received: from fencepost.gnu.org ([2001:470:142:3::e])
+ (Exim 4.90_1) (envelope-from <SRS0=gIDE=I3=kaod.org=clg@ozlabs.org>)
+ id 1rQ7kh-0000tA-5S; Wed, 17 Jan 2024 10:22:52 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <samuel.thibault@gnu.org>)
- id 1rQ7kP-0007Tq-Bi; Wed, 17 Jan 2024 10:22:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=gnu.org;
- s=fencepost-gnu-org; h=In-Reply-To:MIME-Version:References:Subject:To:From:
- Date; bh=vs/rjXDdPV8iry5rDQ7h2bIsyzWv8a0NXFU9duucoEQ=; b=Tm19OAZHRVmYA/ZTOvo6
- AHTZLh9po8oEw4w3FMWdOKfDH0SLSBqDUSh5JoFOv+YyB3Opg8Ml4tJVx95rzEvhQNVI3h4V41f5Y
- qKBiZWGXD5KcqWaA6wcttnHsJS5UY78cZq3EdLlTprpfAkKhja5h72fY32ZJuYV1MxCg6lpSNG2g2
- 6q2KEIcnMV9H8b5zefCs+36uLlBBQx7M2jBtTj2a6PqjJ4OiPFAghPB4a6KZENHolGzBDPahmPvx0
- SM+lwR0V7eKyJBzXJBpn9I7ANdM2XbcasLZwykZBHJxT3H9CEHHqxZTcGCQx4/2ENWe0Iel8D2n0Y
- 9jdVGpkQiLlmSA==;
-Date: Wed, 17 Jan 2024 16:22:30 +0100
-From: Samuel Thibault <samuel.thibault@gnu.org>
-To: Manolo de Medici <manolodemedici@gmail.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, bug-hurd@gnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 2/4] Avoid multiple definitions of copy_file_range
-Message-ID: <20240117152230.bnnjln5mnhxuh5ib@begin>
-Mail-Followup-To: Manolo de Medici <manolodemedici@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, bug-hurd@gnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <CAHP40mkL6EzLgRvYZ2gp=dmF_5gxD-9cJBTODAb8UtjurZuBKg@mail.gmail.com>
- <37ef47fc-92a5-4ffe-9677-2bc013cfe20b@linaro.org>
- <CAHP40mkNb5EH_Js02LpENMc2CA2pj7fEJY_S1sTMNWh_3rcUEQ@mail.gmail.com>
- <20240117143306.lnycf2ijwkzycowj@begin>
- <CAHP40mkk4aRG+9PGjoW2U38WXSvd1NpvDgMet4AQASg3=H=UdA@mail.gmail.com>
- <20240117150323.xn5otaf2ovg3hyp5@begin>
- <CAHP40mmG_SxUqhwysVzYt-c+UF5YVNqk2fBTZpHzAhLn7BCijw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <SRS0=gIDE=I3=kaod.org=clg@ozlabs.org>)
+ id 1rQ7ke-0007Vw-SF; Wed, 17 Jan 2024 10:22:50 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TFV4L5Q1lz4xTx;
+ Thu, 18 Jan 2024 02:22:42 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TFV4H5q9Kz4wdD;
+ Thu, 18 Jan 2024 02:22:39 +1100 (AEDT)
+Message-ID: <765cf0e7-69a9-4be2-bb15-1c8cb432f60a@kaod.org>
+Date: Wed, 17 Jan 2024 16:22:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHP40mmG_SxUqhwysVzYt-c+UF5YVNqk2fBTZpHzAhLn7BCijw@mail.gmail.com>
-Organization: I am not organized
-User-Agent: NeoMutt/20170609 (1.8.3)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] docs/about: Deprecate the old "power5+" and
+ "power7+" CPU names
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ qemu-devel@nongnu.org
+Cc: devel@lists.libvirt.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>
+References: <20240117141054.73841-1-thuth@redhat.com>
+ <20240117141054.73841-3-thuth@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240117141054.73841-3-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=gIDE=I3=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,32 +70,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Manolo de Medici, le mer. 17 janv. 2024 16:08:34 +0100, a ecrit:
-> Understood, but I cannot judge if it is a bug in qemu or it fixes
-> another host os,
-> since qemu doesn't target only glibc.
+On 1/17/24 15:10, Thomas Huth wrote:
+> For consistency we should drop the names with a "+" in it in the
+> long run.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
-Yes, but freebsd too uses ssize_t:
 
-https://man.freebsd.org/cgi/man.cgi?copy_file_range(2)
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-glib mentions that it only exists on linux and freebsd.
+Thanks,
 
-https://www.gnu.org/software/gnulib/manual/html_node/copy_005ffile_005frange.html
+C.
 
-> In order to avoid breaking other hosts, I consider it more cautious to
-> ignore the difference.
 
-Ignoring a bug is not a good thing on the long run :)
+> ---
+>   docs/about/deprecated.rst | 9 +++++++++
+>   1 file changed, 9 insertions(+)
+> 
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index b47763330c..251723d264 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -217,6 +217,15 @@ Nios II CPU (since 8.2)
+>   The Nios II architecture is orphan. The ``nios2`` guest CPU support is
+>   deprecated and will be removed in a future version of QEMU.
+>   
+> +``power5+`` and ``power7+`` CPU names (since 9.0)
+> +'''''''''''''''''''''''''''''''''''''''''''''''''
+> +
+> +The character "+" in device (and thus also CPU) names is not allowed
+> +in the QEMU object model anymore. ``power5+``, ``power5+_v2.1``,
+> +``power7+`` and ``power7+_v2.1`` are currently still supported via
+> +an alias, but for consistency these will get removed in a future
+> +release, too. Use ``power5p_v2.1`` and ``power7p_v2.1`` instead.
+> +
+>   
+>   System emulator machines
+>   ------------------------
 
-When there is something suspicious, it's useful to fix it.
-
-> In the long term the Hurd is going to implement copy_file_range
-
-Yes and by just fixing the prototype, we'll keep qemu able to
-automatically use it when it becomes available.
-
-Really, please, no tinkering, rather fix bugs.
-
-Samuel
 
