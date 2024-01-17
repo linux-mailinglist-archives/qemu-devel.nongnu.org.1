@@ -2,82 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0700D8303BF
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 11:39:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0389A8303C0
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 11:39:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ3Jr-00048B-An; Wed, 17 Jan 2024 05:38:51 -0500
+	id 1rQ3KE-0004WS-P2; Wed, 17 Jan 2024 05:39:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rQ3Jp-00045v-DU
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 05:38:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rQ3K8-0004Jz-G6
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 05:39:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rQ3Jn-0004AM-7J
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 05:38:49 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rQ3K6-0004Bg-GJ
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 05:39:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705487926;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
- references:references; bh=nrET6v/g/ovclRcH9bnWFc74y7iN9iG4lYHmp/gFtiE=;
- b=A7GlCNixITmEOoD41dTFFfQPTREFRXTSzerYIKhxXmnEMIdqfSzCXTkSl+KGWS2mfd5KNS
- R8+IOzUlH8kT0xREqLUTNCtdGNsE69+ETG8rvPECwSYveri5mffVSERj0OinPRSW2eOQPJ
- Nc0+bbK81Bly0YMTkOAmTeG26eV/s3o=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1705487945;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WIe+gNmEdxOf+u95EotlU01P40O0/9WLK/7Xbp89jrw=;
+ b=GUkB4uWUHUxJrhZKhcVBT94b5JP5JBeh2IGHT/Vbn9gZUOe8gGRQg0P+qVLJAb5Dd62fpU
+ b6rCdSOpIVcl98tDSw1or0aIwv63k1iFIqY5oZg62IVsspQZbUtjze9HsiHajZYN6V44e/
+ I6m9CzenylbU7cZlj5qXrIXL0dimUJA=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-360-84udfLKDOGKOn1MjMEVsZQ-1; Wed, 17 Jan 2024 05:38:42 -0500
-X-MC-Unique: 84udfLKDOGKOn1MjMEVsZQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 972A7869EC0;
- Wed, 17 Jan 2024 10:38:42 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.128])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 39ADD492BC6;
- Wed, 17 Jan 2024 10:38:42 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3E20821E66F1; Wed, 17 Jan 2024 11:38:41 +0100 (CET)
-Resent-To: michael.roth@amd.com, peter.maydell@linaro.org,
- qemu-devel@nongnu.org
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Wed, 17 Jan 2024 11:38:41 +0100
-Resent-Message-ID: <87a5p4meha.fsf@pond.sub.org>
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,
- Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH 13/19] qapi/schema: fix typing for
- QAPISchemaVariants.tag_member
-In-Reply-To: <87le8onzif.fsf@pond.sub.org> (Markus Armbruster's message of
- "Wed, 17 Jan 2024 09:19:04 +0100")
-References: <20231116014350.653792-1-jsnow@redhat.com>
- <20231116014350.653792-14-jsnow@redhat.com>
- <87zfz5c28s.fsf@pond.sub.org>
- <CAFn=p-bZPJNU9uLBOW1Uqts7kX-+9+dvSNRxwf+VD5hoCHJq9A@mail.gmail.com>
- <CAFn=p-bky_eAv9Z2V0zQ-_J7EygvYANa4UnxLTB9omMN-AbvbA@mail.gmail.com>
- <87bk9tfwvb.fsf@pond.sub.org>
- <CAFn=p-ZsQnwMtDEN70UdTz75bN6FgzxPbM0yNicOoULpPtV97A@mail.gmail.com>
- <87le8onzif.fsf@pond.sub.org>
-Date: Wed, 17 Jan 2024 11:32:43 +0100
-Message-ID: <87v87smer8.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ us-mta-137-HC0UGyqoOnKgEN2sxDh5ow-1; Wed, 17 Jan 2024 05:39:00 -0500
+X-MC-Unique: HC0UGyqoOnKgEN2sxDh5ow-1
+Received: by mail-io1-f71.google.com with SMTP id
+ ca18e2360f4ac-7bb454e1d63so1184592439f.3
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 02:38:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705487939; x=1706092739;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WIe+gNmEdxOf+u95EotlU01P40O0/9WLK/7Xbp89jrw=;
+ b=xDdo/85p4mieEJ8jc7iGLbbYZ0rEvUNJiJY3y51HFXOj058JXvgRMs5wf9luTiXIc7
+ AG+6gixddo06iSbQsswuYIbv3VcuEh6936ePK8gMhbpGMOQP60sguKIlYLj/X/NenmkQ
+ wsTUgAY1g3sbouoAexxmrLQ99mDI6qW1kvQvAWI1pxHbgIWGTk9WlljEkQnnkulqNVeF
+ bhrgk3dyfxnguPgCAntTmBgjDb6nFlufw/cbSknD9q9jMZjNweWykHMmWUrawkw26JFP
+ GhypETngWguwd4Lw4528zqIwyu+nhs51YFoMgBqQfWlNrseOaNgX0bT+H4/J8ssT7Dr2
+ AQyg==
+X-Gm-Message-State: AOJu0YzyqeRAAgN1+FBfhPSi1GH7WNfHDHYCtiiow277Uw9IR5SpfSyS
+ d9EIsCO1aOWYhiZdrFTUK12rQXT+AmrY6Q3PDQyH+b9IacWsJ3WBEayysiZXwLq61wj0/VDkktF
+ 60OJZJ4RMs0i/DH7T/rric2w=
+X-Received: by 2002:a05:6602:160b:b0:7be:d959:68df with SMTP id
+ x11-20020a056602160b00b007bed95968dfmr13511966iow.32.1705487939280; 
+ Wed, 17 Jan 2024 02:38:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGHaH1erkQYN4bf+1lqJAWHZ5RNY9GlvJaSjfiSzA8e3z+V222h8yT/vEQtM0c2vRdyPWyUOw==
+X-Received: by 2002:a05:6602:160b:b0:7be:d959:68df with SMTP id
+ x11-20020a056602160b00b007bed95968dfmr13511958iow.32.1705487938998; 
+ Wed, 17 Jan 2024 02:38:58 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ y63-20020a029545000000b0046e77bd393dsm361180jah.144.2024.01.17.02.38.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Jan 2024 02:38:58 -0800 (PST)
+Message-ID: <55196d62-f4a1-4266-93f4-774ebfb22be2@redhat.com>
+Date: Wed, 17 Jan 2024 11:38:55 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-Lines: 343
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] intel_iommu: Reset vIOMMU at the last stage of system
+ reset
+Content-Language: en-US
+To: peterx@redhat.com, qemu-devel@nongnu.org
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ Alex Williamson <alex.williamson@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, YangHang Liu <yanghliu@redhat.com>
+References: <20240117091559.144730-1-peterx@redhat.com>
+ <20240117091559.144730-5-peterx@redhat.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240117091559.144730-5-peterx@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
 X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,351 +105,155 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hmm, there's more union-specific code to move out of the base.  Revised
-patch:
+Hi Peter,
 
-diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 658c288f8f..4a2e62d919 100644
---- a/docs/sphinx/qapidoc.py
-+++ b/docs/sphinx/qapidoc.py
-@@ -328,7 +328,8 @@ def visit_object_type(self, name, info, ifcond, features,
-                       + self._nodes_for_sections(doc)
-                       + self._nodes_for_if_section(ifcond))
- 
--    def visit_alternate_type(self, name, info, ifcond, features, variants):
-+    def visit_alternate_type(self, name, info, ifcond, features,
-+                             alternatives):
-         doc = self._cur_doc
-         self._add_doc('Alternate',
-                       self._nodes_for_members(doc, 'Members')
-diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
-index c38df61a6d..e5cea8004e 100644
---- a/scripts/qapi/introspect.py
-+++ b/scripts/qapi/introspect.py
-@@ -26,6 +26,7 @@
- from .gen import QAPISchemaMonolithicCVisitor
- from .schema import (
-     QAPISchema,
-+    QAPISchemaAlternatives,
-     QAPISchemaArrayType,
-     QAPISchemaBuiltinType,
-     QAPISchemaEntity,
-@@ -343,12 +344,12 @@ def visit_object_type_flat(self, name: str, info: Optional[QAPISourceInfo],
-     def visit_alternate_type(self, name: str, info: Optional[QAPISourceInfo],
-                              ifcond: QAPISchemaIfCond,
-                              features: List[QAPISchemaFeature],
--                             variants: QAPISchemaVariants) -> None:
-+                             alternatives: QAPISchemaAlternatives) -> None:
-         self._gen_tree(
-             name, 'alternate',
-             {'members': [Annotated({'type': self._use_type(m.type)},
-                                    m.ifcond)
--                         for m in variants.variants]},
-+                         for m in alternatives.variants]},
-             ifcond, features
-         )
- 
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index 0d9a70ab4c..f64e337ba2 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -187,7 +187,8 @@ def visit_object_type_flat(self, name, info, ifcond, features,
-                                members, variants):
-         pass
- 
--    def visit_alternate_type(self, name, info, ifcond, features, variants):
-+    def visit_alternate_type(self, name, info, ifcond, features,
-+                             alternatives):
-         pass
- 
-     def visit_command(self, name, info, ifcond, features,
-@@ -563,8 +564,7 @@ class QAPISchemaAlternateType(QAPISchemaType):
- 
-     def __init__(self, name, info, doc, ifcond, features, variants):
-         super().__init__(name, info, doc, ifcond, features)
--        assert isinstance(variants, QAPISchemaVariants)
--        assert variants.tag_member
-+        assert isinstance(variants, QAPISchemaAlternatives)
-         variants.set_defined_in(name)
-         variants.tag_member.set_defined_in(self.name)
-         self.variants = variants
-@@ -625,19 +625,12 @@ def visit(self, visitor):
-             self.name, self.info, self.ifcond, self.features, self.variants)
- 
- 
--class QAPISchemaVariants:
--    def __init__(self, tag_name, info, tag_member, variants):
--        # Unions pass tag_name but not tag_member.
--        # Alternates pass tag_member but not tag_name.
--        # After check(), tag_member is always set.
--        assert bool(tag_member) != bool(tag_name)
--        assert (isinstance(tag_name, str) or
--                isinstance(tag_member, QAPISchemaObjectTypeMember))
-+class QAPISchemaVariantsBase:
-+    def __init__(self, info, variants):
-         for v in variants:
-             assert isinstance(v, QAPISchemaVariant)
--        self._tag_name = tag_name
-         self.info = info
--        self.tag_member = tag_member
-+        self.tag_member = None
-         self.variants = variants
- 
-     def set_defined_in(self, name):
-@@ -645,66 +638,8 @@ def set_defined_in(self, name):
-             v.set_defined_in(name)
- 
-     def check(self, schema, seen):
--        if self._tag_name:      # union
--            self.tag_member = seen.get(c_name(self._tag_name))
--            base = "'base'"
--            # Pointing to the base type when not implicit would be
--            # nice, but we don't know it here
--            if not self.tag_member or self._tag_name != self.tag_member.name:
--                raise QAPISemError(
--                    self.info,
--                    "discriminator '%s' is not a member of %s"
--                    % (self._tag_name, base))
--            # Here we do:
--            base_type = schema.resolve_type(self.tag_member.defined_in)
--            if not base_type.is_implicit():
--                base = "base type '%s'" % self.tag_member.defined_in
--            if not isinstance(self.tag_member.type, QAPISchemaEnumType):
--                raise QAPISemError(
--                    self.info,
--                    "discriminator member '%s' of %s must be of enum type"
--                    % (self._tag_name, base))
--            if self.tag_member.optional:
--                raise QAPISemError(
--                    self.info,
--                    "discriminator member '%s' of %s must not be optional"
--                    % (self._tag_name, base))
--            if self.tag_member.ifcond.is_present():
--                raise QAPISemError(
--                    self.info,
--                    "discriminator member '%s' of %s must not be conditional"
--                    % (self._tag_name, base))
--        else:                   # alternate
--            assert isinstance(self.tag_member.type, QAPISchemaEnumType)
--            assert not self.tag_member.optional
--            assert not self.tag_member.ifcond.is_present()
--        if self._tag_name:      # union
--            # branches that are not explicitly covered get an empty type
--            cases = {v.name for v in self.variants}
--            for m in self.tag_member.type.members:
--                if m.name not in cases:
--                    v = QAPISchemaVariant(m.name, self.info,
--                                          'q_empty', m.ifcond)
--                    v.set_defined_in(self.tag_member.defined_in)
--                    self.variants.append(v)
--        if not self.variants:
--            raise QAPISemError(self.info, "union has no branches")
-         for v in self.variants:
-             v.check(schema)
--            # Union names must match enum values; alternate names are
--            # checked separately. Use 'seen' to tell the two apart.
--            if seen:
--                if v.name not in self.tag_member.type.member_names():
--                    raise QAPISemError(
--                        self.info,
--                        "branch '%s' is not a value of %s"
--                        % (v.name, self.tag_member.type.describe()))
--                if not isinstance(v.type, QAPISchemaObjectType):
--                    raise QAPISemError(
--                        self.info,
--                        "%s cannot use %s"
--                        % (v.describe(self.info), v.type.describe()))
--                v.type.check(schema)
- 
-     def check_clash(self, info, seen):
-         for v in self.variants:
-@@ -713,6 +648,79 @@ def check_clash(self, info, seen):
-             v.type.check_clash(info, dict(seen))
- 
- 
-+class QAPISchemaVariants(QAPISchemaVariantsBase):
-+    def __init__(self, info, variants, tag_name):
-+        assert isinstance(tag_name, str)
-+        super().__init__(info, variants)
-+        self._tag_name = tag_name
-+
-+    def check(self, schema, seen):
-+        self.tag_member = seen.get(c_name(self._tag_name))
-+        base = "'base'"
-+        # Pointing to the base type when not implicit would be
-+        # nice, but we don't know it here
-+        if not self.tag_member or self._tag_name != self.tag_member.name:
-+            raise QAPISemError(
-+                self.info,
-+                "discriminator '%s' is not a member of %s"
-+                % (self._tag_name, base))
-+        # Here we do:
-+        base_type = schema.resolve_type(self.tag_member.defined_in)
-+        if not base_type.is_implicit():
-+            base = "base type '%s'" % self.tag_member.defined_in
-+        if not isinstance(self.tag_member.type, QAPISchemaEnumType):
-+            raise QAPISemError(
-+                self.info,
-+                "discriminator member '%s' of %s must be of enum type"
-+                % (self._tag_name, base))
-+        if self.tag_member.optional:
-+            raise QAPISemError(
-+                self.info,
-+                "discriminator member '%s' of %s must not be optional"
-+                % (self._tag_name, base))
-+        if self.tag_member.ifcond.is_present():
-+            raise QAPISemError(
-+                self.info,
-+                "discriminator member '%s' of %s must not be conditional"
-+                % (self._tag_name, base))
-+        # branches that are not explicitly covered get an empty type
-+        cases = {v.name for v in self.variants}
-+        for m in self.tag_member.type.members:
-+            if m.name not in cases:
-+                v = QAPISchemaVariant(m.name, self.info,
-+                                      'q_empty', m.ifcond)
-+                v.set_defined_in(self.tag_member.defined_in)
-+                self.variants.append(v)
-+        if not self.variants:
-+            raise QAPISemError(self.info, "union has no branches")
-+        super().check(schema, seen)
-+        for v in self.variants:
-+            if v.name not in self.tag_member.type.member_names():
-+                raise QAPISemError(
-+                    self.info,
-+                    "branch '%s' is not a value of %s"
-+                    % (v.name, self.tag_member.type.describe()))
-+            if not isinstance(v.type, QAPISchemaObjectType):
-+                raise QAPISemError(
-+                    self.info,
-+                    "%s cannot use %s"
-+                    % (v.describe(self.info), v.type.describe()))
-+            v.type.check(schema)
-+
-+
-+class QAPISchemaAlternatives(QAPISchemaVariantsBase):
-+    def __init__(self, info, variants, tag_member):
-+        assert isinstance(tag_member, QAPISchemaObjectTypeMember)
-+        super().__init__(info, variants)
-+        self.tag_member = tag_member
-+
-+    def check(self, schema, seen):
-+        super().check(schema, seen)
-+        assert isinstance(self.tag_member.type, QAPISchemaEnumType)
-+        assert not self.tag_member.optional
-+        assert not self.tag_member.ifcond.is_present()
-+
-+
- class QAPISchemaMember:
-     """ Represents object members, enum members and features """
-     role = 'member'
-@@ -1184,7 +1192,7 @@ def _def_union_type(self, expr: QAPIExpression):
-             QAPISchemaObjectType(name, info, expr.doc, ifcond, features,
-                                  base, members,
-                                  QAPISchemaVariants(
--                                     tag_name, info, None, variants)))
-+                                     info, variants, tag_name)))
- 
-     def _def_alternate_type(self, expr: QAPIExpression):
-         name = expr['alternate']
-@@ -1202,7 +1210,7 @@ def _def_alternate_type(self, expr: QAPIExpression):
-         self._def_definition(
-             QAPISchemaAlternateType(
-                 name, info, expr.doc, ifcond, features,
--                QAPISchemaVariants(None, info, tag_member, variants)))
-+                QAPISchemaAlternatives(info, variants, tag_member)))
- 
-     def _def_command(self, expr: QAPIExpression):
-         name = expr['command']
-diff --git a/scripts/qapi/types.py b/scripts/qapi/types.py
-index c39d054d2c..05da30b855 100644
---- a/scripts/qapi/types.py
-+++ b/scripts/qapi/types.py
-@@ -23,6 +23,7 @@
- )
- from .schema import (
-     QAPISchema,
-+    QAPISchemaAlternatives,
-     QAPISchemaEnumMember,
-     QAPISchemaFeature,
-     QAPISchemaIfCond,
-@@ -369,11 +370,11 @@ def visit_alternate_type(self,
-                              info: Optional[QAPISourceInfo],
-                              ifcond: QAPISchemaIfCond,
-                              features: List[QAPISchemaFeature],
--                             variants: QAPISchemaVariants) -> None:
-+                             alternatives: QAPISchemaAlternatives) -> None:
-         with ifcontext(ifcond, self._genh):
-             self._genh.preamble_add(gen_fwd_object_or_array(name))
-         self._genh.add(gen_object(name, ifcond, None,
--                                  [variants.tag_member], variants))
-+                                  [alternatives.tag_member], alternatives))
-         with ifcontext(ifcond, self._genh, self._genc):
-             self._gen_type_cleanup(name)
- 
-diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
-index c56ea4d724..725bfcef50 100644
---- a/scripts/qapi/visit.py
-+++ b/scripts/qapi/visit.py
-@@ -28,6 +28,7 @@
- )
- from .schema import (
-     QAPISchema,
-+    QAPISchemaAlternatives,
-     QAPISchemaEnumMember,
-     QAPISchemaEnumType,
-     QAPISchemaFeature,
-@@ -222,7 +223,8 @@ def gen_visit_enum(name: str) -> str:
-                  c_name=c_name(name))
- 
- 
--def gen_visit_alternate(name: str, variants: QAPISchemaVariants) -> str:
-+def gen_visit_alternate(name: str,
-+                        alternatives: QAPISchemaAlternatives) -> str:
-     ret = mcgen('''
- 
- bool visit_type_%(c_name)s(Visitor *v, const char *name,
-@@ -244,7 +246,7 @@ def gen_visit_alternate(name: str, variants: QAPISchemaVariants) -> str:
- ''',
-                 c_name=c_name(name))
- 
--    for var in variants.variants:
-+    for var in alternatives.variants:
-         ret += var.ifcond.gen_if()
-         ret += mcgen('''
-     case %(case)s:
-@@ -414,10 +416,10 @@ def visit_alternate_type(self,
-                              info: Optional[QAPISourceInfo],
-                              ifcond: QAPISchemaIfCond,
-                              features: List[QAPISchemaFeature],
--                             variants: QAPISchemaVariants) -> None:
-+                             alternatives: QAPISchemaAlternatives) -> None:
-         with ifcontext(ifcond, self._genh, self._genc):
-             self._genh.add(gen_visit_decl(name))
--            self._genc.add(gen_visit_alternate(name, variants))
-+            self._genc.add(gen_visit_alternate(name, alternatives))
- 
- 
- def gen_visit(schema: QAPISchema,
-diff --git a/tests/qapi-schema/test-qapi.py b/tests/qapi-schema/test-qapi.py
-index 14f7b62a44..b66ceb81b8 100755
---- a/tests/qapi-schema/test-qapi.py
-+++ b/tests/qapi-schema/test-qapi.py
-@@ -61,9 +61,10 @@ def visit_object_type(self, name, info, ifcond, features,
-         self._print_if(ifcond)
-         self._print_features(features)
- 
--    def visit_alternate_type(self, name, info, ifcond, features, variants):
-+    def visit_alternate_type(self, name, info, ifcond, features,
-+                             alternatives):
-         print('alternate %s' % name)
--        self._print_variants(variants)
-+        self._print_variants(alternatives)
-         self._print_if(ifcond)
-         self._print_features(features)
- 
+On 1/17/24 10:15, peterx@redhat.com wrote:
+> From: Peter Xu <peterx@redhat.com>
+>
+> We got report from Yanghang Liu on an unexpected host DMA error when system
+> resets with VFIO attached to vIOMMU in the VM context.  Alex Williamson
+> quickly spot that there can be ordering issues on resets.  A further test
+> verified that the issue is indeed caused by such wrong ordering.
+nit: not sure the commit msg should contain people info (cover letter
+does it already + credits below)
+>
+> vIOMMU is a fundamentally infrustructural device, its reset is currently
+
+infrastructural
+
+> problematic because no ordering is guaranteed against other PCI devices
+> which may DMA through the vIOMMU device.
+>
+> The reset order is tricky, not only because it's current representation as
+s/it's/its
+> a normal "-device" (so it kind of follow the qdev tree depth-first reset,
+> but at a wrong place in the qtree; ideally it should be the parent
+> somewhere for all pci buses, or just part of pci host bridge), but also
+> because customized device reset hooks registered over the system reset
+> framework, so that the ordering of the vIOMMU reset is not guaranteed.
+>
+> For example, VFIO can register its reset hook with vfio_reset_handler() if
+> some device does not support FLR.  That will not so far follow the
+> depth-first travelsal reset mechanism provided by QEMU reset framework.
+traversal
+>
+> To remedy both of the issues with limited code changes, leverage the newly
+> introduced reset stage framework to reset vIOMMUs at the last stage of the
+> rest devices.  More information can be found in the comments in the patch,
+> which I decided to persist even with the code to make the problem even
+> clearer (with potential TODOs for the future, if possible).
+>
+> Buglink: https://issues.redhat.com/browse/RHEL-7188
+> Analyzed-by: Alex Williamson <alex.williamson@redhat.com>
+> Reported-by: YangHang Liu <yanghliu@redhat.com>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  hw/i386/intel_iommu.c | 54 +++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 52 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index 8b467cbbd2..5a8fbcad7a 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -35,6 +35,7 @@
+>  #include "sysemu/kvm.h"
+>  #include "sysemu/dma.h"
+>  #include "sysemu/sysemu.h"
+> +#include "sysemu/reset.h"
+>  #include "hw/i386/apic_internal.h"
+>  #include "kvm/kvm_i386.h"
+>  #include "migration/vmstate.h"
+> @@ -4086,7 +4087,7 @@ static void vtd_init(IntelIOMMUState *s)
+>  /* Should not reset address_spaces when reset because devices will still use
+>   * the address space they got at first (won't ask the bus again).
+>   */
+> -static void vtd_reset(DeviceState *dev)
+> +static void vtd_reset(void *dev)
+>  {
+>      IntelIOMMUState *s = INTEL_IOMMU_DEVICE(dev);
+>  
+> @@ -4242,7 +4243,6 @@ static void vtd_class_init(ObjectClass *klass, void *data)
+>      DeviceClass *dc = DEVICE_CLASS(klass);
+>      X86IOMMUClass *x86_class = X86_IOMMU_DEVICE_CLASS(klass);
+>  
+> -    dc->reset = vtd_reset;
+>      dc->vmsd = &vtd_vmstate;
+>      device_class_set_props(dc, vtd_properties);
+>      dc->hotpluggable = false;
+> @@ -4254,10 +4254,60 @@ static void vtd_class_init(ObjectClass *klass, void *data)
+>      dc->desc = "Intel IOMMU (VT-d) DMA Remapping device";
+>  }
+>  
+> +static void vtd_instance_init(Object *obj)
+> +{
+> +    IntelIOMMUState *s = INTEL_IOMMU_DEVICE(obj);
+> +
+> +    /*
+> +     * vIOMMU reset may require proper ordering with other devices.  There
+> +     * are two complexities so that normal DeviceState.reset() may not
+> +     * work properly for vIOMMUs:
+> +     *
+> +     * (1) Device depth-first reset hierachy doesn't yet work for vIOMMUs
+> +     *     (reference: resettable_cold_reset_fn())
+> +     *
+> +     *     Currently, vIOMMU devices are created as normal '-device'
+> +     *     cmdlines.  It means in many ways it has the same attributes with
+s/with/as
+> +     *     most of the rest devices, even if the rest devices should
+s/rest/other
+> +     *     logically be under control of the vIOMMU unit.
+> +     *
+> +     *     One side effect of it is vIOMMU devices will be currently put
+> +     *     randomly under qdev tree hierarchy, which is the source of
+> +     *     device reset ordering in current QEMU (depth-first traversal).
+> +     *     It means vIOMMU now can be reset before some devices.  For fully
+> +     *     emulated devices that's not a problem, because the traversal
+> +     *     holds BQL for the whole process.  However it is a problem if DMA
+> +     *     can happen without BQL, like VFIO, vDPA or remote device process.
+> +     *
+> +     *     TODO: one ideal solution can be that we make vIOMMU the parent
+> +     *     of the whole pci host bridge.  Hence vIOMMU can be reset after
+> +     *     all the devices are reset and quiesced.
+in hw/pci/pci.c there is also the info iommu_bus? When resetting a pci
+device know whether it is attached to a viommu. I don't know if we could
+plug the reset priority mechanism at this level.
+> +     *
+> +     * (2) Some devices register its own reset functions
+> +     *
+> +     *     Even if above issue solved, if devices register its own reset
+s/its/their
+> +     *     functions for some reason via QEMU reset hooks, vIOMMU can still
+> +     *     be reset before the device. One example is vfio_reset_handler()
+> +     *     where FLR is not supported on the device.
+> +     *
+> +     *     TODO: merge relevant reset functions into the device tree reset
+> +     *     framework.
+> +     *
+> +     * Neither of the above TODO may be trivial.  To make it work for now,
+> +     * leverage reset stages and reset vIOMMU always at latter stage of the
+> +     * default.  It means it needs to be reset after at least:
+> +     *
+> +     *   - resettable_cold_reset_fn(): machine qdev tree reset
+> +     *   - vfio_reset_handler():       VFIO reset for !FLR
+> +     */
+> +    qemu_register_reset_one(vtd_reset, s, false, 1);
+introducing enum values may be better ( just as we have for migration prio)
+> +}
+> +
+>  static const TypeInfo vtd_info = {
+>      .name          = TYPE_INTEL_IOMMU_DEVICE,
+>      .parent        = TYPE_X86_IOMMU_DEVICE,
+>      .instance_size = sizeof(IntelIOMMUState),
+> +    .instance_init = vtd_instance_init,
+>      .class_init    = vtd_class_init,
+>  };
+>  
+Thanks
+
+Eric
 
 
