@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0148300FF
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 09:05:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34912830100
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 09:05:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ0ul-0002EE-00; Wed, 17 Jan 2024 03:04:47 -0500
+	id 1rQ0ul-0002GF-0W; Wed, 17 Jan 2024 03:04:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rQ0ud-000295-Vi
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:04:40 -0500
+ id 1rQ0uf-0002AD-LZ
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:04:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rQ0ua-00033B-4h
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:04:39 -0500
+ id 1rQ0ub-00033T-Uw
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 03:04:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705478670;
+ s=mimecast20190719; t=1705478677;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=w3CdxFmDkghBhZU+EeJss4FDl+MilK9UCJU2qsqidD0=;
- b=GpMn11dGBCGUSSfyNwgozyLcno+gmbZkBNF82LdcLwB750dxfFt8Ud4Fjmi8z1CVrpLWCG
- Im0+bDfu/KhooDSKLG31gKP+zHs9160euMOfE7rejnwmLYCLwZRTKXuBSZIoSHanbI0NnE
- itiyb3My8ji8qxYSkPKQPhXn5OtrMTI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-kKPI23l6N-aYcSqG6ds7qQ-1; Wed,
- 17 Jan 2024 03:04:27 -0500
-X-MC-Unique: kKPI23l6N-aYcSqG6ds7qQ-1
+ bh=XLDP4eW2xkgtMCC/IcVRlbka3/PL5Xups7xg3OV5U4E=;
+ b=ZFLJxHYoujTFPdvzOhX65o2Qvtc67UGkXnZ/89BnoVClJPUImwUG6IrSFkLmJKnP+sRoJe
+ OW396MKMxLBJ3KIyMrK8/LRwsHcylYtnrYZ/Z9P5GOLr08HFMUUvlgxPIAF0hT2CMyPH1X
+ xsdKzSdR/zP2CrcbKuIB1PYbhiDFF3Q=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-217-3QDMzPqQNkGZ5z8l9WGP9Q-1; Wed, 17 Jan 2024 03:04:30 -0500
+X-MC-Unique: 3QDMzPqQNkGZ5z8l9WGP9Q-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 379383815F8D;
- Wed, 17 Jan 2024 08:04:27 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 073481064D7F;
+ Wed, 17 Jan 2024 08:04:30 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.192.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C666BFFF3;
- Wed, 17 Jan 2024 08:04:24 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7B8301BDB0;
+ Wed, 17 Jan 2024 08:04:27 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, jean-philippe@linaro.org, alex.williamson@redhat.com,
@@ -50,9 +50,9 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  yanghliu@redhat.com, pbonzini@redhat.com
 Cc: mst@redhat.com,
 	clg@redhat.com
-Subject: [RFC 1/7] hw/pci: Introduce PCIIOMMUOps::set_host_iova_regions
-Date: Wed, 17 Jan 2024 09:02:05 +0100
-Message-ID: <20240117080414.316890-2-eric.auger@redhat.com>
+Subject: [RFC 2/7] hw/pci: Introduce pci_device_iommu_bus
+Date: Wed, 17 Jan 2024 09:02:06 +0100
+Message-ID: <20240117080414.316890-3-eric.auger@redhat.com>
 In-Reply-To: <20240117080414.316890-1-eric.auger@redhat.com>
 References: <20240117080414.316890-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -67,7 +67,7 @@ X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,48 +83,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This new callback will be used to convey usable IOVA regions
-from VFIO-PCI devices to vIOMMUS (esp. virtio-iommu). The advantage
-is that this callback can be called very early, once the device has
-is known to be protected by a vIOMMU, after the get_address_space()
-has been called by the parent device. Current solution to convey
-IOVA regions relies on IOMMU MR callbacks but this requires an
-IOMMU MR to be connected with the VFIO-PCI device which generally
-comes with the enablement of the IOMMU MR (vIOMMU protection activated).
-The downside is that is comes pretty late and in case of virtio-iommu,
-after the probe.
+This helper will allow subsequent patches to retrieve the IOMMU bus
+and call its associated PCIIOMMUOps callbacks.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 ---
- include/hw/pci/pci.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ include/hw/pci/pci.h |  1 +
+ hw/pci/pci.c         | 16 ++++++++++++++++
+ 2 files changed, 17 insertions(+)
 
 diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index fa6313aabc..63c018b35a 100644
+index 63c018b35a..649b327f9f 100644
 --- a/include/hw/pci/pci.h
 +++ b/include/hw/pci/pci.h
-@@ -385,6 +385,21 @@ typedef struct PCIIOMMUOps {
-      * @devfn: device and function number
-      */
-    AddressSpace * (*get_address_space)(PCIBus *bus, void *opaque, int devfn);
-+
-+    /**
-+     * @set_host_iova_ranges: convey the usable iova ranges for a given device
-+     *
-+     * Optional callback which returns 0 on success or an error value if any
-+     * should be called after @get_address_space()
-+     *
-+     * @bus: the #PCIBus being accessed.
-+     * @opaque: the data passed to pci_setup_iommu().
-+     * @devfn: device and function number
-+     * @iova_ranges: list of IOVA ranges usable by the device
-+     * @errp: error handle
-+     */
-+   int (*set_host_iova_ranges)(PCIBus *bus, void *opaque, int devfn,
-+                               GList *iova_ranges, Error **errp);
+@@ -403,6 +403,7 @@ typedef struct PCIIOMMUOps {
  } PCIIOMMUOps;
  
  AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
++PCIBus *pci_device_iommu_bus(PCIDevice *dev);
+ 
+ /**
+  * pci_setup_iommu: Initialize specific IOMMU handlers for a PCIBus
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 76080af580..5bf07662fe 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -2672,6 +2672,22 @@ static void pci_device_class_base_init(ObjectClass *klass, void *data)
+     }
+ }
+ 
++PCIBus *pci_device_iommu_bus(PCIDevice *dev)
++{
++    PCIBus *bus = pci_get_bus(dev);
++    PCIBus *iommu_bus = bus;
++
++    while (iommu_bus && !iommu_bus->iommu_ops && iommu_bus->parent_dev) {
++        PCIBus *parent_bus = pci_get_bus(iommu_bus->parent_dev);
++
++        iommu_bus = parent_bus;
++    }
++    if (pci_bus_bypass_iommu(bus)) {
++        return NULL;
++    }
++    return iommu_bus;
++}
++
+ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+ {
+     PCIBus *bus = pci_get_bus(dev);
 -- 
 2.41.0
 
