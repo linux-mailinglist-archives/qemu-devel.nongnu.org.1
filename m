@@ -2,77 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A15830498
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:35:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8988304A5
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:40:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ4BO-0003QS-AV; Wed, 17 Jan 2024 06:34:10 -0500
+	id 1rQ4Gg-0005iS-6J; Wed, 17 Jan 2024 06:39:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rQ4BL-0003Ok-Lt; Wed, 17 Jan 2024 06:34:07 -0500
-Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rQ4BJ-0005Ha-3s; Wed, 17 Jan 2024 06:34:06 -0500
-Received: by mail-qt1-x82b.google.com with SMTP id
- d75a77b69052e-429cafdc6c1so33911151cf.1; 
- Wed, 17 Jan 2024 03:34:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705491243; x=1706096043; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mbRdYF6W/desPaz0GWHbRbds0lNNxcJa2//PZj5iNoU=;
- b=aGdd/giaJEh/mitfaXq6WC7LoAspozWkoif8a1Mmy3nGUjiCN5/TWULzLETbJIxqLx
- Je/g5eLB2InNSfqpUD429kSpoxVf0Ccagrm+dvdlsUxGbeb62HfOcfN8/TmBXPKIEMkf
- tmsjvovNBZvPC2DKXPpK0D/ZemlNfEK61I0gqN33OVZ1KNAfrL0lS4cgV3mRS/f3Q7XO
- n48Tmf6y7p59ihJyIuBgIqRlAJbLZjh7UiA88EevaYEGbh0/ufeQuH1EsjrGb4/WRv+f
- 9z3pIWqngwrYDPs5eaLOmlLdqvoW6mBRZliLce7zbh/2gH8rZtdN7b63TBRXQzkzU+DW
- cljA==
+ (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rQ4Ge-0005i8-6n
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 06:39:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rQ4Gc-0006Gn-OC
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 06:39:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705491574;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=CH626pSqKFSD+Kp2qukzp0Y/x3O//9WPmqfkQBgYC4E=;
+ b=SboU8lHm9OGcshuctTOwIRkwebtc1AS0M7OLBoq0jCDNrI8ApuiT9V8b4BSDe20ssQGX15
+ Buhq1Kr4trF5cHA53s5SeufI818uYItS/ZD8QqB6ZWUUKHgClldvhWUrgupV6ML+iWLHSN
+ 8ZOc99FCsj2o/BktHXYZ1i7zcXvUHvU=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-465-2F4_c1uGPi6o5IcXucWcjQ-1; Wed, 17 Jan 2024 06:39:27 -0500
+X-MC-Unique: 2F4_c1uGPi6o5IcXucWcjQ-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-681803c692fso4728386d6.3
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 03:39:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705491243; x=1706096043;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mbRdYF6W/desPaz0GWHbRbds0lNNxcJa2//PZj5iNoU=;
- b=fmQYBv46jnzDE47i3o9ULo9YDfbRZqFqxYa6DbrDds8T+gBGW81eTSefREGTiZynit
- 33cIfSJ30cT4ylGLJISier7VqsnabWE7xI0fv0HhzN+zXsYra9wjO4P5DrBDQZ4ccqWQ
- IvhNekmGDR6wfEdR5t/rhIbkMvUe5JifH3dj5brpZQH16sTK+UAa4JO8LVFpoNeYLeFo
- OTgd7a/ORYorC3LalzF2mFBG8q40to31f+JT1AHbOiUJJUw31wfih0V4O9MC7frEYJ4L
- RcQ9pP+Tcn8yyXkHDfJ0zcBja7wpTwE8C295EKqbgMspFfCsCieY+iK6l9gyVicTU+pN
- KPHQ==
-X-Gm-Message-State: AOJu0YxwSpjiJFAnR1podU/gvhAFp9a9pWKw9hQw14MCpBM0oQeOamTA
- bgu8CjFW4bdg3vU8dhKCD2S8aQstxUuDZOzdQdI=
-X-Google-Smtp-Source: AGHT+IHEk7MqUxs0f12jcVGKS7YJPz5gZK2zKzPVtJQ4PesJfD9M7H3H2qrZ5M+1bpqjml7VBnjT+hAibx/W9alRXoY=
-X-Received: by 2002:ac8:5f87:0:b0:429:cef4:4cc6 with SMTP id
- j7-20020ac85f87000000b00429cef44cc6mr12363944qta.131.1705491243393; Wed, 17
- Jan 2024 03:34:03 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705491566; x=1706096366;
+ h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CH626pSqKFSD+Kp2qukzp0Y/x3O//9WPmqfkQBgYC4E=;
+ b=rhnP5agDmKlqs3eBdEmfDPnYQrEjUjPJxb0Ju8HDyPcFGwg8cC4Qc3cWHsCs9VvuYA
+ 5MdVGpmwaYT7ymEOBA2AzABRpijsAgcleHEbpklWtiW/f/fgyAZJrIuBS5cIt2P9KpwS
+ x6O/5SzwLID99J5rHVUw39GzPdxtCO+TolK+pTUth/VRjXjUhY/8dTbDq7QUNhlpNpoc
+ MJpp8q6iBgZx8FguQkuquEDEwn9BcU8IaqGQnk32Qr4XaF1rzM/CkUZFrElbuLyQ9Vrc
+ L4ADu5ILytwysDEX5m80jycg6nKL2r++NM30w/lLNFeoMMLt6xawuUdoSiQlwfLw0U4b
+ amNA==
+X-Gm-Message-State: AOJu0Yy0W/Kiw+dgIp+f1bjqX83l08UH3HK8sgAAa5CvQf2bhQ8cp4lt
+ 6P0tqkyEc8axBQr1WG2dG138xcdzdKSD9g/uEoe2CcnIaWhzu7lpQ6+RcPIL3Reakly6t38Enn0
+ +IxhnhFxmnAsgMS1q4RkvHJs=
+X-Received: by 2002:a05:622a:1045:b0:429:7536:60a with SMTP id
+ f5-20020a05622a104500b004297536060amr11218310qte.9.1705491566765; 
+ Wed, 17 Jan 2024 03:39:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFjyYd7TVFZ9RUZ/mmwqBFGqktSN/tkqg9ofBVdteqCohddRy4jWXtee54vCY5ApDEycDKOJQ==
+X-Received: by 2002:a05:622a:1045:b0:429:7536:60a with SMTP id
+ f5-20020a05622a104500b004297536060amr11218298qte.9.1705491566541; 
+ Wed, 17 Jan 2024 03:39:26 -0800 (PST)
+Received: from rh (p200300c93f0273004f0fe90936098834.dip0.t-ipconnect.de.
+ [2003:c9:3f02:7300:4f0f:e909:3609:8834])
+ by smtp.gmail.com with ESMTPSA id
+ h7-20020ac87767000000b004260b65b4f7sm5677357qtu.97.2024.01.17.03.39.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Jan 2024 03:39:26 -0800 (PST)
+Date: Wed, 17 Jan 2024 12:39:21 +0100 (CET)
+From: Sebastian Ott <sebott@redhat.com>
+To: Shaoqin Huang <shahuang@redhat.com>
+cc: qemu-arm@nongnu.org, Eric Auger <eauger@redhat.com>, 
+ Gavin Shan <gshan@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
+ kvm@vger.kernel.org
+Subject: Re: [PATCH v5] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
+In-Reply-To: <20240115080144.44944-1-shahuang@redhat.com>
+Message-ID: <71625f0a-da2d-92aa-0055-72140257b665@redhat.com>
+References: <20240115080144.44944-1-shahuang@redhat.com>
 MIME-Version: 1.0
-References: <20240117110109.287430-1-f.ebner@proxmox.com>
- <CAMxuvayHZiXp=VRm=e=HT8u91p3MTut1KXyWOaooEUv7=wZwFg@mail.gmail.com>
- <4d6f1a47-3311-4a44-b47c-19035d6cfee0@proxmox.com>
-In-Reply-To: <4d6f1a47-3311-4a44-b47c-19035d6cfee0@proxmox.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 17 Jan 2024 15:33:51 +0400
-Message-ID: <CAJ+F1CJ4gF=kx1xedYsnU9MYqTS24xobYrf4ObOAgDnSFGFrnA@mail.gmail.com>
-Subject: Re: [PATCH v2] ui/clipboard: ensure data is available or request
- callback is set upon update
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com, 
- berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sebott@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,61 +98,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
-On Wed, Jan 17, 2024 at 3:30=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
-rote:
+On Mon, 15 Jan 2024, Shaoqin Huang wrote:
+> The KVM_ARM_VCPU_PMU_V3_FILTER provides the ability to let the VMM decide
+> which PMU events are provided to the guest. Add a new option
+> `kvm-pmu-filter` as -cpu sub-option to set the PMU Event Filtering.
+> Without the filter, all PMU events are exposed from host to guest by
+> default. The usage of the new sub-option can be found from the updated
+> document (docs/system/arm/cpu-features.rst).
 >
-> Am 17.01.24 um 12:11 schrieb Marc-Andr=C3=A9 Lureau:
-> > Hi
-> >
-> > On Wed, Jan 17, 2024 at 3:01=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.co=
-m> wrote:
-> >>
-> >> +    for (type =3D 0; type < QEMU_CLIPBOARD_TYPE__COUNT && !missing_da=
-ta; type++) {
-> >> +        if (!info->types[type].data) {
-> >> +            missing_data =3D true;
-> >> +        }
-> >> +    }
-> >> +    /*
-> >> +     * If data is missing, the clipboard owner's 'request' callback n=
-eeds to be
-> >> +     * set. Otherwise, there is no way to get the clipboard data and
-> >> +     * qemu_clipboard_request() cannot be called.
-> >> +     */
-> >> +    if (missing_data && info->owner && !info->owner->request) {
-> >> +        return;
-> >> +    }
-> >
-> > It needs to check whether the type is "available". If not data is
-> > provided, owner should be set as well, it should assert() that.
-> >
-> > That should do the job:
-> >
-> > for (type =3D 0; type < QEMU_CLIPBOARD_TYPE__COUNT; type++) {
-> >     /*
-> >      * If data is missing, the clipboard owner's 'request' callback nee=
-ds to
-> >      * be set. Otherwise, there is no way to get the clipboard data and
-> >      * qemu_clipboard_request() cannot be called.
-> >      */
-> >     if (info->types[type].available && !info->types[type].data) {
-> >         assert(info->owner && info->owner->request);
-> >     }
-> > }
-> >
+> Here is an example shows how to use the PMU Event Filtering, when
+> we launch a guest by use kvm, add such command line:
 >
-> Okay, thanks! But we can't assert, because that doesn't resolve the CVE
-> as it would still crash. The VNC client might not have the
-> VNC_FEATURE_CLIPBOARD_EXT feature, and the request callback is currently
-> only set in that case. But we can return instead of assert to just avoid
-> clipboard update. I'll send a v3.
+>  # qemu-system-aarch64 \
+>        -accel kvm \
+>        -cpu host,kvm-pmu-filter="D:0x11-0x11"
+>
+> Since the first action is deny, we have a global allow policy. This
+> disables the filtering of the cycle counter (event 0x11 being CPU_CYCLES).
+>
+> And then in guest, use the perf to count the cycle:
+>
+>  # perf stat sleep 1
+>
+>   Performance counter stats for 'sleep 1':
+>
+>              1.22 msec task-clock                       #    0.001 CPUs utilized
+>                 1      context-switches                 #  820.695 /sec
+>                 0      cpu-migrations                   #    0.000 /sec
+>                55      page-faults                      #   45.138 K/sec
+>   <not supported>      cycles
+>           1128954      instructions
+>            227031      branches                         #  186.323 M/sec
+>              8686      branch-misses                    #    3.83% of all branches
+>
+>       1.002492480 seconds time elapsed
+>
+>       0.001752000 seconds user
+>       0.000000000 seconds sys
+>
+> As we can see, the cycle counter has been disabled in the guest, but
+> other pmu events are still work.
+>
+> Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
 
-If it doesn't have VNC_FEATURE_CLIPBOARD_EXT, it shouldn't update the
-clipboard without data. (ClientCutText/ServerCutText always have data,
-even if 0-length)
+Reviewed-by: Sebastian Ott <sebott@redhat.com>
 
---=20
-Marc-Andr=C3=A9 Lureau
 
