@@ -2,86 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25D582FDFE
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 01:25:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE5482FE9D
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 02:59:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rPtjY-0001yI-5s; Tue, 16 Jan 2024 19:24:44 -0500
+	id 1rPvBV-0006bP-Gj; Tue, 16 Jan 2024 20:57:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rPtjW-0001y9-2p
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 19:24:42 -0500
-Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rPtjU-00077Z-BL
- for qemu-devel@nongnu.org; Tue, 16 Jan 2024 19:24:41 -0500
-Received: by mail-il1-x12f.google.com with SMTP id
- e9e14a558f8ab-3608e206f27so57412955ab.1
- for <qemu-devel@nongnu.org>; Tue, 16 Jan 2024 16:24:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705451073; x=1706055873; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fJPBcW286TIjVIvRhVP20qsxklLFEYJCpBKvQs3Bl5A=;
- b=w0n+59+bB71C0ukpnsqyjiZPxy5Sv4QmbyonkLpoH2W3G8ge0VKyv6caWRiVBRYO8W
- 6o2HEnzqEylOHfrQfFm9Nr3gNwyQRuYUWm65OCuytO++i6/GC1b1rWIQiZjk8SZJ8J6W
- ytEXX06idruwTWBN9NwikoIuntgo1i2N9b55mep+AGpR+u6MwcFStWsZPs5t/d4WSzsE
- fkSltWJg5/7k9aKh+EAXoUD23tx0Hv0fhCvQB8emIzCsgmK1uqA5aHJ8PyGhqMDFRXd9
- v3dmKMJGNeDbMD98zPSuoP3wLGhE/j/9qzpY7S7KXTXu7XBMRpiuUabKWHTaUA/1uXo8
- I92Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705451073; x=1706055873;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fJPBcW286TIjVIvRhVP20qsxklLFEYJCpBKvQs3Bl5A=;
- b=fxcFEkiLwOLSz220mH/x4nLszB40nEHy4F4pqDGQf6I/VifvI8DQO6LNHpEkeO+Dc8
- CH5jkycw+LxlVBe2x1MwcJfwnKkVFV+hK9TLYshu51HIwo00G7p2Cm6wftfdXEGVhi3P
- IvuntrgxZuOmsCCe5fets32ugtFwojCZDxKn2QPaEgpqSUp+6K0HyvKs+/qlhE/rw5UB
- kn5OBrfrMITJoG+NxqdgRaIuJgcE+trl15GbnotNIGhtB9df/nDjxrcwR2Od7j+OORNg
- 0J1qXVsvvWQFYb5qUuZjQOGXJOogn+X25RnjJas3jovZuH6MLV58c0O7ABsfZw6BU1ow
- JzVw==
-X-Gm-Message-State: AOJu0YznCFvCwuZD3K5UQg9VKy8Do6lNz8Tb44VWcCxw8/9Xu6dHmakY
- VB5ad03O/1xuOothdm6XiI5t0L9vd7dfqg==
-X-Google-Smtp-Source: AGHT+IE+VuOt9wfAiZG6Yb8wY8izn7IPIJ3cK7HznP54qHD8a/vCDabGUReVREi6F6vZwnHDfSvA2w==
-X-Received: by 2002:a05:6e02:11a4:b0:35f:ecf9:96ba with SMTP id
- 4-20020a056e0211a400b0035fecf996bamr8502951ilj.11.1705451073124; 
- Tue, 16 Jan 2024 16:24:33 -0800 (PST)
-Received: from ?IPV6:2001:8004:2738:1dd9:b8c3:7ceb:bfcc:14d9?
- ([2001:8004:2738:1dd9:b8c3:7ceb:bfcc:14d9])
- by smtp.gmail.com with ESMTPSA id
- l11-20020a633e0b000000b005ceac534e47sm10720441pga.51.2024.01.16.16.24.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Jan 2024 16:24:32 -0800 (PST)
-Message-ID: <7d31f4d8-7f9c-4ed0-878e-ea904ec3e7e6@linaro.org>
-Date: Wed, 17 Jan 2024 11:24:24 +1100
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1rPvBS-0006b7-Pf; Tue, 16 Jan 2024 20:57:38 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1rPvBQ-00042I-JO; Tue, 16 Jan 2024 20:57:38 -0500
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40H0fffG019228; Wed, 17 Jan 2024 01:57:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=Cf2WxhcWNKtFIZITANc2ufhTWtnAH5/Y7CcEsTG+VKA=;
+ b=CfH21vrOdMMUmjZWwxpeA0QbxnIPgPtDc5iAAbpk1f1GQ66Ype+hjiBUYgAGFYvxop1e
+ fKGLYy6bBO7Y39xLP6373SbFCw2n7y5XfbYQTQp9pDjKnT+f6swmB9Zsd7fYjZb6LXzw
+ FHT21bFtnRjE4pLnSdQsNAa/a6aiOMZVmTXiNAt3sgvsz7485TPf5p+XJdbskp5mQamk
+ B5+UoWUC/0LR6WG8qcb2O9w0Inw+W8MEtPKRuUaqGk+JMgicYxCPmZYDmvaZU2dwsBiw
+ l9EOOK9f6pRiOpj4C3924iGypzLAqck6+3yaJtuGIPz4slCKLEY2aLboB/jYNfwe9bv7 Dg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vp4emsrmk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 17 Jan 2024 01:57:33 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40H1u9YL002818;
+ Wed, 17 Jan 2024 01:57:32 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vp4emsrma-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 17 Jan 2024 01:57:32 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40H1PxIv019538; Wed, 17 Jan 2024 01:57:32 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vm72k242b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 17 Jan 2024 01:57:32 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40H1vV2h22872676
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 17 Jan 2024 01:57:31 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 09EBA58043;
+ Wed, 17 Jan 2024 01:57:31 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CAEFC58059;
+ Wed, 17 Jan 2024 01:57:29 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.107.253]) by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 17 Jan 2024 01:57:29 +0000 (GMT)
+Message-ID: <0369e3381ec73d7fd5a34d2d9e36f98dde829cb5.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/3] s390x/pci: avoid double enable/disable of aif
+From: Eric Farman <farman@linux.ibm.com>
+To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: thuth@redhat.com, clg@redhat.com, frankja@linux.ibm.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ qemu-devel@nongnu.org
+Date: Tue, 16 Jan 2024 20:57:29 -0500
+In-Reply-To: <20240116223157.73752-2-mjrosato@linux.ibm.com>
+References: <20240116223157.73752-1-mjrosato@linux.ibm.com>
+ <20240116223157.73752-2-mjrosato@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] linux-user/riscv: vdso: fix call frame info in
- __vdso_rt_sigreturn
-Content-Language: en-US
-To: Vineet Gupta <vineetg@rivosinc.com>, qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>, Edwin Lu
- <ewlu@rivosinc.com>, gnu-toolchain <gnu-toolchain@rivosinc.com>
-References: <20240115231552.3217789-1-vineetg@rivosinc.com>
- <f23eb285-16a8-44ee-991b-224b480dd91b@linaro.org>
- <5c3856ea-644a-4d3c-a5a9-d03239ce5d06@rivosinc.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <5c3856ea-644a-4d3c-a5a9-d03239ce5d06@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12f;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: OCnHOOngTd2WDNPjjacx0tM_oPw2tMJV
+X-Proofpoint-ORIG-GUID: eavJOsOE9FXmwAaNVEzRgkArX4qj59SW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-16_14,2024-01-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=999
+ suspectscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 spamscore=0 bulkscore=0 adultscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401170011
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=farman@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,104 +115,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/17/24 10:52, Vineet Gupta wrote:
-> Ok it seems the issue is really subtle.
-> 
-> With 8.2 trunk, the NOP needed before signal trampoline seems to be be
-> factored into the unwind info for sigrestorer.
-> 
->      0000003c 0000000000000098 00000000 CIE
->        Version:               3
->        Augmentation:          "zRS"
->        Code alignment factor: 1
->        Data alignment factor: -4
->        Return address column: 64
->        Augmentation data:     1b
->        DW_CFA_def_cfa: r2 (sp) ofs 832
->        DW_CFA_offset_extended: r64 at cfa-528
->        DW_CFA_offset: r1 (ra) at cfa-520
->        DW_CFA_offset: r2 (sp) at cfa-512
->      ...
->        DW_CFA_offset: r63 (ft11) at cfa-24
->        DW_CFA_nop
->        DW_CFA_nop
-> 
->      000000d8 0000000000000010 000000a0 FDE cie=0000003c
->      pc=000000000000066c..0000000000000678
->                                                                                                                                       
->      ^^^    <--- NOP included
->        DW_CFA_nop
->        DW_CFA_nop
->        DW_CFA_nop
-> 
->      0000000000000664 <__vdso_flush_icache>:
->       664:    00000513              li    a0,0
->       668:    00008067              ret
->       66c:    00000013              nop                 <--- this NOP
-> 
->      0000000000000670 <__vdso_rt_sigreturn>:
->       670:    08b00893              li    a7,139
->       674:    00000073              ecall
-> 
-> 
-> This is due to the .cfi_startproc bracketing. If we move the nop out of
-> the .cfi_{start,end}proc, things start to work as well.
-> 
->      diff --git a/linux-user/riscv/vdso.S b/linux-user/riscv/vdso.S
->      index 4b4e34aeea51..8c9f1038cb8c 100644
->      --- a/linux-user/riscv/vdso.S
->      +++ b/linux-user/riscv/vdso.S
->      @@ -92,6 +92,8 @@ endf __vdso_flush_icache
->       
->              .cfi_endproc
->       
->      +       nop
->      +
->       /*
->        * Start the unwind info at least one instruction before the signal
->        * trampoline, because the unwinder will assume we are returning
->      @@ -178,8 +180,6 @@ endf __vdso_flush_icache
->              .cfi_offset     62, B_FR + 30 * sizeof_freg
->              .cfi_offset     63, B_FR + 31 * sizeof_freg     /* f31 */
->       
->      -       nop
->      -
->       __vdso_rt_sigreturn:
->              raw_syscall __NR_rt_sigreturn
->       endf __vdso_rt_sigreturn
-> 
-> 
-> This changes the cfi info slightly as follows:
-> 
-> 000000d8 0000000000000010 000000a0 FDE cie=0000003c
-> pc=0000000000000670..0000000000000678  <-- excludes nop
->    DW_CFA_nop
->    DW_CFA_nop
->    DW_CFA_nop
-> 
-> 
-> 0000000000000664 <__vdso_flush_icache>:
->   664:    00000513              li    a0,0
->   668:    00008067              ret
->   66c:    00000013              nop
-> 
-> 0000000000000670 <__vdso_rt_sigreturn>:
->   670:    08b00893              li    a7,139
->   674:    00000073              ecall
-> 
-> I concur this is still not 100% explanation of why things are going off,
-> but I have exact same nop quirk for glibc ARC sigrestorer.
-> Would an updated patch along those lines be more palatable.
+On Tue, 2024-01-16 at 17:31 -0500, Matthew Rosato wrote:
+> Use a flag to keep track of whether AIF is currently enabled.=C2=A0 This
+> can be
+> used to avoid enabling/disabling AIF multiple times as well as to
+> determine
+> whether or not it should be disabled during reset processing.
+>=20
+> Fixes: d0bc7091c2 ("s390x/pci: enable adapter event notification for
+> interpreted devices")
+> Reported-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+> ---
+> =C2=A0hw/s390x/s390-pci-kvm.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | 25 +++++++++++++++++++++++--
+> =C2=A0include/hw/s390x/s390-pci-bus.h |=C2=A0 1 +
+> =C2=A02 files changed, 24 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/hw/s390x/s390-pci-kvm.c b/hw/s390x/s390-pci-kvm.c
+> index ff41e4106d..f7e10cfa72 100644
+> --- a/hw/s390x/s390-pci-kvm.c
+> +++ b/hw/s390x/s390-pci-kvm.c
+> @@ -27,6 +27,7 @@ bool s390_pci_kvm_interp_allowed(void)
+> =C2=A0
+> =C2=A0int s390_pci_kvm_aif_enable(S390PCIBusDevice *pbdev, ZpciFib *fib,
+> bool assist)
+> =C2=A0{
+> +=C2=A0=C2=A0=C2=A0 int rc;
+> =C2=A0=C2=A0=C2=A0=C2=A0 struct kvm_s390_zpci_op args =3D {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .fh =3D pbdev->fh,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .op =3D KVM_S390_ZPCIOP_=
+REG_AEN,
+> @@ -38,15 +39,35 @@ int s390_pci_kvm_aif_enable(S390PCIBusDevice
+> *pbdev, ZpciFib *fib, bool assist)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .u.reg_aen.flags =3D (as=
+sist) ? 0 :
+> KVM_S390_ZPCIOP_REGAEN_HOST
+> =C2=A0=C2=A0=C2=A0=C2=A0 };
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0 return kvm_vm_ioctl(kvm_state, KVM_S390_ZPCI_OP, &arg=
+s);
+> +=C2=A0=C2=A0=C2=A0 if (pbdev->aif) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
+> +=C2=A0=C2=A0=C2=A0 }
+> +
+> +=C2=A0=C2=A0=C2=A0 rc =3D kvm_vm_ioctl(kvm_state, KVM_S390_ZPCI_OP, &arg=
+s);
+> +=C2=A0=C2=A0=C2=A0 if (rc =3D=3D 0) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pbdev->aif =3D true;
+> +=C2=A0=C2=A0=C2=A0 }
+> +
+> +=C2=A0=C2=A0=C2=A0 return rc;
+> =C2=A0}
+> =C2=A0
+> =C2=A0int s390_pci_kvm_aif_disable(S390PCIBusDevice *pbdev)
+> =C2=A0{
+> +=C2=A0=C2=A0=C2=A0 int rc;
+> +
+> =C2=A0=C2=A0=C2=A0=C2=A0 struct kvm_s390_zpci_op args =3D {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .fh =3D pbdev->fh,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .op =3D KVM_S390_ZPCIOP_=
+DEREG_AEN
+> =C2=A0=C2=A0=C2=A0=C2=A0 };
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0 return kvm_vm_ioctl(kvm_state, KVM_S390_ZPCI_OP, &arg=
+s);
+> +=C2=A0=C2=A0=C2=A0 if (!pbdev->aif) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
+> +=C2=A0=C2=A0=C2=A0 }
+> +
+> +=C2=A0=C2=A0=C2=A0 rc =3D kvm_vm_ioctl(kvm_state, KVM_S390_ZPCI_OP, &arg=
+s);
+> +=C2=A0=C2=A0=C2=A0 if (rc =3D=3D 0) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pbev->aif =3D false;
 
-No.
+s/pbev/pbdev/
 
-The explanation is right there in the block comment: "Start the unwind info at least one 
-instruction before...".  The unwind info is taken from that nop insn.
+You fix this in patch 2. :)
 
-By moving the nop outside the unwind info, you remove the effect of the unwind info, as 
-the nop is now outside of any unwind blocks.  It is the same as removing all of the unwind 
-info entirely, which results in the (current) libgcc fallback information being used.
+With that fixed:
 
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
 
-r~
+> +=C2=A0=C2=A0=C2=A0 }
+> +
+> +=C2=A0=C2=A0=C2=A0 return rc;
+> =C2=A0}
+> diff --git a/include/hw/s390x/s390-pci-bus.h b/include/hw/s390x/s390-
+> pci-bus.h
+> index b1bdbeaeb5..435e788867 100644
+> --- a/include/hw/s390x/s390-pci-bus.h
+> +++ b/include/hw/s390x/s390-pci-bus.h
+> @@ -361,6 +361,7 @@ struct S390PCIBusDevice {
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool unplug_requested;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool interp;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool forwarding_assist;
+> +=C2=A0=C2=A0=C2=A0 bool aif;
+> =C2=A0=C2=A0=C2=A0=C2=A0 QTAILQ_ENTRY(S390PCIBusDevice) link;
+> =C2=A0};
+> =C2=A0
+
 
