@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22CEA8309AA
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 16:25:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 761D68309B5
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 16:27:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ7mP-00033w-Aw; Wed, 17 Jan 2024 10:24:37 -0500
+	id 1rQ7oD-0003uc-2N; Wed, 17 Jan 2024 10:26:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rQ7mO-00033o-17
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:24:36 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1rQ7oA-0003tO-LI
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:26:26 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rQ7mM-0007ij-66
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:24:35 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40e88bb6d2bso5369005e9.1
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 07:24:33 -0800 (PST)
+ id 1rQ7o9-0008NV-3i
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 10:26:26 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-337bcaef29eso1361616f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 07:26:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705505072; x=1706109872; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705505183; x=1706109983; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YmzJoXSWePwNOE5jFpEzXOHQQnIomR8vxtZZ5u723XA=;
- b=mqf6zvsMiEIGczrV/oKAOKVfImRTJVHDQLlQ000qAZMO7nziMgSSfkICKlxfucpvGo
- NDQW8GftbEyKdJOhSM2HldCEh5J4KO12j5RmyRMwFPgYElwGpH6PCD7MZyllAf+4L0i3
- VF9gvGKspsCS0uK0eCepxyiAlGoIi3wBrt0nRSEUsn6hYalv2las81uw6MqYs1lTfM2w
- 7mJvyRX43ZD6qN/juvCpU6EVyHK+RB5PP7eopl1eyLPlxrbE10qtZKYC3EXJyxcKScv+
- 0Y6YjmYMk7yl95IWS5Zs5hFMcfuoSM8CzdwQkglC3bTeYbX9o/bmJNvEjbKRSCIpJK37
- wAyw==
+ bh=f9sZuZNZixd83qBqP/EhPmyPRXKx4M/FRfRi5JIVAMI=;
+ b=FK1shmNL/BB1iWL9JmWWMHFkkcmcBMOcS8JP0AU6p+FJ1+BxqPvPfEjGao1A5qtdGZ
+ m2BeAMNt0KSXjRV7GkNg4x3xNK2y/DxDje5gt7OEDFd4G4u6xF9GhbuNRsJNpM4SKT94
+ yBzH3Jx95OSyxhB2l5fPT4+Ag0l8k6YZnFalVoj/d800TVb7Cr3EAhm7E6ooQYKW45k9
+ 0I1REAP/X13RLyovvfd+6Bys7lsLh1XiwhtQEzzJhs5fU5UxQB9hnV36rrwme7j6SQ4y
+ KNjii7m4AMAHkDb/hBWuTefoFmXAiKxM/1CqyFqO5juVHUAd4s+CQK98FQ3XoRbwqQGb
+ u4+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705505072; x=1706109872;
+ d=1e100.net; s=20230601; t=1705505183; x=1706109983;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=YmzJoXSWePwNOE5jFpEzXOHQQnIomR8vxtZZ5u723XA=;
- b=iNcVQK8fpJGlL03Zi4a5Yzs0zywyLKbXC7dqy5COxyytwQdedZV9zPixqa/nXe4wLx
- 98xs0/cxgWykCdxQUrno65Aa+vsA9vAudxQE6VksG/h50vDE+UJSPVtZnqNmx/0TAzMU
- T7ypMOV9GUTz1Wzr3Y6H2qJtykO16JJ4HyJNgNA/6qRR7mFYxM8O9XaVe4mO5dLLI34l
- GJP6iU1F3Wt+zrRuDz11ZKmWoXo1gHIrSowykrYhBtEAwO0KvjMNsJ/+YeFfVLgZVsor
- zOXdVa6/2kuDJYpm4Kh72rIZFyA+hJSjBwW0tilw+oiMp4TLkih/BQKmxI78fC/QhNJ/
- cjHQ==
-X-Gm-Message-State: AOJu0Yzg+OgDDPj65+rG0/ZCAcSbgMCqm6KUPEkz75VEcXGVdlMW6Qsb
- n1Iii9UrCzlIXOxlyQ5G/QtnIFcUpCoBEg==
-X-Google-Smtp-Source: AGHT+IGHYqEjydNbCsqO+pHcmhJcugOO2apfTfd75kiAXDNeaad75Vee8L/jB6WNZEpNMDHG0S9o6Q==
-X-Received: by 2002:a05:600c:d8:b0:40e:437a:1b56 with SMTP id
- u24-20020a05600c00d800b0040e437a1b56mr587489wmm.143.1705505072310; 
- Wed, 17 Jan 2024 07:24:32 -0800 (PST)
+ bh=f9sZuZNZixd83qBqP/EhPmyPRXKx4M/FRfRi5JIVAMI=;
+ b=BuTRp6Op1RygNtRA0MXQzZusYNV3ff8ldG8aLeGCAU6gZWSBgiE19gQ9xpzM0OEsvg
+ PZcAVtAxkOD8Wc2V6NqRBuTJx0VOaOTJFadp15hk3A7+XvGBwVSCHZL6z0wDnMbxIGsL
+ I/mB3z/2FJzdG8JTvENdO4w0i4Wo3Up3TYa2cVIy5CA2aoAVycdsTyS8YQSmKg91PEJ4
+ e3pGBfI8gpC/8IyvDIEAhXKfflJgATvE1ZGdeEEDKz7lEpcvQrRbYTsXyY0Al9WEHnhE
+ OcjrZBFJJ//V5y0BshLIvpuPInC5bYokE7Qu+81EzcSbAnU8KjuAQgoJarim23d8jMSK
+ v1fA==
+X-Gm-Message-State: AOJu0Yw5WIGRzu7qyDoWlmDfREV8pEwBPrMSrsyqMt9+erLaYI5KHWfl
+ 2dY7LtrVZ+HlK+VhVKdYz84pMW7HjBW2Tg==
+X-Google-Smtp-Source: AGHT+IEabofyh+CNpXGB0aDkc2IsaffY0Ey8NLyqHOFiAtriKCDGYjF0yi4x+Zgl6zW+PHV3ZP1eKQ==
+X-Received: by 2002:a5d:624e:0:b0:337:6529:6cf6 with SMTP id
+ m14-20020a5d624e000000b0033765296cf6mr4479684wrv.88.1705505183703; 
+ Wed, 17 Jan 2024 07:26:23 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- z4-20020a5d6544000000b00337bfa4e638sm1903091wrv.59.2024.01.17.07.24.31
+ i18-20020adfb652000000b00337bd545d7bsm1913552wre.21.2024.01.17.07.26.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jan 2024 07:24:31 -0800 (PST)
+ Wed, 17 Jan 2024 07:26:23 -0800 (PST)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 803985F8D8;
- Wed, 17 Jan 2024 15:24:31 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id DBEA05F8D8;
+ Wed, 17 Jan 2024 15:26:22 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: [PULL 16/22] gdbstub: expose api to find registers
-In-Reply-To: <c29dbc29-1151-4605-93ee-635c5c1792f2@daynix.com> (Akihiko
- Odaki's message of "Wed, 17 Jan 2024 16:50:15 +0900")
-References: <20240116104809.250076-1-alex.bennee@linaro.org>
- <20240116104809.250076-17-alex.bennee@linaro.org>
- <c29dbc29-1151-4605-93ee-635c5c1792f2@daynix.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  John Snow
+ <jsnow@redhat.com>,  Kyle Evans <kevans@freebsd.org>,  Reinoud Zandijk
+ <reinoud@netbsd.org>,  Gerd Hoffmann <kraxel@redhat.com>,  Wainer dos
+ Santos Moschetta <wainersm@redhat.com>,  Warner Losh <imp@bsdimp.com>,
+ Ryo ONODERA <ryoon@netbsd.org>,  Thomas Huth <thuth@redhat.com>,  Beraldo
+ Leal <bleal@redhat.com>
+Subject: Re: [PATCH v2] tests/vm/netbsd: Remove missing py311-expat package
+In-Reply-To: <20240117140746.23511-1-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 17 Jan 2024 15:07:46
+ +0100")
+References: <20240117140746.23511-1-philmd@linaro.org>
 User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Wed, 17 Jan 2024 15:24:31 +0000
-Message-ID: <878r4ohtjk.fsf@draig.linaro.org>
+Date: Wed, 17 Jan 2024 15:26:22 +0000
+Message-ID: <8734uwhtgh.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,65 +101,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> On 2024/01/16 19:48, Alex Benn=C3=A9e wrote:
->> Expose an internal API to QEMU to return all the registers for a vCPU.
->> The list containing the details required to called gdb_read_register().
->> Based-on: <20231025093128.33116-15-akihiko.odaki@daynix.com>
->> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
->> Message-Id: <20240103173349.398526-38-alex.bennee@linaro.org>
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->
-> I'm not for to pull this, "[PULL 17/22] plugins: add an API to read
-> registers", and "[PULL 19/22] contrib/plugins: extend execlog to track
-> register changes" in the current state. I have only commented the API
-> aspect of these patches, but looking at them now, I see something
-> wrong with their implementations. I'll add comments to respective
-> patches.
+> Since the pkgsrc-2023Q3 release [*], the py-expat package has been
+> merged into the base 'python' package:
 
-OK - the patches where on the list for 14 days so I was going to merge
-as is and fix up any issues after the fact. But if there is review
-incoming I can re-spin without the final series.
-
-There is other plugin activity going on I'd like to get merged this
-cycle so I don't want to hold stuff up.
-
->
->> diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
->> index da9ddfe54c5..7bddea8259e 100644
->> --- a/include/exec/gdbstub.h
->> +++ b/include/exec/gdbstub.h
->> @@ -111,6 +111,53 @@ void gdb_feature_builder_end(const GDBFeatureBuilde=
-r *builder);
->>    */
->>   const GDBFeature *gdb_find_static_feature(const char *xmlname);
->>   +/**
->> + * gdb_find_feature() - Find a feature associated with a CPU.
->> + * @cpu: The CPU associated with the feature.
->> + * @name: The feature's name.
->> + *
->> + * Return: The feature's number.
->> + */
->> +int gdb_find_feature(CPUState *cpu, const char *name);
->
-> This function is not used.
->
->> +
->> +/**
->> + * gdb_find_feature_register() - Find a register associated with a CPU.
->> + * @cpu: The CPU associated with the register.
->> + * @feature: The feature's number returned by gdb_find_feature().
->> + * @name: The register's name.
->> + *
->> + * Return: The register's number.
->> + */
->> +int gdb_find_feature_register(CPUState *cpu, int feature, const char *n=
-ame);
->
-> This function is also no longer needed.
-
-Ahh looks like a merge failure when I re-based.=20
+Queued to testing/next, thanks.
 
 --=20
 Alex Benn=C3=A9e
