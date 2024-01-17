@@ -2,44 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4517F83040F
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:00:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7A7830413
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:01:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ3e9-00019Q-4i; Wed, 17 Jan 2024 05:59:49 -0500
+	id 1rQ3fa-0001ug-V0; Wed, 17 Jan 2024 06:01:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1rQ3e6-00018t-Bc; Wed, 17 Jan 2024 05:59:46 -0500
+ id 1rQ3fZ-0001uK-4j; Wed, 17 Jan 2024 06:01:17 -0500
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1rQ3e4-0007MF-6f; Wed, 17 Jan 2024 05:59:46 -0500
+ id 1rQ3fX-0008KQ-BG; Wed, 17 Jan 2024 06:01:16 -0500
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 48CD649163;
- Wed, 17 Jan 2024 11:59:41 +0100 (CET)
-Message-ID: <1066014c-7cea-4797-b862-60cc3b663c22@proxmox.com>
-Date: Wed, 17 Jan 2024 11:59:39 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ui/clipboard: avoid crash upon request when clipboard
- peer is not initialized
-Content-Language: en-US
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 065C249194;
+ Wed, 17 Jan 2024 12:01:13 +0100 (CET)
 From: Fiona Ebner <f.ebner@proxmox.com>
-To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com,
+To: qemu-devel@nongnu.org
+Cc: kraxel@redhat.com, m.frank@proxmox.com, marcandre.lureau@redhat.com,
  berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
-References: <20240112135527.57212-1-f.ebner@proxmox.com>
- <CAJ+F1C+JXE9hSQ_oDNZvhpYDqPeeKayopB3x2L2YyJTxM8t+Yg@mail.gmail.com>
- <2150aa28-3eba-4e95-a301-d87377ba40a4@proxmox.com>
- <CAJ+F1CKQkXUiuQH+mNC7p00wWrznsgWJD4xjR-AzjJGPnsF8gw@mail.gmail.com>
- <ccd23263-f19f-401e-b476-a7eb1fd22571@proxmox.com>
- <CAJ+F1CJHKsRrxUcUijAVV2bv0EOtbz0BAmH1OEnmciwo7ACXLQ@mail.gmail.com>
- <0c2d35cb-cacf-4a81-9b6a-f07fdea9fc07@proxmox.com>
- <CAJ+F1CJ4F6Kv9Vx_4H+GJ0ME0Q0X4GTm2n6L1JGg-SWFgi18SA@mail.gmail.com>
- <960d7ef2-9e73-4987-98ca-529118325909@proxmox.com>
-In-Reply-To: <960d7ef2-9e73-4987-98ca-529118325909@proxmox.com>
+Subject: [PATCH v2] ui/clipboard: ensure data is available or request callback
+ is set upon update
+Date: Wed, 17 Jan 2024 12:01:09 +0100
+Message-Id: <20240117110109.287430-1-f.ebner@proxmox.com>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
@@ -64,98 +53,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 16.01.24 um 13:11 schrieb Fiona Ebner:
-> Am 15.01.24 um 13:00 schrieb Marc-André Lureau:
->>>>>
->>>>
->>>> The trouble is when qemu_clipboard_update() is called without data &
->>>> without a request callback set. We shouldn't allow that as we have no
->>>> means to get the clipboard data then.
->>>>
->>>
->>> In the above scenario, I'm pretty sure there is data when
->>> qemu_clipboard_update() is called. Just no request callback. If we'd
->>> reject this, won't that break clients that do not set the
->>> VNC_FEATURE_CLIPBOARD_EXT feature and only use non-extended
->>> VNC_MSG_CLIENT_CUT_TEXT messages?
->>
->> If "data" is already set, then qemu_clipboard_request() returns.
->>
->> Inverting the condition I suggested above: it's allowed to be the
->> clipboard owner if either "data" is set, or a request callback is set.
->>
-> 
-> Oh, sorry. Yes, it seems the problematic case is where data is not set.
-> But isn't that legitimate when clearing the clipboard? Or is a
-> VNC_MSG_CLIENT_CUT_TEXT message not valid when len is 0 and should be
-> rejected? In my testing KRDC does send such a message when the clipboard
-> is cleared:
-> 
->> #1  0x0000558f1e6a0dac in vnc_client_cut_text (vs=0x558f207754d0, len=0, 
->>     text=0x558f2046e008 "\003 \002\377\005") at ../ui/vnc-clipboard.c:313
->> #2  0x0000558f1e68e067 in protocol_client_msg (vs=0x558f207754d0, 
->>     data=0x558f2046e000 "\006", len=8) at ../ui/vnc.c:2454
-> 
-> Your suggestion would disallow this for clients that do not set the
-> VNC_FEATURE_CLIPBOARD_EXT feature (and only use non-extended
-> VNC_MSG_CLIENT_CUT_TEXT messages).
-> 
+With VNC, it can be that a client sends a VNC_MSG_CLIENT_CUT_TEXT
+message before sending a VNC_MSG_CLIENT_SET_ENCODINGS message with
+VNC_ENCODING_CLIPBOARD_EXT for configuring the clipboard extension.
 
-I noticed that there is yet another code path leading to
-qemu_clipboard_request() and dereferencing the NULL owner->request even
-if only non-extended VNC_MSG_CLIENT_CUT_TEXT messages are used:
+This means that qemu_clipboard_request() can be reached (via
+vnc_client_cut_text_ext()) before vnc_server_cut_text_caps() was
+called and had the chance to initialize the clipboard peer. In that
+case, info->owner->request is NULL instead of a function and so
+attempting to call it in qemu_clipboard_request() results in a
+segfault.
 
-> Thread 1 "qemu-system-x86" hit Breakpoint 1, vnc_client_cut_text (
->     vs=0x5555593e6c00, len=0, 
->     text=0x5555575ea608 "404078,bus=ahci0.0,drive=drive-sata0,id=sata0,bootindex=100\377\001") at ../ui/vnc-clipboard.c:310
-> (gdb) c
-> Continuing.
+In particular, this can happen when using the KRDC (22.12.3) VNC
+client on Wayland.
 
-And later:
+Another code path leading to the same issue in
+qemu_clipboard_request() is via vdagent_chr_write() and
+vdagent_clipboard_recv_request() after a non-extended
+VNC_MSG_CLIENT_CUT_TEXT messages with len=0 was sent.
 
-> qemu_clipboard_request (info=0x555557e576e0, type=QEMU_CLIPBOARD_TYPE_TEXT) at ../ui/clipboard.c:129
-> 129	    if (info->types[type].data ||
-> (gdb) p *info->owner
-> $65 = {name = 0x0, notifier = {notify = 0x0, node = {le_next = 0x0, le_prev = 0x0}}, request = 0x0}
-> (gdb) bt
-> #0  qemu_clipboard_request (info=0x555557e576e0, type=QEMU_CLIPBOARD_TYPE_TEXT) at ../ui/clipboard.c:129
-> #1  0x00005555558952ce in vdagent_chr_recv_chunk (vd=0x555556f67800) at ../ui/vdagent.c:769
-> #2  vdagent_chr_write (chr=<optimized out>, buf=0x7fff4ab263e4 "", len=0) at ../ui/vdagent.c:840
-> #3  0x0000555555d98830 in qemu_chr_write_buffer (s=s@entry=0x555556f67800, buf=buf@entry=0x7fff4ab263c0 "\001", len=36, 
->     offset=offset@entry=0x7fffffffd030, write_all=false) at ../chardev/char.c:122
-> #4  0x0000555555d98c3c in qemu_chr_write (s=0x555556f67800, buf=buf@entry=0x7fff4ab263c0 "\001", len=len@entry=36, 
->     write_all=<optimized out>, write_all@entry=false) at ../chardev/char.c:186
-> #5  0x0000555555d9109f in qemu_chr_fe_write (be=be@entry=0x555556e59040, buf=buf@entry=0x7fff4ab263c0 "\001", len=len@entry=36)
->     at ../chardev/char-fe.c:42
-> #6  0x0000555555900045 in flush_buf (port=0x555556e58f40, buf=0x7fff4ab263c0 "\001", len=36) at ../hw/char/virtio-console.c:63
-> #7  0x0000555555bea4f3 in do_flush_queued_data (port=0x555556e58f40, vq=0x555559272558, vdev=0x55555926a4d0)
->     at ../hw/char/virtio-serial-bus.c:188
-> #8  0x0000555555c201ff in virtio_queue_notify_vq (vq=0x555559272558) at ../hw/virtio/virtio.c:2268
-> #9  0x0000555555e36dd5 in aio_dispatch_handler (ctx=ctx@entry=0x555556e51b10, node=0x7ffed812b9f0) at ../util/aio-posix.c:372
-> #10 0x0000555555e37662 in aio_dispatch_handlers (ctx=0x555556e51b10) at ../util/aio-posix.c:414
-> #11 aio_dispatch (ctx=0x555556e51b10) at ../util/aio-posix.c:424
-> #12 0x0000555555e4d44e in aio_ctx_dispatch (source=<optimized out>, callback=<optimized out>, user_data=<optimized out>)
->     at ../util/async.c:358
-> #13 0x00007ffff753e7a9 in g_main_context_dispatch () from /lib/x86_64-linux-gnu/libglib-2.0.so.0
-> #14 0x0000555555e4ecb8 in glib_pollfds_poll () at ../util/main-loop.c:287
-> #15 os_host_main_loop_wait (timeout=58675786) at ../util/main-loop.c:310
-> #16 main_loop_wait (nonblocking=nonblocking@entry=0) at ../util/main-loop.c:589
-> #17 0x0000555555aa5f63 in qemu_main_loop () at ../system/runstate.c:791
-> #18 0x0000555555cadc16 in qemu_default_main () at ../system/main.c:37
-> #19 0x00007ffff60801ca in __libc_start_call_main (main=main@entry=0x5555558819d0 <main>, argc=argc@entry=102, 
->     argv=argv@entry=0x7fffffffd458) at ../sysdeps/nptl/libc_start_call_main.h:58
-> #20 0x00007ffff6080285 in __libc_start_main_impl (main=0x5555558819d0 <main>, argc=102, argv=0x7fffffffd458, init=<optimized out>, 
->     fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffd448) at ../csu/libc-start.c:360
-> #21 0x0000555555883581 in _start ()
+In particular, this can happen when using the KRDC (22.12.3) VNC
+client on X11.
 
-So such non-extended VNC_MSG_CLIENT_CUT_TEXT messages with len=0 are
-already problematic. Is clearing the clipboard supposed to be done
-differently?
+It is not enough to check in ui/vnc.c's protocol_client_msg() if the
+VNC_FEATURE_CLIPBOARD_EXT feature is enabled before handling an
+extended clipboard message with vnc_client_cut_text_ext(), because of
+the following scenario with two clients (say noVNC and KRDC):
 
-Your suggestion would prevent this scenario too. I'll send a patch with
-that shortly.
+The noVNC client sets the extension VNC_FEATURE_CLIPBOARD_EXT and
+initializes its cbpeer.
 
-Best Regards,
-Fiona
+The KRDC client does not, but triggers a vnc_client_cut_text() (note
+it's not the _ext variant)). There, a new clipboard info with it as
+the 'owner' is created and via qemu_clipboard_set_data() is called,
+which in turn calls qemu_clipboard_update() with that info.
+
+In qemu_clipboard_update(), the notifier for the noVNC client will be
+called, i.e. vnc_clipboard_notify() and also set vs->cbinfo for the
+noVNC client. The 'owner' in that clipboard info is the clipboard peer
+for the KRDC client, which did not initialize the 'request' function.
+That sounds correct to me, it is the owner of that clipboard info.
+
+Then when noVNC sends a VNC_MSG_CLIENT_CUT_TEXT message (it did set
+the VNC_FEATURE_CLIPBOARD_EXT feature correctly, so a check for it
+passes), that clipboard info is passed to qemu_clipboard_request() and
+the original segfault still happens.
+
+Fix the issue by disallowing clipboard update if both, data is missing
+and the clipboard owner's 'request' callback is not set.
+
+Add an assert that the clipboard owner's 'request' callback is set in
+qemu_clipboard_request() to have a clean error/abort should a similar
+issue appear in the future.
+
+Fixes: CVE-2023-6683
+Reported-by: Markus Frank <m.frank@proxmox.com>
+Suggested-by: Marc-André Lureau <marcandre.lureau@gmail.com>
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+---
+
+Changes in v2:
+    * Different approach as suggested by Marc-André:
+      Instead of quietly returning in qemu_clipboard_request() when no
+      request callback is set, prevent clipboard update if there is
+      both, no data and no request callback.
+
+ ui/clipboard.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/ui/clipboard.c b/ui/clipboard.c
+index 3d14bffaf8..d1bb7c77f2 100644
+--- a/ui/clipboard.c
++++ b/ui/clipboard.c
+@@ -65,12 +65,28 @@ bool qemu_clipboard_check_serial(QemuClipboardInfo *info, bool client)
+ 
+ void qemu_clipboard_update(QemuClipboardInfo *info)
+ {
++    uint32_t type;
++    bool missing_data = false;
+     QemuClipboardNotify notify = {
+         .type = QEMU_CLIPBOARD_UPDATE_INFO,
+         .info = info,
+     };
+     assert(info->selection < QEMU_CLIPBOARD_SELECTION__COUNT);
+ 
++    for (type = 0; type < QEMU_CLIPBOARD_TYPE__COUNT && !missing_data; type++) {
++        if (!info->types[type].data) {
++            missing_data = true;
++        }
++    }
++    /*
++     * If data is missing, the clipboard owner's 'request' callback needs to be
++     * set. Otherwise, there is no way to get the clipboard data and
++     * qemu_clipboard_request() cannot be called.
++     */
++    if (missing_data && info->owner && !info->owner->request) {
++        return;
++    }
++
+     notifier_list_notify(&clipboard_notifiers, &notify);
+ 
+     if (cbinfo[info->selection] != info) {
+@@ -132,6 +148,8 @@ void qemu_clipboard_request(QemuClipboardInfo *info,
+         !info->owner)
+         return;
+ 
++    assert(info->owner->request);
++
+     info->types[type].requested = true;
+     info->owner->request(info, type);
+ }
+-- 
+2.39.2
+
 
 
