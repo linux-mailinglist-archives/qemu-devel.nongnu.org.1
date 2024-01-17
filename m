@@ -2,87 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD1C830B11
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 17:31:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46737830B5A
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 17:44:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ8nM-0006tG-SJ; Wed, 17 Jan 2024 11:29:40 -0500
+	id 1rQ906-0001uW-2g; Wed, 17 Jan 2024 11:42:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rQ8nK-0006sI-Jf
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:29:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rQ8nJ-000531-4v
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:29:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705508976;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=rkyNsJCwFGqJTPhySJfa88JUu1UflHNy/NLPsLpoA3A=;
- b=fgtnriViNFuWkCG3HHVJSTIW01CLBC/M67DdCtQErOzmW7wgjndYFmaNXpUQW6QeGvwwzR
- AsjKlGAr/q9UOQgswfNW7owrv+eeFC1oyvBPhBdzQdVf511GgTv2HrpfY2jgu9ZvVn9kx3
- AvYuygkUmTgXof2jk7e6EWUt7xJzCsM=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-330-GxsfgPZPPXK_D8JZy-5JYQ-1; Wed, 17 Jan 2024 11:29:34 -0500
-X-MC-Unique: GxsfgPZPPXK_D8JZy-5JYQ-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-42987be5d14so149308431cf.1
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 08:29:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705508974; x=1706113774;
- h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rkyNsJCwFGqJTPhySJfa88JUu1UflHNy/NLPsLpoA3A=;
- b=ElHSDz4SOrN95YH+Ztqe2RT4la1GXrCl8oC1JCwr8kTSoUV5piDyR7irTHZABG2PzY
- R+NTg0T4M1jNHws8XxE6jbqLV3LgmTjEa5HRGPMt5BdGHAZbredtS16C3BkEx/lZSRQI
- lR02E7EttSRqjcy4PxitLpU7m8JVDtm7YsMeeQ1uo8k4WoxTRgBG7MM+vHBq+1JBqPNl
- kmIgqgYqL/P0kew2Q3irD3yW9ujaO7gKZqvtZTNB0o08iBa4bSLBqYC2Cr1tPJaLNcFz
- NhzfoAjKzys4y/wyu0qbWKtkjS4pqfdyxINFxH1Tr1pwxnGDqk0eFQlXroGxSOk6QedY
- Db+w==
-X-Gm-Message-State: AOJu0YxxXCePPYqDmuZhd0PeUo1CSpPvCKnLR+kA+CN0dYVsXXYkBomW
- gxl9WXz9LlzZTYLNpciNuU+H3amES06tLJcl9DKuPkFUQNv3a30LBzHL0TTYO1M8h7BcWo58pqO
- 1JezYfvCrXkQ+KrrOFNYkVzQ=
-X-Received: by 2002:a05:622a:291:b0:42a:ccf:9f85 with SMTP id
- z17-20020a05622a029100b0042a0ccf9f85mr2081553qtw.130.1705508974482; 
- Wed, 17 Jan 2024 08:29:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFmlmbNMod+UjUJxjrvx7sc+Nzs2mXpWaJhW4PSvRl+e+9dFXoXA9RoTWAn/W/svgXJQBX8CQ==
-X-Received: by 2002:a05:622a:291:b0:42a:ccf:9f85 with SMTP id
- z17-20020a05622a029100b0042a0ccf9f85mr2081544qtw.130.1705508974279; 
- Wed, 17 Jan 2024 08:29:34 -0800 (PST)
-Received: from rh (p200300c93f0273004f0fe90936098834.dip0.t-ipconnect.de.
- [2003:c9:3f02:7300:4f0f:e909:3609:8834])
- by smtp.gmail.com with ESMTPSA id
- eq23-20020a05622a5e1700b0042992b06012sm5998976qtb.2.2024.01.17.08.29.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jan 2024 08:29:34 -0800 (PST)
-Date: Wed, 17 Jan 2024 17:29:30 +0100 (CET)
-From: Sebastian Ott <sebott@redhat.com>
-To: Eric Auger <eauger@redhat.com>
-cc: Shaoqin Huang <shahuang@redhat.com>, qemu-arm@nongnu.org, 
- Gavin Shan <gshan@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
- kvm@vger.kernel.org
-Subject: Re: [PATCH v5] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
-In-Reply-To: <852ee2a3-b69f-4480-a6f4-f2b274f5e01c@redhat.com>
-Message-ID: <36a1efb3-2538-c339-d627-843e7d2b6541@redhat.com>
-References: <20240115080144.44944-1-shahuang@redhat.com>
- <852ee2a3-b69f-4480-a6f4-f2b274f5e01c@redhat.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQ904-0001u9-9A
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:42:48 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQ902-00083S-JD
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 11:42:48 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 42C20221D0;
+ Wed, 17 Jan 2024 16:42:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1705509764; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=8TO02vwI+QShdMSvO+cZePxxIm4LvPYMmjakg9J9y48=;
+ b=seMzsOH7LBpDje0ksXUdp/9ZA1CSXUuWOX79bqagqdEKtFjrTvdo0BfasvzU6qcQVEDtf9
+ /DIxCgJXfTwRlbUhwSkb2OP1eHpO1bK3IaiBHTKKHAXdH+eAX9CNRQNoIwewSFryzcJSes
+ X1hheN2Nfkj8hY/F9zgIU1y73kN6Iiw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1705509764;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=8TO02vwI+QShdMSvO+cZePxxIm4LvPYMmjakg9J9y48=;
+ b=WDf9hpcorLZocqEEL6q7QM2v1p41uUP5px+cA7fYklABrjUrD+bL+JgZ5VHomkrrLGggUg
+ X24W0psQ9tk8JTCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1705509764; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=8TO02vwI+QShdMSvO+cZePxxIm4LvPYMmjakg9J9y48=;
+ b=seMzsOH7LBpDje0ksXUdp/9ZA1CSXUuWOX79bqagqdEKtFjrTvdo0BfasvzU6qcQVEDtf9
+ /DIxCgJXfTwRlbUhwSkb2OP1eHpO1bK3IaiBHTKKHAXdH+eAX9CNRQNoIwewSFryzcJSes
+ X1hheN2Nfkj8hY/F9zgIU1y73kN6Iiw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1705509764;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=8TO02vwI+QShdMSvO+cZePxxIm4LvPYMmjakg9J9y48=;
+ b=WDf9hpcorLZocqEEL6q7QM2v1p41uUP5px+cA7fYklABrjUrD+bL+JgZ5VHomkrrLGggUg
+ X24W0psQ9tk8JTCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 764F213751;
+ Wed, 17 Jan 2024 16:42:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id lSycDoEDqGXEMQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 17 Jan 2024 16:42:41 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Claudio Fontana <cfontana@suse.de>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Andrea Bolognani <abologna@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PATCH v2] tests/docker: Add sqlite3 module to openSUSE Leap container
+Date: Wed, 17 Jan 2024 13:42:27 -0300
+Message-Id: <20240117164227.32143-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sebott@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: 0.70
+X-Spamd-Result: default: False [0.70 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TO_DN_SOME(0.00)[]; R_MISSING_CHARSET(2.50)[];
+ BROKEN_CONTENT_TYPE(1.50)[]; RCVD_COUNT_THREE(0.00)[3];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_SEVEN(0.00)[10];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ BAYES_HAM(-3.00)[100.00%]; ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ MID_CONTAINS_FROM(1.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,22 +114,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 17 Jan 2024, Eric Auger wrote:
-> On 1/15/24 09:01, Shaoqin Huang wrote:
->> +    /*
->> +     * The filter only needs to be initialized through one vcpu ioctl and it
->> +     * will affect all other vcpu in the vm.
->> +     */
->> +    if (pmu_filter_init) {
-> I think I commented on that on the v4. Maybe I missed your reply. You
-> sure you don't need to call it for each vcpu?
+Avocado needs sqlite3:
 
-From (kernel) commit d7eec2360e3 ("KVM: arm64: Add PMU event filtering
-infrastructure"):
-   Note that although the ioctl is per-vcpu, the map of allowed events is
-   global to the VM (it can be setup from any vcpu until the vcpu PMU is
-   initialized).
+  Failed to load plugin from module "avocado.plugins.journal":
+  ImportError("Module 'sqlite3' is not installed.
+  Use: sudo zypper install python311 to install it")
 
-Sebastian
+From 'zypper info python311':
+  "This package supplies rich command line features provided by
+  readline, and sqlite3 support for the interpreter core, thus forming
+  a so called "extended" runtime."
+
+Include the appropriate package in the lcitool mappings which will
+guarantee the dockerfile gets properly updated when lcitool is
+run. Also include the updated dockerfile.
+
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ tests/docker/dockerfiles/opensuse-leap.docker | 1 +
+ tests/lcitool/mappings.yml                    | 4 ++++
+ tests/lcitool/projects/qemu.yml               | 1 +
+ 3 files changed, 6 insertions(+)
+
+diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
+index dc0e36ce48..cf753383a4 100644
+--- a/tests/docker/dockerfiles/opensuse-leap.docker
++++ b/tests/docker/dockerfiles/opensuse-leap.docker
+@@ -90,6 +90,7 @@ RUN zypper update -y && \
+            pcre-devel-static \
+            pipewire-devel \
+            pkgconfig \
++           python311 \
+            python311-base \
+            python311-pip \
+            python311-setuptools \
+diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
+index 0b908882f1..407c03301b 100644
+--- a/tests/lcitool/mappings.yml
++++ b/tests/lcitool/mappings.yml
+@@ -59,6 +59,10 @@ mappings:
+     CentOSStream8:
+     OpenSUSELeap15:
+ 
++  python3-sqlite3:
++    CentOSStream8: python38
++    OpenSUSELeap15: python311
++
+   python3-tomli:
+     # test using tomllib
+     apk:
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 82092c9f17..149b15de57 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -97,6 +97,7 @@ packages:
+  - python3-pip
+  - python3-sphinx
+  - python3-sphinx-rtd-theme
++ - python3-sqlite3
+  - python3-tomli
+  - python3-venv
+  - rpm2cpio
+-- 
+2.35.3
 
 
