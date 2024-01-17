@@ -2,90 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3145183042B
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:06:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 954F283044B
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 12:12:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ3jr-0003uV-CJ; Wed, 17 Jan 2024 06:05:43 -0500
+	id 1rQ3pU-0005pY-RR; Wed, 17 Jan 2024 06:11:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rQ3ji-0003u6-By; Wed, 17 Jan 2024 06:05:34 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rQ3jg-0000aC-6j; Wed, 17 Jan 2024 06:05:34 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5534dcfdd61so19228975a12.0; 
- Wed, 17 Jan 2024 03:05:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705489529; x=1706094329; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aTMbsHsrO4MrYT6vSy6ZhZxs09701ZYspzOhmvylig0=;
- b=ZjiRG/Ah53Q1q7UrPwgDojfmyI7RSZk32x1uLKjARNBORdhCI/H5GVVjwN6YhEZ1LN
- /WiCY99+gqxs5OMF+DaIvat9a7jgQb0iltbWXPhvv9ShKObfjV+uob9K/xwwNYX4pS83
- Iiu2abqiUzVYayiIpJECgFGg99mimUQJYdeKaIqNX6BflwHuxBS8N2dSfbUy8K/+4oWg
- taE+6egB7xHCdtTDEWxraH2oX72uQo7aVG4Jg3trF8LTsk8vj3vb+VZ1UlIzjfL4LcJ1
- toqLdLq7nFpaznSN7iseAS3tueyPy+6lPpVCFrDEM41/4fFZwf2kSEeaspX3j019AnG+
- qw4Q==
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1rQ3pS-0005pQ-Pv
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 06:11:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1rQ3pQ-0001Gi-Um
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 06:11:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705489887;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ULLYsnr0YwZcFCMK9ypbkOfWZ97tfohJHzqMQ6E2fZY=;
+ b=Kc5vs7SC8GTbzF6ShQRfYhd40+XZnvH05Sc9ogiBKKUyj5cknHyR4cZeZNiVCPxnjf4d91
+ K9evhyq0jCnTRvXoFln3cglcEvaV3t38Cj2RqrOeNEOSoemGRearNFV9KYtqETdUoU0Yi5
+ PYheyMKOyImyRmYESKXuU6FJIK/ab+M=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-423-eSjxGEPtOlSm5qDgHzxmhw-1; Wed, 17 Jan 2024 06:11:25 -0500
+X-MC-Unique: eSjxGEPtOlSm5qDgHzxmhw-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-50edc80b859so4715517e87.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 03:11:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705489529; x=1706094329;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1705489884; x=1706094684;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aTMbsHsrO4MrYT6vSy6ZhZxs09701ZYspzOhmvylig0=;
- b=w1eSaYZMWj9QuAyJaIqBiTpFiMDgGFnoTQwYKSxxJfCKbevKgMAG03iL8cGbfSYpjS
- ILPKvDThidmhmmFwi0vYoIP9Neo1KDmYPE5dB3vO6KnhmRRwnGirFYfl9lr3ve4aDgDo
- SfDP+sx64rXlZmnfDkcgQiqgb5hbNikaLEQAnQjBTm+DCENThFSv2iHZYVRCAAhyZ/I7
- yE3E6BB7jI+lh4hncrvp7sQiMrrJX+rCImW8bbcirZVLE1jUtmhwSkH7uaZjCZxq7QlR
- lfei46HVTiOhLZJLCDBy4/g5MXkbpATQuRIFoJ+lKJknc7i6BGPQGrclncpDAKd97uRF
- JFHQ==
-X-Gm-Message-State: AOJu0YzXi3iIzJUpikKTgaHlijatUCOnq3+XfldCpOdqx26xKP0K9y+J
- CAAaPJSxRFK4/XivhxzWkn0DduW1Fk8=
-X-Google-Smtp-Source: AGHT+IEHrRia/UkLpmAPBMrhUYru/zQGXDVqbNUklo1gn0/+IewEJZv+RVs7CLT6DxNrY9RJk/jYvQ==
-X-Received: by 2002:a05:6402:2052:b0:558:b89d:8e39 with SMTP id
- bc18-20020a056402205200b00558b89d8e39mr720307edb.37.1705489528778; 
- Wed, 17 Jan 2024 03:05:28 -0800 (PST)
-Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- v21-20020a50a455000000b005527c02c1d6sm8254309edb.50.2024.01.17.03.05.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 03:05:27 -0800 (PST)
-Date: Wed, 17 Jan 2024 11:05:20 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- Guenter Roeck <linux@roeck-us.net>
-CC: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Beniamino Galvani <b.galvani@gmail.com>, 
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>, qemu-arm@nongnu.org,
- Alexander Graf <agraf@csgraf.de>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Thomas Huth <thuth@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: =?US-ASCII?Q?Re=3A_Re=3A_=5BPATCH_1/3=5D_hw/arm=3A_Add_EHCI/OHCI_co?=
- =?US-ASCII?Q?ntrollers_to_Allwinner_R40_and_Bananapi_board?=
-In-Reply-To: <ccs4nfcdm7e5iek2enycw4echbyny2okstx4pg2es7pggjlgld@5vftyjpgfot2>
-References: <20240113191651.1313226-1-linux@roeck-us.net>
- <20240113191651.1313226-2-linux@roeck-us.net>
- <56f692d8-41b1-4126-96b9-80d274624984@linaro.org>
- <56fde49f-7dc6-4f8e-9bbf-0336a20a9ebf@roeck-us.net>
- <ccs4nfcdm7e5iek2enycw4echbyny2okstx4pg2es7pggjlgld@5vftyjpgfot2>
-Message-ID: <51F3A473-7A20-4C0C-BDF1-98D839E56A0F@gmail.com>
+ bh=ULLYsnr0YwZcFCMK9ypbkOfWZ97tfohJHzqMQ6E2fZY=;
+ b=ba5IcT3zt8L30QEb0cWkGZBtuUm/6MAgd7Hbdma++MLkGPSvDYcopcOJ6YTOshC/fe
+ 1FhALL3BeAUP2DxRwdEKjOHe6EroS13St3LznnIsHnGwk0JQf858fg2YpQtBaz1zk1cR
+ lFfQYlMW2lqd3lTOL2tBRvPnuTwk/yNljsFk47zybN0Ie9nVPkUJK2tV2Io4LZQ1px4r
+ BwCwISWxgG7BOvioxj0Gf1jqdV5eXy/vBNZtsfOD4GkI46bfrn2bf4QvgrV7X86JWUPY
+ Tr5xme+fNtvP+d7xA6+x9yayMtFrO5x2hfZq4LxZClHugyXMCG6ZL8cCD2DNRYaeIHUe
+ p5NA==
+X-Gm-Message-State: AOJu0YwOU8gjfrhn/KYb7NsFoN7LNE32dWb86q5VTn3N1fbQNMRBiViv
+ j6ENo49/EC/Mny1MaTw4YyYcYVnLKZauLw3gbmx+AXjjDnJAZQrT48r49liiS2k32wZ/mIXu4zt
+ 7eOc5kHyk0QUUGJTyWyysc87qNYsZXZF7JF9zq+xNyk87ToU1/g==
+X-Received: by 2002:a05:6512:74:b0:50e:79a5:545a with SMTP id
+ i20-20020a056512007400b0050e79a5545amr3812637lfo.23.1705489883867; 
+ Wed, 17 Jan 2024 03:11:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGMt0vZLCJo0ltM7MeoaXFhIBIhVCSrNTeP4GoQwmGXFK9hG7PVSwxuB5Tli/aiq4kDlrFaQYD7Feru1T6rJDE=
+X-Received: by 2002:a05:6512:74:b0:50e:79a5:545a with SMTP id
+ i20-20020a056512007400b0050e79a5545amr3812625lfo.23.1705489883524; Wed, 17
+ Jan 2024 03:11:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20240117110109.287430-1-f.ebner@proxmox.com>
+In-Reply-To: <20240117110109.287430-1-f.ebner@proxmox.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Wed, 17 Jan 2024 15:11:11 +0400
+Message-ID: <CAMxuvayHZiXp=VRm=e=HT8u91p3MTut1KXyWOaooEUv7=wZwFg@mail.gmail.com>
+Subject: Re: [PATCH v2] ui/clipboard: ensure data is available or request
+ callback is set upon update
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com, m.frank@proxmox.com, 
+ berrange@redhat.com, mcascell@redhat.com, qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,88 +96,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi
 
-
-Am 16=2E Januar 2024 10:13:37 UTC schrieb Gerd Hoffmann <kraxel@redhat=2Ec=
-om>:
->On Mon, Jan 15, 2024 at 08:12:29AM -0800, Guenter Roeck wrote:
->> On 1/15/24 03:02, Philippe Mathieu-Daud=C3=A9 wrote:
->> > On 13/1/24 20:16, Guenter Roeck wrote:
->> > > If machine USB support is not enabled, create unimplemented devices
->> > > for the USB memory ranges to avoid crashes when booting Linux=2E
->> >=20
->> > I never really understood the reason for machine_usb() and had on my
->> > TODO to do some archeology research to figure it out since quite some
->> > time=2E Having to map an UnimpDevice due to CLI options seems like an
->> > anti-pattern when the device is indeed implemented in the repository=
-=2E
->>=20
->> Me not either=2E I copied the code from aw_a10_init(), trying to use th=
-e
->> same pattern=2E I am perfectly fine with making it unconditional, but t=
-hen
->> I would argue that it should be unconditional for Allwinner A10 as well
->> (not that I really care much, just for consistency)=2E
->>=20
->> The "-usb" option says "enable on-board USB host controller (if not
->> enabled by default)"=2E Unfortunately, that doesn't tell me much,
->> and most specifically it doesn't tell me how to enable it by default=2E
->> One option I can think of would be to enable it on the machine level,
->> i=2Ee=2E, from bananapi_m2u=2Ec, but then, again, I don't see if/how
->> that is done for other boards=2E Any suggestions ?
+On Wed, Jan 17, 2024 at 3:01=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
+rote:
 >
->The -usb switch is there as long as I remember (which goes back to qemu
->0=2E1x days)=2E  I suspect it was introduced in the early usb emulation
->days, where usb emulation was more fragile and turning it on by default
->didn't look like a good plan=2E
+> With VNC, it can be that a client sends a VNC_MSG_CLIENT_CUT_TEXT
+> message before sending a VNC_MSG_CLIENT_SET_ENCODINGS message with
+> VNC_ENCODING_CLIPBOARD_EXT for configuring the clipboard extension.
 >
->usb emulation in modern qemu should be stable enough that enabling it by
->default should not be much of a problem=2E  ohci/uhci/ehci emulation is
->somewhat expensive due to polling being wired into the hardware design,
->but as long as there are no usb devices connected this should not be
->much of a concern either as the guest drivers usually put the usb host
->adapter to sleep in that case (which saves power on physical hardware
->and stops the polling timer in qemu)=2E
+> This means that qemu_clipboard_request() can be reached (via
+> vnc_client_cut_text_ext()) before vnc_server_cut_text_caps() was
+> called and had the chance to initialize the clipboard peer. In that
+> case, info->owner->request is NULL instead of a function and so
+> attempting to call it in qemu_clipboard_request() results in a
+> segfault.
 >
->So, turning on usb support by default makes sense to me when emulating
->boards, where guests expect the usb controllers being present at
->specific MMIO addresses, so mapping UnimpDevice is not needed=2E
-
-Good idea, this might make upstreaming my VIA-south-bridges-in-the-pc-mach=
-ine work simpler=2E
-
+> In particular, this can happen when using the KRDC (22.12.3) VNC
+> client on Wayland.
 >
->In case guests detect hardware via generated device tree / generated
->ACPI tables / pci bus scan (i=2Ee=2E arm virt + microvm + pc + q35) it IM=
-HO
->makes sense to keep current behavior=2E
-
-I remember similar discussions with Phil during PIIX consolidation where t=
-he motivation was to make the code simpler by removing options=2E That is, =
-if a piece of silicon contains multiple functions, the QEMU model should al=
-ways instantiate all (available) functions rather than providing options fo=
-r cherry-picking=2E
-
-Especially in highly integrated devices (such as south bridges) there migh=
-t be interconnections between functions that are hard to handle when some a=
-re optional=2E For example, the ACPI function in the VIA south bridges dete=
-ct activity from all other functions=2E In both PIIX and VIA, the USB funct=
-ion can be (de)activated by software from the ISA function (not implemented=
- yet)=2E
-
-The latter would allow the current behavior of the pc machine(s) to be imp=
-lemented while avoiding the cherry picking problem: The BIOS could switch t=
-he USB function on or off depending on fw_cfg (please correct me if I'm wro=
-ng)=2E I think this would't even need compat machinery=2E Of course, suppor=
-t would need to be added in SeaBIOS and -- I guess -- Tianocore=2E I'd like=
- to look into that but, as usual, no guarantees when this will arrive=2E
-
-Best regards,
-Bernhard
-
+> Another code path leading to the same issue in
+> qemu_clipboard_request() is via vdagent_chr_write() and
+> vdagent_clipboard_recv_request() after a non-extended
+> VNC_MSG_CLIENT_CUT_TEXT messages with len=3D0 was sent.
 >
->take care,
->  Gerd
+> In particular, this can happen when using the KRDC (22.12.3) VNC
+> client on X11.
+>
+> It is not enough to check in ui/vnc.c's protocol_client_msg() if the
+> VNC_FEATURE_CLIPBOARD_EXT feature is enabled before handling an
+> extended clipboard message with vnc_client_cut_text_ext(), because of
+> the following scenario with two clients (say noVNC and KRDC):
+>
+> The noVNC client sets the extension VNC_FEATURE_CLIPBOARD_EXT and
+> initializes its cbpeer.
+>
+> The KRDC client does not, but triggers a vnc_client_cut_text() (note
+> it's not the _ext variant)). There, a new clipboard info with it as
+> the 'owner' is created and via qemu_clipboard_set_data() is called,
+> which in turn calls qemu_clipboard_update() with that info.
+>
+> In qemu_clipboard_update(), the notifier for the noVNC client will be
+> called, i.e. vnc_clipboard_notify() and also set vs->cbinfo for the
+> noVNC client. The 'owner' in that clipboard info is the clipboard peer
+> for the KRDC client, which did not initialize the 'request' function.
+> That sounds correct to me, it is the owner of that clipboard info.
+>
+> Then when noVNC sends a VNC_MSG_CLIENT_CUT_TEXT message (it did set
+> the VNC_FEATURE_CLIPBOARD_EXT feature correctly, so a check for it
+> passes), that clipboard info is passed to qemu_clipboard_request() and
+> the original segfault still happens.
+>
+> Fix the issue by disallowing clipboard update if both, data is missing
+> and the clipboard owner's 'request' callback is not set.
+>
+> Add an assert that the clipboard owner's 'request' callback is set in
+> qemu_clipboard_request() to have a clean error/abort should a similar
+> issue appear in the future.
+>
+> Fixes: CVE-2023-6683
+> Reported-by: Markus Frank <m.frank@proxmox.com>
+> Suggested-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com>
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> ---
+>
+> Changes in v2:
+>     * Different approach as suggested by Marc-Andr=C3=A9:
+>       Instead of quietly returning in qemu_clipboard_request() when no
+>       request callback is set, prevent clipboard update if there is
+>       both, no data and no request callback.
+>
+>  ui/clipboard.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+>
+> diff --git a/ui/clipboard.c b/ui/clipboard.c
+> index 3d14bffaf8..d1bb7c77f2 100644
+> --- a/ui/clipboard.c
+> +++ b/ui/clipboard.c
+> @@ -65,12 +65,28 @@ bool qemu_clipboard_check_serial(QemuClipboardInfo *i=
+nfo, bool client)
+>
+>  void qemu_clipboard_update(QemuClipboardInfo *info)
+>  {
+> +    uint32_t type;
+> +    bool missing_data =3D false;
+>      QemuClipboardNotify notify =3D {
+>          .type =3D QEMU_CLIPBOARD_UPDATE_INFO,
+>          .info =3D info,
+>      };
+>      assert(info->selection < QEMU_CLIPBOARD_SELECTION__COUNT);
+>
+> +    for (type =3D 0; type < QEMU_CLIPBOARD_TYPE__COUNT && !missing_data;=
+ type++) {
+> +        if (!info->types[type].data) {
+> +            missing_data =3D true;
+> +        }
+> +    }
+> +    /*
+> +     * If data is missing, the clipboard owner's 'request' callback need=
+s to be
+> +     * set. Otherwise, there is no way to get the clipboard data and
+> +     * qemu_clipboard_request() cannot be called.
+> +     */
+> +    if (missing_data && info->owner && !info->owner->request) {
+> +        return;
+> +    }
+
+It needs to check whether the type is "available". If not data is
+provided, owner should be set as well, it should assert() that.
+
+That should do the job:
+
+for (type =3D 0; type < QEMU_CLIPBOARD_TYPE__COUNT; type++) {
+    /*
+     * If data is missing, the clipboard owner's 'request' callback needs t=
+o
+     * be set. Otherwise, there is no way to get the clipboard data and
+     * qemu_clipboard_request() cannot be called.
+     */
+    if (info->types[type].available && !info->types[type].data) {
+        assert(info->owner && info->owner->request);
+    }
+}
+
+> +
+>      notifier_list_notify(&clipboard_notifiers, &notify);
+>
+>      if (cbinfo[info->selection] !=3D info) {
+> @@ -132,6 +148,8 @@ void qemu_clipboard_request(QemuClipboardInfo *info,
+>          !info->owner)
+>          return;
+>
+> +    assert(info->owner->request);
+> +
+>      info->types[type].requested =3D true;
+>      info->owner->request(info, type);
+>  }
+> --
+> 2.39.2
 >
 >
+
 
