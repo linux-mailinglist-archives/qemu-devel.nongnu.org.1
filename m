@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97C0830771
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:01:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFB3830778
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:03:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ6Sz-0003C6-56; Wed, 17 Jan 2024 09:00:29 -0500
+	id 1rQ6Vw-0004QO-79; Wed, 17 Jan 2024 09:03:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ6Su-0003BQ-7W
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:00:24 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ6Vu-0004Or-K0
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:03:30 -0500
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ6Ss-0000VR-4Y
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:00:23 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40e8ddebc71so576515e9.2
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 06:00:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ6Vs-0001A4-4R
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:03:30 -0500
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-a2cad931c50so574438566b.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 06:03:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705500020; x=1706104820; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705500206; x=1706105006; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ON98tfpetkZfObkwgLWjrbyDFIRO2MFUFGKc0NChSyg=;
- b=nj+sA7gqBnidBMlVO4dAz0kr62TeYGbzn7alL5eD8H6f8h5SxWsFU8eV0zwP5DIKbD
- 4HG9HmfNvqJeSEHeAICwYwZY0V05PF19tEHmyxE9OblrTDTJmatHBIkBX+U2B+MvYzvU
- OxFep+vREOlgAoPgZtwnkI9wydbPWZAz85xwEK4L2z2f+oDzA+uc7ph89bSC15CwiWZw
- d7STypprM1HsvMfH7xTuLtcF2NQXF7TNF9XPOIUv5SLQ4Z6Q+82sS4uzb3TCFIanPd4N
- 4STIWXD81nqH3Z/vgKf9M51Ph+9KjnB3Of2A4esVO3iRPwKdhxre26HPvvP1s/6fZMK0
- UAaQ==
+ bh=7Hb8HSZTIlaKM3OWz/hK0LGxM+o9h67iPpCzS074NIg=;
+ b=UCR8FZ5+qK3u8vKQXk8lmS82fT0hlLSeddZANgqS4hzNePqIjYtXYnY6uLmvVVJPvo
+ H3cVGby2HbpYMI2CyFicfacF0KObTqqCgiZTzzK/IUnnTCyiMIl/0Wu5SRBI2hlJrPjU
+ MyBz99gxpkMYK3/esB6TpNhNlJ7AYcDy4ivNtPXYWvqT4RfL5G6qcMfqH+rTHUxQQ1LP
+ N+xR17QG6UgZ0d/B97uen1ZW3dBTu9hK3mL50PmJ5vphrsmYpc60/C7cYFJARcYmyJm4
+ 55gVI2p3ov56ySruHl2Py3nVn7WtWDLxEHdiWm/qVS5Q29Xd86iS24BDE9aK0FlZ5dHa
+ R1kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705500020; x=1706104820;
+ d=1e100.net; s=20230601; t=1705500206; x=1706105006;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ON98tfpetkZfObkwgLWjrbyDFIRO2MFUFGKc0NChSyg=;
- b=SogxD/4RsZk7+HN0qBFTUk4QwOkKQaaGBq6Sd+Grx7PyamQuk+E5oJ51Zqw52vTF8t
- M9Iy0EHxL9twf6S2Ks34FM7MtTy8LumFhpaFRxFd0Krlgvf5ghYMvay3h43ZvCCI1HgJ
- nbQgm/CAOvzxeIRP6YhlTJcQhdfrTofyQhOiA/DhnZJ3AnvufRPLBjjqStKoalD6EAVP
- dzdVGABSEuY4jV8CrLWgU40zLImV34NWzMnZIYH3VwVTUeK3gzQeuWyWzMBIs6j3qpEy
- CU+RM7BBM1vjy/bNr+Am62iBXqbbB074uaeSChRotvk1x893MEkZf6v1UwPkTXtuFEz5
- HtLw==
-X-Gm-Message-State: AOJu0YxT3vw3FkCKMi9QJ7NAsBmrmgTl6vRU9M3pEx9d2FTXCNlat3RV
- YsZO9igfF4v+ooYgGrVbJ2WPNXgl/Wkqrg==
-X-Google-Smtp-Source: AGHT+IEdF9O3xDCUksSIG7VyO5lI0ojNjaCq01pnCTyPVYCYHrTTD/XSpcsplbBo9nyVus32VCmktA==
-X-Received: by 2002:a05:600c:3510:b0:40e:4833:8141 with SMTP id
- h16-20020a05600c351000b0040e48338141mr5303772wmq.4.1705500020263; 
- Wed, 17 Jan 2024 06:00:20 -0800 (PST)
+ bh=7Hb8HSZTIlaKM3OWz/hK0LGxM+o9h67iPpCzS074NIg=;
+ b=Abppa5AFbWxAL7eguzl7eSx0hl2gRodHEnnsnCQibeR66CaSRFh7tkDaSnuYI6d46J
+ FIT3nOwAY1RSlWSXuAP5Ex1OmlmwUQZ3O8U1hAlqmApVzRyBvUZMSgoJ8ybxwSOgZ3Oj
+ RgMSBSlGdHqnPjbyp359Dqznbq9+msevM8XxjENPm7mp3pgjlO95+vVLpB3IftUnykAo
+ o6cOwxi4lnvD9u/iF12kwyqMPXzQOU0Ic+zr9KCZAqkIkMpXhEMTiVlz0Yf9zgO9JXIK
+ sGgjQZU996mr3bXpBJfn279wlfHrYTwNK44AhoM8EUnNkIzG7AHQL+/Q17THedFmN7XN
+ CbrQ==
+X-Gm-Message-State: AOJu0Yxg19taj6/+cTF+E54zwl+8GAuC+2SbTc8vLzDhF7drZ4oeJFlv
+ SMW9B1FbVNYz0AdSBYMNWCZ6g0lUFprk6w==
+X-Google-Smtp-Source: AGHT+IEg5Z7hC2UF30gCmvbAMcmXS4eimeCwagFXkmr04ZeqtdKrCWB70oEwkJQetfkAtFYxMhqNjw==
+X-Received: by 2002:a17:907:3ad1:b0:a2a:9e31:7ea5 with SMTP id
+ fi17-20020a1709073ad100b00a2a9e317ea5mr3053320ejc.132.1705500206113; 
+ Wed, 17 Jan 2024 06:03:26 -0800 (PST)
 Received: from [192.168.69.100] ([176.187.212.26])
  by smtp.gmail.com with ESMTPSA id
- bi13-20020a05600c3d8d00b0040e8800fcf3sm2806132wmb.5.2024.01.17.06.00.19
+ k6-20020a170906128600b00a2b0b0fc80esm7772901ejb.193.2024.01.17.06.03.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 06:00:19 -0800 (PST)
-Message-ID: <ba353717-5654-4291-a022-beafa6ad456c@linaro.org>
-Date: Wed, 17 Jan 2024 15:00:18 +0100
+ Wed, 17 Jan 2024 06:03:25 -0800 (PST)
+Message-ID: <8ae6c891-522d-435a-be63-2e5a5c9d6394@linaro.org>
+Date: Wed, 17 Jan 2024 15:03:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: chacha20-s390 broken in 8.2.0 in TCG on s390x
+Subject: Re: [RFC PATCH] tests/vm/netbsd: Remove missing py311-expat package
 Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>,
- Richard Henderson <richard.henderson@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>
-Cc: qemu-s390x <qemu-s390x@nongnu.org>, David Hildenbrand <david@redhat.com>
-References: <d5e8f88b-1d19-4e00-8dc2-b20e0cd34931@tls.msk.ru>
- <dfc5987a-4210-4579-b9a3-1cc12fe1b909@linaro.org>
- <cc4ad254-b177-4a09-96f7-448c638ae67e@tls.msk.ru>
- <f07dfa5c-9f3c-4e22-9514-81c130b6a9ab@linaro.org>
- <764215cd-6f62-4746-b1f5-6174a158f95d@linaro.org>
- <e1f48ff4-d640-4500-9f2b-6b9db0d8ffe3@linaro.org>
- <5c3098cc-3a2f-4272-b06a-6d12d645d628@linaro.org>
- <feb272b1-4729-4acf-8feb-5aed993a5a06@tls.msk.ru>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Beraldo Leal <bleal@redhat.com>, Warner Losh <imp@bsdimp.com>,
+ Ryo ONODERA <ryoon@netbsd.org>, Kyle Evans <kevans@freebsd.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Reinoud Zandijk <reinoud@netbsd.org>, Gerd Hoffmann <kraxel@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
+References: <20240117112407.22462-1-philmd@linaro.org>
+ <5ae6d41e-e291-4fa1-94a1-6ec22cd809be@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <feb272b1-4729-4acf-8feb-5aed993a5a06@tls.msk.ru>
+In-Reply-To: <5ae6d41e-e291-4fa1-94a1-6ec22cd809be@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,53 +98,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/1/24 12:53, Michael Tokarev wrote:
-> 04.01.2024 01:51, Richard Henderson :
->> On 1/4/24 01:37, Philippe Mathieu-Daudé wrote:
->>> Finally changing the constraints on op_rotli_vec seems to fix it:
->>>
->>> ---
->>> diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
->>> index fbee43d3b0..b3456fe857 100644
->>> --- a/tcg/s390x/tcg-target.c.inc
->>> +++ b/tcg/s390x/tcg-target.c.inc
->>> @@ -3264,13 +3264,13 @@ static TCGConstraintSetIndex 
->>> tcg_target_op_def(TCGOpcode op)
->>>       case INDEX_op_ld_vec:
->>>       case INDEX_op_dupm_vec:
->>> +    case INDEX_op_rotli_vec:
->>>           return C_O1_I1(v, r);
->>>       case INDEX_op_dup_vec:
->>>           return C_O1_I1(v, vr);
->>>       case INDEX_op_abs_vec:
->>>       case INDEX_op_neg_vec:
->>>       case INDEX_op_not_vec:
->>> -    case INDEX_op_rotli_vec:
->>>       case INDEX_op_sari_vec:
->>>       case INDEX_op_shli_vec:
->>>       case INDEX_op_shri_vec:
->>>       case INDEX_op_s390_vuph_vec:
->>>       case INDEX_op_s390_vupl_vec:
->>>           return C_O1_I1(v, v);
+On 17/1/24 13:10, Thomas Huth wrote:
+> On 17/01/2024 12.24, Philippe Mathieu-Daudé wrote:
+>> Per commits a9dbde71da ("mkvenv: add better error message for
+>> broken or missing ensurepip") and 1dee66c693 ("tests/vm: add
+>> py310-expat to NetBSD"), we need py-expat to use ensurepip.
 >>
->> Definitely not correct, since VERLL requires a vector input to be 
->> rotated.
+>> However the py311-expat package isn't available anymore:
 >>
->>> But I'm outside of my comfort zone so not really sure what I'm doing...
->>> (I was inspired by the "the instruction verll only allows immediates up
->>> to 32 bits." comment from
->>> https://www.mail-archive.com/gcc-patches@gcc.gnu.org/msg317099.html)
+>>    ### Installing packages ...
+>>    processing remote summary 
+>> (http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/amd64/9.3/All)...
+>>    database for 
+>> http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/amd64/9.3/All is 
+>> up-to-date
+>>    py311-expat is not available in the repository
+>>    ...
+>>    calculating dependencies.../py311-expat is not available in the 
+>> repository
+>>    pkg_install error log can be found in 
+>> /var/db/pkgin/pkg_install-err.log
 >>
->> That message is confused.  The immediate in VERLL is 12 bits (with 
->> only 6 bits ever used for MO_64).  Dunno where "32 bits" comes from.
+>> Dropping it from the default packages list allows creating the
+>> NetBSD VM and build / test QEMU, without error from ensurepip.
+>>
+>> This reverts commit 1dee66c693 ("tests/vm: add py310-expat to NetBSD").
+>>
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2109
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> RFC because ensurepip seems important due to cited commits
+>>      but I'm not sure where it is used, and this fixes my CI build.
 > 
-> So, what do we have here in the end?
-> Should we fix this on qemu side?
+> Thanks for tackling it, I also ran into this problem already and just 
+> did not have enough spare time yet to investigate.
+> 
+> I searched a little bit, and found this text here:
+> https://mail-index.netbsd.org/netbsd-announce/2024/01/01/msg000360.html
+> 
+> "
+> - Several packages have been folded into base packages.  While the
+>     result is simpler, those updating may need to force-remove the
+>     secondary packages, depending on the update method.  When doing
+>     make replace, one has to pkg_delete -f the secondary packages.
+>     pkgin handles at least the python packages correctly, removing the
+>     split package when updating python.  Specific packages and the
+>     former packages now included:
+> 
+>       * cairo: cairo-gobject
+>       * python: py-cElementTree py-curses py-cursespanel py-expat
+>         py-readline py-sqlite3
+> "
 
-Yes.
+Thanks for digging, I'll update the description.
 
-> This thread stopped quite some time ago, with problematic
-> instruction found but no solution..
+> So it seems like the py-expat package has simply been merged into a base 
+> package now. Thus I think your patch is fine. It also fixes the problem 
+> for me, so:
+> 
+> Tested-by: Thomas Huth <thuth@redhat.com>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> 
 
-Be assured we are spending (too?) many hours on this...
 
