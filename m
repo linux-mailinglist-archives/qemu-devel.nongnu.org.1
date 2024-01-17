@@ -2,71 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65BD830797
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D299830796
 	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jan 2024 15:08:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQ6a8-0006fo-3a; Wed, 17 Jan 2024 09:07:52 -0500
+	id 1rQ6aB-0006ku-MI; Wed, 17 Jan 2024 09:07:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rQ6a3-0006d6-W6
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:07:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rQ6a2-0001r3-CL
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:07:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705500465;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xHJSpZihf54gMyT2D/VWA5uo29jLB6aVTPXfolxdZ5Q=;
- b=ch5BwQ0Er/SFNXHVF5tikjm+gzV/SKegtf9xPfwInfdjHwCewTD9xIXLO9DrrBTDxowDEv
- FfeQsj3ZZcgGYxwwbeaMQhqQICl5N3AGmHsxEcdoli/EwURy4HaYK20KKlv40Aplh5qBO2
- HNWM5nmG7iURL3b7pSpE98MiQdpSE2s=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-101-86RR9BCBPZKbtIS8H1Tujw-1; Wed, 17 Jan 2024 09:07:39 -0500
-X-MC-Unique: 86RR9BCBPZKbtIS8H1Tujw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4499D85CDE5;
- Wed, 17 Jan 2024 14:07:39 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.88])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9F0602026D6F;
- Wed, 17 Jan 2024 14:07:38 +0000 (UTC)
-Date: Wed, 17 Jan 2024 09:07:36 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Kevin Wolf <kwolf@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>,
- Lingfeng Yang <lfy@google.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] coroutine-ucontext: Save fake stack for pooled
- coroutine
-Message-ID: <20240117140736.GA1399147@fedora>
-References: <20240117-asan-v2-1-26f9e1ea6e72@daynix.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ6a9-0006gn-OV
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:07:53 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQ6a8-0001rg-24
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 09:07:53 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-559edcee495so282496a12.3
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 06:07:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705500469; x=1706105269; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=t7kwpiXo36c4SIx90VlKYxfoHr1q8vMvAXlXSskB1x0=;
+ b=v8HdfLc1lG7Cjs9+lC1fgqP46Y6lnnwcWYVIas8NjRFU4+GclxEZrqLyLsJOk5l8D3
+ eEFwSU8S2OC98WyktlvxUW413IbkOPGKSpevfb4vQaSLQhMD9uGYUEI0bBnU9ZC8H+o3
+ tJavLlNhIZI5HTLRBzNTmpJCUY59C7EsztXvdNxskN7nshV5sQK5NMPZeOnTafXxPTvi
+ qCkNrL5cqq+C9fe4e59sq6PFFCTMIRIwF2xGsHDd4NbDH3c3md0hrO7wqxSeXJY/3XxQ
+ dgBHA0qnSIVZXpHPkLCfqhR8V3KK9kd7UbC05RAc6VlmiNGVqHgidjQalz3r87Zf8ofj
+ ERVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705500469; x=1706105269;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=t7kwpiXo36c4SIx90VlKYxfoHr1q8vMvAXlXSskB1x0=;
+ b=SBs5ssy/+ghtAU1nq7wp3yj8GSjDiutQnGYt2QeDo+EZ76EWJBJE4wGRpXX3uKgqzd
+ CtowFkNo7Tb1jEhnA9oeGcmfv18PTL1UX13ccDkb4SReZMwsCKFeI8R03neEbKvJmy0a
+ /arW9R+yfwXA4iAUXjSR4RD3yun0RBR0kPt0zm5Ci6NYoyv97bKZYNH2GSfPo+0gWFWN
+ PViYbrmmjkvQnHeYbJThmfum2zuLz9uMwSfmc9iT9DUbf0nAZrjugKEbEWWTzqewb7II
+ wAZlrk1t0If+iZcAToZnNTOh8sZ38lmYqi2JPBCxDCM20P6p6NGrzSXKQg/MwAXk5SBN
+ ri6g==
+X-Gm-Message-State: AOJu0YyEo1zxSGbB/nWf3gkpKeN1StgSuRAtpiwJWHbyZ7d6lYNuR2jY
+ cf6OVVj+3uGVxQA2Cn4mWFkjiy/HkZTzlh11OgkcjSf6u0U=
+X-Google-Smtp-Source: AGHT+IGseLekQmSKXo4ZjbctpQcpXjbgqPAYUb5Kb97xfviYH13tYzYgCWgwWefMxUQim0vnY0qOCA==
+X-Received: by 2002:aa7:cb54:0:b0:559:e80c:6316 with SMTP id
+ w20-20020aa7cb54000000b00559e80c6316mr317980edt.62.1705500469363; 
+ Wed, 17 Jan 2024 06:07:49 -0800 (PST)
+Received: from m1x-phil.lan ([176.187.212.26])
+ by smtp.gmail.com with ESMTPSA id
+ g17-20020a056402321100b005594e177032sm3869987eda.52.2024.01.17.06.07.47
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 17 Jan 2024 06:07:49 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ John Snow <jsnow@redhat.com>
+Cc: Kyle Evans <kevans@freebsd.org>, Reinoud Zandijk <reinoud@netbsd.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Warner Losh <imp@bsdimp.com>, Ryo ONODERA <ryoon@netbsd.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PATCH v2] tests/vm/netbsd: Remove missing py311-expat package
+Date: Wed, 17 Jan 2024 15:07:46 +0100
+Message-ID: <20240117140746.23511-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="kM3EYjLoqBAfyAUp"
-Content-Disposition: inline
-In-Reply-To: <20240117-asan-v2-1-26f9e1ea6e72@daynix.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,52 +95,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Since the pkgsrc-2023Q3 release [*], the py-expat package has been
+merged into the base 'python' package:
 
---kM3EYjLoqBAfyAUp
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+ - Several packages have been folded into base packages.  While the
+   result is simpler, those updating may need to force-remove the
+   secondary packages, depending on the update method.  When doing
+   make replace, one has to pkg_delete -f the secondary packages.
+   pkgin handles at least the python packages correctly, removing the
+   split package when updating python.  Specific packages and the
+   former packages now included:
 
-On Wed, Jan 17, 2024 at 04:06:02PM +0900, Akihiko Odaki wrote:
-> Coroutine may be pooled even after COROUTINE_TERMINATE if
-> CONFIG_COROUTINE_POOL is enabled and fake stack should be saved in
-> such a case to keep AddressSanitizerUseAfterReturn working. Even worse,
-> I'm seeing stack corruption without fake stack being saved.
->=20
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
-> Changes in v2:
-> - Added missing set_current() (Marc-Andr=E9 Lureau)
-> - Added G_STATIC_ASSERT(!IS_ENABLED(CONFIG_TSAN)) (Marc-Andr=E9 Lureau)
-> - Renamed terminate() to terminate_asan() for clarity and consistency.
-> - Changed terminate_asan() to call start_switch_fiber_asan() for
->   consistency.
-> - Link to v1: https://lore.kernel.org/r/20240112-asan-v1-1-e330f0d0032c@d=
-aynix.com
-> ---
->  util/coroutine-ucontext.c | 35 ++++++++++++++++++++++++++---------
->  1 file changed, 26 insertions(+), 9 deletions(-)
+     * cairo: cairo-gobject
+     * python: py-cElementTree py-curses py-cursespanel py-expat
+       py-readline py-sqlite3
 
-Thanks, applied to my block tree:
-https://gitlab.com/stefanha/qemu/commits/block
+Remove py311-expat from the package list in order to avoid:
 
-Stefan
+  ### Installing packages ...
+  processing remote summary (http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/amd64/9.3/All)...
+  database for http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/amd64/9.3/All is up-to-date
+  py311-expat is not available in the repository
+  ...
+  calculating dependencies.../py311-expat is not available in the repository
+  pkg_install error log can be found in /var/db/pkgin/pkg_install-err.log
 
---kM3EYjLoqBAfyAUp
-Content-Type: application/pgp-signature; name="signature.asc"
+[*] https://mail-index.netbsd.org/netbsd-announce/2024/01/01/msg000360.html
 
------BEGIN PGP SIGNATURE-----
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2109
+Tested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ tests/vm/netbsd | 1 -
+ 1 file changed, 1 deletion(-)
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmWn3ygACgkQnKSrs4Gr
-c8gy1Qf9GtM23Q7RSnBNxYFwz12ey4+aZpxQscK9WpHm51KHSwAAWjvJmCL1xLoo
-mZtvAWpbQj+IHKCxTEAhqSeI3BCyDwt9LPaHarqLguyWeVzk2CBb5juuKID/fNqA
-gY2vb/X8Vv07lhLoke5aYHNpVfdzr6VA1ZibmuviirAu2PSNQxWOMMS+tuLO9Rmn
-abHLMlLStP/7Hh2B4q99zD/kLy2lwR0U+HipT4wpNwigK62J0z0nLuU+3cV/B6Ku
-Gc2Eu/0UFDiaRimuxXbeQw4jxx6mQ0IdKtIYB/bNOfoaYlLOgX5/aftMjmkHS/i2
-USu7jVOyeWDD4B7Lr4DXwLnnzX+YAg==
-=QcPb
------END PGP SIGNATURE-----
-
---kM3EYjLoqBAfyAUp--
+diff --git a/tests/vm/netbsd b/tests/vm/netbsd
+index 649fcad353..a3f6dd6b3c 100755
+--- a/tests/vm/netbsd
++++ b/tests/vm/netbsd
+@@ -31,7 +31,6 @@ class NetBSDVM(basevm.BaseVM):
+         "pkgconf",
+         "xz",
+         "python311",
+-        "py311-expat",
+         "ninja-build",
+ 
+         # gnu tools
+-- 
+2.41.0
 
 
