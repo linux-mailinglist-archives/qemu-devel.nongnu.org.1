@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16142831980
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:52:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 164FC831991
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:53:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQRrV-0003iw-1W; Thu, 18 Jan 2024 07:51:13 -0500
+	id 1rQRrX-0003lP-8v; Thu, 18 Jan 2024 07:51:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQRrK-0003iG-7v; Thu, 18 Jan 2024 07:51:02 -0500
+ id 1rQRrJ-0003iA-KZ; Thu, 18 Jan 2024 07:51:02 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQRrH-0000Ef-Fa; Thu, 18 Jan 2024 07:51:02 -0500
+ id 1rQRrH-0000F1-9P; Thu, 18 Jan 2024 07:51:01 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E6F55452C5;
+ by isrv.corpit.ru (Postfix) with ESMTP id F2272452C6;
  Thu, 18 Jan 2024 15:51:26 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A5105668B9;
+ by tsrv.corpit.ru (Postfix) with SMTP id B63B0668BA;
  Thu, 18 Jan 2024 15:50:56 +0300 (MSK)
-Received: (nullmailer pid 2502723 invoked by uid 1000);
+Received: (nullmailer pid 2502728 invoked by uid 1000);
  Thu, 18 Jan 2024 12:50:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.5 00/11] Patch Round-up for stable 8.1.5,
- freeze on 2024-01-27
-Date: Thu, 18 Jan 2024 15:50:38 +0300
-Message-Id: <qemu-stable-8.1.5-20240118154659@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.5 01/11] block: Fix crash when loading snapshot on
+ inactive node
+Date: Thu, 18 Jan 2024 15:50:39 +0300
+Message-Id: <20240118125056.2502687-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <qemu-stable-8.1.5-20240118154659@cover.tls.msk.ru>
+References: <qemu-stable-8.1.5-20240118154659@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,49 +60,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v8.1.5:
+From: Kevin Wolf <kwolf@redhat.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.1
+bdrv_is_read_only() only checks if the node is configured to be
+read-only eventually, but even if it returns false, writing to the node
+may not be permitted at the moment (because it's inactive).
 
-Patch freeze is 2024-01-27, and the release is planned for 2024-01-29:
+bdrv_is_writable() checks that the node can be written to right now, and
+this is what the snapshot operations really need.
 
-  https://wiki.qemu.org/Planning/8.1
+Change bdrv_can_snapshot() to use bdrv_is_writable() to fix crashes like
+the following:
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+$ ./qemu-system-x86_64 -hda /tmp/test.qcow2 -loadvm foo -incoming defer
+qemu-system-x86_64: ../block/io.c:1990: int bdrv_co_write_req_prepare(BdrvChild *, int64_t, int64_t, BdrvTrackedRequest *, int): Assertion `!(bs->open_flags & BDRV_O_INACTIVE)' failed.
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
+The resulting error message after this patch isn't perfect yet, but at
+least it doesn't crash any more:
 
-This is supposed to be last release of 8.1.x stable/bugfix series.
+$ ./qemu-system-x86_64 -hda /tmp/test.qcow2 -loadvm foo -incoming defer
+qemu-system-x86_64: Device 'ide0-hd0' is writable but does not support snapshots
 
-Thanks!
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20231201142520.32255-2-kwolf@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit d3007d348adaaf04ee8b099a475282034a662414)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-/mjt
+diff --git a/block/snapshot.c b/block/snapshot.c
+index e22ac3eac6..86e29ca59f 100644
+--- a/block/snapshot.c
++++ b/block/snapshot.c
+@@ -190,8 +190,10 @@ static BlockDriverState *bdrv_snapshot_fallback(BlockDriverState *bs)
+ int bdrv_can_snapshot(BlockDriverState *bs)
+ {
+     BlockDriver *drv = bs->drv;
++
+     GLOBAL_STATE_CODE();
+-    if (!drv || !bdrv_is_inserted(bs) || bdrv_is_read_only(bs)) {
++
++    if (!drv || !bdrv_is_inserted(bs) || !bdrv_is_writable(bs)) {
+         return 0;
+     }
+ 
+-- 
+2.39.2
 
---------------------------------------
-01 d3007d348ada Kevin Wolf:
-   block: Fix crash when loading snapshot on inactive node
-02 5a7f21efaf99 Kevin Wolf:
-   vl: Improve error message for conflicting -incoming and -loadvm
-03 bb6e2511eb48 Kevin Wolf:
-   iotests: Basic tests for internal snapshots
-04 25145a7d7735 Pavel Pisa:
-   hw/net/can/sja1000: fix bug for single acceptance filter and standard 
-   frame
-05 5cb0e7abe163 Xu Lu:
-   target/riscv: Fix mcycle/minstret increment behavior
-06 4ad87cd4b225 Michael Tokarev:
-   chardev/char.c: fix "abstract device type" error message
-07 82a65e3188ab Peter Maydell:
-   hw/intc/arm_gicv3_cpuif: handle LPIs in in the list registers
-08 1d513e06d966 Natanael Copa:
-   util: fix build with musl libc on ppc64le
-09 c98873ee4a0c Samuel Tardieu:
-   tests/qtest/virtio-ccw: Fix device presence checking
-10 e358a25a97c7 Ilya Leoshkevich:
-   target/s390x: Fix LAE setting a wrong access register
-11 52a21689cd82 Peter Maydell:
-   .gitlab-ci.d/buildtest.yml: Work around htags bug when environment is 
-   large
 
