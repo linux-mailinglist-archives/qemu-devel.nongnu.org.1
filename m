@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BFF83129A
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 07:05:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B23BA83129B
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 07:07:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQLVQ-0000FP-6C; Thu, 18 Jan 2024 01:04:00 -0500
+	id 1rQLYf-0002AG-4N; Thu, 18 Jan 2024 01:07:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQLVN-0000E9-JX; Thu, 18 Jan 2024 01:03:57 -0500
+ id 1rQLYa-00029s-Sq; Thu, 18 Jan 2024 01:07:16 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQLVL-0004OO-Dn; Thu, 18 Jan 2024 01:03:57 -0500
+ id 1rQLYW-0004yi-0a; Thu, 18 Jan 2024 01:07:15 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 464EF44F83;
- Thu, 18 Jan 2024 09:04:21 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 5B46A44F86;
+ Thu, 18 Jan 2024 09:07:38 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id AF01F6601D;
- Thu, 18 Jan 2024 09:03:50 +0300 (MSK)
-Message-ID: <b6559efc-1a83-4a38-b446-354991b30a63@tls.msk.ru>
-Date: Thu, 18 Jan 2024 09:03:50 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id A4F9F66023;
+ Thu, 18 Jan 2024 09:07:08 +0300 (MSK)
+Message-ID: <8ec9eefe-024c-4bef-9f2a-4bd094feaa5a@tls.msk.ru>
+Date: Thu, 18 Jan 2024 09:07:08 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] s390x/pci: fix ISM reset
+Subject: Re: [PATCH 0/2] tcg/s390x: Fix chacha20-s390
 Content-Language: en-US
-To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, thuth@redhat.com, clg@redhat.com,
- frankja@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- qemu-devel@nongnu.org
-References: <20240116223157.73752-1-mjrosato@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, thuth@redhat.com, david@redhat.com,
+ philmd@linaro.org
+References: <20240117213646.159697-1-richard.henderson@linaro.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -59,7 +57,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240116223157.73752-1-mjrosato@linux.ibm.com>
+In-Reply-To: <20240117213646.159697-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -85,34 +83,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-17.01.2024 01:31, Matthew Rosato:
-> Commit ef1535901a0 (re-)introduced an issue where passthrough ISM devices
-> on s390x would enter an error state after reboot.  This was previously fixed
-> by 03451953c79e, using device reset callbacks, however the change in
-> ef1535901a0 effectively triggers a cold reset of the pci bus before the
-> device reset callbacks are triggered.
+18.01.2024 00:36, Richard Henderson:
+> So it turns out the regression exposed by "Optimize env memory operations"
+> is caused by an s390x host encoding error.  This is the first time that we
+> have had sufficient register pressure to use more than a few vector
+> registers at the same time.
 > 
-> To resolve this, this series proposes to remove the use of the reset callback
-> for ISM cleanup and instead trigger ISM reset from subsystem_reset before
-> triggering bus resets.  This has to happen before the bus resets because the
-> reset of s390-pcihost will trigger reset of the PCI bus followed by the
-> s390-pci bus, and the former will trigger vfio-pci reset / the aperture-wide
-> unmap that ISM gets upset about.
->   
->    /s390-pcihost (s390-pcihost)
->      /pci.0 (PCI)
->      /s390-pcibus.0 (s390-pcibus)
->      
-> While fixing this, it was also noted that kernel warnings could be seen that
-> indicate a guest ISC reference count error.  That's because in some reset
-> cases we were not bothering to disable AIF, but would again re-enable it after
-> the reset (causing the reference count to grow erroneously).  This was a base
-> issue that went unnoticed because the kernel previously did not detect and
-> issue a warning for this scenario.
+> As such, the testcase itself is interesting, since nothing else in our
+> testsuite generates translation blocks with quite so many vector insns
+> with more than 16 simultaneously live values.
 
-Is it a -stable material, or not worth picking up for stable?
+Tested-by: Michael Tokarev <mjt@tls.msk.ru>
 
-Thanks,
+Both changes - the fix and the testsuite.  With several (debian) kernels on
+actual s390x hw and on a few other architectures as well.
+
+Why the problem didn't occur on non-s390x *host*?  As I noted in my initial
+email, the testcase worked on amd64 host but not on s390x host..
+
+Thank you for the good work Richard!
 
 /mjt
 
