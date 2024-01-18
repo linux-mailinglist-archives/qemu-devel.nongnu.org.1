@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA3383130C
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:19:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9C083130E
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:20:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQMf1-0002yG-MG; Thu, 18 Jan 2024 02:17:59 -0500
+	id 1rQMgd-0004K7-Hb; Thu, 18 Jan 2024 02:19:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQMey-0002wh-8F
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 02:17:56 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQMgb-0004JT-VK
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 02:19:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQMew-0006wH-NI
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 02:17:55 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQMga-0007jb-F7
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 02:19:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705562273;
+ s=mimecast20190719; t=1705562375;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=7Vf6SYD/xY/w+8aHheMwoHxxm9wtxocnDB3X/4yQJgE=;
- b=J4CXn6kNAook+73sRvxV3GCsTdgD88pYJNbIXrBU41RI5hSpp6qo427szqWHrhj5SFolbo
- CjtHaQeHVFcrmvSrz6QtzBJWu30nHdIo7W6l6mzlFBP2nC/SMWtWz2qznWcwoUpNuKHe5p
- YsbVZAD5iUeAeF4z/JEfDbbKzOxhBuQ=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=X78Fuu6eZUJ0Hqco+loS01zRC594BzVrTpV2QvqB/dU=;
+ b=QpxbpSx/pEVhRg9kmwqLqK5YLy5TnFH2fFoA2IE4lgw6HlxeY7LgJfgYND96MfqmDgBTwd
+ Y26WTxfczrEk4WMDctEX0c0sSWqXO7GDxCHg44ZHo1YQv05x5rVsV1ZvqbUtQCa71eJRkJ
+ +PcllTSTW/n3ktcIiHdYY3fhn5gQydE=
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
+ [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-203-u8_evMxaPC-nurw8EEyuXQ-1; Thu, 18 Jan 2024 02:17:51 -0500
-X-MC-Unique: u8_evMxaPC-nurw8EEyuXQ-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7833751431dso1104157985a.1
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 23:17:51 -0800 (PST)
+ us-mta-433-7vvtTJYVNQeDPnRK6phQMw-1; Thu, 18 Jan 2024 02:19:33 -0500
+X-MC-Unique: 7vvtTJYVNQeDPnRK6phQMw-1
+Received: by mail-oi1-f197.google.com with SMTP id
+ 5614622812f47-3bd9425714cso1778048b6e.3
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 23:19:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705562271; x=1706167071;
+ d=1e100.net; s=20230601; t=1705562373; x=1706167173;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7Vf6SYD/xY/w+8aHheMwoHxxm9wtxocnDB3X/4yQJgE=;
- b=ixWoZWWYW0d0NLJNsGblLmfEXs64kK/U2E06OgK6ndP9WkHbElvWIG2XYPF9QNd8Dr
- vDXizcxCYEvnliDnFCf+f81vSHuYVpMii6wXJB9eR+WI2c3HARFX9p4p2pq23R+F8SZV
- rmoLiL6JpvYjalrOpSAkc66H7W07HWyzpQLJLyUsRio1YPgBLGRaJAIzs3mUCI8FCw8F
- g7DYIPWBBxfGQ7psHHsgH2DTknVrNvhWM4TYPTPdxl4Pufg4U7VzsvBU+85LmedhavWb
- TGj8CxEc5aCgeeFpbNqvajnO71e1lE3rqXOtjRm6k9s3ak/CB+3aLcyQTwHz1a7NqmX3
- ACNQ==
-X-Gm-Message-State: AOJu0YzFGbl1dFpYS5DrH0s/DXDHeBYJ65eClSKqq74h6l4DSzUnY7s2
- n9FblWwjClxmiNKVT9kVLWstr3uLJ0LSisPmkRoUFNv7dle/jhY6cnm5NCpkVV6soJO/wq2mqgN
- C+K20f4Bfr25hYEikI+4TyPLbMzyOWj75Tm7QmMP8/bF/0hTl/eVR
-X-Received: by 2002:a05:620a:25d0:b0:783:486b:fc9b with SMTP id
- y16-20020a05620a25d000b00783486bfc9bmr373375qko.12.1705562271018; 
- Wed, 17 Jan 2024 23:17:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH2pmgnKqaJnV5UlJX+QAw0soqYDBmE/Z/vl3qQ6ZJIE0wDWVjuFHBQ233hcaNBJM0LyyzqZw==
-X-Received: by 2002:a05:620a:25d0:b0:783:486b:fc9b with SMTP id
- y16-20020a05620a25d000b00783486bfc9bmr373364qko.12.1705562270756; 
- Wed, 17 Jan 2024 23:17:50 -0800 (PST)
+ bh=X78Fuu6eZUJ0Hqco+loS01zRC594BzVrTpV2QvqB/dU=;
+ b=KRFJp/VQIITg9dLwmy4gYYGE64oWb/pVD+pV/GXrTIC6wCgozhSmu2JbvAn2Ijw0gl
+ 8jFAX5JxPUKSvkzhSzQQlnoZPc7ppMuLA/lyFw7UAdoP+8XJaUtwhAQnOUihe9pQeFHp
+ ZPUyKgvzDSMZDf8ZjrPysL68d/XJheMOuWX4KHFy2uhdE2lq2Uu6as8zJVW/ZnY2nGZS
+ 1JEWYitsE53ITz8dgfGphIazcTPr/xflW1QubtSQUuR0FmxQTZHEgbiIpNX804JIOjX8
+ j11ixyFXOHCBgiEjSMrcR+CArHTlGUJdNzKbU2MfYQ1ly6IYu2qlaB7qJk9i5g9xPXoR
+ GI7w==
+X-Gm-Message-State: AOJu0Yy4GlqJZZ6SChoxNXU1PTystRjGqoPzEOwOn7mU09RrjHPh8Fk9
+ nT/adBTN6UP4g3LinMhRmBN2l8Hueyz+8lnWKfTJSqbduJh7LVGBoENckWPjEEQgytAZ5jJ6Sej
+ 7JglsiMtjbbAYKxOUHeRZDS5dEXRKaEfLwkd6QCZbZ1pugppH6STS
+X-Received: by 2002:a05:6808:2383:b0:3bd:9d23:4906 with SMTP id
+ bp3-20020a056808238300b003bd9d234906mr401593oib.55.1705562373149; 
+ Wed, 17 Jan 2024 23:19:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGWM5Fs8E5TDCqiB4n4CIi0vBXw/urUglHZ1FYmudqhbi3CMRum+ohu7/ZRDoqsAYVVuN3v/g==
+X-Received: by 2002:a05:6808:2383:b0:3bd:9d23:4906 with SMTP id
+ bp3-20020a056808238300b003bd9d234906mr401584oib.55.1705562372938; 
+ Wed, 17 Jan 2024 23:19:32 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-179-227.web.vodafone.de.
  [109.43.179.227]) by smtp.gmail.com with ESMTPSA id
- a22-20020a05620a103600b0078314f2144bsm5117744qkk.44.2024.01.17.23.17.48
+ a22-20020a05620a103600b0078314f2144bsm5117744qkk.44.2024.01.17.23.19.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 23:17:50 -0800 (PST)
-Message-ID: <99a80bbf-2e1d-4fff-8ca9-ed9143e9592d@redhat.com>
-Date: Thu, 18 Jan 2024 08:17:47 +0100
+ Wed, 17 Jan 2024 23:19:32 -0800 (PST)
+Message-ID: <7a3966d1-7b82-472d-b168-c5c0d36208a8@redhat.com>
+Date: Thu, 18 Jan 2024 08:19:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] tests/tcg/s390x: Import linux
- tools/testing/crypto/chacha20-s390
+Subject: Re: [PATCH 0/3] s390x/pci: fix ISM reset
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, david@redhat.com, philmd@linaro.org, mjt@tls.msk.ru
-References: <20240117213646.159697-1-richard.henderson@linaro.org>
- <20240117213646.159697-3-richard.henderson@linaro.org>
+To: Michael Tokarev <mjt@tls.msk.ru>, Matthew Rosato
+ <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: farman@linux.ibm.com, clg@redhat.com, frankja@linux.ibm.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ qemu-devel@nongnu.org
+References: <20240116223157.73752-1-mjrosato@linux.ibm.com>
+ <b6559efc-1a83-4a38-b446-354991b30a63@tls.msk.ru>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -115,19 +118,19 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240117213646.159697-3-richard.henderson@linaro.org>
+In-Reply-To: <b6559efc-1a83-4a38-b446-354991b30a63@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
+X-Spam_score_int: 9
+X-Spam_score: 0.9
 X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+X-Spam_report: (0.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -143,35 +146,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/01/2024 22.36, Richard Henderson wrote:
-> Modify and simplify the driver, as we're really only interested
-> in correctness of translation of chacha-vx.S.
+On 18/01/2024 07.03, Michael Tokarev wrote:
+> 17.01.2024 01:31, Matthew Rosato:
+>> Commit ef1535901a0 (re-)introduced an issue where passthrough ISM devices
+>> on s390x would enter an error state after reboot.  This was previously fixed
+>> by 03451953c79e, using device reset callbacks, however the change in
+>> ef1535901a0 effectively triggers a cold reset of the pci bus before the
+>> device reset callbacks are triggered.
+>>
+>> To resolve this, this series proposes to remove the use of the reset callback
+>> for ISM cleanup and instead trigger ISM reset from subsystem_reset before
+>> triggering bus resets.  This has to happen before the bus resets because the
+>> reset of s390-pcihost will trigger reset of the PCI bus followed by the
+>> s390-pci bus, and the former will trigger vfio-pci reset / the aperture-wide
+>> unmap that ISM gets upset about.
+>>    /s390-pcihost (s390-pcihost)
+>>      /pci.0 (PCI)
+>>      /s390-pcibus.0 (s390-pcibus)
+>> While fixing this, it was also noted that kernel warnings could be seen that
+>> indicate a guest ISC reference count error.  That's because in some reset
+>> cases we were not bothering to disable AIF, but would again re-enable it 
+>> after
+>> the reset (causing the reference count to grow erroneously).  This was a base
+>> issue that went unnoticed because the kernel previously did not detect and
+>> issue a warning for this scenario.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tests/tcg/s390x/chacha.c        | 341 ++++++++++++
->   tests/tcg/s390x/Makefile.target |   4 +
->   tests/tcg/s390x/chacha-vx.S     | 914 ++++++++++++++++++++++++++++++++
->   3 files changed, 1259 insertions(+)
->   create mode 100644 tests/tcg/s390x/chacha.c
->   create mode 100644 tests/tcg/s390x/chacha-vx.S
-...
-> +	vx	XT0,XT0,XA0
-> +	vx	XT1,XT1,XB0
-> +	vx	XT2,XT2,XC0
-> +	vx	XT3,XT3,XD0
-> +
-> +	vstm	XT0,XT3,0(OUT),0
-> +
-> +.Ldone_4x:
-> +	lmg	%r6,%r7,6*8(SP)
-> +	br	%r14
-> +
-> +.Ltail_4x:
+> Is it a -stable material, or not worth picking up for stable?
 
-FWIW, my "git am" complains about a trailing white space here.
+It's definitely stable material, but IIUC there will be a v2 with some minor 
+fixes.
 
-Apart from that:
-Tested-by: Thomas Huth <thuth@redhat.com>
+  Thomas
 
 
