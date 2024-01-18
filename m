@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF0E832044
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 21:09:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D2B83203F
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 21:09:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQYfH-0003Ro-Bv; Thu, 18 Jan 2024 15:07:03 -0500
+	id 1rQYfO-0003UL-UT; Thu, 18 Jan 2024 15:07:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQYfF-0003Re-Vs
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:07:02 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQYfM-0003TK-VK
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:07:08 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQYfE-0006t0-F8
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:07:01 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40e86a9fbd9so195045e9.1
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 12:07:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQYfK-0006v6-8m
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:07:08 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40e86a9fbd9so195945e9.1
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 12:07:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705608418; x=1706213218; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705608424; x=1706213224; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=htALVQYUd7tctCm3cf8P5ZcYUk/HKeiXOxSFOuNuC8A=;
- b=Jk7ewOybzq6uvZz/lm4sOoitpaxYG5jOdlA8I22c77qVPiiOjYSBYZa9wx6ROs0tOY
- evm9WdRZcjIOKlqBNef6vdx7oTliLJxkLEes2s7m3Lpi6Xsoy+PNlYugUec7KAAGc/in
- 6atEHS9lze233Wr1TwNNbrY1N4Zdo/wLOvzwgKheZDCQ6MCt39NzBg2gh9z/hTia6ZQb
- 8t8R0y8ZADohIX/n4dZ1XGo24P5Q41TK+PTtzSAolwfYueNxCh8wM79S/o5cfNwxXNf3
- yQ2ylz0QsWuPFsnxCo1KPdfxoEDldmRU05hcg2tUH8rNhq2BLlg+H4N9LENYLJAmO9yN
- em8Q==
+ bh=5DV0gjEvxVYdSUXbSGfE0SOvd3u+uIvvVQeLb8GJ57M=;
+ b=Lqyd6nKsMDgNVtksfCAfEXmHP74kdWZNhlNQHXfc91LR77fKjYmKhs4P9RIHv2CMez
+ YM24Z+mHvkDYe9IhTHG3ATEdHb4f7Acg4XLrJacMu3qvAzUXAtbP4nS2p4B9mrnJo7sy
+ Ldom26IU3nRc4Gt7y18FzHL2zm9ITs+EvQ7ByzxcmLMCLTvb6Qr9q6Xd6n5GfscAwCRx
+ 9Bu+GoWPEZhYENSti1oCUG2KsAGArSAGfPMCZ1SxtI9BrSTB1dK6sLbF9aanGPDIMECb
+ eI3djIa29hDskvYcXU6uEZnzr41IHwB8XtTzYESCOjmb3ulqQqXUA+zmiIBs6j0FUHPP
+ gQng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705608418; x=1706213218;
+ d=1e100.net; s=20230601; t=1705608424; x=1706213224;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=htALVQYUd7tctCm3cf8P5ZcYUk/HKeiXOxSFOuNuC8A=;
- b=pZgSuMC98JUkwuuOYS73+dhkGpX4h9gsnZAMJoygkllIOS2d7Mcfzlq3i/OtXtoumP
- rJTk80Tw0UQp0P76ZRa/13YM34+qeA1pF8A+TR9z9gpIengOOcrkY94QSqPot1bPl+b8
- FflL/HjMleP2GbBHnhuEJEz1ps5n8HY1In66y7zQK0flX1UYRVhmx5cbQtCgw2STtvbG
- 14KoWrr0OAGyUzHjNzKpbDSte5dvjWTl4st4X4hJGYsz08FA1dci8Y0wflcWxrQajExw
- 16+0om5v+nk/3HYzKSHlOx3WCY0MmrVU+D51inkdAY2A2s0TwrbKSXbWLwI2D67Phun+
- DTmw==
-X-Gm-Message-State: AOJu0Yz50XTcb7YO8PgpsBTD74BCGS5wNa5al4yZDT27Ukf1+D79bu6f
- Sda1ULUs8efLW2UQxIeQZ/kDgtdtFKDQhMnul/d5o5dfRxYXcWWI28yFiCeOOKbQn91pPTVo3YY
- tDYhUHtWs
-X-Google-Smtp-Source: AGHT+IG8bYbFqhoBk8yTqNa3Tvhld4ys4sIRX15x3ny/K7+1KUY5t+dQIHR21Z/0Xv/O+nHkSVXnDQ==
-X-Received: by 2002:a7b:cbcc:0:b0:40c:416c:d99b with SMTP id
- n12-20020a7bcbcc000000b0040c416cd99bmr862981wmi.47.1705608418664; 
- Thu, 18 Jan 2024 12:06:58 -0800 (PST)
+ bh=5DV0gjEvxVYdSUXbSGfE0SOvd3u+uIvvVQeLb8GJ57M=;
+ b=EHO6TM/zgMcUC6et3AGCf4H9v69twfL74JB6q2NGl2sDV03SHcp3Qe00Z1ZgFEcAul
+ y/EAnF2I8I4iYEqHif9gLJMATrFFkP0I8llFXt6/VX9hqOnoFmz07orDGoTPH0KL6MiL
+ iaDj6aP0zGqqtkr8wocO+3Z32Irt+CPaK8MJAbojwujG67CZQibLN8buyWB2RHCM4nEk
+ swtUyfDoJF8yYgO2QBjWxPAcS8vLwOgeTalerWZ2mk7CzD1LwYd0oT9cAqqPfPP5dPvA
+ Wie8IARibPt9VtGXrf8PW0c9K06igPRZ/mdmMCHhX4rGwxy+Z6hHJw9QQl7DRkACoP7N
+ W7hg==
+X-Gm-Message-State: AOJu0YzGuaDhQdgI+vqFDLGuakS4K7+ZaajSH+zdR87M4pfc49GH/EJo
+ Y0Oejhuacbh7Z88BrqVcgdn1+j2goryRwxH+2364brsM6pE3xSB69VT2c8zqxvGBGpYohlS5qVh
+ bPCeIZWL9
+X-Google-Smtp-Source: AGHT+IGyZXtCLkCvO+pPKnbG3scB5k1GCK313QwzV6L9kDFDYVagNopPUzfRy36YI8Alv8WDgVLOLg==
+X-Received: by 2002:a05:600c:2981:b0:40e:954d:1a1a with SMTP id
+ r1-20020a05600c298100b0040e954d1a1amr749105wmd.76.1705608424346; 
+ Thu, 18 Jan 2024 12:07:04 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- k20-20020a05600c1c9400b0040e54f15d3dsm30578929wms.31.2024.01.18.12.06.57
+ c11-20020a05600c0a4b00b0040d53588d94sm30769470wmq.46.2024.01.18.12.07.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Jan 2024 12:06:58 -0800 (PST)
+ Thu, 18 Jan 2024 12:07:04 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Igor Mitsyanko <i.mitsyanko@gmail.com>, qemu-arm@nongnu.org,
@@ -79,18 +79,18 @@ Cc: Igor Mitsyanko <i.mitsyanko@gmail.com>, qemu-arm@nongnu.org,
  Jean-Christophe Dubois <jcd@tribudubois.net>,
  Joel Stanley <joel@jms.id.au>, Hao Wu <wuhaotsh@google.com>,
  kvm@vger.kernel.org
-Subject: [PATCH 02/20] hw/arm/xilinx_zynq: Include missing 'exec/tswap.h'
+Subject: [PATCH 03/20] hw/arm/smmuv3: Include missing 'hw/registerfields.h'
  header
-Date: Thu, 18 Jan 2024 21:06:23 +0100
-Message-ID: <20240118200643.29037-3-philmd@linaro.org>
+Date: Thu, 18 Jan 2024 21:06:24 +0100
+Message-ID: <20240118200643.29037-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240118200643.29037-1-philmd@linaro.org>
 References: <20240118200643.29037-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -113,32 +113,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-hw/arm/xilinx_zynq.c calls tswap32() which is declared
-in "exec/tswap.h". Include it in order to avoid when
-refactoring unrelated headers:
+hw/arm/smmuv3-internal.h uses the REG32() and FIELD()
+macros defined in "hw/registerfields.h". Include it in
+order to avoid when refactoring unrelated headers:
 
-  hw/arm/xilinx_zynq.c:103:31: error: call to undeclared function 'tswap32';
-  ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-          board_setup_blob[n] = tswap32(board_setup_blob[n]);
-                                ^
+  In file included from ../../hw/arm/smmuv3.c:34:
+  hw/arm/smmuv3-internal.h:36:28: error: expected identifier
+  REG32(IDR0,                0x0)
+                             ^
+  hw/arm/smmuv3-internal.h:37:5: error: expected function body after function declarator
+      FIELD(IDR0, S2P,         0 , 1)
+      ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/xilinx_zynq.c | 1 +
+ hw/arm/smmuv3-internal.h | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index dbb9793aa1..d4c817ecdc 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -37,6 +37,7 @@
- #include "hw/qdev-clock.h"
- #include "sysemu/reset.h"
- #include "qom/object.h"
-+#include "exec/tswap.h"
+diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+index 6076025ad6..e987bc4686 100644
+--- a/hw/arm/smmuv3-internal.h
++++ b/hw/arm/smmuv3-internal.h
+@@ -21,6 +21,7 @@
+ #ifndef HW_ARM_SMMUV3_INTERNAL_H
+ #define HW_ARM_SMMUV3_INTERNAL_H
  
- #define TYPE_ZYNQ_MACHINE MACHINE_TYPE_NAME("xilinx-zynq-a9")
- OBJECT_DECLARE_SIMPLE_TYPE(ZynqMachineState, ZYNQ_MACHINE)
++#include "hw/registerfields.h"
+ #include "hw/arm/smmu-common.h"
+ 
+ typedef enum SMMUTranslationStatus {
 -- 
 2.41.0
 
