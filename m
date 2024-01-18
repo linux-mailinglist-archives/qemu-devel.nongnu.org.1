@@ -2,72 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBB8831CAB
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 16:37:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47286831CC5
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 16:48:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQURf-0002VL-Nh; Thu, 18 Jan 2024 10:36:43 -0500
+	id 1rQUcI-0004BL-Eg; Thu, 18 Jan 2024 10:47:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQURd-0002QP-W3
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 10:36:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rQUcF-00047x-D7; Thu, 18 Jan 2024 10:47:39 -0500
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQURc-0003Il-Bd
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 10:36:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705592199;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uBsr17taPm2+ngokB6yZXJL+jXFS94NlZZ954vewxlc=;
- b=Nhg0bxF+P1Wm/737rnbcd4njqt4/G3j+5McHxj7PE8On+2oDRUpEUN3fzu4t2EjHAX5kpV
- hjUQdb6uRUeSqozbs9uqhQ/hXRVVeOZgWNJ6H5ks6mS2yt9eDZKJMLQIB+7FK5IzdRoJyo
- GvICWIbJDB8YfWgqFJgzemU1Pzx1WcE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-W-EP2NyTMViZO4pgZHqzDg-1; Thu, 18 Jan 2024 10:36:37 -0500
-X-MC-Unique: W-EP2NyTMViZO4pgZHqzDg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 09DA1185A780;
- Thu, 18 Jan 2024 15:36:37 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.209])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D3F492BA;
- Thu, 18 Jan 2024 15:36:35 +0000 (UTC)
-Date: Thu, 18 Jan 2024 16:36:34 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Michael Roth <michael.roth@amd.com>, qemu-block@nongnu.org,
- Fiona Ebner <f.ebner@proxmox.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH 2/3] iotests: port 141 to Python for reliable QMP testing
-Message-ID: <ZalFggPWyDEfZhRc@redhat.com>
-References: <20240116190042.1363717-1-stefanha@redhat.com>
- <20240116190042.1363717-3-stefanha@redhat.com>
- <ZagWlhbvlH4Ff01S@redhat.com> <20240118145513.GA1490473@fedora>
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rQUcD-0007hR-Dk; Thu, 18 Jan 2024 10:47:38 -0500
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id DF915491E8;
+ Thu, 18 Jan 2024 16:47:26 +0100 (CET)
+Message-ID: <06e2bccc-0a5b-4b58-9c4e-7b369f5d3076@proxmox.com>
+Date: Thu, 18 Jan 2024 16:47:25 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="ruCH36XGeUsN9xyP"
-Content-Disposition: inline
-In-Reply-To: <20240118145513.GA1490473@fedora>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+From: Fiona Ebner <f.ebner@proxmox.com>
+Subject: Re: [PATCH 3/3] monitor: only run coroutine commands in
+ qemu_aio_context
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>
+References: <20240116190042.1363717-1-stefanha@redhat.com>
+ <20240116190042.1363717-4-stefanha@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20240116190042.1363717-4-stefanha@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,88 +58,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Am 16.01.24 um 20:00 schrieb Stefan Hajnoczi:
+> monitor_qmp_dispatcher_co() runs in the iohandler AioContext that is not
+> polled during nested event loops. The coroutine currently reschedules
+> itself in the main loop's qemu_aio_context AioContext, which is polled
+> during nested event loops. One known problem is that QMP device-add
+> calls drain_call_rcu(), which temporarily drops the BQL, leading to all
+> sorts of havoc like other vCPU threads re-entering device emulation code
+> while another vCPU thread is waiting in device emulation code with
+> aio_poll().
+> 
+> Paolo Bonzini suggested running non-coroutine QMP handlers in the
+> iohandler AioContext. This avoids trouble with nested event loops. His
+> original idea was to move coroutine rescheduling to
+> monitor_qmp_dispatch(), but I resorted to moving it to qmp_dispatch()
+> because we don't know if the QMP handler needs to run in coroutine
+> context in monitor_qmp_dispatch(). monitor_qmp_dispatch() would have
+> been nicer since it's associated with the monitor implementation and not
+> as general as qmp_dispatch(), which is also used by qemu-ga.
+> 
+> A number of qemu-iotests need updated .out files because the order of
+> QMP events vs QMP responses has changed.
+> 
+> Solves Issue #1933.
+> 
+> Fixes: 7bed89958bfbf40df9ca681cefbdca63abdde39d ("device_core: use drain_call_rcu in in qmp_device_add")
+> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2215192
+> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2214985
+> Buglink: https://issues.redhat.com/browse/RHEL-17369
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
---ruCH36XGeUsN9xyP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+With the patch I can no longer see any do_qmp_dispatch_bh() calls run in
+vCPU threads.
 
-Am 18.01.2024 um 15:55 hat Stefan Hajnoczi geschrieben:
-> On Wed, Jan 17, 2024 at 07:04:06PM +0100, Kevin Wolf wrote:
-> > Am 16.01.2024 um 20:00 hat Stefan Hajnoczi geschrieben:
-> > > The common.qemu bash functions allow tests to interact with the QMP
-> > > monitor of a QEMU process. I spent two days trying to update 141 when
-> > > the order of the test output changed, but found it would still fail
-> > > occassionally because printf() and QMP events race with synchronous Q=
-MP
-> > > communication.
-> > >=20
-> > > I gave up and ported 141 to the existing Python API for QMP tests. The
-> > > Python API is less affected by the order in which QEMU prints output
-> > > because it does not print all QMP traffic by default.
-> > >=20
-> > > The next commit changes the order in which QMP messages are received.
-> > > Make 141 reliable first.
-> > >=20
-> > > Cc: Hanna Czenczek <hreitz@redhat.com>
-> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> >=20
-> > iotests 297 finds problems with the new Python code:
-> >=20
-> >  =3D=3D=3D pylint =3D=3D=3D
-> > +************* Module 141
-> > +141:82:0: C0301: Line too long (86/79) (line-too-long)
-> > +141:93:0: C0301: Line too long (86/79) (line-too-long)
-> > +141:94:0: C0301: Line too long (80/79) (line-too-long)
-> > +141:106:0: C0301: Line too long (85/79) (line-too-long)
-> > +141:107:0: C0301: Line too long (82/79) (line-too-long)
-> > +141:109:0: C0301: Line too long (82/79) (line-too-long)
-> > +141:117:0: C0301: Line too long (86/79) (line-too-long)
-> > +141:120:0: C0301: Line too long (86/79) (line-too-long)
-> > +141:129:0: C0301: Line too long (86/79) (line-too-long)
-> >  =3D=3D=3D mypy =3D=3D=3D
-> > +141:104: error: Value of type variable "Msg" of "log" cannot be "dict[=
-str, Any] | None"  [type-var]
-> > +141:114: error: Value of type variable "Msg" of "log" cannot be "dict[=
-str, Any] | None"  [type-var]
-> > +Found 2 errors in 1 file (checked 37 source files)
->=20
-> I'm not sure how to run this but I manually ran pylint and mypy and
-> fixed those errors. Can you share how you ran this?
+I also did a bit of smoke testing with some other QMP and QGA commands
+and didn't find any obvious breakage, so:
 
-I already answered this in IRC, but for the record: This is from running
-qemu-iotests 297, which is kind of a meta-test that runs the linters on
-Python files in qemu-iotests.
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
 
-> The mypy errors are because the type system cannot express that
-> event_wait() only returns None when timeout=3D0. That's not the case in
-> 141 but mypy complains anyway, so I added an assertion that event is not
-> None to silence mypy.
+P.S.
 
-Sounds like the right solution to me.
+Unfortunately, the patch does not solve the other issue I came across
+back then [0] with snapshot_save_job_bh() being executed during a vCPU
+thread's aio_poll(). See also [1].
 
-Kevin
+I suppose this would need some other mechanism to solve or could it also
+be scheduled to the iohandler AioContext? It's not directly related to
+your patch of course, just mentioning it, because it's a similar theme.
 
---ruCH36XGeUsN9xyP
-Content-Type: application/pgp-signature; name="signature.asc"
+[0]:
+https://lore.kernel.org/qemu-devel/31757c45-695d-4408-468c-c2de560aff9c@proxmox.com/
+[1]: https://gitlab.com/qemu-project/qemu/-/issues/2111
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmWpRYIACgkQfwmycsiP
-L9YVWg/+NSL7qC6onWYQoZuejd6k5eMGCBf9y4J+b07Kf0G88Em1eJD9Le9pBkxy
-SeEFIFNGoenSUxeU//RsJroDBBd47XUoZ0Ou3yYbC5XCYKThpseuYmkIzzwO66OJ
-obOhznct/jS740sMuCwfsAV+sxSZC7f66SMvwscppYLVBM2R0K57dIGn05K5FT7I
-qVyGQ08fqC7RmsXCYPHj5l6uuhI38jpc8ejsiX699d01mXp3LxEFPnFytmlY5LEF
-OOCYDJG2YfGgu4+9eh2uW8Dimv0tuSCY/SDxL2u5lalGQyQNYomkDJl4NJhJXq7e
-H+KCyBzmE2v4jmeNmel+TnBBxj8Erm8heTzYw8oR3tW4ZS75rKSVLc9IjAYS7d2i
-CGjT+T+vzgXHh/32dU1BQikVI6uNPluB38TAl+IB05BrTxsFeBWl/kLYgB5a0Ts2
-XbAQpXO1GmyOlGG5Gvht1uC0UaafVigcUYWKTFul508lEKWF1VtrNaxoRxpJQi+I
-cXdkgio1+84J6fsNBn141/Oascs44mEtaKn57jcBPrHxj/091agWBrSiCySYYnwr
-ZBTzOfSPtKKHdoy0AcCl/GA/jucRsAB+fEZ+hIQvnVJG9MC8S9mdQa3fVU9kG5It
-uThSAvR8BmyqVIu1EyJsOTslo2A1PDNjMMjy6EL++f8BqvhLX+Q=
-=HjUt
------END PGP SIGNATURE-----
-
---ruCH36XGeUsN9xyP--
+Best Regards,
+Fiona
 
 
