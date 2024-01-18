@@ -2,85 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A828319B3
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:57:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 252D58319BC
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:58:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQRxB-0004JL-O5; Thu, 18 Jan 2024 07:57:05 -0500
+	id 1rQRyC-0005Dg-BG; Thu, 18 Jan 2024 07:58:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rQRx9-0004J0-JW
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:57:03 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQRy9-0005DD-Ln
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:58:06 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rQRx7-00021S-RI
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:57:03 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-55a38fb45c1so335932a12.1
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 04:57:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705582620; x=1706187420; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=RpfO4oaFqs6lwAALE39rx6AfKD+NVhjkKQROy23W76U=;
- b=niRZwegmjhKDSQPyh0gu+kYSWj8/ZS8Mhw8Lg7z7RsiiGyZDHUfrsRMoZa0l6aMzEz
- bNNGZ8FBenxuufzgfpPmoqg7Cbsw1ddlU1mx7TzGFTn1Fbmn4SkOJlUoADi0mctAqX5z
- ULrqEg/Ri/oMvsM+s8LMYcfQt21ysnAhr44VVIh0v4brMZJM58g15CQMKiY15j8oVaK1
- MgndmJKmpsHZ0mqItS+99pjcKR2tkNCBVJ63/HE2Dlrj3UJpt3F55v3LO8JW8gLC7PXA
- FWroLn+NNQrTq3pxN3YlHLd56Hftxx3JbsMK4qY5mhr/6DNzxVhkOfKYlcz+kGkgllO6
- tiDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705582620; x=1706187420;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RpfO4oaFqs6lwAALE39rx6AfKD+NVhjkKQROy23W76U=;
- b=tXxNAIeGsfoGLOsYEkQD08DoE6keg4B+4jN9CVk7Hk7GNg6WN6caS/mMKujo6tvrnC
- 3rV+io4TJye9xneldmqu7Mppcd+xv/gy0T+jLNAB9scJPTKMxa4oPhHSovI2SusKwWGx
- o1n8KXFnFpYD1ms9TXODOSt0oylKNpY6TvK/tC/H1yxlzOJmnVCt4SmDjHJ5TnmNNcI8
- vr5lT1bkzIHuUMRBHeEOGmiiZTzQfXCeDEtR9bh0vliTvq9zV9ISmRqPFx183lmF0UKm
- L25lIwRvll3jCblofQW9XRlRB24zFMk90jgYVIsLhBWLOH+DDDGD1pfwPreBi+U+CJW7
- 2Svg==
-X-Gm-Message-State: AOJu0Yx5gUBwOsWi69qxPGgT0kIQ4s2ezJNGOoiF4jugrV1RR81r4MoI
- QqQ4LIcD+PgIbo9819xhW9PJPR02qS4xS01YlhVi92qYXySCiqfepscs8uXjmQsvrRjgqy6qPWU
- 5djV/zgfBE08ScAAXu9UvOzswRk8BVTPjR8ktVw==
-X-Google-Smtp-Source: AGHT+IEm6jRj0FvOggQ3Z5lBaS9mQ/Qb7YCS1waC+LCfHyTzI1oRhDBojXc8cVJXmKfzJ7HCyulqSEnleg1mJfDTNLQ=
-X-Received: by 2002:aa7:d98e:0:b0:55a:343:e617 with SMTP id
- u14-20020aa7d98e000000b0055a0343e617mr562471eds.76.1705582619999; Thu, 18 Jan
- 2024 04:56:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQRy6-0002DI-VI
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:58:04 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 3DF151FCF2;
+ Thu, 18 Jan 2024 12:58:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1705582680; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=eDLZlGQpl9bU3B8zYq3v9fCrWV+3kPi8mh1nIcTaBb4=;
+ b=QPpiUOwJKcb1u5BeQ2SlLdWNkC6weE43GB29ForjNmt7lDTVC45kx/S9ikYHWe9TnMgxBV
+ 2uCKbUiwi/WAQ3urEjj6MGYSCS/Y35tjkp2rIwlMhYPSTh6QcutsWTra5Rrvh3EMpJbS4+
+ pU12xRDUeEE7lP63hWetfFWDZGslH1s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1705582680;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=eDLZlGQpl9bU3B8zYq3v9fCrWV+3kPi8mh1nIcTaBb4=;
+ b=gZvyRaU9KE0UrMTJgzoBIcC7qvKgD2EmB4C17geC1bAgwYeTzpyVdK7pSro/c/zOnGU5X0
+ 0RzW8Ha+9oeFG3Bw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1705582680; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=eDLZlGQpl9bU3B8zYq3v9fCrWV+3kPi8mh1nIcTaBb4=;
+ b=QPpiUOwJKcb1u5BeQ2SlLdWNkC6weE43GB29ForjNmt7lDTVC45kx/S9ikYHWe9TnMgxBV
+ 2uCKbUiwi/WAQ3urEjj6MGYSCS/Y35tjkp2rIwlMhYPSTh6QcutsWTra5Rrvh3EMpJbS4+
+ pU12xRDUeEE7lP63hWetfFWDZGslH1s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1705582680;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=eDLZlGQpl9bU3B8zYq3v9fCrWV+3kPi8mh1nIcTaBb4=;
+ b=gZvyRaU9KE0UrMTJgzoBIcC7qvKgD2EmB4C17geC1bAgwYeTzpyVdK7pSro/c/zOnGU5X0
+ 0RzW8Ha+9oeFG3Bw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B5BBF1387C;
+ Thu, 18 Jan 2024 12:57:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 6rTsHlcgqWWSewAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 18 Jan 2024 12:57:59 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Alex =?utf-8?Q?Benn?=
+ =?utf-8?Q?=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PULL 08/41] target/arm: Set CTR_EL0.{IDC,DIC} for the 'max' CPU
+In-Reply-To: <CAFEAcA-FW-CZga48B-id=uxmxjF7_rZiO+2jJRsZmT9or+_77g@mail.gmail.com>
+References: <20240111110505.1563291-1-peter.maydell@linaro.org>
+ <20240111110505.1563291-9-peter.maydell@linaro.org>
+ <877ck7d56n.fsf@suse.de>
+ <CAFEAcA-FW-CZga48B-id=uxmxjF7_rZiO+2jJRsZmT9or+_77g@mail.gmail.com>
+Date: Thu, 18 Jan 2024 09:57:57 -0300
+Message-ID: <87wms6er3e.fsf@suse.de>
 MIME-Version: 1.0
-References: <20231213105026.1944656-1-kraxel@redhat.com>
- <y2kuootd3k2tqe2245zggbuusg2kaaqrxlvxfwy2wrcbdxg3cn@zgj6tl7gd4lp>
- <CAFEAcA8H6kVNiSk6CEVun5KWQH-sqWxBKxZ9Rf7haQhZHEKiow@mail.gmail.com>
- <CAFEAcA-sw2FNgTft0PYL=GW0JQhdRX9Zn0B6muUjC68nmVXHnA@mail.gmail.com>
- <e2hpw77r6t2ge6h233cq75qdadou6koz62sfktcsrlc2gzeqnq@4ejyxysmmulo>
- <CAFEAcA_f0Q7LkSQ2+sxgBcRQNSTenykq1R28QMuGyW22PtxW2Q@mail.gmail.com>
- <CAFEAcA_-fF7fWGm_QUJa86LHJvtBk4jKvTw=OvM+EOxQzuYvWA@mail.gmail.com>
- <7u5v67zlt5aapyinxbc4dgdiivtx4cr5mttdck6jzfknfb2ni2@lscetlkzwvjy>
- <b5d14237-5bf3-49dc-b9c4-4f18bd6dec96@tls.msk.ru>
- <7gsflxxdzqdjzeyool3kjgsokjgxbys3tijlcmqf2fusddn7o6@vafldjprddge>
-In-Reply-To: <7gsflxxdzqdjzeyool3kjgsokjgxbys3tijlcmqf2fusddn7o6@vafldjprddge>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 18 Jan 2024 12:56:49 +0000
-Message-ID: <CAFEAcA87C0W0nRLe4pbf7LHLP7w38iV3zCHph5_N8bsR77mhmA@mail.gmail.com>
-Subject: Re: Re: [PULL 0/6] Firmware/edk2 20231213 patches
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org, 
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-stable <qemu-stable@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QPpiUOwJ;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=gZvyRaU9
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-6.51 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim]; RCPT_COUNT_FIVE(0.00)[6];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,suse.de:dkim,suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -6.51
+X-Rspamd-Queue-Id: 3DF151FCF2
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,46 +125,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 17 Jan 2024 at 14:29, Gerd Hoffmann <kraxel@redhat.com> wrote:
->
-> On Wed, Jan 17, 2024 at 01:16:34PM +0300, Michael Tokarev wrote:
-> > 15.01.2024 13:20, Gerd Hoffmann :
-> > >    Hi,
-> > >
-> > > > PS: when are we likely to be able to update to a proper released
-> > > > EDK2 ? Running with a git snapshot isn't ideal, so if we can
-> > > > move to an EDK2 release version within this QEMU cycle that would
-> > > > be nice.
-> > >
-> > > Next release should be tagged by end of February, so if the qemu 9.0
-> > > schedule is simliar to the 8.0 schedule this is before soft freeze
-> > > and an update should be no problem.
-> >
-> > So, should we pick this up for 8.2.1, or wait till next release of edk2 ?
-> >
-> > The thing here is that for (some) downstreams, edk2 is a separate package,
-> > so if qemu relies on changed edk2, it should be there before qemu-side
-> > changes can be added.  So if we pick this patchset up for 8.2.1, it might
-> > be a bit surprising for downstreams.
->
-> It's not that there changed something in the edk2 <-> qemu interfaces.
-> This build contains a workaround for the current shim.efi clusterf*ck.
->
-> The tl;dr version:  The build is compiled with the (very recently added)
-> PcdUninstallMemAttrProtocol=TRUE option to workaround a bug in shim.efi.
->
-> The extra long version:
->     https://www.kraxel.org/blog/2023/12/uefi-nx-linux-boot/
->
-> Picking this up for 8.2.1 makes life easier for the downstreams which do
-> not do their own firmware builds but ship the qemu prebuilds instead.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-On the other side of the scales, it's a bit unexpected for a
-stable-branch update to include "unreleased version of EDK
-binaries" (rather than, say, "same version of EDK binaries
-but with one specific fix"). So I can see the argument for
-waiting for the tagged upstream EDK release first.
+> On Wed, 17 Jan 2024 at 21:24, Fabiano Rosas <farosas@suse.de> wrote:
+>> Peter Maydell <peter.maydell@linaro.org> writes:
+>> > diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+>> > index fcda99e1583..40e7a45166f 100644
+>> > --- a/target/arm/tcg/cpu64.c
+>> > +++ b/target/arm/tcg/cpu64.c
+>> > @@ -1105,6 +1105,16 @@ void aarch64_max_tcg_initfn(Object *obj)
+>> >      u = FIELD_DP32(u, CLIDR_EL1, LOUU, 0);
+>> >      cpu->clidr = u;
+>> >
+>> > +    /*
+>> > +     * Set CTR_EL0.DIC and IDC to tell the guest it doesnt' need to
+>> > +     * do any cache maintenance for data-to-instruction or
+>> > +     * instruction-to-guest coherence. (Our cache ops are nops.)
+>> > +     */
+>> > +    t = cpu->ctr;
+>> > +    t = FIELD_DP64(t, CTR_EL0, IDC, 1);
+>> > +    t = FIELD_DP64(t, CTR_EL0, DIC, 1);
+>> > +    cpu->ctr = t;
+>> > +
+>> >      t = cpu->isar.id_aa64isar0;
+>> >      t = FIELD_DP64(t, ID_AA64ISAR0, AES, 2);      /* FEAT_PMULL */
+>> >      t = FIELD_DP64(t, ID_AA64ISAR0, SHA1, 1);     /* FEAT_SHA1 */
+>>
+>> Hi, we're introducing new regression tests to migration and this patch
+>> shows up in the bisect of an issue. I need some help figuring out
+>> whether this is an actual regression or something else.
+>>
+>> The migration is TCG QEMU 8.2.0 -> TCG QEMU master.
+>>
+>> On the destination side (contains this patch) we're hitting this
+>> condition:
+>>
+>> bool write_list_to_cpustate(ARMCPU *cpu)
+>> {
+>> ...
+>>         /*
+>>          * Write value and confirm it reads back as written
+>>          * (to catch read-only registers and partially read-only
+>>          * registers where the incoming migration value doesn't match)
+>>          */
+>>         write_raw_cp_reg(&cpu->env, ri, v);
+>>         if (read_raw_cp_reg(&cpu->env, ri) != v) {
+>> --->        ok = false;
+>>         }
+>
+> This is (among other things) effectively checking that the
+> source and destination CPU agree about the values of constant
+> registers like the ID registers, of which this is one.
+>
+> The "max" CPU is a moving target, so you shouldn't expect
+> to be able to migrate across QEMU versions using it:
+> it can have different features and thus different ID
+> register values between versions (as well as potentially
+> different actual-register-state if the added feature adds
+> new state).
 
-thanks
--- PMM
+We're adding a test for migrating across QEMU versions to stop these
+sort of breakages happening. If 'max' is not suitable for that scenario,
+would there be another cpu you recommend to use? Otherwise aarch64 will
+have to remain uncovered for migration across QEMU versions.
+
+There's no clear statement on what kinds of combinations we support for
+migration, but anything that's actually tested is more likely to be
+considered supported.
+
+Note that we're only targeting 'n-1 -> n' and 'n -> n-1' migrations,
+where n-1 is the latest release and n is the development branch.
 
