@@ -2,44 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3B6831367
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:56:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4246D83136C
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:56:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNF7-0001VS-4B; Thu, 18 Jan 2024 02:55:17 -0500
+	id 1rQNF7-0001W0-3L; Thu, 18 Jan 2024 02:55:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNF3-0001Sr-Th; Thu, 18 Jan 2024 02:55:13 -0500
+ id 1rQNF4-0001Sz-6i; Thu, 18 Jan 2024 02:55:14 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNF1-0007PQ-8C; Thu, 18 Jan 2024 02:55:13 -0500
+ id 1rQNF2-0007Pi-Bg; Thu, 18 Jan 2024 02:55:13 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C7DBC45039;
+ by isrv.corpit.ru (Postfix) with ESMTP id D9F344503A;
  Thu, 18 Jan 2024 10:54:35 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id F02DE661A2;
- Thu, 18 Jan 2024 10:54:05 +0300 (MSK)
-Received: (nullmailer pid 2381673 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0ECA9661A3;
+ Thu, 18 Jan 2024 10:54:06 +0300 (MSK)
+Received: (nullmailer pid 2381676 invoked by uid 1000);
  Thu, 18 Jan 2024 07:54:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Eric Auger <eric.auger@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 15/38] hw/vfio: fix iteration over global VFIODevice
- list
-Date: Thu, 18 Jan 2024 10:52:42 +0300
-Message-Id: <20240118075404.2381519-15-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Miguel Luis <miguel.luis@oracle.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 16/38] hw/intc/arm_gicv3_cpuif: handle LPIs in in the
+ list registers
+Date: Thu, 18 Jan 2024 10:52:43 +0300
+Message-Id: <20240118075404.2381519-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,59 +61,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Volker Rümelin <vr_qemu@t-online.de>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Commit 3d779abafe ("vfio/common: Introduce a global VFIODevice list")
-introduced a global VFIODevice list, but forgot to update the list
-element field name when iterating over the new list. Change the code
-to use the correct list element field.
+The hypervisor can deliver (virtual) LPIs to a guest by setting up a
+list register to have an intid which is an LPI.  The GIC has to treat
+these a little differently to standard interrupt IDs, because LPIs
+have no Active state, and so the guest will only EOI them, it will
+not also deactivate them.  So icv_eoir_write() must do two things:
 
-Fixes: 3d779abafe ("vfio/common: Introduce a global VFIODevice list")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2061
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-(cherry picked from commit 9353b6da430f90e47f352dbf6dc31120c8914da6)
+ * if the LPI ID is not in any list register, we drop the
+   priority but do not increment the EOI count
+ * if the LPI ID is in a list register, we immediately deactivate
+   it, regardless of the split-drop-and-deactivate control
+
+This can be seen in the VirtualWriteEOIR0() and VirtualWriteEOIR1()
+pseudocode in the GICv3 architecture specification.
+
+Without this fix, potentially a hypervisor guest might stall because
+LPIs get stuck in a bogus Active+Pending state.
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Miguel Luis <miguel.luis@oracle.com>
+(cherry picked from commit 82a65e3188abebb509510b391726711606aca642)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index e70fdf5e0c..a5dfc2d27e 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -73,7 +73,7 @@ bool vfio_mig_active(void)
-         return false;
-     }
+diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+index ab1a00508e..258dee1b80 100644
+--- a/hw/intc/arm_gicv3_cpuif.c
++++ b/hw/intc/arm_gicv3_cpuif.c
+@@ -1434,16 +1434,25 @@ static void icv_eoir_write(CPUARMState *env, const ARMCPRegInfo *ri,
+     idx = icv_find_active(cs, irq);
  
--    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
-+    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
-         if (vbasedev->migration_blocker) {
-             return false;
-         }
-@@ -94,7 +94,7 @@ static bool vfio_multiple_devices_migration_is_supported(void)
-     unsigned int device_num = 0;
-     bool all_support_p2p = true;
+     if (idx < 0) {
+-        /* No valid list register corresponding to EOI ID */
+-        icv_increment_eoicount(cs);
++        /*
++         * No valid list register corresponding to EOI ID; if this is a vLPI
++         * not in the list regs then do nothing; otherwise increment EOI count
++         */
++        if (irq < GICV3_LPI_INTID_START) {
++            icv_increment_eoicount(cs);
++        }
+     } else {
+         uint64_t lr = cs->ich_lr_el2[idx];
+         int thisgrp = (lr & ICH_LR_EL2_GROUP) ? GICV3_G1NS : GICV3_G0;
+         int lr_gprio = ich_lr_prio(lr) & icv_gprio_mask(cs, grp);
  
--    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
-+    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
-         if (vbasedev->migration) {
-             device_num++;
- 
-@@ -1352,13 +1352,13 @@ void vfio_reset_handler(void *opaque)
- {
-     VFIODevice *vbasedev;
- 
--    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
-+    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
-         if (vbasedev->dev->realized) {
-             vbasedev->ops->vfio_compute_needs_reset(vbasedev);
-         }
-     }
- 
--    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
-+    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
-         if (vbasedev->dev->realized && vbasedev->needs_reset) {
-             vbasedev->ops->vfio_hot_reset_multi(vbasedev);
+         if (thisgrp == grp && lr_gprio == dropprio) {
+-            if (!icv_eoi_split(env, cs)) {
+-                /* Priority drop and deactivate not split: deactivate irq now */
++            if (!icv_eoi_split(env, cs) || irq >= GICV3_LPI_INTID_START) {
++                /*
++                 * Priority drop and deactivate not split: deactivate irq now.
++                 * LPIs always get their active state cleared immediately
++                 * because no separate deactivate is expected.
++                 */
+                 icv_deactivate_irq(cs, idx);
+             }
          }
 -- 
 2.39.2
