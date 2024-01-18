@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F8A831990
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:52:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC89831982
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:52:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQRrc-0003pg-03; Thu, 18 Jan 2024 07:51:20 -0500
+	id 1rQRrc-0003pr-Rk; Thu, 18 Jan 2024 07:51:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQRrX-0003mv-KM; Thu, 18 Jan 2024 07:51:15 -0500
+ id 1rQRrZ-0003ob-M8; Thu, 18 Jan 2024 07:51:17 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQRrW-0000Wd-1V; Thu, 18 Jan 2024 07:51:15 -0500
+ id 1rQRrX-0000Wx-P8; Thu, 18 Jan 2024 07:51:17 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6A7B9452CC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7BABB452CD;
  Thu, 18 Jan 2024 15:51:27 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2AE59668C0;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3EE2E668C1;
  Thu, 18 Jan 2024 15:50:57 +0300 (MSK)
-Received: (nullmailer pid 2502746 invoked by uid 1000);
+Received: (nullmailer pid 2502749 invoked by uid 1000);
  Thu, 18 Jan 2024 12:50:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+Cc: qemu-stable@nongnu.org, Natanael Copa <ncopa@alpinelinux.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Miguel Luis <miguel.luis@oracle.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.5 07/11] hw/intc/arm_gicv3_cpuif: handle LPIs in in the
- list registers
-Date: Thu, 18 Jan 2024 15:50:45 +0300
-Message-Id: <20240118125056.2502687-7-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.5 08/11] util: fix build with musl libc on ppc64le
+Date: Thu, 18 Jan 2024 15:50:46 +0300
+Message-Id: <20240118125056.2502687-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.5-20240118154659@cover.tls.msk.ru>
 References: <qemu-stable-8.1.5-20240118154659@cover.tls.msk.ru>
@@ -61,64 +60,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Natanael Copa <ncopa@alpinelinux.org>
 
-The hypervisor can deliver (virtual) LPIs to a guest by setting up a
-list register to have an intid which is an LPI.  The GIC has to treat
-these a little differently to standard interrupt IDs, because LPIs
-have no Active state, and so the guest will only EOI them, it will
-not also deactivate them.  So icv_eoir_write() must do two things:
-
- * if the LPI ID is not in any list register, we drop the
-   priority but do not increment the EOI count
- * if the LPI ID is in a list register, we immediately deactivate
-   it, regardless of the split-drop-and-deactivate control
-
-This can be seen in the VirtualWriteEOIR0() and VirtualWriteEOIR1()
-pseudocode in the GICv3 architecture specification.
-
-Without this fix, potentially a hypervisor guest might stall because
-LPIs get stuck in a bogus Active+Pending state.
+Use PPC_FEATURE2_ISEL and PPC_FEATURE2_VEC_CRYPTO from linux headers
+instead of the GNU specific PPC_FEATURE2_HAS_ISEL and
+PPC_FEATURE2_HAS_VEC_CRYPTO. This fixes build with musl libc.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Miguel Luis <miguel.luis@oracle.com>
-(cherry picked from commit 82a65e3188abebb509510b391726711606aca642)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1861
+Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
+Fixes: 63922f467a ("tcg/ppc: Replace HAVE_ISEL macro with a variable")
+Fixes: 68f340d4cd ("tcg/ppc: Enable Altivec detection")
+Message-Id: <20231219105236.7059-1-ncopa@alpinelinux.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 1d513e06d96697f44de4a1b85c6ff627c443e306)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index d07b13eb27..05dcfc4bc3 100644
---- a/hw/intc/arm_gicv3_cpuif.c
-+++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -1434,16 +1434,25 @@ static void icv_eoir_write(CPUARMState *env, const ARMCPRegInfo *ri,
-     idx = icv_find_active(cs, irq);
+diff --git a/util/cpuinfo-ppc.c b/util/cpuinfo-ppc.c
+index 7212afa45d..990e62e141 100644
+--- a/util/cpuinfo-ppc.c
++++ b/util/cpuinfo-ppc.c
+@@ -6,10 +6,10 @@
+ #include "qemu/osdep.h"
+ #include "host/cpuinfo.h"
  
-     if (idx < 0) {
--        /* No valid list register corresponding to EOI ID */
--        icv_increment_eoicount(cs);
-+        /*
-+         * No valid list register corresponding to EOI ID; if this is a vLPI
-+         * not in the list regs then do nothing; otherwise increment EOI count
-+         */
-+        if (irq < GICV3_LPI_INTID_START) {
-+            icv_increment_eoicount(cs);
-+        }
-     } else {
-         uint64_t lr = cs->ich_lr_el2[idx];
-         int thisgrp = (lr & ICH_LR_EL2_GROUP) ? GICV3_G1NS : GICV3_G0;
-         int lr_gprio = ich_lr_prio(lr) & icv_gprio_mask(cs, grp);
++#include <asm/cputable.h>
+ #ifdef CONFIG_GETAUXVAL
+ # include <sys/auxv.h>
+ #else
+-# include <asm/cputable.h>
+ # include "elf.h"
+ #endif
  
-         if (thisgrp == grp && lr_gprio == dropprio) {
--            if (!icv_eoi_split(env, cs)) {
--                /* Priority drop and deactivate not split: deactivate irq now */
-+            if (!icv_eoi_split(env, cs) || irq >= GICV3_LPI_INTID_START) {
-+                /*
-+                 * Priority drop and deactivate not split: deactivate irq now.
-+                 * LPIs always get their active state cleared immediately
-+                 * because no separate deactivate is expected.
-+                 */
-                 icv_deactivate_irq(cs, idx);
+@@ -40,7 +40,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+         info |= CPUINFO_V2_06;
+     }
+ 
+-    if (hwcap2 & PPC_FEATURE2_HAS_ISEL) {
++    if (hwcap2 & PPC_FEATURE2_ISEL) {
+         info |= CPUINFO_ISEL;
+     }
+     if (hwcap & PPC_FEATURE_HAS_ALTIVEC) {
+@@ -53,7 +53,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+              * always have both anyway, since VSX came with Power7
+              * and crypto came with Power8.
+              */
+-            if (hwcap2 & PPC_FEATURE2_HAS_VEC_CRYPTO) {
++            if (hwcap2 & PPC_FEATURE2_VEC_CRYPTO) {
+                 info |= CPUINFO_CRYPTO;
              }
          }
 -- 
