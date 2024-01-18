@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8086A8312C9
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 07:41:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 987A78312D5
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 07:44:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQM4H-0002m6-EW; Thu, 18 Jan 2024 01:40:02 -0500
+	id 1rQM8F-00042s-R1; Thu, 18 Jan 2024 01:44:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xun794@gmail.com>)
- id 1rQM44-0002ku-Rj; Thu, 18 Jan 2024 01:39:50 -0500
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
+ (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
+ id 1rQM8B-00042j-Ra
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 01:44:03 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xun794@gmail.com>)
- id 1rQM43-0002XA-2N; Thu, 18 Jan 2024 01:39:48 -0500
-Received: by mail-pf1-x441.google.com with SMTP id
- d2e1a72fcca58-6d9af1f12d5so10198304b3a.3; 
- Wed, 17 Jan 2024 22:39:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
+ id 1rQM89-00038v-RI
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 01:44:03 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-a2bdc3a3c84so818314166b.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 22:44:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705559984; x=1706164784; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=GR9pOvCXwXpLyLM6JJ5YnP4raOMjph+ANW69uOoX1L8=;
- b=mageH97FqluYoU2zjSG9MoWVXaIuEQ1XhltF12Vub41TKZDW4pPIkjAYwMybVpJNpQ
- iWZ58iXiYnqgykmGPy6KREWQF5GLQPZzTB3vv5bPuYIvpeYe+zXrkP/Fh0QHFGcum3w7
- wRCTK7aJuiC4DVPKmH5ADx2+q+XccLNblV9t2CeMuj0xceL2+36m+8CMGX11HRHyaT2G
- xnQ5eRyRn/FAWI6njQCIzr8gxiBkGGSmztzv72ie+J4KDfvWmIHgHiYoYhUTBzqkVbqn
- WPt9fy/dj9Ch6K4ygf5qeLeqc4p2oA3ZWmhTizYr5wA/7iqLMe7xPVT850txO7tM8CrM
- qyhw==
+ d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1705560239; x=1706165039;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=C+tVU2zjHsgesCy8uoXBOCz8/Fh480I1x5NbavwpaiM=;
+ b=19BH31Tt5slR4+Dizemr7BlMNOusILo6ft2wrpNFsm/851ftWR10yIL356eJeXKO4F
+ Obe1QaD0J+TKWm+ZHG9Z2/mS2FSZX0aK7c5nDIgdy77W0xV3eUtFqbC5nYdiv0zRUuW+
+ aQL/4xWdfpe8dSk1aMGoZKBcQUc/DgJKDxPkjZ9xG9ftneBY67ojBiGaGVxTg1FcFXF5
+ F4dcKOji4gxWh8GIVz1Z3ukOEMkCX4uJk5hwg5pIH1XBcv45MoUXRFM8UO0UW0sjxQKB
+ fjY/XBuiTyvU2OnPQmoNMZixrKVjRCrtuybkGKwSE+PGm9RB5rA8GGfT+qfhlm8abqDc
+ KWRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705559984; x=1706164784;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1705560239; x=1706165039;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=GR9pOvCXwXpLyLM6JJ5YnP4raOMjph+ANW69uOoX1L8=;
- b=coRCjfsD/PUX9YerofI4wvtzEh/ewrHUMRuESmJAbqDiHULT3LZpX5Ngq6ArUUhiL3
- 3XplSfVXRFGt5JEiOf7yGjP1hSjl/4QgeAzLPsRSMj3mK6RVwgIZf7NX28fM9ltdfgIh
- TsWdh1USklZlaSZkKltX7VWNouT37unArH6FVbzNXQEyaeNv7qMVpA9ar9T9AQweKW2u
- fyQv4lH8qT95YM8nbN7IkJCnD7i54i69w0hqmeZ6zSV4EZm5D4VNsBKGSioNzd/0SuF8
- L0O5Y+ipmC771mvY4QWJyIky88OfGMYpsnxppBbWWLYEZlUUCjvpHA4CAR2PUCDFZ87q
- Iv/A==
-X-Gm-Message-State: AOJu0YynAsTJxu2Yx6956iqDM1K6jikwaVgVZKZEBz9HdaKIVZMUbwDj
- yy+ANt+Rgypf4v6GrfwPGNeK5bLCWFz7HLEd7GVcNtXTLqBNQj8xiNVKmvAqVlA=
-X-Google-Smtp-Source: AGHT+IFk683oCZdZNIX1ZWMZJq/ENFtW5HqiRvwlrmKXRnPc5icB6Qa6i90hKZHJP6XEFNFlLASPOw==
-X-Received: by 2002:a05:6a20:7d8e:b0:199:a6cb:20ab with SMTP id
- v14-20020a056a207d8e00b00199a6cb20abmr484703pzj.123.1705559983639; 
- Wed, 17 Jan 2024 22:39:43 -0800 (PST)
-Received: from localhost ([2409:8a20:ae8:e8d0:1e6b:fd1c:8c41:31ba])
- by smtp.gmail.com with ESMTPSA id
- w10-20020a63d74a000000b005cd945c0399sm748552pgi.80.2024.01.17.22.39.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jan 2024 22:39:43 -0800 (PST)
-From: Yihuan Pan <xun794@gmail.com>
-To: qemu-trivial@nongnu.org
-Cc: qemu-devel@nongnu.org,
-	Yihuan Pan <xun794@gmail.com>
-Subject: [PATCH] qemu-docs: Update options for graphical frontends
-Date: Thu, 18 Jan 2024 14:39:30 +0800
-Message-ID: <20240118063930.190918-1-xun794@gmail.com>
-X-Mailer: git-send-email 2.43.0
+ bh=C+tVU2zjHsgesCy8uoXBOCz8/Fh480I1x5NbavwpaiM=;
+ b=VZDiDOLv/ZKRFGUnIMKvnpZ7bhqqRXpnleFWCT9ONS/4AaG30G0RHfhoLd6K0K4PNa
+ jHDdzqDEUTdM6+rNC8HnjR3o8YzDJVV91RWiKXRNUnhvbzm2xBeFFur/PaAL1lr+aOfI
+ dkA1BjbxuEWe2enn/fZ/zEQr9rpW0Zp/CNovFgvgk46g5gCPOo7GhWkvxkKW70g+niex
+ C/NEJILPH9zlv69yMH5n4+L/ZthM35jFeJy7WHuo9wSN+313cAsYlmxtHQ7DpGKuRgM7
+ EYxvaTbkHfWAzE3YK/9koCHz8VNXCIIvmibk/4y36XruIj/r3ohtY/rb1e7Sx+f/a8ic
+ Y/8A==
+X-Gm-Message-State: AOJu0Yzgmsk2CQvhuTZBSHPdO9C5IB1KdrFCeBSOwiDVmqFRyE+GuH87
+ niEI3KGpY1qmbBq+ZWRbxS/1Nf3uh7UKqgekLYa6F6ekmMOLIXteViocN8cdrS8db03KSiX6yxZ
+ chVBU/bCWi7x3fq++DaT2h41SFCEXiTqUVNg7cg==
+X-Google-Smtp-Source: AGHT+IHXLSdwqzj98N1zUPE8JUoMV3VjUh/0d/Obtpd3lDonMcGhqCAt8L+RoEJXEgbvXw/yVX17oRtBEH6OWOSMMro=
+X-Received: by 2002:a17:906:4c54:b0:a28:e7b8:c57e with SMTP id
+ d20-20020a1709064c5400b00a28e7b8c57emr181368ejw.130.1705560238946; Wed, 17
+ Jan 2024 22:43:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::441;
- envelope-from=xun794@gmail.com; helo=mail-pf1-x441.google.com
+References: <20231211071204.30156-1-tomoyuki.hirose@igel.co.jp>
+ <20231211071204.30156-2-tomoyuki.hirose@igel.co.jp>
+ <CAFEAcA9Sp0fVBkAyKFwVwt6F+Bzt4X6UfqhyqFkn25Z14TjZSw@mail.gmail.com>
+In-Reply-To: <CAFEAcA9Sp0fVBkAyKFwVwt6F+Bzt4X6UfqhyqFkn25Z14TjZSw@mail.gmail.com>
+From: Tomoyuki Hirose <tomoyuki.hirose@igel.co.jp>
+Date: Thu, 18 Jan 2024 15:43:42 +0900
+Message-ID: <CAFS=Ecmz3G17MSAcz6wuJn01soL8kEMbB62JEy0o6DGJP_vKvg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] system/memory.c: support unaligned access
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=tomoyuki.hirose@igel.co.jp; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,32 +89,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The command line options `-ctrl-grab` and `-alt-grab` have been removed
-in QEMU 7.1. Instead, use the `-display sdl,grab-mod=<modifiers>` option
-to specify the grab modifiers.
+Hello,
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2103
-Signed-off-by: Yihuan Pan <xun794@gmail.com>
----
- docs/system/keys.rst.inc | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Thank you for reviewing my patches.
+Examples of corner case you explained is very helpful.
+I'm currently working on patches. I will submit v2 as soon
+as it's completed, so please wait a little longer.
 
-diff --git a/docs/system/keys.rst.inc b/docs/system/keys.rst.inc
-index bd9b8e5f6f..44698e301e 100644
---- a/docs/system/keys.rst.inc
-+++ b/docs/system/keys.rst.inc
-@@ -1,7 +1,8 @@
- During the graphical emulation, you can use special key combinations to
- change modes. The default key mappings are shown below, but if you use
--``-alt-grab`` then the modifier is Ctrl-Alt-Shift (instead of Ctrl-Alt)
--and if you use ``-ctrl-grab`` then the modifier is the right Ctrl key
-+``-display sdl,grab-mod=lshift-lctrl-lalt`` then the modifier is
-+Ctrl-Alt-Shift(instead of Ctrl-Alt) and if you use
-+``-display sdl,grab-mod=rctrl`` then the modifier is the right Ctrl key
- (instead of Ctrl-Alt):
- 
- Ctrl-Alt-f
--- 
-2.43.0
-
+thanks,
+Tomoyuki HIROSE
 
