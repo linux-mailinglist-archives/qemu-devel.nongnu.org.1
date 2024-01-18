@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720B4831371
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:57:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B297883139D
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:59:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNGL-0006CG-ES; Thu, 18 Jan 2024 02:56:33 -0500
+	id 1rQNGi-0007ei-MJ; Thu, 18 Jan 2024 02:56:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNG3-0005Qg-Ne; Thu, 18 Jan 2024 02:56:16 -0500
+ id 1rQNGS-0007JM-Nz; Thu, 18 Jan 2024 02:56:42 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNG1-0007vX-Mw; Thu, 18 Jan 2024 02:56:15 -0500
+ id 1rQNGO-0007w0-GQ; Thu, 18 Jan 2024 02:56:39 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A8B5A45047;
+ by isrv.corpit.ru (Postfix) with ESMTP id BB9F445048;
  Thu, 18 Jan 2024 10:54:36 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D362A661AF;
+ by tsrv.corpit.ru (Postfix) with SMTP id E3455661B0;
  Thu, 18 Jan 2024 10:54:06 +0300 (MSK)
-Received: (nullmailer pid 2381713 invoked by uid 1000);
+Received: (nullmailer pid 2381716 invoked by uid 1000);
  Thu, 18 Jan 2024 07:54:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 28/38] readthodocs: fully specify a build environment
-Date: Thu, 18 Jan 2024 10:52:55 +0300
-Message-Id: <20240118075404.2381519-28-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
+ "Nelson H . F . Beebe" <beebe@math.utah.edu>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Bruno Haible <bruno@clisp.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 29/38] hw/hppa/machine: Allow up to 3840 MB total memory
+Date: Thu, 18 Jan 2024 10:52:56 +0300
+Message-Id: <20240118075404.2381519-29-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,60 +61,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+From: Helge Deller <deller@gmx.de>
 
-This is now expected by rtd so I've expanded using their example as
-22.04 is one of our supported platforms. I tried to work out if there
-was an easy way to re-generate a requirements.txt from our
-pythondeps.toml but in the end went for the easier solution.
+The physical hardware allows DIMMs of 4 MB size and above, allowing up
+to 3840 MB of memory, but is restricted by setup code to 3 GB.
+Increase the limit to allow up to the maximum amount of memory.
 
-Cc:  <qemu-stable@nongnu.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231221174200.2693694-1-alex.bennee@linaro.org>
-(cherry picked from commit b16a45bc5e0e329a16af8a2e020a6e7044f9afa2)
+Btw. the memory area from 0xf000.0000 to 0xffff.ffff is reserved by
+the architecture for firmware and I/O memory and can not be used for
+standard memory.
+
+An upcoming 64-bit SeaBIOS-hppa firmware will allow more than 3.75GB
+on 64-bit HPPA64. In this case the ram_max for the pa20 case will change.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Noticed-by: Nelson H. F. Beebe <beebe@math.utah.edu>
+Fixes: b7746b1194c8 ("hw/hppa/machine: Restrict the total memory size to 3GB")
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Bruno Haible <bruno@clisp.org>
+(cherry picked from commit 92039f61af89629f268e04255946c2a3fa0c453f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.readthedocs.yml b/.readthedocs.yml
-index 7fb7b8dd61..0b262469ce 100644
---- a/.readthedocs.yml
-+++ b/.readthedocs.yml
-@@ -5,16 +5,21 @@
- # Required
- version: 2
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index c8da7c18d5..b11907617e 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -276,6 +276,7 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
+     unsigned int smp_cpus = machine->smp.cpus;
+     TranslateFn *translate;
+     MemoryRegion *cpu_region;
++    uint64_t ram_max;
  
-+# Set the version of Python and other tools you might need
-+build:
-+  os: ubuntu-22.04
-+  tools:
-+    python: "3.11"
-+
- # Build documentation in the docs/ directory with Sphinx
- sphinx:
-   configuration: docs/conf.py
+     /* Create CPUs.  */
+     for (unsigned int i = 0; i < smp_cpus; i++) {
+@@ -288,8 +289,10 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
+      */
+     if (hppa_is_pa20(&cpu[0]->env)) {
+         translate = translate_pa20;
++        ram_max = 0xf0000000;      /* 3.75 GB (limited by 32-bit firmware) */
+     } else {
+         translate = translate_pa10;
++        ram_max = 0xf0000000;      /* 3.75 GB (32-bit CPU) */
+     }
  
-+# We recommend specifying your dependencies to enable reproducible builds:
-+# https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html
-+python:
-+  install:
-+    - requirements: docs/requirements.txt
-+
- # We want all the document formats
- formats: all
--
--# For consistency, we require that QEMU's Sphinx extensions
--# run with at least the same minimum version of Python that
--# we require for other Python in our codebase (our conf.py
--# enforces this, and some code needs it.)
--python:
--  version: 3.6
-diff --git a/docs/requirements.txt b/docs/requirements.txt
-new file mode 100644
-index 0000000000..691e5218ec
---- /dev/null
-+++ b/docs/requirements.txt
-@@ -0,0 +1,2 @@
-+sphinx==5.3.0
-+sphinx_rtd_theme==1.1.1
+     for (unsigned int i = 0; i < smp_cpus; i++) {
+@@ -311,9 +314,9 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
+                                 cpu_region);
+ 
+     /* Main memory region. */
+-    if (machine->ram_size > 3 * GiB) {
+-        error_report("RAM size is currently restricted to 3GB");
+-        exit(EXIT_FAILURE);
++    if (machine->ram_size > ram_max) {
++        info_report("Max RAM size limited to %" PRIu64 " MB", ram_max / MiB);
++        machine->ram_size = ram_max;
+     }
+     memory_region_add_subregion_overlap(addr_space, 0, machine->ram, -1);
+ 
 -- 
 2.39.2
 
