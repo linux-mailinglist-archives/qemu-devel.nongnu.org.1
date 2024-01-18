@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B035831B28
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:12:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB907831B26
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:12:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQT62-0004vT-MI; Thu, 18 Jan 2024 09:10:18 -0500
+	id 1rQT64-0004zr-Kv; Thu, 18 Jan 2024 09:10:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQT5w-0004ua-TI; Thu, 18 Jan 2024 09:10:13 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1rQT60-0004w4-Ho; Thu, 18 Jan 2024 09:10:16 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQT5s-0000rn-TZ; Thu, 18 Jan 2024 09:10:12 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6da4a923b1bso6770439b3a.2; 
- Thu, 18 Jan 2024 06:10:07 -0800 (PST)
+ id 1rQT5x-0000sM-DC; Thu, 18 Jan 2024 09:10:16 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6daf9d5f111so10063497b3a.0; 
+ Thu, 18 Jan 2024 06:10:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705587006; x=1706191806; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=4OxPR6eUkgmQgdlDv1NNhfgzx+8cKuCgUfiVAwJqprg=;
- b=iPAifPUiMISwWa0g0UAvdVwyovAHHc0Y9v46TD8JqE2fxtI7P1iQLLgJ8VwbdmY1br
- 95NMaN4/6DTI8VLyePH7bViddYQMahrML7MjUbsdtfMrPXC6DgGP4d/S2RAX1Zo8+CT8
- WsE6kIIRqQyRP8oLJlJHmU6QCSTuju/yEZEm+vK+eNFlATxiQMA9oB/HqOSlFBFuDspC
- k9rYt0zZ/+ThWDZKgcojdOuyr18YEIV5Si6TIOqFlndSiRi0a2wWmzcW1oMXlh8ivtrf
- 2KZfAV5CVmeZS5p2p4b6gonLZh8v7qFaTeMf05radYmZy2IbxpM5kHI93bKzTxVRPL7z
- JowQ==
+ d=gmail.com; s=20230601; t=1705587009; x=1706191809; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nhpTemOWW0eKHDpq5+DOtRyqlGrRk4XHyHUl6XdyOQg=;
+ b=QuBI/6bMHEQK5zDytw3GG0YM98WmxM8JrOmZ5efVWXrPSSiMewRZy4JkITqRlWTKfz
+ gGzR4g72s/e3YTtmk5Gu5SPkIQWkFo6YK2/8I/irAo2F0Ey5sTxpmJPIiDdh+FsHarsE
+ IUvBoroc43dHpMELXiOiGDiokRjeSrAREDGsVko6+UO5GBx/4D9PmcvWkyJ5G4kf2PJg
+ TCWmFx2u7Xn3VigIPLC+Pyt3aZ/jaMag8qyRgCbm7ZWSKBX1MlPOPAv/I9LLUIukOrAu
+ tjQSNoH0V2lIakBovplJMxuOMQoHKsd6KSi7hPY7xZNgxDwUB8y4D/389+Bdbqt321CG
+ HehA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705587006; x=1706191806;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4OxPR6eUkgmQgdlDv1NNhfgzx+8cKuCgUfiVAwJqprg=;
- b=V+sibFBSZy6x/1XF6G/gYhegEyvJbkCcAsey3tDjPw5y53Uh9BlLWwVXwhwwhOSBfy
- n4SiQTyS/1iI0L0ACTIVADnIHCoioO9n0V+coze7tC0NJGZLCQTDJrDtHco5MHSA8xSW
- ogaq4u/nOMlftYedGigS64nicb0ClMHVxKmVAT23qI26QzeJqnzFjiHYv+PdZpzHOiM9
- R0XpLwVjMGwB1P5ow01MTq3o6hCi7FfI7Xr1iX0Utu6LejhAVzUDzrQ6vpasl3uNSsNE
- ToT0Uy8rxn0MUUSHCaNkAOqzVqk96sFhE6FOEvx+OG+0SvDkAic9pVqCyhhkCJmVXeeW
- O3WQ==
-X-Gm-Message-State: AOJu0YwyBoBWOcGCYKei1zROxh5J2EVeP72gvCexjy/EgkkC2KJnGXav
- D+zwtd2BZpf58RLZoXo9ArOf4zgVITkWo5sYOvxynDFwfg0hF201ZJW4VNPr
-X-Google-Smtp-Source: AGHT+IFxBROIJ9znoclP/u7WQR+3vrz1pzpDbGV+tMiT+i8O2RvwW+cJ/1drVEzvTpVBWULi2xBZ6Q==
-X-Received: by 2002:a05:6a00:4094:b0:6d9:bb7c:a56d with SMTP id
- bw20-20020a056a00409400b006d9bb7ca56dmr825117pfb.35.1705587005584; 
- Thu, 18 Jan 2024 06:10:05 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705587009; x=1706191809;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nhpTemOWW0eKHDpq5+DOtRyqlGrRk4XHyHUl6XdyOQg=;
+ b=UXaaz/AwKXZENmgfV7KPumWXP3mkZokhiLwRHWKxfOguzPXa2g8gVGV13gxdRaQwaY
+ 5Ad4VRG2fjx8b3PwOI0/doOviZqa0Ulxi04Fw416eFKHNaQrgvlSVlPPhwG4MTbcyKu/
+ YE8ZlZ0GD99M3iWrniyebpb417xF2fjI6PTZTZSfiZfe3BCGsjCn3oBegpYTC2x2Z7m7
+ i4+9jW/HF4r4oPDywq3Fu6F+N3RBG2VjX4AiCaZy2w96SZphS7P5r02Zou2YtxQMiqzs
+ vx4pJu6fRSkWouL3mjE+G8TA1GS+VGXTzrLxxAggXGhfzGZn+GsiqF8hUCrLEzaP9MKm
+ l90A==
+X-Gm-Message-State: AOJu0Yy6loH/ugvoa/BXuDRmaG4eZwtG9sKxOLTx9c/B/qBfDbHLCGcc
+ FBUJaA9lpaA7c0K/PB9DDmySdh/uwdRR76cty/2bW1S81BkiNwy3A39W60s3
+X-Google-Smtp-Source: AGHT+IGqkm8TEsTCatBIJ00Pm71wtHkVQVuS4duKAcUbqmzGpJ0hOE/Ep/h8seQlGRv5MJk/0KMNOA==
+X-Received: by 2002:a05:6a21:999b:b0:19a:fd2b:5a75 with SMTP id
+ ve27-20020a056a21999b00b0019afd2b5a75mr942555pzb.3.1705587009490; 
+ Thu, 18 Jan 2024 06:10:09 -0800 (PST)
 Received: from wheely.local0.net (124-171-76-150.tpgi.com.au. [124.171.76.150])
  by smtp.gmail.com with ESMTPSA id
- l18-20020a62be12000000b006db3149eacasm3323336pff.104.2024.01.18.06.10.01
+ l18-20020a62be12000000b006db3149eacasm3323336pff.104.2024.01.18.06.10.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Jan 2024 06:10:05 -0800 (PST)
+ Thu, 18 Jan 2024 06:10:09 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -61,14 +62,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH 0/8] ppc: Update targets for Power machines (spapr and pnv)
-Date: Fri, 19 Jan 2024 00:09:34 +1000
-Message-ID: <20240118140942.164319-1-npiggin@gmail.com>
+Subject: [PATCH 1/8] target/ppc: POWER10 does not have transactional memory
+Date: Fri, 19 Jan 2024 00:09:35 +1000
+Message-ID: <20240118140942.164319-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20240118140942.164319-1-npiggin@gmail.com>
+References: <20240118140942.164319-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,30 +94,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are some patches to move defaults to Power10 CPU, update
-some feature bits, and also update skiboot to 7.1. I would like
-to do this for 9.0 if possible.
+POWER10 hardware implements a degenerate transactional memory facility
+in POWER8/9 PCR compatibility modes to permit migration from older
+CPUs, but POWER10 / ISA v3.1 mode does not support it so the CPU model
+should not support it.
 
-Thanks,
-Nick
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ target/ppc/cpu_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Nicholas Piggin (8):
-  target/ppc: POWER10 does not have transactional memory
-  ppc/spapr|pnv: Remove SAO from pa-features when running MTTCG
-  ppc/spapr: Remove copy-paste from pa-features under TCG
-  ppc/spapr: Adjust ibm,pa-features for POWER9
-  ppc/spapr: Add pa-features for POWER10 machines
-  ppc/pnv: Permit ibm,pa-features set per machine variant
-  ppc/pnv: Set POWER9, POWER10 ibm,pa-features bits
-  ppc/pnv: Update skiboot to v7.1
-
- hw/ppc/pnv.c          | 110 +++++++++++++++++++++++++++++++++++++-----
- hw/ppc/spapr.c        |  72 +++++++++++++++++++++++++--
- target/ppc/cpu_init.c |   4 +-
- pc-bios/skiboot.lid   | Bin 2527240 -> 2527328 bytes
- roms/skiboot          |   2 +-
- 5 files changed, 168 insertions(+), 20 deletions(-)
-
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 9df606d523..5c1d0adca8 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -6576,7 +6576,7 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
+                         PPC2_FP_TST_ISA206 | PPC2_BCTAR_ISA207 |
+                         PPC2_LSQ_ISA207 | PPC2_ALTIVEC_207 |
+                         PPC2_ISA205 | PPC2_ISA207S | PPC2_FP_CVT_S64 |
+-                        PPC2_TM | PPC2_ISA300 | PPC2_PRCNTL | PPC2_ISA310 |
++                        PPC2_ISA300 | PPC2_PRCNTL | PPC2_ISA310 |
+                         PPC2_MEM_LWSYNC | PPC2_BCDA_ISA206;
+     pcc->msr_mask = (1ull << MSR_SF) |
+                     (1ull << MSR_HV) |
+@@ -6620,7 +6620,7 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
+     pcc->flags = POWERPC_FLAG_VRE | POWERPC_FLAG_SE |
+                  POWERPC_FLAG_BE | POWERPC_FLAG_PMM |
+                  POWERPC_FLAG_BUS_CLK | POWERPC_FLAG_CFAR |
+-                 POWERPC_FLAG_VSX | POWERPC_FLAG_TM | POWERPC_FLAG_SCV;
++                 POWERPC_FLAG_VSX | POWERPC_FLAG_SCV;
+     pcc->l1_dcache_size = 0x8000;
+     pcc->l1_icache_size = 0x8000;
+ }
 -- 
 2.42.0
 
