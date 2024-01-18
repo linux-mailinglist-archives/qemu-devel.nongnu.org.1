@@ -2,36 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E603683138E
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:58:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CA66831389
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:58:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNGk-00087R-RJ; Thu, 18 Jan 2024 02:56:59 -0500
+	id 1rQNGk-00083P-Jq; Thu, 18 Jan 2024 02:56:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNGY-0007Vt-BC; Thu, 18 Jan 2024 02:56:47 -0500
+ id 1rQNGX-0007Uv-1n; Thu, 18 Jan 2024 02:56:46 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNGU-0007zB-M6; Thu, 18 Jan 2024 02:56:45 -0500
+ id 1rQNGU-0007zD-KT; Thu, 18 Jan 2024 02:56:44 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DFEEB4504A;
+ by isrv.corpit.ru (Postfix) with ESMTP id F2AF64504B;
  Thu, 18 Jan 2024 10:54:36 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 14F1F661B2;
+ by tsrv.corpit.ru (Postfix) with SMTP id 27862661B3;
  Thu, 18 Jan 2024 10:54:07 +0300 (MSK)
-Received: (nullmailer pid 2381722 invoked by uid 1000);
+Received: (nullmailer pid 2381726 invoked by uid 1000);
  Thu, 18 Jan 2024 07:54:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
- Bruno Haible <bruno@clisp.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 31/38] hw/pci-host/astro: Add missing astro & elroy
- registers for NetBSD
-Date: Thu, 18 Jan 2024 10:52:58 +0300
-Message-Id: <20240118075404.2381519-31-mjt@tls.msk.ru>
+ Bruno Haible <bruno@clisp.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 32/38] target/hppa: Fix PDC address translation on
+ PA2.0 with PSW.W=0
+Date: Thu, 18 Jan 2024 10:52:59 +0300
+Message-Id: <20240118075404.2381519-32-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
@@ -62,97 +64,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-NetBSD accesses some astro and elroy registers which aren't accessed
-by Linux yet. Add emulation for those registers to allow NetBSD to
-boot further.
-Please note that this patch is not sufficient to completely boot up
-NetBSD on the 64-bit C3700 machine yet.
+Fix the address translation for PDC space on PA2.0 if PSW.W=0.
+Basically, for any address in the 32-bit PDC range from 0xf0000000 to
+0xf1000000 keep the lower 32-bits and just set the upper 32-bits to
+0xfffffff0.
+
+This mapping fixes the emulated power button in PDC space for 32- and
+64-bit machines and is how the physical C3700 machine seems to map
+PDC.
+
+Figures H-10 and H-11 in the parisc2.0 spec [1] show that the 32-bit
+region will be mapped somewhere into a higher and bigger 64-bit PDC
+space.  The start and end of this 64-bit space is defined by the
+physical address bits. But the figures don't specifiy where exactly the
+mapping will start inside that region. Tests on a real HP C3700
+regarding the address of the power button indicate, that the lower
+32-bits will stay the same though.
+[1] https://parisc.wiki.kernel.org/images-parisc/7/73/Parisc2.0.pdf
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Tested-by: Bruno Haible <bruno@clisp.org>
-(cherry picked from commit 3b57c15f02050227c5c73ca97fa0dfc02f154fe9)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 6ce18d530638f6e4eb87ef8737c634e34362ad2b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
-index 7d68ccee7e..cb2c8a828d 100644
---- a/hw/pci-host/astro.c
-+++ b/hw/pci-host/astro.c
-@@ -166,6 +166,8 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
-     trace_elroy_write(addr, size, val);
- 
-     switch ((addr >> 3) << 3) {
-+    case 0x000: /* PCI_ID & PCI_COMMAND_STATUS_REG */
-+        break;
-     case 0x080:
-         put_val_in_int64(&s->arb_mask, addr, size, val);
-         break;
-@@ -175,6 +177,9 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
-     case 0x200 ... 0x250 - 1:   /* LMMIO, GMMIO, WLMMIO, WGMMIO, ... */
-         put_val_in_arrary(s->mmio_base, 0x200, addr, size, val);
-         break;
-+    case 0x300: /* ibase */
-+    case 0x308: /* imask */
-+        break;
-     case 0x0680:
-         put_val_in_int64(&s->error_config, addr, size, val);
-         break;
-@@ -538,6 +543,9 @@ static MemTxResult astro_chip_read_with_attrs(void *opaque, hwaddr addr,
-     case 0x0030:        /* HP-UX 10.20 and 11.11 reads it. No idea. */
-         val = -1;
-         break;
-+    case 0x0078:        /* NetBSD reads 0x78 ? */
-+        val = -1;
-+        break;
-     case 0x0300 ... 0x03d8:     /* LMMIO_DIRECT0_BASE... */
-         index = (addr - 0x300) / 8;
-         val = s->ioc_ranges[index];
-@@ -624,31 +632,43 @@ static MemTxResult astro_chip_write_with_attrs(void *opaque, hwaddr addr,
-     case 0x10220:
-     case 0x10230:        /* HP-UX 11.11 reads it. No idea. */
-         break;
--    case 0x22108:        /* IOC STATUS_CONTROL */
--        put_val_in_int64(&s->ioc_status_ctrl, addr, size, val);
--        break;
-     case 0x20200 ... 0x20240 - 1: /* IOC Rope0_Control ... */
-         put_val_in_arrary(s->ioc_rope_control, 0x20200, addr, size, val);
-         break;
-     case 0x20040:        /* IOC Rope config */
-+    case 0x22040:
-         put_val_in_int64(&s->ioc_rope_config, addr, size, val);
-         break;
-     case 0x20300:
-+    case 0x22300:
-         put_val_in_int64(&s->tlb_ibase, addr, size, val);
-         break;
-     case 0x20308:
-+    case 0x22308:
-         put_val_in_int64(&s->tlb_imask, addr, size, val);
-         break;
-     case 0x20310:
-+    case 0x22310:
-         put_val_in_int64(&s->tlb_pcom, addr, size, val);
-         /* TODO: flush iommu */
-         break;
-     case 0x20318:
-+    case 0x22318:
-         put_val_in_int64(&s->tlb_tcnfg, addr, size, val);
-         break;
-     case 0x20320:
-+    case 0x22320:
-         put_val_in_int64(&s->tlb_pdir_base, addr, size, val);
-         break;
-+    case 0x22000:       /* func_id */
-+        break;
-+    case 0x22008:       /* func_class */
-+        break;
-+    case 0x22050:       /* rope_debug */
-+        break;
-+    case 0x22108:        /* IOC STATUS_CONTROL */
-+        put_val_in_int64(&s->ioc_status_ctrl, addr, size, val);
-+        break;
-     /*
-      * empty placeholders for non-existent elroys, e.g.
-      * func_class, pci config & data
+diff --git a/roms/seabios-hppa b/roms/seabios-hppa
+index 4c6ecda618..e4eac85880 160000
+--- a/roms/seabios-hppa
++++ b/roms/seabios-hppa
+@@ -1 +1 @@
+-Subproject commit 4c6ecda618f2066707f50c53f31419244fd7f77a
++Subproject commit e4eac85880e8677f96d8b9e94de9f2eec9c0751f
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index 08abd1a9f9..4c28c58ee9 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -55,8 +55,14 @@ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
+         /* I/O address space */
+         addr = (int32_t)addr;
+     } else {
+-        /* PDC address space */
+-        addr &= MAKE_64BIT_MASK(0, 24);
++        /*
++         * PDC address space:
++         * Figures H-10 and H-11 of the parisc2.0 spec do not specify
++         * where to map into the 64-bit PDC address space.
++         * We map with an offset which equals the 32-bit address, which
++         * is what can be seen on physical machines too.
++         */
++        addr = (uint32_t)addr;
+         addr |= -1ull << (TARGET_PHYS_ADDR_SPACE_BITS - 4);
+     }
+     return addr;
 -- 
 2.39.2
 
