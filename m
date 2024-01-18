@@ -2,71 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F358313F1
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 09:04:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED4183144C
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 09:14:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNO9-0003Xl-IV; Thu, 18 Jan 2024 03:04:37 -0500
+	id 1rQNWP-0008Ph-4i; Thu, 18 Jan 2024 03:13:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNO2-0003W3-Mr; Thu, 18 Jan 2024 03:04:32 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNNz-0003p2-IX; Thu, 18 Jan 2024 03:04:28 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1ECC7450B8;
- Thu, 18 Jan 2024 11:04:55 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 33AD76624D;
- Thu, 18 Jan 2024 11:04:25 +0300 (MSK)
-Message-ID: <4f419058-fda4-4101-8787-167056ddbf33@tls.msk.ru>
-Date: Thu, 18 Jan 2024 11:04:25 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQNWJ-0008P7-7h
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 03:13:03 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQNWH-0007kU-Lq
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 03:13:02 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40e76626170so43011825e9.2
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 00:13:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705565580; x=1706170380; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=W6d5Gn5oC26MIaTuRmxEm3iyNRu1tovKGV3urh6vM/w=;
+ b=FjqUZ77YbgAdZp/AeJYEN+AVPQJTVonn+uAHfaGhSPmzeYNg0m2A7l2bYQJt1m3ngu
+ dGZjvJtngrr27mKzfD06jcsOlxwk2PPAQOrV14PjNoSrpretSxTVSj8earYTqeDWp1XP
+ 2UvbID6RYc6SkdY1br5IfwrvFwrRHNDecapnzyFLZUvKxjekgklPzv+x29ty3taKLt5p
+ zd2jOHFmAVQVrtLn1WlOdKZhpRk0fPSphHM0MNUzPq5NGE96Gwl4PnHLsQt3iczrUCYB
+ qETOmK49sWh7pvik44CaUCwG2MWMV5FLJPToxE7CQixsD0TQ09WkEllqYmEIiJQeE0cc
+ RXMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705565580; x=1706170380;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=W6d5Gn5oC26MIaTuRmxEm3iyNRu1tovKGV3urh6vM/w=;
+ b=L8x0fym/vSetL3iu6AiDNgqa4lViQAQl9UNmEIce5syltqyn6RFi031ygmqcrsU9wh
+ lqrLvhxJalXTI0MpRt3jqzt+nBXt7TI8cbfg3DQwd90MpNO26MXKglsfkGnyhvIVEqqy
+ ld/kaxhLaPzE2m5OkSA0QmNOuq1a4uzKY0Fw7wQRhg+z48flv0Sb5NZLafSLM0xSr+IC
+ 5TfSVPxGxmMXp9LcUSndVyfIj4PaIaR+ZbUJ7gaJCb8944qoWgd/GjWGtsEavjcXLt/f
+ KDXltZ7t6eJ+4FJ6yI+IPOqQbCwhXlk8x6/P+/AV+YdUXyP6xgnXa52p2DMOZPc57qEm
+ nNbQ==
+X-Gm-Message-State: AOJu0Yx4twosMKGfxUw5pT71CGTrRitK+nRpXioad2Ap0dgPhVZ3DSq2
+ +96kJIOMPCFn5F+tD5JFgY277yIijheDyi5wVPmV4ymTM3RJJsuNJST9wuZpr0M=
+X-Google-Smtp-Source: AGHT+IEHt7o/UP0g9aGroGu5dBpWj+mGFfmAd6f0CL6nApcZxtNYkoUrv5Z2o+RM7RRzSQ27C/UuJA==
+X-Received: by 2002:a05:600c:5127:b0:40c:55c4:45f5 with SMTP id
+ o39-20020a05600c512700b0040c55c445f5mr251252wms.132.1705565579737; 
+ Thu, 18 Jan 2024 00:12:59 -0800 (PST)
+Received: from [192.168.61.175] (31.red-95-127-38.staticip.rima-tde.net.
+ [95.127.38.31]) by smtp.gmail.com with ESMTPSA id
+ w6-20020adfee46000000b00337cf4a20c6sm818336wro.31.2024.01.18.00.12.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 18 Jan 2024 00:12:59 -0800 (PST)
+Message-ID: <8da792b9-f85f-4b2e-b6f6-094c664a953f@linaro.org>
+Date: Thu, 18 Jan 2024 09:09:11 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] target/i386: mask high bits of CR3 in 32-bit mode
+Subject: Re: [PATCH 3/4] intel_iommu: Tear down address spaces before IOMMU
+ reset
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, mcb30@ipxe.org, qemu-stable@nongnu.org
-References: <20231222175951.172669-1-pbonzini@redhat.com>
- <20231222175951.172669-2-pbonzini@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20231222175951.172669-2-pbonzini@redhat.com>
+To: peterx@redhat.com, qemu-devel@nongnu.org
+Cc: Eric Auger <eric.auger@redhat.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>
+References: <20240117091559.144730-1-peterx@redhat.com>
+ <20240117091559.144730-4-peterx@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240117091559.144730-4-peterx@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,22 +96,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-22.12.2023 20:59, Paolo Bonzini:
-> CR3 bits 63:32 are ignored in 32-bit mode (either legacy 2-level
-> paging or PAE paging).  Do this in mmu_translate() to remove
-> the last where get_physical_address() meaningfully drops the high
-> bits of the address.
+Hi Peter,
+
+On 17/1/24 10:15, peterx@redhat.com wrote:
+> From: Peter Xu <peterx@redhat.com>
 > 
-> Cc: qemu-stable@nongnu.org
-> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-> Fixes: 4a1e9d4d11c ("target/i386: Use atomic operations for pte updates", 2022-10-18)
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> No bug report for this, but logically tearing down of existing address
+> space should happen before reset of IOMMU state / registers, because the
+> current address spaces may still rely on those information.
+> 
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>   hw/i386/intel_iommu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index 1a07faddb4..8b467cbbd2 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -4090,8 +4090,8 @@ static void vtd_reset(DeviceState *dev)
+>   {
+>       IntelIOMMUState *s = INTEL_IOMMU_DEVICE(dev);
+>   
+> -    vtd_init(s);
+>       vtd_address_space_refresh_all(s);
+> +    vtd_init(s);
+>   }
 
-Ping?
-
-Can we get this patch set to master before Jan-27?
-
-Thanks,
-
-/mjt
+You might want to convert to 3-phases reset API here, calling
+vtd_address_space_refresh_all() in a ResettableEnterPhase handler
+and vtd_init() in ResettableHoldPhase (or ResettableExitPhase?).
 
