@@ -2,102 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89341831F55
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 19:53:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64272831F89
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 20:20:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQXUn-0005Kl-NP; Thu, 18 Jan 2024 13:52:09 -0500
+	id 1rQXuf-0002lI-3v; Thu, 18 Jan 2024 14:18:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1rQXUl-0005K6-2O; Thu, 18 Jan 2024 13:52:07 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQXuc-0002kY-4v
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 14:18:50 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1rQXUj-0004yu-9x; Thu, 18 Jan 2024 13:52:06 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40II23qJ011053; Thu, 18 Jan 2024 18:52:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=76CMXB5kscdn1YJWwBdDx9hNhQnA16efDo5ib9NMAfE=;
- b=gQAwlYXc4wlBhdPFjiPG4JS9gDnYCoHipc5126qpaGv2FqooVY9Cav8AJhuOfrUTcRfo
- 7eAGkkyKsas9Ln1noSHrh2pv8zvx6xDKZXO3G6FihDgvVoWOtFf+EuGjtI8VDC9oQ6u/
- oniNhGC3sNxEgPOFmO+McDlKIWNRwAwRqyYrb1qXffUc1wVeZJwfkduYv8P5deUY5ggN
- 9uBLF3ZYFzhR2J0KRuKpvffzOYKBRqowFZrOkJBRMjn6BtD45mg8UT+lBlbgBB+6CzCu
- kOKKZ75jJyCBWbH/vmHY0HSI/ZbQx0LXb7CdGb1yUJjAspBwal1BdnG7WlDgJorJdbkw 7w== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vq8whs8u5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jan 2024 18:52:00 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40IIkw3G008280;
- Thu, 18 Jan 2024 18:52:00 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vq8whs8tt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jan 2024 18:52:00 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40IHIUGe030582; Thu, 18 Jan 2024 18:51:59 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vm72kcsaj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jan 2024 18:51:59 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
- [10.39.53.231])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40IIpwq459376072
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Jan 2024 18:51:58 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 370C958045;
- Thu, 18 Jan 2024 18:51:58 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BEFC058056;
- Thu, 18 Jan 2024 18:51:56 +0000 (GMT)
-Received: from li-2311da4c-2e09-11b2-a85c-c003041e9174.ibm.com.com (unknown
- [9.61.163.245]) by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 18 Jan 2024 18:51:56 +0000 (GMT)
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-To: qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, thuth@redhat.com, clg@redhat.com,
- frankja@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Subject: [PATCH v2 3/3] s390x/pci: drive ISM reset from subsystem reset
-Date: Thu, 18 Jan 2024 13:51:51 -0500
-Message-ID: <20240118185151.265329-4-mjrosato@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118185151.265329-1-mjrosato@linux.ibm.com>
-References: <20240118185151.265329-1-mjrosato@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQXua-0006Z2-5w
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 14:18:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705605525;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=P0Xqmbst6oAXMoI/Xf5JcY391gphSyFh1bxi8ElP2QY=;
+ b=hdGrbFVqgKpFDEFCj+88+DS7TsYu6IWPMfZacAHbbzSsuZcFI4FS7M7ikFDhXUg3fN0Ba0
+ QzyvKDF7KW5BEJMMW++/xAvErEzNHiudbU/9hIQ/fUqV7WPyWsdkemlR4omx7aaT7u40Y+
+ SWfaMaTO76ryL0MFXnfCRTHAXoYAY08=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-656-3ZlrwpmgMJKiHHlXyTrpZg-1; Thu, 18 Jan 2024 14:18:42 -0500
+X-MC-Unique: 3ZlrwpmgMJKiHHlXyTrpZg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3B311185A786;
+ Thu, 18 Jan 2024 19:18:42 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.209])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 60DECC15587;
+ Thu, 18 Jan 2024 19:18:41 +0000 (UTC)
+Date: Thu, 18 Jan 2024 20:18:40 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Ari Sundholm <ari@tuxera.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org
+Subject: Re: [PATCH v2] block/blklogwrites: Protect mutable driver state with
+ a mutex.
+Message-ID: <Zal5kCm23APYc68D@redhat.com>
+References: <f1960d8d-352e-4e1b-4d28-7a110e272356@tuxera.com>
+ <20240111163238.1346482-1-ari@tuxera.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: XoXerEO7tDSMg9pugv6njpNlm0raQq6N
-X-Proofpoint-ORIG-GUID: RAWZ3OIZUn_2Yrzdnhy67uYizwj_9TNw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-18_08,2024-01-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0
- adultscore=0 mlxscore=0 suspectscore=0 mlxlogscore=999 spamscore=0
- priorityscore=1501 lowpriorityscore=0 malwarescore=0 clxscore=1015
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401180137
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240111163238.1346482-1-ari@tuxera.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,112 +80,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ISM devices are sensitive to manipulation of the IOMMU, so the ISM device
-needs to be reset before the vfio-pci device is reset (triggering a full
-UNMAP).  In order to ensure this occurs, trigger ISM device resets from
-subsystem_reset before triggering the PCI bus reset (which will also
-trigger vfio-pci reset).  This only needs to be done for ISM devices
-which were enabled for use by the guest.
-Further, ensure that AIF is disabled as part of the reset event.
+Am 11.01.2024 um 17:32 hat Ari Sundholm geschrieben:
+> During the review of a fix for a concurrency issue in blklogwrites,
+> it was found that the driver needs an additional fix when enabling
+> multiqueue, which is a new feature introduced in QEMU 9.0, as the
+> driver state may be read and written by multiple threads at the same
+> time, which was not the case when the driver was originally written.
+> 
+> Fix the multi-threaded scenario by introducing a mutex to protect the
+> mutable fields in the driver state, and always having the mutex locked
+> by the current thread when accessing them. Also use the mutex and a
+> condition variable to ensure that the super block is not being written
+> to by multiple threads concurrently.
+> 
+> Additionally, add the const qualifier to a few BDRVBlkLogWritesState
+> pointer targets in contexts where the driver state is not written to.
+> 
+> Signed-off-by: Ari Sundholm <ari@tuxera.com>
+> 
+> v1->v2: Ensure that the super block is not written to concurrently.
+> ---
+>  block/blklogwrites.c | 77 +++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 69 insertions(+), 8 deletions(-)
+> 
+> diff --git a/block/blklogwrites.c b/block/blklogwrites.c
+> index ba717dab4d..f8bec7c863 100644
+> --- a/block/blklogwrites.c
+> +++ b/block/blklogwrites.c
+> @@ -3,7 +3,7 @@
+>   *
+>   * Copyright (c) 2017 Tuomas Tynkkynen <tuomas@tuxera.com>
+>   * Copyright (c) 2018 Aapo Vienamo <aapo@tuxera.com>
+> - * Copyright (c) 2018 Ari Sundholm <ari@tuxera.com>
+> + * Copyright (c) 2018-2024 Ari Sundholm <ari@tuxera.com>
+>   *
+>   * This work is licensed under the terms of the GNU GPL, version 2 or later.
+>   * See the COPYING file in the top-level directory.
+> @@ -55,9 +55,34 @@ typedef struct {
+>      BdrvChild *log_file;
+>      uint32_t sectorsize;
+>      uint32_t sectorbits;
+> +    uint64_t update_interval;
+> +
+> +    /*
+> +     * The mutable state of the driver, consisting of the current log sector
+> +     * and the number of log entries.
+> +     *
+> +     * May be read and/or written from multiple threads, and the mutex must be
+> +     * held when accessing these fields.
+> +     */
+>      uint64_t cur_log_sector;
+>      uint64_t nr_entries;
+> -    uint64_t update_interval;
+> +    QemuMutex mutex;
+> +
+> +    /*
+> +     * The super block sequence number. Non-zero if a super block update is in
+> +     * progress.
+> +     *
+> +     * The mutex must be held when accessing this field.
+> +     */
+> +    uint64_t super_update_seq;
+> +
+> +    /*
+> +     * A condition variable to wait for and signal finished superblock updates.
+> +     *
+> +     * Used with the mutex to ensure that only one thread be updating the super
+> +     * block at a time.
+> +     */
+> +    QemuCond super_updated;
+>  } BDRVBlkLogWritesState;
+>  
+>  static QemuOptsList runtime_opts = {
+> @@ -169,6 +194,9 @@ static int blk_log_writes_open(BlockDriverState *bs, QDict *options, int flags,
+>          goto fail;
+>      }
+>  
+> +    qemu_mutex_init(&s->mutex);
+> +    qemu_cond_init(&s->super_updated);
+> +
+>      log_append = qemu_opt_get_bool(opts, "log-append", false);
+>  
+>      if (log_append) {
+> @@ -231,6 +259,8 @@ static int blk_log_writes_open(BlockDriverState *bs, QDict *options, int flags,
+>          s->nr_entries = 0;
+>      }
+>  
+> +    s->super_update_seq = 0;
+> +
+>      if (!blk_log_writes_sector_size_valid(log_sector_size)) {
+>          ret = -EINVAL;
+>          error_setg(errp, "Invalid log sector size %"PRIu64, log_sector_size);
+> @@ -255,6 +285,8 @@ fail_log:
+>          bdrv_unref_child(bs, s->log_file);
+>          bdrv_graph_wrunlock();
+>          s->log_file = NULL;
+> +        qemu_cond_destroy(&s->super_updated);
+> +        qemu_mutex_destroy(&s->mutex);
+>      }
+>  fail:
+>      qemu_opts_del(opts);
+> @@ -269,6 +301,8 @@ static void blk_log_writes_close(BlockDriverState *bs)
+>      bdrv_unref_child(bs, s->log_file);
+>      s->log_file = NULL;
+>      bdrv_graph_wrunlock();
+> +    qemu_cond_destroy(&s->super_updated);
+> +    qemu_mutex_destroy(&s->mutex);
+>  }
+>  
+>  static int64_t coroutine_fn GRAPH_RDLOCK
+> @@ -295,7 +329,7 @@ static void blk_log_writes_child_perm(BlockDriverState *bs, BdrvChild *c,
+>  
+>  static void blk_log_writes_refresh_limits(BlockDriverState *bs, Error **errp)
+>  {
+> -    BDRVBlkLogWritesState *s = bs->opaque;
+> +    const BDRVBlkLogWritesState *s = bs->opaque;
+>      bs->bl.request_alignment = s->sectorsize;
+>  }
+>  
+> @@ -338,15 +372,18 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
+>       * driver may be modified by other driver operations while waiting for the
+>       * I/O to complete.
+>       */
+> +    qemu_mutex_lock(&s->mutex);
+>      const uint64_t entry_start_sector = s->cur_log_sector;
+>      const uint64_t entry_offset = entry_start_sector << s->sectorbits;
+>      const uint64_t qiov_aligned_size = ROUND_UP(lr->qiov->size, s->sectorsize);
+>      const uint64_t entry_aligned_size = qiov_aligned_size +
+>          ROUND_UP(lr->zero_size, s->sectorsize);
+>      const uint64_t entry_nr_sectors = entry_aligned_size >> s->sectorbits;
+> +    const uint64_t entry_seq = s->nr_entries + 1;
+>  
+> -    s->nr_entries++;
+> +    s->nr_entries = entry_seq;
+>      s->cur_log_sector += entry_nr_sectors;
+> +    qemu_mutex_unlock(&s->mutex);
+>  
+>      /*
+>       * Write the log entry. Note that if this is a "write zeroes" operation,
+> @@ -366,17 +403,34 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
+>  
+>      /* Update super block on flush or every update interval */
+>      if (lr->log_ret == 0 && ((lr->entry.flags & LOG_FLUSH_FLAG)
+> -        || (s->nr_entries % s->update_interval == 0)))
+> +        || (entry_seq % s->update_interval == 0)))
+>      {
+>          struct log_write_super super = {
+>              .magic      = cpu_to_le64(WRITE_LOG_MAGIC),
+>              .version    = cpu_to_le64(WRITE_LOG_VERSION),
+> -            .nr_entries = cpu_to_le64(s->nr_entries),
+> +            .nr_entries = const_le64(0),
+>              .sectorsize = cpu_to_le32(s->sectorsize),
+>          };
+> -        void *zeroes = g_malloc0(s->sectorsize - sizeof(super));
+> +        void *zeroes;
+>          QEMUIOVector qiov;
+>  
+> +        /*
+> +         * Wait if a super block update is already in progress.
+> +         * Bail out if a newer update got its turn before us.
+> +         */
+> +        WITH_QEMU_LOCK_GUARD(&s->mutex) {
+> +            while (s->super_update_seq) {
+> +                if (entry_seq < s->super_update_seq) {
+> +                    return;
+> +                }
+> +                qemu_cond_wait(&s->super_updated, &s->mutex);
 
-Fixes: ef1535901a ("s390x: do a subsystem reset before the unprotect on reboot")
-Fixes: 03451953c7 ("s390x/pci: reset ISM passthrough devices on shutdown and system reset")
-Reported-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
----
- hw/s390x/s390-pci-bus.c         | 26 +++++++++++++++++---------
- hw/s390x/s390-virtio-ccw.c      |  8 ++++++++
- include/hw/s390x/s390-pci-bus.h |  1 +
- 3 files changed, 26 insertions(+), 9 deletions(-)
+This will block, which is exactly what you want if another thread is
+writing the super block.
 
-diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-index 347580ebac..3e57d5faca 100644
---- a/hw/s390x/s390-pci-bus.c
-+++ b/hw/s390x/s390-pci-bus.c
-@@ -151,20 +151,12 @@ static void s390_pci_shutdown_notifier(Notifier *n, void *opaque)
-     pci_device_reset(pbdev->pdev);
- }
- 
--static void s390_pci_reset_cb(void *opaque)
--{
--    S390PCIBusDevice *pbdev = opaque;
--
--    pci_device_reset(pbdev->pdev);
--}
--
- static void s390_pci_perform_unplug(S390PCIBusDevice *pbdev)
- {
-     HotplugHandler *hotplug_ctrl;
- 
-     if (pbdev->pft == ZPCI_PFT_ISM) {
-         notifier_remove(&pbdev->shutdown_notifier);
--        qemu_unregister_reset(s390_pci_reset_cb, pbdev);
-     }
- 
-     /* Unplug the PCI device */
-@@ -1132,7 +1124,6 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
-             if (pbdev->pft == ZPCI_PFT_ISM) {
-                 pbdev->shutdown_notifier.notify = s390_pci_shutdown_notifier;
-                 qemu_register_shutdown_notifier(&pbdev->shutdown_notifier);
--                qemu_register_reset(s390_pci_reset_cb, pbdev);
-             }
-         } else {
-             pbdev->fh |= FH_SHM_EMUL;
-@@ -1279,6 +1270,23 @@ static void s390_pci_enumerate_bridge(PCIBus *bus, PCIDevice *pdev,
-     pci_default_write_config(pdev, PCI_SUBORDINATE_BUS, s->bus_no, 1);
- }
- 
-+void s390_pci_ism_reset(void)
-+{
-+    S390pciState *s = s390_get_phb();
-+
-+    S390PCIBusDevice *pbdev, *next;
-+
-+    /* Trigger reset event for each passthrough ISM device currently in-use */
-+    QTAILQ_FOREACH_SAFE(pbdev, &s->zpci_devs, link, next) {
-+        if (pbdev->interp && pbdev->pft == ZPCI_PFT_ISM &&
-+            pbdev->fh & FH_MASK_ENABLE) {
-+            s390_pci_kvm_aif_disable(pbdev);
-+
-+            pci_device_reset(pbdev->pdev);
-+        }
-+    }
-+}
-+
- static void s390_pcihost_reset(DeviceState *dev)
- {
-     S390pciState *s = S390_PCI_HOST_BRIDGE(dev);
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index eaf61d3640..c99682b07d 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -118,6 +118,14 @@ static void subsystem_reset(void)
-     DeviceState *dev;
-     int i;
- 
-+    /*
-+     * ISM firmware is sensitive to unexpected changes to the IOMMU, which can
-+     * occur during reset of the vfio-pci device (unmap of entire aperture).
-+     * Ensure any passthrough ISM devices are reset now, while CPUs are paused
-+     * but before vfio-pci cleanup occurs.
-+     */
-+    s390_pci_ism_reset();
-+
-     for (i = 0; i < ARRAY_SIZE(reset_dev_types); i++) {
-         dev = DEVICE(object_resolve_path_type("", reset_dev_types[i], NULL));
-         if (dev) {
-diff --git a/include/hw/s390x/s390-pci-bus.h b/include/hw/s390x/s390-pci-bus.h
-index 435e788867..2c43ea123f 100644
---- a/include/hw/s390x/s390-pci-bus.h
-+++ b/include/hw/s390x/s390-pci-bus.h
-@@ -401,5 +401,6 @@ S390PCIBusDevice *s390_pci_find_dev_by_target(S390pciState *s,
-                                               const char *target);
- S390PCIBusDevice *s390_pci_find_next_avail_dev(S390pciState *s,
-                                                S390PCIBusDevice *pbdev);
-+void s390_pci_ism_reset(void);
- 
- #endif
--- 
-2.43.0
+However, in a single-threaded case where it's just the previous request
+coroutine that is still writing its super block (i.e. bdrv_co_pwritev()
+below has yielded), this will deadlock because we'll never switch back
+and actually complete the previous super block write.
+
+So unless I'm missing a reason why this won't happen, I think you need a
+coroutine aware mechanism here. The obvious options would be using a
+CoMutex in the first place and holding it across the I/O operation or
+keeping the cheaper QemuMutex and replacing the condition variable with
+a CoQueue.
+
+> +            }
+> +            s->super_update_seq = entry_seq;
+> +            super.nr_entries = cpu_to_le64(s->nr_entries);
+> +        }
+> +
+> +        zeroes = g_malloc0(s->sectorsize - sizeof(super));
+> +
+>          qemu_iovec_init(&qiov, 2);
+>          qemu_iovec_add(&qiov, &super, sizeof(super));
+>          qemu_iovec_add(&qiov, zeroes, s->sectorsize - sizeof(super));
+
+Kevin
 
 
