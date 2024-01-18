@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997C0831998
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:53:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BCB831981
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:52:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQRrd-0003u7-Vw; Thu, 18 Jan 2024 07:51:22 -0500
+	id 1rQRrg-0003up-2q; Thu, 18 Jan 2024 07:51:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQRra-0003pZ-Lu; Thu, 18 Jan 2024 07:51:18 -0500
+ id 1rQRrc-0003tZ-NX; Thu, 18 Jan 2024 07:51:20 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQRrY-0000Zt-W7; Thu, 18 Jan 2024 07:51:18 -0500
+ id 1rQRrb-0000eh-4O; Thu, 18 Jan 2024 07:51:20 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8ECAE452CE;
+ by isrv.corpit.ru (Postfix) with ESMTP id A40BF452CF;
  Thu, 18 Jan 2024 15:51:27 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4F959668C2;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6403A668C3;
  Thu, 18 Jan 2024 15:50:57 +0300 (MSK)
-Received: (nullmailer pid 2502752 invoked by uid 1000);
+Received: (nullmailer pid 2502755 invoked by uid 1000);
  Thu, 18 Jan 2024 12:50:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Samuel Tardieu <sam@rfc1149.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Ido Plat <Ido.Plat@ibm.com>, David Hildenbrand <david@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.5 09/11] tests/qtest/virtio-ccw: Fix device presence
- checking
-Date: Thu, 18 Jan 2024 15:50:47 +0300
-Message-Id: <20240118125056.2502687-9-mjt@tls.msk.ru>
+Subject: [Stable-8.1.5 10/11] target/s390x: Fix LAE setting a wrong access
+ register
+Date: Thu, 18 Jan 2024 15:50:48 +0300
+Message-Id: <20240118125056.2502687-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.5-20240118154659@cover.tls.msk.ru>
 References: <qemu-stable-8.1.5-20240118154659@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,33 +61,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Samuel Tardieu <sam@rfc1149.net>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-An apparent copy-paste error tests for the presence of the
-virtio-rng-ccw device in order to perform tests on the virtio-scsi-ccw
-device.
+LAE should set the access register corresponding to the first operand,
+instead, it always modifies access register 1.
 
-Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
-Message-ID: <20240106130121.1244993-1-sam@rfc1149.net>
-Fixes: 65331bf5d1 ("tests/qtest: Check for virtio-ccw devices before  using them")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Co-developed-by: Ido Plat <Ido.Plat@ibm.com>
+Cc: qemu-stable@nongnu.org
+Fixes: a1c7610a6879 ("target-s390x: implement LAY and LAEY instructions")
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-ID: <20240111092328.929421-2-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit c98873ee4a0c2694aac976ab9affcf55da8b7e61)
+(cherry picked from commit e358a25a97c71c39e3513d9b869cdb82052e50b8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: target/s390x/tcg/translate.c: fixup for
+ v8.1.0-1189-gad75a51e84 "tcg: Rename cpu_env to tcg_env")
 
-diff --git a/tests/qtest/virtio-ccw-test.c b/tests/qtest/virtio-ccw-test.c
-index f4f5858b84..7a5357c212 100644
---- a/tests/qtest/virtio-ccw-test.c
-+++ b/tests/qtest/virtio-ccw-test.c
-@@ -85,7 +85,7 @@ int main(int argc, char **argv)
-     if (qtest_has_device("virtio-rng-ccw")) {
-         qtest_add_func("/virtio/rng/nop", virtio_rng_nop);
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index d927e01c0c..b009789281 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -3221,6 +3221,7 @@ static DisasJumpType op_mov2e(DisasContext *s, DisasOps *o)
+ {
+     int b2 = get_field(s, b2);
+     TCGv ar1 = tcg_temp_new_i64();
++    int r1 = get_field(s, r1);
+ 
+     o->out = o->in2;
+     o->in2 = NULL;
+@@ -3244,7 +3245,7 @@ static DisasJumpType op_mov2e(DisasContext *s, DisasOps *o)
+         break;
      }
--    if (qtest_has_device("virtio-rng-ccw")) {
-+    if (qtest_has_device("virtio-scsi-ccw")) {
-         qtest_add_func("/virtio/scsi/nop", virtio_scsi_nop);
-         qtest_add_func("/virtio/scsi/hotplug", virtio_scsi_hotplug);
-     }
+ 
+-    tcg_gen_st32_i64(ar1, cpu_env, offsetof(CPUS390XState, aregs[1]));
++    tcg_gen_st32_i64(ar1, cpu_env, offsetof(CPUS390XState, aregs[r1]));
+     return DISAS_NEXT;
+ }
+ 
 -- 
 2.39.2
 
