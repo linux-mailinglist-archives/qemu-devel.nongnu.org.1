@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64272831F89
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 20:20:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5BA3831FD8
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 20:45:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQXuf-0002lI-3v; Thu, 18 Jan 2024 14:18:53 -0500
+	id 1rQYJQ-0005BL-EG; Thu, 18 Jan 2024 14:44:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQXuc-0002kY-4v
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 14:18:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
+ id 1rQYJM-0005Ai-AF
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 14:44:24 -0500
+Received: from mgamail.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQXua-0006Z2-5w
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 14:18:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705605525;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=P0Xqmbst6oAXMoI/Xf5JcY391gphSyFh1bxi8ElP2QY=;
- b=hdGrbFVqgKpFDEFCj+88+DS7TsYu6IWPMfZacAHbbzSsuZcFI4FS7M7ikFDhXUg3fN0Ba0
- QzyvKDF7KW5BEJMMW++/xAvErEzNHiudbU/9hIQ/fUqV7WPyWsdkemlR4omx7aaT7u40Y+
- SWfaMaTO76ryL0MFXnfCRTHAXoYAY08=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-656-3ZlrwpmgMJKiHHlXyTrpZg-1; Thu, 18 Jan 2024 14:18:42 -0500
-X-MC-Unique: 3ZlrwpmgMJKiHHlXyTrpZg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3B311185A786;
- Thu, 18 Jan 2024 19:18:42 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.209])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 60DECC15587;
- Thu, 18 Jan 2024 19:18:41 +0000 (UTC)
-Date: Thu, 18 Jan 2024 20:18:40 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Ari Sundholm <ari@tuxera.com>
-Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: Re: [PATCH v2] block/blklogwrites: Protect mutable driver state with
- a mutex.
-Message-ID: <Zal5kCm23APYc68D@redhat.com>
-References: <f1960d8d-352e-4e1b-4d28-7a110e272356@tuxera.com>
- <20240111163238.1346482-1-ari@tuxera.com>
+ (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
+ id 1rQYJJ-0006ts-OC
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 14:44:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705607061; x=1737143061;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=2UPpxnTEyYA2/VUwlWfzLPKZxXkBAJPp0CRd+0fb7AQ=;
+ b=PyI9Ju4HntQgufE0YjNt2wVqD2r5QBtWzo2zClrEBwf5IL9XaEMy37No
+ F9KH3MfXhVnjEqrxr9pOrXPzfcX6SMdOji52UPnj7aqWoerRaMq3ylKX+
+ voEV8zUq93RjTn8jq4ReNy8X9cjrjA5aK2uMXHlBEOIJkbceOocLI+jSp
+ qucz5+QKqCSVr0dpSn8Br4CrXQHNJ8ghsRzY3Ud+H9HhzjI+z4d3x8at+
+ ZosVT8dwrgxxq6Mt24/J08X00Mp8mSU6sQPqpOea1LXXe2y0yculFmNz0
+ RlWnLtSJqab3cFDQ0wHybybZ59sOUzmmct7ei8/nCnZ4jzH2D3dF7Rmg9 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="399427644"
+X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; d="scan'208";a="399427644"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jan 2024 11:44:17 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="903924572"
+X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; d="scan'208";a="903924572"
+Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
+ by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jan 2024 11:44:16 -0800
+From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+To: qemu-devel@nongnu.org
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Laszlo Ersek <lersek@redhat.com>, Dongwon Kim <dongwon.kim@intel.com>,
+ Yanghang Liu <yanghliu@redhat.com>
+Subject: [PATCH v2] target/i386/host-cpu: Use iommu phys_bits with VFIO
+ assigned devices on Intel h/w
+Date: Thu, 18 Jan 2024 11:20:49 -0800
+Message-Id: <20240118192049.1796763-1-vivek.kasireddy@intel.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240111163238.1346482-1-ari@tuxera.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.55.52.120;
+ envelope-from=vivek.kasireddy@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,198 +82,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 11.01.2024 um 17:32 hat Ari Sundholm geschrieben:
-> During the review of a fix for a concurrency issue in blklogwrites,
-> it was found that the driver needs an additional fix when enabling
-> multiqueue, which is a new feature introduced in QEMU 9.0, as the
-> driver state may be read and written by multiple threads at the same
-> time, which was not the case when the driver was originally written.
-> 
-> Fix the multi-threaded scenario by introducing a mutex to protect the
-> mutable fields in the driver state, and always having the mutex locked
-> by the current thread when accessing them. Also use the mutex and a
-> condition variable to ensure that the super block is not being written
-> to by multiple threads concurrently.
-> 
-> Additionally, add the const qualifier to a few BDRVBlkLogWritesState
-> pointer targets in contexts where the driver state is not written to.
-> 
-> Signed-off-by: Ari Sundholm <ari@tuxera.com>
-> 
-> v1->v2: Ensure that the super block is not written to concurrently.
-> ---
->  block/blklogwrites.c | 77 +++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 69 insertions(+), 8 deletions(-)
-> 
-> diff --git a/block/blklogwrites.c b/block/blklogwrites.c
-> index ba717dab4d..f8bec7c863 100644
-> --- a/block/blklogwrites.c
-> +++ b/block/blklogwrites.c
-> @@ -3,7 +3,7 @@
->   *
->   * Copyright (c) 2017 Tuomas Tynkkynen <tuomas@tuxera.com>
->   * Copyright (c) 2018 Aapo Vienamo <aapo@tuxera.com>
-> - * Copyright (c) 2018 Ari Sundholm <ari@tuxera.com>
-> + * Copyright (c) 2018-2024 Ari Sundholm <ari@tuxera.com>
->   *
->   * This work is licensed under the terms of the GNU GPL, version 2 or later.
->   * See the COPYING file in the top-level directory.
-> @@ -55,9 +55,34 @@ typedef struct {
->      BdrvChild *log_file;
->      uint32_t sectorsize;
->      uint32_t sectorbits;
-> +    uint64_t update_interval;
-> +
-> +    /*
-> +     * The mutable state of the driver, consisting of the current log sector
-> +     * and the number of log entries.
-> +     *
-> +     * May be read and/or written from multiple threads, and the mutex must be
-> +     * held when accessing these fields.
-> +     */
->      uint64_t cur_log_sector;
->      uint64_t nr_entries;
-> -    uint64_t update_interval;
-> +    QemuMutex mutex;
-> +
-> +    /*
-> +     * The super block sequence number. Non-zero if a super block update is in
-> +     * progress.
-> +     *
-> +     * The mutex must be held when accessing this field.
-> +     */
-> +    uint64_t super_update_seq;
-> +
-> +    /*
-> +     * A condition variable to wait for and signal finished superblock updates.
-> +     *
-> +     * Used with the mutex to ensure that only one thread be updating the super
-> +     * block at a time.
-> +     */
-> +    QemuCond super_updated;
->  } BDRVBlkLogWritesState;
->  
->  static QemuOptsList runtime_opts = {
-> @@ -169,6 +194,9 @@ static int blk_log_writes_open(BlockDriverState *bs, QDict *options, int flags,
->          goto fail;
->      }
->  
-> +    qemu_mutex_init(&s->mutex);
-> +    qemu_cond_init(&s->super_updated);
-> +
->      log_append = qemu_opt_get_bool(opts, "log-append", false);
->  
->      if (log_append) {
-> @@ -231,6 +259,8 @@ static int blk_log_writes_open(BlockDriverState *bs, QDict *options, int flags,
->          s->nr_entries = 0;
->      }
->  
-> +    s->super_update_seq = 0;
-> +
->      if (!blk_log_writes_sector_size_valid(log_sector_size)) {
->          ret = -EINVAL;
->          error_setg(errp, "Invalid log sector size %"PRIu64, log_sector_size);
-> @@ -255,6 +285,8 @@ fail_log:
->          bdrv_unref_child(bs, s->log_file);
->          bdrv_graph_wrunlock();
->          s->log_file = NULL;
-> +        qemu_cond_destroy(&s->super_updated);
-> +        qemu_mutex_destroy(&s->mutex);
->      }
->  fail:
->      qemu_opts_del(opts);
-> @@ -269,6 +301,8 @@ static void blk_log_writes_close(BlockDriverState *bs)
->      bdrv_unref_child(bs, s->log_file);
->      s->log_file = NULL;
->      bdrv_graph_wrunlock();
-> +    qemu_cond_destroy(&s->super_updated);
-> +    qemu_mutex_destroy(&s->mutex);
->  }
->  
->  static int64_t coroutine_fn GRAPH_RDLOCK
-> @@ -295,7 +329,7 @@ static void blk_log_writes_child_perm(BlockDriverState *bs, BdrvChild *c,
->  
->  static void blk_log_writes_refresh_limits(BlockDriverState *bs, Error **errp)
->  {
-> -    BDRVBlkLogWritesState *s = bs->opaque;
-> +    const BDRVBlkLogWritesState *s = bs->opaque;
->      bs->bl.request_alignment = s->sectorsize;
->  }
->  
-> @@ -338,15 +372,18 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
->       * driver may be modified by other driver operations while waiting for the
->       * I/O to complete.
->       */
-> +    qemu_mutex_lock(&s->mutex);
->      const uint64_t entry_start_sector = s->cur_log_sector;
->      const uint64_t entry_offset = entry_start_sector << s->sectorbits;
->      const uint64_t qiov_aligned_size = ROUND_UP(lr->qiov->size, s->sectorsize);
->      const uint64_t entry_aligned_size = qiov_aligned_size +
->          ROUND_UP(lr->zero_size, s->sectorsize);
->      const uint64_t entry_nr_sectors = entry_aligned_size >> s->sectorbits;
-> +    const uint64_t entry_seq = s->nr_entries + 1;
->  
-> -    s->nr_entries++;
-> +    s->nr_entries = entry_seq;
->      s->cur_log_sector += entry_nr_sectors;
-> +    qemu_mutex_unlock(&s->mutex);
->  
->      /*
->       * Write the log entry. Note that if this is a "write zeroes" operation,
-> @@ -366,17 +403,34 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
->  
->      /* Update super block on flush or every update interval */
->      if (lr->log_ret == 0 && ((lr->entry.flags & LOG_FLUSH_FLAG)
-> -        || (s->nr_entries % s->update_interval == 0)))
-> +        || (entry_seq % s->update_interval == 0)))
->      {
->          struct log_write_super super = {
->              .magic      = cpu_to_le64(WRITE_LOG_MAGIC),
->              .version    = cpu_to_le64(WRITE_LOG_VERSION),
-> -            .nr_entries = cpu_to_le64(s->nr_entries),
-> +            .nr_entries = const_le64(0),
->              .sectorsize = cpu_to_le32(s->sectorsize),
->          };
-> -        void *zeroes = g_malloc0(s->sectorsize - sizeof(super));
-> +        void *zeroes;
->          QEMUIOVector qiov;
->  
-> +        /*
-> +         * Wait if a super block update is already in progress.
-> +         * Bail out if a newer update got its turn before us.
-> +         */
-> +        WITH_QEMU_LOCK_GUARD(&s->mutex) {
-> +            while (s->super_update_seq) {
-> +                if (entry_seq < s->super_update_seq) {
-> +                    return;
-> +                }
-> +                qemu_cond_wait(&s->super_updated, &s->mutex);
+Recent updates in OVMF and Seabios have resulted in MMIO regions
+being placed at the upper end of the physical address space. As a
+result, when a Host device is assigned to the Guest via VFIO, the
+following mapping failures occur when VFIO tries to map the MMIO
+regions of the device:
+VFIO_MAP_DMA failed: Invalid argument
+vfio_dma_map(0x557b2f2736d0, 0x380000000000, 0x1000000, 0x7f98ac400000) = -22 (Invalid argument)
 
-This will block, which is exactly what you want if another thread is
-writing the super block.
+The above failures are mainly seen on some Intel platforms where
+the physical address width is larger than the Host's IOMMU
+address width. In these cases, VFIO fails to map the MMIO regions
+because the IOVAs would be larger than the IOMMU aperture regions.
 
-However, in a single-threaded case where it's just the previous request
-coroutine that is still writing its super block (i.e. bdrv_co_pwritev()
-below has yielded), this will deadlock because we'll never switch back
-and actually complete the previous super block write.
+Therefore, one way to solve this problem would be to ensure that
+cpu->phys_bits = <IOMMU phys_bits>
+This can be done by parsing the IOMMU caps value from sysfs and
+extracting the address width and using it to override the
+phys_bits value as shown in this patch.
 
-So unless I'm missing a reason why this won't happen, I think you need a
-coroutine aware mechanism here. The obvious options would be using a
-CoMutex in the first place and holding it across the I/O operation or
-keeping the cheaper QemuMutex and replacing the condition variable with
-a CoQueue.
+Previous attempt at solving this issue in OVMF:
+https://edk2.groups.io/g/devel/topic/102359124
 
-> +            }
-> +            s->super_update_seq = entry_seq;
-> +            super.nr_entries = cpu_to_le64(s->nr_entries);
-> +        }
-> +
-> +        zeroes = g_malloc0(s->sectorsize - sizeof(super));
-> +
->          qemu_iovec_init(&qiov, 2);
->          qemu_iovec_add(&qiov, &super, sizeof(super));
->          qemu_iovec_add(&qiov, zeroes, s->sectorsize - sizeof(super));
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Alex Williamson <alex.williamson@redhat.com>
+Cc: Cédric Le Goater <clg@redhat.com>
+Cc: Laszlo Ersek <lersek@redhat.com>
+Cc: Dongwon Kim <dongwon.kim@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Tested-by: Yanghang Liu <yanghliu@redhat.com>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 
-Kevin
+---
+v2:
+- Replace the term passthrough with assigned (Laszlo)
+- Update the commit message to note that both OVMF and Seabios
+  guests are affected (Cédric)
+- Update the subject to indicate what is done in the patch
+---
+ target/i386/host-cpu.c | 61 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 60 insertions(+), 1 deletion(-)
+
+diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
+index 92ecb7254b..5c9fcd7dc2 100644
+--- a/target/i386/host-cpu.c
++++ b/target/i386/host-cpu.c
+@@ -12,6 +12,8 @@
+ #include "host-cpu.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
++#include "qemu/config-file.h"
++#include "qemu/option.h"
+ #include "sysemu/sysemu.h"
+ 
+ /* Note: Only safe for use on x86(-64) hosts */
+@@ -51,11 +53,58 @@ static void host_cpu_enable_cpu_pm(X86CPU *cpu)
+     env->features[FEAT_1_ECX] |= CPUID_EXT_MONITOR;
+ }
+ 
++static int intel_iommu_check(void *opaque, QemuOpts *opts, Error **errp)
++{
++    g_autofree char *dev_path = NULL, *iommu_path = NULL, *caps = NULL;
++    const char *driver = qemu_opt_get(opts, "driver");
++    const char *device = qemu_opt_get(opts, "host");
++    uint32_t *iommu_phys_bits = opaque;
++    struct stat st;
++    uint64_t iommu_caps;
++
++    /*
++     * Check if the user requested VFIO device assignment. We don't have
++     * to limit phys_bits if there are no valid assigned devices.
++     */
++    if (g_strcmp0(driver, "vfio-pci") || !device) {
++        return 0;
++    }
++
++    dev_path = g_strdup_printf("/sys/bus/pci/devices/%s", device);
++    if (stat(dev_path, &st) < 0) {
++        return 0;
++    }
++
++    iommu_path = g_strdup_printf("%s/iommu/intel-iommu/cap", dev_path);
++    if (stat(iommu_path, &st) < 0) {
++        return 0;
++    }
++
++    if (g_file_get_contents(iommu_path, &caps, NULL, NULL)) {
++        if (sscanf(caps, "%lx", &iommu_caps) != 1) {
++            return 0;
++        }
++        *iommu_phys_bits = ((iommu_caps >> 16) & 0x3f) + 1;
++    }
++
++    return 0;
++}
++
++static uint32_t host_iommu_phys_bits(void)
++{
++    uint32_t iommu_phys_bits = 0;
++
++    qemu_opts_foreach(qemu_find_opts("device"),
++                      intel_iommu_check, &iommu_phys_bits, NULL);
++    return iommu_phys_bits;
++}
++
+ static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
+ {
+     uint32_t host_phys_bits = host_cpu_phys_bits();
++    uint32_t iommu_phys_bits = host_iommu_phys_bits();
+     uint32_t phys_bits = cpu->phys_bits;
+-    static bool warned;
++    static bool warned, warned2;
+ 
+     /*
+      * Print a warning if the user set it to a value that's not the
+@@ -78,6 +127,16 @@ static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
+         }
+     }
+ 
++    if (iommu_phys_bits && phys_bits > iommu_phys_bits) {
++        phys_bits = iommu_phys_bits;
++        if (!warned2) {
++            warn_report("Using physical bits (%u)"
++                        " to prevent VFIO mapping failures",
++                        iommu_phys_bits);
++            warned2 = true;
++        }
++    }
++
+     return phys_bits;
+ }
+ 
+-- 
+2.39.2
 
 
