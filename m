@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE2D8311C2
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 04:25:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F7A8311BC
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 04:24:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQJ0y-0003X1-L5; Wed, 17 Jan 2024 22:24:24 -0500
+	id 1rQJ10-0003XX-6h; Wed, 17 Jan 2024 22:24:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rQJ0v-0003Wf-O3
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 22:24:21 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1rQJ0y-0003X9-2M
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 22:24:24 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rQJ0t-0002Pa-Le
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 22:24:21 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40e8cc3b738so10673805e9.2
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 19:24:18 -0800 (PST)
+ id 1rQJ0v-0002WT-UY
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 22:24:23 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40e80046264so38494705e9.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 19:24:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705548257; x=1706153057; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705548259; x=1706153059; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BaxeeJgy+H1D/rDFzs4Zm7F3dDyijmRAjRzFwAHqBpY=;
- b=Qetw8A431ZNfIpQ0Ci8E0lamr6BTIge8EyKDMDr25OIYsDnyamqJ/HXfTItZl3NV1Y
- VhJVeNRBBa8iKPze3U9nPex4lQDyvuKk5FqgFL2PmimCnt/lo+jf0YX+rVO1py9BMdhW
- R7yj65tJrkHC+fFpVWVLwyUyQSNPMOGb5j4IjVS2v2rjlMPsplgnvVPj0shzeowFltJV
- I5Y22R8bQ+iE40yBYgz1dVHNQcbSR6a7duaH3U8T2QuGTWWJ3HuxIYR7ZVEDJNQi1NP4
- gj13eodoGMnup/2WkCtda0Z+bdZew/7jqW+xVkcbd0fmhdNJ6EE4voduKTlgkJmXMplT
- T8Ow==
+ bh=Z1Wm3BuytIxY9I50Ihr9Vi6BnC2ipwOgCPrtejpdauQ=;
+ b=O5ySr9os8TLR/qM4/TA+ces7YWDh+QJJ3N1meCTKQducr4CwgVI2IRyKoxK0qyv4pA
+ JpXccWnT0bekvVMJQH4KoQjpXi+13tG3dhCHNBuzHfmyAGeyQICy7Ss1EQvVm1dDvHE8
+ fMJkCUnuVdNtSGwKI/I+C45lD3jUGgHerQaRLmFWGMsJM/q5hNybMLlnATRTP7NVPsxi
+ xCbu0dtblIRgWccbP6/I+zH2XiJM3Gi8I/sjYSI1yGshbYRMwaYnpH2ZvcO2PJwesr7o
+ HPyiZVZFjdYRGdyC6yHDSMa82i4ndgYo8qn9UBdMse+jnhX0BTd0K9wmTTbSyNHN+cH1
+ nE2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705548257; x=1706153057;
+ d=1e100.net; s=20230601; t=1705548259; x=1706153059;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BaxeeJgy+H1D/rDFzs4Zm7F3dDyijmRAjRzFwAHqBpY=;
- b=f/eUAm44kP1gWzaSjykAhkkT7kCAuT35SQ1+XS2Z9kZ97jnYH4S8zUgBSc5kBAzi4k
- /0y9os0bofCKc5tnqttFbq8psxrhgqK4xEcfbYVLcPN9EAHzp1KHogHLqXFne4klB5nx
- E3l4XaUHjUU8sIYBr5Lgx2XglBvm63/g1uVW1NrZazZWJ3Tync/z8kwL6LzUjo8PUyVt
- eKJ3kWSm/wj0qpVpQdL0EIOpIkbmEcNl6+y1JY8nTCBrkbKxT2A1n05oVAfPeS6nbtX6
- NkQKiOa12Y0ZFuLXM4z6QndUhlfg4ZrTizZQQCh/KRhBtFrbDd6RpEOiUFW/c4KMRrbz
- LSxA==
-X-Gm-Message-State: AOJu0YywFoSy+2s0Rskhbi5YpBtqKcVkzcqP/AkUUYCVvOQhFBpj/3S7
- c5yCkTDY76FpfXGecYGgxOjaXzKvXMPcjO01hecKFBu7d1Y5K/0jFOyPR3d8w7Mq3XRQFhqtkra
- WNSY=
-X-Google-Smtp-Source: AGHT+IFmZNOgnsjfnQT2eSEuqy28Xa1OQCK5jhRj17Vpb37lYdS7pCBA+D0c0PE9EE37oNxmgogHYg==
-X-Received: by 2002:a7b:cc13:0:b0:40e:6948:3226 with SMTP id
- f19-20020a7bcc13000000b0040e69483226mr82431wmh.134.1705548257055; 
- Wed, 17 Jan 2024 19:24:17 -0800 (PST)
+ bh=Z1Wm3BuytIxY9I50Ihr9Vi6BnC2ipwOgCPrtejpdauQ=;
+ b=cdqlkTlsegh+u4WdOxfQhQQX2QTyDGJntsdjUw4luiz28sxd1XC2n7F4fiorWwBtK2
+ +/sP7O7ySk/hEbG+SS/fITAMX7UWDYG9pN3LjzR1C0guEhlP+4tiFbNaafEqRhMgZyk2
+ XGOTP6Xv4zIPnKI9b0Er7dI5OhxmFMYHB44zyJ/5XVMC7ocutZEqj9LN35+15IQqNeQ+
+ yc60s7yMcIrLJfvI3pAaCmpMigfXufCKwXV2c/CwhqQfWz4Xxdm9b2Bb+/Sdgr/x1KBx
+ qvHVkszkbrWQ0DpSHh+nCSt2D5o37GMB4sl5LUnyzMSbsVc3sjHuWDco9NvZ3twc6r+u
+ TAkw==
+X-Gm-Message-State: AOJu0Ywom3LMvPOI2egvGYZoP0jxO9k9avklHLTFzePgz4fJE33TYBDR
+ 8aMAXBRkvdasEJEJMD9kU1quoGenegUK0HplNmGP2mNYqj6aZJJ/uul77ZYOdJKoiqeDc4dwgYx
+ 4VkA=
+X-Google-Smtp-Source: AGHT+IE+MXoQIAc6RqJjwcJXwy+fu2U38ishVeuiM66Xy3VHgYOjWKXXrZ45/FN0Ppjh5g6BiFijEQ==
+X-Received: by 2002:a05:6000:1086:b0:337:2940:ab7b with SMTP id
+ y6-20020a056000108600b003372940ab7bmr98965wrw.1.1705548259665; 
+ Wed, 17 Jan 2024 19:24:19 -0800 (PST)
 Received: from linaro.. ([102.35.208.160]) by smtp.gmail.com with ESMTPSA id
- i2-20020adff302000000b0033788e357e1sm2894292wro.108.2024.01.17.19.24.14
+ i2-20020adff302000000b0033788e357e1sm2894292wro.108.2024.01.17.19.24.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jan 2024 19:24:16 -0800 (PST)
+ Wed, 17 Jan 2024 19:24:19 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
@@ -64,17 +64,16 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>
-Subject: [PATCH v2 01/14] plugins: implement inline operation relative to
- cpu_index
-Date: Thu, 18 Jan 2024 07:23:46 +0400
-Message-ID: <20240118032400.3762658-2-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 02/14] plugins: scoreboard API
+Date: Thu, 18 Jan 2024 07:23:47 +0400
+Message-ID: <20240118032400.3762658-3-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118032400.3762658-1-pierrick.bouvier@linaro.org>
 References: <20240118032400.3762658-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,259 +96,371 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of working on a fixed memory location, allow to address it based
-on cpu_index, an element size and a given offset.
-Result address: ptr + offset + cpu_index * element_size.
+We introduce a cpu local storage, automatically managed (and extended)
+by QEMU itself. Plugin allocate a scoreboard, and don't have to deal
+with how many cpus are launched.
 
-With this, we can target a member in a struct array from a base pointer.
+This API will be used by new inline functions but callbacks can benefit
+from this as well. This way, they can operate without a global lock for
+simple operations.
 
-Current semantic is not modified, thus inline operation still targets
-always the same memory location.
+New functions:
+- qemu_plugin_scoreboard_free
+- qemu_plugin_scoreboard_get
+- qemu_plugin_scoreboard_new
+- qemu_plugin_scoreboard_size
+
+In more, we define a qemu_plugin_u64_t, which is a simple struct holding
+a pointer to a scoreboard, and a given offset.
+This allows to have a scoreboard containing structs, without having to
+bring offset for all operations on a specific field.
+
+Since most of the plugins are simply collecting a sum of per-cpu values,
+qemu_plugin_u64_t directly support this operation as well.
+
+New functions:
+- qemu_plugin_u64_get
+- qemu_plugin_u64_sum
+New macros:
+- qemu_plugin_u64
+- qemu_plugin_u64_struct
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- accel/tcg/plugin-gen.c | 67 +++++++++++++++++++++++++++++++++++-------
- include/qemu/plugin.h  |  3 ++
- plugins/api.c          |  7 +++--
- plugins/core.c         | 18 +++++++++---
- plugins/plugin.h       |  6 ++--
- 5 files changed, 81 insertions(+), 20 deletions(-)
+ include/qemu/plugin.h        |  7 +++
+ include/qemu/qemu-plugin.h   | 75 ++++++++++++++++++++++++++++
+ plugins/api.c                | 39 +++++++++++++++
+ plugins/core.c               | 97 ++++++++++++++++++++++++++++++++++++
+ plugins/plugin.h             |  8 +++
+ plugins/qemu-plugins.symbols |  6 +++
+ 6 files changed, 232 insertions(+)
 
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index b37ce7683e6..1a2375d7779 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -132,16 +132,28 @@ static void gen_empty_udata_cb_no_rwg(void)
-  */
- static void gen_empty_inline_cb(void)
- {
-+    TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
-+    TCGv_ptr cpu_index_as_ptr = tcg_temp_ebb_new_ptr();
-     TCGv_i64 val = tcg_temp_ebb_new_i64();
-     TCGv_ptr ptr = tcg_temp_ebb_new_ptr();
- 
-+    tcg_gen_ld_i32(cpu_index, tcg_env,
-+                   -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
-+    /* pass an immediate != 0 so that it doesn't get optimized away */
-+    tcg_gen_muli_i32(cpu_index, cpu_index, 0xdeadbeef);
-+    tcg_gen_ext_i32_ptr(cpu_index_as_ptr, cpu_index);
-+
-     tcg_gen_movi_ptr(ptr, 0);
-+    tcg_gen_add_ptr(ptr, ptr, cpu_index_as_ptr);
-     tcg_gen_ld_i64(val, ptr, 0);
-     /* pass an immediate != 0 so that it doesn't get optimized away */
-     tcg_gen_addi_i64(val, val, 0xdeadface);
-+
-     tcg_gen_st_i64(val, ptr, 0);
-     tcg_temp_free_ptr(ptr);
-     tcg_temp_free_i64(val);
-+    tcg_temp_free_ptr(cpu_index_as_ptr);
-+    tcg_temp_free_i32(cpu_index);
- }
- 
- static void gen_empty_mem_cb(TCGv_i64 addr, uint32_t info)
-@@ -289,12 +301,37 @@ static TCGOp *copy_const_ptr(TCGOp **begin_op, TCGOp *op, void *ptr)
-     return op;
- }
- 
-+static TCGOp *copy_ld_i32(TCGOp **begin_op, TCGOp *op)
-+{
-+    return copy_op(begin_op, op, INDEX_op_ld_i32);
-+}
-+
-+static TCGOp *copy_ext_i32_ptr(TCGOp **begin_op, TCGOp *op)
-+{
-+    if (UINTPTR_MAX == UINT32_MAX) {
-+        op = copy_op(begin_op, op, INDEX_op_mov_i32);
-+    } else {
-+        op = copy_op(begin_op, op, INDEX_op_ext_i32_i64);
-+    }
-+    return op;
-+}
-+
-+static TCGOp *copy_add_ptr(TCGOp **begin_op, TCGOp *op)
-+{
-+    if (UINTPTR_MAX == UINT32_MAX) {
-+        op = copy_op(begin_op, op, INDEX_op_add_i32);
-+    } else {
-+        op = copy_op(begin_op, op, INDEX_op_add_i64);
-+    }
-+    return op;
-+}
-+
- static TCGOp *copy_ld_i64(TCGOp **begin_op, TCGOp *op)
- {
-     if (TCG_TARGET_REG_BITS == 32) {
-         /* 2x ld_i32 */
--        op = copy_op(begin_op, op, INDEX_op_ld_i32);
--        op = copy_op(begin_op, op, INDEX_op_ld_i32);
-+        op = copy_ld_i32(begin_op, op);
-+        op = copy_ld_i32(begin_op, op);
-     } else {
-         /* ld_i64 */
-         op = copy_op(begin_op, op, INDEX_op_ld_i64);
-@@ -330,6 +367,13 @@ static TCGOp *copy_add_i64(TCGOp **begin_op, TCGOp *op, uint64_t v)
-     return op;
- }
- 
-+static TCGOp *copy_mul_i32(TCGOp **begin_op, TCGOp *op, uint32_t v)
-+{
-+    op = copy_op(begin_op, op, INDEX_op_mul_i32);
-+    op->args[2] = tcgv_i32_arg(tcg_constant_i32(v));
-+    return op;
-+}
-+
- static TCGOp *copy_st_ptr(TCGOp **begin_op, TCGOp *op)
- {
-     if (UINTPTR_MAX == UINT32_MAX) {
-@@ -395,18 +439,19 @@ static TCGOp *append_inline_cb(const struct qemu_plugin_dyn_cb *cb,
-                                TCGOp *begin_op, TCGOp *op,
-                                int *unused)
- {
--    /* const_ptr */
--    op = copy_const_ptr(&begin_op, op, cb->userp);
--
--    /* ld_i64 */
-+    char *ptr = cb->userp;
-+    if (!cb->inline_direct_ptr) {
-+        /* dereference userp once to get access to memory location */
-+        ptr = *(char **)cb->userp;
-+    }
-+    op = copy_ld_i32(&begin_op, op);
-+    op = copy_mul_i32(&begin_op, op, cb->inline_element_size);
-+    op = copy_ext_i32_ptr(&begin_op, op);
-+    op = copy_const_ptr(&begin_op, op, ptr + cb->inline_offset);
-+    op = copy_add_ptr(&begin_op, op);
-     op = copy_ld_i64(&begin_op, op);
--
--    /* add_i64 */
-     op = copy_add_i64(&begin_op, op, cb->inline_insn.imm);
--
--    /* st_i64 */
-     op = copy_st_i64(&begin_op, op);
--
-     return op;
- }
- 
 diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index b0c5ac68293..9346249145d 100644
+index 9346249145d..5f340192e56 100644
 --- a/include/qemu/plugin.h
 +++ b/include/qemu/plugin.h
-@@ -86,6 +86,9 @@ enum plugin_dyn_cb_subtype {
- struct qemu_plugin_dyn_cb {
-     union qemu_plugin_cb_sig f;
-     void *userp;
-+    size_t inline_offset;
-+    size_t inline_element_size;
-+    bool inline_direct_ptr;
-     enum plugin_dyn_cb_subtype type;
-     /* @rw applies to mem callbacks only (both regular and inline) */
-     enum qemu_plugin_mem_rw rw;
+@@ -115,6 +115,13 @@ struct qemu_plugin_insn {
+     bool mem_only;
+ };
+ 
++/* A scoreboard is an array of values, indexed by vcpu_index */
++struct qemu_plugin_scoreboard {
++    GArray *data;
++    size_t size;
++    size_t element_size;
++};
++
+ /*
+  * qemu_plugin_insn allocate and cleanup functions. We don't expect to
+  * cleanup many of these structures. They are reused for each fresh
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 2c1930e7e45..934059d64c2 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -220,6 +220,23 @@ void qemu_plugin_register_vcpu_resume_cb(qemu_plugin_id_t id,
+ struct qemu_plugin_tb;
+ /** struct qemu_plugin_insn - Opaque handle for a translated instruction */
+ struct qemu_plugin_insn;
++/**
++ * struct qemu_plugin_scoreboard - Opaque handle for a scoreboard
++ *
++ * A scoreboard is an array of data, indexed by vcpu_index.
++ **/
++struct qemu_plugin_scoreboard;
++
++/**
++ * qemu_plugin_u64_t - uint64_t member of an entry in a scoreboard
++ *
++ * This field allows to access a specific uint64_t member in one given entry,
++ * located at a specified offset. Inline operations expect this as entry.
++ */
++typedef struct qemu_plugin_u64 {
++    struct qemu_plugin_scoreboard *score;
++    size_t offset;
++} qemu_plugin_u64_t;
+ 
+ /**
+  * enum qemu_plugin_cb_flags - type of callback
+@@ -754,5 +771,63 @@ int qemu_plugin_read_register(unsigned int vcpu,
+                               struct qemu_plugin_register *handle,
+                               GByteArray *buf);
+ 
++/**
++ * qemu_plugin_scoreboard_new() - alloc a new scoreboard
++ *
++ * Returns a pointer to a new scoreboard. It must be freed using
++ * qemu_plugin_scoreboard_free.
++ */
++QEMU_PLUGIN_API
++struct qemu_plugin_scoreboard *qemu_plugin_scoreboard_new(size_t element_size);
++
++/**
++ * qemu_plugin_scoreboard_free() - free a scoreboard
++ * @score: scoreboard to free
++ */
++QEMU_PLUGIN_API
++void qemu_plugin_scoreboard_free(struct qemu_plugin_scoreboard *score);
++
++/**
++ * qemu_plugin_scoreboard_size() - return size of a scoreboard
++ * @score: scoreboard to query
++ */
++QEMU_PLUGIN_API
++size_t qemu_plugin_scoreboard_size(struct qemu_plugin_scoreboard *score);
++
++/**
++ * qemu_plugin_scoreboard_get() - access value from a scoreboard
++ * @score: scoreboard to query
++ * @vcpu_index: entry index
++ *
++ * Returns address of entry of a scoreboard matching a given vcpu_index. This
++ * address can be modified later if scoreboard is resized.
++ */
++QEMU_PLUGIN_API
++void *qemu_plugin_scoreboard_get(struct qemu_plugin_scoreboard *score,
++                                 unsigned int vcpu_index);
++
++/* Macros to define a qemu_plugin_u64_t */
++#define qemu_plugin_u64(score) \
++    (qemu_plugin_u64_t){score, 0}
++#define qemu_plugin_u64_struct(score, type, member) \
++    (qemu_plugin_u64_t){score, offsetof(type, member)}
++
++/**
++ * qemu_plugin_u64_get() - access specific uint64_t in a scoreboard
++ * @entry: entry to query
++ * @vcpu_index: entry index
++ *
++ * Returns address of a specific member in a scoreboard entry, matching a given
++ * vcpu_index.
++ */
++QEMU_PLUGIN_API
++uint64_t *qemu_plugin_u64_get(qemu_plugin_u64_t entry, unsigned int vcpu_index);
++
++/**
++ * qemu_plugin_u64_sum() - return sum of all values in a scoreboard
++ * @entry: entry to sum
++ */
++QEMU_PLUGIN_API
++uint64_t qemu_plugin_u64_sum(qemu_plugin_u64_t entry);
+ 
+ #endif /* QEMU_QEMU_PLUGIN_H */
 diff --git a/plugins/api.c b/plugins/api.c
-index 8d5cca53295..e777eb4e9fc 100644
+index e777eb4e9fc..4de94e798c6 100644
 --- a/plugins/api.c
 +++ b/plugins/api.c
-@@ -106,7 +106,8 @@ void qemu_plugin_register_vcpu_tb_exec_inline(struct qemu_plugin_tb *tb,
-                                               void *ptr, uint64_t imm)
- {
-     if (!tb->mem_only) {
--        plugin_register_inline_op(&tb->cbs[PLUGIN_CB_INLINE], 0, op, ptr, imm);
-+        plugin_register_inline_op(&tb->cbs[PLUGIN_CB_INLINE],
-+                                  0, op, ptr, 0, sizeof(uint64_t), true, imm);
-     }
- }
+@@ -547,3 +547,42 @@ static void __attribute__((__constructor__)) qemu_api_init(void)
+     qemu_mutex_init(&reg_handle_lock);
  
-@@ -131,7 +132,7 @@ void qemu_plugin_register_vcpu_insn_exec_inline(struct qemu_plugin_insn *insn,
- {
-     if (!insn->mem_only) {
-         plugin_register_inline_op(&insn->cbs[PLUGIN_CB_INSN][PLUGIN_CB_INLINE],
--                                  0, op, ptr, imm);
-+                                  0, op, ptr, 0, sizeof(uint64_t), true, imm);
-     }
  }
- 
-@@ -156,7 +157,7 @@ void qemu_plugin_register_vcpu_mem_inline(struct qemu_plugin_insn *insn,
-                                           uint64_t imm)
- {
-     plugin_register_inline_op(&insn->cbs[PLUGIN_CB_MEM][PLUGIN_CB_INLINE],
--                              rw, op, ptr, imm);
-+                              rw, op, ptr, 0, sizeof(uint64_t), true, imm);
- }
- 
- void qemu_plugin_register_vcpu_tb_trans_cb(qemu_plugin_id_t id,
++
++struct qemu_plugin_scoreboard *qemu_plugin_scoreboard_new(size_t element_size)
++{
++    return plugin_scoreboard_new(element_size);
++}
++
++void qemu_plugin_scoreboard_free(struct qemu_plugin_scoreboard *score)
++{
++    plugin_scoreboard_free(score);
++}
++
++size_t qemu_plugin_scoreboard_size(struct qemu_plugin_scoreboard *score)
++{
++    return score->size;
++}
++
++void *qemu_plugin_scoreboard_get(struct qemu_plugin_scoreboard *score,
++                                 unsigned int vcpu_index)
++{
++    g_assert(vcpu_index < qemu_plugin_scoreboard_size(score));
++    char *ptr = score->data->data;
++    return ptr + vcpu_index * score->element_size;
++}
++
++uint64_t *qemu_plugin_u64_get(qemu_plugin_u64_t entry,
++                                         unsigned int vcpu_index)
++{
++    char *ptr = (char *) qemu_plugin_scoreboard_get(entry.score, vcpu_index);
++    return (uint64_t *)(ptr + entry.offset);
++}
++
++uint64_t qemu_plugin_u64_sum(qemu_plugin_u64_t entry)
++{
++    uint64_t total = 0;
++    for (int i = 0; i < qemu_plugin_scoreboard_size(entry.score); ++i) {
++        total += *qemu_plugin_u64_get(entry, i);
++    }
++    return total;
++}
 diff --git a/plugins/core.c b/plugins/core.c
-index 49588285dd0..e07b9cdf229 100644
+index e07b9cdf229..0286a127810 100644
 --- a/plugins/core.c
 +++ b/plugins/core.c
-@@ -280,13 +280,18 @@ static struct qemu_plugin_dyn_cb *plugin_get_dyn_cb(GArray **arr)
- 
- void plugin_register_inline_op(GArray **arr,
-                                enum qemu_plugin_mem_rw rw,
--                               enum qemu_plugin_op op, void *ptr,
-+                               enum qemu_plugin_op op,
-+                               void *ptr, size_t offset, size_t element_size,
-+                               bool direct_ptr,
-                                uint64_t imm)
- {
-     struct qemu_plugin_dyn_cb *dyn_cb;
- 
-     dyn_cb = plugin_get_dyn_cb(arr);
-     dyn_cb->userp = ptr;
-+    dyn_cb->inline_element_size = element_size;
-+    dyn_cb->inline_offset = offset;
-+    dyn_cb->inline_direct_ptr = direct_ptr;
-     dyn_cb->type = PLUGIN_CB_INLINE;
-     dyn_cb->rw = rw;
-     dyn_cb->inline_insn.op = op;
-@@ -431,9 +436,14 @@ void qemu_plugin_flush_cb(void)
-     plugin_cb__simple(QEMU_PLUGIN_EV_FLUSH);
+@@ -209,6 +209,71 @@ plugin_register_cb_udata(qemu_plugin_id_t id, enum qemu_plugin_event ev,
+     do_plugin_register_cb(id, ev, func, udata);
  }
  
--void exec_inline_op(struct qemu_plugin_dyn_cb *cb)
-+void exec_inline_op(struct qemu_plugin_dyn_cb *cb, int cpu_index)
- {
--    uint64_t *val = cb->userp;
-+    char *ptr = cb->userp;
-+    if (!cb->inline_direct_ptr) {
-+        ptr = *(char **) cb->userp;
++struct resize_scoreboard_args {
++    size_t new_alloc_size;
++    size_t new_size;
++};
++
++static void plugin_resize_one_scoreboard(gpointer key,
++                                         gpointer value,
++                                         gpointer user_data)
++{
++    struct qemu_plugin_scoreboard *score =
++        (struct qemu_plugin_scoreboard *) value;
++    struct resize_scoreboard_args *args =
++        (struct resize_scoreboard_args *) user_data;
++    if (score->data->len != args->new_alloc_size) {
++        g_array_set_size(score->data, args->new_alloc_size);
 +    }
-+    ptr += cb->inline_offset;
-+    uint64_t *val = (uint64_t *)(ptr + cpu_index * cb->inline_element_size);
++    score->size = args->new_size;
++}
++
++static void plugin_grow_scoreboards__locked(CPUState *cpu)
++{
++    if (cpu->cpu_index < plugin.scoreboard_size) {
++        return;
++    }
++
++    bool need_realloc = FALSE;
++    while (cpu->cpu_index >= plugin.scoreboard_alloc_size) {
++        plugin.scoreboard_alloc_size *= 2;
++        need_realloc = TRUE;
++    }
++    plugin.scoreboard_size = cpu->cpu_index + 1;
++    g_assert(plugin.scoreboard_size <= plugin.scoreboard_alloc_size);
++
++    if (g_hash_table_size(plugin.scoreboards) == 0) {
++        /* nothing to do, we just updated sizes for future scoreboards */
++        return;
++    }
++
++    if (need_realloc) {
++#ifdef CONFIG_USER_ONLY
++        /**
++         * cpus must be stopped, as some tb might still use an existing
++         * scoreboard.
++         */
++        start_exclusive();
++#endif
++    }
++
++    struct resize_scoreboard_args args = {
++        .new_alloc_size = plugin.scoreboard_alloc_size,
++        .new_size = plugin.scoreboard_size
++    };
++    g_hash_table_foreach(plugin.scoreboards,
++                         &plugin_resize_one_scoreboard,
++                         &args);
++
++    if (need_realloc) {
++        /* force all tb to be flushed, as scoreboard pointers were changed. */
++        tb_flush(cpu);
++#ifdef CONFIG_USER_ONLY
++        end_exclusive();
++#endif
++    }
++}
++
+ void qemu_plugin_vcpu_init_hook(CPUState *cpu)
+ {
+     bool success;
+@@ -218,6 +283,7 @@ void qemu_plugin_vcpu_init_hook(CPUState *cpu)
+     success = g_hash_table_insert(plugin.cpu_ht, &cpu->cpu_index,
+                                   &cpu->cpu_index);
+     g_assert(success);
++    plugin_grow_scoreboards__locked(cpu);
+     qemu_rec_mutex_unlock(&plugin.lock);
  
-     switch (cb->inline_insn.op) {
-     case QEMU_PLUGIN_INLINE_ADD_U64:
-@@ -466,7 +476,7 @@ void qemu_plugin_vcpu_mem_cb(CPUState *cpu, uint64_t vaddr,
-                            vaddr, cb->userp);
-             break;
-         case PLUGIN_CB_INLINE:
--            exec_inline_op(cb);
-+            exec_inline_op(cb, cpu->cpu_index);
-             break;
-         default:
-             g_assert_not_reached();
+     plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_INIT);
+@@ -576,8 +642,39 @@ static void __attribute__((__constructor__)) plugin_init(void)
+     qemu_rec_mutex_init(&plugin.lock);
+     plugin.id_ht = g_hash_table_new(g_int64_hash, g_int64_equal);
+     plugin.cpu_ht = g_hash_table_new(g_int_hash, g_int_equal);
++    plugin.scoreboards = g_hash_table_new(g_int64_hash, g_int64_equal);
++    plugin.scoreboard_size = 1;
++    plugin.scoreboard_alloc_size = 16; /* avoid frequent reallocation */
+     QTAILQ_INIT(&plugin.ctxs);
+     qht_init(&plugin.dyn_cb_arr_ht, plugin_dyn_cb_arr_cmp, 16,
+              QHT_MODE_AUTO_RESIZE);
+     atexit(qemu_plugin_atexit_cb);
+ }
++
++struct qemu_plugin_scoreboard *plugin_scoreboard_new(size_t element_size)
++{
++    struct qemu_plugin_scoreboard *score =
++        g_malloc0(sizeof(struct qemu_plugin_scoreboard));
++    score->data = g_array_new(FALSE, TRUE, element_size);
++    g_array_set_size(score->data, plugin.scoreboard_alloc_size);
++    score->size = plugin.scoreboard_size;
++    score->element_size = element_size;
++
++    qemu_rec_mutex_lock(&plugin.lock);
++    bool inserted = g_hash_table_insert(plugin.scoreboards, score, score);
++    g_assert(inserted);
++    qemu_rec_mutex_unlock(&plugin.lock);
++
++    return score;
++}
++
++void plugin_scoreboard_free(struct qemu_plugin_scoreboard *score)
++{
++    qemu_rec_mutex_lock(&plugin.lock);
++    bool removed = g_hash_table_remove(plugin.scoreboards, score);
++    g_assert(removed);
++    qemu_rec_mutex_unlock(&plugin.lock);
++
++    g_array_free(score->data, TRUE);
++    g_free(score);
++}
 diff --git a/plugins/plugin.h b/plugins/plugin.h
-index 5eb2fdbc85e..2c278379b70 100644
+index 2c278379b70..99829c40886 100644
 --- a/plugins/plugin.h
 +++ b/plugins/plugin.h
-@@ -66,7 +66,9 @@ struct qemu_plugin_ctx *plugin_id_to_ctx_locked(qemu_plugin_id_t id);
+@@ -31,6 +31,10 @@ struct qemu_plugin_state {
+      * but with the HT we avoid adding a field to CPUState.
+      */
+     GHashTable *cpu_ht;
++    /* Scoreboards, indexed by their addresses. */
++    GHashTable *scoreboards;
++    size_t scoreboard_size;
++    size_t scoreboard_alloc_size;
+     DECLARE_BITMAP(mask, QEMU_PLUGIN_EV_MAX);
+     /*
+      * @lock protects the struct as well as ctx->uninstalling.
+@@ -99,4 +103,8 @@ void plugin_register_vcpu_mem_cb(GArray **arr,
  
- void plugin_register_inline_op(GArray **arr,
-                                enum qemu_plugin_mem_rw rw,
--                               enum qemu_plugin_op op, void *ptr,
-+                               enum qemu_plugin_op op,
-+                               void *ptr, size_t offset, size_t element_size,
-+                               bool direct_ptr,
-                                uint64_t imm);
+ void exec_inline_op(struct qemu_plugin_dyn_cb *cb, int cpu_index);
  
- void plugin_reset_uninstall(qemu_plugin_id_t id,
-@@ -95,6 +97,6 @@ void plugin_register_vcpu_mem_cb(GArray **arr,
-                                  enum qemu_plugin_mem_rw rw,
-                                  void *udata);
- 
--void exec_inline_op(struct qemu_plugin_dyn_cb *cb);
-+void exec_inline_op(struct qemu_plugin_dyn_cb *cb, int cpu_index);
- 
++struct qemu_plugin_scoreboard *plugin_scoreboard_new(size_t element_size);
++
++void plugin_scoreboard_free(struct qemu_plugin_scoreboard *score);
++
  #endif /* PLUGIN_H */
+diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
+index 6963585c1ea..93866d1b5f2 100644
+--- a/plugins/qemu-plugins.symbols
++++ b/plugins/qemu-plugins.symbols
+@@ -38,10 +38,16 @@
+   qemu_plugin_register_vcpu_tb_exec_inline;
+   qemu_plugin_register_vcpu_tb_trans_cb;
+   qemu_plugin_reset;
++  qemu_plugin_scoreboard_free;
++  qemu_plugin_scoreboard_get;
++  qemu_plugin_scoreboard_new;
++  qemu_plugin_scoreboard_size;
+   qemu_plugin_start_code;
+   qemu_plugin_tb_get_insn;
+   qemu_plugin_tb_n_insns;
+   qemu_plugin_tb_vaddr;
++  qemu_plugin_u64_get;
++  qemu_plugin_u64_sum;
+   qemu_plugin_uninstall;
+   qemu_plugin_vcpu_for_each;
+ };
 -- 
 2.43.0
 
