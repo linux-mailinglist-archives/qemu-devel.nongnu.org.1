@@ -2,83 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 137EE8312E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 07:59:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4E88312EE
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:03:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQMMD-0000rK-2N; Thu, 18 Jan 2024 01:58:33 -0500
+	id 1rQMPu-0001no-1H; Thu, 18 Jan 2024 02:02:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQMMB-0000qv-Ew
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 01:58:31 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rQMPm-0001nQ-Mx
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 02:02:16 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQMM9-0000He-WA
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 01:58:31 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rQMPk-0003ql-VX
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 02:02:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705561109;
+ s=mimecast20190719; t=1705561331;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Lk3TKFXT/grUyqMjs+CSzJrcAbaFYi0WBRE6fxtrzzw=;
- b=URapGZoa1oJW3PIsuQ17PwN7DeGG2Loh5QcBb6mv6mek2l3BIufQFCovMRPogeH3O6Nl6H
- 9BMOw4lcyju2Acxg6g3waclbU9ZzzNl+oH5H+pzYrkgN7pm2TwT+/KDH6y+Fch5HeqTlbh
- vu5i2iUlgkyLWZJXoIjbwWr0Tab09sA=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6Wb5Sq5jf9m6NlV54D8BmTxluDPtuCfJgZG7E597LyI=;
+ b=hxZTk9vlZJs1Yl7+TzgfzC7D3VlEKUjiz5OQNwVl2DNwoQFlM84moFzsEg/G2sl/WVxHs8
+ PG4sLwUSZpDiAY+IYgGPmO2yBMkbbTrcdUbeAebsKsG6IZpfXpU57CLoM2zrQhvqrdXCLq
+ 0KyV799pz7zTCtc0jg9jwXcYeZx2nsc=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-mEvVifTdMSaHlrnWPj8eag-1; Thu, 18 Jan 2024 01:58:22 -0500
-X-MC-Unique: mEvVifTdMSaHlrnWPj8eag-1
-Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-5ce9b15f4ccso1463432a12.0
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 22:58:22 -0800 (PST)
+ us-mta-660-BnsT41CSP9yZ2StywFgNWQ-1; Thu, 18 Jan 2024 02:02:10 -0500
+X-MC-Unique: BnsT41CSP9yZ2StywFgNWQ-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-427b56e96a6so179536211cf.3
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 23:02:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705561101; x=1706165901;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Lk3TKFXT/grUyqMjs+CSzJrcAbaFYi0WBRE6fxtrzzw=;
- b=s2xfyOy7sXUGkNrCZZr4EKAParslUhR0nGUQ8Tt1Ua9BtyawUjSgyDHXIGxnw2gau6
- TmnJnG7VIoH4COnSXAVh9YAS9z3XKGV3Ym+DCDlKjhJI8q8C6a5lLB17eYLWVU8m37XC
- 8VaF4QCGdUvXbGtuaGQMr2oW1WVZbzueugQqffCxaizmDL4bmdGX2ybtT7yVpy8arleA
- rOetiY6DsxLl3QD8tZxD8wPMvDRbuDUtviXczs6xjjUnOKK9rnLJl44CSBfl+EC8Q52v
- xu87AATldcUawy7MF7mE1Jbr9XT881U36eBm2Waf/0eJ0r3ezVj5IvwJC3dRi/usTND0
- mLQQ==
-X-Gm-Message-State: AOJu0YyV+Th1Vbq7vmYxl3oveiGvksk9we3OYiNEueg+1moEBTmZ87A1
- rcZjXc5bEgZAUIdVuWPJuD0mr3JEiqaIpOn9m91dvjOFFOm1nxHnUk//iY4dIzwc8t9sYDg73jC
- ZYG8rVD9FOR9ClLJBj9aTeYEgKAaAGfHV3EX6Y3z5EP4mnRCSXmFvUYAu6tO6
-X-Received: by 2002:a05:6a21:588:b0:19a:bffa:f28b with SMTP id
- lw8-20020a056a21058800b0019abffaf28bmr724351pzb.2.1705561101044; 
- Wed, 17 Jan 2024 22:58:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFO234nGFgrxM/ny9SD6Pn834i1CBW0lE4aVRkULmi8//lUqWLyYTbKXah5coOZ0mWdTeji0Q==
-X-Received: by 2002:a05:6a21:588:b0:19a:bffa:f28b with SMTP id
- lw8-20020a056a21058800b0019abffaf28bmr724343pzb.2.1705561100753; 
- Wed, 17 Jan 2024 22:58:20 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- ks6-20020a170903084600b001d6fbaaeb56sm691448plb.145.2024.01.17.22.58.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jan 2024 22:58:20 -0800 (PST)
-Date: Thu, 18 Jan 2024 14:58:15 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, farosas@suse.de, het.gala@nutanix.com
-Subject: Re: [PATCH] migration: Plug memory leak on HMP migrate error path
-Message-ID: <ZajMB-qhshiAsEXV@x1n>
-References: <20240117140722.3979657-1-armbru@redhat.com>
+ d=1e100.net; s=20230601; t=1705561330; x=1706166130;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6Wb5Sq5jf9m6NlV54D8BmTxluDPtuCfJgZG7E597LyI=;
+ b=GYVt2fmxt+qzpXJFDWra9N41SOucR3G0gtIUT9KdtR5v8KomzsHabtARJV7M1M/IJF
+ 9fBGauUCdCopLDgBhJyAG+2o8g4Ya9Xb04veJi22h+s0AwUdWLs/24uURbDROxiFqZKC
+ dkXUuHsR13sjhhLA+cQ3z2TTGop6eryofOoUXIPFWb0MJ+uCEPHu/PBP3MObyGgWCEpg
+ R4Q8s+G2w7Gm3xmVXwpuVkvQ8+MqtMLcbT50y54yA30+DRQlhmGX7LJYcltTUHX1DQQv
+ bxj/QX6jITzq0lmhsYlGkL5TKiA1Igp97Ghq4HtyAhYxL/lH+bQzs6fYvSF+Gc9hc7mh
+ 0mhA==
+X-Gm-Message-State: AOJu0Yz/uDANtwb9Z5KvSU7+09rlL80S4yzM4B2jeCDzu0Fm1GxTp4NN
+ bhpMns684sm5YgwCwBAmGDn+xco+fr2O07BFGqDLHldJmzMehtu1g5Zf2djbbrsIe2Oz8mbtvb8
+ Npl5hTvWzk3vmDr0Yd8Y0gLK3K9h9wj+DZyIyqKz8dQbg/ILJuMdK
+X-Received: by 2002:a05:622a:1481:b0:429:f8c3:d84 with SMTP id
+ t1-20020a05622a148100b00429f8c30d84mr474593qtx.48.1705561329952; 
+ Wed, 17 Jan 2024 23:02:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFIO95srFX4FsIMvqvOWwf+9UE9CaR52jS0WSyoMxtTVDODPnWx1QZHdV0r5GVroZxATqwyqA==
+X-Received: by 2002:a05:622a:1481:b0:429:f8c3:d84 with SMTP id
+ t1-20020a05622a148100b00429f8c30d84mr474579qtx.48.1705561329711; 
+ Wed, 17 Jan 2024 23:02:09 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ po27-20020a05620a385b00b007836720b96asm2136225qkn.24.2024.01.17.23.02.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Jan 2024 23:02:09 -0800 (PST)
+Message-ID: <9a5eb63a-a4f0-4238-a889-ab111d981313@redhat.com>
+Date: Thu, 18 Jan 2024 08:02:06 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240117140722.3979657-1-armbru@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] s390x/pci: drive ISM reset from subsystem reset
+Content-Language: en-US
+To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: farman@linux.ibm.com, thuth@redhat.com, frankja@linux.ibm.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>
+References: <20240116223157.73752-1-mjrosato@linux.ibm.com>
+ <20240116223157.73752-4-mjrosato@linux.ibm.com>
+ <66735e9f-a4fb-474f-abec-6c83d36f921e@redhat.com>
+ <0131acaf-6daf-46b3-9368-e491766e2825@linux.ibm.com>
+ <04379048-1ff0-482b-8fc7-74cc13bb5a21@linux.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <04379048-1ff0-482b-8fc7-74cc13bb5a21@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,17 +107,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 17, 2024 at 03:07:22PM +0100, Markus Armbruster wrote:
-> hmp_migrate() leaks @caps when qmp_migrate() fails.  Plug the leak
-> with g_autoptr().
+On 1/17/24 22:11, Matthew Rosato wrote:
+> On 1/17/24 10:19 AM, Matthew Rosato wrote:
+>> On 1/17/24 6:01 AM, Cédric Le Goater wrote:
+>>> Adding Alex,
+>>>
+>>> On 1/16/24 23:31, Matthew Rosato wrote:
+>>>> ISM devices are sensitive to manipulation of the IOMMU, so the ISM device
+>>>> needs to be reset before the vfio-pci device is reset (triggering a full
+>>>> UNMAP).  In order to ensure this occurs, trigger ISM device resets from
+>>>> subsystem_reset before triggering the PCI bus reset (which will also
+>>>> trigger vfio-pci reset).  This only needs to be done for ISM devices
+>>>> which were enabled for use by the guest.
+>>>> Further, ensure that AIF is disabled as part of the reset event.
+>>>>
+>>>> Fixes: ef1535901a ("s390x: do a subsystem reset before the unprotect on reboot")
+>>>> Fixes: 03451953c7 ("s390x/pci: reset ISM passthrough devices on shutdown and system reset")
+>>>> Reported-by: Cédric Le Goater <clg@redhat.com>
+>>>> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+>>>> ---
+>>>>    hw/s390x/s390-pci-bus.c         | 26 +++++++++++++++++---------
+>>>>    hw/s390x/s390-virtio-ccw.c      |  2 ++
+>>>>    include/hw/s390x/s390-pci-bus.h |  1 +
+>>>>    3 files changed, 20 insertions(+), 9 deletions(-)
+>>>>
+>>>> diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
+>>>> index 347580ebac..3e57d5faca 100644
+>>>> --- a/hw/s390x/s390-pci-bus.c
+>>>> +++ b/hw/s390x/s390-pci-bus.c
+>>>> @@ -151,20 +151,12 @@ static void s390_pci_shutdown_notifier(Notifier *n, void *opaque)
+>>>>        pci_device_reset(pbdev->pdev);
+>>>>    }
+>>>>    -static void s390_pci_reset_cb(void *opaque)
+>>>> -{
+>>>> -    S390PCIBusDevice *pbdev = opaque;
+>>>> -
+>>>> -    pci_device_reset(pbdev->pdev);
+>>>> -}
+>>>> -
+>>>>    static void s390_pci_perform_unplug(S390PCIBusDevice *pbdev)
+>>>>    {
+>>>>        HotplugHandler *hotplug_ctrl;
+>>>>          if (pbdev->pft == ZPCI_PFT_ISM) {
+>>>>            notifier_remove(&pbdev->shutdown_notifier);
+>>>> -        qemu_unregister_reset(s390_pci_reset_cb, pbdev);
+>>>>        }
+>>>>          /* Unplug the PCI device */
+>>>> @@ -1132,7 +1124,6 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+>>>>                if (pbdev->pft == ZPCI_PFT_ISM) {
+>>>>                    pbdev->shutdown_notifier.notify = s390_pci_shutdown_notifier;
+>>>>                    qemu_register_shutdown_notifier(&pbdev->shutdown_notifier);
+>>>> -                qemu_register_reset(s390_pci_reset_cb, pbdev);
+>>>>                }
+>>>>            } else {
+>>>>                pbdev->fh |= FH_SHM_EMUL;
+>>>> @@ -1279,6 +1270,23 @@ static void s390_pci_enumerate_bridge(PCIBus *bus, PCIDevice *pdev,
+>>>>        pci_default_write_config(pdev, PCI_SUBORDINATE_BUS, s->bus_no, 1);
+>>>>    }
+>>>>    +void s390_pci_ism_reset(void)
+>>>> +{
+>>>> +    S390pciState *s = s390_get_phb();
+>>>> +
+>>>> +    S390PCIBusDevice *pbdev, *next;
+>>>> +
+>>>> +    /* Trigger reset event for each passthrough ISM device currently in-use */
+>>>> +    QTAILQ_FOREACH_SAFE(pbdev, &s->zpci_devs, link, next) {
+>>>> +        if (pbdev->interp && pbdev->pft == ZPCI_PFT_ISM &&
+>>>> +            pbdev->fh & FH_MASK_ENABLE) {
+>>>> +            s390_pci_kvm_aif_disable(pbdev);
+>>>> +
+>>>> +            pci_device_reset(pbdev->pdev);
+>>>> +        }
+>>>> +    }
+>>>> +}
+>>>
+>>>
+>>> Could we instead define a VFIOPCIDevice::resetfn handler for these
+>>> ISM devices (1014:04ed) ? This would be cleaner if possible.
+>>>
+>>> If so, as a prerequisite, we would need to introduce in a little VFIO
+>>> helper to define custom reset handlers.
+>>>
+>>> Thanks,
+>>>
+>>> C.
+>>>
+>>
+>> Oh interesting, I had not noticed that.  This may well work -- resetfn is currently setup via vfio_setup_resetfn_quirk but it would probably be easier to have a helper that takes the vdev and a function pointer so that we can provide a platform-specific reset handler (rather than having hw/vfio/pci-quirks.c worry about CONFIG_S390 etc).  I'll have to play around with this.
+>>   
+>>
 > 
-> Fixes: 967f2de5c9ec (migration: Implement MigrateChannelList to hmp migration flow.) v8.2.0-rc0
-> Fixes: CID 1533124
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Hmm, it was a good idea but I don't think this will work.  I tried to hack something together today but I'm definitely seeing paths where the vfio_listener_region_del happens before the call to vfio_pci_reset (which would ultimately trigger the new custom resetfn).
 
-queued, thanks!
+OK.
+  
+> Perhaps we should stick with the call from subsystem_reset -- it will ensure that the ISM cleanup happens after guest CPUs are stopped but before vfio does its cleanup.
 
--- 
-Peter Xu
+Let's keep the subsystem_reset() method then. Please add a comment on the reset ordering.
+
+Thanks,
+
+C.
+
+
+
+> 
 
 
