@@ -2,68 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4AAA831896
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 12:43:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C65831987
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:52:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQQmu-0003ak-Sl; Thu, 18 Jan 2024 06:42:24 -0500
+	id 1rQRBW-0004GO-T6; Thu, 18 Jan 2024 07:07:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rQQmo-0003aW-F4
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 06:42:18 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rQQml-00037V-KA
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 06:42:18 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxefCSDqllHp4BAA--.8234S3;
- Thu, 18 Jan 2024 19:42:11 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bx8OSQDqllnG0IAA--.43190S3; 
- Thu, 18 Jan 2024 19:42:09 +0800 (CST)
-Subject: Re: [PATCH v4 00/17] Add boot LoongArch elf kernel with FDT
-From: gaosong <gaosong@loongson.cn>
-To: peter.maydell@linaro.org
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, philmd@linaro.org,
- maobibo@loongson.cn, zhaotianrui@loongson.cn, lixianglai@loongson.cn
-References: <20240118111900.1672536-1-gaosong@loongson.cn>
-Message-ID: <ffe7907a-8cb3-f36c-6f6c-7687a820ff47@loongson.cn>
-Date: Thu, 18 Jan 2024 19:42:09 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1rQRBM-0004AN-RO
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:07:44 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1rQRBK-0004gw-Jv
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:07:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705579655;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pdoCzx91suaJRF2wdJwkv7FmurTDxJhyYPodAAPVru4=;
+ b=aIPN0Qd6kRFZNg4ON4MYako90QyeB/5bdHHqeENoq4JALIza8qtVqYKE6qWdyiYZebE7DV
+ 0laIzdx0f2dFH+tP/2dDw2i2eLWKilRNUY+8s46MifNENF1SvkyxKaGc4K94wr0fnDlrb1
+ oP2dyKhl+vLMdxIFNsIc5oaiv42Cmf4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-690-rey8Cl2NOh2NnT4UNpoRCg-1; Thu, 18 Jan 2024 07:07:33 -0500
+X-MC-Unique: rey8Cl2NOh2NnT4UNpoRCg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-40e8d72e1b3so10678785e9.2
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 04:07:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705579652; x=1706184452;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pdoCzx91suaJRF2wdJwkv7FmurTDxJhyYPodAAPVru4=;
+ b=voDhVQ54WG/xhd0i0gsyHiYZC9kzqergWLVvxOSIltkLlEofXEhpXOysGdOJn4JeUZ
+ qY76sXAJQX/GeFxqf2p+FaG4klsriQZX+2HO7ufpISnv2m3bH2lK/rXxKdBmv1PlZC7y
+ f+bvi7BtMPgkpPN8jdzy9xRPkN5eEMaAy/HXCprsIm+VQYDqAJYADsLI4/TXdS38NnVJ
+ TkUVWTSdS8I6DrciWVMnErnDtFW4B3Xq39IWFUNrVTqfLJF/iDfN5IoP74Y4gI+kUXt8
+ B/RmWU0pghy27henDdtXuqfxCrYPbBHsOk8IdIxLUyNjV9ug1xL5gw5atPsJ6V3TEe9O
+ 1z4Q==
+X-Gm-Message-State: AOJu0YxgSwXPH7nAq4c2Dq7h8CNXVSowzVDRCBsmt+VWD/XfS5qgmHU0
+ tuWqGLTJi5IrOsTj+tXsFh2JRfLzO029SI6XOTQUyp7cUac+2j4OqkOguYka/A3GA2x+RCGl532
+ PJjUYhgLGQriCo0OC7KORPQuU4VrUhce0+U3wYt9NXpuQObHtxzAG
+X-Received: by 2002:a05:600c:293:b0:40e:7610:96e9 with SMTP id
+ 19-20020a05600c029300b0040e761096e9mr382396wmk.235.1705579652487; 
+ Thu, 18 Jan 2024 04:07:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHYTuB4WHNEXpiU8eJNIXd8JQRJQsGua/duz/vIkSOeMvD2A0m6WF+JqOvpmRHblTEyr4/VoQ==
+X-Received: by 2002:a05:600c:293:b0:40e:7610:96e9 with SMTP id
+ 19-20020a05600c029300b0040e761096e9mr382386wmk.235.1705579652108; 
+ Thu, 18 Jan 2024 04:07:32 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ q5-20020a5d5745000000b00337bdf4cfc6sm3877047wrw.52.2024.01.18.04.07.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 Jan 2024 04:07:31 -0800 (PST)
+Date: Thu, 18 Jan 2024 13:07:30 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Kai <kai.kang@windriver.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org, Paolo
+ Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, mst@redhat.com
+Subject: Re: [PATCH] qdev: not add devices to bus in reverse order
+Message-ID: <20240118130730.02ff9194@imammedo.users.ipa.redhat.com>
+In-Reply-To: <1db86e7c-9d4a-6c7d-9e6b-52054b2382cd@windriver.com>
+References: <20240109092015.4136865-1-kai.kang@windriver.com>
+ <CAFEAcA9LBXMxOzJwmXYEVj+q0hTzMQZrpZHOOKFYWZDKXFyHig@mail.gmail.com>
+ <1db86e7c-9d4a-6c7d-9e6b-52054b2382cd@windriver.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.39; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20240118111900.1672536-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8Bx8OSQDqllnG0IAA--.43190S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxury7AFW3WrW3Wr17Gw1UXFc_yoW5XF4fpF
- W7Zr13Wrs5JrZ7A3sav34aqr90vwn7Gr12v3W3Kry8CrZFvFy7Z3WxAr9rXFyUt3yIgryq
- vr1Fkw1jgF4UJwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
- 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
- AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
- rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
- CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
- 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
- 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzZ2-
- UUUUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -36
-X-Spam_score: -3.7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
 X-Spam_bar: ---
-X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.748,
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,87 +104,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, 18 Jan 2024 14:48:50 +0800
+Kai <kai.kang@windriver.com> wrote:
 
-Please ignore this,  I will  resend it.
+> On 1/18/24 01:31, Peter Maydell wrote:
+> > (cc'd the people listed for this file in MAINTAINERS)
+> >
+> > On Tue, 9 Jan 2024 at 13:53, Kai Kang <kai.kang@windriver.com> wrote: =
+=20
+> >> When this section of source codes were added via commit:
+> >>
+> >> * 02e2da45c4 Add common BusState
+> >>
+> >> it added devices to bus with LIST_INSERT_HEAD() which operated on the
+> >> single direction list. It didn't have something like LIST_INSERT_TAIL()
+> >> at that time and kept that way when turned to QTAILQ.
+> >>
+> >> Then it causes the fist device in qemu command line inserted at the end
+> >> of the bus child link list. And when realize them, the first device wi=
+ll
+> >> be the last one to be realized.
+> >>
+> >> Replace QTAILQ_INSERT_HEAD_RCU() with QTAILQ_INSERT_TAIL_RCU() to make
+> >> sure that devices are added to bus with the sequence in the command
+> >> line. =20
+> > What are the problems being caused by the the list items being added
+> > in reverse order? Your commit message doesn't say what specific
+> > bug or problem it's trying to fix. =20
+>=20
+> The problem I met was just as I asked for for help in the maillist on=20
+> Dec 18, 2023.
+>=20
+> The indexes of serial isa devices changes with the commit dcdbfaafe90a=20
+> since qemu 6.2.0.
+> Before the commit, it creates devices literally with "1" & "2":
+>=20
+> @@ -1252,8 +1222,6 @@ static void build_isa_devices_aml(Aml *table)
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 aml_append(scope, build=
+_fdc_device_aml(fdc));
+>  =C2=A0=C2=A0=C2=A0=C2=A0 }
+>  =C2=A0=C2=A0=C2=A0=C2=A0 aml_append(scope, build_lpt_device_aml());
+> -=C2=A0=C2=A0=C2=A0 build_com_device_aml(scope, 1);
+> -=C2=A0=C2=A0=C2=A0 build_com_device_aml(scope, 2);
+>=20
+> After apply the commit, it uses the 'aml builder' way and the devices=20
+> are handled in reverse way.
+> Then the indexes are reversed. It affects guest os such as freebsd. When=
+=20
+> run `pstat -t` on freebsd
+> with qemu, the sequence of the output is not right.
+>=20
+> root@freebsd:~ # pstat -t
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 LINE=C2=A0=C2=A0 INQ=C2=A0 CAN=C2=A0 LIN=
+=C2=A0 LOW=C2=A0 OUTQ=C2=A0 USE=C2=A0 LOW=C2=A0=C2=A0 COL=C2=A0 SESS=C2=A0 =
+PGID STATE
+>  =C2=A0=C2=A0=C2=A0=C2=A0 ttyu2=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=
+=A0 0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=
+=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=
+=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0=C2=A0 0 IC
+>  =C2=A0=C2=A0=C2=A0=C2=A0 ttyu3=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=
+=A0 0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=
+=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=
+=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0=C2=A0 0 IC
+>  =C2=A0=C2=A0=C2=A0=C2=A0 ttyu1=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=
+=A0 0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=
+=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0=
+=C2=A0=C2=A0 0=C2=A0=C2=A0=C2=A0=C2=A0 0 IC
+>  =C2=A0=C2=A0=C2=A0=C2=A0 ttyu0=C2=A0 1920=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=
+=A0=C2=A0 0=C2=A0 192=C2=A0 1984=C2=A0=C2=A0=C2=A0 0=C2=A0 199=C2=A0=C2=A0=
+=C2=A0=C2=A0 0=C2=A0=C2=A0 664=C2=A0=C2=A0 668 ICOi
+>=20
+> It is expected with ascend order which keeps the same behavior with=20
+> older version qemu.
 
-在 2024/1/18 下午7:18, Song Gao 写道:
-> Hi, All
->
-> We already support boot efi kernel with bios, but not support boot elf kernel.
-> This series adds boot elf kernel with FDT.
->
-> 'LoongArch supports ACPI and FDT. The information that needs to be passed
->   to the kernel includes the memmap, the initrd, the command line, optionally
->   the ACPI/FDT tables, and so on'  see [1].
->
-> Patch 2-8 : Create efi system table, and three efi configuration table
->              boot_memmap, initd, FDT.
-> Patch 9-17 : Fixes FDT problems.
->
-> Test:
->    - Start kernel
->      See [2] start_kernel.sh
->    - Start qcow2
->      See [2] start_qcow2.sh
->
-> V4:
->    - patch 3 change slave_boot_code[] to const, and 'static void *p ' to
->      'void *p';
->    - patch 4 fixes build error;
->    - patch 10-13, add project and commit link.
->
-> V3:
->    - Load initrd at  kernel_high + 4 * kernel_size;
->    - Load 'boot_rom' at [0 - 1M], the 'boot_rom' includes
-> V3:
->    - Load initrd at  kernel_high + 4 * kernel_size;
->    - Load 'boot_rom' at [0 - 1M], the 'boot_rom' includes
->      slave_boot_code, cmdline_buf and systab_tables;
->    - R-b and rebase.
->
-> V2:
->    - FDT pcie node adds cells 'msi-map';
->
->
-> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/arch/loongarch/booting.rst?h=v6.7-rc4
->
-> [2]: https://github.com/gaosong-loongson/loongarch-binary/releases
->
-> Please review!
->
-> Thanks.
-> Song Gao
->
-> Song Gao (17):
->    hw/loongarch: Move boot fucntions to boot.c
->    hw/loongarch: Add load initrd
->    hw/loongarch: Add slave cpu boot_code
->    hw/loongarch: Add init_cmdline
->    hw/loongarch: Init efi_system_table
->    hw/loongarch: Init efi_boot_memmap table
->    hw/loongarch: Init efi_initrd table
->    hw/loongarch: Init efi_fdt table
->    hw/loongarch: Fix fdt memory node wrong 'reg'
->    hw/loongarch: fdt adds cpu interrupt controller node
->    hw/loongarch: fdt adds Extend I/O Interrupt Controller
->    hw/loongarch: fdt adds pch_pic Controller
->    hw/loongarch: fdt adds pch_msi Controller
->    hw/loongarch: fdt adds pcie irq_map node
->    hw/loongarch: fdt remove unused irqchip node
->    hw/loongarch: Add cells missing from uart node
->    hw/loongarch: Add cells missing from rtc node
->
->   include/hw/intc/loongarch_extioi.h |   1 +
->   include/hw/loongarch/boot.h        | 109 +++++++++
->   include/hw/loongarch/virt.h        |  14 ++
->   include/hw/pci-host/ls7a.h         |   2 +
->   target/loongarch/cpu.h             |   2 +
->   hw/loongarch/boot.c                | 330 ++++++++++++++++++++++++++
->   hw/loongarch/virt.c                | 364 ++++++++++++++++-------------
->   hw/loongarch/meson.build           |   1 +
->   8 files changed, 661 insertions(+), 162 deletions(-)
->   create mode 100644 include/hw/loongarch/boot.h
->   create mode 100644 hw/loongarch/boot.c
->
+this problem description should be in commit message.
+As for fixing it I'd wouldn't touch bus order as Peter already noted
+it has high chances to break behavior elsewhere.
+
+current state of COM naming:
+   1: QEMU 6.1  all machine types: COM1 { uid: 1, irq: 4}, COM2 { uid: 2, i=
+rq: 3}
+   2: QEMU 6.2+ all machine types: COM1 { uid: 2, irq: 4}, COM1 { uid: 1, i=
+rq: 3}
+all of above in default case where user doesn't supply 'index' explicitly.
+
+With 'index' provided explicitly old case #1 might break due to
+hardcoded resource values in former build_com_device_aml().
+#2 (current code) doesn't have issues with resource values
+when explicit 'index' is used (which can be a possible workaround)
+
+So we essentially have changed enumeration for 6.1 and older
+machine types in incompatible way with QEMU-6.2+ builds.
+(and that in it's turn breaks exiting VM config when it
+is started on QEMU-6.2+)
+
+Kai,
+Does above sum-up the issue you are encountering?
+
+> Regards,
+> Kai
+>=20
+> >
+> > In general this kind of patch is something I'm very cautious about,
+> > because it seems very likely that various bits of the code where
+> > order does matter will currently be expecting (and working around)
+> > the reverse-order behaviour, because that's what has been done by
+> > bus_add_child() for the last 20-plus years. (As one concrete example,
+> > see the big comment at the top of create_virtio_devices() in
+> > hw/arm/virt.c. There are probably others where we didn't comment
+> > on the ordering but just assume it.)
+> > =20
+> >> diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+> >> index 43d863b0c5..5e2ff43715 100644
+> >> --- a/hw/core/qdev.c
+> >> +++ b/hw/core/qdev.c
+> >> @@ -89,7 +89,7 @@ static void bus_add_child(BusState *bus, DeviceState=
+ *child)
+> >>       kid->child =3D child;
+> >>       object_ref(OBJECT(kid->child));
+> >>
+> >> -    QTAILQ_INSERT_HEAD_RCU(&bus->children, kid, sibling);
+> >> +    QTAILQ_INSERT_TAIL_RCU(&bus->children, kid, sibling);
+> >>
+> >>       /* This transfers ownership of kid->child to the property.  */
+> >>       snprintf(name, sizeof(name), "child[%d]", kid->index); =20
+> > thanks
+> > -- PMM =20
+>=20
+>=20
 
 
