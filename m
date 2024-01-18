@@ -2,88 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA489832099
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 21:51:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DDC8320C0
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 22:13:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQZLA-0000AF-12; Thu, 18 Jan 2024 15:50:20 -0500
+	id 1rQZgf-0007pG-5K; Thu, 18 Jan 2024 16:12:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rQZL6-00009n-T7
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:50:17 -0500
-Received: from mail-il1-x12c.google.com ([2607:f8b0:4864:20::12c])
+ id 1rQZgb-0007oN-Rc
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 16:12:29 -0500
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rQZL5-0006Gl-Cc
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:50:16 -0500
-Received: by mail-il1-x12c.google.com with SMTP id
- e9e14a558f8ab-3619e804f2aso176425ab.2
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 12:50:12 -0800 (PST)
+ id 1rQZga-00054M-5I
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 16:12:29 -0500
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-5cfaf7ef393so67573a12.3
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 13:12:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705611012; x=1706215812; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1705612346; x=1706217146; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=0f5l0fzZIywWl9cmu82n3FRn9QIX6DqHcYTn9G4/qUo=;
- b=NwHUY3bWNJ6hUz9l6p5JH7ghp5SRms7UZuBIS9+lcu/aSESEQc9gug8RtGaQiMgB6m
- rRkNzcZQtXCASifsZTtOQxonh/7vRjccTD6+OHeCSEubN928Cfzo5KrdD72dlraitUUE
- F5pi9QbSpNli19zweDSnNdoSAQwb+E8de8UPOJbB4hvbk6fHkhPC48JHMOEIi5NzxLht
- fH+ZEh5OsbXp0ynARrWE726xAzLt+NoDNJESNxMPa5W3eecutdwIkWcI4fxXd68f5LXE
- Rl/qQqiVb4Kz/ix8vdwDdjTwzEa8wSITg6EFeF8RyQSfhFSA9eY9jb21HJqUQ8ajtuDI
- 1jSA==
+ bh=xxl1R0nHC9E48b3Yhe/L2m2Hm4QPM1/RyLMfsET8jHg=;
+ b=XNkz7LUEG+OPqyX50pzo722dKbsqHbc6Rhi2zuUL/ptaWFJcOX0R7iA6XDPgKyrf+O
+ du++rlmXmn/L5yVEcHnRAOWgfvg9WMfuaTMdM6PsyrNc3VJxnaH7fpfKGYEsUeQJPUls
+ NasV+W2WOAhijfv8xbC0zBrldtn/TMYUEudRzS0644nvOpiZ5SCqrdeTU6GukmmsOqG6
+ 5xEnWfsqDPtgeBToqLRR6GFrVd8oqKlSw0ti8brwJX+Fr5mGvAZdHkV0JDfGvIQb+/sB
+ k36C7cvB40aIoJhoAJTLsICo8GwXBDE0Q/as/E0PuP3uF2wPty8GI8O+ZikkHB5DL86+
+ /BTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705611012; x=1706215812;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1705612346; x=1706217146;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0f5l0fzZIywWl9cmu82n3FRn9QIX6DqHcYTn9G4/qUo=;
- b=bA0KFkG0HOdzTa1b/IH4IcuYa5TGSSba3V0+wCQdvQ8JeAaSQazwW8U9yNHWu8KP2l
- hx8JIpiwJqMoilz57TxYmmomvgpOF22k8YzLCCUHFE0+ImRNmtbKThu0d9aycxDTyxoX
- HfiE4jdPLhIsbZy6dMx8C4hw1p6sGBuXDHyHMHsMQUISTHvHLjsYB9FiKWw9FaUa9Wc9
- n4gfPIwymK0HUiBlYywUo06d4XT24SxzU5SN1ilu7K0LnVZ6yiHUGdO6tzXY5OkTEGr/
- kH51nTznsN24vs5R5RN+jA2jZ1gWX9SsoV3SoyJCDno0KHwHAApyPkd6Fq/JitmON85i
- mwXQ==
-X-Gm-Message-State: AOJu0YzVM7ox1VNXy+Ov1cWrKRsTe1t7CQYGOow0DsV44Tle6u0Pa/GK
- YgrEd/OJiEgjbd6buu4yKvAlixtEYPFe8aWyFV7y/dOMJ7g1kleIcVqHLFnQzW0=
-X-Google-Smtp-Source: AGHT+IGHiby9diI9TREoPopm6V97A5jRa669kOhxaCnubzBKU+/06WhRBcyqYFoETgKftG+K9SNPVQ==
-X-Received: by 2002:a05:6e02:505:b0:361:933c:3afb with SMTP id
- d5-20020a056e02050500b00361933c3afbmr1644171ils.50.1705611011942; 
- Thu, 18 Jan 2024 12:50:11 -0800 (PST)
+ bh=xxl1R0nHC9E48b3Yhe/L2m2Hm4QPM1/RyLMfsET8jHg=;
+ b=HSc0jpqQf9U9frQeg8IuFgjKRmmOWeDyI7pGGOlFyDKfCsmF5e+VZxm3oao53zI23v
+ BFwmFq1jVw+uGOYQphfMfiZaGywphZhTMpUkZiDEvp0L2zcXx75vOCKJOQS74CDFQ2hU
+ /MyjJrOa9dUSN8szIw6N/NasD4GWZeCpcDGMOeYnF0lSCNV2n3kyNF7GA+QfHx/uMi5c
+ Wp/QzeXvT8/dhVyz/qYreov7t323L+3WJfAyaWNNYk1jHmgWhdKvBIcRz4F+6jynMGQz
+ VdgRcLPXZFelbJPcy59lvyAHYArPr2LWlk263OliMaGj16ODrgcLliLkWfSkP154JuT2
+ TIwQ==
+X-Gm-Message-State: AOJu0YzdQLX3KHA8rL+HIV3kIHrsTIdPgn7Dqlyo4HHpPLGck5AZGv1p
+ nudU4F9DobJ/dmJJGEBliEY8kEfPUaLuLes5dHsp/xAqvIC7G25pQqFV8pp8Ykg=
+X-Google-Smtp-Source: AGHT+IH2BRzV0x30KZOpSNu2azYx1KXjz3cQZ3dFBDsqGCZ1jyxcSSRBVznPiVGEpxRRuU41g1VOsQ==
+X-Received: by 2002:a17:90a:e014:b0:28c:bc02:6df8 with SMTP id
+ u20-20020a17090ae01400b0028cbc026df8mr1264887pjy.86.1705612346512; 
+ Thu, 18 Jan 2024 13:12:26 -0800 (PST)
 Received: from ?IPV6:2001:8004:2728:321b:4bd7:3071:22d6:a756?
  ([2001:8004:2728:321b:4bd7:3071:22d6:a756])
  by smtp.gmail.com with ESMTPSA id
- j8-20020a63e748000000b005c6e8fa9f24sm1980383pgk.49.2024.01.18.12.50.07
+ r5-20020a17090ad40500b0029004b9df9fsm2331348pju.36.2024.01.18.13.12.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 Jan 2024 12:50:11 -0800 (PST)
-Message-ID: <3cb918ca-27cd-4f1e-8738-306dc5280f42@linaro.org>
-Date: Fri, 19 Jan 2024 07:50:03 +1100
+ Thu, 18 Jan 2024 13:12:26 -0800 (PST)
+Message-ID: <6d82413f-3729-4e6e-837b-996038ebaa63@linaro.org>
+Date: Fri, 19 Jan 2024 08:12:18 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/6] target/riscv: Add helper functions to calculate
- current number of masked bits for pointer masking
-To: Deepak Gupta <debug@rivosinc.com>, Alexey Baturo <baturo.alexey@gmail.com>
-Cc: zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
- Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu,
- kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-References: <20240109102930.405323-1-me@deliversmonkey.space>
- <20240109102930.405323-4-me@deliversmonkey.space>
- <CAKC1njSLR614zQk0_DAgYN1jjdg=0eUa7N1AEwwXZVNN6BwjmA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] target/s390x: Emulate CVDG
 Content-Language: en-US
+To: Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, Ido Plat <Ido.Plat@ibm.com>
+References: <20240115202308.1930675-1-iii@linux.ibm.com>
+ <20240115202308.1930675-2-iii@linux.ibm.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAKC1njSLR614zQk0_DAgYN1jjdg=0eUa7N1AEwwXZVNN6BwjmA@mail.gmail.com>
+In-Reply-To: <20240115202308.1930675-2-iii@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12c;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12c.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,42 +96,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/19/24 04:21, Deepak Gupta wrote:
-> On Tue, Jan 9, 2024 at 2:31 AM Alexey Baturo <baturo.alexey@gmail.com> wrote:
->>
->> From: Alexey Baturo <baturo.alexey@gmail.com>
->>
->> Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
->> ---
+On 1/16/24 07:21, Ilya Leoshkevich wrote:
+> CVDG is the same as CVD, except that it converts 64 bits into 128,
+> rather than 32 into 64. Use larger data types in the CVD helper and
+> reuse it.
 > 
->> +
->> +bool riscv_cpu_virt_mem_enabled(CPURISCVState *env)
->> +{
->> +    bool virt_mem_en = false;
->> +#ifndef CONFIG_USER_ONLY
->> +    int satp_mode = 0;
->> +    int priv_mode = cpu_address_mode(env);
->> +    /* Get current PMM field */
->> +    if (riscv_cpu_mxl(env) == MXL_RV32) {
->> +        satp_mode = get_field(env->satp, SATP32_MODE);
->> +    } else {
->> +        satp_mode = get_field(env->satp, SATP64_MODE);
->> +    }
->> +    virt_mem_en = ((satp_mode != VM_1_10_MBARE) && (priv_mode != PRV_M));
->> +#endif
->> +    return virt_mem_en;
+> Reported-by: Ido Plat <Ido.Plat@ibm.com>
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> ---
+>   target/s390x/helper.h            |  1 +
+>   target/s390x/tcg/insn-data.h.inc |  1 +
+>   target/s390x/tcg/int_helper.c    | 11 ++++++++---
+>   target/s390x/tcg/translate.c     |  8 ++++++++
+>   4 files changed, 18 insertions(+), 3 deletions(-)
 > 
-> Obsessing a little bit on how to test PM enabled binaries with qemu-user.
-> If we return false above then we're not allowed to test binaries with
-> pointer masking enabled with qemu-user.
-> That use case is not required?
+> diff --git a/target/s390x/helper.h b/target/s390x/helper.h
+> index 05102578fc9..332a9a9c632 100644
+> --- a/target/s390x/helper.h
+> +++ b/target/s390x/helper.h
+> @@ -89,6 +89,7 @@ DEF_HELPER_FLAGS_2(sqeb, TCG_CALL_NO_WG, i64, env, i64)
+>   DEF_HELPER_FLAGS_2(sqdb, TCG_CALL_NO_WG, i64, env, i64)
+>   DEF_HELPER_FLAGS_2(sqxb, TCG_CALL_NO_WG, i128, env, i128)
+>   DEF_HELPER_FLAGS_1(cvd, TCG_CALL_NO_RWG_SE, i64, s32)
+> +DEF_HELPER_FLAGS_1(cvdg, TCG_CALL_NO_RWG_SE, i128, s64)
+>   DEF_HELPER_FLAGS_4(pack, TCG_CALL_NO_WG, void, env, i32, i64, i64)
+>   DEF_HELPER_FLAGS_4(pka, TCG_CALL_NO_WG, void, env, i64, i64, i32)
+>   DEF_HELPER_FLAGS_4(pku, TCG_CALL_NO_WG, void, env, i64, i64, i32)
+> diff --git a/target/s390x/tcg/insn-data.h.inc b/target/s390x/tcg/insn-data.h.inc
+> index 2f07f39d9cb..388dcb8dbbc 100644
+> --- a/target/s390x/tcg/insn-data.h.inc
+> +++ b/target/s390x/tcg/insn-data.h.inc
+> @@ -296,6 +296,7 @@
+>   /* CONVERT TO DECIMAL */
+>       C(0x4e00, CVD,     RX_a,  Z,   r1_o, a2, 0, 0, cvd, 0)
+>       C(0xe326, CVDY,    RXY_a, LD,  r1_o, a2, 0, 0, cvd, 0)
+> +    C(0xe32e, CVDG,    RXY_a, Z,   r1_o, a2, 0, 0, cvdg, 0)
+>   /* CONVERT TO FIXED */
+>       F(0xb398, CFEBR,   RRF_e, Z,   0, e2, new, r1_32, cfeb, 0, IF_BFP)
+>       F(0xb399, CFDBR,   RRF_e, Z,   0, f2, new, r1_32, cfdb, 0, IF_BFP)
+> diff --git a/target/s390x/tcg/int_helper.c b/target/s390x/tcg/int_helper.c
+> index eb8e6dd1b57..defb8fc7681 100644
+> --- a/target/s390x/tcg/int_helper.c
+> +++ b/target/s390x/tcg/int_helper.c
+> @@ -99,10 +99,15 @@ Int128 HELPER(divu64)(CPUS390XState *env, uint64_t ah, uint64_t al, uint64_t b)
+>   }
+>   
+>   uint64_t HELPER(cvd)(int32_t reg)
+> +{
+> +    return helper_cvdg(reg);
+> +}
+> +
+> +Int128 HELPER(cvdg)(int64_t reg)
+>   {
+>       /* positive 0 */
+> -    uint64_t dec = 0x0c;
+> -    int64_t bin = reg;
+> +    Int128 dec = 0x0c;
+> +    Int128 bin = reg;
+>       int shift;
+>   
+>       if (bin < 0) {
+> @@ -110,7 +115,7 @@ uint64_t HELPER(cvd)(int32_t reg)
+>           dec = 0x0d;
+>       }
+>   
+> -    for (shift = 4; (shift < 64) && bin; shift += 4) {
+> +    for (shift = 4; (shift < 128) && bin; shift += 4) {
+>           dec |= (bin % 10) << shift;
+>           bin /= 10;
+>       }
 
-In a previous round I suggested that the ifdefs are not necessary.
-But for now it will always be off for qemu-user.
+None of this will work with the struct version of Int128 -- you need to use the int128_* 
+functions for initialization and arithmetic.
 
-At some point pointer masking will be in hardware, and the kernel will gain support for 
-it, and there will likely be a prctl() added for it.  At the point the kernel finalizes 
-the API, you will be able to enable pointer masking for qemu-user.
+I suggest you don't try to share code with CVD.
 
 
 r~
