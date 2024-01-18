@@ -2,39 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131C8831368
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:56:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E63D831386
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:58:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNEi-0000vo-3j; Thu, 18 Jan 2024 02:54:52 -0500
+	id 1rQNEj-0000zx-SA; Thu, 18 Jan 2024 02:54:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNEf-0000us-S1; Thu, 18 Jan 2024 02:54:49 -0500
+ id 1rQNEg-0000vp-QK; Thu, 18 Jan 2024 02:54:50 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNEe-0007Oy-AI; Thu, 18 Jan 2024 02:54:49 -0500
+ id 1rQNEf-0007P7-3M; Thu, 18 Jan 2024 02:54:50 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A082845037;
+ by isrv.corpit.ru (Postfix) with ESMTP id B521845038;
  Thu, 18 Jan 2024 10:54:35 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id CC44C661A0;
+ by tsrv.corpit.ru (Postfix) with SMTP id DB7B5661A1;
  Thu, 18 Jan 2024 10:54:05 +0300 (MSK)
-Received: (nullmailer pid 2381667 invoked by uid 1000);
+Received: (nullmailer pid 2381670 invoked by uid 1000);
  Thu, 18 Jan 2024 07:54:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Max Erenberg <merenber@uwaterloo.ca>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Khem Raj <raj.khem@gmail.com>, Eric Auger <eric.auger@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 13/38] edu: fix DMA range upper bound check
-Date: Thu, 18 Jan 2024 10:52:40 +0300
-Message-Id: <20240118075404.2381519-13-mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 14/38] vfio/container: Replace basename with
+ g_path_get_basename
+Date: Thu, 18 Jan 2024 10:52:41 +0300
+Message-Id: <20240118075404.2381519-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,43 +64,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Erenberg <merenber@uwaterloo.ca>
+From: Cédric Le Goater <clg@redhat.com>
 
-The edu_check_range function checks that start <= end1 < end2, where
-end1 is the upper bound (exclusive) of the guest-supplied DMA range and
-end2 is the upper bound (exclusive) of the device's allowed DMA range.
-When the guest tries to transfer exactly DMA_SIZE (4096) bytes, end1
-will be equal to end2, so the check fails and QEMU aborts with this
-puzzling error message (newlines added for formatting):
+g_path_get_basename() is a portable utility function that has the
+advantage of not modifing the string argument. It also fixes a compile
+breakage with the Musl C library reported in [1].
 
-  qemu: hardware error: EDU: DMA range
-    0x0000000000040000-0x0000000000040fff out of bounds
-   (0x0000000000040000-0x0000000000040fff)!
+[1] https://lore.kernel.org/all/20231212010228.2701544-1-raj.khem@gmail.com/
 
-By checking end1 <= end2 instead, guests will be allowed to transfer
-exactly 4096 bytes. It is not necessary to explicitly check for
-start <= end1 because the previous two checks (within(addr, start, end2)
-and end1 > addr) imply start < end1.
-
-Fixes: b30934cb52a7 ("hw: misc, add educational driver", 2015-01-21)
-Signed-off-by: Max Erenberg <merenber@uwaterloo.ca>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 2c5107e1b455d4a157124f021826ead4e04b4aea)
+Reported-by: Khem Raj <raj.khem@gmail.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+(cherry picked from commit 213ae3ffda463c0503e39e0cf827511b5298c314)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/misc/edu.c b/hw/misc/edu.c
-index a1f8bc77e7..e64a246d3f 100644
---- a/hw/misc/edu.c
-+++ b/hw/misc/edu.c
-@@ -115,7 +115,7 @@ static void edu_check_range(uint64_t addr, uint64_t size1, uint64_t start,
-     uint64_t end2 = start + size2;
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 242010036a..adc3005beb 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -848,7 +848,8 @@ static void vfio_put_base_device(VFIODevice *vbasedev)
  
-     if (within(addr, start, end2) &&
--            end1 > addr && within(end1, start, end2)) {
-+            end1 > addr && end1 <= end2) {
-         return;
-     }
+ static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
+ {
+-    char *tmp, group_path[PATH_MAX], *group_name;
++    char *tmp, group_path[PATH_MAX];
++    g_autofree char *group_name = NULL;
+     int ret, groupid;
+     ssize_t len;
  
+@@ -864,7 +865,7 @@ static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
+ 
+     group_path[len] = 0;
+ 
+-    group_name = basename(group_path);
++    group_name = g_path_get_basename(group_path);
+     if (sscanf(group_name, "%d", &groupid) != 1) {
+         error_setg_errno(errp, errno, "failed to read %s", group_path);
+         return -errno;
 -- 
 2.39.2
 
