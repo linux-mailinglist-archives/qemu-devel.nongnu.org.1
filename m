@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B13C831EE1
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D62831EE2
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 19:02:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQWh5-000589-32; Thu, 18 Jan 2024 13:00:47 -0500
+	id 1rQWh1-00056J-8F; Thu, 18 Jan 2024 13:00:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQWgz-000566-I1; Thu, 18 Jan 2024 13:00:41 -0500
+ id 1rQWgy-00055r-A8; Thu, 18 Jan 2024 13:00:40 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQWgw-0001em-8N; Thu, 18 Jan 2024 13:00:41 -0500
+ id 1rQWgw-0001fT-8O; Thu, 18 Jan 2024 13:00:40 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3FC5A45457;
- Thu, 18 Jan 2024 21:01:03 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 67BC245458;
+ Thu, 18 Jan 2024 21:01:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0C3D866C20;
- Thu, 18 Jan 2024 21:00:31 +0300 (MSK)
-Received: (nullmailer pid 2513348 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 3BF1A66C21;
+ Thu, 18 Jan 2024 21:00:33 +0300 (MSK)
+Received: (nullmailer pid 2513353 invoked by uid 1000);
  Thu, 18 Jan 2024 18:00:31 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.9 0/8] Patch Round-up for stable 7.2.9,
- freeze on 2024-01-27
-Date: Thu, 18 Jan 2024 21:00:19 +0300
-Message-Id: <qemu-stable-7.2.9-20240118170458@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.9 1/8] block: Fix crash when loading snapshot on inactive
+ node
+Date: Thu, 18 Jan 2024 21:00:20 +0300
+Message-Id: <20240118180031.2513319-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <qemu-stable-7.2.9-20240118170458@cover.tls.msk.ru>
+References: <qemu-stable-7.2.9-20240118170458@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,40 +60,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v7.2.9:
+From: Kevin Wolf <kwolf@redhat.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+bdrv_is_read_only() only checks if the node is configured to be
+read-only eventually, but even if it returns false, writing to the node
+may not be permitted at the moment (because it's inactive).
 
-Patch freeze is 2024-01-27, and the release is planned for 2024-01-29:
+bdrv_is_writable() checks that the node can be written to right now, and
+this is what the snapshot operations really need.
 
-  https://wiki.qemu.org/Planning/7.2
+Change bdrv_can_snapshot() to use bdrv_is_writable() to fix crashes like
+the following:
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+$ ./qemu-system-x86_64 -hda /tmp/test.qcow2 -loadvm foo -incoming defer
+qemu-system-x86_64: ../block/io.c:1990: int bdrv_co_write_req_prepare(BdrvChild *, int64_t, int64_t, BdrvTrackedRequest *, int): Assertion `!(bs->open_flags & BDRV_O_INACTIVE)' failed.
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
+The resulting error message after this patch isn't perfect yet, but at
+least it doesn't crash any more:
 
-Thanks!
+$ ./qemu-system-x86_64 -hda /tmp/test.qcow2 -loadvm foo -incoming defer
+qemu-system-x86_64: Device 'ide0-hd0' is writable but does not support snapshots
 
-/mjt
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20231201142520.32255-2-kwolf@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit d3007d348adaaf04ee8b099a475282034a662414)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
---------------------------------------
-01 d3007d348ada Kevin Wolf:
-   block: Fix crash when loading snapshot on inactive node
-02 5a7f21efaf99 Kevin Wolf:
-   vl: Improve error message for conflicting -incoming and -loadvm
-03 bb6e2511eb48 Kevin Wolf:
-   iotests: Basic tests for internal snapshots
-04 5cb0e7abe163 Xu Lu:
-   target/riscv: Fix mcycle/minstret increment behavior
-05 4ad87cd4b225 Michael Tokarev:
-   chardev/char.c: fix "abstract device type" error message
-06 82a65e3188ab Peter Maydell:
-   hw/intc/arm_gicv3_cpuif: handle LPIs in in the list registers
-07 e358a25a97c7 Ilya Leoshkevich:
-   target/s390x: Fix LAE setting a wrong access register
-08 52a21689cd82 Peter Maydell:
-   .gitlab-ci.d/buildtest.yml: Work around htags bug when environment is 
-   large
+diff --git a/block/snapshot.c b/block/snapshot.c
+index e22ac3eac6..86e29ca59f 100644
+--- a/block/snapshot.c
++++ b/block/snapshot.c
+@@ -190,8 +190,10 @@ static BlockDriverState *bdrv_snapshot_fallback(BlockDriverState *bs)
+ int bdrv_can_snapshot(BlockDriverState *bs)
+ {
+     BlockDriver *drv = bs->drv;
++
+     GLOBAL_STATE_CODE();
+-    if (!drv || !bdrv_is_inserted(bs) || bdrv_is_read_only(bs)) {
++
++    if (!drv || !bdrv_is_inserted(bs) || !bdrv_is_writable(bs)) {
+         return 0;
+     }
+ 
+-- 
+2.39.2
+
 
