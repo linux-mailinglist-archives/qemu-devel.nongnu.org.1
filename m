@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B5A831B85
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:38:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDDFF831B88
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:38:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQTWs-0004xw-Ck; Thu, 18 Jan 2024 09:38:02 -0500
+	id 1rQTX0-0004zV-NT; Thu, 18 Jan 2024 09:38:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rQTWd-0004uj-3L
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:37:47 -0500
+ id 1rQTWf-0004ux-1T
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:37:50 -0500
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rQTWV-0004Sm-Ch
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:37:44 -0500
+ id 1rQTWZ-0004T0-AI
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:37:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705588659; x=1737124659;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=8/+g3OdWXcDG5ncCrIfNkXVwOEiBgYQqrPPfXHUH510=;
- b=WCeQHY4dlByTVejP7YD2Nq80txJtJpq9YbAdX4XkcyD3O4qDG9so0L8O
- 3XYOvuqBfIWUnyHVzhL8kpdjQ0c/bCklP80tQhucb+tt/rGzi5xj3Tbxd
- 1ip+6K7Pom9gCkKv9OBO1u/WauOWsLDXLOWtVhCO5d7WwBRG0EdONiJWJ
- SlSricySmiYp0yuBPAysJIkhU2xZtDlvJthwm9CBgW/dEJIMDqBZSo9Zz
- l3dZ7MlQqWU/7tJW5MeXUqOrsmmzEzxcUxho5XnSFgE+k79OF/YJrNezy
- W96QPNH4HCZw7knxs2IZsug9RIbr0sWgMMraqzDyOyqAQDHPV/W+qbpBn A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="19057019"
-X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; d="scan'208";a="19057019"
+ t=1705588663; x=1737124663;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=scLXbUoC+ZDyb0yjC19HMwOlFwwAZ+GFvAD3rT1YF14=;
+ b=Od+vLzl2UKCeNtHv4Ai+hw6Hs5ztnDPS2anO0u6ckNtpfbP6nERpPaZt
+ bqUo1g/0eko/ZNZvhIgnishR5FfONfLxqGQiwiyWlaTrz8Lm12ZCy8WHJ
+ xRCyMXleyHoqPboAeMH2oqhK/LT+8+Sd+9NDXjOpOgK5iuPVAEpzAPyVt
+ uieiTroAUjJOgpnyGGlzW27k/nnP3DbgegZS0ikVLHgJwnClWU1B3FHzZ
+ eydDfOYhr0Le8IIM32ZbNuoBQkzQcWZis/dgfLTeQwCqb5y2BiOkkgqUO
+ bcpK+4uHFFX5iJBMf6PaCuk1Det/k5wesY2PeDl2VWDjjFGG2m33vf5m7 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="19057059"
+X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; d="scan'208";a="19057059"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2024 06:36:08 -0800
+ 18 Jan 2024 06:36:10 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; 
-   d="scan'208";a="329230"
+   d="scan'208";a="329252"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa005.jf.intel.com with ESMTP; 18 Jan 2024 06:36:06 -0800
+ by orviesa005.jf.intel.com with ESMTP; 18 Jan 2024 06:36:08 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -47,11 +47,13 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  Yanan Wang <wangyanan55@huawei.com>
 Cc: qemu-devel@nongnu.org, Xiaoling Song <xiaoling.song@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 0/8] tests/unit/test-smp-parse.c: Add more CPU topology test
- cases
-Date: Thu, 18 Jan 2024 22:48:49 +0800
-Message-Id: <20240118144857.2124034-1-zhao1.liu@linux.intel.com>
+Subject: [PATCH 1/8] tests/unit/test-smp-parse.c: Use CPU number macros in
+ invalid topology case
+Date: Thu, 18 Jan 2024 22:48:50 +0800
+Message-Id: <20240118144857.2124034-2-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240118144857.2124034-1-zhao1.liu@linux.intel.com>
+References: <20240118144857.2124034-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=198.175.65.9;
@@ -79,42 +81,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Hi list,
+Use MAX_CPUS/MIN_CPUS micros in invalid topology case. This gives us the
+flexibility to change the maximum and minimum CPU limits.
 
-Currently, test-smp-parse lacks the following cases:
-* The case to cover drawer and book parameters parsing in -smp.
-* The case to cover the full topology (with total 7 levels) to ensure
-  that the topology-related calculations are correct.
-* The case to check smp_props.has_clusters of MachineClass.
-
-Thus, add the above cases to improve test coverage.
-
-In addition, people is trying to bump max_cpus to 4096 for PC machine
-[1]. Without considering other changes, it's only a matter of time
-before the maximum CPUs is raised. Therefore, aslo bump max_cpus to 4096
-in -smp related test cases as a start.
-
-[1]: https://lore.kernel.org/qemu-devel/20231208122611.32311-1-anisinha@redhat.com/
-
-Regards,
-Zhao
-
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Zhao Liu (8):
-  tests/unit/test-smp-parse.c: Use CPU number macros in invalid topology
-    case
-  tests/unit/test-smp-parse.c: Bump max_cpus to 4096
-  tests/unit/test-smp-parse.c: Make test cases aware of the book/drawer
-  tests/unit/test-smp-parse.c: Test "books" parameter in -smp
-  tests/unit/test-smp-parse.c: Test "drawers" parameter in -smp
-  tests/unit/test-smp-parse.c: Test "drawers" and "books" combination
-    case
-  tests/unit/test-smp-parse.c: Test the full 7-levels topology hierarchy
-  tests/unit/test-smp-parse.c: Test smp_props.has_clusters
+ tests/unit/test-smp-parse.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
- tests/unit/test-smp-parse.c | 515 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 494 insertions(+), 21 deletions(-)
-
+diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
+index 24972666a74d..20c663a006b3 100644
+--- a/tests/unit/test-smp-parse.c
++++ b/tests/unit/test-smp-parse.c
+@@ -323,15 +323,21 @@ static const struct SMPTestData data_generic_invalid[] = {
+                         "sockets (2) * cores (4) * threads (2) "
+                         "== maxcpus (16) < smp_cpus (18)",
+     }, {
+-        /* config: -smp 1
+-         * should tweak the supported min CPUs to 2 for testing */
+-        .config = SMP_CONFIG_GENERIC(T, 1, F, 0, F, 0, F, 0, F, 0),
++        /*
++         * config: -smp 1
++         * The test machine should tweak the supported min CPUs to
++         * 2 (MIN_CPUS + 1) for testing.
++         */
++        .config = SMP_CONFIG_GENERIC(T, MIN_CPUS, F, 0, F, 0, F, 0, F, 0),
+         .expect_error = "Invalid SMP CPUs 1. The min CPUs supported "
+                         "by machine '" SMP_MACHINE_NAME "' is 2",
+     }, {
+-        /* config: -smp 512
+-         * should tweak the supported max CPUs to 511 for testing */
+-        .config = SMP_CONFIG_GENERIC(T, 512, F, 0, F, 0, F, 0, F, 0),
++        /*
++         * config: -smp 512
++         * The test machine should tweak the supported max CPUs to
++         * 511 (MAX_CPUS - 1) for testing.
++         */
++        .config = SMP_CONFIG_GENERIC(T, MAX_CPUS, F, 0, F, 0, F, 0, F, 0),
+         .expect_error = "Invalid SMP CPUs 512. The max CPUs supported "
+                         "by machine '" SMP_MACHINE_NAME "' is 511",
+     },
+@@ -575,8 +581,8 @@ static void machine_generic_invalid_class_init(ObjectClass *oc, void *data)
+     MachineClass *mc = MACHINE_CLASS(oc);
+ 
+     /* Force invalid min CPUs and max CPUs */
+-    mc->min_cpus = 2;
+-    mc->max_cpus = 511;
++    mc->min_cpus = MIN_CPUS + 1;
++    mc->max_cpus = MAX_CPUS - 1;
+ }
+ 
+ static void machine_with_dies_class_init(ObjectClass *oc, void *data)
 -- 
 2.34.1
 
