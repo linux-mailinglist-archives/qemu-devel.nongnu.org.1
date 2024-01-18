@@ -2,107 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17775831243
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 06:05:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5786831247
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 06:10:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQKaI-00082h-PF; Thu, 18 Jan 2024 00:04:58 -0500
+	id 1rQKee-0000vp-RD; Thu, 18 Jan 2024 00:09:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1rQKa7-0007wp-2H; Thu, 18 Jan 2024 00:04:48 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQKec-0000vL-G5
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 00:09:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1rQKa5-00059y-7a; Thu, 18 Jan 2024 00:04:46 -0500
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40I4RYkh024854; Thu, 18 Jan 2024 05:04:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=qiO6v/ymO33ATOwRnCl6viP728ybL9C6u98oFMYxiu8=;
- b=RnGkj8yzSRpPXZIZ6V/51XC3BsIZuiuQXMdKNnnAIyNpN+LRDb4ORDIg+8OveV1ruGb3
- p4hepE74Wen9ZW0LCSmQPKZI4VY4U8J+ix3Ua5YK6yRlIpUQtRv7G/zLDMJ7YKjPiSL2
- 1ABq7gO+GOytLkqn8l7Sri6OzqCFXlRde/dqzb+6UN0r/MTQirrliTfOP+JbjS/GlPMS
- h6XczN7wpLGjlPE3gTvSjZXMpBIlbW4tWT5cf05EVSCQSGqld1THGmPKUt/RNNGeqRN0
- Waymwy2X5ldnEkMu3KXxXJbVM497hwEOz1U8A6SyOf4UMt05/vIH1hupf+pPd1kUXkcA tA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vpvyn8tv4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jan 2024 05:04:32 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40I4pq9i028309;
- Thu, 18 Jan 2024 05:04:31 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vpvyn8tte-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jan 2024 05:04:31 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40I3Y5fH000538; Thu, 18 Jan 2024 05:04:30 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vm4ut1mc3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jan 2024 05:04:30 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40I54U4k51315424
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Jan 2024 05:04:30 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E416A58059;
- Thu, 18 Jan 2024 05:04:29 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C1D7158058;
- Thu, 18 Jan 2024 05:04:26 +0000 (GMT)
-Received: from [9.109.243.35] (unknown [9.109.243.35])
- by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 18 Jan 2024 05:04:26 +0000 (GMT)
-Message-ID: <0b103cd1-ee9b-4a7d-8abc-4385528fb45e@linux.ibm.com>
-Date: Thu, 18 Jan 2024 10:34:26 +0530
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQKea-00071G-UV
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 00:09:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705554563;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jNEXmz7mVVM07cddH1v8gDu1apzTRSKKHG2AE8VIMdA=;
+ b=inl4fwz3312gvFb15NlhXt8p/r0E1hZIvZRfiZeoXdqBwLDEtj+IV4diYtfTIGOpwBSxAD
+ kE9DrOYMaM/zBbQGIP4CN3xzHGGOCr+f2vQ+huvM3xdYpWJngC7tJJ+W8Tna3A+wrYmM6R
+ m39g74eCcRyN1aGvL/xMGd32K6Z/sFg=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-101-YEsjJSXzNCqz6WENbWJMhA-1; Thu, 18 Jan 2024 00:09:21 -0500
+X-MC-Unique: YEsjJSXzNCqz6WENbWJMhA-1
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-1d5a4416df4so15975785ad.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 21:09:20 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705554560; x=1706159360;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jNEXmz7mVVM07cddH1v8gDu1apzTRSKKHG2AE8VIMdA=;
+ b=IJEiJIgS7GFBTuqN+s49h9kDl4TWAe0SihUN9Vw5C6x0ms9LL6+wgiqjDqahVVYPzN
+ KOodXkc9mJMwLB91TuKkohOoC9SkTnUa0334MR2yod4Xpo/UQTwBrLGfS48hbI/Zom1y
+ XEohGk+VA+nPRXFPT7ExKW1WWXeqcq5dLd0bWcLyhgrgGLv76ljJ9EBb/J7DiJAijcGh
+ sH9E/KldvPeaimf1eT0+uwLmzdJS/1FE2l8jEKVk04KouGeCzvncSlWvSnnS6kgctWF+
+ sXzx9bioFP4LUFDpEqWPvHVh8r1sAsjzl7q6DVju7/WbHI+7/pc6ZqWkJsosoYIOlg2h
+ 1WSw==
+X-Gm-Message-State: AOJu0Yxycv1APPmJBOP9wyw4sNWAr3HVeV1iWbOGm80GEHYcqD1n5MRT
+ AfBFhrmiRiztTxbOjwshl8t7drxKaz+5zgJn7rRcpwfGziA3D9hVQSXYMJ5ywKgkGPdoc9IoKf9
+ gPedCTIJaNMbUQn1/cxEE/7QQS7+uH3rq/EvmgD/obIjeyXfuZUvDAsdWDdQ3
+X-Received: by 2002:a17:902:ee13:b0:1d5:efd6:20f with SMTP id
+ z19-20020a170902ee1300b001d5efd6020fmr685190plb.1.1705554559899; 
+ Wed, 17 Jan 2024 21:09:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEI4GJHBiEu9UI/u1dVexs1frIl7lhKoOis3EyNjrxWQmCpUu44ZHPXP7ayrwjlwqVmqfIvUg==
+X-Received: by 2002:a17:902:ee13:b0:1d5:efd6:20f with SMTP id
+ z19-20020a170902ee1300b001d5efd6020fmr685178plb.1.1705554559576; 
+ Wed, 17 Jan 2024 21:09:19 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ az8-20020a170902a58800b001d5e993c6b9sm492014plb.68.2024.01.17.21.09.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Jan 2024 21:09:19 -0800 (PST)
+Date: Thu, 18 Jan 2024 13:09:16 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH] vfio: use matching sizeof type
+Message-ID: <ZaiyfDX2-hUUynhp@x1n>
+References: <20240117160344.175872-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] docs/about: Deprecate the old "power5+" and
- "power7+" CPU names
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- qemu-devel@nongnu.org
-Cc: devel@lists.libvirt.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
- Markus Armbruster <armbru@redhat.com>
-References: <20240117141054.73841-1-thuth@redhat.com>
- <20240117141054.73841-3-thuth@redhat.com>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20240117141054.73841-3-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ksdPPRSKAUCcsqZVGSfyvFXAvLR7VJx7
-X-Proofpoint-ORIG-GUID: HXG3CPiUBTznw6-PZlADscl0ciDbRZv_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-18_02,2024-01-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0
- bulkscore=0 impostorscore=0 mlxlogscore=999 lowpriorityscore=0
- priorityscore=1501 mlxscore=0 clxscore=1015 phishscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401180032
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240117160344.175872-1-pbonzini@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,38 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 1/17/24 19:40, Thomas Huth wrote:
-> For consistency we should drop the names with a "+" in it in the
-> long run.
+On Wed, Jan 17, 2024 at 05:03:44PM +0100, Paolo Bonzini wrote:
+> Do not use uint64_t for the type of the declaration and __u64 when
+> computing the number of elements in the array.
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   docs/about/deprecated.rst | 9 +++++++++
->   1 file changed, 9 insertions(+)
+>  hw/vfio/common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index b47763330c..251723d264 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -217,6 +217,15 @@ Nios II CPU (since 8.2)
->   The Nios II architecture is orphan. The ``nios2`` guest CPU support is
->   deprecated and will be removed in a future version of QEMU.
->   
-> +``power5+`` and ``power7+`` CPU names (since 9.0)
-> +'''''''''''''''''''''''''''''''''''''''''''''''''
-> +
-> +The character "+" in device (and thus also CPU) names is not allowed
-> +in the QEMU object model anymore. ``power5+``, ``power5+_v2.1``,
-> +``power7+`` and ``power7+_v2.1`` are currently still supported via
-> +an alias, but for consistency these will get removed in a future
-> +release, too. Use ``power5p_v2.1`` and ``power7p_v2.1`` instead.
-> +
->   
->   System emulator machines
->   ------------------------
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 0b3352f2a9d..0da4003ecf5 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -1118,7 +1118,7 @@ static int vfio_device_dma_logging_report(VFIODevice *vbasedev, hwaddr iova,
+>  {
+>      uint64_t buf[DIV_ROUND_UP(sizeof(struct vfio_device_feature) +
+>                          sizeof(struct vfio_device_feature_dma_logging_report),
+> -                        sizeof(__u64))] = {};
+> +                        sizeof(uint64_t))] = {};
+>      struct vfio_device_feature *feature = (struct vfio_device_feature *)buf;
+>      struct vfio_device_feature_dma_logging_report *report =
+>          (struct vfio_device_feature_dma_logging_report *)feature->data;
+
+There seem to have other places in the sme file that reference __u64.  Are
+we going to remove all __u64 references?  Or maybe something else?
+
+Copy Alex/Cedric to make sure this won't get lost..
+
+Thanks,
+
+-- 
+Peter Xu
+
 
