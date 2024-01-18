@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD81831EE3
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 19:02:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 344E8831EE0
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 19:02:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQWhO-0005Aq-JE; Thu, 18 Jan 2024 13:01:06 -0500
+	id 1rQWhQ-0005IX-QI; Thu, 18 Jan 2024 13:01:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQWh7-0005AO-Cd; Thu, 18 Jan 2024 13:00:49 -0500
+ id 1rQWhA-0005BB-Jo; Thu, 18 Jan 2024 13:00:56 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQWh5-0001jt-W0; Thu, 18 Jan 2024 13:00:49 -0500
+ id 1rQWh8-0001kR-PX; Thu, 18 Jan 2024 13:00:52 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EE0284545C;
- Thu, 18 Jan 2024 21:01:09 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 8E2574545D;
+ Thu, 18 Jan 2024 21:01:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 70C1D66C25;
- Thu, 18 Jan 2024 21:00:38 +0300 (MSK)
-Received: (nullmailer pid 2513365 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id DA91566C26;
+ Thu, 18 Jan 2024 21:00:39 +0300 (MSK)
+Received: (nullmailer pid 2513368 invoked by uid 1000);
  Thu, 18 Jan 2024 18:00:31 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [Stable-7.2.9 5/8] chardev/char.c: fix "abstract device type" error
- message
-Date: Thu, 18 Jan 2024 21:00:24 +0300
-Message-Id: <20240118180031.2513319-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Miguel Luis <miguel.luis@oracle.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.9 6/8] hw/intc/arm_gicv3_cpuif: handle LPIs in in the
+ list registers
+Date: Thu, 18 Jan 2024 21:00:25 +0300
+Message-Id: <20240118180031.2513319-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.9-20240118170458@cover.tls.msk.ru>
 References: <qemu-stable-7.2.9-20240118170458@cover.tls.msk.ru>
@@ -60,32 +61,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current error message:
+From: Peter Maydell <peter.maydell@linaro.org>
 
- qemu-system-x86_64: -chardev spice,id=foo: Parameter 'driver' expects an abstract device type
+The hypervisor can deliver (virtual) LPIs to a guest by setting up a
+list register to have an intid which is an LPI.  The GIC has to treat
+these a little differently to standard interrupt IDs, because LPIs
+have no Active state, and so the guest will only EOI them, it will
+not also deactivate them.  So icv_eoir_write() must do two things:
 
-while in fact the meaning is in reverse, -chardev expects
-a non-abstract device type.
+ * if the LPI ID is not in any list register, we drop the
+   priority but do not increment the EOI count
+ * if the LPI ID is in a list register, we immediately deactivate
+   it, regardless of the split-drop-and-deactivate control
 
-Fixes: 777357d758d9 ("chardev: qom-ify" 2016-12-07)
+This can be seen in the VirtualWriteEOIR0() and VirtualWriteEOIR1()
+pseudocode in the GICv3 architecture specification.
+
+Without this fix, potentially a hypervisor guest might stall because
+LPIs get stuck in a bogus Active+Pending state.
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Miguel Luis <miguel.luis@oracle.com>
+(cherry picked from commit 82a65e3188abebb509510b391726711606aca642)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-(cherry picked from commit 4ad87cd4b2254197b7ac12e3da824854e6a90f8f)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/chardev/char.c b/chardev/char.c
-index b005df3ccf..193bbac054 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -519,7 +519,7 @@ static const ChardevClass *char_get_class(const char *driver, Error **errp)
+diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+index b17b29288c..f71b3b07d8 100644
+--- a/hw/intc/arm_gicv3_cpuif.c
++++ b/hw/intc/arm_gicv3_cpuif.c
+@@ -1432,16 +1432,25 @@ static void icv_eoir_write(CPUARMState *env, const ARMCPRegInfo *ri,
+     idx = icv_find_active(cs, irq);
  
-     if (object_class_is_abstract(oc)) {
-         error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "driver",
--                   "an abstract device type");
-+                   "a non-abstract device type");
-         return NULL;
-     }
+     if (idx < 0) {
+-        /* No valid list register corresponding to EOI ID */
+-        icv_increment_eoicount(cs);
++        /*
++         * No valid list register corresponding to EOI ID; if this is a vLPI
++         * not in the list regs then do nothing; otherwise increment EOI count
++         */
++        if (irq < GICV3_LPI_INTID_START) {
++            icv_increment_eoicount(cs);
++        }
+     } else {
+         uint64_t lr = cs->ich_lr_el2[idx];
+         int thisgrp = (lr & ICH_LR_EL2_GROUP) ? GICV3_G1NS : GICV3_G0;
+         int lr_gprio = ich_lr_prio(lr) & icv_gprio_mask(cs, grp);
  
+         if (thisgrp == grp && lr_gprio == dropprio) {
+-            if (!icv_eoi_split(env, cs)) {
+-                /* Priority drop and deactivate not split: deactivate irq now */
++            if (!icv_eoi_split(env, cs) || irq >= GICV3_LPI_INTID_START) {
++                /*
++                 * Priority drop and deactivate not split: deactivate irq now.
++                 * LPIs always get their active state cleared immediately
++                 * because no separate deactivate is expected.
++                 */
+                 icv_deactivate_irq(cs, idx);
+             }
+         }
 -- 
 2.39.2
 
