@@ -2,87 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3C083188D
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 12:38:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AAA831896
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 12:43:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQQim-0000Fx-JP; Thu, 18 Jan 2024 06:38:08 -0500
+	id 1rQQmu-0003ak-Sl; Thu, 18 Jan 2024 06:42:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rQQik-0000Ed-4F
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 06:38:06 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rQQih-000235-VY
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 06:38:05 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40e60e135a7so61475105e9.0
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 03:38:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705577882; x=1706182682; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KjgG5JfIuIuBtA+7Nc9QdPWRzOWJve3W+fE0BjVvE5M=;
- b=dymmo+nj0jKhCUAkyEyUnhLwjsG0bFCE3KBJ4b6SyPPZN8kWclkPPK/x6G2+eqRhuJ
- 34AZQH1q03NYYzEPflbgaU2d38sftUjigDFenfQPkRO634MBu5xSR6Qht4QrDSDpcXnv
- 6ZCccZuPALqDl8yqR6WrguRjY2whFyA0iOUR87zW3RFFkWAg351JCw0O8A+0+fqCrXVI
- AWof3K+VCrM4CgNKVqCwP+yk5fjwsoiEvqEiBdshi9Lmsv9tFMd254oU0gpK92+DYVDy
- R9Vf7nHF7JkwjCcIuzxRLn1MQEg4Ajph4bTfrqz5rWkFgWWJD1QnF/EzeeJP75+FQwPx
- 1UMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705577882; x=1706182682;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=KjgG5JfIuIuBtA+7Nc9QdPWRzOWJve3W+fE0BjVvE5M=;
- b=TMAR0axxkx/b19RBny/zCEYPGPuRc5M1jCON3DMeLtH0nDAwQMW/6YNooux3Z4Qu2Z
- r8SwPG0kH4SrzJPkSacCZMcfwvN0iseCUwtRRAcbY5qh0Kj0HnIbaY7t45u7AFWNMALH
- FV8LTaNXgp5fjpyaOru4W10sfvnnlwoz1jMOf8RtV5eU6aphEu38W/Qh3NoTVg/txiBm
- Jsvo5IA7ND6lDXSZBAGrF92TCDbrS2q+5EpzAlcujPMC5RsGX5s2ICYS5MwuhhHinISA
- ugNzOkCpKdB7sRdqaDLmIMsQsvbYSoSxtZSpwDYfdBX0LbvIC/YTlfn+Fjp+5hLLGquR
- X7sw==
-X-Gm-Message-State: AOJu0YzRjqvZm/appH/BMIm7I/VAcASluM6KoYvZsGRCCfS2ukmjYCrq
- XUwlShWS51tWb/B1VrrLAv7PouCMGFxUIghgyV9iDxTMWYtveI3f0l/28R1VlwQ=
-X-Google-Smtp-Source: AGHT+IF5TbSayLJr9NP1r1mnOMgwi9LLFHrlYym9OhlEp6jCp+f3Pu5mOrKzkkzAe77sQf6/qt8fyw==
-X-Received: by 2002:a05:600c:54f0:b0:40e:8bad:8c7c with SMTP id
- jb16-20020a05600c54f000b0040e8bad8c7cmr455864wmb.103.1705577882104; 
- Thu, 18 Jan 2024 03:38:02 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- bg42-20020a05600c3caa00b0040e3733a32bsm29148302wmb.41.2024.01.18.03.38.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Jan 2024 03:38:01 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6963F5F8B4;
- Thu, 18 Jan 2024 11:38:01 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org,  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,  Mahmoud Mandour
- <ma.mandourr@gmail.com>
-Subject: Re: [PULL 17/22] plugins: add an API to read registers
-In-Reply-To: <4b2156ed-688d-4617-b52d-200413f01156@daynix.com> (Akihiko
- Odaki's message of "Wed, 17 Jan 2024 18:09:21 +0900")
-References: <20240116104809.250076-1-alex.bennee@linaro.org>
- <20240116104809.250076-18-alex.bennee@linaro.org>
- <4b2156ed-688d-4617-b52d-200413f01156@daynix.com>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Thu, 18 Jan 2024 11:38:01 +0000
-Message-ID: <87cytyhnxi.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rQQmo-0003aW-F4
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 06:42:18 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rQQml-00037V-KA
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 06:42:18 -0500
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8BxefCSDqllHp4BAA--.8234S3;
+ Thu, 18 Jan 2024 19:42:11 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Bx8OSQDqllnG0IAA--.43190S3; 
+ Thu, 18 Jan 2024 19:42:09 +0800 (CST)
+Subject: Re: [PATCH v4 00/17] Add boot LoongArch elf kernel with FDT
+From: gaosong <gaosong@loongson.cn>
+To: peter.maydell@linaro.org
+Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, philmd@linaro.org,
+ maobibo@loongson.cn, zhaotianrui@loongson.cn, lixianglai@loongson.cn
+References: <20240118111900.1672536-1-gaosong@loongson.cn>
+Message-ID: <ffe7907a-8cb3-f36c-6f6c-7687a820ff47@loongson.cn>
+Date: Thu, 18 Jan 2024 19:42:09 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+In-Reply-To: <20240118111900.1672536-1-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Bx8OSQDqllnG0IAA--.43190S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxury7AFW3WrW3Wr17Gw1UXFc_yoW5XF4fpF
+ W7Zr13Wrs5JrZ7A3sav34aqr90vwn7Gr12v3W3Kry8CrZFvFy7Z3WxAr9rXFyUt3yIgryq
+ vr1Fkw1jgF4UJwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
+ 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
+ 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzZ2-
+ UUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.748,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,190 +81,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-> On 2024/01/16 19:48, Alex Benn=C3=A9e wrote:
->> We can only request a list of registers once the vCPU has been
->> initialised so the user needs to use either call the get function on
->> vCPU initialisation or during the translation phase.
->> We don't expose the reg number to the plugin instead hiding it
->> behind
->> an opaque handle. This allows for a bit of future proofing should the
->> internals need to be changed while also being hashed against the
->> CPUClass so we can handle different register sets per-vCPU in
->> hetrogenous situations.
->> Having an internal state within the plugins also allows us to expand
->> the interface in future (for example providing callbacks on register
->> change if the translator can track changes).
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1706
->> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
->> Message-Id: <20240103173349.398526-39-alex.bennee@linaro.org>
->> Based-on: <20231025093128.33116-18-akihiko.odaki@daynix.com>
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
->> index 4daab6efd29..2c1930e7e45 100644
->> --- a/include/qemu/qemu-plugin.h
->> +++ b/include/qemu/qemu-plugin.h
->> @@ -11,6 +11,7 @@
->>   #ifndef QEMU_QEMU_PLUGIN_H
->>   #define QEMU_QEMU_PLUGIN_H
->>   +#include <glib.h>
->>   #include <inttypes.h>
->>   #include <stdbool.h>
->>   #include <stddef.h>
->> @@ -227,8 +228,8 @@ struct qemu_plugin_insn;
->>    * @QEMU_PLUGIN_CB_R_REGS: callback reads the CPU's regs
->>    * @QEMU_PLUGIN_CB_RW_REGS: callback reads and writes the CPU's regs
->>    *
->> - * Note: currently unused, plugins cannot read or change system
->> - * register state.
->> + * Note: currently QEMU_PLUGIN_CB_RW_REGS is unused, plugins cannot cha=
-nge
->> + * system register state.
->>    */
->>   enum qemu_plugin_cb_flags {
->>       QEMU_PLUGIN_CB_NO_REGS,
->> @@ -708,4 +709,50 @@ uint64_t qemu_plugin_end_code(void);
->>   QEMU_PLUGIN_API
->>   uint64_t qemu_plugin_entry_code(void);
->>   +/** struct qemu_plugin_register - Opaque handle for register
->> access */
->> +struct qemu_plugin_register;
->> +
->> +/**
->> + * typedef qemu_plugin_reg_descriptor - register descriptions
->> + *
->> + * @handle: opaque handle for retrieving value with qemu_plugin_read_re=
-gister
->> + * @name: register name
->> + * @feature: optional feature descriptor, can be NULL
->> + */
->> +typedef struct {
->> +    struct qemu_plugin_register *handle;
->> +    const char *name;
->> +    const char *feature;
->> +} qemu_plugin_reg_descriptor;
->> +
->> +/**
->> + * qemu_plugin_get_registers() - return register list for vCPU
->> + * @vcpu_index: vcpu to query
->> + *
->> + * Returns a GArray of qemu_plugin_reg_descriptor or NULL. Caller
->> + * frees the array (but not the const strings).
->> + *
->> + * Should be used from a qemu_plugin_register_vcpu_init_cb() callback
->> + * after the vCPU is initialised.
->> + */
->> +GArray *qemu_plugin_get_registers(unsigned int vcpu_index);
->> +
->> +/**
->> + * qemu_plugin_read_register() - read register
->> + *
->> + * @vcpu: vcpu index
->> + * @handle: a @qemu_plugin_reg_handle handle
->> + * @buf: A GByteArray for the data owned by the plugin
->> + *
->> + * This function is only available in a context that register read acce=
-ss is
->> + * explicitly requested.
->> + *
->> + * Returns the size of the read register. The content of @buf is in tar=
-get byte
->> + * order. On failure returns -1
->> + */
->> +int qemu_plugin_read_register(unsigned int vcpu,
->> +                              struct qemu_plugin_register *handle,
->> +                              GByteArray *buf);
->> +
->> +
->>   #endif /* QEMU_QEMU_PLUGIN_H */
->> diff --git a/plugins/api.c b/plugins/api.c
->> index ac39cdea0b3..8d5cca53295 100644
->> --- a/plugins/api.c
->> +++ b/plugins/api.c
->> @@ -8,6 +8,7 @@
->>    *
->>    *  qemu_plugin_tb
->>    *  qemu_plugin_insn
->> + *  qemu_plugin_register
->>    *
->>    * Which can then be passed back into the API to do additional things.
->>    * As such all the public functions in here are exported in
->> @@ -35,10 +36,12 @@
->>    */
->>     #include "qemu/osdep.h"
->> +#include "qemu/main-loop.h"
->>   #include "qemu/plugin.h"
->>   #include "qemu/log.h"
->>   #include "tcg/tcg.h"
->>   #include "exec/exec-all.h"
->> +#include "exec/gdbstub.h"
->>   #include "exec/ram_addr.h"
->>   #include "disas/disas.h"
->>   #include "plugin.h"
->> @@ -435,3 +438,111 @@ uint64_t qemu_plugin_entry_code(void)
->>   #endif
->>       return entry;
->>   }
->> +
->> +/*
->> + * Register handles
->> + *
->> + * The plugin infrastructure keeps hold of these internal data
->> + * structures which are presented to plugins as opaque handles. They
->> + * are global to the system and therefor additions to the hash table
->> + * must be protected by the @reg_handle_lock.
+Please ignore this,  I will  resend it.
+
+在 2024/1/18 下午7:18, Song Gao 写道:
+> Hi, All
 >
-> The BQL should be used instead. This lock only serializes the plugin
-> access, but the whole gdbstub code needs to be serialized to ensure
-> the correct behaving of e.g., gdb_get_register_list().
-
-Why does gdb_get_register_list need to take the BQL? It only works
-through per-cpu structures. The reg_handle_lock only protects the hash
-table itself.
-
+> We already support boot efi kernel with bios, but not support boot elf kernel.
+> This series adds boot elf kernel with FDT.
 >
->> + *
->> + * In order to future proof for up-coming heterogeneous work we want
->> + * different entries for each CPU type while sharing them in the
->> + * common case of multiple cores of the same type.
+> 'LoongArch supports ACPI and FDT. The information that needs to be passed
+>   to the kernel includes the memmap, the initrd, the command line, optionally
+>   the ACPI/FDT tables, and so on'  see [1].
 >
-> I don't think such an effort should be done in the plugin code, but it
-> should be done in the common gdbstub code.
-
-Sure - we can always move it later.
-
-> GDB assumes all threads have the same set of registers, so gdbstub
-> will need to take care of them by running distinct GDB servers for
-> each processor type, for example. There is a good chance that gdbstub
-> will duplicate similar logic.
-
-Which logic?
-
+> Patch 2-8 : Create efi system table, and three efi configuration table
+>              boot_memmap, initd, FDT.
+> Patch 9-17 : Fixes FDT problems.
 >
->> + */
->> +
->> +static QemuMutex reg_handle_lock;
->> +
->> +struct qemu_plugin_register {
->> +    const char *name;
->> +    int gdb_reg_num;
->> +};
->> +
->> +static GHashTable *reg_handles; /* hash table of PluginReg */
->> +
->> +/* Generate a stable key - would xxhash be overkill? */
->> +static gpointer cpu_plus_reg_to_key(CPUState *cs, int gdb_regnum)
->> +{
->> +    uintptr_t key =3D (uintptr_t) cs->cc;
->> +    key ^=3D gdb_regnum;
->> +    return GUINT_TO_POINTER(key);
->> +}
+> Test:
+>    - Start kernel
+>      See [2] start_kernel.sh
+>    - Start qcow2
+>      See [2] start_qcow2.sh
 >
-> This is, theoretically, prone to collisions and unsafe.
+> V4:
+>    - patch 3 change slave_boot_code[] to const, and 'static void *p ' to
+>      'void *p';
+>    - patch 4 fixes build error;
+>    - patch 10-13, add project and commit link.
+>
+> V3:
+>    - Load initrd at  kernel_high + 4 * kernel_size;
+>    - Load 'boot_rom' at [0 - 1M], the 'boot_rom' includes
+> V3:
+>    - Load initrd at  kernel_high + 4 * kernel_size;
+>    - Load 'boot_rom' at [0 - 1M], the 'boot_rom' includes
+>      slave_boot_code, cmdline_buf and systab_tables;
+>    - R-b and rebase.
+>
+> V2:
+>    - FDT pcie node adds cells 'msi-map';
+>
+>
+> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/arch/loongarch/booting.rst?h=v6.7-rc4
+>
+> [2]: https://github.com/gaosong-loongson/loongarch-binary/releases
+>
+> Please review!
+>
+> Thanks.
+> Song Gao
+>
+> Song Gao (17):
+>    hw/loongarch: Move boot fucntions to boot.c
+>    hw/loongarch: Add load initrd
+>    hw/loongarch: Add slave cpu boot_code
+>    hw/loongarch: Add init_cmdline
+>    hw/loongarch: Init efi_system_table
+>    hw/loongarch: Init efi_boot_memmap table
+>    hw/loongarch: Init efi_initrd table
+>    hw/loongarch: Init efi_fdt table
+>    hw/loongarch: Fix fdt memory node wrong 'reg'
+>    hw/loongarch: fdt adds cpu interrupt controller node
+>    hw/loongarch: fdt adds Extend I/O Interrupt Controller
+>    hw/loongarch: fdt adds pch_pic Controller
+>    hw/loongarch: fdt adds pch_msi Controller
+>    hw/loongarch: fdt adds pcie irq_map node
+>    hw/loongarch: fdt remove unused irqchip node
+>    hw/loongarch: Add cells missing from uart node
+>    hw/loongarch: Add cells missing from rtc node
+>
+>   include/hw/intc/loongarch_extioi.h |   1 +
+>   include/hw/loongarch/boot.h        | 109 +++++++++
+>   include/hw/loongarch/virt.h        |  14 ++
+>   include/hw/pci-host/ls7a.h         |   2 +
+>   target/loongarch/cpu.h             |   2 +
+>   hw/loongarch/boot.c                | 330 ++++++++++++++++++++++++++
+>   hw/loongarch/virt.c                | 364 ++++++++++++++++-------------
+>   hw/loongarch/meson.build           |   1 +
+>   8 files changed, 661 insertions(+), 162 deletions(-)
+>   create mode 100644 include/hw/loongarch/boot.h
+>   create mode 100644 hw/loongarch/boot.c
+>
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
