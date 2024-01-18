@@ -2,79 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18D1831CA9
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 16:35:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBB8831CAB
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 16:37:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQUPV-0007Td-23; Thu, 18 Jan 2024 10:34:29 -0500
+	id 1rQURf-0002VL-Nh; Thu, 18 Jan 2024 10:36:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQUPL-0007SB-6a
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 10:34:20 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQUPI-0002R6-L1
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 10:34:18 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-337cf4eabc9so593906f8f.3
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 07:34:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705592054; x=1706196854; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=SwuaHqluR1Y5JxpZebqlgJ2NJ8ORccM92Gb37cL7c0k=;
- b=sIVskwNecz/a6NnLOcFpfmWR0s6w6xr8eHaiVA8IeMF47oN0uY8WhZr9RWR1KHNB7s
- qaG0TxM49A3b26RuRdM/FFhKk9tlUpO4Acy/WAAU/k+u5qI/6NrMNbIo2NVpa320/Csc
- AbFN4B9NL1GQH4bCefN5+1nhfkEMhed5IhwzFPXWdfymRWRn4YTTpPHIHpX0ibh5EJh/
- +w+etVUarjc8QWQpiXz/tiR05b8TdMRHuqR6UXmtXP1sPmDgv3CAHMKBZCaj1zbaWs9A
- XeQIFKkyJPcHlyj2YDBozt0aOg9X3oyJ4+yygOdhMun52rd1c2WNhiWq9ek/IPgl9TLY
- b/JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705592054; x=1706196854;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SwuaHqluR1Y5JxpZebqlgJ2NJ8ORccM92Gb37cL7c0k=;
- b=Nn4LubVOsIqVcLRxVMRur5ra9TO6wf0kyAIaK0j5wT0DlFVbVmbGPeAH2wJbPjai68
- cSFwB+1TstUIFcc4+jBWx8Rkv4oPvJGgvnZsTWpgMx17n7VQFBgPXm0Beq732Qy1SBYJ
- SZZzSY/gTBSzS9fJG/vqupw2NdxJW42HWF4nKa0FxExcwoMeiMvVPCDRKbh5UUFajtRE
- 5b18aO8wzQfdKl3bVOUqNmDRUQypqI3Q1+ceuFNo1Izm7por58G2wBu/nPMjFu6796j+
- xSSf4HjTKF4cFYWWGthhQWg68YyGUv8A6aNEPYsAHJ7YgPecCxywKz1wyyOHEuXBJWRP
- Wmgw==
-X-Gm-Message-State: AOJu0YzkIa4yeVJaliv7cmNI66Z1EUNehwcgMdHBNqL7yOdPM3JFZsD6
- dzffYHNIStDpWdrZNi4Aj/1A6vROXQg7qMTG01d+fYYmJUVkyvW82bMGXWfpePXxX6gTTXZIPXa
- 3+pYvcA==
-X-Google-Smtp-Source: AGHT+IHgz/rapFoR0xCb1hs55FmFDsAZD2p4fBl1uquM4awL1jz0Ag1TsFbBrCBDGGAhjRbwDGHBoQ==
-X-Received: by 2002:a5d:6712:0:b0:337:c4e2:a1de with SMTP id
- o18-20020a5d6712000000b00337c4e2a1demr532631wru.105.1705592054244; 
- Thu, 18 Jan 2024 07:34:14 -0800 (PST)
-Received: from localhost.localdomain (33.red-95-127-38.staticip.rima-tde.net.
- [95.127.38.33]) by smtp.gmail.com with ESMTPSA id
- i2-20020adff302000000b0033788e357e1sm4271671wro.108.2024.01.18.07.34.13
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Jan 2024 07:34:13 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH] ui/gtk: Strip trailing '\n' from error string arguments
-Date: Thu, 18 Jan 2024 16:34:11 +0100
-Message-ID: <20240118153411.2907-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQURd-0002QP-W3
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 10:36:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQURc-0003Il-Bd
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 10:36:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705592199;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=uBsr17taPm2+ngokB6yZXJL+jXFS94NlZZ954vewxlc=;
+ b=Nhg0bxF+P1Wm/737rnbcd4njqt4/G3j+5McHxj7PE8On+2oDRUpEUN3fzu4t2EjHAX5kpV
+ hjUQdb6uRUeSqozbs9uqhQ/hXRVVeOZgWNJ6H5ks6mS2yt9eDZKJMLQIB+7FK5IzdRoJyo
+ GvICWIbJDB8YfWgqFJgzemU1Pzx1WcE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-645-W-EP2NyTMViZO4pgZHqzDg-1; Thu, 18 Jan 2024 10:36:37 -0500
+X-MC-Unique: W-EP2NyTMViZO4pgZHqzDg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 09DA1185A780;
+ Thu, 18 Jan 2024 15:36:37 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.209])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D3F492BA;
+ Thu, 18 Jan 2024 15:36:35 +0000 (UTC)
+Date: Thu, 18 Jan 2024 16:36:34 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, qemu-block@nongnu.org,
+ Fiona Ebner <f.ebner@proxmox.com>, Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH 2/3] iotests: port 141 to Python for reliable QMP testing
+Message-ID: <ZalFggPWyDEfZhRc@redhat.com>
+References: <20240116190042.1363717-1-stefanha@redhat.com>
+ <20240116190042.1363717-3-stefanha@redhat.com>
+ <ZagWlhbvlH4Ff01S@redhat.com> <20240118145513.GA1490473@fedora>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="ruCH36XGeUsN9xyP"
+Content-Disposition: inline
+In-Reply-To: <20240118145513.GA1490473@fedora>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,37 +83,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-error_report() strings should not include trailing newlines.
 
-Noticed running:
+--ruCH36XGeUsN9xyP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-  $ spatch \
-    --macro-file scripts/cocci-macro-file.h \
-    --sp-file scripts/coccinelle/err-bad-newline.cocci \
-    --keep-comments --use-gitgrep --dir .
-  ./ui/gtk.c:1094:56:"gtk: unexpected touch event type\n"
+Am 18.01.2024 um 15:55 hat Stefan Hajnoczi geschrieben:
+> On Wed, Jan 17, 2024 at 07:04:06PM +0100, Kevin Wolf wrote:
+> > Am 16.01.2024 um 20:00 hat Stefan Hajnoczi geschrieben:
+> > > The common.qemu bash functions allow tests to interact with the QMP
+> > > monitor of a QEMU process. I spent two days trying to update 141 when
+> > > the order of the test output changed, but found it would still fail
+> > > occassionally because printf() and QMP events race with synchronous Q=
+MP
+> > > communication.
+> > >=20
+> > > I gave up and ported 141 to the existing Python API for QMP tests. The
+> > > Python API is less affected by the order in which QEMU prints output
+> > > because it does not print all QMP traffic by default.
+> > >=20
+> > > The next commit changes the order in which QMP messages are received.
+> > > Make 141 reliable first.
+> > >=20
+> > > Cc: Hanna Czenczek <hreitz@redhat.com>
+> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> >=20
+> > iotests 297 finds problems with the new Python code:
+> >=20
+> >  =3D=3D=3D pylint =3D=3D=3D
+> > +************* Module 141
+> > +141:82:0: C0301: Line too long (86/79) (line-too-long)
+> > +141:93:0: C0301: Line too long (86/79) (line-too-long)
+> > +141:94:0: C0301: Line too long (80/79) (line-too-long)
+> > +141:106:0: C0301: Line too long (85/79) (line-too-long)
+> > +141:107:0: C0301: Line too long (82/79) (line-too-long)
+> > +141:109:0: C0301: Line too long (82/79) (line-too-long)
+> > +141:117:0: C0301: Line too long (86/79) (line-too-long)
+> > +141:120:0: C0301: Line too long (86/79) (line-too-long)
+> > +141:129:0: C0301: Line too long (86/79) (line-too-long)
+> >  =3D=3D=3D mypy =3D=3D=3D
+> > +141:104: error: Value of type variable "Msg" of "log" cannot be "dict[=
+str, Any] | None"  [type-var]
+> > +141:114: error: Value of type variable "Msg" of "log" cannot be "dict[=
+str, Any] | None"  [type-var]
+> > +Found 2 errors in 1 file (checked 37 source files)
+>=20
+> I'm not sure how to run this but I manually ran pylint and mypy and
+> fixed those errors. Can you share how you ran this?
 
-Fixes: 5a4cb61ae1 ("ui/gtk: enable backend to send multi-touch events")
-Inspired-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- ui/gtk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I already answered this in IRC, but for the record: This is from running
+qemu-iotests 297, which is kind of a meta-test that runs the linters on
+Python files in qemu-iotests.
 
-diff --git a/ui/gtk.c b/ui/gtk.c
-index 810d7fc796..c819c72a20 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -1091,7 +1091,7 @@ static gboolean gd_touch_event(GtkWidget *widget, GdkEventTouch *touch,
-         type = INPUT_MULTI_TOUCH_TYPE_END;
-         break;
-     default:
--        warn_report("gtk: unexpected touch event type\n");
-+        warn_report("gtk: unexpected touch event type");
-         return FALSE;
-     }
- 
--- 
-2.41.0
+> The mypy errors are because the type system cannot express that
+> event_wait() only returns None when timeout=3D0. That's not the case in
+> 141 but mypy complains anyway, so I added an assertion that event is not
+> None to silence mypy.
+
+Sounds like the right solution to me.
+
+Kevin
+
+--ruCH36XGeUsN9xyP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmWpRYIACgkQfwmycsiP
+L9YVWg/+NSL7qC6onWYQoZuejd6k5eMGCBf9y4J+b07Kf0G88Em1eJD9Le9pBkxy
+SeEFIFNGoenSUxeU//RsJroDBBd47XUoZ0Ou3yYbC5XCYKThpseuYmkIzzwO66OJ
+obOhznct/jS740sMuCwfsAV+sxSZC7f66SMvwscppYLVBM2R0K57dIGn05K5FT7I
+qVyGQ08fqC7RmsXCYPHj5l6uuhI38jpc8ejsiX699d01mXp3LxEFPnFytmlY5LEF
+OOCYDJG2YfGgu4+9eh2uW8Dimv0tuSCY/SDxL2u5lalGQyQNYomkDJl4NJhJXq7e
+H+KCyBzmE2v4jmeNmel+TnBBxj8Erm8heTzYw8oR3tW4ZS75rKSVLc9IjAYS7d2i
+CGjT+T+vzgXHh/32dU1BQikVI6uNPluB38TAl+IB05BrTxsFeBWl/kLYgB5a0Ts2
+XbAQpXO1GmyOlGG5Gvht1uC0UaafVigcUYWKTFul508lEKWF1VtrNaxoRxpJQi+I
+cXdkgio1+84J6fsNBn141/Oascs44mEtaKn57jcBPrHxj/091agWBrSiCySYYnwr
+ZBTzOfSPtKKHdoy0AcCl/GA/jucRsAB+fEZ+hIQvnVJG9MC8S9mdQa3fVU9kG5It
+uThSAvR8BmyqVIu1EyJsOTslo2A1PDNjMMjy6EL++f8BqvhLX+Q=
+=HjUt
+-----END PGP SIGNATURE-----
+
+--ruCH36XGeUsN9xyP--
 
 
