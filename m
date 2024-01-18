@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDDFF831B88
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:38:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E610F831B8E
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:39:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQTX0-0004zV-NT; Thu, 18 Jan 2024 09:38:10 -0500
+	id 1rQTX0-00052t-TJ; Thu, 18 Jan 2024 09:38:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rQTWf-0004ux-1T
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:37:50 -0500
+ id 1rQTWi-0004xx-R8
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:37:58 -0500
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rQTWZ-0004T0-AI
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:37:47 -0500
+ id 1rQTWc-0004TI-VI
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:37:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705588663; x=1737124663;
+ t=1705588667; x=1737124667;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=scLXbUoC+ZDyb0yjC19HMwOlFwwAZ+GFvAD3rT1YF14=;
- b=Od+vLzl2UKCeNtHv4Ai+hw6Hs5ztnDPS2anO0u6ckNtpfbP6nERpPaZt
- bqUo1g/0eko/ZNZvhIgnishR5FfONfLxqGQiwiyWlaTrz8Lm12ZCy8WHJ
- xRCyMXleyHoqPboAeMH2oqhK/LT+8+Sd+9NDXjOpOgK5iuPVAEpzAPyVt
- uieiTroAUjJOgpnyGGlzW27k/nnP3DbgegZS0ikVLHgJwnClWU1B3FHzZ
- eydDfOYhr0Le8IIM32ZbNuoBQkzQcWZis/dgfLTeQwCqb5y2BiOkkgqUO
- bcpK+4uHFFX5iJBMf6PaCuk1Det/k5wesY2PeDl2VWDjjFGG2m33vf5m7 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="19057059"
-X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; d="scan'208";a="19057059"
+ bh=raK/CZUO9BGxPhxaK6FT5X9pHU+bYuQa1Xhf/KvW4Sk=;
+ b=h/yOhP5D5Hxl7z6Zb2/vJQbfnCuQHIlL41qxDMgRVR5/kyIXYk5/yKvv
+ N3/jRfZo9YE9BLxH08YLrS+k3CKbXy9aHxGKsZlkNa9lwjVHQQOWXtyMe
+ T+p1fcKfVJbPtD96S2Czaoda4dNKABAQ8NJGnUHlwcT+0kjjVN2wvCFQx
+ 3PT2b/g/8nQBQMobHNN5CmovfeI0viEsXCjwp6xKYhJbp9SCpquKL3GkD
+ YoeAF2xLrT12T35Zjvtb1cSQfyZ5qF6IRh1UFkjqPH+P5L9dtfa4S8DRG
+ Dsl6ryxvEYZgPVJCFMqYSF43dcUNScAXsluwDsNh502shPcztMRiD9wQH w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="19057100"
+X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; d="scan'208";a="19057100"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2024 06:36:10 -0800
+ 18 Jan 2024 06:36:12 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; 
-   d="scan'208";a="329252"
+   d="scan'208";a="329281"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa005.jf.intel.com with ESMTP; 18 Jan 2024 06:36:08 -0800
+ by orviesa005.jf.intel.com with ESMTP; 18 Jan 2024 06:36:10 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -47,10 +47,9 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  Yanan Wang <wangyanan55@huawei.com>
 Cc: qemu-devel@nongnu.org, Xiaoling Song <xiaoling.song@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 1/8] tests/unit/test-smp-parse.c: Use CPU number macros in
- invalid topology case
-Date: Thu, 18 Jan 2024 22:48:50 +0800
-Message-Id: <20240118144857.2124034-2-zhao1.liu@linux.intel.com>
+Subject: [PATCH 2/8] tests/unit/test-smp-parse.c: Bump max_cpus to 4096
+Date: Thu, 18 Jan 2024 22:48:51 +0800
+Message-Id: <20240118144857.2124034-3-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240118144857.2124034-1-zhao1.liu@linux.intel.com>
 References: <20240118144857.2124034-1-zhao1.liu@linux.intel.com>
@@ -81,57 +80,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Use MAX_CPUS/MIN_CPUS micros in invalid topology case. This gives us the
-flexibility to change the maximum and minimum CPU limits.
+PC mahine is trying to support up to 4096 vCPUs [1], so it's necessary
+to bump max_cpus in test-smp-parse to 4096 to cover the topological
+needs of future machines.
+
+[1]: https://lore.kernel.org/qemu-devel/20231208122611.32311-1-anisinha@redhat.com/
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- tests/unit/test-smp-parse.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ tests/unit/test-smp-parse.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-index 24972666a74d..20c663a006b3 100644
+index 20c663a006b3..55ba13bf7d15 100644
 --- a/tests/unit/test-smp-parse.c
 +++ b/tests/unit/test-smp-parse.c
-@@ -323,15 +323,21 @@ static const struct SMPTestData data_generic_invalid[] = {
-                         "sockets (2) * cores (4) * threads (2) "
-                         "== maxcpus (16) < smp_cpus (18)",
-     }, {
--        /* config: -smp 1
--         * should tweak the supported min CPUs to 2 for testing */
--        .config = SMP_CONFIG_GENERIC(T, 1, F, 0, F, 0, F, 0, F, 0),
-+        /*
-+         * config: -smp 1
-+         * The test machine should tweak the supported min CPUs to
-+         * 2 (MIN_CPUS + 1) for testing.
-+         */
-+        .config = SMP_CONFIG_GENERIC(T, MIN_CPUS, F, 0, F, 0, F, 0, F, 0),
-         .expect_error = "Invalid SMP CPUs 1. The min CPUs supported "
+@@ -20,8 +20,8 @@
+ #define T true
+ #define F false
+ 
+-#define MIN_CPUS 1   /* set the min CPUs supported by the machine as 1 */
+-#define MAX_CPUS 512 /* set the max CPUs supported by the machine as 512 */
++#define MIN_CPUS 1    /* set the min CPUs supported by the machine as 1 */
++#define MAX_CPUS 4096 /* set the max CPUs supported by the machine as 4096 */
+ 
+ #define SMP_MACHINE_NAME "TEST-SMP"
+ 
+@@ -333,13 +333,13 @@ static const struct SMPTestData data_generic_invalid[] = {
                          "by machine '" SMP_MACHINE_NAME "' is 2",
      }, {
--        /* config: -smp 512
--         * should tweak the supported max CPUs to 511 for testing */
--        .config = SMP_CONFIG_GENERIC(T, 512, F, 0, F, 0, F, 0, F, 0),
-+        /*
-+         * config: -smp 512
-+         * The test machine should tweak the supported max CPUs to
-+         * 511 (MAX_CPUS - 1) for testing.
-+         */
-+        .config = SMP_CONFIG_GENERIC(T, MAX_CPUS, F, 0, F, 0, F, 0, F, 0),
-         .expect_error = "Invalid SMP CPUs 512. The max CPUs supported "
-                         "by machine '" SMP_MACHINE_NAME "' is 511",
+         /*
+-         * config: -smp 512
++         * config: -smp 4096
+          * The test machine should tweak the supported max CPUs to
+-         * 511 (MAX_CPUS - 1) for testing.
++         * 4095 (MAX_CPUS - 1) for testing.
+          */
+-        .config = SMP_CONFIG_GENERIC(T, MAX_CPUS, F, 0, F, 0, F, 0, F, 0),
+-        .expect_error = "Invalid SMP CPUs 512. The max CPUs supported "
+-                        "by machine '" SMP_MACHINE_NAME "' is 511",
++        .config = SMP_CONFIG_GENERIC(T, 4096, F, 0, F, 0, F, 0, F, 0),
++        .expect_error = "Invalid SMP CPUs 4096. The max CPUs supported "
++                        "by machine '" SMP_MACHINE_NAME "' is 4095",
      },
-@@ -575,8 +581,8 @@ static void machine_generic_invalid_class_init(ObjectClass *oc, void *data)
-     MachineClass *mc = MACHINE_CLASS(oc);
+ };
  
-     /* Force invalid min CPUs and max CPUs */
--    mc->min_cpus = 2;
--    mc->max_cpus = 511;
-+    mc->min_cpus = MIN_CPUS + 1;
-+    mc->max_cpus = MAX_CPUS - 1;
- }
- 
- static void machine_with_dies_class_init(ObjectClass *oc, void *data)
 -- 
 2.34.1
 
