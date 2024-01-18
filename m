@@ -2,78 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1A7831BE0
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:57:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D910831BE5
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:58:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQTpK-0007ls-Kz; Thu, 18 Jan 2024 09:57:06 -0500
+	id 1rQTpy-0000OG-QX; Thu, 18 Jan 2024 09:57:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rQTpI-0007ke-KY
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:57:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <SRS0=KcIQ=I4=kaod.org=clg@ozlabs.org>)
+ id 1rQTpw-0000JF-5d; Thu, 18 Jan 2024 09:57:44 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rQTpH-0002AJ-7L
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:57:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705589822;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5LYEuvVNL3ejLSEBClVEEeru54w2Ey8wRsGgH9PgLZU=;
- b=dZRCSLQCGQVwgoiYM3U2w0S2X5nIe06EkzV+Xgfv+yQqaRx1zna9NXSofpUD2VL6fBleYq
- UoOAAOI930ilJyhbyOLe4VRDFvoAS9NhfgJtgH2m1dCMVm8y8jx/zs7b/b2VHUI0Av/vDU
- lOD8NrZq3KdUOUkVRsnWdf4lImri0yY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-373-0JlFTRDjPkOOG7zMLGQslA-1; Thu, 18 Jan 2024 09:56:55 -0500
-X-MC-Unique: 0JlFTRDjPkOOG7zMLGQslA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ (Exim 4.90_1) (envelope-from <SRS0=KcIQ=I4=kaod.org=clg@ozlabs.org>)
+ id 1rQTpu-0002Es-7d; Thu, 18 Jan 2024 09:57:43 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TG5St0nlpz4xVM;
+ Fri, 19 Jan 2024 01:57:34 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4299110AFA00;
- Thu, 18 Jan 2024 14:56:55 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.194.167])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6DDB311201;
- Thu, 18 Jan 2024 14:56:54 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3E4D921E680D; Thu, 18 Jan 2024 15:56:53 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Warner Losh <imp@bsdimp.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  "Dr. David Alan Gilbert" <dave@treblig.org>,
- Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,  Kevin Wolf <kwolf@redhat.com>,  Kyle
- Evans <kevans@freebsd.org>,  Peter Maydell <peter.maydell@linaro.org>,
- qemu-block@nongnu.org,  devel@lists.libvirt.org,  Laurent Vivier
- <laurent@vivier.eu>,  Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH 0/3] qapi/hmp/cli: Remove the deprecated 'singlestep'
-In-Reply-To: <20240117151430.29235-1-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 17 Jan 2024 16:14:27
- +0100")
-References: <20240117151430.29235-1-philmd@linaro.org>
-Date: Thu, 18 Jan 2024 15:56:53 +0100
-Message-ID: <87le8madvu.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TG5Sq6Fjmz4x2P;
+ Fri, 19 Jan 2024 01:57:31 +1100 (AEDT)
+Message-ID: <03ef8f5e-c1a9-4127-bbf7-3485619cb9e0@kaod.org>
+Date: Thu, 18 Jan 2024 15:57:25 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] ppc: add machine check injection HMP command
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
+References: <20240118143459.166994-1-npiggin@gmail.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240118143459.166994-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=KcIQ=I4=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,14 +65,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+Hello Nick,
 
-> Deprecated for 8.1, good to go for 9.0.
->
-> Based-on: <20240112100059.965041-5-thuth@redhat.com>
->           "Remove deprecated command line options"
+On 1/18/24 15:34, Nicholas Piggin wrote:
+> I'd like to resurrect this and get it merged, because it's quite
+> useful for testing (has caught several Linux bugs in the past).
+> 
+> IIRC the main concern David had last time it came up was that it
+> should have QMP commands too. Which is valid. But I ended up
+> deciding it wouldn't be nice to expose this low level interface too
+> much, it would be better to use maybe a higher level error injection
+> interface that would be emulated in more detail (e.g., not just a
+> MCE, but would set relevant FIR registers and go through error
+> handling logic).
+> 
+> Since x86 has a low level 'mce' hmp command without qmp equivalent,
+> and since better error injection might take some time, I'd like to
+> just hold nose and take this for now.
 
-Series
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+
+I reworked this series some years ago :
+
+   https://lore.kernel.org/qemu-devel/20211013214042.618918-1-clg@kaod.org/
+
+Did you take into account the changes ?
+
+
+Thanks,
+
+C.
+
+
+
+> Thanks,
+> Nick
+> 
+> Nicholas Piggin (4):
+>    nmi: add MCE class for implementing machine check injection commands
+>    ppc/spapr: Implement mce injection
+>    target/ppc: Add machine check interrupt injection helper
+>    ppc/pnv: Implement mce injection
+> 
+>   include/hw/nmi.h             | 20 ++++++++++++
+>   include/hw/ppc/spapr.h       |  3 ++
+>   include/monitor/hmp-target.h |  1 -
+>   include/monitor/hmp.h        |  1 +
+>   target/ppc/cpu.h             |  1 +
+>   hw/core/nmi.c                | 61 ++++++++++++++++++++++++++++++++++++
+>   hw/ppc/pnv.c                 | 55 ++++++++++++++++++++++++++++++++
+>   hw/ppc/spapr.c               | 54 +++++++++++++++++++++++++++++++
+>   hw/ppc/spapr_events.c        |  3 +-
+>   monitor/hmp-cmds.c           |  1 +
+>   target/ppc/excp_helper.c     |  7 +++++
+>   target/ppc/ppc-qmp-cmds.c    | 10 ++++++
+>   hmp-commands.hx              | 20 +++++++++++-
+>   13 files changed, 233 insertions(+), 4 deletions(-)
+> 
 
 
