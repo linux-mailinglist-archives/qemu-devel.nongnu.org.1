@@ -2,72 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6790F831C3B
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3C2831C3A
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 16:21:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQUBT-00053x-1f; Thu, 18 Jan 2024 10:19:59 -0500
+	id 1rQUBw-00059c-Ug; Thu, 18 Jan 2024 10:20:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQUBQ-00053e-Ji
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 10:19:56 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQUBv-00059K-15
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 10:20:27 -0500
 Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQUBO-0005Tq-Um
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 10:19:56 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQUBt-0005qM-HI
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 10:20:26 -0500
 Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-337d6d7fbd5so262236f8f.0
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 07:19:53 -0800 (PST)
+ ffacd0b85a97d-337c4ec9e46so1297199f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 07:20:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705591192; x=1706195992; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1705591224; x=1706196024; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=iCbAnUjvgKG20+9DpWHVRnqgTMixpS8WefegCWeTDjw=;
- b=yrHZ7h1muV/R8hwPXnRNpm6bgAwAXRXh3ByhuQRn0i6HQhny6nDhWi+RXZpAxcmyTy
- 5qYFXbYJp78SBe7gHFS81vz5KwJ5SMQh+HgW3zjJPDwRZ14OQ4P0k0NZsK129qkJz/WI
- ExLGp7wblRkMKUGY39zePgjnpA6kk09U1UekbgLUl7qDPa/mIZ7irWQDmZcYxvFU/vtO
- 55PGWDoTbudWtitHlExRRoJ1Q22/QC7oNrtJtijGTFvMboqOw2nfxL7mZH7HMLZOtrIF
- RKMq8IzAo8vlEQcMj1qdBZSAvSkigJ4Sken78LtRgmWzvHapjxgw1ecwbxBCbL30TTHk
- 7ndQ==
+ bh=WlkvkmGu3v052Jxiy0qSWoXaSU2xt7d1c5IMx6XOSLw=;
+ b=AUnec7WzuqyJ4qusSg23qgGil8iyl6fQxVnZ1GNo2iY5b+rgxeREJSzikLQOkRGBfP
+ 7bSQ9zTd4JW8KIbIR8RUz+rqEX+aya6kXTqx4Dun3i98JDnoBvpciNLNQT1N0OYtLyqG
+ 9NhnoBPBlXMMU4R+8zVi3qTDOBq7GrzYvydkFQ3KTkZ2MA2k5CAe/4Jbs8QFBagJNqaE
+ 8H0vcY72oox16Oaqe0LMTnsSyylnAIHmdF/oqxG4tOkoJiTfo+YM6kezw1+JfTeAe2bL
+ hZCbkqe2Vo5Mt4X0DYbMZ272ox987DHMn3T675D7247vTVatbr9aHR7vdZFy6NF2Glrb
+ FGFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705591192; x=1706195992;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1705591224; x=1706196024;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iCbAnUjvgKG20+9DpWHVRnqgTMixpS8WefegCWeTDjw=;
- b=wTi/uUsjV3KqC8BiPkZNqkGzCvTN9vitr7Plw6tVYgwV7wnonGPb1FqkhpKD3ZsKmc
- uwDUUXZhCCXcn9QjkavBpjna25t4KxmrQv6YDThAKVk0aMtUMEDTZk0IkdFPbP5eSnPU
- sIAOS7irAkCZzb3TiNptSqmmT/DMzhUd58/DqVLvCG6PdXNhNrzHM8wiV/RDEl1hdy3P
- chCOYiBeKvbDTaE0CKMXP8qr+1a1TIjdyAtHzkCT4QHmaGc0AEQAmukBtawsYbQ8Xm8C
- TeKKOdd+DbTwnjOV17hBfqQL+4rAkQPEQ8VbOkiSSuJJi8KTqbMMTlnun8NStsxCnOth
- ATqw==
-X-Gm-Message-State: AOJu0YxrYciGqrvpn8qbXQcWOgOxHl2L5vsXHoCiAHGlX8eigfZfSCpn
- bzkBP7lWGQot5vEleYWxlabwGFNIETxYBbNOTRv3wAInXf6LtnAfzmZ0dbB6MVM=
-X-Google-Smtp-Source: AGHT+IFo6M2BJ37VNJZj8zQXThYttHtIH3jMa8a8GrY+dKcuLdhUUa5jGhiPavtkUKrmv1cGXo2V9Q==
-X-Received: by 2002:a5d:4692:0:b0:337:9a69:25c1 with SMTP id
- u18-20020a5d4692000000b003379a6925c1mr690227wrq.57.1705591191667; 
- Thu, 18 Jan 2024 07:19:51 -0800 (PST)
+ bh=WlkvkmGu3v052Jxiy0qSWoXaSU2xt7d1c5IMx6XOSLw=;
+ b=CSjcvmvSvGom06JKefjuopxKNigXXy+XZjem9Sm3r5brb9Jhh+EwbSu/Ngt6dCXe1E
+ 23pNoNlN7bzP+gpGzip5a8MG8pJTgv042DJG8lngpCnw1GzB9+2ml14Sj8JvtJFrCBRv
+ RFjUftGpxPLdyz0rTLF1THORIQ552LfAZ21M0PSTH3X2q1l9L0kowPyNW9ZQmPM9RB5A
+ b8ShTMEB5qERFEsC+1ArDFZfsS0QtDIaW/pb/pfY2nVxrpROBfprCG1JC+pgemnc/qwT
+ EEMudw/CGplV19QFNPpOYsS3ZlzBfo5aeXO+Rw9uSJS3aIKXDNruXOZ4Tt1zNx1rKdH3
+ uIEQ==
+X-Gm-Message-State: AOJu0YzPbBXCGsUPKmzoIMdjY2JY33E04GWKT+BcEKXmBo46Qw/zmGl1
+ +WONIlIz/OjG5rTsURAGQySXOFIWrYZouH790TjqI5YHYfAix/dVYtNDOYIP0Xc=
+X-Google-Smtp-Source: AGHT+IHeGCqMhm8u5mxJyycuiGl+UMxtZzZ3LuhhxZfbcQFpJR9/vb9DuPLTxXicJKX1Bna05w/zfg==
+X-Received: by 2002:adf:ed02:0:b0:333:2fd2:7699 with SMTP id
+ a2-20020adfed02000000b003332fd27699mr304313wro.138.1705591224201; 
+ Thu, 18 Jan 2024 07:20:24 -0800 (PST)
 Received: from [192.168.108.175] (33.red-95-127-38.staticip.rima-tde.net.
  [95.127.38.33]) by smtp.gmail.com with ESMTPSA id
- d6-20020adff846000000b0033725783839sm4256057wrq.110.2024.01.18.07.19.50
+ d6-20020adff846000000b0033725783839sm4256057wrq.110.2024.01.18.07.20.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 Jan 2024 07:19:51 -0800 (PST)
-Message-ID: <cb1b39b3-52e0-451e-b07b-ca8c9613a32a@linaro.org>
-Date: Thu, 18 Jan 2024 16:16:29 +0100
+ Thu, 18 Jan 2024 07:20:23 -0800 (PST)
+Message-ID: <1f34e941-5b0a-4091-95f9-0d0c8e302aa9@linaro.org>
+Date: Thu, 18 Jan 2024 16:17:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] hw/ppc/spapr: Rename 'softmmu'
+Subject: Re: [PATCH] hw/arm/virt.c: Remove newline from error_report() string
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org
-References: <20240118133206.158453-1-npiggin@gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20240118131649.2726375-1-peter.maydell@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240118133206.158453-1-npiggin@gmail.com>
+In-Reply-To: <20240118131649.2726375-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::431;
@@ -78,7 +75,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,17 +91,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/1/24 14:32, Nicholas Piggin wrote:
-> I grabbed Philippe's series series and tried to use a more
-> agreeable name. Further disagreement is okay, but must come
-> with a better alternative :) would be good to get this out of
-> the way. I actually don't think softmmu is a great term for it
-> either even in isolation, so would be good to move away from it.
+On 18/1/24 14:16, Peter Maydell wrote:
+> error_report() strings should not include trailing newlines; remove
+> the newline from the error we print when devices won't fit into the
+> address space of the CPU.
+> 
+> This commit also fixes the accidental hardcoded tabs that were in
+> this line, since we have to touch the line anyway.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   hw/arm/virt.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-Eh thanks for the respin Nicholas! I'm happy with the new name :)
-
-Series:
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
 
 
