@@ -2,42 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0569831374
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:57:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 131C8831368
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:56:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNEh-0000vX-A7; Thu, 18 Jan 2024 02:54:51 -0500
+	id 1rQNEi-0000vo-3j; Thu, 18 Jan 2024 02:54:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNEd-0000tn-La; Thu, 18 Jan 2024 02:54:47 -0500
+ id 1rQNEf-0000us-S1; Thu, 18 Jan 2024 02:54:49 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNEc-0007MI-4e; Thu, 18 Jan 2024 02:54:47 -0500
+ id 1rQNEe-0007Oy-AI; Thu, 18 Jan 2024 02:54:49 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 90F3C45036;
+ by isrv.corpit.ru (Postfix) with ESMTP id A082845037;
  Thu, 18 Jan 2024 10:54:35 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id BA0426619F;
+ by tsrv.corpit.ru (Postfix) with SMTP id CC44C661A0;
  Thu, 18 Jan 2024 10:54:05 +0300 (MSK)
-Received: (nullmailer pid 2381664 invoked by uid 1000);
+Received: (nullmailer pid 2381667 invoked by uid 1000);
  Thu, 18 Jan 2024 07:54:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bin Meng <bmeng@tinylab.org>,
- Heinrich Schuchardt <xypron.glpk@gmx.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Max Erenberg <merenber@uwaterloo.ca>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 12/38] hw/net: cadence_gem: Fix MDIO_OP_xxx values
-Date: Thu, 18 Jan 2024 10:52:39 +0300
-Message-Id: <20240118075404.2381519-12-mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 13/38] edu: fix DMA range upper bound check
+Date: Thu, 18 Jan 2024 10:52:40 +0300
+Message-Id: <20240118075404.2381519-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,41 +59,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bin Meng <bmeng@tinylab.org>
+From: Max Erenberg <merenber@uwaterloo.ca>
 
-Testing upstream U-Boot with 'sifive_u' machine we see:
+The edu_check_range function checks that start <= end1 < end2, where
+end1 is the upper bound (exclusive) of the guest-supplied DMA range and
+end2 is the upper bound (exclusive) of the device's allowed DMA range.
+When the guest tries to transfer exactly DMA_SIZE (4096) bytes, end1
+will be equal to end2, so the check fails and QEMU aborts with this
+puzzling error message (newlines added for formatting):
 
-  => dhcp
-  ethernet@10090000: PHY present at 0
-  Could not get PHY for ethernet@10090000: addr 0
-  phy_connect failed
+  qemu: hardware error: EDU: DMA range
+    0x0000000000040000-0x0000000000040fff out of bounds
+   (0x0000000000040000-0x0000000000040fff)!
 
-This has been working till QEMU 8.1 but broken since QEMU 8.2.
+By checking end1 <= end2 instead, guests will be allowed to transfer
+exactly 4096 bytes. It is not necessary to explicitly check for
+start <= end1 because the previous two checks (within(addr, start, end2)
+and end1 > addr) imply start < end1.
 
-Fixes: 1b09eeb122aa ("hw/net/cadence_gem: use FIELD to describe PHYMNTNC register fields")
-Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
-Signed-off-by: Bin Meng <bmeng@tinylab.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Fixes: b30934cb52a7 ("hw: misc, add educational driver", 2015-01-21)
+Signed-off-by: Max Erenberg <merenber@uwaterloo.ca>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 0c7ffc977195c1f71c8132eb5616827e589d4a0f)
+(cherry picked from commit 2c5107e1b455d4a157124f021826ead4e04b4aea)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c
-index 296bba238e..472ce9c8cf 100644
---- a/hw/net/cadence_gem.c
-+++ b/hw/net/cadence_gem.c
-@@ -199,8 +199,8 @@ REG32(PHYMNTNC, 0x34) /* Phy Maintenance reg */
-     FIELD(PHYMNTNC, PHY_ADDR, 23, 5)
-     FIELD(PHYMNTNC, OP, 28, 2)
-     FIELD(PHYMNTNC, ST, 30, 2)
--#define MDIO_OP_READ    0x3
--#define MDIO_OP_WRITE   0x2
-+#define MDIO_OP_READ    0x2
-+#define MDIO_OP_WRITE   0x1
+diff --git a/hw/misc/edu.c b/hw/misc/edu.c
+index a1f8bc77e7..e64a246d3f 100644
+--- a/hw/misc/edu.c
++++ b/hw/misc/edu.c
+@@ -115,7 +115,7 @@ static void edu_check_range(uint64_t addr, uint64_t size1, uint64_t start,
+     uint64_t end2 = start + size2;
  
- REG32(RXPAUSE, 0x38) /* RX Pause Time reg */
- REG32(TXPAUSE, 0x3c) /* TX Pause Time reg */
+     if (within(addr, start, end2) &&
+-            end1 > addr && within(end1, start, end2)) {
++            end1 > addr && end1 <= end2) {
+         return;
+     }
+ 
 -- 
 2.39.2
 
