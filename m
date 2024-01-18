@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD60F831363
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:55:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2FE4831392
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:58:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNEF-0000R4-VP; Thu, 18 Jan 2024 02:54:24 -0500
+	id 1rQNEI-0000S0-OR; Thu, 18 Jan 2024 02:54:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNED-0000QW-RN; Thu, 18 Jan 2024 02:54:21 -0500
+ id 1rQNEF-0000RZ-Vp; Thu, 18 Jan 2024 02:54:23 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNEC-0007LD-8O; Thu, 18 Jan 2024 02:54:21 -0500
+ id 1rQNEE-0007LY-Cm; Thu, 18 Jan 2024 02:54:23 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 500C945032;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6180745033;
  Thu, 18 Jan 2024 10:54:35 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7A7976619B;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8BF2B6619C;
  Thu, 18 Jan 2024 10:54:05 +0300 (MSK)
-Received: (nullmailer pid 2381652 invoked by uid 1000);
+Received: (nullmailer pid 2381655 invoked by uid 1000);
  Thu, 18 Jan 2024 07:54:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Pavel Pisa <pisa@cmp.felk.cvut.cz>,
- Grant Ramsay <gramsay@enphaseenergy.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 08/38] hw/net/can/sja1000: fix bug for single
- acceptance filter and standard frame
-Date: Thu, 18 Jan 2024 10:52:35 +0300
-Message-Id: <20240118075404.2381519-8-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Xu Lu <luxu.kernel@bytedance.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 09/38] target/riscv: Fix mcycle/minstret increment
+ behavior
+Date: Thu, 18 Jan 2024 10:52:36 +0300
+Message-Id: <20240118075404.2381519-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
@@ -60,38 +61,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pavel Pisa <pisa@cmp.felk.cvut.cz>
+From: Xu Lu <luxu.kernel@bytedance.com>
 
-A CAN sja1000 standard frame filter mask has been computed and applied
-incorrectly for standard frames when single Acceptance Filter Mode
-(MOD_AFM = 1) has been selected. The problem has not been found
-by Linux kernel testing because it uses dual filter mode (MOD_AFM = 0)
-and leaves falters fully open.
+The mcycle/minstret counter's stop flag is mistakenly updated on a copy
+on stack. Thus the counter increments even when the CY/IR bit in the
+mcountinhibit register is set. This commit corrects its behavior.
 
-The problem has been noticed by Grant Ramsay when testing with Zephyr
-RTOS which uses single filter mode.
-
-Signed-off-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
-Reported-by: Grant Ramsay <gramsay@enphaseenergy.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2028
-Fixes: 733210e754 ("hw/net/can: SJA1000 chip register level emulation")
-Message-ID: <20240103231426.5685-1-pisa@fel.cvut.cz>
-(cherry picked from commit 25145a7d7735344a469551946fc2a7f19eb4aa3d)
+Fixes: 3780e33732f88 (target/riscv: Support mcycle/minstret write operation)
+Signed-off-by: Xu Lu <luxu.kernel@bytedance.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 5cb0e7abe1635cb82e0033260dac2b910d142f8c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/can/can_sja1000.c b/hw/net/can/can_sja1000.c
-index 73201f9139..575df7d2f8 100644
---- a/hw/net/can/can_sja1000.c
-+++ b/hw/net/can/can_sja1000.c
-@@ -108,7 +108,7 @@ void can_sja_single_filter(struct qemu_can_filter *filter,
-         }
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index fde7ce1a53..c50a33397c 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -907,11 +907,11 @@ static int write_mhpmcounterh(CPURISCVState *env, int csrno, target_ulong val)
+ static RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
+                                          bool upper_half, uint32_t ctr_idx)
+ {
+-    PMUCTRState counter = env->pmu_ctrs[ctr_idx];
+-    target_ulong ctr_prev = upper_half ? counter.mhpmcounterh_prev :
+-                                         counter.mhpmcounter_prev;
+-    target_ulong ctr_val = upper_half ? counter.mhpmcounterh_val :
+-                                        counter.mhpmcounter_val;
++    PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
++    target_ulong ctr_prev = upper_half ? counter->mhpmcounterh_prev :
++                                         counter->mhpmcounter_prev;
++    target_ulong ctr_val = upper_half ? counter->mhpmcounterh_val :
++                                        counter->mhpmcounter_val;
  
-         filter->can_mask = (uint32_t)amr[0] << 3;
--        filter->can_mask |= (uint32_t)amr[1] << 5;
-+        filter->can_mask |= (uint32_t)amr[1] >> 5;
-         filter->can_mask = ~filter->can_mask & QEMU_CAN_SFF_MASK;
-         if (!(amr[1] & 0x10)) {
-             filter->can_mask |= QEMU_CAN_RTR_FLAG;
+     if (get_field(env->mcountinhibit, BIT(ctr_idx))) {
+         /*
+@@ -919,12 +919,12 @@ static RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
+          * stop the icount counting. Just return the counter value written by
+          * the supervisor to indicate that counter was not incremented.
+          */
+-        if (!counter.started) {
++        if (!counter->started) {
+             *val = ctr_val;
+             return RISCV_EXCP_NONE;
+         } else {
+             /* Mark that the counter has been stopped */
+-            counter.started = false;
++            counter->started = false;
+         }
+     }
+ 
 -- 
 2.39.2
 
