@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27DF283214B
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 23:03:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B53832154
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 23:04:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQaSb-00075s-Fe; Thu, 18 Jan 2024 17:02:05 -0500
+	id 1rQaSV-00072T-OK; Thu, 18 Jan 2024 17:01:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rQaSR-00070M-VR; Thu, 18 Jan 2024 17:01:55 -0500
+ id 1rQaSS-00070p-VM; Thu, 18 Jan 2024 17:01:56 -0500
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rQaSQ-0005FS-4R; Thu, 18 Jan 2024 17:01:55 -0500
+ id 1rQaSR-0005Hh-74; Thu, 18 Jan 2024 17:01:56 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id B36C14E62ED;
- Thu, 18 Jan 2024 23:01:52 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id B59104E6004;
+ Thu, 18 Jan 2024 23:01:53 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id RQ9UPtijDn9i; Thu, 18 Jan 2024 23:01:50 +0100 (CET)
+ with ESMTP id wgQCsgZQ8NNF; Thu, 18 Jan 2024 23:01:51 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id BFFA34E628A; Thu, 18 Jan 2024 23:01:50 +0100 (CET)
-Message-Id: <2ae612eeb7f7712a4a3d1d13e08d218fb0a04e0b.1705614747.git.balaton@eik.bme.hu>
+ id C8F264E62A2; Thu, 18 Jan 2024 23:01:51 +0100 (CET)
+Message-Id: <281ce504db0192be0673f3525ea59d425bb1e5e0.1705614747.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1705614747.git.balaton@eik.bme.hu>
 References: <cover.1705614747.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v5 8/9] target/ppc: Clean up ifdefs in excp_helper.c, part 3
+Subject: [PATCH v5 9/9] target/ppc: Remove interrupt handler wrapper functions
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -37,7 +37,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org
-Date: Thu, 18 Jan 2024 23:01:50 +0100 (CET)
+Date: Thu, 18 Jan 2024 23:01:51 +0100 (CET)
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -60,80 +60,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Concatenate #if blocks that are ending then beginning on the next line
-again.
+These wrappers call out to handle POWER7 and newer in separate
+functions but reduce to the generic case when TARGET_PPC64 is not
+defined. It is easy enough to include the switch in the beginning of
+the generic functions to branch out to the specific functions and get
+rid of these wrappers. This avoids one indirection and entitely
+compiles out the switch without TARGET_PPC64.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/excp_helper.c | 15 ++-------------
- 1 file changed, 2 insertions(+), 13 deletions(-)
+ target/ppc/excp_helper.c | 70 ++++++++++++++++++----------------------
+ 1 file changed, 31 insertions(+), 39 deletions(-)
 
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 2d4a72883f..5124c3e6b5 100644
+index 5124c3e6b5..de51627c4c 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -2496,10 +2496,8 @@ void helper_raise_exception(CPUPPCState *env, uint32_t exception)
- {
-     raise_exception_err_ra(env, exception, 0, 0);
- }
--#endif /* CONFIG_TCG */
- 
- #ifndef CONFIG_USER_ONLY
--#ifdef CONFIG_TCG
- void helper_store_msr(CPUPPCState *env, target_ulong val)
- {
-     uint32_t excp = hreg_store_msr(env, val, 0);
-@@ -2605,9 +2603,7 @@ void helper_hrfid(CPUPPCState *env)
- {
-     do_rfi(env, env->spr[SPR_HSRR0], env->spr[SPR_HSRR1]);
- }
--#endif /* TARGET_PPC64 */
- 
--#ifdef TARGET_PPC64
- void helper_rfebb(CPUPPCState *env, target_ulong s)
- {
-     target_ulong msr = env->msr;
-@@ -2707,10 +2703,8 @@ void helper_rfmci(CPUPPCState *env)
-     /* FIXME: choose CSRR1 or MCSRR1 based on cpu type */
-     do_rfi(env, env->spr[SPR_BOOKE_MCSRR0], env->spr[SPR_BOOKE_MCSRR1]);
- }
--#endif /* CONFIG_TCG */
--#endif /* !defined(CONFIG_USER_ONLY) */
-+#endif /* !CONFIG_USER_ONLY */
- 
--#ifdef CONFIG_TCG
- void helper_tw(CPUPPCState *env, target_ulong arg1, target_ulong arg2,
-                uint32_t flags)
- {
-@@ -2738,9 +2732,7 @@ void helper_td(CPUPPCState *env, target_ulong arg1, target_ulong arg2,
-     }
+@@ -1921,8 +1921,21 @@ static int p9_next_unmasked_interrupt(CPUPPCState *env)
  }
  #endif /* TARGET_PPC64 */
--#endif /* CONFIG_TCG */
  
--#ifdef CONFIG_TCG
- static uint32_t helper_SIMON_LIKE_32_64(uint32_t x, uint64_t key, uint32_t lane)
+-static int ppc_next_unmasked_interrupt_generic(CPUPPCState *env)
++static int ppc_next_unmasked_interrupt(CPUPPCState *env)
  {
-     const uint16_t c = 0xfffc;
-@@ -2851,11 +2843,8 @@ HELPER_HASH(HASHST, env->spr[SPR_HASHKEYR], true, NPHIE)
- HELPER_HASH(HASHCHK, env->spr[SPR_HASHKEYR], false, NPHIE)
- HELPER_HASH(HASHSTP, env->spr[SPR_HASHPKEYR], true, PHIE)
- HELPER_HASH(HASHCHKP, env->spr[SPR_HASHPKEYR], false, PHIE)
--#endif /* CONFIG_TCG */
++#ifdef TARGET_PPC64
++    switch (env->excp_model) {
++    case POWERPC_EXCP_POWER7:
++        return p7_next_unmasked_interrupt(env);
++    case POWERPC_EXCP_POWER8:
++        return p8_next_unmasked_interrupt(env);
++    case POWERPC_EXCP_POWER9:
++    case POWERPC_EXCP_POWER10:
++        return p9_next_unmasked_interrupt(env);
++    default:
++        break;
++    }
++#endif
+     bool async_deliver;
  
- #ifndef CONFIG_USER_ONLY
--#ifdef CONFIG_TCG
--
- /* Embedded.Processor Control */
- static int dbell2irq(target_ulong rb)
- {
-@@ -3197,5 +3186,5 @@ bool ppc_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
-     return false;
+     /* External reset */
+@@ -2033,23 +2046,6 @@ static int ppc_next_unmasked_interrupt_generic(CPUPPCState *env)
+     return 0;
  }
  
--#endif /* CONFIG_TCG */
- #endif /* !CONFIG_USER_ONLY */
-+#endif /* CONFIG_TCG */
+-static int ppc_next_unmasked_interrupt(CPUPPCState *env)
+-{
+-    switch (env->excp_model) {
+-#ifdef TARGET_PPC64
+-    case POWERPC_EXCP_POWER7:
+-        return p7_next_unmasked_interrupt(env);
+-    case POWERPC_EXCP_POWER8:
+-        return p8_next_unmasked_interrupt(env);
+-    case POWERPC_EXCP_POWER9:
+-    case POWERPC_EXCP_POWER10:
+-        return p9_next_unmasked_interrupt(env);
+-#endif
+-    default:
+-        return ppc_next_unmasked_interrupt_generic(env);
+-    }
+-}
+-
+ /*
+  * Sets CPU_INTERRUPT_HARD if there is at least one unmasked interrupt to be
+  * delivered and clears CPU_INTERRUPT_HARD otherwise.
+@@ -2279,8 +2275,24 @@ static void p9_deliver_interrupt(CPUPPCState *env, int interrupt)
+ }
+ #endif /* TARGET_PPC64 */
+ 
+-static void ppc_deliver_interrupt_generic(CPUPPCState *env, int interrupt)
++static void ppc_deliver_interrupt(CPUPPCState *env, int interrupt)
+ {
++#ifdef TARGET_PPC64
++    switch (env->excp_model) {
++    case POWERPC_EXCP_POWER7:
++        p7_deliver_interrupt(env, interrupt);
++        return;
++    case POWERPC_EXCP_POWER8:
++        p8_deliver_interrupt(env, interrupt);
++        return;
++    case POWERPC_EXCP_POWER9:
++    case POWERPC_EXCP_POWER10:
++        p9_deliver_interrupt(env, interrupt);
++        return;
++    default:
++        break;
++    }
++#endif
+     PowerPCCPU *cpu = env_archcpu(env);
+ 
+     switch (interrupt) {
+@@ -2383,26 +2395,6 @@ static void ppc_deliver_interrupt_generic(CPUPPCState *env, int interrupt)
+     }
+ }
+ 
+-static void ppc_deliver_interrupt(CPUPPCState *env, int interrupt)
+-{
+-    switch (env->excp_model) {
+-#ifdef TARGET_PPC64
+-    case POWERPC_EXCP_POWER7:
+-        p7_deliver_interrupt(env, interrupt);
+-        break;
+-    case POWERPC_EXCP_POWER8:
+-        p8_deliver_interrupt(env, interrupt);
+-        break;
+-    case POWERPC_EXCP_POWER9:
+-    case POWERPC_EXCP_POWER10:
+-        p9_deliver_interrupt(env, interrupt);
+-        break;
+-#endif
+-    default:
+-        ppc_deliver_interrupt_generic(env, interrupt);
+-    }
+-}
+-
+ void ppc_cpu_do_system_reset(CPUState *cs)
+ {
+     PowerPCCPU *cpu = POWERPC_CPU(cs);
 -- 
 2.30.9
 
