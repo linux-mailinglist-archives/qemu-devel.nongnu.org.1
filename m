@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AE18313BA
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 09:00:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5AF8313B5
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 09:00:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNHI-0002jD-Pd; Thu, 18 Jan 2024 02:57:32 -0500
+	id 1rQNHH-0002VB-RU; Thu, 18 Jan 2024 02:57:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNH2-0001xP-32; Thu, 18 Jan 2024 02:57:17 -0500
+ id 1rQNH3-0001xf-4L; Thu, 18 Jan 2024 02:57:17 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNH0-00083E-G5; Thu, 18 Jan 2024 02:57:15 -0500
+ id 1rQNH1-00083U-Is; Thu, 18 Jan 2024 02:57:16 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 56E9745050;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6600645051;
  Thu, 18 Jan 2024 10:54:37 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 81DB6661B8;
+ by tsrv.corpit.ru (Postfix) with SMTP id 92418661B9;
  Thu, 18 Jan 2024 10:54:07 +0300 (MSK)
-Received: (nullmailer pid 2381741 invoked by uid 1000);
+Received: (nullmailer pid 2381744 invoked by uid 1000);
  Thu, 18 Jan 2024 07:54:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
- Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 37/38] target/hppa: Fix IOR and ISR on error in probe
-Date: Thu, 18 Jan 2024 10:53:04 +0300
-Message-Id: <20240118075404.2381519-37-mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 38/38] target/hppa: Update SeaBIOS-hppa to version 15
+Date: Thu, 18 Jan 2024 10:53:05 +0300
+Message-Id: <20240118075404.2381519-38-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
@@ -62,30 +61,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Put correct values (depending on CPU arch) into IOR and ISR on fault.
+SeaBIOS-hppa version 15:
+- Fix OpenBSD 7.4 boot (PDC_MEM_MAP call returned wrong values)
+
+SeaBIOS-hppa version 14 comes with those fixes:
+- Fix 32-bit HP-UX crash (fix in PDC_FIND_MODULE call)
+- Fix NetBSD boot (power button fix and add option to disable it)
+- Fix FPU detection on NetBSD
+- Add MEMORY_HPA module on B160L
+- Fix detection of mptsas and esp scsi controllers
+- Fix terminate DMA transfer in esp driver (Mark Cave-Ayland)
+- Allow booting from esp controller
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 31efbe72c6cc54b9cbc2505d78870a8a87a8d392)
+(cherry picked from commit 4bda8224fa89ab28958644c5f1a4117886fe8418)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
-index 7f607c3afd..ce15469465 100644
---- a/target/hppa/op_helper.c
-+++ b/target/hppa/op_helper.c
-@@ -351,11 +351,7 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
-     excp = hppa_get_physical_address(env, addr, mmu_idx, 0, &phys,
-                                      &prot, NULL);
-     if (excp >= 0) {
--        if (env->psw & PSW_Q) {
--            /* ??? Needs tweaking for hppa64.  */
--            env->cr[CR_IOR] = addr;
--            env->cr[CR_ISR] = addr >> 32;
--        }
-+        hppa_set_ior_and_isr(env, addr, MMU_IDX_MMU_DISABLED(mmu_idx));
-         if (excp == EXCP_DTLB_MISS) {
-             excp = EXCP_NA_DTLB_MISS;
-         }
+diff --git a/pc-bios/hppa-firmware.img b/pc-bios/hppa-firmware.img
+index ab715f0ecd..1b3a841825 100644
+Binary files a/pc-bios/hppa-firmware.img and b/pc-bios/hppa-firmware.img differ
 -- 
 2.39.2
 
