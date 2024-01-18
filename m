@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F28831925
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:27:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0E4831913
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:25:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQRS3-00044Q-5k; Thu, 18 Jan 2024 07:24:55 -0500
+	id 1rQRRy-0003bK-Fr; Thu, 18 Jan 2024 07:24:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rQRRm-0003Rl-MG
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:24:38 -0500
+ id 1rQRRn-0003Tt-LM
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:24:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rQRRk-00069Y-K9
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:24:38 -0500
+ id 1rQRRl-00069e-CP
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:24:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705580675;
+ s=mimecast20190719; t=1705580676;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6iYFJ1omtBZXJlFu5GK/KyeFIiu1spB8a/9O+0pfZj4=;
- b=eb1oba14neaAoCmkO4kmxCvI95ghdfZLQjVFlJhXNl7H17U/FDbpC2Ih+BdVIPIlWPrp3C
- 8+hSKt9fdUTGv9nLSw1mkKrEophvReEbEupGvN45j5Gm8DXP6uAeZv39u10MolADtX32VQ
- MhNYIjp/N/MHvSgIGCpCF51EcaErHuM=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3zwo8gv+Nfm+lDqFRavE7UEJZC+0js1OM/QRX97Z4do=;
+ b=csDfVfq5FTroNvSUqDQ4SvO50Js0PhZ4uJ0VMPklLPfNTNZCPu0+Hh+uHfDEYXnobBWd9u
+ mh91dta4af5a9wNPtrmsfOaTMbl4NNS+ho7Iq66V/DdkDIXzjlTMU0bNfMWpuxXT0JDGcD
+ /cSo1dGB4JVtAAUMS+EhwzxRYTb2804=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-FveHs_0CPPi30045ZaAiNA-1; Thu, 18 Jan 2024 07:24:34 -0500
-X-MC-Unique: FveHs_0CPPi30045ZaAiNA-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a2b6c2a5fddso471079466b.1
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 04:24:34 -0800 (PST)
+ us-mta-695-0VHBUsyNPGeyA-XbOB-NBw-1; Thu, 18 Jan 2024 07:24:35 -0500
+X-MC-Unique: 0VHBUsyNPGeyA-XbOB-NBw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a2b8bd6c6a3so810332466b.0
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 04:24:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705580672; x=1706185472;
+ d=1e100.net; s=20230601; t=1705580673; x=1706185473;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6iYFJ1omtBZXJlFu5GK/KyeFIiu1spB8a/9O+0pfZj4=;
- b=XjO9g8VOsv0h9H2ZMMfEiPDoPz3ucdJ9U1UdqKxmhUeVwELI6QxnOlumkVvpFYwesg
- d20HyE9ozNJyxQC1yuL8gzau4ERNs1oR9LSmgvEaCP2ROzFcAsPNw/TA0mOZAU4X3ySV
- TJz3DMECP8joDaZIDgTtnZP/DRCzbqoQ5d+VWGCgFDEuEZTzIVp8SieMe3Da78DdTCQU
- V7TUiM6s+ZJRrjbkjESj0KywINj495gFU+nASzrhczlFeVsNn235k0oygBtHqOhBELND
- g3KZ89LdFSsyWZRM3D9ZBBPwGvKp9cG1xHoyuwSbG+gjjvCZZvXJ55M8pcXWcrfEw7mi
- sblA==
-X-Gm-Message-State: AOJu0Yzp2968V+v2KBR6NK9Zz4jrxTfqiEeq3uMvWcT+SOarg1CUEh+T
- 2vaA993OocMeuBPp5kyAdxKW2hJsE0RkKuXbp72DmvnBKxRXp4d0EBZh7xfJXeFWjV9M//sB8LW
- UaI7U0Gn9rchjKH30i3NQrhhjlHqouvZXKq8hwhaqshPxvAhzLo2b1fMzP8jfPKA9MFe1URycHu
- BP69jEvnAsayOpSszJy61l1jkfgnIwA3kUL3un
-X-Received: by 2002:a17:906:c147:b0:a2a:98d:d9ae with SMTP id
- dp7-20020a170906c14700b00a2a098dd9aemr587524ejc.84.1705580671995; 
- Thu, 18 Jan 2024 04:24:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE3/tEtDNX9n/Eq/tbAS6ABeB9CBA8bgDMdwbnvGayArBJq7WPoRRT6MCJYODyabbkzSk99IQ==
-X-Received: by 2002:a17:906:c147:b0:a2a:98d:d9ae with SMTP id
- dp7-20020a170906c14700b00a2a098dd9aemr587513ejc.84.1705580671567; 
- Thu, 18 Jan 2024 04:24:31 -0800 (PST)
+ bh=3zwo8gv+Nfm+lDqFRavE7UEJZC+0js1OM/QRX97Z4do=;
+ b=xKF5dWE9vRKAbgvqGwaUSNncy5VOPsRDq9mud169OhMXaOlegPHgTB/qm0zMG4hOpU
+ 9ZFM0Rhayp20fMt5GWrVQ6GBu1Lzzh5QjA5yNr0yMNSlfs9A81M6jI/NQFn3ARCahk2m
+ lsf09mzZrCPOlhmka6Ibd/JUFRSFsZHZby+potNonDnmKH+tChciBUutY67Nfst1/4eI
+ Bpr2FkfWm/pLT3dn/vkoH+AZlSNr4b/H4jEE/3tMalIMsEEHp5OWgAhAXpjhCY3DgVni
+ BP8UAq4tWk6soyLXXCqFkHD/siW48MvIdMO6kJylAS2Z50+1Fz/l4APMk6qt2NvKmoi9
+ 9mDA==
+X-Gm-Message-State: AOJu0Yz+pIOCjdvDE4PDF7Y3XPpHiWmnoQtLI3HS9LZICORyD+XGLRuC
+ TdbUkvLDG2GrZSjD3OIHOY5E9cWJSyXWPx0CU7Fny5xWpDa0Fu1xmpcIuDrpqpsjDMVV/wWsYDh
+ nSVp/d15x60NZ5oyZtzJclc4sHJvFA00uH4zVMSuTD0jDwGoUdic+KaeESeyEtFfY0JNaYUxhda
+ kE+riskN36dSpJg3eZe7Ata5gJfyCEBUKr3u2R
+X-Received: by 2002:a17:906:8c7:b0:a28:7fe8:8b29 with SMTP id
+ o7-20020a17090608c700b00a287fe88b29mr459514eje.68.1705580673124; 
+ Thu, 18 Jan 2024 04:24:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG6m3/sfGr3z/AEDtkz2sC24fPJQmAf9W+8Nm/ZFCfG0eLWjdljqnw/K5ZFSXxOWnMzpjio3Q==
+X-Received: by 2002:a17:906:8c7:b0:a28:7fe8:8b29 with SMTP id
+ o7-20020a17090608c700b00a287fe88b29mr459505eje.68.1705580672803; 
+ Thu, 18 Jan 2024 04:24:32 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- cw1-20020a170907160100b00a2dae4e408bsm5509381ejd.15.2024.01.18.04.24.30
- for <qemu-devel@nongnu.org>
+ k7-20020a17090627c700b00a19b7362dcfsm9062109ejc.139.2024.01.18.04.24.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Jan 2024 04:24:30 -0800 (PST)
+ Thu, 18 Jan 2024 04:24:32 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/16] vga: sort-of implement word and double-word access modes
-Date: Thu, 18 Jan 2024 13:24:08 +0100
-Message-ID: <20240118122416.9209-9-pbonzini@redhat.com>
+Cc: Daan De Meyer <daan.j.demeyer@gmail.com>
+Subject: [PULL 09/16] Add class property to configure KVM device node to use
+Date: Thu, 18 Jan 2024 13:24:09 +0100
+Message-ID: <20240118122416.9209-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118122416.9209-1-pbonzini@redhat.com>
 References: <20240118122416.9209-1-pbonzini@redhat.com>
@@ -101,198 +101,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jazz Jackrabbit has a very unusual VGA setup, where it uses odd/even mode
-with 256-color graphics.  Probably, it wants to use fast VRAM-to-VRAM
-copies without having to store 4 copies of the sprites as needed in mode
-X, one for each mod-4 alignment; odd/even mode simplifies the code a
-lot if it's okay to place on a 160-pixels horizontal grid.
+From: Daan De Meyer <daan.j.demeyer@gmail.com>
 
-At the same time, because it wants to use double buffering (a la "mode X")
-it uses byte mode, not word mode as is the case in text modes.  In order
-to implement the combination of odd/even mode (plane number comes from
-bit 0 of the address) and byte mode (use all bytes of VRAM, whereas word
-mode only uses bytes 0, 2, 4,... on each of the four planes), we need
-to separate the effect on the plane number from the effect on the address.
+This allows passing the KVM device node to use as a file
+descriptor via /dev/fdset/XX. Passing the device node to
+use as a file descriptor allows running qemu unprivileged
+even when the user running qemu is not in the kvm group
+on distributions where access to /dev/kvm is gated behind
+membership of the kvm group (as long as the process invoking
+qemu is able to open /dev/kvm and passes the file descriptor
+to qemu).
 
-Implementing the modes properly is a mess in QEMU, because it would
-change the layout of VRAM and break migration.  As an approximation,
-shift right when the CPU accesses memory instead of shifting left when
-the CRT controller reads it.  A hack is needed in order to write font data
-properly (see comment in the code), but it works well enough for the game.
-
-Because doubleword and chain4 modes are now independent, chain4 does not
-assert anymore that the address is in range.  Instead it just returns
-all ones and discards writes, like other modes.
-
+Signed-off-by: Daan De Meyer <daan.j.demeyer@gmail.com>
+Message-ID: <20231021134015.1119597-1-daan.j.demeyer@gmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/display/vga_regs.h |  4 ++
- hw/display/vga.c      | 89 +++++++++++++++++++++++++++++++------------
- 2 files changed, 69 insertions(+), 24 deletions(-)
+ include/sysemu/kvm_int.h |  1 +
+ accel/kvm/kvm-all.c      | 25 ++++++++++++++++++++++++-
+ qemu-options.hx          |  8 +++++++-
+ 3 files changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/hw/display/vga_regs.h b/hw/display/vga_regs.h
-index 7fdba34b9b1..40e673f164d 100644
---- a/hw/display/vga_regs.h
-+++ b/hw/display/vga_regs.h
-@@ -100,7 +100,9 @@
+diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+index fd846394be1..882e37e12c5 100644
+--- a/include/sysemu/kvm_int.h
++++ b/include/sysemu/kvm_int.h
+@@ -120,6 +120,7 @@ struct KVMState
+     uint32_t xen_caps;
+     uint16_t xen_gnttab_max_frames;
+     uint16_t xen_evtchn_max_pirq;
++    char *device;
+ };
  
- /* VGA CRT controller bit masks */
- #define VGA_CR11_LOCK_CR0_CR7   0x80 /* lock writes to CR0 - CR7 */
-+#define VGA_CR14_DW             0x40
- #define VGA_CR17_H_V_SIGNALS_ENABLED 0x80
-+#define VGA_CR17_WORD_BYTE      0x40
- 
- /* VGA attribute controller register indices */
- #define VGA_ATC_PALETTE0        0x00
-@@ -154,6 +156,8 @@
- #define VGA_GFX_BIT_MASK        0x08
- 
- /* VGA graphics controller bit masks */
-+#define VGA_GR05_HOST_ODD_EVEN  0x10
- #define VGA_GR06_GRAPHICS_MODE  0x01
-+#define VGA_GR06_CHAIN_ODD_EVEN 0x02
- 
- #endif /* HW_VGA_REGS_H */
-diff --git a/hw/display/vga.c b/hw/display/vga.c
-index d1ef716642f..bc5b83421bf 100644
---- a/hw/display/vga.c
-+++ b/hw/display/vga.c
-@@ -815,25 +815,40 @@ uint32_t vga_mem_readb(VGACommonState *s, hwaddr addr)
-     }
- 
-     if (sr(s, VGA_SEQ_MEMORY_MODE) & VGA_SR04_CHN_4M) {
--        /* chain 4 mode : simplest access (but it should use the same
--         * algorithms as below; see e.g. vga_mem_writeb's plane mask check).
--         */
--        assert(addr < s->vram_size);
--        return s->vram_ptr[addr];
--    }
--
--    if (s->gr[VGA_GFX_MODE] & 0x10) {
-+        /* chain4 mode */
-+        plane = addr & 3;
-+        addr &= ~3;
-+    } else if (s->gr[VGA_GFX_MODE] & VGA_GR05_HOST_ODD_EVEN) {
-         /* odd/even mode (aka text mode mapping) */
-         plane = (s->gr[VGA_GFX_PLANE_READ] & 2) | (addr & 1);
--        addr >>= 1;
-     } else {
-         /* standard VGA latched access */
-         plane = s->gr[VGA_GFX_PLANE_READ];
-     }
- 
-+    if (s->gr[VGA_GFX_MISC] & VGA_GR06_CHAIN_ODD_EVEN) {
-+        addr &= ~1;
-+    }
-+
-+    /* Doubleword/word mode.  See comment in vga_mem_writeb */
-+    if (s->cr[VGA_CRTC_UNDERLINE] & VGA_CR14_DW) {
-+        addr >>= 2;
-+    } else if ((s->gr[VGA_GFX_MODE] & VGA_GR05_HOST_ODD_EVEN) &&
-+               (s->cr[VGA_CRTC_MODE] & VGA_CR17_WORD_BYTE) == 0) {
-+        addr >>= 1;
-+    }
-+
-     if (addr * sizeof(uint32_t) >= s->vram_size) {
-         return 0xff;
-     }
-+
-+    if (s->sr[VGA_SEQ_MEMORY_MODE] & VGA_SR04_CHN_4M) {
-+        /* chain 4 mode: simplified access (but it should use the same
-+         * algorithms as below, see e.g. vga_mem_writeb's plane mask check).
-+         */
-+        return s->vram_ptr[(addr << 2) | plane];
-+    }
-+
-     s->latch = ((uint32_t *)s->vram_ptr)[addr];
-     if (!(s->gr[VGA_GFX_MODE] & 0x08)) {
-         /* read mode 0 */
-@@ -853,8 +868,9 @@ uint32_t vga_mem_readb(VGACommonState *s, hwaddr addr)
- /* called for accesses between 0xa0000 and 0xc0000 */
- void vga_mem_writeb(VGACommonState *s, hwaddr addr, uint32_t val)
- {
--    int memory_map_mode, plane, write_mode, b, func_select, mask;
-+    int memory_map_mode, write_mode, b, func_select, mask;
-     uint32_t write_mask, bit_mask, set_mask;
-+    int plane = 0;
- 
- #ifdef DEBUG_VGA_MEM
-     printf("vga: [0x" HWADDR_FMT_plx "] = 0x%02x\n", addr, val);
-@@ -888,9 +904,46 @@ void vga_mem_writeb(VGACommonState *s, hwaddr addr, uint32_t val)
-         /* chain 4 mode : simplest access */
-         plane = addr & 3;
-         mask &= (1 << plane);
-+        addr &= ~3;
-+    } else {
-+        if ((sr(s, VGA_SEQ_MEMORY_MODE) & VGA_SR04_SEQ_MODE) == 0) {
-+            mask &= (addr & 1) ? 0x0a : 0x05;
-+        }
-+        if (s->gr[VGA_GFX_MISC] & VGA_GR06_CHAIN_ODD_EVEN) {
-+            addr &= ~1;
-+        }
-+    }
-+
-+    /* Doubleword/word mode.  These should be honored when displaying,
-+     * not when reading/writing to memory!  For example, chain4 modes
-+     * use double-word mode and, on real hardware, would fetch bytes
-+     * 0,1,2,3, 16,17,18,19, 32,33,34,35, etc.  Text modes use word
-+     * mode and, on real hardware, would fetch bytes 0,1, 8,9, etc.
-+     *
-+     * QEMU instead shifted addresses on memory accesses because it
-+     * allows more optimizations (e.g. chain4_alias) and simplifies
-+     * the draw_line handlers. Unfortunately, there is one case where
-+     * the difference shows.  When fetching font data, accesses are
-+     * always in consecutive bytes, even if the text/attribute pairs
-+     * are done in word mode.  Hence, doing a right shift when operating
-+     * on font data is wrong.  So check the odd/even mode bits together with
-+     * word mode bit.  The odd/even read bit is 0 when reading font data,
-+     * and the odd/even write bit is 1 when writing it.
-+     */
-+    if (s->cr[VGA_CRTC_UNDERLINE] & VGA_CR14_DW) {
-+        addr >>= 2;
-+    } else if ((sr(s, VGA_SEQ_MEMORY_MODE) & VGA_SR04_SEQ_MODE) == 0 &&
-+               (s->cr[VGA_CRTC_MODE] & VGA_CR17_WORD_BYTE) == 0) {
-+        addr >>= 1;
-+    }
-+
-+    if (addr * sizeof(uint32_t) >= s->vram_size) {
-+        return;
-+    }
-+
-+    if (sr(s, VGA_SEQ_MEMORY_MODE) & VGA_SR04_CHN_4M) {
-         if (mask) {
--            assert(addr < s->vram_size);
--            s->vram_ptr[addr] = val;
-+            s->vram_ptr[(addr << 2) | plane] = val;
- #ifdef DEBUG_VGA_MEM
-             printf("vga: chain4: [0x" HWADDR_FMT_plx "]\n", addr);
+ void kvm_memory_listener_register(KVMState *s, KVMMemoryListener *kml,
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index bbc60146d15..49e755ec4ad 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2349,7 +2349,7 @@ static int kvm_init(MachineState *ms)
+     QTAILQ_INIT(&s->kvm_sw_breakpoints);
  #endif
-@@ -900,15 +953,6 @@ void vga_mem_writeb(VGACommonState *s, hwaddr addr, uint32_t val)
-         return;
-     }
+     QLIST_INIT(&s->kvm_parked_vcpus);
+-    s->fd = qemu_open_old("/dev/kvm", O_RDWR);
++    s->fd = qemu_open_old(s->device ?: "/dev/kvm", O_RDWR);
+     if (s->fd == -1) {
+         fprintf(stderr, "Could not access KVM kernel module: %m\n");
+         ret = -errno;
+@@ -3585,6 +3585,24 @@ static void kvm_set_dirty_ring_size(Object *obj, Visitor *v,
+     s->kvm_dirty_ring_size = value;
+ }
  
--    if ((sr(s, VGA_SEQ_MEMORY_MODE) & VGA_SR04_SEQ_MODE) == 0) {
--        mask &= (addr & 1) ? 0x0a : 0x05;
--    }
--
--    if (s->gr[VGA_GFX_MODE] & 0x10) {
--        /* odd/even mode (aka text mode mapping) */
--        addr >>= 1;
--    }
--
-     /* standard VGA latched access */
-     write_mode = s->gr[VGA_GFX_MODE] & 3;
-     switch(write_mode) {
-@@ -973,9 +1017,6 @@ do_write:
-     /* mask data according to sr[2] */
-     s->plane_updated |= mask; /* only used to detect font change */
-     write_mask = mask16[mask];
--    if (addr * sizeof(uint32_t) >= s->vram_size) {
--        return;
--    }
-     ((uint32_t *)s->vram_ptr)[addr] =
-         (((uint32_t *)s->vram_ptr)[addr] & ~write_mask) |
-         (val & write_mask);
++static char *kvm_get_device(Object *obj,
++                            Error **errp G_GNUC_UNUSED)
++{
++    KVMState *s = KVM_STATE(obj);
++
++    return g_strdup(s->device);
++}
++
++static void kvm_set_device(Object *obj,
++                           const char *value,
++                           Error **errp G_GNUC_UNUSED)
++{
++    KVMState *s = KVM_STATE(obj);
++
++    g_free(s->device);
++    s->device = g_strdup(value);
++}
++
+ static void kvm_accel_instance_init(Object *obj)
+ {
+     KVMState *s = KVM_STATE(obj);
+@@ -3603,6 +3621,7 @@ static void kvm_accel_instance_init(Object *obj)
+     s->xen_version = 0;
+     s->xen_gnttab_max_frames = 64;
+     s->xen_evtchn_max_pirq = 256;
++    s->device = NULL;
+ }
+ 
+ /**
+@@ -3643,6 +3662,10 @@ static void kvm_accel_class_init(ObjectClass *oc, void *data)
+     object_class_property_set_description(oc, "dirty-ring-size",
+         "Size of KVM dirty page ring buffer (default: 0, i.e. use bitmap)");
+ 
++    object_class_property_add_str(oc, "device", kvm_get_device, kvm_set_device);
++    object_class_property_set_description(oc, "device",
++        "Path to the device node to use (default: /dev/kvm)");
++
+     kvm_arch_accel_class_init(oc);
+ }
+ 
+diff --git a/qemu-options.hx b/qemu-options.hx
+index b66570ae006..2ae51005c12 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -188,7 +188,8 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
+     "                dirty-ring-size=n (KVM dirty ring GFN count, default 0)\n"
+     "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
+     "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
+-    "                thread=single|multi (enable multi-threaded TCG)\n", QEMU_ARCH_ALL)
++    "                thread=single|multi (enable multi-threaded TCG)\n"
++    "                device=path (KVM device path, default /dev/kvm)\n", QEMU_ARCH_ALL)
+ SRST
+ ``-accel name[,prop=value[,...]]``
+     This is used to enable an accelerator. Depending on the target
+@@ -269,6 +270,11 @@ SRST
+         open up for a specified of time (i.e. notify-window).
+         Default: notify-vmexit=run,notify-window=0.
+ 
++    ``device=path``
++        Sets the path to the KVM device node. Defaults to ``/dev/kvm``. This
++        option can be used to pass the KVM device to use via a file descriptor
++        by setting the value to ``/dev/fdset/NN``.
++
+ ERST
+ 
+ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
 -- 
 2.43.0
 
