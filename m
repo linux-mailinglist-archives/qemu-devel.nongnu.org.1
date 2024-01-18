@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB01A832040
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 21:09:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC29283204E
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 21:11:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQYgo-0006YM-BM; Thu, 18 Jan 2024 15:08:38 -0500
+	id 1rQYgs-0006tj-Kd; Thu, 18 Jan 2024 15:08:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQYgj-0006Ia-4W
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:08:33 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQYgp-0006jq-Sc
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:08:39 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQYgh-00077S-HB
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:08:32 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40e884ac5c8so255615e9.2
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 12:08:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQYgn-00077y-Ss
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:08:39 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-337d6d7fbd5so444076f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 12:08:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705608510; x=1706213310; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705608516; x=1706213316; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zozAuekXsv7RqlLM4guzPZsrXewV7KaaXnf3wtjaQAU=;
- b=kvd3tq+eapbpCngaN3Dko77VjREW5ZPXaosP/QTIDOmgoBt3YR3tgtI7OUedWpZhF9
- 9bYMjM/oqfkt09JPJwj7ixwubDMpIs1x23TeW/2c/3R/bvCXJkPscf81yGC7C5/AlU3Z
- Y+ycgmlPCfKRbWcAfVE9e+uLUUaTH4XAF4YgVVIgl2zOa6MdHh2Fmg1SwYkhBAd1xZOb
- gUOJGPG87pj8rRY41DYNReCGm0QoFr3L07GsBirJD2POAmixXh+sc1vCY7jCX5FIULR0
- Jn5Jz9l/55feaw1kkHPj6hFHW2TKuBB/jXlgVzJjC5p6RzD2gjj0uMkp42Pha0iF7BzV
- tVZw==
+ bh=MFamDoDB+NPTBY+FXQ/CqwTtVqrO47PjF46IOrgJo58=;
+ b=Mz9xioJXiebR/6aF3RgKMqQp7htcThNP7pex93nB2QDgkLWRFSwZFpK3/q1kHubdMF
+ Z0X/csoPZGGnXPww8EiWh0BIi37tpgUrQjdiI8Dj2c+c1JrRpQtHk8trmn9L5nMoekuh
+ iWCQGBT5NaL3WAq5yO7fJk7UeJPjtGA+nsad3gC80atpLhGICtddvrJbYQ2zsVE7MFn/
+ bHHMCLFinrH45Q09jyWd11TAiDhY3XzvIIpCOiXxc+gDTkdsJTldCkziRggaRMjFs9kj
+ YPjOXctGclLqCJGc4ybfuIxGDoiR6CxSqSQ6n415G861Vrt1QabW0itCEWS6trvRu6yf
+ PmzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705608510; x=1706213310;
+ d=1e100.net; s=20230601; t=1705608516; x=1706213316;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zozAuekXsv7RqlLM4guzPZsrXewV7KaaXnf3wtjaQAU=;
- b=qswuxycYzjV9GfTPISR044z9jkGR/br7clUSqwu2A+LdrC6ViCYRSduWCzQ5VXNcFd
- xpSGwVJeE1gEpjDMLLCHY+LLSS2WS24hDuZ+MNGKaBgufnkbu8i3LeWMySshzoYNcIR+
- 54FQyaUQ7N+Mrep+yqlA3oQ4IqaJFfyGM+kufI5zI250gyQ1UPZBq+vDMO51gRDvNoF1
- e1UJTV0B+2O802wTdf0QHhqAKA4ZndYZ+jIRkZzHThR6A+Z6Ep8+LDCxf2x+SnOhxuZ+
- d3A5pnyGL0/K+gPAXRdbzpjzKyD1sZKlyyAABw53PpGQVzlD8XFlS/kSL5+Z4UfjYzyN
- 7cXA==
-X-Gm-Message-State: AOJu0YyKAYi2ooUB/sQ+y1OLWpeyo2PWmo9q3rHPEZwtCxKBl0N3CZ4v
- jWXiEye1pSr7duro0+XFmuFeug32y9t5HoHivpOTL5Vxyrblfoz242hAMRq5887CgvHZEHPbNjE
- 6x1fE/mGO
-X-Google-Smtp-Source: AGHT+IHAXWZlDPgGCKUoszcIliwZOjZQQesvvlbj+f+1ULrIP3kcqYXjYGbM42jIhneojIogmfSl3g==
-X-Received: by 2002:a05:600c:4216:b0:40e:4a71:e140 with SMTP id
- x22-20020a05600c421600b0040e4a71e140mr430671wmh.342.1705608509862; 
- Thu, 18 Jan 2024 12:08:29 -0800 (PST)
+ bh=MFamDoDB+NPTBY+FXQ/CqwTtVqrO47PjF46IOrgJo58=;
+ b=CSk2VlS70kptGIjqI6jA/SqlNkjwSvfhQS5xtnmoXPhl94fDJk2rMyNlzrCUQUtQ76
+ M20KwIqGk0kBvBxc2GbkinwYMHfmsP/TXZL4F7PwRJ3ntLudQsVyyrs1jIfeqQLVCsqs
+ he9+hI1nBLZmcPYhkOEqwDPvK6http4RzNPaeySqIQ3Xrhs8LHcuYPvzZfNT4Fx7VTYh
+ gJ3jxsuXr5hrnrFs5nk/MddHx4WWFMKN1sQh3dH6/l1TYRucw6XeejYpCDx6vjPnie6G
+ AyTDnmx4kaCJgTRfYJMAT2SLn0RWixS0394t3WgiixWCltdQAe4majAVIYJTbufP83lf
+ 18fw==
+X-Gm-Message-State: AOJu0YxA79kE9dCtOJz9ialwGG0Oq0do8GFd4xTPv1FtZ8p6BonAFLKG
+ jrhgH26ujpeyGQAfl1Us6zSaiDObaLos4xe7+y+BRMDOAJj3fcAtUOg93Y/4ODHJaSQYkolxqdz
+ +LcqgMTPz
+X-Google-Smtp-Source: AGHT+IHYOiJSym2D2yYrltSEDp/Akd8MvzHd3DpgP3oiybk3/olKKAnKTXjU/wbLiQn1O5KNopUAhQ==
+X-Received: by 2002:adf:8b9e:0:b0:337:bea4:49a9 with SMTP id
+ o30-20020adf8b9e000000b00337bea449a9mr1473271wra.11.1705608515800; 
+ Thu, 18 Jan 2024 12:08:35 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- jg1-20020a05600ca00100b0040d4e1393dcsm30281752wmb.20.2024.01.18.12.08.28
+ p13-20020adf9d8d000000b00337bcae5eb1sm4765640wre.72.2024.01.18.12.08.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Jan 2024 12:08:29 -0800 (PST)
+ Thu, 18 Jan 2024 12:08:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Igor Mitsyanko <i.mitsyanko@gmail.com>, qemu-arm@nongnu.org,
@@ -78,18 +78,19 @@ Cc: Igor Mitsyanko <i.mitsyanko@gmail.com>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  Jean-Christophe Dubois <jcd@tribudubois.net>,
  Joel Stanley <joel@jms.id.au>, Hao Wu <wuhaotsh@google.com>,
- kvm@vger.kernel.org
-Subject: [PATCH 18/20] target/arm: Move e2h_access() helper around
-Date: Thu, 18 Jan 2024 21:06:39 +0100
-Message-ID: <20240118200643.29037-19-philmd@linaro.org>
+ kvm@vger.kernel.org, Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 19/20] target/arm: Move GTimer definitions to new 'gtimer.h'
+ header
+Date: Thu, 18 Jan 2024 21:06:40 +0100
+Message-ID: <20240118200643.29037-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240118200643.29037-1-philmd@linaro.org>
 References: <20240118200643.29037-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,63 +113,240 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-e2h_access() was added in commit bb5972e439 ("target/arm:
-Add VHE timer register redirection and aliasing") close to
-the generic_timer_cp_reginfo[] array, but isn't used until
-vhe_reginfo[] definition. Move it closer to the other e2h
-helpers.
+Move Arm A-class Generic Timer definitions to the new
+"target/arm/gtimer.h" header so units in hw/ which don't
+need access to ARMCPU internals can use them without
+having to include the huge "cpu.h".
 
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/helper.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ target/arm/cpu.h       |  8 +-------
+ target/arm/gtimer.h    | 21 +++++++++++++++++++++
+ hw/arm/allwinner-h3.c  |  1 +
+ hw/arm/allwinner-r40.c |  1 +
+ hw/arm/bcm2836.c       |  1 +
+ hw/arm/sbsa-ref.c      |  1 +
+ hw/arm/virt.c          |  1 +
+ hw/arm/xlnx-versal.c   |  1 +
+ hw/arm/xlnx-zynqmp.c   |  1 +
+ hw/cpu/a15mpcore.c     |  1 +
+ target/arm/cpu.c       |  1 +
+ target/arm/helper.c    |  1 +
+ target/arm/hvf/hvf.c   |  1 +
+ target/arm/kvm.c       |  1 +
+ target/arm/machine.c   |  1 +
+ 15 files changed, 35 insertions(+), 7 deletions(-)
+ create mode 100644 target/arm/gtimer.h
 
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index e8df41d642..d3477b1601 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -27,6 +27,7 @@
+ #include "exec/cpu-defs.h"
+ #include "qapi/qapi-types-common.h"
+ #include "target/arm/multiprocessing.h"
++#include "target/arm/gtimer.h"
+ 
+ /* ARM processors have a weak memory model */
+ #define TCG_GUEST_DEFAULT_MO      (0)
+@@ -140,13 +141,6 @@ typedef struct ARMGenericTimer {
+     uint64_t ctl; /* Timer Control register */
+ } ARMGenericTimer;
+ 
+-#define GTIMER_PHYS     0
+-#define GTIMER_VIRT     1
+-#define GTIMER_HYP      2
+-#define GTIMER_SEC      3
+-#define GTIMER_HYPVIRT  4
+-#define NUM_GTIMERS     5
+-
+ #define VTCR_NSW (1u << 29)
+ #define VTCR_NSA (1u << 30)
+ #define VSTCR_SW VTCR_NSW
+diff --git a/target/arm/gtimer.h b/target/arm/gtimer.h
+new file mode 100644
+index 0000000000..b992941bef
+--- /dev/null
++++ b/target/arm/gtimer.h
+@@ -0,0 +1,21 @@
++/*
++ * ARM generic timer definitions for Arm A-class CPU
++ *
++ *  Copyright (c) 2003 Fabrice Bellard
++ *
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
++
++#ifndef TARGET_ARM_GTIMER_H
++#define TARGET_ARM_GTIMER_H
++
++enum {
++    GTIMER_PHYS     = 0,
++    GTIMER_VIRT     = 1,
++    GTIMER_HYP      = 2,
++    GTIMER_SEC      = 3,
++    GTIMER_HYPVIRT  = 4,
++#define NUM_GTIMERS   5
++};
++
++#endif
+diff --git a/hw/arm/allwinner-h3.c b/hw/arm/allwinner-h3.c
+index 2d684b5287..380e0ec11d 100644
+--- a/hw/arm/allwinner-h3.c
++++ b/hw/arm/allwinner-h3.c
+@@ -31,6 +31,7 @@
+ #include "sysemu/sysemu.h"
+ #include "hw/arm/allwinner-h3.h"
+ #include "target/arm/cpu-qom.h"
++#include "target/arm/gtimer.h"
+ 
+ /* Memory map */
+ const hwaddr allwinner_h3_memmap[] = {
+diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c
+index 65392dbc23..898bef9d93 100644
+--- a/hw/arm/allwinner-r40.c
++++ b/hw/arm/allwinner-r40.c
+@@ -33,6 +33,7 @@
+ #include "hw/arm/allwinner-r40.h"
+ #include "hw/misc/allwinner-r40-dramc.h"
+ #include "target/arm/cpu-qom.h"
++#include "target/arm/gtimer.h"
+ 
+ /* Memory map */
+ const hwaddr allwinner_r40_memmap[] = {
+diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
+index 58a78780d2..e3ba18a8ec 100644
+--- a/hw/arm/bcm2836.c
++++ b/hw/arm/bcm2836.c
+@@ -16,6 +16,7 @@
+ #include "hw/arm/raspi_platform.h"
+ #include "hw/sysbus.h"
+ #include "target/arm/cpu-qom.h"
++#include "target/arm/gtimer.h"
+ 
+ struct BCM283XClass {
+     /*< private >*/
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index d6081bfc41..85cb68d546 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -51,6 +51,7 @@
+ #include "qapi/qmp/qlist.h"
+ #include "qom/object.h"
+ #include "target/arm/cpu-qom.h"
++#include "target/arm/gtimer.h"
+ 
+ #define RAMLIMIT_GB 8192
+ #define RAMLIMIT_BYTES (RAMLIMIT_GB * GiB)
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 0ab5fd9477..bdfcf028a0 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -76,6 +76,7 @@
+ #include "target/arm/cpu-qom.h"
+ #include "target/arm/internals.h"
+ #include "target/arm/multiprocessing.h"
++#include "target/arm/gtimer.h"
+ #include "hw/mem/pc-dimm.h"
+ #include "hw/mem/nvdimm.h"
+ #include "hw/acpi/generic_event_device.h"
+diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
+index 87fdb39d43..2798df3730 100644
+--- a/hw/arm/xlnx-versal.c
++++ b/hw/arm/xlnx-versal.c
+@@ -24,6 +24,7 @@
+ #include "hw/arm/xlnx-versal.h"
+ #include "qemu/log.h"
+ #include "target/arm/cpu-qom.h"
++#include "target/arm/gtimer.h"
+ 
+ #define XLNX_VERSAL_ACPU_TYPE ARM_CPU_TYPE_NAME("cortex-a72")
+ #define XLNX_VERSAL_RCPU_TYPE ARM_CPU_TYPE_NAME("cortex-r5f")
+diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
+index 38cb34942f..65901c6e74 100644
+--- a/hw/arm/xlnx-zynqmp.c
++++ b/hw/arm/xlnx-zynqmp.c
+@@ -26,6 +26,7 @@
+ #include "sysemu/sysemu.h"
+ #include "kvm_arm.h"
+ #include "target/arm/cpu-qom.h"
++#include "target/arm/gtimer.h"
+ 
+ #define GIC_NUM_SPI_INTR 160
+ 
+diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
+index bfd8aa5644..967d8d3dd5 100644
+--- a/hw/cpu/a15mpcore.c
++++ b/hw/cpu/a15mpcore.c
+@@ -26,6 +26,7 @@
+ #include "hw/qdev-properties.h"
+ #include "sysemu/kvm.h"
+ #include "kvm_arm.h"
++#include "target/arm/gtimer.h"
+ 
+ static void a15mp_priv_set_irq(void *opaque, int irq, int level)
+ {
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 07357daabe..4c57b9c3b8 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -49,6 +49,7 @@
+ #include "fpu/softfloat.h"
+ #include "cpregs.h"
+ #include "target/arm/cpu-qom.h"
++#include "target/arm/gtimer.h"
+ 
+ static void arm_cpu_set_pc(CPUState *cs, vaddr value)
+ {
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index dc8f14f433..1ef00e50e4 100644
+index 1ef00e50e4..39e2ba25c8 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -3342,20 +3342,6 @@ static const ARMCPRegInfo generic_timer_cp_reginfo[] = {
-     },
- };
+@@ -30,6 +30,7 @@
+ #include "semihosting/common-semi.h"
+ #endif
+ #include "cpregs.h"
++#include "target/arm/gtimer.h"
  
--static CPAccessResult e2h_access(CPUARMState *env, const ARMCPRegInfo *ri,
--                                 bool isread)
--{
--    if (arm_current_el(env) == 1) {
--        /* This must be a FEAT_NV access */
--        /* TODO: FEAT_ECV will need to check CNTHCTL_EL2 here */
--        return CP_ACCESS_OK;
--    }
--    if (!(arm_hcr_el2_eff(env) & HCR_E2H)) {
--        return CP_ACCESS_TRAP;
--    }
--    return CP_ACCESS_OK;
--}
--
- #else
+ #define ARM_CPU_FREQ 1000000000 /* FIXME: 1 GHz, should be configurable */
  
- /*
-@@ -6543,6 +6529,21 @@ static const ARMCPRegInfo el3_cp_reginfo[] = {
- };
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 71a26db188..e5f0f60093 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -29,6 +29,7 @@
+ #include "target/arm/cpu.h"
+ #include "target/arm/internals.h"
+ #include "target/arm/multiprocessing.h"
++#include "target/arm/gtimer.h"
+ #include "trace/trace-target_arm_hvf.h"
+ #include "migration/vmstate.h"
  
- #ifndef CONFIG_USER_ONLY
-+
-+static CPAccessResult e2h_access(CPUARMState *env, const ARMCPRegInfo *ri,
-+                                 bool isread)
-+{
-+    if (arm_current_el(env) == 1) {
-+        /* This must be a FEAT_NV access */
-+        /* TODO: FEAT_ECV will need to check CNTHCTL_EL2 here */
-+        return CP_ACCESS_OK;
-+    }
-+    if (!(arm_hcr_el2_eff(env) & HCR_E2H)) {
-+        return CP_ACCESS_TRAP;
-+    }
-+    return CP_ACCESS_OK;
-+}
-+
- /* Test if system register redirection is to occur in the current state.  */
- static bool redirect_for_e2h(CPUARMState *env)
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 8f52b211f9..81813030a5 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -38,6 +38,7 @@
+ #include "qemu/log.h"
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/ghes.h"
++#include "target/arm/gtimer.h"
+ 
+ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
+     KVM_CAP_LAST_INFO
+diff --git a/target/arm/machine.c b/target/arm/machine.c
+index 542be14bec..9d7dbaea54 100644
+--- a/target/arm/machine.c
++++ b/target/arm/machine.c
+@@ -7,6 +7,7 @@
+ #include "internals.h"
+ #include "cpu-features.h"
+ #include "migration/cpu.h"
++#include "target/arm/gtimer.h"
+ 
+ static bool vfp_needed(void *opaque)
  {
 -- 
 2.41.0
