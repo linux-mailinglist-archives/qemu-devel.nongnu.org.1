@@ -2,132 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7D4831AB1
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 14:37:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18225831AD3
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 14:52:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQSaG-0002zd-Vj; Thu, 18 Jan 2024 08:37:28 -0500
+	id 1rQSn4-0002lS-1b; Thu, 18 Jan 2024 08:50:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1rQSaE-0002vP-8m; Thu, 18 Jan 2024 08:37:26 -0500
-Received: from mail-vi1eur05on20700.outbound.protection.outlook.com
- ([2a01:111:f403:2613::700]
- helo=EUR05-VI1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <arnaud.minier@telecom-paris.fr>)
+ id 1rQSmr-0002kB-LN; Thu, 18 Jan 2024 08:50:30 -0500
+Received: from zproxy2.enst.fr ([137.194.2.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1rQSa9-0003O4-Fo; Thu, 18 Jan 2024 08:37:24 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=G7YSxc3/+RXlrxPIq2gerr+hEPNAerkjUqiaaxZSFpx3ZXF6arPU0XTSqwGa1iu49KLDpYAkqMa6qSrs4FJCI0uRAwGMDctMqac1YCnJDGs5KK0lI5vorLNPPljyPjq72JcQ+fB8YRv16GmLcgyaonbx1N2elXGv9s9A7Kl4H6uVe8LzprEelr68jElJi8I5Ukf706B7Ha9YFJg+XoPXb+Z2POFl/c0zpSexPMFZyAnvkB7P/AlfEU/A0EY4pS3aGJWFiOA129K0thOTGGOVE9ev22zwRPhxZkmw+wFSvx94wxHfQY38NdRIAii/vSBjTew+8k/hRZbkIRO7FKQzFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GinzqjO5WIqz0jEYwAzBpeqSjKfwD9UOJSgVNqb9F8g=;
- b=ITn5k7BfOoWxJUz+iE5a2WVkHnGlnmfikpuSErYhXdXzy96otYPjfGRVAkiZzA90GGjCjGdQsbjwCa+VdfvvGfje4dezkTZ9vfBvxktgr0U4PjL2sraGkAvpAjRXcXSU2iQtAGI8GbE2Ff4ElNPjuyZ2IC07z/DtbryhMeNgV4NhZBM7IvZvmK9erWcEJdzk0JwsVX7y7o/XPMW/ciyOL3/Z133iaKtAWwqjh3uY2COxD6Vp/y7VqFz5gcHADQ5XQvbQjpgfsn6BewJOI8nQfyjeL1CgVPRwJ/zXJIEKhcTDuYmwZ571hsAKUVS4aLVre7ma4xCw7midRbOoYKFAIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GinzqjO5WIqz0jEYwAzBpeqSjKfwD9UOJSgVNqb9F8g=;
- b=GARq9GDy7K1VqZ+y5L2xAVI0neNCdSfG47AClJbgZryaiKEbCgWG3GQPOLr3oZUwb0tVy4kIEvfUKcjOOCMis3Z3Pulsikl5nUVMAh9HF1vsVoybYeG2ATR3m/8/4XP52JJEhIanPoN/FVAkFKpyT2gjFUSfk2jjlPvyf68XzMSUi/+rLV2FOvt1Woh2oBF2WS3BqYSAIAoH99nGuok2Wu9qMaq8UxYP7OVC0MsDx1bKnNXmCxiBQKzHBVfONLNBJUOF0oouMbiK4KEySAC3MTsjLis4vX/e64k7Lf6+S676iCgG/33NF1II64ZGOBBtdVKOcq10PHNZvzXxVsZxMg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
- by PAVPR08MB9770.eurprd08.prod.outlook.com (2603:10a6:102:31e::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.24; Thu, 18 Jan
- 2024 13:37:16 +0000
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::305c:3923:7c79:ddfa]) by PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::305c:3923:7c79:ddfa%4]) with mapi id 15.20.7202.024; Thu, 18 Jan 2024
- 13:37:16 +0000
-Message-ID: <5be339a0-14ce-492e-a775-d6c263a2c35d@virtuozzo.com>
-Date: Thu, 18 Jan 2024 14:37:15 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 13/21] parallels: Handle L1 entries equal to one
-Content-Language: en-US
-To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, vsementsov@yandex-team.ru,
- kwolf@redhat.com, hreitz@redhat.com
-References: <20231228101232.372142-1-alexander.ivanov@virtuozzo.com>
- <20231228101232.372142-14-alexander.ivanov@virtuozzo.com>
-From: "Denis V. Lunev" <den@virtuozzo.com>
-In-Reply-To: <20231228101232.372142-14-alexander.ivanov@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1P195CA0096.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:802:59::49) To PAXPR08MB6956.eurprd08.prod.outlook.com
- (2603:10a6:102:1db::9)
+ (Exim 4.90_1) (envelope-from <arnaud.minier@telecom-paris.fr>)
+ id 1rQSmo-0007Vp-Ec; Thu, 18 Jan 2024 08:50:29 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy2.enst.fr (Postfix) with ESMTP id C7B5C80592;
+ Thu, 18 Jan 2024 14:50:22 +0100 (CET)
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id MsSipxYCxbUm; Thu, 18 Jan 2024 14:50:21 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy2.enst.fr (Postfix) with ESMTP id A538680718;
+ Thu, 18 Jan 2024 14:50:21 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy2.enst.fr A538680718
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1705585821;
+ bh=Bmhqq6mPQuOgHdgKyuGFW7QpqcPFu/FOg7fmIOcGm1Q=;
+ h=From:To:Date:Message-Id:MIME-Version;
+ b=0EHo8K5wM+klv1H/gTMBPT254kzqsbVdXIBfVmfvVOLAZgYBW8MZSFcgPhDK8OO6F
+ +pHF3VY6i4sVTktJnAPEuEZyuAyHmk8GiCAJslDTGjMsKCJsGHd47UAxEwnTzqHvLm
+ DhlgCNM4yCmEmeXavpJ+uYuFMp2alESQfl1uh1yQ=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id 4Lyjk3IlD3al; Thu, 18 Jan 2024 14:50:21 +0100 (CET)
+Received: from AM-Inspiron-3585.enst.fr (unknown
+ [IPv6:2a04:8ec0:0:144:3854:ba9b:1f5c:cca3])
+ by zproxy2.enst.fr (Postfix) with ESMTPSA id 3C89880592;
+ Thu, 18 Jan 2024 14:50:21 +0100 (CET)
+From: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Cc: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>,
+ =?UTF-8?q?Philipe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org
+Subject: [PATCH v2 7/7] Add tests for the STM32L4x5_RCC
+Date: Thu, 18 Jan 2024 14:50:15 +0100
+Message-Id: <20240118135015.8600-1-arnaud.minier@telecom-paris.fr>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240118091107.87831-1-arnaud.minier@telecom-paris.fr>
+References: <20240118091107.87831-1-arnaud.minier@telecom-paris.fr>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|PAVPR08MB9770:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5af3ae40-738c-4da6-feaa-08dc182a963a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sVeq0A7Xo8aJQsc7kQw7tEu4uXIt6bhlyGv/WYB9IsK4yYvHTV0LRMSuaywExIM2lKNpSuILEPbS5/17aLYlcENiQoAtwPe3me9CSLCBUVOpKFvL0fcffyAAJ+MNyZJypSpVymldhbtPWcnNrrKRL10+GbO8vsufMrpH1tMTa0jDvSRIMvuQj4mdsKLnlSlagaD3fKLLPFiH4wnNVolp9L1dRnZcdp6jFt6J0LSQr9uLTN638asCvC7QlAh5LhupXYnsE+/4cW4JE3L84Ef9AvIir26Yd/QTFdPAq8qQWbcvg2sCpSpu+b06kWZvlV2z49hMZF/QPAf8cgl0naRF6jFFEWin1/CFaw0gnqcNfzKTYlzgm2wm8Ip+7nzGynjuiQmT1okL+14SBWzKVyaLhzPc/45hFTxF1ME/jjfkoTBzYz+atT5yWmcf2b5B37DuFx3eVU3lBDVJCA7xdBg3CDvwrIiSQ6/JcojwZ/PZTIpgvWMsrqjAXTAWqhZ047siMTsrYNP/QNMkQKDm8ojm1u+mS3yTe82zr6y0lNXfiZREDB4BDRwhRw1QZZ4lewCT2IO9lKgfb48HKjSEOV5utY6MmhfVf0+HW1LEQ7d1xtThsQCklxPk+hyw7DyeucouvQc+NX24LeOvW3bQTCcCyw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(39850400004)(136003)(366004)(396003)(376002)(230922051799003)(451199024)(186009)(1800799012)(64100799003)(83380400001)(38100700002)(478600001)(4326008)(8676002)(6486002)(8936002)(66556008)(66476007)(66946007)(316002)(2906002)(26005)(6506007)(2616005)(6512007)(53546011)(5660300002)(31696002)(86362001)(41300700001)(36756003)(31686004)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VzRhU1lWd2NIS2YvdHducnVqLzY4dWhUckFiWW1xeEVCdnpXeEZ3U0xoS1BR?=
- =?utf-8?B?Z2tDOERoaElXSjErZGNZV0puUnVqQ1RMc1ZkYmthdG5pQ0FwaFNNbmxtdFpq?=
- =?utf-8?B?c0tJdUJrVDJWMllQTE16ZEtzT2xkc0U2aXRmQzBIQm1ONGNmR1p5Mjd5YkVs?=
- =?utf-8?B?SzBMQVc1R2JhZHpTTG1nVi9wTHlUN0M1bnFtQ3NiZ3UzeXdEVmJKVUVtMDl6?=
- =?utf-8?B?R2hBa1VQMm9ybSs1TXAyZFdOZVF1elAxYnA3MTFzNmMrUDVEUEN4R2JRQ0pK?=
- =?utf-8?B?VnZEWk5jSUJUSkl3eXZaakRIUnpnVXhjcjhORWV1M1JWazNSQ2RWVHRjdWdO?=
- =?utf-8?B?cDUwSHliZ0JMZDh0MWRDUGNXMWw4bUczSFJiVU9WcGZ4UWNJZU9qWFBoTysw?=
- =?utf-8?B?Rnl6Q0JBTmRTWXA5UVRERU5VQ25QU2VzM2hIb1Jxc1pyRStTeWFFV01hY1RH?=
- =?utf-8?B?aWlCSk5UejZkYXFNdHFGdVcrMVYyaXVxdFozdUd1SUs1aitIRWNmb3NFekFW?=
- =?utf-8?B?MDFBL2M5SlM5Zi9ORjJDT0xSRlJBRXN3TUswUnRja3R6L040SDRHSm1FK2Fy?=
- =?utf-8?B?MTBveVkvNkJuemlORVU5TGE1blpYd3dGU1dTb3FZcFgwNmpWQ3FLNHMwTmE5?=
- =?utf-8?B?VndoVFI4dkE3c3l5a0pZSHFtZ2lYSlNtV25TYUNlYXQ4RnZ0S1lSQm5JV1ZH?=
- =?utf-8?B?TGg3WnlhVWVKaEwvcEhURS9BeThFY3VsTVo3bjFNSGtPaE9lSlc5dFhRL1Nk?=
- =?utf-8?B?NFZFTUJMeUhFdkFQY3N1VVRjcXBLOEw5bHczTFZSMGVwZ0RKbkR3R1VMdndU?=
- =?utf-8?B?UFBuUGsrSmlseTFKVFV0QkRtNTdlaU8zYWtCNVJQbStjMTVjMkFRb2ZaWGMz?=
- =?utf-8?B?WVhjaTF2VjV6bC9RQ1lURCtuMzRjcTZzNm1hR1o3eFEwUEt0YjhqL3IrRXlG?=
- =?utf-8?B?ZkZtVUlDc1IrTGhZZTR4Tm9JK2xOYlZ5MGFVeUEvTzZOWm9adExCZFlQZjhp?=
- =?utf-8?B?cGFyaXY0OUpKSjRuelc4NzlZa1JEcEN6TnIvSzJ1NlBrM3NuRXd1VTJuK0VS?=
- =?utf-8?B?d1NSM1g1RXhpcDBOTXNKemZ1L01KK1dWMjFINmZhT2NHRmI3QmlGVUZFY0Fk?=
- =?utf-8?B?M21BZlFTK0xHdWZuSlVkQjFaNVBXVkVJazdTTjBEWTZKQlRra2U3ZTNSUElE?=
- =?utf-8?B?Z2lQZ2Vla0NOaTNTdk5Uamprc2VZYlgrQXZ6RUpCditLdlBYZFFuWGxjQWls?=
- =?utf-8?B?dUF2NkpwWnI0T255K1lCWTZtaGZxUjBHMndMNlFzeU1peEt1U2xUSnlrTXE5?=
- =?utf-8?B?SlEwSUlLZjRzOWRhV0xsQ0J4MkZlQkdoWk4yOEx0Ky8zYnpIUlUvMXVsQjZB?=
- =?utf-8?B?enNDbEcxWmFWYUZ2dnViZ2tZSFBYYUhwTU82Uk93bElNWXlDTzNuemRienZv?=
- =?utf-8?B?M1J4M1lJQ3MrWnVIZmgzVzAxQmNjdzQ0Y3AyU2FxZm53a2orTmg1ekVlS3Fl?=
- =?utf-8?B?bGduOWd0YTRtcjhjbWRES040UElsOWVpL1lrRThXWDVqcTdyQ0llYjczL3FE?=
- =?utf-8?B?ZUZkdTliT1hvbUpLa0RDbmZkcllUTmRrZWxRRzJRSG8xdFBTazZOSkhiTzN1?=
- =?utf-8?B?ZVJiK2t5NlRSK1BtNUlKay9kREdPM1Q2M1o3MXNWZkJJb01za1h5ajNZamts?=
- =?utf-8?B?NVN0TGtZakcwQW5PZExqWkdIS2d0SUs0OEFkTCs5OERMeHVJWUk5bjR0U2I4?=
- =?utf-8?B?M2hJVjg0cjlJMENTRG5ZOW14THFQOWwxQ29iOEN0cW5HeThPYldTa3VadG5x?=
- =?utf-8?B?MVlDWGhoQzNudXU3bytwQ2ZHNGc5bklCMXFUdC9TME1DamJiVjdlbTUxb1cz?=
- =?utf-8?B?dnBLS2Rvc0JmcC9TVkxaR05NOHVvd2VZNTFhOFUyZ2JGdDJhTzZaeTRSRVhh?=
- =?utf-8?B?SmM2S1Bxejl0SFJWTURDZkJYOTRVcEZCMVFscmdKamRIZ3hUOUtjZS9tejJo?=
- =?utf-8?B?TmdsMUhMbXJEZUJvQ1phWVUxTWVvOTdxYTRkSExjZmFQeDlhOHg3bDgvbW9B?=
- =?utf-8?B?MEFoRG1TNEtyY3BmSCtVUkg3RDE5TGFPMDlSMlE3RjN2cTQxZnQxSVhRZFk5?=
- =?utf-8?Q?HFp4/fIodINM2TsMbR0lArExq?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5af3ae40-738c-4da6-feaa-08dc182a963a
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2024 13:37:16.8886 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CFoK1Ubh3IwHycZ8Gzol7liriLpfP2Mfs3CqayF4CdeF8oQaPH/qStnRwfyfTdw68u+EVlcXy/9QWtWjODvYfQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB9770
-Received-SPF: pass client-ip=2a01:111:f403:2613::700;
- envelope-from=den@virtuozzo.com;
- helo=EUR05-VI1-obe.outbound.protection.outlook.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=137.194.2.221;
+ envelope-from=arnaud.minier@telecom-paris.fr; helo=zproxy2.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -144,48 +83,264 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/28/23 11:12, Alexander Ivanov wrote:
-> If all the bits in a dirty bitmap cluster are ones, the cluster shouldn't
-> be written. Instead the corresponding L1 entry should be set to 1.
->
-> Check if all bits in a memory region are ones and set 1 to L1 entries
-> corresponding clusters filled with ones.
->
-> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-> ---
->   block/parallels-ext.c | 12 +++++++++++-
->   1 file changed, 11 insertions(+), 1 deletion(-)
->
-> diff --git a/block/parallels-ext.c b/block/parallels-ext.c
-> index 195b01b109..033ca3ec3a 100644
-> --- a/block/parallels-ext.c
-> +++ b/block/parallels-ext.c
-> @@ -354,7 +354,7 @@ static void GRAPH_RDLOCK parallels_save_bitmap(BlockDriverState *bs,
->       offset = 0;
->       while ((offset = bdrv_dirty_bitmap_next_dirty(bitmap, offset, bm_size)) >= 0) {
->           uint64_t idx = offset / limit;
-> -        int64_t cluster_off, end, write_size;
-> +        int64_t cluster_off, end, write_size, first_zero;
->   
->           offset = QEMU_ALIGN_DOWN(offset, limit);
->           end = MIN(bm_size, offset + limit);
-> @@ -367,6 +367,16 @@ static void GRAPH_RDLOCK parallels_save_bitmap(BlockDriverState *bs,
->               memset(bm_buf + write_size, 0, s->cluster_size - write_size);
->           }
->   
-> +        first_zero = bdrv_dirty_bitmap_next_zero(bitmap, offset, bm_size);
-> +        if (first_zero < 0) {
-> +            goto end;
-> +        }
-> +        if (first_zero - offset >= s->cluster_size) {
-> +            l1_table[idx] = 1;
-> +            offset = end;
-> +            continue;
-> +        }
-> +
->           cluster_off = parallels_allocate_host_clusters(bs, &alloc_size);
->           if (cluster_off <= 0) {
->               goto end;
-That is not enough. We should handle all-one and all-zeroes according
-to the spec and all-zeroes would be much more common.
+Thanks Thomas for the reply.
+I resend this patch as is because it was not properly linked with the pat=
+ch note due to a mistake on my part.
+Will definitely change qts_wait_for_flag() function in the next version !
+
+These tests test:
+- the ability to set the sysclk of the device
+- the ability to enable and disable the PLLs
+- if the clock multiplexers work
+- the register flags and the generation of irqs
+
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+---
+ tests/qtest/meson.build          |   3 +-
+ tests/qtest/stm32l4x5_rcc-test.c | 210 +++++++++++++++++++++++++++++++
+ 2 files changed, 212 insertions(+), 1 deletion(-)
+ create mode 100644 tests/qtest/stm32l4x5_rcc-test.c
+
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index a926af92f6..b0d9a8c2de 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -197,7 +197,8 @@ qtests_aspeed =3D \
+=20
+ qtests_stm32l4x5 =3D \
+   ['stm32l4x5_exti-test',
+-   'stm32l4x5_syscfg-test']
++   'stm32l4x5_syscfg-test',
++   'stm32l4x5_rcc-test']
+=20
+ qtests_arm =3D \
+   (config_all_devices.has_key('CONFIG_MPS2') ? ['sse-timer-test'] : []) =
++ \
+diff --git a/tests/qtest/stm32l4x5_rcc-test.c b/tests/qtest/stm32l4x5_rcc=
+-test.c
+new file mode 100644
+index 0000000000..dc2e1fcb26
+--- /dev/null
++++ b/tests/qtest/stm32l4x5_rcc-test.c
+@@ -0,0 +1,210 @@
++/*
++ * QTest testcase for STM32L4x5_RCC
++ *
++ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or la=
+ter.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "hw/registerfields.h"
++#include "libqtest-single.h"
++#include "hw/misc/stm32l4x5_rcc_internals.h"
++
++#define RCC_BASE_ADDR 0x40021000
++#define NVIC_ISER 0xE000E100
++#define NVIC_ISPR 0xE000E200
++#define NVIC_ICPR 0xE000E280
++#define RCC_IRQ 5
++
++static void enable_nvic_irq(unsigned int n)
++{
++    writel(NVIC_ISER, 1 << n);
++}
++
++static void unpend_nvic_irq(unsigned int n)
++{
++    writel(NVIC_ICPR, 1 << n);
++}
++
++static bool check_nvic_pending(unsigned int n)
++{
++    return readl(NVIC_ISPR) & (1 << n);
++}
++
++static bool qts_wait_for_flag(QTestState *qts, uint32_t event_addr,
++                              uint32_t flag, uint32_t value)
++{
++    time_t now, start =3D time(NULL);
++
++    while (true) {
++        if ((qtest_readl(qts, event_addr) & flag) =3D=3D value) {
++            return true;
++        }
++
++        /* Wait at most 5 seconds */
++        now =3D time(NULL);
++        if (now - start > 5) {
++            break;
++        }
++        g_usleep(1000);
++    }
++
++    return false;
++}
++
++static bool rcc_wait_for_flag(uint32_t event_addr, uint32_t flag,
++                              uint32_t value)
++{
++    return qts_wait_for_flag(global_qtest, RCC_BASE_ADDR + event_addr, f=
+lag, value);
++}
++
++static void rcc_writel(unsigned int offset, uint32_t value)
++{
++    writel(RCC_BASE_ADDR + offset, value);
++}
++
++static uint32_t rcc_readl(unsigned int offset)
++{
++    return readl(RCC_BASE_ADDR + offset);
++}
++
++static void test_init_msi(void)
++{
++    /* MSIRANGE can be set only when MSI is OFF or READY */
++    rcc_writel(A_CR, R_CR_MSION_MASK);
++    /* Wait until MSI is stable */
++    g_assert_true(rcc_wait_for_flag(A_CR, R_CR_MSIRDY_MASK, R_CR_MSIRDY_=
+MASK));
++    /* TODO find a way to test MSI value */
++}
++
++static void test_set_msi_as_sysclk(void)
++{
++    /* Clocking from MSI, in case MSI was not the default source */
++    rcc_writel(A_CFGR, 0);
++    /* Wait until MSI is selected and stable */
++    g_assert_true(rcc_wait_for_flag(A_CFGR, R_CFGR_SWS_MASK, 0));
++}
++
++static void test_init_pll(void)
++{
++    uint32_t value;
++
++    /*
++     * Update PLL and set MSI as the source clock.
++     * PLLM =3D 1 --> 000
++     * PLLN =3D 40 --> 40
++     * PPLLR =3D 2 --> 00
++     * PLLDIV =3D unused, PLLP =3D unused (SAI3), PLLQ =3D unused (48M1)
++     * SRC =3D MSI --> 01
++     */
++    rcc_writel(A_PLLCFGR, R_PLLCFGR_PLLREN_MASK |
++            (40 << R_PLLCFGR_PLLN_SHIFT) |
++            (0b01 << R_PLLCFGR_PLLSRC_SHIFT));
++
++    /* PLL activation */
++    value =3D rcc_readl(A_CR);
++    rcc_writel(A_CR, value | R_CR_PLLON_MASK);
++
++    /* Waiting for PLL lock. */
++    g_assert_true(rcc_wait_for_flag(A_CR, R_CR_PLLRDY_MASK, R_CR_PLLRDY_=
+MASK));
++
++    /* Switches on the PLL clock source */
++    value =3D rcc_readl(A_CFGR);
++    rcc_writel(A_CFGR, (value & ~R_CFGR_SW_MASK) |
++        (0b11 << R_CFGR_SW_SHIFT));
++
++    /* Wait until SYSCLK is stable. */
++    g_assert_true(rcc_wait_for_flag(A_CFGR, R_CFGR_SWS_MASK,
++        (0b11 << R_CFGR_SWS_SHIFT)));
++}
++
++static void test_activate_lse(void)
++{
++    /* LSE activation, no LSE Bypass */
++    rcc_writel(A_BDCR, R_BDCR_LSEDRV_MASK | R_BDCR_LSEON_MASK);
++    g_assert_true(rcc_wait_for_flag(A_BDCR, R_BDCR_LSERDY_MASK, R_BDCR_L=
+SERDY_MASK));
++}
++
++static void test_irq(void)
++{
++    enable_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_LSIRDYIE_MASK);
++    rcc_writel(A_CSR, R_CSR_LSION_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_LSIRDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_LSERDYIE_MASK);
++    rcc_writel(A_BDCR, R_BDCR_LSEON_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_LSERDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_MSIRDYIE_MASK);
++    rcc_writel(A_CR, R_CR_MSION_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_MSIRDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_HSIRDYIE_MASK);
++    rcc_writel(A_CR, R_CR_HSION_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_HSIRDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_HSERDYIE_MASK);
++    rcc_writel(A_CR, R_CR_HSEON_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_HSERDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_PLLRDYIE_MASK);
++    rcc_writel(A_CR, R_CR_PLLON_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_PLLRDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_PLLSAI1RDYIE_MASK);
++    rcc_writel(A_CR, R_CR_PLLSAI1ON_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_PLLSAI1RDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++
++    rcc_writel(A_CIER, R_CIER_PLLSAI2RDYIE_MASK);
++    rcc_writel(A_CR, R_CR_PLLSAI2ON_MASK);
++    g_assert_true(check_nvic_pending(RCC_IRQ));
++    rcc_writel(A_CICR, R_CICR_PLLSAI2RDYC_MASK);
++    unpend_nvic_irq(RCC_IRQ);
++}
++
++int main(int argc, char **argv)
++{
++    int ret;
++
++    g_test_init(&argc, &argv, NULL);
++    g_test_set_nonfatal_assertions();
++    /*
++     * These test separately that we can enable the plls, change the sys=
+clk,
++     * and enable different devices.
++     * They are dependent on one another.
++     */
++    qtest_add_func("stm32l4x5/rcc/init_msi", test_init_msi);
++    qtest_add_func("stm32l4x5/rcc/set_msi_as_sysclk",
++        test_set_msi_as_sysclk);
++    qtest_add_func("stm32l4x5/rcc/activate_lse", test_activate_lse);
++    qtest_add_func("stm32l4x5/rcc/init_pll", test_init_pll);
++
++    qtest_add_func("stm32l4x5/rcc/irq", test_irq);
++
++    qtest_start("-machine b-l475e-iot01a");
++    ret =3D g_test_run();
++    qtest_end();
++
++    return ret;
++}
+--=20
+2.34.1
+
 
