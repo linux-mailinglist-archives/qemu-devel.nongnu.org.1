@@ -2,35 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A9F8313CF
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 09:02:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4318313DB
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 09:03:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNLP-0001G0-JX; Thu, 18 Jan 2024 03:01:47 -0500
+	id 1rQNM9-0001yX-JB; Thu, 18 Jan 2024 03:02:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNL3-0001Fi-VH; Thu, 18 Jan 2024 03:01:27 -0500
+ id 1rQNM6-0001y0-KV; Thu, 18 Jan 2024 03:02:30 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNL1-0002PW-MA; Thu, 18 Jan 2024 03:01:25 -0500
+ id 1rQNM5-0002W7-42; Thu, 18 Jan 2024 03:02:30 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DA08A450AE;
- Thu, 18 Jan 2024 11:01:51 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 493AD450B4;
+ Thu, 18 Jan 2024 11:02:57 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0DA9E6621A;
- Thu, 18 Jan 2024 11:01:22 +0300 (MSK)
-Message-ID: <26c8ddf0-fff3-4a56-a9e2-f6aba20b773e@tls.msk.ru>
-Date: Thu, 18 Jan 2024 11:01:22 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 667136621E;
+ Thu, 18 Jan 2024 11:02:27 +0300 (MSK)
+Message-ID: <cf11bdfc-055b-4b1f-b73a-836d1518820a@tls.msk.ru>
+Date: Thu, 18 Jan 2024 11:02:27 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/xtensa: fix OOB TLB entry access
+Subject: Re: [PATCH-for-8.2 v2] backends/cryptodev: Do not ignore
+ throttle/backends Errors
 Content-Language: en-US
-To: Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <20231215120307.545381-1-jcmvbkbc@gmail.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Zhenwei Pi <pizhenwei@bytedance.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-stable@nongnu.org
+References: <20231120150418.93443-1-philmd@linaro.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -56,9 +62,9 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20231215120307.545381-1-jcmvbkbc@gmail.com>
+In-Reply-To: <20231120150418.93443-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -68
@@ -82,26 +88,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-15.12.2023 15:03, Max Filippov :
-> r[id]tlb[01], [iw][id]tlb opcodes use TLB way index passed in a register
-> by the guest. The host uses 3 bits of the index for ITLB indexing and 4
-> bits for DTLB, but there's only 7 entries in the ITLB array and 10 in
-> the DTLB array, so a malicious guest may trigger out-of-bound access to
-> these arrays.
-> 
-> Change split_tlb_entry_spec return type to bool to indicate whether TLB
-> way passed to it is valid. Change get_tlb_entry to return NULL in case
-> invalid TLB way is requested. Add assertion to xtensa_tlb_get_entry that
-> requested TLB way and entry indices are valid. Add checks to the
-> [rwi]tlb helpers that requested TLB way is valid and return 0 or do
-> nothing when it's not.
+20.11.2023 18:04, Philippe Mathieu-Daudé:
+> Both cryptodev_backend_set_throttle() and CryptoDevBackendClass::init()
+> can set their Error** argument. Do not ignore them, return early on
+> failure. Use the ERRP_GUARD() macro as suggested in commit ae7c80a7bd
+> ("error: New macro ERRP_GUARD()").
 > 
 > Cc: qemu-stable@nongnu.org
-> Fixes: b67ea0cd7441 ("target-xtensa: implement memory protection options")
-> Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+> Fixes: e7a775fd9f ("cryptodev: Account statistics")
+> Fixes: 2580b452ff ("cryptodev: support QoS")
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 Ping?
 Can we get this to master before Jan-27? :)
+It's been reviewed by a few people already.
 
 Thanks,
 
