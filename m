@@ -2,75 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0EC83185A
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 12:22:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F56F8318A3
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 12:48:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQQRg-0007WE-Rp; Thu, 18 Jan 2024 06:20:28 -0500
+	id 1rQQsB-0005DM-1C; Thu, 18 Jan 2024 06:47:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQQRd-0007Vf-Mw; Thu, 18 Jan 2024 06:20:25 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQQRb-0001Wn-Qo; Thu, 18 Jan 2024 06:20:25 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 75B5545243;
- Thu, 18 Jan 2024 14:20:49 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 509F06669A;
- Thu, 18 Jan 2024 14:20:19 +0300 (MSK)
-Message-ID: <cb67e602-4dbc-4070-9a29-32526982c498@tls.msk.ru>
-Date: Thu, 18 Jan 2024 14:20:19 +0300
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rQQrn-0005BB-3Y
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 06:47:27 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rQQrj-0004ju-Gv
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 06:47:26 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8DxfevHD6lleZ4BAA--.7659S3;
+ Thu, 18 Jan 2024 19:47:20 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxXs3HD6llrW8IAA--.40089S2; 
+ Thu, 18 Jan 2024 19:47:19 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, richard.henderson@linaro.org, philmd@linaro.org,
+ maobibo@loongson.cn, zhaotianrui@loongson.cn, lixianglai@loongson.cn
+Subject: [RESEND PATCH v4 00/17] Add boot LoongArch elf kernel with FDT
+Date: Thu, 18 Jan 2024 19:31:06 +0800
+Message-Id: <20240118113123.1672939-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] monitor: only run coroutine commands in
- qemu_aio_context
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- qemu-block@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
- Hanna Reitz <hreitz@redhat.com>
-References: <20240116190042.1363717-1-stefanha@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240116190042.1363717-1-stefanha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8BxXs3HD6llrW8IAA--.40089S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,35 +61,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-16.01.2024 22:00, Stefan Hajnoczi wrote:
-> Several bugs have been reported related to how QMP commands are rescheduled in
-> qemu_aio_context:
-> - https://gitlab.com/qemu-project/qemu/-/issues/1933
-> - https://issues.redhat.com/browse/RHEL-17369
-> - https://bugzilla.redhat.com/show_bug.cgi?id=2215192
-> - https://bugzilla.redhat.com/show_bug.cgi?id=2214985
-> 
-> The first instance of the bug interacted with drain_call_rcu() temporarily
-> dropping the BQL and resulted in vCPU threads entering device emulation code
-> simultaneously (something that should never happen). I set out to make
-> drain_call_rcu() safe to use in this environment, but Paolo and Kevin discussed
-> the possibility of avoiding rescheduling the monitor_qmp_dispatcher_co()
-> coroutine for non-coroutine commands. This would prevent monitor commands from
-> running during vCPU thread aio_poll() entirely and addresses the root cause.
-> 
-> This patch series implements this idea. qemu-iotests is sensitive to the exact
-> order in which QMP events and responses are emitted. Running QMP handlers in
-> the iohandler AioContext causes some QMP events to be ordered differently than
-> before. It is therefore necessary to adjust the reference output in many test
-> cases. The actual QMP code change is small and everything else is just to make
-> qemu-iotests happy.
+Hi, All
 
-This seems to be -stable material too, once it is applied to master.
-It's difficult for me to catch the issue (#1933 @gitlab) locally, but I did
-have some success there, and it always work after this patch is applied.
-It also seem to work fine on 7.2, not only on 8.2, fwiw.
+We already support boot efi kernel with bios, but not support boot elf kernel.
+This series adds boot elf kernel with FDT.
 
-Thanks,
+'LoongArch supports ACPI and FDT. The information that needs to be passed
+ to the kernel includes the memmap, the initrd, the command line, optionally
+ the ACPI/FDT tables, and so on'  see [1].
 
-/mjt
+Patch 2-8 : Create efi system table, and three efi configuration table
+            boot_memmap, initd, FDT.
+Patch 9-17 : Fixes FDT problems.
+
+Test:
+  - Start kernel
+    See [2] start_kernel.sh
+  - Start qcow2
+    See [2] start_qcow2.sh
+
+V4:
+  - patch 3 change slave_boot_code[] to const, and 'static void *p ' to
+    'void *p';
+  - patch 4 fixes build error;
+  - patch 10-13, add project and commit link.
+
+V3:
+  - Load initrd at  kernel_high + 4 * kernel_size;
+  - Load 'boot_rom' at [0 - 1M], the 'boot_rom' includes
+    slave_boot_code, cmdline_buf and systab_tables;
+  - R-b and rebase.
+
+V2:
+  - FDT pcie node adds cells 'msi-map';
+
+
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/arch/loongarch/booting.rst?h=v6.7-rc4
+
+[2]: https://github.com/gaosong-loongson/loongarch-binary/releases
+
+Please review!
+
+Thanks.
+Song Gao
+
+Song Gao (17):
+  hw/loongarch: Move boot fucntions to boot.c
+  hw/loongarch: Add load initrd
+  hw/loongarch: Add slave cpu boot_code
+  hw/loongarch: Add init_cmdline
+  hw/loongarch: Init efi_system_table
+  hw/loongarch: Init efi_boot_memmap table
+  hw/loongarch: Init efi_initrd table
+  hw/loongarch: Init efi_fdt table
+  hw/loongarch: Fix fdt memory node wrong 'reg'
+  hw/loongarch: fdt adds cpu interrupt controller node
+  hw/loongarch: fdt adds Extend I/O Interrupt Controller
+  hw/loongarch: fdt adds pch_pic Controller
+  hw/loongarch: fdt adds pch_msi Controller
+  hw/loongarch: fdt adds pcie irq_map node
+  hw/loongarch: fdt remove unused irqchip node
+  hw/loongarch: Add cells missing from uart node
+  hw/loongarch: Add cells missing from rtc node
+
+ include/hw/intc/loongarch_extioi.h |   1 +
+ include/hw/loongarch/boot.h        | 109 +++++++++
+ include/hw/loongarch/virt.h        |  14 ++
+ include/hw/pci-host/ls7a.h         |   2 +
+ target/loongarch/cpu.h             |   2 +
+ hw/loongarch/boot.c                | 330 ++++++++++++++++++++++++++
+ hw/loongarch/virt.c                | 364 ++++++++++++++++-------------
+ hw/loongarch/meson.build           |   1 +
+ 8 files changed, 661 insertions(+), 162 deletions(-)
+ create mode 100644 include/hw/loongarch/boot.h
+ create mode 100644 hw/loongarch/boot.c
+
+-- 
+2.25.1
+
 
