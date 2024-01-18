@@ -2,95 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D73831266
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 06:28:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A7383125B
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 06:26:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQKuK-0006Zv-NH; Thu, 18 Jan 2024 00:25:40 -0500
+	id 1rQKuJ-0006Z0-W1; Thu, 18 Jan 2024 00:25:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1rQKuA-0006Qp-PU; Thu, 18 Jan 2024 00:25:30 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1rQKuB-0006RD-6T; Thu, 18 Jan 2024 00:25:32 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1rQKu8-0006ed-PH; Thu, 18 Jan 2024 00:25:30 -0500
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ id 1rQKu9-0006er-Fr; Thu, 18 Jan 2024 00:25:30 -0500
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40I4srIk015151; Thu, 18 Jan 2024 05:25:25 GMT
+ 40I5FpxT011331; Thu, 18 Jan 2024 05:25:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=Fq04TSGVKhmDhp7Ea6o9blYNGK04oNML3gU/WjdIpjI=;
- b=cmEFoboVC6ap7HubhhjDXPYITiuRMS5SwOYBmpilANA61ImA1THICh4VNvl5Vk+WhOcQ
- J3iE133xkwYYLvM0TlW9qhlGFETAYNKAWwd+I/WVR5yM3zpj31/uZ1eokOgSXQtEX6R2
- ClUL3gm/5CGIN6m15/3tJyDUT6amRg+QpYXThSEv3ik6Naz8mqHXzt58ityMzybCARw+
- DFrrxK/j3lgaeVwlv9HIw3acRFvTuKliozc+/IGNzrQ8++/bn/m5Nd33ZFxoQhJ4rLSs
- Bvdi5Xcr9w2za+OTrya74BJtjAtzdoNNCuWGZtLFN4BP6fYGUbb+V3h93bh3lFgaopXp sA== 
+ bh=JJkX7uRZbxDZwVzvxUSOrTHXZOrNiLR6MYgW+1I/EGc=;
+ b=VtB+Iw4pdbIhwRmOx6y9buwJi7JsjDW7pEkiTqFZgTUx0hrVv9A7N4GyGSWS1vc2dDu2
+ r6irN7pPghPbkjzzLQpacyMmI9k9Cn89nDPme1SytWB8zeX27EHdMru7PxBIOqTHIGYU
+ 4fJLXzIQW0qGFA1fWjaQPeOktWOexnuPqgsJyNag099CdqxT68rZuYiJ3QQN/7OwDGUJ
+ 8Nn1psVvht409HLahKdba9Iv4BtwbD/vAs1m38iv3fISuTUQXHqbR8cWx+LTTGe1NQxH
+ 8yce4ieDKo6p/rOmQc0NAmj0dC3MT9FDS1zaVNHjpcqI0M2Fkhi7VIspza201ctHFJte Wg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vpvp4se5d-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vpwpbg91p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Jan 2024 05:25:25 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40I5GTAU013091;
+ Thu, 18 Jan 2024 05:25:25 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vpwpbg91d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Jan 2024 05:25:25 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40I3SarB005797; Thu, 18 Jan 2024 05:25:24 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm6bksd2c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 18 Jan 2024 05:25:24 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40I5KUjY028339;
- Thu, 18 Jan 2024 05:25:24 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vpvp4se4b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jan 2024 05:25:24 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40I3IRQb009733; Thu, 18 Jan 2024 05:25:23 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm5unsh51-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jan 2024 05:25:22 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40I5PJ7843123282
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40I5PL3E47645154
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Jan 2024 05:25:19 GMT
+ Thu, 18 Jan 2024 05:25:21 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 51F6C20043;
+ by IMSVA (Postfix) with ESMTP id 369C520043;
+ Thu, 18 Jan 2024 05:25:21 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9815C20040;
  Thu, 18 Jan 2024 05:25:19 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B2B0020040;
- Thu, 18 Jan 2024 05:25:17 +0000 (GMT)
 Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.in.ibm.com (unknown
  [9.109.243.35]) by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 18 Jan 2024 05:25:17 +0000 (GMT)
+ Thu, 18 Jan 2024 05:25:19 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: npiggin@gmail.com, qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, clegoate@redhat.com, mikey@neuling.org,
  amachhiw@linux.vnet.ibm.com, vaibhav@linux.ibm.com,
  sbhat@linux.ibm.com, danielhb413@gmail.com
-Subject: [PATCH v3 14/15] spapr: nested: Introduce cap-nested-papr for Nested
- PAPR API
-Date: Thu, 18 Jan 2024 10:54:37 +0530
-Message-Id: <20240118052438.1475437-15-harshpb@linux.ibm.com>
+Subject: [PATCH v3 15/15] spapr: nested: Set the PCR when logical PVR is set
+Date: Thu, 18 Jan 2024 10:54:38 +0530
+Message-Id: <20240118052438.1475437-16-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240118052438.1475437-1-harshpb@linux.ibm.com>
 References: <20240118052438.1475437-1-harshpb@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 61fNDEUnPSnkDzqTHcXPBTsD0ZjEFB9Y
-X-Proofpoint-ORIG-GUID: N3p_7hH5CBqf4VdVM-Dm1PnBqIUp2uNA
+X-Proofpoint-GUID: Z08FQOxZv2Mkk5-gYXGjKg3BlzOwxaPd
+X-Proofpoint-ORIG-GUID: diB_anQEvy9gegSnw9pOC86eQh-dwUMO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-18_02,2024-01-17_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- bulkscore=0 priorityscore=1501 adultscore=0 suspectscore=0 phishscore=0
- spamscore=0 mlxlogscore=743 lowpriorityscore=0 impostorscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ impostorscore=0
+ suspectscore=0 priorityscore=1501 malwarescore=0 phishscore=0 mlxscore=0
+ spamscore=0 bulkscore=0 mlxlogscore=999 clxscore=1015 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2401180035
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -113,161 +112,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a SPAPR capability cap-nested-papr which enables nested PAPR
-API for nested guests. This new API is to enable support for KVM on PowerVM
-and the support in Linux kernel has already merged upstream.
+From: Amit Machhiwal <amachhiw@linux.vnet.ibm.com>
 
-Signed-off-by: Michael Neuling <mikey@neuling.org>
+In APIv1, KVM L0 sets the PCR, while in the nested papr APIv2, this
+doesn't work as the PCR can't be set via the guest state buffer; the
+logical PVR is set via the GSB though.
+
+This change sets the PCR whenever the logical PVR is set via the GSB.
+Also, unlike the other registers, the value 1 in a defined bit in the
+PCR makes the affected resources unavailable and the value 0 makes
+them available. Hence, the PCR is set accordingly.
+
+Signed-off-by: Amit Machhiwal <amachhiw@linux.vnet.ibm.com>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 ---
- include/hw/ppc/spapr.h |  5 +++-
- hw/ppc/spapr.c         |  2 ++
- hw/ppc/spapr_caps.c    | 55 ++++++++++++++++++++++++++++++++++++++++++
- hw/ppc/spapr_nested.c  |  2 --
- 4 files changed, 61 insertions(+), 3 deletions(-)
+ include/hw/ppc/spapr_nested.h |  9 +++++++++
+ hw/ppc/spapr_nested.c         | 24 ++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index 4d3dbd4e7a..379b64b0d7 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -81,8 +81,10 @@ typedef enum {
- #define SPAPR_CAP_RPT_INVALIDATE        0x0B
- /* Support for AIL modes */
- #define SPAPR_CAP_AIL_MODE_3            0x0C
-+/* Nested PAPR */
-+#define SPAPR_CAP_NESTED_PAPR           0x0D
- /* Num Caps */
--#define SPAPR_CAP_NUM                   (SPAPR_CAP_AIL_MODE_3 + 1)
-+#define SPAPR_CAP_NUM                   (SPAPR_CAP_NESTED_PAPR + 1)
+diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
+index 18dd82009d..bdd2aa2d52 100644
+--- a/include/hw/ppc/spapr_nested.h
++++ b/include/hw/ppc/spapr_nested.h
+@@ -230,6 +230,15 @@ typedef struct SpaprMachineStateNestedGuest {
+ #define GUEST_STATE_REQUEST_GUEST_WIDE       0x1
+ #define GUEST_STATE_REQUEST_SET              0x2
  
- /*
-  * Capability Values
-@@ -993,6 +995,7 @@ extern const VMStateDescription vmstate_spapr_cap_sbbc;
- extern const VMStateDescription vmstate_spapr_cap_ibs;
- extern const VMStateDescription vmstate_spapr_cap_hpt_maxpagesize;
- extern const VMStateDescription vmstate_spapr_cap_nested_kvm_hv;
-+extern const VMStateDescription vmstate_spapr_cap_nested_papr;
- extern const VMStateDescription vmstate_spapr_cap_large_decr;
- extern const VMStateDescription vmstate_spapr_cap_ccf_assist;
- extern const VMStateDescription vmstate_spapr_cap_fwnmi;
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index b87532343c..b34a1b61a6 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -2120,6 +2120,7 @@ static const VMStateDescription vmstate_spapr = {
-         &vmstate_spapr_cap_fwnmi,
-         &vmstate_spapr_fwnmi,
-         &vmstate_spapr_cap_rpt_invalidate,
-+        &vmstate_spapr_cap_nested_papr,
-         NULL
-     }
- };
-@@ -4696,6 +4697,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
-     smc->default_caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_WORKAROUND;
-     smc->default_caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] = 16; /* 64kiB */
-     smc->default_caps.caps[SPAPR_CAP_NESTED_KVM_HV] = SPAPR_CAP_OFF;
-+    smc->default_caps.caps[SPAPR_CAP_NESTED_PAPR] = SPAPR_CAP_OFF;
-     smc->default_caps.caps[SPAPR_CAP_LARGE_DECREMENTER] = SPAPR_CAP_ON;
-     smc->default_caps.caps[SPAPR_CAP_CCF_ASSIST] = SPAPR_CAP_ON;
-     smc->default_caps.caps[SPAPR_CAP_FWNMI] = SPAPR_CAP_ON;
-diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-index c3c83f6e68..4c0080120e 100644
---- a/hw/ppc/spapr_caps.c
-+++ b/hw/ppc/spapr_caps.c
-@@ -487,11 +487,56 @@ static void cap_nested_kvm_hv_apply(SpaprMachineState *spapr,
-             error_append_hint(errp, "Try appending -machine cap-nested-hv=off "
-                                     "or use threads=1 with -smp\n");
-         }
-+    if (spapr->nested.api) {
-+        warn_report("nested.api already set as %d, re-init to kvm-hv",
-+                    spapr->nested.api);
-+    }
-     spapr->nested.api = NESTED_API_KVM_HV;
-     spapr_register_nested_hv();
-     }
- }
- 
-+static void cap_nested_papr_apply(SpaprMachineState *spapr,
-+                                    uint8_t val, Error **errp)
-+{
-+    ERRP_GUARD();
-+    PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
-+    CPUPPCState *env = &cpu->env;
++/* As per ISA v3.1B, following bits are reserved:
++ *      0:2
++ *      4:57  (ISA mentions bit 58 as well but it should be used for P10)
++ *      61:63 (hence, haven't included PCR bits for v2.06 and v2.05
++ *             in LOW BITS)
++ */
++#define PCR_LOW_BITS   (PCR_COMPAT_3_10 | PCR_COMPAT_3_00)
++#define HVMASK_PCR     ~PCR_LOW_BITS
 +
-+    if (!val) {
-+        /* capability disabled by default */
-+        return;
-+    }
-+
-+    if (tcg_enabled()) {
-+        if (!(env->insns_flags2 & PPC2_ISA300)) {
-+            error_setg(errp, "Nested-PAPR only supported on POWER9 and later");
-+            error_append_hint(errp,
-+                              "Try appending -machine cap-nested-papr=off\n");
-+            return;
-+        }
-+    } else if (kvm_enabled()) {
-+        /*
-+         * this gets executed in L1 qemu when L2 is launched,
-+         * needs kvm-hv support in L1 kernel.
-+         */
-+        if (!kvmppc_has_cap_nested_kvm_hv()) {
-+            error_setg(errp,
-+                       "KVM implementation does not support Nested-HV");
-+        } else if (kvmppc_set_cap_nested_kvm_hv(val) < 0) {
-+            error_setg(errp, "Error enabling Nested-HV with KVM");
-+        }
-+    }
-+    if (spapr->nested.api) {
-+        warn_report("nested.api already set as %d, re-init to nested-papr",
-+                    spapr->nested.api);
-+    }
-+    spapr->nested.api = NESTED_API_PAPR;
-+    spapr->nested.capabilities_set = false;
-+    spapr_register_nested_papr();
-+    spapr_nested_gsb_init();
-+}
-+
- static void cap_large_decr_apply(SpaprMachineState *spapr,
-                                  uint8_t val, Error **errp)
- {
-@@ -737,6 +782,15 @@ SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] = {
-         .type = "bool",
-         .apply = cap_nested_kvm_hv_apply,
-     },
-+    [SPAPR_CAP_NESTED_PAPR] = {
-+        .name = "nested-papr",
-+        .description = "Allow Nested HV (PAPR API)",
-+        .index = SPAPR_CAP_NESTED_PAPR,
-+        .get = spapr_cap_get_bool,
-+        .set = spapr_cap_set_bool,
-+        .type = "bool",
-+        .apply = cap_nested_papr_apply,
-+    },
-     [SPAPR_CAP_LARGE_DECREMENTER] = {
-         .name = "large-decr",
-         .description = "Allow Large Decrementer",
-@@ -921,6 +975,7 @@ SPAPR_CAP_MIG_STATE(sbbc, SPAPR_CAP_SBBC);
- SPAPR_CAP_MIG_STATE(ibs, SPAPR_CAP_IBS);
- SPAPR_CAP_MIG_STATE(hpt_maxpagesize, SPAPR_CAP_HPT_MAXPAGESIZE);
- SPAPR_CAP_MIG_STATE(nested_kvm_hv, SPAPR_CAP_NESTED_KVM_HV);
-+SPAPR_CAP_MIG_STATE(nested_papr, SPAPR_CAP_NESTED_PAPR);
- SPAPR_CAP_MIG_STATE(large_decr, SPAPR_CAP_LARGE_DECREMENTER);
- SPAPR_CAP_MIG_STATE(ccf_assist, SPAPR_CAP_CCF_ASSIST);
- SPAPR_CAP_MIG_STATE(fwnmi, SPAPR_CAP_FWNMI);
+ #define GUEST_STATE_ELEMENT(i, sz, s, f, ptr, c) { \
+     .id = (i),                                     \
+     .size = (sz),                                  \
 diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-index e7e5e72006..b91413e09a 100644
+index b91413e09a..75e07f454d 100644
 --- a/hw/ppc/spapr_nested.c
 +++ b/hw/ppc/spapr_nested.c
-@@ -13,8 +13,6 @@
- void spapr_nested_init(SpaprMachineState *spapr)
+@@ -740,9 +740,11 @@ static void out_buf_min_size(void *a, void *b, bool set)
+ 
+ static void copy_logical_pvr(void *a, void *b, bool set)
  {
-     spapr->nested.api = 0;
--    spapr->nested.capabilities_set = false;
--    spapr_nested_gsb_init();
++    SpaprMachineStateNestedGuest *guest;
+     uint32_t *buf; /* 1 word */
+     uint32_t *pvr_logical_ptr;
+     uint32_t pvr_logical;
++    target_ulong pcr = 0;
+ 
+     pvr_logical_ptr = a;
+     buf = b;
+@@ -755,6 +757,28 @@ static void copy_logical_pvr(void *a, void *b, bool set)
+     pvr_logical = be32_to_cpu(buf[0]);
+ 
+     *pvr_logical_ptr = pvr_logical;
++
++    if (*pvr_logical_ptr) {
++        switch (*pvr_logical_ptr) {
++            case CPU_POWERPC_LOGICAL_3_10:
++                pcr = PCR_COMPAT_3_10 | PCR_COMPAT_3_00;
++                break;
++            case CPU_POWERPC_LOGICAL_3_00:
++                pcr = PCR_COMPAT_3_00;
++                break;
++            default:
++                qemu_log_mask(LOG_GUEST_ERROR,
++                    "Could not set PCR for LPVR=0x%08x\n", *pvr_logical_ptr);
++                return;
++        }
++    }
++
++    guest = container_of(pvr_logical_ptr,
++                         struct SpaprMachineStateNestedGuest,
++                         pvr_logical);
++    for (int i = 0; i < guest->vcpus; i++) {
++        guest->vcpu[i].state.pcr = ~pcr | HVMASK_PCR;
++    }
  }
  
- uint8_t spapr_nested_api(SpaprMachineState *spapr)
+ static void copy_tb_offset(void *a, void *b, bool set)
 -- 
 2.39.3
 
