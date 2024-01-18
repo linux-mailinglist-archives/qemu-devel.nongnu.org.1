@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23FB0831EE9
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 19:03:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43938831EE8
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 19:03:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQWhR-0005IQ-1I; Thu, 18 Jan 2024 13:01:09 -0500
+	id 1rQWhR-0005Ib-13; Thu, 18 Jan 2024 13:01:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQWhB-0005BH-OI; Thu, 18 Jan 2024 13:00:56 -0500
+ id 1rQWhD-0005BO-Jl; Thu, 18 Jan 2024 13:00:56 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQWhA-0001kk-72; Thu, 18 Jan 2024 13:00:53 -0500
+ id 1rQWhB-0001kw-TE; Thu, 18 Jan 2024 13:00:55 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 94ACE4545E;
- Thu, 18 Jan 2024 21:01:12 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id B384E4545F;
+ Thu, 18 Jan 2024 21:01:13 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2672866C27;
- Thu, 18 Jan 2024 21:00:41 +0300 (MSK)
-Received: (nullmailer pid 2513371 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 4995266C28;
+ Thu, 18 Jan 2024 21:00:42 +0300 (MSK)
+Received: (nullmailer pid 2513374 invoked by uid 1000);
  Thu, 18 Jan 2024 18:00:31 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Ido Plat <Ido.Plat@ibm.com>, David Hildenbrand <david@redhat.com>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.9 7/8] target/s390x: Fix LAE setting a wrong access
- register
-Date: Thu, 18 Jan 2024 21:00:26 +0300
-Message-Id: <20240118180031.2513319-7-mjt@tls.msk.ru>
+Subject: [Stable-7.2.9 8/8] .gitlab-ci.d/buildtest.yml: Work around htags bug
+ when environment is large
+Date: Thu, 18 Jan 2024 21:00:27 +0300
+Message-Id: <20240118180031.2513319-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.9-20240118170458@cover.tls.msk.ru>
 References: <qemu-stable-7.2.9-20240118170458@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,45 +62,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-LAE should set the access register corresponding to the first operand,
-instead, it always modifies access register 1.
+Sometimes the CI "pages" job fails with a message like this from
+htags:
 
-Co-developed-by: Ido Plat <Ido.Plat@ibm.com>
+$ htags -anT --tree-view=filetree -m qemu_init -t "Welcome to the QEMU sourcecode"
+htags: Negative exec line limit = -371
+
+This is due to a bug in hflags where if the environment is too large it
+falls over:
+https://lists.gnu.org/archive/html/bug-global/2024-01/msg00000.html
+
+This happens to us because GitLab CI puts the commit message of the
+commit under test into the CI_COMMIT_MESSAGE and/or CI_COMMIT_TAG_MESSAGE
+environment variables, so the job will fail if the commit happens to
+have a verbose commit message.
+
+Work around the htags bug by unsetting these variables while running
+htags.
+
 Cc: qemu-stable@nongnu.org
-Fixes: a1c7610a6879 ("target-s390x: implement LAY and LAEY instructions")
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-ID: <20240111092328.929421-2-iii@linux.ibm.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2080
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240111125543.1573473-1-peter.maydell@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit e358a25a97c71c39e3513d9b869cdb82052e50b8)
+(cherry picked from commit 52a21689cd829c1cc931b59b5ee5bdb10dd578c1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: target/s390x/tcg/translate.c: fixup for
- v8.1.0-1189-gad75a51e84  "tcg: Rename cpu_env to tcg_env" and
- v7.2.0-2636-g3ac6f91bca "target/s390x: Drop tcg_temp_free from translate.c")
 
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index b0173e968e..a257c06838 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -3394,6 +3394,7 @@ static DisasJumpType op_mov2e(DisasContext *s, DisasOps *o)
- {
-     int b2 = get_field(s, b2);
-     TCGv ar1 = tcg_temp_new_i64();
-+    int r1 = get_field(s, r1);
- 
-     o->out = o->in2;
-     o->g_out = o->g_in2;
-@@ -3419,7 +3420,7 @@ static DisasJumpType op_mov2e(DisasContext *s, DisasOps *o)
-         break;
-     }
- 
--    tcg_gen_st32_i64(ar1, cpu_env, offsetof(CPUS390XState, aregs[1]));
-+    tcg_gen_st32_i64(ar1, cpu_env, offsetof(CPUS390XState, aregs[r1]));
-     tcg_temp_free_i64(ar1);
- 
-     return DISAS_NEXT;
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 10886bb414..7243b8079b 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -637,7 +637,10 @@ pages:
+     - mkdir -p public
+     # HTML-ised source tree
+     - make gtags
+-    - htags -anT --tree-view=filetree -m qemu_init
++    # We unset variables to work around a bug in some htags versions
++    # which causes it to fail when the environment is large
++    - CI_COMMIT_MESSAGE= CI_COMMIT_TAG_MESSAGE= htags
++        -anT --tree-view=filetree -m qemu_init
+         -t "Welcome to the QEMU sourcecode"
+     - mv HTML public/src
+     # Project documentation
 -- 
 2.39.2
 
