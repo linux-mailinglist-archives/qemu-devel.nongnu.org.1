@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C87831372
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:57:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E45C8831375
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:57:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNGm-0008Hs-7Z; Thu, 18 Jan 2024 02:57:00 -0500
+	id 1rQNHF-0001zJ-Sl; Thu, 18 Jan 2024 02:57:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNGc-0007ee-4x; Thu, 18 Jan 2024 02:56:51 -0500
+ id 1rQNGv-0001p0-Vy; Thu, 18 Jan 2024 02:57:10 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNGZ-00080f-Ec; Thu, 18 Jan 2024 02:56:49 -0500
+ id 1rQNGu-00080r-9n; Thu, 18 Jan 2024 02:57:09 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 118B64504C;
+ by isrv.corpit.ru (Postfix) with ESMTP id 22E4C4504D;
  Thu, 18 Jan 2024 10:54:37 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 3A145661B4;
+ by tsrv.corpit.ru (Postfix) with SMTP id 4C7CA661B5;
  Thu, 18 Jan 2024 10:54:07 +0300 (MSK)
-Received: (nullmailer pid 2381729 invoked by uid 1000);
+Received: (nullmailer pid 2381732 invoked by uid 1000);
  Thu, 18 Jan 2024 07:54:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
- Bruno Haible <bruno@clisp.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 33/38] hw/hppa: Move software power button address back
- into PDC
-Date: Thu, 18 Jan 2024 10:53:00 +0300
-Message-Id: <20240118075404.2381519-33-mjt@tls.msk.ru>
+ Bruno Haible <bruno@clisp.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 34/38] target/hppa: Avoid accessing %gr0 when raising
+ exception
+Date: Thu, 18 Jan 2024 10:53:01 +0300
+Message-Id: <20240118075404.2381519-34-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
@@ -64,63 +63,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The various operating systems (e.g. Linux, NetBSD) have issues
-mapping the power button when it's stored in page zero.
-NetBSD even crashes, because it fails to map that page and then
-accesses unmapped memory.
+The value of unwind_breg may reference register %r0, but we need to avoid
+accessing gr0 directly and use the value 0 instead.
 
-Since we now have a consistent memory mapping of PDC in 32-bit
-and 64-bit address space (the lower 32-bits of the address are in
-sync) the power button can be moved back to PDC space.
-
-This patch fixes the power button on Linux, NetBSD and HP-UX.
+At runtime I've seen unwind_breg being zero with the Linux kernel when
+rfi is used to jump to smp_callin().
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Tested-by: Bruno Haible <bruno@clisp.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit ed35afcb331a972210816435d6b1b5de17fc7d4f)
+Tested-by: Bruno Haible <bruno@clisp.org>
+(cherry picked from commit 5915b67013eb8c3a84e3ef05e6ba4eae55ccd173)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index 54ca2fd91a..9e611620cc 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -36,8 +36,8 @@
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index 4c28c58ee9..1387f4a64b 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -341,7 +341,7 @@ raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
  
- #define MIN_SEABIOS_HPPA_VERSION 12 /* require at least this fw version */
+                 cpu_restore_state(cs, retaddr);
  
--/* Power button address at &PAGE0->pad[4] */
--#define HPA_POWER_BUTTON (0x40 + 4 * sizeof(uint32_t))
-+#define HPA_POWER_BUTTON        (FIRMWARE_END - 0x10)
-+static hwaddr soft_power_reg;
- 
- #define enable_lasi_lan()       0
- 
-@@ -45,7 +45,6 @@ static DeviceState *lasi_dev;
- 
- static void hppa_powerdown_req(Notifier *n, void *opaque)
- {
--    hwaddr soft_power_reg = HPA_POWER_BUTTON;
-     uint32_t val;
- 
-     val = ldl_be_phys(&address_space_memory, soft_power_reg);
-@@ -221,7 +220,7 @@ static FWCfgState *create_fw_cfg(MachineState *ms, PCIBus *pci_bus,
-     fw_cfg_add_file(fw_cfg, "/etc/hppa/machine",
-                     g_memdup(mc->name, len), len);
- 
--    val = cpu_to_le64(HPA_POWER_BUTTON);
-+    val = cpu_to_le64(soft_power_reg);
-     fw_cfg_add_file(fw_cfg, "/etc/hppa/power-button-addr",
-                     g_memdup(&val, sizeof(val)), sizeof(val));
- 
-@@ -295,6 +294,8 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
-         ram_max = 0xf0000000;      /* 3.75 GB (32-bit CPU) */
-     }
- 
-+    soft_power_reg = translate(NULL, HPA_POWER_BUTTON);
-+
-     for (unsigned int i = 0; i < smp_cpus; i++) {
-         g_autofree char *name = g_strdup_printf("cpu%u-io-eir", i);
+-                b = env->gr[env->unwind_breg];
++                b = env->unwind_breg ? env->gr[env->unwind_breg] : 0;
+                 b >>= (env->psw & PSW_W ? 62 : 30);
+                 env->cr[CR_IOR] |= b << 62;
  
 -- 
 2.39.2
