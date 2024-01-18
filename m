@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E91831B33
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:15:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C65831B30
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:15:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQTAT-0003T8-Ih; Thu, 18 Jan 2024 09:14:53 -0500
+	id 1rQTAT-0003U5-Tz; Thu, 18 Jan 2024 09:14:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQTAE-0003Nc-5O; Thu, 18 Jan 2024 09:14:38 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1rQTAH-0003Ot-8h; Thu, 18 Jan 2024 09:14:42 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQTAB-0002Qs-Hs; Thu, 18 Jan 2024 09:14:37 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1d6ed1ad986so12260405ad.3; 
- Thu, 18 Jan 2024 06:14:34 -0800 (PST)
+ id 1rQTAF-0002RH-I1; Thu, 18 Jan 2024 09:14:41 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6dac225bf42so6610865b3a.0; 
+ Thu, 18 Jan 2024 06:14:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705587273; x=1706192073; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705587277; x=1706192077; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RNusOvjYfuLg8yHgiTdJsvx8h4MinrBOkyF4f+pOACI=;
- b=VsqQTcS+aFUTq+8xjJusoS8WNv9MDng7t9DQjoAMDzusMx1PI7nuqumgkZpj6tyq6i
- g8xitTQYADCR3CiKox8PuiMxf5mOuPuQUa33EWoiYduXgJw+/tjvDcZNVW1YDhP2wWK0
- HWTPIbwTc+NCw8JH4rIYcZsUrHRcifS6BPhtZ9SBdHBngYb3Ksv80hd8R0U5IqpPhSLC
- 5iAUnM7zzUcXCZH6PZ/r2GklgyGk00OwPFNLr2Ew3N4Gxs7MaGIjQljfAjWJlkrQ3QMz
- LXNLMVMDqmOfjPZhTJ+nAybQ2ZC1OpRUethyQO0yegS14mmoM7eNQPxFb8v/ypH1jYAz
- 2eUw==
+ bh=hUe6fBSPNDQNiiBAsOj2zDX9QCAESKGGXiGMgOWN/CQ=;
+ b=UeI/oqVACY64NI10ReTxV21ASXg2imdgm+gPrxiHTlIEIfstpXw3KhSjvULSPG4NXx
+ a2EduyecKD+w7Cu39ZrYgC5zDF4bwIaJ9xnzRvRoyqLYxquioVqDRpj7GRsmd5mdQaeG
+ hBkst/78dWGiLkKdcTj9wUNVdHLHSYq4aw1cJdlegsd9lvOqorOIuLj1zc3e6lDbiZA+
+ 8x7feqY90EH8I5CPWN6EMk8NB+fM6ShEv3KnLpw/ALNW/QRbqrGzCoyGB5PKltVbJC96
+ X5/sRB/yexw86Wf5Th3/nOVliYznSg916/47MwwMhxvbFurMEA69E1wPjTfW2zFQskk5
+ uxhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705587273; x=1706192073;
+ d=1e100.net; s=20230601; t=1705587277; x=1706192077;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RNusOvjYfuLg8yHgiTdJsvx8h4MinrBOkyF4f+pOACI=;
- b=D0IUMdjntqZU+KO0eq1oNXH4lHxZgGACR0pdcZ4R0moC7Rf1Y14jjsEnxL+FDa5Ov0
- vW/AB7H6+4CCS5lmqVGoGt18jR8nN3vgobW/fMJrjcGxDs4QTNDk1kW1HQCn4H+JgIlU
- i3tFhdO5qL0d16bWpgf3cNmBihquUEuXZNzFUuy8fhEJR5HRhZ2D3nGQWjlP94Osle9d
- pVcpYQlf4LLLYDD+47flzZ+neCXbvl5tgIda7g16jHY1lRBE6hLoVk967Vu/y69ZSMed
- r0mB2vKVFVX9sq0JZnUW44z7ReUUbffTNaYN6T0kXqzafHfP2wQ9vwGp0qOad+z1rhyv
- pj6A==
-X-Gm-Message-State: AOJu0Yx6DmjsO+10OEq2/wEn37XLCbK9qLAWbjIk8XtmzQ+JtA6NJDhU
- RTOWRtPOM+ZCMmEUthyHnnlC+MoMvuNsbtkg5TNt8D8aO3mCqYwXuBvjCoIV
-X-Google-Smtp-Source: AGHT+IGn0YyUZFHpKZp7Z+CmaDw/hqClvXmIZGKLjLadPN2uD5HOy3WxqWBo0OetP00/4PlYfOIaeA==
-X-Received: by 2002:a17:902:bb97:b0:1d4:55e0:bd0e with SMTP id
- m23-20020a170902bb9700b001d455e0bd0emr919583pls.18.1705587273353; 
- Thu, 18 Jan 2024 06:14:33 -0800 (PST)
+ bh=hUe6fBSPNDQNiiBAsOj2zDX9QCAESKGGXiGMgOWN/CQ=;
+ b=raD8EcOkGTp4tym5cqMeRujzRwmpCga6GidbbqCzVksJAf5gT9ZfIc4PwurTt0+v4q
+ aQsaeqZBnXg7Tq7YVrDs9jBFaDkDMnEW6AzNANKbgvkar6mk0L9VJVnbtziAvzrRBfBd
+ InWmcCdB15M/AdiQBs23PggoHPwXpMgHtXuMiqo4vNZhtfdRW9kbT/FbvEnN/4j0f7H2
+ 5swe7a6vnLiL7NyCCv+Q+eL687rjuJS0tvGYWhT3BWRQHuAyRcdIPI4HaVpaRErdm347
+ 7MWS9ysTwsiJmO83oO29oBGIQCWFkMaBnMVueWHa+bimzTr9kzeOQhkhXRHz2Bf1O9Ns
+ Xj/w==
+X-Gm-Message-State: AOJu0YxpicsTl4DnKbwrZDQPCUExjS4OCa74kwD6c5s5S2jk/vqTWBBz
+ O375u3p98TnY6baAO6MXdTytkZWZTVmXDq8MeS0vh9QmSYT3iOs6BAPKWWgz
+X-Google-Smtp-Source: AGHT+IFGickpwtAshs4hVmQCG3LDsuALLAMASWZkoueLXIzWYYStSjhysRlMqtk6vVxT0XOtKVMaAw==
+X-Received: by 2002:a17:903:1c4:b0:1d3:7c0b:d4ca with SMTP id
+ e4-20020a17090301c400b001d37c0bd4camr796435plh.73.1705587277434; 
+ Thu, 18 Jan 2024 06:14:37 -0800 (PST)
 Received: from wheely.local0.net (124-171-76-150.tpgi.com.au. [124.171.76.150])
  by smtp.gmail.com with ESMTPSA id
- k15-20020a170902760f00b001d4be72802esm1434781pll.150.2024.01.18.06.14.29
+ k15-20020a170902760f00b001d4be72802esm1434781pll.150.2024.01.18.06.14.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Jan 2024 06:14:33 -0800 (PST)
+ Thu, 18 Jan 2024 06:14:37 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -62,16 +62,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH 1/2] ppc/spapr: change pseries machine default to POWER10 CPU
-Date: Fri, 19 Jan 2024 00:14:17 +1000
-Message-ID: <20240118141418.165107-2-npiggin@gmail.com>
+Subject: [PATCH 2/2] ppc/pnv: Change powernv default to powernv10
+Date: Fri, 19 Jan 2024 00:14:18 +1000
+Message-ID: <20240118141418.165107-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240118141418.165107-1-npiggin@gmail.com>
 References: <20240118141418.165107-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,26 +94,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-POWER10 is the latest pseries CPU.
+POWER10 is the latest IBM Power machine. Although it is not offered in
+"OPAL mode" (i.e., powernv configuration), so there is a case that it
+should remain at powernv9, most of the development work is going into
+powernv10 at the moment.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/ppc/pnv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index e8dabc8614..021b1a00e1 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -4675,7 +4675,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 0297871bdd..b949398689 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -2242,8 +2242,6 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
  
-     smc->dr_lmb_enabled = true;
-     smc->update_dt_enabled = true;
--    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
-+    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
-     mc->has_hotpluggable_cpus = true;
-     mc->nvdimm_supported = true;
-     smc->resize_hpt_default = SPAPR_RESIZE_HPT_ENABLED;
+     xfc->match_nvt = pnv_match_nvt;
+ 
+-    mc->alias = "powernv";
+-
+     pmc->compat = compat;
+     pmc->compat_size = sizeof(compat);
+     pmc->dt_power_mgt = pnv_dt_power_mgt;
+@@ -2267,6 +2265,8 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
+     compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_compat));
+ 
++    mc->alias = "powernv";
++
+     pmc->compat = compat;
+     pmc->compat_size = sizeof(compat);
+     pmc->dt_power_mgt = pnv_dt_power_mgt;
 -- 
 2.42.0
 
