@@ -2,65 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C3B83158C
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 10:12:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F1483158A
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 10:12:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQOQJ-0006cr-HJ; Thu, 18 Jan 2024 04:10:56 -0500
+	id 1rQOR2-0006kj-CO; Thu, 18 Jan 2024 04:11:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQOQC-0006ai-RU
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 04:10:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <arnaud.minier@telecom-paris.fr>)
+ id 1rQOR0-0006jy-63; Thu, 18 Jan 2024 04:11:38 -0500
+Received: from zproxy4.enst.fr ([137.194.2.223])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQOQB-0004gq-50
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 04:10:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705569046;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=2grxcxWrslwxTFmFJiHKe1MHiIBI0P3mUGva/9aKz7M=;
- b=QicfsohkSdKIE8W0kWCMyf/sRye+dH/Fohw+REMz1Z+YKJ8CXwlCCAdp1GDXp8AaVDUrN0
- Y8PE37qnQtNViSA34q2Q3pPSAgfqokbJJTnGgc7jXVo7yKbMGwVMFEtJ/4X/LfwReRFWok
- n/3ov93RfhVoGcIe22KLg5ZGMbf5h88=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-379-cT3ng0XCNDSbWNBHv5Jbbw-1; Thu, 18 Jan 2024 04:10:42 -0500
-X-MC-Unique: cT3ng0XCNDSbWNBHv5Jbbw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C531F85A58E;
- Thu, 18 Jan 2024 09:10:41 +0000 (UTC)
-Received: from x1n.redhat.com (unknown [10.72.116.6])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 12A05C15E61;
- Thu, 18 Jan 2024 09:10:37 +0000 (UTC)
-From: peterx@redhat.com
+ (Exim 4.90_1) (envelope-from <arnaud.minier@telecom-paris.fr>)
+ id 1rQOQy-0004mf-6h; Thu, 18 Jan 2024 04:11:37 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id DF9A320641;
+ Thu, 18 Jan 2024 10:11:29 +0100 (CET)
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id i8QuuKoEu9eu; Thu, 18 Jan 2024 10:11:28 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id 9711F205CE;
+ Thu, 18 Jan 2024 10:11:28 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy4.enst.fr 9711F205CE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1705569088;
+ bh=haQavn94m/tteUB3lxixVne3km3oXG4ZBbxq6A9NN4s=;
+ h=From:To:Date:Message-Id:MIME-Version;
+ b=yuvaB/mYHg3DQ2GaEILzzhtag6c5Z49pGUJ65Jn6llgHj1SPVIdKq0LC2VZAdEQzr
+ HeaaKYRT2ylCueZpwePmUxQgfqIWpn3qG6m3xOQvv8+/a/1KyKmhGLdwIxXs7acfA3
+ LDQmtWwyN+uowHdNT/QM6zxZ5iVQB8/LKqXBkYdQ=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id Xz-urpE3TI3m; Thu, 18 Jan 2024 10:11:28 +0100 (CET)
+Received: from AM-Inspiron-3585.numericable.fr (38.162.10.109.rev.sfr.net
+ [109.10.162.38])
+ by zproxy4.enst.fr (Postfix) with ESMTPSA id BCF1720557;
+ Thu, 18 Jan 2024 10:11:27 +0100 (CET)
+From: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 To: qemu-devel@nongnu.org
-Cc: Yi Liu <yi.l.liu@intel.com>, peterx@redhat.com, eric.auger@redhat.com,
- Alex Williamson <alex.williamson@redhat.com>, zhenzhong.duan@intel.com,
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PATCH] MAINTAINERS: Drop myself as VT-d maintainers
-Date: Thu, 18 Jan 2024 17:10:35 +0800
-Message-ID: <20240118091035.48178-1-peterx@redhat.com>
+Cc: philmd@linaro.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, samuel.tardieu@telecom-paris.fr,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2 0/7] Add device STM32L4x5 RCC
+Date: Thu, 18 Jan 2024 10:11:00 +0100
+Message-Id: <20240118091107.87831-1-arnaud.minier@telecom-paris.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=137.194.2.223;
+ envelope-from=arnaud.minier@telecom-paris.fr; helo=zproxy4.enst.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,41 +79,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+This patch adds a new device STM32L4x5 RCC (Reset and Clock Control) devi=
+ce and is part
+of a series implementing the STM32L4x5 with a few peripherals.
 
-Due to my own limitation on bandwidth, I noticed that unfortunately I won't
-have time to review VT-d patches at least in the near future.  Meanwhile I
-expect a lot of possibilities could actually happen in this area in the
-near future.
+Due to the high number of lines, I tried to split the patch into several =
+independent commits.
+Each commit compiles on its own but I had to add temporary workarounds in=
+ intermediary commits to allow them to compile even if some functions are=
+ not used. However, they have been removed once the functions were used. =
+Tell me if this is ok or if I should remove them.
 
-To reflect that reality, I decided to drop myself from the VT-d role.  It
-shouldn't affect much since we still have Jason around like usual, and
-Michael on top.  But I assume it'll always be good if anyone would like to
-fill this role up.
+Also, the tests are not very exhaustive for the moment. I have not found =
+a way to test the clocks' frequency from the qtests, which limits severel=
+y the exhaustiveness of the tests.
 
-I'll still work on QEMU.  So I suppose anyone can still copy me if one
-thinks essential.
+Thanks to Philippe Mathieu-Daud=C3=A9 and Luc Michel for guiding me towar=
+d the hw/misc/bcm2835_cprman.c implementation and answering my questions =
+about clock emulation in qemu !
 
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+Based-on: 20240109194438.70934-1-ines.varhol@telecom-paris.fr
+([PATCH v4 0/3] Add device STM32L4x5 SYSCFG)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b406fb20c0..1c85b4bdad 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3606,7 +3606,6 @@ F: tests/uefi-test-tools/
- 
- VT-d Emulation
- M: Michael S. Tsirkin <mst@redhat.com>
--M: Peter Xu <peterx@redhat.com>
- R: Jason Wang <jasowang@redhat.com>
- S: Supported
- F: hw/i386/intel_iommu.c
--- 
-2.43.0
+Changes from v1 to v2:
+- Removed a mention in the tests
+- Add an early return to prevent a clang compilation error in rcc_update_=
+pllsaixcfgr()
+
+Arnaud Minier (7):
+  Implement STM32L4x5_RCC skeleton
+  Add an internal clock multiplexer object
+  Add an internal PLL Clock object
+  Add initialization information for PLLs and clock multiplexers
+  RCC: Handle Register Updates
+  STM32L4x5: Use the RCC Sysclk
+  Add tests for the STM32L4x5_RCC
+
+ MAINTAINERS                               |    5 +-
+ docs/system/arm/b-l475e-iot01a.rst        |    2 +-
+ hw/arm/Kconfig                            |    1 +
+ hw/arm/b-l475e-iot01a.c                   |   10 +-
+ hw/arm/stm32l4x5_soc.c                    |   45 +-
+ hw/misc/Kconfig                           |    3 +
+ hw/misc/meson.build                       |    1 +
+ hw/misc/stm32l4x5_rcc.c                   | 1299 +++++++++++++++++++++
+ hw/misc/trace-events                      |   14 +
+ include/hw/arm/stm32l4x5_soc.h            |    5 +-
+ include/hw/misc/stm32l4x5_rcc.h           |  239 ++++
+ include/hw/misc/stm32l4x5_rcc_internals.h | 1044 +++++++++++++++++
+ tests/qtest/meson.build                   |    3 +-
+ tests/qtest/stm32l4x5_rcc-test.c          |  210 ++++
+ 14 files changed, 2836 insertions(+), 45 deletions(-)
+ create mode 100644 hw/misc/stm32l4x5_rcc.c
+ create mode 100644 include/hw/misc/stm32l4x5_rcc.h
+ create mode 100644 include/hw/misc/stm32l4x5_rcc_internals.h
+ create mode 100644 tests/qtest/stm32l4x5_rcc-test.c
+
+--=20
+2.34.1
 
 
