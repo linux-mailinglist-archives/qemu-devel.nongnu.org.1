@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572FC831918
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:25:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E88183191B
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:26:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQRS6-0004Jt-Dp; Thu, 18 Jan 2024 07:24:58 -0500
+	id 1rQRS5-0004BW-4S; Thu, 18 Jan 2024 07:24:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rQRRy-0003hj-6o
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:24:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rQRS1-0003zI-60
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:24:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rQRRw-0006Qa-EP
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:24:49 -0500
+ id 1rQRRy-0006XV-Vg
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:24:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705580687;
+ s=mimecast20190719; t=1705580690;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5sh/MzaGjWxLlgh2MspMlqhV3rmhSqr08po1WDn+uqs=;
- b=Js6ZDjaHNCjDSA24y4RssyJx2fxHK68Hk2MVr5S76MzG4CkCTudiToHL06+hAGj3hNYhK9
- G9lByT3RsSFjk9P8YP5NE9sMqzEr95XJdC370g9257A0Ano/rueplTUvyrzncIKlmg5ycp
- h1ZCrz/isF360H6JHMFauxCiig3nVNY=
+ bh=VNAly1Va9uOmD/aqKC3qQhN78zjE+pQNvRpWao8WKWA=;
+ b=ihlIBBzvclCpYUnF2WYD6/RV/EovF3qou2FG3dFyibgs2VmMQvEm6LU2NJNjY7gOLYi+lf
+ CsT2l0AszQub0/vA+WNdskjMN0d5b4yrbDUwh6TuiOP32zRPglaZRGncFoelAbog8gIfuJ
+ q/xdp/F/JTP/qJGX2zTfdPWZK9jQ2YE=
 Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
  [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-UwLlthGaN4qE9EVq-vLRiA-1; Thu, 18 Jan 2024 07:24:46 -0500
-X-MC-Unique: UwLlthGaN4qE9EVq-vLRiA-1
+ us-mta-151-8r1f-T6hPEy7qoDn1AIP6A-1; Thu, 18 Jan 2024 07:24:48 -0500
+X-MC-Unique: 8r1f-T6hPEy7qoDn1AIP6A-1
 Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a2bc65005feso460746666b.0
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 04:24:46 -0800 (PST)
+ a640c23a62f3a-a2eace36abdso84192066b.3
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 04:24:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705580685; x=1706185485;
+ d=1e100.net; s=20230601; t=1705580687; x=1706185487;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5sh/MzaGjWxLlgh2MspMlqhV3rmhSqr08po1WDn+uqs=;
- b=eeRQ3m6kHA8h/C3aYDr0KMEtpJfqAQUvoFZ8W/+HJx0QDkyudXA461cB0fR+jAhrqw
- sV9z9E0baJ0JRFblxLpi42gq+qCbMx1VkJzFDRH/xiIhiNaW/hFYWyrkAI1Q5BKWwTgl
- MwKUlzEtaMsZ7YaPIlMp/NraRXZOIm6yZ8gKSXRFEPAcBqPII3xB1DXxS3MqVpTo3nec
- ujTkelGujef3bTd0unSyY2dGTIvhpIIY2b5oKtHLwOp0icRI31ND9xhUbjuICjwvbnNS
- Kjh5EZrfIV2Wze94qrYsmgYRAft2FzAClWH7GTF+b4+y4qDPChXGIvqriLfVHLGrqi1d
- jeXA==
-X-Gm-Message-State: AOJu0YwOwybVFG0XZH96ucH+m2ZfdRe1l6rmkmeuAGD1oVCy2Qd1jQIE
- O0ogkcnxwC3k7ZaXueB9i5unPlQ1GUla6HvOOHT2pNwEfu6+jUVlDBvEbzPaq+596QRDSIODCII
- lkcNo8YAZmMVmPes1ZzMSMBEfRdu86JmNWDGr+EWlUtRhr2lh0U0/zTCQdVast7mm23RcAMIsDg
- r9Kbh0I8SKR8Qf2aPfSclq7T3m1A4ccQSwpTjc
-X-Received: by 2002:a17:906:c34c:b0:a2d:4383:78c7 with SMTP id
- ci12-20020a170906c34c00b00a2d438378c7mr430536ejb.132.1705580684925; 
- Thu, 18 Jan 2024 04:24:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGJ/CAdaZhHz1QduMdvvFbH6q52VUqfQ36AfUfQMRsvOqjc+iedr1UzAMzAD8bzdfdygtGytQ==
-X-Received: by 2002:a17:906:c34c:b0:a2d:4383:78c7 with SMTP id
- ci12-20020a170906c34c00b00a2d438378c7mr430530ejb.132.1705580684541; 
- Thu, 18 Jan 2024 04:24:44 -0800 (PST)
+ bh=VNAly1Va9uOmD/aqKC3qQhN78zjE+pQNvRpWao8WKWA=;
+ b=jVI24DgAunKYyIZXaTYsdf13Z1SWg5VhcF5KryaLhjq5XFCmMVgJtsaFhvLGfD+EzL
+ W9m9tMHnupNNovh+y2VlRD4gR3Q8Fvn+QKJJ4kiU5nFx1nVH7jdA4EVUeYA+2VQhRZ0g
+ SfUMUUvdrByxytn9SGMDD1Of148RTJS1FquhtlyrbdU8yUF1+fbTN2t5eI0wy1J4CFZ9
+ rqrLBCob5RO4U/8wpL6QBqYAI1fH9ePbSEiU69IITi1+w/4e29PE/j+X38zigxWWsEiz
+ 83/t9PJ5U5isgu8w8LErlgwXnoa7RrPpK1Vp8mwTzeZFPnM//oQKfldHpc5+t/x+E7hU
+ kvxQ==
+X-Gm-Message-State: AOJu0YyQmBomTc0c1mJP6xuF6v9QRucDjItI9y8aaQ3ULsQ0piNoS8aP
+ WmWOyYvkBrcp6gqt+HxhCwyQkTSpQMSC9MYd/0Ax7RSQYmdSJz5pb5Kak0xPxZSTa09HotCdmh9
+ HAqXX5T9vi32GFwCCK6Es64pNTnioFD0k1TLw+kI+lYr27hPFYSA3VzsiDac8x6I9yscAL1KhnE
+ wMuQ9AAzKDzjIp4Eh3Yey2kks3FiAHuqU3508C
+X-Received: by 2002:a17:906:81c8:b0:a28:ac5b:5814 with SMTP id
+ e8-20020a17090681c800b00a28ac5b5814mr242678ejx.185.1705580687201; 
+ Thu, 18 Jan 2024 04:24:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEALDULHaUhl5dvug/meiFhbXGn7QXpJ5MBYQ1zGM/KqHz3OIeWvopMDCUEkgYIml6f6mBPyw==
+X-Received: by 2002:a17:906:81c8:b0:a28:ac5b:5814 with SMTP id
+ e8-20020a17090681c800b00a28ac5b5814mr242673ejx.185.1705580686895; 
+ Thu, 18 Jan 2024 04:24:46 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- cw8-20020a170907160800b00a2cd72af9cesm7871793ejd.146.2024.01.18.04.24.43
+ x27-20020a170906299b00b00a2c0fec4240sm9091833eje.158.2024.01.18.04.24.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Jan 2024 04:24:44 -0800 (PST)
+ Thu, 18 Jan 2024 04:24:45 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 15/16] qemu/osdep: Add huge page aligned support on LoongArch
- platform
-Date: Thu, 18 Jan 2024 13:24:15 +0100
-Message-ID: <20240118122416.9209-16-pbonzini@redhat.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PULL 16/16] tests/tcg: Don't #include <inttypes.h> in
+ aarch64/system/vtimer.c
+Date: Thu, 18 Jan 2024 13:24:16 +0100
+Message-ID: <20240118122416.9209-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118122416.9209-1-pbonzini@redhat.com>
 References: <20240118122416.9209-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
 X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,39 +102,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-On LoongArch kvm mode if transparent huge page wants to be enabled, base
-address and size of memslot from both HVA and GPA view. And LoongArch
-supports both 4K and 16K page size with Linux kernel, so transparent huge
-page size is calculated from real page size rather than hardcoded size.
+make check-tcg fails on Fedora with:
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <20240115073244.174155-1-maobibo@loongson.cn>
+    vtimer.c:9:10: fatal error: inttypes.h: No such file or directory
+
+Fedora has a minimal aarch64 cross-compiler, which satisfies the
+configure checks, so it's chosen instead of the dockerized one.
+There is no cross-version of inttypes.h, however.
+
+Fix by using stdint.h instead. The test does not require anything
+from inttypes.h anyway.
+
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-ID: <20240108125030.58569-1-iii@linux.ibm.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qemu/osdep.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tests/tcg/aarch64/system/vtimer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 9a405bed893..c9692cc3142 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -547,6 +547,14 @@ int madvise(char *, size_t, int);
- #  define QEMU_VMALLOC_ALIGN (256 * 4096)
- #elif defined(__linux__) && defined(__sparc__)
- #  define QEMU_VMALLOC_ALIGN MAX(qemu_real_host_page_size(), SHMLBA)
-+#elif defined(__linux__) && defined(__loongarch__)
-+   /*
-+    * For transparent hugepage optimization, it has better be huge page
-+    * aligned. LoongArch host system supports two kinds of pagesize: 4K
-+    * and 16K, here calculate huge page size from host page size
-+    */
-+#  define QEMU_VMALLOC_ALIGN (qemu_real_host_page_size() * \
-+                         qemu_real_host_page_size() / sizeof(long))
- #else
- #  define QEMU_VMALLOC_ALIGN qemu_real_host_page_size()
- #endif
+diff --git a/tests/tcg/aarch64/system/vtimer.c b/tests/tcg/aarch64/system/vtimer.c
+index 42f2f7796c7..7d725eced34 100644
+--- a/tests/tcg/aarch64/system/vtimer.c
++++ b/tests/tcg/aarch64/system/vtimer.c
+@@ -6,7 +6,7 @@
+  * SPDX-License-Identifier: GPL-2.0-or-later
+  */
+ 
+-#include <inttypes.h>
++#include <stdint.h>
+ #include <minilib.h>
+ 
+ /* grabbed from Linux */
 -- 
 2.43.0
 
