@@ -2,51 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43938831EE8
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 19:03:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F35831EFA
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 19:11:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQWhR-0005Ib-13; Thu, 18 Jan 2024 13:01:09 -0500
+	id 1rQWpz-0008V8-8B; Thu, 18 Jan 2024 13:09:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQWhD-0005BO-Jl; Thu, 18 Jan 2024 13:00:56 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQWpw-0008Sn-TA
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 13:09:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQWhB-0001kw-TE; Thu, 18 Jan 2024 13:00:55 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B384E4545F;
- Thu, 18 Jan 2024 21:01:13 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4995266C28;
- Thu, 18 Jan 2024 21:00:42 +0300 (MSK)
-Received: (nullmailer pid 2513374 invoked by uid 1000);
- Thu, 18 Jan 2024 18:00:31 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.9 8/8] .gitlab-ci.d/buildtest.yml: Work around htags bug
- when environment is large
-Date: Thu, 18 Jan 2024 21:00:27 +0300
-Message-Id: <20240118180031.2513319-8-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-7.2.9-20240118170458@cover.tls.msk.ru>
-References: <qemu-stable-7.2.9-20240118170458@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQWpt-0004dv-PZ
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 13:09:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705601392;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TDQGQP58mCGX9QoIKn0iVXyM5DNkbFOieM6AGfZNrSw=;
+ b=fE+URzYkYzAFQ3GwV0HjPmbwNcd3wpHUf8nBFkdUjJritK4ZEVzXe/i1yeklVmGtt+wAER
+ vSn/5BLpzgZOl7B9StV0OI46uozGKy6kVRZ4vvsx0p7oZ2Wf/Y09h330xOjHByhNhpX7cY
+ tDlO7Yw/yokFYHH0cIZ/UNnbqhJW4Cg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-547-8U2wH_mEOgusM8yibfMwOw-1; Thu, 18 Jan 2024 13:09:46 -0500
+X-MC-Unique: 8U2wH_mEOgusM8yibfMwOw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8FE71920708;
+ Thu, 18 Jan 2024 18:09:44 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.209])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1EF7F1C05E0E;
+ Thu, 18 Jan 2024 18:09:42 +0000 (UTC)
+Date: Thu, 18 Jan 2024 19:09:41 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>,
+ Michael Roth <michael.roth@amd.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-stable@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH v2 0/3] monitor: only run coroutine commands in
+ qemu_aio_context
+Message-ID: <ZalpZV0T4DDFUFsu@redhat.com>
+References: <20240118144823.1497953-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240118144823.1497953-1-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,51 +82,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+Am 18.01.2024 um 15:48 hat Stefan Hajnoczi geschrieben:
+> v2:
+> - Filter image format in 141 test output [Kevin]
+> - Fix pylint and mypy errors in 141 [Kevin]
+> 
+> Several bugs have been reported related to how QMP commands are rescheduled in
+> qemu_aio_context:
+> - https://gitlab.com/qemu-project/qemu/-/issues/1933
+> - https://issues.redhat.com/browse/RHEL-17369
+> - https://bugzilla.redhat.com/show_bug.cgi?id=2215192
+> - https://bugzilla.redhat.com/show_bug.cgi?id=2214985
+> 
+> The first instance of the bug interacted with drain_call_rcu() temporarily
+> dropping the BQL and resulted in vCPU threads entering device emulation code
+> simultaneously (something that should never happen). I set out to make
+> drain_call_rcu() safe to use in this environment, but Paolo and Kevin discussed
+> the possibility of avoiding rescheduling the monitor_qmp_dispatcher_co()
+> coroutine for non-coroutine commands. This would prevent monitor commands from
+> running during vCPU thread aio_poll() entirely and addresses the root cause.
+> 
+> This patch series implements this idea. qemu-iotests is sensitive to the exact
+> order in which QMP events and responses are emitted. Running QMP handlers in
+> the iohandler AioContext causes some QMP events to be ordered differently than
+> before. It is therefore necessary to adjust the reference output in many test
+> cases. The actual QMP code change is small and everything else is just to make
+> qemu-iotests happy.
+> 
+> If you have bugs related to the same issue, please retest them with these
+> patches. Thanks!
 
-Sometimes the CI "pages" job fails with a message like this from
-htags:
+Thanks, applied to the block branch.
 
-$ htags -anT --tree-view=filetree -m qemu_init -t "Welcome to the QEMU sourcecode"
-htags: Negative exec line limit = -371
-
-This is due to a bug in hflags where if the environment is too large it
-falls over:
-https://lists.gnu.org/archive/html/bug-global/2024-01/msg00000.html
-
-This happens to us because GitLab CI puts the commit message of the
-commit under test into the CI_COMMIT_MESSAGE and/or CI_COMMIT_TAG_MESSAGE
-environment variables, so the job will fail if the commit happens to
-have a verbose commit message.
-
-Work around the htags bug by unsetting these variables while running
-htags.
-
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2080
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240111125543.1573473-1-peter.maydell@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 52a21689cd829c1cc931b59b5ee5bdb10dd578c1)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 10886bb414..7243b8079b 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -637,7 +637,10 @@ pages:
-     - mkdir -p public
-     # HTML-ised source tree
-     - make gtags
--    - htags -anT --tree-view=filetree -m qemu_init
-+    # We unset variables to work around a bug in some htags versions
-+    # which causes it to fail when the environment is large
-+    - CI_COMMIT_MESSAGE= CI_COMMIT_TAG_MESSAGE= htags
-+        -anT --tree-view=filetree -m qemu_init
-         -t "Welcome to the QEMU sourcecode"
-     - mv HTML public/src
-     # Project documentation
--- 
-2.39.2
+Kevin
 
 
