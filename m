@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E63D831386
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:58:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3B6831367
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:56:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNEj-0000zx-SA; Thu, 18 Jan 2024 02:54:54 -0500
+	id 1rQNF7-0001VS-4B; Thu, 18 Jan 2024 02:55:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNEg-0000vp-QK; Thu, 18 Jan 2024 02:54:50 -0500
+ id 1rQNF3-0001Sr-Th; Thu, 18 Jan 2024 02:55:13 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNEf-0007P7-3M; Thu, 18 Jan 2024 02:54:50 -0500
+ id 1rQNF1-0007PQ-8C; Thu, 18 Jan 2024 02:55:13 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B521845038;
+ by isrv.corpit.ru (Postfix) with ESMTP id C7DBC45039;
  Thu, 18 Jan 2024 10:54:35 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id DB7B5661A1;
+ by tsrv.corpit.ru (Postfix) with SMTP id F02DE661A2;
  Thu, 18 Jan 2024 10:54:05 +0300 (MSK)
-Received: (nullmailer pid 2381670 invoked by uid 1000);
+Received: (nullmailer pid 2381673 invoked by uid 1000);
  Thu, 18 Jan 2024 07:54:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Khem Raj <raj.khem@gmail.com>, Eric Auger <eric.auger@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 14/38] vfio/container: Replace basename with
- g_path_get_basename
-Date: Thu, 18 Jan 2024 10:52:41 +0300
-Message-Id: <20240118075404.2381519-14-mjt@tls.msk.ru>
+ Eric Auger <eric.auger@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 15/38] hw/vfio: fix iteration over global VFIODevice
+ list
+Date: Thu, 18 Jan 2024 10:52:42 +0300
+Message-Id: <20240118075404.2381519-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
@@ -64,45 +64,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@redhat.com>
+From: Volker Rümelin <vr_qemu@t-online.de>
 
-g_path_get_basename() is a portable utility function that has the
-advantage of not modifing the string argument. It also fixes a compile
-breakage with the Musl C library reported in [1].
+Commit 3d779abafe ("vfio/common: Introduce a global VFIODevice list")
+introduced a global VFIODevice list, but forgot to update the list
+element field name when iterating over the new list. Change the code
+to use the correct list element field.
 
-[1] https://lore.kernel.org/all/20231212010228.2701544-1-raj.khem@gmail.com/
-
-Reported-by: Khem Raj <raj.khem@gmail.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Fixes: 3d779abafe ("vfio/common: Introduce a global VFIODevice list")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2061
+Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit 213ae3ffda463c0503e39e0cf827511b5298c314)
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+(cherry picked from commit 9353b6da430f90e47f352dbf6dc31120c8914da6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 242010036a..adc3005beb 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -848,7 +848,8 @@ static void vfio_put_base_device(VFIODevice *vbasedev)
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index e70fdf5e0c..a5dfc2d27e 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -73,7 +73,7 @@ bool vfio_mig_active(void)
+         return false;
+     }
  
- static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
+-    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
++    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
+         if (vbasedev->migration_blocker) {
+             return false;
+         }
+@@ -94,7 +94,7 @@ static bool vfio_multiple_devices_migration_is_supported(void)
+     unsigned int device_num = 0;
+     bool all_support_p2p = true;
+ 
+-    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
++    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
+         if (vbasedev->migration) {
+             device_num++;
+ 
+@@ -1352,13 +1352,13 @@ void vfio_reset_handler(void *opaque)
  {
--    char *tmp, group_path[PATH_MAX], *group_name;
-+    char *tmp, group_path[PATH_MAX];
-+    g_autofree char *group_name = NULL;
-     int ret, groupid;
-     ssize_t len;
+     VFIODevice *vbasedev;
  
-@@ -864,7 +865,7 @@ static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
+-    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
++    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
+         if (vbasedev->dev->realized) {
+             vbasedev->ops->vfio_compute_needs_reset(vbasedev);
+         }
+     }
  
-     group_path[len] = 0;
- 
--    group_name = basename(group_path);
-+    group_name = g_path_get_basename(group_path);
-     if (sscanf(group_name, "%d", &groupid) != 1) {
-         error_setg_errno(errp, errno, "failed to read %s", group_path);
-         return -errno;
+-    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
++    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
+         if (vbasedev->dev->realized && vbasedev->needs_reset) {
+             vbasedev->ops->vfio_hot_reset_multi(vbasedev);
+         }
 -- 
 2.39.2
 
