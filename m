@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1E38318A4
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 12:48:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38A6A8318AD
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 12:49:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQQrz-0005CX-I3; Thu, 18 Jan 2024 06:47:43 -0500
+	id 1rQQsG-0005Ll-TD; Thu, 18 Jan 2024 06:47:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rQQrn-0005BD-A2
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 06:47:27 -0500
+ id 1rQQro-0005C6-D7
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 06:47:28 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rQQrj-0004kA-JZ
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 06:47:27 -0500
+ (envelope-from <gaosong@loongson.cn>) id 1rQQrk-0004kd-Ft
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 06:47:28 -0500
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxefDJD6llip4BAA--.8242S3;
- Thu, 18 Jan 2024 19:47:21 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxefDKD6lljZ4BAA--.8245S3;
+ Thu, 18 Jan 2024 19:47:22 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxXs3HD6llrW8IAA--.40089S10; 
- Thu, 18 Jan 2024 19:47:21 +0800 (CST)
+ AQAAf8BxXs3HD6llrW8IAA--.40089S11; 
+ Thu, 18 Jan 2024 19:47:22 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, richard.henderson@linaro.org, philmd@linaro.org,
  maobibo@loongson.cn, zhaotianrui@loongson.cn, lixianglai@loongson.cn
-Subject: [RESEND PATCH v4 08/17] hw/loongarch: Init efi_fdt table
-Date: Thu, 18 Jan 2024 19:31:14 +0800
-Message-Id: <20240118113123.1672939-9-gaosong@loongson.cn>
+Subject: [RESEND PATCH v4 09/17] hw/loongarch: Fix fdt memory node wrong 'reg'
+Date: Thu, 18 Jan 2024 19:31:15 +0800
+Message-Id: <20240118113123.1672939-10-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240118113123.1672939-1-gaosong@loongson.cn>
 References: <20240118113123.1672939-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxXs3HD6llrW8IAA--.40089S10
+X-CM-TRANSID: AQAAf8BxXs3HD6llrW8IAA--.40089S11
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,57 +63,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20231227080821.3216113-9-gaosong@loongson.cn>
----
- include/hw/loongarch/boot.h |  4 ++++
- hw/loongarch/boot.c         | 11 +++++++++++
- 2 files changed, 15 insertions(+)
+The right fdt memory node like [1], not [2]
 
-diff --git a/include/hw/loongarch/boot.h b/include/hw/loongarch/boot.h
-index ce47056608..bbe8c8dd5d 100644
---- a/include/hw/loongarch/boot.h
-+++ b/include/hw/loongarch/boot.h
-@@ -34,6 +34,10 @@ typedef struct {
-         EFI_GUID(0x5568e427, 0x68fc, 0x4f3d,  0xac, 0x74, \
-                  0xca, 0x55, 0x52, 0x31, 0xcc, 0x68)
+  [1]
+        memory@0 {
+                device_type = "memory";
+                reg = <0x00 0x00 0x00 0x10000000>;
+        };
+  [2]
+        memory@0 {
+                device_type = "memory";
+                reg = <0x02 0x00 0x02 0x10000000>;
+        };
+
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20231227080821.3216113-10-gaosong@loongson.cn>
+---
+ hw/loongarch/virt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 5f5153e681..129cad92e5 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -290,7 +290,7 @@ static void fdt_add_memory_node(MachineState *ms,
+     char *nodename = g_strdup_printf("/memory@%" PRIx64, base);
  
-+#define DEVICE_TREE_GUID \
-+        EFI_GUID(0xb1b621d5, 0xf19c, 0x41a5,  0x83, 0x0b, \
-+                 0xd9, 0x15, 0x2c, 0x69, 0xaa, 0xe0)
-+
- struct efi_config_table {
-     efi_guid_t guid;
-     uint64_t *ptr;
-diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-index 6f56d4fd91..fe3e640508 100644
---- a/hw/loongarch/boot.c
-+++ b/hw/loongarch/boot.c
-@@ -111,6 +111,16 @@ static void init_efi_initrd_table(struct efi_system_table *systab,
-     initrd_table->size = initrd_size;
- }
+     qemu_fdt_add_subnode(ms->fdt, nodename);
+-    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", 2, base, 2, size);
++    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", 0, base, 0, size);
+     qemu_fdt_setprop_string(ms->fdt, nodename, "device_type", "memory");
  
-+static void init_efi_fdt_table(struct efi_system_table *systab)
-+{
-+    efi_guid_t tbl_guid = DEVICE_TREE_GUID;
-+
-+    /* efi_configuration_table 3 */
-+    guidcpy(&systab->tables[2].guid, &tbl_guid);
-+    systab->tables[2].table = (void *)0x100000; /* fdt_base 1MiB */
-+    systab->nr_tables = 3;
-+}
-+
- static void init_systab(struct loongarch_boot_info *info, void *p, void *start)
- {
-     void *bp_tables_start;
-@@ -136,6 +146,7 @@ static void init_systab(struct loongarch_boot_info *info, void *p, void *start)
-                   sizeof(efi_memory_desc_t) * memmap_entries, 64);
-     init_efi_initrd_table(systab, p, start);
-     p += ROUND_UP(sizeof(struct efi_initrd), 64);
-+    init_efi_fdt_table(systab);
- 
-     systab->tables = (struct efi_configuration_table *)(bp_tables_start - start);
- }
+     if (ms->numa_state && ms->numa_state->num_nodes) {
 -- 
 2.25.1
 
