@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11393831666
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 11:06:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7ED2831668
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 11:06:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQPGd-0008MD-GF; Thu, 18 Jan 2024 05:04:59 -0500
+	id 1rQPHg-0000R2-N3; Thu, 18 Jan 2024 05:06:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rQPGc-0008M3-AI
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 05:04:58 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1rQPHe-0000QB-0k
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 05:06:02 -0500
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rQPGV-0001vf-W8
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 05:04:57 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-559dbeba085so2021159a12.0
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 02:04:50 -0800 (PST)
+ id 1rQPHY-0003OF-IP
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 05:06:01 -0500
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2cca5d81826so155412751fa.2
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 02:05:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705572289; x=1706177089; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=C8nHvjlxSm2UeNRjVOzGaH7Tc4KpH34QKsnvOQREX8I=;
- b=llsgdWwmWG7ii7WoORdnLnXgngNZEP74QjIHMNJBKJxHZzFBCElUHjEvAAjYDZESjd
- 7mqt6VwdQz22zw4MsSQd+hODT5SeZ6RANzUAMI7bWQ8u3xzZRwMw2URhihBqHKss9bsZ
- bE93rEDk4pas1+wsh3W8wnmpP82QKB5hY/GYECvznHNy4brm6zOr5AvpFBGaYcncuhCv
- w/zamVcB3eceKa1x6IF6/1ly3rfgx8mTUPf8PqcyHq66WJyP73vt+dA+0Q4d9h8/HqJA
- tVq7Kp1w7VGhe/Kmv2UFs4ITAz/H6VUzIGJtCi6QNs5dL/FQKJJB6txBFIHhSZ0FMDKJ
- 6XYw==
+ d=linaro.org; s=google; t=1705572355; x=1706177155; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=uTmgt5LKqekmL4R8cbSTdHv6RqEq83JLTfEj+9ciDjI=;
+ b=q0Vql8kdaElAfE1WaC+a0dbafaWkPjIc+xztOblxktNWo74HLLZNJkt6ZjAvrKeJKl
+ /0bWeyJCzsz7NDXjfYs8ebAQvtk+BmYDdQzarcJO1u2WTMWfYGRUBYMq1WQSNvh90jQo
+ 2W9EJt9j6QiS8uPGL2XXGWDuktBGpOEEfjI7mPQAyyDtxpjvH5oA0eyEZSfqhfahEgQD
+ AKvq6RFHAmMnqgoRfju4pu+TGvncYnSPPJHzgPPYGqG+ByjaG1A6VcR5EZGEXL/msusW
+ bbe2t5ScS1nv7IXoiyjM71xm/jHw2Nt0blDqMPXZso773Y67+gLwnUi1ZErWfuzmrC3S
+ BBHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705572289; x=1706177089;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=C8nHvjlxSm2UeNRjVOzGaH7Tc4KpH34QKsnvOQREX8I=;
- b=KGSA01dj5p2rXb9StL1X7FLY0qeZVZZCxRN+Hr5O7RI+xoKrvLlikyM4t/vP6Qyl27
- bIaX2KMA4XH13aCO16riJW3Pkes8Zx1A8nYcdRKSuY317nlBTirUecb0S7QnzjVEBplq
- e4FIg76RPih4yStr9/iDhqryV+2T15Qzy3avLj8kcLckDd3NOue+Efp06EPyfE+hlrVD
- RJn3ZMMkCQqTSpdRaLBuvEC8O6ftHU5XvTcYIdUiyz4YwN5qXv9rqRG2RG+1B4ygbuFr
- W1lAyOXGRKX5IMv5mwnMM1lJJyF4+cBxfJfPjpUV8sUUXukMff0340rxuxfgtW/Nl6d+
- wQKA==
-X-Gm-Message-State: AOJu0YyeMV6L148rJsl1qry2/tt7ui4PO6vMapsrxeZzL6BtdvND5rVx
- y2hTMGaCQWU1HfioVniu/w6BeTDuvKPPaEKSBrdL+SPILumdkhtsWC4btvnY3S1ZJsQkfxZ5iNm
- nvOoYCxKPzO0zBM0pqSHiCcB0WQK02IW2pp2nlgyREFSdrxxw
-X-Google-Smtp-Source: AGHT+IG40vkLOckOZF/QsLMSzTGrOVoXt/nrVy62+Hqt6E2MNmDawFLxZr0Tpztwufk+XM+MkztyQ/EbMpe3rMmyIVQ=
-X-Received: by 2002:aa7:cb50:0:b0:55a:8d7:ac8f with SMTP id
- w16-20020aa7cb50000000b0055a08d7ac8fmr336838edt.2.1705572289139; Thu, 18 Jan
- 2024 02:04:49 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705572355; x=1706177155;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uTmgt5LKqekmL4R8cbSTdHv6RqEq83JLTfEj+9ciDjI=;
+ b=R7sENFws3F3YyJWbLaSIrgp6Sg3hnhedDhhxCuNBD8b/fQb9mOO+mCGf9Qc44rFrzh
+ zaSflJeRmjscj4DVXvrH/v54iIGnVLvK5gEfZWT4vvcpes8nUWeKh6zGsnuKTFeY4NlB
+ 1Wzxy8dy8p0U0kzs/dLAGz6aev7ZeyosXIlANi4SLPwMJXH61Lwnm7fVHPhJlaLYGeRJ
+ FhoBgBAaDIU54YMJJKI3qy5YR3waGRhkv0iRgfZZEvZYtPIeB9z4+vtYU8GKC7mbfLWt
+ E//EOuLV/nrxJjJEnVPBzboX1T3pHUrf1h8wFNMnhEJQ3lb5rptXd6m55GS/p3PnEUBr
+ O6qA==
+X-Gm-Message-State: AOJu0YxgKY1PHpfcneVSiL20U/sgiv3ng8osiwfeeJTYcj/4W9SDQqmB
+ d1qMqoKjpkkkMDOmDKyW/FGcgKc2ziQ1TMmZaUYKW6YyCJUjLBfC8Zk4I9i466lGSn4CzhlccZU
+ AizbS/DzQ0mNsdf6Mi/NZILv66IBAUztgixcrDBuBNbpwWLtK
+X-Google-Smtp-Source: AGHT+IF5HwDI4v6ShIliVfjGkF2zVZ7AnylD3r79HNhfRbYsGmkMcLF3O/yP24TUD6W+voQYz2UefQGkTrw6E3dRs/c=
+X-Received: by 2002:a05:651c:21b:b0:2cc:e3b7:f7a3 with SMTP id
+ y27-20020a05651c021b00b002cce3b7f7a3mr423416ljn.71.1705572354857; Thu, 18 Jan
+ 2024 02:05:54 -0800 (PST)
 MIME-Version: 1.0
-References: <CA+ji3pGBJBp+trjM-RhgkYjOs8rrtLJgHsaNvf=EyGtWB4gAow@mail.gmail.com>
- <CAFEAcA-L2vepWXfgaHW=ogLAvAZjJd5yv1hm6dBU6dsEOS_gCA@mail.gmail.com>
- <CA+ji3pGVBmDAeUoPM9Zk8pOtpxcR+92XeUBN8G=Mmmyi4Eh8-g@mail.gmail.com>
-In-Reply-To: <CA+ji3pGVBmDAeUoPM9Zk8pOtpxcR+92XeUBN8G=Mmmyi4Eh8-g@mail.gmail.com>
+References: <20240109092015.4136865-1-kai.kang@windriver.com>
+ <CAFEAcA9LBXMxOzJwmXYEVj+q0hTzMQZrpZHOOKFYWZDKXFyHig@mail.gmail.com>
+ <1db86e7c-9d4a-6c7d-9e6b-52054b2382cd@windriver.com>
+In-Reply-To: <1db86e7c-9d4a-6c7d-9e6b-52054b2382cd@windriver.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 18 Jan 2024 10:04:36 +0000
-Message-ID: <CAFEAcA9AeqbWt1Q5QM_HEwi+A2KYXFs1ZEqfFJcqdktYwWujTQ@mail.gmail.com>
-Subject: Re: Assistance Required for QEMU Hardfault Error with Cortex-M33 on
- MPS2AN505
-To: sanjana gogte <sanj27272@gmail.com>
-Cc: qemu-devel@nongnu.org
+Date: Thu, 18 Jan 2024 10:05:43 +0000
+Message-ID: <CAFEAcA-UPK_Uo_6bvMVrGSR9ZPMuA4DiAbJOmehhYSKKpEuMWw@mail.gmail.com>
+Subject: Re: [PATCH] qdev: not add devices to bus in reverse order
+To: Kai <kai.kang@windriver.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,137 +89,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 18 Jan 2024 at 06:30, sanjana gogte <sanj27272@gmail.com> wrote:
+On Thu, 18 Jan 2024 at 06:49, Kai <kai.kang@windriver.com> wrote:
 >
-> Hi,
-> 1) I am using QEMU Version 7.1.0. I am currently using this version with =
-a plan to connect the remote port from Xilinx to the mps2an505 board. The d=
-ecision to use this specific version is heavily influenced by the fact that=
- it is the same version utilized by Xilinx's QEMU.
+> On 1/18/24 01:31, Peter Maydell wrote:
+> > (cc'd the people listed for this file in MAINTAINERS)
+> >
+> > On Tue, 9 Jan 2024 at 13:53, Kai Kang <kai.kang@windriver.com> wrote:
+> >> When this section of source codes were added via commit:
+> >>
+> >> * 02e2da45c4 Add common BusState
+> >>
+> >> it added devices to bus with LIST_INSERT_HEAD() which operated on the
+> >> single direction list. It didn't have something like LIST_INSERT_TAIL()
+> >> at that time and kept that way when turned to QTAILQ.
+> >>
+> >> Then it causes the fist device in qemu command line inserted at the end
+> >> of the bus child link list. And when realize them, the first device will
+> >> be the last one to be realized.
+> >>
+> >> Replace QTAILQ_INSERT_HEAD_RCU() with QTAILQ_INSERT_TAIL_RCU() to make
+> >> sure that devices are added to bus with the sequence in the command
+> >> line.
+> > What are the problems being caused by the the list items being added
+> > in reverse order? Your commit message doesn't say what specific
+> > bug or problem it's trying to fix.
 >
-> 2) Debug Logs :
-> guest_errors:
+> The problem I met was just as I asked for for help in the maillist on
+> Dec 18, 2023.
 >
-> Invalid read at addr 0x10000000, size 4, region '(null)', reason: rejecte=
-d
-> Invalid read at addr 0x10000004, size 4, region '(null)', reason: rejecte=
-d
-> Invalid read at addr 0x10800000, size 2, region '(null)', reason: rejecte=
-d
-> qemu: fatal: Lockup: can't escalate 3 to HardFault (current priority -1)
+> The indexes of serial isa devices changes with the commit dcdbfaafe90a
+> since qemu 6.2.0.
+> Before the commit, it creates devices literally with "1" & "2":
 >
-> in_asm:
-
+> @@ -1252,8 +1222,6 @@ static void build_isa_devices_aml(Aml *table)
+>           aml_append(scope, build_fdc_device_aml(fdc));
+>       }
+>       aml_append(scope, build_lpt_device_aml());
+> -    build_com_device_aml(scope, 1);
+> -    build_com_device_aml(scope, 2);
 >
-> IN:
-> 0x10000008:
-> OBJD-T: 00480047
-
-Whoever built your QEMU didn't do it with libcapstone-dev
-installed, so the debug logs have only binary dumps of
-instructions, not the actual instructions, which is a pity
-(--enable-capstone will force configure to either find the
-necessary library or else give you an error message.)
-
-Also, I did not mean "do logs of every -d option separately",
-I meant "do a single log, with -d
-in_asm,exec,cpu,int,cpu_reset,unimp,guest_errors,nochain"
-That way you get the different bits of logging in their
-correct sequence relative to each other.
-
-Luckily, this bit is enough to figure out what's going on:
-
-> Loaded reset SP 0x0 PC 0x0 from vector table
-> Loaded reset SP 0x10080000 PC 0x10000008 from vector table
-
-We load the PC from the vector table, but it does not
-have the low bit set, which is not correct. (All entries
-in the vector table must be function pointers in the
-usual Thumb convention, where the lowest bit is set to
-indicate Thumb mode and clear to indicate Arm mode.)
-This means that we will start without the Thumb T bit set...
-
-> Taking exception 18 [v7M INVSTATE UsageFault] on CPU 0
-
-...which on M-profile means we immediately take a fault trying
-to execute the first instruction...
-
-> ...taking pending secure exception 3
-> ...loading from element 3 of secure vector table at 0x1000000c
-> ...loaded new PC 0x10000011
-
-...but because your vector table includes no entry for
-the hardfault vector, we instead load a PC value which
-doesn't point anywhere useful...
-
-> Taking exception 3 [Prefetch Abort] on CPU 0
-> ...at fault address 0x10800000
-> ...with CFSR.IBUSERR
-> qemu: fatal: Lockup: can't escalate 3 to HardFault (current priority -1)
-
-...and eventually we execute off the end of the ROM memory,
-and then take a bus fault on the instruction fetch. This
-is a Lockup because we were already in a HardFault handler
-when we took this fault.
-
-> 3) You said the vector table is too small so I tried something like this =
-from your reference files but it gives me the same error:
+> After apply the commit, it uses the 'aml builder' way and the devices
+> are handled in reverse way.
+> Then the indexes are reversed. It affects guest os such as freebsd. When
+> run `pstat -t` on freebsd
+> with qemu, the sequence of the output is not right.
 >
-> Boot.s ( Startup file )
+> root@freebsd:~ # pstat -t
+>        LINE   INQ  CAN  LIN  LOW  OUTQ  USE  LOW   COL  SESS  PGID STATE
+>       ttyu2     0    0    0    0     0    0    0     0     0     0 IC
+>       ttyu3     0    0    0    0     0    0    0     0     0     0 IC
+>       ttyu1     0    0    0    0     0    0    0     0     0     0 IC
+>       ttyu0  1920    0    0  192  1984    0  199     0   664   668 ICOi
 >
-> .thumb
-> .syntax unified
->
-> .section .isr_vector
->     .long __StackTop
->     .long Reset_Handler
->     .word 0
+> It is expected with ascend order which keeps the same behavior with
+> older version qemu.
 
-Zeroes here aren't very helpful because the CPU will try
-to jump to address 0 (and then immediately take another
-fault because the Thumb bit isn't set, which will be
-a Lockup condition again). If you at least make them point to
-branch-to-self instructions it'll be a bit clearer when
-you take an exception you weren't expecting, because in
-the debugger you'll see execution looping at that insn.
+Thanks. This seems like something that should be fixed in
+the AML related code, not here.
 
->     .word 0
->     .rept 7
->     .word 0
->     .endr
->     .word 0
->     .word 0
->     .word 0
->     .word 0
->     .word 0
->     .rept 32
->     .word 0
->     .endr
->
->
-> .text
-> .global Reset_Handler
-> Reset_Handler:
->     ldr     R0, =3D main
->     bx      R0
-
-But really your problem is here. You haven't told the assembler
-that "Reset_Handler" is a function entry point, and so it treats
-it like a data label. That means that the least significant bit
-is not set when you reference it in the vector table.
-
-Something like this will do what you want:
-        .type Reset_Handler, function
-        .global Reset_Handler
-Reset_Handler:
-
-PS: a hint for later: your code here does not do anything
-to enable the FPU before it jumps into C code. If your
-C compiler is generating code to use the FPU this will
-mean it will take an exception. So either make sure the
-C compiler is configured not to use the FPU, or else enable
-the FPU first.
-
-thanks
 -- PMM
 
