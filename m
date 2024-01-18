@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B297883139D
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:59:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF50831379
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:58:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNGi-0007ei-MJ; Thu, 18 Jan 2024 02:56:57 -0500
+	id 1rQNGj-0007fr-8n; Thu, 18 Jan 2024 02:56:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNGS-0007JM-Nz; Thu, 18 Jan 2024 02:56:42 -0500
+ id 1rQNGS-0007JN-O5; Thu, 18 Jan 2024 02:56:42 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNGO-0007w0-GQ; Thu, 18 Jan 2024 02:56:39 -0500
+ id 1rQNGP-0007w8-78; Thu, 18 Jan 2024 02:56:39 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BB9F445048;
+ by isrv.corpit.ru (Postfix) with ESMTP id CCD3D45049;
  Thu, 18 Jan 2024 10:54:36 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E3455661B0;
- Thu, 18 Jan 2024 10:54:06 +0300 (MSK)
-Received: (nullmailer pid 2381716 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0315A661B1;
+ Thu, 18 Jan 2024 10:54:07 +0300 (MSK)
+Received: (nullmailer pid 2381719 invoked by uid 1000);
  Thu, 18 Jan 2024 07:54:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
- "Nelson H . F . Beebe" <beebe@math.utah.edu>,
  Richard Henderson <richard.henderson@linaro.org>,
- Bruno Haible <bruno@clisp.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 29/38] hw/hppa/machine: Allow up to 3840 MB total memory
-Date: Thu, 18 Jan 2024 10:52:56 +0300
-Message-Id: <20240118075404.2381519-29-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 30/38] hw/hppa/machine: Disable default devices with
+ --nodefaults option
+Date: Thu, 18 Jan 2024 10:52:57 +0300
+Message-Id: <20240118075404.2381519-30-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
@@ -63,61 +63,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The physical hardware allows DIMMs of 4 MB size and above, allowing up
-to 3840 MB of memory, but is restricted by setup code to 3 GB.
-Increase the limit to allow up to the maximum amount of memory.
+Recognize the qemu --nodefaults option, which will disable the
+following default devices on hppa:
+- lsi53c895a SCSI controller,
+- artist graphics card,
+- LASI 82596 NIC,
+- tulip PCI NIC,
+- second serial PCI card,
+- USB OHCI controller.
 
-Btw. the memory area from 0xf000.0000 to 0xffff.ffff is reserved by
-the architecture for firmware and I/O memory and can not be used for
-standard memory.
-
-An upcoming 64-bit SeaBIOS-hppa firmware will allow more than 3.75GB
-on 64-bit HPPA64. In this case the ram_max for the pa20 case will change.
+Adding this option is very useful to allow manual testing and
+debugging of the other possible devices on the command line.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Noticed-by: Nelson H. F. Beebe <beebe@math.utah.edu>
-Fixes: b7746b1194c8 ("hw/hppa/machine: Restrict the total memory size to 3GB")
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Bruno Haible <bruno@clisp.org>
-(cherry picked from commit 92039f61af89629f268e04255946c2a3fa0c453f)
+(cherry picked from commit d8a3220005d74512677b181e3a32cd94b13ddf49)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index c8da7c18d5..b11907617e 100644
+index b11907617e..54ca2fd91a 100644
 --- a/hw/hppa/machine.c
 +++ b/hw/hppa/machine.c
-@@ -276,6 +276,7 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
-     unsigned int smp_cpus = machine->smp.cpus;
-     TranslateFn *translate;
-     MemoryRegion *cpu_region;
-+    uint64_t ram_max;
+@@ -346,8 +346,10 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+     SysBusDevice *s;
  
-     /* Create CPUs.  */
-     for (unsigned int i = 0; i < smp_cpus; i++) {
-@@ -288,8 +289,10 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
-      */
-     if (hppa_is_pa20(&cpu[0]->env)) {
-         translate = translate_pa20;
-+        ram_max = 0xf0000000;      /* 3.75 GB (limited by 32-bit firmware) */
-     } else {
-         translate = translate_pa10;
-+        ram_max = 0xf0000000;      /* 3.75 GB (32-bit CPU) */
+     /* SCSI disk setup. */
+-    dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
+-    lsi53c8xx_handle_legacy_cmdline(dev);
++    if (drive_get_max_bus(IF_SCSI) >= 0) {
++        dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
++        lsi53c8xx_handle_legacy_cmdline(dev);
++    }
+ 
+     /* Graphics setup. */
+     if (machine->enable_graphics && vga_interface_type != VGA_NONE) {
+@@ -360,7 +362,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
      }
  
-     for (unsigned int i = 0; i < smp_cpus; i++) {
-@@ -311,9 +314,9 @@ static TranslateFn *machine_HP_common_init_cpus(MachineState *machine)
-                                 cpu_region);
- 
-     /* Main memory region. */
--    if (machine->ram_size > 3 * GiB) {
--        error_report("RAM size is currently restricted to 3GB");
--        exit(EXIT_FAILURE);
-+    if (machine->ram_size > ram_max) {
-+        info_report("Max RAM size limited to %" PRIu64 " MB", ram_max / MiB);
-+        machine->ram_size = ram_max;
+     /* Network setup. */
+-    if (enable_lasi_lan()) {
++    if (nd_table[0].used && enable_lasi_lan()) {
+         lasi_82596_init(addr_space, translate(NULL, LASI_LAN_HPA),
+                         qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA));
      }
-     memory_region_add_subregion_overlap(addr_space, 0, machine->ram, -1);
+@@ -385,7 +387,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+     pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_ID], 0x1227); /* Powerbar */
  
+     /* create a second serial PCI card when running Astro */
+-    if (!lasi_dev) {
++    if (serial_hd(1) && !lasi_dev) {
+         pci_dev = pci_new(-1, "pci-serial-4x");
+         qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(1));
+         qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(2));
 -- 
 2.39.2
 
