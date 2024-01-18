@@ -2,100 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 734CC83204D
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 21:11:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA489832099
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 21:51:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQYgx-000735-Fs; Thu, 18 Jan 2024 15:08:47 -0500
+	id 1rQZLA-0000AF-12; Thu, 18 Jan 2024 15:50:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQYgw-000710-4T
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:08:46 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rQZL6-00009n-T7
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:50:17 -0500
+Received: from mail-il1-x12c.google.com ([2607:f8b0:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQYgu-00078u-Aq
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:08:45 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40e86a9fc4bso295265e9.2
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 12:08:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rQZL5-0006Gl-Cc
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 15:50:16 -0500
+Received: by mail-il1-x12c.google.com with SMTP id
+ e9e14a558f8ab-3619e804f2aso176425ab.2
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 12:50:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705608523; x=1706213323; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1705611012; x=1706215812; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=haeX5zmggnkllRSh2IyLwuRzJwGjqqUgrN991UiOKFY=;
- b=C2K3LnScv93a5HrgMMmUsmy2vmDCT69aLcUE9xm+SJ055V9ezx5bqfL2T/UoTsTxjT
- NTzoNxN+h1Rq3Cu7NXvUIgKtZt++BmVMqw20k+Bxjdc0wFINE+Il52qzmHNojsMWfx8N
- 4hoa79qC28Z7wlf65gqP64DcADkeLSK/t+DiCaZAOzcU56Hj/RgndH/pZXZYNLnRx6cg
- ZeYCj5SP/CLNd9YXMEfK/AncAtMHZaqDo0ko23spqW9uvqcWY60OILx6jo4xmz3ZNt6C
- o0KKuvF3CS/unlgVE+lJECAOUHqWp2yoXKebPvKsXmpIE6FOf0HGjqPV4SGf92iin52/
- cQ/Q==
+ bh=0f5l0fzZIywWl9cmu82n3FRn9QIX6DqHcYTn9G4/qUo=;
+ b=NwHUY3bWNJ6hUz9l6p5JH7ghp5SRms7UZuBIS9+lcu/aSESEQc9gug8RtGaQiMgB6m
+ rRkNzcZQtXCASifsZTtOQxonh/7vRjccTD6+OHeCSEubN928Cfzo5KrdD72dlraitUUE
+ F5pi9QbSpNli19zweDSnNdoSAQwb+E8de8UPOJbB4hvbk6fHkhPC48JHMOEIi5NzxLht
+ fH+ZEh5OsbXp0ynARrWE726xAzLt+NoDNJESNxMPa5W3eecutdwIkWcI4fxXd68f5LXE
+ Rl/qQqiVb4Kz/ix8vdwDdjTwzEa8wSITg6EFeF8RyQSfhFSA9eY9jb21HJqUQ8ajtuDI
+ 1jSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705608523; x=1706213323;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1705611012; x=1706215812;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=haeX5zmggnkllRSh2IyLwuRzJwGjqqUgrN991UiOKFY=;
- b=JISR5PL42K4QKeB9DT7QmmzzxXat/I3T20gJUszR9BlznSUUE8DdYbDZTy471yLvx7
- PS3VhU8x5Psj+c7k3Yc4kLAtwTOnIQ21bj5pd2M51DFx+8yL6UtKoFGqh3hYikykftCb
- z153GKRLCIOSv7vu+ZtcMO4vRIAXC1OSFMbVEiIV4zYAazlA8GUDenUU5SKIvffWNVSy
- eunBMYZ+a97z2WfSH6S7GemYbUsLhD+qfjn5urvR7/rcDWLz/7MBVNeQiKk2KECV2wHR
- y6eOUIudgdsGxBZ3SqZwo/bM34PKxs+9lhDwaetYCKZH3I9gIMw0nCnp62VLJ6Y/5b7+
- c5dQ==
-X-Gm-Message-State: AOJu0YwnOmX294OhdYkhOfJvwP6oxVSkKborPc+rhIkSlNoIyEy/lgGz
- ByfhGtb4wbkRkLfG0VvOaREwasPvsJFEm3ZDoyEmGqIVFNn1qGSA1HTRetIPoNe4ujLJ5/tGWWS
- eXeZ1FXZG
-X-Google-Smtp-Source: AGHT+IF1cvUiwdlvGuy/umIofxo4jxXUUakN8g035Hkx43UBNfkpqf5cMEgzAL/KoKKa/HRjhbA+FQ==
-X-Received: by 2002:a05:600c:1c9c:b0:40e:7677:c25c with SMTP id
- k28-20020a05600c1c9c00b0040e7677c25cmr795282wms.142.1705608522835; 
- Thu, 18 Jan 2024 12:08:42 -0800 (PST)
-Received: from [192.168.124.175] ([78.196.4.158])
+ bh=0f5l0fzZIywWl9cmu82n3FRn9QIX6DqHcYTn9G4/qUo=;
+ b=bA0KFkG0HOdzTa1b/IH4IcuYa5TGSSba3V0+wCQdvQ8JeAaSQazwW8U9yNHWu8KP2l
+ hx8JIpiwJqMoilz57TxYmmomvgpOF22k8YzLCCUHFE0+ImRNmtbKThu0d9aycxDTyxoX
+ HfiE4jdPLhIsbZy6dMx8C4hw1p6sGBuXDHyHMHsMQUISTHvHLjsYB9FiKWw9FaUa9Wc9
+ n4gfPIwymK0HUiBlYywUo06d4XT24SxzU5SN1ilu7K0LnVZ6yiHUGdO6tzXY5OkTEGr/
+ kH51nTznsN24vs5R5RN+jA2jZ1gWX9SsoV3SoyJCDno0KHwHAApyPkd6Fq/JitmON85i
+ mwXQ==
+X-Gm-Message-State: AOJu0YzVM7ox1VNXy+Ov1cWrKRsTe1t7CQYGOow0DsV44Tle6u0Pa/GK
+ YgrEd/OJiEgjbd6buu4yKvAlixtEYPFe8aWyFV7y/dOMJ7g1kleIcVqHLFnQzW0=
+X-Google-Smtp-Source: AGHT+IGHiby9diI9TREoPopm6V97A5jRa669kOhxaCnubzBKU+/06WhRBcyqYFoETgKftG+K9SNPVQ==
+X-Received: by 2002:a05:6e02:505:b0:361:933c:3afb with SMTP id
+ d5-20020a056e02050500b00361933c3afbmr1644171ils.50.1705611011942; 
+ Thu, 18 Jan 2024 12:50:11 -0800 (PST)
+Received: from ?IPV6:2001:8004:2728:321b:4bd7:3071:22d6:a756?
+ ([2001:8004:2728:321b:4bd7:3071:22d6:a756])
  by smtp.gmail.com with ESMTPSA id
- l6-20020a7bc346000000b0040d81ca11casm26099868wmj.28.2024.01.18.12.08.41
+ j8-20020a63e748000000b005c6e8fa9f24sm1980383pgk.49.2024.01.18.12.50.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 Jan 2024 12:08:42 -0800 (PST)
-Message-ID: <fbb60cf4-78a3-4133-b138-bc37a79ca68c@linaro.org>
-Date: Thu, 18 Jan 2024 21:08:40 +0100
+ Thu, 18 Jan 2024 12:50:11 -0800 (PST)
+Message-ID: <3cb918ca-27cd-4f1e-8738-306dc5280f42@linaro.org>
+Date: Fri, 19 Jan 2024 07:50:03 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/20] arm: Rework target/ headers to build various hw/
- files once
+Subject: Re: [PATCH v4 3/6] target/riscv: Add helper functions to calculate
+ current number of masked bits for pointer masking
+To: Deepak Gupta <debug@rivosinc.com>, Alexey Baturo <baturo.alexey@gmail.com>
+Cc: zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
+ Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu,
+ kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+References: <20240109102930.405323-1-me@deliversmonkey.space>
+ <20240109102930.405323-4-me@deliversmonkey.space>
+ <CAKC1njSLR614zQk0_DAgYN1jjdg=0eUa7N1AEwwXZVNN6BwjmA@mail.gmail.com>
 Content-Language: en-US
-To: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
-Cc: Igor Mitsyanko <i.mitsyanko@gmail.com>, qemu-arm@nongnu.org,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Eric Auger <eric.auger@redhat.com>,
- Niek Linnenbank <nieklinnenbank@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jan Kiszka <jan.kiszka@web.de>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Alistair Francis <alistair@alistair23.me>,
- Radoslaw Biernacki <rad@semihalf.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Andrey Smirnov <andrew.smirnov@gmail.com>, Rob Herring <robh@kernel.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, Tyrone Ting <kfting@nuvoton.com>,
- Beniamino Galvani <b.galvani@gmail.com>, Alexander Graf <agraf@csgraf.de>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Ani Sinha <anisinha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Jean-Christophe Dubois <jcd@tribudubois.net>,
- Joel Stanley <joel@jms.id.au>, Hao Wu <wuhaotsh@google.com>,
- kvm@vger.kernel.org
-References: <20240118200643.29037-1-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240118200643.29037-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAKC1njSLR614zQk0_DAgYN1jjdg=0eUa7N1AEwwXZVNN6BwjmA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,41 +99,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/1/24 21:06, Philippe Mathieu-Daudé wrote:
-> Hi,
+On 1/19/24 04:21, Deepak Gupta wrote:
+> On Tue, Jan 9, 2024 at 2:31 AM Alexey Baturo <baturo.alexey@gmail.com> wrote:
+>>
+>> From: Alexey Baturo <baturo.alexey@gmail.com>
+>>
+>> Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
+>> ---
 > 
-> In order to fix a bug noticed [*] by Cédric and Fabiano in my
-> "Remove one use of qemu_get_cpu() in A7/A15 MPCore priv" series,
-> I ended reusing commits from other branches and it grew quite
-> a lot. This is the first "cleanup" part, unrelated on MPCorePriv.
+>> +
+>> +bool riscv_cpu_virt_mem_enabled(CPURISCVState *env)
+>> +{
+>> +    bool virt_mem_en = false;
+>> +#ifndef CONFIG_USER_ONLY
+>> +    int satp_mode = 0;
+>> +    int priv_mode = cpu_address_mode(env);
+>> +    /* Get current PMM field */
+>> +    if (riscv_cpu_mxl(env) == MXL_RV32) {
+>> +        satp_mode = get_field(env->satp, SATP32_MODE);
+>> +    } else {
+>> +        satp_mode = get_field(env->satp, SATP64_MODE);
+>> +    }
+>> +    virt_mem_en = ((satp_mode != VM_1_10_MBARE) && (priv_mode != PRV_M));
+>> +#endif
+>> +    return virt_mem_en;
 > 
-> Please review,
-> 
-> Phil.
-> 
+> Obsessing a little bit on how to test PM enabled binaries with qemu-user.
+> If we return false above then we're not allowed to test binaries with
+> pointer masking enabled with qemu-user.
+> That use case is not required?
 
-[*] 
-https://lore.kernel.org/qemu-devel/501c1bfe-fb26-42ab-a925-9888755c72ad@linaro.org/
+In a previous round I suggested that the ifdefs are not necessary.
+But for now it will always be off for qemu-user.
 
-> Philippe Mathieu-Daudé (18):
->    hw/arm/exynos4210: Include missing 'exec/tswap.h' header
->    hw/arm/xilinx_zynq: Include missing 'exec/tswap.h' header
->    hw/arm/smmuv3: Include missing 'hw/registerfields.h' header
->    hw/arm/xlnx-versal: Include missing 'cpu.h' header
->    target/arm/cpu-features: Include missing 'hw/registerfields.h' header
->    target/arm/cpregs: Include missing 'hw/registerfields.h' header
->    target/arm/cpregs: Include missing 'kvm-consts.h' header
->    target/arm: Expose arm_cpu_mp_affinity() in 'multiprocessing.h' header
->    target/arm: Declare ARM_CPU_TYPE_NAME/SUFFIX in 'cpu-qom.h'
->    hw/cpu/a9mpcore: Build it only once
->    hw/misc/xlnx-versal-crl: Include generic 'cpu-qom.h' instead of
->      'cpu.h'
->    hw/misc/xlnx-versal-crl: Build it only once
->    target/arm: Expose M-profile register bank index definitions
->    hw/arm/armv7m: Make 'hw/intc/armv7m_nvic.h' a target agnostic header
->    target/arm: Move ARM_CPU_IRQ/FIQ definitions to 'cpu-qom.h' header
->    target/arm: Move e2h_access() helper around
->    target/arm: Move GTimer definitions to new 'gtimer.h' header
->    hw/arm: Build various units only once
+At some point pointer masking will be in hardware, and the kernel will gain support for 
+it, and there will likely be a prctl() added for it.  At the point the kernel finalizes 
+the API, you will be able to enable pointer masking for qemu-user.
 
+
+r~
 
